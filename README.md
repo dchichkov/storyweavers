@@ -14,7 +14,7 @@ A **story kernel** is a symbolic, algebraic representation of a narrative's stru
 > Once upon a time, there was a big whale. The whale loved to swim in the deep blue sea. The whale was very delicate and kind to all the little fish. One day, the whale wanted to test how fast he could swim...
 
 **Extracted Kernel:**
-```
+```python
 Whale(Character, Imaginary, Delicate + Kind)
 Test(Speed) + Community(Support, cheered) + Happy
 Identity(Whale,
@@ -57,8 +57,7 @@ TinyStories Dataset (2M stories)
          │
          ▼
     ┌──────────┐
-    │ story.py │  ← Kernel algebra & generation
-    │  gen.py  │
+    │  gen5.py │  ← Classical NLG generation engine
     └──────────┘
          │
          ▼
@@ -70,12 +69,32 @@ TinyStories Dataset (2M stories)
 ### `kernel.py` — Kernel Extraction
 Uses LLMs (via OpenAI-compatible API) to extract story kernels from raw text. Processes the TinyStories dataset with async concurrency.
 
-### `story.py` — Narrative Algebra Framework
-Implements the core `Story` and `physical` classes:
-- **`Story`**: Memetic objects with attention algebra (`/`, `+`, `+=`)
-- **`physical`**: Atomic, terminal objects (no internal structure)
-- **`@Stories`**: Decorator that registers reusable kernel functions
-- **`@Characters`**: Creates characters bridging physical and story layers
+### `gen5.py` — Classical Generation Engine ⭐
+
+The main generation engine that converts kernels to stories **without LLMs at runtime**. Uses:
+- Python AST parsing (kernels are valid Python)
+- Template-based sentence generation
+- NLTK for linguistic processing (when available)
+- Compositional execution of kernel functions
+
+**Key design:** Kernels ARE valid Python code. They're parsed with `ast.parse()` and executed against a registry of kernel implementations.
+
+```python
+# Example kernel execution
+kernel = '''
+Lily(Character, girl, Resourceful)
+Encounter(Lily, wolf, forest)
+Fear(Lily)
+Run(Lily)
+Whistle(Lily, loud)
+Run(wolf)
+'''
+
+story = generate_story(kernel)
+# Output: "There once was a resourceful girl named Lily. Lily came across 
+#          a wolf. Lily was scared. Lily ran as fast as she could. 
+#          Lily whistled very loud. The wolf ran away."
+```
 
 ### `cluster.py` — GPU-Accelerated Clustering
 Uses RAPIDS (cuGraph, cuML) for:
@@ -86,8 +105,103 @@ Uses RAPIDS (cuGraph, cuML) for:
 ### `parse.py` — Kernel Analysis
 Parses extracted kernels, computes statistics, and identifies the most common narrative patterns.
 
-### `gen.py` / `gen2.py` — Kernel → Text Generation
-Converts kernel representations back into natural language stories.
+### `story.py` — Narrative Algebra Framework
+Experimental implementation of the kernel algebra with `Story` and `physical` classes.
+
+## Adding New Kernels (Coding Agent Workflow)
+
+The recommended approach for expanding kernel coverage is **interactive development with a coding agent** (like Claude, Cursor, etc.) rather than automated LLM synthesis.
+
+### Why Coding Agent > Automated Synthesis
+
+1. **Context-aware**: The agent sees the full codebase and existing patterns
+2. **Iterative refinement**: Can test, debug, and improve implementations in real-time
+3. **Consistent style**: Follows established conventions in the codebase
+4. **Better error handling**: Can handle edge cases discovered during testing
+5. **Documentation**: Naturally documents decisions and patterns
+
+### How to Add a Kernel
+
+1. **Identify missing kernels** from clustering analysis or parse errors:
+```bash
+python parse.py  # Shows most common kernels
+```
+
+2. **Ask the coding agent** to implement the kernel:
+> "Add a kernel for `Rescue` that handles characters rescuing each other"
+
+3. **The agent adds it to `gen5.py`** following the pattern:
+```python
+@REGISTRY.kernel("Rescue")
+def kernel_rescue(ctx: StoryContext, *args, **kwargs) -> StoryFragment:
+    """Someone is rescued."""
+    chars = [a for a in args if isinstance(a, Character)]
+    
+    if len(chars) >= 2:
+        chars[1].Fear -= 15
+        chars[1].Joy += 10
+        return StoryFragment(f"{chars[0].name} rescued {chars[1].name}!")
+    elif chars:
+        return StoryFragment(f"{chars[0].name} was rescued!")
+    
+    return StoryFragment("Someone came to the rescue!")
+```
+
+4. **Test immediately**:
+```bash
+python gen5.py
+```
+
+### Kernel Implementation Pattern
+
+Every kernel follows this structure:
+
+```python
+@REGISTRY.kernel("KernelName")
+def kernel_name(ctx: StoryContext, *args, **kwargs) -> StoryFragment:
+    """Docstring describing what this kernel does."""
+    
+    # 1. Parse arguments
+    chars = [a for a in args if isinstance(a, Character)]
+    objects = [str(a) for a in args if isinstance(a, str)]
+    
+    # 2. Update character state (optional)
+    if chars:
+        chars[0].Joy += 10  # or Fear, Love, Sadness, etc.
+    
+    # 3. Generate text based on arguments
+    if len(chars) >= 2:
+        return StoryFragment(f"{chars[0].name} verbed {chars[1].name}.")
+    elif chars:
+        return StoryFragment(f"{chars[0].name} verbed.")
+    
+    # 4. Handle concept/state usage (when no character present)
+    return StoryFragment("verbed", kernel_name="KernelName")
+```
+
+### Meta-Pattern Kernels
+
+For narrative structures like `Journey`, `Cautionary`, `Friendship`:
+
+```python
+@REGISTRY.kernel("Journey")
+def kernel_journey(ctx: StoryContext, character: Character = None, **kwargs):
+    parts = []
+    
+    if 'state' in kwargs:
+        parts.append(f"{character.name} was {_state_to_phrase(kwargs['state'])}.")
+    
+    if 'catalyst' in kwargs:
+        parts.append(f"But then, {_event_to_phrase(kwargs['catalyst'])}!")
+    
+    if 'process' in kwargs:
+        parts.append(f"{character.name} {_action_to_phrase(kwargs['process'])}.")
+    
+    if 'transformation' in kwargs:
+        parts.append(f"After that, {character.name} felt {kwargs['transformation']}.")
+    
+    return StoryFragment(' '.join(parts))
+```
 
 ## Goals
 
@@ -110,13 +224,10 @@ Converts kernel representations back into natural language stories.
 
 ## Usage
 
-### Extract Kernels
+### Extract Kernels (requires LLM)
 ```bash
-# Set up LLM endpoint
 export LOCALHOST_BASE_URL="http://localhost:8001/v1"
 export LOCALHOST_API_KEY="your-key"
-
-# Run extraction
 python kernel.py
 ```
 
@@ -130,11 +241,26 @@ python parse.py
 python cluster.py
 ```
 
-### Generate Stories from Kernels
+### Generate Stories (no LLM needed)
 ```bash
-python gen.py
-# or
-python gen2.py
+python gen5.py
+```
+
+### Generate from Custom Kernel
+```python
+from gen5 import generate_story
+
+kernel = '''
+Tim(Character, boy, Brave)
+Monster(Character, scary)
+Encounter(Tim, Monster)
+Fear(Tim)
+Brave(Tim)
+Run(Monster)
+Joy(Tim)
+'''
+
+print(generate_story(kernel))
 ```
 
 ## Philosophy
@@ -146,4 +272,17 @@ The project is grounded in the idea that narratives are composed of reusable **m
 3. **Analyze** what fundamental patterns make stories work
 4. **Train** models on structured narrative representations
 
+**LLM usage is restricted to synthesis time** (extracting kernels, clustering, defining new kernel implementations). At generation time, stories are produced through classical execution — no LLM calls, just template filling and compositional algebra.
+
 This is an exploration of story as code — where narrative structure becomes executable algebra.
+
+## File Overview
+
+| File | Purpose | LLM Required |
+|------|---------|--------------|
+| `kernel.py` | Extract kernels from stories | ✅ Yes |
+| `parse.py` | Analyze kernel statistics | ❌ No |
+| `cluster.py` | Cluster similar stories | ❌ No |
+| `gen5.py` | Generate stories from kernels | ❌ No |
+| `story.py` | Kernel algebra experiments | ❌ No |
+| `gen.py`, `gen2.py`, `gen3.py`, `gen4.py` | Earlier generation attempts | Varies |
