@@ -352,4 +352,9 @@ This is an exploration of story as code — where narrative structure becomes ex
 | `gen5.py` | Core generation engine (representative kernels) | ❌ No |
 | `gen5k01.py` | Kernel Pack #01 (additional kernels) | ❌ No |
 | `story.py` | Kernel algebra experiments | ❌ No |
+| `AGENTS.md` | Instructions for coding agents | ❌ No |
 | `gen.py`, `gen2.py`, `gen3.py`, `gen4.py` | Earlier generation attempts | Varies |
+
+## For Coding Agents
+
+See **[AGENTS.md](AGENTS.md)** for detailed instructions on implementing new kernels.
