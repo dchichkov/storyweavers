@@ -136,6 +136,7 @@ python -c "from gen5 import REGISTRY; import gen5k02; print(len(REGISTRY.kernels
 | `gen5.py` | Core engine + ~50 representative kernels | NO - keep as reference |
 | `gen5k01.py` | Kernel pack #1 (~50 kernels) | Add to or create new pack |
 | `sample.py` | Sampling tool for exploring kernels | NO |
+| `coverage.py` | Check implementation coverage | NO |
 | `README.md` | Project documentation | Update if needed |
 
 ## Implementation Guidelines
@@ -160,6 +161,42 @@ Use these from gen5.py:
 - `_state_to_phrase(state)` - Convert state to phrase
 - `_action_to_phrase(action)` - Convert action to phrase
 - `NLGUtils.join_list(names)` - Join list with "and"
+
+## Checking Coverage
+
+Use `coverage.py` to check how well the implemented kernels cover the dataset:
+
+```bash
+# Full coverage report
+python coverage.py
+
+# Brief one-liner
+python coverage.py --brief
+
+# Show top 30 missing kernels
+python coverage.py --missing
+
+# Show top 30 implemented kernels  
+python coverage.py --implemented
+
+# Show more items
+python coverage.py --missing --top 50
+```
+
+Example output:
+```
+📊 DATASET: TinyStories_kernels/data00.kernels.jsonl
+   Total stories: 100,000
+   Parseable kernels: 80,766 (80.8%)
+
+🔧 IMPLEMENTATION:
+   Implemented kernels: 101
+   Unique kernel names in dataset: 20,523
+
+📈 COVERAGE:
+   Kernel usages covered: 400,310 / 1,113,331 (36.0%)
+   Stories with 60%+ coverage: 4,670
+```
 
 ## Current Coverage
 

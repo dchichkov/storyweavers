@@ -349,6 +349,7 @@ This is an exploration of story as code — where narrative structure becomes ex
 | `parse.py` | Analyze kernel statistics | ❌ No |
 | `cluster.py` | Cluster similar stories | ❌ No |
 | `sample.py` | Sample & explore kernel usage | ❌ No |
+| `coverage.py` | Check kernel implementation coverage | ❌ No |
 | `gen5.py` | Core generation engine (representative kernels) | ❌ No |
 | `gen5k01.py` | Kernel Pack #01 (additional kernels) | ❌ No |
 | `story.py` | Kernel algebra experiments | ❌ No |
