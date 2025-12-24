@@ -20,8 +20,8 @@ import argparse
 import ast
 from pathlib import Path
 
-# Import gen5 generation engine
-from gen5 import generate_story, KernelExecutor, REGISTRY
+# Import gen5 registry (auto-loads all kernel packs)
+from gen5registry import generate_story, REGISTRY, KernelExecutor
 
 
 def load_jsonl(file_path: str, limit: int = None) -> list:

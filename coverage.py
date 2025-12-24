@@ -23,8 +23,7 @@ warnings.filterwarnings('ignore', category=SyntaxWarning)
 
 def load_registry():
     """Load the kernel registry with all kernel packs."""
-    from gen5 import REGISTRY
-    import gen5k01  # Add more kernel packs here as they're created
+    from gen5registry import REGISTRY
     return REGISTRY
 
 
