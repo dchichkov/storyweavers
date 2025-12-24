@@ -10,6 +10,8 @@ Usage:
     python sample.py -n 5               # Sample 5 random stories
     python sample.py -f data01          # Sample from specific file
     python sample.py --show-original    # Also show original story text
+    python sample.py -k Search          # Sample stories using the "Search" kernel
+    python sample.py --explore-missing  # Pick a random missing kernel and sample its usages
 """
 
 import json
@@ -45,6 +47,85 @@ def sample_stories(file_path: str, n: int = 1) -> list:
     
     n = min(n, len(records))
     return random.sample(records, n)
+
+
+def find_stories_with_kernel(file_path: str, kernel_name: str, limit: int = 100) -> list:
+    """Find stories that use a specific kernel."""
+    import re
+    matches = []
+    
+    with open(file_path, 'r') as f:
+        for line in f:
+            try:
+                record = json.loads(line)
+                kernel = record.get('kernel', '') or ''
+                if not kernel:
+                    continue
+                # Look for kernel name as function call or reference
+                # Match: KernelName( or KernelName, or KernelName) or KernelName\n or +KernelName
+                pattern = rf'\b{re.escape(kernel_name)}\b'
+                if re.search(pattern, kernel):
+                    matches.append(record)
+                    if len(matches) >= limit:
+                        break
+            except json.JSONDecodeError:
+                continue
+    
+    return matches
+
+
+def collect_missing_kernels(file_path: str, sample_size: int = 500) -> dict:
+    """Scan stories and collect missing kernel frequencies."""
+    from collections import Counter
+    
+    missing_counts = Counter()
+    records = load_jsonl(file_path, limit=sample_size)
+    
+    for record in records:
+        kernel = record.get('kernel', '')
+        _, missing = check_kernel_coverage(kernel)
+        # Filter out likely character names (single capitalized words that appear as first arg)
+        for m in missing:
+            missing_counts[m] += 1
+    
+    return missing_counts
+
+
+def is_likely_kernel_not_name(kernel_name: str, records: list) -> bool:
+    """Heuristic: check if this is likely a kernel (action/pattern) vs a character name."""
+    # Common kernel patterns (verbs, patterns)
+    kernel_patterns = [
+        'Search', 'Find', 'Play', 'Run', 'Walk', 'Jump', 'Fly', 'Swim',
+        'Help', 'Share', 'Give', 'Take', 'Make', 'Build', 'Create',
+        'Learn', 'Teach', 'Show', 'Tell', 'Ask', 'Answer',
+        'Love', 'Like', 'Want', 'Need', 'Feel', 'Think',
+        'Happy', 'Sad', 'Angry', 'Scared', 'Surprised',
+        'Quest', 'Journey', 'Adventure', 'Mission',
+        'Conflict', 'Fight', 'Battle', 'Challenge',
+        'Loss', 'Win', 'Fail', 'Success',
+        'Start', 'End', 'Begin', 'Finish',
+        'Attempt', 'Try', 'Effort',
+    ]
+    
+    # If it matches common patterns, likely a kernel
+    for pattern in kernel_patterns:
+        if pattern.lower() in kernel_name.lower():
+            return True
+    
+    # Check usage patterns in records
+    call_count = 0
+    ref_count = 0
+    for record in records[:20]:
+        kernel = record.get('kernel', '')
+        # Count as call if followed by (
+        if f'{kernel_name}(' in kernel:
+            call_count += 1
+        # Count as reference if appears without (
+        elif kernel_name in kernel:
+            ref_count += 1
+    
+    # If mostly used as function calls, likely a kernel
+    return call_count > ref_count
 
 
 def check_kernel_syntax(kernel: str) -> tuple:
@@ -149,6 +230,12 @@ def main():
                         help='Random seed for reproducibility')
     parser.add_argument('--stats', action='store_true',
                         help='Show coverage statistics for sampled kernels')
+    parser.add_argument('-k', '--kernel', type=str, default=None,
+                        help='Sample stories that use a specific kernel')
+    parser.add_argument('--explore-missing', '-e', action='store_true',
+                        help='Pick a random missing kernel and sample stories using it')
+    parser.add_argument('--list-missing', '-l', action='store_true',
+                        help='List most common missing kernels')
     
     args = parser.parse_args()
     
@@ -165,6 +252,99 @@ def main():
             print(f"  - {f.stem.replace('.kernels', '')}")
         return 1
     
+    # Mode: List missing kernels
+    if args.list_missing:
+        print(f"Scanning {file_path} for missing kernels...")
+        missing_counts = collect_missing_kernels(str(file_path), sample_size=1000)
+        
+        print(f"\n{'='*70}")
+        print("MOST COMMON MISSING KERNELS")
+        print('='*70)
+        print(f"{'Kernel':<30} {'Count':<10} {'Likely Type'}")
+        print('-'*70)
+        
+        # Get sample records for heuristic
+        sample_records = load_jsonl(str(file_path), limit=100)
+        
+        for kernel_name, count in missing_counts.most_common(30):
+            likely_kernel = is_likely_kernel_not_name(kernel_name, sample_records)
+            type_str = "🔧 kernel" if likely_kernel else "👤 name/trait"
+            print(f"{kernel_name:<30} {count:<10} {type_str}")
+        
+        return 0
+    
+    # Mode: Explore a random missing kernel
+    if args.explore_missing:
+        print(f"Scanning {file_path} for missing kernels...")
+        missing_counts = collect_missing_kernels(str(file_path), sample_size=500)
+        
+        # Get sample records for heuristic
+        sample_records = load_jsonl(str(file_path), limit=100)
+        
+        # Filter to likely kernels (not character names)
+        likely_kernels = [
+            (k, c) for k, c in missing_counts.most_common(50)
+            if is_likely_kernel_not_name(k, sample_records) and c >= 3
+        ]
+        
+        if not likely_kernels:
+            print("No missing kernels found!")
+            return 1
+        
+        # Pick a random one (weighted by frequency)
+        kernel_name = random.choice([k for k, c in likely_kernels[:20]])
+        print(f"\n🎲 Randomly selected missing kernel: {kernel_name}")
+        args.kernel = kernel_name
+    
+    # Mode: Sample stories using a specific kernel
+    if args.kernel:
+        print(f"Finding stories that use '{args.kernel}'...")
+        matches = find_stories_with_kernel(str(file_path), args.kernel, limit=100)
+        
+        if not matches:
+            print(f"No stories found using kernel '{args.kernel}'")
+            return 1
+        
+        print(f"Found {len(matches)} stories using '{args.kernel}'")
+        
+        # Sample from matches
+        n = min(args.num, len(matches))
+        samples = random.sample(matches, n)
+        
+        print(f"\n{'='*70}")
+        print(f"EXPLORING KERNEL: {args.kernel}")
+        print(f"Showing {n} example{'s' if n > 1 else ''} of how '{args.kernel}' is used")
+        print('='*70)
+        
+        for i, record in enumerate(samples, 1):
+            display_sample(record, show_original=args.show_original, index=i)
+        
+        # Show implementation suggestion
+        print(f"\n{'='*70}")
+        print(f"💡 IMPLEMENTATION SUGGESTION FOR: {args.kernel}")
+        print('='*70)
+        print(f"""
+To implement this kernel, add to gen5.py:
+
+@REGISTRY.kernel("{args.kernel}")
+def kernel_{args.kernel.lower()}(ctx: StoryContext, *args, **kwargs) -> StoryFragment:
+    '''TODO: Describe what {args.kernel} does based on examples above.'''
+    chars = [a for a in args if isinstance(a, Character)]
+    objects = [str(a) for a in args if isinstance(a, str)]
+    
+    char = chars[0] if chars else ctx.current_focus
+    
+    if char:
+        # TODO: Update character state
+        # char.Joy += 10
+        return StoryFragment(f"{{char.name}} {args.kernel.lower()}ed.")
+    
+    # No character - used as concept
+    return StoryFragment("{args.kernel.lower()}", kernel_name="{args.kernel}")
+""")
+        return 0
+    
+    # Default mode: Random sampling
     print(f"Sampling {args.num} {'story' if args.num == 1 else 'stories'} from {file_path}")
     
     # Sample stories

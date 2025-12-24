@@ -1131,6 +1131,46 @@ def kernel_rescue(ctx: StoryContext, *args, **kwargs) -> StoryFragment:
     return StoryFragment("Someone came to the rescue!")
 
 
+@REGISTRY.kernel("Conflict")
+def kernel_conflict(ctx: StoryContext, *args, **kwargs) -> StoryFragment:
+    """Conflict between characters - disagreement, fight, or struggle."""
+    chars = [a for a in args if isinstance(a, Character)]
+    cause = kwargs.get('cause', '')
+    
+    # Update emotional states
+    for c in chars:
+        c.Anger += 10
+        c.Joy -= 5
+    
+    if len(chars) >= 2:
+        if cause:
+            cause_text = _to_phrase(cause)
+            return StoryFragment(f"{chars[0].name} and {chars[1].name} had a conflict over the {cause_text}.")
+        return StoryFragment(f"{chars[0].name} and {chars[1].name} got into a fight.")
+    elif chars:
+        if cause:
+            return StoryFragment(f"{chars[0].name} had trouble because of {_to_phrase(cause)}.")
+        return StoryFragment(f"There was trouble for {chars[0].name}.")
+    
+    # No character - check for keyword args describing the conflict
+    chase = kwargs.get('chase', '')
+    refusal = kwargs.get('refusal', '')
+    demand = kwargs.get('demand', '')
+    
+    parts = []
+    if chase:
+        parts.append(_to_phrase(chase))
+    if refusal:
+        parts.append(_to_phrase(refusal))
+    if demand:
+        parts.append(_to_phrase(demand))
+    
+    if parts:
+        return StoryFragment("There was conflict: " + " and ".join(parts) + ".")
+    
+    return StoryFragment("there was conflict", kernel_name="Conflict")
+
+
 @REGISTRY.kernel("Warn")
 def kernel_warn(ctx: StoryContext, *args, **kwargs) -> StoryFragment:
     """Character warns about danger."""

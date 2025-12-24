@@ -120,17 +120,82 @@ The recommended approach for expanding kernel coverage is **interactive developm
 4. **Better error handling**: Can handle edge cases discovered during testing
 5. **Documentation**: Naturally documents decisions and patterns
 
-### How to Add a Kernel
+### Workflow: Sample → Study → Implement → Test
 
-1. **Identify missing kernels** from clustering analysis or parse errors:
+**Critical:** Always sample real usage examples before implementing a kernel!
+
+#### Step 1: Identify Missing Kernels
 ```bash
-python parse.py  # Shows most common kernels
+python sample.py -l              # List common missing kernels
+python sample.py -e              # Explore a random missing kernel  
+python sample.py -k KernelName   # Explore a specific kernel
 ```
 
+#### Step 2: Sample Usage Examples
+```bash
+# See how a kernel is actually used in the dataset
+python sample.py -k Apology -n 5
+
+# Example output shows:
+#   - Original story summary
+#   - Full kernel structure
+#   - How the target kernel fits in context
+#   - What other kernels it's commonly paired with
+```
+
+#### Step 3: Study the Patterns
+Look for:
+- **Arguments**: What characters/objects are typically passed?
+- **Context**: What kernels come before/after?
+- **Variations**: Different ways the same kernel is used
+- **Character state**: What emotions are affected?
+
+#### Step 4: Implement the Kernel
+Create new kernels in **separate files** (e.g., `gen5k01.py`, `gen5k02.py`) to keep `gen5.py` as a representative core sample:
+
+```python
+# gen5k01.py - Additional Kernel Pack #01
+from gen5 import REGISTRY, StoryContext, StoryFragment, Character
+
+@REGISTRY.kernel("Apology")
+def kernel_apology(ctx: StoryContext, *args, **kwargs) -> StoryFragment:
+    ...
+```
+
+#### Step 5: Test with Real Data
+```bash
+# Test by sampling the same kernel again - it should now generate
+python sample.py -k Apology -n 3
+
+# Import the kernel pack in your code:
+from gen5 import generate_story
+import gen5k01  # Registers additional kernels
+```
+
+### Example Session
+
+```bash
+$ python sample.py -k Quest -n 2
+
+KERNEL:
+Hero(Character, Curious + Determined)
+Quest(Hero,
+    longing=Find(Special),
+    process=Search + Heed(Voice) + Enter(mine),
+    obstacle=Fear + mine(twisting),
+    outcome=Safety + Joy)
+
+# Now you understand: Quest takes goal, process, obstacle, outcome kwargs
+# and typically involves Fear → Joy emotional arc
+```
+
+### How to Add a Kernel (After Sampling!)
+
+1. **Sample the kernel** to understand its usage patterns
 2. **Ask the coding agent** to implement the kernel:
 > "Add a kernel for `Rescue` that handles characters rescuing each other"
 
-3. **The agent adds it to `gen5.py`** following the pattern:
+3. **The agent adds it to a kernel pack file** following the pattern:
 ```python
 @REGISTRY.kernel("Rescue")
 def kernel_rescue(ctx: StoryContext, *args, **kwargs) -> StoryFragment:
@@ -283,6 +348,8 @@ This is an exploration of story as code — where narrative structure becomes ex
 | `kernel.py` | Extract kernels from stories | ✅ Yes |
 | `parse.py` | Analyze kernel statistics | ❌ No |
 | `cluster.py` | Cluster similar stories | ❌ No |
-| `gen5.py` | Generate stories from kernels | ❌ No |
+| `sample.py` | Sample & explore kernel usage | ❌ No |
+| `gen5.py` | Core generation engine (representative kernels) | ❌ No |
+| `gen5k01.py` | Kernel Pack #01 (additional kernels) | ❌ No |
 | `story.py` | Kernel algebra experiments | ❌ No |
 | `gen.py`, `gen2.py`, `gen3.py`, `gen4.py` | Earlier generation attempts | Varies |
