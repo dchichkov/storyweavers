@@ -13,8 +13,12 @@ import json
 import ast
 import re
 import argparse
+import warnings
 from collections import Counter
 from pathlib import Path
+
+# Suppress syntax warnings from ast.parse on malformed kernels
+warnings.filterwarnings('ignore', category=SyntaxWarning)
 
 
 def load_registry():
