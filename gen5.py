@@ -554,17 +554,42 @@ def kernel_cautionary(ctx: StoryContext, character: Character = None, **kwargs) 
     if character is None:
         character = Character("someone", "person")
     
-    if 'state' in kwargs:
-        state_text = _state_to_phrase(kwargs['state'])
+    # State/routine - what was happening before
+    if 'state' in kwargs or 'routine' in kwargs:
+        state = kwargs.get('state') or kwargs.get('routine')
+        state_text = _state_to_phrase(state)
         if state_text:
             parts.append(f"{character.name} was {state_text}.")
     
+    # Trigger/event - what started the problem
     if 'event' in kwargs or 'trigger' in kwargs:
         event = kwargs.get('event') or kwargs.get('trigger')
         event_text = _event_to_phrase(event)
         if event_text:
             parts.append(f"One day, {event_text}.")
     
+    # Misstep - the mistake made
+    if 'misstep' in kwargs:
+        misstep = kwargs['misstep']
+        misstep_text = _action_to_phrase(misstep)
+        if misstep_text:
+            parts.append(f"{character.name} {misstep_text}.")
+    
+    # Backlash - negative reaction
+    if 'backlash' in kwargs:
+        backlash = kwargs['backlash']
+        backlash_text = _event_to_phrase(backlash)
+        if backlash_text:
+            parts.append(f"But then, {backlash_text}!")
+    
+    # Result - what happened because of misstep
+    if 'result' in kwargs:
+        result = kwargs['result']
+        result_text = _event_to_phrase(result)
+        if result_text:
+            parts.append(f"As a result, {result_text}.")
+    
+    # Consequence - emotional/physical consequence
     if 'consequence' in kwargs:
         character.Fear += 10
         character.Joy -= 10
@@ -572,10 +597,40 @@ def kernel_cautionary(ctx: StoryContext, character: Character = None, **kwargs) 
         if cons_text:
             parts.append(f"Because of that, {character.name} felt {cons_text}.")
     
-    if 'lesson' in kwargs:
-        lesson_text = _to_phrase(kwargs['lesson'])
+    # Accident - something bad that happened
+    if 'accident' in kwargs:
+        accident = kwargs['accident']
+        accident_text = _event_to_phrase(accident)
+        if accident_text:
+            parts.append(f"Unfortunately, {accident_text}.")
+    
+    # Comfort - being comforted
+    if 'comfort' in kwargs:
+        comfort = kwargs['comfort']
+        comfort_text = _event_to_phrase(comfort)
+        if comfort_text:
+            parts.append(f"Then, {comfort_text}.")
+    
+    # Moral/lesson - what was learned
+    if 'moral' in kwargs or 'lesson' in kwargs:
+        lesson = kwargs.get('moral') or kwargs.get('lesson')
+        lesson_text = _to_phrase(lesson)
         if lesson_text:
-            parts.append(f"{character.name} learned to be more {lesson_text}.")
+            parts.append(f"{character.name} learned that {lesson_text}.")
+    
+    # Insight - realization
+    if 'insight' in kwargs:
+        insight = kwargs['insight']
+        insight_text = _to_phrase(insight)
+        if insight_text:
+            parts.append(f"{character.name} realized the importance of {insight_text}.")
+    
+    # Transformation - how character changed
+    if 'transformation' in kwargs:
+        trans = kwargs['transformation']
+        trans_text = _state_to_phrase(trans)
+        if trans_text:
+            parts.append(f"From then on, {character.name} was {trans_text}.")
     
     return StoryFragment(' '.join(parts), kernel_name="Cautionary")
 

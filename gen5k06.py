@@ -2347,22 +2347,48 @@ def kernel_friendship_ride(ctx: StoryContext, *args, **kwargs) -> StoryFragment:
 @REGISTRY.kernel("RespectfulPlay")
 def kernel_respectful_play(ctx: StoryContext, *args, **kwargs) -> StoryFragment:
     """
-    Playing respectfully.
+    Playing respectfully - asking permission, being polite.
     
     Patterns from dataset:
-      - RespectfulPlay(Lily+Tom, trigger=Dog(friendly,owner=Owner), ...)
+      - RespectfulPlay(Lily+Tom, trigger=Dog(friendly,owner=Owner), request=Ask(Owner,pet), outcome=...)
     """
     chars = [a for a in args if isinstance(a, Character)]
+    parts = []
     
+    # Get character names
     if chars:
         for c in chars:
             c.Joy += 5
-        if len(chars) >= 2:
-            names = NLGUtils.join_list([c.name for c in chars])
-            return StoryFragment(f'{names} played together nicely and respectfully.')
-        return StoryFragment(f'{chars[0].name} played nicely and respectfully.')
+        names = NLGUtils.join_list([c.name for c in chars]) if len(chars) >= 2 else chars[0].name
+    else:
+        names = "They"
     
-    return StoryFragment("They played together nicely and respectfully.", kernel_name="RespectfulPlay")
+    # Trigger - what prompted the play
+    if 'trigger' in kwargs:
+        trigger = kwargs['trigger']
+        trigger_text = _event_to_phrase(trigger)
+        if trigger_text:
+            parts.append(f"Then, {trigger_text}.")
+    
+    # Request - asking permission
+    if 'request' in kwargs:
+        request = kwargs['request']
+        request_text = _action_to_phrase(request)
+        if request_text:
+            parts.append(f"{names} politely {request_text}.")
+    
+    # Outcome - what happened
+    if 'outcome' in kwargs:
+        outcome = kwargs['outcome']
+        outcome_text = _event_to_phrase(outcome)
+        if outcome_text:
+            parts.append(f"{outcome_text.capitalize()}.")
+    
+    # Default text if no kwargs
+    if not parts:
+        parts.append(f"{names} played together nicely and respectfully.")
+    
+    return StoryFragment(' '.join(parts), kernel_name="RespectfulPlay")
 
 
 @REGISTRY.kernel("NoPointing")
