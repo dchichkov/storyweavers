@@ -14,6 +14,18 @@ Storyweavers uses **story kernels** - symbolic representations of narrative patt
 2. **Read `gen5k01.py`** - Additional kernel pack with ~50 more kernels
 3. **Understand the pattern** - Each kernel is a decorated function that takes `StoryContext` and returns `StoryFragment`
 
+**IMPORTANT: Use `gen5registry` when checking coverage or sampling, not `gen5` directly!**
+
+```python
+# CORRECT - loads ALL kernel packs (gen5k01, gen5k02, ... gen5k99)
+from gen5registry import REGISTRY, generate_story
+
+# WRONG - only loads sample gen5.py kernels!
+from gen5 import REGISTRY, generate_story
+```
+
+The `gen5registry` module auto-discovers and imports all `gen5kXX.py` files, ensuring you see all implemented kernels. Always use `sample.py` and `coverage.py` for checking coverage - they use `gen5registry` correctly.
+
 ```python
 # Example kernel structure from gen5.py
 @REGISTRY.kernel("KernelName")
@@ -119,15 +131,17 @@ def kernel_new(ctx: StoryContext, *args, **kwargs) -> StoryFragment:
 ### Step 5: Test with Real Data
 
 ```bash
-# Test the kernel pack
+# Test the kernel pack directly
 python gen5k02.py
 
 # Sample the same kernel again - should now generate properly
 python sample.py -k NewKernel -n 3
 
-# Check total kernel count
-python -c "from gen5 import REGISTRY; import gen5k02; print(len(REGISTRY.kernels))"
+# Check total kernel count (ALWAYS use gen5registry!)
+python -c "from gen5registry import REGISTRY; print(len(REGISTRY.kernels))"
 ```
+
+**Note:** Always use `sample.py` and `coverage.py` for checking coverage - don't write custom scripts that import `gen5` directly, as they won't see all kernel packs.
 
 ## Key Files
 
@@ -255,6 +269,8 @@ $ python sample.py -k Gratitude -n 2
 
 ## Philosophy
 
+- **Use gen5registry, not gen5** - Always import from `gen5registry` to see all kernels
+- **Use sample.py and coverage.py** - Don't write custom scripts; the tools handle imports correctly
 - **Sample before implementing** - Understand real usage patterns
 - **Keep gen5.py clean** - It's the reference implementation
 - **Use separate kernel packs** - Organize by theme or batch
