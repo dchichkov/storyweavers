@@ -581,6 +581,90 @@ def kernel_dreamy(ctx: StoryContext, *args, **kwargs) -> StoryFragment:
     return StoryFragment("dreamy", kernel_name="Dreamy")
 
 
+@REGISTRY.kernel("Chubby")
+def kernel_chubby(ctx: StoryContext, *args, **kwargs) -> StoryFragment:
+    """
+    Physical trait - pleasantly plump.
+    
+    Patterns from dataset:
+      - Kitty(Character, cat, Chubby + Collector)
+    """
+    chars = [a for a in args if isinstance(a, Character)]
+    
+    if chars:
+        return StoryFragment(f'{chars[0].name} was chubby.')
+    
+    return StoryFragment("chubby", kernel_name="Chubby")
+
+
+@REGISTRY.kernel("Grumpy")
+def kernel_grumpy(ctx: StoryContext, *args, **kwargs) -> StoryFragment:
+    """
+    Bad-tempered trait.
+    """
+    chars = [a for a in args if isinstance(a, Character)]
+    
+    if chars:
+        chars[0].Anger += 4
+        return StoryFragment(f'{chars[0].name} was grumpy.')
+    
+    return StoryFragment("grumpy", kernel_name="Grumpy")
+
+
+@REGISTRY.kernel("Shy")
+def kernel_shy(ctx: StoryContext, *args, **kwargs) -> StoryFragment:
+    """
+    Timid/shy trait.
+    """
+    chars = [a for a in args if isinstance(a, Character)]
+    
+    if chars:
+        chars[0].Fear += 3
+        return StoryFragment(f'{chars[0].name} was shy.')
+    
+    return StoryFragment("shy", kernel_name="Shy")
+
+
+@REGISTRY.kernel("Noisy")
+def kernel_noisy(ctx: StoryContext, *args, **kwargs) -> StoryFragment:
+    """
+    Making lots of noise.
+    """
+    chars = [a for a in args if isinstance(a, Character)]
+    
+    if chars:
+        return StoryFragment(f'{chars[0].name} was noisy.')
+    
+    return StoryFragment("noisy", kernel_name="Noisy")
+
+
+@REGISTRY.kernel("Sleepy")
+def kernel_sleepy(ctx: StoryContext, *args, **kwargs) -> StoryFragment:
+    """
+    Tired/drowsy trait.
+    """
+    chars = [a for a in args if isinstance(a, Character)]
+    
+    if chars:
+        chars[0].Sadness += 2
+        return StoryFragment(f'{chars[0].name} was sleepy.')
+    
+    return StoryFragment("sleepy", kernel_name="Sleepy")
+
+
+@REGISTRY.kernel("Thirsty")
+def kernel_thirsty(ctx: StoryContext, *args, **kwargs) -> StoryFragment:
+    """
+    Wanting a drink.
+    """
+    chars = [a for a in args if isinstance(a, Character)]
+    
+    if chars:
+        return StoryFragment(f'{chars[0].name} was thirsty.')
+    
+    return StoryFragment("thirsty", kernel_name="Thirsty")
+
+
 @REGISTRY.kernel("Long")
 def kernel_long(ctx: StoryContext, *args, **kwargs) -> StoryFragment:
     """
@@ -2275,10 +2359,74 @@ def kernel_respectful_play(ctx: StoryContext, *args, **kwargs) -> StoryFragment:
             c.Joy += 5
         if len(chars) >= 2:
             names = NLGUtils.join_list([c.name for c in chars])
-            return StoryFragment(f'{names} played respectfully.')
-        return StoryFragment(f'{chars[0].name} played respectfully.')
+            return StoryFragment(f'{names} played together nicely and respectfully.')
+        return StoryFragment(f'{chars[0].name} played nicely and respectfully.')
     
-    return StoryFragment("respectful play", kernel_name="RespectfulPlay")
+    return StoryFragment("They played together nicely and respectfully.", kernel_name="RespectfulPlay")
+
+
+@REGISTRY.kernel("NoPointing")
+def kernel_no_pointing(ctx: StoryContext, *args, **kwargs) -> StoryFragment:
+    """
+    Lesson about not pointing at things/people.
+    """
+    chars = [a for a in args if isinstance(a, Character)]
+    
+    if chars:
+        return StoryFragment(f'{chars[0].name} learned not to point.')
+    
+    return StoryFragment("It's not nice to point.", kernel_name="NoPointing")
+
+
+@REGISTRY.kernel("Cool")
+def kernel_cool(ctx: StoryContext, *args, **kwargs) -> StoryFragment:
+    """
+    Cooling something down.
+    """
+    chars = [a for a in args if isinstance(a, Character)]
+    objects = [str(a) for a in args if isinstance(a, str)]
+    
+    if chars:
+        if objects:
+            return StoryFragment(f'{chars[0].name} cooled down the {objects[0]}.')
+        return StoryFragment(f'{chars[0].name} cooled it down.')
+    if objects:
+        return StoryFragment(f"The {objects[0]} cooled down.", kernel_name="Cool")
+    
+    return StoryFragment("It cooled down.", kernel_name="Cool")
+
+
+@REGISTRY.kernel("Dinner")
+def kernel_dinner(ctx: StoryContext, *args, **kwargs) -> StoryFragment:
+    """
+    Having dinner.
+    """
+    chars = [a for a in args if isinstance(a, Character)]
+    objects = [str(a) for a in args if isinstance(a, str)]
+    
+    if chars:
+        chars[0].Joy += 4
+        if objects:
+            return StoryFragment(f'{chars[0].name} had {objects[0]} for dinner.')
+        return StoryFragment(f'{chars[0].name} had dinner.')
+    if objects:
+        return StoryFragment(f"It was time for dinner with {objects[0]}.", kernel_name="Dinner")
+    
+    return StoryFragment("It was time for dinner.", kernel_name="Dinner")
+
+
+@REGISTRY.kernel("Hotchocolate")
+def kernel_hot_chocolate(ctx: StoryContext, *args, **kwargs) -> StoryFragment:
+    """
+    Drinking hot chocolate.
+    """
+    chars = [a for a in args if isinstance(a, Character)]
+    
+    if chars:
+        chars[0].Joy += 6
+        return StoryFragment(f'{chars[0].name} drank some warm hot chocolate.')
+    
+    return StoryFragment("They had some warm hot chocolate.", kernel_name="Hotchocolate")
 
 
 # =============================================================================
@@ -2353,6 +2501,11 @@ def kernel_jack(ctx: StoryContext, *args, **kwargs) -> StoryFragment:
     """Jack - common boy character name."""
     return _make_character_name_kernel("Jack", "boy")(ctx, *args, **kwargs)
 
+@REGISTRY.kernel("Tom")
+def kernel_tom(ctx: StoryContext, *args, **kwargs) -> StoryFragment:
+    """Tom - common boy character name."""
+    return _make_character_name_kernel("Tom", "boy")(ctx, *args, **kwargs)
+
 # Common girl names
 @REGISTRY.kernel("Lily")
 def kernel_lily(ctx: StoryContext, *args, **kwargs) -> StoryFragment:
@@ -2388,6 +2541,26 @@ def kernel_anna(ctx: StoryContext, *args, **kwargs) -> StoryFragment:
 def kernel_sue(ctx: StoryContext, *args, **kwargs) -> StoryFragment:
     """Sue - common girl character name."""
     return _make_character_name_kernel("Sue", "girl")(ctx, *args, **kwargs)
+
+@REGISTRY.kernel("Kitty")
+def kernel_kitty(ctx: StoryContext, *args, **kwargs) -> StoryFragment:
+    """Kitty - common girl/cat character name."""
+    return _make_character_name_kernel("Kitty", "cat")(ctx, *args, **kwargs)
+
+@REGISTRY.kernel("Rosie")
+def kernel_rosie(ctx: StoryContext, *args, **kwargs) -> StoryFragment:
+    """Rosie - common girl character name."""
+    return _make_character_name_kernel("Rosie", "girl")(ctx, *args, **kwargs)
+
+@REGISTRY.kernel("Buddy")
+def kernel_buddy(ctx: StoryContext, *args, **kwargs) -> StoryFragment:
+    """Buddy - common pet/friend character name."""
+    return _make_character_name_kernel("Buddy", "friend")(ctx, *args, **kwargs)
+
+@REGISTRY.kernel("Spot")
+def kernel_spot(ctx: StoryContext, *args, **kwargs) -> StoryFragment:
+    """Spot - common dog character name."""
+    return _make_character_name_kernel("Spot", "dog")(ctx, *args, **kwargs)
 
 # Family role names
 @REGISTRY.kernel("Mom")

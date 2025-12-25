@@ -219,7 +219,7 @@ def kernel_reunion(ctx: StoryContext, *args, **kwargs) -> StoryFragment:
         char.Joy += 12
         return StoryFragment(f"{char.name} was reunited with their loved ones.")
     
-    return StoryFragment("there was a happy reunion", kernel_name="Reunion")
+    return StoryFragment("They were happily reunited.", kernel_name="Reunion")
 
 
 @REGISTRY.kernel("Return")

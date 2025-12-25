@@ -1418,12 +1418,20 @@ def _state_to_phrase(value) -> str:
 
 
 def _event_to_phrase(value) -> str:
-    """Convert an event/catalyst to a phrase."""
+    """Convert an event/catalyst to a phrase suitable for 'One day, X.'"""
     if isinstance(value, StoryFragment):
         text = value.text.rstrip('.!?')
         # Make it flow as an event
         if text.startswith('There was '):
             text = text[10:]  # Remove "There was "
+        # If it's a noun phrase (like "a grumpy dog"), add verb
+        words = text.split()
+        if words and not any(w in text.lower() for w in ['was', 'is', 'were', 'came', 'appeared', 'arrived', 'happened']):
+            # Check if it looks like just a noun/adjective phrase
+            if len(words) <= 4 and not text[0].isupper():
+                return f"there was {text}"
+            elif len(words) <= 4:
+                return f"{text} appeared"
         return text
     
     if isinstance(value, str):
@@ -1518,10 +1526,14 @@ class KernelExecutor:
                 return left
         
         elif isinstance(node, ast.Name):
-            # Variable reference - could be character or concept
+            # Variable reference - could be character, kernel, or concept
             name = node.id
             if name in self.ctx.characters:
                 return self.ctx.characters[name]
+            # Check if it's a registered kernel - call it with no args
+            if name in self.registry.kernels:
+                kernel_func = self.registry.kernels[name]
+                return kernel_func(self.ctx)
             # Return as concept string
             return name
         
@@ -1644,23 +1656,59 @@ class KernelExecutor:
         
         # Handle objects without character
         if objects:
-            return StoryFragment(f"There was {phrase} with {NLGUtils.join_list(objects)}.", kernel_name=name)
+            obj_text = NLGUtils.join_list(objects)
+            # Try to form a more natural sentence
+            if phrase.endswith('ing'):
+                return StoryFragment(f"{phrase.capitalize()} {obj_text}.", kernel_name=name)
+            return StoryFragment(f"The {phrase} involved {obj_text}.", kernel_name=name)
         
         # No character - passive/general statement
-        return StoryFragment(f"There was {phrase}.", kernel_name=name)
+        # Make it a proper sentence
+        if phrase.endswith('ing'):
+            return StoryFragment(f"{phrase.capitalize()}.", kernel_name=name)
+        return StoryFragment(f"Something {phrase} happened.", kernel_name=name)
     
     def _compose(self, left: Any, right: Any) -> StoryFragment:
         """Compose two values with + operator."""
-        left_text = _to_phrase(left) if left else ""
-        right_text = _to_phrase(right) if right else ""
+        # Get text from fragments or convert to phrase
+        if isinstance(left, StoryFragment):
+            left_text = left.text
+        else:
+            left_text = _to_phrase(left) if left else ""
         
-        # Combine intelligently
-        if left_text and right_text:
-            # For concepts/states, use "and"
+        if isinstance(right, StoryFragment):
+            right_text = right.text
+        else:
+            right_text = _to_phrase(right) if right else ""
+        
+        # Skip empty parts
+        if not left_text:
+            return StoryFragment(right_text) if right_text else StoryFragment("")
+        if not right_text:
+            return StoryFragment(left_text)
+        
+        # Check if left ends with sentence punctuation
+        left_ends_sentence = left_text.rstrip().endswith(('.', '!', '?'))
+        # Check if right starts with capital (indicating new sentence)
+        right_starts_capital = right_text.lstrip() and right_text.lstrip()[0].isupper()
+        
+        # If left is a complete sentence and right starts new sentence, join with space
+        if left_ends_sentence and right_starts_capital:
+            combined = f"{left_text.rstrip()} {right_text.lstrip()}"
+        elif left_ends_sentence:
+            # Left is sentence, right is fragment - capitalize right and join
+            right_cap = right_text.lstrip()
+            if right_cap:
+                right_cap = right_cap[0].upper() + right_cap[1:]
+            combined = f"{left_text.rstrip()} {right_cap}"
+        elif right_starts_capital:
+            # Left is fragment, right is sentence - add period to left
+            combined = f"{left_text.rstrip()}. {right_text.lstrip()}"
+        else:
+            # Both are fragments - use "and"
             combined = f"{left_text} and {right_text}"
-            return StoryFragment(combined)
         
-        return StoryFragment(left_text or right_text)
+        return StoryFragment(combined)
     
     def _parse_traits(self, traits_value) -> List[str]:
         """Parse traits from various formats."""
