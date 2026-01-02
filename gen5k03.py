@@ -584,12 +584,6 @@ def kernel_laughter(ctx: StoryContext, *args, **kwargs) -> StoryFragment:
     return StoryFragment("there was laughter", kernel_name="Laughter")
 
 
-@REGISTRY.kernel("Laugh")
-def kernel_laugh(ctx: StoryContext, *args, **kwargs) -> StoryFragment:
-    """Alias for Laughter."""
-    return kernel_laughter(ctx, *args, **kwargs)
-
-
 # =============================================================================
 # ACTION & MOVEMENT KERNELS
 # =============================================================================
