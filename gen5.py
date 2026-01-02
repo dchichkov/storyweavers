@@ -198,85 +198,198 @@ class StoryContext:
 # =============================================================================
 
 class NLGUtils:
-    """Natural language generation utilities using NLTK."""
+    """Natural language generation utilities for story text."""
     
     # Verb inflection patterns (past tense)
     IRREGULAR_PAST = {
-        'run': 'ran', 'eat': 'ate', 'see': 'saw', 'find': 'found', 'feed': 'fed',
-        'give': 'gave', 'take': 'took', 'make': 'made', 'come': 'came',
-        'go': 'went', 'get': 'got', 'have': 'had', 'be': 'was',
+        # Common verbs
+        'be': 'was', 'have': 'had', 'do': 'did', 'go': 'went', 'get': 'got',
+        'make': 'made', 'see': 'saw', 'come': 'came', 'take': 'took', 'know': 'knew',
+        # Story verbs
+        'run': 'ran', 'eat': 'ate', 'find': 'found', 'feed': 'fed', 'give': 'gave',
         'say': 'said', 'tell': 'told', 'think': 'thought', 'feel': 'felt',
-        'know': 'knew', 'hear': 'heard', 'begin': 'began', 'fall': 'fell',
-        'fly': 'flew', 'grow': 'grew', 'hide': 'hid', 'hold': 'held',
-        'lose': 'lost', 'meet': 'met', 'read': 'read', 'sing': 'sang',
-        'sit': 'sat', 'sleep': 'slept', 'swim': 'swam', 'teach': 'taught',
-        'throw': 'threw', 'understand': 'understood', 'wake': 'woke',
-        'win': 'won', 'write': 'wrote', 'bring': 'brought', 'buy': 'bought',
-        'catch': 'caught', 'choose': 'chose', 'draw': 'drew', 'drink': 'drank',
-        'drive': 'drove', 'forget': 'forgot', 'freeze': 'froze', 'hurt': 'hurt',
-        'keep': 'kept', 'lead': 'led', 'leave': 'left', 'let': 'let',
-        'put': 'put', 'ride': 'rode', 'rise': 'rose', 'seek': 'sought',
-        'send': 'sent', 'shake': 'shook', 'shine': 'shone', 'show': 'showed',
-        'shut': 'shut', 'speak': 'spoke', 'spend': 'spent', 'stand': 'stood',
-        'steal': 'stole', 'stick': 'stuck', 'strike': 'struck', 'sweep': 'swept',
-        'wear': 'wore', 'weep': 'wept',
+        'hear': 'heard', 'begin': 'began', 'fall': 'fell', 'fly': 'flew', 'grow': 'grew',
+        'hide': 'hid', 'hold': 'held', 'lose': 'lost', 'meet': 'met', 'read': 'read',
+        'sing': 'sang', 'sit': 'sat', 'sleep': 'slept', 'swim': 'swam', 'teach': 'taught',
+        'throw': 'threw', 'understand': 'understood', 'wake': 'woke', 'win': 'won',
+        'write': 'wrote', 'bring': 'brought', 'buy': 'bought', 'catch': 'caught',
+        'choose': 'chose', 'draw': 'drew', 'drink': 'drank', 'drive': 'drove',
+        'forget': 'forgot', 'freeze': 'froze', 'hurt': 'hurt', 'keep': 'kept',
+        'lead': 'led', 'leave': 'left', 'let': 'let', 'put': 'put', 'ride': 'rode',
+        'rise': 'rose', 'seek': 'sought', 'send': 'sent', 'shake': 'shook',
+        'shine': 'shone', 'show': 'showed', 'shut': 'shut', 'speak': 'spoke',
+        'spend': 'spent', 'stand': 'stood', 'steal': 'stole', 'stick': 'stuck',
+        'strike': 'struck', 'sweep': 'swept', 'wear': 'wore', 'weep': 'wept',
+        'build': 'built', 'bend': 'bent', 'lend': 'lent', 'tear': 'tore',
+        'bite': 'bit', 'break': 'broke', 'blow': 'blew', 'dig': 'dug',
+    }
+    
+    # Words that take "an" instead of "a" (phonetic-based exceptions)
+    AN_WORDS = {
+        # Silent h
+        'honest', 'hour', 'honor', 'heir',
+        # Vowel sound with consonant start
+        'unicorn', 'uniform', 'university', 'unique', 'united', 'useful', 'usual',
+        # One-letter vowel sounds
+        'a', 'e', 'i', 'o', 'u', 'x', 'f', 's', 'm', 'l', 'n', 'r',
+    }
+    
+    # Irregular plurals
+    IRREGULAR_PLURAL = {
+        'child': 'children', 'person': 'people', 'man': 'men', 'woman': 'women',
+        'tooth': 'teeth', 'foot': 'feet', 'mouse': 'mice', 'goose': 'geese',
+        'ox': 'oxen', 'sheep': 'sheep', 'deer': 'deer', 'fish': 'fish',
+        'moose': 'moose', 'series': 'series', 'species': 'species',
     }
     
     @staticmethod
     def past_tense(verb: str) -> str:
-        """Convert verb to past tense."""
-        verb = verb.lower()
+        """
+        Convert verb to past tense using irregular verb table and regular rules.
+        
+        Examples:
+            run -> ran, play -> played, cry -> cried, stop -> stopped
+        """
+        if not verb:
+            return verb
+            
+        verb = verb.strip().lower()
+        
+        # Check irregular verbs first
         if verb in NLGUtils.IRREGULAR_PAST:
             return NLGUtils.IRREGULAR_PAST[verb]
+        
         # Regular rules
+        # Rule 1: Verbs ending in 'e' -> add 'd'
         if verb.endswith('e'):
             return verb + 'd'
+        
+        # Rule 2: Verbs ending in consonant + 'y' -> 'ied'
         if verb.endswith('y') and len(verb) > 1 and verb[-2] not in 'aeiou':
             return verb[:-1] + 'ied'
-        if len(verb) > 2 and verb[-1] not in 'aeiouwxy' and verb[-2] in 'aeiou' and verb[-3] not in 'aeiou':
-            return verb + verb[-1] + 'ed'  # Double consonant
+        
+        # Rule 3: Short verbs with CVC pattern -> double final consonant + 'ed'
+        # (consonant-vowel-consonant, e.g., stop -> stopped, hug -> hugged)
+        if len(verb) >= 3 and verb[-1] not in 'aeiouwxy' and verb[-2] in 'aeiou' and verb[-3] not in 'aeiou':
+            return verb + verb[-1] + 'ed'
+        
+        # Default: add 'ed'
         return verb + 'ed'
     
     @staticmethod
     def present_participle(verb: str) -> str:
-        """Convert verb to -ing form."""
-        verb = verb.lower()
+        """
+        Convert verb to -ing form (present participle).
+        
+        Examples:
+            run -> running, play -> playing, die -> dying, see -> seeing
+        """
+        if not verb:
+            return verb
+            
+        verb = verb.strip().lower()
+        
+        # Rule 1: Verbs ending in 'ie' -> 'ying'
         if verb.endswith('ie'):
             return verb[:-2] + 'ying'
-        if verb.endswith('e') and not verb.endswith('ee'):
+        
+        # Rule 2: Verbs ending in 'e' (except 'ee', 'oe', 'ye') -> drop 'e' and add 'ing'
+        if verb.endswith('e') and not verb.endswith(('ee', 'oe', 'ye')):
             return verb[:-1] + 'ing'
-        if len(verb) > 2 and verb[-1] not in 'aeiouwxy' and verb[-2] in 'aeiou' and verb[-3] not in 'aeiou':
+        
+        # Rule 3: Short verbs with CVC pattern -> double final consonant + 'ing'
+        if len(verb) >= 3 and verb[-1] not in 'aeiouwxy' and verb[-2] in 'aeiou' and verb[-3] not in 'aeiou':
             return verb + verb[-1] + 'ing'
+        
+        # Default: add 'ing'
         return verb + 'ing'
     
     @staticmethod
     def article(word: str) -> str:
-        """Get appropriate article (a/an)."""
+        """
+        Get appropriate indefinite article (a/an) based on phonetics.
+        
+        Examples:
+            apple -> an, ball -> a, hour -> an, unicorn -> a
+        """
         if not word:
             return "a"
-        word = word.lower().strip()
-        if word[0] in 'aeiou':
+        
+        word = word.strip().lower()
+        
+        # Check if word starts with vowel sound
+        # Note: This is simplified - true phonetic analysis is complex
+        first_char = word[0]
+        
+        # Exception: words starting with 'u' that sound like 'you' (consonant sound)
+        if first_char == 'u' and (word.startswith('uni') or word.startswith('use') or word.startswith('usu')):
+            return "a"
+        
+        # Check special cases for "an" (silent h, letter names, etc.)
+        if word in NLGUtils.AN_WORDS:
             return "an"
+        
+        # Basic vowel check - most vowels use "an"
+        if first_char in 'aeiou':
+            return "an"
+        
         return "a"
     
     @staticmethod
     def pluralize(word: str) -> str:
-        """Simple pluralization."""
-        if word.endswith('s') or word.endswith('x') or word.endswith('sh') or word.endswith('ch'):
+        """
+        Convert singular noun to plural form.
+        
+        Examples:
+            cat -> cats, box -> boxes, baby -> babies, child -> children
+        """
+        if not word:
+            return word
+        
+        word = word.strip().lower()
+        
+        # Check irregular plurals first
+        if word in NLGUtils.IRREGULAR_PLURAL:
+            return NLGUtils.IRREGULAR_PLURAL[word]
+        
+        # Rule 1: Words ending in s, x, z, ch, sh -> add 'es'
+        if word.endswith(('s', 'x', 'z', 'ch', 'sh')):
             return word + 'es'
+        
+        # Rule 2: Words ending in consonant + 'y' -> 'ies'
         if word.endswith('y') and len(word) > 1 and word[-2] not in 'aeiou':
             return word[:-1] + 'ies'
+        
+        # Rule 3: Words ending in 'f' or 'fe' -> 'ves'
+        if word.endswith('f'):
+            return word[:-1] + 'ves'
+        if word.endswith('fe'):
+            return word[:-2] + 'ves'
+        
+        # Rule 4: Words ending in consonant + 'o' -> 'es'
+        if word.endswith('o') and len(word) > 1 and word[-2] not in 'aeiou':
+            return word + 'es'
+        
+        # Default: add 's'
         return word + 's'
     
     @staticmethod
     def join_list(items: List[str], conjunction: str = "and") -> str:
-        """Join list items with proper grammar."""
+        """
+        Join list items with proper grammar and Oxford comma.
+        
+        Examples:
+            ['Tom'] -> "Tom"
+            ['Tom', 'Sue'] -> "Tom and Sue"
+            ['Tom', 'Sue', 'Bob'] -> "Tom, Sue, and Bob"
+        """
         if not items:
             return ""
         if len(items) == 1:
             return items[0]
         if len(items) == 2:
             return f"{items[0]} {conjunction} {items[1]}"
+        # Oxford comma for 3+ items
         return ", ".join(items[:-1]) + f", {conjunction} " + items[-1]
 
 
