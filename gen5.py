@@ -1621,7 +1621,15 @@ class KernelExecutor:
         kwargs = {kw.arg: self._eval_node(kw.value) for kw in node.keywords}
         
         # Check for Character definition: Name(Character, type, traits)
-        if args and args[0] == 'Character':
+        # The Character kernel returns an empty StoryFragment as a marker
+        is_character_def = (
+            args and 
+            isinstance(args[0], StoryFragment) and 
+            args[0].text == '' and
+            args[0].kernel_name == ''
+        )
+        
+        if is_character_def:
             # Parse type and traits - could be 1 or 2 additional args
             char_type = "character"
             traits = []

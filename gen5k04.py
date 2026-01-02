@@ -516,7 +516,7 @@ def kernel_shame(ctx: StoryContext, *args, **kwargs) -> StoryFragment:
         char = chars[0]
         char.Sadness += 8
         char.Anger += 5
-        return StoryFragment(f"{char.name} felt ashamed of what they had done.")
+        return StoryFragment(f"{char.name} felt ashamed of what {char.he} had done.")
     
     return StoryFragment("shame", kernel_name="Shame")
 
