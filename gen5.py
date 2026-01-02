@@ -407,12 +407,32 @@ class TemplateEngine:
     def _load_default_templates(self):
         """Load built-in sentence templates."""
         
-        # Character introduction - weighted by position
+        # Character introduction - weighted by position with lots of variety
+        # First character (story opening)
         self.add('intro_first', "Once upon a time, there was {article} {adj} {type} named {name}.")
         self.add('intro_first', "There once was {article} {adj} {type} named {name}.")
-        self.add('intro', "There was also {article} {type} named {name}.")
+        self.add('intro_first', "Once there was {article} {adj} {type} named {name}.")
+        self.add('intro_first', "There was {article} {adj} {type}. Her name was {name}.")
+        self.add('intro_first', "There was {article} {adj} {type}. His name was {name}.")
+        self.add('intro_first', "In a cozy little town, there lived {article} {adj} {type} named {name}.")
+        self.add('intro_first', "{name} was {article} {adj} {type}.")
+        self.add('intro_first', "This is a story about {article} {adj} {type} called {name}.")
+        self.add('intro_first', "Once there lived {article} {adj} {type}, and her name was {name}.")
+        self.add('intro_first', "Once there lived {article} {adj} {type}, and his name was {name}.")
+        
+        # Subsequent characters (more variety)
+        self.add('intro', "There was also {article} {adj} {type} named {name}.")
         self.add('intro', "{name} was {article} {adj} {type}.")
         self.add('intro', "{name}, {article} {adj} {type}, lived nearby.")
+        self.add('intro', "There was {article} {adj} {type} named {name}.")
+        self.add('intro', "Her name was {name}.")
+        self.add('intro', "His name was {name}.")
+        self.add('intro', "{name} the {adj} {type} was there too.")
+        self.add('intro', "And there was {name}, {article} {adj} {type}.")
+        self.add('intro', "{name}, {article} {adj} {type}, lived nearby.")
+        self.add('intro', "They had {article} {adj} {type} called {name}.")
+        self.add('intro', "There was also {name}.")
+        self.add('intro', "{name} was {article} {adj} {type} who lived nearby.")
         
         # Lived/setting
         self.add('lived', "{name} lived in {article} {adj} {place}.")
@@ -504,12 +524,18 @@ class TemplateEngine:
         
         # Fill slots
         try:
-            return template.format(**slots)
+            result = template.format(**slots)
+            # Clean up extra whitespace from empty slots
+            result = re.sub(r'\s+', ' ', result)
+            return result
         except KeyError as e:
             # Missing slot - try to fill with placeholder
             slots[str(e).strip("'")] = "something"
             try:
-                return template.format(**slots)
+                result = template.format(**slots)
+                # Clean up extra whitespace
+                result = re.sub(r'\s+', ' ', result)
+                return result
             except:
                 return ""
 
@@ -1834,10 +1860,12 @@ class KernelExecutor:
             if len(args) > 1:
                 # Check if second arg looks like a type (lowercase common nouns) or traits
                 second = str(args[1])
-                common_types = {'girl', 'boy', 'man', 'woman', 'dog', 'cat', 'bird', 'fish',
+                common_types = {'girl', 'boy', 'man', 'woman', 'child', 'baby', 'kid',
+                               'dog', 'cat', 'bird', 'fish',
                                'rabbit', 'bunny', 'bear', 'lion', 'mouse', 'frog', 'duck',
-                               'mother', 'father', 'mom', 'dad', 'grandma', 'grandpa',
-                               'friend', 'teacher', 'farmer', 'king', 'queen', 'princess', 'prince'}
+                               'mother', 'father', 'mom', 'dad', 'mommy', 'daddy', 'grandma', 'grandpa',
+                               'friend', 'teacher', 'farmer', 'king', 'queen', 'princess', 'prince',
+                               'person', 'character'}
                 
                 if '+' in second:
                     # It's traits, no type specified
@@ -1858,15 +1886,34 @@ class KernelExecutor:
             char = self.ctx.add_character(func_name, str(char_type), traits)
             self.ctx.current_focus = char
             
-            # Generate intro
-            adj = NLGUtils.join_list(traits[:2]) if traits else ""
+            # Generate intro - make it more natural
+            adj_list = []
+            
+            # Add "little" for children automatically  
+            if char_type in ('boy', 'girl', 'child'):
+                adj_list.append('little')
+            
+            # Add character traits
+            if traits:
+                adj_list.extend(traits[:2])
+            
+            adj = NLGUtils.join_list(adj_list) if adj_list else ""
+            
+            # For generic "character" type, be more specific
+            display_type = char_type
+            if char_type == "character":
+                # "character" is too vague, use "person" instead
+                display_type = "person"
+            elif char_type == "child":
+                # For "child", we already added "little" to adj, so change type
+                display_type = "one"  # "a little attached one" instead of "a little child"
             
             template_category = 'intro_first' if is_first else 'intro'
             intro = self.registry.templates.generate(template_category,
                 name=func_name,
-                type=char_type,
+                type=display_type,
                 adj=adj,
-                article=NLGUtils.article(adj.split()[0] if adj else str(char_type))
+                article=NLGUtils.article(adj.split()[0] if adj else display_type)
             )
             return StoryFragment(intro, kernel_name="Character")
         

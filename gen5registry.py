@@ -1,13 +1,13 @@
 """
 gen5registry.py - Central registry that loads all kernel packs.
 
-This module auto-discovers and imports all gen5kXX.py kernel packs,
+This module auto-discovers and imports all gen5kXX.py and char5kXX.py kernel packs,
 registering their kernels into the shared REGISTRY.
 
 Usage:
     from gen5registry import REGISTRY, generate_story
     
-    # All kernels from gen5, gen5k01, gen5k02, ... gen5k99 are now available
+    # All kernels from gen5, gen5kXX, char5kXX are now available
     story = generate_story(kernel_string)
 """
 
@@ -29,11 +29,11 @@ from gen5 import (
     _action_to_phrase,
 )
 
-# Auto-discover and load all gen5kXX kernel packs
+# Auto-discover and load all kernel packs
 _loaded_packs = []
 
 def _load_kernel_packs():
-    """Discover and import all gen5kXX.py kernel pack modules."""
+    """Discover and import all gen5kXX.py and char5kXX.py kernel pack modules."""
     global _loaded_packs
     
     # Get the directory containing this file
@@ -42,6 +42,19 @@ def _load_kernel_packs():
     # Find all gen5kXX.py files (gen5k01.py through gen5k99.py)
     for i in range(1, 100):
         module_name = f"gen5k{i:02d}"
+        module_path = base_dir / f"{module_name}.py"
+        
+        if module_path.exists():
+            try:
+                # Import the module (this registers its kernels via decorators)
+                importlib.import_module(module_name)
+                _loaded_packs.append(module_name)
+            except Exception as e:
+                print(f"Warning: Failed to load {module_name}: {e}")
+    
+    # Find all char5kXX.py files (char5k01.py through char5k99.py)
+    for i in range(1, 100):
+        module_name = f"char5k{i:02d}"
         module_path = base_dir / f"{module_name}.py"
         
         if module_path.exists():
