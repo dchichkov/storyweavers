@@ -29,8 +29,17 @@ pip install nltk
 # List common missing kernels (excludes character names by default)
 python sample.py -l
 
+# List missing kernels from a specific dataset file
+python sample.py -l -f data01
+
 # Include character names in the list
 python sample.py -l --include-characters
+
+# Get detailed coverage report with top missing kernels
+python coverage.py --missing --top 30
+
+# Scan a specific dataset file for missing kernels
+python coverage.py --missing --top 30 -d TinyStories_kernels/data01.kernels.jsonl
 
 # Explore a random missing kernel
 python sample.py -e
@@ -40,6 +49,7 @@ python sample.py -k KernelName
 ```
 
 **Note:** Character names (like Tim, Lily, Mom) are automatically detected using AST parsing of `Name(Character, ...)` patterns and excluded from the missing kernels list by default. Use `--include-characters` flag to see them.
+**Note:** You can scan different dataset files (data00 through data14) to find diverse missing kernels and avoid duplicates across files.
 **Note:** Cleanup before implementing.
 
 ### Step 2: Sample Real Usage Examples
@@ -49,6 +59,9 @@ python sample.py -k KernelName
 ```bash
 # See how a kernel is actually used in the dataset
 python sample.py -k Apology -n 5 --seed 42
+
+# Sample from a specific dataset file
+python sample.py -k Apology -n 5 --seed 42 -f data01
 ```
 
 The output shows:
@@ -219,14 +232,18 @@ Some kernels have ambiguous argument patterns in the dataset. Use heuristics to 
 Use `coverage.py` to check how well the implemented kernels cover the dataset:
 
 ```bash
-# Full coverage report
+# Full coverage report (defaults to data00)
 python coverage.py
 
 # Brief one-liner
 python coverage.py --brief
 
-# Show top 30 missing kernels
-python coverage.py --missing  --top 50
+# Show top 30 missing kernels from default dataset (data00)
+python coverage.py --missing --top 30
+
+# Show top 30 missing kernels from a specific dataset
+python coverage.py --missing --top 30 -d TinyStories_kernels/data01.kernels.jsonl
+python coverage.py --missing --top 50 -d TinyStories_kernels/data02.kernels.jsonl
 
 # Show top 30 implemented kernels  
 python coverage.py --implemented
@@ -276,11 +293,13 @@ Example output:
 ## Example Session
 
 ```bash
-# 1. Check what's missing
+# 1. Check what's missing from different datasets
 $ python sample.py -l | head -20
+$ python coverage.py --missing --top 30 -d TinyStories_kernels/data01.kernels.jsonl
 
 # 2. Sample a specific kernel
 $ python sample.py -k Gratitude -n 3 --seed 42
+$ python sample.py -k Gratitude -n 3 --seed 42 -f data01
 
 # Output shows patterns like:
 #   Gratitude(Lily)

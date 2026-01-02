@@ -756,7 +756,27 @@ def kernel_play(ctx: StoryContext, *args, **kwargs) -> StoryFragment:
 def kernel_find(ctx: StoryContext, *args, **kwargs) -> StoryFragment:
     """Character finds something."""
     chars = [a for a in args if isinstance(a, Character)]
-    objects = [str(a) for a in args if not isinstance(a, Character)]
+    # Handle both strings and StoryFragments as objects
+    objects = []
+    for a in args:
+        if not isinstance(a, Character):
+            if isinstance(a, StoryFragment):
+                # Extract the object from fragment text - clean up awkward phrasing
+                obj_text = a.text.rstrip('.!?')
+                # Remove common awkward prefixes from fallback kernels
+                # "The leaf involved soft" -> "soft leaf"
+                if ' involved ' in obj_text:
+                    parts = obj_text.split(' involved ')
+                    if len(parts) == 2:
+                        # Extract "leaf" and "soft", reorder to "soft leaf"
+                        thing = parts[0].replace('The ', '').replace('the ', '').strip()
+                        descriptor = parts[1].strip()
+                        obj_text = f"{descriptor} {thing}"
+                # Remove "something X happened" patterns
+                obj_text = re.sub(r'^something\s+\w+\s+happened\s*', '', obj_text)
+                objects.append(obj_text)
+            else:
+                objects.append(str(a))
     
     char = chars[0] if chars else ctx.current_focus
     obj = objects[0] if objects else kwargs.get('object', 'something')
@@ -771,7 +791,24 @@ def kernel_find(ctx: StoryContext, *args, **kwargs) -> StoryFragment:
 def kernel_see(ctx: StoryContext, *args, **kwargs) -> StoryFragment:
     """Character sees something."""
     chars = [a for a in args if isinstance(a, Character)]
-    objects = [str(a) for a in args if not isinstance(a, Character)]
+    # Handle both strings and StoryFragments as objects
+    objects = []
+    for a in args:
+        if not isinstance(a, Character):
+            if isinstance(a, StoryFragment):
+                obj_text = a.text.rstrip('.!?')
+                # Clean up awkward phrasing from fallback kernels
+                # "The leaf involved soft" -> "soft leaf"
+                if ' involved ' in obj_text:
+                    parts = obj_text.split(' involved ')
+                    if len(parts) == 2:
+                        thing = parts[0].replace('The ', '').replace('the ', '').strip()
+                        descriptor = parts[1].strip()
+                        obj_text = f"{descriptor} {thing}"
+                obj_text = re.sub(r'^something\s+\w+\s+happened\s*', '', obj_text)
+                objects.append(obj_text)
+            else:
+                objects.append(str(a))
     
     char = chars[0] if chars else ctx.current_focus
     obj = objects[0] if objects else "something"
