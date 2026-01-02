@@ -476,8 +476,20 @@ def kernel_hopeful(ctx: StoryContext, *args, **kwargs) -> StoryFragment:
 
 @REGISTRY.kernel("Try")
 def kernel_try(ctx: StoryContext, *args, **kwargs) -> StoryFragment:
-    """Character tries something (alias for Attempt)."""
-    return kernel_attempt(ctx, *args, **kwargs)
+    """Character tries something."""
+    chars = [a for a in args if isinstance(a, Character)]
+    objects = [str(a) for a in args if isinstance(a, str)]
+    action = kwargs.get('action', None)
+    
+    if chars:
+        char = chars[0]
+        if action:
+            return StoryFragment(f'{char.name} tried to {_action_to_phrase(action)}.')
+        elif objects:
+            return StoryFragment(f'{char.name} tried to {objects[0]}.')
+        return StoryFragment(f'{char.name} made a try.')
+    
+    return StoryFragment("there was a try", kernel_name="Try")
 
 
 @REGISTRY.kernel("Decide")

@@ -8,7 +8,6 @@ DESIGN PRINCIPLES
 =================
 - Kernels ARE valid Python ASTs (function calls with args/kwargs)
 - Generation happens by executing kernels against a registry
-- NLTK provides linguistic variation (synonyms, inflection, articles)
 - Templates with slots provide sentence structure
 - Composition operators (+, /, newlines) handled by the interpreter
 
@@ -85,23 +84,6 @@ from dataclasses import dataclass, field
 from typing import Dict, List, Callable, Any, Optional, Union, Tuple
 from collections import defaultdict
 import re
-
-# Try to import NLTK, gracefully degrade if unavailable
-try:
-    import nltk
-    from nltk.corpus import wordnet
-    from nltk.stem import WordNetLemmatizer
-    NLTK_AVAILABLE = True
-    # Download required data silently
-    try:
-        nltk.data.find('corpora/wordnet')
-    except LookupError:
-        nltk.download('wordnet', quiet=True)
-        nltk.download('averaged_perceptron_tagger', quiet=True)
-        nltk.download('punkt', quiet=True)
-except ImportError:
-    NLTK_AVAILABLE = False
-    print("Warning: NLTK not available. Using fallback text generation.")
 
 
 # =============================================================================
@@ -285,22 +267,6 @@ class NLGUtils:
         if word.endswith('y') and len(word) > 1 and word[-2] not in 'aeiou':
             return word[:-1] + 'ies'
         return word + 's'
-    
-    @staticmethod
-    def synonym(word: str) -> str:
-        """Get a synonym using WordNet (if available)."""
-        if not NLTK_AVAILABLE:
-            return word
-        try:
-            synsets = wordnet.synsets(word)
-            if synsets:
-                lemmas = synsets[0].lemmas()
-                candidates = [l.name().replace('_', ' ') for l in lemmas if l.name() != word]
-                if candidates:
-                    return random.choice(candidates)
-        except:
-            pass
-        return word
     
     @staticmethod
     def join_list(items: List[str], conjunction: str = "and") -> str:
