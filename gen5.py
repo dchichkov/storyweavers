@@ -589,6 +589,13 @@ def kernel_cautionary(ctx: StoryContext, character: Character = None, **kwargs) 
         if state_text:
             parts.append(f"{character.name} was {state_text}.")
     
+    # Incident - what happened 
+    if 'incident' in kwargs:
+        incident = kwargs['incident']
+        incident_text = _event_to_phrase(incident)
+        if incident_text:
+            parts.append(f"{incident_text}.")
+    
     # Trigger/event - what started the problem
     if 'event' in kwargs or 'trigger' in kwargs:
         event = kwargs.get('event') or kwargs.get('trigger')
@@ -602,6 +609,13 @@ def kernel_cautionary(ctx: StoryContext, character: Character = None, **kwargs) 
         misstep_text = _action_to_phrase(misstep)
         if misstep_text:
             parts.append(f"{character.name} {misstep_text}.")
+    
+    # Reaction - how others reacted
+    if 'reaction' in kwargs:
+        reaction = kwargs['reaction']
+        reaction_text = _event_to_phrase(reaction)
+        if reaction_text:
+            parts.append(f"{reaction_text}.")
     
     # Backlash - negative reaction
     if 'backlash' in kwargs:
@@ -632,12 +646,26 @@ def kernel_cautionary(ctx: StoryContext, character: Character = None, **kwargs) 
         if accident_text:
             parts.append(f"Unfortunately, {accident_text}.")
     
+    # Resolution - how the problem was resolved
+    if 'resolution' in kwargs:
+        resolution = kwargs['resolution']
+        resolution_text = _event_to_phrase(resolution)
+        if resolution_text:
+            parts.append(f"{resolution_text}.")
+    
     # Comfort - being comforted
     if 'comfort' in kwargs:
         comfort = kwargs['comfort']
         comfort_text = _event_to_phrase(comfort)
         if comfort_text:
             parts.append(f"Then, {comfort_text}.")
+    
+    # Outcome - final result
+    if 'outcome' in kwargs:
+        outcome = kwargs['outcome']
+        outcome_text = _event_to_phrase(outcome)
+        if outcome_text:
+            parts.append(f"{outcome_text}.")
     
     # Moral/lesson - what was learned
     if 'moral' in kwargs or 'lesson' in kwargs:
@@ -1712,6 +1740,10 @@ class KernelExecutor:
                     return StoryFragment(result, kernel_name=func_name)
             except Exception as e:
                 # Fallback: generate generic text
+                import sys
+                print(f"WARNING: Kernel {func_name} failed: {e}", file=sys.stderr)
+                import traceback
+                traceback.print_exc(file=sys.stderr)
                 return self._fallback_kernel(func_name, args, kwargs)
         else:
             # Unknown kernel - generate fallback

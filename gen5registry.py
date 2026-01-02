@@ -18,7 +18,6 @@ from pathlib import Path
 # Import the base gen5 module
 from gen5 import (
     REGISTRY,
-    generate_story,
     KernelExecutor,
     StoryContext,
     StoryFragment,
@@ -55,6 +54,11 @@ def _load_kernel_packs():
 
 # Load all packs on import
 _load_kernel_packs()
+
+def generate_story(kernel: str) -> str:
+    """Generate a story from a kernel string using the full registry."""
+    executor = KernelExecutor(REGISTRY)
+    return executor.execute(kernel)
 
 def get_kernel_count() -> int:
     """Return the total number of registered kernels."""
