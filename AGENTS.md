@@ -17,12 +17,11 @@ Storyweavers uses **story kernels** - symbolic representations of narrative patt
 
 ## Workflow: Sample → Study → Implement → Test → Compare & Improve
 
-### Step 0: Install Dependencies
+### Installation
 
 ```bash
 pip install nltk
 ```
-
 
 ### Step 1: Identify Missing Kernels
 
@@ -41,6 +40,7 @@ python sample.py -k KernelName
 ```
 
 **Note:** Character names (like Tim, Lily, Mom) are automatically detected using AST parsing of `Name(Character, ...)` patterns and excluded from the missing kernels list by default. Use `--include-characters` flag to see them.
+**Note:** Cleanup before implementing.
 
 ### Step 2: Sample Real Usage Examples
 
@@ -157,8 +157,12 @@ The `--show-source` (or `-s`) flag shows:
 2. Compare original vs generated stories
 3. Identify narrative weaknesses (see checklist above)
 4. Update kernel implementation in `gen5kXX.py`
+5. Update the engine (when needed).
 5. Test again: `python gen5kXX.py && python sample.py -k YourKernel -n 5`
 6. Repeat until narrative quality matches or exceeds original stories
+
+
+
 
 ## Key Files
 
