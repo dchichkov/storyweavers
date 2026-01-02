@@ -17,6 +17,13 @@ Storyweavers uses **story kernels** - symbolic representations of narrative patt
 
 ## Workflow: Sample → Study → Implement → Test → Compare & Improve
 
+### Step 0: Install Dependencies
+
+```bash
+pip install nltk
+```
+
+
 ### Step 1: Identify Missing Kernels
 
 ```bash
