@@ -14,32 +14,6 @@ Storyweavers uses **story kernels** - symbolic representations of narrative patt
 2. **Read `gen5k01.py`** - Additional kernel pack with ~50 more kernels
 3. **Understand the pattern** - Each kernel is a decorated function that takes `StoryContext` and returns `StoryFragment`
 
-**IMPORTANT: Use `gen5registry` when checking coverage or sampling, not `gen5` directly!**
-
-```python
-# CORRECT - loads ALL kernel packs (gen5k01, gen5k02, ... gen5k99)
-from gen5registry import REGISTRY, generate_story
-
-# WRONG - only loads sample gen5.py kernels!
-from gen5 import REGISTRY, generate_story
-```
-
-The `gen5registry` module auto-discovers and imports all `gen5kXX.py` files, ensuring you see all implemented kernels. Always use `sample.py` and `coverage.py` for checking coverage - they use `gen5registry` correctly.
-
-```python
-# Example kernel structure from gen5.py
-@REGISTRY.kernel("KernelName")
-def kernel_name(ctx: StoryContext, *args, **kwargs) -> StoryFragment:
-    """Docstring describing what this kernel does."""
-    chars = [a for a in args if isinstance(a, Character)]
-    objects = [str(a) for a in args if isinstance(a, str)]
-    
-    if chars:
-        chars[0].Joy += 10  # Update character state
-        return StoryFragment(f"{chars[0].name} did something.")
-    
-    return StoryFragment("something happened", kernel_name="KernelName")
-```
 
 ## Workflow: Sample → Study → Implement → Test
 
@@ -95,7 +69,7 @@ Loss(Mommy, Sick)               -- temporary loss of companion
 
 ### Step 4: Implement the Kernel
 
-**Create new kernels in separate files** (e.g., `gen5k02.py`) to keep `gen5.py` as a representative core sample:
+**Create new kernels in a nex files** (e.g., `gen5kXX.py`) to keep `gen5.py` as a representative core sample:
 
 ```python
 # gen5k02.py - Additional Kernel Pack #02
@@ -131,7 +105,7 @@ def kernel_new(ctx: StoryContext, *args, **kwargs) -> StoryFragment:
 ### Step 5: Test with Real Data
 
 ```bash
-# Test the kernel pack directly
+# Test the kernel pack directly, for example for gen5k02.py
 python gen5k02.py
 
 # Sample the same kernel again - should now generate properly
@@ -273,7 +247,6 @@ $ python sample.py -k Gratitude -n 2
 - **Use sample.py and coverage.py** - Don't write custom scripts; the tools handle imports correctly
 - **Sample before implementing** - Understand real usage patterns
 - **Keep gen5.py clean** - It's the reference implementation
-- **Use separate kernel packs** - Organize by theme or batch
 - **Test with real data** - Use sample.py to verify
 - **No LLMs at runtime** - All generation is classical execution
 
