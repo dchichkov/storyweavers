@@ -124,7 +124,7 @@ def kernel_obedient(ctx: StoryContext, *args, **kwargs) -> StoryFragment:
     if chars:
         char = chars[0]
         char.Joy += 5
-        return StoryFragment(f"{char.name} was obedient.")
+        return StoryFragment(f"{char.name} learned to be obedient and follow the rules.")
     
     return StoryFragment("obedient", kernel_name="Obedient")
 
@@ -143,7 +143,7 @@ def kernel_cheerful(ctx: StoryContext, *args, **kwargs) -> StoryFragment:
     if chars:
         char = chars[0]
         char.Joy += 8
-        return StoryFragment(f"{char.name} was cheerful.")
+        return StoryFragment(f"{char.name} was cheerful and full of joy.")
     
     return StoryFragment("cheerful", kernel_name="Cheerful")
 
@@ -161,7 +161,7 @@ def kernel_innocent(ctx: StoryContext, *args, **kwargs) -> StoryFragment:
     
     if chars:
         char = chars[0]
-        return StoryFragment(f"{char.name} was innocent.")
+        return StoryFragment(f"{char.name} was innocent and pure of heart.")
     
     return StoryFragment("innocent", kernel_name="Innocent")
 
@@ -180,7 +180,7 @@ def kernel_disobedient(ctx: StoryContext, *args, **kwargs) -> StoryFragment:
     if chars:
         char = chars[0]
         char.Sadness += 3
-        return StoryFragment(f"{char.name} was disobedient.")
+        return StoryFragment(f"{char.name} was disobedient and didn't listen.")
     
     return StoryFragment("disobedient", kernel_name="Disobedient")
 
@@ -198,7 +198,7 @@ def kernel_muddy(ctx: StoryContext, *args, **kwargs) -> StoryFragment:
     
     if chars:
         char = chars[0]
-        return StoryFragment(f"{char.name} was muddy.")
+        return StoryFragment(f"{char.name} was covered in mud and very dirty.")
     
     return StoryFragment("muddy", kernel_name="Muddy")
 
@@ -220,7 +220,10 @@ def kernel_park(ctx: StoryContext, *args, **kwargs) -> StoryFragment:
     chars = [a for a in args if isinstance(a, Character)]
     
     if chars:
-        return StoryFragment(f"{NLGUtils.join_list([c.name for c in chars])} went to the park.")
+        if len(chars) > 1:
+            names = NLGUtils.join_list([c.name for c in chars])
+            return StoryFragment(f"{names} went to the park together.")
+        return StoryFragment(f"{chars[0].name} went to the park.")
     
     return StoryFragment("the park", kernel_name="Park")
 
@@ -237,7 +240,10 @@ def kernel_jungle(ctx: StoryContext, *args, **kwargs) -> StoryFragment:
     chars = [a for a in args if isinstance(a, Character)]
     
     if chars:
-        return StoryFragment(f"{NLGUtils.join_list([c.name for c in chars])} went to the jungle.")
+        if len(chars) > 1:
+            names = NLGUtils.join_list([c.name for c in chars])
+            return StoryFragment(f"{names} went on an adventure to the jungle.")
+        return StoryFragment(f"{chars[0].name} explored the jungle.")
     
     return StoryFragment("the jungle", kernel_name="Jungle")
 
@@ -265,19 +271,21 @@ def kernel_wash(ctx: StoryContext, *args, **kwargs) -> StoryFragment:
     if target:
         target_str = _to_phrase(target)
         agent = chars[0].name if chars else objects[0] if objects else "something"
-        return StoryFragment(f"{agent} washed {target_str}.")
+        return StoryFragment(f"{agent} washed {target_str} clean.")
     
     # Characters washing themselves
     if chars:
         char_names = NLGUtils.join_list([c.name for c in chars])
         if with_what:
-            return StoryFragment(f"{char_names} washed with {with_what}.")
-        return StoryFragment(f"{char_names} washed up.")
+            return StoryFragment(f"{char_names} washed carefully with {with_what}.")
+        if len(chars) > 1:
+            return StoryFragment(f"{char_names} washed up together.")
+        return StoryFragment(f"{char_names} washed up nice and clean.")
     
     # Washing objects
     if objects:
         obj = objects[0]
-        return StoryFragment(f"The {obj} was washed.")
+        return StoryFragment(f"The {obj} was washed clean.")
     
     return StoryFragment("washing", kernel_name="Wash")
 
@@ -299,18 +307,20 @@ def kernel_learning(ctx: StoryContext, *args, **kwargs) -> StoryFragment:
     if kwargs:
         concept = list(kwargs.keys())[0]
         value = kwargs[concept]
-        return StoryFragment(f"learning that {concept} is {_to_phrase(value)}.")
+        return StoryFragment(f"learning that {_to_phrase(concept)} is {_to_phrase(value)}.")
     
     # Characters learning
     if chars:
         char_names = NLGUtils.join_list([c.name for c in chars])
         for char in chars:
             char.Joy += 3
-        return StoryFragment(f"{char_names} learned something important.")
+        if len(chars) > 1:
+            return StoryFragment(f"{char_names} learned something valuable together.")
+        return StoryFragment(f"{char_names} learned an important lesson.")
     
     # Abstract learning
     if objects:
-        return StoryFragment(f"learning about {objects[0]}.")
+        return StoryFragment(f"learning all about {objects[0]}.")
     
     return StoryFragment("learning", kernel_name="Learning")
 
@@ -336,16 +346,18 @@ def kernel_teaching(ctx: StoryContext, *args, **kwargs) -> StoryFragment:
         student = chars[1]
         if lesson:
             lesson_str = _to_phrase(lesson)
-            return StoryFragment(f"{teacher.name} taught {student.name} about {lesson_str}.")
-        return StoryFragment(f"{teacher.name} taught {student.name}.")
+            return StoryFragment(f"{teacher.name} patiently taught {student.name} about {lesson_str}.")
+        return StoryFragment(f"{teacher.name} taught {student.name} an important lesson.")
     
     # Single character teaching
     if chars:
         teacher = chars[0]
         if lesson:
             lesson_str = _to_phrase(lesson)
-            return StoryFragment(f"{teacher.name} taught about {lesson_str}.")
-        return StoryFragment(f"{teacher.name} taught a lesson.")
+            return StoryFragment(f"{teacher.name} taught them about {lesson_str}.")
+        if method:
+            return StoryFragment(f"{teacher.name} taught them how to {_to_phrase(method)}.")
+        return StoryFragment(f"{teacher.name} shared their wisdom.")
     
     # Teaching a concept
     if objects:
@@ -371,12 +383,12 @@ def kernel_release(ctx: StoryContext, *args, **kwargs) -> StoryFragment:
     if chars:
         char = chars[0]
         char.Joy += 10
-        return StoryFragment(f"{char.name} was released and set free.")
+        return StoryFragment(f"{char.name} was released and flew away free.")
     
     # Releasing an object
     if objects:
         obj = objects[0]
-        return StoryFragment(f"The {obj} was released.")
+        return StoryFragment(f"The {obj} was released and floated away.")
     
     return StoryFragment("released", kernel_name="Release")
 
@@ -406,11 +418,11 @@ def kernel_song(ctx: StoryContext, *args, **kwargs) -> StoryFragment:
     if chars:
         char = chars[0]
         char.Joy += 5
-        return StoryFragment(f"{char.name} sang a happy song.")
+        return StoryFragment(f"{char.name} sang a lovely song.")
     
     # Song as object/concept
     if objects:
-        return StoryFragment(f"singing the {objects[0]}.")
+        return StoryFragment(f"singing the {objects[0]} with joy.")
     
     return StoryFragment("a song", kernel_name="Song")
 
@@ -435,15 +447,15 @@ def kernel_appreciation(ctx: StoryContext, *args, **kwargs) -> StoryFragment:
         appreciator.Joy += 5
         appreciator.Love += 5
         appreciated.Joy += 8
-        return StoryFragment(f"{appreciator.name} showed appreciation for {appreciated.name}.")
+        return StoryFragment(f"{appreciator.name} showed deep appreciation for {appreciated.name}.")
     
     # Character appreciating something
     if chars:
         char = chars[0]
         char.Joy += 5
         if objects:
-            return StoryFragment(f"{char.name} appreciated {objects[0]}.")
-        return StoryFragment(f"{char.name} felt appreciation.")
+            return StoryFragment(f"{char.name} appreciated the {objects[0]} with gratitude.")
+        return StoryFragment(f"{char.name} felt true appreciation.")
     
     # Appreciating a concept
     if objects:
@@ -470,12 +482,12 @@ def kernel_responsibility(ctx: StoryContext, *args, **kwargs) -> StoryFragment:
         char = chars[0]
         char.Joy += 3
         if objects:
-            return StoryFragment(f"{char.name} took responsibility for {objects[0]}.")
-        return StoryFragment(f"{char.name} learned to take responsibility.")
+            return StoryFragment(f"{char.name} learned to take responsibility for {objects[0]}.")
+        return StoryFragment(f"{char.name} learned to be responsible and make things right.")
     
     # Responsibility for something
     if objects:
-        return StoryFragment(f"responsibility for {objects[0]}.")
+        return StoryFragment(f"taking responsibility for {objects[0]}.")
     
     return StoryFragment("responsibility", kernel_name="Responsibility")
 
@@ -495,7 +507,7 @@ def kernel_disobey(ctx: StoryContext, *args, **kwargs) -> StoryFragment:
         char = chars[0]
         char.Sadness += 5
         char.Fear += 3
-        return StoryFragment(f"{char.name} disobeyed.")
+        return StoryFragment(f"{char.name} disobeyed and didn't follow the rules.")
     
     return StoryFragment("disobeying", kernel_name="Disobey")
 
@@ -517,10 +529,10 @@ def kernel_character_group(ctx: StoryContext, *args, **kwargs) -> StoryFragment:
     
     if chars:
         char_names = NLGUtils.join_list([c.name for c in chars])
-        return StoryFragment(f"{char_names} formed a group.")
+        return StoryFragment(f"{char_names} gathered together as a group.")
     
     if objects:
-        return StoryFragment(f"a group of {objects[0]}.")
+        return StoryFragment(f"a group of {objects[0]} came together.")
     
     return StoryFragment("a group", kernel_name="CharacterGroup")
 
@@ -539,7 +551,7 @@ def kernel_flight(ctx: StoryContext, *args, **kwargs) -> StoryFragment:
     if chars:
         char = chars[0]
         char.Joy += 8
-        return StoryFragment(f"{char.name} took flight and soared through the air.")
+        return StoryFragment(f"{char.name} took flight and soared gracefully through the sky.")
     
     return StoryFragment("flight", kernel_name="Flight")
 

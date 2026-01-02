@@ -339,15 +339,24 @@ def main():
         print(f"Showing {n} example{'s' if n > 1 else ''} of how '{args.kernel}' is used")
         print('='*70)
         
-        for i, record in enumerate(samples, 1):
-            display_sample(record, show_original=args.show_original, index=i)
+        # When exploring a specific kernel, always show original by default
+        show_orig = True if args.kernel else args.show_original
         
-        # Show implementation suggestion
+        for i, record in enumerate(samples, 1):
+            display_sample(record, show_original=show_orig, index=i)
+        
+        # Show implementation status
         print(f"\n{'='*70}")
-        print(f"💡 IMPLEMENTATION SUGGESTION FOR: {args.kernel}")
-        print('='*70)
-        print(f"""
-To implement this kernel, add to gen5.py:
+        if args.kernel in REGISTRY.kernels:
+            print(f"✅ KERNEL IMPLEMENTED: {args.kernel}")
+            print('='*70)
+            print(f"\nThe '{args.kernel}' kernel is already implemented and ready to use.")
+            print(f"Total kernels in registry: {len(REGISTRY.kernels)}")
+        else:
+            print(f"💡 IMPLEMENTATION SUGGESTION FOR: {args.kernel}")
+            print('='*70)
+            print(f"""
+To implement this kernel, add to a new kernel pack file (e.g., gen5kXX.py):
 
 @REGISTRY.kernel("{args.kernel}")
 def kernel_{args.kernel.lower()}(ctx: StoryContext, *args, **kwargs) -> StoryFragment:
