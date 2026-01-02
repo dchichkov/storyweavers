@@ -13,10 +13,22 @@ KERNELS IN THIS PACK (with usage patterns from sampling):
 - Stop(action)                     -- stopping an action
 - Choose(char, choice)             -- choosing/selecting something
 - Recall(char, memory)             -- remembering something
+- Disregard(char, warning)         -- ignoring/disregarding advice
 
 ## Emotion/Experience Kernels
 - Enjoy(char, activity)            -- enjoying something
 - Continuation(activity)           -- continuing an activity
+
+## Story/Play Kernels
+- Pirates                          -- pretend play as pirates
+- Explorers                        -- pretend play as explorers
+
+## Safety/Warning Kernels
+- MatchesDanger                    -- danger of matches lesson
+- SafeLight(flashlight/lantern)    -- safe lighting alternatives
+
+## Object Kernels
+- Water(bucket)                    -- water for putting out fires
 
 """
 
@@ -165,6 +177,35 @@ def kernel_recall(ctx: StoryContext, *args, **kwargs) -> StoryFragment:
     return StoryFragment("remembering", kernel_name="Recall")
 
 
+@REGISTRY.kernel("Disregard")
+def kernel_disregard(ctx: StoryContext, *args, **kwargs) -> StoryFragment:
+    """
+    Ignoring or disregarding advice/warnings.
+    
+    Patterns from sampling:
+      - Disregard(Tom)               -- Tom disregards warning
+      - Conflict(Nervous(Lily) + Disregard(Tom))  -- tension from disregarding
+    """
+    chars = [a for a in args if isinstance(a, Character)]
+    objects = [str(a) for a in args if not isinstance(a, Character)]
+    
+    char = _get_default_actor(ctx, chars)
+    
+    if char:
+        char.Anger += 3  # Slight increase in impulsiveness/defiance
+        if objects:
+            thing = _to_phrase(objects[0])
+            return StoryFragment(f"{char.name} disregarded {thing}.")
+        return StoryFragment(f"{char.name} ignored the warning.")
+    
+    # No character - used as concept
+    if objects:
+        thing = _to_phrase(objects[0])
+        return StoryFragment(f"disregarding {thing}", kernel_name="Disregard")
+    
+    return StoryFragment("disregard", kernel_name="Disregard")
+
+
 # =============================================================================
 # EMOTION/EXPERIENCE KERNELS
 # =============================================================================
@@ -231,6 +272,115 @@ def kernel_continuation(ctx: StoryContext, *args, **kwargs) -> StoryFragment:
         return StoryFragment(f"continuing {activity}", kernel_name="Continuation")
     
     return StoryFragment("continuing", kernel_name="Continuation")
+
+
+# =============================================================================
+# STORY/PLAY KERNELS
+# =============================================================================
+
+@REGISTRY.kernel("Pirates")
+def kernel_pirates(ctx: StoryContext, *args, **kwargs) -> StoryFragment:
+    """
+    Pretend play as pirates.
+    
+    Patterns from sampling:
+      - Play(Pirates, Explorers, Lily, Tom)    -- playing pirates
+      - Transformation(Play(Pirates) + SafeLight)  -- continuing pirate play
+    """
+    chars = [a for a in args if isinstance(a, Character)]
+    
+    if chars:
+        for char in chars:
+            char.Joy += 10
+        names = NLGUtils.join_list([c.name for c in chars])
+        return StoryFragment(f"{names} pretended to be pirates.")
+    
+    return StoryFragment("playing pirates", kernel_name="Pirates")
+
+
+@REGISTRY.kernel("Explorers")
+def kernel_explorers(ctx: StoryContext, *args, **kwargs) -> StoryFragment:
+    """
+    Pretend play as explorers.
+    
+    Patterns from sampling:
+      - Play(Pirates, Explorers, Lily, Tom)    -- playing explorers
+    """
+    chars = [a for a in args if isinstance(a, Character)]
+    
+    if chars:
+        for char in chars:
+            char.Joy += 10
+        names = NLGUtils.join_list([c.name for c in chars])
+        return StoryFragment(f"{names} pretended to be explorers.")
+    
+    return StoryFragment("playing explorers", kernel_name="Explorers")
+
+
+# =============================================================================
+# SAFETY/WARNING KERNELS
+# =============================================================================
+
+@REGISTRY.kernel("MatchesDanger")
+def kernel_matches_danger(ctx: StoryContext, *args, **kwargs) -> StoryFragment:
+    """
+    Lesson about the danger of matches.
+    
+    Patterns from sampling:
+      - Lesson(MatchesDanger)    -- learning about match danger
+    """
+    return StoryFragment("the danger of playing with matches", kernel_name="MatchesDanger")
+
+
+@REGISTRY.kernel("SafeLight")
+def kernel_safe_light(ctx: StoryContext, *args, **kwargs) -> StoryFragment:
+    """
+    Safe lighting alternatives (flashlight, lantern, etc).
+    
+    Patterns from sampling:
+      - Transformation(Play(Pirates) + SafeLight([flashlight, lantern]))
+    """
+    chars = [a for a in args if isinstance(a, Character)]
+    objects = [str(a) for a in args if not isinstance(a, Character)]
+    
+    lights = objects if objects else ['flashlight']
+    light_list = NLGUtils.join_list(lights)
+    
+    if chars:
+        names = NLGUtils.join_list([c.name for c in chars])
+        return StoryFragment(f"{names} used a safe {light_list} instead.")
+    
+    return StoryFragment(f"using a safe {light_list}", kernel_name="SafeLight")
+
+
+# =============================================================================
+# OBJECT KERNELS
+# =============================================================================
+
+@REGISTRY.kernel("Water")
+def kernel_water(ctx: StoryContext, *args, **kwargs) -> StoryFragment:
+    """
+    Water (for drinking, washing, putting out fires, etc).
+    
+    Patterns from sampling:
+      - Rescue(Mom, method=Water(bucket))    -- using water to rescue
+      - Water(bucket)                         -- water in a bucket
+    """
+    chars = [a for a in args if isinstance(a, Character)]
+    objects = [str(a) for a in args if not isinstance(a, Character)]
+    
+    container = objects[0] if objects else None
+    
+    if chars:
+        char = chars[0]
+        if container:
+            return StoryFragment(f"{char.name} got some water in a {container}.")
+        return StoryFragment(f"{char.name} got some water.")
+    
+    if container:
+        return StoryFragment(f"water in a {container}", kernel_name="Water")
+    
+    return StoryFragment("water", kernel_name="Water")
 
 
 # =============================================================================
