@@ -146,38 +146,6 @@ from gen5 import (
 # COMMUNICATION KERNELS
 # =============================================================================
 
-@REGISTRY.kernel("Request")
-def kernel_request(ctx: StoryContext, *args, **kwargs) -> StoryFragment:
-    """
-    Character requests something.
-    
-    Patterns:
-      - Request(char, thing)           -- asking for something
-      - Request(char, to=other, action)-- asking someone to do something
-      - Request(Emily, Lily)           -- Emily requests from Lily
-    """
-    chars = [a for a in args if isinstance(a, Character)]
-    objects = [str(a) for a in args if isinstance(a, str)]
-    to = kwargs.get('to', None)
-    
-    if len(chars) >= 2:
-        requester = chars[0]
-        askee = chars[1]
-        thing = objects[0] if objects else 'help'
-        return StoryFragment(f'{requester.name} asked {askee.name} for {_to_phrase(thing)}.')
-    elif chars:
-        requester = chars[0]
-        thing = objects[0] if objects else 'something'
-        if to:
-            to_name = to.name if isinstance(to, Character) else str(to)
-            return StoryFragment(f'{requester.name} asked {to_name} for {_to_phrase(thing)}.')
-        return StoryFragment(f'{requester.name} asked for {_to_phrase(thing)}.')
-    
-    if objects:
-        return StoryFragment(f"someone asked for {_to_phrase(objects[0])}", kernel_name="Request")
-    return StoryFragment("there was a request", kernel_name="Request")
-
-
 @REGISTRY.kernel("Gift")
 def kernel_gift(ctx: StoryContext, *args, **kwargs) -> StoryFragment:
     """
@@ -211,36 +179,6 @@ def kernel_gift(ctx: StoryContext, *args, **kwargs) -> StoryFragment:
     
     # Just the gift object
     return StoryFragment(f"there was a gift of {_to_phrase(thing)}", kernel_name="Gift")
-
-
-@REGISTRY.kernel("Promise")
-def kernel_promise(ctx: StoryContext, *args, **kwargs) -> StoryFragment:
-    """
-    Character makes a promise.
-    
-    Patterns:
-      - Promise(char, action)     -- char promises to do action
-      - Promise(share=truck)      -- promise to share
-      - Promise(Mom, Make(cake))  -- Mom promises to make cake
-    """
-    chars = [a for a in args if isinstance(a, Character)]
-    objects = [str(a) for a in args if isinstance(a, str)]
-    share = kwargs.get('share', '')
-    
-    if chars:
-        promiser = chars[0]
-        promiser.Love += 3
-        if share:
-            return StoryFragment(f"{promiser.name} promised to share the {_to_phrase(share)}.")
-        if objects:
-            return StoryFragment(f"{promiser.name} promised to {_to_phrase(objects[0])}.")
-        return StoryFragment(f"{promiser.name} made a promise.")
-    
-    if share:
-        return StoryFragment(f"there was a promise to share the {_to_phrase(share)}", kernel_name="Promise")
-    if objects:
-        return StoryFragment(f"there was a promise to {_to_phrase(objects[0])}", kernel_name="Promise")
-    return StoryFragment("a promise was made", kernel_name="Promise")
 
 
 @REGISTRY.kernel("Wish")
@@ -362,64 +300,6 @@ def kernel_introduce(ctx: StoryContext, *args, **kwargs) -> StoryFragment:
 # =============================================================================
 # MENTAL/EMOTIONAL KERNELS
 # =============================================================================
-
-@REGISTRY.kernel("Gratitude")
-def kernel_gratitude(ctx: StoryContext, *args, **kwargs) -> StoryFragment:
-    """
-    Character expresses gratitude.
-    
-    Patterns:
-      - Gratitude(Lily)           -- Lily is grateful
-      - Gratitude(Lily, Mom)      -- Lily grateful to Mom
-      - Gratitude(Lily, to=Mom)   -- alternate form
-    """
-    chars = [a for a in args if isinstance(a, Character)]
-    to = kwargs.get('to', None)
-    
-    if chars:
-        grateful_one = chars[0]
-        grateful_one.Joy += 8
-        grateful_one.Love += 5
-        
-        if len(chars) >= 2:
-            recipient = chars[1]
-            return StoryFragment(f"{grateful_one.name} was very grateful to {recipient.name}.")
-        elif to:
-            to_name = to.name if isinstance(to, Character) else str(to)
-            return StoryFragment(f"{grateful_one.name} was very grateful to {to_name}.")
-        return StoryFragment(f"{grateful_one.name} felt very grateful.")
-    
-    return StoryFragment("there was gratitude", kernel_name="Gratitude")
-
-
-@REGISTRY.kernel("Insight")
-def kernel_insight(ctx: StoryContext, *args, **kwargs) -> StoryFragment:
-    """
-    Character gains insight or understanding.
-    
-    Patterns:
-      - Insight(concept)          -- understanding a concept
-      - Insight(Sharing + Kindness)-- understanding values
-      - Insight = Love + Protection-- narrative insight
-    """
-    chars = [a for a in args if isinstance(a, Character)]
-    objects = [str(a) for a in args if isinstance(a, str)]
-    fragments = [a for a in args if isinstance(a, StoryFragment)]
-    
-    # Build insight content
-    if fragments:
-        insight_content = _to_phrase(fragments[0])
-    elif objects:
-        insight_content = _to_phrase(objects[0])
-    else:
-        insight_content = "something important"
-    
-    if chars:
-        chars[0].Joy += 10
-        return StoryFragment(f"{chars[0].name} understood about {insight_content}.")
-    
-    return StoryFragment(f"there was an insight about {insight_content}", kernel_name="Insight")
-
 
 @REGISTRY.kernel("Curious")
 def kernel_curious(ctx: StoryContext, *args, **kwargs) -> StoryFragment:
@@ -593,37 +473,6 @@ def kernel_hopeful(ctx: StoryContext, *args, **kwargs) -> StoryFragment:
 # ATTEMPT/DECISION KERNELS
 # =============================================================================
 
-@REGISTRY.kernel("Attempt")
-def kernel_attempt(ctx: StoryContext, *args, **kwargs) -> StoryFragment:
-    """
-    Character attempts something.
-    
-    Patterns:
-      - Attempt(char, action)     -- char tries action
-      - Attempt(Try(char, get(Jar)) + Failure)
-      - Attempt(Lily, action=Place(...))
-    """
-    chars = [a for a in args if isinstance(a, Character)]
-    objects = [str(a) for a in args if isinstance(a, str)]
-    fragments = [a for a in args if isinstance(a, StoryFragment)]
-    action = kwargs.get('action', '')
-    
-    # Get action description
-    if action:
-        action_text = _to_phrase(action)
-    elif fragments:
-        action_text = _to_phrase(fragments[0])
-    elif objects:
-        action_text = _to_phrase(objects[0])
-    else:
-        action_text = "do it"
-    
-    if chars:
-        return StoryFragment(f"{chars[0].name} tried to {action_text}.")
-    
-    return StoryFragment(f"there was an attempt to {action_text}", kernel_name="Attempt")
-
-
 @REGISTRY.kernel("Try")
 def kernel_try(ctx: StoryContext, *args, **kwargs) -> StoryFragment:
     """Character tries something (alias for Attempt)."""
@@ -648,12 +497,6 @@ def kernel_decide(ctx: StoryContext, *args, **kwargs) -> StoryFragment:
         return StoryFragment(f"{chars[0].name} decided to {_to_phrase(choice)}.")
     
     return StoryFragment(f"a decision was made to {_to_phrase(choice)}", kernel_name="Decide")
-
-
-@REGISTRY.kernel("Decision")
-def kernel_decision(ctx: StoryContext, *args, **kwargs) -> StoryFragment:
-    """Alias for Decide."""
-    return kernel_decide(ctx, *args, **kwargs)
 
 
 @REGISTRY.kernel("Agree")
@@ -883,21 +726,6 @@ def kernel_drop(ctx: StoryContext, *args, **kwargs) -> StoryFragment:
     return StoryFragment(f"the {thing} dropped", kernel_name="Drop")
 
 
-@REGISTRY.kernel("Dig")
-def kernel_dig(ctx: StoryContext, *args, **kwargs) -> StoryFragment:
-    """Character digs."""
-    chars = [a for a in args if isinstance(a, Character)]
-    objects = [str(a) for a in args if isinstance(a, str)]
-    
-    digger = chars[0] if chars else ctx.current_focus
-    location = objects[0] if objects else 'in the ground'
-    
-    if digger:
-        return StoryFragment(f"{digger.name} dug {_to_phrase(location)}.")
-    
-    return StoryFragment(f"dug {_to_phrase(location)}", kernel_name="Dig")
-
-
 @REGISTRY.kernel("Cut")
 def kernel_cut(ctx: StoryContext, *args, **kwargs) -> StoryFragment:
     """Character cuts something."""
@@ -911,21 +739,6 @@ def kernel_cut(ctx: StoryContext, *args, **kwargs) -> StoryFragment:
         return StoryFragment(f"{cutter.name} cut the {thing}.")
     
     return StoryFragment(f"the {thing} was cut", kernel_name="Cut")
-
-
-@REGISTRY.kernel("Pour")
-def kernel_pour(ctx: StoryContext, *args, **kwargs) -> StoryFragment:
-    """Character pours something."""
-    chars = [a for a in args if isinstance(a, Character)]
-    objects = [str(a) for a in args if isinstance(a, str)]
-    
-    pourer = chars[0] if chars else ctx.current_focus
-    liquid = objects[0] if objects else 'water'
-    
-    if pourer:
-        return StoryFragment(f"{pourer.name} poured the {liquid}.")
-    
-    return StoryFragment(f"the {liquid} was poured", kernel_name="Pour")
 
 
 @REGISTRY.kernel("Stir")
@@ -1030,18 +843,6 @@ def kernel_kick(ctx: StoryContext, *args, **kwargs) -> StoryFragment:
         return StoryFragment(f"{kicker.name} kicked the {thing}.")
     
     return StoryFragment(f"the {thing} was kicked", kernel_name="Kick")
-
-
-@REGISTRY.kernel("Splash")
-def kernel_splash(ctx: StoryContext, *args, **kwargs) -> StoryFragment:
-    """Character splashes in water."""
-    chars = [a for a in args if isinstance(a, Character)]
-    
-    if chars:
-        chars[0].Joy += 5
-        return StoryFragment(f"{chars[0].name} splashed in the water.")
-    
-    return StoryFragment("there was splashing", kernel_name="Splash")
 
 
 @REGISTRY.kernel("Blow")
@@ -1211,12 +1012,6 @@ def kernel_realize(ctx: StoryContext, *args, **kwargs) -> StoryFragment:
     return StoryFragment(f"there was a realization about {_to_phrase(truth)}", kernel_name="Realize")
 
 
-@REGISTRY.kernel("Realization")
-def kernel_realization(ctx: StoryContext, *args, **kwargs) -> StoryFragment:
-    """Alias for Realize."""
-    return kernel_realize(ctx, *args, **kwargs)
-
-
 @REGISTRY.kernel("Remember")
 def kernel_remember(ctx: StoryContext, *args, **kwargs) -> StoryFragment:
     """Character remembers something."""
@@ -1322,22 +1117,6 @@ def kernel_magic(ctx: StoryContext, *args, **kwargs) -> StoryFragment:
 # DAILY ACTIVITY KERNELS
 # =============================================================================
 
-@REGISTRY.kernel("Cook")
-def kernel_cook(ctx: StoryContext, *args, **kwargs) -> StoryFragment:
-    """Character cooks."""
-    chars = [a for a in args if isinstance(a, Character)]
-    objects = [str(a) for a in args if isinstance(a, str)]
-    
-    cook = chars[0] if chars else ctx.current_focus
-    food = objects[0] if objects else 'food'
-    
-    if cook:
-        cook.Joy += 3
-        return StoryFragment(f"{cook.name} cooked some {food}.")
-    
-    return StoryFragment(f"cooked {food}", kernel_name="Cook")
-
-
 @REGISTRY.kernel("Bake")
 def kernel_bake(ctx: StoryContext, *args, **kwargs) -> StoryFragment:
     """Character bakes."""
@@ -1368,22 +1147,6 @@ def kernel_draw(ctx: StoryContext, *args, **kwargs) -> StoryFragment:
         return StoryFragment(f"{artist.name} drew {picture}.")
     
     return StoryFragment(f"drew {picture}", kernel_name="Draw")
-
-
-@REGISTRY.kernel("Paint")
-def kernel_paint(ctx: StoryContext, *args, **kwargs) -> StoryFragment:
-    """Character paints."""
-    chars = [a for a in args if isinstance(a, Character)]
-    objects = [str(a) for a in args if isinstance(a, str)]
-    
-    painter = chars[0] if chars else ctx.current_focus
-    artwork = objects[0] if objects else 'a picture'
-    
-    if painter:
-        painter.Joy += 5
-        return StoryFragment(f"{painter.name} painted {artwork}.")
-    
-    return StoryFragment(f"painted {artwork}", kernel_name="Paint")
 
 
 @REGISTRY.kernel("Read")
@@ -1771,27 +1534,6 @@ def kernel_notice(ctx: StoryContext, *args, **kwargs) -> StoryFragment:
     return StoryFragment(f"noticed the {thing}", kernel_name="Notice")
 
 
-@REGISTRY.kernel("Observe")
-def kernel_observe(ctx: StoryContext, *args, **kwargs) -> StoryFragment:
-    """
-    Character observes something.
-    
-    Patterns:
-      - Observe(char, scene)      -- char observes scene
-      - Observe(bird)             -- observing birds
-    """
-    chars = [a for a in args if isinstance(a, Character)]
-    objects = [str(a) for a in args if isinstance(a, str)]
-    
-    observer = chars[0] if chars else ctx.current_focus
-    thing = objects[0] if objects else 'everything'
-    
-    if observer:
-        return StoryFragment(f"{observer.name} watched the {thing} carefully.")
-    
-    return StoryFragment(f"observed the {thing}", kernel_name="Observe")
-
-
 @REGISTRY.kernel("Sneak")
 def kernel_sneak(ctx: StoryContext, *args, **kwargs) -> StoryFragment:
     """Character sneaks somewhere."""
@@ -1807,21 +1549,6 @@ def kernel_sneak(ctx: StoryContext, *args, **kwargs) -> StoryFragment:
         return StoryFragment(f"{sneaker.name} sneaked quietly.")
     
     return StoryFragment("sneaked quietly", kernel_name="Sneak")
-
-
-@REGISTRY.kernel("Whisper")
-def kernel_whisper(ctx: StoryContext, *args, **kwargs) -> StoryFragment:
-    """Character whispers."""
-    chars = [a for a in args if isinstance(a, Character)]
-    objects = [str(a) for a in args if isinstance(a, str)]
-    
-    whisperer = chars[0] if chars else ctx.current_focus
-    message = objects[0] if objects else 'a secret'
-    
-    if whisperer:
-        return StoryFragment(f"{whisperer.name} whispered {_to_phrase(message)}.")
-    
-    return StoryFragment(f"whispered {_to_phrase(message)}", kernel_name="Whisper")
 
 
 # =============================================================================

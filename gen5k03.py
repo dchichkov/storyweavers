@@ -123,32 +123,6 @@ from gen5 import (
 # COMMUNICATION & WARNING KERNELS
 # =============================================================================
 
-@REGISTRY.kernel("Warning")
-def kernel_warning(ctx: StoryContext, *args, **kwargs) -> StoryFragment:
-    """
-    Character gives a warning.
-    
-    Patterns:
-      - Warning(char, about)      -- warning about danger
-      - Warning(danger)           -- general warning
-      - event=Warning(Fire)       -- warning as event
-    """
-    chars = [a for a in args if isinstance(a, Character)]
-    objects = [str(a) for a in args if isinstance(a, str)]
-    about = kwargs.get('about', '')
-    
-    danger = about if about else (objects[0] if objects else 'danger')
-    
-    if chars:
-        warner = chars[0]
-        if len(chars) >= 2:
-            warned = chars[1]
-            return StoryFragment(f"{warner.name} warned {warned.name} about the {_to_phrase(danger)}.")
-        return StoryFragment(f"{warner.name} gave a warning about the {_to_phrase(danger)}.")
-    
-    return StoryFragment(f"there was a warning about {_to_phrase(danger)}", kernel_name="Warning")
-
-
 @REGISTRY.kernel("Advice")
 def kernel_advice(ctx: StoryContext, *args, **kwargs) -> StoryFragment:
     """
@@ -340,28 +314,6 @@ def kernel_bond(ctx: StoryContext, *args, **kwargs) -> StoryFragment:
     return StoryFragment("a bond was formed", kernel_name="Bond")
 
 
-@REGISTRY.kernel("Cooperation")
-def kernel_cooperation(ctx: StoryContext, *args, **kwargs) -> StoryFragment:
-    """
-    Characters cooperate.
-    
-    Patterns:
-      - Cooperation(chars)        -- cooperating together
-      - moral=Cooperation         -- cooperation as moral
-    """
-    chars = [a for a in args if isinstance(a, Character)]
-    
-    if len(chars) >= 2:
-        names = NLGUtils.join_list([c.name for c in chars])
-        for c in chars:
-            c.Joy += 5
-        return StoryFragment(f"{names} learned to cooperate.")
-    elif chars:
-        return StoryFragment(f"{chars[0].name} showed cooperation.")
-    
-    return StoryFragment("everyone cooperated", kernel_name="Cooperation")
-
-
 @REGISTRY.kernel("Trust")
 def kernel_trust(ctx: StoryContext, *args, **kwargs) -> StoryFragment:
     """
@@ -403,28 +355,6 @@ def kernel_kindness(ctx: StoryContext, *args, **kwargs) -> StoryFragment:
         return StoryFragment(f"{chars[0].name} showed great kindness.")
     
     return StoryFragment("there was kindness", kernel_name="Kindness")
-
-
-@REGISTRY.kernel("Acceptance")
-def kernel_acceptance(ctx: StoryContext, *args, **kwargs) -> StoryFragment:
-    """
-    Character accepts something/someone.
-    
-    Patterns:
-      - Acceptance(char, thing)   -- accepting something
-      - Acceptance(difference)    -- accepting differences
-    """
-    chars = [a for a in args if isinstance(a, Character)]
-    objects = [str(a) for a in args if isinstance(a, str)]
-    
-    thing = objects[0] if objects else 'the situation'
-    
-    if chars:
-        chars[0].Joy += 5
-        chars[0].Fear -= 5
-        return StoryFragment(f"{chars[0].name} accepted {_to_phrase(thing)}.")
-    
-    return StoryFragment(f"there was acceptance of {_to_phrase(thing)}", kernel_name="Acceptance")
 
 
 # =============================================================================
@@ -658,29 +588,6 @@ def kernel_laughter(ctx: StoryContext, *args, **kwargs) -> StoryFragment:
 def kernel_laugh(ctx: StoryContext, *args, **kwargs) -> StoryFragment:
     """Alias for Laughter."""
     return kernel_laughter(ctx, *args, **kwargs)
-
-
-@REGISTRY.kernel("Excitement")
-def kernel_excitement(ctx: StoryContext, *args, **kwargs) -> StoryFragment:
-    """
-    Character feels excitement.
-    
-    Patterns:
-      - Excitement(char)          -- feeling excited
-      - Excitement(about party)   -- excited about event
-    """
-    chars = [a for a in args if isinstance(a, Character)]
-    objects = [str(a) for a in args if isinstance(a, str)]
-    
-    about = objects[0] if objects else ''
-    
-    if chars:
-        chars[0].Joy += 12
-        if about:
-            return StoryFragment(f"{chars[0].name} felt excitement about the {about}!")
-        return StoryFragment(f"{chars[0].name} was filled with excitement!")
-    
-    return StoryFragment("there was excitement", kernel_name="Excitement")
 
 
 # =============================================================================
@@ -936,31 +843,6 @@ def kernel_bear(ctx: StoryContext, *args, **kwargs) -> StoryFragment:
 # =============================================================================
 # CONCEPT KERNELS
 # =============================================================================
-
-@REGISTRY.kernel("Idea")
-def kernel_idea(ctx: StoryContext, *args, **kwargs) -> StoryFragment:
-    """
-    Character has an idea.
-    
-    Patterns:
-      - Idea(char, concept)       -- having an idea
-      - Idea(use stick)           -- specific idea
-    """
-    chars = [a for a in args if isinstance(a, Character)]
-    objects = [str(a) for a in args if isinstance(a, str)]
-    
-    concept = objects[0] if objects else ''
-    
-    if chars:
-        chars[0].Joy += 5
-        if concept:
-            return StoryFragment(f"{chars[0].name} had an idea: {_to_phrase(concept)}!")
-        return StoryFragment(f"{chars[0].name} had a great idea!")
-    
-    if concept:
-        return StoryFragment(f"the idea was to {_to_phrase(concept)}", kernel_name="Idea")
-    return StoryFragment("there was an idea", kernel_name="Idea")
-
 
 @REGISTRY.kernel("Habit")
 def kernel_habit(ctx: StoryContext, *args, **kwargs) -> StoryFragment:
@@ -1277,27 +1159,6 @@ def kernel_want(ctx: StoryContext, *args, **kwargs) -> StoryFragment:
     return StoryFragment(f"wanted {_to_phrase(desire)}", kernel_name="Want")
 
 
-@REGISTRY.kernel("Spot")
-def kernel_spot(ctx: StoryContext, *args, **kwargs) -> StoryFragment:
-    """
-    Character spots something.
-    
-    Patterns:
-      - Spot(char, thing)         -- spotting something
-      - Spot(treasure)            -- spotting treasure
-    """
-    chars = [a for a in args if isinstance(a, Character)]
-    objects = [str(a) for a in args if isinstance(a, str)]
-    
-    thing = objects[0] if objects else 'something interesting'
-    
-    if chars:
-        chars[0].Joy += 3
-        return StoryFragment(f"{chars[0].name} spotted {_to_phrase(thing)}!")
-    
-    return StoryFragment(f"spotted {_to_phrase(thing)}", kernel_name="Spot")
-
-
 # =============================================================================
 # ADDITIONAL SUPPORT KERNELS TO REACH 100
 # =============================================================================
@@ -1457,31 +1318,6 @@ def kernel_kind(ctx: StoryContext, *args, **kwargs) -> StoryFragment:
         return StoryFragment(f"{chars[0].name} was kind")
     
     return StoryFragment("kind", kernel_name="Kind")
-
-
-@REGISTRY.kernel("Brave")
-def kernel_brave(ctx: StoryContext, *args, **kwargs) -> StoryFragment:
-    """Being brave."""
-    chars = [a for a in args if isinstance(a, Character)]
-    
-    if chars:
-        chars[0].Fear -= 10
-        chars[0].Joy += 5
-        return StoryFragment(f"{chars[0].name} was brave")
-    
-    return StoryFragment("brave", kernel_name="Brave")
-
-
-@REGISTRY.kernel("Shy")
-def kernel_shy(ctx: StoryContext, *args, **kwargs) -> StoryFragment:
-    """Being shy."""
-    chars = [a for a in args if isinstance(a, Character)]
-    
-    if chars:
-        chars[0].Fear += 3
-        return StoryFragment(f"{chars[0].name} was shy")
-    
-    return StoryFragment("shy", kernel_name="Shy")
 
 
 @REGISTRY.kernel("Clever")
@@ -1755,55 +1591,6 @@ def kernel_huge(ctx: StoryContext, *args, **kwargs) -> StoryFragment:
     return StoryFragment("huge", kernel_name="Huge")
 
 
-@REGISTRY.kernel("Transform")
-def kernel_transform(ctx: StoryContext, *args, **kwargs) -> StoryFragment:
-    """
-    Character or thing transforms.
-    
-    Patterns:
-      - Transform(char, new_form) -- transforming into something
-      - Transform(caterpillar, butterfly) -- transformation
-    """
-    chars = [a for a in args if isinstance(a, Character)]
-    objects = [str(a) for a in args if isinstance(a, str)]
-    
-    if chars:
-        chars[0].Joy += 10
-        new_form = objects[0] if objects else 'something new'
-        return StoryFragment(f"{chars[0].name} transformed into {_to_phrase(new_form)}.")
-    
-    if len(objects) >= 2:
-        return StoryFragment(f"The {objects[0]} transformed into a {objects[1]}.")
-    
-    return StoryFragment("there was a transformation", kernel_name="Transform")
-
-
-@REGISTRY.kernel("Outcome")
-def kernel_outcome(ctx: StoryContext, *args, **kwargs) -> StoryFragment:
-    """
-    The outcome of events.
-    
-    Patterns:
-      - Outcome(result)           -- outcome of situation
-      - outcome=Success           -- successful outcome
-    """
-    chars = [a for a in args if isinstance(a, Character)]
-    objects = [str(a) for a in args if isinstance(a, str)]
-    fragments = [a for a in args if isinstance(a, StoryFragment)]
-    
-    if fragments:
-        result = _to_phrase(fragments[0])
-    elif objects:
-        result = _to_phrase(objects[0])
-    else:
-        result = "everything worked out"
-    
-    if chars:
-        return StoryFragment(f"The outcome for {chars[0].name} was {result}.")
-    
-    return StoryFragment(f"The outcome was {result}.", kernel_name="Outcome")
-
-
 @REGISTRY.kernel("Brother")
 def kernel_brother(ctx: StoryContext, *args, **kwargs) -> StoryFragment:
     """Brother character reference."""
@@ -1834,22 +1621,6 @@ def kernel_sister(ctx: StoryContext, *args, **kwargs) -> StoryFragment:
         return StoryFragment(f"a {description} sister", kernel_name="Sister")
     
     return StoryFragment("a sister", kernel_name="Sister")
-
-
-@REGISTRY.kernel("Daddy")
-def kernel_daddy(ctx: StoryContext, *args, **kwargs) -> StoryFragment:
-    """Daddy character reference (alias for Dad)."""
-    chars = [a for a in args if isinstance(a, Character)]
-    objects = [str(a) for a in args if isinstance(a, str)]
-    
-    if chars:
-        return StoryFragment(f"{chars[0].name} the daddy")
-    
-    if objects:
-        description = ' '.join(objects)
-        return StoryFragment(f"a {description} daddy", kernel_name="Daddy")
-    
-    return StoryFragment("daddy", kernel_name="Daddy")
 
 
 @REGISTRY.kernel("Mother")

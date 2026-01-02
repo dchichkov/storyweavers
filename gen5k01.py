@@ -277,34 +277,6 @@ def kernel_resolution(ctx: StoryContext, *args, **kwargs) -> StoryFragment:
 # SUPPORTING KERNELS (commonly paired with the main ones above)
 # =============================================================================
 
-@REGISTRY.kernel("Warn")
-def kernel_warn_extended(ctx: StoryContext, *args, **kwargs) -> StoryFragment:
-    """Extended Warning kernel with 'to' parameter."""
-    chars = [a for a in args if isinstance(a, Character)]
-    to = kwargs.get('to', None)
-    
-    if chars:
-        warner = chars[0]
-        if to:
-            to_name = to.name if isinstance(to, Character) else str(to)
-            return StoryFragment(f'{warner.name} warned {to_name} to be careful.')
-        return StoryFragment(f'{warner.name} gave a warning.')
-    
-    return StoryFragment("There was a warning.", kernel_name="Warn")
-
-
-@REGISTRY.kernel("Danger")
-def kernel_danger(ctx: StoryContext, *args, **kwargs) -> StoryFragment:
-    """Character is in danger."""
-    chars = [a for a in args if isinstance(a, Character)]
-    
-    if chars:
-        chars[0].Fear += 15
-        return StoryFragment(f"{chars[0].name} was in danger!")
-    
-    return StoryFragment("There was danger!", kernel_name="Danger")
-
-
 @REGISTRY.kernel("RuleFollow")
 def kernel_rule_follow(ctx: StoryContext, *args, **kwargs) -> StoryFragment:
     """Characters agree to follow rules."""
@@ -317,21 +289,6 @@ def kernel_rule_follow(ctx: StoryContext, *args, **kwargs) -> StoryFragment:
         return StoryFragment(f"{chars[0].name} promised to follow the rules.")
     
     return StoryFragment("Everyone agreed to follow the rules.", kernel_name="RuleFollow")
-
-
-@REGISTRY.kernel("Climb")
-def kernel_climb(ctx: StoryContext, *args, **kwargs) -> StoryFragment:
-    """Character climbs something."""
-    chars = [a for a in args if isinstance(a, Character)]
-    objects = [str(a) for a in args if isinstance(a, str)]
-    
-    climber = chars[0] if chars else ctx.current_focus
-    thing = objects[0] if objects else 'up'
-    
-    if climber:
-        return StoryFragment(f"{climber.name} climbed {_to_phrase(thing)}.")
-    
-    return StoryFragment(f"someone climbed {_to_phrase(thing)}", kernel_name="Climb")
 
 
 @REGISTRY.kernel("Fall")
@@ -502,99 +459,6 @@ def kernel_clean(ctx: StoryContext, *args, **kwargs) -> StoryFragment:
     return StoryFragment(f"the {thing} was cleaned", kernel_name="Clean")
 
 
-@REGISTRY.kernel("Build")
-def kernel_build(ctx: StoryContext, *args, **kwargs) -> StoryFragment:
-    """
-    Character builds something.
-    
-    Patterns:
-      - Build(tower)               -- build a tower
-      - Build(Grace, material=cake)-- character builds with materials
-    """
-    chars = [a for a in args if isinstance(a, Character)]
-    objects = [str(a) for a in args if isinstance(a, str)]
-    material = kwargs.get('material', '')
-    
-    builder = chars[0] if chars else ctx.current_focus
-    thing = objects[0] if objects else (material if material else 'something')
-    
-    if builder:
-        builder.Joy += 5  # Building is satisfying
-        if material and thing != material:
-            return StoryFragment(f"{builder.name} built a {thing} out of {material}.")
-        return StoryFragment(f"{builder.name} built a {thing}.")
-    
-    return StoryFragment(f"a {thing} was built", kernel_name="Build")
-
-
-@REGISTRY.kernel("Dance")
-def kernel_dance(ctx: StoryContext, *args, **kwargs) -> StoryFragment:
-    """
-    Character dances.
-    
-    Patterns:
-      - Dance(Tim)       -- character dancing
-      - Dance(rock)      -- dancing on/with something
-      - Dance + Laughter -- as part of celebration
-    """
-    chars = [a for a in args if isinstance(a, Character)]
-    objects = [str(a) for a in args if isinstance(a, str)]
-    
-    dancer = chars[0] if chars else ctx.current_focus
-    
-    if dancer:
-        dancer.Joy += 8
-        if len(chars) >= 2:
-            names = NLGUtils.join_list([c.name for c in chars])
-            return StoryFragment(f"{names} danced together.")
-        if objects:
-            return StoryFragment(f"{dancer.name} danced around the {objects[0]}.")
-        return StoryFragment(f"{dancer.name} danced happily.")
-    
-    if objects:
-        return StoryFragment(f"there was dancing around the {objects[0]}", kernel_name="Dance")
-    return StoryFragment("there was dancing", kernel_name="Dance")
-
-
-@REGISTRY.kernel("Swim")
-def kernel_swim(ctx: StoryContext, *args, **kwargs) -> StoryFragment:
-    """
-    Character swims.
-    
-    Patterns:
-      - Swim(Tim, Dad, water)  -- swimming with someone
-      - Swim(fish)             -- thing swimming
-    """
-    chars = [a for a in args if isinstance(a, Character)]
-    objects = [str(a) for a in args if isinstance(a, str)]
-    
-    if chars:
-        chars[0].Joy += 5
-        if len(chars) >= 2:
-            names = NLGUtils.join_list([c.name for c in chars])
-            return StoryFragment(f"{names} went swimming together.")
-        return StoryFragment(f"{chars[0].name} went swimming.")
-    
-    if objects:
-        return StoryFragment(f"the {objects[0]} swam", kernel_name="Swim")
-    return StoryFragment("there was swimming", kernel_name="Swim")
-
-
-@REGISTRY.kernel("Sing")
-def kernel_sing(ctx: StoryContext, *args, **kwargs) -> StoryFragment:
-    """Character sings."""
-    chars = [a for a in args if isinstance(a, Character)]
-    
-    if chars:
-        chars[0].Joy += 5
-        if len(chars) >= 2:
-            names = NLGUtils.join_list([c.name for c in chars])
-            return StoryFragment(f"{names} sang a song together.")
-        return StoryFragment(f"{chars[0].name} sang a happy song.")
-    
-    return StoryFragment("there was singing", kernel_name="Sing")
-
-
 @REGISTRY.kernel("Jump")
 def kernel_jump(ctx: StoryContext, *args, **kwargs) -> StoryFragment:
     """Character jumps."""
@@ -727,55 +591,6 @@ def kernel_teach(ctx: StoryContext, *args, **kwargs) -> StoryFragment:
         return StoryFragment(f"{chars[0].name} learned something new.")
     
     return StoryFragment("There was teaching and learning.", kernel_name="Teach")
-
-
-@REGISTRY.kernel("Success")
-def kernel_success(ctx: StoryContext, *args, **kwargs) -> StoryFragment:
-    """Character succeeds."""
-    chars = [a for a in args if isinstance(a, Character)]
-    objects = [str(a) for a in args if isinstance(a, str)]
-    
-    if chars:
-        chars[0].Joy += 15
-        if objects:
-            return StoryFragment(f"{chars[0].name} succeeded in {_to_phrase(objects[0])}!")
-        return StoryFragment(f"{chars[0].name} did it!")
-    
-    if objects:
-        return StoryFragment(f"There was success with {_to_phrase(objects[0])}!")
-    return StoryFragment("It was a success!", kernel_name="Success")
-
-
-@REGISTRY.kernel("Failure")
-def kernel_failure(ctx: StoryContext, *args, **kwargs) -> StoryFragment:
-    """Character fails at something."""
-    chars = [a for a in args if isinstance(a, Character)]
-    objects = [str(a) for a in args if isinstance(a, str)]
-    
-    if chars:
-        chars[0].Sadness += 10
-        if objects:
-            return StoryFragment(f"{chars[0].name} tried to {_to_phrase(objects[0])} but it didn't work.")
-        return StoryFragment(f"{chars[0].name} tried but it didn't work.")
-    
-    if objects:
-        return StoryFragment(f"The attempt to {_to_phrase(objects[0])} failed.")
-    return StoryFragment("It didn't work.", kernel_name="Failure")
-
-
-@REGISTRY.kernel("Encourage")
-def kernel_encourage(ctx: StoryContext, *args, **kwargs) -> StoryFragment:
-    """Character encourages another."""
-    chars = [a for a in args if isinstance(a, Character)]
-    
-    if len(chars) >= 2:
-        chars[1].Joy += 5
-        chars[1].Fear -= 5
-        return StoryFragment(f"{chars[0].name} encouraged {chars[1].name} to keep trying.")
-    elif chars:
-        return StoryFragment(f"{chars[0].name} was encouraged.")
-    
-    return StoryFragment("There was encouragement.", kernel_name="Encourage")
 
 
 @REGISTRY.kernel("Cooperate")
@@ -1009,21 +824,6 @@ def kernel_fix(ctx: StoryContext, *args, **kwargs) -> StoryFragment:
         return StoryFragment(f"{fixer.name} fixed the {thing}.")
     
     return StoryFragment(f"the {thing} was fixed", kernel_name="Fix")
-
-
-@REGISTRY.kernel("Break")
-def kernel_break(ctx: StoryContext, *args, **kwargs) -> StoryFragment:
-    """Something breaks."""
-    chars = [a for a in args if isinstance(a, Character)]
-    objects = [str(a) for a in args if isinstance(a, str)]
-    
-    thing = objects[0] if objects else 'it'
-    
-    if chars:
-        chars[0].Sadness += 5
-        return StoryFragment(f"Oh no! {chars[0].name} broke the {thing}.")
-    
-    return StoryFragment(f"The {thing} broke.", kernel_name="Break")
 
 
 @REGISTRY.kernel("Show")

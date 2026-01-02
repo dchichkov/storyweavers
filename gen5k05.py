@@ -474,34 +474,6 @@ def kernel_contrast(ctx: StoryContext, *args, **kwargs) -> StoryFragment:
 # EMOTIONAL/STATE KERNELS
 # =============================================================================
 
-@REGISTRY.kernel("Comfort")
-def kernel_comfort(ctx: StoryContext, *args, **kwargs) -> StoryFragment:
-    """
-    Being comforted or comforting someone.
-    
-    Patterns from dataset:
-      - Comfort(Lily, Hug(teddy)+Bed)  -- Lily comforted with teddy and bed
-      - Comfort(Grace, Mum)            -- Mum comforts Grace
-    """
-    chars = [a for a in args if isinstance(a, Character)]
-    objects = [str(a) for a in args if isinstance(a, str)]
-    
-    if len(chars) >= 2:
-        # Comfort(comforted, comforter)
-        comforted = chars[0]
-        comforter = chars[1]
-        comforted.Joy += 8
-        comforted.Sadness -= 5
-        comforter.Love += 5
-        return StoryFragment(f'{comforter.name} comforted {comforted.name}.')
-    elif chars:
-        chars[0].Joy += 8
-        chars[0].Sadness -= 5
-        return StoryFragment(f'{chars[0].name} was comforted.')
-    
-    return StoryFragment("comfort", kernel_name="Comfort")
-
-
 @REGISTRY.kernel("Acceptance")
 def kernel_acceptance(ctx: StoryContext, *args, **kwargs) -> StoryFragment:
     """
@@ -648,17 +620,6 @@ def kernel_joyful(ctx: StoryContext, *args, **kwargs) -> StoryFragment:
 def kernel_authority(ctx: StoryContext, *args, **kwargs) -> StoryFragment:
     """Authority character trait."""
     return StoryFragment("authority", kernel_name="Authority")
-
-
-@REGISTRY.kernel("Loneliness")
-def kernel_loneliness(ctx: StoryContext, *args, **kwargs) -> StoryFragment:
-    """Loneliness emotion."""
-    chars = [a for a in args if isinstance(a, Character)]
-    if chars:
-        chars[0].Sadness += 8
-        chars[0].Joy -= 5
-        return StoryFragment(f'{chars[0].name} felt lonely.')
-    return StoryFragment("loneliness", kernel_name="Loneliness")
 
 
 @REGISTRY.kernel("Family")
@@ -1052,15 +1013,6 @@ def kernel_lazy(ctx: StoryContext, *args, **kwargs) -> StoryFragment:
     return StoryFragment("lazy", kernel_name="Lazy")
 
 
-@REGISTRY.kernel("Sleepy")
-def kernel_sleepy(ctx: StoryContext, *args, **kwargs) -> StoryFragment:
-    """Sleepy state."""
-    chars = [a for a in args if isinstance(a, Character)]
-    if chars:
-        chars[0].Joy -= 2
-    return StoryFragment("sleepy", kernel_name="Sleepy")
-
-
 @REGISTRY.kernel("Gain")
 def kernel_gain(ctx: StoryContext, *args, **kwargs) -> StoryFragment:
     """
@@ -1296,27 +1248,6 @@ def kernel_death(ctx: StoryContext, *args, **kwargs) -> StoryFragment:
     return StoryFragment("death", kernel_name="Death")
 
 
-@REGISTRY.kernel("Illness")
-def kernel_illness(ctx: StoryContext, *args, **kwargs) -> StoryFragment:
-    """
-    Illness state.
-    
-    Patterns from dataset:
-      - Illness(Ratty)
-    """
-    chars = [a for a in args if isinstance(a, Character)]
-    objects = [str(a) for a in args if isinstance(a, str)]
-    
-    if chars:
-        chars[0].Sadness += 8
-        chars[0].Joy -= 5
-        return StoryFragment(f'{chars[0].name} became ill.')
-    elif objects:
-        return StoryFragment(f'{objects[0]} was sick.')
-    
-    return StoryFragment("illness", kernel_name="Illness")
-
-
 @REGISTRY.kernel("Place")
 def kernel_place(ctx: StoryContext, *args, **kwargs) -> StoryFragment:
     """
@@ -1376,19 +1307,6 @@ def kernel_add(ctx: StoryContext, *args, **kwargs) -> StoryFragment:
         return StoryFragment(f'added {objects[0]}')
     
     return StoryFragment("add", kernel_name="Add")
-
-
-@REGISTRY.kernel("Broken")
-def kernel_broken(ctx: StoryContext, *args, **kwargs) -> StoryFragment:
-    """
-    Something broken.
-    """
-    objects = [str(a) for a in args if isinstance(a, str)]
-    
-    if objects:
-        return StoryFragment(f'the {objects[0]} was broken.')
-    
-    return StoryFragment("broken", kernel_name="Broken")
 
 
 @REGISTRY.kernel("Exam")

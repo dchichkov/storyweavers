@@ -1162,28 +1162,6 @@ def kernel_count(ctx: StoryContext, *args, **kwargs) -> StoryFragment:
     return StoryFragment("counted", kernel_name="Count")
 
 
-@REGISTRY.kernel("Pick")
-def kernel_pick(ctx: StoryContext, *args, **kwargs) -> StoryFragment:
-    """
-    Picking or selecting.
-    
-    Patterns from dataset:
-      - Pick(Oranges)
-      - Pick(Oranges) + Taste(Oranges)
-    """
-    chars = [a for a in args if isinstance(a, Character)]
-    objects = [str(a) for a in args if isinstance(a, str)]
-    
-    if chars:
-        if objects:
-            return StoryFragment(f'{chars[0].name} picked the {objects[0]}.')
-        return StoryFragment(f'{chars[0].name} picked something.')
-    if objects:
-        return StoryFragment(f"picked the {objects[0]}", kernel_name="Pick")
-    
-    return StoryFragment("picked", kernel_name="Pick")
-
-
 @REGISTRY.kernel("Taste")
 def kernel_taste(ctx: StoryContext, *args, **kwargs) -> StoryFragment:
     """
@@ -1626,23 +1604,6 @@ def kernel_gluttony(ctx: StoryContext, *args, **kwargs) -> StoryFragment:
         return StoryFragment(f'{chars[0].name} ate too much.')
     
     return StoryFragment("gluttony", kernel_name="Gluttony")
-
-
-@REGISTRY.kernel("Pride")
-def kernel_pride(ctx: StoryContext, *args, **kwargs) -> StoryFragment:
-    """
-    Feeling proud.
-    
-    Patterns from dataset:
-      - Pride(Tom)
-    """
-    chars = [a for a in args if isinstance(a, Character)]
-    
-    if chars:
-        chars[0].Joy += 5
-        return StoryFragment(f'{chars[0].name} felt proud.')
-    
-    return StoryFragment("pride", kernel_name="Pride")
 
 
 @REGISTRY.kernel("Effort")
