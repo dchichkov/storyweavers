@@ -111,7 +111,7 @@ def main():
             ast.parse(kernel)
             characters = extract_character_names(kernel)
             covered, total = count_coverage(kernel, implemented, characters)
-            if total >= 5 and covered / total >= 0.6:
+            if total >= 5 and covered / total >= 0.9:
                 high_coverage_count += 1
         except:
             pass
@@ -136,7 +136,7 @@ def main():
     print()
     print(f"📈 COVERAGE:")
     print(f"   Kernel usages covered: {covered_usages:,} / {total_usages:,} ({100*covered_usages/total_usages:.1f}%)")
-    print(f"   Stories with 60%+ coverage: {high_coverage_count:,}")
+    print(f"   Stories with 90%+ coverage: {high_coverage_count:,}")
     print()
     
     if args.implemented or not args.missing:
@@ -144,10 +144,13 @@ def main():
         print(f"✅ TOP {args.top} IMPLEMENTED KERNELS (by usage)")
         print("=" * 70)
         count = 0
-        for name, usage in all_kernels.most_common(100):
-            if name in implemented and count < args.top:
+        for name, usage in all_kernels.most_common():
+            if name in implemented:
                 print(f"   {name:25s} {usage:,}")
                 count += 1
+
+                if count >= args.top:
+                    break
         print()
     
     if args.missing or not args.implemented:
@@ -155,10 +158,12 @@ def main():
         print(f"❌ TOP {args.top} MISSING KERNELS (by usage)")
         print("=" * 70)
         count = 0
-        for name, usage in all_kernels.most_common(200):
-            if name not in implemented and count < args.top:
+        for name, usage in all_kernels.most_common():
+            if name not in implemented:
                 print(f"   {name:25s} {usage:,}")
                 count += 1
+                if count >= args.top:
+                    break
         print()
     
     print("=" * 70)
