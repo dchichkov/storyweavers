@@ -20,8 +20,11 @@ Storyweavers uses **story kernels** - symbolic representations of narrative patt
 ### Step 1: Identify Missing Kernels
 
 ```bash
-# List common missing kernels
+# List common missing kernels (excludes character names by default)
 python sample.py -l
+
+# Include character names in the list
+python sample.py -l --include-characters
 
 # Explore a random missing kernel
 python sample.py -e
@@ -29,6 +32,8 @@ python sample.py -e
 # Look for a specific kernel
 python sample.py -k KernelName
 ```
+
+**Note:** Character names (like Tim, Lily, Mom) are automatically detected using AST parsing of `Name(Character, ...)` patterns and excluded from the missing kernels list by default. Use `--include-characters` flag to see them.
 
 ### Step 2: Sample Real Usage Examples
 
@@ -178,34 +183,39 @@ Example output:
    Parseable kernels: 80,766 (80.8%)
 
 🔧 IMPLEMENTATION:
-   Implemented kernels: 101
-   Unique kernel names in dataset: 20,523
+   Implemented kernels: 584
+   Unique kernel names in dataset: 16,213
+   Characters detected (excluded): 4,310
 
 📈 COVERAGE:
-   Kernel usages covered: 400,310 / 1,113,331 (36.0%)
-   Stories with 60%+ coverage: 4,670
+   Kernel usages covered: 598,084 / 791,805 (75.5%)
+   Stories with 60%+ coverage: 63,299
 ```
 
 ## Current Coverage
 
-- **101 kernels** implemented
-- **36% coverage** of kernel usages in dataset
-- **~4,700 stories** have 60%+ kernel coverage
+- **584 kernels** implemented
+- **75.5% coverage** of kernel usages in dataset (excluding character names)
+- **~63,300 stories** have 60%+ kernel coverage
+- **4,310 character names** automatically detected and excluded from coverage calculations
 
 ### Top Missing Kernels to Implement
 
 | Kernel | Usages | Notes |
 |--------|--------|-------|
-| Gratitude | 6,024 | Expressing thanks |
-| Request | 5,211 | Asking for something |
-| Insight | 5,028 | Gaining understanding |
-| Gift | 4,811 | Giving presents |
-| Attempt | 4,670 | Trying to do something |
-| Promise | 4,208 | Making commitments |
-| Observe | 4,080 | Watching/noticing |
-| Warning | 4,028 | Giving warnings |
+| Anger | 978 | Feeling or expressing anger |
+| Seek | 956 | Looking for something |
+| Buy | 909 | Purchasing items |
+| Release | 897 | Letting go or freeing |
+| Continue | 896 | Continuing an action |
+| Healing | 888 | Recovery process |
+| Explanation | 848 | Explaining something |
+| Drink | 836 | Drinking beverages |
+| Look | 821 | Looking at something |
+| Wash | 820 | Washing/cleaning |
 
-Note: Many "missing" kernels like `Lily`, `Mom`, `Tim` are character names handled by the `Character` kernel.
+**Note:** Coverage detection now automatically identifies character names (e.g., `Lily(Character, ...)`) and excludes them from kernel counts, showing only genuine narrative patterns that need implementation.
+
 
 ## Example Session
 

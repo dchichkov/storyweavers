@@ -18,6 +18,7 @@ import json
 import random
 import argparse
 import ast
+import re
 from pathlib import Path
 
 # Import gen5 registry (auto-loads all kernel packs)
@@ -74,58 +75,73 @@ def find_stories_with_kernel(file_path: str, kernel_name: str, limit: int = 100)
     return matches
 
 
-def collect_missing_kernels(file_path: str, sample_size: int = 500) -> dict:
-    """Scan stories and collect missing kernel frequencies."""
+def collect_missing_kernels(file_path: str, sample_size: int = 500, include_characters: bool = False) -> tuple:
+    """
+    Scan stories and collect missing kernel frequencies.
+    Returns (missing_counts, character_names_set)
+    
+    Args:
+        file_path: Path to the kernels JSONL file
+        sample_size: Number of stories to sample
+        include_characters: If True, include character names in missing_counts
+    """
     from collections import Counter
     
     missing_counts = Counter()
+    all_character_names = set()
     records = load_jsonl(file_path, limit=sample_size)
     
+    # First pass: collect all character names
+    for record in records:
+        kernel = record.get('kernel', '')
+        all_character_names.update(extract_character_names_from_kernel(kernel))
+    
+    # Second pass: collect missing kernels
     for record in records:
         kernel = record.get('kernel', '')
         _, missing = check_kernel_coverage(kernel)
-        # Filter out likely character names (single capitalized words that appear as first arg)
         for m in missing:
-            missing_counts[m] += 1
+            # Optionally exclude character names
+            if include_characters or m not in all_character_names:
+                missing_counts[m] += 1
     
-    return missing_counts
+    return missing_counts, all_character_names
 
 
-def is_likely_kernel_not_name(kernel_name: str, records: list) -> bool:
-    """Heuristic: check if this is likely a kernel (action/pattern) vs a character name."""
-    # Common kernel patterns (verbs, patterns)
-    kernel_patterns = [
-        'Search', 'Find', 'Play', 'Run', 'Walk', 'Jump', 'Fly', 'Swim',
-        'Help', 'Share', 'Give', 'Take', 'Make', 'Build', 'Create',
-        'Learn', 'Teach', 'Show', 'Tell', 'Ask', 'Answer',
-        'Love', 'Like', 'Want', 'Need', 'Feel', 'Think',
-        'Happy', 'Sad', 'Angry', 'Scared', 'Surprised',
-        'Quest', 'Journey', 'Adventure', 'Mission',
-        'Conflict', 'Fight', 'Battle', 'Challenge',
-        'Loss', 'Win', 'Fail', 'Success',
-        'Start', 'End', 'Begin', 'Finish',
-        'Attempt', 'Try', 'Effort',
-    ]
+def extract_character_names_from_kernel(kernel_str: str) -> set:
+    """
+    Use AST to extract character names from kernel definition.
+    Looks for patterns like: Name(Character, ...) 
+    """
+    if not kernel_str:
+        return set()
     
-    # If it matches common patterns, likely a kernel
-    for pattern in kernel_patterns:
-        if pattern.lower() in kernel_name.lower():
-            return True
+    try:
+        tree = ast.parse(kernel_str)
+    except:
+        return set()
     
-    # Check usage patterns in records
-    call_count = 0
-    ref_count = 0
-    for record in records[:20]:
-        kernel = record.get('kernel', '')
-        # Count as call if followed by (
-        if f'{kernel_name}(' in kernel:
-            call_count += 1
-        # Count as reference if appears without (
-        elif kernel_name in kernel:
-            ref_count += 1
+    character_names = set()
     
-    # If mostly used as function calls, likely a kernel
-    return call_count > ref_count
+    class CharacterVisitor(ast.NodeVisitor):
+        def visit_Call(self, node):
+            # Check if this is a call like Name(Character, ...)
+            if isinstance(node.func, ast.Name):
+                func_name = node.func.id
+                # Check if first argument is 'Character'
+                if node.args and isinstance(node.args[0], ast.Name):
+                    if node.args[0].id == 'Character':
+                        character_names.add(func_name)
+            self.generic_visit(node)
+    
+    visitor = CharacterVisitor()
+    visitor.visit(tree)
+    return character_names
+
+
+def is_character_name(kernel_name: str, character_names: set) -> bool:
+    """Check if a kernel name is actually a character name."""
+    return kernel_name in character_names
 
 
 def check_kernel_syntax(kernel: str) -> tuple:
@@ -236,6 +252,8 @@ def main():
                         help='Pick a random missing kernel and sample stories using it')
     parser.add_argument('--list-missing', '-l', action='store_true',
                         help='List most common missing kernels')
+    parser.add_argument('--include-characters', '-c', action='store_true',
+                        help='Include character names in missing kernels list (default: exclude)')
     
     args = parser.parse_args()
     
@@ -255,36 +273,41 @@ def main():
     # Mode: List missing kernels
     if args.list_missing:
         print(f"Scanning {file_path} for missing kernels...")
-        missing_counts = collect_missing_kernels(str(file_path), sample_size=1000)
+        missing_counts, character_names = collect_missing_kernels(
+            str(file_path), 
+            sample_size=1000,
+            include_characters=args.include_characters
+        )
         
         print(f"\n{'='*70}")
         print("MOST COMMON MISSING KERNELS")
         print('='*70)
-        print(f"{'Kernel':<30} {'Count':<10} {'Likely Type'}")
+        print(f"{'Kernel':<30} {'Count':<10} {'Type'}")
         print('-'*70)
         
-        # Get sample records for heuristic
-        sample_records = load_jsonl(str(file_path), limit=100)
-        
         for kernel_name, count in missing_counts.most_common(30):
-            likely_kernel = is_likely_kernel_not_name(kernel_name, sample_records)
-            type_str = "🔧 kernel" if likely_kernel else "👤 name/trait"
+            # Show whether it's a character or kernel
+            if kernel_name in character_names:
+                type_str = "👤 character"
+            else:
+                type_str = "🔧 kernel"
             print(f"{kernel_name:<30} {count:<10} {type_str}")
+        
+        if not args.include_characters and character_names:
+            print(f"\n({len(character_names)} character names excluded from this list)")
+            print(f"Use --include-characters to see character names")
         
         return 0
     
     # Mode: Explore a random missing kernel
     if args.explore_missing:
         print(f"Scanning {file_path} for missing kernels...")
-        missing_counts = collect_missing_kernels(str(file_path), sample_size=500)
+        missing_counts, character_names = collect_missing_kernels(str(file_path), sample_size=500)
         
-        # Get sample records for heuristic
-        sample_records = load_jsonl(str(file_path), limit=100)
-        
-        # Filter to likely kernels (not character names)
+        # Filter to kernels with at least 3 occurrences
         likely_kernels = [
             (k, c) for k, c in missing_counts.most_common(50)
-            if is_likely_kernel_not_name(k, sample_records) and c >= 3
+            if c >= 3
         ]
         
         if not likely_kernels:

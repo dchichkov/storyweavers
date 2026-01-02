@@ -27,11 +27,22 @@ def load_registry():
     return REGISTRY
 
 
-def count_coverage(kernel: str, implemented: set) -> tuple[int, int]:
+def extract_character_names(kernel: str) -> set:
+    """Extract character names from kernel by looking for Name(Character, ...) pattern."""
+    if not kernel:
+        return set()
+    # Look for patterns like: Lily(Character, ...) or Mom(Character, ...)
+    return set(re.findall(r'\b([A-Z][a-zA-Z]+)\s*\(\s*Character\b', kernel))
+
+
+def count_coverage(kernel: str, implemented: set, characters: set = None) -> tuple[int, int]:
     """Count how many kernels in a kernel string are implemented."""
     if not kernel:
         return 0, 0
     names = set(re.findall(r'\b([A-Z][a-zA-Z]+)\s*\(', kernel))
+    # Exclude character names from counting
+    if characters:
+        names = names - characters
     covered = len(names & implemented)
     return covered, len(names)
 
@@ -72,11 +83,21 @@ def main():
     
     # Extract all kernel names used in the dataset
     all_kernels = Counter()
+    all_characters = set()
+    
     for story in stories:
         kernel = story.get('kernel', '')
         if kernel:
+            # Extract character names
+            all_characters.update(extract_character_names(kernel))
+            # Extract all kernel names
             names = re.findall(r'\b([A-Z][a-zA-Z]+)\s*\(', kernel)
             all_kernels.update(names)
+    
+    # Remove character names from kernel counts
+    for char_name in all_characters:
+        if char_name in all_kernels:
+            del all_kernels[char_name]
     
     # Calculate coverage
     covered_usages = sum(count for name, count in all_kernels.items() if name in implemented)
@@ -88,7 +109,8 @@ def main():
         kernel = s.get('kernel', '')
         try:
             ast.parse(kernel)
-            covered, total = count_coverage(kernel, implemented)
+            characters = extract_character_names(kernel)
+            covered, total = count_coverage(kernel, implemented, characters)
             if total >= 5 and covered / total >= 0.6:
                 high_coverage_count += 1
         except:
@@ -96,7 +118,7 @@ def main():
     
     # Output
     if args.brief:
-        print(f"Kernels: {len(implemented)} | Coverage: {100*covered_usages/total_usages:.1f}% | High-coverage stories: {high_coverage_count}")
+        print(f"Kernels: {len(implemented)} | Coverage: {100*covered_usages/total_usages:.1f}% | High-coverage stories: {high_coverage_count} | Characters detected: {len(all_characters)}")
         return 0
     
     print("=" * 70)
@@ -110,6 +132,7 @@ def main():
     print(f"🔧 IMPLEMENTATION:")
     print(f"   Implemented kernels: {len(implemented)}")
     print(f"   Unique kernel names in dataset: {len(all_kernels):,}")
+    print(f"   Characters detected (excluded): {len(all_characters)}")
     print()
     print(f"📈 COVERAGE:")
     print(f"   Kernel usages covered: {covered_usages:,} / {total_usages:,} ({100*covered_usages/total_usages:.1f}%)")
@@ -134,11 +157,7 @@ def main():
         count = 0
         for name, usage in all_kernels.most_common(200):
             if name not in implemented and count < args.top:
-                # Mark likely character names
-                marker = "  (name?)" if name in {'Lily', 'Tim', 'Mom', 'Timmy', 'Tom', 'Max', 
-                                                   'Mommy', 'Dad', 'Ben', 'Sam', 'Sue', 'Anna',
-                                                   'Lucy', 'Jack', 'Mia', 'Emma', 'Bella'} else ""
-                print(f"   {name:25s} {usage:,}{marker}")
+                print(f"   {name:25s} {usage:,}")
                 count += 1
         print()
     
