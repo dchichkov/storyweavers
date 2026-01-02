@@ -15,7 +15,7 @@ Storyweavers uses **story kernels** - symbolic representations of narrative patt
 3. **Understand the pattern** - Each kernel is a decorated function that takes `StoryContext` and returns `StoryFragment`
 
 
-## Workflow: Sample → Study → Implement → Test
+## Workflow: Sample → Study → Implement → Test → Compare & Improve
 
 ### Step 1: Identify Missing Kernels
 
@@ -122,6 +122,27 @@ python -c "from gen5registry import REGISTRY; print(len(REGISTRY.kernels))"
 
 **Note:** Always use `sample.py` and `coverage.py` for checking coverage - don't write custom scripts that import `gen5` directly, as they won't see all kernel packs.
 
+### Step 6: Compare & Improve Narrative Quality
+
+```bash
+# Compare generated vs original stories with kernel source code
+python sample.py -k NewKernel -n 3 --seed 42 --show-source
+```
+
+The `--show-source` (or `-s`) flag shows:
+- **📖 ORIGINAL**: The actual story from TinyStories dataset
+- **🤖 GENERATED**: Your kernel's output
+- **🔧 KERNEL IMPLEMENTATIONS**: Source code with file:line numbers (e.g., `gen5k07.py:134`)
+
+**Iteration Process:**
+
+1. Generate with kernel: `python sample.py -k YourKernel -n 5 -s`
+2. Compare original vs generated stories
+3. Identify narrative weaknesses (see checklist above)
+4. Update kernel implementation in `gen5kXX.py`
+5. Test again: `python gen5kXX.py && python sample.py -k YourKernel -n 5`
+6. Repeat until narrative quality matches or exceeds original stories
+
 ## Key Files
 
 | File | Purpose | Modify? |
@@ -224,7 +245,7 @@ Example output:
 $ python sample.py -l | head -20
 
 # 2. Sample a specific kernel
-$ python sample.py -k Gratitude -n 3
+$ python sample.py -k Gratitude -n 3 --seed 42
 
 # Output shows patterns like:
 #   Gratitude(Lily)
@@ -249,6 +270,15 @@ def kernel_gratitude(ctx: StoryContext, *args, **kwargs) -> StoryFragment:
 # 4. Test
 $ python gen5k01.py
 $ python sample.py -k Gratitude -n 2
+
+# 5. Compare narrative quality with original stories
+$ python sample.py -k Gratitude -n 3 --seed 42 --show-source
+
+# Check original vs generated - if narrative is weak, improve the kernel
+# Look at the source code shown (with file:line) and iterate
+
+# 6. Final verification
+$ python sample.py -k Gratitude -n 5
 ```
 
 ## Philosophy
@@ -256,6 +286,8 @@ $ python sample.py -k Gratitude -n 2
 - **Use gen5registry, not gen5** - Always import from `gen5registry` to see all kernels
 - **Use sample.py and coverage.py** - Don't write custom scripts; the tools handle imports correctly
 - **Sample before implementing** - Understand real usage patterns
+- **Compare before finishing** - Use `--show-source` to compare generated vs original stories
+- **Iterate on narrative quality** - Good kernels produce natural, engaging prose
 - **Keep gen5.py clean** - It's the reference implementation
 - **Test with real data** - Use sample.py to verify
 - **No LLMs at runtime** - All generation is classical execution
