@@ -196,7 +196,23 @@ Use these from gen5.py:
 - `_to_phrase(arg)` - Convert argument to readable phrase
 - `_state_to_phrase(state)` - Convert state to phrase
 - `_action_to_phrase(action)` - Convert action to phrase
+- `_get_default_actor(ctx, chars)` - Get default character (protagonist heuristic)
 - `NLGUtils.join_list(names)` - Join list with "and"
+
+### Context Tracking
+`StoryContext` provides lightweight state tracking:
+- `ctx.current_focus` - Current character focus (set by Character definitions)
+- `ctx.current_object` - Last mentioned object (set by action kernels like Drop)
+
+Action kernels should set `ctx.current_object` when operating on objects. This enables context inheritance for composed kernels (e.g., `Drop(duck) + Obscure(bubbles)` lets Obscure know the duck is what got obscured).
+
+### Handling Ambiguous Kernels
+Some kernels have ambiguous argument patterns in the dataset. Use heuristics to resolve:
+- **Domain knowledge**: Maintain lists of common patterns (e.g., `Obscure`: fog/smoke/bubbles are agents; vision/view are targets)
+- **Context fallback**: Use `ctx.current_object` when subject is implicit
+- **Multiple signatures**: Support both explicit (`Obscure(duck, by=bubbles)`) and implicit (`Obscure(bubbles)` after `Drop(duck)`) patterns
+
+**Example:** See `kernel_obscure` in `gen5k08.py` for pattern detection and context resolution.
 
 ## Checking Coverage
 

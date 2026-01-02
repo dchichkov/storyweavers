@@ -719,7 +719,11 @@ def kernel_drop(ctx: StoryContext, *args, **kwargs) -> StoryFragment:
     objects = [str(a) for a in args if isinstance(a, str)]
     
     dropper = _get_default_actor(ctx, chars)
-    thing = objects[0] if objects else 'it'
+    thing = objects[0] if objects else kwargs.get('object', 'it')
+    
+    # Track the object for context (e.g., for Obscure to use)
+    if thing != 'it':
+        ctx.current_object = thing
     
     if dropper:
         return StoryFragment(f"{dropper.name} dropped the {thing}.")

@@ -173,6 +173,7 @@ class StoryContext:
     fragments: List[StoryFragment] = field(default_factory=list)
     variables: Dict[str, Any] = field(default_factory=dict)
     current_focus: Optional[Character] = None
+    current_object: Optional[str] = None  # Track last mentioned object for context
     
     def add_character(self, name: str, char_type: str, traits: List[str]) -> Character:
         char = Character(name, char_type, traits)

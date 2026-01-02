@@ -418,6 +418,90 @@ def kernel_look(ctx: StoryContext, *args, **kwargs) -> StoryFragment:
     return StoryFragment("looking", kernel_name="Look")
 
 
+@REGISTRY.kernel("Obscure")
+def kernel_obscure(ctx: StoryContext, *args, **kwargs) -> StoryFragment:
+    """
+    Something obscures something else (fog, smoke, bubbles, etc.)
+    
+    Patterns from dataset:
+      - Obscure(vision)              -- vision is obscured (most common: 8x)
+      - Obscure(Fog)                 -- fog obscures (3x)
+      - Obscure(Cat)                 -- cat is obscured
+      - Obscure(bubbles)             -- ambiguous: bubbles obscure or are obscured?
+      - Obscure(clouds, by=Fog)      -- clouds obscured by fog
+      - Obscure(sun, smoke)          -- sun obscured by smoke
+      - Obscure                      -- general obscurity state
+    
+    Strategy: Use heuristics to figure out what's obscured vs what obscures
+    """
+    chars = [a for a in args if isinstance(a, Character)]
+    objects = [str(a) for a in args if not isinstance(a, Character)]
+    
+    by_agent = kwargs.get('by', kwargs.get('agent', None))
+    effect = kwargs.get('effect', None)
+    
+    # Obscuring agents (things that typically obscure other things)
+    obscuring_agents = {
+        'fog', 'mist', 'smoke', 'cloud', 'clouds', 'bubbles', 'dust',
+        'darkness', 'night', 'shadow', 'veil', 'breath'
+    }
+    
+    # Things typically obscured
+    obscured_targets = {
+        'vision', 'view', 'sight', 'visibility', 'path', 'sun', 'moon',
+        'light', 'star', 'stars', 'face', 'ground', 'feet'
+    }
+    
+    # Pattern 1: Obscure(target, by=agent)
+    if objects and by_agent:
+        target = _to_phrase(objects[0])
+        agent = _to_phrase(by_agent)
+        return StoryFragment(f"the {target} was obscured by {agent}", kernel_name="Obscure")
+    
+    # Pattern 2: Obscure(agent, target) - two args
+    if len(objects) >= 2:
+        first = objects[0].lower()
+        second = objects[1].lower()
+        
+        # Check which is likely the agent
+        if first in obscuring_agents:
+            return StoryFragment(f"the {second} was obscured by {first}", kernel_name="Obscure")
+        else:
+            return StoryFragment(f"the {first} was obscured by {second}", kernel_name="Obscure")
+    
+    # Pattern 3: Single argument - need to infer
+    if objects:
+        thing = objects[0]
+        thing_lower = thing.lower()
+        
+        # If it's a known obscuring agent (Fog, Smoke, etc.)
+        if thing_lower in obscuring_agents:
+            # Check context for what might be obscured
+            if ctx.current_object:
+                return StoryFragment(f"the {ctx.current_object} was obscured by {thing_lower}", kernel_name="Obscure")
+            # Default: it obscures vision
+            return StoryFragment(f"{thing_lower} obscured the view", kernel_name="Obscure")
+        
+        # If it's a known obscured target (vision, view, etc.)
+        if thing_lower in obscured_targets:
+            return StoryFragment(f"the {thing_lower} was obscured", kernel_name="Obscure")
+        
+        # Unknown - assume it's what gets obscured (more common pattern)
+        target = _to_phrase(thing)
+        return StoryFragment(f"the {target} was obscured", kernel_name="Obscure")
+    
+    # Pattern 4: Character gets obscured
+    if chars:
+        char = chars[0]
+        char.Fear += 5
+        if by_agent:
+            return StoryFragment(f"{char.name} was obscured by {_to_phrase(by_agent)}.")
+        return StoryFragment(f"{char.name} was obscured from view.")
+    
+    # Pattern 5: No arguments - general obscurity state
+    return StoryFragment("things became hard to see", kernel_name="Obscure")
+
+
 # =============================================================================
 # TEST THE KERNELS
 # =============================================================================
