@@ -445,11 +445,39 @@ class KernelRegistry:
         self.kernels: Dict[str, Callable] = {}
         self.metadata: Dict[str, Dict] = {}
         self.templates = TemplateEngine()
+        self.show_duplicate_source = False  # Set to True to show source code of duplicates
     
     def kernel(self, name: str = None, verb: str = None, templates: List[str] = None):
         """Decorator to register a kernel function."""
         def decorator(func):
             kernel_name = name or func.__name__
+            
+            # Detect duplicate kernel registrations
+            if kernel_name in self.kernels:
+                import inspect
+                existing_func = self.kernels[kernel_name]
+                existing_file = inspect.getsourcefile(existing_func)
+                new_file = inspect.getsourcefile(func)
+                print(f"⚠️  WARNING: Duplicate kernel '{kernel_name}'")
+                print(f"   Already registered in: {existing_file}")
+                print(f"   Overwriting with: {new_file}")
+                
+                if self.show_duplicate_source:
+                    try:
+                        existing_source = inspect.getsource(existing_func)
+                        new_source = inspect.getsource(func)
+                        print(f"\n   === EXISTING ({existing_file}) ===")
+                        print("   " + "\n   ".join(existing_source.split('\n')[:20]))  # First 20 lines
+                        if existing_source.count('\n') > 20:
+                            print(f"   ... ({existing_source.count(chr(10)) - 20} more lines)")
+                        print(f"\n   === NEW ({new_file}) ===")
+                        print("   " + "\n   ".join(new_source.split('\n')[:20]))  # First 20 lines
+                        if new_source.count('\n') > 20:
+                            print(f"   ... ({new_source.count(chr(10)) - 20} more lines)")
+                        print()
+                    except Exception as e:
+                        print(f"   (Could not retrieve source: {e})")
+            
             self.kernels[kernel_name] = func
             self.metadata[kernel_name] = {
                 'verb': verb or kernel_name.lower(),

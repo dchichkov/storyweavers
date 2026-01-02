@@ -118,9 +118,19 @@ python sample.py -k NewKernel -n 3
 
 # Check total kernel count (ALWAYS use gen5registry!)
 python -c "from gen5registry import REGISTRY; print(len(REGISTRY.kernels))"
+
+# Check for duplicate kernels
+python check_duplicates.py
+python check_duplicates.py --source  # Show source code to compare implementations
 ```
 
 **Note:** Always use `sample.py` and `coverage.py` for checking coverage - don't write custom scripts that import `gen5` directly, as they won't see all kernel packs.
+
+**Avoid Duplicates:** Before implementing a kernel, check if it already exists:
+```bash
+python -c "from gen5registry import REGISTRY; print('YourKernel' in REGISTRY.kernels)"
+```
+If you find duplicates, compare implementations with `python check_duplicates.py --source` and remove the redundant one.
 
 ### Step 6: Compare & Improve Narrative Quality
 
@@ -151,6 +161,7 @@ The `--show-source` (or `-s`) flag shows:
 | `gen5k01.py` | Kernel pack #1 (~50 kernels) | Add to or create new pack |
 | `sample.py` | Sampling tool for exploring kernels | NO |
 | `coverage.py` | Check implementation coverage | NO |
+| `check_duplicates.py` | Find duplicate kernel registrations | NO |
 | `README.md` | Project documentation | Update if needed |
 
 ## Implementation Guidelines
@@ -188,13 +199,10 @@ python coverage.py
 python coverage.py --brief
 
 # Show top 30 missing kernels
-python coverage.py --missing
+python coverage.py --missing  --top 50
 
 # Show top 30 implemented kernels  
 python coverage.py --implemented
-
-# Show more items
-python coverage.py --missing --top 50
 ```
 
 Example output:
