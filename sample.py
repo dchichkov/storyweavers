@@ -19,6 +19,7 @@ import random
 import argparse
 import ast
 import re
+import inspect
 from pathlib import Path
 
 # Import gen5 registry (auto-loads all kernel packs)
@@ -177,7 +178,34 @@ def check_kernel_coverage(kernel: str) -> tuple:
     return implemented, missing
 
 
-def display_sample(record: dict, show_original: bool = False, index: int = None):
+def get_kernel_source(kernel_name: str) -> tuple:
+    """Get the source code of a kernel implementation with file/line info.
+    
+    Returns: (source_code, file_path, line_number) or (None, None, None) if not found
+    """
+    if kernel_name not in REGISTRY.kernels:
+        return None, None, None
+    
+    kernel_func = REGISTRY.kernels[kernel_name]
+    try:
+        source = inspect.getsource(kernel_func)
+        file_path = inspect.getsourcefile(kernel_func)
+        line_number = inspect.getsourcelines(kernel_func)[1]
+        
+        # Make file path relative to project root if possible
+        if file_path:
+            try:
+                file_path = Path(file_path).relative_to(Path.cwd())
+            except ValueError:
+                # If not in current directory, just use absolute path
+                pass
+        
+        return source, file_path, line_number
+    except Exception as e:
+        return f"# Could not retrieve source: {e}", None, None
+
+
+def display_sample(record: dict, show_original: bool = False, show_source: bool = False, index: int = None):
     """Display a sampled story with its kernel and generated text."""
     kernel = record.get('kernel', '')
     original = record.get('story', '')
@@ -225,6 +253,20 @@ def display_sample(record: dict, show_original: bool = False, index: int = None)
         print("-" * 40)
         print(original[:500] + ('...' if len(original) > 500 else ''))
     
+    # Show kernel source code if requested
+    if show_source and implemented:
+        print(f"\n🔧 KERNEL IMPLEMENTATIONS:")
+        print("-" * 40)
+        for i, kernel_name in enumerate(implemented[:10], 1):  # Limit to first 10 to avoid clutter
+            source, file_path, line_num = get_kernel_source(kernel_name)
+            if source:
+                location = f"{file_path}:{line_num}" if file_path and line_num else "unknown location"
+                print(f"\n[{i}] {kernel_name} ({location}):")
+                print(source)
+                print()
+        if len(implemented) > 10:
+            print(f"... and {len(implemented) - 10} more kernels (use fewer samples to see all)")
+    
     # Stats
     print(f"\n📊 STATS:")
     print(f"   Kernels used: {len(implemented)} implemented, {len(missing)} missing")
@@ -242,6 +284,8 @@ def main():
                         help='Data file to sample from (default: data00)')
     parser.add_argument('--show-original', '-o', action='store_true',
                         help='Also display original story text')
+    parser.add_argument('--show-source', '-s', action='store_true',
+                        help='Show source code of implemented kernels')
     parser.add_argument('--seed', type=int, default=None,
                         help='Random seed for reproducibility')
     parser.add_argument('--stats', action='store_true',
@@ -343,7 +387,7 @@ def main():
         show_orig = True if args.kernel else args.show_original
         
         for i, record in enumerate(samples, 1):
-            display_sample(record, show_original=show_orig, index=i)
+            display_sample(record, show_original=show_orig, show_source=args.show_source, index=i)
         
         # Show implementation status
         print(f"\n{'='*70}")
@@ -390,7 +434,7 @@ def kernel_{args.kernel.lower()}(ctx: StoryContext, *args, **kwargs) -> StoryFra
     all_missing = set()
     
     for i, record in enumerate(samples, 1):
-        display_sample(record, show_original=args.show_original, index=i)
+        display_sample(record, show_original=args.show_original, show_source=args.show_source, index=i)
         
         # Collect stats
         impl, miss = check_kernel_coverage(record.get('kernel', ''))
