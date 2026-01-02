@@ -58,6 +58,7 @@ from gen5 import (
     _state_to_phrase,
     _event_to_phrase,
     _action_to_phrase,
+    _get_default_actor,
 )
 
 
@@ -295,11 +296,28 @@ def kernel_rule_follow(ctx: StoryContext, *args, **kwargs) -> StoryFragment:
 def kernel_fall(ctx: StoryContext, *args, **kwargs) -> StoryFragment:
     """Character or thing falls."""
     chars = [a for a in args if isinstance(a, Character)]
+    objects = [str(a) for a in args if isinstance(a, str)]
     
+    # If there are characters, they are the subject
     if chars:
-        chars[0].Fear += 5
-        chars[0].Sadness += 3
-        return StoryFragment(f"{chars[0].name} fell down.")
+        actor = chars[0]
+        actor.Fear += 5
+        actor.Sadness += 3
+        if objects:
+            # Fall(Lily, ground) -> "Lily fell to the ground"
+            return StoryFragment(f"{actor.name} fell to the {_to_phrase(objects[0])}.")
+        return StoryFragment(f"{actor.name} fell down.")
+    
+    # No explicit character - check if it's describing where something fell
+    # Fall(ground) is likely describing where something else (implicit) fell
+    if objects:
+        place = _to_phrase(objects[0])
+        # Check if there's a subject from context
+        actor = _get_default_actor(ctx, [])
+        if actor and place in ['ground', 'floor', 'down']:
+            # Implicit subject fell to a place
+            return StoryFragment(f"it fell to the {place}", kernel_name="Fall")
+        return StoryFragment(f"fell to the {place}", kernel_name="Fall")
     
     return StoryFragment("there was a fall", kernel_name="Fall")
 

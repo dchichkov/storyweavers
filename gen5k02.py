@@ -139,6 +139,7 @@ from gen5 import (
     _state_to_phrase,
     _event_to_phrase,
     _action_to_phrase,
+    _get_default_actor,
 )
 
 
@@ -717,7 +718,7 @@ def kernel_drop(ctx: StoryContext, *args, **kwargs) -> StoryFragment:
     chars = [a for a in args if isinstance(a, Character)]
     objects = [str(a) for a in args if isinstance(a, str)]
     
-    dropper = chars[0] if chars else ctx.current_focus
+    dropper = _get_default_actor(ctx, chars)
     thing = objects[0] if objects else 'it'
     
     if dropper:

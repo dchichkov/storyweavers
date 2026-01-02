@@ -1435,6 +1435,30 @@ def kernel_reassure(ctx: StoryContext, *args, **kwargs) -> StoryFragment:
 # HELPER FUNCTIONS
 # =============================================================================
 
+def _get_default_actor(ctx: StoryContext, explicit_chars: list) -> Optional[Character]:
+    """
+    Get the default actor for an action kernel.
+    
+    Heuristic: Prefer explicit character, then first character (protagonist),
+    then current focus as fallback.
+    
+    This helps with context inheritance - when Drop(cone) is called inside
+    Accident(Lily, process=Drop(cone)), we want Lily to be the dropper.
+    """
+    if explicit_chars:
+        return explicit_chars[0]
+    
+    # Prefer first character (usually protagonist) over current_focus
+    # This is because current_focus gets set to the last-defined character,
+    # but the first character is usually the subject of the story
+    if ctx.characters:
+        first_char = list(ctx.characters.values())[0]
+        return first_char
+    
+    # Fallback to current focus if no characters defined yet
+    return ctx.current_focus
+
+
 def _to_phrase(value) -> str:
     """Convert various types to natural language phrase."""
     if isinstance(value, StoryFragment):
