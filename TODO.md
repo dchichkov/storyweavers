@@ -50,9 +50,303 @@ The current architecture directly interprets the AST, which means each kernel mu
 
 ---
 
-## Simplified Approach: AST → AST Transforms
+## Declarative Rewrite Rules (AST → AST in Kernel Syntax)
 
-**Before implementing full IR, try AST-to-AST rewriting.** This is simpler: walk the AST, add/modify nodes, then execute the transformed AST with the existing interpreter.
+**Key insight**: Instead of writing Python code for AST transforms, define rewrite rules using the same kernel syntax. The engine matches patterns and applies replacements.
+
+### Rule Definition Syntax
+
+```python
+# Rewrite rules expressed AS kernels
+REWRITE_RULES = [
+    # Rule: Brave after Fear → inject _after context
+    Rewrite(
+        pattern = Fear($char, $obj) + Brave($char),
+        output  = Fear($char, $obj) + Brave($char, _after='fear'),
+    ),
+    
+    # Rule: Same character twice → use pronoun
+    Rewrite(
+        pattern = $Kernel1($char, **k1) + $Kernel2($char, **k2),
+        output  = $Kernel1($char, **k1) + $Kernel2($char, _use_pronoun=True, **k2),
+        when    = "$char == last_subject",
+    ),
+    
+    # Rule: Transition on phase change
+    Rewrite(
+        pattern = Fear($char, $obj),
+        output  = Fear($char, $obj, _transition='But one day, '),
+        when    = "phase == 'setup'",
+        effect  = "phase = 'rising'",
+    ),
+    
+    # Rule: Resolution after Conflict → add connector
+    Rewrite(
+        pattern = Story(conflict=$C, resolution=$R),
+        output  = Story(conflict=$C, resolution=Sequence(_transition='In the end, ') + $R),
+    ),
+]
+```
+
+### How It Works
+
+```
+┌─────────────┐    ┌─────────────┐    ┌─────────────┐    ┌──────────┐
+│ Kernel AST  │───▶│ Rule Matcher│───▶│ Transformed │───▶│ Execute  │
+│ (raw input) │    │ (patterns)  │    │    AST      │    │  → Text  │
+└─────────────┘    └─────────────┘    └─────────────┘    └──────────┘
+                         │
+                   ┌─────┴─────┐
+                   │ REWRITE   │
+                   │ RULES     │
+                   │ (kernels) │
+                   └───────────┘
+```
+
+### Pattern Variables
+
+| Variable | Matches | Example |
+|----------|---------|---------|
+| `$char` | Any single Name node | `Tim`, `Lily` |
+| `$obj` | Any argument | `dog`, `ball`, `Fear(monster)` |
+| `$Kernel` | Any kernel name | `Fear`, `Brave`, `Happy` |
+| `**kwargs` | All keyword args | `to=Mom, about=toy` |
+| `$_` | Wildcard (ignore) | Match anything |
+
+### Example: Pronoun Resolution Rule
+
+```python
+# Input story:
+Story(
+    protagonist=Tim(Character, Curious),
+    conflict=Fear(Tim, dog),
+    resolution=Brave(Tim)
+)
+
+# Rule applied:
+Rewrite(
+    pattern = $K1($char) + $K2($char),
+    output  = $K1($char) + $K2($char, _use_pronoun=True),
+)
+
+# Output (after all rules):
+Story(
+    protagonist=Tim(Character, Curious),
+    conflict=Fear(Tim, dog, _transition='But one day, '),
+    resolution=Brave(Tim, _use_pronoun=True, _after='fear')
+)
+```
+
+### Implementation
+
+```python
+import ast
+from dataclasses import dataclass
+
+@dataclass
+class RewriteRule:
+    pattern: str      # Kernel pattern string
+    output: str       # Replacement pattern string
+    when: str = ""    # Optional condition (Python expression)
+    effect: str = ""  # Optional side effect (Python statement)
+
+class PatternMatcher:
+    """Match AST patterns and extract bindings."""
+    
+    def match(self, pattern_ast: ast.AST, target_ast: ast.AST) -> dict | None:
+        """Try to match pattern against target, return bindings or None."""
+        bindings = {}
+        
+        match (pattern_ast, target_ast):
+            # Variable binding: $name matches any Name
+            case (ast.Name(id=var), ast.Name(id=value)) if var.startswith('$'):
+                bindings[var] = value
+                return bindings
+            
+            # Kernel call: Kernel($args) matches Call with same func
+            case (ast.Call(func=ast.Name(id=p_name), args=p_args, keywords=p_kw),
+                  ast.Call(func=ast.Name(id=t_name), args=t_args, keywords=t_kw)):
+                
+                # Pattern variable for kernel name
+                if p_name.startswith('$'):
+                    bindings[p_name] = t_name
+                elif p_name != t_name:
+                    return None  # Names don't match
+                
+                # Match args
+                if len(p_args) != len(t_args):
+                    return None
+                for p_arg, t_arg in zip(p_args, t_args):
+                    sub = self.match(p_arg, t_arg)
+                    if sub is None:
+                        return None
+                    bindings.update(sub)
+                
+                # Handle **kwargs capture
+                for kw in p_kw:
+                    if kw.arg and kw.arg.startswith('**'):
+                        # Capture all target kwargs
+                        bindings[kw.arg] = t_kw
+                
+                return bindings
+            
+            # Composition: A + B matches BinOp
+            case (ast.BinOp(op=ast.Add(), left=p_left, right=p_right),
+                  ast.BinOp(op=ast.Add(), left=t_left, right=t_right)):
+                left_bindings = self.match(p_left, t_left)
+                right_bindings = self.match(p_right, t_right)
+                if left_bindings is None or right_bindings is None:
+                    return None
+                bindings.update(left_bindings)
+                bindings.update(right_bindings)
+                return bindings
+            
+            case _:
+                return None
+    
+    def substitute(self, template_ast: ast.AST, bindings: dict) -> ast.AST:
+        """Substitute bindings into template AST."""
+        match template_ast:
+            case ast.Name(id=var) if var.startswith('$') and var in bindings:
+                return ast.Name(id=bindings[var], ctx=ast.Load())
+            
+            case ast.Call(func=func, args=args, keywords=kws):
+                new_func = self.substitute(func, bindings)
+                new_args = [self.substitute(a, bindings) for a in args]
+                new_kws = []
+                for kw in kws:
+                    if kw.arg and kw.arg.startswith('**') and kw.arg in bindings:
+                        # Expand captured kwargs
+                        new_kws.extend(bindings[kw.arg])
+                    else:
+                        new_kws.append(ast.keyword(
+                            arg=kw.arg,
+                            value=self.substitute(kw.value, bindings)
+                        ))
+                return ast.Call(func=new_func, args=new_args, keywords=new_kws)
+            
+            case ast.BinOp(op=op, left=left, right=right):
+                return ast.BinOp(
+                    op=op,
+                    left=self.substitute(left, bindings),
+                    right=self.substitute(right, bindings)
+                )
+            
+            case _:
+                return template_ast
+
+
+class RuleEngine:
+    """Apply rewrite rules to story AST."""
+    
+    def __init__(self, rules: list[RewriteRule]):
+        self.rules = rules
+        self.matcher = PatternMatcher()
+        self.state = {'phase': 'setup', 'last_subject': None}
+    
+    def apply_rules(self, source: str) -> str:
+        """Apply all rules until fixed point."""
+        tree = ast.parse(source, mode='eval')
+        
+        changed = True
+        while changed:
+            changed = False
+            for rule in self.rules:
+                pattern = ast.parse(rule.pattern, mode='eval').body
+                new_tree, did_change = self._apply_rule(tree, pattern, rule)
+                if did_change:
+                    tree = new_tree
+                    changed = True
+        
+        ast.fix_missing_locations(tree)
+        return ast.unparse(tree)
+    
+    def _apply_rule(self, tree, pattern, rule) -> tuple[ast.AST, bool]:
+        """Apply single rule to tree, return (new_tree, changed)."""
+        # ... recursive application logic
+        pass
+```
+
+### Why This Is Powerful
+
+1. **Rules in domain language** - Same syntax as stories, no Python needed
+2. **Composable** - Rules can be combined, ordered, grouped
+3. **Inspectable** - Can print rules, reason about them
+4. **Agent-generatable** - Agent can write rules, not just kernel code
+5. **Optimizable** - Can compile rules to efficient matcher
+
+### Rule Categories
+
+```python
+# Pronoun rules
+PRONOUN_RULES = [
+    Rewrite(
+        pattern = $K1($char, **k1) + $K2($char, **k2),
+        output  = $K1($char, **k1) + $K2($char, _use_pronoun=True, **k2),
+    ),
+]
+
+# Transition rules  
+TRANSITION_RULES = [
+    Rewrite(
+        pattern = Fear($char, $obj),
+        output  = Fear($char, $obj, _transition='But one day, '),
+        when    = "phase == 'setup'",
+        effect  = "phase = 'rising'",
+    ),
+    Rewrite(
+        pattern = Resolution($char, $outcome),
+        output  = Resolution($char, $outcome, _transition='In the end, '),
+        when    = "phase == 'climax'",
+    ),
+]
+
+# Prerequisite rules
+PREREQ_RULES = [
+    Rewrite(
+        pattern = Fear($char, $_) + Brave($char),
+        output  = Fear($char, $_) + Brave($char, _after='fear'),
+    ),
+    Rewrite(
+        pattern = Conflict($c1, $c2) + Forgiveness($c1, to=$c2),
+        output  = Conflict($c1, $c2) + Forgiveness($c1, to=$c2, _after='conflict'),
+    ),
+]
+
+# All rules
+ALL_RULES = PRONOUN_RULES + TRANSITION_RULES + PREREQ_RULES
+```
+
+### Testing Rules
+
+```bash
+# Test a specific rule
+python -c "
+from rule_engine import RuleEngine, PREREQ_RULES
+
+engine = RuleEngine(PREREQ_RULES)
+input = 'Fear(Tim, dog) + Brave(Tim)'
+output = engine.apply_rules(input)
+print(f'{input} → {output}')
+"
+# Output: Fear(Tim, dog) + Brave(Tim) → Fear(Tim, dog) + Brave(Tim, _after='fear')
+```
+
+### Comparison
+
+| Approach | Pros | Cons |
+|----------|------|------|
+| **Python AST Transformer** | Full power, debuggable | Verbose, requires Python knowledge |
+| **Declarative Rules** | Concise, domain language | Less flexible, new syntax to learn |
+| **Both** | Best of both worlds | More complexity |
+
+**Recommendation**: Start with declarative rules for common patterns (pronouns, transitions, prerequisites). Fall back to Python transformer for complex cases.
+
+---
+
+## Simplified Approach: AST → AST Transforms (Python)
+
+**Alternative: Write transforms in Python.** More verbose but full flexibility.
 
 ### Architecture
 
@@ -92,93 +386,103 @@ Story(
 )
 ```
 
-### Implementation
+### Implementation (Python 3.10+ with match/case)
 
 ```python
 import ast
+from dataclasses import dataclass, field
+
+# Phase transitions for story flow
+PHASE_MAP = {'Fear': 'rising', 'Danger': 'rising', 'Scared': 'rising',
+             'Brave': 'climax', 'Victory': 'climax', 'Rescue': 'climax',
+             'Resolution': 'resolution', 'Moral': 'resolution', 'Happy': 'resolution'}
+
+TRANSITIONS = {
+    ('setup', 'rising'): "But one day, ",
+    ('rising', 'climax'): "Then, ",
+    ('climax', 'resolution'): "In the end, ",
+}
+
+# Prerequisites for context-aware generation
+PREREQUISITES = {
+    'Brave': ['Fear', 'Scared', 'Danger'],
+    'Rescue': ['Danger', 'Fall', 'Accident', 'Trapped'],
+    'Forgiveness': ['Conflict', 'Anger', 'Apology'],
+    'Happy': ['Sad', 'Fear', 'Loss'],
+    'Relief': ['Fear', 'Danger', 'Worry'],
+}
+
+
+def inject_kwarg(node: ast.Call, key: str, value) -> None:
+    """Add a keyword argument to a Call node."""
+    node.keywords.append(ast.keyword(arg=key, value=ast.Constant(value)))
+
 
 class StoryASTTransformer(ast.NodeTransformer):
-    """Transform story AST before execution."""
+    """Transform story AST before execution using match/case patterns."""
     
     def __init__(self):
-        self.seen_characters = {}      # name → Character info
-        self.seen_kernels = []         # list of kernel names in order
-        self.last_subject = None       # for pronoun decisions
-        self.current_phase = "setup"
+        self.seen_kernels: list[str] = []
+        self.last_subject: str | None = None
+        self.current_phase: str = "setup"
     
     def visit_Call(self, node: ast.Call) -> ast.Call:
-        """Visit each kernel call, potentially adding kwargs."""
-        kernel_name = node.func.id if isinstance(node.func, ast.Name) else None
-        
-        if kernel_name:
-            # Track what we've seen
-            self.seen_kernels.append(kernel_name)
-            
-            # Apply transforms
-            node = self._add_pronoun_hint(node, kernel_name)
-            node = self._add_transition(node, kernel_name)
-            node = self._add_prerequisite_context(node, kernel_name)
-        
-        # Recurse into children
+        """Visit each kernel call, using match/case for clean pattern detection."""
+        # Recurse into children first (depth-first)
         self.generic_visit(node)
-        return node
-    
-    def _add_pronoun_hint(self, node: ast.Call, kernel_name: str) -> ast.Call:
-        """Add _use_pronoun=True if subject was just mentioned."""
-        # Extract first arg if it's a character reference
-        if node.args:
-            first_arg = node.args[0]
-            if isinstance(first_arg, ast.Name):
-                char_name = first_arg.id
-                if char_name == self.last_subject:
-                    # Same character → inject pronoun hint
-                    node.keywords.append(
-                        ast.keyword(arg='_use_pronoun', value=ast.Constant(True))
-                    )
-                self.last_subject = char_name
-        return node
-    
-    def _add_transition(self, node: ast.Call, kernel_name: str) -> ast.Call:
-        """Add _transition for phase changes."""
-        phase_starters = {'Fear': 'rising', 'Danger': 'rising', 
-                         'Brave': 'climax', 'Victory': 'climax',
-                         'Resolution': 'resolution', 'Moral': 'resolution'}
         
-        if kernel_name in phase_starters:
-            new_phase = phase_starters[kernel_name]
+        match node:
+            # Pattern: KernelName(CharacterRef, ...) - most common
+            case ast.Call(func=ast.Name(id=kernel_name), args=[ast.Name(id=char_name), *rest]):
+                self._transform_with_character(node, kernel_name, char_name)
+            
+            # Pattern: KernelName(...) - kernel without leading character
+            case ast.Call(func=ast.Name(id=kernel_name)):
+                self._transform_kernel(node, kernel_name)
+            
+            # Pattern: left + right - composition
+            case ast.BinOp(op=ast.Add(), left=left, right=right):
+                # Could inject composition hints here
+                pass
+        
+        return node
+    
+    def _transform_with_character(self, node: ast.Call, kernel_name: str, char_name: str) -> None:
+        """Transform a kernel call that has a character as first arg."""
+        self.seen_kernels.append(kernel_name)
+        
+        # Pronoun hint: same character as last subject?
+        if char_name == self.last_subject:
+            inject_kwarg(node, '_use_pronoun', True)
+        self.last_subject = char_name
+        
+        # Phase transition?
+        if kernel_name in PHASE_MAP:
+            new_phase = PHASE_MAP[kernel_name]
             if new_phase != self.current_phase:
-                transitions = {
-                    ('setup', 'rising'): "But one day, ",
-                    ('rising', 'climax'): "Then, ",
-                    ('climax', 'resolution'): "After that, ",
-                }
                 key = (self.current_phase, new_phase)
-                if key in transitions:
-                    node.keywords.append(
-                        ast.keyword(arg='_transition', 
-                                   value=ast.Constant(transitions[key]))
-                    )
+                if key in TRANSITIONS:
+                    inject_kwarg(node, '_transition', TRANSITIONS[key])
                 self.current_phase = new_phase
-        return node
-    
-    def _add_prerequisite_context(self, node: ast.Call, kernel_name: str) -> ast.Call:
-        """Add _context for prerequisite-aware generation."""
-        prerequisites = {
-            'Brave': ['Fear', 'Scared', 'Danger'],
-            'Rescue': ['Danger', 'Fall', 'Accident'],
-            'Forgiveness': ['Conflict', 'Anger', 'Apology'],
-        }
         
-        if kernel_name in prerequisites:
-            prereqs = prerequisites[kernel_name]
-            matched = [p for p in prereqs if p in self.seen_kernels]
+        # Prerequisite context?
+        if kernel_name in PREREQUISITES:
+            matched = [p for p in PREREQUISITES[kernel_name] if p in self.seen_kernels]
             if matched:
-                # Inject the prerequisite context
-                node.keywords.append(
-                    ast.keyword(arg='_despite', 
-                               value=ast.Constant(matched[0].lower()))
-                )
-        return node
+                inject_kwarg(node, '_after', matched[0].lower())
+    
+    def _transform_kernel(self, node: ast.Call, kernel_name: str) -> None:
+        """Transform a kernel call without character analysis."""
+        self.seen_kernels.append(kernel_name)
+        
+        # Phase transition only
+        if kernel_name in PHASE_MAP:
+            new_phase = PHASE_MAP[kernel_name]
+            if new_phase != self.current_phase:
+                key = (self.current_phase, new_phase)
+                if key in TRANSITIONS:
+                    inject_kwarg(node, '_transition', TRANSITIONS[key])
+                self.current_phase = new_phase
 
 
 def transform_story_ast(source: str) -> str:
@@ -188,47 +492,101 @@ def transform_story_ast(source: str) -> str:
     new_tree = transformer.visit(tree)
     ast.fix_missing_locations(new_tree)
     return ast.unparse(new_tree)
+
+
+# Example usage:
+if __name__ == "__main__":
+    original = "Story(protagonist=Tim(Character, Curious), conflict=Fear(Tim, dog), resolution=Brave(Tim))"
+    transformed = transform_story_ast(original)
+    print(f"Original:    {original}")
+    print(f"Transformed: {transformed}")
+    # Output: Story(protagonist=Tim(Character, Curious), conflict=Fear(Tim, dog, _transition='But one day, '), 
+    #               resolution=Brave(Tim, _use_pronoun=True, _transition='Then, ', _after='fear'))
 ```
 
 ### Kernels Use Injected Kwargs
 
-Kernels check for the injected `_` prefixed kwargs:
+Kernels check for the injected `_` prefixed kwargs using match/case for clean handling:
 
 ```python
 @REGISTRY.kernel("Brave")
 def kernel_brave(ctx: StoryContext, *args, **kwargs) -> StoryFragment:
     char = _get_character(args, ctx)
     
-    # Check for injected hints
+    # Extract injected hints with defaults
     use_pronoun = kwargs.get('_use_pronoun', False)
     transition = kwargs.get('_transition', '')
-    despite = kwargs.get('_despite', '')
+    after = kwargs.get('_after', '')  # e.g., 'fear' from Fear kernel
     
-    # Use pronoun if hinted
+    # Choose subject reference
     subject = char.he if use_pronoun else char.name
     
-    # Build text with context
-    if despite:
-        text = f"Despite {char.pronoun_his} {despite}, {subject} was brave."
-    else:
-        text = f"{subject} was brave."
+    # Build text based on context using match/case
+    match (after, use_pronoun):
+        case (str(emotion), True) if emotion:
+            # After emotion + pronoun: "Despite his fear, he was brave"
+            text = f"Despite {char.pronoun_his} {emotion}, {subject} was brave."
+        case (str(emotion), False) if emotion:
+            # After emotion + name: "Despite his fear, Tim was brave"  
+            text = f"Despite {char.pronoun_his} {emotion}, {subject} was brave."
+        case (_, True):
+            # Just pronoun: "He was brave"
+            text = f"{subject.capitalize()} was brave."
+        case _:
+            # Default: "Tim was brave"
+            text = f"{subject} was brave."
     
+    # Prepend transition if present
     if transition:
-        text = transition + text
+        text = f"{transition}{text[0].lower()}{text[1:]}" if not text[0].isupper() else f"{transition}{text}"
     
     return StoryFragment(text)
+
+
+# Even cleaner: helper for common pattern
+def apply_hints(char: Character, kwargs: dict) -> tuple[str, str, str]:
+    """Extract common AST-injected hints."""
+    use_pronoun = kwargs.get('_use_pronoun', False)
+    subject = char.he if use_pronoun else char.name
+    transition = kwargs.get('_transition', '')
+    after = kwargs.get('_after', '')
+    return subject, transition, after
+
+
+@REGISTRY.kernel("Happy")
+def kernel_happy(ctx: StoryContext, *args, **kwargs) -> StoryFragment:
+    char = _get_character(args, ctx)
+    subject, transition, after = apply_hints(char, kwargs)
+    
+    match after:
+        case 'fear' | 'scared':
+            text = f"{subject} felt relieved and happy."
+        case 'sad' | 'loss':
+            text = f"{subject} finally felt happy again."
+        case _:
+            text = f"{subject} was very happy."
+    
+    return StoryFragment(f"{transition}{text}" if transition else text)
 ```
 
 ### Example Transform
 
 **Input:**
-```
-Story(protagonist=Tim(Character, Curious), conflict=Fear(Tim, dog), resolution=Brave(Tim))
+```python
+Story(
+    protagonist=Tim(Character, Curious),
+    conflict=Fear(Tim, dog),
+    resolution=Brave(Tim)
+)
 ```
 
 **After `StoryASTTransformer`:**
-```
-Story(protagonist=Tim(Character, Curious), conflict=Fear(Tim, dog, _transition='But one day, '), resolution=Brave(Tim, _use_pronoun=True, _transition='Then, ', _despite='fear'))
+```python
+Story(
+    protagonist=Tim(Character, Curious),
+    conflict=Fear(Tim, dog, _transition='But one day, '),
+    resolution=Brave(Tim, _use_pronoun=True, _transition='Then, ', _after='fear')
+)
 ```
 
 **Generated text:**
@@ -343,22 +701,102 @@ class KernelIR:
     prerequisite_context: List[str] = field(default_factory=list)  # ["Fear"] for Brave
 ```
 
-### Optimization Passes
+### Optimization Passes (Python 3.10+ with match/case)
 
 #### Pass 1: Lower AST → StoryIR
 
 ```python
-def lower_to_ir(ast_node) -> StoryIR:
-    """Convert raw Python AST to structured StoryIR."""
-    ir = StoryIR()
+import ast
+from dataclasses import dataclass, field
+
+# Location and emotion kernel sets for classification
+LOCATION_KERNELS = {'Park', 'Beach', 'Forest', 'Home', 'School', 'Garden', 'Kitchen'}
+EMOTION_KERNELS = {'Fear', 'Joy', 'Sadness', 'Anger', 'Happy', 'Scared', 'Brave'}
+META_PATTERNS = {'Story', 'Journey', 'Cautionary', 'Quest', 'Adventure'}
+
+
+def lower_to_ir(ast_node: ast.AST) -> StoryIR:
+    """Convert raw Python AST to structured StoryIR using match/case."""
+    ir = StoryIR(characters={}, scenes=[], locations=[])
+    current_scene = SceneIR(phase="setup", kernels=[], location=None)
     
-    # Walk AST, extract:
-    # - Character definitions → ir.characters
-    # - Location kernels → ir.locations  
-    # - Group by meta-pattern kwargs → ir.scenes
-    # - Individual kernels → scene.kernels
+    def walk(node: ast.AST) -> None:
+        nonlocal current_scene
+        
+        match node:
+            # Character definition: Tim(Character, Curious, ...)
+            case ast.Call(func=ast.Name(id=char_name), args=[ast.Name(id='Character'), *traits]):
+                trait_names = [t.id for t in traits if isinstance(t, ast.Name)]
+                ir.characters[char_name] = CharacterIR(name=char_name, traits=trait_names)
+            
+            # Location kernel: Park(), Beach(), etc.
+            case ast.Call(func=ast.Name(id=loc)) if loc in LOCATION_KERNELS:
+                ir.locations.append(loc.lower())
+                current_scene.location = loc.lower()
+            
+            # Meta-pattern with kwargs: Story(protagonist=..., conflict=..., resolution=...)
+            case ast.Call(func=ast.Name(id=meta), keywords=kwargs) if meta in META_PATTERNS:
+                for kw in kwargs:
+                    match kw.arg:
+                        case 'protagonist' | 'setup':
+                            current_scene = SceneIR(phase="setup", kernels=[], location=None)
+                            walk(kw.value)
+                            ir.scenes.append(current_scene)
+                        case 'conflict' | 'catalyst':
+                            current_scene = SceneIR(phase="rising", kernels=[], location=None)
+                            walk(kw.value)
+                            ir.scenes.append(current_scene)
+                        case 'climax':
+                            current_scene = SceneIR(phase="climax", kernels=[], location=None)
+                            walk(kw.value)
+                            ir.scenes.append(current_scene)
+                        case 'resolution' | 'transformation':
+                            current_scene = SceneIR(phase="resolution", kernels=[], location=None)
+                            walk(kw.value)
+                            ir.scenes.append(current_scene)
+                        case _:
+                            walk(kw.value)
+            
+            # Regular kernel call: Fear(Tim, dog), Brave(Tim), etc.
+            case ast.Call(func=ast.Name(id=kernel_name), args=args, keywords=kwargs):
+                kernel_ir = KernelIR(
+                    name=kernel_name,
+                    args=[extract_arg(a) for a in args],
+                    kwargs={k.arg: extract_arg(k.value) for k in kwargs if k.arg}
+                )
+                current_scene.kernels.append(kernel_ir)
+            
+            # Composition: left + right
+            case ast.BinOp(op=ast.Add(), left=left, right=right):
+                walk(left)
+                walk(right)
+            
+            # Recurse into other nodes
+            case ast.Expression(body=body):
+                walk(body)
+            
+            case _:
+                for child in ast.iter_child_nodes(node):
+                    walk(child)
+    
+    walk(ast_node)
+    
+    # Add any remaining scene
+    if current_scene.kernels and current_scene not in ir.scenes:
+        ir.scenes.append(current_scene)
     
     return ir
+
+
+def extract_arg(node: ast.AST) -> str | None:
+    """Extract argument value from AST node."""
+    match node:
+        case ast.Name(id=name):
+            return name
+        case ast.Constant(value=val):
+            return val
+        case _:
+            return None
 ```
 
 #### Pass 2: Prerequisite Check & Annotation
@@ -366,24 +804,39 @@ def lower_to_ir(ast_node) -> StoryIR:
 ```python
 PREREQUISITES = {
     'Brave': ['Fear', 'Danger', 'Scared'],
-    'Rescue': ['Danger', 'Accident', 'Fall'],
+    'Rescue': ['Danger', 'Accident', 'Fall', 'Trapped'],
     'Forgiveness': ['Conflict', 'Apology', 'Anger'],
     'Celebration': ['Victory', 'Achievement'],
+    'Relief': ['Fear', 'Danger', 'Worry'],
+    'Happy': ['Sad', 'Loss', 'Fear'],
 }
 
 def prerequisite_pass(ir: StoryIR) -> StoryIR:
-    """Check prerequisites, annotate kernels with context."""
-    seen_kernels = set()
+    """Check prerequisites, annotate kernels with context using match/case."""
+    seen_kernels: set[str] = set()
     
     for scene in ir.scenes:
         for kernel in scene.kernels:
-            if kernel.name in PREREQUISITES:
-                prereqs = PREREQUISITES[kernel.name]
-                matched = [p for p in prereqs if p in seen_kernels]
-                if matched:
-                    kernel.prerequisite_context = matched
-                    # Brave after Fear → Brave(despite=Fear)
-                    kernel.emotion_modifier = f"despite {matched[0].lower()}"
+            # Check if this kernel has prerequisites
+            match kernel.name:
+                case name if name in PREREQUISITES:
+                    prereqs = PREREQUISITES[name]
+                    matched = [p for p in prereqs if p in seen_kernels]
+                    if matched:
+                        kernel.prerequisite_context = matched
+                        # Generate appropriate modifier based on context
+                        match (name, matched[0]):
+                            case ('Brave', 'Fear' | 'Scared'):
+                                kernel.emotion_modifier = "despite the fear"
+                            case ('Brave', 'Danger'):
+                                kernel.emotion_modifier = "facing the danger"
+                            case ('Happy', 'Sad' | 'Loss'):
+                                kernel.emotion_modifier = "finally"
+                            case ('Relief', _):
+                                kernel.emotion_modifier = "with relief"
+                            case _:
+                                kernel.emotion_modifier = f"after the {matched[0].lower()}"
+            
             seen_kernels.add(kernel.name)
     
     return ir
@@ -393,28 +846,34 @@ def prerequisite_pass(ir: StoryIR) -> StoryIR:
 
 ```python
 def pronoun_pass(ir: StoryIR) -> StoryIR:
-    """Globally resolve when to use names vs pronouns."""
-    last_subject = None
-    sentences_since_name = 0
+    """Globally resolve when to use names vs pronouns using match/case."""
+    last_subject: str | None = None
+    sentences_since_name: int = 0
     
     for scene in ir.scenes:
         for kernel in scene.kernels:
-            char = kernel.args[0] if kernel.args else None
+            # Get first arg if it's a character reference
+            first_arg = kernel.args[0] if kernel.args else None
             
-            if char and isinstance(char, CharacterIR):
-                if (last_subject == char.name and 
-                    sentences_since_name < 2):
-                    # Same character, recently named → pronoun
-                    kernel.subject_ref = char.pronoun  # "he"/"she"
-                else:
-                    # Different character or too long → use name
-                    kernel.subject_ref = char.name
-                    sentences_since_name = 0
+            match first_arg:
+                # Character name that was just mentioned → use pronoun
+                case str(char_name) if char_name == last_subject and sentences_since_name < 2:
+                    char_ir = ir.characters.get(char_name)
+                    kernel.subject_ref = char_ir.pronoun if char_ir else "they"
+                    sentences_since_name += 1
                 
-                last_subject = char.name
-                sentences_since_name += 1
+                # Character name, different or needs refresh → use name
+                case str(char_name) if char_name in ir.characters:
+                    kernel.subject_ref = char_name
+                    last_subject = char_name
+                    sentences_since_name = 1
+                
+                # Not a character reference
+                case _:
+                    pass
         
-        # Reset at scene boundary
+        # Reset pronoun tracking at scene boundary for clarity
+        last_subject = None
         sentences_since_name = 0
     
     return ir
@@ -423,23 +882,31 @@ def pronoun_pass(ir: StoryIR) -> StoryIR:
 #### Pass 4: Transition Insertion
 
 ```python
+import random
+
 PHASE_TRANSITIONS = {
-    ('setup', 'rising'): ["One day, ", "But then, ", "Suddenly, "],
-    ('rising', 'climax'): ["The moment came. ", "It was then that "],
-    ('climax', 'resolution'): ["After that, ", "Finally, "],
+    ('setup', 'rising'): ["One day, ", "But then, ", "Suddenly, ", "It happened that "],
+    ('rising', 'climax'): ["The moment came. ", "It was then that ", "Just then, "],
+    ('climax', 'resolution'): ["After that, ", "Finally, ", "In the end, ", "And so, "],
 }
 
 def transition_pass(ir: StoryIR) -> StoryIR:
-    """Insert transitions between scenes/phases."""
-    prev_phase = None
+    """Insert transitions between scenes/phases using match/case."""
+    prev_phase: str | None = None
     
     for scene in ir.scenes:
-        if prev_phase and prev_phase != scene.phase:
-            key = (prev_phase, scene.phase)
-            if key in PHASE_TRANSITIONS:
-                scene.kernels[0].transition_before = random.choice(
-                    PHASE_TRANSITIONS[key]
-                )
+        match (prev_phase, scene.phase):
+            # Phase change with known transition
+            case (str(old), str(new)) if old != new and (old, new) in PHASE_TRANSITIONS:
+                if scene.kernels:
+                    scene.kernels[0].transition_before = random.choice(
+                        PHASE_TRANSITIONS[(old, new)]
+                    )
+            
+            # Same phase or no transition defined
+            case _:
+                pass
+        
         prev_phase = scene.phase
     
     return ir
@@ -451,63 +918,99 @@ After all passes, kernels have rich annotations:
 
 ```python
 # Before passes:
-KernelIR(name="Brave", args=[Tim])
+KernelIR(name="Brave", args=["Tim"])
 
 # After passes:
 KernelIR(
     name="Brave", 
-    args=[Tim],
+    args=["Tim"],
     subject_ref="he",                    # Pronoun pass decided
-    emotion_modifier="despite his fear", # Prerequisite pass added
-    transition_before="But then, ",      # Transition pass added
+    emotion_modifier="despite the fear", # Prerequisite pass added
+    transition_before="Then, ",          # Transition pass added
     prerequisite_context=["Fear"]        # Knows what came before
 )
 ```
 
-Kernel execution becomes simpler:
+Kernel execution becomes simpler with match/case:
 
 ```python
 @REGISTRY.kernel("Brave")
-def kernel_brave(ctx, kernel_ir: KernelIR) -> StoryFragment:
-    # Annotations already computed by passes!
-    subject = kernel_ir.subject_ref  # "he" not "Tim"
-    modifier = kernel_ir.emotion_modifier  # "despite his fear"
-    transition = kernel_ir.transition_before  # "But then, "
+def kernel_brave(ctx: StoryContext, kernel_ir: KernelIR) -> StoryFragment:
+    """Generate 'brave' text using pre-computed IR annotations."""
     
-    text = f"{transition}{subject.capitalize()} was brave"
-    if modifier:
-        text = f"{transition}{modifier.capitalize()}, {subject} was brave"
+    # All context already computed by passes!
+    subject = kernel_ir.subject_ref or kernel_ir.args[0]
     
-    return StoryFragment(text + ".")
+    # Use match/case for clean text generation
+    match (kernel_ir.emotion_modifier, kernel_ir.transition_before):
+        case (str(modifier), str(trans)) if modifier and trans:
+            # Full context: "Then, despite the fear, he was brave."
+            text = f"{trans}{modifier}, {subject} was brave."
+        
+        case (str(modifier), _) if modifier:
+            # Just modifier: "Despite the fear, he was brave."
+            text = f"{modifier.capitalize()}, {subject} was brave."
+        
+        case (_, str(trans)) if trans:
+            # Just transition: "Then, he was brave."
+            text = f"{trans}{subject.capitalize()} was brave."
+        
+        case _:
+            # Plain: "He was brave."
+            text = f"{subject.capitalize()} was brave."
+    
+    return StoryFragment(text)
 ```
 
 ### World Model Constraints
 
-The IR can also enforce world-model constraints (Inform 7 style):
+The IR can also enforce world-model constraints (Inform 7 style) using match/case:
 
 ```python
-CONSTRAINTS = {
-    'Rescue': lambda ir, kernel: any(
-        k.name in ('Danger', 'Fall', 'Accident') 
-        for scene in ir.scenes for k in scene.kernels
-    ),
-    'Fly': lambda ir, kernel: (
-        kernel.args[0].char_type in ('bird', 'butterfly', 'fairy')
-        if kernel.args else True
-    ),
-}
-
 def constraint_pass(ir: StoryIR) -> StoryIR:
-    """Validate world model constraints, fix or warn."""
+    """Validate world model constraints using match/case."""
+    seen_kernels: set[str] = set()
+    
     for scene in ir.scenes:
         for kernel in scene.kernels:
-            if kernel.name in CONSTRAINTS:
-                if not CONSTRAINTS[kernel.name](ir, kernel):
-                    # Option 1: Inject prerequisite
-                    # Option 2: Make metaphorical
-                    # Option 3: Warn in output
-                    kernel.constraint_violation = True
+            match kernel.name:
+                # Rescue requires danger context
+                case 'Rescue' if not any(k in seen_kernels for k in ('Danger', 'Fall', 'Accident', 'Trapped')):
+                    kernel.constraint_violation = "rescue_without_danger"
+                    # Option: inject implicit danger
+                    kernel.implicit_prereq = "Danger"
+                
+                # Fly requires flying creature
+                case 'Fly' if kernel.args:
+                    char_name = kernel.args[0]
+                    char_ir = ir.characters.get(char_name)
+                    if char_ir and 'flying' not in char_ir.traits:
+                        # Make it metaphorical instead of literal
+                        kernel.metaphorical = True
+                        kernel.emotion_modifier = "felt like"
+                
+                # Forgiveness requires prior conflict
+                case 'Forgiveness' if not any(k in seen_kernels for k in ('Conflict', 'Anger', 'Fight')):
+                    kernel.constraint_violation = "forgiveness_without_conflict"
+                
+                case _:
+                    pass
+            
+            seen_kernels.add(kernel.name)
+    
     return ir
+
+
+# The constraint-aware kernel uses the annotations:
+@REGISTRY.kernel("Fly")
+def kernel_fly(ctx: StoryContext, kernel_ir: KernelIR) -> StoryFragment:
+    subject = kernel_ir.subject_ref or kernel_ir.args[0]
+    
+    match kernel_ir:
+        case KernelIR(metaphorical=True):
+            return StoryFragment(f"{subject} felt like flying.")
+        case _:
+            return StoryFragment(f"{subject} flew through the air.")
 ```
 
 ### Implementation Path
@@ -834,26 +1337,47 @@ Reduce repetitive character name usage by tracking mentions and using pronouns.
 ```python
 @dataclass
 class StoryContext:
-    last_subject: Optional[Character] = None
-    last_object: Optional[str] = None
-    mention_counts: Dict[str, int] = field(default_factory=dict)
+    last_subject: Character | None = None
+    last_object: str | None = None
+    mention_counts: dict[str, int] = field(default_factory=dict)
     sentences_since_name: int = 0
     
     def subject_reference(self, char: Character) -> str:
-        """Get appropriate reference (name or pronoun) for character."""
+        """Get appropriate reference (name or pronoun) using match/case."""
         self.sentences_since_name += 1
+        count = self.mention_counts.get(char.name, 0)
         
-        # Use name if: first mention, or >2 sentences since last name, or different character
-        if (char.name not in self.mention_counts or 
-            self.sentences_since_name > 2 or 
-            self.last_subject != char):
-            self.mention_counts[char.name] = self.mention_counts.get(char.name, 0) + 1
-            self.last_subject = char
-            self.sentences_since_name = 0
-            return char.name
+        match (self.last_subject, self.sentences_since_name, count):
+            # First mention ever → use name
+            case (_, _, 0):
+                ref = char.name
+                
+            # Different character → use name
+            case (last, _, _) if last != char:
+                ref = char.name
+                
+            # Same character but too long since name → use name
+            case (_, n, _) if n > 2:
+                ref = char.name
+                
+            # Same character, recently mentioned → use pronoun
+            case _:
+                return char.he  # "he", "she", "they"
         
-        # Use pronoun
-        return char.he  # "he", "she", "they"
+        # Update tracking when using name
+        self.mention_counts[char.name] = count + 1
+        self.last_subject = char
+        self.sentences_since_name = 0
+        return ref
+    
+    def object_reference(self, obj: str) -> str:
+        """Get reference for objects (it/them or the object name)."""
+        match (self.last_object, obj):
+            case (last, current) if last == current:
+                return "it"
+            case _:
+                self.last_object = obj
+                return f"the {obj}"
 ```
 
 **Implementation notes:**
@@ -1238,12 +1762,27 @@ These require only kernel changes, no engine changes:
 
 ```python
 def _emotion_adverb(char: Character) -> str:
-    """Get adverb based on dominant emotion."""
-    if char.Fear > 60: return "nervously"
-    if char.Joy > 70: return "happily"  
-    if char.Sadness > 60: return "sadly"
-    if char.Anger > 60: return "angrily"
-    return ""  # neutral
+    """Get adverb based on dominant emotion using match/case."""
+    # Find the dominant emotion
+    emotions = [
+        ('Fear', char.Fear),
+        ('Joy', char.Joy),
+        ('Sadness', char.Sadness),
+        ('Anger', char.Anger),
+    ]
+    dominant, level = max(emotions, key=lambda x: x[1])
+    
+    match (dominant, level):
+        case ('Fear', n) if n > 60:
+            return "nervously"
+        case ('Joy', n) if n > 70:
+            return "happily"
+        case ('Sadness', n) if n > 60:
+            return "sadly"
+        case ('Anger', n) if n > 60:
+            return "angrily"
+        case _:
+            return ""  # neutral
 ```
 
 ---
@@ -1277,53 +1816,78 @@ class StoryContext:
         return [f.kernel_name for f in self.fragments[-5:] if f.kernel_name]
     
     @property
-    def recent_emotions(self) -> dict[str, int]:
-        """Aggregate emotion changes from recent fragments."""
-        # Track which emotions were affected recently
-        ...
+    def recent_emotions(self) -> set[str]:
+        """Emotion kernels from recent fragments."""
+        emotion_kernels = {'Fear', 'Joy', 'Sadness', 'Anger', 'Love', 'Happy', 'Scared', 'Brave'}
+        return {k for k in self.recent_kernels if k in emotion_kernels}
     
     @property  
     def mentioned_names(self) -> set[str]:
-        """Character names mentioned recently - for pronoun decisions."""
-        ...
+        """Character names mentioned in last fragment."""
+        if not self.fragments:
+            return set()
+        return {c.name for c in self.characters.values() 
+                if c.name in self.fragments[-1].text}
     
     @property
-    def last_action(self) -> Optional[str]:
-        """Most recent action kernel name (Run, Walk, Find, etc.)."""
-        action_kernels = {'Run', 'Walk', 'Find', 'See', 'Eat', 'Play', ...}
+    def last_action(self) -> str | None:
+        """Most recent action kernel name."""
+        action_kernels = {'Run', 'Walk', 'Find', 'See', 'Eat', 'Play', 'Jump', 'Climb'}
         for f in reversed(self.fragments[-5:]):
             if f.kernel_name in action_kernels:
                 return f.kernel_name
         return None
 ```
 
-### Pattern-Matching Helpers
+### Pattern-Matching Helpers (using match/case)
 
-Common patterns extracted as helper functions:
+Common patterns extracted as helper functions with match/case:
 
 ```python
-def follows_kernel(ctx: StoryContext, kernel: str, within: int = 3) -> bool:
-    """Check if this kernel follows a specific kernel recently."""
-    return kernel in ctx.recent_kernels[:within]
+def analyze_context(ctx: StoryContext, char: Character) -> dict[str, any]:
+    """Analyze context for a character, return hints for text generation."""
+    recent = ctx.recent_kernels
+    
+    hints = {
+        'use_pronoun': False,
+        'after_emotion': None,
+        'same_focus': False,
+    }
+    
+    # Check pronoun usage
+    match ctx.last_subject:
+        case c if c and c.name == char.name:
+            hints['use_pronoun'] = True
+    
+    # Check for preceding emotion
+    match recent:
+        case [*_, 'Fear' | 'Scared'] | ['Fear' | 'Scared', *_]:
+            hints['after_emotion'] = 'fear'
+        case [*_, 'Joy' | 'Happy'] | ['Joy' | 'Happy', *_]:
+            hints['after_emotion'] = 'joy'
+        case [*_, 'Sadness' | 'Sad'] | ['Sadness' | 'Sad', *_]:
+            hints['after_emotion'] = 'sadness'
+        case [*_, 'Anger' | 'Angry'] | ['Anger' | 'Angry', *_]:
+            hints['after_emotion'] = 'anger'
+    
+    # Check focus
+    match ctx.current_focus:
+        case c if c and c.name == char.name:
+            hints['same_focus'] = True
+    
+    return hints
 
-def follows_emotion(ctx: StoryContext, emotion: str) -> bool:
-    """Check if this follows an emotion kernel (Fear, Joy, Sadness, etc.)."""
-    emotion_kernels = {'Fear', 'Joy', 'Sadness', 'Anger', 'Love', 'Happy', 'Scared'}
-    return any(k in emotion_kernels and emotion.lower() in k.lower() 
-               for k in ctx.recent_kernels)
 
-def same_character_focus(ctx: StoryContext, char: Character) -> bool:
-    """Is this the same character as the current focus?"""
-    return ctx.current_focus and ctx.current_focus.name == char.name
-
-def character_just_mentioned(ctx: StoryContext, char: Character) -> bool:
-    """Was this character just mentioned? (use pronoun instead)"""
-    if not ctx.fragments:
-        return False
-    return char.name in ctx.fragments[-1].text
+def get_subject_ref(char: Character, hints: dict) -> str:
+    """Get the right subject reference based on hints."""
+    match hints:
+        case {'use_pronoun': True}:
+            return char.he
+        case _:
+            return char.name
 ```
 
-### Example: Context-Aware Kernel
+### Example: Context-Aware Kernel (with match/case)
 
 Before (incoherent):
 ```python
@@ -1333,43 +1897,46 @@ def kernel_brave(ctx, *args, **kwargs):
     return StoryFragment(f"{char.name} was brave.")
 ```
 
-After (coherent):
+After (coherent, using match/case):
 ```python
 @REGISTRY.kernel("Brave")
 def kernel_brave(ctx: StoryContext, *args, **kwargs) -> StoryFragment:
     char = _get_character(args, ctx)
+    hints = analyze_context(ctx, char)
+    subject = get_subject_ref(char, hints)
     
-    # Pattern: Brave after Fear → "Despite fear..."
-    if follows_kernel(ctx, 'Fear'):
-        return StoryFragment(f"Despite {char.pronoun_his} fear, {char.name} was brave.")
+    # Use match/case for clean branching
+    match hints:
+        case {'after_emotion': 'fear'}:
+            text = f"Despite {char.pronoun_his} fear, {subject} was brave."
+        
+        case {'after_emotion': 'anger'}:
+            text = f"Channeling {char.pronoun_his} anger, {subject} stood brave."
+        
+        case {'same_focus': True, 'use_pronoun': True}:
+            text = f"{subject.capitalize()} was very brave."
+        
+        case _:
+            text = f"{subject} was brave."
     
-    # Pattern: Brave after Danger → "Facing danger..."
-    if follows_kernel(ctx, 'Danger'):
-        return StoryFragment(f"Facing the danger, {char.name} stayed brave.")
-    
-    # Pattern: same character → use pronoun
-    if same_character_focus(ctx, char):
-        return StoryFragment(f"{char.he.capitalize()} was very brave.")
-    
-    # Default
-    return StoryFragment(f"{char.name} was brave.")
+    return StoryFragment(text)
 ```
 
 ### Scaling to 10k Kernels
 
-| Kernel Count | What Gets Encoded in If-Statements |
+| Kernel Count | What Gets Encoded in match/case |
 |--------------|-------------------------------------|
-| 800 | Basic patterns: "Apology with recipient", "Fear of object" |
-| 2k | Context awareness: "Brave after Fear", "Joy after Loss" |
-| 5k | Narrative arcs: "Resolution references Conflict" |
-| 10k | Style variations: "short sentence after long", pronoun decisions |
+| 800 | Basic patterns: `case {'to': recipient}` → "apologized to X" |
+| 2k | Context awareness: `case {'after_emotion': 'fear'}` → "despite fear" |
+| 5k | Narrative arcs: `case {'prereq': 'Conflict'}` → "resolution references conflict" |
+| 10k | Style variations: `case {'sentence_length': 'long'}` → use short next |
 
 ### Implementation Priority
 
 1. **Add `recent_kernels` property** - Trivial, immediately useful
-2. **Add `follows_kernel()` helper** - Simple function, enables pattern matching
-3. **Update 10 key emotion kernels** - Brave, Happy, Sad, Scared to use patterns
-4. **Document patterns in kernel docstrings** - Help agent know what to check
+2. **Add `analyze_context()` helper** - Returns dict for match/case
+3. **Update 10 key emotion kernels** - Brave, Happy, Sad, Scared to use match/case
+4. **Document patterns in kernel docstrings** - Help agent know what to match
 5. **Add `--incoherent` flag to sample.py** - Find stories where patterns break
 
 ### Why This Works
@@ -1377,14 +1944,14 @@ def kernel_brave(ctx: StoryContext, *args, **kwargs) -> StoryFragment:
 Infocom's coherence came from hand-written responses. Storyweavers' coherence comes from:
 
 1. **LLM extracts patterns** at dataset creation time
-2. **Agent encodes patterns** into if-statements during kernel development
+2. **Agent encodes patterns** into match/case during kernel development
 3. **Runtime executes code** - no LLM needed
 
-The more sophisticated the if-statements, the more coherent the output. The agent's job is to:
+The more sophisticated the match/case patterns, the more coherent the output. The agent's job is to:
 - Sample stories
-- Identify incoherent sequences
-- Add conditionals to handle them
+- Identify incoherent sequences  
+- Add match/case branches to handle them
 - Test and iterate
 
-**The kernels ARE the language model, just compiled into code.**
+**The kernels ARE the language model, just compiled into match/case patterns.**
 
