@@ -251,6 +251,86 @@ def kernel_bella(ctx: StoryContext, *args, **kwargs) -> StoryFragment:
     """Bella - A pet character (dog/cat). Common traits: Beautiful, Gentle, Loving."""
     return _make_character_kernel("Bella", "dog", ["beautiful"])(ctx, *args, **kwargs)
 
+@REGISTRY.kernel("Squirrel")
+def kernel_squirrel(ctx: StoryContext, *args, **kwargs) -> StoryFragment:
+    """Squirrel - A squirrel character. Common traits: Friendly, Mischievous, Quick."""
+    return _make_character_kernel("Squirrel", "squirrel", ["friendly"])(ctx, *args, **kwargs)
+
+@REGISTRY.kernel("Bunny")
+def kernel_bunny(ctx: StoryContext, *args, **kwargs) -> StoryFragment:
+    """Bunny - A rabbit character. Common traits: Soft, Friendly, Gentle."""
+    return _make_character_kernel("Bunny", "rabbit", ["soft"])(ctx, *args, **kwargs)
+
+@REGISTRY.kernel("Rabbit")
+def kernel_rabbit(ctx: StoryContext, *args, **kwargs) -> StoryFragment:
+    """Rabbit - A rabbit character. Common traits: Quick, Curious, Gentle."""
+    return _make_character_kernel("Rabbit", "rabbit", ["quick"])(ctx, *args, **kwargs)
+
+@REGISTRY.kernel("Kitty")
+def kernel_kitty(ctx: StoryContext, *args, **kwargs) -> StoryFragment:
+    """Kitty - A kitten/cat character. Common traits: Playful, Curious, Helpful."""
+    return _make_character_kernel("Kitty", "kitten", ["playful"])(ctx, *args, **kwargs)
+
+@REGISTRY.kernel("Teddy")
+def kernel_teddy(ctx: StoryContext, *args, **kwargs) -> StoryFragment:
+    """Teddy - A teddy bear character. Common traits: Kind, Caring, Cuddly."""
+    return _make_character_kernel("Teddy", "teddy bear", ["kind"])(ctx, *args, **kwargs)
+
+@REGISTRY.kernel("Mouse")
+def kernel_mouse(ctx: StoryContext, *args, **kwargs) -> StoryFragment:
+    """Mouse - A mouse character. Common traits: Small, Quick, Clever."""
+    return _make_character_kernel("Mouse", "mouse", ["small"])(ctx, *args, **kwargs)
+
+@REGISTRY.kernel("Frog")
+def kernel_frog(ctx: StoryContext, *args, **kwargs) -> StoryFragment:
+    """Frog - A frog character. Common traits: Happy, Jumpy, Friendly."""
+    return _make_character_kernel("Frog", "frog", ["happy"])(ctx, *args, **kwargs)
+
+@REGISTRY.kernel("Lion")
+def kernel_lion(ctx: StoryContext, *args, **kwargs) -> StoryFragment:
+    """Lion - A lion character. Common traits: Brave, Strong, Proud."""
+    return _make_character_kernel("Lion", "lion", ["brave"])(ctx, *args, **kwargs)
+
+@REGISTRY.kernel("Bug")
+def kernel_bug(ctx: StoryContext, *args, **kwargs) -> StoryFragment:
+    """Bug - A bug character. Common traits: Small, Busy, Curious."""
+    return _make_character_kernel("Bug", "bug", ["small"])(ctx, *args, **kwargs)
+
+@REGISTRY.kernel("Butterfly")
+def kernel_butterfly(ctx: StoryContext, *args, **kwargs) -> StoryFragment:
+    """Butterfly - A butterfly character. Common traits: Beautiful, Gentle, Graceful."""
+    return _make_character_kernel("Butterfly", "butterfly", ["beautiful"])(ctx, *args, **kwargs)
+
+@REGISTRY.kernel("Tree")
+def kernel_tree(ctx: StoryContext, *args, **kwargs) -> StoryFragment:
+    """Tree - A tree character (anthropomorphized). Common traits: Wise, Old, Strong."""
+    return _make_character_kernel("Tree", "tree", ["wise"])(ctx, *args, **kwargs)
+
+
+# =============================================================================
+# COMMON HUMAN NAMES (ADDITIONAL)
+# =============================================================================
+
+@REGISTRY.kernel("Sarah")
+def kernel_sarah(ctx: StoryContext, *args, **kwargs) -> StoryFragment:
+    """Sarah - A girl character. Common traits: Caring, Cooperative, Excited."""
+    return _make_character_kernel("Sarah", "girl", ["caring"])(ctx, *args, **kwargs)
+
+@REGISTRY.kernel("Sally")
+def kernel_sally(ctx: StoryContext, *args, **kwargs) -> StoryFragment:
+    """Sally - A girl character. Common traits: Curious, Careful, Friendly."""
+    return _make_character_kernel("Sally", "girl", ["curious"])(ctx, *args, **kwargs)
+
+@REGISTRY.kernel("Bob")
+def kernel_bob(ctx: StoryContext, *args, **kwargs) -> StoryFragment:
+    """Bob - A boy/man character. Common traits: Helpful, Friendly, Hardworking."""
+    return _make_character_kernel("Bob", "boy", ["helpful"])(ctx, *args, **kwargs)
+
+@REGISTRY.kernel("Benny")
+def kernel_benny(ctx: StoryContext, *args, **kwargs) -> StoryFragment:
+    """Benny - A boy/bunny character. Common traits: Friendly, Helpful, Playful."""
+    return _make_character_kernel("Benny", "boy", ["friendly"])(ctx, *args, **kwargs)
+
 
 # =============================================================================
 # TESTING
