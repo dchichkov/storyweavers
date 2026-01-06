@@ -40,6 +40,504 @@ Engine improvements inspired by interactive fiction systems (Ink, ChoiceScript, 
 | **Template variety** | 1-2 per kernel | Should be 5+ |
 | **Emotion → text** | Emotions tracked but unused | ChoiceScript state-modified text |
 
+### Fundamental Problem: Direct Interpretation
+
+The current architecture directly interprets the AST, which means each kernel must independently handle:
+- Pronoun decisions (can't see other references)
+- Transition insertion (can't see story structure)
+- Prerequisite checking (can't see what came before)
+- Coherence (logic scattered across 800+ kernels)
+
+---
+
+## Simplified Approach: AST → AST Transforms
+
+**Before implementing full IR, try AST-to-AST rewriting.** This is simpler: walk the AST, add/modify nodes, then execute the transformed AST with the existing interpreter.
+
+### Architecture
+
+```
+┌─────────────┐    ┌─────────────┐    ┌─────────────┐    ┌──────────┐
+│ Kernel AST  │───▶│ AST Passes  │───▶│ Transformed │───▶│ Execute  │
+│ (raw input) │    │ (rewrite)   │    │    AST      │    │  → Text  │
+└─────────────┘    └─────────────┘    └─────────────┘    └──────────┘
+                         │
+              ┌──────────┼──────────┐
+              │          │          │
+         Pronouns   Transitions  Prerequisites
+```
+
+### How It Works
+
+The AST is valid Python - we can walk it, analyze it, and **inject new keyword arguments** before execution.
+
+**Original AST:**
+```python
+Story(
+    protagonist=Tim(Character, Curious),
+    conflict=Fear(Tim, dog),
+    resolution=Brave(Tim)
+)
+```
+
+**After AST transform:**
+```python
+Story(
+    protagonist=Tim(Character, Curious),
+    _transition="One day",           # INJECTED
+    conflict=Fear(Tim, dog),
+    _use_pronoun=Tim,                # INJECTED: next ref to Tim uses "he"
+    _transition="But then",          # INJECTED  
+    resolution=Brave(Tim, _despite="fear")  # INJECTED: context from Fear
+)
+```
+
+### Implementation
+
+```python
+import ast
+
+class StoryASTTransformer(ast.NodeTransformer):
+    """Transform story AST before execution."""
+    
+    def __init__(self):
+        self.seen_characters = {}      # name → Character info
+        self.seen_kernels = []         # list of kernel names in order
+        self.last_subject = None       # for pronoun decisions
+        self.current_phase = "setup"
+    
+    def visit_Call(self, node: ast.Call) -> ast.Call:
+        """Visit each kernel call, potentially adding kwargs."""
+        kernel_name = node.func.id if isinstance(node.func, ast.Name) else None
+        
+        if kernel_name:
+            # Track what we've seen
+            self.seen_kernels.append(kernel_name)
+            
+            # Apply transforms
+            node = self._add_pronoun_hint(node, kernel_name)
+            node = self._add_transition(node, kernel_name)
+            node = self._add_prerequisite_context(node, kernel_name)
+        
+        # Recurse into children
+        self.generic_visit(node)
+        return node
+    
+    def _add_pronoun_hint(self, node: ast.Call, kernel_name: str) -> ast.Call:
+        """Add _use_pronoun=True if subject was just mentioned."""
+        # Extract first arg if it's a character reference
+        if node.args:
+            first_arg = node.args[0]
+            if isinstance(first_arg, ast.Name):
+                char_name = first_arg.id
+                if char_name == self.last_subject:
+                    # Same character → inject pronoun hint
+                    node.keywords.append(
+                        ast.keyword(arg='_use_pronoun', value=ast.Constant(True))
+                    )
+                self.last_subject = char_name
+        return node
+    
+    def _add_transition(self, node: ast.Call, kernel_name: str) -> ast.Call:
+        """Add _transition for phase changes."""
+        phase_starters = {'Fear': 'rising', 'Danger': 'rising', 
+                         'Brave': 'climax', 'Victory': 'climax',
+                         'Resolution': 'resolution', 'Moral': 'resolution'}
+        
+        if kernel_name in phase_starters:
+            new_phase = phase_starters[kernel_name]
+            if new_phase != self.current_phase:
+                transitions = {
+                    ('setup', 'rising'): "But one day, ",
+                    ('rising', 'climax'): "Then, ",
+                    ('climax', 'resolution'): "After that, ",
+                }
+                key = (self.current_phase, new_phase)
+                if key in transitions:
+                    node.keywords.append(
+                        ast.keyword(arg='_transition', 
+                                   value=ast.Constant(transitions[key]))
+                    )
+                self.current_phase = new_phase
+        return node
+    
+    def _add_prerequisite_context(self, node: ast.Call, kernel_name: str) -> ast.Call:
+        """Add _context for prerequisite-aware generation."""
+        prerequisites = {
+            'Brave': ['Fear', 'Scared', 'Danger'],
+            'Rescue': ['Danger', 'Fall', 'Accident'],
+            'Forgiveness': ['Conflict', 'Anger', 'Apology'],
+        }
+        
+        if kernel_name in prerequisites:
+            prereqs = prerequisites[kernel_name]
+            matched = [p for p in prereqs if p in self.seen_kernels]
+            if matched:
+                # Inject the prerequisite context
+                node.keywords.append(
+                    ast.keyword(arg='_despite', 
+                               value=ast.Constant(matched[0].lower()))
+                )
+        return node
+
+
+def transform_story_ast(source: str) -> str:
+    """Transform story kernel source, return modified source."""
+    tree = ast.parse(source, mode='eval')
+    transformer = StoryASTTransformer()
+    new_tree = transformer.visit(tree)
+    ast.fix_missing_locations(new_tree)
+    return ast.unparse(new_tree)
+```
+
+### Kernels Use Injected Kwargs
+
+Kernels check for the injected `_` prefixed kwargs:
+
+```python
+@REGISTRY.kernel("Brave")
+def kernel_brave(ctx: StoryContext, *args, **kwargs) -> StoryFragment:
+    char = _get_character(args, ctx)
+    
+    # Check for injected hints
+    use_pronoun = kwargs.get('_use_pronoun', False)
+    transition = kwargs.get('_transition', '')
+    despite = kwargs.get('_despite', '')
+    
+    # Use pronoun if hinted
+    subject = char.he if use_pronoun else char.name
+    
+    # Build text with context
+    if despite:
+        text = f"Despite {char.pronoun_his} {despite}, {subject} was brave."
+    else:
+        text = f"{subject} was brave."
+    
+    if transition:
+        text = transition + text
+    
+    return StoryFragment(text)
+```
+
+### Example Transform
+
+**Input:**
+```
+Story(protagonist=Tim(Character, Curious), conflict=Fear(Tim, dog), resolution=Brave(Tim))
+```
+
+**After `StoryASTTransformer`:**
+```
+Story(protagonist=Tim(Character, Curious), conflict=Fear(Tim, dog, _transition='But one day, '), resolution=Brave(Tim, _use_pronoun=True, _transition='Then, ', _despite='fear'))
+```
+
+**Generated text:**
+```
+Tim was curious. But one day, Tim was scared of the dog. Then, despite his fear, he was brave.
+```
+
+vs. current output:
+```
+Tim was curious. Tim was scared of the dog. Tim was brave.
+```
+
+### Advantages Over Full IR
+
+| Aspect | AST → AST | Full IR |
+|--------|-----------|---------|
+| **Implementation** | ~100 lines | ~500+ lines |
+| **Testing** | Can print transformed AST | Need IR pretty-printer |
+| **Compatibility** | Works with existing executor | Needs new executor |
+| **Incremental** | Add one pass at a time | All-or-nothing |
+| **Debugging** | `ast.unparse()` to see result | Custom tooling needed |
+
+### Limitations
+
+- Less structured than full IR (still just AST nodes)
+- Passes can't easily share state (need to re-walk)
+- Complex multi-kernel patterns harder to express
+- No typed schema for annotations
+
+### When to Graduate to Full IR
+
+Upgrade to full IR when:
+1. AST transforms get too complex (>5 passes)
+2. Need rich inter-kernel relationships
+3. Want to serialize/cache the IR
+4. Need constraint validation before execution
+
+### Implementation Path
+
+1. **Create `StoryASTTransformer` class** (~50 lines)
+2. **Add pronoun pass** - track subjects, inject `_use_pronoun`
+3. **Add transition pass** - detect phases, inject `_transition`
+4. **Add prerequisite pass** - track kernels, inject `_despite` etc.
+5. **Update key kernels** - Check for `_` kwargs
+6. **Test with sample.py** - Compare before/after
+
+---
+
+## MLIR-Style Compiler Pipeline (Full IR Approach)
+
+Instead of direct interpretation, adopt a **compiler pipeline** with intermediate representation (IR) and optimization passes:
+
+```
+┌─────────────┐    ┌─────────────┐    ┌─────────────┐    ┌─────────────┐    ┌──────────┐
+│ Kernel AST  │───▶│   StoryIR   │───▶│ Optimization│───▶│  Annotated  │───▶│  Execute │
+│ (raw input) │    │ (structured)│    │   Passes    │    │     IR      │    │  → Text  │
+└─────────────┘    └─────────────┘    └─────────────┘    └─────────────┘    └──────────┘
+                          │                  │
+                   ┌──────┴──────┐    ┌──────┴──────┐
+                   │ Flatten     │    │ Pronouns    │
+                   │ Scope chars │    │ Transitions │
+                   │ Track locs  │    │ Prerequisites│
+                   └─────────────┘    │ Coherence   │
+                                      └─────────────┘
+```
+
+### Why This Is Better
+
+| Concern | Current (Interpreter) | Proposed (Compiler) |
+|---------|----------------------|---------------------|
+| **Pronouns** | Each kernel checks `ctx.fragments[-1]` | Pronoun pass sees ALL refs, decides globally |
+| **Transitions** | Kernels hardcode "But then" | Transition pass sees structure, inserts smartly |
+| **Prerequisites** | Nothing enforces Fear→Brave | Prerequisite pass annotates `Brave(despite=Fear)` |
+| **Coherence** | Logic in 800 kernels | Centralized in optimization passes |
+
+### Proposed IR: StoryIR
+
+```python
+@dataclass
+class StoryIR:
+    """Intermediate representation of a story, before text generation."""
+    
+    # Extracted from AST parsing
+    characters: Dict[str, CharacterIR]    # All characters with traits, emotions
+    scenes: List[SceneIR]                  # Story broken into scenes/beats
+    locations: List[str]                   # Settings mentioned
+    
+    # Added by optimization passes
+    pronoun_map: Dict[int, str]           # sentence_idx → "he"/"she"/"they"/name
+    transitions: Dict[int, str]            # scene_idx → "But then,"
+    prerequisites_satisfied: bool          # Constraint check passed
+    
+@dataclass
+class SceneIR:
+    """A scene/beat in the story."""
+    phase: str                            # setup, rising, climax, falling, resolution
+    kernels: List[KernelIR]               # Kernels in this scene
+    location: Optional[str]
+    mood: str = "neutral"
+    
+@dataclass
+class KernelIR:
+    """A single kernel call, annotated."""
+    name: str                             # "Brave", "Fear", etc.
+    args: List[Any]                       # Positional args
+    kwargs: Dict[str, Any]                # Keyword args
+    
+    # Added by passes
+    subject_ref: str = ""                 # "Tim" or "he" or "the boy"
+    emotion_modifier: str = ""            # "nervously", "despite fear"
+    transition_before: str = ""           # "But then, "
+    prerequisite_context: List[str] = field(default_factory=list)  # ["Fear"] for Brave
+```
+
+### Optimization Passes
+
+#### Pass 1: Lower AST → StoryIR
+
+```python
+def lower_to_ir(ast_node) -> StoryIR:
+    """Convert raw Python AST to structured StoryIR."""
+    ir = StoryIR()
+    
+    # Walk AST, extract:
+    # - Character definitions → ir.characters
+    # - Location kernels → ir.locations  
+    # - Group by meta-pattern kwargs → ir.scenes
+    # - Individual kernels → scene.kernels
+    
+    return ir
+```
+
+#### Pass 2: Prerequisite Check & Annotation
+
+```python
+PREREQUISITES = {
+    'Brave': ['Fear', 'Danger', 'Scared'],
+    'Rescue': ['Danger', 'Accident', 'Fall'],
+    'Forgiveness': ['Conflict', 'Apology', 'Anger'],
+    'Celebration': ['Victory', 'Achievement'],
+}
+
+def prerequisite_pass(ir: StoryIR) -> StoryIR:
+    """Check prerequisites, annotate kernels with context."""
+    seen_kernels = set()
+    
+    for scene in ir.scenes:
+        for kernel in scene.kernels:
+            if kernel.name in PREREQUISITES:
+                prereqs = PREREQUISITES[kernel.name]
+                matched = [p for p in prereqs if p in seen_kernels]
+                if matched:
+                    kernel.prerequisite_context = matched
+                    # Brave after Fear → Brave(despite=Fear)
+                    kernel.emotion_modifier = f"despite {matched[0].lower()}"
+            seen_kernels.add(kernel.name)
+    
+    return ir
+```
+
+#### Pass 3: Pronoun Resolution
+
+```python
+def pronoun_pass(ir: StoryIR) -> StoryIR:
+    """Globally resolve when to use names vs pronouns."""
+    last_subject = None
+    sentences_since_name = 0
+    
+    for scene in ir.scenes:
+        for kernel in scene.kernels:
+            char = kernel.args[0] if kernel.args else None
+            
+            if char and isinstance(char, CharacterIR):
+                if (last_subject == char.name and 
+                    sentences_since_name < 2):
+                    # Same character, recently named → pronoun
+                    kernel.subject_ref = char.pronoun  # "he"/"she"
+                else:
+                    # Different character or too long → use name
+                    kernel.subject_ref = char.name
+                    sentences_since_name = 0
+                
+                last_subject = char.name
+                sentences_since_name += 1
+        
+        # Reset at scene boundary
+        sentences_since_name = 0
+    
+    return ir
+```
+
+#### Pass 4: Transition Insertion
+
+```python
+PHASE_TRANSITIONS = {
+    ('setup', 'rising'): ["One day, ", "But then, ", "Suddenly, "],
+    ('rising', 'climax'): ["The moment came. ", "It was then that "],
+    ('climax', 'resolution'): ["After that, ", "Finally, "],
+}
+
+def transition_pass(ir: StoryIR) -> StoryIR:
+    """Insert transitions between scenes/phases."""
+    prev_phase = None
+    
+    for scene in ir.scenes:
+        if prev_phase and prev_phase != scene.phase:
+            key = (prev_phase, scene.phase)
+            if key in PHASE_TRANSITIONS:
+                scene.kernels[0].transition_before = random.choice(
+                    PHASE_TRANSITIONS[key]
+                )
+        prev_phase = scene.phase
+    
+    return ir
+```
+
+### Execution After Passes
+
+After all passes, kernels have rich annotations:
+
+```python
+# Before passes:
+KernelIR(name="Brave", args=[Tim])
+
+# After passes:
+KernelIR(
+    name="Brave", 
+    args=[Tim],
+    subject_ref="he",                    # Pronoun pass decided
+    emotion_modifier="despite his fear", # Prerequisite pass added
+    transition_before="But then, ",      # Transition pass added
+    prerequisite_context=["Fear"]        # Knows what came before
+)
+```
+
+Kernel execution becomes simpler:
+
+```python
+@REGISTRY.kernel("Brave")
+def kernel_brave(ctx, kernel_ir: KernelIR) -> StoryFragment:
+    # Annotations already computed by passes!
+    subject = kernel_ir.subject_ref  # "he" not "Tim"
+    modifier = kernel_ir.emotion_modifier  # "despite his fear"
+    transition = kernel_ir.transition_before  # "But then, "
+    
+    text = f"{transition}{subject.capitalize()} was brave"
+    if modifier:
+        text = f"{transition}{modifier.capitalize()}, {subject} was brave"
+    
+    return StoryFragment(text + ".")
+```
+
+### World Model Constraints
+
+The IR can also enforce world-model constraints (Inform 7 style):
+
+```python
+CONSTRAINTS = {
+    'Rescue': lambda ir, kernel: any(
+        k.name in ('Danger', 'Fall', 'Accident') 
+        for scene in ir.scenes for k in scene.kernels
+    ),
+    'Fly': lambda ir, kernel: (
+        kernel.args[0].char_type in ('bird', 'butterfly', 'fairy')
+        if kernel.args else True
+    ),
+}
+
+def constraint_pass(ir: StoryIR) -> StoryIR:
+    """Validate world model constraints, fix or warn."""
+    for scene in ir.scenes:
+        for kernel in scene.kernels:
+            if kernel.name in CONSTRAINTS:
+                if not CONSTRAINTS[kernel.name](ir, kernel):
+                    # Option 1: Inject prerequisite
+                    # Option 2: Make metaphorical
+                    # Option 3: Warn in output
+                    kernel.constraint_violation = True
+    return ir
+```
+
+### Implementation Path
+
+| Phase | Work | Impact |
+|-------|------|--------|
+| **1. Define StoryIR** | Dataclasses for IR | Foundation |
+| **2. AST → IR lowering** | Parse existing AST into IR | No output change yet |
+| **3. Pronoun pass** | First optimization | Immediate quality boost |
+| **4. Transition pass** | Phase-aware connectors | Better flow |
+| **5. Prerequisite pass** | Context annotations | Coherence |
+| **6. Update kernels** | Use IR annotations | Simpler kernel code |
+
+### Benefits
+
+1. **Kernels become simpler** - just semantic → text, no context checking
+2. **Coherence is centralized** - optimization passes, not 800 kernels
+3. **Easy to add new passes** - pronoun improvements, style transforms
+4. **Testable in isolation** - can unit test each pass
+5. **Inspection** - can print IR to debug why output is wrong
+
+### Analogy
+
+| LLVM/MLIR | Storyweavers |
+|-----------|--------------|
+| Source code | Kernel AST |
+| LLVM IR | StoryIR |
+| Optimization passes | Pronoun, Transition, Prerequisite passes |
+| Target codegen | Text generation via kernels |
+
 ---
 
 ## Architecture Improvement Roadmap
