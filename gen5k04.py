@@ -346,14 +346,17 @@ def kernel_embarrassment(ctx: StoryContext, *args, **kwargs) -> StoryFragment:
     
     Patterns from dataset:
       - Embarrassment(Lily) -- Lily feels embarrassed
+      - reaction=Sorry(Kitty) + Embarrassment -- embarrassment as reaction
     """
     chars = [a for a in args if isinstance(a, Character)]
     
-    if chars:
-        char = chars[0]
+    # Try to get character from args or context
+    char = chars[0] if chars else ctx.current_focus
+    
+    if char:
         char.Sadness += 5
         char.Anger += 3
-        return StoryFragment(f"{char.name} felt embarrassed and their face turned red.")
+        return StoryFragment(f"{char.name} was so embarrassed.")
     
     return StoryFragment("embarrassment", kernel_name="Embarrassment")
 

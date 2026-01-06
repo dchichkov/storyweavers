@@ -721,24 +721,62 @@ def kernel_gather(ctx: StoryContext, *args, **kwargs) -> StoryFragment:
 @REGISTRY.kernel("Escape")
 def kernel_escape(ctx: StoryContext, *args, **kwargs) -> StoryFragment:
     """
-    Character escapes from danger.
+    Character escapes from danger or escapes using a method.
     
     Patterns:
-      - Escape(char, from)        -- escaping from danger
-      - Escape(danger)            -- escaping
+      - Escape(char, from=danger)  -- escaping from danger
+      - Escape(Basket)             -- escaping via basket (hiding/sneaking)
+      - Escape(danger)             -- escaping from something
     """
     chars = [a for a in args if isinstance(a, Character)]
-    objects = [str(a) for a in args if isinstance(a, str)]
-    from_what = kwargs.get('from', '')
+    fragments = [a for a in args if isinstance(a, StoryFragment)]
+    objects = [str(a) for a in args if not isinstance(a, (Character, StoryFragment))]
+    from_what = kwargs.get('from', None)
+    via = kwargs.get('via', None)
     
-    danger = from_what if from_what else (objects[0] if objects else 'danger')
+    char = chars[0] if chars else ctx.current_focus
     
-    if chars:
-        chars[0].Fear -= 10
-        chars[0].Joy += 5
-        return StoryFragment(f"{chars[0].name} escaped from the {_to_phrase(danger)}!")
+    # Determine if first arg is method (basket, window) or threat (cage, room)
+    # Containers and vehicles are usually escape methods, not threats
+    escape_methods = ['basket', 'window', 'door', 'hole', 'tunnel', 'rope', 'ladder', 'boat']
+    threats = ['cage', 'trap', 'prison', 'room', 'house', 'danger', 'monster', 'dog']
     
-    return StoryFragment(f"escaped from the {_to_phrase(danger)}", kernel_name="Escape")
+    thing = objects[0] if objects else (fragments[0].text if fragments else '')
+    
+    # Check if explicit from/via specified
+    if from_what:
+        escape_from = _to_phrase(from_what)
+        if char:
+            char.Fear -= 10
+            char.Joy += 5
+            return StoryFragment(f"{char.name} escaped from the {escape_from}!")
+    elif via:
+        escape_via = _to_phrase(via)
+        if char:
+            char.Joy += 8
+            return StoryFragment(f"{char.name} escaped by hiding in the {escape_via}.")
+    elif thing:
+        thing_lower = thing.lower()
+        # Guess based on common patterns
+        if any(method in thing_lower for method in escape_methods):
+            # It's a method
+            if char:
+                char.Joy += 8
+                return StoryFragment(f"{char.name} hid in the {_to_phrase(thing)} to escape.")
+        else:
+            # Default to escaping from
+            if char:
+                char.Fear -= 10
+                char.Joy += 5
+                return StoryFragment(f"{char.name} escaped from the {_to_phrase(thing)}!")
+    
+    # Generic escape
+    if char:
+        char.Fear -= 10
+        char.Joy += 5
+        return StoryFragment(f"{char.name} escaped!")
+    
+    return StoryFragment("escaped", kernel_name="Escape")
 
 
 # =============================================================================
@@ -810,28 +848,6 @@ def kernel_cat(ctx: StoryContext, *args, **kwargs) -> StoryFragment:
         return StoryFragment(f"a {description} cat", kernel_name="Cat")
     
     return StoryFragment("a cat", kernel_name="Cat")
-
-
-@REGISTRY.kernel("Bear")
-def kernel_bear(ctx: StoryContext, *args, **kwargs) -> StoryFragment:
-    """
-    Bear character or object.
-    
-    Patterns:
-      - Bear(name)                -- bear character
-      - Bear(big, brown)          -- bear description
-    """
-    chars = [a for a in args if isinstance(a, Character)]
-    objects = [str(a) for a in args if isinstance(a, str)]
-    
-    if chars:
-        return StoryFragment(f"{chars[0].name} the bear")
-    
-    if objects:
-        description = ' '.join(objects)
-        return StoryFragment(f"a {description} bear", kernel_name="Bear")
-    
-    return StoryFragment("a bear", kernel_name="Bear")
 
 
 # =============================================================================
@@ -1727,22 +1743,6 @@ def kernel_neighbor(ctx: StoryContext, *args, **kwargs) -> StoryFragment:
         return StoryFragment(f"a {description} neighbor", kernel_name="Neighbor")
     
     return StoryFragment("a neighbor", kernel_name="Neighbor")
-
-
-@REGISTRY.kernel("Teacher")
-def kernel_teacher(ctx: StoryContext, *args, **kwargs) -> StoryFragment:
-    """Teacher character reference."""
-    chars = [a for a in args if isinstance(a, Character)]
-    objects = [str(a) for a in args if isinstance(a, str)]
-    
-    if chars:
-        return StoryFragment(f"{chars[0].name} the teacher")
-    
-    if objects:
-        description = ' '.join(objects)
-        return StoryFragment(f"a {description} teacher", kernel_name="Teacher")
-    
-    return StoryFragment("a teacher", kernel_name="Teacher")
 
 
 # =============================================================================

@@ -1629,15 +1629,19 @@ def kernel_confidence(ctx: StoryContext, *args, **kwargs) -> StoryFragment:
     
     Patterns from dataset:
       - improvement=SkillIncrease + Confidence
+      - Transformation(Kitty, Comforted + Confidence)
     """
     chars = [a for a in args if isinstance(a, Character)]
     
-    if chars:
-        chars[0].Joy += 5
-        chars[0].Fear -= 3
-        return StoryFragment(f'{chars[0].name} felt confident.')
+    char = chars[0] if chars else ctx.current_focus
     
-    return StoryFragment("confidence", kernel_name="Confidence")
+    if char:
+        char.Joy += 5
+        char.Fear -= 3
+        return StoryFragment(f'{char.name} felt confident.')
+    
+    # Return adjective form for use in state descriptions
+    return StoryFragment("confident", kernel_name="Confidence")
 
 
 @REGISTRY.kernel("Safe")

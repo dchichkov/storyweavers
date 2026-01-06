@@ -1332,11 +1332,20 @@ def kernel_accident(ctx: StoryContext, *args, **kwargs) -> StoryFragment:
     
     if char:
         char.Fear += 10
+        # Set current focus so process kernels know who the accident is about
+        prev_focus = ctx.current_focus
+        ctx.current_focus = char
+        
         if process:
-            return StoryFragment(f"Oh no! {char.name} had an accident - {_to_phrase(process)}.")
-        if thing:
-            return StoryFragment(f"Oh no! {char.name} {NLGUtils.past_tense(thing)}.")
-        return StoryFragment(f"Oh no! {char.name} had an accident.")
+            result = StoryFragment(f"Oh no! {char.name} had an accident - {_to_phrase(process)}.")
+        elif thing:
+            result = StoryFragment(f"Oh no! {char.name} {NLGUtils.past_tense(thing)}.")
+        else:
+            result = StoryFragment(f"Oh no! {char.name} had an accident.")
+        
+        # Restore previous focus
+        ctx.current_focus = prev_focus
+        return result
     
     # No character - used as concept/event
     if thing:
@@ -1809,16 +1818,42 @@ def _state_to_phrase(value) -> str:
     """Convert a state value to a descriptive phrase."""
     if isinstance(value, StoryFragment):
         text = value.text.rstrip('.!?').lower()
+        
+        # Handle common state verb patterns to extract just the state
+        if ' longed for ' in text:
+            # "kitty longed for adventure" -> "longing for adventure"
+            parts = text.split(' longed for ')
+            if len(parts) == 2:
+                return f"longing for {parts[1]}"
+        
+        if ' wished for ' in text or ' wanted ' in text:
+            # Similar pattern
+            for verb in [' wished for ', ' wanted ']:
+                if verb in text:
+                    parts = text.split(verb)
+                    if len(parts) == 2:
+                        return f"wishing for {parts[1]}"
+        
         # Check if it's a kernel-generated sentence, extract the state
         if ' was ' in text:
-            return text.split(' was ')[-1]
+            state_part = text.split(' was ')[-1]
+            # Clean up if it got too verbose
+            if len(state_part) > 50:
+                # Just take a simpler description
+                return "going through something"
+            return state_part
+        
         # Check for composed phrases like "going about and playing"
         words = text.split()
         if words:
             # Remove character name if present at start
-            if words[0][0].isupper() if words[0] else False:
+            if words[0] and words[0][0].isupper():
                 words = words[1:]
-            return ' '.join(words)
+            result = ' '.join(words)
+            # If result is too long, simplify
+            if len(result) > 50:
+                return "feeling restless"
+            return result
         return text
     
     if isinstance(value, str):
@@ -1984,9 +2019,29 @@ class KernelExecutor:
         
         func_name = node.func.id
         
-        # Evaluate arguments
-        args = [self._eval_node(arg) for arg in node.args]
+        # For meta-pattern kernels, evaluate first arg to get character, then set focus before evaluating rest
+        # This ensures sub-expressions in both args and kwargs use the correct character context
+        meta_patterns = {'Cautionary', 'Journey', 'Quest', 'Friendship', 'Conflict', 'Transformation'}
+        prev_focus = None
+        
+        if func_name in meta_patterns and node.args:
+            # Evaluate just the first arg to get the character
+            first_arg = self._eval_node(node.args[0])
+            if isinstance(first_arg, Character):
+                prev_focus = self.ctx.current_focus
+                self.ctx.current_focus = first_arg
+            # Evaluate remaining args with character focus set
+            args = [first_arg] + [self._eval_node(arg) for arg in node.args[1:]]
+        else:
+            # Normal evaluation: all args
+            args = [self._eval_node(arg) for arg in node.args]
+        
+        # Evaluate kwargs with character focus still set (if applicable)
         kwargs = {kw.arg: self._eval_node(kw.value) for kw in node.keywords}
+        
+        # Restore previous focus after all evaluation
+        if prev_focus is not None:
+            self.ctx.current_focus = prev_focus
         
         # Check for Character definition: Name(Character, type, traits)
         # The Character kernel returns an empty StoryFragment as a marker
@@ -2006,11 +2061,12 @@ class KernelExecutor:
                 # Check if second arg looks like a type (lowercase common nouns) or traits
                 second = str(args[1])
                 common_types = {'girl', 'boy', 'man', 'woman', 'child', 'baby', 'kid',
-                               'dog', 'cat', 'bird', 'fish',
+                               'dog', 'cat', 'kitten', 'puppy', 'bird', 'fish',
                                'rabbit', 'bunny', 'bear', 'lion', 'mouse', 'frog', 'duck',
                                'mother', 'father', 'mom', 'dad', 'mommy', 'daddy', 'grandma', 'grandpa',
+                               'parent', 'adult', 'stranger',
                                'friend', 'teacher', 'farmer', 'king', 'queen', 'princess', 'prince',
-                               'person', 'character'}
+                               'person', 'character', 'toy', 'teddy bear', 'group', 'lady'}
                 
                 if '+' in second:
                     # It's traits, no type specified

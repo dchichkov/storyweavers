@@ -529,6 +529,7 @@ def kernel_transformation(ctx: StoryContext, *args, **kwargs) -> StoryFragment:
     if fragments:
         # Combine multiple fragments into a coherent transformation
         transformation_parts = []
+        has_verb = False
         for frag in fragments:
             text = _to_phrase(frag)
             # Skip empty or very short fragments
@@ -537,10 +538,13 @@ def kernel_transformation(ctx: StoryContext, *args, **kwargs) -> StoryFragment:
             # Clean up verb forms - make sure they're in proper tense for past narrative
             if text.startswith('playing'):
                 text = 'continued playing'
+                has_verb = True
             elif text.startswith('pretending'):
                 text = 'continued ' + text  # "continued pretending to be..."
+                has_verb = True
             elif text.startswith('using'):
                 text = 'used' + text[5:]  # "using X" -> "used X"
+                has_verb = True
             transformation_parts.append(text)
         
         if transformation_parts:
@@ -548,6 +552,9 @@ def kernel_transformation(ctx: StoryContext, *args, **kwargs) -> StoryFragment:
             if chars:
                 char = chars[0]
                 char.Joy += 10
+                # If parts are states/feelings (not verbs), use "felt"
+                if not has_verb and any(word in transformation_text for word in ['comforted', 'happy', 'sad', 'confident', 'brave', 'safe', 'warm', 'loved']):
+                    return StoryFragment(f"After that, {char.name} felt {transformation_text}.")
                 return StoryFragment(f"After that, {char.name} {transformation_text}.")
             return StoryFragment(f"From then on, they {transformation_text}.", kernel_name="Transformation")
     
