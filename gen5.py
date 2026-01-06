@@ -668,9 +668,15 @@ def kernel_journey(ctx: StoryContext, character: Character = None, **kwargs) -> 
     if 'transformation' in kwargs:
         transform = kwargs['transformation']
         character.Joy += 10
-        transform_text = _state_to_phrase(transform)
+        transform_text = _to_phrase(transform)
         if transform_text:
-            parts.append(f"After that, {character.name} felt {transform_text}.")
+            # Check if transform is already a complete thought
+            if character.name.lower() in transform_text.lower():
+                parts.append(f"{transform_text}.")
+            elif any(word in transform_text for word in ['found', 'stayed', 'decided', 'became']):
+                parts.append(f"{character.name} {transform_text}.")
+            else:
+                parts.append(f"{character.name} {transform_text}.")
     
     return StoryFragment(' '.join(parts), kernel_name="Journey")
 
@@ -1385,15 +1391,25 @@ def kernel_desire(ctx: StoryContext, *args, **kwargs) -> StoryFragment:
 def kernel_longing(ctx: StoryContext, *args, **kwargs) -> StoryFragment:
     """Character longs for something."""
     chars = [a for a in args if isinstance(a, Character)]
-    objects = [str(a) for a in args if not isinstance(a, Character)]
+    # Handle StoryFragment args as objects too (from evaluated kernels)
+    fragments = [a for a in args if isinstance(a, StoryFragment)]
+    objects = [str(a) for a in args if isinstance(a, str)]
     
     char = chars[0] if chars else ctx.current_focus
-    obj = objects[0] if objects else "something more"
+    
+    # Get the object of longing from fragments or objects
+    if fragments:
+        obj = _to_phrase(fragments[0])
+    elif objects:
+        obj = objects[0]
+    else:
+        obj = "something more"
     
     if char:
         char.Sadness += 5
-        return StoryFragment(f"{char.name} longed for {_to_phrase(obj)}.")
-    return StoryFragment(f"There was a longing for {_to_phrase(obj)}.")
+        return StoryFragment(f"{char.name} longed for {obj}.")
+    # As a state descriptor, return just the phrase for composition
+    return StoryFragment(f"longing for {obj}", kernel_name="Longing")
 
 
 @REGISTRY.kernel("Hug")
@@ -1819,42 +1835,77 @@ def _state_to_phrase(value) -> str:
     if isinstance(value, StoryFragment):
         text = value.text.rstrip('.!?').lower()
         
-        # Handle common state verb patterns to extract just the state
-        if ' longed for ' in text:
-            # "kitty longed for adventure" -> "longing for adventure"
-            parts = text.split(' longed for ')
-            if len(parts) == 2:
-                return f"longing for {parts[1]}"
+        # Handle composed states like "restless and longing for adventure"
+        # or "restless. longing for adventure"
+        state_parts = []
         
-        if ' wished for ' in text or ' wanted ' in text:
-            # Similar pattern
-            for verb in [' wished for ', ' wanted ']:
-                if verb in text:
-                    parts = text.split(verb)
-                    if len(parts) == 2:
-                        return f"wishing for {parts[1]}"
+        # Split on sentence boundaries or "and"
+        for separator in ['. ', ' and ']:
+            if separator in text:
+                segments = text.split(separator)
+                for seg in segments:
+                    seg = seg.strip()
+                    if seg:
+                        # Clean up each segment
+                        cleaned = _extract_state(seg)
+                        if cleaned:
+                            state_parts.append(cleaned)
+                if state_parts:
+                    return ' and '.join(state_parts)
         
-        # Check if it's a kernel-generated sentence, extract the state
-        if ' was ' in text:
-            state_part = text.split(' was ')[-1]
-            # Clean up if it got too verbose
-            if len(state_part) > 50:
-                # Just take a simpler description
-                return "going through something"
-            return state_part
+        # Single state - extract it
+        cleaned = _extract_state(text)
+        if cleaned:
+            return cleaned
         
-        # Check for composed phrases like "going about and playing"
-        words = text.split()
-        if words:
-            # Remove character name if present at start
-            if words[0] and words[0][0].isupper():
-                words = words[1:]
-            result = ' '.join(words)
-            # If result is too long, simplify
-            if len(result) > 50:
-                return "feeling restless"
-            return result
         return text
+    
+    if isinstance(value, str):
+        key = value.lower().replace('_', ' ')
+        key = re.sub(r'([a-z])([A-Z])', r'\1 \2', key).lower()
+        # Handle composed values like "routine and play"
+        parts = key.split(' and ')
+        mapped_parts = []
+        for part in parts:
+            part = part.strip()
+            if part in STATE_MAPPINGS:
+                mapped_parts.append(STATE_MAPPINGS[part])
+            elif part in ACTION_MAPPINGS:
+                mapped_parts.append(ACTION_MAPPINGS[part].replace('ed', 'ing'))  # playing instead of played
+            else:
+                mapped_parts.append(part)
+        return ' and '.join(mapped_parts)
+    
+    return _to_phrase(value)
+
+
+def _extract_state(text: str) -> str:
+    """Extract state description from a phrase."""
+    text = text.strip().lower()
+    
+    # Handle verb patterns
+    if ' longed for ' in text:
+        parts = text.split(' longed for ')
+        return f"longing for {parts[-1]}"
+    
+    if ' wished for ' in text:
+        parts = text.split(' wished for ')
+        return f"wishing for {parts[-1]}"
+    
+    if ' wanted ' in text:
+        parts = text.split(' wanted ')
+        return f"wanting {parts[-1]}"
+    
+    # Check if it's a kernel-generated sentence, extract the state
+    if ' was ' in text:
+        return text.split(' was ')[-1]
+    
+    # Remove character name if present at start
+    words = text.split()
+    if words and words[0] and len(words[0]) > 0 and words[0][0].isupper():
+        text = ' '.join(words[1:])
+    
+    return text if len(text) < 50 else ""
     
     if isinstance(value, str):
         key = value.lower().replace('_', ' ')

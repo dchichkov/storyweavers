@@ -255,7 +255,7 @@ def display_sample(record: dict, show_original: bool = False, show_source: bool 
     if show_original and original:
         print(f"\n📖 ORIGINAL:")
         print("-" * 40)
-        print(original[:500] + ('...' if len(original) > 500 else ''))
+        print(original)
     
     # Show kernel source code if requested
     if show_source and implemented:

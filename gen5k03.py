@@ -369,19 +369,28 @@ def kernel_adventure(ctx: StoryContext, *args, **kwargs) -> StoryFragment:
     Patterns:
       - Adventure(char, quest)    -- going on adventure
       - Adventure(forest)         -- adventure in location
+      - Longing(Adventure)        -- as concept, returns just "adventure"
     """
     chars = [a for a in args if isinstance(a, Character)]
     objects = [str(a) for a in args if isinstance(a, str)]
     
-    location = objects[0] if objects else 'far away'
+    location = objects[0] if objects else None
     
     if chars:
         adventurer = chars[0]
         adventurer.Joy += 8
         adventurer.Fear += 3
-        return StoryFragment(f"{adventurer.name} went on an adventure to the {_to_phrase(location)}.")
+        if location:
+            return StoryFragment(f"{adventurer.name} went on an adventure to the {_to_phrase(location)}.")
+        return StoryFragment(f"{adventurer.name} went on an adventure.")
     
-    return StoryFragment(f"there was an adventure to the {_to_phrase(location)}", kernel_name="Adventure")
+    # When used as a concept (no args), return just the word for composition
+    if not args and not kwargs:
+        return StoryFragment("adventure", kernel_name="Adventure")
+    
+    if location:
+        return StoryFragment(f"an adventure in the {_to_phrase(location)}", kernel_name="Adventure")
+    return StoryFragment("an adventure", kernel_name="Adventure")
 
 
 @REGISTRY.kernel("Catalyst")
@@ -757,18 +766,25 @@ def kernel_escape(ctx: StoryContext, *args, **kwargs) -> StoryFragment:
             return StoryFragment(f"{char.name} escaped by hiding in the {escape_via}.")
     elif thing:
         thing_lower = thing.lower()
+        # Strip leading article if present
+        thing_phrase = _to_phrase(thing)
+        for article in ['a ', 'an ', 'the ']:
+            if thing_phrase.lower().startswith(article):
+                thing_phrase = thing_phrase[len(article):]
+                break
+        
         # Guess based on common patterns
         if any(method in thing_lower for method in escape_methods):
             # It's a method
             if char:
                 char.Joy += 8
-                return StoryFragment(f"{char.name} hid in the {_to_phrase(thing)} to escape.")
+                return StoryFragment(f"{char.name} hid in the {thing_phrase} to escape.")
         else:
             # Default to escaping from
             if char:
                 char.Fear -= 10
                 char.Joy += 5
-                return StoryFragment(f"{char.name} escaped from the {_to_phrase(thing)}!")
+                return StoryFragment(f"{char.name} escaped from the {thing_phrase}!")
     
     # Generic escape
     if char:

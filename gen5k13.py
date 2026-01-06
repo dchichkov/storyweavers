@@ -233,11 +233,13 @@ def kernel_restless(ctx: StoryContext, *args, **kwargs) -> StoryFragment:
     """
     chars = [a for a in args if isinstance(a, Character)]
     
-    if chars:
-        char = chars[0]
-        char.Fear += 2
-        return StoryFragment(f"{char.name} was restless and couldn't stay still.")
+    char = chars[0] if chars else ctx.current_focus
     
+    if char:
+        char.Fear += 2
+        return StoryFragment(f"{char.name} was very restless.")
+    
+    # As a state descriptor, return just the adjective
     return StoryFragment("restless", kernel_name="Restless")
 
 
