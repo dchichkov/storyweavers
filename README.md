@@ -49,11 +49,11 @@ TinyStories Dataset (2M stories)
     ┌────┴────┐
     ▼         ▼
 ┌─────────┐ ┌───────────┐
-│parse.py │ │cluster.py │  ← Analysis & GPU clustering
+│sample.py│ │ AGENTS.md │  ← Analysis & Implementation
 └─────────┘ └───────────┘
                 │
                 ▼
-    Story pattern clusters
+    Story Generation Engine and Kernels implementation
          │
          ▼
     ┌──────────┐
@@ -74,7 +74,6 @@ Uses LLMs (via OpenAI-compatible API) to extract story kernels from raw text. Pr
 The main generation engine that converts kernels to stories **without LLMs at runtime**. Uses:
 - Python AST parsing (kernels are valid Python)
 - Template-based sentence generation
-- NLTK for linguistic processing (when available)
 - Compositional execution of kernel functions
 
 **Key design:** Kernels ARE valid Python code. They're parsed with `ast.parse()` and executed against a registry of kernel implementations.
@@ -96,13 +95,8 @@ story = generate_story(kernel)
 #          Lily whistled very loud. The wolf ran away."
 ```
 
-### `cluster.py` — GPU-Accelerated Clustering
-Uses RAPIDS (cuGraph, cuML) for:
-- Weisfeiler-Lehman graph hashing of kernel ASTs
-- UMAP dimensionality reduction
-- DBSCAN/K-Means clustering to find story archetypes
 
-### `parse.py` — Kernel Analysis
+### `sample.py` `parse.py` `coverage.py` — Kernel Analysis
 Parses extracted kernels, computes statistics, and identifies the most common narrative patterns.
 
 ### `story.py` — Narrative Algebra Framework
@@ -110,163 +104,9 @@ Experimental implementation of the kernel algebra with `Story` and `physical` cl
 
 ## Adding New Kernels (Coding Agent Workflow)
 
-The recommended approach for expanding kernel coverage is **interactive development with a coding agent** (like Claude, Cursor, etc.) rather than automated LLM synthesis.
+The approach for expanding kernel coverage is **interactive development with a coding agent** (like Claude, Cursor, etc.) rather than automated LLM synthesis.
+See `AGENTS.md`
 
-### Why Coding Agent > Automated Synthesis
-
-1. **Context-aware**: The agent sees the full codebase and existing patterns
-2. **Iterative refinement**: Can test, debug, and improve implementations in real-time
-3. **Consistent style**: Follows established conventions in the codebase
-4. **Better error handling**: Can handle edge cases discovered during testing
-5. **Documentation**: Naturally documents decisions and patterns
-
-### Workflow: Sample → Study → Implement → Test
-
-**Critical:** Always sample real usage examples before implementing a kernel!
-
-#### Step 1: Identify Missing Kernels
-```bash
-python sample.py -l              # List common missing kernels
-python sample.py -e              # Explore a random missing kernel  
-python sample.py -k KernelName   # Explore a specific kernel
-```
-
-#### Step 2: Sample Usage Examples
-```bash
-# See how a kernel is actually used in the dataset
-python sample.py -k Apology -n 5
-
-# Example output shows:
-#   - Original story summary
-#   - Full kernel structure
-#   - How the target kernel fits in context
-#   - What other kernels it's commonly paired with
-```
-
-#### Step 3: Study the Patterns
-Look for:
-- **Arguments**: What characters/objects are typically passed?
-- **Context**: What kernels come before/after?
-- **Variations**: Different ways the same kernel is used
-- **Character state**: What emotions are affected?
-
-#### Step 4: Implement the Kernel
-Create new kernels in **separate files** (e.g., `gen5k01.py`, `gen5k02.py`) to keep `gen5.py` as a representative core sample:
-
-```python
-# gen5k01.py - Additional Kernel Pack #01
-from gen5 import REGISTRY, StoryContext, StoryFragment, Character
-
-@REGISTRY.kernel("Apology")
-def kernel_apology(ctx: StoryContext, *args, **kwargs) -> StoryFragment:
-    ...
-```
-
-#### Step 5: Test with Real Data
-```bash
-# Test by sampling the same kernel again - it should now generate
-python sample.py -k Apology -n 3
-
-# Import the kernel pack in your code:
-from gen5 import generate_story
-import gen5k01  # Registers additional kernels
-```
-
-### Example Session
-
-```bash
-$ python sample.py -k Quest -n 2
-
-KERNEL:
-Hero(Character, Curious + Determined)
-Quest(Hero,
-    longing=Find(Special),
-    process=Search + Heed(Voice) + Enter(mine),
-    obstacle=Fear + mine(twisting),
-    outcome=Safety + Joy)
-
-# Now you understand: Quest takes goal, process, obstacle, outcome kwargs
-# and typically involves Fear → Joy emotional arc
-```
-
-### How to Add a Kernel (After Sampling!)
-
-1. **Sample the kernel** to understand its usage patterns
-2. **Ask the coding agent** to implement the kernel:
-> "Add a kernel for `Rescue` that handles characters rescuing each other"
-
-3. **The agent adds it to a kernel pack file** following the pattern:
-```python
-@REGISTRY.kernel("Rescue")
-def kernel_rescue(ctx: StoryContext, *args, **kwargs) -> StoryFragment:
-    """Someone is rescued."""
-    chars = [a for a in args if isinstance(a, Character)]
-    
-    if len(chars) >= 2:
-        chars[1].Fear -= 15
-        chars[1].Joy += 10
-        return StoryFragment(f"{chars[0].name} rescued {chars[1].name}!")
-    elif chars:
-        return StoryFragment(f"{chars[0].name} was rescued!")
-    
-    return StoryFragment("Someone came to the rescue!")
-```
-
-4. **Test immediately**:
-```bash
-python gen5.py
-```
-
-### Kernel Implementation Pattern
-
-Every kernel follows this structure:
-
-```python
-@REGISTRY.kernel("KernelName")
-def kernel_name(ctx: StoryContext, *args, **kwargs) -> StoryFragment:
-    """Docstring describing what this kernel does."""
-    
-    # 1. Parse arguments
-    chars = [a for a in args if isinstance(a, Character)]
-    objects = [str(a) for a in args if isinstance(a, str)]
-    
-    # 2. Update character state (optional)
-    if chars:
-        chars[0].Joy += 10  # or Fear, Love, Sadness, etc.
-    
-    # 3. Generate text based on arguments
-    if len(chars) >= 2:
-        return StoryFragment(f"{chars[0].name} verbed {chars[1].name}.")
-    elif chars:
-        return StoryFragment(f"{chars[0].name} verbed.")
-    
-    # 4. Handle concept/state usage (when no character present)
-    return StoryFragment("verbed", kernel_name="KernelName")
-```
-
-### Meta-Pattern Kernels
-
-For narrative structures like `Journey`, `Cautionary`, `Friendship`:
-
-```python
-@REGISTRY.kernel("Journey")
-def kernel_journey(ctx: StoryContext, character: Character = None, **kwargs):
-    parts = []
-    
-    if 'state' in kwargs:
-        parts.append(f"{character.name} was {_state_to_phrase(kwargs['state'])}.")
-    
-    if 'catalyst' in kwargs:
-        parts.append(f"But then, {_event_to_phrase(kwargs['catalyst'])}!")
-    
-    if 'process' in kwargs:
-        parts.append(f"{character.name} {_action_to_phrase(kwargs['process'])}.")
-    
-    if 'transformation' in kwargs:
-        parts.append(f"After that, {character.name} felt {kwargs['transformation']}.")
-    
-    return StoryFragment(' '.join(parts))
-```
 
 ## Goals
 
@@ -352,6 +192,7 @@ This is an exploration of story as code — where narrative structure becomes ex
 | `coverage.py` | Check kernel implementation coverage | ❌ No |
 | `gen5.py` | Core generation engine (representative kernels) | ❌ No |
 | `gen5k01.py` | Kernel Pack #01 (additional kernels) | ❌ No |
+| `chark01.py` | Kernel Pack #01 (character kernels) | ❌ No |
 | `story.py` | Kernel algebra experiments | ❌ No |
 | `AGENTS.md` | Instructions for coding agents | ❌ No |
 | `gen.py`, `gen2.py`, `gen3.py`, `gen4.py` | Earlier generation attempts | Varies |
