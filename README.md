@@ -78,6 +78,113 @@ The main generation engine that converts kernels to stories **without LLMs at ru
 
 **Key design:** Kernels ARE valid Python code. They're parsed with `ast.parse()` and executed against a registry of kernel implementations.
 
+## Generation Engine Architecture
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│                         KERNEL STRING                                │
+│  "Lily(Character, girl, Curious)                                    │
+│   Journey(Lily, catalyst=Discovery(rainbow), transformation=Happy)" │
+└─────────────────────────────────────────────────────────────────────┘
+                                 │
+                                 ▼
+┌─────────────────────────────────────────────────────────────────────┐
+│                        ast.parse()                                   │
+│                    Python AST Tree                                   │
+└─────────────────────────────────────────────────────────────────────┘
+                                 │
+                                 ▼
+┌─────────────────────────────────────────────────────────────────────┐
+│                      KernelExecutor                                  │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ _eval_node(node)                                             │   │
+│  │   ├── ast.Call → lookup REGISTRY, execute kernel function   │   │
+│  │   ├── ast.BinOp(+) → _compose() fragments                   │   │
+│  │   ├── ast.BinOp(/) → attention dilution                     │   │
+│  │   └── ast.Name → resolve character or concept               │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+└─────────────────────────────────────────────────────────────────────┘
+                                 │
+                    ┌────────────┼────────────┐
+                    ▼            ▼            ▼
+          ┌─────────────┐ ┌───────────┐ ┌─────────────┐
+          │  REGISTRY   │ │StoryContext│ │TemplateEngine│
+          │ 800+ kernels│ │ characters │ │ templates   │
+          │ @kernel()   │ │ emotions   │ │ categories  │
+          │ decorators  │ │ focus      │ │ slot-fill   │
+          └─────────────┘ └───────────┘ └─────────────┘
+                    │            │            │
+                    └────────────┼────────────┘
+                                 ▼
+┌─────────────────────────────────────────────────────────────────────┐
+│                      StoryFragment                                   │
+│  { text: "Lily discovered a rainbow!", weight: 1.0, kernel: "..." } │
+└─────────────────────────────────────────────────────────────────────┘
+                                 │
+                                 ▼
+┌─────────────────────────────────────────────────────────────────────┐
+│                    StoryContext.render()                             │
+│  - Filter by weight threshold                                        │
+│  - Join fragments with spacing                                       │
+│  - Clean up punctuation                                              │
+│  - Capitalize sentences                                              │
+└─────────────────────────────────────────────────────────────────────┘
+                                 │
+                                 ▼
+┌─────────────────────────────────────────────────────────────────────┐
+│                        GENERATED STORY                               │
+│  "Once upon a time, there was a curious girl named Lily.            │
+│   But then, Lily discovered a rainbow! Lily learned something       │
+│   important. After that, Lily felt happy."                          │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+### Core Data Structures
+
+| Class | Purpose | Key Fields |
+|-------|---------|------------|
+| `Character` | Story character with emotional state | `name`, `char_type`, `traits`, `Joy`, `Fear`, `Love`, `Anger`, `Sadness`, `pronouns` |
+| `StoryFragment` | Generated text piece with metadata | `text`, `weight`, `kernel_name` |
+| `StoryContext` | Execution state for generation | `characters`, `fragments`, `current_focus`, `current_object` |
+| `KernelRegistry` | Maps kernel names → functions | `kernels`, `metadata`, `templates` |
+| `TemplateEngine` | Category-based template selection | `templates` dict, `generate()` method |
+| `KernelExecutor` | AST interpreter for kernels | `execute()`, `_eval_node()`, `_compose()` |
+
+### Kernel Function Pattern
+
+```python
+@REGISTRY.kernel("KernelName")
+def kernel_name(ctx: StoryContext, *args, **kwargs) -> StoryFragment:
+    """Kernel that does something."""
+    # 1. Parse arguments
+    chars = [a for a in args if isinstance(a, Character)]
+    objects = [str(a) for a in args if isinstance(a, str)]
+    
+    # 2. Update character emotional state
+    if chars:
+        chars[0].Joy += 10
+    
+    # 3. Generate text with character context
+    if chars:
+        return StoryFragment(f"{chars[0].name} did something.")
+    
+    # 4. Or return as concept (for composition in parent kernels)
+    return StoryFragment("something", kernel_name="KernelName")
+```
+
+### Helper Functions
+
+| Function | Purpose |
+|----------|---------|
+| `_to_phrase(value)` | Convert any value to natural language phrase |
+| `_state_to_phrase(value)` | Convert state/emotion to descriptive phrase |
+| `_action_to_phrase(value)` | Convert action to past-tense verb phrase |
+| `_event_to_phrase(value)` | Convert event to "One day, X happened" format |
+| `_get_default_actor(ctx, chars)` | Get protagonist when no character specified |
+| `NLGUtils.past_tense(verb)` | Conjugate verb to past tense |
+| `NLGUtils.article(word)` | Get "a" or "an" for word |
+| `NLGUtils.join_list(items)` | Join with Oxford comma |
+
 ```python
 # Example kernel execution
 kernel = '''
