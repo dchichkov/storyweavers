@@ -170,6 +170,46 @@ The `--show-source` (or `-s`) flag shows:
 6. Repeat until narrative quality matches or exceeds original stories
 
 
+### Step 7: Pin Good Stories as Tests
+
+**When you've iterated on a kernel and it generates good stories, pin them as regression tests!**
+
+```bash
+# 1. Sample and note the story ID that's shown
+python sample.py -k Boo -n 5 --seed 42
+# Output shows: 🆔 STORY ID: data00:123
+
+# 2. Pick a good story and pin it as a test
+python story_tests.py --pin data00:123 --description "Tests YourKernel improvements"
+
+# 3. Verify the test passes
+python story_tests.py --run
+
+# 4. Commit the pinned test to version control
+git add story_tests/data00_123.txt story_tests/index.json
+git commit -m "Add test for YourKernel improvements"
+```
+
+**Why Pin Tests?**
+- Catches regressions when you modify kernels later
+- Documents what "good" output looks like
+- Story IDs are stable (data00:123 always refers to the same story)
+- Generation is deterministic (same story ID = same output)
+
+**When to Pin:**
+- ✅ When narrative quality is good and you want to preserve it
+
+**When to Run Tests:**
+```bash
+# After making changes
+python story_tests.py --run
+
+# If tests fail, you'll see exactly what changed (unified diff)
+```
+
+See `story_tests/README.md` for complete testing documentation.
+
+
 
 
 ## Key Files
