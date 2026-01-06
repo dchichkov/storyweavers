@@ -347,21 +347,32 @@ def kernel_idea(ctx: StoryContext, *args, **kwargs) -> StoryFragment:
       - Idea(Use(matches))             -- idea to use matches
       - Idea(Spot, plan=CooperateAll)  -- Spot has idea with plan
       - catalyst=Idea
+      - Need(Light) + Idea(Use(matches)) -- idea about what to use
     """
     chars = [a for a in args if isinstance(a, Character)]
-    objects = [str(a) for a in args if isinstance(a, str)]
+    fragments = [a for a in args if isinstance(a, StoryFragment)]
+    objects = [str(a) for a in args if not isinstance(a, (Character, StoryFragment))]
     plan = kwargs.get('plan', None)
+    
+    # Extract idea content from fragments or objects
+    idea_content = None
+    if fragments:
+        idea_content = _to_phrase(fragments[0])
+    elif objects:
+        idea_content = _to_phrase(objects[0])
     
     if chars:
         char = chars[0]
         char.Joy += 3
-        if plan:
+        if idea_content:
+            return StoryFragment(f'{char.name} had an idea: {idea_content}!')
+        elif plan:
             return StoryFragment(f'{char.name} had a clever idea.')
-        elif objects:
-            return StoryFragment(f'{char.name} thought of an idea.')
         return StoryFragment(f'{char.name} had an idea!')
     
-    return StoryFragment("there was an idea", kernel_name="Idea")
+    if idea_content:
+        return StoryFragment(f"Then someone had an idea: {idea_content}!", kernel_name="Idea")
+    return StoryFragment("There was an idea.", kernel_name="Idea")
 
 
 # =============================================================================

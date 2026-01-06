@@ -52,12 +52,12 @@ def sample_stories(file_path: str, n: int = 1) -> list:
 
 
 def find_stories_with_kernel(file_path: str, kernel_name: str, limit: int = 100) -> list:
-    """Find stories that use a specific kernel."""
+    """Find stories that use a specific kernel. Returns list of (line_num, record) tuples."""
     import re
     matches = []
     
     with open(file_path, 'r') as f:
-        for line in f:
+        for i, line in enumerate(f):
             try:
                 record = json.loads(line)
                 kernel = record.get('kernel', '') or ''
@@ -67,7 +67,7 @@ def find_stories_with_kernel(file_path: str, kernel_name: str, limit: int = 100)
                 # Match: KernelName( or KernelName, or KernelName) or KernelName\n or +KernelName
                 pattern = rf'\b{re.escape(kernel_name)}\b'
                 if re.search(pattern, kernel):
-                    matches.append(record)
+                    matches.append((i, record))  # Store line number with record
                     if len(matches) >= limit:
                         break
             except json.JSONDecodeError:
@@ -205,7 +205,7 @@ def get_kernel_source(kernel_name: str) -> tuple:
         return f"# Could not retrieve source: {e}", None, None
 
 
-def display_sample(record: dict, show_original: bool = False, show_source: bool = False, index: int = None):
+def display_sample(record: dict, show_original: bool = False, show_source: bool = False, index: int = None, story_id: str = None):
     """Display a sampled story with its kernel and generated text."""
     kernel = record.get('kernel', '')
     original = record.get('story', '')
@@ -215,6 +215,10 @@ def display_sample(record: dict, show_original: bool = False, show_source: bool 
     print(f"\n{'='*70}")
     print(header)
     print('='*70)
+    
+    # Show story ID if available
+    if story_id:
+        print(f"\n🆔 STORY ID: {story_id}")
     
     # Show summary if available
     if summary:
@@ -298,8 +302,53 @@ def main():
                         help='List most common missing kernels')
     parser.add_argument('--include-characters', '-c', action='store_true',
                         help='Include character names in missing kernels list (default: exclude)')
+    parser.add_argument('--story-id', type=str, default=None,
+                        help='Generate a specific story by ID (format: data00:123 or story_123)')
     
     args = parser.parse_args()
+    
+    # Mode: Generate specific story by ID
+    if args.story_id:
+        # Parse story ID (supports data00:123 or story_123 formats)
+        if ':' in args.story_id:
+            # Format: data00:123
+            dataset, line_str = args.story_id.split(':', 1)
+            line_num = int(line_str)
+        elif args.story_id.startswith('story_'):
+            # Format: story_123
+            dataset = 'data00'  # default
+            line_num = int(args.story_id.replace('story_', ''))
+        else:
+            print(f"Error: Invalid story ID format: {args.story_id}")
+            print("Use format: data00:123 or story_123")
+            return 1
+        
+        # Set deterministic seed based on story ID for reproducible template selection
+        # Use hash of story_id to generate a seed
+        import hashlib
+        seed_hash = int(hashlib.md5(args.story_id.encode()).hexdigest()[:8], 16)
+        random.seed(seed_hash)
+        
+        # Build file path
+        file_path = Path('TinyStories_kernels') / f'{dataset}.kernels.jsonl'
+        if not file_path.exists():
+            print(f"Error: Dataset file not found: {file_path}")
+            return 1
+        
+        # Read the specific story
+        with open(file_path) as f:
+            for i, line in enumerate(f):
+                if i == line_num:
+                    record = json.loads(line)
+                    story_id = f"{dataset}:{i}"
+                    display_sample(record, 
+                                 show_original=args.show_original,
+                                 show_source=args.show_source,
+                                 story_id=story_id)
+                    return 0
+        
+        print(f"Error: Line {line_num} not found in {dataset}")
+        return 1
     
     # Set random seed if provided
     if args.seed is not None:
@@ -386,8 +435,12 @@ def main():
         # When exploring a specific kernel, always show original by default
         show_orig = True if args.kernel else args.show_original
         
-        for i, record in enumerate(samples, 1):
-            display_sample(record, show_original=show_orig, show_source=args.show_source, index=i)
+        # Extract dataset name from file_path for story IDs
+        dataset = file_path.stem.replace('.kernels', '')
+        
+        for i, (line_num, record) in enumerate(samples, 1):
+            story_id = f"{dataset}:{line_num}"
+            display_sample(record, show_original=show_orig, show_source=args.show_source, index=i, story_id=story_id)
         
         # Show implementation status
         print(f"\n{'='*70}")

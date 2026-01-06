@@ -552,10 +552,17 @@ def kernel_need(ctx: StoryContext, *args, **kwargs) -> StoryFragment:
       - Need(ReachBars) -- need to reach bars
       - Need(Skip, home) -- Skip needs a home
       - Need(Vest, Timmy) -- Timmy needs vest
+      - Need(Light) + Idea(Use(matches)) -- need for light leads to idea
     """
     chars = [a for a in args if isinstance(a, Character)]
-    objects = [str(a) for a in args if isinstance(a, str)]
-    thing = kwargs.get('thing', objects[0] if objects else '')
+    fragments = [a for a in args if isinstance(a, StoryFragment)]
+    objects = [str(a) for a in args if not isinstance(a, (Character, StoryFragment))]
+    
+    # If we have fragments, extract their meaning
+    if fragments:
+        thing = _to_phrase(fragments[0])
+    else:
+        thing = kwargs.get('thing', objects[0] if objects else '')
     
     if chars:
         char = chars[0]
@@ -564,8 +571,8 @@ def kernel_need(ctx: StoryContext, *args, **kwargs) -> StoryFragment:
         return StoryFragment(f"{char.name} had a need.")
     
     if thing:
-        return StoryFragment(f"the need for {_to_phrase(thing)}", kernel_name="Need")
-    return StoryFragment("a need", kernel_name="Need")
+        return StoryFragment(f"They needed {_to_phrase(thing)}.", kernel_name="Need")
+    return StoryFragment("There was a need.", kernel_name="Need")
 
 
 @REGISTRY.kernel("Plan")

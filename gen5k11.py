@@ -341,14 +341,25 @@ def kernel_safe_light(ctx: StoryContext, *args, **kwargs) -> StoryFragment:
       - Transformation(Play(Pirates) + SafeLight([flashlight, lantern]))
     """
     chars = [a for a in args if isinstance(a, Character)]
-    objects = [str(a) for a in args if not isinstance(a, Character)]
+    # Handle both string objects and lists passed as arguments
+    raw_objects = [a for a in args if not isinstance(a, (Character, StoryFragment))]
     
-    lights = objects if objects else ['flashlight']
+    # Flatten any lists and extract strings
+    lights = []
+    for obj in raw_objects:
+        if isinstance(obj, list):
+            lights.extend([str(item) for item in obj])
+        else:
+            lights.append(str(obj))
+    
+    if not lights:
+        lights = ['flashlight']
+    
     light_list = NLGUtils.join_list(lights)
     
     if chars:
         names = NLGUtils.join_list([c.name for c in chars])
-        return StoryFragment(f"{names} used a safe {light_list} instead.")
+        return StoryFragment(f"{names} used {NLGUtils.article(lights[0])} safe {light_list} instead.")
     
     return StoryFragment(f"using a safe {light_list}", kernel_name="SafeLight")
 

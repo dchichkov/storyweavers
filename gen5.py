@@ -834,24 +834,141 @@ def kernel_friendship(ctx: StoryContext, char1: Character, char2: Character = No
     "{name} and {other} played together.",
 ])
 def kernel_play(ctx: StoryContext, *args, **kwargs) -> StoryFragment:
-    """Characters play."""
+    """
+    Characters play.
+    
+    Patterns:
+      - Play(char1, char2)                  -- characters play together
+      - Play(char, toy)                     -- character plays with object
+      - Play(Pirates, Explorers, char1, char2, tools=[...])  -- role-play
+      - Play(toy)                           -- playing with toy (as concept)
+      - Play(char, quality=Better)          -- playing with quality modifier
+      - Play(basketball, with=friends)      -- playing activity with others
+      - Play(char1, char2, setting=Barn, activity=..., props=...)  -- detailed play scenario
+    """
     chars = [a for a in args if isinstance(a, Character)]
+    fragments = [a for a in args if isinstance(a, StoryFragment)]
     objects = [str(a) for a in args if isinstance(a, str) and a != 'Character']
     
+    # Extract kwargs
+    tools = kwargs.get('tools', [])
+    quality = kwargs.get('quality', '')
+    with_whom = kwargs.get('with', '')
+    setting = kwargs.get('setting', '')
+    activity = kwargs.get('activity', '')
+    props = kwargs.get('props', '')
+    actions = kwargs.get('actions', [])
+    
+    # Increase joy for all characters
     for c in chars:
         c.Joy += 10
     
+    # Extract themes from StoryFragments (Pirates, Explorers become fragment results)
+    themes = []
+    for frag in fragments:
+        # If fragment has a kernel_name that looks like a role/theme, use it
+        if frag.kernel_name and frag.kernel_name[0].isupper():
+            themes.append(frag.kernel_name.lower())
+    
+    # Also check plain string objects for capitalized themes
+    remaining_objects = []
+    for obj in objects:
+        if obj and obj[0].isupper() and obj not in ['Character']:
+            # Likely a theme/role (Pirates, Explorers, etc.)
+            themes.append(obj.lower())
+        else:
+            remaining_objects.append(obj)
+    
+    objects = remaining_objects
+    
+    # Build the narrative
     if len(chars) >= 2:
         names = NLGUtils.join_list([c.name for c in chars])
+        
+        # Detailed play scenario with setting/activity/props
+        if setting or activity or props:
+            parts = [f"{names} played"]
+            
+            if setting:
+                parts.append(f"in the {_to_phrase(setting).lower()}")
+            
+            if activity:
+                activity_text = _to_phrase(activity)
+                # Handle "Pretend(...)" pattern
+                if activity_text.lower().startswith('pretend'):
+                    parts.append(f"and {activity_text.lower()}")
+                else:
+                    parts.append(activity_text.lower())
+            
+            if props:
+                props_text = _to_phrase(props)
+                parts.append(f"with {props_text}")
+            elif tools:
+                tools_str = NLGUtils.join_list([_to_phrase(t) for t in tools])
+                parts.append(f"with their {tools_str}")
+            
+            return StoryFragment(' '.join(parts) + '.')
+        
+        # Role-play with themes
+        if themes:
+            theme_str = NLGUtils.join_list(themes)
+            if tools:
+                tools_str = NLGUtils.join_list([_to_phrase(t) for t in tools])
+                return StoryFragment(f"{names} pretended to be {theme_str} with their {tools_str}.")
+            return StoryFragment(f"{names} pretended to be {theme_str}.")
+        
+        # Playing with objects
+        if objects or tools:
+            items = objects + (tools if isinstance(tools, list) else [])
+            items_str = NLGUtils.join_list([_to_phrase(i) for i in items])
+            return StoryFragment(f"{names} played with {items_str}.")
+        
         return StoryFragment(f"{names} played together and had fun.")
-    elif len(chars) == 1:
-        if objects:
-            return StoryFragment(f"{chars[0].name} played with the {NLGUtils.join_list(objects)}.")
-        return StoryFragment(f"{chars[0].name} played happily.")
     
-    # No characters - this is probably being used as a state/concept
-    if objects:
-        return StoryFragment(f"playing with the {NLGUtils.join_list(objects)}", kernel_name="Play")
+    elif len(chars) == 1:
+        char = chars[0]
+        
+        # With quality modifier
+        if quality:
+            return StoryFragment(f"{char.name} played {_to_phrase(quality).lower()}.")
+        
+        # With setting
+        if setting:
+            return StoryFragment(f"{char.name} played in the {_to_phrase(setting).lower()}.")
+        
+        # With themes/roles
+        if themes:
+            theme_str = NLGUtils.join_list(themes)
+            return StoryFragment(f"{char.name} pretended to be {NLGUtils.article(theme_str)} {theme_str}.")
+        
+        # With objects/tools
+        if objects or tools:
+            items = objects + (tools if isinstance(tools, list) else [])
+            items_str = NLGUtils.join_list([_to_phrase(i) for i in items])
+            if with_whom:
+                return StoryFragment(f"{char.name} played with {items_str} alongside {_to_phrase(with_whom)}.")
+            return StoryFragment(f"{char.name} played with {items_str}.")
+        
+        return StoryFragment(f"{char.name} played happily.")
+    
+    # No characters - this is being used as a state/concept
+    if setting:
+        return StoryFragment(f"playing in the {_to_phrase(setting).lower()}", kernel_name="Play")
+    
+    if themes:
+        theme_str = NLGUtils.join_list(themes)
+        return StoryFragment(f"pretending to be {theme_str}", kernel_name="Play")
+    
+    if objects or tools:
+        items = objects + (tools if isinstance(tools, list) else [])
+        items_str = NLGUtils.join_list([_to_phrase(i) for i in items])
+        if with_whom:
+            return StoryFragment(f"playing {items_str} with {_to_phrase(with_whom)}", kernel_name="Play")
+        return StoryFragment(f"playing with {items_str}", kernel_name="Play")
+    
+    if with_whom:
+        return StoryFragment(f"playing with {_to_phrase(with_whom)}", kernel_name="Play")
+    
     return StoryFragment("playing", kernel_name="Play")
 
 
@@ -1358,46 +1475,74 @@ def kernel_careful(ctx: StoryContext, *args, **kwargs) -> StoryFragment:
 
 @REGISTRY.kernel("Rescue")
 def kernel_rescue(ctx: StoryContext, *args, **kwargs) -> StoryFragment:
-    """Someone is rescued."""
+    """
+    Someone is rescued.
+    
+    Patterns:
+      - Rescue(Mom, Lily)              -- Mom rescues Lily
+      - Rescue(Mom, method=Water(bucket)) -- Mom rescues using water
+    """
     chars = [a for a in args if isinstance(a, Character)]
+    fragments = [a for a in args if isinstance(a, StoryFragment)]
+    method = kwargs.get('method', None)
+    
+    # Extract method from fragments or kwargs
+    if isinstance(method, StoryFragment):
+        method_text = _to_phrase(method)
+    elif method:
+        method_text = _to_phrase(method)
+    else:
+        method_text = None
     
     if len(chars) >= 2:
-        chars[1].Fear -= 15
-        chars[1].Joy += 10
-        return StoryFragment(f"{chars[0].name} rescued {chars[1].name}!")
+        rescuer = chars[0]
+        rescued = chars[1]
+        rescued.Fear -= 15
+        rescued.Joy += 10
+        if method_text:
+            return StoryFragment(f"{rescuer.name} rescued {rescued.name} using {method_text}!")
+        return StoryFragment(f"{rescuer.name} rescued {rescued.name}!")
     elif chars:
-        return StoryFragment(f"{chars[0].name} was rescued!")
+        char = chars[0]
+        char.Joy += 10
+        if method_text:
+            return StoryFragment(f"{char.name} came to the rescue with {method_text}!")
+        return StoryFragment(f"{char.name} came to the rescue!")
     
-    catalyst = kwargs.get('catalyst', '')
-    process = kwargs.get('process', '')
-    outcome = kwargs.get('outcome', '')
-    
-    parts = []
-    if catalyst:
-        parts.append(_to_phrase(catalyst))
-    if process:
-        parts.append(_to_phrase(process))
-    if outcome:
-        parts.append(_to_phrase(outcome))
-    
-    if parts:
-        return StoryFragment("Someone came to the rescue! " + " ".join(parts))
-    return StoryFragment("Someone came to the rescue!")
+    if method_text:
+        return StoryFragment(f"Someone came to the rescue using {method_text}!", kernel_name="Rescue")
+    return StoryFragment("Someone came to the rescue!", kernel_name="Rescue")
 
 
 @REGISTRY.kernel("Conflict")
 def kernel_conflict(ctx: StoryContext, *args, **kwargs) -> StoryFragment:
-    """Conflict between characters - disagreement, fight, or struggle."""
+    """
+    Conflict between characters - disagreement, fight, or struggle.
+    
+    Patterns:
+      - Conflict(Tim, Sue, over=toy)      -- conflict over something
+      - Conflict(Nervous(Lily) + Disregard(Tom)) -- conflicting emotions/actions
+    """
     chars = [a for a in args if isinstance(a, Character)]
+    fragments = [a for a in args if isinstance(a, StoryFragment)]
     cause = kwargs.get('cause', '')
+    over = kwargs.get('over', '')
     
     # Update emotional states
     for c in chars:
         c.Anger += 10
         c.Joy -= 5
     
+    # Handle fragments (nested kernel results)
+    if fragments:
+        conflict_desc = NLGUtils.join_list([_to_phrase(f) for f in fragments])
+        return StoryFragment(f"There was tension: {conflict_desc}.", kernel_name="Conflict")
+    
+    # Handle character conflicts
     if len(chars) >= 2:
-        if cause:
+        if over:
+            return StoryFragment(f"{chars[0].name} and {chars[1].name} disagreed about {_to_phrase(over)}.")
+        elif cause:
             cause_text = _to_phrase(cause)
             return StoryFragment(f"{chars[0].name} and {chars[1].name} had a conflict over the {cause_text}.")
         return StoryFragment(f"{chars[0].name} and {chars[1].name} got into a fight.")
@@ -1909,12 +2054,38 @@ class KernelExecutor:
                 display_type = "one"  # "a little attached one" instead of "a little child"
             
             template_category = 'intro_first' if is_first else 'intro'
+            
+            # Filter templates based on character's gender (pronouns)
+            # Temporarily filter gender-specific templates to match character
+            all_templates = self.registry.templates.templates[template_category].copy()
+            filtered_templates = []
+            for tmpl in all_templates:
+                # Check if template has gender-specific pronoun
+                if 'Her name was' in tmpl or 'her name was' in tmpl:
+                    # Only use for female characters
+                    if char.pronouns[0] == 'she':
+                        filtered_templates.append(tmpl)
+                elif 'His name was' in tmpl or 'his name was' in tmpl:
+                    # Only use for male characters
+                    if char.pronouns[0] == 'he':
+                        filtered_templates.append(tmpl)
+                else:
+                    # Gender-neutral template, always ok
+                    filtered_templates.append(tmpl)
+            
+            # Temporarily override templates for this generation
+            original_templates = self.registry.templates.templates[template_category]
+            self.registry.templates.templates[template_category] = filtered_templates
+            
             intro = self.registry.templates.generate(template_category,
                 name=func_name,
                 type=display_type,
                 adj=adj,
                 article=NLGUtils.article(adj.split()[0] if adj else display_type)
             )
+            
+            # Restore original templates
+            self.registry.templates.templates[template_category] = original_templates
             return StoryFragment(intro, kernel_name="Character")
         
         # Lookup and execute kernel

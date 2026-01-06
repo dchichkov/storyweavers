@@ -513,16 +513,45 @@ def kernel_fly(ctx: StoryContext, *args, **kwargs) -> StoryFragment:
 @REGISTRY.kernel("Transformation")
 def kernel_transformation(ctx: StoryContext, *args, **kwargs) -> StoryFragment:
     """
-    Character or place transforms.
+    Character or situation transforms.
     
     Patterns:
       - Transformation(Village, Kindness)   -- village becomes kinder
       - Transformation(Tim, Brave)          -- character becomes brave
       - transformation=Skill(Build)+Teach   -- at end of growth arc
+      - Transformation(Play(Pirates) + SafeLight([flashlight, lantern])) -- ongoing activity transforms
     """
     chars = [a for a in args if isinstance(a, Character)]
-    objects = [str(a) for a in args if isinstance(a, str)]
+    fragments = [a for a in args if isinstance(a, StoryFragment)]
+    objects = [str(a) for a in args if not isinstance(a, (Character, StoryFragment))]
     
+    # Handle transformation content from fragments
+    if fragments:
+        # Combine multiple fragments into a coherent transformation
+        transformation_parts = []
+        for frag in fragments:
+            text = _to_phrase(frag)
+            # Skip empty or very short fragments
+            if not text or len(text.strip()) < 2:
+                continue
+            # Clean up verb forms - make sure they're in proper tense for past narrative
+            if text.startswith('playing'):
+                text = 'continued playing'
+            elif text.startswith('pretending'):
+                text = 'continued ' + text  # "continued pretending to be..."
+            elif text.startswith('using'):
+                text = 'used' + text[5:]  # "using X" -> "used X"
+            transformation_parts.append(text)
+        
+        if transformation_parts:
+            transformation_text = ' and '.join(transformation_parts)
+            if chars:
+                char = chars[0]
+                char.Joy += 10
+                return StoryFragment(f"After that, {char.name} {transformation_text}.")
+            return StoryFragment(f"From then on, they {transformation_text}.", kernel_name="Transformation")
+    
+    # Simple transformation with trait
     if chars:
         char = chars[0]
         trait = objects[0] if objects else 'different'
@@ -532,7 +561,7 @@ def kernel_transformation(ctx: StoryContext, *args, **kwargs) -> StoryFragment:
     if len(objects) >= 2:
         return StoryFragment(f"The {objects[0]} was filled with {_to_phrase(objects[1])}.")
     elif objects:
-        return StoryFragment(f"There was a transformation to {_to_phrase(objects[0])}.")
+        return StoryFragment(f"Everything changed to {_to_phrase(objects[0])}.")
     
     return StoryFragment("Everything was transformed.", kernel_name="Transformation")
 
