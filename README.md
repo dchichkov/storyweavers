@@ -4,6 +4,9 @@
 
 Storyweavers explores whether stories can be decomposed into compact, algebraic "kernels" — composable narrative patterns that can generate surface text. The project extracts these kernels from the TinyStories dataset (~2M children's stories) and investigates whether a small library of ~1-5K kernels can reconstruct coherent story datasets.
 
+## TODO
+**[TODO.md](TODO.md)** For gaps and next steps, specifically implementing AST → AST transformation.
+
 ## Core Concept: Story Kernels
 
 A **story kernel** is a symbolic, algebraic representation of a narrative's structure. It captures characters, their traits, narrative arcs, and emotional transformations in a composable format.
