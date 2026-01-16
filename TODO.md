@@ -61,29 +61,30 @@ The current architecture directly interprets the AST, which means each kernel mu
 REWRITE_RULES = [
     # Rule: Brave after Fear → inject _after context
     Rewrite(
-        pattern = Fear($char, $obj) + Brave($char),
-        output  = Fear($char, $obj) + Brave($char, _after='fear'),
+        pattern_src = "Fear(__C, __OBJ) + Brave(__C)",
+        output_src  = "Fear(__C, __OBJ) + Brave(__C, _after='fear')",
     ),
     
     # Rule: Same character twice → use pronoun
     Rewrite(
-        pattern = $Kernel1($char, **k1) + $Kernel2($char, **k2),
-        output  = $Kernel1($char, **k1) + $Kernel2($char, _use_pronoun=True, **k2),
-        when    = "$char == last_subject",
+        pattern_src = "__K1(__C) + __K2(__C)",
+        output_src  = "__K1(__C) + __K2(__C, _use_pronoun=True)",
+        # when_src / effect_src are supported by the prototype for simple cases
+        when_src    = "PhaseIs('setup')",
     ),
     
     # Rule: Transition on phase change
     Rewrite(
-        pattern = Fear($char, $obj),
-        output  = Fear($char, $obj, _transition='But one day, '),
-        when    = "phase == 'setup'",
-        effect  = "phase = 'rising'",
+        pattern_src = "Fear(__C, __OBJ)",
+        output_src  = "Fear(__C, __OBJ, _transition='But one day, ')",
+        when_src    = "PhaseIs('setup')",
+        effect_src  = "SetPhase('rising')",
     ),
     
     # Rule: Resolution after Conflict → add connector
     Rewrite(
-        pattern = Story(conflict=$C, resolution=$R),
-        output  = Story(conflict=$C, resolution=Sequence(_transition='In the end, ') + $R),
+        pattern_src = "Story(conflict=__C, resolution=__R)",
+        output_src  = "Story(conflict=__C, resolution=Sequence(_transition='In the end, ') + __R)",
     ),
 ]
 ```
@@ -107,11 +108,10 @@ REWRITE_RULES = [
 
 | Variable | Matches | Example |
 |----------|---------|---------|
-| `$char` | Any single Name node | `Tim`, `Lily` |
-| `$obj` | Any argument | `dog`, `ball`, `Fear(monster)` |
-| `$Kernel` | Any kernel name | `Fear`, `Brave`, `Happy` |
-| `**kwargs` | All keyword args | `to=Mom, about=toy` |
-| `$_` | Wildcard (ignore) | Match anything |
+| `__C` | Any subtree (metavariable) | `Tim`, `Lily`, `Kids(...)` |
+| `__OBJ` | Any subtree | `dog`, `ball`, `Fear(monster)` |
+| `__K1` | (future) any kernel name / call | `Fear`, `Brave`, `Happy` |
+| `__ANY` | (convention) wildcard (ignore) | match anything |
 
 ### Example: Pronoun Resolution Rule
 
@@ -320,16 +320,21 @@ ALL_RULES = PRONOUN_RULES + TRANSITION_RULES + PREREQ_RULES
 ### Testing Rules
 
 ```bash
-# Test a specific rule
-python -c "
-from rule_engine import RuleEngine, PREREQ_RULES
+# Test a specific rule (prototype: rewr5.py)
+python - <<'PY'
+from rewr5 import Rewrite, rewrite_source
 
-engine = RuleEngine(PREREQ_RULES)
-input = 'Fear(Tim, dog) + Brave(Tim)'
-output = engine.apply_rules(input)
-print(f'{input} → {output}')
-"
-# Output: Fear(Tim, dog) + Brave(Tim) → Fear(Tim, dog) + Brave(Tim, _after='fear')
+rules = [
+    Rewrite(
+        pattern_src="Fear(__C, __OBJ) + Brave(__C)",
+        output_src="Fear(__C, __OBJ) + Brave(__C, _after='fear', _use_pronoun=True)",
+    )
+]
+
+src = "Fear(Tim, dog) + Brave(Tim)"
+print(rewrite_source(src, rules))
+PY
+# Output: Fear(Tim, dog) + Brave(Tim, _after='fear', _use_pronoun=True)
 ```
 
 ### Comparison
@@ -346,163 +351,18 @@ print(f'{input} → {output}')
 
 ## Simplified Approach: AST → AST Transforms (Python)
 
-**Alternative: Write transforms in Python.** More verbose but full flexibility.
+This section is now **superseded** by the declarative rewrite prototype in `rewr5.py`.
 
-### Architecture
+**Implemented (done):**
+- Declarative `Rewrite(pattern_src=..., output_src=...)` rules in `rewr5.py`
+- Metavariables with `__` prefix (e.g. `__C`, `__OBJ`)
+- `+` chain flattening so rules can match inside `A + B + C` sequences
+- Minimal guard/effect DSL: `PhaseIs(...)`, `SetPhase(...)`
 
-```
-┌─────────────┐    ┌─────────────┐    ┌─────────────┐    ┌──────────┐
-│ Kernel AST  │───▶│ AST Passes  │───▶│ Transformed │───▶│ Execute  │
-│ (raw input) │    │ (rewrite)   │    │    AST      │    │  → Text  │
-└─────────────┘    └─────────────┘    └─────────────┘    └──────────┘
-                         │
-              ┌──────────┼──────────┐
-              │          │          │
-         Pronouns   Transitions  Prerequisites
-```
-
-### How It Works
-
-The AST is valid Python - we can walk it, analyze it, and **inject new keyword arguments** before execution.
-
-**Original AST:**
-```python
-Story(
-    protagonist=Tim(Character, Curious),
-    conflict=Fear(Tim, dog),
-    resolution=Brave(Tim)
-)
-```
-
-**After AST transform:**
-```python
-Story(
-    protagonist=Tim(Character, Curious),
-    _transition="One day",           # INJECTED
-    conflict=Fear(Tim, dog),
-    _use_pronoun=Tim,                # INJECTED: next ref to Tim uses "he"
-    _transition="But then",          # INJECTED  
-    resolution=Brave(Tim, _despite="fear")  # INJECTED: context from Fear
-)
-```
-
-### Implementation (Python 3.10+ with match/case)
-
-```python
-import ast
-from dataclasses import dataclass, field
-
-# Phase transitions for story flow
-PHASE_MAP = {'Fear': 'rising', 'Danger': 'rising', 'Scared': 'rising',
-             'Brave': 'climax', 'Victory': 'climax', 'Rescue': 'climax',
-             'Resolution': 'resolution', 'Moral': 'resolution', 'Happy': 'resolution'}
-
-TRANSITIONS = {
-    ('setup', 'rising'): "But one day, ",
-    ('rising', 'climax'): "Then, ",
-    ('climax', 'resolution'): "In the end, ",
-}
-
-# Prerequisites for context-aware generation
-PREREQUISITES = {
-    'Brave': ['Fear', 'Scared', 'Danger'],
-    'Rescue': ['Danger', 'Fall', 'Accident', 'Trapped'],
-    'Forgiveness': ['Conflict', 'Anger', 'Apology'],
-    'Happy': ['Sad', 'Fear', 'Loss'],
-    'Relief': ['Fear', 'Danger', 'Worry'],
-}
-
-
-def inject_kwarg(node: ast.Call, key: str, value) -> None:
-    """Add a keyword argument to a Call node."""
-    node.keywords.append(ast.keyword(arg=key, value=ast.Constant(value)))
-
-
-class StoryASTTransformer(ast.NodeTransformer):
-    """Transform story AST before execution using match/case patterns."""
-    
-    def __init__(self):
-        self.seen_kernels: list[str] = []
-        self.last_subject: str | None = None
-        self.current_phase: str = "setup"
-    
-    def visit_Call(self, node: ast.Call) -> ast.Call:
-        """Visit each kernel call, using match/case for clean pattern detection."""
-        # Recurse into children first (depth-first)
-        self.generic_visit(node)
-        
-        match node:
-            # Pattern: KernelName(CharacterRef, ...) - most common
-            case ast.Call(func=ast.Name(id=kernel_name), args=[ast.Name(id=char_name), *rest]):
-                self._transform_with_character(node, kernel_name, char_name)
-            
-            # Pattern: KernelName(...) - kernel without leading character
-            case ast.Call(func=ast.Name(id=kernel_name)):
-                self._transform_kernel(node, kernel_name)
-            
-            # Pattern: left + right - composition
-            case ast.BinOp(op=ast.Add(), left=left, right=right):
-                # Could inject composition hints here
-                pass
-        
-        return node
-    
-    def _transform_with_character(self, node: ast.Call, kernel_name: str, char_name: str) -> None:
-        """Transform a kernel call that has a character as first arg."""
-        self.seen_kernels.append(kernel_name)
-        
-        # Pronoun hint: same character as last subject?
-        if char_name == self.last_subject:
-            inject_kwarg(node, '_use_pronoun', True)
-        self.last_subject = char_name
-        
-        # Phase transition?
-        if kernel_name in PHASE_MAP:
-            new_phase = PHASE_MAP[kernel_name]
-            if new_phase != self.current_phase:
-                key = (self.current_phase, new_phase)
-                if key in TRANSITIONS:
-                    inject_kwarg(node, '_transition', TRANSITIONS[key])
-                self.current_phase = new_phase
-        
-        # Prerequisite context?
-        if kernel_name in PREREQUISITES:
-            matched = [p for p in PREREQUISITES[kernel_name] if p in self.seen_kernels]
-            if matched:
-                inject_kwarg(node, '_after', matched[0].lower())
-    
-    def _transform_kernel(self, node: ast.Call, kernel_name: str) -> None:
-        """Transform a kernel call without character analysis."""
-        self.seen_kernels.append(kernel_name)
-        
-        # Phase transition only
-        if kernel_name in PHASE_MAP:
-            new_phase = PHASE_MAP[kernel_name]
-            if new_phase != self.current_phase:
-                key = (self.current_phase, new_phase)
-                if key in TRANSITIONS:
-                    inject_kwarg(node, '_transition', TRANSITIONS[key])
-                self.current_phase = new_phase
-
-
-def transform_story_ast(source: str) -> str:
-    """Transform story kernel source, return modified source."""
-    tree = ast.parse(source, mode='eval')
-    transformer = StoryASTTransformer()
-    new_tree = transformer.visit(tree)
-    ast.fix_missing_locations(new_tree)
-    return ast.unparse(new_tree)
-
-
-# Example usage:
-if __name__ == "__main__":
-    original = "Story(protagonist=Tim(Character, Curious), conflict=Fear(Tim, dog), resolution=Brave(Tim))"
-    transformed = transform_story_ast(original)
-    print(f"Original:    {original}")
-    print(f"Transformed: {transformed}")
-    # Output: Story(protagonist=Tim(Character, Curious), conflict=Fear(Tim, dog, _transition='But one day, '), 
-    #               resolution=Brave(Tim, _use_pronoun=True, _transition='Then, ', _after='fear'))
-```
+**Remaining TODOs (not done yet):**
+- More flexible keyword matching/capture (e.g. kwargs “rest” capture)
+- Better matching policies (priorities, non-overlap, multi-match per pass)
+- Wire rewrite pass into story generation (`gen5registry.generate_story`) behind a flag
 
 ### Kernels Use Injected Kwargs
 
@@ -580,7 +440,7 @@ Story(
 )
 ```
 
-**After `StoryASTTransformer`:**
+**After rewrite rules applied (prototype: `rewr5.py`):**
 ```python
 Story(
     protagonist=Tim(Character, Curious),
@@ -626,12 +486,11 @@ Upgrade to full IR when:
 
 ### Implementation Path
 
-1. **Create `StoryASTTransformer` class** (~50 lines)
-2. **Add pronoun pass** - track subjects, inject `_use_pronoun`
-3. **Add transition pass** - detect phases, inject `_transition`
-4. **Add prerequisite pass** - track kernels, inject `_despite` etc.
-5. **Update key kernels** - Check for `_` kwargs
-6. **Test with sample.py** - Compare before/after
+1. **Create a rewrite ruleset** (`list[Rewrite]`) in “kernel algebra” syntax (use `__C`, `__OBJ` metavariables)
+2. **Apply rewrites pre-execution** (call `rewrite_source(...)` before evaluation)
+3. **Add core rules**: pronouns, transitions, prerequisites (start small, iterate)
+4. **Update key kernels** (optional): consume injected `_` kwargs for better text
+5. **Test with `sample.py`** and compare before/after
 
 ---
 

@@ -209,6 +209,55 @@ python story_tests.py --run
 
 See `story_tests/README.md` for complete testing documentation.
 
+---
+
+## AST → AST Transforms (Rewrite Rules) — `rewr5.py`
+
+Storyweavers kernels are valid Python AST. We can improve coherence (pronouns, transitions, prerequisites, argument normalization) by **rewriting the story AST before execution**.
+
+`rewr5.py` is the current prototype for **declarative rewrite rules** written in the same “story algebra / kernels” style.
+
+### How It Works (Prototype)
+
+- **Rules are patterns over kernel expressions** (including `+` composition).
+- **Metavariables** are plain identifiers that start with `__` (double underscore), e.g. `__C`, `__OBJ`.
+  - In a rewrite pattern/output, `__C` binds to a subtree and must match consistently.
+  - This keeps rule syntax readable while still being valid Python AST.
+- **`+` chains are flattened** (`A + B + C`) so rules can match inside longer sequences.
+- Optional **guards/effects** are supported via a tiny DSL:
+  - `when_src="PhaseIs('setup')"`
+  - `effect_src="SetPhase('climax')"`
+
+### Running the Demo
+
+```bash
+python rewr5.py
+```
+
+### Defining a Rule (Example)
+
+```python
+from rewr5 import Rewrite, rewrite_source, RewriteContext
+
+rules = [
+    Rewrite(
+        pattern_src="Fear(__C, __OBJ) + Brave(__C)",
+        output_src="Fear(__C, __OBJ) + Brave(__C, _after='fear', _use_pronoun=True)",
+        when_src="PhaseIs('setup')",
+        effect_src="SetPhase('climax')",
+    )
+]
+
+ctx = RewriteContext(phase="setup")
+new_source = rewrite_source(source, rules, ctx=ctx)
+```
+
+### Notes / Current Limitations
+
+- This is a **prototype** intended to validate the syntax + matching approach.
+- Keyword matching in patterns is currently strict (same count/order).
+- The engine is not yet wired into `gen5registry.generate_story()` by default; integrate once the rule set stabilizes.
+
 
 
 

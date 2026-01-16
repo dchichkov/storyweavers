@@ -7,6 +7,19 @@ Storyweavers explores whether stories can be decomposed into compact, algebraic 
 ## TODO
 **[TODO.md](TODO.md)** For gaps and next steps, specifically implementing AST → AST transformation.
 
+### AST → AST Transforms (Prototype)
+
+This repo now includes a prototype rewrite engine: `rewr5.py`.
+
+- **Purpose**: apply declarative “story algebra” rewrite rules to the kernel source **before** execution (pronouns, transitions, prerequisites, normalization).
+- **Rule syntax**: write patterns and outputs using kernel calls and `+` composition; use `__`-prefixed names (e.g. `__C`, `__OBJ`) as metavariables inside rewrite patterns.
+
+Try it:
+
+```bash
+python rewr5.py
+```
+
 ## Core Concept: Story Kernels
 
 A **story kernel** is a symbolic, algebraic representation of a narrative's structure. It captures characters, their traits, narrative arcs, and emotional transformations in a composable format.
