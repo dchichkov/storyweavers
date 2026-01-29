@@ -65,12 +65,10 @@ REWRITE_RULES = [
         output_src  = "Fear(__C, __OBJ) + Brave(__C, _after='fear')",
     ),
     
-    # Rule: Same character twice → use pronoun
+    # Rule: Same character twice → use pronoun (concrete example)
     Rewrite(
-        pattern_src = "__K1(__C) + __K2(__C)",
-        output_src  = "__K1(__C) + __K2(__C, _use_pronoun=True)",
-        # when_src / effect_src are supported by the prototype for simple cases
-        when_src    = "PhaseIs('setup')",
+        pattern_src = "Brave(__C) + Happy(__C)",
+        output_src  = "Brave(__C) + Happy(__C, _use_pronoun=True)",
     ),
     
     # Rule: Transition on phase change
@@ -110,8 +108,9 @@ REWRITE_RULES = [
 |----------|---------|---------|
 | `__C` | Any subtree (metavariable) | `Tim`, `Lily`, `Kids(...)` |
 | `__OBJ` | Any subtree | `dog`, `ball`, `Fear(monster)` |
-| `__K1` | (future) any kernel name / call | `Fear`, `Brave`, `Happy` |
-| `__ANY` | (convention) wildcard (ignore) | match anything |
+| `__X` | Any subtree (metavariable) | any consistent binding |
+
+**Note:** `rewr5.py` currently treats all `__` metavariables as *bindings* (no special wildcard, no “kernel-name metavariable”, no kwargs-rest capture yet).
 
 ### Example: Pronoun Resolution Rule
 
@@ -123,11 +122,8 @@ Story(
     resolution=Brave(Tim)
 )
 
-# Rule applied:
-Rewrite(
-    pattern = $K1($char) + $K2($char),
-    output  = $K1($char) + $K2($char, _use_pronoun=True),
-)
+# Example rule (prototype-friendly, concrete kernels):
+#   Brave(__C) + Happy(__C) → Brave(__C) + Happy(__C, _use_pronoun=True)
 
 # Output (after all rules):
 Story(
@@ -281,35 +277,39 @@ class RuleEngine:
 # Pronoun rules
 PRONOUN_RULES = [
     Rewrite(
-        pattern = $K1($char, **k1) + $K2($char, **k2),
-        output  = $K1($char, **k1) + $K2($char, _use_pronoun=True, **k2),
+        # Prototype-friendly, concrete example:
+        #   Brave(__C) + Happy(__C) → Brave(__C) + Happy(__C, _use_pronoun=True)
+        pattern_src = "Brave(__C) + Happy(__C)",
+        output_src  = "Brave(__C) + Happy(__C, _use_pronoun=True)",
     ),
 ]
 
 # Transition rules  
 TRANSITION_RULES = [
     Rewrite(
-        pattern = Fear($char, $obj),
-        output  = Fear($char, $obj, _transition='But one day, '),
-        when    = "phase == 'setup'",
-        effect  = "phase = 'rising'",
+        pattern_src = "Fear(__C, __OBJ)",
+        output_src  = "Fear(__C, __OBJ, _transition='But one day, ')",
+        when_src    = "PhaseIs('setup')",
+        effect_src  = "SetPhase('rising')",
     ),
     Rewrite(
-        pattern = Resolution($char, $outcome),
-        output  = Resolution($char, $outcome, _transition='In the end, '),
-        when    = "phase == 'climax'",
+        pattern_src = "Happy(__C)",
+        output_src  = "Happy(__C, _transition='In the end, ')",
+        when_src    = "PhaseIs('climax')",
+        effect_src  = "SetPhase('resolution')",
     ),
 ]
 
 # Prerequisite rules
 PREREQ_RULES = [
     Rewrite(
-        pattern = Fear($char, $_) + Brave($char),
-        output  = Fear($char, $_) + Brave($char, _after='fear'),
+        pattern_src = "Fear(__C, __OBJ) + Brave(__C)",
+        output_src  = "Fear(__C, __OBJ) + Brave(__C, _after='fear')",
     ),
     Rewrite(
-        pattern = Conflict($c1, $c2) + Forgiveness($c1, to=$c2),
-        output  = Conflict($c1, $c2) + Forgiveness($c1, to=$c2, _after='conflict'),
+        # (future) additional examples can go here once kwargs matching is more flexible
+        pattern_src = "Conflict(__C1, __C2) + Forgiveness(__C1, to=__C2)",
+        output_src  = "Conflict(__C1, __C2) + Forgiveness(__C1, to=__C2, _after='conflict')",
     ),
 ]
 
