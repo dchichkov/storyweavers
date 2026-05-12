@@ -357,7 +357,11 @@ RULES: List[Rewrite] = [
         output_src="Fear(__C, __OBJ) + Brave(__C, _after='fear', _use_pronoun=True)",
         when_src="PhaseIs('setup')",
         effect_src="SetPhase('climax')",
-    )
+    ),
+    Rewrite(
+        pattern_src="Warning(__C) + Anger",
+        output_src="Warning(__C) + Anger(__C)",
+    ),
 ]
 
 
@@ -366,6 +370,9 @@ if __name__ == "__main__":
 Lily(Character, girl, Curious)
 Fear(Lily, dog) + Brave(Lily)
 Happy(Lily)
+
+Mom(Character, mother, Strict)
+Warning(Mom) + Anger
 """
     print("--- BEFORE ---")
     print(src.strip())
