@@ -4,6 +4,54 @@ Engine improvements inspired by interactive fiction systems (Ink, ChoiceScript, 
 
 ---
 
+## Status Update — `gen6.py` (unified engine)
+
+Much of the design below has now been prototyped and assembled into a single
+self-contained engine: **`gen6.py`**. It fuses the two `*6` prototypes plus a
+coherency layer:
+
+```
+source --[declarative rewrites]--> --[coherence tagging]--> --[typed-world execution]--> --[narrate]--> story
+```
+
+| Capability | Where | State |
+|------------|-------|-------|
+| Typed kernels + backtracking dispatch | `gen6.py` (from `wrld6.py`) | ✅ Done |
+| World/Entity state, meme `+=`, effect + narration trace | `gen6.py` (from `wrld6.py`) | ✅ Done |
+| AST → AST declarative rewrites (`Rewrite`, `+`-chain windowing, meta call-names) | `gen6.py` (from `rewr6.py`) | ✅ Done |
+| **Coherency layer**: pronoun tagging pass (`tag_coherence`) + central `_use_pronoun`/`_transition` handling | `gen6.py` | ✅ Done |
+| Minimal typed kernel set (~35) ported from `gen5.py` | `gen6.py` | ✅ Done |
+| `generate()` / `generate_world()` entrypoints | `gen6.py` | ✅ Done |
+
+This directly addresses the **"Fundamental Problem: Direct Interpretation"**
+below: instead of every kernel deciding pronouns/transitions/prerequisites, a
+single AST pass tags continuation sentences and the renderer (`World.say`)
+honours the tag. Kernel bodies stay tiny and typed.
+
+`gen5.py`, `wrld6.py`, and `rewr6.py` are intentionally **left as-is**:
+`gen5.py` remains the production engine (rich NLG, 800+ kernels), while
+`wrld6.py` / `rewr6.py` are the reference demos that `gen6.py` was assembled
+from.
+
+Run it:
+
+```bash
+python gen6.py
+```
+
+### Still open for `gen6.py`
+
+- **NLG depth**: port more of `gen5.py`'s `NLGUtils`/templates (verb inflection,
+  article handling, template variety) — `gen6` currently uses fixed phrasings.
+- **Transitions**: `_transition` is plumbed through but not yet driven by phase;
+  add `when_src`/`effect_src` guards (below) to emit phase-aware connectors.
+- **Rewrite expressiveness**: kwargs/rest wildcards and `when_src`/`effect_src`
+  guards (the declarative engine currently matches strictly and has no guards).
+- **Coverage/tests**: add a coverage + pinned-story harness pointed at `gen6`
+  (mirroring `coverage.py` + `story_tests/`), and grow the ported kernel set.
+
+---
+
 ## Current Architecture Overview
 
 ```

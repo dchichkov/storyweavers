@@ -269,11 +269,23 @@ class Registry:
                 candidates.append((-bound_count, bound[0], variant, bound[1], bound[2]))
         if not candidates:
             raise TypeError(f"No matching variant for {name}({', '.join(_name(a) for a in args)})")
-        _, _, variant, bound_args, bound_kwargs = sorted(candidates, key=lambda item: (item[0], item[1]))[0]
+        # Add an enumeration index as a final tie-breaker so sorting never has to
+        # compare Variant objects (which are not orderable).
+        ranked = sorted(
+            ((item[0], item[1], i, item[2], item[3], item[4]) for i, item in enumerate(candidates)),
+            key=lambda item: (item[0], item[1], item[2]),
+        )
+        _, _, _, variant, bound_args, bound_kwargs = ranked[0]
         return variant, bound_args, bound_kwargs
 
 
 REGISTRY = Registry()
+
+
+# Penalty added to the score when an Actor parameter is filled from the World's
+# implicit actor instead of an explicit positional argument. It keeps explicit
+# bindings strongly preferred while still allowing the fallback when needed.
+_ACTOR_FALLBACK_PENALTY = 1000
 
 
 def _try_bind(world: World, variant: Variant, args: List[Any], kwargs: Dict[str, Any]) -> Tuple[int, List[Any], Dict[str, Any]] | None:
@@ -281,58 +293,67 @@ def _try_bind(world: World, variant: Variant, args: List[Any], kwargs: Dict[str,
     if params and params[0].name in ("ctx", "world"):
         params = params[1:]
 
-    remaining = list(args)
     unused_kwargs = dict(kwargs)
-    bound_args: List[Any] = []
-    bound_kwargs: Dict[str, Any] = {}
-    score = 0
+    var_keyword = False
+    kw_bound: Dict[str, Any] = {}
+    plan: List[Tuple[inspect.Parameter, Any]] = []
 
     for param in params:
         annotation = variant.hints.get(param.name, param.annotation)
         if param.kind == inspect.Parameter.VAR_POSITIONAL:
             return None
         if param.kind == inspect.Parameter.VAR_KEYWORD:
-            bound_kwargs.update(unused_kwargs)
-            unused_kwargs = {}
+            var_keyword = True
             continue
-
         if param.name in unused_kwargs:
             value = unused_kwargs.pop(param.name)
             if not _matches(value, annotation):
                 return None
-            score += 0
-        elif annotation is Actor:
-            index = _find_match(remaining, annotation)
-            if index is not None:
-                value = remaining.pop(index)
-                score += index
-            elif world.actor is not None:
-                value = world.actor
-                score += 1
-            else:
-                return None
-        else:
-            index = _find_match(remaining, annotation)
-            if index is None:
-                return None
-            value = remaining.pop(index)
-            score += index
+            kw_bound[param.name] = value
+            continue
+        plan.append((param, annotation))
 
-        if param.kind == inspect.Parameter.KEYWORD_ONLY:
-            bound_kwargs[param.name] = value
-        else:
-            bound_args.append(value)
-
-    if remaining or unused_kwargs:
+    if unused_kwargs and not var_keyword:
         return None
-    return score, bound_args, bound_kwargs
 
+    # Backtracking search: assign every leftover positional arg to some plan
+    # parameter (respecting type matches), letting Actor parameters fall back to
+    # world.actor. Greedy per-parameter binding cannot find assignments like
+    # Return(eraser, Lily) where the Actor giver must come from world.actor while
+    # the later Character recipient consumes the positional Lily.
+    pool = list(enumerate(args))
+    best: Tuple[int, Dict[str, Any]] | None = None
 
-def _find_match(values: List[Any], annotation: Any) -> int | None:
-    for i, value in enumerate(values):
-        if _matches(value, annotation):
-            return i
-    return None
+    def search(i: int, available: List[Tuple[int, Any]], score: int, assigned: Dict[str, Any]) -> None:
+        nonlocal best
+        if i == len(plan):
+            if not available and (best is None or score < best[0]):
+                best = (score, dict(assigned))
+            return
+        param, annotation = plan[i]
+        for k, (orig_index, value) in enumerate(available):
+            if _matches(value, annotation):
+                assigned[param.name] = value
+                search(i + 1, available[:k] + available[k + 1:], score + orig_index, assigned)
+                del assigned[param.name]
+        if annotation is Actor and world.actor is not None:
+            assigned[param.name] = world.actor
+            search(i + 1, available, score + _ACTOR_FALLBACK_PENALTY, assigned)
+            del assigned[param.name]
+
+    search(0, pool, 0, {})
+    if best is None:
+        return None
+
+    score, assigned = best
+    # Pass everything by name to avoid positional/keyword misalignment when a
+    # middle parameter was supplied as a keyword.
+    bound_kwargs: Dict[str, Any] = {}
+    bound_kwargs.update(kw_bound)
+    bound_kwargs.update(assigned)
+    if var_keyword:
+        bound_kwargs.update(unused_kwargs)
+    return score, [], bound_kwargs
 
 
 def _matches(value: Any, annotation: Any) -> bool:

@@ -5,19 +5,50 @@
 Storyweavers explores whether stories can be decomposed into compact, algebraic "kernels" — composable narrative patterns that can generate surface text. The project extracts these kernels from the TinyStories dataset (~2M children's stories) and investigates whether a small library of ~1-5K kernels can reconstruct coherent story datasets.
 
 ## TODO
-**[TODO.md](TODO.md)** For gaps and next steps, specifically implementing AST → AST transformation.
+**[TODO.md](TODO.md)** For gaps and next steps. The top of TODO.md has a status update on the unified `gen6.py` engine.
 
-### AST → AST Transforms (Prototype)
+### `gen6.py` — Unified Engine (typed world + rewrites + coherency) ⭐ New
 
-This repo now includes a prototype rewrite engine: `rewr5.py`.
+`gen6.py` assembles the experiments below into a single, self-contained engine:
+
+```
+source --[declarative rewrites]--> --[coherence tagging]--> --[typed-world execution]--> --[narrate]--> story
+```
+
+- **Typed kernels + dispatch** (from `wrld6.py`): kernels declare typed params (`Character`, `Physical`, `Actor`); a backtracking binder selects the matching variant; uppercase "meme" slots carry concept-specific `+=` behaviour; effects and narration are traced automatically.
+- **AST → AST rewrites** (from `rewr6.py`): declarative rules rewrite kernel source **before** execution (normalization, enrichment, prerequisites). Patterns use kernel calls + `+` composition with `__`-prefixed metavariables (e.g. `__C`, `__S`).
+- **Coherency layer**: a single AST pass (`tag_coherence`) tracks narration order and tags repeated-subject kernels so the renderer uses **pronouns** (and `_transition` connectors) — instead of every kernel deciding this on its own.
+
+```bash
+python gen6.py
+```
+
+```python
+from gen6 import generate
+print(generate("""
+Lily(Character, girl, Curious)
+Fear(Lily, dog) + Brave(Lily)
+Joy(Lily)
+"""))
+# "Once upon a time, there was a little curious girl named Lily.
+#  Lily became afraid of the dog. Even though she was afraid, she was brave.
+#  She felt full of joy."
+```
+
+`gen5.py`, `wrld6.py`, and `rewr6.py` are left untouched: `gen5.py` stays the production engine, while `wrld6.py` / `rewr6.py` are the reference demos `gen6.py` was built from.
+
+### AST → AST Transforms (Earlier Prototypes)
+
+The earliest rewrite prototype is `rewr5.py` (and `rewr6.py`, which composes with `wrld6.py`):
 
 - **Purpose**: apply declarative “story algebra” rewrite rules to the kernel source **before** execution (pronouns, transitions, prerequisites, normalization).
 - **Rule syntax**: write patterns and outputs using kernel calls and `+` composition; use `__`-prefixed names (e.g. `__C`, `__OBJ`) as metavariables inside rewrite patterns.
 
-Try it:
+Try them:
 
 ```bash
 python rewr5.py
+python rewr6.py
 ```
 
 ## Core Concept: Story Kernels
@@ -316,6 +347,10 @@ This is an exploration of story as code — where narrative structure becomes ex
 | `gen5.py` | Core generation engine (representative kernels) | ❌ No |
 | `gen5k01.py` | Kernel Pack #01 (additional kernels) | ❌ No |
 | `chark01.py` | Kernel Pack #01 (character kernels) | ❌ No |
+| `gen6.py` | Unified engine: typed world + AST→AST rewrites + coherency layer | ❌ No |
+| `wrld6.py` | Typed world / dispatch prototype (demo `gen6` builds on) | ❌ No |
+| `rewr6.py` | AST→AST rewrite engine prototype (demo `gen6` builds on) | ❌ No |
+| `rewr5.py` | Earlier AST→AST rewrite prototype | ❌ No |
 | `story.py` | Kernel algebra experiments | ❌ No |
 | `AGENTS.md` | Instructions for coding agents | ❌ No |
 | `gen.py`, `gen2.py`, `gen3.py`, `gen4.py` | Earlier generation attempts | Varies |
