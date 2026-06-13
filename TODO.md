@@ -65,11 +65,11 @@ and kernel-library size.
 | Metric | gen6 before | **gen6 now** | gen5 | Notes |
 |--------|-------------|--------------|------|-------|
 | Parse OK (`ast.parse`) | 83.5% | 83.5% | ~80.8% | Same format; remaining ~16% is non-Python the LLM emitted |
-| Execute end-to-end (no exception) | 0.2% | **99.9%** | 96.5% | Fallback never raises → higher than gen5 |
-| Kernel-name coverage (usages) | 36.9% | **46.3%** | 85.0% | 85 kernel names / 94 variants vs gen5's 807 |
-| Stories ≥90% kernel-covered | — | 563 | 26,982 | long tail = kernel-library size |
+| Execute end-to-end (no exception) | 0.2% | **99.8%** | 96.5% | Fallback never raises → higher than gen5 |
+| Kernel-name coverage (usages) | 36.9% | **46.8%** | 85.0% | 86 kernel names / 97 variants vs gen5's 807 |
+| Stories ≥90% kernel-covered | — | 597 | 26,982 | long tail = kernel-library size |
 
-The robustness headline is resolved: **0.2% → 99.9% end-to-end execution**. The
+The robustness headline is resolved: **0.2% → 99.8% end-to-end execution**. The
 remaining gap to gen5 is purely **kernel-library size** (port more kernels).
 
 ### A. Robustness / execution (highest priority) — ✅ DONE
@@ -83,6 +83,14 @@ remaining gap to gen5 is purely **kernel-library size** (port more kernels).
 - [x] **Arity tolerance** — binder now supports optional positional params and
       skipping; `Actor` params fall back to the protagonist, so shapes like
       `Find(newPlace)` / `Play(smallball)` bind or degrade cleanly.
+- [x] **Variable-arity characters (`*args`)** — the binder now accepts
+      `VAR_POSITIONAL` params (optionally type-filtered, e.g. `*chars: Character`),
+      building a real positional call. Handles dataset shapes like
+      `Visit(zoo, Timmy, Mom, Gorilla)` / `Apology(Anna, Ben, Lily)`. (Found via
+      the AGENTS.md workflow dry-run; see "Findings" below.)
+- [x] **Fallback keeps trailing characters** — `fallback_text` now lists extra
+      characters as targets, so `Visit(Lily, Mom, Friend)` →
+      "Lily visited Mom and Friend." instead of dropping Mom/Friend.
 
 ### B. AST / operator coverage — ✅ (weights deferred)
 
@@ -106,6 +114,9 @@ remaining gap to gen5 is purely **kernel-library size** (port more kernels).
 
 - [x] **`NLGUtils`** ported: `past_tense` (irregular table + rules), `article`
       (a/an phonetic exceptions), `pluralize` (irregulars), `join_list` (Oxford).
+      Fixed consonant-doubling so multi-syllable verbs don't double
+      (`visit`→`visited`, not `visitted`); added common offenders to the
+      irregular table. (Found via the workflow dry-run.)
 - [x] **Concept-phrase helpers**: `to_phrase`, `state_to_phrase`,
       `action_to_phrase`, `event_to_phrase`, `_camel_words`.
 - [ ] **TemplateEngine**: 5+ phrasing variations per kernel, gender-filtered +
@@ -115,15 +126,32 @@ remaining gap to gen5 is purely **kernel-library size** (port more kernels).
 
 ### E. Kernel library size & state model
 
-- [~] **Port high-frequency kernels** — first batch done in `gen6k01.py` (85
-      names / 94 variants). Continue porting the long tail to close the coverage
-      gap toward gen5's 85% (gen6k02.py, …).
+- [~] **Port high-frequency kernels** — first batch in `gen6k01.py`; `gen6k02.py`
+      adds `Visit` (86 names / 97 variants total). Continue porting the long tail
+      to close the coverage gap toward gen5's 85%. Top remaining by usage:
+      Catalyst, Adventure, Bond, Obstacle, Praise, Process, Advice, Build, Open,
+      Reveal, Cooperation, Pain, Threat, Break, Meet, Offer, Call, Chase, …
 - [ ] **Decide emotional-state model**: gen5 uses 0–100 with baselines
       (Joy/Love start at 50); gen6 memes start at 0 and grow. Pick one and document.
 
 ### F. API surface — ✅
 
 - [x] `generate_story()` alias exposed via `gen6registry` (also `generate()` in `gen6`).
+
+### Findings from the AGENTS.md workflow dry-run (Visit)
+
+Ran the documented gen6 workflow end-to-end on `Visit` (3,368 usages). The
+workflow itself is sound; the dry-run surfaced and fixed three engine issues:
+
+- [x] **`*args` not supported** by the binder → fixed (section A). The dataset
+      passes variable-length character lists constantly.
+- [x] **`past_tense` doubling bug** (`visitted`, `lessonned`) → fixed (section D).
+- [x] **Fallback dropped trailing characters** → fixed (section A).
+- [x] **`AGENTS.md`** updated: "sample-first" is now a hard rule, and the gen6
+      template documents the `*args` variable-arity pattern.
+- [ ] **Open quality nit**: 3-character all-character calls like
+      `Visit(Lily, Mom, Friend)` are ambiguous (who visits whom) and currently
+      go through the fallback. Acceptable; revisit if it shows up often.
 
 ---
 
@@ -152,6 +180,8 @@ remaining gap to gen5 is purely **kernel-library size** (port more kernels).
 - [x] **`AGENTS.md`** — added a "gen6 Authoring (Current)" section at the top
       (typed variants, `Actor` doer, `@REGISTRY.addition`, `ctx.say`, gen6
       commands, key-files table); gen5 instructions retained as legacy reference.
+      Also added a hard "sample real usage BEFORE writing a kernel" rule and a
+      `*args` variable-arity pattern in the template (from the workflow dry-run).
 - [~] **`README.md`** — gen6 documented as the unified engine; promote to the
       primary pipeline diagram once the kernel library nears parity.
 

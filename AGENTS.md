@@ -31,15 +31,23 @@ gen6 is a typed, fault-tolerant engine. Key differences from gen5:
 
 ### gen6 Workflow
 
+> **⚠️ ALWAYS sample real usage BEFORE writing a kernel definition.** Do not
+> guess a signature. Sample several stories that use the kernel, read how it is
+> actually called in the dataset (positional vs keyword args, which types, what
+> it composes with), and only then write the implementation + variants. This is
+> the single most important rule for producing kernels that match real data.
+
 ```bash
 # 1. Find high-frequency missing kernels (defaults to gen6)
 python coverage.py --missing --top 30
 python sample.py -l
 
-# 2. Study real usage (original vs generated, with source)
+# 2. REQUIRED: sample several real usages of the SPECIFIC kernel before coding it.
+#    Read the argument shapes + what it pairs with; --show-source shows existing
+#    variants and the original-vs-generated stories side by side.
 python sample.py -k Quest -n 5 --seed 42 --show-source
 
-# 3. Implement in a kernel pack (gen6kXX.py), then test
+# 3. Only now implement in a kernel pack (gen6kXX.py), then test
 python gen6k01.py
 python sample.py -k Quest -n 3 --seed 42
 
@@ -47,6 +55,12 @@ python sample.py -k Quest -n 3 --seed 42
 python coverage.py --brief --execute 3000
 python -c "from gen6registry import get_kernel_count, get_variant_count; print(get_kernel_count(), get_variant_count())"
 ```
+
+Why sampling first matters in gen6: typed dispatch picks variants by argument
+*shape*, so you must know the real shapes (e.g. `Quest(hero, goal=...)` vs
+`Quest(Search(x), chars, result=...)`) to type the parameters correctly and add
+the right extra variants. Skipping this step produces kernels that silently fall
+through to the generic fallback.
 
 ### gen6 Kernel Template
 
@@ -70,6 +84,24 @@ def Discover(ctx: World, char: Actor, thing: Physical = None, **kw) -> str:
 def DiscoverConcept(ctx: World, char: Actor, what, **kw) -> str:
     return f"{ctx.say(char)} discovered {to_phrase(what)}."
 ```
+
+**Variable-arity characters (`*args`).** The dataset often passes a variable
+number of characters (e.g. `Visit(zoo, Timmy, Mom, Gorilla)`,
+`Apology(Anna, Ben, Lily)`). The binder supports `*args`, which can be
+type-filtered — it only matches when *every* leftover positional arg fits:
+
+```python
+@REGISTRY.kernel("Visit")
+def VisitPlaceGroup(ctx: World, place: Physical, *visitors: Character) -> str:
+    if visitors:
+        ctx.actor = visitors[0]
+    names = NLGUtils.join_list([str(v) for v in visitors]) or "everyone"
+    return f"{names} went to {place}."
+```
+
+`*args` constraints: fixed positional params before `*args` cannot be supplied by
+keyword in the same call (rare in the dataset); keyword phases still go through
+`**kw`. See `gen6k02.py` for a complete worked example built via this workflow.
 
 Notes:
 - **Meta / structural kernels** (Quest, Journey, Cautionary, Conflict,

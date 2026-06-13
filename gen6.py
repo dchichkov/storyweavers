@@ -404,13 +404,17 @@ def _try_bind(world: World, variant: Variant, args: List[Any], kwargs: Dict[str,
 
     unused_kwargs = dict(kwargs)
     var_keyword = False
+    var_positional: Optional[Tuple[str, Any]] = None  # (name, annotation)
     kw_bound: Dict[str, Any] = {}
     plan: List[Tuple[inspect.Parameter, Any, bool]] = []
 
     for param in params:
         annotation = variant.hints.get(param.name, param.annotation)
         if param.kind == inspect.Parameter.VAR_POSITIONAL:
-            return None
+            # `*args` collects any leftover positional arguments (optionally
+            # type-filtered, e.g. `*chars: Character`).
+            var_positional = (param.name, annotation)
+            continue
         if param.kind == inspect.Parameter.VAR_KEYWORD:
             var_keyword = True
             continue
@@ -429,15 +433,34 @@ def _try_bind(world: World, variant: Variant, args: List[Any], kwargs: Dict[str,
 
     if unused_kwargs and not var_keyword:
         return None
+    # A fixed positional param supplied by keyword can't be combined with `*args`
+    # (Python would fill it positionally too), so reject that rare combination.
+    if var_positional is not None and kw_bound:
+        return None
 
     pool = list(enumerate(args))
-    best: Tuple[int, Dict[str, Any]] | None = None
+    # best = (score, assigned, variadic_values)
+    best: Optional[Tuple[int, Dict[str, Any], List[Any]]] = None
+
+    def consider(score: int, assigned: Dict[str, Any], available: List[Tuple[int, Any]]) -> None:
+        nonlocal best
+        if var_positional is None:
+            if available:
+                return  # leftover positional args with nowhere to go
+            variadic: List[Any] = []
+        else:
+            ann = var_positional[1]
+            rem = [v for _, v in available]
+            if ann not in (inspect._empty, Any) and not all(_matches(v, ann) for v in rem):
+                return  # a leftover arg doesn't fit the typed *args
+            score += sum(idx for idx, _ in available)
+            variadic = rem
+        if best is None or score < best[0]:
+            best = (score, dict(assigned), variadic)
 
     def search(i: int, available: List[Tuple[int, Any]], score: int, assigned: Dict[str, Any]) -> None:
-        nonlocal best
         if i == len(plan):
-            if not available and (best is None or score < best[0]):
-                best = (score, dict(assigned))
+            consider(score, assigned, available)
             return
         param, annotation, optional = plan[i]
         for k, (orig_index, value) in enumerate(available):
@@ -457,13 +480,28 @@ def _try_bind(world: World, variant: Variant, args: List[Any], kwargs: Dict[str,
     if best is None:
         return None
 
-    score, assigned = best
-    bound_kwargs: Dict[str, Any] = {}
-    bound_kwargs.update(kw_bound)
-    bound_kwargs.update(assigned)
-    if var_keyword:
-        bound_kwargs.update(unused_kwargs)
-    return score, [], bound_kwargs
+    score, assigned, variadic = best
+
+    if var_positional is None:
+        # No `*args`: pass everything by name to avoid positional/keyword skew.
+        bound_kwargs: Dict[str, Any] = {}
+        bound_kwargs.update(kw_bound)
+        bound_kwargs.update(assigned)
+        if var_keyword:
+            bound_kwargs.update(unused_kwargs)
+        return score, [], bound_kwargs
+
+    # With `*args`, fixed positional params must be passed positionally (in
+    # declaration order), then the variadic items, then keyword extras.
+    positional: List[Any] = []
+    for param, _ann, _opt in plan:
+        if param.name in assigned:
+            positional.append(assigned[param.name])
+        else:
+            positional.append(param.default)
+    positional.extend(variadic)
+    bound_kwargs = dict(unused_kwargs) if var_keyword else {}
+    return score, positional, bound_kwargs
 
 
 def _matches(value: Any, annotation: Any) -> bool:
@@ -527,6 +565,13 @@ class NLGUtils:
         'strike': 'struck', 'sweep': 'swept', 'wear': 'wore', 'weep': 'wept',
         'build': 'built', 'bend': 'bent', 'lend': 'lent', 'tear': 'tore',
         'bite': 'bit', 'break': 'broke', 'blow': 'blew', 'dig': 'dug',
+        # Common multi-syllable verbs whose final consonant must NOT double
+        # (unstressed last syllable): visit -> visited, not "visitted".
+        'visit': 'visited', 'open': 'opened', 'offer': 'offered',
+        'happen': 'happened', 'enter': 'entered', 'listen': 'listened',
+        'answer': 'answered', 'water': 'watered', 'gather': 'gathered',
+        'cover': 'covered', 'remember': 'remembered', 'travel': 'traveled',
+        'wander': 'wandered', 'whisper': 'whispered', 'order': 'ordered',
     }
 
     AN_WORDS = {
@@ -551,7 +596,11 @@ class NLGUtils:
             return verb + 'd'
         if verb.endswith('y') and len(verb) > 1 and verb[-2] not in 'aeiou':
             return verb[:-1] + 'ied'
-        if len(verb) >= 3 and verb[-1] not in 'aeiouwxy' and verb[-2] in 'aeiou' and verb[-3] not in 'aeiou':
+        # Double the final consonant only for short (≈single-syllable, stressed)
+        # words: stop->stopped, hug->hugged. Longer words with an unstressed
+        # final syllable (visit, offer, …) are handled by IRREGULAR_PAST above.
+        if (len(verb) <= 4 and len(verb) >= 3 and verb[-1] not in 'aeiouwxy'
+                and verb[-2] in 'aeiou' and verb[-3] not in 'aeiou'):
             return verb + verb[-1] + 'ed'
         return verb + 'ed'
 
@@ -693,7 +742,9 @@ def fallback_text(world: World, name: str, args: List[Any], kwargs: Dict[str, An
         words = phrase.split()
         verb = NLGUtils.past_tense(words[0]) if words else phrase
         rest = " ".join(words[1:])
-        targets = [str(o) for o in objs] + [c for c in concepts]
+        # Include any further characters as targets too, so multi-character calls
+        # like Visit(Lily, Mom, Friend) don't silently drop Mom and Friend.
+        targets = [str(c) for c in chars[1:]] + [str(o) for o in objs] + list(concepts)
         tail = (" " + NLGUtils.join_list(targets)) if targets else ""
         body = f"{world.say(actor)} {verb}{(' ' + rest) if rest else ''}{tail}.".replace("  ", " ")
         return (body + (" " + sub_text if sub_text else "")).strip()
