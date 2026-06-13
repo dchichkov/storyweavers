@@ -52,6 +52,119 @@ python gen6.py
 
 ---
 
+## gen6 ← gen5 Feature Parity (Migration Checklist)
+
+Goal: bring `gen6.py` to functional parity with `gen5.py` so the tooling can be
+ported and `gen5.py` retired. **The kernel *format* is already unified** — both
+engines `ast.parse` the same `kernel` field from `TinyStories_kernels/*.jsonl`,
+so **no re-extraction is needed**. The gaps are robustness, AST coverage, NLG,
+and kernel-library size.
+
+### Compatibility snapshot (data00, 3,000-story sample)
+
+| Metric | gen6 before | **gen6 now** | gen5 | Notes |
+|--------|-------------|--------------|------|-------|
+| Parse OK (`ast.parse`) | 83.5% | 83.5% | ~80.8% | Same format; remaining ~16% is non-Python the LLM emitted |
+| Execute end-to-end (no exception) | 0.2% | **99.9%** | 96.5% | Fallback never raises → higher than gen5 |
+| Kernel-name coverage (usages) | 36.9% | **46.3%** | 85.0% | 85 kernel names / 94 variants vs gen5's 807 |
+| Stories ≥90% kernel-covered | — | 563 | 26,982 | long tail = kernel-library size |
+
+The robustness headline is resolved: **0.2% → 99.9% end-to-end execution**. The
+remaining gap to gen5 is purely **kernel-library size** (port more kernels).
+
+### A. Robustness / execution (highest priority) — ✅ DONE
+
+- [x] **Fallback for unknown kernels** — `gen6.fallback_text`: CamelCase →
+      readable past-tense sentence; folds in nested Traces from args/kwargs.
+- [x] **No-variant fallback** — `Registry._select_variant` returns `None`;
+      `Registry.call` routes to `fallback_text` instead of raising.
+- [x] **Per-kernel try/except** in `Registry.call` so a failing kernel degrades
+      to fallback text rather than killing generation.
+- [x] **Arity tolerance** — binder now supports optional positional params and
+      skipping; `Actor` params fall back to the protagonist, so shapes like
+      `Find(newPlace)` / `Play(smallball)` bind or degrade cleanly.
+
+### B. AST / operator coverage — ✅ (weights deferred)
+
+- [x] **`/` attention-dilution operator** — `X / n` with large `n` suppresses `X`.
+- [x] **Lists** `[a, b, c]` (`ast.List` / `ast.Tuple`).
+- [x] **Subscript/indexing** (`ast.Subscript`) + unary minus.
+- [ ] **Fragment weights** — full weight model + threshold filtering at render
+      (gen6 currently only does binary suppress via `/`). Deferred.
+
+### C. Meta / structural kernels (kwarg-driven) — ✅ first batch
+
+- [x] First batch of multi-phase meta kernels in `gen6k01.py`: **Quest, Journey,
+      Cautionary, Conflict, Transformation, Resolution, Response, Encounter,
+      Accident, Routine, Friendship (phased)** (kwargs `state=`, `catalyst=`,
+      `process=`, `insight=`, `outcome=`, `transformation=`, …).
+- [x] **Focus pre-binding** — `Executor.eval` sets `world.actor` from the first
+      character arg before evaluating the rest, so nested kwargs bind to the
+      right actor.
+
+### D. NLG / surface text — ✅ (TemplateEngine deferred)
+
+- [x] **`NLGUtils`** ported: `past_tense` (irregular table + rules), `article`
+      (a/an phonetic exceptions), `pluralize` (irregulars), `join_list` (Oxford).
+- [x] **Concept-phrase helpers**: `to_phrase`, `state_to_phrase`,
+      `action_to_phrase`, `event_to_phrase`, `_camel_words`.
+- [ ] **TemplateEngine**: 5+ phrasing variations per kernel, gender-filtered +
+      first-vs-subsequent intros. gen6 uses fixed phrasings. Deferred.
+- [ ] **Character type inference**: richer `common_types`, trait-vs-type
+      disambiguation. Partial (auto-"little" for children; he/she/they tables).
+
+### E. Kernel library size & state model
+
+- [~] **Port high-frequency kernels** — first batch done in `gen6k01.py` (85
+      names / 94 variants). Continue porting the long tail to close the coverage
+      gap toward gen5's 85% (gen6k02.py, …).
+- [ ] **Decide emotional-state model**: gen5 uses 0–100 with baselines
+      (Joy/Love start at 50); gen6 memes start at 0 and grow. Pick one and document.
+
+### F. API surface — ✅
+
+- [x] `generate_story()` alias exposed via `gen6registry` (also `generate()` in `gen6`).
+
+---
+
+## Tooling & Docs Migration to gen6 (then retire gen5)
+
+### Code / tooling
+
+- [x] **`gen6registry.py`** — auto-discovers and loads `gen6kXX.py` / `char6kXX.py`
+      packs into the shared `REGISTRY`; exposes `generate_story`,
+      `get_kernel_count`, `get_variant_count`, `list_kernels`, `list_loaded_packs`.
+- [x] **`coverage.py`** — defaults to `--engine gen6` (gen5 still available via
+      `--engine gen5`); added `--execute N` end-to-end success metric. gen6
+      `REGISTRY.kernels` (name → `list[Variant]`) works with the existing
+      membership checks; `__contains__` added to the Registry.
+- [x] **`sample.py`** — engine-aware imports (default gen6, `--engine`/env switch);
+      `--show-source` handles multi-variant kernels; suggestion template uses the
+      gen6 typed style.
+- [ ] **`check_duplicates.py`** — redefine "duplicate" for gen6 (identical
+      signature + body) rather than flagging intended multi-variant kernels.
+      (Currently runs clean against gen5; revisit for gen6 semantics.)
+- [ ] **`story_tests.py` / `story_tests/`** — repoint the pinned-story harness at
+      gen6 and regenerate golden files (gen6 output differs).
+
+### Docs / agent guidance
+
+- [x] **`AGENTS.md`** — added a "gen6 Authoring (Current)" section at the top
+      (typed variants, `Actor` doer, `@REGISTRY.addition`, `ctx.say`, gen6
+      commands, key-files table); gen5 instructions retained as legacy reference.
+- [~] **`README.md`** — gen6 documented as the unified engine; promote to the
+      primary pipeline diagram once the kernel library nears parity.
+
+### Decommission gen5
+
+- [ ] Keep `gen5.py`, `gen5kXX.py`, `gen5registry.py` as reference **until gen6
+      reaches coverage parity** (execute ✅ already exceeds gen5; remaining target
+      is kernel-name coverage comparable to gen5's ~85%).
+- [ ] Then move the gen5 family (and superseded `gen*.py`, `wrld5.py`, `rewr5.py`)
+      into `legacy/` or `bak/` and update imports/docs.
+
+---
+
 ## Current Architecture Overview
 
 ```

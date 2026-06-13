@@ -21,10 +21,22 @@ from pathlib import Path
 warnings.filterwarnings('ignore', category=SyntaxWarning)
 
 
-def load_registry():
-    """Load the kernel registry with all kernel packs."""
-    from gen5registry import REGISTRY
+def load_registry(engine: str = "gen6"):
+    """Load the kernel registry with all kernel packs for the chosen engine."""
+    if engine == "gen5":
+        from gen5registry import REGISTRY
+        return REGISTRY
+    from gen6registry import REGISTRY
     return REGISTRY
+
+
+def load_generate(engine: str = "gen6"):
+    """Return the generate_story callable for the chosen engine."""
+    if engine == "gen5":
+        from gen5registry import generate_story
+        return generate_story
+    from gen6registry import generate_story
+    return generate_story
 
 
 def extract_character_names(kernel: str) -> set:
@@ -55,10 +67,14 @@ def main():
     parser.add_argument('--top', '-n', type=int, default=30, help='Number of top items to show')
     parser.add_argument('--data', '-d', default='TinyStories_kernels/data00.kernels.jsonl',
                         help='Path to kernels file')
+    parser.add_argument('--engine', '-e', default='gen6', choices=['gen5', 'gen6'],
+                        help='Which engine registry to measure (default: gen6)')
+    parser.add_argument('--execute', '-x', type=int, default=0, metavar='N',
+                        help='Also measure end-to-end generation on the first N stories')
     args = parser.parse_args()
     
     # Load registry
-    registry = load_registry()
+    registry = load_registry(args.engine)
     implemented = set(registry.kernels.keys())
     
     # Load stories
@@ -116,9 +132,35 @@ def main():
         except:
             pass
     
+    # Optional: end-to-end execution success on the first N stories.
+    exec_ok = exec_total = 0
+    if args.execute:
+        generate_story = load_generate(args.engine)
+        for s in stories[:args.execute]:
+            kernel = s.get('kernel', '')
+            if not kernel:
+                continue
+            try:
+                ast.parse(kernel)
+            except Exception:
+                continue
+            exec_total += 1
+            try:
+                out = generate_story(kernel)
+                if out and not out.startswith('['):
+                    exec_ok += 1
+            except Exception:
+                pass
+
     # Output
     if args.brief:
-        print(f"Kernels: {len(implemented)} | Coverage: {100*covered_usages/total_usages:.1f}% | High-coverage stories: {high_coverage_count} | Characters detected: {len(all_characters)}")
+        line = (f"[{args.engine}] Kernels: {len(implemented)} | "
+                f"Coverage: {100*covered_usages/total_usages:.1f}% | "
+                f"High-coverage stories: {high_coverage_count} | "
+                f"Characters detected: {len(all_characters)}")
+        if args.execute and exec_total:
+            line += f" | Execute OK: {100*exec_ok/exec_total:.1f}% of {exec_total}"
+        print(line)
         return 0
     
     print("=" * 70)
@@ -135,8 +177,11 @@ def main():
     print(f"   Characters detected (excluded): {len(all_characters)}")
     print()
     print(f"📈 COVERAGE:")
+    print(f"   Engine: {args.engine}")
     print(f"   Kernel usages covered: {covered_usages:,} / {total_usages:,} ({100*covered_usages/total_usages:.1f}%)")
     print(f"   Stories with 90%+ coverage: {high_coverage_count:,}")
+    if args.execute and exec_total:
+        print(f"   Execute end-to-end OK: {exec_ok:,} / {exec_total:,} ({100*exec_ok/exec_total:.1f}%) of first {args.execute}")
     print()
     
     if args.implemented or not args.missing:

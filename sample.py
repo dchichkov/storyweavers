@@ -15,6 +15,8 @@ Usage:
 """
 
 import json
+import os
+import sys
 import random
 import argparse
 import ast
@@ -22,8 +24,19 @@ import re
 import inspect
 from pathlib import Path
 
-# Import gen5 registry (auto-loads all kernel packs)
-from gen5registry import generate_story, REGISTRY, KernelExecutor
+# Engine selection: default to gen6; override with STORYWEAVERS_ENGINE=gen5 or
+# the --engine flag (parsed early so the right registry is imported up front).
+_ENGINE = os.environ.get("STORYWEAVERS_ENGINE", "gen6").lower()
+if "--engine" in sys.argv:
+    try:
+        _ENGINE = sys.argv[sys.argv.index("--engine") + 1].lower()
+    except (ValueError, IndexError):
+        pass
+
+if _ENGINE == "gen5":
+    from gen5registry import generate_story, REGISTRY  # noqa: F401
+else:
+    from gen6registry import generate_story, REGISTRY  # noqa: F401
 
 
 def load_jsonl(file_path: str, limit: int = None) -> list:
@@ -178,15 +191,30 @@ def check_kernel_coverage(kernel: str) -> tuple:
     return implemented, missing
 
 
+def _kernel_funcs(kernel_name: str) -> list:
+    """Return the implementation function(s) for a kernel name.
+
+    gen5 maps name -> a single function; gen6 maps name -> a list of typed
+    Variant objects (each with a `.fn`). This normalizes both.
+    """
+    entry = REGISTRY.kernels.get(kernel_name)
+    if entry is None:
+        return []
+    if isinstance(entry, list):
+        return [getattr(v, "fn", v) for v in entry]
+    return [entry]
+
+
 def get_kernel_source(kernel_name: str) -> tuple:
     """Get the source code of a kernel implementation with file/line info.
     
     Returns: (source_code, file_path, line_number) or (None, None, None) if not found
     """
-    if kernel_name not in REGISTRY.kernels:
+    funcs = _kernel_funcs(kernel_name)
+    if not funcs:
         return None, None, None
     
-    kernel_func = REGISTRY.kernels[kernel_name]
+    kernel_func = funcs[0]
     try:
         source = inspect.getsource(kernel_func)
         file_path = inspect.getsourcefile(kernel_func)
@@ -304,6 +332,8 @@ def main():
                         help='Include character names in missing kernels list (default: exclude)')
     parser.add_argument('--story-id', type=str, default=None,
                         help='Generate a specific story by ID (format: data00:123 or story_123)')
+    parser.add_argument('--engine', type=str, default='gen6', choices=['gen5', 'gen6'],
+                        help='Engine to generate with (default: gen6)')
     
     args = parser.parse_args()
     
@@ -453,23 +483,24 @@ def main():
             print(f"💡 IMPLEMENTATION SUGGESTION FOR: {args.kernel}")
             print('='*70)
             print(f"""
-To implement this kernel, add to a new kernel pack file (e.g., gen5kXX.py):
+To implement this kernel for gen6, add to a kernel pack file (e.g., gen6kXX.py).
+Use typed parameters; add more variants for other argument shapes:
 
 @REGISTRY.kernel("{args.kernel}")
-def kernel_{args.kernel.lower()}(ctx: StoryContext, *args, **kwargs) -> StoryFragment:
+def {args.kernel}(ctx: World, char: Actor, thing: Physical = None, **kw) -> str:
     '''TODO: Describe what {args.kernel} does based on examples above.'''
-    chars = [a for a in args if isinstance(a, Character)]
-    objects = [str(a) for a in args if isinstance(a, str)]
-    
-    char = chars[0] if chars else ctx.current_focus
-    
-    if char:
-        # TODO: Update character state
-        # char.Joy += 10
-        return StoryFragment(f"{{char.name}} {args.kernel.lower()}ed.")
-    
-    # No character - used as concept
-    return StoryFragment("{args.kernel.lower()}", kernel_name="{args.kernel}")
+    # Update character/meme state, e.g.:
+    # char.Joy += 0.5
+    ctx.actor = char
+    if thing is not None:
+        ctx.current_object = thing
+        return f"{{ctx.say(char)}} {args.kernel.lower()}ed {{thing}}."
+    return f"{{ctx.say(char)}} {args.kernel.lower()}ed."
+
+# For concept-specific `+=` behaviour (e.g. char.{args.kernel} += other):
+# @REGISTRY.addition("{args.kernel}", Character)
+# def _add_{args.kernel.lower()}(world, owner, target):
+#     owner.add_meme("{args.kernel}", 1.0); owner.add_link("{args.kernel}", target)
 """)
         return 0
     

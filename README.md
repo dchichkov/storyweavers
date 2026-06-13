@@ -35,7 +35,15 @@ Joy(Lily)
 #  She felt full of joy."
 ```
 
-`gen5.py`, `wrld6.py`, and `rewr6.py` are left untouched: `gen5.py` stays the production engine, while `wrld6.py` / `rewr6.py` are the reference demos `gen6.py` was built from.
+**Kernel packs & tooling.** Additional kernels live in `gen6kXX.py` packs and are auto-loaded by `gen6registry.py` (mirrors `gen5registry.py`). The analysis tools now default to gen6:
+
+```bash
+python coverage.py --brief --execute 3000        # gen6 by default; --engine gen5 for the old engine
+python sample.py -k Quest -n 3 --seed 42 --show-source
+python gen6registry.py                            # list loaded packs + kernel/variant counts
+```
+
+gen6 already executes ~all parseable stories end-to-end (the typed dispatch degrades unknown kernels to a readable fallback instead of raising). The remaining gap to gen5 is kernel-library size; see [TODO.md](TODO.md) for the migration checklist and current metrics. `wrld6.py` / `rewr6.py` are the reference demos `gen6.py` was built from; `gen5.py` and its packs remain as a reference until the gen6 kernel library reaches parity.
 
 ### AST → AST Transforms (Earlier Prototypes)
 

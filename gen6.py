@@ -74,6 +74,7 @@ _SHE_TYPES = {
 _HE_TYPES = {
     "boy", "man", "king", "prince", "father", "dad", "daddy", "grandpa",
     "uncle", "brother", "son", "rooster", "he",
+    "fireman", "policeman", "postman", "snowman", "fisherman", "mailman",
 }
 
 
@@ -300,6 +301,12 @@ class Registry:
         self.kernels: Dict[str, List[Variant]] = {}
         self.additions: Dict[Tuple[str, str], Callable[[World, Entity, Any], None]] = {}
 
+    def __contains__(self, name: str) -> bool:
+        return name in self.kernels
+
+    def variants(self, name: str) -> List["Variant"]:
+        return self.kernels.get(name, [])
+
     def kernel(self, name: str) -> Callable[[Callable[..., Any]], Callable[..., Any]]:
         def decorator(fn: Callable[..., Any]) -> Callable[..., Any]:
             variant = Variant(
@@ -328,12 +335,20 @@ class Registry:
             kwargs.pop(extra, None)
 
         start = len(world.effects)
-        variant, bound_args, bound_kwargs = self._select_variant(world, name, args, kwargs)
-        result = variant.fn(world, *bound_args, **bound_kwargs)
-        body = result.text if isinstance(result, Trace) else str(result or "")
+        selected = self._select_variant(world, name, args, kwargs)
+        if selected is None:
+            # Unknown kernel or no signature fits: degrade gracefully.
+            body = fallback_text(world, name, args, kwargs)
+        else:
+            variant, bound_args, bound_kwargs = selected
+            try:
+                result = variant.fn(world, *bound_args, **bound_kwargs)
+                body = result.text if isinstance(result, Trace) else str(result or "")
+            except Exception:
+                body = fallback_text(world, name, args, kwargs)
+
         text = (transition + body) if body else ""
         trace = Trace(name, text, world.effects[start:])
-        world.traces.append(trace)
         world.use_pronoun = False
         return trace
 
@@ -355,7 +370,7 @@ class Registry:
                 bound_count = len(bound_args) + len(bound_kwargs)
                 candidates.append((-bound_count, score, variant, bound_args, bound_kwargs))
         if not candidates:
-            raise TypeError(f"No matching variant for {name}({', '.join(_name(a) for a in args)})")
+            return None
         # Enumeration index is the final tie-breaker so we never have to compare
         # Variant objects (which are not orderable).
         ranked = sorted(
@@ -370,6 +385,9 @@ REGISTRY = Registry()
 
 
 _ACTOR_FALLBACK_PENALTY = 1000
+# Skipping an optional positional param is allowed but disfavoured vs consuming
+# an available argument; kept below the actor-fallback penalty.
+_OPTIONAL_SKIP_PENALTY = 100
 
 
 def _try_bind(world: World, variant: Variant, args: List[Any], kwargs: Dict[str, Any]):
@@ -387,7 +405,7 @@ def _try_bind(world: World, variant: Variant, args: List[Any], kwargs: Dict[str,
     unused_kwargs = dict(kwargs)
     var_keyword = False
     kw_bound: Dict[str, Any] = {}
-    plan: List[Tuple[inspect.Parameter, Any]] = []
+    plan: List[Tuple[inspect.Parameter, Any, bool]] = []
 
     for param in params:
         annotation = variant.hints.get(param.name, param.annotation)
@@ -406,9 +424,8 @@ def _try_bind(world: World, variant: Variant, args: List[Any], kwargs: Dict[str,
             if param.default is inspect.Parameter.empty:
                 return None  # required keyword not supplied
             continue  # optional keyword: use its default
-        if param.default is not inspect.Parameter.empty:
-            continue  # optional positional with default: skip unless matched below
-        plan.append((param, annotation))
+        optional = param.default is not inspect.Parameter.empty
+        plan.append((param, annotation, optional))
 
     if unused_kwargs and not var_keyword:
         return None
@@ -422,7 +439,7 @@ def _try_bind(world: World, variant: Variant, args: List[Any], kwargs: Dict[str,
             if not available and (best is None or score < best[0]):
                 best = (score, dict(assigned))
             return
-        param, annotation = plan[i]
+        param, annotation, optional = plan[i]
         for k, (orig_index, value) in enumerate(available):
             if _matches(value, annotation):
                 assigned[param.name] = value
@@ -432,6 +449,9 @@ def _try_bind(world: World, variant: Variant, args: List[Any], kwargs: Dict[str,
             assigned[param.name] = world.actor
             search(i + 1, available, score + _ACTOR_FALLBACK_PENALTY, assigned)
             del assigned[param.name]
+        if optional:
+            # Leave this parameter to its default and continue.
+            search(i + 1, available, score + _OPTIONAL_SKIP_PENALTY, assigned)
 
     search(0, pool, 0, {})
     if best is None:
@@ -479,6 +499,237 @@ def _name(value: Any) -> str:
     if isinstance(value, Entity):
         return value.name
     return str(value)
+
+
+# =============================================================================
+# Natural-language utilities (ported from gen5.py)
+# =============================================================================
+
+class NLGUtils:
+    """Verb inflection, articles, pluralization, list joining."""
+
+    IRREGULAR_PAST = {
+        'be': 'was', 'have': 'had', 'do': 'did', 'go': 'went', 'get': 'got',
+        'make': 'made', 'see': 'saw', 'come': 'came', 'take': 'took', 'know': 'knew',
+        'run': 'ran', 'eat': 'ate', 'find': 'found', 'feed': 'fed', 'give': 'gave',
+        'say': 'said', 'tell': 'told', 'think': 'thought', 'feel': 'felt',
+        'hear': 'heard', 'begin': 'began', 'fall': 'fell', 'fly': 'flew', 'grow': 'grew',
+        'hide': 'hid', 'hold': 'held', 'lose': 'lost', 'meet': 'met', 'read': 'read',
+        'sing': 'sang', 'sit': 'sat', 'sleep': 'slept', 'swim': 'swam', 'teach': 'taught',
+        'throw': 'threw', 'understand': 'understood', 'wake': 'woke', 'win': 'won',
+        'write': 'wrote', 'bring': 'brought', 'buy': 'bought', 'catch': 'caught',
+        'choose': 'chose', 'draw': 'drew', 'drink': 'drank', 'drive': 'drove',
+        'forget': 'forgot', 'freeze': 'froze', 'hurt': 'hurt', 'keep': 'kept',
+        'lead': 'led', 'leave': 'left', 'let': 'let', 'put': 'put', 'ride': 'rode',
+        'rise': 'rose', 'seek': 'sought', 'send': 'sent', 'shake': 'shook',
+        'shine': 'shone', 'show': 'showed', 'shut': 'shut', 'speak': 'spoke',
+        'spend': 'spent', 'stand': 'stood', 'steal': 'stole', 'stick': 'stuck',
+        'strike': 'struck', 'sweep': 'swept', 'wear': 'wore', 'weep': 'wept',
+        'build': 'built', 'bend': 'bent', 'lend': 'lent', 'tear': 'tore',
+        'bite': 'bit', 'break': 'broke', 'blow': 'blew', 'dig': 'dug',
+    }
+
+    AN_WORDS = {
+        'honest', 'hour', 'honor', 'heir',
+        'a', 'e', 'i', 'o', 'u', 'x', 'f', 's', 'm', 'l', 'n', 'r',
+    }
+
+    IRREGULAR_PLURAL = {
+        'child': 'children', 'person': 'people', 'man': 'men', 'woman': 'women',
+        'tooth': 'teeth', 'foot': 'feet', 'mouse': 'mice', 'goose': 'geese',
+        'ox': 'oxen', 'sheep': 'sheep', 'deer': 'deer', 'fish': 'fish',
+    }
+
+    @staticmethod
+    def past_tense(verb: str) -> str:
+        if not verb:
+            return verb
+        verb = verb.strip().lower()
+        if verb in NLGUtils.IRREGULAR_PAST:
+            return NLGUtils.IRREGULAR_PAST[verb]
+        if verb.endswith('e'):
+            return verb + 'd'
+        if verb.endswith('y') and len(verb) > 1 and verb[-2] not in 'aeiou':
+            return verb[:-1] + 'ied'
+        if len(verb) >= 3 and verb[-1] not in 'aeiouwxy' and verb[-2] in 'aeiou' and verb[-3] not in 'aeiou':
+            return verb + verb[-1] + 'ed'
+        return verb + 'ed'
+
+    @staticmethod
+    def article(word: str) -> str:
+        if not word:
+            return "a"
+        word = word.strip().lower()
+        first = word[0]
+        if first == 'u' and (word.startswith('uni') or word.startswith('use') or word.startswith('usu')):
+            return "a"
+        if word in NLGUtils.AN_WORDS:
+            return "an"
+        if first in 'aeiou':
+            return "an"
+        return "a"
+
+    @staticmethod
+    def pluralize(word: str) -> str:
+        if not word:
+            return word
+        word = word.strip().lower()
+        if word in NLGUtils.IRREGULAR_PLURAL:
+            return NLGUtils.IRREGULAR_PLURAL[word]
+        if word.endswith(('s', 'x', 'z', 'ch', 'sh')):
+            return word + 'es'
+        if word.endswith('y') and len(word) > 1 and word[-2] not in 'aeiou':
+            return word[:-1] + 'ies'
+        if word.endswith('f'):
+            return word[:-1] + 'ves'
+        if word.endswith('fe'):
+            return word[:-2] + 'ves'
+        if word.endswith('o') and len(word) > 1 and word[-2] not in 'aeiou':
+            return word + 'es'
+        return word + 's'
+
+    @staticmethod
+    def join_list(items: List[str], conjunction: str = "and") -> str:
+        items = [i for i in items if i]
+        if not items:
+            return ""
+        if len(items) == 1:
+            return items[0]
+        if len(items) == 2:
+            return f"{items[0]} {conjunction} {items[1]}"
+        return ", ".join(items[:-1]) + f", {conjunction} " + items[-1]
+
+
+def _article(word: str) -> str:
+    return NLGUtils.article(word)
+
+
+def _camel_words(name: str) -> str:
+    """`CamelCase`/`snake_case` -> lowercase words: ``NewPlace`` -> ``new place``."""
+    phrase = re.sub(r"([a-z0-9])([A-Z])", r"\1 \2", name)
+    phrase = phrase.replace("_", " ")
+    return phrase.lower()
+
+
+def to_phrase(value: Any) -> str:
+    """Render any runtime value as an embeddable noun/verb phrase (no trailing period)."""
+    if isinstance(value, Trace):
+        return value.text.rstrip(".!?").strip()
+    if isinstance(value, Entity):
+        return str(value)
+    if isinstance(value, bool):
+        return ""
+    if isinstance(value, (list, tuple)):
+        return NLGUtils.join_list([to_phrase(v) for v in value])
+    if value is None:
+        return ""
+    if isinstance(value, (int, float)):
+        return str(value)
+    return _camel_words(str(value))
+
+
+def state_to_phrase(value: Any) -> str:
+    """Render a 'state' value (for ``X was <state>``)."""
+    if isinstance(value, Trace):
+        text = value.text.rstrip(".!?").strip()
+        if " was " in text:
+            return text.split(" was ", 1)[1]
+        if " felt " in text:
+            return text.split(" felt ", 1)[1]
+        return text
+    return to_phrase(value)
+
+
+def action_to_phrase(value: Any) -> str:
+    """Render an 'action/process' value as a past-tense verb phrase."""
+    if isinstance(value, Trace):
+        text = value.text.rstrip(".!?").strip()
+        words = text.split()
+        if len(words) >= 2 and words[0][:1].isupper():
+            return " ".join(words[1:])
+        return text
+    if isinstance(value, str):
+        words = _camel_words(value).split()
+        if words:
+            return NLGUtils.past_tense(words[0]) + ((" " + " ".join(words[1:])) if len(words) > 1 else "")
+        return value
+    return to_phrase(value)
+
+
+def event_to_phrase(value: Any) -> str:
+    """Render an 'event/catalyst' value (for ``One day, <event>``)."""
+    if isinstance(value, Trace):
+        text = value.text.rstrip(".!?").strip()
+        if text[:1].isupper():
+            text = text[0].lower() + text[1:]
+        return text
+    if isinstance(value, str):
+        return f"something {_camel_words(value)} happened"
+    return to_phrase(value)
+
+
+# =============================================================================
+# Fallback rendering (graceful degradation for unknown / unmatched kernels)
+# =============================================================================
+
+def fallback_text(world: World, name: str, args: List[Any], kwargs: Dict[str, Any]) -> str:
+    """Produce readable text for a kernel with no matching variant.
+
+    Mirrors gen5's ``_fallback_kernel`` so unknown kernels degrade to a sentence
+    instead of aborting the whole story. Nested kernel results (Traces in args or
+    kwargs) are folded in so structural kernels still narrate their children.
+    """
+    phrase = _camel_words(name)
+    chars = [a for a in args if isinstance(a, Entity) and a.kind == "character"]
+    objs = [a for a in args if isinstance(a, Entity) and a.kind != "character"]
+    concepts = [a for a in args if isinstance(a, str)]
+    sub_traces = [a for a in list(args) + list(kwargs.values()) if isinstance(a, Trace) and a.text.strip()]
+
+    sub_text = " ".join(t.text.strip() for t in sub_traces)
+
+    if chars:
+        actor = chars[0]
+        world.actor = actor
+        words = phrase.split()
+        verb = NLGUtils.past_tense(words[0]) if words else phrase
+        rest = " ".join(words[1:])
+        targets = [str(o) for o in objs] + [c for c in concepts]
+        tail = (" " + NLGUtils.join_list(targets)) if targets else ""
+        body = f"{world.say(actor)} {verb}{(' ' + rest) if rest else ''}{tail}.".replace("  ", " ")
+        return (body + (" " + sub_text if sub_text else "")).strip()
+
+    if sub_text:
+        return sub_text
+
+    if objs or concepts:
+        targets = [str(o) for o in objs] + [c.lower() for c in concepts]
+        return f"There was {NLGUtils.join_list(targets)}."
+
+    if phrase.endswith("ing"):
+        return f"{phrase.capitalize()}."
+    return f"Something {phrase} happened."
+
+
+def _combine(left: Any, right: Any) -> Trace:
+    """Combine two evaluated operands of a ``+`` composition into one Trace.
+
+    If either side is a narration Trace, the result sequences sentences;
+    otherwise it is a conceptual composition joined with "and" (e.g. entity
+    names or traits).
+    """
+    if isinstance(left, Trace) or isinstance(right, Trace):
+        parts: List[str] = []
+        for v in (left, right):
+            if isinstance(v, Trace):
+                if v.text.strip():
+                    parts.append(v.text.strip())
+            else:
+                p = to_phrase(v)
+                if p:
+                    parts.append(p)
+        return Trace("Compose", " ".join(parts), [])
+    joined = NLGUtils.join_list([to_phrase(left), to_phrase(right)])
+    return Trace("Compose", joined, [])
 
 
 # =============================================================================
@@ -1090,25 +1341,47 @@ class Executor:
         self.world = World(registry=registry)
 
     def execute_tree(self, tree: ast.AST) -> World:
+        # Only top-level statements emit narration; nested calls (inside args /
+        # kwargs / compositions) are executed for their effects and returned to
+        # the parent kernel, matching gen5's emission model.
         for stmt in tree.body:
             if isinstance(stmt, ast.Expr):
-                self.eval(stmt.value)
+                result = self.eval(stmt.value)
+                if isinstance(result, Trace) and result.text and result.text.strip():
+                    self.world.traces.append(result)
         return self.world
 
     def execute(self, source: str) -> World:
         return self.execute_tree(ast.parse(source))
 
     def eval(self, node: ast.AST) -> Any:
-        if isinstance(node, ast.BinOp) and isinstance(node.op, ast.Add):
-            left = self.eval(node.left)
-            right = self.eval(node.right)
-            return Trace("Add", " ".join(t.text for t in (left, right) if isinstance(t, Trace)), [])
+        if isinstance(node, ast.BinOp):
+            if isinstance(node.op, ast.Add):
+                left = self.eval(node.left)
+                right = self.eval(node.right)
+                return _combine(left, right)
+            if isinstance(node.op, ast.Div):
+                # Attention dilution: `X / n`. A strong dilution suppresses X.
+                left = self.eval(node.left)
+                right = self.value(node.right)
+                if isinstance(right, (int, float)) and right >= 3:
+                    return Trace("Dilute", "", [])
+                return left
+            # Other operators: best-effort, evaluate the left operand.
+            return self.eval(node.left)
 
         if isinstance(node, ast.Call):
             if _is_character_decl(node):
                 return self._character_decl(node)
             if not isinstance(node.func, ast.Name):
-                raise TypeError("Only Name(...) calls are supported")
+                return Trace("?", "", [])
+            # Pre-bind focus: if the first positional arg names a character, make
+            # it the actor before evaluating the rest, so nested sub-expressions
+            # (in args/kwargs) resolve to the right protagonist (gen5 meta-pattern).
+            if node.args and isinstance(node.args[0], ast.Name):
+                ent = self.world.entities.get(node.args[0].id)
+                if ent is not None and ent.kind == "character":
+                    self.world.actor = ent
             args = [self.value(arg) for arg in node.args]
             kwargs = {kw.arg: self.value(kw.value) for kw in node.keywords if kw.arg is not None}
             return self.registry.call(self.world, node.func.id, args, kwargs)
@@ -1118,7 +1391,7 @@ class Executor:
                 return self.registry.call(self.world, node.id, [], {})
             return self.value(node)
 
-        raise TypeError(f"Unsupported AST: {ast.dump(node)}")
+        return self.value(node)
 
     def value(self, node: ast.AST) -> Any:
         if isinstance(node, ast.Name):
@@ -1131,15 +1404,33 @@ class Executor:
             return node.value
         if isinstance(node, ast.Call):
             return self.eval(node)
-        if isinstance(node, ast.BinOp) and isinstance(node.op, ast.Add):
+        if isinstance(node, ast.BinOp):
             return self.eval(node)
-        raise TypeError(f"Unsupported value AST: {ast.dump(node)}")
+        if isinstance(node, ast.List):
+            return [self.value(el) for el in node.elts]
+        if isinstance(node, ast.Tuple):
+            return [self.value(el) for el in node.elts]
+        if isinstance(node, ast.Subscript):
+            container = self.value(node.value)
+            if isinstance(container, list):
+                idx = self.value(node.slice)
+                if isinstance(idx, int) and -len(container) <= idx < len(container):
+                    return container[idx]
+            return container
+        if isinstance(node, ast.UnaryOp) and isinstance(node.op, ast.USub):
+            inner = self.value(node.operand)
+            return -inner if isinstance(inner, (int, float)) else inner
+        # Unknown expression: render its source as a concept string.
+        try:
+            return _camel_words(ast.unparse(node))
+        except Exception:
+            return ""
 
     def _character_decl(self, node: ast.Call) -> Trace:
         assert isinstance(node.func, ast.Name)
         start = len(self.world.effects)
         name = node.func.id
-        is_first = len(self.world.entities) == 0
+        is_first = not any(e.kind == "character" for e in self.world.entities.values())
 
         type_name = "person"
         traits: List[str] = []
@@ -1155,16 +1446,34 @@ class Executor:
             adjs.append("little")
         adjs.extend(t.lower() for t in traits[:2])
         adj = " ".join(adjs)
-        article = _article(adj.split()[0] if adj else type_name)
         descriptor = f"{adj} {type_name}".strip()
+        article = _article(descriptor.split()[0] if descriptor else "person")
 
         if is_first:
             text = f"Once upon a time, there was {article} {descriptor} named {name}."
         else:
             text = f"There was also {article} {descriptor} named {name}."
-        trace = Trace("Character", text, self.world.effects[start:])
-        self.world.traces.append(trace)
-        return trace
+        return Trace("Character", text, self.world.effects[start:])
+
+    def _traits(self, node: ast.AST) -> List[str]:
+        if isinstance(node, ast.Name):
+            return [node.id]
+        if isinstance(node, ast.BinOp) and isinstance(node.op, ast.Add):
+            return self._traits(node.left) + self._traits(node.right)
+        if isinstance(node, ast.Call) and isinstance(node.func, ast.Name):
+            # e.g. Hat(leather) -> "leather hat"
+            inner = [self._concept(a) for a in node.args]
+            inner = [i for i in inner if i]
+            base = _camel_words(node.func.id)
+            return [f"{' '.join(inner)} {base}".strip()] if inner else [base]
+        return [_camel_words(ast.unparse(node))]
+
+    def _concept(self, node: ast.AST) -> str:
+        if isinstance(node, ast.Name):
+            return _camel_words(node.id) if node.id[:1].isupper() else node.id
+        if isinstance(node, ast.Constant):
+            return str(node.value)
+        return _camel_words(ast.unparse(node))
 
     def _traits(self, node: ast.AST) -> List[str]:
         if isinstance(node, ast.Name):
@@ -1177,10 +1486,6 @@ class Executor:
 # =============================================================================
 # Rendering
 # =============================================================================
-
-def _article(word: str) -> str:
-    return "an" if word[:1].lower() in "aeiou" else "a"
-
 
 def narrate(world: World) -> str:
     parts = [t.text.strip() for t in world.traces if t.text and t.text.strip()]

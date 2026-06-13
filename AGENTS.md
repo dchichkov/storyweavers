@@ -2,6 +2,102 @@
 
 This document provides instructions for coding agents (Claude, Cursor, etc.) working on the Storyweavers kernel implementation.
 
+> **Engines:** Storyweavers is migrating from the **gen5** engine to the **gen6**
+> engine. New work should target **gen6** (see the section directly below).
+> The gen5 instructions further down are kept as a reference until the kernel
+> library reaches parity. Tooling (`coverage.py`, `sample.py`) now defaults to
+> gen6; pass `--engine gen5` to use the old engine.
+
+---
+
+## gen6 Authoring (Current — prefer this) ⭐
+
+gen6 is a typed, fault-tolerant engine. Key differences from gen5:
+
+- **Typed dispatch, multiple variants.** A kernel name can have several
+  implementations distinguished by parameter type hints (`Character`,
+  `Physical`, `Actor`). The dispatcher binds arguments to the best-fitting
+  variant; you don't parse `*args` yourself.
+- **`Actor` = "the doer".** A parameter typed `Actor` matches a character
+  argument, but also falls back to the current protagonist (`ctx.actor`) when
+  omitted. Use it for the kernel's subject so implicit/nested calls still work.
+- **Coherency layer is automatic.** Pronouns and transitions are applied by an
+  AST pass + `ctx.say(subject)` — do **not** hand-roll pronoun logic in kernels.
+- **Never crashes.** Unknown kernels / unmatched signatures degrade to a
+  readable fallback sentence instead of raising. Your job is to raise *quality*,
+  not to prevent exceptions.
+- **Return a plain `str`** (one or more sentences). The engine wraps it in a
+  `Trace` and records effects automatically.
+
+### gen6 Workflow
+
+```bash
+# 1. Find high-frequency missing kernels (defaults to gen6)
+python coverage.py --missing --top 30
+python sample.py -l
+
+# 2. Study real usage (original vs generated, with source)
+python sample.py -k Quest -n 5 --seed 42 --show-source
+
+# 3. Implement in a kernel pack (gen6kXX.py), then test
+python gen6k01.py
+python sample.py -k Quest -n 3 --seed 42
+
+# 4. Measure coverage + end-to-end execution
+python coverage.py --brief --execute 3000
+python -c "from gen6registry import get_kernel_count, get_variant_count; print(get_kernel_count(), get_variant_count())"
+```
+
+### gen6 Kernel Template
+
+```python
+# gen6kXX.py
+from gen6 import REGISTRY, World, Entity, Trace, Character, Physical, Actor, \
+    to_phrase, state_to_phrase, action_to_phrase, event_to_phrase, NLGUtils
+
+@REGISTRY.kernel("Discover")
+def Discover(ctx: World, char: Actor, thing: Physical = None, **kw) -> str:
+    """Discover(char, thing) / Discover(char) -- char finds something."""
+    char.Joy += 0.4
+    ctx.actor = char
+    if thing is not None:
+        ctx.current_object = thing
+        return f"{ctx.say(char)} discovered {thing}."
+    return f"{ctx.say(char)} made a wonderful discovery."
+
+# Add another variant for a different argument shape:
+@REGISTRY.kernel("Discover")
+def DiscoverConcept(ctx: World, char: Actor, what, **kw) -> str:
+    return f"{ctx.say(char)} discovered {to_phrase(what)}."
+```
+
+Notes:
+- **Meta / structural kernels** (Quest, Journey, Cautionary, Conflict,
+  Resolution, Encounter, Transformation, Friendship-with-phases) take a subject
+  plus `**kw` phases (`state`, `catalyst`, `process`, `insight`, `outcome`, …)
+  and render each with the `*_to_phrase` helpers. See `gen6k01.py` for examples.
+- **Memeplex `+=` behaviour** (e.g. `char.Fear += dog`) is defined separately
+  with `@REGISTRY.addition("Fear", Character)` handlers in `gen6.py`.
+- Use `ctx.say(subject)` for the grammatical subject; within a multi-sentence
+  kernel use `subject.pronoun("subject")` for continuation sentences.
+
+### gen6 Key Files
+
+| File | Purpose | Modify? |
+|------|---------|---------|
+| `gen6.py` | Engine: typed world/dispatch, AST rewrites, coherency, NLG, fallback | Engine changes only |
+| `gen6k01.py` | Kernel pack #1 (meta + high-frequency kernels) | Add to or create `gen6kXX.py` |
+| `gen6registry.py` | Auto-loads all `gen6kXX.py` packs — **always import from here** | NO |
+| `coverage.py` / `sample.py` | Tooling (default `--engine gen6`) | NO |
+
+---
+
+## gen5 Authoring (Legacy reference)
+
+The remainder of this document describes the original **gen5** engine and its
+`*args/**kwargs` authoring style. It remains valid for gen5 packs and is kept
+for reference while gen6 reaches kernel-library parity.
+
 ## Overview
 
 Storyweavers uses **story kernels** - symbolic representations of narrative patterns that can be executed to generate natural language stories. The generation happens **without LLMs at runtime** - kernels are Python-like expressions parsed with `ast` and executed against a registry of kernel implementations.
