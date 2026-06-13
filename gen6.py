@@ -28,7 +28,8 @@ Pipeline::
            --[typed world execution]--> traces --[narrate]--> story
 
 The kernel set here is intentionally *minimal* - a representative slice ported
-from gen5.py - to exercise the engine end to end. gen5.py is left untouched.
+from the previous engine - to exercise the engine end to end. The previous
+engine (gen5.py and its packs) is kept untouched under ``legacy/``.
 """
 
 from __future__ import annotations

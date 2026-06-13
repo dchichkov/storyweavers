@@ -2,7 +2,7 @@
 """
 sample.py - Sample and generate stories from kernels
 
-Randomly samples stories from TinyStories_kernels and generates text using gen5.py.
+Randomly samples stories from TinyStories_kernels and generates text using gen6.
 Useful for testing kernel coverage and comparing generated vs original stories.
 
 Usage:
@@ -15,8 +15,6 @@ Usage:
 """
 
 import json
-import os
-import sys
 import random
 import argparse
 import ast
@@ -24,19 +22,7 @@ import re
 import inspect
 from pathlib import Path
 
-# Engine selection: default to gen6; override with STORYWEAVERS_ENGINE=gen5 or
-# the --engine flag (parsed early so the right registry is imported up front).
-_ENGINE = os.environ.get("STORYWEAVERS_ENGINE", "gen6").lower()
-if "--engine" in sys.argv:
-    try:
-        _ENGINE = sys.argv[sys.argv.index("--engine") + 1].lower()
-    except (ValueError, IndexError):
-        pass
-
-if _ENGINE == "gen5":
-    from gen5registry import generate_story, REGISTRY  # noqa: F401
-else:
-    from gen6registry import generate_story, REGISTRY  # noqa: F401
+from gen6registry import generate_story, REGISTRY  # noqa: F401
 
 
 def load_jsonl(file_path: str, limit: int = None) -> list:
@@ -194,8 +180,7 @@ def check_kernel_coverage(kernel: str) -> tuple:
 def _kernel_funcs(kernel_name: str) -> list:
     """Return the implementation function(s) for a kernel name.
 
-    gen5 maps name -> a single function; gen6 maps name -> a list of typed
-    Variant objects (each with a `.fn`). This normalizes both.
+    gen6 maps a name -> a list of typed Variant objects (each with a `.fn`).
     """
     entry = REGISTRY.kernels.get(kernel_name)
     if entry is None:
@@ -332,8 +317,8 @@ def main():
                         help='Include character names in missing kernels list (default: exclude)')
     parser.add_argument('--story-id', type=str, default=None,
                         help='Generate a specific story by ID (format: data00:123 or story_123)')
-    parser.add_argument('--engine', type=str, default='gen6', choices=['gen5', 'gen6'],
-                        help='Engine to generate with (default: gen6)')
+    parser.add_argument('--engine', type=str, default='gen6', choices=['gen6'],
+                        help='Engine to generate with (gen6)')
     
     args = parser.parse_args()
     

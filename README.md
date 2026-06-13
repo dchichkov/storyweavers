@@ -35,19 +35,20 @@ Joy(Lily)
 #  She felt full of joy."
 ```
 
-**Kernel packs & tooling.** Additional kernels live in `gen6kXX.py` packs and are auto-loaded by `gen6registry.py` (mirrors `gen5registry.py`). The analysis tools now default to gen6:
+**Kernel packs & tooling.** Additional kernels live in `gen6kXX.py` packs and are auto-loaded by `gen6registry.py`. The analysis tools run on gen6:
 
 ```bash
-python coverage.py --brief --execute 3000        # gen6 by default; --engine gen5 for the old engine
+python coverage.py --brief --execute 3000         # measure dataset coverage
 python sample.py -k Quest -n 3 --seed 42 --show-source
-python gen6registry.py                            # list loaded packs + kernel/variant counts
+python check_duplicates.py                         # find duplicate typed variants
+python gen6registry.py                             # list loaded packs + kernel/variant counts
 ```
 
-gen6 already executes ~all parseable stories end-to-end (the typed dispatch degrades unknown kernels to a readable fallback instead of raising). The remaining gap to gen5 is kernel-library size; see [TODO.md](TODO.md) for the migration checklist and current metrics. `wrld6.py` / `rewr6.py` are the reference demos `gen6.py` was built from; `gen5.py` and its packs remain as a reference until the gen6 kernel library reaches parity.
+gen6 executes ~all parseable stories end-to-end (the typed dispatch degrades unknown kernels to a readable fallback instead of raising). The remaining work is growing the kernel library; see [TODO.md](TODO.md) for the roadmap and current metrics. `wrld6.py` / `rewr6.py` are the reference demos `gen6.py` was built from. The previous engine (`gen5.py` and its `gen5kXX` / `char5kXX` packs) now lives in [`legacy/`](legacy/) for reference only — it is no longer wired into the tooling.
 
-### AST → AST Transforms (Earlier Prototypes)
+### AST → AST Transforms (Reference Demos)
 
-The earliest rewrite prototype is `rewr5.py` (and `rewr6.py`, which composes with `wrld6.py`):
+`rewr6.py` (which composes with `wrld6.py`) is the rewrite prototype `gen6.py` was built from:
 
 - **Purpose**: apply declarative “story algebra” rewrite rules to the kernel source **before** execution (pronouns, transitions, prerequisites, normalization).
 - **Rule syntax**: write patterns and outputs using kernel calls and `+` composition; use `__`-prefixed names (e.g. `__C`, `__OBJ`) as metavariables inside rewrite patterns.
@@ -55,7 +56,7 @@ The earliest rewrite prototype is `rewr5.py` (and `rewr6.py`, which composes wit
 Try them:
 
 ```bash
-python rewr5.py
+python wrld6.py
 python rewr6.py
 ```
 
@@ -112,7 +113,7 @@ TinyStories Dataset (2M stories)
          │
          ▼
     ┌──────────┐
-    │  gen5.py │  ← Classical NLG generation engine
+    │  gen6.py │  ← Classical NLG generation engine (typed world + rewrites)
     └──────────┘
          │
          ▼
@@ -124,14 +125,15 @@ TinyStories Dataset (2M stories)
 ### `kernel.py` — Kernel Extraction
 Uses LLMs (via OpenAI-compatible API) to extract story kernels from raw text. Processes the TinyStories dataset with async concurrency.
 
-### `gen5.py` — Classical Generation Engine ⭐
+### `gen6.py` — Classical Generation Engine ⭐
 
-The main generation engine that converts kernels to stories **without LLMs at runtime**. Uses:
+The generation engine converts kernels to stories **without LLMs at runtime**. Uses:
 - Python AST parsing (kernels are valid Python)
-- Template-based sentence generation
-- Compositional execution of kernel functions
+- Declarative AST → AST rewrites (normalize / enrich before execution)
+- A coherence pass that tags repeated subjects for pronoun use
+- Typed-world execution with a backtracking variant binder and traced narration
 
-**Key design:** Kernels ARE valid Python code. They're parsed with `ast.parse()` and executed against a registry of kernel implementations.
+**Key design:** Kernels ARE valid Python code. They're parsed with `ast.parse()`, rewritten, then executed against a registry of typed kernel variants.
 
 ## Generation Engine Architecture
 
@@ -141,56 +143,55 @@ The main generation engine that converts kernels to stories **without LLMs at ru
 │  "Lily(Character, girl, Curious)                                    │
 │   Journey(Lily, catalyst=Discovery(rainbow), transformation=Happy)" │
 └─────────────────────────────────────────────────────────────────────┘
-                                 │
+                                 │  ast.parse()
                                  ▼
 ┌─────────────────────────────────────────────────────────────────────┐
-│                        ast.parse()                                   │
-│                    Python AST Tree                                   │
+│                   Declarative rewrites (DEFAULT_RULES)               │
+│   pattern → output over kernel calls + `+` composition; metavars     │
+│   (`__C`, `__OBJ`) normalize / enrich the AST before execution       │
 └─────────────────────────────────────────────────────────────────────┘
                                  │
                                  ▼
 ┌─────────────────────────────────────────────────────────────────────┐
-│                      KernelExecutor                                  │
+│                   Coherence pass (tag_coherence)                     │
+│   tags repeated-subject kernels so the renderer uses pronouns        │
+└─────────────────────────────────────────────────────────────────────┘
+                                 │
+                                 ▼
+┌─────────────────────────────────────────────────────────────────────┐
+│                         Executor (typed world)                       │
 │  ┌─────────────────────────────────────────────────────────────┐   │
-│  │ _eval_node(node)                                             │   │
-│  │   ├── ast.Call → lookup REGISTRY, execute kernel function   │   │
-│  │   ├── ast.BinOp(+) → _compose() fragments                   │   │
+│  │ eval(node)                                                   │   │
+│  │   ├── ast.Call → backtracking binder picks a typed Variant  │   │
+│  │   ├── ast.BinOp(+) → _combine() traces / concepts           │   │
 │  │   ├── ast.BinOp(/) → attention dilution                     │   │
-│  │   └── ast.Name → resolve character or concept               │   │
+│  │   └── ast.Name → resolve Entity, concept, or bare kernel    │   │
 │  └─────────────────────────────────────────────────────────────┘   │
 └─────────────────────────────────────────────────────────────────────┘
                                  │
                     ┌────────────┼────────────┐
                     ▼            ▼            ▼
           ┌─────────────┐ ┌───────────┐ ┌─────────────┐
-          │  REGISTRY   │ │StoryContext│ │TemplateEngine│
-          │ 800+ kernels│ │ characters │ │ templates   │
-          │ @kernel()   │ │ emotions   │ │ categories  │
-          │ decorators  │ │ focus      │ │ slot-fill   │
+          │  Registry   │ │   World   │ │  NLGUtils    │
+          │ name→[typed │ │ entities  │ │ past_tense   │
+          │  Variants]  │ │ memes     │ │ article      │
+          │ @kernel()   │ │ actor /   │ │ join_list    │
+          │ + additions │ │ traces    │ │ meta_story   │
           └─────────────┘ └───────────┘ └─────────────┘
                     │            │            │
                     └────────────┼────────────┘
                                  ▼
 ┌─────────────────────────────────────────────────────────────────────┐
-│                      StoryFragment                                   │
-│  { text: "Lily discovered a rainbow!", weight: 1.0, kernel: "..." } │
+│                            Trace                                     │
+│  { kernel: "Discovery", text: "Lily discovered a rainbow.",         │
+│    effects: [...] }   ← appended to world.traces for top-level stmts │
 └─────────────────────────────────────────────────────────────────────┘
-                                 │
-                                 ▼
-┌─────────────────────────────────────────────────────────────────────┐
-│                    StoryContext.render()                             │
-│  - Filter by weight threshold                                        │
-│  - Join fragments with spacing                                       │
-│  - Clean up punctuation                                              │
-│  - Capitalize sentences                                              │
-└─────────────────────────────────────────────────────────────────────┘
-                                 │
+                                 │  narrate(traces)
                                  ▼
 ┌─────────────────────────────────────────────────────────────────────┐
 │                        GENERATED STORY                               │
-│  "Once upon a time, there was a curious girl named Lily.            │
-│   But then, Lily discovered a rainbow! Lily learned something       │
-│   important. After that, Lily felt happy."                          │
+│  "Once upon a time, there was a little curious girl named Lily.     │
+│   Lily discovered a rainbow. She felt happy."                       │
 └─────────────────────────────────────────────────────────────────────┘
 ```
 
@@ -198,63 +199,61 @@ The main generation engine that converts kernels to stories **without LLMs at ru
 
 | Class | Purpose | Key Fields |
 |-------|---------|------------|
-| `Character` | Story character with emotional state | `name`, `char_type`, `traits`, `Joy`, `Fear`, `Love`, `Anger`, `Sadness`, `pronouns` |
-| `StoryFragment` | Generated text piece with metadata | `text`, `weight`, `kernel_name` |
-| `StoryContext` | Execution state for generation | `characters`, `fragments`, `current_focus`, `current_object` |
-| `KernelRegistry` | Maps kernel names → functions | `kernels`, `metadata`, `templates` |
-| `TemplateEngine` | Category-based template selection | `templates` dict, `generate()` method |
-| `KernelExecutor` | AST interpreter for kernels | `execute()`, `_eval_node()`, `_compose()` |
+| `Entity` | Character or physical object with meme state | `name`, `kind`, `traits`, meme slots (`Joy`, `Fear`, `Love`, …), `pronoun` |
+| `Trace` | Narration + effects produced by a kernel call | `kernel`, `text`, `effects` |
+| `World` | Execution state for generation | `entities`, `actor`, `current_object`, `traces`, memes/links |
+| `Variant` | One typed implementation of a kernel name | `name`, `fn`, `signature`, `hints` |
+| `Registry` | Maps kernel names → list of typed variants | `kernels`, `additions` |
+| `Executor` | AST interpreter (binds + executes variants) | `eval()`, `execute_tree()` |
 
-### Kernel Function Pattern
+### Kernel Function Pattern (typed dispatch)
 
 ```python
+from gen6 import REGISTRY, World, Actor, Physical
+
 @REGISTRY.kernel("KernelName")
-def kernel_name(ctx: StoryContext, *args, **kwargs) -> StoryFragment:
-    """Kernel that does something."""
-    # 1. Parse arguments
-    chars = [a for a in args if isinstance(a, Character)]
-    objects = [str(a) for a in args if isinstance(a, str)]
-    
-    # 2. Update character emotional state
-    if chars:
-        chars[0].Joy += 10
-    
-    # 3. Generate text with character context
-    if chars:
-        return StoryFragment(f"{chars[0].name} did something.")
-    
-    # 4. Or return as concept (for composition in parent kernels)
-    return StoryFragment("something", kernel_name="KernelName")
+def KernelName(ctx: World, hero: Actor, thing: Physical = None) -> str:
+    """Kernel that does something.
+
+    Parameters are *typed*: the binder selects this variant when the args
+    match (e.g. a character + an object). `Actor` falls back to the current
+    protagonist when no character is passed.
+    """
+    hero.Joy += 1                     # meme update on the world model
+    if thing is not None:
+        return f"{ctx.say(hero)} did something with {thing}."
+    return f"{ctx.say(hero)} did something."
 ```
 
 ### Helper Functions
 
 | Function | Purpose |
 |----------|---------|
-| `_to_phrase(value)` | Convert any value to natural language phrase |
-| `_state_to_phrase(value)` | Convert state/emotion to descriptive phrase |
-| `_action_to_phrase(value)` | Convert action to past-tense verb phrase |
-| `_event_to_phrase(value)` | Convert event to "One day, X happened" format |
-| `_get_default_actor(ctx, chars)` | Get protagonist when no character specified |
+| `to_phrase(value)` | Convert any value to natural language phrase |
+| `state_to_phrase(value)` | Convert state/emotion to descriptive phrase |
+| `action_to_phrase(value)` | Convert action to past-tense verb phrase |
+| `event_to_phrase(value)` | Convert event to "One day, X happened" format |
+| `meta_story(world, hero, kw)` | Render a multi-phase structural kernel with coherent pronouns |
+| `coherent(world, hero, sentences)` | Collapse repeated subjects to pronouns |
 | `NLGUtils.past_tense(verb)` | Conjugate verb to past tense |
 | `NLGUtils.article(word)` | Get "a" or "an" for word |
 | `NLGUtils.join_list(items)` | Join with Oxford comma |
 
 ```python
-# Example kernel execution
+from gen6 import generate
+
 kernel = '''
 Lily(Character, girl, Resourceful)
 Encounter(Lily, wolf, forest)
 Fear(Lily)
-Run(Lily)
-Whistle(Lily, loud)
+Brave(Lily)
 Run(wolf)
 '''
 
-story = generate_story(kernel)
-# Output: "There once was a resourceful girl named Lily. Lily came across 
-#          a wolf. Lily was scared. Lily ran as fast as she could. 
-#          Lily whistled very loud. The wolf ran away."
+print(generate(kernel))
+# "Once upon a time, there was a little resourceful girl named Lily.
+#  Lily came across a wolf in the forest. She became afraid.
+#  Even so, she was brave. The wolf ran away."
 ```
 
 
@@ -310,12 +309,13 @@ python cluster.py
 
 ### Generate Stories (no LLM needed)
 ```bash
-python gen5.py
+python gen6.py                 # run the engine demo
+python gen6registry.py         # list loaded packs + kernel/variant counts
 ```
 
 ### Generate from Custom Kernel
 ```python
-from gen5 import generate_story
+from gen6 import generate
 
 kernel = '''
 Tim(Character, boy, Brave)
@@ -327,8 +327,11 @@ Run(Monster)
 Joy(Tim)
 '''
 
-print(generate_story(kernel))
+print(generate(kernel))
 ```
+
+> To use the full kernel library (all packs), import from `gen6registry`:
+> `from gen6registry import generate_story`.
 
 ## Philosophy
 
@@ -350,18 +353,17 @@ This is an exploration of story as code — where narrative structure becomes ex
 | `kernel.py` | Extract kernels from stories | ✅ Yes |
 | `parse.py` | Analyze kernel statistics | ❌ No |
 | `cluster.py` | Cluster similar stories | ❌ No |
-| `sample.py` | Sample & explore kernel usage | ❌ No |
-| `coverage.py` | Check kernel implementation coverage | ❌ No |
-| `gen5.py` | Core generation engine (representative kernels) | ❌ No |
-| `gen5k01.py` | Kernel Pack #01 (additional kernels) | ❌ No |
-| `chark01.py` | Kernel Pack #01 (character kernels) | ❌ No |
+| `sample.py` | Sample & explore kernel usage (gen6) | ❌ No |
+| `coverage.py` | Check kernel implementation coverage (gen6) | ❌ No |
+| `check_duplicates.py` | Find duplicate typed variants (gen6) | ❌ No |
 | `gen6.py` | Unified engine: typed world + AST→AST rewrites + coherency layer | ❌ No |
+| `gen6registry.py` | Auto-loads `gen6kXX` / `char6kXX` packs into one registry | ❌ No |
+| `gen6k01.py`, `gen6k02.py`, … | Kernel packs (added kernels) | ❌ No |
 | `wrld6.py` | Typed world / dispatch prototype (demo `gen6` builds on) | ❌ No |
 | `rewr6.py` | AST→AST rewrite engine prototype (demo `gen6` builds on) | ❌ No |
-| `rewr5.py` | Earlier AST→AST rewrite prototype | ❌ No |
 | `story.py` | Kernel algebra experiments | ❌ No |
 | `AGENTS.md` | Instructions for coding agents | ❌ No |
-| `gen.py`, `gen2.py`, `gen3.py`, `gen4.py` | Earlier generation attempts | Varies |
+| `legacy/` | Previous engine (`gen5.py`, `gen5kXX`, `char5kXX`, older `gen*.py`) — reference only | ❌ No |
 
 ## For Coding Agents
 

@@ -2,17 +2,17 @@
 
 This document provides instructions for coding agents (Claude, Cursor, etc.) working on the Storyweavers kernel implementation.
 
-> **Engines:** Storyweavers is migrating from the **gen5** engine to the **gen6**
-> engine. New work should target **gen6** (see the section directly below).
-> The gen5 instructions further down are kept as a reference until the kernel
-> library reaches parity. Tooling (`coverage.py`, `sample.py`) now defaults to
-> gen6; pass `--engine gen5` to use the old engine.
+> **Engine:** Storyweavers runs on the **gen6** engine — all new work targets
+> gen6. The previous **gen5** engine and its packs now live in [`legacy/`](legacy/)
+> for reference only; they are no longer wired into the tooling (`coverage.py`,
+> `sample.py`, `check_duplicates.py` all run on gen6).
 
 ---
 
-## gen6 Authoring (Current — prefer this) ⭐
+## gen6 Authoring ⭐
 
-gen6 is a typed, fault-tolerant engine. Key differences from gen5:
+gen6 is a typed, fault-tolerant engine. Key properties (and how it differs from
+the legacy gen5 engine):
 
 - **Typed dispatch, multiple variants.** A kernel name can have several
   implementations distinguished by parameter type hints (`Character`,
@@ -112,6 +112,59 @@ Notes:
   with `@REGISTRY.addition("Fear", Character)` handlers in `gen6.py`.
 - Use `ctx.say(subject)` for the grammatical subject; within a multi-sentence
   kernel use `subject.pronoun("subject")` for continuation sentences.
+
+### Character Packs (`char6kXX.py`)
+
+**Named characters with default type + traits go in `char6kXX.py` packs**, not in
+the action-kernel packs. `gen6registry.py` auto-loads `char6kXX.py` the same way
+it loads `gen6kXX.py`, so anything you register there is available everywhere.
+
+Know which path applies before writing one:
+
+- **Explicit declaration is handled by the engine — no pack needed.** A call
+  whose first arg is `Character`, e.g. `Lily(Character, girl, Curious)`, is
+  intercepted by the executor (`_character_decl`) and turned into an entity +
+  "Once upon a time, there was a little curious girl named Lily." This is how the
+  dataset declares characters almost everywhere, so it already works out of the box.
+- **A `char6kXX.py` pack is only for the no-arg shorthand** (`Lily()`, `Mom()`,
+  `Spot()`) and its per-name defaults. Without a pack, bare `Lily()` falls through
+  to the generic fallback. Register one kernel per common name; the full
+  `Lily(Character, …)` form still overrides the defaults.
+
+Character names are auto-detected and **excluded from coverage**, so a char pack
+does not move the coverage number — it improves the *readability* of stories that
+use the shorthand. Template (typed like any gen6 kernel, returns `str`):
+
+```python
+# char6k01.py - named-character defaults (auto-loaded by gen6registry)
+from gen6 import REGISTRY, World, NLGUtils
+
+def _named(name: str, kind: str, *traits: str):
+    @REGISTRY.kernel(name)
+    def _decl(ctx: World, *args, **kw) -> str:
+        if name in ctx.entities:                 # already introduced -> refocus
+            ctx.actor = ctx.entities[name]
+            return ""
+        first = not any(e.kind == "character" for e in ctx.entities.values())
+        ent = ctx.character(name, kind, list(traits))
+        ctx.actor = ent
+        lead = "little " if kind in ("boy", "girl", "child") else ""
+        desc = f"{lead}{(traits[0] + ' ') if traits else ''}{kind}".strip()
+        art = NLGUtils.article(desc)
+        if first:
+            return f"Once upon a time, there was {art} {desc} named {name}."
+        return f"There was also {art} {desc} named {name}."
+
+for _n, _k, *_t in [
+    ("Lily", "girl", "curious"), ("Tim", "boy", "curious"),
+    ("Mom", "mother", "caring"), ("Spot", "dog", "loyal"),
+]:
+    _named(_n, _k, *_t)
+```
+
+(The previous engine's `char5k01.py` has ~70 such names; porting it to
+`char6k01.py` is a tracked TODO. Ideally factor the intro sentence into one shared
+gen6 helper so the pack and `_character_decl` stay in sync.)
 
 ### gen6 Quality Pass: World Model & Rewrites
 
@@ -213,443 +266,59 @@ Record what you changed and any remaining limitations in `TODO.md` (there is a
 | File | Purpose | Modify? |
 |------|---------|---------|
 | `gen6.py` | Engine: typed world/dispatch, AST rewrites, coherency, NLG, fallback | Engine changes only |
-| `gen6k01.py` | Kernel pack #1 (meta + high-frequency kernels) | Add to or create `gen6kXX.py` |
-| `gen6registry.py` | Auto-loads all `gen6kXX.py` packs — **always import from here** | NO |
-| `coverage.py` / `sample.py` | Tooling (default `--engine gen6`) | NO |
+| `gen6kXX.py` | Action/structural kernel packs (`gen6k01`, `gen6k02`, …) | Add to or create a new pack |
+| `char6kXX.py` | Named-character default packs (auto-loaded) | Add named characters here |
+| `gen6registry.py` | Auto-loads all `gen6kXX.py` / `char6kXX.py` packs — **always import from here** | NO |
+| `coverage.py` / `sample.py` | Coverage + sampling tooling (gen6) | NO |
+| `check_duplicates.py` | Finds duplicate typed variants (same name + identical signature) | NO |
 
 ---
 
-## gen5 Authoring (Legacy reference)
+## Pinning Good Stories as Tests
 
-The remainder of this document describes the original **gen5** engine and its
-`*args/**kwargs` authoring style. It remains valid for gen5 packs and is kept
-for reference while gen6 reaches kernel-library parity.
-
-## Overview
-
-Storyweavers uses **story kernels** - symbolic representations of narrative patterns that can be executed to generate natural language stories. The generation happens **without LLMs at runtime** - kernels are Python-like expressions parsed with `ast` and executed against a registry of kernel implementations.
-
-## Before You Start
-
-**First, inspect the existing codebase:**
-
-1. **Read `gen5.py`** - The core generation engine with ~50 representative kernel implementations
-2. **Read `gen5k01.py`** - Additional kernel pack with ~50 more kernels
-3. **Understand the pattern** - Each kernel is a decorated function that takes `StoryContext` and returns `StoryFragment`
-
-
-## Workflow: Sample → Study → Implement → Test → Compare & Improve
-
-
-### Step 1: Identify Missing Kernels
+When a kernel reliably produces good output, pin the story as a regression test
+so later changes can't silently degrade it:
 
 ```bash
-# List common missing kernels (excludes character names by default)
-python sample.py -l
-
-# List missing kernels from a specific dataset file
-python sample.py -l -f data01
-
-# Include character names in the list
-python sample.py -l --include-characters
-
-# Get detailed coverage report with top missing kernels
-python coverage.py --missing --top 30
-
-# Scan a specific dataset file for missing kernels
-python coverage.py --missing --top 30 -d TinyStories_kernels/data01.kernels.jsonl
-
-# Explore a random missing kernel
-python sample.py -e
-
-# Look for a specific kernel
-python sample.py -k KernelName
-```
-
-**Note:** Character names (like Tim, Lily, Mom) are automatically detected using AST parsing of `Name(Character, ...)` patterns and excluded from the missing kernels list by default. Use `--include-characters` flag to see them.
-**Note:** You can scan different dataset files (data00 through data14) to find diverse missing kernels and avoid duplicates across files.
-**Note:** Cleanup before implementing.
-
-### Step 2: Sample Real Usage Examples
-
-**Critical: Always sample before implementing!**
-
-```bash
-# See how a kernel is actually used in the dataset
-python sample.py -k Apology -n 5 --seed 42
-
-# Sample from a specific dataset file
-python sample.py -k Apology -n 5 --seed 42 -f data01
-```
-
-The output shows:
-- Original story summary
-- Full kernel structure
-- How the target kernel fits in context
-- What other kernels it's commonly paired with
-- Implementation suggestion template
-
-### Step 3: Study the Patterns
-
-Look for:
-- **Arguments**: What characters/objects are typically passed?
-- **Context**: What kernels come before/after?
-- **Variations**: Different ways the same kernel is used
-- **Character state**: What emotions should be affected?
-
-Example patterns from sampling:
-```
-Apology(Tim)                    -- single char apologizing
-Apology(Tim, to=Ann)            -- char apologizing to specific person
-Apology(Anna, Ben, Lily)        -- multiple chars apologizing to last one
-
-Quest(Hero, goal=..., obstacle=..., process=..., outcome=...)
-Quest(Max, Lucy, clue=..., setting=..., outcome=...)
-
-Loss(Apple)                     -- losing an object
-Loss(Mommy, Sick)               -- temporary loss of companion
-```
-
-### Step 4: Implement the Kernel
-
-**Create new kernels in a nex files** (e.g., `gen5kXX.py`) to keep `gen5.py` as a representative core sample:
-
-```python
-# gen5k02.py - Additional Kernel Pack #02
-"""
-Document the kernels and their usage patterns at the top of the file.
-"""
-
-from gen5 import (
-    REGISTRY, 
-    StoryContext, 
-    StoryFragment, 
-    Character,
-    NLGUtils,
-    _to_phrase,
-)
-
-@REGISTRY.kernel("NewKernel")
-def kernel_new(ctx: StoryContext, *args, **kwargs) -> StoryFragment:
-    """
-    Description of what this kernel does.
-    
-    Patterns from sampling:
-      - NewKernel(char, thing)    -- pattern 1
-      - NewKernel(char, to=other) -- pattern 2
-    """
-    chars = [a for a in args if isinstance(a, Character)]
-    objects = [str(a) for a in args if isinstance(a, str)]
-    
-    # Implementation based on sampled patterns
-    ...
-```
-
-### Step 5: Test with Real Data
-
-```bash
-# Test the kernel pack directly, for example for gen5k02.py
-python gen5k02.py
-
-# Sample the same kernel again - should now generate properly
-python sample.py -k NewKernel -n 3
-
-# Check total kernel count (ALWAYS use gen5registry!)
-python -c "from gen5registry import REGISTRY; print(len(REGISTRY.kernels))"
-
-# Check for duplicate kernels
-python check_duplicates.py
-python check_duplicates.py --source  # Show source code to compare implementations
-```
-
-**Note:** Always use `sample.py` and `coverage.py` for checking coverage - don't write custom scripts that import `gen5` directly, as they won't see all kernel packs.
-
-**Avoid Duplicates:** Before implementing a kernel, check if it already exists:
-```bash
-python -c "from gen5registry import REGISTRY; print('YourKernel' in REGISTRY.kernels)"
-```
-If you find duplicates, compare implementations with `python check_duplicates.py --source` and remove the redundant one.
-
-### Step 6: Compare & Improve Narrative Quality
-
-```bash
-# Compare generated vs original stories with kernel source code
-python sample.py -k NewKernel -n 3 --seed 42 --show-source
-```
-
-The `--show-source` (or `-s`) flag shows:
-- **📖 ORIGINAL**: The actual story from TinyStories dataset
-- **🤖 GENERATED**: Your kernel's output
-- **🔧 KERNEL IMPLEMENTATIONS**: Source code with file:line numbers (e.g., `gen5k07.py:134`)
-
-**Iteration Process:**
-
-1. Generate with kernel: `python sample.py -k YourKernel -n 5 -s`
-2. Compare original vs generated stories
-3. Identify narrative weaknesses (see checklist above)
-4. Update kernel implementation in `gen5kXX.py`
-5. Update the engine (when needed).
-5. Test again: `python gen5kXX.py && python sample.py -k YourKernel -n 5`
-6. Repeat until narrative quality matches or exceeds original stories
-
-
-### Step 7: Pin Good Stories as Tests
-
-**When you've iterated on a kernel and it generates good stories, pin them as regression tests!**
-
-```bash
-# 1. Sample and note the story ID that's shown
-python sample.py -k Boo -n 5 --seed 42
-# Output shows: 🆔 STORY ID: data00:123
-
-# 2. Pick a good story and pin it as a test
-python story_tests.py --pin data00:123 --description "Tests YourKernel improvements"
-
-# 3. Verify the test passes
-python story_tests.py --run
-
-# 4. Commit the pinned test to version control
+python sample.py -k Boo -n 5 --seed 42      # note the STORY ID (e.g. data00:123)
+python story_tests.py --pin data00:123 --description "Tests Boo improvements"
+python story_tests.py --run                  # verify; unified diff on mismatch
 git add story_tests/data00_123.txt story_tests/index.json
-git commit -m "Add test for YourKernel improvements"
 ```
 
-**Why Pin Tests?**
-- Catches regressions when you modify kernels later
-- Documents what "good" output looks like
-- Story IDs are stable (data00:123 always refers to the same story)
-- Generation is deterministic (same story ID = same output)
+Story IDs are stable and generation is deterministic, so a pinned ID always
+reproduces the same output.
 
-**When to Pin:**
-- ✅ When narrative quality is good and you want to preserve it
-
-**When to Run Tests:**
-```bash
-# After making changes
-python story_tests.py --run
-
-# If tests fail, you'll see exactly what changed (unified diff)
-```
-
-See `story_tests/README.md` for complete testing documentation.
-
----
-
-## AST → AST Transforms (Rewrite Rules) — `rewr5.py`
-
-Storyweavers kernels are valid Python AST. We can improve coherence (pronouns, transitions, prerequisites, argument normalization) by **rewriting the story AST before execution**.
-
-`rewr5.py` is the current prototype for **declarative rewrite rules** written in the same “story algebra / kernels” style.
-
-### How It Works (Prototype)
-
-- **Rules are patterns over kernel expressions** (including `+` composition).
-- **Metavariables** are plain identifiers that start with `__` (double underscore), e.g. `__C`, `__OBJ`.
-  - In a rewrite pattern/output, `__C` binds to a subtree and must match consistently.
-  - This keeps rule syntax readable while still being valid Python AST.
-- **`+` chains are flattened** (`A + B + C`) so rules can match inside longer sequences.
-- Optional **guards/effects** are supported via a tiny DSL:
-  - `when_src="PhaseIs('setup')"`
-  - `effect_src="SetPhase('climax')"`
-
-### Running the Demo
-
-```bash
-python rewr5.py
-```
-
-### Defining a Rule (Example)
-
-```python
-from rewr5 import Rewrite, rewrite_source, RewriteContext
-
-rules = [
-    Rewrite(
-        pattern_src="Fear(__C, __OBJ) + Brave(__C)",
-        output_src="Fear(__C, __OBJ) + Brave(__C, _after='fear', _use_pronoun=True)",
-        when_src="PhaseIs('setup')",
-        effect_src="SetPhase('climax')",
-    )
-]
-
-ctx = RewriteContext(phase="setup")
-new_source = rewrite_source(source, rules, ctx=ctx)
-```
-
-### Notes / Current Limitations
-
-- This is a **prototype** intended to validate the syntax + matching approach.
-- Keyword matching in patterns is currently strict (same count/order).
-- The engine is not yet wired into `gen5registry.generate_story()` by default; integrate once the rule set stabilizes.
-
-
-
-
-## Key Files
-
-| File | Purpose | Modify? |
-|------|---------|---------|
-| `gen5.py` | Core engine + ~50 representative kernels | NO - keep as reference |
-| `gen5k01.py` | Kernel pack #1 (~50 kernels) | Add to or create new pack |
-| `sample.py` | Sampling tool for exploring kernels | NO |
-| `coverage.py` | Check implementation coverage | NO |
-| `check_duplicates.py` | Find duplicate kernel registrations | NO |
-| `README.md` | Project documentation | Update if needed |
-
-## Implementation Guidelines
-
-### Character State Updates
-Kernels can modify character emotional state:
-```python
-char.Joy += 10      # Happiness
-char.Sadness += 5   # Sadness  
-char.Fear += 5      # Fear
-char.Anger += 5     # Anger
-char.Love += 5      # Affection
-```
-
-### Return Values
-- With character context: `StoryFragment(f"{char.name} verbed.")`
-- As concept/phrase: `StoryFragment("phrase", kernel_name="KernelName")`
-
-### Helper Functions
-Use these from gen5.py:
-- `_to_phrase(arg)` - Convert argument to readable phrase
-- `_state_to_phrase(state)` - Convert state to phrase
-- `_action_to_phrase(action)` - Convert action to phrase
-- `_get_default_actor(ctx, chars)` - Get default character (protagonist heuristic)
-- `NLGUtils.join_list(names)` - Join list with "and"
-
-### Context Tracking
-`StoryContext` provides lightweight state tracking:
-- `ctx.current_focus` - Current character focus (set by Character definitions)
-- `ctx.current_object` - Last mentioned object (set by action kernels like Drop)
-
-Action kernels should set `ctx.current_object` when operating on objects. This enables context inheritance for composed kernels (e.g., `Drop(duck) + Obscure(bubbles)` lets Obscure know the duck is what got obscured).
-
-### Handling Ambiguous Kernels
-Some kernels have ambiguous argument patterns in the dataset. Use heuristics to resolve:
-- **Domain knowledge**: Maintain lists of common patterns (e.g., `Obscure`: fog/smoke/bubbles are agents; vision/view are targets)
-- **Context fallback**: Use `ctx.current_object` when subject is implicit
-- **Multiple signatures**: Support both explicit (`Obscure(duck, by=bubbles)`) and implicit (`Obscure(bubbles)` after `Drop(duck)`) patterns
-
-**Example:** See `kernel_obscure` in `gen5k08.py` for pattern detection and context resolution.
+> **Note:** the pinned-story harness is being repointed at gen6. Some older
+> gen5-era pins currently fail (gen5-style prose); re-pin them once the gen6
+> output for those stories is good. See `story_tests/README.md`.
 
 ## Checking Coverage
 
-Use `coverage.py` to check how well the implemented kernels cover the dataset:
-
 ```bash
-# Full coverage report (defaults to data00)
-python coverage.py
-
-# Brief one-liner
-python coverage.py --brief
-
-# Show top 30 missing kernels from default dataset (data00)
-python coverage.py --missing --top 30
-
-# Show top 30 missing kernels from a specific dataset
+python coverage.py                            # full report (defaults to data00)
+python coverage.py --brief                    # one-line totals
+python coverage.py --brief --execute 3000     # + end-to-end execution success rate
+python coverage.py --missing --top 30         # top missing kernels
 python coverage.py --missing --top 30 -d TinyStories_kernels/data01.kernels.jsonl
-python coverage.py --missing --top 50 -d TinyStories_kernels/data02.kernels.jsonl
-
-# Show top 30 implemented kernels  
-python coverage.py --implemented
+python coverage.py --implemented              # top implemented kernels
 ```
 
-Example output:
-```
-📊 DATASET: TinyStories_kernels/data00.kernels.jsonl
-   Total stories: 100,000
-   Parseable kernels: 80,766 (80.8%)
-
-🔧 IMPLEMENTATION:
-   Implemented kernels: 584
-   Unique kernel names in dataset: 16,213
-   Characters detected (excluded): 4,310
-
-📈 COVERAGE:
-   Kernel usages covered: 598,084 / 791,805 (75.5%)
-   Stories with 60%+ coverage: 63,299
-```
-
-## Current Coverage
-
-- **584 kernels** implemented
-- **75.5% coverage** of kernel usages in dataset (excluding character names)
-- **~63,300 stories** have 60%+ kernel coverage
-- **4,310 character names** automatically detected and excluded from coverage calculations
-
-### Top Missing Kernels to Implement
-
-| Kernel | Usages | Notes |
-|--------|--------|-------|
-| Anger | 978 | Feeling or expressing anger |
-| Seek | 956 | Looking for something |
-| Buy | 909 | Purchasing items |
-| Release | 897 | Letting go or freeing |
-| Continue | 896 | Continuing an action |
-| Healing | 888 | Recovery process |
-| Explanation | 848 | Explaining something |
-| Drink | 836 | Drinking beverages |
-| Look | 821 | Looking at something |
-| Wash | 820 | Washing/cleaning |
-
-**Note:** Coverage detection now automatically identifies character names (e.g., `Lily(Character, ...)`) and excludes them from kernel counts, showing only genuine narrative patterns that need implementation.
-
-
-## Example Session
-
-```bash
-# 1. Check what's missing from different datasets
-$ python sample.py -l | head -20
-$ python coverage.py --missing --top 30 -d TinyStories_kernels/data01.kernels.jsonl
-
-# 2. Sample a specific kernel
-$ python sample.py -k Gratitude -n 3 --seed 42
-$ python sample.py -k Gratitude -n 3 --seed 42 -f data01
-
-# Output shows patterns like:
-#   Gratitude(Lily)
-#   Gratitude(Lily, to=Mom)
-#   resolution=Apology(Tim)+Gratitude(Mom)
-
-# 3. Implement based on patterns (add to gen5k01.py or new file)
-@REGISTRY.kernel("Gratitude")
-def kernel_gratitude(ctx: StoryContext, *args, **kwargs) -> StoryFragment:
-    chars = [a for a in args if isinstance(a, Character)]
-    to = kwargs.get('to', None)
-    
-    if chars:
-        chars[0].Joy += 8
-        chars[0].Love += 5
-        if to:
-            return StoryFragment(f"{chars[0].name} was very grateful to {to}.")
-        return StoryFragment(f"{chars[0].name} felt very grateful.")
-    
-    return StoryFragment("there was gratitude", kernel_name="Gratitude")
-
-# 4. Test
-$ python gen5k01.py
-$ python sample.py -k Gratitude -n 2
-
-# 5. Compare narrative quality with original stories
-$ python sample.py -k Gratitude -n 3 --seed 42 --show-source
-
-# Check original vs generated - if narrative is weak, improve the kernel
-# Look at the source code shown (with file:line) and iterate
-
-# 6. Final verification
-$ python sample.py -k Gratitude -n 5
-```
+Coverage counts genuine narrative kernels; character names (`Lily(Character, …)`)
+are auto-detected and excluded. Current metrics and the missing-kernel backlog
+live in `TODO.md`.
 
 ## Philosophy
 
-- **Use gen5registry, not gen5** - Always import from `gen5registry` to see all kernels
-- **Use sample.py and coverage.py** - Don't write custom scripts; the tools handle imports correctly
-- **Sample before implementing** - Understand real usage patterns
-- **Compare before finishing** - Use `--show-source` to compare generated vs original stories
-- **Iterate on narrative quality** - Good kernels produce natural, engaging prose
-- **Keep gen5.py clean** - It's the reference implementation
-- **Test with real data** - Use sample.py to verify
-- **No LLMs at runtime** - All generation is classical execution
-
+- **Always import from `gen6registry`** — it loads every pack; importing `gen6`
+  alone sees only the engine's built-in kernels.
+- **Use `sample.py` / `coverage.py`** — don't hand-roll scripts that import a
+  single module; the tools see the full registry.
+- **Sample before implementing** — match real dataset shapes (typed dispatch
+  depends on it).
+- **Compare before finishing** — `--show-source` shows original-vs-generated.
+- **Prefer the world model** — let accumulated state (memes, actor, links) and
+  the coherence pass drive prose; reach for rewrites only to fix structure.
+- **Keep `gen6.py` lean** — add kernels in packs (`gen6kXX.py` / `char6kXX.py`);
+  reserve engine edits for shared infrastructure.
+- **No LLMs at runtime** — all generation is classical execution.

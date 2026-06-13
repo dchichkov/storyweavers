@@ -28,10 +28,10 @@ below: instead of every kernel deciding pronouns/transitions/prerequisites, a
 single AST pass tags continuation sentences and the renderer (`World.say`)
 honours the tag. Kernel bodies stay tiny and typed.
 
-`gen5.py`, `wrld6.py`, and `rewr6.py` are intentionally **left as-is**:
-`gen5.py` remains the production engine (rich NLG, 800+ kernels), while
-`wrld6.py` / `rewr6.py` are the reference demos that `gen6.py` was assembled
-from.
+**`gen6.py` is now the engine** and all tooling runs on it. The previous engine
+(`gen5.py` + its `gen5kXX` / `char5kXX` packs, rich NLG, 800+ kernels) has been
+moved to `legacy/` for reference only. `wrld6.py` / `rewr6.py` remain at top level
+as the reference demos that `gen6.py` was assembled from.
 
 Run it:
 
@@ -150,6 +150,18 @@ remaining gap to gen5 is purely **kernel-library size** (port more kernels).
       `import gen6registry` first so the demo reflects the real (full) registry.
 - [ ] **Decide emotional-state model**: gen5 uses 0–100 with baselines
       (Joy/Love start at 50); gen6 memes start at 0 and grow. Pick one and document.
+- [ ] **Port character packs** — `legacy/char5k01.py` defines ~70 named-character
+      defaults so the bare-name shorthand (`Lily()`, `Mom()`, `Spot()`) introduces
+      a character with a default type + trait. gen6 has the loader hook
+      (`gen6registry` auto-loads `char6kXX.py`) but **no `char6k01.py` yet**, so
+      bare `Lily()` currently hits the generic fallback. Note: explicit
+      `Lily(Character, girl, Curious)` already works natively (`_character_decl`),
+      and character names are excluded from coverage — so this is a *readability*
+      win, not a coverage win. **When porting, factor the intro sentence
+      ("Once upon a time, there was a …") into one shared gen6 helper** so the
+      pack and `_character_decl` stay in sync (currently the text is built inline
+      in the executor). Authoring pattern documented in `AGENTS.md` → "Character
+      Packs".
 
 ### F. API surface — ✅
 
@@ -242,36 +254,42 @@ Known remaining limitations (long tail; documented, not yet fixed):
 - [x] **`gen6registry.py`** — auto-discovers and loads `gen6kXX.py` / `char6kXX.py`
       packs into the shared `REGISTRY`; exposes `generate_story`,
       `get_kernel_count`, `get_variant_count`, `list_kernels`, `list_loaded_packs`.
-- [x] **`coverage.py`** — defaults to `--engine gen6` (gen5 still available via
-      `--engine gen5`); added `--execute N` end-to-end success metric. gen6
-      `REGISTRY.kernels` (name → `list[Variant]`) works with the existing
-      membership checks; `__contains__` added to the Registry.
-- [x] **`sample.py`** — engine-aware imports (default gen6, `--engine`/env switch);
+- [x] **`coverage.py`** — runs on gen6 only (the `--engine gen5` branch was
+      removed when gen5 moved to `legacy/`); `--execute N` end-to-end success
+      metric. gen6 `REGISTRY.kernels` (name → `list[Variant]`) works with the
+      existing membership checks; `__contains__` added to the Registry.
+- [x] **`sample.py`** — imports gen6 only (gen5 engine switch removed);
       `--show-source` handles multi-variant kernels; suggestion template uses the
       gen6 typed style.
-- [ ] **`check_duplicates.py`** — redefine "duplicate" for gen6 (identical
-      signature + body) rather than flagging intended multi-variant kernels.
-      (Currently runs clean against gen5; revisit for gen6 semantics.)
+- [x] **`check_duplicates.py`** — rewritten for gen6 semantics: flags a duplicate
+      only when two variants of the same name share an *identical parameter-type
+      signature* (intended multi-variant kernels are fine). Runs clean
+      (154 names / 166 variants).
 - [ ] **`story_tests.py` / `story_tests/`** — repoint the pinned-story harness at
       gen6 and regenerate golden files (gen6 output differs).
 
 ### Docs / agent guidance
 
-- [x] **`AGENTS.md`** — added a "gen6 Authoring (Current)" section at the top
-      (typed variants, `Actor` doer, `@REGISTRY.addition`, `ctx.say`, gen6
-      commands, key-files table); gen5 instructions retained as legacy reference.
-      Also added a hard "sample real usage BEFORE writing a kernel" rule and a
-      `*args` variable-arity pattern in the template (from the workflow dry-run).
-- [~] **`README.md`** — gen6 documented as the unified engine; promote to the
-      primary pipeline diagram once the kernel library nears parity.
+- [x] **`AGENTS.md`** — gen6 is now the only documented engine: typed-variant
+      authoring, `Actor` doer, `@REGISTRY.addition`, `ctx.say`, the sample-first
+      rule, the `*args` variable-arity pattern, a **Character Packs** section
+      (`char6kXX.py`), the World-Model & Rewrites quality pass, pinning, coverage,
+      and philosophy. The legacy gen5 half was removed (kept only as a `legacy/`
+      pointer).
+- [x] **`README.md`** — gen6 is the primary engine throughout (pipeline diagram,
+      architecture, data structures, helper/Usage examples); gen5 rows replaced
+      by a `legacy/` entry; `--engine gen5` references removed.
 
-### Decommission gen5
+### Decommission gen5 — ✅ DONE
 
-- [ ] Keep `gen5.py`, `gen5kXX.py`, `gen5registry.py` as reference **until gen6
-      reaches coverage parity** (execute ✅ already exceeds gen5; remaining target
-      is kernel-name coverage comparable to gen5's ~85%).
-- [ ] Then move the gen5 family (and superseded `gen*.py`, `wrld5.py`, `rewr5.py`)
-      into `legacy/` or `bak/` and update imports/docs.
+- [x] gen5 family moved to `legacy/`: `gen5.py`, `gen5kXX.py`, `gen5registry.py`,
+      `char5k01.py`, `remove_duplicates.py`, and the older `gen*.py` / `gen.py`.
+      (`wrld5.py` / `rewr5.py` remain at top level as standalone prototypes.)
+- [x] Tooling de-gen5'd: `coverage.py`, `sample.py`, `check_duplicates.py` import
+      gen6 only; README/AGENTS no longer reference gen5 as an engine option.
+- [ ] **Follow-up:** kernel-name coverage is still below gen5's old ~85% (gen6 is
+      at 62.5%) — keep porting the long tail (section E) so nothing is lost by the
+      retirement.
 
 ---
 

@@ -22,19 +22,13 @@ warnings.filterwarnings('ignore', category=SyntaxWarning)
 
 
 def load_registry(engine: str = "gen6"):
-    """Load the kernel registry with all kernel packs for the chosen engine."""
-    if engine == "gen5":
-        from gen5registry import REGISTRY
-        return REGISTRY
+    """Load the kernel registry with all kernel packs."""
     from gen6registry import REGISTRY
     return REGISTRY
 
 
 def load_generate(engine: str = "gen6"):
-    """Return the generate_story callable for the chosen engine."""
-    if engine == "gen5":
-        from gen5registry import generate_story
-        return generate_story
+    """Return the generate_story callable."""
     from gen6registry import generate_story
     return generate_story
 
@@ -67,8 +61,8 @@ def main():
     parser.add_argument('--top', '-n', type=int, default=30, help='Number of top items to show')
     parser.add_argument('--data', '-d', default='TinyStories_kernels/data00.kernels.jsonl',
                         help='Path to kernels file')
-    parser.add_argument('--engine', '-e', default='gen6', choices=['gen5', 'gen6'],
-                        help='Which engine registry to measure (default: gen6)')
+    parser.add_argument('--engine', '-e', default='gen6', choices=['gen6'],
+                        help='Which engine registry to measure (gen6)')
     parser.add_argument('--execute', '-x', type=int, default=0, metavar='N',
                         help='Also measure end-to-end generation on the first N stories')
     args = parser.parse_args()
