@@ -62,12 +62,12 @@ and kernel-library size.
 
 ### Compatibility snapshot (data00, 3,000-story sample)
 
-| Metric | gen6 before | **gen6 now** | gen5 | Notes |
+| Metric | gen6 initial | **gen6 now** | gen5 | Notes |
 |--------|-------------|--------------|------|-------|
 | Parse OK (`ast.parse`) | 83.5% | 83.5% | ~80.8% | Same format; remaining ~16% is non-Python the LLM emitted |
-| Execute end-to-end (no exception) | 0.2% | **99.8%** | 96.5% | Fallback never raises → higher than gen5 |
-| Kernel-name coverage (usages) | 36.9% | **46.8%** | 85.0% | 86 kernel names / 97 variants vs gen5's 807 |
-| Stories ≥90% kernel-covered | — | 597 | 26,982 | long tail = kernel-library size |
+| Execute end-to-end (no exception) | 0.2% | **99.9%** | 96.5% | Fallback never raises → higher than gen5 |
+| Kernel-name coverage (usages) | 36.9% | **62.5%** | 85.0% | 154 kernel names / 165 variants vs gen5's 807 |
+| Stories ≥90% kernel-covered | — | 3,176 | 26,982 | long tail = kernel-library size |
 
 The robustness headline is resolved: **0.2% → 99.8% end-to-end execution**. The
 remaining gap to gen5 is purely **kernel-library size** (port more kernels).
@@ -126,11 +126,28 @@ remaining gap to gen5 is purely **kernel-library size** (port more kernels).
 
 ### E. Kernel library size & state model
 
-- [~] **Port high-frequency kernels** — first batch in `gen6k01.py`; `gen6k02.py`
-      adds `Visit` (86 names / 97 variants total). Continue porting the long tail
-      to close the coverage gap toward gen5's 85%. Top remaining by usage:
-      Catalyst, Adventure, Bond, Obstacle, Praise, Process, Advice, Build, Open,
-      Reveal, Cooperation, Pain, Threat, Break, Meet, Offer, Call, Chase, …
+- [~] **Port high-frequency kernels** — `gen6k01.py` (first batch), `gen6k02.py`
+      (`Visit`), and `gen6k03.py` (~68 kernels from the top-70 missing list:
+      Build, Open, Draw, Catch, Take, Make, Use, Gather, Offer, Call, Invite,
+      Praise, Talk, Learn, Ride, Push, Hide, Explore, Chase, Reveal, Meet, Repair,
+      Fix, Wish, Dream, Care, Reward, Aid, Trust, Question, Observation, Refusal,
+      Smile, Listen, Rest, Sleep, Laughter, Celebrate/Celebration, Escape, Growth,
+      Arrival, Happiness, Excitement, Relief, Kindness, Pain, Anticipation,
+      Acceptance, Love, Break, Fall, Catalyst, Obstacle, Threat, Sight, Failure,
+      Problem, Habit, Emotion, Guidance, Transform, Bond, Advice, Adventure,
+      Process/Action, Cooperation). **154 names / 165 variants → 62.5% coverage.**
+      Continue porting the long tail toward gen5's 85%. Next by usage: Care
+      variants, Reward, Sight refinements, plus richer kwargs handling.
+- [x] **gen6k03 design note**: real calls capitalize objects (`Break(Vase)`,
+      `Build(Stack, block)`), so capitalized undefined names arrive as concept
+      *strings*, not `Physical` entities. `gen6k03` kernels take untyped `*args`
+      and branch on `isinstance(x, Entity) and x.kind == "character"`; coherence
+      still works because `ctx.say()` + the AST pass key off character-name args,
+      not param types.
+- [x] **Workflow gotcha**: running a pack standalone (`python gen6kXX.py`) only
+      loads `gen6` + that pack, so sibling kernels (e.g. `Routine`/`Curiosity`
+      from gen6k01) fall back to concept strings. Pack `__main__` blocks should
+      `import gen6registry` first so the demo reflects the real (full) registry.
 - [ ] **Decide emotional-state model**: gen5 uses 0–100 with baselines
       (Joy/Love start at 50); gen6 memes start at 0 and grow. Pick one and document.
 
@@ -152,6 +169,69 @@ workflow itself is sound; the dry-run surfaced and fixed three engine issues:
 - [ ] **Open quality nit**: 3-character all-character calls like
       `Visit(Lily, Mom, Friend)` are ambiguous (who visits whom) and currently
       go through the fallback. Acceptable; revisit if it shows up often.
+
+### Quality pass: meta-kernel coherence + rewrites/world model
+
+Sampled fully-covered stories (≥5 kernels, all implemented) and fixed the
+recurring quality bugs. Coverage/execution unchanged (62.5% / 99.9%) but
+narrative quality is markedly higher (e.g. `data00:15817` went from a single
+"Lily offered some guidance." to a full multi-phase story).
+
+Engine / shared infrastructure (`gen6.py`):
+- [x] **Centralised meta-phase rendering** (`render_state/action/event/outcome/
+      clause`, `child_sentences`, `meta_story`, `is_meta_call`). Phase children
+      that are narration Traces are now emitted as their *own* sentences instead
+      of being string-spliced into "X was {…}" — kills the double-subject bug
+      ("Leopard was Leopard really wanted…") and dropped fragments.
+- [x] **World-model pronoun pass** (`coherent`): consecutive hero sentences
+      collapse the repeated name to a pronoun ("Sam shared… He played…"),
+      honouring the AST coherence `_use_pronoun` flag for the first mention.
+- [x] **`_combine` fixes**: bare concepts in `+` chains become their own
+      sentence ("There was indifference.") and concept-composition Traces are
+      tagged `Concept` so they're never mistaken for narration ("…the flowers
+      Frog realized…" bug).
+- [x] **Bare-name kernels execute in arg/kwarg position** (`catalyst=Threat`
+      now narrates instead of degrading to the literal "threat").
+- [x] **Binder tolerates stray kwargs** (drop with `_DROP_KWARG_PENALTY`
+      instead of failing) → fixed fallback verbing like "Tom gratituded" for
+      `Gratitude(Tom, for=…)`.
+- [x] **Nounish fallback**: abstract names (`Warmth`, `FamilySupport`,
+      `Confidence`) render as "X felt warmth" not "X warmthed".
+- [x] **camelCase object names** split ("the newPlace" → "the new place").
+- [x] **Removed duplicate `_traits`** (the second def shadowed the richer first,
+      breaking `Hat(leather)` → "leather hat" trait rendering).
+- [x] **Adjacent duplicate sentences collapsed** in `narrate` (stutter from two
+      kernels rendering the same line).
+
+Kernel improvements:
+- [x] Dual-use kernels are now meta-aware: gen6k03 factories + `Guidance`,
+      `Adventure`, `Process`/`Action`, `Cooperation` route phase-kwarg calls to
+      `meta_story`; gen6k01 `Quest/Journey`, `Cautionary`, `Conflict`,
+      `Resolution`, `Friendship`, `Accident` use the shared helpers.
+- [x] `Play/See/Find/Search/Surprise` take an `Actor` (protagonist fallback) so
+      object-first calls inside process chains read well; `Surprise(char, obj)`
+      and bare `Play(char)` variants added.
+
+Rewrites / world model (answering "can we improve with rewrites/world model?"):
+- [x] **World model already subsumes some rewrites**: `Fear(C,dog)+Brave(C)`
+      yields "Even though X was afraid, X was brave" purely from accumulated
+      `Fear`; the `coherent` pronoun pass is world-model-driven.
+- [x] **World-model-aware ending**: `HappyEnd`/`HappilyEverAfter` reads
+      accumulated Joy/Love vs Sadness/Fear and Friendship links to pick among
+      "best of friends" / "turned out all right" / "lived happily".
+- [x] **New DEFAULT_RULES**: witch→Mysterious enrichment; `Loss+Sadness`→bind
+      sadness to the loser (alongside existing strict-mother and Warning+Anger).
+
+Known remaining limitations (long tail; documented, not yet fixed):
+- [ ] **Trace in a noun slot**: simple kernels that interpolate `to_phrase(x)`
+      where `x` is an action Trace embed a full clause ("wanted Nemo explored the
+      coral", "about Bird was very kind"). Needs past→infinitive/gerund
+      reduction; affects Desire/Want, Moral, Reward, Insight/Realize, Attempt.
+- [ ] **Unimplemented kernels in `+` chains** still fall back ("There was
+      picnic.", "There was happy ever after."); shrinks as the library grows.
+- [ ] **Stale pinned tests**: `story_tests/data00_{14193,3216,83}.txt` were
+      pinned during gen5 development (gen5-style prose) and fail under gen6.
+      Re-pin once gen6 quality on those specific stories is deemed good.
 
 ---
 

@@ -128,7 +128,9 @@ class Entity:
     _FIELDS = {"name", "kind", "type_name", "world", "memes", "links", "facts"}
 
     def __str__(self) -> str:
-        return self.name if self.kind == "character" else f"the {self.name}"
+        if self.kind == "character":
+            return self.name
+        return f"the {_camel_words(self.name)}"
 
     def __getattr__(self, name: str) -> Any:
         if name in self.facts:
@@ -388,6 +390,9 @@ _ACTOR_FALLBACK_PENALTY = 1000
 # Skipping an optional positional param is allowed but disfavoured vs consuming
 # an available argument; kept below the actor-fallback penalty.
 _OPTIONAL_SKIP_PENALTY = 100
+# Dropping an un-nameable kwarg (no **kw to catch it) is a last resort: heavily
+# penalised so a variant that actually consumes the kwarg always wins.
+_DROP_KWARG_PENALTY = 800
 
 
 def _try_bind(world: World, variant: Variant, args: List[Any], kwargs: Dict[str, Any]):
@@ -431,8 +436,15 @@ def _try_bind(world: World, variant: Variant, args: List[Any], kwargs: Dict[str,
         optional = param.default is not inspect.Parameter.empty
         plan.append((param, annotation, optional))
 
+    # Stray kwargs the signature can't name (and there's no **kw to catch them)
+    # are *dropped* with a penalty rather than failing the whole bind. The
+    # dataset is full of ad-hoc kwargs (`Gratitude(Tom, for=...)`); dropping one
+    # and narrating the verb beats degrading to fallback "Tom gratituded". Any
+    # variant that genuinely consumes the kwarg scores lower and still wins.
+    drop_penalty = 0
     if unused_kwargs and not var_keyword:
-        return None
+        drop_penalty = _DROP_KWARG_PENALTY * len(unused_kwargs)
+        unused_kwargs = {}
     # A fixed positional param supplied by keyword can't be combined with `*args`
     # (Python would fill it positionally too), so reject that rare combination.
     if var_positional is not None and kw_bound:
@@ -481,6 +493,7 @@ def _try_bind(world: World, variant: Variant, args: List[Any], kwargs: Dict[str,
         return None
 
     score, assigned, variadic = best
+    score += drop_penalty
 
     if var_positional is None:
         # No `*args`: pass everything by name to avoid positional/keyword skew.
@@ -718,8 +731,233 @@ def event_to_phrase(value: Any) -> str:
 
 
 # =============================================================================
+# Meta-kernel phase rendering (shared by the structural kernels in the packs)
+# =============================================================================
+#
+# Phase values arrive already evaluated: a *concept* (string / list), ``None``,
+# or a narration ``Trace`` that already carries its own grammatical subject
+# (e.g. ``Chase(ball)`` -> "Lily chased the ball."). The old approach tried to
+# splice a fragment out of a rendered child sentence by string surgery (split on
+# " was "), which mangled multi-sentence ``+`` compositions and produced double
+# subjects ("Leopard was Leopard really wanted..."). The helpers below instead
+# emit child Traces *as their own sentences* and only template bare concepts.
+
+_SENTENCE_SPLIT = re.compile(r"(?<=[.!?])\s+")
+
+
+def split_sentences(text: str) -> List[str]:
+    text = (text or "").strip()
+    if not text:
+        return []
+    return [s.strip() for s in _SENTENCE_SPLIT.split(text) if s.strip()]
+
+
+def _lower_first(s: str) -> str:
+    return s[0].lower() + s[1:] if s else s
+
+
+# Leading words that should be lower-cased when a clause is spliced after a lead
+# like "One day, " / "In the end, "; proper names keep their capital.
+_LOWERABLE_LEAD = {
+    "he", "she", "they", "it", "there", "the", "a", "an", "everyone",
+    "everything", "one", "that", "this", "his", "her", "their", "its",
+    "suddenly", "soon",
+}
+
+
+def _lead_join(lead: str, sentence: str) -> str:
+    """Prepend ``lead`` to ``sentence``; lower-case the first word only if it is a
+    common function word (so "Bobo was happy" stays capitalised but "They lived
+    happily" becomes lower-case after "In the end, ")."""
+    if not sentence:
+        return lead.rstrip()
+    head = sentence.split(" ", 1)[0]
+    if head.lower().strip(".,!?'") in _LOWERABLE_LEAD:
+        sentence = head[0].lower() + sentence[1:]
+    return lead + sentence
+
+
+def child_sentences(value: Any) -> Optional[List[str]]:
+    """A narration Trace's sentences (each already subjected), or ``None`` for a
+    concept/None that the caller must wrap in a template."""
+    if isinstance(value, Trace) and value.kernel != "Concept" and value.text.strip():
+        return split_sentences(value.text)
+    return None
+
+
+def render_state(subject: str, value: Any) -> List[str]:
+    cs = child_sentences(value)
+    if cs is not None:
+        return cs
+    phrase = state_to_phrase(value)
+    return [f"{subject} was {phrase}."] if phrase else []
+
+
+def render_action(subject: str, value: Any) -> List[str]:
+    cs = child_sentences(value)
+    if cs is not None:
+        return cs
+    phrase = action_to_phrase(value)
+    return [f"{subject} {phrase}."] if phrase and subject else ([phrase.capitalize() + "."] if phrase else [])
+
+
+def render_event(value: Any, *, lead: str = "One day, ") -> List[str]:
+    cs = child_sentences(value)
+    if cs is not None:
+        return [_lead_join(lead, cs[0])] + cs[1:]
+    phrase = event_to_phrase(value)
+    return [f"{lead}{phrase}."] if phrase else []
+
+
+def render_outcome(subject: str, value: Any, *, lead: str = "In the end, ", verb: str = "felt") -> List[str]:
+    cs = child_sentences(value)
+    if cs is not None:
+        return [_lead_join(lead, cs[0])] + cs[1:]
+    phrase = state_to_phrase(value)
+    if not phrase:
+        return []
+    return [f"{lead}{subject} {verb} {phrase}."] if subject else [f"{lead}there was {phrase}."]
+
+
+def render_clause(value: Any, template: str) -> List[str]:
+    """Emit a child Trace as-is, else fill ``template`` with the concept phrase
+    (``template`` must contain one ``{}``, e.g. ``"But there was {}."``)."""
+    cs = child_sentences(value)
+    if cs is not None:
+        return cs
+    phrase = to_phrase(value)
+    return [template.format(phrase)] if phrase else []
+
+
+def coherent(world: World, hero: Optional[Entity], sentences: List[str]) -> str:
+    """Join sentences, collapsing a repeated leading hero-name into a pronoun.
+
+    This is a *world-model* coherence pass: it knows the hero entity and its
+    pronoun, so consecutive sentences about the hero read "Lily ran. She fell."
+    instead of "Lily ran. Lily fell." The first hero sentence keeps the name
+    unless the AST coherence layer already flagged this kernel as a continuation
+    of the same subject (``world.use_pronoun``).
+    """
+    sentences = [s.strip() for s in sentences if s and s.strip()]
+    if not (isinstance(hero, Entity) and hero.kind == "character"):
+        return " ".join(sentences)
+    name = hero.name
+    pron = hero.pronoun("subject")
+    out: List[str] = []
+    prev_hero = bool(world.use_pronoun)
+    for s in sentences:
+        is_hero = s.startswith(name + " ") or s.startswith(name + "'")
+        if is_hero and prev_hero:
+            s = pron.capitalize() + s[len(name):]
+        out.append(s)
+        prev_hero = is_hero
+    return " ".join(out)
+
+
+# Phase keys that signal a "simple" kernel is actually being used as a
+# multi-phase meta structure (e.g. ``Guidance(Lily, state=..., process=...)``).
+_META_KEYS = (
+    "state", "catalyst", "trigger", "goal", "want", "process", "action",
+    "actions", "journey", "obstacle", "conflict", "insight", "discovery",
+    "lesson", "realization", "consequence", "outcome", "transformation",
+    "resolution", "mistake",
+)
+
+
+def is_meta_call(kw: Dict[str, Any]) -> bool:
+    return any(k in kw for k in _META_KEYS)
+
+
+def _first(kw: Dict[str, Any], *keys: str) -> Any:
+    for k in keys:
+        if k in kw and kw[k] is not None:
+            return kw[k]
+    return None
+
+
+def meta_story(world: World, hero: Optional[Entity], kw: Dict[str, Any],
+               *, fallback: Optional[str] = None) -> Optional[str]:
+    """Render a generic multi-phase narrative from keyword phases.
+
+    Shared by structural kernels and by the gen6k03 factories (so any simple
+    kernel called with phase kwargs still produces a full story instead of
+    collapsing to one line). Returns ``None`` (so the caller can fall back to
+    its simple rendering) when no phase produced text.
+    """
+    name = hero.name if isinstance(hero, Entity) and hero.kind == "character" else None
+    if isinstance(hero, Entity):
+        world.actor = hero
+    sents: List[str] = []
+
+    state = _first(kw, "state", "mood")
+    if state is not None and name:
+        sents += render_state(name, state)
+
+    goal = _first(kw, "goal", "want", "desire")
+    if goal is not None:
+        cs = child_sentences(goal)
+        if cs is not None:
+            sents += cs
+        elif name:
+            sents.append(f"{name} wanted {to_phrase(goal)}.")
+
+    catalyst = _first(kw, "catalyst", "trigger")
+    if catalyst is not None:
+        sents += render_event(catalyst)
+
+    mistake = _first(kw, "mistake")
+    if mistake is not None and name:
+        sents += render_action(name, mistake)
+
+    obstacle = _first(kw, "obstacle", "conflict")
+    if obstacle is not None:
+        sents += render_clause(obstacle, "But there was {}.")
+
+    process = _first(kw, "process", "action", "actions", "journey", "method")
+    if process is not None and name:
+        sents += render_action(name, process)
+
+    consequence = _first(kw, "consequence")
+    if consequence is not None:
+        sents += render_clause(consequence, "Because of that, {}.")
+
+    insight = _first(kw, "insight", "discovery", "lesson", "realization")
+    if insight is not None:
+        if isinstance(hero, Entity):
+            hero.add_meme("Wisdom", 1.0)
+        cs = child_sentences(insight)
+        if cs is not None:
+            sents += cs
+        elif name:
+            sents.append(f"{name} learned {to_phrase(insight)}.")
+
+    outcome = _first(kw, "outcome", "transformation", "resolution", "result")
+    if outcome is not None:
+        if isinstance(hero, Entity):
+            hero.add_meme("Joy", 1.0)
+        sents += render_outcome(name or "", outcome)
+
+    if not sents:
+        return fallback
+    return coherent(world, hero, sents)
+
+
+# =============================================================================
 # Fallback rendering (graceful degradation for unknown / unmatched kernels)
 # =============================================================================
+
+_NOUNISH_SUFFIXES = ("ness", "ment", "ity", "ship", "tion", "sion", "ance",
+                     "ence", "hood", "dom", "th", "ude")
+
+
+def _looks_nounish(phrase: str) -> bool:
+    """Heuristic: a multi-word or abstract-noun-suffixed concept is a thing/state,
+    not a verb (so it should not be past-tensed in fallback rendering)."""
+    words = phrase.split()
+    if len(words) > 1:
+        return True
+    return phrase.endswith(_NOUNISH_SUFFIXES)
+
 
 def fallback_text(world: World, name: str, args: List[Any], kwargs: Dict[str, Any]) -> str:
     """Produce readable text for a kernel with no matching variant.
@@ -740,13 +978,16 @@ def fallback_text(world: World, name: str, args: List[Any], kwargs: Dict[str, An
         actor = chars[0]
         world.actor = actor
         words = phrase.split()
-        verb = NLGUtils.past_tense(words[0]) if words else phrase
-        rest = " ".join(words[1:])
-        # Include any further characters as targets too, so multi-character calls
-        # like Visit(Lily, Mom, Friend) don't silently drop Mom and Friend.
         targets = [str(c) for c in chars[1:]] + [str(o) for o in objs] + list(concepts)
         tail = (" " + NLGUtils.join_list(targets)) if targets else ""
-        body = f"{world.say(actor)} {verb}{(' ' + rest) if rest else ''}{tail}.".replace("  ", " ")
+        if _looks_nounish(phrase) and not tail:
+            # Abstract noun kernels (Warmth, FamilySupport, Confidence) read as a
+            # feeling, not a verb -- avoids "warmthed" / "familied".
+            body = f"{world.say(actor)} felt {phrase}."
+        else:
+            verb = NLGUtils.past_tense(words[0]) if words else phrase
+            rest = " ".join(words[1:])
+            body = f"{world.say(actor)} {verb}{(' ' + rest) if rest else ''}{tail}.".replace("  ", " ")
         return (body + (" " + sub_text if sub_text else "")).strip()
 
     if sub_text:
@@ -768,19 +1009,26 @@ def _combine(left: Any, right: Any) -> Trace:
     otherwise it is a conceptual composition joined with "and" (e.g. entity
     names or traits).
     """
-    if isinstance(left, Trace) or isinstance(right, Trace):
+    def _is_narration(v: Any) -> bool:
+        return isinstance(v, Trace) and v.kernel != "Concept" and bool(v.text.strip())
+
+    if _is_narration(left) or _is_narration(right):
         parts: List[str] = []
         for v in (left, right):
-            if isinstance(v, Trace):
-                if v.text.strip():
-                    parts.append(v.text.strip())
+            if _is_narration(v):
+                parts.append(v.text.strip())
             else:
+                # A bare concept (or concept-composition Trace) inside a
+                # narrative sequence becomes its own sentence rather than a naked
+                # phrase jammed between sentences ("...the flowers Frog realized").
                 p = to_phrase(v)
                 if p:
-                    parts.append(p)
+                    parts.append(f"There was {p}.")
         return Trace("Compose", " ".join(parts), [])
+    # Two concepts compose into a noun phrase, not narration. Tag it "Concept"
+    # so `child_sentences` won't mistake it for a pre-subjected sentence.
     joined = NLGUtils.join_list([to_phrase(left), to_phrase(right)])
-    return Trace("Compose", joined, [])
+    return Trace("Concept", joined, [])
 
 
 # =============================================================================
@@ -906,6 +1154,14 @@ def Surprise(ctx: World, char: Actor) -> str:
     return f"{ctx.say(char)} was very surprised."
 
 
+@REGISTRY.kernel("Surprise")
+def SurpriseObject(ctx: World, char: Actor, thing: Physical) -> str:
+    char.Surprise += 1
+    ctx.actor = char
+    ctx.current_object = thing
+    return f"{ctx.say(char)} was surprised by {thing}."
+
+
 @REGISTRY.kernel("Proud")
 @REGISTRY.kernel("Pride")
 def Proud(ctx: World, char: Actor) -> str:
@@ -957,14 +1213,14 @@ def Loss(ctx: World, owner: Character, obj: Physical) -> str:
 
 
 @REGISTRY.kernel("Search")
-def Search(ctx: World, actor: Character, obj: Physical) -> str:
+def Search(ctx: World, actor: Actor, obj: Physical) -> str:
     actor.Search += obj
     ctx.actor = actor
     return f"{ctx.say(actor)} looked everywhere for {obj}."
 
 
 @REGISTRY.kernel("Find")
-def Find(ctx: World, finder: Character, obj: Physical) -> str:
+def Find(ctx: World, finder: Actor, obj: Physical) -> str:
     finder.Find += obj
     ctx.actor = finder
     ctx.current_object = obj
@@ -972,7 +1228,7 @@ def Find(ctx: World, finder: Character, obj: Physical) -> str:
 
 
 @REGISTRY.kernel("Find")
-def FindAt(ctx: World, finder: Character, obj: Physical, location: Physical) -> str:
+def FindAt(ctx: World, finder: Actor, obj: Physical, location: Physical) -> str:
     finder.Find += obj
     obj.location = location
     ctx.actor = finder
@@ -990,7 +1246,7 @@ def Return(ctx: World, giver: Actor, obj: Physical, recipient: Character) -> str
 
 
 @REGISTRY.kernel("See")
-def See(ctx: World, char: Character, obj: Physical) -> str:
+def See(ctx: World, char: Actor, obj: Physical) -> str:
     ctx.actor = char
     ctx.current_object = obj
     return f"{ctx.say(char)} saw {obj}."
@@ -1034,17 +1290,20 @@ def Help(ctx: World, helper: Character, other: Character) -> str:
 
 
 @REGISTRY.kernel("Play")
-def PlayWith(ctx: World, char: Character, other: Character) -> str:
+def PlayWith(ctx: World, char: Actor, other: Character) -> str:
     char.Joy += 0.5
     ctx.actor = char
     return f"{ctx.say(char)} played happily with {other}."
 
 
 @REGISTRY.kernel("Play")
-def PlayObject(ctx: World, char: Character, obj: Physical) -> str:
+def PlayObject(ctx: World, char: Actor, obj: Physical = None) -> str:
     char.Joy += 0.4
     ctx.actor = char
-    return f"{ctx.say(char)} played with {obj}."
+    if obj is not None:
+        ctx.current_object = obj
+        return f"{ctx.say(char)} played with {obj}."
+    return f"{ctx.say(char)} played happily."
 
 
 @REGISTRY.kernel("Hug")
@@ -1132,7 +1391,16 @@ def Lesson(ctx: World, char: Actor) -> str:
 @REGISTRY.kernel("HappyEnd")
 @REGISTRY.kernel("HappilyEverAfter")
 def HappyEnd(ctx: World) -> str:
-    return "And from that day on, everyone was happy."
+    # World-model-aware ending: reflect the emotional arc accumulated in the
+    # world state instead of always emitting the same sentence.
+    chars = [e for e in ctx.entities.values() if e.kind == "character"]
+    joy = sum(e.meme("Joy") + e.meme("Love") for e in chars)
+    sad = sum(e.meme("Sadness") + e.meme("Fear") for e in chars)
+    if chars and sad > joy + 0.5:
+        return "And though it had been hard, everything turned out all right in the end."
+    if any(e.meme("Friendship") > 0 for e in chars):
+        return "And from that day on, they were the best of friends."
+    return "And from that day on, everyone lived happily."
 
 
 # =============================================================================
@@ -1448,6 +1716,11 @@ class Executor:
         if isinstance(node, ast.Name):
             if node.id in self.world.entities:
                 return self.world.entities[node.id]
+            # A bare kernel name used as an argument/kwarg should execute, so
+            # `catalyst=Threat` or `state=Routine` narrate rather than degrade to
+            # the literal concept string "threat" / "routine".
+            if node.id in self.registry.kernels:
+                return self.eval(node)
             if node.id and node.id[0].isupper():
                 return node.id
             return self.world.physical(node.id)
@@ -1526,13 +1799,6 @@ class Executor:
             return str(node.value)
         return _camel_words(ast.unparse(node))
 
-    def _traits(self, node: ast.AST) -> List[str]:
-        if isinstance(node, ast.Name):
-            return [node.id]
-        if isinstance(node, ast.BinOp) and isinstance(node.op, ast.Add):
-            return self._traits(node.left) + self._traits(node.right)
-        return [ast.unparse(node)]
-
 
 # =============================================================================
 # Rendering
@@ -1546,7 +1812,20 @@ def narrate(world: World) -> str:
     story = re.sub(r"\.\.+", ".", story)
     # Capitalize the first letter of every sentence.
     story = re.sub(r"(^|[.!?]\s+)([a-z])", lambda m: m.group(1) + m.group(2).upper(), story)
+    story = _dedupe_adjacent_sentences(story)
     return story.strip()
+
+
+def _dedupe_adjacent_sentences(story: str) -> str:
+    """Drop immediately-repeated sentences (e.g. two kernels that both render
+    "There was lots of fun.") which read as accidental stutter."""
+    pieces = re.split(r"(?<=[.!?])\s+", story)
+    out: List[str] = []
+    for p in pieces:
+        if out and p.strip().lower() == out[-1].strip().lower():
+            continue
+        out.append(p)
+    return " ".join(out)
 
 
 # =============================================================================
@@ -1559,10 +1838,22 @@ DEFAULT_RULES: List[Rewrite] = [
         pattern_src="__C(Character, mother, Strict)",
         output_src="__C(Character, mother, Strict + Caring)",
     ),
+    # Enrichment: a witch reads as mysterious unless already qualified.
+    Rewrite(
+        pattern_src="__C(Character, witch)",
+        output_src="__C(Character, witch, Mysterious)",
+    ),
     # Normalization: a bare Anger after a Warning belongs to the warner.
     Rewrite(
         pattern_src="Warning(__S, __C) + Anger",
         output_src="Warning(__S, __C) + Anger(__S)",
+    ),
+    # Normalization: a bare Sadness after a Loss belongs to the one who lost it
+    # (Loss already narrates the sadness, but an explicit owner keeps coherence
+    # if the bare emotion is rewritten onto the right subject).
+    Rewrite(
+        pattern_src="Loss(__C, __O) + Sadness",
+        output_src="Loss(__C, __O) + Sadness(__C)",
     ),
 ]
 

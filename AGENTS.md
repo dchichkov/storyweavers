@@ -113,6 +113,101 @@ Notes:
 - Use `ctx.say(subject)` for the grammatical subject; within a multi-sentence
   kernel use `subject.pronoun("subject")` for continuation sentences.
 
+### gen6 Quality Pass: World Model & Rewrites
+
+After a batch of kernels is added (or periodically), do a **quality pass**.
+Coverage measures *whether* a kernel runs; this pass measures *how well the
+story reads*. Run it whenever `--execute` is healthy but you haven't eyeballed
+real output recently.
+
+**Step A — Audit fully-covered stories (read real output).** Coverage hides
+quality problems, so generate stories where *every* kernel is implemented and
+read them:
+
+```bash
+python - <<'PY'
+import json, random
+from coverage import extract_character_names, count_coverage
+from gen6registry import REGISTRY, generate_story
+impl = set(REGISTRY.kernels)
+rows = []
+with open("TinyStories_kernels/data00.kernels.jsonl") as f:
+    for i, line in enumerate(f):
+        if i >= 20000: break
+        k = json.loads(line).get("kernel", "") or ""
+        try: import ast; ast.parse(k)
+        except: continue
+        ch = extract_character_names(k); cov, tot = count_coverage(k, impl, ch)
+        if tot >= 6 and cov == tot: rows.append((i, k))
+random.seed(0)
+for i, k in random.sample(rows, 5):
+    print(f"=== data00:{i} ==="); print(generate_story(k)); print()
+PY
+```
+
+For a specific kernel, `python sample.py -k Quest -n 5 -s` shows original-vs-
+generated side by side.
+
+**Step B — Recognise the recurring bug classes** (and where each is fixed):
+
+| Symptom in output | Cause | Fix location |
+|---|---|---|
+| One line for a rich call (`Guidance(L, state=…, process=…)` → "L offered guidance.") | Simple kernel ignores phase kwargs | Route to `meta_story` when `is_meta_call(kw)` |
+| Double subject ("Leo was Leo really wanted…") | String-splicing a child sentence into "X was {…}" | Use `render_state/action/outcome` + `child_sentences` |
+| Repeated name ("Sam ran. Sam fell.") | No pronoun continuation | Build a sentence list, return `coherent(ctx, hero, sents)` |
+| Bare concept jammed mid-sentence ("…butterfly. indifference Leo…") | `+` chain with a non-kernel concept | handled by `_combine`; emit concepts as own sentence |
+| Literal concept ("something threat happened") | Bare-name kernel not executed as a value | handled by executor `value()`; ensure name is registered |
+| Verbed noun ("Tom gratituded", "X warmthed") | stray kwarg or abstract noun hit the fallback | binder drops stray kwargs; `_looks_nounish` in `fallback_text` |
+| Clause in a noun slot ("wanted Nemo explored the coral") | `to_phrase(Trace)` in an object slot | reduce the Trace (past→infinitive) — open limitation |
+
+**Step C — Prefer the world model over bespoke string logic.** The engine
+already tracks entities, memes (`Joy`, `Fear`, `Friendship`, …) and the current
+actor. Use that instead of re-deriving things:
+
+- **Subject/coherence:** end multi-sentence kernels with
+  `return coherent(ctx, hero, sentences)` — it collapses repeated hero names to
+  pronouns using the entity's pronoun, and respects the AST `_use_pronoun` flag.
+- **Phase rendering:** assemble `sentences` with the shared helpers
+  (`render_state`, `render_action`, `render_event`, `render_outcome`,
+  `render_clause`, `child_sentences`) or just call `meta_story(ctx, hero, kw)`.
+- **State-aware text:** read accumulated memes to vary prose. Example —
+  `HappyEnd` reads `Joy`/`Love` vs `Sadness`/`Fear` and `Friendship` links to
+  choose its closing line. Reading state often removes the need for a rewrite.
+- **`Actor` fallback:** type a subject param `Actor` (not `Character`) so
+  object-first calls inside process chains attach to the protagonist
+  (`See/Find/Play/Search` do this).
+
+**Step D — Use rewrites for normalization & enrichment** (`DEFAULT_RULES` in
+`gen6.py`). Rewrites run on the AST *before* execution; metavars are `__NAME`:
+
+```python
+DEFAULT_RULES = [
+    # Enrichment: add an implied trait
+    Rewrite(pattern_src="__C(Character, mother, Strict)",
+            output_src="__C(Character, mother, Strict + Caring)"),
+    # Normalization: attach a bare emotion to the right subject
+    Rewrite(pattern_src="Warning(__S, __C) + Anger",
+            output_src="Warning(__S, __C) + Anger(__S)"),
+]
+```
+
+Use a rewrite when the *structure/arguments* are wrong (a bare emotion that
+belongs to a subject, an implied prerequisite, an enrichable character). Use the
+**world model** when *runtime state* should drive the text. They compose:
+`Fear(C, dog) + Brave(C)` needs no rewrite because `Brave` reads accumulated
+`Fear` and narrates "Even though X was afraid, X was brave."
+
+**Step E — Re-measure and don't regress.** Confirm execution stayed high and
+spot-check the same stories before/after:
+
+```bash
+python gen6.py && python gen6k01.py && python check_duplicates.py
+python coverage.py --brief --execute 3000   # execute % must not drop
+```
+
+Record what you changed and any remaining limitations in `TODO.md` (there is a
+"Quality pass" section to extend), so the next run starts from the known state.
+
 ### gen6 Key Files
 
 | File | Purpose | Modify? |

@@ -36,6 +36,15 @@ from gen6 import (
     state_to_phrase,
     action_to_phrase,
     event_to_phrase,
+    child_sentences,
+    render_state,
+    render_action,
+    render_event,
+    render_outcome,
+    render_clause,
+    coherent,
+    meta_story,
+    is_meta_call,
 )
 
 
@@ -69,47 +78,17 @@ def _has(kw: dict, *keys: str):
 @REGISTRY.kernel("Quest")
 @REGISTRY.kernel("Journey")
 def Quest(ctx: World, hero: Actor, goal: Any = None, **kw: Any) -> str:
-    """Hero pursues a goal through phases: state/catalyst/process/insight/outcome."""
+    """Hero pursues a goal through phases: state/catalyst/process/insight/outcome.
+
+    Phase rendering and pronoun coherence are delegated to the shared
+    ``meta_story`` builder (gen6); child kernels in each phase are emitted as
+    their own sentences and repeated subjects collapse to pronouns.
+    """
     hero.Quest += 1
     ctx.actor = hero
-    name, pron = _refs(ctx, hero)
-    sents = []
-
-    state = _has(kw, "state")
-    if state is not None:
-        sents.append(f"{name} was {state_to_phrase(state)}.")
-
-    g = goal if goal is not None else _has(kw, "goal", "want")
-    if g is not None:
-        subj = pron if sents else name
-        sents.append(f"{subj.capitalize()} wanted {to_phrase(g)}.")
-
-    catalyst = _has(kw, "catalyst", "trigger")
-    if catalyst is not None:
-        sents.append(f"One day, {event_to_phrase(catalyst)}.")
-
-    obstacle = _has(kw, "obstacle", "problem", "conflict")
-    if obstacle is not None:
-        sents.append(f"But there was {to_phrase(obstacle)}.")
-
-    process = _has(kw, "process", "action", "journey")
-    if process is not None:
-        subj = pron if sents else name
-        sents.append(f"{subj.capitalize()} {action_to_phrase(process)}.")
-
-    insight = _has(kw, "insight", "discovery", "lesson")
-    if insight is not None:
-        hero.Wisdom += 1
-        sents.append(f"{pron.capitalize()} discovered {to_phrase(insight)}.")
-
-    outcome = _has(kw, "outcome", "transformation", "resolution", "result")
-    if outcome is not None:
-        hero.Joy += 1
-        sents.append(f"In the end, {pron} felt {state_to_phrase(outcome)}.")
-
-    if not sents:
-        sents.append(f"{name} went on a great adventure.")
-    return " ".join(sents)
+    if goal is not None and "goal" not in kw:
+        kw = dict(kw, goal=goal)
+    return meta_story(ctx, hero, kw, fallback=f"{hero.name} went on a great adventure.")
 
 
 @REGISTRY.kernel("Friendship")
@@ -120,39 +99,43 @@ def FriendshipMeta(ctx: World, a: Actor, b: Character, **kw: Any) -> str:
     sents = []
     state = _has(kw, "state")
     if state is not None:
-        sents.append(f"{ctx.say(a)} was {state_to_phrase(state)}.")
+        sents += render_state(a.name, state)
     catalyst = _has(kw, "catalyst", "trigger")
     if catalyst is not None:
-        sents.append(f"One day, {event_to_phrase(catalyst)}.")
+        sents += render_event(catalyst)
     process = _has(kw, "process", "action")
     if process is not None:
-        sents.append(f"{a.pronoun('subject').capitalize()} and {b} {action_to_phrase(process)}.")
-    sents.append(f"{(a.pronoun('subject').capitalize()) if sents else str(a)} and {b} became good friends.")
+        cs = child_sentences(process)
+        sents += cs if cs is not None else [f"{a.name} and {b} {action_to_phrase(process)}."]
+    sents.append(f"{a.name} and {b} became good friends.")
     outcome = _has(kw, "outcome", "result")
     if outcome is not None:
-        sents.append(f"In the end, there was {state_to_phrase(outcome)}.")
-    return " ".join(sents)
+        sents += render_outcome("", outcome)
+    return coherent(ctx, a, sents)
 
 
 @REGISTRY.kernel("Cautionary")
 def Cautionary(ctx: World, char: Actor, **kw: Any) -> str:
     """A mistake leads to a consequence and a lesson."""
     ctx.actor = char
-    name, pron = _refs(ctx, char)
     sents = []
+    state = _has(kw, "state")
+    if state is not None:
+        sents += render_state(char.name, state)
     mistake = _has(kw, "mistake", "action", "flaw", "behavior")
     if mistake is not None:
-        sents.append(f"{name} {action_to_phrase(mistake)}.")
+        sents += render_action(char.name, mistake)
     consequence = _has(kw, "consequence", "result", "outcome")
     if consequence is not None:
-        sents.append(f"Because of that, {to_phrase(consequence)}.")
+        sents += render_clause(consequence, "Because of that, {}.")
     lesson = _has(kw, "lesson", "insight", "moral")
     if lesson is not None:
         char.Wisdom += 1
-        sents.append(f"{(pron if sents else name).capitalize()} learned that {to_phrase(lesson)}.")
+        cs = child_sentences(lesson)
+        sents += cs if cs is not None else [f"{char.name} learned that {to_phrase(lesson)}."]
     if not sents:
-        sents.append(f"{name} learned an important lesson.")
-    return " ".join(sents)
+        sents.append(f"{char.name} learned an important lesson.")
+    return coherent(ctx, char, sents)
 
 
 @REGISTRY.kernel("Encounter")
@@ -188,9 +171,9 @@ def Accident(ctx: World, char: Actor, **kw: Any) -> str:
     if action is not None:
         sents = [f"{name} accidentally {action_to_phrase(action)}."]
     if result is not None:
-        sents.append(f"As a result, {to_phrase(result)}.")
+        sents += render_clause(result, "As a result, {}.")
     char.Surprise += 1
-    return " ".join(sents)
+    return coherent(ctx, char, sents)
 
 
 @REGISTRY.kernel("Conflict")
@@ -203,10 +186,11 @@ def Conflict(ctx: World, a: Actor, b: Character = None, **kw: Any) -> str:
         line = f"{ctx.say(a)} had a problem"
     line += f" about {to_phrase(over)}." if over is not None else "."
     a.Anger += 0.5
+    sents = [line]
     res = _has(kw, "resolution", "outcome")
     if res is not None:
-        line += f" In the end, {to_phrase(res)}."
-    return line
+        sents += render_clause(res, "In the end, {}.")
+    return coherent(ctx, a, sents)
 
 
 @REGISTRY.kernel("Resolution")
@@ -215,14 +199,19 @@ def Resolution(ctx: World, char: Actor = None, **kw: Any) -> str:
     bits = []
     process = _has(kw, "process", "action")
     if process is not None:
-        subj = ctx.say(char) if char is not None else "They"
-        bits.append(f"{subj} {action_to_phrase(process)}.")
+        cs = child_sentences(process)
+        if cs is not None:
+            bits += cs
+        else:
+            subj = char.name if char is not None else "They"
+            bits.append(f"{subj} {action_to_phrase(process)}.")
     outcome = _has(kw, "outcome", "result", "emotion")
     if outcome is not None:
-        bits.append(f"In the end, everything was {state_to_phrase(outcome)}.")
+        cs = child_sentences(outcome)
+        bits += cs if cs is not None else [f"In the end, everything was {state_to_phrase(outcome)}."]
     if not bits:
         bits.append("In the end, everything worked out.")
-    return " ".join(bits)
+    return coherent(ctx, char, bits)
 
 
 @REGISTRY.kernel("Transformation")
@@ -537,6 +526,7 @@ def FunConcept(ctx: World) -> str:
 
 
 if __name__ == "__main__":
+    import gen6registry  # noqa: F401  (load sibling packs so cross-pack kernels resolve)
     from gen6 import generate
 
     tests = [
