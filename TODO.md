@@ -212,6 +212,38 @@ workflow itself is sound; the dry-run surfaced and fixed three engine issues:
       `Visit(Lily, Mom, Friend)` are ambiguous (who visits whom) and currently
       go through the fallback. Acceptable; revisit if it shows up often.
 
+### World-model dev pass: object memory + relationship state (`gen6.py`)
+
+Made the engine *read* accumulated world state that was previously only written,
+so prose reflects what already happened (AGENTS.md "Prefer the world model").
+
+- [x] **Object memory → state-aware references.** New `World.thing_phrase(obj)`
+      renders an object from accumulated state: its **owner** becomes a
+      possessive pronoun and its **status** (`lost`/`missing`/`broken`, already
+      set by `Loss`/`Vanish`) becomes an adjective. New `World.set_owner` records
+      possession. The core world-model kernels now use them, so a Loss→Search→
+      Find chain reads as a coherent arc:
+      *"Lily lost **her ball** and felt sad. She looked everywhere for **her lost
+      ball**. She finally found **her ball again**."* (was: "lost the ball … the
+      ball … found the ball"). Ownership flows forward (`Find`→`Give`:
+      "found the key. She gave **her key** to Mom"). Fresh discoveries stay
+      "the treasure" (render-before-own), and `Find`/`FindAt` append "again" when
+      reclaiming a lost/missing item. Wired into `Loss`, `Search`, `Find`,
+      `FindAt`, `Return`, `Give`, `See`.
+- [x] **Symmetric relationships.** `Friendship` now records the link/Love on
+      *both* characters (mutual), and being thanked (`Gratitude`) gives the
+      receiver a Joy bump — so relationship-aware readers see the bond from
+      either side.
+- [x] **Richer `HappyEnd`.** Reads more of the arc: reunited + befriended →
+      "together again, the best of friends"; befriended → best friends;
+      overcame fear (Brave while Fearful) → "braver than ever"; net-sad →
+      "though it had been hard…".
+
+Validated on 669 real `Loss`/`Find`/`Search`/`Return` stories: state-aware
+possessives/adjectives fire naturally ("her lost eraser", "their lost ball")
+with **0** article artifacts; coverage/execution unchanged (77.4% / 99.9%);
+canonical no-context shapes still render "the ball".
+
 ### Quality pass #2: tolerant variants for strict builtins (`gen6k06.py`)
 
 Generated ~2,000 fully-covered stories, tallied the worst recurring surface

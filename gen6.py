@@ -224,6 +224,10 @@ class MemeSlot:
         return self._val() <= other
 
 
+# Object-status -> adjective for state-aware references ("the lost ball").
+_STATUS_ADJECTIVES = {"lost": "lost", "missing": "missing", "broken": "broken"}
+
+
 @dataclass
 class World:
     registry: "Registry"
@@ -272,6 +276,32 @@ class World:
         if self.use_pronoun and isinstance(entity, Entity) and entity.kind == "character":
             return entity.pronoun("subject")
         return _name(entity) if isinstance(entity, Entity) else str(entity)
+
+    # -- object memory (world-model state-aware references) ------------------
+    def set_owner(self, obj: Any, owner: Any) -> None:
+        """Record that ``owner`` possesses ``obj`` so later mentions can use a
+        possessive ("her ball") instead of a bare article ("the ball")."""
+        if (isinstance(obj, Entity) and obj.kind != "character"
+                and isinstance(owner, Entity) and owner.kind == "character"):
+            obj.facts["owner"] = owner.name
+
+    def thing_phrase(self, obj: Any, *, with_status: bool = True) -> str:
+        """A state-aware noun phrase for an object, drawn from accumulated world
+        state: its owner (-> possessive pronoun) and its status (lost/missing/
+        broken -> adjective). Falls back to the plain "the <thing>" rendering."""
+        if not (isinstance(obj, Entity) and obj.kind != "character"):
+            return _name(obj) if isinstance(obj, Entity) else str(obj)
+        noun = _camel_words(obj.name)
+        adj = ""
+        if with_status:
+            status = obj.facts.get("status")
+            if status in _STATUS_ADJECTIVES:
+                adj = _STATUS_ADJECTIVES[status] + " "
+        owner_name = obj.facts.get("owner")
+        owner = self.entities.get(owner_name) if owner_name else None
+        if owner is not None and owner.kind == "character":
+            return f"{owner.pronoun('possessive')} {adj}{noun}"
+        return f"the {adj}{noun}"
 
     def state(self) -> str:
         lines: List[str] = []
@@ -1104,6 +1134,8 @@ def _add_gratitude(world: World, owner: Entity, receiver: Entity) -> None:
     owner.add_meme("Gratitude", 1.0)
     owner.add_link("Gratitude", receiver)
     owner.Joy += 0.3
+    if isinstance(receiver, Entity) and receiver.kind == "character":
+        receiver.Joy += 0.2  # being thanked feels good
 
 
 @REGISTRY.addition("Friendship", Character)
@@ -1111,6 +1143,12 @@ def _add_friendship(world: World, owner: Entity, other: Entity) -> None:
     owner.add_meme("Friendship", 1.0)
     owner.add_link("Friendship", other)
     owner.Love += 0.5
+    # Friendship is mutual: record the reverse link/feeling so relationship-aware
+    # kernels (HappyEnd, Reunion, Farewell) read it from either character.
+    if isinstance(other, Entity) and other.kind == "character":
+        other.add_meme("Friendship", 1.0)
+        other.add_link("Friendship", owner.name)
+        other.Love += 0.5
 
 
 @REGISTRY.addition("Give", Physical)
@@ -1222,50 +1260,62 @@ def Vanish(ctx: World, obj: Physical) -> str:
 
 @REGISTRY.kernel("Loss")
 def Loss(ctx: World, owner: Character, obj: Physical) -> str:
+    ctx.set_owner(obj, owner)  # they owned it before losing it -> "her ball"
     owner.Loss += obj
     ctx.actor = owner
     ctx.current_object = obj
-    return f"{ctx.say(owner)} lost {obj} and felt sad."
+    return f"{ctx.say(owner)} lost {ctx.thing_phrase(obj, with_status=False)} and felt sad."
 
 
 @REGISTRY.kernel("Search")
 def Search(ctx: World, actor: Actor, obj: Physical) -> str:
     actor.Search += obj
     ctx.actor = actor
-    return f"{ctx.say(actor)} looked everywhere for {obj}."
+    # Reads accumulated state: a previously-lost object reads "her lost ball".
+    return f"{ctx.say(actor)} looked everywhere for {ctx.thing_phrase(obj)}."
 
 
 @REGISTRY.kernel("Find")
 def Find(ctx: World, finder: Actor, obj: Physical) -> str:
+    # Reclaiming a previously-lost item reads "found her ball again"; a fresh
+    # discovery stays "found the treasure" (render before taking ownership).
+    again = " again" if obj.facts.get("status") in ("lost", "missing") else ""
+    phrase = ctx.thing_phrase(obj, with_status=False)
     finder.Find += obj
+    ctx.set_owner(obj, finder)
     ctx.actor = finder
     ctx.current_object = obj
-    return f"{ctx.say(finder)} finally found {obj}."
+    return f"{ctx.say(finder)} finally found {phrase}{again}."
 
 
 @REGISTRY.kernel("Find")
 def FindAt(ctx: World, finder: Actor, obj: Physical, location: Physical) -> str:
+    again = " again" if obj.facts.get("status") in ("lost", "missing") else ""
+    phrase = ctx.thing_phrase(obj, with_status=False)
     finder.Find += obj
     obj.location = location
+    ctx.set_owner(obj, finder)
     ctx.actor = finder
     ctx.current_object = obj
-    return f"{ctx.say(finder)} found {obj} near {location}."
+    return f"{ctx.say(finder)} found {phrase}{again} near {location}."
 
 
 @REGISTRY.kernel("Return")
 def Return(ctx: World, giver: Actor, obj: Physical, recipient: Character) -> str:
+    phrase = ctx.thing_phrase(obj, with_status=False)  # render before re-owning
     obj.add_meme("Return", 1.0)
     giver.Return += recipient
+    ctx.set_owner(obj, recipient)
     ctx.actor = recipient
     ctx.current_object = obj
-    return f"{ctx.say(giver)} returned {obj} to {recipient}."
+    return f"{ctx.say(giver)} returned {phrase} to {recipient}."
 
 
 @REGISTRY.kernel("See")
 def See(ctx: World, char: Actor, obj: Physical) -> str:
     ctx.actor = char
     ctx.current_object = obj
-    return f"{ctx.say(char)} saw {obj}."
+    return f"{ctx.say(char)} saw {ctx.thing_phrase(obj)}."
 
 
 # --- movement ----------------------------------------------------------------
@@ -1285,10 +1335,13 @@ def Walk(ctx: World, char: Actor) -> str:
 
 @REGISTRY.kernel("Give")
 def Give(ctx: World, giver: Character, obj: Physical, receiver: Character) -> str:
+    phrase = ctx.thing_phrase(obj, with_status=False)  # render before re-owning
     giver.Give += obj
     receiver.Joy += 0.4
+    ctx.set_owner(obj, receiver)
     ctx.actor = giver
-    return f"{ctx.say(giver)} gave {obj} to {receiver}."
+    ctx.current_object = obj
+    return f"{ctx.say(giver)} gave {phrase} to {receiver}."
 
 
 @REGISTRY.kernel("Share")
@@ -1412,10 +1465,18 @@ def HappyEnd(ctx: World) -> str:
     chars = [e for e in ctx.entities.values() if e.kind == "character"]
     joy = sum(e.meme("Joy") + e.meme("Love") for e in chars)
     sad = sum(e.meme("Sadness") + e.meme("Fear") for e in chars)
+    # A character who built up Brave while carrying Fear overcame something.
+    overcame = any(e.meme("Brave") > 0 and e.meme("Fear") > 0 for e in chars)
+    reunited = any(e.meme("Reunion") > 0 or e.meme("Return") > 0 for e in chars)
+    befriended = any(e.meme("Friendship") > 0 for e in chars)
     if chars and sad > joy + 0.5:
         return "And though it had been hard, everything turned out all right in the end."
-    if any(e.meme("Friendship") > 0 for e in chars):
+    if reunited and befriended:
+        return "And, together again, they were the best of friends from that day on."
+    if befriended:
         return "And from that day on, they were the best of friends."
+    if overcame:
+        return "And from that day on, they were braver than ever before."
     return "And from that day on, everyone lived happily."
 
 
