@@ -355,6 +355,7 @@ This is an exploration of story as code — where narrative structure becomes ex
 | `cluster.py` | Cluster similar stories | ❌ No |
 | `sample.py` | Sample & explore kernel usage (gen6) | ❌ No |
 | `coverage.py` | Check kernel implementation coverage (gen6) | ❌ No |
+| `quality.py` | Story-quality eval harness (agent-as-judge; see `QUALITY.md`) | ❌ No |
 | `check_duplicates.py` | Find duplicate typed variants (gen6) | ❌ No |
 | `gen6.py` | Unified engine: typed world + AST→AST rewrites + coherency layer | ❌ No |
 | `gen6registry.py` | Auto-loads `gen6kXX` / `char6kXX` packs into one registry | ❌ No |

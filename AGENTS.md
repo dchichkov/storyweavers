@@ -308,6 +308,26 @@ Coverage counts genuine narrative kernels; character names (`Lily(Character, …
 are auto-detected and excluded. Current metrics and the missing-kernel backlog
 live in `TODO.md`.
 
+## Measuring Story Quality (agent-as-judge)
+
+Coverage measures *whether* kernels run; it says nothing about whether the story
+reads well. **`QUALITY.md`** defines an agent-as-judge protocol for that, with a
+reproducible harness:
+
+```bash
+python quality.py --sample -n 100 --seed 42 --out quality_runs/run.jsonl
+# (grade each record's scores/usable/defects per QUALITY.md)
+python quality.py --report quality_runs/run.jsonl
+```
+
+`--sample` writes a deterministic worksheet of (original, kernel, generated)
+triples; a coding agent scores each on 6 dimensions (grammar, coherence,
+fidelity, completeness, naturalness, overall), marks `usable`, and tags
+`defects` from a controlled vocabulary. `--report` aggregates means, the usable
+rate, quality-by-coverage-tier, and a **defect-frequency table** that points
+straight at the next quality pass. The worksheet is line-oriented JSONL so it
+shards across many parallel agents. Read `QUALITY.md` before grading.
+
 ## Philosophy
 
 - **Always import from `gen6registry`** — it loads every pack; importing `gen6`

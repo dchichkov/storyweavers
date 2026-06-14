@@ -212,6 +212,36 @@ workflow itself is sound; the dry-run surfaced and fixed three engine issues:
       `Visit(Lily, Mom, Friend)` are ambiguous (who visits whom) and currently
       go through the fallback. Acceptable; revisit if it shows up often.
 
+### Story-quality evaluation harness (`QUALITY.md` + `quality.py`)
+
+Coverage/execution say nothing about whether a story *reads* well, so added an
+**agent-as-judge** quality eval (synthesis-time; no runtime LLM). `QUALITY.md`
+defines the rubric (6 dims × 1-5, `usable` bool, controlled `defects` tags) and
+procedure; `quality.py --sample` writes a deterministic gradeable JSONL worksheet
+of (original, kernel, generated) triples, `--report` aggregates means + usable
+rate + quality-by-coverage-tier + a defect-frequency table. Sharded JSONL → runs
+across many parallel agents.
+
+**Baseline (24 stories, `data00`, seed 42, graded once):** overall **2.17/5**,
+**0/24 usable**; by coverage tier full **2.67** > high **2.38** > partial
+**1.92**. Top defects: `literal_concept` (19), `clause_in_noun_slot` (9),
+`missing_kernel_fallback` (7), `verbed_noun` (6). Takeaways: (1) the 74% usage /
+99.9% execution numbers massively overstate readiness — most stories are only
+*partially* covered and degrade; (2) even fully-covered stories average 2.67
+(listy, "There was X" concept dumps), so the **generator** needs work, not just
+coverage; (3) the defect table is the prioritized backlog for the next passes:
+- [ ] **`literal_concept` (#1)**: bare concepts / unimplemented names rendered as
+      "There was X." Improve `_combine` / fallback to drop or better-template
+      lone concepts; implement the high-frequency abstract-noun kernels.
+- [ ] **`clause_in_noun_slot` (#2)**: a Trace inlined in an object slot ("wanted
+      Mom climbed the tree", "lesson about Police warned everyone"). Reduce a
+      Trace to an infinitive/noun phrase in noun position (the open limitation).
+- [ ] **`verbed_noun` remainder**: `Altruism`/`Response`/`Remind`/`Belonging`/
+      `Farewell`-as-verb etc. still hit fallback — extend the gen6k06 tolerant
+      pass / add the kernels.
+- [ ] Baseline worksheet committed at `quality_runs/run_baseline.jsonl`; re-run
+      same seed after each pass and diff the report (must not regress).
+
 ### World-model dev pass: object memory + relationship state (`gen6.py`)
 
 Made the engine *read* accumulated world state that was previously only written,
