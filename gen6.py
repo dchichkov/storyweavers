@@ -950,14 +950,29 @@ def meta_story(world: World, hero: Optional[Entity], kw: Dict[str, Any],
 _NOUNISH_SUFFIXES = ("ness", "ment", "ity", "ship", "tion", "sion", "ance",
                      "ence", "hood", "dom", "th", "ude")
 
+# Curated abstract-noun / emotion concept names that are *never* the intended
+# verb in this dataset, so when an unknown kernel by one of these names hits the
+# fallback it should read "X felt <noun>" instead of being past-tensed into a
+# bogus verb ("joyed", "griefed", "angered-as-state"). Words that double as
+# common verbs (help, play, care, hug, share, ...) are deliberately excluded.
+_NOUNISH_WORDS = frozenset({
+    "joy", "sadness", "anger", "fear", "pride", "grief", "guilt", "relief",
+    "courage", "hope", "envy", "jealousy", "loneliness", "boredom", "calm",
+    "comfort", "peace", "wonder", "awe", "shame", "sorrow", "worry", "dread",
+    "delight", "glee", "bliss", "contentment", "gratitude", "compassion",
+    "kindness", "patience", "honesty", "loyalty", "curiosity", "excitement",
+    "happiness", "sympathy", "empathy", "confidence", "determination",
+    "satisfaction", "disappointment", "frustration", "embarrassment",
+})
+
 
 def _looks_nounish(phrase: str) -> bool:
-    """Heuristic: a multi-word or abstract-noun-suffixed concept is a thing/state,
-    not a verb (so it should not be past-tensed in fallback rendering)."""
+    """Heuristic: a multi-word, abstract-noun-suffixed, or known abstract concept
+    is a thing/state, not a verb (so it should not be past-tensed in fallback)."""
     words = phrase.split()
     if len(words) > 1:
         return True
-    return phrase.endswith(_NOUNISH_SUFFIXES)
+    return phrase in _NOUNISH_WORDS or phrase.endswith(_NOUNISH_SUFFIXES)
 
 
 def fallback_text(world: World, name: str, args: List[Any], kwargs: Dict[str, Any]) -> str:
