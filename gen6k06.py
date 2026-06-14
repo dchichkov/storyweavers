@@ -32,9 +32,11 @@ from typing import Any
 from gen6 import (
     REGISTRY,
     World,
+    Trace,
     NLGUtils,
     to_phrase,
     action_to_phrase,
+    gerund_phrase,
     child_sentences,
     coherent,
 )
@@ -96,13 +98,30 @@ def WarningTolerant(ctx: World, *args: Any, **kw: Any) -> str:
 @REGISTRY.kernel("Lesson")
 def LessonTolerant(ctx: World, *args: Any, **kw: Any) -> str:
     chars, rest = _split(args)
-    topic = NLGUtils.join_list(_phrases(rest))
-    if chars:
-        chars[0].add_meme("Wisdom", 1.0)
-        ctx.actor = chars[0]
-        return f"{ctx.say(chars[0])} learned a lesson about {topic}." if topic \
-            else f"{ctx.say(chars[0])} learned an important lesson that day."
-    return f"It was an important lesson about {topic}." if topic else "It was an important lesson."
+    hero = chars[0] if chars else None
+    # A short, reducible action Trace / plain concept goes into "a lesson about
+    # <X>" as a gerund/noun ("warned everyone" -> "warning everyone"). Anything
+    # that can't cleanly reduce (existential / multi-clause Compose trace) is
+    # emitted as its own sentence so story beats aren't lost.
+    about, extra = [], []
+    for r in rest:
+        g = gerund_phrase(r) if isinstance(r, Trace) else to_phrase(r)
+        if g:
+            about.append(g)
+        else:
+            cs = child_sentences(r)
+            if cs:
+                extra += cs
+    topic = NLGUtils.join_list(about)
+    if hero is not None:
+        hero.add_meme("Wisdom", 1.0)
+        ctx.actor = hero
+        lead = (f"{ctx.say(hero)} learned a lesson about {topic}." if topic
+                else f"{ctx.say(hero)} learned an important lesson that day.")
+    else:
+        lead = (f"It was an important lesson about {topic}." if topic
+                else "It was an important lesson.")
+    return coherent(ctx, hero, [lead] + extra)
 
 
 # ---------------------------------------------------------------------------

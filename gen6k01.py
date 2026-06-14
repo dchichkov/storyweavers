@@ -36,6 +36,9 @@ from gen6 import (
     state_to_phrase,
     action_to_phrase,
     event_to_phrase,
+    infinitive_phrase,
+    base_phrase,
+    clause_inline,
     child_sentences,
     render_state,
     render_action,
@@ -253,7 +256,12 @@ def Desire(ctx: World, char: Actor, thing: Any = None, **kw: Any) -> str:
     ctx.actor = char
     obj = thing if thing is not None else _has(kw, "goal", "object")
     if obj is not None:
-        return f"{ctx.say(char)} really wanted {to_phrase(obj)}."
+        # An action goal reads as an infinitive ("wanted to climb the tree"); a
+        # plain object stays a noun ("wanted the ball"). An un-reducible action
+        # clause yields "" -> fall through to the generic wish line.
+        want = infinitive_phrase(obj)
+        if want:
+            return f"{ctx.say(char)} really wanted {want}."
     return f"{ctx.say(char)} wished for something special."
 
 
@@ -282,7 +290,9 @@ def Insight(ctx: World, char: Actor, what: Any = None, **kw: Any) -> str:
     ctx.actor = char
     w = what if what is not None else _has(kw, "lesson", "that")
     if w is not None:
-        return f"{ctx.say(char)} realized that {to_phrase(w)}."
+        # Keep an embedded clause's subject but lower-case it so it reads as a
+        # subordinate clause ("realized that help was on the way").
+        return f"{ctx.say(char)} realized that {clause_inline(w)}."
     return f"{ctx.say(char)} suddenly understood."
 
 
@@ -474,7 +484,11 @@ def Attempt(ctx: World, char: Actor, what: Any = None, **kw: Any) -> str:
     ctx.actor = char
     w = what if what is not None else _has(kw, "goal", "action")
     if w is not None:
-        return f"{ctx.say(char)} tried to {action_to_phrase(w)}."
+        # "tried to <base verb>": base_phrase keeps a concept verb in base form
+        # ("fly", not "flapped"->"flap") and reduces an action Trace.
+        b = base_phrase(w)
+        if b:
+            return f"{ctx.say(char)} tried to {b}."
     aid = _has(kw, "aid", "help")
     if aid is not None:
         return f"{ctx.say(char)} tried hard, with help from {to_phrase(aid)}."

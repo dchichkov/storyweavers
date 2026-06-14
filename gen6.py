@@ -749,6 +749,119 @@ def action_to_phrase(value: Any) -> str:
     return to_phrase(value)
 
 
+# Inverse of NLGUtils.IRREGULAR_PAST (past -> base), for clause reduction.
+_PAST_TO_BASE = {past: base for base, past in NLGUtils.IRREGULAR_PAST.items()}
+# Common base verbs that end in silent 'e' (so "danced" -> "dance", not "danc").
+_SILENT_E_VERBS = frozenset({
+    "dance", "love", "move", "like", "make", "smile", "share", "care", "save",
+    "place", "hope", "ride", "write", "give", "live", "close", "use", "race",
+    "wave", "bake", "name", "taste", "dare", "chase", "hide", "invite", "decide",
+    "wave", "smile", "wave", "bounce", "dive", "tie", "bite", "hike", "tease",
+    "wipe", "shine", "snore", "rake", "stare", "wave", "explore", "imagine",
+    "behave", "arrive", "believe", "escape", "celebrate", "create", "prepare",
+})
+
+
+def _present_base(past: str) -> str:
+    """Best-effort past-tense -> base form (for infinitives/gerunds)."""
+    w = past.lower()
+    if w in _PAST_TO_BASE:
+        return _PAST_TO_BASE[w]
+    if w.endswith("ied"):
+        return w[:-3] + "y"
+    if w.endswith("ed"):
+        stem = w[:-2]
+        if len(stem) >= 2 and stem[-1] == stem[-2] and stem[-1] not in "aeiou":
+            return stem[:-1]            # stopped -> stop
+        if (stem + "e") in _SILENT_E_VERBS:
+            return stem + "e"           # danced -> dance
+        return stem                     # climbed -> climb
+    return w
+
+
+def _gerund(base: str) -> str:
+    """Base verb -> -ing form (run -> running, dance -> dancing)."""
+    b = base.lower()
+    if b.endswith("ie"):
+        return b[:-2] + "ying"          # tie -> tying
+    if len(b) > 2 and b.endswith("e") and not b.endswith(("ee", "oe", "ye")):
+        return b[:-1] + "ing"           # dance -> dancing (but be -> being)
+    if (len(b) == 3 and b[-1] not in "aeiouwxy"
+            and b[-2] in "aeiou" and b[-3] not in "aeiou"):
+        return b + b[-1] + "ing"        # run -> running
+    return b + "ing"
+
+
+def _strip_subject(text: str) -> str:
+    """Drop a leading capitalized proper-name/pronoun subject from a clause,
+    leaving the predicate ("Mom climbed the tree" -> "climbed the tree")."""
+    words = text.rstrip(".!?").strip().split()
+    if len(words) >= 2 and words[0][:1].isupper():
+        return " ".join(words[1:])
+    return text.rstrip(".!?").strip()
+
+
+# Copulas / auxiliaries: present as a past form but never the *action* of a
+# clause, so they must not drive infinitive/gerund reduction ("there was X" must
+# not become "to be X" / "being X").
+_COPULAS = frozenset({"was", "were", "is", "are", "been", "being", "be",
+                      "had", "has", "have", "did", "does", "do"})
+
+
+def _is_past_verb(word: str) -> bool:
+    """Whether a word is a past-tense *action* verb we can confidently de-tense."""
+    w = word.lower()
+    if w in _COPULAS:
+        return False
+    return w in _PAST_TO_BASE or (len(w) > 3 and w.endswith("ed"))
+
+
+def base_phrase(value: Any) -> str:
+    """An action value as a *base* verb phrase ("climb the tree"), no leading
+    "to". Returns "" for a Trace whose predicate isn't a clean action verb."""
+    if isinstance(value, Trace) and value.kernel not in ("Concept", ""):
+        words = _strip_subject(value.text).split()
+        if words and _is_past_verb(words[0]):
+            words[0] = _present_base(words[0])
+            return " ".join(words)
+        return ""
+    return to_phrase(value)
+
+
+def infinitive_phrase(value: Any) -> str:
+    """Render an action value as an infinitive ("to climb the tree") for a
+    desire/goal slot. Returns "" for an action Trace that doesn't cleanly reduce
+    (e.g. "up into the sky it flew"); a plain object becomes a noun phrase."""
+    if isinstance(value, Trace) and value.kernel not in ("Concept", ""):
+        b = base_phrase(value)
+        return ("to " + b) if b else ""
+    return to_phrase(value)
+
+
+def gerund_phrase(value: Any) -> str:
+    """Render an action value as a gerund ("climbing the tree") for slots like
+    "a lesson about <X>". Returns "" for a non-reducible action Trace; a plain
+    concept becomes a noun phrase."""
+    if isinstance(value, Trace) and value.kernel not in ("Concept", ""):
+        words = _strip_subject(value.text).split()
+        if words and _is_past_verb(words[0]):
+            words[0] = _gerund(_present_base(words[0]))
+            return " ".join(words)
+        return ""
+    return to_phrase(value)
+
+
+def clause_inline(value: Any) -> str:
+    """For "X realized that <clause>" / "X learned that <clause>" slots: keep the
+    embedded clause's own subject but lower-case its first word so it reads as a
+    subordinate clause ("...that help was on the way")."""
+    if isinstance(value, Trace) and value.kernel not in ("Concept", ""):
+        text = value.text.rstrip(".!?").strip()
+        if text:
+            return text[0].lower() + text[1:]
+    return to_phrase(value)
+
+
 def event_to_phrase(value: Any) -> str:
     """Render an 'event/catalyst' value (for ``One day, <event>``)."""
     if isinstance(value, Trace):
@@ -1069,7 +1182,11 @@ def _combine(left: Any, right: Any) -> Trace:
                 # phrase jammed between sentences ("...the flowers Frog realized").
                 p = to_phrase(v)
                 if p:
-                    parts.append(f"There was {p}.")
+                    # Plural agreement: "There were dolls." not "There was dolls."
+                    head = p.split()[0].lower()
+                    plural = (head not in ("the", "a", "an", "his", "her", "their", "its", "some")
+                              and p.endswith("s") and not p.endswith(("ss", "us", "is")))
+                    parts.append(f"There {'were' if plural else 'was'} {p}.")
         return Trace("Compose", " ".join(parts), [])
     # Two concepts compose into a noun phrase, not narration. Tag it "Concept"
     # so `child_sentences` won't mistake it for a pre-subjected sentence.
