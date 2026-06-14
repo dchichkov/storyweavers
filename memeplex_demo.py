@@ -30,6 +30,7 @@ from gen6 import (
     Character,
     Actor,
     Rewrite,
+    NLGUtils,
     to_phrase,
     generate,
     generate_world,
@@ -40,18 +41,34 @@ def _content(content: Any) -> str:
     return to_phrase(content) or "stories"
 
 
+def _embody(ent: Any) -> None:
+    """A physical carrier has a unit of self-identity (`I`) once embodied, so the
+    attention-diluted transmissions (`cat.I / 10`, ...) carry real weight."""
+    if isinstance(ent, World):  # guard against misuse
+        return
+    if ent is not None and ent.meme("I") == 0:
+        ent.add_meme("I", 1.0)
+
+
 @REGISTRY.kernel("Listen")
 def ListenMemeplex(ctx: World, listener: Character, speaker: Character, content: Any) -> str:
     """A listener absorbs a fraction of `content` (a memeplex) from a speaker.
 
     story.py:  animal.Story += Content / 10 ;  animal.We += other.We / 100
+    Narration is *driven by accumulated state*: a listener who already carries
+    other stories absorbs this one differently.
     """
     ctx.actor = listener
-    listener.add_meme("Story", 0.1)                            # absorb a fraction (Content / 10)
+    _embody(listener); _embody(speaker)
+    carried = len(listener.links.get("Story", []))             # READ accumulated state
+    listener.add_meme("Story", speaker.meme("I") / 10)         # absorb a fraction (Content / 10)
     listener.add_link("Story", content)                        # ...of *this* content
-    listener.add_meme("We", speaker.meme("We") / 100 + 0.1)    # weak group-identity merge
+    listener.add_meme("We", speaker.meme("We") / 100 + 0.2)    # weak group-identity merge
     listener.add_link("We", speaker)
-    return f"{ctx.say(listener)} listened closely to {speaker}'s story about {_content(content)}."
+    if carried == 0:
+        return f"{ctx.say(listener)} listened closely to {speaker}'s story about {_content(content)}."
+    return (f"{ctx.say(listener)} listened again, adding {speaker}'s tale of "
+            f"{_content(content)} to the {carried + 1} stories {listener.pronoun('subject')} now carried.")
 
 
 @REGISTRY.kernel("Purr")
@@ -59,18 +76,41 @@ def Purr(ctx: World, cat: Actor, other: Character = None) -> str:
     """A cat purrs; the physical vibration carries love + stories weakly to `other`.
 
     story.py:  other.Love += cat.I / 10 ;  other.Story += cat.Story / 100
+    Narration is *driven by how much love `other` has already accumulated*.
     """
     ctx.actor = cat
+    _embody(cat)
     cat.fact("action", "purring")                              # physical embedding of the purr
-    cat.add_meme("Love", cat.meme("I") / 100 + 0.1)            # self-soothing (cat.I / 100)
-    if other is not None:
-        other.add_meme("Love", cat.meme("I") / 10 + 0.4)       # love carried by the vibration
-        other.add_meme("Story", cat.meme("Story") / 100)       # weak story transmission
-        for s in cat.links.get("Story", []):
-            other.add_link("Story", s)
-        other.add_link("Love", cat)
+    cat.add_meme("Love", cat.meme("I") / 100 + 0.05)           # self-soothing (cat.I / 100)
+    if other is None:
+        return f"{ctx.say(cat)} purred softly to itself."
+    _embody(other)
+    prev = other.meme("Love")                                  # READ accumulated weight
+    other.add_meme("Love", cat.meme("I") / 10 + 0.15)          # love carried by the vibration
+    other.add_meme("Story", cat.meme("Story") / 100)           # weak story transmission
+    for s in cat.links.get("Story", []):
+        other.add_link("Story", s)
+    other.add_link("Love", cat)
+    # The prose escalates with the love `other` has already accumulated.
+    if prev < 0.5:
         return f"{ctx.say(cat)} purred softly, and {other} felt the warm rumble and grew calm."
-    return f"{ctx.say(cat)} purred softly to itself."
+    if prev < 1.5:
+        return f"{ctx.say(cat)} purred again, and {other}, already warmed, leaned in closer."
+    return f"{ctx.say(cat)} purred once more; by now {other} could not imagine a day without {cat}."
+
+
+@REGISTRY.kernel("Closeness")
+def Closeness(ctx: World, a: Character, b: Character) -> str:
+    """A closing reader whose text is chosen entirely from accumulated state: the
+    total Love between the pair and the *shared* Story memeplexes they carry."""
+    love = a.meme("Love") + b.meme("Love")
+    shared = sorted(set(a.links.get("Story", [])) & set(b.links.get("Story", [])))
+    if love >= 3.0 and shared:
+        topic = NLGUtils.join_list([_content(s) for s in shared])
+        return f"Bound by the story of {topic}, {a} and {b} had become inseparable."
+    if love >= 1.0:
+        return f"{a} and {b} had grown very close."
+    return f"{a} and {b} stayed good friends."
 
 
 # The 3-arg memeplex Listen and the generic intransitive Listen (gen6k03) both
@@ -86,25 +126,21 @@ MEMEPLEX_RULES = [
 
 
 def _demo() -> None:
-    story = (
-        "Spot(Character, cat, Loyal)\n"
-        "Lily(Character, girl, Curious)\n"
-        "Listen(Spot, Lily, Treasure)\n"   # Spot absorbs Lily's story about treasure
-        "Purr(Spot, Lily)\n"               # Spot purrs -> transmits love + story to Lily
-        "HappyEnd()"
-    )
-    print("=== NARRATION ===")
-    print(generate(story))
+    head = "Spot(Character, cat, Loyal)\nLily(Character, girl, Curious)\n"
+    light = head + "Listen(Spot, Lily, Treasure)\nPurr(Spot, Lily)\nCloseness(Spot, Lily)"
+    heavy = head + "Listen(Spot, Lily, Treasure)\n" + "Purr(Spot, Lily)\n" * 8 + "Closeness(Spot, Lily)"
+
+    print("=== ACCUMULATED WEIGHTS DRIVE THE NARRATION ===")
+    print("--- light (1 purr) ---")
+    print(generate(light))
+    print("--- heavy (8 purrs: Love accumulates -> different prose AND ending) ---")
+    print(generate(heavy))
 
     print("\n=== WORLD-MODEL EFFECTS (transmitted memeplex magnitudes / links) ===")
-    print(generate_world(story).state())
+    print(generate_world(light).state())
 
     print("\n=== AST REWRITE: Tell(speaker, listener, content) -> Listen(listener, speaker, content) ===")
-    tell = (
-        "Spot(Character, cat)\n"
-        "Lily(Character, girl)\n"
-        "Tell(Lily, Spot, Treasure)"
-    )
+    tell = "Spot(Character, cat)\nLily(Character, girl)\nTell(Lily, Spot, Treasure)"
     print("without rule:", generate(tell).split(". ", 2)[-1])
     print("with rule   :", generate(tell, rules=MEMEPLEX_RULES).split(". ", 2)[-1])
 

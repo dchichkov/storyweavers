@@ -15,7 +15,7 @@ The canonical design lives in **[`story.py`](story.py)** (the "Storyweavers Desi
 
 > **Worked example.** `Listen(animal, other, Content)` embeds a fraction of `Content` into `animal` (`animal.Story += Content / 10`) and weakly merges group identity (`animal.We += other.We / 100`). The `/` keeps weak influences weak; only embedded, sufficiently-weighted memeplexes surface in the narrative. See the `Listen` / `Purr` / `Tell` / `Care` sketches in `story.py`.
 >
-> **Runnable proof-of-concept on gen6:** [`memeplex_demo.py`](memeplex_demo.py) implements `Listen` / `Purr` as gen6 kernels that move `Story`/`Love`/`We` magnitudes between carriers (attention-diluted as in `story.py`), shows the transmitted state in the World, and reframes `Tell → Listen` with an AST rewrite. Run `python memeplex_demo.py`.
+> **Runnable proof-of-concept on gen6:** [`memeplex_demo.py`](memeplex_demo.py) implements `Listen` / `Purr` as gen6 kernels that move `Story`/`Love`/`We` magnitudes between carriers (attention-diluted as in `story.py`). Crucially the **accumulated weights drive the prose**: more purrs raise the listener's `Love`, which escalates the narration and changes a state-chosen ending (`Closeness` reads the pair's total `Love` + shared `Story` links). It also reframes `Tell → Listen` with an AST rewrite. Run `python memeplex_demo.py`.
 
 **Where the implementation stands vs. the north star** (honest):
 
