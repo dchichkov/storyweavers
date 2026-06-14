@@ -278,8 +278,19 @@ def Catalyst(ctx: World, *args, **kw) -> str:
 
 def Obstacle(ctx: World, *args, **kw) -> str:
     chars, rest = _split(args)
-    thing = NLGUtils.join_list(_phrases(rest)) or "a problem"
-    return f"But {thing} stood in the way."
+    # Nested action Traces (e.g. Obstacle(ball, stuck(tree))) must become their
+    # own sentences, not be spliced as a clause into "{} stood in the way".
+    concepts, sents = [], []
+    for r in rest:
+        cs = child_sentences(r)
+        if cs is not None:
+            sents += cs
+        else:
+            p = to_phrase(r)
+            if p:
+                concepts.append(p)
+    thing = NLGUtils.join_list(concepts) or "a problem"
+    return " ".join([f"But {thing} stood in the way."] + sents)
 
 
 def Threat(ctx: World, *args, **kw) -> str:
