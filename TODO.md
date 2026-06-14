@@ -212,6 +212,40 @@ workflow itself is sound; the dry-run surfaced and fixed three engine issues:
       `Visit(Lily, Mom, Friend)` are ambiguous (who visits whom) and currently
       go through the fallback. Acceptable; revisit if it shows up often.
 
+### Quality pass #2: tolerant variants for strict builtins (`gen6k06.py`)
+
+Generated ~2,000 fully-covered stories, tallied the worst recurring surface
+patterns, and traced each to its root cause: the strict single-signature
+builtins in `gen6.py` (`Joy(char)`, `Loss(owner, obj)`, `Warning(a, b)`,
+`Help(a, b)`, `Friendship(a, b)`, `Routine(char)`, …) failed to bind on the
+messy real shapes and fell through to `fallback_text`, which **verbed the kernel
+name** ("routined", "warninged", "joyed", "lossed", "lessoned", "friendshiped")
+or emitted the generic "Something help happened" line.
+
+Fix (idiomatic gen6 — multiple typed variants, keep `gen6.py` lean): added a
+**tolerant `*args`/`**kw` variant** for each high-frequency offender in a new
+quality-pass pack `gen6k06.py`. The dispatcher still prefers the precise typed
+builtin when it fits (it binds more args / registers earlier), so canonical
+calls are byte-for-byte unchanged; the tolerant variants only catch what used to
+degrade. Names covered: Joy, Loss, Warning, Lesson, Friendship, Help, Hug,
+Share, Give, Search, Return, Brave, Conflict, Routine.
+
+Measured over ~2,000 fully-covered stories (before → after):
+`routined` 246→0, `friendshiped` 70→0, `joyed` 68→0, `lessoned` 50→0,
+`lossed` 37→0, `warninged` 37→0; "Something {help/share/search/brave/return/hug}
+happened" ~150→~0. Coverage/execution unchanged (77.4% / 99.9%); the top `-ed`
+token list is now all genuine verbs.
+
+Also in this pass:
+- [x] **Engine `_looks_nounish`** broadened with a curated abstract-noun set
+      (`joy`, `grief`, `pride`, `relief`, …; common noun/verb words like `help`,
+      `play`, `care` deliberately excluded) so *unknown* abstract kernels degrade
+      to "X felt <noun>" instead of being past-tensed.
+- [x] **`gen6k03.Obstacle`**: nested action Traces (`Obstacle(ball, stuck(tree))`)
+      are now emitted as their own sentence instead of being spliced as a clause
+      into "{} stood in the way" ("But the ball and There was the tree stood…"
+      → "But the ball stood in the way. There was the tree.").
+
 ### Quality pass: meta-kernel coherence + rewrites/world model
 
 Sampled fully-covered stories (≥5 kernels, all implemented) and fixed the
