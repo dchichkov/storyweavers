@@ -55,6 +55,14 @@ def _be_past(subject: str) -> str:
     return "were" if subject.lower() == "they" else "was"
 
 
+def _motion_target(text: str) -> str:
+    return {
+        "the inside": "inside",
+        "the outside": "outside",
+        "the home": "home",
+    }.get(text, text)
+
+
 # ---------------------------------------------------------------------------
 # Emotions / states (char-or-concept)
 # ---------------------------------------------------------------------------
@@ -247,6 +255,22 @@ def ReturnTolerant(ctx: World, *args: Any, **kw: Any) -> str:
     return "Everything was returned."
 
 
+@REGISTRY.kernel("Run")
+def RunTolerant(ctx: World, *args: Any, **kw: Any) -> str:
+    chars, rest = _split(args)
+    actor = chars[0] if chars else ctx.actor
+    target = NLGUtils.join_list([_motion_target(p) for p in _phrases(chars[1:]) + _phrases(rest) + _phrases(_kw_targets(kw))])
+    if actor is not None:
+        actor.add_meme("Fear", 0.2)
+        ctx.actor = actor
+        if target in ("inside", "outside", "home"):
+            return f"{ctx.say(actor)} ran {target}."
+        return f"{ctx.say(actor)} ran to {target}." if target else f"{ctx.say(actor)} ran away as fast as possible."
+    if target in ("inside", "outside", "home"):
+        return f"Everyone ran {target}."
+    return f"Everyone ran to {target}." if target else "Everyone ran away as fast as possible."
+
+
 @REGISTRY.kernel("Brave")
 def BraveTolerant(ctx: World, *args: Any, **kw: Any) -> str:
     chars, rest = _split(args)
@@ -373,6 +397,148 @@ def HappyEndingTolerant(ctx: World, *args: Any, **kw: Any) -> str:
     for char in chars:
         char.add_meme("Joy", 0.5)
     return HappyEnd(ctx)
+
+
+@REGISTRY.kernel("DailyPlay")
+@REGISTRY.kernel("PlayAllDay")
+def DailyPlayTolerant(ctx: World, *args: Any, **kw: Any) -> str:
+    chars, rest = _split(args)
+    participants = chars if chars else ([ctx.actor] if ctx.actor else [])
+    extras = list(rest)
+    for key in ("participants", "with", "tool", "object", "item"):
+        value = kw.get(key)
+        if isinstance(value, list):
+            for item in value:
+                if item not in participants and not isinstance(item, Trace):
+                    extras.append(item)
+        elif value is not None:
+            extras.append(value)
+    things = NLGUtils.join_list(_phrases(extras))
+    if participants:
+        for actor in participants:
+            actor.add_meme("Joy", 0.4)
+            actor.add_meme("Friendship", 0.2)
+        ctx.actor = participants[0]
+        who = ctx.say(participants[0]) if len(participants) == 1 else _names(participants)
+        return f"{who} played with {things} every day." if things else f"{who} played together every day."
+    return f"Everyone played with {things} every day." if things else "Everyone played together every day."
+
+
+@REGISTRY.kernel("Goodbye")
+@REGISTRY.kernel("Farewell")
+def GoodbyeTolerant(ctx: World, *args: Any, **kw: Any) -> str:
+    chars, rest = _split(args)
+    target = NLGUtils.join_list(_phrases(rest) + _phrases(_kw_targets(kw)))
+    if len(chars) >= 2:
+        ctx.actor = chars[0]
+        for c in chars:
+            c.add_meme("Farewell", 0.5)
+        return f"{_names(chars)} said goodbye."
+    if chars:
+        if ctx.actor is not None and ctx.actor is not chars[0]:
+            ctx.actor.add_meme("Farewell", 0.5)
+            return f"{ctx.say(ctx.actor)} said goodbye to {chars[0]}."
+        chars[0].add_meme("Farewell", 0.5)
+        ctx.actor = chars[0]
+        return f"{ctx.say(chars[0])} said goodbye."
+    if ctx.actor is not None:
+        ctx.actor.add_meme("Farewell", 0.5)
+        return f"{ctx.say(ctx.actor)} said goodbye to {target}." if target else f"{ctx.say(ctx.actor)} said goodbye."
+    return f"Everyone said goodbye to {target}." if target else "Everyone said goodbye."
+
+
+@REGISTRY.kernel("Belonging")
+def BelongingTolerant(ctx: World, *args: Any, **kw: Any) -> str:
+    chars, rest = _split(args)
+    actor = chars[0] if chars else ctx.actor
+    if actor is not None:
+        actor.add_meme("Belonging", 1.0)
+        actor.add_meme("Joy", 0.2)
+        ctx.actor = actor
+        if is_meta_call(kw):
+            body = meta_story(ctx, actor, kw)
+            lead = f"{ctx.say(actor)} found a place to belong."
+            return coherent(ctx, actor, [lead] + ([body] if body else []))
+        target = NLGUtils.join_list([str(c) for c in chars[1:]] + _phrases(rest) + _phrases(_kw_targets(kw)))
+        return f"{ctx.say(actor)} felt at home with {target}." if target \
+            else f"{ctx.say(actor)} found a place to belong."
+    target = NLGUtils.join_list(_phrases(rest) + _phrases(_kw_targets(kw)))
+    return f"Everyone felt they belonged with {target}." if target else "Everyone felt they belonged."
+
+
+@REGISTRY.kernel("Thank")
+def ThankTolerant(ctx: World, *args: Any, **kw: Any) -> str:
+    chars, rest = _split(args)
+    if len(chars) >= 2:
+        giver, receiver = chars[0], chars[1]
+        giver.add_meme("Gratitude", 1.0)
+        giver.add_link("Gratitude", receiver)
+        receiver.add_meme("Joy", 0.2)
+        ctx.actor = giver
+        return f"{ctx.say(giver)} thanked {receiver}."
+    if chars:
+        receiver = chars[0]
+        if ctx.actor is not None and ctx.actor is not receiver:
+            ctx.actor.add_meme("Gratitude", 1.0)
+            ctx.actor.add_link("Gratitude", receiver)
+            receiver.add_meme("Joy", 0.2)
+            return f"{ctx.say(ctx.actor)} thanked {receiver}."
+        receiver.add_meme("Gratitude", 0.5)
+        ctx.actor = receiver
+        return f"{ctx.say(receiver)} gave thanks."
+    target = NLGUtils.join_list(_phrases(rest) + _phrases(_kw_targets(kw)))
+    if ctx.actor is not None:
+        ctx.actor.add_meme("Gratitude", 0.5)
+        return f"{ctx.say(ctx.actor)} gave thanks for {target}." if target else f"{ctx.say(ctx.actor)} gave thanks."
+    return f"Everyone gave thanks for {target}." if target else "Everyone gave thanks."
+
+
+@REGISTRY.kernel("Response")
+def ResponseTolerant(ctx: World, *args: Any, **kw: Any) -> str:
+    chars, rest = _split(args)
+    actor = chars[0] if chars else ctx.actor
+    pieces = list(rest)
+    for key in ("process", "action", "actions", "outcome", "result", "emotion", "response"):
+        value = kw.get(key)
+        if value is not None:
+            pieces.append(value)
+    sents = []
+    concepts = []
+    for piece in pieces:
+        cs = child_sentences(piece)
+        if cs is not None:
+            sents += cs
+        else:
+            phrase = action_to_phrase(piece)
+            if phrase:
+                concepts.append(phrase)
+    if actor is not None:
+        ctx.actor = actor
+        for phrase in concepts:
+            sents.append(f"{actor.name} {phrase}.")
+        return coherent(ctx, actor, sents or [f"{ctx.say(actor)} responded."])
+    for phrase in concepts:
+        sents.append(f"They {phrase}.")
+    return " ".join(sents) if sents else "They responded."
+
+
+@REGISTRY.kernel("Turn")
+def TurnTolerant(ctx: World, *args: Any, **kw: Any) -> str:
+    chars, rest = _split(args)
+    actor = chars[0] if chars else ctx.actor
+    participants = to_phrase(kw.get("participants")) if kw.get("participants") is not None else ""
+    action = kw.get("action")
+    action_phrase = gerund_phrase(action) if isinstance(action, Trace) else to_phrase(action)
+    target = NLGUtils.join_list(_phrases(chars[1:]) + _phrases(rest))
+    if participants and action_phrase and target:
+        return f"{participants} took turns {action_phrase} in {target}."
+    if participants and target:
+        return f"{participants} took turns with {target}."
+    if actor is not None:
+        actor.add_meme("Turn", 0.5)
+        ctx.actor = actor
+        return f"{ctx.say(actor)} turned {target}." if target else f"{ctx.say(actor)} took a turn."
+    return f"Everyone took turns with {target}." if target else "Everyone took a turn."
 
 
 # ---------------------------------------------------------------------------

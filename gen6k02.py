@@ -28,10 +28,12 @@ from gen6 import (
 
 
 @REGISTRY.kernel("Visit")
-def Visit(ctx: World, visitor: Actor, target: Character, **kw: Any) -> str:
+def Visit(ctx: World, visitor: Actor, target: Character = None, **kw: Any) -> str:
     """Visit(visitor, person) -- a character goes to visit another character."""
     visitor.Joy += 0.2
     ctx.actor = visitor
+    if target is None or target is visitor:
+        return f"{ctx.say(visitor)} went to visit."
     return f"{ctx.say(visitor)} went to visit {target}."
 
 

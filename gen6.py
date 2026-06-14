@@ -63,6 +63,14 @@ class Actor:
 # centrally (so kernel signatures stay clean and typed).
 COHERENCE_KWARGS = ("_use_pronoun", "_transition")
 
+CHARACTER_TYPES = frozenset({
+    "adult", "animal", "authority", "baby", "bird", "boy", "brother", "cat",
+    "child", "crab", "dad", "dog", "elder", "family", "farmer", "father",
+    "fish", "friend", "frog", "girl", "grandma", "horse", "human", "lion",
+    "man", "mom", "mother", "mouse", "owl", "parent", "peer", "person",
+    "rabbit", "sister", "stranger", "toy", "woman",
+})
+
 
 # =============================================================================
 # Pronouns
@@ -889,6 +897,15 @@ def infinitive_phrase(value: Any) -> str:
     """Render an action value as an infinitive ("to climb the tree") for a
     desire/goal slot. Returns "" for an action Trace that doesn't cleanly reduce
     (e.g. "up into the sky it flew"); a plain object becomes a noun phrase."""
+    if isinstance(value, (list, tuple)):
+        parts: List[str] = []
+        for item in value:
+            phrase = infinitive_phrase(item)
+            if phrase.startswith("to ") and parts:
+                phrase = phrase[3:]
+            if phrase:
+                parts.append(phrase)
+        return NLGUtils.join_list(parts)
     if isinstance(value, Trace) and value.kernel not in ("Concept", ""):
         b = base_phrase(value)
         return ("to " + b) if b else ""
@@ -2003,10 +2020,17 @@ class Executor:
             # Pre-bind focus: if the first positional arg names a character, make
             # it the actor before evaluating the rest, so nested sub-expressions
             # (in args/kwargs) resolve to the right protagonist (gen5 meta-pattern).
-            if node.args and isinstance(node.args[0], ast.Name):
-                ent = self.world.entities.get(node.args[0].id)
-                if ent is not None and ent.kind == "character":
-                    self.world.actor = ent
+            focus = None
+            if node.args:
+                for name in self._names_in(node.args[0]):
+                    ent = self.world.entities.get(name)
+                    if ent is not None and ent.kind == "character":
+                        focus = ent
+                        break
+            if focus is None:
+                focus = self._keyword_focus(node)
+            if focus is not None:
+                self.world.actor = focus
             args = [self.value(arg) for arg in node.args]
             kwargs = {kw.arg: self.value(kw.value) for kw in node.keywords if kw.arg is not None}
             return self.registry.call(self.world, node.func.id, args, kwargs)
@@ -2064,8 +2088,13 @@ class Executor:
 
         type_name = "person"
         traits: List[str] = []
-        if len(node.args) > 1 and isinstance(node.args[1], ast.Name):
-            type_name = node.args[1].id
+        if len(node.args) > 1:
+            first_traits = self._traits(node.args[1])
+            if first_traits and first_traits[0].lower() in CHARACTER_TYPES:
+                type_name = first_traits[0]
+                traits.extend(first_traits[1:])
+            else:
+                traits.extend(first_traits)
         for arg in node.args[2:]:
             traits.extend(self._traits(arg))
 
@@ -2084,6 +2113,41 @@ class Executor:
         else:
             text = f"There was also {article} {descriptor} named {name}."
         return Trace("Character", text, self.world.effects[start:])
+
+    def _keyword_focus(self, node: ast.Call) -> Optional[Entity]:
+        """Find an explicit character focus in structural keyword args.
+
+        Calls like `Cautionary(protagonists=Lily + Max, ...)` have no positional
+        hero, so Actor fallback would otherwise use the previously declared
+        character while evaluating nested phases. Pre-binding to the first
+        character named in these focus keywords keeps the world model aligned
+        before kwargs execute.
+        """
+        for kw in node.keywords:
+            if kw.arg not in {"actor", "char", "hero", "protagonist", "protagonists", "participants"}:
+                continue
+            for name in self._names_in(kw.value):
+                ent = self.world.entities.get(name)
+                if ent is not None and ent.kind == "character":
+                    return ent
+        return None
+
+    def _names_in(self, node: ast.AST) -> List[str]:
+        if isinstance(node, ast.Name):
+            return [node.id]
+        if isinstance(node, ast.BinOp):
+            return self._names_in(node.left) + self._names_in(node.right)
+        if isinstance(node, (ast.List, ast.Tuple)):
+            out: List[str] = []
+            for item in node.elts:
+                out.extend(self._names_in(item))
+            return out
+        if isinstance(node, ast.Call):
+            out = [node.func.id] if isinstance(node.func, ast.Name) else []
+            for arg in node.args:
+                out.extend(self._names_in(arg))
+            return out
+        return []
 
     def _traits(self, node: ast.AST) -> List[str]:
         if isinstance(node, ast.Name):

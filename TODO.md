@@ -451,6 +451,56 @@ Measured:
       high-coverage stories, **99.9%** execution OK (was 77.4% / 11,794 before
       this pass).
 
+### Quality pass #4: focus prebinding + recurring ending kernels
+
+Ran the same seed-42 24-story worksheet and patched the highest-signal recurring
+surface defects still visible after pass #3: verbed ending kernels
+(`dailied play`, `goodbyed`, `belonginged`, `responsed`), missing gratitude
+fallback (`Something thank happened`), bad compound-action desires, and wrong
+actor focus in structural calls with `protagonists=` / `participants=`.
+
+Engine / shared infrastructure:
+- [x] **Character declaration type splitting.** `Character, child + Brave +
+      Playful` now declares a `child` with `Brave`/`Playful` traits instead of a
+      generic `person`; `Character, Happy + BeachLoving` still becomes a person
+      with traits when no known type is present.
+- [x] **Keyword focus prebinding.** Calls with structural focus kwargs
+      (`actor`, `hero`, `protagonists`, `participants`, …) now prebind
+      `ctx.actor` before kwargs execute, so nested phase kernels no longer run
+      under the last declared character by accident. The same logic now handles
+      first positional character compositions like `Lily + Max`.
+- [x] **List infinitive reduction.** `Longing([Climb(tree), Win])` now renders
+      "wanted to climb the tree and win" instead of "wanted Lily climbed the
+      tree and win."
+
+Sampled kernels / tolerant variants:
+- [x] `DailyPlay` / `PlayAllDay`: "Sue and Tim played with the radio every day"
+      instead of `dailied play`.
+- [x] `Goodbye` / `Farewell`: "Tim said goodbye" instead of `goodbyed`.
+- [x] `Belonging`: "Tim felt at home with the armchair" instead of
+      `belonginged`.
+- [x] `Thank`: bare or one-arg gratitude now uses the current actor ("Man gave
+      thanks") instead of `Something thank happened`.
+- [x] `Response`: positional action traces are emitted as response sentences
+      instead of falling through to `responsed`.
+- [x] `Run`: object-first motion (`Run(inside)`) now reads "ran inside."
+- [x] `Turn`: common turn-taking/object-turn shapes now render ("Tim and Sue
+      took turns sitting down in the armchair", "Tom turned the ball").
+- [x] `Visit`: one-character visits no longer bind the same character as both
+      visitor and target ("Sue went to visit Sue" → "Sue went to visit").
+
+Seed-42 worksheet heuristic counts (before → after this pass):
+`dailied|goodbyed|belonginged|responsed|...` **4→0**,
+`Something X happened` **2→1**, bad `wanted Name verbed` clause **1→0**,
+duplicate compound-name artifact **1→0**. Literal `There was ...` count stayed
+flat (**15→15**), so the next pass should keep attacking literal concept/object
+fallbacks and missing structural kernels.
+
+Measured:
+- `check_duplicates.py`: clean (323 kernel names / 353 variants).
+- `coverage.py --brief --execute 3000`: **77.8%** coverage, **12,181**
+      high-coverage stories, **99.9%** execution OK.
+
 ### Quality pass: meta-kernel coherence + rewrites/world model
 
 Sampled fully-covered stories (≥5 kernels, all implemented) and fixed the
