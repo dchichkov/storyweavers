@@ -86,6 +86,19 @@ python wrld6.py
 python rewr6.py
 ```
 
+`ast_rewrite_transform_demo.py` shows the next step: a candidate AST transform
+that only applies after both structural and world-model checks pass. The demo
+tries to rewrite `Friendship(__A, __B)` into `Lovers(__A, __B)`, but skips the
+rewrite when the second endpoint is not a declared character, or when executing
+the story up to the old ending leaves too little embedded `Love` in either
+carrier. When mutual hugs have already embedded enough `Love`, the generated
+ending changes from "became good friends" to "let their friendship grow into
+love."
+
+```bash
+python ast_rewrite_transform_demo.py
+```
+
 ## Core Concept: Story Kernels
 
 A **story kernel** is a symbolic, algebraic representation of a narrative's structure. It captures characters, their traits, narrative arcs, and emotional transformations in a composable format.
