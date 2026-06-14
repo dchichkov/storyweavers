@@ -9,6 +9,36 @@ This document provides instructions for coding agents (Claude, Cursor, etc.) wor
 
 ---
 
+## ⭐ North Star — keep aligned with the Memeplex Model
+
+The project's canonical design is the **memeplex model** in **[`story.py`](story.py)**
+(summarized in the [README North Star](README.md#-north-star-the-memeplex-model--see-storypy);
+backlog in [`TODO.md`](TODO.md) "North Star"). Coverage and quality work are means
+to that end — do not let them drift away from it. Before any non-trivial engine
+change, re-read `story.py` and check your change against these principles:
+
+1. **Memeplex == story.** Concepts (`Love`, `Fear`, `Envy`), actions, characters,
+   and whole narratives are the *same kind* of composable object (`+`, `+=`, `/`).
+2. **Embed-or-zero-weight.** A memeplex only affects the narrative once embedded
+   in a physical carrier (book / person / many people). *"Stories need to have
+   associated physical objects, or story weight is zero."* An un-embedded concept
+   must **not** surface (this is the root of the `literal_concept` defect — a bare
+   concept should bind to `ctx.actor` / `ctx.current_object` and render its
+   physical manifestation, or be dropped).
+3. **Track the physical level + concept magnitudes.** Carriers hold how much of
+   each concept is present (`Entity.memes`); let that accumulated state drive the
+   prose (prefer the world model — see the quality-pass guidance below).
+4. **Only allow compatible moves.** Keep generated narrative consistent with the
+   memeplexes already present (e.g. a maxed-`Envy` `Scar(Character, lion)` should
+   not do out-of-character kind acts unless the embedded state changes first).
+
+**When you touch the engine:** state in your PR how the change moves *toward* (or,
+if unavoidable, why it deviates from) this north star. New kernels should let
+embedded state drive text and avoid emitting un-embedded concepts as bare "There
+was X." sentences.
+
+---
+
 ## gen6 Authoring ⭐
 
 gen6 is a typed, fault-tolerant engine. Key properties (and how it differs from

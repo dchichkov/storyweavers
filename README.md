@@ -4,6 +4,30 @@
 
 Storyweavers explores whether stories can be decomposed into compact, algebraic "kernels" — composable narrative patterns that can generate surface text. The project extracts these kernels from the TinyStories dataset (~2M children's stories) and investigates whether a small library of ~1-5K kernels can reconstruct coherent story datasets.
 
+## ⭐ North Star: The Memeplex Model — see [`story.py`](story.py)
+
+The canonical design lives in **[`story.py`](story.py)** (the "Storyweavers Design Summary"). Everything in this repo should be measured against it. The core idea:
+
+- **Everything is a memeplex, and a memeplex *is* a story.** A concept (`Love`, `Fear`, `Envy`), a verb/action, a character, and a whole narrative are the *same kind of object* — composable via the algebra (`+` composition / co-occurrence, `+=` accumulation, `/` attention dilution). They differ only in scale, not in kind.
+- **Memeplexes are platonic forms; they only matter once *embedded* in a physical carrier.** A memeplex must be embedded in something physical — captured in a *book*, alive in a *person*, or alive across *many people* — to affect the narrative. *"Stories need to have associated physical objects, or story weight is zero"* (`story.py`). An un-embedded concept has **zero weight** and must not change the story.
+- **Track the physical level and how much of each concept is present.** Each physical carrier holds *magnitudes* of the concepts embedded in it (`Entity.memes` in `gen6.py` is the seed of this). The story is the evolving state of these embedded magnitudes.
+- **The world model should only allow *compatible* moves.** Generation must be consistent with the memeplexes already present and how they interact. Example: declare a lion `Scar(Character, lion)` and max out its `Envy` memeplex — the world model should then only permit Envy-compatible moves, and the generated narrative must stay consistent with a maxed-Envy character (no out-of-character kindness unless something first changes the embedded state).
+
+> **Worked example.** `Listen(animal, other, Content)` embeds a fraction of `Content` into `animal` (`animal.Story += Content / 10`) and weakly merges group identity (`animal.We += other.We / 100`). The `/` keeps weak influences weak; only embedded, sufficiently-weighted memeplexes surface in the narrative. See the `Listen` / `Purr` / `Tell` / `Care` sketches in `story.py`.
+
+**Where the implementation stands vs. the north star** (honest):
+
+| Principle | Status in `gen6.py` |
+|---|---|
+| Per-carrier concept magnitudes (`Entity.memes`) | ✅ partial — exists and accumulates |
+| Concept embedding via `+=` (`@REGISTRY.addition`) | ✅ partial — some concepts attach to carriers |
+| **Embed-or-zero-weight** (drop un-embedded concepts) | ❌ not enforced — surfaces as the `literal_concept` defect ("There was bravery.") |
+| **Memeplex == story** (one uniform representation) | ❌ kernels, concepts, characters are still three things |
+| **Compatibility / only-allow-compatible-moves** | ❌ not built (design sketch in `TODO.md` → `constraint_pass`) |
+| Physical / plausibility model | ❌ minimal (object owner/status only) |
+
+See [`TODO.md`](TODO.md) for the north-star backlog that closes these gaps, and [`QUALITY.md`](QUALITY.md) for how quality/fidelity is measured against it.
+
 ## TODO
 **[TODO.md](TODO.md)** For gaps and next steps. The top of TODO.md has a status update on the unified `gen6.py` engine.
 
@@ -260,8 +284,8 @@ print(generate(kernel))
 ### `sample.py` `parse.py` `coverage.py` — Kernel Analysis
 Parses extracted kernels, computes statistics, and identifies the most common narrative patterns.
 
-### `story.py` — Narrative Algebra Framework
-Experimental implementation of the kernel algebra with `Story` and `physical` classes.
+### `story.py` — ⭐ Canonical Design (Memeplex Model / North Star)
+The **design summary and reference for the whole project** (see [North Star](#-north-star-the-memeplex-model--see-storypy)). Defines the memeplex model: `Story` (memetic, composable, uppercase) vs `physical` (atomic, terminal, lowercase); characters inherit from both; **a `Story` has weight only when embedded in a physical carrier** ("Stories need to have associated physical objects, or story weight is zero"); attention algebra (`+`, `+=`, `/`); and a physics/plausibility model for consistency. `gen6.py` currently realizes only part of this — `story.py` is the north star the engine is being pulled back toward.
 
 ## Adding New Kernels (Coding Agent Workflow)
 
@@ -335,12 +359,14 @@ print(generate(kernel))
 
 ## Philosophy
 
-The project is grounded in the idea that narratives are composed of reusable **memetic objects** — patterns that propagate through culture. By decomposing stories into kernels, we can:
+The project is grounded in the **memeplex model** (canonical statement in [`story.py`](story.py); summarized in [North Star](#-north-star-the-memeplex-model--see-storypy) above): narratives are reusable **memetic objects** that propagate through culture, where a concept, an action, a character, and a whole story are the *same kind of composable object* — and a memeplex only affects the narrative once it is **embedded in a physical carrier** (book / person / many people); un-embedded memeplexes have zero weight. By decomposing stories into kernels, we can:
 
 1. **Compress** narrative knowledge into a small, interpretable library
 2. **Compose** new stories by combining kernels algebraically
 3. **Analyze** what fundamental patterns make stories work
 4. **Train** models on structured narrative representations
+
+The generation engine should let **embedded memeplex state drive the prose** and only permit **compatible moves** (consistent with the concepts already present and how they interact), rather than executing kernels blindly.
 
 **LLM usage is restricted to synthesis time** (extracting kernels, clustering, defining new kernel implementations). At generation time, stories are produced through classical execution — no LLM calls, just template filling and compositional algebra.
 
@@ -362,7 +388,7 @@ This is an exploration of story as code — where narrative structure becomes ex
 | `gen6k01.py`, `gen6k02.py`, … | Kernel packs (added kernels) | ❌ No |
 | `wrld6.py` | Typed world / dispatch prototype (demo `gen6` builds on) | ❌ No |
 | `rewr6.py` | AST→AST rewrite engine prototype (demo `gen6` builds on) | ❌ No |
-| `story.py` | Kernel algebra experiments | ❌ No |
+| `story.py` | ⭐ **Canonical design / north star** — the memeplex model (memeplex == story, embed-or-zero-weight, physical carriers, compatibility) | ❌ No |
 | `AGENTS.md` | Instructions for coding agents | ❌ No |
 | `legacy/` | Previous engine (`gen5.py`, `gen5kXX`, `char5kXX`, older `gen*.py`) — reference only | ❌ No |
 

@@ -4,6 +4,56 @@ Engine improvements inspired by interactive fiction systems (Ink, ChoiceScript, 
 
 ---
 
+## ⭐ North Star — The Memeplex Model (canonical design: [`story.py`](story.py))
+
+Keep every change pointed at the core idea in **[`story.py`](story.py)** (and the
+[README North Star](README.md#-north-star-the-memeplex-model--see-storypy)).
+Don't let coverage/quality work quietly drift away from it:
+
+1. **Memeplex == story.** Concepts (`Love`, `Fear`, `Envy`), actions/verbs,
+   characters, and whole narratives are the *same kind* of composable object
+   (algebra: `+`, `+=`, `/`). They differ in scale, not kind.
+2. **Embed-or-zero-weight.** A memeplex is a platonic form; it only affects the
+   narrative once **embedded in a physical carrier** (book / person / many
+   people). *"Stories need to have associated physical objects, or story weight
+   is zero."* Un-embedded concepts must **not** surface.
+3. **Track the physical level + concept magnitudes.** Each carrier holds how much
+   of each concept is present (`Entity.memes` is the seed). The story is the
+   evolving state of these embedded magnitudes.
+4. **Only allow compatible moves.** Generation must stay consistent with the
+   memeplexes already present and how they interact. *Example:* max out `Envy` on
+   `Scar(Character, lion)` → the world model should permit only Envy-compatible
+   moves and never narrate out-of-character kindness unless the embedded state
+   changes first.
+
+### North-star backlog (the gaps between `gen6.py` and `story.py`)
+
+- [ ] **Embed-or-zero-weight rule (engine).** A bare concept must bind to a
+      carrier (`ctx.actor` / `ctx.current_object`) as a meme and render its
+      *physical manifestation*; if it can't embed, **drop it** (weight zero).
+      This is the principled fix for the **`literal_concept`** defect (today the
+      engine leaks un-embedded platonic forms as "There was bravery."). Fix in
+      `_combine` / `fallback_text`; re-measure with `quality.py` (seed 42).
+- [ ] **Compatibility / constraint pass.** Lift the `constraint_pass` /
+      `StoryIR` sketch below (search "World Model Constraints") into a real
+      AST/execution gate: rescue-needs-danger, fly-needs-a-flying-creature,
+      forgiveness-needs-prior-conflict, **plus meme-gated moves** (e.g. a
+      maxed-`Envy` carrier resists pro-social kernels). Start with ~4 rules.
+- [ ] **Unify representation toward `memeplex == story`.** Today kernels (typed
+      Python fns), concepts (float slots), and characters (entities) are three
+      different things; converge them toward one composable `Story`/memeplex
+      object (see the `@Stories` algebra + deferred execution in `story.py`).
+- [ ] **Physical / plausibility model.** Grow the physical layer beyond object
+      owner/status (started) toward `story.py`'s `physical()` consistency model
+      (real / fantasy / story-world physics, plausibility of moves).
+- [ ] **Keep it visible.** Re-read this section before large engine passes;
+      record alignment (or deliberate deviation) in PRs.
+
+> Status table (which principles are realized today) is in the
+> [README North Star](README.md#-north-star-the-memeplex-model--see-storypy).
+
+---
+
 ## Status Update — `gen6.py` (unified engine)
 
 Much of the design below has now been prototyped and assembled into a single
