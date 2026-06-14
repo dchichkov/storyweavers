@@ -322,3 +322,37 @@ live in `TODO.md`.
 - **Keep `gen6.py` lean** — add kernels in packs (`gen6kXX.py` / `char6kXX.py`);
   reserve engine edits for shared infrastructure.
 - **No LLMs at runtime** — all generation is classical execution.
+
+---
+
+## Cursor Cloud specific instructions
+
+This is a **pure-Python, stdlib-only CLI/library project** (no web server, GUI,
+or database). "Running the application" means generating stories from kernels:
+`python gen6.py` (engine demo), `python gen6registry.py` (lists packs + counts),
+or `from gen6registry import generate_story` in Python. Standard
+lint/test/coverage commands are already documented above and in `README.md`.
+
+Non-obvious environment caveats:
+
+- **`python` is required, not just `python3`.** The base VM only ships
+  `python3`, but `story_tests.py` shells out to `python` and the docs use
+  `python ...`. VM setup creates a symlink (`/usr/local/bin/python` →
+  `/usr/bin/python3`, Python 3.12). If `python` is ever missing, recreate it:
+  `sudo ln -sf /usr/bin/python3 /usr/local/bin/python`.
+- **No third-party packages for the core flow.** The gen6 engine, packs, and the
+  `coverage.py` / `sample.py` / `check_duplicates.py` / `story_tests.py` tools
+  are stdlib-only — there is nothing to `pip install`. (Optional peripheral
+  scripts not in the core flow need extras: `kernel.py`→`openai`+`tqdm`+an LLM
+  server; `cluster.py`→`numpy`+`scikit-learn`; `test.py`→a GPU RAPIDS stack.)
+- **Dataset is git-LFS `.bz2`; tooling reads decompressed `.jsonl`.**
+  `coverage.py` / `sample.py` / `story_tests.py` default to
+  `TinyStories_kernels/data00.kernels.jsonl`. The repo only ships
+  `*.kernels.jsonl.bz2` (the `.jsonl` form is git-ignored), so it must be
+  decompressed. The startup/update script decompresses `data00`. To use another
+  shard (`data01`..`data14`, or the combined `data`), decompress it first:
+  `bunzip2 -k TinyStories_kernels/data01.kernels.jsonl.bz2`.
+- **Known-failing pinned story tests.** `python story_tests.py --run` currently
+  reports `data00_14193`, `data00_3216`, and `data00_83` as FAIL — these are the
+  gen5-era pins the README/quality-pass notes flag for re-pinning, **not** an
+  environment problem. Re-pin them once their gen6 output is good.
