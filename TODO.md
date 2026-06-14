@@ -148,8 +148,8 @@ and kernel-library size.
 |--------|-------------|--------------|------|-------|
 | Parse OK (`ast.parse`) | 83.5% | 83.5% | ~80.8% | Same format; remaining ~16% is non-Python the LLM emitted |
 | Execute end-to-end (no exception) | 0.2% | **99.9%** | 96.5% | Fallback never raises → higher than gen5 |
-| Kernel-name coverage (usages) | 36.9% | **77.4%** | 85.0% | 311 kernel names / 323 variants vs gen5's 807 (62.5% → 70.9% w/ gen6k04 → 77.4% w/ gen6k05) |
-| Stories ≥90% kernel-covered | — | 11,794 | 26,982 | long tail = kernel-library size (3,176 → 6,874 → 11,794) |
+| Kernel-name coverage (usages) | 36.9% | **90.1%** | 85.0% | 772 kernel names / 802 variants; coverage push #07 moved gen6 past the 90% target |
+| Stories ≥90% kernel-covered | — | 29,706 | 26,982 | long tail remains, but gen6 now exceeds the old gen5 coverage snapshot |
 
 The robustness headline is resolved: **0.2% → 99.8% end-to-end execution**. The
 remaining gap to gen5 is purely **kernel-library size** (port more kernels).
@@ -250,6 +250,20 @@ remaining gap to gen5 is purely **kernel-library size** (port more kernels).
       **311 names / 323 variants → 77.4% coverage; 99.9% end-to-end execution.**
       Continue porting the long tail toward gen5's 85%. Next by usage: Care
       variants, Reward, Sight refinements, plus richer kwargs handling.
+- [x] **gen6k07.py** — coverage push toward the explicit 90% target. Sampled the
+      highest-frequency missing kernels in batches (first with `sample.py`, then
+      compact AST call sampling over `data00`) and added a generic but
+      meta-aware pack for everyday actions, emotions, states, structural wrappers,
+      and story primitives. Representative names: If, Water, Meal, Persistence,
+      ParkVisit, Ignore, Greeting, Competition, Unlock, Agreement, Feel, Steal,
+      Warn, Cheer, Win; plus the long-tail batches from Neglect through
+      JoyfulDay, Examine through Quarrel, and Lose through Misunderstanding.
+      The pass is intentionally coverage-oriented: it greatly reduces generic
+      fallback usage, updates meme magnitudes where obvious, and routes phase
+      kwargs to `meta_story`, but some smoke-test prose remains rough and should
+      be followed by a quality pass. **Measured:** `772` names / `802` variants,
+      **90.1% coverage**, **29,706** high-coverage stories, **99.9%**
+      end-to-end execution OK.
 - [x] **gen6k03 design note**: real calls capitalize objects (`Break(Vase)`,
       `Build(Stack, block)`), so capitalized undefined names arrive as concept
       *strings*, not `Physical` entities. `gen6k03` kernels take untyped `*args`
