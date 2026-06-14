@@ -66,8 +66,8 @@ and kernel-library size.
 |--------|-------------|--------------|------|-------|
 | Parse OK (`ast.parse`) | 83.5% | 83.5% | ~80.8% | Same format; remaining ~16% is non-Python the LLM emitted |
 | Execute end-to-end (no exception) | 0.2% | **99.9%** | 96.5% | Fallback never raises → higher than gen5 |
-| Kernel-name coverage (usages) | 36.9% | **70.9%** | 85.0% | 224 kernel names / 236 variants vs gen5's 807 (was 62.5% before gen6k04) |
-| Stories ≥90% kernel-covered | — | 6,874 | 26,982 | long tail = kernel-library size (was 3,176 before gen6k04) |
+| Kernel-name coverage (usages) | 36.9% | **77.4%** | 85.0% | 311 kernel names / 323 variants vs gen5's 807 (62.5% → 70.9% w/ gen6k04 → 77.4% w/ gen6k05) |
+| Stories ≥90% kernel-covered | — | 11,794 | 26,982 | long tail = kernel-library size (3,176 → 6,874 → 11,794) |
 
 The robustness headline is resolved: **0.2% → 99.8% end-to-end execution**. The
 remaining gap to gen5 is purely **kernel-library size** (port more kernels).
@@ -150,6 +150,22 @@ remaining gap to gen5 is purely **kernel-library size** (port more kernels).
       (`Travel(zoo)`, `Wear(dress)`) fall back to `ctx.actor`; phase kwargs route
       to `meta_story`; `Outcome`/`Result`/`Consequence` wrap child Traces.
       **224 names / 236 variants → 70.9% coverage; 99.9% end-to-end execution.**
+- [x] **gen6k05.py** — next ~90 highest-frequency missing kernels, sampled then
+      implemented (reusing the gen6k03 factories + bespoke variants): Reach, Grab,
+      Bite, Avoid, Feed, Purchase, Capture, Paint, Kick, Approach, Drive, Check,
+      Tell, Put, Lift, Count, Move, Add, Dig, Fill, Remove, Scare, Receive,
+      Answer, Choose, Stop, Reject, Grant, Write, Hear, Enjoy, Heal, Respect,
+      Leave, Thanks, Bonding, Reassurance, Caution, Theft, Recall, Claim,
+      Understanding, Inquiry (transitive); Grow, Agree, Swim, Slip (intransitive);
+      Warm, Calm, Contentment, Hunger, Guilt, Grief, Upset, Safe, Victory
+      (emotion); Broken (event); plus bespoke Go, Sharing/Shared, Exploration,
+      Creation, Home, Illness, Choice, Task, Reaction, Knowledge, Continuation,
+      Goal, Danger, Crisis, Disruption, Temptation, Disobedience, Missing, New,
+      Mess, Attached/Attachment, Death, Injury, Flight, Farewell, Picnic,
+      Unexpected, Cooperate. Object-first calls fall back to `ctx.actor`; phase
+      kwargs route to `meta_story`; child-Trace args (Cooperate/Reaction/Task/
+      Continuation/Unexpected/Sharing) render as their own sentences.
+      **311 names / 323 variants → 77.4% coverage; 99.9% end-to-end execution.**
       Continue porting the long tail toward gen5's 85%. Next by usage: Care
       variants, Reward, Sight refinements, plus richer kwargs handling.
 - [x] **gen6k03 design note**: real calls capitalize objects (`Break(Vase)`,
