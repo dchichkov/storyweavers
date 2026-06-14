@@ -1163,6 +1163,7 @@ _NOUNISH_WORDS = frozenset({
     "kindness", "patience", "honesty", "loyalty", "curiosity", "excitement",
     "happiness", "sympathy", "empathy", "confidence", "determination",
     "satisfaction", "disappointment", "frustration", "embarrassment",
+    "indifference", "bravery", "altruism",
 })
 
 
@@ -1172,6 +1173,17 @@ def _looks_nounish(phrase: str) -> bool:
     words = phrase.split()
     if len(words) > 1:
         return True
+    return phrase in _NOUNISH_WORDS or phrase.endswith(_NOUNISH_SUFFIXES)
+
+
+def _looks_like_state(phrase: str) -> bool:
+    """A concept that reads naturally as a felt state ("indifference").
+
+    `_looks_nounish` is intentionally broad for fallback verb avoidance, but the
+    embed-or-zero pass should only narrate physical manifestations it can say
+    cleanly. Multi-word action concepts such as "help others" still embed as
+    memes; they just do not leak as "felt help others."
+    """
     return phrase in _NOUNISH_WORDS or phrase.endswith(_NOUNISH_SUFFIXES)
 
 
@@ -1210,15 +1222,64 @@ def fallback_text(world: World, name: str, args: List[Any], kwargs: Dict[str, An
         return sub_text
 
     if objs or concepts:
-        targets = [str(o) for o in objs] + [c.lower() for c in concepts]
-        return f"There was {NLGUtils.join_list(targets)}."
+        embedded = [_embed_or_zero(world, c) for c in concepts]
+        embedded = [e for e in embedded if e]
+        if embedded and not objs:
+            return " ".join(embedded)
+        if objs:
+            targets = [str(o) for o in objs]
+            # Only keep unembedded concepts beside physical objects when there
+            # is no carrier to receive them; otherwise the meme is already in
+            # world state and should not also leak as a platonic "thing."
+            if not embedded:
+                targets += [c.lower() for c in concepts]
+            return f"There was {NLGUtils.join_list(targets)}."
+        return ""
+
+    if _looks_nounish(phrase):
+        return _embed_or_zero(world, phrase)
 
     if phrase.endswith("ing"):
         return f"{phrase.capitalize()}."
     return f"Something {phrase} happened."
 
 
-def _combine(left: Any, right: Any) -> Trace:
+def _concept_meme_name(phrase: str) -> str:
+    words = re.findall(r"[A-Za-z0-9]+", phrase)
+    return "".join(w[:1].upper() + w[1:] for w in words) if words else ""
+
+
+def _embed_or_zero(world: World, value: Any) -> str:
+    """Embed a bare memeplex into the current physical carrier, or drop it.
+
+    story.py's north star says platonic memeplexes have zero story weight until
+    carried by something physical. A bare concept in a `+` chain should therefore
+    not leak as "There was X." If a current character/object exists, record the
+    concept magnitude there; narrate only abstract/emotional concepts where the
+    physical manifestation is a readable state ("Lily felt confidence").
+    """
+    if isinstance(value, Trace) and value.kernel == "Concept":
+        phrase = value.text.strip()
+    elif isinstance(value, str):
+        phrase = to_phrase(value).strip()
+    else:
+        return ""
+    if not phrase:
+        return ""
+
+    carrier = world.actor or world.current_object
+    if not isinstance(carrier, Entity):
+        return ""
+
+    meme = _concept_meme_name(phrase)
+    if meme:
+        carrier.add_meme(meme, 1.0)
+    if carrier.kind == "character" and _looks_like_state(phrase):
+        return f"{world.say(carrier)} felt {phrase}."
+    return ""
+
+
+def _combine(world: World, left: Any, right: Any) -> Trace:
     """Combine two evaluated operands of a ``+`` composition into one Trace.
 
     If either side is a narration Trace, the result sequences sentences;
@@ -1234,16 +1295,9 @@ def _combine(left: Any, right: Any) -> Trace:
             if _is_narration(v):
                 parts.append(v.text.strip())
             else:
-                # A bare concept (or concept-composition Trace) inside a
-                # narrative sequence becomes its own sentence rather than a naked
-                # phrase jammed between sentences ("...the flowers Frog realized").
-                p = to_phrase(v)
-                if p:
-                    # Plural agreement: "There were dolls." not "There was dolls."
-                    head = p.split()[0].lower()
-                    plural = (head not in ("the", "a", "an", "his", "her", "their", "its", "some")
-                              and p.endswith("s") and not p.endswith(("ss", "us", "is")))
-                    parts.append(f"There {'were' if plural else 'was'} {p}.")
+                embedded = _embed_or_zero(world, v)
+                if embedded:
+                    parts.append(embedded)
         return Trace("Compose", " ".join(parts), [])
     # Two concepts compose into a noun phrase, not narration. Tag it "Concept"
     # so `child_sentences` won't mistake it for a pre-subjected sentence.
@@ -1573,7 +1627,7 @@ def Laugh(ctx: World, char: Actor) -> str:
 def Friendship(ctx: World, a: Character, b: Character) -> str:
     a.Friendship += b
     ctx.actor = a
-    return f"{ctx.say(a)} and {b} became good friends."
+    return f"{a.name} and {b} became good friends."
 
 
 @REGISTRY.kernel("Gratitude")
@@ -1930,7 +1984,7 @@ class Executor:
             if isinstance(node.op, ast.Add):
                 left = self.eval(node.left)
                 right = self.eval(node.right)
-                return _combine(left, right)
+                return _combine(self.world, left, right)
             if isinstance(node.op, ast.Div):
                 # Attention dilution: `X / n`. A strong dilution suppresses X.
                 left = self.eval(node.left)
@@ -2064,6 +2118,9 @@ def narrate(world: World) -> str:
     story = re.sub(r"\.\.+", ".", story)
     # Capitalize the first letter of every sentence.
     story = re.sub(r"(^|[.!?]\s+)([a-z])", lambda m: m.group(1) + m.group(2).upper(), story)
+    story = re.sub(r"\b[Tt]hey was\b", lambda m: m.group(0)[:4] + " were", story)
+    story = re.sub(r"\b[Tt]hey is\b", lambda m: m.group(0)[:4] + " are", story)
+    story = re.sub(r"\b[Tt]hey has\b", lambda m: m.group(0)[:4] + " have", story)
     story = _dedupe_adjacent_sentences(story)
     return story.strip()
 

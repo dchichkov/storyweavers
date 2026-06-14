@@ -39,6 +39,9 @@ from gen6 import (
     gerund_phrase,
     child_sentences,
     coherent,
+    meta_story,
+    is_meta_call,
+    HappyEnd,
 )
 
 from gen6k03 import _split, _phrases, _kw_targets, _cap
@@ -46,6 +49,10 @@ from gen6k03 import _split, _phrases, _kw_targets, _cap
 
 def _names(chars):
     return NLGUtils.join_list([str(c) for c in chars])
+
+
+def _be_past(subject: str) -> str:
+    return "were" if subject.lower() == "they" else "was"
 
 
 # ---------------------------------------------------------------------------
@@ -250,9 +257,122 @@ def BraveTolerant(ctx: World, *args: Any, **kw: Any) -> str:
         actor.add_meme("Fear", -0.35)
         ctx.actor = actor
         if had_fear:
-            return f"Even though {ctx.say(actor)} was afraid, {actor.pronoun('subject')} was very brave."
+            subj = actor.pronoun("subject")
+            return f"Even though {ctx.say(actor)} was afraid, {subj} {_be_past(subj)} very brave."
         return f"{ctx.say(actor)} was very brave."
     return "It was a brave thing to do."
+
+
+@REGISTRY.kernel("Bravery")
+def BraveryTolerant(ctx: World, *args: Any, **kw: Any) -> str:
+    chars, rest = _split(args)
+    actor = chars[0] if chars else ctx.actor
+    support = NLGUtils.join_list([str(c) for c in chars[1:]] + _phrases(rest) + _phrases(_kw_targets(kw)))
+    if actor is not None:
+        had_fear = actor.Fear > 0.2
+        actor.add_meme("Brave", 1.0)
+        actor.add_meme("Bravery", 1.0)
+        actor.add_meme("Fear", -0.35)
+        ctx.actor = actor
+        if support:
+            return f"{ctx.say(actor)} was brave for {support}."
+        if had_fear:
+            subj = actor.pronoun("subject")
+            return f"Even though {ctx.say(actor)} was afraid, {subj} {_be_past(subj)} very brave."
+        return f"{ctx.say(actor)} was very brave."
+    return "being brave"
+
+
+@REGISTRY.kernel("Altruism")
+def AltruismTolerant(ctx: World, *args: Any, **kw: Any) -> str:
+    chars, rest = _split(args)
+    actor = chars[0] if chars else ctx.actor
+    if actor is not None:
+        actor.add_meme("Altruism", 1.0)
+        actor.add_meme("Kindness", 0.5)
+        actor.add_meme("Love", 0.2)
+        ctx.actor = actor
+        lead = f"{ctx.say(actor)} showed kindness by helping others."
+        if is_meta_call(kw):
+            body = meta_story(ctx, actor, kw)
+            return coherent(ctx, actor, [lead] + ([body] if body else []))
+        target = NLGUtils.join_list(_phrases(chars[1:]) + _phrases(rest) + _phrases(_kw_targets(kw)))
+        return f"{ctx.say(actor)} helped {target} with kindness." if target else lead
+    target = NLGUtils.join_list(_phrases(rest) + _phrases(_kw_targets(kw)))
+    return f"helping {target}" if target else "helping others"
+
+
+@REGISTRY.kernel("Indifference")
+def IndifferenceTolerant(ctx: World, *args: Any, **kw: Any) -> str:
+    chars, rest = _split(args)
+    actor = chars[0] if chars else ctx.actor
+    target = NLGUtils.join_list(_phrases(chars[1:]) + _phrases(rest) + _phrases(_kw_targets(kw)))
+    if actor is not None:
+        actor.add_meme("Indifference", 1.0)
+        ctx.actor = actor
+        return f"{ctx.say(actor)} did not seem to mind {target}." if target \
+            else f"{ctx.say(actor)} did not seem to mind."
+    return f"No one seemed to mind {target}." if target else "No one seemed to mind."
+
+
+@REGISTRY.kernel("Satisfaction")
+def SatisfactionTolerant(ctx: World, *args: Any, **kw: Any) -> str:
+    chars, rest = _split(args)
+    actor = chars[0] if chars else ctx.actor
+    target = NLGUtils.join_list(_phrases(chars[1:]) + _phrases(rest) + _phrases(_kw_targets(kw)))
+    if actor is not None:
+        actor.add_meme("Satisfaction", 1.0)
+        actor.add_meme("Joy", 0.3)
+        ctx.actor = actor
+        subj = ctx.say(actor)
+        return f"{subj} {_be_past(subj)} satisfied with {target}." if target \
+            else f"{subj} felt satisfied."
+    return f"There was satisfaction with {target}." if target else "There was satisfaction."
+
+
+@REGISTRY.kernel("Reminder")
+def ReminderTolerant(ctx: World, *args: Any, **kw: Any) -> str:
+    chars, rest = _split(args)
+    actor = chars[0] if chars else ctx.actor
+    values = list(rest) + [v for v in kw.values() if v is not None]
+    topic_parts = []
+    for value in values:
+        topic_parts.append(gerund_phrase(value) if isinstance(value, Trace) else to_phrase(value))
+    topic = NLGUtils.join_list([p for p in topic_parts if p])
+    if actor is not None:
+        actor.add_meme("Reminder", 1.0)
+        actor.add_meme("Wisdom", 0.2)
+        ctx.actor = actor
+        if len(chars) >= 2:
+            listeners = _names(chars[1:])
+            return f"{ctx.say(actor)} reminded {listeners} about {topic}." if topic \
+                else f"{ctx.say(actor)} reminded {listeners}."
+        return f"{ctx.say(actor)} remembered {topic}." if topic \
+            else f"{ctx.say(actor)} remembered what mattered."
+    return f"It was a reminder about {topic}." if topic else "It was a helpful reminder."
+
+
+@REGISTRY.kernel("Clap")
+def ClapTolerant(ctx: World, *args: Any, **kw: Any) -> str:
+    chars, rest = _split(args)
+    actors = chars if chars else ([ctx.actor] if ctx.actor else [])
+    target = NLGUtils.join_list(_phrases(rest) + _phrases(_kw_targets(kw)))
+    if actors:
+        for actor in actors:
+            actor.add_meme("Joy", 0.2)
+            actor.add_meme("Approval", 0.4)
+        ctx.actor = actors[0]
+        who = ctx.say(actors[0]) if len(actors) == 1 else _names(actors)
+        return f"{who} clapped for {target}." if target else f"{who} clapped happily."
+    return f"Everyone clapped for {target}." if target else "Everyone clapped happily."
+
+
+@REGISTRY.kernel("HappyEnding")
+def HappyEndingTolerant(ctx: World, *args: Any, **kw: Any) -> str:
+    chars, _rest = _split(args)
+    for char in chars:
+        char.add_meme("Joy", 0.5)
+    return HappyEnd(ctx)
 
 
 # ---------------------------------------------------------------------------

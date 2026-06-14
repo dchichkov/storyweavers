@@ -34,6 +34,12 @@ Don't let coverage/quality work quietly drift away from it:
       This is the principled fix for the **`literal_concept`** defect (today the
       engine leaks un-embedded platonic forms as "There was bravery."). Fix in
       `_combine` / `fallback_text`; re-measure with `quality.py` (seed 42).
+      **Partial:** `_combine` and concept-only fallback now embed bare concepts
+      into the current carrier (or drop them when there is no carrier). Only
+      readable abstract states surface as "X felt indifference"; action-like
+      concepts such as `HelpOthers` are recorded as memes but no longer leak as
+      bad prose. Still needs a full seed-42 `quality.py` regrade and broader
+      missing-kernel cleanup.
 - [ ] **Compatibility / constraint pass.** Lift the `constraint_pass` /
       `StoryIR` sketch below (search "World Model Constraints") into a real
       AST/execution gate: rescue-needs-danger, fly-needs-a-flying-creature,
@@ -396,6 +402,54 @@ Also in this pass:
       are now emitted as their own sentence instead of being spliced as a clause
       into "{} stood in the way" ("But the ball and There was the tree stood…"
       → "But the ball stood in the way. There was the tree.").
+
+### Quality pass #3: embed-or-zero concept pass + sampled aliases
+
+Moved gen6 a step closer to the `story.py` memeplex model: bare concepts in a
+narrative `+` chain now bind to the current physical carrier (`ctx.actor` /
+`ctx.current_object`) as meme magnitudes, and only concepts with a readable
+physical manifestation are narrated. This removes accidental platonic events
+like "There was clap" / "There was bravery"; unrenderable concepts still affect
+state but have zero surface weight.
+
+Engine / shared infrastructure:
+- [x] **Embed-or-zero in `_combine` + fallback.** `_combine(world, left, right)`
+      now has access to world state, so non-narration concepts can be embedded
+      into the current carrier or dropped instead of emitted as "There was X."
+      Concept-only fallback uses the same path.
+- [x] **State-vs-action concept guard.** `_looks_like_state` keeps "felt X" for
+      abstract states (`indifference`, `bravery`, `altruism`, `satisfaction`,
+      suffix nouns) but prevents action-like concepts (`HelpOthers`) from
+      surfacing as "felt help others."
+- [x] **Neutral-pronoun agreement repair.** Final rendering rewrites common
+      `they was/is/has` artifacts to `they were/are/have`, fixing coherence-pass
+      rewrites such as "They were satisfied with the melon."
+- [x] **`Moral` clause reduction.** `Moral(Altruism)` now reduces a Trace topic
+      to a gerund phrase ("showing kindness by helping others") instead of
+      splicing a full clause into a noun slot.
+
+Sampled kernels added to `gen6k06.py`:
+- [x] `Clap`, `HappyEnding`, `Indifference`, `Satisfaction`, `Reminder`,
+      `Altruism`, `Bravery` — chosen after sampling real dataset usage with
+      `sample.py -k ... --show-source`. They update memes and render from
+      accumulated world state where possible.
+
+Spot checks:
+- `data00:1032`: `Listen(radio) + Laugh + Clap` now reads "Sue listened
+      carefully. Sue laughed and laughed. Sue clapped happily." instead of
+      leaking "There was clap."
+- `data00:25989`: `Bravery(Jazz, Fin)` and `HappyEnding` are implemented; the
+      ending reads "they were very brave" / "they were braver than ever before"
+      instead of `braveried` / `felt happy ending`.
+- `data00:1474`: `Altruism(Lily, ...)` renders a multi-phase helping story, and
+      missing `HelpOthers` embeds silently instead of "There was helpothers" or
+      "felt help others."
+
+Measured:
+- `check_duplicates.py`: clean (318 kernel names / 344 variants).
+- `coverage.py --brief --execute 3000`: **77.6%** coverage, **12,034**
+      high-coverage stories, **99.9%** execution OK (was 77.4% / 11,794 before
+      this pass).
 
 ### Quality pass: meta-kernel coherence + rewrites/world model
 
@@ -2317,4 +2371,3 @@ The more sophisticated the match/case patterns, the more coherent the output. Th
 - Test and iterate
 
 **The kernels ARE the language model, just compiled into match/case patterns.**
-

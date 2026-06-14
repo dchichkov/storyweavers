@@ -38,6 +38,7 @@ from gen6 import (
     event_to_phrase,
     infinitive_phrase,
     base_phrase,
+    gerund_phrase,
     clause_inline,
     child_sentences,
     render_state,
@@ -110,7 +111,7 @@ def FriendshipMeta(ctx: World, a: Actor, b: Character, **kw: Any) -> str:
     if process is not None:
         cs = child_sentences(process)
         sents += cs if cs is not None else [f"{a.name} and {b} {action_to_phrase(process)}."]
-    sents.append(f"{a.name} and {b} became good friends.")
+    sents.append(f"Together, {a.name} and {b} became good friends.")
     outcome = _has(kw, "outcome", "result")
     if outcome is not None:
         sents += render_outcome("", outcome)
@@ -502,8 +503,11 @@ def Attempt(ctx: World, char: Actor, what: Any = None, **kw: Any) -> str:
 def Moral(ctx: World, lesson: Any = None, **kw: Any) -> str:
     text = lesson if lesson is not None else _has(kw, "lesson")
     if text is not None:
-        return f"The moral of the story is to {action_to_phrase(text)}." if isinstance(text, str) \
-            else f"The moral of the story is about {to_phrase(text)}."
+        if isinstance(text, str):
+            return f"The moral of the story is to {action_to_phrase(text)}."
+        topic = gerund_phrase(text) if isinstance(text, Trace) else to_phrase(text)
+        return f"The moral of the story is about {topic}." if topic \
+            else "And that was the moral of the story."
     return "And that was the moral of the story."
 
 

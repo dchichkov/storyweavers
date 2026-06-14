@@ -23,7 +23,7 @@ The canonical design lives in **[`story.py`](story.py)** (the "Storyweavers Desi
 |---|---|
 | Per-carrier concept magnitudes (`Entity.memes`) | ✅ partial — exists and accumulates |
 | Concept embedding via `+=` (`@REGISTRY.addition`) | ✅ partial — some concepts attach to carriers |
-| **Embed-or-zero-weight** (drop un-embedded concepts) | ❌ not enforced — surfaces as the `literal_concept` defect ("There was bravery.") |
+| **Embed-or-zero-weight** (drop un-embedded concepts) | ✅ partial — `+` chains/fallback now embed bare concepts into the current carrier or drop them; remaining leaks are mostly missing-kernel/template cases |
 | **Memeplex == story** (one uniform representation) | ❌ kernels, concepts, characters are still three things |
 | **Compatibility / only-allow-compatible-moves** | ❌ not built (design sketch in `TODO.md` → `constraint_pass`) |
 | Physical / plausibility model | ❌ minimal (object owner/status only) |
