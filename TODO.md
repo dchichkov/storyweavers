@@ -46,6 +46,21 @@ Don't let coverage/quality work quietly drift away from it:
 - [ ] **Physical / plausibility model.** Grow the physical layer beyond object
       owner/status (started) toward `story.py`'s `physical()` consistency model
       (real / fantasy / story-world physics, plausibility of moves).
+- [x] **Shared weight-reading mechanism (read side).** Added the *general*
+      half of weight-driven narration to `gen6.py`: `pick(value, bands)` (a
+      magnitude->variant selector), `MOOD_MODIFIERS` (emotion -> manner adverb
+      lexicon), and `World.mood()` / `World.mood_lead()` (the actor's dominant
+      *transient* emotion as a ready-to-splice adverb, with a per-entity
+      anti-repeat guard). Wired into a curated set (`See`, `Walk`, `Observe`/
+      `Look`/`Watch`, `Eat`, `Climb`) and the gen6k03 `transitive` factory.
+      Design note (confirmed in discussion): the *syntax* generalizes (read via
+      `meme()`/`MemeSlot`, select via `pick`, write via `+=`/`@addition`) but the
+      *semantics* stay kernel-local — `mood()` covers the common "flavor by
+      dominant emotion" case in one line; bespoke kernels still read memes
+      directly. **Measured:** fires on **22%** of 3,000 stories (758 adverbs),
+      adjacent-dup spam **0.1%**, coverage/execution unchanged. Impact is gated
+      upstream — emotions must be embedded densely enough and an action must
+      follow — so it grows as coverage/quality improve.
 - [ ] **Keep it visible.** Re-read this section before large engine passes;
       record alignment (or deliberate deviation) in PRs.
 

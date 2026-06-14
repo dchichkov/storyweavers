@@ -329,10 +329,11 @@ def Discovery(ctx: World, char: Actor, thing: Physical = None, **kw: Any) -> str
 @REGISTRY.kernel("Watch")
 def Observe(ctx: World, char: Actor, thing: Physical = None, **kw: Any) -> str:
     ctx.actor = char
+    lead = ctx.mood_lead(char)  # state-aware flavor (e.g. "nervously looked at")
     if thing is not None:
         ctx.current_object = thing
-        return f"{ctx.say(char)} looked at {thing}."
-    return f"{ctx.say(char)} looked around carefully."
+        return f"{ctx.say(char)} {lead}looked at {thing}."
+    return f"{ctx.say(char)} {lead}looked around carefully."
 
 
 # ---------------------------------------------------------------------------
@@ -378,11 +379,12 @@ def Encourage(ctx: World, char: Actor, other: Character, **kw: Any) -> str:
 
 @REGISTRY.kernel("Eat")
 def Eat(ctx: World, char: Actor, food: Physical = None, **kw: Any) -> str:
-    char.Joy += 0.2
     ctx.actor = char
+    lead = ctx.mood_lead(char)  # reflect prior state before Eat's own Joy bump
+    char.Joy += 0.2
     if food is not None:
-        return f"{ctx.say(char)} ate {food}."
-    return f"{ctx.say(char)} had something to eat."
+        return f"{ctx.say(char)} {lead}ate {food}."
+    return f"{ctx.say(char)} {lead}had something to eat."
 
 
 @REGISTRY.kernel("Drink")
@@ -396,9 +398,10 @@ def Drink(ctx: World, char: Actor, drink: Physical = None, **kw: Any) -> str:
 @REGISTRY.kernel("Climb")
 def Climb(ctx: World, char: Actor, thing: Physical = None, **kw: Any) -> str:
     ctx.actor = char
+    lead = ctx.mood_lead(char)
     if thing is not None:
-        return f"{ctx.say(char)} climbed {thing}."
-    return f"{ctx.say(char)} climbed up high."
+        return f"{ctx.say(char)} {lead}climbed {thing}."
+    return f"{ctx.say(char)} {lead}climbed up high."
 
 
 @REGISTRY.kernel("Clean")

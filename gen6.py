@@ -227,6 +227,33 @@ class MemeSlot:
 # Object-status -> adjective for state-aware references ("the lost ball").
 _STATUS_ADJECTIVES = {"lost": "lost", "missing": "missing", "broken": "broken"}
 
+# Shared emotional-modifier lexicon: an accumulated emotion -> a manner adverb a
+# kernel can splice into prose ("Lily nervously looked at the dog"). This is the
+# *general* half of weight-driven narration: the lexicon + `World.mood()` are
+# shared; *which* memes a given kernel reacts to (and what each level means) stays
+# kernel-specific. Only clean leading "-ly" adverbs belong here.
+# Transient emotions only -- deliberately excludes trait-like memes (Brave,
+# Curious, ...) that are set to 1.0 at character declaration, so a mood reflects
+# what has *happened*, not a baseline personality trait.
+MOOD_MODIFIERS = {
+    "Joy": "happily", "Love": "fondly", "Fear": "nervously", "Sadness": "sadly",
+    "Anger": "angrily", "Pride": "proudly", "Excitement": "excitedly",
+}
+
+
+def pick(value: float, bands: List[Tuple[float, Any]]) -> Any:
+    """Select an entry from magnitude bands (low->high) by ``value``.
+
+    Pure mechanism for weight-driven prose: the *bands and texts* are the kernel's
+    semantics, the selection is shared. ``bands`` is ``[(threshold, text), ...]``
+    sorted low->high; returns the text of the highest threshold ``value`` meets.
+    """
+    chosen = bands[0][1] if bands else None
+    for threshold, text in bands:
+        if value >= threshold:
+            chosen = text
+    return chosen
+
 
 @dataclass
 class World:
@@ -239,6 +266,8 @@ class World:
 
     # Coherency state, set per-call from injected kwargs.
     use_pronoun: bool = False
+    # Last mood-adverb emitted per entity, to avoid back-to-back adverb spam.
+    recent_mood: Dict[str, str] = field(default_factory=dict)
 
     def character(self, name: str, type_name: str, traits: List[str]) -> Entity:
         entity = self.entities.get(name)
@@ -302,6 +331,34 @@ class World:
         if owner is not None and owner.kind == "character":
             return f"{owner.pronoun('possessive')} {adj}{noun}"
         return f"the {adj}{noun}"
+
+    def mood(self, entity: Any, floor: float = 0.5) -> str:
+        """The manner adverb for ``entity``'s dominant *emotional* memeplex (from
+        ``MOOD_MODIFIERS``), or "" if none is strongly present. General hook for
+        weight-driven flavor: any kernel can splice ``ctx.mood(actor)`` into its
+        prose and it only fires once an emotion has accumulated past ``floor``.
+
+        Only emotional memes are considered (traits like ``Curious`` set to 1.0 at
+        declaration are excluded unless they are also accumulated emotions), and a
+        mood is not repeated back-to-back for the same entity (avoids adverb spam).
+        """
+        if not (isinstance(entity, Entity) and entity.kind == "character"):
+            return ""
+        best, best_v = "", floor
+        for meme, adverb in MOOD_MODIFIERS.items():
+            v = entity.meme(meme)
+            if v > best_v:
+                best, best_v = adverb, v
+        if best and self.recent_mood.get(entity.name) == best:
+            return ""  # don't repeat the same adverb twice in a row
+        if best:
+            self.recent_mood[entity.name] = best
+        return best
+
+    def mood_lead(self, entity: Any, floor: float = 0.5) -> str:
+        """``mood()`` as a ready-to-splice leading modifier: "sadly " or ""."""
+        adverb = self.mood(entity, floor)
+        return (adverb + " ") if adverb else ""
 
     def state(self) -> str:
         lines: List[str] = []
@@ -1431,8 +1488,9 @@ def Return(ctx: World, giver: Actor, obj: Physical, recipient: Character) -> str
 @REGISTRY.kernel("See")
 def See(ctx: World, char: Actor, obj: Physical) -> str:
     ctx.actor = char
+    lead = ctx.mood_lead(char)  # state-aware flavor: "...nervously saw the dog"
     ctx.current_object = obj
-    return f"{ctx.say(char)} saw {ctx.thing_phrase(obj)}."
+    return f"{ctx.say(char)} {lead}saw {ctx.thing_phrase(obj)}."
 
 
 # --- movement ----------------------------------------------------------------
@@ -1445,7 +1503,7 @@ def Run(ctx: World, char: Actor) -> str:
 
 @REGISTRY.kernel("Walk")
 def Walk(ctx: World, char: Actor) -> str:
-    return f"{ctx.say(char)} went for a walk."
+    return f"{ctx.say(char)} {ctx.mood_lead(char)}went for a walk."
 
 
 # --- social ------------------------------------------------------------------
