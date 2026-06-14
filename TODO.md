@@ -49,6 +49,17 @@ Don't let coverage/quality work quietly drift away from it:
 - [ ] **Keep it visible.** Re-read this section before large engine passes;
       record alignment (or deliberate deviation) in PRs.
 
+**Proof-of-concept:** [`memeplex_demo.py`](memeplex_demo.py) already runs `Listen`
+/ `Purr` on gen6 — memeplex magnitudes (`Story`/`Love`/`We`) transmit between
+carriers via the world model (visible in `generate_world().state()`), and an AST
+rewrite reframes `Tell → Listen`. Two gaps it surfaces to fold into the engine:
+(a) gen6's `/` operator is **binary suppress** (`X / n`, n≥3 drops `X`), not the
+**fractional attention weight** story.py uses (`Content / 10`) — the demo does the
+dilution in Python; a real fractional-weight model is still TODO (see "Fragment
+weights"); (b) the 3-arg memeplex `Listen` ties with the generic intransitive
+`Listen` and only wins because the demo reorders variants — dispatch should prefer
+the more *specific* typed variant on ties.
+
 > Status table (which principles are realized today) is in the
 > [README North Star](README.md#-north-star-the-memeplex-model--see-storypy).
 
