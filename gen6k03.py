@@ -102,6 +102,7 @@ def transitive(name, past, *, solo="something", joy=0.0, love=0.0,
         targets = _phrases(chars[1:]) + _phrases(rest) + _phrases(_kw_targets(kw))
         obj = NLGUtils.join_list(targets)
         if actor is not None:
+            lead = ctx.mood_lead(actor)  # state-aware flavor before this verb's own meme bump
             ctx.actor = actor
             if joy:
                 actor.add_meme("Joy", joy)
@@ -113,7 +114,7 @@ def transitive(name, past, *, solo="something", joy=0.0, love=0.0,
                 actor.add_meme("Pride", pride)
             s = ctx.say(actor)
             tail = (prep + " " if prep else "") + obj
-            return f"{s} {past} {tail}.".replace("  ", " ") if obj else f"{s} {past} {solo}."
+            return f"{s} {lead}{past} {tail}.".replace("  ", " ") if obj else f"{s} {lead}{past} {solo}."
         if obj:
             return f"Someone {past} {(prep + ' ') if prep else ''}{obj}."
         return f"{_cap(name.lower())} happened."
