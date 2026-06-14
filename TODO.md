@@ -66,8 +66,8 @@ and kernel-library size.
 |--------|-------------|--------------|------|-------|
 | Parse OK (`ast.parse`) | 83.5% | 83.5% | ~80.8% | Same format; remaining ~16% is non-Python the LLM emitted |
 | Execute end-to-end (no exception) | 0.2% | **99.9%** | 96.5% | Fallback never raises → higher than gen5 |
-| Kernel-name coverage (usages) | 36.9% | **62.5%** | 85.0% | 154 kernel names / 165 variants vs gen5's 807 |
-| Stories ≥90% kernel-covered | — | 3,176 | 26,982 | long tail = kernel-library size |
+| Kernel-name coverage (usages) | 36.9% | **70.9%** | 85.0% | 224 kernel names / 236 variants vs gen5's 807 (was 62.5% before gen6k04) |
+| Stories ≥90% kernel-covered | — | 6,874 | 26,982 | long tail = kernel-library size (was 3,176 before gen6k04) |
 
 The robustness headline is resolved: **0.2% → 99.8% end-to-end execution**. The
 remaining gap to gen5 is purely **kernel-library size** (port more kernels).
@@ -136,6 +136,20 @@ remaining gap to gen5 is purely **kernel-library size** (port more kernels).
       Acceptance, Love, Break, Fall, Catalyst, Obstacle, Threat, Sight, Failure,
       Problem, Habit, Emotion, Guidance, Transform, Bond, Advice, Adventure,
       Process/Action, Cooperation). **154 names / 165 variants → 62.5% coverage.**
+- [x] **gen6k04.py** — next ~70 highest-frequency missing kernels, sampled from
+      the dataset then implemented (reusing the gen6k03 `transitive`/`intransitive`/
+      `emotion` factories + a batch of bespoke variants): Careful, Travel,
+      Invitation, Outcome, Wait, Dialogue, PlayTogether, Need, Retrieve, Game,
+      Hit, Wear, Create, Hurt, Intervention, Confidence, Reunion, Noise, Memory,
+      Result, Explain, Accept, Enter, Remember, Touch, Assist, Safety, Carry,
+      Collaboration, Support, Seek, Compassion, Forget, Dance, Buy, Read, Place,
+      Permission, Release, Continue, Healing, Value, Trip, Forgiveness, Pull,
+      Collect, Bake, Cut, Magic, Practice, Knock, Sit, Explanation, Sing, Taste,
+      Denial, Hold, Refuse, Learning, Pretend, Change, Not, Reassure, Recovery,
+      Appreciation, Follow, Mix, Protect, Consequence, Stuck. Object-first calls
+      (`Travel(zoo)`, `Wear(dress)`) fall back to `ctx.actor`; phase kwargs route
+      to `meta_story`; `Outcome`/`Result`/`Consequence` wrap child Traces.
+      **224 names / 236 variants → 70.9% coverage; 99.9% end-to-end execution.**
       Continue porting the long tail toward gen5's 85%. Next by usage: Care
       variants, Reward, Sight refinements, plus richer kwargs handling.
 - [x] **gen6k03 design note**: real calls capitalize objects (`Break(Vase)`,
