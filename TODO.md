@@ -233,14 +233,27 @@ coverage; (3) the defect table is the prioritized backlog for the next passes:
 - [ ] **`literal_concept` (#1)**: bare concepts / unimplemented names rendered as
       "There was X." Improve `_combine` / fallback to drop or better-template
       lone concepts; implement the high-frequency abstract-noun kernels.
-- [ ] **`clause_in_noun_slot` (#2)**: a Trace inlined in an object slot ("wanted
-      Mom climbed the tree", "lesson about Police warned everyone"). Reduce a
-      Trace to an infinitive/noun phrase in noun position (the open limitation).
-- [ ] **`verbed_noun` remainder**: `Altruism`/`Response`/`Remind`/`Belonging`/
-      `Farewell`-as-verb etc. still hit fallback — extend the gen6k06 tolerant
-      pass / add the kernels.
-- [ ] Baseline worksheet committed at `quality_runs/run_baseline.jsonl`; re-run
-      same seed after each pass and diff the report (must not regress).
+- [x] **`clause_in_noun_slot` (#2)** — DONE (generator defect pass). Added
+      clause-reduction helpers to `gen6.py` (`base_phrase`, `infinitive_phrase`,
+      `gerund_phrase`, `clause_inline`, `_present_base`/`_gerund`, copula
+      exclusion) and wired them: `Want`/`Desire` → "wanted to climb the tree"
+      (un-reducible clauses fall back to the generic wish), `Realize`/`Insight`
+      → "realized that help was on the way", `Lesson` → "a lesson about warning
+      everyone" with multi-clause traces emitted as their own sentences, and
+      `Attempt` → "tried to flap" (was "tried to flapped"). Also added
+      plural-agreement in `_combine` ("There were dolls"). Defect count on the
+      seed-42 worksheet dropped **9 → 4**; overall **2.17 → 2.29**, grammar
+      2.54 → 2.71, coherence 2.58 → 2.71, usable 0% → 4%. After-run committed at
+      `quality_runs/run_after_pass.jsonl`.
+- [ ] **`literal_concept` (#1, now the top defect ~20)**: bare concepts /
+      unimplemented names still render as "There was X." Next pass: smarter
+      `_combine`/fallback (article for countable singulars, drop empty filler) +
+      implement the high-frequency abstract-noun/onomatopoeia kernels.
+- [ ] **`verbed_noun` remainder (~6)**: `Altruism`/`Response`/`Remind`/`Belong`/
+      `Brave`-as-`braveried` etc. still hit fallback — extend the gen6k06
+      tolerant pass / add the kernels.
+- [ ] Re-run the **same seed** after each pass and diff the report (must not
+      regress); baseline at `quality_runs/run_baseline.jsonl`.
 
 ### World-model dev pass: object memory + relationship state (`gen6.py`)
 
