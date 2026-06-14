@@ -35,6 +35,7 @@ from gen6 import (
     Trace,
     NLGUtils,
     to_phrase,
+    state_to_phrase,
     action_to_phrase,
     gerund_phrase,
     child_sentences,
@@ -52,7 +53,9 @@ def _names(chars):
 
 
 def _be_past(subject: str) -> str:
-    return "were" if subject.lower() == "they" else "was"
+    lower = subject.lower()
+    plural_subjects = {"they", "animals", "the animals", "people", "the people", "children", "the children"}
+    return "were" if lower in plural_subjects or " and " in lower else "was"
 
 
 def _motion_target(text: str) -> str:
@@ -61,6 +64,34 @@ def _motion_target(text: str) -> str:
         "the outside": "outside",
         "the home": "home",
     }.get(text, text)
+
+
+def _kw_values(kw: dict, *keys: str) -> list[Any]:
+    out = []
+    for key in keys:
+        value = kw.get(key)
+        if value is None:
+            continue
+        if isinstance(value, (list, tuple)):
+            out.extend(value)
+        else:
+            out.append(value)
+    return out
+
+
+def _state_words(values: list[Any]) -> tuple[list[str], list[str]]:
+    sents, words = [], []
+    for value in values:
+        cs = child_sentences(value)
+        if cs is not None:
+            sents += cs
+            continue
+        phrase = state_to_phrase(value)
+        if phrase.startswith("the "):
+            phrase = phrase[4:]
+        if phrase:
+            words.append(phrase)
+    return sents, words
 
 
 # ---------------------------------------------------------------------------
@@ -161,12 +192,28 @@ def FriendshipTolerant(ctx: World, *args: Any, **kw: Any) -> str:
 @REGISTRY.kernel("Help")
 def HelpTolerant(ctx: World, *args: Any, **kw: Any) -> str:
     chars, rest = _split(args)
+    if len(chars) == 1 and ctx.actor is not None and ctx.actor is not chars[0] and not rest:
+        chars = [ctx.actor, chars[0]]
+    action_sents = []
+    for action in _kw_values(kw, "action", "actions", "process"):
+        cs = child_sentences(action)
+        if cs is not None:
+            action_sents += cs
+        else:
+            phrase = action_to_phrase(action)
+            if phrase:
+                subject = chars[0].name if chars else (ctx.actor.name if ctx.actor else "Someone")
+                action_sents.append(f"{subject} {phrase}.")
     if chars:
         helper = chars[0]
         ctx.actor = helper
         other = NLGUtils.join_list([str(c) for c in chars[1:]] + _phrases(rest) + _phrases(_kw_targets(kw)))
-        return f"{ctx.say(helper)} helped {other}." if other else f"{ctx.say(helper)} helped out."
+        lead = f"{ctx.say(helper)} helped {other}." if other else f"{ctx.say(helper)} helped out."
+        return coherent(ctx, helper, [lead] + action_sents)
     target = NLGUtils.join_list(_phrases(rest) + _phrases(_kw_targets(kw)))
+    if action_sents:
+        lead = f"Someone helped with {target}." if target else "Help was on the way."
+        return " ".join([lead] + action_sents)
     return f"Someone helped with {target}." if target else "Help was on the way."
 
 
@@ -253,6 +300,46 @@ def ReturnTolerant(ctx: World, *args: Any, **kw: Any) -> str:
             return f"{ctx.say(actor)} returned {obj}."
         return f"{ctx.say(actor)} went back home."
     return "Everything was returned."
+
+
+@REGISTRY.kernel("Fetch")
+def FetchTolerant(ctx: World, *args: Any, **kw: Any) -> str:
+    chars, rest = _split(args)
+    actor = chars[0] if chars else ctx.actor
+    items = _phrases(chars[1:]) + _phrases(rest) + _phrases(_kw_values(kw, "item", "object", "target", "what"))
+    item = NLGUtils.join_list(items)
+    source = NLGUtils.join_list(_phrases(_kw_values(kw, "source", "from")))
+    if actor is not None:
+        ctx.actor = actor
+        actor.add_meme("Helpfulness", 0.2)
+        if item and source:
+            return f"{ctx.say(actor)} fetched {item} from {source}."
+        return f"{ctx.say(actor)} fetched {item}." if item else f"{ctx.say(actor)} fetched what was needed."
+    if item and source:
+        return f"Someone fetched {item} from {source}."
+    return f"Someone fetched {item}." if item else "Someone fetched what was needed."
+
+
+@REGISTRY.kernel("Join")
+def JoinTolerant(ctx: World, *args: Any, **kw: Any) -> str:
+    chars, rest = _split(args)
+    explicit_actor = len(chars) >= 2 or bool(rest) or any(v is not None for v in kw.values())
+    if len(chars) == 1 and ctx.actor is not None and ctx.actor is not chars[0] and not rest and not kw:
+        actor = ctx.actor
+        target = str(chars[0])
+    else:
+        actor = chars[0] if (chars and explicit_actor) else None
+        target = NLGUtils.join_list(_phrases(chars[1:]) + _phrases(rest) + _phrases(_kw_values(kw, "group", "team", "target", "object", "with")))
+    if actor is not None:
+        actor.add_meme("Belonging", 0.4)
+        ctx.actor = actor
+        return f"{ctx.say(actor)} joined {target}." if target else f"{ctx.say(actor)} joined in."
+    if ctx.actor is not None and target:
+        ctx.actor.add_meme("Belonging", 0.4)
+        return f"{ctx.say(ctx.actor)} joined {target}."
+    if target:
+        return f"Everyone joined {target}."
+    return "join in."
 
 
 @REGISTRY.kernel("Run")
@@ -352,6 +439,33 @@ def SatisfactionTolerant(ctx: World, *args: Any, **kw: Any) -> str:
         return f"{subj} {_be_past(subj)} satisfied with {target}." if target \
             else f"{subj} felt satisfied."
     return f"There was satisfaction with {target}." if target else "There was satisfaction."
+
+
+@REGISTRY.kernel("State")
+def StateTolerant(ctx: World, *args: Any, **kw: Any) -> str:
+    chars, rest = _split(args)
+    state_values = _kw_values(kw, "state", "mood", "emotion", "condition", "feeling")
+    subject_phrase = ""
+    if not chars and state_values and rest:
+        subject_phrase = to_phrase(rest[0])
+        rest = rest[1:]
+        actor = None
+    else:
+        actor = chars[0] if chars else ctx.actor
+    pieces = list(rest) + state_values
+    sents, states = _state_words(pieces)
+    if actor is not None:
+        ctx.actor = actor
+        for state in states:
+            actor.add_meme(_cap(state.split(" ", 1)[0]), 0.5)
+        if states:
+            sents.append(f"{actor.name} was {NLGUtils.join_list(states)}.")
+        return coherent(ctx, actor, sents or [f"{ctx.say(actor)} was feeling a certain way."])
+    if subject_phrase and states:
+        return f"{_cap(subject_phrase)} {_be_past(subject_phrase)} {NLGUtils.join_list(states)}."
+    if states:
+        return f"Things were {NLGUtils.join_list(states)}."
+    return "Things were in a certain state."
 
 
 @REGISTRY.kernel("Reminder")
@@ -491,6 +605,59 @@ def ThankTolerant(ctx: World, *args: Any, **kw: Any) -> str:
         ctx.actor.add_meme("Gratitude", 0.5)
         return f"{ctx.say(ctx.actor)} gave thanks for {target}." if target else f"{ctx.say(ctx.actor)} gave thanks."
     return f"Everyone gave thanks for {target}." if target else "Everyone gave thanks."
+
+
+@REGISTRY.kernel("Challenge")
+def ChallengeTolerant(ctx: World, *args: Any, **kw: Any) -> str:
+    chars, rest = _split(args)
+    issuer = kw.get("issuer")
+    target_char = kw.get("target")
+    act = kw.get("act") or kw.get("action") or kw.get("task")
+    actor = chars[0] if chars else (issuer if hasattr(issuer, "kind") else ctx.actor)
+    targets = []
+    if target_char is not None:
+        targets.append(target_char)
+    targets += chars[1:] + rest + _kw_values(kw, "difficulty", "obstacle", "with", "object")
+    target = NLGUtils.join_list(_phrases(targets))
+    act_phrase = gerund_phrase(act) if isinstance(act, Trace) else action_to_phrase(act)
+    if actor is not None:
+        actor.add_meme("Challenge", 1.0)
+        actor.add_meme("Brave", 0.2)
+        ctx.actor = actor
+        if issuer is not None and target_char is not None:
+            line = f"{ctx.say(actor)} challenged {target_char}"
+            return f"{line} to {act_phrase}." if act_phrase else f"{line}."
+        if act_phrase and target:
+            return f"{ctx.say(actor)} faced a challenge with {target}: {act_phrase}."
+        if act_phrase:
+            return f"{ctx.say(actor)} faced a challenge: {act_phrase}."
+        return f"{ctx.say(actor)} faced a challenge with {target}." if target else f"{ctx.say(actor)} faced a challenge."
+    return f"There was a challenge with {target}." if target else "There was a challenge."
+
+
+@REGISTRY.kernel("Reflection")
+def ReflectionTolerant(ctx: World, *args: Any, **kw: Any) -> str:
+    chars, rest = _split(args)
+    actor = chars[0] if chars else ctx.actor
+    pieces = list(rest) + _kw_values(kw, "trigger", "insight", "about", "lesson", "thought")
+    topics = []
+    for piece in pieces:
+        cs = child_sentences(piece)
+        if cs is not None:
+            topic = gerund_phrase(piece) or to_phrase(piece)
+        else:
+            topic = state_to_phrase(piece)
+        if topic:
+            topics.append(topic)
+    topic = NLGUtils.join_list(topics)
+    if actor is not None:
+        actor.add_meme("Wisdom", 0.4)
+        actor.add_meme("Reflection", 1.0)
+        ctx.actor = actor
+        line = f"{ctx.say(actor)} thought carefully about {topic}." if topic \
+            else f"{ctx.say(actor)} thought carefully about what happened."
+        return coherent(ctx, actor, [line])
+    return f"Everyone thought carefully about {topic}." if topic else "Everyone thought carefully about what happened."
 
 
 @REGISTRY.kernel("Response")

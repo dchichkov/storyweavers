@@ -2021,7 +2021,15 @@ class Executor:
             # it the actor before evaluating the rest, so nested sub-expressions
             # (in args/kwargs) resolve to the right protagonist (gen5 meta-pattern).
             focus = None
-            if node.args:
+            target_like_one_arg = {
+                "Help", "Visit", "Join", "Thank", "Goodbye", "Farewell",
+            }
+            should_prebind_arg = node.args and not (
+                len(node.args) == 1
+                and not node.keywords
+                and node.func.id in target_like_one_arg
+            )
+            if should_prebind_arg:
                 for name in self._names_in(node.args[0]):
                     ent = self.world.entities.get(name)
                     if ent is not None and ent.kind == "character":

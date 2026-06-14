@@ -30,6 +30,9 @@ from gen6 import (
 @REGISTRY.kernel("Visit")
 def Visit(ctx: World, visitor: Actor, target: Character = None, **kw: Any) -> str:
     """Visit(visitor, person) -- a character goes to visit another character."""
+    if target is None and ctx.actor is not None and ctx.actor is not visitor:
+        target = visitor
+        visitor = ctx.actor
     visitor.Joy += 0.2
     ctx.actor = visitor
     if target is None or target is visitor:

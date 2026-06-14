@@ -501,6 +501,61 @@ Measured:
 - `coverage.py --brief --execute 3000`: **77.8%** coverage, **12,181**
       high-coverage stories, **99.9%** execution OK.
 
+### Quality pass #5: target-like focus + state/challenge/fetch kernels
+
+Continued the TODO quality pass from the next highest-frequency missing kernels,
+following the AGENTS sample-first workflow on `State`, `Challenge`, `Fetch`,
+`Join`, and `Reflection`. The fixes keep moving toward the memeplex model:
+states and reflections embed into the current carrier as meme magnitudes, while
+challenge/fetch/join update carrier state instead of falling through to generic
+events.
+
+Engine / focus model:
+- [x] **Target-like one-arg focus guard.** The executor still prebinds normal
+      actor calls like `Walk(Sally)`, but no longer steals focus for target-like
+      one-arg calls (`Help(Owner)`, `Visit(Friend)`, `Join(Tom)`, `Thank(Friend)`,
+      `Goodbye(Friend)`, `Farewell(Friend)`). This fixes phase-context stories
+      where `Journey(Max, state=Routine(job=Help(Owner)), catalyst=Challenge)`
+      accidentally moved the whole arc onto `Owner`, and where `Visit(Friend)`
+      inside Lily's journey made Friend the protagonist.
+- [x] **One-arg `Visit` target shape.** `Visit(Friend)` now uses the current
+      protagonist as the visitor when one is already active, while top-level
+      `Visit(Lily)` still reads as Lily going to visit.
+
+Sampled kernels / tolerant variants:
+- [x] `State`: `State(Jack, Sad+Tired)` and `State(animals, mood=sad)` now render
+      states instead of `stated`; state words are normalized so lower-case state
+      concepts do not surface as physical objects (`the sad`).
+- [x] `Challenge`: bare and shaped challenges now render as a real obstacle
+      (`Max faced a challenge`) and bump `Challenge`/`Brave`.
+- [x] `Fetch`: object-first and item-kwarg forms (`Fetch(Sally, item=water)`,
+      `Fetch(water, source=river)`) now narrate useful action instead of
+      `Something fetch happened`.
+- [x] `Join`: common group/object forms now render (`Sally joined dance party`)
+      while bare `Join` remains phrase-like enough for invitation/condition
+      contexts.
+- [x] `Reflection`: reflection beats now read from the current protagonist and
+      add `Wisdom`/`Reflection`.
+- [x] `Help(action=...)`: preserves nested action traces such as fetch/wrap
+      instead of collapsing to a one-line "helped out."
+
+Spot checks:
+- `data00:613`: `Visit(Friend)` and `Reflection(Gratitude)` now stay with Lily:
+      "Lily went to visit Friend ... Lily thought carefully..."
+- `data00:4150`: `Challenge` now stays with Max instead of Owner.
+- `data00:4136`: `State(animals, mood=sad)` now reads "The animals were sad."
+      and `Fetch` is implemented.
+
+Measured:
+- `check_duplicates.py`: clean (328 kernel names / 358 variants).
+- `coverage.py --brief --execute 3000`: **78.1%** coverage, **12,484**
+      high-coverage stories, **99.9%** execution OK.
+- Seed-42 worksheet regenerated at `/private/tmp/storyweavers_todo_pass5.jsonl`;
+      quick heuristics show prior wrong-target focus hits **3→0** and generic
+      `Something X happened` hits **1→0** on the 24-record worksheet. Remaining
+      visible defects include missing structural kernels (`Condition`, `Effect`,
+      `Resume`) and clause/list junk from `Reaction(...)`.
+
 ### Quality pass: meta-kernel coherence + rewrites/world model
 
 Sampled fully-covered stories (≥5 kernels, all implemented) and fixed the
