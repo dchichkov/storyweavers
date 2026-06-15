@@ -198,6 +198,9 @@ def render_friendship(renderer, frame):
 def render_lesson(renderer, frame):
     subject = renderer.subj(frame.actor)
     concepts = renderer.concepts(frame)
+    topic_set = set(concepts)
+    if {"parents", "listen", "help"}.issubset(topic_set):
+        return f"{subject} learned to listen to her parents and find another way to help."
     topic = join([c for c in concepts if c not in {"lesson", "moral", "learn"}])
     return f"{subject} learned an important lesson about {topic}." if topic else f"{subject} learned an important lesson."
 

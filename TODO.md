@@ -174,6 +174,14 @@ Known gaps from the first 20 pins:
       stories while keeping snapshots deterministic. Remaining work: move more
       direct-call special cases out of `gen7.py`, model inventory/ownership for
       damaged toys, and make group builders/celebrations less template-like.
+- [~] Add first damaged-object ownership semantics. Routine play now embeds
+      simple owned toy objects, `Incident(Dog, chew(toy))` survives as a `chew`
+      frame, `chew` marks the object damaged without transferring ownership, and
+      later `Loss(toy)` keeps the owner as the emotional subject. The pilot/toy
+      sample is now pinned (`data01:73907`) and renders "Dog chewed her toy.
+      Lily lost her toy..." instead of making the dog own the toy. Remaining
+      work: generalize inventory beyond play/toy traits and render damaged/lost
+      state with richer recovery/repair consequences.
 - [~] Improve phase ordering inside structural calls. `Rescue(...)`, `Deal(...)`,
       `Idea(...)`, and `Race(...)` now reorder parent/child frames more
       coherently; `Cautionary(...)` now defers generic lessons until after the

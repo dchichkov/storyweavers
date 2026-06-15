@@ -32,7 +32,7 @@ CHARACTER_TYPES = {
     "friend", "frog", "girl", "group", "man", "mom", "mommy", "mother",
     "mouse", "parent", "person", "rabbit", "turkey", "twin", "woman",
     "bees", "tree", "daughter", "squirrel", "crab", "fox", "ostrich",
-    "airplane", "cow", "chick", "pig", "elephant", "vehicle",
+    "airplane", "cow", "chick", "pig", "elephant", "vehicle", "peer",
 }
 GENERIC_TYPES = {"animal", "bird", "group", "person"}
 COMPOUNDS = {
@@ -288,7 +288,7 @@ class StoryWorld:
         return self.entity(ent)
 
     def character(self, name: str, type_name: str, traits: Iterable[str] = ()) -> Entity:
-        ent = Entity(name, "character", type_name or infer_type(name, ""), [words(t) for t in traits if words(t)])
+        ent = Entity(name, "character", infer_type(name, type_name), [words(t) for t in traits if words(t)])
         return self.entity(ent)
 
     def resolve(self, ent: Entity | None) -> Entity | None:
@@ -331,9 +331,12 @@ class StoryWorld:
                     actor.add_meme("Joy", 0.2)
         elif frame.kind in {"lose", "lost"}:
             for obj in frame.objects:
+                if obj.owner and actor is not None and obj.owner != actor.id and obj.owner in self.entities:
+                    frame.meta["responsible_actor"] = actor.id
+                    frame.actor = self.entities[obj.owner]
+                    actor = frame.actor
                 obj.state.add("lost")
                 if actor is not None:
-                    obj.owner = actor.id
                     actor.add_meme("Sadness", 0.6)
         elif frame.kind in {"break", "broken"}:
             for obj in frame.objects:
@@ -369,6 +372,16 @@ class StoryWorld:
             actor.add_meme("Joy", 0.4)
             if frame.patient is not None:
                 actor.add_relation("Friendship", frame.patient, 0.2)
+        elif frame.kind == "routine" and actor is not None:
+            for obj in frame.objects:
+                if display_type(obj) == "play":
+                    for trait in obj.traits:
+                        owned = self.physical(trait)
+                        if owned.owner is None:
+                            owned.owner = actor.id
+        elif frame.kind == "chew":
+            for obj in frame.objects:
+                obj.state.add("damaged")
 
         self.history.append(frame)
 
@@ -417,14 +430,19 @@ def normalize_meme(name: str) -> str:
 
 
 def infer_type(name: str, explicit: str) -> str:
-    if explicit:
-        return words(explicit)
     n = words(name)
     aliases = {
         "mom": "mother", "mommy": "mother", "dad": "father",
         "daddy": "father", "old lady": "old lady", "baby bird": "bird",
-        "daughter": "daughter",
+        "daughter": "daughter", "friend": "friend",
     }
+    explicit_words = words(explicit)
+    if explicit_words in {"adult", "parent", "person", "peer"} and n in aliases:
+        return aliases[n]
+    if explicit_words == "peer":
+        return "friend"
+    if explicit_words:
+        return explicit_words
     if n in aliases:
         return aliases[n]
     if n in {"lily", "lucy", "sue", "sara", "sarah", "anna", "emma", "lisa"}:

@@ -5,7 +5,7 @@ calls lower to frame kinds here before Parser.direct_call applies shared role
 and world-model logic.
 """
 
-from gen7 import EvalResult, Frame, Memeplex, REGISTRY, flatten, is_character, objects_from
+from gen7 import EvalResult, Frame, LowerExpr, Memeplex, REGISTRY, flatten, is_character, objects_from
 
 
 ALIASES = {
@@ -87,3 +87,26 @@ def calendar_add(parser, name, lname, values, kw_values, child_frames, context, 
         meta={"participants": agents},
     )
     return EvalResult(frames=child_frames + [frame], values=[Memeplex(name)])
+
+
+@REGISTRY.direct_handler
+def incident(parser, name, lname, values, kw_values, child_frames, context, role):
+    if lname != "incident":
+        return None
+    chars = [v for v in values if is_character(v)]
+    actor = chars[0] if chars else parser.current_actor
+    frames = list(child_frames)
+    for value in values + flatten(kw_values.values()):
+        if isinstance(value, LowerExpr) and value.name.lower() == "chew":
+            frames.append(Frame(
+                "chew",
+                actor=actor,
+                objects=objects_from(value.args, parser.world),
+                source=name,
+                meta={"participants": chars},
+            ))
+    if actor is not None:
+        parser.current_actor = actor
+    if frames:
+        return EvalResult(frames=frames, values=[Memeplex(name)])
+    return None
