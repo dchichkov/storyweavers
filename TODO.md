@@ -675,6 +675,49 @@ Measured:
       action clauses (`try to tie shoes` still sometimes appears as
       `try to the tie shoes`).
 
+### Quality pass #8: world-model/coherence cleanup after 93% coverage
+
+Reviewed three deterministic batches of fully-covered stories (`data00` seeds
+101/202 and `data01` seed 303) and fixed recurring generator defects rather than
+adding broad coverage-only kernels.
+
+- [x] **Trace targets stay out of noun slots.** `gen6k03` generic transitive
+      kernels and `Problem` now split child `Trace` sentences from object
+      phrases; bespoke `Disruption`, `Travel`, and `Satisfaction` got the same
+      treatment. This fixes patterns like "problem with There was...", "made
+      There was...", "traveled to X was...", and "Wind blew disrupted".
+- [x] **Physical carrier phrasing.** Added a small `physical_phrase` path in
+      `gen6.py` for bare physical/location/body-part nouns (`inside`, `home`,
+      `eyes`, etc.), and added kernel-level idioms for `Cover(eyes)` and
+      `Enter(inside)`.
+- [x] **Possessive coherence.** The central `coherent()` pass now converts
+      repeated possessive subjects with the correct possessive pronoun
+      (`Buzz's goal` -> `Their goal`) instead of subject-pronoun junk
+      (`They's goal`).
+- [x] **Lowercase concept wrappers.** Added lowercase `balance`, `balanced`, and
+      `lesson` helpers so moral/insight expressions such as
+      `lesson(balance(activity))` reduce into readable clauses.
+- [x] **Tolerant child-action ideas and reflections.** `Idea(Tim,
+      Transform(...) + Fix(...))` now preserves the child actions after "had a
+      clever idea"; `Reflection(...)` reduces state traces to phrases instead of
+      embedding full sentences in "thought about ...".
+- [x] **Reaction cleanup.** `Reaction(..., emotion=..., action=...)` now emits
+      child emotion/action sentences or reduced emotion/action text instead of
+      "reacted with angry".
+
+Measured:
+- `check_duplicates.py`: clean (`1164` kernel names / `1199` variants).
+- `coverage.py --brief --execute 3000`: **93.0%** coverage, **40,631**
+      high-coverage stories, **99.9%** execution OK.
+- `coverage.py --brief --execute 3000 -d TinyStories_kernels/data01.kernels.jsonl`:
+      **92.9%** coverage, **40,213** high-coverage stories, **100.0%** execution
+      OK.
+- Remaining visible defects in the reviewed batches: some wrong-subject choices
+      inside deeply nested child traces (`Dad` reaction children can still drift
+      to `They`), object-construction fragments from lowercase physical builders
+      (`hook(stick, string)`), and broader story completeness gaps from missing
+      named characters/types.
+
 ### Quality pass: meta-kernel coherence + rewrites/world model
 
 Sampled fully-covered stories (≥5 kernels, all implemented) and fixed the

@@ -498,15 +498,23 @@ def IndifferenceTolerant(ctx: World, *args: Any, **kw: Any) -> str:
 def SatisfactionTolerant(ctx: World, *args: Any, **kw: Any) -> str:
     chars, rest = _split(args)
     actor = chars[0] if chars else ctx.actor
-    target = NLGUtils.join_list(_phrases(chars[1:]) + _phrases(rest) + _phrases(_kw_targets(kw)))
+    values = chars[1:] + rest + _kw_targets(kw)
+    target = NLGUtils.join_list(_phrases(values))
+    extra = []
+    for value in values:
+        cs = child_sentences(value)
+        if cs is not None:
+            extra += cs
     if actor is not None:
         actor.add_meme("Satisfaction", 1.0)
         actor.add_meme("Joy", 0.3)
         ctx.actor = actor
         subj = ctx.say(actor)
-        return f"{subj} {_be_past(subj)} satisfied with {target}." if target \
+        lead = f"{subj} {_be_past(subj)} satisfied with {target}." if target \
             else f"{subj} felt satisfied."
-    return f"There was satisfaction with {target}." if target else "There was satisfaction."
+        return coherent(ctx, actor, [lead] + extra)
+    lead = f"There was satisfaction with {target}." if target else "There was satisfaction."
+    return " ".join([lead] + extra)
 
 
 @REGISTRY.kernel("State")
@@ -712,7 +720,7 @@ def ReflectionTolerant(ctx: World, *args: Any, **kw: Any) -> str:
     for piece in pieces:
         cs = child_sentences(piece)
         if cs is not None:
-            topic = gerund_phrase(piece) or to_phrase(piece)
+            topic = gerund_phrase(piece) or state_to_phrase(piece)
         else:
             topic = state_to_phrase(piece)
         if topic:

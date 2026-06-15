@@ -73,6 +73,18 @@ CHARACTER_TYPES = frozenset({
     "sister", "stranger", "toy", "turkey", "whale", "woman", "youth",
 })
 
+BARE_PHYSICAL_NOUNS = frozenset({
+    "inside", "outside", "home", "downstairs", "upstairs", "outdoors",
+    "eyes", "hands", "feet", "teeth", "hair", "fur", "skin",
+})
+
+
+def physical_phrase(name: str, *, article: bool = True) -> str:
+    noun = _camel_words(name)
+    if noun in BARE_PHYSICAL_NOUNS:
+        return noun
+    return f"the {noun}" if article else noun
+
 
 # =============================================================================
 # Pronouns
@@ -141,7 +153,7 @@ class Entity:
     def __str__(self) -> str:
         if self.kind == "character":
             return self.name
-        return f"the {_camel_words(self.name)}"
+        return physical_phrase(self.name)
 
     def __getattr__(self, name: str) -> Any:
         if name in self.facts:
@@ -340,6 +352,8 @@ class World:
         owner = self.entities.get(owner_name) if owner_name else None
         if owner is not None and owner.kind == "character":
             return f"{owner.pronoun('possessive')} {adj}{noun}"
+        if noun in BARE_PHYSICAL_NOUNS and not adj:
+            return noun
         return f"the {adj}{noun}"
 
     def mood(self, entity: Any, floor: float = 0.5) -> str:
@@ -1065,12 +1079,16 @@ def coherent(world: World, hero: Optional[Entity], sentences: List[str]) -> str:
         return " ".join(sentences)
     name = hero.name
     pron = hero.pronoun("subject")
+    poss = hero.pronoun("possessive")
     out: List[str] = []
     prev_hero = bool(world.use_pronoun)
     for s in sentences:
         is_hero = s.startswith(name + " ") or s.startswith(name + "'")
         if is_hero and prev_hero:
-            s = pron.capitalize() + s[len(name):]
+            if s.startswith(name + "'s "):
+                s = poss.capitalize() + s[len(name) + 2:]
+            else:
+                s = pron.capitalize() + s[len(name):]
         out.append(s)
         prev_hero = is_hero
     return " ".join(out)

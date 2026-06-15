@@ -319,17 +319,24 @@ def Task(ctx: World, *args, **kw) -> str:
 def Reaction(ctx: World, *args, **kw) -> str:
     chars, rest = _split(args)
     hero = chars[0] if chars else ctx.actor
-    cs = _child_sents(rest)
+    emo = _vals(kw, "emotion")
+    action = _vals(kw, "action", "response")
+    cs = _child_sents(rest + ([emo] if emo is not None else []) + ([action] if action is not None else []))
     if cs:
         if hero is not None:
             ctx.actor = hero
         return coherent(ctx, hero, cs)
-    emo = _vals(kw, "emotion")
     feel = _phrases(chars[1:]) + _phrases(rest) + ([state_to_phrase(emo)] if emo is not None else [])
+    act = action_to_phrase(action) if action is not None else ""
     f = NLGUtils.join_list([x for x in feel if x])
     if hero is not None:
         ctx.actor = hero
-        return f"{ctx.say(hero)} reacted with {f}." if f else f"{ctx.say(hero)} did not know how to react."
+        sents = []
+        if f:
+            sents.append(f"{ctx.say(hero)} felt {f}.")
+        if act:
+            sents.append(f"{ctx.say(hero)} {act}.")
+        return coherent(ctx, hero, sents) if sents else f"{ctx.say(hero)} did not know how to react."
     return f"Everyone reacted with {f}." if f else "There was a big reaction."
 
 
@@ -370,7 +377,8 @@ def Goal(ctx: World, *args, **kw) -> str:
     aim = NLGUtils.join_list(_phrases(chars[1:]) + _phrases(rest))
     if hero is not None:
         ctx.actor = hero
-        return f"{ctx.say(hero)}'s goal was {aim}." if aim else f"{ctx.say(hero)} had a goal in mind."
+        poss = hero.pronoun("possessive") if ctx.use_pronoun else f"{hero.name}'s"
+        return f"{poss.capitalize()} goal was {aim}." if aim else f"{ctx.say(hero)} had a goal in mind."
     return f"The goal was {aim}." if aim else "There was a goal to reach."
 
 
@@ -398,8 +406,15 @@ def Crisis(ctx: World, *args, **kw) -> str:
 
 def Disruption(ctx: World, *args, **kw) -> str:
     chars, rest = _split(args)
-    cause = NLGUtils.join_list(_phrases(rest) + _phrases([kw.get("cause")] if kw.get("cause") else []))
-    return f"Suddenly, {cause} disrupted everything." if cause else "Suddenly, everything was disrupted."
+    values = rest + ([kw.get("cause")] if kw.get("cause") else [])
+    cause = NLGUtils.join_list(_phrases(values))
+    extra = []
+    for value in values:
+        cs = child_sentences(value)
+        if cs is not None:
+            extra += cs
+    line = f"Suddenly, {cause} disrupted everything." if cause else "Suddenly, everything was disrupted."
+    return " ".join(extra + [line])
 
 
 def Temptation(ctx: World, *args, **kw) -> str:

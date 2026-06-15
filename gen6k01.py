@@ -314,7 +314,7 @@ def Idea(ctx: World, char: Actor, **kw: Any) -> str:
 def Insight(ctx: World, char: Actor, what: Any = None, **kw: Any) -> str:
     char.Wisdom += 1
     ctx.actor = char
-    w = what if what is not None else _has(kw, "lesson", "that")
+    w = what if what is not None else _has(kw, "lesson", "moral", "that")
     if w is not None:
         # Keep an embedded clause's subject but lower-case it so it reads as a
         # subordinate clause ("realized that help was on the way").

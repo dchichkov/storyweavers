@@ -183,15 +183,30 @@ def Sit(ctx: World, *args, **kw) -> str:
 def Travel(ctx: World, *args, **kw) -> str:
     chars, rest = _split(args)
     dest = _vals(kw, "destination", "to", "inside")
-    place = to_phrase(dest) if dest is not None else NLGUtils.join_list(_phrases(rest))
+    extra = []
+    if dest is not None:
+        cs = child_sentences(dest)
+        if cs is not None:
+            extra += cs
+            place = ""
+        else:
+            place = to_phrase(dest)
+    else:
+        place = NLGUtils.join_list(_phrases(rest))
+        for value in rest:
+            cs = child_sentences(value)
+            if cs is not None:
+                extra += cs
     travelers = chars if chars else ([ctx.actor] if ctx.actor else [])
     if travelers:
         for t in travelers:
             t.add_meme("Joy", 0.1)
         ctx.actor = travelers[0]
         subj = ctx.say(travelers[0]) if len(travelers) == 1 else NLGUtils.join_list([str(t) for t in travelers])
-        return f"{subj} traveled to {place}." if place else f"{subj} set off on a journey."
-    return f"They traveled to {place}." if place else "Off on a journey they went."
+        line = f"{subj} traveled to {place}." if place else f"{subj} set off on a journey."
+        return coherent(ctx, travelers[0], [line] + extra)
+    line = f"They traveled to {place}." if place else "Off on a journey they went."
+    return " ".join([line] + extra)
 
 
 def Continue(ctx: World, *args, **kw) -> str:

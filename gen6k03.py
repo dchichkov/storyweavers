@@ -66,9 +66,20 @@ def _kw_targets(kw: dict):
 def _phrases(values):
     out = []
     for v in values:
+        if child_sentences(v) is not None:
+            continue
         p = str(v) if _is_char(v) else to_phrase(v)
         if p:
             out.append(p)
+    return out
+
+
+def _sentences(values):
+    out = []
+    for v in values:
+        cs = child_sentences(v)
+        if cs is not None:
+            out += cs
     return out
 
 
@@ -99,7 +110,9 @@ def transitive(name, past, *, solo="something", joy=0.0, love=0.0,
             m = meta_story(ctx, actor, kw)
             if m:
                 return m
-        targets = _phrases(chars[1:]) + _phrases(rest) + _phrases(_kw_targets(kw))
+        values = chars[1:] + rest + _kw_targets(kw)
+        targets = _phrases(values)
+        extra = _sentences(values)
         obj = NLGUtils.join_list(targets)
         if actor is not None:
             lead = ctx.mood_lead(actor)  # state-aware flavor before this verb's own meme bump
@@ -113,10 +126,16 @@ def transitive(name, past, *, solo="something", joy=0.0, love=0.0,
             if pride:
                 actor.add_meme("Pride", pride)
             s = ctx.say(actor)
-            tail = (prep + " " if prep else "") + obj
-            return f"{s} {lead}{past} {tail}.".replace("  ", " ") if obj else f"{s} {lead}{past} {solo}."
+            if name == "Enter" and obj in {"inside", "outside", "home"}:
+                line = f"{s} {lead}went {obj}.".replace("  ", " ")
+            else:
+                tail = (prep + " " if prep else "") + obj
+                line = f"{s} {lead}{past} {tail}.".replace("  ", " ") if obj else f"{s} {lead}{past} {solo}."
+            return coherent(ctx, actor, [line] + extra)
         if obj:
-            return f"Someone {past} {(prep + ' ') if prep else ''}{obj}."
+            return " ".join([f"Someone {past} {(prep + ' ') if prep else ''}{obj}."] + extra)
+        if extra:
+            return " ".join(extra)
         return f"{_cap(name.lower())} happened."
     _register(name, fn)
 
@@ -327,13 +346,16 @@ def Failure(ctx: World, *args, **kw) -> str:
 
 def Problem(ctx: World, *args, **kw) -> str:
     chars, rest = _split(args)
-    detail = NLGUtils.join_list(_phrases(rest) + _phrases(_kw_targets(kw)))
+    values = rest + _kw_targets(kw)
+    detail = NLGUtils.join_list(_phrases(values))
+    extra = _sentences(values)
     if chars:
         ctx.actor = chars[0]
-        return f"{ctx.say(chars[0])} had a problem" + (f" with {detail}." if detail else ".")
+        lead = f"{ctx.say(chars[0])} had a problem" + (f" with {detail}." if detail else ".")
+        return coherent(ctx, chars[0], [lead] + extra)
     if detail:
-        return f"There was a problem with {detail}."
-    return "There was a problem."
+        return " ".join([f"There was a problem with {detail}."] + extra)
+    return " ".join(["There was a problem."] + extra)
 
 
 def Habit(ctx: World, *args, **kw) -> str:

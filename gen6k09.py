@@ -11,7 +11,7 @@ from __future__ import annotations
 
 from typing import Any
 
-from gen6 import REGISTRY, World, Entity, NLGUtils, coherent, is_meta_call, meta_story
+from gen6 import REGISTRY, World, Entity, NLGUtils, coherent, is_meta_call, meta_story, to_phrase
 from gen6k03 import _split, _cap
 from gen6k07 import _actor_from, _clean_sentence, _concepts, _kw_values, _sentences
 from gen6k08 import _register_action, _register_meta, _register_state
@@ -181,6 +181,46 @@ def Showcase(ctx: World, *args: Any, **kw: Any) -> str:
     body = meta_story(ctx, actor, kw) if actor is not None and is_meta_call(kw) else ""
     lead = f"{presenter} showcased {subject}." if subject else f"{presenter} put on a showcase."
     return coherent(ctx, actor, [lead, body])
+
+
+@REGISTRY.kernel("Idea")
+def IdeaTolerant(ctx: World, *args: Any, **kw: Any) -> str:
+    chars, rest = _split(args)
+    actor = _actor_from(ctx, chars, kw)
+    sents = _sentences(rest + list(kw.values()))
+    topic = _target(chars[1:], rest, kw, "plan", "goal", "to", "help")
+    if actor is not None:
+        actor.add_meme("Creativity", 0.4)
+        actor.add_meme("Joy", 0.2)
+        ctx.actor = actor
+        lead = f"{ctx.say(actor)} had a clever idea"
+        lead += f" about {topic}." if topic else "."
+        return coherent(ctx, actor, [lead] + sents)
+    return " ".join(sents) if sents else "Someone had a clever idea."
+
+
+@REGISTRY.kernel("balanced")
+def balanced_lower(ctx: World, *args: Any, **kw: Any) -> str:
+    chars, rest = _split(args)
+    actor = _actor_from(ctx, chars, kw)
+    target = _target(chars[1:], rest, kw, "activity", "between")
+    if actor is not None:
+        actor.add_meme("Balance", 1.0)
+        ctx.actor = actor
+        return f"{ctx.say(actor)} found balance with {target}." if target else f"{ctx.say(actor)} found balance."
+    return f"There was balance with {target}." if target else "There was balance."
+
+
+@REGISTRY.kernel("balance")
+def balance_lower(ctx: World, *args: Any, **kw: Any) -> str:
+    target = _target([], list(args), kw, "activity", "between")
+    return f"balance with {target}" if target else "balance"
+
+
+@REGISTRY.kernel("lesson")
+def lesson_lower(ctx: World, *args: Any, **kw: Any) -> str:
+    topic = NLGUtils.join_list([to_phrase(v) for v in list(args) + _kw_values(kw, "about", "moral") if to_phrase(v)])
+    return f"the importance of {topic}" if topic else "an important lesson"
 
 
 for _name, _template, _meme in [

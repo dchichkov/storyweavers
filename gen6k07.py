@@ -490,6 +490,8 @@ def _register_action(name: str, past: str, *, solo: str = "something", meme: str
             if meme:
                 actor.add_meme(meme, amount)
             ctx.actor = actor
+            if name == "Cover" and target in {"eyes", "face", "ears"}:
+                return f"{ctx.say(actor)} covered {actor.pronoun('possessive')} {target}."
             tail = f" {prep} {target}" if prep and target else (f" {target}" if target else "")
             return f"{ctx.say(actor)} {past}{tail}." if target else f"{ctx.say(actor)} {past} {solo}."
         return f"Someone {past} {target}." if target else f"{_cap(name)} happened."
