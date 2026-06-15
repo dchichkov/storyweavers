@@ -134,9 +134,22 @@ def WarningTolerant(ctx: World, *args: Any, **kw: Any) -> str:
     if chars:
         speaker = chars[0]
         ctx.actor = speaker
-        listeners = NLGUtils.join_list([str(c) for c in chars[1:]] + _phrases(rest))
-        return f"{ctx.say(speaker)} warned {listeners} to be careful." if listeners \
-            else f"{ctx.say(speaker)} gave a warning."
+        listeners = NLGUtils.join_list([str(c) for c in chars[1:]])
+        content_values = rest + _kw_values(kw, "content", "message", "about", "comment")
+        content = NLGUtils.join_list([
+            state_to_phrase(v) if isinstance(v, Trace) else to_phrase(v)
+            for v in content_values
+            if (state_to_phrase(v) if isinstance(v, Trace) else to_phrase(v))
+        ])
+        if listeners and content:
+            return f"{ctx.say(speaker)} warned {listeners} about {content}."
+        if listeners:
+            return f"{ctx.say(speaker)} warned {listeners} to be careful."
+        if content:
+            if "careful" in content:
+                return f"{ctx.say(speaker)} warned everyone to be {content}."
+            return f"{ctx.say(speaker)} gave a warning about {content}."
+        return f"{ctx.say(speaker)} gave a warning."
     thing = NLGUtils.join_list(_phrases(rest))
     return f"There was a warning about {thing}." if thing else "There was a warning."
 
@@ -250,6 +263,55 @@ def ShareTolerant(ctx: World, *args: Any, **kw: Any) -> str:
     return f"Everyone shared {thing}." if thing else "There was lots of sharing."
 
 
+def _play_phrase(value: Any) -> str:
+    cs = child_sentences(value)
+    if cs:
+        text = cs[0].rstrip(".!?")
+        words = text.split(" ", 1)
+        if len(words) == 2 and words[0][:1].isupper():
+            text = words[1]
+        for prefix in ("played with ", "played "):
+            if text.startswith(prefix):
+                phrase = text[len(prefix):]
+                return "" if phrase == "happily" else phrase
+        return ""
+    return to_phrase(value)
+
+
+@REGISTRY.kernel("Play")
+def PlayTolerant(ctx: World, *args: Any, **kw: Any) -> str:
+    chars, rest = _split(args)
+    participants = kw.get("participants")
+    if isinstance(participants, (list, tuple)):
+        chars = chars + [p for p in participants if p not in chars and getattr(p, "kind", None) == "character"]
+    targets = [_play_phrase(v) for v in rest + _kw_values(kw, "game", "activity", "with", "location", "place")]
+    targets = [t for t in targets if t]
+    target = NLGUtils.join_list(targets)
+    if chars:
+        for c in chars:
+            c.add_meme("Joy", 0.4)
+        ctx.actor = chars[0]
+        who = _names(chars) if len(chars) > 1 else ctx.say(chars[0])
+        if target:
+            return f"{who} played {target}." if target in {"hide and seek", "tag"} else f"{who} played with {target}."
+        return f"{who} played together." if len(chars) > 1 else f"{who} played happily."
+    if rest:
+        first = rest[0]
+        group = to_phrase(first)
+        if isinstance(first, Trace) and first.kernel == "Concept" and " and " in group:
+            return f"{group} played together."
+    actor = ctx.actor
+    if actor is not None:
+        actor.add_meme("Joy", 0.4)
+        ctx.actor = actor
+        if target:
+            return f"{ctx.say(actor)} played {target}." if target in {"hide and seek", "tag"} else f"{ctx.say(actor)} played with {target}."
+        return f"{ctx.say(actor)} played happily."
+    if target:
+        return f"Everyone played {target}." if target in {"hide and seek", "tag"} else f"Everyone played with {target}."
+    return "Everyone played together."
+
+
 @REGISTRY.kernel("Give")
 def GiveTolerant(ctx: World, *args: Any, **kw: Any) -> str:
     chars, rest = _split(args)
@@ -290,7 +352,7 @@ def SearchTolerant(ctx: World, *args: Any, **kw: Any) -> str:
 def ReturnTolerant(ctx: World, *args: Any, **kw: Any) -> str:
     chars, rest = _split(args)
     actor = chars[0] if chars else ctx.actor
-    obj = NLGUtils.join_list(_phrases(rest))
+    obj = _motion_target(NLGUtils.join_list(_phrases(rest)))
     recips = [str(c) for c in chars[1:]]
     if actor is not None:
         ctx.actor = actor

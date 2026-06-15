@@ -75,6 +75,20 @@ def _has(kw: dict, *keys: str):
     return None
 
 
+_ACTIONISH_PHYSICALS = {
+    "act", "climb", "dance", "fly", "help", "jump", "listen", "play", "run",
+    "pitch", "share", "swim", "talk", "tie", "walk", "work",
+}
+
+
+def _actionish_phrase(value: Any) -> str:
+    if isinstance(value, Entity) and value.kind != "character":
+        first = value.name.split(" ", 1)[0]
+        if value.name in _ACTIONISH_PHYSICALS or first in _ACTIONISH_PHYSICALS:
+            return value.name
+    return base_phrase(value)
+
+
 # ---------------------------------------------------------------------------
 # Meta / structural kernels (keyword phases)
 # ---------------------------------------------------------------------------
@@ -122,6 +136,11 @@ def FriendshipMeta(ctx: World, a: Actor, b: Character, **kw: Any) -> str:
 def Cautionary(ctx: World, char: Actor, **kw: Any) -> str:
     """A mistake leads to a consequence and a lesson."""
     ctx.actor = char
+    if is_meta_call(kw):
+        body = meta_story(ctx, char, kw)
+        if body:
+            char.Wisdom += 1
+            return body
     sents = []
     state = _has(kw, "state")
     if state is not None:
@@ -173,7 +192,13 @@ def Accident(ctx: World, char: Actor, **kw: Any) -> str:
     result = _has(kw, "result", "consequence", "outcome")
     sents = ["Suddenly, something went wrong."]
     if action is not None:
-        sents = [f"{name} accidentally {action_to_phrase(action)}."]
+        cs = child_sentences(action)
+        if cs is not None:
+            sents = cs
+        elif isinstance(action, Entity) and action.kind != "character":
+            sents = [f"{name} had an accident with {to_phrase(action)}."]
+        else:
+            sents = [f"{name} accidentally {action_to_phrase(action)}."]
     if result is not None:
         sents += render_clause(result, "As a result, {}.")
     char.Surprise += 1
@@ -445,6 +470,13 @@ def Throw(ctx: World, char: Actor, thing: Physical = None, **kw: Any) -> str:
 def Rescue(ctx: World, hero: Actor, victim: Character = None, **kw: Any) -> str:
     hero.Brave += 1
     ctx.actor = hero
+    if is_meta_call(kw):
+        body = meta_story(ctx, hero, kw)
+        intro = f"{ctx.say(hero)} tried to help."
+        if victim is not None:
+            victim.Relief += 0.6
+            intro = f"{ctx.say(hero)} tried to rescue {victim}."
+        return coherent(ctx, hero, [intro] + ([body] if body else []))
     if victim is not None:
         victim.Relief += 0.6
         return f"{ctx.say(hero)} bravely rescued {victim}."
@@ -478,6 +510,8 @@ def Success(ctx: World, char: Actor = None, thing: Physical = None, **kw: Any) -
             return f"{ctx.say(char)} succeeded with {to_phrase(what)}."
         return f"{ctx.say(char)} succeeded at last."
     if thing is not None:
+        if isinstance(thing, Entity) and thing.kind != "character" and thing.name in _ACTIONISH_PHYSICALS:
+            return "It worked at last."
         return f"{str(thing).capitalize()} was as good as new."
     return "Everything was put right again."
 
@@ -486,11 +520,11 @@ def Success(ctx: World, char: Actor = None, thing: Physical = None, **kw: Any) -
 @REGISTRY.kernel("Try")
 def Attempt(ctx: World, char: Actor, what: Any = None, **kw: Any) -> str:
     ctx.actor = char
-    w = what if what is not None else _has(kw, "goal", "action")
+    w = what if what is not None else _has(kw, "goal", "action", "process")
     if w is not None:
         # "tried to <base verb>": base_phrase keeps a concept verb in base form
         # ("fly", not "flapped"->"flap") and reduces an action Trace.
-        b = base_phrase(w)
+        b = _actionish_phrase(w)
         if b:
             return f"{ctx.say(char)} tried to {b}."
     aid = _has(kw, "aid", "help")
@@ -523,6 +557,10 @@ def Routine(ctx: World, char: Actor = None, **kw: Any) -> str:
     act = _has(kw, "activity", "action")
     if act is not None:
         return f"Every day, {ctx.say(char)} {action_to_phrase(act)}."
+    if is_meta_call(kw):
+        body = meta_story(ctx, char, kw)
+        if body:
+            return coherent(ctx, char, [f"Every day, {ctx.say(char)} had a routine."] + [body])
     return f"{ctx.say(char)} went about the day as usual."
 
 

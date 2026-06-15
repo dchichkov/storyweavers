@@ -945,8 +945,10 @@ def event_to_phrase(value: Any) -> str:
         if text[:1].isupper():
             text = text[0].lower() + text[1:]
         return text
+    if isinstance(value, Entity):
+        return f"{value} appeared"
     if isinstance(value, str):
-        return f"something {_camel_words(value)} happened"
+        return f"the {_camel_words(value)} appeared"
     return to_phrase(value)
 
 
@@ -1077,10 +1079,13 @@ def coherent(world: World, hero: Optional[Entity], sentences: List[str]) -> str:
 # Phase keys that signal a "simple" kernel is actually being used as a
 # multi-phase meta structure (e.g. ``Guidance(Lily, state=..., process=...)``).
 _META_KEYS = (
-    "state", "catalyst", "trigger", "start", "goal", "want", "process", "action",
-    "actions", "journey", "obstacle", "conflict", "insight", "discovery",
-    "lesson", "realization", "consequence", "outcome", "transformation",
-    "resolution", "mistake",
+    "state", "mood", "catalyst", "trigger", "start", "event", "warning",
+    "goal", "want", "desire", "condition", "promise", "process", "action",
+    "actions", "journey", "method", "help", "find", "rest", "solution",
+    "obstacle", "conflict", "exclusion", "loss", "twist", "insight",
+    "discovery", "lesson", "realization", "moral", "consequence", "reaction",
+    "outcome", "transformation", "resolution", "result", "reward",
+    "continuation", "climax", "mistake",
 )
 
 
@@ -1093,6 +1098,19 @@ def _first(kw: Dict[str, Any], *keys: str) -> Any:
         if k in kw and kw[k] is not None:
             return kw[k]
     return None
+
+
+def _phase_values(kw: Dict[str, Any], *keys: str) -> List[Any]:
+    values: List[Any] = []
+    for k in keys:
+        if k not in kw or kw[k] is None:
+            continue
+        value = kw[k]
+        if isinstance(value, (list, tuple)):
+            values.extend(value)
+        else:
+            values.append(value)
+    return values
 
 
 def meta_story(world: World, hero: Optional[Entity], kw: Dict[str, Any],
@@ -1113,36 +1131,35 @@ def meta_story(world: World, hero: Optional[Entity], kw: Dict[str, Any],
     if state is not None and name:
         sents += render_state(name, state)
 
-    goal = _first(kw, "goal", "want", "desire")
+    goal = _first(kw, "goal", "want", "desire", "condition")
     if goal is not None:
         cs = child_sentences(goal)
         if cs is not None:
             sents += cs
         elif name:
-            sents.append(f"{name} wanted {to_phrase(goal)}.")
+            want = infinitive_phrase(goal)
+            if want:
+                sents.append(f"{name} wanted {want}.")
 
-    catalyst = _first(kw, "catalyst", "trigger", "start")
-    if catalyst is not None:
+    for catalyst in _phase_values(kw, "catalyst", "trigger", "start", "event", "warning"):
         sents += render_event(catalyst)
 
     mistake = _first(kw, "mistake")
     if mistake is not None and name:
         sents += render_action(name, mistake)
 
-    obstacle = _first(kw, "obstacle", "conflict")
-    if obstacle is not None:
+    for obstacle in _phase_values(kw, "obstacle", "conflict", "exclusion", "loss", "twist"):
         sents += render_clause(obstacle, "But there was {}.")
 
-    process = _first(kw, "process", "action", "actions", "journey", "method")
-    if process is not None and name:
+    for process in _phase_values(kw, "process", "action", "actions", "journey", "method", "help", "find", "promise", "rest", "solution", "climax"):
+        if not name:
+            continue
         sents += render_action(name, process)
 
-    consequence = _first(kw, "consequence")
-    if consequence is not None:
+    for consequence in _phase_values(kw, "consequence", "reaction"):
         sents += render_clause(consequence, "Because of that, {}.")
 
-    insight = _first(kw, "insight", "discovery", "lesson", "realization")
-    if insight is not None:
+    for insight in _phase_values(kw, "insight", "discovery", "lesson", "realization", "moral"):
         if isinstance(hero, Entity):
             hero.add_meme("Wisdom", 1.0)
         cs = child_sentences(insight)
@@ -1151,8 +1168,7 @@ def meta_story(world: World, hero: Optional[Entity], kw: Dict[str, Any],
         elif name:
             sents.append(f"{name} learned {to_phrase(insight)}.")
 
-    outcome = _first(kw, "outcome", "transformation", "resolution", "result")
-    if outcome is not None:
+    for outcome in _phase_values(kw, "outcome", "transformation", "resolution", "result", "reward", "continuation"):
         if isinstance(hero, Entity):
             hero.add_meme("Joy", 1.0)
         sents += render_outcome(name or "", outcome)
@@ -1555,6 +1571,9 @@ def Return(ctx: World, giver: Actor, obj: Physical, recipient: Character) -> str
     ctx.set_owner(obj, recipient)
     ctx.actor = recipient
     ctx.current_object = obj
+    if obj.name == "home" and giver is recipient:
+        ctx.actor = giver
+        return f"{ctx.say(giver)} returned home."
     return f"{ctx.say(giver)} returned {phrase} to {recipient}."
 
 

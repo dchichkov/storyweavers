@@ -460,9 +460,14 @@ def Process(ctx: World, *args, **kw) -> str:
 @REGISTRY.kernel("Cooperation")
 def Cooperation(ctx: World, *args, **kw) -> str:
     chars, rest = _split(args)
+    if not chars:
+        participants = kw.get("participants")
+        if isinstance(participants, (list, tuple)):
+            chars = [p for p in participants if _is_char(p)]
     if chars:
         ctx.actor = chars[0]
-        chars[0].add_meme("Friendship", 0.5)
+        for c in chars:
+            c.add_meme("Friendship", 0.5)
         who = NLGUtils.join_list([str(c) for c in chars]) if len(chars) > 1 else str(chars[0])
         sents = [f"{who} worked together."]
         body = meta_story(ctx, chars[0], kw)

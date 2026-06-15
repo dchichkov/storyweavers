@@ -607,6 +607,49 @@ Measured:
       rough structural prose (`was as good as new` from generic restoration), and
       deeper clause/subject issues (`played Dog and the ball`, `came across Dog`).
 
+### Quality pass #7: richer structural phases and participant-aware play
+
+Continued from the quality-gap list after the 90% coverage pass. Generated a
+fresh deterministic covered worksheet (`/private/tmp/storyweavers_quality_pass7.jsonl`,
+60 stories, seed 43) and targeted recurring problems where rich ASTs collapsed
+to one-line summaries.
+
+- [x] **Broader `meta_story` phase aliases.** The shared phase renderer now
+      recognizes real dataset keys such as `event`, `warning`, `condition`,
+      `help`, `find`, `rest`, `solution`, `exclusion`, `loss`, `twist`,
+      `reaction`, `reward`, `continuation`, and `climax`. Goals now use
+      `infinitive_phrase` so action goals read better.
+- [x] **Structural kernels keep more content.** `Cautionary` and `Rescue` now
+      route rich kwarg calls through `meta_story`, so calls like
+      `Cautionary(... warning=..., loss=..., help=..., transformation=...)` and
+      `Rescue(... trigger=..., conflict=..., solution=..., result=...)` no
+      longer collapse to only "learned a lesson" / "saved the day."
+- [x] **Participant-aware structures.** `Cooperation(participants=[...])` now
+      uses the participant list as the subject and renders the phase body.
+      `Play` gained a tolerant participant/composite-subject variant, fixing
+      fragments like a story ending in just "Tim and Pigeon"; game traces such
+      as `Play(HideSeek, participants=[Cat, Dog])` become group play.
+- [x] **Small grammar repairs.** `Warning(Mom, Careful)` now warns everyone to
+      be careful instead of treating "Mom was very careful" as the listener;
+      `Attempt(Tim, fly)` reads "tried to fly"; `Success(fly)` reads "It worked
+      at last"; `Return(home)` avoids "returned the home to Lily" when the actor
+      is returning home.
+- [x] **Event catalysts read less fallback-y.** Bare event concepts in catalyst
+      slots now render as appearances ("the sunset appeared", "the unicorn
+      appeared") instead of "something sunset/unicorn happened."
+
+Measured:
+- `check_duplicates.py`: clean (`776` kernel names / `810` variants).
+- `coverage.py --brief --execute 3000`: **90.1%** coverage, **30,032**
+      high-coverage stories, **99.9%** execution OK.
+- 1,000 fully-covered sample heuristic scan: warning-careful and
+      `played with hide and seek` patterns are **0**; dangling prepositions remain
+      **0** from pass #6. Remaining visible defects include `There was the X and
+      the Y` object-list prose, long-tail fallbacks (`Something observe
+      happened`), strict-return edge cases, and physical phrases that should be
+      action clauses (`try to tie shoes` still sometimes appears as
+      `try to the tie shoes`).
+
 ### Quality pass: meta-kernel coherence + rewrites/world model
 
 Sampled fully-covered stories (≥5 kernels, all implemented) and fixed the
