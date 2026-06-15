@@ -56,11 +56,12 @@ STRUCTURE_CALLS = {
     "Transformation", "Routine", "Story", "Adventure",
 }
 OBJECT_KEYS = {"object", "item", "thing", "target", "content", "gift"}
+LOCATION_KEYS = {"location", "place", "setting", "destination"}
 GOAL_OBJECT_KEYS = {"goal", "into", "to", "result", "outcome", "destination", "setting"}
 PERSON_KEYS = {
     "hero", "protagonist", "rescuer", "rescued", "receiver", "recipient",
     "to", "from", "helper", "speaker", "listener", "owner", "patient",
-    "agent", "source", "target", "victim",
+    "agent", "source", "target", "victim", "companion",
 }
 EMOTION_MEMES = {
     "Joy", "Happy", "Happiness", "Sad", "Sadness", "Fear", "Scared",
@@ -187,6 +188,12 @@ class Entity:
 
     def pronoun(self, case: str = "subject") -> str:
         t = self.type.lower()
+        n = words(self.id)
+        if t in {"adult", "child", "friend", "parent", "person", "speaker", "stranger"}:
+            if n in {"girl", "lily", "lisa", "lucy", "sue", "sarah", "anna", "daughter", "mom", "mommy", "mum", "mother"}:
+                return {"subject": "she", "object": "her", "possessive": "her"}[case]
+            if n in {"boy", "tim", "timmy", "joe", "ben", "sam", "paul", "old man", "oldman", "man", "dad", "daddy", "father"}:
+                return {"subject": "he", "object": "him", "possessive": "his"}[case]
         if t in {"girl", "woman", "mother", "mom", "mommy", "daughter", "old lady"}:
             return {"subject": "she", "object": "her", "possessive": "her"}[case]
         if t in {"boy", "man", "father", "dad"}:
@@ -409,7 +416,11 @@ def infer_type(name: str, explicit: str) -> str:
     }
     if n in aliases:
         return aliases[n]
-    if n in {"girl", "boy", "bird", "mouse", "turkey", "dog", "cat", "barrel", "bunny", "rabbit", "bee", "bees", "duck", "frog", "tree"}:
+    if n in {
+        "girl", "boy", "bird", "mouse", "turkey", "dog", "cat", "barrel",
+        "bunny", "rabbit", "bee", "bees", "duck", "frog", "tree", "bear",
+        "fish", "mole",
+    }:
         return n
     return "person"
 
@@ -507,7 +518,7 @@ class Parser:
         if name in self.world.entities:
             return self.world.entities[name]
         if name[:1].isupper():
-            if role in OBJECT_KEYS or role in GOAL_OBJECT_KEYS:
+            if role in OBJECT_KEYS or role in GOAL_OBJECT_KEYS or role in LOCATION_KEYS:
                 return self.world.physical(name)
             return Memeplex(name)
         return self.world.physical(name)
@@ -636,7 +647,7 @@ class Parser:
                 frame.meta["actor_locked"] = True
             if (
                 actor is not None
-                and frame.kind in {"find", "discover"}
+                and frame.kind in {"find", "discover", "encounter"}
                 and frame.patient is None
                 and len(frame.meta.get("participants", [])) == 1
                 and frame.meta["participants"][0] != actor
@@ -723,9 +734,12 @@ class Parser:
     def direct_call(self, name: str, values: list[Any], kw_values: dict[str, list[Any]], child_frames: list[Frame], context: str, role: str) -> EvalResult | None:
         lname = name.lower()
         chars = [v for v in values if is_character(v)]
+        participant_chars = [v for v in flatten(kw_values.get("participants", [])) if is_character(v)]
         fallback_actor = None if role in PHASE_KEYS else self.current_actor
-        actor = chars[0] if chars else self.actor_from_kwargs(kw_values) or fallback_actor
-        patient = chars[1] if len(chars) > 1 else first_character(flatten(
+        actor = chars[0] if chars else self.actor_from_kwargs(kw_values) or (participant_chars[0] if participant_chars else None) or fallback_actor
+        patient = chars[1] if len(chars) > 1 else (
+            participant_chars[1] if len(participant_chars) > 1 else None
+        ) or first_character(flatten(
             kw_values.get("to", [])
             + kw_values.get("target", [])
             + kw_values.get("victim", [])
@@ -733,7 +747,10 @@ class Parser:
             + kw_values.get("rescued", [])
             + kw_values.get("receiver", [])
             + kw_values.get("recipient", [])
+            + kw_values.get("companion", [])
         ))
+        companion_chars = [v for v in flatten(kw_values.get("companion", [])) if is_character(v)]
+        location = first_entity(flatten(kw_values.get("location", []) + kw_values.get("place", []) + kw_values.get("setting", []) + kw_values.get("destination", [])))
         objects = objects_from([v for v in values if not is_character(v)] + flatten(v for k, v in kw_values.items() if k in OBJECT_KEYS), self.world)
         concepts = concepts_from(values + flatten(kw_values.values()))
 
@@ -840,6 +857,10 @@ class Parser:
             objects = []
             for child in child_frames:
                 child.salience = 0.05
+        if frame_kind == "visit" and location is not None and not objects:
+            objects = [location]
+        if frame_kind == "encounter":
+            objects = [o for o in objects if display_type(o) not in {"wet", "dry"}]
         if frame_kind == "rescue" and patient is None:
             victim_objects = objects_from(flatten(kw_values.get("victim", [])), self.world)
             if victim_objects:
@@ -858,12 +879,13 @@ class Parser:
             actor=actor,
             patient=patient,
             objects=objects,
+            location=location,
             goal=goal,
             result=result,
             concepts=concepts,
             salience=0.15 if frame_kind == "annotation" else 1.0,
             source=name,
-            meta={"participants": chars},
+            meta={"participants": chars + participant_chars + companion_chars},
         )
         extra: list[Frame] = []
         if frame_kind == "encounter":
@@ -915,7 +937,7 @@ class Parser:
         if actor is not None:
             for child in child_frames:
                 if (
-                    child.kind in {"hold", "drop", "teach"}
+                    child.kind in {"hold", "drop", "teach", "encounter"}
                     and child.patient is None
                     and len(child.meta.get("participants", [])) == 1
                     and child.meta["participants"][0] != actor
@@ -941,6 +963,8 @@ class Parser:
         if frame_kind == "idea":
             return EvalResult(frames=[frame] + child_frames + extra, values=[Memeplex(name)])
         if frame_kind == "race":
+            return EvalResult(frames=[frame] + child_frames + extra, values=[Memeplex(name)])
+        if frame_kind == "visit":
             return EvalResult(frames=[frame] + child_frames + extra, values=[Memeplex(name)])
         if frame_kind == "rescue":
             before = [child for child in child_frames if child.kind != "friendship"]
@@ -1196,7 +1220,9 @@ class Renderer:
             return f"The story moved to {self.obj(frame.location)}."
         if frame.kind == "journey":
             party = self.participants(frame) or subject
-            dest = self.obj(frame.location) if frame.location else "somewhere new"
+            if frame.location is None:
+                return f"{party} went on a journey."
+            dest = self.obj(frame.location)
             if dest == "underground":
                 return f"{party} went underground."
             return f"{party} went to {dest}."
@@ -1205,6 +1231,10 @@ class Renderer:
                 return f"{subject} wanted help from {self.obj(frame.goal)}."
             if any(display_type(o) == "grow" for o in frame.objects) or "grow" in concepts:
                 return f"{subject} wanted to grow."
+            if any(display_type(o) == "play" for o in frame.objects) or "play" in concepts:
+                return f"{subject} wanted to play."
+            if any(display_type(o) == "return" for o in frame.objects) or "return" in concepts:
+                return f"{subject} wanted to go back."
             goal = phrase(frame.goal, self.world) or objects or (concepts[0] if concepts else "something special")
             if goal == "grow":
                 return f"{subject} wanted to grow."
@@ -1276,6 +1306,13 @@ class Renderer:
         if frame.kind == "fix":
             return f"{subject} fixed {objects or 'it'}."
         if frame.kind == "play":
+            party = self.participants(frame)
+            if party and len(frame.meta.get("participants", [])) > 1:
+                if len(frame.objects) == 1 and display_type(frame.objects[0]) in {"beach", "sand", "park", "garden", "yard"}:
+                    place = display_type(frame.objects[0])
+                    prep = "on" if place in {"beach", "sand"} else "at" if place == "park" else "in"
+                    return f"{party} played {prep} {self.obj(frame.objects[0])}."
+                return f"{party} played with {objects}." if objects else f"{party} played together."
             if p:
                 return f"{subject} played with {self.obj(p)}."
             return f"{subject} played with {objects}." if objects else f"{subject} played happily."
@@ -1324,12 +1361,21 @@ class Renderer:
                     return f"{subject} coughed and covered {poss} eyes."
                 if "reprimand" in concepts:
                     return f"{subject} was angry and scolded them."
+            if "love" in concepts and objects:
+                return f"{subject} loved {objects}."
             feeling = join([emotion_word(c) for c in concepts])
             party = self.participants(frame)
             if frame.kind == "emotion" and party and len(frame.meta.get("participants", [])) > 1:
                 return f"{party} felt {feeling}." if feeling else f"{party} felt a lot of feelings."
             return f"{subject} felt {feeling}." if feeling else f"{subject} felt a lot of feelings."
         if frame.kind == "encounter":
+            if p and p != a:
+                suffix = f" and saw {objects}" if objects else ""
+                return f"{subject} met {self.obj(p)}{suffix}."
+            if objects:
+                if any(display_type(o) in {"shadow", "noise"} for o in frame.objects):
+                    return f"{subject} noticed {objects}."
+                return f"{subject} saw {objects}."
             return f"{subject} met {self.obj(p)}." if p else f"{subject} met someone."
         if frame.kind == "hug":
             party = self.participants(frame)
@@ -1437,6 +1483,9 @@ class Renderer:
             item = objects or phrase(frame.goal, self.world) or "something sweet"
             return f"{subject} baked {item}."
         if frame.kind == "visit":
+            party = self.participants(frame)
+            if party and len(frame.meta.get("participants", [])) > 1:
+                return f"{party} visited {objects or self.obj(p)}."
             return f"{subject} visited {objects or self.obj(p)}."
         if frame.kind == "hide":
             return f"{subject} hid {objects or 'it'}."
@@ -1495,6 +1544,11 @@ class Renderer:
                 return f"{subject} protected {objects}."
             return f"{subject} protected {self.obj(p)}." if p else f"{subject} tried to protect someone."
         if frame.kind == "bite":
+            if not objects and p is None:
+                return ""
+            if objects and not p and all(display_type(o) in {"wing", "leg", "arm", "hand", "foot", "tail"} for o in frame.objects):
+                poss = a.pronoun("possessive") if a is not None else "their"
+                return f"{subject} hurt {poss} {display_type(frame.objects[0])}."
             if objects and a:
                 return f"{cap(objects)} bit {self.obj(a)}."
             if objects and p:

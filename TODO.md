@@ -144,7 +144,7 @@ Current slice:
 | Physical carriers with object status/owner/location, relation edges, and meme magnitudes | `StoryWorld` / `Entity` | ✅ seed model |
 | Semantic frames for character setup, find/lost/search/ask/help/give/broken/fix/play/fear/rescue/friendship/lesson/reaction/transform | `Parser.direct_call` | ✅ first slice |
 | Lowercase object/state normalization (`lost(toy)`, `broken(toy)`, `hook(stick,string)`) | `LowerExpr` lowering | ✅ partial |
-| 28 representative pinned stories from `data00` + `data01` | `gen7_story_tests.py`, `gen7_story_tests/` | ✅ snapshots pass |
+| 33 representative pinned stories from `data00` + `data01` | `gen7_story_tests.py`, `gen7_story_tests/` | ✅ snapshots pass |
 
 Known gaps from the first 20 pins:
 
@@ -175,8 +175,15 @@ Known gaps from the first 20 pins:
       their motive frames, and nested physical labels like `bottom(pond)` keep
       their object content. Single-character child actions like `Hold(Tom)`,
       `Drop(Tom)`, and `Teach(Sam, ...)` now bind the parent actor as the doer
-      and the child character as the patient. Remaining work: track whether an
-      actor was explicit in the AST instead of relying on scoped locks.
+      and the child character as the patient. Participant lists now drive direct
+      actions like group play, and generic child/person pronouns use common name
+      cues when the type is otherwise too broad. Remaining work: track whether
+      an actor was explicit in the AST instead of relying on scoped locks.
+- [~] Preserve physical scene roles before rendering. Location-like kwargs now
+      lower to physical scene objects for direct calls such as `Visit(...,
+      location=castle)`, companions stay attached to visit frames, object
+      encounters render as seeing/noticing physical objects, and mixed
+      character/object encounters preserve both (`met Tommy and saw the bag`).
 - [~] Broaden direct semantic kernels. `Reward`, `Approve`, `Perform`, `Visit`,
       `Hide`, `Warning`, `Intervention`, `Praise`, `Heal`, `Report`, and
       `Investigation` now have first-pass frames/rendering; remaining work is
@@ -186,7 +193,7 @@ Known gaps from the first 20 pins:
       now becomes a real lesson frame, repeated lesson topics are collapsed, and
       composed lesson phases such as `Avoidance(...) + Memory(...)` keep their
       concrete child frames instead of re-wrapping them as extra morals.
-- [ ] Add a manual `QUALITY.md` grade for the 28 gen7 pins and compare them
+- [ ] Add a manual `QUALITY.md` grade for the 33 gen7 pins and compare them
       against gen6 output; the harness pins behavior but does not judge it.
 
 ### Still open for `gen6.py`
