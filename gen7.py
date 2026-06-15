@@ -34,7 +34,7 @@ CHARACTER_TYPES = {
     "bees", "tree", "daughter", "squirrel", "crab", "fox", "ostrich",
     "airplane", "cow", "chick", "pig", "elephant", "vehicle", "peer",
     "monkey", "bug", "human", "elderly", "old", "fairy", "hawk", "owl", "bus", "birds",
-    "animals", "mechanic", "fisherman",
+    "animals", "mechanic", "fisherman", "boat", "boats",
 }
 GENERIC_TYPES = {"animal", "group", "person"}
 COMPOUNDS = {
@@ -221,7 +221,7 @@ class Entity:
             return {"subject": "he", "object": "him", "possessive": "his"}[case]
         if t in {"group", "children", "people", "bees", "birds", "animals"}:
             return {"subject": "they", "object": "them", "possessive": "their"}[case]
-        if t in {"bird", "dog", "puppy", "cat", "mouse", "monkey", "bug", "turkey", "bear", "bee", "fish", "frog", "rabbit", "bunny", "duck", "barrel", "tree", "flower", "train", "bus", "squirrel", "crab", "fox", "ostrich", "airplane", "cow", "chick", "pig", "elephant", "vehicle", "seed", "fairy", "hawk", "owl"}:
+        if t in {"bird", "dog", "puppy", "cat", "mouse", "monkey", "bug", "turkey", "bear", "bee", "fish", "frog", "rabbit", "bunny", "duck", "barrel", "tree", "flower", "train", "bus", "squirrel", "crab", "fox", "ostrich", "airplane", "cow", "chick", "pig", "elephant", "vehicle", "seed", "fairy", "hawk", "owl", "boat"}:
             return {"subject": "it", "object": "it", "possessive": "its"}[case]
         return {"subject": "they", "object": "them", "possessive": "their"}[case]
 
@@ -503,6 +503,7 @@ def infer_type(name: str, explicit: str) -> str:
         "fish", "mole", "squirrel", "crab", "fox", "ostrich", "airplane",
         "cow", "chick", "pig", "elephant", "vehicle", "ant", "monkey", "bug",
         "train", "flower", "bus", "fairy", "hawk", "owl", "birds", "animals",
+        "boat", "boats",
     }:
         return n
     return "person"
