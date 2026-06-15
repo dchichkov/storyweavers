@@ -709,7 +709,8 @@ class Parser:
                 + kw_values.get("desire", [])
                 + kw_values.get("objective", [])
             )) or first_value(values[1:])
-            frames.append(Frame("want", actor=actor, goal=goal, concepts=[Memeplex(name)], source=name, salience=0.7))
+            if goal is not None:
+                frames.append(Frame("want", actor=actor, goal=goal, concepts=[Memeplex(name)], source=name, salience=0.7))
             setting = first_entity(flatten(kw_values.get("setting", [])))
             if setting is not None:
                 frames.append(Frame("scene", actor=actor, location=setting, source="setting", salience=0.35))
@@ -914,6 +915,8 @@ class Parser:
                 child.salience = 0.05
         if frame_kind == "visit" and location is not None and not objects:
             objects = [location]
+        if frame_kind == "visit" and patient is None and len(chars) == 1 and not objects:
+            patient = next((ent for ent in self.world.declarations if ent != actor), None)
         if frame_kind == "encounter":
             objects = [o for o in objects if display_type(o) not in {"wet", "dry"}]
         if frame_kind == "rescue" and patient is None:
@@ -965,6 +968,8 @@ class Parser:
         if frame_kind in {"find", "discover"} and child_frames and not frame.objects and frame.patient is None:
             frame.salience = 0.05
         if frame_kind == "advice" and child_frames:
+            frame.salience = 0.05
+        if frame_kind == "bake" and not frame.objects and any(child.kind == "bake" and child.objects for child in child_frames):
             frame.salience = 0.05
         if frame_kind == "rescue":
             rescue_child = next(

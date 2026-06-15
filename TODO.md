@@ -213,6 +213,13 @@ Known gaps from the first 20 pins:
       renders as "advised asking for help". Remaining work: represent advice as
       an explicit speaker/listener/command frame so refusals can say what was
       refused rather than generic "said no".
+- [~] Suppress empty structural desires and recover simple visit hosts. `Quest`
+      no longer invents "wanted something special" when the AST has no explicit
+      goal, single-character visits now infer the first declared protagonist as
+      host (`Sam visited Tim`), and parent `Bake(...)` wrappers are suppressed
+      when a concrete child bake already renders the baked object. Remaining
+      work: infer positive goals from problem/process traces instead of merely
+      dropping empty desires, and add richer host/location inference for visits.
 - [~] Improve phase ordering inside structural calls. `Rescue(...)`, `Deal(...)`,
       `Idea(...)`, and `Race(...)` now reorder parent/child frames more
       coherently; `Cautionary(...)` now defers generic lessons until after the
