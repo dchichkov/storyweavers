@@ -33,7 +33,8 @@ CHARACTER_TYPES = {
     "mouse", "parent", "person", "puppy", "rabbit", "turkey", "twin", "woman",
     "bees", "tree", "daughter", "squirrel", "crab", "fox", "ostrich",
     "airplane", "cow", "chick", "pig", "elephant", "vehicle", "peer",
-    "monkey", "bug", "human", "elderly", "old",
+    "monkey", "bug", "human", "elderly", "old", "fairy", "hawk", "owl", "birds",
+    "animals",
 }
 GENERIC_TYPES = {"animal", "group", "person"}
 COMPOUNDS = {
@@ -77,6 +78,11 @@ EMOTION_MEMES = {
     "Joy", "Happy", "Happiness", "Sad", "Sadness", "Fear", "Scared",
     "Angry", "Anger", "Relief", "Lonely", "Kind", "Greed", "Guilt",
     "Trust", "Love", "Friendship", "Worried", "Proud", "Sorry", "Rested",
+}
+OBJECT_MODIFIERS = {
+    "big", "small", "tiny", "little", "purple", "green", "blue", "yellow",
+    "red", "shiny", "bright", "beautiful", "pretty", "colorful", "brilliant",
+    "juicy", "hidden", "favorite", "rough", "distant", "clean", "dirty",
 }
 ACTION_MEMES = {
     "Run": "run", "Persistence": "persist", "Victory": "victory",
@@ -210,9 +216,9 @@ class Entity:
             return {"subject": "she", "object": "her", "possessive": "her"}[case]
         if t in {"boy", "man", "father", "dad"}:
             return {"subject": "he", "object": "him", "possessive": "his"}[case]
-        if t in {"group", "children", "people", "bees"}:
+        if t in {"group", "children", "people", "bees", "birds", "animals"}:
             return {"subject": "they", "object": "them", "possessive": "their"}[case]
-        if t in {"bird", "dog", "puppy", "cat", "mouse", "monkey", "bug", "turkey", "bear", "bee", "fish", "frog", "rabbit", "bunny", "duck", "barrel", "tree", "squirrel", "crab", "fox", "ostrich", "airplane", "cow", "chick", "pig", "elephant", "vehicle", "seed"}:
+        if t in {"bird", "dog", "puppy", "cat", "mouse", "monkey", "bug", "turkey", "bear", "bee", "fish", "frog", "rabbit", "bunny", "duck", "barrel", "tree", "squirrel", "crab", "fox", "ostrich", "airplane", "cow", "chick", "pig", "elephant", "vehicle", "seed", "fairy", "hawk", "owl"}:
             return {"subject": "it", "object": "it", "possessive": "its"}[case]
         return {"subject": "they", "object": "them", "possessive": "their"}[case]
 
@@ -425,6 +431,11 @@ class StoryWorld:
             return f"{noun} {target}"
         if noun in BARE_NOUNS:
             return noun
+        traits = [
+            t for t in obj.traits
+            if t and t not in {noun, obj.id} and t in OBJECT_MODIFIERS
+        ]
+        trait_prefix = f"{' '.join(traits)} " if traits else ""
         adj = ""
         if "lost" in status:
             adj = "lost "
@@ -434,9 +445,9 @@ class StoryWorld:
         if owner_id and owner_id in self.entities:
             owner = self.entities[owner_id]
             if owner.pronoun("subject") == "it" and not allow_it_owner:
-                return f"the {adj}{noun}"
-            return f"{owner.pronoun('possessive')} {adj}{noun}"
-        return f"the {adj}{noun}"
+                return f"the {adj}{trait_prefix}{noun}"
+            return f"{owner.pronoun('possessive')} {adj}{trait_prefix}{noun}"
+        return f"the {adj}{trait_prefix}{noun}"
 
 
 def normalize_meme(name: str) -> str:
@@ -455,6 +466,7 @@ def infer_type(name: str, explicit: str) -> str:
         "daddy": "father", "old lady": "old lady", "baby bird": "bird",
         "daughter": "daughter", "friend": "friend",
         "mrs johnson": "woman", "mr jenkins": "man",
+        "little animals": "animals", "big bird": "bird",
     }
     explicit_words = words(explicit)
     if explicit_words == "bird" and n in {"baby bird", "turkey", "chick"}:
@@ -475,7 +487,7 @@ def infer_type(name: str, explicit: str) -> str:
         return aliases[n]
     if n in {"lily", "lucy", "sue", "sara", "sarah", "anna", "emma", "lisa"}:
         return "girl"
-    if n in {"tim", "timmy", "sam", "ben", "paul", "joe", "frank", "pete"}:
+    if n in {"tim", "timmy", "tommy", "sam", "ben", "paul", "joe", "john", "frank", "pete"}:
         return "boy"
     if n == "seed":
         return "seed"
@@ -484,7 +496,7 @@ def infer_type(name: str, explicit: str) -> str:
         "bunny", "rabbit", "bee", "bees", "duck", "frog", "tree", "bear",
         "fish", "mole", "squirrel", "crab", "fox", "ostrich", "airplane",
         "cow", "chick", "pig", "elephant", "vehicle", "ant", "monkey", "bug",
-        "train", "flower",
+        "train", "flower", "fairy", "hawk", "owl", "birds", "animals",
     }:
         return n
     return "person"
@@ -1232,7 +1244,14 @@ def objects_from(values: Iterable[Any], world: StoryWorld) -> list[Entity]:
         if isinstance(value, Entity) and value.kind != "character":
             out.append(value)
         elif isinstance(value, LowerExpr):
-            obj = world.physical(value.name, concept_labels(value.args + flatten(value.kwargs.values())))
+            child_objects = objects_from(value.args + flatten(value.kwargs.values()), world)
+            if words(value.name) in OBJECT_MODIFIERS and child_objects:
+                obj = child_objects[0]
+                modifier = words(value.name)
+                if modifier not in obj.traits:
+                    obj.traits.insert(0, modifier)
+            else:
+                obj = world.physical(value.name, concept_labels(value.args + flatten(value.kwargs.values())))
             out.append(obj)
         elif isinstance(value, str) and value:
             out.append(world.physical(value))
@@ -1636,7 +1655,8 @@ class Renderer:
         if frame.kind == "heal":
             return f"{subject} healed {objects or self.obj(p)}."
         if frame.kind == "safe":
-            return f"{subject} was safe."
+            copula = "were" if a is not None and a.pronoun("subject") == "they" else "was"
+            return f"{subject} {copula} safe."
         if frame.kind == "harmony":
             return "Everything felt peaceful."
         if frame.kind == "report":
@@ -1822,6 +1842,8 @@ def format_qa_answer(question: str, answer: str) -> str:
 
     if question.startswith("Who is "):
         name = question.removeprefix("Who is ").removesuffix("?")
+        if fragment.startswith(f"{name} are "):
+            return response(fragment, "This group is introduced as part of the story world")
         return response(fragment, f"{name} is introduced as part of the story world")
     if question == "Who got hurt?":
         return response(f"{fragment} got hurt", "That injury is one of the story problems")
@@ -1850,6 +1872,8 @@ def format_qa_answer(question: str, answer: str) -> str:
                 return response(f"{actor} wanted to grow", f"That desire helps guide {actor}'s actions")
             if fragment in {"the climb", "climb"}:
                 return response(f"{actor} wanted to climb", f"That desire helps guide {actor}'s actions")
+            if fragment == "feed":
+                return response(f"{actor} wanted to feed the babies", f"That desire helps guide {actor}'s actions")
             return response(f"{actor} wanted {fragment}", f"That desire helps guide {actor}'s actions")
         past = {
             "find": "found",
@@ -1923,7 +1947,11 @@ def frame_to_qa(world: StoryWorld, frame: Frame) -> list[QA]:
         desc = display_type(frame.actor)
         if frame.actor.traits:
             desc = f"{' '.join(frame.actor.traits)} {desc}"
-        add_qa(items, seen, f"Who is {frame.actor.id}?", f"{frame.actor.id} is {article(desc)} {desc}.", "character", frame.source)
+        if is_plural(desc):
+            answer = f"{frame.actor.id} are {desc}."
+        else:
+            answer = f"{frame.actor.id} is {article(desc)} {desc}."
+        add_qa(items, seen, f"Who is {frame.actor.id}?", answer, "character", frame.source)
     elif frame.kind == "want":
         goal = phrase(frame.goal, world) or objects
         add_qa(items, seen, f"What did {actor} want?", goal, "desire", frame.source)
@@ -2033,7 +2061,11 @@ def build_qa(world: StoryWorld, limit: int | None = None) -> list[QA]:
         desc = display_type(ent)
         if ent.traits:
             desc = f"{' '.join(ent.traits)} {desc}"
-        add_qa(items, seen, f"Who is {ent.id}?", f"{ent.id} is {article(desc)} {desc}.", "character", "declare")
+        if is_plural(desc):
+            answer = f"{ent.id} are {desc}."
+        else:
+            answer = f"{ent.id} is {article(desc)} {desc}."
+        add_qa(items, seen, f"Who is {ent.id}?", answer, "character", "declare")
     for frame in world.history:
         if frame.salience < 0.18:
             continue
@@ -2071,6 +2103,8 @@ def phrase(value: Any, world: StoryWorld) -> str:
         if value.name in {"find", "search", "rescue", "fix", "return", "retrieve"}:
             verb = "look for" if value.name == "search" else value.name
             return f"{verb} {join(vals)}".strip()
+        if value.name == "feed":
+            return f"feed {join(vals) or 'someone'}".strip()
         return f"{words(value.name)} {join(vals)}".strip()
     if isinstance(value, str):
         return words(value)

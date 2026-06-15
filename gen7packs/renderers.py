@@ -138,6 +138,8 @@ def render_want(renderer, frame):
     goal = phrase(frame.goal, renderer.world) or objects or (concepts[0] if concepts else "something special")
     if goal == "grow":
         return f"{subject} wanted to grow."
+    if goal == "feed":
+        return f"{subject} wanted to feed the babies."
     if frame.goal is not None and type(frame.goal).__name__ == "LowerExpr" and frame.goal.name in {"find", "search", "rescue", "fix", "return", "retrieve"}:
         return f"{subject} wanted to {goal}."
     return f"{subject} wanted {goal}."
@@ -678,8 +680,25 @@ def render_advice(renderer, frame):
 @REGISTRY.renderer("break", "broken")
 def render_break(renderer, frame):
     renderer.subj(frame.actor)
-    if frame.source.lower() == "accident" and frame.objects:
-        return f"{cap(plain_object_phrase(renderer, frame.objects[0]))} broke."
+    if frame.objects:
+        parts = []
+        owner_map = frame.meta.get("object_owner", {})
+        state_map = frame.meta.get("object_state", {})
+        for obj in frame.objects:
+            owner_id = owner_map.get(obj.id)
+            owner = renderer.world.entities.get(owner_id) if owner_id else None
+            if owner is not None and owner.pronoun("subject") != "it":
+                parts.append(renderer.world.object_phrase(
+                    obj,
+                    status=state_map.get(obj.id),
+                    owner_id=owner_id,
+                    snapshot_owner=True,
+                    allow_it_owner=True,
+                ))
+            else:
+                parts.append(plain_object_phrase(renderer, obj))
+        objects = join(parts)
+        return f"{cap(objects)} broke."
     objects = renderer.objs(frame)
     return f"{cap(objects or 'Something')} broke."
 
