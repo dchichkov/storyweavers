@@ -60,6 +60,7 @@ GOAL_OBJECT_KEYS = {"goal", "into", "to", "result", "outcome", "destination", "s
 PERSON_KEYS = {
     "hero", "protagonist", "rescuer", "rescued", "receiver", "recipient",
     "to", "from", "helper", "speaker", "listener", "owner", "patient",
+    "agent", "source", "target", "victim",
 }
 EMOTION_MEMES = {
     "Joy", "Happy", "Happiness", "Sad", "Sadness", "Fear", "Scared",
@@ -643,6 +644,16 @@ class Parser:
                 frame.patient = frame.meta["participants"][0]
                 frame.actor = actor
                 frame.meta["actor_locked"] = True
+            if (
+                actor is not None
+                and frame.kind in {"hold", "drop", "teach"}
+                and frame.patient is None
+                and len(frame.meta.get("participants", [])) == 1
+                and frame.meta["participants"][0] != actor
+            ):
+                frame.patient = frame.meta["participants"][0]
+                frame.actor = actor
+                frame.meta["actor_locked"] = True
             if frame.actor is None and frame.kind not in {"declare", "scene"}:
                 frame.actor = actor
             elif (
@@ -660,6 +671,10 @@ class Parser:
             if key in skip:
                 continue
             for value in kw_values.get(key, []):
+                if key in {"lesson", "moral"} and isinstance(value, Memeplex):
+                    labels = set(value.labels())
+                    if labels and any(frame.source in labels for frame in child_frames):
+                        continue
                 frames.extend(self.value_to_frames(key, value, actor))
         if name == "Cautionary" and not any(frame.kind == "lesson" for frame in frames):
             frames.append(Frame("lesson", actor=actor, concepts=[Memeplex(name)], source=name, salience=0.55))
@@ -677,6 +692,8 @@ class Parser:
                 return [Frame("encounter", actor=actor, patient=value, source=key, salience=0.8)]
             return [Frame("state", actor=actor, objects=[value], source=key, salience=0.35)]
         if isinstance(value, Memeplex):
+            if key in {"lesson", "moral"}:
+                return [Frame("lesson", actor=actor, concepts=[value], source=key, salience=0.75)]
             normalized = {normalize_meme(label) for label in value.labels()}
             if normalized & {"Joy", "Sadness", "Fear", "Anger", "Relief", "Guilt", "Love", "Lonely", "Kind"}:
                 return [Frame("emotion", actor=actor, concepts=[value], source=key, salience=0.7)]
@@ -711,6 +728,7 @@ class Parser:
         patient = chars[1] if len(chars) > 1 else first_character(flatten(
             kw_values.get("to", [])
             + kw_values.get("target", [])
+            + kw_values.get("victim", [])
             + kw_values.get("other", [])
             + kw_values.get("rescued", [])
             + kw_values.get("receiver", [])
@@ -766,6 +784,10 @@ class Parser:
             "escape": "escape", "continuation": "play",
             "command": "command", "obedience": "perform", "message": "message",
             "affection": "hug", "sick": "problem",
+            "hold": "hold", "drop": "drop", "permission": "permission",
+            "pick": "take", "suggest": "advice", "remove": "remove",
+            "teach": "teach", "transport": "transport", "drive": "drive",
+            "clean": "clean", "chew": "chew",
         }.get(lname)
 
         if frame_kind is None and name in EMOTION_MEMES:
@@ -780,6 +802,8 @@ class Parser:
         if frame_kind == "ask" and patient is None and len(chars) == 1 and self.current_actor is not None and self.current_actor != actor:
             patient = self.current_actor
         if frame_kind in {"scold", "protect"} and patient is None and len(chars) == 1 and self.current_actor is not None and self.current_actor != actor:
+            patient = self.current_actor
+        if frame_kind == "forgiveness" and patient is None and len(chars) == 1 and self.current_actor is not None and self.current_actor != actor:
             patient = self.current_actor
 
         if frame_kind in {"emotion", "reaction"}:
@@ -814,6 +838,12 @@ class Parser:
         )) or positional_goal
         if frame_kind == "ask" and positional_goal is not None:
             objects = []
+            for child in child_frames:
+                child.salience = 0.05
+        if frame_kind == "rescue" and patient is None:
+            victim_objects = objects_from(flatten(kw_values.get("victim", [])), self.world)
+            if victim_objects:
+                objects = victim_objects
         if frame_kind in {"state", "collaboration", "satisfaction", "share"} and len(chars) > 1:
             actor, patient = chars[0], chars[1]
         if frame_kind == "reunion" and len(chars) > 1:
@@ -884,6 +914,17 @@ class Parser:
                     child.actor = actor
         if actor is not None:
             for child in child_frames:
+                if (
+                    child.kind in {"hold", "drop", "teach"}
+                    and child.patient is None
+                    and len(child.meta.get("participants", [])) == 1
+                    and child.meta["participants"][0] != actor
+                ):
+                    child.patient = child.meta["participants"][0]
+                    child.actor = actor
+                    child.meta["actor_locked"] = True
+        if actor is not None:
+            for child in child_frames:
                 if child.actor is None and child.kind not in {"declare", "scene"}:
                     child.actor = actor
         if actor is not None:
@@ -908,7 +949,7 @@ class Parser:
         return EvalResult(frames=child_frames + [frame] + extra, values=[Memeplex(name)])
 
     def actor_from_kwargs(self, kw_values: dict[str, list[Any]]) -> Entity | None:
-        for key in ("actor", "hero", "protagonist", "rescuer", "helper", "speaker", "owner"):
+        for key in ("actor", "agent", "hero", "protagonist", "rescuer", "helper", "speaker", "source", "owner"):
             ent = first_character(flatten(kw_values.get(key, [])))
             if ent is not None:
                 return ent
@@ -1043,6 +1084,8 @@ class Renderer:
     def dedupe(self, sentences: list[str]) -> list[str]:
         out: list[str] = []
         seen: set[str] = set()
+        lesson_topics: set[str] = set()
+        saw_lesson = False
         for sentence in sentences:
             sentence = sentence.strip()
             if not sentence:
@@ -1055,6 +1098,16 @@ class Renderer:
             feeling = re.match(r"^(?:[a-z]+|he|she|it|they)(?: and [a-z]+)? felt ([^.]+)\.$", key)
             if feeling and out and f"felt {feeling.group(1)}" in out[-1].lower():
                 continue
+            lesson = re.match(r"^(?:[a-z]+|he|she|it|they)(?: and [a-z]+)? learned an important lesson(?: about ([^.]+))?\.$", key)
+            if lesson:
+                topic = (lesson.group(1) or "").strip()
+                if topic:
+                    if topic in lesson_topics or (topic == "learn" and saw_lesson):
+                        continue
+                    lesson_topics.add(topic)
+                elif saw_lesson:
+                    continue
+                saw_lesson = True
             out.append(sentence)
             seen.add(key)
         return out
@@ -1236,7 +1289,7 @@ class Renderer:
                 return f"{a.id} and {p.id} became good friends."
             return "They became good friends."
         if frame.kind == "lesson":
-            topic = join([c for c in concepts if c not in {"lesson", "moral"}])
+            topic = join([c for c in concepts if c not in {"lesson", "moral", "learn"}])
             return f"{subject} learned an important lesson about {topic}." if topic else f"{subject} learned an important lesson."
         if frame.kind == "refuse":
             return f"{subject} said no."
@@ -1316,6 +1369,25 @@ class Renderer:
         if frame.kind == "reward":
             target = self.obj(p) if p else "someone"
             return f"{subject} rewarded {target} with {objects or 'a treat'}."
+        if frame.kind == "permission":
+            return f"{subject} gave permission." if a else "There was permission."
+        if frame.kind == "hold":
+            return f"{subject} held {objects or self.obj(p)}."
+        if frame.kind == "drop":
+            return f"{subject} dropped {objects or self.obj(p)}."
+        if frame.kind == "remove":
+            return f"{subject} took off {objects or 'it'}."
+        if frame.kind == "teach":
+            target = self.obj(p) if p else "someone"
+            return f"{subject} taught {target}."
+        if frame.kind == "transport":
+            return f"{subject} carried {objects or 'everyone'}."
+        if frame.kind == "drive":
+            return f"{subject} drove {objects or 'along'}."
+        if frame.kind == "clean":
+            return f"{subject} cleaned {objects or 'it'}."
+        if frame.kind == "chew":
+            return f"{subject} chewed {objects or 'it'}."
         if frame.kind == "collaboration":
             party = self.participants(frame)
             if party and len(frame.meta.get("participants", [])) > 1:

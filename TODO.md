@@ -144,7 +144,7 @@ Current slice:
 | Physical carriers with object status/owner/location, relation edges, and meme magnitudes | `StoryWorld` / `Entity` | ✅ seed model |
 | Semantic frames for character setup, find/lost/search/ask/help/give/broken/fix/play/fear/rescue/friendship/lesson/reaction/transform | `Parser.direct_call` | ✅ first slice |
 | Lowercase object/state normalization (`lost(toy)`, `broken(toy)`, `hook(stick,string)`) | `LowerExpr` lowering | ✅ partial |
-| 25 representative pinned stories from `data00` + `data01` | `gen7_story_tests.py`, `gen7_story_tests/` | ✅ snapshots pass |
+| 28 representative pinned stories from `data00` + `data01` | `gen7_story_tests.py`, `gen7_story_tests/` | ✅ snapshots pass |
 
 Known gaps from the first 20 pins:
 
@@ -173,14 +173,20 @@ Known gaps from the first 20 pins:
       repeated emotion labels are suppressed. `Find(Character)` now binds the
       found character as the target under a parent actor, conflict blockers own
       their motive frames, and nested physical labels like `bottom(pond)` keep
-      their object content. Remaining work: track whether an actor was explicit
-      in the AST instead of relying on scoped locks.
+      their object content. Single-character child actions like `Hold(Tom)`,
+      `Drop(Tom)`, and `Teach(Sam, ...)` now bind the parent actor as the doer
+      and the child character as the patient. Remaining work: track whether an
+      actor was explicit in the AST instead of relying on scoped locks.
 - [~] Broaden direct semantic kernels. `Reward`, `Approve`, `Perform`, `Visit`,
       `Hide`, `Warning`, `Intervention`, `Praise`, `Heal`, `Report`, and
       `Investigation` now have first-pass frames/rendering; remaining work is
       role typing so objects like `owner` / `BoxUnderBed` become proper
       participants/locations instead of noun phrases.
-- [ ] Add a manual `QUALITY.md` grade for the 25 gen7 pins and compare them
+- [~] Normalize explicit lessons without duplicating child events. `lesson=Careful`
+      now becomes a real lesson frame, repeated lesson topics are collapsed, and
+      composed lesson phases such as `Avoidance(...) + Memory(...)` keep their
+      concrete child frames instead of re-wrapping them as extra morals.
+- [ ] Add a manual `QUALITY.md` grade for the 28 gen7 pins and compare them
       against gen6 output; the harness pins behavior but does not judge it.
 
 ### Still open for `gen6.py`
