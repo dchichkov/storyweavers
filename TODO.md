@@ -121,6 +121,47 @@ Run it:
 python gen6.py
 ```
 
+## Status Update — `gen7.py` (MUD-like StoryWorld prototype)
+
+`gen7.py` is a clean-break vertical slice that parses TinyStories kernel ASTs
+into semantic `Frame` commands, applies them to a persistent `StoryWorld`, and
+renders from event/state history. It intentionally does **not** import gen6
+kernel packs; the goal is to test whether MUD-like world simulation at the
+kernel/AST level produces better tiny stories than template-first execution.
+
+Run it:
+
+```bash
+python gen7.py --story-id data00:36222
+python gen7_story_tests.py --run
+```
+
+Current slice:
+
+| Capability | Where | State |
+|------------|-------|-------|
+| Standalone parser/world/renderer entrypoints (`parse_story`, `generate_world`, `generate`, `render`) | `gen7.py` | ✅ first prototype |
+| Physical carriers with object status/owner/location, relation edges, and meme magnitudes | `StoryWorld` / `Entity` | ✅ seed model |
+| Semantic frames for character setup, find/lost/search/ask/help/give/broken/fix/play/fear/rescue/friendship/lesson/reaction/transform | `Parser.direct_call` | ✅ first slice |
+| Lowercase object/state normalization (`lost(toy)`, `broken(toy)`, `hook(stick,string)`) | `LowerExpr` lowering | ✅ partial |
+| 20 representative pinned stories from `data00` + `data01` | `gen7_story_tests.py`, `gen7_story_tests/` | ✅ snapshots pass |
+
+Known gaps from the first 20 pins:
+
+- [ ] Improve phase ordering inside structural calls such as `Rescue(...)` and
+      `Deal(...)`; child outcome frames can currently render before the parent
+      resolution.
+- [ ] Add richer exchange/transaction semantics for `Deal`, `Transform`, `Give`,
+      and `Receive` so object ownership does not drift in chains like
+      `penny -> toy`.
+- [ ] Add action frames for common concept-only process values (`Run`, `Victory`,
+      `Persistence`, `Recall`, `Competition`) so race/quest stories do not
+      collapse to one refusal or one fear sentence.
+- [ ] Improve routine/activity lowering for `screen(tablet)`, `Bake(...)`,
+      `Collaboration(...)`, and `Satisfaction(...)`.
+- [ ] Add a manual `QUALITY.md` grade for the 20 gen7 pins and compare them
+      against gen6 output; the harness pins behavior but does not judge it.
+
 ### Still open for `gen6.py`
 
 - **NLG depth**: port more of `gen5.py`'s `NLGUtils`/templates (verb inflection,

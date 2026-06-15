@@ -72,6 +72,27 @@ python gen6registry.py                             # list loaded packs + kernel/
 
 gen6 executes ~all parseable stories end-to-end (the typed dispatch degrades unknown kernels to a readable fallback instead of raising). The remaining work is growing the kernel library; see [TODO.md](TODO.md) for the roadmap and current metrics. `wrld6.py` / `rewr6.py` are the reference demos `gen6.py` was built from. The previous engine (`gen5.py` and its `gen5kXX` / `char5kXX` packs) now lives in [`legacy/`](legacy/) for reference only — it is no longer wired into the tooling.
 
+### `gen7.py` — MUD-Like StoryWorld Prototype
+
+`gen7.py` is a clean-break prototype that treats kernels as world-level commands
+before rendering English. It does **not** import gen6 kernel packs. The flow is:
+
+```
+kernel AST -> semantic Frame list -> persistent StoryWorld -> discourse render
+```
+
+The first vertical slice focuses on role preservation, object status/ownership,
+simple meme magnitudes, and ordered event history rather than broad coverage.
+
+```bash
+python gen7.py --story-id data00:36222
+python gen7_story_tests.py --run
+```
+
+The gen7 snapshot runner pins 20 representative stories, including known problem
+cases from both `data00` and `data01`, so quality/world-model changes can improve
+the semantic slice without silently regressing it.
+
 ### AST → AST Transforms (Reference Demos)
 
 `rewr6.py` (which composes with `wrld6.py`) is the rewrite prototype `gen6.py` was built from:
