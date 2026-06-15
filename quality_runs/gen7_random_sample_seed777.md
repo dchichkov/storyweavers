@@ -1,12 +1,18 @@
-# Random Quality Sample - seed 777
+# Gen7 Random Quality Sample - seed 777 comparison set
 
-> Note: this sample was produced with `quality.py`, whose current sampling
-> harness uses the gen6 registry/generator. It is not a gen7 output sample.
+> Note: gen7 does not currently have a `quality.py`-style sampler. This file uses
+> the same five story IDs as `gen6_random_sample_seed777.md`, generated with
+> `gen7.generate(...)`, so the two samples can be compared directly.
 
-Sample command:
+Generation command shape:
 
 ```bash
-.venv/bin/python quality.py --sample -n 5 --seed 777 --scan 80000 --out /private/tmp/storyweavers_random_quality_sample.jsonl
+/opt/homebrew/bin/python3.12 - <<'PY'
+import gen7
+for story_id in ["data00:18697", "data00:29975", "data00:36222", "data00:36242", "data00:46773"]:
+    row = gen7.load_story(story_id)
+    print(story_id, gen7.generate(row["kernel"]))
+PY
 ```
 
 Manual grading follows `QUALITY.md` dimensions, each scored 1-5.
@@ -16,34 +22,31 @@ Manual grading follows `QUALITY.md` dimensions, each scored 1-5.
 | Metric | Value |
 |---|---:|
 | Stories | 5 |
-| Mean coverage ratio | 0.932 |
-| Mean grammar | 2.6 |
-| Mean coherence | 2.6 |
-| Mean fidelity | 3.2 |
-| Mean completeness | 3.0 |
-| Mean naturalness | 2.4 |
-| Mean overall | 2.6 |
-| Usable rate | 1/5 = 20% |
+| Mean grammar | 4.0 |
+| Mean coherence | 3.8 |
+| Mean fidelity | 3.6 |
+| Mean completeness | 3.6 |
+| Mean naturalness | 3.4 |
+| Mean overall | 3.6 |
+| Usable rate | 5/5 = 100% |
 
 ## Scores
 
-| ID | Coverage | Grammar | Coherence | Fidelity | Completeness | Naturalness | Overall | Usable | Main defects |
-|---|---:|---:|---:|---:|---:|---:|---:|---|---|
-| data00:18697 | 8/8 | 3 | 3 | 4 | 4 | 3 | 3 | no | pronoun_error, wrong_subject, naturalness |
-| data00:29975 | 6/8 | 2 | 2 | 3 | 2 | 2 | 2 | no | wrong_subject, clause_in_noun_slot, article_error |
-| data00:36222 | 13/13 | 2 | 2 | 3 | 3 | 2 | 2 | no | wrong_subject, clause_in_noun_slot, literal_concept |
-| data00:36242 | 10/11 | 2 | 2 | 2 | 2 | 2 | 2 | no | dropped_content, literal_concept, wrong_subject |
-| data00:46773 | 5/5 | 4 | 4 | 4 | 4 | 3 | 4 | yes | mild dropped_content |
+| ID | Grammar | Coherence | Fidelity | Completeness | Naturalness | Overall | Usable | Main defects |
+|---|---:|---:|---:|---:|---:|---:|---|---|
+| data00:18697 | 4 | 4 | 4 | 4 | 4 | 4 | yes | mild generic_label |
+| data00:29975 | 4 | 4 | 3 | 3 | 3 | 3 | yes | dropped_content |
+| data00:36222 | 4 | 4 | 4 | 4 | 4 | 4 | yes | mild compression |
+| data00:36242 | 4 | 3 | 3 | 3 | 3 | 3 | yes | wrong_subject, dropped_content |
+| data00:46773 | 4 | 4 | 4 | 4 | 3 | 4 | yes | mild generic_scene |
 
 ## 1. data00:18697
-
-Coverage: 8/8 (1.0)
 
 Summary: A little girl who was feeling sad and alone found comfort in a friendly barrel who listened to her worries and offered to be there for her whenever she needed to talk.
 
 Generated:
 
-> Once upon a time, there was a sad lonely person named Girl. There was also a friendly kind person named Barrel. Girl felt sad. They came across Barrel. Barrel spoke up. Girl shared the worries. Barrel listened carefully. They made a promise. Girl felt a wave of relief. They hugged Barrel. They smiled. They had to part from Barrel and the smile.
+> Once upon a time, there was a sad lonely girl. There was also a friendly kind barrel. Girl felt sad. She met Barrel. Barrel asked Girl about why she was sad. Girl shared the worries. Barrel listened carefully. Barrel made a promise. Girl felt relieved. Girl and Barrel said goodbye with a smile.
 
 Original:
 
@@ -57,17 +60,15 @@ Original:
 >
 > The little girl thanked the friendly barrel, who was always friendly and kind, and they both went their separate ways with a smile on their faces.
 
-Notes: Preserves the emotional arc, but "Girl" as a name, repeated "They", and the final "part from Barrel and the smile" make it feel templated.
+Notes: Gen7 preserves the emotional arc and avoids the gen6 pronoun/object collapse. The remaining rough edge is that `Girl` and `Barrel` still read like labels rather than natural references.
 
 ## 2. data00:29975
-
-Coverage: 6/8 (0.75)
 
 Summary: A tired turkey finds a cozy spot to rest but is disturbed by children playing. The children catch him and take him home, where they give him food and a warm place to sleep, making the turkey happy to have made new friends.
 
 Generated:
 
-> Once upon a time, there was a tired bird named Turkey. There was also a kind group named Children. Turkey rested for a while. Children played happily with Children. Children was disturbed by the noise and Children. Turkey felt attempt sleep. Children felt capture attempt. They fed the animals. They warmed place. Turkey felt happy. Turkey and Children became good friends.
+> Once upon a time, there was a tired turkey. There were also kind children. Turkey rested for a while. Children played happily. A loud noise interrupted the moment. Children tried to catch Turkey. Children were kind. Turkey felt happy. Turkey felt rested. Turkey and Children became good friends.
 
 Original:
 
@@ -79,17 +80,15 @@ Original:
 >
 > The turkey was scared, but the children were very kind. They gave him some food and a warm place to sleep. The turkey was no longer tired, and he was happy to have made new friends.
 
-Notes: The broad plot survives, but subjects and clauses degrade badly: "Children was disturbed", "felt attempt sleep", and "warmed place".
+Notes: Gen7 is coherent and readable, but it compresses away the take-home/feed/warm-place details that carry the original resolution.
 
 ## 3. data00:36222
-
-Coverage: 13/13 (1.0)
 
 Summary: Lily finds a magic rock that can make things shrink and uses it to play with her dog Max, but accidentally shrinks him. They discover a secret room underground and help a mouse who is stuck there, using the magic rock to make him big again. They become friends and play together every day.
 
 Generated:
 
-> Once upon a time, there was a little curious playful girl named Lily. There was also a loyal playful dog named Max. There was also a worried mouse named Mouse. Lily finally found the rock. The rock sparkled with magic. Max shrank down. Lily wanted Lily and Max. Lily dug the ground. Lily discovered the secretroom. There was great joy over Lily and Max. Mouse came across Mouse. Mouse seemed worried. They pleaded with someone. They grew. They got a warm hug. Everyone became good friends. Every day, Lily had the same routine. There was lots of fun.
+> Once upon a time, there was a little curious playful girl named Lily. There was also a loyal playful dog named Max. There was also a worried mouse. Lily found the rock. Max became small. Lily and Max went underground. She dug carefully. She found the secret room. Lily and Max felt happy. She met Mouse. Mouse felt worried. Mouse grew big again. Mouse, Lily, and Max shared a warm hug. Lily, Max, and Mouse became good friends. Every day, the friends played together.
 
 Original:
 
@@ -99,17 +98,15 @@ Original:
 >
 > In the room, they saw a worried little mouse. The mouse said, "Please help me! I'm stuck in this room." Lily used the magic rock to make the mouse big again. The mouse was so happy, he gave Lily and Max a big hug. They all became good friends and played together every day.
 
-Notes: Fully covered but still not very readable. Strong signs of wrong subject selection: "Mouse came across Mouse", "They grew", "They got a warm hug".
+Notes: Strong gen7 result: role preservation, causality, and the object/state trace are mostly intact. The prose is still compressed and omits some explicit dialogue/causal explanation.
 
 ## 4. data00:36242
-
-Coverage: 10/11 (0.909)
 
 Summary: Lily loves her new jacket with a tough zipper and wants to jump in puddles, but her mom won't let her. They compromise and go home to put on rain boots and jump in puddles together.
 
 Generated:
 
-> Once upon a time, there was a little playful stubborn girl named Lily. There was also a caring protective mother named Mom. Every day, Lily had the same routine. There was the puddles. She had. There was a disagreement. She resisted. Mom put on the rainboots. There was the puddles and the together. In the end, Lily and Mom felt full of joy. Mom realized that everyone worked together.
+> Once upon a time, there was a little playful stubborn girl named Lily. There was also a caring protective mother. Every day, Lily loved to jump. Mom tried to keep the jacket dry. Lily resisted. Mom agreed. She wore the rainboots. Lily and Mom felt happy. Mom found a compromise. She learned that working together helped.
 
 Original:
 
@@ -119,17 +116,15 @@ Original:
 >
 > Lily pouted and crossed her arms. "But I want to jump in the puddles!" she said. Her mom smiled and said, "How about we go home and put on our rain boots and jump in the puddles together?" Lily's face lit up and she hugged her mom. "Yay, let's do it!" she said as they walked back home to get their rain boots.
 
-Notes: The happy compromise is barely present; several lines are fragments ("She had", "the puddles and the together").
+Notes: The compromise shape is visible, but the generated ending assigns the lesson to Mom and compresses the rain-boots resolution too aggressively.
 
 ## 5. data00:46773
-
-Coverage: 5/5 (1.0)
 
 Summary: Tim meets a bird in the park who can shoot gold from its beak, but the gold turns out to be rocks.
 
 Generated:
 
-> Once upon a time, there was a little curious greedy boy named Tim. There was also a playful supportive mother named Mom. There was also a magical generous bird named Bird. Tim wanted gold. The gold turned into the rocks. Tim traded the bread. He received the gold. In the end, Mom and Tim played together.
+> Once upon a time, there was a little curious greedy boy named Tim. There was also a playful supportive mother. There was also a magical generous bird. Tim wanted the gold. The story moved to the park. He met Bird. He traded the bread. He received the gold. The gold turned into the rocks. Mom and Tim played at the park.
 
 Original:
 
@@ -139,4 +134,4 @@ Original:
 >
 > Tim took the gold home and showed his mom. But the gold turned into rocks! His mom said, "It's just a fun trick, Tim. Let's go back to the park and play some more." Tim and his mom laughed and played in the park all day.
 
-Notes: Best of this batch. It drops the bird dialogue and tree/climb setup, but the trade, gold-to-rocks twist, and play ending are coherent.
+Notes: The transaction and transformation are clear. Remaining roughness is mostly generic scene wording and missing dialogue/flavor.
