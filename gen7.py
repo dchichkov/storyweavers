@@ -30,7 +30,7 @@ CHARACTER_TYPES = {
     "adult", "animal", "baby", "bear", "bee", "bird", "boy", "bunny",
     "cat", "child", "children", "dad", "dog", "duck", "father", "fish",
     "friend", "frog", "girl", "group", "man", "mom", "mommy", "mother",
-    "mouse", "parent", "person", "rabbit", "turkey", "twin", "woman",
+    "mouse", "parent", "person", "puppy", "rabbit", "turkey", "twin", "woman",
     "bees", "tree", "daughter", "squirrel", "crab", "fox", "ostrich",
     "airplane", "cow", "chick", "pig", "elephant", "vehicle", "peer",
 }
@@ -43,6 +43,7 @@ COMPOUNDS = {
     "why sad": "why she was sad",
     "playground": "playground",
     "schoolyard": "school yard",
+    "icecream": "ice cream",
     "backyard": "backyard",
     "bedroom": "bedroom",
     "bathroom": "bathroom",
@@ -208,7 +209,7 @@ class Entity:
             return {"subject": "he", "object": "him", "possessive": "his"}[case]
         if t in {"group", "children", "people", "bees"}:
             return {"subject": "they", "object": "them", "possessive": "their"}[case]
-        if t in {"bird", "dog", "cat", "mouse", "turkey", "bear", "bee", "fish", "frog", "rabbit", "bunny", "duck", "barrel", "tree", "squirrel", "crab", "fox", "ostrich", "airplane", "cow", "chick", "pig", "elephant", "vehicle", "seed"}:
+        if t in {"bird", "dog", "puppy", "cat", "mouse", "turkey", "bear", "bee", "fish", "frog", "rabbit", "bunny", "duck", "barrel", "tree", "squirrel", "crab", "fox", "ostrich", "airplane", "cow", "chick", "pig", "elephant", "vehicle", "seed"}:
             return {"subject": "it", "object": "it", "possessive": "its"}[case]
         return {"subject": "they", "object": "them", "possessive": "their"}[case]
 
@@ -1051,6 +1052,12 @@ class Parser:
         if actor is not None:
             for child in child_frames:
                 if (
+                    frame_kind == "play"
+                    and len(chars) > 1
+                    and child.kind in {"alarm", "scare", "help", "play"}
+                ):
+                    child.meta["participants"] = list(chars)
+                if (
                     child.kind == "warning"
                     and child.actor is not None
                     and child.actor != actor
@@ -1672,7 +1679,7 @@ def emotion_word(label: str) -> str:
         "scared": "scared", "angry": "angry", "anger": "angry",
         "relief": "relieved", "guilt": "sorry", "sorry": "sorry",
         "ashamed": "ashamed", "worried": "worried", "lonely": "lonely",
-        "rested": "rested", "full": "full",
+        "rested": "rested", "full": "full", "trust": "safe",
         "smile": "happy", "enjoy": "happy", "confidence": "confident",
         "pride": "proud", "laughter": "happy",
     }

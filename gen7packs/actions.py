@@ -5,7 +5,17 @@ calls lower to frame kinds here before Parser.direct_call applies shared role
 and world-model logic.
 """
 
-from gen7 import EvalResult, Frame, LowerExpr, Memeplex, REGISTRY, flatten, is_character, objects_from
+from gen7 import (
+    EvalResult,
+    Frame,
+    LowerExpr,
+    Memeplex,
+    REGISTRY,
+    display_type,
+    flatten,
+    is_character,
+    objects_from,
+)
 
 
 ALIASES = {
@@ -14,7 +24,7 @@ ALIASES = {
     "lost": "lost", "loss": "lost", "lose": "lost",
     "search": "search", "ask": "ask", "request": "ask",
     "help": "help", "assist": "help", "comfort": "help",
-    "give": "give", "gift": "give", "receive": "receive",
+    "give": "give", "gift": "give", "receive": "receive", "obtain": "receive",
     "break": "break", "broken": "broken", "fix": "fix", "repair": "fix",
     "play": "play", "fear": "fear", "rescue": "rescue", "save": "rescue",
     "friendship": "friendship", "moral": "lesson", "lesson": "lesson",
@@ -61,10 +71,55 @@ ALIASES = {
     "clean": "clean", "cut": "cut", "chew": "chew", "build": "make", "use": "use",
     "show": "show", "calendaradd": "calendar_add", "anticipation": "anticipation",
     "celebration": "celebration", "playinside": "play",
+    "pinch": "injury", "threat": "threat",
+    "alarm": "alarm", "screamtogether": "alarm", "scare": "scare",
+    "blowaway": "blow_away", "unlock": "unlock", "makelaugh": "cheer",
+    "cheer": "cheer", "reassure": "reassure",
 }
 
 for _name, _kind in ALIASES.items():
     REGISTRY.direct_alias(_name, kind=_kind)
+
+
+@REGISTRY.direct_handler
+def accident(parser, name, lname, values, kw_values, child_frames, context, role):
+    if lname != "accident":
+        return None
+    if child_frames:
+        return EvalResult(frames=child_frames, values=[Memeplex(name)])
+    chars = [v for v in values if is_character(v)]
+    actor = chars[0] if chars else parser.current_actor
+    objects = objects_from([v for v in values if not is_character(v)], parser.world)
+    object_names = {display_type(o) for o in objects}
+    labels = {
+        label.lower()
+        for value in flatten(kw_values.values())
+        if isinstance(value, Memeplex)
+        for label in value.labels()
+    }
+    if chars and object_names & {"arm", "leg", "hand", "foot", "head"}:
+        return EvalResult(
+            frames=[Frame("injury", actor=actor, objects=objects, source=name)],
+            values=[Memeplex(name)],
+        )
+    if objects and (labels & {"break", "broken"} or "scale" in object_names):
+        return EvalResult(
+            frames=[Frame("broken", actor=actor, objects=objects, source=name)],
+            values=[Memeplex(name)],
+        )
+    jump = next((v for v in values if isinstance(v, LowerExpr) and v.name.lower() == "jump"), None)
+    if jump is not None:
+        trouble = objects_from(jump.args, parser.world)
+        return EvalResult(
+            frames=[Frame("problem", actor=actor, objects=trouble, concepts=[Memeplex("stuck")], source=name)],
+            values=[Memeplex(name)],
+        )
+    if objects:
+        return EvalResult(
+            frames=[Frame("problem", actor=actor, objects=objects, concepts=[Memeplex(name)], source=name)],
+            values=[Memeplex(name)],
+        )
+    return EvalResult(values=[Memeplex(name)])
 
 
 @REGISTRY.direct_handler

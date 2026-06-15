@@ -155,6 +155,8 @@ def render_find(renderer, frame):
     object_names = [display_type(o) for o in frame.objects]
     if "hook" in object_names and "cheap" in object_names:
         return f"{subject} found a simple hook."
+    if "key" in object_names and "grass" in object_names:
+        return f"{subject} found the key in the grass."
     return f"{subject} found {objects}." if objects else f"{subject} found something new."
 
 
@@ -216,6 +218,8 @@ def render_help(renderer, frame):
     subject = renderer.subj(frame.actor)
     objects = renderer.objs(frame)
     assisted = frame.meta.get("assisted_action")
+    if frame.source.lower() == "comfort" and frame.objects:
+        return f"{subject} felt better with {objects}."
     if frame.kind == "help" and assisted:
         if assisted == "ask":
             return f"{subject} helped by asking for help."
@@ -233,6 +237,46 @@ def render_help(renderer, frame):
     if frame.patient is None and not objects and frame.kind == "help":
         return f"{subject} helped."
     return f"{subject} {verb} {target}."
+
+
+@REGISTRY.renderer("injury")
+def render_injury(renderer, frame):
+    subject = renderer.subj(frame.actor)
+    body_parts = [display_type(o) for o in frame.objects if display_type(o) in {"arm", "leg", "hand", "foot", "head"}]
+    if body_parts and frame.actor is not None:
+        return f"{subject} hurt {frame.actor.pronoun('possessive')} {body_parts[0]}."
+    objects = renderer.objs(frame)
+    return f"{subject} got hurt by {objects}." if objects else f"{subject} got hurt."
+
+
+@REGISTRY.renderer("threat")
+def render_threat(renderer, frame):
+    concepts = set(renderer.concepts(frame))
+    if frame.objects:
+        threat = renderer.obj(frame.objects[0])
+        if "hungry" in concepts:
+            return f"A hungry {display_type(frame.objects[0])} came near."
+        return f"{cap(threat)} came near."
+    return "Danger came near."
+
+
+@REGISTRY.renderer("alarm")
+def render_alarm(renderer, frame):
+    party = renderer.participants(frame)
+    subject = party if party and len(frame.meta.get("participants", [])) > 1 else renderer.subj(frame.actor)
+    if frame.source.lower() == "screamtogether" or party:
+        return f"{subject} shouted together for help."
+    return f"{subject} shouted for help."
+
+
+@REGISTRY.renderer("scare")
+def render_scare(renderer, frame):
+    party = renderer.participants(frame)
+    subject = party if party and len(frame.meta.get("participants", [])) > 1 else renderer.subj(frame.actor)
+    target = renderer.objs(frame) or renderer.obj(frame.patient)
+    if target:
+        return f"{subject} scared {target} away."
+    return f"{subject} scared the danger away."
 
 
 @REGISTRY.renderer("play")
@@ -289,6 +333,10 @@ def render_lesson(renderer, frame):
         return f"{subject} learned that helping others can feel good."
     if "cooperation" in topic_set:
         return f"{subject} learned that working together helped."
+    if "collaboration possible" in topic_set:
+        return f"{subject} learned that friends can help make big plans possible."
+    if "importance" in topic_set:
+        return f"{subject} learned that the key was important."
     if "moderation" in topic_set:
         return f"{subject} learned not to take too much."
     if "change" in topic_set:
@@ -384,6 +432,8 @@ def render_problem(renderer, frame):
     concepts = renderer.concepts(frame)
     if objects:
         object_names = [display_type(o) for o in frame.objects]
+        if "stuck" in concepts:
+            return f"{subject} got stuck in {objects}."
         if "noise" in object_names:
             return "A loud noise interrupted the moment."
         return f"There was a problem with {objects}."
@@ -425,6 +475,19 @@ def render_give(renderer, frame):
     return f"{subject} gave {objects or 'something'} to {target}."
 
 
+@REGISTRY.renderer("hold")
+def render_hold(renderer, frame):
+    subject = renderer.subj(frame.actor)
+    object_names = [display_type(o) for o in frame.objects]
+    held = [o for o in frame.objects if display_type(o) not in {"mouth", "hand", "hands"}]
+    if frame.patient is not None and any(part in object_names for part in ("hand", "hands")):
+        return f"{subject} held {frame.patient.id}'s hand."
+    if "mouth" in object_names and held and frame.actor is not None:
+        item = join([renderer.obj(o) for o in held])
+        return f"{subject} held {item} in {frame.actor.pronoun('possessive')} mouth."
+    return f"{subject} held {renderer.objs(frame) or renderer.obj(frame.patient)}."
+
+
 @REGISTRY.renderer("make")
 def render_make(renderer, frame):
     subject = renderer.subj(frame.actor)
@@ -451,6 +514,32 @@ def render_use(renderer, frame):
         return f"{subject} used {tool} to {verb} {target}.".strip()
     objects = renderer.objs(frame)
     return f"{subject} used {objects or 'it'}."
+
+
+@REGISTRY.renderer("unlock")
+def render_unlock(renderer, frame):
+    subject = renderer.subj(frame.actor)
+    if len(frame.objects) >= 2:
+        target = renderer.obj(frame.objects[0])
+        tool = renderer.obj(frame.objects[1])
+        return f"{subject} used {tool} to unlock {target}."
+    return f"{subject} unlocked {renderer.objs(frame) or 'it'}."
+
+
+@REGISTRY.renderer("blow_away")
+def render_blow_away(renderer, frame):
+    objects = renderer.objs(frame)
+    return f"The wind blew {objects or 'it'} away."
+
+
+@REGISTRY.renderer("cheer", "reassure")
+def render_cheer(renderer, frame):
+    subject = renderer.subj(frame.actor)
+    if frame.source.lower() == "makelaugh":
+        return f"{subject} laughed."
+    if frame.kind == "reassure":
+        return f"{subject} felt reassured."
+    return f"{subject} cheered up."
 
 
 @REGISTRY.renderer("show")
@@ -539,6 +628,8 @@ def render_advice(renderer, frame):
 @REGISTRY.renderer("break", "broken")
 def render_break(renderer, frame):
     renderer.subj(frame.actor)
+    if frame.source.lower() == "accident" and frame.objects:
+        return f"{cap(plain_object_phrase(renderer, frame.objects[0]))} broke."
     objects = renderer.objs(frame)
     return f"{cap(objects or 'Something')} broke."
 

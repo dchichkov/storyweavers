@@ -147,7 +147,7 @@ Current slice:
 | Semantic frames for character setup, find/lost/search/ask/help/give/broken/fix/play/fear/rescue/friendship/lesson/reaction/transform | `Parser.direct_call` + `gen7packs.actions` | ✅ first slice |
 | First renderer pack for desire/find/search/loss/ask/help/play/friendship/lesson/emotion/encounter/problem/transform/visit/object-state frames | `gen7packs.renderers` | ✅ first extraction |
 | Lowercase object/state normalization (`lost(toy)`, `broken(toy)`, `hook(stick,string)`) | `LowerExpr` lowering | ✅ partial |
-| 55 representative pinned stories from `data00` + `data01` | `gen7_story_tests.py`, `gen7_story_tests/` | ✅ snapshots pass |
+| 60 representative pinned stories from `data00` + `data01` | `gen7_story_tests.py`, `gen7_story_tests/` | ✅ snapshots pass |
 
 Known gaps from the first 20 pins:
 
@@ -156,8 +156,10 @@ Known gaps from the first 20 pins:
       unpinned gen7 candidates with summary, generated text, and original text.
       The first sampled batch promoted 5 additional pins (`data00:14971`,
       `data00:18138`, `data00:18146`, `data00:9315`, `data01:3375`), bringing
-      the suite to 55. Continue adding 5-10 reviewed pins per quality pass so
-      regressions and new failure modes stay visible.
+      the suite to 55. A second sampled pass promoted 5 more (`data00:47709`,
+      `data00:67975`, `data00:69885`, `data00:99040`, `data01:79405`),
+      bringing the suite to 60. Continue adding 5-10 reviewed pins per quality
+      pass so regressions and new failure modes stay visible.
 - [~] Split gen7 out of the giant-if prototype. The frame-name ontology now lives
       in `gen7packs.actions`, and a first high-frequency renderer batch lives in
       `gen7packs.renderers`. `gen7.py` still owns too much role normalization and
@@ -214,6 +216,16 @@ Known gaps from the first 20 pins:
       of help/someone fallbacks. Remaining work: model teaching content/tools
       explicitly (for example `raingauge`) and broaden breakfast/inventory
       semantics beyond the first cereal+bowl case.
+- [~] Preserve more sampled process events as world frames. `puppy` declarations
+      now keep the animal type/traits, `icecream` normalizes to "ice cream",
+      `Obtain`/`Unlock`/`BlowAway`/`Threat`/`Alarm`/`Scare`/hospital comfort
+      calls render as concrete events, and `Accident(...)` is no longer a blunt
+      injury alias: body-part accidents become injuries, scale accidents break
+      the scale, child-action accidents let their children speak, and jump-into-
+      pit accidents become stuck/problem beats. Remaining work: generalize
+      possession/instrument relations so "held the key in its mouth" and
+      "used the key to unlock the leash" come from inventory semantics rather
+      than renderer-local object patterns.
 - [~] Preserve named nonhuman carrier identity in discourse. Repeated animal,
       plant, and object-carrier actors now keep their story name instead of
       collapsing long action chains to ambiguous "It ..." subjects; this also
