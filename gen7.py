@@ -908,6 +908,7 @@ class Parser:
             + kw_values.get("desire", [])
             + kw_values.get("ask", [])
             + kw_values.get("about", [])
+            + kw_values.get("want", [])
         )) or positional_goal
         if frame_kind == "ask" and positional_goal is not None:
             objects = []
@@ -917,6 +918,14 @@ class Parser:
             objects = [location]
         if frame_kind == "visit" and patient is None and len(chars) == 1 and not objects:
             patient = next((ent for ent in self.world.declarations if ent != actor), None)
+        if (
+            frame_kind in {"give", "teach"}
+            and patient is None
+            and len(chars) == 1
+            and fallback_actor is not None
+            and fallback_actor != actor
+        ):
+            patient = fallback_actor
         if frame_kind == "encounter":
             objects = [o for o in objects if display_type(o) not in {"wet", "dry"}]
         if frame_kind == "rescue" and patient is None:

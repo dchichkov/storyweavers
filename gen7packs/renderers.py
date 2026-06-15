@@ -285,10 +285,14 @@ def render_lesson(renderer, frame):
         return f"{subject} learned to ask for help."
     if "unique skills" in topic_set:
         return f"{subject} learned that everyone has their own skills."
+    if "good feel" in topic_set:
+        return f"{subject} learned that helping others can feel good."
     if "cooperation" in topic_set:
         return f"{subject} learned that working together helped."
     if "moderation" in topic_set:
         return f"{subject} learned not to take too much."
+    if "change" in topic_set:
+        return f"{subject} learned that change can be okay."
     if "careful" in topic_set:
         return f"{subject} learned to be careful."
     if "steady" in topic_set:
@@ -413,6 +417,11 @@ def render_give(renderer, frame):
     subject = renderer.subj(frame.actor)
     objects = renderer.objs(frame)
     target = renderer.obj(frame.patient) if frame.patient else "someone"
+    if (
+        frame.source.lower() == "give"
+        and {display_type(o) for o in frame.objects} == {"cereal", "bowl"}
+    ):
+        return f"{subject} gave {target} a bowl of cereal."
     return f"{subject} gave {objects or 'something'} to {target}."
 
 

@@ -201,11 +201,19 @@ Known gaps from the first 20 pins:
 - [~] Replace common placeholder morals with actionable lesson text. The gen7
       renderer pack now maps recurring lesson memeplexes such as `Careful`,
       `Cooperation`, `NoStrangerTalk`, `UnknownNotScary`, `AskingForHelp`,
-      `Responsibility + Kindness`, and `Help + Friendship + Joy` to concrete
+      `Responsibility + Kindness`, `Help + Friendship + Joy`, `GoodFeel`, and
+      `Change` to concrete
       morals ("learned to be careful", "learned that working together helped")
       instead of the generic "learned an important lesson about X" fallback.
       Remaining work: make these topic rules data-driven packs and let relation
       / meme magnitudes choose the moral when multiple lessons are plausible.
+- [~] Improve simple request/recipient role flow. `Ask(..., want=...)` now keeps
+      the requested object as the goal, one-character `Give`/`Teach` calls infer
+      the prior protagonist as recipient/student, and the pinned breakfast story
+      renders "asked Mommy for the cereal" / "gave Lily a bowl of cereal" instead
+      of help/someone fallbacks. Remaining work: model teaching content/tools
+      explicitly (for example `raingauge`) and broaden breakfast/inventory
+      semantics beyond the first cereal+bowl case.
 - [~] Preserve named nonhuman carrier identity in discourse. Repeated animal,
       plant, and object-carrier actors now keep their story name instead of
       collapsing long action chains to ambiguous "It ..." subjects; this also
