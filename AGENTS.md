@@ -88,6 +88,11 @@ QA defects in `TODO.md` using a controlled vocabulary such as `bare_answer`,
 `ungrounded_answer`, `duplicate_question`, `wrong_focus`, `missing_causality`,
 `not_answerable`, and `too_shallow`.
 
+Each gen7 quality pass should sample original text, generated narrative, and QA
+together; promote 5-10 rough-but-representative cases into the pinned suite; and
+keep full multi-sentence responses green in the smoke test before adding new QA
+surface area.
+
 Multi-turn QA is a desired gen7 milestone. Implement it as conversation state
 over the same `StoryWorld`, not as free-form text chat: follow-up questions such
 as "Why?", "What happened next?", "Who helped?", and "Where was it?" should

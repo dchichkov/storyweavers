@@ -33,8 +33,9 @@ CHARACTER_TYPES = {
     "mouse", "parent", "person", "puppy", "rabbit", "turkey", "twin", "woman",
     "bees", "tree", "daughter", "squirrel", "crab", "fox", "ostrich",
     "airplane", "cow", "chick", "pig", "elephant", "vehicle", "peer",
+    "monkey", "bug",
 }
-GENERIC_TYPES = {"animal", "bird", "group", "person"}
+GENERIC_TYPES = {"animal", "group", "person"}
 COMPOUNDS = {
     "secretroom": "secret room",
     "screenaddict": "screen addict",
@@ -45,6 +46,7 @@ COMPOUNDS = {
     "schoolyard": "school yard",
     "icecream": "ice cream",
     "pointyrock": "pointy rock",
+    "toycar": "toy car",
     "backyard": "backyard",
     "bedroom": "bedroom",
     "bathroom": "bathroom",
@@ -210,7 +212,7 @@ class Entity:
             return {"subject": "he", "object": "him", "possessive": "his"}[case]
         if t in {"group", "children", "people", "bees"}:
             return {"subject": "they", "object": "them", "possessive": "their"}[case]
-        if t in {"bird", "dog", "puppy", "cat", "mouse", "turkey", "bear", "bee", "fish", "frog", "rabbit", "bunny", "duck", "barrel", "tree", "squirrel", "crab", "fox", "ostrich", "airplane", "cow", "chick", "pig", "elephant", "vehicle", "seed"}:
+        if t in {"bird", "dog", "puppy", "cat", "mouse", "monkey", "bug", "turkey", "bear", "bee", "fish", "frog", "rabbit", "bunny", "duck", "barrel", "tree", "squirrel", "crab", "fox", "ostrich", "airplane", "cow", "chick", "pig", "elephant", "vehicle", "seed"}:
             return {"subject": "it", "object": "it", "possessive": "its"}[case]
         return {"subject": "they", "object": "them", "possessive": "their"}[case]
 
@@ -454,6 +456,8 @@ def infer_type(name: str, explicit: str) -> str:
         "daughter": "daughter", "friend": "friend",
     }
     explicit_words = words(explicit)
+    if explicit_words == "bird" and n in {"baby bird", "turkey", "chick"}:
+        return n
     if explicit_words in {"adult", "parent", "person", "peer"} and n in aliases:
         return aliases[n]
     if explicit_words == "peer":
@@ -472,7 +476,7 @@ def infer_type(name: str, explicit: str) -> str:
         "girl", "boy", "bird", "mouse", "turkey", "dog", "cat", "barrel",
         "bunny", "rabbit", "bee", "bees", "duck", "frog", "tree", "bear",
         "fish", "mole", "squirrel", "crab", "fox", "ostrich", "airplane",
-        "cow", "chick", "pig", "elephant", "vehicle", "ant",
+        "cow", "chick", "pig", "elephant", "vehicle", "ant", "monkey", "bug",
     }:
         return n
     return "person"
@@ -491,7 +495,7 @@ def trait_text(ent: Entity) -> str:
     typ_words = set(words(display_type(ent)).split())
     traits = [
         t for t in ent.traits
-        if t and t not in {ent.type, display_type(ent)} and not set(words(t).split()).issubset(typ_words)
+        if t and t not in {"human", ent.type, display_type(ent)} and not set(words(t).split()).issubset(typ_words)
     ]
     return " ".join(traits[:2])
 
@@ -708,9 +712,13 @@ class Parser:
     def structure_call(self, name: str, values: list[Any], kw_values: dict[str, list[Any]], child_frames: list[Frame]) -> EvalResult:
         chars = [v for v in values if is_character(v)]
         participant_chars = [v for v in flatten(kw_values.get("participants", [])) if is_character(v)]
+        named_actor = self.world.entities.get(name)
+        if named_actor is not None and not is_character(named_actor):
+            named_actor = None
         actor = (
             chars[0] if chars
-            else first_character(flatten(kw_values.get("hero", []) + kw_values.get("protagonist", [])))
+            else named_actor
+            or first_character(flatten(kw_values.get("hero", []) + kw_values.get("protagonist", [])))
             or (participant_chars[0] if participant_chars else None)
             or self.current_actor
         )
@@ -1799,7 +1807,7 @@ def format_qa_answer(question: str, answer: str) -> str:
     if question == "Who was reunited?":
         return response(f"{fragment} was reunited", "The reunion restores the relationship")
 
-    m = re.match(r"^What did (.+?) (want|find|lose|fix|share|give|receive|unlock|use|make|learn)\?$", question)
+    m = re.match(r"^What did (.+?) (want|find|lose|fix|share|give|receive|unlock|use|make|learn|eat|wipe)\?$", question)
     if m:
         actor, verb = m.groups()
         if verb == "learn":
@@ -1807,6 +1815,10 @@ def format_qa_answer(question: str, answer: str) -> str:
                 return response(f"{actor} learned {fragment}", f"This is the lesson the story gives to {actor}")
             return response(f"{actor} learned about {fragment}", f"This is the lesson the story gives to {actor}")
         if verb == "want":
+            if fragment in {"the grow", "grow"}:
+                return response(f"{actor} wanted to grow", f"That desire helps guide {actor}'s actions")
+            if fragment in {"the climb", "climb"}:
+                return response(f"{actor} wanted to climb", f"That desire helps guide {actor}'s actions")
             return response(f"{actor} wanted {fragment}", f"That desire helps guide {actor}'s actions")
         past = {
             "find": "found",
@@ -1818,8 +1830,17 @@ def format_qa_answer(question: str, answer: str) -> str:
             "unlock": "unlocked",
             "use": "used",
             "make": "made",
+            "eat": "ate",
+            "wipe": "wiped",
         }[verb]
         return response(f"{actor} {past} {fragment}", f"That event is recorded in the story world")
+
+    m = re.match(r"^What did (.+?) (dream about|try to print)\?$", question)
+    if m:
+        actor, verb = m.groups()
+        if verb == "dream about":
+            return response(f"{actor} dreamed about {fragment}", "That dream is part of the story trace")
+        return response(f"{actor} tried to print {fragment}", "That attempt is part of the story trace")
 
     m = re.match(r"^Who did (.+?) (share|give|help|rescue|play) with\?$", question)
     if m:
@@ -1875,6 +1896,8 @@ def frame_to_qa(world: StoryWorld, frame: Frame) -> list[QA]:
         object_names = {display_type(o) for o in frame.objects}
         if "key" in object_names and "grass" in object_names:
             answer = "the key"
+        if "bunch" in object_names and "ground" in object_names:
+            answer = "a bunch of bananas"
         add_qa(items, seen, f"What did {actor} find?", answer, "discovery", frame.source)
     elif frame.kind in {"lost", "lose"}:
         add_qa(items, seen, f"What did {actor} lose?", objects, "loss", frame.source)
@@ -1925,6 +1948,19 @@ def frame_to_qa(world: StoryWorld, frame: Frame) -> list[QA]:
         add_qa(items, seen, "Who scared the danger away?", qa_participants(frame) or actor, "resolution", frame.source)
     elif frame.kind == "make":
         add_qa(items, seen, f"What did {actor} make?", objects, "creation", frame.source)
+    elif frame.kind == "eat":
+        add_qa(items, seen, f"What did {actor} eat?", objects, "action", frame.source)
+    elif frame.kind == "wipe":
+        if any(display_type(o) == "mouth" for o in frame.objects):
+            poss = frame.actor.pronoun("possessive") if frame.actor is not None else "their"
+            target = f"{poss} mouth"
+        else:
+            target = objects
+        add_qa(items, seen, f"What did {actor} wipe?", target, "action", frame.source)
+    elif frame.kind == "dream":
+        add_qa(items, seen, f"What did {actor} dream about?", objects or join(concepts), "action", frame.source)
+    elif frame.kind == "print":
+        add_qa(items, seen, f"What did {actor} try to print?", objects, "action", frame.source)
     elif frame.kind == "unlock":
         if frame.objects:
             add_qa(items, seen, f"What did {actor} unlock?", qa_object(world, frame.objects[0], frame), "action", frame.source)

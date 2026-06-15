@@ -46,6 +46,9 @@ ALIASES = {
     "run": "run", "recall": "recall", "learn": "lesson",
     "completion": "complete", "bake": "bake", "party": "party",
     "dance": "dance", "sing": "sing", "ride": "ride",
+    "eat": "eat", "nap": "rest", "dream": "dream", "print": "print",
+    "wipe": "wipe", "habit": "habit", "reject": "refuse",
+    "skillacquired": "complete",
     "surprise": "surprise", "reveal": "reveal", "walk": "walk",
     "open": "open", "attack": "attack", "protect": "protect",
     "bite": "bite", "hospital": "hospital", "avoidance": "avoidance",
@@ -120,6 +123,46 @@ def accident(parser, name, lname, values, kw_values, child_frames, context, role
             values=[Memeplex(name)],
         )
     return EvalResult(values=[Memeplex(name)])
+
+
+@REGISTRY.direct_handler
+def growth(parser, name, lname, values, kw_values, child_frames, context, role):
+    if lname != "growth":
+        return None
+    chars = [v for v in values if is_character(v)]
+    actor = chars[0] if chars else parser.current_actor
+    if actor is not None and display_type(actor) == "seed":
+        return EvalResult(
+            frames=child_frames + [Frame("grow", actor=actor, source=name)],
+            values=[Memeplex(name)],
+        )
+    return EvalResult(frames=child_frames, values=[Memeplex(name)])
+
+
+@REGISTRY.direct_handler
+def learning(parser, name, lname, values, kw_values, child_frames, context, role):
+    if lname != "learning":
+        return None
+    chars = [v for v in values if is_character(v)]
+    actor = chars[0] if chars else parser.current_actor
+    labels = {
+        label.lower()
+        for value in values + flatten(kw_values.values())
+        if isinstance(value, Memeplex)
+        for label in value.labels()
+    }
+    if actor is not None and "grow" in labels:
+        return EvalResult(
+            frames=child_frames + [Frame(
+                "lesson",
+                actor=actor,
+                concepts=[Memeplex("Grow")],
+                source=name,
+                meta={"actor_locked": True, "participants": [actor]},
+            )],
+            values=[Memeplex(name)],
+        )
+    return EvalResult(frames=child_frames, values=[Memeplex(name)])
 
 
 @REGISTRY.direct_handler

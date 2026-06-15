@@ -123,6 +123,8 @@ def render_want(renderer, frame):
         return f"{subject} wanted to help with {objects or 'it'}."
     if any(display_type(o) == "grow" for o in frame.objects) or "grow" in concepts:
         return f"{subject} wanted to grow."
+    if any(display_type(o) == "climb" for o in frame.objects) or "climb" in concepts:
+        return f"{subject} wanted to climb."
     if any(display_type(o) == "play" for o in frame.objects) or "play" in concepts:
         return f"{subject} wanted to play."
     if any(display_type(o) == "return" for o in frame.objects) or "return" in concepts:
@@ -157,6 +159,8 @@ def render_find(renderer, frame):
         return f"{subject} found a simple hook."
     if "key" in object_names and "grass" in object_names:
         return f"{subject} found the key in the grass."
+    if "bunch" in object_names and "ground" in object_names:
+        return f"{subject} found a bunch of bananas on the ground."
     return f"{subject} found {objects}." if objects else f"{subject} found something new."
 
 
@@ -339,6 +343,10 @@ def render_lesson(renderer, frame):
         return f"{subject} learned that the key was important."
     if {"share", "no waste"}.issubset(topic_set):
         return f"{subject} learned to share food and not waste it."
+    if "eat" in topic_set:
+        return f"{subject} learned to stick with real food."
+    if "grow" in topic_set:
+        return f"{subject} learned that growing strong was better than fighting."
     if "moderation" in topic_set:
         return f"{subject} learned not to take too much."
     if "change" in topic_set:
@@ -561,6 +569,46 @@ def render_calendar_add(renderer, frame):
     if party:
         return f"{party} added {event_text} to the calendar."
     return f"{renderer.subj(frame.actor)} added {event_text} to the calendar."
+
+
+@REGISTRY.renderer("eat")
+def render_eat(renderer, frame):
+    subject = renderer.subj(frame.actor)
+    objects = renderer.objs(frame)
+    return f"{subject} ate {objects or 'something'}."
+
+
+@REGISTRY.renderer("wipe")
+def render_wipe(renderer, frame):
+    subject = renderer.subj(frame.actor)
+    object_names = [display_type(o) for o in frame.objects]
+    if "mouth" in object_names:
+        return f"{subject} wiped {frame.actor.pronoun('possessive') if frame.actor is not None else 'their'} mouth."
+    return f"{subject} wiped {renderer.objs(frame) or 'it'}."
+
+
+@REGISTRY.renderer("dream")
+def render_dream(renderer, frame):
+    subject = renderer.subj(frame.actor)
+    objects = renderer.objs(frame)
+    return f"{subject} dreamed about {objects or 'something unusual'}."
+
+
+@REGISTRY.renderer("print")
+def render_print(renderer, frame):
+    subject = renderer.subj(frame.actor)
+    objects = renderer.objs(frame)
+    return f"{subject} tried to print {objects or 'something'}."
+
+
+@REGISTRY.renderer("habit")
+def render_habit(renderer, frame):
+    subject = renderer.subj(frame.actor)
+    objects = renderer.objs(frame)
+    if any(display_type(o) == "wipe" for o in frame.objects):
+        poss = frame.actor.pronoun("possessive") if frame.actor is not None else "their"
+        return f"{subject} made it a habit to wipe {poss} mouth."
+    return f"{subject} made it a habit to {objects or 'remember'}."
 
 
 @REGISTRY.renderer("anticipation")
