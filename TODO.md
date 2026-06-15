@@ -144,7 +144,7 @@ Current slice:
 | Physical carriers with object status/owner/location, relation edges, and meme magnitudes | `StoryWorld` / `Entity` | ✅ seed model |
 | Semantic frames for character setup, find/lost/search/ask/help/give/broken/fix/play/fear/rescue/friendship/lesson/reaction/transform | `Parser.direct_call` | ✅ first slice |
 | Lowercase object/state normalization (`lost(toy)`, `broken(toy)`, `hook(stick,string)`) | `LowerExpr` lowering | ✅ partial |
-| 20 representative pinned stories from `data00` + `data01` | `gen7_story_tests.py`, `gen7_story_tests/` | ✅ snapshots pass |
+| 25 representative pinned stories from `data00` + `data01` | `gen7_story_tests.py`, `gen7_story_tests/` | ✅ snapshots pass |
 
 Known gaps from the first 20 pins:
 
@@ -160,8 +160,9 @@ Known gaps from the first 20 pins:
       intent so chains like `penny -> toy` do not need bespoke handling.
 - [~] Add action frames for common concept-only process values (`Run`, `Victory`,
       `Persistence`, `Recall`, `Competition`). The first mapping now gives race
-      and rescue stories visible process beats; expand this into a typed action
-      ontology.
+      and rescue stories visible process beats; newer mappings cover
+      `Bond`/`Separation`/`AskHelp`/`Success`/`Safe`/`Harmony` style process
+      concepts. Expand this into a typed action ontology.
 - [~] Improve routine/activity lowering for `screen(tablet)`, `Bake(...)`,
       `Collaboration(...)`, and `Satisfaction(...)`. Collaboration/satisfaction
       now render as world events; screen-heavy routines and farm chores have
@@ -174,7 +175,12 @@ Known gaps from the first 20 pins:
       their motive frames, and nested physical labels like `bottom(pond)` keep
       their object content. Remaining work: track whether an actor was explicit
       in the AST instead of relying on scoped locks.
-- [ ] Add a manual `QUALITY.md` grade for the 20 gen7 pins and compare them
+- [~] Broaden direct semantic kernels. `Reward`, `Approve`, `Perform`, `Visit`,
+      `Hide`, `Warning`, `Intervention`, `Praise`, `Heal`, `Report`, and
+      `Investigation` now have first-pass frames/rendering; remaining work is
+      role typing so objects like `owner` / `BoxUnderBed` become proper
+      participants/locations instead of noun phrases.
+- [ ] Add a manual `QUALITY.md` grade for the 25 gen7 pins and compare them
       against gen6 output; the harness pins behavior but does not judge it.
 
 ### Still open for `gen6.py`

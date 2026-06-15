@@ -41,6 +41,8 @@ COMPOUNDS = {
     "bedroom": "bedroom",
     "bathroom": "bathroom",
     "everyday": "every day",
+    "ask help": "asking for help",
+    "box under bed": "box under the bed",
 }
 PHASE_KEYS = (
     "state", "setup", "catalyst", "trigger", "problem", "conflict",
@@ -70,6 +72,11 @@ ACTION_MEMES = {
     "Reunion": "reunion", "Celebration": "celebration",
     "Community": "community", "Party": "party", "Dance": "dance",
     "Sing": "sing", "Bite": "bite", "Guide": "guide",
+    "Bond": "bond", "Separation": "separation", "EverlastingFriendship": "friendship",
+    "Success": "complete", "Failure": "problem", "Confidence": "emotion",
+    "Pride": "emotion", "Humility": "lesson", "Harmony": "harmony",
+    "JointEffort": "collaboration", "Safe": "safe", "Laughter": "emotion",
+    "AskHelp": "advice", "NoOxygen": "danger", "NoAir": "danger",
 }
 LOW_STATE_CALLS = {"lost", "broken", "stuck", "trapped", "hurt", "sad"}
 BARE_NOUNS = {
@@ -416,7 +423,11 @@ def display_type(ent: Entity) -> str:
 
 
 def trait_text(ent: Entity) -> str:
-    traits = [t for t in ent.traits if t and t not in {ent.type, display_type(ent)}]
+    typ_words = set(words(display_type(ent)).split())
+    traits = [
+        t for t in ent.traits
+        if t and t not in {ent.type, display_type(ent)} and not set(words(t).split()).issubset(typ_words)
+    ]
     return " ".join(traits[:2])
 
 
@@ -743,6 +754,18 @@ class Parser:
             "wear": "wear", "accept": "accept", "resist": "resist",
             "compromise": "compromise", "insight": "lesson",
             "catalyst": "activity", "process": "activity",
+            "cooperation": "collaboration", "caretaker": "caretaker",
+            "outcome": "outcome", "requirement": "need", "advice": "advice",
+            "try": "attempt", "perform": "perform", "approve": "approve",
+            "reward": "reward", "pickup": "take", "enjoy": "emotion",
+            "visit": "visit", "hide": "hide", "warning": "warning",
+            "intervention": "intervention", "praise": "praise",
+            "awareness": "state", "offer": "offer", "polishing": "work",
+            "heal": "heal", "safe": "safe", "harmony": "harmony",
+            "report": "report", "investigation": "search",
+            "escape": "escape", "continuation": "play",
+            "command": "command", "obedience": "perform", "message": "message",
+            "affection": "hug", "sick": "problem",
         }.get(lname)
 
         if frame_kind is None and name in EMOTION_MEMES:
@@ -797,6 +820,9 @@ class Parser:
             actor, patient = chars[0], chars[1]
         if frame_kind == "deal":
             actor = chars[0] if chars else actor
+        if frame_kind == "want":
+            for child in child_frames:
+                child.salience = 0.05
         frame = Frame(
             frame_kind,
             actor=actor,
@@ -813,6 +839,14 @@ class Parser:
         if frame_kind == "encounter":
             for value in flatten(kw_values.get("state", [])):
                 extra.extend(self.value_to_frames("state", value, patient or actor))
+        phase_render_kinds = {
+            "encounter", "collaboration", "caretaker", "attempt", "outcome",
+            "activity", "intervention", "command",
+        }
+        if frame_kind in phase_render_kinds:
+            for key in ("process", "result", "outcome", "resolution", "transformation", "insight", "consequence", "ending"):
+                for value in flatten(kw_values.get(key, [])):
+                    extra.extend(self.value_to_frames(key, value, actor))
         if frame_kind == "state":
             for value in values[1:]:
                 if isinstance(value, LowerExpr):
@@ -1116,7 +1150,11 @@ class Renderer:
         if frame.kind == "want":
             if isinstance(frame.goal, Entity) and frame.goal.kind == "character":
                 return f"{subject} wanted help from {self.obj(frame.goal)}."
+            if any(display_type(o) == "grow" for o in frame.objects) or "grow" in concepts:
+                return f"{subject} wanted to grow."
             goal = phrase(frame.goal, self.world) or objects or (concepts[0] if concepts else "something special")
+            if goal == "grow":
+                return f"{subject} wanted to grow."
             if isinstance(frame.goal, LowerExpr) and frame.goal.name in {"find", "search", "rescue", "fix", "return", "retrieve"}:
                 return f"{subject} wanted to {goal}."
             return f"{subject} wanted {goal}."
@@ -1141,6 +1179,10 @@ class Renderer:
                 return f"{subject} lost {self.obj(p)} and felt sad."
             return f"{cap(objects)} was lost{where}." if objects else ""
         if frame.kind == "search":
+            if frame.source.lower() == "investigation":
+                return f"{subject} investigated."
+            if len(frame.objects) == 1 and display_type(frame.objects[0]) == "under" and frame.objects[0].traits:
+                return f"{subject} looked under {self.world.object_phrase(self.world.physical(frame.objects[0].traits[0]))}."
             if len(frame.objects) == 1 and display_type(frame.objects[0]) in {"pond", "park", "woods"}:
                 return f"{subject} searched around {self.obj(frame.objects[0])}."
             return f"{subject} looked everywhere for {objects}." if objects else f"{subject} searched carefully."
@@ -1256,11 +1298,31 @@ class Renderer:
             return f"{subject} made a promise."
         if frame.kind == "idea":
             return f"{subject} had an idea."
+        if frame.kind == "need":
+            if any(display_type(o) == "grow" for o in frame.objects):
+                needs = [self.obj(o) for o in frame.objects if display_type(o) != "grow"]
+                return f"{subject} needed {join(needs)} to grow." if needs else f"{subject} needed help to grow."
+            return f"{subject} needed {objects or phrase(frame.goal, self.world) or 'help'}."
+        if frame.kind == "advice":
+            return f"{subject} gave helpful advice." if a else "There was helpful advice."
+        if frame.kind == "attempt":
+            return f"{subject} tried."
+        if frame.kind == "outcome":
+            return f"{subject} saw what happened."
+        if frame.kind == "perform":
+            return f"{subject} performed {objects}." if objects else f"{subject} performed carefully."
+        if frame.kind == "approve":
+            return f"{subject} approved."
+        if frame.kind == "reward":
+            target = self.obj(p) if p else "someone"
+            return f"{subject} rewarded {target} with {objects or 'a treat'}."
         if frame.kind == "collaboration":
             party = self.participants(frame)
             if party and len(frame.meta.get("participants", [])) > 1:
                 return f"{party} worked together."
             return f"{subject} worked together with {self.obj(p)}." if p else f"{subject} worked on it."
+        if frame.kind == "caretaker":
+            return f"{subject} cared for others."
         if frame.kind == "satisfaction":
             party = self.participants(frame)
             return f"{party} felt happy and full." if party else f"{subject} felt happy and full."
@@ -1276,6 +1338,11 @@ class Renderer:
             return f"{subject} remembered good advice."
         if frame.kind == "complete":
             return f"{subject} finished the task."
+        if frame.kind == "bond":
+            return f"{subject} and {self.obj(p)} felt close." if p else f"{subject} made a connection."
+        if frame.kind == "separation":
+            copula = "were" if a is not None and a.pronoun("subject") == "they" else "was"
+            return f"{subject} {copula} separated."
         if frame.kind == "reunion":
             party = self.participants(frame)
             if a and p:
@@ -1297,6 +1364,36 @@ class Renderer:
         if frame.kind == "bake":
             item = objects or phrase(frame.goal, self.world) or "something sweet"
             return f"{subject} baked {item}."
+        if frame.kind == "visit":
+            return f"{subject} visited {objects or self.obj(p)}."
+        if frame.kind == "hide":
+            return f"{subject} hid {objects or 'it'}."
+        if frame.kind == "warning":
+            target = self.obj(p) if p else "someone"
+            return f"{subject} warned {target}."
+        if frame.kind == "intervention":
+            return f"{subject} stepped in to help."
+        if frame.kind == "praise":
+            target = self.obj(p) if p else "someone"
+            return f"{subject} praised {target}."
+        if frame.kind == "offer":
+            return f"{subject} offered {objects or 'help'}."
+        if frame.kind == "work":
+            return f"{subject} worked carefully."
+        if frame.kind == "heal":
+            return f"{subject} healed {objects or self.obj(p)}."
+        if frame.kind == "safe":
+            return f"{subject} was safe."
+        if frame.kind == "harmony":
+            return "Everything felt peaceful."
+        if frame.kind == "report":
+            return f"{subject} told {self.obj(p)} about {objects}." if p and objects else f"{subject} told the others."
+        if frame.kind == "escape":
+            return f"{subject} escaped."
+        if frame.kind == "message":
+            return f"{subject} found a loving message." if objects else f"{subject} received a message."
+        if frame.kind == "danger":
+            return f"{subject} was in danger."
         if frame.kind == "ride":
             if len(frame.objects) >= 2:
                 return f"{subject} rode {self.obj(frame.objects[0])} to {self.obj(frame.objects[1])}."
@@ -1364,6 +1461,8 @@ class Renderer:
         if frame.kind == "shrink":
             return f"{cap(objects or self.obj(a))} became small."
         if frame.kind == "grow":
+            if objects and all(display_type(o) in {"big", "strong", "point top"} for o in frame.objects):
+                return f"{subject} tried to grow big and strong."
             return f"{cap(objects or self.obj(a))} grew big again."
         if frame.kind == "dig":
             return f"{subject} dug carefully."
@@ -1378,6 +1477,8 @@ def emotion_word(label: str) -> str:
         "relief": "relieved", "guilt": "sorry", "sorry": "sorry",
         "ashamed": "ashamed", "worried": "worried", "lonely": "lonely",
         "rested": "rested", "full": "full",
+        "smile": "happy", "enjoy": "happy", "confidence": "confident",
+        "pride": "proud", "laughter": "happy",
     }
     return mapping.get(label, label)
 
