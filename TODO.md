@@ -198,6 +198,14 @@ Known gaps from the first 20 pins:
       instead of the generic "learned an important lesson about X" fallback.
       Remaining work: make these topic rules data-driven packs and let relation
       / meme magnitudes choose the moral when multiple lessons are plausible.
+- [~] Preserve named nonhuman carrier identity in discourse. Repeated animal,
+      plant, and object-carrier actors now keep their story name instead of
+      collapsing long action chains to ambiguous "It ..." subjects; this also
+      exposes true actor transitions such as Lily the cat rewarding Max. `Quest`
+      now preserves `objective=` as the desire goal, so a food quest renders as
+      wanting food instead of "something special". Remaining work: add a richer
+      reference planner so named nonhumans can alternate names, pronouns, and
+      role phrases without losing clarity.
 - [~] Improve phase ordering inside structural calls. `Rescue(...)`, `Deal(...)`,
       `Idea(...)`, and `Race(...)` now reorder parent/child frames more
       coherently; `Cautionary(...)` now defers generic lessons until after the

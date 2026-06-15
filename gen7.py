@@ -704,7 +704,11 @@ class Parser:
         if name == "Routine":
             frames.append(Frame("routine", actor=actor, objects=objects_from(values[1:] + flatten(kw_values.get("object", [])), self.world), concepts=concepts_from(values), source=name, salience=0.8, meta={"participants": chars + participant_chars}))
         elif name == "Quest":
-            goal = first_value(flatten(kw_values.get("goal", []) + kw_values.get("desire", []))) or first_value(values[1:])
+            goal = first_value(flatten(
+                kw_values.get("goal", [])
+                + kw_values.get("desire", [])
+                + kw_values.get("objective", [])
+            )) or first_value(values[1:])
             frames.append(Frame("want", actor=actor, goal=goal, concepts=[Memeplex(name)], source=name, salience=0.7))
             setting = first_entity(flatten(kw_values.get("setting", [])))
             if setting is not None:
@@ -1258,6 +1262,8 @@ class Renderer:
         if ent is None:
             return "They"
         if self.last_subject == ent.id:
+            if ent.kind == "character" and ent.pronoun("subject") == "it":
+                return ent.id
             return cap(ent.pronoun("subject"))
         self.last_subject = ent.id
         return ent.id
