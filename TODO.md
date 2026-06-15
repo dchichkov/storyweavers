@@ -150,7 +150,7 @@ Current slice:
 | First renderer pack for desire/find/search/loss/ask/help/play/friendship/lesson/emotion/encounter/problem/transform/visit/object-state frames | `gen7packs.renderers` | ✅ first extraction |
 | Lowercase object/state normalization (`lost(toy)`, `broken(toy)`, `hook(stick,string)`) | `LowerExpr` lowering | ✅ partial |
 | Trace-derived templated QA (`generate_qa`, `StoryWorld.questions`, `--show-qa`) | `gen7.py`, `gen7_story_tests.py` | ✅ first slice |
-| 100 representative pinned stories from `data00` + `data01` | `gen7_story_tests.py`, `gen7_story_tests/` | ✅ snapshots pass |
+| 108 representative pinned stories from `data00` + `data01` | `gen7_story_tests.py`, `gen7_story_tests/` | ✅ snapshots pass |
 
 Known gaps from the first 20 pins:
 
@@ -176,6 +176,9 @@ Known gaps from the first 20 pins:
       A seventh pass promoted 8 more (`data00:4534`, `data00:51657`,
       `data00:86751`, `data00:96047`, `data00:97714`, `data01:21445`,
       `data01:37775`, `data01:80705`), bringing the suite to 100.
+      An eighth pass promoted 8 more (`data00:25709`, `data00:45243`,
+      `data00:4922`, `data00:49762`, `data00:57522`, `data01:20285`,
+      `data01:35318`, `data01:70276`), bringing the suite to 108.
       Continue adding 5-10 reviewed pins per quality pass so regressions and new
       failure modes stay visible.
 - [~] Add trace-derived QA generation to gen7. `StoryWorld` now carries
@@ -200,7 +203,7 @@ Known gaps from the first 20 pins:
       `too_shallow`) in scored QA worksheets.
 - [~] Upgrade gen7 QA answers from bare facts to full responses. QA answers now
       normalize fragments into complete two-sentence responses and `--run-qa`
-      reports 100% full-response / multi-sentence rate on the 100 pinned stories.
+      reports 100% full-response / multi-sentence rate on the 108 pinned stories.
       Remaining work: make the second sentence less generic by using richer
       causal/world context, for example: "Max found the key in the grass. He kept
       it and later used it to unlock the leash."
@@ -238,6 +241,14 @@ Known gaps from the first 20 pins:
       as a second found object. Remaining work: fix actor focus in nested rescue
       and walk stories, and drop low-value future placeholders like "found the
       more."
+- [~] Preserve object-state timing and recipient QA from sampled defects. State
+      wrappers such as `broken(modelairplane)` no longer mutate shared objects
+      during parsing, so earlier desire frames do not inherit future damage while
+      later loss frames can still mention the broken object after simulation.
+      `modelairplane` now renders as "model airplane", `give` questions ask
+      "Who did X give to?", and simple-hook QA matches the renderer. Remaining
+      work: assign observer/parent lessons to the correct actor in cautionary
+      stories and improve low-value loss targets such as abstract "fun".
 - [ ] Prototype multi-turn gen7 QA. Add a small conversation state over
       `StoryWorld` that remembers the last entity/event/question type, so
       follow-ups like "Why?", "What happened next?", "Who helped?", and "Where
@@ -249,7 +260,7 @@ Known gaps from the first 20 pins:
       `gen7packs.renderers`. `gen7.py` still owns too much role normalization and
       many residual render branches; next migrations should move direct-call
       special cases into `direct_handler` packs and split world constraints/effects
-      by frame kind while keeping the 100 snapshots green.
+      by frame kind while keeping the 108 snapshots green.
 - [~] Continue pack-local quality fixes from rough samples. Untyped common names
       now infer likely child/person types (`Lily(Character, Neat + Kind)` renders
       as a girl rather than a literal "lily"), play locations use scene
@@ -418,7 +429,7 @@ Known gaps from the first 20 pins:
       now becomes a real lesson frame, repeated lesson topics are collapsed, and
       composed lesson phases such as `Avoidance(...) + Memory(...)` keep their
       concrete child frames instead of re-wrapping them as extra morals.
-- [ ] Add a manual `QUALITY.md` grade for the 100 gen7 pins and compare them
+- [ ] Add a manual `QUALITY.md` grade for the 108 gen7 pins and compare them
       against gen6 output; the harness pins behavior but does not judge it.
 
 ### Still open for `gen6.py`

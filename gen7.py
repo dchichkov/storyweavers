@@ -48,6 +48,7 @@ COMPOUNDS = {
     "icecream": "ice cream",
     "pointyrock": "pointy rock",
     "toycar": "toy car",
+    "modelairplane": "model airplane",
     "backyard": "backyard",
     "bedroom": "bedroom",
     "bathroom": "bathroom",
@@ -210,7 +211,7 @@ class Entity:
         t = self.type.lower()
         n = words(self.id)
         if t in {"adult", "child", "friend", "parent", "person", "speaker", "stranger"}:
-            if n in {"girl", "lily", "lisa", "lucy", "sue", "sarah", "anna", "daughter", "mom", "mommy", "mum", "mother"}:
+            if n in {"girl", "lily", "lisa", "lucy", "sue", "sally", "sarah", "anna", "daughter", "mom", "mommy", "mum", "mother"}:
                 return {"subject": "she", "object": "her", "possessive": "her"}[case]
             if n in {"boy", "tim", "timmy", "joe", "ben", "sam", "paul", "old man", "oldman", "man", "dad", "daddy", "father"}:
                 return {"subject": "he", "object": "him", "possessive": "his"}[case]
@@ -1247,9 +1248,12 @@ def objects_from(values: Iterable[Any], world: StoryWorld) -> list[Entity]:
             out.append(value)
         elif isinstance(value, LowerExpr):
             child_objects = objects_from(value.args + flatten(value.kwargs.values()), world)
-            if words(value.name) in OBJECT_MODIFIERS and child_objects:
+            lowered = words(value.name)
+            if lowered in {"broken", "lost"} and child_objects:
                 obj = child_objects[0]
-                modifier = words(value.name)
+            elif lowered in OBJECT_MODIFIERS and child_objects:
+                obj = child_objects[0]
+                modifier = lowered
                 if modifier not in obj.traits:
                     obj.traits.insert(0, modifier)
             else:
@@ -1922,10 +1926,15 @@ def format_qa_answer(question: str, answer: str) -> str:
             return response(f"{actor} dreamed about {fragment}", "That dream is part of the story trace")
         return response(f"{actor} tried to print {fragment}", "That attempt is part of the story trace")
 
-    m = re.match(r"^Who did (.+?) (share|give|help|rescue|play) with\?$", question)
+    m = re.match(r"^Who did (.+?) give to\?$", question)
+    if m:
+        actor = m.group(1)
+        return response(f"{actor} gave it to {fragment}", "That answer follows the receiver role in the world trace")
+
+    m = re.match(r"^Who did (.+?) (share|help|rescue|play) with\?$", question)
     if m:
         actor, verb = m.groups()
-        past = {"share": "shared", "give": "gave", "help": "helped", "rescue": "rescued", "play": "played"}[verb]
+        past = {"share": "shared", "help": "helped", "rescue": "rescued", "play": "played"}[verb]
         return response(f"{actor} {past} with {fragment}", "That answer follows the participant roles in the world trace")
 
     m = re.match(r"^Who did (.+?) (help|rescue)\?$", question)
@@ -1984,6 +1993,8 @@ def frame_to_qa(world: StoryWorld, frame: Frame) -> list[QA]:
     elif frame.kind in {"find", "discover"}:
         answer = patient if frame.patient is not None else qa_find_answer(world, frame)
         object_names = {display_type(o) for o in frame.objects}
+        if {"hook", "cheap"}.issubset(object_names):
+            answer = "a simple hook"
         if "key" in object_names and "grass" in object_names:
             answer = "the key"
         if "bunch" in object_names and "ground" in object_names:
@@ -1999,7 +2010,10 @@ def frame_to_qa(world: StoryWorld, frame: Frame) -> list[QA]:
         verb = "share" if frame.kind == "share" else "give"
         add_qa(items, seen, f"What did {actor} {verb}?", objects or "what they had", "exchange", frame.source)
         if frame.patient is not None:
-            add_qa(items, seen, f"Who did {actor} {verb} with?", patient, "exchange", frame.source)
+            if frame.kind == "give":
+                add_qa(items, seen, f"Who did {actor} give to?", patient, "exchange", frame.source)
+            else:
+                add_qa(items, seen, f"Who did {actor} share with?", patient, "exchange", frame.source)
     elif frame.kind == "receive":
         add_qa(items, seen, f"What did {actor} receive?", objects, "exchange", frame.source)
     elif frame.kind in {"help", "rescue"}:
