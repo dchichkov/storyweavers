@@ -135,7 +135,7 @@ Run it:
 python gen7.py --story-id data00:36222
 python gen7.py --story-id data00:36222 --qa
 python gen7_story_tests.py --run
-python gen7_story_tests.py --run-qa
+python gen7_story_tests.py --run-qa --qa-limit 12
 python gen7_story_tests.py --sample 10 --seed 777 --scan 20000 --show-qa --qa-limit 8
 ```
 
@@ -150,7 +150,7 @@ Current slice:
 | First renderer pack for desire/find/search/loss/ask/help/play/friendship/lesson/emotion/encounter/problem/transform/visit/object-state frames | `gen7packs.renderers` | ✅ first extraction |
 | Lowercase object/state normalization (`lost(toy)`, `broken(toy)`, `hook(stick,string)`) | `LowerExpr` lowering | ✅ partial |
 | Trace-derived templated QA (`generate_qa`, `StoryWorld.questions`, `--show-qa`) | `gen7.py`, `gen7_story_tests.py` | ✅ first slice |
-| 108 representative pinned stories from `data00` + `data01` | `gen7_story_tests.py`, `gen7_story_tests/` | ✅ snapshots pass |
+| 116 representative pinned stories from `data00` + `data01` | `gen7_story_tests.py`, `gen7_story_tests/` | ✅ snapshots pass |
 
 Known gaps from the first 20 pins:
 
@@ -179,6 +179,12 @@ Known gaps from the first 20 pins:
       An eighth pass promoted 8 more (`data00:25709`, `data00:45243`,
       `data00:4922`, `data00:49762`, `data00:57522`, `data01:20285`,
       `data01:35318`, `data01:70276`), bringing the suite to 108.
+      A ninth pass promoted 8 more (`data01:67823`, `data00:87633`,
+      `data00:36589`, `data00:60763`, `data00:66052`, `data00:67173`,
+      `data01:32325`, `data01:64888`), bringing the suite to 116 and adding
+      fresh QA/narrative pressure around nested rescue roles, Quest/Longing
+      dedupe, stolen-object ownership, apology/friendship, and rough sampled
+      failures.
       Continue adding 5-10 reviewed pins per quality pass so regressions and new
       failure modes stay visible.
 - [~] Add trace-derived QA generation to gen7. `StoryWorld` now carries
@@ -200,10 +206,17 @@ Known gaps from the first 20 pins:
       add answerability/groundedness checks against frame/entity ids and track a
       controlled defect vocabulary (`bare_answer`, `ungrounded_answer`,
       `duplicate_question`, `wrong_focus`, `missing_causality`, `not_answerable`,
-      `too_shallow`) in scored QA worksheets.
+      `too_shallow`, `followup_lost_context`) in scored QA worksheets.
+      Fresh sampled defects: `data00:17523` shows generic lesson QA despite a
+      causal road/car danger in the original; `data01:13942` produces useful
+      emotion QA but misses repair causality and asks from the wrong focus
+      around robot/girl help; `data00:18753` demonstrates that snapshot-green
+      friendship QA can still miss late tragic outcomes.
 - [~] Upgrade gen7 QA answers from bare facts to full responses. QA answers now
       normalize fragments into complete two-sentence responses and `--run-qa`
-      reports 100% full-response / multi-sentence rate on the 108 pinned stories.
+      reports 100% full-response / multi-sentence rate on the 116 pinned stories
+      (`620` QA pairs at `--qa-limit 12`, 18 question kinds, 3.1% duplicate
+      questions).
       Remaining work: make the second sentence less generic by using richer
       causal/world context, for example: "Max found the key in the grass. He kept
       it and later used it to unlock the leash."
@@ -254,13 +267,17 @@ Known gaps from the first 20 pins:
       follow-ups like "Why?", "What happened next?", "Who helped?", and "Where
       was it?" resolve against the same executable event trace instead of the
       rendered English. Start with deterministic templated turns and a smoke
-      sampler before attempting broader dialogue behavior.
+      sampler before attempting broader dialogue behavior. The first smoke gate
+      should verify at least: follow-up answers remain full multi-sentence
+      responses, refer to the same frame/entity id as the prior turn when
+      appropriate, and fail closed with "the trace does not say" style answers
+      when the world model has no grounded answer.
 - [~] Split gen7 out of the giant-if prototype. The frame-name ontology now lives
       in `gen7packs.actions`, and a first high-frequency renderer batch lives in
       `gen7packs.renderers`. `gen7.py` still owns too much role normalization and
       many residual render branches; next migrations should move direct-call
       special cases into `direct_handler` packs and split world constraints/effects
-      by frame kind while keeping the 108 snapshots green.
+      by frame kind while keeping the 116 snapshots green.
 - [~] Continue pack-local quality fixes from rough samples. Untyped common names
       now infer likely child/person types (`Lily(Character, Neat + Kind)` renders
       as a girl rather than a literal "lily"), play locations use scene
@@ -429,7 +446,7 @@ Known gaps from the first 20 pins:
       now becomes a real lesson frame, repeated lesson topics are collapsed, and
       composed lesson phases such as `Avoidance(...) + Memory(...)` keep their
       concrete child frames instead of re-wrapping them as extra morals.
-- [ ] Add a manual `QUALITY.md` grade for the 108 gen7 pins and compare them
+- [ ] Add a manual `QUALITY.md` grade for the 116 gen7 pins and compare them
       against gen6 output; the harness pins behavior but does not judge it.
 
 ### Still open for `gen6.py`

@@ -91,11 +91,11 @@ move out of the monolith incrementally while the pinned stories stay stable.
 python gen7.py --story-id data00:36222
 python gen7.py --story-id data00:36222 --qa
 python gen7_story_tests.py --run
-python gen7_story_tests.py --run-qa
+python gen7_story_tests.py --run-qa --qa-limit 12
 python gen7_story_tests.py --sample 10 --seed 777 --scan 20000 --show-qa --qa-limit 8
 ```
 
-The gen7 snapshot runner pins 108 representative stories, including known problem
+The gen7 snapshot runner pins 116 representative stories, including known problem
 cases from both `data00` and `data01`, so quality/world-model changes can improve
 the semantic slice without silently regressing it. Use `--sample N` during quality
 passes to inspect deterministic unpinned candidates; promote 5-10 reviewed stories
@@ -109,10 +109,13 @@ sampling passes, inspect generated questions and answers alongside the story and
 original text; diversify question types when a batch repeats the same shallow
 forms. The target format is a full natural-language response, usually multiple
 sentences when the world trace supports it, rather than a bare noun phrase.
-`--run-qa` is the smoke gate today; extend it over time to measure answerability,
-diversity, groundedness in the world trace, and whether answers are complete
-responses. Multi-turn QA is a desired next milestone: follow-up questions should
-carry the referenced entity/event forward through the same simulated world state.
+`--run-qa` is the smoke gate today: it checks for nonempty QA, question syntax,
+full-response answers, multi-sentence answers, minimum question-kind diversity,
+and duplicate-question rate. Extend it over time to measure answerability,
+groundedness in the world trace, and whether each answer is tied to a real
+frame/entity id. Multi-turn QA is a desired next milestone: follow-up questions
+should carry the referenced entity/event forward through the same simulated
+world state, not through a free-form chat over rendered prose.
 
 ### AST → AST Transforms (Reference Demos)
 

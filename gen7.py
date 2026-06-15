@@ -769,6 +769,12 @@ class Parser:
                 + kw_values.get("desire", [])
                 + kw_values.get("objective", [])
             )) or first_value(values[1:])
+            if (
+                isinstance(goal, Memeplex)
+                and {label.lower() for label in goal.labels()} <= {"longing", "desire"}
+                and any(frame.kind == "want" for frame in child_frames)
+            ):
+                goal = None
             if goal is not None:
                 frames.append(Frame("want", actor=actor, goal=goal, concepts=[Memeplex(name)], source=name, salience=0.7))
             setting = first_entity(flatten(kw_values.get("setting", [])))
@@ -933,7 +939,7 @@ class Parser:
         if frame_kind == "encounter" and len(chars) == 1 and self.current_actor is not None and self.current_actor != chars[0]:
             actor, patient = self.current_actor, chars[0]
         if (
-            frame_kind in {"ask", "teach"}
+            (frame_kind in {"ask", "teach"} or (frame_kind == "rescue" and lname == "pull"))
             and self.local_actor is not None
             and len(chars) == 1
             and chars[0] != self.local_actor
@@ -1061,7 +1067,12 @@ class Parser:
                 ),
                 None,
             )
-            if rescue_child is not None and rescue_child.actor != actor:
+            if rescue_child is not None and rescue_child.patient is not None:
+                frame.actor = rescue_child.actor or actor
+                frame.patient = rescue_child.patient
+                frame.objects = list(rescue_child.objects)
+                rescue_child.salience = 0.05
+            elif rescue_child is not None and rescue_child.actor != actor:
                 frame.actor = rescue_child.actor
                 frame.patient = rescue_child.patient or actor
                 frame.objects = list(rescue_child.objects)

@@ -64,6 +64,16 @@ When improving gen7, sample QA alongside generated text and the original story,
 read the failures, and improve repeated classes. The smoke test must stay green,
 but green smoke only proves basic shape; it does not prove quality.
 
+Every gen7 quality pass should include a QA pass:
+
+1. Run `gen7_story_tests.py --sample ... --show-qa` and read original text,
+   generated text, questions, and answers together.
+2. Fix repeated narrative or QA failures in the frame/world layer when possible.
+3. Promote 5-10 rough-but-representative sampled cases into `STORY_IDS` and
+   `gen7_story_tests/`.
+4. Keep both `gen7_story_tests.py --run` and
+   `gen7_story_tests.py --run-qa --qa-limit 12` green before finishing.
+
 QA should be generated from `StoryWorld.history`, entity state, meme magnitudes,
 relations, and frame metadata. A good QA pair is answerable from the simulated
 world, grounded in entities/events that actually exist, and useful for checking
@@ -83,10 +93,11 @@ Target answer style:
 When touching QA, update or extend `gen7_story_tests.py --run-qa` so it measures
 more than nonempty output. Useful deterministic checks include duplicate-rate,
 question-kind distribution, answer length/full-sentence rate, grounded entity
-mentions, and whether every QA answer is tied to a frame/entity id. Record known
-QA defects in `TODO.md` using a controlled vocabulary such as `bare_answer`,
-`ungrounded_answer`, `duplicate_question`, `wrong_focus`, `missing_causality`,
-`not_answerable`, and `too_shallow`.
+mentions, answerability from `StoryWorld`, and whether every QA answer is tied to
+a frame/entity id. Record known QA defects in `TODO.md` using a controlled
+vocabulary such as `bare_answer`, `ungrounded_answer`, `duplicate_question`,
+`wrong_focus`, `missing_causality`, `not_answerable`, `too_shallow`, and
+`followup_lost_context`.
 
 Each gen7 quality pass should sample original text, generated narrative, and QA
 together; promote 5-10 rough-but-representative cases into the pinned suite; and
