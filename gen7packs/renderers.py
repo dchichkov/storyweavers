@@ -39,6 +39,21 @@ def action_goal_from_object(renderer, obj):
     return ""
 
 
+def action_phrase(renderer, action, target):
+    verbs = {
+        "remove": "take off",
+        "cut": "cut",
+        "carry": "carry",
+        "clean": "clean",
+        "push": "push",
+        "pull": "pull",
+        "wrap": "wrap",
+        "store": "put away",
+    }
+    verb = verbs.get(action, action)
+    return f"{verb} {target}".strip()
+
+
 def plain_object_phrase(renderer, obj):
     return renderer.world.object_phrase(obj, status=[], owner_id=None, snapshot_owner=True)
 
@@ -198,9 +213,8 @@ def render_help(renderer, frame):
     if frame.kind == "help" and assisted:
         if assisted == "ask":
             return f"{subject} helped by asking for help."
-        action = "take off" if assisted == "remove" else assisted
-        return f"{subject} helped {action} {objects or renderer.obj(frame.patient)}."
-    if frame.kind == "help" and len(frame.objects) == 1 and display_type(frame.objects[0]) in {"remove", "push", "clean", "wrap", "store", "take care", "carry", "pull"}:
+        return f"{subject} helped {action_phrase(renderer, assisted, objects or renderer.obj(frame.patient))}."
+    if frame.kind == "help" and len(frame.objects) == 1 and display_type(frame.objects[0]) in {"remove", "push", "clean", "wrap", "store", "take care", "carry", "pull", "cut"}:
         return f"{subject} helped {renderer.action_object(frame.objects[0])}."
     target = renderer.obj(frame.patient) if frame.patient else (objects or "someone")
     verb = "rescued" if frame.kind == "rescue" else "helped"
@@ -483,10 +497,15 @@ def render_praise(renderer, frame):
 @REGISTRY.renderer("advice")
 def render_advice(renderer, frame):
     subject = renderer.subj(frame.actor)
+    topics = set(renderer.concepts(frame) + [display_type(o) for o in frame.objects])
     if frame.source.lower() == "suggest":
         if any(display_type(o) == "build" for o in frame.objects):
             return f"{subject} suggested building something."
         return f"{subject} made a suggestion."
+    if "asking for help" in topics or "ask help" in topics:
+        return f"{subject} advised asking for help."
+    if frame.objects:
+        return f"{subject} gave advice about {renderer.objs(frame)}."
     return f"{subject} gave helpful advice." if frame.actor else "There was helpful advice."
 
 

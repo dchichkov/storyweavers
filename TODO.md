@@ -206,6 +206,13 @@ Known gaps from the first 20 pins:
       wanting food instead of "something special". Remaining work: add a richer
       reference planner so named nonhumans can alternate names, pronouns, and
       role phrases without losing clarity.
+- [~] Expand helper/advice action semantics. `method=` is now executable phase
+      data, `Cut(...)` lowers into a reusable action frame, `Help(...,
+      method=Ask(...) + Cut(bush))` renders the concrete action ("helped cut the
+      bush") instead of "helped by asking for help", and advice about `AskHelp`
+      renders as "advised asking for help". Remaining work: represent advice as
+      an explicit speaker/listener/command frame so refusals can say what was
+      refused rather than generic "said no".
 - [~] Improve phase ordering inside structural calls. `Rescue(...)`, `Deal(...)`,
       `Idea(...)`, and `Race(...)` now reorder parent/child frames more
       coherently; `Cautionary(...)` now defers generic lessons until after the

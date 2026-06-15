@@ -52,7 +52,7 @@ COMPOUNDS = {
 }
 PHASE_KEYS = (
     "state", "setup", "catalyst", "trigger", "problem", "conflict",
-    "desire", "goal", "plan", "promise", "process", "action", "event",
+    "desire", "goal", "plan", "promise", "method", "process", "action", "event",
     "reaction", "help", "solution", "result", "outcome", "insight",
     "moral", "lesson", "resolution", "transformation", "ending",
     "setting", "destination", "encounter", "twist", "block", "motive",
@@ -779,7 +779,7 @@ class Parser:
             if frame.kind in {"scold", "protect"} and frame.patient is None and frame.actor is not None and frame.actor != actor:
                 frame.patient = actor
         frames.extend(child_frames)
-        skip = {"hero", "protagonist", "goal", "desire", "setting", "destination", "encounter"}
+        skip = {"hero", "protagonist", "goal", "desire", "setting", "destination", "encounter", "method"}
         for key in PHASE_KEYS:
             if key in skip:
                 continue
@@ -937,7 +937,10 @@ class Parser:
                 objects = list(desired_child.objects)
         assisted_child = None
         if frame_kind == "help" and child_frames:
-            assisted_child = next((child for child in child_frames if child.kind not in {"annotation", "scene", "declare"}), None)
+            assisted_child = next(
+                (child for child in child_frames if child.kind not in {"annotation", "scene", "declare", "ask"}),
+                None,
+            ) or next((child for child in child_frames if child.kind not in {"annotation", "scene", "declare"}), None)
             if assisted_child is not None:
                 objects = list(assisted_child.objects)
                 for child in child_frames:
@@ -1311,6 +1314,7 @@ class Renderer:
                 "take care": "take care of",
                 "carry": "carry",
                 "pull": "pull",
+                "cut": "cut",
             }
             if action in verbs:
                 return f"{verbs[action]} {target}"
@@ -1473,6 +1477,8 @@ class Renderer:
             return f"{subject} drove {objects or 'along'}."
         if frame.kind == "clean":
             return f"{subject} cleaned {objects or 'it'}."
+        if frame.kind == "cut":
+            return f"{subject} cut {objects or 'it'}."
         if frame.kind == "chew":
             return f"{subject} chewed {objects or 'it'}."
         if frame.kind == "collaboration":
