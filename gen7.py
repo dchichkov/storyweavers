@@ -27,7 +27,7 @@ CHARACTER_TYPES = {
     "friend", "frog", "girl", "group", "man", "mom", "mommy", "mother",
     "mouse", "parent", "person", "rabbit", "turkey", "twin", "woman",
     "bees", "tree", "daughter", "squirrel", "crab", "fox", "ostrich",
-    "airplane",
+    "airplane", "cow", "chick", "pig", "elephant", "vehicle",
 }
 GENERIC_TYPES = {"animal", "bird", "group", "person"}
 COMPOUNDS = {
@@ -201,7 +201,7 @@ class Entity:
             return {"subject": "he", "object": "him", "possessive": "his"}[case]
         if t in {"group", "children", "people", "bees"}:
             return {"subject": "they", "object": "them", "possessive": "their"}[case]
-        if t in {"bird", "dog", "cat", "mouse", "turkey", "bear", "bee", "fish", "frog", "rabbit", "bunny", "duck", "barrel", "tree", "squirrel", "crab", "fox", "ostrich", "airplane"}:
+        if t in {"bird", "dog", "cat", "mouse", "turkey", "bear", "bee", "fish", "frog", "rabbit", "bunny", "duck", "barrel", "tree", "squirrel", "crab", "fox", "ostrich", "airplane", "cow", "chick", "pig", "elephant", "vehicle"}:
             return {"subject": "it", "object": "it", "possessive": "its"}[case]
         return {"subject": "they", "object": "them", "possessive": "their"}[case]
 
@@ -420,7 +420,8 @@ def infer_type(name: str, explicit: str) -> str:
     if n in {
         "girl", "boy", "bird", "mouse", "turkey", "dog", "cat", "barrel",
         "bunny", "rabbit", "bee", "bees", "duck", "frog", "tree", "bear",
-        "fish", "mole",
+        "fish", "mole", "squirrel", "crab", "fox", "ostrich", "airplane",
+        "cow", "chick", "pig", "elephant", "vehicle",
     }:
         return n
     return "person"
@@ -960,7 +961,22 @@ class Parser:
                     child.meta["actor_locked"] = True
         if actor is not None:
             for child in child_frames:
+                if (
+                    child.kind == "emotion"
+                    and len(chars) > 1
+                    and not child.meta.get("participants")
+                ):
+                    child.actor = chars[0]
+                    child.patient = chars[1]
+                    child.meta["participants"] = list(chars)
+                    child.meta["actor_locked"] = True
                 if child.actor is None and child.kind not in {"declare", "scene"}:
+                    child.actor = actor
+                elif (
+                    child.kind not in {"declare", "scene"}
+                    and not child.meta.get("actor_locked")
+                    and child.actor not in child.meta.get("participants", [])
+                ):
                     child.actor = actor
         if actor is not None:
             self.current_actor = actor
@@ -1206,6 +1222,8 @@ class Renderer:
                 "wrap": "wrap",
                 "store": "put away",
                 "take care": "take care of",
+                "carry": "carry",
+                "pull": "pull",
             }
             if action in verbs:
                 return f"{verbs[action]} {target}"
@@ -1329,7 +1347,7 @@ class Renderer:
                     return f"{subject} helped by asking for help."
                 action = "take off" if assisted == "remove" else assisted
                 return f"{subject} helped {action} {objects or self.obj(p)}."
-            if frame.kind == "help" and len(frame.objects) == 1 and display_type(frame.objects[0]) in {"remove", "push", "clean", "wrap", "store", "take care"}:
+            if frame.kind == "help" and len(frame.objects) == 1 and display_type(frame.objects[0]) in {"remove", "push", "clean", "wrap", "store", "take care", "carry", "pull"}:
                 return f"{subject} helped {self.action_object(frame.objects[0])}."
             target = self.obj(p) if p else (objects or "someone")
             verb = "rescued" if frame.kind == "rescue" else "helped"
