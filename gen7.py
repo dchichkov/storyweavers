@@ -247,6 +247,14 @@ class Frame:
 
 
 @dataclass
+class QA:
+    question: str
+    answer: str
+    kind: str
+    source: str = ""
+
+
+@dataclass
 class EvalResult:
     frames: list[Frame] = field(default_factory=list)
     values: list[Any] = field(default_factory=list)
@@ -262,6 +270,7 @@ class StoryWorld:
         self.entities: dict[str, Entity] = {}
         self.declarations: list[Entity] = []
         self.history: list[Frame] = []
+        self.qa: list[QA] = []
         self.current_actor: Entity | None = None
         self.scene: Entity | None = None
 
@@ -389,7 +398,13 @@ class StoryWorld:
     def apply_all(self, frames: Iterable[Frame]) -> "StoryWorld":
         for frame in frames:
             self.apply(frame)
+        self.qa = build_qa(self)
         return self
+
+    def questions(self, limit: int = 8) -> list[QA]:
+        if not self.qa:
+            self.qa = build_qa(self)
+        return self.qa[:limit]
 
     def object_phrase(
         self,
@@ -1228,6 +1243,10 @@ def generate(kernel_src: str) -> str:
     return render(generate_world(kernel_src))
 
 
+def generate_qa(kernel_src: str, limit: int = 8) -> list[QA]:
+    return generate_world(kernel_src).questions(limit=limit)
+
+
 class Renderer:
     def __init__(self, world: StoryWorld) -> None:
         self.world = world
@@ -1672,6 +1691,184 @@ class Renderer:
         return ""
 
 
+def qa_subject(ent: Entity | None) -> str:
+    return ent.id if ent is not None else "someone"
+
+
+def qa_object(world: StoryWorld, obj: Entity | None, frame: Frame | None = None) -> str:
+    if obj is None:
+        return "something"
+    if obj.kind == "character":
+        return obj.id
+    if frame is None:
+        return world.object_phrase(obj)
+    status = frame.meta.get("object_state", {}).get(obj.id)
+    owner_map = frame.meta.get("object_owner", {})
+    owner_id = owner_map.get(obj.id)
+    return world.object_phrase(
+        obj,
+        status=status,
+        owner_id=owner_id,
+        snapshot_owner=obj.id in owner_map,
+        allow_it_owner=False,
+    )
+
+
+def qa_objects(world: StoryWorld, frame: Frame) -> str:
+    return join([qa_object(world, obj, frame) for obj in frame.objects])
+
+
+def qa_participants(frame: Frame) -> str:
+    chars = [c for c in frame.meta.get("participants", []) if is_character(c)]
+    if not chars and frame.actor is not None:
+        chars = [frame.actor]
+        if frame.patient is not None:
+            chars.append(frame.patient)
+    return join([c.id for c in chars])
+
+
+def qa_concepts(frame: Frame) -> list[str]:
+    out: list[str] = []
+    seen: set[str] = set()
+    for concept in frame.concepts:
+        for label in concept.labels():
+            text = words(label)
+            if text and text not in {"routine", "quest", "cautionary"} and text not in seen:
+                out.append(text)
+                seen.add(text)
+    return out
+
+
+def add_qa(items: list[QA], seen: set[tuple[str, str]], question: str, answer: str, kind: str, source: str = "") -> None:
+    question = question.strip()
+    answer = answer.strip()
+    if not question or not answer or answer == "something":
+        return
+    key = (question.lower(), answer.lower())
+    if key in seen:
+        return
+    seen.add(key)
+    items.append(QA(question, answer, kind, source))
+
+
+def frame_to_qa(world: StoryWorld, frame: Frame) -> list[QA]:
+    items: list[QA] = []
+    seen: set[tuple[str, str]] = set()
+    actor = qa_subject(frame.actor)
+    patient = qa_subject(frame.patient)
+    objects = qa_objects(world, frame)
+    concepts = qa_concepts(frame)
+
+    if frame.kind == "declare" and frame.actor is not None:
+        desc = display_type(frame.actor)
+        if frame.actor.traits:
+            desc = f"{' '.join(frame.actor.traits)} {desc}"
+        add_qa(items, seen, f"Who is {frame.actor.id}?", f"{frame.actor.id} is {article(desc)} {desc}.", "character", frame.source)
+    elif frame.kind == "want":
+        goal = phrase(frame.goal, world) or objects
+        add_qa(items, seen, f"What did {actor} want?", goal, "desire", frame.source)
+    elif frame.kind in {"find", "discover"}:
+        answer = patient if frame.patient is not None else objects
+        object_names = {display_type(o) for o in frame.objects}
+        if "key" in object_names and "grass" in object_names:
+            answer = "the key"
+        add_qa(items, seen, f"What did {actor} find?", answer, "discovery", frame.source)
+    elif frame.kind in {"lost", "lose"}:
+        add_qa(items, seen, f"What did {actor} lose?", objects, "loss", frame.source)
+    elif frame.kind in {"break", "broken"}:
+        add_qa(items, seen, "What broke?", objects, "object_state", frame.source)
+    elif frame.kind == "fix":
+        add_qa(items, seen, f"What did {actor} fix?", objects, "object_state", frame.source)
+    elif frame.kind in {"give", "share"}:
+        verb = "share" if frame.kind == "share" else "give"
+        add_qa(items, seen, f"What did {actor} {verb}?", objects or "what they had", "exchange", frame.source)
+        if frame.patient is not None:
+            add_qa(items, seen, f"Who did {actor} {verb} with?", patient, "exchange", frame.source)
+    elif frame.kind == "receive":
+        add_qa(items, seen, f"What did {actor} receive?", objects, "exchange", frame.source)
+    elif frame.kind in {"help", "rescue"}:
+        verb = "rescue" if frame.kind == "rescue" else "help"
+        target = patient if frame.patient is not None else objects
+        add_qa(items, seen, f"Who did {actor} {verb}?", target, frame.kind, frame.source)
+    elif frame.kind == "friendship" and frame.actor is not None and frame.patient is not None:
+        add_qa(items, seen, "Who became friends?", f"{frame.actor.id} and {frame.patient.id}", "relationship", frame.source)
+    elif frame.kind == "emotion":
+        feeling = join([emotion_word(c) for c in concepts])
+        add_qa(items, seen, f"How did {actor} feel?", feeling, "emotion", frame.source)
+    elif frame.kind == "lesson":
+        answer = Renderer(world).render_frame(frame).rstrip(".")
+        prefix = f"{actor} learned "
+        if answer.lower().startswith(prefix.lower()):
+            answer = answer[len(prefix):]
+        add_qa(items, seen, f"What did {actor} learn?", answer, "lesson", frame.source)
+    elif frame.kind == "play":
+        play_places = {"beach", "sand", "park", "garden", "yard", "grass", "woods", "playground"}
+        place = next((obj for obj in frame.objects if display_type(obj) in play_places), None)
+        if place is not None:
+            add_qa(items, seen, f"Where did {actor} play?", qa_object(world, place, frame), "location", frame.source)
+        elif frame.patient is not None:
+            add_qa(items, seen, f"Who did {actor} play with?", patient, "relationship", frame.source)
+    elif frame.kind == "visit":
+        target = patient if frame.patient is not None else objects
+        add_qa(items, seen, f"Where did {actor} visit?", target, "location", frame.source)
+    elif frame.kind == "injury":
+        add_qa(items, seen, "Who got hurt?", actor, "problem", frame.source)
+    elif frame.kind == "problem":
+        answer = objects or join(concepts)
+        add_qa(items, seen, f"What problem did {actor} have?", answer, "problem", frame.source)
+    elif frame.kind == "threat":
+        add_qa(items, seen, "What danger appeared?", objects or join(concepts), "problem", frame.source)
+    elif frame.kind == "scare":
+        add_qa(items, seen, "Who scared the danger away?", qa_participants(frame) or actor, "resolution", frame.source)
+    elif frame.kind == "make":
+        add_qa(items, seen, f"What did {actor} make?", objects, "creation", frame.source)
+    elif frame.kind == "unlock":
+        if frame.objects:
+            add_qa(items, seen, f"What did {actor} unlock?", qa_object(world, frame.objects[0], frame), "action", frame.source)
+        if len(frame.objects) >= 2:
+            add_qa(items, seen, f"What did {actor} use?", qa_object(world, frame.objects[1], frame), "instrument", frame.source)
+    elif frame.kind == "blow_away":
+        add_qa(items, seen, "What did the wind blow away?", objects, "cause_effect", frame.source)
+    elif frame.kind == "reunion":
+        party = qa_participants(frame)
+        add_qa(items, seen, "Who was reunited?", party, "relationship", frame.source)
+    return items
+
+
+def build_qa(world: StoryWorld, limit: int | None = None) -> list[QA]:
+    items: list[QA] = []
+    seen: set[tuple[str, str]] = set()
+    priority = {
+        "problem": 0,
+        "desire": 1,
+        "discovery": 2,
+        "object_state": 3,
+        "exchange": 4,
+        "rescue": 5,
+        "relationship": 6,
+        "lesson": 7,
+        "emotion": 8,
+        "location": 9,
+        "character": 20,
+    }
+    for ent in world.declarations:
+        desc = display_type(ent)
+        if ent.traits:
+            desc = f"{' '.join(ent.traits)} {desc}"
+        add_qa(items, seen, f"Who is {ent.id}?", f"{ent.id} is {article(desc)} {desc}.", "character", "declare")
+    for frame in world.history:
+        if frame.salience < 0.18:
+            continue
+        for qa in frame_to_qa(world, frame):
+            key = (qa.question.lower(), qa.answer.lower())
+            if key in seen:
+                continue
+            seen.add(key)
+            items.append(qa)
+    items.sort(key=lambda qa: (priority.get(qa.kind, 20), qa.question))
+    return items if limit is None else items[:limit]
+
+
 def emotion_word(label: str) -> str:
     mapping = {
         "joy": "happy", "happy": "happy", "happiness": "happy",
@@ -1724,21 +1921,33 @@ def main() -> None:
     ap.add_argument("--story-id", help="Generate one TinyStories kernel by id, e.g. data00:18697")
     ap.add_argument("--kernel", help="Generate from an inline kernel string")
     ap.add_argument("--world", action="store_true", help="Print a compact world dump too")
+    ap.add_argument("--qa", action="store_true", help="Print generated question/answer pairs")
+    ap.add_argument("--qa-limit", type=int, default=8, help="Maximum QA pairs to print")
     args = ap.parse_args()
 
     if args.story_id:
         record = load_story(args.story_id)
         kernel = record.get("kernel", "") or ""
-        print(generate(kernel))
+        world = generate_world(kernel)
+        print(render(world))
+        if args.qa:
+            for qa in world.questions(limit=args.qa_limit):
+                print(f"Q: {qa.question}")
+                print(f"A: {qa.answer}")
         if args.world:
-            world = generate_world(kernel)
             print(json.dumps({
                 "entities": {k: {"kind": v.kind, "type": v.type, "state": sorted(v.state), "memes": dict(v.memes)} for k, v in world.entities.items()},
                 "frames": [f.kind for f in world.history],
+                "qa": [{"question": qa.question, "answer": qa.answer, "kind": qa.kind} for qa in world.questions(limit=args.qa_limit)],
             }, indent=2))
         return
     if args.kernel:
-        print(generate(args.kernel))
+        world = generate_world(args.kernel)
+        print(render(world))
+        if args.qa:
+            for qa in world.questions(limit=args.qa_limit):
+                print(f"Q: {qa.question}")
+                print(f"A: {qa.answer}")
         return
     ap.print_help()
 

@@ -99,6 +99,11 @@ def generated_text(story_id: str) -> str:
     return gen7.generate(row.get("kernel", "") or "").strip()
 
 
+def generated_qa(story_id: str, limit: int) -> list[gen7.QA]:
+    row = gen7.load_story(story_id)
+    return gen7.generate_qa(row.get("kernel", "") or "", limit=limit)
+
+
 def snapshot_text(story_id: str) -> str:
     return f"STORY_ID: {story_id}\n\n{generated_text(story_id)}\n"
 
@@ -142,7 +147,7 @@ def sample_story_ids(count: int, seed: int, datasets: list[str], scan: int) -> l
     return sorted(candidates)
 
 
-def print_sample(story_ids: list[str], show_kernel: bool) -> None:
+def print_sample(story_ids: list[str], show_kernel: bool, show_qa: bool, qa_limit: int) -> None:
     for story_id in story_ids:
         row = gen7.load_story(story_id)
         print(f"=== {story_id} ===")
@@ -152,6 +157,12 @@ def print_sample(story_ids: list[str], show_kernel: bool) -> None:
         print()
         print("GENERATED:")
         print(generated_text(story_id))
+        if show_qa:
+            print()
+            print("QA:")
+            for qa in generated_qa(story_id, qa_limit):
+                print(f"Q: {qa.question}")
+                print(f"A: {qa.answer}")
         if show_kernel:
             print()
             print("KERNEL:")
@@ -214,6 +225,28 @@ def run(story_ids: list[str]) -> int:
     return 0
 
 
+def run_qa(story_ids: list[str], qa_limit: int) -> int:
+    failures = 0
+    for story_id in story_ids:
+        pairs = generated_qa(story_id, qa_limit)
+        if not pairs:
+            failures += 1
+            print(f"{story_id}: no QA generated")
+            continue
+        for qa in pairs:
+            if not qa.question.endswith("?"):
+                failures += 1
+                print(f"{story_id}: malformed question {qa.question!r}")
+            if not qa.answer.strip():
+                failures += 1
+                print(f"{story_id}: blank answer for {qa.question!r}")
+    if failures:
+        print(f"{failures} gen7 QA check(s) failed")
+        return 1
+    print(f"ok - generated QA for {len(story_ids)} gen7 stories")
+    return 0
+
+
 def select_ids(args: argparse.Namespace) -> list[str]:
     if args.story_id:
         return args.story_id
@@ -225,17 +258,20 @@ def main() -> int:
     ap.add_argument("--list", action="store_true", help="List pinned story ids")
     ap.add_argument("--pin", action="store_true", help="Write snapshots")
     ap.add_argument("--run", action="store_true", help="Compare snapshots")
+    ap.add_argument("--run-qa", action="store_true", help="Smoke-test generated QA")
     ap.add_argument("--sample", type=int, metavar="N", help="Print N unpinned gen7 sample candidates")
     ap.add_argument("--seed", type=int, default=42, help="Seed for --sample")
     ap.add_argument("--scan", type=int, default=100000, help="Rows per dataset to scan for --sample")
     ap.add_argument("--data", nargs="+", default=["data00", "data01"], help="Datasets for --sample, e.g. data00 data01")
     ap.add_argument("--show-kernel", action="store_true", help="Include kernel source in --sample output")
+    ap.add_argument("--show-qa", action="store_true", help="Include generated QA in --sample output")
+    ap.add_argument("--qa-limit", type=int, default=6, help="Maximum QA pairs to show per sampled story")
     ap.add_argument("story_id", nargs="*", help="Optional story ids; defaults to the pinned gen7 suite")
     args = ap.parse_args()
 
     if args.sample is not None:
         story_ids = sample_story_ids(args.sample, args.seed, args.data, args.scan)
-        print_sample(story_ids, args.show_kernel)
+        print_sample(story_ids, args.show_kernel, args.show_qa, args.qa_limit)
         return 0
 
     story_ids = select_ids(args)
@@ -248,6 +284,8 @@ def main() -> int:
         return 0
     if args.run:
         return run(story_ids)
+    if args.run_qa:
+        return run_qa(story_ids, args.qa_limit)
     ap.print_help()
     return 0
 

@@ -133,8 +133,10 @@ Run it:
 
 ```bash
 python gen7.py --story-id data00:36222
+python gen7.py --story-id data00:36222 --qa
 python gen7_story_tests.py --run
-python gen7_story_tests.py --sample 10 --seed 777 --scan 20000
+python gen7_story_tests.py --run-qa
+python gen7_story_tests.py --sample 10 --seed 777 --scan 20000 --show-qa
 ```
 
 Current slice:
@@ -147,6 +149,7 @@ Current slice:
 | Semantic frames for character setup, find/lost/search/ask/help/give/broken/fix/play/fear/rescue/friendship/lesson/reaction/transform | `Parser.direct_call` + `gen7packs.actions` | ✅ first slice |
 | First renderer pack for desire/find/search/loss/ask/help/play/friendship/lesson/emotion/encounter/problem/transform/visit/object-state frames | `gen7packs.renderers` | ✅ first extraction |
 | Lowercase object/state normalization (`lost(toy)`, `broken(toy)`, `hook(stick,string)`) | `LowerExpr` lowering | ✅ partial |
+| Trace-derived templated QA (`generate_qa`, `StoryWorld.questions`, `--show-qa`) | `gen7.py`, `gen7_story_tests.py` | ✅ first slice |
 | 60 representative pinned stories from `data00` + `data01` | `gen7_story_tests.py`, `gen7_story_tests/` | ✅ snapshots pass |
 
 Known gaps from the first 20 pins:
@@ -160,6 +163,16 @@ Known gaps from the first 20 pins:
       `data00:67975`, `data00:69885`, `data00:99040`, `data01:79405`),
       bringing the suite to 60. Continue adding 5-10 reviewed pins per quality
       pass so regressions and new failure modes stay visible.
+- [~] Add trace-derived QA generation to gen7. `StoryWorld` now carries
+      deterministic templated `QA` pairs built from simulated frames, with
+      `generate_qa(...)`, `gen7.py --qa`, `gen7_story_tests.py --show-qa`, and
+      `--run-qa` for smoke testing. Current templates cover declarations,
+      desires, discoveries, loss/break/fix, exchange, help/rescue, friendship,
+      emotion, lessons, play/visit locations, injuries/problems, threats,
+      scare-away, creation, unlock/instrument, wind effects, and reunion.
+      Remaining work: move QA template registration into packs alongside
+      renderers, add negative/why questions from causal links, and grade QA
+      answerability against original texts.
 - [~] Split gen7 out of the giant-if prototype. The frame-name ontology now lives
       in `gen7packs.actions`, and a first high-frequency renderer batch lives in
       `gen7packs.renderers`. `gen7.py` still owns too much role normalization and
@@ -325,7 +338,7 @@ Known gaps from the first 20 pins:
       now becomes a real lesson frame, repeated lesson topics are collapsed, and
       composed lesson phases such as `Avoidance(...) + Memory(...)` keep their
       concrete child frames instead of re-wrapping them as extra morals.
-- [ ] Add a manual `QUALITY.md` grade for the 55 gen7 pins and compare them
+- [ ] Add a manual `QUALITY.md` grade for the 60 gen7 pins and compare them
       against gen6 output; the harness pins behavior but does not judge it.
 
 ### Still open for `gen6.py`
