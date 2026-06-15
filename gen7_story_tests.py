@@ -131,6 +131,16 @@ STORY_IDS = [
     "data00:67173",
     "data01:32325",
     "data01:64888",
+    "data00:40058",
+    "data00:50592",
+    "data00:75825",
+    "data00:782",
+    "data01:29106",
+    "data01:36002",
+    "data01:45014",
+    "data01:773",
+    "data01:78472",
+    "data01:81764",
 ]
 
 SNAPSHOT_DIR = Path(__file__).parent / "gen7_story_tests"

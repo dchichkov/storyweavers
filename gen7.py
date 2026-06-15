@@ -34,7 +34,7 @@ CHARACTER_TYPES = {
     "bees", "tree", "daughter", "squirrel", "crab", "fox", "ostrich",
     "airplane", "cow", "chick", "pig", "elephant", "vehicle", "peer",
     "monkey", "bug", "human", "elderly", "old", "fairy", "hawk", "owl", "bus", "birds",
-    "animals",
+    "animals", "mechanic", "fisherman",
 }
 GENERIC_TYPES = {"animal", "group", "person"}
 COMPOUNDS = {
@@ -210,7 +210,7 @@ class Entity:
     def pronoun(self, case: str = "subject") -> str:
         t = self.type.lower()
         n = words(self.id)
-        if t in {"adult", "child", "friend", "parent", "person", "speaker", "stranger"}:
+        if t in {"adult", "child", "friend", "parent", "person", "speaker", "stranger", "mechanic", "fisherman"}:
             if n in {"girl", "lily", "lisa", "lucy", "sue", "sally", "sarah", "anna", "daughter", "mom", "mommy", "mum", "mother"}:
                 return {"subject": "she", "object": "her", "possessive": "her"}[case]
             if n in {"boy", "tim", "timmy", "joe", "ben", "sam", "paul", "old man", "oldman", "man", "dad", "daddy", "father"}:
@@ -379,6 +379,9 @@ class StoryWorld:
         elif frame.kind in {"help", "rescue"} and actor is not None and frame.patient is not None:
             actor.add_relation("Help", frame.patient, 1.0)
             frame.patient.add_meme("Relief", 0.5)
+        elif frame.kind == "comfort" and actor is not None:
+            actor.add_meme("Relief", 0.4)
+            actor.add_meme("Joy", 0.1)
         elif frame.kind == "friendship" and actor is not None and frame.patient is not None:
             actor.add_relation("Friendship", frame.patient, 1.0)
             frame.patient.add_relation("Friendship", actor, 1.0)
@@ -718,8 +721,8 @@ class Parser:
         rest = list(node.args[1:])
         explicit_type = ""
         traits: list[str] = []
-        if rest and isinstance(rest[0], ast.Name) and rest[0].id[:1].islower() and rest[0].id in CHARACTER_TYPES:
-            explicit_type = rest.pop(0).id
+        if rest and isinstance(rest[0], ast.Name) and words(rest[0].id) in CHARACTER_TYPES:
+            explicit_type = words(rest.pop(0).id)
         for arg in rest:
             traits.extend(node_labels(arg))
         type_name = "group" if marker in {"CharacterGroup", "Group"} else infer_type(name, explicit_type)
@@ -947,6 +950,8 @@ class Parser:
             actor, patient = self.local_actor, chars[0]
         elif frame_kind == "ask" and patient is None and len(chars) == 1 and self.current_actor is not None and self.current_actor != actor:
             patient = self.current_actor
+        if frame_kind == "comfort" and patient is None and len(chars) == 1 and self.local_actor is not None and chars[0] != self.local_actor:
+            actor, patient = chars[0], self.local_actor
         if frame_kind in {"scold", "protect", "warning"} and patient is None and len(chars) == 1 and self.current_actor is not None and self.current_actor != actor:
             patient = self.current_actor
         if frame_kind == "forgiveness" and patient is None and len(chars) == 1 and self.current_actor is not None and self.current_actor != actor:
@@ -1907,6 +1912,8 @@ def format_qa_answer(question: str, answer: str) -> str:
                 return response(f"{actor} wanted to travel", f"That desire helps guide {actor}'s actions")
             if fragment in {"the splash", "splash"}:
                 return response(f"{actor} wanted to splash in the puddle", f"That desire helps guide {actor}'s actions")
+            if fragment in {"the sail", "sail"}:
+                return response(f"{actor} wanted to sail", f"That desire helps guide {actor}'s actions")
             if fragment in {"the pretty", "pretty"}:
                 return response(f"{actor} wanted something pretty", f"That desire helps guide {actor}'s actions")
             if fragment in {"the big and the pretty", "big and pretty"}:
@@ -1937,6 +1944,13 @@ def format_qa_answer(question: str, answer: str) -> str:
             return response(f"{actor} dreamed about {fragment}", "That dream is part of the story trace")
         return response(f"{actor} tried to print {fragment}", "That attempt is part of the story trace")
 
+    m = re.match(r"^What comforted (.+?)\?$", question)
+    if m:
+        actor = m.group(1)
+        if fragment in {"warm", "the warm"}:
+            return response(f"Feeling warm comforted {actor}", f"That comfort changes {actor}'s story state")
+        return response(f"{cap(fragment)} comforted {actor}", f"That comfort changes {actor}'s story state")
+
     m = re.match(r"^Who did (.+?) give to\?$", question)
     if m:
         actor = m.group(1)
@@ -1953,6 +1967,11 @@ def format_qa_answer(question: str, answer: str) -> str:
         actor, verb = m.groups()
         past = "rescued" if verb == "rescue" else "helped"
         return response(f"{actor} {past} {fragment}", "That answer follows the helper and patient roles")
+
+    m = re.match(r"^Who did (.+?) comfort\?$", question)
+    if m:
+        actor = m.group(1)
+        return response(f"{actor} comforted {fragment}", "That answer follows the comforter and patient roles")
 
     m = re.match(r"^How did (.+?) feel\?$", question)
     if m:
@@ -2031,6 +2050,12 @@ def frame_to_qa(world: StoryWorld, frame: Frame) -> list[QA]:
         verb = "rescue" if frame.kind == "rescue" else "help"
         target = patient if frame.patient is not None else objects
         add_qa(items, seen, f"Who did {actor} {verb}?", target, frame.kind, frame.source)
+    elif frame.kind == "comfort":
+        if frame.patient is not None:
+            add_qa(items, seen, f"Who did {actor} comfort?", patient, "comfort", frame.source)
+        else:
+            target = objects or "comfort"
+            add_qa(items, seen, f"What comforted {actor}?", target, "comfort", frame.source)
     elif frame.kind == "friendship" and frame.actor is not None and frame.patient is not None:
         add_qa(items, seen, "Who became friends?", f"{frame.actor.id} and {frame.patient.id}", "relationship", frame.source)
     elif frame.kind == "emotion":
@@ -2099,6 +2124,7 @@ def frame_to_qa(world: StoryWorld, frame: Frame) -> list[QA]:
 def build_qa(world: StoryWorld, limit: int | None = None) -> list[QA]:
     items: list[QA] = []
     seen: set[tuple[str, str]] = set()
+    by_question: dict[str, int] = {}
     priority = {
         "problem": 0,
         "desire": 1,
@@ -2108,8 +2134,9 @@ def build_qa(world: StoryWorld, limit: int | None = None) -> list[QA]:
         "rescue": 5,
         "relationship": 6,
         "lesson": 7,
-        "emotion": 8,
-        "location": 9,
+        "comfort": 8,
+        "emotion": 9,
+        "location": 10,
         "character": 20,
     }
     for ent in world.declarations:
@@ -2122,6 +2149,8 @@ def build_qa(world: StoryWorld, limit: int | None = None) -> list[QA]:
         else:
             answer = f"{ent.id} is {article(desc)} {desc}."
         add_qa(items, seen, f"Who is {ent.id}?", answer, "character", "declare")
+        if items:
+            by_question[items[-1].question.lower()] = len(items) - 1
     for frame in world.history:
         if frame.salience < 0.18:
             continue
@@ -2130,7 +2159,14 @@ def build_qa(world: StoryWorld, limit: int | None = None) -> list[QA]:
             if key in seen:
                 continue
             seen.add(key)
+            question_key = qa.question.lower()
+            if question_key in by_question and qa.kind != "character":
+                prior = items[by_question[question_key]]
+                if prior.kind != "character":
+                    items[by_question[question_key]] = qa
+                    continue
             items.append(qa)
+            by_question[question_key] = len(items) - 1
     items.sort(key=lambda qa: (priority.get(qa.kind, 20), qa.question))
     return items if limit is None else items[:limit]
 

@@ -95,7 +95,7 @@ python gen7_story_tests.py --run-qa --qa-limit 12
 python gen7_story_tests.py --sample 10 --seed 777 --scan 20000 --show-qa --qa-limit 8
 ```
 
-The gen7 snapshot runner pins 116 representative stories, including known problem
+The gen7 snapshot runner pins 126 representative stories, including known problem
 cases from both `data00` and `data01`, so quality/world-model changes can improve
 the semantic slice without silently regressing it. Use `--sample N` during quality
 passes to inspect deterministic unpinned candidates; promote 5-10 reviewed stories

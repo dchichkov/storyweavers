@@ -23,7 +23,7 @@ ALIASES = {
     "want": "want", "desire": "want", "longing": "want",
     "lost": "lost", "loss": "lost", "lose": "lost",
     "search": "search", "ask": "ask", "request": "ask",
-    "help": "help", "assist": "help", "comfort": "help",
+    "help": "help", "assist": "help", "comfort": "comfort",
     "give": "give", "gift": "give", "receive": "receive", "obtain": "receive",
     "break": "break", "broken": "broken", "fix": "fix", "repair": "fix",
     "play": "play", "fear": "fear", "rescue": "rescue", "save": "rescue",

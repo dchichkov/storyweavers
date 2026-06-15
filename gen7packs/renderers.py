@@ -134,6 +134,8 @@ def render_want(renderer, frame):
         return f"{subject} wanted to travel."
     if "splash" in object_names or "splash" in concepts:
         return f"{subject} wanted to splash in the puddle."
+    if "sail" in object_names or "sail" in concepts:
+        return f"{subject} wanted to sail."
     if {"big", "pretty"}.issubset(object_names) or {"big", "pretty"}.issubset(set(concepts)):
         return f"{subject} wanted to be big and pretty."
     if any(display_type(o) == "pretty" for o in frame.objects) or "pretty" in concepts:
@@ -161,6 +163,8 @@ def render_want(renderer, frame):
         return f"{subject} wanted to travel."
     if goal in {"the splash", "splash"}:
         return f"{subject} wanted to splash in the puddle."
+    if goal in {"the sail", "sail"}:
+        return f"{subject} wanted to sail."
     if goal in {"the pretty", "pretty"}:
         return f"{subject} wanted something pretty."
     if goal in {"the big and the pretty", "big and pretty"}:
@@ -268,6 +272,22 @@ def render_help(renderer, frame):
     if frame.patient is None and not objects and frame.kind == "help":
         return f"{subject} helped."
     return f"{subject} {verb} {target}."
+
+
+@REGISTRY.renderer("comfort")
+def render_comfort(renderer, frame):
+    subject = renderer.subj(frame.actor)
+    objects = renderer.objs(frame)
+    if frame.patient is not None:
+        target = renderer.obj(frame.patient)
+        if objects:
+            return f"{subject} comforted {target} with {objects}."
+        return f"{subject} comforted {target}."
+    if objects:
+        if {display_type(o) for o in frame.objects} <= {"warm", "inside"}:
+            return f"{subject} felt warm and comforted."
+        return f"{subject} felt better with {objects}."
+    return f"{subject} felt comforted."
 
 
 @REGISTRY.renderer("injury")

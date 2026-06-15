@@ -150,7 +150,7 @@ Current slice:
 | First renderer pack for desire/find/search/loss/ask/help/play/friendship/lesson/emotion/encounter/problem/transform/visit/object-state frames | `gen7packs.renderers` | ✅ first extraction |
 | Lowercase object/state normalization (`lost(toy)`, `broken(toy)`, `hook(stick,string)`) | `LowerExpr` lowering | ✅ partial |
 | Trace-derived templated QA (`generate_qa`, `StoryWorld.questions`, `--show-qa`) | `gen7.py`, `gen7_story_tests.py` | ✅ first slice |
-| 116 representative pinned stories from `data00` + `data01` | `gen7_story_tests.py`, `gen7_story_tests/` | ✅ snapshots pass |
+| 126 representative pinned stories from `data00` + `data01` | `gen7_story_tests.py`, `gen7_story_tests/` | ✅ snapshots pass |
 
 Known gaps from the first 20 pins:
 
@@ -185,6 +185,12 @@ Known gaps from the first 20 pins:
       fresh QA/narrative pressure around nested rescue roles, Quest/Longing
       dedupe, stolen-object ownership, apology/friendship, and rough sampled
       failures.
+      A tenth pass promoted 10 more (`data00:40058`, `data00:50592`,
+      `data00:75825`, `data00:782`, `data01:29106`, `data01:36002`,
+      `data01:45014`, `data01:773`, `data01:78472`, `data01:81764`), bringing
+      the suite to 126 and covering reveal/share, mechanic repair QA, accident
+      recovery, rescue-role failures, transformation, comfort state, permission
+      consequences, friendship, and sail/desire rendering.
       Continue adding 5-10 reviewed pins per quality pass so regressions and new
       failure modes stay visible.
 - [~] Add trace-derived QA generation to gen7. `StoryWorld` now carries
@@ -214,8 +220,8 @@ Known gaps from the first 20 pins:
       friendship QA can still miss late tragic outcomes.
 - [~] Upgrade gen7 QA answers from bare facts to full responses. QA answers now
       normalize fragments into complete two-sentence responses and `--run-qa`
-      reports 100% full-response / multi-sentence rate on the 116 pinned stories
-      (`620` QA pairs at `--qa-limit 12`, 18 question kinds, 3.1% duplicate
+      reports 100% full-response / multi-sentence rate on the 126 pinned stories
+      (`661` QA pairs at `--qa-limit 12`, 19 question kinds, 0.0% duplicate
       questions).
       Remaining work: make the second sentence less generic by using richer
       causal/world context, for example: "Max found the key in the grass. He kept
@@ -277,7 +283,7 @@ Known gaps from the first 20 pins:
       `gen7packs.renderers`. `gen7.py` still owns too much role normalization and
       many residual render branches; next migrations should move direct-call
       special cases into `direct_handler` packs and split world constraints/effects
-      by frame kind while keeping the 116 snapshots green.
+      by frame kind while keeping the 126 snapshots green.
 - [~] Continue pack-local quality fixes from rough samples. Untyped common names
       now infer likely child/person types (`Lily(Character, Neat + Kind)` renders
       as a girl rather than a literal "lily"), play locations use scene
@@ -446,7 +452,7 @@ Known gaps from the first 20 pins:
       now becomes a real lesson frame, repeated lesson topics are collapsed, and
       composed lesson phases such as `Avoidance(...) + Memory(...)` keep their
       concrete child frames instead of re-wrapping them as extra morals.
-- [ ] Add a manual `QUALITY.md` grade for the 116 gen7 pins and compare them
+- [ ] Add a manual `QUALITY.md` grade for the 126 gen7 pins and compare them
       against gen6 output; the harness pins behavior but does not judge it.
 
 ### Still open for `gen6.py`
