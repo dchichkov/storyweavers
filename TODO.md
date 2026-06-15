@@ -134,6 +134,7 @@ Run it:
 ```bash
 python gen7.py --story-id data00:36222
 python gen7_story_tests.py --run
+python gen7_story_tests.py --sample 10 --seed 777 --scan 20000
 ```
 
 Current slice:
@@ -146,10 +147,17 @@ Current slice:
 | Semantic frames for character setup, find/lost/search/ask/help/give/broken/fix/play/fear/rescue/friendship/lesson/reaction/transform | `Parser.direct_call` + `gen7packs.actions` | ✅ first slice |
 | First renderer pack for desire/find/search/loss/ask/help/play/friendship/lesson/emotion/encounter/problem/transform/visit/object-state frames | `gen7packs.renderers` | ✅ first extraction |
 | Lowercase object/state normalization (`lost(toy)`, `broken(toy)`, `hook(stick,string)`) | `LowerExpr` lowering | ✅ partial |
-| 50 representative pinned stories from `data00` + `data01` | `gen7_story_tests.py`, `gen7_story_tests/` | ✅ snapshots pass |
+| 55 representative pinned stories from `data00` + `data01` | `gen7_story_tests.py`, `gen7_story_tests/` | ✅ snapshots pass |
 
 Known gaps from the first 20 pins:
 
+- [~] Scale gen7 sampling as part of every quality iteration. `gen7_story_tests.py`
+      now has `--sample N --seed S --scan M`, which prints deterministic
+      unpinned gen7 candidates with summary, generated text, and original text.
+      The first sampled batch promoted 5 additional pins (`data00:14971`,
+      `data00:18138`, `data00:18146`, `data00:9315`, `data01:3375`), bringing
+      the suite to 55. Continue adding 5-10 reviewed pins per quality pass so
+      regressions and new failure modes stay visible.
 - [~] Split gen7 out of the giant-if prototype. The frame-name ontology now lives
       in `gen7packs.actions`, and a first high-frequency renderer batch lives in
       `gen7packs.renderers`. `gen7.py` still owns too much role normalization and
@@ -297,7 +305,7 @@ Known gaps from the first 20 pins:
       now becomes a real lesson frame, repeated lesson topics are collapsed, and
       composed lesson phases such as `Avoidance(...) + Memory(...)` keep their
       concrete child frames instead of re-wrapping them as extra morals.
-- [ ] Add a manual `QUALITY.md` grade for the 50 gen7 pins and compare them
+- [ ] Add a manual `QUALITY.md` grade for the 55 gen7 pins and compare them
       against gen6 output; the harness pins behavior but does not judge it.
 
 ### Still open for `gen6.py`

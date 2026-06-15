@@ -4,7 +4,10 @@
 from __future__ import annotations
 
 import argparse
+import ast
 import difflib
+import json
+import random
 import re
 from pathlib import Path
 
@@ -62,9 +65,15 @@ STORY_IDS = [
     "data01:9606",
     "data00:99939",
     "data01:73907",
+    "data00:14971",
+    "data00:18138",
+    "data00:18146",
+    "data00:9315",
+    "data01:3375",
 ]
 
 SNAPSHOT_DIR = Path(__file__).parent / "gen7_story_tests"
+DATA_DIR = Path(__file__).parent / "TinyStories_kernels"
 SELF_EVENT = re.compile(r"\b([A-Z][A-Za-z]+)\b came across \1\b")
 FORBIDDEN = (
     "Something happened",
@@ -87,6 +96,67 @@ def generated_text(story_id: str) -> str:
 
 def snapshot_text(story_id: str) -> str:
     return f"STORY_ID: {story_id}\n\n{generated_text(story_id)}\n"
+
+
+def dataset_path(dataset: str) -> Path:
+    return DATA_DIR / f"{dataset}.kernels.jsonl"
+
+
+def iter_story_rows(datasets: list[str], scan: int):
+    for dataset in datasets:
+        path = dataset_path(dataset)
+        with path.open() as f:
+            for i, raw in enumerate(f):
+                if i >= scan:
+                    break
+                try:
+                    row = json.loads(raw)
+                except Exception:
+                    continue
+                yield f"{dataset}:{i}", row
+
+
+def sample_story_ids(count: int, seed: int, datasets: list[str], scan: int) -> list[str]:
+    pinned = set(STORY_IDS)
+    candidates: list[str] = []
+    for story_id, row in iter_story_rows(datasets, scan):
+        if story_id in pinned:
+            continue
+        kernel = row.get("kernel", "") or ""
+        if not kernel.strip():
+            continue
+        try:
+            ast.parse(kernel)
+            if gen7.generate(kernel).strip():
+                candidates.append(story_id)
+        except Exception:
+            continue
+    rng = random.Random(seed)
+    if len(candidates) > count:
+        candidates = rng.sample(candidates, count)
+    return sorted(candidates)
+
+
+def print_sample(story_ids: list[str], show_kernel: bool) -> None:
+    for story_id in story_ids:
+        row = gen7.load_story(story_id)
+        print(f"=== {story_id} ===")
+        summary = (row.get("summary") or "").strip()
+        if summary:
+            print(f"SUMMARY: {summary}")
+        print()
+        print("GENERATED:")
+        print(generated_text(story_id))
+        if show_kernel:
+            print()
+            print("KERNEL:")
+            print((row.get("kernel") or "").strip())
+        original = (row.get("story") or "").strip()
+        if original:
+            print()
+            print("ORIGINAL:")
+            print(original)
+        print()
 
 
 def validate(story_id: str, text: str) -> list[str]:
@@ -150,8 +220,18 @@ def main() -> int:
     ap.add_argument("--list", action="store_true", help="List pinned story ids")
     ap.add_argument("--pin", action="store_true", help="Write snapshots")
     ap.add_argument("--run", action="store_true", help="Compare snapshots")
-    ap.add_argument("story_id", nargs="*", help="Optional story ids; defaults to the 20-story slice")
+    ap.add_argument("--sample", type=int, metavar="N", help="Print N unpinned gen7 sample candidates")
+    ap.add_argument("--seed", type=int, default=42, help="Seed for --sample")
+    ap.add_argument("--scan", type=int, default=100000, help="Rows per dataset to scan for --sample")
+    ap.add_argument("--data", nargs="+", default=["data00", "data01"], help="Datasets for --sample, e.g. data00 data01")
+    ap.add_argument("--show-kernel", action="store_true", help="Include kernel source in --sample output")
+    ap.add_argument("story_id", nargs="*", help="Optional story ids; defaults to the pinned gen7 suite")
     args = ap.parse_args()
+
+    if args.sample is not None:
+        story_ids = sample_story_ids(args.sample, args.seed, args.data, args.scan)
+        print_sample(story_ids, args.show_kernel)
+        return 0
 
     story_ids = select_ids(args)
     if args.list:
