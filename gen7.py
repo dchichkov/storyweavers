@@ -33,7 +33,7 @@ CHARACTER_TYPES = {
     "mouse", "parent", "person", "puppy", "rabbit", "turkey", "twin", "woman",
     "bees", "tree", "daughter", "squirrel", "crab", "fox", "ostrich",
     "airplane", "cow", "chick", "pig", "elephant", "vehicle", "peer",
-    "monkey", "bug",
+    "monkey", "bug", "human", "elderly", "old",
 }
 GENERIC_TYPES = {"animal", "group", "person"}
 COMPOUNDS = {
@@ -454,10 +454,17 @@ def infer_type(name: str, explicit: str) -> str:
         "mom": "mother", "mommy": "mother", "dad": "father",
         "daddy": "father", "old lady": "old lady", "baby bird": "bird",
         "daughter": "daughter", "friend": "friend",
+        "mrs johnson": "woman", "mr jenkins": "man",
     }
     explicit_words = words(explicit)
     if explicit_words == "bird" and n in {"baby bird", "turkey", "chick"}:
         return n
+    if explicit_words == "human":
+        return aliases.get(n, "person")
+    if explicit_words == "elderly":
+        return aliases.get(n, "old person")
+    if explicit_words == "old":
+        return aliases.get(n, "old man")
     if explicit_words in {"adult", "parent", "person", "peer"} and n in aliases:
         return aliases[n]
     if explicit_words == "peer":
@@ -468,7 +475,7 @@ def infer_type(name: str, explicit: str) -> str:
         return aliases[n]
     if n in {"lily", "lucy", "sue", "sara", "sarah", "anna", "emma", "lisa"}:
         return "girl"
-    if n in {"tim", "timmy", "sam", "ben", "paul", "joe"}:
+    if n in {"tim", "timmy", "sam", "ben", "paul", "joe", "frank", "pete"}:
         return "boy"
     if n == "seed":
         return "seed"
@@ -477,6 +484,7 @@ def infer_type(name: str, explicit: str) -> str:
         "bunny", "rabbit", "bee", "bees", "duck", "frog", "tree", "bear",
         "fish", "mole", "squirrel", "crab", "fox", "ostrich", "airplane",
         "cow", "chick", "pig", "elephant", "vehicle", "ant", "monkey", "bug",
+        "train", "flower",
     }:
         return n
     return "person"
@@ -565,6 +573,7 @@ class Parser:
         self.world = StoryWorld()
         self.frames: list[Frame] = []
         self.current_actor: Entity | None = None
+        self.local_actor: Entity | None = None
 
     def parse(self, source: str) -> list[Frame]:
         tree = ast.parse(source)
@@ -636,7 +645,14 @@ class Parser:
         if name[:1].islower():
             return self.lower_call(node)
 
+        previous_actor = self.current_actor
+        previous_local_actor = self.local_actor
         arg_results = [self.eval_expr(arg, context=context, role=role) for arg in node.args]
+        arg_values = flatten([r.values for r in arg_results])
+        arg_chars = [v for v in arg_values if is_character(v)]
+        if arg_chars:
+            self.current_actor = arg_chars[0]
+            self.local_actor = arg_chars[0]
         kw_results = {
             kw.arg: self.eval_expr(
                 kw.value,
@@ -646,10 +662,13 @@ class Parser:
             for kw in node.keywords
             if kw.arg
         }
+        if arg_chars:
+            self.current_actor = previous_actor
+            self.local_actor = previous_local_actor
         child_frames = [f for r in arg_results for f in r.frames]
         for r in kw_results.values():
             child_frames.extend(r.frames)
-        values = flatten([r.values for r in arg_results])
+        values = arg_values
         kw_values = {k: flatten([r.values]) for k, r in kw_results.items()}
 
         if role == "goal" and name in {"Find", "Search", "Rescue", "Fix", "Return"}:
@@ -720,6 +739,7 @@ class Parser:
             else named_actor
             or first_character(flatten(kw_values.get("hero", []) + kw_values.get("protagonist", [])))
             or (participant_chars[0] if participant_chars else None)
+            or self.local_actor
             or self.current_actor
         )
         if actor is not None:
@@ -810,7 +830,7 @@ class Parser:
             if key in skip:
                 continue
             for value in kw_values.get(key, []):
-                if key in {"lesson", "moral"} and isinstance(value, Memeplex):
+                if isinstance(value, Memeplex):
                     labels = set(value.labels())
                     if labels and any(frame.source in labels for frame in child_frames):
                         continue
@@ -867,7 +887,7 @@ class Parser:
                 return result
         chars = [v for v in values if is_character(v)]
         participant_chars = [v for v in flatten(kw_values.get("participants", [])) if is_character(v)]
-        fallback_actor = None if role in PHASE_KEYS else self.current_actor
+        fallback_actor = self.local_actor if role in PHASE_KEYS else self.current_actor
         actor = chars[0] if chars else self.actor_from_kwargs(kw_values) or (participant_chars[0] if participant_chars else None) or fallback_actor
         patient = chars[1] if len(chars) > 1 else (
             participant_chars[1] if len(participant_chars) > 1 else None
@@ -897,7 +917,14 @@ class Parser:
 
         if frame_kind == "encounter" and len(chars) == 1 and self.current_actor is not None and self.current_actor != chars[0]:
             actor, patient = self.current_actor, chars[0]
-        if frame_kind == "ask" and patient is None and len(chars) == 1 and self.current_actor is not None and self.current_actor != actor:
+        if (
+            frame_kind in {"ask", "teach"}
+            and self.local_actor is not None
+            and len(chars) == 1
+            and chars[0] != self.local_actor
+        ):
+            actor, patient = self.local_actor, chars[0]
+        elif frame_kind == "ask" and patient is None and len(chars) == 1 and self.current_actor is not None and self.current_actor != actor:
             patient = self.current_actor
         if frame_kind in {"scold", "protect", "warning"} and patient is None and len(chars) == 1 and self.current_actor is not None and self.current_actor != actor:
             patient = self.current_actor
@@ -928,6 +955,8 @@ class Parser:
         else:
             result = first_value(flatten(kw_values.get("result", []) + kw_values.get("outcome", [])))
         positional_goal = first_value([v for v in values[2:] if not is_character(v)])
+        if frame_kind == "ask" and self.local_actor is not None and len(chars) == 1:
+            positional_goal = first_value([v for v in values if not is_character(v)])
         goal = first_value(flatten(
             kw_values.get("goal", [])
             + kw_values.get("desire", [])
@@ -995,6 +1024,8 @@ class Parser:
             source=name,
             meta={"participants": chars + participant_chars + companion_chars},
         )
+        if actor is not None and (chars or (role in PHASE_KEYS and self.local_actor is not None)):
+            frame.meta["actor_locked"] = True
         if assisted_child is not None:
             frame.meta["assisted_action"] = assisted_child.kind
         if desired_child is not None:
@@ -1859,6 +1890,11 @@ def format_qa_answer(question: str, answer: str) -> str:
         actor = m.group(1)
         return response(f"{actor} felt {fragment}", f"That feeling is tracked on {actor} in the story state")
 
+    m = re.match(r"^Did (.+?) feel (.+?)\?$", question)
+    if m:
+        actor, feeling = m.groups()
+        return response(f"Yes, {actor} felt {feeling}", f"That feeling is tracked on {actor} in the story state")
+
     m = re.match(r"^Where did (.+?) (play|visit)\?$", question)
     if m:
         actor, verb = m.groups()
@@ -1920,7 +1956,10 @@ def frame_to_qa(world: StoryWorld, frame: Frame) -> list[QA]:
         add_qa(items, seen, "Who became friends?", f"{frame.actor.id} and {frame.patient.id}", "relationship", frame.source)
     elif frame.kind == "emotion":
         feeling = join([emotion_word(c) for c in concepts])
-        add_qa(items, seen, f"How did {actor} feel?", feeling, "emotion", frame.source)
+        if feeling and " and " not in feeling and "," not in feeling:
+            add_qa(items, seen, f"Did {actor} feel {feeling}?", "yes", "emotion", frame.source)
+        else:
+            add_qa(items, seen, f"How did {actor} feel?", feeling, "emotion", frame.source)
     elif frame.kind == "lesson":
         answer = Renderer(world).render_frame(frame).rstrip(".")
         prefix = f"{actor} learned "
