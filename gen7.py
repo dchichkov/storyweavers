@@ -34,12 +34,13 @@ CHARACTER_TYPES = {
     "bees", "tree", "daughter", "squirrel", "crab", "fox", "ostrich",
     "airplane", "cow", "chick", "pig", "elephant", "vehicle", "peer",
     "monkey", "bug", "human", "elderly", "old", "fairy", "hawk", "owl", "bus", "birds",
-    "animals", "mechanic", "fisherman", "boat", "boats",
+    "animals", "mechanic", "fisherman", "boat", "boats", "insect",
 }
 GENERIC_TYPES = {"animal", "group", "person"}
 COMPOUNDS = {
     "secretroom": "secret room",
     "screenaddict": "screen addict",
+    "manylegs": "many legs",
     "warmplace": "warm place",
     "whenalone": "when alone",
     "why sad": "why she was sad",
@@ -84,6 +85,7 @@ OBJECT_MODIFIERS = {
     "big", "small", "tiny", "little", "purple", "green", "blue", "yellow",
     "red", "shiny", "bright", "beautiful", "pretty", "colorful", "brilliant",
     "juicy", "hidden", "favorite", "rough", "distant", "clean", "dirty",
+    "old", "new", "enormous",
 }
 ACTION_MEMES = {
     "Run": "run", "Persistence": "persist", "Victory": "victory",
@@ -477,6 +479,8 @@ def infer_type(name: str, explicit: str) -> str:
     explicit_words = words(explicit)
     if explicit_words == "bird" and n in {"baby bird", "turkey", "chick"}:
         return n
+    if explicit_words == "insect" and n in {"ant", "butterfly", "bug"}:
+        return n
     if explicit_words == "human":
         return aliases.get(n, "person")
     if explicit_words == "elderly":
@@ -520,9 +524,15 @@ def display_type(ent: Entity) -> str:
 
 def trait_text(ent: Entity) -> str:
     typ_words = set(words(display_type(ent)).split())
+    broad_type_traits = {"adult", "animal", "child", "girl", "boy", "person", "insect"}
     traits = [
         t for t in ent.traits
-        if t and t not in {"human", "male", "female", ent.type, display_type(ent)} and not set(words(t).split()).issubset(typ_words)
+        if (
+            t
+            and t not in {"human", "male", "female", ent.type, display_type(ent)}
+            and t not in broad_type_traits
+            and not set(words(t).split()).issubset(typ_words)
+        )
     ]
     return " ".join(traits[:2])
 
