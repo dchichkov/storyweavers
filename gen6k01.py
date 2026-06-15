@@ -346,6 +346,9 @@ def Discovery(ctx: World, char: Actor, thing: Physical = None, **kw: Any) -> str
         return f"{ctx.say(char)} discovered {thing}."
     obj = _has(kw, "object", "what")
     if obj is not None:
+        cs = child_sentences(obj)
+        if cs:
+            return coherent(ctx, char, [f"{ctx.say(char)} discovered something unusual."] + cs)
         return f"{ctx.say(char)} discovered {to_phrase(obj)}."
     return f"{ctx.say(char)} made a wonderful discovery."
 

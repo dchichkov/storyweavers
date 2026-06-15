@@ -148,8 +148,8 @@ and kernel-library size.
 |--------|-------------|--------------|------|-------|
 | Parse OK (`ast.parse`) | 83.5% | 83.5% | ~80.8% | Same format; remaining ~16% is non-Python the LLM emitted |
 | Execute end-to-end (no exception) | 0.2% | **99.9%** | 96.5% | Fallback never raises → higher than gen5 |
-| Kernel-name coverage (usages) | 36.9% | **92.5%** | 85.0% | 1044 kernel names / 1078 variants; coverage push #08 moved gen6 past the 92% target |
-| Stories ≥90% kernel-covered | — | 35,355 | 26,982 | long tail remains, but gen6 now exceeds the old gen5 coverage snapshot |
+| Kernel-name coverage (usages) | 36.9% | **93.0%** | 85.0% | 1161 kernel names / 1195 variants; data01-driven coverage push also lifted data00 past 93% |
+| Stories ≥90% kernel-covered | — | 40,631 | 26,982 | long tail remains, but gen6 now exceeds the old gen5 coverage snapshot |
 
 The robustness headline is resolved: **0.2% → 99.9% end-to-end execution**. The
 remaining gap to gen5 is purely **kernel-library size** (port more kernels).
@@ -275,6 +275,20 @@ remaining gap to gen5 is purely **kernel-library size** (port more kernels).
       for overly bland prose. **Measured:** `1044` names / `1078` variants,
       **92.5% coverage**, **35,355** high-coverage stories, **99.9%**
       end-to-end execution OK.
+- [x] **gen6k09.py / data01 pass** — coverage push for `data01` specifically.
+      Baseline was **90.5%** on `TinyStories_kernels/data01.kernels.jsonl`; after
+      sampling the highest-frequency missing data01 kernels (`Show`, `Lost`,
+      `Harmony`, `Roll`, `Empathy`, `Party`, `Playground`, etc.) and adding a
+      focused state/action/meta pack, data01 reached **92.9% coverage** with
+      **40,213** high-coverage stories and **100.0%** execution OK. The same pack
+      also lifts the default data00 snapshot to **93.0% coverage**, **40,631**
+      high-coverage stories, **99.9%** execution OK. Quality follow-up included
+      routing rich `Lesson(..., catalyst=..., process=..., outcome=...)` calls
+      through `meta_story` in `gen6k06.py` and preventing `Discovery(object=Trace)`
+      from splicing child sentences into noun slots in `gen6k01.py`. Remaining
+      data01 missing kernels are now low-frequency (top missing usage ~54), so
+      next gains should be selected by story quality defects rather than raw
+      coverage alone.
 - [x] **gen6k03 design note**: real calls capitalize objects (`Break(Vase)`,
       `Build(Stack, block)`), so capitalized undefined names arrive as concept
       *strings*, not `Physical` entities. `gen6k03` kernels take untyped `*args`

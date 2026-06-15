@@ -158,6 +158,12 @@ def WarningTolerant(ctx: World, *args: Any, **kw: Any) -> str:
 def LessonTolerant(ctx: World, *args: Any, **kw: Any) -> str:
     chars, rest = _split(args)
     hero = chars[0] if chars else None
+    if hero is not None and is_meta_call(kw):
+        hero.add_meme("Wisdom", 1.0)
+        ctx.actor = hero
+        body = meta_story(ctx, hero, kw)
+        lead = f"{ctx.say(hero)} learned an important lesson."
+        return coherent(ctx, hero, [lead] + ([body] if body else []))
     # A short, reducible action Trace / plain concept goes into "a lesson about
     # <X>" as a gerund/noun ("warned everyone" -> "warning everyone"). Anything
     # that can't cleanly reduce (existential / multi-clause Compose trace) is
