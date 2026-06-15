@@ -182,6 +182,14 @@ Known gaps from the first 20 pins:
       Lily lost her toy..." instead of making the dog own the toy. Remaining
       work: generalize inventory beyond play/toy traits and render damaged/lost
       state with richer recovery/repair consequences.
+- [~] Clean up vague structural renderer fallbacks. Empty `Routine(...)` wrappers
+      now drop instead of rendering "had a familiar routine", location-only
+      routines avoid duplicating later concrete scene actions, routine participant
+      groups propagate into child play frames, vague `Outcome(... Friendship ...)`
+      wrappers are suppressed, and stateful outcomes such as the seed story render
+      a real consequence ("stayed small and felt sad"). Remaining work: replace
+      the remaining generic lesson phrasings with state-aware morals and move
+      these renderer overrides into smaller domain packs as the ontology grows.
 - [~] Improve phase ordering inside structural calls. `Rescue(...)`, `Deal(...)`,
       `Idea(...)`, and `Race(...)` now reorder parent/child frames more
       coherently; `Cautionary(...)` now defers generic lessons until after the

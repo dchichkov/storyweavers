@@ -208,7 +208,7 @@ class Entity:
             return {"subject": "he", "object": "him", "possessive": "his"}[case]
         if t in {"group", "children", "people", "bees"}:
             return {"subject": "they", "object": "them", "possessive": "their"}[case]
-        if t in {"bird", "dog", "cat", "mouse", "turkey", "bear", "bee", "fish", "frog", "rabbit", "bunny", "duck", "barrel", "tree", "squirrel", "crab", "fox", "ostrich", "airplane", "cow", "chick", "pig", "elephant", "vehicle"}:
+        if t in {"bird", "dog", "cat", "mouse", "turkey", "bear", "bee", "fish", "frog", "rabbit", "bunny", "duck", "barrel", "tree", "squirrel", "crab", "fox", "ostrich", "airplane", "cow", "chick", "pig", "elephant", "vehicle", "seed"}:
             return {"subject": "it", "object": "it", "possessive": "its"}[case]
         return {"subject": "they", "object": "them", "possessive": "their"}[case]
 
@@ -449,6 +449,8 @@ def infer_type(name: str, explicit: str) -> str:
         return "girl"
     if n in {"tim", "timmy", "sam", "ben", "paul", "joe"}:
         return "boy"
+    if n == "seed":
+        return "seed"
     if n in {
         "girl", "boy", "bird", "mouse", "turkey", "dog", "cat", "barrel",
         "bunny", "rabbit", "bee", "bees", "duck", "frog", "tree", "bear",
@@ -721,6 +723,14 @@ class Parser:
             frames.append(Frame("activity", actor=actor, concepts=[Memeplex(name)], source=name, salience=0.4))
 
         for frame in child_frames:
+            if (
+                name == "Routine"
+                and actor is not None
+                and len(chars + participant_chars) > 1
+                and frame.kind in {"play", "activity"}
+            ):
+                frame.actor = actor
+                frame.meta["participants"] = chars + participant_chars
             if name == "Conflict" and block_actor is not None and frame.kind in {"protect", "refuse", "accept"}:
                 frame.actor = block_actor
                 frame.meta["actor_locked"] = True
@@ -945,6 +955,8 @@ class Parser:
             frame.meta["assisted_action"] = assisted_child.kind
         if desired_child is not None:
             frame.meta["desired_action"] = desired_child.kind
+        if frame_kind in {"find", "discover"} and child_frames and not frame.objects and frame.patient is None:
+            frame.salience = 0.05
         if frame_kind == "advice" and child_frames:
             frame.salience = 0.05
         if frame_kind == "rescue":

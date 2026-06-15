@@ -42,6 +42,42 @@ def plain_object_phrase(renderer, obj):
     return renderer.world.object_phrase(obj, status=[], owner_id=None, snapshot_owner=True)
 
 
+@REGISTRY.renderer("routine")
+def render_routine(renderer, frame):
+    concepts = renderer.concepts(frame)
+    object_names = [display_type(o) for o in frame.objects]
+    subject = renderer.subj(frame.actor)
+    party = renderer.participants(frame) or subject
+    if party in {"He", "She", "It", "They"}:
+        party = party.lower()
+    routine_subject = subject.lower() if subject in {"He", "She", "It", "They"} else subject
+    if any(c in {"friendship"} for c in concepts):
+        return "Every day, the friends played together."
+    if frame.actor is not None and "screen addict" in frame.actor.traits:
+        return f"Every day, {routine_subject} spent too much time with a screen."
+    if "farm" in concepts and "chores" in object_names:
+        return "Every day, the family did chores on the farm."
+    if "play" in object_names or "play" in concepts:
+        play_obj = next((o for o in frame.objects if display_type(o) not in {"play", "friends"}), None)
+        if "friends" in object_names:
+            loc = next((o.traits[0] for o in frame.objects if display_type(o) == "play" and o.traits), "")
+            place = f" in {renderer.world.object_phrase(renderer.world.physical(loc))}" if loc else ""
+            return f"Every day, {party} played with friends{place}."
+        return f"Every day, {party} played with {renderer.obj(play_obj)}." if play_obj else f"Every day, {party} played."
+    if "jump" in object_names:
+        return f"Every day, {party} loved to jump."
+    if "chores" in object_names:
+        return f"Every day, {party} did chores."
+    if len(concepts) == 1 and concepts[0] in {"park", "garden", "school", "beach"}:
+        return ""
+    if len(frame.meta.get("participants", [])) > 1:
+        return ""
+    objects = renderer.objs(frame)
+    if objects:
+        return f"Every day, {subject} spent time with {objects}."
+    return ""
+
+
 @REGISTRY.renderer("want")
 def render_want(renderer, frame):
     subject = renderer.subj(frame.actor)
@@ -203,6 +239,28 @@ def render_lesson(renderer, frame):
         return f"{subject} learned to listen to her parents and find another way to help."
     topic = join([c for c in concepts if c not in {"lesson", "moral", "learn"}])
     return f"{subject} learned an important lesson about {topic}." if topic else f"{subject} learned an important lesson."
+
+
+@REGISTRY.renderer("outcome")
+def render_outcome(renderer, frame):
+    subject = renderer.subj(frame.actor)
+    concepts = set(renderer.concepts(frame))
+    object_names = {display_type(o) for o in frame.objects}
+    if "friendship" in concepts:
+        return ""
+    if {"sad", "small", "weak"} & concepts or {"small", "weak"} & object_names:
+        return f"{subject} stayed small and felt sad."
+    if concepts:
+        return f"{subject} saw the result."
+    return ""
+
+
+@REGISTRY.renderer("accept")
+def render_accept(renderer, frame):
+    subject = renderer.subj(frame.actor)
+    if frame.actor is not None and frame.actor.type in {"girl", "boy", "child"}:
+        return f"{subject} listened."
+    return f"{subject} agreed."
 
 
 @REGISTRY.renderer("reaction", "emotion")
