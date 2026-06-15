@@ -31,6 +31,7 @@ CHARACTER_TYPES = {
 GENERIC_TYPES = {"animal", "bird", "group", "person"}
 COMPOUNDS = {
     "secretroom": "secret room",
+    "screenaddict": "screen addict",
     "warmplace": "warm place",
     "whenalone": "when alone",
     "why sad": "why she was sad",
@@ -353,7 +354,15 @@ class StoryWorld:
             self.apply(frame)
         return self
 
-    def object_phrase(self, obj: Entity, *, status: list[str] | None = None, owner_id: str | None = None, snapshot_owner: bool = False) -> str:
+    def object_phrase(
+        self,
+        obj: Entity,
+        *,
+        status: list[str] | None = None,
+        owner_id: str | None = None,
+        snapshot_owner: bool = False,
+        allow_it_owner: bool = False,
+    ) -> str:
         status = status if status is not None else sorted(obj.state)
         noun = display_type(obj)
         if noun in BARE_NOUNS:
@@ -366,7 +375,7 @@ class StoryWorld:
         owner_id = owner_id if snapshot_owner else obj.owner
         if owner_id and owner_id in self.entities:
             owner = self.entities[owner_id]
-            if owner.pronoun("subject") == "it":
+            if owner.pronoun("subject") == "it" and not allow_it_owner:
                 return f"the {adj}{noun}"
             return f"{owner.pronoun('possessive')} {adj}{noun}"
         return f"the {adj}{noun}"
@@ -601,13 +610,22 @@ class Parser:
         elif name == "Journey":
             destination = first_entity(flatten(kw_values.get("destination", []) + kw_values.get("setting", [])))
             frames.append(Frame("journey", actor=actor, patient=chars[1] if len(chars) > 1 else None, location=destination, concepts=[Memeplex(name)], source=name, salience=0.75, meta={"participants": chars + participant_chars}))
-        elif name in {"Cautionary", "Lesson"}:
+        elif name == "Cautionary":
+            pass
+        elif name == "Lesson":
             frames.append(Frame("lesson", actor=actor, concepts=[Memeplex(name)], source=name, salience=0.6))
         elif name not in {"Response", "Resolution", "Transformation"}:
             frames.append(Frame("activity", actor=actor, concepts=[Memeplex(name)], source=name, salience=0.4))
 
         for frame in child_frames:
             if frame.actor is None and frame.kind not in {"declare", "scene"}:
+                frame.actor = actor
+            elif (
+                actor is not None
+                and frame.kind not in {"declare", "scene"}
+                and not frame.meta.get("actor_locked")
+                and frame.actor not in frame.meta.get("participants", [])
+            ):
                 frame.actor = actor
             if frame.kind in {"scold", "protect"} and frame.patient is None and frame.actor is not None and frame.actor != actor:
                 frame.patient = actor
@@ -618,6 +636,8 @@ class Parser:
                 continue
             for value in kw_values.get(key, []):
                 frames.extend(self.value_to_frames(key, value, actor))
+        if name == "Cautionary" and not any(frame.kind == "lesson" for frame in frames):
+            frames.append(Frame("lesson", actor=actor, concepts=[Memeplex(name)], source=name, salience=0.55))
         return EvalResult(frames=frames, values=[Memeplex(name)])
 
     def value_to_frames(self, key: str, value: Any, actor: Entity | None) -> list[Frame]:
@@ -809,6 +829,7 @@ class Parser:
                 if child.kind == "protect" and child.actor is not None and child.actor != actor:
                     child.patient = child.actor
                     child.actor = actor
+                    child.meta["actor_locked"] = True
         if frame_kind == "race" and actor is not None:
             for child in child_frames:
                 if child.kind in {"competition", "run", "recall", "victory", "lesson", "complete"}:
@@ -971,13 +992,18 @@ class Renderer:
 
     def dedupe(self, sentences: list[str]) -> list[str]:
         out: list[str] = []
+        seen: set[str] = set()
         for sentence in sentences:
             sentence = sentence.strip()
             if not sentence:
                 continue
-            if out and out[-1].lower() == sentence.lower():
+            key = sentence.lower()
+            if out and out[-1].lower() == key:
+                continue
+            if key in seen:
                 continue
             out.append(sentence)
+            seen.add(key)
         return out
 
     def subj(self, ent: Entity | None) -> str:
@@ -1008,11 +1034,13 @@ class Renderer:
         for obj in frame.objects:
             status = frame.meta.get("object_state", {}).get(obj.id)
             owner_map = frame.meta.get("object_owner", {})
+            owner_id = owner_map.get(obj.id)
             parts.append(self.world.object_phrase(
                 obj,
                 status=status,
-                owner_id=owner_map.get(obj.id),
+                owner_id=owner_id,
                 snapshot_owner=obj.id in owner_map,
+                allow_it_owner=owner_id is not None and frame.actor is not None and owner_id == frame.actor.id,
             ))
         return join(parts)
 
@@ -1020,7 +1048,13 @@ class Renderer:
         labels: list[str] = []
         for concept in frame.concepts:
             labels.extend(words(x) for x in concept.labels())
-        return [x for x in labels if x and x not in {"routine", "quest", "cautionary"}]
+        out: list[str] = []
+        seen: set[str] = set()
+        for label in labels:
+            if label and label not in {"routine", "quest", "cautionary"} and label not in seen:
+                out.append(label)
+                seen.add(label)
+        return out
 
     def render_frame(self, frame: Frame) -> str:
         a = frame.actor
@@ -1034,6 +1068,10 @@ class Renderer:
                 return "Every day, the friends played together."
             object_names = [display_type(o) for o in frame.objects]
             party = self.participants(frame) or subject
+            if a is not None and "screen addict" in a.traits:
+                return f"Every day, {subject} spent too much time with a screen."
+            if "farm" in concepts and "chores" in object_names:
+                return "Every day, the family did chores on the farm."
             if "play" in object_names or "play" in concepts:
                 play_obj = next((o for o in frame.objects if display_type(o) not in {"play", "friends"}), None)
                 if "friends" in object_names:
@@ -1066,6 +1104,9 @@ class Renderer:
         if frame.kind in {"find", "discover"}:
             if p:
                 return f"{subject} found {self.obj(p)}."
+            object_names = [display_type(o) for o in frame.objects]
+            if "hook" in object_names and "cheap" in object_names:
+                return f"{subject} found a simple hook."
             return f"{subject} found {objects}." if objects else f"{subject} found something new."
         if frame.kind in {"lose", "lost"}:
             where = ""
@@ -1081,6 +1122,8 @@ class Renderer:
                 return f"{subject} lost {self.obj(p)} and felt sad."
             return f"{cap(objects)} was lost{where}." if objects else ""
         if frame.kind == "search":
+            if len(frame.objects) == 1 and display_type(frame.objects[0]) in {"pond", "park", "woods"}:
+                return f"{subject} searched around {self.obj(frame.objects[0])}."
             return f"{subject} looked everywhere for {objects}." if objects else f"{subject} searched carefully."
         if frame.kind == "ask":
             target = self.obj(p) if p else ""
@@ -1218,7 +1261,7 @@ class Renderer:
             if party:
                 copula = "were" if "," in party or " and " in party else "was"
                 return f"{party} {copula} reunited."
-            return f"{subject} was reunited with family."
+            return "They were together again."
         if frame.kind == "celebration":
             return "Everyone celebrated."
         if frame.kind == "community":
@@ -1254,6 +1297,11 @@ class Renderer:
             copula = "were" if a is not None and is_plural(display_type(a)) else "was"
             return f"{subject} {copula} attacked."
         if frame.kind == "protect":
+            object_names = [display_type(o) for o in frame.objects]
+            if "jacket" in object_names and "wet" in object_names:
+                return f"{subject} tried to keep the jacket dry."
+            if objects:
+                return f"{subject} protected {objects}."
             return f"{subject} protected {self.obj(p)}." if p else f"{subject} tried to protect someone."
         if frame.kind == "bite":
             if objects and a:

@@ -150,8 +150,9 @@ Known gaps from the first 20 pins:
 
 - [~] Improve phase ordering inside structural calls. `Rescue(...)`, `Deal(...)`,
       `Idea(...)`, and `Race(...)` now reorder parent/child frames more
-      coherently; remaining work is a general phase planner instead of
-      per-parent ordering.
+      coherently; `Cautionary(...)` now defers generic lessons until after the
+      event trace and skips them when an explicit lesson exists. Remaining work
+      is a general phase planner instead of per-parent ordering.
 - [~] Add richer exchange/transaction semantics for `Deal`, `Transform`, `Give`,
       and `Receive`. Event-time ownership snapshots now prevent final-state
       ownership from corrupting earlier prose, and deals render promises before
@@ -163,8 +164,13 @@ Known gaps from the first 20 pins:
       ontology.
 - [~] Improve routine/activity lowering for `screen(tablet)`, `Bake(...)`,
       `Collaboration(...)`, and `Satisfaction(...)`. Collaboration/satisfaction
-      now render as world events; `screen(tablet)` and richer bake/party flows
-      are still thin.
+      now render as world events; screen-heavy routines and farm chores have
+      first-pass world text; richer bake/party flows are still thin.
+- [~] Improve scoped focus/ownership. Parent phases now override stale actor
+      focus for implicit child calls, event-time ownership can still render
+      animal-owned objects as "its toy", and repeated exact sentences /
+      repeated emotion labels are suppressed. Remaining work: track whether an
+      actor was explicit in the AST instead of relying on scoped locks.
 - [ ] Add a manual `QUALITY.md` grade for the 20 gen7 pins and compare them
       against gen6 output; the harness pins behavior but does not judge it.
 
