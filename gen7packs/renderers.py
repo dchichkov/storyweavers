@@ -58,6 +58,10 @@ def plain_object_phrase(renderer, obj):
     return renderer.world.object_phrase(obj, status=[], owner_id=None, snapshot_owner=True)
 
 
+def carrier_with_trait(renderer, trait):
+    return next((ent for ent in renderer.world.declarations if trait in ent.traits), None)
+
+
 def lesson_topics(renderer, frame):
     topics = []
     for topic in renderer.concepts(frame):
@@ -123,6 +127,8 @@ def render_want(renderer, frame):
         return f"{subject} wanted to play."
     if any(display_type(o) == "return" for o in frame.objects) or "return" in concepts:
         return f"{subject} wanted to go back."
+    if len(frame.objects) == 1 and display_type(frame.objects[0]) == "magic":
+        return f"{subject} wanted to learn magic."
     if len(frame.objects) == 1:
         action_goal = action_goal_from_object(renderer, frame.objects[0])
         if action_goal:
@@ -388,6 +394,18 @@ def render_transform(renderer, frame):
     objects = renderer.objs(frame)
     target = phrase(frame.result, renderer.world)
     return f"{cap(objects or 'Something')} turned into {target}." if target else f"{cap(objects or 'Something')} changed."
+
+
+@REGISTRY.renderer("reveal")
+def render_reveal(renderer, frame):
+    subject = renderer.subj(frame.actor)
+    object_names = {display_type(o) for o in frame.objects}
+    if "shape shift" in object_names:
+        carrier = carrier_with_trait(renderer, "shape shift") or frame.actor
+        if carrier is not None:
+            renderer.last_subject = carrier.id
+            return f"{carrier.id} changed shape."
+    return f"{subject} revealed {renderer.objs(frame) or 'the surprise'}."
 
 
 @REGISTRY.renderer("give")

@@ -997,7 +997,13 @@ class Parser:
         if frame_kind in phase_render_kinds:
             for key in ("process", "result", "outcome", "resolution", "transformation", "insight", "consequence", "ending"):
                 for value in flatten(kw_values.get(key, [])):
-                    extra.extend(self.value_to_frames(key, value, actor))
+                    phase_frames = self.value_to_frames(key, value, actor)
+                    if frame_kind == "encounter" and patient is not None:
+                        for phase_frame in phase_frames:
+                            if phase_frame.kind in {"bond", "separation", "reunion"} and phase_frame.patient is None:
+                                phase_frame.patient = patient
+                                phase_frame.meta["participants"] = [actor, patient] if actor is not None else [patient]
+                    extra.extend(phase_frames)
         if frame_kind == "state":
             for value in values[1:]:
                 if isinstance(value, LowerExpr):
@@ -1509,8 +1515,12 @@ class Renderer:
         if frame.kind == "complete":
             return f"{subject} finished the task."
         if frame.kind == "bond":
+            if a is not None and p is not None:
+                return f"{a.id} and {p.id} grew close."
             return f"{subject} and {self.obj(p)} felt close." if p else f"{subject} made a connection."
         if frame.kind == "separation":
+            if a is not None and p is not None:
+                return f"{a.id} and {p.id} were separated."
             copula = "were" if a is not None and a.pronoun("subject") == "they" else "was"
             return f"{subject} {copula} separated."
         if frame.kind == "reunion":

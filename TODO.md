@@ -220,6 +220,13 @@ Known gaps from the first 20 pins:
       when a concrete child bake already renders the baked object. Remaining
       work: infer positive goals from problem/process traces instead of merely
       dropping empty desires, and add richer host/location inference for visits.
+- [~] Render abstract concepts through their physical carriers. Desire for
+      `magic` now reads as wanting to learn magic, `Reveal(ShapeShift)` binds to
+      the character carrying that trait ("Bunny changed shape"),
+      and encounter process frames now keep their partner through bond,
+      separation, and reunion beats. Remaining work: generalize this into an
+      embedded-concept rendering table so more traits/actions choose carrier
+      verbs instead of noun phrases.
 - [~] Improve phase ordering inside structural calls. `Rescue(...)`, `Deal(...)`,
       `Idea(...)`, and `Race(...)` now reorder parent/child frames more
       coherently; `Cautionary(...)` now defers generic lessons until after the
