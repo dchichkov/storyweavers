@@ -5,7 +5,7 @@ calls lower to frame kinds here before Parser.direct_call applies shared role
 and world-model logic.
 """
 
-from gen7 import REGISTRY
+from gen7 import EvalResult, Frame, Memeplex, REGISTRY, flatten, is_character, objects_from
 
 
 ALIASES = {
@@ -56,11 +56,34 @@ ALIASES = {
     "command": "command", "obedience": "perform", "message": "message",
     "affection": "hug", "sick": "problem",
     "hold": "hold", "drop": "drop", "permission": "permission",
-    "pick": "take", "suggest": "advice", "remove": "remove",
+    "pick": "take", "suggest": "advice", "remove": "remove", "pull": "rescue",
     "teach": "teach", "transport": "transport", "drive": "drive",
-    "clean": "clean", "chew": "chew",
+    "clean": "clean", "chew": "chew", "build": "make", "use": "use",
+    "show": "show", "calendaradd": "calendar_add", "anticipation": "anticipation",
+    "celebration": "celebration", "playinside": "play",
 }
 
 for _name, _kind in ALIASES.items():
     REGISTRY.direct_alias(_name, kind=_kind)
 
+
+@REGISTRY.direct_handler
+def calendar_add(parser, name, lname, values, kw_values, child_frames, context, role):
+    if lname != "calendaradd":
+        return None
+    agents = [v for v in flatten(kw_values.get("agents", [])) if is_character(v)]
+    actor = agents[0] if agents else parser.current_actor
+    event_objects = objects_from(flatten(kw_values.get("event", [])), parser.world)
+    calendar = parser.world.physical("calendar")
+    objects = [calendar] + event_objects
+    if actor is not None:
+        parser.current_actor = actor
+    frame = Frame(
+        "calendar_add",
+        actor=actor,
+        patient=agents[1] if len(agents) > 1 else None,
+        objects=objects,
+        source=name,
+        meta={"participants": agents},
+    )
+    return EvalResult(frames=child_frames + [frame], values=[Memeplex(name)])

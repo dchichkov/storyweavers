@@ -285,6 +285,75 @@ def render_give(renderer, frame):
     return f"{subject} gave {objects or 'something'} to {target}."
 
 
+@REGISTRY.renderer("make")
+def render_make(renderer, frame):
+    subject = renderer.subj(frame.actor)
+    if frame.source.lower() == "build" and frame.objects:
+        thing = renderer.obj(frame.objects[0])
+        if len(frame.objects) > 1:
+            materials = join([renderer.obj(o) for o in frame.objects[1:]])
+            return f"{subject} built {thing} with {materials}."
+        return f"{subject} built {thing}."
+    objects = renderer.objs(frame)
+    return f"{subject} made {objects or 'something'}."
+
+
+@REGISTRY.renderer("use")
+def render_use(renderer, frame):
+    subject = renderer.subj(frame.actor)
+    if len(frame.objects) >= 2 and display_type(frame.objects[1]) in {"retrieve", "find", "fix", "clean"}:
+        tool = renderer.obj(frame.objects[0])
+        action = display_type(frame.objects[1])
+        target = ""
+        if frame.objects[1].traits:
+            target = join([renderer.obj(renderer.world.physical(t)) for t in frame.objects[1].traits])
+        verb = "look for" if action == "find" else action
+        return f"{subject} used {tool} to {verb} {target}.".strip()
+    objects = renderer.objs(frame)
+    return f"{subject} used {objects or 'it'}."
+
+
+@REGISTRY.renderer("show")
+def render_show(renderer, frame):
+    subject = renderer.subj(frame.actor)
+    objects = renderer.objs(frame)
+    target = renderer.obj(frame.patient) if frame.patient else "everyone"
+    return f"{subject} showed {objects or 'it'} to {target}."
+
+
+@REGISTRY.renderer("calendar_add")
+def render_calendar_add(renderer, frame):
+    renderer.subj(frame.actor)
+    party = renderer.participants(frame)
+    event = next((o for o in frame.objects if display_type(o) != "calendar"), None)
+    event_text = renderer.obj(event) if event is not None else "a special day"
+    if party:
+        return f"{party} added {event_text} to the calendar."
+    return f"{renderer.subj(frame.actor)} added {event_text} to the calendar."
+
+
+@REGISTRY.renderer("anticipation")
+def render_anticipation(renderer, frame):
+    subject = renderer.subj(frame.actor)
+    objects = renderer.objs(frame)
+    party = renderer.participants(frame)
+    if not objects:
+        return ""
+    topic = objects or "the special day"
+    if party and len(frame.meta.get("participants", [])) > 1:
+        return f"{party} looked forward to {topic}."
+    return f"{subject} looked forward to {topic}."
+
+
+@REGISTRY.renderer("celebration")
+def render_celebration(renderer, frame):
+    renderer.subj(frame.actor)
+    party = renderer.participants(frame)
+    if party:
+        return f"{party} celebrated together."
+    return "Everyone celebrated together."
+
+
 @REGISTRY.renderer("receive")
 def render_receive(renderer, frame):
     subject = renderer.subj(frame.actor)
@@ -310,6 +379,16 @@ def render_praise(renderer, frame):
         return f"{subject} thought it was cool."
     objects = renderer.objs(frame)
     return f"{subject} praised {objects}." if objects else f"{subject} praised them."
+
+
+@REGISTRY.renderer("advice")
+def render_advice(renderer, frame):
+    subject = renderer.subj(frame.actor)
+    if frame.source.lower() == "suggest":
+        if any(display_type(o) == "build" for o in frame.objects):
+            return f"{subject} suggested building something."
+        return f"{subject} made a suggestion."
+    return f"{subject} gave helpful advice." if frame.actor else "There was helpful advice."
 
 
 @REGISTRY.renderer("break", "broken")

@@ -888,6 +888,8 @@ class Parser:
             victim_objects = objects_from(flatten(kw_values.get("victim", [])), self.world)
             if victim_objects:
                 objects = victim_objects
+        if frame_kind == "rescue" and len(chars) >= 2:
+            actor, patient = chars[0], chars[1]
         if frame_kind in {"state", "collaboration", "satisfaction", "share"} and len(chars) > 1:
             actor, patient = chars[0], chars[1]
         if frame_kind == "reunion" and len(chars) > 1:
@@ -925,6 +927,23 @@ class Parser:
             frame.meta["assisted_action"] = assisted_child.kind
         if desired_child is not None:
             frame.meta["desired_action"] = desired_child.kind
+        if frame_kind == "advice" and child_frames:
+            frame.salience = 0.05
+        if frame_kind == "rescue":
+            rescue_child = next(
+                (
+                    child for child in child_frames
+                    if child.kind in {"rescue", "help"}
+                    and child.actor is not None
+                    and (child.patient is not None or actor is not None)
+                ),
+                None,
+            )
+            if rescue_child is not None and rescue_child.actor != actor:
+                frame.actor = rescue_child.actor
+                frame.patient = rescue_child.patient or actor
+                frame.objects = list(rescue_child.objects)
+                rescue_child.salience = 0.05
         extra: list[Frame] = []
         if frame_kind == "encounter":
             for value in flatten(kw_values.get("state", [])):

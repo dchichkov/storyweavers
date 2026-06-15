@@ -165,6 +165,15 @@ Known gaps from the first 20 pins:
       "returned the play" / "praised someone" style fallbacks. Remaining work:
       owner transfer for chewed/lost toys, explicit rescue-agent extraction, and
       broader action ontology for `Build`/`Use`/`Show`/`Celebration`-style beats.
+- [~] Broaden the first gen7 action ontology slice. `Pull(rope, Bear, Tim)` now
+      lowers to a rescue child frame so parent `Rescue(Tim, ...)` can render
+      "Bear rescued Tim"; `Build`/`Use`/`Show`/`CalendarAdd`/`Anticipation`/
+      `Celebration` now have first-pass frame/rendering support; executable
+      suggestion wrappers are suppressed when their child action already renders.
+      This improves pinned fort, calendar, show-and-tell, rescue, and retrieve
+      stories while keeping snapshots deterministic. Remaining work: move more
+      direct-call special cases out of `gen7.py`, model inventory/ownership for
+      damaged toys, and make group builders/celebrations less template-like.
 - [~] Improve phase ordering inside structural calls. `Rescue(...)`, `Deal(...)`,
       `Idea(...)`, and `Race(...)` now reorder parent/child frames more
       coherently; `Cautionary(...)` now defers generic lessons until after the
