@@ -1810,6 +1810,34 @@ def qa_find_answer(world: StoryWorld, frame: Frame) -> str:
     return qa_objects(world, frame)
 
 
+def qa_task_answer(world: StoryWorld, frame: Frame) -> str:
+    if len(frame.objects) == 1:
+        obj = frame.objects[0]
+        action = display_type(obj)
+        if action in {"carry", "clean", "push", "pull", "wrap", "store", "cut", "remove"} and obj.traits:
+            target = join([world.object_phrase(world.physical(trait)) for trait in obj.traits])
+            gerunds = {
+                "carry": "carrying",
+                "clean": "cleaning",
+                "push": "pushing",
+                "pull": "pulling",
+                "wrap": "wrapping",
+                "store": "putting away",
+                "cut": "cutting",
+                "remove": "taking off",
+            }
+            return f"{gerunds.get(action, action)} {target}".strip()
+    return qa_objects(world, frame)
+
+
+def qa_rescue_answer(world: StoryWorld, frame: Frame) -> str:
+    if len(frame.objects) == 1:
+        obj = frame.objects[0]
+        if display_type(obj) in {"pick", "pull"} and obj.traits:
+            return world.object_phrase(world.physical(obj.traits[0]))
+    return qa_objects(world, frame)
+
+
 def qa_participants(frame: Frame) -> str:
     chars = [c for c in frame.meta.get("participants", []) if is_character(c)]
     if not chars and frame.actor is not None:
@@ -1892,7 +1920,7 @@ def format_qa_answer(question: str, answer: str) -> str:
     if question == "Who was reunited?":
         return response(f"{fragment} was reunited", "The reunion restores the relationship")
 
-    m = re.match(r"^What did (.+?) (want|find|lose|fix|share|give|receive|unlock|use|make|learn|eat|wipe|paint)\?$", question)
+    m = re.match(r"^What did (.+?) (want|find|lose|fix|share|give|receive|unlock|use|make|learn|eat|wipe|paint|pull)\?$", question)
     if m:
         actor, verb = m.groups()
         if verb == "learn":
@@ -1934,6 +1962,7 @@ def format_qa_answer(question: str, answer: str) -> str:
             "eat": "ate",
             "wipe": "wiped",
             "paint": "painted",
+            "pull": "pulled",
         }[verb]
         return response(f"{actor} {past} {fragment}", f"That event is recorded in the story world")
 
@@ -1950,6 +1979,11 @@ def format_qa_answer(question: str, answer: str) -> str:
         if fragment in {"warm", "the warm"}:
             return response(f"Feeling warm comforted {actor}", f"That comfort changes {actor}'s story state")
         return response(f"{cap(fragment)} comforted {actor}", f"That comfort changes {actor}'s story state")
+
+    m = re.match(r"^What did (.+?) help with\?$", question)
+    if m:
+        actor = m.group(1)
+        return response(f"{actor} helped with {fragment}", "That answer follows the tool or task in the world trace")
 
     m = re.match(r"^Who did (.+?) give to\?$", question)
     if m:
@@ -2048,8 +2082,13 @@ def frame_to_qa(world: StoryWorld, frame: Frame) -> list[QA]:
         add_qa(items, seen, f"What did {actor} receive?", objects, "exchange", frame.source)
     elif frame.kind in {"help", "rescue"}:
         verb = "rescue" if frame.kind == "rescue" else "help"
-        target = patient if frame.patient is not None else objects
-        add_qa(items, seen, f"Who did {actor} {verb}?", target, frame.kind, frame.source)
+        if frame.kind == "rescue" and frame.source.lower() == "pull" and objects:
+            add_qa(items, seen, f"What did {actor} pull?", objects, "action", frame.source)
+        elif frame.kind == "help" and frame.patient is None and objects:
+            add_qa(items, seen, f"What did {actor} help with?", qa_task_answer(world, frame), frame.kind, frame.source)
+        else:
+            target = patient if frame.patient is not None else qa_rescue_answer(world, frame)
+            add_qa(items, seen, f"Who did {actor} {verb}?", target, frame.kind, frame.source)
     elif frame.kind == "comfort":
         if frame.patient is not None:
             add_qa(items, seen, f"Who did {actor} comfort?", patient, "comfort", frame.source)

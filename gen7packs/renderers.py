@@ -54,6 +54,12 @@ def action_phrase(renderer, action, target):
     return f"{verb} {target}".strip()
 
 
+def wrapped_action_target(renderer, obj):
+    if display_type(obj) in {"pick", "pull"} and obj.traits:
+        return renderer.world.object_phrase(renderer.world.physical(obj.traits[0]))
+    return ""
+
+
 def plain_object_phrase(renderer, obj):
     return renderer.world.object_phrase(obj, status=[], owner_id=None, snapshot_owner=True)
 
@@ -261,6 +267,12 @@ def render_help(renderer, frame):
         return f"{subject} helped {action_phrase(renderer, assisted, objects or renderer.obj(frame.patient))}."
     if frame.kind == "help" and len(frame.objects) == 1 and display_type(frame.objects[0]) in {"remove", "push", "clean", "wrap", "store", "take care", "carry", "pull", "cut"}:
         return f"{subject} helped {renderer.action_object(frame.objects[0])}."
+    if frame.kind == "rescue" and frame.source.lower() == "pull" and objects:
+        return f"{subject} pulled {objects}."
+    if frame.kind == "rescue" and len(frame.objects) == 1:
+        target = wrapped_action_target(renderer, frame.objects[0])
+        if target:
+            return f"{subject} rescued {target}."
     target = renderer.obj(frame.patient) if frame.patient else (objects or "someone")
     verb = "rescued" if frame.kind == "rescue" else "helped"
     if frame.kind == "rescue" and frame.actor is not None and frame.actor.pronoun("subject") == "it":
@@ -269,6 +281,8 @@ def render_help(renderer, frame):
         name = frame.actor.id if frame.actor is not None else subject
         copula = "were" if frame.actor is not None and is_plural(display_type(frame.actor)) else "was"
         return f"{name} {copula} kind."
+    if frame.kind == "help" and frame.patient is None and objects:
+        return f"{subject} helped with {objects}."
     if frame.patient is None and not objects and frame.kind == "help":
         return f"{subject} helped."
     return f"{subject} {verb} {target}."
