@@ -8,9 +8,9 @@ turns the simulated state into prose. The goal is not broad coverage — it is t
 capture the *logic, interactions, and causations* of one story well enough to
 generate many **reasonable** variations of it.
 
-The reference implementation is [`worlds/puddles.py`](worlds/puddles.py) (the
-Lily / puddles / new-jacket tale, `data00:36242`). Read it end to end before
-writing a new one — this guide is the map, `puddles.py` is the territory.
+The reference implementation are in the [`worlds/puddles.py`](worlds/puddles.py) and
+[`worlds/pirates.py`](worlds/pirates.py). Read these end to end before
+writing a new one — this guide is the map, implementations are the territory.
 
 ## Layout
 
@@ -158,8 +158,10 @@ Key types and where to find them in `puddles.py`:
 ---
 
 ## Step-by-step: from a story text to a new script
+### 0. Generate a seed, with `python storyworlds/seed.py` and write a short 
+story, as per the instructions in the seed.
 
-### 1. Read the source story and extract its skeleton
+### 1. Read the story and extract its skeleton
 
 Identify, in plain words:
 
