@@ -504,7 +504,7 @@ def Moral(ctx: World, lesson: Any = None, **kw: Any) -> str:
     text = lesson if lesson is not None else _has(kw, "lesson")
     if text is not None:
         if isinstance(text, str):
-            return f"The moral of the story is to {action_to_phrase(text)}."
+            return f"The moral of the story is to {base_phrase(text)}."
         topic = gerund_phrase(text) if isinstance(text, Trace) else to_phrase(text)
         return f"The moral of the story is about {topic}." if topic \
             else "And that was the moral of the story."

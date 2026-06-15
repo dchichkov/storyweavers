@@ -570,6 +570,43 @@ Measured:
       visible defects include missing structural kernels (`Condition`, `Effect`,
       `Resume`) and clause/list junk from `Reaction(...)`.
 
+### Quality pass #6: coverage-pack focus, carrier types, and fallback cleanup
+
+After `gen6k07.py` pushed coverage past 90%, audited a deterministic covered
+worksheet plus 1,000 sampled fully-covered stories. The pass targeted recurring
+surface defects introduced or exposed by the broad coverage pack:
+
+- [x] **Keyword-focus repair in `gen6k07.py`.** The generic action/state/meta
+      factories now honor explicit focus kwargs (`initiator`, `asker`, `speaker`,
+      `participants`, `helper`, etc.) instead of falling back to the last
+      declared character. Example: `Trade(initiator=Timmy, request=car)` now
+      renders from Timmy, not the previously declared friend.
+- [x] **Narration Trace cleanup in target slots.** Coverage-pack `_concepts`
+      no longer splices child sentences into noun phrases, avoiding artifacts
+      like "the church and the floor" when a child action should stand alone.
+- [x] **Dangling-preposition cleanup.** Generic state templates now drop empty
+      optional tails (`with .`, `about .`, `for .`, `to .`). In the 1,000-story
+      sample these counted **>0 → 0** for the tracked patterns.
+- [x] **Sampled tolerant kernels:** `Clean`, `Start`, `Trash`, `Wind`, `Wave`,
+      and tolerant `Proud`/`Pride`. These remove common `Something start/wind/
+      wave happened`, `Mom prided Lily`, and trash/cleanup flattening.
+- [x] **Moral grammar.** `Moral(HelpOthers)` now reads "to help others" instead
+      of "to helped others."
+- [x] **More physical carrier types.** Added sampled character types such as
+      `bunny`, `cow`, `butterfly`, `dolphin`, `octopus`, `whale`, `group`,
+      `leader`, `youth`, and `fisherman`, reducing intros like
+      "cow proud person" and keeping the physical level visible.
+
+Measured:
+- `check_duplicates.py`: clean (`776` kernel names / `809` variants).
+- `coverage.py --brief --execute 3000`: **90.1%** coverage, **30,032**
+      high-coverage stories, **99.9%** execution OK.
+- 1,000 fully-covered sample heuristic scan: `with/about/for/to .`, `prided`,
+      `winded`, and `waveed` all **0**. Remaining visible defects include long-tail
+      fallbacks (`Something observe happened`, `Something ice day happened`),
+      rough structural prose (`was as good as new` from generic restoration), and
+      deeper clause/subject issues (`played Dog and the ball`, `came across Dog`).
+
 ### Quality pass: meta-kernel coherence + rewrites/world model
 
 Sampled fully-covered stories (≥5 kernels, all implemented) and fixed the

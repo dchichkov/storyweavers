@@ -14,17 +14,26 @@ from typing import Any
 from gen6 import (
     REGISTRY,
     World,
+    Entity,
     Trace,
     NLGUtils,
     to_phrase,
     action_to_phrase,
+    base_phrase,
     child_sentences,
     coherent,
     meta_story,
     is_meta_call,
 )
 
-from gen6k03 import _split, _phrases, _kw_targets, _cap
+from gen6k03 import _split, _phrases, _kw_targets, _cap, _is_char
+
+
+_FOCUS_KEYS = (
+    "actor", "char", "hero", "protagonist", "protagonists", "participants",
+    "initiator", "asker", "speaker", "giver", "helper", "teacher", "learner",
+    "client", "owner",
+)
 
 
 def _kw_values(kw: dict, *keys: str) -> list[Any]:
@@ -40,6 +49,27 @@ def _kw_values(kw: dict, *keys: str) -> list[Any]:
     return out
 
 
+def _first_char(value: Any) -> Entity | None:
+    if _is_char(value):
+        return value
+    if isinstance(value, (list, tuple)):
+        for item in value:
+            found = _first_char(item)
+            if found is not None:
+                return found
+    return None
+
+
+def _actor_from(ctx: World, chars: list[Entity], kw: dict) -> Entity | None:
+    if chars:
+        return chars[0]
+    for key in _FOCUS_KEYS:
+        found = _first_char(kw.get(key))
+        if found is not None:
+            return found
+    return ctx.actor
+
+
 def _sentences(values: list[Any]) -> list[str]:
     out: list[str] = []
     for value in values:
@@ -50,14 +80,36 @@ def _sentences(values: list[Any]) -> list[str]:
 
 
 def _concepts(values: list[Any]) -> str:
-    return NLGUtils.join_list(_phrases(values))
+    # A narration Trace is already a sentence; using it as a noun phrase creates
+    # artifacts like "the church and the floor". Callers that want those
+    # sentences should collect them through `_sentences`.
+    phrase_values = [v for v in values if child_sentences(v) is None]
+    return NLGUtils.join_list(_phrases(phrase_values))
+
+
+def _clean_sentence(text: str) -> str:
+    """Remove dangling preposition tails left by empty optional targets."""
+    fixes = (
+        (" with .", "."),
+        (" about .", "."),
+        (" of .", "."),
+        (" for .", "."),
+        (" to .", "."),
+        (" from .", "."),
+        (" by .", "."),
+        (" near .", "."),
+        (": .", "."),
+    )
+    for old, new in fixes:
+        text = text.replace(old, new)
+    return text.replace("  ", " ")
 
 
 @REGISTRY.kernel("If")
 def If(ctx: World, *args: Any, **kw: Any) -> str:
     """Conditional wrapper: If(condition, result) / If(Share(Food), Help(...))."""
     chars, rest = _split(args)
-    actor = chars[0] if chars else ctx.actor
+    actor = _actor_from(ctx, chars, kw)
     values = _kw_values(kw, "condition", "when", "then", "result", "outcome") + list(rest)
     sents = _sentences(values)
     phrases = [to_phrase(v) for v in values if child_sentences(v) is None and to_phrase(v)]
@@ -80,7 +132,7 @@ def If(ctx: World, *args: Any, **kw: Any) -> str:
 @REGISTRY.kernel("Water")
 def Water(ctx: World, *args: Any, **kw: Any) -> str:
     chars, rest = _split(args)
-    actor = chars[0] if chars else ctx.actor
+    actor = _actor_from(ctx, chars, kw)
     targets = _phrases(chars[1:]) + _phrases(rest) + _phrases(_kw_targets(kw))
     target = NLGUtils.join_list(targets)
     if actor is not None and target:
@@ -96,7 +148,7 @@ def Water(ctx: World, *args: Any, **kw: Any) -> str:
 @REGISTRY.kernel("Meal")
 def Meal(ctx: World, *args: Any, **kw: Any) -> str:
     chars, rest = _split(args)
-    actor = chars[0] if chars else ctx.actor
+    actor = _actor_from(ctx, chars, kw)
     foods = _phrases(chars[1:]) + _phrases(rest) + _phrases(_kw_values(kw, "food", "item", "dish", "meal"))
     food = NLGUtils.join_list(foods)
     if actor is not None:
@@ -109,7 +161,7 @@ def Meal(ctx: World, *args: Any, **kw: Any) -> str:
 @REGISTRY.kernel("Persistence")
 def Persistence(ctx: World, *args: Any, **kw: Any) -> str:
     chars, rest = _split(args)
-    actor = chars[0] if chars else ctx.actor
+    actor = _actor_from(ctx, chars, kw)
     if actor is not None and is_meta_call(kw):
         body = meta_story(ctx, actor, kw)
         if body:
@@ -131,7 +183,7 @@ def Persistence(ctx: World, *args: Any, **kw: Any) -> str:
 @REGISTRY.kernel("ParkVisit")
 def ParkVisit(ctx: World, *args: Any, **kw: Any) -> str:
     chars, rest = _split(args)
-    actor = chars[0] if chars else ctx.actor
+    actor = _actor_from(ctx, chars, kw)
     if actor is not None and is_meta_call(kw):
         body = meta_story(ctx, actor, kw)
         if body:
@@ -149,7 +201,7 @@ def ParkVisit(ctx: World, *args: Any, **kw: Any) -> str:
 @REGISTRY.kernel("Ignore")
 def Ignore(ctx: World, *args: Any, **kw: Any) -> str:
     chars, rest = _split(args)
-    actor = chars[0] if chars else ctx.actor
+    actor = _actor_from(ctx, chars, kw)
     target = _concepts(chars[1:] + rest + _kw_values(kw, "target", "object", "problem", "warning"))
     if actor is not None:
         actor.add_meme("Indifference", 0.4)
@@ -161,7 +213,7 @@ def Ignore(ctx: World, *args: Any, **kw: Any) -> str:
 @REGISTRY.kernel("Joyful")
 def Joyful(ctx: World, *args: Any, **kw: Any) -> str:
     chars, rest = _split(args)
-    actor = chars[0] if chars else ctx.actor
+    actor = _actor_from(ctx, chars, kw)
     if actor is not None and is_meta_call(kw):
         actor.add_meme("Joy", 1.0)
         body = meta_story(ctx, actor, kw)
@@ -178,7 +230,7 @@ def Joyful(ctx: World, *args: Any, **kw: Any) -> str:
 @REGISTRY.kernel("Greeting")
 def Greeting(ctx: World, *args: Any, **kw: Any) -> str:
     chars, rest = _split(args)
-    speaker = chars[0] if chars else ctx.actor
+    speaker = _actor_from(ctx, chars, kw)
     listeners = chars[1:] + rest + _kw_values(kw, "to", "listener", "target")
     words = _concepts(_kw_values(kw, "words", "message"))
     target = _concepts(listeners)
@@ -194,7 +246,7 @@ def Greeting(ctx: World, *args: Any, **kw: Any) -> str:
 @REGISTRY.kernel("Competition")
 def Competition(ctx: World, *args: Any, **kw: Any) -> str:
     chars, rest = _split(args)
-    actor = chars[0] if chars else ctx.actor
+    actor = _actor_from(ctx, chars, kw)
     if actor is not None and is_meta_call(kw):
         actor.add_meme("Competition", 1.0)
         body = meta_story(ctx, actor, kw)
@@ -214,7 +266,7 @@ def Competition(ctx: World, *args: Any, **kw: Any) -> str:
 @REGISTRY.kernel("Unlock")
 def Unlock(ctx: World, *args: Any, **kw: Any) -> str:
     chars, rest = _split(args)
-    actor = chars[0] if chars else ctx.actor
+    actor = _actor_from(ctx, chars, kw)
     target = _concepts(chars[1:] + rest + _kw_targets(kw))
     if actor is not None:
         actor.add_meme("Progress", 0.3)
@@ -226,7 +278,7 @@ def Unlock(ctx: World, *args: Any, **kw: Any) -> str:
 @REGISTRY.kernel("Concern")
 def Concern(ctx: World, *args: Any, **kw: Any) -> str:
     chars, rest = _split(args)
-    actor = chars[0] if chars else ctx.actor
+    actor = _actor_from(ctx, chars, kw)
     target = _concepts(chars[1:] + rest + _kw_targets(kw))
     if actor is not None:
         actor.add_meme("Concern", 1.0)
@@ -239,7 +291,7 @@ def Concern(ctx: World, *args: Any, **kw: Any) -> str:
 @REGISTRY.kernel("Balance")
 def Balance(ctx: World, *args: Any, **kw: Any) -> str:
     chars, rest = _split(args)
-    actor = chars[0] if chars else ctx.actor
+    actor = _actor_from(ctx, chars, kw)
     ideas = _concepts(chars[1:] + rest + _kw_values(kw, "between", "with", "and"))
     if actor is not None:
         actor.add_meme("Wisdom", 0.4)
@@ -252,7 +304,7 @@ def Balance(ctx: World, *args: Any, **kw: Any) -> str:
 @REGISTRY.kernel("Wet")
 def Wet(ctx: World, *args: Any, **kw: Any) -> str:
     chars, rest = _split(args)
-    actor = chars[0] if chars else ctx.actor
+    actor = _actor_from(ctx, chars, kw)
     target = _concepts(chars[1:] + rest + _kw_targets(kw))
     if actor is not None:
         actor.add_meme("Wet", 1.0)
@@ -264,7 +316,7 @@ def Wet(ctx: World, *args: Any, **kw: Any) -> str:
 @REGISTRY.kernel("Dry")
 def Dry(ctx: World, *args: Any, **kw: Any) -> str:
     chars, rest = _split(args)
-    actor = chars[0] if chars else ctx.actor
+    actor = _actor_from(ctx, chars, kw)
     target = _concepts(chars[1:] + rest + _kw_targets(kw))
     if actor is not None and target:
         actor.add_meme("Care", 0.2)
@@ -293,18 +345,22 @@ def ReturnHome(ctx: World, *args: Any, **kw: Any) -> str:
 @REGISTRY.kernel("Command")
 def Command(ctx: World, *args: Any, **kw: Any) -> str:
     chars, rest = _split(args)
-    speaker = chars[0] if chars else ctx.actor
+    speaker = _actor_from(ctx, chars, kw)
     listener = chars[1] if len(chars) > 1 else kw.get("to")
     action = kw.get("action") or kw.get("command") or kw.get("request")
     pieces = [action] if action is not None else list(rest)
     action_text = ""
     if pieces:
-        action_text = action_to_phrase(pieces[0]) if isinstance(pieces[0], Trace) else to_phrase(pieces[0])
+        action_text = base_phrase(pieces[0]) if isinstance(pieces[0], Trace) else to_phrase(pieces[0])
+        if not action_text and isinstance(pieces[0], Trace):
+            action_text = action_to_phrase(pieces[0])
     if speaker is not None:
         speaker.add_meme("Authority", 0.4)
         ctx.actor = speaker
         who = f" {to_phrase(listener)}" if listener is not None else ""
         if action_text:
+            if not who:
+                who = " everyone"
             return f"{ctx.say(speaker)} told{who} to {action_text}."
         return f"{ctx.say(speaker)} gave{who} a command."
     return f"Someone gave a command to {to_phrase(listener)}." if listener is not None else "Someone gave a command."
@@ -313,7 +369,7 @@ def Command(ctx: World, *args: Any, **kw: Any) -> str:
 @REGISTRY.kernel("Agreement")
 def Agreement(ctx: World, *args: Any, **kw: Any) -> str:
     chars, rest = _split(args)
-    actor = chars[0] if chars else ctx.actor
+    actor = _actor_from(ctx, chars, kw)
     others = _concepts(chars[1:] + rest + _kw_values(kw, "with", "about", "response"))
     if actor is not None:
         actor.add_meme("Agreement", 1.0)
@@ -326,7 +382,7 @@ def Agreement(ctx: World, *args: Any, **kw: Any) -> str:
 @REGISTRY.kernel("Feel")
 def Feel(ctx: World, *args: Any, **kw: Any) -> str:
     chars, rest = _split(args)
-    actor = chars[0] if chars else ctx.actor
+    actor = _actor_from(ctx, chars, kw)
     feeling = _concepts(chars[1:] + rest + _kw_values(kw, "state", "mood", "feeling"))
     place = _concepts(_kw_values(kw, "in", "at", "with"))
     if actor is not None:
@@ -342,7 +398,7 @@ def Feel(ctx: World, *args: Any, **kw: Any) -> str:
 @REGISTRY.kernel("Dirty")
 def Dirty(ctx: World, *args: Any, **kw: Any) -> str:
     chars, rest = _split(args)
-    actor = chars[0] if chars else ctx.actor
+    actor = _actor_from(ctx, chars, kw)
     target = _concepts(chars[1:] + rest + _kw_targets(kw))
     if actor is not None:
         actor.add_meme("Dirty", 1.0)
@@ -355,7 +411,7 @@ def Dirty(ctx: World, *args: Any, **kw: Any) -> str:
 @REGISTRY.kernel("Suggest")
 def Suggestion(ctx: World, *args: Any, **kw: Any) -> str:
     chars, rest = _split(args)
-    speaker = chars[0] if chars else ctx.actor
+    speaker = _actor_from(ctx, chars, kw)
     target = _concepts(chars[1:] + rest + _kw_targets(kw))
     if speaker is not None:
         speaker.add_meme("Wisdom", 0.2)
@@ -367,7 +423,7 @@ def Suggestion(ctx: World, *args: Any, **kw: Any) -> str:
 @REGISTRY.kernel("Steal")
 def Steal(ctx: World, *args: Any, **kw: Any) -> str:
     chars, rest = _split(args)
-    actor = chars[0] if chars else ctx.actor
+    actor = _actor_from(ctx, chars, kw)
     item = _concepts(chars[1:] + rest + _kw_values(kw, "item", "object", "target"))
     if actor is not None:
         actor.add_meme("Mischief", 0.6)
@@ -380,7 +436,7 @@ def Steal(ctx: World, *args: Any, **kw: Any) -> str:
 @REGISTRY.kernel("Warn")
 def Warn(ctx: World, *args: Any, **kw: Any) -> str:
     chars, rest = _split(args)
-    speaker = chars[0] if chars else ctx.actor
+    speaker = _actor_from(ctx, chars, kw)
     listeners = chars[1:]
     topic = _concepts(rest + _kw_values(kw, "about", "topic", "reason"))
     if speaker is not None:
@@ -410,7 +466,7 @@ def Cheer(ctx: World, *args: Any, **kw: Any) -> str:
 @REGISTRY.kernel("Win")
 def Win(ctx: World, *args: Any, **kw: Any) -> str:
     chars, rest = _split(args)
-    actor = chars[0] if chars else ctx.actor
+    actor = _actor_from(ctx, chars, kw)
     prize = _concepts(chars[1:] + rest + _kw_values(kw, "prize", "game", "race"))
     if actor is not None:
         actor.add_meme("Victory", 1.0)
@@ -424,7 +480,7 @@ def Win(ctx: World, *args: Any, **kw: Any) -> str:
 def _register_action(name: str, past: str, *, solo: str = "something", meme: str = "", amount: float = 0.3, prep: str = "") -> None:
     def fn(ctx: World, *args: Any, **kw: Any) -> str:
         chars, rest = _split(args)
-        actor = chars[0] if chars else ctx.actor
+        actor = _actor_from(ctx, chars, kw)
         if actor is not None and is_meta_call(kw):
             body = meta_story(ctx, actor, kw)
             if body:
@@ -444,15 +500,15 @@ def _register_action(name: str, past: str, *, solo: str = "something", meme: str
 def _register_state(name: str, template: str, *, meme: str = "", amount: float = 0.6) -> None:
     def fn(ctx: World, *args: Any, **kw: Any) -> str:
         chars, rest = _split(args)
-        actor = chars[0] if chars else ctx.actor
+        actor = _actor_from(ctx, chars, kw)
         target = _concepts(chars[1:] + rest + _kw_targets(kw))
         if actor is not None:
             if meme:
                 actor.add_meme(meme, amount)
             ctx.actor = actor
-            return template.format(s=ctx.say(actor), t=target)
+            return _clean_sentence(template.format(s=ctx.say(actor), t=target))
         subject = _cap(target) if target else "Everyone"
-        return template.format(s=subject, t="")
+        return _clean_sentence(template.format(s=subject, t=""))
     fn.__name__ = name
     REGISTRY.kernel(name)(fn)
 
@@ -460,7 +516,7 @@ def _register_state(name: str, template: str, *, meme: str = "", amount: float =
 def _register_meta(name: str, fallback: str, *, meme: str = "") -> None:
     def fn(ctx: World, *args: Any, **kw: Any) -> str:
         chars, rest = _split(args)
-        actor = chars[0] if chars else ctx.actor
+        actor = _actor_from(ctx, chars, kw)
         if actor is not None:
             if meme:
                 actor.add_meme(meme, 0.5)
@@ -480,6 +536,85 @@ def _register_meta(name: str, fallback: str, *, meme: str = "") -> None:
         return f"{_cap(name)} happened with {target}." if target else f"{_cap(name)} happened."
     fn.__name__ = name
     REGISTRY.kernel(name)(fn)
+
+
+@REGISTRY.kernel("Clean")
+def CleanTolerant(ctx: World, *args: Any, **kw: Any) -> str:
+    chars, rest = _split(args)
+    actor = _actor_from(ctx, chars, kw)
+    sents = _sentences(rest + list(kw.values()))
+    target = _concepts(chars[1:] + rest + _kw_targets(kw))
+    if actor is not None:
+        actor.add_meme("Pride", 0.2)
+        actor.add_meme("Care", 0.2)
+        ctx.actor = actor
+        lead = f"{ctx.say(actor)} cleaned {target}." if target else f"{ctx.say(actor)} tidied everything up."
+        return coherent(ctx, actor, [lead] + sents)
+    if target:
+        return f"{_cap(target)} was cleaned."
+    return "Everything was cleaned up."
+
+
+@REGISTRY.kernel("Start")
+def Start(ctx: World, *args: Any, **kw: Any) -> str:
+    chars, rest = _split(args)
+    actor = _actor_from(ctx, chars, kw)
+    target = _concepts(chars[1:] + rest + _kw_values(kw, "target", "object", "thing"))
+    if target:
+        return f"{_cap(target)} started."
+    if actor is not None:
+        ctx.actor = actor
+        actor.add_meme("Initiative", 0.3)
+        return f"{ctx.say(actor)} started."
+    return "Things started."
+
+
+@REGISTRY.kernel("Trash")
+def Trash(ctx: World, *args: Any, **kw: Any) -> str:
+    chars, rest = _split(args)
+    actor = _actor_from(ctx, chars, kw)
+    target = _concepts(chars[1:] + rest + _kw_values(kw, "on", "in", "at", "target", "object"))
+    if actor is not None:
+        actor.add_meme("Disgust", 0.3)
+        ctx.actor = actor
+        return f"{ctx.say(actor)} found trash near {target}." if target else f"{ctx.say(actor)} found trash."
+    return f"There was trash near {target}." if target else "There was trash."
+
+
+@REGISTRY.kernel("Wind")
+def Wind(ctx: World, *args: Any, **kw: Any) -> str:
+    chars, rest = _split(args)
+    actor = _actor_from(ctx, chars, kw)
+    target = _concepts(chars[1:] + rest + _kw_values(kw, "around", "through", "target"))
+    if actor is not None:
+        actor.add_meme("Weather", 0.2)
+        ctx.actor = actor
+    return f"The wind blew around {target}." if target else "The wind blew."
+
+
+@REGISTRY.kernel("Wave")
+def Wave(ctx: World, *args: Any, **kw: Any) -> str:
+    chars, rest = _split(args)
+    actor = _actor_from(ctx, chars, kw)
+    target = _concepts(chars[1:] + rest + _kw_values(kw, "target", "object"))
+    if actor is not None:
+        actor.add_meme("Danger", 0.2)
+        ctx.actor = actor
+    return f"A wave swept over {target}." if target else "A wave swept in."
+
+
+@REGISTRY.kernel("Proud")
+@REGISTRY.kernel("Pride")
+def ProudTolerant(ctx: World, *args: Any, **kw: Any) -> str:
+    chars, rest = _split(args)
+    actor = _actor_from(ctx, chars, kw)
+    target = _concepts(chars[1:] + rest + _kw_values(kw, "of", "about", "target"))
+    if actor is not None:
+        actor.add_meme("Pride", 1.0)
+        actor.add_meme("Joy", 0.5)
+        ctx.actor = actor
+        return f"{ctx.say(actor)} felt proud of {target}." if target else f"{ctx.say(actor)} felt proud."
+    return f"Everyone felt proud of {target}." if target else "Everyone felt proud."
 
 
 _register_action("Neglect", "neglected", solo="it", meme="Neglect", amount=0.5)

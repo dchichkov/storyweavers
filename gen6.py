@@ -64,11 +64,13 @@ class Actor:
 COHERENCE_KWARGS = ("_use_pronoun", "_transition")
 
 CHARACTER_TYPES = frozenset({
-    "adult", "animal", "authority", "baby", "bird", "boy", "brother", "cat",
-    "child", "crab", "dad", "dog", "elder", "family", "farmer", "father",
-    "fish", "friend", "frog", "girl", "grandma", "horse", "human", "lion",
-    "man", "mom", "mother", "mouse", "owl", "parent", "peer", "person",
-    "rabbit", "sister", "stranger", "toy", "woman",
+    "adult", "animal", "authority", "baby", "bear", "bird", "boy", "brother",
+    "bunny", "butterfly", "cat", "child", "cow", "crab", "dad", "dog",
+    "dolphin", "duck", "elder", "family", "farmer", "father", "fish",
+    "fisherman", "friend", "frog", "girl", "grandma", "group", "horse",
+    "human", "leader", "lion", "man", "mom", "mommy", "mother", "mouse",
+    "octopus", "owl", "parent", "peer", "person", "pig", "puppy", "rabbit",
+    "sister", "stranger", "toy", "turkey", "whale", "woman", "youth",
 })
 
 
@@ -1075,7 +1077,7 @@ def coherent(world: World, hero: Optional[Entity], sentences: List[str]) -> str:
 # Phase keys that signal a "simple" kernel is actually being used as a
 # multi-phase meta structure (e.g. ``Guidance(Lily, state=..., process=...)``).
 _META_KEYS = (
-    "state", "catalyst", "trigger", "goal", "want", "process", "action",
+    "state", "catalyst", "trigger", "start", "goal", "want", "process", "action",
     "actions", "journey", "obstacle", "conflict", "insight", "discovery",
     "lesson", "realization", "consequence", "outcome", "transformation",
     "resolution", "mistake",
@@ -1119,7 +1121,7 @@ def meta_story(world: World, hero: Optional[Entity], kw: Dict[str, Any],
         elif name:
             sents.append(f"{name} wanted {to_phrase(goal)}.")
 
-    catalyst = _first(kw, "catalyst", "trigger")
+    catalyst = _first(kw, "catalyst", "trigger", "start")
     if catalyst is not None:
         sents += render_event(catalyst)
 
