@@ -427,11 +427,15 @@ def infer_type(name: str, explicit: str) -> str:
     }
     if n in aliases:
         return aliases[n]
+    if n in {"lily", "lucy", "sue", "sara", "sarah", "anna", "emma", "lisa"}:
+        return "girl"
+    if n in {"tim", "timmy", "sam", "ben", "paul", "joe"}:
+        return "boy"
     if n in {
         "girl", "boy", "bird", "mouse", "turkey", "dog", "cat", "barrel",
         "bunny", "rabbit", "bee", "bees", "duck", "frog", "tree", "bear",
         "fish", "mole", "squirrel", "crab", "fox", "ostrich", "airplane",
-        "cow", "chick", "pig", "elephant", "vehicle",
+        "cow", "chick", "pig", "elephant", "vehicle", "ant",
     }:
         return n
     return "person"
@@ -722,6 +726,15 @@ class Parser:
                 frame.patient = frame.meta["participants"][0]
                 frame.actor = actor
                 frame.meta["actor_locked"] = True
+            if (
+                actor is not None
+                and frame.kind == "warning"
+                and frame.actor is not None
+                and frame.actor != actor
+                and len(frame.meta.get("participants", [])) == 1
+            ):
+                frame.patient = actor
+                frame.meta["actor_locked"] = True
             if frame.actor is None and frame.kind not in {"declare", "scene"}:
                 frame.actor = actor
             elif (
@@ -828,7 +841,7 @@ class Parser:
             actor, patient = self.current_actor, chars[0]
         if frame_kind == "ask" and patient is None and len(chars) == 1 and self.current_actor is not None and self.current_actor != actor:
             patient = self.current_actor
-        if frame_kind in {"scold", "protect"} and patient is None and len(chars) == 1 and self.current_actor is not None and self.current_actor != actor:
+        if frame_kind in {"scold", "protect", "warning"} and patient is None and len(chars) == 1 and self.current_actor is not None and self.current_actor != actor:
             patient = self.current_actor
         if frame_kind == "forgiveness" and patient is None and len(chars) == 1 and self.current_actor is not None and self.current_actor != actor:
             patient = self.current_actor
@@ -962,7 +975,15 @@ class Parser:
         if actor is not None:
             for child in child_frames:
                 if (
-                    child.kind in {"hold", "drop", "teach", "encounter"}
+                    child.kind == "warning"
+                    and child.actor is not None
+                    and child.actor != actor
+                    and len(child.meta.get("participants", [])) == 1
+                ):
+                    child.patient = actor
+                    child.meta["actor_locked"] = True
+                if (
+                    child.kind in {"hold", "drop", "teach", "encounter", "warning"}
                     and child.patient is None
                     and len(child.meta.get("participants", [])) == 1
                     and child.meta["participants"][0] != actor

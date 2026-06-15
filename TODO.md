@@ -156,6 +156,15 @@ Known gaps from the first 20 pins:
       many residual render branches; next migrations should move direct-call
       special cases into `direct_handler` packs and split world constraints/effects
       by frame kind while keeping the 49 snapshots green.
+- [~] Continue pack-local quality fixes from rough samples. Untyped common names
+      now infer likely child/person types (`Lily(Character, Neat + Kind)` renders
+      as a girl rather than a literal "lily"), play locations use scene
+      prepositions ("in the woods", "at the park", "on the sand"), action-like
+      desires such as `Longing(jump(pit))` render as verbs, scoped warnings attach
+      to the parent actor, and renderer-pack handlers for `Return`/`Praise` avoid
+      "returned the play" / "praised someone" style fallbacks. Remaining work:
+      owner transfer for chewed/lost toys, explicit rescue-agent extraction, and
+      broader action ontology for `Build`/`Use`/`Show`/`Celebration`-style beats.
 - [~] Improve phase ordering inside structural calls. `Rescue(...)`, `Deal(...)`,
       `Idea(...)`, and `Race(...)` now reorder parent/child frames more
       coherently; `Cautionary(...)` now defers generic lessons until after the

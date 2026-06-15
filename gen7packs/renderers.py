@@ -12,6 +12,36 @@ from gen7 import (
 )
 
 
+SCENE_PLAY_PLACES = {"beach", "sand", "park", "garden", "yard", "grass", "woods", "playground"}
+
+
+def place_prep(place):
+    if place in {"beach", "sand"}:
+        return "on"
+    if place in {"park", "playground"}:
+        return "at"
+    return "in"
+
+
+def action_goal_from_object(renderer, obj):
+    action = display_type(obj)
+    if action == "jump":
+        if obj.traits:
+            target = renderer.world.object_phrase(renderer.world.physical(obj.traits[0]))
+            return f"jump into {target}"
+        return "jump"
+    if action == "play":
+        if obj.traits:
+            target = renderer.world.object_phrase(renderer.world.physical(obj.traits[0]))
+            return f"play with {target}"
+        return "play"
+    return ""
+
+
+def plain_object_phrase(renderer, obj):
+    return renderer.world.object_phrase(obj, status=[], owner_id=None, snapshot_owner=True)
+
+
 @REGISTRY.renderer("want")
 def render_want(renderer, frame):
     subject = renderer.subj(frame.actor)
@@ -27,6 +57,10 @@ def render_want(renderer, frame):
         return f"{subject} wanted to play."
     if any(display_type(o) == "return" for o in frame.objects) or "return" in concepts:
         return f"{subject} wanted to go back."
+    if len(frame.objects) == 1:
+        action_goal = action_goal_from_object(renderer, frame.objects[0])
+        if action_goal:
+            return f"{subject} wanted to {action_goal}."
     goal = phrase(frame.goal, renderer.world) or objects or (concepts[0] if concepts else "something special")
     if goal == "grow":
         return f"{subject} wanted to grow."
@@ -89,7 +123,10 @@ def render_ask(renderer, frame):
     objects = renderer.objs(frame)
     target = renderer.obj(frame.patient) if frame.patient else ""
     action_goal = renderer.action_goal(frame.goal)
-    thing = objects or phrase(frame.goal, renderer.world)
+    if frame.goal is not None and getattr(frame.goal, "kind", None) == "physical":
+        thing = objects or plain_object_phrase(renderer, frame.goal)
+    else:
+        thing = objects or phrase(frame.goal, renderer.world)
     if target and thing:
         if action_goal:
             return f"{subject} asked {target} to {action_goal}."
@@ -133,13 +170,16 @@ def render_play(renderer, frame):
     objects = renderer.objs(frame)
     party = renderer.participants(frame)
     if party and len(frame.meta.get("participants", [])) > 1:
-        if len(frame.objects) == 1 and display_type(frame.objects[0]) in {"beach", "sand", "park", "garden", "yard"}:
+        if len(frame.objects) == 1 and display_type(frame.objects[0]) in SCENE_PLAY_PLACES:
             place = display_type(frame.objects[0])
-            prep = "on" if place in {"beach", "sand"} else "at" if place == "park" else "in"
+            prep = place_prep(place)
             return f"{party} played {prep} {renderer.obj(frame.objects[0])}."
         return f"{party} played with {objects}." if objects else f"{party} played together."
     if frame.patient:
         return f"{subject} played with {renderer.obj(frame.patient)}."
+    if len(frame.objects) == 1 and display_type(frame.objects[0]) in SCENE_PLAY_PLACES:
+        place = display_type(frame.objects[0])
+        return f"{subject} played {place_prep(place)} {renderer.obj(frame.objects[0])}."
     return f"{subject} played with {objects}." if objects else f"{subject} played happily."
 
 
@@ -250,6 +290,26 @@ def render_receive(renderer, frame):
     subject = renderer.subj(frame.actor)
     objects = renderer.objs(frame)
     return f"{subject} received {objects or 'something'}."
+
+
+@REGISTRY.renderer("return")
+def render_return(renderer, frame):
+    subject = renderer.subj(frame.actor)
+    objects = renderer.objs(frame)
+    if len(frame.objects) == 1 and display_type(frame.objects[0]) == "play":
+        return f"{subject} went back to playing."
+    return f"{subject} returned {objects or 'home'}."
+
+
+@REGISTRY.renderer("praise")
+def render_praise(renderer, frame):
+    subject = renderer.subj(frame.actor)
+    if frame.patient:
+        return f"{subject} praised {renderer.obj(frame.patient)}."
+    if len(frame.objects) == 1 and display_type(frame.objects[0]) == "cool":
+        return f"{subject} thought it was cool."
+    objects = renderer.objs(frame)
+    return f"{subject} praised {objects}." if objects else f"{subject} praised them."
 
 
 @REGISTRY.renderer("break", "broken")
