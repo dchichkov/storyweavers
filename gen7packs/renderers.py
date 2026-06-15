@@ -13,6 +13,7 @@ from gen7 import (
 
 
 SCENE_PLAY_PLACES = {"beach", "sand", "park", "garden", "yard", "grass", "woods", "playground"}
+LESSON_FILLERS = {"lesson", "moral", "learn", "insight"}
 
 
 def place_prep(place):
@@ -40,6 +41,20 @@ def action_goal_from_object(renderer, obj):
 
 def plain_object_phrase(renderer, obj):
     return renderer.world.object_phrase(obj, status=[], owner_id=None, snapshot_owner=True)
+
+
+def lesson_topics(renderer, frame):
+    topics = []
+    for topic in renderer.concepts(frame):
+        if topic not in LESSON_FILLERS:
+            topics.append(topic)
+    out = []
+    seen = set()
+    for topic in topics:
+        if topic and topic not in seen:
+            out.append(topic)
+            seen.add(topic)
+    return out
 
 
 @REGISTRY.renderer("routine")
@@ -233,11 +248,34 @@ def render_friendship(renderer, frame):
 @REGISTRY.renderer("lesson")
 def render_lesson(renderer, frame):
     subject = renderer.subj(frame.actor)
-    concepts = renderer.concepts(frame)
-    topic_set = set(concepts)
+    topics = lesson_topics(renderer, frame)
+    topic_set = set(topics)
+    possessive = frame.actor.pronoun("possessive") if frame.actor is not None else "their"
     if {"parents", "listen", "help"}.issubset(topic_set):
-        return f"{subject} learned to listen to her parents and find another way to help."
-    topic = join([c for c in concepts if c not in {"lesson", "moral", "learn"}])
+        return f"{subject} learned to listen to {possessive} parents and find another way to help."
+    if {"help", "friendship", "joy"}.issubset(topic_set):
+        return f"{subject} learned that helping a friend could bring joy."
+    if {"responsibility", "kindness"}.issubset(topic_set):
+        return f"{subject} learned to be responsible and kind."
+    if "no stranger talk" in topic_set:
+        return f"{subject} learned not to talk to strangers."
+    if "unknown not scary" in topic_set:
+        return f"{subject} learned that new things are not always scary."
+    if "asking for help" in topic_set or "ask help" in topic_set:
+        return f"{subject} learned to ask for help."
+    if "unique skills" in topic_set:
+        return f"{subject} learned that everyone has their own skills."
+    if "cooperation" in topic_set:
+        return f"{subject} learned that working together helped."
+    if "moderation" in topic_set:
+        return f"{subject} learned not to take too much."
+    if "careful" in topic_set:
+        return f"{subject} learned to be careful."
+    if "steady" in topic_set:
+        return f"{subject} learned to keep trying steadily."
+    if "kindness" in topic_set:
+        return f"{subject} learned to be kind."
+    topic = join(topics)
     return f"{subject} learned an important lesson about {topic}." if topic else f"{subject} learned an important lesson."
 
 

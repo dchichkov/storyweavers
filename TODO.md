@@ -146,7 +146,7 @@ Current slice:
 | Semantic frames for character setup, find/lost/search/ask/help/give/broken/fix/play/fear/rescue/friendship/lesson/reaction/transform | `Parser.direct_call` + `gen7packs.actions` | ✅ first slice |
 | First renderer pack for desire/find/search/loss/ask/help/play/friendship/lesson/emotion/encounter/problem/transform/visit/object-state frames | `gen7packs.renderers` | ✅ first extraction |
 | Lowercase object/state normalization (`lost(toy)`, `broken(toy)`, `hook(stick,string)`) | `LowerExpr` lowering | ✅ partial |
-| 49 representative pinned stories from `data00` + `data01` | `gen7_story_tests.py`, `gen7_story_tests/` | ✅ snapshots pass |
+| 50 representative pinned stories from `data00` + `data01` | `gen7_story_tests.py`, `gen7_story_tests/` | ✅ snapshots pass |
 
 Known gaps from the first 20 pins:
 
@@ -188,8 +188,16 @@ Known gaps from the first 20 pins:
       groups propagate into child play frames, vague `Outcome(... Friendship ...)`
       wrappers are suppressed, and stateful outcomes such as the seed story render
       a real consequence ("stayed small and felt sad"). Remaining work: replace
-      the remaining generic lesson phrasings with state-aware morals and move
+      the long tail of generic lesson phrasings with state-aware morals and move
       these renderer overrides into smaller domain packs as the ontology grows.
+- [~] Replace common placeholder morals with actionable lesson text. The gen7
+      renderer pack now maps recurring lesson memeplexes such as `Careful`,
+      `Cooperation`, `NoStrangerTalk`, `UnknownNotScary`, `AskingForHelp`,
+      `Responsibility + Kindness`, and `Help + Friendship + Joy` to concrete
+      morals ("learned to be careful", "learned that working together helped")
+      instead of the generic "learned an important lesson about X" fallback.
+      Remaining work: make these topic rules data-driven packs and let relation
+      / meme magnitudes choose the moral when multiple lessons are plausible.
 - [~] Improve phase ordering inside structural calls. `Rescue(...)`, `Deal(...)`,
       `Idea(...)`, and `Race(...)` now reorder parent/child frames more
       coherently; `Cautionary(...)` now defers generic lessons until after the
@@ -260,7 +268,7 @@ Known gaps from the first 20 pins:
       now becomes a real lesson frame, repeated lesson topics are collapsed, and
       composed lesson phases such as `Avoidance(...) + Memory(...)` keep their
       concrete child frames instead of re-wrapping them as extra morals.
-- [ ] Add a manual `QUALITY.md` grade for the 49 gen7 pins and compare them
+- [ ] Add a manual `QUALITY.md` grade for the 50 gen7 pins and compare them
       against gen6 output; the harness pins behavior but does not judge it.
 
 ### Still open for `gen6.py`

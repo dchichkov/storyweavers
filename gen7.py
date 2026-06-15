@@ -1241,15 +1241,14 @@ class Renderer:
                 if lost_obj in lost_objects:
                     continue
                 lost_objects.add(lost_obj)
-            lesson = re.match(r"^(?:[a-z]+|he|she|it|they)(?: and [a-z]+)? learned an important lesson(?: about ([^.]+))?\.$", key)
-            if lesson:
-                topic = (lesson.group(1) or "").strip()
-                if topic:
-                    if topic in lesson_topics or (topic == "learn" and saw_lesson):
-                        continue
-                    lesson_topics.add(topic)
-                elif saw_lesson:
+            learned = re.match(r"^(?:[a-z]+|he|she|it|they)(?: and [a-z]+)? learned (.+)\.$", key)
+            if learned:
+                lesson_key = learned.group(1).strip()
+                if lesson_key in lesson_topics:
                     continue
+                if lesson_key == "an important lesson" and saw_lesson:
+                    continue
+                lesson_topics.add(lesson_key)
                 saw_lesson = True
             out.append(sentence)
             seen.add(key)

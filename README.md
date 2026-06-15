@@ -92,7 +92,7 @@ python gen7.py --story-id data00:36222
 python gen7_story_tests.py --run
 ```
 
-The gen7 snapshot runner pins 49 representative stories, including known problem
+The gen7 snapshot runner pins 50 representative stories, including known problem
 cases from both `data00` and `data01`, so quality/world-model changes can improve
 the semantic slice without silently regressing it.
 
