@@ -33,7 +33,7 @@ CHARACTER_TYPES = {
     "mouse", "parent", "person", "puppy", "rabbit", "turkey", "twin", "woman",
     "bees", "tree", "daughter", "squirrel", "crab", "fox", "ostrich",
     "airplane", "cow", "chick", "pig", "elephant", "vehicle", "peer",
-    "monkey", "bug", "human", "elderly", "old", "fairy", "hawk", "owl", "birds",
+    "monkey", "bug", "human", "elderly", "old", "fairy", "hawk", "owl", "bus", "birds",
     "animals",
 }
 GENERIC_TYPES = {"animal", "group", "person"}
@@ -129,6 +129,8 @@ def article(noun: str) -> str:
 def is_plural(noun: str) -> bool:
     head = noun.strip().split()[-1:] or [""]
     word = head[0].lower()
+    if word in {"bus", "class", "grass", "glass"}:
+        return False
     return word in {"children", "people"} or (word.endswith("s") and not word.endswith("ss"))
 
 
@@ -218,7 +220,7 @@ class Entity:
             return {"subject": "he", "object": "him", "possessive": "his"}[case]
         if t in {"group", "children", "people", "bees", "birds", "animals"}:
             return {"subject": "they", "object": "them", "possessive": "their"}[case]
-        if t in {"bird", "dog", "puppy", "cat", "mouse", "monkey", "bug", "turkey", "bear", "bee", "fish", "frog", "rabbit", "bunny", "duck", "barrel", "tree", "flower", "train", "squirrel", "crab", "fox", "ostrich", "airplane", "cow", "chick", "pig", "elephant", "vehicle", "seed", "fairy", "hawk", "owl"}:
+        if t in {"bird", "dog", "puppy", "cat", "mouse", "monkey", "bug", "turkey", "bear", "bee", "fish", "frog", "rabbit", "bunny", "duck", "barrel", "tree", "flower", "train", "bus", "squirrel", "crab", "fox", "ostrich", "airplane", "cow", "chick", "pig", "elephant", "vehicle", "seed", "fairy", "hawk", "owl"}:
             return {"subject": "it", "object": "it", "possessive": "its"}[case]
         return {"subject": "they", "object": "them", "possessive": "their"}[case]
 
@@ -466,7 +468,7 @@ def infer_type(name: str, explicit: str) -> str:
         "daddy": "father", "old lady": "old lady", "baby bird": "bird",
         "daughter": "daughter", "friend": "friend",
         "mrs johnson": "woman", "mr jenkins": "man",
-        "little animals": "animals", "big bird": "bird",
+        "little animals": "animals", "big bird": "bird", "bus": "bus",
     }
     explicit_words = words(explicit)
     if explicit_words == "bird" and n in {"baby bird", "turkey", "chick"}:
@@ -496,7 +498,7 @@ def infer_type(name: str, explicit: str) -> str:
         "bunny", "rabbit", "bee", "bees", "duck", "frog", "tree", "bear",
         "fish", "mole", "squirrel", "crab", "fox", "ostrich", "airplane",
         "cow", "chick", "pig", "elephant", "vehicle", "ant", "monkey", "bug",
-        "train", "flower", "fairy", "hawk", "owl", "birds", "animals",
+        "train", "flower", "bus", "fairy", "hawk", "owl", "birds", "animals",
     }:
         return n
     return "person"
@@ -1778,6 +1780,16 @@ def qa_objects(world: StoryWorld, frame: Frame) -> str:
     return join([qa_object(world, obj, frame) for obj in frame.objects])
 
 
+def qa_find_answer(world: StoryWorld, frame: Frame) -> str:
+    regular = [obj for obj in frame.objects if display_type(obj) not in POSITION_OBJECTS]
+    positioned = [obj for obj in frame.objects if display_type(obj) in POSITION_OBJECTS and obj.traits]
+    if regular and positioned:
+        found = join([qa_object(world, obj, frame) for obj in regular])
+        where = join([qa_object(world, obj, frame) for obj in positioned])
+        return f"{found} {where}".strip()
+    return qa_objects(world, frame)
+
+
 def qa_participants(frame: Frame) -> str:
     chars = [c for c in frame.meta.get("participants", []) if is_character(c)]
     if not chars and frame.actor is not None:
@@ -1876,6 +1888,10 @@ def format_qa_answer(question: str, answer: str) -> str:
                 return response(f"{actor} wanted to fly", f"That desire helps guide {actor}'s actions")
             if fragment in {"the golf", "golf"}:
                 return response(f"{actor} wanted to play golf", f"That desire helps guide {actor}'s actions")
+            if fragment in {"the travel", "travel"}:
+                return response(f"{actor} wanted to travel", f"That desire helps guide {actor}'s actions")
+            if fragment in {"the splash", "splash"}:
+                return response(f"{actor} wanted to splash in the puddle", f"That desire helps guide {actor}'s actions")
             if fragment in {"the pretty", "pretty"}:
                 return response(f"{actor} wanted something pretty", f"That desire helps guide {actor}'s actions")
             if fragment in {"the big and the pretty", "big and pretty"}:
@@ -1966,7 +1982,7 @@ def frame_to_qa(world: StoryWorld, frame: Frame) -> list[QA]:
         goal = phrase(frame.goal, world) or objects
         add_qa(items, seen, f"What did {actor} want?", goal, "desire", frame.source)
     elif frame.kind in {"find", "discover"}:
-        answer = patient if frame.patient is not None else objects
+        answer = patient if frame.patient is not None else qa_find_answer(world, frame)
         object_names = {display_type(o) for o in frame.objects}
         if "key" in object_names and "grass" in object_names:
             answer = "the key"

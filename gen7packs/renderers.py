@@ -130,6 +130,10 @@ def render_want(renderer, frame):
     if any(display_type(o) == "golf" for o in frame.objects) or "golf" in concepts:
         return f"{subject} wanted to play golf."
     object_names = {display_type(o) for o in frame.objects}
+    if "travel" in object_names or "travel" in concepts:
+        return f"{subject} wanted to travel."
+    if "splash" in object_names or "splash" in concepts:
+        return f"{subject} wanted to splash in the puddle."
     if {"big", "pretty"}.issubset(object_names) or {"big", "pretty"}.issubset(set(concepts)):
         return f"{subject} wanted to be big and pretty."
     if any(display_type(o) == "pretty" for o in frame.objects) or "pretty" in concepts:
@@ -153,6 +157,10 @@ def render_want(renderer, frame):
         return f"{subject} wanted to fly."
     if goal in {"the golf", "golf", "play the golf"}:
         return f"{subject} wanted to play golf."
+    if goal in {"the travel", "travel"}:
+        return f"{subject} wanted to travel."
+    if goal in {"the splash", "splash"}:
+        return f"{subject} wanted to splash in the puddle."
     if goal in {"the pretty", "pretty"}:
         return f"{subject} wanted something pretty."
     if goal in {"the big and the pretty", "big and pretty"}:
