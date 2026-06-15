@@ -39,6 +39,62 @@ was X." sentences.
 
 ---
 
+## gen7 Prototype Work: StoryWorld, Sampling, and QA
+
+gen7 is an active prototype, separate from gen6, for testing the MUD-like
+StoryWorld direction. gen7 work should still follow the memeplex north star:
+parse kernel ASTs into executable world frames, apply them to persistent state,
+then render narrative and QA from that state. Do not turn gen7 QA into
+post-processing over English prose when the frame/world trace can answer it.
+
+Useful commands:
+
+```bash
+python gen7.py --story-id data00:36222
+python gen7.py --story-id data00:36222 --qa --qa-limit 8
+python gen7_story_tests.py --run
+python gen7_story_tests.py --run-qa --qa-limit 12
+python gen7_story_tests.py --sample 10 --seed 777 --scan 20000 --show-qa --qa-limit 8
+```
+
+### gen7 QA Quality Passes
+
+Treat question/answer generation as part of narrative quality, not a side demo.
+When improving gen7, sample QA alongside generated text and the original story,
+read the failures, and improve repeated classes. The smoke test must stay green,
+but green smoke only proves basic shape; it does not prove quality.
+
+QA should be generated from `StoryWorld.history`, entity state, meme magnitudes,
+relations, and frame metadata. A good QA pair is answerable from the simulated
+world, grounded in entities/events that actually exist, and useful for checking
+whether the engine preserved causality, ownership, roles, and lesson state.
+
+Target answer style:
+
+- Prefer full natural-language responses over bare noun phrases.
+- Use one to three short sentences when the trace supports cause/effect or
+  temporal context.
+- Keep answers grounded: no entities, motives, or outcomes that are not present
+  in the world trace.
+- Diversify question kinds across a sample: who/what/where/how/why/what-next,
+  plus role, object-state, instrument, lesson, and causal questions.
+- Avoid duplicate shallow questions that only restate declarations.
+
+When touching QA, update or extend `gen7_story_tests.py --run-qa` so it measures
+more than nonempty output. Useful deterministic checks include duplicate-rate,
+question-kind distribution, answer length/full-sentence rate, grounded entity
+mentions, and whether every QA answer is tied to a frame/entity id. Record known
+QA defects in `TODO.md` using a controlled vocabulary such as `bare_answer`,
+`ungrounded_answer`, `duplicate_question`, `wrong_focus`, `missing_causality`,
+`not_answerable`, and `too_shallow`.
+
+Multi-turn QA is a desired gen7 milestone. Implement it as conversation state
+over the same `StoryWorld`, not as free-form text chat: follow-up questions such
+as "Why?", "What happened next?", "Who helped?", and "Where was it?" should
+resolve against the last referenced entity/event/question type.
+
+---
+
 ## gen6 Authoring ⭐
 
 gen6 is a typed, fault-tolerant engine. Key properties (and how it differs from

@@ -92,7 +92,7 @@ python gen7.py --story-id data00:36222
 python gen7.py --story-id data00:36222 --qa
 python gen7_story_tests.py --run
 python gen7_story_tests.py --run-qa
-python gen7_story_tests.py --sample 10 --seed 777 --scan 20000 --show-qa
+python gen7_story_tests.py --sample 10 --seed 777 --scan 20000 --show-qa --qa-limit 8
 ```
 
 The gen7 snapshot runner pins 60 representative stories, including known problem
@@ -103,6 +103,16 @@ into `STORY_IDS` plus snapshots each iteration so the suite grows with the failu
 surface. `gen7.generate_qa(...)` and `--show-qa` generate deterministic templated
 questions/answers from the simulated `StoryWorld` trace, so QA quality can be
 reviewed beside the generated text.
+
+QA should now be treated as part of gen7 quality, not an afterthought. During
+sampling passes, inspect generated questions and answers alongside the story and
+original text; diversify question types when a batch repeats the same shallow
+forms. The target format is a full natural-language response, usually multiple
+sentences when the world trace supports it, rather than a bare noun phrase.
+`--run-qa` is the smoke gate today; extend it over time to measure answerability,
+diversity, groundedness in the world trace, and whether answers are complete
+responses. Multi-turn QA is a desired next milestone: follow-up questions should
+carry the referenced entity/event forward through the same simulated world state.
 
 ### AST → AST Transforms (Reference Demos)
 

@@ -136,7 +136,7 @@ python gen7.py --story-id data00:36222
 python gen7.py --story-id data00:36222 --qa
 python gen7_story_tests.py --run
 python gen7_story_tests.py --run-qa
-python gen7_story_tests.py --sample 10 --seed 777 --scan 20000 --show-qa
+python gen7_story_tests.py --sample 10 --seed 777 --scan 20000 --show-qa --qa-limit 8
 ```
 
 Current slice:
@@ -173,6 +173,27 @@ Known gaps from the first 20 pins:
       Remaining work: move QA template registration into packs alongside
       renderers, add negative/why questions from causal links, and grade QA
       answerability against original texts.
+- [ ] Make gen7 QA a sampled, scored quality surface. Every gen7 quality
+      iteration should sample QA with `--show-qa`, promote rough QA cases into
+      pins or fixtures, and improve repeated failure classes just like story
+      prose. Extend `--run-qa` beyond the current nonempty/malformed smoke check
+      to report deterministic quality metrics: answerability from the world
+      trace, groundedness/no hallucinated entities, diversity of question kinds,
+      duplicate-rate, and whether answers are complete natural-language
+      responses. Track a small controlled defect vocabulary for QA failures
+      (`bare_answer`, `ungrounded_answer`, `duplicate_question`, `wrong_focus`,
+      `missing_causality`, `not_answerable`, `too_shallow`).
+- [ ] Upgrade gen7 QA answers from bare facts to full responses. The desired
+      answer shape is one to three short sentences grounded in the simulated
+      world state, for example: "Max found the key in the grass. He kept it and
+      later used it to unlock the leash." Keep concise answers when the trace is
+      genuinely simple, but avoid noun-only answers as the default.
+- [ ] Prototype multi-turn gen7 QA. Add a small conversation state over
+      `StoryWorld` that remembers the last entity/event/question type, so
+      follow-ups like "Why?", "What happened next?", "Who helped?", and "Where
+      was it?" resolve against the same executable event trace instead of the
+      rendered English. Start with deterministic templated turns and a smoke
+      sampler before attempting broader dialogue behavior.
 - [~] Split gen7 out of the giant-if prototype. The frame-name ontology now lives
       in `gen7packs.actions`, and a first high-frequency renderer batch lives in
       `gen7packs.renderers`. `gen7.py` still owns too much role normalization and
