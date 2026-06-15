@@ -218,7 +218,7 @@ class Entity:
             return {"subject": "he", "object": "him", "possessive": "his"}[case]
         if t in {"group", "children", "people", "bees", "birds", "animals"}:
             return {"subject": "they", "object": "them", "possessive": "their"}[case]
-        if t in {"bird", "dog", "puppy", "cat", "mouse", "monkey", "bug", "turkey", "bear", "bee", "fish", "frog", "rabbit", "bunny", "duck", "barrel", "tree", "squirrel", "crab", "fox", "ostrich", "airplane", "cow", "chick", "pig", "elephant", "vehicle", "seed", "fairy", "hawk", "owl"}:
+        if t in {"bird", "dog", "puppy", "cat", "mouse", "monkey", "bug", "turkey", "bear", "bee", "fish", "frog", "rabbit", "bunny", "duck", "barrel", "tree", "flower", "train", "squirrel", "crab", "fox", "ostrich", "airplane", "cow", "chick", "pig", "elephant", "vehicle", "seed", "fairy", "hawk", "owl"}:
             return {"subject": "it", "object": "it", "possessive": "its"}[case]
         return {"subject": "they", "object": "them", "possessive": "their"}[case]
 
@@ -515,7 +515,7 @@ def trait_text(ent: Entity) -> str:
     typ_words = set(words(display_type(ent)).split())
     traits = [
         t for t in ent.traits
-        if t and t not in {"human", ent.type, display_type(ent)} and not set(words(t).split()).issubset(typ_words)
+        if t and t not in {"human", "male", "female", ent.type, display_type(ent)} and not set(words(t).split()).issubset(typ_words)
     ]
     return " ".join(traits[:2])
 
@@ -1860,7 +1860,7 @@ def format_qa_answer(question: str, answer: str) -> str:
     if question == "Who was reunited?":
         return response(f"{fragment} was reunited", "The reunion restores the relationship")
 
-    m = re.match(r"^What did (.+?) (want|find|lose|fix|share|give|receive|unlock|use|make|learn|eat|wipe)\?$", question)
+    m = re.match(r"^What did (.+?) (want|find|lose|fix|share|give|receive|unlock|use|make|learn|eat|wipe|paint)\?$", question)
     if m:
         actor, verb = m.groups()
         if verb == "learn":
@@ -1872,6 +1872,14 @@ def format_qa_answer(question: str, answer: str) -> str:
                 return response(f"{actor} wanted to grow", f"That desire helps guide {actor}'s actions")
             if fragment in {"the climb", "climb"}:
                 return response(f"{actor} wanted to climb", f"That desire helps guide {actor}'s actions")
+            if fragment in {"the fly", "fly"}:
+                return response(f"{actor} wanted to fly", f"That desire helps guide {actor}'s actions")
+            if fragment in {"the golf", "golf"}:
+                return response(f"{actor} wanted to play golf", f"That desire helps guide {actor}'s actions")
+            if fragment in {"the pretty", "pretty"}:
+                return response(f"{actor} wanted something pretty", f"That desire helps guide {actor}'s actions")
+            if fragment in {"the big and the pretty", "big and pretty"}:
+                return response(f"{actor} wanted to be big and pretty", f"That desire helps guide {actor}'s actions")
             if fragment == "feed":
                 return response(f"{actor} wanted to feed the babies", f"That desire helps guide {actor}'s actions")
             return response(f"{actor} wanted {fragment}", f"That desire helps guide {actor}'s actions")
@@ -1887,6 +1895,7 @@ def format_qa_answer(question: str, answer: str) -> str:
             "make": "made",
             "eat": "ate",
             "wipe": "wiped",
+            "paint": "painted",
         }[verb]
         return response(f"{actor} {past} {fragment}", f"That event is recorded in the story world")
 
@@ -1945,8 +1954,9 @@ def frame_to_qa(world: StoryWorld, frame: Frame) -> list[QA]:
 
     if frame.kind == "declare" and frame.actor is not None:
         desc = display_type(frame.actor)
-        if frame.actor.traits:
-            desc = f"{' '.join(frame.actor.traits)} {desc}"
+        traits = trait_text(frame.actor)
+        if traits:
+            desc = f"{traits} {desc}"
         if is_plural(desc):
             answer = f"{frame.actor.id} are {desc}."
         else:
@@ -2014,7 +2024,11 @@ def frame_to_qa(world: StoryWorld, frame: Frame) -> list[QA]:
     elif frame.kind == "scare":
         add_qa(items, seen, "Who scared the danger away?", qa_participants(frame) or actor, "resolution", frame.source)
     elif frame.kind == "make":
-        add_qa(items, seen, f"What did {actor} make?", objects, "creation", frame.source)
+        object_names = {display_type(o) for o in frame.objects}
+        answer = "a toy car" if {"toy", "car"}.issubset(object_names) else objects
+        add_qa(items, seen, f"What did {actor} make?", answer, "creation", frame.source)
+    elif frame.kind == "paint":
+        add_qa(items, seen, f"What did {actor} paint?", objects, "action", frame.source)
     elif frame.kind == "eat":
         add_qa(items, seen, f"What did {actor} eat?", objects, "action", frame.source)
     elif frame.kind == "wipe":
@@ -2059,8 +2073,9 @@ def build_qa(world: StoryWorld, limit: int | None = None) -> list[QA]:
     }
     for ent in world.declarations:
         desc = display_type(ent)
-        if ent.traits:
-            desc = f"{' '.join(ent.traits)} {desc}"
+        traits = trait_text(ent)
+        if traits:
+            desc = f"{traits} {desc}"
         if is_plural(desc):
             answer = f"{ent.id} are {desc}."
         else:

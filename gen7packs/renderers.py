@@ -125,6 +125,15 @@ def render_want(renderer, frame):
         return f"{subject} wanted to grow."
     if any(display_type(o) == "climb" for o in frame.objects) or "climb" in concepts:
         return f"{subject} wanted to climb."
+    if any(display_type(o) == "fly" for o in frame.objects) or "fly" in concepts:
+        return f"{subject} wanted to fly."
+    if any(display_type(o) == "golf" for o in frame.objects) or "golf" in concepts:
+        return f"{subject} wanted to play golf."
+    object_names = {display_type(o) for o in frame.objects}
+    if {"big", "pretty"}.issubset(object_names) or {"big", "pretty"}.issubset(set(concepts)):
+        return f"{subject} wanted to be big and pretty."
+    if any(display_type(o) == "pretty" for o in frame.objects) or "pretty" in concepts:
+        return f"{subject} wanted something pretty."
     if any(display_type(o) == "play" for o in frame.objects) or "play" in concepts:
         return f"{subject} wanted to play."
     if any(display_type(o) == "return" for o in frame.objects) or "return" in concepts:
@@ -140,6 +149,14 @@ def render_want(renderer, frame):
         return f"{subject} wanted to grow."
     if goal == "feed":
         return f"{subject} wanted to feed the babies."
+    if goal in {"the fly", "fly"}:
+        return f"{subject} wanted to fly."
+    if goal in {"the golf", "golf", "play the golf"}:
+        return f"{subject} wanted to play golf."
+    if goal in {"the pretty", "pretty"}:
+        return f"{subject} wanted something pretty."
+    if goal in {"the big and the pretty", "big and pretty"}:
+        return f"{subject} wanted to be big and pretty."
     if frame.goal is not None and type(frame.goal).__name__ == "LowerExpr" and frame.goal.name in {"find", "search", "rescue", "fix", "return", "retrieve"}:
         return f"{subject} wanted to {goal}."
     return f"{subject} wanted {goal}."
@@ -503,6 +520,9 @@ def render_hold(renderer, frame):
 @REGISTRY.renderer("make")
 def render_make(renderer, frame):
     subject = renderer.subj(frame.actor)
+    object_names = {display_type(o) for o in frame.objects}
+    if {"toy", "car"}.issubset(object_names):
+        return f"{subject} made a toy car."
     if frame.source.lower() == "build" and frame.objects:
         thing = renderer.obj(frame.objects[0])
         if len(frame.objects) > 1:
@@ -511,6 +531,13 @@ def render_make(renderer, frame):
         return f"{subject} built {thing}."
     objects = renderer.objs(frame)
     return f"{subject} made {objects or 'something'}."
+
+
+@REGISTRY.renderer("paint")
+def render_paint(renderer, frame):
+    subject = renderer.subj(frame.actor)
+    objects = renderer.objs(frame)
+    return f"{subject} painted {objects or 'carefully'}."
 
 
 @REGISTRY.renderer("use")

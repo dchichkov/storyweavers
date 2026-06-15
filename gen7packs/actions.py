@@ -72,6 +72,7 @@ ALIASES = {
     "pick": "take", "suggest": "advice", "remove": "remove", "pull": "rescue",
     "teach": "teach", "transport": "transport", "drive": "drive",
     "clean": "clean", "cut": "cut", "chew": "chew", "build": "make", "use": "use",
+    "create": "make", "paint": "paint", "meal": "eat",
     "show": "show", "calendaradd": "calendar_add", "anticipation": "anticipation",
     "celebration": "celebration", "playinside": "play",
     "pinch": "injury", "threat": "threat",
