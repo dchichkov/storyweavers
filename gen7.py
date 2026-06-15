@@ -44,6 +44,7 @@ COMPOUNDS = {
     "playground": "playground",
     "schoolyard": "school yard",
     "icecream": "ice cream",
+    "pointyrock": "pointy rock",
     "backyard": "backyard",
     "bedroom": "bedroom",
     "bathroom": "bathroom",
@@ -1741,7 +1742,7 @@ def qa_concepts(frame: Frame) -> list[str]:
 
 def add_qa(items: list[QA], seen: set[tuple[str, str]], question: str, answer: str, kind: str, source: str = "") -> None:
     question = question.strip()
-    answer = answer.strip()
+    answer = format_qa_answer(question, answer.strip())
     if not question or not answer or answer == "something":
         return
     key = (question.lower(), answer.lower())
@@ -1749,6 +1750,108 @@ def add_qa(items: list[QA], seen: set[tuple[str, str]], question: str, answer: s
         return
     seen.add(key)
     items.append(QA(question, answer, kind, source))
+
+
+def sentence(text: str) -> str:
+    text = text.strip()
+    if not text:
+        return ""
+    return text if text[-1:] in ".?!" else f"{text}."
+
+
+def response(first: str, second: str) -> str:
+    return f"{sentence(first)} {sentence(second)}".strip()
+
+
+def sentence_count(text: str) -> int:
+    return len(re.findall(r"[.!?]", text))
+
+
+def clean_answer_fragment(answer: str) -> str:
+    answer = answer.strip()
+    answer = answer[:-1] if answer.endswith(".") else answer
+    return answer
+
+
+def format_qa_answer(question: str, answer: str) -> str:
+    answer = answer.strip()
+    if not answer:
+        return ""
+    if re.match(r"^[A-Z].*[.?!]$", answer) and sentence_count(answer) >= 2:
+        return answer
+    fragment = clean_answer_fragment(answer)
+
+    if question.startswith("Who is "):
+        name = question.removeprefix("Who is ").removesuffix("?")
+        return response(fragment, f"{name} is introduced as part of the story world")
+    if question == "Who got hurt?":
+        return response(f"{fragment} got hurt", "That injury is one of the story problems")
+    if question == "Who became friends?":
+        return response(f"{fragment} became friends", "Their friendship is part of the resolution")
+    if question == "What broke?":
+        return response(f"{cap(fragment)} broke", "That broken object changes the story state")
+    if question == "What danger appeared?":
+        return response(f"{cap(fragment)} appeared as a danger", "That danger creates pressure in the scene")
+    if question == "Who scared the danger away?":
+        return response(f"{fragment} scared the danger away", "That action resolves the threat")
+    if question == "What did the wind blow away?":
+        return response(f"The wind blew {fragment} away", "That event changes the object state")
+    if question == "Who was reunited?":
+        return response(f"{fragment} was reunited", "The reunion restores the relationship")
+
+    m = re.match(r"^What did (.+?) (want|find|lose|fix|share|give|receive|unlock|use|make|learn)\?$", question)
+    if m:
+        actor, verb = m.groups()
+        if verb == "learn":
+            if fragment.startswith(("that ", "to ", "not to ", "an ")):
+                return response(f"{actor} learned {fragment}", f"This is the lesson the story gives to {actor}")
+            return response(f"{actor} learned about {fragment}", f"This is the lesson the story gives to {actor}")
+        if verb == "want":
+            return response(f"{actor} wanted {fragment}", f"That desire helps guide {actor}'s actions")
+        past = {
+            "find": "found",
+            "lose": "lost",
+            "fix": "fixed",
+            "share": "shared",
+            "give": "gave",
+            "receive": "received",
+            "unlock": "unlocked",
+            "use": "used",
+            "make": "made",
+        }[verb]
+        return response(f"{actor} {past} {fragment}", f"That event is recorded in the story world")
+
+    m = re.match(r"^Who did (.+?) (share|give|help|rescue|play) with\?$", question)
+    if m:
+        actor, verb = m.groups()
+        past = {"share": "shared", "give": "gave", "help": "helped", "rescue": "rescued", "play": "played"}[verb]
+        return response(f"{actor} {past} with {fragment}", "That answer follows the participant roles in the world trace")
+
+    m = re.match(r"^Who did (.+?) (help|rescue)\?$", question)
+    if m:
+        actor, verb = m.groups()
+        past = "rescued" if verb == "rescue" else "helped"
+        return response(f"{actor} {past} {fragment}", "That answer follows the helper and patient roles")
+
+    m = re.match(r"^How did (.+?) feel\?$", question)
+    if m:
+        actor = m.group(1)
+        return response(f"{actor} felt {fragment}", f"That feeling is tracked on {actor} in the story state")
+
+    m = re.match(r"^Where did (.+?) (play|visit)\?$", question)
+    if m:
+        actor, verb = m.groups()
+        if verb == "play":
+            prep = "at" if fragment in {"the park", "the playground"} else "in"
+            return response(f"{actor} played {prep} {fragment}", "That location anchors the scene")
+        return response(f"{actor} visited {fragment}", "That location anchors the scene")
+
+    m = re.match(r"^What problem did (.+?) have\?$", question)
+    if m:
+        actor = m.group(1)
+        return response(f"{actor} had a problem with {fragment}", "That problem drives the next story events")
+
+    return response(cap(fragment), "This answer comes from the simulated story world")
 
 
 def frame_to_qa(world: StoryWorld, frame: Frame) -> list[QA]:

@@ -227,23 +227,62 @@ def run(story_ids: list[str]) -> int:
 
 def run_qa(story_ids: list[str], qa_limit: int) -> int:
     failures = 0
+    total_pairs = 0
+    full_responses = 0
+    multi_sentence_responses = 0
+    duplicate_questions = 0
+    kind_counts: dict[str, int] = {}
     for story_id in story_ids:
         pairs = generated_qa(story_id, qa_limit)
         if not pairs:
             failures += 1
             print(f"{story_id}: no QA generated")
             continue
+        questions_seen: set[str] = set()
         for qa in pairs:
+            total_pairs += 1
+            kind_counts[qa.kind] = kind_counts.get(qa.kind, 0) + 1
             if not qa.question.endswith("?"):
                 failures += 1
                 print(f"{story_id}: malformed question {qa.question!r}")
             if not qa.answer.strip():
                 failures += 1
                 print(f"{story_id}: blank answer for {qa.question!r}")
+            if qa.question.lower() in questions_seen:
+                duplicate_questions += 1
+            questions_seen.add(qa.question.lower())
+            sentence_marks = re.findall(r"[.!?]", qa.answer.strip())
+            if re.match(r"^[A-Z0-9].*[.!?]$", qa.answer.strip()) and " " in qa.answer.strip():
+                full_responses += 1
+            else:
+                failures += 1
+                print(f"{story_id}: bare/incomplete answer {qa.answer!r} for {qa.question!r}")
+            if len(sentence_marks) >= 2:
+                multi_sentence_responses += 1
+            else:
+                failures += 1
+                print(f"{story_id}: answer is not multi-sentence {qa.answer!r} for {qa.question!r}")
+    kind_total = len(kind_counts)
+    if kind_total < 4:
+        failures += 1
+        print(f"QA kind diversity too low: {kind_total} kinds")
+    duplicate_rate = (duplicate_questions / total_pairs * 100.0) if total_pairs else 0.0
+    if duplicate_rate > 10.0:
+        failures += 1
+        print(f"QA duplicate question rate too high: {duplicate_rate:.1f}%")
     if failures:
         print(f"{failures} gen7 QA check(s) failed")
         return 1
-    print(f"ok - generated QA for {len(story_ids)} gen7 stories")
+    full_rate = (full_responses / total_pairs * 100.0) if total_pairs else 0.0
+    multi_rate = (multi_sentence_responses / total_pairs * 100.0) if total_pairs else 0.0
+    top_kinds = ", ".join(f"{kind}:{count}" for kind, count in sorted(kind_counts.items())[:8])
+    print(
+        f"ok - generated QA for {len(story_ids)} gen7 stories; "
+        f"pairs={total_pairs}; full_response_rate={full_rate:.1f}%; "
+        f"multi_sentence_rate={multi_rate:.1f}%; "
+        f"kinds={kind_total}; duplicate_questions={duplicate_questions} ({duplicate_rate:.1f}%); "
+        f"top_kinds={top_kinds}"
+    )
     return 0
 
 

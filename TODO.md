@@ -173,21 +173,22 @@ Known gaps from the first 20 pins:
       Remaining work: move QA template registration into packs alongside
       renderers, add negative/why questions from causal links, and grade QA
       answerability against original texts.
-- [ ] Make gen7 QA a sampled, scored quality surface. Every gen7 quality
+- [~] Make gen7 QA a sampled, scored quality surface. Every gen7 quality
       iteration should sample QA with `--show-qa`, promote rough QA cases into
       pins or fixtures, and improve repeated failure classes just like story
-      prose. Extend `--run-qa` beyond the current nonempty/malformed smoke check
-      to report deterministic quality metrics: answerability from the world
-      trace, groundedness/no hallucinated entities, diversity of question kinds,
-      duplicate-rate, and whether answers are complete natural-language
-      responses. Track a small controlled defect vocabulary for QA failures
-      (`bare_answer`, `ungrounded_answer`, `duplicate_question`, `wrong_focus`,
-      `missing_causality`, `not_answerable`, `too_shallow`).
-- [ ] Upgrade gen7 QA answers from bare facts to full responses. The desired
-      answer shape is one to three short sentences grounded in the simulated
-      world state, for example: "Max found the key in the grass. He kept it and
-      later used it to unlock the leash." Keep concise answers when the trace is
-      genuinely simple, but avoid noun-only answers as the default.
+      prose. `--run-qa` now reports deterministic quality metrics and enforces
+      full-response shape, multi-sentence answers, minimum question-kind
+      diversity, and a maximum duplicate-question rate of 10%. Remaining work:
+      add answerability/groundedness checks against frame/entity ids and track a
+      controlled defect vocabulary (`bare_answer`, `ungrounded_answer`,
+      `duplicate_question`, `wrong_focus`, `missing_causality`, `not_answerable`,
+      `too_shallow`) in scored QA worksheets.
+- [~] Upgrade gen7 QA answers from bare facts to full responses. QA answers now
+      normalize fragments into complete two-sentence responses and `--run-qa`
+      reports 100% full-response / multi-sentence rate on the 60 pinned stories.
+      Remaining work: make the second sentence less generic by using richer
+      causal/world context, for example: "Max found the key in the grass. He kept
+      it and later used it to unlock the leash."
 - [ ] Prototype multi-turn gen7 QA. Add a small conversation state over
       `StoryWorld` that remembers the last entity/event/question type, so
       follow-ups like "Why?", "What happened next?", "Who helped?", and "Where

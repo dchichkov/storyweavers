@@ -337,6 +337,8 @@ def render_lesson(renderer, frame):
         return f"{subject} learned that friends can help make big plans possible."
     if "importance" in topic_set:
         return f"{subject} learned that the key was important."
+    if {"share", "no waste"}.issubset(topic_set):
+        return f"{subject} learned to share food and not waste it."
     if "moderation" in topic_set:
         return f"{subject} learned not to take too much."
     if "change" in topic_set:
