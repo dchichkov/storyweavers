@@ -141,13 +141,21 @@ Current slice:
 | Capability | Where | State |
 |------------|-------|-------|
 | Standalone parser/world/renderer entrypoints (`parse_story`, `generate_world`, `generate`, `render`) | `gen7.py` | ✅ first prototype |
+| Pack registry for distributed gen7 semantics (`direct_alias`, `direct_handler`, `renderer`) | `gen7.py`, `gen7packs/` | ✅ first extraction |
 | Physical carriers with object status/owner/location, relation edges, and meme magnitudes | `StoryWorld` / `Entity` | ✅ seed model |
-| Semantic frames for character setup, find/lost/search/ask/help/give/broken/fix/play/fear/rescue/friendship/lesson/reaction/transform | `Parser.direct_call` | ✅ first slice |
+| Semantic frames for character setup, find/lost/search/ask/help/give/broken/fix/play/fear/rescue/friendship/lesson/reaction/transform | `Parser.direct_call` + `gen7packs.actions` | ✅ first slice |
+| First renderer pack for desire/find/search/loss/ask/help/play/friendship/lesson/emotion/encounter/problem/transform/visit/object-state frames | `gen7packs.renderers` | ✅ first extraction |
 | Lowercase object/state normalization (`lost(toy)`, `broken(toy)`, `hook(stick,string)`) | `LowerExpr` lowering | ✅ partial |
 | 49 representative pinned stories from `data00` + `data01` | `gen7_story_tests.py`, `gen7_story_tests/` | ✅ snapshots pass |
 
 Known gaps from the first 20 pins:
 
+- [~] Split gen7 out of the giant-if prototype. The frame-name ontology now lives
+      in `gen7packs.actions`, and a first high-frequency renderer batch lives in
+      `gen7packs.renderers`. `gen7.py` still owns too much role normalization and
+      many residual render branches; next migrations should move direct-call
+      special cases into `direct_handler` packs and split world constraints/effects
+      by frame kind while keeping the 49 snapshots green.
 - [~] Improve phase ordering inside structural calls. `Rescue(...)`, `Deal(...)`,
       `Idea(...)`, and `Race(...)` now reorder parent/child frames more
       coherently; `Cautionary(...)` now defers generic lessons until after the

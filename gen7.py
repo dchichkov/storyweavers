@@ -12,12 +12,17 @@ from __future__ import annotations
 
 import argparse
 import ast
+import importlib
 import json
 import re
+import sys
 from collections import defaultdict
 from dataclasses import dataclass, field
 from pathlib import Path
-from typing import Any, Iterable
+from typing import Any, Callable, Iterable
+
+if __name__ == "__main__":
+    sys.modules.setdefault("gen7", sys.modules[__name__])
 
 
 CHARACTER_MARKERS = {"Character", "CharacterGroup", "Group"}
@@ -468,6 +473,48 @@ def describe_character(ent: Entity, first: bool) -> str:
     return f"{lead} {desc} named {ent.id}." if plural else f"{lead} {article(desc)} {desc} named {ent.id}."
 
 
+DirectHandler = Callable[["Parser", str, str, list[Any], dict[str, list[Any]], list[Frame], str, str], EvalResult | None]
+RenderHandler = Callable[["Renderer", Frame], str | None]
+
+
+class Gen7Registry:
+    """Small pack registry for gen7 semantic lowering and rendering."""
+
+    def __init__(self) -> None:
+        self.direct_aliases: dict[str, str] = {}
+        self.direct_handlers: list[DirectHandler] = []
+        self.render_handlers: dict[str, RenderHandler] = {}
+
+    def direct_alias(self, *names: str, kind: str) -> None:
+        for name in names:
+            self.direct_aliases[name.lower()] = kind
+
+    def direct_handler(self, fn: DirectHandler) -> DirectHandler:
+        self.direct_handlers.append(fn)
+        return fn
+
+    def renderer(self, *kinds: str) -> Callable[[RenderHandler], RenderHandler]:
+        def _decorator(fn: RenderHandler) -> RenderHandler:
+            for kind in kinds:
+                self.render_handlers[kind] = fn
+            return fn
+
+        return _decorator
+
+
+REGISTRY = Gen7Registry()
+_PACKS_LOADED = False
+
+
+def load_packs() -> None:
+    global _PACKS_LOADED
+    if _PACKS_LOADED:
+        return
+    _PACKS_LOADED = True
+    for module_name in ("gen7packs.actions", "gen7packs.renderers"):
+        importlib.import_module(module_name)
+
+
 class Parser:
     def __init__(self) -> None:
         self.world = StoryWorld()
@@ -743,6 +790,10 @@ class Parser:
 
     def direct_call(self, name: str, values: list[Any], kw_values: dict[str, list[Any]], child_frames: list[Frame], context: str, role: str) -> EvalResult | None:
         lname = name.lower()
+        for handler in REGISTRY.direct_handlers:
+            result = handler(self, name, lname, values, kw_values, child_frames, context, role)
+            if result is not None:
+                return result
         chars = [v for v in values if is_character(v)]
         participant_chars = [v for v in flatten(kw_values.get("participants", [])) if is_character(v)]
         fallback_actor = None if role in PHASE_KEYS else self.current_actor
@@ -764,58 +815,7 @@ class Parser:
         objects = objects_from([v for v in values if not is_character(v)] + flatten(v for k, v in kw_values.items() if k in OBJECT_KEYS), self.world)
         concepts = concepts_from(values + flatten(kw_values.values()))
 
-        frame_kind = {
-            "find": "find", "discover": "discover", "discovery": "discover",
-            "want": "want", "desire": "want", "longing": "want",
-            "lost": "lost", "loss": "lost", "lose": "lost",
-            "search": "search", "ask": "ask", "request": "ask",
-            "help": "help", "assist": "help", "comfort": "help",
-            "give": "give", "gift": "give", "receive": "receive",
-            "break": "break", "broken": "broken", "fix": "fix", "repair": "fix",
-            "play": "play", "fear": "fear", "rescue": "rescue", "save": "rescue",
-            "friendship": "friendship", "moral": "lesson", "lesson": "lesson",
-            "refuse": "refuse", "refusal": "refuse", "apology": "apology",
-            "forgiveness": "forgiveness", "return": "return", "transform": "transform",
-            "problem": "problem", "reaction": "reaction", "emotion": "emotion",
-            "encounter": "encounter", "meet": "encounter", "hug": "hug",
-            "listen": "listen", "share": "share", "promise": "promise",
-            "rest": "rest", "feed": "give", "warm": "warm", "capture": "capture",
-            "catch": "capture", "take": "take", "shrink": "shrink", "grow": "grow",
-            "dig": "dig", "plead": "ask", "smile": "emotion",
-            "dialogue": "ask", "parting": "parting", "disturbance": "problem",
-            "attemptsleep": "rest", "captureattempt": "capture",
-            "kindness": "help", "magic": "annotation", "trade": "trade",
-            "deal": "deal", "idea": "idea", "collaboration": "collaboration",
-            "sharing": "share", "satisfaction": "satisfaction",
-            "hunger": "hunger", "state": "state", "guide": "guide",
-            "reunion": "reunion", "race": "race", "competition": "competition",
-            "run": "run", "recall": "recall", "learn": "lesson",
-            "completion": "complete", "bake": "bake", "party": "party",
-            "dance": "dance", "sing": "sing", "ride": "ride",
-            "surprise": "surprise", "reveal": "reveal", "walk": "walk",
-            "open": "open", "attack": "attack", "protect": "protect",
-            "bite": "bite", "hospital": "hospital", "avoidance": "avoidance",
-            "memory": "memory", "scold": "scold", "make": "make",
-            "wear": "wear", "accept": "accept", "resist": "resist",
-            "compromise": "compromise", "insight": "lesson",
-            "catalyst": "activity", "process": "activity",
-            "cooperation": "collaboration", "caretaker": "caretaker",
-            "outcome": "outcome", "requirement": "need", "advice": "advice",
-            "try": "attempt", "perform": "perform", "approve": "approve",
-            "reward": "reward", "pickup": "take", "enjoy": "emotion",
-            "visit": "visit", "hide": "hide", "warning": "warning",
-            "intervention": "intervention", "praise": "praise",
-            "awareness": "state", "offer": "offer", "polishing": "work",
-            "heal": "heal", "safe": "safe", "harmony": "harmony",
-            "report": "report", "investigation": "search",
-            "escape": "escape", "continuation": "play",
-            "command": "command", "obedience": "perform", "message": "message",
-            "affection": "hug", "sick": "problem",
-            "hold": "hold", "drop": "drop", "permission": "permission",
-            "pick": "take", "suggest": "advice", "remove": "remove",
-            "teach": "teach", "transport": "transport", "drive": "drive",
-            "clean": "clean", "chew": "chew",
-        }.get(lname)
+        frame_kind = REGISTRY.direct_aliases.get(lname)
 
         if frame_kind is None and name in EMOTION_MEMES:
             frame_kind = "emotion"
@@ -1111,6 +1111,7 @@ def node_labels(node: ast.AST) -> list[str]:
 
 
 def parse_story(kernel_src: str) -> list[Frame]:
+    load_packs()
     return Parser().parse(kernel_src)
 
 
@@ -1277,6 +1278,13 @@ class Renderer:
     def render_frame(self, frame: Frame) -> str:
         a = frame.actor
         p = frame.patient
+        handler = REGISTRY.render_handlers.get(frame.kind)
+        if handler is not None:
+            previous = self.last_subject
+            rendered = handler(self, frame)
+            if rendered is not None:
+                return rendered
+            self.last_subject = previous
         subject = self.subj(a)
         objects = self.objs(frame)
         concepts = self.concepts(frame)
@@ -1317,126 +1325,10 @@ class Renderer:
             if dest == "underground":
                 return f"{party} went underground."
             return f"{party} went to {dest}."
-        if frame.kind == "want":
-            if isinstance(frame.goal, Entity) and frame.goal.kind == "character":
-                return f"{subject} wanted help from {self.obj(frame.goal)}."
-            if frame.meta.get("desired_action") == "help":
-                return f"{subject} wanted to help with {objects or 'it'}."
-            if any(display_type(o) == "grow" for o in frame.objects) or "grow" in concepts:
-                return f"{subject} wanted to grow."
-            if any(display_type(o) == "play" for o in frame.objects) or "play" in concepts:
-                return f"{subject} wanted to play."
-            if any(display_type(o) == "return" for o in frame.objects) or "return" in concepts:
-                return f"{subject} wanted to go back."
-            goal = phrase(frame.goal, self.world) or objects or (concepts[0] if concepts else "something special")
-            if goal == "grow":
-                return f"{subject} wanted to grow."
-            if isinstance(frame.goal, LowerExpr) and frame.goal.name in {"find", "search", "rescue", "fix", "return", "retrieve"}:
-                return f"{subject} wanted to {goal}."
-            return f"{subject} wanted {goal}."
-        if frame.kind in {"find", "discover"}:
-            if p:
-                return f"{subject} found {self.obj(p)}."
-            regular, positioned = self.split_position_objects(frame.objects)
-            if positioned and regular:
-                found = join([self.obj(o) for o in regular])
-                where = join([self.obj(o) for o in positioned])
-                return f"{subject} found {found} {where}."
-            object_names = [display_type(o) for o in frame.objects]
-            if "hook" in object_names and "cheap" in object_names:
-                return f"{subject} found a simple hook."
-            return f"{subject} found {objects}." if objects else f"{subject} found something new."
-        if frame.kind in {"lose", "lost"}:
-            where = ""
-            if frame.location is not None:
-                loc = display_type(frame.location)
-                if loc == "bottom" and frame.location.traits:
-                    where = f" at the bottom of {self.world.object_phrase(self.world.physical(frame.location.traits[0]))}"
-                else:
-                    where = f" near {self.obj(frame.location)}"
-            if objects and a:
-                return f"{subject} lost {objects}{where} and felt sad."
-            if p:
-                return f"{subject} lost {self.obj(p)} and felt sad."
-            return f"{cap(objects)} was lost{where}." if objects else ""
-        if frame.kind == "search":
-            if frame.source.lower() == "investigation":
-                return f"{subject} investigated."
-            if len(frame.objects) == 1 and display_type(frame.objects[0]) == "under" and frame.objects[0].traits:
-                return f"{subject} looked under {self.world.object_phrase(self.world.physical(frame.objects[0].traits[0]))}."
-            if len(frame.objects) == 1 and display_type(frame.objects[0]) in {"pond", "park", "woods"}:
-                return f"{subject} searched around {self.obj(frame.objects[0])}."
-            return f"{subject} looked everywhere for {objects}." if objects else f"{subject} searched carefully."
-        if frame.kind == "ask":
-            target = self.obj(p) if p else ""
-            action_goal = self.action_goal(frame.goal)
-            thing = objects or phrase(frame.goal, self.world)
-            if target and thing:
-                if action_goal:
-                    return f"{subject} asked {target} to {action_goal}."
-                if isinstance(frame.goal, LowerExpr) and frame.goal.name == "find":
-                    return f"{subject} asked {target} to {thing}."
-                if isinstance(frame.goal, LowerExpr) and frame.goal.name == "retrieve":
-                    return f"{subject} asked {target} to {thing}."
-                preposition = "about" if frame.source.lower() == "dialogue" else "for"
-                return f"{subject} asked {target} {preposition} {thing}."
-            if target:
-                return f"{subject} asked {target} for help."
-            return f"{subject} asked for help."
-        if frame.kind in {"help", "rescue"}:
-            assisted = frame.meta.get("assisted_action")
-            if frame.kind == "help" and assisted:
-                if assisted == "ask":
-                    return f"{subject} helped by asking for help."
-                action = "take off" if assisted == "remove" else assisted
-                return f"{subject} helped {action} {objects or self.obj(p)}."
-            if frame.kind == "help" and len(frame.objects) == 1 and display_type(frame.objects[0]) in {"remove", "push", "clean", "wrap", "store", "take care", "carry", "pull"}:
-                return f"{subject} helped {self.action_object(frame.objects[0])}."
-            target = self.obj(p) if p else (objects or "someone")
-            verb = "rescued" if frame.kind == "rescue" else "helped"
-            if frame.kind == "rescue" and a is not None and a.pronoun("subject") == "it":
-                return f"{a.id} rescued {target}."
-            if frame.source.lower() == "kindness" and p is None and not objects:
-                name = a.id if a is not None else subject
-                copula = "were" if a is not None and is_plural(display_type(a)) else "was"
-                return f"{name} {copula} kind."
-            if p is None and not objects and frame.kind == "help":
-                return f"{subject} helped."
-            return f"{subject} {verb} {target}."
-        if frame.kind == "give":
-            target = self.obj(p) if p else "someone"
-            return f"{subject} gave {objects or 'something'} to {target}."
-        if frame.kind == "receive":
-            return f"{subject} received {objects or 'something'}."
         if frame.kind == "condition":
             return ""
-        if frame.kind in {"break", "broken"}:
-            return f"{cap(objects or 'Something')} broke."
-        if frame.kind == "fix":
-            return f"{subject} fixed {objects or 'it'}."
-        if frame.kind == "play":
-            party = self.participants(frame)
-            if party and len(frame.meta.get("participants", [])) > 1:
-                if len(frame.objects) == 1 and display_type(frame.objects[0]) in {"beach", "sand", "park", "garden", "yard"}:
-                    place = display_type(frame.objects[0])
-                    prep = "on" if place in {"beach", "sand"} else "at" if place == "park" else "in"
-                    return f"{party} played {prep} {self.obj(frame.objects[0])}."
-                return f"{party} played with {objects}." if objects else f"{party} played together."
-            if p:
-                return f"{subject} played with {self.obj(p)}."
-            return f"{subject} played with {objects}." if objects else f"{subject} played happily."
         if frame.kind == "fear":
             return f"{subject} felt scared."
-        if frame.kind == "friendship":
-            party = self.participants(frame)
-            if party and len(frame.meta.get("participants", [])) > 2:
-                return f"{party} became good friends."
-            if a and p:
-                return f"{a.id} and {p.id} became good friends."
-            return "They became good friends."
-        if frame.kind == "lesson":
-            topic = join([c for c in concepts if c not in {"lesson", "moral", "learn"}])
-            return f"{subject} learned an important lesson about {topic}." if topic else f"{subject} learned an important lesson."
         if frame.kind == "refuse":
             return f"{subject} said no."
         if frame.kind == "apology":
@@ -1445,47 +1337,12 @@ class Renderer:
             return f"{subject} forgave {self.obj(p)}." if p else f"{subject} forgave them."
         if frame.kind == "return":
             return f"{subject} returned {objects or 'home'}."
-        if frame.kind == "transform":
-            target = phrase(frame.result, self.world)
-            return f"{cap(objects or 'Something')} turned into {target}." if target else f"{cap(objects or 'Something')} changed."
         if frame.kind == "deal":
             target = self.obj(p) if p else ""
             if frame.result and objects:
                 outcome = phrase(frame.result, self.world)
                 return f"{subject} promised to turn {objects} into {outcome}."
             return f"{subject} made a deal with {target}." if target else f"{subject} made a deal."
-        if frame.kind == "problem":
-            if objects:
-                object_names = [display_type(o) for o in frame.objects]
-                if "noise" in object_names:
-                    return "A loud noise interrupted the moment."
-                return f"There was a problem with {objects}."
-            if concepts:
-                return f"{subject} had a problem: {join(concepts)}."
-            return f"{subject} had a problem."
-        if frame.kind in {"reaction", "emotion"}:
-            if frame.kind == "reaction":
-                if "cough" in concepts and "cover" in concepts:
-                    poss = a.pronoun("possessive") if a is not None else "their"
-                    return f"{subject} coughed and covered {poss} eyes."
-                if "reprimand" in concepts:
-                    return f"{subject} was angry and scolded them."
-            if "love" in concepts and objects:
-                return f"{subject} loved {objects}."
-            feeling = join([emotion_word(c) for c in concepts])
-            party = self.participants(frame)
-            if frame.kind == "emotion" and party and len(frame.meta.get("participants", [])) > 1:
-                return f"{party} felt {feeling}." if feeling else f"{party} felt a lot of feelings."
-            return f"{subject} felt {feeling}." if feeling else f"{subject} felt a lot of feelings."
-        if frame.kind == "encounter":
-            if p and p != a:
-                suffix = f" and saw {objects}" if objects else ""
-                return f"{subject} met {self.obj(p)}{suffix}."
-            if objects:
-                if any(display_type(o) in {"shadow", "noise"} for o in frame.objects):
-                    return f"{subject} noticed {objects}."
-                return f"{subject} saw {objects}."
-            return f"{subject} met {self.obj(p)}." if p else f"{subject} met someone."
         if frame.kind == "hug":
             party = self.participants(frame)
             if party and len(frame.meta.get("participants", [])) > 2:
@@ -1591,19 +1448,6 @@ class Renderer:
         if frame.kind == "bake":
             item = objects or phrase(frame.goal, self.world) or "something sweet"
             return f"{subject} baked {item}."
-        if frame.kind == "visit":
-            party = self.participants(frame)
-            regular, positioned = self.split_position_objects(frame.objects)
-            if positioned and regular:
-                place = join([self.obj(o) for o in regular])
-                where = join([self.obj(o) for o in positioned])
-                group = party if party and len(frame.meta.get("participants", [])) > 1 else subject
-                return f"{group} visited {place} and spent time {where}."
-            if p and not frame.objects:
-                return f"{subject} visited {self.obj(p)}."
-            if party and len(frame.meta.get("participants", [])) > 1:
-                return f"{party} visited {objects or self.obj(p)}."
-            return f"{subject} visited {objects or self.obj(p)}."
         if frame.kind == "hide":
             return f"{subject} hid {objects or 'it'}."
         if frame.kind == "warning":
@@ -1747,6 +1591,7 @@ def phrase(value: Any, world: StoryWorld) -> str:
 
 
 def render(world: StoryWorld) -> str:
+    load_packs()
     return Renderer(world).render()
 
 
