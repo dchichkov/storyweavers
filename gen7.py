@@ -26,7 +26,8 @@ CHARACTER_TYPES = {
     "cat", "child", "children", "dad", "dog", "duck", "father", "fish",
     "friend", "frog", "girl", "group", "man", "mom", "mommy", "mother",
     "mouse", "parent", "person", "rabbit", "turkey", "twin", "woman",
-    "bees", "tree", "daughter",
+    "bees", "tree", "daughter", "squirrel", "crab", "fox", "ostrich",
+    "airplane",
 }
 GENERIC_TYPES = {"animal", "bird", "group", "person"}
 COMPOUNDS = {
@@ -200,7 +201,7 @@ class Entity:
             return {"subject": "he", "object": "him", "possessive": "his"}[case]
         if t in {"group", "children", "people", "bees"}:
             return {"subject": "they", "object": "them", "possessive": "their"}[case]
-        if t in {"bird", "dog", "cat", "mouse", "turkey", "bear", "bee", "fish", "frog", "rabbit", "bunny", "duck", "barrel", "tree"}:
+        if t in {"bird", "dog", "cat", "mouse", "turkey", "bear", "bee", "fish", "frog", "rabbit", "bunny", "duck", "barrel", "tree", "squirrel", "crab", "fox", "ostrich", "airplane"}:
             return {"subject": "it", "object": "it", "possessive": "its"}[case]
         return {"subject": "they", "object": "them", "possessive": "their"}[case]
 
@@ -563,6 +564,9 @@ class Parser:
         if self.has_meta_kwargs(kw_values) or name in STRUCTURE_CALLS:
             return self.structure_call(name, values, kw_values, child_frames)
 
+        chars = [v for v in values if is_character(v)]
+        if chars and not kw_values:
+            self.current_actor = chars[0]
         if context == "value" or role in OBJECT_KEYS or role in GOAL_OBJECT_KEYS:
             ent = self.world.physical(name, concept_labels(values))
             return EvalResult(frames=child_frames, values=[ent])
@@ -874,6 +878,13 @@ class Parser:
         if frame_kind == "want":
             for child in child_frames:
                 child.salience = 0.05
+        assisted_child = None
+        if frame_kind == "help" and child_frames:
+            assisted_child = next((child for child in child_frames if child.kind not in {"annotation", "scene", "declare"}), None)
+            if assisted_child is not None:
+                objects = list(assisted_child.objects)
+                for child in child_frames:
+                    child.salience = 0.05
         frame = Frame(
             frame_kind,
             actor=actor,
@@ -887,6 +898,8 @@ class Parser:
             source=name,
             meta={"participants": chars + participant_chars + companion_chars},
         )
+        if assisted_child is not None:
+            frame.meta["assisted_action"] = assisted_child.kind
         extra: list[Frame] = []
         if frame_kind == "encounter":
             for value in flatten(kw_values.get("state", [])):
@@ -1109,6 +1122,7 @@ class Renderer:
         out: list[str] = []
         seen: set[str] = set()
         lesson_topics: set[str] = set()
+        lost_objects: set[str] = set()
         saw_lesson = False
         for sentence in sentences:
             sentence = sentence.strip()
@@ -1122,6 +1136,13 @@ class Renderer:
             feeling = re.match(r"^(?:[a-z]+|he|she|it|they)(?: and [a-z]+)? felt ([^.]+)\.$", key)
             if feeling and out and f"felt {feeling.group(1)}" in out[-1].lower():
                 continue
+            loss = re.match(r"^(?:[a-z]+|he|she|it|they)(?: and [a-z]+)? lost (.+) and felt sad\.$", key)
+            if loss:
+                lost_obj = re.sub(r"\b(?:his|her|their|its|the|lost)\b", "", loss.group(1)).strip()
+                lost_obj = " ".join(lost_obj.split())
+                if lost_obj in lost_objects:
+                    continue
+                lost_objects.add(lost_obj)
             lesson = re.match(r"^(?:[a-z]+|he|she|it|they)(?: and [a-z]+)? learned an important lesson(?: about ([^.]+))?\.$", key)
             if lesson:
                 topic = (lesson.group(1) or "").strip()
@@ -1174,6 +1195,22 @@ class Renderer:
             ))
         return join(parts)
 
+    def action_object(self, obj: Entity) -> str:
+        action = display_type(obj)
+        if obj.traits:
+            target = self.world.object_phrase(self.world.physical(obj.traits[0]))
+            verbs = {
+                "remove": "remove",
+                "push": "push",
+                "clean": "clean",
+                "wrap": "wrap",
+                "store": "put away",
+                "take care": "take care of",
+            }
+            if action in verbs:
+                return f"{verbs[action]} {target}"
+        return self.world.object_phrase(obj)
+
     def concepts(self, frame: Frame) -> list[str]:
         labels: list[str] = []
         for concept in frame.concepts:
@@ -1198,8 +1235,11 @@ class Renderer:
                 return "Every day, the friends played together."
             object_names = [display_type(o) for o in frame.objects]
             party = self.participants(frame) or subject
+            if party in {"He", "She", "It", "They"}:
+                party = party.lower()
+            routine_subject = subject.lower() if subject in {"He", "She", "It", "They"} else subject
             if a is not None and "screen addict" in a.traits:
-                return f"Every day, {subject} spent too much time with a screen."
+                return f"Every day, {routine_subject} spent too much time with a screen."
             if "farm" in concepts and "chores" in object_names:
                 return "Every day, the family did chores on the farm."
             if "play" in object_names or "play" in concepts:
@@ -1215,7 +1255,7 @@ class Renderer:
                 return f"Every day, {party} did chores."
             if objects:
                 return f"Every day, {subject} spent time with {objects}."
-            return f"Every day, {subject} had a familiar routine."
+            return f"Every day, {routine_subject} had a familiar routine."
         if frame.kind == "scene" and frame.location:
             return f"The story moved to {self.obj(frame.location)}."
         if frame.kind == "journey":
@@ -1283,6 +1323,14 @@ class Renderer:
                 return f"{subject} asked {target} for help."
             return f"{subject} asked for help."
         if frame.kind in {"help", "rescue"}:
+            assisted = frame.meta.get("assisted_action")
+            if frame.kind == "help" and assisted:
+                if assisted == "ask":
+                    return f"{subject} helped by asking for help."
+                action = "take off" if assisted == "remove" else assisted
+                return f"{subject} helped {action} {objects or self.obj(p)}."
+            if frame.kind == "help" and len(frame.objects) == 1 and display_type(frame.objects[0]) in {"remove", "push", "clean", "wrap", "store", "take care"}:
+                return f"{subject} helped {self.action_object(frame.objects[0])}."
             target = self.obj(p) if p else (objects or "someone")
             verb = "rescued" if frame.kind == "rescue" else "helped"
             if frame.kind == "rescue" and a is not None and a.pronoun("subject") == "it":
@@ -1565,7 +1613,9 @@ class Renderer:
         if frame.kind == "make":
             return f"{subject} made {objects or 'something'}."
         if frame.kind == "wear":
-            return f"{subject} wore {objects or 'it'}."
+            worn = [o for o in frame.objects if display_type(o) not in {"head", "body"}]
+            item = join([self.obj(o) for o in worn])
+            return f"{subject} wore {item or objects or 'it'}."
         if frame.kind == "accept":
             return f"{subject} accepted it."
         if frame.kind == "resist":
