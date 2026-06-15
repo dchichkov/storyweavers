@@ -144,7 +144,7 @@ Current slice:
 | Physical carriers with object status/owner/location, relation edges, and meme magnitudes | `StoryWorld` / `Entity` | ✅ seed model |
 | Semantic frames for character setup, find/lost/search/ask/help/give/broken/fix/play/fear/rescue/friendship/lesson/reaction/transform | `Parser.direct_call` | ✅ first slice |
 | Lowercase object/state normalization (`lost(toy)`, `broken(toy)`, `hook(stick,string)`) | `LowerExpr` lowering | ✅ partial |
-| 41 representative pinned stories from `data00` + `data01` | `gen7_story_tests.py`, `gen7_story_tests/` | ✅ snapshots pass |
+| 45 representative pinned stories from `data00` + `data01` | `gen7_story_tests.py`, `gen7_story_tests/` | ✅ snapshots pass |
 
 Known gaps from the first 20 pins:
 
@@ -197,6 +197,13 @@ Known gaps from the first 20 pins:
       location=castle)`, companions stay attached to visit frames, object
       encounters render as seeing/noticing physical objects, and mixed
       character/object encounters preserve both (`met Tommy and saw the bag`).
+      Prepositional lower objects such as `under(bed)` now render as physical
+      locations rather than nounified objects (`found the piece under the bed`,
+      `visited the park and spent time under the tree`).
+- [~] Render action-like goals as actions. Requests such as `Request(Lily,
+      to=Daddy, ask=Bring(island, closer))` now render as asking Daddy to bring
+      the island closer instead of asking for "the bring"; body-part tool
+      arguments such as `Pick(Tim, ball, hand)` no longer leak into prose.
 - [~] Broaden direct semantic kernels. `Reward`, `Approve`, `Perform`, `Visit`,
       `Hide`, `Warning`, `Intervention`, `Praise`, `Heal`, `Report`, and
       `Investigation` now have first-pass frames/rendering; remaining work is
@@ -206,7 +213,7 @@ Known gaps from the first 20 pins:
       now becomes a real lesson frame, repeated lesson topics are collapsed, and
       composed lesson phases such as `Avoidance(...) + Memory(...)` keep their
       concrete child frames instead of re-wrapping them as extra morals.
-- [ ] Add a manual `QUALITY.md` grade for the 41 gen7 pins and compare them
+- [ ] Add a manual `QUALITY.md` grade for the 45 gen7 pins and compare them
       against gen6 output; the harness pins behavior but does not judge it.
 
 ### Still open for `gen6.py`

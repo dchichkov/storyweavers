@@ -86,6 +86,8 @@ BARE_NOUNS = {
     "inside", "outside", "home", "downstairs", "upstairs", "eyes", "hands",
     "feet", "hair", "teeth", "underground",
 }
+POSITION_OBJECTS = {"under", "behind", "near", "inside", "outside"}
+BODY_PART_OBJECTS = {"head", "body", "hand", "hands", "arm", "leg", "foot", "feet"}
 
 
 def words(name: Any) -> str:
@@ -381,6 +383,9 @@ class StoryWorld:
     ) -> str:
         status = status if status is not None else sorted(obj.state)
         noun = display_type(obj)
+        if noun in POSITION_OBJECTS and obj.traits:
+            target = self.object_phrase(self.physical(obj.traits[0]))
+            return f"{noun} {target}"
         if noun in BARE_NOUNS:
             return noun
         adj = ""
@@ -1229,6 +1234,28 @@ class Renderer:
                 return f"{verbs[action]} {target}"
         return self.world.object_phrase(obj)
 
+    def action_goal(self, value: Any) -> str:
+        if isinstance(value, Entity):
+            action = display_type(value)
+            if action == "bring" and value.traits:
+                targets = [t for t in value.traits if t != "closer"]
+                target = join([self.world.object_phrase(self.world.physical(t)) for t in targets])
+                suffix = " closer" if "closer" in value.traits else ""
+                return f"bring {target}{suffix}".strip()
+            if action in {"find", "retrieve", "carry", "clean"} and value.traits:
+                target = join([self.world.object_phrase(self.world.physical(t)) for t in value.traits])
+                return f"{action} {target}".strip()
+        if isinstance(value, LowerExpr):
+            text = phrase(value, self.world)
+            if value.name in {"find", "search", "rescue", "fix", "return", "retrieve", "bring", "carry"}:
+                return text
+        return ""
+
+    def split_position_objects(self, objects: list[Entity]) -> tuple[list[Entity], list[Entity]]:
+        positioned = [o for o in objects if display_type(o) in POSITION_OBJECTS and o.traits]
+        regular = [o for o in objects if o not in positioned]
+        return regular, positioned
+
     def concepts(self, frame: Frame) -> list[str]:
         labels: list[str] = []
         for concept in frame.concepts:
@@ -1302,6 +1329,11 @@ class Renderer:
         if frame.kind in {"find", "discover"}:
             if p:
                 return f"{subject} found {self.obj(p)}."
+            regular, positioned = self.split_position_objects(frame.objects)
+            if positioned and regular:
+                found = join([self.obj(o) for o in regular])
+                where = join([self.obj(o) for o in positioned])
+                return f"{subject} found {found} {where}."
             object_names = [display_type(o) for o in frame.objects]
             if "hook" in object_names and "cheap" in object_names:
                 return f"{subject} found a simple hook."
@@ -1329,8 +1361,11 @@ class Renderer:
             return f"{subject} looked everywhere for {objects}." if objects else f"{subject} searched carefully."
         if frame.kind == "ask":
             target = self.obj(p) if p else ""
+            action_goal = self.action_goal(frame.goal)
             thing = objects or phrase(frame.goal, self.world)
             if target and thing:
+                if action_goal:
+                    return f"{subject} asked {target} to {action_goal}."
                 if isinstance(frame.goal, LowerExpr) and frame.goal.name == "find":
                     return f"{subject} asked {target} to {thing}."
                 if isinstance(frame.goal, LowerExpr) and frame.goal.name == "retrieve":
@@ -1550,6 +1585,12 @@ class Renderer:
             return f"{subject} baked {item}."
         if frame.kind == "visit":
             party = self.participants(frame)
+            regular, positioned = self.split_position_objects(frame.objects)
+            if positioned and regular:
+                place = join([self.obj(o) for o in regular])
+                where = join([self.obj(o) for o in positioned])
+                group = party if party and len(frame.meta.get("participants", [])) > 1 else subject
+                return f"{group} visited {place} and spent time {where}."
             if party and len(frame.meta.get("participants", [])) > 1:
                 return f"{party} visited {objects or self.obj(p)}."
             return f"{subject} visited {objects or self.obj(p)}."
@@ -1651,7 +1692,9 @@ class Renderer:
         if frame.kind == "trade":
             return f"{subject} traded {objects}." if objects else f"{subject} made a trade."
         if frame.kind == "take":
-            return f"{subject} took {objects or 'it'}."
+            taken = [o for o in frame.objects if display_type(o) not in BODY_PART_OBJECTS]
+            item = join([self.obj(o) for o in taken])
+            return f"{subject} took {item or objects or 'it'}."
         if frame.kind == "shrink":
             return f"{cap(objects or self.obj(a))} became small."
         if frame.kind == "grow":
