@@ -148,17 +148,23 @@ Current slice:
 
 Known gaps from the first 20 pins:
 
-- [ ] Improve phase ordering inside structural calls such as `Rescue(...)` and
-      `Deal(...)`; child outcome frames can currently render before the parent
-      resolution.
-- [ ] Add richer exchange/transaction semantics for `Deal`, `Transform`, `Give`,
-      and `Receive` so object ownership does not drift in chains like
-      `penny -> toy`.
-- [ ] Add action frames for common concept-only process values (`Run`, `Victory`,
-      `Persistence`, `Recall`, `Competition`) so race/quest stories do not
-      collapse to one refusal or one fear sentence.
-- [ ] Improve routine/activity lowering for `screen(tablet)`, `Bake(...)`,
-      `Collaboration(...)`, and `Satisfaction(...)`.
+- [~] Improve phase ordering inside structural calls. `Rescue(...)`, `Deal(...)`,
+      `Idea(...)`, and `Race(...)` now reorder parent/child frames more
+      coherently; remaining work is a general phase planner instead of
+      per-parent ordering.
+- [~] Add richer exchange/transaction semantics for `Deal`, `Transform`, `Give`,
+      and `Receive`. Event-time ownership snapshots now prevent final-state
+      ownership from corrupting earlier prose, and deals render promises before
+      later actual transforms. Remaining work: explicit inventory/transaction
+      intent so chains like `penny -> toy` do not need bespoke handling.
+- [~] Add action frames for common concept-only process values (`Run`, `Victory`,
+      `Persistence`, `Recall`, `Competition`). The first mapping now gives race
+      and rescue stories visible process beats; expand this into a typed action
+      ontology.
+- [~] Improve routine/activity lowering for `screen(tablet)`, `Bake(...)`,
+      `Collaboration(...)`, and `Satisfaction(...)`. Collaboration/satisfaction
+      now render as world events; `screen(tablet)` and richer bake/party flows
+      are still thin.
 - [ ] Add a manual `QUALITY.md` grade for the 20 gen7 pins and compare them
       against gen6 output; the harness pins behavior but does not judge it.
 
