@@ -148,10 +148,10 @@ and kernel-library size.
 |--------|-------------|--------------|------|-------|
 | Parse OK (`ast.parse`) | 83.5% | 83.5% | ~80.8% | Same format; remaining ~16% is non-Python the LLM emitted |
 | Execute end-to-end (no exception) | 0.2% | **99.9%** | 96.5% | Fallback never raises → higher than gen5 |
-| Kernel-name coverage (usages) | 36.9% | **90.1%** | 85.0% | 772 kernel names / 802 variants; coverage push #07 moved gen6 past the 90% target |
-| Stories ≥90% kernel-covered | — | 29,706 | 26,982 | long tail remains, but gen6 now exceeds the old gen5 coverage snapshot |
+| Kernel-name coverage (usages) | 36.9% | **92.5%** | 85.0% | 1044 kernel names / 1078 variants; coverage push #08 moved gen6 past the 92% target |
+| Stories ≥90% kernel-covered | — | 35,355 | 26,982 | long tail remains, but gen6 now exceeds the old gen5 coverage snapshot |
 
-The robustness headline is resolved: **0.2% → 99.8% end-to-end execution**. The
+The robustness headline is resolved: **0.2% → 99.9% end-to-end execution**. The
 remaining gap to gen5 is purely **kernel-library size** (port more kernels).
 
 ### A. Robustness / execution (highest priority) — ✅ DONE
@@ -263,6 +263,17 @@ remaining gap to gen5 is purely **kernel-library size** (port more kernels).
       kwargs to `meta_story`, but some smoke-test prose remains rough and should
       be followed by a quality pass. **Measured:** `772` names / `802` variants,
       **90.1% coverage**, **29,706** high-coverage stories, **99.9%**
+      end-to-end execution OK.
+- [x] **gen6k08.py** — coverage push toward the explicit 92% target. Sampled the
+      next missing tranche (`Flood`, `Lie`, `HelpRequest`, `Avoidance`, plus the
+      previously sampled long-tail batch) and added tolerant state/action/meta
+      wrappers that preserve phase kwargs through `meta_story` and update obvious
+      meme magnitudes. Includes specific wording for common problem/event shapes
+      such as floods, lies, and requests for help, plus small punctuation cleanup
+      for meta wrappers. This is still coverage-oriented: it reduces fallback
+      volume, but the next quality pass should inspect the added generic wrappers
+      for overly bland prose. **Measured:** `1044` names / `1078` variants,
+      **92.5% coverage**, **35,355** high-coverage stories, **99.9%**
       end-to-end execution OK.
 - [x] **gen6k03 design note**: real calls capitalize objects (`Break(Vase)`,
       `Build(Stack, block)`), so capitalized undefined names arrive as concept
