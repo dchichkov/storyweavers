@@ -169,8 +169,11 @@ Known gaps from the first 20 pins:
 - [~] Improve scoped focus/ownership. Parent phases now override stale actor
       focus for implicit child calls, event-time ownership can still render
       animal-owned objects as "its toy", and repeated exact sentences /
-      repeated emotion labels are suppressed. Remaining work: track whether an
-      actor was explicit in the AST instead of relying on scoped locks.
+      repeated emotion labels are suppressed. `Find(Character)` now binds the
+      found character as the target under a parent actor, conflict blockers own
+      their motive frames, and nested physical labels like `bottom(pond)` keep
+      their object content. Remaining work: track whether an actor was explicit
+      in the AST instead of relying on scoped locks.
 - [ ] Add a manual `QUALITY.md` grade for the 20 gen7 pins and compare them
       against gen6 output; the harness pins behavior but does not judge it.
 

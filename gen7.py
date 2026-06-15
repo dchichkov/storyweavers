@@ -47,7 +47,7 @@ PHASE_KEYS = (
     "desire", "goal", "plan", "promise", "process", "action", "event",
     "reaction", "help", "solution", "result", "outcome", "insight",
     "moral", "lesson", "resolution", "transformation", "ending",
-    "setting", "destination", "encounter", "twist",
+    "setting", "destination", "encounter", "twist", "block", "motive",
 )
 STRUCTURE_CALLS = {
     "Quest", "Journey", "Cautionary", "Resolution", "Response",
@@ -595,6 +595,7 @@ class Parser:
         )
         if actor is not None:
             self.current_actor = actor
+        block_actor = first_character(flatten(kw_values.get("block", [])))
         frames: list[Frame] = []
         if name == "Routine":
             frames.append(Frame("routine", actor=actor, objects=objects_from(values[1:] + flatten(kw_values.get("object", [])), self.world), concepts=concepts_from(values), source=name, salience=0.8, meta={"participants": chars + participant_chars}))
@@ -618,6 +619,19 @@ class Parser:
             frames.append(Frame("activity", actor=actor, concepts=[Memeplex(name)], source=name, salience=0.4))
 
         for frame in child_frames:
+            if name == "Conflict" and block_actor is not None and frame.kind in {"protect", "refuse", "accept"}:
+                frame.actor = block_actor
+                frame.meta["actor_locked"] = True
+            if (
+                actor is not None
+                and frame.kind in {"find", "discover"}
+                and frame.patient is None
+                and len(frame.meta.get("participants", [])) == 1
+                and frame.meta["participants"][0] != actor
+            ):
+                frame.patient = frame.meta["participants"][0]
+                frame.actor = actor
+                frame.meta["actor_locked"] = True
             if frame.actor is None and frame.kind not in {"declare", "scene"}:
                 frame.actor = actor
             elif (
@@ -907,6 +921,8 @@ def concept_labels(values: Iterable[Any]) -> list[str]:
             labels.extend(words(x) for x in value.labels())
         elif isinstance(value, LowerExpr):
             labels.append(words(value.name))
+        elif isinstance(value, Entity):
+            labels.append(display_type(value))
         elif isinstance(value, str):
             labels.append(words(value))
     return [x for x in labels if x]
@@ -1001,6 +1017,9 @@ class Renderer:
             if out and out[-1].lower() == key:
                 continue
             if key in seen:
+                continue
+            feeling = re.match(r"^(?:[a-z]+|he|she|it|they)(?: and [a-z]+)? felt ([^.]+)\.$", key)
+            if feeling and out and f"felt {feeling.group(1)}" in out[-1].lower():
                 continue
             out.append(sentence)
             seen.add(key)
@@ -1196,6 +1215,9 @@ class Renderer:
             return f"{subject} made a deal with {target}." if target else f"{subject} made a deal."
         if frame.kind == "problem":
             if objects:
+                object_names = [display_type(o) for o in frame.objects]
+                if "noise" in object_names:
+                    return "A loud noise interrupted the moment."
                 return f"There was a problem with {objects}."
             if concepts:
                 return f"{subject} had a problem: {join(concepts)}."
