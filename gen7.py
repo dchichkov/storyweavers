@@ -881,9 +881,13 @@ class Parser:
             actor, patient = chars[0], chars[1]
         if frame_kind == "deal":
             actor = chars[0] if chars else actor
+        desired_child = None
         if frame_kind == "want":
             for child in child_frames:
                 child.salience = 0.05
+            desired_child = next((child for child in child_frames if child.kind not in {"annotation", "scene", "declare"}), None)
+            if desired_child is not None and desired_child.objects:
+                objects = list(desired_child.objects)
         assisted_child = None
         if frame_kind == "help" and child_frames:
             assisted_child = next((child for child in child_frames if child.kind not in {"annotation", "scene", "declare"}), None)
@@ -906,6 +910,8 @@ class Parser:
         )
         if assisted_child is not None:
             frame.meta["assisted_action"] = assisted_child.kind
+        if desired_child is not None:
+            frame.meta["desired_action"] = desired_child.kind
         extra: list[Frame] = []
         if frame_kind == "encounter":
             for value in flatten(kw_values.get("state", [])):
@@ -1314,6 +1320,8 @@ class Renderer:
         if frame.kind == "want":
             if isinstance(frame.goal, Entity) and frame.goal.kind == "character":
                 return f"{subject} wanted help from {self.obj(frame.goal)}."
+            if frame.meta.get("desired_action") == "help":
+                return f"{subject} wanted to help with {objects or 'it'}."
             if any(display_type(o) == "grow" for o in frame.objects) or "grow" in concepts:
                 return f"{subject} wanted to grow."
             if any(display_type(o) == "play" for o in frame.objects) or "play" in concepts:
@@ -1591,6 +1599,8 @@ class Renderer:
                 where = join([self.obj(o) for o in positioned])
                 group = party if party and len(frame.meta.get("participants", [])) > 1 else subject
                 return f"{group} visited {place} and spent time {where}."
+            if p and not frame.objects:
+                return f"{subject} visited {self.obj(p)}."
             if party and len(frame.meta.get("participants", [])) > 1:
                 return f"{party} visited {objects or self.obj(p)}."
             return f"{subject} visited {objects or self.obj(p)}."

@@ -144,7 +144,7 @@ Current slice:
 | Physical carriers with object status/owner/location, relation edges, and meme magnitudes | `StoryWorld` / `Entity` | ✅ seed model |
 | Semantic frames for character setup, find/lost/search/ask/help/give/broken/fix/play/fear/rescue/friendship/lesson/reaction/transform | `Parser.direct_call` | ✅ first slice |
 | Lowercase object/state normalization (`lost(toy)`, `broken(toy)`, `hook(stick,string)`) | `LowerExpr` lowering | ✅ partial |
-| 45 representative pinned stories from `data00` + `data01` | `gen7_story_tests.py`, `gen7_story_tests/` | ✅ snapshots pass |
+| 49 representative pinned stories from `data00` + `data01` | `gen7_story_tests.py`, `gen7_story_tests/` | ✅ snapshots pass |
 
 Known gaps from the first 20 pins:
 
@@ -204,6 +204,11 @@ Known gaps from the first 20 pins:
       to=Daddy, ask=Bring(island, closer))` now render as asking Daddy to bring
       the island closer instead of asking for "the bring"; body-part tool
       arguments such as `Pick(Tim, ball, hand)` no longer leak into prose.
+      Desire frames can also read child actions, so `Desire(Help(cake))` becomes
+      wanting to help with the cake rather than wanting "the help".
+- [~] Preserve person-to-person visit roles. `Visit(Friend, Lily)` now renders
+      as Friend visiting Lily rather than "Friend and Lily visited Lily";
+      group-visit wording is still used when the object is a real place.
 - [~] Broaden direct semantic kernels. `Reward`, `Approve`, `Perform`, `Visit`,
       `Hide`, `Warning`, `Intervention`, `Praise`, `Heal`, `Report`, and
       `Investigation` now have first-pass frames/rendering; remaining work is
@@ -213,7 +218,7 @@ Known gaps from the first 20 pins:
       now becomes a real lesson frame, repeated lesson topics are collapsed, and
       composed lesson phases such as `Avoidance(...) + Memory(...)` keep their
       concrete child frames instead of re-wrapping them as extra morals.
-- [ ] Add a manual `QUALITY.md` grade for the 45 gen7 pins and compare them
+- [ ] Add a manual `QUALITY.md` grade for the 49 gen7 pins and compare them
       against gen6 output; the harness pins behavior but does not judge it.
 
 ### Still open for `gen6.py`
