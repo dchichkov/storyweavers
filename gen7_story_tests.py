@@ -171,6 +171,144 @@ STORY_IDS = [
     "data01:77422",
     "data01:85435",
     "data01:92520",
+    "data00:4536",
+    "data00:49002",
+    "data00:51682",
+    "data00:86786",
+    "data00:96091",
+    "data00:97764",
+    "data01:21493",
+    "data01:26407",
+    "data01:5646",
+    "data01:98922",
+    "data00:25720",
+    "data00:45266",
+    "data00:4925",
+    "data00:49783",
+    "data00:57549",
+    "data01:20333",
+    "data01:35375",
+    "data01:70341",
+    "data01:7574",
+    "data01:82377",
+    "data00:36603",
+    "data00:60792",
+    "data00:66082",
+    "data00:67208",
+    "data00:80214",
+    "data00:87670",
+    "data01:32378",
+    "data01:35798",
+    "data01:52091",
+    "data01:64959",
+    "data00:15878",
+    "data00:45384",
+    "data00:6343",
+    "data00:79188",
+    "data00:89887",
+    "data00:92450",
+    "data00:92881",
+    "data01:28179",
+    "data01:61915",
+    "data01:71488",
+    "data00:11422",
+    "data00:22522",
+    "data00:42218",
+    "data00:44795",
+    "data00:97266",
+    "data01:23486",
+    "data01:58416",
+    "data01:73055",
+    "data01:8082",
+    "data01:87711",
+    "data00:1806",
+    "data00:43611",
+    "data00:68804",
+    "data00:74157",
+    "data00:78016",
+    "data00:94530",
+    "data01:25206",
+    "data01:31935",
+    "data01:46791",
+    "data01:49629",
+    "data00:29172",
+    "data00:2937",
+    "data00:33361",
+    "data00:34496",
+    "data00:4707",
+    "data00:56879",
+    "data00:7474",
+    "data01:26992",
+    "data01:38956",
+    "data01:87080",
+    "data00:13438",
+    "data00:32099",
+    "data00:60955",
+    "data00:78059",
+    "data01:23726",
+    "data01:43341",
+    "data01:59459",
+    "data01:61198",
+    "data01:86445",
+    "data01:92217",
+    "data00:10929",
+    "data00:24230",
+    "data00:49065",
+    "data00:99253",
+    "data01:16695",
+    "data01:26577",
+    "data01:35596",
+    "data01:43580",
+    "data01:45202",
+    "data01:69897",
+    "data00:27293",
+    "data00:4638",
+    "data00:67122",
+    "data00:73979",
+    "data00:77920",
+    "data00:96836",
+    "data01:24610",
+    "data01:42508",
+    "data01:55376",
+    "data01:82345",
+    "data00:15828",
+    "data00:19373",
+    "data00:22466",
+    "data00:49517",
+    "data00:98139",
+    "data01:14886",
+    "data01:19355",
+    "data01:21909",
+    "data01:30015",
+    "data01:48070",
+    "data00:14953",
+    "data00:24249",
+    "data00:2749",
+    "data00:38685",
+    "data00:48655",
+    "data00:76484",
+    "data00:84753",
+    "data01:82926",
+    "data01:86967",
+    "data01:99051",
+    "data00:23274",
+    "data00:39058",
+    "data00:59661",
+    "data00:65997",
+    "data00:70736",
+    "data00:76136",
+    "data00:78482",
+    "data01:10599",
+    "data01:48975",
+    "data01:95069",
+    "data00:56094",
+    "data00:60479",
+    "data00:73707",
+    "data00:77951",
+    "data00:93435",
+    "data01:23829",
+    "data01:38112",
+    "data01:54058",
 ]
 
 SNAPSHOT_DIR = Path(__file__).parent / "gen7_story_tests"
@@ -183,6 +321,10 @@ FORBIDDEN = (
     "There was Fear",
     "There was Joy",
     "There was Love",
+)
+GENERIC_QA_SENTENCES = (
+    "That event is recorded in the story world.",
+    "This answer comes from the simulated story world.",
 )
 
 
@@ -327,6 +469,7 @@ def run_qa(story_ids: list[str], qa_limit: int) -> int:
     full_responses = 0
     multi_sentence_responses = 0
     duplicate_questions = 0
+    generic_second_sentences = 0
     kind_counts: dict[str, int] = {}
     for story_id in story_ids:
         pairs = generated_qa(story_id, qa_limit)
@@ -358,11 +501,14 @@ def run_qa(story_ids: list[str], qa_limit: int) -> int:
             else:
                 failures += 1
                 print(f"{story_id}: answer is not multi-sentence {qa.answer!r} for {qa.question!r}")
+            if any(generic in qa.answer for generic in GENERIC_QA_SENTENCES):
+                generic_second_sentences += 1
     kind_total = len(kind_counts)
     if kind_total < 4:
         failures += 1
         print(f"QA kind diversity too low: {kind_total} kinds")
     duplicate_rate = (duplicate_questions / total_pairs * 100.0) if total_pairs else 0.0
+    generic_rate = (generic_second_sentences / total_pairs * 100.0) if total_pairs else 0.0
     if duplicate_rate > 10.0:
         failures += 1
         print(f"QA duplicate question rate too high: {duplicate_rate:.1f}%")
@@ -377,6 +523,7 @@ def run_qa(story_ids: list[str], qa_limit: int) -> int:
         f"pairs={total_pairs}; full_response_rate={full_rate:.1f}%; "
         f"multi_sentence_rate={multi_rate:.1f}%; "
         f"kinds={kind_total}; duplicate_questions={duplicate_questions} ({duplicate_rate:.1f}%); "
+        f"generic_second_sentences={generic_second_sentences} ({generic_rate:.1f}%); "
         f"top_kinds={top_kinds}"
     )
     return 0

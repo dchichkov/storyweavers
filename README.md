@@ -92,10 +92,10 @@ python gen7.py --story-id data00:36222
 python gen7.py --story-id data00:36222 --qa
 python gen7_story_tests.py --run
 python gen7_story_tests.py --run-qa --qa-limit 12
-python gen7_story_tests.py --sample 10 --seed 777 --scan 20000 --show-qa --qa-limit 8
+python gen7_story_tests.py --sample 10 --seed 777 --scan 20000 --show-qa --qa-limit 8 --show-kernel
 ```
 
-The gen7 snapshot runner pins 156 representative stories, including known problem
+The gen7 snapshot runner pins 294 representative stories, including known problem
 cases from both `data00` and `data01`, so quality/world-model changes can improve
 the semantic slice without silently regressing it. Use `--sample N` during quality
 passes to inspect deterministic unpinned candidates; promote 5-10 reviewed stories
@@ -105,17 +105,24 @@ questions/answers from the simulated `StoryWorld` trace, so QA quality can be
 reviewed beside the generated text.
 
 QA should now be treated as part of gen7 quality, not an afterthought. During
-sampling passes, inspect generated questions and answers alongside the story and
-original text; diversify question types when a batch repeats the same shallow
-forms. The target format is a full natural-language response, usually multiple
-sentences when the world trace supports it, rather than a bare noun phrase.
-`--run-qa` is the smoke gate today: it checks for nonempty QA, question syntax,
+sampling passes, inspect generated questions and answers alongside the story,
+kernel, and original text; improve repeated QA failures the same way narrative
+failures are improved. The target answer is a full natural-language response,
+usually two or more sentences when the world trace supports it, rather than a
+bare noun phrase. Question generation should stay tied to `StoryWorld.history`,
+entity state, relations, meme magnitudes, and frame metadata instead of becoming
+post-processing over rendered prose.
+
+`--run-qa` is the smoke gate today. It checks nonempty QA, question syntax,
 full-response answers, multi-sentence answers, minimum question-kind diversity,
-and duplicate-question rate. Extend it over time to measure answerability,
-groundedness in the world trace, and whether each answer is tied to a real
-frame/entity id. Multi-turn QA is a desired next milestone: follow-up questions
-should carry the referenced entity/event forward through the same simulated
-world state, not through a free-form chat over rendered prose.
+duplicate-question rate, and generic second-sentence rate. Run it after every QA
+change, and keep extending it from sampled defects: answerability from
+`StoryWorld`, grounded entity/frame ids, causal answers, role/object-state
+questions, and shallow-question detection. A good sampled batch should show a
+mix of who/what/where/how/why/what-next plus role, object-state, instrument,
+lesson, and causal questions. Multi-turn QA is a desired next milestone:
+follow-up questions should carry the referenced entity/event forward through the
+same simulated world state, not through a free-form chat over rendered prose.
 
 ### AST → AST Transforms (Reference Demos)
 

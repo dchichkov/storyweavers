@@ -136,7 +136,7 @@ python gen7.py --story-id data00:36222
 python gen7.py --story-id data00:36222 --qa
 python gen7_story_tests.py --run
 python gen7_story_tests.py --run-qa --qa-limit 12
-python gen7_story_tests.py --sample 10 --seed 777 --scan 20000 --show-qa --qa-limit 8
+python gen7_story_tests.py --sample 10 --seed 777 --scan 20000 --show-qa --qa-limit 8 --show-kernel
 ```
 
 Current slice:
@@ -150,7 +150,7 @@ Current slice:
 | First renderer pack for desire/find/search/loss/ask/help/play/friendship/lesson/emotion/encounter/problem/transform/visit/object-state frames | `gen7packs.renderers` | ✅ first extraction |
 | Lowercase object/state normalization (`lost(toy)`, `broken(toy)`, `hook(stick,string)`) | `LowerExpr` lowering | ✅ partial |
 | Trace-derived templated QA (`generate_qa`, `StoryWorld.questions`, `--show-qa`) | `gen7.py`, `gen7_story_tests.py` | ✅ first slice |
-| 156 representative pinned stories from `data00` + `data01` | `gen7_story_tests.py`, `gen7_story_tests/` | ✅ snapshots pass |
+| 294 representative pinned stories from `data00` + `data01` | `gen7_story_tests.py`, `gen7_story_tests/` | ✅ snapshots pass |
 
 Known gaps from the first 20 pins:
 
@@ -216,6 +216,153 @@ Known gaps from the first 20 pins:
       wrappers such as `old(microscope)` so they preserve their physical carrier,
       and filtered broad type traits such as `Child` / `insect` out of character
       descriptions when the specific carrier is already known.
+      A fourteenth pass promoted 10 more (`data00:4536`, `data00:49002`,
+      `data00:51682`, `data00:86786`, `data00:96091`, `data00:97764`,
+      `data01:21493`, `data01:26407`, `data01:5646`, `data01:98922`),
+      bringing the suite to 166 and adding pressure around comfort/replacement
+      QA, heavy-object teamwork, birthday cleaning, accident consequences,
+      roof repair help, advice/internalization, storm safety/helping, sandcastle
+      role binding, and bird rescue. The same pass fixed comfort frames so
+      replacement context such as `Replacement(old=toy, new=car)` can ground
+      narrative and QA answers.
+      A fifteenth pass promoted 10 more (`data00:25720`, `data00:45266`,
+      `data00:4925`, `data00:49783`, `data00:57549`, `data01:20333`,
+      `data01:35375`, `data01:70341`, `data01:7574`, `data01:82377`),
+      bringing the suite to 176 and adding pressure around rain/inside-play
+      transformations, lollipop game stakes, protector/rescue roles, play
+      desire QA, surprise gifts, cane safety, tent/rain play, cat sharing,
+      careful climbing, and kitchen overflow lessons. The same pass added
+      explicit `panda` character typing, normalized play desires in QA, and
+      rendered `Play(outside, friends)` as outdoor play with friends.
+      A sixteenth pass promoted 10 more (`data00:36603`, `data00:60792`,
+      `data00:66082`, `data00:67208`, `data00:80214`, `data00:87670`,
+      `data01:32378`, `data01:35798`, `data01:52091`, `data01:64959`),
+      bringing the suite to 186 and adding pressure around surprise gifts,
+      goat wandering/friendship, vehicle travel, pretend astronauts, horse/bird
+      nest help, pirate-ship quests, friend study help, cat rescue, cooking help,
+      and swan/fish cooperation. The same pass added explicit `goat`, `horse`,
+      `car`, `swan`, and `elder` carrier typing, plus a small article fix for
+      silent-h words such as "honest".
+      A seventeenth pass promoted 10 more (`data00:15878`, `data00:45384`,
+      `data00:6343`, `data00:79188`, `data00:89887`, `data00:92450`,
+      `data00:92881`, `data01:28179`, `data01:61915`, `data01:71488`),
+      bringing the suite to 196 and adding pressure around human/girl typing,
+      bull friendship and hug desires, balloon replacement, wish fulfillment,
+      pet/owner praise, mud-castle disruption, lawyer help, dress-up dog
+      surprises, teddy adventure protection, and cooking/meal QA. The same pass
+      added explicit `bull` and `teddy` carrier typing, name-aware `Girl` and
+      `Amy` inference, and normalized `hug` / `adventure` desire phrasing in
+      prose and QA.
+      An eighteenth pass promoted 10 more (`data00:11422`, `data00:22522`,
+      `data00:42218`, `data00:44795`, `data00:97266`, `data01:23486`,
+      `data01:58416`, `data01:73055`, `data01:8082`, `data01:87711`),
+      bringing the suite to 206 and adding pressure around swing apologies,
+      popularity/kindness lessons, ant teamwork, princess self-acceptance,
+      snack returns, dog/tree cooperation, breakfast prayer/assertiveness,
+      dentist caution, magical ball return, and race perseverance. The same
+      pass normalized concept surface forms such as `PriceIrrelevant`,
+      `NoStupid`, `RespectSelf`, `HighFast`, and `Reciprocal`, rendered
+      `Popular` / `princess` desires as state/action desires, and made two-party
+      hugs render as a shared hug.
+      A nineteenth pass promoted 10 more (`data00:1806`, `data00:43611`,
+      `data00:68804`, `data00:74157`, `data00:78016`, `data00:94530`,
+      `data01:25206`, `data01:31935`, `data01:46791`, `data01:49629`),
+      bringing the suite to 216 and adding pressure around stuck-door help,
+      leash return, attic injury lessons, backyard danger, penny honesty,
+      butterfly distraction, market selling, robot assistance, garden
+      responsibility, and belonging/community. The same pass made action
+      desires like `sell(vegetables)` surface in prose and QA, made
+      `Belonging` render as wanting to belong, and made `Twist(handle)` render
+      as twisting the handle in help prose and QA.
+      A twentieth pass promoted 10 more (`data00:29172`, `data00:2937`,
+      `data00:33361`, `data00:34496`, `data00:4707`, `data00:56879`,
+      `data00:7474`, `data01:26992`, `data01:38956`, `data01:87080`),
+      bringing the suite to 226 and adding pressure around rescue-then-accident
+      causality, stuck wardrobe help, injury/care support, flower self-acceptance,
+      toy-train empathy, fish/dragon transformation, reach/cooperation, deaf
+      parent visual cues, animal-naming/meals, and cardboard-box spaceship play.
+      The same pass added explicit `flower` character typing, normalized
+      `cardboardbox`, and rendered/answered `Throw(ball)` help as throwing the
+      ball.
+      A twenty-first pass promoted 10 more (`data00:13438`, `data00:32099`,
+      `data00:60955`, `data00:78059`, `data01:23726`, `data01:43341`,
+      `data01:59459`, `data01:61198`, `data01:86445`, `data01:92217`),
+      bringing the suite to 236 and adding pressure around fisherman/bird deals,
+      deaf-library communication, simple toy-car joy, redemption/apology,
+      swim/barrel caution, mirror tragedy, lazy catch/read loops, faucet
+      accidents, reef exploration, and tea-party conflict resolution. The same
+      pass improved common name inference for `Tom` and `Jane`, and normalized
+      `swim` / `real train` desire phrasing in prose and QA.
+      A twenty-second pass promoted 10 more (`data00:10929`, `data00:24230`,
+      `data00:49065`, `data00:99253`, `data01:16695`, `data01:26577`,
+      `data01:35596`, `data01:43580`, `data01:45202`, `data01:69897`),
+      bringing the suite to 246 and adding pressure around nested ask/play
+      goals, rescue-role drift, bad-food lessons, missing creation/library
+      events, fire/help causality, tea-party conflict, parent/child repair
+      lessons, lost-bear reunions, hot-object warnings, and multi-character pet
+      help. The same pass preserved nested `Ask(play(toy))` intent as an action
+      goal, rendered `shake(toy)` play as playing with the toy, added play-object
+      QA, and normalized `WorldBetter` / `CommunityBenefit` lesson concepts.
+      A twenty-third pass promoted 10 more (`data00:27293`, `data00:4638`,
+      `data00:67122`, `data00:73979`, `data00:77920`, `data00:96836`,
+      `data01:24610`, `data01:42508`, `data01:55376`, `data01:82345`),
+      bringing the suite to 256 and adding pressure around vehicle cautionary
+      decline, pet-name inference, helmet safety lessons, kite-help role binding,
+      truth/promise continuations, stuck-box loss, search/find confidence,
+      sharing-is-caring friendship, fragile-toy repair, and cat journey events.
+      The same pass narrowed bare `Help(X)` role binding, preserved explicit
+      helper actions such as `Help(Mittens, carry(bone))`, rendered
+      `Continuation(... remember(...))` as memory instead of play, used frame
+      snapshots for `Take` object state, and normalized truck/vehicle/caregiver
+      carrier descriptions plus helmet/truth/sharing lesson text.
+      A twenty-fourth pass promoted 10 more (`data00:15828`, `data00:19373`,
+      `data00:22466`, `data00:49517`, `data00:98139`, `data01:14886`,
+      `data01:19355`, `data01:21909`, `data01:30015`, `data01:48070`),
+      bringing the suite to 266 and adding pressure around bury/missing/new friend
+      plant arcs, fetch/play QA, rotten-food caution, owl box-opening
+      requests, tragic sailing accidents, snail/giraffe/king carrier typing,
+      bike sharing, unpacking routines, and redemption/return scenes. The same
+      pass added `snail`, `giraffe`, and `king` carriers, normalized `Bury`,
+      `Missing`, `NewFriend`, and object-bearing `Care` into frames, preserved
+      nested open requests as action goals, rendered fetch/game play as actions
+      instead of object lists, and kept frame-time state for buried objects.
+      A twenty-fifth pass promoted 10 more (`data00:14953`, `data00:24249`,
+      `data00:2749`, `data00:38685`, `data00:48655`, `data00:76484`,
+      `data00:84753`, `data01:82926`, `data01:86967`, `data01:99051`),
+      bringing the suite to 276 and adding pressure around bird rescue/recovery,
+      tree loss lessons, fragile-ball replacement, reading comfort, collective
+      box opening, kitchen caution, fitness advice, butterfly mood repair,
+      clown self-care, and blueberry moderation. The same pass added `clown`
+      carrier typing plus `Jenny`/`Will` name inference, normalized
+      `Moderation`, `Illness`, and `HospitalStay`, improved lesson wording for
+      dependable/strong, stories-heal, no-play, fit, stay-happy, self-care, and
+      moderation, and made play-outside QA answer as an activity rather than an
+      object.
+      A twenty-sixth pass promoted 10 more (`data00:23274`, `data00:39058`,
+      `data00:59661`, `data00:65997`, `data00:70736`, `data00:76136`,
+      `data00:78482`, `data01:10599`, `data01:48975`, `data01:95069`),
+      bringing the suite to 286 and adding pressure around fear/overcome
+      endings, snake/tie escape lessons, rainy street play, horse/friendship
+      routines, fire-rescue role binding, castle collaboration, lemon/box cleanup,
+      fake-food caution, radio comfort, and empathy during tree-climb encounters.
+      The same pass moved common lowercase phase verbs into executable frames
+      without over-rendering `jump`/`splash`, added a `RainyPlay` pack handler,
+      preserved bite argument order, repaired comfort role defaults for
+      joke/silly-face vs replacement comfort, made broken-state problem QA drop
+      state-marker objects, and made rescue-building QA answer with people in
+      the building rather than the building itself.
+      A twenty-seventh pass promoted 8 more (`data00:56094`, `data00:60479`,
+      `data00:73707`, `data00:77951`, `data00:93435`, `data01:23829`,
+      `data01:38112`, `data01:54058`), bringing the suite to 294 and adding
+      pressure around gentle-puppy collar removal, exploration desire,
+      bee-sting comfort, bright-jug persistence, seal/matching-ball play,
+      new-friend race/play, mean-kids teasing, and oatmeal provision/thanks.
+      The same pass added seal carrier/pronoun support, narrowed `Value(...)`
+      into gentleness-only lesson normalization, preserved `Keep(...)`,
+      `Provision(...)`, `Consumption(...)`, `Thanks(...)`, `Tease(...)`, and
+      `Sting(...)` as executable frames, collapsed modifier-only physical
+      observations, and replaced generic QA second sentences with verb-specific
+      world-state/context answers.
       Continue adding 5-10 reviewed pins per quality pass so regressions and new
       failure modes stay visible.
 - [~] Add trace-derived QA generation to gen7. `StoryWorld` now carries
@@ -226,31 +373,72 @@ Known gaps from the first 20 pins:
       emotion, lessons, play/visit locations, injuries/problems, threats,
       scare-away, creation, unlock/instrument, wind effects, and reunion.
       Remaining work: move QA template registration into packs alongside
-      renderers, add negative/why questions from causal links, and grade QA
-      answerability against original texts.
+      renderers, add negative/why/what-next questions from causal links, and
+      grade QA answerability against `StoryWorld` frame/entity ids before any
+      comparison to original texts.
 - [~] Make gen7 QA a sampled, scored quality surface. Every gen7 quality
-      iteration should sample QA with `--show-qa`, promote rough QA cases into
-      pins or fixtures, and improve repeated failure classes just like story
-      prose. `--run-qa` now reports deterministic quality metrics and enforces
+      iteration should sample QA with `--show-qa --show-kernel`, read it beside
+      the kernel, generated story, and original text, promote rough QA cases
+      into pins or fixtures, and improve repeated failure classes just like
+      story prose.
+      `--run-qa` now reports deterministic quality metrics and enforces
       full-response shape, multi-sentence answers, minimum question-kind
       diversity, and a maximum duplicate-question rate of 10%. Remaining work:
-      add answerability/groundedness checks against frame/entity ids and track a
-      controlled defect vocabulary (`bare_answer`, `ungrounded_answer`,
-      `duplicate_question`, `wrong_focus`, `missing_causality`, `not_answerable`,
-      `too_shallow`, `followup_lost_context`) in scored QA worksheets.
+      add answerability/groundedness checks against frame/entity ids, per-kind
+      distribution floors, and a scored QA worksheet using a controlled defect
+      vocabulary (`bare_answer`, `ungrounded_answer`, `duplicate_question`,
+      `wrong_focus`, `missing_causality`, `not_answerable`, `too_shallow`,
+      `followup_lost_context`).
       Fresh sampled defects: `data00:17523` shows generic lesson QA despite a
       causal road/car danger in the original; `data01:13942` produces useful
       emotion QA but misses repair causality and asks from the wrong focus
       around robot/girl help; `data00:18753` demonstrates that snapshot-green
-      friendship QA can still miss late tragic outcomes.
+      friendship QA can still miss late tragic outcomes. Newer QA/story samples
+      add: `data00:4536` has wrong character typing ("attached teddy child"),
+      weak recipient grounding, and misses the ruined-teddy heartbreak; `data00:49002`
+      produces shallow teamwork QA despite clear heavy-anchor struggle/process
+      frames; `data00:96091` exposes wrong helper focus ("helped friendship
+      someone") and generic fix QA; `data01:26407` produces the bad
+      `wrong_focus`/`too_shallow` answer "Comfort comforted Timmy"; `data01:5646`
+      flips the sandcastle builder from Sue to Tim, so maker QA mirrors the
+      wrong role. The latest sampled batch adds `nested_action_noun` failures
+      (`asked Luna for ask`, `played with the shake`), `bare_lesson_concept`
+      (`world better`), `wrong_focus` rescue-role drift (`Tim rescued someone`),
+      and `missing_causality` around fire/tea-party/repair setup. The newest
+      sampled batch adds `continuation_as_play` (`played with the remember`),
+      `generic_threat_answer` (`Take appeared as a danger`), `late_state_leak`
+      (`took the broken car` before the break event), `broad_trait_noise`
+      (`caregiver warn mother`, `big vehicle truck`), and a split
+      `wrong_focus` class where bare `Help(Sue)` should use the current
+      protagonist but explicit helper actions must keep the named helper. The
+      latest long-tail sample adds `action_object_list` (`played with fetch and
+      ball`, `played with game and friends`), `missing_action_frame` (`Bury`,
+      `Missing`, `NewFriend`, `Care` disappearing as annotations),
+      `missing_carrier_type` (`snail`, `giraffe`, `king`), and
+      `nested_request_goal` (`asked Owl for the open`). The newest sample adds
+      `generic_lesson_phrase` (`stories heal`, `stay and happy`, `self care`),
+      `play_location_as_object` (`played with outside`), `missing_name_inference`
+      (`clown joyful bobo`), and `moderation_without_food` (`important lesson`
+      for `Moderation(blueberry)`). This pass adds `phase_action_annotation`
+      (`Bite`, `Climb`, `Run`, `Throw`, `Hold` disappearing or becoming noun
+      objects), `overbroad_action_lowering` (`Jump`/`Splash` rendering as
+      awkward play frames), `bite_argument_order`, `comfort_role_ambiguity`,
+      `fire_rescue_actor_drift`, and `problem_state_as_object`. The newest
+      sampled QA/narrative defects add `overbroad_observation_alias`,
+      `overbroad_value_lesson`, `group_lost_as_owned_objects`,
+      `abduction_emotion_ordering`, `modifier_as_object`, and
+      `generic_qa_second_sentence`.
 - [~] Upgrade gen7 QA answers from bare facts to full responses. QA answers now
       normalize fragments into complete two-sentence responses and `--run-qa`
-      reports 100% full-response / multi-sentence rate on the 156 pinned stories
-      (`792` QA pairs at `--qa-limit 12`, 19 question kinds, 0.0% duplicate
-      questions).
-      Remaining work: make the second sentence less generic by using richer
-      causal/world context, for example: "Max found the key in the grass. He kept
-      it and later used it to unlock the leash."
+      reports 100% full-response / multi-sentence rate on the 294 pinned stories
+      (`1472` QA pairs at `--run-qa --qa-limit 12`, 19 question kinds, 0.0%
+      duplicate questions, and `0` generic audit-style second sentences / `0.0%`).
+      The smoke gate now reports generic second-sentence rate so future passes
+      can keep answers contextual instead of falling back to audit boilerplate.
+      Remaining work: make more second sentences causal and world-state-rich by
+      using ownership, location, prior problem, later consequence, and relation
+      changes; for example: "Max found the key in the grass. He kept it and
+      later used it to unlock the leash."
 - [~] Improve phase-local role binding and QA variety from sampled defects.
       Keyword phases now have an explicit local actor scope, so examples such as
       `Accident(Pete, process=Chew(...))`, `Teach(Sam, Sword)`, and
@@ -302,13 +490,15 @@ Known gaps from the first 20 pins:
       should verify at least: follow-up answers remain full multi-sentence
       responses, refer to the same frame/entity id as the prior turn when
       appropriate, and fail closed with "the trace does not say" style answers
-      when the world model has no grounded answer.
+      when the world model has no grounded answer. Add a sample mode that prints
+      a short scripted conversation after selected QA pairs, and score
+      `followup_lost_context` separately from ordinary `wrong_focus`.
 - [~] Split gen7 out of the giant-if prototype. The frame-name ontology now lives
       in `gen7packs.actions`, and a first high-frequency renderer batch lives in
       `gen7packs.renderers`. `gen7.py` still owns too much role normalization and
       many residual render branches; next migrations should move direct-call
       special cases into `direct_handler` packs and split world constraints/effects
-      by frame kind while keeping the 156 snapshots green.
+      by frame kind while keeping the 294 snapshots green.
 - [~] Continue pack-local quality fixes from rough samples. Untyped common names
       now infer likely child/person types (`Lily(Character, Neat + Kind)` renders
       as a girl rather than a literal "lily"), play locations use scene
@@ -477,7 +667,7 @@ Known gaps from the first 20 pins:
       now becomes a real lesson frame, repeated lesson topics are collapsed, and
       composed lesson phases such as `Avoidance(...) + Memory(...)` keep their
       concrete child frames instead of re-wrapping them as extra morals.
-- [ ] Add a manual `QUALITY.md` grade for the 156 gen7 pins and compare them
+- [ ] Add a manual `QUALITY.md` grade for the 294 gen7 pins and compare them
       against gen6 output; the harness pins behavior but does not judge it.
 
 ### Still open for `gen6.py`

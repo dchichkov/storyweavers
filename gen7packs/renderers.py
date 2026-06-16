@@ -1,6 +1,7 @@
 """Core renderer pack for high-frequency gen7 frame kinds."""
 
 from gen7 import (
+    Frame,
     REGISTRY,
     cap,
     display_type,
@@ -12,7 +13,7 @@ from gen7 import (
 )
 
 
-SCENE_PLAY_PLACES = {"beach", "sand", "park", "garden", "yard", "grass", "woods", "playground"}
+SCENE_PLAY_PLACES = {"beach", "sand", "park", "garden", "yard", "grass", "woods", "playground", "street"}
 LESSON_FILLERS = {"lesson", "moral", "learn", "insight"}
 
 
@@ -26,6 +27,16 @@ def place_prep(place):
 
 def action_goal_from_object(renderer, obj):
     action = display_type(obj)
+    if action == "fetch":
+        if obj.traits:
+            target = renderer.world.object_phrase(renderer.world.physical(obj.traits[0]))
+            return f"play fetch with {target}"
+        return "play fetch"
+    if action == "unpack":
+        if obj.traits:
+            target = renderer.world.object_phrase(renderer.world.physical(obj.traits[0]))
+            return f"unpack {target}"
+        return "unpack"
     if action == "jump":
         if obj.traits:
             target = renderer.world.object_phrase(renderer.world.physical(obj.traits[0]))
@@ -36,6 +47,16 @@ def action_goal_from_object(renderer, obj):
             target = renderer.world.object_phrase(renderer.world.physical(obj.traits[0]))
             return f"play with {target}"
         return "play"
+    if action == "shake":
+        if obj.traits:
+            target = renderer.world.object_phrase(renderer.world.physical(obj.traits[0]))
+            return f"play with {target}"
+        return "play"
+    if action == "sell":
+        if obj.traits:
+            target = join([renderer.world.object_phrase(renderer.world.physical(trait)) for trait in obj.traits])
+            return f"sell {target}"
+        return "sell"
     return ""
 
 
@@ -49,6 +70,8 @@ def action_phrase(renderer, action, target):
         "pull": "pull",
         "wrap": "wrap",
         "store": "put away",
+        "twist": "twist",
+        "throw": "throw",
     }
     verb = verbs.get(action, action)
     return f"{verb} {target}".strip()
@@ -82,6 +105,19 @@ def lesson_topics(renderer, frame):
     return out
 
 
+def modifier_collapsed_objects(objects):
+    if len(objects) < 2:
+        return objects
+    main = objects[0]
+    modifier_names = {"bright", "funny", "flexible", "rigid", "matching"}
+    modifiers = [display_type(o) for o in objects[1:] if display_type(o) in modifier_names]
+    extras = [o for o in objects[1:] if display_type(o) not in modifier_names]
+    for modifier in reversed(modifiers):
+        if modifier not in main.traits:
+            main.traits.insert(0, modifier)
+    return [main] + extras
+
+
 @REGISTRY.renderer("routine")
 def render_routine(renderer, frame):
     concepts = renderer.concepts(frame)
@@ -97,6 +133,13 @@ def render_routine(renderer, frame):
         return f"Every day, {routine_subject} spent too much time with a screen."
     if "farm" in concepts and "chores" in object_names:
         return "Every day, the family did chores on the farm."
+    if {"play", "run"}.issubset(object_names):
+        play = next((o for o in frame.objects if display_type(o) == "play"), None)
+        run = next((o for o in frame.objects if display_type(o) == "run"), None)
+        play_target = renderer.world.object_phrase(renderer.world.physical(play.traits[0])) if play and play.traits else "toys"
+        run_target = renderer.world.object_phrase(renderer.world.physical(run.traits[0])) if run and run.traits else ""
+        run_phrase = f" and ran in {run_target}" if run_target else " and ran around"
+        return f"Every day, {party} played with {play_target}{run_phrase}."
     if "play" in object_names or "play" in concepts:
         play_obj = next((o for o in frame.objects if display_type(o) not in {"play", "friends"}), None)
         if "friends" in object_names:
@@ -104,6 +147,13 @@ def render_routine(renderer, frame):
             place = f" in {renderer.world.object_phrase(renderer.world.physical(loc))}" if loc else ""
             return f"Every day, {party} played with friends{place}."
         return f"Every day, {party} played with {renderer.obj(play_obj)}." if play_obj else f"Every day, {party} played."
+    if {"crawl", "eat"}.issubset(object_names):
+        actor_name = frame.actor.id if frame.actor is not None else party
+        crawl = next((o for o in frame.objects if display_type(o) == "crawl"), None)
+        eat = next((o for o in frame.objects if display_type(o) == "eat"), None)
+        crawl_target = renderer.world.object_phrase(renderer.world.physical(crawl.traits[0])) if crawl and crawl.traits else "around"
+        eat_target = renderer.world.object_phrase(renderer.world.physical(eat.traits[0])) if eat and eat.traits else "food"
+        return f"Every day, {actor_name} crawled on {crawl_target} and ate {eat_target}."
     if "jump" in object_names:
         return f"Every day, {party} loved to jump."
     if "chores" in object_names:
@@ -136,12 +186,34 @@ def render_want(renderer, frame):
     if any(display_type(o) == "golf" for o in frame.objects) or "golf" in concepts:
         return f"{subject} wanted to play golf."
     object_names = {display_type(o) for o in frame.objects}
+    if "fit" in object_names or "fit" in concepts:
+        return f"{subject} wanted to be fit."
+    if "explore" in object_names or "explore" in concepts:
+        return f"{subject} wanted to explore."
+    match_obj = next((o for o in frame.objects if display_type(o) == "match" and o.traits), None)
+    if match_obj is not None:
+        target = renderer.world.object_phrase(renderer.world.physical(match_obj.traits[0], ["matching"]))
+        return f"{subject} wanted {target}."
     if "travel" in object_names or "travel" in concepts:
         return f"{subject} wanted to travel."
     if "splash" in object_names or "splash" in concepts:
         return f"{subject} wanted to splash in the puddle."
     if "sail" in object_names or "sail" in concepts:
         return f"{subject} wanted to sail."
+    if "hug" in object_names or "hug" in concepts:
+        return f"{subject} wanted a hug."
+    if "adventure" in object_names or "adventure" in concepts:
+        return f"{subject} wanted an adventure."
+    if "popular" in object_names or "popular" in concepts:
+        return f"{subject} wanted to be popular."
+    if "princess" in object_names or "princess" in concepts:
+        return f"{subject} wanted to be a princess."
+    if "belonging" in object_names or "belonging" in concepts:
+        return f"{subject} wanted to belong."
+    if "swim" in object_names or "swim" in concepts:
+        return f"{subject} wanted to swim."
+    if "real train" in object_names or "real train" in concepts:
+        return f"{subject} wanted to ride a real train."
     if {"big", "pretty"}.issubset(object_names) or {"big", "pretty"}.issubset(set(concepts)):
         return f"{subject} wanted to be big and pretty."
     if any(display_type(o) == "pretty" for o in frame.objects) or "pretty" in concepts:
@@ -171,6 +243,24 @@ def render_want(renderer, frame):
         return f"{subject} wanted to splash in the puddle."
     if goal in {"the sail", "sail"}:
         return f"{subject} wanted to sail."
+    if goal in {"the hug", "hug"}:
+        return f"{subject} wanted a hug."
+    if goal in {"the adventure", "adventure"}:
+        return f"{subject} wanted an adventure."
+    if goal in {"the popular", "popular"}:
+        return f"{subject} wanted to be popular."
+    if goal in {"the princess", "princess"}:
+        return f"{subject} wanted to be a princess."
+    if goal in {"the belonging", "belonging"}:
+        return f"{subject} wanted to belong."
+    if goal in {"the swim", "swim"}:
+        return f"{subject} wanted to swim."
+    if goal in {"the real train", "real train"}:
+        return f"{subject} wanted to ride a real train."
+    if goal in {"the fit", "fit"}:
+        return f"{subject} wanted to be fit."
+    if goal in {"the explore", "explore"}:
+        return f"{subject} wanted to explore."
     if goal in {"the pretty", "pretty"}:
         return f"{subject} wanted something pretty."
     if goal in {"the big and the pretty", "big and pretty"}:
@@ -183,15 +273,25 @@ def render_want(renderer, frame):
 @REGISTRY.renderer("find", "discover")
 def render_find(renderer, frame):
     subject = renderer.subj(frame.actor)
-    objects = renderer.objs(frame)
+    objects_frame = Frame(
+        frame.kind,
+        actor=frame.actor,
+        patient=frame.patient,
+        objects=modifier_collapsed_objects(frame.objects),
+        source=frame.source,
+        meta=frame.meta,
+    )
+    objects = renderer.objs(objects_frame)
+    if objects_frame.objects and all(display_type(o) in {"bright", "funny", "flexible", "rigid", "matching"} for o in objects_frame.objects):
+        return ""
     if frame.patient:
         return f"{subject} found {renderer.obj(frame.patient)}."
-    regular, positioned = renderer.split_position_objects(frame.objects)
+    regular, positioned = renderer.split_position_objects(objects_frame.objects)
     if positioned and regular:
         found = join([renderer.obj(o) for o in regular])
         where = join([renderer.obj(o) for o in positioned])
         return f"{subject} found {found} {where}."
-    object_names = [display_type(o) for o in frame.objects]
+    object_names = [display_type(o) for o in objects_frame.objects]
     if "hook" in object_names and "cheap" in object_names:
         return f"{subject} found a simple hook."
     if "key" in object_names and "grass" in object_names:
@@ -259,13 +359,15 @@ def render_help(renderer, frame):
     subject = renderer.subj(frame.actor)
     objects = renderer.objs(frame)
     assisted = frame.meta.get("assisted_action")
+    if frame.kind == "rescue" and any(display_type(o) == "building" for o in frame.objects):
+        return f"{subject} put out the fire and kept everyone safe."
     if frame.source.lower() == "comfort" and frame.objects:
         return f"{subject} felt better with {objects}."
     if frame.kind == "help" and assisted:
         if assisted == "ask":
             return f"{subject} helped by asking for help."
         return f"{subject} helped {action_phrase(renderer, assisted, objects or renderer.obj(frame.patient))}."
-    if frame.kind == "help" and len(frame.objects) == 1 and display_type(frame.objects[0]) in {"remove", "push", "clean", "wrap", "store", "take care", "carry", "pull", "cut"}:
+    if frame.kind == "help" and len(frame.objects) == 1 and display_type(frame.objects[0]) in {"remove", "push", "clean", "wrap", "store", "take care", "carry", "pull", "cut", "twist", "throw"}:
         return f"{subject} helped {renderer.action_object(frame.objects[0])}."
     if frame.kind == "rescue" and frame.source.lower() == "pull" and objects:
         return f"{subject} pulled {objects}."
@@ -297,6 +399,18 @@ def render_comfort(renderer, frame):
         if objects:
             return f"{subject} comforted {target} with {objects}."
         return f"{subject} comforted {target}."
+    lost_ids = frame.meta.get("comfort_lost_objects", [])
+    if objects and lost_ids:
+        lost = join([
+            renderer.world.object_phrase(
+                renderer.world.physical(obj_id),
+                status=[],
+                owner_id=renderer.world.physical(obj_id).owner,
+                snapshot_owner=True,
+            )
+            for obj_id in lost_ids
+        ])
+        return f"{subject} felt comforted by {objects} after losing {lost}."
     if objects:
         if {display_type(o) for o in frame.objects} <= {"warm", "inside"}:
             return f"{subject} felt warm and comforted."
@@ -307,6 +421,8 @@ def render_comfort(renderer, frame):
 @REGISTRY.renderer("injury")
 def render_injury(renderer, frame):
     subject = renderer.subj(frame.actor)
+    if frame.source.lower() == "pain":
+        return f"{subject} was in pain."
     body_parts = [display_type(o) for o in frame.objects if display_type(o) in {"arm", "leg", "hand", "foot", "head"}]
     if body_parts and frame.actor is not None:
         return f"{subject} hurt {frame.actor.pronoun('possessive')} {body_parts[0]}."
@@ -317,11 +433,17 @@ def render_injury(renderer, frame):
 @REGISTRY.renderer("threat")
 def render_threat(renderer, frame):
     concepts = set(renderer.concepts(frame))
+    if frame.actor is not None and "take" in concepts:
+        target = renderer.objs(frame) or "something"
+        return f"{renderer.obj(frame.actor)} tried to take {target}."
     if frame.objects:
         threat = renderer.obj(frame.objects[0])
         if "hungry" in concepts:
             return f"A hungry {display_type(frame.objects[0])} came near."
         return f"{cap(threat)} came near."
+    if frame.actor is not None:
+        action = " tried to take something" if "take" in concepts else " came near"
+        return f"{renderer.obj(frame.actor)}{action}."
     return "Danger came near."
 
 
@@ -349,14 +471,39 @@ def render_play(renderer, frame):
     subject = renderer.subj(frame.actor)
     objects = renderer.objs(frame)
     party = renderer.participants(frame)
+    object_names = {display_type(o) for o in frame.objects}
+    if {"street", "water"}.issubset(object_names):
+        return f"{party or subject} played in the water on the street."
+    if "outside" in object_names:
+        if "friends" in object_names:
+            return f"{party or subject} played outside with friends."
+        return f"{party or subject} played outside."
+    if {"game", "friends"}.issubset(object_names):
+        return f"{party or subject} played a game with friends."
+    if {"fetch", "ball"}.issubset(object_names):
+        return f"{party or subject} played fetch with the ball."
     if party and len(frame.meta.get("participants", [])) > 1:
         if len(frame.objects) == 1 and display_type(frame.objects[0]) in SCENE_PLAY_PLACES:
             place = display_type(frame.objects[0])
             prep = place_prep(place)
             return f"{party} played {prep} {renderer.obj(frame.objects[0])}."
+        if len(frame.objects) == 1:
+            action_goal = action_goal_from_object(renderer, frame.objects[0])
+            if action_goal:
+                if action_goal.startswith("play "):
+                    return f"{party} played {action_goal.removeprefix('play ')}."
+                return f"{party} {action_goal}."
         return f"{party} played with {objects}." if objects else f"{party} played together."
     if frame.patient:
         return f"{subject} played with {renderer.obj(frame.patient)}."
+    if len(frame.objects) == 2 and any(display_type(o) in {"fetch", "unpack"} for o in frame.objects):
+        action = next(o for o in frame.objects if display_type(o) in {"fetch", "unpack"})
+        target = next((o for o in frame.objects if o is not action), None)
+        if target is not None:
+            target_text = renderer.world.object_phrase(target)
+            if display_type(action) == "fetch":
+                return f"{subject} played fetch with {target_text}."
+            return f"{subject} unpacked {target_text}."
     if len(frame.objects) == 1 and display_type(frame.objects[0]) in SCENE_PLAY_PLACES:
         place = display_type(frame.objects[0])
         return f"{subject} played {place_prep(place)} {renderer.obj(frame.objects[0])}."
@@ -371,6 +518,8 @@ def render_friendship(renderer, frame):
         return f"{party} became good friends."
     if frame.actor and frame.patient:
         return f"{frame.actor.id} and {frame.patient.id} became good friends."
+    if frame.actor:
+        return f"{frame.actor.id} made a new friend."
     return "They became good friends."
 
 
@@ -379,6 +528,7 @@ def render_lesson(renderer, frame):
     subject = renderer.subj(frame.actor)
     topics = lesson_topics(renderer, frame)
     topic_set = set(topics)
+    object_names = {display_type(o) for o in frame.objects}
     possessive = frame.actor.pronoun("possessive") if frame.actor is not None else "their"
     if {"parents", "listen", "help"}.issubset(topic_set):
         return f"{subject} learned to listen to {possessive} parents and find another way to help."
@@ -408,12 +558,54 @@ def render_lesson(renderer, frame):
         return f"{subject} learned to stick with real food."
     if "grow" in topic_set:
         return f"{subject} learned that growing strong was better than fighting."
+    if frame.source.lower() == "moderation":
+        if frame.objects:
+            food = display_type(frame.objects[0])
+            if food == "chew" and frame.objects[0].traits:
+                target = renderer.world.object_phrase(renderer.world.physical(frame.objects[0].traits[0]))
+                return f"{subject} learned not to chew too much {target}."
+            if food == "chew":
+                return f"{subject} learned not to chew gum too much."
+            food = "blueberries" if food == "blueberry" else food
+            return f"{subject} learned not to eat too many {food}."
     if "moderation" in topic_set:
         return f"{subject} learned not to take too much."
+    if "gentleness" in topic_set or "gentle" in topic_set:
+        return f"{subject} learned to be gentle."
+    if "matching matters" in topic_set:
+        return f"{subject} learned that matching things can work well together."
+    if "not real" in topic_set or "not real" in object_names:
+        return f"{subject} learned that not everything is real."
+    let_go = next((obj for obj in frame.objects if display_type(obj) == "let go"), None)
+    if let_go is not None:
+        target = renderer.world.object_phrase(renderer.world.physical(let_go.traits[0])) if let_go.traits else "something"
+        return f"{subject} learned that letting go of {target} could keep {frame.actor.pronoun('object') if frame.actor is not None else 'them'} safe."
+    if "self-care" in topic_set:
+        reflexive = {
+            "he": "himself",
+            "she": "herself",
+            "they": "themselves",
+            "it": "itself",
+        }.get(frame.actor.pronoun("subject") if frame.actor is not None else "they", "themselves")
+        return f"{subject} learned to take care of {reflexive}."
+    if "stories can heal" in topic_set:
+        return f"{subject} learned that stories can help when someone feels hurt."
+    if {"stay", "happy"}.issubset(topic_set):
+        return f"{subject} learned to look for small things that could help her feel happy."
+    if "not playing" in topic_set:
+        return f"{subject} learned not to play in the kitchen."
+    if {"dependable", "strong"}.issubset(topic_set):
+        return f"{subject} learned to be strong and dependable."
     if "change" in topic_set:
         return f"{subject} learned that change can be okay."
     if "careful" in topic_set:
         return f"{subject} learned to be careful."
+    if "helmet" in topic_set:
+        return f"{subject} learned to wear a helmet."
+    if "sharing is caring" in topic_set:
+        return f"{subject} learned that sharing is caring."
+    if "truth" in topic_set:
+        return f"{subject} learned to tell the truth."
     if "steady" in topic_set:
         return f"{subject} learned to keep trying steadily."
     if "kindness" in topic_set:
@@ -449,6 +641,10 @@ def render_emotion(renderer, frame):
     subject = renderer.subj(frame.actor)
     concepts = renderer.concepts(frame)
     objects = renderer.objs(frame)
+    if frame.source.lower() == "thanks" and frame.patient is not None:
+        return f"{subject} thanked {renderer.obj(frame.patient)}."
+    if frame.source.lower() == "thanks":
+        return ""
     if frame.kind == "reaction":
         if "cough" in concepts and "cover" in concepts:
             poss = frame.actor.pronoun("possessive") if frame.actor is not None else "their"
@@ -499,10 +695,11 @@ def render_visit(renderer, frame):
 @REGISTRY.renderer("problem")
 def render_problem(renderer, frame):
     subject = renderer.subj(frame.actor)
-    objects = renderer.objs(frame)
+    useful_objects = [o for o in frame.objects if display_type(o) not in {"broken", "lost", "missing"}]
+    objects = renderer.objs(Frame(frame.kind, actor=frame.actor, patient=frame.patient, objects=useful_objects, source=frame.source, meta=frame.meta))
     concepts = renderer.concepts(frame)
     if objects:
-        object_names = [display_type(o) for o in frame.objects]
+        object_names = [display_type(o) for o in useful_objects]
         if "stuck" in concepts:
             return f"{subject} got stuck in {objects}."
         if "noise" in object_names:
@@ -543,6 +740,8 @@ def render_give(renderer, frame):
         and {display_type(o) for o in frame.objects} == {"cereal", "bowl"}
     ):
         return f"{subject} gave {target} a bowl of cereal."
+    if frame.source.lower() == "provision" and objects and frame.patient is not None:
+        return f"{subject} gave {target} {objects}."
     return f"{subject} gave {objects or 'something'} to {target}."
 
 
@@ -645,8 +844,106 @@ def render_calendar_add(renderer, frame):
 @REGISTRY.renderer("eat")
 def render_eat(renderer, frame):
     subject = renderer.subj(frame.actor)
-    objects = renderer.objs(frame)
+    food = [o for o in frame.objects if display_type(o) not in {"spoon", "fork"}]
+    objects = renderer.objs(Frame(frame.kind, actor=frame.actor, patient=frame.patient, objects=food, source=frame.source, meta=frame.meta))
     return f"{subject} ate {objects or 'something'}."
+
+
+@REGISTRY.renderer("heal")
+def render_heal(renderer, frame):
+    subject = renderer.subj(frame.actor)
+    if frame.objects:
+        return f"{subject} healed with {renderer.objs(frame)}."
+    return f"{subject} healed."
+
+
+@REGISTRY.renderer("climb")
+def render_climb(renderer, frame):
+    subject = renderer.subj(frame.actor)
+    target = join([plain_object_phrase(renderer, obj) for obj in frame.objects])
+    return f"{subject} climbed {target or 'up'}."
+
+
+@REGISTRY.renderer("descend")
+def render_descend(renderer, frame):
+    subject = renderer.subj(frame.actor)
+    return f"{subject} climbed down."
+
+
+@REGISTRY.renderer("look")
+def render_look(renderer, frame):
+    subject = renderer.subj(frame.actor)
+    return f"{subject} looked at {renderer.objs(frame) or 'it'}."
+
+
+@REGISTRY.renderer("pause")
+def render_pause(renderer, frame):
+    subject = renderer.subj(frame.actor)
+    return f"{subject} paused."
+
+
+@REGISTRY.renderer("realize")
+def render_realize(renderer, frame):
+    subject = renderer.subj(frame.actor)
+    if any(display_type(o) == "fake" for o in frame.objects):
+        return f"{subject} realized it was not real."
+    return f"{subject} realized what was happening."
+
+
+@REGISTRY.renderer("trick")
+def render_trick(renderer, frame):
+    subject = renderer.subj(frame.actor)
+    return f"{subject} used {renderer.objs(frame) or 'an idea'} as a trick."
+
+
+@REGISTRY.renderer("throw")
+def render_throw(renderer, frame):
+    subject = renderer.subj(frame.actor)
+    return f"{subject} threw {renderer.objs(frame) or 'it'}."
+
+
+@REGISTRY.renderer("knock")
+def render_knock(renderer, frame):
+    return "Someone knocked on the door."
+
+
+@REGISTRY.renderer("run")
+def render_run(renderer, frame):
+    subject = renderer.subj(frame.actor)
+    object_names = {display_type(o) for o in frame.objects}
+    if "away" in object_names:
+        return f"{subject} ran away."
+    if "home" in object_names:
+        return f"{subject} ran home."
+    return f"{subject} kept running."
+
+
+@REGISTRY.renderer("push")
+def render_push(renderer, frame):
+    subject = renderer.subj(frame.actor)
+    objects = renderer.objs(frame)
+    if frame.source.lower() == "bow" and objects:
+        return f"{subject} pushed {objects} back into place."
+    return f"{subject} pushed {objects or 'it'}."
+
+
+@REGISTRY.renderer("bite")
+def render_bite(renderer, frame):
+    subject = renderer.subj(frame.actor)
+    objects = renderer.objs(frame)
+    if not objects and frame.patient is None:
+        return ""
+    if frame.meta.get("bite_attacker_object") and frame.patient is not None:
+        return f"{cap(objects)} bit {renderer.obj(frame.patient)}."
+    if frame.objects and frame.actor is not None:
+        body_parts = {"wing", "leg", "arm", "hand", "foot", "tail"}
+        if all(display_type(o) in body_parts for o in frame.objects):
+            poss = frame.actor.pronoun("possessive")
+            return f"{subject} hurt {poss} {display_type(frame.objects[0])}."
+        return f"{subject} took a bite of {objects}."
+    if frame.patient is not None:
+        return f"{subject} bit {renderer.obj(frame.patient)}."
+    return f"{subject} was bitten."
 
 
 @REGISTRY.renderer("wipe")
@@ -708,6 +1005,11 @@ def render_celebration(renderer, frame):
 def render_receive(renderer, frame):
     subject = renderer.subj(frame.actor)
     objects = renderer.objs(frame)
+    if frame.source.lower() == "keep" and frame.objects:
+        kept = renderer.obj(frame.objects[0])
+        if len(frame.objects) > 1:
+            return f"{subject} kept {kept} in {renderer.obj(frame.objects[1])}."
+        return f"{subject} kept {kept}."
     return f"{subject} received {objects or 'something'}."
 
 
