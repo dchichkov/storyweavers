@@ -30,8 +30,7 @@ from dataclasses import dataclass
 # Pools -- the swappable vocabulary.  Keep words simple/concrete (TinyStories
 # level); features are narrative instruments; styles are the overall register.
 # ---------------------------------------------------------------------------
-WORDS = [
-    # nouns
+_CORE_SEEDS = [
     "ride", "moon", "puddle", "jacket", "dog", "garden", "boat", "kite",
     "cake", "lantern", "forest", "river", "shell", "ladder", "balloon",
     "mirror", "key", "snow", "bell", "nest", "blanket", "candle", "broom",
@@ -40,17 +39,79 @@ WORDS = [
     "teapot", "umbrella", "cookie", "scarf", "pebble", "wagon", "swing",
     "tent", "map", "crown", "mitten", "spoon", "window", "garden gnome",
     "anchor", "compass", "snail", "owl", "frog", "butterfly", "kitten",
-    # verbs
     "jump", "hide", "share", "build", "wander", "rescue", "whisper", "climb",
     "spill", "promise", "search", "forgive", "chase", "fix", "wait",
     "bake", "paint", "dance", "sneak", "giggle", "stumble", "gather",
     "knock", "float", "dig", "wave", "sing", "tiptoe", "sparkle", "tumble",
-    # adjectives / feelings
     "upset", "brave", "curious", "gentle", "lonely", "proud", "scared",
     "stubborn", "kind", "clumsy", "sleepy", "jealous", "cheerful", "shy",
     "grumpy", "worried", "excited", "silly", "patient", "bold", "tiny",
     "giant", "sparkly", "muddy", "cozy", "noisy", "honest", "greedy",
 ]
+
+_NOUNS = [
+    "acorn", "airship", "beacon", "beehive", "bench", "blossom", "breeze",
+    "bucket", "butter", "cactus", "carpet", "cave", "cello", "chest", "cigar",
+    "clock", "clove", "cloud", "coach", "cobblestone", "cove", "cradle",
+    "crystal", "dam", "dandelion", "diary", "dish", "dove", "dragonfly", "drumstick",
+    "dune", "earring", "ember", "fence", "ferry", "flint", "frost", "garage",
+    "garland", "goblet", "harbor", "harvest", "helmet", "honey", "island",
+    "jewel", "jungle", "kettle", "kitchen", "ladder", "lamplight", "ledger",
+    "letter", "lighthouse", "lilypad", "linens", "lodge", "lumber", "mackerel",
+    "magnolia", "market", "meadow", "mural", "muffin", "mural", "mustache",
+    "oasis", "orchard", "otter", "outpost", "pail", "pantry", "pebble",
+    "picket", "pinecone", "plate", "plank", "plaza", "pocket", "quill", "raccoon",
+    "rain", "ribbon", "riverbank", "sand", "satchel", "saucer", "scarf", "sculpture",
+    "shackle", "sheep", "silk", "silt", "sledge", "snorkel", "stair", "station",
+    "stone", "sundial", "syrup", "talisman", "telescope", "thistle", "tinsel",
+    "topiary", "totem", "tusk", "twig", "umbrella", "vault", "vessel", "village",
+    "violin", "warden", "watch", "willow", "windmill", "xylophone", "yarn", "zephyr",
+]
+
+_VERBS = [
+    "admire", "amble", "blow", "bundle", "button", "cajole", "chase", "cling",
+    "cling", "clasp", "climb", "collect", "crash", "decorate", "dip", "drift",
+    "dwell", "echo", "enjoy", "escort", "exchange", "feast", "flip", "flicker",
+    "float", "forge", "freckle", "fume", "gather", "gaze", "glimmer", "glide",
+    "hammer", "hasten", "hover", "howl", "imitate", "inflate", "inspect", "invite",
+    "jam", "juggle", "kneel", "laugh", "linger", "lurk", "murmur", "nuzzle",
+    "paddle", "peek", "pounce", "pounce", "prance", "preen", "quiver", "rattle",
+    "riddle", "roam", "sip", "sniff", "soar", "spark", "stamp", "stitch",
+    "sway", "tailspin", "tiptoe", "trickle", "troop", "vex", "whisper", "wilt",
+    "wink", "wobble", "yawn", "zip", "zoom",
+]
+
+_ADJECTIVES = [
+    "agile", "brisk", "breezy", "careful", "cheerful", "clingy", "cozy", "crisp",
+    "curious", "damp", "dark", "dashing", "dizzy", "eager", "faint", "flickering",
+    "fragrant", "friendly", "frosty", "fuzzy", "gentle", "gilded", "golden",
+    "graceful", "greasy", "grubby", "happy", "hushed", "icy", "jealous", "jolly",
+    "knotty", "lively", "lonely", "lumpy", "lucky", "mellow", "misty", "muddy",
+    "nervy", "noisy", "patient", "peppy", "pensive", "petite", "playful", "proud",
+    "quirky", "quiet", "rainy", "ragged", "risky", "rusty", "sassy", "sly",
+    "smoky", "soggy", "sparkly", "speedy", "sunny", "tactful", "tiny", "timid",
+    "trembling", "tricky", "vivid", "wandering", "waxy", "windy", "wobbly",
+    "wondrous", "yummy", "zealous",
+]
+
+_COMPOUND_MODIFIERS = [
+    "bright", "cozy", "crystal", "dusty", "fuzzy", "golden", "icy", "loud",
+    "misty", "quiet",
+]
+
+_COMPOUND_SUBJECTS = [
+    "cat", "duck", "fox", "fox cub", "moon", "river", "bridge", "tower", "garden",
+    "train", "path", "storm", "star", "lamp", "trail", "cabin", "forest", "cloud",
+    "moss", "island", "harbor", "village", "hill", "field", "gate", "pond",
+]
+
+WORDS = list(dict.fromkeys(
+    _CORE_SEEDS
+    + _NOUNS
+    + _VERBS
+    + _ADJECTIVES
+    + [f"{m} {n}" for m in _COMPOUND_MODIFIERS for n in _COMPOUND_SUBJECTS]
+))
 
 FEATURES = [
     "Dialogue",
