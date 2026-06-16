@@ -54,7 +54,7 @@ python gen7.py --story-id data00:36222
 python gen7.py --story-id data00:36222 --qa --qa-limit 8
 python gen7_story_tests.py --run
 python gen7_story_tests.py --run-qa --qa-limit 12
-python gen7_story_tests.py --sample 10 --seed 777 --scan 20000 --show-qa --qa-limit 8
+python gen7_story_tests.py --sample 10 --seed 777 --scan 20000 --show-qa --qa-limit 8 --show-kernel
 ```
 
 ### gen7 QA Quality Passes
@@ -66,13 +66,18 @@ but green smoke only proves basic shape; it does not prove quality.
 
 Every gen7 quality pass should include a QA pass:
 
-1. Run `gen7_story_tests.py --sample ... --show-qa` and read original text,
-   generated text, questions, and answers together.
+1. Run `gen7_story_tests.py --sample ... --show-qa --show-kernel` and read
+   original text, kernel source, generated text, questions, and answers together.
 2. Fix repeated narrative or QA failures in the frame/world layer when possible.
 3. Promote 5-10 rough-but-representative sampled cases into `STORY_IDS` and
-   `gen7_story_tests/`.
+   `gen7_story_tests/`, especially cases whose QA exposes role, ownership,
+   causality, object-state, or lesson drift.
 4. Keep both `gen7_story_tests.py --run` and
    `gen7_story_tests.py --run-qa --qa-limit 12` green before finishing.
+5. Update `TODO.md` with the sampled QA defects and the next measurable smoke
+   gate to add.
+6. If multi-turn QA has a prototype, sample follow-up conversations in the same
+   pass and judge whether the follow-up stays anchored to the prior frame/entity.
 
 QA should be generated from `StoryWorld.history`, entity state, meme magnitudes,
 relations, and frame metadata. A good QA pair is answerable from the simulated
@@ -82,19 +87,26 @@ whether the engine preserved causality, ownership, roles, and lesson state.
 Target answer style:
 
 - Prefer full natural-language responses over bare noun phrases.
-- Use one to three short sentences when the trace supports cause/effect or
-  temporal context.
+- Use two or three short sentences when the trace supports cause/effect or
+  temporal context; one-sentence answers are only acceptable when the trace is
+  genuinely too thin.
 - Keep answers grounded: no entities, motives, or outcomes that are not present
   in the world trace.
 - Diversify question kinds across a sample: who/what/where/how/why/what-next,
   plus role, object-state, instrument, lesson, and causal questions.
 - Avoid duplicate shallow questions that only restate declarations.
+- Prefer causal/contextual second sentences over generic audit sentences such as
+  "That event is recorded in the story world" whenever the trace contains the
+  relevant cause, result, owner, location, or later consequence.
 
 When touching QA, update or extend `gen7_story_tests.py --run-qa` so it measures
 more than nonempty output. Useful deterministic checks include duplicate-rate,
 question-kind distribution, answer length/full-sentence rate, grounded entity
 mentions, answerability from `StoryWorld`, and whether every QA answer is tied to
-a frame/entity id. Record known QA defects in `TODO.md` using a controlled
+a frame/entity id. Keep the smoke test as a real quality signal: it should fail
+when answers regress to bare fragments, duplicate shallow questions, or
+single-sentence responses across the pinned suite. Record known QA defects in
+`TODO.md` using a controlled
 vocabulary such as `bare_answer`, `ungrounded_answer`, `duplicate_question`,
 `wrong_focus`, `missing_causality`, `not_answerable`, `too_shallow`, and
 `followup_lost_context`.
@@ -107,7 +119,9 @@ surface area.
 Multi-turn QA is a desired gen7 milestone. Implement it as conversation state
 over the same `StoryWorld`, not as free-form text chat: follow-up questions such
 as "Why?", "What happened next?", "Who helped?", and "Where was it?" should
-resolve against the last referenced entity/event/question type.
+resolve against the last referenced entity/event/question type. Multi-turn
+answers should keep the same full-response, multi-sentence standard as ordinary
+QA, and should fail closed when the trace has no grounded answer.
 
 ---
 
