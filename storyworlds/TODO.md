@@ -57,3 +57,22 @@
 - Treat regex-reported pronoun issues as review hints, not automatic failures:
   some matches are normal phrases such as `she said`, while others are real
   errors such as object pronouns used as subjects.
+
+## New storyworld batch notes
+
+- Added `moss_cookie_misunderstanding.py`, seeded from `storyworlds/seed.py`
+  (`cookie`, `golden moss`, `Misunderstanding`, `Humor`, `Fairy Tale`). The
+  world models a child mistaking living fairy-glade growth for a treat, treasure,
+  or stepping place; the gate requires the mistake to create an honest risk and
+  the remedy to address that risk.
+- Added `aquarium_calm.py`, a calm-animal-care world where the child wants a
+  small water animal to respond; the parent predicts stress from tapping,
+  shaking, overfeeding, or net-chasing and offers a compatible quiet plan.
+- Verification evidence for this batch: both new worlds pass `--verify`;
+  `moss_cookie_misunderstanding.py` reports 22 ASP/Python-valid combos and
+  `aquarium_calm.py` reports 68. Both pass a deterministic seeds `0..9` `--qa`
+  sweep, curated `--all --qa`, `--json`, representative `--trace`, and explicit
+  invalid-combo rejection probes.
+- Remaining frontier for the next batch: add a small launcher or meta-smoke that
+  discovers new `storyworlds/worlds/*.py` scripts and runs `--verify`, a seeded
+  `--qa` sweep, `--json`, and one registered invalid-combo probe where available.

@@ -49,6 +49,12 @@ _CORE_SEEDS = [
     "giant", "sparkly", "muddy", "cozy", "noisy", "honest", "greedy",
 ]
 
+_EMOTIONS = [
+    "happy", "sad", "angry", "scared", "excited", "lonely", "proud", "jealous", 
+    "curious", "nervous", "hopeful", "confused", "grateful", "guilty", "relieved", 
+    "bored", "anxious",
+]
+
 _NOUNS = [
     "acorn", "airship", "beacon", "beehive", "bench", "blossom", "breeze",
     "bucket", "butter", "cactus", "carpet", "cave", "cello", "chest", "cigar",
@@ -78,7 +84,11 @@ _VERBS = [
     "paddle", "peek", "pounce", "pounce", "prance", "preen", "quiver", "rattle",
     "riddle", "roam", "sip", "sniff", "soar", "spark", "stamp", "stitch",
     "sway", "tailspin", "tiptoe", "trickle", "troop", "vex", "whisper", "wilt",
-    "wink", "wobble", "yawn", "zip", "zoom",
+    "wink", "wobble", "yawn", "zip", "zoom", "look", "see", "run", "jump", "hide",
+    "share", "build", "wander", "rescue", "whisper", "climb", "spill", "promise", 
+    "search", "forgive", "chase", "love", "fix", "wait", "bake", "paint", "dance",
+    "sneak", "giggle", "stumble", "gather", "knock", "float", "dig", "wave", "sing", 
+    "tiptoe", "sparkle",
 ]
 
 _ADJECTIVES = [
@@ -91,18 +101,21 @@ _ADJECTIVES = [
     "quirky", "quiet", "rainy", "ragged", "risky", "rusty", "sassy", "sly",
     "smoky", "soggy", "sparkly", "speedy", "sunny", "tactful", "tiny", "timid",
     "trembling", "tricky", "vivid", "wandering", "waxy", "windy", "wobbly",
-    "wondrous", "yummy", "zealous",
+    "wondrous", "yummy", "zealous", 
 ]
 
 _COMPOUND_MODIFIERS = [
     "bright", "cozy", "crystal", "dusty", "fuzzy", "golden", "icy", "loud",
-    "misty", "quiet",
+    "misty", "quiet", "rusty", "shiny", "silent", "sparkly", "twinkling", "whispering",
+    "wondrous", "wobbly"
 ]
 
 _COMPOUND_SUBJECTS = [
     "cat", "duck", "fox", "fox cub", "moon", "river", "bridge", "tower", "garden",
     "train", "path", "storm", "star", "lamp", "trail", "cabin", "forest", "cloud",
-    "moss", "island", "harbor", "village", "hill", "field", "gate", "pond",
+    "moss", "island", "harbor", "village", "hill", "field", "gate", "pond", "cave",
+    "castle", "ship", "wagon", "tent", "tree", "flower", "rock", "bush", "street",
+    "window", "door", "fountain", "statue", "bench", "sign", "lighthouse", 
 ]
 
 WORDS = list(dict.fromkeys(
@@ -110,6 +123,7 @@ WORDS = list(dict.fromkeys(
     + _NOUNS
     + _VERBS
     + _ADJECTIVES
+    + _EMOTIONS
     + [f"{m} {n}" for m in _COMPOUND_MODIFIERS for n in _COMPOUND_SUBJECTS]
 ))
 
