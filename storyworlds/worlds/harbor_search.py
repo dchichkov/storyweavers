@@ -311,6 +311,24 @@ def _pronouns(gender: str) -> tuple[str, str, str]:
     return "she", "her", "her"
 
 
+def helper_phrase(helper: str) -> str:
+    words = helper.replace("_", " ")
+    family = {"mother", "uncle"}
+    if words in family:
+        return words
+    return f"the {words}"
+
+
+def sentence(text: str) -> str:
+    text = text.strip()
+    if not text:
+        return text
+    text = text[0].upper() + text[1:]
+    if text[-1] not in ".!?":
+        text += "."
+    return text
+
+
 def spot_where(phrase: str) -> str:
     first = phrase.split()[0]
     if first in {"inside", "under", "behind", "next", "near", "on", "in", "at", "between", "beside", "through", "within", "outside"}:
@@ -437,15 +455,15 @@ def generate(params: StoryParams) -> StorySample:
     _apply_rules(world)
     spot_location = spot_where(world.spot.phrase)
 
-    subject, poss, obj = _pronouns(params.gender)
-    other = world.params.helper.replace("_", " ").replace("mother", "mom")
+    subject, poss, _ = _pronouns(params.gender)
+    other = helper_phrase(world.params.helper)
     hero = params.hero
     item = world.lost_item.phrase
     method = world.method.phrase
 
     para1 = [
-        f"{hero} loved {world.lost_item.loved_for} and always kept their {item} close. "
-        f"On a bright morning, {hero} and {poss} {world.params.helper} were by {world.district.phrase}.",
+        f"{hero} loved the {item} for {world.lost_item.loved_for} and always kept it close. "
+        f"On a bright morning, {hero} and {other} were by {world.district.phrase}.",
         f"The air smelled like {world.district.atmosphere}. It was one of {hero}'s favorite places.",
     ]
 
@@ -453,14 +471,14 @@ def generate(params: StoryParams) -> StorySample:
         f"Then, while walking past {world.spot.phrase}, {hero} felt the weight of an absence. "
         f"{hero} had lost the {item}. {hero} remembered: {world.spot.clue}.",
         f"{subject.capitalize()} took a breath, because {world.spot.hazard} spots are tricky and a child can't solve them with hurry.",
-        f'"We can do this safely," said {other}. "Use the right method for this place," and {obj} nodded.',
+        f'"We can do this safely," said {other}. "Use the right method for this place." {hero} nodded.',
     ]
 
     para3 = [
-        f"So {hero} and {other} searched by {method}. {hero} {world.method.action}.",
+        f"So {hero} and {other} searched with {method}. {hero} {world.method.action}.",
         f"{predict_risk(world)} {subject.capitalize()} kept a calm pace and checked each place slowly.",
         f"In the end, the {item} was found {spot_location}, and everyone smiled.",
-        f'"I should remember to ask for help first," {hero} said. "And I should match the method to the place,".',
+        f'"I should remember to slow down first," {hero} said. "And I should match the method to the place."',
     ]
 
     world.story = "\n\n".join([" ".join(para1), " ".join(para2), " ".join(para3)])
@@ -480,11 +498,14 @@ def generate(params: StoryParams) -> StorySample:
     ]
 
     qas = [
-        QAItem(f"What did {hero} lose?", f"{hero} lost {world.lost_item.phrase}."),
+        QAItem(f"What did {hero} lose?", f"{hero} lost the {world.lost_item.phrase}."),
         QAItem("Where did the search take place?", f"The search took place in {world.district.phrase}."),
-        QAItem("Why was the method needed?", world.facts.get("hazard_warning", f"The {world.spot.hazard} made a careful method necessary.") + " "
-               f"The spot needed a {world.spot.need}-style approach."),
-        QAItem("How was the problem solved?", f"{hero} used {method} and found the item {spot_location}."),
+        QAItem(
+            "Why was the method needed?",
+            sentence(world.facts.get("hazard_warning", f"The {world.spot.hazard} made a careful method necessary.")) + " "
+            f"That is why {hero} needed a {world.spot.need}-style approach instead of rushing."
+        ),
+        QAItem("How was the problem solved?", f"{hero} used {method} with {other}, then found the {world.lost_item.phrase} {spot_location}."),
     ]
 
     qas_world: list[QAItem] = [
@@ -492,7 +513,7 @@ def generate(params: StoryParams) -> StorySample:
         QAItem("Why do adults help in height or locked spots?", "Adults can add caution, permission, and a stable plan when reaching or opening is needed."),
     ]
     qas_world.append(
-        QAItem(f"What is one risk of {world.spot.hazard} in search scenes?", world.facts["hazard_warning"])
+        QAItem(f"What is one risk of {world.spot.hazard} in search scenes?", sentence(world.facts["hazard_warning"]))
     )
     qas_world.extend(QAItem(q, a) for q, a in HUMAN_QUESTIONS.get(params.lost_item, []))
 

@@ -454,6 +454,10 @@ def predict_risk(world: World) -> str:
     return "crowds and movement can hide quiet sounds and small objects"
 
 
+def tokenized_flashback(world: World) -> str:
+    return world.spot.flashback.replace("bell", world.token.phrase).replace("object", world.token.phrase)
+
+
 def generate(params: StoryParams) -> StorySample:
     world = build_world(params)
     apply_rules(world)
@@ -465,16 +469,16 @@ def generate(params: StoryParams) -> StorySample:
         f"{params.hero} carried {possessive} {world.token.phrase} while {subject} kept watch on the crowd."
     )
     disappearance = (
-        f"When one final tone rang, {params.hero} looked down and found the bell missing. "
+        f"When one final tone rang, {params.hero} looked down and found the {world.token.phrase} missing. "
         f"In memory, {params.hero} heard this sound: \"{world.spot.clue}\"."
     )
     helper_line = (
         f'\"{helper},\" {params.hero} said, \"we can still find it.\" '
-        f'{helper} smiled and pointed out the flashback: {world.spot.flashback}.'
+        f'{helper} smiled and pointed out the flashback: {tokenized_flashback(world)}.'
     )
     search = (
         f"They used {world.method.phrase}. {params.hero} {world.method.action}. "
-        f"{predict_risk(world)}. {params.hero} found the object {world.spot.phrase}."
+        f"{predict_risk(world)}. {params.hero} found the {world.token.phrase} {world.spot.phrase}."
     )
     ending = (
         f"{params.hero} held {possessive} {world.token.phrase} and set it on the table. "
@@ -496,7 +500,7 @@ def generation_prompts(world: World) -> list[str]:
     return [
         'Write a mystery story using the words "bell", "candle", and "rope".',
         f"Create a careful-search story where {world.params.hero} loses {world.token.phrase} in {world.venue.phrase}.",
-        f"Explain how {world.params.hero} found the token using {world.method.phrase}.",
+        f"Explain how {world.params.hero} found the missing item using {world.method.phrase}.",
     ]
 
 
@@ -505,7 +509,7 @@ def story_qa(world: World) -> list[QAItem]:
         QAItem("What was the missing item?", f"The story says the lost item was {world.token.phrase}."),
         QAItem("What started the investigation?", f"The first clue remembered was '{world.spot.clue}'."),
         QAItem("Why was the chosen method safe?", f"The scene required a {world.spot.need} search and they used a method for that need."),
-        QAItem("How was the token found?", f"They used {world.method.phrase}, which was suitable for {world.spot.need}, and found it {world.spot.phrase}."),
+        QAItem("How was the missing item found?", f"They used {world.method.phrase}, which was suitable for {world.spot.need}, and found it {world.spot.phrase}."),
         QAItem("What did the child learn?", "The child learned that safe methods and calm planning recover things better than rushing."),
     ]
 

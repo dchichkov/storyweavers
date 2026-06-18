@@ -78,3 +78,27 @@ Common cleanup defects from the Spark batch:
   child-facing Q&A.
 - Registry phrases and renderers need one clear article strategy to avoid output
   such as `a a bright beach ball` or `the a caring librarian`.
+
+## Random QA Pass Notes
+
+On 2026-06-17, a randomized story+QA sweep used `./.venv/bin/python` with
+`-n 1 --seed <seed> --qa` over 20 randomly selected scripts. The initial pass
+found three hard failures and several sampled quality issues:
+
+- `icy_rusty_fence.py` crashed because the hero entity was created with a stale
+  `pronoun=` keyword; its cherished prize also was not marked as worn, so the
+  predicted warning could disappear.
+- `loud_street_bench_detective.py` used the display phrase `soft cloth` where
+  later lookup expected the registry key.
+- `crystal_river_hover.py` had a list/tuple syntax typo and was missing the
+  `Entity.phrase` field its renderer used.
+- `cozy_bridge_lamp.py` had the same missing `Entity.phrase` field and several
+  template joins such as doubled articles, `little little`, and bad plural
+  wording.
+- `harbor_search.py`, `market_lost_coin.py`, and `clocktower_search.py` ran but
+  exposed role/pronoun drift, terse QA, or token-specific story mismatches.
+
+After cleanup, the same deterministic 20-script sweep had no crashes. The only
+remaining scanner flags were false positives from ordinary phrases such as
+`his dad` / `her mom`, so regex lint should stay advisory and be paired with
+human reading of the sampled story and QA.

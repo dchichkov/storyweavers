@@ -319,7 +319,7 @@ TOOLS = {
         {"paper", "tool"},
     ),
     "soft_cloth": Tool(
-        "soft cloth",
+        "soft_cloth",
         "soft cloth",
         {"under", "bench"},
         {"smudge"},

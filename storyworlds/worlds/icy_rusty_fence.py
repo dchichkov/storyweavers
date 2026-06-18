@@ -278,12 +278,14 @@ def introduce(world: World, hero: Entity, parent: Entity) -> None:
     world.say(
         f"Once upon a time, there was a little {hero.type} named {hero.id}, and {hero.pronoun('subject')} was curious and brave."
     )
-    world.say(f"{parent.pronoun('subject').capitalize()} {parent.label_word} promised to keep a close watch.")
+    world.say(f"{parent.label_word.capitalize()} promised to keep a close watch.")
 
 
 def present_prize(world: World, hero: Entity, prize: Entity) -> None:
+    liked = "them" if prize.plural else "it"
     world.say(
-        f"One afternoon, {hero.pronoun('possessive')} parent had bought a {prize.label} and {hero.pronoun('object')} liked it dearly."
+        f"One afternoon, {hero.pronoun('possessive')} {world.get(hero.owner).label_word} had bought {hero.pronoun('object')} {prize.phrase}, "
+        f"and {hero.pronoun('subject')} liked {liked} dearly."
     )
 
 
@@ -293,7 +295,7 @@ def wants_activity(world: World, hero: Entity, activity: Activity, parent: Entit
     world.say(
         f"{hero.pronoun().capitalize()} said, \"I want to go, and you can trust my judgment.\""
     )
-    world.say(f"{parent.id} said no because the {activity.keyword} edge can be dangerous.")
+    world.say(f"{parent.label_word.capitalize()} said no because the {activity.keyword} edge can be dangerous.")
 
 
 def warn(world: World, parent: Entity, hero: Entity, activity: Activity, prize: Entity) -> bool:
@@ -302,10 +304,11 @@ def warn(world: World, parent: Entity, hero: Entity, activity: Activity, prize: 
         return False
     world.facts["predicted_soil"] = activity.soil
     world.facts["predicted_workload"] = pred["workload"]
+    clean_target = "them" if prize.plural else "it"
     world.say(
-        f'"If you go too close, your {prize.label} will get {activity.soil}, and we will have to clean it."'
+        f'"If you go too close, your {prize.label} will get {activity.soil}, and we will have to clean {clean_target}."'
     )
-    world.say(f"{parent.id} added, \"I am not stopping your adventure. I am stopping the mess.\"")
+    world.say(f"{parent.label_word.capitalize()} added, \"I am not stopping your adventure. I am stopping the mess.\"")
     return True
 
 
@@ -320,7 +323,7 @@ def grab(world: World, hero: Entity, parent: Entity, activity: Activity) -> None
     hero.memes["grabbed_by"] += 1
     propagate(world, narrate=False)
     world.say(
-        f'{parent.id} grabbed {hero.pronoun("object")} by the hand and said, "Keep your promise and stay with me."'
+        f'{parent.label_word.capitalize()} grabbed {hero.pronoun("object")} by the hand and said, "Keep your promise and stay with me."'
     )
     world.say(f'They stood by the old fence and talked it through.')
 
@@ -354,15 +357,15 @@ def propose_compromise(world: World, hero: Entity, parent: Entity, activity: Act
         gear.worn_by = None
         del world.entities[gear.id]
         return None
-    world.say(f'{parent.id} said, "{parent.pronoun("possessive").capitalize()} idea: {selected.prep}."')
+    world.say(f'{parent.label_word.capitalize()} said, "Here is my idea: {selected.prep}."')
     return selected
 
 
 def accept(world: World, hero: Entity, parent: Entity, selected: Gear, activity: Activity) -> None:
     hero.memes["joy"] += 1
     hero.memes["conflict"] = 0.0
-    world.say(f"{hero.id} laughed and hugged {parent.id}.")
-    world.say(f'They {selected.tail}, then {activity.gerund} safely together.')
+    world.say(f"{hero.id} laughed and hugged {parent.label_word}.")
+    world.say(f'They {selected.tail}, then {hero.id} could {activity.verb} safely.')
 
 
 def finish(world: World, hero: Entity, resolved: bool) -> None:
@@ -388,7 +391,6 @@ def tell(setting: Setting, activity: Activity, prize_cfg: Prize, name: str, gend
             kind="character",
             type=gender,
             traits=[trait],
-            pronoun="",
         )
     )
     parent = world.add(
@@ -397,7 +399,6 @@ def tell(setting: Setting, activity: Activity, prize_cfg: Prize, name: str, gend
             kind="character",
             type=parent_type,
             label=f"the {parent_type}",
-            label_word=parent_type if parent_type else "parent",  # fallback; should not be used
         )
     )
     hero.owner = parent.id
@@ -411,6 +412,7 @@ def tell(setting: Setting, activity: Activity, prize_cfg: Prize, name: str, gend
             region=prize_cfg.region,
             owner=hero.id,
             caretaker=parent.id,
+            worn_by=hero.id,
             plural=prize_cfg.plural,
         )
     )
@@ -563,7 +565,7 @@ def explain_gender(prize_id: str, gender: str) -> str:
 
 
 KNOWLEDGE = {
-    "fence": [("Why is a old fence risky?", "Old rails and planks can be slippery or weak, so children should stay close.)")],
+    "fence": [("Why is an old fence risky?", "Old rails and planks can be slippery or weak, so children should stay close.")],
     "river": [("Why can a riverbank be damp?", "Water and fog make the bank wet and slippery.")],
     "wet": [("Why does wet fabric feel cold?", "Water carries heat away from skin quickly when a material is wet.")],
     "mud": [("Why is mud sticky?", "Mud is wet soil, so it clings to shoes and can trip you.")],
@@ -591,7 +593,7 @@ def story_qa(world: World) -> list[QAItem]:
     prize = f["prize"]
     act = f["activity"]
     out = [
-        QAItem("Who are the characters?", f"{hero.id} and {parent.id}."),
+        QAItem("Who are the characters?", f"{hero.id} and {parent.label_word.capitalize()}."),
         QAItem("What did the child want to do?", f"{hero.id} wanted to {act.verb}."),
     ]
     if f.get("warned"):
@@ -599,14 +601,17 @@ def story_qa(world: World) -> list[QAItem]:
         soil = f.get("predicted_soil", "damage")
         out.append(QAItem(
             "Why did the parent caution the child?",
-            f"The parent warned that {prize.id} could get {soil} and there would be extra cleaning work."
+            f"The parent warned that the {prize.label} could get {soil} and there would be extra cleaning work."
         ))
         if workload >= THRESHOLD:
-            out.append(QAItem("How much extra work was expected?", f"At least {int(workload)} workload unit was expected."))
+            out.append(QAItem(
+                "What extra work was expected?",
+                f"{parent.label_word.capitalize()} expected extra cleaning if the {prize.label} got {soil}."
+            ))
     if f.get("conflict"):
         out.append(QAItem(
             "How did misunderstanding happen?",
-            f"{hero.id} wanted to do the action first, and {parent.id} held {hero.pronoun('object')} by the hand."
+            f"{hero.id} wanted to do the action first, and {parent.label_word} held {hero.pronoun('object')} by the hand."
         ))
     if f.get("resolved"):
         out.append(QAItem(

@@ -26,6 +26,12 @@
 
 ## Current cleanup queue
 
+- 2026-06-17 random QA pass: fixed sampled crashers in
+  `icy_rusty_fence.py`, `loud_street_bench_detective.py`,
+  `crystal_river_hover.py`, and `cozy_bridge_lamp.py`; fixed sampled QA/prose
+  quality defects in `harbor_search.py`, `market_lost_coin.py`, and
+  `clocktower_search.py`. The rerun of the same deterministic 20-script random
+  sweep completed with `20/20` scripts returning exit 0 under `--qa`.
 - Re-run a human sample review on the Spark worlds after each cleanup batch.
   The cleanup pass raised normal sampled robustness from `88/100` to `100/100`
   over seeds `0..9`; the final lightweight artifact scan reported
@@ -37,9 +43,20 @@
 - Next quality layer: move beyond regex artifacts and do a human readability
   pass for scene vividness, emotional causality, and whether QA answers use full
   natural-language explanations rather than terse template statements.
+- Add a repo-level `storyworlds` smoke launcher that discovers
+  `storyworlds/worlds/*.py`, runs `--verify` where supported, runs a seeded
+  `--qa` sample, and reports crash/artifact hints. Keep pronoun regexes as hints:
+  the 2026-06-17 sweep flagged normal `his dad` / `her mom` phrases as false
+  positives.
 
 ## Readability pass findings
 
+- 2026-06-17 pass: recurring defects were `crash`, `missing_entity_field`,
+  `bad_registry_key`, `article_composition`, `wrong_focus`, `bad_pronoun`, and
+  `too_shallow`. The most useful fixes were state-level first: marking prizes as
+  worn before prediction in `icy_rusty_fence.py`, using registry keys rather than
+  display phrases in `loud_street_bench_detective.py`, and adding the shared
+  `phrase` field where renderers already depended on it.
 - Fixed a cluster where role/name references broke emotional causality, especially
   parent/helper wording such as `his Milo`, object-pronoun hugs, and parent-role
   endings in market and snow-day stories.

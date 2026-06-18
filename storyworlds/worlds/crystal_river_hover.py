@@ -43,6 +43,7 @@ class Entity:
     kind: str = "thing"  # character | thing
     type: str = "thing"
     label: str = ""
+    phrase: str = ""
     traits: list[str] = field(default_factory=list)
     owner: Optional[str] = None
     caretaker: Optional[str] = None
@@ -281,28 +282,29 @@ def introduce(world: World, hero: Entity, parent: Entity) -> None:
         f"and {hero.pronoun('subject')} loved exploring."
     )
     world.say(
-        f"In that quiet garden, {hero.id} kept staring at the {world.setting.landmark}, "
+        f"In that quiet garden, {hero.id} kept staring at {world.setting.landmark}, "
         f"the sign that read '{world.setting.sign}'."
     )
 
 
 def loves_activity(world: World, hero: Entity, activity: Activity) -> None:
     hero.memes["love_play"] += 1
-    world.say(f"{hero.id} was especially excited to {activity.gerund} near the crystal river.")
+    world.say(f"{hero.id} was especially excited to try {activity.gerund} near the crystal river.")
 
 
 def buy_prize(world: World, parent: Entity, hero: Entity, prize: Entity) -> None:
     world.say(
         f"One day, {hero.pronoun('possessive')} {parent.label_word} bought "
-        f"{hero.pronoun('object')} a special {prize.phrase}."
+        f"{hero.pronoun('object')} {prize.phrase}."
     )
 
 
 def loves_prize(world: World, hero: Entity, prize: Entity) -> None:
     hero.memes["love"] += 1
     prize.worn_by = hero.id
+    kept = "them" if prize.plural else "it"
     world.say(
-        f"{hero.id} loved {hero.pronoun('possessive')} new {prize.label} and kept it on "
+        f"{hero.id} loved {hero.pronoun('possessive')} new {prize.label} and kept {kept} on "
         f"as a badge of honor."
     )
 
@@ -331,8 +333,9 @@ def warn(world: World, parent: Entity, hero: Entity, activity: Activity, prize: 
         return False
     world.facts["predicted_soil"] = activity.soil
     world.facts["predicted_workload"] = pred["workload"]
-    clause = f"It will get {activity.soil}, and then {parent.pronoun('object')} will have to clean it up."
-    world.say(f'"{clause}" {hero.pronoun("possessive")} {parent.label_word} said softly.')
+    clean_target = "them" if prize.plural else "it"
+    clause = f"Your {prize.label} will get {activity.soil}, and then we will have to clean {clean_target}"
+    world.say(f'"{clause}," {hero.pronoun("possessive")} {parent.label_word} said softly.')
     return True
 
 
@@ -345,7 +348,7 @@ def grab_hand(world: World, parent: Entity, hero: Entity, activity: Activity) ->
     hero.memes["grabbed_by"] += 1
     propagate(world, narrate=False)
     world.say(
-        f"{parent.pronoun('subject').capitalize()} grabbed {hero.pronoun('object')} by the hand "
+        f"{parent.label_word.capitalize()} held {hero.pronoun('object')} by the hand "
         f"and said, 'You have to resist the urge to {activity.verb} today.'"
     )
 
@@ -395,7 +398,7 @@ def accept(world: World, parent: Entity, hero: Entity, gear_def: Gear) -> None:
     world.say(
         f"{hero.id}'s face brightened immediately. "
         f"{hero.pronoun().capitalize()} hugged {hero.pronoun('possessive')} {parent.label_word} "
-        f"and said, 'Let’s go!' as they {gear_def.tail} toward the bright hill."
+        f"and said, 'Let’s go!' after they {gear_def.tail}."
     )
 
 
@@ -533,7 +536,7 @@ GEAR = [
         prep="pull on waterproof overalls",
         tail="put on waterproof overalls",
     ),
-)
+]
 
 PRIZES = {
     "sneakers": Prize("sneakers", "white sneakers", "a pair of sneakers", "sneakers", "feet", plural=True),

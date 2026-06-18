@@ -300,7 +300,7 @@ def loves_market(world: World, hero: Entity) -> None:
 
 def buy_token(world: World, parent: Entity, hero: Entity, coin: Entity) -> None:
     world.say(
-        f"One day, {parent.label_word} gave {hero.pronoun('object')} a new "
+        f"One day, {parent.label_word.capitalize()} gave {hero.pronoun('object')} a new "
         f"{coin.label} for the market."
     )
 
@@ -342,7 +342,7 @@ def grab_hand(world: World, parent: Entity, hero: Entity) -> None:
     hero.memes["grabbed"] += 1
     propagate(world, narrate=False)
     world.say(
-        f'Then {parent.pronoun("possessive")} {parent.label_word} gently grabbed '
+        f'Then {parent.label_word.capitalize()} gently grabbed '
         f'{hero.pronoun("object")} by the hand.'
     )
 
@@ -369,7 +369,7 @@ def offer_gear(world: World, parent: Entity, hero: Entity, coin: Entity,
     world.facts["gear"] = gear
     world.facts["resolved"] = True
     world.say(
-        f'{parent.pronoun("possessive").capitalize()} {parent.label_word} helped {hero.id} '
+        f'{parent.label_word.capitalize()} helped {hero.id} '
         f'put {coin.phrase or coin.label} inside the {gear.label}.'
     )
     return gear_def
@@ -401,7 +401,7 @@ def finish_market_trip(world: World, hero: Entity, parent: Entity, coin_id: str)
 
     world.facts["outcome"] = "safe"
     world.say(
-        f'{hero.id} and {parent.pronoun("possessive")} {parent.label_word} reached the candy stand.'
+        f'{hero.id} and {hero.pronoun("possessive")} {parent.label_word} reached the candy stand.'
     )
     world.say(
         f'{hero.id} handed over {coin.phrase or coin.label} and bought a sweet for the two of them.'
@@ -508,7 +508,7 @@ def story_qa(world: World) -> list[tuple[str, str]]:
             f"The key object was a {coin.label}.",
         ),
         (
-            f"Why did {parent.label_word} warn {hero.id}?",
+            f"Why did {parent.label_word.capitalize()} warn {hero.id}?",
             world.facts.get("risk_reason", f"{parent.label_word} did not think there was a risk."),
         ),
     ]

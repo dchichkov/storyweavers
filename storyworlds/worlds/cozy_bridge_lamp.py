@@ -38,6 +38,7 @@ class Entity:
     kind: str = "thing"
     type: str = "thing"
     label: str = ""
+    phrase: str = ""
     traits: list[str] = field(default_factory=list)
     owner: Optional[str] = None
     caretaker: Optional[str] = None
@@ -271,12 +272,12 @@ def predict_mess(world: World, actor: Entity, activity: Activity, prize_id: str)
 
 
 def introduce(world: World, hero: Entity, parent: Entity) -> None:
-    trait = hero.traits[0] if hero.traits else "quick"
+    trait = next((t for t in hero.traits if t != "little"), "quick")
     world.say(
         f"Once upon a time, there was a little {trait} {hero.type} named {hero.id}."
     )
     world.say(
-        f"One day at the {world.setting.place}, {hero.id} noticed a {world.setting.landmark} "
+        f"One day at {world.setting.place}, {hero.id} noticed a {world.setting.landmark} "
         f"that shimmered like a {world.setting.fixture} and wanted to add a shiny flower sticker."
     )
 
@@ -285,7 +286,7 @@ def loves_activity(world: World, hero: Entity, activity: Activity, prize: Prize)
     hero.memes["love_play"] += 1
     world.say(
         f"{hero.id} loved making a tiny rainbow with a twinkling lamp and "
-        f"kept dreaming of {activity.verb} to get home in style."
+        f"kept dreaming of {activity.gerund} to get home in style."
     )
     world.say(f"{hero.id} also cared a lot about {hero.pronoun('possessive')} new {prize.label}.")
 
@@ -293,16 +294,15 @@ def loves_activity(world: World, hero: Entity, activity: Activity, prize: Prize)
 def give_prize(world: World, parent: Entity, hero: Entity, prize: Entity) -> None:
     world.say(
         f"One day, {hero.pronoun('possessive')} {parent.label_word} brought "
-        f"{hero.pronoun('object')} a special {prize.phrase}."
+        f"{hero.pronoun('object')} {prize.phrase}."
     )
 
 
 def wear_prize(world: World, hero: Entity, prize: Entity) -> None:
     hero.memes["love"] += 1
     prize.worn_by = hero.id
-    world.say(
-        f"{hero.id} wore {prize.it} and said it was very precious."
-    )
+    feeling = "they were" if prize.plural else "it was"
+    world.say(f"{hero.id} wore {prize.it} and said {feeling} very precious.")
 
 
 def go_place(world: World, hero: Entity, parent: Entity, activity: Activity) -> None:
@@ -312,7 +312,7 @@ def go_place(world: World, hero: Entity, parent: Entity, activity: Activity) -> 
         f"{world.setting.place}."
     )
     world.say(
-        f"{hero.id} wanted to {activity.verb} across the bridge, but the stones were slippery."
+        f"{hero.id} wanted to {activity.verb}, but the stones were slippery."
     )
 
 
@@ -322,8 +322,9 @@ def warn(world: World, parent: Entity, hero: Entity, activity: Activity, prize: 
         return False
     world.facts["predicted_soil"] = activity.soil
     world.facts["predicted_workload"] = pred["workload"]
+    prize_subject = "they" if prize.plural else "it"
     world.say(
-        f'"If we hurry, we might spill everything and {prize.it} would get {activity.soil}," '
+        f'"If we hurry, we might spill everything and {prize_subject} would get {activity.soil}," '
         f"{hero.pronoun('possessive')} {parent.label_word} said."
     )
     return True
@@ -347,8 +348,7 @@ def pout(world: World, hero: Entity, activity: Activity) -> None:
     if hero.memes["conflict"] < THRESHOLD:
         return
     world.say(
-        f"{hero.id} pouted and said, \"{hero.pronoun().capitalize()} can still make a rainbow if we do "
-        f"it carefully together.\""
+        f'{hero.id} pouted and said, "I can still make a rainbow if we do it carefully together."'
     )
 
 
@@ -371,7 +371,7 @@ def compromise(world: World, parent: Entity, hero: Entity, activity: Activity, p
     if not predict_mess(world, hero, activity, prize.id)["soiled"]:
         world.say(
             f'"Good idea," {parent.pronoun("subject")} said. '
-            f'"Let us {gear_def.prep} and then {activity.gerund} as a team."'
+            f'"Let us {gear_def.prep} and then {activity.verb} as a team."'
         )
         return gear_def
     gear.worn_by = None
@@ -611,7 +611,7 @@ def story_qa(world: World) -> list[tuple[str, str]]:
         (f"What did {hero.id} want to do at the cozy bridge?",
          f"{hero.id} wanted to {act.verb}."),
         (f"What item did {hero.id} care about the most?",
-         f"It was {hero.pronoun('possessive')} new {prize.label}, and {hero.pronoun('subject')} wanted it to stay clean."),
+         f"It was {hero.pronoun('possessive')} new {prize.label}, and {hero.pronoun('subject')} wanted {prize.it} to stay clean."),
     ]
     if f.get("conflict"):
         why = (
