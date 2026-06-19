@@ -278,6 +278,17 @@ HELPERS = ("librarian", "aunt", "uncle", "teacher", "volunteer")
 RULES: list[Rule] = []
 
 
+def _helper_label(helper_key: str) -> str:
+    labels = {
+        "librarian": "the librarian",
+        "teacher": "the teacher",
+        "volunteer": "the volunteer",
+        "aunt": "the aunt",
+        "uncle": "the uncle",
+    }
+    return labels.get(helper_key, helper_key.replace("_", " "))
+
+
 def _r_warning(world: World) -> list[str]:
     if world.facts.get("attempted") is None:
         return []
@@ -482,8 +493,8 @@ def build_intro(world: World, hero: Entity, helper: Entity, target: RescueTarget
     world.say(
         f"Once upon a time, there was a {pron} {hero.type} named {hero.label} in {place.phrase}."
     )
-    helper_desc = f"a caring {helper.type}" if helper.type in {"librarian", "teacher", "aunt", "uncle"} else f"a helpful {helper.type}"
-    world.say(f"{helper.label}, {helper_desc}, was organizing books nearby.")
+    helper_tone = "caring" if helper.type in {"librarian", "teacher", "aunt", "uncle"} else "helpful"
+    world.say(f"{helper.label.capitalize()} was organizing books nearby and watching with {helper_tone} attention.")
 
 
 def notice_and_want(world: World, hero: Entity, target: RescueTarget, method: RescueMethod, place: Place) -> None:
@@ -514,12 +525,13 @@ def build_world(params: StoryParams) -> World:
             traits=["child", "little"],
         )
     )
-    helper_name = params.helper.replace("_", " ").title()
+    helper_key = "librarian" if method_cfg.uses_staff else params.helper
+    helper_name = _helper_label(helper_key)
     helper = world.add(
         Entity(
             id="Helper",
             kind="character",
-            type="librarian" if "libr" in params.helper else params.helper,
+            type="librarian" if "libr" in helper_key else helper_key,
             label=helper_name,
         )
     )
@@ -609,39 +621,39 @@ def story_qa(world: World) -> list[QAItem]:
     return [
         QAItem(
             "Who were the main characters?",
-            f"The story follows {hero.label}, who is the child rescuer, and {helper.label}, who helped with the rescue.",
+            f"The story follows {hero.label}, who is the child rescuer, and {helper.label}, who helped with the rescue. The helper matters because the safe method depends on matching the object, shelf, and place instead of grabbing quickly.",
         ),
         QAItem(
             "Where did the rescue take place?",
-            f"It happened in {place.phrase}.",
+            f"It happened in {place.phrase}. That location matters because its risks, such as narrow space, low light, dust, or height, affect which rescue methods are valid.",
         ),
         QAItem(
             "What did the child rescue?",
-            f"The child rescued {target.phrase} from a difficult spot.",
+            f"The child rescued {target.phrase} from a difficult spot. The target's fragility, weight, or height controls whether the story allows a stool, hook, ladder, or librarian help.",
         ),
         QAItem(
-            "How was the object rescued?",
-            f"The child {method.phrase}, and the helper stayed nearby to keep it safe.",
+            "How did the chosen method keep the rescue safe?",
+            f"The child {method.phrase}, and {helper.label} stayed nearby to keep it safe. The method is compatible here because it solves {', '.join(s.replace('_', ' ') for s in sorted(method.solves))} without ignoring the library risk.",
         ),
         QAItem(
             f"What lesson did {hero.label} learn?",
-            f"{hero.label} learned that matching the method to the object and place keeps fragile items safe.",
+            f"{hero.label} learned that matching the method to the object and place keeps fragile items safe. In this world, care means choosing a method the room actually supports.",
         ),
     ]
 
 
 WORLD_KNOWLEDGE: dict[str, list[tuple[str, str]]] = {
     "height": [
-        ("Why avoid rushing at high places?", "Rushing near a high shelf can shift balance and drop objects.")
+        ("Why avoid rushing at high places?", "Rushing near a high shelf can shift balance and drop objects. A slower method or helper gives the child time to stay steady before reaching.")
     ],
     "fragile": [
-        ("Why are fragile objects handled with extra care?", "Fragile objects break more easily if pulled or dropped suddenly."),
+        ("Why are fragile objects handled with extra care?", "Fragile objects break more easily if pulled or dropped suddenly. The compatible method must keep the object supported instead of yanking it loose."),
     ],
     "dust": [
-        ("Why can dust affect libraries?", "Fine dust can make tools and hands slippery, so people move slowly and carefully."),
+        ("Why can dust affect libraries?", "Fine dust can make tools and hands slippery, so people move slowly and carefully. It also makes careful visibility part of the rescue rather than a decorative detail."),
     ],
     "staff": [
-        ("Why call for a staff helper?", "An adult helper can stabilize a child during a high or awkward reach."),
+        ("Why call for a staff helper?", "An adult helper can stabilize a child during a high or awkward reach. Staff help is especially important when the target or place requires permission and steady handling."),
     ],
 }
 

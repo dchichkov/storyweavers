@@ -102,3 +102,33 @@ After cleanup, the same deterministic 20-script sweep had no crashes. The only
 remaining scanner flags were false positives from ordinary phrases such as
 `his dad` / `her mom`, so regex lint should stay advisory and be paired with
 human reading of the sampled story and QA.
+
+On 2026-06-18, a second random QA pass sampled all 55 scripts in
+`storyworlds/worlds/` once each with `./.venv/bin/python <script> -n 1 --seed
+<seed> --qa`. The first run returned `53/55` successful samples. The two hard
+failures were syntax typos in `river_mist_quest.py` and
+`whispering_field.py`; after fixing those, the pass exposed a stale
+`setup_lamp` call and an ASP import/path issue in `river_mist_quest.py`, plus an
+ASP rule mismatch in `whispering_field.py`. The same pass also caught
+child-facing wording drift in `museum_search.py`.
+
+The final rerun of the same 55 seeds returned `55/55` successful `--qa` samples.
+The only scanner flag left was a false positive in `rusty_door_icy_pond.py` for
+the normal sentence "Touching or shaking them can scare the animals...", which
+again confirms that regex hints need human review.
+
+A follow-up QA-depth pass on the same date targeted worlds whose sampled answers
+were dominated by terse one-sentence responses. The pass expanded answers to
+include grounded cause/effect or safety context in `beach_tide.py`,
+`campfire_caution.py`, `library_rescue.py`, `train_station_wait.py`,
+`river_mist_quest.py`, `whispering_field.py`, `museum_search.py`,
+`rooftop_kite.py`, `market_lost_coin.py`, `icy_rusty_fence.py`, and
+`clocktower_search.py`; it also fixed a `library_rescue.py` helper/method
+consistency issue where a volunteer could narrate a librarian-only rescue.
+
+After that QA-depth pass, a 10-world targeted sample with three seeds per world
+reported `shortA=0` for every sampled world and `oneSent=0` for the touched
+cluster. A final all-world sweep still returned `55/55` successful samples. The
+remaining weak-QA backlog is concentrated in older worlds such as `pirates.py`,
+`puddles.py`, `bakery_kindness.py`, `crystal_river_hover.py`,
+`mystery_spill.py`, and `theater_prop.py`.

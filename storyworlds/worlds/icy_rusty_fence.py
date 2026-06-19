@@ -565,13 +565,13 @@ def explain_gender(prize_id: str, gender: str) -> str:
 
 
 KNOWLEDGE = {
-    "fence": [("Why is an old fence risky?", "Old rails and planks can be slippery or weak, so children should stay close.")],
-    "river": [("Why can a riverbank be damp?", "Water and fog make the bank wet and slippery.")],
-    "wet": [("Why does wet fabric feel cold?", "Water carries heat away from skin quickly when a material is wet.")],
-    "mud": [("Why is mud sticky?", "Mud is wet soil, so it clings to shoes and can trip you.")],
-    "river_boots": [("What are river boots for?", "They help your feet stay dry and steady around water and mud.")],
-    "wind_jacket": [("What does a wind jacket do?", "It reduces chill and wet spray from reaching your torso.")],
-    "mud_gaiters": [("What are gaiters for?", "They cover lower legs and reduce mud splash when walking on rough ground.")],
+    "fence": [("Why is an old fence risky?", "Old rails and planks can be slippery or weak, so children should stay close. The story uses that risk to make bravery depend on listening and choosing a safer route.")],
+    "river": [("Why can a riverbank be damp?", "Water and fog make the bank wet and slippery. That dampness is why the parent's warning is practical rather than just strict.")],
+    "wet": [("Why does wet fabric feel cold?", "Water carries heat away from skin quickly when a material is wet. Keeping the clothing dry helps the child continue outside more safely.")],
+    "mud": [("Why is mud sticky?", "Mud is wet soil, so it clings to shoes and can trip you. Gear or a slower path can reduce the mess without ending the adventure.")],
+    "river_boots": [("What are river boots for?", "They help your feet stay dry and steady around water and mud. In the compromise, they answer the same risk the warning predicted.")],
+    "wind_jacket": [("What does a wind jacket do?", "It reduces chill and wet spray from reaching your torso. That makes it a grounded fix when the activity threatens upper clothing.")],
+    "mud_gaiters": [("What are gaiters for?", "They cover lower legs and reduce mud splash when walking on rough ground. They make the brave choice safer by protecting the exposed area.")],
 }
 KNOWLEDGE_ORDER = ["fence", "river", "wet", "mud", "river_boots", "wind_jacket", "mud_gaiters"]
 
@@ -593,34 +593,36 @@ def story_qa(world: World) -> list[QAItem]:
     prize = f["prize"]
     act = f["activity"]
     out = [
-        QAItem("Who are the characters?", f"{hero.id} and {parent.label_word.capitalize()}."),
-        QAItem("What did the child want to do?", f"{hero.id} wanted to {act.verb}."),
+        QAItem("Who are the characters?", f"{hero.id} is the child who wants to explore, and {parent.label_word} is the parent guiding the safer choice. Their disagreement creates a detective-like problem about what risk is really present."),
+        QAItem("What did the child want to do?", f"{hero.id} wanted to {act.verb}. That wish is possible in the setting, but the world trace predicts mess or danger for the item being worn."),
     ]
     if f.get("warned"):
         workload = f.get("predicted_workload", 0)
         soil = f.get("predicted_soil", "damage")
         out.append(QAItem(
             "Why did the parent caution the child?",
-            f"The parent warned that the {prize.label} could get {soil} and there would be extra cleaning work."
+            f"The parent warned that the {prize.label} could get {soil} and there would be extra cleaning work. The warning is grounded in the activity's affected zone and the prize's exposed region."
         ))
         if workload >= THRESHOLD:
             out.append(QAItem(
                 "What extra work was expected?",
-                f"{parent.label_word.capitalize()} expected extra cleaning if the {prize.label} got {soil}."
+                f"{parent.label_word.capitalize()} expected extra cleaning if the {prize.label} got {soil}. That cleanup pressure explains why the parent stops the action before it happens."
             ))
     if f.get("conflict"):
         out.append(QAItem(
             "How did misunderstanding happen?",
-            f"{hero.id} wanted to do the action first, and {parent.label_word} held {hero.pronoun('object')} by the hand."
+            f"{hero.id} wanted to do the action first, and {parent.label_word} held {hero.pronoun('object')} by the hand. The child read the boundary as unfair, while the parent was reacting to a concrete risk."
         ))
     if f.get("resolved"):
+        gear = f.get("gear")
+        gear_text = gear.label if gear is not None else "a safer plan"
         out.append(QAItem(
             "How was the conflict resolved?",
-            "With a specific compromise that protected the item, so they continued safely."
+            f"They used {gear_text} as a specific compromise that protected the item, so they continued safely. The ending keeps the adventure while changing the unsafe condition."
         ))
-        out.append(QAItem("What is the moral?", "Bravery is better with safety and listening."))
+        out.append(QAItem("What is the moral?", "Bravery is better with safety and listening. The brave part is not ignoring danger; it is choosing the plan that lets everyone continue safely."))
     else:
-        out.append(QAItem("What happened instead?", "The family waited safely rather than taking a risky route."))
+        out.append(QAItem("What happened instead?", "The family waited safely rather than taking a risky route. That fail-closed ending keeps the story honest when no protective compromise is available."))
     return out
 
 

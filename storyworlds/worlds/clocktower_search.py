@@ -506,31 +506,31 @@ def generation_prompts(world: World) -> list[str]:
 
 def story_qa(world: World) -> list[QAItem]:
     return [
-        QAItem("What was the missing item?", f"The story says the lost item was {world.token.phrase}."),
-        QAItem("What started the investigation?", f"The first clue remembered was '{world.spot.clue}'."),
-        QAItem("Why was the chosen method safe?", f"The scene required a {world.spot.need} search and they used a method for that need."),
-        QAItem("How was the missing item found?", f"They used {world.method.phrase}, which was suitable for {world.spot.need}, and found it {world.spot.phrase}."),
-        QAItem("What did the child learn?", "The child learned that safe methods and calm planning recover things better than rushing."),
+        QAItem("What was the missing item?", f"The story says the lost item was {world.token.phrase}. That object matters because its material and hiding place shape how careful the search needs to be."),
+        QAItem("What started the investigation?", f"The first clue remembered was '{world.spot.clue}'. The clue anchors the search to a real place instead of letting the child wander randomly."),
+        QAItem("Why was the chosen method safe?", f"The scene required a {world.spot.need} search and they used a method for that need. Matching method to need keeps the search from becoming a risky reach, climb, or rush."),
+        QAItem("How was the missing item found?", f"They used {world.method.phrase}, which was suitable for {world.spot.need}, and found it {world.spot.phrase}. The recovery follows from the method and spot rather than appearing by luck."),
+        QAItem("What did the child learn?", "The child learned that safe methods and calm planning recover things better than rushing. The lesson is grounded in the clocktower layout and the specific clue trail."),
     ]
 
 
 def world_knowledge_qa(world: World) -> list[QAItem]:
     qas = [
-        QAItem("Why can crowds make searching harder?", "Crowds can hide small objects and make careful movement difficult."),
-        QAItem("Why is helper support useful?", "A helper can cover an angle the main searcher cannot reach and keep the search safer."),
+        QAItem("Why can crowds make searching harder?", "Crowds can hide small objects and make careful movement difficult. A calm search keeps the object, path, and people around it visible."),
+        QAItem("Why is helper support useful?", "A helper can cover an angle the main searcher cannot reach and keep the search safer. That support is especially useful when the clue points to a narrow, high, or dark place."),
     ]
     if world.spot.hazard == "locked":
-        qas.append(QAItem("Why does a key matter in this scene?", "Locked places need the correct key so the search remains safe and controlled."))
+        qas.append(QAItem("Why does a key matter in this scene?", "Locked places need the correct key so the search remains safe and controlled. Asking for access prevents the child from forcing a place open."))
     if world.spot.hazard == "height":
-        qas.append(QAItem("Why avoid standing on unstable edges?", "Unstable edges can cause a child to lose balance."))
+        qas.append(QAItem("Why avoid standing on unstable edges?", "Unstable edges can cause a child to lose balance. A safe method keeps the searcher's body stable while the object is recovered."))
     if world.spot.hazard == "water":
-        qas.append(QAItem("Why avoid wet corners for fragile items?", "Water can pull or damage objects that should stay dry and can shift footing."))
+        qas.append(QAItem("Why avoid wet corners for fragile items?", "Water can pull or damage objects that should stay dry and can shift footing. That makes both the item and the child part of the safety decision."))
     if world.spot.hazard == "dark":
-        qas.append(QAItem("Why did they use candle light?", "A small light helps locate objects in dark spots without forcing movement."))
+        qas.append(QAItem("Why did they use candle light?", "A small light helps locate objects in dark spots without forcing movement. Better visibility lowers the need to feel blindly around the clocktower."))
     if world.token.material in ("paper", "felt", "glass"):
         qas.append(QAItem(
             "What can happen to fragile materials?",
-            f"A {world.token.material} token can be damaged by wetness, pressure, or hard movement.",
+            f"A {world.token.material} token can be damaged by wetness, pressure, or hard movement. The search method should protect the material while bringing the object back.",
         ))
     return qas
 

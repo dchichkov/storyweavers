@@ -394,9 +394,21 @@ def human_reason(reason: str) -> str:
     return reason.replace("_", " ").replace("edge patio", "the edge patio").replace("foil", "foil kite")
 
 
+def alternative_action(hero: str, alternative: SafeAlternative) -> str:
+    return f"{hero} {alternative.phrase}"
+
+
+def covers_text(alternative: SafeAlternative) -> str:
+    if "all" in alternative.covers:
+        return "all active risks"
+    return ", ".join(human_reason(risk) for risk in alternative.covers)
+
+
 def generate(params: StoryParams) -> StorySample:
     world = build_world(params)
     subject, possessive, object_pronoun = _pronouns(params.gender)
+    hero_name = world.entities["hero"].name
+    risks_text = ", ".join(human_reason(risk) for risk in world.risks) if world.risks else "no active roof, wind, or kite risk"
 
     if world.can_fly:
         middle = _flight_plan(world, subject, possessive)
@@ -409,25 +421,57 @@ def generate(params: StoryParams) -> StorySample:
     world.story = f"{para1}\n\n{para2}\n\n{para3}"
 
     prompts = [
-        f"Write a safe rooftop story where {params.hero} makes this safe choice: {world.alternative.phrase}.",
+        f"Write a safe rooftop story where {params.hero} uses this safety plan: {world.alternative.phrase}.",
         f"The world has {world.location.phrase}, {world.wind.phrase}, and {world.kite.phrase}.",
         "Show safe decision-making in a child-focused setting.",
     ]
 
     story_qa = [
-        QAItem("What did the child want to do at first?", f"The child planned to fly {world.kite.phrase}."),
-        QAItem(f"Where did this happen?", f"It happened at {world.location.phrase}."),
-        QAItem("Was it safe to fly the kite in this setup?", "Yes, the wind, kite, and roof matched well enough for a controlled launch." if world.can_fly else "No. The wind, kite, or roof did not match safely, so the child chose a grounded alternative."),
-        QAItem("What was chosen as the safe alternative?", f"{world.entities['hero'].name} {world.alternative.phrase}."),
-        QAItem("Why was the alternative safe here?", f"{world.alternative.lesson} It kept the child away from the risky launch conditions."),
-        QAItem("What risk was explicitly identified by the decision?", f"The story identified that {human_reason(world.can_reason)}."),
+        QAItem(
+            "What did the child want to do at first?",
+            f"{hero_name} planned to fly {world.kite.phrase}. The story treats that wish seriously, but checks it against the roof, wind, and kite before allowing action.",
+        ),
+        QAItem(
+            "Where did this happen?",
+            f"It happened at {world.location.phrase}. That place matters because it has {world.location.description}, which changes how safe a launch can be.",
+        ),
+        QAItem(
+            "Was it safe to fly the kite in this setup?",
+            "Yes. The wind, kite, and roof matched well enough for a controlled launch, so the story still required distance and a planned handoff."
+            if world.can_fly
+            else "No. The wind, kite, or roof did not match safely, so the child chose a grounded alternative instead of forcing a launch.",
+        ),
+        QAItem(
+            "What was chosen as the safe alternative?",
+            f"{alternative_action(hero_name, world.alternative)}. The alternative fits the trace because it covers {covers_text(world.alternative)} while preserving a rooftop-sky activity.",
+        ),
+        QAItem(
+            "Why was the alternative safe here?",
+            f"{world.alternative.lesson} It kept the child away from the risky launch conditions while still answering the desire to play or observe.",
+        ),
+        QAItem(
+            "What risk was explicitly identified by the decision?",
+            f"The decision identified {human_reason(world.can_reason)} and active risks of {risks_text}. Naming those risks makes the safety choice grounded rather than a generic warning.",
+        ),
     ]
 
     world_qa = [
-        QAItem("Why can some rooftop spots be dangerous for kites?", "Edges and obstacles can turn wind tension into a fall or snag risk."),
-        QAItem("How do strong gusts affect kite play?", "They can create sudden pull and make line control harder."),
-        QAItem("What should adults do in edge-located kite situations?", "Add distance, clear footing, and direct supervision before any launch."),
-        QAItem("What is one safe alternative when conditions are unsafe?", "Choosing a grounded activity such as indoor building or observing from a sheltered place."),
+        QAItem(
+            "Why can some rooftop spots be dangerous for kites?",
+            "Edges and obstacles can turn wind tension into a fall or snag risk. A safe story has to reason about the place, not only whether the kite looks fun.",
+        ),
+        QAItem(
+            "How do strong gusts affect kite play?",
+            "They can create sudden pull and make line control harder. That suddenness is why gusty or stormy wind often pushes the story toward grounded alternatives.",
+        ),
+        QAItem(
+            "What should adults do in edge-located kite situations?",
+            "Adults should add distance, clear footing, and direct supervision before any launch. If those controls do not cover the active risk, the launch should be postponed.",
+        ),
+        QAItem(
+            "What is one safe alternative when conditions are unsafe?",
+            "A grounded activity such as indoor building or observing from a sheltered place can keep the kite interest alive. The important point is that the alternative must cover the same risk that stopped the launch.",
+        ),
     ]
 
     return StorySample(

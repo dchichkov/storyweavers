@@ -47,6 +47,13 @@ parse kernel ASTs into executable world frames, apply them to persistent state,
 then render narrative and QA from that state. Do not turn gen7 QA into
 post-processing over English prose when the frame/world trace can answer it.
 
+For standalone `storyworlds/` scripts, also follow [`storyworlds/AGENTS.md`](storyworlds/AGENTS.md):
+green constraints and grounded QA are not enough. Random samples should read
+like complete stories, with a clear premise, a state-driven turn, and an ending
+image that proves what changed. Treat `missing_beginning`, `missing_ending`,
+`event_log_prose`, `raw_fact_fragment`, `no_final_image`, and `weak_turn` as
+storytelling quality defects.
+
 Useful commands:
 
 ```bash

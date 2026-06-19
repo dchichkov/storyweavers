@@ -268,10 +268,14 @@ def predict_mess(world: World, actor: Entity, activity: Activity, prize_id: str)
 
 
 def introduce(world: World, hero: Entity) -> None:
-    traits = ", ".join(t for t in hero.traits[:2])
-    if traits:
-        traits = f"{traits} "
-    world.say(f"Once upon a time, there was {hero.pronoun('subject')} little {hero.type} named {hero.id}, and {hero.pronoun()} was {traits}curious.")
+    traits = []
+    for trait in hero.traits:
+        if trait not in traits:
+            traits.append(trait)
+    desc = " ".join(traits[:2])
+    if desc:
+        desc += " "
+    world.say(f"Once upon a time, there was a little {desc}{hero.type} named {hero.id}.")
 
 
 def loves_activity(world: World, hero: Entity, activity: Activity) -> None:
@@ -281,8 +285,11 @@ def loves_activity(world: World, hero: Entity, activity: Activity) -> None:
 
 
 def buys(world: World, parent: Entity, hero: Entity, prize: Entity) -> None:
+    new_phrase = prize.phrase
+    if not new_phrase.startswith(("a ", "an ", "the ")):
+        new_phrase = f"new {new_phrase}"
     world.say(
-        f"One day, {parent.id} bought {hero.pronoun('possessive')} new {prize.phrase} "
+        f"One day, {parent.label_word} bought {hero.pronoun('object')} {new_phrase} "
         f"for a special outing."
     )
 
@@ -300,7 +307,7 @@ def arrive(world: World, hero: Entity, parent: Entity) -> None:
     loc = "were in" if world.setting.indoor else "went to"
     storm = "One evening, " if world.weather else "One day, "
     world.say(
-        f"{storm}{hero.id} and {parent.id} {loc} {world.setting.place}."
+        f"{storm}{hero.id} and {hero.pronoun('possessive')} {parent.label_word} {loc} {world.setting.place}."
     )
 
 
@@ -317,10 +324,11 @@ def warn(world: World, parent: Entity, hero: Entity, activity: Activity, prize: 
         return False
     world.facts["predicted_soil"] = activity.soil
     world.facts["predicted_workload"] = pred["workload"]
-    clause = f"if you {activity.verb}, your {prize.label} will get {activity.soil}"
+    clause = f"If you {activity.verb}, your {prize.label} will get {activity.soil}"
+    clean_target = "them" if prize.plural else "it"
     if pred["workload"] >= THRESHOLD:
-        clause += f", and then {parent.id} will have to clean it."
-    world.say(f'"{clause}," said {parent.id}.')
+        clause += f", and then I will have to clean {clean_target}"
+    world.say(f'"{clause}," said {parent.label_word}.')
     return True
 
 
@@ -333,7 +341,7 @@ def grab_hand(world: World, parent: Entity, hero: Entity, activity: Activity) ->
     hero.memes["grabbed_by"] += 1
     propagate(world, narrate=False)
     world.say(
-        f'But {parent.id} grabbed {hero.pronoun("object")} by the hand and said, '
+        f'But {parent.label_word} held {hero.pronoun("object")} by the hand and said, '
         f'"This field can be wild. You need to resist the urge to {activity.verb} today."'
     )
 
@@ -383,7 +391,7 @@ def accept(world: World, parent: Entity, hero: Entity, gear_def: Gear) -> None:
     hero.memes["love"] += 1
     hero.memes["conflict"] = 0.0
     world.say(
-        f'"I like this better," {hero.id} said. {hero.pronoun().capitalize()} hugged {parent.id} and '
+        f'"I like this better," {hero.id} said. {hero.pronoun().capitalize()} hugged {parent.label_word} and '
         f'followed after they {gear_def.tail}.'
     )
 
@@ -400,7 +408,7 @@ def tell(setting: Setting, activity: Activity, prize_cfg: Prize, hero_name: str 
         traits=["curious"] + (hero_traits or ["brave"]),
     ))
     parent = world.add(Entity(
-        id="Parent" if parent_type == "mother" else "Guardian",
+        id=parent_type.capitalize(),
         kind="character",
         type=parent_type,
         label=f"the {parent_type}",
@@ -482,7 +490,7 @@ ACTIVITIES = {
         keyword="whispering storm",
         tags={"storm", "wet", "cold"},
     ),
-)
+}
 
 GEAR = [
     Gear(
@@ -547,16 +555,16 @@ class StoryParams:
 
 
 KNOWLEDGE = {
-    "ice": [("What is ice?", "Ice is water that has frozen and become hard and slippery when it gets very cold.")],
-    "slip": [("Why can ice make you fall?", "Ice is slippery, so feet can lose traction and you can slide or skid.")],
-    "wet": [("Why does wet clothing feel cold?", "Wet fabric lets heat escape from the body faster, which can make you feel chilled.")],
-    "storm": [("Why can a storm feel scary in the cold?", "Wind and fast-changing sounds can feel loud and sharp, so adults ask children to stay careful in a storm.")],
-    "cold": [("Why are storms colder on exposed fields?", "Cold air and wind carry heat away quickly when you are outside.")],
-    "field": [("Why does a field get slippery in winter?", "When snow and water freeze, the ground can become slick.")],
-    "boots": [("What are ice cleats for?", "They give your boots better grip so your feet are less likely to slip.")],
-    "wind_shell": [("Why wear a wind shell?", "A wind shell helps block wind and limits how quickly your body gets cold.")],
-    "waterproof_coat": [("Why can a waterproof coat help in a storm?", "It blocks a lot of wind and rain so your clothes stay drier and warmer.")],
-    "ice_cleats": [("How do ice cleats work?", "They create extra bite against ice and help a person keep their footing.")],
+    "ice": [("What is ice?", "Ice is water that has frozen and become hard and slippery when it gets very cold. In the story, ice turns running into a safety question rather than ordinary play.")],
+    "slip": [("Why can ice make you fall?", "Ice is slippery, so feet can lose traction and you can slide or skid. A safer plan adds grip or slows the child down before the activity continues.")],
+    "wet": [("Why does wet clothing feel cold?", "Wet fabric lets heat escape from the body faster, which can make you feel chilled. That is why the parent worries about clothing as well as behavior.")],
+    "storm": [("Why can a storm feel scary in the cold?", "Wind and fast-changing sounds can feel loud and sharp, so adults ask children to stay careful in a storm. The warning protects the child without ending the outing completely.")],
+    "cold": [("Why are storms colder on exposed fields?", "Cold air and wind carry heat away quickly when you are outside. Protective gear can make the same plan safer and more realistic.")],
+    "field": [("Why does a field get slippery in winter?", "When snow and water freeze, the ground can become slick. The world uses that condition to decide which compromise is honest.")],
+    "boots": [("What are ice cleats for?", "They give your boots better grip so your feet are less likely to slip. They solve the footing risk while still letting the child move.")],
+    "wind_shell": [("Why wear a wind shell?", "A wind shell helps block wind and limits how quickly your body gets cold. It turns a stormy activity into something the parent can allow safely.")],
+    "waterproof_coat": [("Why can a waterproof coat help in a storm?", "It blocks a lot of wind and rain so your clothes stay drier and warmer. The story treats that protection as part of the compromise, not just an accessory.")],
+    "ice_cleats": [("How do ice cleats work?", "They create extra bite against ice and help a person keep their footing. That directly answers the slippery-field risk in the world trace.")],
 }
 KNOWLEDGE_ORDER = ["ice", "slip", "wet", "storm", "cold", "field", "boots", "wind_shell", "waterproof_coat", "ice_cleats"]
 
@@ -567,7 +575,7 @@ def generation_prompts(world: World) -> list[str]:
     key = act.keyword or act.mess
     return [
         f'Write a tiny story with the words "{key}" and "syrup" about a child and a parent making a safe compromise.',
-        f"Tell a warm story where {hero.id} wants to {act.verb}, but {parent.id} worries about the new {prize.label} getting ruined.",
+        f"Tell a warm story where {hero.id} wants to {act.verb}, but {parent.label_word} worries about the new {prize.label} getting ruined.",
         f'Use a heartwarming "parent, warning, compromise, and resolution" arc for a child on {f["setting"].place}.',
     ]
 
@@ -576,34 +584,34 @@ def story_qa(world: World) -> list[QAItem]:
     f = world.facts
     hero, parent, act, prize = f["hero"], f["parent"], f["activity"], f["prize"]
     out: list[QAItem] = []
-    out.append(QAItem("Who is the story about?", f"{hero.id} and {parent.id}."))
-    out.append(QAItem(f"What did {hero.id} want to do?", f"{hero.id} wanted to {act.verb}."))
-    out.append(QAItem(f"Why was {hero.id} {hero.id} upset?", f"{hero.id} wanted to {act.verb} but still wanted to protect {hero.pronoun('possessive')} {prize.label}."))
+    out.append(QAItem("Who is the story about?", f"The story is about {hero.id}, the child who wants to play, and {parent.label_word}, the parent trying to keep the outing safe. Their relationship matters because the solution is a compromise, not a punishment."))
+    out.append(QAItem(f"What did {hero.id} want to do?", f"{hero.id} wanted to {act.verb}. The want is realistic because the setting affords that activity, but the weather and ground conditions make it risky without a fix."))
+    out.append(QAItem(f"Why was {hero.id} upset?", f"{hero.id} wanted to {act.verb} but still wanted to protect {hero.pronoun('possessive')} {prize.label}. That tension is why the warning first feels unfair and then becomes negotiable."))
 
     if f.get("warned"):
         soil = f.get("predicted_soil", "damage")
         work = f.get("predicted_workload", 0)
         why = (
-            f"{parent.id} warned that if {hero.id} went out, the {prize.label} would get {soil}. "
-            f"That would mean {parent.id} had more cleaning work" + (
+            f"{parent.label_word.capitalize()} warned that if {hero.id} went out, the {prize.label} would get {soil}. "
+            f"That would mean {parent.label_word} had more cleaning work" + (
                 ", so this mattered" if work >= THRESHOLD else "."
             )
         )
         if work >= THRESHOLD:
             why += "."
-        out.append(QAItem(f"Why did {parent.id} warn {hero.id}?", why))
+        out.append(QAItem(f"Why did {parent.label_word} warn {hero.id}?", why))
 
     if f.get("conflict"):
         out.append(QAItem(
             "What made the argument happen?",
-            f"{hero.id} tried to act before the warning was accepted, and {parent.id} grabbed {hero.pronoun('object')} to keep {hero.pronoun('object')} safe."
+            f"{hero.id} tried to act before the warning was accepted, and {parent.label_word} held {hero.pronoun('object')} to keep {hero.pronoun('object')} safe. The conflict starts because the child hears no, while the parent is responding to a concrete risk."
         ))
 
     if f.get("resolved"):
         gear = f["gear"]
         out.append(QAItem(
             "How was the problem solved?",
-            f"They agreed on a safer choice first: they {gear.prep if gear else 'used a safer plan'}, then did the activity safely."
+            f"They agreed on a safer choice first: they {gear.prep if gear else 'used a safer plan'}, then did the activity safely. The gear is not decorative; it protects the same body region or clothing item that the activity threatened."
         ))
         out.append(QAItem(
             f"How did {hero.id} feel at the end?",
@@ -692,11 +700,8 @@ def explain_gender(prize_id: str, gender: str) -> str:
 ASP_RULES = r"""
 valid(Place, Activity, Prize) :-
     affords(Place, Activity),
-    splash(Activity, Region),
-    worn_on(Prize, Region),
-    guards(gear(_, Activity), Mess),
-    mess_of(Activity, Mess),
-    at_risk(Activity, Prize).
+    at_risk(Activity, Prize),
+    has_fix(Activity, Prize).
 
 at_risk(Activity, Prize) :- splash(Activity, Region), worn_on(Prize, Region).
 has_fix(Activity, Prize) :-

@@ -335,26 +335,28 @@ def _prompts(world: World) -> list[str]:
 
 
 def _story_qa(world: World) -> list[QAItem]:
+    hero = world.params.hero
+    companion = world.params.companion
     return [
         QAItem(
             "Where is the child waiting?",
-            f"The child is waiting at {world.platform.phrase}.",
+            f"{hero} is waiting at {world.platform.phrase} with {companion}. The platform details matter because the safe action depends on its queue, staff access, and edge layout.",
         ),
         QAItem(
-            "What was risky in the scene?",
-            f"The risky situation involved {world.object.phrase}, which could lead to {world.object.danger}.",
+            "Why was patience necessary in the scene?",
+            f"The risky situation involved {world.object.phrase}, which could lead to {world.object.danger}. Patience gave {hero} time to choose a station-safe action instead of reacting to the delay or the crowd.",
         ),
         QAItem(
             "How did the child stay safe?",
-            f"The child chose to {world.action.phrase}. That moved the child away from the immediate risk and kept the waiting orderly.",
+            f"{hero} chose to {world.action.phrase}. That moved the child away from the immediate risk and kept the waiting orderly.",
         ),
         QAItem(
             "What changed by the end?",
-            "The child stayed in the safe waiting flow and waited for proper boarding time without panicking.",
+            f"{hero} stayed in the safe waiting flow and waited for proper boarding time without panicking. The story turns a frustrating delay into a practiced choice about where to stand and who to ask.",
         ),
         QAItem(
-            "What is the practical lesson?",
-            "Patience, plus choosing an allowed station-safe action, is how you stay safe in crowded transit spaces.",
+            "What should happen next if the platform gets busy again?",
+            f"{hero} should keep using allowed station choices such as {world.action.phrase} or another action listed for this platform. The lesson is that patience works best when it is paired with a concrete safe place or helper.",
         ),
     ]
 
@@ -370,11 +372,11 @@ def _world_qa(world: World) -> list[QAItem]:
         ),
         QAItem(
             "Why is this action compatible with the object?",
-            f"{obj.phrase.capitalize()} calls for a choice that creates distance and slows the child down. Compatible choices include {', '.join(ACTIONS[a].phrase for a in obj.compatible_actions)}.",
+            f"{obj.phrase.capitalize()} calls for a choice that creates distance and slows the child down. Compatible choices include {', '.join(ACTIONS[a].phrase for a in obj.compatible_actions)}, so the selected action is grounded in the object's danger.",
         ),
         QAItem(
             "What if a disallowed action had been used?",
-            "A disallowed action could increase crowd pressure, rush, or an unsafe approach near tracks or doors.",
+            "A disallowed action could increase crowd pressure, rush, or an unsafe approach near tracks or doors. The world gate prevents those combinations so the generated story stays realistic.",
         ),
         QAItem(
             f"Was {action.phrase} considered an explicit safe action?",

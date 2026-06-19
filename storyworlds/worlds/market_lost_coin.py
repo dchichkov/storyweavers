@@ -498,32 +498,32 @@ def story_qa(world: World) -> list[tuple[str, str]]:
     conflict = bool(world.facts.get("resolved"))
 
     qa: list[tuple[str, str]] = [
-        ("Who is the story about?", f"It is about {hero.id} and {hero.pronoun('possessive')} {parent.label_word} visiting {place}."),
+        ("Who is the story about?", f"It is about {hero.id} and {hero.pronoun('possessive')} {parent.label_word} visiting {place}. Their roles matter because the parent notices the coin risk before the child does."),
         (
             f"What did {hero.id} want to do at the market?",
-            f"{hero.id} wanted to {act.verb}.",
+            f"{hero.id} wanted to {act.verb}. That action is tempting in a busy market, but it also exposes the pocket where the coin is carried.",
         ),
         (
             "What is this story's central object?",
-            f"The key object was a {coin.label}.",
+            f"The key object was a {coin.label}. The coin drives the plot because losing it would change whether the visit can end with a treat.",
         ),
         (
             f"Why did {parent.label_word.capitalize()} warn {hero.id}?",
-            world.facts.get("risk_reason", f"{parent.label_word} did not think there was a risk."),
+            f"{world.facts.get('risk_reason', f'{parent.label_word} did not think there was a risk.')} The warning is tied to the world model's loss risk rather than a general dislike of playing.",
         ),
     ]
     if conflict:
         qa.append((
             "How did they avoid losing the coin?",
             f"They used the {world.facts['gear'].label if world.facts.get('gear') else 'coin pouch'} "
-            f"so the coin stayed safe while playing."
+            f"so the coin stayed safe while playing. The compromise protects the pocket region while still letting the child enjoy the market."
         ))
     if outcome == "safe":
         qa.append((f"How did {hero.id} finish the visit?",
-                   f"{hero.id} reached the candy stand, paid with the coin, and bought a sweet for the two of them to share."))
+                   f"{hero.id} reached the candy stand, paid with the coin, and bought a sweet for the two of them to share. The safe ending works because the coin stayed available for its purpose."))
     else:
         qa.append((f"What happened by the end of the market visit?",
-                   f"{hero.id} lost {hero.pronoun('possessive')} coin and could not buy anything."))
+                   f"{hero.id} lost {hero.pronoun('possessive')} coin and could not buy anything. That ending shows what the warning was trying to prevent."))
     return qa
 
 
@@ -725,40 +725,40 @@ WORLD_KNOWLEDGE: dict[str, list[tuple[str, str]]] = {
     "coin": [
         ("Why can a coin be lost in a crowd?",
          "A pocket can be jostled and the object can fall out if it is not held or "
-         "stored safely."),
+         "stored safely. The market world treats that as a physical loss risk, not a moral failure."),
         ("Why use a small purse for coins?",
          "A coin purse gives the coins a separate, closed space, so they are less "
-         "likely to fall out during movement."),
+         "likely to fall out during movement. It is a practical fix that lets the child keep exploring."),
     ],
     "pouch": [
         ("What is a coin purse?",
          "A coin purse is a tiny bag for small coins that keeps them from slipping "
-         "out of a pocket."),
+         "out of a pocket. In this story it turns the parent's warning into a workable compromise."),
     ],
     "market": [
         ("Why does a market feel crowded?",
          "Many people walk through market aisles at once, so people and carts "
-         "can squeeze close together."),
+         "can squeeze close together. That crowding explains why running or chasing makes the coin harder to protect."),
     ],
     "crowd": [
         ("What should you do in a crowded place if you need to keep something safe?",
-         "Walk at a slower pace and keep your hands or valuables close."
+         "Walk at a slower pace and keep your hands or valuables close. The safer pace keeps attention on both the path and the important object."
          ),
     ],
     "warning": [
         ("Why might grown-ups warn in crowds?",
          "Adults often warn to prevent avoidable accidents like losing money or running "
-         "into people."),
+         "into people. The warning is useful when it points to a specific safer action."),
     ],
     "activity": [
         ("Why is chasing things in busy places risky?",
          "Fast movement in dense spaces can cause collisions and make it harder to "
-         "keep small items from falling out."),
+         "keep small items from falling out. A story can still allow fun if it adds a protection step first."),
     ],
     "loss": [
         ("What should you do if you drop something important?",
          "Tell an adult right away and pause your activity while you both look for "
-         "it."),
+         "it. Stopping quickly makes recovery more likely because the search area stays small."),
     ],
 }
 

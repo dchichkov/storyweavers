@@ -266,35 +266,36 @@ def predict_mess(world: World, actor: Entity, activity: Activity, prize_id: str)
 
 
 def introduce(world: World, hero: Entity) -> None:
-    world.say(f"Once upon a time, there was {hero.pronoun('subject')} little {hero.type} named {hero.id}, who loved the riverbank.")
+    world.say(f"Once upon a time, there was a little {hero.type} named {hero.id}, who loved the riverbank.")
 
 
 def curious_about_snail(world: World, hero: Entity) -> None:
     hero.memes["love"] += 1
     world.say(
-        f"{hero.id} was curious and followed a tiny snail trail to a {hero.pronoun('possessive')} wonder."
+        f"{hero.id} was curious and followed a tiny snail trail toward a little wonder."
     )
 
 
 def setup_lamp(world: World, hero: Entity, prize: Entity) -> None:
     world.say(
-        f"{hero.id} carried {hero.pronoun('possessive')} fuzzy lamp on {hero.pronoun('possessive')} chest and loved it."
+        f"{hero.id} carried a fuzzy lamp close to {hero.pronoun('possessive')} {prize.label} and loved its warm glow."
     )
 
 
 def loves_and_wears(world: World, hero: Entity, prize: Entity) -> None:
     prize.worn_by = hero.id
-    world.say(f"{hero.id} wore the {prize.label} every day and was very proud of it.")
+    proud_target = "them" if prize.plural else "it"
+    world.say(f"{hero.id} wore the {prize.label} every day and was very proud of {proud_target}.")
 
 
 def arrive(world: World, hero: Entity, parent: Entity) -> None:
     day = "In the misty morning" if world.weather else "One morning"
-    world.say(f"{day}, {hero.id} and {parent.id} went to {world.setting.place}.")
+    world.say(f"{day}, {hero.id} and {hero.pronoun('possessive')} {parent.label_word} went to {world.setting.place}.")
 
 
 def wants_to_roll(world: World, hero: Entity, parent: Entity, activity: Activity) -> None:
     hero.memes["desire"] += 1
-    world.say(f"{hero.id} wanted to {activity.gerund} with the misty wagon.")
+    world.say(f"{hero.id} wanted to {activity.verb} with the misty wagon.")
 
 
 def warn(world: World, parent: Entity, hero: Entity, activity: Activity, prize: Entity) -> bool:
@@ -303,11 +304,12 @@ def warn(world: World, parent: Entity, hero: Entity, activity: Activity, prize: 
         return False
     world.facts["predicted_soil"] = activity.soil
     world.facts["predicted_workload"] = pred["workload"]
+    clean_target = "them" if prize.plural else "it"
     warning = (
-        f'"If you {activity.verb}, your {prize.label} will get {activity.soil}. '
-        f"I will have to clean it later."
+        f"If you {activity.verb}, your {prize.label} will get {activity.soil}. "
+        f"I will have to clean {clean_target} later."
     )
-    world.say(f"{parent.id} said, {warning}")
+    world.say(f'{parent.label_word.capitalize()} said, "{warning}"')
     return True
 
 
@@ -319,7 +321,7 @@ def defy(world: World, hero: Entity, activity: Activity) -> None:
 def grab_hand(world: World, hero: Entity, parent: Entity, activity: Activity) -> None:
     hero.memes["grabbed_by"] += 1
     propagate(world, narrate=False)
-    world.say(f'But {parent.id} held {hero.pronoun("object")} by the hand and said, "I said no. We can go slowly if safe."')
+    world.say(f'But {parent.label_word} held {hero.pronoun("object")} by the hand and said, "I said no. We can go slowly if safe."')
 
 
 def confusion(world: World, hero: Entity) -> None:
@@ -351,7 +353,7 @@ def compromise(world: World, hero: Entity, parent: Entity, activity: Activity, p
         del world.entities[offered.id]
         return None
     world.say(
-        f"{parent.id} said, \"Let's {gear.prep} and then we can walk the wagon path safely.\""
+        f"{parent.label_word.capitalize()} said, \"Let's {gear.prep} and then we can walk the wagon path safely.\""
     )
     return gear
 
@@ -360,17 +362,17 @@ def accept(world: World, hero: Entity, parent: Entity, gear: Gear) -> None:
     hero.memes["joy"] += 1
     hero.memes["conflict"] = 0.0
     world.say(
-        f"{hero.id} nodded, took a breath, and followed as they {gear.tail}."
+        f"{hero.id} nodded, took a breath, and followed {parent.label_word} as they {gear.tail}."
     )
     world.facts["resolved"] = True
 
 
-def final_triumph(world: World, hero: Entity) -> None:
+def final_triumph(world: World, hero: Entity, parent: Entity) -> None:
     if not world.facts.get("resolved"):
         world.say(f"In the end, {hero.id} listened and stayed careful, and both were proud.")
         return
     world.say(
-        f"Together {hero.pronoun('subject')} walked along the riverbank and found where the snail had started."
+        f"Together, {hero.id} and {parent.label_word} walked along the riverbank and found where the snail had started."
     )
     world.facts["resolved"] = True
 
@@ -405,7 +407,7 @@ def tell(setting: Setting, activity: Activity, prize_cfg: Prize, hero_name: str,
 
     introduce(world, hero)
     curious_about_snail(world, hero)
-    setup_lamp(world, hero)
+    setup_lamp(world, hero, prize)
     loves_and_wears(world, hero, prize)
 
     world.para()
@@ -421,9 +423,9 @@ def tell(setting: Setting, activity: Activity, prize_cfg: Prize, hero_name: str,
     gear = compromise(world, hero, parent, activity, prize)
     if gear:
         accept(world, hero, parent, gear)
-        final_triumph(world, hero)
+        final_triumph(world, hero, parent)
     else:
-        world.say(f"{hero.id} and {parent.id} stayed in a safer place and watched the river for a while.")
+        world.say(f"{hero.id} and {parent.label_word} stayed in a safer place and watched the river for a while.")
         world.facts["resolved"] = False
 
     world.facts["warned"] = warned
@@ -497,7 +499,7 @@ GEAR = [
         prep="pull on the windproof coat",
         tail="put on the windproof coat",
     ),
-)
+]
 
 PRIZES = {
     "boots": Prize("boots", "warm wool boots", "boots", "feet", plural=True),
@@ -562,18 +564,18 @@ class StoryParams:
 
 
 KNOWLEDGE = {
-    "wagon": [("What is a wagon used for?", "A wagon is a small cart on wheels used to carry things or roll along a path.")],
-    "mud": [("Why do boots get muddy?", "Mud is wet dirt. Walking on soft earth and puddles puts it onto shoes and socks.")],
-    "snail": [("How do snails move?", "Snails leave thin silver lines in damp places while slowly creeping forward.")],
-    "riverbank": [("What is a riverbank?", "A riverbank is the edge of a river. It can be soft and sometimes slippery.")],
-    "rusty": [("Why are metal parts rusty?", "Rusted metal has been damp and has slowly changed color from oxidation.")],
-    "lamp": [("Why might a lamp be useful in mist?", "A lamp helps people see better and feel safer when it is foggy.")],
-    "wet": [("Why get wet in mist?", "Mist can cling to fabric and make clothes feel cool and damp.")],
-    "boat": [("Why is caution important near water?", "Edges near water can be slippery and need careful footing.")],
-    "river": [("What makes riverbank mud slippery?", "When the ground is wet and compact, it can become slick.")],
-    "snug_jacket": [("How does a snug jacket help?", "It keeps wind off and helps keep a child dry for a while.")],
-    "windproof_coat": [("What is a windproof coat?", "It is a thick outer layer that reduces wind and spray.")],
-    "river_boots": [("What do boots do on a riverbank?", "Boots cover the feet and help a child keep balance in mud and wet ground.")],
+    "wagon": [("What is a wagon used for?", "A wagon is a small cart on wheels used to carry things or roll along a path. In this story, it gives the child a tempting action that still needs a safe route.")],
+    "mud": [("Why do boots get muddy?", "Mud is wet dirt. Walking on soft earth and puddles puts it onto shoes and socks, which is why the parent worries about cleaning.")],
+    "snail": [("How do snails move?", "Snails leave thin silver lines in damp places while slowly creeping forward. The trail gives the child something interesting to follow without inventing a new character.")],
+    "riverbank": [("What is a riverbank?", "A riverbank is the edge of a river. It can be soft and sometimes slippery, so the story treats quick movement there as risky.")],
+    "rusty": [("Why are metal parts rusty?", "Rusted metal has been damp and has slowly changed color from oxidation. That detail fits a misty or river setting where moisture matters.")],
+    "lamp": [("Why might a lamp be useful in mist?", "A lamp helps people see better and feel safer when it is foggy. It also keeps the story focused on careful movement instead of sudden running.")],
+    "wet": [("Why get wet in mist?", "Mist can cling to fabric and make clothes feel cool and damp. That gives the warning a concrete reason instead of making the parent seem unfair.")],
+    "boat": [("Why is caution important near water?", "Edges near water can be slippery and need careful footing. A child can still explore there, but the safe plan must slow the movement down.")],
+    "river": [("What makes riverbank mud slippery?", "When the ground is wet and compact, it can become slick. That is why boots or a slower path are useful in a riverbank scene.")],
+    "snug_jacket": [("How does a snug jacket help?", "It keeps wind off and helps keep a child dry for a while. In the compromise, it protects the thing the parent was worried about.")],
+    "windproof_coat": [("What is a windproof coat?", "It is a thick outer layer that reduces wind and spray. It makes outdoor play more realistic when the weather is misty or cold.")],
+    "river_boots": [("What do boots do on a riverbank?", "Boots cover the feet and help a child keep balance in mud and wet ground. They solve the practical risk without canceling the outing.")],
 }
 KNOWLEDGE_ORDER = ["wagon", "mud", "snail", "riverbank", "rusty", "lamp", "wet", "boat", "river", "snug_jacket", "windproof_coat", "river_boots"]
 
@@ -597,24 +599,32 @@ def story_qa(world: World) -> list[QAItem]:
     prize = f["prize"]
     act = f["activity"]
     out = [
-        QAItem("Who are the main characters?", f"{hero.id} and {parent.id}."),
-        QAItem("What did the parent warn about?", f"The parent warned that {prize.label} could get {act.soil}."),
+        QAItem(
+            "Who are the main characters?",
+            f"{hero.id} is the child who wants to keep exploring, and {parent.label_word} is the parent setting the safety boundary. Their disagreement drives the compromise rather than a simple yes-or-no ending.",
+        ),
+        QAItem(
+            "What did the parent warn about?",
+            f"The parent warned that the {prize.label} could get {act.soil}. That warning is grounded in the world trace because the activity affects the same region the prize protects or occupies.",
+        ),
     ]
     if f.get("warned"):
         soil = f.get("predicted_soil", "ruined")
         work = f.get("predicted_workload", 0)
         warn_reason = (
-            f"{parent.id} warned because if {hero.id} {act.verb}, the {prize.label} could get {soil}."
+            f"{parent.label_word.capitalize()} warned because if {hero.id} tried to {act.verb}, the {prize.label} could get {soil}."
         )
         if work >= THRESHOLD:
             warn_reason += " That would add extra cleanup work."
-        out.append(QAItem(f"Why did {parent.id} warn {hero.id}?", warn_reason))
+        out.append(QAItem(f"Why did {parent.label_word} warn {hero.id}?", warn_reason))
     if f.get("conflict"):
-        out.append(QAItem("How did conflict start?", f"{hero.id} tried to ignore the warning first, so {parent.id} held {hero.pronoun('object')} by the hand."))
+        out.append(QAItem("How did conflict start?", f"{hero.id} tried to ignore the warning first, so {parent.label_word} held {hero.pronoun('object')} by the hand. The conflict came from misunderstanding the warning as punishment rather than protection."))
     if f.get("resolved"):
-        out.append(QAItem("How was the argument resolved?", f"They used a compromise and then {hero.pronoun('subject')} could continue safely."))
+        gear = f.get("gear")
+        plan = gear.prep if gear is not None else "chose a slower plan"
+        out.append(QAItem("How was the argument resolved?", f"They agreed to {plan} as a compromise, and then {hero.pronoun('subject')} could continue safely. The ending preserves the child's goal while changing the conditions around the risky activity."))
     else:
-        out.append(QAItem("How was it resolved in the end?", "They did not ride far and stayed safe instead."))
+        out.append(QAItem("How was it resolved in the end?", "They did not ride far and stayed safe instead. The story closes by choosing restraint when the world has no grounded protective fix."))
     return out
 
 
@@ -732,7 +742,6 @@ def asp_valid_stories() -> list[tuple[str, str, str, str]]:
 
 
 def asp_verify() -> int:
-    from storyworlds import asp as aspmod
     py = set(valid_combos())
     clingo = set(asp_valid_combos())
     if py == clingo:

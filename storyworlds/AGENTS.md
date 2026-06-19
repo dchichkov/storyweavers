@@ -101,6 +101,10 @@ A finished script:
 
 - Runs with `python storyworlds/worlds/<name>.py` and prints a story close to
   the original, plus `--all`, `-n N --seed S`, and `--trace`.
+- Reads like a **complete story**, not a trace dump: it has a clear beginning
+  that states why this story is happening now, a middle turn where the simulated
+  state changes what the protagonist understands or chooses, and an ending that
+  pays off the premise with a changed world, relationship, or object state.
 - Derives prose from **simulated state**, not from one frozen paragraph. The
   parent's warning, the conflict, and the resolution all come from rules firing
   over entities — change a parameter and the consequences re-derive themselves.
@@ -108,6 +112,11 @@ A finished script:
   constraint layer. A weak argument that happens to appear in the source dataset
   (e.g. "a *jacket* will get wet → wear *rain boots*") must be rejected, not
   reproduced. Constraints keep generation inside the story's plausible domain.
+- Renders the world state with **storyteller prose**, not ledger prose. Avoid
+  dropping registry fragments directly into sentences (`using X's secret:
+  changed the seating chart`, `a clue pointing toward Y`). Use small rendering
+  helpers that turn facts into authored beats with rhythm, sensory texture, and
+  causality.
 
 ---
 
@@ -171,6 +180,11 @@ Identify, in plain words:
   an item, a person).
 - **The premise → tension → turn → resolution arc.** Most TinyStories tales are
   3 short paragraphs: setup, conflict, resolution.
+- **The beginning and ending contract:** why does the protagonist enter this
+  situation, what question or desire pulls the reader forward, and what final
+  image proves the world has changed? A valid ending is more than "state =
+  solved"; it should show what was restored, learned, forgiven, found, protected,
+  or released.
 - **The causal chains.** Write them as arrows. Split into two kinds:
   - *Physical:* `jump in puddles → wet → shoes wet & dirty → mother more work`.
   - *Emotional / memeplex:* `forbidden but wants it → defiance`,
@@ -395,6 +409,18 @@ phrasings (e.g. indoor "went to the playroom" → "were in the playroom", or a
 until a fresh batch is clean. (This is exactly how `puddles.py` gained the
 gender gate, the raincoat activity, and the honest sand model.)
 
+Also read for **storytelling shape**. Ask:
+
+- Does the first sentence give the reader a reason to care, or does it begin in
+  the middle of a scene with no premise?
+- Does the protagonist make a grounded choice or discovery, rather than merely
+  triggering the next logged event?
+- Does the ending answer the opening promise with a concrete final image?
+- Are generated facts rendered as natural story beats, not raw database labels
+  or colon-glued fragments?
+- Does the prose have a little rhythm and sensory continuity while staying
+  faithful to the world trace?
+
 ---
 
 ## Conventions & guardrails
@@ -430,6 +456,10 @@ gender gate, the raincoat activity, and the honest sand model.)
       `asp_facts()` reproduce the Python gate (and `outcome_of`, if any) exactly.
       This is the world's self-contained test — keep it green.
 - [ ] A fresh `-n 10` batch reads cleanly (pronouns, plurals, phrasing, logic).
+- [ ] At least a few random samples read as complete stories with beginning,
+      turn, and ending; not merely valid event sequences.
+- [ ] Renderer helpers turn facts/IDs/secrets into authored prose with sensory
+      detail and causal transitions.
 - [ ] `--trace` shows the consequence stayed counterfactual (state-driven prose).
 - [ ] `--qa` prints all three sets (prompts / story-grounded / world-knowledge),
       each derived from the simulated world rather than the rendered text.

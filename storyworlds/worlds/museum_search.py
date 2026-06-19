@@ -284,16 +284,16 @@ HELPERS = ("curator", "librarian", "guard", "parent", "older_brother")
 
 WORLD_KNOWLEDGE = {
     "ticket": [
-        QAItem("Why can paper items fail near moisture?", "Paper softens and tears when wet, so water should be avoided."),
+        QAItem("Why can paper items fail near moisture?", "Paper softens and tears when wet, so water should be avoided. A careful search protects the object as well as finding it."),
     ],
     "mask": [
-        QAItem("Why can paper masks be fragile in crowds?", "Paper masks crease or tear if pulled quickly by movement."),
+        QAItem("Why can paper masks be fragile in crowds?", "Paper masks crease or tear if pulled quickly by movement. That is why the search method should avoid jostling people or displays."),
     ],
     "coin_box": [
-        QAItem("Why can a small wood box be hard to recover?", "A small rigid object can fall into cracks and become hard to spot."),
+        QAItem("Why can a small wood box be hard to recover?", "A small rigid object can fall into cracks and become hard to spot. The finder needs a method that matches the hiding place rather than a fast grab."),
     ],
     "flash": [
-        QAItem("Why is good lighting useful in dark spots?", "Focused light makes small items easier to spot without feeling around blindly."),
+        QAItem("Why is good lighting useful in dark spots?", "Focused light makes small items easier to spot without feeling around blindly. It keeps the search safe because hands do not have to sweep through unknown spaces."),
     ],
 }
 
@@ -303,6 +303,24 @@ def _pronouns(gender: str) -> tuple[str, str, str]:
     if gender == "boy":
         return "he", "his", "him"
     return "she", "her", "her"
+
+
+def helper_phrase(helper: str) -> str:
+    words = helper.replace("_", " ")
+    family = {"parent", "older brother"}
+    if words in family:
+        return words
+    return f"the {words}"
+
+
+def sentence(text: str) -> str:
+    text = text.strip()
+    if not text:
+        return text
+    text = text[0].upper() + text[1:]
+    if text[-1] not in ".!?":
+        text += "."
+    return text
 
 
 def spot_where(phrase: str) -> str:
@@ -418,13 +436,14 @@ def generate(params: StoryParams) -> StorySample:
     world = build_world(params)
     apply_rules(world)
     subject, poss, obj_pron = _pronouns(params.gender)
-    helper = params.helper.replace("_", " ")
+    helper = helper_phrase(params.helper)
+    helper_subject = helper.capitalize()
     spot_location = spot_where(world.spot.phrase)
 
     child_intro = "a girl" if params.gender == "girl" else "a boy"
     story_lines = [
         f"Once upon a time, there was {child_intro} named {params.hero}.",
-        f"{params.hero} loved {world.lost_object.loved_for} and treasured {poss} {world.lost_object.phrase}.",
+        f"{params.hero} treasured {poss} {world.lost_object.phrase} because it reminded {obj_pron} of {world.lost_object.loved_for}.",
         f"One visit to {world.venue.phrase}, {params.hero} noticed the room smelled of {world.venue.atmosphere}.",
     ]
 
@@ -433,7 +452,7 @@ def generate(params: StoryParams) -> StorySample:
         f"{subject.capitalize()} remembered: {world.spot.clue}."
     )
     story_lines.append(
-        f"{subject.capitalize()} said quietly, \"Let's stay calm and do this the safe way.\" {helper.capitalize()} agreed "
+        f"{subject.capitalize()} said quietly, \"Let's stay calm and do this the safe way.\" {helper_subject} agreed "
         f"and explained that {spot_location} needed a {world.spot.need} approach."
     )
 
@@ -445,7 +464,7 @@ def generate(params: StoryParams) -> StorySample:
 
     para_three = [
         f"In a moment, {subject} found the {world.lost_object.phrase} {spot_location}.",
-        f"{helper} smiled, and {params.hero} learned to match method and place, especially when {obj_pron} loved things matter most.",
+        f"{helper_subject} smiled, and {params.hero} learned to match method and place, especially when things {subject} loves matter most.",
     ]
 
     world.story = "\n\n".join([" ".join(story_lines), " ".join(para_two), " ".join(para_three)])
@@ -458,19 +477,31 @@ def generate(params: StoryParams) -> StorySample:
     ]
 
     story_qa = [
-        QAItem("What was lost?", f"{params.hero} lost the {world.lost_object.phrase}."),
-        QAItem("Where was the search location?", f"In {world.venue.phrase}, specifically {spot_location}."),
-        QAItem("Which method was used?", f"They used {world.method.phrase}, because the spot needed a {world.spot.need} approach."),
-        QAItem("Why was this method safe?", world.facts["hazard_warning"]),
+        QAItem(
+            "What was lost?",
+            f"{params.hero} lost the {world.lost_object.phrase}. It mattered because the object reminded {obj_pron} of {world.lost_object.loved_for}, so the search had emotional weight as well as a practical goal.",
+        ),
+        QAItem(
+            "Where was the search location?",
+            f"The search happened in {world.venue.phrase}, specifically {spot_location}. That spot had a {world.spot.hazard} hazard, so the scene needed more care than simply looking around.",
+        ),
+        QAItem(
+            "Which method was used?",
+            f"They used {world.method.phrase}, because the spot needed a {world.spot.need} approach. The method is grounded in the world trace as the action that can solve this kind of place-specific problem.",
+        ),
+        QAItem(
+            "Why was this method safe?",
+            f"{sentence(world.facts['hazard_warning'])} It kept the search matched to the hazard instead of letting worry turn into rushing.",
+        ),
         QAItem(
             "What lesson is shown?",
-            f"The story shows that asking for help and using the right method for a place helps keep the search safe and calm.",
+            "The story shows that asking for help and using the right method for a place helps keep the search safe and calm. It also shows that caring about a lost object does not mean ignoring the room's rules.",
         ),
     ]
 
     world_qa = list(WORLD_KNOWLEDGE[params.lost_object])
     world_qa.append(
-        QAItem("Why can a crowd make quiet work hard?", "A lot of people makes small objects harder to track and increases sudden movement.")
+        QAItem("Why can a crowd make quiet work hard?", "A lot of people makes small objects harder to track and increases sudden movement. Slow, quiet searching protects both the child and the exhibits.")
     )
 
     return StorySample(

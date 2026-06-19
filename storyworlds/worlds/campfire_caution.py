@@ -334,14 +334,26 @@ def _story_qa(world: World) -> list[QAItem]:
     response = world.response
     setting = world.setting
     return [
-        QAItem("Who is in this story?", f"{hero}, {world.params.parent}, and a small campfire are at {setting.phrase}."),
-        QAItem("What was risky at first?", f"{hero} was about to handle {item.phrase}, which can be unsafe because {item.risk_note}."),
         QAItem(
-            "What did the child do instead?",
-            f"{hero} used the safer response: {response.phrase}.",
+            "Who is in this story?",
+            f"{hero} is the child near the campfire, and {world.params.parent} is the adult who helps control the risk. The setting is {setting.phrase}, where the fire changes what actions are safe.",
         ),
-        QAItem("What was the result?", f"{hero} moved {item.phrase} safely and kept the campfire moment safe."),
-        QAItem("What lesson does this teach?", response.lesson),
+        QAItem(
+            "Why was acting quickly not enough?",
+            f"{hero} was about to handle {item.phrase}, which can be unsafe because {item.risk_note}. Moving fast would make the danger harder to see before hands or clothing got too close.",
+        ),
+        QAItem(
+            "How did the safer response work?",
+            f"{hero} used {response.phrase}. That response fits the hazard because it follows the cue to {response.cue} instead of relying on bravery alone.",
+        ),
+        QAItem(
+            "What changed by the end?",
+            f"{hero} moved {item.phrase} safely and kept the campfire moment calm. The important change is that the child chose a method that solved {item.danger} rather than touching the risk directly.",
+        ),
+        QAItem(
+            "What practical lesson does this teach?",
+            f"{response.lesson} In this world, a safe campfire choice is specific to the object and the campsite, not a generic rule to grab things carefully.",
+        ),
     ]
 
 
@@ -349,17 +361,17 @@ def _world_qa(world: World) -> list[QAItem]:
     base = [
         QAItem(
             "Why is there a safe-response constraint?",
-            "Each campsite offers different tools and hazards, so only some responses are valid for each object.",
+            "Each campsite offers different tools and hazards, so only some responses are valid for each object. The constraint keeps the story from claiming that any tool can solve any fire danger.",
         ),
         QAItem(
             "Why does asking an adult always work?",
-            f"{RESPONSES['ask_adult'].phrase.capitalize()} keeps the risky hand-action under adult supervision and avoids heat exposure.",
+            f"{RESPONSES['ask_adult'].phrase.capitalize()} keeps the risky hand-action under adult supervision and avoids heat exposure. It is the broad fallback because an adult can choose whether to use distance, insulation, or no touch at all.",
         ),
     ]
     if world.item.danger == "steam":
-        base.append(QAItem("How do mitts help with steam hazards?", "They insulate the hands and reduce direct heat transfer from hot metal or steam."))
+        base.append(QAItem("How do mitts help with steam hazards?", "They insulate the hands and reduce direct heat transfer from hot metal or steam. The story still keeps the helper nearby, because protection works best when the motion is slow and deliberate."))
     if world.item.danger == "spark":
-        base.append(QAItem("Why is distance good for spark risks?", "Distance reduces accidental contact and limits how far burns and embers can travel onto skin."))
+        base.append(QAItem("Why is distance good for spark risks?", "Distance reduces accidental contact and limits how far burns and embers can travel onto skin. That is why rod-like or adult-guided responses fit spark cases better than bare hands."))
     return base
 
 

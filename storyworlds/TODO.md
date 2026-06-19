@@ -32,6 +32,21 @@
   quality defects in `harbor_search.py`, `market_lost_coin.py`, and
   `clocktower_search.py`. The rerun of the same deterministic 20-script random
   sweep completed with `20/20` scripts returning exit 0 under `--qa`.
+- 2026-06-18 all-world random QA pass: sampled all 55
+  `storyworlds/worlds/*.py` scripts once with `./.venv/bin/python <script> -n 1
+  --seed <seed> --qa`. Initial result was `53/55`; final rerun was `55/55`.
+  Fixed `crash` / `syntax_error` in `river_mist_quest.py` and
+  `whispering_field.py`, `bad_call_signature` and `bad_import_path` in
+  `river_mist_quest.py`, `asp_mismatch` in `whispering_field.py`, and
+  `bad_pronoun` / `wrong_focus` / `too_shallow` wording in `museum_search.py`,
+  `river_mist_quest.py`, and `whispering_field.py`.
+- 2026-06-18 QA-depth follow-up: expanded terse one-sentence answers into
+  grounded two-sentence responses in `beach_tide.py`, `campfire_caution.py`,
+  `library_rescue.py`, `train_station_wait.py`, `river_mist_quest.py`,
+  `whispering_field.py`, `museum_search.py`, `rooftop_kite.py`,
+  `market_lost_coin.py`, `icy_rusty_fence.py`, and `clocktower_search.py`.
+  Also fixed `library_rescue.py` helper/method drift where `ask_librarian`
+  could be narrated by a non-librarian helper.
 - Re-run a human sample review on the Spark worlds after each cleanup batch.
   The cleanup pass raised normal sampled robustness from `88/100` to `100/100`
   over seeds `0..9`; the final lightweight artifact scan reported
@@ -48,6 +63,21 @@
   `--qa` sample, and reports crash/artifact hints. Keep pronoun regexes as hints:
   the 2026-06-17 sweep flagged normal `his dad` / `her mom` phrases as false
   positives.
+- Promote the 2026-06-18 all-world sweep into that launcher or a saved command
+  so future passes can rerun the same seed stream and compare failure/artifact
+  counts. The only remaining scanner flag in the final sweep was a false
+  positive in `rusty_door_icy_pond.py` for "Touching or shaking them can...".
+- Remaining QA-depth backlog from the final 55-world sweep: `pirates.py`,
+  `puddles.py`, `bakery_kindness.py`, `crystal_river_hover.py`,
+  `mystery_spill.py`, `theater_prop.py`, `harbor_search.py`, `artroom.py`,
+  `cozy_bridge_lamp.py`, `forest_bridge.py`, and `snow_day_help.py` still have
+  sampled QA sets dominated by one-sentence answers or occasional short answers.
+- Add a storytelling-shape pass after QA-depth fixes. Sample random stories and
+  judge whether each has a beginning that explains why the story is happening,
+  a middle turn driven by simulated state, and an ending that pays off the
+  premise with a changed world/object/relationship. Track defects as
+  `missing_beginning`, `missing_ending`, `event_log_prose`,
+  `raw_fact_fragment`, `no_final_image`, and `weak_turn`.
 
 ## Readability pass findings
 
@@ -57,6 +87,22 @@
   worn before prediction in `icy_rusty_fence.py`, using registry keys rather than
   display phrases in `loud_street_bench_detective.py`, and adding the shared
   `phrase` field where renderers already depended on it.
+- 2026-06-18 pass: broad `--qa` sampling found that syntax/parity checks are
+  still worthwhile even after sampled robustness looks good. The highest-value
+  next quality layer is not more regexes but reading bland-yet-valid worlds for
+  emotional causality, especially worlds whose parent/child roles are rendered
+  as generic `mom` / `dad` labels and whose QA explains the fix without naming
+  the world-state cause.
+- 2026-06-18 QA-depth follow-up: a targeted 10-world, 3-seed sample improved
+  the touched cluster to `shortA=0` and `oneSent=0` for the sampled QA answers.
+  The useful pattern was to add a causal second sentence tied to the world trace
+  (`risk`, `method`, `gear`, `helper`, `location`, or `material`) rather than a
+  generic audit sentence.
+- 2026-06-18 storytelling follow-up from `haunted_feast_mystery.py`: validity
+  and atmosphere were not enough. A sampled story still felt incomplete until
+  the renderer stated the premise, gave Iris an investigative purpose, converted
+  raw secret/clue facts into authored beats, and ended with a concrete image of
+  the haunting resolved. Apply this same bar to future readability passes.
 - Fixed a cluster where role/name references broke emotional causality, especially
   parent/helper wording such as `his Milo`, object-pronoun hugs, and parent-role
   endings in market and snow-day stories.
@@ -71,6 +117,9 @@
   pass should add more sensory detail and emotional beats without weakening the
   constraint gates; good targets are `beach_tide.py`, `campfire_caution.py`,
   `library_rescue.py`, and `train_station_wait.py`.
+- Storytelling bar for that frontier: avoid prose that merely reports
+  `event -> clue -> method -> solved`. Prefer a reader-facing premise, textured
+  transitions, protagonist choice, and an ending image that proves what changed.
 - Treat regex-reported pronoun issues as review hints, not automatic failures:
   some matches are normal phrases such as `she said`, while others are real
   errors such as object pronouns used as subjects.

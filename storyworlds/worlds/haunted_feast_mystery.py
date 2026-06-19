@@ -108,7 +108,7 @@ ROOMS = {
 
 DISHES = {
     "pie": Dish("pie", "blackberry pie", "a silver button baked under the crust", "a vanished servant's coat"),
-    "soup": Dish("soup", "midnight soup", "three salt rings floating against the stir", "a promise broken before supper"),
+    "soup": Dish("soup", "midnight soup", "three salt rings floating in the stirred soup", "a promise broken before supper"),
     "bread": Dish("bread", "braided bread", "one braid tied into a tiny noose", "a guest who never reached the table"),
 }
 
@@ -123,6 +123,59 @@ METHODS = {
     "question": Method("question", "question the living suspect gently", "suspect", 2),
     "toast": Method("toast", "raise a toast to the missing guest", "ghost", 3),
 }
+
+
+def secret_sentence(suspect: Suspect) -> str:
+    name = sentence_start(suspect.name)
+    return {
+        "hid the last invitation": f"{name} had hidden the last invitation.",
+        "changed the seating chart": f"{name} had moved a name card before the first bell rang.",
+        "played the tune that summoned the dead": f"{name} had played the tune that called the dead to supper.",
+    }.get(suspect.secret, f"{suspect.name} knew that {suspect.secret}.")
+
+
+def sentence_start(text: str) -> str:
+    return text[:1].upper() + text[1:] if text else text
+
+
+def method_sentence(method: Method, suspect: Suspect) -> str:
+    if method.id == "match":
+        return (
+            "Iris set the clue beside the empty place and watched the pattern answer her. "
+            f"{secret_sentence(suspect)}"
+        )
+    if method.id == "question":
+        return (
+            f"Iris asked {suspect.name} one soft question, then another, until the room itself seemed to listen. "
+            f"{secret_sentence(suspect)}"
+        )
+    return (
+        "Iris lifted her glass to the chair no one had claimed and spoke the secret into the candlelight. "
+        f"{secret_sentence(suspect)}"
+    )
+
+
+def memory_sentence(memory: str) -> str:
+    return {
+        "a vanished servant's coat": "the vanished servant whose coat had been left behind",
+        "a promise broken before supper": "the promise broken before supper",
+        "a guest who never reached the table": "the guest who never reached the table",
+    }.get(memory, memory)
+
+
+def restored_detail(memory: str) -> str:
+    return {
+        "a vanished servant's coat": "a neat coat hung beside the servant's old chair",
+        "a promise broken before supper": "the broken promise was spoken aloud and forgiven",
+        "a guest who never reached the table": "the empty chair was finally drawn close to the table",
+    }.get(memory, "the old wrong was named and set right")
+
+
+def opening_sentence(room: Room) -> str:
+    return (
+        "Iris came to the old house because, once each year, it laid supper for someone no one remembered. "
+        f"This year the whispers led her to {room.name}."
+    )
 
 
 def valid_params(params: Params) -> tuple[bool, str]:
@@ -174,7 +227,7 @@ def foreshadow(world: FeastWorld) -> None:
     room = ROOMS[world.params.room]
     world.record(
         "foreshadow",
-        f"Before the feast appeared in {room.name}, {room.omen}.",
+        f"Long before midnight, {room.omen}.",
         "room",
         "sleuth",
         fear=room.fear,
@@ -187,7 +240,7 @@ def reveal_feast(world: FeastWorld) -> None:
     suspect = SUSPECTS[world.params.suspect]
     world.record(
         "feast",
-        f"At midnight the ghost feast set out {dish.name}, and {suspect.name} looked away too quickly.",
+        f"When midnight opened like a door, the ghost feast set out {dish.name}; across the table, {suspect.name} went still.",
         "feast",
         "suspect",
         clues=1,
@@ -197,9 +250,10 @@ def reveal_feast(world: FeastWorld) -> None:
 
 def inspect_clue(world: FeastWorld) -> None:
     dish = DISHES[world.params.dish]
+    clue_pronoun = "They" if dish.id == "soup" else "It"
     world.record(
         "clue",
-        f"Iris found {dish.clue}, a small clue pointing toward {dish.memory}.",
+        f"Iris found {dish.clue}. {clue_pronoun} pointed toward {memory_sentence(dish.memory)}.",
         "sleuth",
         "dish",
         clues=1,
@@ -211,8 +265,8 @@ def predict_if_wrong(world: FeastWorld) -> str:
     imagined = copy.deepcopy(world)
     imagined.meters["insight"] += METHODS[imagined.params.method].insight
     if imagined.meters["insight"] >= 3:
-        return "Iris saw that naming the right memory would let the chairs turn back toward the living."
-    return "Iris saw that guessing too soon would make every covered plate whisper a different false answer."
+        return "Iris felt the room waiting for one true memory, not a clever guess."
+    return "Iris knew that if she guessed too soon, every covered plate would whisper a different lie."
 
 
 def solve_mystery(world: FeastWorld) -> None:
@@ -225,7 +279,7 @@ def solve_mystery(world: FeastWorld) -> None:
         insight += 1
     world.record(
         "solve",
-        f"Iris chose to {method.name}, using {suspect.name}'s secret: {suspect.secret}.",
+        method_sentence(method, suspect),
         "sleuth",
         "suspect",
         insight=insight,
@@ -238,7 +292,7 @@ def settle_ghost(world: FeastWorld) -> None:
     if solved:
         world.record(
             "peace",
-            f"The missing guest understood the truth about {world.facts['answer']} and let the feast grow quiet.",
+            f"The missing guest heard the truth about {memory_sentence(str(world.facts['answer']))}. One by one, the whispering plates fell silent.",
             "ghost",
             "feast",
             peace=1,
@@ -257,8 +311,12 @@ def settle_ghost(world: FeastWorld) -> None:
 
 
 def render_story(world: FeastWorld, prediction: str) -> str:
+    room = ROOMS[world.params.room]
+    suspect = SUSPECTS[world.params.suspect]
+    answer = str(world.facts["answer"])
     parts = [
-        "Iris came to the old house for supper and found every place at the table waiting for a ghost.",
+        opening_sentence(room),
+        f"She arrived with a notebook in her coat pocket and found one extra place set at the table, though {suspect.name} would not say who it was for.",
         world.history[0].text,
         world.history[1].text,
         prediction,
@@ -267,9 +325,14 @@ def render_story(world: FeastWorld, prediction: str) -> str:
         world.history[4].text,
     ]
     if world.facts["ending"] == "solved":
-        parts.append("By dawn, the feast had become only a table, and the table no longer remembered hunger.")
+        parts.append(
+            f"By dawn, {restored_detail(answer)}. Iris stepped out into the pale morning, "
+            "and behind her the house kept only enough silence for the living."
+        )
     else:
-        parts.append("By dawn, Iris knew the mystery had named a direction, not yet the final truth.")
+        parts.append(
+            "By dawn, Iris had named only part of the truth. She left a candle burning and promised to return before the next midnight feast."
+        )
     return "\n".join(parts)
 
 
@@ -293,9 +356,13 @@ def generate(params: Params) -> StorySample:
     ]
     story_qa = [
         QAItem(
+            "Why did Iris come to the old house?",
+            f"Iris came because the old house was said to set supper for a forgotten guest once each year. This year's haunting led her to {ROOMS[params.room].name}, where the extra place setting began the mystery.",
+        ),
+        QAItem(
             "What clue helped solve the ghost feast?",
             f"The important clue was {world.facts['dish_clue']}. "
-            f"It pointed Iris toward {world.facts['answer']}, which is why the ghost could respond to the solution.",
+            f"It pointed Iris toward {memory_sentence(str(world.facts['answer']))}, which is why the ghost could respond to the solution.",
         ),
         QAItem(
             "How did the story foreshadow the mystery?",
@@ -311,7 +378,7 @@ def generate(params: Params) -> StorySample:
         ),
         QAItem(
             "Which suspect secret mattered?",
-            f"{world.entities['suspect'].name}'s secret mattered: {world.facts['secret']}. "
+            f"{secret_sentence(SUSPECTS[params.suspect])} "
             "That fact was stored before the solution event and used by the chosen method.",
         ),
     ]

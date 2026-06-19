@@ -442,23 +442,27 @@ def _story_qa(world: World) -> list[QAItem]:
     guardian = world.entities[world.params.guardian]
     item = world.item
     method = world.method
+    risk_label = item.risk.replace("_", " ")
     return [
-        QAItem("Who are the characters?", f"{hero.id} and {guardian.id} are at the beach."),
+        QAItem(
+            "Who are the characters?",
+            f"{hero.id} is the child making the retrieval choice, and {guardian.id} is the helper at the beach. Their roles matter because the safe plan keeps a responsible helper involved when the water changes.",
+        ),
         QAItem(
             f"What did {hero.id} see at the water line?",
-            f"{hero.id} saw {item.phrase} near {world.location.phrase}.",
+            f"{hero.id} saw {item.phrase} near {world.location.phrase}. The world state marks that object with a {risk_label} risk, so it was not just a simple reach-and-grab moment.",
         ),
         QAItem(
-            "What was risky about the situation?",
-            f"The object was in moving water, and the tide was {world.tide.phrase}, which changed the safety of approach.",
+            "Why was rushing unsafe?",
+            f"The object was in moving water, and the tide was {world.tide.phrase}, which changed the safety of the approach. Rushing would ignore both the place constraint and the object risk.",
         ),
         QAItem(
-            "What safe retrieval method was used?",
-            f"{hero.id} used {method.phrase}, which matched the tide, place, and object risk.",
+            "How did the safe method solve the exact risk?",
+            f"{hero.id} used {method.phrase}, which matched the tide, place, and object risk. That method works here because it solves {risk_label} without asking the child to move into the most dangerous part of the waterline.",
         ),
         QAItem(
-            "What was the outcome?",
-            f"{item.phrase.capitalize()} was recovered safely, and everyone stayed on safer footing instead of rushing into the water.",
+            "What changed by the end?",
+            f"{item.phrase.capitalize()} was recovered safely, and everyone stayed on safer footing instead of rushing into the water. The lesson shifted from wanting the object quickly to choosing timing, distance, or help.",
         ),
     ]
 
@@ -467,19 +471,19 @@ def _world_qa(world: World) -> list[QAItem]:
     base = [
         QAItem(
             "Why do method constraints depend on tide?",
-            "Different tides change water force and reach, so the same action can be safe at low tide but unsafe at high tide.",
+            "Different tides change water force and reach, so the same action can be safe at low tide but unsafe at high tide. The compatibility gate keeps methods from being used when the tide state would make them unrealistic.",
         ),
         QAItem(
             "Why is asking for help considered safe in this world?",
-            "A helper can stay farther from hazards while keeping the risky action controlled and visible.",
+            "A helper can stay farther from hazards while keeping the risky action controlled and visible. That is why help remains valid even when direct child action is restricted by tide or location.",
         ),
     ]
     if world.tide.key in {"rising", "high"}:
-        base.append(QAItem("Which retrieval style is usually avoided at these tides?", "Short solo or deep wading is avoided when the tide is rising or high."))
+        base.append(QAItem("Which retrieval style is usually avoided at these tides?", "Short solo or deep wading is avoided when the tide is rising or high. Those choices put the child closer to water that is moving outward or pressing against the shore."))
     if world.item.risk == "strong_current":
-        base.append(QAItem("Why was this object restricted to careful retrieval?", "A strong current can pull objects and people faster than expected."))
+        base.append(QAItem("Why was this object restricted to careful retrieval?", "A strong current can pull objects and people faster than expected. The answer must stay focused on controlled help or waiting, because the world trace marks the object with that current risk."))
     if world.item.risk == "rock_snag":
-        base.append(QAItem("Why is distance important near rocks?", "Distance prevents hands from being pulled into snag points around uneven rock surfaces."))
+        base.append(QAItem("Why is distance important near rocks?", "Distance prevents hands from being pulled into snag points around uneven rock surfaces. It also gives the helper time to adjust the method before the object catches again."))
     return base
 
 
