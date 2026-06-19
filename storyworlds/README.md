@@ -70,6 +70,24 @@ Omit `--dry-run` to launch the SDK job. Defaults are conservative:
 The generated prompt asks Codex to create exactly
 `storyworlds/worlds/<name>.py`, run `--verify`, sample 10 `--qa` stories, check
 JSON output, and finish with `git diff --check`.
+The helper uses `thread.turn(...).stream()` rather than the convenience
+`thread.run(...)`, so long SDK jobs print their thread id, turn id, item
+completions, token updates, and final status while they run.
+
+For an extra-safe trial, isolate the Codex sqlite runtime state instead of
+letting the SDK write to the normal `~/.codex/sqlite` directory:
+
+```bash
+./.venv/bin/python storyworlds/codex_world_factory.py moonlit_library_key \
+  --words moonlit library key --features search kindness mystery \
+  --codex-home /private/tmp/storyweavers-codex-home \
+  --timeout-seconds 600
+```
+
+This still lets Codex read the normal auth/configuration, but keeps generated
+thread/state databases under the supplied temp directory. Add
+`--isolate-codex-home` only if you also want to point `CODEX_HOME` itself at the
+temp directory; that mode needs separate authentication/configuration.
 
 ## Review and Cleanup Notes
 
