@@ -261,7 +261,7 @@ METHODS: dict[str, SearchMethod] = {
     ),
     "ask_helper": SearchMethod(
         "ask_helper",
-        "asking a kind helper",
+        "help from a kind helper",
         "asked a person they trusted to check nearby places",
         ("ask",),
     ),
@@ -436,14 +436,18 @@ def apply_rules(world: World) -> None:
 
 def predict_risk(world: World) -> str:
     if world.spot.hazard == "water":
-        return "water can make reaching and lifting dangerous"
+        return "Water can make reaching and lifting dangerous"
     if world.spot.hazard == "locked":
-        return "locked spots need the right access and calm"
+        return "Locked spots need the right access and calm"
     if world.spot.hazard == "height":
-        return "a child could fall without support"
+        return "A child could fall without support"
     if world.spot.hazard == "dark":
-        return "dark places can hide the object and make movement uncertain"
-    return "crowds can make a child bump into moving objects"
+        return "Dark places can hide the object and make movement uncertain"
+    return "Crowds can make a child bump into moving objects"
+
+
+def need_word(need: str) -> str:
+    return {"ask": "helper", "height": "high-place", "dark": "dark-place"}.get(need, need)
 
 
 def generate(params: StoryParams) -> StorySample:
@@ -454,7 +458,7 @@ def generate(params: StoryParams) -> StorySample:
 
     story = [
         f"{params.hero} walked through {world.district.phrase} during the festival, holding {possessive} {world.lost_object.phrase}.",
-        f"When the music shifted and the whistles blew, the object was gone. {params.hero} heard only {world.spot.clue} in memory, and {params.hero.split()[0] if ' ' in params.hero else params.hero} froze.",
+        f"When the music shifted and the whistles blew, the {world.lost_object.phrase} was gone. {params.hero} heard only {world.spot.clue} in memory, and {params.hero.split()[0] if ' ' in params.hero else params.hero} stood very still.",
     ]
 
     helping = pronouns(params.gender)[2]
@@ -464,12 +468,12 @@ def generate(params: StoryParams) -> StorySample:
     )
 
     story.append(
-        f"They searched with {world.method.phrase}. {params.hero} {world.method.action}, "
-        f"and {predict_risk(world)}. {params.hero.split()[0] if ' ' in params.hero else params.hero}'s {world.lost_object.phrase} ended up {world.spot.phrase}."
+        f"They chose the right method: {world.method.phrase}. {params.hero} {world.method.action}. "
+        f"{predict_risk(world)}. At last, {params.hero.split()[0] if ' ' in params.hero else params.hero}'s {world.lost_object.phrase} was waiting {world.spot.phrase}."
     )
 
     end = (
-        f"{params.hero} held {possessive} {world.lost_object.phrase} at heart and laughed when it was returned. "
+        f"{params.hero} held {possessive} {world.lost_object.phrase} against {possessive} heart and laughed when the festival lights came back into focus. "
         f"The mystery taught {helping} to pause, ask for help, and match the right method to the right place."
     )
     story.append(end)
@@ -496,11 +500,11 @@ def generation_prompts(world: World) -> list[str]:
 def story_qa(world: World) -> list[QAItem]:
     hero_obj = world.params.hero
     return [
-        QAItem("What was lost?", f"The story says {hero_obj} lost {world.lost_object.phrase}."),
+        QAItem("What was lost?", f"The story says {hero_obj} lost {world.lost_object.phrase}. That object matters because the whole search begins when the festival noise hides where it went."),
         QAItem("Where did the clue point?", f"The clue was {world.spot.clue}. That pointed to the area described as {world.spot.phrase}."),
-        QAItem("Why was a careful method needed?", f"Because the place had a {world.spot.need} requirement and was {world.spot.hazard}. Running a rushed method could make the search dangerous."),
-        QAItem("How was the object found?", f"They used {world.method.phrase}, because it matched a {world.spot.need} search in the area described as {world.spot.phrase}."),
-        QAItem("What lesson did the festival mystery teach?", "It showed that listening to clues, using the right tool, and asking for help can solve a problem safely and calmly."),
+        QAItem("Why was a careful method needed?", f"Because the place needed a {need_word(world.spot.need)} approach and had a {world.spot.hazard} hazard. Running a rushed method could make the search dangerous."),
+        QAItem("How was the object found?", f"They used {world.method.phrase}, because it matched the {need_word(world.spot.need)} search in the area described as {world.spot.phrase}. The recovery follows the clue trail instead of arriving by chance."),
+        QAItem("What lesson did the festival mystery teach?", "It showed that listening to clues, using the right tool, and asking for help can solve a problem safely and calmly. The ending proves the lesson because the lost object comes back without anyone rushing into the hazard."),
     ]
 
 
@@ -509,7 +513,7 @@ def world_knowledge_qa(world: World) -> list[QAItem]:
     qas = [
         QAItem("Why can crowded places make searches harder?", "Crowds make it easy to lose sight of small details. Calm, slower steps keep the search safer and clearer."),
         QAItem("Why is asking a helper useful?", "Helpers can remember details and physically assist in places children should not reach alone."),
-        QAItem("Why does this story stress matching method to place?", f"Different places need different actions. Here, the place required a {world.spot.need} action, and {world.method.phrase} was chosen."),
+        QAItem("Why does this story stress matching method to place?", f"Different places need different actions. Here, the place required a {need_word(world.spot.need)} approach, and {world.method.phrase} was chosen."),
     ]
     if world.spot.hazard == "water":
         qas.append(QAItem("Why are water spots treated carefully?", "Water moves objects and footing fast, so safe retrieval is important to avoid loss or harm."))
@@ -581,7 +585,7 @@ def format_qa(sample: StorySample) -> str:
     lines = ["", "== (1) Generation prompts -- asks that would produce this story =="]
     lines.extend(f"{i}. {prompt}" for i, prompt in enumerate(sample.prompts, 1))
     lines.append("")
-    lines.append("== (2) Story questions -- answerable from the story/world trace ==")
+    lines.append("== (2) Story questions -- answerable from the story details ==")
     for qa in sample.story_qa:
         lines.append(f"Q: {qa.question}")
         lines.append(f"A: {qa.answer}")

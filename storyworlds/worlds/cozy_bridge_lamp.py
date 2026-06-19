@@ -288,7 +288,7 @@ def loves_activity(world: World, hero: Entity, activity: Activity, prize: Prize)
         f"{hero.id} loved making a tiny rainbow with a twinkling lamp and "
         f"kept dreaming of {activity.gerund} to get home in style."
     )
-    world.say(f"{hero.id} also cared a lot about {hero.pronoun('possessive')} new {prize.label}.")
+    world.say(f"{hero.id} also cared a lot about {hero.pronoun('possessive')} {prize.label}.")
 
 
 def give_prize(world: World, parent: Entity, hero: Entity, prize: Entity) -> None:
@@ -323,23 +323,24 @@ def warn(world: World, parent: Entity, hero: Entity, activity: Activity, prize: 
     world.facts["predicted_soil"] = activity.soil
     world.facts["predicted_workload"] = pred["workload"]
     prize_subject = "they" if prize.plural else "it"
-    world.say(
-        f'"If we hurry, we might spill everything and {prize_subject} would get {activity.soil}," '
-        f"{hero.pronoun('possessive')} {parent.label_word} said."
-    )
+    if activity.mess == "slip":
+        warning = "If we hurry across wet stones, we might slip before we reach the lamp"
+    else:
+        warning = f"If we hurry across wet stones, we might slip or spill, and {prize_subject} would get {activity.soil}"
+    world.say(f'"{warning}," {hero.pronoun("possessive")} {parent.label_word} said.')
     return True
 
 
 def defies(world: World, hero: Entity, activity: Activity) -> None:
     hero.memes["defiance"] += 1
-    world.say(f"{hero.id} said no, then tried to {activity.rush}.")
+    world.say(f"{hero.id} shook {hero.pronoun('possessive')} head, then tried to {activity.rush}.")
 
 
 def grab_hand(world: World, parent: Entity, hero: Entity, activity: Activity) -> None:
     hero.memes["grabbed_by"] += 1
     propagate(world, narrate=False)
     world.say(
-        f"{parent.pronoun('subject').capitalize()} held {hero.pronoun('object')} by the hand. "
+        f"{hero.pronoun('possessive').capitalize()} {parent.label_word} held {hero.pronoun('object')} by the hand. "
         f'"Let us do this together and stay safe."'
     )
 
@@ -370,7 +371,7 @@ def compromise(world: World, parent: Entity, hero: Entity, activity: Activity, p
     ))
     if not predict_mess(world, hero, activity, prize.id)["soiled"]:
         world.say(
-            f'"Good idea," {parent.pronoun("subject")} said. '
+            f'"Good idea," {hero.pronoun("possessive")} {parent.label_word} said. '
             f'"Let us {gear_def.prep} and then {activity.verb} as a team."'
         )
         return gear_def
@@ -611,7 +612,7 @@ def story_qa(world: World) -> list[tuple[str, str]]:
         (f"What did {hero.id} want to do at the cozy bridge?",
          f"{hero.id} wanted to {act.verb}."),
         (f"What item did {hero.id} care about the most?",
-         f"It was {hero.pronoun('possessive')} new {prize.label}, and {hero.pronoun('subject')} wanted {prize.it} to stay clean."),
+         f"It was {hero.pronoun('possessive')} {prize.label}, and {hero.pronoun('subject')} wanted {prize.it} to stay clean."),
     ]
     if f.get("conflict"):
         why = (
@@ -624,11 +625,12 @@ def story_qa(world: World) -> list[tuple[str, str]]:
         g = f["gear"]
         qa.append((
             "How did they make it work?",
-            f"They chose {g.label} and crossed together, so the plan worked without the feared spill."
+            f"They chose {g.label} and crossed together, so the plan worked without the feared spill. "
+            f"Moving as a team let the lamp and flower stay part of the happy ending."
         ))
         qa.append((
             f"What lesson does the story teach {hero.id} and the readers?",
-            "When a place is risky, teamwork and safer choices prevent trouble."
+            "When a place is risky, teamwork and safer choices prevent trouble. The story shows that careful help can keep play from turning into a mess."
         ))
     return qa
 

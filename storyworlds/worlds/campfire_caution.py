@@ -291,7 +291,7 @@ def _render_story(world: World) -> str:
         f"{setting.warning.capitalize()}."
     )
     temptation = (
-        f"{hero.id} wanted to act quickly and reached for the object before thinking."
+        f"{hero.id} wanted to fix it quickly and reached toward {item.phrase} before thinking."
     )
     warning = (
         f'{parent.id} noticed and said, "Hold on. {item.phrase.capitalize()} near the fire can be '
@@ -314,7 +314,8 @@ def _render_story(world: World) -> str:
     )
     lesson = (
         f'The lesson was clear: "{response.lesson}" '
-        f"{hero.id} understood that caution is not the end of adventure; it is how adventures stay safe."
+        f"The fire settled back into its ring, and {hero.id} understood that caution is not the end of adventure; "
+        "it is how adventures stay safe."
     )
 
     return "\n\n".join([opening, temptation, warning, action, outcome, lesson])
@@ -348,7 +349,7 @@ def _story_qa(world: World) -> list[QAItem]:
         ),
         QAItem(
             "What changed by the end?",
-            f"{hero} moved {item.phrase} safely and kept the campfire moment calm. The important change is that the child chose a method that solved {item.danger} rather than touching the risk directly.",
+            f"The risky moment around {item.phrase} became calm again, and the campfire stayed contained. The important change is that {hero} chose a method that solved {item.danger} rather than touching the risk directly.",
         ),
         QAItem(
             "What practical lesson does this teach?",

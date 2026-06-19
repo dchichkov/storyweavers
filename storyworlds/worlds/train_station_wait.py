@@ -301,8 +301,8 @@ def _render_story(world: World) -> str:
     companion = world.entities[params.companion]
 
     opening = (
-        f"{hero.name} arrived at {platform.phrase} and found the train delayed again. "
-        f"The station display showed crowded movement, and the platform felt rushed."
+        f"{hero.name} arrived at {platform.phrase} with {companion.name} and found the train delayed again. "
+        f"The station display blinked above the crowd, and the platform felt rushed."
     )
     observation = (
         f"At {platform.queue}, {hero.name} noticed {station_object.phrase}. "
@@ -321,7 +321,10 @@ def _render_story(world: World) -> str:
         object=station_object.phrase,
         action=action.phrase,
     )
-    lesson = f"{action.lesson_line} {hero.name} remembered: {station_object.lesson_hint}."
+    lesson = (
+        f"{action.lesson_line} When the train finally sighed into the station, {hero.name} was already "
+        f"in the right place and remembered: {station_object.lesson_hint}."
+    )
 
     return "\n\n".join([opening, observation, action_line, result_line, lesson])
 
@@ -352,7 +355,7 @@ def _story_qa(world: World) -> list[QAItem]:
         ),
         QAItem(
             "What changed by the end?",
-            f"{hero} stayed in the safe waiting flow and waited for proper boarding time without panicking. The story turns a frustrating delay into a practiced choice about where to stand and who to ask.",
+            f"{hero} stayed in the safe waiting flow and waited for proper boarding time without panicking. The ending turns a frustrating delay into a visible choice: stand in the right place before the train arrives.",
         ),
         QAItem(
             "What should happen next if the platform gets busy again?",
@@ -367,16 +370,16 @@ def _world_qa(world: World) -> list[QAItem]:
     action = world.action
     return [
         QAItem(
-            "Why is action choice constrained at this platform?",
+            "Why do safe choices depend on the platform?",
             f"Each platform has different safe choices because its crowding, staff access, and edge layout are different. At {platform.phrase}, calm choices include {', '.join(ACTIONS[a].phrase for a in platform.allowed_actions)}.",
         ),
         QAItem(
             "Why is this action compatible with the object?",
-            f"{obj.phrase.capitalize()} calls for a choice that creates distance and slows the child down. Compatible choices include {', '.join(ACTIONS[a].phrase for a in obj.compatible_actions)}, so the selected action is grounded in the object's danger.",
+            f"{obj.phrase.capitalize()} calls for a choice that creates distance and slows the child down. Good choices include {', '.join(ACTIONS[a].phrase for a in obj.compatible_actions)}, so the selected action is grounded in the danger.",
         ),
         QAItem(
             "What if a disallowed action had been used?",
-            "A disallowed action could increase crowd pressure, rush, or an unsafe approach near tracks or doors. The world gate prevents those combinations so the generated story stays realistic.",
+            "A disallowed action could increase crowd pressure, rushing, or an unsafe approach near tracks or doors. The constraint prevents those combinations so the generated story stays realistic.",
         ),
         QAItem(
             f"Was {action.phrase} considered an explicit safe action?",

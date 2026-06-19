@@ -311,7 +311,7 @@ def compromise(world: World, hero: Entity, mentor: Entity, thing_cfg: GardenThin
 
 def moral(world: World, hero: Entity, thing_cfg: GardenThing) -> None:
     world.say(
-        f"{hero.id} learned that kindness can make a garden sparkle brighter than taking."
+        f"{hero.id} watched the sparkle stay where it belonged. The garden seemed brighter because kindness had left room for everyone."
     )
 
 
@@ -486,7 +486,7 @@ def story_qa(world: World) -> list[tuple[str, str]]:
         ("How did they solve the problem?",
          f"They chose to {plan.offer}. That let {hero.id} enjoy the sparkle while leaving the {thing.label} for {dependent.label}."),
         (f"What did {hero.id} learn?",
-         f"{hero.id} learned that kindness can make a garden feel brighter than keeping a shiny thing."),
+         f"{hero.id} learned that kindness can make a garden feel brighter than keeping a shiny thing. The ending shows that lesson by leaving the useful sparkle in place for the creature that needed it."),
     ]
 
 

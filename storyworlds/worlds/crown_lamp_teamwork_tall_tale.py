@@ -266,7 +266,7 @@ def predict_truth(world: World) -> dict:
 
 def introduce(world: World, hero: Entity, partner: Entity, crown: Crown, lamp: Lamp) -> None:
     world.say(
-        f"At {world.fair.place}, {world.fair.opening}, {hero.id} and {partner.id} "
+        f"At {world.fair.place}, {world.fair.opening}. {hero.id} and {partner.id} "
         f"were in charge of guarding {crown.phrase}."
     )
     world.say(
@@ -424,7 +424,7 @@ SURFACES = {
 PLANS = {
     "move_lamp": Plan("move_lamp", "move the lamp", {"sparkle", "shadow"},
                       "hold the crown still", "move the lamp one inch at a time",
-                      "When the lamp moved, the giant sign moved too.",
+                      "When the lamp moved, the wild shape moved too.",
                       {"teamwork", "lamp"}),
     "cover_crown": Plan("cover_crown", "cover the crown", {"sparkle", "shadow"},
                         "cover the crown with a napkin", "watch the wall and window",

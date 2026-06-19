@@ -451,7 +451,7 @@ def predict_risk(world: World) -> str:
         return "Water can tug a small object from safe reach"
     if world.spot.hazard == "dark":
         return "Dim places can hide the bell and make footing unsure"
-    return "crowds and movement can hide quiet sounds and small objects"
+    return "Crowds and movement can hide quiet sounds and small objects"
 
 
 def tokenized_flashback(world: World) -> str:
@@ -461,28 +461,28 @@ def tokenized_flashback(world: World) -> str:
 def generate(params: StoryParams) -> StorySample:
     world = build_world(params)
     apply_rules(world)
-    subject, possessive, _ = pronouns(params.gender)
+    subject, possessive, object_pronoun = pronouns(params.gender)
     helper = params.helper.replace("_", " ").title()
 
     opening = (
-        f"{params.hero} stood at {world.venue.phrase} as evening bells rang. "
-        f"{params.hero} carried {possessive} {world.token.phrase} while {subject} kept watch on the crowd."
+        f"{params.hero} stood at {world.venue.phrase} as the evening bells began to ring. "
+        f"{params.hero} carried {possessive} {world.token.phrase} close, because the crowd was bright and busy around {object_pronoun}."
     )
     disappearance = (
-        f"When one final tone rang, {params.hero} looked down and found the {world.token.phrase} missing. "
-        f"In memory, {params.hero} heard this sound: \"{world.spot.clue}\"."
+        f"When one final tone faded, {params.hero} looked down and found the {world.token.phrase} missing. "
+        f"Only one sound stayed in memory: \"{world.spot.clue}.\""
     )
     helper_line = (
         f'\"{helper},\" {params.hero} said, \"we can still find it.\" '
-        f'{helper} smiled and pointed out the flashback: {tokenized_flashback(world)}.'
+        f'{helper} knelt beside {params.hero} and helped read the moment backward: {tokenized_flashback(world)}.'
     )
     search = (
-        f"They used {world.method.phrase}. {params.hero} {world.method.action}. "
-        f"{predict_risk(world)}. {params.hero} found the {world.token.phrase} {world.spot.phrase}."
+        f"They chose {world.method.phrase}. {params.hero} {world.method.action}. "
+        f"{predict_risk(world)}. Then the clue gave way: the {world.token.phrase} was waiting {world.spot.phrase}."
     )
     ending = (
-        f"{params.hero} held {possessive} {world.token.phrase} and set it on the table. "
-        f"The lesson was simple: {params.hero} learned to pause, follow clues, and match each method to the place."
+        f"{params.hero} held {possessive} {world.token.phrase} until the bells sounded gentle again. "
+        f"After that, {subject} remembered to pause, follow clues, and choose the method that fit the place."
     )
 
     sample = StorySample(
@@ -510,7 +510,7 @@ def story_qa(world: World) -> list[QAItem]:
         QAItem("What started the investigation?", f"The first clue remembered was '{world.spot.clue}'. The clue anchors the search to a real place instead of letting the child wander randomly."),
         QAItem("Why was the chosen method safe?", f"The scene required a {world.spot.need} search and they used a method for that need. Matching method to need keeps the search from becoming a risky reach, climb, or rush."),
         QAItem("How was the missing item found?", f"They used {world.method.phrase}, which was suitable for {world.spot.need}, and found it {world.spot.phrase}. The recovery follows from the method and spot rather than appearing by luck."),
-        QAItem("What did the child learn?", "The child learned that safe methods and calm planning recover things better than rushing. The lesson is grounded in the clocktower layout and the specific clue trail."),
+        QAItem("What did the child learn?", f"The child learned that safe methods and calm planning recover things better than rushing. The lesson is tied to {world.venue.phrase} and the specific clue trail."),
     ]
 
 
@@ -592,7 +592,7 @@ def format_qa(sample: StorySample) -> str:
     lines = ["", "== (1) Generation prompts -- asks that would produce this story =="]
     lines.extend(f"{i}. {prompt}" for i, prompt in enumerate(sample.prompts, 1))
     lines.append("")
-    lines.append("== (2) Story questions -- answerable from the story/world trace ==")
+    lines.append("== (2) Story questions -- answerable from the story details ==")
     for qa in sample.story_qa:
         lines.append(f"Q: {qa.question}")
         lines.append(f"A: {qa.answer}")

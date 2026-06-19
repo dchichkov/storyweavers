@@ -244,7 +244,7 @@ def maybe_predict(weather: Weather, item: Item, action: HelperAction, path: Snow
 
 def introduce(world: World, hero: Entity, parent: Entity) -> None:
     article = "a little boy" if hero.type == "boy" else "a little girl"
-    world.say(f"Once upon a time, there was {article} named {hero.id} with {hero.pronoun('possessive')} helper {parent.label}.")
+    world.say(f"Once upon a time, there was {article} named {hero.id} walking with {hero.pronoun('possessive')} helper {parent.label}.")
     world.say(f"{hero.pronoun().capitalize()} loved winter mornings and wanted to walk through {world.setting.phrase}.")
 
 
@@ -253,7 +253,7 @@ def describe_weather(world: World, weather: Weather) -> None:
 
 
 def equip_item(world: World, hero: Entity, item: Item) -> None:
-    world.say(f"{hero.id} prepared {item.label}.")
+    world.say(f"{hero.id} got {item.label} ready before stepping outside.")
 
 
 def warning(world: World, parent: Entity, hero: Entity, weather: Weather, item: Item, action: HelperAction, path: SnowPath) -> None:
@@ -507,17 +507,19 @@ def story_qa(world: World) -> list[tuple[str, str]]:
     safe = f.get("safe_arrival", False)
     qa: list[tuple[str, str]] = [
         (f"Who is the story about?",
-         f"It is about {hero.label}, helper {parent.label}, and a snow-day walk."),
+         f"It is about {hero.label}, {parent.label}, and a snow-day walk."),
         (f"What weather are they in?",
          f"They walked during {weather.phrase}."),
         ("What helpful action did the parent ask for?",
-         f"The parent asked {hero.label} to {action.phrase}. {item.label.capitalize()} was part of the safe winter preparation."),
+         f"{parent.label} asked {hero.label} to {action.phrase}. {item.label.capitalize()} helped make that preparation concrete."),
         (f"How did they make the {path.label} safe?",
-         f"They prepared before stepping outside. The plan brought the route risk down to {pred['hazard']}, so the {path.label} was safe enough to use."),
+         f"They prepared before stepping outside and chose a route plan that fit the weather. "
+         f"Because the plan was safe enough, they could use the {path.label} without rushing."),
     ]
     if safe:
         qa.append((f"What was the outcome of the story?",
-                  f"They took the {path.label} and stayed safe because they acted before leaving."))
+                  f"They took the {path.label} and stayed safe because they acted before leaving. "
+                  f"The ending shows {hero.label} feeling proud after accepting help."))
     else:
         qa.append(("What was the outcome?", "They stayed inside because the path was still too risky."))
     return qa
@@ -771,6 +773,8 @@ def resolve_params(args: argparse.Namespace, rng: random.Random) -> StoryParams:
     names = GIRL_NAMES if gender == "girl" else BOY_NAMES
     hero = args.hero or rng.choice(names)
     parent = args.parent or ("Maya" if gender == "girl" else "Milo")
+    if parent == hero and not args.parent:
+        parent = "Nina" if gender == "girl" else "Owen"
     return StoryParams(place_id, weather_id, item_id, action_id, path_id, hero, gender, parent)
 
 

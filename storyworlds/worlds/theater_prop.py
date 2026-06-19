@@ -371,8 +371,8 @@ def perform_show(world: World, hero: Entity, friend: Entity, director: Entity,
         f"performed the scene together."
     )
     world.say(
-        f"The missing-prop panic passed, and everyone clapped when they finished "
-        f"with applause for the teamwork.")
+        "The missing-prop panic had become a backstage story, and the final bow "
+        "felt warmer because everyone knew they had saved the scene together.")
     world.facts.update(result="resolved", outcome="resolved")
 
 

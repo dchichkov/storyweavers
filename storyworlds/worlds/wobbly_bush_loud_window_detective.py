@@ -205,7 +205,7 @@ def enter_case(world: WindowWorld) -> None:
     window = WINDOWS[world.params.window]
     world.record(
         "enter",
-        f"Pip entered {yard.name}, where {yard.setting}, and heard the {window.name}.",
+        f"Pip entered {yard.name}, where {yard.setting}, and heard the {window.name} start its noisy warning.",
         "detective",
         "yard",
         noise=yard.clutter,
@@ -304,7 +304,7 @@ def reveal_surprise(world: WindowWorld) -> None:
 
 def render_story(world: WindowWorld, prediction: str) -> str:
     lines = [
-        "Pip liked detective cases best when they taught him something before they named a culprit.",
+        "Pip liked detective cases best when they taught him something before they named a culprit, so he tried to listen even when the clues were loud.",
         world.history[0].text,
         world.history[1].text,
         world.history[2].text,
@@ -314,7 +314,7 @@ def render_story(world: WindowWorld, prediction: str) -> str:
         world.history[5].text,
     ]
     if world.facts["ending"] == "solved":
-        lines.append("After that, Pip wrote the lesson twice: listen to repeated clues before chasing surprise.")
+        lines.append(f"After that, Pip wrote the lesson twice: {lesson_phrase(str(world.facts['lesson_need']))} before chasing surprise.")
     else:
         lines.append("After that, Pip stayed beside the bush, ready to learn the pattern instead of outrunning it.")
     return "\n".join(lines)
@@ -342,8 +342,8 @@ def generate(params: Params) -> StorySample:
     story_qa = [
         QAItem(
             "What repeated clue mattered?",
-            f"The repeated clue was that {world.facts['wobble']}. "
-            f"It happened before the loud window's noise and raised the repeat meter to {world.meters['repeats']}.",
+            f"The bush {world.facts['wobble']} before the loud window made its noise. "
+            "Because the pattern came first, Pip knew the window was warning him rather than accusing someone.",
         ),
         QAItem(
             "What lesson did Pip learn?",
@@ -351,7 +351,7 @@ def generate(params: Params) -> StorySample:
                 f"Pip learned to {lesson_phrase(str(world.facts['lesson_need']))} before accusing anyone. "
                 f"He tested that by choosing to {world.facts['test_action']}."
                 if world.facts["ending"] == "solved"
-                else f"Pip had not fully learned the {world.facts['lesson_need']} lesson yet. "
+                else f"Pip had not fully learned to {lesson_phrase(str(world.facts['lesson_need']))} yet. "
                 f"He tried to {world.facts['test_action']}, but the ending stayed partial."
             ),
         ),
@@ -359,8 +359,11 @@ def generate(params: Params) -> StorySample:
     world_qa = [
         QAItem(
             "Was the loud-window case solved?",
-            f"The ending state is {world.facts['ending']}. "
-            f"Insight ended at {world.meters['insight']}, lesson at {world.meters['lesson']}, and repeats at {world.meters['repeats']}.",
+            (
+                "Yes. Pip matched the test to the window's lesson, so the repeated clue became an answer."
+                if world.facts["ending"] == "solved"
+                else "Not fully. Pip noticed the repeated pattern, but his test did not match the lesson the loud window was repeating."
+            ),
         ),
         QAItem(
             "Which suspect excuse was recorded?",

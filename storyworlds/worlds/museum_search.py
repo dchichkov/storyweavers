@@ -442,14 +442,14 @@ def generate(params: StoryParams) -> StorySample:
 
     child_intro = "a girl" if params.gender == "girl" else "a boy"
     story_lines = [
-        f"Once upon a time, there was {child_intro} named {params.hero}.",
+        f"Once upon a time, there was {child_intro} named {params.hero} who loved quiet museum days.",
         f"{params.hero} treasured {poss} {world.lost_object.phrase} because it reminded {obj_pron} of {world.lost_object.loved_for}.",
         f"One visit to {world.venue.phrase}, {params.hero} noticed the room smelled of {world.venue.atmosphere}.",
     ]
 
     story_lines.append(
         f"Then {spot_location}, the {world.lost_object.phrase} was gone. "
-        f"{subject.capitalize()} remembered: {world.spot.clue}."
+        f"{subject.capitalize()} stopped and remembered one small clue: {world.spot.clue}."
     )
     story_lines.append(
         f"{subject.capitalize()} said quietly, \"Let's stay calm and do this the safe way.\" {helper_subject} agreed "
@@ -464,7 +464,8 @@ def generate(params: StoryParams) -> StorySample:
 
     para_three = [
         f"In a moment, {subject} found the {world.lost_object.phrase} {spot_location}.",
-        f"{helper_subject} smiled, and {params.hero} learned to match method and place, especially when things {subject} loves matter most.",
+        f"{helper_subject} smiled, and {params.hero} held it gently while the room settled back into its quiet hum.",
+        f"After that, {subject} remembered to match method and place, especially when things {subject} loves matter most.",
     ]
 
     world.story = "\n\n".join([" ".join(story_lines), " ".join(para_two), " ".join(para_three)])
@@ -487,7 +488,7 @@ def generate(params: StoryParams) -> StorySample:
         ),
         QAItem(
             "Which method was used?",
-            f"They used {world.method.phrase}, because the spot needed a {world.spot.need} approach. The method is grounded in the world trace as the action that can solve this kind of place-specific problem.",
+            f"They used {world.method.phrase}, because the spot needed a {world.spot.need} approach. That method fits the place-specific problem and keeps the search calm.",
         ),
         QAItem(
             "Why was this method safe?",
@@ -519,7 +520,7 @@ def format_qa(sample: StorySample) -> str:
     for i, prompt in enumerate(sample.prompts, 1):
         lines.append(f"{i}. {prompt}")
     lines.append("")
-    lines.append("== (2) Story questions -- answerable from the story/world trace ==")
+    lines.append("== (2) Story questions -- answerable from the story details ==")
     for qa in sample.story_qa:
         lines.append(f"Q: {qa.question}")
         lines.append(f"A: {qa.answer}")

@@ -276,26 +276,26 @@ def predict_mess(world: World, actor: Entity, activity: Activity, prize_id: str)
 
 def introduce(world: World, hero: Entity, parent: Entity) -> None:
     world.say(
-        f"Once upon a time, there was a little {hero.type} named {hero.id}, and {hero.pronoun('subject')} was curious and brave."
+        f"Once upon a time, there was a little {hero.type} named {hero.id}, curious enough to notice every shimmer of frost."
     )
-    world.say(f"{parent.label_word.capitalize()} promised to keep a close watch.")
+    world.say(f"{parent.label_word.capitalize()} promised to keep a close watch while the evening turned sleepy and silver.")
 
 
 def present_prize(world: World, hero: Entity, prize: Entity) -> None:
     liked = "them" if prize.plural else "it"
     world.say(
-        f"One afternoon, {hero.pronoun('possessive')} {world.get(hero.owner).label_word} had bought {hero.pronoun('object')} {prize.phrase}, "
+        f"Earlier that day, {hero.pronoun('possessive')} {world.get(hero.owner).label_word} had bought {hero.pronoun('object')} {prize.phrase}, "
         f"and {hero.pronoun('subject')} liked {liked} dearly."
     )
 
 
 def wants_activity(world: World, hero: Entity, activity: Activity, parent: Entity) -> None:
     hero.memes["desire"] += 1
-    world.say(f"{hero.id} wanted to {activity.verb} and find the icy flower by the river.")
+    world.say(f"{hero.id} wanted to {activity.verb} and find the icy flower by the river before the light was gone.")
     world.say(
         f"{hero.pronoun().capitalize()} said, \"I want to go, and you can trust my judgment.\""
     )
-    world.say(f"{parent.label_word.capitalize()} said no because the {activity.keyword} edge can be dangerous.")
+    world.say(f"{parent.label_word.capitalize()} held up a careful hand because the {activity.keyword} edge can be dangerous.")
 
 
 def warn(world: World, parent: Entity, hero: Entity, activity: Activity, prize: Entity) -> bool:
@@ -308,7 +308,7 @@ def warn(world: World, parent: Entity, hero: Entity, activity: Activity, prize: 
     world.say(
         f'"If you go too close, your {prize.label} will get {activity.soil}, and we will have to clean {clean_target}."'
     )
-    world.say(f"{parent.label_word.capitalize()} added, \"I am not stopping your adventure. I am stopping the mess.\"")
+    world.say(f"{parent.label_word.capitalize()} added, \"I am not stopping your adventure. I am helping it last.\"")
     return True
 
 
@@ -323,16 +323,16 @@ def grab(world: World, hero: Entity, parent: Entity, activity: Activity) -> None
     hero.memes["grabbed_by"] += 1
     propagate(world, narrate=False)
     world.say(
-        f'{parent.label_word.capitalize()} grabbed {hero.pronoun("object")} by the hand and said, "Keep your promise and stay with me."'
+        f'{parent.label_word.capitalize()} caught {hero.pronoun("object")} by the hand and said, "Keep your promise and stay with me."'
     )
-    world.say(f'They stood by the old fence and talked it through.')
+    world.say("They stood by the old fence until the first rush of wanting had time to quiet.")
 
 
 def misunderstanding_clear(world: World, hero: Entity) -> None:
     if hero.memes["conflict"] < THRESHOLD:
         return
     hero.memes["confusion"] += 1
-    world.say(f"{hero.id} realized the silence was not punishment, just care.")
+    world.say(f"{hero.id} realized the pause was not punishment; it was care making room for a better plan.")
 
 
 def propose_compromise(world: World, hero: Entity, parent: Entity, activity: Activity, prize: Entity) -> Gear | None:
@@ -357,22 +357,22 @@ def propose_compromise(world: World, hero: Entity, parent: Entity, activity: Act
         gear.worn_by = None
         del world.entities[gear.id]
         return None
-    world.say(f'{parent.label_word.capitalize()} said, "Here is my idea: {selected.prep}."')
+    world.say(f'{parent.label_word.capitalize()} said, "Here is my idea: {selected.prep}, and then we can keep going."')
     return selected
 
 
-def accept(world: World, hero: Entity, parent: Entity, selected: Gear, activity: Activity) -> None:
+def accept(world: World, hero: Entity, parent: Entity, selected: Gear, activity: Activity, prize: Entity) -> None:
     hero.memes["joy"] += 1
     hero.memes["conflict"] = 0.0
     world.say(f"{hero.id} laughed and hugged {parent.label_word}.")
-    world.say(f'They {selected.tail}, then {hero.id} could {activity.verb} safely.')
+    world.say(f"They {selected.tail}, then {hero.id} could {activity.verb} safely while {hero.pronoun('possessive')} {prize.label} stayed protected.")
 
 
 def finish(world: World, hero: Entity, resolved: bool) -> None:
     if resolved:
         world.facts["outcome"] = "compromise"
         world.say(f"{hero.id} found a bright icy flower near the river and felt glad.")
-        world.say("The night stayed gentle, and both stayed safe.")
+        world.say("On the walk back, the fence looked less like a dare and more like a guide. The night stayed gentle, and both stayed safe.")
     else:
         world.facts["outcome"] = "deferred"
         world.say(
@@ -431,7 +431,7 @@ def tell(setting: Setting, activity: Activity, prize_cfg: Prize, name: str, gend
     world.para()
     selected = propose_compromise(world, hero, parent, activity, prize)
     if selected:
-        accept(world, hero, parent, selected, activity)
+        accept(world, hero, parent, selected, activity, prize)
         finish(world, hero, resolved=True)
     else:
         finish(world, hero, resolved=False)
@@ -593,20 +593,20 @@ def story_qa(world: World) -> list[QAItem]:
     prize = f["prize"]
     act = f["activity"]
     out = [
-        QAItem("Who are the characters?", f"{hero.id} is the child who wants to explore, and {parent.label_word} is the parent guiding the safer choice. Their disagreement creates a detective-like problem about what risk is really present."),
-        QAItem("What did the child want to do?", f"{hero.id} wanted to {act.verb}. That wish is possible in the setting, but the world trace predicts mess or danger for the item being worn."),
+        QAItem("Who are the characters?", f"{hero.id} is the child who wants to explore, and {parent.label_word} is the parent guiding the safer choice. Their disagreement creates a small mystery about what risk is really present."),
+        QAItem("What did the child want to do?", f"{hero.id} wanted to {act.verb}. That wish is possible in the setting, but the story has already shown that the clothing or keepsake could be spoiled without a safer plan."),
     ]
     if f.get("warned"):
         workload = f.get("predicted_workload", 0)
         soil = f.get("predicted_soil", "damage")
         out.append(QAItem(
             "Why did the parent caution the child?",
-            f"The parent warned that the {prize.label} could get {soil} and there would be extra cleaning work. The warning is grounded in the activity's affected zone and the prize's exposed region."
+            f"The parent warned that the {prize.label} could get {soil} and there would be extra cleaning work. The warning is grounded in what the activity would touch, not in a vague dislike of adventure."
         ))
         if workload >= THRESHOLD:
             out.append(QAItem(
                 "What extra work was expected?",
-                f"{parent.label_word.capitalize()} expected extra cleaning if the {prize.label} got {soil}. That cleanup pressure explains why the parent stops the action before it happens."
+                f"{parent.label_word.capitalize()} expected extra cleaning if the {prize.label} got {soil}. That cleanup pressure explains why the parent pauses the action before the problem happens."
             ))
     if f.get("conflict"):
         out.append(QAItem(
@@ -615,7 +615,7 @@ def story_qa(world: World) -> list[QAItem]:
         ))
     if f.get("resolved"):
         gear = f.get("gear")
-        gear_text = gear.label if gear is not None else "a safer plan"
+        gear_text = f"the {gear.label}" if gear is not None else "a safer plan"
         out.append(QAItem(
             "How was the conflict resolved?",
             f"They used {gear_text} as a specific compromise that protected the item, so they continued safely. The ending keeps the adventure while changing the unsafe condition."

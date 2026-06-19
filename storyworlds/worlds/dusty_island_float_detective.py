@@ -208,7 +208,7 @@ def hear_witness(world: IslandWorld) -> None:
     witness = WITNESSES[world.params.witness]
     world.record(
         "witness",
-        f"{witness.name} admitted they {witness.secret}.",
+        f"{witness.name} lowered their voice and shared an uneasy truth: they {witness.secret}.",
         "witness",
         "detective",
         honesty=witness.honesty,
@@ -273,7 +273,7 @@ def reveal_twist(world: IslandWorld) -> None:
 
 def render_story(world: IslandWorld, prediction: str) -> str:
     lines = [
-        "Detective Mira believed every mystery deserved one honest sentence before any accusation.",
+        "Detective Mira believed every mystery deserved one honest sentence before any accusation, so she packed a notebook and went where the dust was behaving badly.",
         world.history[0].text,
         world.history[1].text,
         world.history[2].text,
@@ -282,9 +282,9 @@ def render_story(world: IslandWorld, prediction: str) -> str:
         world.history[4].text,
     ]
     if world.facts["ending"] == "solved":
-        lines.append("When the truth was spoken, the island stopped trying to float away from the town.")
+        lines.append("When the truth was spoken, the island settled close enough for the dock ropes to rest slack in the morning light.")
     else:
-        lines.append("Mira closed her notebook gently, knowing the case would solve itself only when someone chose honesty.")
+        lines.append("Mira closed her notebook gently while dust turned in the air, knowing the island would come home only when someone chose honesty.")
     return "\n".join(lines)
 
 
@@ -311,28 +311,31 @@ def generate(params: Params) -> StorySample:
             "What was the twist in the case?",
             (
                 f"The twist was that the dusty island could float while people denied that {truth_clause(str(world.facts['secret']))}. "
-                "That answer came from the witness secret and the final island state."
+                "Once that truth was spoken, the island stopped drifting away from town."
                 if world.facts["ending"] == "solved"
                 else "The story only partly revealed the twist. "
-                f"The world still showed a floating island because honesty reached {world.meters['honesty']} and the final state was partial."
+                "The island was still floating because the useful test and the honest account had not come together yet."
             ),
         ),
         QAItem(
             "How did Mira use problem solving?",
             f"Mira used the clue that {world.facts['clue']} and chose to {world.facts['method_action']}. "
-            f"The solve meter ended at {world.meters['solve']}.",
+            f"That method {'fit the evidence, so it helped reveal the truth' if world.facts['aligned'] else 'did not fit the evidence, so the case stayed unfinished'}.",
         ),
     ]
     world_qa = [
         QAItem(
             "Was the dusty island case solved?",
-            f"The ending state is {world.facts['ending']}. "
-            f"Clarity ended at {world.meters['clarity']}, honesty at {world.meters['honesty']}, and solve at {world.meters['solve']}.",
+            (
+                "Yes. The evidence, witness truth, and method all lined up, so the island settled back toward town."
+                if world.facts["ending"] == "solved"
+                else "Not fully. Mira had some true pieces, but the case still lacked the right match between evidence, honesty, and method."
+            ),
         ),
         QAItem(
             "Which evidence pointed to the answer?",
-            f"The evidence was {world.entities['evidence'].name}. "
-            f"It pointed to {world.facts['answer']}, and the method was {'aligned' if world.facts['aligned'] else 'not aligned'} with it.",
+            f"The evidence was the {world.entities['evidence'].name}. "
+            f"It pointed to {world.facts['answer']}, which is why the chosen method {'worked' if world.facts['aligned'] else 'could not finish the case'}.",
         ),
     ]
     return StorySample(

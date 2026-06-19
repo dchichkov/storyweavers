@@ -67,17 +67,37 @@
   so future passes can rerun the same seed stream and compare failure/artifact
   counts. The only remaining scanner flag in the final sweep was a false
   positive in `rusty_door_icy_pond.py` for "Touching or shaking them can...".
-- Remaining QA-depth backlog from the final 55-world sweep: `pirates.py`,
-  `puddles.py`, `bakery_kindness.py`, `crystal_river_hover.py`,
-  `mystery_spill.py`, `theater_prop.py`, `harbor_search.py`, `artroom.py`,
-  `cozy_bridge_lamp.py`, `forest_bridge.py`, and `snow_day_help.py` still have
-  sampled QA sets dominated by one-sentence answers or occasional short answers.
-- Add a storytelling-shape pass after QA-depth fixes. Sample random stories and
-  judge whether each has a beginning that explains why the story is happening,
-  a middle turn driven by simulated state, and an ending that pays off the
-  premise with a changed world/object/relationship. Track defects as
-  `missing_beginning`, `missing_ending`, `event_log_prose`,
-  `raw_fact_fragment`, `no_final_image`, and `weak_turn`.
+- 2026-06-19 seed-world storytelling pass: polished `puddles.py` and
+  `pirates.py` after 10-variant random samples with `--qa`. `puddles.py` now
+  has a clearer beginning, sensory setup, softer conflict, concrete final image,
+  and fuller cause/effect QA. `pirates.py` now has a stronger opening, grounded
+  darkness/flame warning, branch-aware safe-light ending, and fuller QA answers.
+  Both scripts pass `--verify`; keep them in future human samples for tone, but
+  remove them from the highest-priority QA-depth queue.
+- 2026-06-19 all-world storytelling/QA pass: used five parallel workers plus a
+  local overflow lane to sample the remaining storyworlds in 10-variant batches
+  with `--qa`, then polish prose and grounded answers. The pass fixed a sampled
+  crash in `quiet_sign_fuzzy_flower_mystery.py`, a `harbor_search.py` QA
+  crasher, stale scaffold phrases such as `world model` / `ending state is`,
+  repeated/raw wording (`new new dress`, `the sign, the sign`, raw risk
+  numbers), and many terse one-sentence QA answers.
+- Integrated verification for the 2026-06-19 pass: all 65
+  `storyworlds/worlds/*.py` scripts pass `--verify`; all 65 pass
+  `-n 1 --seed 31000 --qa`; a normal story/QA artifact scan reported
+  `flagged=0` for scaffold phrases, unresolved templates, doubled articles, and
+  underscored tokens. `git diff --check` is clean.
+- Remaining quality frontier: the all-world pass raised the floor, but some
+  worlds are still intentionally template-like. Future passes should focus on
+  prose variety, richer protagonist desire, and less safety-explainer cadence in
+  otherwise-correct worlds such as `market_lost_coin.py`, `whispering_field.py`,
+  `rooftop_kite.py`, `cozy_bridge_lamp.py`, `forest_bridge.py`, and
+  `snow_day_help.py`.
+- Keep using the storytelling-shape rubric when sampling: a beginning that
+  explains why the story is happening, a middle turn driven by simulated state,
+  and an ending that pays off the premise with a changed
+  world/object/relationship. Track defects as `missing_beginning`,
+  `missing_ending`, `event_log_prose`, `raw_fact_fragment`, `no_final_image`,
+  and `weak_turn`.
 
 ## Readability pass findings
 

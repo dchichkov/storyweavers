@@ -247,9 +247,10 @@ def introduce(world: World, hero: Entity, guardian: Entity, wonder_cfg: Wonder) 
 
 def notice(world: World, hero: Entity, mistake: Mistake, wonder_cfg: Wonder) -> None:
     hero.memes["wonder"] += 1
+    quote_verb = mistake.verb.replace("your pocket", "my pocket")
     world.say(
         f"To {hero.id}, it looked almost like {mistake.reason}. "
-        f'"Maybe I should {mistake.verb}," {hero.pronoun()} whispered.'
+        f'"Maybe I should {quote_verb}," {hero.pronoun()} whispered.'
     )
 
 
@@ -276,7 +277,7 @@ def try_anyway(world: World, hero: Entity, guardian: Entity, mistake: Mistake) -
     )
     world.say(
         f"{guardian.label_word.capitalize()} gently caught {hero.pronoun('possessive')} hand before any harm was done. "
-        f'"That is the funny part," {guardian.pronoun()} said. "It only looks like a treat."'
+        f'"That is the funny part," {guardian.pronoun()} said. "It only looks like {mistake.reason}."'
     )
 
 
@@ -376,7 +377,7 @@ REMEDIES = {
         tags={"bridge", "habitat"}),
     "story_basket": Remedy(
         "story_basket", "a story basket", {"uproot"},
-        "carry the idea home in a story basket instead of a pocket",
+        "carry the idea home in a story basket, not a pocket",
         "filled the story basket with words instead of pulling up roots",
         tags={"story", "plants"}),
 }
@@ -428,10 +429,11 @@ def story_qa(world: World) -> list[tuple[str, str]]:
     hero, guardian = f["hero"], f["guardian"]
     wonder, mistake, remedy = f["wonder_cfg"], f["mistake"], f["remedy"]
     pos, obj = hero.pronoun("possessive"), hero.pronoun("object")
+    wanted = "take a piece home" if mistake.id == "pluck" else mistake.verb
     qa = [
         ("Who is the story about?", f"The story is about {hero.id}, a little {hero.type}, and {pos} {guardian.label_word}. They find {wonder.label} in {world.glade.place}."),
-        (f"What did {hero.id} misunderstand?", f"{hero.id} thought {wonder.label} looked like {mistake.reason}. That made {obj} want to {mistake.verb}, even though it was really a living thing."),
-        ("Why did the guide stop the child?", f"The guide stopped {hero.id} because {mistake.gerund} could {mistake.risk_text}. The warning came from the world model's predicted harm, not from a random scolding."),
+        (f"What did {hero.id} misunderstand?", f"{hero.id} thought {wonder.label} looked like {mistake.reason}. That made {obj} want to {wanted}, even though it was really a living thing."),
+        ("Why did the guide stop the child?", f"The guide stopped {hero.id} because {mistake.gerund} could {mistake.risk_text}. The warning was specific: the shiny patch was a tiny home, so the funny mistake could still cause real harm."),
     ]
     if f.get("resolved"):
         safe_offer = remedy.offer.replace("our eyes", "their eyes")

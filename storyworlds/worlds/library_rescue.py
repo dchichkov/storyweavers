@@ -309,7 +309,8 @@ def _r_warning(world: World) -> list[str]:
     method = world.facts["method_obj"]
     if hero is None or helper is None or target is None or not isinstance(method, RescueMethod):
         return []
-    target_ref = target.label
+    target_cfg = world.facts.get("target_cfg")
+    target_ref = target_cfg.noun if isinstance(target_cfg, RescueTarget) else target.label
     hero.memes["fear"] += 1
     helper.memes["care"] += 1
     return [
@@ -328,18 +329,18 @@ def _r_rescue(world: World) -> list[str]:
     method = world.facts["method_obj"]
     if hero is None or target is None or helper is None or not isinstance(method, RescueMethod):
         return []
-    target_ref = target.label
+    target_cfg = world.facts.get("target_cfg")
+    target_ref = target_cfg.noun if isinstance(target_cfg, RescueTarget) else target.label
     sig = ("rescue", target.id, method.id)
     if sig in world.fired:
         return []
     world.fired.add(sig)
 
-    place = world.place
     world.rescued = True
     target.memes["rescued"] += 1
     if method.id == "ask_librarian":
         sentence = (
-            f"{hero.label} {method.approach}, and {helper.label} brought {target_ref} down from {place.phrase},"
+            f"{hero.label} {method.approach}, and {helper.label} brought {target_ref} down from the shelf,"
             f" then handed it back gently."
         )
     elif method.id == "short_ladder":
@@ -370,7 +371,10 @@ def _r_celebrate(world: World) -> list[str]:
     if hero is None or target is None:
         return []
     hero.memes["kindness"] += 1
-    return [f"{hero.label} smiled because {target.label} was safe again and thanked {hero.pronoun('possessive')} helper. "]
+    return [
+        f"{hero.label} smiled because the rescued item was steady in safe hands again, "
+        f"then thanked {hero.pronoun('possessive')} helper."
+    ]
 
 
 RULES.extend([
@@ -491,15 +495,17 @@ def attempt_rescue(world: World, method: RescueMethod) -> None:
 def build_intro(world: World, hero: Entity, helper: Entity, target: RescueTarget, place: Place) -> None:
     pron = "little" if "child" in hero.traits else ""
     world.say(
-        f"Once upon a time, there was a {pron} {hero.type} named {hero.label} in {place.phrase}."
+        f"Once upon a time, there was a {pron} {hero.type} named {hero.label} who loved quiet library corners."
     )
     helper_tone = "caring" if helper.type in {"librarian", "teacher", "aunt", "uncle"} else "helpful"
-    world.say(f"{helper.label.capitalize()} was organizing books nearby and watching with {helper_tone} attention.")
+    world.say(
+        f"In {place.phrase}, {helper.label} was organizing books nearby and watching with {helper_tone} attention."
+    )
 
 
 def notice_and_want(world: World, hero: Entity, target: RescueTarget, method: RescueMethod, place: Place) -> None:
     world.say(
-        f"One day, {hero.label} noticed {target.phrase} resting out of reach near the shelves in {place.phrase}."
+        f"One day, {hero.label} noticed {target.phrase} resting out of reach near the shelves."
     )
     world.say(
         f'"I want {target.noun}," {hero.label} said, "and I can help safely if I slow down."'
@@ -580,7 +586,7 @@ def build_world(params: StoryParams) -> World:
             f"Because of the risk in {place.phrase}, {hero.label} chose each move with care and gratitude."
         )
     world.say(
-        f"{hero.label} learned that asking the right helper or tool for the right object keeps everyone safe in the library."
+        f"{hero.label} learned that the right helper or tool can turn a worried reach into a calm library rescue."
     )
 
     world.facts.update(
@@ -629,15 +635,15 @@ def story_qa(world: World) -> list[QAItem]:
         ),
         QAItem(
             "What did the child rescue?",
-            f"The child rescued {target.phrase} from a difficult spot. The target's fragility, weight, or height controls whether the story allows a stool, hook, ladder, or librarian help.",
+            f"The child rescued {target.phrase} from a difficult spot. Its fragility, weight, or height controls whether the safe story allows a stool, hook, ladder, or librarian help.",
         ),
         QAItem(
             "How did the chosen method keep the rescue safe?",
-            f"The child {method.phrase}, and {helper.label} stayed nearby to keep it safe. The method is compatible here because it solves {', '.join(s.replace('_', ' ') for s in sorted(method.solves))} without ignoring the library risk.",
+            f"The child {method.phrase}, and {helper.label} stayed nearby to keep it safe. The method fit this rescue because it handled {', '.join(s.replace('_', ' ') for s in sorted(method.solves))} without ignoring the library risk.",
         ),
         QAItem(
             f"What lesson did {hero.label} learn?",
-            f"{hero.label} learned that matching the method to the object and place keeps fragile items safe. In this world, care means choosing a method the room actually supports.",
+            f"{hero.label} learned that matching the method to the object and place keeps library treasures safe. Care is active here: it means choosing a method the room actually supports.",
         ),
     ]
 
@@ -647,7 +653,7 @@ WORLD_KNOWLEDGE: dict[str, list[tuple[str, str]]] = {
         ("Why avoid rushing at high places?", "Rushing near a high shelf can shift balance and drop objects. A slower method or helper gives the child time to stay steady before reaching.")
     ],
     "fragile": [
-        ("Why are fragile objects handled with extra care?", "Fragile objects break more easily if pulled or dropped suddenly. The compatible method must keep the object supported instead of yanking it loose."),
+        ("Why are fragile objects handled with extra care?", "Fragile objects break more easily if pulled or dropped suddenly. The chosen method should keep the object supported instead of yanking it loose."),
     ],
     "dust": [
         ("Why can dust affect libraries?", "Fine dust can make tools and hands slippery, so people move slowly and carefully. It also makes careful visibility part of the rescue rather than a decorative detail."),

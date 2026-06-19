@@ -413,8 +413,8 @@ def predict_damage(world: World, hero: Entity, search: Search, clue: Entity) -> 
 
 def introduce(world: World, hero: Entity, friend: Entity, elder: Entity, trait: str) -> None:
     world.say(
-        f"Once upon a time, there was a {trait} child detective named {hero.label} "
-        f"who watched a fuzzy train at {world.setting.line}."
+        f"Once upon a time, there was a {trait} child detective named {hero.label}, "
+        f"and the day's smallest case was waiting by a fuzzy train at {world.setting.line}."
     )
     world.say(f"{world.setting.rhyme_line} A sparkly star was missing from the train's roof.")
     world.say(f"{friend.label} and another friend would not speak, so {hero.label} opened a kindness case.")
@@ -497,7 +497,10 @@ def reconcile(world: World, hero: Entity, friend: Entity, elder: Entity, search:
     hero.memes["relief"] += 1
     friend.memes["joy"] += 1
     elder.memes["relief"] += 1
-    world.say(f"{friend.label} smiled and went to say sorry. The rhyme came true: clickety clue, kind and true.")
+    world.say(
+        f"{friend.label} smiled and went to say sorry. The fuzzy train stayed whole, "
+        "and the rhyme came true: clickety clue, kind and true."
+    )
     world.facts["resolved"] = True
 
 

@@ -268,8 +268,8 @@ def predict_solution(world: World, thing: MissingThing, clue: Clue,
 
 def introduce(world: World, hero: Entity, helper: Entity, thing: MissingThing) -> None:
     world.say(
-        f"One muddy morning, {hero.id} and {helper.id} were {world.place.label}. "
-        f"Rain had left {world.place.muddy_from}."
+        f"One muddy morning, {hero.id} and {helper.id} were {world.place.label}, "
+        f"where rain had left {world.place.muddy_from} and every footprint seemed ready to tell on someone."
     )
     world.say(
         f"{hero.id} was ready to use {thing.phrase}, because {thing.use}. "
@@ -345,8 +345,8 @@ def return_thing(world: World, hero: Entity, helper: Entity, thing: MissingThing
         f"helped put it back."
     )
     world.say(
-        f'"Next time, ask first," said {hero.id}. The case was solved, and the '
-        f"muddy marks were cleaned away."
+        f'"Next time, ask first," said {hero.id}. The case was solved, and by lunchtime '
+        f"the muddy marks were only pale smudges drying by the door."
     )
 
 
@@ -529,7 +529,7 @@ def story_qa(world: World) -> list[tuple[str, str]]:
         ("Who took the missing thing?",
          f"{suspect.label[0].upper() + suspect.label[1:]} had taken {thing.label}. The muddy tracks matched {suspect.label}, and {suspect.label} had a reason to touch it."),
         ("How did the children solve the mystery?",
-         f"They followed the evidence and asked a question instead of accusing. Then {suspect.label} explained, returned the item, and helped clean up."),
+         f"They followed the evidence and asked a question instead of accusing. Then {suspect.label} explained, returned the item, and helped clean up, which proved the tracks had led to a fair answer."),
     ]
 
 

@@ -386,7 +386,10 @@ def _do_forbidden(world: World, target: Entity, narrate: bool = True) -> None:
 def play_setup(world: World, a: Entity, b: Entity, theme: Theme) -> None:
     for kid in (a, b):
         kid.memes["joy"] += 1
-    world.say(f"{a.id} and {b.id} turned the living room into {theme.scene}. {theme.rig}")
+    world.say(
+        f"On a quiet afternoon, {a.id} and {b.id} turned the living room into "
+        f"{theme.scene}. {theme.rig}"
+    )
     world.say(
         f'"{theme.captain} {a.id} and {theme.mate} {b.id}!" {a.id} shouted. '
         f'"Let\'s find {theme.goal}!"'
@@ -396,9 +399,9 @@ def play_setup(world: World, a: Entity, b: Entity, theme: Theme) -> None:
 def need_light(world: World, b: Entity, theme: Theme, target: Flammable) -> None:
     world.say(
         f"But the {theme.cave_word} -- {theme.dark_spot}, {target.drape} -- "
-        f"was dark. Very dark."
+        f"swallowed the light from the window."
     )
-    world.say(f'"We need a light," said {b.id}.')
+    world.say(f'{b.id} peered inside. "We need a light," {b.pronoun()} said.')
 
 
 def tempt(world: World, a: Entity, forbidden: Forbidden) -> None:
@@ -409,6 +412,7 @@ def tempt(world: World, a: Entity, forbidden: Forbidden) -> None:
         f'{a.id}\'s {lit}. "I know! {forbidden.cry} I saw '
         f'{forbidden.phrase} {forbidden.where}."'
     )
+    world.say("For one breath, the idea felt clever.")
 
 
 def warn(world: World, b: Entity, a: Entity, forbidden: Forbidden,
@@ -424,7 +428,8 @@ def warn(world: World, b: Entity, a: Entity, forbidden: Forbidden,
                  f'head, sure it was a bad idea.')
     world.say(
         f'{b.id} bit {b.pronoun("possessive")} lip. "{a.id}, we\'re not allowed '
-        f'to touch {forbidden.label}. {parent.label_word.capitalize()} said."{extra}'
+        f'to touch {forbidden.label}. {parent.label_word.capitalize()} said. '
+        f'It can make a real flame, and {target.the} can catch."{extra}'
     )
 
 
@@ -471,7 +476,7 @@ def back_down(world: World, a: Entity, b: Entity, forbidden: Forbidden,
         f"{b.pronoun('object')}, thought better of it, and gave up the idea."
     )
     world.say(
-        f"They left {them} right where {were} and told "
+        f"They left {them} right where {were} and went to tell "
         f"{parent.label_word.capitalize()} how dark the {theme.cave_word} had been."
     )
 
@@ -481,8 +486,8 @@ def ignite(world: World, target_ent: Entity, forbidden: Forbidden,
     _do_forbidden(world, target_ent)          # fires the spread rule (danger, fear)
     world.say(
         f"{forbidden.strike} {forbidden.unit[0].upper()}{forbidden.unit[1:]} "
-        f"flared to life. For one second it was wonderful -- a tiny golden flame, "
-        f"just like a real lantern. Then the flame leaned, kissed {target.near}, "
+        f"flared to life. For one second it was wonderful, a tiny golden flame "
+        f"pretending to be a lantern. Then the flame leaned, kissed {target.near}, "
         f"and a little line of orange began to climb."
     )
 
@@ -533,8 +538,12 @@ def safe_gift(world: World, parent: Entity, a: Entity, b: Entity,
     for kid in (a, b):
         kid.memes["joy"] += 1
         kid.memes["safety"] += 1
+    if any(e.meters["scorched"] >= THRESHOLD for e in world.entities.values()):
+        next_day = "The next day, after the scary part had been talked through"
+    else:
+        next_day = "The next day, after everyone had talked it through"
     world.say(
-        f"The next day, {parent.label_word.capitalize()} had a surprise. "
+        f"{next_day}, {parent.label_word.capitalize()} had a surprise. "
         f"{parent.pronoun().capitalize()} handed them {l1.phrase} that {l1.glow}, "
         f"and {l2.phrase} that {l2.glow}."
     )
@@ -548,7 +557,8 @@ def safe_gift(world: World, parent: Entity, a: Entity, b: Entity,
     if pet:
         world.say(f"Even {pet} padded along behind them.")
     world.say(
-        f"And the {theme.role_plural} {theme.send_off} -- bright, brave, and safe."
+        f"This time, the {theme.role_plural} {theme.send_off} -- bright, brave, "
+        f"and safe."
     )
 
 
@@ -608,6 +618,9 @@ def grim_lesson(world: World, parent: Entity, a: Entity, b: Entity,
     world.say(
         f"But {a.id} and {b.id} never forgot what they learned that night: "
         f"{forbidden.not_toy}, and fire can grow faster than anyone can run."
+    )
+    world.say(
+        "After that, when a game grew too dark, they called a grown-up instead."
     )
 
 
@@ -1011,37 +1024,46 @@ def story_qa(world: World) -> list[tuple[str, str]]:
          f"{th.role_plural}, and {a.id}'s {pw} who came to help."),
         ("What were the children playing?",
          f"They turned the living room into {th.scene} and pretended to be "
-         f"{th.role_plural} looking for {th.goal}."),
+         f"{th.role_plural} looking for {th.goal}. The pretend game made the "
+         f"dark spot feel like part of the adventure."),
         ("Why did they need a light?",
-         f"They wanted to explore {th.dark_spot}, and it was very dark."),
+         f"They wanted to explore {th.dark_spot}, but that place swallowed the "
+         f"light from the window. That darkness is what made the unsafe flame "
+         f"idea tempting."),
         (f"What did {a.id} want to use for light, and what did {b.id} say?",
          f"{a.id} wanted to use {fb.label}, but {b.id} warned that they were not "
-         f"allowed to touch {fb.label}."),
+         f"allowed to touch {fb.label}. {b.id} also knew it could make a real "
+         f"flame near {tg.the}."),
     ]
     if f.get("ignited"):
         qa.append((
             f"What happened when {a.id} lit {them}?",
             f"{tg.The} caught fire -- a little line of flame began to climb up it, "
-            f"and the children were very scared."))
+            f"and the children were very scared. The danger came from using "
+            f"{fb.label} near something flammable."))
     if f.get("outcome") == "averted":
         sib = "brother" if b.type == "boy" else "sister"
         qa.append((
             f"What did {a.id} do after {b.id} warned {a.pronoun('object')}?",
             f"{a.id} listened to {b.id}, {a.pronoun('possessive')} big {sib}, and "
-            f"gave up the idea, so no fire ever started."))
+            f"gave up the idea, so no fire ever started. They told {pw} about "
+            f"the dark {th.cave_word} instead of touching {fb.label}."))
         qa.append((
             f"What did {a.id}'s {pw} give them the next day?",
             f"{parent.pronoun().capitalize()} gave them {l1.phrase} and "
-            f"{l2.phrase} so they could explore with safe light."))
+            f"{l2.phrase} so they could explore with safe light. Those lights "
+            f"met the same need without making fire."))
         qa.append((
             "How did the story end?",
             f"Safely -- they used safe light instead of {fb.label}, and nobody "
-            f"got hurt and nothing burned."))
+            f"got hurt and nothing burned. The game could continue because they "
+            f"chose a safer tool."))
     elif f.get("outcome") == "contained":
         body = resp.qa_text.replace("{target}", tg.label)
         qa.append((
             f"How did {a.id}'s {pw} put out the fire?",
-            f"{pw.capitalize()} came running and {body}."))
+            f"{pw.capitalize()} came running and {body}. The quick response "
+            f"stopped the fire before it spread through the room."))
         qa.append((
             f"Was {a.id}'s {pw} angry?",
             f"No. {pw.capitalize()} hugged them, was glad they called for help, "
@@ -1050,25 +1072,30 @@ def story_qa(world: World) -> list[tuple[str, str]]:
         qa.append((
             f"What did {a.id}'s {pw} give them the next day?",
             f"{parent.pronoun().capitalize()} gave them {l1.phrase} and "
-            f"{l2.phrase} so they could explore with safe light."))
+            f"{l2.phrase} so they could explore with safe light. The new lights "
+            f"let them keep the adventure without the flame."))
         qa.append((
             f"How did {a.id} and {b.id} feel at the end?",
             f"They felt brave, happy, and safe, and they promised never to play "
-            f"with {fb.label} again."))
+            f"with {fb.label} again. The ending turns the scary lesson into a "
+            f"safer way to keep playing."))
     elif f.get("outcome") == "burned":
         fail = resp.fail.replace("{target}", tg.label)
         qa.append((
             f"Could {a.id}'s {pw} put the fire out?",
             f"No. {pw.capitalize()} {fail}, and the fire raced through the whole "
-            f"house."))
+            f"house. The family had to escape because the fire was already too "
+            f"big for that response."))
         qa.append((
             "How did the story end?",
             f"Everyone got out safely, but the house burned down. {a.id} and "
-            f"{b.id} were safe, though very sad to lose their home."))
+            f"{b.id} were safe, though very sad to lose their home. Afterward, "
+            f"they knew to call a grown-up whenever a game grew too dark."))
         qa.append((
             f"What did {a.id} and {b.id} learn?",
             f"{fb.not_toy[0].upper()}{fb.not_toy[1:]}, and that fire can grow "
-            f"faster than anyone can run."))
+            f"faster than anyone can run. The lesson came from seeing how quickly "
+            f"one unsafe flame became bigger than their game."))
     return qa
 
 

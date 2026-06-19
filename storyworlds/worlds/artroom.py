@@ -350,13 +350,13 @@ def _do_activity(world: World, actor: Entity, activity: Activity, narrate: bool 
 def introduce(world: World, hero: Entity) -> None:
     trait = next((t for t in hero.traits if t != "little"), "")
     desc = f"little {trait} {hero.type}".strip()
-    world.say(f"Once upon a time, there was a {desc} named {hero.id}.")
+    world.say(f"Once upon a time, there was a {desc} named {hero.id} who noticed every good place to make something.")
 
 
 def loves_activity(world: World, hero: Entity, activity: Activity) -> None:
     hero.memes["love_play"] += 1
     where = "inside" if world.setting.indoor else "outside"
-    world.say(f"{hero.pronoun().capitalize()} loved playing {where} and {activity.gerund}.")
+    world.say(f"{hero.pronoun().capitalize()} loved playing {where} and {activity.gerund}; the messier the idea looked, the more exciting it felt.")
 
 
 def buys(world: World, parent: Entity, hero: Entity, prize: Entity) -> None:
@@ -370,8 +370,8 @@ def loves_prize(world: World, hero: Entity, prize: Entity) -> None:
     hero.memes["love"] += 1
     prize.worn_by = hero.id
     world.say(
-        f"{hero.id} loved {hero.pronoun('possessive')} new {prize.label} and "
-        f"wore {prize.it()} everywhere {hero.pronoun()} went."
+        f"{hero.id} loved {hero.pronoun('possessive')} {prize.label} and "
+        f"wore {prize.it()} as if the whole day had been made specially for {hero.pronoun('object')}."
     )
 
 
@@ -388,7 +388,7 @@ def wants(world: World, hero: Entity, parent: Entity, activity: Activity) -> Non
     hero.memes["desire"] += 1
     world.say(
         f"{hero.id} wanted to {activity.verb}, but "
-        f"{hero.pronoun('possessive')} {parent.label_word} said no."
+        f"{hero.pronoun('possessive')} {parent.label_word} held up a gentle hand."
     )
 
 
@@ -417,7 +417,7 @@ def grab_hand(world: World, parent: Entity, hero: Entity, activity: Activity) ->
     world.say(
         f"but {hero.pronoun('possessive')} {parent.label_word} grabbed "
         f"{hero.pronoun('possessive')} hand and said, "
-        f'"You have to resist the urge to {activity.verb} today."'
+        f'"You can want to {activity.verb}, and we can still choose the clean way."'
     )
 
 
@@ -692,7 +692,7 @@ def story_qa(world: World) -> list[tuple[str, str]]:
         why += (f", and then {pos} {pw} would have to clean {prize.it()}. "
                 if work >= THRESHOLD else ". ")
         why += (f"When {hero.id} tried to {act.rush.rstrip(', ')}, {pos} {pw} "
-                f"grabbed {pos} hand and asked {obj} to resist the urge to "
+                f"held {pos} hand and reminded {obj} they could choose a clean way to "
                 f"{act.verb}.")
         qa.append((f"Using the story above, explain how {hero.id}'s {pw} was "
                    f"upset and why.", why))
@@ -704,7 +704,7 @@ def story_qa(world: World) -> list[tuple[str, str]]:
                    f"without ruining {pos} {prize.label}."))
         qa.append((f"How did {hero.id} feel at the end?",
                    f"{hero.id} felt happy and hugged {pos} {pw} once they agreed "
-                   f"on the plan."))
+                   f"on the plan. The compromise let the play continue without ruining {pos} {prize.label}."))
     return qa
 
 

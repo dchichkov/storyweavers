@@ -450,12 +450,13 @@ def story_qa(world: World) -> list[tuple[str, str]]:
     f = world.facts
     hero, guide, cabin, cloud, goal, choice = (f["hero"], f["guide"], f["cabin"],
                                               f["cloud"], f["goal"], f["choice"])
-    pred = f.get("prediction", {})
     return [
         ("Where did the adventure begin?",
          f"The adventure began in {cabin.phrase}. It was quiet enough that {hero.id} noticed small sounds."),
         ("What blocked the trail?",
-         f"{cloud.phrase.capitalize()} made mist over {cabin.landmark}. The world model predicted the trail would be hidden because the mist was too thick for the goal."),
+         f"{cloud.phrase.capitalize()} made mist over {cabin.landmark}. The path "
+         f"to {goal.phrase} was hidden, so rushing ahead could have made "
+         f"{hero.id} and {guide.label_word} lose the trail."),
         ("What choice did the hero make?",
          f"{hero.id} chose to {choice.label}. That was kind and safe, so it comforted the cloud instead of scaring it."),
         ("What moral value did the story teach?",

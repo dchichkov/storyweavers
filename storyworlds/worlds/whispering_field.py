@@ -314,7 +314,7 @@ def arrive(world: World, hero: Entity, parent: Entity) -> None:
 def wants(world: World, hero: Entity, parent: Entity, activity: Activity) -> None:
     hero.memes["desire"] += 1
     world.say(
-        f"{hero.id} wanted to {activity.verb}, but {hero.pronoun('possessive')} {parent.label_word} said no."
+        f"{hero.id} wanted to {activity.verb}, and the wild field seemed to call {hero.pronoun('object')} closer."
     )
 
 
@@ -334,7 +334,7 @@ def warn(world: World, parent: Entity, hero: Entity, activity: Activity, prize: 
 
 def defy(world: World, hero: Entity, activity: Activity) -> None:
     hero.memes["defiance"] += 1
-    world.say(f"{hero.id} did not listen and tried to {activity.rush}.")
+    world.say(f"{hero.id} heard the warning, but the wish to play pulled hard, and {hero.pronoun()} tried to {activity.rush}.")
 
 
 def grab_hand(world: World, parent: Entity, hero: Entity, activity: Activity) -> None:
@@ -342,7 +342,7 @@ def grab_hand(world: World, parent: Entity, hero: Entity, activity: Activity) ->
     propagate(world, narrate=False)
     world.say(
         f'But {parent.label_word} held {hero.pronoun("object")} by the hand and said, '
-        f'"This field can be wild. You need to resist the urge to {activity.verb} today."'
+        f'"This field can be wild. Let us make the choice safe before we go."'
     )
 
 
@@ -392,7 +392,7 @@ def accept(world: World, parent: Entity, hero: Entity, gear_def: Gear) -> None:
     hero.memes["conflict"] = 0.0
     world.say(
         f'"I like this better," {hero.id} said. {hero.pronoun().capitalize()} hugged {parent.label_word} and '
-        f'followed after they {gear_def.tail}.'
+        f'followed after they {gear_def.tail}. Soon they were outside together, and the field felt exciting without feeling too wild.'
     )
 
 
@@ -564,7 +564,7 @@ KNOWLEDGE = {
     "boots": [("What are ice cleats for?", "They give your boots better grip so your feet are less likely to slip. They solve the footing risk while still letting the child move.")],
     "wind_shell": [("Why wear a wind shell?", "A wind shell helps block wind and limits how quickly your body gets cold. It turns a stormy activity into something the parent can allow safely.")],
     "waterproof_coat": [("Why can a waterproof coat help in a storm?", "It blocks a lot of wind and rain so your clothes stay drier and warmer. The story treats that protection as part of the compromise, not just an accessory.")],
-    "ice_cleats": [("How do ice cleats work?", "They create extra bite against ice and help a person keep their footing. That directly answers the slippery-field risk in the world trace.")],
+    "ice_cleats": [("How do ice cleats work?", "They create extra bite against ice and help a person keep their footing. That directly answers the slippery-field risk in the story.")],
 }
 KNOWLEDGE_ORDER = ["ice", "slip", "wet", "storm", "cold", "field", "boots", "wind_shell", "waterproof_coat", "ice_cleats"]
 

@@ -357,11 +357,11 @@ def story_qa(world: World) -> list[QAItem]:
     p = world.params
     _she, her, _ = pronouns(p.gender)
     return [
-        QAItem("Who is the quest about?", f"It is about {p.hero}, {her} {p.companion}, and the missing {world.crown.phrase}."),
+        QAItem("Who is the quest about?", f"It is about {p.hero}, {her} {p.companion}, and the missing {world.crown.phrase}. Their quest begins because the crown matters to the child's pretend game."),
         QAItem("What clue started the mystery?", f"The clue was {world.spot.clue}. In the flashback, {p.hero} remembered that {world.spot.flashback}."),
         QAItem("Why did the companion tell the child to wait?", f"{p.companion.title()} predicted that if they chased the crown, {predict_risk(world)}. Waiting kept the quest safe."),
         QAItem("How was the crown found?", f"They used {world.method.phrase} because it matched a {world.spot.need} search. The crown was recovered {world.spot.phrase} after the ride was safe."),
-        QAItem("What lesson did the mystery teach?", "It taught that remembering carefully can solve a quest better than rushing. The child found the crown by following evidence calmly."),
+        QAItem("What lesson did the mystery teach?", "It taught that remembering carefully can solve a quest better than rushing. The crown came back because the child followed evidence calmly and waited for the ride to be safe."),
     ]
 
 
@@ -534,7 +534,7 @@ def format_qa(sample: StorySample) -> str:
     lines = ["", "== (1) Generation prompts -- asks that would produce this story =="]
     lines.extend(f"{i}. {prompt}" for i, prompt in enumerate(sample.prompts, 1))
     lines.append("")
-    lines.append("== (2) Story questions -- answerable from the story/world trace ==")
+    lines.append("== (2) Story questions -- answerable from the story details ==")
     for qa in sample.story_qa:
         lines.append(f"Q: {qa.question}")
         lines.append(f"A: {qa.answer}")

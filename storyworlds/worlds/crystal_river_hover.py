@@ -283,7 +283,7 @@ def introduce(world: World, hero: Entity, parent: Entity) -> None:
     )
     world.say(
         f"In that quiet garden, {hero.id} kept staring at {world.setting.landmark}, "
-        f"the sign that read '{world.setting.sign}'."
+        f"where a sign read '{world.setting.sign}'."
     )
 
 
@@ -304,7 +304,7 @@ def loves_prize(world: World, hero: Entity, prize: Entity) -> None:
     prize.worn_by = hero.id
     kept = "them" if prize.plural else "it"
     world.say(
-        f"{hero.id} loved {hero.pronoun('possessive')} new {prize.label} and kept {kept} on "
+        f"{hero.id} loved {hero.pronoun('possessive')} {prize.label} and kept {kept} on "
         f"as a badge of honor."
     )
 
@@ -323,7 +323,7 @@ def wants(world: World, hero: Entity, parent: Entity, activity: Activity) -> Non
     hero.memes["desire"] += 1
     world.say(
         f"{hero.id} wanted to {activity.verb}, but {hero.pronoun('possessive')} "
-        f"{parent.label_word} said no."
+        f"{parent.label_word} looked at the damp path and paused."
     )
 
 
@@ -349,7 +349,7 @@ def grab_hand(world: World, parent: Entity, hero: Entity, activity: Activity) ->
     propagate(world, narrate=False)
     world.say(
         f"{parent.label_word.capitalize()} held {hero.pronoun('object')} by the hand "
-        f"and said, 'You have to resist the urge to {activity.verb} today.'"
+        f"and said, 'You can want to {activity.verb}, and we can still choose a safer way.'"
     )
 
 
@@ -391,14 +391,19 @@ def compromise(world: World, parent: Entity, hero: Entity, activity: Activity,
     return None
 
 
-def accept(world: World, parent: Entity, hero: Entity, gear_def: Gear) -> None:
+def accept(world: World, parent: Entity, hero: Entity, activity: Activity,
+           prize: Entity, gear_def: Gear) -> None:
     hero.memes["joy"] += 1
     hero.memes["love"] += 1
     hero.memes["conflict"] = 0.0
     world.say(
         f"{hero.id}'s face brightened immediately. "
         f"{hero.pronoun().capitalize()} hugged {hero.pronoun('possessive')} {parent.label_word} "
-        f"and said, 'Let’s go!' after they {gear_def.tail}."
+        f"and said, 'Let's go!'"
+    )
+    world.say(
+        f"After they {gear_def.tail}, {hero.id} was {activity.gerund} near the river, "
+        f"and {hero.pronoun('possessive')} {prize.label} stayed clean."
     )
 
 
@@ -449,7 +454,7 @@ def tell(setting: Setting, activity: Activity, prize_cfg: Prize, hero_name: str 
     pout(world, hero, activity)
     gear_def = compromise(world, parent, hero, activity, prize)
     if gear_def:
-        accept(world, parent, hero, gear_def)
+        accept(world, parent, hero, activity, prize, gear_def)
 
     world.facts.update(
         hero=hero,
@@ -611,21 +616,22 @@ def story_qa(world: World) -> list[tuple[str, str]]:
         (f"What did {hero.id} want to do?",
          f"{hero.id} wanted to {act.verb} and go toward the crystal river."),
         (f"What did {hero.id} worry about?",
-         f"{hero.id} was worried about getting {act.soil} with the new {prize.label}."),
+         f"{hero.id} and {hero.pronoun('possessive')} {p} were worried that the {prize.label} could get {act.soil} on the damp path."),
     ]
     if f.get("conflict"):
         soiled = f.get("predicted_soil", "mud")
         qa.append((
             f"Explain why {hero.id} and {hero.pronoun('possessive')} {p} argued.",
             f"{hero.pronoun().capitalize()} {p} was worried that after {act.verb}, the "
-            f"new {prize.label} would get {soiled}, and wanted to avoid cleanup work."
+            f"{prize.label} would get {soiled}, and wanted to avoid cleanup work. "
+            f"{hero.id} still wanted the adventure, so they needed a safer plan."
         ))
     if f.get("resolved"):
         gear = f["gear"]
         qa.append((
             "How was the argument resolved?",
             f"{hero.id} and {hero.pronoun('possessive')} {p} chose {gear.label} and then "
-            f"{hero.pronoun('subject')} could {act.verb} safely."
+            f"{hero.pronoun('subject')} could {act.verb} safely. The {prize.label} stayed clean while the adventure continued."
         ))
         qa.append((
             f"How did {hero.id} feel at the end?",

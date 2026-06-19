@@ -328,22 +328,21 @@ def warn(world: World, parent: Entity, hero: Entity, activity: Activity, coin: E
     )
     world.say(
         f'"Careful," {parent.pronoun()} said. "If you start {activity.gerund}, '
-        f'that {coin.label} will drop from {hero.pronoun("possessive")} pocket before we get home."'
+        f'that {coin.label} could slip out of your pocket before we get home."'
     )
     return True
 
 
 def resist(world: World, hero: Entity) -> None:
     hero.memes["defiance"] += 1
-    world.say(f'{hero.id} frowned and said, "But I have to try!"')
+    world.say(f'{hero.id} frowned because the market still looked too exciting to leave alone. "But I really want to try!" {hero.pronoun()} said.')
 
 
 def grab_hand(world: World, parent: Entity, hero: Entity) -> None:
     hero.memes["grabbed"] += 1
     propagate(world, narrate=False)
     world.say(
-        f'Then {parent.label_word.capitalize()} gently grabbed '
-        f'{hero.pronoun("object")} by the hand.'
+        f'Then {parent.label_word.capitalize()} gently took {hero.pronoun("object")} by the hand before the crowd could tug them apart.'
     )
 
 
@@ -354,7 +353,7 @@ def offer_gear(world: World, parent: Entity, hero: Entity, coin: Entity,
         return None
     world.say(
         f'"Take my {gear_def.label}," {parent.pronoun()} said, '
-        f'"then you can keep exploring safely."'
+        f'"then the coin has a safe place and you can keep exploring."'
     )
     gear = world.add(Entity(
         id=gear_def.id,
@@ -406,7 +405,7 @@ def finish_market_trip(world: World, hero: Entity, parent: Entity, coin_id: str)
     world.say(
         f'{hero.id} handed over {coin.phrase or coin.label} and bought a sweet for the two of them.'
     )
-    world.say(f'At the end of the visit, {hero.id} hugged {hero.pronoun("possessive")} {parent.label_word} happily.')
+    world.say(f'At the end of the visit, the {coin.label} had done its job, and {hero.id} hugged {hero.pronoun("possessive")} {parent.label_word} happily.')
 
 
 def tell(params: StoryParams) -> World:
@@ -509,7 +508,7 @@ def story_qa(world: World) -> list[tuple[str, str]]:
         ),
         (
             f"Why did {parent.label_word.capitalize()} warn {hero.id}?",
-            f"{world.facts.get('risk_reason', f'{parent.label_word} did not think there was a risk.')} The warning is tied to the world model's loss risk rather than a general dislike of playing.",
+            f"{world.facts.get('risk_reason', f'{parent.label_word} did not think there was a risk.')} The warning is specific: the busy movement could make the coin slip away, so the parent is protecting the treat money rather than stopping play for no reason.",
         ),
     ]
     if conflict:
@@ -725,7 +724,7 @@ WORLD_KNOWLEDGE: dict[str, list[tuple[str, str]]] = {
     "coin": [
         ("Why can a coin be lost in a crowd?",
          "A pocket can be jostled and the object can fall out if it is not held or "
-         "stored safely. The market world treats that as a physical loss risk, not a moral failure."),
+         "stored safely. That makes coin loss a practical risk, not a moral failure."),
         ("Why use a small purse for coins?",
          "A coin purse gives the coins a separate, closed space, so they are less "
          "likely to fall out during movement. It is a practical fix that lets the child keep exploring."),

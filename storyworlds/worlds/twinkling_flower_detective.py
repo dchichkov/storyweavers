@@ -414,8 +414,8 @@ def predict_damage(world: World, hero: Entity, search: Search, flower: Entity) -
 
 def introduce(world: World, hero: Entity, helper: Entity, elder: Entity, trait: str) -> None:
     world.say(
-        f"Once upon a time, there was a {trait} child detective named {hero.label} "
-        f"who carried a notebook through {world.setting.line}."
+        f"Once upon a time, there was a {trait} child detective named {hero.label}, "
+        f"and a small surprise waited somewhere in {world.setting.line}."
     )
     world.say(f"{world.setting.mystery_line} {hero.label} thought, \"Every surprise leaves a clue if I look kindly.\"")
     world.say(f"{helper.label} followed with a tiny envelope marked SECRET.")
@@ -435,7 +435,7 @@ def place_flower(world: World, flower_cfg: Flower) -> Entity:
         )
     )
     world.say(
-        f"Some children called any clue plant a twinkling flower; the gardener called it a wondrous flower. "
+        f"The children whispered about twinkling flowers, and the gardener called the strangest ones wondrous. "
         f"In the middle grew a {flower_cfg.full_label}. {flower_cfg.clue_line}"
     )
     world.facts["flower"] = flower.id
@@ -502,7 +502,7 @@ def solve_case(world: World, hero: Entity, helper: Entity, elder: Entity, search
     helper.memes["joy"] += 1
     elder.memes["relief"] += 1
     world.say(f"The surprise was that {helper.label} had hidden a thank-you note for {hero.label}.")
-    world.say(f"{hero.label} wrote, \"Best clue: solve gently,\" and closed the case.")
+    world.say(f"{hero.label} wrote, \"Best clue: solve gently,\" and closed the case while the flower kept shining.")
     world.facts["resolved"] = True
     world.facts["surprise"] = "thank-you note"
 
@@ -570,7 +570,7 @@ def story_qa(world: World) -> list[tuple[str, str]]:
         (
             f"Why did {elder.label} stop {hero.label}?",
             f"{elder.label} stopped {hero.label} because {search.gerund} could {prediction['warning']}. "
-            f"The danger was predicted before the {flower.label} was actually harmed.",
+            f"The warning gave {hero.label} time to protect the {flower.label} before the clue was harmed.",
         ),
         (
             f"How did {helper.label} help solve the case?",

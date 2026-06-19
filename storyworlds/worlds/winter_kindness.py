@@ -396,13 +396,17 @@ def story_qa(world: World) -> list[tuple[str, str]]:
         ("Who is the story about?",
          f"It is about {hero.label}, {hero.pronoun('possessive')} {mentor.label}, and {creature.phrase}."),
         ("Why was the creature sleepy?",
-         f"The creature was exposed to the cold, and the world model predicted the cold would make them too sleepy to get home."),
+         "The creature had been out in the cold too long. The cold was making "
+         "the creature slower and sleepier, so it needed warmth before going home."),
         ("What did the mentor warn?",
-         f"{mentor.label.capitalize()} warned that leaving {creature.label} exposed would make them too sleepy to get home."),
+         f"{mentor.label.capitalize()} warned that leaving {creature.label} exposed "
+         "would make them too sleepy to get home. The warning helped the child "
+         "see that waiting would not be kind enough."),
         ("How did kindness solve the problem?",
          f"{hero.label} shared {garment.phrase}, which covered {creature.label}'s {creature.need}. That warmed the creature up."),
         (f"What did {hero.label} learn?",
-         f"{hero.label} learned that warmth grows bigger when it is shared."),
+         f"{hero.label} learned that warmth grows bigger when it is shared. "
+         "Giving up a favorite warm thing became a happier kind of bravery."),
     ]
 
 

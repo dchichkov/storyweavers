@@ -268,11 +268,11 @@ def active_risks(location: Rooftop, wind: Wind, kite: Kite) -> list[str]:
 
 def safe_to_fly(location: Rooftop, wind: Wind, kite: Kite) -> tuple[bool, str]:
     if wind.key not in kite.allowed_winds:
-        return False, f"the {kite.key} is not matched to {wind.key} weather"
+        return False, f"{kite.phrase} is not matched to {wind.phrase}"
     if wind.key in location.forbidden_winds:
-        return False, f"{wind.key} wind is not allowed at {location.key}"
+        return False, f"{wind.phrase} is not safe at {location.phrase}"
     if location.key in kite.forbidden_locations:
-        return False, f"{location.key} has hazards that do not work with a {kite.key} kite"
+        return False, f"{location.phrase} has hazards that do not work with {kite.phrase}"
     return True, "environment matched for a controlled launch"
 
 
@@ -357,19 +357,19 @@ def build_world(params: StoryParams) -> World:
 
 def _opening(world: World, pronoun: str, possessive: str) -> list[str]:
     hero = world.params.hero
-    kite_phrase = world.kite.phrase
     return [
-        f"{hero} stood at {world.location.phrase} with {world.kite.phrase} in a side bag.",
+        f"{hero} came to {world.location.phrase}, carrying {world.kite.phrase} tucked in a side bag.",
         f"The day had {world.wind.phrase}, and {possessive} friend had said this roof could be tricky.",
         f"Because the roof had {world.location.description}, {hero} checked everything before deciding to play.",
     ]
 
 
 def _flight_plan(world: World, subject: str, possessive: str) -> list[str]:
+    hero = world.entities["hero"].name
     return [
-        f"{world.entities['hero'].name} used {world.alternative.phrase} because {world.alternative.details}.",
-        f"With the line held near the rail and a clear handoff routine, {world.entities['hero'].name} and {subject} kept tension controlled.",
-        f"The kite caught air, and {world.entities['hero'].name} kept a wide distance while launching.",
+        f"{hero} followed the safe plan: {world.alternative.phrase}.",
+        f"{world.alternative.details.capitalize()}, so the line never became a surprise.",
+        f"The kite caught air, and {hero} kept a wide distance while launching.",
     ]
 
 
@@ -379,19 +379,20 @@ def _ground_plan(world: World, object_pronoun: str) -> list[str]:
     return [
         f"Because {human_reason(world.can_reason)}, {hero} did not launch a kite.",
         f"Instead, {hero} chose a safer plan: {details}.",
-        f"This kept {object_pronoun} safe while still enjoying the rooftop sky from afar.",
+        f"This kept {object_pronoun} safe while the rooftop sky stayed part of the day from afar.",
     ]
 
 
 def _closing(world: World) -> list[str]:
+    hero = world.entities["hero"].name
     return [
-        f"The lesson was simple: {world.alternative.lesson}",
-        f"{world.entities['hero'].name} learned to match kite choice, wind, and place before every launch.",
+        f"{world.alternative.lesson}",
+        f"{hero} packed the kite carefully, already knowing to match kite choice, wind, and place before every launch.",
     ]
 
 
 def human_reason(reason: str) -> str:
-    return reason.replace("_", " ").replace("edge patio", "the edge patio").replace("foil", "foil kite")
+    return reason.replace("_", " ").replace("edge patio", "the edge patio").replace("foil kite", "paperfoil trainer kite")
 
 
 def alternative_action(hero: str, alternative: SafeAlternative) -> str:
@@ -442,8 +443,8 @@ def generate(params: StoryParams) -> StorySample:
             else "No. The wind, kite, or roof did not match safely, so the child chose a grounded alternative instead of forcing a launch.",
         ),
         QAItem(
-            "What was chosen as the safe alternative?",
-            f"{alternative_action(hero_name, world.alternative)}. The alternative fits the trace because it covers {covers_text(world.alternative)} while preserving a rooftop-sky activity.",
+            "What safe plan was chosen?",
+            f"{alternative_action(hero_name, world.alternative)}. That plan fits because it covers {covers_text(world.alternative)} while preserving a rooftop-sky activity.",
         ),
         QAItem(
             "Why was the alternative safe here?",
@@ -451,7 +452,7 @@ def generate(params: StoryParams) -> StorySample:
         ),
         QAItem(
             "What risk was explicitly identified by the decision?",
-            f"The decision identified {human_reason(world.can_reason)} and active risks of {risks_text}. Naming those risks makes the safety choice grounded rather than a generic warning.",
+            f"The decision identified {human_reason(world.can_reason)} and active risks of {risks_text}. Naming those risks makes the safety choice specific instead of a generic warning.",
         ),
     ]
 

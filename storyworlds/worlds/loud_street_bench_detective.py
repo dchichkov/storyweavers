@@ -413,8 +413,8 @@ def predict_damage(world: World, hero: Entity, search: Search, clue: Entity) -> 
 
 def introduce(world: World, hero: Entity, friend: Entity, elder: Entity, trait: str) -> None:
     world.say(
-        f"Once upon a time, there was a {trait} child detective named {hero.label} "
-        f"who watched {world.setting.line} from a cozy bench."
+        f"Once upon a time, there was a {trait} child detective named {hero.label}, "
+        f"and the morning's noisiest case waited on a cozy bench at {world.setting.line}."
     )
     world.say(f"{world.setting.street_line} {friend.label} sat at the other end, not speaking to a friend yet.")
     world.say(f"{hero.label} thought, \"Kind detectives solve cases so people can talk again.\"")
@@ -498,7 +498,7 @@ def reconcile(world: World, hero: Entity, friend: Entity, elder: Entity, search:
     friend.memes["joy"] += 1
     elder.memes["relief"] += 1
     world.say(f"{friend.label} smiled and went to make peace before the street got any louder.")
-    world.say(f"{hero.label} closed the case: kindness had found the clue without bruising it.")
+    world.say(f"{hero.label} closed the case while the bench held the rescued clue safe and still.")
     world.facts["resolved"] = True
 
 
@@ -546,9 +546,10 @@ def generation_prompts(world: World) -> list[str]:
     hero = world.get(str(world.facts["hero"]))
     search = SEARCHES[str(world.facts["search"])]
     clue = CLUES[str(world.facts["clue"])]
+    article = "an" if clue.label[0].lower() in "aeiou" else "a"
     return [
         'Write a detective story that includes "loud street" and "cozy bench".',
-        f"Write a kind reconciliation story where {hero.label} investigates a {clue.label}.",
+        f"Write a kind reconciliation story where {hero.label} investigates {article} {clue.label}.",
         f"Write a story where {search.gerund} would damage the clue, so the detective uses a gentler method.",
     ]
 
@@ -570,7 +571,7 @@ def story_qa(world: World) -> list[tuple[str, str]]:
         (
             f"How did {friend.label} help?",
             f"{friend.label} offered the {tool.label}, which let {hero.label} examine the clue gently. "
-            f"That helped the case move toward reconciliation instead of another argument.",
+            f"That protected the evidence long enough for the case to move toward reconciliation instead of another argument.",
         ),
         (
             "What made the ending kind?",

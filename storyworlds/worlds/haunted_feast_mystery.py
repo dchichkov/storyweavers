@@ -372,14 +372,13 @@ def generate(params: Params) -> StorySample:
     ]
     world_qa = [
         QAItem(
-            "Was the mystery solved in the world state?",
-            f"The ending state is {world.facts['ending']}. "
-            f"The world reached insight {world.meters['insight']} with {world.meters['clues']} clues and peace {world.meters['peace']}.",
+            "Did Iris truly solve the mystery?",
+            f"Yes. Iris gathered enough clues and insight for the feast to quiet, so the ending is {world.facts['ending']} rather than merely postponed.",
         ),
         QAItem(
             "Which suspect secret mattered?",
             f"{secret_sentence(SUSPECTS[params.suspect])} "
-            "That fact was stored before the solution event and used by the chosen method.",
+            "That secret mattered because Iris used it to connect the clue to the missing guest instead of making a lucky guess.",
         ),
     ]
     return StorySample(

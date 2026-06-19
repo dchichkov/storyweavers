@@ -125,7 +125,7 @@ WINDOWS = {
 MEMORIES = {
     "grandma": Memory("grandma", "Grandma's ribbon", "Grandma once tied a red ribbon on the sill and said, 'Bring wonder back kindly.'", 3),
     "friend": Memory("friend", "Milo's promise", "Milo once promised to wait at the hilltop no matter how dusty the day became.", 2),
-    "song": Memory("song", "the window song", "A little song from last winter remembered how the glass brightened when people forgave each other.", 3),
+    "song": Memory("song", "the window song", "A little song from last winter reminded Anya how the glass brightened when people forgave each other.", 3),
 }
 
 CONFLICTS = {
@@ -293,21 +293,36 @@ def resolve_window(world: QuestWorld) -> None:
 
 
 def render_story(world: QuestWorld, prediction: str) -> str:
-    lines = [
-        "Everyone said the wondrous window only opened for people who came back with a softer heart.",
-        world.history[0].text,
-        world.history[1].text,
-        world.history[2].text,
-        world.history[3].text,
-        prediction,
-        world.history[4].text,
-        world.history[5].text,
-    ]
+    window = WINDOWS[world.params.window]
+    hill = HILLS[world.params.hill]
+    opening = (
+        "Everyone said the wondrous window only opened for people who came back "
+        "with a softer heart. That morning its glass had gone dim, and Anya "
+        f"could no longer see its promise: it {window.wonder}."
+    )
+    act1 = (
+        f"So {world.history[0].text} {world.history[1].text} "
+        f"At first, {hill.name} made the errand feel like a race against dust."
+    )
+    act2 = (
+        f"{world.history[2].text} The memory slowed Anya's steps just enough "
+        f"for her to listen. {world.history[3].text} {prediction}"
+    )
+    act3 = (
+        f"{world.history[4].text} {world.history[5].text}"
+    )
+    lines = [opening, act1, act2, act3]
     if world.facts["ending"] == "restored":
-        lines.append("When Anya looked through it, she saw the dusty hill shining like a road home.")
+        lines.append(
+            "When Anya looked through the glass, the dusty hill shone back like "
+            "a road home, and the window no longer looked lonely."
+        )
     else:
-        lines.append("Anya sat beside the sill anyway, warm enough to try again before sunset.")
-    return "\n".join(lines)
+        lines.append(
+            "Anya sat beside the sill anyway. The corner was still cloudy, but "
+            "her heart was warm enough to try again before sunset."
+        )
+    return "\n\n".join(lines)
 
 
 def generate(params: Params) -> StorySample:
@@ -326,31 +341,59 @@ def generate(params: Params) -> StorySample:
     story = render_story(world, prediction)
     prompts = [
         "Write a heartwarming quest with a wondrous window and a dusty hill.",
-        "Use a flashback to carry emotional state into the present conflict.",
-        "Make the window's outcome depend on simulated warmth, repair, and alignment.",
+        "Use a flashback to help the hero choose warmth during the present conflict.",
+        "Make the window brighten only when the hero's choice matches what it truly needs.",
     ]
     story_qa = [
         QAItem(
             "What flashback helped Anya?",
-            f"The flashback was: {world.facts['flashback']} "
-            f"It raised warmth to {world.meters['warmth']}, which helped determine the window's outcome.",
+            f"Anya remembered: {world.facts['flashback']} The memory helped "
+            "her slow down and choose with warmth instead of treating the quest "
+            "like a race.",
         ),
         QAItem(
             "What conflict stood in the way?",
             f"The conflict was that {world.facts['pressure']}. "
-            f"Anya answered by choosing to {world.facts['choice_action']}.",
+            f"Anya answered by choosing to {world.facts['choice_action']}, which "
+            "turned the problem back toward care instead of victory.",
         ),
     ]
+    restored = world.facts["ending"] == "restored"
+    aligned = bool(world.facts["aligned"])
+    story_qa.append(
+        QAItem(
+            "How did the story end?",
+            (
+                "The window brightened when Anya's choice matched what it needed. "
+                "By the end, the dusty hill looked like a road home instead of only "
+                "a hard climb."
+                if restored
+                else "The window only glimmered, so Anya knew the quest was not "
+                "finished yet. She stayed beside the cloudy corner with enough "
+                "warmth to try again."
+            ),
+        )
+    )
     world_qa = [
         QAItem(
             "Was the wondrous window restored?",
-            f"The ending state is {world.facts['ending']}. "
-            f"Repair ended at {world.meters['repair']}, warmth at {world.meters['warmth']}, and hope at {world.meters['hope']}.",
+            (
+                "Yes. The window was restored because Anya carried the memory "
+                "into the present conflict and made a choice that met the window's need."
+                if restored
+                else "Not fully. The window glimmered, but the story says one "
+                "cloudy corner remained because Anya still needed a gentler try."
+            ),
         ),
         QAItem(
             "What did the window need?",
             f"The window needed {world.facts['window_need']}. "
-            f"The chosen action was {'aligned' if world.facts['aligned'] else 'not aligned'} with that need.",
+            + (
+                "Anya's choice matched that need, which is why the glass brightened."
+                if aligned
+                else "Anya's choice did not fully match that need, which is why "
+                "the glass kept one cloudy corner."
+            ),
         ),
     ]
     return StorySample(

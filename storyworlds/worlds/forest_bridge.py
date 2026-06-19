@@ -389,8 +389,8 @@ def _render_story(world: World) -> str:
     )
     weather_line = f"Today, {weather.phrase}. {weather.lesson} That meant each step had to be handled with intention."
     prep = (
-        f"{hero_name} chose {tool.phrase} and {tool.prep}. {tool.detail} "
-        f"{hero_name} checked every step before stepping onto it."
+        f"{hero_name} chose {tool.phrase}. {he.capitalize()} {tool.prep}. {tool.detail} "
+        f"{hero_name} checked every step before stepping onto the bridge."
     )
     detail = _risk_line(world)
     if risk <= 1:
@@ -400,8 +400,8 @@ def _render_story(world: World) -> str:
         )
     else:
         crossing_line = (
-            f"{hero_name} crossed with one hand on {tool.phrase}, counting each plank before stepping. "
-            f"Some sections still rocked, but {his} care and {tool.phrase} kept {him} balanced."
+            f"{hero_name} crossed with the plan in place, counting each plank before stepping. "
+            f"Some sections still rocked, but {his} care and the safer plan kept {him} balanced."
         )
     closing = (
         f"When {hero_name} reached the far end, {his} breath settled and {his} courage settled too. "
@@ -440,7 +440,8 @@ def _story_qa(world: World) -> list[QAItem]:
         ),
         QAItem(
             "How did weather affect the difficulty?",
-            f"{weather.phrase.capitalize()} changed the challenge by adding {', '.join(h.replace('_', ' ') for h in weather.hazards) or 'very little extra risk'}. That changed what preparation the child needed before crossing.",
+            f"The weather changed the challenge by adding {', '.join(h.replace('_', ' ') for h in weather.hazards) or 'very little extra risk'}. "
+            f"That changed what preparation {p.hero} needed before crossing.",
         ),
         QAItem(
             "What lesson did the story show?",

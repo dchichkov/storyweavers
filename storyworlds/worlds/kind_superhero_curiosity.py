@@ -202,7 +202,7 @@ def notice_crisis(world: HeroWorld) -> None:
 
 def inner_monologue(world: HeroWorld) -> None:
     power = POWERS[world.params.power]
-    thought = f"I could punch the problem, Kind Comet thought, but {power.question.lower()}"
+    thought = f'"I could punch the problem," Kind Comet thought, "but {power.question.lower()}"'
     world.record(
         "thought",
         thought,
@@ -217,7 +217,7 @@ def consult_ally(world: HeroWorld) -> None:
     ally = ALLIES[world.params.ally]
     world.record(
         "ally",
-        f"{ally.name} hesitated because they {ally.doubt}.",
+        f"Beside her, {ally.name} hesitated because they {ally.doubt}.",
         "ally",
         "hero",
         trust=ally.trust_gain,
@@ -233,8 +233,8 @@ def predict_response(world: HeroWorld) -> str:
     else:
         imagined.meters["resolve"] += 1
     if imagined.meters["curiosity"] + imagined.meters["kindness"] + imagined.meters["resolve"] >= 7:
-        return "The thought showed her that a kind question could become stronger than a punch."
-    return "The thought warned her that kindness without the right question would only slow the danger."
+        return "That question made the whole rescue turn: Kind Comet would have to understand the fear before lifting anything."
+    return "The question helped, but it also warned her that kindness had to reach the real need, not only the loudest danger."
 
 
 def answer_kindly(world: HeroWorld) -> None:
@@ -243,7 +243,7 @@ def answer_kindly(world: HeroWorld) -> None:
     resolve = 2 if aligned else 1
     world.record(
         "kind_response",
-        f"Kind Comet chose to {response.name}: she would {response.kind_act}.",
+        f"Kind Comet chose to {response.name}. She would {response.kind_act}, even while the city watched.",
         "hero",
         "crisis",
         kindness=response.kindness,
@@ -273,7 +273,7 @@ def settle_city(world: HeroWorld) -> None:
     else:
         world.record(
             "unfinished",
-            "The city was safer, but Kind Comet knew the real worry still needed another gentle question.",
+            f"The city was safer, but Kind Comet could still feel the real worry underneath: {world.facts['hidden_need']}.",
             "hero",
             "crisis",
         )
@@ -284,9 +284,11 @@ def settle_city(world: HeroWorld) -> None:
 
 
 def render_story(world: HeroWorld, prediction: str) -> str:
+    crisis = CRISES[world.params.crisis]
     lines = [
         "The city called her Kind Comet because she rescued people without making them feel small.",
         world.history[0].text,
+        f"The trouble looked like a machine problem, but {crisis.name} trembled as if it had feelings caught inside it.",
         world.history[1].text,
         world.history[2].text,
         prediction,
@@ -296,7 +298,7 @@ def render_story(world: HeroWorld, prediction: str) -> str:
     if world.facts["ending"] == "saved":
         lines.append("Afterward, even the sirens sounded softer, as if the city had learned to ask before shouting.")
     else:
-        lines.append("Afterward, Kind Comet stayed nearby, curious enough to keep listening and kind enough not to rush.")
+        lines.append("Afterward, Kind Comet stayed nearby, one hand raised for safety and one ear open for the answer still coming.")
     return "\n".join(lines)
 
 
@@ -321,25 +323,29 @@ def generate(params: Params) -> StorySample:
     story_qa = [
         QAItem(
             "What did Kind Comet think before acting?",
-            f"Kind Comet's inner monologue was: {world.facts['inner_monologue']}. "
-            "That thought shifted the scene from force toward curiosity.",
+            f'Kind Comet paused before acting and asked, "{POWERS[params.power].question.lower()}" '
+            "That thought shifted the rescue away from force and toward curiosity.",
         ),
         QAItem(
             "How was the hero kind?",
             f"Kind Comet chose to {world.facts['kind_act']}. "
-            f"The kindness meter became {world.meters['kindness']}, and the ending was {world.facts['ending']}.",
+            f"She treated {CRISES[params.crisis].name} as something with a need, not as something to defeat.",
         ),
     ]
+    solved = world.facts["ending"] == "saved"
     world_qa = [
         QAItem(
             "Was the superhero crisis solved?",
-            f"The ending state is {world.facts['ending']}. "
-            f"Danger ended at {world.meters['danger']}, curiosity at {world.meters['curiosity']}, and resolve at {world.meters['resolve']}.",
+            (
+                f"Yes. Kind Comet calmed {CRISES[params.crisis].name} because she understood that {world.facts['hidden_need']}."
+                if solved
+                else f"Not completely. Kind Comet made {CRISES[params.crisis].name} safer, but she still needed to respond to the fact that {world.facts['hidden_need']}."
+            ),
         ),
         QAItem(
             "What hidden need drove the crisis?",
             f"The hidden need was that {world.facts['hidden_need']}. "
-            "That need was stored in the crisis entity before the response was chosen.",
+            "That is why the best rescue had to include listening, comfort, or companionship instead of only strength.",
         ),
     ]
     return StorySample(

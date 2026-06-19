@@ -51,6 +51,26 @@ resolve_params, generate, emit, -n, --all, --seed, --trace, --qa, --json,
 After the workers finished, the parent thread re-ran every new world's
 `--verify` command directly with `./.venv/bin/python` as a final cross-check.
 
+## Codex SDK One-Shot World Factory
+
+If `openai_codex` is installed in `./.venv`, `codex_world_factory.py` can launch
+a single SDK-backed Codex job to create one new world file. It uses the same
+one-file prompt shape as the subagent swarm, but sends it through
+`AsyncCodex.thread_start(...).run(...)`.
+
+Preview the exact prompt first:
+
+```bash
+./.venv/bin/python storyworlds/codex_world_factory.py moss_cookie_v2 \
+  --words moss cookie --features misunderstanding kindness --dry-run
+```
+
+Omit `--dry-run` to launch the SDK job. Defaults are conservative:
+`model=gpt-5.4`, `sandbox=workspace-write`, and `approval-mode=deny_all`.
+The generated prompt asks Codex to create exactly
+`storyworlds/worlds/<name>.py`, run `--verify`, sample 10 `--qa` stories, check
+JSON output, and finish with `git diff --check`.
+
 ## Review and Cleanup Notes
 
 `--verify` is necessary but not sufficient. It checks that a world's Python gate
@@ -67,6 +87,17 @@ for s in 0 1 2 3 4 5 6 7 8 9; do
   ./.venv/bin/python storyworlds/worlds/<name>.py -n 1 --seed "$s" --qa >/tmp/storyworld.out
 done
 ```
+
+To read across the whole collection, use the repo-level sampler:
+
+```bash
+./.venv/bin/python storyworlds/sample_worlds.py -n 10 --seed 42
+./.venv/bin/python storyworlds/sample_worlds.py -n 10 --seed 42 --no-qa
+```
+
+It discovers `storyworlds/worlds/*.py`, picks random worlds without replacement,
+and runs one seeded sample from each. QA is included by default because it tends
+to expose story-quality defects alongside the prose.
 
 Common cleanup defects from the Spark batch:
 
@@ -132,3 +163,25 @@ cluster. A final all-world sweep still returned `55/55` successful samples. The
 remaining weak-QA backlog is concentrated in older worlds such as `pirates.py`,
 `puddles.py`, `bakery_kindness.py`, `crystal_river_hover.py`,
 `mystery_spill.py`, and `theater_prop.py`.
+
+On 2026-06-19, a broader storytelling/QA cleanup pass used five parallel
+workers plus a local overflow lane to revisit the remaining worlds in
+approximately 10-variation `--qa` batches. The pass raised the floor on story
+shape and QA grounding across the older backlog, including the reference
+`puddles.py` / `pirates.py` worlds and many search, mystery, kindness, caution,
+and quest worlds.
+
+The integrated verification after that pass:
+
+```bash
+# all 65 worlds
+./.venv/bin/python storyworlds/worlds/<name>.py --verify
+./.venv/bin/python storyworlds/worlds/<name>.py -n 1 --seed 31000 --qa
+git diff --check
+```
+
+Results: `65/65` worlds passed `--verify`; `65/65` passed the seeded `--qa`
+smoke; the normal story/QA artifact scan reported no scaffold leaks for
+`world model`, raw meter language, unresolved template fields, doubled articles,
+or underscored tokens. The remaining work is mostly artful-variety polish:
+several worlds are coherent and grounded but still template-like.

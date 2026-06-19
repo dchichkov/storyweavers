@@ -313,9 +313,6 @@ def _pronouns(gender: str) -> tuple[str, str, str]:
 
 def helper_phrase(helper: str) -> str:
     words = helper.replace("_", " ")
-    family = {"mother", "uncle"}
-    if words in family:
-        return words
     return f"the {words}"
 
 
@@ -432,6 +429,8 @@ def _apply_rules(world: World) -> None:
             "dark": "dark corners hide edges and hidden gaps",
             "slip": "slippery or loose surfaces can pull you off balance",
         }[world.spot.hazard]
+    else:
+        world.facts["hazard_warning"] = "busy places can hide small clues and make careful searching important"
 
 
 def predict_risk(world: World) -> str:
@@ -512,9 +511,8 @@ def generate(params: StoryParams) -> StorySample:
         QAItem("Why can crowded places make searching hard?", "Crowds can hide small clues and move small objects quickly."),
         QAItem("Why do adults help in height or locked spots?", "Adults can add caution, permission, and a stable plan when reaching or opening is needed."),
     ]
-    qas_world.append(
-        QAItem(f"What is one risk of {world.spot.hazard} in search scenes?", sentence(world.facts["hazard_warning"]))
-    )
+    hazard_warning = sentence(world.facts.get("hazard_warning", predict_risk(world)))
+    qas_world.append(QAItem(f"What is one risk of {world.spot.hazard} in search scenes?", hazard_warning))
     qas_world.extend(QAItem(q, a) for q, a in HUMAN_QUESTIONS.get(params.lost_item, []))
 
     return StorySample(

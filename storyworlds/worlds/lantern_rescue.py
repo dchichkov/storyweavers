@@ -277,8 +277,9 @@ def _render_story(world: World) -> str:
         f"through {place.phrase} with {his} {mentor}. The lantern made a small golden circle, "
         f"but beyond it the night kept its secrets."
     )
+    sound = creature.sound if creature.sound[-1] in ".!?" else f"{creature.sound}."
     mystery = (
-        f"Near {place.landmark}, {p.hero} heard a whispery sound: \"{creature.sound}\" "
+        f"Near {place.landmark}, {p.hero} heard a whispery sound: \"{sound}\" "
         f"There, in the edge of the lantern light, was {creature_intro}."
     )
     warning = (
@@ -311,7 +312,7 @@ def _story_qa(world: World) -> list[QAItem]:
     c = world.creature
     _he, his, _him = _pronouns(p.gender)
     return [
-        QAItem("Who is the story about?", f"It is about {p.hero}, {his} {p.mentor}, and {c.phrase}."),
+        QAItem("Who is the story about?", f"It is about {p.hero}, {his} {p.mentor}, and {c.phrase}. The mentor matters because the child wants to help quickly but needs a calmer way."),
         QAItem(
             "What was mysterious at first?",
             f"{p.hero} heard the sound \"{c.sound}\" before seeing the {c.key}. The lantern revealed what the dark had hidden.",
@@ -322,7 +323,7 @@ def _story_qa(world: World) -> list[QAItem]:
         ),
         QAItem(
             "How did the child help?",
-            f"{p.hero} used {world.guide.phrase} and the brass lantern to guide the {c.key} to {c.need}.",
+            f"{p.hero} used {world.guide.phrase} and the brass lantern to guide the {c.key} to {c.need}. The help worked because the signal was gentle enough for a frightened creature to follow.",
         ),
         QAItem(
             "What lesson does the fable teach?",

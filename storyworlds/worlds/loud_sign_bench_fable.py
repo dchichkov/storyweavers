@@ -494,12 +494,25 @@ def predict_spoil(world: World, move: MistakeMove, clue: Entity) -> dict[str, ob
     sim = world.copy()
     risky_try(sim, MOVES[move.id], sim.get(clue.id))
     sim_clue = sim.get(clue.id)
+    clue_cfg = CLUES[clue.id]
     return {
         "risk": move.risk,
         "spoiled": sim_clue.meters["spoiled"] >= THRESHOLD,
-        "warning": move.warning,
+        "warning": spoil_warning(move, clue_cfg),
         "fired": list(sim.fired_names),
     }
+
+
+def spoil_warning(move: MistakeMove, clue: LessonClue) -> str:
+    clue_warnings = {
+        ("arrow_mark", "topple"): "topple the sign before its small arrow can be read",
+        ("bench_note", "topple"): "knock the folded bench note loose before it can be read",
+        ("bench_note", "startle"): "make everyone miss the folded bench note before it can be read",
+        ("sail_word", "splash"): "splash over the clue painted on the tiny sail",
+        ("sail_word", "startle"): "send the tiny ship bobbing before the sail word can be read",
+        ("ripple_star", "splash"): "splash over the ripple star before it can point anywhere",
+    }
+    return clue_warnings.get((clue.id, move.risk), move.warning)
 
 
 def warn(world: World, hero: Entity, elder: Entity, move: MistakeMove, clue: Entity) -> None:
@@ -609,7 +622,7 @@ def story_qa(params: StoryParams, world: World) -> list[QAItem]:
         ),
         QAItem(
             f"Why did {params.elder} stop {params.animal}?",
-            f"{params.elder} stopped {params.animal} because {move.gerund} could {move.warning}. "
+            f"{params.elder} stopped {params.animal} because {move.gerund} could {spoil_warning(move, clue)}. "
             "That consequence was predicted before the clue was actually spoiled.",
         ),
         QAItem(

@@ -305,7 +305,7 @@ MOVES = {
         "scatter",
         {"floor", "corner"},
         "scatter the tiny tracks across the blanket floor",
-        {"rumble", "tracks", "adventure"},
+        {"rumble", "adventure"},
     ),
 }
 
@@ -346,7 +346,7 @@ CLUES = {
         "snore echo",
         "snore echo in the tent corner",
         "corner",
-        {"squash", "scatter"},
+        {"scatter"},
         "The snore echo came from a frog sleeping in a tin cup.",
         "what sounded like a pocket-sized dragon",
         {"snore", "frog", "humor"},
@@ -373,6 +373,15 @@ PLANS = {
         "held the lantern still and counted the shadow first",
         {"teamwork", "shadow", "lantern"},
     ),
+    "quiet_listen": TeamPlan(
+        "quiet_listen",
+        "quiet listen",
+        {"corner"},
+        {"scatter"},
+        "Hold still and listen twice before charging in",
+        "held still and listened twice before charging in",
+        {"teamwork", "snore", "listening"},
+    ),
     "blanket_grid": TeamPlan(
         "blanket_grid",
         "blanket grid",
@@ -388,6 +397,7 @@ PLANS = {
 METHODS = {
     "two_hand_flap": "opening the flap together, one hand each",
     "lantern_count": "holding the lantern still and counting the shadow first",
+    "quiet_listen": "holding still and listening twice before charging in",
     "blanket_grid": "lifting the blanket by corners so the tracks stayed put",
 }
 
@@ -498,12 +508,24 @@ def predict_spoil(world: World, move: ScareMove, clue: Entity) -> dict[str, obje
     sim = world.copy()
     risky_try(sim, MOVES[move.id], sim.get(clue.id))
     sim_clue = sim.get(clue.id)
+    clue_cfg = CLUES[clue.id]
     return {
         "risk": move.risk,
         "spoiled": sim_clue.meters["spoiled"] >= THRESHOLD,
-        "warning": move.warning,
+        "warning": spoil_warning(move, clue_cfg),
         "fired": list(sim.fired_names),
     }
+
+
+def spoil_warning(move: ScareMove, clue: TentClue) -> str:
+    clue_warnings = {
+        ("button_print", "rip"): "rip the button print loose from the tent flap",
+        ("crumb_tracks", "rip"): "shake the crumb tracks away from their path",
+        ("crumb_tracks", "scatter"): "scatter the tiny tracks across the blanket floor",
+        ("moth_shadow", "squash"): "squash the shadow before anyone can see what made it",
+        ("snore_echo", "scatter"): "muddle the echo before anyone can tell where the sound slept",
+    }
+    return clue_warnings.get((clue.id, move.risk), move.warning)
 
 
 def warn(world: World, hero: Entity, teammate: Entity, move: ScareMove, clue: Entity) -> None:
@@ -591,7 +613,7 @@ CURATED = [
     StoryParams("backyard", "yank_flap", "button_print", "Mabel", "girl", "Uncle Bo", "dramatic", 171),
     StoryParams("meadow", "poke_shadow", "moth_shadow", "Leo", "boy", "Pip", "brave", 172),
     StoryParams("creek", "listen_rumble", "crumb_tracks", "Riley", "child", "Mina", "curious", 173),
-    StoryParams("backyard", "poke_shadow", "snore_echo", "Nina", "girl", "Nora", "sleepy", 174),
+    StoryParams("backyard", "listen_rumble", "snore_echo", "Nina", "girl", "Nora", "sleepy", 174),
 ]
 
 
@@ -611,7 +633,7 @@ def story_qa(params: StoryParams, world: World) -> list[QAItem]:
     return [
         QAItem(
             f"Why did {params.teammate} stop {params.name}?",
-            f"{params.teammate} stopped {params.name} because {move.gerund} could {move.warning}. "
+            f"{params.teammate} stopped {params.name} because {move.gerund} could {spoil_warning(move, clue)}. "
             "That danger was predicted before the clue was actually spoiled.",
         ),
         QAItem(

@@ -295,7 +295,8 @@ def arrive(world: World, hero: Entity, parent: Entity) -> None:
 
 def wants_to_roll(world: World, hero: Entity, parent: Entity, activity: Activity) -> None:
     hero.memes["desire"] += 1
-    world.say(f"{hero.id} wanted to {activity.verb} with the misty wagon.")
+    extra = " with the misty wagon" if activity.id == "misty_wagon" and "wagon" not in activity.verb else ""
+    world.say(f"{hero.id} wanted to {activity.verb}{extra}.")
 
 
 def warn(world: World, parent: Entity, hero: Entity, activity: Activity, prize: Entity) -> bool:
@@ -321,13 +322,16 @@ def defy(world: World, hero: Entity, activity: Activity) -> None:
 def grab_hand(world: World, hero: Entity, parent: Entity, activity: Activity) -> None:
     hero.memes["grabbed_by"] += 1
     propagate(world, narrate=False)
-    world.say(f'But {parent.label_word} held {hero.pronoun("object")} by the hand and said, "I said no. We can go slowly if safe."')
+    world.say(
+        f'But {parent.label_word} held {hero.pronoun("object")} by the hand and said, '
+        f'"I know you want to go. Let us make the path safe first."'
+    )
 
 
 def confusion(world: World, hero: Entity) -> None:
     if hero.memes["defiance"] >= THRESHOLD:
         hero.memes["confusion"] += 1
-        world.say(f"{hero.pronoun().capitalize()} thought {hero.pronoun('subject')} was being punished, and grew confused.")
+        world.say(f"{hero.pronoun().capitalize()} had thought the warning meant the adventure was over, and grew quiet for a moment.")
 
 
 def compromise(world: World, hero: Entity, parent: Entity, activity: Activity, prize: Entity) -> Gear | None:
@@ -353,7 +357,7 @@ def compromise(world: World, hero: Entity, parent: Entity, activity: Activity, p
         del world.entities[offered.id]
         return None
     world.say(
-        f"{parent.label_word.capitalize()} said, \"Let's {gear.prep} and then we can walk the wagon path safely.\""
+        f"{parent.label_word.capitalize()} said, \"Let's {gear.prep} first, and then the river path can still be ours.\""
     )
     return gear
 
@@ -372,7 +376,7 @@ def final_triumph(world: World, hero: Entity, parent: Entity) -> None:
         world.say(f"In the end, {hero.id} listened and stayed careful, and both were proud.")
         return
     world.say(
-        f"Together, {hero.id} and {parent.label_word} walked along the riverbank and found where the snail had started."
+        f"Together, {hero.id} and {parent.label_word} walked along the riverbank. The snail trail silvered the mud ahead, and the little lamp glowed over safe steps."
     )
     world.facts["resolved"] = True
 
@@ -605,14 +609,14 @@ def story_qa(world: World) -> list[QAItem]:
         ),
         QAItem(
             "What did the parent warn about?",
-            f"The parent warned that the {prize.label} could get {act.soil}. That warning is grounded in the world trace because the activity affects the same region the prize protects or occupies.",
+            f"The parent warned that the {prize.label} could get {act.soil}. The warning makes sense because the activity threatens the same part of the child or clothing that the prize protects.",
         ),
     ]
     if f.get("warned"):
         soil = f.get("predicted_soil", "ruined")
         work = f.get("predicted_workload", 0)
         warn_reason = (
-            f"{parent.label_word.capitalize()} warned because if {hero.id} tried to {act.verb}, the {prize.label} could get {soil}."
+            f"{parent.label_word.capitalize()} warned because {act.gerund} could make the {prize.label} get {soil}."
         )
         if work >= THRESHOLD:
             warn_reason += " That would add extra cleanup work."
@@ -622,9 +626,9 @@ def story_qa(world: World) -> list[QAItem]:
     if f.get("resolved"):
         gear = f.get("gear")
         plan = gear.prep if gear is not None else "chose a slower plan"
-        out.append(QAItem("How was the argument resolved?", f"They agreed to {plan} as a compromise, and then {hero.pronoun('subject')} could continue safely. The ending preserves the child's goal while changing the conditions around the risky activity."))
+        out.append(QAItem("How was the argument resolved?", f"They agreed to {plan} as a compromise, and then {hero.pronoun('subject')} could continue safely. The ending preserves the child's goal and shows the riverbank becoming possible again under safer conditions."))
     else:
-        out.append(QAItem("How was it resolved in the end?", "They did not ride far and stayed safe instead. The story closes by choosing restraint when the world has no grounded protective fix."))
+        out.append(QAItem("How was it resolved in the end?", "They did not ride far and stayed safe instead. The story closes by choosing restraint when there is no honest protective fix nearby."))
     return out
 
 

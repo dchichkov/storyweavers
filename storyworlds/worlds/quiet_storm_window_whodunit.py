@@ -413,8 +413,8 @@ def predict_spoil(world: World, hero: Entity, search: Search, clue: Entity) -> d
 
 def introduce(world: World, hero: Entity, helper: Entity, elder: Entity, trait: str) -> None:
     world.say(
-        f"Once upon a time, there was a {trait} child detective named {hero.label} "
-        f"who stood in {world.setting.line}."
+        f"Once upon a time, there was a {trait} child detective named {hero.label}, "
+        f"and a quiet storm had carried a whodunit into {world.setting.line}."
     )
     world.say(f"{world.setting.storm_line} The silent window held one bright mark and no explanation.")
     world.say(f"{helper.label} had been blamed for the missing lantern, and {hero.label} wanted the truth.")
@@ -441,7 +441,7 @@ def place_clue(world: World, clue_cfg: Clue) -> Entity:
 def suspect(world: World, hero: Entity, search: Search) -> None:
     world.break_para()
     world.say(f"{hero.label} suspected {search.suspect} and {search.urge}.")
-    world.say(f"Inside, {hero.pronoun('subject')} thought, \"A whodunit needs a who before snack time.\"")
+    world.say(f"Inside, {hero.pronoun('subject')} thought, \"A whodunit needs a who, but it needs the clue even more.\"")
     hero.memes["certainty"] += 1
 
 
@@ -498,7 +498,7 @@ def solve(world: World, hero: Entity, helper: Entity, elder: Entity, search: Sea
     helper.memes["joy"] += 1
     elder.memes["relief"] += 1
     world.say(f"The misunderstanding cleared: {helper.label} had not taken the lantern at all.")
-    world.say(f"{hero.label} closed the case while the quiet storm bowed against the silent window.")
+    world.say(f"{hero.label} closed the case while the quiet storm bowed against the silent window and left the clue shining.")
     world.facts["resolved"] = True
 
 
@@ -565,7 +565,7 @@ def story_qa(world: World) -> list[tuple[str, str]]:
         (
             f"Why did {elder.label} stop {hero.label}?",
             f"{elder.label} stopped {hero.label} because {search.gerund} could {prediction['warning']}. "
-            f"The warning was predicted before the {clue.label} was spoiled.",
+            f"That warning protected the {clue.label} before the case lost its fairest evidence.",
         ),
         (
             f"How did {helper.label} help?",
@@ -575,7 +575,7 @@ def story_qa(world: World) -> list[tuple[str, str]]:
         (
             "What was the misunderstanding?",
             f"{hero.label} thought the case pointed to {search.suspect}. "
-            f"The preserved clue showed that {helper.label} had not taken the lantern.",
+            f"The preserved clue showed a different explanation, so {helper.label} was no longer blamed for the lantern.",
         ),
     ]
 

@@ -353,7 +353,7 @@ def solve(world: World, hero: Entity, partner: Entity, case: Case, clue: Clue) -
     )
     world.say(
         f"{hero.id} and {partner.id} high-fived, because the lodge mystery had "
-        f"needed two detectives, not one."
+        f"needed two detectives, not one. Their notebook stayed open on the table, ready for the next small clue."
     )
 
 
@@ -546,11 +546,11 @@ def story_qa(world: World) -> list[tuple[str, str]]:
         ("Who were the detectives in the story?",
          f"The detectives were {hero.id} and {partner.id}. They solved the lodge mystery together."),
         ("What went missing?",
-         f"{case.owner_label}'s {case.missing} went missing from the {case.vanish_room}."),
+         f"{case.owner_label}'s {case.missing} went missing from the {case.vanish_room}. That disappearance is what started the lodge case."),
         ("What clue did they find?",
          f"They found {clue.label}. It mattered because it connected the missing {case.missing} to the {case.found_at}."),
         ("How did teamwork help?",
-         f"{hero.id} asked questions while {partner.id} used {tool.label}. Their shared work turned the clue into evidence."),
+         f"{hero.id} asked questions while {partner.id} used {tool.label}. Their shared work turned the clue into evidence, so neither detective had to solve the case alone."),
     ]
     if f.get("solved"):
         where = f"on the {case.found_at}" if case.found_at == "porch" else f"in the {case.found_at}"

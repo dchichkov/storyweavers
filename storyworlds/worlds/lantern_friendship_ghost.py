@@ -127,6 +127,10 @@ GESTURES = {
 }
 
 
+def need_sentence(ghost: Ghost) -> str:
+    return f"{ghost.name} needed {ghost.need}"
+
+
 def choices() -> list[Params]:
     return [
         Params(place=place, ghost=ghost, lantern=lantern, gesture=gesture)
@@ -253,11 +257,12 @@ def apply_gesture(world: GhostWorld, predicted: bool = False) -> None:
 
 def settle_haunting(world: GhostWorld) -> None:
     ghost = GHOSTS[world.params.ghost]
+    place = PLACES[world.params.place]
     friendship = 1 if world.meters["trust"] >= 3 and world.meters["fear"] <= 3 else 0
     if friendship:
         world.record(
             "settle",
-            f"{ghost.name} lowered the cold from the room because Nora had treated the haunting as a friend.",
+            f"{ghost.name} lowered the cold around {place.name} because Nora had treated the haunting as a friend.",
             "ghost",
             "child",
             friendship=1,
@@ -266,7 +271,7 @@ def settle_haunting(world: GhostWorld) -> None:
     else:
         world.record(
             "settle",
-            f"{ghost.name} faded only halfway; Nora had learned the shape of the sorrow, but not yet how to keep it company.",
+            f"{ghost.name} faded only halfway; Nora understood that {need_sentence(ghost)}, but had not answered it fully yet.",
             "ghost",
             "child",
         )
@@ -283,7 +288,7 @@ def render_story(world: GhostWorld, prediction: str) -> str:
         *[event.text for event in world.history[2:]],
     ]
     if world.facts["ending"] == "friendship":
-        lines.append("After that, the lantern shone softer whenever Nora passed a lonely place.")
+        lines.append(f"After that, the lantern shone softer whenever Nora passed a lonely place, and {world.entities['ghost'].name} no longer had to haunt it alone.")
     else:
         lines.append("After that, Nora kept the lantern ready, knowing friendship sometimes needed a second brave visit.")
     return "\n".join(lines)
@@ -314,7 +319,7 @@ def generate(params: Params) -> StorySample:
                 f"Her promise was to {world.facts['promise']}, which raised trust enough to change the haunting."
                 if world.facts["ending"] == "friendship"
                 else "Nora tried to treat the ghost as someone with a need rather than as a monster. "
-                f"Her promise was to {world.facts['promise']}, but the world state shows trust stayed too low for full friendship."
+                f"Her promise was to {world.facts['promise']}, but the ghost still needed another brave visit before full friendship."
             ),
         ),
         QAItem(
@@ -325,14 +330,17 @@ def generate(params: Params) -> StorySample:
     ]
     world_qa = [
         QAItem(
-            "What is the final friendship meter?",
-            f"The final friendship meter is {world.meters['friendship']}. "
-            f"The ending state is {world.facts['ending']}, derived after trust reached {world.meters['trust']} and fear reached {world.meters['fear']}.",
+            "Did Nora and the ghost become friends?",
+            (
+                f"Yes. Nora earned enough trust for {world.entities['ghost'].name} to lower the cold and accept the lantern as a shared light."
+                if world.facts["ending"] == "friendship"
+                else f"Not yet. Nora lowered the fear, but {world.entities['ghost'].name} still needed more trust before the haunting could become friendship."
+            ),
         ),
         QAItem(
             "Which entity held the ghost's need?",
-            f"The ghost entity {world.entities['ghost'].name} held the need: {world.facts['need']}. "
-            "The answer is grounded in the ghost state created before the story was rendered.",
+            f"{world.entities['ghost'].name} held the need: {world.facts['need']}. "
+            "That need explains why the lantern scene had to become a gesture of care, not a chase.",
         ),
     ]
     return StorySample(

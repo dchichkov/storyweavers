@@ -409,8 +409,9 @@ def _render_story(world: World) -> str:
     item_text = item.phrase
 
     opening = (
-        f"The tide was {tide.phrase} at {location.phrase}, and {tide.warning} "
-        f"{hero.id} saw {item_text} drift farther from the edge."
+        f"On a bright beach morning, {hero.id} and {guardian.id} stopped at {location.phrase}. "
+        f"The tide was {tide.phrase}, and {tide.warning} "
+        f"Then {hero.id} saw {item_text} move farther from the edge."
     )
     if item.key == "message_bottle":
         warning = f"{guardian.id} warned, 'Keep a distance; strong current can pull things out too fast.'"
@@ -419,14 +420,23 @@ def _render_story(world: World) -> str:
     elif item.key == "seashell":
         warning = f"{guardian.id} said, 'The waterline is slick there; slow hands and long distance are safer.'"
     else:
-        warning = f"{hero.id} noticed the object might wash away, and {guardian.id} called it out as risky."
+        warning = f"{hero.id} noticed it might wash away, and {guardian.id} called the risk out gently."
 
     action = method.action.format(hero=hero.id, guardian=guardian.id, item=item_text)
     outcome = method.result.format(hero=hero.id, guardian=guardian.id, item=item_text)
     lesson = (
-        f'{method.lesson} In the end, {hero.id} learned that tide-aware retrieval keeps the beach fun and safe.'
+        f"{method.lesson} By the time the water shone flat again, {hero.id} was back on dry sand "
+        f"with {item_text}, and the beach still felt safe enough for play."
     )
     return "\n\n".join([opening, warning, action, outcome, lesson])
+
+
+def _method_answer_phrase(method: RetrievalMethod) -> str:
+    if method.phrase.startswith("using "):
+        return method.phrase.removeprefix("using ")
+    if method.key == "ask_help":
+        return "a request for help from the guardian"
+    return method.phrase
 
 
 def _prompts(world: World) -> list[str]:
@@ -450,7 +460,7 @@ def _story_qa(world: World) -> list[QAItem]:
         ),
         QAItem(
             f"What did {hero.id} see at the water line?",
-            f"{hero.id} saw {item.phrase} near {world.location.phrase}. The world state marks that object with a {risk_label} risk, so it was not just a simple reach-and-grab moment.",
+            f"{hero.id} saw {item.phrase} near {world.location.phrase}. Its {risk_label} risk made it more than a simple reach-and-grab moment.",
         ),
         QAItem(
             "Why was rushing unsafe?",
@@ -458,11 +468,11 @@ def _story_qa(world: World) -> list[QAItem]:
         ),
         QAItem(
             "How did the safe method solve the exact risk?",
-            f"{hero.id} used {method.phrase}, which matched the tide, place, and object risk. That method works here because it solves {risk_label} without asking the child to move into the most dangerous part of the waterline.",
+            f"{hero.id} used {_method_answer_phrase(method)}, which matched the tide, place, and object risk. That method works here because it solves {risk_label} without asking the child to move into the most dangerous part of the waterline.",
         ),
         QAItem(
             "What changed by the end?",
-            f"{item.phrase.capitalize()} was recovered safely, and everyone stayed on safer footing instead of rushing into the water. The lesson shifted from wanting the object quickly to choosing timing, distance, or help.",
+            f"{item.phrase.capitalize()} was recovered safely, and everyone stayed on dry, steadier footing. The final image is not a scolding but a beach that can still be enjoyed because the choice became slower and safer.",
         ),
     ]
 
@@ -471,7 +481,7 @@ def _world_qa(world: World) -> list[QAItem]:
     base = [
         QAItem(
             "Why do method constraints depend on tide?",
-            "Different tides change water force and reach, so the same action can be safe at low tide but unsafe at high tide. The compatibility gate keeps methods from being used when the tide state would make them unrealistic.",
+            "Different tides change water force and reach, so the same action can be safe at low tide but unsafe at high tide. The story only chooses methods that make sense for the water's current state.",
         ),
         QAItem(
             "Why is asking for help considered safe in this world?",
@@ -481,7 +491,7 @@ def _world_qa(world: World) -> list[QAItem]:
     if world.tide.key in {"rising", "high"}:
         base.append(QAItem("Which retrieval style is usually avoided at these tides?", "Short solo or deep wading is avoided when the tide is rising or high. Those choices put the child closer to water that is moving outward or pressing against the shore."))
     if world.item.risk == "strong_current":
-        base.append(QAItem("Why was this object restricted to careful retrieval?", "A strong current can pull objects and people faster than expected. The answer must stay focused on controlled help or waiting, because the world trace marks the object with that current risk."))
+        base.append(QAItem("Why was this object restricted to careful retrieval?", "A strong current can pull objects and people faster than expected. That is why the safer answer stays focused on controlled help or waiting."))
     if world.item.risk == "rock_snag":
         base.append(QAItem("Why is distance important near rocks?", "Distance prevents hands from being pulled into snag points around uneven rock surfaces. It also gives the helper time to adjust the method before the object catches again."))
     return base

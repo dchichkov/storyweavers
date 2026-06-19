@@ -316,7 +316,8 @@ def thanks(world: World, child: Entity, dependent: Entity) -> None:
 
 def moral(world: World, child: Entity) -> None:
     world.say(
-        f"{child.id} learned that kindness in a bakery is the sweetest kind of hunger answer."
+        f"{child.id} learned that waiting for a fair share can make a bakery feel generous. "
+        "The warm smell of bread stayed in the room, and so did the kindness."
     )
 
 
@@ -565,7 +566,8 @@ def story_qa(world: World) -> list[tuple[str, str]]:
         ),
         (
             "What lesson did the hero learn?",
-            f"{child.id} learned that waiting and helping in a bakery can keep everyone better fed and happier.",
+            f"{child.id} learned that waiting and helping in a bakery can keep everyone better fed and happier. "
+            "The ending shows kindness as something the whole shop can feel.",
         ),
         (
             f"Was this a warned moment?",

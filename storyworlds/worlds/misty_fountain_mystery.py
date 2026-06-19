@@ -196,7 +196,7 @@ def question_suspect(world: FountainWorld) -> None:
     suspect = SUSPECTS[world.params.suspect]
     world.record(
         "question",
-        f"{suspect.name} admitted they {suspect.motive}.",
+        f"{suspect.name} gave Lina a motive: they {suspect.motive}.",
         "detective",
         "suspect",
         clarity=1,
@@ -218,13 +218,16 @@ def apply_fix(world: FountainWorld) -> None:
     fix = FIXES[world.params.fix]
     aligned = fix.targets in world.facts["answer"]
     repair = fix.repair + (1 if aligned else -1)
+    mist_delta = -min(world.meters["mist"], repair)
+    if not aligned:
+        mist_delta = -min(max(0, world.meters["mist"] - 1), max(0, repair - 1))
     world.record(
         "fix",
         f"Lina decided to {fix.name}, testing the clue against the fountain instead of guessing.",
         "detective",
         "fountain",
         repair=repair,
-        mist=-min(world.meters["mist"], repair),
+        mist=mist_delta,
     )
     world.facts["fix"] = fix.name
 
@@ -248,7 +251,7 @@ def resolve_mystery(world: FountainWorld) -> None:
     else:
         world.record(
             "haze",
-            "The fountain cleared for one breath, then folded the answer back into mist.",
+            "The fountain thinned for one breath, then folded the answer back into mist.",
             "fountain",
             "detective",
         )
@@ -259,7 +262,7 @@ def resolve_mystery(world: FountainWorld) -> None:
 
 def render_story(world: FountainWorld, prediction: str) -> str:
     parts = [
-        "The town square had one mystery left after sunset: why the misty fountain would not run clear.",
+        "After sunset, the town square had one mystery left: why the misty fountain would not run clear, and why everyone was whispering about it.",
         world.history[0].text,
         world.history[1].text,
         world.history[2].text,
@@ -268,9 +271,9 @@ def render_story(world: FountainWorld, prediction: str) -> str:
         world.history[4].text,
     ]
     if world.facts["ending"] == "solved":
-        parts.append("By morning, people made wishes again, and Lina wrote the solution before the mist could steal it.")
+        parts.append("By morning, people made wishes again, and Lina wrote the solution while clear water ticked into the basin.")
     else:
-        parts.append("By morning, Lina had narrowed the mystery, but the fountain still kept one wet secret.")
+        parts.append("By morning, Lina had narrowed the mystery, but mist still curled over the basin like a secret not ready to leave.")
     return "\n".join(parts)
 
 
@@ -302,18 +305,21 @@ def generate(params: Params) -> StorySample:
             "How did Lina solve the problem?",
             (
                 f"Lina used the {world.facts['clue_seen']} and then chose to {world.facts['fix']}. "
-                f"That repair changed the repair meter to {world.meters['repair']} and the mist meter to {world.meters['mist']}."
+                "Because that repair matched the clue, the fountain cleared and the real cause could be named."
                 if world.facts["ending"] == "solved"
                 else f"Lina used the {world.facts['clue_seen']} and tried to {world.facts['fix']}. "
-                f"The repair meter reached {world.meters['repair']}, but the world state stayed partial because the fix did not match the cause."
+                "The repair did not match the clue's cause, so the fountain only improved for a moment."
             ),
         ),
     ]
     world_qa = [
         QAItem(
             "Was the fountain mystery solved?",
-            f"The ending state is {world.facts['ending']}. "
-            f"The world had clarity {world.meters['clarity']}, repair {world.meters['repair']}, and mist {world.meters['mist']}.",
+            (
+                "Yes. Lina matched the clue to the correct repair, and the fountain ran clear again."
+                if world.facts["ending"] == "solved"
+                else "Not fully. Lina found useful evidence, but the chosen repair did not match the hidden cause."
+            ),
         ),
         QAItem(
             "Which suspect motive was recorded?",

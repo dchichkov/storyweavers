@@ -352,6 +352,30 @@ def predict_mess(world: World, actor: Entity, activity: Activity, prize_id: str)
 # ---------------------------------------------------------------------------
 # Verbs: each mutates state and (optionally) narrates.
 # ---------------------------------------------------------------------------
+def activity_delight(activity: Activity) -> str:
+    return {
+        "puddles": "the plip-plop sound made the whole path feel like a game",
+        "rain": "the raindrops made tiny taps on leaves and sleeves",
+        "mud": "the soft squelch underfoot made every step feel funny",
+        "paint": "the bright colors made the paper feel ready for an adventure",
+        "sand": "the warm grains slipped through small fingers like sugar",
+    }.get(activity.id, "it made the day feel full of play")
+
+
+def setting_detail(setting: Setting, activity: Activity) -> str:
+    if setting.indoor:
+        return f"The {setting.place.removeprefix('the ')} was quiet, and the play table waited nearby."
+    if activity.weather == "rainy":
+        return f"The air smelled fresh, and {setting.place} shone after the rain."
+    if setting.place == "the beach":
+        return "The beach was bright, and the sand looked ready for little footprints."
+    return f"{setting.place.capitalize()} looked wide and ready for play."
+
+
+def prize_was_clean(hero: Entity, prize: Entity) -> str:
+    return f"{hero.pronoun('possessive')} {prize.label} stayed clean"
+
+
 def _do_activity(world: World, actor: Entity, activity: Activity, narrate: bool = True) -> None:
     if activity.id not in world.setting.affords:
         return                                  # this place can't host the activity
@@ -364,18 +388,21 @@ def _do_activity(world: World, actor: Entity, activity: Activity, narrate: bool 
 def introduce(world: World, hero: Entity) -> None:
     trait = next((t for t in hero.traits if t != "little"), "")
     desc = f"little {trait} {hero.type}".strip()
-    world.say(f"Once upon a time, there was a {desc} named {hero.id}.")
+    world.say(f"{hero.id} was a {desc} who noticed every good place to play.")
 
 
 def loves_activity(world: World, hero: Entity, activity: Activity) -> None:
     hero.memes["love_play"] += 1
     where = "inside" if world.setting.indoor else "outside"
-    world.say(f"{hero.pronoun().capitalize()} loved playing {where} and {activity.gerund}.")
+    world.say(
+        f"{hero.pronoun().capitalize()} loved playing {where} and {activity.gerund}; "
+        f"{activity_delight(activity)}."
+    )
 
 
 def buys(world: World, parent: Entity, hero: Entity, prize: Entity) -> None:
     world.say(
-        f"One day, {hero.id}'s {parent.label_word} bought "
+        f"That week, {hero.id}'s {parent.label_word} bought "
         f"{hero.pronoun('object')} {prize.phrase}."
     )
 
@@ -384,25 +411,26 @@ def loves_prize(world: World, hero: Entity, prize: Entity) -> None:
     hero.memes["love"] += 1
     prize.worn_by = hero.id
     world.say(
-        f"{hero.id} loved {hero.pronoun('possessive')} new {prize.label} and "
-        f"wore {prize.it()} everywhere {hero.pronoun()} went."
+        f"{hero.id} loved {hero.pronoun('possessive')} {prize.label} and "
+        f"wore {prize.it()} as if the day had been made specially for {hero.pronoun('object')}."
     )
 
 
-def arrive(world: World, hero: Entity, parent: Entity) -> None:
+def arrive(world: World, hero: Entity, parent: Entity, activity: Activity) -> None:
     day = {"rainy": "One rainy day, ", "sunny": "One sunny day, "}.get(world.weather, "One day, ")
     go = "were in" if world.setting.indoor else "went to"
     world.say(
         f"{day}{hero.id} and {hero.pronoun('possessive')} "
         f"{parent.label_word} {go} {world.setting.place}."
     )
+    world.say(setting_detail(world.setting, activity))
 
 
 def wants(world: World, hero: Entity, parent: Entity, activity: Activity) -> None:
     hero.memes["desire"] += 1
     world.say(
-        f"{hero.id} wanted to {activity.verb}, but "
-        f"{hero.pronoun('possessive')} {parent.label_word} said no."
+        f"{hero.id} wanted to {activity.verb} right away, but "
+        f"{hero.pronoun('possessive')} {parent.label_word} held up a gentle hand."
     )
 
 
@@ -416,13 +444,14 @@ def warn(world: World, parent: Entity, hero: Entity, activity: Activity, prize: 
     clause = f"You'll get your {prize.label} {activity.soil}"
     if pred["workload"] >= THRESHOLD:
         clause += f", and then I'll have to clean {prize.it()}"
-    world.say(f'"{clause}," {hero.pronoun("possessive")} {parent.label_word} said.')
+    world.say(f'"{clause}," {hero.pronoun("possessive")} {parent.label_word} said. "Let\'s think first."')
     return True
 
 
 def defies(world: World, hero: Entity, activity: Activity) -> None:
     hero.memes["defiance"] += 1
-    world.say(f"{hero.id} didn't want to listen and tried to {activity.rush},")
+    world.say(f"{hero.id} heard the warning, but the wish to play was still tugging hard.")
+    world.say(f"{hero.pronoun().capitalize()} tried to {activity.rush},")
 
 
 def grab_hand(world: World, parent: Entity, hero: Entity, activity: Activity) -> None:
@@ -431,7 +460,7 @@ def grab_hand(world: World, parent: Entity, hero: Entity, activity: Activity) ->
     world.say(
         f"but {hero.pronoun('possessive')} {parent.label_word} grabbed "
         f"{hero.pronoun('possessive')} hand and said, "
-        f'"You have to resist the urge to {activity.verb} today."'
+        f'"You can want to {activity.verb}, and we can still choose the safe way."'
     )
 
 
@@ -439,7 +468,7 @@ def pout(world: World, hero: Entity, activity: Activity) -> None:
     if hero.memes["conflict"] >= THRESHOLD:     # only narrate embedded conflict
         world.say(
             f'{hero.id} pouted and crossed {hero.pronoun("possessive")} arms. '
-            f'"But I want to {activity.verb}!" {hero.pronoun()} said.'
+            f'"But I really want to {activity.verb}!" {hero.pronoun()} said.'
         )
 
 
@@ -461,20 +490,27 @@ def compromise(world: World, parent: Entity, hero: Entity, activity: Activity,
         del world.entities[gear.id]
         return None
     world.say(
-        f'{hero.pronoun("possessive").capitalize()} {parent.label_word} smiled and '
-        f'said, "How about we {gear_def.prep} and {activity.verb} together?"'
+        f'{hero.pronoun("possessive").capitalize()} {parent.label_word} looked at the '
+        f'{prize.label}, then back at {hero.id}, and smiled. '
+        f'"How about we {gear_def.prep} and {activity.verb} together?"'
     )
     return gear_def
 
 
-def accept(world: World, parent: Entity, hero: Entity, gear_def: Gear) -> None:
+def accept(world: World, parent: Entity, hero: Entity, activity: Activity, prize: Entity,
+           gear_def: Gear) -> None:
     hero.memes["joy"] += 1
     hero.memes["love"] += 1
     hero.memes["conflict"] = 0.0                # resolution clears the tension
     world.say(
         f"{hero.id}'s face lit up and {hero.pronoun()} hugged "
         f"{hero.pronoun('possessive')} {parent.label_word}. "
-        f'"Yay, let\'s do it!" {hero.pronoun()} said as they {gear_def.tail}.'
+        f'"Yay, let\'s do it!" {hero.pronoun()} said.'
+    )
+    world.say(
+        f"They {gear_def.tail}. Soon {hero.id} was {activity.gerund}, "
+        f"{prize_was_clean(hero, prize)}, and {parent.label_word} was laughing beside "
+        f"{hero.pronoun('object')}."
     )
 
 
@@ -506,7 +542,7 @@ def tell(setting: Setting, activity: Activity, prize_cfg: Prize,
 
     # Act 2 -- conflict: desire vs. the predicted mess, ending in a grabbed hand.
     world.para()
-    arrive(world, hero, parent)
+    arrive(world, hero, parent, activity)
     wants(world, hero, parent, activity)
     warn(world, parent, hero, activity, prize)
     defies(world, hero, activity)
@@ -517,7 +553,7 @@ def tell(setting: Setting, activity: Activity, prize_cfg: Prize,
     pout(world, hero, activity)
     gear_def = compromise(world, parent, hero, activity, prize)
     if gear_def:
-        accept(world, parent, hero, gear_def)
+        accept(world, parent, hero, activity, prize, gear_def)
 
     # Record facts for the Q&A generators (grounded in the simulated world).
     world.facts.update(hero=hero, parent=parent, prize=prize, prize_cfg=prize_cfg,
@@ -678,8 +714,8 @@ def generation_prompts(world: World) -> list[str]:
         f"Tell a gentle story where a {hero.type} named {hero.id} wants to "
         f"{act.verb} but {hero.pronoun('possessive')} {parent.label_word} worries "
         f"about {prize.phrase}, and they find a happy compromise.",
-        f'Write a simple story that uses the verb "resist", the noun "{kw}", and '
-        f"ends with a parent and child agreeing on a compromise.",
+        f'Write a simple story that uses the noun "{kw}" and ends with a parent '
+        f"and child pausing to choose a safer way to play.",
     ]
 
 
@@ -710,19 +746,20 @@ def story_qa(world: World) -> list[tuple[str, str]]:
         why += (f", and then {pw} would have to clean {prize.it()}. "
                 if work >= THRESHOLD else ". ")
         why += (f"When {hero.id} tried to {act.rush.rstrip(', ')}, {pos} {pw} "
-                f"grabbed {pos} hand and asked {obj} to resist the urge to "
-                f"{act.verb}.")
+                f"held {pos} hand and reminded {obj} they could still want to "
+                f"{act.verb} while choosing a safer way.")
         qa.append((f"Using the story above, explain how {hero.id}'s {pw} was "
                    f"upset and why.", why))
     if f.get("resolved"):
         gear = f["gear"]
-        prep = gear.prep.replace("your ", "their ").replace("our ", "their ")
         qa.append(("How did they solve the problem?",
-                   f"They agreed to {prep}, so {hero.id} could {act.verb} "
-                   f"without ruining {pos} {prize.label}."))
+                   f"They agreed to use {gear.label} first, so {hero.id} could {act.verb} "
+                   f"without ruining {pos} {prize.label}. The plan let {obj} "
+                   f"play while {pos} {prize.label} stayed clean."))
         qa.append((f"How did {hero.id} feel at the end?",
                    f"{hero.id} felt happy and hugged {pos} {pw} once they agreed "
-                   f"on the plan."))
+                   f"on the plan. At the end, {sub} was {act.gerund} with "
+                   f"{pw} laughing nearby."))
     return qa
 
 

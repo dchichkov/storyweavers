@@ -451,14 +451,17 @@ def story_qa(world: World) -> list[tuple[str, str]]:
         ("Who is the story about?",
          f"It is about {hero.label} and {friend.label}, who found a mystery near {world.setting.phrase}."),
         (f"What did {hero.label} think they saw?",
-         f"{hero.label} thought {shimmer.phrase} was a fallen star."),
+         f"{hero.label} thought {shimmer.phrase} was a fallen star. The shimmer "
+         "looked magical at first because it moved and shone near the river."),
         ("Why was trying alone risky?",
          f"Trying to {approach.action} was risky because it could lead to {risk}. "
          f"{friend.label} warned about that before they acted."),
         ("How did teamwork solve the mystery?",
-         f"They chose {plan.label}. That let them check the shimmer safely and discover it was {shimmer.real}."),
+         f"They chose {plan.label}. That let them check the shimmer safely and "
+         f"discover it was {shimmer.real}, without making the river problem worse."),
         (f"What did {hero.label} learn?",
-         f"{hero.label} learned that a mystery is easier to solve when friends check it together."),
+         f"{hero.label} learned that a mystery is easier to solve when friends "
+         "check it together. Slowing down helped them find the harmless truth."),
     ]
 
 

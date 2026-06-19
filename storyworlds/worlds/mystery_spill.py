@@ -303,7 +303,8 @@ def repair_clue(world: World, hero: Entity, friend: Entity, repair: Repair,
 
 def moral(world: World, hero: Entity) -> None:
     world.say(
-        f"{hero.id} learned that saying sorry and fixing the harm mattered more than being right."
+        f"{hero.id} learned that saying sorry and fixing the harm mattered more than being right. "
+        "Soon the clue was back in the mystery pile, and the two friends bent over it together."
     )
 
 
@@ -455,9 +456,9 @@ def story_qa(world: World) -> list[tuple[str, str]]:
         ("How did the warning predict the problem?",
          f"{friend.id} warned that if the {spill.label} spilled, {clue.label} would get {predicted} and they might lose the clue."),
         ("How did they fix the mistake?",
-         f"They used {repair.label} to repair {clue.label}. Then {friend.id} forgave {hero.id}."),
+         f"They used {repair.label} to repair {clue.label}. Then {friend.id} forgave {hero.id}, and the mystery team could keep working together."),
         (f"What did {hero.id} learn?",
-         f"{hero.id} learned that saying sorry and fixing the harm mattered more than being right."),
+         f"{hero.id} learned that saying sorry and fixing the harm mattered more than being right. The repaired clue mattered, but the repaired friendship mattered too."),
     ]
 
 

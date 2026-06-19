@@ -141,6 +141,14 @@ BRAVE_ACTS = {
 }
 
 
+def clue_phrase(clue: str) -> str:
+    return {
+        "direction": "choosing the path together",
+        "apology": "a real apology",
+        "memory": "remembering who mattered",
+    }.get(clue, clue)
+
+
 def valid_params(params: Params) -> tuple[bool, str]:
     if params.garden not in GARDENS:
         return False, f"unknown garden: {params.garden}"
@@ -292,7 +300,7 @@ def resolve_case(world: MysteryWorld) -> None:
 
 def render_story(world: MysteryWorld, prediction: str) -> str:
     lines = [
-        "Nia was brave enough to call herself a detective, but wiser cases taught her to listen first.",
+        "Nia was brave enough to call herself a detective, but the quietest cases had taught her to listen before she solved.",
         world.history[0].text,
         world.history[1].text,
         world.history[2].text,
@@ -302,9 +310,9 @@ def render_story(world: MysteryWorld, prediction: str) -> str:
         world.history[5].text,
     ]
     if world.facts["ending"] == "reconciled":
-        lines.append("Afterward, the quiet sign stayed quiet because the friends no longer needed it to speak for them.")
+        lines.append("Afterward, the quiet sign stayed quiet, and the friends walked out together past the fuzzy flower.")
     else:
-        lines.append("Afterward, Nia stayed beside the flower, brave enough to ask again more gently.")
+        lines.append("Afterward, Nia stayed beside the flower, brave enough to let the next question be softer.")
     return "\n".join(lines)
 
 
@@ -331,24 +339,31 @@ def generate(params: Params) -> StorySample:
         QAItem(
             "What did the quiet sign reveal?",
             f"The quiet sign revealed: {world.facts['sign_message']}. "
-            f"Its underlying clue was {world.facts['sign_clue']}.",
+            f"That message pointed Nia toward {clue_phrase(str(world.facts['sign_clue']))}, which was the kind of repair the friendship needed.",
         ),
         QAItem(
             "How did dialogue affect reconciliation?",
             f"Nia said, {world.facts['dialogue']} "
-            f"The dialogue was {'aligned' if world.facts['aligned'] else 'not aligned'} with the sign clue, so the ending became {world.facts['ending']}.",
+            + (
+                "That matched what the sign was asking for, so the friends could reconcile."
+                if world.facts["aligned"]
+                else "That was brave, but it was not the repair the sign was asking for, so the mystery stayed partly open."
+            ),
         ),
     ]
     world_qa = [
         QAItem(
             "Was the mystery reconciled?",
-            f"The ending state is {world.facts['ending']}. "
-            f"Clues ended at {world.meters['clues']}, courage at {world.meters['courage']}, and peace at {world.meters['peace']}.",
+            (
+                "Yes. Nia chose the brave act that matched the sign, and the friends no longer needed the sign to speak for them."
+                if world.facts["ending"] == "reconciled"
+                else "Not yet. Nia had clues and courage, but the chosen words did not answer the sign's real request."
+            ),
         ),
         QAItem(
             "What did the fuzzy flower remember?",
             f"The flower remembered that it {world.facts['flower_memory']}. "
-            "That memory was stored before the dialogue event and helped ground the answer.",
+            "Its memory gave Nia something real to listen to before she chose what to say.",
         ),
     ]
     return StorySample(
