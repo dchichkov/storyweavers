@@ -77,6 +77,7 @@ class Entity:
     @phrase.setter
     def phrase(self, value: str) -> None:
         object.__setattr__(self, "_phrase", value)
+
 @dataclass
 class Value:
     id: str
@@ -88,7 +89,7 @@ class Value:
 
     def __getattr__(self, name: str):
         if name in {"meters", "memes"}:
-            value = defaultdict(float)
+            value = __import__("collections").defaultdict(float)
             object.__setattr__(self, name, value)
             return value
         if name == "tags":
@@ -112,7 +113,7 @@ class Offer:
 
     def __getattr__(self, name: str):
         if name in {"meters", "memes"}:
-            value = defaultdict(float)
+            value = __import__("collections").defaultdict(float)
             object.__setattr__(self, name, value)
             return value
         if name == "tags":
@@ -136,7 +137,7 @@ class Setting:
 
     def __getattr__(self, name: str):
         if name in {"meters", "memes"}:
-            value = defaultdict(float)
+            value = __import__("collections").defaultdict(float)
             object.__setattr__(self, name, value)
             return value
         if name == "tags":
@@ -194,7 +195,7 @@ class Rule:
 
     def __getattr__(self, name: str):
         if name in {"meters", "memes"}:
-            value = defaultdict(float)
+            value = __import__("collections").defaultdict(float)
             object.__setattr__(self, name, value)
             return value
         if name == "tags":
@@ -544,6 +545,17 @@ def dump_trace(world: World) -> str:
             parts.append(f"role={e.role}")
         lines.append(f"  {e.id:8} ({e.type:7}) {' '.join(parts)}")
     return "\n".join(lines)
+
+
+@dataclass
+class StoryParams:
+    setting: str
+    value: str
+    offer: str
+    hero: str
+    friend: str
+    elder: str
+    seed: Optional[int] = None
 
 
 CURATED = [

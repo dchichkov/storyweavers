@@ -82,6 +82,7 @@ class Entity:
     @phrase.setter
     def phrase(self, value: str) -> None:
         object.__setattr__(self, "_phrase", value)
+
 @dataclass
 class Market:
     id: str
@@ -96,7 +97,7 @@ class Market:
 
     def __getattr__(self, name: str):
         if name in {"meters", "memes"}:
-            value = defaultdict(float)
+            value = __import__("collections").defaultdict(float)
             object.__setattr__(self, name, value)
             return value
         if name == "tags":
@@ -120,7 +121,7 @@ class AnimalKind:
 
     def __getattr__(self, name: str):
         if name in {"meters", "memes"}:
-            value = defaultdict(float)
+            value = __import__("collections").defaultdict(float)
             object.__setattr__(self, name, value)
             return value
         if name == "tags":
@@ -146,7 +147,7 @@ class FriendItem:
 
     def __getattr__(self, name: str):
         if name in {"meters", "memes"}:
-            value = defaultdict(float)
+            value = __import__("collections").defaultdict(float)
             object.__setattr__(self, name, value)
             return value
         if name == "tags":
@@ -170,7 +171,7 @@ class SupervisionAid:
 
     def __getattr__(self, name: str):
         if name in {"meters", "memes"}:
-            value = defaultdict(float)
+            value = __import__("collections").defaultdict(float)
             object.__setattr__(self, name, value)
             return value
         if name == "tags":
@@ -192,7 +193,7 @@ class Rule:
 
     def __getattr__(self, name: str):
         if name in {"meters", "memes"}:
-            value = defaultdict(float)
+            value = __import__("collections").defaultdict(float)
             object.__setattr__(self, name, value)
             return value
         if name == "tags":
@@ -495,7 +496,7 @@ class StoryParams:
 
     def __getattr__(self, name: str):
         if name in {"meters", "memes"}:
-            value = defaultdict(float)
+            value = __import__("collections").defaultdict(float)
             object.__setattr__(self, name, value)
             return value
         if name == "tags":

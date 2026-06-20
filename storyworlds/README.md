@@ -78,8 +78,11 @@ completions, token updates, and final status while they run.
 
 `openai_batch_world_factory.py` prepares OpenAI Batch API requests for many
 storyworld drafts using `gpt-5.4-mini` by default. Batch jobs cannot edit this
-checkout directly, so each request asks the model to return a JSON object with
-the target path, complete Python source, checks to run, and quality risks.
+checkout directly, so each request asks the model to call the `emit_python_file`
+custom tool with the target path, complete Python source, checks to run, and
+quality risks. Older JSON-object results can still be materialized by the
+script, but the preferred path is the raw Python tool payload because it avoids
+escaping a full source file inside JSON text.
 
 Preview the first request without writing files or contacting OpenAI:
 
@@ -99,7 +102,8 @@ Submit the same shape to the Batch API:
 
 ```bash
 OPENAI_API_KEY=... ./.venv/bin/python storyworlds/openai_batch_world_factory.py submit \
-  -n 100 --seed 123 --model gpt-5.4-mini
+  -n 100 --seed 123 --model gpt-5.4-mini \
+  --reasoning-effort low --max-output-tokens 32000
 ```
 
 Then inspect and download results:
@@ -112,6 +116,61 @@ Then inspect and download results:
 Downloaded results are JSONL rows keyed by `custom_id`. Their order is not
 guaranteed, so use the manifest's job list to map responses back to target
 world filenames before materializing and running `--verify` / `--qa`.
+
+### 1k `gpt-5.4-mini` Batch Runbook
+
+The 2026-06-20 1k materialized batch was generated with:
+
+```bash
+OPENAI_API_KEY="$(cat .API_KEY)" ./.venv/bin/python storyworlds/openai_batch_world_factory.py submit \
+  -n 1000 \
+  --seed 184114977 \
+  --model gpt-5.4-mini \
+  --reasoning-effort low \
+  --max-output-tokens 32000
+```
+
+Batch id and files:
+
+- Batch id: `batch_6a365d9a796c8190b61af021aaa75d29`
+- Manifest: `storyworlds/batches/storyworld_batch_20260620T092945Z_seed184114977_n1000.manifest.json`
+- Input JSONL: `storyworlds/batches/storyworld_batch_20260620T092945Z_seed184114977_n1000.jsonl`
+- Downloaded output: `storyworlds/batches/batch_6a365d9a796c8190b61af021aaa75d29.output.jsonl`
+
+The input JSONL was about 127 MiB, under the Batch API file limit that mattered
+for this run. There is no shared batch-level system prompt in this request
+format, and the API did not document `jsonl.gz` input for this path, so the
+prompt was materialized once per request. Prompt caching still helped: the run
+reported about 31.3M input tokens, about 30.4M cached tokens, about 5.7M output
+tokens, and about 116k reasoning tokens.
+
+Check status, download, and materialize:
+
+```bash
+OPENAI_API_KEY="$(cat .API_KEY)" ./.venv/bin/python storyworlds/openai_batch_world_factory.py status \
+  batch_6a365d9a796c8190b61af021aaa75d29
+
+OPENAI_API_KEY="$(cat .API_KEY)" ./.venv/bin/python storyworlds/openai_batch_world_factory.py download \
+  batch_6a365d9a796c8190b61af021aaa75d29
+
+./.venv/bin/python storyworlds/openai_batch_world_factory.py materialize \
+  storyworlds/batches/batch_6a365d9a796c8190b61af021aaa75d29.output.jsonl \
+  --manifest storyworlds/batches/storyworld_batch_20260620T092945Z_seed184114977_n1000.manifest.json \
+  --overwrite
+```
+
+Initial materialization wrote 1000 worlds. The first full sampled run was:
+
+```bash
+./.venv/bin/python storyworlds/openai_batch_world_factory.py sample-materialized \
+  --manifest storyworlds/batches/storyworld_batch_20260620T092945Z_seed184114977_n1000.manifest.json \
+  --timeout 5
+```
+
+The initial result was `ok=383 failed=604 missing=0 timeout=13`. After the
+mechanical repair pass it rose to `ok=726 failed=256 missing=0 timeout=18`.
+After the follow-up repair pass it rose to `ok=730 failed=252 missing=0
+timeout=18`, with zero Python compile errors.
 
 For an extra-safe trial, isolate the Codex sqlite runtime state instead of
 letting the SDK write to the normal `~/.codex/sqlite` directory:
@@ -166,6 +225,92 @@ Common cleanup defects from the Spark batch:
   child-facing Q&A.
 - Registry phrases and renderers need one clear article strategy to avoid output
   such as `a a bright beach ball` or `the a caring librarian`.
+
+### Batch Repair Playbook
+
+Start with compile errors, then sampled runtime errors. Compile failures are
+usually mechanical and cheap to repair in chunks:
+
+```bash
+./.venv/bin/python - <<'PY'
+import py_compile
+from pathlib import Path
+
+errors = []
+for path in sorted(Path("storyworlds/worlds/gpt-5.4-mini").glob("*.py")):
+    try:
+        py_compile.compile(str(path), doraise=True)
+    except py_compile.PyCompileError as exc:
+        errors.append((path, str(exc.exc_value)))
+
+print("compile_errors", len(errors))
+for path, msg in errors[:50]:
+    print(path, msg.splitlines()[0])
+PY
+```
+
+Then run the materialized sampler and aggregate failures by exception type and
+message:
+
+```bash
+./.venv/bin/python storyworlds/openai_batch_world_factory.py sample-materialized \
+  --manifest storyworlds/batches/storyworld_batch_20260620T092945Z_seed184114977_n1000.manifest.json \
+  --timeout 5 \
+  --out storyworlds/batches/storyworld_batch_20260620T092945Z_seed184114977_n1000.samples.jsonl
+```
+
+The high-yield mechanical repairs from the 1k batch were:
+
+- Syntax drift: fix unterminated strings, quote typos, and decorator omissions
+  first. Keep `compile_errors=0` as the gate before runtime sampling.
+- `World.get`: generated worlds often called `world.get(...)` even though the
+  local `World` dataclass had only `entity(...)`. Add a tiny fallback method
+  that returns an existing entity or creates a neutral placeholder.
+- `Entity.tags` and settable `Entity.phrase`: many renderers used these as if
+  they were common fields. Add a `tags: Set[str]` field and make `phrase`
+  settable when a generated file assigned to it.
+- Non-`Entity` dataclass shims: generated helper objects often accessed missing
+  soft-state attributes. Add a dataclass-level `__getattr__` fallback for those
+  helper classes, and use `__import__("collections").defaultdict(float)` inside
+  the shim so files do not also need a top-level `defaultdict` import.
+- `QAItem.__iter__`: some generated scripts unpacked QA items as `(q, a)`.
+  Keeping this compatibility in `storyworlds/results.py` fixed many scripts
+  without changing each generated file.
+- `CURATED` placement: some files put curated `StoryParams(...)` values before
+  the `StoryParams` class existed. Move `CURATED` after the class, or add the
+  missing dataclass where generation omitted it.
+- Entity-loop mutation: `for e in world.entities.values()` can fail if the loop
+  creates entities. Snapshot with `list(world.entities.values())`.
+
+Do not add a broad missing-attribute fallback to `Entity`. That experiment
+reduced the sampled pass rate because real entity-field bugs became silent
+placeholder objects and then broke later control flow in harder-to-debug ways.
+Patch repeated, narrow missing fields instead.
+
+After each repair chunk, rerun both the compile sweep and the materialized
+sampler. For the 1k batch, the remaining sampled failure classes after the
+follow-up pass were mostly per-world logic bugs rather than one safe global
+rewrite: `AttributeError`, `TypeError`, `KeyError`, `NameError`, 18 timeouts,
+and 16 `No valid combination matches the given options` failures.
+
+### Quality Signals From the 1k Batch
+
+The successful samples still need a human quality pass. The common scanner flags
+after the follow-up repair pass were:
+
+- `double_article`: 137 hits, usually phrases such as `a a ...` or `the a ...`.
+- `scaffold_language`: 14 hits, usually `world model`, `story world`, `trace`,
+  raw meter language, or similar implementation vocabulary.
+- `bad_seed_words`: 10 hits from source words that are not suitable for
+  child-facing output. Filter these before generation or reject them during
+  materialization.
+- `unresolved_template`: 8 hits with literal braces or format fragments.
+- `underscore_token`: 6 hits where ids leaked into story or QA text.
+
+Treat those as quality defects even when the script exits 0. The desired bar is
+the same as the hand-authored worlds: a clear premise, a state-driven turn, a
+concrete ending image, and grounded QA that explains cause/effect without
+exposing solver internals.
 
 ## Random QA Pass Notes
 

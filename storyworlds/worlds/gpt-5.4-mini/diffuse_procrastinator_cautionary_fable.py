@@ -90,6 +90,7 @@ class Entity:
     @phrase.setter
     def phrase(self, value: str) -> None:
         object.__setattr__(self, "_phrase", value)
+
 @dataclass
 class Place:
     id: str
@@ -100,7 +101,7 @@ class Place:
 
     def __getattr__(self, name: str):
         if name in {"meters", "memes"}:
-            value = defaultdict(float)
+            value = __import__("collections").defaultdict(float)
             object.__setattr__(self, name, value)
             return value
         if name == "tags":
@@ -125,7 +126,7 @@ class Task:
 
     def __getattr__(self, name: str):
         if name in {"meters", "memes"}:
-            value = defaultdict(float)
+            value = __import__("collections").defaultdict(float)
             object.__setattr__(self, name, value)
             return value
         if name == "tags":
@@ -151,7 +152,7 @@ class Risk:
 
     def __getattr__(self, name: str):
         if name in {"meters", "memes"}:
-            value = defaultdict(float)
+            value = __import__("collections").defaultdict(float)
             object.__setattr__(self, name, value)
             return value
         if name == "tags":
@@ -177,7 +178,7 @@ class Remedy:
 
     def __getattr__(self, name: str):
         if name in {"meters", "memes"}:
-            value = defaultdict(float)
+            value = __import__("collections").defaultdict(float)
             object.__setattr__(self, name, value)
             return value
         if name == "tags":
@@ -235,7 +236,7 @@ class Rule:
 
     def __getattr__(self, name: str):
         if name in {"meters", "memes"}:
-            value = defaultdict(float)
+            value = __import__("collections").defaultdict(float)
             object.__setattr__(self, name, value)
             return value
         if name == "tags":
@@ -446,7 +447,7 @@ class StoryParams:
 
     def __getattr__(self, name: str):
         if name in {"meters", "memes"}:
-            value = defaultdict(float)
+            value = __import__("collections").defaultdict(float)
             object.__setattr__(self, name, value)
             return value
         if name == "tags":

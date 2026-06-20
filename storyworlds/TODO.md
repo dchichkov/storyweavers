@@ -26,6 +26,35 @@
 
 ## Current cleanup queue
 
+- 2026-06-20 `gpt-5.4-mini` 1k Batch API run: submitted
+  `batch_6a365d9a796c8190b61af021aaa75d29` with seed `184114977`,
+  `--reasoning-effort low`, and `--max-output-tokens 32000`. Materialized
+  output from
+  `storyworlds/batches/batch_6a365d9a796c8190b61af021aaa75d29.output.jsonl`
+  into `storyworlds/worlds/gpt-5.4-mini/`. The initial materialized sampler
+  result was `ok=383 failed=604 missing=0 timeout=13`; the main compatibility
+  repair pass raised it to `ok=726 failed=256 missing=0 timeout=18`; a follow-up
+  repair pass raised it to `ok=730 failed=252 missing=0 timeout=18`.
+- Repairs applied to the 1k generated batch: zeroed compile errors; added common
+  generated-world compatibility shims for `World.get`, entity `tags`, settable
+  `Entity.phrase`, non-`Entity` dataclass soft attributes, iterable `QAItem`,
+  `CURATED` placement, missing `StoryParams`, and entity-loop snapshots. The
+  follow-up pass fixed the `defaultdict` dependency inside generated shims and
+  normalized missing/undecorated `StoryParams` definitions. A broad
+  `Entity.__getattr__` fallback was tested and rejected because it reduced the
+  sampled pass rate by hiding real entity bugs.
+- Remaining generated-batch runtime backlog: the latest sampled failure mix is
+  mostly per-world logic rather than one obvious global rewrite: 92
+  `AttributeError`, 49 `TypeError`, 49 `KeyError`, 26 `NameError`, 18 timeouts,
+  16 `No valid combination matches the given options` story errors, plus a
+  smaller tail of value/index/import/type annotation defects. Good next moves
+  are targeted fixes for repeated exact errors, then a quarantine list for
+  worlds whose gates produce no valid sampled combination or hang.
+- Remaining generated-batch quality backlog in successful samples:
+  `double_article` remains common, followed by scaffold/debug vocabulary,
+  child-unsuitable seed words, unresolved format templates, and underscored ids
+  leaking into story or QA text. Track these as real quality defects even when
+  `sample-materialized` exits 0.
 - 2026-06-17 random QA pass: fixed sampled crashers in
   `icy_rusty_fence.py`, `loud_street_bench_detective.py`,
   `crystal_river_hover.py`, and `cozy_bridge_lamp.py`; fixed sampled QA/prose
