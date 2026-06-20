@@ -4,6 +4,8 @@
 The Batch API cannot edit this checkout directly. Each request asks the model to
 call a custom tool with the complete Python source as raw tool input; a separate
 materialization/review pass can then write and verify the generated files.
+
+Checkpoint: 1k run.
 """
 
 from __future__ import annotations
