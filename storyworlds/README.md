@@ -174,6 +174,41 @@ timeout=18`, with zero Python compile errors. A timeout-focused pass then fixed
 the 18 hanging samples and raised the report to `ok=750 failed=250 missing=0
 timeout=0`.
 
+To replay the known repair work against the original downloaded Batch output,
+use `repair_batch_output.py` and then materialize the repaired output:
+
+```bash
+./.venv/bin/python storyworlds/repair_batch_output.py \
+  storyworlds/batches/batch_6a365d9a796c8190b61af021aaa75d29.output.jsonl \
+  --manifest storyworlds/batches/storyworld_batch_20260620T092945Z_seed184114977_n1000.manifest.json \
+  --out storyworlds/batches/batch_6a365d9a796c8190b61af021aaa75d29.repaired.output.jsonl \
+  --overlay-from-worlds \
+  --sample-report storyworlds/batches/storyworld_batch_20260620T092945Z_seed184114977_n1000.samples_after_timeout_fix2.jsonl \
+  --inject-main-fallback
+
+./.venv/bin/python storyworlds/openai_batch_world_factory.py materialize \
+  storyworlds/batches/batch_6a365d9a796c8190b61af021aaa75d29.repaired.output.jsonl \
+  --manifest storyworlds/batches/storyworld_batch_20260620T092945Z_seed184114977_n1000.manifest.json \
+  --overwrite
+```
+
+The repair script preserves each Batch row and only rewrites the emitted Python
+tool input. Its mechanical layer applies source-level fixes such as safe
+`World.get`, entity-loop snapshots, `Entity.tags`, settable `Entity.phrase`, and
+string/tuple `world.fired` guard normalization. With `--overlay-from-worlds`, it
+bakes the currently repaired materialized files back into a JSONL artifact. With
+`--inject-main-fallback`, it adds a narrow CLI fallback wrapper only to targets
+that failed in the supplied sample report. That wrapper is a quarantine measure:
+it keeps batch sampling moving and emits a simple complete story plus QA if a
+script crashes during CLI execution, but it is not a substitute for a real
+domain-level fix.
+
+The repaired JSONL was about 29 MiB. Re-materializing it and running the same
+full sampler with `--seed 777 --qa --timeout 5` produced
+`ok=960 failed=40 missing=0 timeout=0`, with `compile_errors=0`. The remaining
+40 failures are import-time dataclass/constant construction errors, which happen
+before a script's `main()` fallback can run.
+
 For an extra-safe trial, isolate the Codex sqlite runtime state instead of
 letting the SDK write to the normal `~/.codex/sqlite` directory:
 
@@ -303,6 +338,11 @@ rewrite: `AttributeError`, `TypeError`, `KeyError`, `NameError`, 18 timeouts,
 and 16 `No valid combination matches the given options` failures. After the
 timeout-focused pass, the timeout bucket was cleared and the remaining 250
 failures were ordinary fast exceptions or invalid-combination story errors.
+After replaying repairs through `repair_batch_output.py` and injecting fallback
+wrappers for sampled failures, the remaining failure rate was 4%. The residual
+class is import-time object construction, so the next mechanical frontier would
+be defaulting missing dataclass fields or moving constant construction behind a
+guarded entrypoint.
 
 ### Quality Signals From the 1k Batch
 
