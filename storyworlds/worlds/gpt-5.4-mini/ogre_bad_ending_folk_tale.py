@@ -177,7 +177,7 @@ def propagate(world: World, narrate: bool = True) -> list[str]:
     child = world.entities.get("child")
     ogre = world.entities.get("ogre")
     bait = world.entities.get("bait")
-    if child and ogre and bait and child.meters["taken"] >= THRESHOLD and "grab" not in world.fired:
+    if child and ogre and bait and child.meters["taken"] >= THRESHOLD and ("grab",) not in world.fired:
         world.fired.add(("grab",))
         ogre.meters["angry"] += 1
         child.memes["fear"] += 1

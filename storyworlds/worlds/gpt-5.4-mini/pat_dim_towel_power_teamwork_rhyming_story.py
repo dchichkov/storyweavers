@@ -205,7 +205,7 @@ class Rule:
 
 def _r_wet_spark(world: World) -> list[str]:
     out: list[str] = []
-    if world.get("towel").meters["wet"] >= THRESHOLD and "pat-dim" not in world.fired:
+    if world.get("towel").meters["wet"] >= THRESHOLD and ("pat-dim",) not in world.fired:
         world.fired.add(("pat-dim",))
         world.get("room").meters["dim"] += 1
         out.append("The room grew a little dim, and the wet towel sagged with a sad little sway.")

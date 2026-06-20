@@ -233,9 +233,10 @@ def _r_worry(world: World) -> list[str]:
     for e in list(world.entities.values()):
         if e.meters["mystery"] < THRESHOLD:
             continue
-        if e.id in world.fired:
+        sig = (e.id, "worry")
+        if sig in world.fired:
             continue
-        world.fired.add((e.id, "worry"))
+        world.fired.add(sig)
         for kid in list(world.entities.values()):
             if kid.role == "detective":
                 kid.memes["focus"] += 1

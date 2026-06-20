@@ -206,7 +206,7 @@ def _r_detect(world: World) -> list[str]:
 def _r_relief(world: World) -> list[str]:
     out: list[str] = []
     token = world.get("token")
-    if token.meters["returned"] >= THRESHOLD and "celebrate" not in world.fired:
+    if token.meters["returned"] >= THRESHOLD and ("celebrate",) not in world.fired:
         world.fired.add(("celebrate",))
         world.get("hero").memes["relief"] += 1
         world.get("friend").memes["relief"] += 1

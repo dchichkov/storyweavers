@@ -242,7 +242,7 @@ class Rule:
 def _r_fear(world: World) -> list[str]:
     out = []
     for e in list(world.entities.values()):
-        if e.meters["haunted"] >= THRESHOLD and ("ghost" not in world.fired):
+        if e.meters["haunted"] >= THRESHOLD and (("ghost",) not in world.fired):
             e.memes["fear"] += 1
             out.append("__ghost__")
             world.fired.add(("ghost",))

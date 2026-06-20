@@ -262,7 +262,7 @@ def _r_find(world: World) -> list[str]:
     out: list[str] = []
     magnet = world.get("magnet")
     shelf = world.get("shelf")
-    if magnet.meters["stuck"] >= THRESHOLD and "found" not in world.fired:
+    if magnet.meters["stuck"] >= THRESHOLD and ("found",) not in world.fired:
         world.fired.add(("found",))
         shelf.meters["clue"] += 1
         out.append("__found__")

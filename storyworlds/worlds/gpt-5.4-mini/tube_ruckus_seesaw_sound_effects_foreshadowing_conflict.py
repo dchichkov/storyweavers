@@ -192,11 +192,11 @@ def _r_rumble(world: World) -> list[str]:
     out: list[str] = []
     tube = world.entities.get("tube")
     seesaw = world.entities.get("seesaw")
-    if tube and tube.meters["shaking"] >= THRESHOLD and "tube_rumble" not in world.fired:
+    if tube and tube.meters["shaking"] >= THRESHOLD and ("tube_rumble",) not in world.fired:
         world.fired.add(("tube_rumble",))
         tube.meters["noise"] += 1
         out.append("__tube_rumble__")
-    if seesaw and seesaw.meters["creak"] >= THRESHOLD and "seesaw_creak" not in world.fired:
+    if seesaw and seesaw.meters["creak"] >= THRESHOLD and ("seesaw_creak",) not in world.fired:
         world.fired.add(("seesaw_creak",))
         seesaw.meters["noise"] += 1
         out.append("__seesaw_creak__")
@@ -206,7 +206,7 @@ def _r_rumble(world: World) -> list[str]:
 def _r_conflict(world: World) -> list[str]:
     out: list[str] = []
     tube = world.entities.get("tube")
-    if not tube or tube.meters["jammed"] < THRESHOLD or "conflict" in world.fired:
+    if not tube or tube.meters["jammed"] < THRESHOLD or ("conflict",) in world.fired:
         return out
     world.fired.add(("conflict",))
     for e in list(world.entities.values()):
@@ -219,7 +219,7 @@ def _r_conflict(world: World) -> list[str]:
 def _r_relief(world: World) -> list[str]:
     out: list[str] = []
     tube = world.entities.get("tube")
-    if not tube or tube.meters["fixed"] < THRESHOLD or "relief" in world.fired:
+    if not tube or tube.meters["fixed"] < THRESHOLD or ("relief",) in world.fired:
         return out
     world.fired.add(("relief",))
     for e in list(world.entities.values()):

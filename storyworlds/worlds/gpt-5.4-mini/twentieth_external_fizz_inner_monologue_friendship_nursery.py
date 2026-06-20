@@ -210,7 +210,7 @@ class Rule:
 def _r_fizz(world: World) -> list[str]:
     out: list[str] = []
     bottle = world.entities.get("bottle")
-    if bottle and bottle.meters["shaken"] >= THRESHOLD and "fizz" not in world.fired:
+    if bottle and bottle.meters["shaken"] >= THRESHOLD and ("fizz",) not in world.fired:
         world.fired.add(("fizz",))
         bottle.meters["fizzing"] += 1
         world.get("room").meters["mess"] += 1

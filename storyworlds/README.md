@@ -170,7 +170,9 @@ Initial materialization wrote 1000 worlds. The first full sampled run was:
 The initial result was `ok=383 failed=604 missing=0 timeout=13`. After the
 mechanical repair pass it rose to `ok=726 failed=256 missing=0 timeout=18`.
 After the follow-up repair pass it rose to `ok=730 failed=252 missing=0
-timeout=18`, with zero Python compile errors.
+timeout=18`, with zero Python compile errors. A timeout-focused pass then fixed
+the 18 hanging samples and raised the report to `ok=750 failed=250 missing=0
+timeout=0`.
 
 For an extra-safe trial, isolate the Codex sqlite runtime state instead of
 letting the SDK write to the normal `~/.codex/sqlite` directory:
@@ -281,6 +283,13 @@ The high-yield mechanical repairs from the 1k batch were:
   missing dataclass where generation omitted it.
 - Entity-loop mutation: `for e in world.entities.values()` can fail if the loop
   creates entities. Snapshot with `list(world.entities.values())`.
+- Fixed-point timeout: generated `propagate` / `fixpoint` loops often use
+  `world.fired` to make rules one-shot. The timeout class came from two small
+  variants of the same defect: a guard checked `"rule" in world.fired` while the
+  rule stored `("rule",)`, or a rule appended a sentinel such as
+  `__worry__` without adding any fired signature at all. Fix by making the guard
+  and stored signature identical, or by adding a narrow one-shot signature before
+  mutating meters/memes and returning a sentinel.
 
 Do not add a broad missing-attribute fallback to `Entity`. That experiment
 reduced the sampled pass rate because real entity-field bugs became silent
@@ -291,7 +300,9 @@ After each repair chunk, rerun both the compile sweep and the materialized
 sampler. For the 1k batch, the remaining sampled failure classes after the
 follow-up pass were mostly per-world logic bugs rather than one safe global
 rewrite: `AttributeError`, `TypeError`, `KeyError`, `NameError`, 18 timeouts,
-and 16 `No valid combination matches the given options` failures.
+and 16 `No valid combination matches the given options` failures. After the
+timeout-focused pass, the timeout bucket was cleared and the remaining 250
+failures were ordinary fast exceptions or invalid-combination story errors.
 
 ### Quality Signals From the 1k Batch
 

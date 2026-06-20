@@ -214,7 +214,7 @@ def _r_foreshadow(world: World) -> list[str]:
     child = world.get("child")
     path = world.get("path")
     ghost = world.get("ghost")
-    if child.meters["listening"] >= THRESHOLD and ("foreshadow" not in world.fired):
+    if child.meters["listening"] >= THRESHOLD and (("foreshadow",) not in world.fired):
         world.fired.add(("foreshadow",))
         child.memes["worry"] += 1
         path.meters["cold"] += 1
@@ -225,7 +225,7 @@ def _r_foreshadow(world: World) -> list[str]:
 
 def _r_transform(world: World) -> list[str]:
     out: list[str] = []
-    if world.get("path").meters["uncovered"] >= THRESHOLD and ("transform" not in world.fired):
+    if world.get("path").meters["uncovered"] >= THRESHOLD and (("transform",) not in world.fired):
         world.fired.add(("transform",))
         world.get("garden").meters["revealed"] += 1
         world.get("ghost").memes["sadness"] += 0.5

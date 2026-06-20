@@ -265,7 +265,7 @@ class Rule:
 def _r_fear(world: World) -> list[str]:
     out: list[str] = []
     for e in list(world.entities.values()):
-        if e.meters["haunted"] >= THRESHOLD and ("fear" not in world.fired):
+        if e.meters["haunted"] >= THRESHOLD and (("fear",) not in world.fired):
             world.fired.add(("fear",))
             for ent in list(world.entities.values()):
                 if ent.kind == "character":

@@ -254,7 +254,7 @@ def _r_conflict(world: World) -> list[str]:
 def _r_flare(world: World) -> list[str]:
     out = []
     lantern = world.entities.get("lantern")
-    if lantern and lantern.meters["lit"] >= THRESHOLD and "flare" not in world.fired:
+    if lantern and lantern.meters["lit"] >= THRESHOLD and ("flare",) not in world.fired:
         world.fired.add(("flare",))
         room = world.get("room")
         room.meters["glare"] += 1

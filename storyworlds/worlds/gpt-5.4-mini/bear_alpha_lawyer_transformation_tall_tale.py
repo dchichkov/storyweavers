@@ -256,7 +256,7 @@ def _r_grow(world: World) -> list[str]:
 
 def _r_settle(world: World) -> list[str]:
     out = []
-    if world.get("town").meters["peace"] >= THRESHOLD and "settle" not in world.fired:
+    if world.get("town").meters["peace"] >= THRESHOLD and ("settle",) not in world.fired:
         world.fired.add(("settle",))
         for eid in ("alpha", "lawyer"):
             world.get(eid).memes["relief"] += 1

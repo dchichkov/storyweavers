@@ -206,16 +206,16 @@ def fixpoint(world: StoryWorld) -> None:
     changed = True
     while changed:
         changed = False
-        if world.cape.has_slit and ("slit_worry" not in world.fired):
+        if world.cape.has_slit and (("slit_worry",) not in world.fired):
             world.fired.add(("slit_worry",))
             world.child.memes["worry"] += 1
             world.room.meters["quiet"] += 1
             changed = True
-        if world.book.meters["opened"] >= THRESHOLD and ("book_talk" not in world.fired):
+        if world.book.meters["opened"] >= THRESHOLD and (("book_talk",) not in world.fired):
             world.fired.add(("book_talk",))
             world.child.memes["curiosity"] += 1
             changed = True
-        if world.cape.meters["mended"] >= THRESHOLD and ("mended_calm" not in world.fired):
+        if world.cape.meters["mended"] >= THRESHOLD and (("mended_calm",) not in world.fired):
             world.fired.add(("mended_calm",))
             world.child.memes["relief"] += 1
             world.parent.memes["kindness"] += 1

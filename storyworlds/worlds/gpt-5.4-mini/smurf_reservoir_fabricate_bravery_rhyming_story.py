@@ -238,7 +238,7 @@ class Rule:
 def _r_brave(world: World) -> list[str]:
     out: list[str] = []
     hero = world.get("smurf")
-    if hero.memes["bravery"] >= 3 and "brave" not in world.fired:
+    if hero.memes["bravery"] >= 3 and ("brave",) not in world.fired:
         world.fired.add(("brave",))
         hero.memes["hope"] += 1
         out.append("__brave__")

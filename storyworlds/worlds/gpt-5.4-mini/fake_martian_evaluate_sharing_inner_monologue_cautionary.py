@@ -234,6 +234,10 @@ def _r_shine(world: World) -> list[str]:
 def _r_fear(world: World) -> list[str]:
     out: list[str] = []
     if world.facts.get("risk") and not world.facts.get("shared_truth"):
+        sig = ("fear", "risk")
+        if sig in world.fired:
+            return out
+        world.fired.add(sig)
         for kid in world.characters():
             if kid.role == "child":
                 kid.memes["worry"] += 1

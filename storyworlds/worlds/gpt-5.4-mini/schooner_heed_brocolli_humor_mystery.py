@@ -215,7 +215,7 @@ class Rule:
 
 def _r_notice(world: World) -> list[str]:
     out = []
-    if world.get("mystery_box").meters["opened"] >= THRESHOLD and "notice" not in world.fired:
+    if world.get("mystery_box").meters["opened"] >= THRESHOLD and ("notice",) not in world.fired:
         world.fired.add(("notice",))
         world.get("child").memes["curiosity"] += 1
         out.append("__notice__")

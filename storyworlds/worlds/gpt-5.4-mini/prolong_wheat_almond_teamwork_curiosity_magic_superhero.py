@@ -326,7 +326,7 @@ def _r_curiosity(world: World) -> list[str]:
 
 def _r_delay(world: World) -> list[str]:
     out: list[str] = []
-    if world.get("task").meters["ready"] >= THRESHOLD and "resolved" not in world.fired:
+    if world.get("task").meters["ready"] >= THRESHOLD and ("resolved",) not in world.fired:
         world.fired.add(("resolved",))
         world.get("task").meters["complete"] += 1
         out.append("The work was finished before the light faded.")

@@ -276,7 +276,7 @@ def _r_weight(world: World) -> list[str]:
 def _r_slip(world: World) -> list[str]:
     out = []
     if world.facts.get("wet_ground") and world.facts.get("carrying_bridge") and not world.facts.get("has_rope"):
-        if "slip" in world.fired:
+        if ("slip",) in world.fired:
             return out
         world.fired.add(("slip",))
         for e in world.characters():

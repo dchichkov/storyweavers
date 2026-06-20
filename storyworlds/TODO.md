@@ -43,13 +43,25 @@
   normalized missing/undecorated `StoryParams` definitions. A broad
   `Entity.__getattr__` fallback was tested and rejected because it reduced the
   sampled pass rate by hiding real entity bugs.
-- Remaining generated-batch runtime backlog: the latest sampled failure mix is
-  mostly per-world logic rather than one obvious global rewrite: 92
+- Remaining generated-batch runtime backlog before the timeout pass: the sampled
+  failure mix was mostly per-world logic rather than one obvious global rewrite:
+  92
   `AttributeError`, 49 `TypeError`, 49 `KeyError`, 26 `NameError`, 18 timeouts,
   16 `No valid combination matches the given options` story errors, plus a
   smaller tail of value/index/import/type annotation defects. Good next moves
   are targeted fixes for repeated exact errors, then a quarantine list for
   worlds whose gates produce no valid sampled combination or hang.
+- 2026-06-20 timeout pass: investigated all 18 timeout scripts with
+  `faulthandler.dump_traceback_later` under the same `PYTHONPATH=storyworlds`
+  environment used by `sample-materialized`. The consistent cause was generated
+  fixed-point rules that never became quiescent: either a string guard checked
+  `world.fired` while the rule stored a one-element tuple, or an unguarded rule
+  returned a sentinel every pass without recording a fired signature. Repaired
+  generated scripts with string/tuple sentinel normalization, added narrow
+  one-shot signatures to the remaining unguarded timeout rules, and fixed one
+  fast `StoryParams` constructor bug plus one generated entity-field bug exposed
+  after the hangs were removed. New full-sampler result:
+  `ok=750 failed=250 missing=0 timeout=0`.
 - Remaining generated-batch quality backlog in successful samples:
   `double_article` remains common, followed by scaffold/debug vocabulary,
   child-unsuitable seed words, unresolved format templates, and underscored ids

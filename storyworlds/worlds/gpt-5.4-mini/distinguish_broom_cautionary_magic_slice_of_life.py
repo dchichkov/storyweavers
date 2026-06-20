@@ -380,7 +380,7 @@ def _do_action(world: World, child: Entity, tool: Tool, mess: Mess, narrate: boo
 
 def propagate(world: World, narrate: bool = True) -> list[str]:
     produced: list[str] = []
-    if world.get("room").meters["messy"] >= THRESHOLD and "mess" not in world.fired:
+    if world.get("room").meters["messy"] >= THRESHOLD and ("mess",) not in world.fired:
         world.fired.add(("mess",))
         world.get("child").memes["worry"] += 1
         produced.append("__mess__")

@@ -158,8 +158,9 @@ class Rule:
 def _r_fear(world: World) -> list[str]:
     out: list[str] = []
     for e in list(world.entities.values()):
-        if e.memes["fear"] >= THRESHOLD and ("fear" not in world.fired):
-            world.fired.add(("fear", e.id))
+        sig = ("fear", e.id)
+        if e.memes["fear"] >= THRESHOLD and sig not in world.fired:
+            world.fired.add(sig)
             out.append("__fear__")
     return out
 

@@ -206,6 +206,10 @@ class Rule:
 def _r_worry(world: World) -> list[str]:
     out: list[str] = []
     if world.facts.get("clue_found") and not world.facts.get("case_solved"):
+        sig = ("worry", "clue")
+        if sig in world.fired:
+            return out
+        world.fired.add(sig)
         for name in ("sleuth", "assistant"):
             if name in world.entities:
                 world.get(name).memes["worry"] += 1

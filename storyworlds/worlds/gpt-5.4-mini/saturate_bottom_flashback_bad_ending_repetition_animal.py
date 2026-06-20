@@ -255,7 +255,7 @@ def _r_saturate(world: World) -> list[str]:
 
 def _r_bottom(world: World) -> list[str]:
     basket = world.entities.get("basket")
-    if basket and basket.meters["soggy"] >= THRESHOLD and "bottom" not in world.fired:
+    if basket and basket.meters["soggy"] >= THRESHOLD and ("bottom",) not in world.fired:
         world.fired.add(("bottom",))
         basket.meters["heavy"] += 1
     return []

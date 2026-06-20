@@ -209,7 +209,7 @@ def _r_spook(world: World) -> list[str]:
     child = world.entities.get("child")
     if not ghost or not child:
         return out
-    if ghost.meters["seen"] >= THRESHOLD and "spook" not in world.fired:
+    if ghost.meters["seen"] >= THRESHOLD and ("spook",) not in world.fired:
         world.fired.add(("spook",))
         child.memes["fear"] += 1
         ghost.memes["trust"] += 1
@@ -223,7 +223,7 @@ def _r_soothe(world: World) -> list[str]:
     child = world.entities.get("child")
     if not ghost or not child:
         return out
-    if ghost.memes["trust"] >= THRESHOLD and "soothe" not in world.fired:
+    if ghost.memes["trust"] >= THRESHOLD and ("soothe",) not in world.fired:
         world.fired.add(("soothe",))
         child.memes["kindness"] += 1
         child.memes["relief"] += 1

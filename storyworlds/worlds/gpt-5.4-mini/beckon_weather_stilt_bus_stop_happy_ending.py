@@ -252,12 +252,12 @@ def _r_weather(world: World) -> list[str]:
     stop = world.get("stop")
     weather = world.get("weather")
     kid = world.get("kid")
-    if weather.id == "rain" and stop.shelter and "rain_alert" not in world.fired:
+    if weather.id == "rain" and stop.shelter and ("rain_alert",) not in world.fired:
         world.fired.add(("rain_alert",))
         stop.meters["wet"] += 1
         kid.memes["mischief"] += 1
         out.append("The rain drummed on the roof, and the bus stop went shiny.")
-    if weather.id == "wind" and "wind_alert" not in world.fired:
+    if weather.id == "wind" and ("wind_alert",) not in world.fired:
         world.fired.add(("wind_alert",))
         kid.meters["wobble"] += 1
         out.append("A windy puff made the sign shimmy like it was telling a joke.")
@@ -284,7 +284,7 @@ def _r_beckon(world: World) -> list[str]:
     kid = world.get("kid")
     bus = world.get("bus")
     helper = world.get("helper")
-    if kid.memes["beckon"] < THRESHOLD or ("bus_notice" in world.fired):
+    if kid.memes["beckon"] < THRESHOLD or ("bus_notice",) in world.fired:
         return out
     world.fired.add(("bus_notice",))
     bus.memes["attention"] += 1
@@ -297,7 +297,7 @@ def _r_shelter(world: World) -> list[str]:
     out: list[str] = []
     kid = world.get("kid")
     stop = world.get("stop")
-    if stop.shelter and kid.meters["wet"] >= THRESHOLD and ("dry_off" not in world.fired):
+    if stop.shelter and kid.meters["wet"] >= THRESHOLD and (("dry_off",) not in world.fired):
         world.fired.add(("dry_off",))
         kid.meters["wet"] = 0.0
         kid.memes["relief"] += 1
@@ -338,7 +338,7 @@ def setup(world: World, kid: Entity, parent: Entity, weather: Entity, stilt: Ent
     kid.memes["joy"] += 1
     kid.memes["beckon"] = 0.0
     world.say(f"On a bright morning, {kid.id} waited at the {stop.label} with {stilt.phrase} strapped on.")
-    world.say(f"The weather was {weather.name}, which made the bus stop feel like a stage for a very serious clown.")
+    world.say(f"The weather was {weather.label}, which made the bus stop feel like a stage for a very serious clown.")
     world.say(f"{kid.id} liked the tall view so much that even the pigeons seemed shorter.")
     world.say(f'"Is the bus coming soon?" {kid.id} asked, and {parent.label_word} smiled at the sky.')
 
@@ -561,6 +561,7 @@ def generate(params: StoryParams) -> StorySample:
     stop = world.add(Entity("stop", "thing", "stop", STOPS[params.stop].label))
     bus = world.add(Entity("bus", "thing", "bus", "bus"))
     helper = world.add(Entity("helper", "character", "helper", HELPERS[params.helper].label, "helper"))
+    helper.action = HELPERS[params.helper].action
     world.facts.update(weather=weather, stilt=stilt, stop=stop, helper=helper, bus=bus, kid=kid, parent=parent)
     setup(world, kid, parent, weather, stilt, stop, bus, helper)
     world.para()

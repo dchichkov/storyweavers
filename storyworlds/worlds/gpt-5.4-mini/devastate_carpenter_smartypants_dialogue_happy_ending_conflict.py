@@ -207,7 +207,7 @@ class Rule:
 def _r_alarm(world: World) -> list[str]:
     out: list[str] = []
     if world.get("problem").meters["broken"] >= THRESHOLD:
-        if "alarm" not in world.fired:
+        if ("alarm",) not in world.fired:
             world.fired.add(("alarm",))
             for e in list(world.entities.values()):
                 if e.role in {"detective", "partner"}:

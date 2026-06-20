@@ -209,7 +209,7 @@ class Rule:
 def _r_humor(world: World) -> list[str]:
     out: list[str] = []
     for ent in list(world.entities.values()):
-        if ent.meters["stuck"] >= THRESHOLD and ("humor" not in world.fired):
+        if ent.meters["stuck"] >= THRESHOLD and (("humor",) not in world.fired):
             world.fired.add(("humor",))
             for kid in list(world.entities.values()):
                 if kid.role == "child":

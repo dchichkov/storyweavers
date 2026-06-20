@@ -222,9 +222,10 @@ def _r_spill(world: World) -> list[str]:
     out: list[str] = []
     if world.get("clarinet").meters["scratched"] < THRESHOLD:
         return out
-    if "spill" in world.fired:
+    sig = ("spill",)
+    if sig in world.fired:
         return out
-    world.fired.add(("spill",))
+    world.fired.add(sig)
     for ch in world.characters():
         ch.memes["worry"] += 1
     world.get("clarinet").meters["dusty"] += 1

@@ -186,7 +186,7 @@ def _r_tomorrow(world: World) -> list[str]:
     out: list[str] = []
     child = world.get("child")
     room = world.get("room")
-    if child.memes["waiting"] >= THRESHOLD and ("tomorrow" not in world.fired):
+    if child.memes["waiting"] >= THRESHOLD and (("tomorrow",) not in world.fired):
         world.fired.add(("tomorrow",))
         child.memes["hope"] += 1
         room.meters["night"] = 0.0

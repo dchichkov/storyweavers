@@ -315,8 +315,9 @@ def _r_mysterious_glow(world: World) -> list[str]:
     out = []
     mystery = world.facts["mystery"]
     for e in list(world.entities.values()):
-        if e.role == "mystery" and e.meters["mystery"] >= THRESHOLD and ("glow" not in world.fired):
-            world.fired.add(("glow", mystery.id))
+        sig = ("glow", mystery.id)
+        if e.role == "mystery" and e.meters["mystery"] >= THRESHOLD and sig not in world.fired:
+            world.fired.add(sig)
             world.get("setting").meters["mystery"] += 1
             out.append("__mystery__")
     return out

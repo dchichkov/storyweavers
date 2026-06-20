@@ -274,7 +274,7 @@ def _r_risk(world: World) -> list[str]:
 def _r_growth(world: World) -> list[str]:
     out: list[str] = []
     seed = world.get("seed")
-    if seed.meters["growth"] >= THRESHOLD and "seed" not in world.fired:
+    if seed.meters["growth"] >= THRESHOLD and ("growth", "seed") not in world.fired:
         world.fired.add(("growth", "seed"))
         seed.label = "sprouted seed"
         out.append("By morning, the seed had become a green sprout.")
@@ -392,7 +392,14 @@ def tell(setting: Setting, creature: Creature, seed_thing: Thing, action: Action
         crow=crow,
         bed=bed,
         seed=seed,
-        outcome=outcome_of(StoryParams(setting.id, action.id, seed_thing.id)),
+        outcome=outcome_of(
+            StoryParams(
+                setting=setting.id,
+                creature=creature.id,
+                seed_thing=seed_thing.id,
+                action=action.id,
+            )
+        ),
         transformed=seed.meters["growth"] >= 2.0,
         lesson=crow.memes["lesson"] >= LESSON_MIN,
     )

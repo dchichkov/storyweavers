@@ -225,6 +225,10 @@ def _r_fear(world: World) -> list[str]:
 def _r_conflict(world: World) -> list[str]:
     out: list[str] = []
     if world.facts.get("toxic_spoken") and not world.facts.get("mended"):
+        sig = ("conflict", "toxic_spoken")
+        if sig in world.fired:
+            return out
+        world.fired.add(sig)
         for kid in ("mina", "pavel"):
             ent = world.get(kid)
             ent.memes["conflict"] += 1

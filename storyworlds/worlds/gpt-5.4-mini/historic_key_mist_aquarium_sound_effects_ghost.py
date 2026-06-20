@@ -241,7 +241,7 @@ def _r_mist(world: World) -> list[str]:
     out: list[str] = []
     if not world.setting.misty:
         return out
-    if "mist" in world.fired:
+    if ("mist",) in world.fired:
         return out
     world.fired.add(("mist",))
     world.get("aquarium").meters["mist"] += 1
@@ -255,7 +255,7 @@ def _r_echo(world: World) -> list[str]:
     out: list[str] = []
     if not world.setting.echo:
         return out
-    if "echo" in world.fired:
+    if ("echo",) in world.fired:
         return out
     world.fired.add(("echo",))
     for char in world.characters():

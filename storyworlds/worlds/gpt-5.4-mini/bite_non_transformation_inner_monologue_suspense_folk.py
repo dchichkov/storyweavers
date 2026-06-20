@@ -225,6 +225,10 @@ class Rule:
 def _r_suspense(world: World) -> list[str]:
     out: list[str] = []
     if world.facts.get("danger_seen") and not world.facts.get("safe_chosen"):
+        sig = ("suspense", "danger")
+        if sig in world.fired:
+            return out
+        world.fired.add(sig)
         for eid in ("hero", "companion"):
             world.get(eid).memes["fear"] += 1
         out.append("__suspense__")

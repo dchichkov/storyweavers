@@ -222,7 +222,7 @@ class Rule:
 def _r_tired(world: World) -> list[str]:
     out: list[str] = []
     child = world.get("child")
-    if child.meters["strain"] >= THRESHOLD and "tired" not in world.fired:
+    if child.meters["strain"] >= THRESHOLD and ("tired",) not in world.fired:
         world.fired.add(("tired",))
         child.memes["worry"] += 1
         out.append("__tired__")

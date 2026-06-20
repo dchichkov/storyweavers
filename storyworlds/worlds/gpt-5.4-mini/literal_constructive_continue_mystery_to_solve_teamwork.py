@@ -261,7 +261,7 @@ def _r_unease(world: World) -> list[str]:
 
 def _r_teamwork(world: World) -> list[str]:
     out: list[str] = []
-    if world.facts.get("teamwork_spot", False) and "teamwork" not in world.fired:
+    if world.facts.get("teamwork_spot", False) and ("teamwork",) not in world.fired:
         world.fired.add(("teamwork",))
         for kid in list(world.entities.values()):
             if kid.role in {"investigator", "helper"}:
@@ -273,7 +273,7 @@ def _r_teamwork(world: World) -> list[str]:
 
 def _r_continue(world: World) -> list[str]:
     out: list[str] = []
-    if world.facts.get("goal_mended", False) and "continue" not in world.fired:
+    if world.facts.get("goal_mended", False) and ("continue",) not in world.fired:
         world.fired.add(("continue",))
         for kid in list(world.entities.values()):
             if kid.role in {"investigator", "helper"}:

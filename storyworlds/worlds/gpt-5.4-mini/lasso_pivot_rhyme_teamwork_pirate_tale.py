@@ -235,7 +235,7 @@ class Rule:
 def _r_risk(world: World) -> list[str]:
     out: list[str] = []
     sail = world.get("sail")
-    if sail.meters["snagged"] >= THRESHOLD and "risk" not in world.fired:
+    if sail.meters["snagged"] >= THRESHOLD and ("risk",) not in world.fired:
         world.fired.add(("risk",))
         for kid in (world.get("captain_kid"), world.get("mate_kid")):
             kid.memes["worry"] += 1

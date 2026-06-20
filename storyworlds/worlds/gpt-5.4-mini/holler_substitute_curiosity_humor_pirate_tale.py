@@ -229,7 +229,7 @@ class Rule:
 def _r_shine(world: World) -> list[str]:
     out: list[str] = []
     if world.get("lantern").meters["used"] >= THRESHOLD:
-        if "shine" in world.fired:
+        if ("shine",) in world.fired:
             return out
         world.fired.add(("shine",))
         world.get("crew").memes["glee"] += 1
