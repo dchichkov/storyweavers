@@ -84,6 +84,36 @@ quality risks. Older JSON-object results can still be materialized by the
 script, but the preferred path is the raw Python tool payload because it avoids
 escaping a full source file inside JSON text.
 
+## OpenAI Story Quality Ratings
+
+`openai_story_quality.py` samples one generated story per storyworld script and
+rates each story with the Responses API. This is baseline-calibrated, not
+matched to each script's original TinyStories source: every generated story is
+sent after the same fixed Tim/Sarah race story plus its baseline rating
+`{"coherence":7,"style":6,"grammar":7,"storytelling":7,"overall":7}`.
+
+Dry-run the input collection and prompt shape without contacting OpenAI:
+
+```bash
+./.venv/bin/python storyworlds/openai_story_quality.py --dry-run --limit 3
+```
+
+Run the eval over up to 100 successful story samples, with Responses calls
+issued asynchronously in batches of 20:
+
+```bash
+OPENAI_API_KEY="$(cat .API_KEY)" ./.venv/bin/python storyworlds/openai_story_quality.py \
+  --limit 100 \
+  --batch-size 20 \
+  --out storyworlds/batches/story_quality_latest.jsonl
+```
+
+The script sets a stable `prompt_cache_key` and `prompt_cache_retention=24h` by
+default, so the shared system prompt, baseline story, and schema can benefit from
+prompt caching across requests. Use `--prompt-cache-key` to pin a custom cache
+token, `--model` to change the model, and `--base-url` for an OpenAI-compatible
+endpoint.
+
 Preview the first request without writing files or contacting OpenAI:
 
 ```bash
