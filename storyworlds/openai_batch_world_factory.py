@@ -39,7 +39,7 @@ BATCH_DIR = STORYWORLDS_DIR / "batches"
 DEFAULT_MODEL = "gpt-5.4-mini"
 DEFAULT_ENDPOINT = "/v1/responses"
 DEFAULT_REASONING_EFFORT = "low"
-PROMPT_PROTOCOL = "custom_tool_python_v1"
+PROMPT_PROTOCOL = "custom_tool_python_v2"
 EMIT_TOOL_NAME = "emit_python_file"
 SLUG_WORD_RE = re.compile(r"[a-z0-9]+")
 MODEL_DIR_RE = re.compile(r"[^A-Za-z0-9_.-]+")
@@ -417,7 +417,9 @@ Invalid fields include prompt=, kind=, text=, qa=, trace=, data=, meta=, index=,
 and history= on these shared dataclasses.
 
 Two complete examples of acceptable existing worlds follow. Use them as style
-and contract references, but do not copy their domain content.
+and contract references, but do not copy their domain content. Some older
+example code uses positional dataclass construction; for this new file, follow
+the reliability requirements below instead.
 
 {examples}
 
@@ -440,6 +442,28 @@ Implementation requirements:
 - Avoid scaffold leaks, raw template fragments, unresolved braces, underscored
   debug ids, doubled articles, and in-story implementation jargon.
 - Do not copy an existing world. Create a fresh tiny domain from the seed.
+
+Reliability requirements from previous failed batches:
+- Keep the Python schema small and boring. Prefer one shared Entity dataclass
+  with safe defaults for common fields such as attrs, tags, meters, pronouns,
+  and display phrase. Add domain-specific dataclasses only when they reduce
+  real complexity.
+- Give optional dataclass fields defaults. When constructing dataclasses in
+  CURATED, lookup tables, or constants, use keyword arguments for every field.
+  Do not mix positional and keyword arguments in the same dataclass call.
+- Define exactly one top-level @dataclass class StoryParams before CURATED,
+  resolve_params, generate, verify, or any module-level StoryParams instances.
+  Construct StoryParams with keyword arguments, not positional argument lists.
+- Module import must not crash. Any top-level lookup table or CURATED instance
+  must match its dataclass constructor exactly. If you add a dataclass field,
+  update all instances of that dataclass.
+- Objects used as actors/helpers in prose or QA must either be Entity instances
+  or implement the same fields/methods you call, especially pronoun(), attrs,
+  tags, and meters. Do not call .pronoun(), .attrs, or .meters on arbitrary
+  domain config objects unless those attributes are defined.
+- Keep dictionary keys aligned with StoryParams fields. resolve_params should
+  choose from the actual keys of lookup dictionaries, and generate should fail
+  closed with StoryError for invalid params instead of raising KeyError.
 
 Seed request:
 - Target file: {job.target}

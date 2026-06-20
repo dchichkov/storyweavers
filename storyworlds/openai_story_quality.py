@@ -22,6 +22,7 @@ import os
 import random
 import sys
 import time
+from collections import Counter
 from dataclasses import dataclass
 from datetime import UTC, datetime
 from pathlib import Path
@@ -157,6 +158,24 @@ def build_parser() -> argparse.ArgumentParser:
         help="output JSONL path; default: storyworlds/batches/story_quality_<timestamp>.jsonl",
     )
     parser.add_argument(
+        "--summary-out",
+        type=Path,
+        default=None,
+        help="summary JSON path; default: <out stem>.summary.json",
+    )
+    parser.add_argument(
+        "--aggregate",
+        type=Path,
+        default=None,
+        help="summarize an existing story-quality JSONL file without calling OpenAI",
+    )
+    parser.add_argument(
+        "--top-n",
+        type=int,
+        default=5,
+        help="number of lowest/highest examples to include in summaries; default: 5",
+    )
+    parser.add_argument(
         "--prompt-cache-key",
         default=None,
         help="override the shared prompt_cache_key",
@@ -198,6 +217,12 @@ def now_stamp() -> str:
 
 def default_output_path() -> Path:
     return BATCH_DIR / f"story_quality_{now_stamp()}.jsonl"
+
+
+def default_summary_path(output_path: Path) -> Path:
+    if output_path.suffix == ".jsonl":
+        return output_path.with_suffix(".summary.json")
+    return output_path.with_name(f"{output_path.name}.summary.json")
 
 
 def prompt_cache_key() -> str:
@@ -418,6 +443,140 @@ def validate_rating(payload: Any) -> dict[str, int]:
     return rating
 
 
+def load_jsonl(path: Path) -> list[dict[str, Any]]:
+    rows: list[dict[str, Any]] = []
+    with path.open(encoding="utf-8") as handle:
+        for line_number, line in enumerate(handle, 1):
+            if not line.strip():
+                continue
+            try:
+                row = json.loads(line)
+            except json.JSONDecodeError as exc:
+                raise SystemExit(f"{path}:{line_number}: invalid JSON: {exc}") from exc
+            if isinstance(row, dict):
+                rows.append(row)
+    return rows
+
+
+def usage_summary(rows: list[dict[str, Any]]) -> dict[str, int]:
+    totals = {
+        "input_tokens": 0,
+        "cached_input_tokens": 0,
+        "output_tokens": 0,
+        "reasoning_tokens": 0,
+        "total_tokens": 0,
+    }
+    for row in rows:
+        usage = (row.get("response") or {}).get("usage") or {}
+        if not isinstance(usage, dict):
+            continue
+        totals["input_tokens"] += int(usage.get("input_tokens") or 0)
+        totals["output_tokens"] += int(usage.get("output_tokens") or 0)
+        totals["total_tokens"] += int(usage.get("total_tokens") or 0)
+        input_details = usage.get("input_tokens_details") or {}
+        output_details = usage.get("output_tokens_details") or {}
+        if isinstance(input_details, dict):
+            totals["cached_input_tokens"] += int(input_details.get("cached_tokens") or 0)
+        if isinstance(output_details, dict):
+            totals["reasoning_tokens"] += int(output_details.get("reasoning_tokens") or 0)
+    return totals
+
+
+def compact_example(row: dict[str, Any]) -> dict[str, Any]:
+    story = row.get("story")
+    excerpt = story if isinstance(story, str) else ""
+    excerpt = " ".join(excerpt.split())
+    if len(excerpt) > 240:
+        excerpt = excerpt[:237].rstrip() + "..."
+    return {
+        "script": row.get("script"),
+        "seed": row.get("seed"),
+        "rating": row.get("rating"),
+        "story_excerpt": excerpt,
+    }
+
+
+def aggregate_rows(rows: list[dict[str, Any]], *, top_n: int = 5) -> dict[str, Any]:
+    ok_rows = [
+        row for row in rows
+        if row.get("ok") is True and isinstance(row.get("rating"), dict)
+    ]
+    failed_rows = [row for row in rows if row.get("ok") is not True]
+
+    averages: dict[str, float | None] = {}
+    mins: dict[str, int | None] = {}
+    maxes: dict[str, int | None] = {}
+    histograms: dict[str, dict[str, int]] = {}
+    baseline_deltas: dict[str, float | None] = {}
+    for key in RATING_KEYS:
+        values = [
+            row["rating"][key]
+            for row in ok_rows
+            if isinstance(row["rating"].get(key), int)
+        ]
+        if values:
+            averages[key] = round(sum(values) / len(values), 3)
+            mins[key] = min(values)
+            maxes[key] = max(values)
+            hist = Counter(values)
+            histograms[key] = {str(score): hist.get(score, 0) for score in range(10)}
+            baseline_deltas[key] = round(averages[key] - BASELINE_RATING[key], 3)
+        else:
+            averages[key] = None
+            mins[key] = None
+            maxes[key] = None
+            histograms[key] = {str(score): 0 for score in range(10)}
+            baseline_deltas[key] = None
+
+    def sort_key(row: dict[str, Any]) -> tuple[int, int, int, str]:
+        rating = row.get("rating") or {}
+        return (
+            int(rating.get("overall") or 0),
+            int(rating.get("storytelling") or 0),
+            int(rating.get("grammar") or 0),
+            str(row.get("script") or ""),
+        )
+
+    lowest = sorted(ok_rows, key=sort_key)[: max(0, top_n)]
+    highest = sorted(ok_rows, key=sort_key, reverse=True)[: max(0, top_n)]
+    errors = Counter(str(row.get("error") or "unknown_error") for row in failed_rows)
+
+    return {
+        "created_at": now_stamp(),
+        "rows": len(rows),
+        "ok": len(ok_rows),
+        "failed": len(failed_rows),
+        "baseline_rating": BASELINE_RATING,
+        "averages": averages,
+        "baseline_deltas": baseline_deltas,
+        "mins": mins,
+        "maxes": maxes,
+        "histograms": histograms,
+        "lowest_overall": [compact_example(row) for row in lowest],
+        "highest_overall": [compact_example(row) for row in highest],
+        "error_counts": dict(errors.most_common()),
+        "usage": usage_summary(rows),
+    }
+
+
+def write_summary(summary: dict[str, Any], path: Path | None) -> None:
+    text = json.dumps(summary, indent=2, ensure_ascii=False)
+    print(text)
+    if path is not None:
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text(text + "\n", encoding="utf-8")
+        print(f"Wrote {path}")
+
+
+def summarize_file(path: Path, summary_out: Path | None, *, top_n: int) -> int:
+    rows = load_jsonl(path)
+    out_path = summary_out or default_summary_path(path)
+    summary = aggregate_rows(rows, top_n=top_n)
+    summary["input_path"] = str(path)
+    write_summary(summary, out_path)
+    return 0 if summary["ok"] else 1
+
+
 async def rate_story(client: Any, args: argparse.Namespace, item: StoryInput, cache_key: str) -> dict[str, Any]:
     started = time.monotonic()
     try:
@@ -527,6 +686,11 @@ def print_dry_run(inputs: list[StoryInput], failures: list[SampleFailure], args:
 
 
 async def async_main(args: argparse.Namespace) -> int:
+    if args.top_n < 0:
+        raise SystemExit("--top-n must be non-negative")
+    if args.aggregate is not None:
+        return summarize_file(args.aggregate, args.summary_out, top_n=args.top_n)
+
     scripts = manifest_scripts(args.manifest) if args.manifest else discover_scripts(args.worlds_dir)
     if not scripts:
         raise SystemExit("no storyworld scripts found")
@@ -552,7 +716,9 @@ async def async_main(args: argparse.Namespace) -> int:
         return 0
 
     out_path = args.out or default_output_path()
-    return await run_ratings(args, inputs, out_path)
+    status = await run_ratings(args, inputs, out_path)
+    summarize_file(out_path, args.summary_out, top_n=args.top_n)
+    return status
 
 
 def main() -> int:

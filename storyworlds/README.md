@@ -108,6 +108,15 @@ OPENAI_API_KEY="$(cat .API_KEY)" ./.venv/bin/python storyworlds/openai_story_qua
   --out storyworlds/batches/story_quality_latest.jsonl
 ```
 
+Each run writes a sibling `*.summary.json` aggregation with averages, min/maxes,
+score histograms, lowest/highest examples, error counts, and token/cache usage.
+To summarize an existing run without contacting OpenAI:
+
+```bash
+./.venv/bin/python storyworlds/openai_story_quality.py \
+  --aggregate storyworlds/batches/story_quality_latest.jsonl
+```
+
 The script sets a stable `prompt_cache_key` and `prompt_cache_retention=24h` by
 default, so the shared system prompt, baseline story, and schema can benefit from
 prompt caching across requests. Use `--prompt-cache-key` to pin a custom cache
@@ -212,9 +221,7 @@ use `repair_batch_output.py` and then materialize the repaired output:
   storyworlds/batches/batch_6a365d9a796c8190b61af021aaa75d29.output.jsonl \
   --manifest storyworlds/batches/storyworld_batch_20260620T092945Z_seed184114977_n1000.manifest.json \
   --out storyworlds/batches/batch_6a365d9a796c8190b61af021aaa75d29.repaired.output.jsonl \
-  --overlay-from-worlds \
-  --sample-report storyworlds/batches/storyworld_batch_20260620T092945Z_seed184114977_n1000.samples_after_timeout_fix2.jsonl \
-  --inject-main-fallback
+  --overlay-from-worlds
 
 ./.venv/bin/python storyworlds/openai_batch_world_factory.py materialize \
   storyworlds/batches/batch_6a365d9a796c8190b61af021aaa75d29.repaired.output.jsonl \
@@ -226,18 +233,39 @@ The repair script preserves each Batch row and only rewrites the emitted Python
 tool input. Its mechanical layer applies source-level fixes such as safe
 `World.get`, entity-loop snapshots, `Entity.tags`, settable `Entity.phrase`, and
 string/tuple `world.fired` guard normalization. With `--overlay-from-worlds`, it
-bakes the currently repaired materialized files back into a JSONL artifact. With
-`--inject-main-fallback`, it adds a narrow CLI fallback wrapper only to targets
-that failed in the supplied sample report. That wrapper is a quarantine measure:
-it keeps batch sampling moving and emits a simple complete story plus QA if a
-script crashes during CLI execution, but it is not a substitute for a real
-domain-level fix.
+bakes the currently repaired materialized files back into a JSONL artifact. Do
+not synthesize fallback stories for failed scripts; those hide broken generated
+worlds and make pass rates misleading.
 
 The repaired JSONL was about 29 MiB. Re-materializing it and running the same
 full sampler with `--seed 777 --qa --timeout 5` produced
-`ok=960 failed=40 missing=0 timeout=0`, with `compile_errors=0`. The remaining
-40 failures are import-time dataclass/constant construction errors, which happen
-before a script's `main()` fallback can run.
+`ok=750 failed=250 missing=0 timeout=0`, with `compile_errors=0`. The remaining
+failures need real source repairs rather than placeholder output.
+
+### Batch Artifact Archives
+
+Use `archive_batches.py` to create one Git-LFS-friendly archive per Batch run.
+Do not archive the whole `storyworlds/batches/` directory as one snapshot; that
+mixes unrelated experiments and makes provenance harder to inspect.
+
+Archive by Batch id:
+
+```bash
+./.venv/bin/python storyworlds/archive_batches.py \
+  --batch-id batch_6a365d9a796c8190b61af021aaa75d29
+```
+
+or by manifest:
+
+```bash
+./.venv/bin/python storyworlds/archive_batches.py \
+  --manifest storyworlds/batches/storyworld_batch_20260620T092945Z_seed184114977_n1000.manifest.json
+```
+
+Each per-batch archive includes the manifest, input JSONL, downloaded output,
+repaired output files whose names contain the Batch id, sample reports with the
+same manifest stem, and the scripts/docs needed to reproduce generation and
+repairs. The script requires `--all-batches` for the old whole-directory mode.
 
 For an extra-safe trial, isolate the Codex sqlite runtime state instead of
 letting the SDK write to the normal `~/.codex/sqlite` directory:

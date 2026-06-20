@@ -65,17 +65,17 @@
 - 2026-06-20 JSON repair replay pass: added
   `storyworlds/repair_batch_output.py` so the original downloaded Batch output
   can be rewritten with the discovered repairs and re-materialized. The script
-  applies broad mechanical source rewrites, can overlay the currently repaired
-  materialized files into the JSONL, and can inject a last-resort CLI fallback
-  only for targets proven to fail in a sample report. Repaired artifact:
+  applies broad mechanical source rewrites and can overlay the currently
+  repaired materialized files into the JSONL. It must not synthesize replacement
+  stories for broken generated worlds; failed scripts should stay failed until
+  they receive real source repairs. Repaired artifact:
   `storyworlds/batches/batch_6a365d9a796c8190b61af021aaa75d29.repaired.output.jsonl`
   (about 29 MiB). Verification after re-materializing:
-  `compile_errors=0` and `ok=960 failed=40 missing=0 timeout=0` under
-  `sample-materialized --seed 777 --qa --timeout 5`, improving the final sampled
-  failure rate from 25% to 4%. The remaining 40 failures are import-time
-  dataclass/constant construction errors, so a CLI `main()` fallback cannot
-  catch them; the next mechanical target is defaulting missing dataclass fields
-  or moving generated constant construction behind guarded functions.
+  `compile_errors=0` and `ok=750 failed=250 missing=0 timeout=0` under
+  `sample-materialized --seed 777 --qa --timeout 5`. The remaining failures are
+  the next mechanical target: defaulting missing dataclass fields, moving
+  generated constant construction behind guarded functions, and repairing
+  repeated role/entity lookup mistakes.
 - Remaining generated-batch quality backlog in successful samples:
   `double_article` remains common, followed by scaffold/debug vocabulary,
   child-unsuitable seed words, unresolved format templates, and underscored ids

@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
-"""Create a gzip tar archive of local storyworld Batch artifacts.
+"""Create gzip tar archives of local storyworld Batch artifacts.
 
 The raw Batch JSONL files are intentionally ignored by git because they are
-large and frequently regenerated. This script bundles them into a single
-archive that can be tracked with Git LFS when we want a durable snapshot.
+large and frequently regenerated. This script bundles one Batch run at a time
+into an archive that can be tracked with Git LFS when we want a durable
+snapshot.
 """
 from __future__ import annotations
 
@@ -29,6 +30,21 @@ DEFAULT_EXTRA_FILES = [
 
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(description=__doc__)
+    scope = parser.add_mutually_exclusive_group(required=True)
+    scope.add_argument(
+        "--batch-id",
+        help="OpenAI Batch id to archive, e.g. batch_...",
+    )
+    scope.add_argument(
+        "--manifest",
+        type=Path,
+        help="manifest JSON for the Batch run to archive",
+    )
+    scope.add_argument(
+        "--all-batches",
+        action="store_true",
+        help="legacy mode: archive every direct file under --batch-dir",
+    )
     parser.add_argument(
         "--batch-dir",
         type=Path,
@@ -74,11 +90,15 @@ def rel(path: Path) -> str:
     return path.resolve().relative_to(ROOT).as_posix()
 
 
-def collect_files(batch_dir: Path, extras: list[Path]) -> list[Path]:
+def collect_all_batch_files(batch_dir: Path, extras: list[Path]) -> list[Path]:
     files: list[Path] = []
     if batch_dir.exists():
         files.extend(path for path in sorted(batch_dir.iterdir()) if path.is_file())
     files.extend(path for path in extras if path.exists() and path.is_file())
+    return unique_paths(files)
+
+
+def unique_paths(files: list[Path]) -> list[Path]:
     seen: set[Path] = set()
     unique: list[Path] = []
     for path in files:
@@ -89,20 +109,106 @@ def collect_files(batch_dir: Path, extras: list[Path]) -> list[Path]:
     return unique
 
 
-def default_archive_path(archive_dir: Path) -> Path:
+def load_manifest(path: Path) -> dict:
+    with path.open(encoding="utf-8") as handle:
+        data = json.load(handle)
+    if not isinstance(data, dict):
+        raise SystemExit(f"Manifest is not a JSON object: {path}")
+    if "jobs" not in data:
+        raise SystemExit(f"Manifest does not look like a Batch manifest: {path}")
+    return data
+
+
+def find_manifest_for_batch(batch_dir: Path, batch_id: str) -> tuple[Path, dict]:
+    matches: list[tuple[Path, dict]] = []
+    for path in sorted(batch_dir.glob("*.manifest.json")):
+        try:
+            manifest = load_manifest(path)
+        except (OSError, json.JSONDecodeError, SystemExit):
+            continue
+        if manifest.get("batch_id") == batch_id:
+            matches.append((path.resolve(), manifest))
+    if not matches:
+        raise SystemExit(f"No manifest under {batch_dir} has batch_id={batch_id!r}")
+    if len(matches) > 1:
+        names = ", ".join(rel(path) for path, _ in matches)
+        raise SystemExit(f"Multiple manifests matched {batch_id!r}: {names}")
+    return matches[0]
+
+
+def manifest_input_path(batch_dir: Path, manifest: dict) -> Path | None:
+    jsonl_path = manifest.get("jsonl_path")
+    if not jsonl_path:
+        return None
+    path = Path(jsonl_path)
+    if not path.is_absolute():
+        path = ROOT / path
+    return path.resolve()
+
+
+def collect_one_batch_files(
+    batch_dir: Path,
+    manifest_path: Path,
+    manifest: dict,
+    extras: list[Path],
+) -> list[Path]:
+    files: list[Path] = [manifest_path.resolve()]
+
+    input_path = manifest_input_path(batch_dir, manifest)
+    if input_path and input_path.exists():
+        files.append(input_path)
+
+    batch_id = manifest.get("batch_id")
+    if batch_id:
+        files.extend(path.resolve() for path in sorted(batch_dir.glob(f"{batch_id}*")) if path.is_file())
+        files.extend(path.resolve() for path in sorted(batch_dir.glob(f"*{batch_id}*")) if path.is_file())
+
+    stem = manifest_path.name.removesuffix(".manifest.json")
+    files.extend(path.resolve() for path in sorted(batch_dir.glob(f"{stem}*")) if path.is_file())
+
+    files.extend(path.resolve() for path in extras if path.exists() and path.is_file())
+    return unique_paths(files)
+
+
+def default_archive_path(archive_dir: Path, manifest_path: Path | None = None, batch_id: str | None = None) -> Path:
     stamp = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
-    return archive_dir / f"storyworld_batches_{stamp}.tar.gz"
+    if manifest_path is not None:
+        stem = manifest_path.name.removesuffix(".manifest.json")
+        suffix = f"_{batch_id}" if batch_id else ""
+        return archive_dir / f"{stem}{suffix}_{stamp}.tar.gz"
+    return archive_dir / f"storyworld_batches_all_{stamp}.tar.gz"
 
 
 def main() -> int:
     args = build_parser().parse_args()
     batch_dir = args.batch_dir.resolve()
-    archive_path = (args.out.resolve() if args.out else default_archive_path(args.archive_dir))
-    archive_path.parent.mkdir(parents=True, exist_ok=True)
-
     extras = [] if args.no_default_extras else list(DEFAULT_EXTRA_FILES)
     extras.extend(path if path.is_absolute() else ROOT / path for path in args.extra_file)
-    files = collect_files(batch_dir, extras)
+
+    manifest_path: Path | None = None
+    manifest: dict | None = None
+    batch_id: str | None = None
+    archive_kind = "all_batches" if args.all_batches else "single_batch"
+
+    if args.all_batches:
+        files = collect_all_batch_files(batch_dir, extras)
+    else:
+        if args.manifest:
+            manifest_path = (args.manifest if args.manifest.is_absolute() else ROOT / args.manifest).resolve()
+            manifest = load_manifest(manifest_path)
+            batch_id = manifest.get("batch_id")
+        else:
+            batch_id = args.batch_id
+            manifest_path, manifest = find_manifest_for_batch(batch_dir, batch_id)
+        files = collect_one_batch_files(batch_dir, manifest_path, manifest, extras)
+
+    archive_path = (
+        args.out.resolve()
+        if args.out
+        else default_archive_path(args.archive_dir, manifest_path=manifest_path, batch_id=batch_id)
+    )
+    archive_path.parent.mkdir(parents=True, exist_ok=True)
+
     if not files:
         raise SystemExit(f"No files found under {batch_dir}")
 
@@ -111,6 +217,9 @@ def main() -> int:
         "created_at": created_at,
         "root": str(ROOT),
         "batch_dir": rel(batch_dir),
+        "archive_kind": archive_kind,
+        "batch_id": batch_id,
+        "batch_manifest": rel(manifest_path) if manifest_path else None,
         "archive": archive_path.name,
         "file_count": len(files),
         "files": [
