@@ -24,11 +24,18 @@ ROOT = Path(__file__).resolve().parents[1]
 STORYWORLDS_DIR = Path(__file__).resolve().parent
 WORLDS_DIR = STORYWORLDS_DIR / "worlds"
 STORY_CONTRACT_PATH = STORYWORLDS_DIR / "STORY.md"
+RESULTS_PATH = STORYWORLDS_DIR / "results.py"
+EXAMPLE_WORLD_PATHS = (
+    WORLDS_DIR / "pirates.py",
+    WORLDS_DIR / "puddles.py",
+)
 TODO_PATH = STORYWORLDS_DIR / "TODO.md"
 BATCH_DIR = STORYWORLDS_DIR / "batches"
 DEFAULT_MODEL = "gpt-5.4-mini"
 DEFAULT_ENDPOINT = "/v1/responses"
+DEFAULT_REASONING_EFFORT = "medium"
 SLUG_WORD_RE = re.compile(r"[a-z0-9]+")
+MODEL_DIR_RE = re.compile(r"[^A-Za-z0-9_.-]+")
 
 
 @dataclass(slots=True)
@@ -85,8 +92,14 @@ def build_parser() -> argparse.ArgumentParser:
         ap.add_argument(
             "--max-output-tokens",
             type=int,
-            default=14000,
-            help="max output tokens per storyworld response; default: 14000",
+            default=32000,
+            help="max output tokens per storyworld response; default: 32000",
+        )
+        ap.add_argument(
+            "--reasoning-effort",
+            choices=("minimal", "low", "medium", "high", "xhigh"),
+            default=DEFAULT_REASONING_EFFORT,
+            help=f"Responses API reasoning effort; default: {DEFAULT_REASONING_EFFORT}",
         )
         ap.add_argument(
             "--endpoint",
@@ -175,10 +188,19 @@ def slugify(parts: list[str], *, max_parts: int = 7) -> str:
     return slug
 
 
-def unique_slug(base: str, used: set[str]) -> str:
+def model_dir_name(model: str) -> str:
+    name = MODEL_DIR_RE.sub("_", model.strip()).strip("._-")
+    return name or "model"
+
+
+def output_worlds_dir(model: str) -> Path:
+    return WORLDS_DIR / model_dir_name(model)
+
+
+def unique_slug(base: str, used: set[str], worlds_dir: Path) -> str:
     candidate = base
     index = 2
-    while candidate in used or (WORLDS_DIR / f"{candidate}.py").exists():
+    while candidate in used or (worlds_dir / f"{candidate}.py").exists():
         candidate = f"{base}_{index}"
         index += 1
     used.add(candidate)
@@ -213,7 +235,8 @@ def make_jobs(args: argparse.Namespace) -> tuple[int, list[StoryworldJob]]:
     import seed as seed_module
 
     base_seed = args.seed if args.seed is not None else random.randrange(2**31)
-    used = {path.stem for path in WORLDS_DIR.glob("*.py")}
+    worlds_dir = output_worlds_dir(args.model)
+    used = {path.stem for path in worlds_dir.glob("*.py")}
     jobs: list[StoryworldJob] = []
     for index in range(args.count):
         job_seed = base_seed + index
@@ -235,12 +258,14 @@ def make_jobs(args: argparse.Namespace) -> tuple[int, list[StoryworldJob]]:
                 ]
             ),
             used,
+            worlds_dir,
         )
+        target = (worlds_dir / f"{name}.py").relative_to(ROOT).as_posix()
         jobs.append(
             StoryworldJob(
                 custom_id=f"storyworld:{index + 1:05d}:{name}",
                 name=name,
-                target=f"storyworlds/worlds/{name}.py",
+                target=target,
                 seed=job_seed,
                 words=list(seed_obj.words),
                 setting=seed_obj.setting,
@@ -255,6 +280,11 @@ def make_jobs(args: argparse.Namespace) -> tuple[int, list[StoryworldJob]]:
 
 def build_storyworld_prompt(job: StoryworldJob, *, full_instructions: bool) -> str:
     story_contract = read_prompt_file(STORY_CONTRACT_PATH)
+    results_contract = read_prompt_file(RESULTS_PATH)
+    examples = "\n\n".join(
+        f"### {path.relative_to(ROOT).as_posix()}\n\n```python\n{read_prompt_file(path)}\n```"
+        for path in EXAMPLE_WORLD_PATHS
+    )
     todo_block = ""
     if full_instructions:
         todo_block = f"""
@@ -279,6 +309,23 @@ Storyworld contract from storyworlds/STORY.md:
 
 {story_contract}
 {todo_block}
+
+Exact shared result API from storyworlds/results.py:
+
+```python
+{results_contract}
+```
+
+You must instantiate the shared result containers exactly as defined above:
+- QAItem(question=..., answer=...)
+- StorySample(params=..., story=..., prompts=..., story_qa=..., world_qa=..., world=...)
+Invalid fields include prompt=, kind=, text=, qa=, trace=, data=, meta=, index=,
+and history= on these shared dataclasses.
+
+Two complete examples of acceptable existing worlds follow. Use them as style
+and contract references, but do not copy their domain content.
+
+{examples}
 
 Seed request:
 - Target file: {job.target}
@@ -314,6 +361,7 @@ def request_line(
     model: str,
     endpoint: str,
     max_output_tokens: int,
+    reasoning_effort: str,
     full_instructions: bool,
 ) -> dict[str, Any]:
     return {
@@ -322,6 +370,7 @@ def request_line(
         "url": endpoint,
         "body": {
             "model": model,
+            "reasoning": {"effort": reasoning_effort},
             "input": [
                 {
                     "role": "user",
@@ -354,6 +403,7 @@ def prepare_files(args: argparse.Namespace) -> dict[str, Any]:
             model=args.model,
             endpoint=args.endpoint,
             max_output_tokens=args.max_output_tokens,
+            reasoning_effort=args.reasoning_effort,
             full_instructions=args.full_instructions,
         )
         for job in jobs
@@ -385,6 +435,7 @@ def prepare_files(args: argparse.Namespace) -> dict[str, Any]:
         "endpoint": args.endpoint,
         "completion_window": args.completion_window,
         "max_output_tokens": args.max_output_tokens,
+        "reasoning_effort": args.reasoning_effort,
         "full_instructions": args.full_instructions,
         "jsonl_path": str(jsonl_path),
         "manifest_path": str(manifest_path),
