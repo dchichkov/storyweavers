@@ -8,10 +8,11 @@ narrative instruments and a style, e.g.:
 
     Write a story that includes the following words and narrative instruments.
     Words: ride, moon, upset
+    Setting: school garden
     Features: Dialogue, Cautionary, Conflict
     Style: Fairy Tale
 
-It just enumerates pools (words / features / styles) and samples a random,
+It just enumerates pools (words / settings / features / styles) and samples a random,
 reproducible combination.
 
 Run it
@@ -28,7 +29,8 @@ from dataclasses import dataclass
 
 # ---------------------------------------------------------------------------
 # Pools -- the swappable vocabulary.  Keep words simple/concrete (TinyStories
-# level); features are narrative instruments; styles are the overall register.
+# level); settings are everyday story places; features are narrative instruments;
+# styles are the overall register.
 # ---------------------------------------------------------------------------
 _CORE_SEEDS = [
     "ride", "moon", "puddle", "jacket", "dog", "garden", "boat", "kite",
@@ -160,6 +162,124 @@ FEATURES = [
     "Flashback",
 ]
 
+SETTINGS = [
+    "beach",
+    "seaside promenade",
+    "tidal pool",
+    "airport",
+    "train station",
+    "bus stop",
+    "school",
+    "kindergarten",
+    "classroom",
+    "school library",
+    "art room",
+    "music room",
+    "science corner",
+    "playground",
+    "sandbox",
+    "splash pad",
+    "skate park",
+    "soccer field",
+    "swimming pool",
+    "community center",
+    "children's museum",
+    "aquarium",
+    "zoo",
+    "petting zoo",
+    "farmyard",
+    "orchard",
+    "flower field",
+    "vegetable garden",
+    "kitchen",
+    "bakery",
+    "grocery store",
+    "market",
+    "laundromat",
+    "doctor's waiting room",
+    "dentist office",
+    "hair salon",
+    "post office",
+    "fire station",
+    "neighborhood park",
+    "picnic meadow",
+    "forest trail",
+    "campground",
+    "pond",
+    "river path",
+    "community garden",
+    "grandparent's house",
+    "friend's backyard",
+    "apartment courtyard",
+    "toy store",
+    "bookstore",
+    "living room",
+    "bedroom",
+    "playroom",
+    "bathroom",
+    "dining room",
+    "mudroom",
+    "daycare room",
+    "nap room",
+    "indoor gym",
+    "dance studio",
+    "swim school",
+    "craft workshop",
+    "building blocks corner",
+    "puppet theater",
+    "toy library",
+    "reading nook",
+    "museum gallery",
+    "indoor play cafe",
+    "shopping mall",
+    "hotel lobby",
+    "construction site",
+    "road repair",
+    "busy street crossing",
+    "flooded street",
+    "storm drain",
+    "parking lot",
+    "train platform",
+    "subway station",
+    "escalator",
+    "elevator",
+    "workshop",
+    "garage",
+    "tool shed",
+    "dock",
+    "pier",
+    "rocky shore",
+    "icy sidewalk",
+    "steep hill path",
+    "deep puddle",
+    "crowded market",
+    "driveway",
+    "bike lane",
+    "railroad crossing",
+    "bus depot",
+    "ferry terminal",
+    "boat ramp",
+    "marina",
+    "canal path",
+    "riverbank",
+    "cliff lookout",
+    "quarry edge",
+    "fallen tree trail",
+    "muddy slope",
+    "snowy curb",
+    "wet stairs",
+    "loose gravel path",
+    "basement stairs",
+    "attic ladder",
+    "laundry room",
+    "storage closet",
+    "loading dock",
+    "warehouse aisle",
+    "hardware store",
+    "garden center",
+    "animal enclosure",
+]
+
 STYLES = [
     "Fairy Tale",
     "Fable",
@@ -187,6 +307,7 @@ STYLES = [
 @dataclass
 class StorySeed:
     words: list[str]
+    setting: str
     features: list[str]
     style: str
 
@@ -195,6 +316,7 @@ class StorySeed:
             "Write a story that includes the following words and narrative "
             "instruments.\n"
             f"Words: {', '.join(self.words)}\n"
+            f"Setting: {self.setting}\n"
             f"Features: {', '.join(self.features)}\n"
             f"Style: {self.style}"
         )
@@ -204,6 +326,7 @@ def sample(rng: random.Random, n_words: int = 3, n_features: int = 3) -> StorySe
     """A random, reproducible combination drawn from the pools above."""
     return StorySeed(
         words=rng.sample(WORDS, n_words),
+        setting=rng.choice(SETTINGS),
         features=rng.sample(FEATURES, n_features),
         style=rng.choice(STYLES),
     )
