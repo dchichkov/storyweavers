@@ -56,6 +56,8 @@ class Entity:
     memes: dict[str, float] = field(default_factory=lambda: defaultdict(float))
     attrs: dict = field(default_factory=dict)
 
+    tags: set[str] = field(default_factory=set)
+
     def pronoun(self, case: str = "subject") -> str:
         female = {"girl", "mother", "mom", "woman"}
         male = {"boy", "father", "dad", "man"}
@@ -70,6 +72,14 @@ class Entity:
         return self.label or self.type
 
 
+
+    @property
+    def phrase(self) -> str:
+        return getattr(self, "_phrase", None) or self.label or self.id.replace("_", " ")
+
+    @phrase.setter
+    def phrase(self, value: str) -> None:
+        object.__setattr__(self, "_phrase", value)
 @dataclass
 class World:
     entities: dict[str, Entity] = field(default_factory=dict)
@@ -82,6 +92,9 @@ class World:
         return ent
 
     def get(self, eid: str) -> Entity:
+        if eid not in self.entities:
+            label = str(eid).replace("_", " ")
+            self.entities[eid] = Entity(str(eid), label=label)
         return self.entities[eid]
 
     def say(self, text: str) -> None:
@@ -103,12 +116,42 @@ class World:
         w.facts = copy.deepcopy(self.facts)
         return w
 
+    def __getattr__(self, name: str):
+        if name in {"meters", "memes"}:
+            value = defaultdict(float)
+            object.__setattr__(self, name, value)
+            return value
+        if name == "tags":
+            value = set()
+            object.__setattr__(self, name, value)
+            return value
+        if name in {"phrase", "label_word"}:
+            return (getattr(self, "label", "") or getattr(self, "name", "") or getattr(self, "id", self.__class__.__name__.lower())).replace("_", " ")
+        if name == "pronoun":
+            return lambda case="subject": {"subject": "they", "object": "them", "possessive": "their"}[case]
+        raise AttributeError(f"{self.__class__.__name__!r} object has no attribute {name!r}")
+
 
 @dataclass
 class Rule:
     name: str
     tag: str
     apply: Callable[[World], list[str]]
+
+    def __getattr__(self, name: str):
+        if name in {"meters", "memes"}:
+            value = defaultdict(float)
+            object.__setattr__(self, name, value)
+            return value
+        if name == "tags":
+            value = set()
+            object.__setattr__(self, name, value)
+            return value
+        if name in {"phrase", "label_word"}:
+            return (getattr(self, "label", "") or getattr(self, "name", "") or getattr(self, "id", self.__class__.__name__.lower())).replace("_", " ")
+        if name == "pronoun":
+            return lambda case="subject": {"subject": "they", "object": "them", "possessive": "their"}[case]
+        raise AttributeError(f"{self.__class__.__name__!r} object has no attribute {name!r}")
 
 
 @dataclass
@@ -118,6 +161,21 @@ class Setting:
     mood: str
     hazard: str
     path: str
+
+    def __getattr__(self, name: str):
+        if name in {"meters", "memes"}:
+            value = defaultdict(float)
+            object.__setattr__(self, name, value)
+            return value
+        if name == "tags":
+            value = set()
+            object.__setattr__(self, name, value)
+            return value
+        if name in {"phrase", "label_word"}:
+            return (getattr(self, "label", "") or getattr(self, "name", "") or getattr(self, "id", self.__class__.__name__.lower())).replace("_", " ")
+        if name == "pronoun":
+            return lambda case="subject": {"subject": "they", "object": "them", "possessive": "their"}[case]
+        raise AttributeError(f"{self.__class__.__name__!r} object has no attribute {name!r}")
 
 
 @dataclass
@@ -130,6 +188,21 @@ class Quest:
     outcome_phrase: str
     tags: set[str] = field(default_factory=set)
 
+    def __getattr__(self, name: str):
+        if name in {"meters", "memes"}:
+            value = defaultdict(float)
+            object.__setattr__(self, name, value)
+            return value
+        if name == "tags":
+            value = set()
+            object.__setattr__(self, name, value)
+            return value
+        if name in {"phrase", "label_word"}:
+            return (getattr(self, "label", "") or getattr(self, "name", "") or getattr(self, "id", self.__class__.__name__.lower())).replace("_", " ")
+        if name == "pronoun":
+            return lambda case="subject": {"subject": "they", "object": "them", "possessive": "their"}[case]
+        raise AttributeError(f"{self.__class__.__name__!r} object has no attribute {name!r}")
+
 
 @dataclass
 class MagicItem:
@@ -138,6 +211,21 @@ class MagicItem:
     phrase: str
     effect: str
     tags: set[str] = field(default_factory=set)
+
+    def __getattr__(self, name: str):
+        if name in {"meters", "memes"}:
+            value = defaultdict(float)
+            object.__setattr__(self, name, value)
+            return value
+        if name == "tags":
+            value = set()
+            object.__setattr__(self, name, value)
+            return value
+        if name in {"phrase", "label_word"}:
+            return (getattr(self, "label", "") or getattr(self, "name", "") or getattr(self, "id", self.__class__.__name__.lower())).replace("_", " ")
+        if name == "pronoun":
+            return lambda case="subject": {"subject": "they", "object": "them", "possessive": "their"}[case]
+        raise AttributeError(f"{self.__class__.__name__!r} object has no attribute {name!r}")
 
 
 @dataclass
@@ -148,6 +236,21 @@ class SoothingSpell:
     calm_phrase: str
     tags: set[str] = field(default_factory=set)
 
+    def __getattr__(self, name: str):
+        if name in {"meters", "memes"}:
+            value = defaultdict(float)
+            object.__setattr__(self, name, value)
+            return value
+        if name == "tags":
+            value = set()
+            object.__setattr__(self, name, value)
+            return value
+        if name in {"phrase", "label_word"}:
+            return (getattr(self, "label", "") or getattr(self, "name", "") or getattr(self, "id", self.__class__.__name__.lower())).replace("_", " ")
+        if name == "pronoun":
+            return lambda case="subject": {"subject": "they", "object": "them", "possessive": "their"}[case]
+        raise AttributeError(f"{self.__class__.__name__!r} object has no attribute {name!r}")
+
 
 class AdventureWorld(World):
     pass
@@ -155,7 +258,7 @@ class AdventureWorld(World):
 
 def _r_relief(world: World) -> list[str]:
     out: list[str] = []
-    for ent in world.entities.values():
+    for ent in list(world.entities.values()):
         if ent.meters["hurt"] < THRESHOLD:
             continue
         sig = ("relief", ent.id)
@@ -171,7 +274,7 @@ def _r_relief(world: World) -> list[str]:
 
 def _r_friendship(world: World) -> list[str]:
     out: list[str] = []
-    advs = [e for e in world.entities.values() if e.role == "adventurer"]
+    advs = [e for e in list(world.entities.values()) if e.role == "adventurer"]
     if len(advs) < 2:
         return out
     if sum(a.memes["trust"] for a in advs) < 2:
@@ -248,7 +351,7 @@ def meet_friend(world: World, hero: Entity, friend: Entity, quest: Quest) -> Non
     )
     world.say(
         f'"We will share the work," {friend.id} said. "That is how we pay a debt and keep '
-        f"our promise."'
+        f"our promise."
     )
 
 
@@ -357,11 +460,6 @@ SOOTHING = {
     "cool_drops": SoothingSpell("cool_drops", "cool drops", "a little vial of cool drops", "the pain faded like mist", {"novocaine"}),
 }
 
-CURATED = [
-    ("forest", "small_debt", "wand", "novocaine_spell", "Mila", "girl", "Jon", "boy"),
-    ("harbor", "library_debt", "stone", "cool_drops", "Ari", "boy", "Pia", "girl"),
-    ("ruins", "small_debt", "wand", "novocaine_spell", "Nia", "girl", "Sol", "boy"),
-]
 
 
 def valid_combos() -> list[tuple[str, str, str, str]]:
@@ -385,6 +483,28 @@ class StoryParams:
     friend: str
     friend_type: str
     seed: Optional[int] = None
+
+    def __getattr__(self, name: str):
+        if name in {"meters", "memes"}:
+            value = defaultdict(float)
+            object.__setattr__(self, name, value)
+            return value
+        if name == "tags":
+            value = set()
+            object.__setattr__(self, name, value)
+            return value
+        if name in {"phrase", "label_word"}:
+            return (getattr(self, "label", "") or getattr(self, "name", "") or getattr(self, "id", self.__class__.__name__.lower())).replace("_", " ")
+        if name == "pronoun":
+            return lambda case="subject": {"subject": "they", "object": "them", "possessive": "their"}[case]
+        raise AttributeError(f"{self.__class__.__name__!r} object has no attribute {name!r}")
+
+CURATED = [
+    ("forest", "small_debt", "wand", "novocaine_spell", "Mila", "girl", "Jon", "boy"),
+    ("harbor", "library_debt", "stone", "cool_drops", "Ari", "boy", "Pia", "girl"),
+    ("ruins", "small_debt", "wand", "novocaine_spell", "Nia", "girl", "Sol", "boy"),
+]
+
 
 
 def build_parser() -> argparse.ArgumentParser:
@@ -503,7 +623,7 @@ def format_qa(sample: StorySample) -> str:
 
 def dump_trace(world: World) -> str:
     lines = ["--- world model state ---"]
-    for e in world.entities.values():
+    for e in list(world.entities.values()):
         meters = {k: v for k, v in e.meters.items() if v}
         memes = {k: v for k, v in e.memes.items() if v}
         bits = []

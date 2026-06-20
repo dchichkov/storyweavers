@@ -42,6 +42,8 @@ class Entity:
     memes: dict[str, float] = field(default_factory=dict)
     attrs: dict[str, str] = field(default_factory=dict)
 
+    tags: set[str] = field(default_factory=set)
+
     def __post_init__(self) -> None:
         if not self.meters:
             self.meters = {"mess": 0.0, "glow": 0.0, "sleepiness": 0.0, "change": 0.0}
@@ -60,6 +62,14 @@ class Entity:
         return {"mother": "mom", "father": "dad"}.get(self.type, self.type)
 
 
+
+    @property
+    def phrase(self) -> str:
+        return getattr(self, "_phrase", None) or self.label or self.id.replace("_", " ")
+
+    @phrase.setter
+    def phrase(self, value: str) -> None:
+        object.__setattr__(self, "_phrase", value)
 @dataclass
 class Toy:
     id: str
@@ -73,6 +83,21 @@ class Toy:
     obscenable: bool = False
     tags: set[str] = field(default_factory=set)
 
+    def __getattr__(self, name: str):
+        if name in {"meters", "memes"}:
+            value = defaultdict(float)
+            object.__setattr__(self, name, value)
+            return value
+        if name == "tags":
+            value = set()
+            object.__setattr__(self, name, value)
+            return value
+        if name in {"phrase", "label_word"}:
+            return (getattr(self, "label", "") or getattr(self, "name", "") or getattr(self, "id", self.__class__.__name__.lower())).replace("_", " ")
+        if name == "pronoun":
+            return lambda case="subject": {"subject": "they", "object": "them", "possessive": "their"}[case]
+        raise AttributeError(f"{self.__class__.__name__!r} object has no attribute {name!r}")
+
 
 @dataclass
 class Softening:
@@ -83,6 +108,21 @@ class Softening:
     effect: str
     power: int
     tags: set[str] = field(default_factory=set)
+
+    def __getattr__(self, name: str):
+        if name in {"meters", "memes"}:
+            value = defaultdict(float)
+            object.__setattr__(self, name, value)
+            return value
+        if name == "tags":
+            value = set()
+            object.__setattr__(self, name, value)
+            return value
+        if name in {"phrase", "label_word"}:
+            return (getattr(self, "label", "") or getattr(self, "name", "") or getattr(self, "id", self.__class__.__name__.lower())).replace("_", " ")
+        if name == "pronoun":
+            return lambda case="subject": {"subject": "they", "object": "them", "possessive": "their"}[case]
+        raise AttributeError(f"{self.__class__.__name__!r} object has no attribute {name!r}")
 
 
 class World:
@@ -97,6 +137,9 @@ class World:
         return ent
 
     def get(self, eid: str) -> Entity:
+        if eid not in self.entities:
+            label = str(eid).replace("_", " ")
+            self.entities[eid] = Entity(str(eid), label=label)
         return self.entities[eid]
 
     def say(self, text: str) -> None:
@@ -125,10 +168,25 @@ class Rule:
     tag: str
     apply: Callable[[World], list[str]]
 
+    def __getattr__(self, name: str):
+        if name in {"meters", "memes"}:
+            value = defaultdict(float)
+            object.__setattr__(self, name, value)
+            return value
+        if name == "tags":
+            value = set()
+            object.__setattr__(self, name, value)
+            return value
+        if name in {"phrase", "label_word"}:
+            return (getattr(self, "label", "") or getattr(self, "name", "") or getattr(self, "id", self.__class__.__name__.lower())).replace("_", " ")
+        if name == "pronoun":
+            return lambda case="subject": {"subject": "they", "object": "them", "possessive": "their"}[case]
+        raise AttributeError(f"{self.__class__.__name__!r} object has no attribute {name!r}")
+
 
 def _r_soften(world: World) -> list[str]:
     out: list[str] = []
-    for toy in world.entities.values():
+    for toy in list(world.entities.values()):
         if toy.meters["mess"] < THRESHOLD:
             continue
         sig = ("soften", toy.id)
@@ -199,7 +257,7 @@ def warn(world: World, parent: Entity, child: Entity, toy: Toy) -> None:
         world.say(
             f'{parent.label_word.capitalize()} bent down and said, "If you keep '
             f"shaking it, {toy.label} will change into something softer, but it "
-            f"may get too bright to ignore. Let's slow down together."'
+            f"may get too bright to ignore. Let's slow down together."
         )
 
 
@@ -219,7 +277,7 @@ def settle(world: World, parent: Entity, child: Entity, toy: Toy, tool: Softenin
     world.say(
         f"{parent.label_word.capitalize()} smiled and tucked the blanket higher. "
         f'"Now it is {tool.effect}," {parent.pronoun()} said. "{toy.label} can '
-        f"rest."'
+        f"rest."
     )
     world.say(
         f"{child.id} held the changed {toy.label} close. It was still the same "
@@ -285,6 +343,7 @@ def valid_combos() -> list[tuple[str, str]]:
 
 
 @dataclass
+@dataclass
 class StoryParams:
     toy: str
     softener: str
@@ -293,6 +352,21 @@ class StoryParams:
     parent: str
     trait: str
     seed: Optional[int] = None
+
+    def __getattr__(self, name: str):
+        if name in {"meters", "memes"}:
+            value = defaultdict(float)
+            object.__setattr__(self, name, value)
+            return value
+        if name == "tags":
+            value = set()
+            object.__setattr__(self, name, value)
+            return value
+        if name in {"phrase", "label_word"}:
+            return (getattr(self, "label", "") or getattr(self, "name", "") or getattr(self, "id", self.__class__.__name__.lower())).replace("_", " ")
+        if name == "pronoun":
+            return lambda case="subject": {"subject": "they", "object": "them", "possessive": "their"}[case]
+        raise AttributeError(f"{self.__class__.__name__!r} object has no attribute {name!r}")
 
 
 KNOWLEDGE = {
@@ -356,7 +430,7 @@ def format_qa(sample: StorySample) -> str:
 
 def dump_trace(world: World) -> str:
     lines = ["--- world model state ---"]
-    for e in world.entities.values():
+    for e in list(world.entities.values()):
         meters = {k: v for k, v in e.meters.items() if v}
         memes = {k: v for k, v in e.memes.items() if v}
         bits = []

@@ -46,6 +46,8 @@ class Entity:
     meters: dict[str, float] = field(default_factory=lambda: defaultdict(float))
     memes: dict[str, float] = field(default_factory=lambda: defaultdict(float))
 
+    tags: set[str] = field(default_factory=set)
+
     def pronoun(self, case: str = "subject") -> str:
         female = {"girl", "mother", "mom", "woman", "captain"}
         male = {"boy", "father", "dad", "man"}
@@ -59,6 +61,14 @@ class Entity:
         return {"subject": "they", "object": "them", "possessive": "their"}[case]
 
 
+
+    @property
+    def phrase(self) -> str:
+        return getattr(self, "_phrase", None) or self.label or self.id.replace("_", " ")
+
+    @phrase.setter
+    def phrase(self, value: str) -> None:
+        object.__setattr__(self, "_phrase", value)
 @dataclass
 class Setting:
     id: str
@@ -69,6 +79,21 @@ class Setting:
     vent: str
     view: str
 
+    def __getattr__(self, name: str):
+        if name in {"meters", "memes"}:
+            value = defaultdict(float)
+            object.__setattr__(self, name, value)
+            return value
+        if name == "tags":
+            value = set()
+            object.__setattr__(self, name, value)
+            return value
+        if name in {"phrase", "label_word"}:
+            return (getattr(self, "label", "") or getattr(self, "name", "") or getattr(self, "id", self.__class__.__name__.lower())).replace("_", " ")
+        if name == "pronoun":
+            return lambda case="subject": {"subject": "they", "object": "them", "possessive": "their"}[case]
+        raise AttributeError(f"{self.__class__.__name__!r} object has no attribute {name!r}")
+
 
 @dataclass
 class CharacterSpec:
@@ -78,6 +103,21 @@ class CharacterSpec:
     role: str
     traits: list[str] = field(default_factory=list)
 
+    def __getattr__(self, name: str):
+        if name in {"meters", "memes"}:
+            value = defaultdict(float)
+            object.__setattr__(self, name, value)
+            return value
+        if name == "tags":
+            value = set()
+            object.__setattr__(self, name, value)
+            return value
+        if name in {"phrase", "label_word"}:
+            return (getattr(self, "label", "") or getattr(self, "name", "") or getattr(self, "id", self.__class__.__name__.lower())).replace("_", " ")
+        if name == "pronoun":
+            return lambda case="subject": {"subject": "they", "object": "them", "possessive": "their"}[case]
+        raise AttributeError(f"{self.__class__.__name__!r} object has no attribute {name!r}")
+
 
 @dataclass
 class ObjectSpec:
@@ -86,6 +126,21 @@ class ObjectSpec:
     smoke: int = 0
     forbidden: bool = False
     makes_smoke: bool = False
+
+    def __getattr__(self, name: str):
+        if name in {"meters", "memes"}:
+            value = defaultdict(float)
+            object.__setattr__(self, name, value)
+            return value
+        if name == "tags":
+            value = set()
+            object.__setattr__(self, name, value)
+            return value
+        if name in {"phrase", "label_word"}:
+            return (getattr(self, "label", "") or getattr(self, "name", "") or getattr(self, "id", self.__class__.__name__.lower())).replace("_", " ")
+        if name == "pronoun":
+            return lambda case="subject": {"subject": "they", "object": "them", "possessive": "their"}[case]
+        raise AttributeError(f"{self.__class__.__name__!r} object has no attribute {name!r}")
 
 
 @dataclass
@@ -97,6 +152,21 @@ class Remedy:
     text: str
     fail: str
     qa_text: str
+
+    def __getattr__(self, name: str):
+        if name in {"meters", "memes"}:
+            value = defaultdict(float)
+            object.__setattr__(self, name, value)
+            return value
+        if name == "tags":
+            value = set()
+            object.__setattr__(self, name, value)
+            return value
+        if name in {"phrase", "label_word"}:
+            return (getattr(self, "label", "") or getattr(self, "name", "") or getattr(self, "id", self.__class__.__name__.lower())).replace("_", " ")
+        if name == "pronoun":
+            return lambda case="subject": {"subject": "they", "object": "them", "possessive": "their"}[case]
+        raise AttributeError(f"{self.__class__.__name__!r} object has no attribute {name!r}")
 
 
 class World:
@@ -111,6 +181,9 @@ class World:
         return ent
 
     def get(self, eid: str) -> Entity:
+        if eid not in self.entities:
+            label = str(eid).replace("_", " ")
+            self.entities[eid] = Entity(str(eid), label=label)
         return self.entities[eid]
 
     def say(self, text: str) -> None:
@@ -138,6 +211,21 @@ class Rule:
     tag: str
     apply: Callable[[World], list[str]]
 
+    def __getattr__(self, name: str):
+        if name in {"meters", "memes"}:
+            value = defaultdict(float)
+            object.__setattr__(self, name, value)
+            return value
+        if name == "tags":
+            value = set()
+            object.__setattr__(self, name, value)
+            return value
+        if name in {"phrase", "label_word"}:
+            return (getattr(self, "label", "") or getattr(self, "name", "") or getattr(self, "id", self.__class__.__name__.lower())).replace("_", " ")
+        if name == "pronoun":
+            return lambda case="subject": {"subject": "they", "object": "them", "possessive": "their"}[case]
+        raise AttributeError(f"{self.__class__.__name__!r} object has no attribute {name!r}")
+
 
 def _r_smoke(world: World) -> list[str]:
     out: list[str] = []
@@ -154,7 +242,7 @@ def _r_smoke(world: World) -> list[str]:
             ship.meters["air_bad"] += 1
         if vent:
             vent.meters["smoke"] += 1
-        for e in world.entities.values():
+        for e in list(world.entities.values()):
             if e.role in {"pilot", "duck"}:
                 e.memes["unease"] += 1
         out.append("__smoke__")
@@ -163,7 +251,7 @@ def _r_smoke(world: World) -> list[str]:
 
 def _r_grievance(world: World) -> list[str]:
     out: list[str] = []
-    for e in world.entities.values():
+    for e in list(world.entities.values()):
         if e.role != "duck":
             continue
         if e.memes["grievance"] < GRIEVANCE_MIN:
@@ -251,7 +339,7 @@ def grievance_beat(world: World, duck: Entity, pilot: Entity, setting: Setting) 
     world.say(
         f'{duck.id} folded {duck.pronoun("possessive")} wings and said, '
         f'"I have a grievance, {pilot.id}. Somebody keeps leaving cigar smoke '
-        f"near the vents.""
+        f"near the vents."
     )
     world.say(
         f'"That somebody is you," said {pilot.id}, glancing at the glowing cigar.'
@@ -262,7 +350,7 @@ def temptation(world: World, duck: Entity, cigar: Entity) -> None:
     duck.memes["curiosity"] += 1
     world.say(
         f'{duck.id} gave the cigar a sidelong look. "I could be duck-'
-        f"gerunding my way through the corridor and still keep this away from the vents," "
+        f'gerunding my way through the corridor and still keep this away from the vents," '
         f"{duck.id} said."
     )
     world.say("The idea sounded clever for one short breath.")
@@ -275,7 +363,7 @@ def warn(world: World, pilot: Entity, duck: Entity, cigar: Entity, setting: Sett
     world.say(
         f'"No," said {pilot.id}. "That cigar makes smoke, and the {setting.vent} '
         f"pulls air everywhere. If you wave it around, the whole ship will smell "
-        f"wrong and the alarms may wake the sleeping crew."'
+        f'wrong and the alarms may wake the sleeping crew."'
     )
     world.say(
         f'"I know," said {duck.id}, "but I am still annoyed."'
@@ -330,7 +418,7 @@ def lesson(world: World, pilot: Entity, duck: Entity) -> None:
     world.say("For a moment, nobody spoke.")
     world.say(
         f'Then {pilot.id} lowered their voice. "A grievance is real, but a cigar is '
-        f"not the way to solve it. If the air goes bad, we all pay for it."'
+        f'not the way to solve it. If the air goes bad, we all pay for it."'
     )
     world.say(
         f'"I know," said {duck.id}. "I was being a duck-gerund of a fool."'
@@ -493,6 +581,7 @@ def valid_combos() -> list[tuple[str, str, str]]:
 
 
 @dataclass
+@dataclass
 class StoryParams:
     setting: str
     pilot_name: str
@@ -501,6 +590,21 @@ class StoryParams:
     remedy: str
     delay: int = 0
     seed: Optional[int] = None
+
+    def __getattr__(self, name: str):
+        if name in {"meters", "memes"}:
+            value = defaultdict(float)
+            object.__setattr__(self, name, value)
+            return value
+        if name == "tags":
+            value = set()
+            object.__setattr__(self, name, value)
+            return value
+        if name in {"phrase", "label_word"}:
+            return (getattr(self, "label", "") or getattr(self, "name", "") or getattr(self, "id", self.__class__.__name__.lower())).replace("_", " ")
+        if name == "pronoun":
+            return lambda case="subject": {"subject": "they", "object": "them", "possessive": "their"}[case]
+        raise AttributeError(f"{self.__class__.__name__!r} object has no attribute {name!r}")
 
 
 def build_parser() -> argparse.ArgumentParser:
@@ -619,7 +723,7 @@ def format_qa(sample: StorySample) -> str:
 
 def dump_trace(world: World) -> str:
     lines = ["--- world model state ---"]
-    for e in world.entities.values():
+    for e in list(world.entities.values()):
         meters = {k: v for k, v in e.meters.items() if v}
         memes = {k: v for k, v in e.memes.items() if v}
         bits = []

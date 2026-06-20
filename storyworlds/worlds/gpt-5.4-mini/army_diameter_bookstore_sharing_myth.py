@@ -47,6 +47,8 @@ class Entity:
     memes: dict[str, float] = field(default_factory=lambda: defaultdict(float))
     attrs: dict = field(default_factory=dict)
 
+    tags: set[str] = field(default_factory=set)
+
     def pronoun(self, case: str = "subject") -> str:
         female = {"girl", "mother", "mom", "woman"}
         male = {"boy", "father", "dad", "man"}
@@ -61,6 +63,14 @@ class Entity:
         return {"mother": "mom", "father": "dad"}.get(self.type, self.type)
 
 
+
+    @property
+    def phrase(self) -> str:
+        return getattr(self, "_phrase", None) or self.label or self.id.replace("_", " ")
+
+    @phrase.setter
+    def phrase(self, value: str) -> None:
+        object.__setattr__(self, "_phrase", value)
 @dataclass
 class Setting:
     id: str
@@ -68,6 +78,21 @@ class Setting:
     shelves: str
     air: str
     tags: set[str] = field(default_factory=set)
+
+    def __getattr__(self, name: str):
+        if name in {"meters", "memes"}:
+            value = defaultdict(float)
+            object.__setattr__(self, name, value)
+            return value
+        if name == "tags":
+            value = set()
+            object.__setattr__(self, name, value)
+            return value
+        if name in {"phrase", "label_word"}:
+            return (getattr(self, "label", "") or getattr(self, "name", "") or getattr(self, "id", self.__class__.__name__.lower())).replace("_", " ")
+        if name == "pronoun":
+            return lambda case="subject": {"subject": "they", "object": "them", "possessive": "their"}[case]
+        raise AttributeError(f"{self.__class__.__name__!r} object has no attribute {name!r}")
 
 
 @dataclass
@@ -80,6 +105,21 @@ class Book:
     rare: bool = False
     tags: set[str] = field(default_factory=set)
 
+    def __getattr__(self, name: str):
+        if name in {"meters", "memes"}:
+            value = defaultdict(float)
+            object.__setattr__(self, name, value)
+            return value
+        if name == "tags":
+            value = set()
+            object.__setattr__(self, name, value)
+            return value
+        if name in {"phrase", "label_word"}:
+            return (getattr(self, "label", "") or getattr(self, "name", "") or getattr(self, "id", self.__class__.__name__.lower())).replace("_", " ")
+        if name == "pronoun":
+            return lambda case="subject": {"subject": "they", "object": "them", "possessive": "their"}[case]
+        raise AttributeError(f"{self.__class__.__name__!r} object has no attribute {name!r}")
+
 
 @dataclass
 class Need:
@@ -89,6 +129,21 @@ class Need:
     reason: str
     tags: set[str] = field(default_factory=set)
 
+    def __getattr__(self, name: str):
+        if name in {"meters", "memes"}:
+            value = defaultdict(float)
+            object.__setattr__(self, name, value)
+            return value
+        if name == "tags":
+            value = set()
+            object.__setattr__(self, name, value)
+            return value
+        if name in {"phrase", "label_word"}:
+            return (getattr(self, "label", "") or getattr(self, "name", "") or getattr(self, "id", self.__class__.__name__.lower())).replace("_", " ")
+        if name == "pronoun":
+            return lambda case="subject": {"subject": "they", "object": "them", "possessive": "their"}[case]
+        raise AttributeError(f"{self.__class__.__name__!r} object has no attribute {name!r}")
+
 
 @dataclass
 class SharePlan:
@@ -97,6 +152,21 @@ class SharePlan:
     effect: str
     ending: str
     tags: set[str] = field(default_factory=set)
+
+    def __getattr__(self, name: str):
+        if name in {"meters", "memes"}:
+            value = defaultdict(float)
+            object.__setattr__(self, name, value)
+            return value
+        if name == "tags":
+            value = set()
+            object.__setattr__(self, name, value)
+            return value
+        if name in {"phrase", "label_word"}:
+            return (getattr(self, "label", "") or getattr(self, "name", "") or getattr(self, "id", self.__class__.__name__.lower())).replace("_", " ")
+        if name == "pronoun":
+            return lambda case="subject": {"subject": "they", "object": "them", "possessive": "their"}[case]
+        raise AttributeError(f"{self.__class__.__name__!r} object has no attribute {name!r}")
 
 
 class World:
@@ -112,6 +182,9 @@ class World:
         return ent
 
     def get(self, eid: str) -> Entity:
+        if eid not in self.entities:
+            label = str(eid).replace("_", " ")
+            self.entities[eid] = Entity(str(eid), label=label)
         return self.entities[eid]
 
     def say(self, text: str) -> None:
@@ -139,10 +212,25 @@ class Rule:
     tag: str
     apply: Callable[[World], list[str]]
 
+    def __getattr__(self, name: str):
+        if name in {"meters", "memes"}:
+            value = defaultdict(float)
+            object.__setattr__(self, name, value)
+            return value
+        if name == "tags":
+            value = set()
+            object.__setattr__(self, name, value)
+            return value
+        if name in {"phrase", "label_word"}:
+            return (getattr(self, "label", "") or getattr(self, "name", "") or getattr(self, "id", self.__class__.__name__.lower())).replace("_", " ")
+        if name == "pronoun":
+            return lambda case="subject": {"subject": "they", "object": "them", "possessive": "their"}[case]
+        raise AttributeError(f"{self.__class__.__name__!r} object has no attribute {name!r}")
+
 
 def _r_lonely(world: World) -> list[str]:
     out: list[str] = []
-    for ent in world.entities.values():
+    for ent in list(world.entities.values()):
         if ent.memes["want"] < THRESHOLD:
             continue
         sig = ("lonely", ent.id)
@@ -159,7 +247,7 @@ def _r_share(world: World) -> list[str]:
     book = world.entities.get("book")
     if not book or book.meters["held"] < THRESHOLD:
         return out
-    readers = [e for e in world.entities.values() if e.role in {"child_a", "child_b"}]
+    readers = [e for e in list(world.entities.values()) if e.role in {"child_a", "child_b"}]
     if len(readers) < 2:
         return out
     if book.meters["shared"] >= THRESHOLD:
@@ -245,8 +333,8 @@ def tell(setting: Setting, book: Book, need: Need, plan: SharePlan,
     a.memes["want"] += 1
     b.memes["want"] += 1
     world.say(
-        f"But only one copy was there. {a.id} reached first, and {b.id} wanted {need.phrase}. '
-        f'The room felt a little tight, like a crowded story."
+        f"But only one copy was there. {a.id} reached first, and {b.id} wanted {need.phrase}. "
+        f'The room felt a little tight, like a crowded story.'
     )
     if need.id == "crowd":
         world.say("The army story seemed to call for many eyes, not only one pair.")
@@ -263,8 +351,8 @@ def tell(setting: Setting, book: Book, need: Need, plan: SharePlan,
     if can_share(book, plan):
         book.meters["shared"] += 1
         world.say(
-            f"They {plan.effect}. First one child read, then the other, and the librarian '
-            f'turned the page slowly so nobody missed the pictures."
+            f"They {plan.effect}. First one child read, then the other, and the librarian "
+            f'turned the page slowly so nobody missed the pictures.'
         )
         world.say(
             f"By the end, the book felt lighter in their hands, and the army in the myth "
@@ -395,7 +483,7 @@ def format_qa(sample: StorySample) -> str:
 
 def dump_trace(world: World) -> str:
     lines = ["--- world model state ---"]
-    for e in world.entities.values():
+    for e in list(world.entities.values()):
         meters = {k: v for k, v in e.meters.items() if v}
         memes = {k: v for k, v in e.memes.items() if v}
         bits = []
@@ -503,6 +591,7 @@ def resolve_params(args: argparse.Namespace, rng: random.Random):
 
 
 @dataclass
+@dataclass
 class StoryParams:
     setting: str
     book: str
@@ -512,6 +601,21 @@ class StoryParams:
     name2: str
     adult: str
     seed: Optional[int] = None
+
+    def __getattr__(self, name: str):
+        if name in {"meters", "memes"}:
+            value = defaultdict(float)
+            object.__setattr__(self, name, value)
+            return value
+        if name == "tags":
+            value = set()
+            object.__setattr__(self, name, value)
+            return value
+        if name in {"phrase", "label_word"}:
+            return (getattr(self, "label", "") or getattr(self, "name", "") or getattr(self, "id", self.__class__.__name__.lower())).replace("_", " ")
+        if name == "pronoun":
+            return lambda case="subject": {"subject": "they", "object": "them", "possessive": "their"}[case]
+        raise AttributeError(f"{self.__class__.__name__!r} object has no attribute {name!r}")
 
 
 def generate(params: StoryParams) -> StorySample:

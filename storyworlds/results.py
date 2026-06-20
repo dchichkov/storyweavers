@@ -37,6 +37,11 @@ class QAItem:
     question: str
     answer: str
 
+    def __iter__(self):
+        """Allow generated worlds to treat QAItem like a ``(question, answer)`` pair."""
+        yield self.question
+        yield self.answer
+
 
 @dataclass
 class StorySample:

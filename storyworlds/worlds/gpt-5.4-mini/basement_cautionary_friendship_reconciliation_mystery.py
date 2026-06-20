@@ -45,6 +45,8 @@ class Entity:
     meters: dict[str, float] = field(default_factory=lambda: {})
     memes: dict[str, float] = field(default_factory=lambda: {})
 
+    tags: set[str] = field(default_factory=set)
+
     def __post_init__(self) -> None:
         self.meters = dict(self.meters)
         self.memes = dict(self.memes)
@@ -63,12 +65,35 @@ class Entity:
         return {"mother": "mom", "father": "dad"}.get(self.type, self.type)
 
 
+
+    @property
+    def phrase(self) -> str:
+        return getattr(self, "_phrase", None) or self.label or self.id.replace("_", " ")
+
+    @phrase.setter
+    def phrase(self, value: str) -> None:
+        object.__setattr__(self, "_phrase", value)
 @dataclass
 class Room:
     id: str
     label: str
     meters: dict[str, float] = field(default_factory=lambda: {})
     memes: dict[str, float] = field(default_factory=lambda: {})
+
+    def __getattr__(self, name: str):
+        if name in {"meters", "memes"}:
+            value = defaultdict(float)
+            object.__setattr__(self, name, value)
+            return value
+        if name == "tags":
+            value = set()
+            object.__setattr__(self, name, value)
+            return value
+        if name in {"phrase", "label_word"}:
+            return (getattr(self, "label", "") or getattr(self, "name", "") or getattr(self, "id", self.__class__.__name__.lower())).replace("_", " ")
+        if name == "pronoun":
+            return lambda case="subject": {"subject": "they", "object": "them", "possessive": "their"}[case]
+        raise AttributeError(f"{self.__class__.__name__!r} object has no attribute {name!r}")
 
 
 @dataclass
@@ -81,7 +106,23 @@ class ObjectCfg:
     can_scare: bool = False
     meters: dict[str, float] = field(default_factory=lambda: {})
 
+    def __getattr__(self, name: str):
+        if name in {"meters", "memes"}:
+            value = defaultdict(float)
+            object.__setattr__(self, name, value)
+            return value
+        if name == "tags":
+            value = set()
+            object.__setattr__(self, name, value)
+            return value
+        if name in {"phrase", "label_word"}:
+            return (getattr(self, "label", "") or getattr(self, "name", "") or getattr(self, "id", self.__class__.__name__.lower())).replace("_", " ")
+        if name == "pronoun":
+            return lambda case="subject": {"subject": "they", "object": "them", "possessive": "their"}[case]
+        raise AttributeError(f"{self.__class__.__name__!r} object has no attribute {name!r}")
 
+
+@dataclass
 @dataclass
 class StoryParams:
     basement: str
@@ -94,6 +135,21 @@ class StoryParams:
     friend2_gender: str
     parent: str
     seed: Optional[int] = None
+
+    def __getattr__(self, name: str):
+        if name in {"meters", "memes"}:
+            value = defaultdict(float)
+            object.__setattr__(self, name, value)
+            return value
+        if name == "tags":
+            value = set()
+            object.__setattr__(self, name, value)
+            return value
+        if name in {"phrase", "label_word"}:
+            return (getattr(self, "label", "") or getattr(self, "name", "") or getattr(self, "id", self.__class__.__name__.lower())).replace("_", " ")
+        if name == "pronoun":
+            return lambda case="subject": {"subject": "they", "object": "them", "possessive": "their"}[case]
+        raise AttributeError(f"{self.__class__.__name__!r} object has no attribute {name!r}")
 
 
 class World:
@@ -143,6 +199,21 @@ class Rule:
     name: str
     apply: Callable[[World], list[str]]
 
+    def __getattr__(self, name: str):
+        if name in {"meters", "memes"}:
+            value = defaultdict(float)
+            object.__setattr__(self, name, value)
+            return value
+        if name == "tags":
+            value = set()
+            object.__setattr__(self, name, value)
+            return value
+        if name in {"phrase", "label_word"}:
+            return (getattr(self, "label", "") or getattr(self, "name", "") or getattr(self, "id", self.__class__.__name__.lower())).replace("_", " ")
+        if name == "pronoun":
+            return lambda case="subject": {"subject": "they", "object": "them", "possessive": "their"}[case]
+        raise AttributeError(f"{self.__class__.__name__!r} object has no attribute {name!r}")
+
 
 def propagate(world: World, narrate: bool = True) -> list[str]:
     out: list[str] = []
@@ -165,7 +236,7 @@ def _r_fear(world: World) -> list[str]:
     room = world.rooms["basement"]
     if room.meters.get("mystery", 0.0) >= THRESHOLD and ("fear", "f1") not in world.fired:
         world.fired.add(("fear", "f1"))
-        for e in world.entities.values():
+        for e in list(world.entities.values()):
             if e.role in {"explorer", "cautious"}:
                 e.memes["fear"] = e.memes.get("fear", 0.0) + 1
         room.meters["tension"] = room.meters.get("tension", 0.0) + 1
@@ -297,6 +368,21 @@ class StoryParams:
     parent: str
     seed: Optional[int] = None
 
+    def __getattr__(self, name: str):
+        if name in {"meters", "memes"}:
+            value = defaultdict(float)
+            object.__setattr__(self, name, value)
+            return value
+        if name == "tags":
+            value = set()
+            object.__setattr__(self, name, value)
+            return value
+        if name in {"phrase", "label_word"}:
+            return (getattr(self, "label", "") or getattr(self, "name", "") or getattr(self, "id", self.__class__.__name__.lower())).replace("_", " ")
+        if name == "pronoun":
+            return lambda case="subject": {"subject": "they", "object": "them", "possessive": "their"}[case]
+        raise AttributeError(f"{self.__class__.__name__!r} object has no attribute {name!r}")
+
 
 KNOWLEDGE = {
     "basement": [("What is a basement?", "A basement is a lower room under a house, often used for storage or laundry.")],
@@ -375,7 +461,7 @@ def format_qa(sample: StorySample) -> str:
 
 def dump_trace(world: World) -> str:
     lines = ["--- world model state ---"]
-    for e in world.entities.values():
+    for e in list(world.entities.values()):
         lines.append(f"  {e.id:10} ({e.type:7}) role={e.role} meters={e.meters} memes={e.memes}")
     for r in world.rooms.values():
         lines.append(f"  {r.id:10} (room   ) meters={r.meters} memes={r.memes}")

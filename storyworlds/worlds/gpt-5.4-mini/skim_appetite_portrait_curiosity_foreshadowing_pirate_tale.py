@@ -53,6 +53,8 @@ class Entity:
     meters: dict[str, float] = field(default_factory=dict)
     memes: dict[str, float] = field(default_factory=dict)
 
+    tags: set[str] = field(default_factory=set)
+
     def __post_init__(self) -> None:
         if not self.meters:
             self.meters = {"need": 0.0, "order": 0.0, "hidden": 0.0}
@@ -67,6 +69,14 @@ class Entity:
         return {"subject": "they", "object": "them", "possessive": "their"}[case]
 
 
+
+    @property
+    def phrase(self) -> str:
+        return getattr(self, "_phrase", None) or self.label or self.id.replace("_", " ")
+
+    @phrase.setter
+    def phrase(self, value: str) -> None:
+        object.__setattr__(self, "_phrase", value)
 @dataclass
 class Scene:
     id: str
@@ -78,6 +88,21 @@ class Scene:
     style: str
     meters: dict[str, float] = field(default_factory=dict)
     memes: dict[str, float] = field(default_factory=dict)
+
+    def __getattr__(self, name: str):
+        if name in {"meters", "memes"}:
+            value = defaultdict(float)
+            object.__setattr__(self, name, value)
+            return value
+        if name == "tags":
+            value = set()
+            object.__setattr__(self, name, value)
+            return value
+        if name in {"phrase", "label_word"}:
+            return (getattr(self, "label", "") or getattr(self, "name", "") or getattr(self, "id", self.__class__.__name__.lower())).replace("_", " ")
+        if name == "pronoun":
+            return lambda case="subject": {"subject": "they", "object": "them", "possessive": "their"}[case]
+        raise AttributeError(f"{self.__class__.__name__!r} object has no attribute {name!r}")
 
 
 @dataclass
@@ -93,6 +118,21 @@ class ObjectThing:
     meters: dict[str, float] = field(default_factory=dict)
     memes: dict[str, float] = field(default_factory=dict)
 
+    def __getattr__(self, name: str):
+        if name in {"meters", "memes"}:
+            value = defaultdict(float)
+            object.__setattr__(self, name, value)
+            return value
+        if name == "tags":
+            value = set()
+            object.__setattr__(self, name, value)
+            return value
+        if name in {"phrase", "label_word"}:
+            return (getattr(self, "label", "") or getattr(self, "name", "") or getattr(self, "id", self.__class__.__name__.lower())).replace("_", " ")
+        if name == "pronoun":
+            return lambda case="subject": {"subject": "they", "object": "them", "possessive": "their"}[case]
+        raise AttributeError(f"{self.__class__.__name__!r} object has no attribute {name!r}")
+
 
 @dataclass
 class PlotToken:
@@ -102,6 +142,21 @@ class PlotToken:
     hint: str
     reveal: str
     foreshadow: str
+
+    def __getattr__(self, name: str):
+        if name in {"meters", "memes"}:
+            value = defaultdict(float)
+            object.__setattr__(self, name, value)
+            return value
+        if name == "tags":
+            value = set()
+            object.__setattr__(self, name, value)
+            return value
+        if name in {"phrase", "label_word"}:
+            return (getattr(self, "label", "") or getattr(self, "name", "") or getattr(self, "id", self.__class__.__name__.lower())).replace("_", " ")
+        if name == "pronoun":
+            return lambda case="subject": {"subject": "they", "object": "them", "possessive": "their"}[case]
+        raise AttributeError(f"{self.__class__.__name__!r} object has no attribute {name!r}")
 
 
 class World:
@@ -153,10 +208,25 @@ class Rule:
     name: str
     apply: Callable[[World], list[str]]
 
+    def __getattr__(self, name: str):
+        if name in {"meters", "memes"}:
+            value = defaultdict(float)
+            object.__setattr__(self, name, value)
+            return value
+        if name == "tags":
+            value = set()
+            object.__setattr__(self, name, value)
+            return value
+        if name in {"phrase", "label_word"}:
+            return (getattr(self, "label", "") or getattr(self, "name", "") or getattr(self, "id", self.__class__.__name__.lower())).replace("_", " ")
+        if name == "pronoun":
+            return lambda case="subject": {"subject": "they", "object": "them", "possessive": "their"}[case]
+        raise AttributeError(f"{self.__class__.__name__!r} object has no attribute {name!r}")
+
 
 def _r_curiosity(world: World) -> list[str]:
     out: list[str] = []
-    for ent in world.entities.values():
+    for ent in list(world.entities.values()):
         if ent.memes.get("curiosity", 0.0) < THRESHOLD:
             continue
         sig = ("curiosity", ent.id)
@@ -257,7 +327,7 @@ def tell(world: World, hero: Entity, mate: Entity, token: PlotToken, food: Objec
     )
     world.say(
         f"{mate.id} leaned closer and whispered, 'That scrap looks important. "
-        f'It might tell us where the next treasure is hidden.'"
+        f'It might tell us where the next treasure is hidden.'
     )
     world.say(
         f"When {hero.id} skimmed the paper, a small picture of {portrait.label} "
@@ -364,6 +434,7 @@ BOY_NAMES = ["Tom", "Finn", "Eli", "Max", "Theo", "Sam"]
 
 
 @dataclass
+@dataclass
 class StoryParams:
     theme: str
     token: str
@@ -374,6 +445,21 @@ class StoryParams:
     mate: str
     mate_gender: str
     seed: Optional[int] = None
+
+    def __getattr__(self, name: str):
+        if name in {"meters", "memes"}:
+            value = defaultdict(float)
+            object.__setattr__(self, name, value)
+            return value
+        if name == "tags":
+            value = set()
+            object.__setattr__(self, name, value)
+            return value
+        if name in {"phrase", "label_word"}:
+            return (getattr(self, "label", "") or getattr(self, "name", "") or getattr(self, "id", self.__class__.__name__.lower())).replace("_", " ")
+        if name == "pronoun":
+            return lambda case="subject": {"subject": "they", "object": "them", "possessive": "their"}[case]
+        raise AttributeError(f"{self.__class__.__name__!r} object has no attribute {name!r}")
 
 
 def valid_combos() -> list[tuple[str, str, str, str]]:
@@ -428,7 +514,7 @@ def dump_trace(world: World) -> str:
     lines = ["--- world model state ---"]
     if world.scene:
         lines.append(f"scene={world.scene}")
-    for e in world.entities.values():
+    for e in list(world.entities.values()):
         lines.append(f"{e.id}: meters={e.meters} memes={e.memes}")
     for o in world.objects.values():
         lines.append(f"{o.id}: meters={o.meters} memes={o.memes}")
