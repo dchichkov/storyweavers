@@ -15,7 +15,10 @@ import hashlib
 import json
 import random
 import re
+import os
+import subprocess
 import sys
+import time
 from dataclasses import asdict, dataclass
 from datetime import UTC, datetime
 from pathlib import Path
@@ -188,6 +191,36 @@ def build_parser() -> argparse.ArgumentParser:
         "--dry-run",
         action="store_true",
         help="print what would be written without touching files",
+    )
+
+    sample = sub.add_parser(
+        "sample-materialized",
+        help="run one story+QA sample from each target in a batch manifest",
+    )
+    sample.add_argument(
+        "--manifest",
+        type=Path,
+        required=True,
+        help="manifest JSON from the matching prepare/submit run",
+    )
+    sample.add_argument(
+        "--out",
+        type=Path,
+        default=None,
+        help="JSONL report path; default: <manifest stem>.samples.jsonl",
+    )
+    sample.add_argument("--seed", type=int, default=777, help="sample seed; default: 777")
+    sample.add_argument(
+        "--timeout",
+        type=float,
+        default=20.0,
+        help="seconds allowed per script; default: 20",
+    )
+    sample.add_argument(
+        "--limit",
+        type=int,
+        default=None,
+        help="only run the first N manifest targets",
     )
     return parser
 
@@ -628,6 +661,11 @@ def manifest_targets(manifest_path: Path) -> dict[str, str]:
     }
 
 
+def manifest_jobs(manifest_path: Path) -> list[dict[str, Any]]:
+    manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+    return list(manifest.get("jobs", []))
+
+
 def safe_target_path(target: str) -> Path:
     path = (ROOT / target).resolve()
     path.relative_to(WORLDS_DIR.resolve())
@@ -723,6 +761,121 @@ def cmd_materialize(args: argparse.Namespace) -> int:
     return 0 if written or not skipped else 1
 
 
+def sample_output_path(manifest_path: Path) -> Path:
+    name = manifest_path.name
+    suffix = ".manifest.json"
+    if name.endswith(suffix):
+        return manifest_path.with_name(f"{name[:-len(suffix)]}.samples.jsonl")
+    return manifest_path.with_suffix(".samples.jsonl")
+
+
+def sample_env() -> dict[str, str]:
+    env = os.environ.copy()
+    existing = env.get("PYTHONPATH")
+    parts = [str(STORYWORLDS_DIR)]
+    if existing:
+        parts.append(existing)
+    env["PYTHONPATH"] = os.pathsep.join(parts)
+    return env
+
+
+def cmd_sample_materialized(args: argparse.Namespace) -> int:
+    jobs = manifest_jobs(args.manifest)
+    if args.limit is not None:
+        jobs = jobs[: args.limit]
+    out_path = args.out or sample_output_path(args.manifest)
+    out_path.parent.mkdir(parents=True, exist_ok=True)
+
+    env = sample_env()
+    ok = failed = missing = timeout_count = 0
+    with out_path.open("w", encoding="utf-8") as handle:
+        for index, job in enumerate(jobs, 1):
+            custom_id = job.get("custom_id", "")
+            target = job.get("target", "")
+            try:
+                path = safe_target_path(target)
+            except (KeyError, ValueError) as exc:
+                result = {
+                    "custom_id": custom_id,
+                    "target": target,
+                    "ok": False,
+                    "returncode": None,
+                    "error": str(exc),
+                    "stdout": "",
+                    "stderr": "",
+                }
+                handle.write(json.dumps(result, ensure_ascii=False) + "\n")
+                failed += 1
+                print(f"[{index}/{len(jobs)}] bad target {target}: {exc}", flush=True)
+                continue
+
+            if not path.exists():
+                result = {
+                    "custom_id": custom_id,
+                    "target": target,
+                    "ok": False,
+                    "returncode": None,
+                    "error": "missing_file",
+                    "stdout": "",
+                    "stderr": "",
+                }
+                handle.write(json.dumps(result, ensure_ascii=False) + "\n")
+                missing += 1
+                print(f"[{index}/{len(jobs)}] missing {target}", flush=True)
+                continue
+
+            cmd = [sys.executable, str(path), "--seed", str(args.seed), "--qa"]
+            started = time.monotonic()
+            try:
+                proc = subprocess.run(
+                    cmd,
+                    cwd=ROOT,
+                    env=env,
+                    text=True,
+                    capture_output=True,
+                    timeout=args.timeout,
+                )
+                elapsed = time.monotonic() - started
+                result = {
+                    "custom_id": custom_id,
+                    "target": target,
+                    "ok": proc.returncode == 0,
+                    "returncode": proc.returncode,
+                    "elapsed_seconds": round(elapsed, 3),
+                    "stdout": proc.stdout,
+                    "stderr": proc.stderr,
+                }
+                if proc.returncode == 0:
+                    ok += 1
+                    status = "ok"
+                else:
+                    failed += 1
+                    status = f"rc={proc.returncode}"
+            except subprocess.TimeoutExpired as exc:
+                elapsed = time.monotonic() - started
+                result = {
+                    "custom_id": custom_id,
+                    "target": target,
+                    "ok": False,
+                    "returncode": None,
+                    "elapsed_seconds": round(elapsed, 3),
+                    "error": "timeout",
+                    "stdout": exc.stdout or "",
+                    "stderr": exc.stderr or "",
+                }
+                timeout_count += 1
+                status = "timeout"
+
+            handle.write(json.dumps(result, ensure_ascii=False) + "\n")
+            print(f"[{index}/{len(jobs)}] {status} {target}", flush=True)
+
+    print(
+        f"Wrote {out_path} ok={ok} failed={failed} missing={missing} "
+        f"timeout={timeout_count}"
+    )
+    return 0 if ok else 1
+
+
 def main() -> int:
     args = build_parser().parse_args()
     if args.command == "prepare":
@@ -735,6 +888,8 @@ def main() -> int:
         return cmd_download(args)
     if args.command == "materialize":
         return cmd_materialize(args)
+    if args.command == "sample-materialized":
+        return cmd_sample_materialized(args)
     raise AssertionError(args.command)
 
 
