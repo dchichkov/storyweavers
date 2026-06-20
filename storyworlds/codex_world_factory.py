@@ -27,6 +27,7 @@ STORY_CONTRACT_PATH = Path(__file__).resolve().parent / "STORY.md"
 TODO_PATH = Path(__file__).resolve().parent / "TODO.md"
 SLUG_RE = re.compile(r"^[a-z][a-z0-9_]*$")
 SLUG_WORD_RE = re.compile(r"[a-z0-9]+")
+MODEL_DIR_RE = re.compile(r"[^A-Za-z0-9_.-]+")
 
 
 @dataclass(slots=True)
@@ -45,7 +46,10 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument(
         "name",
         nargs="?",
-        help="new world slug, e.g. moss_cookie_v2; writes storyworlds/worlds/<name>.py",
+        help=(
+            "new world slug, e.g. moss_cookie_v2; writes "
+            "storyworlds/worlds/<model>/<name>.py"
+        ),
     )
     parser.add_argument(
         "--batch",
@@ -164,7 +168,24 @@ def validate_name(name: str) -> None:
             "name must be a lowercase Python slug: start with a letter, then "
             "letters, numbers, or underscores"
         )
-    target = WORLDS_DIR / f"{name}.py"
+
+
+def model_dir_name(model: str) -> str:
+    name = MODEL_DIR_RE.sub("_", model.strip()).strip("._-")
+    return name or "model"
+
+
+def output_worlds_dir(model: str) -> Path:
+    return WORLDS_DIR / model_dir_name(model)
+
+
+def output_world_path(args: argparse.Namespace) -> Path:
+    return output_worlds_dir(args.model) / f"{args.name}.py"
+
+
+def validate_world_path(args: argparse.Namespace) -> None:
+    validate_name(args.name)
+    target = output_world_path(args)
     if target.exists():
         raise SystemExit(f"{target.relative_to(ROOT)} already exists")
 
@@ -175,7 +196,7 @@ def validate_cli(args: argparse.Namespace) -> None:
     if args.batch is None:
         if not args.name:
             raise SystemExit("name is required unless --batch is used")
-        validate_name(args.name)
+        validate_world_path(args)
         return
     if args.batch < 1:
         raise SystemExit("--batch must be at least 1")
@@ -201,7 +222,7 @@ def read_prompt_file(path: Path) -> str:
 
 
 def build_prompt(args: argparse.Namespace) -> str:
-    target = f"storyworlds/worlds/{args.name}.py"
+    target = output_world_path(args).relative_to(ROOT).as_posix()
     domain = args.domain.strip() or "Build a small simulated story domain from the supplied words and features."
     seed_text = getattr(args, "seed_text", "")
     seed_block = f"\nSeed prompt:\n{seed_text}\n" if seed_text else ""
@@ -280,10 +301,10 @@ def slugify(parts: list[str], *, max_parts: int = 6) -> str:
     return slug
 
 
-def unique_slug(base: str, used: set[str]) -> str:
+def unique_slug(base: str, used: set[str], worlds_dir: Path) -> str:
     candidate = base
     index = 2
-    while candidate in used or (WORLDS_DIR / f"{candidate}.py").exists():
+    while candidate in used or (worlds_dir / f"{candidate}.py").exists():
         candidate = f"{base}_{index}"
         index += 1
     used.add(candidate)
@@ -308,7 +329,8 @@ def make_batch_jobs(args: argparse.Namespace) -> list[argparse.Namespace]:
     base_seed = args.seed if args.seed is not None else random.randrange(2 ** 31)
     args.batch_seed = base_seed
     print(f"[batch] base seed: {base_seed}", flush=True)
-    used = {path.stem for path in WORLDS_DIR.glob("*.py")}
+    worlds_dir = output_worlds_dir(args.model)
+    used = {path.stem for path in worlds_dir.glob("*.py")}
     jobs: list[argparse.Namespace] = []
     for index in range(args.batch):
         rng = random.Random(base_seed + index)
@@ -329,7 +351,7 @@ def make_batch_jobs(args: argparse.Namespace) -> list[argparse.Namespace]:
             max_parts=7,
         )
         job = argparse.Namespace(**vars(args))
-        job.name = unique_slug(slug_base, used)
+        job.name = unique_slug(slug_base, used, worlds_dir)
         job.words = tuple(seed_obj.words)
         job.features = tuple(seed_obj.features)
         job.style = seed_obj.style

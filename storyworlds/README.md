@@ -74,6 +74,45 @@ The helper uses `thread.turn(...).stream()` rather than the convenience
 `thread.run(...)`, so long SDK jobs print their thread id, turn id, item
 completions, token updates, and final status while they run.
 
+## OpenAI Batch World Factory
+
+`openai_batch_world_factory.py` prepares OpenAI Batch API requests for many
+storyworld drafts using `gpt-5.4-mini` by default. Batch jobs cannot edit this
+checkout directly, so each request asks the model to return a JSON object with
+the target path, complete Python source, checks to run, and quality risks.
+
+Preview the first request without writing files or contacting OpenAI:
+
+```bash
+./.venv/bin/python storyworlds/openai_batch_world_factory.py prepare \
+  -n 10 --seed 123 --dry-run
+```
+
+Write a JSONL batch input and manifest under `storyworlds/batches/`:
+
+```bash
+./.venv/bin/python storyworlds/openai_batch_world_factory.py prepare \
+  -n 100 --seed 123
+```
+
+Submit the same shape to the Batch API:
+
+```bash
+OPENAI_API_KEY=... ./.venv/bin/python storyworlds/openai_batch_world_factory.py submit \
+  -n 100 --seed 123 --model gpt-5.4-mini
+```
+
+Then inspect and download results:
+
+```bash
+./.venv/bin/python storyworlds/openai_batch_world_factory.py status batch_...
+./.venv/bin/python storyworlds/openai_batch_world_factory.py download batch_...
+```
+
+Downloaded results are JSONL rows keyed by `custom_id`. Their order is not
+guaranteed, so use the manifest's job list to map responses back to target
+world filenames before materializing and running `--verify` / `--qa`.
+
 For an extra-safe trial, isolate the Codex sqlite runtime state instead of
 letting the SDK write to the normal `~/.codex/sqlite` directory:
 
