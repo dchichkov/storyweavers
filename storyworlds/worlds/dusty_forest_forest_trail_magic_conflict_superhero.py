@@ -501,9 +501,10 @@ def _opening(world: World, subject: str, possessive: str) -> list[str]:
 def _conflict(world: World, subject: str) -> list[str]:
     threat = world.threat
     hero = world.hero.name
+    blocked_span = "a long stretch" if threat.blocked_span_m >= 6 else "a stretch"
     return [
         f"Right ahead stood {threat.phrase}, and it {threat.action}.",
-        f"In only a moment, {threat.blocked_span_m:.0f} meters of trail disappeared behind dust, and {threat.fear_target} had nowhere easy to go.",
+        f"In only a moment, {blocked_span} of trail disappeared behind dust, and {threat.fear_target} had nowhere easy to go.",
         f"{hero} felt the urge to dash straight in, but {subject} knew that a superhero who could not see clearly might scare the frightened creatures even more.",
     ]
 
@@ -557,7 +558,7 @@ def _story_qa(world: World) -> list[QAItem]:
         ),
         QAItem(
             "What made the trail dangerous at the start?",
-            f"{world.threat.phrase.capitalize()} blocked about {world.threat.blocked_span_m:.0f} meters of trail with magic dust and confusion. That trapped {world.threat.fear_target} in a place where clear walking and clear seeing both became hard.",
+            f"{world.threat.phrase.capitalize()} blocked a stretch of trail with magic dust and confusion. That trapped {world.threat.fear_target} in a place where clear walking and clear seeing both became hard.",
         ),
         QAItem(
             "Why did the hero stop instead of rushing straight into the conflict?",

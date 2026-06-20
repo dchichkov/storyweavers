@@ -162,3 +162,43 @@
 - Remaining frontier for the next batch: add a small launcher or meta-smoke that
   discovers new `storyworlds/worlds/*.py` scripts and runs `--verify`, a seeded
   `--qa` sweep, `--json`, and one registered invalid-combo probe where available.
+- 2026-06-20 pending-world review: sampled the 40 untracked pending
+  `storyworlds/worlds/*_{2,3,4}.py` additions with `--verify` and seeds `0..9`
+  under `--qa`. Fixed child-facing `scaffold_language` / `raw_state_fragment`
+  defects in `shiny_tree_wondrous_path_crystal_bush_campground_3.py`,
+  `sledge_riverbank_zoo_misunderstanding_curiosity_pirate_tale_2.py`,
+  `cozy_garden_misty_flower_forest_trail_sharing_3.py`, and
+  `fuzzy_field_rusty_cabin_whispering_cloud_campground_2.py` where QA mentioned
+  the world model, simulation meters, or "story world" instead of the story's
+  physical state. The expanded sweep also fixed the same child-facing scaffold
+  vocabulary in `cozy_garden_misty_flower_forest_trail_sharing_4.py`,
+  `cozy_pond_soccer_field_reconciliation_mystery_3.py`,
+  `shackle_petting_zoo_friendship_ghost_story_3.py`,
+  `silent_fox_cub_garden_gnome_hardware_store_3.py`, and
+  `sip_bucket_friend_s_backyard_misunderstanding_nursery_3.py`. Rerun results:
+  `40/40` passed `--verify`, `400/400` seeded
+  `--qa` samples passed, and the generated-output artifact scan found no
+  remaining scaffold phrases, unresolved templates, doubled articles, or raw
+  state terminology.
+- The same pass found and fixed a broader recent-world verifier defect in
+  `icy_cloud_friend_s_backyard_rhyme_kindness_2.py`: the ASP
+  `missing_kind_tag` helper had an unsafe variable, the predictor simulated
+  kind acts even when a backyard lacked the required physical affordance, and
+  the frost rule could refire indefinitely. The fixes keep compatibility tied
+  to available backyard features and make frost a one-time state transition.
+  Final all-world smoke: `161/161` scripts passed `--verify` and
+  `-n 1 --seed 31000 --qa`.
+- 2026-06-20 follow-up quality sample: ran
+  `storyworlds/sample_worlds.py -n 30 --seed 9001 --qa` and fixed sampled
+  `raw_state_fragment`, `scaffold_language`, and `compatibility_drift` issues.
+  `dusty_forest_forest_trail_magic_conflict_superhero.py` no longer emits raw
+  meter-distance prose, `library_rescue.py` no longer dumps solver categories
+  such as `high shelf, shelf, table`, and `snow_day_help.py` now rejects
+  ice-storm routes that only use warm layers instead of traction or path
+  clearing. Cleaned remaining child-facing QA labels in
+  `fuzzy_field_rusty_cabin_whispering_cloud_campground.py`,
+  `dusty_forest_forest_trail_magic_conflict_superhero_2.py`, and
+  `honey_loud_storm_crystal_lamp_bus_depot.py`. Rerun artifact scan over the
+  same 30-world sample found no scaffold phrases, unresolved templates, doubled
+  articles, raw meter prose, or known action-fragment defects. Final all-world
+  smoke: `161/161` scripts passed `--verify` and `-n 1 --seed 31000 --qa`.

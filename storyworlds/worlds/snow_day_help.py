@@ -149,6 +149,8 @@ def route_hazard(weather: Weather, item: Item, action: HelperAction, path: SnowP
 
 
 def is_route_safe(weather: Weather, item: Item, action: HelperAction, path: SnowPath) -> bool:
+    if weather.id == "ice_storm" and action.id not in {"wear_boots", "clear_path"}:
+        return False
     if path.id == "frozen_bridge" and weather.id == "ice_storm" and action.id != "wear_boots":
         return False
     if item.id not in (action.needs_item or {item.id}):
@@ -409,7 +411,7 @@ HELPERS: dict[str, HelperAction] = {
     "wear_boots": HelperAction(
         "wear_boots",
         "put on protective boots",
-        "put on warm boots",
+        "put on snow boots",
         2,
         needs_item={"boots"},
     ),
@@ -665,9 +667,19 @@ safe(P,W,I,A,Pt) :-
     path_allows(Pt, A),
     path_hazard(Pt, PH),
     WH + PH - IS - AS <= 2,
+    not blocked_ice_walk(W, A),
     not blocked_bridge(W, Pt, A).
 
+blocked_ice_walk(W, A) :-
+    weather(W, _),
+    action(A, _),
+    W = ice_storm,
+    A != wear_boots,
+    A != clear_path.
+
 blocked_bridge(W, Pt, A) :-
+    weather(W, _),
+    path_hazard(Pt, _),
     action(A, _),
     W = ice_storm,
     Pt = frozen_bridge,

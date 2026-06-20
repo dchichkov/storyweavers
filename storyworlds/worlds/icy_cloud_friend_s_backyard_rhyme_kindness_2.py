@@ -157,7 +157,9 @@ def _r_frost(world: World) -> list[str]:
     friend = world.get("friend")
     if cloud.meters["altitude"] >= SAFE_ALTITUDE or cloud.meters["cold"] < THRESHOLD:
         return []
-    sig = ("frost", f"{int(cloud.meters['cold'])}:{int(yard.meters['frost'])}")
+    if yard.meters["frost"] >= THRESHOLD:
+        return []
+    sig = ("frost", "1")
     if sig in world.fired:
         return []
     world.fired.add(sig)
@@ -287,6 +289,8 @@ def valid_transition(backyard: Backyard, trick: FailedTrick, act: KindAct) -> bo
 
 
 def predict_kindness(backyard: Backyard, act: KindAct) -> dict[str, float]:
+    if not act.required_tags.issubset(backyard.tags):
+        return {"cold": 1.6, "altitude": 0.5, "grateful": 0.0}
     world = World(backyard)
     world.add(Entity("hero", kind="character", type="child", label="hero"))
     world.add(Entity("friend", kind="character", type="child", label="friend"))
@@ -836,7 +840,7 @@ requires_any_trick(T) :- requires_trick(T, _).
 
 kind_ok(K, B) :- kind_act(K), backyard(B), warm_enough(K), kind_enough(K), rise_enough(K),
                  not missing_kind_tag(K, B).
-missing_kind_tag(K, B) :- requires_kind(K, Tag), not has_tag(B, Tag).
+missing_kind_tag(K, B) :- kind_act(K), backyard(B), requires_kind(K, Tag), not has_tag(B, Tag).
 
 valid(C, F, B, T, K, E) :- child(C), friend(F), backyard(B), failed_trick(T), kind_act(K), ending(E),
                            trick_ok(T, B), kind_ok(K, B).

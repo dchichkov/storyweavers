@@ -769,7 +769,7 @@ def format_qa(sample: StorySample) -> str:
     lines = ["== (1) Generation prompts -- asks that would produce this story =="]
     lines += [f"{i}. {p}" for i, p in enumerate(sample.prompts, 1)]
     lines.append("")
-    lines.append("== (2) Story questions -- answerable from the world state ==")
+    lines.append("== (2) Story questions -- answerable from the story ==")
     for item in sample.story_qa:
         lines += [f"Q: {item.question}", f"A: {item.answer}"]
     lines.append("")

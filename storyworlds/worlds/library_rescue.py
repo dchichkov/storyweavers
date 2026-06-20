@@ -610,7 +610,7 @@ def generation_prompts(world: World) -> list[str]:
     method = f["method_cfg"]
     hero = f["hero"]
     return [
-        f"Write a children story set in a library where {hero.label} finds and rescues {target.phrase}.",
+        f"Write a children's story set in a library where {hero.label} finds and rescues {target.phrase}.",
         f"Use {place.phrase}, {target.phrase}, and a rescue where the child {method.phrase}.",
         "Focus on the consequence of choosing the method safely versus taking unnecessary risk.",
     ]
@@ -623,6 +623,12 @@ def story_qa(world: World) -> list[QAItem]:
     helper = f["helper_entity"]
     target = f["target_cfg"]
     method = f["method_cfg"]
+    method_fit = {
+        "ask_librarian": "a staff helper could steady the object and bring it down with permission",
+        "use_stool": "the object was close enough for a careful step-stool reach",
+        "soft_hook": "the soft hook could slide the object forward without rough pulling",
+        "short_ladder": "the short ladder fit the high shelf and the helper could stay close",
+    }.get(method.id, "the method matched the object's real position")
 
     return [
         QAItem(
@@ -639,7 +645,7 @@ def story_qa(world: World) -> list[QAItem]:
         ),
         QAItem(
             "How did the chosen method keep the rescue safe?",
-            f"The child {method.phrase}, and {helper.label} stayed nearby to keep it safe. The method fit this rescue because it handled {', '.join(s.replace('_', ' ') for s in sorted(method.solves))} without ignoring the library risk.",
+            f"The child {method.phrase}, and {helper.label} stayed nearby to keep it safe. That fit this rescue because {method_fit}.",
         ),
         QAItem(
             f"What lesson did {hero.label} learn?",
