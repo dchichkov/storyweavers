@@ -1009,7 +1009,7 @@ def generation_prompts(world: World) -> list[str]:
     ]
 
 
-def story_qa(world: World) -> list[tuple[str, str]]:
+def story_qa(world: World) -> list[QAItem]:
     """(2) Questions answerable from the text/world of THIS story."""
     f = world.facts
     a, b, parent = f["instigator"], f["cautioner"], f["parent"]
@@ -1018,88 +1018,114 @@ def story_qa(world: World) -> list[tuple[str, str]]:
     pw = parent.label_word
     them = "them" if fb.plural else "it"
     pair = pair_noun(a, b, f.get("relation", "friends"))
-    qa: list[tuple[str, str]] = [
-        ("Who is the story about?",
-         f"It is about {pair}, {a.id} and {b.id}, who were playing "
-         f"{th.role_plural}, and {a.id}'s {pw} who came to help."),
-        ("What were the children playing?",
-         f"They turned the living room into {th.scene} and pretended to be "
-         f"{th.role_plural} looking for {th.goal}. The pretend game made the "
-         f"dark spot feel like part of the adventure."),
-        ("Why did they need a light?",
-         f"They wanted to explore {th.dark_spot}, but that place swallowed the "
-         f"light from the window. That darkness is what made the unsafe flame "
-         f"idea tempting."),
-        (f"What did {a.id} want to use for light, and what did {b.id} say?",
-         f"{a.id} wanted to use {fb.label}, but {b.id} warned that they were not "
-         f"allowed to touch {fb.label}. {b.id} also knew it could make a real "
-         f"flame near {tg.the}."),
+    # Keep story QA heavily parametrized by sampled story state. These should
+    # vary with names, relation, pretend frame, forbidden tool, flammable target,
+    # adult response, safe-light substitute, and outcome as much as possible.
+    qa: list[QAItem] = [
+        QAItem(
+            f"Who is the story about when {a.id} and {b.id} play {th.role_plural}?",
+            f"It is about {pair}, {a.id} and {b.id}, who were playing "
+            f"{th.role_plural}, and {a.id}'s {pw} who came to help.",
+        ),
+        QAItem(
+            f"What pretend game did {a.id} and {b.id} make in the living room?",
+            f"They turned the living room into {th.scene} and pretended to be "
+            f"{th.role_plural} looking for {th.goal}. The pretend game made "
+            f"{th.dark_spot} feel like part of the adventure.",
+        ),
+        QAItem(
+            f"Why did {a.id} and {b.id} need light for {th.goal}?",
+            f"They wanted to explore {th.dark_spot}, where {tg.the} made the "
+            f"pretend {th.cave_word} dark. That darkness made {fb.label} seem "
+            f"tempting even though it could make a real flame.",
+        ),
+        QAItem(
+            f"What did {a.id} want to use near {tg.the}, and what did {b.id} say?",
+            f"{a.id} wanted to use {fb.label}, but {b.id} warned that they were "
+            f"not allowed to touch {fb.label}. {b.id} also knew it could make "
+            f"a real flame near {tg.the}.",
+        ),
     ]
     if f.get("ignited"):
-        qa.append((
-            f"What happened when {a.id} lit {them}?",
+        qa.append(QAItem(
+            f"What happened when {a.id} lit {them} near {tg.the}?",
             f"{tg.The} caught fire -- a little line of flame began to climb up it, "
             f"and the children were very scared. The danger came from using "
-            f"{fb.label} near something flammable."))
+            f"{fb.label} near something flammable.",
+        ))
     if f.get("outcome") == "averted":
         sib = "brother" if b.type == "boy" else "sister"
-        qa.append((
-            f"What did {a.id} do after {b.id} warned {a.pronoun('object')}?",
+        qa.append(QAItem(
+            f"What did {a.id} do after {b.id} warned {a.pronoun('object')} "
+            f"about {fb.label}?",
             f"{a.id} listened to {b.id}, {a.pronoun('possessive')} big {sib}, and "
             f"gave up the idea, so no fire ever started. They told {pw} about "
-            f"the dark {th.cave_word} instead of touching {fb.label}."))
-        qa.append((
-            f"What did {a.id}'s {pw} give them the next day?",
+            f"the dark {th.cave_word} instead of touching {fb.label}.",
+        ))
+        qa.append(QAItem(
+            f"What safe lights did {a.id}'s {pw} give for {th.dark_spot}?",
             f"{parent.pronoun().capitalize()} gave them {l1.phrase} and "
             f"{l2.phrase} so they could explore with safe light. Those lights "
-            f"met the same need without making fire."))
-        qa.append((
-            "How did the story end?",
+            f"met the same need without making fire.",
+        ))
+        qa.append(QAItem(
+            f"How did {a.id} and {b.id}'s {th.role_plural} game end with "
+            f"{l1.label} and {l2.label}?",
             f"Safely -- they used safe light instead of {fb.label}, and nobody "
             f"got hurt and nothing burned. The game could continue because they "
-            f"chose a safer tool."))
+            f"chose a safer tool.",
+        ))
     elif f.get("outcome") == "contained":
         body = resp.qa_text.replace("{target}", tg.label)
-        qa.append((
-            f"How did {a.id}'s {pw} put out the fire?",
+        qa.append(QAItem(
+            f"How did {a.id}'s {pw} put out the fire on {tg.the}?",
             f"{pw.capitalize()} came running and {body}. The quick response "
-            f"stopped the fire before it spread through the room."))
-        qa.append((
-            f"Was {a.id}'s {pw} angry?",
+            f"stopped the fire before it spread through the room.",
+        ))
+        qa.append(QAItem(
+            f"Was {a.id}'s {pw} angry after {a.id} used {fb.label}?",
             f"No. {pw.capitalize()} hugged them, was glad they called for help, "
             f"and reminded them that {fb.not_toy} and that fire can grow faster "
-            f"than you can run."))
-        qa.append((
-            f"What did {a.id}'s {pw} give them the next day?",
+            f"than you can run.",
+        ))
+        qa.append(QAItem(
+            f"What safer lights replaced {fb.label} in {a.id} and {b.id}'s "
+            f"{th.role_plural} game?",
             f"{parent.pronoun().capitalize()} gave them {l1.phrase} and "
             f"{l2.phrase} so they could explore with safe light. The new lights "
-            f"let them keep the adventure without the flame."))
-        qa.append((
-            f"How did {a.id} and {b.id} feel at the end?",
+            f"let them keep the adventure without the flame.",
+        ))
+        qa.append(QAItem(
+            f"How did {a.id} and {b.id} feel after the fire near {tg.the} was out?",
             f"They felt brave, happy, and safe, and they promised never to play "
             f"with {fb.label} again. The ending turns the scary lesson into a "
-            f"safer way to keep playing."))
+            f"safer way to keep playing.",
+        ))
     elif f.get("outcome") == "burned":
         fail = resp.fail.replace("{target}", tg.label)
-        qa.append((
-            f"Could {a.id}'s {pw} put the fire out?",
+        qa.append(QAItem(
+            f"Could {a.id}'s {pw} put out the fire after {tg.the} caught?",
             f"No. {pw.capitalize()} {fail}, and the fire raced through the whole "
             f"house. The family had to escape because the fire was already too "
-            f"big for that response."))
-        qa.append((
-            "How did the story end?",
+            f"big for that response.",
+        ))
+        qa.append(QAItem(
+            f"How did the story end for {a.id} and {b.id} after {fb.label} "
+            f"set {tg.the} on fire?",
             f"Everyone got out safely, but the house burned down. {a.id} and "
             f"{b.id} were safe, though very sad to lose their home. Afterward, "
-            f"they knew to call a grown-up whenever a game grew too dark."))
-        qa.append((
-            f"What did {a.id} and {b.id} learn?",
+            f"they knew to call a grown-up whenever a game grew too dark.",
+        ))
+        qa.append(QAItem(
+            f"What did {a.id} and {b.id} learn about {fb.label} and {th.goal}?",
             f"{fb.not_toy[0].upper()}{fb.not_toy[1:]}, and that fire can grow "
             f"faster than anyone can run. The lesson came from seeing how quickly "
-            f"one unsafe flame became bigger than their game."))
+            f"one unsafe flame became bigger than their game.",
+        ))
     return qa
 
 
-def world_knowledge_qa(world: World) -> list[tuple[str, str]]:
+def world_knowledge_qa(world: World) -> list[QAItem]:
     """(3) Generic, child-level questions about the world's elements."""
     f = world.facts
     outcome = f.get("outcome")
@@ -1113,10 +1139,10 @@ def world_knowledge_qa(world: World) -> list[tuple[str, str]]:
     else:                                         # averted: no fire, no response used
         for light in f["lights"]:
             tags |= set(light.tags)
-    out: list[tuple[str, str]] = []
+    out: list[QAItem] = []
     for tag in KNOWLEDGE_ORDER:
         if tag in tags and tag in KNOWLEDGE:
-            out.extend(KNOWLEDGE[tag])
+            out.extend(QAItem(q, a) for q, a in KNOWLEDGE[tag])
     return out
 
 
@@ -1468,8 +1494,8 @@ def generate(params: StoryParams) -> StorySample:
         params=params,
         story=world.render(),
         prompts=generation_prompts(world),
-        story_qa=[QAItem(q, a) for q, a in story_qa(world)],
-        world_qa=[QAItem(q, a) for q, a in world_knowledge_qa(world)],
+        story_qa=story_qa(world),
+        world_qa=world_knowledge_qa(world),
         world=world,
     )
 

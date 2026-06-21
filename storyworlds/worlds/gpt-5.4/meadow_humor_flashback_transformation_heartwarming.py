@@ -62,6 +62,7 @@ class Entity:
     traits: list[str] = field(default_factory=list)
     role: str = ""
     owner: str = ""
+    attrs: dict = field(default_factory=dict)
     host_for: set[str] = field(default_factory=set)
     supports: set[str] = field(default_factory=set)
     # physical meters and emotional memes
@@ -353,7 +354,7 @@ def flashback(world: World, helper: Entity, child: Entity, cat: CaterpillarKind,
         f'"Do you remember last week?" {helper.pronoun()} asked.'
     )
     world.say(
-        f"{helper.memory_verb.capitalize()} the same patch of {plant.label}, when {cat.flashback}. "
+        f"{helper.attrs['memory_verb'].capitalize()} the same patch of {plant.label}, when {cat.flashback}. "
         f'"It was not ready then," {helper.pronoun()} said, "and it cannot be hurried now. '
         f"Growing has its own quiet kind of funny." + '"'
     )
@@ -401,7 +402,7 @@ def ending(world: World, child: Entity, helper: Entity, cat: CaterpillarKind, me
     )
     world.say(
         f'"So it was a butterfly all along," {child.id} said softly. '
-        f'"Yes," {helper.pronoun()} answered, "{helper.comfort_style} and now you got to see it become itself."'
+        f'"Yes," {helper.pronoun()} answered, "{helper.attrs["comfort_style"]} and now you got to see it become itself."'
     )
     world.facts["butterfly_seen"] = creature.meters["butterfly"] >= THRESHOLD
 
@@ -430,7 +431,10 @@ def tell(meadow: Meadow, caterpillar: CaterpillarKind, plant: Plant, perch: Perc
     helper_kind = helper_kind or HELPERS["grandmother"]
 
     child = world.add(Entity(id=child_name, kind="character", type=child_type, role="child"))
-    helper = world.add(Entity(id="Helper", kind="character", type=helper_kind.type, role="helper", label=helper_kind.label))
+    helper = world.add(Entity(
+        id="Helper", kind="character", type=helper_kind.type, role="helper", label=helper_kind.label,
+        attrs={"memory_verb": helper_kind.memory_verb, "comfort_style": helper_kind.comfort_style}
+    ))
     creature = world.add(Entity(id="creature", kind="thing", type="caterpillar", label=caterpillar.label))
     world.add(Entity(id="plant", kind="thing", type="plant", label=plant.label, host_for=set(plant.host_for)))
     world.add(Entity(id="perch", kind="thing", type="perch", label=perch.label, supports=set(perch.supports)))
@@ -643,8 +647,8 @@ def story_qa(world: World) -> list[tuple[str, str]]:
             f"{helper.label_word.capitalize()} remembered the same patch of {plant.label} from last week, when the caterpillar was much smaller and still busy eating. The memory showed that the change had been happening little by little all along."
         ),
         (
-            f"Why did they keep the caterpillar near {plant.label} and put it on {perch.label}?",
-            f"They chose the right plant because that caterpillar kind belongs there, and they chose a steady perch so it could hang safely. Those careful choices let the transformation happen naturally instead of forcing it."
+            f"Why did they keep the caterpillar near {plant.label} and put it on {perch.phrase}?",
+            f"They chose the right plant because that kind of caterpillar belongs there, and they chose a steady perch so it could hang safely. Those careful choices let the transformation happen naturally instead of forcing it."
         ),
     ]
     if f.get("chrysalis"):

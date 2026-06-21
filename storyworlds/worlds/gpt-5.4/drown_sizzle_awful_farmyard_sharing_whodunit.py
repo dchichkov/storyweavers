@@ -832,8 +832,8 @@ def explain_detective(detective: Detective, culprit: AnimalSpec, treat: Treat) -
 ASP_RULES = r"""
 reachable(A, H) :- can_reach(A, H), hide_access(H, A).
 safe_hideout(T, H) :- treat(T), hideout(H), dry(H), not near_water(H).
-detective_can_solve(D, A, T) :- clue_of(A, C), reads(D, C).
-detective_can_solve(D, A, T) :- treat_crumb(T, Cr), reads(D, Cr).
+detective_can_solve(D, A, T) :- detective(D), animal(A), treat(T), clue_of(A, C), reads(D, C).
+detective_can_solve(D, A, T) :- detective(D), animal(A), treat(T), treat_crumb(T, Cr), reads(D, Cr).
 
 valid(T, A, H, D, F) :- treat(T), animal(A), hideout(H), detective(D), friend(F),
                         safe_hideout(T, H), reachable(A, H),

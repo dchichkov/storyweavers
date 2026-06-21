@@ -298,14 +298,14 @@ def introduce(world: World, child: Entity, spot: Spot) -> None:
     )
     world.say(
         f"It hummed on the string with a soft little show, "
-        f"and {spot.rhyme} made the whole corner glow."
+        f"and {spot.rhyme}."
     )
 
 
 def near_fragile(world: World, hazard: Hazard) -> None:
     world.say(
         f"Nearby sat {hazard.phrase}, quiet and still. "
-        f"It looked very pretty, but breakable still."
+        f"It looked very pretty, but it was breakable still."
     )
 
 
@@ -368,7 +368,7 @@ def redirect(world: World, mentor: Entity, child: Entity, remedy: Remedy) -> Non
     )
     world.say(
         f'"First low and slow, then high with a show; '
-        f'{remedy.lesson_line}"'
+        f'{remedy.lesson_line}."'
     )
 
 
@@ -525,12 +525,6 @@ BOY_NAMES = ["Toby", "Milo", "Benji", "Robin", "Ollie", "Jem"]
 TRAITS = ["merry", "bouncy", "bright", "gentle", "cheery"]
 MENTORS = ["mother", "father", "grandmother", "grandfather"]
 
-CURATED = [
-    StoryParams("kitchen", "teacup", "chalk_ring", "Molly", "girl", "grandmother", "merry"),
-    StoryParams("stair", "vase", "porch_mat", "Toby", "boy", "father", "bouncy"),
-    StoryParams("hall", "lamp", "chalk_ring", "Rosie", "girl", "mother", "bright"),
-]
-
 
 # ---------------------------------------------------------------------------
 # Per-world params
@@ -545,6 +539,13 @@ class StoryParams:
     mentor_type: str
     child_trait: str
     seed: Optional[int] = None
+
+
+CURATED = [
+    StoryParams("kitchen", "teacup", "chalk_ring", "Molly", "girl", "grandmother", "merry"),
+    StoryParams("stair", "vase", "porch_mat", "Toby", "boy", "father", "bouncy"),
+    StoryParams("hall", "lamp", "chalk_ring", "Rosie", "girl", "mother", "bright"),
+]
 
 
 # ---------------------------------------------------------------------------

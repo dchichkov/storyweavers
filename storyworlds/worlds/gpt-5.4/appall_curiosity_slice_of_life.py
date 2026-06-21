@@ -270,6 +270,40 @@ def _do_action(world: World, child: Entity, action: Action, narrate: bool = True
     propagate(world, narrate=narrate)
 
 
+def sentence_case(text: str) -> str:
+    return text[:1].upper() + text[1:] if text else text
+
+
+def definite_phrase(text: str) -> str:
+    if text.startswith("a "):
+        return "the " + text[2:]
+    if text.startswith("an "):
+        return "the " + text[3:]
+    return text
+
+
+def warning_body(action: Action) -> str:
+    return {
+        "dig": "dig around the cup with one finger",
+        "squeeze": "squeeze the green tip",
+        "poke": "lift the towel and poke the dough",
+    }[action.id]
+
+
+def warning_damage(action: Action) -> str:
+    text = action.damage
+    if text.startswith("you can "):
+        return "you could " + text[len("you can "):]
+    return text.replace(" can ", " could ", 1)
+
+
+def qa_risk(action: Action) -> str:
+    text = action.damage
+    if text.startswith("you can "):
+        return f"{action.verb} could {text[len('you can '):]}"
+    return "that " + text.replace(" can ", " could ", 1)
+
+
 def introduce(world: World, child: Entity, subject: Subject) -> None:
     world.say(
         f"{child.id} had been watching {subject.phrase} {subject.place} every day. "
@@ -302,7 +336,7 @@ def warn(world: World, adult: Entity, child: Entity, subject: Subject, action: A
     child.memes["caution_heard"] += 1
     world.say(
         f'{adult.label_word.capitalize()} saw {child.pronoun("object")} reaching and said, '
-        f'"Easy now. If you {action.body}, {action.damage}."'
+        f'"Easy now. If you {warning_body(action)}, {warning_damage(action)}."'
     )
     if pred["disturbed"]:
         world.say(
@@ -313,8 +347,9 @@ def warn(world: World, adult: Entity, child: Entity, subject: Subject, action: A
 
 def defy(world: World, child: Entity, action: Action) -> None:
     child.memes["defiance"] += 1
+    reassurance = action.reassurance.rstrip(".")
     world.say(
-        f'Curiosity tugged harder than patience. "{action.reassurance}" {child.id} said, '
+        f'Curiosity tugged harder than patience. "{reassurance}," {child.id} said, '
         f"and {child.pronoun()} went ahead."
     )
 
@@ -322,7 +357,7 @@ def defy(world: World, child: Entity, action: Action) -> None:
 def regret(world: World, child: Entity, subject: Subject, action: Action) -> None:
     world.say(
         f"As soon as {child.pronoun()} {action.body}, {child.pronoun('possessive')} face changed. "
-        f"{subject.later_sign} did not come faster. Instead, everything looked a little troubled."
+        f"{sentence_case(subject.later_sign)} did not come faster. Instead, everything looked a little troubled."
     )
 
 
@@ -330,7 +365,7 @@ def comfort_and_redirect(world: World, adult: Entity, child: Entity, subject: Su
     child.memes["comfort"] += 1
     world.say(
         f"The sight might have appalled someone in a hurry, but it did not appall "
-        f"{adult.label_word}. {adult.pronoun().capitalize()} knelt beside {child.id} and kept "
+        f"{child.pronoun('possessive')} {adult.label_word}. {adult.pronoun().capitalize()} knelt beside {child.id} and kept "
         f"{adult.pronoun('possessive')} voice soft."
     )
     world.say(
@@ -346,7 +381,7 @@ def settle(world: World, child: Entity, subject: Subject, tool: Tool) -> None:
     child.meters["using_safe_method"] += 1
     propagate(world, narrate=False)
     world.say(
-        f"Soon the room felt quiet again. {child.id} stayed close, used the {tool.label}, and waited."
+        f"Soon the room felt quiet again. {child.id} stayed close, used {definite_phrase(tool.phrase)}, and waited."
     )
     world.say(
         f"After a while, {subject.later_sign}. {tool.image}"
@@ -429,6 +464,7 @@ SUBJECTS = {
         "bean",
         "a bean seed tucked in a clear cup",
         "on the sunny windowsill",
+        "the dirt around the cup",
         "a pale root curling against the side",
         "a green hook of stem peeped up through the soil",
         "the seed and its new root",
@@ -443,6 +479,7 @@ SUBJECTS = {
         "bulb",
         "a flower bulb in a small clay pot",
         "beside the kitchen window",
+        "the dirt in the little pot",
         "a tight green tip pushing from the dirt",
         "the green tip stood taller and unfolded at the top",
         "the little shoot",
@@ -457,6 +494,7 @@ SUBJECTS = {
         "dough",
         "bread dough resting in a warm bowl",
         "under a clean towel on the counter",
+        "the clean towel",
         "the towel lifting just a little in the middle",
         "the dough had risen high and round",
         "the warm dough",
@@ -641,19 +679,19 @@ def story_qa(world: World) -> list[tuple[str, str]]:
             f"{child.pronoun().capitalize()} was watching {subject.phrase} {subject.place}. {child.pronoun('possessive').capitalize()} curiosity grew because a small sign of change had just appeared."
         ),
         (
-            f"Why did {child.id} do {action.verb}?",
-            f"{child.id} wanted to know what was happening right away. Waiting felt hard, so {child.pronoun()} reached for a quick answer with {action.verb}."
+            f"Why did {child.id} try a rough way to check?",
+            f"{child.id} wanted to know what was happening right away. Waiting felt hard, so {child.pronoun()} tried a rough check instead of watching gently."
         ),
         (
             f"Why did {adult.label_word} tell {child.id} to be gentle?",
-            f"{adult.label_word.capitalize()} knew that if {child.id} {action.body}, {action.damage}. The warning came from the real needs of {subject.protect_word}, not from a wish to spoil the fun."
+            f"{adult.label_word.capitalize()} knew that {qa_risk(action)}. The warning came from the real needs of {subject.protect_word}, not from a wish to spoil the fun."
         ),
     ]
     if f["disturbed"]:
         qa.append(
             (
                 f"What happened after {child.id} touched it the rough way?",
-                f"{subject.later_sign.capitalize()} did not come faster. Instead, the little project looked disturbed, and {child.id} felt worried because curiosity had turned into fussing."
+                f"{sentence_case(subject.later_sign)} did not come faster. Instead, the little project looked disturbed, and {child.id} felt worried because curiosity had turned into fussing."
             )
         )
     qa.append(
@@ -665,7 +703,7 @@ def story_qa(world: World) -> list[tuple[str, str]]:
     qa.append(
         (
             "How did the story end?",
-            f"It ended with patience proving useful: {subject.later_sign}, and {child.id} learned that being curious and being gentle can belong together. The ending image shows real change arriving after calm waiting."
+            f"It ended with patience proving useful: {subject.later_sign}. {child.id} learned that being curious and being gentle can belong together, and the ending image shows real change arriving after calm waiting."
         )
     )
     return qa

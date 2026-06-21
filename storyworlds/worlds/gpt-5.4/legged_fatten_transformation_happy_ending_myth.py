@@ -266,7 +266,7 @@ def introduce(world: World, hero: Entity, creature: Creature, task: Task, guide:
     hero.meters["hunger"] = float(creature.hunger)
     world.say(
         f"In the first age, when streams still listened and hills still answered, "
-        f"there lived {creature.opening} named {hero.id}. {creature.gait}"
+        f"there lived {creature.title} named {hero.id}. {creature.opening} {creature.gait}"
     )
     world.say(
         f"One dawn, {guide.id}, keeper of the old shrine, placed {task.burden} before "
@@ -376,7 +376,7 @@ def reveal_and_transform(world: World, hero: Entity, stranger: Entity, boon: Boo
 def triumph(world: World, hero: Entity, task: Task, boon: Boon) -> None:
     hero.meters["completed"] += 1
     world.say(
-        f"Now {boon.triumph}, {hero.id} carried {task.burden} to {task.place}. "
+        f"Now {boon.triumph}. {hero.id} carried {task.burden} to {task.place}. "
         f"There {hero.pronoun()} laid it down before the waiting altar."
     )
     world.say(
@@ -691,7 +691,7 @@ def story_qa(world: World) -> list[tuple[str, str]]:
     qa: list[tuple[str, str]] = [
         (
             "Who is the story about?",
-            f"It is about {hero.id}, {creature.opening}, who was given the holy task of carrying "
+            f"It is about {hero.id}, {creature.title}, who was given the holy task of carrying "
             f"{task.burden} to {task.place}. {guide.id} sent {hero.pronoun('object')} on the journey."
         ),
         (
@@ -779,7 +779,7 @@ CURATED = [
     StoryParams("goatling", "stair_of_sun", "moon_figs", "moon_stag", "Iris", "Thaleia", "goddess"),
     StoryParams("reed_fawn", "reed_ford", "barley_loaf", "reed_heron", "Nysa", "Eirene", "goddess"),
     StoryParams("foxling", "bridge_of_wind", "honey_cakes", "storm_swallow", "Theron", "Maron", "god"),
-    StoryParams("foxling", "reed_ford", "moon_figs", "reed_heron", "Lyra", "Lykos", "god"),
+    StoryParams("goatling", "bridge_of_wind", "moon_figs", "storm_swallow", "Lyra", "Lykos", "god"),
 ]
 
 

@@ -584,6 +584,15 @@ def tell(
     world.add(Entity(id="pattern", kind="thing", type="pattern", label=pattern.label))
     world.add(Entity(id="material", kind="thing", type="material", label=material.label))
     world.add(Entity(id="place", kind="thing", type="place", label=place.label))
+    world.facts.update(
+        place=place,
+        pattern_cfg=pattern,
+        material_cfg=material,
+        elder_cfg=elder_cfg,
+        maker=maker,
+        toucher=toucher,
+        elder=elder,
+    )
 
     introduce(world, maker, toucher, place)
     gather(world, maker, toucher, material, pattern)

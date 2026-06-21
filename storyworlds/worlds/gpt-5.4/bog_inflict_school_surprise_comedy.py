@@ -74,9 +74,9 @@ class Entity:
 
     @property
     def title_word(self) -> str:
-        if self.role == "teacher":
+        if self.role == "teacher" or self.type.startswith("teacher_"):
             return "teacher"
-        if self.role == "principal":
+        if self.role == "principal" or self.type.startswith("principal_"):
             return "principal"
         if self.type in {"mother", "father"}:
             return {"mother": "mom", "father": "dad"}[self.type]
@@ -323,7 +323,7 @@ def warn(world: World, friend: Entity, hero: Entity, surprise: SurpriseKind, rou
         spoil = f" It might even spoil {surprise.label}."
     work = ""
     if pred["hall_dirty"]:
-        work = f" And please don't inflict muddy footprints on the hall for {helper.title_word} to mop."
+        work = f" And please don't inflict muddy footprints on the hall for the {helper.title_word} to mop."
     world.say(
         f'{friend.id} grabbed {hero.pronoun("possessive")} sleeve. "That is not a shortcut. It is a bog with opinions," '
         f'{friend.pronoun()} said. "It will grab your shoes, splash mud, and make everyone stare.{spoil}{work}"'
@@ -822,7 +822,7 @@ CURATED = [
 ASP_RULES = r"""
 compatible(S, C) :- surprise(S), carrier(C), sensible(C), vulnerable(S, V), guards(C, V),
                     not missing_guard(S, C).
-missing_guard(S, C) :- vulnerable(S, V), not guards(C, V).
+missing_guard(S, C) :- surprise(S), carrier(C), vulnerable(S, V), not guards(C, V).
 
 valid(S, C) :- compatible(S, C).
 

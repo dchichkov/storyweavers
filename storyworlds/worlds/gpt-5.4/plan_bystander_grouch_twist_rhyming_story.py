@@ -734,8 +734,8 @@ CURATED = [
 # ASP twin
 # ---------------------------------------------------------------------------
 ASP_RULES = r"""
-problem(P, W, K, snag)   :- snaggy(P), not gust_problem(W, K), not no_lift_problem(W, K).
-problem(P, W, K, wobble) :- not snaggy(P), gust_problem(W, K), not no_lift_problem(W, K).
+problem(P, W, K, snag)   :- place(P), wind(W), kite(K), snaggy(P), not gust_problem(W, K), not no_lift_problem(W, K).
+problem(P, W, K, wobble) :- place(P), wind(W), kite(K), not snaggy(P), gust_problem(W, K), not no_lift_problem(W, K).
 
 gust_problem(W, K) :- gusty(W), needs_tail(K).
 no_lift_problem(soft, star).

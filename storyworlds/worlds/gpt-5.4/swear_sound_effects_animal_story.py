@@ -48,6 +48,10 @@ from results import QAItem, StoryError, StorySample  # noqa: E402
 THRESHOLD = 1.0
 
 
+def sentence_case(text: str) -> str:
+    return text[:1].upper() + text[1:] if text else text
+
+
 @dataclass
 class Entity:
     id: str
@@ -267,7 +271,7 @@ def warning(world: World, helper: Entity, helper_spec: HelperSpec, route: Route,
     )
 
 
-def attempt(world: World, hero: Entity, route: Route, cargo: Cargo) -> None:
+def attempt(world: World, hero: Entity, route: Route, cargo: Entity, cargo_cfg: Cargo) -> None:
     hero.memes["pride"] += 1
     world.say(
         f"But {hero.id} took a brave little breath and stepped forward. {route.label.capitalize()} went {route.sound}."
@@ -277,7 +281,7 @@ def attempt(world: World, hero: Entity, route: Route, cargo: Cargo) -> None:
     hero.meters["stumble"] += 1
     propagate(world, narrate=False)
     world.say(
-        f'{cargo.sound}! {route.mishap_text} {cargo.loss_text}'
+        f'{sentence_case(cargo_cfg.sound)}! {route.mishap_text} {cargo_cfg.loss_text}'
     )
 
 
@@ -307,7 +311,7 @@ def retry(world: World, hero: Entity, helper: Entity, tool: Tool, cargo: Cargo, 
         f'This time, {hero.id} let {helper.id} help {tool.carry_verb}. Together they started again.'
     )
     world.say(
-        f"{route.safe_text} went {route.sound}, but the {tool.label} held steady. {cargo.rescue_text}"
+        f"{route.safe_text} and went {route.sound}, but the {tool.label} held steady. {cargo.rescue_text}"
     )
     cargo_ent = world.get("cargo")
     cargo_ent.meters["delivered"] += 1
@@ -324,7 +328,7 @@ def ending(world: World, hero: Entity, hero_spec: HeroSpec, helper: Entity, carg
         f'{hero.id} smiled at {helper.id} and said, "Next time I will still be brave, but I will listen first. I swear that too."'
     )
     world.say(
-        f"{hero_spec.cheer} and {tool.ending_image}"
+        f"{hero_spec.cheer} {sentence_case(tool.ending_image)}"
     )
 
 
@@ -342,7 +346,7 @@ def tell(hero_spec: HeroSpec, helper_spec: HelperSpec, cargo: Cargo, route: Rout
 
     world.para()
     warning(world, helper, helper_spec, route, cargo)
-    attempt(world, hero, route, cargo)
+    attempt(world, hero, route, cargo_ent, cargo)
 
     world.para()
     comfort(world, helper, helper_spec, hero)
@@ -597,7 +601,7 @@ def story_qa(world: World) -> list[tuple[str, str]]:
         ),
         (
             f"What did {hero.id} say with the word 'swear'?",
-            f"{hero.id} said, \"I swear I can do it,\" because {hero.pronoun('subject')} felt proud and wanted to carry the treat alone. That line shows {hero.pronoun('subject')} was brave, but not careful yet."
+            f"{hero.id} said, \"I swear I can do it,\" because {hero.pronoun('subject')} felt proud and wanted to carry the treat alone. That line shows {hero.pronoun('subject')} were brave, but not careful yet."
         ),
         (
             f"Why did the first trip go wrong?",

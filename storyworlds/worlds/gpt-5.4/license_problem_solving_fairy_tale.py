@@ -252,11 +252,11 @@ def explain_rejection(problem: Problem, solution: Solution) -> str:
 def introduce(world: World, hero: Entity, quest: Quest) -> None:
     hero.memes["care"] += 1
     world.say(
-        f"In the mossy little kingdom of Thistledown, {hero.id} lived where "
+        f"In the mossy little kingdom of Thistledown, {hero.label} lived where "
         f"foxgloves leaned over the path and bells in the reeds rang at dusk."
     )
     world.say(quest.opening)
-    world.say(quest.need_line)
+    world.say(quest.need_line.format(hero=hero.label))
 
 
 def explain_rule(world: World, keeper: Entity) -> None:
@@ -270,11 +270,11 @@ def explain_rule(world: World, keeper: Entity) -> None:
     )
 
 
-def depart(world: World, hero: Entity, lantern: Entity) -> None:
+def depart(world: World, hero: Entity, lantern: Entity, quest: Quest) -> None:
     hero.memes["hope"] += 1
     lantern.meters["lit"] += 1
     world.say(
-        f"So {hero.id} tucked a warm little loaf into a satchel, lifted "
+        f"So {hero.label} tucked {quest.item} into a satchel, lifted "
         f"{hero.pronoun('possessive')} lantern, and hurried toward the river road."
     )
 
@@ -292,7 +292,7 @@ def arrive_problem(world: World, hero: Entity, keeper: Entity, problem: Problem)
     world.say(problem.keeper_line)
     if hero.memes["worry"] >= THRESHOLD:
         world.say(
-            f"{hero.id}'s heart gave one small thump. The river looked dark below, "
+            f"{hero.label}'s heart gave one small thump. The river looked dark below, "
             "and the far lanterns of the village seemed suddenly very far away."
         )
 
@@ -300,7 +300,7 @@ def arrive_problem(world: World, hero: Entity, keeper: Entity, problem: Problem)
 def think(world: World, hero: Entity, problem: Problem) -> None:
     hero.memes["thought"] += 1
     world.say(
-        f"But {hero.id} did not stamp or sob. {hero.pronoun().capitalize()} took a slow breath, "
+        f"But {hero.label} did not stamp or sob. {hero.pronoun().capitalize()} took a slow breath, "
         f"looked at the little card again, and thought about what {problem.fix_need}."
     )
 
@@ -310,7 +310,12 @@ def apply_solution(world: World, problem: Problem, solution: Solution, narrate: 
     keeper = world.get("keeper")
     license_card = world.get("license")
     if narrate:
-        world.say(solution.action)
+        world.say(solution.action.format(
+            hero=hero.label,
+            subj=hero.pronoun(),
+            subj_cap=hero.pronoun().capitalize(),
+            poss=hero.pronoun("possessive"),
+        ))
     if solution.id == "memory_riddle":
         hero.memes["clever"] += 1
         hero.memes["proved_honesty"] += 1
@@ -348,14 +353,14 @@ def grant_passage(world: World, hero: Entity, keeper: Entity, quest: Quest) -> N
         "the silver chain across the bridge was lifted."
     )
     world.say(
-        f"{hero.id} crossed over the shining boards while moonlight trembled in the water below."
+        f"{hero.label} crossed over the shining boards while moonlight trembled in the water below."
     )
     world.say(quest.ending_image)
 
 
 def close_with_lesson(world: World, hero: Entity) -> None:
     world.say(
-        f"After that, {hero.id} kept {hero.pronoun('possessive')} lantern license tucked safely in a dry blue pocket."
+        f"After that, {hero.label} kept {hero.pronoun('possessive')} lantern license tucked safely in a dry blue pocket."
     )
     world.say(
         "And whenever a knotty problem appeared, the child of Thistledown remembered "
@@ -384,7 +389,7 @@ def tell(
 
     introduce(world, hero, quest)
     explain_rule(world, keeper)
-    depart(world, hero, lantern)
+    depart(world, hero, lantern, quest)
 
     world.para()
     arrive_problem(world, hero, keeper, problem)
@@ -425,7 +430,7 @@ QUESTS = {
         "Grandmother Wren",
         "honey bread",
         "One evening, Grandmother Wren sent word from the far bank that her cough was scratchy and her cupboard was bare.",
-        'Mira promised, "I will bring warm honey bread before the moon climbs high."',
+        '{hero} promised, "I will bring warm honey bread before the moon climbs high."',
         "Before long, the old grandmother was smiling by the window with warm bread in her hands, and the cottage smelled of honey and thyme.",
         tags={"bread", "helping"},
     ),
@@ -453,22 +458,25 @@ PROBLEMS = {
     "forgotten": Problem(
         "forgotten",
         "forgotten card",
-        "Your lantern license is missing, little traveler. No card, no crossing until I know whose light you carry.",
-        "the old lantern rhyme and proof that the child truly belongs on the road",
+        "the lantern license card was missing",
+        '"Your lantern license is missing, little traveler. No card, no crossing until I know whose light you carry."',
+        "would show the old lantern rhyme and prove that the child truly belonged on the road",
         tags={"memory", "license"},
     ),
     "smudged": Problem(
         "smudged",
         "smudged stamp",
-        "This lantern license has been splashed by river mist. I cannot read the moon-stamp clearly enough to pass you through.",
-        "a clean way to prove the lantern was truly registered",
+        "the moon-stamp had been blurred by river mist",
+        '"This lantern license has been splashed by river mist. I cannot read the moon-stamp clearly enough to pass you through."',
+        "would prove the lantern was truly registered",
         tags={"repair", "license"},
     ),
     "torn": Problem(
         "torn",
         "torn ribbon",
-        "The witness ribbon on this lantern license has torn loose. The rule says I must see some honest mark tying this light to its owner.",
-        "a witness mark or another trustworthy sign",
+        "the witness ribbon had torn loose",
+        '"The witness ribbon on this lantern license has torn loose. The rule says I must see some honest mark tying this light to its owner."',
+        "would make an honest mark tying this light to its owner",
         tags={"witness", "license"},
     ),
 }
@@ -479,7 +487,7 @@ SOLUTIONS = {
         "answer the lantern rhyme",
         3,
         {"forgotten"},
-        'Mira looked up at the carved swan over the arch and softly recited the old lantern rhyme. Then she answered the keeper\'s three gentle questions about whose light it was, where it had first been blessed, and why she was hurrying tonight.',
+        '{hero} looked up at the carved swan over the arch and softly recited the old lantern rhyme. Then {subj} answered the keeper\'s three gentle questions about whose light it was, where it had first been blessed, and why {subj} was hurrying tonight.',
         "The keeper's face softened. With a silver pen, she wrote a fresh moon-mark on a new card and tied the license beneath the lantern ring.",
         "answered the old lantern rhyme and proved the lantern truly belonged to the traveler",
         tags={"memory", "rhyme", "license"},
@@ -489,7 +497,7 @@ SOLUTIONS = {
         "repair the wet ledger",
         3,
         {"smudged"},
-        'Seeing the keeper\'s ledger drooping in the mist, Mira offered a strip of cattail thread from her satchel and helped dry and bind the damp pages. When the last page was straight, the old list of lantern numbers could be read again.',
+        "Seeing the keeper's ledger drooping in the mist, {hero} offered a strip of cattail thread from {poss} satchel and helped dry and bind the damp pages. When the last page was straight, the old list of lantern numbers could be read again.",
         "There, beside the date and the bridge seal, lay the lantern's number after all. The keeper brushed the page dry and pressed a clear new stamp onto the license.",
         "helped repair the keeper's wet ledger so the true license record could be checked",
         tags={"repair", "kindness", "license"},
@@ -499,7 +507,7 @@ SOLUTIONS = {
         "bring a witness ribbon",
         2,
         {"torn"},
-        'Mira remembered the flour-star ribbon the village baker had tied to the lantern handle that morning. She showed the matching star stitched on the baker\'s market note, and the keeper saw at once that the mark and the errand belonged together.',
+        "{hero} remembered the flour-star ribbon the village baker had tied to the lantern handle that morning. {subj_cap} showed the matching star stitched on the baker's market note, and the keeper saw at once that the mark and the errand belonged together.",
         "With a nod, the keeper tied on a fresh witness ribbon and fastened the license neatly beneath it.",
         "showed a matching witness mark that proved the lantern and errand belonged together",
         tags={"witness", "proof", "license"},
@@ -509,7 +517,7 @@ SOLUTIONS = {
         "slip past the chain",
         1,
         set(),
-        'For one uneasy blink, Mira wondered if she could duck under the silver chain and run across before anyone noticed.',
+        "For one uneasy blink, {hero} wondered if {subj} could duck under the silver chain and run across before anyone noticed.",
         "But that would only break trust, not mend the license.",
         "tried to sneak past the bridge keeper",
         tags={"bad_idea"},
@@ -519,7 +527,7 @@ SOLUTIONS = {
         "argue with the keeper",
         1,
         set(),
-        'For one hot moment, Mira thought about shouting that rules were foolish when someone needed help.',
+        "For one hot moment, {hero} thought about shouting that rules were foolish when someone needed help.",
         "But loud words could not turn a bad license into a good one.",
         "argued instead of solving the actual problem",
         tags={"bad_idea"},
@@ -614,7 +622,7 @@ def story_qa(world: World) -> list[tuple[str, str]]:
         ),
         (
             "How did the hero solve the problem?",
-            f"{hero.label} chose to {solution.label}. {solution.qa_text.capitalize()}, which gave the keeper a real reason to trust the license."
+            f"{hero.label} chose to {solution.label}. {hero.label} {solution.qa_text}, which gave the keeper a real reason to trust the license."
         ),
     ]
     if solved:

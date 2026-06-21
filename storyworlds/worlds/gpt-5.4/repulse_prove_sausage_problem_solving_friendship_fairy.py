@@ -184,8 +184,10 @@ def _r_grumpy(world: World) -> list[str]:
 
 
 def _r_friendship(world: World) -> list[str]:
-    f1 = world.get("friend1")
-    f2 = world.get("friend2")
+    friends = [e for e in world.entities.values() if e.role == "friend"]
+    if len(friends) < 2:
+        return []
+    f1, f2 = friends[:2]
     if f1.memes["helped"] < THRESHOLD or f2.memes["helped"] < THRESHOLD:
         return []
     sig = ("friendship", "pair")
@@ -445,7 +447,7 @@ SETTINGS = {
         "Mossbeard",
         "They loved to follow the path of blue mushrooms to the Moonberry Feast.",
         "Hand in hand, they crossed the moon bridge and went on to the Moonberry Feast, where even the lanterns seemed to bow to them.",
-        "moonlight lay on the water like folded silk",
+        "moonlight lay on the water like folded silk.",
         tags={"bridge", "feast", "fairy"},
     ),
     "willow_gate": Setting(
@@ -458,7 +460,7 @@ SETTINGS = {
         "Mossbeard",
         "They had set out before sunset to reach the Dewdrop Dance beyond the willow lane.",
         "Laughing softly, they stepped through the willow gate and on toward the Dewdrop Dance, where the fiddles were already singing.",
-        "the willow leaves flashed silver like fish scales in a stream",
+        "the willow leaves flashed silver like fish scales in a stream.",
         tags={"gate", "dance", "fairy"},
     ),
     "crystal_ferry": Setting(
@@ -471,7 +473,7 @@ SETTINGS = {
         "Mossbeard",
         "They were hurrying along the crystal ford road to reach the Starlight Supper before the first bell.",
         "Soon they floated over the water on the crystal ferry and on to the Starlight Supper, where stars shivered in the soup bowls.",
-        "small stars peeped out early and trembled in the darkening sky",
+        "small stars peeped out early and trembled in the darkening sky.",
         tags={"ferry", "supper", "fairy"},
     ),
 }

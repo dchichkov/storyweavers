@@ -239,6 +239,7 @@ PLACES = {
     "meadow": Place(
         "meadow",
         "the moon-bright meadow",
+        "silver grass and sleepy daisies",
         "the round hill above the meadow",
         "where the stars looked close enough to whisper to",
         affords={"stream", "brambles"},
@@ -246,6 +247,7 @@ PLACES = {
     "cliffs": Place(
         "cliffs",
         "the path below the windy sea cliffs",
+        "a sandy path with lighthouse shadows",
         "the lighthouse knoll",
         "where the dark sea and the sky touched in one shining line",
         affords={"wind", "dark_path"},
@@ -253,6 +255,7 @@ PLACES = {
     "garden": Place(
         "garden",
         "the sleeping garden behind the cottages",
+        "rows of moonlit herbs and quiet bean poles",
         "the old sundial hill",
         "where the flower heads nodded under the stars",
         affords={"brambles", "dark_path"},
@@ -529,7 +532,7 @@ def decide_journey(world: World, hero: Entity, parent: Entity, place: Place, obs
         f'"maybe it can find the sky again."'
     )
     world.say(
-        f"They set off together, but the way held {obstacle.challenge}: {obstacle.challenge}. "
+        f"They set off together, but the way held {obstacle.challenge}. "
         f"{obstacle.risk_line}"
     )
 
@@ -679,7 +682,7 @@ def story_qa(world: World) -> list[tuple[str, str]]:
         ("Why was the trip an adventure?",
          f"They had to carry the comet to {place.high_place} and face {obstacle.challenge} on the way. The obstacle made the journey feel brave instead of easy."),
         (f"How did they get past {obstacle.label}?",
-         f"They used {tool.phrase}. That worked because {tool.label} could honestly handle the problem of {obstacle.challenge}."),
+         f"They used {tool.phrase}. That worked because {tool.phrase} could honestly handle the problem of {obstacle.challenge}."),
     ]
     if outcome == "tonight":
         qa.append((

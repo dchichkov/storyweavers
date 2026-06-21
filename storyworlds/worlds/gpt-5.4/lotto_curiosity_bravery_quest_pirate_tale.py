@@ -96,6 +96,15 @@ class Owner:
     thanks: str
     tags: set[str] = field(default_factory=set)
 
+    def pronoun(self, case: str = "subject") -> str:
+        words = {self.id, self.label.lower(), self.role_word.lower()}
+        joined = " ".join(words)
+        if any(word in joined for word in ("dad", "father", "man", "uncle")):
+            return {"subject": "he", "object": "him", "possessive": "his"}[case]
+        if any(word in joined for word in ("aunt", "grandma", "mother", "woman")):
+            return {"subject": "she", "object": "her", "possessive": "her"}[case]
+        return {"subject": "they", "object": "them", "possessive": "their"}[case]
+
 
 @dataclass
 class Clue:
@@ -390,7 +399,7 @@ def ending(world: World, seeker: Entity, mate: Entity, owner_cfg: Owner, place: 
         kid.memes["joy"] += 1
         kid.memes["wonder"] += 1
     world.say(
-        f"{owner_cfg.label} tucked the ticket safely into {owner_cfg.pronoun('possessive')} pocket "
+        f"{sentence_case(owner_cfg.label)} tucked the ticket safely into {owner_cfg.pronoun('possessive')} pocket "
         f"and gave them each a shiny chocolate coin wrapped in gold paper."
     )
     world.say(
@@ -563,7 +572,7 @@ CHALLENGES = {
         "crowd",
         "the busy crowd",
         "A thick crowd pressed around the drawing board, all elbows and baskets and rustling coats.",
-        f'"If we run in there, we'll lose each other," said one child.',
+        "\"If we run in there, we'll lose each other,\" said one child.",
         "stay_together",
         "crowd",
         tags={"crowd"},
@@ -695,6 +704,10 @@ def pair_noun(a: Entity, b: Entity) -> str:
     return "a boy and a girl"
 
 
+def sentence_case(text: str) -> str:
+    return text[:1].upper() + text[1:] if text else text
+
+
 def story_qa(world: World) -> list[tuple[str, str]]:
     f = world.facts
     seeker = f["seeker"]
@@ -728,7 +741,7 @@ def story_qa(world: World) -> list[tuple[str, str]]:
         ),
         (
             "How did they get past the obstacle safely?",
-            f"They used {helper.qa_action}. The helper matched the problem, so bravery worked together with good sense.",
+            f"{sentence_case(helper.qa_action)}. The helper matched the problem, so bravery worked together with good sense.",
         ),
         (
             "How did the story end?",

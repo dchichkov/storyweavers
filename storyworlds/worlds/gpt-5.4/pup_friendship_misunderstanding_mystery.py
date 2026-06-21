@@ -563,6 +563,7 @@ CLUES = {
         "pawprints",
         "a line of muddy pawprints",
         "the pawprints in a curving little trail",
+        "the curving line of muddy pawprints",
         requires_wet=True,
         tags={"pawprints", "mystery"},
     ),
@@ -570,6 +571,7 @@ CLUES = {
         "blue_thread",
         "a snag of thread caught on a splinter",
         "the tiny thread marks and sniffs",
+        "the tiny blue threads and puppy sniffs",
         requires_soft_item=True,
         tags={"thread", "mystery"},
     ),
@@ -577,6 +579,7 @@ CLUES = {
         "chewed_corner",
         "one small tooth mark and a faint puppy smell",
         "the tooth-mark clue and the tiny snuffling sounds",
+        "the tooth mark and the little snuffling sounds",
         tags={"toothmark", "mystery"},
     ),
 }

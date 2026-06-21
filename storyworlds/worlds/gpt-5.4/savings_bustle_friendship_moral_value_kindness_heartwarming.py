@@ -245,6 +245,10 @@ def valid_combos() -> list[tuple[str, str, str, str]]:
     return combos
 
 
+def need_text(text: str, friend: Entity) -> str:
+    return text.format(friend=friend.id, poss=friend.pronoun("possessive"))
+
+
 def outcome_of(params: "StoryParams") -> str:
     plan = SAVINGS[params.savings]
     wish = WISHES[params.wish]
@@ -295,7 +299,7 @@ def friend_problem(world: World, friend: Entity, need: Need) -> None:
     friend.memes["worry"] += 1
     world.say(
         f"Then {friend.id} stopped at another table and looked down at {need.phrase}. "
-        f"{friend.pronoun().capitalize()} whispered that {need.reason}."
+        f"{friend.pronoun().capitalize()} whispered that {need_text(need.reason, friend)}."
     )
     world.say(
         f"But {friend.pronoun('possessive')} hand only held part of the price, and {friend.pronoun()} was short by {need.shortage} coin"
@@ -310,19 +314,19 @@ def warning_beat(world: World, hero: Entity, friend: Entity, need: Need) -> None
     hero.memes["concern"] += 1
     if pred["left_out"]:
         world.say(
-            f"{hero.id} looked at {friend.id}'s face and could almost see what would happen next: {need.consequence}."
+            f"{hero.id} looked at {friend.id}'s face and could almost see what would happen next: {need_text(need.consequence, friend)}."
         )
     else:
         world.say(f"{hero.id} could tell that {friend.id} was worried.")
     world.history.append("hero_predicted_loss")
 
 
-def choose_kindness(world: World, hero: Entity, friend: Entity, wish: Wish, need: Need) -> None:
+def choose_kindness(world: World, hero: Entity, friend: Entity, wish: Wish, need: Entity, need_cfg: Need) -> None:
     world.say(
         f"{hero.id} curled {hero.pronoun('possessive')} fingers around the savings for a moment. "
         f"{hero.pronoun().capitalize()} still wanted {wish.label}, but friendship tugged harder."
     )
-    gift = need.cost
+    gift = need_cfg.cost
     hero.meters["coins"] -= float(gift)
     friend.meters["coins"] += float(gift)
     need.meters["bought"] += 1
@@ -333,23 +337,23 @@ def choose_kindness(world: World, hero: Entity, friend: Entity, wish: Wish, need
         f'"You can use my savings today."'
     )
     world.say(
-        f"{friend.id}'s shoulders softened at once. Together they paid for {need.phrase}."
+        f"{friend.id}'s shoulders softened at once. Together they paid for {need_cfg.phrase}."
     )
     world.history.append("hero_shared_savings")
 
 
-def buy_wish(world: World, hero: Entity, wish: Wish) -> None:
-    hero.meters["coins"] -= float(wish.cost)
+def buy_wish(world: World, hero: Entity, wish: Entity, wish_cfg: Wish) -> None:
+    hero.meters["coins"] -= float(wish_cfg.cost)
     wish.meters["bought"] += 1
     hero.memes["joy"] += 1
     world.say(
-        f"There were still enough coins left, so {hero.id} also bought {wish.phrase}. "
+        f"There were still enough coins left, so {hero.id} also bought {wish_cfg.phrase}. "
         f"{hero.pronoun().capitalize()} held it carefully, smiling even wider now."
     )
     world.history.append("hero_bought_wish")
 
 
-def skip_wish(world: World, hero: Entity, wish: Wish) -> None:
+def skip_wish(world: World, hero: Entity, friend: Entity, wish: Wish) -> None:
     propagate(world, narrate=False)
     world.say(
         f"When {hero.id} looked back at the stall with {wish.phrase}, the coins left were not enough."
@@ -401,8 +405,8 @@ def tell(
     hero = world.add(Entity(id=hero_name, kind="character", type=hero_type, role="hero"))
     friend = world.add(Entity(id=friend_name, kind="character", type=friend_type, role="friend", traits=[friend_trait]))
     parent = world.add(Entity(id="Parent", kind="character", type=parent_type, role="parent", label="the parent"))
-    world.add(Entity(id="wish", type="wish", label=wish.label, phrase=wish.phrase, attrs={"cost": wish.cost}))
-    world.add(Entity(id="need", type="need", label=need.label, phrase=need.phrase, attrs={"cost": need.cost}))
+    wish_ent = world.add(Entity(id="wish", type="wish", label=wish.label, phrase=wish.phrase, attrs={"cost": wish.cost}))
+    need_ent = world.add(Entity(id="need", type="need", label=need.label, phrase=need.phrase, attrs={"cost": need.cost}))
 
     introduce(world, hero, friend, parent, plan)
     desire(world, hero, wish)
@@ -412,14 +416,14 @@ def tell(
     warning_beat(world, hero, friend, need)
 
     world.para()
-    choose_kindness(world, hero, friend, wish, need)
+    choose_kindness(world, hero, friend, wish, need_ent, need)
     if plan.coins >= wish.cost + need.cost:
-        buy_wish(world, hero, wish)
+        buy_wish(world, hero, wish_ent, wish)
         world.para()
         ending_both(world, hero, friend, wish, need)
         outcome = "both"
     else:
-        skip_wish(world, hero, wish)
+        skip_wish(world, hero, friend, wish)
         world.para()
         ending_friend_first(world, hero, friend, setting)
         outcome = "friend_first"
@@ -549,7 +553,7 @@ NEEDS = {
         3,
         2,
         "the class writing table had opened, but without a notebook there would be nowhere to keep the pages",
-        "friend would have to stand aside and watch the writing table instead of joining in",
+        "{friend} would have to stand aside and watch the writing table instead of joining in",
         tags={"school"},
     ),
     "seed_packet": Need(
@@ -558,8 +562,8 @@ NEEDS = {
         "a packet of sunflower seeds",
         4,
         1,
-        "friend had promised to bring seeds for the shared planting tray",
-        "friend would have an empty space in the planting tray while everyone else pressed seeds into the soil",
+        "{friend} had promised to bring seeds for the shared planting tray",
+        "{friend} would have an empty space in the planting tray while everyone else pressed seeds into the soil",
         tags={"garden"},
     ),
     "muffin_ticket": Need(
@@ -568,8 +572,8 @@ NEEDS = {
         "a blueberry muffin ticket",
         2,
         1,
-        "friend's coin had rolled under a stall, and snack time was almost there",
-        "friend would have to sit at snack time with empty hands while the others nibbled and chatted",
+        "{friend}'s coin had rolled under a stall, and snack time was almost there",
+        "{friend} would have to sit at snack time with empty hands while the others nibbled and chatted",
         tags={"food"},
     ),
 }
@@ -709,11 +713,11 @@ def story_qa(world: World) -> list[tuple[str, str]]:
         ),
         (
             f"Why was {friend.id} worried?",
-            f"{friend.id} was worried because {need.reason}. {friend.pronoun().capitalize()} was short by {need.shortage} coin{'' if need.shortage == 1 else 's'}, so getting {need.label} suddenly felt hard."
+            f"{friend.id} was worried because {need_text(need.reason, friend)}. {friend.pronoun().capitalize()} was short by {need.shortage} coin{'' if need.shortage == 1 else 's'}, so getting {need.label} suddenly felt hard."
         ),
         (
             f"Why did {hero.id} decide to share the savings?",
-            f"{hero.id} could see that without help, {need.consequence}. That is why friendship tugged harder than buying {wish.label} first."
+            f"{hero.id} could see that without help, {need_text(need.consequence, friend)}. That is why friendship tugged harder than buying {wish.label} first."
         ),
     ]
     if outcome == "both":
@@ -826,10 +830,11 @@ can_really_want(P, W) :- savings(P), wish(W), coins(P, C), wish_cost(W, K), C >=
 
 valid(S, P, W, N) :- sold_here(S, W, N), can_help(P, N), can_really_want(P, W).
 
-outcome(both) :- chosen_plan(P), chosen_wish(W), chosen_need(N),
+outcome(both) :- chosen_setting(S), chosen_plan(P), chosen_wish(W), chosen_need(N),
+                 valid(S, P, W, N),
                  coins(P, C), wish_cost(W, WC), need_cost(N, NC), C >= WC + NC.
-outcome(friend_first) :- chosen_plan(P), chosen_wish(W), chosen_need(N),
-                         valid(chosen_setting, P, W, N),
+outcome(friend_first) :- chosen_setting(S), chosen_plan(P), chosen_wish(W), chosen_need(N),
+                         valid(S, P, W, N),
                          coins(P, C), wish_cost(W, WC), need_cost(N, NC), C < WC + NC.
 """
 
@@ -857,10 +862,7 @@ def asp_facts() -> str:
 
 
 def asp_program(extra: str, show: str) -> str:
-    chosen_alias = """
-valid(chosen_setting, P, W, N) :- chosen_setting(chosen_setting), valid(chosen_setting, P, W, N).
-"""
-    return f"{asp_facts()}\n{ASP_RULES}\n{chosen_alias}\n{extra}\n{show}\n"
+    return f"{asp_facts()}\n{ASP_RULES}\n{extra}\n{show}\n"
 
 
 def asp_valid_combos() -> list[tuple]:

@@ -193,7 +193,9 @@ def _r_thirst_to_guzzle(world: World) -> list[str]:
 def _r_guzzle_to_suspicion(world: World) -> list[str]:
     child = world.get("child")
     pet = world.get("pet")
-    setting = world.facts["setting_cfg"]
+    setting = world.facts.get("setting_cfg")
+    if setting is None:
+        return []
     if pet.meters["guzzling"] < THRESHOLD or not setting.dark:
         return []
     sig = ("guzzle_to_suspicion", child.id, pet.id)
@@ -678,7 +680,8 @@ def story_qa(world: World) -> list[tuple[str, str]]:
     f = world.facts
     child = f["child"]
     helper = f["helper"]
-    pet = f["pet_cfg"]
+    pet_cfg = f["pet_cfg"]
+    pet_ent = f["pet"]
     water = f["water_cfg"]
     setting = f["setting_cfg"]
     tool = f["tool_cfg"]
@@ -690,7 +693,7 @@ def story_qa(world: World) -> list[tuple[str, str]]:
         (f"Why did {child.id} think something spooky was there?",
          f"{child.id} heard the loud guzzling in a shadowy place and did not know what was making it. Because the noise sounded bigger in the dark, {child.pronoun()} misunderstood it as a thief or monster."),
         ("What was really making the sound?",
-         f"It was {pet.label} drinking from {water.phrase}. {pet.label.capitalize()} had been very active earlier, so {pet.pronoun()} was thirsty and started to guzzle."),
+         f"It was {pet_cfg.label} drinking from {water.phrase}. {pet_cfg.label.capitalize()} had been very active earlier, so {pet_ent.pronoun()} was thirsty and started to guzzle."),
         (f"How did {child.id} solve the case?",
          f"{child.id} walked closer with {tool.phrase} and looked carefully instead of only guessing. Once the light or close look reached the nook, the mystery stopped being scary and became easy to explain."),
         ("How did the story end?",

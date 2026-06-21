@@ -42,6 +42,10 @@ SENSE_MIN = 2
 CAREFUL_TRAITS = {"careful", "steady", "gentle", "thoughtful"}
 
 
+def was_or_were(entity: "Entity") -> str:
+    return "were" if entity.pronoun() == "they" else "was"
+
+
 @dataclass
 class Entity:
     id: str
@@ -293,7 +297,7 @@ def reveal_twist(world: World, ostrich: Entity, hazard: Hazard) -> None:
     ostrich.memes["pride"] += 1
     world.say(
         f"But here came the twist, bright and clear as a bell: "
-        f"{ostrich.id} was not shrinking. {ostrich.pronoun().capitalize()} was reading the place well."
+        f"{ostrich.id} was not shrinking. {ostrich.pronoun().capitalize()} {was_or_were(ostrich)} reading the place well."
     )
     world.say(
         f"With tall, steady legs and a lookout-long view, "
@@ -408,18 +412,21 @@ GOALS = {
     "sunrise": Goal(
         "sunrise",
         "watch the sunrise spill gold over the farms below",
+        "gold light trembled over the fields",
         "they watched the sunrise paint every paddock aglow",
         tags={"sunrise", "farm"},
     ),
     "market": Goal(
         "market",
         "count the wagons rolling to the valley market",
+        "wagon bells glinted in the morning",
         "they counted the wagons below, snug and bright as a locket",
         tags={"market", "farm"},
     ),
     "swallows": Goal(
         "swallows",
         "see the swallows loop above the valley grass",
+        "small wings flashed over the grass",
         "they watched the swallows stitch blue ribbons through the pass",
         tags={"birds", "farm"},
     ),
@@ -591,7 +598,7 @@ def story_qa(world: World) -> list[tuple[str, str]]:
         ),
         (
             f"Why did {friend.id} think {ostrich.id} was afraid?",
-            f"{friend.id} first saw the pause and thought it meant fear. The twist is that {ostrich.id} was not shrinking back at all; {ostrich.pronoun()} was reading the danger correctly."
+            f"{friend.id} first saw the pause and thought it meant fear. The twist is that {ostrich.id} was not shrinking back at all; {ostrich.pronoun()} {was_or_were(ostrich)} reading the danger correctly."
         ),
     ]
     if f["outcome"] == "near_miss":

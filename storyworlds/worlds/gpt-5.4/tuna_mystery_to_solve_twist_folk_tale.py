@@ -186,6 +186,13 @@ class Rule:
     apply: Callable[[World], list[str]]
 
 
+def entity_by_role(world: World, role: str, fallback_id: str) -> Entity:
+    for ent in world.entities.values():
+        if ent.role == role:
+            return ent
+    return world.get(fallback_id)
+
+
 def _r_missing_worry(world: World) -> list[str]:
     tuna = world.get("tuna")
     if tuna.meters["missing"] < THRESHOLD:
@@ -194,7 +201,7 @@ def _r_missing_worry(world: World) -> list[str]:
     if sig in world.fired:
         return []
     world.fired.add(sig)
-    world.get("seeker").memes["concern"] += 1
+    entity_by_role(world, "seeker", "seeker").memes["concern"] += 1
     world.get("village").memes["worry"] += 1
     return []
 
@@ -213,7 +220,7 @@ def _r_false_blame(world: World) -> list[str]:
 
 
 def _r_clues_to_knowledge(world: World) -> list[str]:
-    seeker = world.get("seeker")
+    seeker = entity_by_role(world, "seeker", "seeker")
     helper = world.get("helper")
     culprit = world.get("culprit")
     if seeker.meters["clues_seen"] < 2:
@@ -232,7 +239,7 @@ def _r_clues_to_knowledge(world: World) -> list[str]:
 def _r_remedy_success(world: World) -> list[str]:
     remedy = world.get("remedy")
     culprit = world.get("culprit")
-    if world.get("seeker").meters["understands"] < THRESHOLD:
+    if entity_by_role(world, "seeker", "seeker").meters["understands"] < THRESHOLD:
         return []
     if culprit.attrs.get("need") not in remedy.attrs.get("solves", set()):
         return []
@@ -335,8 +342,8 @@ def open_tale(world: World, setting: Setting, seeker: Entity, elder: Entity) -> 
     seeker.memes["care"] += 1
     world.say(
         f"In {setting.village}, where people said the sea listened at night, "
-        f"there lived a child named {seeker.id}. {elder.id}, {seeker.id}'s "
-        f"{elder.label_word}, used to say that every honest feast begins with a "
+        f"there lived a child named {seeker.id}. {elder.id}, the village elder, "
+        f"used to say that every honest feast begins with a "
         f"thank-you."
     )
 
@@ -376,19 +383,19 @@ def seeker_refuses_haste(world: World, seeker: Entity, elder: Entity) -> None:
     )
 
 
-def observe_clues(world: World, culprit: Culprit, helper: Helper) -> None:
-    seeker = world.get("seeker")
+def observe_clues(world: World, culprit: Culprit, helper: Entity, helper_cfg: Helper) -> None:
+    seeker = entity_by_role(world, "seeker", "seeker")
     seeker.meters["clues_seen"] += 2
     propagate(world, narrate=False)
     world.say(
         f"At the edge of the village path, {seeker.id} found {culprit.trail}. "
-        f"There {helper.phrase} was waiting, and {helper.pronoun()} said, "
-        f'"{helper.wisdom}"'
+        f"There {helper_cfg.phrase} was waiting, and {helper.pronoun()} said, "
+        f'"{helper_cfg.wisdom}"'
     )
 
 
 def revelation(world: World, setting: Setting, culprit: Culprit, suspect: Suspect) -> None:
-    seeker = world.get("seeker")
+    seeker = entity_by_role(world, "seeker", "seeker")
     world.say(
         f"Together they followed the signs to {setting.reveal_place}. There they "
         f"saw {culprit.reveal}. {culprit.twist_line}"
@@ -408,8 +415,9 @@ def revelation(world: World, setting: Setting, culprit: Culprit, suspect: Suspec
 def remedy_scene(world: World, remedy: Remedy, culprit: Culprit, elder: Entity) -> None:
     world.get("remedy").attrs["used"] = True
     propagate(world, narrate=False)
+    seeker = entity_by_role(world, "seeker", "seeker")
     world.say(
-        f"{elder.id} came when {world.get('seeker').id} called, and together they "
+        f"{elder.id} came when {seeker.id} called, and together they "
         f"{remedy.action}. At once the hard feeling in the air softened."
     )
     world.say(remedy.ending)
@@ -470,7 +478,7 @@ def tell(setting: Setting, suspect: Suspect, culprit: Culprit, helper: Helper,
     seeker_refuses_haste(world, seeker, elder)
 
     world.para()
-    observe_clues(world, culprit, helper)
+    observe_clues(world, culprit, helper_ent, helper)
     revelation(world, setting, culprit, suspect)
 
     world.para()
@@ -743,7 +751,7 @@ def story_qa(world: World) -> list[tuple[str, str]]:
         ),
         (
             "What was the twist?",
-            f"The one everyone blamed was innocent. The real cause was {culprit.label}, and {culprit.motive}"
+            f"The one everyone blamed was innocent. The real cause was {culprit.label}. {culprit.motive}"
         ),
         (
             "How was the problem fixed?",
@@ -828,7 +836,7 @@ remedy_fits(R, C) :- remedy(R), culprit(C), need(C, N), solves(R, N).
 valid(S, C, H, R) :- suspect(S), culprit(C), helper(H), remedy(R),
                      different_culprit(S, C), helper_can(H, C), remedy_fits(R, C).
 
-# outcome is always restored for a valid story in this domain.
+% outcome is always restored for a valid story in this domain.
 outcome(restored) :- chosen(S, C, H, R), valid(S, C, H, R).
 """
 

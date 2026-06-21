@@ -417,7 +417,7 @@ def late_hurt(world: World, holder: Entity, waiter: Entity, activity: Activity) 
         f"The explanation came too late. {waiter.id}'s face had already gone stiff, and {holder.id} was too cross to listen kindly."
     )
     world.say(
-        f"Instead of finishing {activity.project}, each child turned away and worked alone for a moment, then not at all."
+        f"Instead of finishing the {activity.project}, each child turned away and worked alone for a moment, then not at all."
     )
 
 
@@ -429,7 +429,7 @@ def bad_ending(world: World, holder: Entity, waiter: Entity, activity: Activity,
     )
     world.say(activity.loss_image)
     world.say(
-        f"The unfinished {activity.project} sat between them, and even {item.label} no longer looked special."
+        f"The unfinished {activity.project} sat between them, and even the {item.label} no longer looked special."
     )
 
 
@@ -501,6 +501,7 @@ ACTIVITIES = {
         "coloring",
         "the kitchen",
         "Sunlight lay across the table, and two half-finished paper houses waited beside a bowl of apple slices.",
+        "street scene",
         "They were coloring one big street scene together, trading ideas about windows, doors, and tiny pets in the yards.",
         "Could I use the bright ones for the roof now?",
         "At the end, the paper street was still pale on one side, and the apple slices had gone soft while nobody ate them.",
@@ -511,6 +512,7 @@ ACTIVITIES = {
         "sticker_album",
         "the living room",
         "The rug was warm under their knees, and an open album lay between them with empty spaces waiting to be filled.",
+        "album page",
         "They were making one sticker album page together, lining up stars, animals, and shiny circles in careful rows.",
         "Can I have a turn with those for this empty corner?",
         "At the end, the album page still had a blank square in the middle, and the shiny stickers stayed stuck to their backing sheet.",
@@ -521,6 +523,7 @@ ACTIVITIES = {
         "cardboard_town",
         "the den",
         "A laundry basket of boxes stood nearby, and the room smelled faintly of tape and crayons.",
+        "cardboard town",
         "They were building a cardboard town together, each child folding little shops while planning where the pretend bakery should go.",
         "May I use that for the sign and the bakery door?",
         "At the end, the cardboard town had one crooked shop and one flat box, and the pretend bakery never opened at all.",

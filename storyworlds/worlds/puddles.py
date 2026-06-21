@@ -719,7 +719,7 @@ def generation_prompts(world: World) -> list[str]:
     ]
 
 
-def story_qa(world: World) -> list[tuple[str, str]]:
+def story_qa(world: World) -> list[QAItem]:
     """(2) Questions answerable from the text/world of THIS story."""
     f = world.facts
     hero, parent, prize, act = f["hero"], f["parent"], f["prize"], f["activity"]
@@ -727,14 +727,34 @@ def story_qa(world: World) -> list[tuple[str, str]]:
     sub, obj, pos = (hero.pronoun("subject"), hero.pronoun("object"),
                      hero.pronoun("possessive"))
     where = "inside" if world.setting.indoor else "outside"
-    qa: list[tuple[str, str]] = [
-        (f"Who is the story about?",
-         f"It is about a little {hero.type} named {hero.id} and "
-         f"{pos} {pw}."),
-        (f"What did {hero.id} love to do?",
-         f"{hero.id} loved playing {where} and {act.gerund}."),
-        (f"What did {hero.id}'s {pw} buy {obj}?",
-         f"{pos.capitalize()} {pw} bought {obj} {prize.phrase}."),
+    place = world.setting.place
+    trait = next((t for t in hero.traits if t != "little"), hero.type)
+    day = {"rainy": "rainy day", "sunny": "sunny day"}.get(world.weather, "play day")
+    # Keep story QA heavily parametrized by sampled story state. These should
+    # vary with names, roles, setting, activity, object, conflict, and outcome
+    # as much as possible so the training set does not learn invariant QA shells.
+    qa: list[QAItem] = [
+        QAItem(
+            f"Who is the story about when {hero.id} visits {place} to "
+            f"{act.verb} in {pos} {prize.label}?",
+            f"It is about a little {trait} {hero.type} named {hero.id} and "
+            f"{pos} {pw}. They go to {place} on a {day}, and {hero.id} is "
+            f"wearing {pos} {prize.label}.",
+        ),
+        QAItem(
+            f"What did {trait} {hero.id} love to do {where} in {place} before "
+            f"{pw} worried about {pos} {prize.label}?",
+            f"{trait.capitalize()} {hero.id} loved playing {where} and "
+            f"{act.gerund}. That wish became tricky because {pos} "
+            f"{prize.label} could get messy.",
+        ),
+        QAItem(
+            f"What new {prize.label} did {hero.id}'s {pw} buy for the "
+            f"{trait} {hero.type} before "
+            f"the {act.keyword or act.mess} play at {place}?",
+            f"{pos.capitalize()} {pw} bought {obj} {prize.phrase}. "
+            f"{hero.id} loved {prize.it()} and wore {prize.it()} for the outing.",
+        ),
     ]
     # The featured question: how/why the parent was upset -- grounded in the
     # predicted mess (the world model run forward) and the grabbed-hand conflict.
@@ -748,31 +768,43 @@ def story_qa(world: World) -> list[tuple[str, str]]:
         why += (f"When {hero.id} tried to {act.rush.rstrip(', ')}, {pos} {pw} "
                 f"held {pos} hand and reminded {obj} they could still want to "
                 f"{act.verb} while choosing a safer way.")
-        qa.append((f"Using the story above, explain how {hero.id}'s {pw} was "
-                   f"upset and why.", why))
+        qa.append(QAItem(
+            f"Why did {hero.id}'s {pw} worry about {pos} {prize.label} "
+            f"when {trait} {hero.id} wanted to {act.verb} at {place}?",
+            why,
+        ))
     if f.get("resolved"):
         gear = f["gear"]
-        qa.append(("How did they solve the problem?",
-                   f"They agreed to use {gear.label} first, so {hero.id} could {act.verb} "
-                   f"without ruining {pos} {prize.label}. The plan let {obj} "
-                   f"play while {pos} {prize.label} stayed clean."))
-        qa.append((f"How did {hero.id} feel at the end?",
-                   f"{hero.id} felt happy and hugged {pos} {pw} once they agreed "
-                   f"on the plan. At the end, {sub} was {act.gerund} with "
-                   f"{pw} laughing nearby."))
+        gear_plan = gear.label
+        if gear_plan.startswith(("a ", "an ")):
+            gear_plan = gear_plan.split(" ", 1)[1]
+        qa.append(QAItem(
+            f"How did {gear.label} help {trait} {hero.id} {act.verb} at {place} "
+            f"without ruining {pos} {prize.label}?",
+            f"They agreed to use {gear.label} first, so {hero.id} could "
+            f"{act.verb} at {place} without ruining {pos} {prize.label}. "
+            f"The plan let {obj} play while {pos} {prize.label} stayed clean.",
+        ))
+        qa.append(QAItem(
+            f"How did {trait} {hero.id} feel after {pw} agreed to the {gear_plan} "
+            f"plan for {act.keyword or act.mess} at {place}?",
+            f"{hero.id} felt happy and hugged {pos} {pw} once they agreed "
+            f"on the plan for {pos} {prize.label}. At the end, {sub} was "
+            f"{act.gerund} with {pw} laughing nearby.",
+        ))
     return qa
 
 
-def world_knowledge_qa(world: World) -> list[tuple[str, str]]:
+def world_knowledge_qa(world: World) -> list[QAItem]:
     """(3) Generic, child-level questions about the world's elements."""
     f = world.facts
     tags = set(f["activity"].tags)
     if f.get("gear"):
         tags.add(f["gear"].id)
-    out: list[tuple[str, str]] = []
+    out: list[QAItem] = []
     for tag in KNOWLEDGE_ORDER:
         if tag in tags:
-            out.extend(KNOWLEDGE[tag])
+            out.extend(QAItem(q, a) for q, a in KNOWLEDGE[tag])
     return out
 
 
@@ -1002,8 +1034,8 @@ def generate(params: StoryParams) -> StorySample:
         params=params,
         story=world.render(),
         prompts=generation_prompts(world),
-        story_qa=[QAItem(q, a) for q, a in story_qa(world)],
-        world_qa=[QAItem(q, a) for q, a in world_knowledge_qa(world)],
+        story_qa=story_qa(world),
+        world_qa=world_knowledge_qa(world),
         world=world,
     )
 

@@ -180,6 +180,13 @@ class Rule:
     apply: Callable[[World], list[str]]
 
 
+def entity_by_role(world: World, role: str, fallback_id: str) -> Entity:
+    for ent in world.entities.values():
+        if ent.role == role:
+            return ent
+    return world.get(fallback_id)
+
+
 def _r_gap_means_escape(world: World) -> list[str]:
     out: list[str] = []
     coop = world.get("enclosure")
@@ -194,14 +201,16 @@ def _r_gap_means_escape(world: World) -> list[str]:
     flock.meters["escaped"] += escaped
     flock.memes["fear"] += 1
     world.get("child").memes["alarm"] += 1
-    world.get("parent").memes["worry"] += 1
+    parent = entity_by_role(world, "parent", "parent")
+    parent.memes["worry"] += 1
     out.append("__escaped__")
     return out
 
 
 def _r_missing_after_search(world: World) -> list[str]:
     flock = world.get("residents")
-    if flock.meters["escaped"] < THRESHOLD or world.get("parent").meters["searched"] < THRESHOLD:
+    parent = entity_by_role(world, "parent", "parent")
+    if flock.meters["escaped"] < THRESHOLD or parent.meters["searched"] < THRESHOLD:
         return []
     sig = ("missing", int(flock.meters["escaped"]))
     if sig in world.fired:
@@ -213,7 +222,7 @@ def _r_missing_after_search(world: World) -> list[str]:
         flock.meters["found"] += found
     flock.meters["missing"] += missing
     world.get("child").memes["guilt"] += 1
-    world.get("parent").memes["care"] += 1
+    parent.memes["care"] += 1
     return ["__missing__"]
 
 
@@ -401,7 +410,7 @@ def introduce(world: World, child: Entity, parent: Entity, weather: Weather, enc
 def hear_sound(world: World, child: Entity, mistake: Mistake, source: Source) -> None:
     child.memes["concern"] += 1
     world.say(
-        f"From somewhere close by came {mistake.article} {mistake.cry}. "
+        f"From somewhere close by came {mistake.cry}. "
         f"{child.id} stopped and listened hard."
     )
     world.say(
@@ -634,6 +643,7 @@ def story_qa(world: World) -> list[tuple[str, str]]:
     missing = f["missing"]
     escaped = f["escaped"]
     found = f["found"]
+    source_reveal = source.reveal.rstrip(".")
     qa: list[tuple[str, str]] = [
         (
             "Who is the story about?",
@@ -645,7 +655,7 @@ def story_qa(world: World) -> list[tuple[str, str]]:
         ),
         (
             "What was the misunderstanding?",
-            f"The sound was not coming from inside {enclosure.the} at all. {source.reveal}."
+            f"The sound was not coming from inside {enclosure.the} at all. {source_reveal}."
         ),
         (
             f"What happened when the slat came off?",
@@ -763,7 +773,7 @@ valid(E, M, S)  :- enclosure(E), mistake(M), source(S), plausible(M, S), breacha
 escaped(E, N) :- escape_count(E, N).
 all_missing(E, W) :- escape_risk(E, R), weather_diff(W, D), R + D >= 5.
 missing(E, W, N) :- all_missing(E, W), escaped(E, N).
-missing(E, W, 1) :- escaped(E, N), not all_missing(E, W), N >= 1.
+missing(E, W, 1) :- weather(W), escaped(E, N), not all_missing(E, W), N >= 1.
 """
 
 

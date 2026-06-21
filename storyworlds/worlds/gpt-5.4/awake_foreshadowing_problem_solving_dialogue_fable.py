@@ -190,6 +190,24 @@ def predict_problem(world: World, place: Place, event: Event, duty: Duty) -> dic
     }
 
 
+def sentence_case(text: str) -> str:
+    return text[:1].upper() + text[1:] if text else text
+
+
+def duty_intro(duty: Duty) -> str:
+    if duty.location in duty.act:
+        return duty.act
+    return f"{duty.act} at {duty.location}"
+
+
+def elder_listening_spot(elder: Entity) -> str:
+    if elder.type == "owl":
+        return "from a branch"
+    if elder.type == "tortoise":
+        return "from a mossy stone"
+    return "nearby"
+
+
 def _r_sleepiness(world: World) -> list[str]:
     hero = world.get("hero")
     duty = world.facts["duty"]
@@ -256,7 +274,7 @@ def introduce(world: World, hero: Entity, friend: Entity, place: Place, duty: Du
         f"In {place.label}, a young {hero.type} named {hero.id} liked to be the first pair of eyes to notice what the day needed."
     )
     world.say(
-        f"Each morning, {hero.id} had one small but important job: {duty.act} at {duty.location}. {duty.value_text}"
+        f"Each morning, {hero.id} had one small but important job: {duty_intro(duty)}. {duty.value_text}"
     )
     world.say(
         f"{friend.id}, a steady {friend.type}, often worked nearby and knew how seriously {hero.id} took that duty."
@@ -279,11 +297,11 @@ def foreshadow(world: World, elder: Entity, hero: Entity, event: Event, duty: Du
     elder.memes["care"] += 1
     if pred["too_sleepy"]:
         world.say(
-            f'The old {elder.type}, {elder.id}, listened from a branch and said, "A long night can make a short morning. Heavy eyes do not {duty.act.split()[0]} very quickly."'
+            f'The old {elder.type}, {elder.id}, listened {elder_listening_spot(elder)} and said, "A long night can make a short morning. Heavy eyes do not {duty.act.split()[0]} very quickly."'
         )
     else:
         world.say(
-            f'The old {elder.type}, {elder.id}, listened from a branch and said, "Even a lovely night should leave room for the work of dawn."'
+            f'The old {elder.type}, {elder.id}, listened {elder_listening_spot(elder)} and said, "Even a lovely night should leave room for the work of dawn."'
         )
     world.say(
         f'{hero.id} tried to laugh, but the warning stayed in the air like a small cloud before rain.'
@@ -314,8 +332,9 @@ def consult(world: World, hero: Entity, friend: Entity, duty: Duty) -> None:
 
 
 def solve(world: World, hero: Entity, friend: Entity, solution: Solution) -> None:
+    offer = sentence_case(solution.offer.rstrip("."))
     world.say(
-        f'"Then let us untie the knot," said {friend.id}. "{solution.offer}"'
+        f'"Then let us untie the knot," said {friend.id}. "{offer}."'
     )
     world.say(solution.method_text.replace("{hero}", hero.id).replace("{friend}", friend.id))
 
@@ -700,7 +719,7 @@ def explain_rejection(place: Place, event: Event, duty: Duty, solution: Solution
 
 
 ASP_RULES = r"""
-risk(P,E,D,R) :- travel(P,T), lateness(E,L), R = T + L.
+risk(P,E,D,R) :- place(P), event(E), duty(D), travel(P,T), lateness(E,L), R = T + L.
 
 fits(S,P,E,D) :- solution(S), duty(D),
                  supports(S,N), need(D,N),

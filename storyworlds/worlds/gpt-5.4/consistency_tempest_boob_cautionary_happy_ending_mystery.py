@@ -365,15 +365,21 @@ def observe(world: World, child: Entity, helper: Entity, source_cfg: MysterySour
     helper.meters["safe_check"] += 1
     source.meters["pattern_seen"] += 1
     propagate(world, narrate=False)
-    world.say(method_cfg.observe_text.format(child=child.id, helper=helper.label_word, sound=source_cfg.sound))
+    world.say(method_cfg.observe_text.format(
+        child=child.id,
+        helper=helper.label_word,
+        helper_cap=helper.label_word.capitalize(),
+        sound=source_cfg.sound,
+    ))
     world.say(
         f"After listening twice, then three times, they noticed the consistency of it. {source_cfg.clue_text}"
     )
 
 
 def reveal(world: World, helper: Entity, source_cfg: MysterySource, method_cfg: Method) -> None:
+    explanation = method_cfg.explain_text.format(cause=source_cfg.cause).rstrip(".") + "."
     world.say(
-        f'"It is not a ghost," said {helper.label_word}. "{method_cfg.explain_text.format(cause=source_cfg.cause)}"'
+        f'"It is not a ghost," said {helper.label_word.capitalize()}. "{explanation}"'
     )
 
 
@@ -538,7 +544,7 @@ METHODS = {
         "window_watch",
         "watching safely from the window",
         {"outside_visible"},
-        "{helper.capitalize()} drew {child} to the glass and watched without opening anything. Together they counted the gusts and listened for the {sound}.",
+        "{helper_cap} drew {child} to the glass and watched without opening anything. Together they counted the gusts and listened for the {sound}.",
         "If we watch from here, we can learn that {cause}",
         tags={"window", "pattern"},
     ),
@@ -546,7 +552,7 @@ METHODS = {
         "hall_listen",
         "listening from the hall with a lantern lit low",
         {"inside_hidden"},
-        "{helper.capitalize()} lit a small lantern and stood with {child} in the hall, well away from the stair edge. They listened for the {sound} and for the breath of moving air.",
+        "{helper_cap} lit a small lantern and stood with {child} in the hall, well away from the stair edge. They listened for the {sound} and for the breath of moving air.",
         "If we listen from here, we can tell that {cause}",
         tags={"attic", "pattern"},
     ),

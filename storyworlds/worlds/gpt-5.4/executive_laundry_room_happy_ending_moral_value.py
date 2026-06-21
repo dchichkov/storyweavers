@@ -260,7 +260,7 @@ STAINS = {
     "soap": Stain("soap", "soap bubbles", "a bottle with a loose cap", "white", needs_cold=False,
                   needs_gentle=True, tags={"soap"}),
     "dust": Stain("dust", "gray dust", "the floor behind the washer", "gray", needs_cold=False,
-                  needs_gentle=False, tags={"dust"}),
+                  needs_gentle=True, tags={"dust"}),
 }
 
 METHODS = {
@@ -337,7 +337,7 @@ def stain_affects(stain: Stain, garment: Garment) -> bool:
 def method_safe(fabric: Fabric, stain: Stain, method: Method) -> bool:
     if fabric.delicate and not method.safe_for_delicate:
         return False
-    if stain.needs_cold and method.water_temp == "hot":
+    if stain.needs_cold and method.water_temp != "cold":
         return False
     if stain.needs_gentle and not method.gentle:
         return False
@@ -464,7 +464,7 @@ def apply_wash(world: World, cloth: Entity, method: Method, narrate: bool = True
         cloth.meters["worn"] += 1
     if not method.safe_for_delicate and cloth.attrs.get("delicate"):
         cloth.meters["ruined"] += 1
-    if cloth.attrs.get("needs_cold") and method.water_temp == "hot":
+    if cloth.attrs.get("needs_cold") and method.water_temp != "cold":
         cloth.meters["stain_set"] += 1
     if cloth.attrs.get("needs_gentle") and not method.gentle:
         cloth.meters["stain_set"] += 1
@@ -770,12 +770,12 @@ ASP_RULES = r"""
 affects(G,S) :- garment(G), stain(S).
 
 method_safe(F,S,M) :- fabric(F), stain(S), method(M),
-                      not delicate(F), not needs_hot_block(S,M), not needs_gentle_block(S,M).
+                      not delicate(F), not needs_cold_block(S,M), not needs_gentle_block(S,M).
 method_safe(F,S,M) :- fabric(F), stain(S), method(M),
-                      delicate(F), safe_delicate(M), not needs_hot_block(S,M), not needs_gentle_block(S,M).
+                      delicate(F), safe_delicate(M), not needs_cold_block(S,M), not needs_gentle_block(S,M).
 
-needs_hot_block(S,M) :- needs_cold(S), water_temp(M, hot).
-needs_gentle_block(S,M) :- needs_gentle(S), not gentle(M).
+needs_cold_block(S,M) :- stain(S), method(M), needs_cold(S), not water_temp(M, cold).
+needs_gentle_block(S,M) :- stain(S), method(M), needs_gentle(S), not gentle(M).
 
 drying_safe(F,D) :- fabric(F), drying(D), not delicate(F).
 drying_safe(F,D) :- fabric(F), drying(D), delicate(F), drying_delicate(D).

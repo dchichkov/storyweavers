@@ -246,6 +246,10 @@ def valid_combos() -> list[tuple[str, str, str]]:
     return out
 
 
+def sentence_case(text: str) -> str:
+    return text[:1].upper() + text[1:] if text else text
+
+
 def explain_rejection(route_id: str, obstacle_id: str, charm_id: str) -> str:
     route = ROUTES[route_id]
     obstacle = OBSTACLES[obstacle_id]
@@ -288,7 +292,7 @@ def sail_out(world: World, captain: Entity, mate: Entity, route: Route) -> None:
         f"Salt sparkled on the rail, and the mast hummed in the morning wind."
     )
     world.say(
-        f'"{route.treasure} will be ours by snack time," {captain.id} said, grinning like a tiny sea captain.'
+        f'"{sentence_case(route.treasure)} will be ours by snack time," {captain.id} said, grinning like a tiny sea captain.'
     )
 
 
@@ -444,6 +448,7 @@ OBSTACLES = {
         "a silver mist-bank",
         "a wall of silver mist hiding sharp rocks",
         "The bow drifted so near that black rocks suddenly showed their wet teeth inside the haze, and the little boat gave an uneasy wobble.",
+        "If they sailed on by guessing, the rocks could scrape the little boat.",
         "star_compass",
         "The silver mist thinned into ribbons, and the rocks stood still and plain where the crew could steer safely around them.",
         "The mist hid sharp rocks, so sailing straight ahead would have scraped the little boat.",
@@ -454,6 +459,7 @@ OBSTACLES = {
         "a sleeping moon-whale",
         "the rounded back of a moon-whale asleep across the bay mouth",
         "A great sleepy eye blinked open, and the whale's slow roll made the boat tip hard enough for both children to grab the rail.",
+        "If they startled the whale, one huge roll could tip the boat sideways.",
         "song_flute",
         "The moon-whale sighed, rolled aside, and left a calm lane of water wide enough for the tiny pirate boat.",
         "The whale was blocking the bay, and if it woke badly it could tip the boat with one huge roll.",
@@ -464,6 +470,7 @@ OBSTACLES = {
         "a whispering coral reef",
         "a whispering coral reef just under the clear water",
         "The sea began hissing around hidden coral points, and the hull scraped once with a small frightening cry.",
+        "If they kept guessing at the channel, the coral could crack the hull.",
         "tide_lantern",
         "Blue light spread over the water, showing the safe channel while the hiss of the reef softened to a friendly whisper.",
         "The coral points were almost invisible, and they could crack the boat if the crew kept guessing.",

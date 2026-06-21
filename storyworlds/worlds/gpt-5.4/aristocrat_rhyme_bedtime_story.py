@@ -346,9 +346,27 @@ def caregiver_notices(world: World, caregiver: Entity, child: Entity, disturbanc
     )
 
 
+def entity_by_role(world: World, role: str) -> Entity:
+    for ent in world.entities.values():
+        if ent.role == role:
+            return ent
+    return world.get(role)
+
+
+def remedy_past_tense(remedy: Remedy, child: Entity) -> str:
+    return {
+        "window_latch": "latched the window and tucked the blanket",
+        "lullaby": "hummed a lullaby",
+        "hall_check": "checked the hall with a small lamp",
+        "count_rain": f"counted raindrops with {child.id}",
+        "kiss_forehead": f"gave {child.id} a kiss",
+    }[remedy.id]
+
+
 def apply_remedy(world: World, remedy: Remedy, narrate: bool = True) -> None:
     room = world.get("room")
-    child = world.get("child")
+    child = entity_by_role(world, "child")
+    caregiver = entity_by_role(world, "caregiver")
     if "draft" in remedy.fixes:
         room.meters["draft"] = 0.0
         room.meters["noise"] = 0.0
@@ -366,7 +384,8 @@ def apply_remedy(world: World, remedy: Remedy, narrate: bool = True) -> None:
     child.memes["trust"] += 1
     propagate(world, narrate=False)
     if narrate:
-        world.say(remedy.action)
+        action = remedy.action.format(name=child.id).replace("Caregiver", caregiver.label_word.capitalize())
+        world.say(action)
         world.say(remedy.result)
 
 
@@ -444,6 +463,7 @@ def tell(
 
 CHAMBERS = {
     "tower": Chamber(
+        "tower",
         "Moonlight lay in a pale square on the rug.",
         "A high canopied bed stood by the wall.",
         "A single lamp made a honey-colored glow.",
@@ -451,6 +471,7 @@ CHAMBERS = {
         "where the dark felt light and the night sat right",
     ),
     "nursery": Chamber(
+        "nursery",
         "The nursery windows held a silver moon.",
         "A little carved bed rested beneath a painted ceiling.",
         "The night-light glowed like a sleepy peach.",
@@ -576,7 +597,7 @@ REMEDIES = {
 
 RHYMES = {
     "draft": (
-        "The curtain stayed slight, but the blanket held tight.",
+        "The curtain stayed still, and the blanket held tight.",
         "The room was not deep; it was ready for sleep.",
     ),
     "thunder": (
@@ -676,7 +697,7 @@ def story_qa(world: World) -> list[tuple[str, str]]:
         ),
         (
             f"How did {caregiver.label_word} help?",
-            f"{caregiver.label_word.capitalize()} used {remedy.label}. The remedy matched the real cause of the trouble, so the room became calmer and {child.id} could finally rest."
+            f"{caregiver.label_word.capitalize()} {remedy_past_tense(remedy, child)}. The remedy matched the real cause of the trouble, so the room became calmer and {child.id} could finally rest."
         ),
         (
             "Why did the remedy work better than the grand idea?",

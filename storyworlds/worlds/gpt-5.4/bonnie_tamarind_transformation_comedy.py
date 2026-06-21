@@ -323,8 +323,13 @@ def droop_beat(world: World, bonnie: Entity, look: Look, attempt: Attempt) -> No
     world.say(
         f"For half a second, Bonnie held still, waiting for the magic to happen. Then the tamarind drooped {place}."
     )
+    sticky_joke = {
+        "lip": "The brown stripe looked more like a sticky comma than a fierce mustache.",
+        "chin": "The brown swoop looked more like a sticky drip than wizard magic.",
+        "hair": "The paste made one strand flop like a sleepy noodle.",
+    }.get(attempt.region, "The paste made a silly shape instead of a costume.")
     world.say(
-        f"{look.reveal} Bonnie blinked, {bonnie.pronoun('possessive')} nose wrinkled, and even she let out a surprised snort."
+        f"{sticky_joke} Bonnie blinked, {bonnie.pronoun('possessive')} nose wrinkled, and even she let out a surprised snort."
     )
 
 
@@ -517,14 +522,6 @@ PROPS = {
 }
 
 HELPER_TYPES = ["mother", "father"]
-
-CURATED = [
-    StoryParams("living_room", "pirate", "lip", "felt_mustache", "mother"),
-    StoryParams("kitchen", "walrus", "lip", "whiskers", "father"),
-    StoryParams("porch", "wizard", "chin", "beard", "mother"),
-]
-
-
 @dataclass
 class StoryParams:
     setting: str
@@ -533,6 +530,13 @@ class StoryParams:
     prop: str
     helper: str
     seed: Optional[int] = None
+
+
+CURATED = [
+    StoryParams("living_room", "pirate", "lip", "felt_mustache", "mother"),
+    StoryParams("kitchen", "walrus", "lip", "whiskers", "father"),
+    StoryParams("porch", "wizard", "chin", "beard", "mother"),
+]
 
 
 KNOWLEDGE = {

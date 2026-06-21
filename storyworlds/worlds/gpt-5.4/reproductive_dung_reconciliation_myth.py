@@ -283,7 +283,7 @@ def opening(world: World, realm: Realm, dung: DungKind, first: Entity, second: E
         f"There lived two sacred beetle siblings, {first.id} and {second.id}, who rolled the dawn-ball each morning."
     )
     world.say(
-        f"The ball was made of {dung.phrase}, rich from {dung.source}, and it carried a warm reproductive promise inside it. "
+        f"The ball was shaped from {dung.phrase}, rich from {dung.source}, and it carried a warm reproductive promise inside it. "
         f"The old ones said that promise helped grasses rise again, chicks hatch, and young beetles wake when their season came."
     )
     world.say(
@@ -427,21 +427,21 @@ REALMS = {
         "reed_marsh",
         "the reed marsh touched the belly of the sky",
         "the water mirrored gold between the reeds",
-        "At sunset the marsh glowed softly, and the reeds whispered over calm water",
+        "At sunset the marsh glowed softly, and the reeds whispered over calm water.",
         tags={"marsh", "dawn"},
     ),
     "red_plain": Realm(
         "red_plain",
         "the red plain stretched wide as a sleeping lion",
         "the far grass shone copper under the newborn light",
-        "At evening the plain held a red shine, and the little burrows felt safe again",
+        "At evening the plain held a red shine, and the little burrows felt safe again.",
         tags={"plain", "dawn"},
     ),
     "river_bend": Realm(
         "river_bend",
         "the great river bent like a blue bracelet around the earth",
         "the banks flashed silver where kingfishers waited",
-        "By evening the river carried bright pieces of sky, and the fish leapt without fear",
+        "By evening the river carried bright pieces of sky, and the fish leapt without fear.",
         tags={"river", "dawn"},
     ),
 }
@@ -726,7 +726,7 @@ CURATED = [
 
 ASP_RULES = r"""
 needs_met(Ds, Rt) :- dispute(Ds), rite(Rt), not missing_need(Ds, Rt).
-missing_need(Ds, Rt) :- needs(Ds, N), not repairs(Rt, N).
+missing_need(Ds, Rt) :- dispute(Ds), rite(Rt), needs(Ds, N), not repairs(Rt, N).
 
 strong_enough(Dg, Rt) :- dung(Dg), rite(Rt), weight(Dg, W), strength(Rt, S), S >= W.
 

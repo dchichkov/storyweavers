@@ -84,6 +84,51 @@ quality risks. Older JSON-object results can still be materialized by the
 script, but the preferred path is the raw Python tool payload because it avoids
 escaping a full source file inside JSON text.
 
+## OpenAI Service World Factory
+
+`openai_service_world_factory.py` generates the same storyworld request shape
+with ordinary async Responses API calls instead of Batch. It writes a run
+manifest, a raw response JSONL, and a run-specific world directory under
+`storyworlds/worlds/`.
+
+For the usual generate-plus-eval pass, use the one-command pipeline. It creates
+the worlds, runs `openai_story_quality.py`, runs `qa_static_check.py`, and writes
+a Markdown report beside the manifest:
+
+```bash
+OPENAI_API_KEY="$(cat .API_KEY)" ./.venv/bin/python storyworlds/openai_service_world_pipeline.py \
+  -n 10 --model gpt-5.4-mini --reasoning-effort low --max-output-tokens 32000
+```
+
+To build a report from an already-generated manifest without regenerating:
+
+```bash
+./.venv/bin/python storyworlds/openai_service_world_pipeline.py \
+  --from-manifest storyworlds/batches/storyworld_service_<stamp>_seed<seed>_n10.manifest.json \
+  --skip-quality
+```
+
+```bash
+OPENAI_API_KEY="$(cat .API_KEY)" ./.venv/bin/python storyworlds/openai_service_world_factory.py \
+  -n 10 --model gpt-5.4-mini --reasoning-effort low --max-output-tokens 32000
+```
+
+The resulting manifest can be passed directly to the quality eval:
+
+```bash
+OPENAI_API_KEY="$(cat .API_KEY)" ./.venv/bin/python storyworlds/openai_story_quality.py \
+  --manifest storyworlds/batches/storyworld_service_<stamp>_seed<seed>_n10.manifest.json \
+  --limit 10 --batch-size 5
+```
+
+For duplicate/static QA checks over that exact run directory:
+
+```bash
+./.venv/bin/python storyworlds/qa_static_check.py \
+  --worlds-dir storyworlds/worlds/gpt-5.4-mini_service_<stamp>_seed<seed>_n10 \
+  -n 10 --variants 3 --seed 42
+```
+
 ## OpenAI Story Quality Ratings
 
 `openai_story_quality.py` samples one generated story per storyworld script and

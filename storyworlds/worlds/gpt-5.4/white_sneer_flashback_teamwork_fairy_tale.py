@@ -41,6 +41,13 @@ from results import QAItem, StoryError, StorySample  # noqa: E402
 THRESHOLD = 1.0
 
 
+def spoken_with_speaker(line: str, speaker: str) -> str:
+    text = line.strip()
+    if text.endswith(("?", "!")):
+        return f'"{text}" {speaker} said.'
+    return f'"{text.rstrip(".")}," {speaker} said.'
+
+
 @dataclass
 class Entity:
     id: str
@@ -97,6 +104,14 @@ class Obstacle:
     def The(self) -> str:
         text = self.the
         return text[0].upper() + text[1:]
+
+
+def near_miss(obstacle: Obstacle) -> str:
+    return {
+        "brook": "slipped toward the water",
+        "wall": "slid back down the stones",
+        "thorns": "caught a sleeve on the briars",
+    }.get(obstacle.id, obstacle.verb)
 
 
 @dataclass
@@ -310,7 +325,7 @@ def quest_setup(world: World, lead: Entity, partner: Entity, place: Place, treas
     partner.memes["care"] += 1
     world.say(opening_line(place))
     world.say(
-        f"One morning, {lead.id} and {partner.id} were sent along {place.path} "
+        f"One morning, {lead.label} and {partner.label} were sent along {place.path} "
         f"to fetch {treasure.phrase}. The village needed it {treasure.use}."
     )
     world.say(
@@ -332,8 +347,8 @@ def sight_obstacle(world: World, place: Place, obstacle: Obstacle, taunter: Taun
     propagate(world, narrate=False)
     world.say(
         f"Then {taunter.label} peeped out and let a {taunter.style} sneer curl across "
-        f"{taunter.pronoun('possessive')} face. "
-        f'"{taunter.voice}" it said.'
+        f"{taunter_ent.pronoun('possessive')} face. "
+        f'{spoken_with_speaker(taunter.voice, "it")}'
     )
 
 
@@ -341,12 +356,12 @@ def lone_try(world: World, lead: Entity, obstacle: Obstacle, taunter: Taunter) -
     lead.memes["pride"] += 1
     lead.meters["reaching"] += 1
     world.say(
-        f"For one worried moment, {lead.id} thought about facing {obstacle.the} alone. "
-        f"{lead.pronoun().capitalize()} took a brave little step and nearly {obstacle.verb}."
+        f"For one worried moment, {lead.label} thought about facing {obstacle.the} alone. "
+        f"{lead.pronoun().capitalize()} took a brave little step and nearly {near_miss(obstacle)}."
     )
     if taunter.strength >= 2:
         world.say(
-            f"The sneer stung more than the cold air, and {lead.id}'s heart gave a jump."
+            f"The sneer stung more than the cold air, and {lead.label}'s heart gave a jump."
         )
 
 
@@ -354,14 +369,14 @@ def flashback(world: World, lead: Entity, partner: Entity, lesson: Lesson) -> No
     lead.memes["memory"] += 1
     partner.memes["trust"] += 1
     world.say(
-        f"Then a memory flickered through {lead.id}'s mind like a lamp behind frosty glass."
+        f"Then a memory flickered through {lead.label}'s mind like a lamp behind frosty glass."
     )
     world.say(
         f"In a flashback, {lead.pronoun()} saw {lesson.elder} again: {lesson.image}. "
         f'"{lesson.line}"'
     )
     world.say(
-        f"{lead.id} looked at {partner.id} and understood that the old lesson had never "
+        f"{lead.label} looked at {partner.label} and understood that the old lesson had never "
         f"been about being strongest. It had been about being together."
     )
 
@@ -379,7 +394,7 @@ def teamwork_action(
     world.get("aid").meters["used"] += 1
     propagate(world, narrate=False)
     world.say(
-        f'"Together," {lead.id} whispered, and {partner.id} nodded.'
+        f'"Together," {lead.label} whispered, and {partner.label} nodded.'
     )
     world.say(
         f"They used {aid.phrase}. {aid.action} as they faced {obstacle.the}."
@@ -391,7 +406,7 @@ def teamwork_action(
         f"They passed {obstacle.the} and reached {treasure.phrase}."
     )
     world.say(
-        f"When {partner.id} lifted it, {treasure.glow}, and the path no longer looked so dark."
+        f"When {partner.label} lifted it, {treasure.glow}, and the path no longer looked so dark."
     )
 
 
@@ -403,11 +418,11 @@ def return_home(world: World, lead: Entity, partner: Entity, taunter: Taunter, t
         f"The sneer on {taunter.label}'s face slipped away. It had no cruel word left."
     )
     world.say(
-        f"{lead.id} and {partner.id} carried {treasure.label} home between them, "
+        f"{lead.label} and {partner.label} carried {treasure.label} home between them, "
         f"carefully and proudly."
     )
     world.say(
-        f"That evening, {treasure.label} stood in the village square, white and bright, "
+        f"That evening, {treasure.label} was set in the village square, white and bright, "
         f"and everyone could see what had changed: two small travelers had become a true team."
     )
 
@@ -569,24 +584,24 @@ LESSONS = {
         "hold_fast",
         "Grandmother Rowan",
         "When the ground is unkind, hold fast to each other before you hold fast to your wish.",
-        "an old winter morning when Grandmother Rowan helped them cross a ditch by gripping both their hands",
         "brook",
+        "an old winter morning when Grandmother Rowan helped them cross a ditch by gripping both their hands",
         tags={"grandmother", "teamwork"},
     ),
     "step_and_pull": Lesson(
         "step_and_pull",
         "Old Mason Brindle",
         "A high place is climbed twice: once by your own feet and once by the friend who pulls you after.",
-        "the day Old Mason Brindle laughed softly and showed them how one child could steady the other on a loose step",
         "wall",
+        "the day Old Mason Brindle laughed softly and showed them how one child could steady the other on a loose step",
         tags={"mason", "teamwork"},
     ),
     "spread_and_share": Lesson(
         "spread_and_share",
         "Aunt Willow",
         "Briars grow meanest where hands try to hurry alone; lay kindness down first and go together.",
-        "a spring afternoon when Aunt Willow laid her shawl over nettles so both children could pass without tears",
         "thorns",
+        "a spring afternoon when Aunt Willow laid her shawl over nettles so both children could pass without tears",
         tags={"aunt", "teamwork"},
     ),
 }
@@ -805,7 +820,7 @@ def story_qa(world: World) -> list[tuple[str, str]]:
         qa.append(
             (
                 "What happened in the flashback?",
-                f"{lead.label} remembered {lesson.elder} and the lesson, \"{lesson.line}\". The memory mattered because it taught that the obstacle should be faced together, not alone."
+                f"{lead.label} remembered {lesson.elder} and the lesson, \"{lesson.line}\" The memory mattered because it taught that the obstacle should be faced together, not alone."
             )
         )
     if f["teamwork"]:
@@ -819,7 +834,7 @@ def story_qa(world: World) -> list[tuple[str, str]]:
         qa.append(
             (
                 "How did the story end?",
-                f"They brought home {treasure.label}, and it stood white and bright in the village square. The ending shows that the children changed from worried travelers into a true team."
+                f"They brought home {treasure.label}, and it was set white and bright in the village square. The ending shows that the children changed from worried travelers into a true team."
             )
         )
     return qa

@@ -210,7 +210,7 @@ IMPULSES = {
         tags={"grab", "startle"},
     ),
     "scoop": Impulse(
-        "scoop sand away",
+        "scoop",
         "scoop the sand away",
         'Gene cupped both hands. "Maybe if I scoop the sand away, I can find it," he said.',
         force=2,
@@ -834,9 +834,11 @@ def dump_trace(world: World) -> str:
 ASP_RULES = r"""
 % Reasonable world combinations.
 valid(P, C, I, M) :- place(P), creature(C), impulse(I), method(M),
-                     place_ok(C, P), impulse_ok(C, I), sensible(M).
+                     place_ok(C, P), impulse_ok(C, I), sensible(M),
+                     not forceful_nonshy(C, I).
 
 sensible(M) :- method(M), method_sense(M, S), sense_min(Min), S >= Min.
+forceful_nonshy(C, I) :- creature(C), impulse(I), impulse_force(I, F), F > 0, not shy(C).
 
 % Outcome model: a first fast move startles a shy creature; patience and care
 % restore safety; safe + patience reveals the creature.
@@ -857,8 +859,9 @@ def asp_facts() -> str:
         lines.append(asp.fact("creature", cid))
         if creature.shy:
             lines.append(asp.fact("shy", cid))
-    for iid in IMPULSES:
+    for iid, impulse in IMPULSES.items():
         lines.append(asp.fact("impulse", iid))
+        lines.append(asp.fact("impulse_force", iid, impulse.force))
     for mid, method in METHODS.items():
         lines.append(asp.fact("method", mid))
         lines.append(asp.fact("method_sense", mid, method.sense))

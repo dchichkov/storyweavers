@@ -37,6 +37,10 @@ THRESHOLD = 1.0
 SENSE_MIN = 2
 
 
+def the_label(text: str) -> str:
+    return f"the {text}"
+
+
 @dataclass
 class Entity:
     id: str
@@ -249,7 +253,7 @@ def introduce(world: World, child: Entity, helper: Entity, shelf: Shelf, contain
         f"After school, {child.id} padded into the {shelf.room} and stopped under {shelf.phrase}."
     )
     world.say(
-        f"Up there sat {container.phrase}, full of {container.snack}. When the jar gave {container.sound}, "
+        f"Up there sat {container.phrase}, full of {container.snack}. When it gave {container.sound}, "
         f"{child.id}'s eyes grew round."
     )
     world.say(
@@ -291,7 +295,7 @@ def warn(world: World, child: Entity, helper: Entity, shelf: Shelf, container: C
     if pred["wobble"] >= THRESHOLD:
         world.say(
             f'"That way would make you wobble," said {helper.id}. '
-            f'"And {container.label} sounds like it wants to stay in one piece."'
+            f'"And {the_label(container.label)} sounds like it wants to stay in one piece."'
         )
     else:
         world.say(
@@ -337,7 +341,7 @@ def share(world: World, child: Entity, helper: Entity, parent: Entity, container
     child.memes["joy"] += 1
     helper.memes["joy"] += 1
     world.say(
-        f'Soon {container.open_phrase}. "{container.snack.capitalize()} for the thinkers," said {parent.label_word}, passing some around.'
+        f'Soon {container.open_phrase}. "{container.snack.capitalize()} for the thinkers," said {parent.label_word.capitalize()}, passing some around.'
     )
     if method.id == "ask_parent":
         world.say(
@@ -371,8 +375,11 @@ def closing_image(world: World, child: Entity, helper: Entity, shelf: Shelf) -> 
 def tell(shelf: Shelf, container: Container, method: Method,
          child_name: str = "Nora", child_type: str = "girl",
          helper_name: str = "Max", helper_type: str = "boy",
-         parent_type: str = "mother") -> World:
+         parent_type: str = "mother",
+         params: StoryParams | None = None) -> World:
     world = World()
+    if params is not None:
+        world.facts["params"] = params
     child = world.add(Entity(id=child_name, kind="character", type=child_type, role="child"))
     helper = world.add(Entity(id=helper_name, kind="character", type=helper_type, role="helper"))
     parent = world.add(Entity(id="Parent", kind="character", type=parent_type, role="parent", label="the parent"))
@@ -432,7 +439,6 @@ CONTAINERS = {
 METHODS = {
     "ask_parent": Method(
         "ask_parent", "ask a grown-up", "ask a grown-up", 4, 4, 4, True,
-        adult_help=True,
         text="",
         success='In one smooth move, the {container} was safely on the counter.',
         tags={"ask_adult"},
@@ -532,7 +538,7 @@ def generation_prompts(world: World) -> list[str]:
     return [
         f'Write a funny story for a 3-to-5-year-old that includes the word "ways" and lots of dialogue. A child wants {container.snack} from {container.phrase} on {shelf.phrase}.',
         f"Tell a comedy where {child.id} and {helper.id} think of many ways to reach a snack, but only one way is sensible enough to use.",
-        f'Write a light family story with back-and-forth dialogue, a high snack, a safer plan, and an ending where everyone laughs in the kitchen.',
+        f'Write a light family story with back-and-forth dialogue, an out-of-reach snack, a safer plan, and an ending where everyone laughs in the kitchen.',
     ]
 
 
@@ -548,11 +554,11 @@ def story_qa(world: World) -> list[tuple[str, str]]:
     qa: list[tuple[str, str]] = [
         (
             "Who is the story about?",
-            f"It is about {child.id} and {helper.id}, who were trying to reach {container.phrase} in the kitchen. {parent.label_word.capitalize()} also helped at the end."
+            f"It is about {child.id} and {helper.id}, who were trying to reach {container.phrase} in the kitchen. {parent.label_word.capitalize()} joined them when the snack was shared."
         ),
         (
             f"Why did {child.id} keep looking up at the shelf?",
-            f"{child.id} wanted the {container.snack} inside {container.label}. The snack was sitting on {shelf.phrase}, so reaching it became the whole problem."
+            f"{child.id} wanted the {container.snack} inside {the_label(container.label)}. The snack was sitting on {shelf.phrase}, so reaching it became the whole problem."
         ),
         (
             "Why did they talk about so many ways?",
@@ -567,7 +573,7 @@ def story_qa(world: World) -> list[tuple[str, str]]:
     elif outcome == "wobble":
         qa.append((
             f"What happened when they used {method.phrase}?",
-            f"They did get the {container.label} down, but the attempt gave a tiny wobble first. That mattered because the container needed careful handling, especially on a high shelf."
+            f"They did get {the_label(container.label)} down, but the attempt gave a tiny wobble first. That mattered because the container needed careful handling on {shelf.phrase}."
         ))
     else:
         qa.append((
@@ -576,7 +582,7 @@ def story_qa(world: World) -> list[tuple[str, str]]:
         ))
     qa.append((
         "How did the story end?",
-        f"It ended with the snack open, everyone sharing, and the shelf no longer feeling so bossy. The change is clear because the problem moved from 'too high to reach' to 'safe and funny to remember.'"
+        f"It ended with the snack open, everyone sharing, and the shelf no longer feeling so bossy. The change is clear because the problem moved from 'out of reach' to 'safe and funny to remember.'"
     ))
     return qa
 
@@ -718,7 +724,7 @@ def asp_program(extra: str, show: str) -> str:
 def asp_valid_combos() -> list[tuple]:
     import asp
     model = asp.one_model(asp_program("", "#show reasonable/3."))
-    return sorted(set(asp.atoms(model, "reasonable")))
+    return sorted((shelf, container, method) for method, shelf, container in set(asp.atoms(model, "reasonable")))
 
 
 def asp_outcome(params: StoryParams) -> str:
@@ -828,8 +834,6 @@ def resolve_params(args: argparse.Namespace, rng: random.Random) -> StoryParams:
 
 
 def generate(params: StoryParams) -> StorySample:
-    world = World()
-    world.facts["params"] = params
     world = tell(
         SHELVES[params.shelf],
         CONTAINERS[params.container],
@@ -839,8 +843,8 @@ def generate(params: StoryParams) -> StorySample:
         params.helper,
         params.helper_gender,
         params.parent,
+        params=params,
     )
-    world.facts["params"] = params
     return StorySample(
         params=params,
         story=world.render(),

@@ -295,7 +295,7 @@ def predict_reveal(gift: Gift, traveler: TravelerKind, share: SharePlan) -> bool
     return t.meters["revealed"] >= THRESHOLD
 
 
-def begin_journey(world: World, child: Entity, setting: Setting, gift: Gift, elder: Entity) -> None:
+def begin_journey(world: World, child: Entity, setting: Setting, gift: Entity, gift_cfg: Gift, elder: Entity) -> None:
     child.memes["duty"] += 1
     gift.meters["remaining"] = gift.attrs["portions"]
     world.say(
@@ -303,7 +303,7 @@ def begin_journey(world: World, child: Entity, setting: Setting, gift: Gift, eld
         f"{child.id} set out for {setting.shrine_desc}."
     )
     world.say(
-        f"{elder.label.capitalize()} had placed {gift.phrase} in {gift.vessel} and asked "
+        f"{elder.label.capitalize()} had packed {gift_cfg.phrase} and asked "
         f"{child.pronoun('object')} to carry it along {setting.path_desc}."
     )
     world.say(setting.weather_line)
@@ -443,7 +443,7 @@ def tell(setting: Setting, gift_cfg: Gift, traveler_cfg: TravelerKind, share: Sh
                             edible=gift_cfg.edible, shareable=gift_cfg.shareable,
                             attrs={"portions": gift_cfg.portions}))
 
-    begin_journey(world, child, setting, gift_cfg, elder)
+    begin_journey(world, child, setting, gift, gift_cfg, elder)
     world.para()
     stranger_appears(world, child, traveler, traveler_cfg)
     choice_to_share(world, child, gift, gift_cfg, share, traveler, traveler_cfg)

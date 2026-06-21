@@ -428,7 +428,7 @@ def smoke_matches_task(smoke: SmokeSign, task: Task) -> bool:
 def fruit_matches_task(task: Task, fruit: Fruit) -> bool:
     if not task.needs_fruit:
         return fruit.id in task.fruit_ids
-    return fruit.id in task.fruit_ids and fruit.id in fruit.task_ids and fruit.ripe_now == task.ripe_required
+    return fruit.id in task.fruit_ids and task.id in fruit.task_ids and fruit.ripe_now == task.ripe_required
 
 
 def approach_sense(place: Place, smoke: SmokeSign, approach: Approach) -> int:
@@ -890,10 +890,10 @@ smoke_matches(S, T) :- task_smoke(T, S).
 fruit_matches(T, F) :- task(T), fruit(F), not needs_fruit(T), task_fruit(T, F).
 fruit_matches(T, F) :- needs_fruit(T), task_fruit(T, F), ripe_now(F).
 
-approach_sense(P, S, A, V) :- allows_bell(P), urgent(S), sense_urgent(A, V), approach(A), A = village_bell.
-approach_sense(P, S, A, V) :- not urgent(S), allows_bell(P), sense_mild(A, V), approach(A), A = village_bell.
-approach_sense(P, S, A, V) :- approach(A), A != village_bell, urgent(S), sense_urgent(A, V).
-approach_sense(P, S, A, V) :- approach(A), A != village_bell, not urgent(S), sense_mild(A, V).
+approach_sense(P, S, A, V) :- place(P), smoke(S), allows_bell(P), urgent(S), sense_urgent(A, V), approach(A), A = village_bell.
+approach_sense(P, S, A, V) :- place(P), smoke(S), not urgent(S), allows_bell(P), sense_mild(A, V), approach(A), A = village_bell.
+approach_sense(P, S, A, V) :- place(P), smoke(S), approach(A), A != village_bell, urgent(S), sense_urgent(A, V).
+approach_sense(P, S, A, V) :- place(P), smoke(S), approach(A), A != village_bell, not urgent(S), sense_mild(A, V).
 
 sensible(P, S, A) :- approach_sense(P, S, A, V), sense_min(M), V >= M.
 

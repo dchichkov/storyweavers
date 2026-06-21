@@ -46,6 +46,10 @@ BRAVERY_INIT = 6.0
 CAUTIOUS_TRAITS = {"careful", "gentle", "sensible", "steady"}
 
 
+def sentence_case(text: str) -> str:
+    return text[:1].upper() + text[1:] if text else text
+
+
 @dataclass
 class Entity:
     id: str
@@ -107,6 +111,17 @@ class Victim:
     @property
     def the(self) -> str:
         return f"the {self.label}"
+
+    @property
+    def The(self) -> str:
+        return self.the.capitalize()
+
+    @property
+    def Phrase(self) -> str:
+        return sentence_case(self.phrase)
+
+    def pronoun(self, case: str = "subject") -> str:
+        return {"subject": "it", "object": "it", "possessive": "its"}[case]
 
 
 @dataclass
@@ -288,7 +303,7 @@ def trouble_appears(world: World, b: Entity, victim: Victim, scene: Scene) -> No
     world.get("victim").meters["snagged"] += 1
     propagate(world, narrate=False)
     world.say(
-        f"Then a sharp little sound floated down from {scene.mast}. {victim.phrase} was {victim.snag}, "
+        f"Then a sharp little sound floated down from {scene.mast}. {victim.Phrase} was {victim.snag}, "
         f"and every frightened flap shook the rope."
     )
     world.say(f'"Listen," {b.id} whispered. "{victim.cry}"')
@@ -297,7 +312,7 @@ def trouble_appears(world: World, b: Entity, victim: Victim, scene: Scene) -> No
 def temptation(world: World, a: Entity, throw: ThrowThing) -> None:
     a.memes["bravado"] += 1
     world.say(
-        f'{a.id} pointed up at the rigging. "{throw.hurl_line}"'
+        f"{a.id} pointed up at the rigging. {throw.hurl_line}"
     )
     world.say("For one bold second, the idea felt quick and clever.")
 
@@ -349,8 +364,7 @@ def hurl(world: World, a: Entity, throw_ent: Entity, throw: ThrowThing, victim: 
 
 
 def alarm(world: World, b: Entity, captain: Entity, victim: Victim) -> None:
-    world.say(f'"Captain! {victim.The if hasattr(victim, "The") else victim.label.capitalize()} is scared!" {b.id} shouted.')
-    world.say(f'"Captain!"')
+    world.say(f'"Captain! {victim.The} is scared!" {b.id} shouted.')
 
 
 def rescue(world: World, captain: Entity, response: Response, victim: Victim) -> None:
@@ -360,7 +374,7 @@ def rescue(world: World, captain: Entity, response: Response, victim: Victim) ->
     v.meters["hurt"] = 0.0
     v.memes["fear"] = 0.0
     world.say(
-        f"{captain.label_word.capitalize()} came at once and {response.text.replace('{victim}', victim.label)}."
+        f"{sentence_case(captain.label)} came at once and {response.text.replace('{victim}', victim.the)}."
     )
     world.say(
         f"Soon {victim.the} was free again, trembling but safe, with both wings tucked close."
@@ -374,10 +388,10 @@ def rescue_fail(world: World, captain: Entity, response: Response, victim: Victi
     v.meters["hurt"] += 1
     propagate(world, narrate=False)
     world.say(
-        f"{captain.label_word.capitalize()} came at once and {response.fail.replace('{victim}', victim.label)}."
+        f"{sentence_case(captain.label)} came at once and {response.fail.replace('{victim}', victim.the)}."
     )
     world.say(
-        f"{victim.The if hasattr(victim, 'The') else victim.label.capitalize()} got loose at last, but flew away crooked and frightened over the water."
+        f"{victim.The} got loose at last, but flew away crooked and frightened over the water."
     )
 
 
@@ -388,12 +402,12 @@ def lesson(world: World, captain: Entity, a: Entity, b: Entity, throw: ThrowThin
         kid.memes["worry"] = 0.0
     if outcome == "safe":
         world.say(
-            f'{captain.label_word.capitalize()} knelt beside them. "A real pirate does not hurl first and think later," '
+            f'{sentence_case(captain.label)} knelt beside them. "A real pirate does not hurl first and think later," '
             f'{captain.pronoun()} said softly. "Good pirate karma comes from helping with gentle hands and the right type of tool."'
         )
     else:
         world.say(
-            f'{captain.label_word.capitalize()} knelt beside them. "You meant to help, but a quick throw can turn fear into pain," '
+            f'{sentence_case(captain.label)} knelt beside them. "You meant to help, but a quick throw can turn fear into pain," '
             f'{captain.pronoun()} said softly. "If we want good karma on this ship, we must choose the right type of help."'
         )
     world.say(f'"We understand," whispered {b.id} and {a.id} together.')
@@ -569,6 +583,7 @@ VICTIMS = {
         "a little gull with silver wings",
         "snagged in a loose bit of fishing net",
         "It sounds scared.",
+        "the harbor wall",
         2,
         tags={"gull", "animal", "rescue"},
     ),
@@ -578,6 +593,7 @@ VICTIMS = {
         "a white tern with a forked tail",
         "caught by one leg in a string near the sail",
         "That bird is crying.",
+        "the open cove",
         2,
         tags={"bird", "animal", "rescue"},
     ),
@@ -587,6 +603,7 @@ VICTIMS = {
         "a bright green parrot",
         "tangled in the bunting above the deck",
         "Its wings are stuck.",
+        "the warm mast-top",
         3,
         tags={"parrot", "animal", "rescue"},
     ),
@@ -799,7 +816,7 @@ def story_qa(world: World) -> list[tuple[str, str]]:
         ))
         qa.append((
             "How did the captain fix the problem?",
-            f"The captain {response.qa_text.replace('{victim}', victim.label)}. The careful method worked because it was stronger and gentler than throwing."
+            f"The captain {response.qa_text.replace('{victim}', victim.the)}. The careful method worked because it was stronger and gentler than throwing."
         ))
         qa.append((
             "What did the children learn?",

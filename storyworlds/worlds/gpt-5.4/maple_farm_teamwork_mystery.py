@@ -331,8 +331,9 @@ def deduce(world: World, kid1: Entity, kid2: Entity, culprit: Culprit, place: Hi
     team = world.get("team")
     team.meters["combined"] += 1
     propagate(world, narrate=False)
+    mark = culprit.mark.rstrip(".")
     world.say(
-        f'"{culprit.mark}," whispered {kid2.id}. "{culprit.label.capitalize()}!"'
+        f'"{mark}," whispered {kid2.id}. "{culprit.label.capitalize()}!"'
     )
     world.say(
         f'{kid1.id} looked from the clue to {place.phrase} and nodded. '
@@ -513,7 +514,7 @@ CULPRITS = {
         "the wind",
         "weather",
         "light paper or cloth only",
-        rough=False,
+        False,
         "A loose trail does not look like paws or hooves.",
         "a tiny red flap caught on a splinter",
         tags={"wind"},
@@ -523,7 +524,7 @@ CULPRITS = {
         "the farm puppy",
         "animal",
         "cloth or food-smelling things",
-        rough=True,
+        True,
         "Round pawprints dotted the dust.",
         "two muddy pawprints under the table",
         tags={"puppy", "paws"},
@@ -533,7 +534,7 @@ CULPRITS = {
         "the fence goat",
         "animal",
         "paper or cloth things it can mouth",
-        rough=True,
+        True,
         "Tiny hoof marks lined up by the boards.",
         "a chewed paper fleck near the fence gate",
         tags={"goat", "hooves"},

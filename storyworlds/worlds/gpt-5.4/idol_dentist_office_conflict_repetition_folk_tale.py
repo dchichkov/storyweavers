@@ -81,6 +81,12 @@ class Entity:
             return "dentist"
         return self.type
 
+    @property
+    def doctor_name(self) -> str:
+        if self.role == "dentist":
+            return f"Dr. {self.id}"
+        return self.id
+
 
 @dataclass
 class Idol:
@@ -108,6 +114,14 @@ class Exam:
     metal_problem: bool
     touch_level: int
     tags: set[str] = field(default_factory=set)
+
+    @property
+    def gerund(self) -> str:
+        return {
+            "count": "counting the teeth",
+            "cleaning": "cleaning the teeth",
+            "xray": "taking a tooth picture",
+        }.get(self.id, self.label)
 
 
 @dataclass
@@ -281,14 +295,14 @@ def introduce(world: World, child: Entity, parent: Entity, dentist: Entity, idol
         f"{idol.material} friend that had listened to many worried breaths."
     )
     world.say(
-        f"And in that place waited Dr. {dentist.id}, a gentle dentist with a lamp like a small white moon."
+        f"And in that place waited {dentist.doctor_name}, a gentle dentist with a lamp like a small white moon."
     )
 
 
-def call_to_chair(world: World, child: Entity, exam: Exam) -> None:
+def call_to_chair(world: World, child: Entity, dentist: Entity, exam: Exam) -> None:
     child.memes["fear"] += 1
     world.say(
-        f'Dr. {world.get("dentist").id} smiled and said, "{exam.opening_line}"'
+        f'{dentist.doctor_name} smiled and said, "{exam.opening_line}"'
     )
     world.say(
         f"But when {child.id} saw the great chair and the silver tools, "
@@ -324,7 +338,7 @@ def second_refusal(world: World, child: Entity, parent: Entity, idol: Idol) -> N
 def third_refusal(world: World, child: Entity, dentist: Entity, idol: Idol) -> None:
     child.memes["refusal"] += 1
     world.say(
-        f'And for the third time Dr. {dentist.id} asked, "Shall your idol watch from nearby?"'
+        f'And for the third time {dentist.doctor_name} asked, "Shall your idol watch from nearby?"'
     )
     world.say(
         f'And for the third time {child.id} said, "No. My idol stays with me."'
@@ -351,7 +365,7 @@ def offer_perch(world: World, child: Entity, dentist: Entity, idol: Idol, perch:
     pred_ready = predict_ready(world, perch.id)
     world.facts["pred_ready"] = pred_ready
     world.say(
-        f"Then Dr. {dentist.id} had a wiser thought. {dentist.pronoun('subject').capitalize()} set out {perch.phrase} "
+        f"Then {dentist.doctor_name} had a wiser thought. {dentist.pronoun('subject').capitalize()} set out {perch.phrase} "
         f"and said, \"Let your idol wait here. {perch.watch_line}\""
     )
     a, b, c = ritual.words
@@ -375,7 +389,7 @@ def accept_offer(world: World, child: Entity, idol: Entity, perch: Perch, ritual
 
 def begin_exam(world: World, child: Entity, dentist: Entity, exam: Exam) -> None:
     world.say(
-        f"Then {child.id} climbed into the chair, and Dr. {dentist.id} began to {exam.label}."
+        f"Then {child.id} climbed into the chair, and {dentist.doctor_name} began to {exam.label}."
     )
     if exam.id == "xray":
         world.say(
@@ -396,7 +410,7 @@ def return_idol(world: World, child: Entity, dentist: Entity, idol: Entity) -> N
     child.memes["joy"] += 1
     child.memes["bravery"] += 1
     world.say(
-        f"When the work was done, Dr. {dentist.id} placed {idol.label} back into {child.id}'s hands."
+        f"When the work was done, {dentist.doctor_name} placed {idol.label} back into {child.id}'s hands."
     )
     world.say(
         f"And {child.id} laughed, for the idol had not been lost at all. It had watched, and {child.id} had been brave."
@@ -489,7 +503,11 @@ RITUALS = {
     ),
 }
 
-CHILD_NAMES = ["Lina", "Mira", "Nora", "Tomas", "Eli", "Rosa", "Ada", "Ben"]
+CHILD_NAMES_BY_GENDER = {
+    "girl": ["Lina", "Mira", "Nora", "Rosa", "Ada"],
+    "boy": ["Tomas", "Eli", "Ben"],
+}
+CHILD_NAMES = sorted({name for names in CHILD_NAMES_BY_GENDER.values() for name in names})
 PARENT_TYPES = ["mother", "father"]
 DENTISTS = [("Mora", "dentist_f"), ("Hale", "dentist_m")]
 TRAITS = ["timid", "careful", "small", "watchful", "earnest"]
@@ -546,7 +564,7 @@ def generation_prompts(world: World) -> list[str]:
     exam = f["exam_cfg"]
     return [
         f'Write a folk-tale style story for a 3-to-5-year-old set in a dentist office and include the word "idol".',
-        f"Tell a repetitive conflict story where {child.id} refuses three times to set down {idol.label} before a gentle dentist finds a wiser plan during {exam.label}.",
+        f"Tell a repetitive conflict story where {child.id} refuses three times to set down {idol.label} before a gentle dentist finds a wiser plan during {exam.gerund}.",
         f"Write a simple folk tale about fear in a dentist office, an idol used for comfort, and a calm ending that turns a quarrel into courage.",
     ]
 
@@ -563,7 +581,7 @@ def story_qa(world: World) -> list[tuple[str, str]]:
     qa: list[tuple[str, str]] = [
         (
             "Who is the story about?",
-            f"It is about {child.id}, a child who brought {idol.label} to the dentist office, along with {child.pronoun('possessive')} {parent.label_word} and Dr. {dentist.id}. The story follows how fear turned into bravery during the visit."
+            f"It is about {child.id}, a child who brought {idol.label} to the dentist office, along with {child.pronoun('possessive')} {parent.label_word} and {dentist.doctor_name}. The story follows how fear turned into bravery during the visit."
         ),
         (
             f"Why did {child.id} keep saying no?",
@@ -571,7 +589,7 @@ def story_qa(world: World) -> list[tuple[str, str]]:
         ),
         (
             "What was the conflict in the story?",
-            f"The conflict was that the dentist needed the child's hands free for {exam.label}, but {child.id} did not want to let go of the idol. The trouble lasted until the adults found a safe nearby place where the idol could still 'watch.'"
+            f"The conflict was that the dentist needed the child's hands free for {exam.gerund}, but {child.id} did not want to let go of the idol. The trouble lasted until the adults found a safe nearby place where the idol could still 'watch.'"
         ),
         (
             "What happened three times?",
@@ -583,7 +601,7 @@ def story_qa(world: World) -> list[tuple[str, str]]:
         ),
         (
             f"How was the problem solved?",
-            f"Dr. {dentist.id} offered {perch.phrase} as a special watching place and spoke the ritual words three times. After that, {child.id} trusted the plan, let go of the idol, and the exam could begin."
+            f"{dentist.doctor_name} offered {perch.phrase} as a special watching place and spoke the ritual words three times. After that, {child.id} trusted the plan, let go of the idol, and the exam could begin."
         ),
         (
             f"How did the story end?",
@@ -662,7 +680,7 @@ def tell(
 
     introduce(world, child, parent, dentist, idol_cfg)
     world.para()
-    call_to_chair(world, child, exam_cfg)
+    call_to_chair(world, child, dentist, exam_cfg)
     first_refusal(world, child, exam_cfg, idol_cfg)
     second_refusal(world, child, parent, idol_cfg)
     third_refusal(world, child, dentist, idol_cfg)
@@ -740,10 +758,10 @@ ASP_RULES = r"""
 needs_aside(I, E) :- idol(I), exam(E), requires_hands_free(E).
 needs_aside(I, E) :- idol(I), exam(E), metal_problem(E), not xray_safe(I).
 
-safe_perch_for(E, P, I) :- perch(P), clean(P), near_child(P), safe_for_idol(P),
+safe_perch_for(E, P, I) :- exam(E), idol(I), perch(P), clean(P), near_child(P), safe_for_idol(P),
                            sense(P, S), sense_min(M), S >= M,
                            not bad_pocket_xray(E, P, I).
-bad_pocket_xray(E, pocket, I) :- metal_problem(E), not xray_safe(I).
+bad_pocket_xray(E, pocket, I) :- exam(E), idol(I), metal_problem(E), not xray_safe(I).
 
 valid(I, E, P) :- needs_aside(I, E), safe_perch_for(E, P, I).
 
@@ -885,7 +903,7 @@ def resolve_params(args: argparse.Namespace, rng: random.Random) -> StoryParams:
     idol, exam, perch = rng.choice(sorted(combos))
     ritual = args.ritual or rng.choice(sorted(RITUALS))
     child_gender = args.child_gender or rng.choice(["girl", "boy"])
-    child_name = args.child_name or rng.choice(CHILD_NAMES)
+    child_name = args.child_name or rng.choice(CHILD_NAMES_BY_GENDER[child_gender])
     parent = args.parent or rng.choice(PARENT_TYPES)
     dentist_name, dentist_gender = rng.choice(DENTISTS)
     trait = rng.choice(TRAITS)

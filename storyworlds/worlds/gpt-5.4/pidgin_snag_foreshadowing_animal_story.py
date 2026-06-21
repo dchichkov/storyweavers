@@ -272,7 +272,7 @@ def tempt(world: World, hero: Entity, item: RiskyItem) -> None:
     world.say(
         f"But then {hero.id} spotted {item.phrase}. It looked soft and grand, and {hero.pronoun()} thought it would make the nest look special."
     )
-    world.say(item.carry_text.format(name=hero.id))
+    world.say(item.carry_text.format(name=hero.id, poss=hero.pronoun("possessive")))
 
 
 def warn(world: World, hero: Entity, helper: Entity, item: RiskyItem, spot: Spot) -> None:
@@ -300,7 +300,8 @@ def choose_safe(world: World, hero: Entity, safe_item: SafeItem, helper: Entity)
         f"{hero.id} looked again at the caught scrap and remembered the warning."
     )
     world.say(
-        f"Instead of taking the long thing, {hero.pronoun()} chose {safe_item.phrase}. {safe_item.carry_text.format(name=hero.id)}"
+        f"Instead of taking the long thing, {hero.pronoun()} chose {safe_item.phrase}. "
+        f"{safe_item.carry_text.format(name=hero.id, poss=hero.pronoun('possessive'))}"
     )
 
 
@@ -403,9 +404,9 @@ def tell(place: Place, risky_item: RiskyItem, spot: Spot, safe_item: SafeItem,
 
 
 PLACES = {
-    "rooftop": Place("rooftop", "the old market rooftop", "the chimneys", "the warm roof tiles"),
-    "garden": Place("garden", "the bakery garden wall", "the plum tree", "the soft grass below"),
-    "harbor": Place("harbor", "a beam above the harbor", "the masts", "the windy boards"),
+    "rooftop": Place("rooftop", "the old market rooftop", "the chimneys", "the weather vanes", "the warm roof tiles"),
+    "garden": Place("garden", "the bakery garden wall", "the plum tree", "the plum leaves", "the soft grass below"),
+    "harbor": Place("harbor", "a beam above the harbor", "the masts", "the harbor", "the windy boards"),
 }
 
 RISKY_ITEMS = {
@@ -414,7 +415,7 @@ RISKY_ITEMS = {
         "the ribbon",
         "a long pink ribbon trailing from a crate",
         "a strip of pink ribbon already caught",
-        "{name} gripped one end in {name}'s beak and gave it an eager tug.",
+        "{name} gripped one end in {poss} beak and gave it an eager tug.",
         tags={"ribbon", "snag"},
     ),
     "string": RiskyItem(
@@ -474,7 +475,7 @@ SAFE_ITEMS = {
         "twigs",
         "twigs",
         "two neat little twigs",
-        "{name} picked up the twigs one by one, and they sat neatly in {name}'s beak.",
+        "{name} picked up the twigs one by one, and they sat neatly in {poss} beak.",
         tags={"twig", "nest"},
     ),
     "grass": SafeItem(

@@ -363,12 +363,15 @@ def consult_elder(world: World, hero: Entity, elder: Entity, sanctuary: Sanctuar
     )
 
 
-def choose_balance(world: World, hero: Entity, sanctuary: Sanctuary, response: Response) -> None:
+def choose_balance(world: World, hero: Entity, sanctuary: Sanctuary, response: Response, elder: Entity | None = None) -> None:
     hero.meters["balanced_offering"] += 1
     hero.memes["kindness"] += 1
     shrine = world.get("shrine")
     shrine.meters["balanced"] += 1
     world.say(response.text.format(
+        hero=hero.id,
+        elder=elder.label_word if elder is not None else "the elder",
+        object=hero.pronoun("object"),
         bowl=sanctuary.bowl,
         offering_a=sanctuary.offering_a,
         offering_b=sanctuary.offering_b,
@@ -460,7 +463,7 @@ def tell(
     if response.helper:
         consult_elder(world, hero, elder, sanctuary)
         world.para()
-        choose_balance(world, hero, sanctuary, response)
+        choose_balance(world, hero, sanctuary, response, elder)
     else:
         world.say(
             f"{hero.id} remembered the old carved marks on {sanctuary.bowl}. "
@@ -619,7 +622,7 @@ RESPONSES = {
         solves=True,
         helper=True,
         text=(
-            "With the elder beside {object}, {hero} filled {bowl} in the old way: "
+            "With {elder} beside {object}, {hero} filled {bowl} in the old way: "
             "{ratio_words}. The smallness of the gift looked strange at first, "
             "but its balance looked true."
         ),
@@ -994,8 +997,6 @@ def generate(params: StoryParams) -> StorySample:
     )
 
     story = world.render()
-    story = story.replace("{hero}", params.name)
-    story = story.replace("{object}", world.facts["elder"].pronoun("object"))
 
     return StorySample(
         params=params,
