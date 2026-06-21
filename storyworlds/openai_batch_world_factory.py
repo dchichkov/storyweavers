@@ -30,6 +30,7 @@ STORYWORLDS_DIR = Path(__file__).resolve().parent
 WORLDS_DIR = STORYWORLDS_DIR / "worlds"
 STORY_CONTRACT_PATH = STORYWORLDS_DIR / "STORY.md"
 RESULTS_PATH = STORYWORLDS_DIR / "results.py"
+ASP_PATH = STORYWORLDS_DIR / "asp.py"
 EXAMPLE_WORLD_PATHS = (
     WORLDS_DIR / "pirates.py",
     WORLDS_DIR / "puddles.py",
@@ -374,6 +375,7 @@ def make_jobs(args: argparse.Namespace) -> tuple[int, list[StoryworldJob]]:
 def build_storyworld_prompt(job: StoryworldJob, *, full_instructions: bool) -> str:
     story_contract = read_prompt_file(STORY_CONTRACT_PATH)
     results_contract = read_prompt_file(RESULTS_PATH)
+    asp_contract = read_prompt_file(ASP_PATH)
     examples = "\n\n".join(
         f"### {path.relative_to(ROOT).as_posix()}\n\n```python\n{read_prompt_file(path)}\n```"
         for path in EXAMPLE_WORLD_PATHS
@@ -410,6 +412,12 @@ Exact shared result API from storyworlds/results.py:
 {results_contract}
 ```
 
+Exact shared ASP/clingo helper API from storyworlds/asp.py:
+
+```python
+{asp_contract}
+```
+
 You must instantiate the shared result containers exactly as defined above:
 - QAItem(question=..., answer=...)
 - StorySample(params=..., story=..., prompts=..., story_qa=..., world_qa=..., world=...)
@@ -425,38 +433,29 @@ the reliability requirements below instead.
 
 Implementation requirements:
 - Write a complete, valid, stdlib-only Python script.
-- Import and use storyworlds/results.py in the same style as existing worlds.
+- Import and use storyworlds/results.py and storyworlds/asp.py as example worlds.
 - Include StoryParams, build_parser, resolve_params, generate, emit, -n, --all,
   --seed, --trace, --qa, --json, --asp, --verify, and --show-asp.
 - Include a Python valid_combos checker plus an inline ASP twin. --verify must
   exit 0 when run from the repo with ./.venv/bin/python.
-- The target file lives under storyworlds/worlds/<model>/. Make imports robust
-  from that nested directory; importing results.py must work when the script is
-  run directly from the repo root.
 - --verify must run at least one normal generate/emit smoke test with default or
   curated params and fail if ordinary story generation crashes.
-- Make random samples read like complete stories: clear premise, state-driven
-  turn, and ending image that proves what changed.
 - QA must be grounded in simulated state/history, with natural two-or-three
   sentence answers where the trace supports cause/effect.
-- Avoid scaffold leaks, raw template fragments, unresolved braces, underscored
-  debug ids, doubled articles, and in-story implementation jargon.
-- Do not copy an existing world. Create a fresh tiny domain from the seed.
+- Avoid scaffold leaks, raw template fragments, and implementation jargon.
+- Do not copy an existing world. Create a fresh tiny domain from the seed,
+  and progress from a fresh story to a complete storyworld.
+- Make complete stories: clear premise, state-driven turn, and ending image 
+  that proves what changed.
 
-Reliability requirements from previous failed batches:
-- Keep the Python schema small and boring. Prefer one shared Entity dataclass
-  with safe defaults for common fields such as attrs, tags, meters, pronouns,
-  and display phrase. Add domain-specific dataclasses only when they reduce
-  real complexity.
+
+Note on dataclass reliability:
 - Give optional dataclass fields defaults. When constructing dataclasses in
   CURATED, lookup tables, or constants, use keyword arguments for every field.
   Do not mix positional and keyword arguments in the same dataclass call.
 - Define exactly one top-level @dataclass class StoryParams before CURATED,
   resolve_params, generate, verify, or any module-level StoryParams instances.
   Construct StoryParams with keyword arguments, not positional argument lists.
-- Module import must not crash. Any top-level lookup table or CURATED instance
-  must match its dataclass constructor exactly. If you add a dataclass field,
-  update all instances of that dataclass.
 - Objects used as actors/helpers in prose or QA must either be Entity instances
   or implement the same fields/methods you call, especially pronoun(), attrs,
   tags, and meters. Do not call .pronoun(), .attrs, or .meters on arbitrary
