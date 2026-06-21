@@ -23,7 +23,7 @@ from collections import defaultdict
 from dataclasses import dataclass, field
 from typing import Callable, Optional
 
-sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 from results import QAItem, StoryError, StorySample  # noqa: E402
 
 THRESHOLD = 1.0
@@ -315,13 +315,13 @@ def _resolve_problem(world: World, clerk: Entity, problem: Problem, tool: System
     problem_ent.meters["attention"] += 1
     if narrate:
         world.say(
-            f"At the little office, {clerk.id} stood behind the desk while the queue kept growing. "
+            f"At the little office, {clerk.label_word} stood behind the desk while the queue kept growing. "
             f"Someone had brought in {problem.document}, and the whole system seemed to be missing {problem.missing}."
         )
     propagate(world, narrate=narrate)
     if narrate:
         world.say(
-            f"{clerk.id} squinted at the papers, then reached for {tool.label}. "
+            f"{clerk.label_word} squinted at the papers, then reached for {tool.label}. "
             f"{tool.funny.capitalize()} {tool.phrase}."
         )
     problem_ent.meters["solved"] += 1
@@ -331,7 +331,7 @@ def _resolve_problem(world: World, clerk: Entity, problem: Problem, tool: System
     hall.memes["order"] += 1
     if narrate:
         world.say(
-            f"The stamp landed with a cheerful thump, and the {problem.label} was fixed without any drama."
+            f"The stamp landed with a cheerful thump, and {problem.label} was fixed without any drama."
         )
 
 
@@ -339,40 +339,39 @@ def setup(world: World, clerk: Entity, neighbor: Entity, problem: Problem) -> No
     clerk.memes["kindness"] += 1
     neighbor.memes["hope"] += 1
     world.say(
-        f"{clerk.id} worked the front desk of the neighborhood office, where the queue was small and the tea was bad. "
-        f"{neighbor.id} arrived with a small family problem and a face that said the morning had already been long."
+        f"{clerk.label_word} worked the front desk of the neighborhood office, where the queue was small and the tea was bad. "
+        f"{neighbor.label_word} arrived with a small family problem and a face that said the morning had already been long."
     )
     world.say(
-        f"The issue was {problem.label}: the form said {problem.document}, but the system was missing {problem.missing}."
+        f"The issue was {problem.label}; the system was missing {problem.missing}."
     )
 
 
 def joke(world: World, neighbor: Entity, problem: Problem) -> None:
     neighbor.memes["humor"] += 1
     world.say(
-        f'{neighbor.id} whispered, "This bureaucracy runs on coffee, ink, and three people apologizing at once." '
+        f'{neighbor.label_word} whispered, "This bureaucracy runs on coffee, ink, and three people apologizing at once." '
         f"Even the waiting chair seemed to agree."
     )
     world.say(
-        f"{problem.comic.capitalize()} {problem.ask}."
+        f"{problem.comic.capitalize()}. {problem.ask}"
     )
 
 
 def twist(world: World, clerk: Entity, tool: SystemTool, problem: Problem) -> None:
     clerk.memes["surprise"] += 1
     world.say(
-        f"Then the twist arrived: the missing piece was not lost at all. It was tucked into the back of the printer tray, "
-        f"where yesterday's flyer had pressed it flat."
+        f"Then the twist arrived: the missing piece was not lost at all. {problem.twist.capitalize()}."
     )
     world.say(
-        f'{clerk.id} blinked, laughed once, and said, "Well, that explains the system." '
-        f"{tool.funny.capitalize()}."
+        f'{clerk.label_word} blinked, laughed once, and said, "Well, that explains the system." '
+        f"The little office joke finally landed."
     )
 
 
 def ending(world: World, clerk: Entity, neighbor: Entity, problem: Problem) -> None:
     world.say(
-        f"By lunchtime, the line was moving again. {clerk.id} slid the approved paper across the counter, and {neighbor.id} "
+        f"By lunchtime, the line was moving again. {clerk.label_word} slid the approved paper across the counter, and {neighbor.label_word} "
         f"slipped it into a folder before it could escape."
     )
     world.say(
@@ -394,7 +393,7 @@ def tell(problem: Problem, tool: SystemTool, clerk_name: str = "Mara", clerk_typ
     world.para()
     joke(world, neighbor, problem)
     world.say(
-        f"{clerk.id} checked the forms, tapped the folder twice, and called it a system problem rather than a disaster."
+        f"{clerk.label_word} checked the forms, tapped the folder twice, and called it a system problem rather than a disaster."
     )
     world.para()
     _resolve_problem(world, clerk, problem, tool)

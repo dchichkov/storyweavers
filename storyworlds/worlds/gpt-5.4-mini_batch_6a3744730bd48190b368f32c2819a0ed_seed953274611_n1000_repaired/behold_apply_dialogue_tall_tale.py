@@ -34,7 +34,7 @@ from collections import defaultdict
 from dataclasses import dataclass, field
 from typing import Callable, Optional
 
-sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 from results import QAItem, StoryError, StorySample  # noqa: E402
 
 THRESHOLD = 1.0
@@ -350,7 +350,7 @@ def need(world: World, vessel: Entity, problem: Problem) -> None:
 def boast(world: World, hero: Entity, problem: Problem) -> None:
     hero.memes["bravery"] += 1
     world.say(
-        f'"{problem.test}?" {hero.id} said. "That is smaller than a grasshopper\'s sneeze. I could {problem.id} it with one hand tied to a fence post."'
+        f'"{problem.test}?" {hero.id} said. "That is smaller than a grasshopper\'s sneeze. I could fix it with one hand tied to a fence post."'
     )
 
 
@@ -359,7 +359,7 @@ def warn(world: World, elder: Entity, hero: Entity, problem: Problem, vessel: En
     elder.memes["care"] += 1
     world.facts["predicted_mud"] = pred["mud"]
     world.say(
-        f'"Now, {hero.id}," said {elder.id}, "if we do not {problem.id} this {vessel.label}, the floor will be wet and the yard will turn to mud."'
+        f'"Now, {hero.id}," said {elder.id}, "if we do not repair this {vessel.label}, the floor will be wet and the yard will turn to mud."'
     )
 
 
@@ -368,19 +368,23 @@ def decide(world: World, hero: Entity, elder: Entity) -> None:
     world.say(f'"Then let us apply the fix proper," said {hero.id}, and {elder.id} nodded like a rooster on a rail.')
 
 
-def repair(world: World, vessel: Entity, fix: Fix, problem: Problem) -> None:
+def repair(world: World, hero: Entity, vessel: Entity, fix: Fix, problem: Problem) -> None:
     vessel.meters["repaired"] += 1
     vessel.meters["leaking"] = 0.0
-    world.say(f'"{fix.text}," cried {world.get("hero").id}, and together they set to work.')
+    repair_text = fix.text[0].upper() + fix.text[1:]
+    world.say(f'"{repair_text}," cried {hero.id}, and together they set to work.')
     world.say(
-        f"They {fix.qa_text.replace('{target}', problem.label)}. The {vessel.label} stopped dripping, and the old boards held their water like a strong promise."
+        f"They {fix.qa_text.replace('{target}', 'the ' + vessel.label)}. The {vessel.label} stopped dripping, and the old boards held their water like a strong promise."
     )
 
 
-def failure(world: World, vessel: Entity, fix: Fix, problem: Problem) -> None:
+def failure(world: World, elder: Entity, vessel: Entity, fix: Fix, problem: Problem) -> None:
     vessel.meters["leaking"] += 1
     propagate(world, narrate=False)
-    world.say(f'"{fix.fail.replace("{target}", problem.label)}," muttered {world.get("elder").id}.')
+    failed = fix.fail.replace("{target}", problem.label)
+    if "{target}" not in fix.fail and problem.label not in failed:
+        failed = f"{failed} the {vessel.label}"
+    world.say(f'"{failed}," muttered {elder.id}.')
     world.say("The leak kept hissing, and the puddle on the boards grew wider than a wagon wheel.")
 
 
@@ -397,7 +401,7 @@ def curtained_ending(world: World, hero: Entity, elder: Entity, vessel: Entity) 
     hero.memes["fear"] += 0
     elder.memes["fear"] += 0
     world.say(
-        f"By and by, the {vessel.label} stood dry as a bone, and {hero.id} could see their own brave face in its polished side."
+        f"By and by, the {vessel.label} sat under the porch roof, still dripping but no longer flooding the yard, and {hero.id} promised to try a wiser fix tomorrow."
     )
 
 
@@ -417,11 +421,11 @@ def tell(setting: Setting, problem: Problem, fix: Fix, delay: int, hero_name: st
 
     if contains(fix, problem, delay):
         world.para()
-        repair(world, vessel, fix, problem)
+        repair(world, hero, vessel, fix, problem)
         ending(world, hero, elder, vessel)
     else:
         world.para()
-        failure(world, vessel, fix, problem)
+        failure(world, elder, vessel, fix, problem)
         curtained_ending(world, hero, elder, vessel)
 
     world.facts.update(hero=hero, elder=elder, vessel=vessel, setting=setting, problem=problem, fix=fix, delay=delay,

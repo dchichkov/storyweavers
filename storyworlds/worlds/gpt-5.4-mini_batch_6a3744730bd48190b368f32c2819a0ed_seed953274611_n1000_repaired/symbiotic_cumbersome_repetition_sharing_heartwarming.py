@@ -359,18 +359,25 @@ def predict(world: World) -> dict:
 
 
 def _do_attempt(world: World, narrate: bool = True) -> None:
-    child = world.get("child")
-    can = world.get("can")
+    child = world.facts.get("child") or world.get("child")
+    can = world.facts.get("can") or world.get("can")
+    attempt = int(can.meters["carried"])
     child.memes["effort"] += 1
     can.meters["carried"] += 1
     can.meters["cumbersome"] += 1
     if narrate:
-        world.say(f"{child.id} lifted the {can.label} again, but it was cumbersome and wobbly.")
+        if attempt == 0:
+            world.say(f"{child.id} lifted the {can.label}, but it was cumbersome and wobbly.")
+        else:
+            world.say(f"{child.id} tried the {can.label} again, gripping it with both hands.")
     if can.meters["shared"] < THRESHOLD:
         child.memes["strain"] += 1
         can.meters["spilled"] += 1
         if narrate:
-            world.say(f"{child.id} tried once more, and then once more, but the water kept sloshing out.")
+            if attempt == 0:
+                world.say(f"The water sloshed over the rim before {child.pronoun('subject')} could reach the soil.")
+            else:
+                world.say(f"Even the second try spilled, and {child.id} finally stopped to think.")
 
 
 def tell(garden: Garden, load: Load, helper: Helper, outcome: Outcome,
@@ -387,6 +394,9 @@ def tell(garden: Garden, load: Load, helper: Helper, outcome: Outcome,
     world.facts["load"] = load
     world.facts["helper"] = helper
     world.facts["outcome"] = outcome
+    world.facts["child"] = kid
+    world.facts["elder"] = elder_ent
+    world.facts["can"] = can
 
     kid.memes["love"] += 1
     elder_ent.memes["love"] += 1

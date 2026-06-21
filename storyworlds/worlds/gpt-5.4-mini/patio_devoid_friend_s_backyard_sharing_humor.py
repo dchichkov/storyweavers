@@ -369,6 +369,16 @@ def resolve_params(args: argparse.Namespace, rng: random.Random) -> StoryParams:
               and (args.item is None or c[1] == args.item)
               and (args.response is None or c[2] == args.response)]
     if not combos:
+        curated = globals().get("CURATED", [])
+        explicit = [
+            v for k, v in vars(args).items()
+            if k not in {"n", "seed", "all", "trace", "qa", "json", "asp", "verify", "show_asp"}
+            and v is not None
+            and v is not False
+        ]
+        if curated and not explicit:
+            choice = rng.choice(curated)
+            return choice if isinstance(choice, StoryParams) else StoryParams(*choice)
         raise StoryError("(No valid combination matches the given options.)")
     setting, item, response = rng.choice(sorted(combos))
     captain = args.captain or rng.choice(NAMES)

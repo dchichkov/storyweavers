@@ -35,7 +35,7 @@ from collections import defaultdict
 from dataclasses import dataclass, field
 from typing import Callable, Optional
 
-sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 from results import QAItem, StoryError, StorySample  # noqa: E402
 
 THRESHOLD = 1.0
@@ -322,11 +322,11 @@ def hazard_reasonable(place: Place, clue: Clue, cause: Cause) -> bool:
 
 def valid_combos() -> list[tuple[str, str, str]]:
     combos = []
-    for p in PLACES:
-        for c in CLUES:
-            for cause in CAUSES:
+    for place_id, p in PLACES.items():
+        for clue_id, c in CLUES.items():
+            for cause_id, cause in CAUSES.items():
                 if hazard_reasonable(p, c, cause):
-                    combos.append((p.id, c.id, cause.id))
+                    combos.append((place_id, clue_id, cause_id))
     return combos
 
 
@@ -480,6 +480,23 @@ def world_knowledge_qa(world: World) -> list[tuple[str, str]]:
         if key in tags and key in KNOWLEDGE:
             out.extend(KNOWLEDGE[key])
     return out
+
+
+KNOWLEDGE_ORDER = ["paper", "button", "ribbon"]
+KNOWLEDGE = {
+    "paper": [
+        ("How can paper be a clue?",
+         "Paper can show where someone was sitting or what they touched. In this story, the paper clue helps point to the harmless cause of the scare."),
+    ],
+    "button": [
+        ("How can a button matter in a mystery?",
+         "A button can show that clothing was too tight or that someone passed through a place. Here, it helps explain why the friend felt unwell."),
+    ],
+    "ribbon": [
+        ("Why can dust or a ribbon matter?",
+         "A dusty ribbon can show where someone rested or what bothered them. In this story, it helps the detectives find the real cause."),
+    ],
+}
 
 
 def format_qa(sample: StorySample) -> str:

@@ -34,7 +34,7 @@ from collections import defaultdict
 from dataclasses import dataclass, field
 from typing import Callable, Optional
 
-sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))))
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 from results import QAItem, StoryError, StorySample  # noqa: E402
 
 THRESHOLD = 1.0
@@ -114,6 +114,7 @@ class HelperItem:
     moral: str
     can_moan: bool = True
     shiny: bool = False
+    sense: int = SENSE_MIN
     tags: set[str] = field(default_factory=set)
 
     def __getattr__(self, name: str):
@@ -328,6 +329,17 @@ class RoomSpec:
     affordances: set[str]
     moonbeam: str
     ending_image: str
+
+    @property
+    def affords(self) -> set[str]:
+        task_ids: set[str] = set()
+        if "toys" in self.affordances:
+            task_ids.add("tidy_toys")
+        if "books" in self.affordances or "lantern" in self.affordances:
+            task_ids.add("find_book")
+        if "blanket" in self.affordances:
+            task_ids.add("settle_blanket")
+        return task_ids
 
     def __getattr__(self, name: str):
         if name in {"meters", "memes"}:

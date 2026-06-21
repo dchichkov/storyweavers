@@ -34,7 +34,7 @@ from collections import defaultdict
 from dataclasses import dataclass, field, asdict
 from typing import Callable, Optional
 
-sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 from results import QAItem, StoryError, StorySample  # noqa: E402
 
 THRESHOLD = 1.0
@@ -340,7 +340,7 @@ def setup(world: World, child: Entity, helper: Entity, place: Place) -> None:
         f"where the windows looked like sleepy eyes."
     )
     world.say(
-        f"{place.dark} made every hallway whisper, and the air had a cold, old smell."
+        f"{place.dark}, and every hallway seemed to whisper. The air had a cold, old smell."
     )
 
 
@@ -362,7 +362,7 @@ def warn(world: World, helper: Entity, child: Entity, hazard: Hazard, place: Pla
     world.say(
         f'{helper.id} shook {helper.pronoun("possessive")} head. '
         f'"Do not use {hazard.label} here," {helper.id} said. '
-        f'"This place is not for a test, and one boom can wake the whole mine."'
+        f'"This place is not for a test, and one boom can shake {place.label} apart."'
     )
 
 
@@ -392,7 +392,7 @@ def ending(world: World, child: Entity, place: Place, choice: SaferChoice) -> No
     child.memes["peace"] += 1
     place.meters["calm"] += 1
     world.say(
-        f"At the end, {child.id} walked away with {choice.label}, and the haunted "
+        f"At the end, {child.id} walked away with the {choice.label}, and the haunted "
         f"place kept its secret soul to itself."
     )
     world.say(
@@ -453,7 +453,7 @@ class StoryParams:
 
 PLACES = {
     "old_mine": Place(id="old_mine", label="the old mine", dark="The tunnel mouth was black as soot", mood="echoing"),
-    "attic": Place(id="attic", label="the attic", dark="The rafters made long, nervous lines", mood="dusty"),
+    "attic": Place(id="attic", label="the attic", dark="The rafters drew long, nervous lines", mood="dusty"),
 }
 
 HAZARDS = {

@@ -37,7 +37,7 @@ from collections import defaultdict
 from dataclasses import dataclass, field
 from typing import Callable, Optional
 
-sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 from results import QAItem, StoryError, StorySample  # noqa: E402
 
 THRESHOLD = 1.0
@@ -375,11 +375,11 @@ def is_valid_combo(quest: Quest, item: BiologyItem, tool: MagicTool) -> bool:
 
 def valid_combos() -> list[tuple[str, str, str]]:
     out = []
-    for q in QUESTS:
+    for quest_id, q in QUESTS.items():
         for bid, item in BIOLOGY.items():
             for mid, tool in MAGIC.items():
                 if is_valid_combo(q, item, tool):
-                    out.append((q.id, bid, mid))
+                    out.append((quest_id, bid, mid))
     return out
 
 

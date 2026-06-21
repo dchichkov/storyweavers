@@ -30,7 +30,7 @@ from collections import defaultdict
 from dataclasses import dataclass, field
 from typing import Callable, Optional
 
-sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 from results import QAItem, StoryError, StorySample  # noqa: E402
 
 THRESHOLD = 1.0
@@ -361,15 +361,16 @@ def begin(world: World, child: Entity, parent: Entity, setting: Setting) -> None
 
 def invite_surprise(world: World, child: Entity, surprise: Surprise) -> None:
     world.say(
-        f"{child.id} found {surprise.phrase} hidden by the crib, and {child.pronoun('possessive')} eyes went wide."
+        f"{child.id} found {surprise.phrase}, and {child.pronoun('possessive')} eyes went wide."
     )
     child.memes["wonder"] += 1
 
 
 def share_prompt(world: World, child: Entity, friend: Entity, sharing: Sharing) -> None:
     child.memes["want_to_share"] += 1
+    said = f'"{sharing.offer}"' if sharing.offer.endswith(("?", "!")) else f'"{sharing.offer},"'
     world.say(
-        f'"{sharing.offer}," {child.id} whispered, and then {child.id} smiled at {friend.id} '
+        f'{said} {child.id} whispered, and then {child.id} smiled at {friend.id} '
         f'because {sharing.response}.'
     )
 
@@ -377,7 +378,7 @@ def share_prompt(world: World, child: Entity, friend: Entity, sharing: Sharing) 
 def reveal(world: World, child: Entity, surprise: Surprise, nightlight: Nightlight) -> None:
     _do_reveal(world, surprise)
     world.say(
-        f"{surprise.reveal} {surprise.warmth}. {nightlight.phrase.capitalize()} {nightlight.glow}, "
+        f"{surprise.reveal} {surprise.warmth} {nightlight.phrase.capitalize()} {nightlight.glow}, "
         f"making the crib corner look like a tiny safe harbor."
     )
 
@@ -656,15 +657,19 @@ def resolve_params(args: argparse.Namespace, rng: random.Random) -> StoryParams:
     nightlight = args.nightlight or rng.choice(list(NIGHTLIGHTS))
     if setting not in SETTINGS or surprise not in SURPRISES or sharing not in SHARINGS or nightlight not in NIGHTLIGHTS:
         raise StoryError(explain_rejection())
+    child_name = args.child_name or rng.choice(GIRL_NAMES + BOY_NAMES)
+    friend_name = args.friend_name or rng.choice([n for n in GIRL_NAMES + BOY_NAMES if n != child_name])
+    child_gender = args.child_gender or ("girl" if child_name in GIRL_NAMES else "boy")
+    friend_gender = args.friend_gender or ("girl" if friend_name in GIRL_NAMES else "boy")
     return StoryParams(
         setting=setting,
         surprise=surprise,
         sharing=sharing,
         nightlight=nightlight,
-        child_name=args.child_name or rng.choice(GIRL_NAMES + BOY_NAMES),
-        child_gender=args.child_gender or rng.choice(["girl", "boy"]),
-        friend_name=args.friend_name or rng.choice([n for n in GIRL_NAMES + BOY_NAMES if n != (args.child_name or "")]),
-        friend_gender=args.friend_gender or rng.choice(["girl", "boy"]),
+        child_name=child_name,
+        child_gender=child_gender,
+        friend_name=friend_name,
+        friend_gender=friend_gender,
         parent_type=args.parent_type or rng.choice(["mother", "father"]),
     )
 

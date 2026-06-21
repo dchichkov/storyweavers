@@ -26,7 +26,7 @@ from collections import defaultdict
 from dataclasses import dataclass, field
 from typing import Callable, Optional
 
-sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 from results import QAItem, StoryError, StorySample  # noqa: E402
 
 THRESHOLD = 1.0
@@ -245,7 +245,7 @@ def propagate(world: World, narrate: bool = True) -> list[str]:
 
 
 def problem_at_risk(problem: Problem, clue: Clue) -> bool:
-    return problem.id in clue.tags
+    return bool(problem.tags & clue.tags)
 
 
 def sensible_solutions() -> list[Solution]:

@@ -297,7 +297,7 @@ MISSIONS = {
         repetition_line="Again and again, the map showed the same bright route and the same red warning ring.",
         danger_line="But the red ring meant the ship would scrape the rocks if it kept going straight.",
         resolution_line="So the crew repeated the safe check, repeated the safe turn, and listened to the calm lane instead.",
-        ending_image="the ship gliding past the rocks while a starfish floated safely in a warm tank",
+        ending_image="the ship glided past the rocks while a starfish floated safely in a warm tank",
         tags={"astrologic", "space", "repeat"},
     ),
     "moon-loop": Mission(
@@ -438,7 +438,7 @@ def tell(params: StoryParams) -> World:
     world.para()
     world.say(f"{params.captain} used {fix['label']} and the ship steadied at once.")
     world.say(f"The starfish stopped trembling and floated in a clear bowl of water beside the console.")
-    world.say(f"{mission.ending_image}.")
+    world.say(f"{mission.ending_image[0].upper()}{mission.ending_image[1:]}.")
     world.facts.update(params=params, mission=mission, route=route, hazard=hazard, fix=fix,
                        pilot=pilot, helper=helper, captain=captain, starfish=starfish,
                        outcome="safe")
@@ -609,11 +609,23 @@ def resolve_args(args: argparse.Namespace, rng: random.Random) -> StoryParams:
 
 
 def resolve_params(args: argparse.Namespace, rng: random.Random) -> StoryParams:
+    defaults = {
+        "astro-chart": ("lane", "scrape", "turn"),
+        "moon-loop": ("loop", "jolt", "strap"),
+        "comet-bend": ("comet", "open-bay", "latch"),
+    }
+    mission = args.mission or rng.choice(list(MISSIONS))
+    route, hazard, fix = defaults[mission]
+    route = args.route or route
+    hazard = args.hazard or hazard
+    fix = args.fix or fix
+    if (route, hazard, fix) != defaults[mission]:
+        raise StoryError(f"(No story: {mission} needs {defaults[mission][0]}, {defaults[mission][1]}, and {defaults[mission][2]}.)")
     params = StoryParams(
-        mission=args.mission or rng.choice(list(MISSIONS)),
-        route=args.route or rng.choice(list(ROUTES)),
-        hazard=args.hazard or rng.choice(list(HAZARDS)),
-        fix=args.fix or rng.choice(list(FIXES)),
+        mission=mission,
+        route=route,
+        hazard=hazard,
+        fix=fix,
         pilot=args.pilot or rng.choice(PILOT_NAMES),
         pilot_type=args.pilot_type or rng.choice(["girl", "boy"]),
         helper=args.helper or rng.choice(HELPER_NAMES),

@@ -29,7 +29,7 @@ from collections import defaultdict
 from dataclasses import dataclass, field
 from typing import Callable, Optional
 
-sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 from results import QAItem, StoryError, StorySample  # noqa: E402
 
 THRESHOLD = 1.0
@@ -370,11 +370,11 @@ def rhyme(lines: list[str]) -> str:
 
 def valid_combos() -> list[tuple[str, str, str]]:
     combos = []
-    for h in HARBORS:
+    for harbor_id, h in HARBORS.items():
         for ship_id, ship in FREIGHTERS.items():
             for gift_id, gift in GIFTS.items():
                 if ship.can_transform and "gift" in gift.tags:
-                    combos.append((h.id, ship_id, gift_id))
+                    combos.append((harbor_id, ship_id, gift_id))
     return combos
 
 

@@ -28,7 +28,7 @@ from collections import defaultdict
 from dataclasses import dataclass, field
 from typing import Optional
 
-sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 from results import QAItem, StoryError, StorySample  # noqa: E402
 
 THRESHOLD = 1.0
@@ -487,7 +487,7 @@ def chosen_fix(budget: Budget, fix: Fix, problem: Problem) -> bool:
 
 def solve_budget(world: World, tom: Entity, helper: Entity, budget: Budget, problem: Problem, animal: Animal, fix: Fix) -> None:
     world.say(
-        f"At the {world.facts['enclosure_label']}, Tom noticed {problem.label_word} "
+        f"At {world.facts['enclosure_label']}, Tom noticed that {problem.label_word} "
         f"{problem.trigger}."
     )
     tom.memes["concern"] += 1
@@ -504,7 +504,7 @@ def solve_budget(world: World, tom: Entity, helper: Entity, budget: Budget, prob
     helper.memes["support"] += 1
     tom.memes["planning"] += 1
     world.say(
-        f"Tom and {helper.id} counted the parts, thought of a gentler way, and chose to {fix.method}."
+        f"Tom and {helper.id} counted the parts, thought of a gentler way, and chose a careful plan: they {fix.method}."
     )
     problem.meters["trouble"] += 1
     propagate(world, narrate=False)
@@ -516,7 +516,7 @@ def solve_budget(world: World, tom: Entity, helper: Entity, budget: Budget, prob
         tom.memes["pride"] += 1
         helper.memes["pride"] += 1
         world.say(
-            f"The fix worked. {fix.result}, and {animal.label} settled again in the soft straw."
+            f"The fix worked: {fix.result}, and {animal.label} settled again in the soft straw."
         )
         world.say(
             f"Then Tom and {helper.id} shared a small smile, because the enclosure was safe, quiet, and warm."

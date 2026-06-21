@@ -38,8 +38,7 @@ from typing import Callable, Optional
 
 # Make storyworlds/results.py importable when run directly from this nested dir.
 THIS = os.path.abspath(__file__)
-WORLDS_DIR = os.path.dirname(os.path.dirname(os.path.dirname(THIS)))   # .../storyworlds/worlds
-STORYWORLDS_DIR = os.path.dirname(WORLDS_DIR)                          # .../storyworlds
+STORYWORLDS_DIR = os.path.dirname(os.path.dirname(os.path.dirname(THIS)))   # .../storyworlds
 sys.path.insert(0, STORYWORLDS_DIR)
 from results import QAItem, StoryError, StorySample  # noqa: E402
 
@@ -92,6 +91,11 @@ class Idol:
     tiny: bool = True
     xray_safe: bool = True
     tags: set[str] = field(default_factory=set)
+    meters: dict[str, float] = field(default_factory=lambda: defaultdict(float))
+    memes: dict[str, float] = field(default_factory=lambda: defaultdict(float))
+
+    def pronoun(self, case: str = "subject") -> str:
+        return {"subject": "it", "object": "it", "possessive": "its"}[case]
 
 
 @dataclass

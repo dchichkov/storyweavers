@@ -22,7 +22,7 @@ from collections import defaultdict
 from dataclasses import dataclass, field
 from typing import Callable, Optional
 
-sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 from results import QAItem, StoryError, StorySample  # noqa: E402
 
 THRESHOLD = 1.0
@@ -349,7 +349,7 @@ def should_clear(helper: Helper) -> bool:
 def tell(card: Card, bus: Bus, helper: Helper, street: Street) -> World:
     world = World()
     hero = world.add(Entity(id="Mila", kind="character", type="girl", role="child"))
-    guide = world.add(Entity(id=helper.label, kind="character", type="thing", role="helper"))
+    guide = world.add(Entity(id=helper.id, kind="character", type="person", label=helper.label, role="helper"))
     world.add(Entity(id="street", type="place", label=street.label))
     bus_ent = world.add(Entity(id="bus", type="vehicle", label=bus.label))
     card_ent = world.add(Entity(id="card", type="thing", label=card.label))
@@ -373,7 +373,7 @@ def tell(card: Card, bus: Bus, helper: Helper, street: Street) -> World:
     )
     guide.memes["care"] = 1
     world.say(
-        f"{guide.label} looked cerebral and wise, with thoughtful eyes. "
+        f"{guide.label.capitalize()} studied the water with thoughtful eyes. "
         f"'Let's read the card, and then make a plan with no surprise.'"
     )
 
@@ -382,7 +382,7 @@ def tell(card: Card, bus: Bus, helper: Helper, street: Street) -> World:
 
     world.para()
     world.say(
-        f"{guide.label} tucked the card close and tapped the bus's side. "
+        f"{guide.label.capitalize()} tucked the card close and tapped the bus's side. "
         f"'We can help it be safe, and we can still take pride.'"
     )
     if flood_risk(street, bus):

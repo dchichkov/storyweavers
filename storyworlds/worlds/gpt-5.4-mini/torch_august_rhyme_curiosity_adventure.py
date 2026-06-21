@@ -524,6 +524,16 @@ def resolve_params(args: argparse.Namespace, rng: random.Random) -> StoryParams:
         raise StoryError("(No story: that hazard does not fit this setting.)")
     combos = [c for c in valid_combos() if (args.setting is None or c[0] == args.setting) and (args.hazard is None or c[1] == args.hazard) and (args.tool is None or c[2] == args.tool)]
     if not combos:
+        curated = globals().get("CURATED", [])
+        explicit = [
+            v for k, v in vars(args).items()
+            if k not in {"n", "seed", "all", "trace", "qa", "json", "asp", "verify", "show_asp"}
+            and v is not None
+            and v is not False
+        ]
+        if curated and not explicit:
+            choice = rng.choice(curated)
+            return choice if isinstance(choice, StoryParams) else StoryParams(*choice)
         raise StoryError("(No valid combination matches the given options.)")
     setting, hazard, tool = rng.choice(sorted(combos))
     verse = args.verse or rng.choice(sorted(VERSES))

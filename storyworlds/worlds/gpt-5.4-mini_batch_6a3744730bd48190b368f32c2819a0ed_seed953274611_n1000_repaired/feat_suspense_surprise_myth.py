@@ -28,7 +28,7 @@ from collections import defaultdict
 from dataclasses import dataclass, field
 from typing import Callable, Optional
 
-sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 from results import QAItem, StoryError, StorySample  # noqa: E402
 
 THRESHOLD = 1.0
@@ -306,11 +306,11 @@ def propagate(world: World, narrate: bool = True) -> list[str]:
 
 def valid_combos() -> list[tuple[str, str, str]]:
     combos = []
-    for p in PREMISES:
-        for f in FEATS:
-            for s in SURPRISES:
-                if p.id in {"grove", "bridge", "cave"} and f.id in {"crossing", "offering", "rescue"}:
-                    combos.append((p.id, f.id, s.id))
+    for premise_id, p in PREMISES.items():
+        for feat_id, f in FEATS.items():
+            for surprise_id, s in SURPRISES.items():
+                if premise_id in {"grove", "bridge", "cave"} and feat_id in {"crossing", "offering", "rescue"}:
+                    combos.append((premise_id, feat_id, surprise_id))
     return combos
 
 

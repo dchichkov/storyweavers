@@ -27,7 +27,7 @@ from collections import defaultdict
 from dataclasses import dataclass, field
 from typing import Callable, Optional
 
-sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 from results import QAItem, StoryError, StorySample  # noqa: E402
 
 THRESHOLD = 1.0
@@ -679,6 +679,16 @@ def resolve_params(args: argparse.Namespace, rng: random.Random) -> StoryParams:
               and (args.clue is None or c[1] == args.clue)
               and (args.misunderstanding is None or c[2] == args.misunderstanding)]
     if not combos:
+        curated = globals().get("CURATED", [])
+        explicit = [
+            v for k, v in vars(args).items()
+            if k not in {"n", "seed", "all", "trace", "qa", "json", "asp", "verify", "show_asp"}
+            and v is not None
+            and v is not False
+        ]
+        if curated and not explicit:
+            choice = rng.choice(curated)
+            return choice if isinstance(choice, StoryParams) else StoryParams(*choice)
         raise StoryError("(No valid combination matches the given options.)")
     setting, clue, misunderstanding = rng.choice(sorted(combos))
     helper = args.helper or rng.choice(sorted(HELPERS))

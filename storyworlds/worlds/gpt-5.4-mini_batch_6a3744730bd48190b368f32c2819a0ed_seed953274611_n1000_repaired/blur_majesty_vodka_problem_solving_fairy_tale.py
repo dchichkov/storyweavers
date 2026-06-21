@@ -37,7 +37,7 @@ from collections import defaultdict
 from dataclasses import dataclass, field
 from typing import Callable, Optional
 
-sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 from results import QAItem, StoryError, StorySample  # noqa: E402
 
 THRESHOLD = 1.0
@@ -335,7 +335,7 @@ def hazard(problem: Problem, tool: Tool) -> bool:
 
 
 def valid_combos() -> list[tuple[str, str, str]]:
-    return [("castle", "vodka_spill", t.id) for t in TOOLS if TOOLS[t].sense >= SENSE_MIN]
+    return [("castle", "vodka_spill", tid) for tid, tool in TOOLS.items() if tool.sense >= SENSE_MIN]
 
 
 def predict(world: World) -> dict:

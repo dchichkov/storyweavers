@@ -27,7 +27,7 @@ from collections import defaultdict
 from dataclasses import dataclass, field
 from typing import Callable, Optional
 
-sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 from results import QAItem, StoryError, StorySample  # noqa: E402
 
 THRESHOLD = 1.0
@@ -292,11 +292,11 @@ def predict_mystery(world: World, mystery: Mystery) -> dict:
 
 def valid_combos() -> list[tuple[str, str, str]]:
     combos = []
-    for place in PLACES:
-        for mystery in MYSTERIES:
-            for answer in ANSWERS:
-                if mystery.id in answer.tags and place.id in {"arcade"}:
-                    combos.append((place.id, mystery.id, answer.id))
+    for place_id, place in PLACES.items():
+        for mystery_id, mystery in MYSTERIES.items():
+            for answer_id, answer in ANSWERS.items():
+                if mystery_id in answer.tags and place_id in {"arcade"}:
+                    combos.append((place_id, mystery_id, answer_id))
     return combos
 
 

@@ -35,7 +35,7 @@ from dataclasses import dataclass, field
 from typing import Callable, Optional
 
 # Make the shared result containers importable when run directly.
-sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 from results import QAItem, StoryError, StorySample  # noqa: E402
 
 THRESHOLD = 1.0
@@ -286,12 +286,12 @@ def could_need_surgery(ache: Surgery, severity: int) -> bool:
 
 def valid_combos() -> list[tuple[str, str, str]]:
     combos = []
-    for p in PLACES:
-        for h in HERALDS:
-            for g in GUIDES:
-                for s in SURGERIES:
-                    if p.id in {"clinic", "hospital"} and could_need_surgery(s, 2):
-                        combos.append((p.id, h.id, g.id))
+    for place_id, p in PLACES.items():
+        for herald_id, h in HERALDS.items():
+            for guide_id, g in GUIDES.items():
+                for s in SURGERIES.values():
+                    if place_id in {"clinic", "hospital"} and could_need_surgery(s, 2):
+                        combos.append((place_id, herald_id, guide_id))
     return combos
 
 

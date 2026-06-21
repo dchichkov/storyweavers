@@ -34,7 +34,7 @@ import sys
 from dataclasses import dataclass, field
 from typing import Callable, Optional
 
-sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 from results import QAItem, StoryError, StorySample  # noqa: E402
 
 THRESHOLD = 1.0
@@ -254,7 +254,12 @@ def predict_search(world: World) -> dict:
 
 
 def valid_combo(setting: Setting, animal: Animal) -> bool:
-    return bool(setting.hiding_spots and setting.clue_spots and animal.hiding in setting.hiding_spots and animal.clue in setting.clue_spots)
+    return bool(
+        setting.hiding_spots
+        and setting.clue_spots
+        and any(spot in animal.hiding for spot in setting.hiding_spots)
+        and any(spot in animal.clue for spot in setting.clue_spots)
+    )
 
 
 def valid_combos() -> list[tuple[str, str]]:

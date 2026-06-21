@@ -24,7 +24,7 @@ from dataclasses import dataclass, field, asdict
 from typing import Optional
 
 # Make the shared result containers importable when this script is run directly.
-sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 from results import QAItem, StoryError, StorySample  # noqa: E402
 
 THRESHOLD = 1.0

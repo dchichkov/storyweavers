@@ -34,7 +34,7 @@ from collections import defaultdict
 from dataclasses import dataclass, field
 from typing import Callable, Optional
 
-sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 from results import QAItem, StoryError, StorySample  # noqa: E402
 
 THRESHOLD = 1.0
@@ -740,6 +740,16 @@ def resolve_params(args: argparse.Namespace, rng: random.Random) -> StoryParams:
               and (args.hazard is None or c[1] == args.hazard)
               and (args.response is None or c[2] == args.response)]
     if not combos:
+        curated = globals().get("CURATED", [])
+        explicit = [
+            v for k, v in vars(args).items()
+            if k not in {"n", "seed", "all", "trace", "qa", "json", "asp", "verify", "show_asp"}
+            and v is not None
+            and v is not False
+        ]
+        if curated and not explicit:
+            choice = rng.choice(curated)
+            return choice if isinstance(choice, StoryParams) else StoryParams(*choice)
         raise StoryError("(No valid combination matches the given options.)")
     setting, hazard, response = rng.choice(sorted(combos))
     delay = args.delay if args.delay is not None else rng.randint(0, 2)
@@ -750,7 +760,7 @@ def resolve_params(args: argparse.Namespace, rng: random.Random) -> StoryParams:
 
 def generate(params: StoryParams) -> StorySample:
     world = tell(SETTINGS[params.setting], HAZARDS[params.hazard], RESPONSES[params.response],
-                 params.delay, params.derrick_name, params.helper, params.helper_gender, params.derrick_gender)
+                 params.delay, params.derrick_name, params.helper_name, params.helper_gender, params.derrick_gender)
     return StorySample(
         params=params,
         story=world.render(),

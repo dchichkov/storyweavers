@@ -31,7 +31,7 @@ from collections import defaultdict
 from dataclasses import dataclass, field
 from typing import Callable, Optional
 
-sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 from results import QAItem, StoryError, StorySample  # noqa: E402
 
 
@@ -289,7 +289,7 @@ def propagate(world: World, narrate: bool = True) -> list[str]:
 
 
 def hazard_at_risk(consent_obj: ConsentObject, stove_item: StoveItem) -> bool:
-    return consent_obj.tag == "ask_permission" and stove_item.flammable
+    return consent_obj.tag == "ask_permission" and stove_item.id == "stove"
 
 
 def sensible_responses() -> list[Response]:

@@ -26,7 +26,7 @@ from collections import defaultdict
 from dataclasses import dataclass, field
 from typing import Callable, Optional
 
-sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 from results import QAItem, StoryError, StorySample  # noqa: E402
 
 THRESHOLD = 1.0
@@ -238,11 +238,11 @@ def propagate(world: World, narrate: bool = True) -> list[str]:
 
 def valid_combos() -> list[tuple[str, str, str]]:
     combos = []
-    for scene in SCENES:
+    for scene_id, scene in SCENES.items():
         for snack_id, snack in SNACKS.items():
             for response_id, resp in RESPONSES.items():
                 if snack.appetizing and resp.sense >= SENSE_MIN:
-                    combos.append((scene.id, snack_id, response_id))
+                    combos.append((scene_id, snack_id, response_id))
     return combos
 
 

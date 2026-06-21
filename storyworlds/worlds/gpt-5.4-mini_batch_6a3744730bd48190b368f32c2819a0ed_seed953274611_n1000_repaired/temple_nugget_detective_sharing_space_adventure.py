@@ -30,7 +30,7 @@ from collections import defaultdict
 from dataclasses import dataclass, field
 from typing import Callable, Optional
 
-sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 from results import QAItem, StoryError, StorySample  # noqa: E402
 
 THRESHOLD = 1.0
@@ -344,12 +344,12 @@ def predict_share(world: World) -> dict[str, float]:
 
 
 def build_story(world: World, scene: SceneConfig, nugget: NuggetConfig, share: ShareConfig) -> None:
-    detective = world.get("detective")
-    helper = world.get("helper")
+    detective = world.facts["detective"]
+    helper = world.facts["helper"]
     temple = world.get("temple")
 
     world.say(
-        f"Far beyond the blue Earth, {detective.id} the detective landed at {scene.temple}. "
+        f"Far beyond the blue Earth, Detective {detective.id} landed at {scene.temple}. "
         f"The old stone temple floated on a rocky moon ridge, and {scene.dark_place} was deep inside."
     )
     world.say(
@@ -361,7 +361,7 @@ def build_story(world: World, scene: SceneConfig, nugget: NuggetConfig, share: S
     helper.memes["worry"] += 1
     detective.memes["focus"] += 1
     world.say(
-        f"{detective.id} did not rush. {detective.id} was a careful detective, and {detective.id} knew space adventures went better when friends shared."
+        f"Detective {detective.id} did not rush. {detective.id} was careful, and {detective.pronoun('subject')} knew space adventures went better when friends shared."
     )
     world.say(
         f'{helper.id} said, "If you keep the nugget, I will only worry. If we share it, I can hold the map light."'

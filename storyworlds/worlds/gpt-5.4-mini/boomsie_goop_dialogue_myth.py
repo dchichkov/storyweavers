@@ -30,7 +30,7 @@ from collections import defaultdict
 from dataclasses import dataclass, field
 from typing import Optional
 
-sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 from results import QAItem, StoryError, StorySample  # noqa: E402
 
 THRESHOLD = 1.0
@@ -351,7 +351,7 @@ def tell(world: World, setting: Setting, relic: Relic, goop: Goop, response: Res
     world.para()
     if can_save(response, goop):
         world.say(
-            f'{elder.id} came forward and {response.text}.'
+            f'{e.id} came forward and {response.text}.'
         )
         relic_ent.meters["sticky"] = 0.0
         world.say(
@@ -372,7 +372,7 @@ def tell(world: World, setting: Setting, relic: Relic, goop: Goop, response: Res
         outcome = "clean"
     else:
         world.say(
-            f'{elder.id} came forward and {response.fail}.'
+            f'{e.id} came forward and {response.fail}.'
         )
         relic_ent.meters["sticky"] += 1
         world.say(

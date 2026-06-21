@@ -22,7 +22,7 @@ from collections import defaultdict
 from dataclasses import dataclass, field
 from typing import Optional
 
-sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 from results import QAItem, StoryError, StorySample  # noqa: E402
 
 THRESHOLD = 1.0
@@ -329,12 +329,14 @@ def best_problem() -> Problem:
 
 
 def build_story_line(hero: Entity, helper: Entity, problem: Problem, mat: Thing) -> list[str]:
+    oddity = problem.oddity[0].upper() + problem.oddity[1:]
+    humor = problem.humor[0].upper() + problem.humor[1:]
     return [
-        f"At the campground, {hero.id} found {mat.phrase} by the tent flap. The {mat.label} looked odd, and that was the first funny clue.",
-        f"{helper.id} peered at it and said, \"That is an odd little thing.\" {problem.oddity}",
+        f"Soon {hero.id} found the {mat.phrase} by the tent flap. The {mat.label} looked odd, and that was the first funny clue.",
+        f"{helper.id} peered at it and said, \"That is an odd little thing.\" {oddity}.",
         f"Then came a tiny conflict: {problem.conflict_line}.",
         f"{hero.id} wanted to {problem.quest}, but the wind kept fluttering the clue like a teasing bird.",
-        f"{problem.humor} So {hero.id} took a breath, said, \"I can persevere,\" and kept going anyway.",
+        f"{humor}. So {hero.id} took a breath, said, \"I can persevere,\" and kept going anyway.",
         f"Together they chose to {problem.fix}. Soon the missing thing was found, the mat was back in place, and the campsite felt bright again.",
         f"At last {hero.id} grinned. The quest was done, the odd clue made sense, and the campground was calm as a hush-hush song.",
     ]
@@ -350,7 +352,7 @@ def tell(problem: Problem, mat: Thing, hero_name: str, hero_gender: str, helper_
     helper.memes["warn"] = 1
     hero.memes["hope"] = 1
     hero.memes["curious"] = 1
-    world.say(f"At {world.setting.place}, {hero.id} began a small quest beside {mat_ent.label_word}.")
+    world.say(f"At {world.setting.place}, {hero.id} began a small quest beside the {mat_ent.label_word}.")
     world.say(f"{world.setting.detail}")
     world.para()
     for line in build_story_line(hero, helper, problem, mat_ent):
