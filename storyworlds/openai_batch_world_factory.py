@@ -245,7 +245,7 @@ def prompt_cache_key(*, full_instructions: bool) -> str:
     digest = hashlib.sha256()
     digest.update(PROMPT_PROTOCOL.encode("utf-8"))
     digest.update(b"\0")
-    for path in (STORY_CONTRACT_PATH, RESULTS_PATH, *EXAMPLE_WORLD_PATHS):
+    for path in (STORY_CONTRACT_PATH, RESULTS_PATH, ASP_PATH, *EXAMPLE_WORLD_PATHS):
         digest.update(path.relative_to(ROOT).as_posix().encode("utf-8"))
         digest.update(b"\0")
         digest.update(read_prompt_file(path).encode("utf-8"))
@@ -445,7 +445,7 @@ Implementation requirements:
 - Avoid scaffold leaks, raw template fragments, and implementation jargon.
 - Do not copy an existing world. Create a fresh tiny domain from the seed,
   and progress from a fresh story to a complete storyworld.
-- Make complete stories: clear premise, state-driven turn, and ending image 
+- Make complete stories: clear premise, state-driven turn, and ending image
   that proves what changed.
 
 
@@ -463,11 +463,20 @@ Note on dataclass reliability:
 - Keep dictionary keys aligned with StoryParams fields. resolve_params should
   choose from the actual keys of lookup dictionaries, and generate should fail
   closed with StoryError for invalid params instead of raising KeyError.
+- Default generation must not silently substitute a curated story. `python file.py 
+  --seed N --qa` must generate from the params resolved for that seed. If those 
+  params are invalid, fix `resolve_params()` to choose only valid params
+- `resolve_params()` must choose only from `valid_combos()` after applying CLI filters. 
+  Random generation should never select an invalid combination and rely on `generate()`
+  to reject it.
+- Before calling `propagate()`, initialize every `world.facts[...]`, entity `attrs`,
+  `meters`, and `memes` value that any rule reads. No rule should depend on a fact 
+  assigned later in `tell()`.
 
 Seed request:
 - Target file: {job.target}
 - Domain: {job.domain}
-- Seed words: {", ".join(job.words)}
+- Use these words: {", ".join(job.words)}
 - Setting: {job.setting}
 - Features: {", ".join(job.features)}
 - Style: {job.style}

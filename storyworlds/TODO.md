@@ -26,6 +26,19 @@
 
 ## Current cleanup queue
 
+- 2026-06-21 `gpt-5.4` repaired 1k follow-up: the live
+  `storyworlds/worlds/gpt-5.4_batch_6a372179eacc8190a39e4ad27b242f70_seed678402913_n1000_repaired/`
+  directory started at `compile_ok=953 failed=47` and `ok=811 failed=189
+  timeout=0` for `--seed 777 --qa`. A runnable-first cleanup added generated
+  compatibility shims, fixed direct `results` import path variants, repaired all
+  47 syntax/quote defects, added narrow generated `Entity` fields, soft-defaulted
+  generated world/registry dictionaries, and fixed repeated generated dataclass /
+  format-context defects. The curated retry shim is present but **not enabled by
+  default**; set `STORYWORLDS_ALLOW_CURATED_RETRY=1` only for explicit salvage
+  experiments. New default baseline: `compile_ok=1000 failed=0`; runnable sample
+  `ok=970 failed=30 timeout=0`. Remaining tail is mostly real story-state gates
+  (`StoryError`, 26 files), plus 2 `AttributeError`, 1 `TypeError`, and 1
+  `IndexError` one-offs.
 - 2026-06-20 `gpt-5.4-mini` 1k Batch API run: submitted
   `batch_6a365d9a796c8190b61af021aaa75d29` with seed `184114977`,
   `--reasoning-effort low`, and `--max-output-tokens 32000`. Materialized

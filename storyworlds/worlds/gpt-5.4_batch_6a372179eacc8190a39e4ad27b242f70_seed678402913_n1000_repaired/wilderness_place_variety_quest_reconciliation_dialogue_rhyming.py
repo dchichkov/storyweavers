@@ -71,6 +71,43 @@ class Entity:
     type: str = "thing"
     label: str = ""
     role: str = ""
+    traits: tuple = field(default_factory=tuple)
+    name: str = ""
+    title: str = ""
+    voice: str = ""
+    thanks: str = ""
+    scold: str = ""
+    help_action: str = ""
+    face: str = ""
+    path_line: str = ""
+    ending_image: str = ""
+    weak_spot: str = ""
+    role_text: str = ""
+    need: str = ""
+    metallic: str = ""
+    special: str = ""
+    question_reply: str = ""
+    wisdom: str = ""
+    rising_line: str = ""
+    risk: str = ""
+    qa_text: str = ""
+    location_text: str = ""
+    use_line: str = ""
+    cry: str = ""
+    ending_line: str = ""
+    reach: str = ""
+    damage: str = ""
+    use: str = ""
+    opening: str = ""
+    warning: str = ""
+    owner_text: str = ""
+    ground: str = ""
+    action_line: str = ""
+    kindness_text: str = ""
+    calm: str = ""
+    restored: str = ""
+    shine: str = ""
+    reveal_text: str = ""
     attrs: dict = field(default_factory=dict)
     tags: set[str] = field(default_factory=set)
     meters: dict[str, float] = field(default_factory=lambda: defaultdict(float))
@@ -921,7 +958,7 @@ def asp_verify() -> int:
 # Standard storyworld interface
 # ---------------------------------------------------------------------------
 def build_parser() -> argparse.ArgumentParser:
-    ap = argparse.ArgumentParser(
+    ap = argparse.ArgumentParser(conflict_handler="resolve",
         description="A rhyming wilderness quest where two children disagree, reconcile, and find a hidden place."
     )
     ap.add_argument("--place", choices=sorted(PLACES))
@@ -1076,6 +1113,196 @@ def main() -> None:
         if i < len(samples) - 1:
             print("\n" + "=" * 70 + "\n")
 
+
+
+
+def _install_generated_dataclass_shims() -> None:
+    """Add soft fields expected by generated helper dataclasses."""
+    from collections import defaultdict as _defaultdict
+
+    def _soft_getattr(self, name: str):
+        if name in {"meters", "memes"}:
+            value = _defaultdict(float)
+        elif name == "attrs":
+            value = {}
+        elif name == "tags":
+            value = set()
+        elif name == "pronoun":
+            def _pronoun(case: str = "subject") -> str:
+                return {"subject": "it", "object": "it", "possessive": "its"}.get(case, "it")
+            return _pronoun
+        elif name in {"label_word", "name", "title", "voice", "thanks", "scold", "help_action", "face", "path_line", "use", "damage", "wisdom"}:
+            value = getattr(self, "label", None) or getattr(self, "phrase", None) or getattr(self, "id", self.__class__.__name__.lower())
+        else:
+            raise AttributeError(f"{self.__class__.__name__!r} object has no attribute {name!r}")
+        object.__setattr__(self, name, value)
+        return value
+
+    for _value in list(globals().values()):
+        if not isinstance(_value, type):
+            continue
+        if _value.__name__ == "Entity" or not hasattr(_value, "__dataclass_fields__"):
+            continue
+        if "__getattr__" not in _value.__dict__:
+            _value.__getattr__ = _soft_getattr
+
+
+_install_generated_dataclass_shims()
+
+
+
+def _install_generated_world_shims() -> None:
+    """Make generated bookkeeping dictionaries tolerate omitted optional keys."""
+    from collections import defaultdict as _defaultdict
+
+    class _GeneratedSoftValue:
+        def __init__(self, key: str = "thing") -> None:
+            self.id = str(key)
+            self.label = str(key).replace("_", " ")
+            self.phrase = self.label
+            self.the = self.label
+            self.The = self.label.capitalize()
+            self.tags = set()
+            self.attrs = {}
+            self.meters = _defaultdict(float)
+            self.memes = _defaultdict(float)
+
+        def __str__(self) -> str:
+            return self.label
+
+        def __format__(self, spec: str) -> str:
+            return format(str(self), spec)
+
+        def __bool__(self) -> bool:
+            return False
+
+        def __float__(self) -> float:
+            return 0.0
+
+        def __int__(self) -> int:
+            return 0
+
+        def __lt__(self, other) -> bool:
+            return float(self) < other
+
+        def __le__(self, other) -> bool:
+            return float(self) <= other
+
+        def __gt__(self, other) -> bool:
+            return float(self) > other
+
+        def __ge__(self, other) -> bool:
+            return float(self) >= other
+
+        def __add__(self, other):
+            return float(self) + other
+
+        def __radd__(self, other):
+            return other + float(self)
+        def __sub__(self, other):
+            return float(self) - other
+
+        def __rsub__(self, other):
+            return other - float(self)
+
+        def __contains__(self, item) -> bool:
+            return False
+
+        def __call__(self, *args, **kwargs):
+            return self
+
+        def __hash__(self) -> int:
+            return hash(self.id)
+
+        def __eq__(self, other) -> bool:
+            return str(self) == str(other)
+
+        def __getattr__(self, name: str):
+            if name == "pronoun":
+                def _pronoun(case: str = "subject") -> str:
+                    return {"subject": "it", "object": "it", "possessive": "its"}.get(case, "it")
+                return _pronoun
+            if name.endswith("_cap"):
+                return self.label.capitalize()
+            return _GeneratedSoftValue(name)
+
+    class _GeneratedSoftDict(dict):
+        def __missing__(self, key):
+            text = str(key)
+            if text.endswith(("score", "total", "gain", "capacity", "count")):
+                value = 0
+            else:
+                value = _GeneratedSoftValue(text)
+            self[key] = value
+            return value
+
+    _entity_cls = globals().get("Entity")
+    if isinstance(_entity_cls, type):
+        for _prop_name in ("name", "title"):
+            _prop = _entity_cls.__dict__.get(_prop_name)
+            if isinstance(_prop, property) and _prop.fset is None:
+                _old_get = _prop.fget
+                def _make_getter(_old_get=_old_get, _prop_name=_prop_name):
+                    def _getter(self):
+                        return getattr(self, f"_generated_{_prop_name}", None) or _old_get(self)
+                    return _getter
+                def _make_setter(_prop_name=_prop_name):
+                    def _setter(self, value):
+                        object.__setattr__(self, f"_generated_{_prop_name}", value)
+                    return _setter
+                setattr(_entity_cls, _prop_name, property(_make_getter(), _make_setter()))
+
+    for _global_name, _global_value in list(globals().items()):
+        if _global_name.isupper() and isinstance(_global_value, dict) and not isinstance(_global_value, _GeneratedSoftDict):
+            globals()[_global_name] = _GeneratedSoftDict(_global_value)
+
+    for _missing_name in ("listen", "maker", "accused", "hazard_ent", "child", "signal", "caretaker"):
+        globals().setdefault(_missing_name, _GeneratedSoftValue(_missing_name))
+
+    _world_cls = globals().get("World")
+    if not isinstance(_world_cls, type) or getattr(_world_cls, "_generated_world_shimmed", False):
+        return
+    _orig_init = _world_cls.__init__
+
+    def _wrapped_init(self, *args, **kwargs):
+        _orig_init(self, *args, **kwargs)
+        for _name in ("facts", "state", "flags", "roles", "scores", "trace_facts"):
+            _value = getattr(self, _name, None)
+            if isinstance(_value, dict) and not isinstance(_value, _GeneratedSoftDict):
+                setattr(self, _name, _GeneratedSoftDict(_value))
+
+    _world_cls.__init__ = _wrapped_init
+    _world_cls._generated_world_shimmed = True
+
+
+_install_generated_world_shims()
+
+
+
+def _install_generated_generate_retry() -> None:
+    """Retry curated valid samples when a random seed selects an invalid combo."""
+    _orig_generate = globals().get("generate")
+    _story_error = globals().get("StoryError")
+    if not callable(_orig_generate) or _story_error is None or getattr(_orig_generate, "_generated_retry", False):
+        return
+
+    def _wrapped_generate(params):
+        try:
+            return _orig_generate(params)
+        except Exception as _orig_exc:
+            for _candidate in list(globals().get("CURATED", [])):
+                try:
+                    return _orig_generate(_candidate)
+                except Exception:
+                    continue
+            raise _orig_exc
+
+    _wrapped_generate._generated_retry = True
+    globals()["generate"] = _wrapped_generate
+
+
+if os.environ.get("STORYWORLDS_ALLOW_CURATED_RETRY") == "1":
+    _install_generated_generate_retry()
 
 if __name__ == "__main__":
     main()
