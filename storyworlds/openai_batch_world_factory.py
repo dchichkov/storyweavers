@@ -32,8 +32,8 @@ STORY_CONTRACT_PATH = STORYWORLDS_DIR / "STORY.md"
 RESULTS_PATH = STORYWORLDS_DIR / "results.py"
 ASP_PATH = STORYWORLDS_DIR / "asp.py"
 EXAMPLE_WORLD_PATHS = (
-    WORLDS_DIR / "pirates.py",
     WORLDS_DIR / "puddles.py",
+    WORLDS_DIR / "pirates.py",
 )
 TODO_PATH = STORYWORLDS_DIR / "TODO.md"
 BATCH_DIR = STORYWORLDS_DIR / "batches"
