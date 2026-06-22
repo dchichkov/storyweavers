@@ -403,6 +403,74 @@ The same entry also exposes an idiomatic WordNet sense — `IsA: person` (from
 characters. Curation has to *prune* idiomatic senses, not only *merge*
 synonymous ones.
 
+**Counterexample — `cautionary tale`.** Where ConceptNet has *nothing* useful
+is on the narrative kernels themselves. Its entire substantive entry for
+`cautionary tale` is one edge:
+
+```
+cautionary tale IsA tale
+```
+
+No participants, no slots, no preconditions, no effects — just a synonym
+list and the bare lineage. The same is true of `detective story`, `quest`,
+`morality tale`, and friends. ConceptNet and Wikidata cover the *content*
+domain (what is a detective, a clue, a zoo, a giraffe) but say almost
+nothing about the *narrative structure* the kernels themselves describe.
+Slot schemas (`slot/2`, `slot_accepts/3`), preconditions (`pre/2`), and
+effects (`produces/2`, `absorbs/2`) for a kernel like `Cautionary` must be
+hand-authored from the TinyStories corpus and the kernel's typed Python
+signature — there is no external source to import them from.
+
+**However — query the right concept.** The cautionary-tale entry was empty
+because we queried the wrong thing. The narrative *archetype* has no entry,
+but the *roles inside it* (`detective`, `witness`, `suspect`, `mentor`,
+`fool`) usually do. Querying `detective` returns 24+ weighted `CapableOf`
+edges from Open Mind Common Sense:
+
+```
+a detective CapableOf  case a joint              (w=4.9)
+a detective CapableOf  tail a suspect            (w=4.47)
+a detective CapableOf  piece together the clues  (w=2.83)
+a detective CapableOf  question a witness        (w=1.0)
+a detective CapableOf  note clues, gather evidence, catch a criminal,
+                       miss a clue, find a missing person,
+                       follow a suspect, hunt for clues,
+                       trust their instinct, ... (15 more)
+```
+
+Translates to a useful action vocabulary the Detective kernel's slots can
+draw on:
+
+```prolog
+% CapableOf -> role-action facts (with crowdsourced weight).
+role_action(detective, tail_suspect,         4.47).
+role_action(detective, piece_together_clues, 2.83).
+role_action(detective, question_witness,     1.0).
+role_action(detective, gather_evidence,      1.0).
+role_action(detective, miss_clue,            1.0).   % failure modes are useful too
+% ...
+```
+
+A `Detective` kernel's `clue=` slot can then accept anything in
+`role_action(detective, _, _)`, ranked by weight for narrative variety. The
+`miss_clue` edge especially is a free *failure* mode — the kernel gets an
+honest "the detective screwed up" branch without authoring one. ConceptNet
+covers role action vocabulary at least as well as it covers entity
+properties; the trick is to query the kernel's *participants*, not its name.
+
+(Surface quirks the import pass has to handle: edges land on both
+`a detective` and `A detective` (article + casing variants), and at least
+one typo is in the data (`find eveidence`). Normalise on import, threshold
+by weight, and validate against `observed_slot/3` from the dataset.)
+
+This sharpens the division of labour: the bootstrap fills slot *contents*
+(entity kinds, role actions, properties — the things that go *inside*
+slots); the *narrative shape* of each kernel stays a small, deliberate,
+hand-authored block. The `observed_slot/3` crawl is the bridge — it tells
+you which content kinds and role actions actually appear in which kernel
+slots, so the hand-authored schema can be empirically validated against the
+dataset rather than guessed.
+
 So treat ConceptNet as one source among several: Wikidata for stable
 taxonomy, ConceptNet for crowdsourced functional edges *where they exist*,
 the TinyStories crawl for actually-used senses, and a small manual top-up
@@ -417,11 +485,70 @@ sees only static facts. A free coverage signal also falls out — any dataset
 use of a kernel that is *not* derivable under the imported lattice is a
 checklist entry for what `slot_accepts` / `kind_of` facts are still missing.
 
-A kernel author then writes ~5 lines of bespoke `pre` / `produces` effects per
-kernel, and the slot/kind ontology is *inherited* from the shared commons.
-The same lattice is reusable across the whole kernel library — adding
-`Mystery` as a kind doesn't just help `Detective`; it automatically makes
-every other host with a `slot_accepts(_, _, mystery)` legal to compose with.
+**7. Or grow your own: a story-grounded ConceptNet — see [`conceptnet_mine.py`](conceptnet_mine.py).**
+Every external-KB failure above (ostrich's missing neck, the empty `cautionary
+tale`, the toy-giraffe-in-a-drawer sense, the idiomatic `ostrich IsA person`)
+is a *domain-mismatch* symptom — a general-purpose KB describing a world that
+isn't quite the children's-story world. Mining the assertions from TinyStories
+itself removes that class by construction: coverage matches usage, and the
+senses are the *story* senses. The framing: **TinyStories is the Open Mind
+Common Sense corpus, and an LLM pass is the assertion parser** — exactly how
+ConceptNet was built, scoped to our domain.
+
+`conceptnet_mine.py` mirrors `kernel.py` (async few-shot LLM pass, streaming
+JSONL) but extracts commonsense edges instead of the kernel:
+
+```bash
+./.venv/bin/python conceptnet_mine.py extract   --datasets 3        # stories -> dataXX.assertions.jsonl  (LLM)
+./.venv/bin/python conceptnet_mine.py rdf        data03.assertions.jsonl   # -> N-Quads (named graph = story = provenance)
+./.venv/bin/python conceptnet_mine.py aggregate  'data*.assertions.jsonl'  # -> weighted, reified 6-field RDF rows
+```
+
+Design points that make the output usable rather than noise:
+
+- **Controlled relation vocabulary → ConceptNet URIs.** The LLM may only emit
+  from a fixed set; most map to real ConceptNet relations (`/r/IsA`,
+  `/r/Causes`, `/r/MotivatedByGoal`, …) so the result unions with an imported
+  dump, with a small local namespace for the narrative ones
+  (`CharacterRole`, `ResolvesBy`, `FeelsToward`).
+- **Grounded, not world-knowledge.** Every assertion requires a verbatim
+  `evidence` span; the prompt forbids outside knowledge. This is the guardrail
+  against the drawer/idiom failure modes.
+- **Affect is the prize.** Extraction is steered toward the
+  `Causes`/`CausesDesire`/`MotivatedByGoal`/`ResolvesBy` edges that the corpus
+  is rich in and generic encyclopedias lack — exactly the gap the empty
+  `cautionary tale` entry exposed, and the source of `pre/2` / `produces/2`
+  facts for the narrative kernels.
+- **Weight = corroboration, with provenance.** `aggregate` collapses
+  `(subject, relation, object)` across the corpus; weight is the number of
+  distinct stories asserting the edge, `--min-weight` drops one-offs (and LLM
+  hallucinations with them), and each edge is reified ConceptNet-style carrying
+  `weight` + a `prov:wasDerivedFrom` per source story. Concepts must be short
+  and reusable for this to work — a sentence-shaped node never recurs, so it
+  can never be corroborated.
+- **Lossless RDF, no new runtime deps.** N-Quads (raw, provenance via named
+  graphs) and the 6-field HuggingFace rows are hand-serialized; the rows match
+  the `CleverThis/conceptnet` schema, so the mined KB loads beside an imported
+  ConceptNet 5.7 dump and round-trips to Turtle.
+
+This is **self-hosting in the compiler sense**: kernels are extracted from
+TinyStories, and now the commonsense substrate their type system needs is *also*
+extracted from TinyStories. The same `lift` (hoist a property held across
+siblings to their parent) and `prune` (drop idioms) curation steps still apply,
+but they now run over an endogenous, domain-matched graph rather than a borrowed
+one. External KBs (Wikidata for clean taxonomy, ConceptNet for breadth) remain a
+useful *prior* to merge in — the two layers union cleanly because both speak the
+same ConceptNet URI scheme.
+
+A kernel author then writes the *narrative shape* — `slot/2`,
+`slot_accepts/3`, and a handful of `pre` / `produces` effects — and the
+*content lattice* those slots refer to is inherited from the shared commons.
+The lattice is reusable across the whole kernel library: adding `Mystery` as
+a kind doesn't just help `Detective`; it automatically makes every other host
+with `slot_accepts(_, _, mystery)` legal to compose with. This is the same
+split that already works in `storyworlds/worlds/puddles.py` — the registries
+are content (settings, prizes, gear), the `ASP_RULES` are structure — lifted
+from per-world to per-kernel.
 
 **Where this lands against the north star.** The
 *Compatibility / only-allow-compatible-moves* row in the status table above is
