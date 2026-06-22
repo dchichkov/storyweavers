@@ -15,6 +15,7 @@ from types import SimpleNamespace
 from typing import Any
 
 import openai_batch_world_factory as batch_factory
+import openai_story_quality
 import qa_static_check
 
 
@@ -45,13 +46,19 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--words-per-seed", type=int, default=None)
     parser.add_argument("--features-per-seed", type=int, default=None)
     parser.add_argument("--full-instructions", action="store_true")
+    parser.add_argument(
+        "--prompt-addendum",
+        type=Path,
+        default=None,
+        help="optional extra prompt instructions appended to every storyworld request",
+    )
     parser.add_argument("--overwrite", action="store_true")
     parser.add_argument("--allow-incomplete", action="store_true")
     parser.add_argument("--target-dir", type=Path, default=None)
     parser.add_argument("--output-dir", type=Path, default=BATCH_DIR)
-    parser.add_argument("--quality-batch-size", type=int, default=5)
-    parser.add_argument("--quality-sample-timeout", type=float, default=20.0)
-    parser.add_argument("--quality-sample-concurrency", type=int, default=8)
+    parser.add_argument("--quality-batch-size", type=int, default=openai_story_quality.DEFAULT_BATCH_SIZE)
+    parser.add_argument("--quality-sample-timeout", type=float, default=openai_story_quality.DEFAULT_SAMPLE_TIMEOUT)
+    parser.add_argument("--quality-sample-concurrency", type=int, default=openai_story_quality.DEFAULT_SAMPLE_CONCURRENCY)
     parser.add_argument("--quality-seed", type=int, default=777)
     parser.add_argument("--quality-out", type=Path, default=None)
     parser.add_argument("--qa-variants", type=int, default=3)
@@ -152,6 +159,8 @@ def factory_command(args: argparse.Namespace) -> list[str]:
         cmd += ["--target-dir", str(args.target_dir)]
     if args.full_instructions:
         cmd.append("--full-instructions")
+    if args.prompt_addendum is not None:
+        cmd += ["--prompt-addendum", str(args.prompt_addendum)]
     if args.overwrite:
         cmd.append("--overwrite")
     if args.allow_incomplete:
@@ -159,6 +168,111 @@ def factory_command(args: argparse.Namespace) -> list[str]:
     if args.dry_run:
         cmd.append("--dry-run")
     return cmd
+
+
+def service_prompt(job: dict[str, Any], args: argparse.Namespace) -> str:
+    story_job = batch_factory.StoryworldJob(**job)
+    prompt = batch_factory.build_storyworld_prompt(
+        story_job,
+        full_instructions=bool(args.full_instructions),
+    )
+    addendum_path = args.prompt_addendum
+    if addendum_path is None and isinstance(job.get("prompt_addendum"), str):
+        addendum_path = Path(str(job["prompt_addendum"]))
+    if addendum_path is not None:
+        path = addendum_path if addendum_path.is_absolute() else ROOT / addendum_path
+        if path.exists():
+            prompt += "\n\nAdditional direct-service prompt addendum:\n\n"
+            prompt += path.read_text(encoding="utf-8").strip() + "\n"
+    return prompt
+
+
+def write_prompt_files(manifest_path: Path, manifest: dict[str, Any], args: argparse.Namespace) -> dict[str, Path]:
+    stem = manifest_path.name.removesuffix(".manifest.json")
+    prompt_dir = manifest_path.with_name(f"{stem}.prompts")
+    prompt_dir.mkdir(parents=True, exist_ok=True)
+    out: dict[str, Path] = {}
+    for job in manifest.get("jobs", []):
+        if not isinstance(job, dict) or not isinstance(job.get("name"), str):
+            continue
+        path = prompt_dir / f"{job['name']}.prompt.md"
+        path.write_text(service_prompt(job, args), encoding="utf-8")
+        if isinstance(job.get("custom_id"), str):
+            out[job["custom_id"]] = path
+    return out
+
+
+def sample_env() -> dict[str, str]:
+    env = os.environ.copy()
+    existing = env.get("PYTHONPATH")
+    parts = [str(STORYWORLDS_DIR)]
+    if existing:
+        parts.append(existing)
+    env["PYTHONPATH"] = os.pathsep.join(parts)
+    return env
+
+
+def parse_json_story(raw: str) -> str | None:
+    try:
+        payload = json.loads(raw)
+    except json.JSONDecodeError:
+        return None
+    if isinstance(payload, dict) and isinstance(payload.get("story"), str):
+        return payload["story"].strip()
+    return None
+
+
+def sample_one_story(script: Path, seed: int, timeout: float) -> tuple[bool, str]:
+    cmd = [sys.executable, str(script), "--json", "--seed", str(seed)]
+    last_error = ""
+    for attempt in range(3):
+        try:
+            proc = subprocess.run(
+                cmd,
+                cwd=ROOT,
+                env=sample_env(),
+                text=True,
+                capture_output=True,
+                timeout=timeout,
+            )
+        except subprocess.TimeoutExpired:
+            return False, f"timed out after {timeout:g}s"
+        except OSError as exc:
+            last_error = str(exc)
+            if getattr(exc, "errno", None) == 35 and attempt < 2:
+                continue
+            return False, last_error
+        if proc.returncode:
+            return False, proc.stderr.strip() or f"returncode={proc.returncode}"
+        story = parse_json_story(proc.stdout)
+        if story:
+            return True, story
+        return False, "missing_story_or_invalid_json"
+    return False, last_error or "unknown_error"
+
+
+def write_story_files(manifest_path: Path, manifest: dict[str, Any], args: argparse.Namespace) -> dict[str, Path]:
+    stem = manifest_path.name.removesuffix(".manifest.json")
+    story_dir = manifest_path.with_name(f"{stem}.stories")
+    story_dir.mkdir(parents=True, exist_ok=True)
+    out: dict[str, Path] = {}
+    for index, job in enumerate(manifest.get("jobs", [])):
+        if not isinstance(job, dict):
+            continue
+        custom_id = job.get("custom_id")
+        target = job.get("target")
+        name = job.get("name")
+        if not isinstance(custom_id, str) or not isinstance(target, str) or not isinstance(name, str):
+            continue
+        ok, text = sample_one_story(ROOT / target, args.quality_seed + index, args.quality_sample_timeout)
+        suffix = "story.md" if ok else "error.txt"
+        path = story_dir / f"{name}.{suffix}"
+        if ok:
+            path.write_text(f"# {name}\n\n{text}\n", encoding="utf-8")
+        else:
+            path.write_text(text.rstrip() + "\n", encoding="utf-8")
+        out[custom_id] = path
+    return out
 
 
 def quality_paths(manifest_path: Path, args: argparse.Namespace) -> tuple[Path, Path]:
@@ -268,6 +382,8 @@ def render_report(
     factory_proc: subprocess.CompletedProcess[str],
     manifest_path: Path | None,
     manifest: dict[str, Any],
+    prompt_files: dict[str, Path],
+    story_files: dict[str, Path],
     quality_cmd: list[str] | None,
     quality_proc: subprocess.CompletedProcess[str] | None,
     quality_out_path: Path | None,
@@ -313,7 +429,33 @@ def render_report(
         lines.append(f"- Quality summary: `{rel(quality_summary_path)}`")
     if quality_out_path and quality_out_path.exists():
         lines.append(f"- Quality rows: `{rel(quality_out_path)}`")
+    if prompt_files:
+        first_prompt_dir = next(iter(prompt_files.values())).parent
+        lines.append(f"- Prompt files: `{rel(first_prompt_dir)}`")
+    if story_files:
+        first_story_dir = next(iter(story_files.values())).parent
+        lines.append(f"- Story sample files: `{rel(first_story_dir)}`")
     lines.append(f"- Report: `{rel(report_path)}`")
+
+    if jobs:
+        lines += ["", "## Produced Files", ""]
+        lines.append("| # | Script | Prompt | Story Sample | Seed |")
+        lines.append("|---:|---|---|---|---:|")
+        for index, job in enumerate(jobs, 1):
+            if not isinstance(job, dict):
+                continue
+            custom_id = str(job.get("custom_id") or "")
+            target = job.get("target")
+            name = str(job.get("name") or f"job-{index}")
+            script_link = f"[{name}]({rel(ROOT / str(target))})" if isinstance(target, str) else name
+            prompt_path = prompt_files.get(custom_id)
+            story_path = story_files.get(custom_id)
+            prompt_link = f"[prompt]({rel(prompt_path)})" if prompt_path else ""
+            story_label = "story" if story_path and story_path.suffix == ".md" else "error"
+            story_link = f"[{story_label}]({rel(story_path)})" if story_path else ""
+            lines.append(
+                f"| {index} | {script_link} | {prompt_link} | {story_link} | {job.get('seed', '')} |"
+            )
 
     lines += [
         "",
@@ -381,12 +523,18 @@ def main() -> int:
         return factory_proc.returncode
     if manifest_path is None or not manifest:
         raise SystemExit("Generation did not produce a readable manifest; cannot run eval report.")
+    args.full_instructions = bool(manifest.get("full_instructions", args.full_instructions))
+    if args.prompt_addendum is None and isinstance(manifest.get("prompt_addendum"), str):
+        args.prompt_addendum = Path(str(manifest["prompt_addendum"]))
 
     report_path = args.report_out
     if report_path is None:
         report_path = manifest_path.with_name(f"{manifest_path.name.removesuffix('.manifest.json')}.report.md")
     if not report_path.is_absolute():
         report_path = ROOT / report_path
+
+    prompt_files = write_prompt_files(manifest_path, manifest, args)
+    story_files = write_story_files(manifest_path, manifest, args)
 
     quality_proc: subprocess.CompletedProcess[str] | None = None
     quality_out: Path | None = None
@@ -418,6 +566,8 @@ def main() -> int:
         factory_proc=factory_proc,
         manifest_path=manifest_path,
         manifest=manifest,
+        prompt_files=prompt_files,
+        story_files=story_files,
         quality_cmd=quality_cmd,
         quality_proc=quality_proc,
         quality_out_path=quality_out,

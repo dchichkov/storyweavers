@@ -3,11 +3,11 @@
 storyworlds/worlds/puddles.py
 =============================
 
-A standalone *story world* sketch for the "Lily / puddles / new jacket" tale
-(``data00:36242``) and close, *constraint-checked* variations of it.  
+A standalone *story world* sketch for "The Puddles" tale and close, 
+*constraint-checked* variations of it.
 
-Reference story (can be poor quality, or good quality, needs a world model):
---------------------------------------------------
+Initial story (used to build a world model):
+---
 Once upon a time, there was a little cheerful boy named Leo. He loved playing outside 
 and dancing in the rain. One day, Leo's mom bought him a clean white shirt. 
 Leo loved his new shirt and wore it everywhere he went.
@@ -21,39 +21,20 @@ Leo pouted and crossed his arms. "But I want to play in the rain!" he said. His 
 and said, "How about we put on your rain boots first and play in the rain together?" 
 Leo's face lit up and he hugged his mom. "Yay, let's do it!" he said as they went to get the rain boots.
 
-Why the coverage constraint exists
-----------------------------------
-The original logic ("a new *shirt* will get wet -> let's put on
-*rain boots*") is weak: rain boots protect feet, not a jacket.  ("new white
-*shirt* -> rain jacket" is fine.)  So this sketch refuses to generate the
-unreasonable argument.  Every wearable occupies a body **region**; an activity
-splashes a set of regions; protective gear **covers** a set of regions.  A
-compromise is only a compatible move when the chosen gear (a) guards the mess
-kind *and* (b) covers the region of the at-risk prize.  The world model itself
-enforces this: a shirt (torso) is not covered by the splash zone of puddle-jumping
-(feet/legs), so the parent has no honest warning to give, and no story is made.
-
-Causal rules (forward-chained to a fixpoint), one engine for both axes:
-
+Causal state updates:
+---
     do activity                  -> actor.<mess> += 1
+                                    actor.joy += 1
     actor messy + worn item      -> item.<mess>++, item.dirty++       only if the item's
-                                    region is in the splash zone and not covered by gear
+                                    region is in the splash zone and no worn protective
+                                    gear covers that region
     worn item dirty              -> item.caretaker.workload += 1       (more work for the parent)
 
-    loves play + does it         -> actor.joy += 1
-    forbidden + wants it         -> actor.defiance += 1
-    parent grabs the hand        -> conflict += 1 on both
-    compromise accepted          -> joy/love += 1 ; conflict -> 0
-
-Run it
-------
-    python storyworlds/worlds/puddles.py                       # random reasonable story (seeded)
-    python storyworlds/worlds/puddles.py --place garden --activity mud --prize socks
-    python storyworlds/worlds/puddles.py --prize jacket --activity puddles   # rejected: explains why
-    python storyworlds/worlds/puddles.py --all                 # curated, constraint-valid variety set
-    python storyworlds/worlds/puddles.py -n 5 --seed 7         # random, only constraint-valid combos
-    python storyworlds/worlds/puddles.py --trace               # dump the world-model state
-    python storyworlds/worlds/puddles.py --qa --json           # serialize story + 3 Q&A sets to JSON
+Scripted social/emotional beats:
+---
+    warning ignored              -> actor.defiance += 1
+    parent grabs a defiant child -> actor.conflict += 1                (child tension)
+    compromise accepted          -> actor.joy/love += 1 ; actor.conflict -> 0
 """
 
 from __future__ import annotations
@@ -279,7 +260,7 @@ def _r_workload(world: World) -> list[str]:
 
 
 def _r_grab_conflict(world: World) -> list[str]:
-    """parent grabbed the hand while the child is defiant -> conflict on both."""
+    """Parent grabbed the hand while the child is defiant -> child conflict."""
     for actor in world.characters():
         if actor.memes["grabbed_by"] < THRESHOLD or actor.memes["defiance"] < THRESHOLD:
             continue

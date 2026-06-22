@@ -91,13 +91,25 @@ with ordinary async Responses API calls instead of Batch. It writes a run
 manifest, a raw response JSONL, and a run-specific world directory under
 `storyworlds/worlds/`.
 
-For the usual generate-plus-eval pass, use the one-command pipeline. It creates
-the worlds, runs `openai_story_quality.py`, runs `qa_static_check.py`, and writes
-a Markdown report beside the manifest:
+For the usual generate-plus-eval pass, use the one-command pipeline. It uses the
+same prompt text as `openai_batch_world_factory.py` by default, creates the
+worlds, runs `openai_story_quality.py`, runs `qa_static_check.py`, and writes a
+Markdown report beside the manifest:
 
 ```bash
 OPENAI_API_KEY="$(cat .API_KEY)" ./.venv/bin/python storyworlds/openai_service_world_pipeline.py \
   -n 10 --model gpt-5.4-mini --reasoning-effort low --max-output-tokens 32000
+```
+
+For an optimization-loop variant after reading a report, pass a prompt addendum.
+Addenda are appended to the exact batch prompt; omit this flag when comparing
+against the original batch prompt. The first reliability addendum targets nested
+imports, syntax errors, `-n 3 --json`, and static story-QA duplication:
+
+```bash
+OPENAI_API_KEY="$(cat .API_KEY)" ./.venv/bin/python storyworlds/openai_service_world_pipeline.py \
+  -n 10 --model gpt-5.4-mini --reasoning-effort low --max-output-tokens 32000 \
+  --prompt-addendum storyworlds/prompts/gpt54mini_service_reliability_v1.md
 ```
 
 To build a report from an already-generated manifest without regenerating:

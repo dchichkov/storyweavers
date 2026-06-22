@@ -4,77 +4,86 @@ storyworlds/worlds/pirates.py
 =============================
 
 A standalone *story world* sketch for "The Pirates and the Forbidden Spark" and
-close, *constraint-checked* variations of it.  Same engine shape as
-``worlds/puddles.py`` (typed entities with accumulating physical *meters* and
-emotional *memes*, a forward-chaining causal rule engine, a predict-then-warn
-beat, a reasonableness gate, and a state-driven renderer) applied to a different
-domain: **a child takes a forbidden shortcut, an accident happens, a calm adult
-fixes it the sensible way, and the family adopts a safe alternative.**
+close, *constraint-checked* variations of it. Typed entities with accumulating 
+physical *meters* and emotional *memes*, a forward-chaining causal rule engine, 
+a predict-then-warn beat, a reasonableness gate, and a state-driven renderer).
 
-Base text (the reference story this world rebuilds, can be poor quality, or good quality, needs a world model):
---------------------------------------------------
-    The Pirates and the Forbidden Spark
+Initial story (used to build a world model):
+---
+The Pirates and the Forbidden Spark
 
-    Lily and Tom turned the living room into a wild island. The sofa was their
-    pirate ship, a broom became a sword, an old shoebox held their treasure, and
-    a crayon map showed the way to the gold.
+Lily and Tom turned the living room into a wild island. The sofa was their
+pirate ship, a broom became a sword, an old shoebox held their treasure, and
+a crayon map showed the way to the gold.
 
-    "Captain Tom and Explorer Lily!" Tom shouted. "Let's find the treasure cave!"
+"Captain Tom and Explorer Lily!" Tom shouted. "Let's find the treasure cave!"
 
-    But the cave -- the space under the big table, behind the long dark curtains
-    -- was dark. Very dark.
+But the cave - the space under the big table, behind the long dark curtains
+- was dark. Very dark.
 
-    "We need a light," said Lily.
+"We need a light," said Lily.
 
-    Tom's eyes lit up. "I know! Matches! I saw a box in the kitchen drawer."
+Tom's eyes lit up. "I know! Matches! I saw a box in the kitchen drawer."
 
-    Lily bit her lip. "Tom, we're not allowed to touch matches. Mom said."
+Lily bit her lip. "Tom, we're not allowed to touch matches. Mom said."
 
-    "Don't be such a scaredy-cat," Tom said, and ran to get them.
+"Don't be such a scaredy-cat," Tom said, and ran to get them.
 
-    Scritch! The first match flared to life. For one second it was wonderful -- a
-    tiny golden flame, just like a real lantern. Then the flame leaned, kissed the
-    bottom of the curtain, and a little line of orange began to climb.
+Scritch! The first match flared to life. For one second it was wonderful -- a
+tiny golden flame, just like a real lantern. Then the flame leaned, kissed the
+bottom of the curtain, and a little line of orange began to climb.
 
-    "Tom!" Lily screamed. "Fire! The curtain!"
+"Tom!" Lily screamed. "Fire! The curtain!"
 
-    "MOM!"
+"MOM!"
 
-    Mom came running. In a flash she grabbed the bucket from the cleaning closet,
-    filled it at the sink, and threw the water -- whoosh -- right over the curtain.
-    The flame hissed and died, leaving only a wet, smoky smell and two very
-    frightened pirates.
+Mom came running. In a flash she grabbed the bucket from the cleaning closet,
+filled it at the sink, and threw the water -- whoosh -- right over the curtain.
+The flame hissed and died, leaving only a wet, smoky smell and two very
+frightened pirates.
 
-    For a moment, nobody spoke.
+For a moment, nobody spoke.
 
-    Then Mom knelt down and hugged them both. "I'm not angry that you're scared,"
-    she said softly. "I'm glad you called me. But you must always remember:
-    matches are not toys. Fire can grow faster than you can run. Promise me --
-    never, ever again."
+Then Mom knelt down and hugged them both. "I'm not angry that you're scared,"
+she said softly. "I'm glad you called me. But you must always remember:
+matches are not toys. Fire can grow faster than you can run. Promise me --
+never, ever again."
 
-    "We promise," whispered Lily and Tom together.
+"We promise," whispered Lily and Tom together.
 
-    The next day, Mom had a surprise. She handed them a flashlight that clicked on
-    bright as a star, and a little camping lantern that glowed warm and safe.
+The next day, Mom had a surprise. She handed them a flashlight that clicked on
+bright as a star, and a little camping lantern that glowed warm and safe.
 
-    "Now," she smiled, "what does a pirate need to explore a dark cave?"
+"Now," she smiled, "what does a pirate need to explore a dark cave?"
 
-    Tom held up the lantern. Lily clicked on the flashlight.
+Tom held up the lantern. Lily clicked on the flashlight.
 
-    "Safe light!" they cheered.
+"Safe light!" they cheered.
 
-    And the pirates sailed off to find their treasure -- bright, brave, and safe.
+And the pirates sailed off to find their treasure -- bright, brave, and safe.
 
-Run it
-------
-    python storyworlds/worlds/pirates.py                       # random reasonable story (seeded)
-    python storyworlds/worlds/pirates.py --theme pirates --forbidden matches --target curtain
-    python storyworlds/worlds/pirates.py --target tiles        # rejected: a tile wall won't catch fire
-    python storyworlds/worlds/pirates.py --response water_bucket  # rejected: low common-sense response
-    python storyworlds/worlds/pirates.py --response stomp --delay 2  # unhappy "burned-down" ending
-    python storyworlds/worlds/pirates.py --all                 # curated set (happy AND oopsie endings)
-    python storyworlds/worlds/pirates.py -n 5 --seed 7         # random, only constraint-valid combos
-    python storyworlds/worlds/pirates.py --qa --json           # serialize story + 3 Q&A sets to JSON
+Causal state updates:
+---
+    forbidden flame near target  -> target.burning += 1
+                                    target.scorched += 1
+    something burning            -> room.danger += 1
+                                    each child.fear += 1
+
+Scripted social/emotional beats:
+---
+    pretend-play setup           -> each child.joy += 1
+    forbidden shortcut suggested -> instigator.bravado += 1
+    warning given                -> cautioner.caution += 1
+    warning ignored              -> instigator.defiance += 1
+    older cautioner overrules    -> instigator.bravery -> 0
+                                    both children.relief += 1
+    rescue succeeds              -> target.burning -> 0 ; room.danger -> 0
+    lesson accepted              -> both children.relief/love/lesson += 1
+                                    both children.fear -> 0
+    safe lights adopted          -> both children.joy/safety += 1
+    rescue fails                 -> room.burning += 1 ; fear keeps rising
+    grim lesson accepted         -> both children.relief/love/lesson += 1
+
 """
 
 from __future__ import annotations
@@ -790,16 +799,16 @@ SAFE_LIGHTS = {
                             tags={"glowsticks"}),
 }
 
-# Note to the coding agent. Original/base texts of reference stories that you'll
-# receive can be problematic, for example, the in the above story, it is not the
-# greatest solution:  ```she grabbed the bucket from the cleaning closet, filled
-# it at the sink, and threw the water -- whoosh -- right over the curtain```
-# Reference stories supplied often need corrections, and storyworld models should
-# not use them as the golden standard.  In this particular case, either grabbing a
-# fire extinguisher from the kitchen, or quickly pulling down the curtain on the
-# floor and putting them in a ball to get the fire extinguished is a better
-# option.  Ideally storyworld models would include such common sense options, and
-# would prefer them, potentially even excuding less sensible alternatives.
+# ---------------------------------------------------------------------------
+# Analysis section: ranking of responses by common sense and power.
+# ---------------------------------------------------------------------------
+# Original/base texts of reference stories that you'll make can be problematic, 
+# it is not the greatest solution:  ```she grabbed the bucket from the closet,
+# filled it at the sink, and threw the water -- whoosh -- right over the curtain```
+# In this particular case, either grabbing a fire extinguisher from the kitchen, 
+# or pulling down the curtain on the floor and putting them in a ball to get the 
+# fire extinguished is a more sensible option.  Ideally storyworld models would 
+# include such common sense options, and would prefer them.
 #
 # So: RESPONSES carries the weak water-bucket option for fidelity to the source,
 # but ranks it below SENSE_MIN, so the model knows about it yet refuses to tell it

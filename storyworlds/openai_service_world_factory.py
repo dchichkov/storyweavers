@@ -137,6 +137,12 @@ def build_parser() -> argparse.ArgumentParser:
         help="inline storyworlds/TODO.md along with STORY.md",
     )
     parser.add_argument(
+        "--prompt-addendum",
+        type=Path,
+        default=None,
+        help="optional extra prompt instructions appended to every storyworld request",
+    )
+    parser.add_argument(
         "--overwrite",
         action="store_true",
         help="replace existing target files",
@@ -254,10 +260,13 @@ def request_body(args: argparse.Namespace, job: StoryworldJob) -> dict[str, Any]
     prompt = build_storyworld_prompt(
         job,
         full_instructions=args.full_instructions,
-    ).replace(
-        "You do not have filesystem access in this batch job.",
-        "You do not have filesystem access in this service request.",
     )
+    if args.prompt_addendum is not None:
+        prompt += (
+            "\n\nAdditional direct-service prompt addendum:\n\n"
+            + args.prompt_addendum.read_text(encoding="utf-8").strip()
+            + "\n"
+        )
     return {
         "model": args.model,
         "prompt_cache_key": prompt_cache_key(full_instructions=args.full_instructions),
@@ -406,6 +415,7 @@ async def run(args: argparse.Namespace) -> int:
         "prompt_cache_key": prompt_cache_key(full_instructions=args.full_instructions),
         "prompt_cache_retention": args.prompt_cache_retention,
         "full_instructions": args.full_instructions,
+        "prompt_addendum": None if args.prompt_addendum is None else str(args.prompt_addendum),
         "target_dir": target_dir.relative_to(ROOT).as_posix(),
         "response_jsonl": response_jsonl.relative_to(ROOT).as_posix(),
         "manifest_path": manifest_path.relative_to(ROOT).as_posix(),
