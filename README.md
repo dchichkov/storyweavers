@@ -25,7 +25,7 @@ The canonical design lives in **[`story.py`](story.py)** (the "Storyweavers Desi
 | Concept embedding via `+=` (`@REGISTRY.addition`) | ✅ partial — some concepts attach to carriers |
 | **Embed-or-zero-weight** (drop un-embedded concepts) | ✅ partial — `+` chains/fallback now embed bare concepts into the current carrier or drop them; remaining leaks are mostly missing-kernel/template cases |
 | **Memeplex == story** (one uniform representation) | ❌ kernels, concepts, characters are still three things |
-| **Compatibility / only-allow-compatible-moves** | ❌ not built (design sketch in `TODO.md` → `constraint_pass`) |
+| **Compatibility / only-allow-compatible-moves** | ❌ not built — concrete layered plan in [Composing Kernels](#composing-kernels-typed-slots-world-gated-rewrites-optional-asp) (typed signatures + optional ASP overlay); backlog item: `TODO.md` → `constraint_pass` |
 | Physical / plausibility model | ❌ minimal (object owner/status only) |
 
 See [`TODO.md`](TODO.md) for the north-star backlog that closes these gaps, and [`QUALITY.md`](QUALITY.md) for how quality/fidelity is measured against it.
@@ -150,6 +150,305 @@ love."
 ```bash
 python ast_rewrite_transform_demo.py
 ```
+
+### Composing Kernels: Typed Slots, World-Gated Rewrites, Optional ASP
+
+How do you splice one kernel into another — insert a `Detective(...)` into the
+`event=` slot of a `Cautionary(...)`, replace a `Friendship` ending with
+`Lovers`, wrap a story as a sub-kernel — *without* writing a one-off Python gate
+per pair? Most of the pieces are already in the repo; they need to be layered.
+
+**1. Phase kwargs are already slots.** Real kernels in the dataset use keyword
+arguments as named insertion points:
+
+```python
+Cautionary(ball,
+    event=Accident(ball, process=Roll(hill) + Step(worker)),
+    setting=factory(loud + machine),
+    consequence=Death(ball))
+```
+
+`state=` / `event=` / `consequence=` / `lesson=` are typed holes the renderer
+already reads (`gen6k01.py`). "Insert Detective into Cautionary" can be as
+simple as putting `Detective(...)` in `event=` — no engine change.
+
+**2. `Rewrite` is the add/replace/remove primitive.** `gen6.py` ships
+pattern→template rewrites with `__VAR` metavars (`DEFAULT_RULES`,
+`match_pattern`, `substitute`, `rewrite_tree`). Compose operations are
+one-liners:
+
+```python
+Rewrite(
+    pattern_src="Cautionary(__S, event=__E, **__R)",
+    output_src ="Cautionary(__S, event=__E + Detective(Sherlock, "
+                "case=Aftermath(__S, __E)), **__R)",
+)
+```
+
+Insert / replace / remove / wrap are the same machinery; only the templates
+differ.
+
+**3. World-gated rewrites are the safety layer.** Pure pattern matching
+produces nonsense (Lovers grafted onto strangers who never met).
+[`ast_rewrite_transform_demo.py`](ast_rewrite_transform_demo.py) shows the
+right pattern: probe-execute the host with the candidate subtree replaced by a
+no-op, read the resulting `World`, and only commit the rewrite when accumulated
+state allows it.
+
+**4. The systematic shape — type system first, ASP on top.** Per-pair Python
+gates do not scale. The correct factoring is a *typed signature* per kernel:
+
+```python
+@dataclass(frozen=True)
+class KernelSignature:
+    name: str                       # "Detective"
+    kind: str                       # this kernel's tag when used as a guest, e.g. "Mystery"
+    slots: tuple[SlotType, ...]     # each slot: name + set of accepted kinds
+    requires: tuple[Effect, ...]    # what must hold in the host: Carrier, Unresolved, Magnitude(...)
+    produces: tuple[Effect, ...]    # what this kernel adds: Embedded(meme, role), Absorbs(...)
+```
+
+Three checks fall out of the signatures, each with the right tool:
+
+| check | tool | when it runs | example |
+|---|---|---|---|
+| **kind** (`guest.kind ∈ slot.accepts`) | dict/set lookup | every sample | "Detective is a Mystery, fits `event=`" |
+| **requires** (effects in probe world) | small Python predicate over `World` | per-sample, after kind passes | "`embedded(love, A)` holds for both endpoints" |
+| **global queries** (compat matrix, enumeration, UNSAT diagnostics) | ASP / clingo | offline / batch | "which hosts can take Detective in *any* slot?" |
+
+The type system is the daily check (microseconds, replaces the demo's
+hand-rolled `allow_lovers` with one uniform predicate). ASP is a power tool
+that *consumes the same signatures*, serialised as facts — the `asp.py` +
+inline `ASP_RULES` idiom from [`storyworlds/worlds/puddles.py`](storyworlds/worlds/puddles.py)
+and [`storyworlds/worlds/pirates.py`](storyworlds/worlds/pirates.py) already
+proves the clingo pattern at the storyworld level (a Python gate plus an
+inline declarative twin kept in lockstep by `--verify`); lifting that idiom
+from "rules per storyworld" to "rules per kernel" is the next step.
+
+**5. ASP rules: per kernel; standalone rulesets per world.** The declarative
+twin pattern is already proven at the storyworld level. From
+[`storyworlds/worlds/puddles.py`](storyworlds/worlds/puddles.py):
+
+```prolog
+% A prize is at risk when the activity splashes the region it is worn on.
+prize_at_risk(A, P) :- splashes(A, R), worn_on(P, R).
+
+% Gear is a compatible fix only when it both neutralises the mess kind AND
+% covers the at-risk region (rain boots guard wet but cover only feet).
+protects(G, A, P) :- gear(G), prize_at_risk(A, P),
+                     mess_of(A, M), guards(G, M),
+                     covers(G, R), worn_on(P, R).
+has_fix(A, P)     :- protects(_, A, P).
+
+valid(Place, A, P) :- affords(Place, A), prize_at_risk(A, P), has_fix(A, P).
+```
+
+That works because the world is *closed*: every `splashes/2`, `worn_on/2`,
+`guards/2`, `covers/2` fact comes from that one world's own registries (emitted
+by `asp_facts()`, kept in lockstep with the Python gate by `--verify`).
+[`storyworlds/worlds/pirates.py`](storyworlds/worlds/pirates.py) extends the
+same idiom with an *outcome model* (`averted | contained | burned`) — the ASP
+twin derives the branch from the scenario's facts, and `asp_verify()` asserts
+parity across curated and randomized cases.
+
+The right factoring going forward is **two layers**, not one:
+
+- **Per-kernel rules** live alongside each `@REGISTRY.kernel(...)` Python
+  function. They are *open* — they don't know what they'll compose with — so
+  they quantify over kinds (`unresolved(case)`, `has_carrier(observer)`) rather
+  than over specific facts. The reusable unit:
+
+  ```prolog
+  % gen6kXX_detective.lp -- ships next to @REGISTRY.kernel("Detective")
+  kernel(detective).
+  kind_of(detective, mystery).
+
+  slot(detective, case).
+  slot(detective, clue).
+  slot(detective, reveal).
+  slot_accepts(detective, case,   loss).
+  slot_accepts(detective, case,   theft).
+  slot_accepts(detective, case,   mystery).
+  slot_accepts(detective, clue,   evidence).
+  slot_accepts(detective, reveal, confession).
+
+  pre(detective, has_carrier(observer)).
+  pre(detective, unresolved(case)).
+
+  produces(detective, embedded(justice, observer)).
+  produces(detective, embedded(wisdom,  victim)).
+  absorbs(detective,  unresolved(case)).
+  ```
+
+  A single shared `compose.lp` derives every legal `(host, slot, guest)` from
+  these per-kernel facts — no per-pair Python gate, no per-pair ASP rule
+  either. Adding a kernel = adding ~20 lines of facts; the composition layer
+  re-derives every legal insertion involving it.
+
+- **Per-world standalone rulesets** (the inline `ASP_RULES` from each
+  storyworld) stay *closed*: they ground out specific entities, registries,
+  and a single outcome model. They consume the shared kernel layer above but
+  add domain-specific predicates (`splashes/2`, `worn_on/2`, `spread/2`,
+  `sense/2`) that only make sense inside that story. `--verify` keeps each
+  world's Python gate and its ASP twin in lockstep, exactly as `puddles.py`
+  and `pirates.py` already do.
+
+The two layers compose: a story is legal iff its kernel composition checks
+under the shared per-kernel rules **and** every per-world fact remains
+satisfiable. Per-kernel rules are *narrative type discipline* (open, reusable);
+per-world rulesets are *domain physics* (closed, instance-level).
+
+**6. Bootstrap per-kernel rules from an encyclopedia / Wikidata.** Authoring
+the `slot_accepts/3` and `kind_of/2` facts by hand for every kernel is the
+labour-intensive part of this scheme. Most of it is *general-purpose common
+sense* — "a Theft is a kind of Crime, a Crime is a kind of Event, a Footprint
+can be a Clue, a Detective investigates a Crime" — and that knowledge already
+exists, machine-readable, in external sources. Three complementary sources at
+three granularities:
+
+- **Wikidata (taxonomic).** SPARQL `wdt:P279*` hypernym chains give the
+  `kind_of/2` lattice directly: `Theft → Crime → Event`,
+  `Detective → Investigator → Profession`,
+  `Forest → Wilderness → Geographical_Feature`. A one-shot extract per
+  kernel-relevant concept produces ~50 lines of facts and gives every kernel
+  a shared cultural ontology for free.
+- **ConceptNet (functional).** `/r/UsedFor`, `/r/CapableOf`, `/r/HasA`,
+  `/r/CausedBy` edges populate `slot_accepts/3`: what can *play the role* of
+  a clue, a reveal, a setting, an instrument. Wikidata is taxonomic;
+  ConceptNet is functional; both are useful and they don't overlap much.
+- **TinyStories itself (empirical).** Crawling `TinyStories_kernels/*.jsonl`
+  for every `Host(..., slot=Guest(...), ...)` shape emits
+  `observed_slot/3(host, slot, guest)` facts. Intersect those with the
+  Wikidata/ConceptNet lattice to keep only senses *actually used* in real
+  stories, and frequency-threshold against typos. This grounds the type
+  system in real dataset usage rather than in what one author imagined.
+
+**Worked example — ConceptNet on `giraffe`.** A condensed slice of the
+ConceptNet entry, picking the relations relevant to the type system and
+dropping synonyms / cross-lingual entries:
+
+```
+giraffe IsA            ruminant, mammal, animal, herd animal, giraffidae
+giraffe AtLocation     a zoo, a drawer
+giraffe HasA           long neck, a nose
+giraffe CapableOf      drink water
+giraffe DefinedAs      tallest land animal, biggest ruminant on earth
+giraffe HasProperty    male, female
+giraffe Symbol         🦒
+```
+
+Each row maps mechanically to per-kernel ASP facts:
+
+```prolog
+% Taxonomic (IsA -> kind_of; transitive closure feeds slot_accepts).
+kind_of(giraffe, ruminant).      kind_of(ruminant, mammal).
+kind_of(mammal,  animal).        kind_of(giraffidae, mammal).
+
+% Functional (AtLocation, HasA, CapableOf -> role facts).
+at_location(giraffe, zoo).       at_location(giraffe, drawer).
+has_part(giraffe, long_neck).    capable_of(giraffe, drink_water).
+defined_as(giraffe, tallest_land_animal).
+
+% Renderer hook (Symbol) -- not used by the gate, used by prose.
+symbol(giraffe, "🦒").
+```
+
+These facts immediately make a `Visit(zoo, hero, giraffe)` shape derivable:
+the `things_seen` slot of `Visit` can accept anything with
+`at_location(X, zoo)` and `kind_of*(X, animal)`, so a single ConceptNet pass
+populates dozens of legal guests at once with no per-pair authoring. The same
+`kind_of` chain also makes `giraffe` a valid `mammal` / `animal` wherever an
+upstream slot already accepts those kinds — Wikidata-style taxonomic reuse
+falls out for free.
+
+The `at_location(giraffe, drawer)` edge also shows *why* the curation step
+matters: ConceptNet conflates senses — a real giraffe lives in a zoo, a *toy*
+giraffe lives in a drawer. A small split into `giraffe_animal` and
+`giraffe_toy` keeps both useful and neither leaking into the wrong slot. The
+intersection with `observed_slot/3` from the TinyStories crawl is the cheap
+filter: only senses actually used in real stories survive into the per-kernel
+rules.
+
+**Counterexample — `ostrich`.** ConceptNet coverage is uneven: popular,
+iconic concepts get rich entries; close neighbours of the same kind often do
+not. The `ostrich` entry returns the taxonomic chain (`IsA: bird, ratite,
+flightless bird, animal`) and exactly *one* functional edge
+(`CapableOf: lay an egg`) — no `HasA`, no `AtLocation`, no `DefinedAs`, no
+`Symbol`. An ostrich does have a long neck, long legs, and lives on the
+savannah; none of that is in ConceptNet:
+
+```prolog
+% From ConceptNet, complete:
+kind_of(ostrich, bird).         kind_of(bird, animal).
+kind_of(ostrich, ratite).       kind_of(ratite, flightless_bird).
+capable_of(ostrich, lay_egg).
+% Missing vs. giraffe: at_location, has_part, defined_as, symbol.
+```
+
+The one functional edge that *is* present — `CapableOf: lay an egg` — sits at
+the wrong level of the hierarchy: egg-laying is a property of every `bird`,
+not something specific to ostriches. A disciplined ontology would assert
+`capable_of(bird, lay_egg)` once and let subtypes inherit it through
+`kind_of/2`; ConceptNet's crowdsourced edges land wherever a contributor put
+them, with no inheritance push-up. The bootstrap pass therefore needs a
+**lift** step alongside the prune step: when a property holds for several
+siblings under a common parent, hoist it to the parent and drop the leaves.
+Wikidata's `wdt:P279` lattice plus `wdt:P31` instance facts is much better
+factored on this axis, which is why the layered approach matters — ConceptNet
+fills functional gaps, Wikidata enforces taxonomic discipline.
+
+The same entry also exposes an idiomatic WordNet sense — `IsA: person` (from
+"ostrich politics" / a person who denies facts). Imported uncritically,
+`kind_of(ostrich, person)` would let an ostrich fill any slot that accepts
+characters. Curation has to *prune* idiomatic senses, not only *merge*
+synonymous ones.
+
+So treat ConceptNet as one source among several: Wikidata for stable
+taxonomy, ConceptNet for crowdsourced functional edges *where they exist*,
+the TinyStories crawl for actually-used senses, and a small manual top-up
+per kernel pack for the holes both corpora share (a tracked
+`missing_facts.lp` per pack is enough — gaps stay legible). The bootstrap
+closes the long tail; it does not eliminate authoring.
+
+This fits the project's "LLMs at synthesis time, never at runtime" rule:
+extraction + curation runs once, offline, against external corpora; the
+resulting `.lp` snippets ship with each kernel pack and the runtime engine
+sees only static facts. A free coverage signal also falls out — any dataset
+use of a kernel that is *not* derivable under the imported lattice is a
+checklist entry for what `slot_accepts` / `kind_of` facts are still missing.
+
+A kernel author then writes ~5 lines of bespoke `pre` / `produces` effects per
+kernel, and the slot/kind ontology is *inherited* from the shared commons.
+The same lattice is reusable across the whole kernel library — adding
+`Mystery` as a kind doesn't just help `Detective`; it automatically makes
+every other host with a `slot_accepts(_, _, mystery)` legal to compose with.
+
+**Where this lands against the north star.** The
+*Compatibility / only-allow-compatible-moves* row in the status table above is
+the gap this design closes:
+
+- *Embed-or-zero-weight* becomes a static rule: an unsatisfied `Embedded(M, carrier)`
+  precondition blocks any kernel that references it. An un-embedded meme can
+  never satisfy a later kernel's `requires`.
+- *Only compatible moves* becomes typing: `kind ∉ slot.accepts` → static
+  reject; `requires` unmet in the probe world → dynamic reject. The maxed-`Envy`
+  `Scar(Character, lion)` cannot fill a slot whose accepted kinds include only
+  kind-acts.
+
+**Order of work** (smallest first, in keeping with YAGNI):
+
+1. `KernelSignature` dataclass attached to existing kernels via an optional
+   `signature=` argument on `@REGISTRY.kernel`. Unsignatured kernels keep
+   working; signatures opt-in pack-by-pack.
+2. `can_fill(host, slot, guest)` + `requires_met(world, guest)` as two short
+   Python predicates. Together they replace every hand-rolled `allow_*` gate
+   from `ast_rewrite_transform_demo.py` with one uniform check.
+3. `to_asp(sig)` + a shared `compose.lp` for the global queries you actually
+   want (compatibility matrices, optimisation, UNSAT diagnostics). ASP becomes
+   a serialised view of the same signatures, not a parallel rulebase.
+
+Pilot the whole stack on one kernel family (e.g. Cautionary × Detective), in
+the spirit of `storyworlds/worlds/`, before touching `gen6` core.
 
 ## Core Concept: Story Kernels
 
