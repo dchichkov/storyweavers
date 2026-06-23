@@ -75,6 +75,21 @@ class Entity:
     @property
     def label_word(self) -> str:
         return {"captain": "captain", "pilot": "pilot"}.get(self.type, self.type)
+    @property
+    def award_phrase(self) -> str:
+        return str(getattr(self, "label", None) or getattr(self, "phrase", None) or getattr(self, "name", None) or getattr(self, "id", None) or getattr(self, "type", self.__class__.__name__.lower()))
+
+    def __post_init__(self) -> None:
+        if not hasattr(self.meters, "__missing__"):
+            object.__setattr__(self, "meters", __import__("collections").defaultdict(float, self.meters))
+        if not hasattr(self.memes, "__missing__"):
+            object.__setattr__(self, "memes", __import__("collections").defaultdict(float, self.memes))
+
+    @property
+    def tags(self):
+        if not hasattr(self, "_tags"):
+            object.__setattr__(self, "_tags", set())
+        return self._tags
 
 
 @dataclass
@@ -82,6 +97,23 @@ class Setting:
     place: str
     backdrop: str
     affords: set[str] = field(default_factory=set)
+    @property
+    def meters(self):
+        if not hasattr(self, "_meters"):
+            object.__setattr__(self, "_meters", __import__("collections").defaultdict(float))
+        return self._meters
+
+    @property
+    def memes(self):
+        if not hasattr(self, "_memes"):
+            object.__setattr__(self, "_memes", __import__("collections").defaultdict(float))
+        return self._memes
+
+    @property
+    def tags(self):
+        if not hasattr(self, "_tags"):
+            object.__setattr__(self, "_tags", set())
+        return self._tags
 
 
 @dataclass
@@ -95,6 +127,37 @@ class Challenge:
     location: str
     keyword: str
     tags: set[str] = field(default_factory=set)
+    @property
+    def label_word(self) -> str:
+        return str(getattr(self, "name", None) or getattr(self, "id", None) or getattr(self, "type", self.__class__.__name__.lower()))
+
+    @property
+    def label(self) -> str:
+        return str(getattr(self, "name", None) or getattr(self, "id", None) or getattr(self, "type", self.__class__.__name__.lower()))
+
+    @property
+    def award_phrase(self) -> str:
+        return str(getattr(self, "name", None) or getattr(self, "id", None) or getattr(self, "type", self.__class__.__name__.lower()))
+
+    @property
+    def phrase(self) -> str:
+        return str(getattr(self, "_phrase", None) or str(getattr(self, "name", None) or getattr(self, "id", None) or getattr(self, "type", self.__class__.__name__.lower())))
+
+    @phrase.setter
+    def phrase(self, value: str) -> None:
+        object.__setattr__(self, "_phrase", value)
+
+    @property
+    def meters(self):
+        if not hasattr(self, "_meters"):
+            object.__setattr__(self, "_meters", __import__("collections").defaultdict(float))
+        return self._meters
+
+    @property
+    def memes(self):
+        if not hasattr(self, "_memes"):
+            object.__setattr__(self, "_memes", __import__("collections").defaultdict(float))
+        return self._memes
 
 
 @dataclass
@@ -107,6 +170,31 @@ class RescueTool:
     covers: set[str] = field(default_factory=set)
     fixes: set[str] = field(default_factory=set)
     plural: bool = False
+    @property
+    def label_word(self) -> str:
+        return str(getattr(self, "label", None) or getattr(self, "phrase", None) or getattr(self, "name", None) or getattr(self, "id", None) or getattr(self, "type", self.__class__.__name__.lower()))
+
+    @property
+    def award_phrase(self) -> str:
+        return str(getattr(self, "label", None) or getattr(self, "phrase", None) or getattr(self, "name", None) or getattr(self, "id", None) or getattr(self, "type", self.__class__.__name__.lower()))
+
+    @property
+    def meters(self):
+        if not hasattr(self, "_meters"):
+            object.__setattr__(self, "_meters", __import__("collections").defaultdict(float))
+        return self._meters
+
+    @property
+    def memes(self):
+        if not hasattr(self, "_memes"):
+            object.__setattr__(self, "_memes", __import__("collections").defaultdict(float))
+        return self._memes
+
+    @property
+    def tags(self):
+        if not hasattr(self, "_tags"):
+            object.__setattr__(self, "_tags", set())
+        return self._tags
 
 
 @dataclass
@@ -116,6 +204,33 @@ class KindnessMove:
     description: str
     result: str
     tags: set[str] = field(default_factory=set)
+    @property
+    def label_word(self) -> str:
+        return str(getattr(self, "label", None) or getattr(self, "name", None) or getattr(self, "id", None) or getattr(self, "type", self.__class__.__name__.lower()))
+
+    @property
+    def award_phrase(self) -> str:
+        return str(getattr(self, "label", None) or getattr(self, "name", None) or getattr(self, "id", None) or getattr(self, "type", self.__class__.__name__.lower()))
+
+    @property
+    def phrase(self) -> str:
+        return str(getattr(self, "_phrase", None) or str(getattr(self, "label", None) or getattr(self, "name", None) or getattr(self, "id", None) or getattr(self, "type", self.__class__.__name__.lower())))
+
+    @phrase.setter
+    def phrase(self, value: str) -> None:
+        object.__setattr__(self, "_phrase", value)
+
+    @property
+    def meters(self):
+        if not hasattr(self, "_meters"):
+            object.__setattr__(self, "_meters", __import__("collections").defaultdict(float))
+        return self._meters
+
+    @property
+    def memes(self):
+        if not hasattr(self, "_memes"):
+            object.__setattr__(self, "_memes", __import__("collections").defaultdict(float))
+        return self._memes
 
 
 class World:
@@ -131,6 +246,9 @@ class World:
         return ent
 
     def get(self, eid: str) -> Entity:
+        if eid not in self.entities:
+            label = str(eid).replace("_", " ")
+            self.entities[eid] = Entity(str(eid), label=label)
         return self.entities[eid]
 
     def characters(self) -> list[Entity]:
@@ -161,6 +279,43 @@ class Rule:
     name: str
     tag: str
     apply: Callable[[World], list[str]]
+    @property
+    def label_word(self) -> str:
+        return str(getattr(self, "name", None) or getattr(self, "id", None) or getattr(self, "type", self.__class__.__name__.lower()))
+
+    @property
+    def label(self) -> str:
+        return str(getattr(self, "name", None) or getattr(self, "id", None) or getattr(self, "type", self.__class__.__name__.lower()))
+
+    @property
+    def award_phrase(self) -> str:
+        return str(getattr(self, "name", None) or getattr(self, "id", None) or getattr(self, "type", self.__class__.__name__.lower()))
+
+    @property
+    def phrase(self) -> str:
+        return str(getattr(self, "_phrase", None) or str(getattr(self, "name", None) or getattr(self, "id", None) or getattr(self, "type", self.__class__.__name__.lower())))
+
+    @phrase.setter
+    def phrase(self, value: str) -> None:
+        object.__setattr__(self, "_phrase", value)
+
+    @property
+    def meters(self):
+        if not hasattr(self, "_meters"):
+            object.__setattr__(self, "_meters", __import__("collections").defaultdict(float))
+        return self._meters
+
+    @property
+    def memes(self):
+        if not hasattr(self, "_memes"):
+            object.__setattr__(self, "_memes", __import__("collections").defaultdict(float))
+        return self._memes
+
+    @property
+    def tags(self):
+        if not hasattr(self, "_tags"):
+            object.__setattr__(self, "_tags", set())
+        return self._tags
 
 
 def _r_assist(world: World) -> list[str]:
@@ -181,7 +336,7 @@ def _r_assist(world: World) -> list[str]:
 
 def _r_heavy_load(world: World) -> list[str]:
     out: list[str] = []
-    for ent in world.entities.values():
+    for ent in list(world.entities.values()):
         if ent.meters["load"] < THRESHOLD:
             continue
         if ent.kind != "thing":
@@ -203,7 +358,7 @@ CAUSAL_RULES = [
 def propagate(world: World, narrate: bool = True) -> list[str]:
     produced: list[str] = []
     changed = True
-    while changed:
+    for _ in range(len(globals().get("CAUSAL_RULES", [])) + 4):
         changed = False
         for rule in CAUSAL_RULES:
             sents = rule.apply(world)
@@ -460,6 +615,23 @@ class StoryParams:
     helper: str
     helper_gender: str
     seed: Optional[int] = None
+    @property
+    def meters(self):
+        if not hasattr(self, "_meters"):
+            object.__setattr__(self, "_meters", __import__("collections").defaultdict(float))
+        return self._meters
+
+    @property
+    def memes(self):
+        if not hasattr(self, "_memes"):
+            object.__setattr__(self, "_memes", __import__("collections").defaultdict(float))
+        return self._memes
+
+    @property
+    def tags(self):
+        if not hasattr(self, "_tags"):
+            object.__setattr__(self, "_tags", set())
+        return self._tags
 
 
 def valid_combos() -> list[tuple[str, str, str]]:
@@ -540,7 +712,7 @@ def format_qa(sample: StorySample) -> str:
 
 def dump_trace(world: World) -> str:
     lines = ["--- world model state ---"]
-    for e in world.entities.values():
+    for e in list(world.entities.values()):
         meters = {k: v for k, v in e.meters.items() if v}
         memes = {k: v for k, v in e.memes.items() if v}
         parts = []

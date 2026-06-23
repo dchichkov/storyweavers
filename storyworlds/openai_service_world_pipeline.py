@@ -9,6 +9,7 @@ import os
 import re
 import subprocess
 import sys
+import time
 from datetime import UTC, datetime
 from pathlib import Path
 from types import SimpleNamespace
@@ -17,6 +18,7 @@ from typing import Any
 import openai_batch_world_factory as batch_factory
 import openai_story_quality
 import qa_static_check
+import repair_batch_output
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -66,6 +68,11 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--qa-timeout", type=float, default=30.0)
     parser.add_argument("--qa-top", type=int, default=20)
     parser.add_argument("--report-out", type=Path, default=None)
+    parser.add_argument(
+        "--repair-failures",
+        action="store_true",
+        help="apply scripted repairs only to scripts that fail local runnable checks before eval",
+    )
     parser.add_argument(
         "--from-manifest",
         type=Path,
@@ -217,6 +224,8 @@ def parse_json_story(raw: str) -> str | None:
         payload = json.loads(raw)
     except json.JSONDecodeError:
         return None
+    if isinstance(payload, list):
+        payload = next((item for item in payload if isinstance(item, dict)), {})
     if isinstance(payload, dict) and isinstance(payload.get("story"), str):
         return payload["story"].strip()
     return None
@@ -249,6 +258,115 @@ def sample_one_story(script: Path, seed: int, timeout: float) -> tuple[bool, str
             return True, story
         return False, "missing_story_or_invalid_json"
     return False, last_error or "unknown_error"
+
+
+def probe_script(script: Path, *, seed: int, variants: int, timeout: float) -> tuple[bool, str]:
+    compile_cmd = [sys.executable, "-m", "py_compile", str(script)]
+    proc = None
+    for attempt in range(3):
+        try:
+            proc = subprocess.run(
+                compile_cmd,
+                cwd=ROOT,
+                env=sample_env(),
+                text=True,
+                capture_output=True,
+            )
+            break
+        except OSError as exc:
+            if getattr(exc, "errno", None) == 35 and attempt < 2:
+                time.sleep(0.25 * (attempt + 1))
+                continue
+            return False, str(exc)
+    if proc is None:
+        return False, "py_compile did not run"
+    if proc.returncode:
+        return False, proc.stderr.strip() or proc.stdout.strip() or "py_compile failed"
+
+    run_cmd = [
+        sys.executable,
+        str(script),
+        "-n",
+        str(variants),
+        "--seed",
+        str(seed),
+        "--json",
+    ]
+    proc = None
+    for attempt in range(3):
+        try:
+            proc = subprocess.run(
+                run_cmd,
+                cwd=ROOT,
+                env=sample_env(),
+                text=True,
+                capture_output=True,
+                timeout=timeout,
+            )
+            break
+        except subprocess.TimeoutExpired:
+            return False, f"timed out after {timeout:g}s: {' '.join(run_cmd)}"
+        except OSError as exc:
+            if getattr(exc, "errno", None) == 35 and attempt < 2:
+                time.sleep(0.25 * (attempt + 1))
+                continue
+            return False, str(exc)
+    if proc is None:
+        return False, "sample command did not run"
+    if proc.returncode:
+        return False, proc.stderr.strip() or proc.stdout.strip() or f"returncode={proc.returncode}"
+    try:
+        payload = qa_static_check.parse_json_samples(proc.stdout)
+    except json.JSONDecodeError as exc:
+        return False, f"invalid JSON: {exc}"
+    if len(payload) < 1:
+        return False, "no JSON story samples"
+    return True, "ok"
+
+
+def repair_failures(manifest: dict[str, Any], args: argparse.Namespace) -> list[str]:
+    if not args.repair_failures:
+        return []
+    print("Running scripted repair pass over locally failing scripts", flush=True)
+    log: list[str] = []
+    for job in manifest.get("jobs", []):
+        if not isinstance(job, dict) or not isinstance(job.get("target"), str):
+            continue
+        name = str(job.get("name") or job["target"])
+        path = ROOT / str(job["target"])
+        ok, detail = probe_script(
+            path,
+            seed=args.quality_seed,
+            variants=max(1, args.qa_variants),
+            timeout=args.qa_timeout,
+        )
+        if ok:
+            continue
+        source = path.read_text(encoding="utf-8")
+        repaired, changes = repair_batch_output.repair_source(source)
+        if not changes:
+            line = f"- {name}: failed: no scripted repair matched: {detail.splitlines()[0] if detail else detail}"
+            log.append(line)
+            print(line, flush=True)
+            continue
+        path.write_text(repaired.rstrip() + "\n", encoding="utf-8")
+        repaired_ok, repaired_detail = probe_script(
+            path,
+            seed=args.quality_seed,
+            variants=max(1, args.qa_variants),
+            timeout=args.qa_timeout,
+        )
+        status = "ok" if repaired_ok else "failed"
+        final_detail = "ok" if repaired_ok else (repaired_detail.splitlines()[0] if repaired_detail else repaired_detail)
+        if not repaired_ok:
+            path.write_text(source.rstrip() + "\n", encoding="utf-8")
+            final_detail = f"{final_detail}; rolled back"
+        line = f"- {name}: {status}: {', '.join(changes)}; {final_detail}"
+        log.append(line)
+        print(line, flush=True)
+    if not log:
+        log.append("scripted repair: no failing scripts")
+    return log
 
 
 def write_story_files(manifest_path: Path, manifest: dict[str, Any], args: argparse.Namespace) -> dict[str, Path]:
@@ -391,6 +509,7 @@ def render_report(
     quality_summary: dict[str, Any],
     qa_result: qa_static_check.CheckResult | None,
     qa_text: str,
+    repair_log: list[str],
 ) -> str:
     target_dir = Path(manifest["target_dir"]) if manifest.get("target_dir") else None
     response_jsonl = ROOT / manifest["response_jsonl"] if manifest.get("response_jsonl") else None
@@ -412,6 +531,7 @@ def render_report(
         f"- Requested worlds: {args.count}",
         f"- Generated worlds: {generated_ok}/{len(jobs) or args.count}",
         f"- Generation failures: {generated_failed}",
+        f"- Repair log lines: {len(repair_log)}",
         f"- Quality-rated stories: {quality_ok if quality_ok is not None else 'skipped'}",
         f"- QA static run failures: {qa_failures if qa_failures is not None else 'skipped'}",
         f"- Duplicate story-QA groups: {qa_duplicates if qa_duplicates is not None else 'skipped'}",
@@ -456,6 +576,18 @@ def render_report(
             lines.append(
                 f"| {index} | {script_link} | {prompt_link} | {story_link} | {job.get('seed', '')} |"
             )
+
+    lines += [
+        "",
+        "## Repair",
+        "",
+    ]
+    if repair_log:
+        lines.append("```text")
+        lines.extend(repair_log)
+        lines.append("```")
+    else:
+        lines.append("Skipped.")
 
     lines += [
         "",
@@ -533,6 +665,8 @@ def main() -> int:
     if not report_path.is_absolute():
         report_path = ROOT / report_path
 
+    repair_log = repair_failures(manifest, args)
+
     prompt_files = write_prompt_files(manifest_path, manifest, args)
     story_files = write_story_files(manifest_path, manifest, args)
 
@@ -575,6 +709,7 @@ def main() -> int:
         quality_summary=quality_summary,
         qa_result=qa_result,
         qa_text=qa_text,
+        repair_log=repair_log,
     )
     report_path.parent.mkdir(parents=True, exist_ok=True)
     report_path.write_text(report, encoding="utf-8")
