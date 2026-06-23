@@ -3,6 +3,14 @@
 This loop is for improving the `gpt-5.4-mini` storyworld prompt and the cheap
 scripted repair layer without using an LLM repair pass.
 
+The loop has two distinct phases:
+
+1. Make the generated scripts runnable and sampleable.
+2. Judge story quality only after the runnable set is clean.
+
+Do not skip the first phase. Quality scores are misleading when a large fraction
+of scripts fail before producing stories.
+
 ## Goal
 
 Raise downstream storyworld quality while keeping the generated scripts runnable,
@@ -46,6 +54,10 @@ The command writes:
 - a Markdown report with links to prompts, scripts, stories, repair logs, quality
   results, and static QA output
 
+Keep these artifacts. Do not delete raw responses, manifests, prompt snapshots,
+or earlier reports when iterating. They are the audit trail that lets us compare
+prompt, repair, and quality changes without regenerating the same batch.
+
 ## Repair Policy
 
 Use `--repair-failures` by default. It probes each generated script with
@@ -66,6 +78,132 @@ Good repair rules are mechanical and model-specific, for example:
 
 Avoid bulky reliability instructions in the prompt when a tiny deterministic
 repair rule fixes a common generated-code mistake.
+
+## Repair-First Workflow
+
+When a run has script failures, repair before spending more quality-judge calls.
+The target is near 100% runnable scripts, then quality assessment.
+
+1. Preserve the generated batch artifacts.
+
+   Before materializing broad repairs, copy the current report and world scripts
+   to a clearly named backup:
+
+   ```bash
+   cp storyworlds/batches/storyworld_service_<stamp>_seed<seed>_n100.report.md \
+     storyworlds/batches/storyworld_service_<stamp>_seed<seed>_n100.report.before_repair_iter1.md
+
+   cp -R storyworlds/worlds/gpt-5.4-mini_service_<stamp>_seed<seed>_n100 \
+     storyworlds/batches/storyworld_service_<stamp>_seed<seed>_n100.stories.before_repair_iter1
+   ```
+
+2. Improve `repair_batch_output.py` for repeated mechanical failures.
+
+   Add rules only for concrete generated-code patterns. Good examples include:
+
+   - `rng.choice(sorted(combos))` on tuples containing dataclass objects
+   - invalid generated syntax such as `def ASP_RULES = r"""`
+   - missing dataclass fields/properties used later by the script
+   - ordinary dicts used as `meters` / `memes`
+   - generated lookup code that assumes a constant table has a key
+   - bounded propagation loops when a generated fixed-point rule can fire forever
+
+   Syntax-check the repair script after edits:
+
+   ```bash
+   ./.venv/bin/python -m py_compile storyworlds/repair_batch_output.py
+   ```
+
+3. Re-materialize the same batch without quality.
+
+   Use the original manifest so the model outputs stay fixed and only repair
+   behavior changes:
+
+   ```bash
+   ./.venv/bin/python storyworlds/openai_service_world_pipeline.py \
+     --from-manifest storyworlds/batches/storyworld_service_<stamp>_seed<seed>_n100.manifest.json \
+     -n 100 \
+     --repair-failures \
+     --skip-quality \
+     --report-out storyworlds/batches/storyworld_service_<stamp>_seed<seed>_n100.repair_iter1.report.md
+   ```
+
+4. Run static QA over the repaired worlds directory.
+
+   This is the repair gate:
+
+   ```bash
+   ./.venv/bin/python storyworlds/qa_static_check.py \
+     --worlds-dir storyworlds/worlds/gpt-5.4-mini_service_<stamp>_seed<seed>_n100 \
+     -n 100 \
+     --variants 3 \
+     --seed 42 \
+     --timeout 30
+   ```
+
+   The checker may exit nonzero because duplicate QA groups are a lint failure.
+   For the repair gate, first look at the header:
+
+   - `Sampled 100 world script(s)` is the runnable target.
+   - `Run failures:` must be absent.
+   - Duplicate story-QA groups are a quality/QA follow-up, not a script-repair
+     failure.
+
+5. Repair remaining failures one by one.
+
+   If only a few scripts remain, inspect each traceback and patch the generated
+   script directly. Also fold general patterns back into `repair_batch_output.py`
+   when they are replayable. Probe individual scripts with the same import path
+   used by the static checker:
+
+   ```bash
+   PYTHONPATH=storyworlds ./.venv/bin/python \
+     storyworlds/worlds/gpt-5.4-mini_service_<stamp>_seed<seed>_n100/<script>.py \
+     -n 3 \
+     --seed 42 \
+     --json
+   ```
+
+   Typical last-mile fixes:
+
+   - relax an over-strict generated `valid_combos()` predicate
+   - store ids or handle entity objects consistently in `world.facts`
+   - add missing CLI tail code when a script was truncated after helper
+     definitions
+   - add `default=str` to JSON dumps for dataclass-heavy payloads
+   - fix generated facts such as `hero` / `helper` missing from `world.facts`
+
+6. Re-run the full static gate.
+
+   Do not run quality assessment until all scripts are sampleable. A clean repair
+   pass should say `Sampled 100 world script(s)` and list no run failures.
+
+## Quality Assessment After Repair
+
+Once static sampling is clean, run the quality judge against the repaired worlds
+directory. This assesses the actual one-by-one repaired files instead of
+regenerating or re-repairing from the manifest:
+
+```bash
+OPENAI_API_KEY="$(cat .API_KEY)" ./.venv/bin/python storyworlds/openai_story_quality.py \
+  --worlds-dir storyworlds/worlds/gpt-5.4-mini_service_<stamp>_seed<seed>_n100 \
+  --limit 100 \
+  --batch-size 50 \
+  --sample-concurrency 16 \
+  --sample-timeout 30 \
+  --seed 777 \
+  --model gpt-5.4-mini \
+  --out storyworlds/batches/story_quality_service_<stamp>_seed<seed>_n100.repaired_final.jsonl \
+  --summary-out storyworlds/batches/story_quality_service_<stamp>_seed<seed>_n100.repaired_final.summary.json
+```
+
+Record:
+
+- rated count and API failures
+- quality averages and baseline deltas
+- lowest-overall examples
+- duplicate QA group count from the static checker
+- which repair rules were generalized and which scripts needed one-off patches
 
 ## Reading A Run
 
