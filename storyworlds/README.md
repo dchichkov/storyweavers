@@ -94,51 +94,57 @@ manifest, a raw response JSONL, and a run-specific world directory under
 For the usual generate-plus-eval pass, use the one-command pipeline. It uses the
 same prompt text as `openai_batch_world_factory.py` by default, creates the
 worlds, runs `openai_story_quality.py`, runs `qa_static_check.py`, and writes a
-Markdown report beside the manifest:
+Markdown report beside the manifest. The service pipeline defaults to 100
+storyworlds; use a different `--seed` for each optimization iteration so results
+are not tuned to one sample. See
+[`QUALITY_ITERATION_PIPELINE.md`](QUALITY_ITERATION_PIPELINE.md) for the full
+prompt/repair/quality loop:
 
 ```bash
 OPENAI_API_KEY="$(cat .API_KEY)" ./.venv/bin/python storyworlds/openai_service_world_pipeline.py \
-  -n 10 --model gpt-5.4-mini --reasoning-effort low --max-output-tokens 32000
+  --seed <new-seed> --model gpt-5.4-mini --reasoning-effort low --max-output-tokens 32000 \
+  --repair-failures
 ```
 
 For an optimization-loop variant after reading a report, pass a prompt addendum.
 Addenda are appended to the exact batch prompt; omit this flag when comparing
-against the original batch prompt. The first reliability addendum targets nested
-imports, syntax errors, `-n 3 --json`, and static story-QA duplication:
+against the original batch prompt:
 
 ```bash
 OPENAI_API_KEY="$(cat .API_KEY)" ./.venv/bin/python storyworlds/openai_service_world_pipeline.py \
-  -n 10 --model gpt-5.4-mini --reasoning-effort low --max-output-tokens 32000 \
-  --prompt-addendum storyworlds/prompts/gpt54mini_service_reliability_v1.md
+  --seed <new-seed> --model gpt-5.4-mini --reasoning-effort low --max-output-tokens 32000 \
+  --repair-failures \
+  --prompt-addendum storyworlds/prompts/<prompt_tweak>.md
 ```
 
 To build a report from an already-generated manifest without regenerating:
 
 ```bash
 ./.venv/bin/python storyworlds/openai_service_world_pipeline.py \
-  --from-manifest storyworlds/batches/storyworld_service_<stamp>_seed<seed>_n10.manifest.json \
+  --from-manifest storyworlds/batches/storyworld_service_<stamp>_seed<seed>_n100.manifest.json \
+  --repair-failures \
   --skip-quality
 ```
 
 ```bash
 OPENAI_API_KEY="$(cat .API_KEY)" ./.venv/bin/python storyworlds/openai_service_world_factory.py \
-  -n 10 --model gpt-5.4-mini --reasoning-effort low --max-output-tokens 32000
+  --seed <new-seed> --model gpt-5.4-mini --reasoning-effort low --max-output-tokens 32000
 ```
 
 The resulting manifest can be passed directly to the quality eval:
 
 ```bash
 OPENAI_API_KEY="$(cat .API_KEY)" ./.venv/bin/python storyworlds/openai_story_quality.py \
-  --manifest storyworlds/batches/storyworld_service_<stamp>_seed<seed>_n10.manifest.json \
-  --limit 10 --batch-size 5
+  --manifest storyworlds/batches/storyworld_service_<stamp>_seed<seed>_n100.manifest.json \
+  --limit 100 --batch-size 20
 ```
 
 For duplicate/static QA checks over that exact run directory:
 
 ```bash
 ./.venv/bin/python storyworlds/qa_static_check.py \
-  --worlds-dir storyworlds/worlds/gpt-5.4-mini_service_<stamp>_seed<seed>_n10 \
-  -n 10 --variants 3 --seed 42
+  --worlds-dir storyworlds/worlds/gpt-5.4-mini_service_<stamp>_seed<seed>_n100 \
+  -n 100 --variants 3 --seed 42
 ```
 
 ## OpenAI Story Quality Ratings

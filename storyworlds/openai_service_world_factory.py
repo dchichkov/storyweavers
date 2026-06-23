@@ -56,8 +56,8 @@ def build_parser() -> argparse.ArgumentParser:
         "-n",
         "--count",
         type=int,
-        default=10,
-        help="number of storyworlds to generate; default: 10",
+        default=100,
+        help="number of storyworlds to generate; default: 100",
     )
     parser.add_argument(
         "--seed",

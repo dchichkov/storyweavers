@@ -37,7 +37,7 @@ def build_parser() -> argparse.ArgumentParser:
             "a Markdown report."
         )
     )
-    parser.add_argument("-n", "--count", type=int, default=10, help="storyworld count; default: 10")
+    parser.add_argument("-n", "--count", type=int, default=100, help="storyworld count; default: 100")
     parser.add_argument("--seed", type=int, default=None, help="base generation seed")
     parser.add_argument("--model", default=os.environ.get("OPENAI_MODEL", batch_factory.DEFAULT_MODEL))
     parser.add_argument("--base-url", default=os.environ.get("OPENAI_BASE_URL"))
