@@ -132,11 +132,6 @@ def build_parser() -> argparse.ArgumentParser:
         help="where to write manifest and response JSONL; default: storyworlds/batches",
     )
     parser.add_argument(
-        "--full-instructions",
-        action="store_true",
-        help="inline storyworlds/TODO.md along with STORY.md",
-    )
-    parser.add_argument(
         "--prompt-addendum",
         type=Path,
         default=None,
@@ -249,7 +244,6 @@ def make_jobs(args: argparse.Namespace, *, stamp: str) -> tuple[int, Path, list[
                 setting=seed_obj.setting,
                 features=list(seed_obj.features),
                 style=seed_obj.style,
-                seed_text=seed_obj.render(),
                 domain=generated_domain(seed_obj),
             )
         )
@@ -259,17 +253,13 @@ def make_jobs(args: argparse.Namespace, *, stamp: str) -> tuple[int, Path, list[
 def request_body(args: argparse.Namespace, job: StoryworldJob) -> dict[str, Any]:
     prompt = build_storyworld_prompt(
         job,
-        full_instructions=args.full_instructions,
+        prompt_addendum=args.prompt_addendum,
     )
-    if args.prompt_addendum is not None:
-        prompt += (
-            "\n\nAdditional direct-service prompt addendum:\n\n"
-            + args.prompt_addendum.read_text(encoding="utf-8").strip()
-            + "\n"
-        )
     return {
         "model": args.model,
-        "prompt_cache_key": prompt_cache_key(full_instructions=args.full_instructions),
+        "prompt_cache_key": prompt_cache_key(
+            prompt_addendum=args.prompt_addendum,
+        ),
         "prompt_cache_retention": args.prompt_cache_retention,
         "reasoning": {"effort": args.reasoning_effort},
         "tools": [emit_python_tool()],
@@ -412,9 +402,10 @@ async def run(args: argparse.Namespace) -> int:
         "max_output_tokens": args.max_output_tokens,
         "reasoning_effort": args.reasoning_effort,
         "concurrency": args.concurrency,
-        "prompt_cache_key": prompt_cache_key(full_instructions=args.full_instructions),
+        "prompt_cache_key": prompt_cache_key(
+            prompt_addendum=args.prompt_addendum,
+        ),
         "prompt_cache_retention": args.prompt_cache_retention,
-        "full_instructions": args.full_instructions,
         "prompt_addendum": None if args.prompt_addendum is None else str(args.prompt_addendum),
         "target_dir": target_dir.relative_to(ROOT).as_posix(),
         "response_jsonl": response_jsonl.relative_to(ROOT).as_posix(),

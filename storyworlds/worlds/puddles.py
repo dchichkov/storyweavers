@@ -274,9 +274,9 @@ def _r_grab_conflict(world: World) -> list[str]:
 
 
 CAUSAL_RULES: list[Rule] = [
-    Rule("soak", "physical", _r_soak),
-    Rule("workload", "physical", _r_workload),
-    Rule("grab_conflict", "social", _r_grab_conflict),
+    Rule(name="soak", tag="physical", apply=_r_soak),
+    Rule(name="workload", tag="physical", apply=_r_workload),
+    Rule(name="grab_conflict", tag="social", apply=_r_grab_conflict),
 ]
 
 
@@ -548,62 +548,153 @@ def tell(setting: Setting, activity: Activity, prize_cfg: Prize,
 # Content registries.
 # ---------------------------------------------------------------------------
 SETTINGS = {
-    "park": Setting("the park", indoor=False, affords={"puddles", "rain"}),
-    "garden": Setting("the garden", indoor=False, affords={"puddles", "mud", "rain"}),
-    "backyard": Setting("the backyard", indoor=False, affords={"mud", "puddles", "rain"}),
-    "beach": Setting("the beach", indoor=False, affords={"sand"}),
-    "playroom": Setting("the playroom", indoor=True, affords={"paint"}),
+    "park": Setting(place="the park", indoor=False, affords={"puddles", "rain"}),
+    "garden": Setting(place="the garden", indoor=False, affords={"puddles", "mud", "rain"}),
+    "backyard": Setting(place="the backyard", indoor=False, affords={"mud", "puddles", "rain"}),
+    "beach": Setting(place="the beach", indoor=False, affords={"sand"}),
+    "playroom": Setting(place="the playroom", indoor=True, affords={"paint"}),
 }
 
 ACTIVITIES = {
     # puddle-jumping splashes feet/legs only -- NOT the torso (so a jacket is
     # not at risk here, which is why jacket+puddles is rejected, cf. the README).
-    "puddles": Activity("puddles", "jump in the puddles", "jumping in puddles",
-                        "run towards the puddles", "wet", "wet and dirty",
-                        {"feet", "legs"}, "rainy",
-                        keyword="puddles", tags={"puddle", "wet"}),
+    "puddles": Activity(
+        id="puddles",
+        verb="jump in the puddles",
+        gerund="jumping in puddles",
+        rush="run towards the puddles",
+        mess="wet",
+        soil="wet and dirty",
+        zone={"feet", "legs"},
+        weather="rainy",
+        keyword="puddles",
+        tags={"puddle", "wet"},
+    ),
     # rain falls on everything, so it *does* reach the torso -- jacket+rain is the
     # reasonable counterpart that a raincoat genuinely fixes.
-    "rain": Activity("rain", "play in the rain", "dancing in the rain",
-                     "run out into the rain", "wet", "soaking wet",
-                     {"feet", "legs", "torso"}, "rainy",
-                     keyword="rain", tags={"rain", "wet"}),
-    "mud": Activity("mud", "play in the mud", "splashing in the mud",
-                    "run to the mud", "muddy", "all muddy",
-                    {"feet", "legs"}, "rainy",
-                    keyword="mud", tags={"mud", "dirty"}),
-    "paint": Activity("paint", "paint a picture", "painting pictures",
-                      "grab the paints", "painted", "covered in paint",
-                      {"torso"}, "",
-                      keyword="paint", tags={"paint", "dirty"}),
-    "sand": Activity("sand", "dig in the sand", "digging in the sand",
-                     "sit down in the sand", "sandy", "covered in sand",
-                     {"legs"}, "sunny",
-                     keyword="sand", tags={"sand"}),
+    "rain": Activity(
+        id="rain",
+        verb="play in the rain",
+        gerund="dancing in the rain",
+        rush="run out into the rain",
+        mess="wet",
+        soil="soaking wet",
+        zone={"feet", "legs", "torso"},
+        weather="rainy",
+        keyword="rain",
+        tags={"rain", "wet"},
+    ),
+    "mud": Activity(
+        id="mud",
+        verb="play in the mud",
+        gerund="splashing in the mud",
+        rush="run to the mud",
+        mess="muddy",
+        soil="all muddy",
+        zone={"feet", "legs"},
+        weather="rainy",
+        keyword="mud",
+        tags={"mud", "dirty"},
+    ),
+    "paint": Activity(
+        id="paint",
+        verb="paint a picture",
+        gerund="painting pictures",
+        rush="grab the paints",
+        mess="painted",
+        soil="covered in paint",
+        zone={"torso"},
+        weather="",
+        keyword="paint",
+        tags={"paint", "dirty"},
+    ),
+    "sand": Activity(
+        id="sand",
+        verb="dig in the sand",
+        gerund="digging in the sand",
+        rush="sit down in the sand",
+        mess="sandy",
+        soil="covered in sand",
+        zone={"legs"},
+        weather="sunny",
+        keyword="sand",
+        tags={"sand"},
+    ),
 }
 
 # Order matters: more specific gear first, full-body fallback last.  Each gear
 # only protects the regions it actually covers (the core reasonableness rule).
 GEAR = [
-    Gear("boots", "rain boots", {"feet"}, {"wet", "muddy"},
-         "go home and put on our rain boots",
-         "walked back home to get their rain boots", plural=True),
-    Gear("smock", "an old smock", {"torso"}, {"painted"},
-         "put on an old smock first", "went to get the old smock"),
-    Gear("raincoat", "a raincoat", {"torso"}, {"wet"},
-         "put on your raincoat first", "went to get the raincoat"),
-    Gear("playclothes", "old play clothes", {"legs", "torso"},
-         {"wet", "muddy", "sandy", "painted"},
-         "go home and put on your old play clothes",
-         "walked back home to get the old play clothes", plural=True),
+    Gear(
+        id="boots",
+        label="rain boots",
+        covers={"feet"},
+        guards={"wet", "muddy"},
+        prep="go home and put on our rain boots",
+        tail="walked back home to get their rain boots",
+        plural=True,
+    ),
+    Gear(
+        id="smock",
+        label="an old smock",
+        covers={"torso"},
+        guards={"painted"},
+        prep="put on an old smock first",
+        tail="went to get the old smock",
+    ),
+    Gear(
+        id="raincoat",
+        label="a raincoat",
+        covers={"torso"},
+        guards={"wet"},
+        prep="put on your raincoat first",
+        tail="went to get the raincoat",
+    ),
+    Gear(
+        id="playclothes",
+        label="old play clothes",
+        covers={"legs", "torso"},
+        guards={"wet", "muddy", "sandy", "painted"},
+        prep="go home and put on your old play clothes",
+        tail="walked back home to get the old play clothes",
+        plural=True,
+    ),
 ]
 
 PRIZES = {
-    "shoes": Prize("shoes", "pretty white shoes", "shoes", "feet", plural=True),
-    "socks": Prize("socks", "new white socks", "socks", "feet", plural=True),
-    "dress": Prize("dress", "a pretty new dress", "dress", "legs", genders={"girl"}),
-    "jacket": Prize("jacket", "a new jacket with a tough zipper", "jacket", "torso"),
-    "shirt": Prize("shirt", "a clean white shirt", "shirt", "torso"),
+    "shoes": Prize(
+        label="shoes",
+        phrase="pretty white shoes",
+        type="shoes",
+        region="feet",
+        plural=True,
+    ),
+    "socks": Prize(
+        label="socks",
+        phrase="new white socks",
+        type="socks",
+        region="feet",
+        plural=True,
+    ),
+    "dress": Prize(
+        label="dress",
+        phrase="a pretty new dress",
+        type="dress",
+        region="legs",
+        genders={"girl"},
+    ),
+    "jacket": Prize(
+        label="jacket",
+        phrase="a new jacket with a tough zipper",
+        type="jacket",
+        region="torso",
+    ),
+    "shirt": Prize(
+        label="shirt",
+        phrase="a clean white shirt",
+        type="shirt",
+        region="torso",
+    ),
 }
 
 GIRL_NAMES = ["Lily", "Mia", "Zoe", "Ava", "Ella", "Lucy", "Anna", "Maya", "Nora", "Rose"]
@@ -716,25 +807,37 @@ def story_qa(world: World) -> list[QAItem]:
     # as much as possible so the training set does not learn invariant QA shells.
     qa: list[QAItem] = [
         QAItem(
-            f"Who is the story about when {hero.id} visits {place} to "
-            f"{act.verb} in {pos} {prize.label}?",
-            f"It is about a little {trait} {hero.type} named {hero.id} and "
-            f"{pos} {pw}. They go to {place} on a {day}, and {hero.id} is "
-            f"wearing {pos} {prize.label}.",
+            question=(
+                f"Who is the story about when {hero.id} visits {place} to "
+                f"{act.verb} in {pos} {prize.label}?"
+            ),
+            answer=(
+                f"It is about a little {trait} {hero.type} named {hero.id} and "
+                f"{pos} {pw}. They go to {place} on a {day}, and {hero.id} is "
+                f"wearing {pos} {prize.label}."
+            ),
         ),
         QAItem(
-            f"What did {trait} {hero.id} love to do {where} in {place} before "
-            f"{pw} worried about {pos} {prize.label}?",
-            f"{trait.capitalize()} {hero.id} loved playing {where} and "
-            f"{act.gerund}. That wish became tricky because {pos} "
-            f"{prize.label} could get messy.",
+            question=(
+                f"What did {trait} {hero.id} love to do {where} in {place} before "
+                f"{pw} worried about {pos} {prize.label}?"
+            ),
+            answer=(
+                f"{trait.capitalize()} {hero.id} loved playing {where} and "
+                f"{act.gerund}. That wish became tricky because {pos} "
+                f"{prize.label} could get messy."
+            ),
         ),
         QAItem(
-            f"What new {prize.label} did {hero.id}'s {pw} buy for the "
-            f"{trait} {hero.type} before "
-            f"the {act.keyword or act.mess} play at {place}?",
-            f"{pos.capitalize()} {pw} bought {obj} {prize.phrase}. "
-            f"{hero.id} loved {prize.it()} and wore {prize.it()} for the outing.",
+            question=(
+                f"What new {prize.label} did {hero.id}'s {pw} buy for the "
+                f"{trait} {hero.type} before "
+                f"the {act.keyword or act.mess} play at {place}?"
+            ),
+            answer=(
+                f"{pos.capitalize()} {pw} bought {obj} {prize.phrase}. "
+                f"{hero.id} loved {prize.it()} and wore {prize.it()} for the outing."
+            ),
         ),
     ]
     # The featured question: how/why the parent was upset -- grounded in the
@@ -750,9 +853,11 @@ def story_qa(world: World) -> list[QAItem]:
                 f"held {pos} hand and reminded {obj} they could still want to "
                 f"{act.verb} while choosing a safer way.")
         qa.append(QAItem(
-            f"Why did {hero.id}'s {pw} worry about {pos} {prize.label} "
-            f"when {trait} {hero.id} wanted to {act.verb} at {place}?",
-            why,
+            question=(
+                f"Why did {hero.id}'s {pw} worry about {pos} {prize.label} "
+                f"when {trait} {hero.id} wanted to {act.verb} at {place}?"
+            ),
+            answer=why,
         ))
     if f.get("resolved"):
         gear = f["gear"]
@@ -760,18 +865,26 @@ def story_qa(world: World) -> list[QAItem]:
         if gear_plan.startswith(("a ", "an ")):
             gear_plan = gear_plan.split(" ", 1)[1]
         qa.append(QAItem(
-            f"How did {gear.label} help {trait} {hero.id} {act.verb} at {place} "
-            f"without ruining {pos} {prize.label}?",
-            f"They agreed to use {gear.label} first, so {hero.id} could "
-            f"{act.verb} at {place} without ruining {pos} {prize.label}. "
-            f"The plan let {obj} play while {pos} {prize.label} stayed clean.",
+            question=(
+                f"How did {gear.label} help {trait} {hero.id} {act.verb} at {place} "
+                f"without ruining {pos} {prize.label}?"
+            ),
+            answer=(
+                f"They agreed to use {gear.label} first, so {hero.id} could "
+                f"{act.verb} at {place} without ruining {pos} {prize.label}. "
+                f"The plan let {obj} play while {pos} {prize.label} stayed clean."
+            ),
         ))
         qa.append(QAItem(
-            f"How did {trait} {hero.id} feel after {pw} agreed to the {gear_plan} "
-            f"plan for {act.keyword or act.mess} at {place}?",
-            f"{hero.id} felt happy and hugged {pos} {pw} once they agreed "
-            f"on the plan for {pos} {prize.label}. At the end, {sub} was "
-            f"{act.gerund} with {pw} laughing nearby.",
+            question=(
+                f"How did {trait} {hero.id} feel after {pw} agreed to the {gear_plan} "
+                f"plan for {act.keyword or act.mess} at {place}?"
+            ),
+            answer=(
+                f"{hero.id} felt happy and hugged {pos} {pw} once they agreed "
+                f"on the plan for {pos} {prize.label}. At the end, {sub} was "
+                f"{act.gerund} with {pw} laughing nearby."
+            ),
         ))
     return qa
 
@@ -785,7 +898,7 @@ def world_knowledge_qa(world: World) -> list[QAItem]:
     out: list[QAItem] = []
     for tag in KNOWLEDGE_ORDER:
         if tag in tags:
-            out.extend(QAItem(q, a) for q, a in KNOWLEDGE[tag])
+            out.extend(QAItem(question=q, answer=a) for q, a in KNOWLEDGE[tag])
     return out
 
 
@@ -830,11 +943,51 @@ def dump_trace(world: World) -> str:
 
 # Curated, constraint-valid set (used by --all).
 CURATED = [
-    StoryParams("park", "puddles", "shoes", "Lily", "girl", "mother", "playful"),
-    StoryParams("garden", "mud", "socks", "Tim", "boy", "father", "curious"),
-    StoryParams("park", "rain", "jacket", "Ben", "boy", "father", "lively"),  # jacket+rain -> raincoat
-    StoryParams("playroom", "paint", "shirt", "Mia", "girl", "mother", "spirited"),
-    StoryParams("beach", "sand", "dress", "Zoe", "girl", "mother", "cheerful"),
+    StoryParams(
+        place="park",
+        activity="puddles",
+        prize="shoes",
+        name="Lily",
+        gender="girl",
+        parent="mother",
+        trait="playful",
+    ),
+    StoryParams(
+        place="garden",
+        activity="mud",
+        prize="socks",
+        name="Tim",
+        gender="boy",
+        parent="father",
+        trait="curious",
+    ),
+    StoryParams(  # jacket+rain -> raincoat
+        place="park",
+        activity="rain",
+        prize="jacket",
+        name="Ben",
+        gender="boy",
+        parent="father",
+        trait="lively",
+    ),
+    StoryParams(
+        place="playroom",
+        activity="paint",
+        prize="shirt",
+        name="Mia",
+        gender="girl",
+        parent="mother",
+        trait="spirited",
+    ),
+    StoryParams(
+        place="beach",
+        activity="sand",
+        prize="dress",
+        name="Zoe",
+        gender="girl",
+        parent="mother",
+        trait="cheerful",
+    ),
 ]
 
 
@@ -1003,7 +1156,15 @@ def resolve_params(args: argparse.Namespace, rng: random.Random) -> StoryParams:
     name = args.name or rng.choice(GIRL_NAMES if gender == "girl" else BOY_NAMES)
     parent = args.parent or rng.choice(["mother", "father"])
     trait = rng.choice(TRAITS)
-    return StoryParams(place, activity, prize_id, name, gender, parent, trait)
+    return StoryParams(
+        place=place,
+        activity=activity,
+        prize=prize_id,
+        name=name,
+        gender=gender,
+        parent=parent,
+        trait=trait,
+    )
 
 
 def generate(params: StoryParams) -> StorySample:

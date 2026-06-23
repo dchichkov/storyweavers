@@ -35,7 +35,6 @@ EXAMPLE_WORLD_PATHS = (
     WORLDS_DIR / "puddles.py",
     WORLDS_DIR / "pirates.py",
 )
-TODO_PATH = STORYWORLDS_DIR / "TODO.md"
 BATCH_DIR = STORYWORLDS_DIR / "batches"
 DEFAULT_MODEL = "gpt-5.4-mini"
 DEFAULT_ENDPOINT = "/v1/responses"
@@ -56,7 +55,6 @@ class StoryworldJob:
     setting: str
     features: list[str]
     style: str
-    seed_text: str
     domain: str
 
 
@@ -131,11 +129,6 @@ def build_parser() -> argparse.ArgumentParser:
             type=Path,
             default=BATCH_DIR,
             help="where to write JSONL and manifest files",
-        )
-        ap.add_argument(
-            "--full-instructions",
-            action="store_true",
-            help="inline storyworlds/TODO.md along with STORY.md",
         )
         ap.add_argument(
             "--dry-run",
@@ -241,7 +234,21 @@ def read_prompt_file(path: Path) -> str:
     return path.read_text(encoding="utf-8").strip()
 
 
-def prompt_cache_key(*, full_instructions: bool) -> str:
+def read_prompt_addendum(path: Path | None) -> str:
+    if path is None:
+        return ""
+    resolved = path if path.is_absolute() else ROOT / path
+    return read_prompt_file(resolved)
+
+
+def prompt_file_cache_name(path: Path) -> str:
+    try:
+        return path.relative_to(ROOT).as_posix()
+    except ValueError:
+        return path.as_posix()
+
+
+def prompt_cache_key(*, prompt_addendum: Path | None = None) -> str:
     digest = hashlib.sha256()
     digest.update(PROMPT_PROTOCOL.encode("utf-8"))
     digest.update(b"\0")
@@ -250,10 +257,11 @@ def prompt_cache_key(*, full_instructions: bool) -> str:
         digest.update(b"\0")
         digest.update(read_prompt_file(path).encode("utf-8"))
         digest.update(b"\0")
-    if full_instructions:
-        digest.update(TODO_PATH.relative_to(ROOT).as_posix().encode("utf-8"))
+    if prompt_addendum is not None:
+        resolved = prompt_addendum if prompt_addendum.is_absolute() else ROOT / prompt_addendum
+        digest.update(prompt_file_cache_name(resolved).encode("utf-8"))
         digest.update(b"\0")
-        digest.update(read_prompt_file(TODO_PATH).encode("utf-8"))
+        digest.update(read_prompt_file(resolved).encode("utf-8"))
     return f"storyworld_factory:{digest.hexdigest()[:16]}"
 
 
@@ -365,14 +373,17 @@ def make_jobs(args: argparse.Namespace) -> tuple[int, list[StoryworldJob]]:
                 setting=seed_obj.setting,
                 features=list(seed_obj.features),
                 style=seed_obj.style,
-                seed_text=seed_obj.render(),
                 domain=generated_domain(seed_obj),
             )
         )
     return base_seed, jobs
 
 
-def build_storyworld_prompt(job: StoryworldJob, *, full_instructions: bool) -> str:
+def build_storyworld_prompt(
+    job: StoryworldJob,
+    *,
+    prompt_addendum: Path | None = None,
+) -> str:
     story_contract = read_prompt_file(STORY_CONTRACT_PATH)
     results_contract = read_prompt_file(RESULTS_PATH)
     asp_contract = read_prompt_file(ASP_PATH)
@@ -380,14 +391,7 @@ def build_storyworld_prompt(job: StoryworldJob, *, full_instructions: bool) -> s
         f"### {path.relative_to(ROOT).as_posix()}\n\n```python\n{read_prompt_file(path)}\n```"
         for path in EXAMPLE_WORLD_PATHS
     )
-    todo_block = ""
-    if full_instructions:
-        todo_block = f"""
-
-Additional cleanup notes from storyworlds/TODO.md:
-
-{read_prompt_file(TODO_PATH)}
-"""
+    addendum_block = read_prompt_addendum(prompt_addendum)
 
     return f"""You are generating one standalone storyworld source file for the Storyweavers repo.
 You do not have filesystem access in this batch job. Call the {EMIT_TOOL_NAME}
@@ -404,85 +408,39 @@ from the Seed request. Emit only raw Python source as the tool input:
 Storyworld contract from storyworlds/STORY.md:
 
 {story_contract}
-{todo_block}
 
-Exact shared result API from storyworlds/results.py:
+Implementation details and reliability requirements:
+
+- You must instantiate the shared result containers exactly as defined, for example:
+  StorySample(params=..., story=..., prompts=..., story_qa=..., world_qa=..., world=...)
+- Invalid fields include prompt=, kind=, text=, qa=, trace=, data=, meta=, index=, and history= on these shared dataclasses.
+{addendum_block}
+
+Shared result API from storyworlds/results.py:
 
 ```python
 {results_contract}
 ```
 
-Exact shared ASP/clingo helper API from storyworlds/asp.py:
+Shared ASP/clingo helper API from storyworlds/asp.py:
 
 ```python
 {asp_contract}
 ```
 
-You must instantiate the shared result containers exactly as defined above:
-- QAItem(question=..., answer=...)
-- StorySample(params=..., story=..., prompts=..., story_qa=..., world_qa=..., world=...)
-Invalid fields include prompt=, kind=, text=, qa=, trace=, data=, meta=, index=,
-and history= on these shared dataclasses.
-
 Two complete examples of acceptable existing worlds follow. Use them as style
-and contract references, but do not copy their domain content. Some older
-example code uses positional dataclass construction; for this new file, follow
-the reliability requirements below instead.
+and contract references, but do not copy their domain content. 
 
 {examples}
 
-Implementation requirements:
-- Write a complete, valid, stdlib-only Python script.
-- Import and use storyworlds/results.py and storyworlds/asp.py as example worlds.
-- Include StoryParams, build_parser, resolve_params, generate, emit, -n, --all,
-  --seed, --trace, --qa, --json, --asp, --verify, and --show-asp.
-- Include a Python valid_combos checker plus an inline ASP twin. --verify must
-  exit 0 when run from the repo with ./.venv/bin/python.
-- --verify must run at least one normal generate/emit smoke test with default or
-  curated params and fail if ordinary story generation crashes.
-- QA must be grounded in simulated state/history, with natural two-or-three
-  sentence answers where the trace supports cause/effect.
-- Avoid scaffold leaks, raw template fragments, and implementation jargon.
-- Do not copy an existing world. Create a fresh tiny domain from the seed,
-  and progress from a fresh story to a complete storyworld.
-- Make complete stories: clear premise, state-driven turn, and ending image
-  that proves what changed.
 
-
-Note on dataclass reliability:
-- Give optional dataclass fields defaults. When constructing dataclasses in
-  CURATED, lookup tables, or constants, use keyword arguments for every field.
-  Do not mix positional and keyword arguments in the same dataclass call.
-- Define exactly one top-level @dataclass class StoryParams before CURATED,
-  resolve_params, generate, verify, or any module-level StoryParams instances.
-  Construct StoryParams with keyword arguments, not positional argument lists.
-- Objects used as actors/helpers in prose or QA must either be Entity instances
-  or implement the same fields/methods you call, especially pronoun(), attrs,
-  tags, and meters. Do not call .pronoun(), .attrs, or .meters on arbitrary
-  domain config objects unless those attributes are defined.
-- Keep dictionary keys aligned with StoryParams fields. resolve_params should
-  choose from the actual keys of lookup dictionaries, and generate should fail
-  closed with StoryError for invalid params instead of raising KeyError.
-- Default generation must not silently substitute a curated story. `python file.py 
-  --seed N --qa` must generate from the params resolved for that seed. If those 
-  params are invalid, fix `resolve_params()` to choose only valid params
-- `resolve_params()` must choose only from `valid_combos()` after applying CLI filters. 
-  Random generation should never select an invalid combination and rely on `generate()`
-  to reject it.
-- Before calling `propagate()`, initialize every `world.facts[...]`, entity `attrs`,
-  `meters`, and `memes` value that any rule reads. No rule should depend on a fact 
-  assigned later in `tell()`.
-
-Seed request:
+Include the following words and narrative instruments:
 - Target file: {job.target}
 - Domain: {job.domain}
-- Use these words: {", ".join(job.words)}
+- Seed words: {", ".join(job.words)}
 - Setting: {job.setting}
 - Features: {", ".join(job.features)}
 - Style: {job.style}
-
-Seed prompt:
-{job.seed_text}
 """
 
 
@@ -493,7 +451,6 @@ def request_line(
     endpoint: str,
     max_output_tokens: int,
     reasoning_effort: str,
-    full_instructions: bool,
 ) -> dict[str, Any]:
     return {
         "custom_id": job.custom_id,
@@ -501,7 +458,7 @@ def request_line(
         "url": endpoint,
         "body": {
             "model": model,
-            "prompt_cache_key": prompt_cache_key(full_instructions=full_instructions),
+            "prompt_cache_key": prompt_cache_key(),
             "prompt_cache_retention": "24h",
             "reasoning": {"effort": reasoning_effort},
             "tools": [emit_python_tool()],
@@ -515,7 +472,6 @@ def request_line(
                             "type": "input_text",
                             "text": build_storyworld_prompt(
                                 job,
-                                full_instructions=full_instructions,
                             ),
                         }
                     ],
@@ -540,7 +496,6 @@ def prepare_files(args: argparse.Namespace) -> dict[str, Any]:
             endpoint=args.endpoint,
             max_output_tokens=args.max_output_tokens,
             reasoning_effort=args.reasoning_effort,
-            full_instructions=args.full_instructions,
         )
         for job in jobs
     ]
@@ -574,7 +529,6 @@ def prepare_files(args: argparse.Namespace) -> dict[str, Any]:
         "completion_window": args.completion_window,
         "max_output_tokens": args.max_output_tokens,
         "reasoning_effort": args.reasoning_effort,
-        "full_instructions": args.full_instructions,
         "jsonl_path": str(jsonl_path),
         "manifest_path": str(manifest_path),
         "jobs": [asdict(job) for job in jobs],

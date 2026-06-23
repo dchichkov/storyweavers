@@ -228,6 +228,82 @@ Only change the prompt when the defect looks broad. Only add a repair rule when
 the failing pattern is concrete and repeated, or when it is clearly harmless and
 specific.
 
+## Diagnosing Prompt vs Repair vs Examples
+
+When a run fails, do not immediately add more instructions. First decide which
+part of the system owns the defect.
+
+Check the exact run inputs:
+
+```bash
+head -80 storyworlds/batches/storyworld_service_<stamp>_seed<seed>_n100.manifest.json
+```
+
+Confirm:
+
+- `prompt_addendum`: whether the run used an addendum or the base prompt only
+- `model`, `base_seed`, `count`, `concurrency`, `reasoning_effort`
+- prompt snapshots under `*.prompts/`
+
+Then inspect the prompt stack:
+
+- `storyworlds/STORY.md`: canonical contract
+- `storyworlds/openai_batch_world_factory.py`: generated base prompt and example
+  world selection
+- `storyworlds/prompts/gpt54mini_service_reliability_*.md`: optional addenda
+- the per-job prompt snapshot for a failed or low-scoring script
+
+Use this ownership guide:
+
+| Symptom | Likely owner | Preferred fix |
+|---|---|---|
+| Syntax typo, bad quote, `def ASP_RULES =`, `rng.choice(sorted(combos))` on dataclass tuples | repair layer | Add or adjust `repair_batch_output.py` rule |
+| Missing dataclass convenience fields such as `.phrase`, `.label_word`, `.meters`, `.memes`, `.tags` | repair layer, unless it changes semantics | Add safe dataclass fallback/default rule |
+| Ordinary `-n 3 --json` has no valid combos | prompt/addendum or examples | Tell model to keep a compact valid story space; examples should show this |
+| `resolve_params()` chooses params that `generate()` rejects | prompt/addendum | Emphasize simple keys and combo consistency |
+| `world.get("hero")` before adding hero, or QA reads missing `world.facts` | prompt/addendum | Emphasize state initialization before rules/prose/QA |
+| Infinite propagation loop | prompt/addendum plus repair safety net | Ask for idempotent rules; keep bounded-loop repair |
+| Role placeholders leak into prose (`child`, `hero`, `helper`) | examples/addendum | Improve examples and add semantic prose guidance |
+| Duplicate story-specific QA across variants | addendum or example QA pattern | Require `story_qa` from `StoryParams` / `world.facts`; generic definitions go to `world_qa` |
+| Many failures copy a pattern from `puddles.py` / `pirates.py` | examples | Replace examples with smaller golden examples |
+| A single generated script has a one-off domain mistake | one-by-one generated-file repair | Patch the script; only generalize if repeated |
+
+When editing an addendum, remove instructions that duplicate the repair script or
+the base prompt. Addenda should focus on decisions the repair pass cannot safely
+infer:
+
+- choose a small valid state space
+- keep `StoryParams` as CLI-safe keys/names
+- make random generation select only accepted combos
+- initialize `world.facts` and entities before readers/rules use them
+- make causal rules idempotent
+- prevent semantic quality defects such as role placeholders and duplicate QA
+
+If a defect looks like example parroting, inspect the embedded examples before
+adding more negative instructions. The current base prompt includes complete
+world examples from `EXAMPLE_WORLD_PATHS` in
+`storyworlds/openai_batch_world_factory.py`. Those examples are powerful: the
+model may copy both their good architecture and their brittle idioms. Prefer
+cleaning or replacing examples over stacking contradictory addenda.
+
+Before running a new addendum broadly, keep it testable:
+
+```bash
+OPENAI_API_KEY="$(cat .API_KEY)" ./.venv/bin/python storyworlds/openai_service_world_pipeline.py \
+  -n 100 \
+  --seed <new-seed> \
+  --model gpt-5.4-mini \
+  --reasoning-effort low \
+  --max-output-tokens 32000 \
+  --concurrency 50 \
+  --prompt-addendum storyworlds/prompts/gpt54mini_service_reliability_v3.md \
+  --repair-failures
+```
+
+Compare that against a base-prompt run, not just against an older repaired
+manifest. The question is whether the addendum improves fresh generation after
+the same repair layer is applied.
+
 ## Rerunning Existing Manifests
 
 After changing repair rules, rerun from the same manifest so the generated model

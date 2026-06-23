@@ -47,7 +47,6 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--concurrency", type=int, default=5)
     parser.add_argument("--words-per-seed", type=int, default=None)
     parser.add_argument("--features-per-seed", type=int, default=None)
-    parser.add_argument("--full-instructions", action="store_true")
     parser.add_argument(
         "--prompt-addendum",
         type=Path,
@@ -164,8 +163,6 @@ def factory_command(args: argparse.Namespace) -> list[str]:
         cmd += ["--features-per-seed", str(args.features_per_seed)]
     if args.target_dir is not None:
         cmd += ["--target-dir", str(args.target_dir)]
-    if args.full_instructions:
-        cmd.append("--full-instructions")
     if args.prompt_addendum is not None:
         cmd += ["--prompt-addendum", str(args.prompt_addendum)]
     if args.overwrite:
@@ -178,19 +175,17 @@ def factory_command(args: argparse.Namespace) -> list[str]:
 
 
 def service_prompt(job: dict[str, Any], args: argparse.Namespace) -> str:
-    story_job = batch_factory.StoryworldJob(**job)
-    prompt = batch_factory.build_storyworld_prompt(
-        story_job,
-        full_instructions=bool(args.full_instructions),
+    story_job_fields = batch_factory.StoryworldJob.__dataclass_fields__
+    story_job = batch_factory.StoryworldJob(
+        **{key: value for key, value in job.items() if key in story_job_fields}
     )
     addendum_path = args.prompt_addendum
     if addendum_path is None and isinstance(job.get("prompt_addendum"), str):
         addendum_path = Path(str(job["prompt_addendum"]))
-    if addendum_path is not None:
-        path = addendum_path if addendum_path.is_absolute() else ROOT / addendum_path
-        if path.exists():
-            prompt += "\n\nAdditional direct-service prompt addendum:\n\n"
-            prompt += path.read_text(encoding="utf-8").strip() + "\n"
+    prompt = batch_factory.build_storyworld_prompt(
+        story_job,
+        prompt_addendum=addendum_path,
+    )
     return prompt
 
 
@@ -655,7 +650,6 @@ def main() -> int:
         return factory_proc.returncode
     if manifest_path is None or not manifest:
         raise SystemExit("Generation did not produce a readable manifest; cannot run eval report.")
-    args.full_instructions = bool(manifest.get("full_instructions", args.full_instructions))
     if args.prompt_addendum is None and isinstance(manifest.get("prompt_addendum"), str):
         args.prompt_addendum = Path(str(manifest["prompt_addendum"]))
 

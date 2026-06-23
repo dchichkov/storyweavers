@@ -301,7 +301,7 @@ def _r_spread(world: World) -> list[str]:
 
 
 CAUSAL_RULES: list[Rule] = [
-    Rule("spread", "physical", _r_spread),
+    Rule(name="spread", tag="physical", apply=_r_spread),
 ]
 
 
@@ -732,71 +732,168 @@ def tell(theme: Theme, forbidden: Forbidden, target: Flammable,
 # ---------------------------------------------------------------------------
 THEMES = {
     "pirates": Theme(
-        "pirates", "a wild island",
-        "The sofa was their pirate ship, a broom became a sword, an old shoebox "
-        "held their treasure, and a crayon map showed the way to the gold.",
-        "Captain", "Explorer", "the treasure cave",
-        "the space under the big table", "cave",
-        "a pirate", "pirates", "sailed off to find their treasure"),
+        id="pirates",
+        scene="a wild island",
+        rig=(
+            "The sofa was their pirate ship, a broom became a sword, an old shoebox "
+            "held their treasure, and a crayon map showed the way to the gold."
+        ),
+        captain="Captain",
+        mate="Explorer",
+        goal="the treasure cave",
+        dark_spot="the space under the big table",
+        cave_word="cave",
+        role_solo="a pirate",
+        role_plural="pirates",
+        send_off="sailed off to find their treasure",
+    ),
     "explorers": Theme(
-        "explorers", "a deep jungle",
-        "The sofa was their jeep, a broom became a machete, an old shoebox held "
-        "their supplies, and a crayon map showed the way to the lost temple.",
-        "Captain", "Scout", "the hidden temple",
-        "the space under the big table", "tunnel",
-        "an explorer", "explorers", "set off to find the lost temple"),
+        id="explorers",
+        scene="a deep jungle",
+        rig=(
+            "The sofa was their jeep, a broom became a machete, an old shoebox held "
+            "their supplies, and a crayon map showed the way to the lost temple."
+        ),
+        captain="Captain",
+        mate="Scout",
+        goal="the hidden temple",
+        dark_spot="the space under the big table",
+        cave_word="tunnel",
+        role_solo="an explorer",
+        role_plural="explorers",
+        send_off="set off to find the lost temple",
+    ),
     "astronauts": Theme(
-        "astronauts", "a faraway planet",
-        "The sofa was their rocket, a broom became a space flag, an old shoebox "
-        "held their moon rocks, and a crayon map showed the way to the crater.",
-        "Commander", "Pilot", "the dark crater",
-        "the space under the big table", "crater",
-        "an astronaut", "astronauts", "blasted off to explore the crater"),
+        id="astronauts",
+        scene="a faraway planet",
+        rig=(
+            "The sofa was their rocket, a broom became a space flag, an old shoebox "
+            "held their moon rocks, and a crayon map showed the way to the crater."
+        ),
+        captain="Commander",
+        mate="Pilot",
+        goal="the dark crater",
+        dark_spot="the space under the big table",
+        cave_word="crater",
+        role_solo="an astronaut",
+        role_plural="astronauts",
+        send_off="blasted off to explore the crater",
+    ),
 }
 
 FORBIDDEN = {
     "matches": Forbidden(
-        "matches", "Matches!", "matches", "a box of matches", "in the kitchen drawer",
-        "the first match", "Scritch!", "matches are not toys",
-        plural=True, tags={"matches", "fire", "call_adult"}),
+        id="matches",
+        cry="Matches!",
+        label="matches",
+        phrase="a box of matches",
+        where="in the kitchen drawer",
+        unit="the first match",
+        strike="Scritch!",
+        not_toy="matches are not toys",
+        plural=True,
+        tags={"matches", "fire", "call_adult"},
+    ),
     "lighter": Forbidden(
-        "lighter", "A lighter!", "the lighter", "a lighter", "on the coffee table",
-        "the little flame", "Click!", "a lighter is not a toy",
-        plural=False, tags={"lighter", "fire", "call_adult"}),
+        id="lighter",
+        cry="A lighter!",
+        label="the lighter",
+        phrase="a lighter",
+        where="on the coffee table",
+        unit="the little flame",
+        strike="Click!",
+        not_toy="a lighter is not a toy",
+        plural=False,
+        tags={"lighter", "fire", "call_adult"},
+    ),
     "candle": Forbidden(
-        "candle", "A candle!", "the candle", "a candle and the long matches",
-        "on the mantel", "the candle flame", "Scritch!", "candles are not toys",
-        plural=False, tags={"candle", "fire", "call_adult"}),
+        id="candle",
+        cry="A candle!",
+        label="the candle",
+        phrase="a candle and the long matches",
+        where="on the mantel",
+        unit="the candle flame",
+        strike="Scritch!",
+        not_toy="candles are not toys",
+        plural=False,
+        tags={"candle", "fire", "call_adult"},
+    ),
 }
 
 TARGETS = {
-    "curtain": Flammable("curtain", "curtain", "the curtain",
-                         "the bottom of the curtain", "hung with long dark curtains",
-                         spread=3, flammable=True, tags={"curtain", "flammable"}),
-    "blanket": Flammable("blanket", "blanket", "the blanket",
-                         "the edge of the blanket", "draped with a big fuzzy blanket",
-                         spread=2, flammable=True, tags={"blanket", "flammable"}),
-    "tablecloth": Flammable("tablecloth", "tablecloth", "the tablecloth",
-                            "the hem of the long tablecloth",
-                            "half-covered by a long tablecloth",
-                            spread=2, flammable=True, tags={"tablecloth", "flammable"}),
+    "curtain": Flammable(
+        id="curtain",
+        label="curtain",
+        the="the curtain",
+        near="the bottom of the curtain",
+        drape="hung with long dark curtains",
+        spread=3,
+        flammable=True,
+        tags={"curtain", "flammable"},
+    ),
+    "blanket": Flammable(
+        id="blanket",
+        label="blanket",
+        the="the blanket",
+        near="the edge of the blanket",
+        drape="draped with a big fuzzy blanket",
+        spread=2,
+        flammable=True,
+        tags={"blanket", "flammable"},
+    ),
+    "tablecloth": Flammable(
+        id="tablecloth",
+        label="tablecloth",
+        the="the tablecloth",
+        near="the hem of the long tablecloth",
+        drape="half-covered by a long tablecloth",
+        spread=2,
+        flammable=True,
+        tags={"tablecloth", "flammable"},
+    ),
     # Decoy: not flammable -> no fire, no rescue, no lesson.  Used to show the
     # reasonableness gate refuse a story (cf. jacket+puddles in puddles.py).
-    "tiles": Flammable("tiles", "tile wall", "the tile wall",
-                       "the cool tiles", "edged by a cold tile wall",
-                       flammable=False, tags={"tiles"}),
+    "tiles": Flammable(
+        id="tiles",
+        label="tile wall",
+        the="the tile wall",
+        near="the cool tiles",
+        drape="edged by a cold tile wall",
+        flammable=False,
+        tags={"tiles"},
+    ),
 }
 
 SAFE_LIGHTS = {
-    "flashlight": SafeLight("flashlight", "flashlight", "a flashlight",
-                            "clicked on bright as a star", tags={"flashlight"}),
-    "lantern": SafeLight("lantern", "lantern", "a little camping lantern",
-                         "glowed warm and safe", tags={"lantern"}),
-    "headlamp": SafeLight("headlamp", "head-lamp", "a head-lamp",
-                          "lit up the whole cave", tags={"headlamp"}),
-    "glowsticks": SafeLight("glowsticks", "glow sticks", "two bendy glow sticks",
-                            "shone green in the dark", plural=True,
-                            tags={"glowsticks"}),
+    "flashlight": SafeLight(
+        id="flashlight",
+        label="flashlight",
+        phrase="a flashlight",
+        glow="clicked on bright as a star",
+        tags={"flashlight"},
+    ),
+    "lantern": SafeLight(
+        id="lantern",
+        label="lantern",
+        phrase="a little camping lantern",
+        glow="glowed warm and safe",
+        tags={"lantern"},
+    ),
+    "headlamp": SafeLight(
+        id="headlamp",
+        label="head-lamp",
+        phrase="a head-lamp",
+        glow="lit up the whole cave",
+        tags={"headlamp"},
+    ),
+    "glowsticks": SafeLight(
+        id="glowsticks",
+        label="glow sticks",
+        phrase="two bendy glow sticks",
+        glow="shone green in the dark",
+        plural=True,
+        tags={"glowsticks"},
+    ),
 }
 
 # ---------------------------------------------------------------------------
@@ -816,36 +913,58 @@ SAFE_LIGHTS = {
 # fire-extinguisher or pull-down-and-smother responses instead.
 RESPONSES = {
     "extinguisher": Response(
-        "extinguisher", 3, 4,
-        "grabbed the fire extinguisher from the kitchen and sprayed the flames "
-        "until every spark was gone",
-        "emptied the whole fire extinguisher, but the flames were already too big "
-        "to stop",
-        "put the flames out with the fire extinguisher",
-        tags={"extinguisher", "fire"}),
+        id="extinguisher",
+        sense=3,
+        power=4,
+        text=(
+            "grabbed the fire extinguisher from the kitchen and sprayed the flames "
+            "until every spark was gone"
+        ),
+        fail=(
+            "emptied the whole fire extinguisher, but the flames were already too big "
+            "to stop"
+        ),
+        qa_text="put the flames out with the fire extinguisher",
+        tags={"extinguisher", "fire"},
+    ),
     "smother": Response(
-        "smother", 3, 3,
-        "pulled the {target} down to the floor, balled it up, and pressed the "
-        "flames out under a heavy rug",
-        "tried to pull the {target} down, but the fire was climbing too fast to "
-        "smother",
-        "pulled the {target} down and smothered the flames under a heavy rug",
-        tags={"smother", "fire"}),
+        id="smother",
+        sense=3,
+        power=3,
+        text=(
+            "pulled the {target} down to the floor, balled it up, and pressed the "
+            "flames out under a heavy rug"
+        ),
+        fail=(
+            "tried to pull the {target} down, but the fire was climbing too fast to "
+            "smother"
+        ),
+        qa_text="pulled the {target} down and smothered the flames under a heavy rug",
+        tags={"smother", "fire"},
+    ),
     "stomp": Response(
-        "stomp", 2, 2,
-        "pulled the {target} down and stamped on the flames, hard and fast, until "
-        "they were out",
-        "stamped at the flames, but they only leapt higher",
-        "pulled the {target} down and stamped the flames out",
-        tags={"smother", "fire"}),
+        id="stomp",
+        sense=2,
+        power=2,
+        text=(
+            "pulled the {target} down and stamped on the flames, hard and fast, until "
+            "they were out"
+        ),
+        fail="stamped at the flames, but they only leapt higher",
+        qa_text="pulled the {target} down and stamped the flames out",
+        tags={"smother", "fire"},
+    ),
     # Deliberately low common-sense (the original): kept for reference, refused by
     # the SENSE_MIN gate so it is never the chosen response.
     "water_bucket": Response(
-        "water_bucket", 1, 1,
-        "filled a bucket at the sink and threw the water over the {target}",
-        "threw a bucket of water over the {target}, but it was far too little",
-        "threw a bucket of water over the {target}",
-        tags={"water", "fire"}),
+        id="water_bucket",
+        sense=1,
+        power=1,
+        text="filled a bucket at the sink and threw the water over the {target}",
+        fail="threw a bucket of water over the {target}, but it was far too little",
+        qa_text="threw a bucket of water over the {target}",
+        tags={"water", "fire"},
+    ),
 }
 
 GIRL_NAMES = ["Lily", "Mia", "Zoe", "Ava", "Ella", "Lucy", "Anna", "Maya", "Nora", "Rose"]
@@ -1032,104 +1151,142 @@ def story_qa(world: World) -> list[QAItem]:
     # adult response, safe-light substitute, and outcome as much as possible.
     qa: list[QAItem] = [
         QAItem(
-            f"Who is the story about when {a.id} and {b.id} play {th.role_plural}?",
-            f"It is about {pair}, {a.id} and {b.id}, who were playing "
-            f"{th.role_plural}, and {a.id}'s {pw} who came to help.",
+            question=f"Who is the story about when {a.id} and {b.id} play {th.role_plural}?",
+            answer=(
+                f"It is about {pair}, {a.id} and {b.id}, who were playing "
+                f"{th.role_plural}, and {a.id}'s {pw} who came to help."
+            ),
         ),
         QAItem(
-            f"What pretend game did {a.id} and {b.id} make in the living room?",
-            f"They turned the living room into {th.scene} and pretended to be "
-            f"{th.role_plural} looking for {th.goal}. The pretend game made "
-            f"{th.dark_spot} feel like part of the adventure.",
+            question=f"What pretend game did {a.id} and {b.id} make in the living room?",
+            answer=(
+                f"They turned the living room into {th.scene} and pretended to be "
+                f"{th.role_plural} looking for {th.goal}. The pretend game made "
+                f"{th.dark_spot} feel like part of the adventure."
+            ),
         ),
         QAItem(
-            f"Why did {a.id} and {b.id} need light for {th.goal}?",
-            f"They wanted to explore {th.dark_spot}, where {tg.the} made the "
-            f"pretend {th.cave_word} dark. That darkness made {fb.label} seem "
-            f"tempting even though it could make a real flame.",
+            question=f"Why did {a.id} and {b.id} need light for {th.goal}?",
+            answer=(
+                f"They wanted to explore {th.dark_spot}, where {tg.the} made the "
+                f"pretend {th.cave_word} dark. That darkness made {fb.label} seem "
+                f"tempting even though it could make a real flame."
+            ),
         ),
         QAItem(
-            f"What did {a.id} want to use near {tg.the}, and what did {b.id} say?",
-            f"{a.id} wanted to use {fb.label}, but {b.id} warned that they were "
-            f"not allowed to touch {fb.label}. {b.id} also knew it could make "
-            f"a real flame near {tg.the}.",
+            question=f"What did {a.id} want to use near {tg.the}, and what did {b.id} say?",
+            answer=(
+                f"{a.id} wanted to use {fb.label}, but {b.id} warned that they were "
+                f"not allowed to touch {fb.label}. {b.id} also knew it could make "
+                f"a real flame near {tg.the}."
+            ),
         ),
     ]
     if f.get("ignited"):
         qa.append(QAItem(
-            f"What happened when {a.id} lit {them} near {tg.the}?",
-            f"{tg.The} caught fire -- a little line of flame began to climb up it, "
-            f"and the children were very scared. The danger came from using "
-            f"{fb.label} near something flammable.",
+            question=f"What happened when {a.id} lit {them} near {tg.the}?",
+            answer=(
+                f"{tg.The} caught fire -- a little line of flame began to climb up it, "
+                f"and the children were very scared. The danger came from using "
+                f"{fb.label} near something flammable."
+            ),
         ))
     if f.get("outcome") == "averted":
         sib = "brother" if b.type == "boy" else "sister"
         qa.append(QAItem(
-            f"What did {a.id} do after {b.id} warned {a.pronoun('object')} "
-            f"about {fb.label}?",
-            f"{a.id} listened to {b.id}, {a.pronoun('possessive')} big {sib}, and "
-            f"gave up the idea, so no fire ever started. They told {pw} about "
-            f"the dark {th.cave_word} instead of touching {fb.label}.",
+            question=(
+                f"What did {a.id} do after {b.id} warned {a.pronoun('object')} "
+                f"about {fb.label}?"
+            ),
+            answer=(
+                f"{a.id} listened to {b.id}, {a.pronoun('possessive')} big {sib}, and "
+                f"gave up the idea, so no fire ever started. They told {pw} about "
+                f"the dark {th.cave_word} instead of touching {fb.label}."
+            ),
         ))
         qa.append(QAItem(
-            f"What safe lights did {a.id}'s {pw} give for {th.dark_spot}?",
-            f"{parent.pronoun().capitalize()} gave them {l1.phrase} and "
-            f"{l2.phrase} so they could explore with safe light. Those lights "
-            f"met the same need without making fire.",
+            question=f"What safe lights did {a.id}'s {pw} give for {th.dark_spot}?",
+            answer=(
+                f"{parent.pronoun().capitalize()} gave them {l1.phrase} and "
+                f"{l2.phrase} so they could explore with safe light. Those lights "
+                f"met the same need without making fire."
+            ),
         ))
         qa.append(QAItem(
-            f"How did {a.id} and {b.id}'s {th.role_plural} game end with "
-            f"{l1.label} and {l2.label}?",
-            f"Safely -- they used safe light instead of {fb.label}, and nobody "
-            f"got hurt and nothing burned. The game could continue because they "
-            f"chose a safer tool.",
+            question=(
+                f"How did {a.id} and {b.id}'s {th.role_plural} game end with "
+                f"{l1.label} and {l2.label}?"
+            ),
+            answer=(
+                f"Safely -- they used safe light instead of {fb.label}, and nobody "
+                f"got hurt and nothing burned. The game could continue because they "
+                f"chose a safer tool."
+            ),
         ))
     elif f.get("outcome") == "contained":
         body = resp.qa_text.replace("{target}", tg.label)
         qa.append(QAItem(
-            f"How did {a.id}'s {pw} put out the fire on {tg.the}?",
-            f"{pw.capitalize()} came running and {body}. The quick response "
-            f"stopped the fire before it spread through the room.",
+            question=f"How did {a.id}'s {pw} put out the fire on {tg.the}?",
+            answer=(
+                f"{pw.capitalize()} came running and {body}. The quick response "
+                f"stopped the fire before it spread through the room."
+            ),
         ))
         qa.append(QAItem(
-            f"Was {a.id}'s {pw} angry after {a.id} used {fb.label}?",
-            f"No. {pw.capitalize()} hugged them, was glad they called for help, "
-            f"and reminded them that {fb.not_toy} and that fire can grow faster "
-            f"than you can run.",
+            question=f"Was {a.id}'s {pw} angry after {a.id} used {fb.label}?",
+            answer=(
+                f"No. {pw.capitalize()} hugged them, was glad they called for help, "
+                f"and reminded them that {fb.not_toy} and that fire can grow faster "
+                f"than you can run."
+            ),
         ))
         qa.append(QAItem(
-            f"What safer lights replaced {fb.label} in {a.id} and {b.id}'s "
-            f"{th.role_plural} game?",
-            f"{parent.pronoun().capitalize()} gave them {l1.phrase} and "
-            f"{l2.phrase} so they could explore with safe light. The new lights "
-            f"let them keep the adventure without the flame.",
+            question=(
+                f"What safer lights replaced {fb.label} in {a.id} and {b.id}'s "
+                f"{th.role_plural} game?"
+            ),
+            answer=(
+                f"{parent.pronoun().capitalize()} gave them {l1.phrase} and "
+                f"{l2.phrase} so they could explore with safe light. The new lights "
+                f"let them keep the adventure without the flame."
+            ),
         ))
         qa.append(QAItem(
-            f"How did {a.id} and {b.id} feel after the fire near {tg.the} was out?",
-            f"They felt brave, happy, and safe, and they promised never to play "
-            f"with {fb.label} again. The ending turns the scary lesson into a "
-            f"safer way to keep playing.",
+            question=f"How did {a.id} and {b.id} feel after the fire near {tg.the} was out?",
+            answer=(
+                f"They felt brave, happy, and safe, and they promised never to play "
+                f"with {fb.label} again. The ending turns the scary lesson into a "
+                f"safer way to keep playing."
+            ),
         ))
     elif f.get("outcome") == "burned":
         fail = resp.fail.replace("{target}", tg.label)
         qa.append(QAItem(
-            f"Could {a.id}'s {pw} put out the fire after {tg.the} caught?",
-            f"No. {pw.capitalize()} {fail}, and the fire raced through the whole "
-            f"house. The family had to escape because the fire was already too "
-            f"big for that response.",
+            question=f"Could {a.id}'s {pw} put out the fire after {tg.the} caught?",
+            answer=(
+                f"No. {pw.capitalize()} {fail}, and the fire raced through the whole "
+                f"house. The family had to escape because the fire was already too "
+                f"big for that response."
+            ),
         ))
         qa.append(QAItem(
-            f"How did the story end for {a.id} and {b.id} after {fb.label} "
-            f"set {tg.the} on fire?",
-            f"Everyone got out safely, but the house burned down. {a.id} and "
-            f"{b.id} were safe, though very sad to lose their home. Afterward, "
-            f"they knew to call a grown-up whenever a game grew too dark.",
+            question=(
+                f"How did the story end for {a.id} and {b.id} after {fb.label} "
+                f"set {tg.the} on fire?"
+            ),
+            answer=(
+                f"Everyone got out safely, but the house burned down. {a.id} and "
+                f"{b.id} were safe, though very sad to lose their home. Afterward, "
+                f"they knew to call a grown-up whenever a game grew too dark."
+            ),
         ))
         qa.append(QAItem(
-            f"What did {a.id} and {b.id} learn about {fb.label} and {th.goal}?",
-            f"{fb.not_toy[0].upper()}{fb.not_toy[1:]}, and that fire can grow "
-            f"faster than anyone can run. The lesson came from seeing how quickly "
-            f"one unsafe flame became bigger than their game.",
+            question=f"What did {a.id} and {b.id} learn about {fb.label} and {th.goal}?",
+            answer=(
+                f"{fb.not_toy[0].upper()}{fb.not_toy[1:]}, and that fire can grow "
+                f"faster than anyone can run. The lesson came from seeing how quickly "
+                f"one unsafe flame became bigger than their game."
+            ),
         ))
     return qa
 
@@ -1151,7 +1308,7 @@ def world_knowledge_qa(world: World) -> list[QAItem]:
     out: list[QAItem] = []
     for tag in KNOWLEDGE_ORDER:
         if tag in tags and tag in KNOWLEDGE:
-            out.extend(QAItem(q, a) for q, a in KNOWLEDGE[tag])
+            out.extend(QAItem(question=q, answer=a) for q, a in KNOWLEDGE[tag])
     return out
 
 
@@ -1207,30 +1364,112 @@ def dump_trace(world: World) -> str:
 CURATED = [
     # Happy: a sensible response that beats the fire (delay small enough).
     # Older brother + high trust -> the "she trusted him" defiance branch.
-    StoryParams("pirates", "matches", "curtain", "flashlight", "lantern",
-                "extinguisher", "Tom", "boy", "Lily", "girl", "mother", "careful", 0,
-                instigator_age=6, cautioner_age=4, relation="siblings", trust=8,
-                comfort="stuffed rabbit", pet="the puppy"),
+    StoryParams(
+        theme="pirates",
+        forbidden="matches",
+        target="curtain",
+        light1="flashlight",
+        light2="lantern",
+        response="extinguisher",
+        instigator="Tom",
+        instigator_gender="boy",
+        cautioner="Lily",
+        cautioner_gender="girl",
+        parent="mother",
+        trait="careful",
+        delay=0,
+        instigator_age=6,
+        cautioner_age=4,
+        relation="siblings",
+        trust=8,
+        comfort="stuffed rabbit",
+        pet="the puppy",
+    ),
     # Friends, low trust -> no sibling clause; firm cautious warning.
-    StoryParams("explorers", "lighter", "blanket", "headlamp", "lantern",
-                "smother", "Max", "boy", "Mia", "girl", "father", "clever", 0,
-                instigator_age=5, cautioner_age=5, relation="friends", trust=3),
+    StoryParams(
+        theme="explorers",
+        forbidden="lighter",
+        target="blanket",
+        light1="headlamp",
+        light2="lantern",
+        response="smother",
+        instigator="Max",
+        instigator_gender="boy",
+        cautioner="Mia",
+        cautioner_gender="girl",
+        parent="father",
+        trait="clever",
+        delay=0,
+        instigator_age=5,
+        cautioner_age=5,
+        relation="friends",
+        trust=3,
+    ),
     # Oopsie: the method is too weak for a fast fire -> the place burns down.
-    StoryParams("astronauts", "candle", "tablecloth", "flashlight", "glowsticks",
-                "stomp", "Sam", "boy", "Zoe", "girl", "mother", "cautious", 1,
-                instigator_age=6, cautioner_age=4, relation="siblings", trust=4,
-                comfort="toy dinosaur", pet="the cat"),
+    StoryParams(
+        theme="astronauts",
+        forbidden="candle",
+        target="tablecloth",
+        light1="flashlight",
+        light2="glowsticks",
+        response="stomp",
+        instigator="Sam",
+        instigator_gender="boy",
+        cautioner="Zoe",
+        cautioner_gender="girl",
+        parent="mother",
+        trait="cautious",
+        delay=1,
+        instigator_age=6,
+        cautioner_age=4,
+        relation="siblings",
+        trust=4,
+        comfort="toy dinosaur",
+        pet="the cat",
+    ),
     # Averted: the cautioner is the older sibling, so the instigator gives up the
     # idea and no fire ever starts -- straight to the safe alternative.
-    StoryParams("pirates", "lighter", "curtain", "glowsticks", "flashlight",
-                "extinguisher", "Sam", "boy", "Tom", "boy", "father", "careful", 0,
-                instigator_age=5, cautioner_age=7, relation="siblings", trust=4,
-                pet="their little dog"),
+    StoryParams(
+        theme="pirates",
+        forbidden="lighter",
+        target="curtain",
+        light1="glowsticks",
+        light2="flashlight",
+        response="extinguisher",
+        instigator="Sam",
+        instigator_gender="boy",
+        cautioner="Tom",
+        cautioner_gender="boy",
+        parent="father",
+        trait="careful",
+        delay=0,
+        instigator_age=5,
+        cautioner_age=7,
+        relation="siblings",
+        trust=4,
+        pet="their little dog",
+    ),
     # Even the extinguisher can be too late once the fire gets a big head start.
-    StoryParams("pirates", "matches", "curtain", "headlamp", "lantern",
-                "extinguisher", "Eli", "boy", "Nora", "girl", "mother", "cautious", 2,
-                instigator_age=7, cautioner_age=5, relation="siblings", trust=2,
-                comfort="floppy teddy bear"),
+    StoryParams(
+        theme="pirates",
+        forbidden="matches",
+        target="curtain",
+        light1="headlamp",
+        light2="lantern",
+        response="extinguisher",
+        instigator="Eli",
+        instigator_gender="boy",
+        cautioner="Nora",
+        cautioner_gender="girl",
+        parent="mother",
+        trait="cautious",
+        delay=2,
+        instigator_age=7,
+        cautioner_age=5,
+        relation="siblings",
+        trust=2,
+        comfort="floppy teddy bear",
+    ),
 ]
 
 
@@ -1481,10 +1720,27 @@ def resolve_params(args: argparse.Namespace, rng: random.Random) -> StoryParams:
     trust = rng.randint(0, 10)
     comfort = rng.choice(COMFORTS + ["", ""])
     pet = rng.choice(PETS + ["", ""])
-    return StoryParams(theme, forbidden, target, light1, light2, response,
-                       instigator, ig, cautioner, cg, parent, trait, delay,
-                       instigator_age=instigator_age, cautioner_age=cautioner_age,
-                       relation=relation, trust=trust, comfort=comfort, pet=pet)
+    return StoryParams(
+        theme=theme,
+        forbidden=forbidden,
+        target=target,
+        light1=light1,
+        light2=light2,
+        response=response,
+        instigator=instigator,
+        instigator_gender=ig,
+        cautioner=cautioner,
+        cautioner_gender=cg,
+        parent=parent,
+        trait=trait,
+        delay=delay,
+        instigator_age=instigator_age,
+        cautioner_age=cautioner_age,
+        relation=relation,
+        trust=trust,
+        comfort=comfort,
+        pet=pet,
+    )
 
 
 def generate(params: StoryParams) -> StorySample:

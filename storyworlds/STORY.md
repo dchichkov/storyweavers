@@ -40,30 +40,23 @@ TinyStories-style domain.
 - Keep prose child-facing, concrete, and authored.
 - Never leak internal ids, raw meter/debug language, unresolved template fields,
   doubled articles, or scaffold phrases into story text or child-facing QA.
-
-## QA
-
-- Generate three sets from world state, not by parsing rendered English:
-  prompts, story-grounded QA, and world-knowledge QA.
-- Story-grounded answers should be full natural-language explanations, usually
-  two short sentences when cause/effect is available.
+- Story-grounded answers should be full natural-language explanations.
 - Prefer causal second sentences tied to world trace facts: risk, method, gear,
   helper, location, material, ownership, or later consequence.
 
-## Required Checks
-
-Run these before finishing a new world:
+# Typical Verification Commands
 
 ```bash
 ./.venv/bin/python storyworlds/worlds/<name>.py --verify
 ./.venv/bin/python storyworlds/worlds/<name>.py -n 10 --seed 777 --qa
 ./.venv/bin/python storyworlds/worlds/<name>.py --json
+./.venv/bin/python storyworlds/worlds/<name>.py --all --qa
+./.venv/bin/python storyworlds/worlds/<name>.py --trace --seed 777
 git diff --check -- storyworlds/worlds/<name>.py
 ```
 
-Useful extra checks:
+# Typical Generation Commands
 
 ```bash
-./.venv/bin/python storyworlds/worlds/<name>.py --all --qa
-./.venv/bin/python storyworlds/worlds/<name>.py --trace --seed 777
+./.venv/bin/python storyworlds/worlds/<name>.py -n 1000 --seed 42 --qa --json
 ```
