@@ -26,6 +26,7 @@ from openai_batch_world_factory import (
 
 
 ENTITY_LOOP_RE = re.compile(r"for (\w+) in world\.entities\.values\(\):")
+ARGPARSE_N_RE = re.compile(r"\.add_argument\((?P<quote>['\"])--n(?P=quote)")
 
 
 DATACLASS_CLASS_RE = re.compile(
@@ -83,6 +84,10 @@ def add_world_get_placeholder(source: str) -> str:
 
 def snapshot_entity_loops(source: str) -> str:
     return ENTITY_LOOP_RE.sub(r"for \1 in list(world.entities.values()):", source)
+
+
+def add_short_n_alias(source: str) -> str:
+    return ARGPARSE_N_RE.sub(".add_argument(\"-n\", \"--n\"", source)
 
 
 def normalize_fired_guards(source: str) -> str:
@@ -194,22 +199,69 @@ def add_dataclass_common_properties(source: str) -> str:
         body = match.group("body")
         additions: list[str] = []
         fields = {m.group("name") for m in FIELD_RE.finditer(body)}
+        has_labelish = bool({"id", "label", "name", "type", "phrase"} & fields)
+        def fallback_expr(*preferred: str) -> str:
+            parts = [f'getattr(self, "{name}", None)' for name in preferred if name in fields]
+            parts.extend(
+                [
+                    'getattr(self, "name", None)',
+                    'getattr(self, "id", None)',
+                    'getattr(self, "type", self.__class__.__name__.lower())',
+                ]
+            )
+            return f"str({' or '.join(parts)})"
+
+        label_word_expr = fallback_expr("label", "phrase")
+        label_expr = fallback_expr("phrase")
+        award_expr = fallback_expr("label", "phrase")
+        phrase_expr = fallback_expr("label")
         if "label_word" not in text and ({"id", "label", "name", "type"} & fields):
             additions.append(
                 "    @property\n"
                 "    def label_word(self) -> str:\n"
-                "        return str(getattr(self, \"label\", None) or getattr(self, \"name\", None) or getattr(self, \"id\", None) or getattr(self, \"type\", self.__class__.__name__.lower()))\n"
+                f"        return {label_word_expr}\n"
+            )
+        if "def label(self)" not in text and "label" not in fields and has_labelish:
+            additions.append(
+                "    @property\n"
+                "    def label(self) -> str:\n"
+                f"        return {label_expr}\n"
+            )
+        if "def award_phrase(self)" not in text and "award_phrase" not in fields and has_labelish:
+            additions.append(
+                "    @property\n"
+                "    def award_phrase(self) -> str:\n"
+                f"        return {award_expr}\n"
             )
         if "def phrase(self)" not in text and "phrase" not in fields and ({"id", "label", "name", "type"} & fields):
             additions.append(
                 "    @property\n"
                 "    def phrase(self) -> str:\n"
-                "        return str(getattr(self, \"_phrase\", None) or getattr(self, \"label_word\", None) or getattr(self, \"label\", None) or getattr(self, \"id\", self.__class__.__name__.lower()))\n"
+                f"        return str(getattr(self, \"_phrase\", None) or {phrase_expr})\n"
                 "\n"
                 "    @phrase.setter\n"
                 "    def phrase(self, value: str) -> None:\n"
                 "        object.__setattr__(self, \"_phrase\", value)\n"
             )
+        if "def __post_init__(self)" not in text and ({"meters", "memes"} & fields):
+            post_lines = [
+                "    def __post_init__(self) -> None:\n",
+            ]
+            if "meters" in fields:
+                post_lines.extend(
+                    [
+                        "        if not hasattr(self.meters, \"__missing__\"):\n",
+                        "            object.__setattr__(self, \"meters\", __import__(\"collections\").defaultdict(float, self.meters))\n",
+                    ]
+                )
+            if "memes" in fields:
+                post_lines.extend(
+                    [
+                        "        if not hasattr(self.memes, \"__missing__\"):\n",
+                        "            object.__setattr__(self, \"memes\", __import__(\"collections\").defaultdict(float, self.memes))\n",
+                    ]
+                )
+            additions.append("".join(post_lines))
         if "meters" not in fields and "def meters(self)" not in text:
             additions.append(
                 "    @property\n"
@@ -306,6 +358,32 @@ def add_known_default_fields(source: str) -> str:
     return source
 
 
+def use_defaultdict_for_state_maps(source: str) -> str:
+    source = re.sub(
+        r"(meters\s*:\s*dict\[[^\n]+\]\s*=\s*)field\(default_factory=dict\)",
+        r"\1field(default_factory=lambda: __import__('collections').defaultdict(float))",
+        source,
+    )
+    source = re.sub(
+        r"(memes\s*:\s*dict\[[^\n]+\]\s*=\s*)field\(default_factory=dict\)",
+        r"\1field(default_factory=lambda: __import__('collections').defaultdict(float))",
+        source,
+    )
+    source = source.replace(
+        '__import__(\\"collections\\").defaultdict(float)',
+        "__import__('collections').defaultdict(float)",
+    )
+    return source
+
+
+def repair_undefined_thing_label(source: str) -> str:
+    if "thing.label" not in source:
+        return source
+    if re.search(r"def \w+\([^)]*\bitem\b", source) or "item = world.add(" in source:
+        return source.replace("thing.label", "item.label")
+    return source
+
+
 def bound_propagate_loops(source: str) -> str:
     return source.replace(
         "    changed = True\n    while changed:\n",
@@ -317,6 +395,7 @@ def repair_source(source: str) -> tuple[str, list[str]]:
     changes: list[str] = []
     repaired = source
     for name, fn in (
+        ("short_n_alias", add_short_n_alias),
         ("world_get_placeholder", add_world_get_placeholder),
         ("snapshot_entity_loops", snapshot_entity_loops),
         ("normalize_fired_guards", normalize_fired_guards),
@@ -326,6 +405,8 @@ def repair_source(source: str) -> tuple[str, list[str]]:
         ("missing_keyword_fields", add_missing_keyword_fields),
         ("dataclass_common_properties", add_dataclass_common_properties),
         ("known_default_fields", add_known_default_fields),
+        ("defaultdict_state_maps", use_defaultdict_for_state_maps),
+        ("undefined_thing_label", repair_undefined_thing_label),
         ("bound_propagate_loops", bound_propagate_loops),
     ):
         new_source = fn(repaired)

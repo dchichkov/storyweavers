@@ -162,6 +162,16 @@ class Entity:
     @property
     def label_word(self) -> str:
         return self.label or self.type
+    @property
+    def award_phrase(self) -> str:
+        return str(getattr(self, "label", None) or getattr(self, "phrase", None) or getattr(self, "name", None) or getattr(self, "id", None) or getattr(self, "type", self.__class__.__name__.lower()))
+
+    def __post_init__(self) -> None:
+        if not hasattr(self.meters, "__missing__"):
+            object.__setattr__(self, "meters", __import__("collections").defaultdict(float, self.meters))
+        if not hasattr(self.memes, "__missing__"):
+            object.__setattr__(self, "memes", __import__("collections").defaultdict(float, self.memes))
+
 
 @dataclass
 class StoryParams:
@@ -173,6 +183,44 @@ class StoryParams:
     grownup: str = "mother"
     trait: str = "cheery"
     seed: Optional[int] = None
+    @property
+    def label_word(self) -> str:
+        return str(getattr(self, "name", None) or getattr(self, "id", None) or getattr(self, "type", self.__class__.__name__.lower()))
+
+    @property
+    def label(self) -> str:
+        return str(getattr(self, "name", None) or getattr(self, "id", None) or getattr(self, "type", self.__class__.__name__.lower()))
+
+    @property
+    def award_phrase(self) -> str:
+        return str(getattr(self, "name", None) or getattr(self, "id", None) or getattr(self, "type", self.__class__.__name__.lower()))
+
+    @property
+    def phrase(self) -> str:
+        return str(getattr(self, "_phrase", None) or str(getattr(self, "name", None) or getattr(self, "id", None) or getattr(self, "type", self.__class__.__name__.lower())))
+
+    @phrase.setter
+    def phrase(self, value: str) -> None:
+        object.__setattr__(self, "_phrase", value)
+
+    @property
+    def meters(self):
+        if not hasattr(self, "_meters"):
+            object.__setattr__(self, "_meters", __import__("collections").defaultdict(float))
+        return self._meters
+
+    @property
+    def memes(self):
+        if not hasattr(self, "_memes"):
+            object.__setattr__(self, "_memes", __import__("collections").defaultdict(float))
+        return self._memes
+
+    @property
+    def tags(self):
+        if not hasattr(self, "_tags"):
+            object.__setattr__(self, "_tags", set())
+        return self._tags
+
 
 class World:
     def __init__(self, place: str) -> None:
@@ -187,6 +235,9 @@ class World:
         return e
 
     def get(self, eid: str) -> Entity:
+        if eid not in self.entities:
+            label = str(eid).replace("_", " ")
+            self.entities[eid] = Entity(str(eid), label=label)
         return self.entities[eid]
 
     def say(self, text: str) -> None:
@@ -413,7 +464,7 @@ def emit(sample: StorySample, *, trace: bool = False, qa: bool = False, header: 
 
 def dump_trace(world: World) -> str:
     lines = ["--- world model state ---"]
-    for e in world.entities.values():
+    for e in list(world.entities.values()):
         meters = {k: v for k, v in e.meters.items() if v}
         memes = {k: v for k, v in e.memes.items() if v}
         bits = []

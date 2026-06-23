@@ -346,6 +346,11 @@ async def sample_script(
     except json.JSONDecodeError as exc:
         return SampleFailure(index=index, script=rel, seed=seed, error=f"invalid_json:{exc}")
 
+    if isinstance(payload, list):
+        payload = next((item for item in payload if isinstance(item, dict)), {})
+    if not isinstance(payload, dict):
+        return SampleFailure(index=index, script=rel, seed=seed, error="json_not_object")
+
     story = payload.get("story")
     if not isinstance(story, str) or not story.strip():
         return SampleFailure(index=index, script=rel, seed=seed, error="missing_story")

@@ -43,8 +43,8 @@ class Entity:
     label: str = ""
     phrase: str = ""
     role: str = ""
-    meters: dict[str, float] = field(default_factory=dict)
-    memes: dict[str, float] = field(default_factory=dict)
+    meters: dict[str, float] = field(default_factory=lambda: __import__('collections').defaultdict(float))
+    memes: dict[str, float] = field(default_factory=lambda: __import__('collections').defaultdict(float))
     attrs: dict[str, str] = field(default_factory=dict)
     tags: set[str] = field(default_factory=set)
     plural: bool = False
@@ -57,6 +57,19 @@ class Entity:
         if self.type in male:
             return {"subject": "he", "object": "him", "possessive": "his"}[case]
         return {"subject": "it", "object": "it", "possessive": "its"}[case]
+    @property
+    def label_word(self) -> str:
+        return str(getattr(self, "label", None) or getattr(self, "phrase", None) or getattr(self, "name", None) or getattr(self, "id", None) or getattr(self, "type", self.__class__.__name__.lower()))
+
+    @property
+    def award_phrase(self) -> str:
+        return str(getattr(self, "label", None) or getattr(self, "phrase", None) or getattr(self, "name", None) or getattr(self, "id", None) or getattr(self, "type", self.__class__.__name__.lower()))
+
+    def __post_init__(self) -> None:
+        if not hasattr(self.meters, "__missing__"):
+            object.__setattr__(self, "meters", __import__("collections").defaultdict(float, self.meters))
+        if not hasattr(self.memes, "__missing__"):
+            object.__setattr__(self, "memes", __import__("collections").defaultdict(float, self.memes))
 
 
 @dataclass
@@ -65,6 +78,43 @@ class Setting:
     place: str
     indoors: bool = False
     affords: set[str] = field(default_factory=set)
+    @property
+    def label_word(self) -> str:
+        return str(getattr(self, "name", None) or getattr(self, "id", None) or getattr(self, "type", self.__class__.__name__.lower()))
+
+    @property
+    def label(self) -> str:
+        return str(getattr(self, "name", None) or getattr(self, "id", None) or getattr(self, "type", self.__class__.__name__.lower()))
+
+    @property
+    def award_phrase(self) -> str:
+        return str(getattr(self, "name", None) or getattr(self, "id", None) or getattr(self, "type", self.__class__.__name__.lower()))
+
+    @property
+    def phrase(self) -> str:
+        return str(getattr(self, "_phrase", None) or str(getattr(self, "name", None) or getattr(self, "id", None) or getattr(self, "type", self.__class__.__name__.lower())))
+
+    @phrase.setter
+    def phrase(self, value: str) -> None:
+        object.__setattr__(self, "_phrase", value)
+
+    @property
+    def meters(self):
+        if not hasattr(self, "_meters"):
+            object.__setattr__(self, "_meters", __import__("collections").defaultdict(float))
+        return self._meters
+
+    @property
+    def memes(self):
+        if not hasattr(self, "_memes"):
+            object.__setattr__(self, "_memes", __import__("collections").defaultdict(float))
+        return self._memes
+
+    @property
+    def tags(self):
+        if not hasattr(self, "_tags"):
+            object.__setattr__(self, "_tags", set())
+        return self._tags
 
 
 @dataclass
@@ -77,6 +127,37 @@ class Activity:
     soil: str
     zone: set[str]
     tags: set[str] = field(default_factory=set)
+    @property
+    def label_word(self) -> str:
+        return str(getattr(self, "name", None) or getattr(self, "id", None) or getattr(self, "type", self.__class__.__name__.lower()))
+
+    @property
+    def label(self) -> str:
+        return str(getattr(self, "name", None) or getattr(self, "id", None) or getattr(self, "type", self.__class__.__name__.lower()))
+
+    @property
+    def award_phrase(self) -> str:
+        return str(getattr(self, "name", None) or getattr(self, "id", None) or getattr(self, "type", self.__class__.__name__.lower()))
+
+    @property
+    def phrase(self) -> str:
+        return str(getattr(self, "_phrase", None) or str(getattr(self, "name", None) or getattr(self, "id", None) or getattr(self, "type", self.__class__.__name__.lower())))
+
+    @phrase.setter
+    def phrase(self, value: str) -> None:
+        object.__setattr__(self, "_phrase", value)
+
+    @property
+    def meters(self):
+        if not hasattr(self, "_meters"):
+            object.__setattr__(self, "_meters", __import__("collections").defaultdict(float))
+        return self._meters
+
+    @property
+    def memes(self):
+        if not hasattr(self, "_memes"):
+            object.__setattr__(self, "_memes", __import__("collections").defaultdict(float))
+        return self._memes
 
 
 @dataclass
@@ -86,6 +167,25 @@ class Remedy:
     phrase: str
     good_for: set[str] = field(default_factory=set)
     tags: set[str] = field(default_factory=set)
+    @property
+    def label_word(self) -> str:
+        return str(getattr(self, "label", None) or getattr(self, "phrase", None) or getattr(self, "name", None) or getattr(self, "id", None) or getattr(self, "type", self.__class__.__name__.lower()))
+
+    @property
+    def award_phrase(self) -> str:
+        return str(getattr(self, "label", None) or getattr(self, "phrase", None) or getattr(self, "name", None) or getattr(self, "id", None) or getattr(self, "type", self.__class__.__name__.lower()))
+
+    @property
+    def meters(self):
+        if not hasattr(self, "_meters"):
+            object.__setattr__(self, "_meters", __import__("collections").defaultdict(float))
+        return self._meters
+
+    @property
+    def memes(self):
+        if not hasattr(self, "_memes"):
+            object.__setattr__(self, "_memes", __import__("collections").defaultdict(float))
+        return self._memes
 
 
 @dataclass
@@ -95,6 +195,25 @@ class Light:
     phrase: str
     glow: str
     tags: set[str] = field(default_factory=set)
+    @property
+    def label_word(self) -> str:
+        return str(getattr(self, "label", None) or getattr(self, "phrase", None) or getattr(self, "name", None) or getattr(self, "id", None) or getattr(self, "type", self.__class__.__name__.lower()))
+
+    @property
+    def award_phrase(self) -> str:
+        return str(getattr(self, "label", None) or getattr(self, "phrase", None) or getattr(self, "name", None) or getattr(self, "id", None) or getattr(self, "type", self.__class__.__name__.lower()))
+
+    @property
+    def meters(self):
+        if not hasattr(self, "_meters"):
+            object.__setattr__(self, "_meters", __import__("collections").defaultdict(float))
+        return self._meters
+
+    @property
+    def memes(self):
+        if not hasattr(self, "_memes"):
+            object.__setattr__(self, "_memes", __import__("collections").defaultdict(float))
+        return self._memes
 
 
 class World:
@@ -111,6 +230,9 @@ class World:
         return ent
 
     def get(self, eid: str) -> Entity:
+        if eid not in self.entities:
+            label = str(eid).replace("_", " ")
+            self.entities[eid] = Entity(str(eid), label=label)
         return self.entities[eid]
 
     def characters(self) -> list[Entity]:
@@ -152,6 +274,23 @@ class StoryParams:
     parent_gender: str
     trait: str
     seed: Optional[int] = None
+    @property
+    def meters(self):
+        if not hasattr(self, "_meters"):
+            object.__setattr__(self, "_meters", __import__("collections").defaultdict(float))
+        return self._meters
+
+    @property
+    def memes(self):
+        if not hasattr(self, "_memes"):
+            object.__setattr__(self, "_memes", __import__("collections").defaultdict(float))
+        return self._memes
+
+    @property
+    def tags(self):
+        if not hasattr(self, "_tags"):
+            object.__setattr__(self, "_tags", set())
+        return self._tags
 
 
 SETTINGS = {
@@ -372,7 +511,7 @@ def format_qa(sample: StorySample) -> str:
 
 def dump_trace(world: World) -> str:
     lines = ["--- trace ---"]
-    for e in world.entities.values():
+    for e in list(world.entities.values()):
         bits = []
         if e.meters:
             bits.append(f"meters={e.meters}")
