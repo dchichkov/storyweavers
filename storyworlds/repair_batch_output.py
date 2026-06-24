@@ -528,7 +528,7 @@ def add_fallback_storyparams_helper(source: str) -> str:
         "                    break\n"
         "        if value is None:\n"
         "            upper = name.upper()\n"
-        "            keys = [upper + \"S\", upper + \"ES\"]\n"
+        "            keys = [upper, upper + \"S\", upper + \"ES\"]\n"
         "            if upper.endswith(\"Y\"):\n"
         "                keys.append(upper[:-1] + \"IES\")\n"
         "            for key in keys:\n"
@@ -618,7 +618,7 @@ def use_safe_constant_lookups(source: str) -> str:
     def repl(match: re.Match[str]) -> str:
         name = match.group("name")
         key = match.group("key").strip()
-        if "[" in key or "]" in key:
+        if "[" in key or "]" in key or ":" in key:
             return match.group(0)
         if key.startswith(("\"", "'")) and key.rstrip().endswith(("\"", "'")):
             return match.group(0)
@@ -652,6 +652,13 @@ def normalize_plural_global_lookups(source: str) -> str:
 
 def repair_common_syntax_glitches(source: str) -> str:
     source = source.replace(", attributes:=None", ", attributes=None")
+    source = source.replace("mem es=", "memes=")
+    source = source.replace("met ers=", "meters=")
+    source = re.sub(
+        r"f'\"(?P<text>[^'\n]*),'\s+\{",
+        lambda match: f"f'\"{match.group('text')},\" {{",
+        source,
+    )
     source = source.replace('.repeat_spot\']}', ".repeat_spot}")
     source = source.replace('be.""', 'be."')
     source = source.replace("rng.choice(sorted(combos))", "rng.choice(list(combos))")
@@ -694,6 +701,11 @@ def repair_common_syntax_glitches(source: str) -> str:
                 body = body[: len(body) - (len(body) - len(stripped)) - 2] + '")' + body[len(stripped):]
             elif stripped.endswith("'"):
                 body = body[: len(body) - (len(body) - len(stripped)) - 1] + '"' + body[len(stripped):]
+        if "f'" in stripped and stripped.count("'") == 1:
+            if stripped.endswith('")'):
+                body = body[: len(body) - (len(body) - len(stripped)) - 2] + "')" + body[len(stripped):]
+            elif stripped.endswith('"'):
+                body = body[: len(body) - (len(body) - len(stripped)) - 1] + "'" + body[len(stripped):]
         lines.append(body + newline)
     source = "".join(lines)
     source = re.sub(
@@ -702,6 +714,119 @@ def repair_common_syntax_glitches(source: str) -> str:
         source,
     )
     return source
+
+
+def widen_pronoun_methods(source: str) -> str:
+    def repl(match: re.Match[str]) -> str:
+        indent = match.group("indent")
+        return (
+            f"{indent}def pronoun(self, case: str = \"subject\") -> str:\n"
+            f"{indent}    return self.p(case)\n"
+        )
+
+    return re.sub(
+        r"(?m)^(?P<indent>\s*)def pronoun\(self\) -> str:\n"
+        r"(?P=indent)    return self\.p\(\)\n",
+        repl,
+        source,
+    )
+
+
+def continue_sampling_after_storyerror(source: str) -> str:
+    return re.sub(
+        r"(?m)^(?P<indent>\s*)except StoryError as \w+:\n"
+        r"(?P=indent)    print\(\w+\)\n"
+        r"(?P=indent)    return\n",
+        r"\g<indent>except StoryError:\n\g<indent>    continue\n",
+        source,
+    )
+
+
+def safe_params_method_selectors(source: str) -> str:
+    return re.sub(
+        r"\bparams\.([A-Za-z_]\w*)\(\)",
+        r'(getattr(params, "\1", None)() if callable(getattr(params, "\1", None)) else getattr(params, "\1", None))',
+        source,
+    )
+
+
+def safe_next_value_matches(source: str) -> str:
+    return re.sub(
+        r"next\((?P<var>[A-Za-z_]\w*) for (?P=var) in (?P<name>[A-Z][A-Z0-9_]*S)\.values\(\) if (?P=var)\.id == (?P<expr>[^)\n]+(?:\)[^)\n]*)?)\)",
+        r"next((\g<var> for \g<var> in \g<name>.values() if \g<var>.id == \g<expr>), next(iter(\g<name>.values())))",
+        source,
+    )
+
+
+def use_gear_fallbacks(source: str) -> str:
+    return re.sub(
+        r"(?m)^(?P<indent>\s*)gear = (?P<fn>select_gear|share_choice)\((?P<args>[^\n]+)\)\n"
+        r"(?P=indent)if gear is None:\n"
+        r"(?P=indent)    (?P<body>pass|return world)\n",
+        r"\g<indent>gear = \g<fn>(\g<args>)\n"
+        r"\g<indent>if gear is None:\n"
+        r'\g<indent>    gear = next(iter(globals().get("GEARS", globals().get("GEAR", []))))\n',
+        source,
+    )
+
+
+def safe_world_fact_indexing(source: str) -> str:
+    if not re.search(r"world\.facts\.update\([^)]*=\s*[A-Za-z_]\w*\.id", source, flags=re.DOTALL):
+        return source
+    repaired = re.sub(
+        r"""\bf\[(?P<quote>["'])(?P<key>[A-Za-z_]\w*)(?P=quote)\](?!\s*\[)""",
+        r'_safe_fact(world, f, "\g<key>")',
+        source,
+    )
+    repaired = re.sub(
+        r'world\.get\(_safe_fact\(world, f, "([A-Za-z_]\w*)"\)\)',
+        r'_safe_fact(world, f, "\1")',
+        repaired,
+    )
+    if repaired == source or "def _safe_fact(" in repaired:
+        return repaired
+    helper = (
+        "\n"
+        "def _safe_fact(world, facts, key):\n"
+        "    value = facts.get(key) if hasattr(facts, \"get\") else None\n"
+        "    if hasattr(value, \"id\") or hasattr(value, \"label\") or hasattr(value, \"verb\"):\n"
+        "        return value\n"
+        "    if isinstance(value, str) and hasattr(world, \"get\"):\n"
+        "        try:\n"
+        "            resolved = world.get(value)\n"
+        "            if resolved is not None:\n"
+        "                return resolved\n"
+        "        except Exception:\n"
+        "            pass\n"
+        "    entities = getattr(world, \"entities\", {})\n"
+        "    if hasattr(entities, \"values\"):\n"
+        "        for entity in entities.values():\n"
+        "            if hasattr(entity, \"id\") or hasattr(entity, \"label\"):\n"
+        "                return entity\n"
+        "    return value\n"
+        "\n"
+    )
+    dataclass_at = repaired.find("@dataclass")
+    if dataclass_at != -1:
+        return repaired[:dataclass_at] + helper + repaired[dataclass_at:]
+    return helper.lstrip() + repaired
+
+
+def use_global_suspects_in_resolver(source: str) -> str:
+    return source.replace(
+        "for suspect in world.suspects.values():",
+        'for suspect in list(world.suspects.values()) + list(globals().get("SUSPECTS", {}).values()):',
+    )
+
+
+def remove_orphan_storyerror_message_fragments(source: str) -> str:
+    return re.sub(
+        r"(?m)^([ \t]*return _fallback_storyparams\(args, rng, StoryParams, globals\(\)\)\n)"
+        r"(?:[ \t]+f?[\"'][^\n]*\n)+"
+        r"[ \t]*\)\n",
+        r"\1",
+        source,
+    )
 
 
 def repair_undefined_thing_label(source: str) -> str:
@@ -725,6 +850,13 @@ def repair_source(source: str) -> tuple[str, list[str]]:
     for name, fn in (
         ("short_n_alias", add_short_n_alias),
         ("common_syntax_glitches", repair_common_syntax_glitches),
+        ("pronoun_case_arg", widen_pronoun_methods),
+        ("storyerror_continue_sampling", continue_sampling_after_storyerror),
+        ("safe_next_value_matches", safe_next_value_matches),
+        ("gear_fallbacks", use_gear_fallbacks),
+        ("safe_world_fact_indexing", safe_world_fact_indexing),
+        ("params_method_selectors", safe_params_method_selectors),
+        ("global_suspect_resolver", use_global_suspects_in_resolver),
         ("world_get_placeholder", add_world_get_placeholder),
         ("snapshot_entity_loops", snapshot_entity_loops),
         ("normalize_fired_guards", normalize_fired_guards),
@@ -736,7 +868,9 @@ def repair_source(source: str) -> tuple[str, list[str]]:
         ("dict_value_iteration", use_dict_values_when_loop_dereferences_items),
         ("dataclass_common_properties", add_dataclass_common_properties),
         ("fallback_storyparams", fallback_storyparams_for_resolve_errors),
+        ("orphan_storyerror_fragments", remove_orphan_storyerror_message_fragments),
         ("downgrade_storyerror_raises", downgrade_remaining_storyerror_raises),
+        ("gear_fallbacks_after_storyerror", use_gear_fallbacks),
         ("known_default_fields", add_known_default_fields),
         ("defaultdict_state_maps", use_defaultdict_for_state_maps),
         ("defaultdict_state_assignments", use_defaultdict_for_state_assignments),
