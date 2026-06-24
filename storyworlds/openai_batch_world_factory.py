@@ -35,6 +35,12 @@ EXAMPLE_WORLD_PATHS = (
     WORLDS_DIR / "puddles.py",
     WORLDS_DIR / "pirates.py",
 )
+EXAMPLE_WORLD_CHOICES = ("all", "puddles", "pirates")
+EXAMPLE_WORLD_MAP = {
+    "puddles": (WORLDS_DIR / "puddles.py",),
+    "pirates": (WORLDS_DIR / "pirates.py",),
+    "all": EXAMPLE_WORLD_PATHS,
+}
 BATCH_DIR = STORYWORLDS_DIR / "batches"
 DEFAULT_MODEL = "gpt-5.4-mini"
 DEFAULT_ENDPOINT = "/v1/responses"
@@ -123,6 +129,12 @@ def build_parser() -> argparse.ArgumentParser:
             "--metadata-tag",
             default="storyworld_factory",
             help="short metadata tag attached to submitted batches",
+        )
+        ap.add_argument(
+            "--example-worlds",
+            choices=EXAMPLE_WORLD_CHOICES,
+            default="all",
+            help="which bundled example worlds to include in prompts; default: all",
         )
         ap.add_argument(
             "--output-dir",
@@ -248,11 +260,22 @@ def prompt_file_cache_name(path: Path) -> str:
         return path.as_posix()
 
 
-def prompt_cache_key(*, prompt_addendum: Path | None = None) -> str:
+def prompt_cache_key(
+    *,
+    prompt_addendum: Path | None = None,
+    example_worlds: str = "all",
+) -> str:
     digest = hashlib.sha256()
     digest.update(PROMPT_PROTOCOL.encode("utf-8"))
     digest.update(b"\0")
-    for path in (STORY_CONTRACT_PATH, RESULTS_PATH, ASP_PATH, *EXAMPLE_WORLD_PATHS):
+    digest.update(f"example_worlds={example_worlds}".encode("utf-8"))
+    digest.update(b"\0")
+    for path in (
+        STORY_CONTRACT_PATH,
+        RESULTS_PATH,
+        ASP_PATH,
+        *EXAMPLE_WORLD_MAP[example_worlds],
+    ):
         digest.update(path.relative_to(ROOT).as_posix().encode("utf-8"))
         digest.update(b"\0")
         digest.update(read_prompt_file(path).encode("utf-8"))
@@ -383,13 +406,15 @@ def build_storyworld_prompt(
     job: StoryworldJob,
     *,
     prompt_addendum: Path | None = None,
+    example_worlds: str = "all",
 ) -> str:
     story_contract = read_prompt_file(STORY_CONTRACT_PATH)
     results_contract = read_prompt_file(RESULTS_PATH)
     asp_contract = read_prompt_file(ASP_PATH)
+    example_paths = EXAMPLE_WORLD_MAP[example_worlds]
     examples = "\n\n".join(
         f"### {path.relative_to(ROOT).as_posix()}\n\n```python\n{read_prompt_file(path)}\n```"
-        for path in EXAMPLE_WORLD_PATHS
+        for path in example_paths
     )
     addendum_block = read_prompt_addendum(prompt_addendum)
 
@@ -451,6 +476,7 @@ def request_line(
     endpoint: str,
     max_output_tokens: int,
     reasoning_effort: str,
+    example_worlds: str = "all",
 ) -> dict[str, Any]:
     return {
         "custom_id": job.custom_id,
@@ -458,7 +484,7 @@ def request_line(
         "url": endpoint,
         "body": {
             "model": model,
-            "prompt_cache_key": prompt_cache_key(),
+            "prompt_cache_key": prompt_cache_key(example_worlds=example_worlds),
             "prompt_cache_retention": "24h",
             "reasoning": {"effort": reasoning_effort},
             "tools": [emit_python_tool()],
@@ -472,6 +498,7 @@ def request_line(
                             "type": "input_text",
                             "text": build_storyworld_prompt(
                                 job,
+                                example_worlds=example_worlds,
                             ),
                         }
                     ],
@@ -496,6 +523,7 @@ def prepare_files(args: argparse.Namespace) -> dict[str, Any]:
             endpoint=args.endpoint,
             max_output_tokens=args.max_output_tokens,
             reasoning_effort=args.reasoning_effort,
+            example_worlds=args.example_worlds,
         )
         for job in jobs
     ]
@@ -529,6 +557,7 @@ def prepare_files(args: argparse.Namespace) -> dict[str, Any]:
         "completion_window": args.completion_window,
         "max_output_tokens": args.max_output_tokens,
         "reasoning_effort": args.reasoning_effort,
+        "example_worlds": args.example_worlds,
         "jsonl_path": str(jsonl_path),
         "manifest_path": str(manifest_path),
         "jobs": [asdict(job) for job in jobs],

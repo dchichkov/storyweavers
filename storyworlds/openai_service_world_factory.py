@@ -25,6 +25,7 @@ from openai_batch_world_factory import (
     DEFAULT_MODEL,
     DEFAULT_REASONING_EFFORT,
     EMIT_TOOL_NAME,
+    EXAMPLE_WORLD_CHOICES,
     PROMPT_PROTOCOL,
     ROOT,
     STORYWORLDS_DIR,
@@ -136,6 +137,12 @@ def build_parser() -> argparse.ArgumentParser:
         type=Path,
         default=None,
         help="optional extra prompt instructions appended to every storyworld request",
+    )
+    parser.add_argument(
+        "--example-worlds",
+        choices=EXAMPLE_WORLD_CHOICES,
+        default="all",
+        help="which bundled example worlds to include in prompts; default: all",
     )
     parser.add_argument(
         "--overwrite",
@@ -254,11 +261,13 @@ def request_body(args: argparse.Namespace, job: StoryworldJob) -> dict[str, Any]
     prompt = build_storyworld_prompt(
         job,
         prompt_addendum=args.prompt_addendum,
+        example_worlds=args.example_worlds,
     )
     return {
         "model": args.model,
         "prompt_cache_key": prompt_cache_key(
             prompt_addendum=args.prompt_addendum,
+            example_worlds=args.example_worlds,
         ),
         "prompt_cache_retention": args.prompt_cache_retention,
         "reasoning": {"effort": args.reasoning_effort},
@@ -404,9 +413,11 @@ async def run(args: argparse.Namespace) -> int:
         "concurrency": args.concurrency,
         "prompt_cache_key": prompt_cache_key(
             prompt_addendum=args.prompt_addendum,
+            example_worlds=args.example_worlds,
         ),
         "prompt_cache_retention": args.prompt_cache_retention,
         "prompt_addendum": None if args.prompt_addendum is None else str(args.prompt_addendum),
+        "example_worlds": args.example_worlds,
         "target_dir": target_dir.relative_to(ROOT).as_posix(),
         "response_jsonl": response_jsonl.relative_to(ROOT).as_posix(),
         "manifest_path": manifest_path.relative_to(ROOT).as_posix(),

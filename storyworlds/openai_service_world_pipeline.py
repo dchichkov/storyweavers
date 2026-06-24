@@ -53,6 +53,12 @@ def build_parser() -> argparse.ArgumentParser:
         default=None,
         help="optional extra prompt instructions appended to every storyworld request",
     )
+    parser.add_argument(
+        "--example-worlds",
+        choices=batch_factory.EXAMPLE_WORLD_CHOICES,
+        default="all",
+        help="which bundled example worlds to include in prompts; default: all",
+    )
     parser.add_argument("--overwrite", action="store_true")
     parser.add_argument("--allow-incomplete", action="store_true")
     parser.add_argument("--target-dir", type=Path, default=None)
@@ -165,6 +171,8 @@ def factory_command(args: argparse.Namespace) -> list[str]:
         cmd += ["--target-dir", str(args.target_dir)]
     if args.prompt_addendum is not None:
         cmd += ["--prompt-addendum", str(args.prompt_addendum)]
+    if args.example_worlds != "all":
+        cmd += ["--example-worlds", args.example_worlds]
     if args.overwrite:
         cmd.append("--overwrite")
     if args.allow_incomplete:
@@ -185,6 +193,7 @@ def service_prompt(job: dict[str, Any], args: argparse.Namespace) -> str:
     prompt = batch_factory.build_storyworld_prompt(
         story_job,
         prompt_addendum=addendum_path,
+        example_worlds=str(job.get("example_worlds") or args.example_worlds),
     )
     return prompt
 
@@ -652,6 +661,8 @@ def main() -> int:
         raise SystemExit("Generation did not produce a readable manifest; cannot run eval report.")
     if args.prompt_addendum is None and isinstance(manifest.get("prompt_addendum"), str):
         args.prompt_addendum = Path(str(manifest["prompt_addendum"]))
+    if args.example_worlds == "all" and isinstance(manifest.get("example_worlds"), str):
+        args.example_worlds = str(manifest["example_worlds"])
 
     report_path = args.report_out
     if report_path is None:
