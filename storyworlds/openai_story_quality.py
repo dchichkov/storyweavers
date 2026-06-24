@@ -39,6 +39,8 @@ DEFAULT_LIMIT = 100
 DEFAULT_BATCH_SIZE = 20
 DEFAULT_SAMPLE_CONCURRENCY = 8
 DEFAULT_SAMPLE_TIMEOUT = 20.0
+DEFAULT_SERVICE_TIER = "flex"
+DEFAULT_REQUEST_TIMEOUT = 900.0
 PROMPT_PROTOCOL = "story_quality_baseline_v1"
 
 SYSTEM_PROMPT = (
@@ -185,6 +187,11 @@ def build_parser() -> argparse.ArgumentParser:
         choices=("in_memory", "24h"),
         default="24h",
         help="Responses prompt cache retention; default: 24h",
+    )
+    parser.add_argument(
+        "--service-tier",
+        default=DEFAULT_SERVICE_TIER,
+        help=f"Responses API service_tier; default: {DEFAULT_SERVICE_TIER}",
     )
     parser.add_argument(
         "--max-output-tokens",
@@ -404,7 +411,7 @@ def make_client(args: argparse.Namespace):
     api_key = os.environ.get(args.api_key_env)
     if not api_key:
         raise SystemExit(f"{args.api_key_env} is not set.")
-    kwargs: dict[str, Any] = {"api_key": api_key}
+    kwargs: dict[str, Any] = {"api_key": api_key, "timeout": DEFAULT_REQUEST_TIMEOUT}
     if args.base_url:
         kwargs["base_url"] = args.base_url
     return AsyncOpenAI(**kwargs)
@@ -432,6 +439,7 @@ def compact_response(response: Any) -> dict[str, Any]:
         "id": data.get("id"),
         "model": data.get("model"),
         "status": data.get("status"),
+        "service_tier": data.get("service_tier"),
         "usage": data.get("usage"),
     }
 
@@ -585,7 +593,7 @@ def summarize_file(path: Path, summary_out: Path | None, *, top_n: int) -> int:
 async def rate_story(client: Any, args: argparse.Namespace, item: StoryInput, cache_key: str) -> dict[str, Any]:
     started = time.monotonic()
     try:
-        response = await client.responses.create(
+        response = await client.with_options(timeout=DEFAULT_REQUEST_TIMEOUT).responses.create(
             model=args.model,
             input=response_input(item.story),
             text=text_format(),
@@ -593,6 +601,7 @@ async def rate_story(client: Any, args: argparse.Namespace, item: StoryInput, ca
             max_output_tokens=args.max_output_tokens,
             prompt_cache_key=cache_key,
             prompt_cache_retention=args.prompt_cache_retention,
+            service_tier=args.service_tier,
         )
         elapsed = time.monotonic() - started
         raw_text = output_text(response)
@@ -646,6 +655,7 @@ async def run_ratings(args: argparse.Namespace, inputs: list[StoryInput], out_pa
                     row["model"] = args.model
                     row["prompt_cache_key"] = cache_key
                     row["prompt_cache_retention"] = args.prompt_cache_retention
+                    row["service_tier"] = args.service_tier
                     handle.write(json.dumps(row, ensure_ascii=False) + "\n")
                     handle.flush()
                 print(
@@ -669,6 +679,7 @@ def print_dry_run(inputs: list[StoryInput], failures: list[SampleFailure], args:
                 "batch_size": args.batch_size,
                 "prompt_cache_key": args.prompt_cache_key or prompt_cache_key(),
                 "prompt_cache_retention": args.prompt_cache_retention,
+                "service_tier": args.service_tier,
                 "first_input": None if not inputs else {
                     "script": inputs[0].script,
                     "seed": inputs[0].seed,

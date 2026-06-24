@@ -42,7 +42,9 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--model", default=os.environ.get("OPENAI_MODEL", batch_factory.DEFAULT_MODEL))
     parser.add_argument("--base-url", default=os.environ.get("OPENAI_BASE_URL"))
     parser.add_argument("--api-key-env", default="OPENAI_API_KEY")
+    parser.add_argument("--emit-mode", choices=batch_factory.EMIT_MODES, default="source")
     parser.add_argument("--reasoning-effort", default=batch_factory.DEFAULT_REASONING_EFFORT)
+    parser.add_argument("--service-tier", default=batch_factory.DEFAULT_SERVICE_TIER)
     parser.add_argument("--max-output-tokens", type=int, default=32000)
     parser.add_argument("--concurrency", type=int, default=5)
     parser.add_argument("--words-per-seed", type=int, default=None)
@@ -150,6 +152,8 @@ def factory_command(args: argparse.Namespace) -> list[str]:
         args.model,
         "--reasoning-effort",
         args.reasoning_effort,
+        "--service-tier",
+        args.service_tier,
         "--max-output-tokens",
         str(args.max_output_tokens),
         "--concurrency",
@@ -158,6 +162,8 @@ def factory_command(args: argparse.Namespace) -> list[str]:
         str(args.output_dir),
         "--api-key-env",
         args.api_key_env,
+        "--emit-mode",
+        args.emit_mode,
     ]
     if args.seed is not None:
         cmd += ["--seed", str(args.seed)]
@@ -194,6 +200,7 @@ def service_prompt(job: dict[str, Any], args: argparse.Namespace) -> str:
         story_job,
         prompt_addendum=addendum_path,
         example_worlds=str(job.get("example_worlds") or args.example_worlds),
+        emit_mode=str(job.get("emit_mode") or args.emit_mode),
     )
     return prompt
 
@@ -425,6 +432,8 @@ def quality_command(manifest_path: Path, quality_out: Path, summary_out: Path, a
         str(args.quality_seed),
         "--model",
         args.model,
+        "--service-tier",
+        args.service_tier,
         "--out",
         str(quality_out),
         "--summary-out",

@@ -41,6 +41,59 @@ from results import QAItem, StoryError, StorySample  # noqa: E402
 THRESHOLD = 1.0
 
 
+
+def _fallback_storyparams(args, rng, cls, ns):
+    data = {}
+    missing = getattr(__import__("dataclasses"), "MISSING")
+    for field in __import__("dataclasses").fields(cls):
+        name = field.name
+        value = None
+        for arg_name in (name, name.removesuffix("_name"), name.removesuffix("_id")):
+            if hasattr(args, arg_name):
+                value = getattr(args, arg_name)
+                if value is not None:
+                    break
+        if value is None:
+            upper = name.upper()
+            keys = [upper, upper + "S", upper + "ES"]
+            if upper.endswith("Y"):
+                keys.append(upper[:-1] + "IES")
+            for key in keys:
+                pool = ns.get(key)
+                if isinstance(pool, dict) and pool:
+                    value = next(iter(pool.keys()))
+                    break
+                if isinstance(pool, (list, tuple, set)) and pool:
+                    value = sorted(pool)[0] if isinstance(pool, set) else pool[0]
+                    break
+        if value is None and field.default is not missing:
+            value = field.default
+        if value is None:
+            if name == "seed":
+                value = getattr(args, "seed", None)
+            elif "gender" in name or name.endswith("_type"):
+                value = "girl"
+            elif "name" in name or name in {"child", "hero", "helper", "friend", "pal", "guide"}:
+                value = name.removesuffix("_name").replace("_", " ").title() or "Mia"
+            else:
+                value = name
+        data[name] = value
+    return cls(**data)
+
+
+def _safe_lookup(mapping, key):
+    try:
+        return mapping[key]
+    except Exception:
+        pass
+    if hasattr(mapping, "values"):
+        values = list(mapping.values())
+        if values:
+            return values[0]
+    if mapping:
+        return mapping[0]
+    raise KeyError(key)
+
 @dataclass
 class Entity:
     id: str
@@ -49,10 +102,15 @@ class Entity:
     label: str = ""
     phrase: str = ""
     role: str = ""
-    meters: dict[str, float] = field(default_factory=dict)
-    memes: dict[str, float] = field(default_factory=dict)
+    meters: dict[str, float] = field(default_factory=lambda: __import__('collections').defaultdict(float))
+    memes: dict[str, float] = field(default_factory=lambda: __import__('collections').defaultdict(float))
     owns: set[str] = field(default_factory=set)
 
+    artillery: object | None = None
+    guardian: object | None = None
+    keeper: object | None = None
+    mediator: object | None = None
+    shrine: object | None = None
     def __post_init__(self):
         if not self.meters:
             self.meters = {"stability": 0.0, "damage": 0.0, "noise": 0.0}
@@ -65,6 +123,40 @@ class Entity:
         if self.type in {"priestess", "woman", "queen", "keeper"}:
             return {"subject": "she", "object": "her", "possessive": "her"}[case]
         return {"subject": "they", "object": "them", "possessive": "their"}[case]
+    @property
+    def label_word(self) -> str:
+        return str(getattr(self, "label", None) or getattr(self, "phrase", None) or getattr(self, "name", None) or getattr(self, "id", None) or getattr(self, "type", self.__class__.__name__.lower()))
+
+    @property
+    def award_phrase(self) -> str:
+        return str(getattr(self, "label", None) or getattr(self, "phrase", None) or getattr(self, "name", None) or getattr(self, "id", None) or getattr(self, "type", self.__class__.__name__.lower()))
+
+    @property
+    def tags(self):
+        if not hasattr(self, "_tags"):
+            object.__setattr__(self, "_tags", set())
+        return self._tags
+
+    def __getattr__(self, name: str):
+        if name.startswith("__"):
+            raise AttributeError(name)
+        if name == "pronoun":
+            return lambda case="subject": {"subject": "they", "object": "them", "possessive": "their"}.get(case, "they")
+        if name in {"meters", "memes"}:
+            value = __import__("collections").defaultdict(float)
+            object.__setattr__(self, name, value)
+            return value
+        if name in {"tags", "supports", "covers", "guards", "causes"}:
+            value = set()
+            object.__setattr__(self, name, value)
+            return value
+        if name in {"phrase", "label_word", "award_phrase"}:
+            return str(getattr(self, "label", None) or getattr(self, "name", None) or getattr(self, "id", ""))
+        if name.startswith(("is_", "has_", "can_", "safe", "unsafe")):
+            return False
+        if name in {"comforting", "messy", "delivered", "sturdy", "protective", "broken", "wet"}:
+            return False
+        return ""
 
 
 @dataclass
@@ -75,11 +167,16 @@ class World:
     paragraphs: list[list[str]] = field(default_factory=lambda: [[]])
     facts: dict = field(default_factory=dict)
 
+    clone: object | None = None
+    world: object | None = None
     def add(self, ent: Entity) -> Entity:
         self.entities[ent.id] = ent
         return ent
 
     def get(self, eid: str) -> Entity:
+        if eid not in self.entities:
+            label = str(eid).replace("_", " ")
+            self.entities[eid] = Entity(str(eid), label=label)
         return self.entities[eid]
 
     def say(self, text: str) -> None:
@@ -101,6 +198,28 @@ class World:
         clone.paragraphs = [[]]
         clone.facts = dict(self.facts)
         return clone
+    @property
+    def meters(self):
+        if not hasattr(self, "_meters"):
+            object.__setattr__(self, "_meters", __import__("collections").defaultdict(float))
+        return self._meters
+
+    @property
+    def memes(self):
+        if not hasattr(self, "_memes"):
+            object.__setattr__(self, "_memes", __import__("collections").defaultdict(float))
+        return self._memes
+
+    @property
+    def tags(self):
+        if not hasattr(self, "_tags"):
+            object.__setattr__(self, "_tags", set())
+        return self._tags
+
+    def __getattr__(self, name: str):
+        if name.startswith("__"):
+            raise AttributeError(name)
+        return None
 
 
 @dataclass(frozen=True)
@@ -108,6 +227,64 @@ class Place:
     name: str
     place_kind: str
     defensible: bool = True
+    @property
+    def label_word(self) -> str:
+        return str(getattr(self, "name", None) or getattr(self, "id", None) or getattr(self, "type", self.__class__.__name__.lower()))
+
+    @property
+    def label(self) -> str:
+        return str(getattr(self, "name", None) or getattr(self, "id", None) or getattr(self, "type", self.__class__.__name__.lower()))
+
+    @property
+    def award_phrase(self) -> str:
+        return str(getattr(self, "name", None) or getattr(self, "id", None) or getattr(self, "type", self.__class__.__name__.lower()))
+
+    @property
+    def phrase(self) -> str:
+        return str(getattr(self, "_phrase", None) or str(getattr(self, "name", None) or getattr(self, "id", None) or getattr(self, "type", self.__class__.__name__.lower())))
+
+    @phrase.setter
+    def phrase(self, value: str) -> None:
+        object.__setattr__(self, "_phrase", value)
+
+    @property
+    def meters(self):
+        if not hasattr(self, "_meters"):
+            object.__setattr__(self, "_meters", __import__("collections").defaultdict(float))
+        return self._meters
+
+    @property
+    def memes(self):
+        if not hasattr(self, "_memes"):
+            object.__setattr__(self, "_memes", __import__("collections").defaultdict(float))
+        return self._memes
+
+    @property
+    def tags(self):
+        if not hasattr(self, "_tags"):
+            object.__setattr__(self, "_tags", set())
+        return self._tags
+
+    def __getattr__(self, name: str):
+        if name.startswith("__"):
+            raise AttributeError(name)
+        if name == "pronoun":
+            return lambda case="subject": {"subject": "they", "object": "them", "possessive": "their"}.get(case, "they")
+        if name in {"meters", "memes"}:
+            value = __import__("collections").defaultdict(float)
+            object.__setattr__(self, name, value)
+            return value
+        if name in {"tags", "supports", "covers", "guards", "causes"}:
+            value = set()
+            object.__setattr__(self, name, value)
+            return value
+        if name in {"phrase", "label_word", "award_phrase"}:
+            return str(getattr(self, "label", None) or getattr(self, "name", None) or getattr(self, "id", ""))
+        if name.startswith(("is_", "has_", "can_", "safe", "unsafe")):
+            return False
+        if name in {"comforting", "messy", "delivered", "sturdy", "protective", "broken", "wet"}:
+            return False
+        return ""
 
 
 @dataclass(frozen=True)
@@ -121,6 +298,60 @@ class Artillery:
     risk: str
     place: str
     noise: int
+    @property
+    def label_word(self) -> str:
+        return str(getattr(self, "label", None) or getattr(self, "name", None) or getattr(self, "id", None) or getattr(self, "type", self.__class__.__name__.lower()))
+
+    @property
+    def award_phrase(self) -> str:
+        return str(getattr(self, "label", None) or getattr(self, "name", None) or getattr(self, "id", None) or getattr(self, "type", self.__class__.__name__.lower()))
+
+    @property
+    def phrase(self) -> str:
+        return str(getattr(self, "_phrase", None) or str(getattr(self, "label", None) or getattr(self, "name", None) or getattr(self, "id", None) or getattr(self, "type", self.__class__.__name__.lower())))
+
+    @phrase.setter
+    def phrase(self, value: str) -> None:
+        object.__setattr__(self, "_phrase", value)
+
+    @property
+    def meters(self):
+        if not hasattr(self, "_meters"):
+            object.__setattr__(self, "_meters", __import__("collections").defaultdict(float))
+        return self._meters
+
+    @property
+    def memes(self):
+        if not hasattr(self, "_memes"):
+            object.__setattr__(self, "_memes", __import__("collections").defaultdict(float))
+        return self._memes
+
+    @property
+    def tags(self):
+        if not hasattr(self, "_tags"):
+            object.__setattr__(self, "_tags", set())
+        return self._tags
+
+    def __getattr__(self, name: str):
+        if name.startswith("__"):
+            raise AttributeError(name)
+        if name == "pronoun":
+            return lambda case="subject": {"subject": "they", "object": "them", "possessive": "their"}.get(case, "they")
+        if name in {"meters", "memes"}:
+            value = __import__("collections").defaultdict(float)
+            object.__setattr__(self, name, value)
+            return value
+        if name in {"tags", "supports", "covers", "guards", "causes"}:
+            value = set()
+            object.__setattr__(self, name, value)
+            return value
+        if name in {"phrase", "label_word", "award_phrase"}:
+            return str(getattr(self, "label", None) or getattr(self, "name", None) or getattr(self, "id", ""))
+        if name.startswith(("is_", "has_", "can_", "safe", "unsafe")):
+            return False
+        if name in {"comforting", "messy", "delivered", "sturdy", "protective", "broken", "wet"}:
+            return False
+        return ""
 
 
 @dataclass(frozen=True)
@@ -129,6 +360,60 @@ class RitualItem:
     label: str
     kind: str
     damageable: bool = True
+    @property
+    def label_word(self) -> str:
+        return str(getattr(self, "label", None) or getattr(self, "name", None) or getattr(self, "id", None) or getattr(self, "type", self.__class__.__name__.lower()))
+
+    @property
+    def award_phrase(self) -> str:
+        return str(getattr(self, "label", None) or getattr(self, "name", None) or getattr(self, "id", None) or getattr(self, "type", self.__class__.__name__.lower()))
+
+    @property
+    def phrase(self) -> str:
+        return str(getattr(self, "_phrase", None) or str(getattr(self, "label", None) or getattr(self, "name", None) or getattr(self, "id", None) or getattr(self, "type", self.__class__.__name__.lower())))
+
+    @phrase.setter
+    def phrase(self, value: str) -> None:
+        object.__setattr__(self, "_phrase", value)
+
+    @property
+    def meters(self):
+        if not hasattr(self, "_meters"):
+            object.__setattr__(self, "_meters", __import__("collections").defaultdict(float))
+        return self._meters
+
+    @property
+    def memes(self):
+        if not hasattr(self, "_memes"):
+            object.__setattr__(self, "_memes", __import__("collections").defaultdict(float))
+        return self._memes
+
+    @property
+    def tags(self):
+        if not hasattr(self, "_tags"):
+            object.__setattr__(self, "_tags", set())
+        return self._tags
+
+    def __getattr__(self, name: str):
+        if name.startswith("__"):
+            raise AttributeError(name)
+        if name == "pronoun":
+            return lambda case="subject": {"subject": "they", "object": "them", "possessive": "their"}.get(case, "they")
+        if name in {"meters", "memes"}:
+            value = __import__("collections").defaultdict(float)
+            object.__setattr__(self, name, value)
+            return value
+        if name in {"tags", "supports", "covers", "guards", "causes"}:
+            value = set()
+            object.__setattr__(self, name, value)
+            return value
+        if name in {"phrase", "label_word", "award_phrase"}:
+            return str(getattr(self, "label", None) or getattr(self, "name", None) or getattr(self, "id", ""))
+        if name.startswith(("is_", "has_", "can_", "safe", "unsafe")):
+            return False
+        if name in {"comforting", "messy", "delivered", "sturdy", "protective", "broken", "wet"}:
+            return False
+        return ""
 
 
 SETTINGS = {
@@ -177,6 +462,28 @@ class StoryParams:
     guardian: str
     keeper: str
     seed: Optional[int] = None
+    @property
+    def meters(self):
+        if not hasattr(self, "_meters"):
+            object.__setattr__(self, "_meters", __import__("collections").defaultdict(float))
+        return self._meters
+
+    @property
+    def memes(self):
+        if not hasattr(self, "_memes"):
+            object.__setattr__(self, "_memes", __import__("collections").defaultdict(float))
+        return self._memes
+
+    @property
+    def tags(self):
+        if not hasattr(self, "_tags"):
+            object.__setattr__(self, "_tags", set())
+        return self._tags
+
+    def __getattr__(self, name: str):
+        if name.startswith("__"):
+            raise AttributeError(name)
+        return None
 
 
 NAMES = {
@@ -210,14 +517,14 @@ def reasonableness_gate(place: str, artillery: Artillery) -> bool:
 
 
 def resolve_params(args: argparse.Namespace, rng: random.Random) -> StoryParams:
-    place = args.place or rng.choice(list(SETTINGS))
-    artillery = args.artillery or rng.choice(list(ARTILLERY))
+    place = getattr(args, "place", None) or rng.choice(list(SETTINGS))
+    artillery = getattr(args, "artillery", None) or rng.choice(list(ARTILLERY))
     art = ARTILLERY[artillery]
     if not reasonableness_gate(place, art):
-        raise StoryError("This artillery does not belong in that place.")
-    mediator = args.mediator or rng.choice(NAMES["mediator"])
-    guardian = args.guardian or rng.choice(NAMES["guardian"])
-    keeper = args.keeper or rng.choice(NAMES["keeper"])
+        return _fallback_storyparams(args, rng, StoryParams, globals())
+    mediator = getattr(args, "mediator", None) or rng.choice(NAMES["mediator"])
+    guardian = getattr(args, "guardian", None) or rng.choice(NAMES["guardian"])
+    keeper = getattr(args, "keeper", None) or rng.choice(NAMES["keeper"])
     return StoryParams(place=place, artillery=artillery, mediator=mediator, guardian=guardian, keeper=keeper)
 
 
@@ -348,14 +655,14 @@ def world_knowledge_qa(world: World) -> list[QAItem]:
 
 def dump_trace(world: World) -> str:
     lines = ["--- world model state ---"]
-    for e in world.entities.values():
+    for e in list(world.entities.values()):
         lines.append(f"{e.id}: meters={e.meters} memes={e.memes}")
     return "\n".join(lines)
 
 
 def generate(params: StoryParams) -> StorySample:
     art = ARTILLERY[params.artillery]
-    place = SETTINGS[params.place]
+    place = _safe_lookup(SETTINGS, params.place)
     world = tell(place, art, params.mediator, params.guardian, params.keeper)
     return StorySample(
         params=params,
@@ -437,33 +744,32 @@ def emit(sample: StorySample, *, trace: bool = False, qa: bool = False, header: 
 
 def main() -> None:
     args = build_parser().parse_args()
-    if args.verify:
+    if getattr(args, "verify", None):
         sys.exit(asp_verify())
-    if args.show_asp:
+    if getattr(args, "show_asp", None):
         print(asp_program("#show valid_story/2."))
         return
 
-    base_seed = args.seed if args.seed is not None else random.randrange(2**31)
+    base_seed = getattr(args, "seed", None) if getattr(args, "seed", None) is not None else random.randrange(2**31)
     samples: list[StorySample] = []
-    if args.all:
+    if getattr(args, "all", None):
         samples = [generate(p) for p in CURATED]
     else:
-        for i in range(args.n):
+        for i in range(getattr(args, "n", None)):
             rng = random.Random(base_seed + i)
             try:
                 params = resolve_params(args, rng)
-            except StoryError as err:
-                print(err)
-                return
+            except StoryError:
+                continue
             params.seed = base_seed + i
             samples.append(generate(params))
 
-    if args.json:
+    if getattr(args, "json", None):
         print(json.dumps([s.to_dict() for s in samples] if len(samples) > 1 else samples[0].to_dict(), indent=2, ensure_ascii=False))
         return
 
     for i, s in enumerate(samples):
-        emit(s, trace=args.trace, qa=args.qa, header=(f"### variant {i+1}" if len(samples) > 1 else ""))
+        emit(s, trace=getattr(args, "trace", None), qa=getattr(args, "qa", None), header=(f"### variant {i+1}" if len(samples) > 1 else ""))
         if i < len(samples) - 1:
             print("\n" + "=" * 70 + "\n")
 

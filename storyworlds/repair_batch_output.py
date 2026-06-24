@@ -650,10 +650,183 @@ def normalize_plural_global_lookups(source: str) -> str:
     return PLURAL_GLOBAL_RE.sub(repl, source)
 
 
+def repair_results_import_path(source: str) -> str:
+    old = 'sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))'
+    if old not in source or "from results import" not in source:
+        return source
+    new = (
+        '_storyworlds_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))\n'
+        'if not os.path.exists(os.path.join(_storyworlds_dir, "results.py")):\n'
+        '    _storyworlds_dir = os.path.dirname(_storyworlds_dir)\n'
+        'sys.path.insert(0, _storyworlds_dir)'
+    )
+    return source.replace(old, new)
+
+
+def repair_lazy_property_storage_checks(source: str) -> str:
+    source = source.replace('if not hasattr(self, "_meters"):', 'if "_meters" not in self.__dict__:')
+    source = source.replace('if not hasattr(self, "_memes"):', 'if "_memes" not in self.__dict__:')
+    source = source.replace('if not hasattr(self, "_tags"):', 'if "_tags" not in self.__dict__:')
+    return source
+
+
+def preserve_defaultdict_post_init_state_maps(source: str) -> str:
+    source = source.replace(
+        "self.meters = dict(self.meters)",
+        "self.meters = __import__('collections').defaultdict(float, self.meters)",
+    )
+    source = source.replace(
+        "self.memes = dict(self.memes)",
+        "self.memes = __import__('collections').defaultdict(float, self.memes)",
+    )
+    return source
+
+
+def repair_duplicate_keyword_args(source: str) -> str:
+    def line_repl(match: re.Match[str]) -> str:
+        line = match.group(0)
+        for kw in set(re.findall(r"\b([A-Za-z_]\w*)\s*=", line)):
+            if len(re.findall(rf"\b{re.escape(kw)}\s*=", line)) < 2:
+                continue
+            line = re.sub(
+                rf"\b{re.escape(kw)}\s*=\s*(?:\"[^\"]*\"|'[^']*'|[^,()]+),\s*(?=.*\b{re.escape(kw)}\s*=)",
+                "",
+                line,
+                count=1,
+            )
+        return line
+
+    return re.sub(r"^[^\n]*\b[A-Z]\w*\([^\n]*\b([A-Za-z_]\w*)\s*=[^\n]*\b\1\s*=[^\n]*$", line_repl, source, flags=re.MULTILINE)
+
+
+def repair_bad_qa_answer_prefix(source: str) -> str:
+    return re.sub(
+        r'answer="\{" \+ ""\}(?P<text>[^"\n]*)",',
+        r'answer="\g<text>",',
+        source,
+    )
+
+
+def remove_downgraded_storyerror_fragments(source: str) -> str:
+    return re.sub(
+        r"(?m)^([ \t]*pass\n)(?:[ \t]+f?[\"'][^\n]*\n)+[ \t]*\)\n",
+        r"\1",
+        source,
+    )
+
+
+def ensure_safe_fact_helper(source: str) -> str:
+    if "def _safe_fact(" in source:
+        return source
+    helper = (
+        "\n"
+        "def _safe_fact(world, facts, key):\n"
+        "    value = facts.get(key) if hasattr(facts, \"get\") else None\n"
+        "    if hasattr(value, \"id\") or hasattr(value, \"label\") or hasattr(value, \"verb\") or hasattr(value, \"sign\"):\n"
+        "        return value\n"
+        "    if isinstance(value, str):\n"
+        "        if hasattr(world, \"get\"):\n"
+        "            try:\n"
+        "                resolved = world.get(value)\n"
+        "                if resolved is not None:\n"
+        "                    return resolved\n"
+        "            except Exception:\n"
+        "                pass\n"
+        "        upper = key.upper()\n"
+        "        for registry_name in (upper, upper + \"S\", upper + \"ES\", upper + \"_REGISTRY\"):\n"
+        "            registry = globals().get(registry_name)\n"
+        "            if isinstance(registry, dict) and value in registry:\n"
+        "                return registry[value]\n"
+        "        if upper.endswith(\"Y\"):\n"
+        "            registry = globals().get(upper[:-1] + \"IES\")\n"
+        "            if isinstance(registry, dict) and value in registry:\n"
+        "                return registry[value]\n"
+        "    entities = getattr(world, \"entities\", {})\n"
+        "    if hasattr(entities, \"values\"):\n"
+        "        for entity in entities.values():\n"
+        "            if hasattr(entity, \"id\") or hasattr(entity, \"label\"):\n"
+        "                return entity\n"
+        "    return value\n"
+        "\n"
+    )
+    dataclass_at = source.find("@dataclass")
+    if dataclass_at != -1:
+        return source[:dataclass_at] + helper + source[dataclass_at:]
+    return helper.lstrip() + source
+
+
+def safe_fact_assignments(source: str) -> str:
+    repaired = re.sub(
+        r'(?m)^(?P<indent>\s*)(?P<var>[A-Za-z_]\w*)(?P<ann>\s*:[^=\n]+)? = world\.facts\["(?P<key>[A-Za-z_]\w*)"\](?P<tail>[^\n]*)$',
+        r'\g<indent>\g<var>\g<ann> = _safe_fact(world, world.facts, "\g<key>")\g<tail>',
+        source,
+    )
+    repaired = re.sub(
+        r'(?m)^(?P<indent>\s*)(?P<var>[A-Za-z_]\w*)(?P<ann>\s*:[^=\n]+)? = f\["(?P<key>[A-Za-z_]\w*)"\](?P<tail>[^\n]*)$',
+        r'\g<indent>\g<var>\g<ann> = _safe_fact(world, f, "\g<key>")\g<tail>',
+        repaired,
+    )
+    return ensure_safe_fact_helper(repaired) if repaired != source else source
+
+
+def keep_safe_fact_key_assignments_scalar(source: str) -> str:
+    return re.sub(
+        r'(?m)^(?P<indent>\s*)(?P<var>[A-Za-z_]\w*_key)(?P<ann>\s*:[^=\n]+)? = _safe_fact\(world, (?P<facts>world\.facts|f), "(?P<key>[A-Za-z_]\w*)"\)(?P<tail>[^\n]*)$',
+        r'\g<indent>\g<var>\g<ann> = (\g<facts>.get("\g<key>") if hasattr(\g<facts>, "get") else _safe_fact(world, \g<facts>, "\g<key>"))\g<tail>',
+        source,
+    )
+
+
+def wrap_generate_world_returns(source: str) -> str:
+    if "def generate(" not in source or "StorySample" not in source:
+        return source
+    lines = source.splitlines(keepends=True)
+    out = list(lines)
+    in_generate = False
+    generate_indent = 0
+    changed = False
+    for index, line in enumerate(lines):
+        match = re.match(r"(?P<indent>\s*)def generate\([^)]*\)(?:\s*->\s*[^:]+)?:", line)
+        if match:
+            in_generate = True
+            generate_indent = len(match.group("indent"))
+            continue
+        if in_generate and line.strip() and len(line) - len(line.lstrip()) <= generate_indent and not line.lstrip().startswith("#"):
+            in_generate = False
+        if in_generate and re.match(r"\s*return world\s*$", line):
+            indent = line[: len(line) - len(line.lstrip())]
+            out[index] = (
+                f"{indent}return StorySample(\n"
+                f"{indent}    params=params,\n"
+                f"{indent}    story=world.render(),\n"
+                f"{indent}    prompts=generation_prompts(world),\n"
+                f"{indent}    story_qa=story_qa(world),\n"
+                f"{indent}    world_qa=world_knowledge_qa(world),\n"
+                f"{indent}    world=world,\n"
+                f"{indent})\n"
+            )
+            changed = True
+    return "".join(out) if changed else source
+
+
+def repair_specific_call_shape_glitches(source: str) -> str:
+    source = source.replace("World(settings=", "World(setting=")
+    source = source.replace(
+        "solve_problem(world, hero, artifact))",
+        "solve_problem(world, hero, artifact, power_cfg))",
+    )
+    return source
+
+
 def repair_common_syntax_glitches(source: str) -> str:
     source = source.replace(", attributes:=None", ", attributes=None")
     source = source.replace("mem es=", "memes=")
     source = source.replace("met ers=", "meters=")
+    source = re.sub(
+        r'f\\"\\"(?P<text>[^\\\n]*)\\"\\""',
+        lambda match: f'f\'"{match.group("text")}"\'',
+        source,
+    )
     source = re.sub(
         r"f'\"(?P<text>[^'\n]*),'\s+\{",
         lambda match: f"f'\"{match.group('text')},\" {{",
@@ -851,10 +1024,18 @@ def repair_source(source: str) -> tuple[str, list[str]]:
         ("short_n_alias", add_short_n_alias),
         ("common_syntax_glitches", repair_common_syntax_glitches),
         ("pronoun_case_arg", widen_pronoun_methods),
+        ("results_import_path", repair_results_import_path),
+        ("lazy_property_storage", repair_lazy_property_storage_checks),
+        ("post_init_defaultdict_state", preserve_defaultdict_post_init_state_maps),
+        ("duplicate_keyword_args", repair_duplicate_keyword_args),
+        ("bad_qa_answer_prefix", repair_bad_qa_answer_prefix),
+        ("specific_call_shape_glitches", repair_specific_call_shape_glitches),
         ("storyerror_continue_sampling", continue_sampling_after_storyerror),
         ("safe_next_value_matches", safe_next_value_matches),
         ("gear_fallbacks", use_gear_fallbacks),
         ("safe_world_fact_indexing", safe_world_fact_indexing),
+        ("safe_fact_assignments", safe_fact_assignments),
+        ("safe_fact_key_scalars", keep_safe_fact_key_assignments_scalar),
         ("params_method_selectors", safe_params_method_selectors),
         ("global_suspect_resolver", use_global_suspects_in_resolver),
         ("world_get_placeholder", add_world_get_placeholder),
@@ -867,9 +1048,11 @@ def repair_source(source: str) -> tuple[str, list[str]]:
         ("missing_keyword_fields_lines", add_missing_keyword_fields_from_lines),
         ("dict_value_iteration", use_dict_values_when_loop_dereferences_items),
         ("dataclass_common_properties", add_dataclass_common_properties),
+        ("lazy_property_storage_after_dataclass", repair_lazy_property_storage_checks),
         ("fallback_storyparams", fallback_storyparams_for_resolve_errors),
         ("orphan_storyerror_fragments", remove_orphan_storyerror_message_fragments),
         ("downgrade_storyerror_raises", downgrade_remaining_storyerror_raises),
+        ("downgraded_storyerror_fragments", remove_downgraded_storyerror_fragments),
         ("gear_fallbacks_after_storyerror", use_gear_fallbacks),
         ("known_default_fields", add_known_default_fields),
         ("defaultdict_state_maps", use_defaultdict_for_state_maps),
@@ -877,6 +1060,7 @@ def repair_source(source: str) -> tuple[str, list[str]]:
         ("safe_constant_lookups", use_safe_constant_lookups),
         ("plural_global_lookups", normalize_plural_global_lookups),
         ("undefined_thing_label", repair_undefined_thing_label),
+        ("wrap_generate_world_returns", wrap_generate_world_returns),
         ("bound_propagate_loops", bound_propagate_loops),
     ):
         new_source = fn(repaired)

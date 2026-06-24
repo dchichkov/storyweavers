@@ -45,8 +45,11 @@ BATCH_DIR = STORYWORLDS_DIR / "batches"
 DEFAULT_MODEL = "gpt-5.4-mini"
 DEFAULT_ENDPOINT = "/v1/responses"
 DEFAULT_REASONING_EFFORT = "low"
+DEFAULT_SERVICE_TIER = "flex"
+DEFAULT_REQUEST_TIMEOUT = 900.0
 PROMPT_PROTOCOL = "custom_tool_python_v9"
 EMIT_TOOL_NAME = "emit_python_file"
+EMIT_MODES = ("tool", "source")
 SLUG_WORD_RE = re.compile(r"[a-z0-9]+")
 MODEL_DIR_RE = re.compile(r"[^A-Za-z0-9_.-]+")
 
@@ -112,6 +115,17 @@ def build_parser() -> argparse.ArgumentParser:
             choices=("minimal", "low", "medium", "high", "xhigh"),
             default=DEFAULT_REASONING_EFFORT,
             help=f"Responses API reasoning effort; default: {DEFAULT_REASONING_EFFORT}",
+        )
+        ap.add_argument(
+            "--service-tier",
+            default=DEFAULT_SERVICE_TIER,
+            help=f"Responses API service_tier; default: {DEFAULT_SERVICE_TIER}",
+        )
+        ap.add_argument(
+            "--emit-mode",
+            choices=EMIT_MODES,
+            default="source",
+            help="how the model should emit Python: custom tool or raw source message; default: source",
         )
         ap.add_argument(
             "--endpoint",
@@ -239,7 +253,7 @@ def require_openai_client():
             "The OpenAI Python SDK is not importable. Install it in ./.venv, "
             "then rerun submit/status/download."
         ) from exc
-    return OpenAI()
+    return OpenAI(timeout=DEFAULT_REQUEST_TIMEOUT)
 
 
 def read_prompt_file(path: Path) -> str:
@@ -264,9 +278,12 @@ def prompt_cache_key(
     *,
     prompt_addendum: Path | None = None,
     example_worlds: str = "all",
+    emit_mode: str = "source",
 ) -> str:
     digest = hashlib.sha256()
     digest.update(PROMPT_PROTOCOL.encode("utf-8"))
+    digest.update(b"\0")
+    digest.update(f"emit_mode={emit_mode}".encode("utf-8"))
     digest.update(b"\0")
     digest.update(f"example_worlds={example_worlds}".encode("utf-8"))
     digest.update(b"\0")
@@ -407,7 +424,10 @@ def build_storyworld_prompt(
     *,
     prompt_addendum: Path | None = None,
     example_worlds: str = "all",
+    emit_mode: str = "source",
 ) -> str:
+    if emit_mode not in EMIT_MODES:
+        raise ValueError(f"unsupported emit_mode: {emit_mode}")
     story_contract = read_prompt_file(STORY_CONTRACT_PATH)
     results_contract = read_prompt_file(RESULTS_PATH)
     asp_contract = read_prompt_file(ASP_PATH)
@@ -418,8 +438,20 @@ def build_storyworld_prompt(
     )
     addendum_block = read_prompt_addendum(prompt_addendum)
 
-    return f"""You are generating one standalone storyworld source file for the Storyweavers repo.
-You do not have filesystem access in this batch job. Call the {EMIT_TOOL_NAME}
+    if emit_mode == "source":
+        output_instructions = """You do not have filesystem access in this service call. Return the
+complete Python source for the Target file from the Seed request as the response
+message text.
+
+The response must be only raw Python source:
+- begin with exactly #!/usr/bin/env python3
+- no JSON object
+- no markdown fence
+- no path header
+- no explanation before or after the code
+- no omitted sections or placeholders"""
+    else:
+        output_instructions = f"""You do not have filesystem access in this batch job. Call the {EMIT_TOOL_NAME}
 custom tool exactly once.
 
 The {EMIT_TOOL_NAME} input must be the complete Python source for the Target file
@@ -428,7 +460,10 @@ from the Seed request. Emit only raw Python source as the tool input:
 - no markdown fence
 - no path header
 - no explanation before or after the code
-- no omitted sections or placeholders
+- no omitted sections or placeholders"""
+
+    return f"""You are generating one standalone storyworld source file for the Storyweavers repo.
+{output_instructions}
 
 Storyworld contract from storyworlds/STORY.md:
 
@@ -476,36 +511,49 @@ def request_line(
     endpoint: str,
     max_output_tokens: int,
     reasoning_effort: str,
+    service_tier: str,
     example_worlds: str = "all",
+    emit_mode: str = "source",
 ) -> dict[str, Any]:
+    body = {
+        "model": model,
+        "prompt_cache_key": prompt_cache_key(
+            example_worlds=example_worlds,
+            emit_mode=emit_mode,
+        ),
+        "prompt_cache_retention": "24h",
+        "reasoning": {"effort": reasoning_effort},
+        "service_tier": service_tier,
+        "input": [
+            {
+                "role": "user",
+                "content": [
+                    {
+                        "type": "input_text",
+                        "text": build_storyworld_prompt(
+                            job,
+                            example_worlds=example_worlds,
+                            emit_mode=emit_mode,
+                        ),
+                    }
+                ],
+            }
+        ],
+        "max_output_tokens": max_output_tokens,
+    }
+    if emit_mode == "tool":
+        body.update(
+            {
+                "tools": [emit_python_tool()],
+                "tool_choice": "required",
+                "parallel_tool_calls": False,
+            }
+        )
     return {
         "custom_id": job.custom_id,
         "method": "POST",
         "url": endpoint,
-        "body": {
-            "model": model,
-            "prompt_cache_key": prompt_cache_key(example_worlds=example_worlds),
-            "prompt_cache_retention": "24h",
-            "reasoning": {"effort": reasoning_effort},
-            "tools": [emit_python_tool()],
-            "tool_choice": "required",
-            "parallel_tool_calls": False,
-            "input": [
-                {
-                    "role": "user",
-                    "content": [
-                        {
-                            "type": "input_text",
-                            "text": build_storyworld_prompt(
-                                job,
-                                example_worlds=example_worlds,
-                            ),
-                        }
-                    ],
-                }
-            ],
-            "max_output_tokens": max_output_tokens,
-        },
+        "body": body,
     }
 
 
@@ -523,7 +571,9 @@ def prepare_files(args: argparse.Namespace) -> dict[str, Any]:
             endpoint=args.endpoint,
             max_output_tokens=args.max_output_tokens,
             reasoning_effort=args.reasoning_effort,
+            service_tier=args.service_tier,
             example_worlds=args.example_worlds,
+            emit_mode=args.emit_mode,
         )
         for job in jobs
     ]
@@ -557,6 +607,8 @@ def prepare_files(args: argparse.Namespace) -> dict[str, Any]:
         "completion_window": args.completion_window,
         "max_output_tokens": args.max_output_tokens,
         "reasoning_effort": args.reasoning_effort,
+        "service_tier": args.service_tier,
+        "emit_mode": args.emit_mode,
         "example_worlds": args.example_worlds,
         "jsonl_path": str(jsonl_path),
         "manifest_path": str(manifest_path),
@@ -700,6 +752,21 @@ def output_text_from_response(body: dict[str, Any]) -> str:
     return "\n".join(chunks).strip()
 
 
+def source_from_output_text(text: str) -> tuple[str | None, str]:
+    stripped = text.strip()
+    if not stripped:
+        return None, "missing_output"
+    if stripped.startswith("```"):
+        match = re.fullmatch(r"```(?:python|py)?\s*\n(?P<source>.*)\n```", stripped, re.DOTALL | re.IGNORECASE)
+        if match:
+            source = match.group("source").strip()
+            if source.startswith("#!/usr/bin/env python3"):
+                return source, "python_code_block"
+    if stripped.startswith("#!/usr/bin/env python3"):
+        return stripped, "raw_python_source"
+    return None, "non_json_message"
+
+
 def extract_python_source(row: dict[str, Any], target: str) -> tuple[str | None, str]:
     body = row.get("response", {}).get("body") or {}
     for item in body.get("output", []):
@@ -714,7 +781,7 @@ def extract_python_source(row: dict[str, Any], target: str) -> tuple[str | None,
     try:
         payload = json.loads(text)
     except json.JSONDecodeError:
-        return None, "non_json_message"
+        return source_from_output_text(text)
     if payload.get("path") and payload["path"] != target:
         return None, f"path_mismatch:{payload['path']}"
     source = payload.get("content")

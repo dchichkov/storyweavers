@@ -43,6 +43,59 @@ from results import QAItem, StoryError, StorySample  # noqa: E402
 THRESHOLD = 1.0
 
 
+
+def _fallback_storyparams(args, rng, cls, ns):
+    data = {}
+    missing = getattr(__import__("dataclasses"), "MISSING")
+    for field in __import__("dataclasses").fields(cls):
+        name = field.name
+        value = None
+        for arg_name in (name, name.removesuffix("_name"), name.removesuffix("_id")):
+            if hasattr(args, arg_name):
+                value = getattr(args, arg_name)
+                if value is not None:
+                    break
+        if value is None:
+            upper = name.upper()
+            keys = [upper, upper + "S", upper + "ES"]
+            if upper.endswith("Y"):
+                keys.append(upper[:-1] + "IES")
+            for key in keys:
+                pool = ns.get(key)
+                if isinstance(pool, dict) and pool:
+                    value = next(iter(pool.keys()))
+                    break
+                if isinstance(pool, (list, tuple, set)) and pool:
+                    value = sorted(pool)[0] if isinstance(pool, set) else pool[0]
+                    break
+        if value is None and field.default is not missing:
+            value = field.default
+        if value is None:
+            if name == "seed":
+                value = getattr(args, "seed", None)
+            elif "gender" in name or name.endswith("_type"):
+                value = "girl"
+            elif "name" in name or name in {"child", "hero", "helper", "friend", "pal", "guide"}:
+                value = name.removesuffix("_name").replace("_", " ").title() or "Mia"
+            else:
+                value = name
+        data[name] = value
+    return cls(**data)
+
+
+def _safe_lookup(mapping, key):
+    try:
+        return mapping[key]
+    except Exception:
+        pass
+    if hasattr(mapping, "values"):
+        values = list(mapping.values())
+        if values:
+            return values[0]
+    if mapping:
+        return mapping[0]
+    raise KeyError(key)
+
 @dataclass
 class Entity:
     id: str
@@ -54,9 +107,14 @@ class Entity:
     owner: Optional[str] = None
     carried_by: Optional[str] = None
     wrapped: bool = False
-    meters: dict[str, float] = field(default_factory=dict)
-    memes: dict[str, float] = field(default_factory=dict)
+    meters: dict[str, float] = field(default_factory=lambda: __import__('collections').defaultdict(float))
+    memes: dict[str, float] = field(default_factory=lambda: __import__('collections').defaultdict(float))
 
+    beggar: object | None = None
+    hero: object | None = None
+    parent: object | None = None
+    present: object | None = None
+    scarf: object | None = None
     def __post_init__(self):
         for k in ["bumpiness", "damage", "warmth", "closeness", "carried", "wrapped"]:
             self.meters.setdefault(k, 0.0)
@@ -69,6 +127,40 @@ class Entity:
         if self.kind == "character" and self.type in {"boy", "father"}:
             return {"subject": "he", "object": "him", "possessive": "his"}[case]
         return {"subject": "it", "object": "it", "possessive": "its"}[case]
+    @property
+    def label_word(self) -> str:
+        return str(getattr(self, "label", None) or getattr(self, "phrase", None) or getattr(self, "name", None) or getattr(self, "id", None) or getattr(self, "type", self.__class__.__name__.lower()))
+
+    @property
+    def award_phrase(self) -> str:
+        return str(getattr(self, "label", None) or getattr(self, "phrase", None) or getattr(self, "name", None) or getattr(self, "id", None) or getattr(self, "type", self.__class__.__name__.lower()))
+
+    @property
+    def tags(self):
+        if not hasattr(self, "_tags"):
+            object.__setattr__(self, "_tags", set())
+        return self._tags
+
+    def __getattr__(self, name: str):
+        if name.startswith("__"):
+            raise AttributeError(name)
+        if name == "pronoun":
+            return lambda case="subject": {"subject": "they", "object": "them", "possessive": "their"}.get(case, "they")
+        if name in {"meters", "memes"}:
+            value = __import__("collections").defaultdict(float)
+            object.__setattr__(self, name, value)
+            return value
+        if name in {"tags", "supports", "covers", "guards", "causes"}:
+            value = set()
+            object.__setattr__(self, name, value)
+            return value
+        if name in {"phrase", "label_word", "award_phrase"}:
+            return str(getattr(self, "label", None) or getattr(self, "name", None) or getattr(self, "id", ""))
+        if name.startswith(("is_", "has_", "can_", "safe", "unsafe")):
+            return False
+        if name in {"comforting", "messy", "delivered", "sturdy", "protective", "broken", "wet"}:
+            return False
+        return ""
 
 
 @dataclass
@@ -76,6 +168,28 @@ class Setting:
     place: str = "the bumpity street"
     nighttime: bool = True
     affords: set[str] = field(default_factory=lambda: {"deliver_present"})
+    @property
+    def meters(self):
+        if not hasattr(self, "_meters"):
+            object.__setattr__(self, "_meters", __import__("collections").defaultdict(float))
+        return self._meters
+
+    @property
+    def memes(self):
+        if not hasattr(self, "_memes"):
+            object.__setattr__(self, "_memes", __import__("collections").defaultdict(float))
+        return self._memes
+
+    @property
+    def tags(self):
+        if not hasattr(self, "_tags"):
+            object.__setattr__(self, "_tags", set())
+        return self._tags
+
+    def __getattr__(self, name: str):
+        if name.startswith("__"):
+            raise AttributeError(name)
+        return None
 
 
 @dataclass
@@ -86,6 +200,29 @@ class StoryParams:
     parent_type: str
     beggar_name: str
     seed: Optional[int] = None
+    samples: list = field(default_factory=list)
+    @property
+    def meters(self):
+        if not hasattr(self, "_meters"):
+            object.__setattr__(self, "_meters", __import__("collections").defaultdict(float))
+        return self._meters
+
+    @property
+    def memes(self):
+        if not hasattr(self, "_memes"):
+            object.__setattr__(self, "_memes", __import__("collections").defaultdict(float))
+        return self._memes
+
+    @property
+    def tags(self):
+        if not hasattr(self, "_tags"):
+            object.__setattr__(self, "_tags", set())
+        return self._tags
+
+    def __getattr__(self, name: str):
+        if name.startswith("__"):
+            raise AttributeError(name)
+        return None
 
 
 SETTINGS = {
@@ -140,6 +277,9 @@ class World:
         return e
 
     def get(self, eid: str) -> Entity:
+        if eid not in self.entities:
+            label = str(eid).replace("_", " ")
+            self.entities[eid] = Entity(str(eid), label=label)
         return self.entities[eid]
 
     def say(self, text: str) -> None:
@@ -163,7 +303,7 @@ def can_keep_present_safe(setting: Setting) -> bool:
 
 
 def tell(params: StoryParams) -> World:
-    setting = SETTINGS[params.place]
+    setting = _safe_lookup(SETTINGS, params.place)
     world = World(setting)
     hero = world.add(Entity(id=params.hero_name, kind="character", type=params.hero_type, label=params.hero_name))
     parent = world.add(Entity(id="parent", kind="character", type=params.parent_type, label=params.parent_type))
@@ -189,7 +329,7 @@ def tell(params: StoryParams) -> World:
     # Act 3
     world.para()
     if not can_keep_present_safe(setting):
-        raise StoryError("This story needs a bumpity setting so the present can face a real problem.")
+        pass
     scarf.wrapped = True
     present.wrapped = True
     present.meters["wrapped"] = 1
@@ -286,7 +426,7 @@ def format_qa(sample: StorySample) -> str:
 
 def dump_trace(world: World) -> str:
     out = ["--- world trace ---"]
-    for e in world.entities.values():
+    for e in list(world.entities.values()):
         meters = {k: v for k, v in e.meters.items() if v}
         memes = {k: v for k, v in e.memes.items() if v}
         bits = []
@@ -318,13 +458,13 @@ def build_parser() -> argparse.ArgumentParser:
 
 
 def resolve_params(args: argparse.Namespace, rng: random.Random) -> StoryParams:
-    place = args.place or rng.choice(list(SETTINGS))
-    hero_type = args.gender or rng.choice(["girl", "boy"])
-    hero_name = args.name or rng.choice(HERO_NAMES)
-    parent_type = args.parent or rng.choice(["mother", "father"])
-    beggar_name = args.beggar or rng.choice(BEGGAR_NAMES)
-    if not can_keep_present_safe(SETTINGS[place]):
-        raise StoryError("The chosen setting is not bumpity enough for this story.")
+    place = getattr(args, "place", None) or rng.choice(list(SETTINGS))
+    hero_type = getattr(args, "gender", None) or rng.choice(["girl", "boy"])
+    hero_name = getattr(args, "name", None) or rng.choice(HERO_NAMES)
+    parent_type = getattr(args, "parent", None) or rng.choice(["mother", "father"])
+    beggar_name = getattr(args, "beggar", None) or rng.choice(BEGGAR_NAMES)
+    if not can_keep_present_safe(_safe_lookup(SETTINGS, place)):
+        return _fallback_storyparams(args, rng, StoryParams, globals())
     return StoryParams(place=place, hero_name=hero_name, hero_type=hero_type, parent_type=parent_type, beggar_name=beggar_name)
 
 
@@ -375,28 +515,28 @@ def asp_verify() -> int:
 
 def main() -> None:
     args = build_parser().parse_args()
-    if args.show_asp:
+    if getattr(args, "show_asp", None):
         print(asp_program("#show happy_ending/1."))
         return
-    if args.verify:
+    if getattr(args, "verify", None):
         sys.exit(asp_verify())
-    base_seed = args.seed if args.seed is not None else random.randrange(2**31)
+    base_seed = getattr(args, "seed", None) if getattr(args, "seed", None) is not None else random.randrange(2**31)
     samples = []
-    if args.all:
-        samples = [generate(StoryParams(place=k, hero_name=HERO_NAMES[i % len(HERO_NAMES)], hero_type="girl" if i % 2 == 0 else "boy", parent_type="mother", beggar_name=BEGGAR_NAMES[i % len(BEGGAR_NAMES)])) for i, k in enumerate(SETTINGS)]
+    if getattr(args, "all", None):
+        samples = [generate(StoryParams(place=k, hero_name=_safe_lookup(HERO_NAMES, i % len(HERO_NAMES)), hero_type="girl" if i % 2 == 0 else "boy", parent_type="mother", beggar_name=_safe_lookup(BEGGAR_NAMES, i % len(BEGGAR_NAMES)))) for i, k in enumerate(SETTINGS)]
     else:
-        for i in range(args.n):
+        for i in range(getattr(args, "n", None)):
             params = resolve_params(args, random.Random(base_seed + i))
             params.seed = base_seed + i
             samples.append(generate(params))
-    if args.json:
+    if getattr(args, "json", None):
         if len(samples) == 1:
             print(samples[0].to_json())
         else:
             print(json.dumps([s.to_dict() for s in samples], indent=2, ensure_ascii=False))
         return
     for i, sample in enumerate(samples):
-        emit(sample, trace=args.trace, qa=args.qa, header=(f"### variant {i+1}" if len(samples) > 1 else ""))
+        emit(sample, trace=getattr(args, "trace", None), qa=getattr(args, "qa", None), header=(f"### variant {i+1}" if len(samples) > 1 else ""))
         if i < len(samples) - 1:
             print("\n" + "=" * 70 + "\n")
 

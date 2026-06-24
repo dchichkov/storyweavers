@@ -23,8 +23,11 @@ from typing import Any
 from openai_batch_world_factory import (
     BATCH_DIR,
     DEFAULT_MODEL,
+    DEFAULT_REQUEST_TIMEOUT,
     DEFAULT_REASONING_EFFORT,
+    DEFAULT_SERVICE_TIER,
     EMIT_TOOL_NAME,
+    EMIT_MODES,
     EXAMPLE_WORLD_CHOICES,
     PROMPT_PROTOCOL,
     ROOT,
@@ -94,6 +97,12 @@ def build_parser() -> argparse.ArgumentParser:
         help="environment variable containing the API key; default: OPENAI_API_KEY",
     )
     parser.add_argument(
+        "--emit-mode",
+        choices=EMIT_MODES,
+        default="source",
+        help="how the model should emit Python: custom tool or raw source message; default: source",
+    )
+    parser.add_argument(
         "--max-output-tokens",
         type=int,
         default=DEFAULT_MAX_OUTPUT_TOKENS,
@@ -104,6 +113,11 @@ def build_parser() -> argparse.ArgumentParser:
         choices=("minimal", "low", "medium", "high", "xhigh"),
         default=DEFAULT_REASONING_EFFORT,
         help=f"Responses API reasoning effort; default: {DEFAULT_REASONING_EFFORT}",
+    )
+    parser.add_argument(
+        "--service-tier",
+        default=DEFAULT_SERVICE_TIER,
+        help=f"Responses API service_tier; default: {DEFAULT_SERVICE_TIER}",
     )
     parser.add_argument(
         "--concurrency",
@@ -190,7 +204,7 @@ def make_client(args: argparse.Namespace) -> Any:
     api_key = os.environ.get(args.api_key_env)
     if not api_key:
         raise SystemExit(f"{args.api_key_env} is not set.")
-    kwargs: dict[str, Any] = {"api_key": api_key}
+    kwargs: dict[str, Any] = {"api_key": api_key, "timeout": DEFAULT_REQUEST_TIMEOUT}
     if args.base_url:
         kwargs["base_url"] = args.base_url
     return AsyncOpenAI(**kwargs)
@@ -262,18 +276,18 @@ def request_body(args: argparse.Namespace, job: StoryworldJob) -> dict[str, Any]
         job,
         prompt_addendum=args.prompt_addendum,
         example_worlds=args.example_worlds,
+        emit_mode=args.emit_mode,
     )
     return {
         "model": args.model,
         "prompt_cache_key": prompt_cache_key(
             prompt_addendum=args.prompt_addendum,
             example_worlds=args.example_worlds,
+            emit_mode=args.emit_mode,
         ),
         "prompt_cache_retention": args.prompt_cache_retention,
         "reasoning": {"effort": args.reasoning_effort},
-        "tools": [emit_python_tool()],
-        "tool_choice": "required",
-        "parallel_tool_calls": False,
+        "service_tier": args.service_tier,
         "input": [
             {
                 "role": "user",
@@ -286,6 +300,15 @@ def request_body(args: argparse.Namespace, job: StoryworldJob) -> dict[str, Any]
             }
         ],
         "max_output_tokens": args.max_output_tokens,
+        **(
+            {
+                "tools": [emit_python_tool()],
+                "tool_choice": "required",
+                "parallel_tool_calls": False,
+            }
+            if args.emit_mode == "tool"
+            else {}
+        ),
     }
 
 
@@ -314,6 +337,7 @@ def response_row(
             "prompt_cache_key": request.get("prompt_cache_key"),
             "prompt_cache_retention": request.get("prompt_cache_retention"),
             "reasoning": request.get("reasoning"),
+            "service_tier": request.get("service_tier"),
             "max_output_tokens": request.get("max_output_tokens"),
         },
         "response": {
@@ -364,7 +388,7 @@ async def call_one(
     started = time.monotonic()
     async with semaphore:
         try:
-            response = await client.responses.create(**request)
+            response = await client.with_options(timeout=DEFAULT_REQUEST_TIMEOUT).responses.create(**request)
             elapsed = time.monotonic() - started
             return response_row(
                 job=job,
@@ -407,13 +431,16 @@ async def run(args: argparse.Namespace) -> int:
         "model": args.model,
         "service": "responses",
         "output_protocol": SERVICE_PROTOCOL,
+        "emit_mode": args.emit_mode,
         "emit_tool_name": EMIT_TOOL_NAME,
         "max_output_tokens": args.max_output_tokens,
         "reasoning_effort": args.reasoning_effort,
+        "service_tier": args.service_tier,
         "concurrency": args.concurrency,
         "prompt_cache_key": prompt_cache_key(
             prompt_addendum=args.prompt_addendum,
             example_worlds=args.example_worlds,
+            emit_mode=args.emit_mode,
         ),
         "prompt_cache_retention": args.prompt_cache_retention,
         "prompt_addendum": None if args.prompt_addendum is None else str(args.prompt_addendum),
