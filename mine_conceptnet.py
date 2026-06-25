@@ -30,8 +30,8 @@ relations live under a small local namespace.
 Usage (use the repo venv):
 
     ./.venv/bin/python conceptnet_mine.py extract   --datasets 3
-    ./.venv/bin/python conceptnet_mine.py rdf        data03.assertions.jsonl
-    ./.venv/bin/python conceptnet_mine.py aggregate  data*.assertions.jsonl --min-weight 2
+    ./.venv/bin/python conceptnet_mine.py rdf        conceptnet/data03.assertions.jsonl
+    ./.venv/bin/python conceptnet_mine.py aggregate  'conceptnet/data*.assertions.jsonl' --min-weight 2
 """
 from __future__ import annotations
 
@@ -42,6 +42,8 @@ import hashlib
 import json
 import os
 import re
+import sys
+import traceback
 
 # ---------------------------------------------------------------------------
 # Controlled relation vocabulary -> URIs.
@@ -60,6 +62,7 @@ TS_V = "http://storyweavers.org/voc#"        # our vocabulary terms (weight, dat
 RDF = "http://www.w3.org/1999/02/22-rdf-syntax-ns#"
 XSD = "http://www.w3.org/2001/XMLSchema#"
 PROV = "http://www.w3.org/ns/prov#"
+OUTPUT_DIR = "conceptnet"
 
 # token the model may emit -> full relation URI
 RELATIONS: dict[str, str] = {
@@ -177,8 +180,10 @@ Story:
 Assertions:"""
 
 
-def _parse_json_array(text: str) -> list[dict]:
+def _parse_json_array(text: str | None) -> list[dict]:
     """Best-effort: pull the first top-level JSON array out of the completion."""
+    if not text:
+        return []
     start, end = text.find("["), text.rfind("]")
     if start == -1 or end == -1 or end < start:
         return []
@@ -189,14 +194,43 @@ def _parse_json_array(text: str) -> list[dict]:
         return []
 
 
-async def extract_assertions(client, model, record: dict) -> list[dict]:
+def _log_failure(story_id: str, message: str, content: str | None = None) -> None:
+    print(f"[mine_conceptnet] {story_id}: {message}", file=sys.stderr)
+    if content:
+        print(content[:2000], file=sys.stderr)
+        if len(content) > 2000:
+            print("... [truncated diagnostic output]", file=sys.stderr)
+
+
+def _output_path(name: str) -> str:
+    os.makedirs(OUTPUT_DIR, exist_ok=True)
+    return os.path.join(OUTPUT_DIR, name)
+
+
+def _ensure_parent(path: str) -> None:
+    parent = os.path.dirname(path)
+    if parent:
+        os.makedirs(parent, exist_ok=True)
+
+
+async def extract_assertions(client, model, record: dict, story_id: str) -> list[dict]:
     resp = await client.chat.completions.create(
         model=model,
         messages=[{"role": "user", "content": build_prompt(record)}],
         temperature=0.0,
-        max_tokens=1200,
+        max_tokens=16000,
     )
-    raw = _parse_json_array(resp.choices[0].message.content)
+    choice = resp.choices[0]
+    content = choice.message.content
+    finish_reason = getattr(choice, "finish_reason", None)
+    if finish_reason == "length":
+        _log_failure(story_id, "finish_reason=length; JSON may be truncated", content)
+    elif finish_reason not in (None, "stop"):
+        _log_failure(story_id, f"finish_reason={finish_reason}", content)
+
+    raw = _parse_json_array(content)
+    if not raw and content and content.strip() != "[]":
+        _log_failure(story_id, "could not parse a JSON array from model output", content)
     # keep only well-formed rows with an allowed relation and an evidence span
     clean = []
     for a in raw:
@@ -226,10 +260,15 @@ async def process_dataset(dataset: str) -> None:
         stories = json.load(f)
 
     async def limited(idx: int, record: dict) -> dict:
+        story_id = f"{dataset}:{idx}"
         async with sem:
-            assertions = await extract_assertions(client, model, record)
+            try:
+                assertions = await extract_assertions(client, model, record, story_id)
+            except Exception as exc:
+                _log_failure(story_id, f"{type(exc).__name__}: {exc}\n{traceback.format_exc()}")
+                assertions = []
         return {
-            "story_id": f"{dataset}:{idx}",
+            "story_id": story_id,
             "words": record.get("instruction", {}).get("words", []),
             "features": record.get("instruction", {}).get("features", []),
             "assertions": assertions,
@@ -237,7 +276,7 @@ async def process_dataset(dataset: str) -> None:
 
     async with client:
         tasks = [limited(i, r) for i, r in enumerate(stories)]
-        with open(f"{dataset}.assertions.jsonl", "w") as out:
+        with open(_output_path(f"{dataset}.assertions.jsonl"), "w") as out:
             for task in tqdm(asyncio.as_completed(tasks), total=len(tasks),
                              desc=f"Mining {dataset}"):
                 out.write(json.dumps(await task) + "\n")
@@ -292,6 +331,7 @@ def _nt_uri(u: str) -> str:
 
 def write_nquads(paths: list[str], out_path: str) -> int:
     n = 0
+    _ensure_parent(out_path)
     with open(out_path, "w") as out:
         for rec in _iter_assertions(paths):
             g = _nt_uri(story_uri(rec["story_id"]))
@@ -336,6 +376,7 @@ def aggregate(paths: list[str], out_path: str, min_weight: int) -> None:
     kept = {k: v for k, v in edges.items()
             if len(v["stories"]) >= min_weight}
     rows = 0
+    _ensure_parent(out_path)
     with open(out_path, "w") as out:
         for (s, r, o), v in sorted(kept.items(),
                                    key=lambda kv: -len(kv[1]["stories"])):
@@ -376,11 +417,11 @@ def main() -> None:
 
     pr = sub.add_parser("rdf", help="assertions.jsonl -> N-Quads (provenance graphs)")
     pr.add_argument("inputs", nargs="+")
-    pr.add_argument("--out", default="assertions.nq")
+    pr.add_argument("--out", default=os.path.join(OUTPUT_DIR, "assertions.nq"))
 
     pa = sub.add_parser("aggregate", help="assertions.jsonl -> weighted 6-field RDF rows")
     pa.add_argument("inputs", nargs="+")
-    pa.add_argument("--out", default="conceptnet_ts.hf.jsonl")
+    pa.add_argument("--out", default=os.path.join(OUTPUT_DIR, "conceptnet_ts.hf.jsonl"))
     pa.add_argument("--min-weight", type=int, default=2,
                     help="drop edges asserted by fewer than N stories")
 
