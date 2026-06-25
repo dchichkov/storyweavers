@@ -51,7 +51,6 @@ FEWSHOT = {
         },
         "effects": [
             "actor.Joy += 0.4",
-            "actor.Love += 0.1",
         ],
         "renders": [
             "{actor} laughed.",
@@ -61,7 +60,6 @@ FEWSHOT = {
             "@REGISTRY.kernel(\"Laugh\")\n"
             "def Laugh(ctx: World, actor: Character, stimulus: Physical = None, **kw) -> str:\n"
             "    actor.Joy += 0.4\n"
-            "    actor.Love += 0.1\n"
             "    ctx.actor = actor\n"
             "    if stimulus is not None:\n"
             "        ctx.current_object = stimulus\n"
