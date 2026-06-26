@@ -1,9 +1,51 @@
 from openai import AsyncOpenAI
-import openai, os, asyncio
+import openai, os, asyncio, argparse, json, sys
 from tqdm.asyncio import tqdm
+from mine_conceptnet import extract_assertions
 
 
-async def extract_kernel(client, model, story):
+def load_conceptnet(path):
+    if not path:
+        return {}
+    out = {}
+    with open(path) as f:
+        for line in f:
+            if not line.strip():
+                continue
+            rec = json.loads(line)
+            out[rec.get("story_id")] = rec.get("assertions", [])
+    return out
+
+
+def format_conceptnet(assertions, limit=30):
+    if not assertions:
+        return ""
+    groups = [
+        ("Entities / kinds", {"IsA", "PartOf", "HasA", "MadeOf", "HasProperty", "DefinedAs"}),
+        ("Affordances", {"UsedFor", "CapableOf", "AtLocation", "LocatedNear", "ReceivesAction", "HasPrerequisite", "HasSubevent"}),
+        ("Causal / motivational rules", {"Causes", "CausesDesire", "Desires", "MotivatedByGoal", "ResolvesBy", "FeelsToward"}),
+        ("Roles", {"CharacterRole"}),
+    ]
+    lines = ["## Mined ConceptNet facts for this story", ""]
+    used = 0
+    for title, rels in groups:
+        rows = [a for a in assertions if a.get("relation") in rels]
+        if not rows:
+            continue
+        lines.append(f"{title}:")
+        for a in rows[:max(0, limit - used)]:
+            lines.append(f"- {a.get('subject')} {a.get('relation')} {a.get('object')}  # {a.get('evidence')}")
+            used += 1
+            if used >= limit:
+                break
+        lines.append("")
+        if used >= limit:
+            break
+    lines.append("Use these facts as semantic grounding for the story kernel, not as a separate output.")
+    return "\n".join(lines)
+
+
+async def extract_kernel(client, model, story, conceptnet_text=""):
 
     pairs = [
 {"story" : """
@@ -88,15 +130,20 @@ Journey(Sophie,
     transformation = Engaged(World) + Friendship(Sophie, Wind))
 """},
 
-{ "story": """Once upon a time, there was a big whale. The whale loved to swim in the deep blue sea. The whale was very delicate and kind to all the little fish. 
-One day, the whale wanted to test how fast he could swim. He swam and swam, faster and faster. All the fish cheered for the whale as he went by. The whale felt happy and strong.
-But then, something unexpected happened. The whale found out he was not a whale, but a big, fast shark! The shark was still delicate and kind, and all the fish still liked him. They all swam and played together, happy in the deep blue sea.""",
+{ "story": """Once upon a time, there was a little cheerful boy named Leo. He loved playing outside and dancing in the rain. One day, Leo's mom bought him a clean white shirt. Leo loved his new shirt and wore it everywhere he went.
+One rainy day, Leo and his mom went to the backyard. Leo wanted to play in the rain, but his mom said no. "You'll get your shirt soaking wet, and then I'll have to clean it," his mom said. Leo didn't want to listen and tried to run out into the rain, but his mom grabbed his hand and said, "You have to resist the urge to play in the rain today."
+Leo pouted and crossed his arms. "But I want to play in the rain!" he said. His mom smiled and said, "How about we put on your rain boots first and play in the rain together?" Leo's face lit up and he hugged his mom. "Yay, let's do it!" he said as they went to get the rain boots.""",
 "kernel": """
-Whale(Character, Imaginary, Delicate + Kind)
-Test(Speed) + Community(Support, cheered) + Happy
-Identity(Whale,
-         new=Shark,
-         reaction=Acceptance + Community(Support, Liked))"""
+Leo(Character, boy, Cheerful + Playful)
+Mom(Character, mother, Caring + Protective)
+Shirt(Physical, clean + white, worn_by=Leo, region=torso)
+RainBoots(Physical, Protective, guards=Wet, covers=[feet, legs])
+Cautionary(Leo,
+    desire = Play(Leo, object=rain) + Joy(Leo),
+    risk = Predict(Mom, outcome=Wet(Shirt) + Dirty(Shirt) + Workload(Mom)),
+    conflict = Warning(Mom, object=Leo) + Defiance(Leo) + Grab(Mom, object=Leo) + Pout(Leo),
+    resolution = Compromise(Mom, object=Leo,
+        plan=Use(RainBoots, action=Play(Leo, object=rain)) + Clean(Shirt) + Love(Leo, object=Mom)))"""
 },
 
 
@@ -105,8 +152,8 @@ Identity(Whale,
 Tim(Character, boy, Playful + Carefree)
 Cautionary(Tim,
            event=Accident(Tim, process=Kick(ball) + Hit(face)),
-           consequence=Pain(face) + Loss(Tim, Joy(ball) + Comfort(Mom, Tim)),
-           lesson=Warning(Mom, Tim)
+           consequence=Pain(face) + Loss(Tim, Joy(ball) + Comfort(Mom, object=Tim)),
+           lesson=Warning(Mom, object=Tim)
            )
 )
 """}
@@ -142,7 +189,7 @@ You are a narrative pattern extraction system. Your task is to analyze stories a
   - Example: `Hungry / 10`
 
 - Parentheses `()` = story kernel application with arguments
-  - Example: `Discovery(book, under(bench))`
+  - Example: `Discovery(Sophie, object=book, location=under(bench))`
 
 - Square brackets `[]` = lists of items
   - Example: `[locket, flower, compass]`
@@ -157,6 +204,15 @@ You are a narrative pattern extraction system. Your task is to analyze stories a
   - ❌ WRONG - `PocketItToKeep(coin)` → Use: `Pocket(coin) + Keep` 
   - ❌ WRONG - `Findowner(coin)` → Use: `Find(Owner(coin))`
   - ❌ WRONG - `FindIfLost` → Use: `If(Lost, Find)`
+  
+- **Use ConceptNet-style argument names after the subject**. If a kernel has more
+  than one semantic argument, keep the main actor/topic as the first positional
+  argument (`subject`) and use `object=` for the related entity/concept. Use
+  phase names like `process=`, `consequence=`, `lesson=`, `risk=`, or `plan=`
+  only for story structure.
+  - Good: `Warning(Mom, object=Tim)`, `Play(Leo, object=rain)`,
+    `Compromise(Mom, object=Leo, plan=Use(RainBoots, action=Play(Leo, object=rain)))`
+  - Avoid: `Warning(Mom, Tim)`, `Play(Leo, rain)`, `Compromise(Mom, Leo, plan)`
   
   
 - **Preserve relational patterns** - if an element appears in multiple places (like `wind` in Longing and Transformation), keep it consistent
@@ -220,6 +276,8 @@ Extract the story kernel from the following story. Follow the syntax rules above
 6. Don't add extra commentary or headers
 
 
+{conceptnet_facts}
+
 **Story to analyze:**
 {story}
 
@@ -236,38 +294,68 @@ Extract the story kernel from the following story. Follow the syntax rules above
                 kernel_2=pairs[1]["kernel"],
                 story_3=pairs[2]["story"],
                 kernel_3=pairs[2]["kernel"],
+                conceptnet_facts=conceptnet_text,
                 story=story
             )}
         ],
         temperature=0.0,
-        max_tokens=1000,
+        max_tokens=4000,
     )
-    #print(response['choices'][0]['message']['content'])
+    choice = response.choices[0]
+    content = choice.message.content
+    if not content:
+        print(f"[mine_kernels] empty kernel response; finish_reason={getattr(choice, 'finish_reason', None)}", file=sys.stderr)
+        try:
+            print(choice.model_dump_json(indent=2)[:2000], file=sys.stderr)
+        except Exception:
+            print(choice, file=sys.stderr)
 
-    return response.choices[0].message.content
+    return content or ""
 
 
 
  
-async def process_stories(stories, dataset):
+async def extract_test_case(story):
+    localhost_base_url = os.environ.get("LOCALHOST_BASE_URL", "http://localhost:8001/v1")
+    localhost_api_key = os.environ.get("LOCALHOST_API_KEY", "dummy-key")
+    model = os.environ.get("MINE_MODEL", "gpt-oss-120b")
+    client = AsyncOpenAI(api_key=localhost_api_key, base_url=localhost_base_url)
+    record = {"story": story, "summary": "", "instruction": {"words": [], "features": []}}
+    async with client:
+        assertions = await extract_assertions(client, model, record, "test")
+        conceptnet_text = format_conceptnet(assertions)
+        kernel = await extract_kernel(client, model, story=story, conceptnet_text=conceptnet_text)
+    return assertions, conceptnet_text, kernel
+
+
+async def process_stories(stories, dataset, out_dir, conceptnet=None, limit=None):
 
     localhost_base_url = os.environ.get("LOCALHOST_BASE_URL", "http://localhost:8001/v1")
     localhost_api_key = os.environ.get("LOCALHOST_API_KEY", "dummy-key")
     
     client = AsyncOpenAI(api_key=localhost_api_key, base_url=localhost_base_url)
     model = "gpt-oss-120b"
-    output_file = f"{dataset}.kernels.jsonl"
+    os.makedirs(out_dir, exist_ok=True)
+    output_file = os.path.join(out_dir, f"{dataset}.kernels.jsonl")
     concurency = 32
     sem = asyncio.Semaphore(concurency)
 
-    async def limited_extract(story):
+    if limit is not None:
+        stories = stories[:limit]
+
+    async def limited_extract(idx, story):
+        story_id = f"{dataset}:{idx}"
+        conceptnet_text = format_conceptnet((conceptnet or {}).get(story_id, []))
         async with sem:
-            kernel = await extract_kernel(client, model, story=story["story"])
+            kernel = await extract_kernel(client, model, story=story["story"],
+                                          conceptnet_text=conceptnet_text)
             story["kernel"] = kernel
+            if conceptnet_text:
+                story["conceptnet_text"] = conceptnet_text
             return story
 
     async with client:
-        tasks = [limited_extract(story) for story in stories]
+        tasks = [limited_extract(i, story) for i, story in enumerate(stories)]
 
         with open(output_file, 'w') as f:
             for task in tqdm(asyncio.as_completed(tasks), total=len(tasks), desc="Extracting"):
@@ -278,6 +366,12 @@ async def process_stories(stories, dataset):
 
 
 if __name__ == "__main__":
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--datasets", nargs="+", type=int, default=[3])
+    ap.add_argument("--conceptnet", help="path to dataXX.assertions.jsonl from mine_conceptnet.py")
+    ap.add_argument("--limit", type=int, default=None)
+    ap.add_argument("--out-dir", help="write mined dataset kernels here; if unset, run only the test case")
+    args = ap.parse_args()
 
     test = """John and Sarah were playing together in their backyard when they found a piece of metal. It was shiny and reflective and they couldn't wait to show their parents.
 John asked Sarah, "What should we do with the metal?"
@@ -289,16 +383,21 @@ Their parents smiled, and said, "Well, why don't you two take it around the neig
 John and Sarah were so cheerful and excited about the prospect of helping find the true owner of the metal, that they grabbed it and set off, ready to call on their neighbours.
 """
 
-    #kernel = extract_kernel(test)
-    #print(kernel)
+    if not args.out_dir:
+        assertions, conceptnet_text, kernel = asyncio.run(extract_test_case(test))
+        print(conceptnet_text)
+        print()
+        print(kernel)
+        print(f"\n# assertions: {len(assertions)}")
+        raise SystemExit(0)
 
-    for i in range(3, 4):
+    conceptnet = load_conceptnet(args.conceptnet)
+    for i in args.datasets:
         dataset = f"data{i:02d}"
         with open(f"TinyStories_all_data/{dataset}.json", "r") as f:
-            import json
             data = json.load(f)
 
 
-        kernels = asyncio.run(process_stories(data, dataset))
+        kernels = asyncio.run(process_stories(data, dataset, args.out_dir, conceptnet, args.limit))
 
 
