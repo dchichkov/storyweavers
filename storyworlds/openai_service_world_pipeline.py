@@ -69,6 +69,9 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--quality-sample-timeout", type=float, default=openai_story_quality.DEFAULT_SAMPLE_TIMEOUT)
     parser.add_argument("--quality-sample-concurrency", type=int, default=openai_story_quality.DEFAULT_SAMPLE_CONCURRENCY)
     parser.add_argument("--quality-seed", type=int, default=777)
+    parser.add_argument("--quality-model", default=openai_story_quality.DEFAULT_MODEL)
+    parser.add_argument("--quality-base-url", default=None)
+    parser.add_argument("--quality-api-key-env", default="OPENAI_API_KEY")
     parser.add_argument("--quality-out", type=Path, default=None)
     parser.add_argument("--qa-variants", type=int, default=3)
     parser.add_argument("--qa-seed", type=int, default=42)
@@ -353,6 +356,11 @@ def repair_failures(manifest: dict[str, Any], args: argparse.Namespace) -> list[
         )
         if ok:
             continue
+        if not path.exists():
+            line = f"- {name}: failed: target file missing: {detail.splitlines()[0] if detail else detail}"
+            log.append(line)
+            print(line, flush=True)
+            continue
         source = path.read_text(encoding="utf-8")
         repaired, changes = repair_batch_output.repair_source(source)
         if not changes:
@@ -431,7 +439,7 @@ def quality_command(manifest_path: Path, quality_out: Path, summary_out: Path, a
         "--seed",
         str(args.quality_seed),
         "--model",
-        args.model,
+        args.quality_model,
         "--service-tier",
         args.service_tier,
         "--out",
@@ -439,19 +447,20 @@ def quality_command(manifest_path: Path, quality_out: Path, summary_out: Path, a
         "--summary-out",
         str(summary_out),
         "--api-key-env",
-        args.api_key_env,
+        args.quality_api_key_env,
     ]
-    if args.base_url:
-        cmd += ["--base-url", args.base_url]
+    if args.quality_base_url:
+        cmd += ["--base-url", args.quality_base_url]
     return cmd
 
 
 def run_qa_static(worlds_dir: Path, args: argparse.Namespace) -> tuple[qa_static_check.CheckResult, str]:
+    available = len(list(worlds_dir.glob("*.py")))
     check_args = SimpleNamespace(
         worlds_dir=worlds_dir,
         include_tmp=False,
         recursive=False,
-        count=args.count,
+        count=min(args.count, available) if available else args.count,
         seed=args.qa_seed,
         allow_repeat=False,
         variants=args.qa_variants,

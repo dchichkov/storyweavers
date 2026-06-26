@@ -110,7 +110,7 @@ def build_parser() -> argparse.ArgumentParser:
     )
     parser.add_argument(
         "--reasoning-effort",
-        choices=("minimal", "low", "medium", "high", "xhigh"),
+        choices=("off", "none", "minimal", "low", "medium", "high", "xhigh"),
         default=DEFAULT_REASONING_EFFORT,
         help=f"Responses API reasoning effort; default: {DEFAULT_REASONING_EFFORT}",
     )
@@ -278,7 +278,7 @@ def request_body(args: argparse.Namespace, job: StoryworldJob) -> dict[str, Any]
         example_worlds=args.example_worlds,
         emit_mode=args.emit_mode,
     )
-    return {
+    request = {
         "model": args.model,
         "prompt_cache_key": prompt_cache_key(
             prompt_addendum=args.prompt_addendum,
@@ -286,7 +286,6 @@ def request_body(args: argparse.Namespace, job: StoryworldJob) -> dict[str, Any]
             emit_mode=args.emit_mode,
         ),
         "prompt_cache_retention": args.prompt_cache_retention,
-        "reasoning": {"effort": args.reasoning_effort},
         "service_tier": args.service_tier,
         "input": [
             {
@@ -310,6 +309,9 @@ def request_body(args: argparse.Namespace, job: StoryworldJob) -> dict[str, Any]
             else {}
         ),
     }
+    if args.reasoning_effort != "off":
+        request["reasoning"] = {"effort": args.reasoning_effort}
+    return request
 
 
 def json_model_dump(obj: Any) -> dict[str, Any]:

@@ -1,0 +1,1341 @@
+#!/usr/bin/env python3
+"""
+storyworlds/worlds/gpt-5.4-mini_service_20260626T060043Z_seed274930118_n5000/core_fabulous_curiosity_tall_tale.py
+===============================================================================================================
+
+A small, self-contained story world in a tall-tale style: a curious child,
+a fabulous core, a warning, a clever fix, and a bright ending image.
+
+The world is intentionally narrow and constraint-driven:
+- one child, one helper adult, one treasured core-object
+- a few places where the core can be discovered
+- a few activities that can put the core at risk
+- a compatible protective fix that must genuinely solve the problem
+
+The prose is child-facing and state-driven, not a frozen template.
+"""
+
+from __future__ import annotations
+
+import argparse
+import json
+import os
+import random
+import sys
+from dataclasses import dataclass, field
+from typing import Optional
+
+_storyworlds_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+if not os.path.exists(os.path.join(_storyworlds_dir, "results.py")):
+    _storyworlds_dir = os.path.dirname(_storyworlds_dir)
+sys.path.insert(0, _storyworlds_dir)
+from results import QAItem, StoryError, StorySample  # noqa: E402
+
+
+THRESHOLD = 1.0
+
+
+
+def _safe_fact(world, facts, key):
+    value = facts.get(key) if hasattr(facts, "get") else None
+    if hasattr(value, "id") or hasattr(value, "label") or hasattr(value, "verb") or hasattr(value, "sign"):
+        return value
+    if isinstance(value, str):
+        if hasattr(world, "get"):
+            try:
+                resolved = world.get(value)
+                if resolved is not None:
+                    return resolved
+            except Exception:
+                pass
+        upper = key.upper()
+        for registry_name in (upper, upper + "S", upper + "ES", upper + "_REGISTRY"):
+            registry = globals().get(registry_name)
+            if isinstance(registry, dict) and value in registry:
+                return registry[value]
+        if upper.endswith("Y"):
+            registry = globals().get(upper[:-1] + "IES")
+            if isinstance(registry, dict) and value in registry:
+                return registry[value]
+    entities = getattr(world, "entities", {})
+    if hasattr(entities, "values"):
+        for entity in entities.values():
+            if hasattr(entity, "id") or hasattr(entity, "label"):
+                return entity
+    return value
+
+
+def _fallback_storyparams(args, rng, cls, ns):
+    data = {}
+    missing = getattr(__import__("dataclasses"), "MISSING")
+    for field in __import__("dataclasses").fields(cls):
+        name = field.name
+        value = None
+        for arg_name in (name, name.removesuffix("_name"), name.removesuffix("_id")):
+            if hasattr(args, arg_name):
+                value = getattr(args, arg_name)
+                if value is not None:
+                    break
+        if value is None:
+            upper = name.upper()
+            keys = [upper, upper + "S", upper + "ES"]
+            if upper.endswith("Y"):
+                keys.append(upper[:-1] + "IES")
+            for key in keys:
+                pool = ns.get(key)
+                if isinstance(pool, dict) and pool:
+                    value = next(iter(pool.keys()))
+                    break
+                if isinstance(pool, (list, tuple, set)) and pool:
+                    value = sorted(pool)[0] if isinstance(pool, set) else pool[0]
+                    break
+        if value is None and field.default is not missing:
+            value = field.default
+        if value is None:
+            if name == "seed":
+                value = getattr(args, "seed", None)
+            elif "gender" in name or name.endswith("_type"):
+                value = "girl"
+            elif "name" in name or name in {"child", "hero", "helper", "friend", "pal", "guide"}:
+                value = name.removesuffix("_name").replace("_", " ").title() or "Mia"
+            else:
+                value = name
+        data[name] = value
+    return cls(**data)
+
+
+def _safe_lookup(mapping, key):
+    if hasattr(key, "id"):
+        key = key.id
+    try:
+        return mapping[key]
+    except Exception:
+        pass
+    if hasattr(mapping, "values"):
+        values = [value for value in mapping.values() if value is not None]
+        if values:
+            return values[0]
+    if mapping:
+        return mapping[0]
+    raise KeyError(key)
+
+@dataclass
+class Entity:
+    id: str
+    kind: str = "thing"
+    type: str = "thing"
+    label: str = ""
+    phrase: str = ""
+    traits: list[str] = field(default_factory=list)
+    owner: Optional[str] = None
+    caretaker: Optional[str] = None
+    worn_by: Optional[str] = None
+    region: str = ""
+    protective: bool = False
+    covers: set[str] = field(default_factory=set)
+    plural: bool = False
+    meters: dict[str, float] = field(default_factory=lambda: __import__('collections').defaultdict(float))
+    memes: dict[str, float] = field(default_factory=lambda: __import__('collections').defaultdict(float))
+
+    gear: object | None = None
+    hero: object | None = None
+    parent: object | None = None
+    prize: object | None = None
+    def __post_init__(self) -> None:
+        if not self.meters:
+            self.meters = {"dusty": 0.0, "wet": 0.0, "scratched": 0.0, "shiny": 0.0}
+        if not self.memes:
+            self.memes = {"curiosity": 0.0, "joy": 0.0, "worry": 0.0, "pride": 0.0, "relief": 0.0}
+
+    def pronoun(self, case: str = "subject") -> str:
+        female = {"girl", "mother", "mom", "woman"}
+        male = {"boy", "father", "dad", "man"}
+        if self.type in female:
+            return {"subject": "she", "object": "her", "possessive": "her"}[case]
+        if self.type in male:
+            return {"subject": "he", "object": "him", "possessive": "his"}[case]
+        return {"subject": "it", "object": "it", "possessive": "its"}[case]
+
+    def it(self) -> str:
+        return "them" if self.plural else "it"
+
+    @property
+    def label_word(self) -> str:
+        return {"mother": "mom", "father": "dad"}.get(self.type, self.type)
+    @property
+    def award_phrase(self) -> str:
+        return str(getattr(self, "label", None) or getattr(self, "phrase", None) or getattr(self, "name", None) or getattr(self, "id", None) or getattr(self, "type", self.__class__.__name__.lower()))
+
+    @property
+    def tags(self):
+        if "_tags" not in self.__dict__:
+            object.__setattr__(self, "_tags", set())
+        return self._tags
+
+    def __getattr__(self, name: str):
+        if name.startswith("__"):
+            raise AttributeError(name)
+        if name == "pronoun":
+            return lambda case="subject": {"subject": "they", "object": "them", "possessive": "their"}.get(case, "they")
+        if name in {"meters", "memes"}:
+            value = __import__("collections").defaultdict(float)
+            object.__setattr__(self, name, value)
+            return value
+        if name in {"tags", "supports", "covers", "guards", "causes"}:
+            value = set()
+            object.__setattr__(self, name, value)
+            return value
+        if name in {"phrase", "label_word", "award_phrase"}:
+            return str(getattr(self, "label", None) or getattr(self, "name", None) or getattr(self, "id", ""))
+        if name.startswith(("is_", "has_", "can_", "safe", "unsafe")):
+            return False
+        if name in {"comforting", "messy", "delivered", "sturdy", "protective", "broken", "wet"}:
+            return False
+        return ""
+
+    def __getitem__(self, key):
+        if isinstance(key, int):
+            if key == 0:
+                return self
+            raise IndexError(key)
+        if isinstance(key, str):
+            if hasattr(self, key):
+                return getattr(self, key)
+            for attr in ("meters", "memes"):
+                mapping = getattr(self, attr, None)
+                if hasattr(mapping, "get") and key in mapping:
+                    return mapping.get(key)
+        raise KeyError(key)
+
+    def __iter__(self):
+        yield self
+
+    def __hash__(self):
+        return hash(getattr(self, "id", id(self)))
+
+
+@dataclass
+class Setting:
+    place: str
+    indoors: bool
+    affords: set[str] = field(default_factory=set)
+    detail: str = ""
+    @property
+    def meters(self):
+        if "_meters" not in self.__dict__:
+            object.__setattr__(self, "_meters", __import__("collections").defaultdict(float))
+        return self._meters
+
+    @property
+    def memes(self):
+        if "_memes" not in self.__dict__:
+            object.__setattr__(self, "_memes", __import__("collections").defaultdict(float))
+        return self._memes
+
+    @property
+    def tags(self):
+        if "_tags" not in self.__dict__:
+            object.__setattr__(self, "_tags", set())
+        return self._tags
+
+    def __getattr__(self, name: str):
+        if name.startswith("__"):
+            raise AttributeError(name)
+        return None
+
+
+@dataclass
+class Activity:
+    id: str
+    verb: str
+    gerund: str
+    rush: str
+    risk: str
+    mess: str
+    soil: str
+    zone: set[str]
+    keyword: str
+    tags: set[str] = field(default_factory=set)
+    @property
+    def label_word(self) -> str:
+        return str(getattr(self, "name", None) or getattr(self, "id", None) or getattr(self, "type", self.__class__.__name__.lower()))
+
+    @property
+    def label(self) -> str:
+        return str(getattr(self, "name", None) or getattr(self, "id", None) or getattr(self, "type", self.__class__.__name__.lower()))
+
+    @property
+    def award_phrase(self) -> str:
+        return str(getattr(self, "name", None) or getattr(self, "id", None) or getattr(self, "type", self.__class__.__name__.lower()))
+
+    @property
+    def phrase(self) -> str:
+        return str(getattr(self, "_phrase", None) or str(getattr(self, "name", None) or getattr(self, "id", None) or getattr(self, "type", self.__class__.__name__.lower())))
+
+    @phrase.setter
+    def phrase(self, value: str) -> None:
+        object.__setattr__(self, "_phrase", value)
+
+    @property
+    def meters(self):
+        if "_meters" not in self.__dict__:
+            object.__setattr__(self, "_meters", __import__("collections").defaultdict(float))
+        return self._meters
+
+    @property
+    def memes(self):
+        if "_memes" not in self.__dict__:
+            object.__setattr__(self, "_memes", __import__("collections").defaultdict(float))
+        return self._memes
+
+    def __getattr__(self, name: str):
+        if name.startswith("__"):
+            raise AttributeError(name)
+        if name == "pronoun":
+            return lambda case="subject": {"subject": "they", "object": "them", "possessive": "their"}.get(case, "they")
+        if name in {"meters", "memes"}:
+            value = __import__("collections").defaultdict(float)
+            object.__setattr__(self, name, value)
+            return value
+        if name in {"tags", "supports", "covers", "guards", "causes"}:
+            value = set()
+            object.__setattr__(self, name, value)
+            return value
+        if name in {"phrase", "label_word", "award_phrase"}:
+            return str(getattr(self, "label", None) or getattr(self, "name", None) or getattr(self, "id", ""))
+        if name.startswith(("is_", "has_", "can_", "safe", "unsafe")):
+            return False
+        if name in {"comforting", "messy", "delivered", "sturdy", "protective", "broken", "wet"}:
+            return False
+        return ""
+
+    def __getitem__(self, key):
+        if isinstance(key, int):
+            if key == 0:
+                return self
+            raise IndexError(key)
+        if isinstance(key, str):
+            if hasattr(self, key):
+                return getattr(self, key)
+            for attr in ("meters", "memes"):
+                mapping = getattr(self, attr, None)
+                if hasattr(mapping, "get") and key in mapping:
+                    return mapping.get(key)
+        raise KeyError(key)
+
+    def __iter__(self):
+        yield self
+
+    def __hash__(self):
+        return hash(getattr(self, "id", id(self)))
+
+
+@dataclass
+class Prize:
+    label: str
+    phrase: str
+    type: str
+    region: str
+    plural: bool = False
+    genders: set[str] = field(default_factory=lambda: {"girl", "boy"})
+    @property
+    def label_word(self) -> str:
+        return str(getattr(self, "label", None) or getattr(self, "phrase", None) or getattr(self, "name", None) or getattr(self, "id", None) or getattr(self, "type", self.__class__.__name__.lower()))
+
+    @property
+    def award_phrase(self) -> str:
+        return str(getattr(self, "label", None) or getattr(self, "phrase", None) or getattr(self, "name", None) or getattr(self, "id", None) or getattr(self, "type", self.__class__.__name__.lower()))
+
+    @property
+    def meters(self):
+        if "_meters" not in self.__dict__:
+            object.__setattr__(self, "_meters", __import__("collections").defaultdict(float))
+        return self._meters
+
+    @property
+    def memes(self):
+        if "_memes" not in self.__dict__:
+            object.__setattr__(self, "_memes", __import__("collections").defaultdict(float))
+        return self._memes
+
+    @property
+    def tags(self):
+        if "_tags" not in self.__dict__:
+            object.__setattr__(self, "_tags", set())
+        return self._tags
+
+    def __getattr__(self, name: str):
+        if name.startswith("__"):
+            raise AttributeError(name)
+        if name == "pronoun":
+            return lambda case="subject": {"subject": "they", "object": "them", "possessive": "their"}.get(case, "they")
+        if name in {"meters", "memes"}:
+            value = __import__("collections").defaultdict(float)
+            object.__setattr__(self, name, value)
+            return value
+        if name in {"tags", "supports", "covers", "guards", "causes"}:
+            value = set()
+            object.__setattr__(self, name, value)
+            return value
+        if name in {"phrase", "label_word", "award_phrase"}:
+            return str(getattr(self, "label", None) or getattr(self, "name", None) or getattr(self, "id", ""))
+        if name.startswith(("is_", "has_", "can_", "safe", "unsafe")):
+            return False
+        if name in {"comforting", "messy", "delivered", "sturdy", "protective", "broken", "wet"}:
+            return False
+        return ""
+
+    def __getitem__(self, key):
+        if isinstance(key, int):
+            if key == 0:
+                return self
+            raise IndexError(key)
+        if isinstance(key, str):
+            if hasattr(self, key):
+                return getattr(self, key)
+            for attr in ("meters", "memes"):
+                mapping = getattr(self, attr, None)
+                if hasattr(mapping, "get") and key in mapping:
+                    return mapping.get(key)
+        raise KeyError(key)
+
+    def __iter__(self):
+        yield self
+
+    def __hash__(self):
+        return hash(getattr(self, "id", id(self)))
+
+
+@dataclass
+class Gear:
+    id: str
+    label: str
+    covers: set[str]
+    guards: set[str]
+    prep: str
+    tail: str
+    plural: bool = False
+    @property
+    def label_word(self) -> str:
+        return str(getattr(self, "label", None) or getattr(self, "name", None) or getattr(self, "id", None) or getattr(self, "type", self.__class__.__name__.lower()))
+
+    @property
+    def award_phrase(self) -> str:
+        return str(getattr(self, "label", None) or getattr(self, "name", None) or getattr(self, "id", None) or getattr(self, "type", self.__class__.__name__.lower()))
+
+    @property
+    def phrase(self) -> str:
+        return str(getattr(self, "_phrase", None) or str(getattr(self, "label", None) or getattr(self, "name", None) or getattr(self, "id", None) or getattr(self, "type", self.__class__.__name__.lower())))
+
+    @phrase.setter
+    def phrase(self, value: str) -> None:
+        object.__setattr__(self, "_phrase", value)
+
+    @property
+    def meters(self):
+        if "_meters" not in self.__dict__:
+            object.__setattr__(self, "_meters", __import__("collections").defaultdict(float))
+        return self._meters
+
+    @property
+    def memes(self):
+        if "_memes" not in self.__dict__:
+            object.__setattr__(self, "_memes", __import__("collections").defaultdict(float))
+        return self._memes
+
+    @property
+    def tags(self):
+        if "_tags" not in self.__dict__:
+            object.__setattr__(self, "_tags", set())
+        return self._tags
+
+    def __getattr__(self, name: str):
+        if name.startswith("__"):
+            raise AttributeError(name)
+        if name == "pronoun":
+            return lambda case="subject": {"subject": "they", "object": "them", "possessive": "their"}.get(case, "they")
+        if name in {"meters", "memes"}:
+            value = __import__("collections").defaultdict(float)
+            object.__setattr__(self, name, value)
+            return value
+        if name in {"tags", "supports", "covers", "guards", "causes"}:
+            value = set()
+            object.__setattr__(self, name, value)
+            return value
+        if name in {"phrase", "label_word", "award_phrase"}:
+            return str(getattr(self, "label", None) or getattr(self, "name", None) or getattr(self, "id", ""))
+        if name.startswith(("is_", "has_", "can_", "safe", "unsafe")):
+            return False
+        if name in {"comforting", "messy", "delivered", "sturdy", "protective", "broken", "wet"}:
+            return False
+        return ""
+
+    def __getitem__(self, key):
+        if isinstance(key, int):
+            if key == 0:
+                return self
+            raise IndexError(key)
+        if isinstance(key, str):
+            if hasattr(self, key):
+                return getattr(self, key)
+            for attr in ("meters", "memes"):
+                mapping = getattr(self, attr, None)
+                if hasattr(mapping, "get") and key in mapping:
+                    return mapping.get(key)
+        raise KeyError(key)
+
+    def __iter__(self):
+        yield self
+
+    def __hash__(self):
+        return hash(getattr(self, "id", id(self)))
+
+
+@dataclass
+class StoryParams:
+    place: str
+    activity: str
+    prize: str
+    name: str
+    gender: str
+    parent: str
+    trait: str
+    seed: Optional[int] = None
+    @property
+    def label_word(self) -> str:
+        return str(getattr(self, "name", None) or getattr(self, "id", None) or getattr(self, "type", self.__class__.__name__.lower()))
+
+    @property
+    def label(self) -> str:
+        return str(getattr(self, "name", None) or getattr(self, "id", None) or getattr(self, "type", self.__class__.__name__.lower()))
+
+    @property
+    def award_phrase(self) -> str:
+        return str(getattr(self, "name", None) or getattr(self, "id", None) or getattr(self, "type", self.__class__.__name__.lower()))
+
+    @property
+    def phrase(self) -> str:
+        return str(getattr(self, "_phrase", None) or str(getattr(self, "name", None) or getattr(self, "id", None) or getattr(self, "type", self.__class__.__name__.lower())))
+
+    @phrase.setter
+    def phrase(self, value: str) -> None:
+        object.__setattr__(self, "_phrase", value)
+
+    @property
+    def meters(self):
+        if "_meters" not in self.__dict__:
+            object.__setattr__(self, "_meters", __import__("collections").defaultdict(float))
+        return self._meters
+
+    @property
+    def memes(self):
+        if "_memes" not in self.__dict__:
+            object.__setattr__(self, "_memes", __import__("collections").defaultdict(float))
+        return self._memes
+
+    @property
+    def tags(self):
+        if "_tags" not in self.__dict__:
+            object.__setattr__(self, "_tags", set())
+        return self._tags
+
+    def __getattr__(self, name: str):
+        if name.startswith("__"):
+            raise AttributeError(name)
+        if name == "pronoun":
+            return lambda case="subject": {"subject": "they", "object": "them", "possessive": "their"}.get(case, "they")
+        if name in {"meters", "memes"}:
+            value = __import__("collections").defaultdict(float)
+            object.__setattr__(self, name, value)
+            return value
+        if name in {"tags", "supports", "covers", "guards", "causes"}:
+            value = set()
+            object.__setattr__(self, name, value)
+            return value
+        if name in {"phrase", "label_word", "award_phrase"}:
+            return str(getattr(self, "label", None) or getattr(self, "name", None) or getattr(self, "id", ""))
+        if name.startswith(("is_", "has_", "can_", "safe", "unsafe")):
+            return False
+        if name in {"comforting", "messy", "delivered", "sturdy", "protective", "broken", "wet"}:
+            return False
+        return ""
+
+    def __getitem__(self, key):
+        if isinstance(key, int):
+            if key == 0:
+                return self
+            raise IndexError(key)
+        if isinstance(key, str):
+            if hasattr(self, key):
+                return getattr(self, key)
+            for attr in ("meters", "memes"):
+                mapping = getattr(self, attr, None)
+                if hasattr(mapping, "get") and key in mapping:
+                    return mapping.get(key)
+        raise KeyError(key)
+
+    def __iter__(self):
+        yield self
+
+    def __hash__(self):
+        return hash(getattr(self, "id", id(self)))
+
+
+class World:
+    def __init__(self, setting: Setting) -> None:
+        self.setting = setting
+        self.entities: dict[str, Entity] = {}
+        self.fired: set[tuple] = set()
+        self.paragraphs: list[list[str]] = [[]]
+        self.zone: set[str] = set()
+        self.facts: dict = {}
+
+    def add(self, ent: Entity) -> Entity:
+        self.entities[ent.id] = ent
+        return ent
+
+    def get(self, eid: str) -> Entity:
+        if eid not in self.entities:
+            label = str(eid).replace("_", " ")
+            self.entities[eid] = Entity(str(eid), label=label)
+        return self.entities[eid]
+
+    def characters(self) -> list[Entity]:
+        return [e for e in self.entities.values() if e.kind == "character"]
+
+    def worn_items(self, actor: Entity) -> list[Entity]:
+        return [e for e in self.entities.values() if e.worn_by == actor.id]
+
+    def covered(self, actor: Entity, region: str) -> bool:
+        return any(g.protective and region in g.covers for g in self.worn_items(actor))
+
+    def say(self, text: str) -> None:
+        if text:
+            self.paragraphs[-1].append(text)
+
+    def para(self) -> None:
+        if self.paragraphs[-1]:
+            self.paragraphs.append([])
+
+    def render(self) -> str:
+        return "\n\n".join(" ".join(p) for p in self.paragraphs if p)
+    def copy(self):
+        clone = __import__("copy").deepcopy(self)
+        return clone
+
+
+def _bump(d: dict[str, float], key: str, amt: float = 1.0) -> None:
+    d[key] = d.get(key, 0.0) + amt
+
+
+def prize_at_risk(activity: Activity, prize: Prize) -> bool:
+    return prize.region in activity.zone
+
+
+def select_gear(activity: Activity, prize: Prize) -> Optional[Gear]:
+    for gear in GEAR:
+        if activity.mess in gear.guards and prize.region in gear.covers:
+            return gear
+    return None
+
+
+def valid_combos() -> list[tuple[str, str, str]]:
+    combos = []
+    for place, setting in SETTINGS.items():
+        for act_id in setting.affords:
+            act = _safe_lookup(ACTIVITIES, act_id)
+            for prize_id, prize in PRIZES.items():
+                if prize_at_risk(act, prize) and select_gear(act, prize):
+                    combos.append((place, act_id, prize_id))
+    return combos
+
+
+def _do_activity(world: World, actor: Entity, activity: Activity, narrate: bool = True) -> list[str]:
+    if activity.id not in world.setting.affords:
+        return []
+    world.zone = set(activity.zone)
+    _bump(actor.memes, "curiosity")
+    _bump(actor.meters, activity.mess)
+    _bump(actor.meters, "shiny", -0.25)
+    return propagate(world, narrate=narrate)
+
+
+def _r_soil(world: World) -> list[str]:
+    out: list[str] = []
+    for actor in world.characters():
+        for mess in ("dusty", "wet", "scratched"):
+            if actor.meters.get(mess, 0.0) < THRESHOLD:
+                continue
+            for item in world.worn_items(actor):
+                if item.protective or item.region not in world.zone:
+                    continue
+                if world.covered(actor, item.region):
+                    continue
+                sig = ("soil", item.id, mess)
+                if sig in world.fired:
+                    continue
+                world.fired.add(sig)
+                _bump(item.meters, mess)
+                _bump(item.meters, "shiny", -0.5)
+                out.append(f"{actor.id}'s {item.label} got {mess}.")
+    return out
+
+
+def _r_core_dulled(world: World) -> list[str]:
+    out: list[str] = []
+    prize = world.entities.get("core")
+    if not prize:
+        return out
+    if any(prize.meters.get(k, 0.0) >= THRESHOLD for k in ("dusty", "wet", "scratched")):
+        sig = ("dim",)
+        if sig in world.fired:
+            return out
+        world.fired.add(sig)
+        _bump(prize.meters, "shiny", -1.0)
+        out.append("The fabulous core lost a bit of its shine.")
+    return out
+
+
+def _r_worry(world: World) -> list[str]:
+    out: list[str] = []
+    hero = world.get("hero")
+    if hero.memes.get("curiosity", 0.0) >= THRESHOLD and world.get("core").meters.get("shiny", 0.0) <= 0:
+        _bump(hero.memes, "worry")
+    return out
+
+
+CAUSAL_RULES = [
+    _r_soil,
+    _r_core_dulled,
+    _r_worry,
+]
+
+
+def propagate(world: World, narrate: bool = True) -> list[str]:
+    produced: list[str] = []
+    changed = True
+    for _ in range(len(globals().get("CAUSAL_RULES", [])) + 4):
+        changed = False
+        for rule in CAUSAL_RULES:
+            sents = rule(world)
+            if sents:
+                changed = True
+                produced.extend(sents)
+    if narrate:
+        for s in produced:
+            world.say(s)
+    return produced
+
+
+def setting_detail(setting: Setting) -> str:
+    return setting.detail or f"{setting.place.capitalize()} looked ready for a curious tumble."
+
+
+def introduce(world: World, hero: Entity) -> None:
+    trait = next((t for t in hero.traits if t != "little"), "curious")
+    world.say(f"{hero.id} was a little {trait} {hero.type} who could spot wonder before breakfast.")
+
+
+def love_core(world: World, hero: Entity, prize: Entity) -> None:
+    hero.memes["pride"] += 0.5
+    world.say(
+        f"{hero.id} loved the fabulous {prize.label} because it gleamed like a tiny sunset inside a lantern."
+    )
+
+
+def arrive(world: World, hero: Entity, parent: Entity, activity: Activity) -> None:
+    world.say(
+        f"One day, {hero.id} and {hero.pronoun('possessive')} {parent.label_word} went to {world.setting.place}."
+    )
+    world.say(setting_detail(world.setting))
+    world.say(
+        f"{hero.id} wanted to {activity.verb}, and {hero.pronoun('possessive')} eyes grew round as saucers."
+    )
+
+
+def warn(world: World, parent: Entity, hero: Entity, activity: Activity, prize: Entity) -> bool:
+    if not prize_at_risk(activity, prize):
+        return False
+    _bump(parent.memes, "worry")
+    world.facts["predicted_soil"] = activity.soil
+    world.say(
+        f'"Careful," {hero.pronoun("possessive")} {parent.label_word} said. '
+        f'"If you {activity.verb}, the {prize.label} could get {activity.soil}."'
+    )
+    return True
+
+
+def defy(world: World, hero: Entity, activity: Activity) -> None:
+    _bump(hero.memes, "curiosity")
+    world.say(f"But curiosity is a big horse, and {hero.id} still tried to {activity.rush}.")
+
+
+def grab_and_resolve(world: World, parent: Entity, hero: Entity, activity: Activity, prize: Entity) -> Optional[Gear]:
+    _bump(hero.memes, "worry")
+    gear_def = select_gear(activity, prize)
+    if gear_def is None:
+        return None
+    gear = world.add(Entity(
+        id=gear_def.id,
+        type="gear",
+        label=gear_def.label,
+        owner=hero.id,
+        caretaker=parent.id,
+        protective=True,
+        covers=set(gear_def.covers),
+        plural=gear_def.plural,
+    ))
+    gear.worn_by = hero.id
+    if predict_mess(world, hero, activity, prize.id)["soiled"]:
+        gear.worn_by = None
+        del world.entities[gear.id]
+        return None
+    world.say(
+        f'Then {hero.pronoun("possessive")} {parent.label_word} smiled and said, '
+        f'"How about we {gear_def.prep} first?"'
+    )
+    return gear_def
+
+
+def accept(world: World, parent: Entity, hero: Entity, activity: Activity, prize: Entity, gear_def: Gear) -> None:
+    _bump(hero.memes, "joy", 1.0)
+    _bump(hero.memes, "relief", 1.0)
+    hero.memes["worry"] = 0.0
+    world.say(
+        f"{hero.id} nodded so hard it could have shaken the rafters. "
+        f"Together they {gear_def.tail}."
+    )
+    _do_activity(world, hero, activity, narrate=True)
+    _bump(prize.meters, "shiny", 1.0)
+    world.say(
+        f"At last {hero.id} was {activity.gerund}, the fabulous {prize.label} stayed bright, and the whole day seemed taller."
+    )
+
+
+def predict_mess(world: World, actor: Entity, activity: Activity, prize_id: str) -> dict:
+    sim = world.copy()
+    _do_activity(sim, sim.get(actor.id), activity, narrate=False)
+    prize = sim.entities.get(prize_id)
+    return {
+        "soiled": bool(prize and any(prize.meters.get(k, 0.0) >= THRESHOLD for k in ("dusty", "wet", "scratched"))),
+    }
+
+
+def tell(setting: Setting, activity: Activity, prize_cfg: Prize, hero_name: str, hero_type: str, hero_traits: list[str], parent_type: str) -> World:
+    world = World(setting)
+    hero = world.add(Entity(id="hero", kind="character", type=hero_type, label=hero_name, traits=["little"] + hero_traits))
+    parent = world.add(Entity(id="parent", kind="character", type=parent_type, label=f"the {parent_type}"))
+    prize = world.add(Entity(
+        id="core",
+        type=prize_cfg.type,
+        label=prize_cfg.label,
+        phrase=prize_cfg.phrase,
+        owner=hero.id,
+        caretaker=parent.id,
+        region=prize_cfg.region,
+        plural=prize_cfg.plural,
+        meters={"dusty": 0.0, "wet": 0.0, "scratched": 0.0, "shiny": 2.0},
+        memes={"curiosity": 0.0, "joy": 0.0, "worry": 0.0, "pride": 0.0, "relief": 0.0},
+    ))
+
+    introduce(world, hero)
+    love_core(world, hero, prize)
+
+    world.para()
+    arrive(world, hero, parent, activity)
+    warn(world, parent, hero, activity, prize)
+    defy(world, hero, activity)
+
+    world.para()
+    gear_def = grab_and_resolve(world, parent, hero, activity, prize)
+    if gear_def:
+        accept(world, parent, hero, activity, prize, gear_def)
+
+    world.facts.update(hero=hero, parent=parent, prize=prize, activity=activity, gear=gear_def, setting=setting, resolved=gear_def is not None)
+    return world
+
+
+SETTINGS = {
+    "lantern_shop": Setting(
+        place="the lantern shop",
+        indoors=True,
+        affords={"peek", "carry"},
+        detail="The shelves glowed with brass loops and shiny paper stars.",
+    ),
+    "hill_fair": Setting(
+        place="the hill fair",
+        indoors=False,
+        affords={"peek", "carry", "polish"},
+        detail="The fair sat on a windy hill, where the flags snapped like cheerful kites.",
+    ),
+    "clock_tower": Setting(
+        place="the old clock tower",
+        indoors=True,
+        affords={"peek", "polish"},
+        detail="Inside, the great clock ticked like a polite giant with a golden heart.",
+    ),
+}
+
+ACTIVITIES = {
+    "peek": Activity(
+        id="peek",
+        verb="peek at the core",
+        gerund="peeking at the core",
+        rush="dash to the core",
+        risk="touch it with dusty fingers",
+        mess="dusty",
+        soil="a bit dusty",
+        zone={"hands"},
+        keyword="core",
+        tags={"core", "curiosity"},
+    ),
+    "carry": Activity(
+        id="carry",
+        verb="carry the core",
+        gerund="carrying the core",
+        rush="hoist the core without thinking",
+        risk="bump it against the rail",
+        mess="scratched",
+        soil="scratched and dull",
+        zone={"hands"},
+        keyword="core",
+        tags={"core", "curiosity"},
+    ),
+    "polish": Activity(
+        id="polish",
+        verb="polish the core",
+        gerund="polishing the core",
+        rush="rub the core in a hurry",
+        risk="smear it with wet cloths",
+        mess="wet",
+        soil="wet and cloudy",
+        zone={"hands"},
+        keyword="core",
+        tags={"core", "curiosity"},
+    ),
+}
+
+PRIZES = {
+    "core": Prize(
+        label="core",
+        phrase="a fabulous glass core",
+        type="core",
+        region="hands",
+    )
+}
+
+GEAR = [
+    Gear(
+        id="gloves",
+        label="soft gloves",
+        covers={"hands"},
+        guards={"dusty", "scratched"},
+        prep="put on soft gloves",
+        tail="put on the soft gloves and lifted the core carefully",
+    ),
+    Gear(
+        id="cloth",
+        label="a dry polishing cloth",
+        covers={"hands"},
+        guards={"wet", "dusty"},
+        prep="use a dry polishing cloth",
+        tail="picked up a dry polishing cloth and cleaned it the proper way",
+    ),
+]
+
+NAMES = ["Nora", "Milo", "Piper", "Jasper", "Ruby", "Finn", "Ivy", "Theo"]
+TRAITS = ["curious", "bright-eyed", "spirited", "wonder-hungry", "restless"]
+
+
+def explain_rejection(activity: Activity, prize: Prize) -> str:
+    return (
+        f"(No story: {activity.gerund} does not meaningfully put the {prize.label} at risk "
+        f"in this setup, or no real fix exists. The tale needs a true worry and a true remedy.)"
+    )
+
+
+def valid_gender_prize(prize_id: str, gender: str) -> bool:
+    return gender in _safe_lookup(PRIZES, prize_id).genders
+
+
+def explain_gender(prize_id: str, gender: str) -> str:
+    return f"(No story: this {_safe_lookup(PRIZES, prize_id).label} doesn't fit a {gender} restriction here.)"
+
+
+@dataclass
+class StoryConfig:
+    place: str
+    activity: str
+    prize: str
+    name: str
+    gender: str
+    parent: str
+    trait: str
+    seed: Optional[int] = None
+    @property
+    def label_word(self) -> str:
+        return str(getattr(self, "name", None) or getattr(self, "id", None) or getattr(self, "type", self.__class__.__name__.lower()))
+
+    @property
+    def label(self) -> str:
+        return str(getattr(self, "name", None) or getattr(self, "id", None) or getattr(self, "type", self.__class__.__name__.lower()))
+
+    @property
+    def award_phrase(self) -> str:
+        return str(getattr(self, "name", None) or getattr(self, "id", None) or getattr(self, "type", self.__class__.__name__.lower()))
+
+    @property
+    def phrase(self) -> str:
+        return str(getattr(self, "_phrase", None) or str(getattr(self, "name", None) or getattr(self, "id", None) or getattr(self, "type", self.__class__.__name__.lower())))
+
+    @phrase.setter
+    def phrase(self, value: str) -> None:
+        object.__setattr__(self, "_phrase", value)
+
+    @property
+    def meters(self):
+        if "_meters" not in self.__dict__:
+            object.__setattr__(self, "_meters", __import__("collections").defaultdict(float))
+        return self._meters
+
+    @property
+    def memes(self):
+        if "_memes" not in self.__dict__:
+            object.__setattr__(self, "_memes", __import__("collections").defaultdict(float))
+        return self._memes
+
+    @property
+    def tags(self):
+        if "_tags" not in self.__dict__:
+            object.__setattr__(self, "_tags", set())
+        return self._tags
+
+    def __getattr__(self, name: str):
+        if name.startswith("__"):
+            raise AttributeError(name)
+        if name == "pronoun":
+            return lambda case="subject": {"subject": "they", "object": "them", "possessive": "their"}.get(case, "they")
+        if name in {"meters", "memes"}:
+            value = __import__("collections").defaultdict(float)
+            object.__setattr__(self, name, value)
+            return value
+        if name in {"tags", "supports", "covers", "guards", "causes"}:
+            value = set()
+            object.__setattr__(self, name, value)
+            return value
+        if name in {"phrase", "label_word", "award_phrase"}:
+            return str(getattr(self, "label", None) or getattr(self, "name", None) or getattr(self, "id", ""))
+        if name.startswith(("is_", "has_", "can_", "safe", "unsafe")):
+            return False
+        if name in {"comforting", "messy", "delivered", "sturdy", "protective", "broken", "wet"}:
+            return False
+        return ""
+
+    def __getitem__(self, key):
+        if isinstance(key, int):
+            if key == 0:
+                return self
+            raise IndexError(key)
+        if isinstance(key, str):
+            if hasattr(self, key):
+                return getattr(self, key)
+            for attr in ("meters", "memes"):
+                mapping = getattr(self, attr, None)
+                if hasattr(mapping, "get") and key in mapping:
+                    return mapping.get(key)
+        raise KeyError(key)
+
+    def __iter__(self):
+        yield self
+
+    def __hash__(self):
+        return hash(getattr(self, "id", id(self)))
+
+
+def generation_prompts(world: World) -> list[str]:
+    f = world.facts
+    hero, parent, act = _safe_fact((globals().get("world") or locals().get("world") or locals().get("mw") or locals().get("w")), f, "hero"), _safe_fact((globals().get("world") or locals().get("world") or locals().get("mw") or locals().get("w")), f, "parent"), _safe_fact((globals().get("world") or locals().get("world") or locals().get("mw") or locals().get("w")), f, "activity")
+    return [
+        f'Write a short tall tale for a child about "{hero.label}" and a fabulous core.',
+        f"Tell a curious story where {hero.label} wants to {act.verb} but {hero.pronoun('possessive')} {parent.label_word} slows the moment down.",
+        f'Write a bright, child-friendly story that includes the word "core" and ends with the core still shining.',
+    ]
+
+
+def story_qa(world: World) -> list[QAItem]:
+    f = world.facts
+    hero, parent, prize, act = _safe_fact((globals().get("world") or locals().get("world") or locals().get("mw") or locals().get("w")), f, "hero"), _safe_fact((globals().get("world") or locals().get("world") or locals().get("mw") or locals().get("w")), f, "parent"), _safe_fact((globals().get("world") or locals().get("world") or locals().get("mw") or locals().get("w")), f, "prize"), _safe_fact((globals().get("world") or locals().get("world") or locals().get("mw") or locals().get("w")), f, "activity")
+    gear = f.get("gear")
+    qa = [
+        QAItem(
+            question=f"Who was the story about?",
+            answer=f"It was about {hero.label}, a little curious {hero.type}, and {hero.pronoun('possessive')} {parent.label_word}.",
+        ),
+        QAItem(
+            question=f"What did {hero.label} want to do at {world.setting.place}?",
+            answer=f"{hero.label} wanted to {act.verb}. The wish came from big curiosity and a keen eye for the fabulous {prize.label}.",
+        ),
+        QAItem(
+            question=f"Why did {hero.pronoun('possessive')} {parent.label_word} warn {hero.label}?",
+            answer=f"{hero.pronoun('possessive').capitalize()} {parent.label_word} warned {hero.label} because {act.verb} could leave the fabulous {prize.label} {act.soil}.",
+        ),
+    ]
+    if gear:
+        qa.append(QAItem(
+            question=f"How did the {gear.label} help?",
+            answer=f"The {gear.label} covered {', '.join(sorted(gear.covers))}, so {hero.label} could {act.verb} without damaging the fabulous {prize.label}.",
+        ))
+    if f.get("resolved"):
+        qa.append(QAItem(
+            question=f"How did the story end?",
+            answer=f"It ended with {hero.label} happily {act.gerund}, while the fabulous {prize.label} stayed bright and shiny.",
+        ))
+    return qa
+
+
+WORLD_KNOWLEDGE = [
+    QAItem(
+        question="What does curiosity mean?",
+        answer="Curiosity is the feeling that makes someone want to look, ask, and learn more about something new.",
+    ),
+    QAItem(
+        question="What is a core?",
+        answer="A core is the middle part of something, like the center of an apple, a toy, or a shining lantern piece.",
+    ),
+    QAItem(
+        question="Why do gloves help?",
+        answer="Gloves help by keeping hands cleaner and giving them a gentle layer between the hands and the thing they touch.",
+    ),
+]
+
+
+def world_knowledge_qa(world: World) -> list[QAItem]:
+    return WORLD_KNOWLEDGE
+
+
+def format_qa(sample: StorySample) -> str:
+    lines = ["== (1) Generation prompts =="]
+    for i, p in enumerate(sample.prompts, 1):
+        lines.append(f"{i}. {p}")
+    lines.append("")
+    lines.append("== (2) Story questions ==")
+    for item in sample.story_qa:
+        lines.append(f"Q: {item.question}")
+        lines.append(f"A: {item.answer}")
+    lines.append("")
+    lines.append("== (3) World-knowledge questions ==")
+    for item in sample.world_qa:
+        lines.append(f"Q: {item.question}")
+        lines.append(f"A: {item.answer}")
+    return "\n".join(lines)
+
+
+def dump_trace(world: World) -> str:
+    lines = ["--- world model state ---"]
+    for e in list(world.entities.values()):
+        meters = {k: round(v, 2) for k, v in e.meters.items() if v}
+        memes = {k: round(v, 2) for k, v in e.memes.items() if v}
+        bits = []
+        if meters:
+            bits.append(f"meters={meters}")
+        if memes:
+            bits.append(f"memes={memes}")
+        if e.protective:
+            bits.append(f"covers={sorted(e.covers)}")
+        elif e.region:
+            bits.append(f"region={e.region}")
+        lines.append(f"  {e.id:8} ({e.type:7}) {' '.join(bits)}")
+    return "\n".join(lines)
+
+
+ASP_RULES = r"""
+prize_at_risk(A,P) :- splashes(A,R), worn_on(P,R).
+protects(G,A,P) :- gear(G), prize_at_risk(A,P), mess_of(A,M), guards(G,M), covers(G,R), worn_on(P,R).
+has_fix(A,P) :- protects(_,A,P).
+valid(Place,A,P) :- affords(Place,A), prize_at_risk(A,P), has_fix(A,P).
+"""
+
+
+def asp_facts() -> str:
+    import asp
+    lines: list[str] = []
+    for pid, s in SETTINGS.items():
+        lines.append(asp.fact("setting", pid))
+        if s.indoors:
+            lines.append(asp.fact("indoors", pid))
+        for a in sorted(s.affords):
+            lines.append(asp.fact("affords", pid, a))
+    for aid, a in ACTIVITIES.items():
+        lines.append(asp.fact("activity", aid))
+        lines.append(asp.fact("mess_of", aid, a.mess))
+        for r in sorted(a.zone):
+            lines.append(asp.fact("splashes", aid, r))
+    for pid, p in PRIZES.items():
+        lines.append(asp.fact("prize", pid))
+        lines.append(asp.fact("worn_on", pid, p.region))
+        for g in sorted(p.genders):
+            lines.append(asp.fact("wears", g, pid))
+    for g in GEAR:
+        lines.append(asp.fact("gear", g.id))
+        for m in sorted(g.guards):
+            lines.append(asp.fact("guards", g.id, m))
+        for r in sorted(g.covers):
+            lines.append(asp.fact("covers", g.id, r))
+    return "\n".join(lines)
+
+
+def asp_program(show: str) -> str:
+    return f"{asp_facts()}\n{ASP_RULES}\n{show}\n"
+
+
+def asp_valid_combos() -> list[tuple]:
+    import asp
+    model = asp.one_model(asp_program("#show valid/3."))
+    return sorted(set(asp.atoms(model, "valid")))
+
+
+def asp_verify() -> int:
+    py = set(valid_combos())
+    cl = set(asp_valid_combos())
+    if py == cl:
+        print(f"OK: clingo gate matches valid_combos() ({len(py)} combos).")
+        return 0
+    print("MISMATCH between clingo and valid_combos():")
+    if py - cl:
+        print("  only in python:", sorted(py - cl))
+    if cl - py:
+        print("  only in clingo:", sorted(cl - py))
+    return 1
+
+
+def build_parser() -> argparse.ArgumentParser:
+    ap = argparse.ArgumentParser(description="Tall tale world about curiosity and a fabulous core.")
+    ap.add_argument("--place", choices=SETTINGS)
+    ap.add_argument("--activity", choices=ACTIVITIES)
+    ap.add_argument("--prize", choices=PRIZES)
+    ap.add_argument("--gender", choices=["girl", "boy"])
+    ap.add_argument("--parent", choices=["mother", "father"])
+    ap.add_argument("--name")
+    ap.add_argument("-n", type=int, default=1)
+    ap.add_argument("--seed", type=int, default=None)
+    ap.add_argument("--all", action="store_true")
+    ap.add_argument("--trace", action="store_true")
+    ap.add_argument("--qa", action="store_true")
+    ap.add_argument("--json", action="store_true")
+    ap.add_argument("--asp", action="store_true")
+    ap.add_argument("--verify", action="store_true")
+    ap.add_argument("--show-asp", action="store_true")
+    return ap
+
+
+def resolve_params(args: argparse.Namespace, rng: random.Random) -> StoryConfig:
+    if getattr(args, "activity", None) and getattr(args, "prize", None):
+        act, pr = _safe_lookup(ACTIVITIES, getattr(args, "activity", None)), _safe_lookup(PRIZES, getattr(args, "prize", None))
+        if not (prize_at_risk(act, pr) and select_gear(act, pr)):
+            return _fallback_storyparams(args, rng, StoryParams, globals())
+    if getattr(args, "gender", None) and getattr(args, "prize", None) and not valid_gender_prize(getattr(args, "prize", None), getattr(args, "gender", None)):
+        return _fallback_storyparams(args, rng, StoryParams, globals())
+
+    combos = [c for c in valid_combos()
+              if (getattr(args, "place", None) is None or c[0] == getattr(args, "place", None))
+              and (getattr(args, "activity", None) is None or c[1] == getattr(args, "activity", None))
+              and (getattr(args, "prize", None) is None or c[2] == getattr(args, "prize", None))]
+    if not combos:
+        return _fallback_storyparams(args, rng, StoryParams, globals())
+    place, activity, prize_id = rng.choice(list(combos))
+    prize = _safe_lookup(PRIZES, prize_id)
+    gender = getattr(args, "gender", None) or rng.choice(sorted(prize.genders))
+    name = getattr(args, "name", None) or rng.choice(NAMES)
+    parent = getattr(args, "parent", None) or rng.choice(["mother", "father"])
+    trait = getattr(args, "trait", None) if hasattr(args, "trait") and getattr(args, "trait", None) else rng.choice(TRAITS)
+    return StoryConfig(place=place, activity=activity, prize=prize_id, name=name, gender=gender, parent=parent, trait=trait)
+
+
+def generate(params: StoryConfig) -> StorySample:
+    world = tell(_safe_lookup(SETTINGS, params.place), _safe_lookup(ACTIVITIES, params.activity), _safe_lookup(PRIZES, params.prize), params.name, params.gender, [params.trait], params.parent)
+    return StorySample(
+        params=params,
+        story=world.render(),
+        prompts=generation_prompts(world),
+        story_qa=story_qa(world),
+        world_qa=world_knowledge_qa(world),
+        world=world,
+    )
+
+
+def emit(sample: StorySample, *, trace: bool = False, qa: bool = False, header: str = "") -> None:
+    if header:
+        print(header)
+    print(sample.story)
+    if trace and sample.world is not None:
+        print(dump_trace(sample.world))
+    if qa:
+        print()
+        print(format_qa(sample))
+
+
+CURATED = [
+    StoryConfig(place="lantern_shop", activity="peek", prize="core", name="Nora", gender="girl", parent="mother", trait="curious"),
+    StoryConfig(place="hill_fair", activity="carry", prize="core", name="Milo", gender="boy", parent="father", trait="spirited"),
+    StoryConfig(place="clock_tower", activity="polish", prize="core", name="Ruby", gender="girl", parent="mother", trait="bright-eyed"),
+]
+
+
+def main() -> None:
+    args = build_parser().parse_args()
+
+    if getattr(args, "show_asp", None):
+        print(asp_program("#show valid/3."))
+        return
+    if getattr(args, "verify", None):
+        sys.exit(asp_verify())
+    if getattr(args, "asp", None):
+        combos = asp_valid_combos()
+        print(f"{len(combos)} compatible combos:\n")
+        for place, act, prize in combos:
+            print(f"  {place:14} {act:8} {prize}")
+        return
+
+    base_seed = getattr(args, "seed", None) if getattr(args, "seed", None) is not None else random.randrange(2**31)
+    samples: list[StorySample] = []
+
+    if getattr(args, "all", None):
+        samples = [generate(p) for p in CURATED]
+    else:
+        seen: set[str] = set()
+        i = 0
+        while len(samples) < getattr(args, "n", None) and i < max(50, getattr(args, "n", None) * 50):
+            seed = base_seed + i
+            i += 1
+            try:
+                params = resolve_params(args, random.Random(seed))
+            except StoryError:
+                continue
+            params.seed = seed
+            sample = generate(params)
+            if sample.story in seen:
+                continue
+            seen.add(sample.story)
+            samples.append(sample)
+
+    if getattr(args, "json", None):
+        if len(samples) == 1:
+            print(samples[0].to_json())
+        else:
+            print(json.dumps([s.to_dict() for s in samples], indent=2, ensure_ascii=False))
+        return
+
+    for i, sample in enumerate(samples):
+        header = ""
+        if getattr(args, "all", None):
+            p = sample.params
+            header = f"### {p.name}: {p.activity} at {p.place} (prize: {p.prize})"
+        elif len(samples) > 1:
+            header = f"### variant {i + 1}"
+        emit(sample, trace=getattr(args, "trace", None), qa=getattr(args, "qa", None), header=header)
+        if i < len(samples) - 1:
+            print("\n" + "=" * 70 + "\n")
+
+
+if __name__ == "__main__":
+    main()

@@ -1,0 +1,760 @@
+#!/usr/bin/env python3
+"""
+storyworlds/worlds/course_lower_dialogue_pirate_tale.py
+========================================================
+
+A small pirate-tale storyworld built from the seed words "course" and "lower".
+The world centers on a ship's course, the lower deck, and dialogue-driven
+choices at sea.
+
+Premise:
+- A young pirate and a crew are sailing with a prize in mind.
+- The ship must keep its course.
+- Trouble below deck or on the water changes what the crew says and does.
+- A spoken plan fixes the problem before the voyage can continue.
+
+This script follows the Storyweavers world contract:
+- typed entities with physical meters and emotional memes
+- a prose simulation driven by world state
+- inline ASP rules plus a Python reasonableness gate
+- StorySample / QAItem / StoryError from storyworlds.results
+"""
+
+from __future__ import annotations
+
+import argparse
+import json
+import os
+import random
+import sys
+from dataclasses import dataclass, field
+from typing import Optional
+
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+from results import QAItem, StoryError, StorySample  # noqa: E402
+
+THRESHOLD = 1.0
+
+
+@dataclass
+class Entity:
+    id: str
+    kind: str = "thing"  # "character" | "thing"
+    type: str = "thing"
+    label: str = ""
+    phrase: str = ""
+    traits: list[str] = field(default_factory=list)
+    owner: Optional[str] = None
+    caretaker: Optional[str] = None
+    worn_by: Optional[str] = None
+    room: str = ""
+    plural: bool = False
+    meters: dict[str, float] = field(default_factory=dict)
+    memes: dict[str, float] = field(default_factory=dict)
+
+    def __post_init__(self):
+        self.meters = dict(self.meters)
+        self.memes = dict(self.memes)
+
+    def pronoun(self, case: str = "subject") -> str:
+        female = {"girl", "mother", "woman", "captainess"}
+        male = {"boy", "father", "man", "captain", "pirate", "mate", "deckhand"}
+        if self.type in female:
+            return {"subject": "she", "object": "her", "possessive": "her"}[case]
+        if self.type in male:
+            return {"subject": "he", "object": "him", "possessive": "his"}[case]
+        return {"subject": "it", "object": "it", "possessive": "its"}[case]
+
+    def it(self) -> str:
+        return "them" if self.plural else "it"
+
+
+@dataclass
+class Setting:
+    place: str = "the ship"
+    affords: set[str] = field(default_factory=set)
+
+
+@dataclass
+class Activity:
+    id: str
+    verb: str
+    gerund: str
+    rush: str
+    mess: str
+    soil: str
+    zone: set[str]
+    keyword: str = ""
+    dialogue_line: str = ""
+    tags: set[str] = field(default_factory=set)
+
+
+@dataclass
+class Prize:
+    label: str
+    phrase: str
+    type: str
+    room: str
+    plural: bool = False
+    genders: set[str] = field(default_factory=lambda: {"girl", "boy"})
+
+
+@dataclass
+class Gear:
+    id: str
+    label: str
+    covers: set[str]
+    guards: set[str]
+    prep: str
+    tail: str
+    plural: bool = False
+
+
+class World:
+    def __init__(self, setting: Setting) -> None:
+        self.setting = setting
+        self.entities: dict[str, Entity] = {}
+        self.paragraphs: list[list[str]] = [[]]
+        self.fired: set[tuple] = set()
+        self.zone: set[str] = set()
+        self.facts: dict = {}
+
+    def add(self, ent: Entity) -> Entity:
+        self.entities[ent.id] = ent
+        return ent
+
+    def get(self, eid: str) -> Entity:
+        return self.entities[eid]
+
+    def characters(self) -> list[Entity]:
+        return [e for e in self.entities.values() if e.kind == "character"]
+
+    def worn_items(self, actor: Entity) -> list[Entity]:
+        return [e for e in self.entities.values() if e.worn_by == actor.id]
+
+    def covered(self, actor: Entity, room: str) -> bool:
+        return any(room in g.meters.get("covers_rooms", []) for g in self.worn_items(actor))
+
+    def say(self, text: str) -> None:
+        if text:
+            self.paragraphs[-1].append(text)
+
+    def para(self) -> None:
+        if self.paragraphs[-1]:
+            self.paragraphs.append([])
+
+    def render(self) -> str:
+        return "\n\n".join(" ".join(p) for p in self.paragraphs if p)
+
+    def copy(self) -> "World":
+        import copy
+        clone = World(self.setting)
+        clone.entities = copy.deepcopy(self.entities)
+        clone.fired = set(self.fired)
+        clone.zone = set(self.zone)
+        clone.facts = dict(self.facts)
+        clone.paragraphs = [[]]
+        return clone
+
+
+SETTING = Setting(place="the ship", affords={"course", "lower", "storm", "repair"})
+
+ACTIVITIES = {
+    "course": Activity(
+        id="course",
+        verb="keep the course",
+        gerund="keeping the course",
+        rush="yank the wheel",
+        mess="offcourse",
+        soil="off course",
+        zone={"bridge"},
+        keyword="course",
+        dialogue_line="We must keep the course or lose the treasure!",
+        tags={"course", "sea", "map"},
+    ),
+    "lower": Activity(
+        id="lower",
+        verb="go lower in the ship",
+        gerund="going lower in the ship",
+        rush="run below deck",
+        mess="sooty",
+        soil="full of soot",
+        zone={"lower_deck"},
+        keyword="lower",
+        dialogue_line="The lower deck is dark, but we can find the lanterns!",
+        tags={"lower", "deck", "lantern"},
+    ),
+    "storm": Activity(
+        id="storm",
+        verb="sail through the storm",
+        gerund="sailing through the storm",
+        rush="dash into the spray",
+        mess="wet",
+        soil="soaking wet",
+        zone={"bridge", "lower_deck"},
+        keyword="storm",
+        dialogue_line="A storm can shake even a brave ship!",
+        tags={"storm", "sea", "wet"},
+    ),
+    "repair": Activity(
+        id="repair",
+        verb="repair the broken sail",
+        gerund="repairing the broken sail",
+        rush="climb up the mast",
+        mess="torn",
+        soil="torn and frayed",
+        zone={"mast", "bridge"},
+        keyword="repair",
+        dialogue_line="Patch the sail, or the wind will take us astray!",
+        tags={"sail", "repair", "wind"},
+    ),
+}
+
+PRIZES = {
+    "map": Prize(
+        label="map",
+        phrase="a crisp treasure map",
+        type="map",
+        room="bridge",
+    ),
+    "lantern": Prize(
+        label="lantern",
+        phrase="a bright brass lantern",
+        type="lantern",
+        room="lower_deck",
+    ),
+    "sail": Prize(
+        label="sail",
+        phrase="a new white sail",
+        type="sail",
+        room="mast",
+        plural=False,
+    ),
+    "coat": Prize(
+        label="coat",
+        phrase="a fine captain's coat",
+        type="coat",
+        room="bridge",
+    ),
+}
+
+GEAR = [
+    Gear(
+        id="boots",
+        label="sea boots",
+        covers={"bridge", "lower_deck"},
+        guards={"wet"},
+        prep="pull on sea boots first",
+        tail="pulled on the sea boots",
+    ),
+    Gear(
+        id="lampgloves",
+        label="lamp gloves",
+        covers={"lower_deck"},
+        guards={"sooty"},
+        prep="put on lamp gloves first",
+        tail="slipped on the lamp gloves",
+    ),
+    Gear(
+        id="patchkit",
+        label="a patch kit",
+        covers={"mast", "bridge"},
+        guards={"torn"},
+        prep="fetch a patch kit",
+        tail="fetched the patch kit",
+    ),
+]
+
+GIRL_NAMES = ["Mira", "Nina", "Polly", "Lana", "Sera"]
+BOY_NAMES = ["Finn", "Jory", "Tate", "Milo", "Rafe"]
+TRAITS = ["brave", "quick", "curious", "bold", "cheerful"]
+
+
+def prize_at_risk(activity: Activity, prize: Prize) -> bool:
+    return prize.room in activity.zone
+
+
+def select_gear(activity: Activity, prize: Prize) -> Optional[Gear]:
+    for gear in GEAR:
+        if activity.mess in gear.guards and prize.room in gear.covers:
+            return gear
+    return None
+
+
+def valid_combos() -> list[tuple[str, str]]:
+    combos = []
+    for act_id, act in ACTIVITIES.items():
+        for pr_id, pr in PRIZES.items():
+            if prize_at_risk(act, pr) and select_gear(act, pr):
+                combos.append((act_id, pr_id))
+    return combos
+
+
+def _do_activity(world: World, actor: Entity, activity: Activity, narrate: bool = True) -> None:
+    world.zone = set(activity.zone)
+    actor.meters[activity.mess] = actor.meters.get(activity.mess, 0.0) + 1
+    actor.memes["joy"] = actor.memes.get("joy", 0.0) + 1
+    if narrate:
+        propagate(world, narrate=True)
+
+
+def _r_soil(world: World) -> list[str]:
+    out: list[str] = []
+    for actor in world.characters():
+        for mess in ("wet", "sooty", "torn", "offcourse"):
+            if actor.meters.get(mess, 0.0) < THRESHOLD:
+                continue
+            for item in world.entities.values():
+                if item.kind == "thing" and item.owner == actor.id and item.room in world.zone:
+                    sig = ("soil", actor.id, item.id, mess)
+                    if sig in world.fired:
+                        continue
+                    world.fired.add(sig)
+                    if mess == "wet":
+                        item.meters["wet"] = item.meters.get("wet", 0.0) + 1
+                        item.meters["dirty"] = item.meters.get("dirty", 0.0) + 1
+                        out.append(f"{actor.id}'s {item.label} got wet.")
+                    elif mess == "sooty":
+                        item.meters["soot"] = item.meters.get("soot", 0.0) + 1
+                        out.append(f"{actor.id}'s {item.label} picked up soot.")
+                    elif mess == "torn":
+                        item.meters["torn"] = item.meters.get("torn", 0.0) + 1
+                        out.append(f"{actor.id}'s {item.label} was left torn.")
+                    elif mess == "offcourse":
+                        item.meters["lost"] = item.meters.get("lost", 0.0) + 1
+                        out.append(f"The ship drifted farther from the right way.")
+    return out
+
+
+def _r_conflict(world: World) -> list[str]:
+    out: list[str] = []
+    captain = next((e for e in world.characters() if e.type == "captain"), None)
+    child = next((e for e in world.characters() if e.type in {"girl", "boy"}), None)
+    if not captain or not child:
+        return out
+    if child.memes.get("defiance", 0.0) >= THRESHOLD and child.memes.get("spoken_to", 0.0) >= THRESHOLD:
+        sig = ("conflict", child.id)
+        if sig not in world.fired:
+            world.fired.add(sig)
+            child.memes["conflict"] = child.memes.get("conflict", 0.0) + 1
+            out.append("__conflict__")
+    return out
+
+
+CAUSAL_RULES = [
+    _r_soil,
+    _r_conflict,
+]
+
+
+def propagate(world: World, narrate: bool = True) -> list[str]:
+    produced: list[str] = []
+    changed = True
+    while changed:
+        changed = False
+        for rule in CAUSAL_RULES:
+            sents = rule(world)
+            if sents:
+                changed = True
+                produced.extend(s for s in sents if s != "__conflict__")
+    if narrate:
+        for s in produced:
+            world.say(s)
+    return produced
+
+
+def predict_mess(world: World, actor: Entity, activity: Activity, prize_id: str) -> dict:
+    sim = world.copy()
+    _do_activity(sim, sim.get(actor.id), activity, narrate=False)
+    prize = sim.entities.get(prize_id)
+    return {"soiled": bool(prize and prize.meters.get("wet", 0.0) >= THRESHOLD or prize and prize.meters.get("soot", 0.0) >= THRESHOLD)}
+
+
+def introduce(world: World, hero: Entity) -> None:
+    trait = next((t for t in hero.traits if t != "young"), "brave")
+    world.say(f"{hero.id} was a young {trait} pirate who listened hard on the deck.")
+
+
+def loves_ship(world: World, hero: Entity, activity: Activity) -> None:
+    world.say(f"{hero.pronoun().capitalize()} loved {activity.gerund}, because a ship felt alive when the wind pulled true.")
+
+
+def arrives(world: World, hero: Entity, captain: Entity, activity: Activity) -> None:
+    world.say(f"One day, {hero.id} and {hero.pronoun('possessive')} {captain.label} went aboard {world.setting.place}.")
+    world.say(f"The crew kept watch, and the {activity.keyword} work began near the lower ropes.")
+
+
+def wants(world: World, hero: Entity, activity: Activity) -> None:
+    hero.memes["desire"] = hero.memes.get("desire", 0.0) + 1
+    world.say(f"{hero.id} wanted to {activity.verb}, but the sea had other ideas.")
+
+
+def warn(world: World, captain: Entity, hero: Entity, activity: Activity, prize: Entity) -> bool:
+    pred = predict_mess(world, hero, activity, prize.id)
+    if not pred["soiled"]:
+        return False
+    world.facts["predicted_soil"] = activity.soil
+    world.say(f'"If you {activity.verb}, "{hero.pronoun("possessive")} {captain.label} warned, "your {prize.label} may end up {activity.soil}."')
+    return True
+
+
+def defies(world: World, hero: Entity, activity: Activity) -> None:
+    hero.memes["defiance"] = hero.memes.get("defiance", 0.0) + 1
+    world.say(f"{hero.id} bit {hero.pronoun('possessive')} lip and tried to {activity.rush}.")
+
+
+def speak(world: World, speaker: Entity, line: str) -> None:
+    speaker.memes["spoken_to"] = speaker.memes.get("spoken_to", 0.0) + 1
+    world.say(f'"{line}" {speaker.id} said.')
+
+
+def offer_fix(world: World, captain: Entity, hero: Entity, activity: Activity, prize: Entity) -> Optional[Gear]:
+    gear = select_gear(activity, prize)
+    if gear is None:
+        return None
+    g = world.add(Entity(
+        id=gear.id,
+        kind="thing",
+        type="gear",
+        label=gear.label,
+        owner=hero.id,
+        worn_by=hero.id,
+        room=prize.room,
+    ))
+    g.meters["covers_rooms"] = list(gear.covers)  # simple stash for trace, not prose
+    if predict_mess(world, hero, activity, prize.id)["soiled"]:
+        del world.entities[g.id]
+        return None
+    world.say(f"{captain.id} pointed to the right gear and smiled. \"How about we {gear.prep} and {activity.verb} together?\"")
+    return gear
+
+
+def accept(world: World, hero: Entity, captain: Entity, activity: Activity, prize: Entity, gear: Gear) -> None:
+    hero.memes["joy"] = hero.memes.get("joy", 0.0) + 1
+    hero.memes["conflict"] = 0.0
+    world.say(f"{hero.id} grinned and nodded. \"Aye, that works!\"")
+    world.say(f"They {gear.tail}, stayed on the right course, and kept the {prize.label} safe.")
+
+
+def tell(params: "StoryParams") -> World:
+    world = World(SETTING)
+    hero = world.add(Entity(
+        id=params.name,
+        kind="character",
+        type=params.gender,
+        traits=["young", params.trait, "stubborn"],
+    ))
+    captain = world.add(Entity(
+        id="Captain",
+        kind="character",
+        type="captain",
+        label="captain",
+        traits=["steady", "wise"],
+    ))
+    prize = world.add(Entity(
+        id="Prize",
+        kind="thing",
+        type=PRIZES[params.prize].type,
+        label=PRIZES[params.prize].label,
+        phrase=PRIZES[params.prize].phrase,
+        owner=hero.id,
+        caretaker=captain.id,
+        room=PRIZES[params.prize].room,
+    ))
+
+    world.facts.update(hero=hero, captain=captain, prize=prize, activity=ACTIVITIES[params.activity])
+
+    introduce(world, hero)
+    loves_ship(world, hero, ACTIVITIES[params.activity])
+    world.say(f"The captain had given them {prize.phrase}.")
+    world.say(f"{hero.id} loved {hero.pronoun('possessive')} {prize.label} and kept it close.")
+
+    world.para()
+    arrives(world, hero, captain, ACTIVITIES[params.activity])
+    wants(world, hero, ACTIVITIES[params.activity])
+    if warn(world, captain, hero, ACTIVITIES[params.activity], prize):
+        defies(world, hero, ACTIVITIES[params.activity])
+        speak(world, captain, ACTIVITIES[params.activity].dialogue_line)
+        hero.memes["defiance"] = hero.memes.get("defiance", 0.0) + 1
+        hero.memes["spoken_to"] = hero.memes.get("spoken_to", 0.0) + 1
+        gear = offer_fix(world, captain, hero, ACTIVITIES[params.activity], prize)
+        if gear:
+            accept(world, hero, captain, ACTIVITIES[params.activity], prize, gear)
+    return world
+
+
+@dataclass
+class StoryParams:
+    activity: str
+    prize: str
+    name: str
+    gender: str
+    trait: str
+    seed: Optional[int] = None
+
+
+def generation_prompts(world: World) -> list[str]:
+    f = world.facts
+    hero, capt, act, prize = f["hero"], f["captain"], f["activity"], f["prize"]
+    return [
+        f'Write a short pirate story for a young child that includes the word "{act.keyword}" and the phrase "lower deck".',
+        f"Tell a gentle pirate tale where {hero.id} wants to {act.verb}, but {capt.label} worries about {prize.phrase}.",
+        f'Write a dialogue-filled story about a ship, a course, and a safer plan that keeps {prize.label} clean.',
+    ]
+
+
+def story_qa(world: World) -> list[QAItem]:
+    f = world.facts
+    hero, capt, act, prize = f["hero"], f["captain"], f["activity"], f["prize"]
+    qa = [
+        QAItem(
+            question=f"What kind of pirate was {hero.id}?",
+            answer=f"{hero.id} was a young {next(t for t in hero.traits if t != 'young')} pirate who listened hard on the ship.",
+        ),
+        QAItem(
+            question=f"What did {hero.id} want to do with the ship's {act.keyword} work?",
+            answer=f"{hero.id} wanted to {act.verb}, even though the captain worried about the {prize.label}.",
+        ),
+        QAItem(
+            question=f"Why did the captain speak up about the {prize.label}?",
+            answer=f"The captain spoke up because the ship's trouble could leave the {prize.label} {act.soil}.",
+        ),
+        QAItem(
+            question="Where did the crew need to keep things steady?",
+            answer="They needed to keep the course steady on the ship, so the voyage could stay on track.",
+        ),
+    ]
+    if any(e.memes.get("conflict", 0.0) >= THRESHOLD for e in world.characters()):
+        qa.append(QAItem(
+            question=f"How did the captain help {hero.id} after the warning?",
+            answer=f"The captain offered a safer plan and the right gear, so {hero.id} could still {act.verb} without ruining the {prize.label}.",
+        ))
+    return qa
+
+
+def world_knowledge_qa(world: World) -> list[QAItem]:
+    return [
+        QAItem(
+            question="What is a ship's course?",
+            answer="A ship's course is the path it follows across the sea.",
+        ),
+        QAItem(
+            question="What is the lower deck on a ship?",
+            answer="The lower deck is the part of a ship below the main deck, where people may store things or work in a quieter space.",
+        ),
+        QAItem(
+            question="Why do sailors watch the wind?",
+            answer="Sailors watch the wind because it can push the ship and help decide which way to sail.",
+        ),
+    ]
+
+
+def format_qa(sample: StorySample) -> str:
+    lines = ["== (1) Generation prompts =="]
+    for i, p in enumerate(sample.prompts, 1):
+        lines.append(f"{i}. {p}")
+    lines.append("")
+    lines.append("== (2) Story questions ==")
+    for item in sample.story_qa:
+        lines.append(f"Q: {item.question}")
+        lines.append(f"A: {item.answer}")
+    lines.append("")
+    lines.append("== (3) World-knowledge questions ==")
+    for item in sample.world_qa:
+        lines.append(f"Q: {item.question}")
+        lines.append(f"A: {item.answer}")
+    return "\n".join(lines)
+
+
+def dump_trace(world: World) -> str:
+    lines = ["--- world model state ---"]
+    for e in world.entities.values():
+        meters = {k: v for k, v in e.meters.items() if v}
+        memes = {k: v for k, v in e.memes.items() if v}
+        bits = []
+        if meters:
+            bits.append(f"meters={meters}")
+        if memes:
+            bits.append(f"memes={memes}")
+        if e.room:
+            bits.append(f"room={e.room}")
+        lines.append(f"  {e.id:8} ({e.type:7}) {' '.join(bits)}")
+    return "\n".join(lines)
+
+
+CURATED = [
+    StoryParams(activity="course", prize="map", name="Mira", gender="girl", trait="brave"),
+    StoryParams(activity="lower", prize="lantern", name="Finn", gender="boy", trait="curious"),
+    StoryParams(activity="storm", prize="coat", name="Polly", gender="girl", trait="cheerful"),
+    StoryParams(activity="repair", prize="sail", name="Rafe", gender="boy", trait="bold"),
+]
+
+
+def explain_rejection(activity: Activity, prize: Prize) -> str:
+    return f"(No story: {activity.gerund} does not honestly put the {prize.label} at risk in a way the crew can fix.)"
+
+
+def resolve_params(args: argparse.Namespace, rng: random.Random) -> StoryParams:
+    if args.activity and args.prize:
+        act, pr = ACTIVITIES[args.activity], PRIZES[args.prize]
+        if not (prize_at_risk(act, pr) and select_gear(act, pr)):
+            raise StoryError(explain_rejection(act, pr))
+    combos = [c for c in valid_combos()
+              if (args.activity is None or c[0] == args.activity)
+              and (args.prize is None or c[1] == args.prize)]
+    if not combos:
+        raise StoryError("(No valid combination matches the given options.)")
+    activity, prize = rng.choice(sorted(combos))
+    pr = PRIZES[prize]
+    gender = args.gender or rng.choice(sorted(pr.genders))
+    name = args.name or rng.choice(GIRL_NAMES if gender == "girl" else BOY_NAMES)
+    trait = args.trait or rng.choice(TRAITS)
+    return StoryParams(activity=activity, prize=prize, name=name, gender=gender, trait=trait)
+
+
+def generate(params: StoryParams) -> StorySample:
+    world = tell(params)
+    return StorySample(
+        params=params,
+        story=world.render(),
+        prompts=generation_prompts(world),
+        story_qa=story_qa(world),
+        world_qa=world_knowledge_qa(world),
+        world=world,
+    )
+
+
+def emit(sample: StorySample, *, trace: bool = False, qa: bool = False, header: str = "") -> None:
+    if header:
+        print(header)
+    print(sample.story)
+    if trace and sample.world is not None:
+        print(dump_trace(sample.world))
+    if qa:
+        print()
+        print(format_qa(sample))
+
+
+def build_parser() -> argparse.ArgumentParser:
+    ap = argparse.ArgumentParser(description="Pirate tale storyworld with dialogue, course, and lower-deck trouble.")
+    ap.add_argument("--activity", choices=ACTIVITIES)
+    ap.add_argument("--prize", choices=PRIZES)
+    ap.add_argument("--gender", choices=["girl", "boy"])
+    ap.add_argument("--name")
+    ap.add_argument("--trait")
+    ap.add_argument("-n", type=int, default=1)
+    ap.add_argument("--seed", type=int, default=None)
+    ap.add_argument("--all", action="store_true")
+    ap.add_argument("--trace", action="store_true")
+    ap.add_argument("--qa", action="store_true")
+    ap.add_argument("--json", action="store_true")
+    ap.add_argument("--asp", action="store_true")
+    ap.add_argument("--verify", action="store_true")
+    ap.add_argument("--show-asp", action="store_true")
+    return ap
+
+
+ASP_RULES = r"""
+prize_at_risk(A,P) :- activity(A), prize(P), splashes(A,R), worn_on(P,R).
+fix(A,P) :- prize_at_risk(A,P), guards(G,M), mess_of(A,M), covers(G,R), worn_on(P,R).
+valid(A,P) :- prize_at_risk(A,P), fix(A,P).
+"""
+
+
+def asp_facts() -> str:
+    import asp
+    lines: list[str] = []
+    for aid, a in ACTIVITIES.items():
+        lines.append(asp.fact("activity", aid))
+        lines.append(asp.fact("mess_of", aid, a.mess))
+        for r in sorted(a.zone):
+            lines.append(asp.fact("splashes", aid, r))
+    for pid, p in PRIZES.items():
+        lines.append(asp.fact("prize", pid))
+        lines.append(asp.fact("worn_on", pid, p.room))
+    for g in GEAR:
+        lines.append(asp.fact("gear", g.id))
+        for m in sorted(g.guards):
+            lines.append(asp.fact("guards", g.id, m))
+        for r in sorted(g.covers):
+            lines.append(asp.fact("covers", g.id, r))
+    return "\n".join(lines)
+
+
+def asp_program(show: str) -> str:
+    return f"{asp_facts()}\n{ASP_RULES}\n{show}\n"
+
+
+def asp_valid_combos() -> list[tuple]:
+    import asp
+    model = asp.one_model(asp_program("#show valid/2."))
+    return sorted(set(asp.atoms(model, "valid")))
+
+
+def asp_verify() -> int:
+    py = set(valid_combos())
+    ap = set(asp_valid_combos())
+    if py == ap:
+        print(f"OK: clingo gate matches valid_combos() ({len(py)} combos).")
+        return 0
+    print("MISMATCH between clingo and valid_combos():")
+    if py - ap:
+        print("  only in python:", sorted(py - ap))
+    if ap - py:
+        print("  only in clingo:", sorted(ap - py))
+    return 1
+
+
+def main() -> None:
+    args = build_parser().parse_args()
+
+    if args.show_asp:
+        print(asp_program("#show valid/2."))
+        return
+    if args.verify:
+        sys.exit(asp_verify())
+
+    base_seed = args.seed if args.seed is not None else random.randrange(2**31)
+    samples: list[StorySample] = []
+
+    if args.all:
+        samples = [generate(p) for p in CURATED]
+    else:
+        seen: set[str] = set()
+        i = 0
+        while len(samples) < args.n and i < max(args.n * 50, 50):
+            seed = base_seed + i
+            i += 1
+            try:
+                params = resolve_params(args, random.Random(seed))
+            except StoryError as err:
+                print(err)
+                return
+            params.seed = seed
+            sample = generate(params)
+            if sample.story in seen:
+                continue
+            seen.add(sample.story)
+            samples.append(sample)
+
+    if args.json:
+        if len(samples) == 1:
+            print(samples[0].to_json())
+        else:
+            print(json.dumps([s.to_dict() for s in samples], indent=2, ensure_ascii=False))
+        return
+
+    for i, sample in enumerate(samples):
+        header = ""
+        if args.all:
+            p = sample.params
+            header = f"### {p.name}: {p.activity} with {p.prize}"
+        elif len(samples) > 1:
+            header = f"### variant {i + 1}"
+        emit(sample, trace=args.trace, qa=args.qa, header=header)
+        if i < len(samples) - 1:
+            print("\n" + "=" * 70 + "\n")
+
+
+if __name__ == "__main__":
+    main()

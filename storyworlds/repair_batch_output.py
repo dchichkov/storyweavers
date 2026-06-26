@@ -35,10 +35,13 @@ DATACLASS_CLASS_RE = re.compile(
 FIELD_RE = re.compile(r"^    (?P<name>[A-Za-z_]\w*)\s*:", re.MULTILINE)
 KEYWORD_CALL_RE = re.compile(r"(?P<class>\b[A-Z]\w*)\((?P<args>[^()\n]*(?:\n[^()]*)?)\)")
 KEYWORD_RE = re.compile(r"(?P<name>[A-Za-z_]\w*)\s*=\s*(?P<value>[^,\n)]+)")
-CONSTANT_LOOKUP_RE = re.compile(r"\b(?P<name>[A-Z][A-Z0-9_]*S)\[(?P<key>[^\]\n]+)\]")
+CONSTANT_LOOKUP_RE = re.compile(
+    r"\b(?P<name>[A-Z][A-Z0-9_]*(?:S|_REGISTRY))\[(?P<key>[^\]\n]+)\]"
+)
 PLURAL_GLOBAL_RE = re.compile(
     r"globals\(\)\[(?P<expr>[A-Za-z_][\w\.]*)\.upper\(\)\s*\+\s*(['\"])S\2\]"
 )
+WORLD_EXPR = '(globals().get("world") or locals().get("world") or locals().get("mw") or locals().get("w"))'
 
 
 def build_parser() -> argparse.ArgumentParser:
@@ -266,6 +269,29 @@ def add_dataclass_common_properties(source: str) -> str:
                     ]
                 )
             additions.append("".join(post_lines))
+        elif "def __post_init__(self)" in text and ({"meters", "memes"} & fields):
+            post_lines = []
+            if "meters" in fields and 'object.__setattr__(self, "meters"' not in text:
+                post_lines.extend(
+                    [
+                        "        if not hasattr(self.meters, \"__missing__\"):\n",
+                        "            object.__setattr__(self, \"meters\", __import__(\"collections\").defaultdict(float, self.meters))\n",
+                    ]
+                )
+            if "memes" in fields and 'object.__setattr__(self, "memes"' not in text:
+                post_lines.extend(
+                    [
+                        "        if not hasattr(self.memes, \"__missing__\"):\n",
+                        "            object.__setattr__(self, \"memes\", __import__(\"collections\").defaultdict(float, self.memes))\n",
+                    ]
+                )
+            if post_lines:
+                text = re.sub(
+                    r"(    def __post_init__\(self\)(?: -> None)?:\n)",
+                    r"\1" + "".join(post_lines),
+                    text,
+                    count=1,
+                )
         if "meters" not in fields and "def meters(self)" not in text:
             additions.append(
                 "    @property\n"
@@ -323,6 +349,32 @@ def add_dataclass_common_properties(source: str) -> str:
                 )
             additions.append(
                 missing_attr
+            )
+        if "__getitem__" not in text and ({"id", "label", "name", "type"} & fields):
+            additions.append(
+                "    def __getitem__(self, key):\n"
+                "        if isinstance(key, int):\n"
+                "            if key == 0:\n"
+                "                return self\n"
+                "            raise IndexError(key)\n"
+                "        if isinstance(key, str):\n"
+                "            if hasattr(self, key):\n"
+                "                return getattr(self, key)\n"
+                "            for attr in (\"meters\", \"memes\"):\n"
+                "                mapping = getattr(self, attr, None)\n"
+                "                if hasattr(mapping, \"get\") and key in mapping:\n"
+                "                    return mapping.get(key)\n"
+                "        raise KeyError(key)\n"
+            )
+        if "__iter__" not in text and ({"id", "label", "name", "type"} & fields):
+            additions.append(
+                "    def __iter__(self):\n"
+                "        yield self\n"
+            )
+        if "__hash__" not in text and ({"id", "label", "name", "type"} & fields):
+            additions.append(
+                "    def __hash__(self):\n"
+                "        return hash(getattr(self, \"id\", id(self)))\n"
             )
         if not additions:
             return text
@@ -391,15 +443,33 @@ def add_missing_keyword_fields_from_lines(source: str) -> str:
         fields = {m.group("name") for m in FIELD_RE.finditer(match.group("body"))}
         blocks[match.group("name")] = (fields, match.group(0))
 
+    def call_chunks() -> list[tuple[str, str]]:
+        lines = source.splitlines()
+        chunks: list[tuple[str, str]] = []
+        names = tuple(blocks)
+        for index, line in enumerate(lines):
+            for class_name in names:
+                marker = f"{class_name}("
+                if marker not in line:
+                    continue
+                chunk_lines = [line]
+                balance = line.count("(") - line.count(")")
+                next_index = index + 1
+                while balance > 0 and next_index < len(lines):
+                    later = lines[next_index]
+                    chunk_lines.append(later)
+                    balance += later.count("(") - later.count(")")
+                    next_index += 1
+                chunks.append((class_name, "\n".join(chunk_lines)))
+        return chunks
+
     missing: dict[str, dict[str, str]] = {}
-    for line in source.splitlines():
-        for class_name, (fields, block) in blocks.items():
-            if f"{class_name}(" not in line:
-                continue
-            for kw in KEYWORD_RE.finditer(line):
-                name = kw.group("name")
-                if name not in fields and not re.search(rf"def {re.escape(name)}\(", block):
-                    missing.setdefault(class_name, {})[name] = kw.group("value")
+    for class_name, chunk in call_chunks():
+        fields, block = blocks[class_name]
+        for kw in KEYWORD_RE.finditer(chunk):
+            name = kw.group("name")
+            if name not in fields and not re.search(rf"def {re.escape(name)}\(", block):
+                missing.setdefault(class_name, {})[name] = kw.group("value")
 
     if not missing:
         return source
@@ -417,6 +487,45 @@ def add_missing_keyword_fields_from_lines(source: str) -> str:
             insert_at = body_start + method_match.start()
             return text[:insert_at] + lines + text[insert_at:]
         return text.rstrip() + "\n" + lines + "\n"
+
+    return DATACLASS_CLASS_RE.sub(repl, source)
+
+
+def default_storyparams_required_fields(source: str) -> str:
+    def default_for(annotation: str) -> str:
+        annotation = annotation.strip()
+        if "str" in annotation:
+            return ' = ""'
+        if "bool" in annotation:
+            return " = False"
+        if "int" in annotation:
+            return " = 0"
+        if "float" in annotation:
+            return " = 0.0"
+        if "list" in annotation:
+            return " = field(default_factory=list)"
+        if "set" in annotation:
+            return " = field(default_factory=set)"
+        if "dict" in annotation:
+            return " = field(default_factory=dict)"
+        return " = None"
+
+    def repl(match: re.Match[str]) -> str:
+        if match.group("name") != "StoryParams":
+            return match.group(0)
+        text = match.group(0)
+
+        def line_repl(line_match: re.Match[str]) -> str:
+            line = line_match.group(0)
+            if "=" in line:
+                return line
+            return line + default_for(line_match.group("annotation"))
+
+        return re.sub(
+            r"(?m)^    (?P<field>[A-Za-z_]\w*)\s*:\s*(?P<annotation>[^=\n]+)$",
+            line_repl,
+            text,
+        )
 
     return DATACLASS_CLASS_RE.sub(repl, source)
 
@@ -489,12 +598,14 @@ def add_safe_lookup_helper(source: str) -> str:
     helper = (
         "\n"
         "def _safe_lookup(mapping, key):\n"
+        "    if hasattr(key, \"id\"):\n"
+        "        key = key.id\n"
         "    try:\n"
         "        return mapping[key]\n"
         "    except Exception:\n"
         "        pass\n"
         "    if hasattr(mapping, \"values\"):\n"
-        "        values = list(mapping.values())\n"
+        "        values = [value for value in mapping.values() if value is not None]\n"
         "        if values:\n"
         "            return values[0]\n"
         "    if mapping:\n"
@@ -505,6 +616,23 @@ def add_safe_lookup_helper(source: str) -> str:
     if "_safe_lookup(" not in source:
         return source
     if "def _safe_lookup(" in source:
+        return source
+    dataclass_at = source.find("@dataclass")
+    if dataclass_at != -1:
+        return source[:dataclass_at] + helper + source[dataclass_at:]
+    return helper.lstrip() + source
+
+
+def add_safe_next_helper(source: str) -> str:
+    helper = (
+        "\n"
+        "def _safe_next(iterable, fallback=None):\n"
+        "    return next(iter(iterable), fallback)\n"
+        "\n"
+    )
+    if "_safe_next(" not in source:
+        return source
+    if "def _safe_next(" in source:
         return source
     dataclass_at = source.find("@dataclass")
     if dataclass_at != -1:
@@ -758,12 +886,12 @@ def ensure_safe_fact_helper(source: str) -> str:
 def safe_fact_assignments(source: str) -> str:
     repaired = re.sub(
         r'(?m)^(?P<indent>\s*)(?P<var>[A-Za-z_]\w*)(?P<ann>\s*:[^=\n]+)? = world\.facts\["(?P<key>[A-Za-z_]\w*)"\](?P<tail>[^\n]*)$',
-        r'\g<indent>\g<var>\g<ann> = _safe_fact(world, world.facts, "\g<key>")\g<tail>',
+        rf'\g<indent>\g<var>\g<ann> = _safe_fact({WORLD_EXPR}, world.facts, "\g<key>")\g<tail>',
         source,
     )
     repaired = re.sub(
         r'(?m)^(?P<indent>\s*)(?P<var>[A-Za-z_]\w*)(?P<ann>\s*:[^=\n]+)? = f\["(?P<key>[A-Za-z_]\w*)"\](?P<tail>[^\n]*)$',
-        r'\g<indent>\g<var>\g<ann> = _safe_fact(world, f, "\g<key>")\g<tail>',
+        rf'\g<indent>\g<var>\g<ann> = _safe_fact({WORLD_EXPR}, f, "\g<key>")\g<tail>',
         repaired,
     )
     return ensure_safe_fact_helper(repaired) if repaired != source else source
@@ -819,6 +947,9 @@ def repair_specific_call_shape_glitches(source: str) -> str:
 
 
 def repair_common_syntax_glitches(source: str) -> str:
+    source = source.replace("@dataclass(frozen=True)", "@dataclass")
+    source = source.replace("@dataclass(frozen = True)", "@dataclass")
+    source = source.replace("dataclasses.deepcopy", "__import__('copy').deepcopy")
     source = source.replace(", attributes:=None", ", attributes=None")
     source = source.replace("mem es=", "memes=")
     source = source.replace("met ers=", "meters=")
@@ -839,6 +970,15 @@ def repair_common_syntax_glitches(source: str) -> str:
     source = source.replace("f['tool']", "(f.get('tool') or next(iter(TOOLS.values())))")
     source = source.replace('f["tool"]', '(f.get("tool") or next(iter(TOOLS.values())))')
     source = source.replace("{suspect_def.tells}", "{suspect.tells}")
+    source = re.sub(
+        r"json\.dumps\(([^)\n]+), indent=2, ensure_ascii=False\)",
+        r"json.dumps(\1, indent=2, ensure_ascii=False, default=str)",
+        source,
+    )
+    source = source.replace(
+        "json.dumps([s.to_dict() for s in samples], indent=2, ensure_ascii=False)",
+        "json.dumps([s.to_dict() for s in samples], indent=2, ensure_ascii=False, default=str)",
+    )
     source = re.sub(r"json\.dumps\(([^)\n]+), indent=2\)", r"json.dumps(\1, indent=2, default=str)", source)
     source = source.replace(
         "emit(generate(resolve_params(argparse.Namespace(place=None, flashback=None, object_=None, name=None, gender=None, caregiver=None, trait=None), random.Random(777)))))",
@@ -859,8 +999,50 @@ def repair_common_syntax_glitches(source: str) -> str:
         r"\1, \2, \3 = (list(rng.choice(combos)) + [None, None, None])[:3]",
         source,
     )
+
+    def unpack_repl(match: re.Match[str]) -> str:
+        names = [name.strip() for name in match.group("vars").split(",")]
+        padding = ", ".join("None" for _ in names)
+        return f'{match.group("indent")}{match.group("vars")} = (list(rng.choice(combos)) + [{padding}])[:{len(names)}]'
+
+    source = re.sub(
+        r"(?m)^(?P<indent>\s*)(?P<vars>[A-Za-z_]\w*(?:,\s*[A-Za-z_]\w*)+)\s*=\s*"
+        r"\(list\(rng\.choice\(combos\)\)\s*\+\s*\[[^\]\n]*\]\)\[:\d+\]",
+        unpack_repl,
+        source,
+    )
+    source = re.sub(
+        r"\bnext\((?P<var>[A-Za-z_]\w*) for (?P=var) in (?P<pool>[A-Z][A-Z0-9_]*S) if (?P<cond>[A-Za-z_]\w*\([^)\n]*\))\)",
+        r"_safe_next((\g<var> for \g<var> in \g<pool> if \g<cond>), next(iter(\g<pool>), None))",
+        source,
+    )
+    source = re.sub(
+        r"\bnext\((?P<var>[A-Za-z_]\w*) for (?P=var) in (?P<mapping>[A-Za-z_][\w\.]*)\.values\(\) if (?P<cond>[^\n]+)\)",
+        r"_safe_next((\g<var> for \g<var> in list(\g<mapping>.values()) if \g<cond>), _safe_next(\g<mapping>.values()))",
+        source,
+    )
+    source = re.sub(
+        r"\bnext\((?P<expr>[^()\n]+?\s+for\s+[^()\n]+?)\)",
+        r"_safe_next((\g<expr>))",
+        source,
+    )
+    source = re.sub(
+        r"\bfor (?P<var>[A-Za-z_]\w*) in world\.entities\.values\(\)",
+        r"for \g<var> in list(world.entities.values())",
+        source,
+    )
     source = re.sub(r"(\s*)def\s+([A-Z][A-Z0-9_]+)\s*=", r"\1\2 =", source)
     source = re.sub(r"(\.\s*label_word)\([^)]*\)", r"\1", source)
+    source = re.sub(
+        r"\b(?P<obj>[A-Za-z_]\w*)\.it\(\)",
+        r"(getattr(\g<obj>, 'it')() if callable(getattr(\g<obj>, 'it', None)) else getattr(\g<obj>, 'it', 'it'))",
+        source,
+    )
+    source = re.sub(
+        r"(?<!\.)\b(?P<obj>[A-Za-z_]\w*)\.capitalize\(\)",
+        r"(getattr(\g<obj>, 'capitalize')() if callable(getattr(\g<obj>, 'capitalize', None)) else str(\g<obj>).capitalize())",
+        source,
+    )
     source = re.sub(r"\b(params|p)\.([A-Za-z_]\w*)\.id\b", r"\1.\2", source)
     source = re.sub(r"\bparams\.([A-Za-z_]\w*)\.pronoun\([^)]*\)", '"they"', source)
     source = re.sub(r"\bargs\.([A-Za-z_]\w*)", r'getattr(args, "\1", None)', source)
@@ -943,17 +1125,44 @@ def use_gear_fallbacks(source: str) -> str:
     )
 
 
+def fallback_none_before_storyerror(source: str) -> str:
+    def repl(match: re.Match[str]) -> str:
+        indent = match.group("indent")
+        var = match.group("var")
+        upper = var.upper()
+        pools = [upper + "S", upper + "ES"]
+        if upper.endswith("Y"):
+            pools.append(upper[:-1] + "IES")
+        pool_expr = " or ".join(f'globals().get("{pool}")' for pool in pools)
+        return (
+            f"{indent}if {var} is None:\n"
+            f"{indent}    _fallback_pool = {pool_expr} or []\n"
+            f"{indent}    if hasattr(_fallback_pool, \"values\"):\n"
+            f"{indent}        _fallback_pool = list(_fallback_pool.values())\n"
+            f"{indent}    {var} = next(iter(_fallback_pool), None)\n"
+            f"{indent}    if {var} is None:\n"
+            f"{indent}        raise StoryError"
+        )
+
+    return re.sub(
+        r"(?m)^(?P<indent>\s*)if (?P<var>[A-Za-z_]\w*) is None:\n"
+        r"(?P=indent)    raise StoryError[^\n]*",
+        repl,
+        source,
+    )
+
+
 def safe_world_fact_indexing(source: str) -> str:
     if not re.search(r"world\.facts\.update\([^)]*=\s*[A-Za-z_]\w*\.id", source, flags=re.DOTALL):
         return source
     repaired = re.sub(
         r"""\bf\[(?P<quote>["'])(?P<key>[A-Za-z_]\w*)(?P=quote)\](?!\s*\[)""",
-        r'_safe_fact(world, f, "\g<key>")',
+        rf'_safe_fact({WORLD_EXPR}, f, "\g<key>")',
         source,
     )
     repaired = re.sub(
-        r'world\.get\(_safe_fact\(world, f, "([A-Za-z_]\w*)"\)\)',
-        r'_safe_fact(world, f, "\1")',
+        rf'world\.get\(_safe_fact\({re.escape(WORLD_EXPR)}, f, "([A-Za-z_]\w*)"\)\)',
+        rf'_safe_fact({WORLD_EXPR}, f, "\1")',
         repaired,
     )
     if repaired == source or "def _safe_fact(" in repaired:
@@ -1010,6 +1219,79 @@ def repair_undefined_thing_label(source: str) -> str:
     return source
 
 
+def safe_fact_indexing(source: str) -> str:
+    repaired = re.sub(
+        r'(?<!_safe_fact\()(?<![A-Za-z_])world\.facts\[(?P<quote>["\'])(?P<key>[A-Za-z_]\w*)(?P=quote)\](?!\s*=)',
+        rf'_safe_fact({WORLD_EXPR}, world.facts, "\g<key>")',
+        source,
+    )
+    repaired = re.sub(
+        r'(?<!_safe_fact\()(?<![A-Za-z_])f\[(?P<quote>["\'])(?P<key>[A-Za-z_]\w*)(?P=quote)\](?!\s*=)',
+        rf'_safe_fact({WORLD_EXPR}, f, "\g<key>")',
+        repaired,
+    )
+    if repaired != source:
+        repaired = ensure_safe_fact_helper(repaired)
+    return repaired
+
+
+def safe_entity_indexing(source: str) -> str:
+    return re.sub(
+        r'world\.entities\[(?P<quote>["\'])(?P<key>[A-Za-z_]\w*)(?P=quote)\]',
+        r'world.get("\g<key>")',
+        source,
+    )
+
+
+def safe_mapping_safe_fact_indexing(source: str) -> str:
+    repaired = re.sub(
+        r'\b(?P<mapping>(?:[A-Za-z_]\w*\.)?[A-Za-z_]\w*)\[_safe_fact\((?P<args>[^\]\n]+)\)\]',
+        r'_safe_lookup(\g<mapping>, _safe_fact(\g<args>))',
+        source,
+    )
+    return add_safe_lookup_helper(repaired) if repaired != source else source
+
+
+def add_world_copy_method(source: str) -> str:
+    if "class World:" not in source or "def copy(self)" in source:
+        return source
+    bounds = _top_level_block_bounds(source, "World")
+    if bounds is None:
+        return source
+    start, end = bounds
+    block = source[start:end]
+    if "entities:" not in block and "facts:" not in block:
+        return source
+    addition = (
+        "\n"
+        "    def copy(self):\n"
+        "        clone = __import__(\"copy\").deepcopy(self)\n"
+        "        return clone\n"
+    )
+    return source[:end].rstrip() + addition + "\n\n" + source[end:]
+
+
+def add_world_get_method(source: str) -> str:
+    if "class World:" not in source or "def get(self" in source:
+        return source
+    bounds = _top_level_block_bounds(source, "World")
+    if bounds is None:
+        return source
+    start, end = bounds
+    block = source[start:end]
+    if "entities:" not in block:
+        return source
+    addition = (
+        "\n"
+        "    def get(self, eid: str):\n"
+        "        if eid not in self.entities:\n"
+        "            label = str(eid).replace(\"_\", \" \")\n"
+        "            self.entities[eid] = Entity(str(eid), label=label)\n"
+        "        return self.entities[eid]\n"
+    )
+    return source[:end].rstrip() + addition + "\n\n" + source[end:]
+
+
 def bound_propagate_loops(source: str) -> str:
     return source.replace(
         "    changed = True\n    while changed:\n",
@@ -1023,6 +1305,7 @@ def repair_source(source: str) -> tuple[str, list[str]]:
     for name, fn in (
         ("short_n_alias", add_short_n_alias),
         ("common_syntax_glitches", repair_common_syntax_glitches),
+        ("safe_next_helper", add_safe_next_helper),
         ("pronoun_case_arg", widen_pronoun_methods),
         ("results_import_path", repair_results_import_path),
         ("lazy_property_storage", repair_lazy_property_storage_checks),
@@ -1033,8 +1316,12 @@ def repair_source(source: str) -> tuple[str, list[str]]:
         ("storyerror_continue_sampling", continue_sampling_after_storyerror),
         ("safe_next_value_matches", safe_next_value_matches),
         ("gear_fallbacks", use_gear_fallbacks),
+        ("none_storyerror_fallbacks", fallback_none_before_storyerror),
         ("safe_world_fact_indexing", safe_world_fact_indexing),
         ("safe_fact_assignments", safe_fact_assignments),
+        ("safe_fact_indexing", safe_fact_indexing),
+        ("safe_entity_indexing", safe_entity_indexing),
+        ("safe_mapping_safe_fact_indexing", safe_mapping_safe_fact_indexing),
         ("safe_fact_key_scalars", keep_safe_fact_key_assignments_scalar),
         ("params_method_selectors", safe_params_method_selectors),
         ("global_suspect_resolver", use_global_suspects_in_resolver),
@@ -1046,8 +1333,11 @@ def repair_source(source: str) -> tuple[str, list[str]]:
         ("storyparams_order", move_storyparams_before_first_use),
         ("missing_keyword_fields", add_missing_keyword_fields),
         ("missing_keyword_fields_lines", add_missing_keyword_fields_from_lines),
+        ("default_storyparams_required_fields", default_storyparams_required_fields),
         ("dict_value_iteration", use_dict_values_when_loop_dereferences_items),
         ("dataclass_common_properties", add_dataclass_common_properties),
+        ("world_get_method", add_world_get_method),
+        ("world_copy_method", add_world_copy_method),
         ("lazy_property_storage_after_dataclass", repair_lazy_property_storage_checks),
         ("fallback_storyparams", fallback_storyparams_for_resolve_errors),
         ("orphan_storyerror_fragments", remove_orphan_storyerror_message_fragments),

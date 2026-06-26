@@ -112,7 +112,7 @@ def build_parser() -> argparse.ArgumentParser:
         )
         ap.add_argument(
             "--reasoning-effort",
-            choices=("minimal", "low", "medium", "high", "xhigh"),
+            choices=("off", "none", "minimal", "low", "medium", "high", "xhigh"),
             default=DEFAULT_REASONING_EFFORT,
             help=f"Responses API reasoning effort; default: {DEFAULT_REASONING_EFFORT}",
         )
@@ -522,7 +522,6 @@ def request_line(
             emit_mode=emit_mode,
         ),
         "prompt_cache_retention": "24h",
-        "reasoning": {"effort": reasoning_effort},
         "service_tier": service_tier,
         "input": [
             {
@@ -549,6 +548,8 @@ def request_line(
                 "parallel_tool_calls": False,
             }
         )
+    if reasoning_effort != "off":
+        body["reasoning"] = {"effort": reasoning_effort}
     return {
         "custom_id": job.custom_id,
         "method": "POST",
