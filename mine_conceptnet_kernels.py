@@ -11,6 +11,7 @@ Output:
 
 Use the repo venv:
     ./.venv/bin/python mine_conceptnet_kernels.py extract --datasets 3
+    ./.venv/bin/python mine_conceptnet_kernels.py extract --datasets 3 --include-code
 """
 from __future__ import annotations
 
@@ -56,21 +57,19 @@ FEWSHOT = {
             "{actor} laughed.",
             "{actor} laughed at {stimulus}.",
         ],
-        "code": (
-            "@REGISTRY.kernel(\"Laugh\")\n"
-            "def Laugh(ctx: World, actor: Character, stimulus: Physical = None, **kw) -> str:\n"
-            "    actor.Joy += 0.4\n"
-            "    ctx.actor = actor\n"
-            "    if stimulus is not None:\n"
-            "        ctx.current_object = stimulus\n"
-            "        return f\"{ctx.say(actor)} laughed at {stimulus}.\"\n"
-            "    return f\"{ctx.say(actor)} laughed.\"\n"
-        ),
     }],
 }
 
 
-def build_prompt(record: dict) -> str:
+def build_prompt(record: dict, include_code: bool) -> str:
+    code_rules = (
+        '- Include optional `"code"` with a gen6-style Python function sketch. '
+        'Do not wrap it in Markdown fences.\n'
+        '- If a Story or Concept slot is needed in code, leave it untyped or use object; '
+        'preserve the stronger type in the JSON `signature`.'
+        if include_code
+        else '- Do NOT include `"code"`. Mine only the typed kernel metadata.'
+    )
     return f"""# Typed Story Kernel Mining
 
 Extract a few tiny executable Storyweavers kernel sketches from the story.
@@ -85,8 +84,7 @@ Each kernel object:
     "evidence": "one exact contiguous quote from the story",
     "signature": {{"slot_name": "Character|Physical|Story|Concept"}},
     "effects": ["small state effects, e.g. actor.Joy += 0.4"],
-    "renders": ["template sentence(s) using {{slot}} names"],
-    "code": "gen6-style Python function sketch"
+    "renders": ["template sentence(s) using {{slot}} names"]
   }}
 
 Rules:
@@ -103,10 +101,7 @@ Rules:
   - HasPrerequisite -> precondition comment/effect.
   - ResolvesBy -> conflict/tension resolution.
 - Evidence must be a contiguous substring of the story. Do not use "...".
-- The code should be a sketch, not a whole file. Use gen6 idioms when possible:
-  @REGISTRY.kernel, ctx: World, Character, Physical, ctx.say(actor).
-- If a Story or Concept slot is needed in code, leave it untyped or use object;
-  preserve the stronger type in the JSON `signature`.
+{code_rules}
 - Return 2-6 kernels. If nothing is reusable, return [].
 
 ## Example
@@ -157,7 +152,7 @@ def _output_path(name: str) -> str:
     return os.path.join(OUTPUT_DIR, name)
 
 
-def _clean_kernel(k: dict) -> dict | None:
+def _clean_kernel(k: dict, include_code: bool) -> dict | None:
     if not isinstance(k, dict):
         return None
     if k.get("relation") not in RELATIONS:
@@ -174,7 +169,7 @@ def _clean_kernel(k: dict) -> dict | None:
     }
     if not signature:
         return None
-    return {
+    out = {
         "name": str(k["name"]),
         "concept": str(k["concept"]),
         "relation": str(k["relation"]),
@@ -183,16 +178,20 @@ def _clean_kernel(k: dict) -> dict | None:
         "signature": signature,
         "effects": [str(x) for x in k.get("effects", []) if x],
         "renders": [str(x) for x in k.get("renders", []) if x],
-        "code": str(k.get("code", "")).strip(),
     }
+    if include_code and k.get("code"):
+        out["code"] = str(k["code"]).strip()
+    return out
 
 
-async def extract_kernels(client, model: str, record: dict, story_id: str) -> list[dict]:
+async def extract_kernels(
+    client, model: str, record: dict, story_id: str, include_code: bool
+) -> list[dict]:
     resp = await client.chat.completions.create(
         model=model,
-        messages=[{"role": "user", "content": build_prompt(record)}],
+        messages=[{"role": "user", "content": build_prompt(record, include_code)}],
         temperature=0.0,
-        max_tokens=8000,
+        max_tokens=8000 if include_code else 4000,
     )
     choice = resp.choices[0]
     content = choice.message.content
@@ -205,10 +204,12 @@ async def extract_kernels(client, model: str, record: dict, story_id: str) -> li
     raw = _parse_json_array(content)
     if not raw and content and content.strip() != "[]":
         _log_failure(story_id, "could not parse a JSON array from model output", content)
-    return [k for item in raw if (k := _clean_kernel(item)) is not None]
+    return [k for item in raw if (k := _clean_kernel(item, include_code)) is not None]
 
 
-async def process_dataset(dataset: str, limit: int | None = None) -> None:
+async def process_dataset(
+    dataset: str, limit: int | None = None, include_code: bool = False
+) -> None:
     from openai import AsyncOpenAI
     from tqdm.asyncio import tqdm
 
@@ -227,7 +228,7 @@ async def process_dataset(dataset: str, limit: int | None = None) -> None:
         story_id = f"{dataset}:{idx}"
         async with sem:
             try:
-                kernels = await extract_kernels(client, model, record, story_id)
+                kernels = await extract_kernels(client, model, record, story_id, include_code)
             except Exception as exc:
                 _log_failure(story_id, f"{type(exc).__name__}: {exc}\n{traceback.format_exc()}")
                 kernels = []
@@ -240,7 +241,8 @@ async def process_dataset(dataset: str, limit: int | None = None) -> None:
 
     async with client:
         tasks = [limited(i, r) for i, r in enumerate(stories)]
-        with open(_output_path(f"{dataset}.kernel_sketches.jsonl"), "w") as out:
+        suffix = "kernel_sketches_with_code" if include_code else "kernel_sketches"
+        with open(_output_path(f"{dataset}.{suffix}.jsonl"), "w") as out:
             for task in tqdm(asyncio.as_completed(tasks), total=len(tasks),
                              desc=f"Mining kernel sketches {dataset}"):
                 out.write(json.dumps(await task, ensure_ascii=False) + "\n")
@@ -256,11 +258,13 @@ def main() -> None:
                     help="dataXX indices to process (default: 3)")
     pe.add_argument("--limit", type=int, default=None,
                     help="only process the first N stories, useful for prompt testing")
+    pe.add_argument("--include-code", action="store_true",
+                    help="ask for optional gen6-style code sketches")
 
     args = ap.parse_args()
     if args.mode == "extract":
         for i in args.datasets:
-            asyncio.run(process_dataset(f"data{i:02d}", args.limit))
+            asyncio.run(process_dataset(f"data{i:02d}", args.limit, args.include_code))
 
 
 if __name__ == "__main__":
