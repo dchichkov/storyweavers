@@ -27,7 +27,10 @@ import sys
 from dataclasses import dataclass, field
 from typing import Optional
 
-sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+_storyworlds_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+if not os.path.exists(os.path.join(_storyworlds_dir, "results.py")):
+    _storyworlds_dir = os.path.dirname(_storyworlds_dir)
+sys.path.insert(0, _storyworlds_dir)
 from results import QAItem, StoryError, StorySample  # noqa: E402
 
 
@@ -288,7 +291,7 @@ def generation_prompts(world: World) -> list[str]:
     f = world.facts
     item = f["item"]
     return [
-        f"Write a child-friendly adventure story about a beaver trying to make sales with {ITEMS[item.id].label}.",
+        f"Write a child-friendly adventure story about a beaver trying to make sales with {ITEMS[item.type].label}.",
         f"Tell a short story where a beaver learns a lesson after bringing an obscure item to market.",
         f"Create an adventure tale with a beaver, a small stall, and an obscure object that turns out to help people.",
     ]
@@ -307,11 +310,11 @@ def story_qa(world: World) -> list[QAItem]:
         ),
         QAItem(
             question=f"What did the beaver hope to sell?",
-            answer=f"The beaver hoped to sell {item.label}, which was {ITEMS[item.id].phrase}.",
+            answer=f"The beaver hoped to sell {item.label}, which was {ITEMS[item.type].phrase}.",
         ),
         QAItem(
             question=f"Why did the beaver think the item was hard to sell at first?",
-            answer=f"Most shoppers passed it by because {ITEMS[item.id].obscure_reason}.",
+            answer=f"Most shoppers passed it by because {ITEMS[item.type].obscure_reason}.",
         ),
         QAItem(
             question="What changed the beaver's day?",

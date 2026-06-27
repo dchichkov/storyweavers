@@ -14,7 +14,10 @@ import sys
 from dataclasses import dataclass, field
 from typing import Optional
 
-sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+_storyworlds_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+if not os.path.exists(os.path.join(_storyworlds_dir, "results.py")):
+    _storyworlds_dir = os.path.dirname(_storyworlds_dir)
+sys.path.insert(0, _storyworlds_dir)
 from results import QAItem, StoryError, StorySample  # noqa: E402
 
 TASK_THRESHOLD = 1.0
@@ -129,7 +132,7 @@ def _r_steps(world: World) -> list[str]:
 
 def _r_progress(world: World) -> list[str]:
     out: list[str] = []
-    child = world.entities.get("child")
+    child = _child_entity(world)
     task = world.entities.get("task")
     tool = world.entities.get("tool")
     if not child or not task or not tool:
@@ -152,7 +155,7 @@ def _r_progress(world: World) -> list[str]:
 
 def _r_finish(world: World) -> list[str]:
     out: list[str] = []
-    child = world.entities.get("child")
+    child = _child_entity(world)
     parent = world.entities.get("parent")
     task = world.entities.get("task")
     if not child or not parent or not task:
@@ -166,11 +169,18 @@ def _r_finish(world: World) -> list[str]:
     child.memes["pride"] = child.memes.get("pride", 0) + 1
     child.memes["worry"] = 0
     parent.memes["warmth"] = parent.memes.get("warmth", 0) + 1
-    out.append(f"{child.id} finished the task and smiled at {parent.id}.")
+    out.append(f"{child.id} finished the task and smiled at {parent.label}.")
     return out
 
 
 CAUSAL_RULES = [_r_steps, _r_progress, _r_finish]
+
+
+def _child_entity(world: World) -> Optional[Entity]:
+    return world.entities.get("child") or next(
+        (e for e in world.entities.values() if e.kind == "character" and e.id != "parent"),
+        None,
+    )
 
 
 def propagate(world: World, narrate: bool = True) -> None:
@@ -356,9 +366,9 @@ def generate(params: StoryParams) -> StorySample:
     child.meters["task_focus"] = 1
     child.memes["worry"] = 1
     world.say(f"{child.id} stood in {setting.place} with a big task that felt {task_cfg.worry}.")
-    world.say(f"{parent.id} came close and said, \"Let's make it gentle and small.\"")
+    world.say(f"{parent.label} came close and said, \"Let's make it gentle and small.\"")
     world.para()
-    world.say(f"{parent.id} showed {child.id} {tool.prep}, and {tool.effect}.")
+    world.say(f"{parent.label} showed {child.id} {tool.prep}, and {tool.effect}.")
     world.say(f"{child.id} liked the idea and held on to {tool.label}.")
     propagate(world, narrate=True)
     world.para()
@@ -368,7 +378,7 @@ def generate(params: StoryParams) -> StorySample:
             child.meters["task_focus"] = 1
             propagate(world, narrate=True)
     world.say(f"In the end, {task_cfg.done_image}, and {child.id} felt proud enough to smile big.")
-    world.say(f"{parent.id} gave a warm hug, and the room felt calm and kind.")
+    world.say(f"{parent.label} gave a warm hug, and the room felt calm and kind.")
     world.facts = {"task": task_cfg, "tool": tool, "child": child, "parent": parent, "setting": setting}
     return StorySample(params=params, story=world.render(), prompts=generation_prompts(world), story_qa=story_qa(world), world_qa=world_knowledge_qa(world), world=world)
 
@@ -396,12 +406,12 @@ def story_qa(world: World) -> list[QAItem]:
             answer=f"{child.id} needed to {task.verb}. It felt big at first, but it could be done one small step at a time.",
         ),
         QAItem(
-            question=f"How did {parent.id} help {child.id} with the task?",
-            answer=f"{parent.id} helped by making the job feel smaller and kinder. That turned the task into something {child.id} could handle with a calm heart.",
+            question=f"How did {parent.label} help {child.id} with the task?",
+            answer=f"{parent.label} helped by making the job feel smaller and kinder. That turned the task into something {child.id} could handle with a calm heart.",
         ),
         QAItem(
             question=f"How did the story end after {child.id} finished the task?",
-            answer=f"It ended with {task.done_image}, {child.id} feeling proud, and {parent.id} giving a warm hug.",
+            answer=f"It ended with {task.done_image}, {child.id} feeling proud, and {parent.label} giving a warm hug.",
         ),
     ]
 

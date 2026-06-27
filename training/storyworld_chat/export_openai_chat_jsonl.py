@@ -19,6 +19,7 @@ from __future__ import annotations
 import argparse
 import concurrent.futures
 import json
+import os
 import random
 import re
 import subprocess
@@ -57,6 +58,9 @@ class WorldRun:
     ok: bool
     seconds: float
     samples: int = 0
+    raw_samples: int = 0
+    duplicate_samples_removed: int = 0
+    samples_cap_dropped: int = 0
     rows: int = 0
     error: str | None = None
 
@@ -95,6 +99,9 @@ class ExportStats:
     pack_questions_unused_fit: dict[str, int] = field(default_factory=dict)
     pack_stories_attempted: int = 0
     pack_stories_failed_to_fit: int = 0
+    raw_samples: int = 0
+    duplicate_samples_removed: int = 0
+    samples_cap_dropped: int = 0
     failure_kinds: dict[str, int] = field(default_factory=dict)
     failures: list[dict[str, Any]] = field(default_factory=list)
 
@@ -253,10 +260,20 @@ def failure_kind(error: str) -> str:
         return "timeout"
     if "invalid json" in lowered:
         return "invalid_json"
-    if "traceback" in lowered:
-        return "traceback"
+    if "syntaxerror" in lowered:
+        return "syntax_error"
     if "storyerror" in lowered or "no valid combination" in lowered:
         return "story_error"
+    if "recursionerror" in lowered:
+        return "recursion_error"
+    if "attributeerror" in lowered:
+        return "attribute_error"
+    if "keyerror" in lowered:
+        return "key_error"
+    if "typeerror" in lowered:
+        return "type_error"
+    if "traceback" in lowered:
+        return "traceback"
     return "other"
 
 
@@ -396,6 +413,25 @@ def stable_rel(path: Path) -> str:
         return str(path)
 
 
+def subprocess_env() -> dict[str, str]:
+    env = os.environ.copy()
+    storyworlds_path = str(ROOT / "storyworlds")
+    current = env.get("PYTHONPATH")
+    env["PYTHONPATH"] = (
+        storyworlds_path
+        if not current
+        else storyworlds_path + os.pathsep + current
+    )
+    return env
+
+
+def compact_error(text: str, max_chars: int = 4000) -> str:
+    stripped = text.strip() or "nonzero exit"
+    if len(stripped) <= max_chars:
+        return stripped
+    return stripped[:1000] + "\n...\n" + stripped[-(max_chars - 1006):]
+
+
 def run_world(
     python: str,
     world: Path,
@@ -421,14 +457,15 @@ def run_world(
             text=True,
             capture_output=True,
             timeout=timeout,
+            env=subprocess_env(),
         )
     except subprocess.TimeoutExpired:
         return [], f"timeout after {timeout:g}s", time.time() - start
 
     elapsed = time.time() - start
     if result.returncode:
-        err = result.stderr.strip() or result.stdout.strip() or "nonzero exit"
-        return [], err.splitlines()[0], elapsed
+        err = result.stderr or result.stdout
+        return [], compact_error(err), elapsed
 
     try:
         data = json.loads(result.stdout)
@@ -441,6 +478,40 @@ def run_world(
         return [], f"expected JSON object/list, got {type(data).__name__}", elapsed
     samples = [x for x in data if isinstance(x, dict) and x.get("story")]
     return samples, None, elapsed
+
+
+def filter_samples(
+    samples: list[dict[str, Any]],
+    *,
+    dedupe_stories: bool,
+    shuffle_samples: bool,
+    sample_cap_per_world: int | None,
+    seed: int,
+) -> tuple[list[dict[str, Any]], int, int]:
+    duplicate_removed = 0
+    cap_dropped = 0
+    filtered = samples
+
+    if dedupe_stories:
+        seen: set[str] = set()
+        filtered = []
+        for sample in samples:
+            key = normalize_for_duplicate(str(sample.get("story") or ""))
+            if key in seen:
+                duplicate_removed += 1
+                continue
+            seen.add(key)
+            filtered.append(sample)
+
+    if shuffle_samples:
+        filtered = list(filtered)
+        random.Random(seed ^ 0x5A17A11).shuffle(filtered)
+
+    if sample_cap_per_world is not None and len(filtered) > sample_cap_per_world:
+        cap_dropped = len(filtered) - sample_cap_per_world
+        filtered = filtered[:sample_cap_per_world]
+
+    return filtered, duplicate_removed, cap_dropped
 
 
 def collect_world_qa_pool(
@@ -1028,6 +1099,9 @@ def build_markdown_report(
         f"- token counter: `{token_counter.mode}`",
         f"- rows: `{stats.rows}`",
         f"- samples: `{stats.samples}`",
+        f"- raw samples before filters: `{stats.raw_samples}`",
+        f"- duplicate story samples removed: `{stats.duplicate_samples_removed}`",
+        f"- samples dropped by cap: `{stats.samples_cap_dropped}`",
         f"- worlds ok/failed: `{stats.worlds_ok}` / `{stats.worlds_failed}`",
         f"- timeout seconds: `{args.timeout}`",
         f"- world QA mode: `{args.world_qa_mode}`",
@@ -1165,8 +1239,35 @@ def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--worlds-dir", type=Path, default=DEFAULT_WORLDS_DIR)
     parser.add_argument("--recursive", action="store_true")
+    parser.add_argument(
+        "--shuffle-worlds",
+        action="store_true",
+        help="shuffle discovered worlds deterministically with --seed before slicing",
+    )
+    parser.add_argument(
+        "--start-world",
+        type=int,
+        default=0,
+        help="zero-based offset into the sorted discovered world list",
+    )
     parser.add_argument("--max-worlds", type=int, default=None)
     parser.add_argument("--samples-per-world", type=int, default=10)
+    parser.add_argument(
+        "--dedupe-story-samples",
+        action="store_true",
+        help="dedupe samples from each world by rendered story text before packing rows",
+    )
+    parser.add_argument(
+        "--shuffle-samples",
+        action="store_true",
+        help="shuffle each world's samples deterministically before applying --sample-cap-per-world",
+    )
+    parser.add_argument(
+        "--sample-cap-per-world",
+        type=int,
+        default=None,
+        help="maximum samples to keep per world after optional dedupe/shuffle",
+    )
     parser.add_argument("--seed", type=int, default=20260621)
     parser.add_argument("--jobs", type=int, default=1)
     parser.add_argument("--timeout", type=float, default=60.0)
@@ -1259,6 +1360,8 @@ def main() -> int:
     args = build_parser().parse_args()
     if args.samples_per_world < 1:
         raise SystemExit("--samples-per-world must be at least 1")
+    if args.sample_cap_per_world is not None and args.sample_cap_per_world < 1:
+        raise SystemExit("--sample-cap-per-world must be at least 1 when set")
     if args.jobs < 1:
         raise SystemExit("--jobs must be at least 1")
     if args.max_context_tokens < 64:
@@ -1273,8 +1376,14 @@ def main() -> int:
         raise SystemExit("--world-qa-pool-samples-per-world must be nonnegative")
     if args.world_qa_max_per_sample < 0:
         raise SystemExit("--world-qa-max-per-sample must be nonnegative")
+    if args.start_world < 0:
+        raise SystemExit("--start-world must be nonnegative")
 
     worlds = discover_worlds(args.worlds_dir.resolve(), args.recursive)
+    if args.shuffle_worlds:
+        random.Random(args.seed).shuffle(worlds)
+    if args.start_world:
+        worlds = worlds[args.start_world:]
     if args.max_worlds is not None:
         worlds = worlds[: args.max_worlds]
     if not worlds:
@@ -1347,6 +1456,15 @@ def main() -> int:
                         raise SystemExit(1)
                     continue
 
+                raw_sample_count = len(samples)
+                samples, duplicate_removed, cap_dropped = filter_samples(
+                    samples,
+                    dedupe_stories=args.dedupe_story_samples,
+                    shuffle_samples=args.shuffle_samples,
+                    sample_cap_per_world=args.sample_cap_per_world,
+                    seed=seed,
+                )
+
                 row_count = 0
                 row_rng = random.Random(args.seed ^ 0xC0FFEE ^ (index * 1_000_003))
                 for sample_index, sample in enumerate(samples):
@@ -1380,6 +1498,9 @@ def main() -> int:
                         row_count += 1
 
                 stats.worlds_ok += 1
+                stats.raw_samples += raw_sample_count
+                stats.duplicate_samples_removed += duplicate_removed
+                stats.samples_cap_dropped += cap_dropped
                 stats.samples += len(samples)
                 stats.rows += row_count
                 runs.append(
@@ -1390,10 +1511,16 @@ def main() -> int:
                         True,
                         elapsed,
                         samples=len(samples),
+                        raw_samples=raw_sample_count,
+                        duplicate_samples_removed=duplicate_removed,
+                        samples_cap_dropped=cap_dropped,
                         rows=row_count,
                     )
                 )
-                print(f"OK   {rel}: samples={len(samples)} rows={row_count}")
+                print(
+                    f"OK   {rel}: raw_samples={raw_sample_count} "
+                    f"samples={len(samples)} rows={row_count}"
+                )
 
     runs.sort(key=lambda run: run.index)
     if args.manifest:
@@ -1401,7 +1528,12 @@ def main() -> int:
             "args": {
                 "worlds_dir": str(args.worlds_dir),
                 "recursive": args.recursive,
+                "shuffle_worlds": args.shuffle_worlds,
+                "start_world": args.start_world,
                 "samples_per_world": args.samples_per_world,
+                "dedupe_story_samples": args.dedupe_story_samples,
+                "shuffle_samples": args.shuffle_samples,
+                "sample_cap_per_world": args.sample_cap_per_world,
                 "seed": args.seed,
                 "tasks": sorted(tasks),
                 "prompt_policy": args.prompt_policy,
