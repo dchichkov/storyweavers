@@ -15,7 +15,8 @@ target Ubuntu/DGX machines and import optional ML dependencies only when run.
 
 Last verified on the `pi` host on 2026-09-04:
 
-- Repository: `/home/dmitry/storyweavers`, clean `main` at commit `86bbf397`.
+- Repository: `/home/dmitry/storyweavers`, on `main` and synchronized with the
+  Mac clone before the production run.
 - GPU: NVIDIA GeForce RTX 4090 with 24 GB VRAM.
 - Python environment: `training/storyworld_chat/.venv` using Python 3.10.12.
 - Training stack: PyTorch 2.14.0 with CUDA 13.0, Transformers 4.57.6,
@@ -70,9 +71,78 @@ still oversample each script, deduplicate rendered stories, shuffle, and cap at
 250 as described below; do not extrapolate the one-sample audit as the final
 training row count.
 
-Next production step: export the full deduplicated corpus, train the final 16k
-tokenizer on that broad corpus, repack with exact tokenizer counts, create a
-world-disjoint dev split, and run the 60M model for two epochs.
+### Production Corpus And Run (2026-09-04)
+
+The first full corpus is materialized on `pi` under
+`training/storyworld_chat/data/production_20260904/`. Generated data is ignored
+by Git, while the commands and finalizer are tracked here.
+
+| Split | Selected worlds | Successful worlds | Rows | Exact tokens | Mean tokens | Disk |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: |
+| train | 6,642 | 6,516 | 596,966 | 410,187,389 | 687.12 | 2.2 GB |
+| dev | 350 | 339 | 31,435 | 21,694,272 | 690.13 | 117 MB |
+
+The split seed is `20260904`; train and dev have zero world overlap and zero
+exact-conversation overlap. Each world was asked for 100 samples, then rendered
+stories were deduplicated and shuffled within that world. This yielded 531,850
+distinct train samples from 553,982 raw samples; multiturn packing produced the
+larger row count. All rows use the production 16k tokenizer, fit within 1,024
+tokens, alternate valid chat roles, end with an assistant turn, and have unique
+IDs. Finalization found no exact duplicate conversations. It rewrote 4,996
+colliding train IDs and 269 colliding dev IDs without changing their messages.
+
+A Unicode audit found 724 train rows (456,411 tokens) containing accidental
+Cyrillic substitutions from 12 source worlds. Those rows were excluded during
+finalization; the final train/dev files contain no Cyrillic, runtime traceback,
+or code-fence rows. The original shards and pre-finalization files remain in
+the production directory for audit and recovery.
+
+Final artifact checksums:
+
+- train SHA-256: `3bf0324ba049e1db5a81e7238b70ee8b44028d164c82729f486e8a3e3ee72b76`.
+- dev SHA-256: `16c086d208fe546f862d5c3553ce175162e7ea9deb41ec8772dface4063a1e02`.
+
+The clean train artifact was assembled with:
+
+```bash
+python training/storyworld_chat/finalize_chat_jsonl.py \
+  training/storyworld_chat/data/production_20260904/train.part??.jsonl \
+  --exclude-message-regex '[\u0400-\u04ff]' \
+  --max-context-tokens 1024 \
+  --out training/storyworld_chat/data/production_20260904/train.jsonl \
+  --manifest training/storyworld_chat/data/production_20260904/train.final.manifest.json
+```
+
+The production tokenizer is
+`training/storyworld_chat/tokenizers/storyworld-16k-production` and contains
+exactly 16,000 tokens. The two-epoch 60M run writes to
+`training/storyworld_chat/outputs/storyworld-60m-production-20260904-2ep`.
+At launch it scheduled 4,664 optimizer steps, with loss falling from 9.3234 at
+step 10 to 7.8997 at step 30. It used about 10.7 GB of GPU memory and sustained
+about 2.2 seconds per step.
+
+Launch command:
+
+```bash
+training/storyworld_chat/.venv/bin/python \
+  training/storyworld_chat/train_chat.py \
+  --train-jsonl training/storyworld_chat/data/production_20260904/train.jsonl \
+  --eval-jsonl training/storyworld_chat/data/production_20260904/dev.jsonl \
+  --tokenizer training/storyworld_chat/tokenizers/storyworld-16k-production \
+  --output-dir training/storyworld_chat/outputs/storyworld-60m-production-20260904-2ep \
+  --config training/storyworld_chat/configs/storyworld_60m_1024.json \
+  --num-train-epochs 2 \
+  --per-device-train-batch-size 8 \
+  --per-device-eval-batch-size 8 \
+  --gradient-accumulation-steps 32 \
+  --learning-rate 3e-4 \
+  --logging-steps 10 \
+  --eval-steps 1000 \
+  --save-steps 1000 \
+  --save-total-limit 3 \
+  --bf16 \
+  --report-to tensorboard
+```
 
 ## 1. Export StoryWorld Chat JSONL
 
