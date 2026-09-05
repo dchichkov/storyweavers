@@ -397,3 +397,64 @@ Both commands target roughly 262k tokens per optimizer step:
 
 Use TinyStories and BoolQ as separate eval suites.  This scaffold only builds
 the StoryWorld training feed and intrinsic chat-loss validation.
+
+## 5. Held-Out Vibe Test
+
+`vibe_test.py` runs a human-readable checkpoint comparison against frozen dev
+prompts. It scores both generated stories and held-out reference stories with
+the same fixed-baseline rubric as `storyworlds/openai_story_quality.py`:
+coherence, style, grammar, storytelling, and overall, each from 0 to 9. The
+default judge is always `gpt-5.4-mini` on the `flex` service tier.
+
+Freeze the prompt set once. Reservoir sampling is uniform over eligible dev
+rows and records the original dev line and prompt hash:
+
+```bash
+training/storyworld_chat/.venv/bin/python \
+  training/storyworld_chat/vibe_test.py sample \
+  --dev-jsonl training/storyworld_chat/data/production_20260904/dev.jsonl \
+  --count 16 \
+  --seed 20260905 \
+  --out training/storyworld_chat/vibe_runs/dev16_seed20260905.prompts.jsonl
+```
+
+Generate against one or more checkpoints. Greedy decoding is the default so a
+checkpoint gives repeatable output; pass `--temperature 0.7` for an explicitly
+sampled companion run.
+
+```bash
+training/storyworld_chat/.venv/bin/python \
+  training/storyworld_chat/vibe_test.py generate \
+  --prompts-jsonl training/storyworld_chat/vibe_runs/dev16_seed20260905.prompts.jsonl \
+  --model step3000=training/storyworld_chat/outputs/storyworld-60m-production-20260904-2ep/checkpoint-3000 \
+  --model final=training/storyworld_chat/outputs/storyworld-60m-production-20260904-2ep \
+  --batch-size 8 \
+  --max-new-tokens 768 \
+  --bf16 \
+  --out training/storyworld_chat/vibe_runs/dev16_seed20260905.generations.jsonl
+```
+
+Judge on the Linux box, then produce the compact summary and the full prompt,
+reference, generation, and score report:
+
+```bash
+OPENAI_API_KEY="$(cat .API_KEY)" \
+training/storyworld_chat/.venv/bin/python \
+  training/storyworld_chat/vibe_test.py judge \
+  --generations-jsonl training/storyworld_chat/vibe_runs/dev16_seed20260905.generations.jsonl \
+  --judge-model gpt-5.4-mini \
+  --service-tier flex \
+  --concurrency 16 \
+  --out training/storyworld_chat/vibe_runs/dev16_seed20260905.ratings.jsonl
+
+training/storyworld_chat/.venv/bin/python \
+  training/storyworld_chat/vibe_test.py report \
+  --ratings-jsonl training/storyworld_chat/vibe_runs/dev16_seed20260905.ratings.jsonl \
+  --out training/storyworld_chat/vibe_runs/dev16_seed20260905.report.md
+```
+
+To test another epoch or optimizer step, reuse the same `*.prompts.jsonl` and
+give its model path a new label. Use a separate generation file, or `--append`
+only when the label is new. Reusing the frozen prompts is what makes checkpoint
+deltas meaningful; changing the seed creates a new suite rather than extending
+the old one.
