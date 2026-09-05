@@ -19,7 +19,7 @@ import re
 import sys
 import time
 from collections import Counter, defaultdict
-from datetime import UTC, datetime
+from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Iterable
 
@@ -50,7 +50,7 @@ IM_END = "<|im_end|>"
 
 
 def stamp() -> str:
-    return datetime.now(UTC).strftime("%Y%m%dT%H%M%SZ")
+    return datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
 
 
 def read_jsonl(path: Path) -> list[dict[str, Any]]:
