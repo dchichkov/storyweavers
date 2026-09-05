@@ -492,7 +492,9 @@ training/storyworld_chat/.venv/bin/python \
 ```
 
 Train from scratch with the same production command, changing only the input
-and output paths:
+and output paths. TinyStories rows are about half as long, so accumulation is
+doubled to 64 to preserve approximately the same non-padding tokens per optimizer
+update and nearly the same update count over two epochs:
 
 ```bash
 training/storyworld_chat/.venv/bin/python \
@@ -500,17 +502,17 @@ training/storyworld_chat/.venv/bin/python \
   --train-jsonl training/storyworld_chat/data/tinystories_gpt4_matched/train.jsonl \
   --eval-jsonl training/storyworld_chat/data/tinystories_gpt4_matched/dev.jsonl \
   --tokenizer training/storyworld_chat/tokenizers/storyworld-16k-production \
-  --output-dir training/storyworld_chat/outputs/tinystories-gpt4-60m-matched-2ep \
+  --output-dir training/storyworld_chat/outputs/tinystories-gpt4-60m-matched-ga64-2ep \
   --config training/storyworld_chat/configs/storyworld_60m_1024.json \
   --num-train-epochs 2 \
   --per-device-train-batch-size 8 \
   --per-device-eval-batch-size 8 \
-  --gradient-accumulation-steps 32 \
+  --gradient-accumulation-steps 64 \
   --learning-rate 3e-4 \
   --logging-steps 10 \
-  --eval-steps 1000 \
-  --save-steps 1000 \
-  --save-total-limit 3 \
+  --eval-steps 500 \
+  --save-steps 500 \
+  --save-total-limit 20 \
   --bf16 \
   --report-to tensorboard
 ```
@@ -519,3 +521,35 @@ The resulting checkpoints can be passed directly to `vibe_test.py generate`
 against the frozen StoryWorld dev prompts. Because plain TinyStories has no QA
 turns, this control isolates story generation quality; it does not test whether
 the model learned StoryWorld's follow-up QA behavior.
+
+### Materialized Control And Distribution Difference
+
+The GPT-4-only control was materialized on `pi` on 2026-09-05. Both files are
+within one context window of their StoryWorld token targets, their checksums
+match the export manifest, and a full audit found no repeated ID, repeated
+story, cross-split story, or invalid role sequence.
+
+| Measure | StoryWorld production | TinyStories GPT-4 control |
+| --- | ---: | ---: |
+| Train tokens | 410,187,389 | 410,186,394 |
+| Dev tokens | 21,694,272 | 21,693,263 |
+| Train rows | 596,966 | 1,132,573 |
+| Dev rows | 31,435 | 59,945 |
+| Mean train row tokens | 687.12 | 362.17 |
+| Mean base story conversation tokens | 373.48 | 362.17 |
+| Mean assistant turns per packed train row | 8.14 | 1.00 |
+| Distinct train story samples | about 531,850 | 1,132,573 |
+| Story source | executable StoryWorld scripts | GPT-4 |
+| Follow-up QA | story QA plus world QA | none |
+
+The close base-story lengths make this a useful end-to-end data-distribution
+control. It is not a pure prose-quality ablation: at the same total token count,
+TinyStories supplies about twice as many distinct stories, while StoryWorld
+spends roughly half its corpus on millions of short QA turns. A later ablation
+can equalize story count or add matched QA if this run shows a large advantage.
+
+The matched run uses 64-way accumulation, schedules 4,426 optimizer steps over
+two epochs, and evaluates/saves every 500 steps. The corresponding StoryWorld
+run scheduled 4,664 steps. Using accumulation 32 would schedule 8,850 updates
+for the shorter TinyStories rows and would confound data quality with twice as
+many parameter updates.
