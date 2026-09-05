@@ -11,6 +11,69 @@ The scripts are intentionally light on assumptions.  The exporter is stdlib-only
 and samples `storyworlds/worlds/*.py`; the tokenizer/trainer scripts are for the
 target Ubuntu/DGX machines and import optional ML dependencies only when run.
 
+## Current Linux Setup And Progress
+
+Last verified on the `pi` host on 2026-09-04:
+
+- Repository: `/home/dmitry/storyweavers`, clean `main` at commit `86bbf397`.
+- GPU: NVIDIA GeForce RTX 4090 with 24 GB VRAM.
+- Python environment: `training/storyworld_chat/.venv` using Python 3.10.12.
+- Training stack: PyTorch 2.14.0 with CUDA 13.0, Transformers 4.57.6,
+  Accelerate 1.14.0, Tokenizers 0.22.2, and TensorBoard 2.21.0.
+- CUDA import, allocation, matrix multiplication, model training, checkpoint
+  save, checkpoint reload, and chat-template inference have all been verified.
+
+Create the environment from a fresh clone with:
+
+```bash
+cd ~/storyweavers
+python3 -m venv training/storyworld_chat/.venv
+training/storyworld_chat/.venv/bin/python -m pip install --upgrade pip setuptools wheel
+training/storyworld_chat/.venv/bin/python -m pip --isolated install \
+  --index-url https://pypi.org/simple \
+  -r training/storyworld_chat/requirements.txt
+```
+
+The explicit PyPI index and isolated mode avoid an unreachable NVIDIA extra
+index configured on the current host. Transformers must remain below version 5
+unless `train_chat.py` is updated for the newer `TrainingArguments` API.
+
+### Verified Training Runs
+
+Generated data, tokenizers, and model outputs below are intentionally ignored by
+Git and currently live only on `pi`.
+
+| Run | Train/eval rows | Steps | Time | Result |
+| --- | ---: | ---: | ---: | --- |
+| `outputs/smoke-20m-v4` | 39 / none | 10 | 3.8s | End-to-end 14.6M wiring smoke passed. |
+| `outputs/chat60m-100w` | 1,572 / 308 | 50 | 13.8s | Best bounded generalization check; final eval loss 6.223. |
+| `outputs/chat60m-100w-10ep` | 1,572 / 308 | 500 | 102s | Deliberate overfit check; train loss 0.06, eval loss 6.745. |
+
+The bounded chat run used 100 shuffled training worlds and 20 disjoint eval
+worlds from the repaired 5k batch. The small-corpus tokenizer reached 7,263
+tokens, so the nominal 60M config instantiated 55,452,160 parameters. The
+10-epoch model nearly reproduced seen stories but still drifted on names; on
+unseen worlds it produced story-shaped but grammatically weak text. This proves
+the training path works, while also showing that repeating a narrow slice is not
+a substitute for the broad corpus.
+
+The current one-sample execution audit found:
+
+| Scope | Materialized scripts | Runnable | Emitted a story row |
+| --- | ---: | ---: | ---: |
+| All folders, including temporary and copied versions | 14,894 | 11,524 | 11,522 |
+| Six high-value batches listed in `storyworlds/BATCH_CATALOG.md` | 8,200 | 6,993 | 6,992 |
+
+The 6,992 emitting high-value scripts have no exact source duplicates. One
+sample from each totals about 2.85M estimated tokens. The full export should
+still oversample each script, deduplicate rendered stories, shuffle, and cap at
+250 as described below; do not extrapolate the one-sample audit as the final
+training row count.
+
+Next production step: export the full deduplicated corpus, train the final 16k
+tokenizer on that broad corpus, repack with exact tokenizer counts, create a
+world-disjoint dev split, and run the 60M model for two epochs.
+
 ## 1. Export StoryWorld Chat JSONL
 
 Small smoke export with separate one-turn rows:
