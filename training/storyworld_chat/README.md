@@ -113,6 +113,16 @@ python training/storyworld_chat/finalize_chat_jsonl.py \
   --manifest training/storyworld_chat/data/production_20260904/train.final.manifest.json
 ```
 
+Git LFS snapshots are stored in `training/storyworld_chat/data_archives/`:
+
+- `storyworld_chat_production_20260904_corpus.tar.gz` contains the clean
+  train/dev JSONL plus split, export, failure, and finalization metadata.
+- `storyworld_chat_production_20260904_tokenizer.tar.gz` contains the tokenizer
+  source export, its report/manifest, and the finalized 16k tokenizer.
+- `SHA256SUMS` records archive checksums. Run `git lfs pull` before extraction,
+  then `sha256sum -c training/storyworld_chat/data_archives/SHA256SUMS` from the
+  repository root.
+
 The production tokenizer is
 `training/storyworld_chat/tokenizers/storyworld-16k-production` and contains
 exactly 16,000 tokens. The two-epoch 60M run writes to
