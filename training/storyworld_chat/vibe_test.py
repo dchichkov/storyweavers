@@ -213,7 +213,7 @@ def generate(args: argparse.Namespace) -> int:
         dtype = torch.bfloat16 if args.bf16 and torch.cuda.is_available() else None
         model = AutoModelForCausalLM.from_pretrained(
             model_path,
-            torch_dtype=dtype,
+            dtype=dtype,
             device_map="auto" if torch.cuda.is_available() else None,
         )
         model.eval()
@@ -239,6 +239,7 @@ def generate(args: argparse.Namespace) -> int:
                 max_length=max(1, context_limit - args.max_new_tokens),
                 add_special_tokens=False,
             )
+            encoded.pop("token_type_ids", None)
             encoded = {key: value.to(model.device) for key, value in encoded.items()}
             prompt_width = int(encoded["input_ids"].shape[1])
             room = max(1, context_limit - prompt_width)
