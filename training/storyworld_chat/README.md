@@ -458,3 +458,64 @@ give its model path a new label. Use a separate generation file, or `--append`
 only when the label is new. Reusing the frozen prompts is what makes checkpoint
 deltas meaningful; changing the seed creates a new suite rather than extending
 the old one.
+
+## 6. Matched TinyStories Control Corpus
+
+`export_tinystories_chat_jsonl.py` builds a data-quality control run using the
+official TinyStories metadata archive. Unlike the text-only Parquet release,
+`TinyStories_all_data.tar.gz` preserves each story's original instruction,
+three required words, optional features, summary, and source model. The exporter
+defaults to GPT-4 stories and places the original request inside StoryWorld's
+exact `Task: write_story`, `Prompt:`, and `Params:` envelope.
+
+It deliberately uses the existing production 16k tokenizer and defaults to the
+exact production train/dev token budgets. This keeps tokenizer IDs, model
+architecture, chat format, optimizer setup, token exposure, and `vibe_test.py`
+checkpoint loading compatible. Splits are assigned by a seeded story-content
+hash, and exact story duplicates cannot cross splits.
+
+```bash
+wget -c -O training/storyworld_chat/source_data/tinystories/TinyStories_all_data.tar.gz \
+  'https://huggingface.co/datasets/roneneldan/TinyStories/resolve/main/TinyStories_all_data.tar.gz?download=true'
+
+training/storyworld_chat/.venv/bin/python \
+  training/storyworld_chat/export_tinystories_chat_jsonl.py \
+  --archive training/storyworld_chat/source_data/tinystories/TinyStories_all_data.tar.gz \
+  --tokenizer training/storyworld_chat/tokenizers/storyworld-16k-production \
+  --train-target-tokens 410187389 \
+  --dev-target-tokens 21694272 \
+  --source gpt4 \
+  --seed 20260905 \
+  --train-out training/storyworld_chat/data/tinystories_gpt4_matched/train.jsonl \
+  --dev-out training/storyworld_chat/data/tinystories_gpt4_matched/dev.jsonl \
+  --manifest training/storyworld_chat/data/tinystories_gpt4_matched/export.manifest.json
+```
+
+Train from scratch with the same production command, changing only the input
+and output paths:
+
+```bash
+training/storyworld_chat/.venv/bin/python \
+  training/storyworld_chat/train_chat.py \
+  --train-jsonl training/storyworld_chat/data/tinystories_gpt4_matched/train.jsonl \
+  --eval-jsonl training/storyworld_chat/data/tinystories_gpt4_matched/dev.jsonl \
+  --tokenizer training/storyworld_chat/tokenizers/storyworld-16k-production \
+  --output-dir training/storyworld_chat/outputs/tinystories-gpt4-60m-matched-2ep \
+  --config training/storyworld_chat/configs/storyworld_60m_1024.json \
+  --num-train-epochs 2 \
+  --per-device-train-batch-size 8 \
+  --per-device-eval-batch-size 8 \
+  --gradient-accumulation-steps 32 \
+  --learning-rate 3e-4 \
+  --logging-steps 10 \
+  --eval-steps 1000 \
+  --save-steps 1000 \
+  --save-total-limit 3 \
+  --bf16 \
+  --report-to tensorboard
+```
+
+The resulting checkpoints can be passed directly to `vibe_test.py generate`
+against the frozen StoryWorld dev prompts. Because plain TinyStories has no QA
+turns, this control isolates story generation quality; it does not test whether
+the model learned StoryWorld's follow-up QA behavior.
