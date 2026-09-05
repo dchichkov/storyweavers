@@ -5,7 +5,6 @@ from __future__ import annotations
 
 import argparse
 import hashlib
-import io
 import json
 import re
 import tarfile
@@ -161,8 +160,7 @@ def source_records(archive: Path) -> Iterable[tuple[str, int, dict[str, Any]]]:
             extracted = tar.extractfile(member)
             if extracted is None:
                 continue
-            with io.TextIOWrapper(extracted, encoding="utf-8") as text:
-                values = json.load(text)
+            values = json.loads(extracted.read().decode("utf-8"))
             if not isinstance(values, list):
                 continue
             for index, value in enumerate(values):
