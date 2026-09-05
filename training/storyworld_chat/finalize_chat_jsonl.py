@@ -6,6 +6,7 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import re
 from collections import Counter
 from pathlib import Path
 from typing import Any
@@ -20,6 +21,10 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--out", required=True, type=Path)
     parser.add_argument("--manifest", required=True, type=Path)
     parser.add_argument("--max-context-tokens", type=int, default=1024)
+    parser.add_argument(
+        "--exclude-message-regex",
+        help="drop rows when this regular expression matches any message content",
+    )
     return parser
 
 
@@ -65,6 +70,9 @@ def main() -> int:
         raise SystemExit("--out must not also be an input")
     if args.max_context_tokens < 1:
         raise SystemExit("--max-context-tokens must be positive")
+    exclude_pattern = (
+        re.compile(args.exclude_message_regex) if args.exclude_message_regex else None
+    )
 
     args.out.parent.mkdir(parents=True, exist_ok=True)
     args.manifest.parent.mkdir(parents=True, exist_ok=True)
@@ -77,6 +85,7 @@ def main() -> int:
     tokens: list[int] = []
     input_rows = 0
     duplicates_removed = 0
+    excluded_rows = 0
     digest = hashlib.sha256()
 
     try:
@@ -89,6 +98,12 @@ def main() -> int:
                         input_rows += 1
                         row = json.loads(line)
                         validate_row(row, source, line_number, args.max_context_tokens)
+                        if exclude_pattern and any(
+                            exclude_pattern.search(message["content"])
+                            for message in row["messages"]
+                        ):
+                            excluded_rows += 1
+                            continue
                         message_key = json.dumps(
                             row["messages"], ensure_ascii=False, sort_keys=True, separators=(",", ":")
                         )
@@ -130,6 +145,8 @@ def main() -> int:
         "input_rows": input_rows,
         "output_rows": len(tokens),
         "exact_conversation_duplicates_removed": duplicates_removed,
+        "excluded_rows": excluded_rows,
+        "exclude_message_regex": args.exclude_message_regex,
         "conflicting_ids_rewritten": sum(id_collision_counts.values()),
         "unique_ids": len(seen_ids),
         "source_rows": dict(source_rows),
@@ -150,7 +167,8 @@ def main() -> int:
     )
     print(
         f"wrote {len(tokens)} rows ({total_tokens} tokens); "
-        f"removed {duplicates_removed} exact conversation duplicates -> {args.out}"
+        f"removed {duplicates_removed} exact conversation duplicates and "
+        f"excluded {excluded_rows} rows -> {args.out}"
     )
     return 0
 
