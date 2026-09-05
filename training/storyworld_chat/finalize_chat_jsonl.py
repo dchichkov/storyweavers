@@ -70,6 +70,7 @@ def main() -> int:
     args.manifest.parent.mkdir(parents=True, exist_ok=True)
     temp = args.out.with_name(args.out.name + ".tmp")
     seen_ids: dict[str, str] = {}
+    id_collision_counts: Counter[str] = Counter()
     seen_messages: set[str] = set()
     source_rows: Counter[str] = Counter()
     task_rows: Counter[str] = Counter()
@@ -93,7 +94,16 @@ def main() -> int:
                         )
                         prior = seen_ids.get(row["id"])
                         if prior is not None and prior != message_key:
-                            raise ValueError(f"{source}:{line_number}: conflicting duplicate id {row['id']}")
+                            original_id = row["id"]
+                            id_collision_counts[original_id] += 1
+                            row["id"] = (
+                                f"{original_id}:collision:{id_collision_counts[original_id]}"
+                            )
+                            while row["id"] in seen_ids:
+                                id_collision_counts[original_id] += 1
+                                row["id"] = (
+                                    f"{original_id}:collision:{id_collision_counts[original_id]}"
+                                )
                         seen_ids[row["id"]] = message_key
                         if message_key in seen_messages:
                             duplicates_removed += 1
@@ -120,6 +130,7 @@ def main() -> int:
         "input_rows": input_rows,
         "output_rows": len(tokens),
         "exact_conversation_duplicates_removed": duplicates_removed,
+        "conflicting_ids_rewritten": sum(id_collision_counts.values()),
         "unique_ids": len(seen_ids),
         "source_rows": dict(source_rows),
         "task_rows": dict(task_rows),
