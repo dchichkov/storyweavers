@@ -105,5 +105,8 @@ Legend: `queued`, `active`, `repaired`, `verified`, `blocked`.
 | 10 | verified | `yam_chuckle_laser_storm_drain_humor_flashback.py` | 1 skeleton; 67/100 exact unique in fresh baseline | 1 skeleton | 100 unique; 100 skeletons | Twelve child-safe drain incidents; 310/600 unique story-QA pairs. |
 | 10 | verified | `yum_dim_crest_noon_curiosity_bravery_happy.py` | 1 skeleton; 72/100 exact unique in fresh baseline | 1 skeleton | 100 unique; 100 skeletons | Twelve scenarios; incorrect universal-key narration fixed. |
 | 10 | verified | `yell_surprise_suspense_dialogue_animal_story.py` | 1 skeleton/100 exact-unique stories | 1 skeleton | 100 unique; 100 skeletons | Twelve suspense incidents; 424/500 unique story-QA pairs. |
+| 11 | verified | `blase_canned_sharing_inner_monologue_animal_story.py` | 1 skeleton; 98/100 exact unique in fresh baseline | 1 skeleton | 100 unique; 100 skeletons | Twelve scenarios; source label framed as a temporary pose. |
+| 11 | verified | `deposit_pediatric_muddy_slope_mystery_to_solve.py` | 2 skeletons; 96/100 emitted in fresh baseline | 2 skeletons | 100 unique; 100 skeletons | Twelve child-safe medical mysteries; partial generation fixed. |
+| 11 | verified | `webbed_joey_conflict_mystery.py` | 1 skeleton/100 exact-unique stories | 1 skeleton | 100 unique; 100 skeletons | Twelve mystery cases; 353/500 unique story-QA pairs. |
 
 Additional waves follow the frozen 120-script template-collapse ranking.
