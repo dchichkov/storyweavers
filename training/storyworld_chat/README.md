@@ -440,6 +440,10 @@ although training always included it. Its prompts, generations, ratings, and
 report remain preserved under the original `dev16_seed20260905.*` names for
 auditability. The corrected rerun uses separate `dev16_seed20260905.bos.*`
 artifacts; generation rows also record `generation.bos_prepended=true`.
+Using the same 16 frozen prompts and `gpt-5.4-mini` judge, corrected overall
+scores were `2.062` for checkpoint 3000 and `2.250` for the final model, versus
+`2.250` and `2.438` in the original run. BOS therefore did not explain the weak
+StoryWorld generations; the BOS-corrected artifacts are the canonical result.
 
 Judge on the Linux box, then produce the compact summary and the full prompt,
 reference, generation, and score report:
