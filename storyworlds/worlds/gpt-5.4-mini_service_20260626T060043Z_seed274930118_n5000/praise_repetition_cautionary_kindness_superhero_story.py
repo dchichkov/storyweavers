@@ -33,6 +33,228 @@ TOOLS = ["a rope", "a flashlight", "a ladder", "a map", "a walkie-talkie"]
 ACTIONS = ["climb", "carry", "lift", "guide", "reach", "steady"]
 TRAITS = ["brave", "eager", "gentle", "careful", "friendly", "cheerful"]
 
+INCIDENTS = {
+    "a stuck kite": [
+        {
+            "id": "bakery_weather_vane",
+            "premise": "a silver kite was wound around the bakery's weather vane, and its tail kept knocking loose flour tins toward the sidewalk",
+            "impulse": "spring straight to the roof",
+            "warning": "A tumbling tin clanged beside an empty bench and showed how rushing could endanger someone below",
+            "clue": "the kite string tightened whenever the wind turned east",
+            "solution": "closed the sidewalk, waited for a quiet gust, and guided the baker as the string was unhooked from indoors",
+            "kindness": "asked the worried kite owner to count the safe steps with them",
+            "result": "the kite floated down without another tin falling",
+            "ending": "the kite's silver tail rested across the bakery counter beside a warm loaf",
+        },
+        {
+            "id": "tram_wire",
+            "premise": "a red kite had snagged near a tram wire while its young owner tugged harder and harder",
+            "impulse": "fly up and grab the wet string",
+            "warning": "The string snapped blue with a tiny spark, warning everyone to stay far away",
+            "clue": "a warning plate on the pole named the transit crew to call",
+            "solution": "moved the crowd back and helped the transit crew stop the line before they freed the kite",
+            "kindness": "sat with the frightened owner and explained that a kite can be replaced but a person cannot",
+            "result": "the crew lowered the kite after the wire was safely switched off",
+            "ending": "the red kite rode home folded beneath its owner's arm while the tram bell rang again",
+        },
+        {
+            "id": "park_branch",
+            "premise": "a kite was pulling a cracked branch over the tables at the park picnic",
+            "impulse": "yank the string with superhero strength",
+            "warning": "The branch creaked lower when the string was pulled, scattering cups across one table",
+            "clue": "the split in the branch widened each time the kite fluttered",
+            "solution": "cleared the tables, steadied the dangling string, and let the park keeper trim the cracked branch first",
+            "kindness": "turned the waiting children into a calm counting team instead of blaming the kite flyer",
+            "result": "the trimmed branch and the kite both came down gently",
+            "ending": "everyone ate beneath a safe green tree while the kite dried on the grass",
+        },
+    ],
+    "a blocked bridge": [
+        {
+            "id": "hidden_plank",
+            "premise": "storm branches covered the footbridge, hiding a plank that had cracked underneath",
+            "impulse": "sweep every branch aside in one mighty rush",
+            "warning": "One boot touched the hidden plank and it dipped toward the stream",
+            "clue": "a thin line of water bubbled up through the split wood",
+            "solution": "closed both ends, uncovered the boards one at a time, and helped the bridge crew mark the cracked plank",
+            "kindness": "found a level detour for a neighbor pushing a stroller",
+            "result": "the branches were cleared only after the weak board had been replaced",
+            "ending": "the first safe footsteps crossed beside a fresh yellow repair mark",
+        },
+        {
+            "id": "parade_gridlock",
+            "premise": "two parade carts had met nose to nose on the narrow bridge while families crowded behind them",
+            "impulse": "push both carts apart at once",
+            "warning": "The bridge rail shivered when both crowds leaned forward together",
+            "clue": "the smaller cart had a clear lane to reverse into",
+            "solution": "asked both sides to step back, reversed the smaller cart, and brought each group across in turn",
+            "kindness": "let the youngest musicians cross first so their heavy drums could be set down",
+            "result": "the carts passed separately and the bridge stopped shaking",
+            "ending": "the parade restarted with one soft drumbeat at each end of the bridge",
+        },
+        {
+            "id": "rising_creek",
+            "premise": "the creek had risen over the bridge approach and a delivery rider was waiting with medicine",
+            "impulse": "wade through the fast brown water",
+            "warning": "A loose bucket spun past faster than anyone could run",
+            "clue": "the flood marker showed that the safe riverside path was already underwater",
+            "solution": "sealed the approach and sent the medicine around the hill by the dry emergency route",
+            "kindness": "carried a message ahead so the waiting family knew the medicine was still coming",
+            "result": "the delivery arrived by the high road while the bridge stayed closed",
+            "ending": "a porch lamp blinked thank-you across the wet valley at dusk",
+        },
+    ],
+    "a fallen sign": [
+        {
+            "id": "school_crossing",
+            "premise": "the school crossing sign had fallen across the curb just as morning bicycles arrived",
+            "impulse": "lift the heavy post alone before the bell rang",
+            "warning": "The bent base scraped forward and nearly rolled into the bicycle lane",
+            "clue": "two rusted bolts were still sticking through the base",
+            "solution": "stopped the bicycles, covered the sharp bolts, and helped the crossing guard set a temporary sign",
+            "kindness": "walked beside a nervous new student through the marked crossing",
+            "result": "everyone entered school safely while a repair crew secured a new post",
+            "ending": "the new sign flashed gold in the afternoon sun above a row of parked bicycles",
+        },
+        {
+            "id": "market_awning",
+            "premise": "a market sign had dropped onto an awning, trapping a vendor's cart beneath the sagging cloth",
+            "impulse": "crawl under the awning and shoulder the sign up",
+            "warning": "A second hook popped loose and the canvas sagged another inch",
+            "clue": "the remaining hook was bearing all the weight",
+            "solution": "cleared the stall, supported the awning from outside, and guided the market crew to lower the sign together",
+            "kindness": "saved the vendor's fruit by passing each crate down a careful line of helpers",
+            "result": "the cart rolled free before the awning was repaired",
+            "ending": "the vendor arranged a bright apple star where the fallen sign had been",
+        },
+        {
+            "id": "trail_arrow",
+            "premise": "a trail sign had fallen and twisted, sending walkers toward a muddy ravine",
+            "impulse": "stand the sign up without checking which way it pointed",
+            "warning": "A returning walker called that the arrow had already led three people the wrong way",
+            "clue": "moss on the post matched the shaded side of its old hole",
+            "solution": "blocked the false turn, compared the trail map with the moss mark, and reset the arrow toward the lake",
+            "kindness": "waited for the missing walkers and shared water when they returned",
+            "result": "the corrected sign guided everyone back to the main trail",
+            "ending": "three muddy boot prints curved safely toward the blue lake",
+        },
+    ],
+    "a lost kitten": [
+        {
+            "id": "storm_drain",
+            "premise": "a lost kitten was mewing beneath a storm-drain grate as rain began to spot the pavement",
+            "impulse": "pull up the grate with bare hands",
+            "warning": "The heavy grate shifted and pinched the edge of a dropped glove",
+            "clue": "the mews came from a dry side pipe rather than the rushing channel",
+            "solution": "kept the street clear and guided an animal rescuer to open the side hatch",
+            "kindness": "spoke softly so the kitten followed the rescuer's warm food instead of hiding deeper",
+            "result": "the kitten emerged dry just before the rain became heavy",
+            "ending": "two damp paw prints appeared on the rescuer's yellow towel",
+        },
+        {
+            "id": "shop_awning",
+            "premise": "a lost kitten crouched on a striped shop awning above a noisy crowd",
+            "impulse": "leap onto the awning and scoop it up",
+            "warning": "The cloth bowed when the kitten backed away from the sudden movement",
+            "clue": "it leaned toward the quiet sound of its owner's bell",
+            "solution": "quieted the crowd and helped the shopkeeper open an upstairs window beside the awning",
+            "kindness": "gave the worried owner the job of ringing the familiar bell slowly",
+            "result": "the kitten stepped through the window by itself",
+            "ending": "its tiny bell jingled once from the safety of its owner's coat",
+        },
+        {
+            "id": "delivery_van",
+            "premise": "a lost kitten was hiding beneath a delivery van that was due to leave the square",
+            "impulse": "slide underneath and reach between the wheels",
+            "warning": "The driver started jingling the keys before noticing the small tail",
+            "clue": "a trail of crumbs led from the van to a quiet cardboard box",
+            "solution": "returned the keys to the driver, guarded the wheels, and placed the box at the end of the crumb trail",
+            "kindness": "asked everyone to kneel far back so the kitten had a calm path out",
+            "result": "the kitten crept into the box and the van left only after a full wheel check",
+            "ending": "the box rode home on its owner's lap with two green eyes peeking over the rim",
+        },
+    ],
+    "a jammed door": [
+        {
+            "id": "library_pebble",
+            "premise": "the library's side door was jammed while a reading club waited inside",
+            "impulse": "ram the door open with one powerful shoulder",
+            "warning": "A glass pane rattled and everyone inside stepped back",
+            "clue": "a tiny pebble was wedged beneath the lower hinge",
+            "solution": "kept the main exit clear and helped the librarian lift the door just enough to remove the pebble",
+            "kindness": "told the waiting children a quiet riddle so nobody crowded the doorway",
+            "result": "the door swung freely without cracking the glass",
+            "ending": "the reading club filed out beneath a paper moon hanging perfectly still",
+        },
+        {
+            "id": "rain_swollen",
+            "premise": "rain had swollen the community-center door while a soup delivery cooled outside",
+            "impulse": "pull the handle until the latch broke",
+            "warning": "The handle bent and the hot soup cart began rolling down the ramp",
+            "clue": "the top of the wooden door rubbed while the latch itself still moved",
+            "solution": "stopped the cart, used the other entrance, and helped the caretaker sand the swollen edge",
+            "kindness": "carried bowls first to the people who had been waiting longest",
+            "result": "the soup stayed warm and the repaired door closed without sticking",
+            "ending": "steam curled from the last bowl as rain tapped the easy-moving door",
+        },
+        {
+            "id": "greenhouse_vine",
+            "premise": "the greenhouse door was jammed with the gardening class on the warm side of the glass",
+            "impulse": "tear the whole vine away from the latch",
+            "warning": "The vine tightened around a shelf of seedling pots when it was tugged",
+            "clue": "one soft loop, not the thick stem, was caught behind the latch",
+            "solution": "opened the roof vents, supported the pots, and let the gardener unwind the single trapped loop",
+            "kindness": "protected both the waiting class and the living vine instead of choosing one over the other",
+            "result": "the door opened and the vine remained rooted and green",
+            "ending": "a heart-shaped leaf rested beside the freed latch",
+        },
+    ],
+}
+
+TOOL_STEPS = {
+    "a rope": "mark a safe waiting line between two cones",
+    "a flashlight": "inspect the trouble from the safe side without touching it",
+    "a ladder": "keep everyone clear while the trained helper locked a ladder in place for a higher view",
+    "a map": "mark the hazard and the safest route around it",
+    "a walkie-talkie": "report each step and wait for a clear reply before continuing",
+}
+
+OPENINGS = [
+    "Morning patrol had barely begun.",
+    "The city clocks had just chimed nine.",
+    "A neighborhood festival filled the streets.",
+    "Clouds hurried over the rooftops.",
+    "The community garden was opening for the day.",
+    "Shopkeepers were lifting their shutters.",
+]
+
+PRAISE_LINES = [
+    '"You noticed the danger before anyone was hurt. That is excellent hero work,"',
+    '"Good spotting. Real courage begins by paying attention,"',
+    '"You cared enough to stop and look. I am proud of that choice,"',
+    '"Sharp eyes, kind heart. You found the moment when help was needed,"',
+    '"That warning may have protected a neighbor. Well done,"',
+    '"You saw who needed help, not just a problem to conquer. Good work,"',
+]
+
+CHECKLISTS = [
+    ("Look, listen, ask, then act", "looked again, listened for changes, asked who was responsible, and only then acted"),
+    ("Clear the way, check the risk, choose the helper", "cleared the way, named the risk, and chose the right helper"),
+    ("People back, danger marked, grown-ups ready", "moved people back, marked the danger, and waited until the trained adults were ready"),
+    ("Pause, plan, protect", "paused, explained the plan, and protected the people nearest the trouble"),
+    ("No rush, no guess, one safe step", "stopped rushing, checked the clue, and took one safe step at a time"),
+    ("See it, say it, solve it safely", "studied the trouble, said the plan aloud, and solved it with the team"),
+]
+
+CLOSING_PRAISE = [
+    "praised the careful decision rather than the superhero strength",
+    "said the kindest rescue was the one that kept every helper safe",
+    "pointed out that changing a risky plan was a brave thing to do",
+    "thanked the hero for listening before acting",
+    "cheered the teamwork that made the rescue calm",
+    "called the patient plan a power worth practicing",
+]
+
 
 
 def _fallback_storyparams(args, rng, cls, ns):
@@ -395,6 +617,15 @@ def resolve_params(args: argparse.Namespace, rng: random.Random) -> StoryParams:
 
 
 def make_world(params: StoryParams) -> World:
+    stable_seed = params.seed
+    if stable_seed is None:
+        signature = "|".join(
+            [params.hero, params.helper, params.city, params.mishap, params.tool, params.trait]
+        )
+        stable_seed = sum((index + 1) * ord(char) for index, char in enumerate(signature))
+    rng = random.Random(stable_seed)
+    incident = rng.choice(INCIDENTS[params.mishap])
+    checklist, checklist_action = rng.choice(CHECKLISTS)
     hero = Hero(
         name=params.hero,
         title="superhero",
@@ -410,53 +641,105 @@ def make_world(params: StoryParams) -> World:
         caution_rule="slow down and check first",
         repetition_line="the plan was repeated until it sounded clear and safe",
     )
-    return World(hero=hero, helper=helper, problem=problem, tool=params.tool, city=params.city)
+    return World(
+        hero=hero,
+        helper=helper,
+        problem=problem,
+        tool=params.tool,
+        city=params.city,
+        facts={
+            "incident": incident,
+            "opening": rng.choice(OPENINGS),
+            "first_praise": rng.choice(PRAISE_LINES),
+            "checklist": checklist,
+            "checklist_action": checklist_action,
+            "tool_step": TOOL_STEPS[params.tool],
+            "closing_praise": rng.choice(CLOSING_PRAISE),
+        },
+    )
 
 
 def generate_story(world: World) -> None:
     h = world.hero
     he = world.helper
     p = world.problem
+    incident = world.facts["incident"]
+    checklist = world.facts["checklist"]
 
-    world.say(f"In {world.city}, {h.name} was a {h.trait} superhero who loved to help.")
-    world.say(f"One morning, {h.name} saw {p.thing} near the tallest path in {p.place}, and {h.name} wanted to fix it right away.")
-    world.say(f'{he.name} smiled and said, "Good job noticing that. Praise for your quick eyes, {h.name}!"')
+    article = "an" if h.trait[:1].lower() in "aeiou" else "a"
+    world.say(
+        f"{world.facts['opening']} In {world.city}, {h.name}, {article} {h.trait} "
+        "young superhero, heard someone call for help."
+    )
+    world.say(f"The trouble was {p.thing}: {incident['premise']}.")
+    world.say(
+        f"{h.name}'s first impulse was to {incident['impulse']}. "
+        f"Then {incident['warning'].lower()}."
+    )
+    world.say(f"{world.facts['first_praise']} said {he.name}.")
     h.memes["praise"] += 1
     h.memes["worry"] += 0.5
 
-    world.say(f"But {he.name} also said, " + f'"{p.caution_rule}. We should use {world.problem.thing} the safe way."')
+    world.say(
+        f'"But praise is not permission to rush," {he.name} added. '
+        f'"Use caution. What clue do you see?" {h.name} noticed that {incident["clue"]}.'
+    )
     h.memes["caution"] += 1
     h.memes["repetition"] += 1
-    world.say(f"{h.name} repeated the plan once, then twice: {p.repetition_line}.")
+    world.say(
+        f'Together they made a short plan: "{checklist}." {h.name} repeated it; '
+        f'the neighbors repeated it; then everyone followed it. The useful repetition settled the '
+        f'order in every mind, and the group {world.facts["checklist_action"]}.'
+    )
 
-    world.say(f"So {h.name} grabbed {world.tool} and used it carefully, step by step.")
+    world.say(
+        f"For the next step, {h.name} used {world.tool} to {world.facts['tool_step']}. "
+        f"Then the team {incident['solution']}."
+    )
     h.meters["helped"] = 1.0
     h.memes["worry"] = max(0.0, h.memes["worry"] - 0.5)
 
-    world.say(f"{h.name} helped without rushing, and {he.name} gave more praise for the kind choice.")
+    world.say(
+        f"Kindness shaped one more choice: {h.name} {incident['kindness']}. "
+        f"Because nobody rushed, {incident['result']}."
+    )
     h.memes["praise"] += 1
     h.memes["kindness"] += 1
-    world.say(f"At the end, {world.problem.thing} was fixed, {world.city} felt safe again, and {h.name} smiled bigger than before.")
+    world.say(
+        f"Afterward, {he.name} {world.facts['closing_praise']}. {h.name} understood the "
+        "cautionary lesson: praise should encourage careful kindness, not careless showing off."
+    )
+    world.say(f"That evening in {world.city}, {incident['ending']}.")
 
 
 def story_qa(world: World) -> list[QAItem]:
     h, he, p = world.hero, world.helper, world.problem
+    incident = world.facts["incident"]
+    article = "an" if h.trait[:1].lower() in "aeiou" else "a"
     return [
         QAItem(
-            question=f"Who was the superhero in the story?",
-            answer=f"The superhero was {h.name}, a {h.trait} hero who wanted to help in {world.city}.",
+            question="Who was the superhero in the story?",
+            answer=f"The superhero was {h.name}, {article} {h.trait} young hero in {world.city}.",
         ),
         QAItem(
-            question=f"Why did {he.name} tell {h.name} to slow down?",
-            answer=f"{he.name} wanted {h.name} to be careful, because fixing {p.thing} too fast could mean someone could get hurt.",
+            question=f"What did {h.name} nearly do too quickly?",
+            answer=f"{h.name} nearly tried to {incident['impulse']}. {incident['warning']}.",
         ),
         QAItem(
-            question=f"What helped {h.name} stay brave and kind?",
-            answer=f"Kind praise helped {h.name} stay brave, and repeating the safe plan helped {h.name} remember what to do.",
+            question=f"What clue helped {h.name} understand {p.thing}?",
+            answer=f"{h.name} noticed that {incident['clue']}. That clue helped the team choose a safer plan.",
         ),
         QAItem(
-            question=f"What tool did {h.name} use?",
-            answer=f"{h.name} used {world.tool} carefully to help fix the problem.",
+            question="What plan did everyone repeat?",
+            answer=f'Everyone repeated, "{world.facts["checklist"]}." The repetition helped the group remember the safe order.',
+        ),
+        QAItem(
+            question=f"How did {h.name} use {world.tool}?",
+            answer=f"{h.name} used {world.tool} to {world.facts['tool_step']}.",
+        ),
+        QAItem(
+            question="How did kindness affect the rescue?",
+            answer=f"{h.name} {incident['kindness']}. This made the rescue considerate as well as safe.",
         ),
     ]
 
@@ -483,19 +766,23 @@ def world_qa(world: World) -> list[QAItem]:
 
 
 def generation_prompts(world: World) -> list[str]:
+    incident = world.facts["incident"]
     return [
-        f"Write a short superhero story for little kids that includes praise, caution, and repetition.",
-        f"Tell a gentle story where {world.hero.name} helps with {world.problem.thing} in {world.city} using {world.tool}.",
-        "Write a story that shows a hero listening to kind advice, repeating a safe plan, and finishing with praise.",
+        "Write a child-friendly superhero story where praise, repetition, caution, and kindness all change what the hero does.",
+        f"Tell how {world.hero.name} handles {world.problem.thing} in {world.city} after noticing that {incident['clue']}.",
+        f"Write a cautionary rescue in which a hero repeats the plan '{world.facts['checklist']}' and uses {world.tool} safely.",
     ]
 
 
 def dump_trace(world: World) -> str:
     h = world.hero
+    incident = world.facts["incident"]
     lines = ["--- world model state ---"]
     lines.append(f"hero={h.name} meters={h.meters} memes={h.memes}")
     lines.append(f"helper={world.helper.name} role={world.helper.role}")
     lines.append(f"problem={world.problem.thing} place={world.problem.place}")
+    lines.append(f"incident={incident['id']} clue={incident['clue']}")
+    lines.append(f"result={incident['result']}")
     return "\n".join(lines)
 
 

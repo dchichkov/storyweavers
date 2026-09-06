@@ -148,6 +148,8 @@ class Entity:
             return {"subject": "she", "object": "her", "possessive": "her"}[case]
         if self.type in male:
             return {"subject": "he", "object": "him", "possessive": "his"}[case]
+        if self.kind == "character":
+            return {"subject": "they", "object": "them", "possessive": "their"}[case]
         return {"subject": "it", "object": "it", "possessive": "its"}[case]
 
     def it(self) -> str:
@@ -408,6 +410,22 @@ class Fix:
         return ""
 
 
+@dataclass(frozen=True)
+class Case:
+    id: str
+    occasion: str
+    missing: str
+    first_clue: str
+    mistaken_guess: str
+    evidence: str
+    helper_reason: str
+    kind_offer: str
+    shared_action: str
+    result: str
+    ending_image: str
+    lesson: str
+
+
 class World:
     def __init__(self, setting: Setting) -> None:
         self.setting = setting
@@ -639,6 +657,183 @@ FIXES = {
 NAMES = ["Mina", "Noah", "Iris", "Leo", "Ruby", "Otis"]
 HELPER_NAMES = ["Pia", "Ezra", "Sage", "Owen", "June", "Milo"]
 
+GENDERS = {
+    "Mina": "girl", "Iris": "girl", "Ruby": "girl", "Pia": "girl", "June": "girl",
+    "Noah": "boy", "Leo": "boy", "Otis": "boy", "Ezra": "boy", "Owen": "boy", "Milo": "boy",
+    "Sage": "child",
+}
+
+CASES = {
+    "landing_mat": Case(
+        id="landing_mat",
+        occasion="the playground's first morning after a rainy week",
+        missing="the blue landing mat that belonged on the ground below the slide",
+        first_clue="a trail of square muddy prints led toward the reading bench",
+        mistaken_guess="that someone had taken the mat just to keep other children away",
+        evidence="one dry book corner and a row of mat-shaped drips beneath the bench",
+        helper_reason="moved the mat to save the library books when rain blew under the bench",
+        kind_offer="offered to fetch a spare tarp for the books before returning the safety mat",
+        shared_action="covered the books with the tarp, rinsed the mat, and set it below the slide",
+        result="the landing place was padded again and the books stayed dry",
+        ending_image="the last raindrop flashed on the clean blue mat like a tiny magnifying glass",
+        lesson="asking why can turn an accusation into a solution",
+    ),
+    "queue_marks": Case(
+        id="queue_marks",
+        occasion="a cheerful class picnic",
+        missing="the chalk footprints that showed where the slide line began",
+        first_clue="a damp sponge rested beside a bucket striped with yellow chalk",
+        mistaken_guess="that the line leader had erased the marks to claim every turn",
+        evidence="gritty pebbles stuck to the sponge and a scrape shone on the lowest step",
+        helper_reason="washed away the chalk after loose grit made the steps slippery",
+        kind_offer="suggested drawing new footprints once the steps were clean and dry",
+        shared_action="swept the grit, dried each step, and drew a winding trail of fresh footprints",
+        result="everyone could queue safely without arguing over whose turn came next",
+        ending_image="small shoes waited on green and gold chalk feet while the slide gleamed bare and safe",
+        lesson="a fair rule works best when everyone helps make it safe",
+    ),
+    "welcome_flag": Case(
+        id="welcome_flag",
+        occasion="the park's welcome-day celebration",
+        missing="the bright welcome flag that usually flew from the pole beside the slide",
+        first_clue="three red threads clung to a low hawthorn branch",
+        mistaken_guess="that the helper had hidden the flag to spoil the celebration",
+        evidence="a snapped cord pointed downwind toward a robin's nest",
+        helper_reason="folded the fallen flag before its loose string could tangle near the nest",
+        kind_offer="invited the detective to replace the cord with a short, bird-safe tie",
+        shared_action="carried the flag back and fastened it where no string could trail",
+        result="the welcome flag flew again without putting the birds in danger",
+        ending_image="the red flag waved above the bare silver slide as a robin sang from the hedge",
+        lesson="protecting a small neighbor matters more than being first to decorate",
+    ),
+    "lost_sign": Case(
+        id="lost_sign",
+        occasion="a pleasant afternoon treasure hunt",
+        missing="the picture clue that had been clipped to the side of the slide",
+        first_clue="a bent wooden clip lay under a patch of fluttering leaves",
+        mistaken_guess="that the helper had removed the clue to win the treasure hunt",
+        evidence="leaf-shaped wet marks crossed the path toward the drinking fountain",
+        helper_reason="rescued the rain-soaked clue before its ink could wash away",
+        kind_offer="held out the dried clue and asked to finish the hunt as a team",
+        shared_action="copied the clue onto sturdy card and clipped it beside, not across, the slide",
+        result="every team could read the clue and the sliding path stayed clear",
+        ending_image="the new clue nodded in the breeze while two detectives followed its arrow together",
+        lesson="sharing evidence makes a mystery fair for everyone",
+    ),
+    "sun_hat": Case(
+        id="sun_hat",
+        occasion="a warm family play day",
+        missing="a little sun hat that had been perched on the slide's side rail",
+        first_clue="a ribbon end poked from beneath the lost-and-found basket",
+        mistaken_guess="that the helper meant to keep the pretty hat",
+        evidence="a name tag inside the hat matched a toddler searching near the swings",
+        helper_reason="put the hat safely in lost-and-found so it would not blow into the sliding lane",
+        kind_offer="asked the detective to help return it to its worried owner",
+        shared_action="matched the name tag, returned the hat, and moved the basket beside the gate",
+        result="the toddler had shade again and the slide remained bare of loose objects",
+        ending_image="the toddler's yellow hat bobbed toward the swings while the empty slide shone in the sun",
+        lesson="returning something precious is kinder than guarding a mistaken claim",
+    ),
+    "painted_star": Case(
+        id="painted_star",
+        occasion="the morning of the playground art walk",
+        missing="a paper star planned for the fence beside the slide",
+        first_clue="blue paint dots crossed the pavement but stopped at a recycling bin",
+        mistaken_guess="that the helper had thrown away another child's artwork",
+        evidence="the star's back was soggy and its tape had collected sand",
+        helper_reason="lifted it from the slide before the wet paper could make the surface slick",
+        kind_offer="offered clean card and a place on the fence for a stronger new star",
+        shared_action="painted a new star and pinned it securely to the fence",
+        result="the art could be admired while the slide stayed clear for play",
+        ending_image="their blue star dried on the fence, framing the bare slide through its center",
+        lesson="kindness can preserve an idea even when its first form cannot be saved",
+    ),
+    "acorn_map": Case(
+        id="acorn_map",
+        occasion="a breezy nature-club meeting",
+        missing="the acorn map children had arranged beside the slide",
+        first_clue="one acorn cap sat in a neat dustpan near the sandbox",
+        mistaken_guess="that the helper had swept up the map without caring",
+        evidence="tiny ants streamed from the old acorns toward a crack by the steps",
+        helper_reason="moved the acorns so no one would crush the ants or slip on the shells",
+        kind_offer="proposed rebuilding the map on a low table away from running feet",
+        shared_action="carried the ants' acorns to the soil and rebuilt the map with smooth stones",
+        result="the club kept its map and the path around the slide was safe",
+        ending_image="a spiral of stones pointed north while ants vanished beneath the green hedge",
+        lesson="careful observation makes room for people and tiny creatures alike",
+    ),
+    "bell": Case(
+        id="bell",
+        occasion="a lively playground relay",
+        missing="the brass turn bell that normally hung on a post near the slide",
+        first_clue="a circle of clean wood showed where the bell strap had been",
+        mistaken_guess="that the helper wanted to control every turn without ringing",
+        evidence="a frayed strap and a small brass screw rested on the repair cart",
+        helper_reason="removed the bell after its strap began to tear",
+        kind_offer="showed the detective the damage and offered to make turn cards meanwhile",
+        shared_action="made numbered cards, shared the turns, and asked an adult to mend the strap",
+        result="the relay continued fairly and the repaired bell could not fall",
+        ending_image="at sunset, one clear bell note floated over the bare slide and twelve orderly cards",
+        lesson="pausing to repair something can be fairer than pretending it is fine",
+    ),
+    "shadow_shapes": Case(
+        id="shadow_shapes",
+        occasion="a sunny shapes lesson",
+        missing="a set of cardboard shapes that had cast shadows across the slide's side panel",
+        first_clue="a triangle shadow trembled on the storage-shed door",
+        mistaken_guess="that the helper had carried the lesson away for another class",
+        evidence="two curling corners and a hot patch of tape showed the shapes had softened in the sun",
+        helper_reason="removed the loose cardboard before it peeled into the sliding path",
+        kind_offer="invited the detective to hold the shapes safely against the fence instead",
+        shared_action="clipped the shapes to the fence and traced their changing shadows in chalk",
+        result="the lesson continued and nothing loose covered the slide",
+        ending_image="a long triangle shadow reached toward their chalk circles as evening cooled the playground",
+        lesson="changing a plan is wise when the evidence reveals a safer way",
+    ),
+    "quiet_card": Case(
+        id="quiet_card",
+        occasion="a calm sensory-play hour",
+        missing="the quiet-turn card from the sign beside the slide",
+        first_clue="a corner of purple card showed beneath a bench cushion",
+        mistaken_guess="that the helper had hidden it to end quiet hour early",
+        evidence="a child nearby covered their ears whenever the card's metal clip rattled",
+        helper_reason="moved the rattling card so the sharp sound would stop",
+        kind_offer="suggested replacing the metal clip with a soft clothespin",
+        shared_action="found a wooden clothespin, rehung the card, and tested it in silence",
+        result="quiet turns resumed without the startling rattle",
+        ending_image="the purple card rested soundlessly beside the bare slide while leaves whispered overhead",
+        lesson="kindness listens for discomfort that other people may not notice",
+    ),
+    "garden_marker": Case(
+        id="garden_marker",
+        occasion="a garden-work morning beside the yard slide",
+        missing="the painted marker for the mint bed near the slide",
+        first_clue="green paint smudged a watering-can handle",
+        mistaken_guess="that the helper had borrowed the marker and forgotten it",
+        evidence="the marker's splintered end lay beside a newly covered patch of soil",
+        helper_reason="pulled out the broken marker before its sharp edge could scratch a gardener",
+        kind_offer="offered a smooth craft stick and asked to paint a replacement together",
+        shared_action="sanded the stick, painted MINT on it, and planted it firmly in the bed",
+        result="the herb bed had a safe label and the path to the slide stayed open",
+        ending_image="mint leaves brushed the new green marker while a ladybug crossed its final letter",
+        lesson="telling someone about a hidden hazard is an important kind act",
+    ),
+    "story_cards": Case(
+        id="story_cards",
+        occasion="the park's outdoor story circle",
+        missing="the ending card from a picture story arranged near the slide",
+        first_clue="three silver sequins led from the bare display board to a stroller",
+        mistaken_guess="that the helper had taken the ending to keep the answer secret",
+        evidence="a baby's fist held one sequin while the story card rested safely in the stroller pocket",
+        helper_reason="caught the card when wind blew it toward the baby and loose decorations came off",
+        kind_offer="returned the card and proposed removing the remaining loose sequins",
+        shared_action="saved the sequins in a jar and fastened the plain card to the display board",
+        result="the story had its ending and the baby could explore safely",
+        ending_image="the final picture stood beside the bare slide as sealed sequins sparkled inside their jar",
+        lesson="a plain, safe ending can hold more kindness than a glittery risk",
+    ),
+}
+
 
 @dataclass
 class StoryParams:
@@ -734,8 +929,8 @@ def resolve_params(args: argparse.Namespace, rng: random.Random) -> StoryParams:
 
 def build_world(params: StoryParams) -> World:
     world = World(_safe_lookup(SETTINGS, params.place))
-    detective = world.add(Entity(id="detective", kind="character", type="boy", label=params.name))
-    helper = world.add(Entity(id="helper", kind="character", type="girl", label=params.helper))
+    detective = world.add(Entity(id="detective", kind="character", type=GENDERS.get(params.name, "child"), label=params.name))
+    helper = world.add(Entity(id="helper", kind="character", type=GENDERS.get(params.helper, "child"), label=params.helper))
     slide = world.add(Entity(id="slide", type="slide", label="slide"))
     prize = world.add(Entity(id="prize", type=_safe_lookup(PRIZES, params.prize).type, label=_safe_lookup(PRIZES, params.prize).label, phrase=_safe_lookup(PRIZES, params.prize).phrase))
     world.facts = {
@@ -749,42 +944,160 @@ def build_world(params: StoryParams) -> World:
     return world
 
 
+def _story_rng(params: StoryParams) -> random.Random:
+    if params.seed is not None:
+        return random.Random(params.seed ^ 0x51D3C7)
+    identity = "|".join((params.place, params.activity, params.prize, params.name, params.helper))
+    return random.Random(sum((i + 1) * ord(ch) for i, ch in enumerate(identity)))
+
+
+def _opening(rng: random.Random, world: World, detective: Entity, prize: Prize, case: Case) -> str:
+    return rng.choice([
+        f"During {case.occasion}, {detective.label}, a young detective, arrived on a pleasant day at {world.setting.place}, wearing {prize.phrase} and looking for a mystery.",
+        f"The day felt pleasant at {world.setting.place}, especially to the young detective {detective.label}, who wore {prize.phrase} and kept a notebook ready.",
+        f"The young detective {detective.label} had promised to notice small things during {case.occasion}. At {world.setting.place} on that pleasant day, even {prize.phrase} had a pocket for clues.",
+        f"A pleasant breeze followed {detective.label} into {world.setting.place} for {case.occasion}. With {prize.phrase} on, the young detective began a careful patrol.",
+        f"No one had announced a mystery on that pleasant day at {world.setting.place}. Still, during {case.occasion}, the young detective {detective.label} noticed when the ordinary scene did not look ordinary at all.",
+    ])
+
+
+def _discovery(rng: random.Random, detective: Entity, case: Case) -> list[str]:
+    subject = detective.pronoun("subject").capitalize()
+    missing = rng.choice([
+        f"The slide looked bare because {case.missing} was gone.",
+        f"One glance at the bare slide revealed the problem: {case.missing} had vanished.",
+        f"Something made the slide look strangely bare. {subject} checked twice and saw that {case.missing} was missing.",
+        f"The first puzzle was a bare-looking slide, with no sign of {case.missing}.",
+    ])
+    clue = rng.choice([
+        f"Nearby, {case.first_clue}.",
+        f"Instead of guessing, {detective.label} searched low and high. Soon {case.first_clue}.",
+        f"A real detective follows what can be seen: {case.first_clue}.",
+        f"The smallest detail mattered. Just beyond the slide, {case.first_clue}.",
+    ])
+    thought = rng.choice([
+        f"At first, {detective.label} suspected {case.mistaken_guess}.",
+        f"{subject} nearly decided {case.mistaken_guess}, but a suspicion was not proof.",
+        f"The quick answer was {case.mistaken_guess}. {detective.label} wrote a question mark beside that idea.",
+        f"Could it be {case.mistaken_guess}? {detective.label} took one slow breath and kept investigating.",
+    ])
+    evidence = rng.choice([
+        f"Then the evidence changed the case: {case.evidence}.",
+        f"A closer look revealed evidence that did not fit the first guess: {case.evidence}.",
+        f"The next clue was stronger than suspicion: {case.evidence}.",
+        f"Before making an accusation, {detective.label} studied this evidence: {case.evidence}.",
+    ])
+    return [missing, clue, thought, evidence]
+
+
+def _conflict(rng: random.Random, detective: Entity, helper: Entity, case: Case) -> list[str]:
+    challenge = rng.choice([
+        f"A conflict began when {detective.label} blurted, \"You took it! I followed the clues.\"",
+        f"The suspicion became a conflict when {detective.label} hurried to block {helper.label}'s path. \"Please put it back right now,\" the detective said.",
+        f"\"This case is solved,\" {detective.label} announced too soon, pointing at {helper.label}. The accusation started a conflict.",
+        f"When {helper.label} arrived, both children spoke at once. Their different ideas tightened into a conflict.",
+    ])
+    pause = rng.choice([
+        f"{helper.label} looked hurt, so {detective.label} opened the notebook again and asked, \"What happened?\"",
+        f"The conflict made both voices louder. Then {detective.label} remembered that clues matter more than volume and asked for the missing part.",
+        f"For a moment neither child listened. {helper.label} pointed to the evidence, and {detective.label} let the question replace the accusation.",
+        f"{detective.label} noticed that the evidence still needed an explanation. \"Tell me your reason,\" the detective said more gently.",
+    ])
+    explanation = rng.choice([
+        f"{helper.label} explained that {helper.pronoun('subject')} {case.helper_reason}.",
+        f"\"I did not want to spoil anything,\" said {helper.label}. \"I {case.helper_reason}.\"",
+        f"The final piece clicked into place: {helper.label} had {case.helper_reason}.",
+        f"As {helper.label} described how {helper.pronoun('subject')} {case.helper_reason}, every clue began to agree.",
+    ])
+    return [challenge, pause, explanation]
+
+
+def _resolution(rng: random.Random, detective: Entity, helper: Entity, case: Case) -> list[str]:
+    kindness = rng.choice([
+        f"Kindness changed the investigation. {detective.label} apologized, and {helper.label} {case.kind_offer}.",
+        f"\"I am sorry I guessed before I listened,\" said {detective.label}. Answering with kindness, {helper.label} {case.kind_offer}.",
+        f"The detective crossed out the accusation. {helper.label}'s kindness supplied a better plan: {helper.pronoun('subject')} {case.kind_offer}.",
+        f"They could have stayed angry. Instead, kindness won: {detective.label} apologized and {helper.label} {case.kind_offer}.",
+    ])
+    work = rng.choice([
+        f"Together they {case.shared_action}.",
+        f"The two new partners {case.shared_action}.",
+        f"Following their kinder plan, they {case.shared_action}.",
+        f"This time they shared the work: they {case.shared_action}.",
+    ])
+    result = rng.choice([
+        f"Now {case.result}.",
+        f"Their work meant that {case.result}.",
+        f"The solved case had a result everyone could see: {case.result}.",
+        f"By listening and helping, they made sure {case.result}.",
+    ])
+    ending = rng.choice([
+        f"Before going home, {detective.label} wrote, \"{case.lesson.capitalize()}.\" Nearby, {case.ending_image}.",
+        f"The notebook's last line said, \"Lesson learned: {case.lesson}.\" Then {case.ending_image}.",
+        f"{detective.label} closed the case with one lesson: {case.lesson}. As the pleasant day ended, {case.ending_image}.",
+        f"The conflict was over, but its lesson remained: {case.lesson}. In the final quiet moment, {case.ending_image}.",
+    ])
+    return [kindness, work, result, ending]
+
+
 def generate(params: StoryParams) -> StorySample:
     world = build_world(params)
     detective = _safe_fact(world, world.facts, "detective")
     helper = _safe_fact(world, world.facts, "helper")
-    activity = _safe_fact(world, world.facts, "activity")
     prize = _safe_fact(world, world.facts, "prize")
-    intro(world, detective, prize)
+    rng = _story_rng(params)
+    case = rng.choice(list(CASES.values()))
+
+    slide = world.get("slide")
+    slide.meters["bare"] = 1.0
+    detective.memes["curiosity"] = 1.0
+    world.facts.update({"case": case, "missing": case.missing, "evidence": case.evidence})
+
+    world.say(_opening(rng, world, detective, prize, case))
     world.para()
-    clue_scene(world, detective, activity, prize)
-    simulate_clue(world, activity, prize, narrate=True)
-    if detect_problem(world, detective, activity, prize):
-        world.say(f"{detective.label} knew the clue meant a conflict was close.")
+    for sentence in _discovery(rng, detective, case):
+        world.say(sentence)
     world.para()
-    conflict_scene(world, detective, helper, activity, prize)
-    apply_activity(world, detective, activity, prize, narrate=True)
+    detective.memes["conflict"] = 1.0
+    helper.memes["conflict"] = 1.0
+    for sentence in _conflict(rng, detective, helper, case):
+        world.say(sentence)
     world.para()
-    fix = FIXES["mat"] if prize.region == "legs" else FIXES["cloth"]
-    resolution_scene(world, detective, helper, fix, prize)
+    detective.memes["conflict"] = 0.0
+    helper.memes["conflict"] = 0.0
+    detective.memes["kindness"] = 1.0
+    helper.memes["kindness"] = 1.0
+    detective.memes["relief"] = 1.0
+    slide.meters["safe"] = 1.0
+    world.facts.update({"resolution": case.shared_action, "lesson": case.lesson, "case_solved": True})
+    for sentence in _resolution(rng, detective, helper, case):
+        world.say(sentence)
     story = world.render()
     prompts = [
-        f"Write a short detective story for a young child that uses the words pleasant, slide, and bare.",
+        "Write a short detective story for a young child that uses the words pleasant, slide, and bare.",
         f"Tell a gentle mystery where {params.name} notices a bare slide and a conflict, then kindness helps.",
-        f"Write a simple detective tale about a pleasant day at {world.setting.place} with a kind ending.",
+        f"Write a simple detective tale about {case.occasion} at {world.setting.place} with a kind ending.",
     ]
     story_qa = [
         QAItem(
-            question=f"Who was the little detective in the story?",
-            answer=f"The little detective was {params.name}.",
+            question="Who investigated the mystery?",
+            answer=f"{params.name} investigated why the slide looked bare.",
         ),
         QAItem(
-            question=f"What was odd about the slide?",
-            answer="The slide was bare, and that made it look like something was missing or not ready.",
+            question="What was missing near the slide?",
+            answer=f"The missing item was {case.missing}.",
         ),
         QAItem(
-            question=f"How did the conflict get solved?",
-            answer=f"{params.helper} used kindness by bringing {fix.label}, which made the slide safe and ended the conflict.",
+            question=f"What evidence changed {params.name}'s first guess?",
+            answer=f"{params.name} found this decisive evidence: {case.evidence}.",
+        ),
+        QAItem(
+            question=f"What had {params.helper} done, and why?",
+            answer=f"{params.helper} had {case.helper_reason}.",
+        ),
+        QAItem(
+            question="How did kindness resolve the conflict?",
+            answer=f"{params.name} listened and apologized, while {params.helper} {case.kind_offer}. Together they {case.shared_action}.",
         ),
     ]
     world_qa = [
@@ -797,8 +1110,12 @@ def generate(params: StoryParams) -> StorySample:
             answer="A conflict is a problem where people want different things and feel upset until they find a way forward.",
         ),
         QAItem(
-            question="What is a slide?",
-            answer="A slide is a playground toy you climb up and then glide down.",
+            question="Why should a detective test a first guess against evidence?",
+            answer="A first guess can be wrong. Evidence helps a detective find an explanation that fits what really happened.",
+        ),
+        QAItem(
+            question="What lesson did this case demonstrate?",
+            answer=f"The case demonstrated that {case.lesson}.",
         ),
     ]
     return StorySample(params=params, story=story, prompts=prompts, story_qa=story_qa, world_qa=world_qa, world=world)

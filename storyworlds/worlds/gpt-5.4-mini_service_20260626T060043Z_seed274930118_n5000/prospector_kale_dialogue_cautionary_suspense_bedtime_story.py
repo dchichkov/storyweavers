@@ -26,7 +26,9 @@ import sys
 from dataclasses import dataclass, field
 from typing import Optional
 
-sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+sys.path.insert(
+    0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+)
 from results import QAItem, StoryError, StorySample  # noqa: E402
 
 
@@ -101,6 +103,11 @@ class StoryParams:
     hero_name: str
     child_name: str
     seed: Optional[int] = None
+    incident: int = 0
+    opening: int = 0
+    warning: int = 0
+    transition: int = 0
+    reflection: int = 0
 
 
 SETTINGS = {
@@ -111,6 +118,197 @@ SETTINGS = {
 
 HERO_NAMES = ["Milo", "Nina", "Theo", "Lina", "Owen", "Ivy"]
 CHILD_NAMES = ["Pip", "Mina", "Jasper", "Bea", "Toby", "Rosa"]
+
+INCIDENTS = [
+    {
+        "glimmer": "a row of silver flashes trembling across the kale",
+        "guess": "a seam of moon-silver had pushed up through the soil",
+        "urge": "rub one bright leaf to see whether treasure dust came off",
+        "sound": "a quick click-click answered from beneath the leaves",
+        "clue": "round drops clung to the leaf edges, and a loose sprinkler ticked nearby",
+        "test": "They held the lantern low and caught one drop on a clean spoon instead of touching the plant.",
+        "cause": "dew was reflecting the moon while the sprinkler cooled",
+        "repair": "The gardener tightened the sprinkler, then helped them rinse a basket of kale at the pump.",
+        "lesson": "shine can invite a guess, but clues deserve a careful look",
+        "ending": "Beside the quiet sprinkler, clean kale leaves shone like little green moons.",
+    },
+    {
+        "glimmer": "one pale shape bobbing between two dark rows of kale",
+        "guess": "a tiny cave lantern was signaling from underground",
+        "urge": "crawl through the narrow rows and grab the mysterious light",
+        "sound": "the shape scraped, paused, and scraped again",
+        "clue": "a wooden handle leaned from the leaves, with damp soil on its end",
+        "test": "They stayed on the path and called for the gardener rather than squeezing into the dark patch.",
+        "cause": "a white garden scoop was rocking on a loose irrigation hose",
+        "repair": "Together they moved the hose, returned the scoop, and washed the kale it had splashed.",
+        "lesson": "a moving shadow is not proof of danger or treasure",
+        "ending": "The scoop rested by the shed while the straight kale rows slept under the stars.",
+    },
+    {
+        "glimmer": "green sparks winking above the crinkled kale leaves",
+        "guess": "emerald nuggets were floating out of a secret mine",
+        "urge": "wave a jar through the leaves and capture every spark",
+        "sound": "something hummed close to the jar and vanished",
+        "clue": "the lights rose on tiny wings and blinked only when the air grew still",
+        "test": "They set the jar down, counted the flashes, and watched without chasing them.",
+        "cause": "fireflies were resting above the cool kale patch",
+        "repair": "The gardener showed them a safe path around the plants and picked kale from the far row.",
+        "lesson": "wonder is better observed gently than snatched in haste",
+        "ending": "Fireflies blinked over the rinsed kale, and nobody disturbed their soft green dance.",
+    },
+    {
+        "glimmer": "a golden corner peeking from under the largest kale plant",
+        "guess": "a lost claim map had finally surfaced",
+        "urge": "yank the corner free before anyone else spotted it",
+        "sound": "paper crackled, followed by a low rustle along the fence",
+        "clue": "the corner bore a painted carrot and was tied to a garden stake",
+        "test": "They loosened no knots and read the visible words by lantern light.",
+        "cause": "the gardener's planting label had folded beneath a leaf",
+        "repair": "The gardener retied the label, showed them the word KALE, and let them harvest an outer leaf.",
+        "lesson": "finding something does not make it yours to pull apart",
+        "ending": "The straightened label stood guard while a washed kale leaf dried on a blue cloth.",
+    },
+    {
+        "glimmer": "a coppery gleam circling the stems at ground level",
+        "guess": "a buried bracelet marked the mouth of a mine",
+        "urge": "dig beside the stems with the prospector's small trowel",
+        "sound": "dry leaves gave a long shiver although the wind had stopped",
+        "clue": "a thin trail curved around the plants and disappeared under a watering board",
+        "test": "They put the trowel away and traced the trail from the path with the lantern.",
+        "cause": "a harmless snail trail was catching the moonlight",
+        "repair": "The gardener moved the board without hurting the snail and showed them which kale leaves were ready.",
+        "lesson": "careful tracking protects small lives as well as gardens",
+        "ending": "A snail crossed the silver path as the three friends carried clean kale home.",
+    },
+    {
+        "glimmer": "a bright rim flashing inside a fallen flowerpot beside the kale",
+        "guess": "a gold pan had been hidden there by another prospector",
+        "urge": "reach into the pot before the scraping sound returned",
+        "sound": "scritch-scratch came from the pot, then stopped when they spoke",
+        "clue": "two dry kale leaves poked from the rim and moved whenever the breeze slipped under them",
+        "test": "They tapped the ground beside the pot with a stick and waited at arm's length.",
+        "cause": "wind was turning a loose metal plant marker inside the pot",
+        "repair": "The gardener lifted the pot, secured the marker, and composted the dry leaves.",
+        "lesson": "waiting and testing from a safe distance can shrink a frightening mystery",
+        "ending": "The marker lay snug in its tray, and the kale made only a sleepy leafy hush.",
+    },
+    {
+        "glimmer": "inky drops sparkling on one edge of the kale bed",
+        "guess": "dark ore was leaking from a crack below",
+        "urge": "taste a drop to learn whether it was bitter mineral water",
+        "sound": "a bucket knocked softly somewhere beyond the gate",
+        "clue": "the drops smelled earthy, and a tipped watering pail stood beside a sack marked COMPOST",
+        "test": "They touched nothing, stepped back, and told the gardener exactly what they had noticed.",
+        "cause": "safe compost tea had spilled while feeding the soil, but the leaves still needed washing",
+        "repair": "The gardener righted the pail and rinsed the harvested kale twice under clean water.",
+        "lesson": "even familiar garden things should be identified before tasting",
+        "ending": "The empty pail drained upside down while clean kale curled in a white bowl.",
+    },
+    {
+        "glimmer": "tiny crystals whitening the tips of the kale",
+        "guess": "a frost mine had opened during the night",
+        "urge": "snap off a crystal-covered leaf as a treasure sample",
+        "sound": "a brittle little crack ran down the row",
+        "clue": "their breath clouded, the path glittered too, and every crystal melted on the lantern glass",
+        "test": "They covered one leaf with a mitten and waited to see whether its crystals vanished.",
+        "cause": "the first light frost had silvered the whole garden",
+        "repair": "The gardener checked the leaves, harvested the sound ones, and washed them in the warm kitchen.",
+        "lesson": "several matching clues can correct an exciting first guess",
+        "ending": "Outside, frost twinkled untouched; inside, green kale steamed beside three drowsy cups.",
+    },
+    {
+        "glimmer": "a trembling pool of light beneath a leaning kale plant",
+        "guess": "water had filled an abandoned mine shaft",
+        "urge": "step off the stones and measure the shining pool",
+        "sound": "drip, pause, drip came from under the soil",
+        "clue": "one stepping stone was darker than the others and the nearby leaves drooped",
+        "test": "They marked the wet stone with the lantern and fetched the gardener without crossing it.",
+        "cause": "a split irrigation tube had made a slippery puddle and thirsty plants",
+        "repair": "They held the lantern while the gardener joined the tube and propped the kale upright.",
+        "lesson": "a cautious warning matters most when excitement hides an ordinary hazard",
+        "ending": "The repaired tube gave one final plip, and the upright kale cast a calm shadow.",
+    },
+    {
+        "glimmer": "three bright marks leading from the gate toward the kale",
+        "guess": "another prospector had stamped a secret trail",
+        "urge": "follow the marks between the beds before they faded",
+        "sound": "a bell at the gate gave one lonely ting",
+        "clue": "each mark had the same crescent edge as the gardener's muddy boot",
+        "test": "They compared the marks from the path and called out instead of following into the beds.",
+        "cause": "the gardener had carried a lantern through wet soil while checking the kale",
+        "repair": "The gardener brushed the path, latched the gate, and invited them to pick kale together.",
+        "lesson": "asking the person who made a clue can be wiser than inventing a chase",
+        "ending": "Three clean bootprints pointed home beneath a lantern hanging safely on its hook.",
+    },
+    {
+        "glimmer": "a silver ribbon curling from the kale toward the shed",
+        "guess": "a mapmaker had drawn a shining road to treasure",
+        "urge": "race along the ribbon before the moon went behind a cloud",
+        "sound": "the shed latch clacked twice in the gathering dark",
+        "clue": "the ribbon was wet, narrow, and broken wherever the soil was dry",
+        "test": "They stood together, lit a second lantern, and followed it only from the firm path.",
+        "cause": "a watering can had dribbled a moonlit trail after the gardener filled it",
+        "repair": "The gardener closed the loose latch, wiped the can, and washed a handful of kale.",
+        "lesson": "staying together keeps a curious investigation from becoming a risky one",
+        "ending": "The dry watering can gleamed on its shelf while the moonlit ribbon faded away.",
+    },
+    {
+        "glimmer": "a brass-colored disk swinging just above the kale",
+        "guess": "a prospector's medal was warning them away from a claim",
+        "urge": "duck under the garden cord and catch the swinging disk",
+        "sound": "ting-a-ling rang out whenever the disk brushed a stake",
+        "clue": "the disk hung from the gate cord, and one broad kale leaf had pulled the cord tight",
+        "test": "They stayed outside the cord and shone the lantern along it from end to end.",
+        "cause": "the gardener's little gate bell had snagged on a fallen kale leaf",
+        "repair": "The gardener freed the leaf, tested the bell, and washed the leaf before adding it to supper.",
+        "lesson": "boundaries remain important even when the thing beyond them looks harmless",
+        "ending": "The gate clicked shut, the bell was still, and one clean kale leaf waited on a starry plate.",
+    },
+]
+
+OPENINGS = [
+    "The moon had climbed above {place} when {hero}, a careful prospector, promised {child} one last quiet walk before bed.",
+    "Just before bedtime, {child} carried a lantern beside {hero}, the prospector, along the safest path through {place}.",
+    "A cool night settled over {place}. {hero}, an old prospector at heart, showed {child} how to walk slowly and notice small things.",
+    "While the house grew sleepy, prospector {hero} and {child} took a final lantern round through {place}.",
+    '"Ten careful minutes, then pillows," said prospector {hero} as {child} joined the moonlit walk through {place}.',
+    "Crickets tuned their night song around {place} as {hero}, the prospector, led {child} between the garden markers.",
+    "Bedtime was near, but {hero} the prospector had promised {child} a calm look at {place} beneath the moon.",
+    "With one lantern and two pairs of boots, prospector {hero} and {child} entered {place} for a short bedtime stroll.",
+]
+
+WARNINGS = [
+    '"Stop at the path," {hero} said. "A sparkle tells us where to look, not what is safe."',
+    '"Curiosity may ask the first question," warned {hero}, "but caution chooses our next step."',
+    '"Let our eyes investigate before our hands do," {hero} said, drawing {child} back.',
+    '"No tasting, grabbing, or stepping closer until we know," said {hero}.',
+    '"A good prospector checks a clue twice," {hero} reminded {child}. "Stay beside me."',
+    '"We can solve this without rushing," whispered {hero}. "First, tell me what you notice."',
+    '"Unknown does not mean terrible," {hero} said, "but it does mean we pause and check."',
+    '"Treasure can wait," said {hero}. "Safety cannot, so we gather clues from here."',
+]
+
+TRANSITIONS = [
+    "For a moment, neither of them moved.",
+    "The lantern flame dipped, and the shadows seemed to lean closer.",
+    "They listened through one long cricket song.",
+    "A cloud crossed the moon, making the mystery look larger than before.",
+    "Their brave plan was simply to be still and pay attention.",
+    "The garden held its breath while they considered the evidence.",
+    "Instead of filling the silence with guesses, they searched for one more clue.",
+    "They counted three slow breaths before deciding what to do.",
+]
+
+REFLECTIONS = [
+    '"The sound made me want to hurry," {child} admitted, "but hurrying would not have explained it."',
+    '"Our first guess was exciting," said {child}, "and the real answer fits all the clues better."',
+    '"I am glad we protected the kale while we investigated," {child} said.',
+    '"Being cautious did not spoil the mystery," {child} observed. "It helped us solve it."',
+    '"Next time I will ask what the evidence shows," promised {child}.',
+    '"We were brave enough to wait," {child} said, holding the lantern steady.',
+    '"A clue is more useful when we do not disturb it," {child} decided.',
+    '"We found an answer without turning a small puzzle into a big problem," said {child}.',
+]
 
 
 # ---------------------------------------------------------------------------
@@ -170,6 +368,11 @@ def asp_verify() -> int:
 def build_world(params: StoryParams) -> StoryState:
     setting = SETTINGS[params.place]
     world = StoryState(setting=setting)
+    incident = INCIDENTS[params.incident % len(INCIDENTS)]
+    story_place = (
+        "the garden just beyond the kitchen door"
+        if setting.indoor else setting.place
+    )
 
     hero = world.add(Entity(
         id=params.hero_name, kind="character", type="prospector",
@@ -188,53 +391,53 @@ def build_world(params: StoryParams) -> StoryState:
         owner=gardener.id, caretaker=gardener.id, edible=True, safe_after_wash=True,
     ))
 
-    # Act 1
+    world.say(OPENINGS[params.opening % len(OPENINGS)].format(
+        place=story_place, hero=hero.id, child=child.id
+    ))
+    world.say(f"Near the kale, they noticed {incident['glimmer']}.")
     world.say(
-        f"On a quiet bedtime evening, {hero.id} was a sleepy prospector who loved moonlit walks."
-    )
-    world.say(
-        f'{hero.id} peeked at the shiny leaves and whispered, "Could that be gold?"'
-    )
-    world.say(
-        f'{child.id} tiptoed beside {hero.id} and asked, "Is it treasure, or is it supper?"'
+        f'"Perhaps {incident["guess"]}," {hero.id} murmured. '
+        f'"Or perhaps it is something ordinary," {child.id} replied.'
     )
 
-    # Act 2
     world.para()
     world.say(
-        f"Near {world.setting.place}, the leaves gleamed in the dark, and the night felt very still."
+        f"Then {incident['sound']}. {child.id} wanted to {incident['urge']}."
     )
-    world.say(
-        f"{child.id} reached for the leaves at once, but {hero.id} lifted a hand and said, "
-        f'"Wait first. Some plants are safe, and some are not."'
-    )
+    world.say(WARNINGS[params.warning % len(WARNINGS)].format(
+        hero=hero.id, child=child.id
+    ))
     child.memes["impulse"] = 1
     hero.memes["caution"] = 1
     world.facts["tension"] = True
-    world.facts["danger"] = True
-    world.say(
-        f"The crickets kept chirping while everyone listened for footsteps in the grass."
-    )
+    world.facts["possible_danger"] = incident["urge"]
+    world.say(TRANSITIONS[params.transition % len(TRANSITIONS)])
+    world.say(f"From the safe path, they saw that {incident['clue']}.")
+    world.say(incident["test"])
+    world.say(REFLECTIONS[params.reflection % len(REFLECTIONS)].format(
+        child=child.id
+    ))
 
-    # Act 3
     world.para()
     world.say(
-        f"Then the gardener came with a lantern and smiled. "
-        f'"It is kale," {gardener.id} said. "It is good to eat after you wash it."'
+        f'The gardener arrived and listened to every clue. "You investigated wisely," '
+        f'the gardener said. "{incident["cause"].capitalize()}."'
     )
+    world.say(incident["repair"])
     world.say(
-        f"{child.id} breathed out, and {hero.id} laughed softly, relieved that the mystery was safe."
+        f'"Tonight I learned that {incident["lesson"]}," {child.id} told {hero.id}. '
+        f"The prospector nodded, glad their suspenseful mystery had ended safely."
     )
-    world.say(
-        f"They carried the kale inside, washed it in a little bowl, and left the moonlit path peaceful again."
-    )
+    world.say(f"Then {child.id} yawned, and they turned home toward bedtime.")
+    world.say(incident["ending"])
 
     world.facts.update(
         hero=hero,
         child=child,
         gardener=gardener,
         kale=kale,
-        place=params.place,
+        place=story_place,
+        incident=incident,
     )
     return world
 
@@ -244,10 +447,11 @@ def build_world(params: StoryParams) -> StoryState:
 # ---------------------------------------------------------------------------
 def generation_prompts(world: StoryState) -> list[str]:
     f = world.facts
+    incident = f["incident"]
     return [
-        'Write a bedtime story about a prospector who mistakes shiny kale for treasure.',
-        f"Tell a gentle suspense story where {f['hero'].id} warns {f['child'].id} to check a plant before tasting it.",
-        f'Write a child-friendly story set in {f["place"]} with a dialogue about whether a leafy patch is safe.',
+        f'Write a bedtime story about a prospector investigating {incident["glimmer"]}.',
+        f"Tell a gentle suspense story where {f['hero'].id} helps {f['child'].id} investigate safely before acting.",
+        f'Write a child-friendly story set in {f["place"]} with dialogue, kale, a cautionary turn, and a peaceful ending.',
     ]
 
 
@@ -257,22 +461,27 @@ def story_qa(world: StoryState) -> list[QAItem]:
     child = f["child"]
     gardener = f["gardener"]
     place = f["place"]
+    incident = f["incident"]
     return [
         QAItem(
-            question=f"Who was the sleepy prospector in the story?",
-            answer=f"The sleepy prospector was {hero.id}. {hero.id} walked by moonlight and watched the shiny leaves carefully.",
+            question=f"Who was the prospector in the story?",
+            answer=f"The prospector was {hero.id}. {hero.id} helped {child.id} examine the nighttime mystery without rushing.",
         ),
         QAItem(
-            question=f"What did {child.id} want to do when they found the shiny leaves?",
-            answer=f"{child.id} wanted to taste the leaves at once, but {hero.id} said to wait and check first.",
+            question=f"What risky thing did {child.id} first want to do?",
+            answer=f"{child.id} wanted to {incident['urge']}. {hero.id} asked the child to pause and investigate from a safe place instead.",
         ),
         QAItem(
-            question=f"Why did everyone stop worrying at {place}?",
-            answer=f"Everyone stopped worrying because the gardener arrived with a lantern and said the leaves were kale, which was safe after washing.",
+            question=f"What clue helped solve the suspenseful mystery at {place}?",
+            answer=f"They noticed that {incident['clue']}. That evidence helped the gardener explain that {incident['cause']}.",
         ),
         QAItem(
-            question=f"What did they do with the kale at the end?",
-            answer=f"They carried the kale inside and washed it in a little bowl before bedtime.",
+            question="How did the gardener help make things right?",
+            answer=incident["repair"],
+        ),
+        QAItem(
+            question=f"What lesson did {child.id} learn before bedtime?",
+            answer=f"{child.id} learned that {incident['lesson']}. The careful choice kept the child, the kale, and the garden safe.",
         ),
     ]
 
@@ -341,7 +550,16 @@ def resolve_params(args: argparse.Namespace, rng: random.Random) -> StoryParams:
     child_name = args.child or rng.choice(CHILD_NAMES)
     if hero_name == child_name:
         child_name = rng.choice([n for n in CHILD_NAMES if n != hero_name])
-    return StoryParams(place=place, hero_name=hero_name, child_name=child_name)
+    return StoryParams(
+        place=place,
+        hero_name=hero_name,
+        child_name=child_name,
+        incident=rng.randrange(len(INCIDENTS)),
+        opening=rng.randrange(len(OPENINGS)),
+        warning=rng.randrange(len(WARNINGS)),
+        transition=rng.randrange(len(TRANSITIONS)),
+        reflection=rng.randrange(len(REFLECTIONS)),
+    )
 
 
 def generate(params: StoryParams) -> StorySample:

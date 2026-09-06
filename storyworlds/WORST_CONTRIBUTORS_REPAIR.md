@@ -78,5 +78,8 @@ Legend: `queued`, `active`, `repaired`, `verified`, `blocked`.
 | 6 | verified | `narrative_specify_coupon_teamwork_foreshadowing_tall_tale.py` | 1 skeleton/100 exact-unique stories | 1 skeleton | 100 unique; 67 skeletons | Twelve arcs and eight telling modes; 229/600 unique story-QA pairs. |
 | 6 | verified | `photography_twit_aster_transformation_kindness_comedy.py` | 1 skeleton/100 exact-unique stories | 1 skeleton | 100 unique; 100 skeletons | Twelve scenarios; potentially insulting term recast as a fictional bird. |
 | 6 | verified | `plunge_frigate_inner_monologue_twist_sharing_rhyming.py` | 1 skeleton/100 exact-unique stories | 1 skeleton | 100 unique; 100 skeletons | Twelve incidents; 383/500 unique story-QA pairs. |
+| 6 | verified | `pleasant_slide_bare_kindness_conflict_detective_story.py` | 1 skeleton; 79/100 exact unique in fresh baseline | 1 skeleton | 100 unique; 100 skeletons | Twelve safe detective cases; 214/500 unique story-QA pairs. |
+| 7 | verified | `praise_repetition_cautionary_kindness_superhero_story.py` | 1 production skeleton; 2 in fresh baseline | 2 skeletons | 100 unique; 100 skeletons | Fifteen safety incidents; independent replay check passed. |
+| 7 | verified | `prospector_kale_dialogue_cautionary_suspense_bedtime_story.py` | 1 skeleton/100 exact-unique stories | 1 skeleton | 100 unique; 100 skeletons | Twelve cautionary mysteries; 221/500 unique story-QA pairs. |
 
 Additional waves follow the frozen 120-script template-collapse ranking.
