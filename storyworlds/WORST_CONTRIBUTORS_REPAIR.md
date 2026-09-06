@@ -108,5 +108,8 @@ Legend: `queued`, `active`, `repaired`, `verified`, `blocked`.
 | 11 | verified | `blase_canned_sharing_inner_monologue_animal_story.py` | 1 skeleton; 98/100 exact unique in fresh baseline | 1 skeleton | 100 unique; 100 skeletons | Twelve scenarios; source label framed as a temporary pose. |
 | 11 | verified | `deposit_pediatric_muddy_slope_mystery_to_solve.py` | 2 skeletons; 96/100 emitted in fresh baseline | 2 skeletons | 100 unique; 100 skeletons | Twelve child-safe medical mysteries; partial generation fixed. |
 | 11 | verified | `webbed_joey_conflict_mystery.py` | 1 skeleton/100 exact-unique stories | 1 skeleton | 100 unique; 100 skeletons | Twelve mystery cases; 353/500 unique story-QA pairs. |
+| 11 | verified | `destructor_sharing_surprise_cautionary_nursery_rhyme.py` | 1 skeleton; 91/100 exact unique in fresh baseline | 1 skeleton | 100 unique; 100 skeletons | Twelve incidents; destructor recast as a harmless craft toy. |
+| 11 | verified | `equivalent_sherbet_kindergarten_kindness_dialogue_ghost_story.py` | 1 skeleton; 96/100 emitted in fresh baseline | 1 skeleton | 100 unique; 100 skeletons | Twelve gentle kindergarten mysteries; partial generation fixed. |
+| 11 | verified | `eyed_cautionary_sharing_humor_pirate_tale.py` | 1 skeleton; 97/100 exact unique in fresh baseline | 1 skeleton | 100 unique; 100 skeletons | Twelve pirate incidents; 330/600 unique story-QA pairs. |
 
 Additional waves follow the frozen 120-script template-collapse ranking.
