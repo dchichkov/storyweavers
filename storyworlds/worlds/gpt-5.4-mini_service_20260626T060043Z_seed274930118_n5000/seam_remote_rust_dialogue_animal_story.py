@@ -25,7 +25,9 @@ import sys
 from dataclasses import dataclass, field
 from typing import Optional
 
-sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+sys.path.insert(0, ROOT)
+sys.path.insert(0, os.path.join(ROOT, "storyworlds"))
 from results import QAItem, StoryError, StorySample  # noqa: E402
 
 
@@ -94,6 +96,20 @@ class StoryParams:
     name: str
     friend_name: str
     seed: Optional[int] = None
+
+
+@dataclass(frozen=True)
+class Incident:
+    title: str
+    textile: str
+    remote_job: str
+    premise: str
+    accident: str
+    clue: str
+    mistaken_try: str
+    repair: str
+    lesson: str
+    ending: str
 
 
 class World:
@@ -179,6 +195,154 @@ CHARACTER_NAMES = {
 }
 
 
+INCIDENTS = [
+    Incident(
+        title="shadow-puppet rehearsal",
+        textile="the moon-patterned puppet curtain",
+        remote_job="change the little stage lights",
+        premise="They were rehearsing a shadow-puppet show for the youngest animals",
+        accident="a paper moon snagged the curtain seam just as the light remote began to rasp",
+        clue="a rust-colored crescent beneath the battery-door hinge matched a damp ring on the shelf",
+        mistaken_try="pressing harder only wrinkled the button and pulled the seam wider",
+        repair="unpinned the moon, stitched a broad cloth patch behind the seam, and let the grown-up badger clean and oil only the rusty hinge",
+        lesson="A careful look can solve two troubles that impatient paws only enlarge",
+        ending="The patched moon sailed across the curtain while silver shadows danced without a wobble",
+    ),
+    Incident(
+        title="sleepover story hour",
+        textile="the striped reading quilt",
+        remote_job="play gentle forest sounds",
+        premise="They were arranging a quiet story corner for a rainy-night sleepover",
+        accident="a basket wheel caught the quilt seam, and rain blown through the window reached the remote's metal latch",
+        clue="one orange flake on the latch and a wet wheel track showed what had happened",
+        mistaken_try="hiding the rip beneath a pillow left a cold draft and did nothing for the silent remote",
+        repair="moved the basket, dried the shelf, reinforced the seam with a patch and strong backstitches, and asked Owl to loosen the cleaned latch with one careful drop of oil",
+        lesson="Telling the truth early gives everyone time to make a lasting repair",
+        ending="Rain tapped the roof as the mended quilt rose over two warm noses and the remote whispered cricket songs",
+    ),
+    Incident(
+        title="seedling rescue",
+        textile="the canvas sling used to carry seedlings",
+        remote_job="guide a toy watering cart",
+        premise="They were carrying tiny tomato plants from the shed to the sunny garden",
+        accident="a heavy pot split the sling's side seam while old rust locked the remote's battery door",
+        clue="the torn threads leaned toward the overloaded corner, and rusty dust fell when the door was tilted",
+        mistaken_try="balancing every pot in one paw made the seedlings sway dangerously",
+        repair="set the pots down, reinforced the seam with a wide patch, divided the load, and had Mole clean and oil the door hinge away from the batteries",
+        lesson="Sharing a load protects both the helpers and the things in their care",
+        ending="straight rows of seedlings glittered beside the patched sling while the watering cart clicked home",
+    ),
+    Incident(
+        title="lost duckling signal",
+        textile="the bright safety vest",
+        remote_job="flash a beacon beside the reed pond",
+        premise="They were helping Ranger Otter guide a lost duckling back through the reeds",
+        accident="a thorn opened the vest seam, and pond mist had rusted the remote's outer switch hinge",
+        clue="yellow thread clung to the thorn while a rusty squeak came from the hinge rather than the button",
+        mistaken_try="calling in every direction frightened the duckling farther under the leaves",
+        repair="stood quietly, patched the reflective seam, and let the ranger clean and oil the rusty hinge before testing the beacon",
+        lesson="Quiet evidence is often more useful than a loud guess",
+        ending="The repaired vest shone beside the pond as the duckling followed three soft flashes to its mother",
+    ),
+    Incident(
+        title="museum dinosaur parade",
+        textile="the felt tail of a model dinosaur",
+        remote_job="make the exhibit walk and roar",
+        premise="They were preparing the woodland museum's clockwork dinosaur for visiting cubs",
+        accident="the long felt tail caught under a crate and split at its seam while rust stiffened the remote's metal slider",
+        clue="a straight drag mark led to the crate, and reddish powder gathered beneath the slider",
+        mistaken_try="tugging the tail free made the stuffing peek out like a white cloud",
+        repair="lifted the crate together, tucked in the stuffing, patched the seam, and watched Curator Crow service the cleaned slider",
+        lesson="Protecting an old treasure matters more than beginning a show on time",
+        ending="The dinosaur took one grand patched-tail step and gave a tiny roar that made every cub grin",
+    ),
+    Incident(
+        title="bakery delivery",
+        textile="the insulated bun bag",
+        remote_job="open the bakery's little delivery cart",
+        premise="They were taking warm berry buns to neighbors after a windy morning",
+        accident="a sharp crate corner split the bag seam, and salty road spray rusted the remote's key-ring hinge",
+        clue="purple crumbs marked the short tear, while the key ring left an orange smudge on a napkin",
+        mistaken_try="racing the stuck cart made two buns tumble toward a puddle",
+        repair="caught the buns, rounded the crate corner, patched the bag, and asked Beaver to clean and oil the empty remote's key-ring hinge",
+        lesson="Slowing down can be the quickest way to deliver something safely",
+        ending="Steam curled from the saved buns as the patched bag rested in a cart that rolled smoothly down the lane",
+    ),
+    Incident(
+        title="lantern trail",
+        textile="the map pocket on a trail pack",
+        remote_job="light marker lanterns along the path",
+        premise="They were marking a twilight trail so the firefly choir could find the meadow",
+        accident="a bramble tore the map-pocket seam, and rust froze the remote's folding antenna after a dewy night",
+        clue="the missing map corner remained on the bramble, and dew beads outlined the rusty antenna joint",
+        mistaken_try="following memory alone brought them twice to the same hollow stump",
+        repair="returned to the last marker, patched the pocket, pieced together the map, and let an adult clean and oil the antenna joint before raising it",
+        lesson="Good explorers retrace their steps when the evidence says they are lost",
+        ending="Lanterns blinked one by one toward a meadow where the patched pocket held the map snug and dry",
+    ),
+    Incident(
+        title="tide-pool census",
+        textile="the waterproof notebook cover",
+        remote_job="take pictures with a small shore camera",
+        premise="They were counting anemones for the beach keeper without touching them",
+        accident="a shell edge sliced the cover seam, and salty mist left rust on the remote shutter's outer hinge",
+        clue="a shell-shaped nick fit the tear, and the orange stain stopped at the hinge instead of reaching the controls",
+        mistaken_try="guessing the count from memory mixed up three red anemones and four green ones",
+        repair="moved above the tide line, patched the cover, recopied the count, and let the keeper clean and oil the detached hinge",
+        lesson="Patient records help small observations become trustworthy knowledge",
+        ending="The final photograph showed seven bright anemones beside a notebook whose patched cover snapped shut",
+    ),
+    Incident(
+        title="winter food shelf",
+        textile="the grain sack",
+        remote_job="raise a model storeroom door",
+        premise="They were demonstrating how the animals shared grain during snowy weeks",
+        accident="a rough nail opened the sack seam, and rust jammed the remote's little safety cover",
+        clue="three kernels lay beneath the nail, and a rusty line followed the edge of the cover",
+        mistaken_try="scooping grain while the sack still hung up only fed the spill",
+        repair="lowered the sack, covered the nail, stitched on a double patch, and had Tortoise clean and oil the removed safety-cover hinge",
+        lesson="Stop the cause of a problem before gathering what it spilled",
+        ending="Not one kernel remained on the floor when the patched sack stood beneath the smoothly opening model door",
+    ),
+    Incident(
+        title="river-cleanup raft",
+        textile="the mesh collecting pouch",
+        remote_job="steer a toy-sized cleanup raft",
+        premise="They were collecting floating paper from a shallow stream",
+        accident="a forked twig split the pouch seam, and damp storage had rusted the remote's metal wrist-loop pin",
+        clue="the twig was still woven through the mesh, and the pin left orange dust on a dry leaf",
+        mistaken_try="chasing loose paper downstream scattered it into smaller pieces",
+        repair="anchored the raft, removed the twig, bound and patched the mesh, then asked Heron to clean and oil the pin before reattaching the loop",
+        lesson="Secure your tools first, then work from one careful place",
+        ending="The clear stream carried only reflected clouds past the patched pouch and the raft tied safely at shore",
+    ),
+    Incident(
+        title="orchard weather watch",
+        textile="the windsock's red tail",
+        remote_job="turn the little weather vane",
+        premise="They were checking the orchard before a strong afternoon breeze",
+        accident="a sudden gust snapped the windsock seam, while rust gripped the remote's metal dial axle",
+        clue="the tear pointed downwind, and the dial made a dry scrape even after the button was released",
+        mistaken_try="holding the windsock high by hand nearly pulled the smaller animal off the ladder",
+        repair="climbed down, patched the tail on a table, and let Gardener Goat clean and oil the dial axle before testing it from the ground",
+        lesson="A safe plan is never spoiled by taking time to climb down",
+        ending="The red patched tail streamed east while apples nodded beneath a vane turning freely above them",
+    ),
+    Incident(
+        title="music-box welcome",
+        textile="the embroidered welcome banner",
+        remote_job="start a row of tiny music boxes",
+        premise="They were welcoming a shy new hedgehog to the neighborhood supper",
+        accident="the banner seam tore on a hook, and soup steam awakened rust in the remote's sliding cover",
+        clue="a loop of gold thread hung from the hook, and an orange streak appeared where steam had cooled on metal",
+        mistaken_try="singing louder to hide the broken music only made the new guest cover her ears",
+        repair="lowered their voices, patched the banner, moved the remote away from steam, and let Aunt Hare clean and oil its empty cover hinge",
+        lesson="Kindness begins by noticing what makes another person comfortable",
+        ending="One music box chimed softly as the new hedgehog smiled beneath a banner with a neat golden patch",
+    ),
+]
+
+
 # ---------------------------------------------------------------------------
 # Reasoning / simulation
 # ---------------------------------------------------------------------------
@@ -234,72 +398,138 @@ def predict_fix(world: World) -> dict[str, bool]:
 # Story text helpers
 # ---------------------------------------------------------------------------
 
-def intro_line(hero: Entity, friend: Entity, blanket: Entity, remote: Entity) -> str:
-    return (
-        f"{hero.id} was a little {hero.type} who loved {remote.phrase}. "
-        f"{friend.id}, a cheerful {friend.type}, liked to curl up on {blanket.phrase} and listen."
-    )
+OPENINGS = [
+    "Morning light reached {place} when {hero}, a young {hero_type}, met {friend}, a {friend_type} with a patient ear.",
+    "At {place}, {hero} the {hero_type} and {friend} the {friend_type} promised to finish one useful job before lunch.",
+    "The smallest sounds carried through {place} as {hero} the {hero_type} and {friend} the {friend_type} prepared for {title}.",
+    "Everyone else was busy when {hero}, a careful {hero_type}, asked {friend} the {friend_type} to help with {title}.",
+    "A good plan was taking shape at {place}: {hero} the {hero_type} would watch the remote, and {friend} the {friend_type} would guard the cloth.",
+    "Just after breakfast, {hero} the {hero_type} hurried to {place}, where {friend} the {friend_type} was laying out supplies for {title}.",
+    "For days, {hero} the {hero_type} and {friend} the {friend_type} had looked forward to {title}; now everything was ready at {place}.",
+    "At {place}, {friend} the {friend_type} heard {hero} the {hero_type} humming while they set up the cloth and tested the remote.",
+]
+
+REACTIONS = [
+    "{hero} wanted to fix everything at once, but {friend} asked for one quiet minute to inspect the evidence.",
+    "For a moment {friend}'s ears drooped. Then {hero} fetched a tray so no small part could roll away.",
+    "{hero}'s stomach felt tight, because others were counting on them. {friend} reminded {hero} that careful help still counted as help.",
+    "Neither animal blamed the other. They named what was damaged and what still worked.",
+    "{friend} stopped the activity before anyone could trip or tear the cloth farther. {hero} marked the rusty part with a chalk arrow.",
+    "The delay felt enormous to {hero}, yet {friend} noticed that the damage was small enough to mend.",
+    "{hero} took one slow breath and placed the remote on a dry towel. {friend} folded the torn edges together without pulling them.",
+    "Instead of hiding the accident, they called for the knowledgeable grown-up nearby and explained exactly what they had seen.",
+    "{friend} guarded the scene while {hero} drew the clue in a pocket notebook.",
+    "They compared the working parts with the damaged ones before choosing a tool.",
+    "{hero} felt embarrassed by the first mistake. {friend} answered, \"Changing our plan is how we learn.\"",
+    "The two animals made a rule: dry paws near the remote, gentle paws near the seam.",
+]
+
+DIALOGUES = [
+    ('"The seam tells us where the pull happened," {friend} said. "And the rust tells us where water lingered," {hero} replied.'),
+    ('"Should we push the remote again?" asked {hero}. "No," said {friend}. "First we find the cause, then we repair it."'),
+    ('"Two problems do not always need one answer," {friend} observed. "Patch the cloth; service the rusty metal," said {hero}.'),
+    ('"Let us say what we know," said {hero}. "A seam opened, a remote stuck, and this clue connects each accident," {friend} answered.'),
+    ('"Can we still finish?" {hero} asked. {friend} nodded. "Yes, if finishing safely matters more than finishing first."'),
+    ('"I nearly made it worse," {hero} admitted. "Then your next careful choice matters even more," {friend} said.'),
+    ('"The remote is not a hammer, and thread is not glue," {friend} said. {hero} smiled. "So we choose the right tool for each job."'),
+    ('"We need a patch, dry cleaning tools, and an adult for the metal hinge," {hero} counted. "That is a real plan," said {friend}.'),
+]
+
+REFLECTIONS = [
+    "The repaired seam held when they tested it with a gentle pull.",
+    "They tested the remote from a safe distance before returning it to the activity.",
+    "They put every tool away and checked the floor for pins, drips, and loose parts.",
+    "The first test failed softly, so they adjusted the patch instead of forcing the remote.",
+    "A second inspection found no loose thread and no new orange dust.",
+    "They wrote the repair date on a small tag so the equipment could be checked again.",
+    "They showed a younger animal why the patch spread the pull across stronger cloth.",
+    "Before celebrating, they thanked the grown-up who had handled the rusty metal safely.",
+    "They moved the remote to a dry box and rolled the cloth instead of crumpling it.",
+    "The trouble had cost them time, but it had also taught them how to care for shared things.",
+    "They repeated the test once slowly and once during the real activity.",
+    "At last, both animals could explain not only what they fixed, but why the damage had happened.",
+]
 
 
-def conflict_line(hero: Entity, blanket: Entity, remote: Entity) -> str:
-    return (
-        f"One day {hero.id} tugged the blanket too hard, and the seam split with a soft rip. "
-        f'\"Oh no,\" {hero.id} said, \"the blanket is torn!\" '
-        f'Then the button on the remote stuck, because a little rust had crept inside.'
-    )
+def _stable_seed(*parts: str) -> int:
+    return sum((i + 1) * ord(ch) for i, ch in enumerate("|".join(parts)))
 
 
-def dialogue_warning(hero: Entity, friend: Entity, blanket: Entity, remote: Entity) -> str:
-    return (
-        f'\"If the seam stays open, the blanket will get worse,\" {friend.id} said. '
-        f'\"And if the remote stays rusty, it will not sing,\" {hero.id} said. '
-        f'\"We can fix both,\" {friend.id} replied.'
-    )
+def story_paragraphs(
+    setting: Setting,
+    hero: Entity,
+    friend: Entity,
+    incident: Incident,
+    rng: random.Random,
+) -> list[str]:
+    values = {
+        "place": setting.place,
+        "hero": hero.id,
+        "friend": friend.id,
+        "hero_type": hero.type,
+        "friend_type": friend.type,
+        "title": incident.title,
+    }
+    opening = rng.choice(OPENINGS).format(**values)
+    reaction = rng.choice(REACTIONS).format(**values)
+    dialogue = rng.choice(DIALOGUES).format(**values)
+    reflection = rng.choice(REFLECTIONS).format(**values)
+    premise = f"{incident.premise}. The remote could {incident.remote_job}, and {incident.textile} needed to hold firm."
+    accident = f"Trouble arrived when {incident.accident}."
+    clue = f"They looked closely: {incident.clue}."
+    mistake = f"At first, {incident.mistaken_try}."
+    repair = f"Together they {incident.repair}."
+    result = f"The seam held, the remote moved freely again, and no rust remained on its serviced outer part."
+    lesson = f'"{incident.lesson}," {friend.id} said.'
+    ending_detail = incident.ending[:1].lower() + incident.ending[1:]
+    ending = f"As the day settled, {ending_detail}."
 
-
-def resolution_line(hero: Entity, friend: Entity, blanket: Entity, remote: Entity) -> str:
-    return (
-        f"{hero.id} held the patch in place while {friend.id} dripped a tiny bit of oil into the remote. "
-        f"The seam closed neatly, the rust loosened, and the button clicked again."
-    )
-
-
-def ending_line(hero: Entity, friend: Entity, blanket: Entity, remote: Entity) -> str:
-    return (
-        f"By sunset, {hero.id} and {friend.id} were sitting together on the blanket, "
-        f"pressing the remote and laughing as the toys danced."
-    )
+    mode = rng.randrange(6)
+    if mode == 0:
+        return [f"{opening} {premise}", f"{accident} {reaction} {clue} {dialogue}", f"{mistake} {repair} {result}", f"{reflection} {lesson} {ending}"]
+    if mode == 1:
+        return [f"{opening} {premise}", f"{accident} {mistake} {reaction}", f"{dialogue} {clue}", f"{repair} {result} {lesson} {reflection} {ending}"]
+    if mode == 2:
+        return [f"{opening} {premise} {accident}", f"{reaction} {dialogue}", f"{clue} {mistake}", f"{repair} {reflection} {result}", f"{lesson} {ending}"]
+    if mode == 3:
+        return [f"{opening} {premise}", f"{accident} {clue}", f"{mistake} {reaction} {dialogue}", f"{repair} {result}", f"{reflection} {lesson} {ending}"]
+    if mode == 4:
+        return [f"{opening} {premise}", f"{accident} {dialogue} {mistake}", f"{reaction} {clue} {repair}", f"{result} {reflection} {lesson}", ending]
+    return [f"{opening} {premise} {accident}", f"{mistake} {reaction}", f"{clue} {dialogue} {repair}", f"{result} {lesson} {reflection} {ending}"]
 
 
 # ---------------------------------------------------------------------------
 # World screenplay
 # ---------------------------------------------------------------------------
 
-def tell(setting: Setting, hero_type: str, friend_type: str, hero_name: str, friend_name: str) -> World:
+def tell(
+    setting: Setting,
+    hero_type: str,
+    friend_type: str,
+    hero_name: str,
+    friend_name: str,
+    seed: Optional[int] = None,
+) -> World:
     world = World(setting)
+    story_seed = seed if seed is not None else _stable_seed(setting.place, hero_type, friend_type, hero_name, friend_name)
+    rng = random.Random(story_seed)
+    incident = rng.choice(INCIDENTS)
     hero = world.add(Entity(id=hero_name, kind="character", type=hero_type))
     friend = world.add(Entity(id=friend_name, kind="character", type=friend_type))
 
-    blanket = world.add(Entity(id="blanket", type="blanket", label="blanket", phrase="a soft blue blanket"))
-    remote = world.add(Entity(id="remote", type="remote", label="remote", phrase="a small toy remote with a springy button"))
-    patch = world.add(Entity(id="patch", type="patch", label="patch", phrase="a square cloth patch"))
-    oil = world.add(Entity(id="oil", type="oil", label="oil", phrase="a tiny bottle of oil"))
+    blanket = world.add(Entity(id="blanket", type="blanket", label=incident.textile, phrase=incident.textile))
+    remote = world.add(Entity(id="remote", type="remote", label="remote", phrase=f"a remote used to {incident.remote_job}"))
+    patch = world.add(Entity(id="patch", type="patch", label="patch", phrase="a sturdy cloth patch"))
+    oil = world.add(Entity(id="oil", type="oil", label="oil", phrase="a drop of oil for an outer metal hinge"))
 
     hero.memes["love"] += 1.0
     hero.memes["curiosity"] += 1.0
     friend.memes["joy"] += 1.0
 
-    world.say(intro_line(hero, friend, blanket, remote))
-    world.para()
-
     blanket.meters["broken"] += 1.0
     apply_rust(world, remote)
     hero.memes["worry"] += 1.0
     friend.memes["worry"] += 1.0
-
-    world.say(conflict_line(hero, blanket, remote))
-    world.say(dialogue_warning(hero, friend, blanket, remote))
-    world.para()
 
     if not can_fix_remote(world):
         raise StoryError("This story needs both a patch and oil so the animals can fix the seam and the rust.")
@@ -311,8 +541,9 @@ def tell(setting: Setting, hero_type: str, friend_type: str, hero_name: str, fri
     hero.memes["worry"] = 0.0
     friend.memes["worry"] = 0.0
 
-    world.say(resolution_line(hero, friend, blanket, remote))
-    world.say(ending_line(hero, friend, blanket, remote))
+    for paragraph in story_paragraphs(setting, hero, friend, incident, rng):
+        world.say(paragraph)
+        world.para()
 
     world.facts = {
         "hero": hero,
@@ -324,6 +555,7 @@ def tell(setting: Setting, hero_type: str, friend_type: str, hero_name: str, fri
         "setting": setting,
         "seam_fixed": not seam_is_torn(blanket),
         "rust_fixed": not remote_is_rusty(remote),
+        "incident": incident,
     }
     return world
 
@@ -336,10 +568,11 @@ def generation_prompts(world: World) -> list[str]:
     f = world.facts
     hero: Entity = f["hero"]  # type: ignore[assignment]
     friend: Entity = f["friend"]  # type: ignore[assignment]
+    incident: Incident = f["incident"]  # type: ignore[assignment]
     return [
-        "Write a short Animal Story about a child animal, a torn seam, a rusty remote, and a kind repair.",
-        f"Tell a gentle story where {hero.id} and {friend.id} talk about a seam and a remote that needs help.",
-        "Write a child-friendly dialogue story that ends with the animals fixing both the seam and the rust.",
+        f"Write a short Animal Story about {incident.title}, a torn seam, a rusty remote, and a careful repair.",
+        f"Tell a gentle story where {hero.id} and {friend.id} use dialogue and evidence to solve the trouble during {incident.title}.",
+        f"Write a child-friendly story in which the animals learn that {incident.lesson.lower()}.",
     ]
 
 
@@ -350,27 +583,32 @@ def story_qa(world: World) -> list[QAItem]:
     blanket: Entity = f["blanket"]  # type: ignore[assignment]
     remote: Entity = f["remote"]  # type: ignore[assignment]
     setting: Setting = f["setting"]  # type: ignore[assignment]
+    incident: Incident = f["incident"]  # type: ignore[assignment]
 
     return [
         QAItem(
-            question=f"What did {hero.id} love in the story?",
-            answer=f"{hero.id} loved the little remote because it could make the toys sing and dance.",
+            question=f"What were {hero.id} and {friend.id} preparing for?",
+            answer=f"They were preparing for {incident.title} at {setting.place}. {incident.premise}.",
         ),
         QAItem(
-            question=f"What happened to the blanket at {setting.place}?",
-            answer=f"The seam in the blanket tore open when {hero.id} tugged too hard.",
+            question=f"What damaged {blanket.label} and the remote?",
+            answer=f"The trouble began when {incident.accident}. That opened the seam and left a rusty remote part stuck.",
         ),
         QAItem(
-            question=f"Why did the remote stop working well?",
-            answer="A little rust had crept inside the remote, so the button stuck.",
+            question=f"What clue helped the two animals understand the trouble?",
+            answer=f"They discovered that {incident.clue}. The clue showed them where to focus the repair.",
         ),
         QAItem(
-            question=f"How did {hero.id} and {friend.id} fix the problem?",
-            answer=f"They used a patch to close the seam and a tiny bit of oil to loosen the rust in the remote.",
+            question=f"How did {hero.id} and {friend.id} repair both problems safely?",
+            answer=f"Together they {incident.repair}. The repaired seam held, and the remote's serviced outer part moved freely again.",
         ),
         QAItem(
-            question="How did the story end?",
-            answer=f"It ended with {hero.id} and {friend.id} sitting on the repaired blanket and laughing as the remote worked again.",
+            question=f"What lesson did {friend.id} express after the repair?",
+            answer=f'{friend.id} said, "{incident.lesson}." Their final careful test showed why that lesson mattered.',
+        ),
+        QAItem(
+            question="What final image showed that the animals' work succeeded?",
+            answer=f"The story ended with this image: {incident.ending}.",
         ),
     ]
 
@@ -391,7 +629,7 @@ def world_knowledge_qa(world: World) -> list[QAItem]:
         ),
         QAItem(
             question="Why can oil help a stuck part?",
-            answer="Oil can help moving parts slide more easily, so something stuck can begin to move again.",
+            answer="With an adult's help, a suitable oil can help a cleaned outer hinge move freely. It should not be dripped into a remote's electronics or battery compartment.",
         ),
     ]
 
@@ -515,7 +753,7 @@ def resolve_params(args: argparse.Namespace, rng: random.Random) -> StoryParams:
     friend_name = args.friend_name or rng.choice(CHARACTER_NAMES[friend_type])
 
     if name == friend_name:
-        friend_name = random.choice([n for n in CHARACTER_NAMES[friend_type] if n != friend_name])
+        friend_name = rng.choice([n for n in CHARACTER_NAMES[friend_type] if n != friend_name])
 
     return StoryParams(
         place=place,
@@ -527,7 +765,14 @@ def resolve_params(args: argparse.Namespace, rng: random.Random) -> StoryParams:
 
 
 def generate(params: StoryParams) -> StorySample:
-    world = tell(SETTINGS[params.place], params.hero_type, params.friend_type, params.name, params.friend_name)
+    world = tell(
+        SETTINGS[params.place],
+        params.hero_type,
+        params.friend_type,
+        params.name,
+        params.friend_name,
+        params.seed,
+    )
     return StorySample(
         params=params,
         story=world.render(),

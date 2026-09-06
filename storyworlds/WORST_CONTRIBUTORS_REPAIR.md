@@ -84,5 +84,9 @@ Legend: `queued`, `active`, `repaired`, `verified`, `blocked`.
 | 7 | verified | `psychiatry_sticky_palm_sound_effects_transformation_cautionary.py` | 1 production skeleton; 2 in fresh baseline | 2 skeletons | 100 unique; 100 skeletons | Twelve non-stigmatizing incidents; 336/600 unique story-QA pairs. |
 | 7 | verified | `pun_teamwork_heartwarming.py` | 1 skeleton/100 exact-unique stories | 1 skeleton | 100 unique; 100 skeletons | Twelve scenarios with functional wordplay; 197/500 unique story-QA pairs. |
 | 7 | verified | `pupa_appetizing_quail_campground_reconciliation_kindness_quest.py` | 1 skeleton/100 exact-unique stories | 1 skeleton | 100 unique; 100 skeletons | Twelve reconciliation quests; missing required terms and QA grounding fixed. |
+| 7 | verified | `quote_glutton_craft_workshop_inner_monologue_teamwork.py` | 1 production skeleton; 2 in fresh baseline | 2 skeletons | 100 unique; 100 skeletons | Twelve mysteries; source label explicitly reconsidered as hurtful. |
+| 8 | verified | `rascal_bilge_ambidextrous_lesson_learned_suspense_space.py` | 1 skeleton/100 exact-unique stories | 1 skeleton | 100 unique; 100 skeletons | Twelve emergencies; source term recast as a robot class. |
+| 8 | verified | `seam_remote_rust_dialogue_animal_story.py` | 1 skeleton; 72/100 exact unique in fresh baseline | 1 skeleton | 100 unique; 100 skeletons | Twelve incidents; nondeterministic name selection fixed. |
+| 8 | verified | `session_rotten_rhyme_twist_conflict_animal_story.py` | 1 skeleton/100 exact-unique stories | 1 skeleton | 100 unique; 100 skeletons | Twelve incidents; 258/600 unique story-QA pairs. |
 
 Additional waves follow the frozen 120-script template-collapse ranking.
