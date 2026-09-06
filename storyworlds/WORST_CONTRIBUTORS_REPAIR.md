@@ -141,5 +141,9 @@ Legend: `queued`, `active`, `repaired`, `verified`, `blocked`.
 | 16 | verified | `coward_chord_bonus_friendship_happy_ending_fable.py` | 1 skeleton; 55/100 exact unique in fresh baseline | 1 skeleton | 100 unique; 100 skeletons | Twelve incidents; loaded label explicitly challenged. |
 | 16 | verified | `equity_gamble_marmoset_mystery_to_solve_lesson.py` | 1 skeleton; 60/100 emitted in fresh baseline | 1 skeleton | 100 unique; 100 skeletons | Twelve equity mysteries; gambling made non-monetary and reversible. |
 | 16 | verified | `wine_grump_mystery_to_solve_fable.py` | 1 skeleton; 64/100 emitted in fresh baseline | 1 skeleton | 100 unique; 100 skeletons | Twelve mysteries; wine adult-managed and grump made a temporary mood. |
+| 16 | verified | `coop_architect_pappy_bravery_mystery_to_solve.py` | 1 skeleton; 54/100 exact unique in fresh baseline | 1 skeleton | 100 unique; 100 skeletons | Twelve architectural mysteries; pappy established as a caretaker nickname. |
+| 16 | verified | `evolution_pregnant_ewok_humor_animal_story.py` | 1 skeleton; 48/100 exact unique in fresh baseline | 1 skeleton | 100 unique; 100 skeletons | Twelve respectful scenarios; learning distinguished from evolution. |
+| 17 | verified | `salon_bushed_stylish_dialogue_reconciliation_fable.py` | 1 skeleton; 56/100 emitted in fresh baseline | 1 skeleton | 100 unique; 100 skeletons | Twelve consent-aware salon incidents; no appearance shaming. |
+| 17 | verified | `watt_fill_gerund_wardrobe_tidal_pool_bad.py` | 1 skeleton; 56/100 emitted in fresh baseline | 1 skeleton | 100 unique; 100 skeletons | Twelve habitat-safe incidents with non-cruel bad outcomes. |
 
 Additional waves follow the frozen 120-script template-collapse ranking.
