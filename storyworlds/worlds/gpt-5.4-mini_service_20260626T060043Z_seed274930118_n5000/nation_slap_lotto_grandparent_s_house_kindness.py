@@ -8,15 +8,15 @@ grandparent's house, with kindness and teamwork as the turn and resolution.
 
 Seed-tale sketch:
 ---
-A little animal from a far nation visits Grandparent's house with a shiny lotto
-board. A pushy slap knocks the pieces aside, and everyone feels the tension.
-Then the family slows down, uses kindness and teamwork, and finishes the game
-together.
+A little animal from an imaginary nation visits Grandparent's house with a
+picture-lotto board. An object makes a harmless slap sound and disrupts the
+game. Then the family investigates, uses kindness and teamwork, and finishes
+the game together.
 
 World premise:
 - "nation" is the origin-word of the little traveler.
-- "slap" is the disruptive action that scatters the lotto pieces.
-- "lotto" is the prized game everyone wants to play.
+- "slap" is a nonviolent sound or an object-to-object motion.
+- "lotto" is a no-money picture-matching game, never gambling.
 - Kindness and Teamwork are the emotional tools that resolve the story.
 
 This script follows the Storyweavers world contract:
@@ -36,7 +36,7 @@ import sys
 from dataclasses import dataclass, field
 from typing import Optional
 
-sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 from results import QAItem, StoryError, StorySample  # noqa: E402
 
 
@@ -68,6 +68,8 @@ class Entity:
             return {"subject": "she", "object": "her", "possessive": "her"}[case]
         if self.type in male:
             return {"subject": "he", "object": "him", "possessive": "his"}[case]
+        if self.kind == "character":
+            return {"subject": "they", "object": "them", "possessive": "their"}[case]
         return {"subject": "it", "object": "it", "possessive": "its"}[case]
 
     def it(self) -> str:
@@ -170,7 +172,8 @@ def _r_spill(world: World) -> list[str]:
             world.fired.add(sig)
             item.meters["scattered"] = item.meters.get("scattered", 0.0) + 1
             item.meters["messy"] = item.meters.get("messy", 0.0) + 1
-            out.append(f"Their {item.label} scattered across the table.")
+            incident = world.facts["incident"]
+            out.append(incident["conflict"].format(hero=actor.label))
     return out
 
 
@@ -187,7 +190,7 @@ def _r_worry(world: World) -> list[str]:
         world.fired.add(sig)
         carer = world.get(item.caretaker)
         carer.memes["worry"] = carer.memes.get("worry", 0.0) + 1
-        out.append(f"That made {carer.label} worry about the tidy house.")
+        out.append(f"{carer.label} was concerned about the pieces, but looked for evidence before assigning blame.")
     return out
 
 
@@ -202,7 +205,8 @@ def _r_kind(world: World) -> list[str]:
         world.fired.add(sig)
         actor.memes["worry"] = max(0.0, actor.memes.get("worry", 0.0) - 1)
         actor.memes["joy"] = actor.memes.get("joy", 0.0) + 1
-        out.append(f"{actor.label} spoke softly and helped everyone calm down.")
+        incident = world.facts["incident"]
+        out.append(incident["kindness"].format(hero=actor.label))
     return out
 
 
@@ -219,7 +223,8 @@ def _r_team(world: World) -> list[str]:
         if item.meters.get("messy", 0.0) >= THRESHOLD:
             item.meters["messy"] = 0.0
             item.meters["sorted"] = item.meters.get("sorted", 0.0) + 1
-    out.append("Together, they picked up every piece and put the lotto board back in place.")
+    incident = world.facts["incident"]
+    out.append(incident["teamwork"].format(hero=world.facts["hero"].label))
     return out
 
 
@@ -303,6 +308,180 @@ NATIONS = ["Sun Nation", "River Nation", "Hill Nation"]
 TRAITS = ["curious", "gentle", "brave", "playful"]
 
 
+INCIDENTS = [
+    {
+        "id": "window_gust",
+        "premise": "Grandparent had set the picture tiles in careful rows beside an open window.",
+        "conflict": "A gust snapped the curtain against the table with a cloth slap and sent the light tiles skating under the chairs.",
+        "mistake": "At first, {hero} hurried after the nearest cards, nudging two farther away.",
+        "clue": "A fluttering corner of the map showed that the wind, not any player, had moved them.",
+        "dialogue": "\"Let us stop the breeze before we chase the pieces,\" Grandparent said.",
+        "kindness": "{hero} checked that Grandparent was comfortable and held the curtain gently aside.",
+        "teamwork": "Grandparent latched the window while {hero} gathered the tiles by animal family.",
+        "cause": "an open window let a gust reach the lightweight cards",
+        "lesson": "kindness can begin with noticing what another person needs",
+        "ending": "The last sunbeam rested on a tidy row of owls while the curtain stayed peacefully still.",
+    },
+    {
+        "id": "box_lid",
+        "premise": "The lotto box had a new cardboard divider for birds, fish, and forest animals.",
+        "conflict": "Its springy lid fell with a cardboard slap, tipping three groups of tiles into one bright heap.",
+        "mistake": "{hero} tried to scoop the heap at once, but matching corners slipped between the paws.",
+        "clue": "Three colored divider tabs were still poking from beneath the mixed cards.",
+        "dialogue": "\"Those tabs can tell us where each family belongs,\" {hero} realized.",
+        "kindness": "{hero} apologized for rushing and invited Grandparent to choose the easiest color first.",
+        "teamwork": "They made three small piles, checked every picture together, and reset the divider.",
+        "cause": "the box lid was not folded behind its cardboard catch",
+        "lesson": "a patient invitation is kinder than taking over",
+        "ending": "When the lid finally closed, three colored tabs stood straight like tiny flags.",
+    },
+    {
+        "id": "table_leaf",
+        "premise": "They chose the folding table so the whole lotto board would fit beside their cocoa mugs.",
+        "conflict": "A loose table leaf lifted and settled with a wooden slap, making the round markers roll toward the edge.",
+        "mistake": "{hero} reached across Grandparent too quickly and blocked the safest path to the rolling pieces.",
+        "clue": "A brass support beneath the leaf was hanging sideways instead of locked flat.",
+        "dialogue": "\"Hands back for a moment; I know this old table,\" Grandparent said calmly.",
+        "kindness": "{hero} listened, cleared the mugs, and made room for Grandparent to show the safe latch.",
+        "teamwork": "Grandparent secured the support while {hero} caught the markers in a shallow basket.",
+        "cause": "the folding-table support had not clicked into its locked position",
+        "lesson": "listening to experience is part of working kindly together",
+        "ending": "Two cocoa rings and one perfectly level board glowed beneath the kitchen lamp.",
+    },
+    {
+        "id": "sticky_note",
+        "premise": "Grandparent had marked the game columns with removable notes so a new player could follow them.",
+        "conflict": "One note peeled free and landed on the board with a papery slap, hiding the row everyone needed.",
+        "mistake": "{hero} guessed where the hidden tiles belonged, and the guesses made the pattern more confusing.",
+        "clue": "The note's faint pencil arrow lined up with a tiny moon printed beside the covered row.",
+        "dialogue": "\"We can uncover the clue without blaming the note,\" {hero} said with a grin.",
+        "kindness": "{hero} asked before lifting Grandparent's labels and read each small word aloud.",
+        "teamwork": "One held the guide steady while the other restored the moon row in picture order.",
+        "cause": "a removable guide note had curled over the moon-picture row",
+        "lesson": "asking before moving another person's things shows care",
+        "ending": "The little moon appeared again, silver and clear above the completed row.",
+    },
+    {
+        "id": "dog_tail",
+        "premise": "The board waited on a low table while Grandparent's sleepy dog dozed safely on a nearby rug.",
+        "conflict": "The dog dreamed, and its tail gave the empty box a cheerful slap that bounced the counters onto the rug.",
+        "mistake": "{hero} nearly called the dog naughty, then noticed it was still sound asleep.",
+        "clue": "A fan of tail marks in the rug pointed from the dog to the overturned box.",
+        "dialogue": "\"It was an accident, so let us solve it without scolding,\" Grandparent whispered.",
+        "kindness": "{hero} moved slowly, left the resting dog undisturbed, and fetched a quiet tray.",
+        "teamwork": "Grandparent lifted the box while {hero} counted every counter from the rug into the tray.",
+        "cause": "a dreaming dog's wagging tail bumped an empty game box",
+        "lesson": "kindness means checking what happened before deciding whom to blame",
+        "ending": "The dog slept on as the final counter clicked softly into its round hollow.",
+    },
+    {
+        "id": "book_bump",
+        "premise": "They built a reading-and-lotto corner with the game below Grandparent's animal atlas.",
+        "conflict": "The atlas slid from its cushion and met the table with a flat slap, covering half the board.",
+        "mistake": "{hero} tugged one edge, but Grandparent's bookmark began to slip from its special page.",
+        "clue": "The bookmark ribbon showed exactly which side of the heavy book should be lifted first.",
+        "dialogue": "\"My place matters, and so does our game,\" Grandparent said. \"We can protect both.\"",
+        "kindness": "{hero} stopped pulling, saved the bookmark, and asked Grandparent how to carry the atlas.",
+        "teamwork": "They lifted it together onto a firm shelf, then rebuilt the covered picture row.",
+        "cause": "a heavy atlas had been balanced on a cushion instead of the shelf",
+        "lesson": "caring for someone's treasured place is a practical kind of kindness",
+        "ending": "The atlas ribbon and the lotto's red fox tile both rested exactly where they belonged.",
+    },
+    {
+        "id": "clock_chime",
+        "premise": "Their quiet game began just before Grandparent's tall clock was due to chime.",
+        "conflict": "At noon, the clock's little hatch opened with a wooden slap, startling {hero} into dropping the draw bag.",
+        "mistake": "{hero} crawled toward the scattered tokens before noticing one had rolled near the clock case.",
+        "clue": "The clock's painted noon mark explained both the sudden sound and where the last token had stopped.",
+        "dialogue": "\"That sound surprised us; it did not mean danger,\" Grandparent said.",
+        "kindness": "{hero} admitted feeling startled, and Grandparent waited without teasing.",
+        "teamwork": "They used a flashlight from the floor and a long cardboard guide to roll the token safely into reach.",
+        "cause": "the noon clock hatch opened beside an unsecured draw bag",
+        "lesson": "kind words make it easier to admit surprise and think clearly",
+        "ending": "The clock ticked gently above a full bag and two relieved smiles.",
+    },
+    {
+        "id": "serving_tray",
+        "premise": "Grandparent carried the lotto pieces on a serving tray so the table could be set in stages.",
+        "conflict": "A cork coaster sprang upright and slapped the underside of the tray, hopping the picture tiles out of their stacks.",
+        "mistake": "{hero} sorted by size alone, which put a small whale beside a large mouse.",
+        "clue": "The pictures' blue, green, and gold borders matched three bowls on the tray.",
+        "dialogue": "\"Size fooled us, but the borders will not,\" {hero} said.",
+        "kindness": "{hero} praised Grandparent's bowl idea and returned the coaster instead of tossing it aside.",
+        "teamwork": "They called border colors in turn and rebuilt the stacks without rushing.",
+        "cause": "a bent cork coaster had been trapped beneath the serving tray",
+        "lesson": "kind teamwork values another person's useful idea",
+        "ending": "Blue, green, and gold stacks rose neatly beside the now-flat coaster.",
+    },
+    {
+        "id": "door_draft",
+        "premise": "A neighbor had just delivered apples when the family started the no-money picture lotto game.",
+        "conflict": "The screen door closed with a screen-frame slap, and its draft flipped every face-down card face up.",
+        "mistake": "{hero} covered the cards with both paws, accidentally seeing pictures Grandparent had not seen.",
+        "clue": "A clean tea towel was folded nearby and large enough to hide the whole board fairly.",
+        "dialogue": "\"We can reset the round so neither of us gets an unfair peek,\" {hero} offered.",
+        "kindness": "{hero} volunteered to turn away while Grandparent mixed the covered cards.",
+        "teamwork": "They tucked the towel over the board, shuffled beneath it, and restarted with equal information.",
+        "cause": "the closing screen door pushed a draft across face-down cards",
+        "lesson": "kindness includes protecting fairness even when no one asks",
+        "ending": "The apples shone in their bowl as two honestly matched cards met in the center.",
+    },
+    {
+        "id": "sneeze_fan",
+        "premise": "Grandparent dusted the game shelf before bringing down the old lotto set.",
+        "conflict": "A sudden sneeze made a paper fan fall with a light slap, fanning the score markers into the hallway.",
+        "mistake": "{hero} laughed at the surprising sound before seeing that Grandparent felt embarrassed.",
+        "clue": "A trail of colored dots led from the shelf to each marker along the hall runner.",
+        "dialogue": "\"I am sorry I laughed before I checked on you,\" {hero} said.",
+        "kindness": "{hero} brought a tissue, waited for Grandparent's nod, and turned cleanup into a color hunt.",
+        "teamwork": "They followed opposite sides of the dotted trail and met at the final purple marker.",
+        "cause": "a loose paper fan fell when a harmless sneeze shook the shelf",
+        "lesson": "a quick apology should be followed by thoughtful help",
+        "ending": "The purple marker returned home beside a fresh tissue box and a shared chuckle.",
+    },
+    {
+        "id": "map_fold",
+        "premise": "Beside the lotto board lay a hand-drawn map of the imaginary nations in their animal stories.",
+        "conflict": "A folded map flap sprang open with a paper slap and swept the matching cards into the wrong nation columns.",
+        "mistake": "{hero} assumed every card from one column must belong together, although the map showed many kinds of neighbors.",
+        "clue": "Tiny bridge symbols connected all three nation columns across the creases.",
+        "dialogue": "\"A nation contains many different people; a column cannot tell us anyone's nature,\" Grandparent said.",
+        "kindness": "{hero} listened and described each card by its picture instead of making guesses about its nation.",
+        "teamwork": "They followed the bridge symbols, restored the matching pattern, and flattened the map with soft weights.",
+        "cause": "a tightly folded story map sprang open across the game board",
+        "lesson": "kindness treats each person as an individual, never as a national stereotype",
+        "ending": "Three paper bridges crossed the flat map while every different animal card found its match.",
+    },
+    {
+        "id": "chair_cushion",
+        "premise": "They used a lap-sized lotto board so Grandparent could play comfortably from a favorite chair.",
+        "conflict": "A firm cushion settled with a muffled slap and tilted the board, sliding buttons into the blanket folds.",
+        "mistake": "{hero} suggested moving to the floor, forgetting that Grandparent had chosen the chair for comfort.",
+        "clue": "The breakfast tray nearby had folding legs and a level rim made for holding things steady.",
+        "dialogue": "\"Let us adapt the game to the player, not the player to the game,\" {hero} said after thinking.",
+        "kindness": "{hero} asked what felt comfortable and brought the tray only after Grandparent agreed.",
+        "teamwork": "Together they searched each blanket fold, counted the buttons, and set the board on the level tray.",
+        "cause": "a settling chair cushion tilted a lap board that needed firmer support",
+        "lesson": "kindness makes room for another person's comfort and choice",
+        "ending": "The level tray held a finished row while Grandparent relaxed against the soft cushion.",
+    },
+]
+
+
+ROUTES = [
+    ("On a visit filled with small plans,", "The first idea did not work.", "By evening,"),
+    ("The mystery began quietly:", "That guess only deepened the muddle.", "Before the lamp came on,"),
+    ("Grandparent called it a good day for noticing details.", "For one worried moment, the game seemed spoiled.", "After careful work,"),
+    ("Rain tapped outside while a bright indoor game waited.", "Rushing made the trouble harder to read.", "When the rain softened,"),
+    ("The visit began with a promise to take turns.", "Then the promise was tested by a surprising mess.", "Once both players had helped,"),
+    ("A familiar room can still hold a new puzzle.", "The obvious answer proved incomplete.", "At the end of the puzzle,"),
+    ("Before choosing a card, Grandparent invited one careful look around.", "Even so, an impatient response missed the important clue.", "With the clue understood,"),
+    ("The picture game was ready, but the room had its own small surprise.", "Neither blame nor speed put things right.", "Soon afterward,"),
+    ("That afternoon's best tool was not in the game box.", "The scattered pieces called for thought before action.", "Because they acted together,"),
+    ("At Grandparent's house, an ordinary game became a lesson worth remembering.", "A mistaken first move showed why patience mattered.", "When every piece was accounted for,"),
+]
+
+
 @dataclass
 class StoryParams:
     place: str
@@ -331,8 +510,22 @@ def explain_rejection(activity: Activity, prize: Prize) -> str:
     )
 
 
+def _story_choices(params: StoryParams) -> tuple[dict[str, str], tuple[str, str, str]]:
+    if params.seed is None:
+        signature = "|".join(
+            [params.name, params.animal, params.nation, params.grandparent, params.trait]
+        )
+        key = sum((index + 1) * ord(char) for index, char in enumerate(signature))
+    else:
+        key = params.seed
+    incident = INCIDENTS[key % len(INCIDENTS)]
+    route = ROUTES[(key // len(INCIDENTS)) % len(ROUTES)]
+    return incident, route
+
+
 def build_world(params: StoryParams) -> World:
     world = World(SETTING)
+    incident, route = _story_choices(params)
     hero = world.add(Entity(
         id=params.name,
         kind="character",
@@ -359,7 +552,15 @@ def build_world(params: StoryParams) -> World:
         meters={"messy": 0.0, "sorted": 0.0, "scattered": 0.0},
     ))
 
-    world.facts.update(hero=hero, grandparent=grandparent, prize=prize, params=params)
+    world.facts.update(
+        hero=hero,
+        grandparent=grandparent,
+        prize=prize,
+        params=params,
+        incident=incident,
+        route=route,
+        lotto_kind="a no-money picture-matching game",
+    )
     return world
 
 
@@ -367,16 +568,22 @@ def intro(world: World) -> None:
     f = world.facts
     hero: Entity = f["hero"]
     params: StoryParams = f["params"]
+    incident: dict[str, str] = f["incident"]
+    route = f["route"]
+    world.say(route[0])
     world.say(
-        f"{hero.label} was a little {params.animal} from the {params.nation}, and "
-        f"{hero.pronoun('possessive')} favorite place was {world.setting.place}."
+        f"{hero.label}, a {params.trait} little {params.animal}, had come from the imaginary "
+        f"{params.nation} to visit {params.grandparent} at {world.setting.place}."
     )
     world.say(
-        f"{hero.pronoun().capitalize()} loved {ACTIVITIES['lotto'].gerund} with the shiny lotto board."
+        "That imaginary nation was a place on a family story map, drawn with rivers, "
+        "roads, and many different neighborhoods."
     )
     world.say(
-        f"At {world.setting.place}, {params.grandparent} kept the board safe and ready on the table."
+        "Their lotto was a no-money picture-matching game: nobody bet, bought a ticket, "
+        "or won a prize."
     )
+    world.say(incident["premise"].format(hero=hero.label))
 
 
 def conflict(world: World) -> None:
@@ -384,19 +591,22 @@ def conflict(world: World) -> None:
     hero: Entity = f["hero"]
     gp: Entity = f["grandparent"]
     prize: Entity = f["prize"]
-    act = ACTIVITIES["lotto"]
+    incident: dict[str, str] = f["incident"]
+    route = f["route"]
 
     world.para()
-    world.say(
-        f"One afternoon, {hero.label} wanted to {act.verb} right away."
-    )
-    world.say(
-        f"Then a quick {act.mess} came with a sharp {act.mess} on the table, and the cards flew apart."
-    )
+    world.say(route[1])
     hero.meters["slap"] = hero.meters.get("slap", 0.0) + 1
     propagate(world)
-    world.say(
-        f"{gp.label} frowned a little because the {prize.label} was no longer neat."
+    world.say(incident["mistake"].format(hero=hero.label))
+    world.say(incident["clue"].format(hero=hero.label))
+    world.say(incident["dialogue"].format(hero=hero.label))
+    world.say(f"The evidence showed what had happened: {incident['cause']}.")
+    world.say("The slap was only an object sound; nobody had hit a person or animal.")
+    world.facts.update(
+        conflict=incident["conflict"].format(hero=hero.label),
+        clue=incident["clue"].format(hero=hero.label),
+        cause=incident["cause"],
     )
 
 
@@ -405,23 +615,30 @@ def resolve(world: World) -> None:
     hero: Entity = f["hero"]
     gp: Entity = f["grandparent"]
     prize: Entity = f["prize"]
+    incident: dict[str, str] = f["incident"]
+    route = f["route"]
 
     world.para()
+    world.say(route[2])
+    world.say("Kindness shaped their next choice, and teamwork gave each player a useful job.")
     hero.memes["kindness"] = 1.0
     hero.memes["teamwork"] = 1.0
     gp.memes["teamwork"] = 1.0
     propagate(world)
     world.say(
-        f"{hero.label} said sorry and used kindness to gather the cards."
+        f"They checked every piece of the {prize.label}; none was lost, and the safe play area was clear again."
     )
     world.say(
-        f"{hero.label} and {gp.label} used teamwork to sort every piece, and soon the lotto board was tidy again."
+        f"Then {hero.label} and {gp.label} played a fair round of picture lotto and took turns calling the animals."
     )
     world.say(
-        f"After that, they played lotto together at {world.setting.place}, and the room felt warm and happy."
+        f"{hero.label} learned that {incident['lesson']}."
     )
-    world.say(
-        f"The {prize.label} stayed safe on the table, and the little {f['params'].animal} smiled like the best day had just begun."
+    world.say(incident["ending"].format(hero=hero.label))
+    world.facts.update(
+        resolution=incident["teamwork"].format(hero=hero.label),
+        lesson=incident["lesson"],
+        ending=incident["ending"].format(hero=hero.label),
     )
 
 
@@ -440,10 +657,11 @@ def tell(params: StoryParams) -> World:
 def generation_prompts(world: World) -> list[str]:
     f = world.facts
     params: StoryParams = f["params"]
+    incident: dict[str, str] = f["incident"]
     return [
-        f"Write an Animal Story about a little {params.animal} from the {params.nation} visiting grandparent's house to play lotto.",
-        f"Tell a short story where a {params.trait} {params.animal} makes a slap mistake with a lotto board, then kindness and teamwork fix it.",
-        f"Write a child-friendly story set in grandparent's house that includes the words nation, slap, and lotto.",
+        f"Write an animal story about {params.name}, a {params.trait} {params.animal} from the imaginary {params.nation}, visiting {params.grandparent}'s house for no-money picture lotto.",
+        f"Use this cause in a child-friendly story: {incident['cause']}. The event should create a nonviolent slap sound and a problem with a lotto board.",
+        f"Write a story in which kindness and teamwork solve the {incident['id'].replace('_', ' ')} incident, ending with {incident['ending'][0].lower() + incident['ending'][1:]}",
     ]
 
 
@@ -452,22 +670,35 @@ def story_qa(world: World) -> list[QAItem]:
     hero: Entity = f["hero"]
     gp: Entity = f["grandparent"]
     params: StoryParams = f["params"]
+    incident: dict[str, str] = f["incident"]
     qa = [
         QAItem(
-            question=f"Who was the story about?",
-            answer=f"It was about {hero.label}, a little {params.animal} from the {params.nation} who visited grandparent's house.",
+            question="Who was the visiting player?",
+            answer=f"The visiting player was {hero.label}, a {params.trait} little {params.animal} from the imaginary {params.nation}.",
         ),
         QAItem(
-            question=f"What game did {hero.label} want to play?",
-            answer="They wanted to play lotto with the shiny lotto board.",
+            question=f"What did lotto mean in {hero.label}'s story?",
+            answer="Lotto was a no-money picture-matching game. Nobody bet, bought a ticket, or won a prize.",
         ),
         QAItem(
-            question=f"What went wrong when the game started?",
-            answer="A quick slap scattered the lotto pieces across the table.",
+            question="What caused the slap sound and the game problem?",
+            answer=f"The problem happened because {incident['cause']}. The slap was not directed at a person or animal.",
         ),
         QAItem(
-            question=f"How did {hero.label} and Grandparent fix the problem?",
-            answer="They used kindness and teamwork to pick up every piece and make the lotto board tidy again.",
+            question=f"What clue helped {hero.label} understand the problem?",
+            answer=incident["clue"].format(hero=hero.label),
+        ),
+        QAItem(
+            question=f"How did {hero.label} show kindness?",
+            answer=incident["kindness"].format(hero=hero.label),
+        ),
+        QAItem(
+            question=f"How did {hero.label} and {gp.label} use teamwork?",
+            answer=incident["teamwork"].format(hero=hero.label),
+        ),
+        QAItem(
+            question="What lesson did the visitor learn?",
+            answer=f"{hero.label} learned that {incident['lesson']}.",
         ),
     ]
     return qa
@@ -486,6 +717,14 @@ def world_knowledge_qa(world: World) -> list[QAItem]:
         QAItem(
             question="Why do people tidy up scattered game pieces?",
             answer="People tidy up game pieces so the game stays organized and everyone can keep playing safely.",
+        ),
+        QAItem(
+            question="Can the word lotto describe a game without gambling?",
+            answer="Yes. Picture lotto is a matching game that can be played without money, betting, tickets, or prizes.",
+        ),
+        QAItem(
+            question="Does a person's nation determine their personality?",
+            answer="No. A nation is a place or community, while every person has individual traits, choices, and experiences.",
         ),
     ]
 
@@ -575,7 +814,10 @@ def valid_combos() -> list[tuple[str, str, str]]:
 def asp_verify() -> int:
     py = set(valid_combos())
     cl = set(asp_valid_combos())
-    cl = {("grandparent's house", a, p) for (_, a, p) in cl} if cl else set()
+    cl = {
+        ("grandparent's house", activity, "lotto" if prize == "lotto_board" else prize)
+        for _, activity, prize in cl
+    }
     if py == cl:
         print(f"OK: clingo gate matches valid_combos() ({len(py)} combos).")
         return 0
@@ -693,7 +935,7 @@ def main() -> None:
             animal="fox",
             nation="Sun Nation",
             grandparent="grandmother",
-            trait="kind",
+            trait="gentle",
         )
         samples = [generate(params)]
     else:

@@ -80,6 +80,11 @@ class StoryParams:
     sound2: str
     caution_level: int = 1
     seed: Optional[int] = None
+    premise: str = "pattern_game"
+    mishap: str = "eager_tap"
+    recovery: str = "leaf_gate"
+    practice: str = "stop_look_ask"
+    ending: str = "lidded_box"
     @property
     def meters(self):
         if not hasattr(self, "_meters"):
@@ -275,7 +280,7 @@ ANIMALS = {
 }
 
 PLACES = {
-    "grass": Place("grass", "soft grass", safe=True),
+    "grass": Place("grass", "a wide craft tray on the soft grass", safe=True),
     "pond": Place("pond", "the pond edge", risky=True),
     "nest": Place("nest", "the nest bowl", risky=True),
 }
@@ -287,6 +292,54 @@ BEADS = {
 }
 
 SOUNDS = ["plink-plink", "ting-ting", "clink-clink", "click-click"]
+
+PREMISES = [
+    "bracelet_board",
+    "counting_game",
+    "gift_string",
+    "pattern_game",
+    "sound_parade",
+    "treasure_find",
+]
+MISHAPS = [
+    "breeze",
+    "eager_tap",
+    "loose_thread",
+    "sneeze",
+    "surprise_hop",
+    "wobbly_board",
+]
+MISHAPS_BY_PREMISE = {
+    "bracelet_board": ["loose_thread", "sneeze", "surprise_hop", "wobbly_board"],
+    "counting_game": ["breeze", "eager_tap", "sneeze", "surprise_hop"],
+    "gift_string": ["breeze", "loose_thread", "sneeze", "surprise_hop"],
+    "pattern_game": ["breeze", "eager_tap", "sneeze", "wobbly_board"],
+    "sound_parade": ["eager_tap", "sneeze", "surprise_hop", "wobbly_board"],
+    "treasure_find": ["breeze", "eager_tap", "sneeze", "surprise_hop"],
+}
+RECOVERIES = [
+    "cloth_catch",
+    "cup_cover",
+    "leaf_gate",
+    "spoon_stop",
+    "team_pause",
+    "tray_tilt",
+]
+PRACTICES = [
+    "container_rule",
+    "count_and_check",
+    "mat_rule",
+    "slow_hands",
+    "stop_look_ask",
+]
+ENDINGS = [
+    "craft_tray",
+    "high_shelf",
+    "lidded_box",
+    "tied_pouch",
+    "threaded_garland",
+    "window_pattern",
+]
 
 
 def valid_combos() -> list[tuple[str, str, str]]:
@@ -305,75 +358,184 @@ def explain_rejection(animal: str, bead: str, place: str) -> str:
     return "(No story: this combination does not create a clear cautionary turn.)"
 
 
-def use_bead(world: World, animal: Entity, bead: Entity, place: Entity) -> None:
-    bead.meters["near_risk"] += 1
+def _names(animal: Entity, helper: Entity) -> tuple[str, str]:
+    return animal.id.capitalize(), helper.id.capitalize()
+
+
+def begin(world: World, animal: Entity, helper: Entity, bead: Entity, params: StoryParams) -> None:
+    animal_name, helper_name = _names(animal, helper)
+    openings = {
+        "bracelet_board": (
+            f"On a bright afternoon, {animal_name}, a young {animal.type}, joined the grown-up helper {helper_name} at a low craft board. "
+            f"They planned to thread {bead.label} onto a bracelet for the forest fair."
+        ),
+        "counting_game": (
+            f"After breakfast, {animal_name}, a young {animal.type}, spread a cloth beside the grown-up helper {helper_name}. "
+            f"They placed {bead.label} on it for a careful counting game."
+        ),
+        "gift_string": (
+            f"{animal_name}, a young {animal.type}, wanted to make a tiny beaded gift for a friend. "
+            f"The grown-up helper {helper_name} brought a tray, some thick string, and {bead.label}."
+        ),
+        "pattern_game": (
+            f"One sunny morning, {animal_name}, a young {animal.type}, sat with the grown-up helper {helper_name} on the grass. "
+            f"They were arranging {bead.label} in a bright pattern on a wide tray."
+        ),
+        "sound_parade": (
+            f"At music time, {animal_name}, a young {animal.type}, and the grown-up helper {helper_name} made a quiet rhythm tray. "
+            f"Inside it, {bead.label} could rattle without rolling away."
+        ),
+        "treasure_find": (
+            f"While tidying the garden path, {animal_name}, a young {animal.type}, spotted {bead.label}. "
+            f"Instead of picking it up alone, {animal_name} called the grown-up helper {helper_name}, who moved it onto a cloth-lined tray."
+        ),
+    }
+    world.say(openings[params.premise])
     world.say(
-        f'{animal.id} found {bead.label}. "{animal.attrs["sound"]}!" {animal.id} laughed. '
-        f'"{animal.attrs["repeat"]}"'
+        f'"{params.sound1}!" went the bead. "{params.sound1}, {params.sound1}," '
+        f'{animal_name} echoed, and {helper_name} answered, "{params.sound2}!"'
     )
 
 
 def warn(world: World, helper: Entity, animal: Entity, bead: Entity, place: Entity) -> None:
     helper.memes["care"] += 1
+    animal_name, helper_name = _names(animal, helper)
     world.say(
-        f'{helper.id} looked up fast. "{animal.id}, {animal.id}, be careful," '
-        f'{helper.id} said. "Tiny beads do not belong near {place.label}."'
+        f'{helper_name} pointed toward {place.label}. "{animal_name}, pause and keep the bead on the tray," '
+        f'{helper_name} said. "A bead is tiny, so we keep it away from mouths and risky places."'
     )
 
 
-def almost_drop(world: World, animal: Entity, bead: Entity, place: Entity) -> None:
-    world.say(
-        f"{animal.id} held the bead up high. {animal.id} held it high, high, high. "
-        f"Then it slipped -- slip! -- and rolled toward {place.label}."
-    )
+def almost_drop(world: World, animal: Entity, bead: Entity, place: Entity, params: StoryParams) -> str:
+    animal_name = animal.id.capitalize()
+    mishaps = {
+        "breeze": (
+            f"A breeze lifted one corner of the cloth. Flip-flap! The bead began rolling toward {place.label}.",
+            "a breeze lifted the cloth",
+        ),
+        "eager_tap": (
+            f"{animal_name} tapped the tray a little too eagerly. Tap, tap, TAP! The bead hopped over the rim and rolled toward {place.label}.",
+            f"{animal_name} tapped the tray too eagerly",
+        ),
+        "loose_thread": (
+            f"The thick string caught on a twig and pulled free. Zip, plip! The bead slid off its end toward {place.label}.",
+            "the string caught on a twig and pulled free",
+        ),
+        "sneeze": (
+            f'A puff of pollen made {animal_name} sneeze. "Ah-choo!" The cloth jumped, and the bead spun toward {place.label}.',
+            f"a sneeze jolted the cloth",
+        ),
+        "surprise_hop": (
+            f"A grasshopper sprang past with a boing. {animal_name} gave a surprised hop, bumped the board, and sent the bead toward {place.label}.",
+            f"a grasshopper startled {animal_name} into bumping the board",
+        ),
+        "wobbly_board": (
+            f"One acorn under the board made it wobble. Tip-tip, tilt! The bead curved toward {place.label}.",
+            "an acorn made the board wobble",
+        ),
+    }
+    text, cause = mishaps[params.mishap]
+    bead.meters["near_risk"] += 1
+    world.say(text)
     propagate(world, narrate=False)
+    return cause
 
 
-def recover(world: World, helper: Entity, animal: Entity, bead: Entity, safe: Entity) -> None:
+def recover(
+    world: World,
+    helper: Entity,
+    animal: Entity,
+    bead: Entity,
+    safe: Entity,
+    params: StoryParams,
+) -> str:
+    animal_name, helper_name = _names(animal, helper)
+    recoveries = {
+        "cloth_catch": (
+            f'{animal_name} called, "Bead rolling!" {helper_name} spread the cloth in its path. Fuff! The cloth caught it well before the edge.',
+            f"{animal_name} called out and {helper_name} caught it with the cloth",
+        ),
+        "cup_cover": (
+            f'{helper_name} said, "Hands still." {animal_name} froze while {helper_name} placed a clear cup over the bead. Clink! Together they slid cup and bead back to the tray.',
+            f"they paused, covered it with a clear cup, and slid it back",
+        ),
+        "leaf_gate": (
+            f"{helper_name} laid a broad leaf across the bead's path. Swish, stop! {animal_name} fetched the tray while {helper_name} guarded the little leaf gate.",
+            f"{helper_name} blocked it with a broad leaf while {animal_name} fetched the tray",
+        ),
+        "spoon_stop": (
+            f"A wooden spoon lay beside the craft things. {animal_name} held still while {helper_name} set the spoon across the path. Tok! The bead stopped against it.",
+            f"{helper_name} safely stopped it with a wooden spoon",
+        ),
+        "team_pause": (
+            f'{animal_name} remembered the warning and called, "Stop, look, ask!" Both animals stayed back. {helper_name} brought the tray close, then gently swept the bead into it.',
+            f"they stayed back, brought the tray close, and swept the bead into it",
+        ),
+        "tray_tilt": (
+            f"{helper_name} set the wide tray downhill from the bead. {animal_name} pointed but did not grab. Rrrroll, plink! The bead rolled safely into the tray.",
+            f"they placed the tray in its path and let it roll safely inside",
+        ),
+    }
+    text, action = recoveries[params.recovery]
+    world.say(text)
     bead.meters["near_risk"] = 0
-    world.say(
-        f'{helper.id} nudged it back with a paw. "{helper.attrs["caution"]}" '
-        f'{helper.id} said again, and {animal.id} nodded.'
-    )
-    world.say(
-        f"The bead went into {safe.label}. Tap-tap. Safe again."
-    )
+    bead.meters["contained"] += 1
+    safe.meters["holding_bead"] += 1
+    return action
 
 
-def lesson(world: World, animal: Entity, helper: Entity, bead: Entity) -> None:
+def lesson(world: World, animal: Entity, helper: Entity, bead: Entity, safe: Entity, params: StoryParams) -> None:
+    animal_name, helper_name = _names(animal, helper)
     animal.memes["lesson"] += 1
     animal.memes["relief"] += 1
     helper.memes["relief"] += 1
-    world.say(
-        f"Again and again, {animal.id} repeated the rule: tiny beads stay where they can be seen. "
-        f"{animal.id} kept the bead in the basket, and {helper.id} smiled."
-    )
+    practices = {
+        "container_rule": f'They practiced the rule together: "Out for crafts, in the box; out for crafts, in the box." Then {animal_name} put the bead away before leaving.',
+        "count_and_check": f'{animal_name} counted slowly, "One bead out, one bead back." {helper_name} checked the empty cloth, and they counted once more.',
+        "mat_rule": f'They moved every craft piece to the middle of the mat. "Middle of the mat, safe where we sat," they repeated while they tidied.',
+        "slow_hands": f'{animal_name} tried again with slow paws over the tray. "Slow hands, safe bead. Slow hands, safe bead," {animal_name} repeated.',
+        "stop_look_ask": f'{animal_name} practiced the three-part warning: "Stop, look, ask. Stop, look, ask." {helper_name} smiled when {animal_name} asked before touching the bead again.',
+    }
+    world.say(practices[params.practice])
+    endings = {
+        "craft_tray": f"At sunset, the little bead rested in the tray's covered center cup while {helper_name} carried it to the high craft cupboard.",
+        "high_shelf": f"When craft time ended, {helper_name} closed a small container and placed it on a high shelf. Below it, {animal_name}'s paws were empty and safe.",
+        "lidded_box": f"Click went the lid of the craft box. Through its clear top, {animal_name} could see the bead resting safely inside.",
+        "tied_pouch": f"{helper_name} tied the bead inside a little craft pouch. It gave one soft clink, then hung safely beyond the animals' reach.",
+        "threaded_garland": f"With {helper_name} holding both ends, they threaded the bead onto a finished garland and tied two strong knots. It gleamed safely above their picnic table.",
+        "window_pattern": f"They sealed the bead in a clear pattern jar with the other craft pieces. Evening light shone through the colors while the closed jar stood safely on the shelf.",
+    }
+    world.say(endings[params.ending])
 
 
 def tell(params: StoryParams) -> World:
     world = World()
     animal = world.add(Entity(id=params.animal, kind="character", type=params.animal, role="young"))
-    helper = world.add(Entity(id=params.helper, kind="character", type=params.helper, role="helper"))
+    helper = world.add(Entity(id=params.helper, kind="character", type=params.helper, role="grown-up helper"))
     bead = world.add(Entity(id="bead", kind="thing", type="bead", label=params.bead))
     risky = world.add(Entity(id="place", kind="thing", type="place", label=PLACES[params.risky_place].label))
     safe = world.add(Entity(id="basket", kind="thing", type="basket", label=PLACES[params.safe_place].label))
     animal.attrs["sound"] = params.sound1
     animal.attrs["repeat"] = f"{params.sound1}! {params.sound1}!"
-    helper.attrs["caution"] = helper.id.capitalize() + " watched closely."
-    world.say(
-        f"One sunny morning, {animal.id} was playing near the grass with {bead.label}. "
-        f"{animal.id} loved the shiny bead."
-    )
-    world.say(
-        f'"{params.sound1}!" {animal.id} sang. "{params.sound2}!" the bead seemed to answer.'
-    )
+    helper.attrs["caution"] = "Small beads stay on a tray or inside a closed container."
+    begin(world, animal, helper, bead, params)
     world.para()
     warn(world, helper, animal, bead, risky)
-    almost_drop(world, animal, bead, risky)
-    recover(world, helper, animal, bead, safe)
+    cause = almost_drop(world, animal, bead, risky, params)
+    recovery = recover(world, helper, animal, bead, safe, params)
     world.para()
-    lesson(world, animal, helper, bead)
-    world.facts.update(animal=animal, helper=helper, bead=bead, place=risky, safe=safe)
+    lesson(world, animal, helper, bead, safe, params)
+    world.facts.update(
+        animal=animal,
+        helper=helper,
+        bead=bead,
+        place=risky,
+        safe=safe,
+        cause=cause,
+        recovery=recovery,
+        premise=params.premise,
+        practice=params.practice,
+    )
     return world
 
 
@@ -381,9 +543,9 @@ def generation_prompts(world: World) -> list[str]:
     f = world.facts
     animal = f["animal"].id
     return [
-        f"Write an animal story for a young child that includes the word bead and a clear warning.",
-        f"Tell a cautionary animal story where {animal} plays with a bead, hears a warning, and keeps it safe.",
-        f"Write a short repeating story with sound effects like plink and clink that teaches a child to be careful with a bead.",
+        "Write an animal story for a young child that includes a bead, sound effects, repetition, and a clear safety warning.",
+        f"Tell a cautionary animal story where {animal} uses a bead during a supervised activity, notices a mishap, and helps keep it safe.",
+        "Write a complete story in which a tiny craft object nearly reaches a risky place, the characters respond calmly, and the final image proves it is contained.",
     ]
 
 
@@ -392,15 +554,15 @@ def story_qa(world: World) -> list[tuple[str, str]]:
     animal = f["animal"].id
     helper = f["helper"].id
     return [
-        ("What was the story about?", f"It was about {animal} and {helper}, who were careful with a bead."),
-        ("What happened when the bead rolled?", f"It rolled toward the risky place, but {helper} helped stop it. That kept the bead from getting lost or causing trouble."),
-        ("What did the animal learn?", f"{animal} learned to keep the bead where it could be seen. The repeated warning helped make that rule easy to remember."),
+        ("What caused the bead to move toward the risky place?", f"The bead moved because {f['cause']}. That turned their careful activity into a problem they had to solve."),
+        ("How did the animals make the bead safe again?", f"{animal.capitalize()} and {helper.capitalize()} made it safe when {f['recovery']}. They did not use their mouths or rush after the tiny bead."),
+        ("What safety lesson did the young animal practice?", f"{animal.capitalize()} practiced keeping small beads on a tray or in a closed container and asking for help. The repeated words made the rule easier to remember."),
     ]
 
 
 def world_knowledge_qa(world: World) -> list[tuple[str, str]]:
     return [
-        ("What is a bead?", "A bead is a tiny shiny object that can be threaded or held for play. Small things like beads should be kept away from mouths."),
+        ("What is a bead?", "A bead is a small object with a hole for thread or cord. Young children should use beads only with a grown-up and keep them away from mouths."),
         ("Why should little animals be careful with tiny objects?", "Tiny objects can be swallowed or lost easily. That is why grown-ups warn children to keep them in a safe place."),
         ("What do sound effects do in a story?", "Sound effects make the action feel lively and fun. They help the reader hear the moment in their head."),
     ]
@@ -530,9 +692,24 @@ def resolve_params(args: argparse.Namespace, rng: random.Random) -> StoryParams:
     safe = args.safe_place or "grass"
     s1 = args.sound1 or rng.choice(SOUNDS)
     s2 = args.sound2 or rng.choice([s for s in SOUNDS if s != s1])
+    premise = rng.choice(PREMISES)
     if not PLACES[risky].risky:
         raise StoryError(explain_rejection(animal, bead, risky))
-    return StoryParams(animal=animal, helper=helper, bead=BEADS[bead]["phrase"], risky_place=risky, safe_place=safe, sound1=s1, sound2=s2, caution_level=args.caution_level if args.caution_level is not None else 1)
+    return StoryParams(
+        animal=animal,
+        helper=helper,
+        bead=BEADS[bead]["phrase"],
+        risky_place=risky,
+        safe_place=safe,
+        sound1=s1,
+        sound2=s2,
+        caution_level=args.caution_level if args.caution_level is not None else 1,
+        premise=premise,
+        mishap=rng.choice(MISHAPS_BY_PREMISE[premise]),
+        recovery=rng.choice(RECOVERIES),
+        practice=rng.choice(PRACTICES),
+        ending=rng.choice(ENDINGS),
+    )
 
 
 def generate(params: StoryParams) -> StorySample:

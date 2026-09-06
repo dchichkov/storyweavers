@@ -145,5 +145,8 @@ Legend: `queued`, `active`, `repaired`, `verified`, `blocked`.
 | 16 | verified | `evolution_pregnant_ewok_humor_animal_story.py` | 1 skeleton; 48/100 exact unique in fresh baseline | 1 skeleton | 100 unique; 100 skeletons | Twelve respectful scenarios; learning distinguished from evolution. |
 | 17 | verified | `salon_bushed_stylish_dialogue_reconciliation_fable.py` | 1 skeleton; 56/100 emitted in fresh baseline | 1 skeleton | 100 unique; 100 skeletons | Twelve consent-aware salon incidents; no appearance shaming. |
 | 17 | verified | `watt_fill_gerund_wardrobe_tidal_pool_bad.py` | 1 skeleton; 56/100 emitted in fresh baseline | 1 skeleton | 100 unique; 100 skeletons | Twelve habitat-safe incidents with non-cruel bad outcomes. |
+| 17 | verified | `bead_sound_effects_cautionary_repetition_animal_story.py` | 2 skeletons/100 exact-unique stories | 2 skeletons | 100 unique; 100 skeletons | Six compatible premise/mishap/recovery families; bead safety preserved. |
+| 17 | verified | `nation_slap_lotto_grandparent_s_house_kindness.py` | 1 skeleton; 54/100 emitted in fresh baseline | 1 skeleton | 100 unique; 100 skeletons | Twelve incidents; slap made an object sound and lotto a no-money game. |
+| 17 | verified | `raviolo_pillar_neighborhood_bad_ending_conflict_sharing.py` | 1 skeleton; 56/100 emitted in fresh baseline | 1 skeleton | 100 unique; 100 skeletons | Twelve non-cruel incidents with professional structural handling. |
 
 Additional waves follow the frozen 120-script template-collapse ranking.
