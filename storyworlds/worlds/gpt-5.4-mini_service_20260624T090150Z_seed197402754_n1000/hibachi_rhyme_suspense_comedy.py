@@ -16,7 +16,7 @@ import sys
 from dataclasses import dataclass, field
 from typing import Optional
 
-sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 from results import QAItem, StoryError, StorySample  # noqa: E402
 
 
@@ -28,6 +28,10 @@ class StoryParams:
     friend: str
     dish: str
     garnish: str
+    incident: int = 0
+    premise: int = 0
+    rhyme_form: int = 0
+    ending: int = 0
     seed: Optional[int] = None
 
 
@@ -92,7 +96,7 @@ garnish(G) :- garnish_name(G).
 rhyme_pair(D, G) :- dish_rhyme(D, G).
 suspense_pair(D, G) :- suspenseful(D, G).
 
-valid(N, D, G) :- name(N), dish_name(D), garnish_name(G), rhyme_pair(D, G), suspense_pair(D, G).
+valid(N, D, G) :- name(N), dish_name(D), garnish_name(G), rhyme_pair(D, G).
 valid_story(N, D, G, P) :- valid(N, D, G), parent_name(P).
 """
 
@@ -138,6 +142,120 @@ SUSPENSE = [
     ("veggies", "a shiny cherry tomato"),
 ]
 
+PREMISES = [
+    "{name} had never sat around a hibachi grill before. With {parent} on one side and {friend} on the other, every shiny spatula looked like part of a magic show.",
+    "It was {parent}'s birthday, and {name} had promised to help make dinner cheerful. At the hibachi table, {friend} pointed to the grill and whispered, 'The stage is hot!'",
+    "Rain had canceled {name}'s picnic with {friend}, so {parent} chose a hibachi dinner instead. Soon the drumming spatulas made the storm outside seem very far away.",
+    "{name} felt nervous about tasting {dish}. Then {chef} bowed beside the hibachi grill and promised that brave bites came with a first-row cooking show.",
+    "{name} and {friend} arrived at hibachi wearing paper crowns made by {parent}. They expected supper, but {chef} announced, 'Tonight, every diner joins the act.'",
+    "The restaurant was nearly quiet when {name}, {parent}, and {friend} took the last hibachi seats. One clang from {chef}'s spatula woke the whole table with a grin.",
+]
+
+INCIDENTS = [
+    {
+        "lead": "First, {chef} shaped the {dish} into a little hill and balanced {garnish} at its peak.",
+        "trigger": "A puff of steam nudged the garnish downhill. It rolled toward the grill's edge, faster with every wobble.",
+        "risk": "Everyone wondered whether it would tumble onto the floor.",
+        "action": "{name} slid an empty sauce dish beside the cool rim. The garnish rolled neatly into it with a tiny clink.",
+        "resolution": "{chef} thanked {name}, checked that the dish was safely away from the heat, and returned the garnish to the plate.",
+        "cause": "a puff of steam sent the garnish rolling toward the edge",
+        "deed": "placed an empty sauce dish at the cool rim and caught it",
+        "result": "the garnish landed safely in the sauce dish",
+    },
+    {
+        "lead": "{chef} stacked onion rings into a tower beside the {dish}, then tucked {garnish} near its base.",
+        "trigger": "The tower hissed, but no flame appeared. Instead, its top ring began to lean over {friend}'s plate.",
+        "risk": "The table went silent as the crooked tower tipped another inch.",
+        "action": "{name} spotted a loose onion ring and told {chef}, who lifted it away before the tower could topple.",
+        "resolution": "With a wider base, the rebuilt tower puffed one harmless cloud straight up, and everybody cheered.",
+        "cause": "a loose onion ring made the steaming tower lean",
+        "deed": "noticed the loose ring and warned the chef",
+        "result": "the chef rebuilt a steady tower that puffed safely upward",
+    },
+    {
+        "lead": "Beside the {dish}, {chef} balanced {garnish} on a spatula and flipped it toward {parent}'s waiting plate.",
+        "trigger": "The garnish landed under an upside-down metal bowl. Something beneath it went tick-tick-scritch.",
+        "risk": "Nobody knew whether the hidden thing was dinner, a spoon, or a very tiny visitor.",
+        "action": "{name} listened closely and heard the garnish rolling in circles. 'Lift slowly,' {name} advised.",
+        "resolution": "{chef} raised the bowl one finger-width at a time and found only the spinning garnish, perfectly clean and safe.",
+        "cause": "the garnish rolled under a metal bowl and made a mysterious scratching sound",
+        "deed": "listened to the sound and asked the chef to lift the bowl slowly",
+        "result": "they discovered the harmless garnish spinning beneath the bowl",
+    },
+    {
+        "lead": "{chef} drew a smiling face in the {dish}, with {garnish} perched where its nose should be.",
+        "trigger": "Then the grill fan tugged a paper order slip toward the hot surface. It fluttered just beyond the spatula.",
+        "risk": "For one breath, the little slip hovered over the heat like a white moth.",
+        "action": "{name} pointed while {friend} called, 'Behind the plate!' {chef} covered the flame and pinned the slip with a cool plate.",
+        "resolution": "The order stayed readable, the paper never touched the heat, and the smiling dinner kept its garnish nose.",
+        "cause": "the grill fan blew a paper order slip toward the hot surface",
+        "deed": "spotted the slip and helped direct the chef to it",
+        "result": "the chef covered the flame and secured the slip with a cool plate",
+    },
+    {
+        "lead": "{chef} made the spatulas tap a marching beat while the {dish} sizzled and {garnish} waited on a plate.",
+        "trigger": "One spatula slipped from the rhythm and spun on the empty side of the grill, handle circling toward {chef}.",
+        "risk": "The silver tool whirled once, twice, and seemed ready to spin right off its safe patch.",
+        "action": "{name} called, 'Stop the drum!' {chef} froze the other spatula and trapped the spinning handle beneath it.",
+        "resolution": "After checking the tool, {chef} began a slower beat, and {name} counted every careful tap.",
+        "cause": "a spatula slipped and spun across an empty part of the grill",
+        "deed": "called for the drumming to stop so the chef could trap the handle",
+        "result": "the chef caught the spatula and restarted with a slower, safer rhythm",
+    },
+    {
+        "lead": "A ribbon of noodles rose from {chef}'s spatula while the {dish} and {garnish} waited below.",
+        "trigger": "The noodle ribbon looped around the pepper shaker and began pulling it toward the hot grill.",
+        "risk": "The shaker crept closer, leaving a dotted trail of pepper behind it.",
+        "action": "{name} held up a napkin as a signal. {chef} snipped the noodle loop with the spatula's edge and caught the shaker.",
+        "resolution": "Then {parent} wiped the cool tabletop, and {chef} served a fresh noodle curl shaped like a question mark.",
+        "cause": "a noodle loop tugged the pepper shaker toward the grill",
+        "deed": "signaled the chef, who cut the noodle loop and caught the shaker",
+        "result": "the shaker stayed safe and the tabletop was cleaned",
+    },
+    {
+        "lead": "{chef} covered the {dish} with a lid and asked everyone to guess where {garnish} would appear.",
+        "trigger": "When the lid rose, the garnish was gone. A small round bump traveled beneath {parent}'s folded napkin.",
+        "risk": "The bump stopped. Then it moved again, as if dinner had learned to crawl.",
+        "action": "{name} followed the damp little trail and gently unfolded the napkin over a clean plate.",
+        "resolution": "Out rolled the missing garnish. {chef} replaced it with a fresh one and sent the runaway to the dish bin.",
+        "cause": "the garnish slipped beneath a folded napkin and made a moving bump",
+        "deed": "followed its trail and opened the napkin over a clean plate",
+        "result": "they found the garnish and the chef replaced it with a fresh one",
+    },
+    {
+        "lead": "For the grand trick, {chef} set a spoon bridge over the {dish} and placed {garnish} at one end.",
+        "trigger": "A tap sent the garnish across, but it stopped in the middle while the spoon bridge trembled.",
+        "risk": "Would it roll forward into the meal or backward toward the hot grill?",
+        "action": "{name} asked everyone to stop bumping the table. In the sudden stillness, {chef} tilted the spoon toward the plate.",
+        "resolution": "The garnish rolled the safe way and landed atop dinner as softly as a marble on a pillow.",
+        "cause": "the garnish stalled on a trembling spoon bridge",
+        "deed": "asked everyone to hold still while the chef tilted the spoon toward the plate",
+        "result": "the garnish rolled safely onto the meal",
+    },
+]
+
+RHYME_FORMS = [
+    "{friend} clapped a beat: 'Slow by the glow; steady and ready!' The table repeated it until the worry shrank.",
+    "{chef} sang, 'No crash, no splash; we saved supper in a flash!' Even {parent} answered with a drumroll on the table.",
+    "'Was that a dinner disaster?' asked {friend}. 'No,' said {name}, 'just a platter that needed us faster!'",
+    "{name} tried a tongue twister: 'Hibachi heroes handle hot hills.' Then came the rhyme, 'Slow with the show is the safest way to go!'",
+    "{chef} called, 'What beats fright?' The diners answered, 'Thinking right!' Their call-and-response bounced around the table.",
+    "{friend} made a tiny two-line poem: 'We waited in suspense tonight; then teamwork turned the trouble right.'",
+    "'Knock, knock,' said {chef}. 'Who's there?' asked {name}. 'Dinner.' 'Dinner who?' 'Dinner is a winner, especially for a hungry beginner!'",
+    "The table invented a menu rhyme together: 'A careful clue, a thing to do, and hibachi dinner coming through!'",
+]
+
+ENDINGS = [
+    "At the end, {name} lifted the last bite of {dish}. In the clean plate below, {garnish} sat like a tiny medal for staying calm.",
+    "Outside, the rain shone in the restaurant lights. {name} drew a smiling hibachi grill in the foggy window, complete with a safely parked garnish.",
+    "Before leaving, {chef} folded a paper chef hat for {name}. Across its front, {friend} wrote, 'Chief Clue Finder of Table Seven.'",
+    "The final wisp of steam curled into a question-mark shape above the empty plate. {name} laughed because this mystery now had a happy answer.",
+    "On the ride home, {name} tapped the slow, safe spatula rhythm on both knees. Beside {name}, {parent} supplied the rhyme, and neither missed a beat.",
+    "The table's last cheer made the little paper crowns wobble. Under them, {name} and {friend} grinned at a dinner saved by noticing and helping.",
+    "{chef} placed one cool spatula beside the finished plate for a picture. It reflected four relieved smiles and not one runaway bite.",
+    "As the restaurant lights dimmed, the polished grill reflected {name}'s wave. The garnish rested at the center of the finished plate, bright under the lamp.",
+]
+
 
 def build_parser() -> argparse.ArgumentParser:
     ap = argparse.ArgumentParser(description="A hibachi storyworld with rhyme, suspense, and comedy.")
@@ -166,7 +284,7 @@ def valid_combos() -> list[tuple[str, str]]:
 def asp_valid_combos() -> list[tuple]:
     import asp
     model = asp.one_model(asp_program("#show valid/3."))
-    return sorted(set(asp.atoms(model, "valid")))
+    return sorted({(dish, garnish) for _, dish, garnish in asp.atoms(model, "valid")})
 
 
 def asp_verify() -> int:
@@ -202,10 +320,32 @@ def resolve_params(args: argparse.Namespace, rng: random.Random) -> StoryParams:
         friend=args.friend or rng.choice(FRIENDS),
         dish=dish,
         garnish=garnish,
+        incident=rng.randrange(len(INCIDENTS)),
+        premise=rng.randrange(len(PREMISES)),
+        rhyme_form=rng.randrange(len(RHYME_FORMS)),
+        ending=rng.randrange(len(ENDINGS)),
     )
 
 
+def apply_seeded_structure(params: StoryParams, seed: int) -> None:
+    """Give consecutive CLI seeds distinct combinations of narrative forms."""
+    params.incident = seed % len(INCIDENTS)
+    params.premise = (seed // len(INCIDENTS)) % len(PREMISES)
+    params.rhyme_form = (seed // 3) % len(RHYME_FORMS)
+    params.ending = (seed // 5) % len(ENDINGS)
+
+
 def generate(params: StoryParams) -> StorySample:
+    values = {
+        "name": params.name,
+        "parent": params.parent,
+        "chef": params.chef,
+        "friend": params.friend,
+        "dish": params.dish,
+        "garnish": params.garnish,
+    }
+    incident = INCIDENTS[params.incident % len(INCIDENTS)]
+
     w = World()
     kid = w.add(Entity(id=params.name, kind="character", label=params.name))
     parent = w.add(Entity(id=params.parent, kind="character", label=params.parent))
@@ -214,27 +354,27 @@ def generate(params: StoryParams) -> StorySample:
     meal = w.add(Entity(id="meal", label=params.dish, meters={"hot": 0.0}, memes={"tension": 0.0}))
     garnish = w.add(Entity(id="garnish", label=params.garnish, meters={"spin": 0.0}, memes={"surprise": 0.0}))
 
-    w.say(f"{kid.id} went to the hibachi grill with {parent.label}, and the air smelled like butter and fun.")
-    w.say(f"{chef.label} said, 'Hold your hats, stay in your seats, and watch the hot pan dance.'")
-    w.say(f"{kid.id} laughed because {chef.label} flipped {meal.label} with a grin so bright it could have paid rent.")
+    w.say(PREMISES[params.premise % len(PREMISES)].format(**values))
+    w.say(f"The air smelled like toasted sesame and {meal.label}, and {chef.label} reminded everyone to keep hands away from the hot grill.")
+    w.say(incident["lead"].format(**values))
 
     w.para()
     meal.meters["hot"] = 1.0
     meal.memes["tension"] = 1.0
     garnish.meters["spin"] = 1.0
     garnish.memes["surprise"] = 1.0
-    w.say(f"Then, with a hiss and a pop, {garnish.label} rolled toward the edge like a tiny runaway moon.")
-    w.say(f"{kid.id} gasped. {friend.id} whispered, 'If it drops, it will plop!' and that made everyone snort.")
-    w.say(f"{parent.label} reached out, but {chef.label} was quicker and caught it with a spatula like a hero in a silly hat.")
+    w.say(incident["trigger"].format(**values))
+    w.say(incident["risk"].format(**values))
+    w.say(incident["action"].format(**values))
 
     w.para()
     kid.memes["relief"] = 1.0
     kid.memes["joy"] = 1.0
     chef.memes["pride"] = 1.0
     friend.memes["joy"] = 1.0
-    w.say(f"{chef.label} set the garnish on top of the meal and said, 'No flop, just a chop-and-pop!'")
-    w.say(f"{kid.id} giggled so hard {kid.id} nearly bounced off the chair, and the whole table joined the rhyme parade.")
-    w.say(f"At the end, {kid.id} ate {meal.label} with {garnish.label} on top, and the once-scary little tumble became dinner's funniest trick.")
+    w.say(incident["resolution"].format(**values))
+    w.say(RHYME_FORMS[params.rhyme_form % len(RHYME_FORMS)].format(**values))
+    w.say(ENDINGS[params.ending % len(ENDINGS)].format(**values))
 
     w.facts.update(
         kid=kid.id,
@@ -243,14 +383,18 @@ def generate(params: StoryParams) -> StorySample:
         friend=friend.id,
         dish=params.dish,
         garnish=params.garnish,
+        incident=params.incident % len(INCIDENTS),
+        suspense_cause=incident["cause"],
+        helpful_action=incident["deed"],
+        result=incident["result"],
         suspense=True,
         resolved=True,
     )
 
     prompts = [
-        f"Write a funny story about a child at a hibachi restaurant where a small surprise creates suspense.",
-        f"Tell a comedy story in which {params.name} visits hibachi with {params.parent} and a chef makes dinner feel like a show.",
-        f"Write a child-friendly story that includes {params.dish}, {params.garnish}, and a playful rhyme.",
+        "Write a funny, rhyming story about a child at a hibachi restaurant where a small surprise creates suspense.",
+        f"Tell a suspense-comedy story in which {params.name} visits hibachi with {params.parent} and helps {params.chef} solve a dinner problem.",
+        f"Write a child-friendly hibachi story that includes {params.dish}, {params.garnish}, a causal solution, and a playful rhyme.",
     ]
 
     story_qa = [
@@ -260,15 +404,15 @@ def generate(params: StoryParams) -> StorySample:
         ),
         QAItem(
             question=f"What made the moment feel suspenseful?",
-            answer=f"{params.garnish} rolled toward the edge of the grill, so everyone had to wait and see if it would fall.",
+            answer=f"The moment felt suspenseful because {incident['cause']}. Everyone had to wait and see what would happen next.",
         ),
         QAItem(
-            question=f"How did the story end?",
-            answer=f"It ended happily, with {params.chef} catching the garnish and {params.name} laughing over dinner.",
+            question=f"What did {params.name} do to help?",
+            answer=f"{params.name} {incident['deed']}. That careful action helped solve the problem.",
         ),
         QAItem(
-            question=f"Why was the ending funny?",
-            answer=f"The chef turned a scary little wobble into a joke and a rhyme, so the whole table laughed.",
+            question=f"How was the problem resolved?",
+            answer=f"In the end, {incident['result']}. The diners relaxed and turned the tense moment into a rhyme and a joke.",
         ),
     ]
 
@@ -329,10 +473,10 @@ def dump_trace(world: World) -> str:
 
 def build_curated() -> list[StoryParams]:
     return [
-        StoryParams(name="Mina", parent="mom", chef="Chef Sora", friend="Max", dish="fried rice", garnish="a green pea"),
-        StoryParams(name="Theo", parent="dad", chef="Chef Bingo", friend="Rae", dish="noodles", garnish="a tiny onion volcano"),
-        StoryParams(name="Lila", parent="aunt", chef="Chef Nori", friend="Pip", dish="shrimp", garnish="a lemon wedge"),
-        StoryParams(name="Jun", parent="uncle", chef="Chef Taro", friend="Toby", dish="teriyaki chicken", garnish="a shiny cherry tomato"),
+        StoryParams(name="Mina", parent="mom", chef="Chef Sora", friend="Max", dish="fried rice", garnish="a green pea", incident=0, premise=0, rhyme_form=0, ending=0),
+        StoryParams(name="Theo", parent="dad", chef="Chef Bingo", friend="Rae", dish="noodles", garnish="a tiny onion volcano", incident=2, premise=2, rhyme_form=3, ending=3),
+        StoryParams(name="Lila", parent="aunt", chef="Chef Nori", friend="Pip", dish="shrimp", garnish="a lemon wedge", incident=5, premise=4, rhyme_form=5, ending=5),
+        StoryParams(name="Jun", parent="uncle", chef="Chef Taro", friend="Toby", dish="teriyaki chicken", garnish="a shiny cherry tomato", incident=7, premise=5, rhyme_form=7, ending=7),
     ]
 
 
@@ -382,6 +526,7 @@ def main() -> None:
                 print(err)
                 return
             params.seed = seed
+            apply_seeded_structure(params, seed)
             sample = generate(params)
             if sample.story in seen:
                 continue

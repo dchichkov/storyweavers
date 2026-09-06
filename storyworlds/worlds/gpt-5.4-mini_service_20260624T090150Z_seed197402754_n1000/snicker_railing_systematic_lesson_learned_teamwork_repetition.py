@@ -21,7 +21,8 @@ import sys
 from dataclasses import dataclass, field
 from typing import Optional
 
-sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+sys.path.insert(0, ROOT)
 from results import QAItem, StoryError, StorySample  # noqa: E402
 
 TOPIC_WORDS = ("snicker", "railing", "systematic")
@@ -59,7 +60,59 @@ class StoryParams:
     name: str
     helper_name: str
     parent_name: str
+    mystery: int = 0
+    plan: int = 0
+    roles: int = 0
+    refrain: int = 0
     seed: Optional[int] = None
+
+
+@dataclass(frozen=True)
+class Mystery:
+    place: str
+    first_sound: str
+    clue: str
+    cause: str
+    first_test: str
+    second_test: str
+    repair: str
+    ending: str
+
+
+MYSTERIES = [
+    Mystery("the old house", "three quick snickers whenever the stair light dimmed", "a bright thread caught beneath the third spindle", "a loose scarf fringe brushing the wood", "held the light still while the other watched the spindles", "moved the scarf and heard the same three sounds", "tucked the scarf safely onto its hook", "the scarf hung still above a silent railing"),
+    Mystery("the library loft", "a snicker each time someone climbed the last stair", "tiny wheel tracks in the dust", "a wind-up mouse trapped behind the bottom post", "marked each stair and climbed them one at a time", "pressed the marked steps again in reverse order", "lifted the toy mouse into its basket", "the toy mouse slept in its basket beside the quiet stairs"),
+    Mystery("the rainy porch", "a wet little snicker after every gust", "three drops trembling on one iron curl", "a rain chain tapping a hollow railing cap", "watched one gust while counting each tap", "held the rain chain away and repeated the count", "fastened the chain to its proper ring", "raindrops slid silently down the chain into a blue barrel"),
+    Mystery("the school theater", "a snicker whenever the curtain swayed", "a silver bell string peeking through the railing", "a costume bell caught between two posts", "tested the curtain, floor, and railing separately", "pulled the curtain twice while listening at each post", "freed the bell and returned it to the jester hat", "the jester hat waited onstage while the railing shone in peace"),
+    Mystery("the moonlit museum", "a papery snicker beside the balcony railing", "a corner of a label fluttering near an air vent", "a loose exhibit label scraping the rail", "closed nearby doors one by one to trace the draft", "opened only the vent and heard the scrape return", "secured the label beneath its clear cover", "the label lay flat while moonlight striped the silent balcony"),
+    Mystery("the seaside inn", "a salty snicker whenever the tide rose", "a line of sand beneath the seaward post", "a shell wedged in a crack and rocked by the wind", "listened at each post from the door toward the sea", "covered the crack, uncovered it, and compared the sounds", "set the shell on the windowsill and sealed the crack", "the shell gleamed on the sill above a calm, quiet railing"),
+    Mystery("the clockmaker's landing", "a neat snicker at every quarter hour", "a brass spring glinting behind the newel post", "a toy clock spring clicking against the railing", "timed the sound against the hallway clock", "stopped the toy clock and waited through the next quarter hour", "returned the spring to the clockmaker's tray", "the hallway clock chimed over a railing that made no reply"),
+    Mystery("the winter lodge", "a dry snicker whenever the heater woke", "warm air lifting one curled wood shaving", "a wood shaving fluttering inside the hollow rail", "checked the posts with the heater off", "turned the heater on and followed the flutter upward", "brushed out the shaving and fitted the cap snugly", "snow pressed the windows while the smooth railing stayed still"),
+    Mystery("the garden observatory", "a leafy snicker as the dome turned", "a green tendril looped around the outer rail", "a pea vine dragging across the railing", "turned the dome in four small measured steps", "trimmed one loose leaf and repeated the four steps", "guided the vine onto a bamboo support", "the vine curled around its bamboo while stars filled the dome"),
+    Mystery("the ferry's upper deck", "a snicker under the railing when the engine slowed", "a red ribbon flicking through a drainage slot", "a luggage ribbon snapping against the rail", "checked the rail once at cruising speed and once while slowing", "held the ribbon still during the next change of speed", "tied the ribbon firmly around its suitcase handle", "the red bow rode quietly above the silver wake"),
+    Mystery("the community pool", "a bubbly snicker after each splash", "a row of bubbles escaping below the handrail", "a foam diving ring lodged over a water jet", "watched the jets in order from shallow end to deep", "lifted the ring, replaced it, and heard the bubbles return", "carried the diving ring back to the equipment bin", "blue ripples winked beneath a quiet, dripping handrail"),
+    Mystery("the tree-house stair", "a nutty snicker whenever a squirrel crossed the roof", "acorn crumbs balanced on the top post", "an acorn rolling through the hollow bamboo railing", "tapped each bamboo section from bottom to top", "tipped the top section twice and followed the rolling sound", "shook out the acorn and capped the bamboo", "the acorn rested on a stump while sunset warmed the silent rail"),
+]
+
+PLANS = [
+    ("make a numbered checklist from the first post to the last", "checked off each place only after both agreed on what they heard"),
+    ("draw a simple map and divide the railing into four sections", "placed a chalk dot beside every section they had tested"),
+    ("set out three cards marked LOOK, LISTEN, and TEST", "turned over one card after completing that step at every spot"),
+    ("agree to change only one thing during each test", "wrote down what changed and what stayed the same"),
+]
+
+ROLE_PATTERNS = [
+    ("held the lantern and called out each numbered place", "looked closely and recorded every clue", "swapped jobs halfway so each could check the other's work"),
+    ("performed each careful test", "kept the checklist and compared the sounds", "paused after every test to agree before moving on"),
+    ("watched the railing", "tested the nearby objects that might touch it", "shared their observations and chose the next test together"),
+]
+
+REFRAINS = [
+    ("Look, listen, test", "They said it before every new check, and the steady words kept worry from rushing them."),
+    ("One place, one change", "They repeated the rule whenever either child wanted to guess too soon."),
+    ("Try it, note it, try once more", "The little chant helped them compare the first result with the second."),
+    ("Together, then again", "Each repetition gave one child a turn to act and the other a turn to notice."),
+]
 
 
 class World:
@@ -111,7 +164,8 @@ def _r_snicker(world: World) -> list[str]:
         return out
     world.fired.add(sig)
     rail.memes["mysterious"] = rail.memes.get("mysterious", 0.0) + 1
-    out.append("A small snicker seemed to float up from the railing.")
+    mystery = world.facts["mystery"]
+    out.append(f"Then the sound came again, clearly this time: {mystery.first_sound}.")
     return out
 
 
@@ -131,7 +185,8 @@ def _r_systematic(world: World) -> list[str]:
         return out
     world.fired.add(sig)
     rail.memes["safe"] = rail.memes.get("safe", 0.0) + 1
-    out.append("They checked every board in a systematic way.")
+    plan_finish = world.facts["plan"][1]
+    out.append(f"That systematic plan worked: they {plan_finish}.")
     return out
 
 
@@ -148,7 +203,8 @@ def _r_repetition(world: World) -> list[str]:
         return out
     world.fired.add(sig)
     helper.memes["calm"] = helper.memes.get("calm", 0.0) + 1
-    out.append("Again and again, they listened for the same creak until the sound made sense.")
+    refrain, meaning = world.facts["refrain"]
+    out.append(f'"{refrain}," they repeated. {meaning}')
     return out
 
 
@@ -172,60 +228,16 @@ def propagate(world: World, narrate: bool = True) -> list[str]:
 
 
 def build_story(params: StoryParams) -> World:
-    setting = Setting()
+    mystery = MYSTERIES[params.mystery % len(MYSTERIES)]
+    plan = PLANS[params.plan % len(PLANS)]
+    roles = ROLE_PATTERNS[params.roles % len(ROLE_PATTERNS)]
+    refrain = REFRAINS[params.refrain % len(REFRAINS)]
+    setting = Setting(place=mystery.place)
     world = World(setting)
     child = world.add(Entity(id="Child", kind="character", type="boy", label=params.name))
     helper = world.add(Entity(id="Helper", kind="character", type="girl", label=params.helper_name))
     parent = world.add(Entity(id="Parent", kind="character", type="mother", label=params.parent_name))
     rail = world.add(Entity(id="Railing", kind="thing", type="railing", label="the railing"))
-
-    child.memes["uneasy"] = 1.0
-    helper.memes["teamwork"] = 1.0
-    child.memes["determination"] = 1.0
-
-    world.say(
-        f"Late at night in {setting.place}, {child.label} heard a tiny snicker near {rail.label}."
-    )
-    world.say(
-        f"The old hallway was dim, and {rail.label} gave one soft creak every time the floorboards shifted."
-    )
-    world.para()
-
-    world.say(
-        f"{child.label} wanted to look, but the sound made {child.pronoun('object')} hesitate."
-    )
-    world.say(
-        f"{helper.label} held up a lantern and said they should be systematic, one step at a time."
-    )
-    rail.meters["checked"] = 1.0
-
-    world.para()
-    world.say(
-        f"So the two of them began to inspect {rail.label} together."
-    )
-    world.say(
-        f"{child.label} tapped the first post while {helper.label} listened, then they switched and did it again."
-    )
-    rail.meters["checked"] = 2.0
-    propagate(world, narrate=True)
-
-    world.para()
-    world.say(
-        f"They kept going, careful and quiet, until the last loose nail was found."
-    )
-    rail.meters["checked"] = 3.0
-    propagate(world, narrate=True)
-
-    world.para()
-    world.say(
-        f"In the end, {parent.label} smiled and tightened the nail, and the railing stopped sounding spooky."
-    )
-    world.say(
-        f"{child.label} laughed at the little snicker, because it had only been the wind under the rail."
-    )
-    world.say(
-        f"{child.label} learned that teamwork and repetition can turn a ghostly worry into an answer."
-    )
 
     world.facts.update(
         child=child,
@@ -233,17 +245,74 @@ def build_story(params: StoryParams) -> World:
         parent=parent,
         rail=rail,
         setting=setting,
+        mystery=mystery,
+        plan=plan,
+        roles=roles,
+        refrain=refrain,
     )
+
+    world.say(
+        f"Near bedtime in {setting.place}, {child.label} stopped beside {rail.label}. "
+        "From somewhere below came a faint, secretive sound."
+    )
+    world.say(
+        f'"That sounds like a sneaky snicker," {child.label} whispered. The mystery made his feet feel heavy.'
+    )
+    child.memes["uneasy"] = 1.0
+    propagate(world, narrate=True)
+    world.para()
+
+    world.say(
+        f"{helper.label} did not laugh at him or make a wild guess. She proposed a plan: they would {plan[0]}."
+    )
+    world.say(
+        f'"Systematic means careful and in order," she said. "We will know why each test matters."'
+    )
+    child.memes["determination"] = 1.0
+    helper.memes["teamwork"] = 1.0
+    rail.meters["checked"] = 1.0
+
+    world.para()
+    world.say(
+        f"Their teamwork gave each child a useful role. {child.label} {roles[0]}; {helper.label} {roles[1]}."
+    )
+    world.say(
+        f"First they {mystery.first_test}. They noticed {mystery.clue}."
+    )
+    rail.meters["checked"] = 2.0
+    propagate(world, narrate=True)
+
+    world.para()
+    world.say(
+        f"Next they {mystery.second_test}. This time the result matched the clue."
+    )
+    world.say(f"They {roles[2]}. Soon they discovered the real cause: {mystery.cause}.")
+    rail.meters["checked"] = 3.0
+    propagate(world, narrate=True)
+
+    world.para()
+    world.say(
+        f"They explained every test to {parent.label}, then all three worked together and {mystery.repair}."
+    )
+    world.say(
+        f"When they repeated the first test, the snicker did not return. {child.label}'s heavy feeling was gone."
+    )
+    world.say(
+        f"He had learned a lasting lesson: repetition is useful when each careful try teaches the team something."
+    )
+    world.say(f"Before they left, they looked back. {mystery.ending.capitalize()}.")
+    world.facts["lesson"] = "Careful repetition helps a team compare clues instead of repeating guesses."
     return world
 
 
 def generation_prompts(world: World) -> list[str]:
     f = world.facts
     child = f["child"]
+    mystery = f["mystery"]
     return [
-        f"Write a gentle ghost story for a small child about {child.label}, a snicker, and a railing.",
-        "Tell a short story where teamwork and repetition help solve a spooky hallway mystery.",
-        "Write a simple story in which a strange sound at a railing turns out not to be a real ghost.",
+        f"Write a gentle mystery for a small child about {child.label}, a snicker, and a railing in {f['setting'].place}.",
+        f"Tell a short story where systematic teamwork and repetition reveal {mystery.cause}.",
+        "Write a simple lesson-learned story in which repeated tests solve a spooky railing sound without a real ghost.",
     ]
 
 
@@ -253,22 +322,24 @@ def story_qa(world: World) -> list[QAItem]:
     helper = f["helper"]
     parent = f["parent"]
     rail = f["rail"]
+    mystery = f["mystery"]
+    refrain = f["refrain"][0]
     return [
         QAItem(
             question=f"Why did {child.label} feel nervous near {rail.label}?",
-            answer=f"{child.label} felt nervous because a tiny snicker seemed to come from {rail.label}, and the hallway was dark and spooky.",
+            answer=f"{child.label} felt nervous because {mystery.first_sound} seemed to come from {rail.label}. He did not yet know what caused it.",
         ),
         QAItem(
             question=f"How did {child.label} and {helper.label} solve the problem?",
-            answer=f"They solved it by working together in a systematic way, checking {rail.label} again and again until they found the loose nail.",
+            answer=f"They worked systematically, repeated a controlled test, and compared their observations. That evidence led them to {mystery.cause}.",
         ),
         QAItem(
-            question=f"What did {child.label} learn at the end of the story?",
-            answer=f"{child.label} learned that teamwork and repetition can help turn a scary mystery into something simple and safe.",
+            question=f"Why did the children repeat, '{refrain}'?",
+            answer=f"The repeated words kept their teamwork orderly while they tested one clue at a time. Repetition helped them compare results instead of guessing.",
         ),
         QAItem(
-            question=f"Who fixed the last problem with {rail.label}?",
-            answer=f"{parent.label} fixed the last problem by tightening the loose nail after the children found it.",
+            question=f"What lesson did {child.label} learn after the team found the cause?",
+            answer=f"{child.label} learned that careful repetition helps a team compare clues instead of repeating guesses. The team proved the lesson when they {mystery.repair}.",
         ),
     ]
 
@@ -402,7 +473,15 @@ def resolve_params(args: argparse.Namespace, rng: random.Random) -> StoryParams:
     name = args.name or rng.choice(BOY_NAMES)
     helper_name = args.helper_name or rng.choice(GIRL_NAMES)
     parent_name = args.parent_name or rng.choice(PARENT_NAMES)
-    return StoryParams(name=name, helper_name=helper_name, parent_name=parent_name)
+    return StoryParams(
+        name=name,
+        helper_name=helper_name,
+        parent_name=parent_name,
+        mystery=rng.randrange(len(MYSTERIES)),
+        plan=rng.randrange(len(PLANS)),
+        roles=rng.randrange(len(ROLE_PATTERNS)),
+        refrain=rng.randrange(len(REFRAINS)),
+    )
 
 
 def generate(params: StoryParams) -> StorySample:
@@ -448,15 +527,18 @@ def main() -> None:
         samples = [generate(params)]
     else:
         seen: set[str] = set()
+        seen_structures: set[tuple[int, int, int, int]] = set()
         i = 0
         while len(samples) < args.n and i < max(args.n * 20, 20):
             params = resolve_params(args, random.Random(base_seed + i))
             params.seed = base_seed + i
             sample = generate(params)
             i += 1
-            if sample.story in seen:
+            structure = (params.mystery, params.plan, params.roles, params.refrain)
+            if sample.story in seen or structure in seen_structures:
                 continue
             seen.add(sample.story)
+            seen_structures.add(structure)
             samples.append(sample)
 
     if args.json:

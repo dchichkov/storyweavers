@@ -49,8 +49,10 @@ Legend: `queued`, `active`, `repaired`, `verified`, `blocked`.
 | 2 | verified | `thud_teamwork_rhyming_story.py` | 1 skeleton/100 exact-unique stories | 1 skeleton | 100 unique; 12 skeletons | Twelve substantive causal stories. |
 | 2 | verified | `contagious_interchange_teamwork_ghost_story.py` | 1 skeleton/100 exact-unique stories | 1 skeleton | 100 unique; 100 skeletons | Ten causal arcs; setting/task collapse fixed. |
 | 2 | verified | `employee_pylon_magic_pirate_tale.py` | 1 skeleton/100 exact-unique stories | 1 skeleton | 100 unique; 94 skeletons | Nine arcs and all three magic moves restored. |
-| 2 | active | `garnet_humor_curiosity_repetition_tall_tale.py` | 1 skeleton/100 exact-unique stories | pending | pending | |
-| 2 | active | `hibachi_rhyme_suspense_comedy.py` | 1 skeleton/100 exact-unique stories | pending | pending | |
-| 2 | active | `loop_energy_ginger_conflict_pirate_tale.py` | 1 skeleton/100 exact-unique stories | pending | pending | |
+| 2 | verified | `garnet_humor_curiosity_repetition_tall_tale.py` | 1 skeleton/100 exact-unique stories | 1 skeleton | 100 unique; 73 skeletons | Eight causal arcs; independent check passed. |
+| 2 | verified | `hibachi_rhyme_suspense_comedy.py` | 1 skeleton/100 exact-unique stories | 1 skeleton | 100 unique; 100 skeletons | Eight incidents and rhyme/comedy forms. |
+| 2 | verified | `loop_energy_ginger_conflict_pirate_tale.py` | 1 skeleton/100 exact-unique stories | 1 skeleton | 100 unique; 100 skeletons | Eight causal arcs; 333/400 unique story-QA pairs. |
+| 3 | verified | `shishkebab_ice_fluid_friendship_kindness_myth.py` | 1 skeleton/100 exact-unique stories | 1 skeleton | 100 unique; 96 skeletons | Twelve causal arcs and six narrative structures. |
+| 3 | verified | `snicker_railing_systematic_lesson_learned_teamwork_repetition.py` | 1 skeleton/100 exact-unique stories | 1 skeleton | 100 unique; 100 skeletons | Twelve mystery arcs; independent check passed. |
 
 Additional waves are appended after the full 120-script ranking is frozen.
