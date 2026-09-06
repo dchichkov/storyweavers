@@ -74,10 +74,13 @@ class Entity:
     def pronoun(self, case: str = "subject") -> str:
         female = {"girl", "mother", "mom", "woman"}
         male = {"boy", "father", "dad", "man"}
+        neutral = {"child", "person"}
         if self.type in female:
             return {"subject": "she", "object": "her", "possessive": "her"}[case]
         if self.type in male:
             return {"subject": "he", "object": "him", "possessive": "his"}[case]
+        if self.type in neutral:
+            return {"subject": "they", "object": "them", "possessive": "their"}[case]
         return {"subject": "it", "object": "it", "possessive": "its"}[case]
     @property
     def label_word(self) -> str:
@@ -313,67 +316,56 @@ class World:
         return clone
 
 
-def _tick_hunger(world: World) -> list[str]:
-    out = []
-    for e in list(world.entities.values()):
-        if e.kind == "character" and e.meters.get("hunger", 0) >= THRESHOLD and not e.fired if False else True:
-            pass
-    return out
-
-
-def _clue_found(world: World) -> list[str]:
+def _first_clue_found(world: World) -> list[str]:
     out = []
     child = world.get("child")
-    snack = world.get("quesadilla")
     if child.memes.get("searching", 0) < THRESHOLD:
         return out
-    sig = ("clue",)
+    sig = ("first_clue",)
     if sig in world.fired:
         return out
     world.fired.add(sig)
-    child.memes["hope"] = child.memes.get("hope", 0) + 1
-    out.append(f"{child.label} noticed {snack.phrase} was not on the table, but {snack.clue} by the kitchen door.")
+    child.memes["first_clue"] += 1
+    out.append(world.facts["first_discovery"])
     return out
 
 
-def _find_helper(world: World) -> list[str]:
+def _second_clue_found(world: World) -> list[str]:
     out = []
     child = world.get("child")
-    helper = world.get("helper")
-    if child.memes.get("searching", 0) < THRESHOLD:
+    if child.memes.get("first_clue", 0) < THRESHOLD:
         return out
-    if child.memes.get("clue", 0) < THRESHOLD:
-        return out
-    sig = ("helper",)
+    sig = ("second_clue",)
     if sig in world.fired:
         return out
     world.fired.add(sig)
-    child.memes["calm"] = child.memes.get("calm", 0) + 1
-    helper.memes["care"] = helper.memes.get("care", 0) + 1
-    out.append(f"Then {child.label} followed the clue into the hallway and found {helper.label} with a gentle smile.")
+    child.memes["second_clue"] += 1
+    child.memes["hope"] += 1
+    out.append(world.facts["second_discovery"])
     return out
 
 
-def _reveal(world: World) -> list[str]:
+def _solve_mystery(world: World) -> list[str]:
     out = []
     child = world.get("child")
     snack = world.get("quesadilla")
     helper = world.get("helper")
-    sig = ("reveal",)
+    sig = ("resolved",)
     if sig in world.fired:
         return out
-    if child.memes.get("calm", 0) < THRESHOLD:
+    if child.memes.get("second_clue", 0) < THRESHOLD:
         return out
     world.fired.add(sig)
-    snack.meters["warmth"] = 1
-    child.meters["hunger"] = 0
-    child.memes["joy"] = child.memes.get("joy", 0) + 1
-    out.append(f"{helper.label} explained that {helper.pronoun('subject')} had moved the quesadilla to keep it warm.")
-    out.append(f"Soon {child.label} was eating the quesadilla, and the little mystery felt happy and complete.")
+    snack.meters["warmth"] = 1.0
+    child.meters["hunger"] = 0.0
+    child.memes["calm"] += 1
+    child.memes["joy"] += 1
+    helper.memes["care"] += 1
+    out.extend(world.facts["resolution_lines"])
     return out
 
 
-RULES = [_clue_found, _find_helper, _reveal]
+RULES = [_first_clue_found, _second_clue_found, _solve_mystery]
 
 
 def propagate(world: World) -> list[str]:
@@ -391,47 +383,197 @@ def propagate(world: World) -> list[str]:
     return produced
 
 
-def ask_for_help(world: World, child: Entity) -> None:
-    child.memes["searching"] = child.memes.get("searching", 0) + 1
-    child.meters["hunger"] = child.meters.get("hunger", 0) + 1
-    world.say(f"At bedtime, {child.label} got sleepy and hungry and noticed the quesadilla was missing.")
-    world.say(f"{child.label} whispered, \"Where did my quesadilla go?\" and began to look for a clue.")
+def begin_search(world: World) -> None:
+    child = world.get("child")
+    child.memes["searching"] += 1
+    child.meters["hunger"] += 1
+    world.say(world.facts["missing_line"])
+    world.say(world.facts["question_line"])
 
 
-def notice_clue(world: World, child: Entity) -> None:
-    child.memes["clue"] = child.memes.get("clue", 0) + 1
-    world.say(f"{child.label} padded softly past the kitchen and saw {world.get('quesadilla').clue}.")
+def close_story(world: World) -> None:
+    child = world.get("child")
+    if ("resolved",) not in world.fired:
+        raise StoryError("The quesadilla mystery reached bedtime without a resolution.")
+    world.say(world.facts["ending_line"])
+    child.memes["asleep"] += 1
 
 
-def close_story(world: World, child: Entity) -> None:
-    snack = world.get("quesadilla")
-    world.say(
-        f"By the end, {child.label} was warm and content, {snack.label} was safe in a cozy place, "
-        f"and the house felt peaceful again."
+SCENARIOS = (
+    {
+        "missing_from": "the blue plate beside the stove",
+        "first_clue": "a floury oven-mitt print on the counter",
+        "first_discovery": "A floury oven-mitt print pointed from the empty blue plate toward the pantry.",
+        "second_clue": "the warm, toasty smell near the pantry door",
+        "second_discovery": "At the pantry, a warm, toasty smell curled through the crack beneath the door.",
+        "found_place": "a covered pan on the pantry shelf",
+        "motive": "a cool draft had begun to chill the snack",
+        "helper_action": "covered the pan with a clean towel",
+    },
+    {
+        "missing_from": "the little table by the window",
+        "first_clue": "three crumbs leading toward the reading nook",
+        "first_discovery": "Three crisp crumbs made a tiny trail from the table to the reading nook.",
+        "second_clue": "a corner of the striped napkin beneath a basket",
+        "second_discovery": "Beside the books, the corner of a striped napkin peeked from beneath the picnic basket.",
+        "found_place": "the lidded picnic basket",
+        "motive": "the curious cat had jumped onto the table",
+        "helper_action": "tucked the plate safely inside the basket",
+    },
+    {
+        "missing_from": "the tray beside the bedtime cocoa",
+        "first_clue": "a thin strand of cheese on the rug",
+        "first_discovery": "A thin strand of cheese glimmered on the rug like a pale thread.",
+        "second_clue": "a folded red napkin outside the dining room",
+        "second_discovery": "The cheese thread ended at a folded red napkin outside the dining room.",
+        "found_place": "the warming dish on the dining table",
+        "motive": "the cocoa had spilled close to the tray",
+        "helper_action": "carried the snack away from the spill and wiped the plate dry",
+    },
+    {
+        "missing_from": "the flowered plate on the kitchen island",
+        "first_clue": "a round mark where the plate had rested",
+        "first_discovery": "On the kitchen island, one clean round mark showed exactly where the plate had been.",
+        "second_clue": "the soft click of a timer near the breakfast nook",
+        "second_discovery": "From the breakfast nook came the soft click of a timer and the faint scent of toasted corn.",
+        "found_place": "a warm stoneware dish in the breakfast nook",
+        "motive": "the middle needed one more minute to melt",
+        "helper_action": "set a timer and warmed it until the cheese was perfectly soft",
+    },
+    {
+        "missing_from": "the wooden board under the night-light",
+        "first_clue": "a green napkin caught on a chair",
+        "first_discovery": "A green napkin hung from the back of a chair, though it had been beside the quesadilla before.",
+        "second_clue": "two apple slices on a saucer in the hall",
+        "second_discovery": "In the hall, two apple slices waited on a saucer beside the closed study door.",
+        "found_place": "a covered tray in the study",
+        "motive": "apple slices would make it a more balanced bedtime snack",
+        "helper_action": "arranged the warm wedges and apple slices together",
+    },
+    {
+        "missing_from": "the small plate near the back door",
+        "first_clue": "a fluttering paper moon from the napkin ring",
+        "first_discovery": "The paper moon from the napkin ring fluttered beside the back door.",
+        "second_clue": "a trail of raindrops ending at the mudroom bench",
+        "second_discovery": "A few raindrops crossed the floor and stopped beside the mudroom bench.",
+        "found_place": "an insulated lunch bag on the mudroom shelf",
+        "motive": "rain had blown through the open doorway",
+        "helper_action": "slipped the plate into the dry insulated bag",
+    },
+    {
+        "missing_from": "the checked placemat at the end of the counter",
+        "first_clue": "the quiet squeak of a cabinet hinge",
+        "first_discovery": "The room was still until a cabinet hinge gave one small, helpful squeak.",
+        "second_clue": "a wooden spoon resting beside the warming drawer",
+        "second_discovery": "Below the cabinet, a wooden spoon pointed straight toward the warming drawer.",
+        "found_place": "the warming drawer beneath the counter",
+        "motive": "the bedtime song lasted longer than expected",
+        "helper_action": "put the plate in the warming drawer so it would not turn cold",
+    },
+    {
+        "missing_from": "the moon-shaped plate beside the sink",
+        "first_clue": "a dab of tomato salsa on a clean dish towel",
+        "first_discovery": "A bright dab of tomato salsa dotted the clean dish towel beside the sink.",
+        "second_clue": "the rustle of foil from the family room",
+        "second_discovery": "Then foil rustled softly in the family room, just beyond the half-open door.",
+        "found_place": "a foil-covered tray on the family-room ottoman",
+        "motive": "everyone had moved there to watch the moon rise",
+        "helper_action": "covered the tray and carried the bedtime snack to the window",
+    },
+)
+
+SETTINGS = (
+    "a small house where the hallway night-light glowed",
+    "a quiet apartment above the sleepy town",
+    "a cottage where rain tapped softly on the roof",
+    "a warm farmhouse under a silver moon",
+    "a little home at the end of a lantern-lit lane",
+)
+
+FILLINGS = (
+    "mild cheddar and sweet corn",
+    "melted cheese and tiny black beans",
+    "creamy cheese and spinach",
+    "golden cheese with a little tomato",
+    "soft cheese and roasted squash",
+)
+
+SEARCH_REACTIONS = (
+    "took one slow breath and decided to inspect the room carefully",
+    "remembered that good detectives begin with what they can see",
+    "felt worried for a moment, then chose to follow the evidence",
+    "listened to the quiet house before taking the first careful step",
+)
+
+ENDING_IMAGES = (
+    "Soon only a crescent of quesadilla remained, and its last curl of steam faded beneath the glowing night-light.",
+    "After the final warm bite, the empty plate shone like a little moon while the house settled into silence.",
+    "The clean plate rested by the sink, the striped napkin was folded, and moonlight lay peacefully across the floor.",
+    "With the mystery solved, a buttery scent lingered in the kitchen as the bedroom lamp clicked softly off.",
+    "A few golden crumbs remained on the plate; then the blanket rose to a sleepy chin and the clock gave one quiet tick.",
+)
+
+
+def tell(params: Optional["StoryParams"] = None) -> World:
+    if params is None:
+        params = StoryParams()
+    setting = Setting(place=params.setting_place)
+    world = World(setting)
+    child = world.add(Entity(id="child", kind="character", type=params.child_type, label=params.child_name))
+    helper = world.add(Entity(id="helper", kind="character", type=params.helper_type, label=params.helper_name))
+    quesadilla = world.add(Entity(
+        id="quesadilla",
+        type="snack",
+        label="quesadilla",
+        phrase=f"the quesadilla filled with {params.filling}",
+        owner=child.id,
+        caretaker=helper.id,
+    ))
+    helper_subject = helper.pronoun("subject").capitalize()
+    world.facts.update(
+        child=child,
+        helper=helper,
+        quesadilla=quesadilla,
+        setting=setting,
+        filling=params.filling,
+        missing_from=params.missing_from,
+        first_clue=params.first_clue,
+        second_clue=params.second_clue,
+        found_place=params.found_place,
+        motive=params.motive,
+        first_discovery=params.first_discovery,
+        second_discovery=params.second_discovery,
+        missing_line=(
+            f"When {child.label} returned in pajamas, {params.missing_from} was empty. "
+            f"The quesadilla had vanished."
+        ),
+        question_line=(
+            f'"A bedtime mystery," {child.label} whispered. {child.pronoun("subject").capitalize()} '
+            f"{params.search_reaction}."
+        ),
+        resolution_lines=[
+            f"There, {child.label} found {helper.label} beside {params.found_place}, with the quesadilla safe and warm.",
+            f'"I moved it because {params.motive}," {helper.label} explained. {helper_subject} had '
+            f"{params.helper_action}.",
+            f"The clues fit at last. {child.label} thanked {helper.label}, shared the crisp-edged wedges, and felt the worry melt away.",
+        ],
+        ending_line=params.ending_image,
     )
 
-
-def tell() -> World:
-    setting = Setting(place="the little house")
-    world = World(setting)
-    child = world.add(Entity(id="child", kind="character", type="girl", label="Mina"))
-    helper = world.add(Entity(id="helper", kind="character", type="mother", label="Mom"))
-    quesadilla = world.add(Entity(
-        id="quesadilla", type="snack", label="quesadilla",
-        phrase="the warm quesadilla on the plate", owner=child.id, caretaker=helper.id
-    ))
-    world.facts.update(child=child, helper=helper, quesadilla=quesadilla, setting=setting)
-
-    world.say(f"Once upon a bedtime, {child.label} lived in {setting.place} and loved a warm quesadilla before sleep.")
-    world.say(f"{child.label} liked it because it was {Snack('quesadilla','quesadilla','').comfort if False else 'soft, cheesy, and cozy'}.")
+    world.say(
+        f"Just before bedtime, {child.label} helped {helper.label} make a quesadilla filled with {params.filling} "
+        f"in {setting.place}."
+    )
+    world.say(
+        f"They left it on {params.missing_from}, ready for one cozy snack after pajamas were on."
+    )
 
     world.para()
-    ask_for_help(world, child)
-    notice_clue(world, child)
+    begin_search(world)
     propagate(world)
 
     world.para()
-    close_story(world, child)
+    close_story(world)
     return world
 
 
@@ -482,7 +624,21 @@ def asp_verify() -> int:
 class StoryParams:
     seed: Optional[int] = None
     child_name: str = "Mina"
+    child_type: str = "girl"
     helper_name: str = "Mom"
+    helper_type: str = "mother"
+    setting_place: str = SETTINGS[0]
+    filling: str = FILLINGS[0]
+    missing_from: str = SCENARIOS[0]["missing_from"]
+    first_clue: str = SCENARIOS[0]["first_clue"]
+    first_discovery: str = SCENARIOS[0]["first_discovery"]
+    second_clue: str = SCENARIOS[0]["second_clue"]
+    second_discovery: str = SCENARIOS[0]["second_discovery"]
+    found_place: str = SCENARIOS[0]["found_place"]
+    motive: str = SCENARIOS[0]["motive"]
+    helper_action: str = SCENARIOS[0]["helper_action"]
+    search_reaction: str = SEARCH_REACTIONS[0]
+    ending_image: str = ENDING_IMAGES[0]
     samples: list = field(default_factory=list)
     @property
     def meters(self):
@@ -523,15 +679,53 @@ def build_parser() -> argparse.ArgumentParser:
 
 
 def resolve_params(args: argparse.Namespace, rng: random.Random) -> StoryParams:
-    return StoryParams(seed=getattr(args, "seed", None), child_name=rng.choice(["Mina", "Nora", "Lina", "Ivy"]), helper_name=rng.choice(["Mom", "Mama", "Mother"]))
+    seed = int(getattr(args, "seed", None) or 0)
+    # The core is a permutation of 288 child/helper/scenario combinations, so
+    # any 100 adjacent seeds are distinct. The RNG spreads the prose axes.
+    index = (seed * 191 + 137) % 288
+
+    def take(options):
+        nonlocal index
+        value = options[index % len(options)]
+        index //= len(options)
+        return value
+
+    child_name, child_type = take(
+        (("Mina", "girl"), ("Nora", "girl"), ("Lina", "girl"), ("Ivy", "girl"),
+         ("Theo", "boy"), ("Sam", "child"))
+    )
+    helper_name, helper_type = take(
+        (("Mom", "mother"), ("Mama", "mother"), ("Dad", "father"),
+         ("Papa", "father"), ("Grandma", "woman"), ("Grandpa", "man"))
+    )
+    scenario = take(SCENARIOS)
+    return StoryParams(
+        seed=seed,
+        child_name=child_name,
+        child_type=child_type,
+        helper_name=helper_name,
+        helper_type=helper_type,
+        setting_place=rng.choice(SETTINGS),
+        filling=rng.choice(FILLINGS),
+        missing_from=scenario["missing_from"],
+        first_clue=scenario["first_clue"],
+        first_discovery=scenario["first_discovery"],
+        second_clue=scenario["second_clue"],
+        second_discovery=scenario["second_discovery"],
+        found_place=scenario["found_place"],
+        motive=scenario["motive"],
+        helper_action=scenario["helper_action"],
+        search_reaction=rng.choice(SEARCH_REACTIONS),
+        ending_image=rng.choice(ENDING_IMAGES),
+    )
 
 
 def generation_prompts(world: World) -> list[str]:
     f = world.facts
     return [
-        'Write a short bedtime story about a missing quesadilla and a gentle mystery to solve.',
-        f"Tell a cozy story where {f['child'].label} looks for a quesadilla and {f['helper'].label} helps solve the mystery.",
-        "Write a simple bedtime tale that ends with the quesadilla found and the child feeling calm.",
+        "Write a short bedtime story about a missing quesadilla and a gentle mystery to solve.",
+        f"Tell a cozy mystery where {f['child'].label} follows {f['first_clue']} and {f['second_clue']}.",
+        f"Write a bedtime tale in which {f['helper'].label} moved a quesadilla because {f['motive']}.",
     ]
 
 
@@ -541,16 +735,29 @@ def story_qa(world: World) -> list[QAItem]:
     helper = _safe_fact(world, f, "helper")
     return [
         QAItem(
-            question=f"Who was looking for the missing quesadilla?",
-            answer=f"{child.label} was looking for it because the bedtime snack had disappeared from the table.",
+            question=(
+                f"Who searched for the {f['filling']} quesadilla after it vanished from "
+                f"{f['missing_from']} in {f['setting'].place}?"
+            ),
+            answer=(
+                f"{child.label} searched for it while {helper.label} kept it safe. "
+                f"It had disappeared from {f['missing_from']}."
+            ),
         ),
         QAItem(
-            question=f"Why did {helper.label} move the quesadilla?",
-            answer=f"{helper.label} moved it to keep it warm, not to hide it forever.",
+            question=(
+                f"Why did {helper.label} move {child.label}'s {f['filling']} quesadilla "
+                f"from {f['missing_from']}?"
+            ),
+            answer=f"{helper.label} moved it because {f['motive']}. The snack was waiting safely in {f['found_place']}.",
         ),
         QAItem(
-            question="How did the mystery end?",
-            answer=f"{child.label} followed the clue, found {helper.label}, and then ate the warm quesadilla in peace.",
+            question=f"Which clues helped {child.label} solve the mystery?",
+            answer=f"{child.label} noticed {f['first_clue']} and then {f['second_clue']}. Together they led to {helper.label} and the quesadilla.",
+        ),
+        QAItem(
+            question=f"How did {child.label} feel after finding the snack in {f['found_place']}?",
+            answer=f"{child.label} felt calm and joyful after the clues made sense. {child.label} thanked {helper.label} and shared the warm wedges.",
         ),
     ]
 
@@ -593,7 +800,7 @@ def dump_trace(world: World) -> str:
 
 
 def generate(params: StoryParams) -> StorySample:
-    world = tell()
+    world = tell(params)
     return StorySample(
         params=params,
         story=world.render(),
@@ -635,7 +842,10 @@ def main() -> None:
         samples = [generate(StoryParams(seed=base_seed))]
     else:
         for i in range(getattr(args, "n", None)):
-            params = resolve_params(args, random.Random(base_seed + i))
+            sample_seed = base_seed + i
+            sample_args = argparse.Namespace(**vars(args))
+            sample_args.seed = sample_seed
+            params = resolve_params(sample_args, random.Random(sample_seed))
             params.seed = base_seed + i
             samples.append(generate(params))
 

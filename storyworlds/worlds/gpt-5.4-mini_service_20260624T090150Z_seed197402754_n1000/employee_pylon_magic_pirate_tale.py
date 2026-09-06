@@ -336,6 +336,20 @@ class Tool:
         return ""
 
 
+@dataclass(frozen=True)
+class StoryArc:
+    id: str
+    move: str
+    need: str
+    danger: str
+    warning: str
+    plan: str
+    result: str
+    celebration: str
+    cause_answer: str
+    action_answer: str
+
+
 class World:
     def __init__(self, setting: Setting) -> None:
         self.setting = setting
@@ -380,9 +394,9 @@ class World:
 # ---------------------------------------------------------------------------
 
 SETTINGS = {
-    "harbor": Setting(place="the harbor", affords={"magic"}),
-    "dock": Setting(place="the dock", affords={"magic"}),
-    "shipyard": Setting(place="the shipyard", affords={"magic"}),
+    "harbor": Setting(place="the harbor", affords={"glow", "sparkle", "float"}),
+    "dock": Setting(place="the dock", affords={"glow", "sparkle", "float"}),
+    "shipyard": Setting(place="the shipyard", affords={"glow", "sparkle", "float"}),
 }
 
 MOVES = {
@@ -446,6 +460,117 @@ EMPLOYEE_NAMES = ["Nina", "Milo", "Tess", "Jory", "Pia", "Finn"]
 BOSS_NAMES = ["Captain Reed", "Boss Marla", "First Mate June"]
 TRAITS = ["brave", "clever", "cheerful", "stubborn", "lively"]
 
+ARCS = {
+    "fog_signal": StoryArc(
+        id="fog_signal",
+        move="glow",
+        need="a pea-soup fog hid a family skiff from the pier",
+        danger="loose sparks could scorch the pylon's signal pennant",
+        warning='"A bright idea still needs a careful hand," {boss} warned.',
+        plan="shield the lantern, then blink it three times toward the channel",
+        result="the skiff followed the three golden blinks safely home",
+        celebration="the rescued family rang a tiny brass bell",
+        cause_answer="A thick fog hid a family skiff from the pier.",
+        action_answer="They covered the lantern and flashed three safe signals.",
+    ),
+    "night_delivery": StoryArc(
+        id="night_delivery",
+        move="glow",
+        need="the harbor healer needed a medicine parcel before moonrise",
+        danger="an uncovered flare could startle the pony waiting beside the pylon",
+        warning='"Let us make a useful light, not a frightening one," said {boss}.',
+        plan="hood the lantern and carry its gentle glow along the painted path",
+        result="the employee found the healer's blue door and delivered the parcel",
+        celebration="the healer hung a paper star where the soft light had guided them",
+        cause_answer="The harbor healer needed a medicine parcel before moonrise.",
+        action_answer="They hooded the lantern and followed its gentle light to the healer.",
+    ),
+    "lost_bell": StoryArc(
+        id="lost_bell",
+        move="glow",
+        need="the tide bell had fallen among the dark rocks below the quay",
+        danger="wild sparks could burn the old seaweed ropes tied to the pylon",
+        warning='"Search slowly, matey; the tide is quicker than it looks," {boss} said.',
+        plan="cover the lantern and sweep its glow across one rock at a time",
+        result="a green glint revealed the bell before the rising tide reached it",
+        celebration="the repaired bell chimed once for every worker on the quay",
+        cause_answer="The tide bell had fallen among the rocks below the quay.",
+        action_answer="They shielded the lantern and searched the rocks one by one.",
+    ),
+    "tangled_rigging": StoryArc(
+        id="tangled_rigging",
+        move="sparkle",
+        need="a training ship's rigging had twisted into a dangerous knot",
+        danger="flying glitter dust could hide the colored safety marks on the pylon",
+        warning='"No pirate cuts a knot before learning what it holds," {boss} said.',
+        plan="wrap the rope, make only the trapped strand sparkle, and loosen it by hand",
+        result="the bright strand showed exactly which loop to free",
+        celebration="the young deckhands raised a patchwork sail without a single snap",
+        cause_answer="The training ship's rigging had twisted into a dangerous knot.",
+        action_answer="They wrapped the rope and made only the trapped strand sparkle.",
+    ),
+    "hidden_mooring": StoryArc(
+        id="hidden_mooring",
+        move="sparkle",
+        need="storm foam had hidden the rope that held a little ferry",
+        danger="sparkling dust could make the wet pylon too slippery to climb near",
+        warning='"Feet on the boards and eyes on the rope," {boss} called.',
+        plan="bind the rope in cloth and send one silver shimmer along its length",
+        result="the shimmer traced the rope to a loose mooring ring",
+        celebration="the ferry captain painted a silver stripe around the repaired ring",
+        cause_answer="Storm foam had hidden the ferry's mooring rope.",
+        action_answer="They wrapped the rope and traced it with one silver shimmer.",
+    ),
+    "crab_rescue": StoryArc(
+        id="crab_rescue",
+        move="sparkle",
+        need="a crab had backed into a maze of discarded fishing line",
+        danger="a cloud of glitter could confuse the crab and coat the pylon steps",
+        warning='"Small sailors need calm seas too," {boss} whispered.',
+        plan="cover the line and make each safe strand twinkle before lifting it away",
+        result="the crab followed the clear path back to a tide pool",
+        celebration="the crab raised one claw beside the clean pylon as if waving goodbye",
+        cause_answer="A crab was trapped in discarded fishing line.",
+        action_answer="They made the safe strands twinkle and lifted the line away.",
+    ),
+    "medicine_crate": StoryArc(
+        id="medicine_crate",
+        move="float",
+        need="a medicine crate had slipped from a visiting ship into the water",
+        danger="an untethered floating crate could ram the pylon with the tide",
+        warning='"Give every floating thing a line home," {boss} ordered.',
+        plan="fasten the net to the pier before lifting the crate on a small magic wave",
+        result="the net guided the dry crate between the pilings and onto the dock",
+        celebration="the ship's cook shared warm apple buns with the whole crew",
+        cause_answer="A medicine crate had fallen from a visiting ship.",
+        action_answer="They tethered a cargo net before floating the crate to the dock.",
+    ),
+    "duckling_crossing": StoryArc(
+        id="duckling_crossing",
+        move="float",
+        need="three ducklings were stranded on a low board as the tide rose",
+        danger="a wandering magic wave could bump their board against the pylon",
+        warning='"The gentlest rescue begins with a strong knot," {boss} said.',
+        plan="net the board loosely, then float it across the quiet side of the pier",
+        result="the mother duck met all three ducklings in the sheltered cove",
+        celebration="four neat wakes shone copper in the sunset beside the pylon",
+        cause_answer="Three ducklings were stranded while the tide was rising.",
+        action_answer="They netted the board and floated it through the quiet water.",
+    ),
+    "festival_cargo": StoryArc(
+        id="festival_cargo",
+        move="float",
+        need="the children's pirate festival was missing its chest of paper crowns",
+        danger="the chest could drift into the pylon and soak every crown",
+        warning='"Treasure is no fun when it becomes harbor litter," {boss} said.',
+        plan="lace a cargo net around the chest and pull while the magic held it level",
+        result="the chest skimmed safely under the bunting and reached the festival",
+        celebration="each child wore a paper crown while the pylon flew a red flag",
+        cause_answer="The pirate festival needed its chest of paper crowns.",
+        action_answer="They netted the chest and floated it level to the festival.",
+    ),
+}
+
 
 # ---------------------------------------------------------------------------
 # ASP twin
@@ -499,7 +624,7 @@ def asp_valid() -> list[tuple]:
 def valid_combos() -> list[tuple[str, str]]:
     combos = []
     for sid, setting in SETTINGS.items():
-        for mid in setting.affords:
+        for mid in sorted(setting.affords):
             move = _safe_lookup(MOVES, mid)
             if any(t for t in TOOLS if move_risk_kind(move) in t.guards and move_zone(move) & t.covers):
                 combos.append((sid, mid))
@@ -525,6 +650,10 @@ class StoryParams:
     name: str
     boss: str
     trait: str
+    arc: str = "fog_signal"
+    opening: int = 0
+    turn: int = 0
+    ending: int = 0
     seed: Optional[int] = None
     @property
     def label_word(self) -> str:
@@ -625,28 +754,82 @@ def build_world(params: StoryParams) -> World:
 
     move = _safe_lookup(MOVES, params.move)
     tool = select_tool(move)
+    compatible_arcs = [arc for arc in ARCS.values() if arc.move == move.id]
+    arc = ARCS.get(params.arc)
+    if arc not in compatible_arcs:
+        arc = compatible_arcs[0]
+    if tool is None:
+        raise ValueError(f"No safety tool is available for {move.id}")
 
-    world.say(f"{employee.id} was a {params.trait} employee at {world.setting.place}, and {employee.pronoun('possessive')} favorite thing was a little bit of magic.")
-    world.say(f"{employee.id} loved to {move.verb}, especially when the salt wind swirled by the pylon.")
+    fmt = {
+        "name": employee.id,
+        "boss": boss.label,
+        "place": world.setting.place,
+        "trait": params.trait,
+        "move": move.verb,
+        "need": arc.need,
+        "danger": arc.danger,
+        "plan": arc.plan,
+        "tool": tool.label,
+    }
+    openings = [
+        "{name} was the {trait} employee of a small pirate crew at {place}. While other pirates polished spyglasses, {name} practiced gentle magic beside the pylon.",
+        '"All hands to the pylon!" called {boss}. {name}, a {trait} pirate employee at {place}, tucked away a magic charm and hurried over.',
+        "The pylon at {place} had weathered a hundred tides. Its newest pirate helper was {name}, a {trait} employee who knew a little useful magic.",
+        "On the pirate crew's busiest morning, {name} checked ropes, counted crates, and swept the boards around the pylon. The {trait} employee kept one magic trick for emergencies.",
+    ]
+    turn_leads = [
+        "Instead of rushing, {name} asked what the magic might touch.",
+        '"Then we make the magic smaller and the safety bigger," {name} decided.',
+        "The employee took one slow breath, studied the wind and water, and changed the plan.",
+        "A good pirate solves the danger before chasing the treasure, so {name} fetched {tool}.",
+    ]
+    ending_frames = [
+        "That evening, {celebration}. The pylon stood unharmed beneath the first star, and {name} knew careful magic was the bravest kind.",
+        '"Job done, matey," {boss} said as {celebration}. Beside them, the clean pylon cast a long stripe across the evening water.',
+        "By sunset, {celebration}. {name} coiled the last rope at the foot of the pylon, proud that the safest plan had also been the cleverest.",
+        "Soon, {celebration}. The crew sailed home past the pylon, where one quiet reflection shimmered like a silver coin.",
+    ]
 
+    world.say(openings[params.opening % len(openings)].format(**fmt))
+    if params.opening % 2 == 0:
+        world.say(f"Then trouble arrived: {arc.need}.")
     world.para()
-    world.say(f"One day, {employee.id} and {boss.label} went to {world.setting.place}.")
-    world.say(f"{employee.id} wanted to {move.verb}, but {boss.label} looked at the pylon and frowned.")
+
+    if params.opening % 2:
+        world.say(f"The day's trouble was plain: {arc.need}.")
+        world.say(f"{employee.id} offered to {move.verb}, but {arc.danger}.")
+    else:
+        world.say(f"{employee.id} reached for magic and offered to {move.verb}.")
+        world.say(f"{boss.label} stopped the crew because {arc.danger}.")
     if predict(world, employee, move)["harm"]:
-        world.say(f'"If you do that," {boss.label} said, "you could leave {move.risk} on the pylon."')
+        world.say(arc.warning.format(**fmt))
         employee.memes["worry"] += 1
 
     world.para()
-    world.say(f"{employee.id} still wanted to use {params.move} magic, so {boss.label} showed a safer way.")
-    if tool is None:
-        pass
-    world.say(f"They first used {tool.label}: {tool.prep}.")
+    world.say(turn_leads[params.turn % len(turn_leads)].format(**fmt))
+    if params.turn % 2 == 0:
+        world.say(f"Together, the two pirates chose to {arc.plan}. They checked {tool.label} twice before beginning.")
+    else:
+        world.say(f"Their new plan was to {arc.plan}. {boss.label} tested the knot while {employee.id} watched the pylon.")
     _do_magic(world, employee, move)
     employee.memes["pride"] += 1
-    world.say(f"Then {employee.id} could {move.verb} without hurting the pylon.")
-    world.say(f"At the end, {employee.id} {tool.tail}, and the pylon stood clean and shining by the water.")
+    if params.turn % 3 == 0:
+        world.say(f"At {employee.id}'s signal, the magic answered, and {arc.result}.")
+    elif params.turn % 3 == 1:
+        world.say(f"A pinch of magic did its work without touching the pylon, and {arc.result}.")
+    else:
+        world.say(f'"Steady now," said {employee.id}. The careful spell held, so {arc.result}.')
 
-    world.facts.update(employee=employee, boss=boss, pylon=pylon, move=move, tool=tool)
+    world.para()
+    world.say(
+        ending_frames[params.ending % len(ending_frames)].format(
+            **fmt,
+            celebration=arc.celebration,
+        )
+    )
+
+    world.facts.update(employee=employee, boss=boss, pylon=pylon, move=move, tool=tool, arc=arc)
     return world
 
 
@@ -658,32 +841,33 @@ def prompts(world: World) -> list[str]:
     f = world.facts
     emp = _safe_fact(world, f, "employee")
     move = _safe_fact(world, f, "move")
+    arc = f["arc"]
     return [
-        f'Write a short pirate-style story for a child about a harbor employee who uses "{move.keyword}" magic near a pylon.',
-        f"Tell a gentle story where {emp.id} wants to {move.verb} at the harbor, but the boss worries about the pylon.",
-        f"Write a simple story with a safer choice, a pylon, and a little magic by the sea.",
+        f'Write a child-friendly pirate tale about an employee who uses "{move.keyword}" near a pylon when {arc.need}.',
+        f"Tell a gentle sea adventure where {emp.id} must {arc.plan} without damaging a pylon.",
+        f"Write a pirate story about teamwork, a safer choice, a pylon, and a little magic by the sea.",
     ]
 
 
 def story_qa(world: World) -> list[QAItem]:
     f = world.facts
-    emp, boss, pylon, move, tool = f["employee"], f["boss"], f["pylon"], f["move"], (f.get("tool") or next(iter(TOOLS.values())))
+    emp, boss, move, tool, arc = f["employee"], f["boss"], f["move"], f["tool"], f["arc"]
     return [
         QAItem(
-            question=f"Who wanted to {move.verb} at the harbor?",
-            answer=f"{emp.id} wanted to {move.verb} at the harbor.",
+            question="What problem did the pirate crew need to solve?",
+            answer=arc.cause_answer,
         ),
         QAItem(
             question=f"Why did {boss.label} worry about the pylon?",
-            answer=f"{boss.label} worried because {move.risk} from the magic could bother the pylon.",
+            answer=f"{boss.label} worried because {arc.danger}.",
         ),
         QAItem(
-            question=f"What helped {emp.id} use {move.verb} safely?",
-            answer=f"{tool.label} helped {emp.id} use the magic safely, so the pylon stayed in good shape.",
+            question=f"How did {emp.id} and {boss.label} use the magic safely?",
+            answer=arc.action_answer,
         ),
         QAItem(
-            question=f"How did the story end?",
-            answer=f"It ended with {emp.id} using {move.verb} safely and the pylon shining by the water.",
+            question="What proved that their careful plan worked?",
+            answer=f"Their plan worked because {arc.result}.",
         ),
     ]
 
@@ -733,6 +917,7 @@ def build_parser() -> argparse.ArgumentParser:
     ap.add_argument("--name")
     ap.add_argument("--boss", choices=BOSS_NAMES)
     ap.add_argument("--trait", choices=TRAITS)
+    ap.add_argument("--arc", choices=ARCS.keys())
     ap.add_argument("-n", type=int, default=1)
     ap.add_argument("--all", action="store_true")
     ap.add_argument("--seed", type=int, default=None)
@@ -747,19 +932,29 @@ def build_parser() -> argparse.ArgumentParser:
 
 def resolve_params(args: argparse.Namespace, rng: random.Random) -> StoryParams:
     combos = valid_combos()
+    requested_arc = getattr(args, "arc", None)
+    requested_move = getattr(args, "move", None)
+    if requested_arc and (not requested_move or ARCS[requested_arc].move == requested_move):
+        combos = [c for c in combos if c[1] == ARCS[requested_arc].move]
     if getattr(args, "place", None):
         combos = [c for c in combos if c[0] == getattr(args, "place", None)]
-    if getattr(args, "move", None):
-        combos = [c for c in combos if c[1] == getattr(args, "move", None)]
+    if requested_move:
+        combos = [c for c in combos if c[1] == requested_move]
     if not combos:
         return _fallback_storyparams(args, rng, StoryParams, globals())
     place, move = rng.choice(list(combos))
+    arc_choices = [arc.id for arc in ARCS.values() if arc.move == move]
+    arc = requested_arc if requested_arc in arc_choices else rng.choice(arc_choices)
     return StoryParams(
         place=place,
         move=move,
         name=getattr(args, "name", None) or rng.choice(EMPLOYEE_NAMES),
         boss=getattr(args, "boss", None) or rng.choice(BOSS_NAMES),
         trait=getattr(args, "trait", None) or rng.choice(TRAITS),
+        arc=arc,
+        opening=rng.randrange(4),
+        turn=rng.randrange(4),
+        ending=rng.randrange(4),
     )
 
 
@@ -808,9 +1003,9 @@ def asp_verify() -> int:
 
 
 CURATED = [
-    StoryParams(place="harbor", move="glow", name="Nina", boss="Captain Reed", trait="clever"),
-    StoryParams(place="dock", move="sparkle", name="Milo", boss="Boss Marla", trait="brave"),
-    StoryParams(place="shipyard", move="float", name="Tess", boss="First Mate June", trait="lively"),
+    StoryParams(place="harbor", move="glow", name="Nina", boss="Captain Reed", trait="clever", arc="fog_signal"),
+    StoryParams(place="dock", move="sparkle", name="Milo", boss="Boss Marla", trait="brave", arc="tangled_rigging", opening=1, turn=1, ending=1),
+    StoryParams(place="shipyard", move="float", name="Tess", boss="First Mate June", trait="lively", arc="duckling_crossing", opening=2, turn=2, ending=2),
 ]
 
 

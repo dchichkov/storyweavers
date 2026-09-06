@@ -35,7 +35,10 @@ import sys
 from dataclasses import dataclass, field
 from typing import Optional
 
-sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+_storyworlds_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+if not os.path.exists(os.path.join(_storyworlds_dir, "results.py")):
+    _storyworlds_dir = os.path.dirname(_storyworlds_dir)
+sys.path.insert(0, _storyworlds_dir)
 from results import QAItem, StoryError, StorySample  # noqa: E402
 
 
@@ -125,11 +128,89 @@ HIDDEN_OBJECTS = [
     "fallen hat",
     "small mop",
 ]
-SPANISH_LINES = [
-    "valiente, valiente, paso al frente",
-    "luz de luna, calma mi mente",
-    "uno, dos, tres, yo puedo seguir",
-]
+SPANISH_LINES = {
+    "valiente, valiente, paso al frente": "brave, brave, take a step ahead",
+    "luz de luna, calma mi mente": "moonlight, calm my mind",
+    "uno, dos, tres, yo puedo seguir": "one, two, three, I can keep going",
+}
+
+OPENINGS = {
+    "hall": [
+        "After supper, {child} helped {parent} carry play costumes down the hall.",
+        "At bedtime, {child} and {parent} gathered costumes left along the hall.",
+    ],
+    "attic": [
+        "On a rainy afternoon, {child} helped {parent} sort an old costume trunk in the attic.",
+        "Before dusk, {child} and {parent} climbed to the attic to put school-play costumes away.",
+    ],
+    "shed": [
+        "At sunset, {child} helped {parent} return painted stage props to the shed.",
+        "After the school play, {child} and {parent} carried the last costume box to the shed.",
+    ],
+    "stage": [
+        "After rehearsal, {child} stayed with {parent} to clear the quiet stage.",
+        "When the little school play ended, {child} and {parent} packed the costumes on the stage.",
+    ],
+}
+
+HIDDEN_EVENTS = {
+    "paper bag": [
+        (
+            "Something near the wall went scritch-scritch, then stopped.",
+            "followed the rustle to the wall",
+            "A cool draft was nudging a crumpled paper bag across the floor.",
+            "folded the bag flat for recycling",
+        ),
+        (
+            "A pale shape puffed up, sank down, and rose once more.",
+            "held the lantern toward the bobbing shape",
+            "Air beneath the door was making a paper bag rise and fall.",
+            "tucked the bag into the paper bin",
+        ),
+    ],
+    "wind-up mouse": [
+        (
+            "From behind a box came a clickety-click and a quick silver gleam.",
+            "tracked the tiny clicking past the box",
+            "A wind-up mouse from the play was bumping in a circle because its key was still turning.",
+            "stopped the toy mouse and set it on the prop shelf",
+        ),
+        (
+            "Two round shadows darted low, then tapped against a chair.",
+            "lowered the lantern and looked beneath the chair",
+            "The wheels of a wind-up mouse were ticking against a chair leg.",
+            "wound down the toy mouse and returned it to its tray",
+        ),
+    ],
+    "fallen hat": [
+        (
+            "A tall, crooked shadow nodded from the wall.",
+            "raised the lantern toward the nodding shadow",
+            "A fallen hat was rocking on a broom handle, and its brim made the shadow look tall.",
+            "hung the hat back on its low wooden peg",
+        ),
+        (
+            "Something with a wide black brim seemed to peek around a crate.",
+            "carried the light around the crate",
+            "A fallen hat from the costume trunk had landed brim-up and was catching the lantern light.",
+            "brushed off the hat and placed it in the costume trunk",
+        ),
+    ],
+    "small mop": [
+        (
+            "A thin shadow brushed the door with a hush-hush sweep.",
+            "walked beside the beam until it reached the door",
+            "A small mop had tipped sideways, and the moving door was dragging its soft strings.",
+            "stood the mop firmly in its corner",
+        ),
+        (
+            "From the corner came a soft swish, pause, swish.",
+            "shone the lantern into the swishing corner",
+            "A loose window latch was stirring the strings of a small mop.",
+            "fastened the latch and leaned the mop safely against the wall",
+        ),
+    ],
+}
 
 
 def build_parser() -> argparse.ArgumentParser:
@@ -166,7 +247,7 @@ def resolve_params(args: argparse.Namespace, rng: random.Random) -> StoryParams:
         child_name=name,
         parent_name=parent,
         language_word="Spanish",
-        prop_word="shotgun",
+        prop_word=rng.choice(PROPS),
         dark_word="dark",
         bravery_word="bravery",
         rhyme_style="rhyming",
@@ -180,7 +261,8 @@ def make_world(params: StoryParams) -> World:
     parent = Entity(id=params.parent_name, kind="character", label=params.parent_name, type="parent")
     prop = Entity(id="prop", kind="thing", label=params.prop_word, type="costume prop")
     lantern = Entity(id="lantern", kind="thing", label="lantern", type="light")
-    hidden = Entity(id="hidden", kind="thing", label="paper bag", type="small object")
+    hidden_label = random.Random((params.seed or 0) + 7919).choice(HIDDEN_OBJECTS)
+    hidden = Entity(id="hidden", kind="thing", label=hidden_label, type="small object")
     return World(
         setting=SETTINGS[params.setting],
         child=child,
@@ -191,10 +273,6 @@ def make_world(params: StoryParams) -> World:
     )
 
 
-def _rhyme(lines: list[str]) -> str:
-    return " ".join(lines)
-
-
 def _build_story(world: World, params: StoryParams) -> None:
     c = world.child
     p = world.parent
@@ -202,51 +280,69 @@ def _build_story(world: World, params: StoryParams) -> None:
     lantern = world.lantern
     hidden = world.hidden_object
 
+    rng = random.Random((params.seed or 0) + 104729)
+    opening = rng.choice(OPENINGS[params.setting]).format(child=c.label, parent=p.label)
+    signal, brave_action, reveal, cleanup = rng.choice(HIDDEN_EVENTS[hidden.label])
+    spanish = rng.choice(list(SPANISH_LINES))
+    translation = SPANISH_LINES[spanish]
+    support_line = rng.choice([
+        f'{p.label} lit the lantern and said, "We can look together; one careful step will do."',
+        f'{p.label} raised the lantern and said, "I am beside you. You may stop whenever you choose."',
+        f'{p.label} passed over the lantern and said, "Go slowly; I will stay close to you."',
+    ])
+    brave_line = rng.choice([
+        f"Fear still fluttered in {c.label}'s chest, but {c.label} {brave_action}.",
+        f"The sound was still strange, yet {c.label} {brave_action}.",
+        f"With one slow breath and one steady step, {c.label} {brave_action}.",
+    ])
+    endings = [
+        f"Soon the lantern hung by the door, the {prop.label} rested in its costume box, and a slim gold beam warmed {c.label}'s smiling face.",
+        f"They closed the costume trunk with the {prop.label} safely inside; beside it, the lantern painted one calm circle of gold.",
+        f"When they switched off the lantern, {c.label} repeated the Spanish rhyme once more, and this time the dark room felt peaceful.",
+        f"At the doorway, {c.label} looked back at the tidy room: one quiet shadow, one boxed-up {prop.label}, and no mystery left at all.",
+    ]
+
     c.memes["fear"] = 1.0
     c.memes["bravery"] = 0.0
     lantern.meters["light"] = 1.0
+    prop.meters["pretend"] = 1.0
+    hidden.meters["hidden"] = 1.0
 
+    world.say(opening)
     world.say(
-        f"In the {params.dark_word} little {world.setting}, {c.label} felt a shiver and a scare, "
-        f"for shadows could wobble and whisper in air."
+        f"A bright-painted {prop.label} belonged to the show, a harmless pretend prop "
+        f"inside the costume box. Then the lamp clicked out, and the room turned {params.dark_word} as night."
     )
-    world.say(
-        f"{p.label} came near with a lantern so bright, and gave {c.label} a {prop.label} to hold just right."
-    )
+    world.say(signal)
 
     world.para()
-    spanish = random.Random(params.seed or 0).choice(SPANISH_LINES)
+    world.say(support_line)
+    p.inc_meme("care", 1.0)
     world.say(
-        f'"{spanish}," said {c.label}, with a breathy small grin; '
-        f'the words felt like courage that bloomed from within.'
+        f'{c.label} remembered a Spanish rhyme. "{spanish.capitalize()}," {c.label} whispered. '
+        f'It meant "{translation}." '
+        f"The familiar words made a rhythm steady and clear, but bravery did not mean never feeling fear."
     )
     c.inc_meme("bravery", 1.0)
-    c.memes["fear"] = 0.0
-    world.say(
-        f"With {params.bravery_word} a-twinkle, {c.label} took a walk, "
-        f"and softly kept speaking in rhyme as they talked."
-    )
+    c.inc_meter("brave_steps", 1.0)
+    world.say(brave_line)
 
     world.para()
-    hidden.meters["hidden"] = 1.0
+    world.say(reveal)
+    hidden.meters["hidden"] = 0.0
+    hidden.meters["found"] = 1.0
+    c.memes["fear"] = 0.25
     world.say(
-        f"The lantern beam swayed, and it shone on the floor; "
-        f"there sat just a paper bag, nothing more."
-    )
-    world.say(
-        f"{c.label} laughed, because all of the fright had been only a shadow that puffed out of sight."
+        f"The clue had a cause, and the cause was small. {c.label} smiled to know there was no monster at all."
     )
 
     world.para()
     c.inc_meme("joy", 1.0)
     world.say(
-        f"So {c.label} stood tall in the {params.dark_word} little room, "
-        f"with Spanish on lips and no room left for gloom."
+        f"Together they {cleanup}. {c.label} learned that {params.bravery_word} did not make fear disappear; "
+        f"it meant taking one careful step with someone loving near."
     )
-    world.say(
-        f"The {prop.label} went back in its box with a thump, "
-        f"and bravery sparkled like warm little pump."
-    )
+    world.say(rng.choice(endings))
 
     world.facts.update(
         child=c,
@@ -256,6 +352,9 @@ def _build_story(world: World, params: StoryParams) -> None:
         hidden=hidden,
         spanish=spanish,
         setting=params.setting,
+        signal=signal,
+        reveal=reveal,
+        cleanup=cleanup,
         brave=bool(c.memes.get("bravery", 0.0) >= 1.0),
     )
 
@@ -263,8 +362,8 @@ def _build_story(world: World, params: StoryParams) -> None:
 def generation_prompts(world: World) -> list[str]:
     return [
         f"Write a short rhyming story for a little child in {world.setting} with a dark shadow and a brave heart.",
-        f"Tell a gentle story that includes the words Spanish, shotgun, and dark, and ends with bravery and relief.",
-        f"Write a simple rhyming tale where a child holds a lantern, repeats a Spanish line, and discovers the scary thing was harmless.",
+        f"Tell a gentle story that includes Spanish, a harmless pretend shotgun, and the dark, and ends with bravery and relief.",
+        f"Write a simple rhyming tale where a child uses a lantern, repeats a Spanish line, and discovers that a {world.hidden_object.label} caused the scary clue.",
     ]
 
 
@@ -277,16 +376,16 @@ def story_qa(world: World) -> list[QAItem]:
             answer=f"{c.label} was brave after feeling scared in the dark and hearing the comforting Spanish rhyme.",
         ),
         QAItem(
-            question=f"What did {p.label} give {c.label} to help?",
-            answer=f"{p.label} gave {c.label} a lantern and a harmless shotgun costume prop so {c.label} could look around safely.",
+            question=f"How did {p.label} help {c.label}?",
+            answer=f"{p.label} provided the lantern, stayed close, and let {c.label} investigate at a careful pace.",
         ),
         QAItem(
             question="What was the scary thing really?",
-            answer="It was only a paper bag, so the dark shape was harmless after all.",
+            answer=f"It was a harmless {world.hidden_object.label}. {world.facts['reveal']}",
         ),
         QAItem(
             question="Why did the child feel braver at the end?",
-            answer=f"{c.label} repeated a Spanish line, found the hidden shape was only a paper bag, and then felt proud and calm.",
+            answer=f"{c.label} repeated a Spanish line, took a careful step despite being afraid, and discovered what caused the strange clue.",
         ),
     ]
 

@@ -268,6 +268,13 @@ SETTINGS = {
     "orchard": "the orchard",
 }
 
+PLACE_DETAILS = {
+    "barnyard": ("between the red barn and the hay cart", "a mound of hay", "the weather vane"),
+    "schoolroom": ("beneath the high classroom clock", "a pile of old gym mats", "the school bell"),
+    "dock": ("beside the tied-up fishing boats", "a coil of soft rope", "the harbor flag"),
+    "orchard": ("between two rows of apple trees", "a heap of empty apple sacks", "the tallest pear tree"),
+}
+
 NAMES = ["Mabel", "Hank", "Tilly", "Otis", "Nell", "Benny", "Ruby", "Cal"]
 HELPERS = ["grandfather", "aunt", "neighbor", "teacher"]
 
@@ -342,6 +349,9 @@ class ActPlan:
     trick: str
     count_needed: int
     count_extra: int
+    prop: str = "teak pieces"
+    preparation: str = "build the prop"
+    failed_motion: str = "the whole setup toppled"
     risky_word: str = "act"
     tags: set[str] = field(default_factory=set)
     @property
@@ -411,6 +421,9 @@ ACTS = {
         trick="balance on one foot while waving a hat",
         count_needed=4,
         count_extra=1,
+        prop="two teak stilts",
+        preparation="fasten crossbars to the teak stilts",
+        failed_motion="the left stilt folded under the first step",
         tags={"act"},
     ),
     "teak_tower_act": ActPlan(
@@ -420,24 +433,76 @@ ACTS = {
         trick="make the tower tall enough to touch the rafters",
         count_needed=6,
         count_extra=2,
+        prop="a tower of teak blocks",
+        preparation="stack the teak blocks into a narrow tower",
+        failed_motion="the tower bowed sideways before the climb began",
         tags={"teak", "act"},
     ),
     "counting_act": ActPlan(
         id="counting_act",
-        verb="say the arithmetic aloud for the act",
+        verb="perform a counting-and-clapping act",
         gerund="doing arithmetic",
-        trick="count the props twice and clap on every number",
+        trick="climb a teak staircase and clap on every number",
         count_needed=5,
         count_extra=3,
+        prop="a staircase of teak steps",
+        preparation="lay out the teak steps in counting order",
+        failed_motion="the numbered steps folded into one another",
         tags={"arithmetic", "act"},
     ),
 }
 
-TEAK_ITEMS = {
-    "plank": "a smooth teak plank",
-    "block": "three teak blocks",
-    "chair": "a teak chair",
-}
+TEAK_ITEMS = [
+    "smooth teak pieces",
+    "golden-brown teak pieces",
+    "old teak pieces polished until they shone",
+    "sturdy teak pieces borrowed from the workshop",
+]
+
+INTRODUCTIONS = [
+    "announced a towering act so loudly that everyone nearby came to watch",
+    "painted a sign promising the tallest act anyone had ever seen",
+    "rang a handbell and promised an act grand enough to tickle the clouds",
+    "boasted that the act would make the town clock look short",
+]
+
+TRANSFORMATIONS = [
+    {
+        "kind": "spiraled",
+        "phrase": "teak curled into a giant wooden corkscrew",
+        "change": "the teak curled into a giant wooden corkscrew, twisting every joint out of line",
+        "failure": "the corkscrew-shaped prop spun under the child's first touch",
+        "scar": "a spiral-shaped hitching post",
+    },
+    {
+        "kind": "rooted",
+        "phrase": "teak rooted itself into the ground",
+        "change": "roots burst from the teak and gripped the ground so firmly that six adults could not budge it",
+        "failure": "the rooted prop would not move into position for the trick",
+        "scar": "a stubborn little teak tree",
+    },
+    {
+        "kind": "shrunken",
+        "phrase": "teak shrank to the size of building toys",
+        "change": "the teak shrank piece by piece until the entire prop could fit inside a lunch basket",
+        "failure": "the tiny prop was much too small to climb or balance upon",
+        "scar": "a tiny teak model of the failed act",
+    },
+    {
+        "kind": "hinged",
+        "phrase": "teak folded like an accordion",
+        "change": "invisible hinges appeared in the teak, and the tall prop folded like an accordion",
+        "failure": "the hinged prop snapped shut at the child's first touch",
+        "scar": "a zigzag teak bench",
+    },
+    {
+        "kind": "overgrown",
+        "phrase": "teak stretched far too tall",
+        "change": "the teak shot upward past the promised height and would not stop growing",
+        "failure": "the useful end of the prop rose beyond anyone's reach",
+        "scar": "a teak pole taller than every roof in town",
+    },
+]
 
 
 class WorldModel:
@@ -445,36 +510,40 @@ class WorldModel:
         self.world = world
         self.fired: set[str] = set()
 
-    def transform_teak(self, hero: Entity, item: Entity, plan: ActPlan) -> None:
+    def transform_teak(self, hero: Entity, item: Entity, transformation: dict[str, str]) -> None:
         if "transform" in self.fired:
             return
         self.fired.add("transform")
-        item.type = "twisted_teak"
-        item.label = "twisted teak"
-        item.phrase = "twisted teak with a bent leg"
+        item.type = f"{transformation['kind']}_teak"
+        item.label = transformation["phrase"]
+        item.phrase = transformation["phrase"]
         item.meters["tilt"] = 1
         hero.memes["shock"] = hero.memes.get("shock", 0) + 1
-        self.world.say(
-            f"Then the teak turned strange and twisty, as if the wood had heard the counting and gotten ideas."
-        )
-        self.world.say(
-            f"Their big idea was still {plan.gerund}, but the teak piece leaned like a sleepy goose."
-        )
+        self.world.say(f"At the sound of the wrong answer, {transformation['change']}.")
 
-    def fail_badly(self, hero: Entity, helper: Entity, item: Entity, plan: ActPlan) -> None:
+    def fail_badly(
+        self,
+        hero: Entity,
+        helper: Entity,
+        plan: ActPlan,
+        landing: str,
+        scar: dict[str, str],
+    ) -> None:
         if "bad_end" in self.fired:
             return
         self.fired.add("bad_end")
         hero.memes["disappointment"] = hero.memes.get("disappointment", 0) + 1
         helper.memes["worry"] = helper.memes.get("worry", 0) + 1
         self.world.say(
-            f"The arithmetic came out wrong, so the act could not go on the way it was promised."
+            f"{hero.label} tried to begin anyway, but {scar['failure']}. "
+            f"The sudden stop sent the child tumbling harmlessly into {landing}, while the audience scattered."
         )
         self.world.say(
-            f"{hero.name} stood with {hero.pronoun('possessive')} mouth open, while {helper.label} frowned at the numbers."
+            f"The promised act never happened. {helper.label.capitalize()} helped {hero.label} "
+            "check the piles again, and this time they found the missing pieces."
         )
         self.world.say(
-            f"In the end, the show was a bad ending: the crowd saw the broken setup, and the grand {plan.id} never happened."
+            f"Nobody applauded, and the transformed wood could not be repaired; it remained {scar['scar']}."
         )
 
 
@@ -512,50 +581,83 @@ def tell(params: StoryParams, rng: random.Random) -> World:
     hero = world.add(Entity(id=params.name, kind="character", type="child", label=params.name))
     helper = world.add(Entity(id="helper", kind="character", type=params.helper, label=params.helper))
     plan = choose_plan(rng)
+    place_detail, landing, landmark = PLACE_DETAILS[params.place]
+    needed = plan.count_needed + rng.choice([0, 1, 2, 3])
+    shortfall = rng.randint(1, min(3, needed - 2))
+    actual_total = needed - shortfall
+    first_pile = rng.randint(1, actual_total - 1)
+    second_pile = actual_total - first_pile
+    claimed_total = needed + rng.choice([0, 1, 2])
+    transformation = rng.choice(TRANSFORMATIONS)
+    material_description = rng.choice(TEAK_ITEMS)
+    announcement = rng.choice(INTRODUCTIONS)
     teak = world.add(Entity(
         id="teak",
         kind="thing",
         type="teak",
         label="teak",
-        phrase=TEAK_ITEMS["plank"],
-        count=plan.count_needed - 1,
+        phrase=material_description,
+        count=first_pile,
     ))
     extra = world.add(Entity(
         id="extra",
         kind="thing",
         type="teak",
         label="teak scraps",
-        phrase=TEAK_ITEMS["block"],
-        count=plan.count_extra,
+        phrase="the second pile of teak pieces",
+        count=second_pile,
     ))
 
+    world.say(f"One morning in {world.place}, {hero.label} {announcement}.")
     world.say(
-        f"Once in {world.place}, {hero.name} bragged that {hero.pronoun()} could {plan.verb} better than anyone in town."
+        f"The plan was to {plan.verb}: {hero.pronoun()} would {plan.trick} {place_detail}."
     )
     world.say(
-        f"{hero.name} wanted to {plan.trick}, and {params.helper} brought out the teak, because teak is strong and proud-looking."
+        f"{helper.label.capitalize()} supplied {teak.phrase}. Teak was strong enough for a tall prop, "
+        "but only if every piece was counted and fitted correctly."
     )
     world.para()
     world.say(
-        f"To make the trick work, they had to do arithmetic: {teak.count} pieces were not enough, and {extra.count} more were sitting by the wall."
+        f"The plan required {needed} pieces. {hero.label} counted {first_pile} in one pile and "
+        f"{second_pile} in another, then cried, \"{first_pile} plus {second_pile} is {claimed_total}! "
+        "We have enough!\""
     )
     world.say(
-        f"{params.helper.capitalize()} counted again and again, but the numbers wobbled like geese in a wind."
+        f"{helper.label.capitalize()} asked for the arithmetic once more. In fact, {first_pile} plus "
+        f"{second_pile} was only {actual_total}, leaving {plan.prop} {shortfall} "
+        f"{'piece' if shortfall == 1 else 'pieces'} short."
+    )
+    world.say(
+        f"Too proud to delay the crowd, {hero.label} hurried to {plan.preparation} with the incomplete set."
     )
 
     model = WorldModel(world)
-    if plan.id == "counting_act":
-        model.transform_teak(hero, teak, plan)
-    else:
-        model.transform_teak(hero, teak, plan)
+    model.transform_teak(hero, teak, transformation)
 
     world.para()
-    model.fail_badly(hero, helper, teak, plan)
+    model.fail_badly(hero, helper, plan, landing, transformation)
     world.say(
-        f"By sunset, the teak was still there, but it had become a crooked reminder that tall boasting needs careful arithmetic."
+        f"At sunset, {hero.label} carried the chalked equation home. Beside {landmark}, "
+        f"{transformation['scar']} remained as a tall reminder that a confident answer is not always a correct one."
     )
 
-    world.facts.update(hero=hero, helper=helper, plan=plan, teak=teak, extra=extra)
+    world.facts.update(
+        hero=hero,
+        helper=helper,
+        plan=plan,
+        teak=teak,
+        extra=extra,
+        needed=needed,
+        actual_total=actual_total,
+        first_pile=first_pile,
+        second_pile=second_pile,
+        shortfall=shortfall,
+        claimed_total=claimed_total,
+        material_description=material_description,
+        announcement=announcement,
+        landmark=landmark,
+        transformation=transformation,
+    )
     return world
 
 
@@ -564,7 +666,7 @@ def generation_prompts(world: World) -> list[str]:
     hero = _safe_fact(world, f, "hero")
     plan = _safe_fact(world, f, "plan")
     return [
-        f"Write a tall tale about {hero.name} who wants to {plan.verb} and must use arithmetic to do it.",
+        f"Write a tall tale about {hero.label} who wants to {plan.verb} and must use arithmetic to do it.",
         f"Tell a short story where teak matters, the numbers go wrong, and the ending is bad but memorable.",
         f"Write a child-friendly tall tale that includes act, arithmetic, and teak in a funny disaster.",
     ]
@@ -575,16 +677,39 @@ def story_qa(world: World) -> list[QAItem]:
     hero, helper, plan, teak = f["hero"], f["helper"], f["plan"], f["teak"]
     return [
         QAItem(
-            question=f"What did {hero.name} want to do in the story?",
-            answer=f"{hero.name} wanted to {plan.verb}.",
+            question=(
+                f"What act did {hero.label} plan after {hero.pronoun()} {f['announcement']}?"
+            ),
+            answer=(
+                f"{hero.label} planned to {plan.verb} in {world.place}, using {plan.prop}. "
+                f"The {helper.label} supplied {f['material_description']}, and the plan needed "
+                f"{f['needed']} pieces. Before the attempt, {hero.label} wrongly claimed that "
+                f"{f['first_pile']} plus {f['second_pile']} was {f['claimed_total']}, and then "
+                f"{f['transformation']['change']}."
+            ),
         ),
         QAItem(
-            question=f"Why did {params_placeholder(world)} need arithmetic?",
-            answer=f"They needed arithmetic to check whether the teak setup had enough pieces for the act.",
+            question=(
+                f"After {hero.label} {f['announcement']}, what arithmetic mistake did "
+                f"{hero.pronoun()} make while counting {f['material_description']} for {plan.prop}?"
+            ),
+            answer=(
+                f"{hero.label} had {f['first_pile']} plus {f['second_pile']}, which equals "
+                f"{f['actual_total']}. The act needed {f['needed']} pieces, so the setup was "
+                f"{f['shortfall']} {'piece' if f['shortfall'] == 1 else 'pieces'} short. The wrong "
+                f"answer then caused this transformation: {f['transformation']['change']}."
+            ),
         ),
         QAItem(
-            question=f"What happened to the teak by the end?",
-            answer=f"The teak transformed into crooked, twisted wood, and the plan ended badly.",
+            question=(
+                f"After {hero.label} {f['announcement']}, what happened to {f['material_description']} "
+                f"when {hero.pronoun()} claimed that {f['first_pile']} plus {f['second_pile']} was "
+                f"{f['claimed_total']} during the {plan.id.replace('_', ' ')}?"
+            ),
+            answer=(
+                f"In {world.place}, the {teak.label}. The act failed, and the wood remained "
+                f"{f['transformation']['scar']} beside {f['landmark']}."
+            ),
         ),
     ]
 
@@ -642,7 +767,7 @@ valid_story(P) :- place(P), story_word(act), story_word(arithmetic), story_word(
 
 
 def asp_facts() -> str:
-    import storyworlds.asp as asp
+    import asp
     lines = [
         asp.fact("place", p) for p in SETTINGS
     ]
@@ -656,7 +781,7 @@ def asp_program(show: str) -> str:
 
 def asp_verify() -> int:
     try:
-        import storyworlds.asp as asp
+        import asp
     except Exception as e:
         print(f"ASP unavailable: {e}")
         return 1

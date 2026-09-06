@@ -37,20 +37,69 @@ import sys
 from dataclasses import dataclass, field
 from typing import Optional
 
-sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 from results import QAItem, StoryError, StorySample  # noqa: E402
 
 FOLK_OPENERS = [
     "Once, in a small village between hills and water,",
     "Long ago, where the reeds bowed and the lanterns glowed,",
     "In a quiet valley with a stone dam and a winding path,",
+    "In the days when every river was said to carry a song,",
+    "Once beside a dam of gray stones and silver water,",
 ]
 
-FOLK_ENDINGS = [
-    "And so the village rested, the water stayed bound, and the child went home with a steady heart.",
-    "And so the evening grew soft, the dam held the river kindly, and the barrette stayed safely in place.",
-    "And that is how the little lesson became a good tale for later days.",
+SCENES = [
+    "Swallows skimmed above the quiet pool while the spillway hummed below.",
+    "Reeds nodded at the water's edge, and sunlight flashed on every ripple.",
+    "The dam keeper's bell gave one soft clang as the afternoon breeze arrived.",
+    "Cloud shadows crossed the reservoir while the old stones shone after rain.",
 ]
+
+EVENTS = {
+    "spray": {
+        "warning": "a silver fan of spray can leap over the rail without warning",
+        "event": "Just then, a burst of spray flew over the rail and freckled the stones.",
+        "clue": "dark spots spreading across the pale rock",
+        "effect": "wet",
+        "danger": "the slick edge",
+    },
+    "gust": {
+        "warning": "a strong gust can tug at loose things near the spillway",
+        "event": "Just then, a gust rushed up the dam and snapped the ends of the ribbon like little flags.",
+        "clue": "the reeds bending all at once",
+        "effect": "windblown",
+        "danger": "the windy path",
+    },
+    "glare": {
+        "warning": "the bright water can hide the wet line on the stones",
+        "event": "Just then, the sun slipped from a cloud and laid a dazzling path across the water.",
+        "clue": "a dull, safe stone beside the bright glare",
+        "effect": "glare",
+        "danger": "the shining wet stones",
+    },
+}
+
+LESSONS = {
+    "steady": {
+        "memory": "Look at one steady thing before you take your next step.",
+        "action": "fixed her eyes on the iron rail, then looked carefully at the path beside it",
+    },
+    "near_far": {
+        "memory": "When a bright view confuses you, look near, then far, and near once more.",
+        "action": "looked at her own shoes, across the reservoir, and back to the stones",
+    },
+    "shade": {
+        "memory": "Shade your eyes from a hard glare, and give them a moment to see clearly.",
+        "action": "shaded her eyes with one hand and waited until the edges of the path became clear",
+    },
+}
+
+ENDING_IMAGES = {
+    "lanterns": "That evening, two lanterns glowed on the safe lookout while the blue shell in the barrette held one tiny spark of light.",
+    "swallow": "As they walked home, a swallow crossed the copper sky, and the barrette sat firm above a dry, smiling face.",
+    "reflection": "Below them, the dam's calm pool held the first star, and the barrette answered with a small blue gleam.",
+    "bell": "Behind them, the dam keeper's bell rang once, and the secured barrette did not stir in the evening breeze.",
+}
 
 
 @dataclass
@@ -246,36 +295,35 @@ def _do_activity(world: World, actor: Entity, activity: Activity, narrate: bool 
     propagate(world, narrate=narrate)
 
 
-def tell_flashback(world: World, elder: Entity) -> None:
+def tell_flashback(world: World, elder: Entity, lesson: dict[str, str]) -> None:
     if world.flashback_used:
         return
     world.flashback_used = True
     world.say(
-        f"Flashback: when {elder.id} once visited the eye doctor, the doctor had held up a bright chart and said, "
-        f"\"Keep your eyes steady, and you will notice trouble before it slips away.\""
+        f"Years before, {elder.id} had visited the village eye doctor. The doctor had lowered a bright chart and said, "
+        f"\"{lesson['memory']}\""
     )
     world.say(
-        f"{elder.id} remembered that lesson now, as clearly as a candle in a dark room."
+        f"Now that old visit returned to {elder.id}'s mind as clearly as a candle in a dark room."
+    )
+    world.say(f'"That is what the eye doctor taught me," {elder.id} told the child.')
+
+
+def introduce(world: World, hero: Entity, elder: Entity, prize: Entity, opener: str) -> None:
+    world.say(
+        f"{opener} there lived a little {hero.type} named {hero.id}. For the village's river-light festival, "
+        f"{hero.pronoun('subject')} wore {prize.phrase} above one ear."
+    )
+    world.say(
+        f"{elder.id}, {elder.phrase}, had promised to show the child the dam before the lanterns were lit."
     )
 
 
-def introduce(world: World, hero: Entity, elder: Entity, prize: Entity) -> None:
-    opener = random.choice(FOLK_OPENERS)
+def setting_scene(world: World, activity: Activity, scene: str) -> None:
     world.say(
-        f"{opener} there lived a little {hero.type} named {hero.id}, who wore {hero.pronoun('possessive')} {prize.label} like a tiny bright star."
+        f"The dam stood broad and strong above the river, holding the deep reservoir on one side and guiding water through the spillway on the other."
     )
-    world.say(
-        f"{elder.id}, {elder.phrase}, watched over the child with a patient heart."
-    )
-
-
-def setting_scene(world: World, activity: Activity) -> None:
-    world.say(
-        f"The dam stood over the river, its stones warm in the sun, while water sang softly below."
-    )
-    world.say(
-        f"{activity.gerund.capitalize()} there looked tempting, because the breeze danced over the spillway and made the water sparkle."
-    )
+    world.say(scene)
 
 
 def wants(world: World, hero: Entity, activity: Activity) -> None:
@@ -285,74 +333,120 @@ def wants(world: World, hero: Entity, activity: Activity) -> None:
     )
 
 
-def warn(world: World, elder: Entity, hero: Entity, activity: Activity, prize: Entity) -> bool:
-    pred = predict_mess(world, hero, activity, prize.id)
-    if not pred["soiled"]:
-        return False
+def warn(world: World, elder: Entity, hero: Entity, activity: Activity, prize: Entity,
+         event: dict[str, str]) -> bool:
     elder.memes["fear"] = elder.memes.get("fear", 0.0) + 1
     elder.memes["memory"] = elder.memes.get("memory", 0.0) + 1
     world.say(
-        f'"If you go too close," {elder.id} said, "your {prize.label} may get {activity.soil}, and the river wind may carry it off."'
+        f'"Wait by me," {elder.id} said. "{event["warning"].capitalize()}, and your {prize.label} could slip away."'
     )
     return True
 
 
-def flashback_memory(world: World, elder: Entity) -> None:
-    tell_flashback(world, elder)
+def flashback_memory(world: World, elder: Entity, lesson: dict[str, str]) -> None:
+    tell_flashback(world, elder, lesson)
 
 
-def compromise(world: World, elder: Entity, hero: Entity, activity: Activity, prize: Entity) -> Optional[Gear]:
-    if activity.id != "riverbank":
-        pass
-    gear = GEAR["ribbon"]
-    if predict_mess(world, hero, activity, prize.id)["soiled"]:
+def meet_turn(world: World, hero: Entity, activity: Activity, event: dict[str, str],
+              lesson: dict[str, str], prize: Entity) -> None:
+    world.say(event["event"])
+    world.zone = {"head"}
+    hero.meters[event["effect"]] = hero.meters.get(event["effect"], 0.0) + 1
+    hero.memes["joy"] = hero.memes.get("joy", 0.0) + 1
+    propagate(world, narrate=False)
+    hero.memes["caution"] = hero.memes.get("caution", 0.0) + 1
+    world.say(
+        f"Instead of hurrying forward, {hero.id} remembered the doctor's words and {lesson['action']}. "
+        f"That was how {hero.pronoun('subject')} noticed {event['clue']} before reaching {event['danger']}."
+    )
+    if prize.meters.get("dirty", 0.0):
+        if event["effect"] == "windblown":
+            world.say(f"The clip had shifted a little, but the {prize.label} was still safely in {hero.id}'s hair.")
+        else:
+            world.say(f"A few drops had touched the {prize.label}, but it was still safely in {hero.id}'s hair.")
+
+
+def compromise(world: World, elder: Entity, hero: Entity, prize: Entity, solution_id: str) -> Gear:
+    gear = GEAR[solution_id]
+    if solution_id == "ribbon":
+        world.say(f"{elder.id} tied a soft ribbon through the clip so the barrette could not shake loose.")
+        prize.worn_by = hero.id
+    elif solution_id == "pouch":
         world.say(
-            f'{elder.id} smiled and said, "Let us pin it more tightly and watch from the safe stones."'
+            f"{hero.id} chose to tuck the barrette into {elder.id}'s buttoned cloth pouch until they left the water."
         )
-        return gear
-    return None
+        prize.worn_by = None
+        prize.caretaker = elder.id
+    else:
+        if prize.meters.get("wet", 0.0):
+            care = "dried the barrette and fastened it"
+        elif prize.meters.get("windblown", 0.0):
+            care = "smoothed the child's hair and secured the barrette"
+        else:
+            care = "checked the clasp and secured the barrette"
+        world.say(f"Together they moved to the railed lookout, where {elder.id} {care} with a second clip.")
+        prize.worn_by = hero.id
+    prize.meters["dirty"] = 0.0
+    prize.meters["wet"] = 0.0
+    prize.meters["windblown"] = 0.0
+    return gear
 
 
-def accept(world: World, elder: Entity, hero: Entity, activity: Activity, prize: Entity, gear: Gear) -> None:
+def accept(world: World, elder: Entity, hero: Entity, activity: Activity, prize: Entity,
+           gear: Gear, ending: str) -> None:
     hero.memes["joy"] = hero.memes.get("joy", 0.0) + 1
     hero.memes["fear"] = 0.0
+    if gear.id == "pouch":
+        world.say(
+            f"From behind the rail, {hero.id} could {activity.verb} with both hands free. When it was time to go, "
+            f"{elder.id} returned the clean barrette and fastened it snugly."
+        )
+    else:
+        world.say(
+            f"From behind the rail, {hero.id} could {activity.verb} while the clean barrette stayed snug and safe."
+        )
     world.say(
-        f"{hero.id} let {elder.id} steady the {gear.label}, and the little {prize.label} stayed neat and snug."
-    )
-    world.say(
-        f"Then {hero.id} watched the rushing water from the safe stones, happy and calm."
+        f'"Seeing clearly also means choosing carefully," {hero.id} said. {elder.id} squeezed {hero.pronoun("possessive")} hand.'
     )
     world.para()
-    world.say(random.choice(FOLK_ENDINGS))
+    world.say(ending)
 
 
 def build_story(setting: Setting, activity: Activity, prize_cfg: Prize,
                 hero_name: str = "Mina", hero_type: str = "girl",
-                elder_name: str = "Grandmother", elder_type: str = "elderwoman") -> World:
+                elder_name: str = "Grandmother", elder_type: str = "elderwoman",
+                event_id: str = "spray", lesson_id: str = "steady",
+                solution_id: str = "ribbon", opener: str = FOLK_OPENERS[0],
+                scene: str = SCENES[0], ending_id: str = "lanterns") -> World:
     world = World(setting)
-    hero = world.add(Entity(id=hero_name, kind="character", type=hero_type, phrase="a bright-eyed grandmother?"))
-    elder = world.add(Entity(id=elder_name, kind="character", type=elder_type, phrase="the village grandmother"))
+    hero = world.add(Entity(id=hero_name, kind="character", type=hero_type, phrase=f"a curious young {hero_type}"))
+    elder = world.add(Entity(id=elder_name, kind="character", type=elder_type, phrase="the child's careful elder"))
     prize = world.add(Entity(id="barrette", type=prize_cfg.type, label=prize_cfg.label, phrase=prize_cfg.phrase,
-                             owner=hero.id, caretaker=elder.id, region=prize_cfg.region))
+                             owner=hero.id, caretaker=elder.id, worn_by=hero.id, region=prize_cfg.region))
+    event = EVENTS[event_id]
+    lesson = LESSONS[lesson_id]
+    world.facts.update(hero=hero, elder=elder, prize=prize, activity=activity, setting=setting,
+                       event_id=event_id, event=event, lesson_id=lesson_id, lesson=lesson,
+                       solution_id=solution_id, ending_id=ending_id, opener=opener,
+                       scene=scene, ending=ENDING_IMAGES[ending_id])
 
-    introduce(world, hero, elder, prize)
+    introduce(world, hero, elder, prize, opener)
     world.para()
-    setting_scene(world, activity)
+    setting_scene(world, activity, scene)
     wants(world, hero, activity)
-    warn(world, elder, hero, activity, prize)
-    flashback_memory(world, elder)
-    world.say(f"{hero.id} looked at the dam, then at {elder.id}, and listened.")
+    warn(world, elder, hero, activity, prize, event)
+    flashback_memory(world, elder, lesson)
     world.para()
-    gear = compromise(world, elder, hero, activity, prize)
-    if gear:
-        accept(world, elder, hero, activity, prize, gear)
+    meet_turn(world, hero, activity, event, lesson, prize)
+    gear = compromise(world, elder, hero, prize, solution_id)
+    accept(world, elder, hero, activity, prize, gear, ENDING_IMAGES[ending_id])
 
-    world.facts.update(hero=hero, elder=elder, prize=prize, activity=activity, gear=gear, setting=setting)
+    world.facts["gear"] = gear
     return world
 
 
 SETTINGS = {
-    "dam": Setting(place="the village dam", affords={"waterwatch"}),
+    "dam": Setting(place="the village dam", affords={"waterwatch", "breeze"}),
 }
 
 ACTIVITIES = {
@@ -397,7 +491,23 @@ GEAR = {
         guards={"wet", "windblown"},
         prep="pin the barrette with a ribbon",
         tail="pinned the barrette with a ribbon and stood on the safe stones",
-    )
+    ),
+    "pouch": Gear(
+        id="pouch",
+        label="buttoned cloth pouch",
+        covers={"head"},
+        guards={"wet", "windblown"},
+        prep="store the barrette in a buttoned cloth pouch",
+        tail="kept the barrette dry until it was safe to wear again",
+    ),
+    "lookout": Gear(
+        id="lookout",
+        label="second clip",
+        covers={"head"},
+        guards={"wet", "windblown"},
+        prep="move behind the lookout rail and add a second clip",
+        tail="secured the barrette from behind the lookout rail",
+    ),
 }
 
 GIRL_NAMES = ["Mina", "Lila", "Nora", "Tess", "Ivy"]
@@ -411,6 +521,10 @@ class StoryParams:
     prize: str = "barrette"
     name: str = "Mina"
     elder: str = "Grandmother"
+    event: str = "spray"
+    lesson: str = "steady"
+    solution: str = "ribbon"
+    ending: str = "lanterns"
     seed: Optional[int] = None
 
 
@@ -429,33 +543,48 @@ KNOWLEDGE = {
 def generation_prompts(world: World) -> list[str]:
     f = world.facts
     return [
-        'Write a short folk tale for a young child that includes a dam, an eye doctor memory, and a barrette.',
-        f"Tell a gentle story where {f['hero'].id} wants to {f['activity'].verb} near {f['setting'].place}, but an elder remembers an ophthalmology visit and helps.",
-        "Write a small story with a flashback, a village dam, and a barrette that stays safe by the end.",
+        f"Write a short folk tale for a young child about {f['hero'].id} and {f['elder'].id} at {f['setting'].place}. "
+        f"The child wants to {f['activity'].verb}, and the trouble begins when {f['event']['warning']}.",
+        f"Tell a gentle dam story with a flashback to an eye doctor who taught this lesson: {f['lesson']['memory']} "
+        f"Use a {f['gear'].label} to help keep a blue-shell barrette safe.",
+        f"Write a complete folk tale about a barrette, a village dam, and careful seeing. End with this image: {f['ending']}",
     ]
 
 
 def story_qa(world: World) -> list[QAItem]:
     f = world.facts
     hero, elder, prize, activity = f["hero"], f["elder"], f["prize"], f["activity"]
+    event, lesson, gear = f["event"], f["lesson"], f["gear"]
+    event_text = event["event"].removeprefix("Just then, ").rstrip(".")
     return [
         QAItem(
-            question=f"Who is the story about?",
-            answer=f"The story is about {hero.id}, a little {hero.type}, and {elder.id}, who cares for the child.",
-        ),
-        QAItem(
-            question=f"Why did {elder.id} bring up the eye doctor?",
+            question="Who visited the dam, and what was happening around them?",
             answer=(
-                f"{elder.id} remembered the eye doctor from earlier and used that memory to help {hero.id} notice the danger before the {prize.label} could get ruined."
+                f"{hero.id}, a little {hero.type}, visited with {elder.id}, the child's careful elder. "
+                f"{f['scene']} {hero.id} hoped to {activity.verb}. The tale ends this way: {f['ending']}"
             ),
         ),
         QAItem(
-            question=f"What happened to the {prize.label} at the end?",
-            answer=f"The {prize.label} stayed neat and snug, because {elder.id} helped pin it more tightly before they watched the water.",
+            question=f"Which eye-doctor lesson helped {hero.id} when {event_text}?",
+            answer=(
+                f"{elder.id} remembered the eye doctor's advice: \"{lesson['memory']}\" "
+                f"That advice helped {hero.id} notice {event['clue']} before reaching {event['danger']}, "
+                f"and afterward they used the {gear.label}."
+            ),
         ),
         QAItem(
-            question=f"What did {hero.id} do near the dam instead of running onto the wet stones?",
-            answer=f"{hero.id} watched the water from the safe stones and enjoyed {activity.gerund}.",
+            question=f"How did {hero.id} and {elder.id} protect the {prize.label} after noticing {event['clue']}?",
+            answer=(
+                f"They used the {gear.label} before {hero.id} stayed behind the rail to {activity.verb}. "
+                f"At the close, the barrette was clean and snug in {hero.id}'s hair. {f['ending']}"
+            ),
+        ),
+        QAItem(
+            question=f"What did {hero.id} do instead of hurrying toward {event['danger']}?",
+            answer=(
+                f"{hero.id} {lesson['action']}, so she noticed {event['clue']}. The child then used the {gear.label} "
+                f"and stayed behind the rail to {activity.verb}. Around them, {f['scene'][0].lower() + f['scene'][1:]}"
+            ),
         ),
     ]
 
@@ -494,18 +623,28 @@ def dump_trace(world: World) -> str:
 
 
 def resolve_params(args: argparse.Namespace, rng: random.Random) -> StoryParams:
+    activity = args.activity or rng.choice(list(ACTIVITIES))
+    compatible_events = ["spray", "glare"] if activity == "waterwatch" else ["gust", "glare"]
     return StoryParams(
         place="dam",
-        activity=args.activity or rng.choice(list(ACTIVITIES)),
+        activity=activity,
         prize="barrette",
         name=args.name or rng.choice(GIRL_NAMES),
         elder=args.elder or rng.choice(ELDER_NAMES),
+        event=args.event or rng.choice(compatible_events),
+        lesson=args.lesson or rng.choice(list(LESSONS)),
+        solution=args.solution or rng.choice(list(GEAR)),
+        ending=args.ending or rng.choice(list(ENDING_IMAGES)),
     )
 
 
 def generate(params: StoryParams) -> StorySample:
+    rng = random.Random(params.seed if params.seed is not None else 0)
     world = build_story(SETTINGS[params.place], ACTIVITIES[params.activity], PRIZES[params.prize],
-                        hero_name=params.name, elder_name=params.elder)
+                        hero_name=params.name, elder_name=params.elder,
+                        event_id=params.event, lesson_id=params.lesson,
+                        solution_id=params.solution, opener=rng.choice(FOLK_OPENERS),
+                        scene=rng.choice(SCENES), ending_id=params.ending)
     return StorySample(
         params=params,
         story=world.render(),
@@ -530,10 +669,14 @@ def emit(sample: StorySample, *, trace: bool = False, qa: bool = False, header: 
 def build_parser() -> argparse.ArgumentParser:
     ap = argparse.ArgumentParser(description="A small folk-tale storyworld with a dam, ophthalmology memory, and a barrette.")
     ap.add_argument("--place", choices=SETTINGS)
-    ap.add_argument("--activity", choices=ACTIVITIES, default="waterwatch")
+    ap.add_argument("--activity", choices=ACTIVITIES)
     ap.add_argument("--prize", choices=PRIZES, default="barrette")
     ap.add_argument("--name")
     ap.add_argument("--elder")
+    ap.add_argument("--event", choices=EVENTS)
+    ap.add_argument("--lesson", choices=LESSONS)
+    ap.add_argument("--solution", choices=GEAR)
+    ap.add_argument("--ending", choices=ENDING_IMAGES)
     ap.add_argument("-n", type=int, default=1)
     ap.add_argument("--seed", type=int, default=None)
     ap.add_argument("--all", action="store_true")

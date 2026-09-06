@@ -443,9 +443,9 @@ def predict(world: World, actor: Entity, task: Task) -> dict:
 
 
 SETTINGS = {
-    "museum": Setting(place="the museum", quiet=True, affords={"hang", "sort"}),
-    "attic": Setting(place="the attic", quiet=True, affords={"sort", "dust"}),
-    "library": Setting(place="the library", quiet=True, affords={"stack", "hang"}),
+    "museum": Setting(place="the museum", quiet=True, affords={"ghost_display", "bat_string"}),
+    "attic": Setting(place="the attic", quiet=True, affords={"bat_string", "lantern"}),
+    "library": Setting(place="the library", quiet=True, affords={"ghost_display", "lantern"}),
 }
 
 TASKS = {
@@ -576,6 +576,136 @@ GIRL_NAMES = ["Mina", "Ivy", "Nora", "Luna", "Ada", "Maya"]
 BOY_NAMES = ["Jun", "Eli", "Owen", "Theo", "Ben", "Finn"]
 
 
+@dataclass(frozen=True)
+class StoryArc:
+    opening_detail: str
+    fear_trigger: str
+    obstacle: str
+    discovery: str
+    actions: tuple[str, str, str]
+    result: str
+    ending_image: str
+    problem_answer: str
+
+
+STORY_ARCS = [
+    StoryArc(
+        opening_detail="A paper moon hung above the exhibit, waiting for its first visitors.",
+        fear_trigger="A hidden fan coughed awake, and the ghost curtain billowed like a white sail.",
+        obstacle="Its gust twisted the bat string around the lantern hook and left half the bats upside down.",
+        discovery="A loose ribbon fluttered toward the floor vent, showing where the strange wind began.",
+        actions=("covered the vent with a display board", "held the lantern steady", "unwound and rehung the bats"),
+        result="With the draft stopped, the bats formed a smooth arch instead of a tangled knot.",
+        ending_image="Under the paper moon, their three shadows joined into one friendly shape.",
+        problem_answer="A hidden fan blew the ghost curtain and tangled the paper bats around the lantern hook.",
+    ),
+    StoryArc(
+        opening_detail="They had promised to make one dark corner gentle enough for the youngest visitors.",
+        fear_trigger="A pale glow slid behind a curtain, and a whisper raced from one child to the next.",
+        obstacle="A rolling supply cart had nudged the lantern away and pinned its cord beneath one wheel.",
+        discovery="A thin gold stripe under the curtain revealed the lantern, while the wheel explained why it would not move.",
+        actions=("rolled the cart backward", "freed and checked the cord", "returned the lantern to its painted mark"),
+        result="The mysterious glow became an ordinary warm circle around the tiny ghost.",
+        ending_image="The ghost's silver hat shone in the lantern light, no longer hidden at all.",
+        problem_answer="A supply cart trapped the lantern cord and pushed the light behind a curtain.",
+    ),
+    StoryArc(
+        opening_detail="Before opening time, they tested a button that was supposed to play one welcoming ghostly whisper.",
+        fear_trigger="The whisper repeated from an empty cabinet, and its contagious hush made everyone tiptoe.",
+        obstacle="The sound cable had looped around the bat string, so each swinging bat pressed the button again.",
+        discovery="They stood still and heard the whisper return exactly when the lowest bat touched the switch.",
+        actions=("lifted the low bat", "untangled and clipped the cable", "tested the button once more"),
+        result="The whisper played once, politely, and then the cabinet stayed quiet.",
+        ending_image="One paper bat rocked to a stop above a ghost holding a tiny WELCOME sign.",
+        problem_answer="A swinging paper bat kept pressing a sound button because its string was tangled with the cable.",
+    ),
+    StoryArc(
+        opening_detail="Rain stitched silver lines down the high windows while they prepared the indoor ghost walk.",
+        fear_trigger="Three hollow taps crossed the ceiling, spreading a contagious worry through the room.",
+        obstacle="A small skylight leak was dripping onto the direction cards and making their ink run.",
+        discovery="The taps matched three drops gathering on the same corner of the skylight frame.",
+        actions=("set a bucket beneath the leak", "moved the cards to a dry table", "copied the blurred arrows onto fresh cards"),
+        result="Visitors could follow the dry new arrows, and every drop landed safely in the bucket.",
+        ending_image="In the last clean card, the lantern made each raindrop sparkle beside a smiling ghost.",
+        problem_answer="Rain leaked through the skylight and blurred the direction cards for the ghost walk.",
+    ),
+    StoryArc(
+        opening_detail="An old clock watched over the display as they balanced lanterns along a narrow shelf.",
+        fear_trigger="The clock struck with a boom, and a contagious shiver passed through all three helpers.",
+        obstacle="The chime's vibration walked the lantern toward the shelf edge and shook two ghost portraits crooked.",
+        discovery="A cup of paper stars trembled only when the clock chimed, proving that vibration caused the trouble.",
+        actions=("moved the lantern to a lower table", "fastened the portraits with two clips", "tested the clock from a safe distance"),
+        result="The next chime was loud, but nothing slipped, tilted, or fell.",
+        ending_image="When the clock hands met at eight, the portraits remained straight in a calm amber glow.",
+        problem_answer="The old clock's chime vibrated the shelf, moving the lantern and tilting the ghost portraits.",
+    ),
+    StoryArc(
+        opening_detail="They arranged a trail of white footprints to lead visitors toward the tiny ghost.",
+        fear_trigger="A fresh glowing handprint appeared on a dark panel, and surprise became contagious.",
+        obstacle="The final footprints had vanished, leaving the trail pointed at a blank wall.",
+        discovery="The handprint matched glow paint on the helper's glove, and more paint marks led beneath a folded cloth.",
+        actions=("lifted the cloth", "laid the hidden footprints back in order", "washed the stray handprint from the panel"),
+        result="The complete trail now curved safely around the wall and ended at the ghost display.",
+        ending_image="A row of little glowing feet stopped neatly before the ghost's round purple shoes.",
+        problem_answer="A folded cloth covered the last glowing footprints, while paint from a glove made a mysterious handprint.",
+    ),
+    StoryArc(
+        opening_detail="For the final room, they planned a small shadow show behind the ghost display.",
+        fear_trigger="A giant horned shadow climbed the wall, and one startled gasp became contagious.",
+        obstacle="The projector was shining through a crooked bat cutout and enlarging it across the exit sign.",
+        discovery="When one child moved the cutout, the giant shadow moved at exactly the same time.",
+        actions=("switched off the projector", "centered the bat in its frame", "aimed the beam below the exit sign"),
+        result="The enormous shape shrank into a cheerful bat that flapped beside the tiny ghost.",
+        ending_image="A crisp little bat shadow bowed on the wall while the real exit sign glowed above it.",
+        problem_answer="A crooked bat cutout in the projector made a huge shadow cover the exit sign.",
+    ),
+    StoryArc(
+        opening_detail="They threaded soft blue ribbon between the displays to mark a winding ghost path.",
+        fear_trigger="A long moan rose from the wall vent, and its contagious note made their voices wobble.",
+        obstacle="A ribbon tail had slipped through the vent grille and was whistling whenever warm air blew past it.",
+        discovery="The moan stopped when the heater paused, and the ribbon trembled as soon as it started again.",
+        actions=("turned the heater down", "pulled the ribbon free", "tied its end around a sturdy post"),
+        result="Warm air flowed silently, and the blue path stayed clear beneath everyone's feet.",
+        ending_image="The ribbon curved through the quiet room like a blue river ending at the lantern-lit ghost.",
+        problem_answer="A loose ribbon in the warm-air vent made the ghostly moaning sound.",
+    ),
+    StoryArc(
+        opening_detail="A box of numbered clue cards waited beside the ghost for a children's treasure hunt.",
+        fear_trigger="Something scratched inside the delivery chute, and nervous giggles became contagious.",
+        obstacle="A cardboard mailing tube rolled out, struck the clue box, and scattered its cards out of order.",
+        discovery="The tube's loose cap lay in the chute, showing that gravity, not a ghost, had sent it rolling.",
+        actions=("latched the chute door", "sorted the clue cards by number", "used the empty tube to hold spare maps"),
+        result="The treasure hunt made sense again, and the troublesome tube became useful.",
+        ending_image="Card number one rested in the ghost's hands, ready for the first visitor.",
+        problem_answer="A mailing tube rolled down the delivery chute and knocked the numbered clue cards onto the floor.",
+    ),
+    StoryArc(
+        opening_detail="They built a doorway of paper bats so visitors could enter the ghost room beneath rustling wings.",
+        fear_trigger="The door clicked shut by itself, and the contagious alarm made them all call out at once.",
+        obstacle="A fallen bat string had caught the latch, blocking the doorway and pulling the arch sideways.",
+        discovery="Light showed beneath the door, and a gentle pull on the string made the latch click again.",
+        actions=("slid a ruler under the door to free the string", "held the arch upright", "retied the bats well above the latch"),
+        result="The doorway opened easily, and the repaired arch left a wide, safe path.",
+        ending_image="The open door framed the glowing ghost while the bats hung still overhead.",
+        problem_answer="A fallen bat string caught the door latch and pulled the paper arch crooked.",
+    ),
+]
+
+
+TEAM_LINES = [
+    '"Fear can travel quickly," said {helper}, "so let us pass a plan around just as quickly."',
+    '"We heard one another get scared," said {hero}. "Now let us hear one another think."',
+    '"Nobody has to solve every part," said {sibling}. "We can trade jobs until each part fits."',
+    '"First we find the cause, then we share the work," said {helper}.',
+]
+
+INTERCHANGES = [
+    "After the first step, they made an interchange: each person passed a job to the next pair of hands.",
+    "Halfway through, they tried an interchange of jobs so the holder could inspect and the inspector could repair.",
+    "They used a careful interchange, swapping roles whenever someone had a clearer view or steadier reach.",
+]
+
+
 def valid_combos() -> list[tuple[str, str]]:
     combos = []
     for place, setting in SETTINGS.items():
@@ -630,60 +760,90 @@ def tell(setting: Setting, task: Task, params: StoryParams) -> World:
     bats = world.add(Entity(id="bats", label="the paper bats", type="thing", plural=True))
     ghost = world.add(Entity(id="ghost", label="the tiny ghost", type="thing"))
 
-    world.say(f"{hero.id} was helping in {setting.place}, where the halls felt quiet and old.")
-    world.say(f"{hero.id} and {sib.id} were {task.gerund}, while {helper.id} kept watch near the display.")
-    world.say(f"The tiny ghost looked cute, but the dark corners still gave {hero.id} a shivery feeling.")
+    seed = params.seed if params.seed is not None else 0
+    arc = STORY_ARCS[seed % len(STORY_ARCS)]
+    team_line = TEAM_LINES[(seed // len(STORY_ARCS)) % len(TEAM_LINES)]
+    interchange = INTERCHANGES[(seed // (len(STORY_ARCS) * len(TEAM_LINES))) % len(INTERCHANGES)]
+    helper_name = f"their {helper.id}"
+    team_line = team_line.format(helper=helper_name, hero=hero.id, sibling=sib.id)
+
+    world.say(f"{hero.id} and {sib.id} stayed late with {helper_name} in {setting.place} to finish {task.gerund}.")
+    world.say(arc.opening_detail)
+    world.say("Although it was a ghost display, they wanted its surprises to feel playful, not unsafe.")
 
     world.para()
-    hero.memes["fear"] += 1.0
-    sib.memes["fear"] += 0.5
-    world.say(f"A floorboard creaked, and the spooky feeling became contagious.")
-    if predict(world, hero, task)["spread"]:
-        world.say(f"{sib.id} started whispering too, as if the night itself had joined in.")
+    hero.memes["fear"] = 1.0
+    sib.memes["fear"] = 0.5
+    world.say(arc.fear_trigger)
+    world.say(f"The fear felt contagious: when {hero.id} jumped, {sib.id} jumped too, and even {helper_name} spoke in a whisper.")
+    world.say(arc.obstacle)
 
     world.para()
-    lantern.meters["mess"] += 1.0
-    bats.meters["mess"] += 1.0
-    world.say(f"Then the lantern slid behind a curtain, and the bats slipped down onto the floor.")
-    world.say(f"The ghost display looked scattered, and that made {hero.id} worry.")
+    world.say(f"Instead of blaming a ghost, {hero.id} asked everyone to watch and listen for a pattern.")
+    world.say(arc.discovery)
+    world.say(team_line)
 
     world.para()
     hero.memes["helping"] = 1.0
     sib.memes["helping"] = 1.0
     helper.memes["helping"] = 1.0
-    world.say(f"{helper.id} smiled and said they could work as a team.")
-    world.say(f"{sib.id} held the lantern, {hero.id} picked up the bats, and {helper.id} straightened the string.")
-    propagate(world, narrate=True)
+    assigned_actions = [
+        f"{hero.id} {arc.actions[0]}",
+        f"{sib.id} {arc.actions[1]}",
+        f"{helper_name} {arc.actions[2]}",
+    ]
+    world.say(f"Their teamwork began: {assigned_actions[0]}, {assigned_actions[1]}, and {assigned_actions[2]}.")
+    world.say(interchange)
+    _teamwork_swap(world)
+    world.say(arc.result)
 
     world.para()
-    world.say(f"By the end, the tiny ghost was back in the middle of a neat, glowing display.")
-    world.say(f"The scary feeling had turned small, and the room felt friendly again.")
+    hero.memes["fear"] = 0.0
+    sib.memes["fear"] = 0.0
+    helper.memes["fear"] = 0.0
+    world.say("Because they found the real cause and shared the work, the frightening mystery became a problem they knew how to solve.")
+    world.say(arc.ending_image)
 
-    world.facts.update(hero=hero, sibling=sib, helper=helper, task=task, setting=setting, lantern=lantern, bats=bats, ghost=ghost)
+    world.facts.update(
+        hero=hero,
+        sibling=sib,
+        helper=helper,
+        helper_name=helper_name,
+        task=task,
+        setting=setting,
+        lantern=lantern,
+        bats=bats,
+        ghost=ghost,
+        arc=arc,
+        assigned_actions=assigned_actions,
+    )
     return world
 
 
 def generation_prompts(world: World) -> list[str]:
     f = world.facts
     return [
-        f"Write a short ghost story for young children about {f['hero'].id}, {f['sibling'].id}, and {f['helper'].id} working together in {world.setting.place}.",
-        f"Tell a gentle spooky story where a contagious feeling of fear changes into teamwork while a {f['task'].keyword} display gets fixed.",
-        f"Write a simple story about a child who helps in a haunted museum and finds an interchange of jobs that makes the night easier.",
+        f"Write a short ghost story for young children about {f['hero'].id}, {f['sibling'].id}, and {f['helper_name']} solving a real problem in {world.setting.place}.",
+        f"Tell a gentle spooky story where contagious fear changes into teamwork while the children finish {f['task'].gerund}.",
+        f"Write a simple story in which an interchange of jobs helps a family discover why {f['arc'].problem_answer.lower()}",
     ]
 
 
 def story_qa(world: World) -> list[QAItem]:
     f = world.facts
-    hero, sib, helper, task = f["hero"], f["sibling"], f["helper"], f["task"]
+    hero, sib, task, arc = f["hero"], f["sibling"], f["task"], f["arc"]
+    actions = f["assigned_actions"]
     return [
         QAItem(question=f"Who was helping in {world.setting.place}?",
-               answer=f"{hero.id} was helping there with {sib.id} and {helper.id}."),
-        QAItem(question=f"What went wrong with the spooky display?",
-               answer="The lantern slid away and the paper bats fell down, so the display looked messy."),
-        QAItem(question=f"How did they fix it?",
-               answer=f"They worked as a team and swapped jobs: one held the lantern, one picked up the bats, and one fixed the string."),
+               answer=f"{hero.id} was helping there with {sib.id} and {f['helper_name']}. They were {task.gerund}."),
+        QAItem(question="What caused the frightening problem?",
+               answer=arc.problem_answer),
+        QAItem(question="What did the team do after they understood the cause?",
+               answer=f"They shared the work: {actions[0]}, {actions[1]}, and {actions[2]}. Then they exchanged jobs when another pair of hands fit better."),
         QAItem(question=f"Why did the spooky feeling spread?",
-               answer="A creaky sound made the fear contagious, so more than one person started feeling jumpy."),
+               answer=f"The sudden event startled {hero.id}, and seeing {hero.id} react startled the others. Their fear was contagious until they stopped to investigate."),
+        QAItem(question="How did the story end?",
+               answer=f"The team solved the real problem. {arc.ending_image}"),
     ]
 
 

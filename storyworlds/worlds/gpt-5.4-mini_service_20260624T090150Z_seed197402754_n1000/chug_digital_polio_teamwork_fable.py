@@ -608,6 +608,162 @@ class StoryParams:
         return ""
 
 
+@dataclass(frozen=True)
+class Journey:
+    destination: str
+    receiver: str
+    obstacle: str
+    danger: str
+    digital_clue: str
+    shared_action: str
+    result: str
+    ending_image: str
+    obstacle_answer: str
+    teamwork_answer: str
+
+
+JOURNEYS = [
+    Journey(
+        destination="the hilltop clinic",
+        receiver="Nurse Ayo",
+        obstacle="a rain-swollen stream covered the low wooden bridge",
+        danger="crossing there could tip the cooler into the water",
+        digital_clue="an older stone bridge around the next bend",
+        shared_action="{hero} held the cooler level while {friend} walked ahead and tested each stone with a sturdy stick",
+        result="The wheels bumped safely over the old bridge, and the cooler never tilted",
+        ending_image="Below them, the muddy stream flashed gold while the cart chugged up the final hill",
+        obstacle_answer="A rain-swollen stream had covered the low wooden bridge.",
+        teamwork_answer="{hero} kept the cooler level while {friend} tested the stones ahead, so neither had to cross the flooded bridge alone.",
+    ),
+    Journey(
+        destination="the school health room",
+        receiver="the village health worker",
+        obstacle="a fallen tamarind branch lay across the narrow lane",
+        danger="the cart could not squeeze past without shaking the medicine",
+        digital_clue="a farm track that joined the lane beyond the fallen tree",
+        shared_action="{friend_cap} pushed loose twigs aside while {hero} steered the cart slowly onto the farm track",
+        result="The farm track was bumpy but firm, and the cooler stayed snug beneath its blanket",
+        ending_image="Children waved from the school gate as the little cart answered with one bright chug",
+        obstacle_answer="A fallen tamarind branch blocked the narrow lane.",
+        teamwork_answer="{friend_cap} cleared the loose twigs while {hero} carefully steered the cart onto the farm track.",
+    ),
+    Journey(
+        destination="the riverside homes",
+        receiver="Health Worker Nia",
+        obstacle="the painted sign at a three-way fork had blown into the grass",
+        danger="a wrong turn would take them far from the waiting families",
+        digital_clue="their moving dot beside a row of blue beehives on the correct road",
+        shared_action="{hero} followed the moving dot while {friend} searched the hedges and spotted the blue beehives",
+        result="Map and sharp eyes agreed, and the cart found the riverside road before the rain returned",
+        ending_image="At the last home, lamplight shone on the dry cooler as raindrops began to tap the roof",
+        obstacle_answer="A storm had blown down the sign at a three-way fork.",
+        teamwork_answer="{hero} read their position on the tablet while {friend} found the blue beehives that marked the correct road.",
+    ),
+    Journey(
+        destination="the mango-grove clinic",
+        receiver="Doctor Sefu",
+        obstacle="one cart wheel sank deep into a patch of sticky red mud",
+        danger="spinning the wheel only buried it farther",
+        digital_clue="a dry ridge just a few steps to their left",
+        shared_action="{friend_cap} tucked flat stones under the wheel while {hero} pulled steadily toward the dry ridge",
+        result="The wheel climbed onto the stones, then rolled free with a proud chug",
+        ending_image="A red wheel track curved toward the clinic, with two neat stepping-stones left beside it",
+        obstacle_answer="One wheel of the cart sank into sticky red mud.",
+        teamwork_answer="{friend_cap} placed flat stones under the wheel while {hero} pulled the cart toward firmer ground.",
+    ),
+    Journey(
+        destination="the market-square clinic",
+        receiver="Nurse Lela",
+        obstacle="a herd of sleepy cattle filled the quickest road",
+        danger="startling them could upset the cart and its cooler",
+        digital_clue="a quiet garden lane that entered the square from behind the well",
+        shared_action="{hero} guided the cart through the garden lane while {friend} walked beside the cooler to keep it from rocking",
+        result="They passed the cattle without a shout or a spill and entered the square beside the old well",
+        ending_image="The cattle still dozed in the sun when a happy chug echoed softly across the square",
+        obstacle_answer="Sleepy cattle were blocking the quickest road.",
+        teamwork_answer="{hero} steered through a quiet garden lane while {friend} steadied the cooler over every bump.",
+    ),
+    Journey(
+        destination="the cedar-tree health post",
+        receiver="Health Worker Bina",
+        obstacle="wind had scattered thorny branches across the open road",
+        danger="a thorn could puncture a tire and stop the delivery",
+        digital_clue="a sheltered path running behind the line of cedar trees",
+        shared_action="{friend_cap} watched for thorns while {hero} guided the wheels along the sheltered path shown on the screen",
+        result="The cedar trees quieted the wind, and all four tires reached the health post safely",
+        ending_image="Cedar needles danced behind them while the cart rested beneath a green roof",
+        obstacle_answer="The wind had scattered thorny branches across the road.",
+        teamwork_answer="{friend_cap} watched for thorns while {hero} followed the sheltered path on the tablet.",
+    ),
+    Journey(
+        destination="the lakeside clinic",
+        receiver="Nurse Pala",
+        obstacle="thick morning fog hid the bend beside the lake",
+        danger="they could wander onto the soft shore if they guessed the way",
+        digital_clue="the road curving inland beside a stone water trough",
+        shared_action="{hero} read the curve on the screen while {friend} listened for the trough's dripping water and walked beside the cart",
+        result="The dripping grew louder, the stone trough appeared, and the safe road opened ahead",
+        ending_image="The fog lifted as the clinic bell rang and the cart gave a soft answering chug",
+        obstacle_answer="Thick fog hid the bend beside the lake.",
+        teamwork_answer="{hero} read the map while {friend} listened for the water trough that marked the safe bend.",
+    ),
+    Journey(
+        destination="the acacia health tent",
+        receiver="Health Worker Omi",
+        obstacle="a deep rut split the dusty road from edge to edge",
+        danger="a hard jolt could knock the cooler from its straps",
+        digital_clue="a nearby footpath with a smooth crossing over the narrow end of the rut",
+        shared_action="{friend_cap} tightened the cooler's straps while {hero} lined up the wheels with the smooth crossing",
+        result="The cart crossed one careful wheel at a time, and the lid stayed firmly closed",
+        ending_image="Under the acacia tree, the strapped cooler sat square and cool beside the waiting health worker",
+        obstacle_answer="A deep rut split the dusty road.",
+        teamwork_answer="{friend_cap} tightened the cooler's straps while {hero} guided each wheel across the smoothest place.",
+    ),
+]
+
+OPENINGS = [
+    "At sunrise on {place}, {hero}, a {trait} young helper, fastened a medicine cooler into a little cart. {friend_cap}, {hero}'s steady friend, checked the straps twice.",
+    "The morning delivery bell rang along {place}. {hero}, a {trait} young helper, hurried to the cart, where {friend} was already guarding a small cooler.",
+    "On {place}, every roof was still silver with dew when {hero} and {friend} began an important journey. {hero} was known for being {trait}, and today that gift would matter.",
+    "A little delivery cart waited beside {place}, ready to go chugging into the morning. Its drivers were {hero}, a {trait} young helper, and {friend}, a companion who noticed what others missed.",
+]
+
+TRAIT_TURNS = {
+    "kind": "Instead of blaming anyone, {hero} took a breath and asked, \"What can each of us do?\"",
+    "careful": "{hero} stopped the cart, checked the cooler straps, and studied the whole map before choosing.",
+    "brave": "Although {hero} felt worried, bravery meant pausing long enough to choose a safe plan.",
+    "patient": "{hero} let the wheels grow still and remembered that arriving safely mattered more than arriving first.",
+}
+
+TEAMWORK_LINES = [
+    '"A map can show a way," said {friend}, "but friends must travel it together."',
+    '"Let us give each pair of hands one job," {friend} said. "Then the cooler will stay safe."',
+    '"We do not need the fastest plan," said {friend}. "We need a plan we can do together."',
+    '{friend_cap} nudged the tablet toward {hero}. "You read the clue, and I will watch the road."',
+]
+
+MORALS = [
+    "A useful tool may point out a path, but teamwork is what carries a precious job to the end.",
+    "Two friends with different jobs can solve a problem that neither should face alone.",
+    "The safest shortcut is sometimes patience shared between friends.",
+]
+
+TRAIT_MORALS = {
+    "kind": "Kind words help a team hear every good idea.",
+    "careful": "Careful planning keeps a shared task safe.",
+    "brave": "Being brave does not mean rushing ahead; it means listening, planning, and helping one another.",
+    "patient": "Patience gives a team time to find the safer way.",
+}
+
+MISSIONS = [
+    "Families from the outlying lanes would meet the health worker there that morning.",
+    "The health worker needed the medicine before beginning the day's rounds.",
+    "Several families had traveled early so the children would not miss the clinic visit.",
+    "The cooler needed to reach trained hands while its contents were still properly chilled.",
+    "A storm was expected later, so the village had arranged an early clinic visit.",
+]
+
+
 def valid_combos() -> list[tuple[str, str, str]]:
     return [("village", "chug", "vaccine"), ("village", "digital", "vaccine"),
             ("village", "polio", "vaccine"), ("village", "teamwork", "vaccine")]
@@ -617,34 +773,42 @@ def generation_prompts(world: World) -> list[str]:
     f = world.facts
     return [
         'Write a short fable for a young child that includes the words "chug", "digital", and "polio".',
-        f"Tell a gentle teamwork fable about {f['hero'].id} and a {f['friend'].id} delivering {f['prize'].label}.",
-        "Write a simple moral tale where a hard road becomes easier because friends work together.",
+        f"Tell a gentle teamwork fable about {f['hero'].id} and {f['friend'].label} delivering {f['prize'].label} to {f['journey'].destination}.",
+        f"Write a simple moral tale in which friends use a digital map and teamwork to solve this problem: {f['journey'].obstacle}.",
     ]
 
 
 def story_qa(world: World) -> list[QAItem]:
     f = world.facts
-    hero, friend, prize, aid, action = f["hero"], f["friend"], f["prize"], f["aid"], f["action"]
+    hero, friend, prize, journey = f["hero"], f["friend"], f["prize"], f["journey"]
     return [
         QAItem(
-            question=f"Who went on the journey in the story?",
-            answer=f"{hero.id} and {friend.id} went together to carry {prize.label} through the village.",
+            question="Who went on the medicine-delivery journey?",
+            answer=f"{hero.id} and {friend.label} traveled together to deliver {prize.label}.",
         ),
         QAItem(
-            question=f"What sound did the ride make?",
-            answer="The ride made a soft chug, chug, chug as they moved along the road.",
+            question="What problem stopped or slowed their cart?",
+            answer=journey.obstacle_answer,
         ),
         QAItem(
-            question=f"How did the digital tablet help them?",
-            answer=f"The digital tablet showed the safest path, so they could keep going without getting lost.",
+            question="What useful clue did the digital tablet show?",
+            answer=f"The digital tablet showed {journey.digital_clue}.",
         ),
         QAItem(
-            question=f"Why were they carrying the polio drops?",
-            answer="They were bringing the polio drops to the village homes so children could have them in time.",
+            question="How did the two friends share the work?",
+            answer=journey.teamwork_answer.format(
+                hero=hero.id,
+                friend=friend.label,
+                friend_cap=friend.label.capitalize(),
+            ),
         ),
         QAItem(
-            question=f"What lesson did the story teach about teamwork?",
-            answer="The story taught that teamwork makes a hard job easier and helps friends finish safely together.",
+            question="How do we know their plan worked?",
+            answer=f"{journey.result}. {journey.receiver[0].upper() + journey.receiver[1:]} received the polio drops with the cooler safely closed.",
+        ),
+        QAItem(
+            question="What lesson did the friends learn?",
+            answer=f["moral"],
         ),
     ]
 
@@ -715,6 +879,7 @@ def asp_facts() -> str:
 ASP_RULES = r"""
 valid_story(village, A, P) :- action(A), prize(P), kind(P, polio), tagged(A, chug).
 valid_story(village, A, P) :- action(A), prize(P), kind(P, polio), tagged(A, digital).
+valid_story(village, A, P) :- action(A), prize(P), kind(P, polio), tagged(A, polio).
 valid_story(village, A, P) :- action(A), prize(P), kind(P, polio), tagged(A, teamwork).
 """
 
@@ -768,36 +933,77 @@ def resolve_params(args: argparse.Namespace, rng: random.Random) -> StoryParams:
 def tell(params: StoryParams) -> World:
     world = World(SETTING)
     hero = world.add(Entity(id=params.name, kind="character", type="girl", label=params.name))
-    friend = world.add(Entity(id=params.friend, kind="character", type="animal", label=params.friend))
+    friend = world.add(Entity(id=params.friend, kind="character", type="animal", label=f"the {params.friend}"))
     prize = world.add(Entity(id="vaccine", type="medicine", label="polio drops", phrase="a small cooler of polio drops", plural=True))
-    aid = world.add(Entity(id="tablet", type="tool", label="digital tablet"))
+    world.add(Entity(id="tablet", type="tool", label="digital tablet"))
+    aid = AIDS["tablet"]
     action = ACTIONS["chug"]
 
-    world.say(
-        f"Once in {world.setting.place}, {hero.id} was a {params.trait} little helper, and {friend.id} was a faithful companion."
+    stable_seed = params.seed
+    if stable_seed is None:
+        stable_seed = sum((i + 1) * ord(c) for i, c in enumerate(f"{params.name}:{params.friend}:{params.trait}"))
+    rng = random.Random(stable_seed)
+    journey = rng.choice(JOURNEYS)
+    opening = rng.choice(OPENINGS)
+    teamwork_line = rng.choice(TEAMWORK_LINES)
+    moral = rng.choice(MORALS + [TRAIT_MORALS[params.trait]])
+    mission = rng.choice(MISSIONS)
+    friend_cap = friend.label.capitalize()
+
+    world.facts.update(
+        hero=hero,
+        friend=friend,
+        prize=prize,
+        aid=aid,
+        action=action,
+        journey=journey,
+        moral=moral,
     )
+    world.say(opening.format(
+        place=world.setting.place,
+        hero=hero.id,
+        friend=friend.label,
+        friend_cap=friend_cap,
+        trait=params.trait,
+    ))
     world.say(
-        f"They had one important job: bring {prize.phrase} to the far homes before night."
+        f"Their job was to bring {prize.phrase} to {journey.receiver} at {journey.destination}. "
+        f"{mission}"
     )
-    world.say(
-        f"Their cart went chug, chug, chug, and the digital tablet glowed like a tiny guide."
-    )
+    world.say("The cart set off with a cheerful chug, chug, chug, and a digital tablet showed the road ahead.")
     world.para()
-    world.say(
-        f"But the road had puddles and mud, and the cart began to slow."
-    )
-    world.say(
-        f"{hero.id} worried that the polio drops would arrive too late."
-    )
-    world.say(
-        f"Then {friend.id} reminded {hero.id} that a problem is smaller when two friends carry it together."
-    )
-    world.para()
+
     hero.memes["worry"] = 1
     hero.meters["stuck"] = 1
-    world.facts.update(hero=hero, friend=friend, prize=prize, aid=aid, action=action)
-    turn(world, hero, friend, aid)
-    resolution(world, hero, friend, prize, aid, action)
+    world.say(f"Partway there, {journey.obstacle}. {journey.danger.capitalize()}.")
+    world.say(f"The cart fell silent. {hero.id} worried that the polio drops might not arrive on time.")
+    world.say(TRAIT_TURNS[params.trait].format(hero=hero.id))
+    world.say(teamwork_line.format(hero=hero.id, friend=friend.label, friend_cap=friend_cap))
+    world.para()
+
+    hero.memes["teamwork"] = 1
+    friend.memes["teamwork"] = 1
+    hero.memes["hope"] = 1
+    friend.memes["hope"] = 1
+    world.say(f"On the digital tablet they found {journey.digital_clue}.")
+    world.say(journey.shared_action.format(
+        hero=hero.id,
+        friend=friend.label,
+        friend_cap=friend_cap,
+    ) + ".")
+    world.say(journey.result + ".")
+    world.para()
+
+    hero.meters["stuck"] = 0
+    hero.memes["joy"] = 1
+    friend.memes["joy"] = 1
+    world.say(
+        f"At {journey.destination}, {journey.receiver} received the polio drops with the cooler safely closed. "
+        f"{hero.id} and {friend.label} had arrived by giving different parts of the same plan their full care. "
+        "That was teamwork: not doing the same thing, but helping toward the same good end."
+    )
+    world.say(f"They learned this: {moral}")
+    world.say(journey.ending_image + ".")
     hero.memes["teamwork"] = 1
     friend.memes["teamwork"] = 1
     return world
