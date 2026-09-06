@@ -81,5 +81,8 @@ Legend: `queued`, `active`, `repaired`, `verified`, `blocked`.
 | 6 | verified | `pleasant_slide_bare_kindness_conflict_detective_story.py` | 1 skeleton; 79/100 exact unique in fresh baseline | 1 skeleton | 100 unique; 100 skeletons | Twelve safe detective cases; 214/500 unique story-QA pairs. |
 | 7 | verified | `praise_repetition_cautionary_kindness_superhero_story.py` | 1 production skeleton; 2 in fresh baseline | 2 skeletons | 100 unique; 100 skeletons | Fifteen safety incidents; independent replay check passed. |
 | 7 | verified | `prospector_kale_dialogue_cautionary_suspense_bedtime_story.py` | 1 skeleton/100 exact-unique stories | 1 skeleton | 100 unique; 100 skeletons | Twelve cautionary mysteries; 221/500 unique story-QA pairs. |
+| 7 | verified | `psychiatry_sticky_palm_sound_effects_transformation_cautionary.py` | 1 production skeleton; 2 in fresh baseline | 2 skeletons | 100 unique; 100 skeletons | Twelve non-stigmatizing incidents; 336/600 unique story-QA pairs. |
+| 7 | verified | `pun_teamwork_heartwarming.py` | 1 skeleton/100 exact-unique stories | 1 skeleton | 100 unique; 100 skeletons | Twelve scenarios with functional wordplay; 197/500 unique story-QA pairs. |
+| 7 | verified | `pupa_appetizing_quail_campground_reconciliation_kindness_quest.py` | 1 skeleton/100 exact-unique stories | 1 skeleton | 100 unique; 100 skeletons | Twelve reconciliation quests; missing required terms and QA grounding fixed. |
 
 Additional waves follow the frozen 120-script template-collapse ranking.

@@ -26,7 +26,8 @@ import sys
 from dataclasses import dataclass, field
 from typing import Optional
 
-sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+sys.path.insert(0, ROOT)
 from results import QAItem, StoryError, StorySample  # noqa: E402
 
 # ---------------------------------------------------------------------------
@@ -164,6 +165,151 @@ GIRL_NAMES = ["Mina", "Luna", "Pippa", "Nora", "Tia"]
 BOY_NAMES = ["Bram", "Otto", "Milo", "Finn", "Rowan"]
 ANIMAL_TYPES = ["rabbit", "fox", "badger", "squirrel", "deer"]
 TRAITS = ["curious", "gentle", "brave", "quiet", "kind"]
+
+SCENARIOS = [
+    {
+        "id": "nest_marker",
+        "premise": "A quail had tucked her nest beside the first quest marker.",
+        "conflict": "A strip of appetizing berry bread lay beyond it, and the shortest reach would have crushed the sheltering grass.",
+        "mistake": "leaned over the nest before noticing an egg wobble",
+        "clue": "the mother quail's sharp warning call",
+        "repair": "backed away, marked a wide path with pinecones, and divided the bread with {helper}",
+        "lesson": "a prize is never worth frightening a family",
+        "ending": "the quail settled over her eggs while two neat trails of pinecones curved toward the sunset",
+    },
+    {
+        "id": "missing_map",
+        "premise": "The quest map vanished just as a quail darted beneath the picnic table.",
+        "conflict": "{hero} accused {helper} of moving it after finding appetizing crumbs on the empty map board.",
+        "mistake": "spoke before searching carefully",
+        "clue": "a corner of paper caught beneath the pupa's wind screen",
+        "repair": "apologized, freed the map without touching the pupa, and asked {helper} to read the next clue aloud",
+        "lesson": "questions mend more than quick blame",
+        "ending": "the flattened map glowed beside the lantern, with one shared crumb resting on each plate",
+    },
+    {
+        "id": "fallen_pupa",
+        "premise": "Wind knocked the pupa's twig shelter into the quest trail.",
+        "conflict": "The rescue whistle was across the campground beside an appetizing apple tart, and {hero} wanted to race for both.",
+        "mistake": "ran ahead without explaining the plan",
+        "clue": "the quail pacing around the exposed pupa instead of fleeing",
+        "repair": "returned to {helper}, carried the twig together, and rebuilt the shelter before sharing the tart",
+        "lesson": "kindness begins by making sure nobody is left exposed",
+        "ending": "under a roof of crossed twigs, the pupa rested as the quail's footprints circled the fresh earth",
+    },
+    {
+        "id": "quail_canteen",
+        "premise": "A thirsty quail pecked at the quest team's nearly empty canteen.",
+        "conflict": "The next station offered appetizing melon only to teams that arrived with water to spare.",
+        "mistake": "pulled the cup away and made the quail stumble",
+        "clue": "a dry pupa case and curled leaves beside the dusty bird",
+        "repair": "said sorry, poured a shallow drink, and worked with {helper} to collect dew in broad leaves",
+        "lesson": "sharing a little can reveal a better solution",
+        "ending": "three dew-filled leaves shone by the trail while the refreshed quail chirped from a stump",
+    },
+    {
+        "id": "snack_bag",
+        "premise": "The campground's quest prize was an appetizing bag of seed cakes.",
+        "conflict": "A quail tugged the loose string, scattering cakes dangerously close to the pupa's log.",
+        "mistake": "shouted at the bird and snatched the bag",
+        "clue": "plastic thread looped around the quail's ankle",
+        "repair": "held still while {helper} cut the thread, then gathered every wrapper and offered safe seeds away from the pupa",
+        "lesson": "understanding the trouble comes before judging who caused it",
+        "ending": "the clean grass held no string at all, only a row of quail tracks beside the protected log",
+    },
+    {
+        "id": "bridge_riddle",
+        "premise": "The reconciliation quest stopped at a muddy miniature bridge.",
+        "conflict": "{hero} and {helper} argued over whose bridge design could carry an appetizing picnic basket without disturbing a quail nearby.",
+        "mistake": "pushed one plank into place and splashed mud on {helper}",
+        "clue": "the pupa's silk threads crossing in a strong, gentle lattice",
+        "repair": "wiped away the splash, combined both designs, and invited {helper} to tie the final crossing",
+        "lesson": "two careful ideas can support more than one stubborn idea",
+        "ending": "the basket crossed on a woven bridge as the quail stepped safely through the reeds below",
+    },
+    {
+        "id": "bell_echo",
+        "premise": "Quest bells were hidden around the campground, each tuned to a different note.",
+        "conflict": "An appetizing cinnamon smell distracted {hero}, who rang the loudest bell beside a sleeping pupa and startled a quail.",
+        "mistake": "laughed at the noise when {helper} asked for quiet",
+        "clue": "the pupa's twig trembling long after the echo faded",
+        "repair": "apologized, wrapped the bell in a scarf, and followed {helper}'s silent hand signals to the next station",
+        "lesson": "fun becomes kinder when everyone can feel safe",
+        "ending": "at dusk, one muffled chime floated over the fire while the quail slept with her head beneath a wing",
+    },
+    {
+        "id": "berry_stain",
+        "premise": "A purple stain appeared across the campground quest flag.",
+        "conflict": "{helper} thought {hero}'s appetizing berry pocket had leaked, and {hero} angrily blamed a passing quail.",
+        "mistake": "hid the sticky pocket instead of telling the truth",
+        "clue": "a berry-colored pawprint beside the pupa viewing jar",
+        "repair": "admitted the spill, washed the flag with {helper}, and moved the clean viewing jar into shade",
+        "lesson": "honesty gives reconciliation somewhere firm to begin",
+        "ending": "the clean flag fluttered above two purple-stained paws and a quail pecking harmless berries below",
+    },
+    {
+        "id": "lost_chick",
+        "premise": "A young quail became separated from its family during the campground quest.",
+        "conflict": "The last appetizing oat biscuit was also the team's final trail token, and its smell was the only thing that made the chick follow.",
+        "mistake": "refused to risk the token until {helper} turned away in disappointment",
+        "clue": "tiny tracks circling the pupa log and leading toward a worried call",
+        "repair": "crumbled the biscuit into a safe trail and asked {helper} to guard the chick from hikers",
+        "lesson": "finishing first matters less than helping someone get home",
+        "ending": "beneath the finish banner, the reunited quail family shared crumbs while the unused prize ribbon stirred overhead",
+    },
+    {
+        "id": "lantern_heat",
+        "premise": "Cold fog covered the campground before the evening quest.",
+        "conflict": "{hero} moved a lantern close to warm an appetizing pot of soup, not seeing the pupa attached to the lantern post.",
+        "mistake": "dismissed {helper}'s warning as needless worry",
+        "clue": "a quail spreading her wings between the heat and the pupa",
+        "repair": "moved the lantern to a stone ring, thanked {helper}, and warmed the soup with reflected heat instead",
+        "lesson": "listening can protect a life too small to speak",
+        "ending": "steam curled from the soup across the fire ring while the pupa hung cool beneath a silver drop of fog",
+    },
+    {
+        "id": "painted_stones",
+        "premise": "Painted stones were supposed to guide every team through the kindness quest.",
+        "conflict": "{hero} secretly turned one arrow toward an appetizing pancake station, sending {helper} near a quail's nesting hollow.",
+        "mistake": "changed a shared sign for a private reward",
+        "clue": "the same blue paint on {hero}'s paw and the backward arrow",
+        "repair": "confessed, restored the marker, and walked behind {helper} while they checked every remaining sign",
+        "lesson": "trust returns through truthful actions, not clever excuses",
+        "ending": "all the blue arrows pointed home, and the quail watched from beside a pupa-shaped shadow on the final stone",
+    },
+    {
+        "id": "rain_shelter",
+        "premise": "Rain began while the quest teams carried an appetizing picnic through the campground.",
+        "conflict": "Only one dry shelter remained, but a soaked quail and a pupa-covered branch already occupied its corner.",
+        "mistake": "dragged the basket inside without leaving room for {helper}",
+        "clue": "rain running from {helper}'s ears while the quail tucked closer around the pupa",
+        "repair": "came back out, used the picnic cloth as a wider roof, and held one side while {helper} secured the other",
+        "lesson": "comfort feels best when it is made wide enough to share",
+        "ending": "raindrops drummed above a dry circle of friends, one quiet pupa, and a quail preening her feathers",
+    },
+]
+
+OPENINGS = [
+    "At first light, {hero}, a {trait} {species}, studied the quest board at the campground.",
+    "The campground smelled of wet bark when {hero}, the {trait} {species}, reported for a reconciliation quest.",
+    "Before the breakfast bell, {hero} the {species} promised to complete the campground's kindness quest.",
+    "A trail ribbon snapped in the breeze as {hero}, a {trait} {species}, joined {helper} at the campground.",
+    "On the busiest campground morning of summer, {hero} the {species} volunteered for a quest about kindness.",
+    "Under tall pines, {hero}, the campground's {trait} {species}, opened the first quest envelope.",
+    "The ranger's map called it a reconciliation quest, and {hero} the {species} wanted to prove ready for it.",
+    "Campfire smoke curled above the campground as {hero}, a {trait} {species}, chose the kindness trail.",
+]
+
+DIALOGUE = [
+    '"Let me explain what I saw," {helper} said. "Then we can fix it together."',
+    '"Being sorry is a start," said {helper}. "Show me what you will do next."',
+    '"Wait," {helper} said gently. "The smallest clue may be the important one."',
+    '"I was hurt, but I am listening," {helper} replied. "Tell me the truth."',
+    '"A quest is not a race away from our mistakes," {helper} said.',
+    '"We can disagree and still work side by side," {helper} reminded {hero}.',
+    '"Kindness needs hands as well as words," said {helper}.',
+    '"Look once more before deciding," {helper} whispered.',
+]
 
 
 # ---------------------------------------------------------------------------
@@ -331,6 +477,8 @@ class StoryParams:
     helper: str
     trait: str
     seed: Optional[int] = None
+    scenario: str = "nest_marker"
+    telling: int = 0
 
 
 def build_parser() -> argparse.ArgumentParser:
@@ -368,7 +516,19 @@ def resolve_params(args: argparse.Namespace, rng: random.Random) -> StoryParams:
     name = args.name or rng.choice(GIRL_NAMES if rng.random() < 0.5 else BOY_NAMES)
     helper = args.helper or rng.choice(["friend", "parent", "ranger"])
     trait = args.trait or rng.choice(TRAITS)
-    return StoryParams(place=place, quest=quest, treat=treat, name=name, species=species, helper=helper, trait=trait)
+    scenario = rng.choice(SCENARIOS)["id"]
+    telling = rng.randrange(1_000_000)
+    return StoryParams(
+        place=place,
+        quest=quest,
+        treat=treat,
+        name=name,
+        species=species,
+        helper=helper,
+        trait=trait,
+        scenario=scenario,
+        telling=telling,
+    )
 
 
 def generate(params: StoryParams) -> StorySample:
@@ -378,17 +538,61 @@ def generate(params: StoryParams) -> StorySample:
     world.add(Entity(id="pupa", type="pupa", label="pupa"))
     quest = QUESTS[params.quest]
     treat = TASTES[params.treat]
+    scenario = next(s for s in SCENARIOS if s["id"] == params.scenario)
+    rng = random.Random(params.telling)
+    values = {"hero": hero.id, "helper": helper.id, "trait": params.trait, "species": params.species}
+    opening = rng.choice(OPENINGS).format(**values)
+    dialogue = rng.choice(DIALOGUE).format(**values)
+    admission = rng.choice([
+        f'"I chose too quickly," {hero.id} admitted.',
+        f'"I cared more about winning than listening," {hero.id} said.',
+        f'"That was my mistake, and I am sorry," {hero.id} told {helper.id}.',
+        f'{hero.id} took a breath. "I hurt you. May I help repair it?"',
+        f'"I cannot undo it," {hero.id} said, "but I can make the next choice kinder."',
+        f'{hero.id} faced {helper.id}. "You deserved the truth sooner."',
+    ])
+    turn = rng.choice([
+        "That clue changed the shape of the whole problem.",
+        f"For the first time, {hero.id} stopped thinking about the finish ribbon.",
+        "The quest suddenly seemed less about winning and more about noticing.",
+        f"Seeing it clearly made {hero.id}'s cheeks grow warm with regret.",
+        "Instead of defending the mistake, the young adventurer looked for its cause.",
+        f"{helper.id} waited, giving the truth enough quiet to be heard.",
+    ])
+    reconciliation = rng.choice([
+        f"{helper.id} accepted the apology after watching the careful repair.",
+        f"The tight feeling between them eased when {hero.id} finished the repair.",
+        f"They did not pretend the mistake had vanished, but they trusted each other again.",
+        f"By working together, {hero.id} and {helper.id} made peace instead of merely saying it.",
+        f"Their reconciliation grew from the apology and the action that followed it.",
+        f"{helper.id} smiled at last, and the two rejoined the quest side by side.",
+    ])
+    pupa_link = rng.choice([
+        "Nearby, the pupa remained still, a quiet reminder that important changes can happen out of sight.",
+        "They checked the pupa before moving on and left its shelter untouched.",
+        "Even the silent pupa belonged in the circle of care they made.",
+        "Beside them, the pupa waited safely for its own transformation.",
+    ])
 
-    world.say(
-        f"{hero.id} was a {params.trait} {params.species} at {world.setting.place}, "
-        f"and even the tiny pupa by the pine log seemed to be waiting for a busy day."
-    )
-    world.say(
-        f"{hero.id} loved the campground because every path promised a small quest, "
-        f"and the air sometimes smelled appetizing near the picnic table."
-    )
+    world.say(opening)
+    world.say(scenario["premise"].format(**values))
     world.para()
-    run_world(world, hero, helper, quest, treat)
+    world.say(scenario["conflict"].format(**values))
+    world.say(f"In the rush, {hero.id} {scenario['mistake'].format(**values)}.")
+    world.say(dialogue)
+    world.para()
+    world.say(f"Then they noticed {scenario['clue'].format(**values)}. {turn}")
+    world.say(admission)
+    world.say(f"To put things right, {hero.id} {scenario['repair'].format(**values)}.")
+    world.para()
+    world.say(reconciliation)
+    world.say("This was reconciliation made real: kindness in words, followed by kindness in action.")
+    world.say(f"{hero.id} understood that {scenario['lesson']}.")
+    world.say(pupa_link)
+    world.say(f"Their final campground image was this: {scenario['ending'].format(**values)}.")
+
+    hero.memes.update({"guilt": 1, "apology": 1, "kindness": 1, "peace": 1})
+    helper.memes.update({"hurt": 1, "softness": 1, "peace": 1})
 
     world.facts = {
         "hero": hero,
@@ -397,6 +601,12 @@ def generate(params: StoryParams) -> StorySample:
         "treat": treat,
         "params": params,
         "reconciled": hero.memes.get("peace", 0) >= THRESHOLD,
+        "scenario": scenario,
+        "mistake": scenario["mistake"].format(**values),
+        "clue": scenario["clue"].format(**values),
+        "repair": scenario["repair"].format(**values),
+        "lesson": scenario["lesson"],
+        "ending": scenario["ending"].format(**values),
     }
 
     return StorySample(
@@ -429,24 +639,26 @@ def story_qa(world: World) -> list[QAItem]:
     f = world.facts
     hero = f["hero"]
     helper = f["helper"]
-    quest = f["quest"]
-    treat = f["treat"]
     return [
         QAItem(
             question=f"Where does {hero.id}'s story take place?",
-            answer=f"It takes place at {world.setting.place}, where the campground paths and picnic table make room for a small quest.",
+            answer=f"It takes place at {world.setting.place}. That is where {hero.id} and {helper.id} undertake their kindness quest.",
         ),
         QAItem(
-            question=f"Why did {hero.id} pause during the quest?",
-            answer=f"{hero.id} paused because the {treat.label} looked appetizing, and the smell made it hard to stay focused on {quest.gerund}.",
+            question=f"What mistake did {hero.id} make?",
+            answer=f"{hero.id} {f['mistake']}. The choice hurt trust and made the quest's real problem clear.",
         ),
         QAItem(
-            question=f"What did {helper.id} do after the mistake?",
-            answer=f"{helper.id} stayed calm, offered help, and guided {hero.id} toward reconciliation instead of scolding.",
+            question=f"What clue helped {hero.id} understand the problem?",
+            answer=f"The important clue was {f['clue']}. It helped {hero.id} stop, reconsider, and listen.",
         ),
         QAItem(
-            question=f"What changed by the end of the story?",
-            answer=f"By the end, {hero.id} and {helper.id} were walking together again, and kindness made the campground feel peaceful.",
+            question=f"How did {hero.id} repair the harm?",
+            answer=f"{hero.id} {f['repair']}. That concrete act of kindness allowed reconciliation with {helper.id}.",
+        ),
+        QAItem(
+            question=f"What did {hero.id} learn from the quest?",
+            answer=f"{hero.id} learned that {f['lesson']}. The final image is this: {f['ending']}.",
         ),
     ]
 
