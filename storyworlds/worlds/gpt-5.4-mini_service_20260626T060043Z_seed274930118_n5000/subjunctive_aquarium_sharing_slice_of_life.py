@@ -28,6 +28,7 @@ Causal state updates:
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import os
 import random
@@ -35,7 +36,8 @@ import sys
 from dataclasses import dataclass, field
 from typing import Optional
 
-sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+sys.path.insert(0, ROOT)
 from results import QAItem, StoryError, StorySample  # noqa: E402
 
 AQUARIUM_PLACES = {
@@ -106,6 +108,238 @@ class StoryParams:
     relation: str
     trait: str
     seed: Optional[int] = None
+
+
+@dataclass(frozen=True)
+class Incident:
+    title: str
+    premise: str
+    conflict: str
+    first_try: str
+    clue: str
+    sharing_plan: str
+    child_job: str
+    buddy_job: str
+    dialogue: str
+    resolution: str
+    lesson: str
+    ending: str
+
+
+INCIDENTS = [
+    Incident(
+        "The Two-Tank Choice",
+        "a feeding talk at the reef tank and a diver talk at the kelp tank were about to begin at the same time",
+        "{child} wanted the guide open to the reef map, while {buddy} kept reaching for the kelp page",
+        "they tugged the covers back and forth until neither could read a complete sentence",
+        "the schedule box showed that the talks overlapped for only five minutes",
+        "circle both times, hear the reef introduction, and let {buddy} navigate to the kelp tank",
+        "read the reef facts aloud while the guide rested between them",
+        "watched the clock and traced the shortest route with one finger",
+        '"If we share the decisions too, the guide can help both of us," {child} said',
+        "they heard the reef keeper explain the {fish}, then reached the kelp window before the diver waved",
+        "Sharing can mean combining two wishes into one fair plan.",
+        "their two penciled circles touched on the schedule page as silver bubbles climbed the kelp glass",
+    ),
+    Incident(
+        "The Missing Bookmark",
+        "the guide opened to the wrong page just when the {fish} appeared",
+        "each child thought the other had moved the blue bookmark",
+        "they searched one another's pockets and made each other feel blamed",
+        "a blue corner peeked from beneath the aquarium bench where the guide had rested",
+        "search together, then take turns keeping the page and watching the tank",
+        "checked beneath the bench and brushed dust from the bookmark",
+        "held their place in the guide and called out when the fish returned",
+        '"I wish we had asked before we guessed," {buddy} said',
+        "they apologized, replaced the marker, and matched three guide pictures to three swimming fish",
+        "A shared search works better when nobody is treated like the culprit.",
+        "the rescued blue bookmark lay across the {fish} page while a real fin glimmered beyond it",
+    ),
+    Incident(
+        "The Foggy Window",
+        "a patch of aquarium glass looked cloudy beside the {fish} habitat",
+        "{child} trusted the guide's clear drawing, but {buddy} insisted the blurry shape was a different animal",
+        "they argued by pointing harder at the same foggy patch",
+        "two steps to the side, the glass was clear and the guide's fin pattern matched exactly",
+        "let one person hold the guide while the other tests a new viewing spot",
+        "compared the stripes in the picture with the animal beyond the clear glass",
+        "found the clean angle and invited {child} to stand there too",
+        '"What if the window is confusing us, not the picture?" {buddy} asked',
+        "they changed places, checked the markings together, and agreed they had found the {fish}",
+        "Changing where we look can settle a disagreement more kindly than arguing.",
+        "both faces appeared side by side in the clear glass beneath the drifting {fish}",
+    ),
+    Incident(
+        "The Quiet-Tank Puzzle",
+        "the guide promised a soft clicking sound near the {fish} tank, but the gallery seemed silent",
+        "{buddy} wanted to keep talking, while {child} wanted everyone to stop at once",
+        "they shushed each other so loudly that nearby visitors turned around",
+        "a small sign asked listeners to wait quietly between the filter's gentle hums",
+        "share one silent minute, with one child timing and the other following the guide",
+        "held the guide open and pointed to each sound clue without speaking",
+        "counted sixty slow seconds on the wall clock",
+        '"If we were quieter together, perhaps we would hear it," {child} whispered',
+        "during the pause they heard three tiny clicks and then thanked the family beside them for waiting too",
+        "Cooperation includes sharing quiet space with the people around us.",
+        "three penciled dots marked the margin while the tank lights rippled silently overhead",
+    ),
+    Incident(
+        "The Last Sketch Pencil",
+        "the aquarium sketch table had one pencil left beside a picture guide",
+        "both children wanted to draw the {fish} before it swam behind the rocks",
+        "{child} began a whole drawing while {buddy} watched the pencil grow shorter",
+        "the guide's loop diagram showed the fish returning to the same arch each time",
+        "alternate quick turns: outline on one pass, add details on the next",
+        "drew the body outline and handed over the pencil at the rock arch",
+        "added the fins, then returned it when the fish circled back",
+        '"Your lines can finish what mine began," {child} said',
+        "they completed one joint sketch, signed both names, and left the pencil for the next visitor",
+        "Sharing time and tools can turn two unfinished ideas into one complete creation.",
+        "their signed {fish} sketch dried beside the guide as the living model began another loop",
+    ),
+    Incident(
+        "The Stamp Trail",
+        "a conservation trail asked visitors to find four symbols in the guide",
+        "{child} rushed toward the easy stamp while {buddy} wanted to study the recycling clue first",
+        "they carried the guide in opposite directions and nearly missed both stations",
+        "the clue arrows formed one continuous route around the aquarium",
+        "let {buddy} solve the next clue and {child} choose the following route turn",
+        "read each riddle and checked that no station was skipped",
+        "pressed the stamps carefully and passed the guide back after each one",
+        '"Suppose we treated every clue as our clue," {buddy} suggested',
+        "they found all four symbols and used the last page to choose one way to save water at home",
+        "A shared quest is fair when choices and responsibilities both travel around.",
+        "four bright stamps curved around a drawing of the {fish} on the completed trail page",
+    ),
+    Incident(
+        "The Dark Tunnel",
+        "the path to the {fish} passed through a dim underwater tunnel",
+        "{buddy} wanted the guide for comfort, while {child} wanted it to identify every shadow",
+        "{child} walked ahead with the book and did not notice {buddy} stop at the entrance",
+        "a lit map in the guide showed a short bench halfway through the tunnel",
+        "walk together, share the guide's glowing map, and pause at the bench if needed",
+        "held one side of the open guide and named only the shapes they could verify",
+        "held the other side, chose the pace, and said when a pause would help",
+        '"If this feels too dark, we can turn back together," {child} promised',
+        "they reached the bench calmly, spotted the {fish} overhead, and chose to finish the short path",
+        "Sharing information also means making room for another person's comfort.",
+        "the guide glowed between their hands while the {fish} crossed the blue ceiling above them",
+    ),
+    Incident(
+        "The Label in Two Languages",
+        "the {fish} label used a word that {buddy} knew from home but {child} had never heard",
+        "{child} kept reading the familiar guide entry while {buddy}'s explanation went unheard",
+        "they repeated different names more loudly instead of comparing them",
+        "the label printed both names beside the same small drawing",
+        "take turns teaching each name and use the guide picture as their common clue",
+        "listened, repeated the new word carefully, and pointed to its label",
+        "read the familiar name, then explained when their family used the other one",
+        '"I wish I had listened the first time," {child} said',
+        "they wrote both names on a blank guide tab and taught them to the adult who joined them",
+        "Sharing words can make knowledge larger without making either word smaller.",
+        "two names rested on one neat tab as the {fish} hovered beside its bilingual sign",
+    ),
+    Incident(
+        "The Splash and the Guide",
+        "a touch-pool splash dotted the edge of the picture guide",
+        "{child} feared the shared book was ruined and blamed {buddy} for standing too close",
+        "they rubbed the damp page with a sleeve, wrinkling one corner",
+        "the aquarium helper pointed to paper towels and a dry-book tray nearby",
+        "carry the closed guide together to the helper and follow the drying directions",
+        "blotted the cover gently and admitted that rubbing had worsened the wrinkle",
+        "held the pages apart while the helper placed clean paper between them",
+        '"If we repair it together, it can still guide us," {buddy} said',
+        "the book dried safely, and they used its undamaged {fish} page while keeping it away from the pool",
+        "When a shared thing is harmed, honest teamwork matters more than quick blame.",
+        "the dry guide stood on the return shelf with one small wrinkle and every picture still clear",
+    ),
+    Incident(
+        "The Closing Bell",
+        "the closing bell would ring soon, with three guide pages still marked to visit",
+        "each child insisted that their favorite tank should be last",
+        "they raced down separate aisles until an adult called them back",
+        "the aquarium map placed two marked tanks together and the {fish} tank beside the exit",
+        "choose the joined pair together, then save the exit-side fish for a shared finale",
+        "planned the route and crossed off each stop only after both had seen it",
+        "carried the guide and reminded the group when it was time to move",
+        '"Were there more minutes, we might see everything; today we can choose well," {child} said',
+        "they visited all three tanks without running and reached the doors before the final bell",
+        "Sharing a limited afternoon means choosing together, not trying to win every choice.",
+        "the last guide check mark sat beside the {fish} while sunset colored the exit windows",
+    ),
+    Incident(
+        "The Feeding-Time Note",
+        "the guide listed an old feeding time for the {fish}",
+        "{buddy} thought they had missed the event, while {child} wanted to wait beside the empty feeding rail",
+        "they guarded their place for several minutes and grew cross with each other",
+        "a fresh notice said today's feeding had moved to the habitat's far window",
+        "let one child keep their place while the other checks the notice with an aquarium educator",
+        "asked the educator to confirm the new location and returned with the answer",
+        "kept the guide and a clear space at the rail, then gladly gave up the old spot",
+        '"I would rather share the right answer than keep the wrong place," {buddy} said',
+        "they moved together, updated the guide in pencil, and watched the {fish} eat at the far window",
+        "Good sharing includes bringing useful information back to the group.",
+        "a tidy pencil arrow joined the old time to the new one as feeding ripples crossed the tank",
+    ),
+    Incident(
+        "The Tiny Visitor's Turn",
+        "a younger visitor could not see the {fish} picture while the two children spread their guide across the whole bench",
+        "{child} and {buddy} each guarded half the page and overlooked the waiting visitor",
+        "they scooted closer together but still left no safe place to look",
+        "the bench's low end had room for three people and a broad ledge for the open guide",
+        "move to the low end, place the guide on the ledge, and point without blocking anyone",
+        "read the first sentence slowly and left space beside the page",
+        "found the real fish in the tank and helped the younger visitor follow the direction",
+        '"If everyone could see, this would be a better discovery," {child} said',
+        "all three matched the picture to the {fish}, then the children passed the open space to another family",
+        "Sharing sometimes begins by noticing someone who has not been included yet.",
+        "three reflections leaned over one open guide while the {fish} flashed between green plants",
+    ),
+]
+
+OPENINGS = [
+    "On an ordinary Saturday morning",
+    "Just after the aquarium doors opened",
+    "During a quiet visit after lunch",
+    "While rain tapped the aquarium roof",
+    "Near the middle of a busy family afternoon",
+    "Before the first school group reached the tanks",
+    "On a calm weekday at the aquarium",
+    "With one hour left before supper",
+]
+
+TURN_LEADS = [
+    "The small disagreement became a real problem when",
+    "Their visit stopped feeling easy after",
+    "For a minute, sharing seemed impossible because",
+    "The guide was useful, but it also became the center of a quarrel:",
+    "Neither child meant to be unkind. Even so,",
+    "The trouble sharpened when",
+    "A perfectly ordinary moment went crooked when",
+    "Their two plans bumped into each other when",
+]
+
+CLUE_LEADS = [
+    "Then a careful look changed the question.",
+    "A clue nearby gave them something better than a guess.",
+    "They paused long enough to notice one useful fact.",
+    "The aquarium itself offered a quiet correction.",
+    "Instead of arguing again, they checked what was around them.",
+    "One detail made their first idea look less certain.",
+    "When they retraced the moment, a clue stood out.",
+    "The turn came from evidence neither had noticed at first.",
+]
+
+ENDING_LEADS = [
+    "At the end of the visit",
+    "When it was time to leave",
+    "A little later",
+    "Before they moved to the next gallery",
+    "By the aquarium's closing song",
+    "As families drifted toward the doors",
+    "After one last look at the tank",
+    "In their last memory of the day",
+]
 
 
 class World:
@@ -190,6 +424,29 @@ def propagate(world: World, narrate: bool = True) -> list[str]:
     return produced
 
 
+def _story_choices(params: StoryParams) -> tuple[Incident, str, str, str, str]:
+    key = "|".join(
+        str(value)
+        for value in (
+            params.seed,
+            params.place,
+            params.item,
+            params.fish,
+            params.name,
+            params.relation,
+            params.trait,
+        )
+    ).encode("utf-8")
+    digest = hashlib.sha256(key).digest()
+    return (
+        INCIDENTS[int.from_bytes(digest[0:4], "big") % len(INCIDENTS)],
+        OPENINGS[int.from_bytes(digest[4:8], "big") % len(OPENINGS)],
+        TURN_LEADS[int.from_bytes(digest[8:12], "big") % len(TURN_LEADS)],
+        CLUE_LEADS[int.from_bytes(digest[12:16], "big") % len(CLUE_LEADS)],
+        ENDING_LEADS[int.from_bytes(digest[16:20], "big") % len(ENDING_LEADS)],
+    )
+
+
 def tell(params: StoryParams) -> World:
     world = World(Setting(place=params.place))
     child = world.add(Entity(id="child", kind="character", type="girl", meters={}, memes={}))
@@ -215,43 +472,53 @@ def tell(params: StoryParams) -> World:
     ))
 
     fish = params.fish
+    incident, opening, turn_lead, clue_lead, ending_lead = _story_choices(params)
+    values = {
+        "child": child.id,
+        "buddy": buddy.id,
+        "fish": fish,
+    }
+    detail = lambda text: text.format(**values)
 
     world.say(
-        f"{child.id} arrived at {params.place} with a {params.trait} little picture guide."
+        f"{opening}, {child.id}, who was {params.trait}, arrived at {params.place} with {buddy.id} and one picture guide between them."
     )
+    world.say(f"Their small adventure was called {incident.title}: {detail(incident.premise)}.")
     world.say(
-        f"{buddy.id} wanted to look too, and for a moment {child.id} wished it could all belong to just one pair of hands."
+        f"At first {child.id} held the guide close, wishing there were two copies so nobody would have to yield a page."
     )
+
     world.para()
+    world.say(f"{turn_lead} {detail(incident.conflict)}.")
+    world.say(f"Their first answer did not help: {detail(incident.first_try)}.")
     world.say(
-        f"Then they stood beside the bright tanks, where the {fish} drifted like tiny moving commas."
+        f"{child.id} remembered a new word from school: subjunctive, the kind of language used for wishes. Wishing for two guides could not make another copy, so the one real guide still required a choice."
     )
-    world.say(
-        f"\"If only there were two guides,\" {child.id} thought, \"but there is only one.\""
-    )
-    world.say(
-        f"{buddy.id} pointed at the fish and waited, and that waiting made the room feel quieter."
-    )
+
+    world.para()
+    world.say(f"{clue_lead} The useful detail was this: {detail(incident.clue)}.")
+    world.say(detail(incident.dialogue) + ".")
+    world.say(f"Together they made a practical sharing plan: {detail(incident.sharing_plan)}.")
 
     item.meters["shared"] = 1
-    propagate(world, narrate=True)
+    share_lines = propagate(world, narrate=False)
+    world.para()
+    world.say(f"{child.id} {detail(incident.child_job)}.")
+    world.say(f"Meanwhile, {buddy.id} {detail(incident.buddy_job)}.")
+    for line in share_lines:
+        world.say(line)
+    world.say(f"Their shared work paid off: {detail(incident.resolution)}.")
 
     world.para()
-    world.say(
-        f"{child.id} smiled, opened the guide to the {fish} page, and read the name out loud so {buddy.id} could hear."
-    )
-    world.say(
-        f"After that, they took turns holding the book, and every time one of them found a fish, the other one got to be the first to point."
-    )
-    world.say(
-        f"By the time they left, the guide was still flat and safe, and both children were still talking about the {fish} as if they had discovered a small treasure together."
-    )
+    world.say(detail(incident.lesson))
+    world.say(f"{ending_lead}, {detail(incident.ending)}.")
 
     world.facts.update(
         child=child,
         buddy=buddy,
         item=item,
         fish=fish,
+        incident=incident,
         params=params,
         shared=True,
         resolved=True,
@@ -264,10 +531,11 @@ def generation_prompts(world: World) -> list[str]:
     child = f["child"]
     buddy = f["buddy"]
     fish = f["fish"]
+    incident = f["incident"]
     return [
-        f'Write a short slice-of-life story at an aquarium that includes the word "subjunctive" and shows two children learning to share one picture guide.',
-        f"Tell a gentle aquarium story where {child.id} and {buddy.id} use one guidebook to find the {fish}, and a wishful thought leads to a sharing moment.",
-        f"Write a small subjunctive story about an aquarium visit, taking turns, and how sharing makes the day feel calmer.",
+        'Write a child-facing slice-of-life story at an aquarium that uses the word "subjunctive" and makes sharing one picture guide solve a concrete problem.',
+        f"Tell a gentle aquarium story called {incident.title} where {child.id} and {buddy.id} disagree, inspect a clue, and share their guide while looking for the {fish}.",
+        f"Write an everyday story about an aquarium visit in which the wish for two guides gives way to this fair plan: {incident.sharing_plan.format(child=child.id, buddy=buddy.id, fish=fish)}.",
     ]
 
 
@@ -277,22 +545,29 @@ def story_qa(world: World) -> list[QAItem]:
     buddy = f["buddy"]
     item = f["item"]
     fish = f["fish"]
+    incident = f["incident"]
+    values = {"child": child.id, "buddy": buddy.id, "fish": fish}
+    detail = lambda text: text.format(**values)
     return [
         QAItem(
-            question=f"Where did {child.id} and {buddy.id} spend the story?",
-            answer=f"They spent the story at the aquarium, where they watched the fish and shared a picture guide.",
+            question=f"What problem did {child.id} and {buddy.id} face in {incident.title}?",
+            answer=f"They discovered that {detail(incident.conflict)}. Their first attempt failed because {detail(incident.first_try)}.",
         ),
         QAItem(
-            question=f"What did {child.id} and {buddy.id} share?",
-            answer=f"They shared one picture guide, and they took turns holding it so both of them could look at the fish.",
+            question="Which clue helped the children stop guessing?",
+            answer=f"They noticed that {detail(incident.clue)}. That evidence gave them a fairer way to understand the problem.",
         ),
         QAItem(
-            question=f"Which fish did the guide help them notice?",
-            answer=f"The guide helped them notice the {fish}, which they kept pointing out together.",
+            question=f"How did {child.id} and {buddy.id} share the picture guide?",
+            answer=f"They agreed to {detail(incident.sharing_plan)}. {child.id} {detail(incident.child_job)}, while {buddy.id} {detail(incident.buddy_job)}.",
         ),
         QAItem(
-            question=f"How did sharing change the mood of the visit?",
-            answer=f"Sharing made the visit calmer and happier, because {child.id} stopped holding onto the guide so tightly and both children could enjoy it.",
+            question="What changed because the children followed their sharing plan?",
+            answer=f"Their teamwork meant that {detail(incident.resolution)}. The guide was shared, and the disagreement ended calmly.",
+        ),
+        QAItem(
+            question=f"What lesson did the children learn after seeing the {fish}?",
+            answer=detail(incident.lesson),
         ),
     ]
 
@@ -343,17 +618,6 @@ def dump_trace(world: World) -> str:
             bits.append(f"memes={memes}")
         lines.append(f"  {e.id:10} ({e.type:8}) {' '.join(bits)}")
     return "\n".join(lines)
-
-
-@dataclass
-class StoryParams:
-    place: str
-    item: str
-    fish: str
-    name: str
-    relation: str
-    trait: str
-    seed: Optional[int] = None
 
 
 ITEMS = {

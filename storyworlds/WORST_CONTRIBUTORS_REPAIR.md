@@ -111,5 +111,8 @@ Legend: `queued`, `active`, `repaired`, `verified`, `blocked`.
 | 11 | verified | `destructor_sharing_surprise_cautionary_nursery_rhyme.py` | 1 skeleton; 91/100 exact unique in fresh baseline | 1 skeleton | 100 unique; 100 skeletons | Twelve incidents; destructor recast as a harmless craft toy. |
 | 11 | verified | `equivalent_sherbet_kindergarten_kindness_dialogue_ghost_story.py` | 1 skeleton; 96/100 emitted in fresh baseline | 1 skeleton | 100 unique; 100 skeletons | Twelve gentle kindergarten mysteries; partial generation fixed. |
 | 11 | verified | `eyed_cautionary_sharing_humor_pirate_tale.py` | 1 skeleton; 97/100 exact unique in fresh baseline | 1 skeleton | 100 unique; 100 skeletons | Twelve pirate incidents; 330/600 unique story-QA pairs. |
+| 12 | verified | `commit_riverbank_transformation_quest_slice_of_life.py` | 2 skeletons; 88/100 exact unique in fresh baseline | 2 skeletons | 100 unique; 100 skeletons | Twelve riverbank incidents and ten narrative routes. |
+| 12 | verified | `head_scrawny_sneer_sound_effects_lesson_learned.py` | 1 skeleton; 96/100 emitted in fresh baseline | 1 skeleton | 100 unique; 100 skeletons | Twelve incidents; body-shaming and sneering explicitly corrected. |
+| 12 | verified | `subjunctive_aquarium_sharing_slice_of_life.py` | 1 skeleton; 95/100 exact unique in fresh baseline | 1 skeleton | 100 unique; 100 skeletons | Twelve aquarium incidents; duplicate parameter class removed. |
 
 Additional waves follow the frozen 120-script template-collapse ranking.
