@@ -25,7 +25,12 @@ import sys
 from dataclasses import dataclass, field
 from typing import Optional
 
-sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+HERE = os.path.dirname(os.path.abspath(__file__))
+ROOT = os.path.abspath(os.path.join(HERE, "..", ".."))
+REPO_ROOT = os.path.dirname(ROOT)
+for path in (REPO_ROOT, ROOT):
+    if path not in sys.path:
+        sys.path.insert(0, path)
 from results import QAItem, StoryError, StorySample  # noqa: E402
 
 
@@ -113,7 +118,7 @@ def _rule_smell_bran(world: World) -> list[str]:
     for e in world.entities.values():
         if e.type == "bran" and e.meters.get("mixed", 0.0) >= THRESHOLD and "smell" not in e.meters:
             e.meters["smell"] = 1.0
-            out.append(f"The bran scent drifted through the room.")
+            out.append(world.facts.get("scent_line", "The warm bran scent drifted through the room."))
     return out
 
 
@@ -128,7 +133,7 @@ def _rule_warm_feelings(world: World) -> list[str]:
     if r.memes.get("surprised", 0.0) >= THRESHOLD and "gratitude" not in r.memes:
         r.memes["gratitude"] = 1.0
         g.memes["pride"] = g.memes.get("pride", 0.0) + 1.0
-        out.append(f"{r.id} smiled with gratitude.")
+        out.append(world.facts.get("gratitude_line", f"{r.id} smiled with gratitude."))
     return out
 
 
@@ -137,7 +142,7 @@ def _rule_share(world: World) -> list[str]:
     for e in world.entities.values():
         if e.type == "bran" and e.meters.get("served", 0.0) >= THRESHOLD and "shared" not in e.meters:
             e.meters["shared"] = 1.0
-            out.append("Everyone had a little bit together.")
+            out.append(world.facts.get("sharing_line", "Everyone shared a little bit together."))
     return out
 
 
@@ -192,73 +197,229 @@ CHILD_NAMES = ["Maya", "Leo", "Nina", "Eli", "Sora", "Owen", "Ivy", "Noah"]
 HELPER_NAMES = ["Aunt June", "Dad", "Mom", "Grandpa", "Big Sister", "Older Brother"]
 
 
+@dataclass(frozen=True)
+class StoryArc:
+    id: str
+    need: str
+    premise: str
+    obstacle: str
+    turn: str
+    action: str
+    reveal: str
+    result: str
+    ending_images: tuple[str, ...]
+
+
+STORY_ARCS = (
+    StoryArc(
+        id="windblown_welcome",
+        need="had come home tired after a long day",
+        premise="{helper} arranged paper stars beside a covered basket of {treat} for a welcome-home surprise.",
+        obstacle="A gust swept past them {location}, snapping the string and scattering every star.",
+        turn="{child} caught the last star before it sailed away and noticed a tiny arrow drawn on its back.",
+        action="Together they rehung the stars, following the arrows until the bright trail ended at the basket.",
+        reveal="{helper} opened the basket and said the welcome was meant for {child} all along.",
+        result="The ruined decoration became a treasure trail, and {child}'s tired face brightened.",
+        ending_images=(
+            "The final paper star turned slowly above an empty plate.",
+            "Crumbs and rescued stars made a cheerful little constellation on the table.",
+            "The mended string shone in the window while they shared the last warm bite.",
+        ),
+    ),
+    StoryArc(
+        id="smudged_recipe",
+        need="felt discouraged after a hard lesson",
+        premise="{helper} planned a heartwarming surprise by baking {treat} from an old family recipe.",
+        obstacle="A splash of milk blurred the most important line on the recipe card.",
+        turn="{child} remembered that the missing mark looked like the small spoon, not the large one.",
+        action="{helper} measured again while {child} counted each careful stir aloud.",
+        reveal="When the batch rose perfectly, {helper} admitted that the treats had always been for {child}.",
+        result="Solving one small kitchen puzzle helped {child} feel capable again.",
+        ending_images=(
+            "They tucked the dry recipe card beside a plate holding one last bran crumb.",
+            "A floury small-spoon print remained on the counter like a medal.",
+            "Steam curled over the repaired recipe while their two mugs touched with a quiet clink.",
+        ),
+    ),
+    StoryArc(
+        id="runaway_note",
+        need="was missing a friend who had moved away",
+        premise="{helper} wrote kind messages from the family and hid them beneath a tray of {treat}.",
+        obstacle="A bold little bird snatched the ribboned surprise note and darted past them {location}.",
+        turn="{child} spotted one blue thread caught low on a railing and guessed where the bird had gone.",
+        action="They offered the bird a loose piece of string, and it traded back the note without a fuss.",
+        reveal="Inside the saved envelope, {child} found every message and a promise to write to the distant friend together.",
+        result="The surprise could not erase the missing, but it made the distance feel smaller.",
+        ending_images=(
+            "The rescued blue ribbon lay beside two bran crumbs and a freshly addressed envelope.",
+            "From the sill, the bird watched them seal a letter with a tiny flour thumbprint.",
+            "Their new letter waited by the door while the treat tray cooled in the evening light.",
+        ),
+    ),
+    StoryArc(
+        id="stuck_wagon",
+        need="had spent the morning helping everyone else",
+        premise="{helper} loaded {treat} into a small wagon for a secret thank-you picnic.",
+        obstacle="One wheel jammed against a pebble, and the covered wagon would not budge.",
+        turn="Without knowing what was inside, {child} fetched a flat board to make a tiny ramp.",
+        action="{child} held the board steady while {helper} eased the wheel up and over.",
+        reveal="At the picnic cloth, {helper} lifted the cover and thanked {child} for being helpful yet again.",
+        result="The helper finally became the one being helped, which made them both laugh.",
+        ending_images=(
+            "The freed wagon rested under the table with a daisy tucked through its wheel.",
+            "Only a few bran crumbs remained on the picnic cloth beside the useful little board.",
+            "The once-stuck wheel made one proud turn as they pulled the empty wagon home.",
+        ),
+    ),
+    StoryArc(
+        id="berry_spill",
+        need="worried that a small mistake had spoiled the day",
+        premise="{helper} decorated {treat} beneath a cloth so that {child} would not see the surprise early.",
+        obstacle="A bowl tipped, painting a large berry-colored blot across the white cloth.",
+        turn="{child} heard the clatter and offered a clean sponge without trying to peek underneath.",
+        action="Instead of hiding the stain, they dabbed it into a heart and added three smaller berry dots.",
+        reveal="{helper} whisked away the new heart-cloth and revealed the treats made especially for {child}.",
+        result="What looked like a spoiled surprise became its happiest decoration.",
+        ending_images=(
+            "The berry heart dried over a chair while purple smiles circled the empty tray.",
+            "Three berry dots and three bran crumbs remained side by side on the cloth.",
+            "They hung the stained cloth in the window, where its heart glowed rosy in the sun.",
+        ),
+    ),
+    StoryArc(
+        id="missing_ingredient",
+        need="needed cheering after a rainy, lonely afternoon",
+        premise="{helper} began mixing {treat} as a quiet comfort surprise.",
+        obstacle="The fruit jar was empty, and rain drummed too hard for a trip to the shop.",
+        turn="{child} offered the apple saved for tomorrow, saying that good things tasted better when shared.",
+        action="{helper} diced the apple while {child} shook cinnamon into the bowl with both hands.",
+        reveal="When the warm treats appeared later, {helper} explained where the generous apple had gone.",
+        result="{child}'s own kindness came back as the very surprise that brought comfort.",
+        ending_images=(
+            "Rain jeweled the window while an apple peel curled beside the empty bran tray.",
+            "The cinnamon jar stood between their plates as the storm softened to a whisper.",
+            "One apple seed waited in a cup for spring, and one last crumb waited for morning.",
+        ),
+    ),
+    StoryArc(
+        id="lantern_blackout",
+        need="was nervous about the dark during a storm",
+        premise="{helper} prepared {treat} before sunset and hid a comfort surprise nearby.",
+        obstacle="Just as the storm arrived, every light {location} blinked out.",
+        turn="{child} found the safe battery lantern by remembering its red handle.",
+        action="They carried the lantern together, checking the floor and gathering blankets before sitting down.",
+        reveal="In the lantern's circle, {helper} uncovered the bran treats and a note that read, 'Brave can be gentle.'",
+        result="The dark stayed dark, but it no longer felt empty or frightening.",
+        ending_images=(
+            "The red-handled lantern shone on two plates and a peaceful pile of blankets.",
+            "Outside, rain flashed silver; inside, the last bran crumb vanished with a giggle.",
+            "Their shadows sat close together on the wall until the lamps blinked warmly back.",
+        ),
+    ),
+    StoryArc(
+        id="quiet_celebration",
+        need="thought everyone had forgotten a small but important achievement",
+        premise="{helper} invited the family to hide while {treat} cooled for a surprise celebration.",
+        obstacle="The guests were delayed, and the quiet room made {child}'s hopeful smile fade.",
+        turn="A timer chimed, followed by three soft knocks that matched the rhythm of {child}'s favorite song.",
+        action="{child} knocked the rhythm back, and voices answered from behind curtains and doors.",
+        reveal="Everyone stepped out as {helper} presented the bran treats and named what {child} had achieved.",
+        result="Being noticed mattered more than a loud party, and {child} understood that the wait had not meant forgetting.",
+        ending_images=(
+            "Three paper hats leaned around the crumb-speckled tray after the final song.",
+            "The little timer sat silent beneath a banner bearing {child}'s name.",
+            "Long after the guests left, one bright card remained propped beside the clean plates.",
+        ),
+    ),
+    StoryArc(
+        id="cracked_plate",
+        need="was returning something borrowed and feared it might be damaged",
+        premise="{helper} set {treat} on a favorite painted plate for a reassuring surprise.",
+        obstacle="A thin crack appeared in the plate before the treats could be carried safely.",
+        turn="{child} heard the worried sigh and suggested using the sturdy picnic basket instead.",
+        action="They lined the basket with a towel, moved every treat, and set the cracked plate aside for repair.",
+        reveal="{helper} opened the basket and explained that the surprise was meant to show that accidents can be handled honestly.",
+        result="Together they protected the food, told the truth about the plate, and let worry loosen its grip.",
+        ending_images=(
+            "A gold repair sticker crossed the clean plate while the basket held only bran crumbs.",
+            "The empty basket sat safely on the floor, and the cracked plate waited beside a tube of glue.",
+            "They drew a tiny heart near the repaired line before putting the plate back on its shelf.",
+        ),
+    ),
+    StoryArc(
+        id="secret_map",
+        need="wanted an adventure on an otherwise ordinary day",
+        premise="{helper} hid a map leading to a heartwarming bran surprise somewhere {location}.",
+        obstacle="The final map corner tore away, leaving no picture of the hiding place.",
+        turn="{child} noticed that flour dust formed a square where a box had recently stood.",
+        action="They compared the dusty outline with the map, searched low instead of high, and found a ribbon under a bench.",
+        reveal="The ribbon opened a box of {treat}, and {helper} declared {child} the day's most patient explorer.",
+        result="Careful noticing, rather than wild guessing, solved the surprise adventure.",
+        ending_images=(
+            "The mended map lay flat beneath an empty box and a neat ring of bran crumbs.",
+            "A ribbon compass pointed toward home as the two explorers finished their feast.",
+            "They pinned the torn map above the bench, marking the treasure spot with a floury star.",
+        ),
+    ),
+)
+
+
+OPENING_FORMS = (
+    "On the day {child} {need}, {helper} began planning something kind.",
+    "{helper} noticed that {child} {need}. A quiet plan began at once.",
+    "It seemed like an ordinary day, except that {child} {need}, and {helper} had noticed.",
+    "Because {child} {need}, {helper} decided that a small act of care might help.",
+    "{child} {need}. {helper} said nothing yet, but kindness was already at work.",
+)
+
+DIALOGUE_FORMS = (
+    '"May I help?" {child} asked. "Yes," said {helper}, "but trust me for one more minute."',
+    '"Something is going wrong," {helper} admitted. {child} answered, "Then we can set it right together."',
+    '{child} whispered, "Is this a secret?" {helper} smiled. "Only until your next good idea."',
+    '"I will not peek," {child} promised. "You can still be my partner," {helper} replied.',
+    '{helper} asked, "Ready to solve this with me?" and {child} answered with an eager, "Ready!"',
+)
+
+RESPONSE_FORMS = (
+    "{child} blinked in surprise, then wrapped {helper} in a grateful hug.",
+    "For one still moment {child} stared, surprised; then a wide smile arrived.",
+    '"You remembered," {child} said, and the happy surprise made both voices wobble a little.',
+    "The surprise left {child} speechless until a laugh and a thank-you came out together.",
+    "{child}'s eyes grew bright. The treat mattered, but being understood mattered even more.",
+)
+
+
 # ---------------------------------------------------------------------------
 # Story actions
 # ---------------------------------------------------------------------------
-def opening(world: World, child: Entity, helper: Entity, bran: Entity) -> None:
-    world.say(
-        f"{child.id} was a little {child.type} who loved simple snacks and cozy days."
-    )
-    world.say(
-        f"{helper.id} knew {child.id} liked {world.scene.bran_style}, even when the day felt ordinary."
-    )
-    world.say(
-        f"So {helper.id} decided to make {world.scene.surprise_note} with {bran.label}."
-    )
+def _location(scene: Scene) -> str:
+    return {
+        "the kitchen": "in the kitchen",
+        "the bakery": "at the bakery",
+        "the porch": "on the porch",
+    }[scene.place]
 
 
-def prepare_bran(world: World, helper: Entity, bran: Entity) -> None:
-    bran.meters["mixed"] = 1.0
-    bran.prepared_by = helper.id
-    world.say(
-        f"In {world.scene.place}, {helper.id} stirred the bowl carefully and baked {bran.phrase}."
-    )
-    world.say(
-        f"{helper.id} hid the finished {bran.label} behind a clean towel so the surprise could stay secret."
-    )
-    propagate(world)
-
-
-def suspense(world: World, child: Entity, helper: Entity) -> None:
-    child.memes["curious"] = child.memes.get("curious", 0.0) + 1.0
-    world.say(
-        f"Later, {child.id} noticed a sweet smell and paused by the doorway."
-    )
-    world.say(
-        f"{child.id} asked, \"What are you making, {helper.id}?\" and peeked at the covered tray."
-    )
-
-
-def reveal(world: World, child: Entity, helper: Entity, bran: Entity) -> None:
-    child.memes["surprised"] = 1.0
-    world.say(
-        f"{helper.id} laughed softly and lifted the towel."
-    )
-    world.say(
-        f"\"It's a surprise for you,\" {helper.id} said. \"I made {bran.phrase} because I wanted your day to feel brighter.\""
-    )
-    bran.hidden = False
-    bran.served = True
-    bran.meters["served"] = 1.0
-    propagate(world)
-
-
-def ending(world: World, child: Entity, helper: Entity, bran: Entity) -> None:
-    child.memes["joy"] = child.memes.get("joy", 0.0) + 1.0
-    child.memes["gratitude"] = child.memes.get("gratitude", 0.0) + 1.0
-    world.say(
-        f"{child.id} grinned and took a bite of the warm {bran.label}."
-    )
-    world.say(
-        f"{child.id} hugged {helper.id} and said the surprise made the whole place feel kind and cozy."
-    )
-    world.say(
-        f"By the end, the tray was empty, and the room felt full of love instead."
+def _render(template: str, world: World, child: Entity, helper: Entity, bran: Entity, arc: StoryArc) -> str:
+    return template.format(
+        child=child.id,
+        helper=helper.id,
+        treat=bran.phrase,
+        bran=bran.label,
+        location=_location(world.scene),
+        need=arc.need,
     )
 
 
 def simulate(params: StoryParams) -> World:
-    scene = PLACES[params.place]
+    base_scene = PLACES[params.place]
+    scene = Scene(
+        place=base_scene.place,
+        occasion=params.occasion,
+        surprise_kind=params.surprise_kind,
+        bran_style=params.bran_style,
+        surprise_note=f"a {params.surprise_kind} surprise",
+    )
     world = World(scene)
     child = world.add(Entity(id=params.child_name, kind="character", type=params.child_type))
     helper = world.add(Entity(id=params.helper_name, kind="character", type=params.helper_type))
@@ -274,22 +435,79 @@ def simulate(params: StoryParams) -> World:
         )
     )
 
-    world.facts.update(child=child.id, helper=helper.id, bran=bran.id, scene=scene)
+    rng = random.Random(params.seed if params.seed is not None else 0)
+    arc = rng.choice(STORY_ARCS)
+    opening_form = rng.choice(OPENING_FORMS)
+    dialogue_form = rng.choice(DIALOGUE_FORMS)
+    response_form = rng.choice(RESPONSE_FORMS)
+    ending_image = rng.choice(arc.ending_images)
+    scent_lines = (
+        f"A toasted bran scent curled {_location(scene)}.",
+        f"Soon the gentle smell of warm bran filled {scene.place}.",
+        "The hearty, sweet smell of bran slipped out before the secret did.",
+    )
+    sharing_lines = (
+        f"{child.id} broke the first {bran.label.rstrip('s')} in two so they could taste it together.",
+        f"They shared the {bran.label} slowly, talking about every twist in the day.",
+        f"{helper.id} poured two drinks, and they passed the {bran.label} back and forth.",
+    )
+    gratitude_lines = (
+        f"{child.id} thanked {helper.id} for noticing what kind of day it had been.",
+        f"Gratitude warmed {child.id}'s face even before the first bite.",
+        f"{child.id} squeezed {helper.id}'s hand and said, \"This is exactly what I needed.\"",
+    )
+    world.facts.update(
+        child=child.id,
+        helper=helper.id,
+        giver=helper.id,
+        receiver=child.id,
+        bran=bran.id,
+        scene=scene,
+        arc=arc,
+        obstacle=arc.obstacle,
+        helpful_action=arc.action,
+        result=arc.result,
+        ending_image=ending_image,
+        scent_line=rng.choice(scent_lines),
+        sharing_line=rng.choice(sharing_lines),
+        gratitude_line=rng.choice(gratitude_lines),
+    )
 
-    opening(world, child, helper, bran)
+    world.say(_render(opening_form, world, child, helper, bran, arc))
+    world.say("The plan was meant to become a heartwarming surprise, with bran at its center.")
+    world.say(_render(arc.premise, world, child, helper, bran, arc))
     world.para()
-    prepare_bran(world, helper, bran)
+
+    bran.meters["mixed"] = 1.0
+    bran.prepared_by = helper.id
+    world.say(_render(arc.obstacle, world, child, helper, bran, arc))
+    propagate(world)
     world.para()
-    suspense(world, child, helper)
+
+    child.memes["curious"] = 1.0
+    world.say(_render(arc.turn, world, child, helper, bran, arc))
+    world.say(_render(dialogue_form, world, child, helper, bran, arc))
+    world.say(_render(arc.action, world, child, helper, bran, arc))
     world.para()
-    reveal(world, child, helper, bran)
+
+    world.say(_render(arc.reveal, world, child, helper, bran, arc))
+    child.memes["surprised"] = 1.0
+    bran.hidden = False
+    bran.served = True
+    bran.meters["served"] = 1.0
+    world.say(_render(response_form, world, child, helper, bran, arc))
+    propagate(world)
     world.para()
-    ending(world, child, helper, bran)
+
+    child.memes["joy"] = 1.0
+    world.say(_render(arc.result, world, child, helper, bran, arc))
+    world.say(_render(ending_image, world, child, helper, bran, arc))
 
     world.facts.update(
         child=child,
         helper=helper,
         bran=bran,
+        arc=arc,
         resolved=True,
     )
     return world
@@ -302,11 +520,12 @@ def generation_prompts(world: World) -> list[str]:
     f = world.facts
     child = f["child"]
     helper = f["helper"]
+    arc: StoryArc = f["arc"]
     scene = world.scene
     return [
-        f'Write a warm short story for a young child about {child.id}, a surprise, and {scene.bran_style}.',
-        f"Tell a heartwarming story where {helper.id} secretly makes {scene.bran_style} and {child.id} discovers the surprise.",
-        f'Write a gentle story set in {scene.place} that ends with sharing {scene.bran_style}.',
+        f"Write a warm short story about {child.id}, who {arc.need}, and a surprise involving {scene.bran_style}.",
+        f"Tell a heartwarming story where {helper.id} plans a bran surprise, an obstacle interrupts it, and {child.id} helps.",
+        f"Write a gentle story set { _location(scene) } with a causal problem, shared action, and a concrete happy ending.",
     ]
 
 
@@ -315,19 +534,23 @@ def story_qa(world: World) -> list[QAItem]:
     child: Entity = f["child"]
     helper: Entity = f["helper"]
     bran: Entity = f["bran"]
-    scene = world.scene
+    arc: StoryArc = f["arc"]
     return [
         QAItem(
-            question=f"Who was the surprise for in the story?",
-            answer=f"The surprise was for {child.id}, who found out that {helper.id} had made {bran.label}.",
+            question=f"Why did {helper.id} plan a {bran.label} surprise for {child.id}?",
+            answer=f"{helper.id} planned it because {child.id} {arc.need}. The {bran.label} were meant to show care.",
         ),
         QAItem(
-            question=f"What did {helper.id} make to surprise {child.id}?",
-            answer=f"{helper.id} made {bran.phrase} and hid it carefully until the right moment.",
+            question=f"What problem did {child.id} and {helper.id} face before sharing the {bran.label}?",
+            answer=_render(arc.obstacle, world, child, helper, bran, arc),
         ),
         QAItem(
-            question=f"How did {child.id} feel after seeing the surprise?",
-            answer=f"{child.id} felt surprised, happy, and grateful when the towel came off in {scene.place}.",
+            question=f"How did {child.id} help the surprise succeed?",
+            answer=_render(arc.action, world, child, helper, bran, arc),
+        ),
+        QAItem(
+            question=f"How was the {arc.id.replace('_', ' ')} problem resolved for {child.id}?",
+            answer=_render(arc.result, world, child, helper, bran, arc),
         ),
     ]
 
@@ -454,6 +677,7 @@ def resolve_params(args: argparse.Namespace, rng: random.Random) -> StoryParams:
         helper_name=helper_name,
         helper_type=helper_type,
         bran_style=bran_style,
+        seed=rng.randrange(2**31),
     )
 
 
@@ -498,9 +722,21 @@ def main() -> None:
     base_seed = args.seed if args.seed is not None else random.randrange(2**31)
     samples: list[StorySample] = []
     curated = [
-        StoryParams("kitchen", "homecoming", "welcome", "Maya", "girl", "Mom", "woman", "bran muffins"),
-        StoryParams("bakery", "thank-you", "thank-you", "Leo", "boy", "Dad", "man", "bran cookies"),
-        StoryParams("porch", "rainy-day", "comfort", "Ivy", "girl", "Aunt June", "woman", "bran tea cakes"),
+        StoryParams(
+            place="kitchen", occasion="homecoming", surprise_kind="welcome",
+            child_name="Maya", child_type="girl", helper_name="Mom",
+            helper_type="woman", bran_style="bran muffins", seed=101,
+        ),
+        StoryParams(
+            place="bakery", occasion="thank-you", surprise_kind="thank-you",
+            child_name="Leo", child_type="boy", helper_name="Dad",
+            helper_type="man", bran_style="bran cookies", seed=202,
+        ),
+        StoryParams(
+            place="porch", occasion="rainy-day", surprise_kind="comfort",
+            child_name="Ivy", child_type="girl", helper_name="Aunt June",
+            helper_type="woman", bran_style="bran tea cakes", seed=303,
+        ),
     ]
 
     if args.all:

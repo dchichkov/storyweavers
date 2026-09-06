@@ -54,5 +54,9 @@ Legend: `queued`, `active`, `repaired`, `verified`, `blocked`.
 | 2 | verified | `loop_energy_ginger_conflict_pirate_tale.py` | 1 skeleton/100 exact-unique stories | 1 skeleton | 100 unique; 100 skeletons | Eight causal arcs; 333/400 unique story-QA pairs. |
 | 3 | verified | `shishkebab_ice_fluid_friendship_kindness_myth.py` | 1 skeleton/100 exact-unique stories | 1 skeleton | 100 unique; 96 skeletons | Twelve causal arcs and six narrative structures. |
 | 3 | verified | `snicker_railing_systematic_lesson_learned_teamwork_repetition.py` | 1 skeleton/100 exact-unique stories | 1 skeleton | 100 unique; 100 skeletons | Twelve mystery arcs; independent check passed. |
+| 3 | verified | `performance_flashback_moral_value_humor_rhyming_story.py` | 1 skeleton/100 exact-unique stories | 1 skeleton | 100 unique; 100 skeletons | 400/400 unique story-QA pairs. |
+| 3 | verified | `biology_nurse_oil_dialogue_superhero_story.py` | 1 skeleton/100 exact-unique stories | 1 skeleton | 100 unique; 100 skeletons | Twelve incidents; 327/400 unique story-QA pairs. |
+| 3 | verified | `bran_surprise_heartwarming.py` | 1 skeleton/100 exact-unique stories | 1 skeleton | 100 unique; 100 skeletons | Ten causal arcs; 315/400 unique story-QA pairs. |
+| 3 | verified | `vehicle_lovin_zoom_children_s_museum_misunderstanding.py` | 1 skeleton/100 exact-unique stories | 1 skeleton | 100 unique; 100 skeletons | Twelve causal arcs; 399/400 unique story-QA pairs. |
 
 Additional waves are appended after the full 120-script ranking is frozen.
