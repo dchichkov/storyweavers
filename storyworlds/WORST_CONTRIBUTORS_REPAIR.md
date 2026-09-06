@@ -134,5 +134,8 @@ Legend: `queued`, `active`, `repaired`, `verified`, `blocked`.
 | 15 | verified | `alliance_shrivel_fifty_dining_room_surprise_detective.py` | 1 skeleton; 75/100 exact unique in fresh baseline | 1 skeleton | 100 unique; 99 skeletons | Twelve dining-room mysteries and eight narration modes. |
 | 15 | verified | `stern_demolish_cautionary_animal_story.py` | 1 skeleton; 54/100 exact unique in fresh baseline | 1 skeleton | 100 unique; 100 skeletons | Twelve adult-controlled demolition incidents; root CLI fixed. |
 | 15 | verified | `veal_fast_twist_rhyming_story.py` | 1 skeleton; 63/100 emitted in fresh baseline | 1 skeleton | 100 unique; 100 skeletons | Twelve food-safe incidents; veal retained as a non-graphic meal context. |
+| 15 | verified | `bulls_lullabye_marina_transformation_friendship_mystery.py` | 1 skeleton; 48/100 exact unique in fresh baseline | 1 skeleton | 100 unique; 100 skeletons | Twelve marina mysteries; trained workers handle livestock. |
+| 15 | verified | `fair_scrub_problem_solving_inner_monologue_bad.py` | 1 skeleton; 65/100 exact unique in fresh baseline | 1 skeleton | 100 unique; 100 skeletons | Twelve incidents with safe cleaning and non-cruel setbacks. |
+| 16 | verified | `iguana_canal_path_misunderstanding_animal_story.py` | 1 skeleton; 64/100 emitted in fresh baseline | 1 skeleton | 100 unique; 100 skeletons | Twelve canal incidents; animals remain behind barriers. |
 
 Additional waves follow the frozen 120-script template-collapse ranking.

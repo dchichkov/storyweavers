@@ -7,14 +7,17 @@ from __future__ import annotations
 
 import argparse
 import json
-import os
 import random
 import sys
 from dataclasses import dataclass, field
+from pathlib import Path
 from typing import Optional
 
-sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-from results import QAItem, StoryError, StorySample  # noqa: E402
+ROOT = Path(__file__).resolve().parents[3]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+
+from storyworlds.results import QAItem, StorySample  # noqa: E402
 
 
 @dataclass
@@ -48,7 +51,190 @@ class StoryParams:
     seed: Optional[int] = None
 
 
-MATERIALS = ("rope", "lantern", "bucket", "sailcloth")
+SCENARIOS = (
+    {
+        "name": "the silent buoy",
+        "mystery": "the red channel buoy had stopped chiming whenever the evening ferry passed",
+        "clue": "a strand of blue sailcloth was caught beneath its sound shield",
+        "wrong": "They first blamed the fog for swallowing the bell's sound",
+        "cause": "a loose festival banner was muffling the buoy",
+        "response": "the harbor crew retrieved the cloth from their workboat and secured every banner ashore",
+        "line": '"The same blue thread is on the welcome arch," the companion noticed',
+        "change": "The quiet bull lifted his head at the restored, gentle chime instead of pacing",
+        "ending": "the buoy gave one silver note while the bull's reflection rested between two mooring lights",
+        "lesson": "good friends test a clue before they accuse the weather",
+    },
+    {
+        "name": "the wandering lanterns",
+        "mystery": "three solar lanterns appeared in a new place along the quay each morning",
+        "clue": "tiny wheel marks curved from the lantern rack toward a sloping drain",
+        "wrong": "They wondered whether a night visitor was rearranging them as a secret message",
+        "cause": "the unlocked rack rolled a little whenever the tide lifted a floating ramp",
+        "response": "a dockworker chocked the rack's wheels and painted its safe parking outline",
+        "line": '"The trail bends downhill, not toward a hiding place," the hero said',
+        "change": "The nervous bull stopped flinching at wandering pools of light once the lanterns stayed put",
+        "ending": "three steady circles of gold shone beside the bull's straw bed",
+        "lesson": "curiosity becomes useful when friends measure what moved and why",
+    },
+    {
+        "name": "the missing lullabye",
+        "mystery": "the last line of the marina's old lullabye had vanished from the song board",
+        "clue": "faint reversed letters showed through the damp paper backing",
+        "wrong": "They suspected someone had torn away the ending because it sounded silly",
+        "cause": "the final lyric had been pasted backward during a hurried rain repair",
+        "response": "the archivist softened the paste, turned the strip over, and mounted it beneath clear cover",
+        "line": '"It is not gone; it is facing the wall," the companion whispered',
+        "change": "When everyone sang the complete lullabye, the bull settled and the shy companion joined the chorus",
+        "ending": "the recovered words glimmered under glass as the final note crossed the water",
+        "lesson": "friends look twice before deciding that something has been lost",
+    },
+    {
+        "name": "the knocking hull",
+        "mystery": "a hollow knock answered every lullabye from an empty training boat",
+        "clue": "the knocks matched the small waves rather than the rhythm of the song",
+        "wrong": "For a moment they imagined that someone was trapped below deck",
+        "cause": "a padded fender had slipped behind the hull and tapped at each rise of the water",
+        "response": "the boat owner pulled the fender into view and retied it at the correct height",
+        "line": '"Sing once, then pause and watch the wave," the hero proposed',
+        "change": "The companion changed from frightened guessing to patient observation, and the bull mirrored that calm",
+        "ending": "the boat rocked without knocking, and a round fender bobbed neatly beside its cleat",
+        "lesson": "bravery can mean waiting long enough to notice a pattern",
+    },
+    {
+        "name": "the salt-white hoofprints",
+        "mystery": "white hoof-shaped marks crossed a locked dock beyond the bulls' secure pen",
+        "clue": "each mark had straight brush edges and smelled faintly of chalk, not mud",
+        "wrong": "They feared a bull had somehow left the supervised enclosure",
+        "cause": "an art volunteer had tested footprint stencils for the marina's farm-benefit trail",
+        "response": "the volunteer labeled the test area and the handler counted every bull safely inside the pen",
+        "line": '"Real hooves would not leave square corners," the companion reasoned',
+        "change": "Relief replaced suspicion, and the children thanked the handler for checking first",
+        "ending": "chalk hoofprints led visitors to the benefit tent while the real bulls chewed hay behind two latched gates",
+        "lesson": "a startling shape is evidence to examine, not proof by itself",
+    },
+    {
+        "name": "the blue ribbon",
+        "mystery": "a blue ribbon kept disappearing from the livestock shelter's award hook",
+        "clue": "salt crystals sparkled on the ribbon whenever it returned",
+        "wrong": "The friends briefly suspected a jealous exhibitor",
+        "cause": "a gust from the vent lifted the ribbon into a rain barrel beside the outside wall",
+        "response": "the caretaker moved the hook, covered the barrel, and clipped up the dried ribbon",
+        "line": '"The ribbon visited the same salty puddle every time," the hero said',
+        "change": "The bull's young caretaker admitted the loose hook instead of hiding the mistake, strengthening the friendship",
+        "ending": "the ribbon stayed above Brindle's nameplate, blue as the strip of evening sea",
+        "lesson": "telling the truth gives friends something real to repair",
+    },
+    {
+        "name": "the humming rope",
+        "mystery": "a mooring rope hummed the first notes of a lullabye only after sunset",
+        "clue": "the sound stopped whenever a deckhand loosened the line by one careful notch",
+        "wrong": "They wondered if a hidden music box was tied beneath the dock",
+        "cause": "the cooling rope tightened across a hollow metal fairlead and vibrated in the breeze",
+        "response": "the dockmaster adjusted the line safely and added a soft protective sleeve",
+        "line": '"The rope is acting like one enormous string," the companion said',
+        "change": "What had sounded eerie became a lesson in wind and tension, and the bull no longer turned toward it",
+        "ending": "the sleeved rope lay quiet while the friends hummed its old tune from behind the viewing rail",
+        "lesson": "mysteries grow smaller when friends change one condition at a time",
+    },
+    {
+        "name": "the green water pail",
+        "mystery": "one bull's sealed water pail looked green each afternoon but clear each morning",
+        "clue": "a green safety flag reflected in the surface only when the sun reached the west window",
+        "wrong": "The children worried that algae had suddenly filled the fresh water",
+        "cause": "sunlight bounced the flag's color through the shelter window",
+        "response": "the handler tested the water, replaced it as scheduled, and moved the flag away from the window",
+        "line": '"Let us ask the handler to test it; color alone cannot tell us if it is safe," the hero said',
+        "change": "The companion learned to report an animal-care concern without reaching into the enclosure",
+        "ending": "clear water held a small square of sunset while the green flag fluttered across the yard",
+        "lesson": "kindness means reporting a concern and letting trained caretakers check it",
+    },
+    {
+        "name": "the double whistle",
+        "mystery": "the harbor master's single safety whistle always seemed to answer itself",
+        "clue": "the second note came only beside the curved roof of the livestock shelter",
+        "wrong": "They searched for another person signaling from the fog",
+        "cause": "the shelter roof reflected the whistle as a crisp echo",
+        "response": "the team marked an alternate signal station where echoes could not confuse workers",
+        "line": '"One call, one reflection," the companion counted after a careful test',
+        "change": "The confusing signal became a safer marina procedure",
+        "ending": "one clean whistle crossed the dusk, followed only by the soft rustle of hay",
+        "lesson": "friends improve a system when a discovery could keep others safe",
+    },
+    {
+        "name": "the untied weather vane",
+        "mystery": "the brass bull weather vane pointed toward the sea even when every flag blew inland",
+        "clue": "a crescent scratch circled the base where the arrow should have turned",
+        "wrong": "They joked that the metal bull wanted to visit the boats",
+        "cause": "a grain of windblown sand had jammed the vane's bearing",
+        "response": "the maintenance worker lowered, cleaned, and reinstalled the vane from a closed work zone",
+        "line": '"The flags agree with one another, so the vane needs checking," the hero concluded',
+        "change": "The companion's joke became a sound hypothesis, then a respectful request for expert help",
+        "ending": "the brass bull turned inland with the flags as the real bull slept below",
+        "lesson": "playful ideas can lead to careful tests when friends listen",
+    },
+    {
+        "name": "the unopened gate alarm",
+        "mystery": "the secure livestock gate chimed at midnight although its seal remained unbroken",
+        "clue": "the alarm log showed each chime exactly when the ice maker began its cleaning cycle",
+        "wrong": "The caretaker feared someone had tried to open the bull enclosure",
+        "cause": "a shared loose cable carried vibration from the nearby utility wall to the gate sensor",
+        "response": "an electrician separated the cable mounts and the handler tested the alarm without opening the occupied pen",
+        "line": '"The seal says the gate stayed shut; the clock may tell us what else started," the companion said',
+        "change": "Careful records transformed a frightening alarm into a repairable equipment fault",
+        "ending": "the green gate light held steady while cubes clicked harmlessly into the marina cafe's bin",
+        "lesson": "records help friends separate what seemed to happen from what actually happened",
+    },
+    {
+        "name": "the moonlit bell",
+        "mystery": "a tiny bell rang near the bull shelter whenever moonlight reached the eastern dock",
+        "clue": "the bell fell silent when a passing cloud covered a solar garden ornament",
+        "wrong": "They thought the lullabye-loving bull might be nudging the bell for a song",
+        "cause": "the ornament's light sensor was wired backward and started its chime in brightness",
+        "response": "the exhibit maker switched it off, corrected the sensor, and mounted it outside the animal area",
+        "line": '"The bull is behind both gates, but the moon keeps touching that silver panel," the hero observed',
+        "change": "The friends stopped giving the bull human motives and learned to read the physical clues",
+        "ending": "moonlight silvered the silent ornament while the bull breathed slowly beneath a clean blanket",
+        "lesson": "friendship with an animal includes respecting its space and understanding its behavior",
+    },
+)
+
+OPENINGS = (
+    "The first clue arrived just before the marina lamps came on.",
+    "A puzzle was waiting where the working docks met the temporary livestock shelter.",
+    "The evening began with a sound that did not belong where it seemed to be.",
+    "At low tide, two friends noticed that the marina's ordinary routine had changed.",
+    "Fog curled between the masts when the harbor master asked two careful observers for help.",
+    "After the last tour group left, one small detail refused to make sense.",
+    "The bulls from the coastal farm were resting safely when a marina mystery interrupted the quiet.",
+    "No one was in danger, but something at the marina plainly needed explaining.",
+)
+
+TRANSITIONS = (
+    "Instead of deciding too soon, they wrote down what changed and what stayed the same.",
+    "They compared the timing, the weather, and the marks without crossing the safety rail.",
+    "The pair asked the responsible worker for permission, then observed from the public path.",
+    "They traded theories, rejected the ones that did not fit, and kept the strongest clue.",
+    "A short lullabye helped everyone listen between the ordinary harbor noises.",
+    "They drew a simple clue map and invited the caretaker to check it with them.",
+    "Their first idea failed, so they changed one condition and watched again.",
+    "Friendship made disagreement useful: one watched the water while the other watched the clock.",
+)
+
+QA_STYLES = (
+    ("What puzzled the friends about {scenario}?", "What evidence changed their minds?", "What was the hidden cause?", "Who handled the safe repair?", "How did someone change?", "What idea did the friends carry home?"),
+    ("Which marina mystery involved {scenario}?", "Which detail pointed toward the answer?", "What finally explained the puzzle?", "How did the group respond without approaching the bull?", "What transformation followed the discovery?", "What did the experience teach the friends?"),
+    ("Why did {scenario} need investigating?", "What clue did {hero} and {companion} use?", "What had really happened?", "How was the marina made safe again?", "What changed after the mystery was solved?", "Which lesson fit the evidence?"),
+    ("What unusual event began the case of {scenario}?", "What observation helped solve it?", "What caused the unusual event?", "What safe action resolved the problem?", "How did the solution transform the situation?", "What lesson completed the story?"),
+)
+
+LULLABYES = (
+    "Rest by the rail where the calm tides flow; night holds the harbor steady and slow.",
+    "Hush now, harbor, soften your light; boats are at anchor and all gates are right.",
+    "Moon over mast and star over bay; breathe with the water till worry drifts away.",
+    "Low sings the wind and quiet lies the foam; every tired traveler has a sheltered home.",
+    "Rock, little ripple, under the moon; morning will find us, but not too soon.",
+    "Lanterns are glowing, the workday is done; rest until silver gives way to the sun.",
+)
 
 
 @dataclass
@@ -86,96 +272,152 @@ def _narrate_name(entity: Entity) -> str:
     return entity.label or entity.id
 
 
-def propagate(world: World) -> None:
-    changed = True
-    while changed:
-        changed = False
-        for bull in [e for e in world.entities.values() if e.type == "bull"]:
-            if bull.meters.get("drowsy", 0) >= 1 and bull.meters.get("calmed", 0) < 1:
-                sig = ("lullaby", bull.id)
-                if sig not in world.fired:
-                    world.fired.add(sig)
-                    bull.meters["calmed"] = 1
-                    bull.memes["peace"] = bull.memes.get("peace", 0) + 1
-                    world.say(f"The soft lullabye settled over {_narrate_name(bull)} like moonlight on water.")
-                    changed = True
-        for hero in [e for e in world.entities.values() if e.kind == "character"]:
-            if hero.memes.get("wonder", 0) >= 1 and hero.memes.get("friendship", 0) < 1:
-                sig = ("friendship", hero.id)
-                if sig not in world.fired:
-                    world.fired.add(sig)
-                    hero.memes["friendship"] = 1
-                    world.say(f"{_narrate_name(hero)} stayed near the bull instead of running away, and that made a new friendship.")
-                    changed = True
-        for hero in [e for e in world.entities.values() if e.kind == "character"]:
-            if hero.memes.get("curious", 0) >= 1 and hero.memes.get("mystery", 0) < 1:
-                sig = ("mystery", hero.id)
-                if sig not in world.fired:
-                    world.fired.add(sig)
-                    hero.memes["mystery"] = 1
-                    world.say(f"Someone had moved the little harbor bell, and nobody knew why.")
-                    changed = True
-        for bull in [e for e in world.entities.values() if e.type == "bull"]:
-            if bull.meters.get("calmed", 0) >= 1 and bull.meters.get("changed", 0) < 1:
-                sig = ("transform", bull.id)
-                if sig not in world.fired:
-                    world.fired.add(sig)
-                    bull.meters["changed"] = 1
-                    bull.type = "gentle bull"
-                    bull.label = f"gentle {bull.label}"
-                    world.say(f"The bull was not wild anymore; it had become a gentle bull with slow eyes and a quiet step.")
-                    changed = True
-
-
 def tell(params: StoryParams) -> World:
+    rng = random.Random(params.seed if params.seed is not None else 0)
+    scenario = SCENARIOS[rng.randrange(len(SCENARIOS))]
+    opening = OPENINGS[rng.randrange(len(OPENINGS))]
+    transition = TRANSITIONS[rng.randrange(len(TRANSITIONS))]
+    lullabye = LULLABYES[rng.randrange(len(LULLABYES))]
+    investigation_order = rng.randrange(4)
+
     world = World(params.marina)
     hero = world.add(Entity(id=params.hero, kind="character", type="girl", label=params.hero, traits=["curious", "kind"]))
     companion = world.add(Entity(id=params.companion, kind="character", type="boy", label=params.companion, traits=["nervous", "loyal"]))
     bull = world.add(Entity(id=params.bull, kind="animal", type="bull", label=params.bull))
-    note = world.add(Entity(id="note", kind="thing", type="note", label="a torn note", phrase="a torn note with wet ink"))
-    note.owner = hero.id
+    clue = world.add(Entity(id="clue", kind="thing", type="evidence", label=scenario["clue"], phrase=scenario["clue"]))
+    role_names = {
+        "the hero": hero.id,
+        "The hero": hero.id,
+        "the companion": companion.id,
+        "The companion": companion.id,
+        "Brindle": bull.id,
+    }
 
-    hero.memes["curious"] = 1
-    hero.memes["wonder"] = 1
+    def personalize(text: str) -> str:
+        for role, name in role_names.items():
+            text = text.replace(role, name)
+        return text
 
-    world.say(f"At the {world.marina}, {hero.id} and {companion.id} found a quiet mystery beside the boats.")
-    world.say(f"Under a dock lamp stood {bull.label}, a bull with a rope around one horn and sea spray on its hide.")
-    world.say(f"{hero.id} noticed a torn note tucked under {note.phrase}, and the note mentioned a lullabye.")
+    change = personalize(scenario["change"])
+    ending = personalize(scenario["ending"])
+
+    hero.memes.update(curiosity=1, friendship=1)
+    companion.memes.update(bravery=1, friendship=1)
+    bull.meters.update(secure=1, calm=0, transformed=0)
+    world.facts = {
+        "hero": hero.id,
+        "companion": companion.id,
+        "bull": bull.id,
+        "scenario": scenario["name"],
+        "mystery": scenario["mystery"],
+        "clue": scenario["clue"],
+        "wrong": scenario["wrong"],
+        "cause": scenario["cause"],
+        "response": scenario["response"],
+        "change": change,
+        "ending": ending,
+        "lesson": scenario["lesson"],
+        "lullabye": lullabye,
+        "qa_style": rng.randrange(len(QA_STYLES)),
+    }
+
+    world.say(opening)
+    world.say(
+        f"At the {world.marina}, {hero.id} and {companion.id} were visiting bulls temporarily sheltered from a coastal storm. "
+        f"Trained handlers cared for {bull.label} behind two latched livestock gates; the children stayed on the public side of the viewing rail."
+    )
+    world.say(f"Their mystery was this: {scenario['mystery']}.")
     world.para()
-    world.say(f"{companion.id} wanted to run, but {hero.id} listened. The harbor was full of fog, and the only clear sound was a soft hum.")
-    world.say(f"{hero.id} began to sing a lullabye, low and steady, the kind that rocks dozing babies and sleepy kittens.")
-    bull.meters["drowsy"] = 1
-    propagate(world)
+
+    observations = [
+        f"{scenario['wrong']}.",
+        f"Then {hero.id} found the useful clue: {clue.phrase}.",
+        f"{personalize(scenario['line'])}.",
+        transition,
+    ]
+    if investigation_order == 1:
+        observations[1], observations[2] = observations[2], observations[1]
+    elif investigation_order == 2:
+        observations = [observations[3], observations[0], observations[2], observations[1]]
+    elif investigation_order == 3:
+        observations = [observations[0], observations[3], observations[1], observations[2]]
+    for sentence in observations:
+        world.say(sentence)
+
+    world.say(
+        f"While the authorized workers checked the clue, {hero.id} sang the marina lullabye from behind the rail: "
+        f'"{lullabye}"'
+    )
+    bull.meters["calm"] = 1
+    bull.memes["peace"] = 1
     world.para()
-    world.say(f"Then {hero.id} and {companion.id} followed the clue to the old fish office, where a lantern glowed behind the glass.")
-    world.say(f"They learned the bell had been moved so the boats would not wake the bull, and the bull had stayed calm because {hero.id} sang.")
-    world.say(f"{companion.id} smiled at {hero.id} and said the mystery was not scary after all. It was a story about helping.")
+
+    world.say(f"The evidence revealed the cause: {scenario['cause']}.")
+    world.say(f"To solve it safely, {scenario['response']}.")
+    world.say(f"The transformation was clear: {change[0].lower() + change[1:]}.")
+    bull.meters["transformed"] = 1
+    hero.memes["mystery_solved"] = 1
+    companion.memes["mystery_solved"] = 1
+
+    if rng.randrange(2):
+        world.say(
+            f'"We did not need to be fearless," {companion.id} told {hero.id}. '
+            f'"We needed to be careful together." {hero.id} answered that this was what friendship looked like.'
+        )
+    else:
+        world.say(
+            f"The friendship changed too: {hero.id} began asking for {companion.id}'s observations, "
+            f"and {companion.id} began offering them without waiting to feel completely brave."
+        )
+    world.para()
+    world.say(f"They carried home the lesson that {scenario['lesson']}.")
+    world.say(f"That night, {ending}.")
     return world
 
 
 def generation_prompts(world: World) -> list[str]:
+    facts = world.facts
     return [
-        f"Write a child-friendly mystery story set at a marina that includes bulls and a lullabye.",
-        f"Tell a gentle story about friendship, a bull, and a transformation at the {world.marina}.",
-        "Write a short mystery where a song helps solve a problem and changes how someone feels.",
+        f"Write a child-friendly mystery set at the {world.marina} about {facts['scenario']}; include safely sheltered bulls and a lullabye.",
+        f"Tell how two friends use this clue, {facts['clue']}, to discover that {facts['cause']}.",
+        f"Write a gentle transformation story ending with this image: {facts['ending']}.",
     ]
 
 
 def story_qa(world: World) -> list[QAItem]:
-    hero = world.get(world.facts["hero"]) if world.facts else None
-    bull = world.get(world.facts["bull"]) if world.facts else None
+    facts = world.facts
+    questions = [
+        text.format(
+            scenario=facts["scenario"],
+            hero=facts["hero"],
+            companion=facts["companion"],
+        )
+        for text in QA_STYLES[facts["qa_style"]]
+    ]
     return [
         QAItem(
-            question="Where did the mystery happen?",
-            answer=f"It happened at the {world.marina}, near the boats and the dock lamp.",
+            question=questions[0],
+            answer=f"The friends needed to explain why {facts['mystery']}.",
         ),
         QAItem(
-            question="What did the child sing?",
-            answer="The child sang a lullabye, soft enough to calm the bull.",
+            question=questions[1],
+            answer=f"They noticed that {facts['clue']}. That evidence fit the real cause better than their first guess.",
         ),
         QAItem(
-            question="What changed by the end?",
-            answer="The bull changed from wild and worried into a gentle bull, and the children became friends with it.",
+            question=questions[2],
+            answer=f"They discovered that {facts['cause']}.",
+        ),
+        QAItem(
+            question=questions[3],
+            answer=f"The children stayed behind the livestock barrier while {facts['response']}.",
+        ),
+        QAItem(
+            question=questions[4],
+            answer=f"{facts['change']}. The friends also changed by trusting careful evidence and each other.",
+        ),
+        QAItem(
+            question=questions[5],
+            answer=f"They learned that {facts['lesson']}.",
         ),
     ]
 
@@ -192,7 +434,7 @@ def world_qa(world: World) -> list[QAItem]:
         ),
         QAItem(
             question="What is a bull?",
-            answer="A bull is an adult male cow. Bulls can be strong and loud, but they can also become calm.",
+            answer="A bull is an adult male bovine. People should observe bulls from a safe distance and leave their care to trained handlers.",
         ),
     ]
 
@@ -285,7 +527,6 @@ def resolve_params(args: argparse.Namespace, rng: random.Random) -> StoryParams:
 
 def generate(params: StoryParams) -> StorySample:
     world = tell(params)
-    world.facts = {"hero": params.hero, "companion": params.companion, "bull": params.bull}
     return StorySample(
         params=params,
         story=world.render(),

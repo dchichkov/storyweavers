@@ -17,13 +17,15 @@ from __future__ import annotations
 
 import argparse
 import json
-import os
 import random
 import sys
 from dataclasses import dataclass, field
+from pathlib import Path
 from typing import Optional
 
-sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+ROOT = Path(__file__).resolve().parents[2]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
 from results import QAItem, StoryError, StorySample  # noqa: E402
 
 
@@ -103,6 +105,10 @@ def asp_facts() -> str:
     return "\n".join(
         [
             asp.fact("character", "iguana"),
+            asp.fact("sees", "iguana", "uncertain_shape"),
+            asp.fact("misreads", "iguana", "uncertain_shape"),
+            asp.fact("explains", "friend", "iguana"),
+            asp.fact("calms", "friend", "iguana"),
             asp.fact("setting", "canal_path"),
             asp.fact("theme", "misunderstanding"),
         ]
@@ -135,12 +141,193 @@ SETTING = Setting(
     detail="a long path beside the water, with reeds bending in the breeze",
 )
 
+INCIDENTS = [
+    {
+        "id": "turtle_shadow",
+        "premise": "a broad shadow slid beneath the footbridge",
+        "mistake": "a turtle was trapped under the bridge",
+        "first_action": "called urgently toward the water before checking the shape",
+        "clue": "the shadow kept exactly the same pace as a cloud overhead",
+        "test": "watched from behind the path railing while the cloud crossed the sun",
+        "truth": "it was the cloud's shadow moving over clear water",
+        "repair": "lowered his voice and apologized for alarming the resting ducks",
+        "ending": "one real turtle lifted its nose beside a lily pad while the cloud sailed on",
+        "lesson": "A moving shadow is a clue to study, not proof that an animal is in trouble.",
+    },
+    {
+        "id": "bottle_otter",
+        "premise": "a brown shape bobbed beside the reeds with a soft plip-plip",
+        "mistake": "a young otter was struggling in the canal",
+        "first_action": "ran along the dry path shouting for the shape to paddle closer",
+        "clue": "sunlight flashed from a straight glass rim",
+        "test": "used the lookout binoculars without leaning over the rail",
+        "truth": "it was an empty bottle turning in the current",
+        "repair": "asked the canal keeper to remove the litter with a long-handled net",
+        "ending": "the clean water rippled behind the keeper's net, with no frightened otter anywhere",
+        "lesson": "Careful looking can turn a frightening guess into a useful, safe action.",
+    },
+    {
+        "id": "reed_crocodile",
+        "premise": "the reeds shook and made a long scratch-scratch beside the bend",
+        "mistake": "a crocodile was crawling toward the path",
+        "first_action": "blocked the path with his tail and warned every walker to stop",
+        "clue": "each scratch arrived with the same gust that spun the weather vane",
+        "test": "waited at the marked lookout and compared the reeds during the next gust",
+        "truth": "a loose reed stem was brushing the wooden fence",
+        "repair": "let the ranger tie the stem back while he calmly reopened the path",
+        "ending": "the secured reeds whispered instead of scratching as minnows flickered below",
+        "lesson": "A sensible warning should be followed by evidence, not stretched into a scary rumor.",
+    },
+    {
+        "id": "orange_glove",
+        "premise": "an orange shape lay still beside a maintenance box",
+        "mistake": "another iguana had fainted on the canal path",
+        "first_action": "begged his friend to fetch water for the motionless stranger",
+        "clue": "the shape had five narrow points and a bright silver cuff",
+        "test": "looked from a step away and asked a maintenance worker to inspect it",
+        "truth": "it was the worker's dropped safety glove",
+        "repair": "returned the glove and explained his hasty alarm to the gathered animals",
+        "ending": "the glove waved from the worker's hand as the two iguanas exchanged a peaceful nod",
+        "lesson": "Kind concern works best when it travels with patient observation.",
+    },
+    {
+        "id": "rope_snake",
+        "premise": "a striped coil appeared near the closed service gate",
+        "mistake": "a snake was guarding the only way home",
+        "first_action": "told his friend they must make a long detour without asking anyone",
+        "clue": "one end of the coil was clipped to a keeper's cart",
+        "test": "stayed on the public path and called the keeper over",
+        "truth": "it was a dry mooring rope waiting to be stored",
+        "repair": "helped point walkers toward the open gate while the keeper put the rope away",
+        "ending": "the empty path curved home under little pools of lamplight",
+        "lesson": "Distance keeps animals safe, and a knowledgeable adult can settle an uncertain sight.",
+    },
+    {
+        "id": "mirror_iguana",
+        "premise": "a green face appeared inside a shiny canal-depth marker",
+        "mistake": "a silent iguana was copying every expression he made",
+        "first_action": "frowned and puffed himself up, making the supposed stranger look cross",
+        "clue": "his friend appeared in the marker at the very same angle",
+        "test": "raised one forefoot, then lowered it, while remaining on the dry path",
+        "truth": "the polished marker was reflecting them like a mirror",
+        "repair": "relaxed his crest and laughed at the quarrel he had started with himself",
+        "ending": "two small reflections bowed together in the marker's sunset glow",
+        "lesson": "Before answering an unfriendly look, check whether you understand what you see.",
+    },
+    {
+        "id": "bridge_cry",
+        "premise": "three hollow groans sounded beneath the pedestrian bridge",
+        "mistake": "a large animal was crying for help below the boards",
+        "first_action": "paced in worry and interrupted a keeper's bird count",
+        "clue": "the groan came only when a delivery cart crossed one particular board",
+        "test": "stood behind the barrier while the keeper rolled the empty cart across again",
+        "truth": "a dry bridge joint needed oil and inspection",
+        "repair": "kept walkers at the signed detour until the maintenance team finished",
+        "ending": "the repaired bridge gave one quiet click beneath the keeper's returning cart",
+        "lesson": "Repeating a safe test can separate an animal call from a mechanical sound.",
+    },
+    {
+        "id": "flag_bird",
+        "premise": "a yellow triangle fluttered low beside a newly planted willow",
+        "mistake": "a bird had hurt its wing and could not rise",
+        "first_action": "scattered seeds toward it, drawing pigeons across the busy path",
+        "clue": "the triangle never turned its head and was fastened to a wire stem",
+        "test": "called the gardener and watched from the quiet side of the path",
+        "truth": "it was a survey flag marking where the willow roots began",
+        "repair": "swept the stray seeds from the path with the gardener's help",
+        "ending": "the flag fluttered above bare, tidy stones while the pigeons fed in their proper garden patch",
+        "lesson": "Helping on a guess can create a second problem, so first find out what needs help.",
+    },
+    {
+        "id": "bubble_frog",
+        "premise": "round bubbles rose beside a covered drainage grate",
+        "mistake": "a frog was trapped underneath the grate",
+        "first_action": "reached toward the cover until his friend reminded him not to touch canal equipment",
+        "clue": "the bubbles began whenever the small pump light blinked",
+        "test": "stepped back and reported the pattern to the canal technician",
+        "truth": "an aeration pipe was safely releasing air into the water",
+        "repair": "thanked his friend for stopping him and added the observation to the nature log",
+        "ending": "a real frog called from the far bank as neat bubbles climbed through the dusk",
+        "lesson": "Bravery can mean stepping back, reporting a clue, and letting trained adults check equipment.",
+    },
+    {
+        "id": "toy_duckling",
+        "premise": "a tiny yellow shape zipped in sharp squares across a model-boat basin",
+        "mistake": "a duckling was lost and swimming in a panic",
+        "first_action": "whistled and hurried after it along the walking line",
+        "clue": "the shape stopped whenever a child's remote control stopped clicking",
+        "test": "asked the child to park the shape beside the basin's low dock",
+        "truth": "it was a duck-shaped model boat",
+        "repair": "explained the alarm, then helped place a MODEL BOAT card beside the launch spot",
+        "ending": "the toy duck rested at its dock while a real duck family glided beyond the divider",
+        "lesson": "Looking for cause and effect is better than trusting the first lively appearance.",
+    },
+    {
+        "id": "branch_lizard",
+        "premise": "a knobbly brown form stretched across the path after a windy night",
+        "mistake": "a giant lizard was sleeping where bicycles passed",
+        "first_action": "whispered for everyone to tiptoe around it on the canal-side edge",
+        "clue": "the form had snapped leaves and pale wood showing at one end",
+        "test": "kept everyone inside the rail and asked the groundskeeper to identify it",
+        "truth": "it was a fallen sycamore branch, not an animal",
+        "repair": "directed bicycles to stop while the groundskeeper cleared the full path",
+        "ending": "fresh sawdust made a golden crescent where the branch had blocked the morning route",
+        "lesson": "A safe correction matters more than pretending an imaginative guess was right.",
+    },
+    {
+        "id": "cone_beak",
+        "premise": "a bright beak seemed to peek from behind a path-repair screen",
+        "mistake": "a rare orange bird had nested inside the work zone",
+        "first_action": "invited his friend closer for a photograph despite the KEEP OUT sign",
+        "clue": "black letters curved across the orange surface",
+        "test": "both animals stayed outside the barrier and zoomed the lookout camera",
+        "truth": "it was the pointed top of a safety cone",
+        "repair": "moved back to the viewing mark and told the ranger why they had almost approached",
+        "ending": "the cone stood bright beneath the repaired lamp while swallows crossed the open sky",
+        "lesson": "Curiosity should never erase a barrier or a clear safety sign.",
+    },
+]
+
+OPENINGS = [
+    "At first light, {hero} set out to count animal tracks along the canal path.",
+    "After lunch, {hero} and {friend} began a slow nature walk beside the canal.",
+    "A cool breeze met {hero} at the canal-path map, where {friend} was waiting.",
+    "On keeper-help day, {hero} promised to notice changes without disturbing wildlife.",
+    "The canal path was busy with walkers when {hero} joined {friend} near the reeds.",
+    "Just before sunset, {hero} carried a nature notebook down the dry canal path.",
+    "Following overnight wind, {hero} and {friend} inspected the public path from behind its rail.",
+    "During the quiet animal-count hour, {hero} met {friend} at the marked lookout.",
+]
+
+REFLECTIONS = [
+    '"I treated my first idea like a fact," {hero} admitted. "Next time I will gather clues."',
+    '{friend} said, "Concern was a good beginning. Checking safely made it useful."',
+    '{hero} wrote the truth beneath his crossed-out guess so the mistake could teach him.',
+    'They retold the event with the clue in the middle, because that was where understanding changed.',
+    '{hero} noticed that relief arrived only after observation replaced imagination.',
+    'Together they made a three-step rule: pause, look for evidence, and ask someone who knows.',
+    'Instead of hiding the error, {hero} explained it to the next walkers so nobody repeated it.',
+    '{friend} tapped the notebook. "A guess may open a mystery, but evidence must close it."',
+]
+
 
 # ---------------------------------------------------------------------------
 # World simulation
 # ---------------------------------------------------------------------------
 
 def build_world(params: StoryParams) -> World:
+    rng = random.Random(params.seed)
+    incident = INCIDENTS[rng.randrange(len(INCIDENTS))]
+    opening = OPENINGS[rng.randrange(len(OPENINGS))]
+    reflection = REFLECTIONS[rng.randrange(len(REFLECTIONS))]
+    detail = rng.choice([
+        "reeds bending above the water",
+        "a painted distance marker and a sturdy rail",
+        "willow shadows crossing the gravel",
+        "keeper signs beside a broad viewing place",
+        "dragonflies hovering beyond the fence",
+        "a dry public path above the slow current",
+    ])
     world = World(setting=SETTING)
     hero = world.add(Entity(
         id=params.name,
@@ -158,104 +345,114 @@ def build_world(params: StoryParams) -> World:
         meters={"distance": 0.0},
         memes={"friendship": 1.0, "worry": 0.0, "relief": 0.0},
     ))
-    object1 = world.add(Entity(
-        id="bucket",
-        type="bucket",
-        label="a blue bucket",
-        phrase="a blue bucket",
-        carried_by=friend.id,
+    clue = world.add(Entity(
+        id="clue",
+        type="evidence",
+        label=incident["clue"],
+        phrase=incident["clue"],
     ))
-    sign = world.add(Entity(
-        id="sign",
-        type="sign",
-        label="a sign",
-        phrase="a small sign with a painted fish",
-    ))
-    fish = world.add(Entity(
-        id="fish",
-        type="fish",
-        label="a fish shape",
-        phrase="a painted fish on the sign",
-    ))
-
-    world.facts.update(hero=hero, friend=friend, bucket=object1, sign=sign, fish=fish)
+    world.facts.update(
+        hero=hero,
+        friend=friend,
+        clue=clue,
+        incident=incident,
+        incident_id=incident["id"],
+        opening=opening,
+        reflection=reflection,
+        setting_detail=detail,
+        safe_boundary="the public canal path behind its rail or marked barrier",
+    )
     return world
 
 
 def story_intro(world: World) -> None:
     hero: Entity = world.facts["hero"]
     friend: Entity = world.facts["friend"]
+    world.say(world.facts["opening"].format(hero=hero.id, friend=friend.id))
     world.say(
-        f"{hero.id} was a small iguana who liked quiet walks along the canal path."
+        f"{hero.id} was a small iguana, and {friend.id} was a watchful little bird. "
+        f"They stayed on the canal path, where they saw {world.facts['setting_detail']}."
     )
     world.say(
-        f"He often met {friend.id}, a little bird who carried things and liked to chatter about everything he saw."
-    )
-    world.say(
-        f"That morning, the canal path was calm, and the water moved in slow silver ribbons."
+        "They knew the canal was for observing from a safe distance: neither animal entered "
+        "the water, crossed a barrier, nor handled maintenance equipment."
     )
 
 
 def story_misunderstanding(world: World) -> None:
     hero: Entity = world.facts["hero"]
     friend: Entity = world.facts["friend"]
-    sign: Entity = world.facts["sign"]
-    bucket: Entity = world.facts["bucket"]
-    fish: Entity = world.facts["fish"]
+    incident: dict = world.facts["incident"]
 
     hero.meters["distance"] += 1
     world.say(
-        f"While they walked, {hero.id} saw {sign.phrase} near the path and stopped short."
+        f"Near the next bend, {incident['premise']}. {hero.id} stopped so suddenly that "
+        f"{friend.id} nearly bumped into his tail."
     )
     hero.memes["confusion"] += 1
     world.say(
-        f"The painted fish on the sign looked so real to him that he thought {friend.id}'s blue bucket held a live fish."
+        f"From that first glimpse, {hero.id} decided that {incident['mistake']}. "
+        f"He {incident['first_action']}."
     )
     world.say(
-        f"{hero.id} blinked hard and backed away, worried that the bucket might splash or flop at any second."
+        f'"Wait," {friend.id} said. "That may be possible, but we have only a guess. '
+        'Let us stay on the safe path and find a clue before we act again."'
     )
     hero.memes["worry"] += 1
     friend.memes["worry"] += 1
-    world.facts["misread_object"] = bucket.id
-    world.facts["misread_as"] = fish.phrase
+    world.facts["misread_as"] = incident["mistake"]
+    world.facts["first_action"] = incident["first_action"]
     world.facts["misunderstanding"] = True
 
 
 def story_turn(world: World) -> None:
     hero: Entity = world.facts["hero"]
     friend: Entity = world.facts["friend"]
-    bucket: Entity = world.facts["bucket"]
+    incident: dict = world.facts["incident"]
 
     world.say(
-        f"{friend.id} noticed {hero.id} staring and paused beside him."
+        f"They studied the scene without going nearer. Soon {friend.id} noticed the useful clue: "
+        f"{incident['clue']}."
     )
     world.say(
-        f"He set the bucket down and said, \"It's only my paint bucket. I used it to make the fish sign for the path.\""
+        f"To test the idea safely, {hero.id} {incident['test']}. "
+        f"The evidence showed that {incident['truth']}."
     )
     world.say(
-        f"Then he turned the sign so {hero.id} could see the flat wood and the dry paint."
+        world.facts["reflection"].format(hero=hero.id, friend=friend.id)
     )
     hero.memes["confusion"] = max(0.0, hero.memes["confusion"] - 1.0)
     hero.memes["worry"] = max(0.0, hero.memes["worry"] - 1.0)
+    friend.memes["worry"] = max(0.0, friend.memes["worry"] - 1.0)
+    hero.memes["confidence"] += 0.5
+    world.facts["clue_found"] = incident["clue"]
+    world.facts["truth"] = incident["truth"]
     world.facts["explained"] = True
 
 
 def story_resolution(world: World) -> None:
     hero: Entity = world.facts["hero"]
     friend: Entity = world.facts["friend"]
+    incident: dict = world.facts["incident"]
 
     hero.memes["relief"] += 1
     hero.memes["confidence"] += 1
     friend.memes["relief"] += 1
     world.say(
-        f"{hero.id} gave a tiny laugh. The bucket was only a bucket after all."
+        f"Now that the misunderstanding was clear, {hero.id} {incident['repair']}. "
+        f"{friend.id} stayed beside him until the path was calm again."
     )
     world.say(
-        f"He and {friend.id} walked on together, side by side, with the canal water flashing quietly below them."
+        f"{incident['lesson']} {hero.id} repeated the lesson once, not as a rule to fear the canal, "
+        "but as a reminder to match kind intentions with good evidence."
     )
     world.say(
-        f"By the end of the path, the iguana was calm again, and the little bird was still chatting beside him."
+        f"As they continued along the canal path, {incident['ending']}. "
+        f"{hero.id} and {friend.id} walked home together, relieved and a little wiser."
     )
+    world.facts["repair"] = incident["repair"]
+    world.facts["lesson"] = incident["lesson"]
+    world.facts["ending_image"] = incident["ending"]
     world.facts["resolved"] = True
 
 
@@ -278,32 +475,50 @@ def generate_story_world(params: StoryParams) -> World:
 def generation_prompts(world: World) -> list[str]:
     hero: Entity = world.facts["hero"]
     friend: Entity = world.facts["friend"]
+    incident: dict = world.facts["incident"]
     return [
-        'Write a short Animal Story about an iguana walking on the canal path and making a small mistake about what he sees.',
-        f"Tell a gentle story where {hero.id}, an iguana, misunderstands what {friend.id} is carrying at the canal path, then learns the truth.",
-        "Write a simple story set on a canal path where a painted sign causes a misunderstanding, and the animals clear it up kindly.",
+        "Write a child-facing Animal Story about an iguana whose misunderstanding on a canal path is corrected with safe observation.",
+        f"Tell how {hero.id} and {friend.id} investigate the mistaken idea that {incident['mistake']}, without entering the canal or crossing a barrier.",
+        f"Write a gentle evidence-based mystery in which the clue is that {incident['clue']}, and end with {incident['ending']}.",
     ]
 
 
 def story_qa(world: World) -> list[QAItem]:
     hero: Entity = world.facts["hero"]
     friend: Entity = world.facts["friend"]
+    incident: dict = world.facts["incident"]
     return [
         QAItem(
-            question=f"Where was {hero.id} walking when the misunderstanding happened?",
-            answer=f"He was walking on the canal path, beside the water and the reeds."
+            question=f"What did {hero.id} and {friend.id} notice around them before the mystery?",
+            answer=f"They noticed {world.facts['setting_detail']} while staying on the canal path. This established the safe place from which they observed the incident."
         ),
         QAItem(
-            question=f"What did {hero.id} think {friend.id}'s bucket contained?",
-            answer=f"He thought the blue bucket held a live fish because the painted fish on the sign looked real."
+            question=f"What did {hero.id} mistakenly believe on the canal path?",
+            answer=f"{hero.id} mistakenly believed that {incident['mistake']}. His first glimpse did not provide enough evidence."
         ),
         QAItem(
-            question=f"How did {friend.id} fix the misunderstanding?",
-            answer=f"He set the bucket down, explained that it was only a paint bucket, and turned the sign so {hero.id} could see the painted fish clearly."
+            question=f"Which clue helped {hero.id} and {friend.id} reconsider the misunderstanding?",
+            answer=f"They noticed that {incident['clue']}. That detail did not fit {hero.id}'s first explanation."
         ),
         QAItem(
-            question=f"How did {hero.id} feel at the end of the story?",
-            answer=f"He felt relieved and calm, and he kept walking happily with {friend.id}."
+            question=f"How did the animals check the clue without taking a canal-side risk?",
+            answer=f"{hero.id} {incident['test']}. Both animals remained on the public path and respected its safety boundary."
+        ),
+        QAItem(
+            question=f"What was the real explanation for what {hero.id} saw?",
+            answer=f"The evidence showed that {incident['truth']}. This resolved the misunderstanding."
+        ),
+        QAItem(
+            question=f"What did {hero.id} do after learning the truth?",
+            answer=f"He {incident['repair']}. The repair addressed the consequence of his mistaken first action."
+        ),
+        QAItem(
+            question=f"How did {hero.id} and {friend.id} put their new understanding into words?",
+            answer=world.facts["reflection"].format(hero=hero.id, friend=friend.id)
+        ),
+        QAItem(
+            question="What lesson did the canal-path incident teach?",
+            answer=incident["lesson"]
         ),
     ]
 
@@ -319,8 +534,8 @@ def world_knowledge_qa(world: World) -> list[QAItem]:
             answer="A misunderstanding happens when someone thinks something is true but later learns they were wrong."
         ),
         QAItem(
-            question="Why can painted signs be confusing sometimes?",
-            answer="Painted signs can be confusing when their pictures look real from far away or in a quick glance."
+            question="How should a child or animal observe something uncertain beside a canal?",
+            answer="They should remain on the public path behind rails or barriers, look for clues from a safe distance, and ask a responsible adult or keeper for help."
         ),
     ]
 
