@@ -88,5 +88,10 @@ Legend: `queued`, `active`, `repaired`, `verified`, `blocked`.
 | 8 | verified | `rascal_bilge_ambidextrous_lesson_learned_suspense_space.py` | 1 skeleton/100 exact-unique stories | 1 skeleton | 100 unique; 100 skeletons | Twelve emergencies; source term recast as a robot class. |
 | 8 | verified | `seam_remote_rust_dialogue_animal_story.py` | 1 skeleton; 72/100 exact unique in fresh baseline | 1 skeleton | 100 unique; 100 skeletons | Twelve incidents; nondeterministic name selection fixed. |
 | 8 | verified | `session_rotten_rhyme_twist_conflict_animal_story.py` | 1 skeleton/100 exact-unique stories | 1 skeleton | 100 unique; 100 skeletons | Twelve incidents; 258/600 unique story-QA pairs. |
+| 8 | verified | `sledge_classic_linguini_teamwork_foreshadowing_superhero_story.py` | 1 production skeleton; 3 in fresh baseline | 3 skeletons | 100 unique; 100 skeletons | Twelve rescues and eight telling modes; ASP verification fixed. |
+| 8 | verified | `slob_fatten_helly_friendship_humor_dialogue_rhyming.py` | 1 skeleton/100 exact-unique stories | 1 skeleton | 100 unique; 100 skeletons | Twelve incidents; awkward terms given non-insulting meanings. |
+| 8 | verified | `stride_convenient_reading_nook_kindness_happy_ending.py` | 1 skeleton/100 exact-unique stories | 1 skeleton | 100 unique; 100 skeletons | Twelve scenarios; repository-root import and ASP parity fixed. |
+| 8 | verified | `switch_checker_conflict_detective_story.py` | 1 skeleton/100 exact-unique stories | 1 skeleton | 100 unique; 100 skeletons | Twelve detective cases; 382/600 unique story-QA pairs. |
+| 9 | verified | `system_vacancy_test_sharing_curiosity_folk_tale.py` | 1 skeleton; 70/100 exact unique in fresh baseline | 1 skeleton | 100 unique; 100 skeletons | Twelve folk-tale scenarios; 409/700 unique story-QA pairs. |
 
 Additional waves follow the frozen 120-script template-collapse ranking.

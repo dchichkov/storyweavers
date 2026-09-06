@@ -26,7 +26,10 @@ import sys
 from dataclasses import dataclass, field
 from typing import Optional
 
-sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+STORYWORLDS_ROOT = os.path.dirname(
+    os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+)
+sys.path.insert(0, STORYWORLDS_ROOT)
 from results import QAItem, StoryError, StorySample  # noqa: E402
 
 
@@ -86,6 +89,22 @@ class Vacancy:
     test_item: str
     reward: str
     threshold_kind: str = "readiness"
+
+
+@dataclass(frozen=True)
+class Scenario:
+    id: str
+    opening: str
+    obstacle: str
+    hasty_choice: str
+    clue: str
+    shared_item: str
+    helper: str
+    careful_action: str
+    result: str
+    system_change: str
+    lesson: str
+    ending: str
 
 
 @dataclass
@@ -209,6 +228,201 @@ GIRL_NAMES = ["Mira", "Nela", "Tova", "Lina", "Sera", "Rin"]
 BOY_NAMES = ["Ivo", "Pavel", "Borin", "Marek", "Tarin", "Jori"]
 ADJ = ["curious", "kind", "patient", "brave", "gentle", "lively"]
 
+SCENARIOS = [
+    Scenario(
+        "fog_markers",
+        "Fog swallowed the white stones that marked the safest bends in the path.",
+        "Three lanterns looked equally bright, yet one bend remained dark enough to hide the millstream.",
+        "The child nearly chose the biggest flame and hurried on alone.",
+        "A bead of water leaned away from the lantern whose air holes faced the wind.",
+        "a dry matchbox and a strip of blue ribbon",
+        "the miller's youngest child",
+        "turned the air holes from the wind and tied the ribbon where every helper could see the safe bend",
+        "the smallest flame burned steadily and the millstream crossing became visible",
+        "blue guide ribbons were added to the evening lantern route",
+        "a question can reveal what brightness alone conceals",
+        "Along the millstream, blue ribbons fluttered beside twelve calm circles of light.",
+    ),
+    Scenario(
+        "missing_oil",
+        "On market night, the oil measure came back empty before half the lamps were filled.",
+        "The final jar held too little oil for both the bridge lamp and the square lamp.",
+        "The child first reached for the jar without asking who still needed it.",
+        "A soot mark showed that the square's broad wick had been drinking twice its proper share.",
+        "the measuring cup and the remaining lamp oil",
+        "a patient baker",
+        "trimmed the wasteful wick, measured equal portions, and invited two helpers to check the marks",
+        "both lamps lasted until the market carts were safely home",
+        "every oil jar received a marked sharing cup",
+        "fair portions can make a small supply serve a whole village",
+        "At midnight, one gold lamp shone over the bridge and another over the empty market baskets.",
+    ),
+    Scenario(
+        "moth_glass",
+        "A cloud of pale moths gathered when the orchard lanterns were lit.",
+        "Their wings tapped the hot glass, and frightened children began waving branches at them.",
+        "The child almost carried the lanterns closer to chase the moths away with brighter light.",
+        "The moths settled whenever a lamp was shaded and a bowl of moonflowers stood nearby.",
+        "a cool lantern shade and a basket of moonflowers",
+        "the orchard keeper",
+        "shared the flowers among the dark trees and fitted cool shades while everyone stood quietly",
+        "the moths drifted to the blossoms and the path stayed safely lit",
+        "orchard lamps were given cool shades and flower stations",
+        "careful curiosity protects small lives instead of frightening them",
+        "Moths rested on white petals while shaded lanterns glimmered beneath the apple trees.",
+    ),
+    Scenario(
+        "bell_rope",
+        "Just before dusk, the warning bell rang twice though nobody had pulled its rope.",
+        "Villagers could not tell whether the west path was ready to open.",
+        "The child wanted to declare the bell broken and begin the test elsewhere.",
+        "Each gust made a loose rope-end brush the bronze rim with a tiny ting.",
+        "a coil of cord and the good step stool",
+        "a short shepherd",
+        "held the stool steady for the shepherd, then used the shared cord to secure the loose rope",
+        "the bell stayed silent until the proper opening signal was pulled",
+        "bell ropes became part of the lantern keeper's afternoon check",
+        "listening to a small sound can prevent a large confusion",
+        "When the true bell rang, sheep and children crossed beneath a neat row of lights.",
+    ),
+    Scenario(
+        "puddle_reflection",
+        "After a storm, puddles copied every lantern and made the lane seem full of false lights.",
+        "Travelers followed a reflection toward a muddy ditch instead of the hill road.",
+        "The child first tried to stamp out each reflected flame with a boot.",
+        "A dropped apple rolled past the false lights but cast a shadow beside every real post.",
+        "chalk, a broom, and the driest cloak",
+        "a rain-soaked apple seller",
+        "shared the cloak, swept a narrow route, and chalked arrows beside posts that cast real shadows",
+        "travelers could distinguish the hill road even while the puddles still gleamed",
+        "real lantern posts were marked with bright arrows after rain",
+        "testing an idea is wiser than fighting an appearance",
+        "Behind the last cart, puddles held upside-down stars while the chalk arrows pointed home.",
+    ),
+    Scenario(
+        "owl_signal",
+        "An owl began hooting whenever the north lantern went dark.",
+        "Some villagers feared the calls were an omen and refused to use the herb path.",
+        "The child nearly rang every bell to scare the owl away.",
+        "A loose shutter pinched the wick only when the owl landed on the lamp roof.",
+        "a wooden peg and a handful of safe perch straw",
+        "the herb gatherer",
+        "shared the straw for a nearby perch and replaced the shutter peg without disturbing the nest",
+        "the owl perched safely and the north lantern no longer winked out",
+        "wildlife perches were placed away from the working lamps",
+        "curiosity turns fearful guesses into kind solutions",
+        "The owl watched from its straw perch as the herb path glowed silver-green below.",
+    ),
+    Scenario(
+        "snow_tunnel",
+        "The first snow banked against the low lanterns on the school lane.",
+        "Clearing one lamp buried the next, and the children could not see where the path ended.",
+        "The child began digging the widest tunnel without asking for help.",
+        "A thin crust cracked in a straight line above the stones warmed by buried lanterns.",
+        "two small shovels and a red wool scarf",
+        "a pair of schoolchildren",
+        "gave one shovel to the children, marked the warm stones with the scarf, and cleared short breathing wells",
+        "the lamps shone through safe round openings all the way to the school door",
+        "snow teams were paired so no lantern keeper dug alone",
+        "shared work can be both quicker and safer than a grand solo effort",
+        "Round lantern windows dotted the snow like warm buttons on a white coat.",
+    ),
+    Scenario(
+        "festival_colors",
+        "For the seed festival, families brought colored glass to dress the village lanterns.",
+        "When every pane was fitted at once, the path turned too dim to read the stepping stones.",
+        "The child wanted to remove all the decorations and disappoint the families.",
+        "One clear pane cast enough light when it alternated with two colored panes.",
+        "the clear panes and a box of colored glass",
+        "three festival painters",
+        "invited each painter to share a color, then arranged clear spaces between their designs",
+        "the stepping stones stayed visible beneath a cheerful ribbon of color",
+        "festival lanterns followed a shared clear-pane pattern",
+        "a good system can make room for beauty and safety together",
+        "Red, green, and clear squares danced across the stepping stones until the music ended.",
+    ),
+    Scenario(
+        "lost_key",
+        "At sunset, the lamp-shed key vanished from its peg.",
+        "Without the spare wicks inside, the eastern lamps would fail before moonrise.",
+        "The child suspected the last helper and almost accused him in the square.",
+        "A trail of brass-colored scratches ended beneath the communal tool cart.",
+        "a hand mirror and the last candle stub",
+        "the helper who had been blamed",
+        "apologized, shared the candle, and angled the mirror under the cart while the helper held it still",
+        "they found the key caught beside a loose wheel and replaced every eastern wick",
+        "the key gained a bright wooden tag and a signed return hook",
+        "evidence and cooperation are better guides than suspicion",
+        "The tagged key swung on its hook while the eastern lamps brightened one by one.",
+    ),
+    Scenario(
+        "goat_gate",
+        "A nimble goat learned to nose open the lamp-shed gate each afternoon.",
+        "It scattered clean wicks through the grass and left muddy hoofprints near the oil jars.",
+        "The child planned to tie the gate so tightly that smaller helpers could not enter.",
+        "The goat ignored the latch whenever fresh clover waited beside its own pen.",
+        "a basket of clover and a low wooden latch",
+        "the smallest stable helper",
+        "shared the clover, asked the helper to test the latch, and moved the tempting feed away from the shed",
+        "the goat trotted to its pen while every helper could still open the safe latch",
+        "shed latches were tested by the shortest member of each work team",
+        "a solution should serve the smallest helper as well as stop the biggest nuisance",
+        "The goat munched clover behind its gate as clean wicks dried in the sunset.",
+    ),
+    Scenario(
+        "fireflies",
+        "Hundreds of fireflies appeared beside the marsh path on the longest summer evening.",
+        "Their moving sparks made it hard to tell which distant lights marked firm ground.",
+        "The child proposed catching the fireflies in jars to make the test easier.",
+        "The village lamps stayed at one height, while every living spark bobbed above the reeds.",
+        "a measuring cord and two polished reflectors",
+        "the marsh guide",
+        "shared the cord, set the reflectors at a single low height, and left the fireflies free",
+        "travelers followed the steady reflected line without stepping into the marsh",
+        "marsh lamps received low reflectors that did not disturb wildlife",
+        "patient observation can solve a problem without taking freedom away",
+        "Fireflies rose over the reeds while a quiet silver line led the last traveler home.",
+    ),
+    Scenario(
+        "clock_delay",
+        "The tower clock began striking sunset several minutes too early.",
+        "Helpers lit the lamps before the oil carts arrived and wasted a precious portion each day.",
+        "The child thought the simplest answer was to ignore the clock forever.",
+        "The clock lost exactly one beat whenever its stiff gear passed a patch of old dust.",
+        "a soft brush and the little bottle of clock oil",
+        "the apprentice clockmaker",
+        "shared the brush, counted beats aloud with the apprentice, and oiled only the sticking pin",
+        "the clock struck with the sunset and the carts reached every lamp on time",
+        "the clock and lantern teams began comparing their records each week",
+        "systems improve when neighbors share observations instead of guarding them",
+        "The final chime floated over carts whose lantern jars shone full and amber.",
+    ),
+]
+
+DIALOGUES = [
+    "What changes when we look from down here?",
+    "Could the trouble be showing us its own answer?",
+    "Let us each tell what we noticed before we decide.",
+    "What can we share so nobody has to guess alone?",
+    "Suppose the loudest answer is not the truest one.",
+    "May we test one small idea before changing everything?",
+    "Who has seen this happen at another hour?",
+    "What would make the path safe for the smallest traveler?",
+]
+
+REFLECTIONS = [
+    "Curiosity is not merely wanting the answer; it is staying long enough to notice.",
+    "A keeper must make light for others, not collect all the tools nearby.",
+    "Passing a test should prove what a person will do when no prize is watching.",
+    "A village system works because many careful hands can correct one another.",
+    "Sharing attention can matter as much as sharing an object.",
+    "The vacancy needed someone willing to revise a first idea.",
+    "Useful questions leave room for another person's knowledge.",
+    "Care is the part of cleverness that remembers who may be affected.",
+    "The work belonged to the whole path, not to the person carrying the key.",
+    "Wonder became wisdom only after it was shared.",
+]
+
 
 def valid_combos() -> list[tuple[str, str, str]]:
     return [("village", "lantern_test", "lantern_keeper")]
@@ -268,8 +482,22 @@ def reasonableness_gate(params: StoryParams) -> None:
 
 
 def tell(world: World, params: StoryParams) -> World:
+    variant = params.seed if params.seed is not None else sum(
+        (i + 1) * ord(ch)
+        for i, ch in enumerate(
+            f"{params.name}|{params.gender}|{params.elder}|{params.trait}"
+        )
+    )
+    scenario = SCENARIOS[variant % len(SCENARIOS)]
+    telling_mode = (variant // len(SCENARIOS)) % 8
+    dialogue = DIALOGUES[(variant // (len(SCENARIOS) * 8)) % len(DIALOGUES)]
+    reflection = REFLECTIONS[
+        (variant // (len(SCENARIOS) * 8 * len(DIALOGUES))) % len(REFLECTIONS)
+    ]
+
     hero = world.add(Entity(id=params.name, kind="character", type=params.gender))
     elder = world.add(Entity(id="Elder", kind="character", type=params.elder, label=params.elder))
+    helper = world.add(Entity(id="Helper", kind="character", type="person", label=scenario.helper))
     vacancy = VACANCIES[params.vacancy]
     trial = TRIALS[params.trial]
     lantern = world.add(Entity(
@@ -283,61 +511,87 @@ def tell(world: World, params: StoryParams) -> World:
     ))
 
     add_meme(hero, "curiosity", 1.0)
+    openings = [
+        f"Long ago, the village green kept an evening system: each lantern helper checked one light and reported to the {vacancy.title}.",
+        f"In an old village between hill and marsh, the path-lighting system was treated like a promise renewed every dusk.",
+        f"Every evening, bells sent the village lantern team from the green to bridge, orchard, school, and marsh.",
+        f"The village had no king of lamplight; it had a system in which neighbors checked and shared the work.",
+        f"Grandparents said the path lamps were a necklace the whole village fastened together at sunset.",
+        f"On the green stood a lamp shed, and inside it hung a chart showing how the village lighting system worked.",
+        f"Before moonrise, the village always tested its lamps in pairs so no dark corner was forgotten.",
+        f"This folk tale begins with a brass lantern, a careful village system, and one unanswered question.",
+    ]
+    world.say(openings[telling_mode])
     world.say(
-        f"In the village by the green, there was an old system for lighting the path each evening."
+        f"{hero.id}, a {params.trait} {params.gender}, followed the keepers because curiosity made ordinary details feel like clues."
     )
     world.say(
-        f"The lantern keeper watched over {vacancy.tool_phrase}, and the little folk knew where to stand, where to wait, and where to help."
-    )
-    world.say(
-        f"{hero.id} was a {params.trait} {params.gender} who loved to ask why the bells rang and why the windows shone."
+        f"The oldest keeper, {params.elder}, cared for {vacancy.tool_phrase} and taught that light belonged to everyone who used the path."
     )
     world.para()
 
     add_meme(hero, "desire", 1.0)
     world.say(
-        f"One foggy dusk, the village announced a vacancy: the lantern keeper needed a helper who could learn the work."
+        f"When a vacancy opened for a new {vacancy.title}, {hero.id} asked to take the test."
     )
     world.say(
-        f"{hero.id} wanted to take the {trial.keyword} test at once, but {params.elder} warned that the task was not solved by hurry."
+        f"Instead of reciting rules, {params.elder} made the evening's real trouble the test: {scenario.opening}"
     )
     add_meme(hero, "worry", 1.0)
-    world.say(
-        f'The elder said, "{trial.clue} matters most, because {trial.risk} when the mist is thick."'
-    )
+    world.say(scenario.obstacle)
+    world.say(scenario.hasty_choice)
+
+    mode_turns = [
+        f'Before acting, {hero.id} asked {scenario.helper}, "{dialogue}"',
+        f'"{dialogue}" {hero.id} asked, kneeling where the smallest marks were easiest to see.',
+        f"The other helpers argued until {hero.id} raised one hand and asked, \"{dialogue}\"",
+        f"Remembering that a test reveals choices, {hero.id} stopped and said, \"{dialogue}\"",
+        f"Rather than hide the first mistake, {hero.id} admitted it to {scenario.helper} and asked, \"{dialogue}\"",
+        f"The elder offered no answer. After a thoughtful silence, {hero.id} asked, \"{dialogue}\"",
+        f"A younger child tugged {hero.id}'s sleeve. That interruption prompted the question, \"{dialogue}\"",
+        f"First {hero.id} drew the problem in the dust; then came the question, \"{dialogue}\"",
+    ]
+    world.say(mode_turns[telling_mode])
 
     world.para()
     add_meter(hero, "sharing", 1.0)
     add_meme(hero, "curiosity", 1.0)
     world.say(
-        f"Before the test, {hero.id} shared the oil, the matches, and even a little stool with the younger children."
+        f"Together they noticed the decisive clue: {scenario.clue}"
     )
     world.say(
-        f"The children showed {hero.id} how to hold the lantern steady, and {hero.id} listened instead of boasting."
+        f"For the next part of the test, {hero.id} practiced sharing {scenario.shared_item} with {scenario.helper}."
     )
+    world.say(f"Then {hero.id} {scenario.careful_action}.")
     propagate(world)
 
     add_meter(hero, "ready", 1.0)
-    world.say(
-        f"Then {hero.id} stepped to the test with a calm heart and a careful hand."
-    )
-    world.say(
-        f"{hero.id} cleaned the wick, shielded the flame from the fog, and kept the light bright from start to end."
-    )
+    world.say(f"The result proved the plan: {scenario.result}.")
     add_meter(lantern, "light", 1.0)
+    add_meter(helper, "helped", 1.0)
     propagate(world)
 
     world.para()
     add_meme(hero, "pride", 1.0)
     add_meme(elder, "trust", 1.0)
     world.say(
-        f"The elder smiled and gave {hero.id} the key to the lamp shed, because the village system had found its new keeper."
+        f"The elder awarded {hero.id} {vacancy.reward}, but asked what should change after one successful test."
     )
-    world.say(
-        f"That night, {hero.id} carried {vacancy.tool_phrase} along the path, and the whole green glowed as if it had been waiting for {hero.id} all along."
-    )
+    world.say(f"The village lighting system adopted a new rule: {scenario.system_change}.")
+    world.say(f"The lesson was plain: {scenario.lesson}. {reflection}")
+    world.say(scenario.ending)
 
-    world.facts.update(hero=hero, elder=elder, vacancy=vacancy, trial=trial, lantern=lantern)
+    world.facts.update(
+        hero=hero,
+        elder=elder,
+        helper=helper,
+        vacancy=vacancy,
+        trial=trial,
+        lantern=lantern,
+        scenario=scenario,
+        dialogue=dialogue,
+        reflection=reflection,
+    )
     return world
 
 
@@ -360,10 +614,11 @@ def generation_prompts(world: World) -> list[str]:
     hero = f["hero"]
     trial = f["trial"]
     vacancy = f["vacancy"]
+    scenario = f["scenario"]
     return [
         f'Write a short folk tale for young children about a village system, a vacancy, and a curiosity test that includes the word "{trial.keyword}".',
         f"Tell a gentle story where {hero.id} wants to {trial.verb} for the {vacancy.title} vacancy, but learns to share first.",
-        f"Write a simple village tale about {hero.id}, a lantern, and a child who proves readiness by sharing and careful attention.",
+        f"Write a simple village tale about {hero.id}, a lantern, and this problem: {scenario.obstacle}",
     ]
 
 
@@ -373,22 +628,35 @@ def story_qa(world: World) -> list[QAItem]:
     elder = f["elder"]
     vacancy = f["vacancy"]
     trial = f["trial"]
+    scenario = f["scenario"]
     return [
         QAItem(
-            question=f"Who wanted to take the {trial.keyword} test for the vacant village job?",
+            question=f"Who wanted to take the {trial.keyword} for the vacant village job?",
             answer=f"{hero.id}, a curious child in the village, wanted to take the test for the vacant {vacancy.title} job.",
         ),
         QAItem(
-            question=f"Why did the elder worry about the test?",
-            answer=f"The elder worried because {trial.risk}, so the test had to be done with a calm hand and careful attention.",
+            question=f"What problem became {hero.id}'s test?",
+            answer=f"The test was to solve this village problem: {scenario.obstacle}",
         ),
         QAItem(
-            question=f"What did {hero.id} share before the test?",
-            answer=f"{hero.id} shared the oil, the matches, and even a little stool with the younger children, which helped everyone trust {hero.id}.",
+            question=f"What clue changed {hero.id}'s first plan?",
+            answer=f"{hero.id} noticed this clue: {scenario.clue} That evidence pointed toward a more careful plan.",
         ),
         QAItem(
-            question=f"How did {hero.id} finally earn the vacancy?",
-            answer=f"{hero.id} kept the flame steady during the test, and the elder gave {hero.id} the key to the lamp shed.",
+            question=f"What did {hero.id} share during the test?",
+            answer=f"{hero.id} shared {scenario.shared_item} with {scenario.helper}, so they could work on the problem together.",
+        ),
+        QAItem(
+            question=f"How did {hero.id} solve the problem?",
+            answer=f"{hero.id} {scenario.careful_action}. As a result, {scenario.result}.",
+        ),
+        QAItem(
+            question="How did the village system improve afterward?",
+            answer=f"After the test, the village adopted a new rule: {scenario.system_change}. The improvement preserved what everyone had learned.",
+        ),
+        QAItem(
+            question=f"What lesson did {hero.id} learn about curiosity and sharing?",
+            answer=f"{hero.id} learned that {scenario.lesson}. Curiosity helped most when observations and tools were shared.",
         ),
     ]
 

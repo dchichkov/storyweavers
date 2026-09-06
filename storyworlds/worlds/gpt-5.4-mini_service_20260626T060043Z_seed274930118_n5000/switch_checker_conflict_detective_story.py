@@ -30,7 +30,8 @@ import sys
 from dataclasses import dataclass, field
 from typing import Optional
 
-sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+sys.path.insert(0, ROOT)
 from results import QAItem, StoryError, StorySample  # noqa: E402
 
 
@@ -77,6 +78,188 @@ class StoryParams:
     switch_name: str
     switch_kind: str
     seed: Optional[int] = None
+
+
+@dataclass(frozen=True)
+class Incident:
+    problem: str
+    consequence: str
+    clue: str
+    false_lead: str
+    test: str
+    cause: str
+    repair: str
+    lesson: str
+    ending: str
+
+
+INCIDENTS = [
+    Incident(
+        "a book cart stood crooked beside the wall",
+        "the reading lamps blinked out while a child was choosing a book",
+        "a curved chalk mark crossed the floor beside one cart wheel",
+        "a cold draft from the door",
+        "rolled the cart back along the chalk curve without touching the lever",
+        "the cart's loose wheel had swung wide and nudged the switch down",
+        "tightened the wheel and marked a safe parking line",
+        "A good detective tests a clue before blaming anyone.",
+        "a row of open books shone beneath steady lamps",
+    ),
+    Incident(
+        "a costume cape hung from a peg near the panel",
+        "the rehearsal sign vanished just before the youngest actors entered",
+        "one blue thread curled around the switch",
+        "the caretaker who had locked the prop cupboard",
+        "lifted the cape slowly and watched its long hem sweep the wall",
+        "the cape had snagged the lever when someone carried it past",
+        "moved the costume peg and shortened the dangling loop",
+        "Evidence can settle a conflict more kindly than a quick accusation.",
+        "the blue cape hung safely while the rehearsal sign glowed",
+    ),
+    Incident(
+        "a parcel waited below the control panel",
+        "the welcome display went dark as families arrived",
+        "a clean square remained in the dust around the parcel",
+        "a cat whose pawprints ended far from the wall",
+        "matched the parcel's upper corner to the square beside the lever",
+        "the tall parcel had tipped against the switch before sliding upright",
+        "laid the parcel flat and added a low delivery shelf",
+        "Shapes and positions can tell a story when witnesses cannot.",
+        "the bright welcome display reflected in the parcel's silver tape",
+    ),
+    Incident(
+        "a paper label lay face-down under the switch",
+        "the direction arrows stopped glowing and two visitors chose opposite paths",
+        "a curl of sticky backing clung to the lever",
+        "a prank by one of the visitors",
+        "held the fallen label against the wall and followed its bent corner",
+        "the label had peeled loose and dragged the switch down as it fell",
+        "cleaned the wall and fastened a new label away from the controls",
+        "Small physical clues are stronger than exciting guesses.",
+        "fresh arrows pointed the same way across the bright floor",
+    ),
+    Incident(
+        "a festival poster flapped beside an open window",
+        "the colored lanterns went out in the middle of decorating",
+        "the poster's torn corner carried a gray streak shaped like the lever",
+        "a late visitor seen near the window",
+        "asked the checker to fan the poster while watching its corner",
+        "a gust had slapped the poster across the switch",
+        "closed the window halfway and pinned all four poster corners",
+        "Recreating an event can reveal a harmless cause.",
+        "colored lanterns glimmered over a poster that no longer fluttered",
+    ),
+    Incident(
+        "a cleaning cloth rested on a hook above the panel",
+        "the safety light went dark during the checker's final round",
+        "a yellow fiber and a faint lemon scent remained on the lever",
+        "the cleaner, who seemed to have touched the controls on purpose",
+        "compared the fiber with the cloth and measured how far it could swing",
+        "the damp cloth had sagged from its hook and caught the switch",
+        "placed the hook lower and farther from the panel",
+        "A clue may identify an object without proving a person's intent.",
+        "the folded cloth dried on its new hook under a calm green light",
+    ),
+    Incident(
+        "a model train rattled on a display table",
+        "the station clock and platform lights stopped together",
+        "the switch trembled each time the train crossed one loose rail joint",
+        "someone secretly flicking the control between train laps",
+        "set a coin beside the lever and watched it quiver with each passing car",
+        "repeated vibration had shaken a worn switch downward",
+        "tightened the rail joint and fitted a firm guard around the lever",
+        "Patterns repeated in time can expose a mechanical cause.",
+        "the little train circled beneath a clock ticking exactly on time",
+    ),
+    Incident(
+        "three beanbags were piled too high near the wall",
+        "the game scoreboard went blank during a close final round",
+        "green threads on the switch matched a split beanbag seam",
+        "the losing team trying to erase the score",
+        "stacked the beanbags again and gently tapped the bottom one",
+        "the top beanbag had tumbled against the switch",
+        "sewed the split seam and stored the beanbags in a floor basket",
+        "Fair solutions come from checking evidence, especially during conflict.",
+        "both teams cheered beneath the restored score as the beanbags sat snug below",
+    ),
+    Incident(
+        "a puppet theater had been rolled beside the wall",
+        "the tiny stage lamps failed before the final scene",
+        "a red puppet string was looped loosely around the lever",
+        "the puppeteer forgetting to turn the lights on",
+        "pulled the theater back inch by inch and traced the string's path",
+        "the trailing string had tugged the switch off when the theater moved",
+        "coiled every string and painted a parking mark for the theater",
+        "Tracing a clue backward can uncover the whole chain of events.",
+        "a red dragon puppet bowed in a circle of golden stage light",
+    ),
+    Incident(
+        "a silver kite tail poked through a high window",
+        "the weather signal disappeared while rain clouds gathered",
+        "a narrow silver ribbon was pinched beneath the switch",
+        "a bird fluttering outside the glass",
+        "loosened the ribbon and followed it from the lever to the window latch",
+        "the wind had pulled the kite tail tight enough to lower the switch",
+        "freed the kite, shut the window, and checked the weather lamp",
+        "Following a clue from end to end prevents a mystery from becoming a quarrel.",
+        "the weather lamp glowed amber as the rescued kite rested by the door",
+    ),
+    Incident(
+        "the checker's clipboard leaned beneath the panel",
+        "the closing bell and hallway light both fell silent",
+        "a fresh brass-colored dent marked the clipboard's top clip",
+        "a hurried messenger who had passed moments earlier",
+        "lined up the dent with the lever and replayed the checker's last turn",
+        "the checker had accidentally bumped the switch while writing a note",
+        "hung the clipboard on the opposite wall and corrected the record",
+        "Admitting your own mistake is part of solving a case honestly.",
+        "the checker added a truthful final tick beneath the glowing light",
+    ),
+    Incident(
+        "an emergency-practice card sat behind the panel",
+        "the ordinary chime stayed silent after the practice ended",
+        "the card said OFF FOR PRACTICE, but its bottom line was hidden",
+        "a helper ignoring the rules",
+        "slid the card free and read the covered instruction aloud",
+        "a helper had safely turned the switch off for practice but missed the reminder to restore it",
+        "turned it on together and added a bright return-check box to the card",
+        "Clear instructions keep responsible actions from causing later confusion.",
+        "the completed practice card hung beside a softly shining chime lamp",
+    ),
+]
+
+OPENINGS = [
+    "The case began with a silence that did not belong.",
+    "The checker noticed the trouble before anyone else did.",
+    "A tiny change turned an ordinary afternoon into a detective story.",
+    "Just as the room grew busy, one familiar signal disappeared.",
+    "No alarm rang; the first warning was the checker's puzzled face.",
+    "The mystery arrived quietly, with one switch pointing the wrong way.",
+    "At first the problem looked simple, but the nearby objects told a longer tale.",
+    "The detective was halfway through tidying the clue notebook when the checker called.",
+]
+
+DISAGREEMENTS = [
+    '"We should ask before we accuse," the detective said.',
+    '"That guess fits part of the scene, but not every clue," the checker replied.',
+    'The checker wanted a quick answer; the detective wanted one careful test.',
+    '"A suspicion is a question, not a verdict," the detective reminded them both.',
+    'They disagreed about the false lead, then agreed to let the evidence decide.',
+    'The conflict sharpened until the checker took a breath and read the clue aloud.',
+    '"Let us prove what happened," said the checker, setting blame aside.',
+    'For a moment each defended a different theory, and neither theory explained the whole scene.',
+]
+
+CLOSING_LEADS = [
+    "After they checked their repair twice,",
+    "With the mystery recorded in the casebook,",
+    "Once apologies had replaced suspicion,",
+    "When the restored signal held steady,",
+    "Before they put away the magnifying glass,",
+    "At closing time,",
+    "Their final check found everything working, and",
+    "The room settled back into its ordinary rhythm;",
+]
 
 
 class World:
@@ -170,6 +353,20 @@ def solve_case(world: World) -> None:
 
 
 def tell(world: World, params: StoryParams) -> World:
+    stable_seed = params.seed
+    if stable_seed is None:
+        stable_seed = sum((i + 1) * ord(ch) for i, ch in enumerate(
+            f"{params.place}|{params.detector}|{params.checker}|{params.switch_name}|{params.switch_kind}"
+        ))
+    rng = random.Random(stable_seed ^ 0x5A17C)
+    incident = rng.choice(INCIDENTS)
+    opening = rng.choice(OPENINGS)
+    disagreement = rng.choice(DISAGREEMENTS)
+    closing_lead = rng.choice(CLOSING_LEADS)
+    notice_style = rng.randrange(6)
+    search_style = rng.randrange(6)
+    solve_style = rng.randrange(6)
+
     detective = world.add(Entity(id="detective", kind="character", type="boy", label=params.detector))
     checker = world.add(Entity(id="checker", kind="character", type="girl", label=params.checker))
     switch = world.add(Entity(id="switch", type="switch", label=params.switch_name, phrase=params.switch_kind))
@@ -180,49 +377,99 @@ def tell(world: World, params: StoryParams) -> World:
     detector_name = detective.label
     checker_name = checker.label
 
+    intros = [
+        f"{detector_name}, a young detective, kept a pencil and a folded clue card ready.",
+        f"Young detective {detector_name} liked questions that could be tested.",
+        f"Whenever a small mystery appeared, detective {detector_name} began by listening.",
+        f"{detector_name} was the {params.place}'s patient young detective.",
+        f"A magnifying glass was useful, but detective {detector_name} trusted careful experiments more.",
+        f"Detective {detector_name} knew that neat answers had to fit every clue.",
+    ]
+    checker_intros = [
+        f"The checker was {checker_name}, who recorded each light, sign, and sound.",
+        f"{checker_name}, the day's checker, noticed even the smallest change.",
+        f"Beside the checklist stood {checker_name}, a checker who took details seriously.",
+        f"Checker {checker_name} made one slow round of the {params.place} each hour.",
+        f"The careful checker, {checker_name}, knew how the room should look and sound.",
+        f"{checker_name} carried the checker sheet and marked only what could be seen.",
+    ]
+    world.say(opening)
+    world.say(intros[notice_style])
+    world.say(checker_intros[(notice_style + rng.randrange(6)) % 6])
     world.say(
-        f"{detector_name} was a small detective who loved quiet rooms, sharp clues, and neat answers."
-    )
-    world.say(
-        f"{checker_name} was the checker, the one who watched the details and noticed when something looked wrong."
-    )
-    world.say(
-        f"In the {params.place}, there was a {params.switch_kind} called the {params.switch_name}."
+        f"Their most important control was a {params.switch_kind} labeled {params.switch_name}."
     )
 
     world.para()
+    problem_leads = [
+        f"In the {params.place}, {incident.consequence}.",
+        f"Trouble showed itself when {incident.consequence}.",
+        f"The checker looked up: {incident.consequence}.",
+        f"Without warning, {incident.consequence}.",
+        f"The first fact in the case was plain: {incident.consequence}.",
+        f"Everyone paused because {incident.consequence}.",
+    ]
+    world.say(problem_leads[(notice_style + search_style) % 6])
     world.say(
-        f"One evening, the {params.place} went dim, and the checker frowned because the {params.switch_name} was off."
-    )
-    world.say(
-        f"The detective leaned close and said the case would not be hard if they followed the clue with care."
+        f"The checker found the {params.switch_name} off; nearby, {incident.problem}."
     )
 
     detect_conflict(world)
     if checker.memes.get("conflict", 0) >= THRESHOLD:
-        world.say(
-            f"The checker felt the conflict right away, because a dark room made the job harder and the clue felt urgent."
-        )
+        conflict_lines = [
+            f"Worried, {checker_name} started a conflict by proposing {incident.false_lead} as the cause.",
+            f"The conflict began when {checker_name} pointed to {incident.false_lead}.",
+            f"Because the problem felt urgent, {checker_name}'s suspicion of {incident.false_lead} caused a conflict.",
+            f"{checker_name} insisted on {incident.false_lead}; the detective disagreed, and a conflict began.",
+            f"A tense conflict grew around one guess: perhaps it was {incident.false_lead}.",
+            f"A conflict shook their teamwork when the checker blamed {incident.false_lead}.",
+        ]
+        world.say(conflict_lines[solve_style])
     if detective.memes.get("suspicion", 0) >= THRESHOLD:
-        world.say(
-            f"The detective suspected someone had moved the switch and wanted to know why."
-        )
+        world.say(disagreement)
 
     world.para()
-    world.say(
-        f"They checked the wall, checked the floor, and checked the switch again. The detective noticed a tiny smudge on the lever."
-    )
-    world.say(
-        f"That was enough to solve the mystery: someone had bumped the switch while hurrying past."
-    )
+    clue_lines = [
+        f"Under a low beam of light, they found their best clue: {incident.clue}.",
+        f"They searched from floor to wall until {checker_name} spotted that {incident.clue}.",
+        f"Instead of questioning anyone, they sketched the scene and noted that {incident.clue}.",
+        f"Three ordinary details led nowhere; then the checker saw that {incident.clue}.",
+        f"The detective compared every nearby object with the lever. One fact mattered: {incident.clue}.",
+        f"They paused, looked from a new angle, and discovered that {incident.clue}.",
+    ]
+    test_lines = [
+        f"To test it, they {incident.test}.",
+        f"Their next step was an experiment: they {incident.test}.",
+        f"{detector_name} asked everyone to stand clear while they {incident.test}.",
+        f"The checker wrote down what happened as they {incident.test}.",
+        f"They predicted what should happen, then {incident.test}.",
+        f"Carefully and without causing damage, they {incident.test}.",
+    ]
+    world.say(clue_lines[search_style])
+    world.say(test_lines[(search_style + solve_style) % 6])
+    cause_lines = [
+        f"The result revealed the full chain: {incident.cause}.",
+        f"Now every clue agreed. {incident.cause.capitalize()}.",
+        f"That proved no secret culprit was needed; {incident.cause}.",
+        f"The false lead fell apart, and the real explanation was clear: {incident.cause}.",
+        f"Their test worked exactly once, showing that {incident.cause}.",
+        f"{checker_name} crossed out the accusation. The evidence showed that {incident.cause}.",
+    ]
+    world.say(cause_lines[(notice_style + solve_style) % 6])
 
     solve_case(world)
-    world.say(
-        f"The detective flipped the {params.switch_name} back on, and the {params.place} glowed bright again."
-    )
-    world.say(
-        f"The checker smiled, the conflict faded, and the two of them stood in the warm light with the case solved."
-    )
+    world.para()
+    repair_lines = [
+        f"Together they flipped the {params.switch_name} on and {incident.repair}.",
+        f"After restoring the switch, they {incident.repair} so the trouble would not repeat.",
+        f"{checker_name} turned the switch on while {detector_name} {incident.repair}.",
+        f"The switch was back on; to prevent a repeat, they {incident.repair}.",
+        f"They made the {params.place} bright again and {incident.repair}.",
+        f"First came light; next, they {incident.repair}.",
+    ]
+    world.say(repair_lines[solve_style])
+    world.say(f'{detector_name} closed the clue notebook. "{incident.lesson}"')
+    world.say(f"{closing_lead} {incident.ending}.")
 
     world.facts.update(
         detective=detective,
@@ -231,6 +478,15 @@ def tell(world: World, params: StoryParams) -> World:
         room=room,
         place=params.place,
         switch_kind=params.switch_kind,
+        incident=incident,
+        false_lead=incident.false_lead,
+        clue=incident.clue,
+        test=incident.test,
+        cause=incident.cause,
+        repair=incident.repair,
+        lesson=incident.lesson,
+        consequence=incident.consequence,
+        ending=incident.ending,
     )
     return world
 
@@ -319,8 +575,8 @@ def generation_prompts(world: World) -> list[str]:
     f = world.facts
     return [
         f'Write a short detective story for a young child that includes the words "switch" and "checker".',
-        f"Tell a gentle mystery where {f['checker'].label} notices the {f['switch'].label} is wrong and {f['detective'].label} helps solve the conflict.",
-        f"Write a simple detective tale set in {f['place']} where a switch changes the room from dark to bright.",
+        f"Tell a gentle mystery where {f['checker'].label} notices that {f['consequence']} and {f['detective'].label} helps solve the conflict.",
+        f"Write an evidence-led detective tale set in {f['place']} where the clue is that {f['clue']}.",
     ]
 
 
@@ -332,19 +588,27 @@ def story_qa(world: World) -> list[QAItem]:
     return [
         QAItem(
             question=f"Who noticed the problem with the switch in {place}?",
-            answer=f"The checker, {c.label}, noticed that the {sw.label} was off and the room was dark.",
+            answer=f"The checker, {c.label}, noticed that the {sw.label} was off after {world.facts['consequence']}.",
         ),
         QAItem(
-            question=f"What kind of story is this?",
-            answer=f"It is a detective story about {d.label} and {c.label} solving a small conflict.",
+            question=f"What clue helped {d.label} and {c.label} move beyond their first guess?",
+            answer=f"They found that {world.facts['clue']}.",
         ),
         QAItem(
-            question=f"What changed after the detective solved the case?",
-            answer=f"The {sw.label} was flipped on, so {place} became bright again.",
+            question=f"What really caused the {sw.label} to turn off?",
+            answer=f"They discovered that {world.facts['cause']}.",
         ),
         QAItem(
-            question=f"Why was there conflict in the story?",
-            answer=f"There was conflict because the {sw.label} was off and the dark room made the checker worry.",
+            question=f"How did the detectives keep the same problem from happening again?",
+            answer=f"After restoring the {sw.label}, they {world.facts['repair']}.",
+        ),
+        QAItem(
+            question=f"Why did a conflict arise between {d.label} and {c.label}?",
+            answer=f"The urgent problem led them to disagree about {world.facts['false_lead']} before they tested the evidence.",
+        ),
+        QAItem(
+            question="What lesson did the young detectives take from the case?",
+            answer=world.facts["lesson"],
         ),
     ]
 

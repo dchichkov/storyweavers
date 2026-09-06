@@ -10,13 +10,16 @@ from __future__ import annotations
 
 import argparse
 import json
-import os
 import random
 import sys
 from dataclasses import dataclass, field
+from pathlib import Path
 from typing import Optional
 
-sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+STORYWORLDS_ROOT = Path(__file__).resolve().parents[2]
+if str(STORYWORLDS_ROOT) not in sys.path:
+    sys.path.insert(0, str(STORYWORLDS_ROOT))
+
 from results import QAItem, StoryError, StorySample  # noqa: E402
 
 ASP_RULES = r"""
@@ -53,6 +56,20 @@ class StoryParams:
     object: str
     help_kind: str
     seed: Optional[int] = None
+
+
+@dataclass(frozen=True)
+class Scenario:
+    key: str
+    premise: str
+    trouble: str
+    failed_try: str
+    clue: str
+    visitor_line: str
+    repair: str
+    result: str
+    lesson: str
+    ending: str
 
 
 @dataclass
@@ -111,6 +128,7 @@ def asp_facts() -> str:
         asp.fact("setting", "reading_nook"),
         asp.fact("has_kindness", "reading_nook"),
         asp.fact("has_happy_ending", "reading_nook"),
+        asp.fact("helpful_choice", "reading_nook"),
         asp.fact("help", "book"),
         asp.fact("help", "lamp"),
         asp.fact("help", "blanket"),
@@ -131,12 +149,216 @@ def valid_help_choices() -> list[str]:
     return ["book", "lamp", "blanket", "stool"]
 
 
+NAMES = ["Mina", "Nora", "Liam", "Eli", "Luna", "Ivy", "Omar", "Tess"]
+VISITORS = ["little fox", "tiny owl", "small mouse", "young rabbit", "shy hedgehog", "young badger"]
+OBJECTS = ["book", "page", "ribbon", "cup"]
+
+SCENARIOS = [
+    Scenario(
+        key="mixed_pages",
+        premise="was arranging a picture-story display for the afternoon reading circle",
+        trouble="A breeze from the open window scattered the numbered pages across three cushions.",
+        failed_try="scooping them up quickly mixed the middle of the tale even more",
+        clue="a painted moon grew a little fuller on each page",
+        visitor_line='"The moons can show us what comes next," the visitor whispered.',
+        repair="laid the pages in moon order, checked the story aloud, and tied them with the ribbon",
+        result="The pictures now carried the characters from sunset all the way to morning.",
+        lesson="a careful clue can be more useful than hurried hands",
+        ending="the ordered pages shone like a row of tiny windows under the reading light",
+    ),
+    Scenario(
+        key="rain_leak",
+        premise="had prepared the nook for a rainy-day tale",
+        trouble="A slow drip appeared above the shelf and crept toward the waiting storybook.",
+        failed_try="holding one cup beneath the drip left the nearby books exposed to splashes",
+        clue="the wet marks formed a line leading from the window latch",
+        visitor_line='"The rain is coming through that little gap," the visitor said.',
+        repair="closed the latch, caught the last drops, and moved every dry book to the far shelf",
+        result="The leak stopped before a single page was spoiled.",
+        lesson="kindness sometimes means protecting what everyone shares",
+        ending="three raindrops rested outside the glass while the dry book lay open inside",
+    ),
+    Scenario(
+        key="lost_marker",
+        premise="was saving a place in a long adventure before snack time",
+        trouble="The ribbon marker slipped behind the shelf, and nobody remembered the last page they had read.",
+        failed_try="guessing a chapter brought them to the ending before the mystery had begun",
+        clue="a faint silver star marked every chapter they had already finished",
+        visitor_line='"Let us follow the stars instead of guessing," the visitor suggested.',
+        repair="found the final starred chapter, retrieved the ribbon safely, and marked the next page",
+        result="They returned to the exact moment when the hidden door was about to open.",
+        lesson="patient remembering can be a kind gift to a reading partner",
+        ending="the rescued ribbon rested between two pages beside one small silver star",
+    ),
+    Scenario(
+        key="wobbly_stack",
+        premise="was building a low display of favorite tales",
+        trouble="The stack leaned toward the visitor each time another book was added.",
+        failed_try="pressing down on the top made the narrow base tilt farther",
+        clue="the widest book was perched at the very top instead of underneath",
+        visitor_line='"Wide things make steadier beginnings," the visitor observed.',
+        repair="rebuilt the stack from widest to smallest and tested it with one gentle tap",
+        result="The little tower stood straight and left a clear path beside it.",
+        lesson="a sound beginning keeps a good idea from toppling",
+        ending="the smallest red book sat squarely atop a calm staircase of stories",
+    ),
+    Scenario(
+        key="dim_picture",
+        premise="had chosen a book whose pictures hid clues in deep blue ink",
+        trouble="The corner was too dim for the visitor to see the tiny map inside the cover.",
+        failed_try="holding the page close blocked the little light that was already there",
+        clue="the map appeared whenever light crossed the paper from the side",
+        visitor_line='"Perhaps the picture needs light, not closer eyes," the visitor said.',
+        repair="turned the light gently, flattened the page, and traced the map without touching the ink",
+        result="A silver path appeared between the painted trees.",
+        lesson="help works best when it answers the problem that is really there",
+        ending="a slim silver trail glimmered across the open map between their paws and hands",
+    ),
+    Scenario(
+        key="noisy_hinge",
+        premise="was about to begin the quietest part of a bedtime story",
+        trouble="The little cupboard squeaked at every turn and startled the visitor out of the tale.",
+        failed_try="opening it faster produced an even louder screech",
+        clue="a loose wooden peg trembled whenever the door moved",
+        visitor_line='"That peg is asking to be snug," the visitor said with a smile.',
+        repair="pressed the peg into place, moved the door slowly, and tucked the needed supplies nearby",
+        result="The cupboard opened with only a soft wooden sigh.",
+        lesson="gentle attention can quiet a problem that force makes louder",
+        ending="the cupboard stood peacefully ajar while the final sentence floated through the nook",
+    ),
+    Scenario(
+        key="shy_reader",
+        premise="had invited everyone to take one turn reading aloud",
+        trouble="The visitor knew the words but froze when the reading circle looked their way.",
+        failed_try="promising that the page was easy only made the visitor clutch it more tightly",
+        clue="the visitor quietly mouthed every line when nobody interrupted",
+        visitor_line='"Could we read the first part together?" the visitor asked.',
+        repair="read in a soft duet, paused at each picture, and let the visitor choose the final line",
+        result="By the last page, the visitor spoke one brave sentence alone.",
+        lesson="kindness makes room for courage instead of demanding it",
+        ending="two fingers pointed to the final word as the circle answered with quiet smiles",
+    ),
+    Scenario(
+        key="torn_corner",
+        premise="was opening an old story that many children loved",
+        trouble="A brittle page corner caught on the cover and tore with a papery whisper.",
+        failed_try="pulling the page free widened the tiny split",
+        clue="the tear stopped whenever the page lay perfectly flat",
+        visitor_line='"Let us keep it still before we mend it," the visitor said.',
+        repair="flattened the page, placed a clear repair strip along the edge, and turned it from the middle",
+        result="The words stayed readable, and the repaired corner flexed without tearing.",
+        lesson="caring for an old thing lets many new friends enjoy it",
+        ending="the mended corner caught a warm square of light without hiding a single letter",
+    ),
+    Scenario(
+        key="rolling_cup",
+        premise="had set water beside the cushions for a long chapter",
+        trouble="The round cup rolled from a sloping tray toward the open book.",
+        failed_try="catching the cup while balancing the book sent the tray sliding too",
+        clue="one folded corner of the tray sat higher than the others",
+        visitor_line='"We should level the tray before we fill the cup again," the visitor said.',
+        repair="set the book safely aside, leveled the tray, and placed the cup in its deep holder",
+        result="The next careful test left both cup and pages perfectly still.",
+        lesson="solving the cause is kinder than blaming the thing that rolled",
+        ending="a round reflection trembled inside the steady cup beside the dry book",
+    ),
+    Scenario(
+        key="blocked_path",
+        premise="was preparing a surprise shelf for the youngest readers",
+        trouble="A basket of returned books blocked the visitor's short path into the nook.",
+        failed_try="squeezing around it knocked a loose ribbon onto the floor",
+        clue="three empty shelf spaces matched the labels on the returned books",
+        visitor_line='"If we put these stories home, everyone gets a path," the visitor said.',
+        repair="sorted the returns by label, shelved them together, and moved the basket under the table",
+        result="A broad, convenient path opened between the doorway and the cushions.",
+        lesson="tidying can be kindness when it makes a shared place welcoming",
+        ending="the visitor took an easy stride down the clear path toward a green cushion",
+    ),
+    Scenario(
+        key="missing_voice",
+        premise="was rehearsing a story with a different voice for every character",
+        trouble="The card naming the final character vanished just before the visitor's favorite scene.",
+        failed_try="inventing a random voice made the brave captain sound like the sleepy dragon",
+        clue="a triangle of blue paper peeked from beneath the cushion seam",
+        visitor_line='"The captain card had a blue hat," the visitor remembered.',
+        repair="lifted the cushion together, matched the blue card to the picture, and practiced the scene once",
+        result="The captain returned with a bright voice just in time for the rescue.",
+        lesson="listening to another person's memory can complete your own",
+        ending="the blue character card stood beside the book as both friends gave a final bow",
+    ),
+    Scenario(
+        key="drafty_corner",
+        premise="had planned to finish a winter tale before the library bell",
+        trouble="A chilly draft kept flipping the page whenever they reached the important riddle.",
+        failed_try="pinning one corner with a finger let the other corner flutter shut",
+        clue="the air slipped through a narrow space beneath the curtain",
+        visitor_line='"We can stop the breeze without covering the pictures," the visitor said.',
+        repair="blocked the low draft, steadied the open book, and read the riddle one line at a time",
+        result="The page stayed open long enough for them to solve the snowy riddle together.",
+        lesson="a small comfort can give a friend room to think",
+        ending="the curtain rested still above two warm cushions and an open snowy page",
+    ),
+]
+
+OPENINGS = [
+    "Morning light made a golden square in the reading nook when {name} arrived.",
+    "Just before story hour, {name} heard a hopeful rustle in the reading nook.",
+    "The reading nook was quiet enough to hear one page turn as {name} stepped inside.",
+    "On a drizzly afternoon, {name} saved the coziest corner of the reading nook for a guest.",
+    "A paper sign beside the reading nook promised, 'Every reader belongs here.'",
+    "The library bell had barely chimed when {name} entered the reading nook with a gentle stride.",
+    "Between two tall shelves, the reading nook waited for {name} and one small visitor.",
+    "Story hour was nearly ready, but the reading nook still held one problem to solve.",
+]
+
+REACTIONS = [
+    "{name}'s first impulse was to hurry, but kindness asked for a better look.",
+    '"We will not rush past your worry," {name} promised.',
+    "{name} took one slow breath and asked what the visitor had noticed.",
+    '"A convenient answer should also be a careful one," {name} said.',
+    "Instead of taking over, {name} invited the visitor to inspect the problem too.",
+    "For a moment {name} felt stuck; then the visitor's worried face made the next choice clear.",
+    '"Let us solve the cause, not merely hide the mess," {name} decided.',
+    "{name} stopped, listened, and made space for the visitor's idea.",
+]
+
+AID_ACTIONS = {
+    "book": "opened the spare book as a sturdy guide and reference",
+    "lamp": "angled the lamp toward the important clue",
+    "blanket": "spread the blanket beneath their work to protect the books and cushion their knees",
+    "stool": "placed the stool firmly on the level floor so they could work at a convenient height",
+}
+
+PLANS = [
+    "They named one safe step each and agreed to check the result together.",
+    "They divided the work: one watched the clue while the other handled the repair.",
+    "Before moving anything, they cleared a convenient working space beside the cushions.",
+    "They tried the smallest useful change first and watched what happened.",
+    "Together they counted to three, then moved slowly enough to notice every change.",
+    "They placed the fragile things out of harm's way before beginning the repair.",
+    "They repeated the clue aloud so their plan answered the real problem.",
+    "They chose roles that let both friends contribute instead of leaving one to watch.",
+]
+
+CELEBRATIONS = [
+    "Neither friend needed a grand reward; seeing the worry disappear was enough.",
+    "Their smiles came from the shared solution, not from being the one who was right.",
+    "The visitor thanked {name}, and {name} thanked the visitor for the clue.",
+    "They tested their work once more, then bumped elbows in a tiny celebration.",
+    "Other readers noticed the result and quietly helped keep the nook welcoming.",
+    "The solution felt warmer because both friends had shaped it.",
+    "They left a small note explaining the kind fix for the next reader.",
+    "The visitor's relieved grin made {name}'s careful stride feel lighter.",
+]
+
+
 def valid_params(rng: random.Random) -> StoryParams:
     return StoryParams(
-        name=rng.choice(["Mina", "Nora", "Liam", "Eli", "Luna", "Ivy"]),
-        visitor=rng.choice(["little fox", "tiny owl", "small mouse", "young rabbit"]),
-        object=rng.choice(["book", "page", "ribbon", "cup"]),
+        name=rng.choice(NAMES),
+        visitor=rng.choice(VISITORS),
+        object=rng.choice(OBJECTS),
         help_kind=rng.choice(valid_help_choices()),
+        seed=rng.randrange(2**31),
     )
 
 
@@ -196,38 +418,66 @@ def tell_story(world: World, params: StoryParams) -> None:
     object_ent = world.get("object")
     helper = world.get("helper")
 
+    rng = random.Random(params.seed if params.seed is not None else 0)
+    scenario = rng.choice(SCENARIOS)
+    opening = rng.choice(OPENINGS).format(name=hero.label)
+    reaction = rng.choice(REACTIONS).format(name=hero.label)
+    plan = rng.choice(PLANS)
+    celebration = rng.choice(CELEBRATIONS).format(name=hero.label)
+    aid_action = AID_ACTIONS[helper.label]
+
     hero.bump_meme("kindness")
     visitor.bump_meme("hope")
 
+    world.say(opening)
     world.say(
-        f"Once in the cozy reading nook, {hero.label} sat by a shelf of bright tales, "
-        f"and a {visitor.label} came in with a quiet, curious look."
-    )
-    world.say(
-        f"{visitor.label.capitalize()} wanted to reach the {object_ent.label}, "
-        f"but the little room was high and the path was not convenient."
+        f"A {visitor.label} arrived carrying a {object_ent.label}, and {hero.label} welcomed the guest "
+        f"with kindness. Together they settled in; {hero.label} {scenario.premise}."
     )
     world.para()
+    world.say(scenario.trouble)
+    world.say(f"At first, {hero.label} tried the quickest answer, but {scenario.failed_try}.")
+    world.say(reaction)
+    world.para()
+
     hero.bump_meme("care")
+    visitor.bump_meme("curiosity")
+    world.say(f"Then they found the useful clue: {scenario.clue}.")
+    world.say(scenario.visitor_line)
+    world.say(plan)
+    world.para()
+
     helper.bump_meter("use", 1)
     world.say(
-        f"Then {hero.label} made a kind plan. With a gentle stride, {hero.label} moved "
-        f"to the {helper.label} and brought it over."
+        f"With a calm stride, {hero.label} brought the {helper.label} closer and {aid_action}."
     )
-    world.say(
-        f"That made the corner convenient at last, so {visitor.label} could reach the "
-        f"{object_ent.label} without any fuss."
-    )
+    world.say(f"Working side by side, they {scenario.repair}.")
+    world.say(scenario.result)
     world.para()
+
     visitor.bump_meme("joy")
     hero.bump_meme("joy")
+    world.say(celebration)
+    world.say(f"They decided that {scenario.lesson}.")
     world.say(
-        f"The two friends smiled, and the reading nook grew warm with kindness. "
-        f"In the end, they shared the {object_ent.label}, listened to the story, "
-        f"and the whole little place felt like a happy ending."
+        f"The thoughtful repair made the reading nook convenient for the next reader too. "
+        f"As their happy ending, they shared the {object_ent.label}; {scenario.ending}."
     )
-    world.facts["stride"] = True
-    world.facts["convenient"] = True
+    world.facts.update(
+        stride=True,
+        convenient=True,
+        scenario=scenario.key,
+        premise=scenario.premise,
+        trouble=scenario.trouble,
+        failed_try=scenario.failed_try,
+        clue=scenario.clue,
+        repair=scenario.repair,
+        result=scenario.result,
+        lesson=scenario.lesson,
+        ending_image=scenario.ending,
+        aid_action=aid_action,
+        resolved=True,
+    )
 
 
 def generation_prompts(world: World) -> list[str]:
@@ -235,10 +485,11 @@ def generation_prompts(world: World) -> list[str]:
     hero = f["hero"].label
     visitor = f["visitor"].label
     helper = f["helper"].label
+    scenario = str(f["scenario"]).replace("_", " ")
     return [
         f'Write a fairy-tale story set in a reading nook where {hero} helps {visitor} with kindness.',
         f"Tell a gentle story that uses the words stride and convenient and ends happily.",
-        f"Write a child-friendly story about a reading nook, a small problem, and a kind solution with {helper}.",
+        f"Write a child-friendly story about a {scenario} problem and a kind solution involving a {helper}.",
     ]
 
 
@@ -250,16 +501,24 @@ def story_qa(world: World) -> list[QAItem]:
     obj = f["object"].label
     return [
         QAItem(
-            question=f"Where did the story take place?",
-            answer=f"It took place in the reading nook, a cozy little place for calm stories and kind help.",
+            question="What problem interrupted the visit to the reading nook?",
+            answer=str(f["trouble"]),
         ),
         QAItem(
-            question=f"Who helped make things convenient for {visitor}?",
-            answer=f"{hero} helped by bringing the {helper}, which made the little problem easy to solve.",
+            question=f"What clue did {hero} and the {visitor} notice?",
+            answer=f"They noticed that {f['clue']}.",
         ),
         QAItem(
-            question=f"What did the friends share at the end?",
-            answer=f"They shared the {obj} and enjoyed the story together.",
+            question=f"How did the {helper} help the friends carry out their plan?",
+            answer=f"{hero} {f['aid_action']}, and together they {f['repair']}.",
+        ),
+        QAItem(
+            question="What changed after the friends worked together?",
+            answer=str(f["result"]),
+        ),
+        QAItem(
+            question=f"What showed that the story had a happy ending?",
+            answer=f"The friends shared the {obj}, and {f['ending_image']}.",
         ),
     ]
 
@@ -358,9 +617,9 @@ def emit(sample: StorySample, *, trace: bool = False, qa: bool = False, header: 
 
 
 CURATED = [
-    StoryParams(name="Mina", visitor="little fox", object="book", help_kind="lamp"),
-    StoryParams(name="Nora", visitor="tiny owl", object="page", help_kind="stool"),
-    StoryParams(name="Liam", visitor="small mouse", object="ribbon", help_kind="blanket"),
+    StoryParams(name="Mina", visitor="little fox", object="book", help_kind="lamp", seed=11),
+    StoryParams(name="Nora", visitor="tiny owl", object="page", help_kind="stool", seed=29),
+    StoryParams(name="Liam", visitor="small mouse", object="ribbon", help_kind="blanket", seed=47),
 ]
 
 
@@ -388,7 +647,6 @@ def main() -> None:
         i = 0
         while len(samples) < args.n and i < max(50, args.n * 50):
             params = resolve_params(args, random.Random(rng.randrange(2**31)))
-            params.seed = args.seed
             sample = generate(params)
             if sample.story in seen:
                 i += 1
