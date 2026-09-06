@@ -378,6 +378,10 @@ class StoryParams:
     prop: str
     sound_effect: str
     animal: str
+    scenario: str = "welcome_show"
+    opening_variant: int = 0
+    response_variant: int = 0
+    ending_variant: int = 0
     seed: Optional[int] = None
 
 
@@ -462,16 +466,13 @@ HELPERS = ["zookeeper", "mom", "dad", "older sister", "older brother"]
 # Reasonableness
 # ---------------------------------------------------------------------------
 def prop_at_risk(prop: Prop, animal: str) -> bool:
-    return prop.id == "mattress" and animal in {"goat", "pony"} or prop.id == "artichoke"
+    return prop.id in {"mattress", "artichoke"} and animal in ANIMAL_KINDS
 
 
 def valid_combo(place: str, prop: str, animal: str) -> bool:
     if place not in SETTINGS:
         return False
     if prop not in PROPS or animal not in ANIMALS:
-        return False
-    # Mattress makes sense only if the sound is loud enough to matter.
-    if prop == "mattress" and _safe_lookup(PROPS, prop).loudness < 0.5:
         return False
     return prop_at_risk(_safe_lookup(PROPS, prop), animal)
 
@@ -549,21 +550,169 @@ def _reconcile(world: World, child: Entity, helper: Entity, animal: Entity, prop
     )
 
 
-def tell(setting: Setting, prop: Prop, animal_kind: str, child_name: str, child_gender: str, helper_name: str, helper_role: str) -> World:
+@dataclass(frozen=True)
+class Scenario:
+    animal: str
+    premise: str
+    goal: str
+    trouble: str
+    evidence: str
+    repair: str
+    result: str
+
+
+SCENARIOS = {
+    "welcome_show": Scenario(
+        animal="goat",
+        premise="had promised to open the keeper's welcome talk with one cheerful bounce",
+        goal="make the waiting families laugh without bothering the animals",
+        trouble="the mattress skidded against the gate, and the sudden boom sent the goat behind its water tub",
+        evidence="The goat's ears stayed flat whenever the mattress faced the pen",
+        repair="turned the mattress on its side as a quiet backdrop and tapped the artichoke ribbon for a tiny plip",
+        result="the goat stepped out and ate from the keeper's open palm",
+    ),
+    "portrait_booth": Scenario(
+        animal="pony",
+        premise="was helping make a soft portrait corner for the petting zoo's adoption board",
+        goal="earn a fine photograph instead of chasing more applause",
+        trouble="a showy bounce flashed the fame ribbon, and the pony backed out of the camera frame",
+        evidence="The pony returned near the blanket but stopped when the springs squeaked",
+        repair="laid the mattress flat, covered its squeaky corner, and let the pony sniff the artichoke ribbon",
+        result="the pony stood calmly beside the hand-painted adoption sign",
+    ),
+    "nap_corner": Scenario(
+        animal="lamb",
+        premise="had brought an old crib mattress to pad the lambs' supervised rest corner",
+        goal="finish the useful job before showing anyone the school fame ribbon",
+        trouble="testing the springs with three comic boings woke a lamb and tangled a hay basket",
+        evidence="The lamb paced beside the fallen basket instead of settling on the fresh straw",
+        repair="lifted the mattress with the helper, righted the basket, and hummed a soft baa-boop rhythm",
+        result="the lamb curled against the padded rail and closed its eyes",
+    ),
+    "snack_demo": Scenario(
+        animal="rabbit",
+        premise="was scheduled to explain which garden vegetables the animals may eat",
+        goal="share an artichoke fact clearly, even though the fame ribbon made performing tempting",
+        trouble="a mattress-drum flourish drowned out the keeper's warning and made the rabbit bolt from the display",
+        evidence="The untouched artichoke leaf lay beside a rabbit-shaped gap in the straw",
+        repair="put the mattress away, repeated the safety rule in a whisper, and placed an approved leaf by the hide box",
+        result="the rabbit emerged, sniffed the leaf, and nibbled while everyone listened quietly",
+    ),
+    "muddy_crossing": Scenario(
+        animal="piglet",
+        premise="was carrying a narrow mattress pad to cover a muddy patch outside the piglet yard",
+        goal="help small visitors cross cleanly and prove that useful work mattered more than fame",
+        trouble="the pad landed with a whomp, splashing mud and sending the piglet squealing into its shelter",
+        evidence="Tiny hoofprints ended at the shelter door, where the piglet peered out",
+        repair="moved the pad farther from the fence, wiped the rail, and answered each oink with a gentle boop",
+        result="the piglet followed the quiet calls back to its feed pan",
+    ),
+    "lost_ribbon": Scenario(
+        animal="goat",
+        premise="planned one photograph with the artichoke-shaped ribbon that had made them briefly famous at school",
+        goal="find the missing ribbon without blaming a curious animal",
+        trouble="a bounce shook the ribbon loose, and the goat carried it beneath the climbing bridge",
+        evidence="Green paper points showed beneath the bridge, but the goat guarded the narrow opening",
+        repair="stopped bouncing, traded the goat a keeper-approved twig, and slid the mattress under the ribbon",
+        result="the ribbon came out unchewed, and the goat kept the twig",
+    ),
+    "runaway_cart": Scenario(
+        animal="pony",
+        premise="was wheeling a folded mattress toward the first-aid tent for tired volunteers",
+        goal="deliver it safely before joining the little fame-ribbon ceremony",
+        trouble="a wheel struck a stone, the load cried sproing, and the cart rolled toward the pony's lead rope",
+        evidence="The helper caught the handle, but the trembling pony had pulled the rope taut",
+        repair="chocked the wheel with a block, carried the mattress by hand, and counted soft clip-clops with the pony",
+        result="the loose rope hung in a curve while the pony drank peacefully",
+    ),
+    "story_stage": Scenario(
+        animal="lamb",
+        premise="had built a mattress stage for a tiny tale about a famous artichoke explorer",
+        goal="finish the tale in a way the youngest visitors and the lamb could enjoy",
+        trouble="the explorer's giant ker-boing made the lamb knock over the page board",
+        evidence="The lamb stood on the final picture, hiding how the adventure ended",
+        repair="sat on the floor, invited the lamb off with the keeper, and made each sound with two quiet finger taps",
+        result="the last page showed the artichoke explorer sharing a leafy picnic",
+    ),
+    "rain_shelter": Scenario(
+        animal="rabbit",
+        premise="was using a clean mattress as a temporary wall while rain blew into the education shed",
+        goal="keep the rabbit demonstration dry rather than protect a fancy reputation",
+        trouble="an extra bounce loosened one strap; wind slapped the mattress with a whump and tipped the artichoke model toward the rabbit pen",
+        evidence="The rabbit froze beneath the bench while rain dotted the floor",
+        repair="fastened the mattress with two straps and moved the wobbling model onto a low crate",
+        result="the rabbit stretched into a dry patch as rain ticked safely outside",
+    ),
+    "quiet_parade": Scenario(
+        animal="piglet",
+        premise="wanted the petting zoo parade to honor helpers, not just the wearer of a fame ribbon",
+        goal="find a sound the piglet could comfortably follow",
+        trouble="drumming on the mattress made the piglet turn around and scatter the paper artichoke badges",
+        evidence="The piglet followed bare footsteps but veered away whenever the drumbeat returned",
+        repair="gave every helper a badge and replaced the mattress drum with a soft pat-pat walking beat",
+        result="the piglet followed the line past every smiling helper",
+    ),
+    "counting_game": Scenario(
+        animal="goat",
+        premise="was teaching preschoolers to count using an artichoke poster and a mattress-shaped number board",
+        goal="help the children notice the goat's signals as carefully as the numbers",
+        trouble="ten fast boings won loud applause but made the goat kick its empty bucket",
+        evidence="The bucket clanged once, and the goat pressed itself against the far fence",
+        repair="asked everyone for ten silent fingers, refilled the bucket, and counted the goat's slow chews instead",
+        result="ten fingers lowered while the goat crunched its final mouthful",
+    ),
+    "kindness_prize": Scenario(
+        animal="pony",
+        premise="expected to receive the famous artichoke ribbon after a petting-zoo sound contest",
+        goal="decide what the prize should mean after the contest went wrong",
+        trouble="the winning mattress boom startled the pony and made another child drop the ribbon in the dust",
+        evidence="Nobody cheered; the pony sidestepped each time someone raised a hand to clap",
+        repair="apologized, brushed off the ribbon, and pinned it on the helper for keeping the pony calm",
+        result="the children waved silently while the pony rested its chin above the clean ribbon",
+    ),
+}
+
+OPENINGS = [
+    "Morning sun striped the straw when {child} arrived at {place}.",
+    "Just after the gates opened, {child} followed {helper} into {place}.",
+    "A hand-painted QUIET FEET sign greeted {child} at {place}.",
+    "At feeding time, {child} could hear hooves and buckets all across {place}.",
+]
+
+RESPONSES = [
+    '"Watch the animal, not the audience," {helper} said. {child} nodded and {repair}.',
+    '{child} whispered, "My joke caused that. I need to fix it." With {helper} nearby, {pronoun} {repair}.',
+    '"First make it safe; then make it funny," said {helper}. So {child} {repair}.',
+    '{child} took off the fame ribbon. "Being noticed is not the same as being helpful," {pronoun} said, then {repair}.',
+]
+
+ENDINGS = [
+    "At closing time, {result}; the artichoke ribbon hung quietly from the mattress handle.",
+    "Before leaving, {child} drew the peaceful {animal} beside a green artichoke, with the mattress folded in the corner.",
+    "The final sound was {animal_noise}, followed by one careful {soft_sound}; nothing flinched, tipped, or ran away.",
+    "In the last photograph, {result}, and {child}'s fame ribbon was almost hidden behind a bit of hay.",
+]
+
+
+def tell(params: StoryParams) -> World:
+    setting = _safe_lookup(SETTINGS, params.place)
+    prop = _safe_lookup(PROPS, params.prop)
+    plan = _safe_lookup(SCENARIOS, params.scenario)
+    animal_kind = plan.animal
     world = World(setting)
 
     child = world.add(Entity(
-        id=child_name,
+        id=params.child_name,
         kind="character",
-        type=child_gender,
-        label=child_name,
+        type=params.child_gender,
+        label=params.child_name,
         traits=["little", "careful", "proud"],
     ))
     helper = world.add(Entity(
-        id=helper_name,
+        id=params.helper_name,
         kind="character",
-        type=helper_role if helper_role in {"mother", "father"} else "person",
-        label=helper_name,
+        type=params.helper_role if params.helper_role in {"mother", "father"} else "person",
+        label=params.helper_name,
         traits=["calm", "patient"],
     ))
     animal_info = _safe_lookup(ANIMALS, animal_kind)
@@ -589,27 +738,53 @@ def tell(setting: Setting, prop: Prop, animal_kind: str, child_name: str, child_
     child.memes["fame"] = 1.0
     child.meters["careful"] = 1.0
 
-    # Act 1
-    world.say(
-        f"{child.id} came to {setting.place} with {item.phrase} and a tiny feeling of fame."
+    animal_noise = animal_info["noise"]
+    soft_sound = {"boing": "boop", "boop": "tap", "honk": "tap"}.get(params.sound_effect, "tap")
+    opening = OPENINGS[params.opening_variant % len(OPENINGS)].format(
+        child=child.id, helper=helper.id, place=setting.place
     )
+    world.say(opening)
     world.say(
-        f"{child.id} liked the way {prop.sound} sounded and kept saying it again: “{prop.sound}, {prop.sound}.”"
+        f"{child.id} wore an artichoke-shaped ribbon from a school contest and carried a small mattress. "
+        f"{child.pronoun().capitalize()} had a job: {child.pronoun()} {plan.premise}. "
+        f"That little taste of fame also made {child.pronoun('object')} eager to add a performance."
     )
-    world.say(
-        f"A {animal.label} watched from the straw with bright eyes."
-    )
+    world.say(f"The plan was to {plan.goal}.")
 
-    # Act 2
     world.para()
-    world.say(
-        f"{child.id} tapped the mattress and let out a big “{sound_repeat(prop.sound)}!”"
-    )
-    _sound(world, child, prop, animal)
+    world.say(f'At first came a neat "{soft_sound}." Then {child.id} tried "{sound_repeat(params.sound_effect)}!"')
+    world.say(f"Because of that, {plan.trouble}.")
+    animal.memes["startle"] = 1.0
+    child.memes["embarrassment"] = 1.0
+    world.fired.add(("sound", prop.id, animal.id))
+    world.facts["repetition"] = True
+    world.facts["sound_effect"] = params.sound_effect
+    world.facts["animal_startled"] = True
+    world.say(plan.evidence + ".")
 
-    # Act 3
     world.para()
-    _reconcile(world, child, helper, animal, prop)
+    response = RESPONSES[params.response_variant % len(RESPONSES)].format(
+        child=child.id,
+        helper=helper.id,
+        pronoun=child.pronoun(),
+        repair=plan.repair,
+    )
+    world.say(response)
+    world.say(f"The change worked: {plan.result}.")
+    animal.memes["calm"] = 1.0
+    helper.memes["gentleness"] = 1.0
+    child.memes["care"] = 1.0
+    world.fired.add(("reconcile", child.id, animal.id))
+
+    world.para()
+    ending = ENDINGS[params.ending_variant % len(ENDINGS)].format(
+        child=child.id,
+        animal=animal.label,
+        animal_noise=animal_noise,
+        soft_sound=soft_sound,
+        result=plan.result,
+    )
+    world.say(ending)
 
     world.facts.update(
         child=child,
@@ -618,6 +793,12 @@ def tell(setting: Setting, prop: Prop, animal_kind: str, child_name: str, child_
         prop=item,
         prop_cfg=prop,
         setting=setting,
+        plan=plan,
+        trouble=plan.trouble,
+        evidence=plan.evidence,
+        repair=plan.repair,
+        result=plan.result,
+        animal_noise=animal_noise,
         resolved=animal.memes.get("calm", 0.0) >= THRESHOLD,
     )
     return world
@@ -629,9 +810,9 @@ def tell(setting: Setting, prop: Prop, animal_kind: str, child_name: str, child_
 def generation_prompts(world: World) -> list[str]:
     f = world.facts
     return [
-        'Write a slice-of-life story set at a petting zoo with a playful sound effect and a gentle reconciliation.',
-        f"Tell a short story in which {f['child'].id} keeps repeating {f['prop_cfg'].sound} and then learns to be quieter around a {f['animal'].label}.",
-        f"Write a simple story that includes a mattress, an artichoke, and a petting zoo, ending with everyone feeling okay again.",
+        "Write a complete petting-zoo story about a mattress, brief fame, an artichoke-shaped ribbon, useful sound effects, and a gentle repair.",
+        f"Tell how {f['child'].id}'s repeated {f['prop_cfg'].sound} causes a problem for a {f['animal'].label}, then show the specific action that makes it calm again.",
+        f"Write a child-friendly story in which {f['child'].id} learns that caring for an animal matters more than applause; end after {f['result']}.",
     ]
 
 
@@ -645,19 +826,19 @@ def story_qa(world: World) -> list[QAItem]:
     return [
         QAItem(
             question=f"What did {child.id} bring to the petting zoo?",
-            answer=f"{child.id} brought {prop.phrase}. It was the thing that made the loud or soft sound effect in the story.",
+            answer=f"{child.id} brought {prop.phrase} and wore an artichoke-shaped fame ribbon from school. The mattress helped create the sound effect that caused the problem.",
         ),
         QAItem(
-            question=f"Why did the {animal.label} step back when {child.id} made the sound?",
-            answer=f"The sound was repeated and loud enough to startle the {animal.label}, so it stepped back for a moment.",
+            question=f"How did the repeated sound cause trouble for the {animal.label}?",
+            answer=f"The repeated {prop.sound} led to this problem: {f['trouble']}. {f['evidence']}.",
         ),
         QAItem(
             question=f"How did {child.id} and {helper.id} fix the awkward moment?",
-            answer=f"{helper.id} stayed gentle, and {child.id} lowered the prop and tried a softer sound until the {animal.label} settled down.",
+            answer=f"{helper.id.capitalize()} helped {child.id} slow down and pay attention. {child.id} {f['repair']}, so {f['result']}.",
         ),
         QAItem(
             question=f"What changed by the end of the story?",
-            answer=f"By the end, the surprise had turned into reconciliation, and everyone was calm again at the petting zoo.",
+            answer=f"At first the {animal.label} was startled by the performance. By the end, {f['result']}, proving that {child.id}'s repair worked.",
         ),
     ]
 
@@ -712,8 +893,8 @@ def format_qa(sample: StorySample) -> str:
 # ASP twin
 # ---------------------------------------------------------------------------
 ASP_RULES = r"""
-prop_at_risk(mattress, animal) :- animal(animal).
-prop_at_risk(artichoke, animal) :- animal(animal).
+prop_at_risk(mattress, A) :- animal(A).
+prop_at_risk(artichoke, A) :- animal(A).
 
 needs_reconciliation(C, A) :- startled(A), child(C), animal(A).
 good_story(P, C, A) :- place(P), prop(mattress), child(C), animal(A), prop_at_risk(mattress, A), needs_reconciliation(C, A).
@@ -723,13 +904,14 @@ good_story(P, C, A) :- place(P), prop(mattress), child(C), animal(A), prop_at_ri
 def asp_facts() -> str:
     import asp
 
-    lines: list[str] = []
+    lines: list[str] = [asp.fact("child", "child")]
     for pid in SETTINGS:
         lines.append(asp.fact("place", pid))
     for pid in PROPS:
         lines.append(asp.fact("prop", pid))
     for aid in ANIMALS:
         lines.append(asp.fact("animal", aid))
+        lines.append(asp.fact("startled", aid))
     return "\n".join(lines)
 
 
@@ -783,14 +965,26 @@ def build_parser() -> argparse.ArgumentParser:
 def resolve_params(args: argparse.Namespace, rng: random.Random) -> StoryParams:
     place = getattr(args, "place", None) or "petting_zoo"
     prop = getattr(args, "prop", None) or "mattress"
-    animal = getattr(args, "animal", None) or rng.choice(sorted(ANIMALS))
+    compatible_scenarios = [
+        key for key, plan in SCENARIOS.items()
+        if getattr(args, "animal", None) in {None, plan.animal}
+    ]
+    scenario = rng.choice(compatible_scenarios)
+    animal = getattr(args, "animal", None) or SCENARIOS[scenario].animal
     if not valid_combo(place, prop, animal):
         return _fallback_storyparams(args, rng, StoryParams, globals())
 
     gender = getattr(args, "gender", None) or rng.choice(["girl", "boy"])
     name = getattr(args, "name", None) or rng.choice(GIRL_NAMES if gender == "girl" else BOY_NAMES)
-    helper_role = getattr(args, "role", None) or rng.choice(["mother", "father"])
-    helper = getattr(args, "helper", None) or rng.choice(HELPERS)
+    requested_role = getattr(args, "role", None)
+    helper = getattr(args, "helper", None)
+    if helper is None and requested_role is not None:
+        helper = "mom" if requested_role == "mother" else "dad"
+    helper = helper or rng.choice(HELPERS)
+    helper_role = requested_role or {
+        "mom": "mother",
+        "dad": "father",
+    }.get(helper, "person")
     return StoryParams(
         place=place,
         child_name=name,
@@ -800,19 +994,15 @@ def resolve_params(args: argparse.Namespace, rng: random.Random) -> StoryParams:
         prop=prop,
         sound_effect=_safe_lookup(PROPS, prop).sound,
         animal=animal,
+        scenario=scenario,
+        opening_variant=rng.randrange(len(OPENINGS)),
+        response_variant=rng.randrange(len(RESPONSES)),
+        ending_variant=rng.randrange(len(ENDINGS)),
     )
 
 
 def generate(params: StoryParams) -> StorySample:
-    world = tell(
-        _safe_lookup(SETTINGS, params.place),
-        _safe_lookup(PROPS, params.prop),
-        params.animal,
-        params.child_name,
-        params.child_gender,
-        params.helper_name,
-        params.helper_role,
-    )
+    world = tell(params)
     return StorySample(
         params=params,
         story=world.render(),

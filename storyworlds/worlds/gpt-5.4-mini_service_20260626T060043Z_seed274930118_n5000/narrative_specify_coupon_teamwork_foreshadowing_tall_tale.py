@@ -32,13 +32,14 @@ from __future__ import annotations
 import argparse
 import copy
 import json
-import os
 import random
 import sys
 from dataclasses import dataclass, field
+from pathlib import Path
 from typing import Optional
 
-sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+ROOT = Path(__file__).resolve().parents[3]
+sys.path.insert(0, str(ROOT / "storyworlds"))
 from results import QAItem, StoryError, StorySample  # noqa: E402
 
 FORESHADOW_THRESHOLD = 1.0
@@ -108,6 +109,8 @@ class StoryParams:
     helper1: str
     helper2: str
     seed: Optional[int] = None
+    arc: str = "windmill"
+    telling: str = "porch"
 
 
 class World:
@@ -165,7 +168,7 @@ def _r_teamwork(world: World) -> list[str]:
     world.fired.add(sig)
     hero = world.get(leader.id)
     hero.memes["confidence"] = hero.memes.get("confidence", 0) + 1
-    out.append("The crew moved like a pair of geese in a fair wind, each one pulling the load just so.")
+    out.append(world.facts["team_line"])
     return out
 
 
@@ -182,7 +185,7 @@ def _r_coupon_ready(world: World) -> list[str]:
     if sig in world.fired:
         return out
     world.fired.add(sig)
-    out.append(f"{hero.id} held the coupon up high, ready to trade it for the prize.")
+    out.append(world.facts["ready_line"].format(hero=hero.id))
     return out
 
 
@@ -197,7 +200,7 @@ def _r_foreshadow(world: World) -> list[str]:
         return out
     world.fired.add(sig)
     ribbon.memes["noticed"] = ribbon.memes.get("noticed", 0) + 1
-    out.append("That little sign had been a hint all along, pointing the crew back to the ribbon.")
+    out.append(world.facts["reveal_line"])
     return out
 
 
@@ -291,6 +294,175 @@ COUPONS = {
 NAMES = ["Gus", "Dot", "Milo", "Nell", "Ivy", "Mabel", "Bert", "Walt"]
 HELPERS = ["Dot", "Milo", "Nell", "Ivy", "Bert", "Walt", "Pip", "June"]
 
+NAME_TYPES = {
+    "Gus": "boy", "Milo": "boy", "Bert": "boy", "Walt": "boy", "Pip": "boy",
+    "Dot": "girl", "Nell": "girl", "Ivy": "girl", "Mabel": "girl", "June": "girl",
+}
+
+# Each arc has a different problem, clue payoff, division of labor, and repair.
+# They are authored as complete causal paths rather than interchangeable adjectives.
+ARCS = {
+    "windmill": {
+        "premise": "A west wind was rattling every shutter, so the shopkeeper planned to close before noon.",
+        "hint": "A ribbon painted on the weather vane pointed toward the narrow blue bin.",
+        "obstacle": "A gust snatched the spool and rolled it under a delivery cart before they could reach the counter.",
+        "jobs": "{h1} blocked the wheels with a brick, {h2} crawled under for the spool, and {hero} tied the ribbon around it while all three traded a relieved smile.",
+        "turn": "The painted ribbon had specified where the real ribbon was stored, and its knot now kept the rescued spool from unwinding.",
+        "finish": "The clerk reopened the shutter long enough to honor the coupon.",
+        "image": "the kite tugged so hard that three chimney clouds lined up behind it like sheep",
+    },
+    "parade": {
+        "premise": "The noon parade had filled the street, and the crew had only until the brass band reached the shop door.",
+        "hint": "The drummer's sash had a spool, a ribbon, and a smiling sun stitched in that order.",
+        "obstacle": "The crowd separated the helpers, leaving each child with one needed thing and no clear way across.",
+        "jobs": "{h1} lifted the spool on a broom, {h2} waved the ribbon from a bench, and {hero} called a marching count that brought them together on every fourth beat.",
+        "turn": "The stitched order was a route as well as a list; by following it, they reunited before the band arrived.",
+        "finish": "They specified each item to the clerk, who stamped the coupon on the final drumbeat.",
+        "image": "the kite sailed above the parade and its tail seemed long enough to underline the whole town",
+    },
+    "goat": {
+        "premise": "At the county fair, a prize goat kept nosing anything made of paper.",
+        "hint": "A tiny bite mark beside the coupon's ribbon picture looked unimportant at first.",
+        "obstacle": "The goat swallowed the loose end of the ribbon and chased {hero} toward the judging tent.",
+        "jobs": "{h1} offered the goat an apple, {h2} caught the freed ribbon, and {hero} protected the coupon inside the empty spool.",
+        "turn": "That first bite mark had foreshadowed the goat's appetite, so the crew knew kindness and an apple would work better than a tug-of-war.",
+        "finish": "The judge laughed, verified all three requirements, and walked them to the redemption booth.",
+        "image": "the kite climbed over the fair until the goat's blue ribbon looked like a shoelace below",
+    },
+    "puddle": {
+        "premise": "Last night's rain had turned the road to the shop into a chain of silver puddles.",
+        "hint": "Three dry stepping-stones bore faint pictures of a spool, a bow, and a grin.",
+        "obstacle": "The deepest puddle soaked the coupon's corner and stranded the ribbon on the opposite bank.",
+        "jobs": "{h1} laid down boards, {h2} ferried the ribbon in a lunch tin, and {hero} dried the coupon by winding it gently around the spool.",
+        "turn": "The pictures had specified a safe crossing all along, and the spool's dry paper tube saved the damp coupon.",
+        "finish": "The clerk could still read the offer, so the careful team earned the prize.",
+        "image": "the kite's reflection crossed every puddle, making a blue road all the way home",
+    },
+    "bell": {
+        "premise": "The shop's enormous doorbell rang whenever anyone stepped on the porch, startling the clerk into dropping things.",
+        "hint": "A chalk arrow beneath the bell pointed to a hook shaped like a bow.",
+        "obstacle": "When the crew arrived, the bell shook the ribbon from {h1}'s hand and onto a high awning.",
+        "jobs": "{hero} steadied the spool as a pulley, {h2} guided its string over the hook, and {h1} used the loop to lower the ribbon safely.",
+        "turn": "The bow-shaped hook from the opening clue became their pulley point, just as the chalk arrow had promised.",
+        "finish": "They entered softly, named every coupon condition, and received the kite without one more crash.",
+        "image": "the kite rang the breeze so sweetly that even the enormous bell seemed to listen",
+    },
+    "magpie": {
+        "premise": "A magpie on the boardwalk had begun collecting every bright scrap it saw.",
+        "hint": "One silver feather lay beside the ribbon bin before the children chose their jobs.",
+        "obstacle": "Halfway to the stand, the ribbon vanished and flashed from the bird's nest atop a lamp.",
+        "jobs": "{h1} made a safe loop from the spool, {h2} held it steady, and {hero} offered a shiny bottle cap in exchange for the ribbon.",
+        "turn": "The silver feather had foreshadowed the collector, and teamwork let them bargain without frightening it.",
+        "finish": "At the stand they specified the returned ribbon, the spool, and their very genuine smile.",
+        "image": "the kite wheeled beside the magpie until bird and paper shadow danced together on the planks",
+    },
+    "clock": {
+        "premise": "The coupon expired when the old shop clock struck twelve, and its minute hand was already climbing.",
+        "hint": "A ribbon tied around the number eleven fluttered each time the clock lost a minute.",
+        "obstacle": "The clock jumped forward when a loose gear fell out, leaving too little time to search separately.",
+        "jobs": "{h1} found the gear beside the spool rack, {h2} used the ribbon to lift it into place, and {hero} kept the pendulum still until both were clear.",
+        "turn": "The fluttering ribbon had marked the loose part; fixing it restored the missing minutes instead of stealing extra time.",
+        "finish": "The true clock chimed only after the team presented the coupon and its three specified requirements.",
+        "image": "the kite rose at noon and its shadow swept the square like the hand of a joyful clock",
+    },
+    "wagon": {
+        "premise": "The children loaded their supplies into a red wagon whose left wheel squeaked at every turn.",
+        "hint": "A neat ribbon knot on the handle sat directly above that wobbling wheel.",
+        "obstacle": "On the hill, the wheel pin slipped out and the spool began rolling toward the creek.",
+        "jobs": "{hero} stopped the wagon, {h1} caught the spool with a boot, and {h2} untied the ribbon to lash the wheel pin firmly in place.",
+        "turn": "The opening knot had specified an emergency tie; using it turned a decoration into the repair they needed.",
+        "finish": "They pulled the mended wagon to the shop and redeemed the coupon together.",
+        "image": "the kite lifted the empty wagon handle until it looked ready to follow them into the clouds",
+    },
+    "whistle": {
+        "premise": "Fog covered the boardwalk so thickly that even the candy-striped shop sign disappeared.",
+        "hint": "The coupon showed three tiny whistle marks beside its picture of the ribbon.",
+        "obstacle": "The helpers lost sight of one another, and the spool string tangled around a bench.",
+        "jobs": "{hero} gave three whistles, {h1} answered while freeing the spool, and {h2} followed their voices with the ribbon held high.",
+        "turn": "Those printed marks had specified a signal, not a decoration, and the shared signal gathered the team in the fog.",
+        "finish": "Their footsteps reached the stand together, where the seller accepted the coupon.",
+        "image": "the kite climbed through the fog and opened a blue window wide enough for sunlight to pour through",
+    },
+    "cat": {
+        "premise": "A sleepy shop cat had chosen the ribbon basket for its morning bed.",
+        "hint": "Three loose blue threads clung to its whiskers when {hero} first read the coupon.",
+        "obstacle": "The cat woke, sprang onto a flour shelf, and carried the ribbon beyond the children's reach.",
+        "jobs": "{h1} rolled the spool gently like a toy, {h2} waited with open hands, and {hero} praised the cat until it pounced down and released the ribbon.",
+        "turn": "The threads had foreshadowed where the ribbon would go, and the team solved the trouble patiently instead of chasing.",
+        "finish": "The clerk brushed off the flour, checked every specified item, and honored the coupon.",
+        "image": "the kite purred in the wind while the cat watched its tail stitch zigzags across the sky",
+    },
+    "bridge": {
+        "premise": "A toy-sized bridge crossed the ditch before the corner shop, but one plank was missing.",
+        "hint": "A ribbon around the railing marked two holes exactly one spool-width apart.",
+        "obstacle": "The children could not carry their supplies across without tipping them into the ditch.",
+        "jobs": "{h2} found a flat board, {h1} measured it with the spool, and {hero} threaded the ribbon through both marked holes to hold it.",
+        "turn": "The railing clue had specified the size and fastening for a replacement plank, so each child's task mattered.",
+        "finish": "They crossed their little repair and gave the waiting clerk the coupon.",
+        "image": "the kite arched over the ditch like a second bridge, only taller than the courthouse",
+    },
+    "sneeze": {
+        "premise": "A pepper wagon rattled past just as the crew gathered the coupon supplies.",
+        "hint": "The ribbon bin's lid carried a painted warning: HOLD TIGHT WHEN THE RED WAGON COMES.",
+        "obstacle": "One enormous sneeze sent the ribbon sailing, the spool bouncing, and everyone's smiles away.",
+        "jobs": "{h1} trapped the spool under a basket, {h2} caught the ribbon on a rake, and {hero} told such a silly sneeze joke that all three smiles returned.",
+        "turn": "The painted warning had foreshadowed the pepper cloud; because they remembered it, no needed item escaped for long.",
+        "finish": "Still laughing, they specified the three recovered requirements and redeemed the coupon.",
+        "image": "the kite sneezed once in the high wind and blew every cloud into a perfect white ring",
+    },
+}
+
+TELLINGS = {
+    "porch": {
+        "opening": "On a morning bright enough to polish every window, {hero} found {coupon} beneath a porch cup.",
+        "invite": "\"Two hands can hold things, but six hands can solve things,\" {hero} said, calling {h1} and {h2}.",
+        "team": "The three moved as one team: nobody's small job was treated as small.",
+        "ready": "{hero} flattened the coupon on the counter and named each requirement clearly.",
+    },
+    "whopper": {
+        "opening": "Folks claim {hero}'s pocket was deep enough for a canoe; that is where {hero} discovered {coupon}.",
+        "invite": "{hero} could lift a fence, perhaps, but admitted that this job needed {h1}'s judgment and {h2}'s quick hands.",
+        "team": "Their teamwork was so tidy that even their three shadows took turns helping.",
+        "ready": "{hero} raised the coupon, while the helpers specified every item they had brought.",
+    },
+    "fireside": {
+        "opening": "Listen close: this narrative began when {hero} unfolded {coupon} beside the warm stove.",
+        "invite": "Before taking one step, {hero}, {h1}, and {h2} agreed that each voice would count.",
+        "team": "They paused, listened, and fitted their ideas together like boards in a strong floor.",
+        "ready": "{hero} placed the coupon down, and all three checked its conditions once more.",
+    },
+    "quick": {
+        "opening": "Snap! A cereal box opened, and {coupon} landed in {hero}'s hand.",
+        "invite": "\"Team, specify what we need,\" cried {hero}; {h1} read the list and {h2} planned the route.",
+        "team": "One called, one carried, and one checked; then they swapped whenever a friend needed help.",
+        "ready": "At the counter, {hero} presented the coupon while the others showed the complete set.",
+    },
+    "quiet": {
+        "opening": "While the town still whispered in its sleep, {hero} found {coupon} folded inside a library book.",
+        "invite": "{hero} asked {h1} and {h2} quietly, and they made a careful plan before the streets grew busy.",
+        "team": "No one boasted; each child simply noticed what the others needed and helped.",
+        "ready": "{hero} slid the coupon forward and let the helpers explain how the team had completed it.",
+    },
+    "newspaper": {
+        "opening": "The morning paper would later call it astonishing, but first {hero} found {coupon} under the doorstep.",
+        "invite": "{hero} recruited {h1} to track the list and {h2} to guard the supplies.",
+        "team": "Witnesses agreed that the crew's teamwork was faster than a headline crossing town.",
+        "ready": "{hero} showed the coupon to the clerk and reported every completed condition.",
+    },
+    "question": {
+        "opening": "Could one little coupon cause a town-sized adventure? It did when {hero} found {coupon}.",
+        "invite": "{hero} asked, \"Who can help me do this properly?\" and {h1} and {h2} answered together.",
+        "team": "Whenever one child asked a question, the other two answered with an idea and a hand.",
+        "ready": "\"What does the coupon specify?\" asked the clerk, and the team displayed every answer.",
+    },
+    "ledger": {
+        "opening": "The town ledger records that {hero} found {coupon} on the most blustery day of the year.",
+        "invite": "In the margin, {hero} wrote three names: {hero}, {h1}, and {h2}, a crew with shared responsibility.",
+        "team": "Their plan changed when trouble changed, but their promise to help one another did not.",
+        "ready": "{hero} set the coupon beside the supplies so the clerk could verify each one.",
+    },
+}
+
 
 def valid_combos() -> list[tuple[str, str, str]]:
     return [(p, t, c) for p, place in PLACES.items() for t, task in TASKS.items() for c, coupon in COUPONS.items() if t == "kite" and coupon.prize == "kite" and task.id in place.affords]
@@ -374,46 +546,89 @@ def resolve_params(args: argparse.Namespace, rng: random.Random) -> StoryParams:
     name = args.name or rng.choice(NAMES)
     helper1 = args.helper1 or rng.choice([n for n in HELPERS if n != name])
     helper2 = args.helper2 or rng.choice([n for n in HELPERS if n not in {name, helper1}])
-    return StoryParams(place=place, task=task, coupon=coupon, name=name, helper1=helper1, helper2=helper2)
+    return StoryParams(
+        place=place,
+        task=task,
+        coupon=coupon,
+        name=name,
+        helper1=helper1,
+        helper2=helper2,
+        arc=rng.choice(sorted(ARCS)),
+        telling=rng.choice(sorted(TELLINGS)),
+    )
 
 
 def tell(params: StoryParams) -> World:
     place = PLACES[params.place]
     task = TASKS[params.task]
     coupon = COUPONS[params.coupon]
+    arc = ARCS[params.arc]
+    telling = TELLINGS[params.telling]
     world = World(place)
-    hero = world.add(Entity(id=params.name, kind="character", type="boy", label=params.name))
-    h1 = world.add(Entity(id=params.helper1, kind="character", type="girl", label=params.helper1))
-    h2 = world.add(Entity(id=params.helper2, kind="character", type="boy", label=params.helper2))
+    hero = world.add(Entity(id=params.name, kind="character", type=NAME_TYPES.get(params.name, "child"), label=params.name))
+    h1 = world.add(Entity(id=params.helper1, kind="character", type=NAME_TYPES.get(params.helper1, "child"), label=params.helper1))
+    h2 = world.add(Entity(id=params.helper2, kind="character", type=NAME_TYPES.get(params.helper2, "child"), label=params.helper2))
     cp = world.add(Entity(id="coupon", type="coupon", label=coupon.label, phrase=coupon.phrase, owner=hero.id))
     ribbon = world.add(Entity(id="ribbon", type="thing", label="ribbon"))
     spool = world.add(Entity(id="spool", type="thing", label="spool"))
     smile = world.add(Entity(id="smile", type="thing", label="smile"))
 
-    world.facts.update(hero=hero, helpers=[h1, h2], coupon=cp, task=task, clue_seen=True)
+    fields = {
+        "hero": hero.id,
+        "h1": h1.id,
+        "h2": h2.id,
+        "coupon": coupon.phrase,
+        "place": place.name,
+    }
+    rendered_arc = {key: value.format(**fields) for key, value in arc.items()}
+    rendered_telling = {key: value.format(**fields) for key, value in telling.items()}
+    world.facts.update(
+        hero=hero,
+        helpers=[h1, h2],
+        coupon=cp,
+        task=task,
+        clue_seen=True,
+        clue=rendered_arc["hint"],
+        obstacle=rendered_arc["obstacle"],
+        jobs=rendered_arc["jobs"],
+        consequence=rendered_arc["turn"],
+        ending_image=rendered_arc["image"],
+        team_line=rendered_telling["team"],
+        ready_line=rendered_telling["ready"],
+        reveal_line=rendered_arc["turn"],
+        arc=params.arc,
+        telling=params.telling,
+    )
 
     # Beginning
-    world.say(f"{hero.id} was a tall-tale fellow with a hat like a wagon wheel and a pocket full of wonder.")
-    world.say(f"One bright day, {hero.id} found {coupon.phrase} tucked away like a pearl in a cornstalk.")
-    world.say(f"The coupon said it would work if three things came along: {', '.join(coupon.requires[:-1])}, and {coupon.requires[-1]}.")
+    world.say(rendered_telling["opening"])
+    world.say(rendered_arc["premise"])
+    world.say(
+        f"The coupon specified three requirements: {', '.join(coupon.requires[:-1])}, "
+        f"and {coupon.requires[-1]}."
+    )
+    world.say(rendered_arc["hint"])
 
     # Middle
     world.para()
-    world.say(f"{hero.id} wanted to {task.verb}, but {hero.pronoun('possessive')} arms were not long enough for the load.")
+    world.say(rendered_telling["invite"])
     h1.memes["helping"] = 1
     h2.memes["helping"] = 1
-    world.say(f"So {hero.id} called on {h1.id} and {h2.id}, and the three of them went off like a row of cheerful bluebirds.")
-    world.say(f"At first they nearly missed the ribbon, until {task.clue}.")
+    world.say(rendered_arc["obstacle"])
+    world.say(rendered_arc["jobs"])
     propagate(world, narrate=True)
 
     # Resolution
     world.para()
     if all(req in {"spool", "ribbon", "smile"} for req in coupon.requires):
         cp.meters["complete"] = 1
-    world.say(f"Together they carried {spool.label}, {ribbon.label}, and {smile.label} to {coupon.redeem_at}.")
+    world.say(
+        f"Together they brought the {spool.label}, the {ribbon.label}, and a real {smile.label} "
+        f"to {coupon.redeem_at}."
+    )
     propagate(world, narrate=True)
-    world.say(f"The clerk took the coupon, winked, and handed over the prize.")
-    world.say(f"By the end, {task.tall_image}.")
+    world.say(rendered_arc["finish"])
+    world.say(f"When they finally flew the kite, {rendered_arc['image']}.")
 
     world.facts["resolved"] = True
     return world
@@ -426,8 +641,8 @@ def generation_prompts(world: World) -> list[str]:
     coupon: Entity = f["coupon"]
     return [
         'Write a short tall-tale story for a child about a coupon, teamwork, and a clue that was foreshadowed.',
-        f"Tell a story where {hero.id} and two helpers work together to {task.verb} using {coupon.label}.",
-        f"Write a narrative that specifies the needed items, uses the word 'coupon', and ends with a big sky-high image.",
+        f"Tell a story where {hero.id} and two helpers solve this trouble together: {f['obstacle']}",
+        f"Write a narrative that specifies the needed items, pays off the clue '{f['clue']}', uses the word 'coupon', and ends with a tall-tale image.",
     ]
 
 
@@ -448,11 +663,19 @@ def story_qa(world: World) -> list[QAItem]:
         ),
         QAItem(
             question=f"What clue foreshadowed the missing item?",
-            answer=f"The clue was that {TASKS[f['task'].id].clue if isinstance(f['task'], Task) else 'a sign pointed them back'}; it led them back to the ribbon before the final trade.",
+            answer=f"The early clue was this: {f['clue']} Later, it helped the team understand what to do.",
+        ),
+        QAItem(
+            question="How did the three children divide the work?",
+            answer=f"They divided it this way: {f['jobs']} Their separate actions solved one shared problem.",
+        ),
+        QAItem(
+            question="Why did the clue matter later?",
+            answer=f"It mattered because {f['consequence']} The early detail therefore helped cause the solution.",
         ),
         QAItem(
             question=f"What happened at the end after they used the coupon?",
-            answer=f"They traded the coupon and got the prize, and the story ended with {task.tall_image}.",
+            answer=f"They traded the coupon and got the kite. At the end, {f['ending_image']}.",
         ),
     ]
 

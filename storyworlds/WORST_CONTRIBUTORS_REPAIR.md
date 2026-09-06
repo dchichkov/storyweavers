@@ -73,5 +73,10 @@ Legend: `queued`, `active`, `repaired`, `verified`, `blocked`.
 | 5 | verified | `folly_chimp_rhyme_cautionary_pirate_tale.py` | 1 skeleton/100 exact-unique stories | 1 skeleton | 100 unique; 100 skeletons | Twelve pirate incidents; 574/600 unique story-QA pairs. |
 | 5 | verified | `gypsy_teeny_playroom_lesson_learned_mystery_to.py` | 1 skeleton/100 exact-unique stories | 1 skeleton | 100 unique; 100 skeletons | Twelve mysteries; source term handled as an old, potentially hurtful label. |
 | 5 | verified | `hedge_mash_explore_magic_curiosity_problem_solving.py` | 1 skeleton/100 exact-unique stories | 1 skeleton | 100 unique; 100 skeletons | Twelve magical problems; independent replay and QA checks passed. |
+| 6 | verified | `huge_movement_silo_grocery_store_moral_value.py` | 1 skeleton/100 exact-unique stories | 1 skeleton | 100 unique; 100 skeletons | Twelve incidents; 333/400 unique story-QA pairs. |
+| 6 | verified | `mattress_fame_artichoke_petting_zoo_sound_effects.py` | 1 skeleton/100 exact-unique stories | 1 skeleton | 100 unique; 96 skeletons | Twelve scenarios; placeholder output eliminated. |
+| 6 | verified | `narrative_specify_coupon_teamwork_foreshadowing_tall_tale.py` | 1 skeleton/100 exact-unique stories | 1 skeleton | 100 unique; 67 skeletons | Twelve arcs and eight telling modes; 229/600 unique story-QA pairs. |
+| 6 | verified | `photography_twit_aster_transformation_kindness_comedy.py` | 1 skeleton/100 exact-unique stories | 1 skeleton | 100 unique; 100 skeletons | Twelve scenarios; potentially insulting term recast as a fictional bird. |
+| 6 | verified | `plunge_frigate_inner_monologue_twist_sharing_rhyming.py` | 1 skeleton/100 exact-unique stories | 1 skeleton | 100 unique; 100 skeletons | Twelve incidents; 383/500 unique story-QA pairs. |
 
 Additional waves follow the frozen 120-script template-collapse ranking.
