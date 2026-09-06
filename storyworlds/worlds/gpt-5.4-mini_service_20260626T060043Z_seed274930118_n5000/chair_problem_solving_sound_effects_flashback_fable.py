@@ -8,12 +8,8 @@ A small creature in a simple home has a favorite chair that starts to wobble.
 The creature remembers an older lesson, listens to the chair's noises, and
 solves the problem with care instead of force.
 
-The story world is intentionally small and classical:
-- one setting
-- one main problem
-- one remembered lesson
-- one concrete fix
-- a brief moral-like ending image
+The story world is intentionally small and classical, but its state can select
+many different chair problems, clues, remembered lessons, repairs, and endings.
 
 This file follows the Storyweavers storyworld contract.
 """
@@ -28,7 +24,9 @@ import sys
 from dataclasses import dataclass, field
 from typing import Optional
 
-sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+HERE = os.path.dirname(os.path.abspath(__file__))
+ROOT = os.path.dirname(os.path.dirname(os.path.dirname(HERE)))
+sys.path.insert(0, os.path.join(ROOT, "storyworlds"))
 from results import QAItem, StoryError, StorySample  # noqa: E402
 
 
@@ -80,6 +78,12 @@ ROOMS = {
     "workshop": Room(name="the workshop", light="dusty"),
 }
 
+ROOM_PHRASES = {
+    "kitchen": "in the kitchen",
+    "porch": "on the porch",
+    "workshop": "in the workshop",
+}
+
 KINDS = ["fox", "mouse", "rabbit", "crow", "hedgehog"]
 TRAITS = ["wise", "patient", "careful", "gentle", "brave"]
 
@@ -96,6 +100,230 @@ NAMES = {
     "crow": ["Corin", "Sable", "Jett"],
     "hedgehog": ["Pebb", "Tansy", "Brio"],
 }
+
+
+@dataclass(frozen=True)
+class RepairArc:
+    use: str
+    trigger: str
+    sound: str
+    comparison: str
+    symptom: str
+    inspection: str
+    cause: str
+    obstacle: str
+    action: str
+    result: str
+    ending: str
+    tool: str
+
+
+REPAIR_ARCS = [
+    RepairArc(
+        use="drawing maps at the table",
+        trigger="a gust rattled the open window",
+        sound="creak-creak",
+        comparison="a frog clearing its throat",
+        symptom="the left back leg rocked whenever weight shifted",
+        inspection="pressed each corner and watched the left back joint open a hair",
+        cause="a screw in the left back leg had worked loose",
+        obstacle="The screw turned once, then stuck beneath a cap of dust",
+        action="brushed the dust away and tightened the screw with a small wrench",
+        result="the four legs stood square and the wobble vanished",
+        ending="a cup of crayons stood still while a new map curled beside it",
+        tool="small wrench",
+    ),
+    RepairArc(
+        use="shelling peas beside the window",
+        trigger="a pea rolled beneath one foot",
+        sound="tick-tock-tick",
+        comparison="a tiny clock in a hurry",
+        symptom="the front foot clicked against the floor",
+        inspection="slid a ribbon under each foot and found a shallow dip in the floorboard",
+        cause="the floor was uneven beneath the front chair leg",
+        obstacle="A thick wooden shim made the chair lean the other way",
+        action="trimmed a thin square of cork and tucked it beneath the front foot",
+        result="the cork filled the dip without lifting the chair too high",
+        ending="three round peas rested on the seat without rolling away",
+        tool="cork square",
+    ),
+    RepairArc(
+        use="reading fables after supper",
+        trigger="the chair was dragged too close to the wall",
+        sound="scritch-scrape",
+        comparison="a cricket bowing a rough little fiddle",
+        symptom="a pale mark appeared whenever the chair leaned back",
+        inspection="held a candle low and saw the top rail brushing the plaster",
+        cause="the chair back was scraping the wall, not breaking inside",
+        obstacle="Moving it forward left one leg perched on the edge of the rug",
+        action="shifted the rug and set a felt pad behind the top rail",
+        result="the chair had room to rest without touching wall or rug edge",
+        ending="the candle flame and the chair's shadow both held perfectly still",
+        tool="felt pad",
+    ),
+    RepairArc(
+        use="mending a little red scarf",
+        trigger="a dropped spool bounced against the lower rung",
+        sound="tok-clack",
+        comparison="two acorns knocking hats",
+        symptom="the lower rung slipped sideways when nudged",
+        inspection="followed the sound with one paw and found the rung half out of its socket",
+        cause="the crossbar peg had crept out of its wooden socket",
+        obstacle="Pushing the rung directly only made it spring out again",
+        action="wrapped the peg with a drop of glue and tied it snug while it dried",
+        result="the rung settled deep in its socket and held firm",
+        ending="the finished red scarf hung from a rung that did not clack once",
+        tool="glue and soft cord",
+    ),
+    RepairArc(
+        use="sorting buttons into bright rows",
+        trigger="a blue button vanished near the rocker",
+        sound="grr-rip, grr-rip",
+        comparison="a sleepy bear scratching a door",
+        symptom="one rocker rasped only halfway through its swing",
+        inspection="tilted the chair safely and traced a fresh line beneath the curved runner",
+        cause="a flat pebble was trapped beneath the rocking runner",
+        obstacle="The pebble was wedged too tightly to pinch out with a paw",
+        action="lifted the runner with a wooden spoon and swept the pebble free",
+        result="the rocker traveled in a smooth, quiet arc",
+        ending="the rescued blue button rode on the seat through three silent rocks",
+        tool="wooden spoon",
+    ),
+    RepairArc(
+        use="watching rain bead on the door",
+        trigger="yesterday's damp breeze had blown through the room",
+        sound="eee-awk",
+        comparison="a gull complaining over an empty shore",
+        symptom="the seat squealed at one joint but did not wobble",
+        inspection="placed one finger on each joint and felt the dry right joint shiver",
+        cause="the clean wooden joint had dried and begun rubbing",
+        obstacle="Pouring oil everywhere would have made the seat slippery and messy",
+        action="rubbed one tiny dab of beeswax into the noisy joint",
+        result="the protected joint moved freely without staining the seat",
+        ending="rain tapped the window, now the only sound beside the chair",
+        tool="beeswax",
+    ),
+    RepairArc(
+        use="weaving a basket for apples",
+        trigger="the basket handle caught the edge of the woven seat",
+        sound="fip-fip-pop",
+        comparison="raindrops hopping from a leaf",
+        symptom="one cane strip lifted whenever the seat was pressed",
+        inspection="ran a blunt needle along the weave and found one loose crossing",
+        cause="a cane strip had slipped over instead of under its neighbor",
+        obstacle="Pulling the strip straight made the gap wider",
+        action="soaked the strip, wove it back under-over, and pinned it until dry",
+        result="the crossing tightened into the same pattern as the rest",
+        ending="one red apple sat above the repaired weave like a quiet lantern",
+        tool="blunt needle and pin",
+    ),
+    RepairArc(
+        use="practicing a song for the harvest supper",
+        trigger="the highest note made something under the seat buzz",
+        sound="bzzz-brum",
+        comparison="a bee trapped inside a drum",
+        symptom="the buzz stopped whenever the apron beneath the seat was touched",
+        inspection="hummed each note slowly and located a loose wooden brace",
+        cause="a small brace beneath the seat was vibrating against its peg",
+        obstacle="A wad of cloth silenced the buzz but hid the loose brace",
+        action="removed the cloth and pressed the brace onto a fresh cork peg",
+        result="the brace held fast even when the highest note rang out",
+        ending="the last clear note floated over a chair as quiet as moonlight",
+        tool="fresh cork peg",
+    ),
+    RepairArc(
+        use="painting a sign for the garden gate",
+        trigger="the paint jar bumped the chair during cleanup",
+        sound="tap...tap-tap",
+        comparison="a woodpecker practicing very slowly",
+        symptom="a decorative knob nodded atop the right post",
+        inspection="covered the knob with a cloth and discovered it could turn by hand",
+        cause="the top knob had loosened from its threaded post",
+        obstacle="Bare paws slipped on the smooth round knob",
+        action="gripped it through the cloth and turned it until the threads seated",
+        result="the knob faced forward and no longer tapped",
+        ending="the dry garden sign leaned against a chair crowned by one steady knob",
+        tool="folded cloth",
+    ),
+    RepairArc(
+        use="building a paper town on the seat",
+        trigger="a paper tower toppled when the chair tilted",
+        sound="thump-hush-thump",
+        comparison="a giant tiptoeing in wool socks",
+        symptom="one leg sank slightly whenever the chair stood on the soft mat",
+        inspection="marked the four footprints and saw one deep hollow in the mat",
+        cause="the thick mat compressed unevenly beneath the narrow chair feet",
+        obstacle="Adding a block under one foot made the paper town slope",
+        action="set a broad wooden board beneath all four chair feet",
+        result="the board spread the weight evenly across the soft mat",
+        ending="four paper houses remained upright beneath the evening lamp",
+        tool="broad wooden board",
+    ),
+    RepairArc(
+        use="polishing seed jars for spring",
+        trigger="a full jar was set down harder than usual",
+        sound="ping-ding",
+        comparison="a spoon tapping a teacup",
+        symptom="a tiny metal corner bracket chimed when the seat moved",
+        inspection="held each bracket in turn and found one missing its wooden pin",
+        cause="the bracket's small retaining pin had fallen out",
+        obstacle="A metal nail was too sharp and too narrow for the old hole",
+        action="shaped a smooth wooden peg and pressed it through the bracket",
+        result="the broad peg held the bracket without scratching the chair",
+        ending="the seed jars shone in a row above a bracket that made no reply",
+        tool="smooth wooden peg",
+    ),
+    RepairArc(
+        use="sharing berry cakes with a neighbor",
+        trigger="the neighbor noticed one cake sliding toward the seat's edge",
+        sound="whuff-click",
+        comparison="a boot stepping out of soft mud",
+        symptom="the removable cushion shifted whenever someone stood up",
+        inspection="lifted the cushion and found one cloth tie pulled through its loop",
+        cause="the cushion tie had come undone beneath the seat",
+        obstacle="A tight knot held the cushion crooked and pinched its corner",
+        action="loosened the knot, centered the cushion, and tied a gentle bow",
+        result="the cushion stayed centered yet could still be removed for cleaning",
+        ending="two berry-cake plates balanced beside a neat bow under the seat",
+        tool="cushion tie",
+    ),
+]
+
+FLASHBACKS = [
+    ("Grandmother Reed", "listen twice before changing anything", "patient listening"),
+    ("the village carpenter", "test one part at a time", "careful testing"),
+    ("an old bridge keeper", "a sound points toward the place that moves", "following a sound"),
+    ("their first basket lesson", "undo a poor fix before making a sound one", "correcting a mistaken fix"),
+    ("a rainy-day repair", "the smallest clue can reveal the whole cause", "respecting small clues"),
+    ("Father Rowan", "steady work beats one mighty shove", "using steady work"),
+    ("the mill mouse", "name the cause before choosing the tool", "matching a tool to the cause"),
+    ("a lesson beside the creek", "try gently, observe, and then try again", "gentle observation"),
+]
+
+OPENINGS = [
+    "The chair had carried many quiet afternoons without complaint.",
+    "It was not a grand chair, but it belonged in every happy memory of the room.",
+    "Each scratch on the chair marked an old meal, game, or story.",
+    "The chair was small enough for the room and sturdy enough to feel like a friend.",
+    "Sunlight often found the chair before it found anything else.",
+]
+
+DIALOGUES = [
+    '"A noise is a clue, not an enemy," {name} said.',
+    '"I will ask what moved before I ask how to stop it," {name} whispered.',
+    '"No thumping and no guessing," {name} decided. "First I will look."',
+    '"Tell me where it hurts, little chair," {name} said, listening again.',
+    '"Slow paws can solve what hurried paws miss," {name} reminded {self_ref}.',
+]
+
+ENDING_LESSONS = [
+    "From then on, every odd sound received a question before it received a tool.",
+    "The room seemed to agree that understanding is the first part of mending.",
+    "That evening proved that careful minds can be stronger than forceful paws.",
+    "Afterward, the smallest creak was treated as useful news, never a nuisance.",
+    "And so patience left the chair stronger and its owner wiser.",
+    "The lesson stayed: a good solution fits the cause as neatly as a key fits a lock.",
+]
 
 # ---------------------------------------------------------------------------
 # World state
@@ -160,7 +388,8 @@ def listen_to_chair(world: World) -> None:
     world.fired.add("listen")
     world.chair.creak += 1.0
     world.chair.meters["wobble"] += 0.5
-    world.say("The chair gave a small creak: creak, creak, like a frog clearing its throat.")
+    arc = world.facts["arc"]
+    world.say(f"The chair answered, {arc.sound}, like {arc.comparison}.")
 
 
 def flashback(world: World) -> None:
@@ -168,9 +397,10 @@ def flashback(world: World) -> None:
         return
     world.fired.add("flashback")
     world.hero.meme["remembered"] = world.hero.meme.get("remembered", 0.0) + 1.0
+    teacher, lesson, _ = world.facts["flashback"]
     world.say(
-        f"{world.hero.name} remembered an old lesson: when something wobbles, "
-        f"first find the cause, then fix the cause, not just the noise."
+        f"The sound opened a flashback in {world.hero.name}'s mind. Long ago, "
+        f"{teacher} had taught: {lesson}."
     )
 
 
@@ -178,22 +408,22 @@ def inspect(world: World) -> None:
     if "inspect" in world.fired:
         return
     world.fired.add("inspect")
+    arc = world.facts["arc"]
     world.say(
-        f"{world.hero.name} knelt beside the chair and touched each leg in turn. "
-        f"One back leg was looser than the others."
+        f"Instead of shaking the chair harder, {world.hero.name} {arc.inspection}. "
+        f"The clue revealed the cause: {arc.cause}."
     )
+    world.facts["cause_found"] = True
 
 
 def solve(world: World) -> None:
     if "solve" in world.fired:
         return
     world.fired.add("solve")
-    if world.chair.leg_tightness < 0.7:
-        world.say(
-            f"{world.hero.name} fetched a little wrench and turned the loose screw "
-            f"until the leg stood firm."
-        )
-        world.say("Click, twist, snug. The chair stopped shivering.")
+    arc = world.facts["arc"]
+    if world.facts.get("cause_found"):
+        world.say(f"{arc.obstacle}. {world.facts['dialogue']}")
+        world.say(f"So {world.hero.name} {arc.action}. {arc.result.capitalize()}.")
         world.chair.fixed = True
         world.chair.wobble = 0.0
         world.chair.creak = 0.0
@@ -201,7 +431,7 @@ def solve(world: World) -> None:
         world.chair.memes["trust"] = 1.0
         world.chair.memes["relief"] = 1.0
     else:
-        raise StoryError("The chair is already too tight to need this solution.")
+        raise StoryError("A repair cannot be chosen before the cause is found.")
 
 
 def conclude(world: World) -> None:
@@ -209,9 +439,11 @@ def conclude(world: World) -> None:
         return
     world.fired.add("conclude")
     if world.chair.fixed:
+        arc = world.facts["arc"]
         world.say(
-            f"In the end, {world.hero.name} sat down gently, and the chair answered "
-            f"with a soft, steady hush. The little home felt wiser for having listened."
+            f"To test the work, {world.hero.name} sat down gently. The chair stayed "
+            f"steady and quiet; {arc.ending}. Later, {world.hero.name} told the adventure "
+            f"as a fable about patient problem-solving. {world.facts['ending_lesson']}"
         )
     else:
         world.say(
@@ -227,32 +459,51 @@ def build_world(params: StoryParams) -> World:
     world.hero = hero
     world.chair.material = params.chair_material
     world.chair.name = "the chair"
+    if params.seed is not None:
+        choice = params.seed
+    else:
+        key = f"{params.name}|{params.kind}|{params.trait}|{params.room}|{params.chair_material}"
+        choice = sum((i + 1) * ord(char) for i, char in enumerate(key))
+    arc = REPAIR_ARCS[choice % len(REPAIR_ARCS)]
+    remembered = FLASHBACKS[(choice // len(REPAIR_ARCS)) % len(FLASHBACKS)]
+    opening = OPENINGS[(choice // (len(REPAIR_ARCS) * len(FLASHBACKS))) % len(OPENINGS)]
+    dialogue_template = DIALOGUES[(choice * 7 + choice // 11) % len(DIALOGUES)]
+    self_ref = "themself"
+    world.facts.update(
+        arc=arc,
+        flashback=remembered,
+        opening=opening,
+        location_phrase=ROOM_PHRASES[params.room],
+        dialogue=dialogue_template.format(name=hero.name, self_ref=self_ref),
+        ending_lesson=ENDING_LESSONS[(choice * 5 + choice // 13) % len(ENDING_LESSONS)],
+    )
     return world
 
 
 def tell_story(world: World) -> None:
     hero = world.hero
     chair_word = f"{world.chair.material} chair"
+    arc = world.facts["arc"]
 
     world.say(
-        f"Once in {world.room.name}, there lived a {hero.trait} little {hero.kind} "
+        f"Once {world.facts['location_phrase']}, there lived a {hero.trait} little {hero.kind} "
         f"named {hero.name}."
     )
     world.say(
-        f"{hero.name} loved the {chair_word} by the table, because it was the best "
-        f"place to rest after work and play."
+        f"{hero.name} loved the {chair_word} by the table, especially for "
+        f"{arc.use}. {world.facts['opening']}"
     )
 
     world.para()
     world.say(
-        f"One afternoon, the chair began to say a funny sound: creak, creak, creak."
+        f"One afternoon, {arc.trigger}, and the chair made a strange sound."
     )
     listen_to_chair(world)
     world.chair.wobble += 1.0
     if chair_is_problematic(world):
         world.say(
-            f"{hero.name} noticed that the chair did not just sing; it tipped a little "
-            f"when anyone sat on it."
+            f"{hero.name} listened from the front, the back, and underneath. "
+            f"Soon {hero.name} noticed that {arc.symptom}. That was the real problem."
         )
 
     world.para()
@@ -267,7 +518,13 @@ def tell_story(world: World) -> None:
         room=world.room,
         chair=world.chair,
         resolved=world.chair.fixed,
-        problem=chair_is_problematic(world),
+        problem=arc.symptom,
+        cause=arc.cause,
+        action=arc.action,
+        result=arc.result,
+        ending=arc.ending,
+        tool=arc.tool,
+        remembered_lesson=world.facts["flashback"][1],
     )
 
 
@@ -278,9 +535,9 @@ def generation_prompts(world: World) -> list[str]:
     f = world.facts
     hero = f["hero"]
     return [
-        f"Write a short fable about {hero.name} and a chair that makes a strange sound.",
-        "Tell a child-friendly story where listening carefully helps solve a chair problem.",
-        "Write a little moral tale with a flashback that leads to fixing a chair.",
+        f"Write a short fable about {hero.name}, the {f['chair'].material} chair, and the sound {f['arc'].sound}.",
+        f"Tell a child-friendly problem-solving story {f['location_phrase']} where the clue is that {f['problem']}.",
+        f"Write a flashback fable in which {hero.name} remembers to {f['remembered_lesson']} and uses {f['tool']}.",
     ]
 
 
@@ -290,28 +547,28 @@ def story_qa(world: World) -> list[QAItem]:
     chair = f["chair"]
     return [
         QAItem(
-            question=f"What problem did {hero.name} notice with the chair?",
-            answer=f"{hero.name} noticed that the {chair.material} chair was wobbling and making a creaky sound.",
+            question=f"What problem did {hero.name} notice with the {chair.material} chair {f['location_phrase']}?",
+            answer=f"{hero.name} noticed that {f['problem']}. The sound {f['arc'].sound} helped locate the trouble.",
         ),
         QAItem(
-            question=f"What did {hero.name} remember from the flashback?",
+            question=f"What did {hero.name} remember when the sound {f['arc'].sound} caused a flashback?",
             answer=(
-                f"{hero.name} remembered that the best way to solve a problem is to "
-                f"find the cause first and then fix that cause."
+                f"{hero.name} remembered how {f['flashback'][0]} taught the lesson to {f['remembered_lesson']}. "
+                f"That memory kept {hero.name} from using force or guessing."
             ),
         ),
         QAItem(
-            question=f"How was the chair fixed?",
+            question=f"What caused the sound {f['arc'].sound} from the {chair.material} chair?",
             answer=(
-                f"{hero.name} found the loose leg and tightened it with a little wrench "
-                f"until the chair became steady."
+                f"The sound came from this problem: {f['cause']}. "
+                f"{hero.name} confirmed the cause by inspecting the chair carefully."
             ),
         ),
         QAItem(
-            question=f"What was the ending image of the story?",
+            question=f"How did {hero.name} use {f['tool']} to solve the problem, and what proved it worked?",
             answer=(
-                f"In the end, {hero.name} sat down and the chair answered with a soft, "
-                f"steady hush instead of a wobble."
+                f"{hero.name.capitalize()} {f['action']}. Afterward, {f['result']}, and "
+                f"the final image showed that {f['ending']}."
             ),
         ),
     ]
@@ -364,6 +621,9 @@ def dump_trace(world: World) -> str:
             f"room={world.room.name}",
             f"hero={hero.name} ({hero.kind}, {hero.trait})",
             f"chair.material={chair.material}",
+            f"problem={world.facts.get('problem')}",
+            f"cause={world.facts.get('cause')}",
+            f"tool={world.facts.get('tool')}",
             f"chair.wobble={chair.wobble}",
             f"chair.creak={chair.creak}",
             f"chair.fixed={chair.fixed}",

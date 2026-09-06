@@ -27,7 +27,13 @@ import sys
 from dataclasses import dataclass, field
 from typing import Callable, Optional
 
-sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+HERE = os.path.dirname(os.path.abspath(__file__))
+ROOT = HERE
+while ROOT != os.path.dirname(ROOT):
+    if os.path.exists(os.path.join(ROOT, "results.py")):
+        break
+    ROOT = os.path.dirname(ROOT)
+sys.path.insert(0, ROOT)
 from results import QAItem, StoryError, StorySample  # noqa: E402
 
 # ---------------------------------------------------------------------------
@@ -151,6 +157,188 @@ SHIP_NAMES = ["The Winking Gull", "The Starboard Fox", "The Merry Kraken", "The 
 PLACES = ["the harbor", "the dock", "the moonlit pier", "the old quay"]
 
 
+@dataclass(frozen=True)
+class StoryArc:
+    id: str
+    ambition: str
+    nutrient: str
+    slot: str
+    omen: str
+    danger: str
+    task: str
+    complication: str
+    turn: str
+    result: str
+    ending: str
+
+
+ARCS = [
+    StoryArc(
+        "broth_stove", "take charge of the storm watch", "ginger broth", "galley warming slot",
+        "the cook's ladle rolled across the deck before the first wave struck",
+        "the empty warming slot would leave the soaked crew cold and hungry",
+        "lash the broth crate to a serving tray and carry it below",
+        "a wave tilted the companionway and sent the tray sliding",
+        "hooked the tray with a mop handle while the cook steadied the crate",
+        "the broth reached the warming slot before the rain",
+        "steam curled from twelve mugs beneath the storm lantern",
+    ),
+    StoryArc(
+        "lime_rack", "chart the next long crossing", "fresh limes", "ration-rack slot",
+        "the last green lime rolled from the rack as the ship's map showed weeks of open water",
+        "without the limes' nutrient, the crew might grow weak on the long crossing",
+        "bring the lime hamper aboard and fit it into the ration rack",
+        "the hamper was too broad to pass the narrow hatch",
+        "made two canvas slings and lowered the limes through the skylight",
+        "every lime was counted into the proper slot",
+        "green peels spiraled beside the compass as dawn opened the sea",
+    ),
+    StoryArc(
+        "bean_locker", "ring the departure bell", "dried beans", "pantry slot",
+        "weevils crept from an old sack while gulls circled the waiting tide",
+        "the spoiled sack could not supply the nutrient the rowing crew needed",
+        "sort the sound beans, seal them in tins, and fill the pantry slot",
+        "one tin split and scattered beans beneath the water barrels",
+        "formed a bucket line and swept every clean bean into a spare tin",
+        "the sealed tins clicked safely into the pantry slot",
+        "the departure bell rang above a pot bubbling with red beans",
+    ),
+    StoryArc(
+        "grain_chute", "serve beside the quartermaster", "whole-grain meal", "measuring-chute slot",
+        "a pale stream of meal trickled from a seam before anyone opened the bin",
+        "a split chute would waste the nutrient-rich meal before breakfast",
+        "patch the chute and slide its measuring cup into the empty slot",
+        "the ship rolled, widening the seam faster than one pair of hands could stitch",
+        "called the sailmaker to brace the chute, then sealed it with waxed canvas",
+        "the repaired cup measured a fair scoop for every sailor",
+        "golden porridge shone in bowls lined along the quiet rail",
+    ),
+    StoryArc(
+        "kelp_drawer", "keep the shore charts", "dried kelp", "dry-store slot",
+        "a damp green thread appeared beneath the dry-store door at low tide",
+        "seawater would ruin the kelp and wash away its useful nutrient",
+        "find the leak, dry the packets, and move them into the high slot",
+        "a crab had wedged the drain flap open behind a heavy coil of rope",
+        "used a boathook to free the crab and worked with the mate to lift the coil",
+        "the drain shut and the kelp packets rested dry above the waterline",
+        "crisp green ribbons topped the crew's supper under a clearing sky",
+    ),
+    StoryArc(
+        "oat_labels", "prove that careful work mattered more than boasting", "rolled oats", "breakfast-bin slot",
+        "two identical barrels knocked together whenever the tide turned",
+        "the lamp-oil barrel could be mistaken for the oats the crew needed for nutrient-rich breakfast",
+        "test the seals, mark the oat barrel, and place it in the breakfast slot",
+        "rain blurred the chalk label just as the barrels were being moved",
+        "cut an oat-shaped stamp from cork and pressed a lasting mark into the lid",
+        "the correctly marked barrel settled into its own slot",
+        "oatcakes cooled in neat rows while the oily barrel stayed locked away",
+    ),
+    StoryArc(
+        "fruit_net", "carry the captain's signal pennant", "dried apricots", "hanging-net slot",
+        "one frayed cord snapped and dropped an empty net beside the capstan",
+        "the next snap could spill the fruit and its nutrient into the bilge",
+        "splice a stronger net and load the apricots into its slot",
+        "the mast rope needed for the splice was already holding a loose sail",
+        "braided short galley cords while two deckhands secured the sail",
+        "the new net held firm through three hard rolls",
+        "orange apricots glowed in the net as the pennant cracked overhead",
+    ),
+    StoryArc(
+        "mineral_filter", "steer through the reef gate", "mineral water", "cask-filter slot",
+        "the water tap coughed out one cloudy drop while the reef wind freshened",
+        "a clogged filter would keep the crew from the water and nutrient salts they needed",
+        "clean the filter stones and return the basket to its slot",
+        "a pebble jammed the basket where fingers could not reach",
+        "bent a spoon into a hook and guided the pebble out by lantern light",
+        "clear water rang into every cup from the restored filter",
+        "silver drops flashed from the tap while the ship slipped between the reefs",
+    ),
+    StoryArc(
+        "rescue_rations", "command the smallest rescue boat", "pea biscuits", "lifeboat ration slot",
+        "an empty wrapper fluttered from the lifeboat before a distant flare rose",
+        "the rescue crew could not row far without a compact nutrient ration",
+        "pack pea biscuits into the lifeboat's narrow slot",
+        "the tin fit the slot but rattled loose whenever the oars struck",
+        "folded a cork cradle and tied it down with a sailor's crossing knot",
+        "the ration tin stayed secure throughout the rescue",
+        "the saved fisher shared a pea biscuit as both boats met the sunrise",
+    ),
+    StoryArc(
+        "sickbay_tonic", "assist the ship's healer", "orange-and-mint tonic", "sickbay bottle slot",
+        "the empty bottle rack chimed as a feverish lookout coughed overhead",
+        "the lookout needed drink, rest, and the tonic's nutrient before the night watch",
+        "mix the tonic, cool it, and secure its bottle in the padded slot",
+        "the cork popped free when warm tonic met the cold bottle",
+        "cooled the mixture in a wet cloth and asked the healer to check it before recorking",
+        "the lookout drank safely and slept while another sailor took watch",
+        "a full tonic bottle gleamed beside the lookout's folded red scarf",
+    ),
+    StoryArc(
+        "seed_tray", "tend the captain's cabin garden", "cress seedlings", "sun-tray slot",
+        "three dry leaves skittered from the cabin window although planting day had just begun",
+        "without water and light, the seedlings could not make the fresh nutrient the crew hoped to eat",
+        "mend the cracked tray and set it in the sunny slot",
+        "a passing boom shadowed the only patch of morning light",
+        "rigged a small polished plate to reflect sunlight around the boom",
+        "the sealed tray caught both clean water and steady light",
+        "tiny green cress leaves pointed toward their square of borrowed sun",
+    ),
+    StoryArc(
+        "sesame_chest", "sit in the captain's council", "sesame cakes", "emergency-chest slot",
+        "the emergency chest clicked open by itself when thunder shook the quay",
+        "its bare slot meant no quick nutrient food would be ready if the ship lost its galley",
+        "wrap the sesame cakes against damp and lock them into the chest",
+        "the old key turned halfway and threatened to break in the lock",
+        "rubbed the lock with graphite, then let the carpenter ease the key around",
+        "the dry cakes were inventoried and the chest closed without forcing it",
+        "a sesame star rested on the lid beside the captain's checked ledger",
+    ),
+]
+
+INTRO_FORMS = [
+    "At {place}, {hero} served aboard {ship} and hoped to {ambition}. {hero} had chased distinction with loud boasts, but no boast had helped the crew.",
+    "The youngest pirate on {ship} was {hero}. While the vessel waited at {place}, {hero} dreamed of distinction and a chance to {ambition}.",
+    "Morning found {hero} working the deck of {ship} at {place}. The pirate wanted distinction, especially the honor to {ambition}, yet the captain watched deeds rather than swagger.",
+    "{hero} could polish brass and climb rigging, but had not yet earned distinction aboard {ship}. At {place}, one careful job might prove {hero} ready to {ambition}.",
+    "Before {ship} sailed from {place}, {hero} asked for a grander duty. Distinction, the young pirate believed, would mean being allowed to {ambition}.",
+    "On the tide before departure, {hero} stood aboard {ship} at {place}. Instead of treasure, {hero} wanted the distinction of being trusted to {ambition}.",
+]
+
+DIALOGUE_FORMS = [
+    ('"Did you notice that warning?" asked {captain}.', '"Yes," said {hero}. "It means {danger}. Let me {task}."'),
+    ('{captain} pointed toward the trouble. "Tell me what it foretells, {hero}."', '"It foretells that {danger}," {hero} replied. "I can {task}."'),
+    ('"A pirate seeking distinction should read small signs," said {captain}. "What do you see?"', '"I see that {danger}," said {hero}. "We should {task}."'),
+    ('{hero} tugged the captain\'s sleeve. "That sign is not harmless, is it?"', '"No," said {captain}. "It warns that {danger}. What is your plan?" {hero} answered, "I will {task}."'),
+    ('"Crew, look closely," called {captain}. "Something is about to go wrong."', '"Then we act before it does," {hero} said. "First we {task}."'),
+    ('{captain} asked quietly, "Do you still want distinction, {hero}?"', '"Yes, but the crew needs help first," said {hero}. "The sign means {danger}, so I will {task}."'),
+]
+
+ACTION_LEADS = [
+    "The work began at once.",
+    "There was no time for another boast.",
+    "Together, the pirates put the plan in motion.",
+    "The captain gave one nod, and the deck became busy.",
+    "With the warning still in mind, {hero} started carefully.",
+    "The crew made room while {hero} gathered the needed tools.",
+]
+
+SUPPORT_ACTIONS = [
+    "the cook protected the remaining food from spray",
+    "two deckhands cleared a safe path through the coils",
+    "the carpenter laid out only the tools the job required",
+    "the lookout called each roll of the ship before it came",
+    "the quartermaster checked every item against the ledger",
+    "the sailmaker tied a safety line around the work area",
+    "the cabin helper carried a dry lantern close to the work",
+    "the mate assigned one steady hand to hold each loose piece",
+]
+
+AWARDS = [
+    "a brass compass badge", "a blue watch ribbon", "a carved wooden star",
+    "the silver deck whistle", "a place in the captain's log", "a red duty sash",
+]
+
+
 # ---------------------------------------------------------------------------
 # ASP twin
 # ---------------------------------------------------------------------------
@@ -161,7 +349,7 @@ can_fill(S) :- needs_nutrient(S), crate(nutrient_crate), fits(nutrient_crate, nu
 
 % A story is reasonable when the young pirate wants distinction, the nutrient
 % slot is empty, and there is a compatible crate to fill it.
-valid_story(P) :- wants_distinction(P), can_fill(P).
+valid_story(P) :- wants_distinction(P), ship(S), can_fill(S).
 """
 
 
@@ -214,13 +402,14 @@ def build_parser() -> argparse.ArgumentParser:
 
 
 def resolve_params(args: argparse.Namespace, rng: random.Random) -> StoryParams:
+    hero_name = args.name or rng.choice(HERO_NAMES)
     return StoryParams(
-        hero_name=args.name or rng.choice(HERO_NAMES),
-        hero_type="boy" if (args.name in {"Finn", "Jory", "Pip", "Toby"}) else "girl",
+        hero_name=hero_name,
+        hero_type="boy" if hero_name in {"Finn", "Jory", "Pip", "Toby"} else "girl",
         captain_name=args.captain or rng.choice(CAPTAIN_NAMES),
         ship_name=args.ship or rng.choice(SHIP_NAMES),
         place=args.place or rng.choice(PLACES),
-        seed=None,
+        seed=rng.randrange(2**31),
     )
 
 
@@ -240,58 +429,105 @@ def make_world(params: StoryParams) -> Ship:
     ship.facts["captain_name"] = params.captain_name
     ship.facts["ship_name"] = params.ship_name
     ship.facts["place"] = params.place
-    ship.facts["distinction"] = "a brass star"
-    ship.facts["slot"] = "nutrient slot"
-    ship.facts["nutrient"] = "a crate of nutrient broth"
     return ship
 
 
 def foreshadow(ship: Ship) -> str:
     ship.memes["worry"] += 1
     ship.meters["storm"] += 1
+    arc: StoryArc = ship.facts["arc"]
     return (
-        f"Black clouds gathered over {ship.place}, and the captain looked toward the galley. "
-        f'"The storm will make hungry mouths," {ship.facts["captain_name"]} said. '
-        f'"If the nutrient slot stays empty, the crew will sail sour."'
+        f"A warning came early: {arc.omen}. It foreshadowed a real danger: "
+        f"{arc.danger}."
     )
 
 
 def dialogue_offer(ship: Ship) -> str:
     ship.memes["hope"] += 1
     ship.memes["pride"] += 1
-    return (
-        f'"Then let me fetch the nutrient crate," said {ship.facts["hero_name"]}. '
-        f'"If I fill the slot, maybe I can earn some distinction too."'
-    )
+    arc: StoryArc = ship.facts["arc"]
+    warning, answer = ship.facts["dialogue"]
+    values = {
+        "hero": ship.facts["hero_name"],
+        "captain": ship.facts["captain_name"],
+        "danger": arc.danger,
+        "task": arc.task,
+    }
+    return " ".join((warning.format(**values), answer.format(**values)))
 
 
 def resolve(ship: Ship) -> str:
+    arc: StoryArc = ship.facts["arc"]
+    hero = ship.facts["hero_name"]
+    captain = ship.facts["captain_name"]
     ship.holds["nutrient_slot"] = "nutrient_crate"
     ship.meters["hunger"] = 0
     ship.meters["supplies"] = 1
     ship.facts["resolved"] = True
     propagate(ship, narrate=False)
     return (
-        f"{ship.facts['hero_name']} tugged the crate into the nutrient slot, and warm steam rose from the lid. "
-        f"The crew ladled out broth, their faces bright again. "
-        f'{ship.facts["captain_name"]} pinned on a brass star and said, '
-        f'"That is true distinction, matey: you saw the need before the bell rang."'
+        f"The result was plain: {arc.result}. {arc.ending.capitalize()}. "
+        f'{captain} gave {hero} {ship.facts["award"]}. "That is distinction," the captain said. '
+        f'"You read the warning, protected the crew\'s nutrient supply, and asked for help when it mattered."'
     )
 
 
 def tell_story(params: StoryParams) -> Ship:
     ship = make_world(params)
+    rng = random.Random(params.seed if params.seed is not None else "|".join(
+        (params.hero_name, params.captain_name, params.ship_name, params.place)
+    ))
+    arc = rng.choice(ARCS)
+    intro_form = rng.choice(INTRO_FORMS)
+    dialogue = rng.choice(DIALOGUE_FORMS)
+    action_lead = rng.choice(ACTION_LEADS)
+    support_action = rng.choice(SUPPORT_ACTIONS)
+    award = rng.choice(AWARDS)
+    ship.facts.update({
+        "arc": arc,
+        "arc_id": arc.id,
+        "distinction": award,
+        "slot": arc.slot,
+        "nutrient": arc.nutrient,
+        "danger": arc.danger,
+        "task": arc.task,
+        "complication": arc.complication,
+        "turn": arc.turn,
+        "result": arc.result,
+        "ending": arc.ending,
+        "dialogue": dialogue,
+        "support_action": support_action,
+        "award": award,
+    })
     ship.facts["resolved"] = False
     ship.meters["hunger"] = 1
     ship.meters["storm"] = 0
-    intro = (
-        f"On {ship.place}, the young pirate {params.hero_name} polished the deck of {params.ship_name}. "
-        f"{params.hero_name} wanted distinction more than any shiny coin."
+    intro = intro_form.format(
+        hero=params.hero_name,
+        ship=params.ship_name,
+        place=params.place,
+        ambition=arc.ambition,
     )
     f1 = foreshadow(ship)
     d1 = dialogue_offer(ship)
+    lead = action_lead.format(hero=params.hero_name)
+    action = (
+        f"{lead} Meanwhile, {support_action}. {params.hero_name} tried to {arc.task}. "
+        f"Then {arc.complication}. "
+        f"Instead of hiding the setback, {params.hero_name} {arc.turn}."
+    )
     ending = resolve(ship)
-    ship.facts["story"] = "\n\n".join([intro, f1, d1, ending])
+    structure = rng.randrange(4)
+    if structure == 0:
+        paragraphs = [intro, f1, d1, action, ending]
+    elif structure == 1:
+        paragraphs = [intro + " " + f1, d1, action, ending]
+    elif structure == 2:
+        paragraphs = [intro, f1 + " " + d1, action, ending]
+    else:
+        paragraphs = [intro, f1, d1 + " " + action, ending]
+    ship.facts["structure"] = structure
+    ship.facts["story"] = "\n\n".join(paragraphs)
     return ship
 
 
@@ -301,30 +537,31 @@ def tell_story(params: StoryParams) -> Ship:
 def prompts(ship: Ship) -> list[str]:
     return [
         'Write a short pirate tale with the words "distinction", "slot", and "nutrient".',
-        f"Tell a story about {ship.facts['hero_name']} on {ship.facts['ship_name']} where a missing slot becomes important.",
-        "Make the captain warn about the coming storm, then let the hero answer in dialogue and earn a reward.",
+        f"Tell a story about {ship.facts['hero_name']} on {ship.facts['ship_name']} where the {ship.facts['slot']} becomes important.",
+        f"Foreshadow danger to the {ship.facts['nutrient']}, use dialogue to make a plan, and end with a concrete sign of distinction.",
     ]
 
 
 def story_qa(ship: Ship) -> list[QAItem]:
     hero = ship.facts["hero_name"]
     captain = ship.facts["captain_name"]
+    arc: StoryArc = ship.facts["arc"]
     return [
         QAItem(
-            question=f"What did {hero} want at the start of the pirate tale?",
-            answer=f"{hero} wanted distinction, meaning {hero} wanted to stand out and do a worthy deed.",
+            question=f"What distinction did {hero} seek from {captain} aboard {ship.name} at {ship.place}?",
+            answer=f"{hero} wanted distinction and hoped to {arc.ambition}. The captain required a useful deed rather than a boast.",
         ),
         QAItem(
-            question="What problem did the captain foreshadow?",
-            answer=f"{captain} warned that the storm would make the crew hungry if the nutrient slot stayed empty.",
+            question=f"What danger did {captain} and {hero} infer from the early sign on {ship.name} at {ship.place}?",
+            answer=f"The sign warned that {arc.danger}. {captain} asked {hero} to read that warning before the trouble grew.",
         ),
         QAItem(
-            question=f"How did {hero} help the ship?",
-            answer=f"{hero} fetched the nutrient crate and filled the nutrient slot so the crew could eat and sail well.",
+            question=f"When the plan met trouble aboard {ship.name}, how did {hero} and {captain}'s crew respond?",
+            answer=f"While {ship.facts['support_action']}, {hero} faced this complication: {arc.complication}. {hero} then {arc.turn}, which let the crew finish the job.",
         ),
         QAItem(
-            question="What proved that the ending was happy?",
-            answer="The crew ate warm broth, the hunger went away, and the captain gave the hero a brass star.",
+            question=f"What final image aboard {ship.name} at {ship.place} showed {captain} that {hero} had resolved the {arc.slot} problem?",
+            answer=f"{arc.ending.capitalize()}. The captain also gave {hero} {ship.facts['award']} as a mark of distinction.",
         ),
     ]
 
@@ -446,9 +683,18 @@ def main() -> None:
     samples: list[StorySample] = []
     if args.all:
         curated = [
-            StoryParams("Pip", "boy", "Captain Brine", "The Winking Gull", "the harbor"),
-            StoryParams("Mina", "girl", "Captain Coral", "The Starboard Fox", "the dock"),
-            StoryParams("Nell", "girl", "Captain Morrow", "The Merry Kraken", "the moonlit pier"),
+            StoryParams(
+                hero_name="Pip", hero_type="boy", captain_name="Captain Brine",
+                ship_name="The Winking Gull", place="the harbor",
+            ),
+            StoryParams(
+                hero_name="Mina", hero_type="girl", captain_name="Captain Coral",
+                ship_name="The Starboard Fox", place="the dock",
+            ),
+            StoryParams(
+                hero_name="Nell", hero_type="girl", captain_name="Captain Morrow",
+                ship_name="The Merry Kraken", place="the moonlit pier",
+            ),
         ]
         samples = [generate(p) for p in curated]
     else:

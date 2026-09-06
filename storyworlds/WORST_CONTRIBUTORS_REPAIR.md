@@ -58,5 +58,10 @@ Legend: `queued`, `active`, `repaired`, `verified`, `blocked`.
 | 3 | verified | `biology_nurse_oil_dialogue_superhero_story.py` | 1 skeleton/100 exact-unique stories | 1 skeleton | 100 unique; 100 skeletons | Twelve incidents; 327/400 unique story-QA pairs. |
 | 3 | verified | `bran_surprise_heartwarming.py` | 1 skeleton/100 exact-unique stories | 1 skeleton | 100 unique; 100 skeletons | Ten causal arcs; 315/400 unique story-QA pairs. |
 | 3 | verified | `vehicle_lovin_zoom_children_s_museum_misunderstanding.py` | 1 skeleton/100 exact-unique stories | 1 skeleton | 100 unique; 100 skeletons | Twelve causal arcs; 399/400 unique story-QA pairs. |
+| 4 | verified | `chair_problem_solving_sound_effects_flashback_fable.py` | 1 skeleton/100 exact-unique stories | 1 skeleton | 100 unique; 100 skeletons | Twelve arcs; 372/400 unique story-QA pairs. |
+| 4 | verified | `cantina_shriek_referendum_suspense_slice_of_life.py` | 1 skeleton/100 exact-unique stories | 1 skeleton | 100 unique; 100 skeletons | Twelve arcs; 424/500 unique story-QA pairs. |
+| 4 | verified | `dogie_sophisticated_thank_friendship_sharing_animal_story.py` | 1 skeleton/100 exact-unique stories | 1 skeleton | 100 unique; 100 skeletons | Twelve arcs; child-readable language improved. |
+| 4 | verified | `coast_nostril_inner_monologue_comedy.py` | 1 skeleton/100 exact-unique stories | 1 skeleton | 100 unique; 100 skeletons | Ten incidents and functional thinking modes. |
+| 4 | verified | `distinction_slot_nutrient_foreshadowing_dialogue_pirate_tale.py` | 1 skeleton/100 exact-unique stories | 1 skeleton | 100 unique; 100 skeletons | Twelve pirate arcs; 400/400 unique story-QA pairs. |
 
 Additional waves are appended after the full 120-script ranking is frozen.

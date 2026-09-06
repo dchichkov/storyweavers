@@ -37,7 +37,11 @@ import sys
 from dataclasses import dataclass, field
 from typing import Optional
 
-sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+HERE = os.path.dirname(os.path.abspath(__file__))
+ROOT = HERE
+while ROOT != os.path.dirname(ROOT) and not os.path.exists(os.path.join(ROOT, "results.py")):
+    ROOT = os.path.dirname(ROOT)
+sys.path.insert(0, ROOT)
 from results import QAItem, StoryError, StorySample  # noqa: E402
 
 # ---------------------------------------------------------------------------
@@ -261,6 +265,165 @@ def closing_image(world: World, hero: Entity, visitor: Entity, host: Entity) -> 
         )
 
 
+STORY_ARCS = [
+    {
+        "routine": "sorting cinnamon sticks while a domino game clicked by the window",
+        "alarm": "a flour sack shifted in the pantry and a sharp shriek rang out",
+        "clue": "a dusting of pawprints crossed the tiles, then vanished under the lowest shelf",
+        "fear": "a heavy jar might have fallen on someone",
+        "cause": "a hungry kitten had wriggled through a torn screen and caught its ribbon on a basket",
+        "action": "lifted the basket together, cut the ribbon, and offered the kitten a saucer of water",
+        "dialogue": "\"Easy now,\" {hero} whispered. \"We found you.\"",
+        "safeguard": "a quiet corner, a repaired pantry screen, and a last order before the neighbors went home",
+        "ending": "the kitten slept in a towel-lined basket beneath the quiet-corner sign",
+    },
+    {
+        "routine": "stacking blue cups as two neighbors traded recipes at the counter",
+        "alarm": "the ballot box jumped, and {visitor} gave a shriek that silenced every spoon",
+        "clue": "the lid bumped twice although no hand was near it",
+        "fear": "someone had hidden a trick inside the box to spoil the referendum",
+        "cause": "a tiny green gecko had crawled through the handle and was pushing at the lid",
+        "action": "slid a menu beneath the gecko and carried it safely to the courtyard wall",
+        "dialogue": "\"No trick,\" said {host}, smiling with relief. \"Only a very small voter.\"",
+        "safeguard": "covered ballot boxes, gentle courtyard lights, and two trial evenings each week",
+        "ending": "the gecko blinked from the warm wall while the sealed ballot box waited on the counter",
+    },
+    {
+        "routine": "slicing limes while rain tapped a patient rhythm on the awning",
+        "alarm": "a metallic shriek tore through the kitchen just as the lamps flickered",
+        "clue": "a thin ribbon of steam curled from behind the old kettle",
+        "fear": "a pipe was about to burst and flood the cantina",
+        "cause": "the kettle's loose pressure cap was whistling against a bent spoon",
+        "action": "turned off the burner, opened the window, and tightened the cool cap with a cloth",
+        "dialogue": "\"First the flame, then the fix,\" {hero} said, and {visitor} nodded",
+        "safeguard": "a closing-time kettle check, lower music, and a one-month late-hours trial",
+        "ending": "the repaired kettle breathed one soft puff beside a row of checked-off boxes",
+    },
+    {
+        "routine": "writing the soup special while a delivery bicycle ticked outside",
+        "alarm": "a shriek came from the storeroom, followed by three hollow knocks",
+        "clue": "a red bottle rolled into view and stopped against {hero}'s shoe",
+        "fear": "a stranger had slipped through the back door",
+        "cause": "the delivery bicycle had nudged the door, toppling an empty crate around {visitor}'s ankle",
+        "action": "steadied the crate, freed {visitor}, and moved the bicycle to its painted parking mark",
+        "dialogue": "\"I'm all right,\" {visitor} said. \"But that bicycle needs a proper home.\"",
+        "safeguard": "a marked delivery bay, an earlier delivery cutoff, and calm late service indoors",
+        "ending": "the bicycle rested inside its yellow square as the last soup bowls dried",
+    },
+    {
+        "routine": "polishing a brass bell while a grandmother taught a child to fold napkins",
+        "alarm": "the curtain snapped toward the ceiling fan and {visitor}'s shriek rose with it",
+        "clue": "one curtain cord swung over an empty chair like a slow pendulum",
+        "fear": "someone was tugging the curtain from the dark alley window",
+        "cause": "the evening breeze had loosened its knot and fed the cloth toward the fan",
+        "action": "switched off the fan, tied back the curtain, and checked every window cord",
+        "dialogue": "\"The breeze made a grand mystery of a small knot,\" {host} said",
+        "safeguard": "secure curtain ties, a quieter fan setting, and late hours only on breezy-night checks",
+        "ending": "the tied curtains framed a square of moonlight above the folded napkins",
+    },
+    {
+        "routine": "filling sugar jars while an old radio murmured the weather forecast",
+        "alarm": "the radio released a piercing shriek and every customer ducked",
+        "clue": "the sound stopped whenever {hero} moved the referendum sign away from the antenna",
+        "fear": "an emergency warning was trying to break through the broadcast",
+        "cause": "the sign's loose metal clip was touching the antenna and causing feedback",
+        "action": "unclipped the sign, wrapped the sharp clip, and tuned the radio to a clear station",
+        "dialogue": "\"Let's test the simple thing first,\" {hero} told the worried table",
+        "safeguard": "a volume cap, padded sign clips, and a host responsible for each late shift",
+        "ending": "the radio played softly while the padded referendum sign hung safely by the door",
+    },
+    {
+        "routine": "counting clean forks while dusk turned the front window violet",
+        "alarm": "a shriek sounded outside, and the glowing cantina sign went dark",
+        "clue": "small scrape marks led from the sign's switch to a loose wooden ladder",
+        "fear": "someone was trying to frighten customers away before the vote",
+        "cause": "a delivery rope had snagged the switch, and {visitor} had cried out when the ladder wobbled",
+        "action": "held the ladder flat, untangled the rope, and tested the sign from the ground",
+        "dialogue": "\"No climbing in the dark,\" {host} said. \"We solve this together.\"",
+        "safeguard": "a locked ladder rack, a ground-level sign switch, and well-lit late departures",
+        "ending": "the violet window held the cantina's steady gold sign and three neighbors walking home together",
+    },
+    {
+        "routine": "lining up jars of beans while the cook hummed behind the swinging door",
+        "alarm": "a shelf groaned, {visitor} shrieked, and one jar began to creep toward the edge",
+        "clue": "the shelf leaned only when the back door closed",
+        "fear": "the whole wall of jars would tumble into the dining room",
+        "cause": "a missing wooden shim let each closing door jolt the shelf",
+        "action": "caught the jar, unloaded the shelf, and fitted a new shim before restacking it",
+        "dialogue": "\"Empty first, mend second, stack last,\" {hero} counted aloud",
+        "safeguard": "weekly shelf checks, a soft doorstop, and a shorter menu during late hours",
+        "ending": "the bean jars stood level as the new doorstop held the door in a gentle hush",
+    },
+    {
+        "routine": "wrapping warm rolls while neighbors shook rain from their umbrellas",
+        "alarm": "the lights blinked out and a shriek came from beside the humming icebox",
+        "clue": "a puddle glimmered on the floor, but the icebox door was still firmly shut",
+        "fear": "a live wire had fallen into the water",
+        "cause": "a leaking umbrella had made the puddle while {visitor} bumped a squeaky rubber floor mat",
+        "action": "blocked the puddle, dried it with towels, and checked the unplugged mat area with a lamp",
+        "dialogue": "\"Nobody steps closer until the floor is dry,\" {hero} said calmly",
+        "safeguard": "an umbrella stand, battery lanterns, and early closing whenever the power failed",
+        "ending": "dry umbrellas circled the new stand while a lantern shone on the final vote tally",
+    },
+    {
+        "routine": "chalking dessert prices while the service hatch rattled with passing plates",
+        "alarm": "a shriek burst through the hatch as the little door jammed halfway open",
+        "clue": "a striped dish towel protruded beneath one hinge",
+        "fear": "a cook's hand was trapped on the other side",
+        "cause": "the towel had wound around the hinge while {visitor} reached for a harmless fallen spoon",
+        "action": "held the hatch still, freed the towel, and passed the spoon back with wooden tongs",
+        "dialogue": "\"Hands clear?\" called {hero}. \"Clear,\" came the answer from the kitchen",
+        "safeguard": "a clear hatch shelf, a spoken hands-clear check, and table service after ten",
+        "ending": "the striped towel hung on its own hook while the hatch closed without a rattle",
+    },
+    {
+        "routine": "watering the window herbs while chess pieces clicked at the corner table",
+        "alarm": "a sudden shriek came from beneath the herb shelf, followed by a papery flutter",
+        "clue": "one referendum slip sailed across the floor with a crescent bitten from its edge",
+        "fear": "someone was secretly destroying votes",
+        "cause": "a field mouse had found a bread crumb beside the slips and startled {visitor}",
+        "action": "covered the ballots, swept the crumbs, and guided the mouse into a box for release outside",
+        "dialogue": "\"Count every slip, blame no one,\" {host} reminded the room",
+        "safeguard": "sealed ballots, nightly crumb checks, and late snacks served only at tables",
+        "ending": "the mouse vanished into the herb garden as the unbitten slips lay counted under glass",
+    },
+    {
+        "routine": "folding checked tablecloths while a family shared the last plate of toast",
+        "alarm": "a shriek cut through the soft talk when a bell rang inside the locked coat cupboard",
+        "clue": "the bell rang again each time the front door swung inward",
+        "fear": "someone had been shut inside the cupboard",
+        "cause": "a coat button was tugging a bicycle bell by a thread caught under the door",
+        "action": "opened the cupboard together, snipped the thread, and returned the bell to its owner",
+        "dialogue": "\"A pattern is a clue,\" {hero} said. \"Let's move the door once more.\"",
+        "safeguard": "open coat hooks, a clear cupboard floor, and a door check before every late closing",
+        "ending": "the freed bell sat beside a folded tablecloth while the cupboard stood safely open",
+    },
+]
+
+OPENINGS = [
+    "The proposed late-hours referendum waited on a chalkboard near the door.",
+    "Beside the till, a jar held paper votes for that evening's referendum.",
+    "Everyone knew the referendum on later hours would begin after the supper rush.",
+    "A hand-lettered referendum notice promised a decision before the lamps were dimmed.",
+]
+
+SUSPENSE_BEATS = [
+    "For one long moment, nobody could tell whether the danger was growing or already past.",
+    "The ordinary room suddenly felt full of corners where an answer might be hiding.",
+    "They listened before moving; suspense made even the kettle's click sound important.",
+    "No one rushed toward the noise. They named what they could see and checked one clue at a time.",
+    "The silence afterward stretched until the smallest sound seemed enormous.",
+]
+
+VOTE_LINES = [
+    "Each person spoke once before anyone marked a ballot.",
+    "They wrote worries on one side of the chalkboard and workable answers on the other.",
+    "The neighbors tested the new rule against what had just happened.",
+    "Even the youngest visitor was invited to name what would make the room feel safe.",
+    "They paused the vote until every question had a plain answer.",
+]
+
+
 def tell_story(params: StoryParams) -> World:
     world = World(Place(name="the cantina"))
     hero = world.add(Entity(id=params.hero, kind="character", type="woman", label=params.hero))
@@ -271,25 +434,76 @@ def tell_story(params: StoryParams) -> World:
     host.memes["patience"] = 1.0
     visitor.memes["curiosity"] = 1.0
 
-    introduce(world, hero, host)
-    world.para()
-    everyday_scene(world, hero, visitor)
-    trigger_shriek(world, visitor)
-    propagate(world)
+    seed = params.seed or 0
+    arc = STORY_ARCS[seed % len(STORY_ARCS)]
+    opening = OPENINGS[(seed // len(STORY_ARCS)) % len(OPENINGS)]
+    suspense = SUSPENSE_BEATS[(seed // (len(STORY_ARCS) * len(OPENINGS))) % len(SUSPENSE_BEATS)]
+    vote_line = VOTE_LINES[(seed // 7) % len(VOTE_LINES)]
+    detail = [
+        "a chipped red saucer",
+        "a green glass sugar jar",
+        "three striped napkins",
+        "a brass spoon cup",
+        "a blue enamel tray",
+        "a basket of warm rolls",
+        "a vase of mint stems",
+        "a stack of dominoes",
+    ][(seed // 3) % 8]
+    fmt = {"hero": hero.id, "host": host.id, "visitor": visitor.id}
+    text = {key: value.format(**fmt) for key, value in arc.items()}
 
+    world.say(
+        f"{hero.id} worked at the cantina, {text['routine']}. {host.id} checked {detail} "
+        f"while {visitor.id} settled near the window. {opening}"
+    )
     world.para()
-    discover_kitten(world, hero, visitor)
-    propagate(world)
-
+    clue_sentence = text["clue"][:1].upper() + text["clue"][1:]
+    world.say(f"Then {text['alarm']}. {clue_sentence}.")
+    world.facts["shrieked"] = True
+    for ent in (hero, host, visitor):
+        ent.memes["tension"] = 1.0
+    world.say(f"They feared {text['fear']}. Suspense held the room still. {suspense}")
     world.para()
-    call_referendum(world, host, hero)
-    vote(world, hero, host, visitor)
-    propagate(world)
-
+    world.say(f"{hero.id}, {host.id}, and {visitor.id} looked together instead of guessing. They discovered that {text['cause']}.")
+    dialogue = text["dialogue"]
+    dialogue_end = "" if dialogue.rstrip('"').endswith((".", "!", "?")) else "."
+    world.say(f"They {text['action']}. {dialogue}{dialogue_end}")
+    for ent in (hero, host, visitor):
+        ent.memes["tension"] = 0.0
+        ent.memes["relief"] = 1.0
+    hero.memes["care"] = 1.0
     world.para()
-    closing_image(world, hero, visitor, host)
+    world.say(
+        f"When the room was calm, {host.id} called the referendum on keeping the cantina open later. "
+        f"{vote_line} The scare had shown them one practical need: {text['safeguard']}."
+    )
+    world.say(
+        "The ballots approved that careful plan for a trial month. It was not the loudest answer or the quickest one, "
+        "but it let neighbors gather without forgetting the people who needed quiet and safety."
+    )
+    world.para()
+    world.say(
+        f"At closing time, {text['ending']}. {hero.id} turned the sign to CLOSED, and the familiar slice-of-life "
+        "sounds of cups, chairs, and good nights returned to the cantina."
+    )
 
-    world.facts.update(hero=hero, host=host, visitor=visitor)
+    world.facts.update(
+        hero=hero,
+        host=host,
+        visitor=visitor,
+        arc=seed % len(STORY_ARCS),
+        routine=text["routine"],
+        detail=detail,
+        alarm=text["alarm"],
+        clue=text["clue"],
+        feared=text["fear"],
+        cause=text["cause"],
+        response=text["action"],
+        safeguard=text["safeguard"],
+        ending=text["ending"],
+        vote_called=True,
+        referendum_result="late_open",
+    )
     return world
 
 
@@ -310,8 +524,8 @@ def generation_prompts(world: World) -> list[str]:
     f = world.facts
     return [
         'Write a short slice-of-life suspense story set in a cantina where a sudden shriek changes the mood.',
-        f"Tell a gentle story in {world.place.name} where {f['hero'].id} hears a shriek, helps safely, and then joins a referendum.",
-        "Write a small, concrete story about a neighborhood cantina, a startled room, and a calm vote about staying open late.",
+        f"Tell a gentle story in {world.place.name} where {f['hero'].id} investigates this clue: {f['clue']}. End with a referendum.",
+        f"Write a grounded cantina mystery whose group discovers that {f['cause']}, followed by a calm community vote.",
     ]
 
 
@@ -320,34 +534,26 @@ def story_qa(world: World) -> list[QAItem]:
     hero: Entity = f["hero"]
     host: Entity = f["host"]
     visitor: Entity = f["visitor"]
-    result = f.get("referendum_result", "late_open")
     return [
         QAItem(
-            question=f"Where does the story happen?",
-            answer=f"It happens in the cantina, where cups, stools, and a warm kettle make an ordinary evening feel close and familiar.",
+            question=f"What ordinary work was happening in the cantina before {visitor.id} heard the shriek?",
+            answer=f"{hero.id} was {f['routine']}. Nearby, {host.id} checked {f['detail']} while {visitor.id} sat by the window.",
         ),
         QAItem(
-            question=f"What caused everyone to freeze at first?",
-            answer=f"A sharp shriek came from the side room, and the whole cantina went quiet before anyone knew what was wrong.",
+            question=f"What did the shriek make {hero.id}, {host.id}, and {visitor.id} fear at first?",
+            answer=f"{f['alarm'][:1].upper() + f['alarm'][1:]}. At first, the people feared {f['feared']}.",
         ),
         QAItem(
-            question=f"Who found the problem behind the crates?",
-            answer=f"{visitor.id} found the frightened kitten behind the crates, and {hero.id} helped make it safe.",
+            question=f"Which clue did the three neighbors examine instead of guessing about the shriek?",
+            answer=f"They noticed that {f['clue']}. Instead of guessing, {hero.id}, {host.id}, and {visitor.id} checked it together.",
         ),
         QAItem(
-            question=f"What was the referendum about?",
-            answer=f"{host.id} called a referendum about whether the cantina should stay open later for neighbors.",
+            question=f"What really caused the frightening moment, and how did {hero.id}'s group resolve it?",
+            answer=f"They discovered that {f['cause']}. They {f['response']}.",
         ),
         QAItem(
-            question=f"How did the story end?",
-            answer=(
-                "The kitten was safe, the room was calm again, and "
-                + (
-                    "the neighbors chose to keep the cantina open later with quieter rules."
-                    if result == "late_open"
-                    else "the neighbors chose to close early, with a promise to try another calm gathering later."
-                )
-            ),
+            question=f"What safeguard did {host.id}'s referendum approve, and what final image showed the change?",
+            answer=f"The neighbors approved later hours with {f['safeguard']}. At closing time, {f['ending']}.",
         ),
     ]
 
@@ -451,11 +657,16 @@ def build_parser() -> argparse.ArgumentParser:
 
 
 def resolve_params(args: argparse.Namespace, rng: random.Random) -> StoryParams:
+    hero = args.hero or rng.choice(NAMES)
+    host_choices = [name for name in HOSTS if name != hero]
+    host = args.host or rng.choice(host_choices)
+    visitor_choices = [name for name in VISITORS if name not in {hero, host}]
+    visitor = args.visitor or rng.choice(visitor_choices)
     return StoryParams(
         place=args.place or "cantina",
-        hero=args.hero or rng.choice(NAMES),
-        host=args.host or rng.choice(HOSTS),
-        visitor=args.visitor or rng.choice(VISITORS),
+        hero=hero,
+        host=host,
+        visitor=visitor,
         seed=args.seed,
     )
 
