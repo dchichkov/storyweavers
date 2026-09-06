@@ -420,7 +420,8 @@ training/storyworld_chat/.venv/bin/python \
 
 Generate against one or more checkpoints. Greedy decoding is the default so a
 checkpoint gives repeatable output; pass `--temperature 0.7` for an explicitly
-sampled companion run.
+sampled companion run. Generation prepends the tokenizer's beginning-of-sequence
+token, matching `OpenAIChatJsonlDataset` in `train_chat.py` exactly.
 
 ```bash
 training/storyworld_chat/.venv/bin/python \
@@ -433,6 +434,12 @@ training/storyworld_chat/.venv/bin/python \
   --bf16 \
   --out training/storyworld_chat/vibe_runs/dev16_seed20260905.generations.jsonl
 ```
+
+The original 2026-09-05 vibe run omitted `<|begin_of_text|>` during generation,
+although training always included it. Its prompts, generations, ratings, and
+report remain preserved under the original `dev16_seed20260905.*` names for
+auditability. The corrected rerun uses separate `dev16_seed20260905.bos.*`
+artifacts; generation rows also record `generation.bos_prepended=true`.
 
 Judge on the Linux box, then produce the compact summary and the full prompt,
 reference, generation, and score report:

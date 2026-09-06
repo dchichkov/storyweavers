@@ -225,9 +225,13 @@ def generate(args: argparse.Namespace) -> int:
         stop_ids = list(dict.fromkeys(token for token in stop_ids if token is not None))
 
         for batch in chunks(prompts, args.batch_size):
+            bos = tokenizer.bos_token or ""
             rendered = [
-                tokenizer.apply_chat_template(
-                    row["prompt_messages"], tokenize=False, add_generation_prompt=True
+                bos
+                + tokenizer.apply_chat_template(
+                    row["prompt_messages"],
+                    tokenize=False,
+                    add_generation_prompt=True,
                 )
                 for row in batch
             ]
@@ -280,6 +284,7 @@ def generate(args: argparse.Namespace) -> int:
                             "max_new_tokens": args.max_new_tokens,
                             "temperature": args.temperature,
                             "top_p": args.top_p,
+                            "bos_prepended": bool(bos),
                         },
                     }
                 )
