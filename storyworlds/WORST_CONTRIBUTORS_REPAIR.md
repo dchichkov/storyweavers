@@ -128,5 +128,8 @@ Legend: `queued`, `active`, `repaired`, `verified`, `blocked`.
 | 14 | verified | `instance_chowmein_lesson_learned_bad_ending_rhyme.py` | 1 skeleton; 54/100 exact unique in fresh baseline | 1 skeleton | 100 unique; 100 skeletons | Twelve food-safe, non-cruel incidents; pronouns fixed. |
 | 14 | verified | `jambalaya_lasagne_duplicate_foreshadowing_twist_problem_solving.py` | 1 skeleton; 75/100 emitted in fresh baseline | 1 skeleton | 100 unique; 100 skeletons | Twelve duplicate mysteries; duplication made causally meaningful. |
 | 14 | verified | `putty_pupil_exclusion_playground_quest_conflict_pirate.py` | 1 skeleton; 71/100 exact unique in fresh baseline | 1 skeleton | 100 unique; 99 skeletons | Twelve inclusive playground quests; 312/500 unique story-QA pairs. |
+| 14 | verified | `coincide_linguine_icicle_warehouse_aisle_dialogue_slice.py` | 1 skeleton; 70/100 exact unique in fresh baseline | 1 skeleton | 100 unique; 100 skeletons | Twelve warehouse incidents with trained staff handling hazards. |
+| 15 | verified | `infer_archer_colony_reconciliation_rhyming_story.py` | 1 skeleton; 72/100 emitted in fresh baseline | 1 skeleton | 100 unique; 100 skeletons | Twelve supervised soft-archery incidents; colony means animal community. |
+| 15 | verified | `somersault_sanitary_sound_effects_fable.py` | 1 skeleton; 72/100 emitted in fresh baseline | 1 skeleton | 100 unique; 100 skeletons | Twelve sanitation incidents; acrobatics made supervised and safe. |
 
 Additional waves follow the frozen 120-script template-collapse ranking.
