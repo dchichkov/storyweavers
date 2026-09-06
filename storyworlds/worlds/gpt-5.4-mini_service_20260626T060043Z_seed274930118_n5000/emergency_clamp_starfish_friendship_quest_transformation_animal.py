@@ -28,7 +28,11 @@ import sys
 from dataclasses import dataclass, field
 from typing import Optional
 
-sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+HERE = os.path.dirname(os.path.abspath(__file__))
+ROOT = HERE
+while ROOT != os.path.dirname(ROOT) and not os.path.exists(os.path.join(ROOT, "results.py")):
+    ROOT = os.path.dirname(ROOT)
+sys.path.insert(0, ROOT)
 from results import QAItem, StoryError, StorySample  # noqa: E402
 
 
@@ -88,6 +92,20 @@ class Tool:
     tail: str
 
 
+@dataclass(frozen=True)
+class NarrativeArc:
+    id: str
+    opening: str
+    emergency: str
+    obstacle: str
+    clue: str
+    friend_choice: str
+    hero_action: str
+    release: str
+    transformation: str
+    ending: str
+
+
 class World:
     def __init__(self, setting: Setting) -> None:
         self.setting = setting
@@ -141,7 +159,7 @@ def _r_clamp_hurts(world: World) -> list[str]:
         return out
     world.fired.add(sig)
     carrier.memes["stress"] = carrier.memes.get("stress", 0) + 1
-    out.append(f"The clamp looked heavy, and {carrier.id} felt the worry pinch harder.")
+    out.append(f"For one breath the clamp resisted, and {carrier.id} felt the worry pinch harder.")
     return out
 
 
@@ -153,7 +171,7 @@ def _r_free_starfish(world: World) -> list[str]:
         return out
     if not star.stuck:
         return out
-    helper = world.entities.get("hero")
+    helper = world.facts.get("hero")
     if not helper:
         return out
     if helper.memes.get("brave", 0) < THRESHOLD:
@@ -167,14 +185,15 @@ def _r_free_starfish(world: World) -> list[str]:
     star.stuck = False
     star.meters["safe"] = star.meters.get("safe", 0) + 1
     helper.memes["joy"] = helper.memes.get("joy", 0) + 1
-    out.append("The clamp opened, and the starfish wriggled free at last.")
+    arc = world.facts["arc"]
+    out.append(arc.release)
     return out
 
 
 def _r_transformation(world: World) -> list[str]:
     out: list[str] = []
-    hero = world.entities.get("hero")
-    star = world.entities.get("starfish")
+    hero = world.facts.get("hero")
+    star = world.facts.get("star")
     if not hero or not star:
         return out
     if hero.memes.get("brave", 0) < THRESHOLD or star.meters.get("safe", 0) < THRESHOLD:
@@ -185,7 +204,7 @@ def _r_transformation(world: World) -> list[str]:
     world.fired.add(sig)
     hero.memes["confidence"] = hero.memes.get("confidence", 0) + 1
     star.meters["glow"] = star.meters.get("glow", 0) + 1
-    out.append("The hero felt changed, from shy and shaky to steady and bright.")
+    out.append(world.facts["arc"].transformation.format(hero=hero.id))
     return out
 
 
@@ -230,6 +249,172 @@ TOOLS = {
         tail="used the shell wedge to pry the clamp open",
     )
 }
+
+
+ARCS = [
+    NarrativeArc(
+        "nursery_gate",
+        "A spring tide had filled the reef nursery with silver bubbles.",
+        "A loose research clamp had snapped around one arm of a young starfish beside the nursery gate.",
+        "Every wave rocked the gate and tightened the clamp another click.",
+        "A trail of scraped algae showed that the gate must be held still before anyone touched the fastener.",
+        "offered to brace the swaying gate, although the deeper water frightened them",
+        "slid the shell wedge beneath the clamp and waited for the wave to draw back",
+        "With the gate steady, the clamp sprang open and the starfish crept into the quiet nursery.",
+        "That patient rescue was a transformation for {hero}: worry became careful courage, not reckless speed.",
+        "At sunset, the freed starfish rested among the bubbles while two friends watched the gate swing safely above it.",
+    ),
+    NarrativeArc(
+        "storm_marker",
+        "After a night storm, broken marker ropes lay across the tidepool.",
+        "A clamp from a marker line had pinned a starfish beneath a flat red float.",
+        "Foam hid the clamp each time the friends leaned close.",
+        "The float rose on every third wave, leaving one calm breath in which to work.",
+        "counted the waves aloud so the rescue would follow a safe rhythm",
+        "used the shell wedge only when the third wave lifted the float",
+        "On the next count, the clamp released and the starfish paddled clear of the storm rope.",
+        "The quest caused a quiet transformation in {hero}, who learned that bravery can listen and time its move.",
+        "Three tiny arm prints remained in the wet sand beside the neatly coiled marker rope.",
+    ),
+    NarrativeArc(
+        "telescope_stand",
+        "The friends came to chart moon pools for the reef animals.",
+        "The clamp on an old tide telescope had fallen and trapped a starfish against its wooden stand.",
+        "The stand tilted whenever either animal pulled at the clamp.",
+        "A dry barnacle patch marked the one leg that needed a counterweight.",
+        "dragged a round stone into place and promised not to let the telescope tip",
+        "wedged the clamp apart while keeping one paw against the balanced stand",
+        "The balanced stand held; the clamp opened, and the starfish slid down a ribbon of water.",
+        "For {hero}, the transformation was from guessing alone to trusting a friend's practical idea.",
+        "That night the telescope pointed at the moon, with the starfish safe in the pool below its reflection.",
+    ),
+    NarrativeArc(
+        "rescue_basket",
+        "A floating rescue basket bumped against the reef after drifting from the harbor.",
+        "Its metal clamp had caught a starfish together with a twist of fishing line.",
+        "Pulling the line made the starfish slide toward a sharp shell edge.",
+        "The line went slack whenever the basket was turned toward shore.",
+        "turned the heavy basket while calling clear directions to the hero",
+        "kept the line loose and worked the wedge into the clamp from the safe side",
+        "The clamp clicked free, and the starfish dropped gently into a cup of clear water.",
+        "The shared work brought a transformation: {hero} stopped treating help as a weakness and began using it as strength.",
+        "They carried the empty basket home while the starfish vanished beneath a waving green frond.",
+    ),
+    NarrativeArc(
+        "festival_lantern",
+        "The reef animals were hanging shell lanterns for the first low-tide festival.",
+        "One lantern clamp slipped from its cord and closed over a starfish near the dance pool.",
+        "The lantern kept spinning, putting the trapped arm under strain.",
+        "Its shadow paused whenever the cord was caught against a forked rock.",
+        "caught the cord and gave up a place in the parade to keep it from twisting",
+        "crawled beneath the quiet lantern and eased the clamp open with the wedge",
+        "Once the cord stopped turning, the clamp loosened and the starfish unfurled all five arms.",
+        "Kindness made the transformation in {hero}: being the festival's rescuer mattered more than leading its parade.",
+        "The last lantern cast a five-pointed glow around the starfish as the friends danced on opposite sides of the pool.",
+    ),
+    NarrativeArc(
+        "kelp_bridge",
+        "The pair set out to repair a kelp bridge used by the smallest shore animals.",
+        "Beneath the kelp bridge, a fastening clamp had fallen onto a starfish and tangled itself in two strands.",
+        "Cutting either strand would drop the bridge into the channel.",
+        "The crossed strands formed a loop that could carry the weight if both ends stayed taut.",
+        "held both kelp ends, choosing a sore grip over abandoning the bridge",
+        "followed the loop to the clamp and pried its hinge instead of cutting the living kelp",
+        "The hinge opened; the starfish floated free, and the woven bridge stayed whole.",
+        "The transformation taught {hero} to protect the whole reef while saving one animal in danger.",
+        "By evening, the starfish sheltered under the bridge and tiny crabs crossed safely overhead.",
+    ),
+    NarrativeArc(
+        "current_meter",
+        "A current meter had begun ringing a warning bell beside the deep pool.",
+        "Its clamp had detached and caught a starfish in the narrow channel below.",
+        "The rushing water pushed the wedge away each time the hero reached down.",
+        "A side channel became still when a broad shell covered its inlet.",
+        "swam against the current to place the broad shell over the inlet",
+        "entered the newly calm channel and twisted the wedge across the clamp's hinge",
+        "In the softened current, the clamp opened and the starfish climbed onto a safe ledge.",
+        "The emergency changed {hero}; after the transformation, fear became respect for water and a habit of planning.",
+        "The warning bell fell silent, and five starfish arms waved from the ledge like a small good-bye.",
+    ),
+    NarrativeArc(
+        "map_case",
+        "The friends were following an old shell map to find a freshwater seep.",
+        "At the final marker, the clamp of the map case had trapped a starfish in a rocky crack.",
+        "The crack was too narrow for both friends to reach the hinge.",
+        "Reflected light on the case revealed a second opening behind the rock.",
+        "gave the only lantern shell to the hero and felt along the dark rear passage",
+        "guided the wedge toward the hinge by following the friend's tapping signal",
+        "A final tap guided the wedge home; the clamp opened and the starfish backed out of the crack.",
+        "The quest transformed {hero} from the one who wanted to lead into the one who knew how to listen.",
+        "Fresh water beaded on the open map case while the starfish traced a five-armed path across the pool floor.",
+    ),
+    NarrativeArc(
+        "crab_hospital",
+        "At the little animal hospital, the friends were delivering clean moss bandages.",
+        "An empty supply-box clamp had sprung shut on a starfish volunteer.",
+        "A frightened hermit crab crowded the doorway and blocked the shortest route.",
+        "The crab calmed when someone spoke softly and showed it the open bandage basket.",
+        "comforted the crab and cleared a path instead of rushing past it",
+        "knelt beside the supply box and rocked the wedge gently until the clamp relaxed",
+        "The clamp relaxed without a snap, and the starfish crawled onto the clean moss.",
+        "The transformation made {hero} gentler under pressure: an emergency did not erase anyone else's fear.",
+        "The starfish later placed one bright bandage on the empty box, a reminder to mend its clamp.",
+    ),
+    NarrativeArc(
+        "bell_rope",
+        "A reef bell announced the safe path home before the tide returned.",
+        "The bell-rope clamp had dropped into a pool and pinned a starfish under its brass tongue.",
+        "If the rope went loose, the other young animals would lose their warning signal.",
+        "A forked branch could hold the rope while the clamp was opened below.",
+        "raised the branch and kept the bell sounding for everyone still on the reef",
+        "descended beside the starfish and levered the clamp away from the brass tongue",
+        "The clamp lifted, the starfish escaped, and the bell continued its steady call.",
+        "Responsibility completed {hero}'s transformation from a nervous traveler into a guardian of the path.",
+        "As the tide covered the stones, the bell rang above one last star-shaped ripple.",
+    ),
+    NarrativeArc(
+        "science_tag",
+        "The two friends volunteered to count animals in the protected tidepool.",
+        "A discarded tagging clamp had closed beside a starfish and wedged two of its arms beneath a slate.",
+        "Moving the slate first would scrape the starfish against the rough pool floor.",
+        "Tiny bubbles escaped from a release notch hidden under the clamp.",
+        "held a mirror shell below the water so the hidden notch became visible",
+        "aimed the shell wedge at the reflected notch and pressed until the spring yielded",
+        "The spring yielded, the slate lifted, and the starfish walked away on all five arms.",
+        "Curiosity and care worked a transformation in {hero}, turning a frightened witness into a thoughtful problem-solver.",
+        "They drew the five clear arm tracks in their animal-count book and locked the broken clamp away.",
+    ),
+    NarrativeArc(
+        "driftwood_cart",
+        "A driftwood cart carried sea grass to animals stranded by the heat.",
+        "When one wheel broke, its clamp bounced into a puddle and trapped a starfish at the puddle's edge.",
+        "The loaded cart began rolling back toward the rescue place.",
+        "A shallow groove beside the wheel was just wide enough for a stone brake.",
+        "left the precious sea grass, caught the cart, and kicked a stone into the groove",
+        "pressed the shell wedge with all available strength while {friend} held the cart secure",
+        "The wheel stopped, the clamp opened, and the starfish slipped into the deeper pool.",
+        "The transformation joined courage with friendship: {hero} learned that a quest succeeds when friends divide the danger.",
+        "Later, the repaired cart rolled on, leaving a damp five-pointed mark on its lowest plank.",
+    ),
+]
+
+OPENING_FORMS = [
+    "{hero}, a {trait} {animal}, usually explored beside {friend}, a kind {friend_animal}.",
+    "Whenever {hero} the {animal} felt unsure, {friend} the {friend_animal} made room for one more brave step.",
+    "The tidepool knew {hero} as a {trait} {animal} and {friend} as the friend who always listened.",
+    "This animal quest began with {hero} the {animal} and {friend} the {friend_animal} sharing an ordinary morning.",
+    "{hero} and {friend} had different strengths, which was exactly why their friendship worked.",
+    "Before the emergency, {hero} the {animal} thought every quest had to be completed alone.",
+]
+
+DIALOGUES = [
+    ('"We need a plan, not a pull," said {friend}.', '"Stay with me while I try it," answered {hero}.'),
+    ('"I can handle one part if you handle the other," said {friend}.', '"Then neither of us is alone," said {hero}.'),
+    ('"Look at what the water is telling us," {friend} whispered.', '"I see the clue now," replied {hero}.'),
+    ('"The starfish needs us to be careful," said {hero}.', '"Careful and together," {friend} agreed.'),
+    ('"Being scared does not end the quest," said {friend}.', '"No, but it tells us to think," said {hero}.'),
+    ('"First make the danger still," said {hero}.', '"Then open the clamp," replied {friend}.'),
+]
 
 GIRL_NAMES = ["Mina", "Luna", "Tia", "Nori", "Kiki"]
 BOY_NAMES = ["Pip", "Milo", "Jasper", "Tomo", "Rai"]
@@ -291,38 +476,81 @@ def resolve_params(args: argparse.Namespace, rng: random.Random) -> StoryParams:
     )
 
 
-def _do_quest(world: World, hero: Entity, friend: Entity, star: Entity, clamp: Entity, tool: Tool) -> None:
+def _do_quest(
+    world: World,
+    hero: Entity,
+    friend: Entity,
+    star: Entity,
+    clamp: Entity,
+    tool: Tool,
+    arc: NarrativeArc,
+    dialogue: tuple[str, str],
+    structure: int,
+) -> None:
+    def names(text: str) -> str:
+        return text.format(hero=hero.id, friend=friend.id)
+
     hero.memes["worry"] = hero.memes.get("worry", 0) + 1
-    world.say(
-        f"One morning at {world.setting.place}, {hero.id} the {hero.type} saw an emergency: "
-        f"a starfish was stuck under the clamp."
+    world.facts.update(
+        obstacle=arc.obstacle,
+        clue=arc.clue,
+        friend_choice=arc.friend_choice,
+        hero_action=names(arc.hero_action),
+        release=arc.release,
+        transformation=arc.transformation.format(hero=hero.id),
+        ending=arc.ending,
     )
-    world.say(
-        f"{friend.id} came quickly too, because friends do not leave when the tidepool feels scary."
-    )
+
+    if structure == 0:
+        world.say(arc.opening)
+        world.say(f"Then came the emergency: {arc.emergency}")
+        world.say(arc.obstacle)
+    elif structure == 1:
+        world.say(f"The emergency arrived without warning. {arc.emergency}")
+        world.say(arc.opening)
+        world.say(f"The first rescue attempt failed. {arc.obstacle}")
+    elif structure == 2:
+        world.say(arc.opening)
+        world.say(f'"A starfish needs help!" cried {hero.id}. {arc.emergency}')
+        world.say(f"They paused before touching the clamp. {arc.obstacle}")
+    else:
+        world.say(f"Something was wrong at {world.setting.place}: {arc.emergency}")
+        world.say(arc.opening)
+        world.say(f"This would be no simple quest. {arc.obstacle}")
+
     world.para()
-    world.say(f"{hero.id} wanted to {QUESTS['rescue'].verb}, but {tool.prep} first.")
-    world.say(f"{hero.id} and {friend.id} followed the quest path over the wet stones.")
-    world.say(f"They found {tool.phrase} near a warm shell pile.")
+    world.say(dialogue[0].format(hero=hero.id, friend=friend.id))
+    world.say(f"They studied the emergency instead of yanking at the clamp. {arc.clue}")
+    world.say(
+        f"For friendship's sake, {friend.id} {arc.friend_choice}. "
+        f"That choice gave {hero.id} time to {tool.prep}."
+    )
+    world.say(dialogue[1].format(hero=hero.id, friend=friend.id))
     hero.meters["tool_use"] = hero.meters.get("tool_use", 0) + 1
     clamp.carried_by = hero.id
     hero.memes["brave"] = hero.memes.get("brave", 0) + 1
-    world.say(
-        f"{hero.id} held the tool with careful paws and started the rescue, even though the clamp looked hard to move."
-    )
+    friend.memes["support"] = friend.memes.get("support", 0) + 1
+    world.say(f"Working as a team, {hero.id} {names(arc.hero_action)}.")
     propagate(world, narrate=True)
     clamp.carried_by = None
-    world.say(tool.tail.capitalize() + ".")
-    propagate(world, narrate=True)
     world.para()
     if not star.stuck:
         world.say(
-            f"The starfish blinked awake, safe again, and {friend.id} cheered as the water sparkled around them."
+            f"{hero.id} thanked {friend.id}. The animal friends understood that their quest had succeeded "
+            "because each had chosen a different useful part."
         )
+        world.say(arc.ending)
     hero.memes["friendship"] = hero.memes.get("friendship", 0) + 1
 
 
 def tell(params: StoryParams) -> World:
+    seed = params.seed if params.seed is not None else 0
+    combination_count = len(ARCS) * len(OPENING_FORMS) * len(DIALOGUES) * 4
+    code = (seed * 137) % combination_count
+    arc = ARCS[code % len(ARCS)]
+    opening_index = (code // len(ARCS)) % len(OPENING_FORMS)
+    dialogue_index = (code // (len(ARCS) * len(OPENING_FORMS))) % len(DIALOGUES)
+    structure = (code // (len(ARCS) * len(OPENING_FORMS) * len(DIALOGUES))) % 4
     world = World(SETTING)
     hero = world.add(Entity(
         id=params.name,
@@ -357,16 +585,32 @@ def tell(params: StoryParams) -> World:
         stuck=False,
         carried_by=None,
     ))
-    world.facts.update(hero=hero, friend=friend, star=star, clamp=clamp, params=params)
+    world.facts.update(hero=hero, friend=friend, star=star, clamp=clamp, params=params, arc=arc)
     world.say(
-        f"{hero.id} was a {params.trait} {params.animal} who loved small quests with {friend.id}, "
-        f"because friendship made even a tidepool day feel big."
+        OPENING_FORMS[opening_index].format(
+            hero=hero.id,
+            trait=params.trait,
+            animal=params.animal,
+            friend=friend.id,
+            friend_animal=params.friend_animal,
+        )
     )
     world.say(
-        f"On that day, the two friends spotted a starfish in an emergency under a clamp."
+        "Their friendship was about to guide an animal rescue quest involving an emergency, a clamp, "
+        "and a starfish toward a real transformation."
     )
     world.para()
-    _do_quest(world, hero, friend, star, clamp, TOOLS[params.tool])
+    _do_quest(
+        world,
+        hero,
+        friend,
+        star,
+        clamp,
+        TOOLS[params.tool],
+        arc,
+        DIALOGUES[dialogue_index],
+        structure,
+    )
     return world
 
 
@@ -374,10 +618,12 @@ def generation_prompts(world: World) -> list[str]:
     f = world.facts
     hero = f["hero"]
     friend = f["friend"]
+    arc = f["arc"]
     return [
-        f'Write a short animal story about {hero.id} the {hero.type}, friendship, and a starfish emergency.',
-        f"Tell a gentle quest story where {friend.id} helps {hero.id} free a starfish from a clamp.",
-        f'Write an Animal Story with the words "emergency", "clamp", and "starfish" that ends in transformation.',
+        f"Write a short animal story about {hero.id} the {hero.type}, {friend.id} the {friend.type}, "
+        f"and the {arc.id.replace('_', ' ')} starfish emergency.",
+        f"Tell a friendship quest in which {friend.id} helps {hero.id} understand this clue: {arc.clue}",
+        f'Write an Animal Story with the words "emergency", "clamp", and "starfish" that ends in a transformation and this image: {arc.ending}',
     ]
 
 
@@ -385,33 +631,42 @@ def story_qa(world: World) -> list[QAItem]:
     f = world.facts
     hero = f["hero"]
     friend = f["friend"]
-    star = f["star"]
-    clamp = f["clamp"]
     params = f["params"]
+    arc = f["arc"]
+    first_animal = ("an" if params.animal[0].lower() in "aeiou" else "a") + f" {params.animal}"
+    second_animal = ("an" if params.friend_animal[0].lower() in "aeiou" else "a") + f" {params.friend_animal}"
     return [
         QAItem(
-            question=f"Who saw the emergency at the tidepool reef?",
-            answer=f"{hero.id} saw it first, and {friend.id} rushed over to help.",
+            question=f"What caused the starfish emergency that {hero.id} and {friend.id} found?",
+            answer=arc.emergency,
         ),
         QAItem(
-            question=f"What was stuck under the clamp?",
-            answer=f"The starfish was stuck under the clamp until the friends used the shell wedge.",
+            question=f"What made the clamp difficult for {hero.id} to open?",
+            answer=arc.obstacle,
         ),
         QAItem(
-            question=f"How did friendship matter in the quest?",
-            answer=f"{friend.id} stayed close and helped {hero.id} stay brave, so the rescue could happen.",
+            question=f"What clue helped {hero.id} and {friend.id} form a safe plan?",
+            answer=arc.clue,
         ),
         QAItem(
-            question=f"What changed by the end of the story?",
-            answer=f"{hero.id} changed from worried to brave, and the starfish changed from stuck to safe.",
+            question=f"What friendship choice did {friend.id} make?",
+            answer=f"{friend.id} {arc.friend_choice}.",
         ),
         QAItem(
-            question=f"Why was the clamp important in this story?",
-            answer=f"The clamp was the thing that made the emergency real, because it held the starfish down until the friends opened it.",
+            question=f"How did {hero.id} complete the rescue?",
+            answer=f"{hero.id} {f['hero_action']}. {f['release']}",
         ),
         QAItem(
-            question=f"What kind of story was this with {params.animal} and {params.friend_animal} friends?",
-            answer="It was an Animal Story about a quest, a rescue, and a gentle transformation.",
+            question=f"How did the animal quest transform {hero.id}?",
+            answer=f["transformation"],
+        ),
+        QAItem(
+            question=f"What final image showed {hero.id} and {friend.id} that the emergency was over?",
+            answer=f["ending"],
+        ),
+        QAItem(
+            question=f"What kind of story joined {first_animal} and {second_animal}?",
+            answer=f"It was an Animal Story joining {hero.id} the {params.animal} and {friend.id} the {params.friend_animal} in a friendship quest and transformation.",
         ),
     ]
 
@@ -482,9 +737,9 @@ def valid_story(params: StoryParams) -> bool:
 
 
 CURATED = [
-    StoryParams(name="Mina", animal="octopus", trait="shy", friend_name="Pip", friend_animal="otter", quest="rescue", tool="shell_wedge"),
-    StoryParams(name="Luna", animal="seal", trait="gentle", friend_name="Rai", friend_animal="turtle", quest="rescue", tool="shell_wedge"),
-    StoryParams(name="Tomo", animal="crab", trait="curious", friend_name="Kiki", friend_animal="fish", quest="rescue", tool="shell_wedge"),
+    StoryParams(name="Mina", animal="octopus", trait="shy", friend_name="Pip", friend_animal="otter", quest="rescue", tool="shell_wedge", seed=0),
+    StoryParams(name="Luna", animal="seal", trait="gentle", friend_name="Rai", friend_animal="turtle", quest="rescue", tool="shell_wedge", seed=1),
+    StoryParams(name="Tomo", animal="crab", trait="curious", friend_name="Kiki", friend_animal="fish", quest="rescue", tool="shell_wedge", seed=2),
 ]
 
 

@@ -20,13 +20,17 @@ from __future__ import annotations
 
 import argparse
 import json
-import os
 import random
 import sys
 from dataclasses import dataclass, field
+from pathlib import Path
 from typing import Optional
 
-sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+ROOT = next(
+    parent for parent in Path(__file__).resolve().parents
+    if (parent / "storyworlds" / "results.py").is_file()
+)
+sys.path.insert(0, str(ROOT / "storyworlds"))
 from results import QAItem, StoryError, StorySample  # noqa: E402
 
 THRESHOLD = 1.0
@@ -119,44 +123,43 @@ class World:
         return "\n\n".join(" ".join(p) for p in self.paragraphs if p)
 
 
-def _moneyless_risk(world: World) -> list[str]:
+def _curious_choice_has_cost(world: World) -> list[str]:
     out: list[str] = []
     hero = world.get("hero")
     dress = world.get("dress")
-    thorn = world.get("thorn")
     if hero.memes.get("curiosity", 0) < THRESHOLD:
         return out
-    if dress.meters.get("torn", 0) >= THRESHOLD:
+    if dress.meters.get("damaged", 0) >= THRESHOLD:
         return out
-    if hero.meters.get("near_thorn", 0) < THRESHOLD:
+    if hero.meters.get("chose_quest", 0) < THRESHOLD:
         return out
-    sig = ("torn", dress.id)
+    sig = ("quest_cost", world.facts["arc_id"])
     if sig in world.fired:
         return out
     world.fired.add(sig)
-    dress.meters["torn"] = 1
-    dress.meters["dirty"] = 1
-    thorn.meters["used"] = 1
-    out.append("The thorn snagged the dress and left a long jagged tear.")
+    dress.meters["damaged"] = 1
+    dress.meters[world.facts["damage_kind"]] = 1
+    out.append(world.facts["consequence"])
     return out
 
 
-def _loss_after_torn(world: World) -> list[str]:
+def _quest_fails_after_cost(world: World) -> list[str]:
     out: list[str] = []
     hero = world.get("hero")
     dress = world.get("dress")
-    if dress.meters.get("torn", 0) < THRESHOLD:
+    if dress.meters.get("damaged", 0) < THRESHOLD:
         return out
-    sig = ("loss", dress.id)
+    sig = ("failed_quest", world.facts["arc_id"])
     if sig in world.fired:
         return out
     world.fired.add(sig)
     hero.memes["sorrow"] = hero.memes.get("sorrow", 0) + 1
-    out.append("After that, the dress could not be made whole again.")
+    hero.meters["quest_failed"] = 1
+    out.append(world.facts["failed_goal"])
     return out
 
 
-CAUSAL_RULES = [_moneyless_risk, _loss_after_torn]
+CAUSAL_RULES = [_curious_choice_has_cost, _quest_fails_after_cost]
 
 
 def propagate(world: World, narrate: bool = True) -> list[str]:
@@ -184,14 +187,201 @@ class StoryParams:
     seed: Optional[int] = None
 
 
+@dataclass(frozen=True)
+class QuestArc:
+    id: str
+    lure: str
+    goal: str
+    fairy_name: str
+    warning: str
+    choice: str
+    obstacle: str
+    action: str
+    consequence: str
+    damage_kind: str
+    truth: str
+    failed_goal: str
+    final_image: str
+    lesson: str
+
+
 SETTINGS = {
     "rose path": Setting(place="the rose path", landmark="the sweetwilliam hedge"),
     "moon garden": Setting(place="the moon garden", landmark="the sweetwilliam hedge"),
     "brook lane": Setting(place="the brook lane", landmark="the sweetwilliam hedge"),
 }
 
-HERO_NAMES = ["Lina", "Mira", "Eira", "Nora", "Elin", "Tessa"]
+GIRL_NAMES = ["Lina", "Mira", "Eira", "Nora", "Elin", "Tessa"]
+BOY_NAMES = ["Ari", "Milo", "Nils", "Oren", "Perrin", "Tomas"]
+HERO_NAMES = GIRL_NAMES + BOY_NAMES
 TRAITS = ["curious", "gentle", "brave", "dreamy"]
+
+QUEST_ARCS = [
+    QuestArc(
+        "moon_key", "a moon-pale key ticking beneath the flowers", "unlock the silver door painted on an old pear tree",
+        "Pipkin", "That key belongs to the night. Wait until the moon rises.",
+        "pocketed the key and tried the painted lock before sunset", "a hooked branch barred the shortest path",
+        "ducked under it instead of walking around", "The hook caught the dress and tore a crescent from its hem.", "torn",
+        "The silver door was only moonlight on bark, and the key became an ordinary snail shell.",
+        "There was no hidden room to find, and the moon key would not tick again.",
+        "On the pear-tree root lay the torn blue crescent beside one quiet shell.",
+        "wonder can be enjoyed without grabbing what is not understood",
+    ),
+    QuestArc(
+        "bell_gate", "three bell notes ringing from a gate no one else could see", "reach the fairy music before its last note",
+        "Mallow", "The music crosses the bog path. Follow the stepping stones, not the sound.",
+        "hurried straight toward the loudest chime", "black mud hid beneath a bright skin of duckweed",
+        "jumped from a root toward a reflection that looked like stone", "The root rolled, and dark mud splashed the dress from collar to hem.", "stained",
+        "The final bell came from a sleepy cow beyond the hedge, not a fairy gate.",
+        "The music stopped, the imagined gate vanished, and the stains would never wash pale again.",
+        "At dusk, three muddy footprints and a dull blue dress faced the silent field.",
+        "an exciting sound is not a map",
+    ),
+    QuestArc(
+        "dew_map", "a map written in beads of dew across a sweetwilliam leaf", "follow the shining route to the fairies' breakfast table",
+        "Ferncap", "Read it where it grows. A dew map disappears when carried.",
+        "plucked the leaf so the secret route could come along", "a warm wind curled the leaf into a tube",
+        "dipped it in the brook, hoping the water would restore the lines", "The wet leaf bled green across the dress and blurred every silver stitch.", "dyed",
+        "Fresh dew formed a tiny arrow pointing back to the flower that had been picked.",
+        "The route was gone, and the fairies closed their breakfast before the lost map could be returned.",
+        "The curled leaf floated downstream while green drops dried on the empty blue pocket.",
+        "some clues must be studied gently where they belong",
+    ),
+    QuestArc(
+        "petal_door", "a tiny red door opening and closing between the sweetwilliam stems", "ask the garden fairies for one wish",
+        "Thimble", "Knock once and stand back. Never push a fairy door.",
+        "knocked twice, then pulled at the door when nobody answered", "the stems twisted into a narrow living corridor",
+        "squeezed sideways and tugged harder at the red handle", "The closing petals pinched the dress and pulled off every pearl button.", "buttonless",
+        "Behind the door was a beetle's winter cupboard, with no wish inside.",
+        "The little door sealed itself, and no fairy answered another knock that day.",
+        "Six pearl buttons rested like cold seeds under the firmly closed red petals.",
+        "patience matters when asking to enter another creature's home",
+    ),
+    QuestArc(
+        "foxglove_lantern", "a violet lantern bobbing beyond the hedge at noon", "bring home a spark that could light bedtime stories",
+        "Brindlewing", "A fairy light chooses its own road. Watch from the path.",
+        "followed the lantern through a gap marked with crossed twigs", "the light drifted over a bed of clinging burrs",
+        "crawled after it and brushed the burrs away with both sleeves", "The burrs frayed the dress until both sleeves hung in blue threads.", "frayed",
+        "The lantern was a violet petal carried by a bright green beetle.",
+        "The beetle flew free, but the hoped-for bedtime spark had never existed.",
+        "Blue threads fluttered from the burr patch as the green beetle vanished into gold light.",
+        "a beautiful moving thing need not be captured",
+    ),
+    QuestArc(
+        "mirror_beetle", "a beetle whose back showed a castle in place of a reflection", "find the castle queen and return her missing crown",
+        "Clover", "Do not chase the picture. Ask what the beetle is reflecting.",
+        "ran after each new castle gleam without looking up", "the reflections led beneath a low, dripping stone arch",
+        "climbed onto a mossy ledge to catch the brightest view", "Cold rusty water poured from the arch and striped the dress orange.", "rust_stained",
+        "The castle stood on the far hill; its image had simply curved across the beetle's shell.",
+        "By the time the truth was clear, the castle gates had closed and the crown quest was over.",
+        "The beetle rested clean on a leaf while orange lines dried across the dress below.",
+        "curiosity works best when it pauses to test what it sees",
+    ),
+    QuestArc(
+        "whisper_well", "a voice in an acorn cup whispering, 'Find what the well forgot'", "recover the well's forgotten name",
+        "Nettle", "Lower the cup slowly, and stop if the rope turns blue.",
+        "kept lowering the cup after the rope flashed blue", "a water wheel woke and spun the rope in a sudden loop",
+        "grabbed the wet rope rather than letting the cup go", "The loop snapped a jar of berry dye, soaking the dress in purple blotches.", "blotched",
+        "The whisper had been the echo of wind passing through the empty acorn cup.",
+        "The cup sank beyond reach, taking the supposed name and the quest with it.",
+        "Purple water circled the well while one empty rope knocked softly against the stones.",
+        "letting go can be wiser than forcing a mystery to continue",
+    ),
+    QuestArc(
+        "seed_crown", "a golden seed wearing a crown of white hairs", "plant a new fairy kingdom before the seed flew away",
+        "Sorrel", "A flying seed already knows where it must land. Do not tie it down.",
+        "fastened the seed to a pearl button with a ribbon", "a gust pulled the ribbon toward the thorn maze",
+        "held the ribbon tight and chased it between the thorns", "The ribbon tore away with the button and ripped a long seam down the dress.", "split_seam",
+        "The golden seed sailed over the wall and settled by itself in a sunny field.",
+        "The seed was gone, and no forced fairy kingdom grew inside the garden.",
+        "Beyond the wall the seed shone freely, while a loose blue seam trailed through the thorns.",
+        "help is not helpful when it ignores what a living thing needs",
+    ),
+    QuestArc(
+        "sugar_bridge", "a trail of sparkling grains leading toward a bridge the size of a spoon", "cross into the fairies' midsummer market",
+        "Honeytoe", "Those are salt crystals, not fairy sugar. Rain is coming.",
+        "tasted one grain but followed the trail anyway", "the first raindrops swelled the clay beside the tiny bridge",
+        "knelt to shore up the bridge with handfuls of sticky clay", "Clay hardened over the dress, making its skirt stiff and heavy.", "clay_caked",
+        "The bridge belonged to ants carrying salt away from their flooded nest.",
+        "The ant trail moved underground, and the imagined fairy market could no longer be reached.",
+        "At sunset, ants crossed safely beneath a stiff blue skirt propped beside the empty path.",
+        "careful questions reveal who truly needs help",
+    ),
+    QuestArc(
+        "clock_moth", "a clock-faced moth beating its wings backward", "follow it to yesterday and mend a forgotten promise",
+        "Tansy", "The marks are wing spots, not clock hands. Stay outside the old glasshouse.",
+        "lifted the glasshouse latch when the moth slipped through", "sleeping vines tightened around the doorway",
+        "pushed through before the vines could close", "The latch caught the dress and peeled away its lace collar.", "collar_lost",
+        "Inside, every clock was broken, and the moth flew forward like any other moth.",
+        "Yesterday never opened, so the forgotten promise remained beyond reach.",
+        "A lace collar hung from the locked latch while the clock moth slept on tomorrow's window.",
+        "wanting to change the past does not make every sign a doorway",
+    ),
+    QuestArc(
+        "rainbow_spool", "a spool unwinding a rainbow thread through the flower bed", "sew the morning rainbow back before the sky faded",
+        "Bluebell", "That thread is spider silk in sunlight. Do not wind it around yourself.",
+        "looped the thread around the dress so it could not escape", "the hidden spider hurried home and pulled from the other end",
+        "spun in circles to gather every shining strand", "The sticky silk dragged pollen and dry petals all over the dress.", "silk_stuck",
+        "A cloud covered the sun, and the rainbow vanished from the ordinary web.",
+        "No sky needed sewing, and the web was too tangled for its small owner to use.",
+        "Under the gray cloud, a spider waited beside a blue dress wrapped in dusty petals.",
+        "a quick explanation should be checked before acting on it",
+    ),
+    QuestArc(
+        "snowberry_boat", "a white berry sailing in a walnut-shell boat along the gutter", "escort the fairy boat to the sea before twilight",
+        "Dockleaf", "The gutter ends at the mill grate. Lift the boat out before then.",
+        "let the boat race ahead to see whether a secret tunnel waited", "rainwater rushed faster around the bend",
+        "slid down the bank and reached through the grate for the shell", "The grate snagged the dress pocket and tore it away into the stream.", "pocket_torn",
+        "The walnut shell lodged safely in reeds, but the white berry was only a berry.",
+        "Twilight arrived with no sea and no fairy passenger, only an unfinished quest.",
+        "The empty pocket turned in the mill stream while the walnut shell rocked among quiet reeds.",
+        "a promised destination should not matter more than a clear warning",
+    ),
+]
+
+OPENINGS = [
+    "On the morning of the sweetwilliam festival",
+    "While the garden fairies hung dew on the sweetwilliam blooms",
+    "Just after rain polished every sweetwilliam leaf",
+    "When the sweetwilliam hedge smelled warm and spicy",
+    "At the hour when fairy bells were said to wake",
+    "Before the last sweetwilliam flower opened",
+]
+
+REFLECTIONS = [
+    "A warning had sounded dull beside a mystery, but now its meaning was plain.",
+    "The quest had begun with a question; it ended because the answer was chased too quickly.",
+    "Being curious had not been wrong. Refusing to pause had caused the harm.",
+    "The garden kept its secrets, and the costly choice could not be taken back.",
+    "No spell repaired the result, because fairy warnings were not riddles to defeat.",
+]
+
+REQUESTS = [
+    "Please tell me what it means before I choose",
+    "Could I study it from the path first",
+    "I only want one quick look",
+    "What if the secret disappears while I wait",
+    "I can be careful and still finish before supper",
+    "Surely one small step cannot spoil a whole quest",
+]
+
+PAUSES = [
+    "counted five heartbeats, but the lure seemed brighter after each one",
+    "asked one sensible question, then rushed off before hearing the whole answer",
+    "marked the safe path with three pebbles, then abandoned it at the first turn",
+    "promised to stop at the warning sign, but stepped beyond it when the mystery moved",
+    "looked back toward home, then let the unanswered question pull harder",
+    "tested one harmless clue correctly and mistook that success for permission to continue",
+]
+
+ENDING_LEADS = [
+    "Nothing frightening followed the child home, but nothing could undo the choice either.",
+    "Everyone reached home safely; the loss, however, was real and lasting.",
+    "The garden grew peaceful again, though the failed quest left no prize to celebrate.",
+    "Supper was warm and home was safe, yet the damaged dress stayed damaged.",
+    "The fairies did not punish anyone; the ordinary consequence was enough.",
+    "By nightfall the danger had passed, but the hoped-for wonder was gone.",
+]
 
 ASP_RULES = r"""
 curious(H) :- hero(H), curiosity(H).
@@ -254,55 +444,91 @@ def build_parser() -> argparse.ArgumentParser:
 
 def resolve_params(args: argparse.Namespace, rng: random.Random) -> StoryParams:
     gender = args.gender or rng.choice(["girl", "boy"])
-    name = args.name or rng.choice(HERO_NAMES)
+    names = GIRL_NAMES if gender == "girl" else BOY_NAMES
+    name = args.name or rng.choice(names)
     trait = args.trait or rng.choice(TRAITS)
     place = args.place or rng.choice(list(SETTINGS))
-    if args.gender is None and name in {"Eira", "Lina", "Mira", "Nora", "Elin", "Tessa"}:
-        pass
     return StoryParams(name=name, gender=gender, trait=trait, place=place)
 
 
 def tell(params: StoryParams) -> World:
+    seed = params.seed
+    if seed is None:
+        seed = sum(ord(ch) for ch in f"{params.name}|{params.gender}|{params.trait}|{params.place}")
+    cursor = seed
+    arc = QUEST_ARCS[cursor % len(QUEST_ARCS)]
+    cursor //= len(QUEST_ARCS)
+    opening = OPENINGS[cursor % len(OPENINGS)]
+    cursor //= len(OPENINGS)
+    reflection = REFLECTIONS[cursor % len(REFLECTIONS)]
+    cursor //= len(REFLECTIONS)
+    request = REQUESTS[cursor % len(REQUESTS)]
+    cursor //= len(REQUESTS)
+    pause_action = PAUSES[cursor % len(PAUSES)]
+    cursor //= len(PAUSES)
+    ending_lead = ENDING_LEADS[cursor % len(ENDING_LEADS)]
+
     world = World(SETTINGS[params.place])
     hero = world.add(Entity(id="hero", kind="character", type=params.gender, label=params.name, traits=[params.trait]))
     dress = world.add(Entity(id="dress", kind="thing", type="dress", label="dress", phrase="a blue dress with pearl buttons", owner=hero.id))
     hedge = world.add(Entity(id="hedge", kind="thing", type="hedge", label="sweetwilliam hedge"))
-    thorn = world.add(Entity(id="thorn", kind="thing", type="thorn", label="thorn", owner=hedge.id))
-    world.facts.update(hero=hero, dress=dress, hedge=hedge, thorn=thorn, setting=world.setting)
+    fairy = world.add(Entity(id="fairy", kind="character", type="fairy", label=arc.fairy_name, caretaker=hedge.id))
+    lure = world.add(Entity(id="lure", kind="thing", type="clue", label=arc.lure, owner=hedge.id))
+    world.facts.update(
+        hero=hero,
+        dress=dress,
+        hedge=hedge,
+        fairy=fairy,
+        lure=lure,
+        setting=world.setting,
+        arc_id=arc.id,
+        goal=arc.goal,
+        warning=arc.warning,
+        choice=arc.choice,
+        obstacle=arc.obstacle,
+        action=arc.action,
+        consequence=arc.consequence,
+        damage_kind=arc.damage_kind,
+        truth=arc.truth,
+        failed_goal=arc.failed_goal,
+        final_image=arc.final_image,
+        lesson=arc.lesson,
+        request=request,
+        pause_action=pause_action,
+    )
 
     world.say(
-        f"Once in {world.setting.place}, there was a little {params.trait} {params.gender} named {params.name}."
+        f"{opening}, a {params.trait} {params.gender} named {params.name} walked through {world.setting.place}."
     )
     world.say(
-        f"{params.name} wore a dress and loved the sweetwilliam hedge, because its pink blossoms looked like tiny crowns."
+        f"{params.name} wore a blue dress with pearl buttons and stopped beside the sweetwilliam hedge, where {arc.lure} waited."
     )
 
     world.para()
     hero.memes["curiosity"] = 1
     world.say(
-        f"One day, {params.name} noticed a silver glimmer tucked behind {world.setting.landmark}."
+        f"Curiosity filled {params.name} with questions. The discovery suggested a quest: {arc.goal}."
     )
     world.say(
-        f"Curiosity stirred in {params.name}'s chest, and {params.name} decided on a quest to see what hid there."
+        f"A thumb-high fairy named {arc.fairy_name} stepped from the flowers. \"{arc.warning}\""
     )
-
-    hero.meters["near_thorn"] = 1
-    world.say(
-        f"{params.name} slipped closer, stepping between the leaves to follow the little glimmer."
-    )
-    propagate(world)
-    if dress.meters.get("torn", 0) >= THRESHOLD:
-        world.say(
-            f"The pretty dress caught on the thorn, and the bright cloth split before {params.name} could save it."
-        )
+    world.say(f'"{request}," {params.name} replied.')
 
     world.para()
+    world.say(f"For a moment, {params.name} {pause_action}.")
+    world.say(f"Then {params.name} {arc.choice}. Soon {arc.obstacle}.")
+    world.say(f"Determined to complete the quest, {params.name} {arc.action}.")
+    hero.meters["chose_quest"] = 1
     world.say(
-        f"{params.name} stood very still beside the sweetwilliam hedge, holding the torn dress and the ended quest."
+        f'"Stop now," called {arc.fairy_name}, but the warning arrived one choice too late.'
     )
-    world.say(
-        f"The blossoms were still sweet, but the day had turned into a bad ending, and {params.name} learned to heed careful warnings."
-    )
+    propagate(world)
+
+    world.para()
+    world.say(arc.truth)
+    world.say(reflection)
+    world.say(f"{ending_lead} {params.name} understood that {arc.lesson}.")
+    world.say(f"It was a bad ending, though not a cruel one. {arc.final_image}")
     world.facts["bad_ending"] = True
     return world
 
@@ -311,9 +537,9 @@ def generation_prompts(world: World) -> list[str]:
     f = world.facts
     hero = f["hero"]
     return [
-        f"Write a fairy tale about {hero.label} and a dress, where curiosity leads to a quest and a bad ending.",
-        f"Tell a short fairy story set near the sweetwilliam hedge and the rose path.",
-        f"Write a child-facing cautionary tale in which a curious girl or boy follows a glimmer and loses a dress.",
+        f"Write a fairy tale about {hero.label} and a dress, where curiosity leads to a quest to {f['goal']} and a bad ending.",
+        f"Tell a short fairy story set near the sweetwilliam hedge in {f['setting'].place}, using this warning: {f['warning']}",
+        f"Write a child-facing cautionary tale in which {hero.label} discovers {f['lure'].label} and learns that {f['lesson']}.",
     ]
 
 
@@ -322,20 +548,20 @@ def story_qa(world: World) -> list[QAItem]:
     hero = f["hero"]
     qas = [
         QAItem(
-            question=f"Who was the curious child in the story?",
+            question="Who was the curious child in the fairy story?",
             answer=f"The curious child was {hero.label}, a little {hero.traits[0]} {hero.type}.",
         ),
         QAItem(
-            question="What did the child set out to do?",
-            answer="The child began a quest to look behind the sweetwilliam hedge and find the silver glimmer.",
+            question=f"What quest did {hero.label} choose after noticing {f['lure'].label}?",
+            answer=f"{hero.label} chose a quest to {f['goal']}.",
         ),
         QAItem(
-            question="What happened to the dress?",
-            answer="The dress caught on a thorn and tore, so it could not be saved.",
+            question=f"How did {hero.label}'s choice cause the dress to be damaged?",
+            answer=f"{hero.label} {f['choice']}. Then {hero.label} {f['action']}, and {f['consequence'][0].lower() + f['consequence'][1:]}",
         ),
         QAItem(
-            question="Was the ending happy?",
-            answer="No. The story ended badly, with the torn dress and the child learning too late to be careful.",
+            question=f"Why was {hero.label}'s quest a bad ending even though {hero.pronoun()} returned safely?",
+            answer=f"The quest failed: {f['failed_goal'][0].lower() + f['failed_goal'][1:]} The lasting final image was this: {f['final_image']}",
         ),
     ]
     return qas

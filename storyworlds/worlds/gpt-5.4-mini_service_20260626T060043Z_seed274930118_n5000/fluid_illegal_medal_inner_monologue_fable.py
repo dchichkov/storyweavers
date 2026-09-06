@@ -37,6 +37,7 @@ _storyworlds_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 if not os.path.exists(os.path.join(_storyworlds_dir, "results.py")):
     _storyworlds_dir = os.path.dirname(_storyworlds_dir)
 sys.path.insert(0, _storyworlds_dir)
+sys.path.insert(0, os.path.dirname(_storyworlds_dir))
 from results import QAItem, StoryError, StorySample  # noqa: E402
 
 
@@ -357,71 +358,206 @@ def make_world(params: StoryParams) -> World:
     return w
 
 
-def inner_monologue(world: World, hero: Entity, helper: Entity, medal: Entity) -> None:
-    hero.memes["fear"] += 0.4
-    world.say(
-        f"\"That medal is not mine,\" thought {hero.label}. "
-        f"\"It belongs to {medal.owner or 'someone'} and I should not take it.\""
-    )
-    helper.memes["greed"] += 0.5
-    world.say(
-        f"Then {helper.label} leaned close and whispered, "
-        f"\"If we coat it with fluid, no one will notice.\""
-    )
-    world.say(
-        f"\"But that would be illegal,\" thought {hero.label}. "
-        f"\"A shiny trick can still be a wrong one.\""
-    )
+FABLE_ARCS = [
+    {
+        "title": "rain-barrel ribbons",
+        "fluid": "blue rain-barrel dye",
+        "premise": "the village was hanging ribbons for its rainy-day games",
+        "find": "beneath the judges' awning, still tied to a winner's blue ribbon",
+        "plan": "dip the ribbon in blue fluid, replace it with a plain cord, and claim the medal as a new prize",
+        "harm": "the dye would stain the winner's ribbon and hide the mark that proved who earned it",
+        "action": "set the bottle upright, wrapped the medal in a clean leaf, and asked the ribbon keeper to check the winners' list",
+        "repair": "The keeper matched the blue ribbon to a young hare and returned the medal before the games began",
+        "response": "praised the careful check, while the hare thanked them with a shy bow",
+        "ending": "the true medal flashed above the finish line, and an unstained blue ribbon fluttered in the rain",
+        "moral": "A borrowed shine never becomes an earned one.",
+    },
+    {
+        "title": "sap over the engraving",
+        "fluid": "clear pine sap",
+        "premise": "the village was hosting a harvest contest",
+        "find": "in a bed of fallen leaves, engraved with the name of last year's champion",
+        "plan": "brush sticky fluid over the engraving and claim that the nameless medal had just been found",
+        "harm": "the sap could seal dirt into the letters and erase part of the village's history",
+        "action": "moved the sap away, compared the engraving with the honor board, and called for the contest steward",
+        "repair": "The steward cleaned one corner with warm water, read the champion's name, and placed the medal in its display case",
+        "response": "thanked them for protecting both the medal and the memory attached to it",
+        "ending": "late sunlight filled every engraved letter while clean pinecones rested below the case",
+        "moral": "Truth keeps old honors bright.",
+    },
+    {
+        "title": "oil at the bridge",
+        "fluid": "a jar of slippery seed oil",
+        "premise": "boats were gathering for a lantern parade",
+        "find": "beside a loose bridge plank, where a parade judge had dropped it",
+        "plan": "grease the medal with fluid, slide it beneath the plank, and collect it later when nobody is watching",
+        "harm": "oil near the river could make the bridge slick and send the medal into the current",
+        "action": "capped the oil, marked the loose plank with a red scarf, and carried the medal to the lantern marshal",
+        "repair": "The marshal fastened the plank and locked the medal in the parade chest until its owner arrived",
+        "response": "said that guarding the bridge mattered even more than guarding a prize",
+        "ending": "lanterns drifted under a dry bridge while the safe medal waited inside its locked parade chest",
+        "moral": "A secret shortcut can endanger more than the secret.",
+    },
+    {
+        "title": "berry-ink disguise",
+        "fluid": "purple blackberry ink",
+        "premise": "young artists were painting signs for the village fair",
+        "find": "on the sign-painting table, beside a card naming its owner",
+        "plan": "paint the medal purple with fluid and enter it in the fair as a brand-new sculpture",
+        "harm": "the sour ink could darken the metal and turn another person's honor into a dishonest display",
+        "action": "covered the ink cup, read the owner's card aloud, and carried both card and medal to the fair office",
+        "repair": "The clerk wiped away one stray purple drop and sent a bell-ringer to find the owner",
+        "response": "gave them blank tin circles to paint honestly instead of taking a finished medal",
+        "ending": "their little painted moons hung beside the fair gate, while the medal shone in its owner's green sash",
+        "moral": "Making something small is better than stealing something grand.",
+    },
+    {
+        "title": "glue and the false sash",
+        "fluid": "milky craft glue",
+        "premise": "the schoolhouse animals were preparing a kindness ceremony",
+        "find": "under a sewing stool, with a broken loop on its red ribbon",
+        "plan": "use sticky fluid to fasten the medal to a spare sash and walk into the ceremony as winners",
+        "harm": "the glue could ruin the ribbon, and the false claim would take applause from the child who had helped others",
+        "action": "put the glue on a high shelf, showed the broken loop to the teacher, and offered thread for a proper repair",
+        "repair": "The teacher stitched the loop, checked the ceremony book, and found the medal's worried recipient",
+        "response": "invited both friends to help hand out programs because they had corrected their choice",
+        "ending": "the repaired red ribbon rested over the right heart as paper programs rustled down every row",
+        "moral": "Kindness cannot be glued onto a dishonest claim.",
+    },
+    {
+        "title": "soap and the maker's mark",
+        "fluid": "a bowl of strong washing soap",
+        "premise": "market day had filled the lanes with carts and bells",
+        "find": "near a silversmith's cart, stamped with the maker's tiny leaf",
+        "plan": "scrub away the leaf with soapy fluid and trade the medal at another stall",
+        "harm": "rough soap could scratch the medal, and selling found property would be illegal",
+        "action": "left the bowl untouched, traced the tiny leaf on paper, and asked nearby sellers who used that mark",
+        "repair": "A potter recognized the silversmith's leaf and led them to the owner before the market closed",
+        "response": "showed them how a maker's mark helps lost treasures travel home",
+        "ending": "the medal chimed softly against the silversmith's tools as the last market bell rang",
+        "moral": "Honest questions uncover what scrubbing tries to hide.",
+    },
+    {
+        "title": "wax over a crack",
+        "fluid": "warm beeswax",
+        "premise": "the village museum was airing its oldest keepsakes",
+        "find": "near a display cloth, with a hairline crack across its back",
+        "plan": "pour waxy fluid into the crack, hide the damage, and sell the medal as perfect",
+        "harm": "hot wax might widen the crack, and hiding damage would cheat any buyer",
+        "action": "blew out the warming candle, padded a small box with moss, and reported the crack to the curator",
+        "repair": "The curator placed the medal in the padded box and wrote a truthful repair note for the conservator",
+        "response": "said that admitting damage is the first careful step toward mending it",
+        "ending": "the cracked medal rested safely on moss, its honest label glowing beneath a cool museum lamp",
+        "moral": "A truthful flaw is safer than a hidden one.",
+    },
+    {
+        "title": "paint-water switch",
+        "fluid": "golden paint water",
+        "premise": "a costume procession was forming nearby",
+        "find": "inside an open costume trunk, next to a wooden pretend medal",
+        "plan": "color the wooden token with golden fluid, swap it for the real medal, and keep the real one",
+        "harm": "the switch would fool the performers and steal an object trusted to the costume keeper",
+        "action": "separated the two medals, closed the paint jar, and called the keeper before anyone dressed for the parade",
+        "repair": "The keeper counted both props, locked away the real medal, and let them safely paint the wooden one",
+        "response": "explained that pretending onstage is fun, but tricking people offstage is wrong",
+        "ending": "a wooden medal sparkled in the procession while the real one waited behind a brass lock",
+        "moral": "Playful pretending must stop where deceit begins.",
+    },
+    {
+        "title": "syrup and the borrowed sash",
+        "fluid": "sticky maple syrup",
+        "premise": "breakfast cooks were setting tables for a woodland thank-you feast",
+        "find": "folded inside a borrowed sash that had slipped from a chair",
+        "plan": "dab syrupy fluid under the medal so it would stick to a coat, then say it had always been there",
+        "harm": "the syrup would stain the sash and turn a simple lost-and-found problem into stealing",
+        "action": "washed away a sticky drop, hung the sash where everyone could see it, and rang the lost-property bell",
+        "repair": "The feast captain followed the bell, named the sash's owner, and checked that the medal was dry",
+        "response": "served them warm oatcakes for choosing to call attention rather than hide evidence",
+        "ending": "steam curled above honest oatcakes while the clean medal lay on its blue sash",
+        "moral": "What sticks to a lie is harder to wash away than syrup.",
+    },
+    {
+        "title": "lamp-oil polish",
+        "fluid": "smoky lamp oil",
+        "premise": "the village night watch was beginning",
+        "find": "near an empty watch post, dull from years of use",
+        "plan": "polish it with lamp fluid, call it newly made, and demand a reward for bringing it",
+        "harm": "lamp oil could stain the old medal, and inventing a reward would turn helpfulness into fraud",
+        "action": "trimmed the lamp safely, noted where the medal lay, and fetched the watch captain without asking for payment",
+        "repair": "The captain recognized the medal as the watch's service badge and returned it to its hook",
+        "response": "offered sincere thanks, which felt better than a reward won by a lie",
+        "ending": "the service medal hung above the watch log as one steady lamp lit the bridge",
+        "moral": "Service shines best when it does not bargain for praise.",
+    },
+    {
+        "title": "clay copy",
+        "fluid": "silky clay slip",
+        "premise": "potters were shaping keepsakes for the spring festival",
+        "find": "on a drying board, beside a note asking that it be copied for the village archive",
+        "plan": "press the medal into wet fluid clay, hand over the copy, and secretly keep the original",
+        "harm": "a clay copy could be useful only if everyone knew it was a copy; switching it would be illegal theft",
+        "action": "asked the archivist for permission, labeled the clay impression COPY, and kept the original in sight",
+        "repair": "Together they fired the labeled copy and returned the real medal to its padded archive drawer",
+        "response": "commended them for turning a dishonest idea into an honest craft lesson",
+        "ending": "the clay copy stood beneath a clear label while the real medal gleamed safely behind glass",
+        "moral": "A copy teaches only when it tells the truth about what it is.",
+    },
+    {
+        "title": "muddy medal at the pond",
+        "fluid": "clear pond water",
+        "premise": "gardeners were cleaning paths after a windy sports day",
+        "find": "half hidden in mud beside the pond, with one ribbon end pointing toward the playing field",
+        "plan": "rinse it in the fluid, pocket the clean medal, and say the mud had held nothing",
+        "harm": "cleaning the medal would not make it theirs, and silence would keep its owner searching",
+        "action": "rinsed only enough mud to read the number, left a marker at the spot, and brought the medal to lost property",
+        "repair": "The games judge matched the number to a runner who had been retracing every path in tears",
+        "response": "thanked them for using the clue to return the medal instead of using the mud to hide it",
+        "ending": "the runner's muddy shoes stopped at last, and a clean medal swung from the proper ribbon",
+        "moral": "Finding what is hidden does not make it yours.",
+    },
+]
 
 
-def risk_medal(world: World, hero: Entity, helper: Entity, medal: Entity, fluid: Entity) -> None:
-    helper.memes["greed"] += 0.4
-    medal.meters["fluid"] += 1.0
-    medal.meters["shine"] += fluid.meters["shine"]
-    medal.meters["safety"] -= 0.6
-    world.say(
-        f"{helper.label} reached for the medal and tilted the bottle of fluid toward it."
-    )
-    world.say(
-        f"{hero.label} felt a tightness in the chest and thought, "
-        f"\"If I let this happen, the medal will be spoiled and the judge will be hurt.\""
-    )
-    world.facts["illegal_plan"] = True
-    world.facts["medal_at_risk"] = True
+INNER_THOUGHTS = [
+    "Wanting it does not change who owns it. What choice would I wish someone made with my treasure?",
+    "The plan sounds clever only while I ignore who gets hurt. I can stop it before clever becomes cruel.",
+    "My stomach feels knotted because I already know the rule. Courage means listening before the knot becomes guilt.",
+    "Nobody may be watching, but I will remember. I would rather carry the truth than hide the medal.",
+    "A bright object cannot brighten a lie. First I should protect it, then find the person who can prove its story.",
+    "Being a friend does not mean agreeing with a wrong idea. A good friend can say no and help make things right.",
+    "If I pause and check the clues, I can choose with facts instead of wishing. The owner's mark deserves an honest answer.",
+    "The illegal part is not just a rule on paper. Someone trusted this medal to be returned, and that trust matters.",
+]
 
 
-def refuse(world: World, hero: Entity, helper: Entity, judge: Entity, medal: Entity) -> None:
-    hero.memes["guilt"] += 0.3
-    hero.memes["trust"] += 0.5
-    helper.memes["fear"] += 0.3
-    world.say(
-        f"{hero.label} stood taller and said, \"No. We must return the medal at once.\""
-    )
-    world.say(
-        f"In the quiet that followed, {hero.label} thought, "
-        f"\"Honesty is smaller than a parade, but it can carry a whole heart.\""
-    )
-    medal.kept_by = judge.id
-    medal.owner = judge.id
-    world.facts["returned"] = True
+REFUSALS = [
+    '"Stop," {hero} said. "We are not changing or hiding a medal that belongs to someone else."',
+    'Before the fluid moved another inch, {hero} stepped between the bottle and the medal. "No trick. We tell the truth."',
+    '"I nearly followed your idea," {hero} admitted, "but it is illegal and it could cause real harm. Help me put it right."',
+    '{hero} took one slow breath. "A friend can disagree," {hero} said. "I will protect the medal, and I hope you will help."',
+    '"Let us test the honest path first," {hero} said. "We can follow the clues without damaging anything."',
+    '{hero} shook their head. "Winning praise with somebody else\'s medal would not be winning at all."',
+]
 
 
-def resolve(world: World, hero: Entity, judge: Entity, medal: Entity) -> None:
-    judge.memes["trust"] += 0.6
-    judge.memes["calm"] += 0.2
-    hero.memes["relief"] += 0.8
-    hero.memes["pride"] += 0.3
-    medal.meters["safety"] = 1.0
-    medal.meters["fluid"] = 0.0
-    world.say(
-        f"{hero.label} carried the medal back to {judge.label} and admitted the whole thing."
-    )
-    world.say(
-        f"{judge.label} took the medal, smiled gently, and said the honest one should be trusted."
-    )
-    world.say(
-        f"By sunset, {hero.label} had no prize in its claws, but it had something steadier: a clear name."
-    )
+OPENINGS = [
+    "On a morning when {premise}, {hero} and {helper} met at {place}.",
+    "Every creature at {place} seemed busy because {premise}. Only {hero} and {helper} noticed something out of place.",
+    "The bells at {place} had barely rung when {hero} joined {helper}; {premise}.",
+    "Long ago, when {premise}, two friends named {hero} and {helper} crossed {place} together.",
+    "At {place}, {premise}. That was where {hero} and {helper} faced a choice no contest could score.",
+    "The day began cheerfully at {place}: {premise}. Then {hero} spotted a glint that changed the morning.",
+]
+
+
+TURN_LINKS = [
+    "For one breath, the plan felt easy. Then {hero} listened inward instead of reaching outward.",
+    "The bottle tipped, and the medal's reflection trembled. Inside, {hero}'s wish argued with a quieter, wiser voice.",
+    "No grown-up stood nearby. That silence made {hero}'s inner monologue sound clearer, not weaker.",
+    "The tempting idea raced ahead like a cart downhill. {hero} stopped and let one honest thought catch up.",
+    "{hero} imagined owning the shine, then imagined the owner finding an empty place. The second picture changed everything.",
+    "A rule alone felt small until {hero} pictured the damage the plan could cause. Then the choice became plain.",
+]
 
 
 def tell(params: StoryParams) -> World:
@@ -432,18 +568,72 @@ def tell(params: StoryParams) -> World:
     medal = w.get("medal")
     fluid = w.get("fluid")
 
-    w.say(
-        f"At {w.place}, {hero.label} found the old medal left alone beside the bench."
+    stable_seed = params.seed
+    if stable_seed is None:
+        stable_seed = sum(ord(ch) for ch in (params.hero_name + params.helper_name + params.place))
+    rng = random.Random(stable_seed ^ 0x51A7F1)
+    arc = rng.choice(FABLE_ARCS)
+    thought = rng.choice(INNER_THOUGHTS)
+    refusal = rng.choice(REFUSALS).format(hero=hero.label)
+    opening = rng.choice(OPENINGS).format(
+        premise=arc["premise"], hero=hero.label, helper=helper.label, place=w.place
     )
-    w.say(
-        f"It shone like a little sun, and {helper.label} stared at it with hungry eyes."
+    turn_link = rng.choice(TURN_LINKS).format(hero=hero.label)
+    find_lines = [
+        f"{hero.label} found a medal {arc['find']}. Its worn edge showed that it mattered to someone.",
+        f"A medal caught {hero.label}'s eye {arc['find']}. It was no toy; its ribbon and marks carried an owner's history.",
+        f"There lay a real medal {arc['find']}. {hero.label} lifted it only far enough to keep it from being stepped on.",
+        f"Near their feet, {hero.label} noticed a medal {arc['find']}. The small object felt heavier than its size.",
+    ]
+    proposal_lines = [
+        f"{helper.label} pointed to {arc['fluid']} and whispered, \"We could {arc['plan']}.\"",
+        f"Then {helper.label} noticed {arc['fluid']}. \"What if we {arc['plan']}?\" came the whisper.",
+        f"\"Here is a way to keep it,\" {helper.label} murmured, reaching toward {arc['fluid']}. \"We can {arc['plan']}.\"",
+    ]
+
+    fluid.label = arc["fluid"]
+    fluid.phrase = arc["fluid"]
+    helper.memes["greed"] += 0.8
+    hero.memes["fear"] += 0.4
+    medal.meters["fluid"] += 0.4
+    medal.meters["safety"] -= 0.5
+    w.facts.update(
+        arc_title=arc["title"], fluid_name=arc["fluid"], illegal_plan=arc["plan"],
+        possible_harm=arc["harm"], inner_thought=thought, honest_action=arc["action"],
+        repair=arc["repair"], outcome=arc["response"], ending_image=arc["ending"],
+        moral=arc["moral"], medal_at_risk=True,
     )
+
+    w.say(opening)
+    w.say(rng.choice(find_lines))
     w.para()
-    inner_monologue(w, hero, helper, medal)
-    risk_medal(w, hero, helper, medal, fluid)
+    w.say(rng.choice(proposal_lines))
+    w.say(f"The idea was illegal: {arc['harm']}.")
+    w.say(turn_link)
+    w.say(f"{hero.label} thought, \"{thought}\"")
     w.para()
-    refuse(w, hero, helper, judge, medal)
-    resolve(w, hero, judge, medal)
+    w.say(refusal)
+    w.say(f"Instead, {hero.label} {arc['action']}.")
+    if rng.randrange(2):
+        w.say(f"{helper.label} lowered their eyes. \"I was chasing the shine,\" they said. \"I will help with the truth.\"")
+    else:
+        w.say(f"After a quiet moment, {helper.label} drew back from the fluid. \"Your no stopped both of us from making it worse,\" they said.")
+    w.para()
+    w.say(f"{arc['repair']}.")
+    w.say(f"When {judge.label} heard the whole account, {judge.label} {arc['response']}.")
+    w.say(f"Before they left, {hero.label} said the lesson aloud: \"{arc['moral']}\"")
+    w.say(f"By day's end, {arc['ending']}.")
+
+    hero.memes["trust"] += 0.7
+    hero.memes["relief"] += 0.8
+    helper.memes["guilt"] += 0.4
+    helper.memes["trust"] += 0.3
+    judge.memes["trust"] += 0.6
+    medal.meters["safety"] = 1.0
+    medal.meters["fluid"] = 0.0
+    medal.kept_by = judge.id
+    medal.owner = judge.id
+    w.facts["returned"] = True
 
     w.facts.update(
         place=w.place,
@@ -460,8 +650,8 @@ def tell(params: StoryParams) -> World:
 def generation_prompts(world: World) -> list[str]:
     f = world.facts
     return [
-        f'Write a short fable for a child about a {f["hero_type"]} who finds a medal and hears an inner monologue about doing an illegal thing.',
-        f"Tell a gentle fable where {f['hero_name']} resists a sneaky plan with fluid and returns the medal to {f['judge_name']}.",
+        f'Write a short fable for a child about a {f["hero_type"]} who finds a medal and uses an inner monologue to reject an illegal plan involving {f["fluid_name"]}.',
+        f"Tell a gentle fable where {f['hero_name']} stops a plan to {f['illegal_plan']} and makes the medal safe.",
         f'Write a small moral story that includes the words "fluid", "illegal", and "medal".',
     ]
 
@@ -474,20 +664,24 @@ def story_qa(world: World) -> list[QAItem]:
     medal = _safe_fact(world, f, "medal")
     return [
         QAItem(
-            question=f"What did {hero.label} find at {world.place}?",
-            answer=f"{hero.label} found a medal that belonged to {judge.label}.",
+            question=f"What did {hero.label} find in the fable about {f['arc_title']}?",
+            answer=f"{hero.label} found a medal that did not belong to them and kept it safe while looking for its owner.",
         ),
         QAItem(
-            question=f"What illegal idea did {helper.label} whisper about the medal?",
-            answer=f"{helper.label} whispered about coating the medal with fluid and keeping it as if it were a new prize.",
+            question=f"What illegal idea involved {f['fluid_name']}?",
+            answer=f"{helper.label} proposed that they {f['illegal_plan']}.",
         ),
         QAItem(
-            question=f"What did {hero.label} think inside its own head before choosing the right thing?",
-            answer=f"{hero.label} thought that the medal was not theirs, that the trick would be illegal, and that honesty was the better path.",
+            question=f"How did {hero.label}'s inner monologue change what happened next?",
+            answer=f"{hero.label} thought, \"{f['inner_thought']}\" That thought helped them refuse the plan and choose an honest action.",
         ),
         QAItem(
-            question=f"How did the story end for the medal?",
-            answer=f"{hero.label} returned the medal to {judge.label}, so the medal was safe again and the wrong plan was stopped.",
+            question=f"What honest action did {hero.label} take after realizing the plan could cause harm?",
+            answer=f"{hero.label} {f['honest_action']}. As a result, {f['repair'].lower()}.",
+        ),
+        QAItem(
+            question="What final image showed that the illegal plan had been stopped?",
+            answer=f"At the end, {f['ending_image']}.",
         ),
     ]
 

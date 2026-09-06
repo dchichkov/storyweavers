@@ -1,8 +1,11 @@
 # Worst-Contributor Repair Campaign
 
-This campaign repairs 120 production StoryWorld scripts in waves of six. The
-selection combines historical `gpt-5.4-mini` story-quality ratings with
-per-world generation statistics preserved in the production export manifests.
+This campaign repairs 126 production StoryWorld scripts in rolling waves of six.
+The scope combines six independently identified low-quality, duplicate-heavy
+worlds with a frozen ranking of 120 template-collapsed contributors. Selection
+uses historical `gpt-5.4-mini` story-quality ratings, generation statistics
+preserved in the production export manifests, and slot-normalized narrative
+skeleton counts measured from the exported training corpus.
 
 ## Evidence And Scope
 
@@ -15,10 +18,11 @@ per-world generation statistics preserved in the production export manifests.
 - Exact duplicate stories were removed before the final JSONL was written.
   Repeated and near-template QA remains a separate corpus-level issue.
 
-The target list prioritizes worlds with both low quality and high duplication,
-then the remaining lowest-quality rated contributors and highest-duplication
-contributors. A single historical quality rating is only a triage signal, not
-proof that every seed is poor.
+The first six targets combine low quality and exact duplication. The frozen
+120-target ranking then prioritizes worlds whose exported stories collapse to
+the fewest slot-normalized narrative skeletons, with exact duplication and
+historical quality retained as supporting evidence. A single historical quality
+rating is only a triage signal, not proof that every seed is poor.
 
 ## Repair Gate
 
@@ -63,5 +67,8 @@ Legend: `queued`, `active`, `repaired`, `verified`, `blocked`.
 | 4 | verified | `dogie_sophisticated_thank_friendship_sharing_animal_story.py` | 1 skeleton/100 exact-unique stories | 1 skeleton | 100 unique; 100 skeletons | Twelve arcs; child-readable language improved. |
 | 4 | verified | `coast_nostril_inner_monologue_comedy.py` | 1 skeleton/100 exact-unique stories | 1 skeleton | 100 unique; 100 skeletons | Ten incidents and functional thinking modes. |
 | 4 | verified | `distinction_slot_nutrient_foreshadowing_dialogue_pirate_tale.py` | 1 skeleton/100 exact-unique stories | 1 skeleton | 100 unique; 100 skeletons | Twelve pirate arcs; 400/400 unique story-QA pairs. |
+| 5 | verified | `dress_sweetwilliam_curiosity_quest_bad_ending_fairy.py` | 1 skeleton/100 exact-unique stories | 1 skeleton | 100 unique; 100 skeletons | Independent replay check passed; 271/400 unique story-QA pairs. |
+| 5 | verified | `emergency_clamp_starfish_friendship_quest_transformation_animal.py` | 1 skeleton/100 exact-unique stories | 1 skeleton | 100 unique; 100 skeletons | Independent replay check passed; 680/800 unique story-QA pairs. |
+| 5 | verified | `fluid_illegal_medal_inner_monologue_fable.py` | 1 skeleton/100 exported stories | 88/100 exact unique; 1 skeleton | 100 unique; 100 skeletons | Twelve causal arcs; independent replay and QA checks passed. |
 
-Additional waves are appended after the full 120-script ranking is frozen.
+Additional waves follow the frozen 120-script template-collapse ranking.
