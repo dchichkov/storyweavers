@@ -25,7 +25,7 @@ import sys
 from dataclasses import dataclass, field
 from typing import Optional
 
-sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 from results import QAItem, StoryError, StorySample  # noqa: E402
 
 
@@ -97,6 +97,180 @@ NAMES = ["Mina", "Aria", "Luna", "Theo", "Nico", "Pia", "Ravi", "Elio"]
 SHIP_NAMES = ["the Comet Lily", "the Blue Orbit", "the Star Lantern", "the Little Helix"]
 
 
+INCIDENTS = [
+    {
+        "title": "the echoing moon gate",
+        "place": "a gate between two blue moons",
+        "signal": "three quick notes and one long note",
+        "wrong": "counted every radio echo as a new instruction and turned too soon",
+        "setback": "the ship settled on a quiet service ledge while the gate closed for the night",
+        "clue": "each true phrase began with the Italian word 'ascolta,' meaning 'listen'",
+        "meaning": "Listen once, then follow the long note toward the left moon",
+        "action": "muted the echoes, played the four-note phrase once on the mandolin, and marked the left moon on the chart",
+        "recovery": "the morning gate recognized the clean phrase and opened a silver path",
+        "ending": "dew-bright moon dust trembled on the ledge as the ship sailed between the moons",
+        "lesson": "Repetition helps only when you know which part is the original message",
+    },
+    {
+        "title": "the drifting lantern buoys",
+        "place": "a current of lantern-shaped navigation buoys",
+        "signal": "a rising mandolin scale",
+        "wrong": "followed the brightest buoy instead of the notes and entered a harmless loop",
+        "setback": "the ship returned to the same green buoy just as its travel clock chimed bedtime",
+        "clue": "the Italian message said 'dal basso all'alto,' or 'from low to high'",
+        "meaning": "Visit the buoys in the same low-to-high order as the melody",
+        "action": "sorted the glowing buoys by pitch, then shared the piloting and music-counting jobs",
+        "recovery": "the final high note lit a straight lane out of the current",
+        "ending": "the buoys winked behind them in a staircase of green, gold, and white",
+        "lesson": "A pattern can be a map when a crew tests it carefully together",
+    },
+    {
+        "title": "the sleepy comet crossing",
+        "place": "the path of a slow, powdery comet",
+        "signal": "a soft tune with a pause after every second bar",
+        "wrong": "treated the pauses as broken radio gaps and sped into the comet's dusty wake",
+        "setback": "the dust cloud hid every landmark, so the crew parked safely and missed the evening crossing",
+        "clue": "the repeated Italian word 'pausa' meant that each silence was part of the directions",
+        "meaning": "Move during the music and wait during each pause",
+        "action": "tapped the pauses on the mandolin case and navigated in careful start-and-stop steps",
+        "recovery": "the dust cleared between pauses, revealing one marker at a time",
+        "ending": "a pale comet tail curled beyond the window while the final chord faded",
+        "lesson": "Silence can carry useful information too",
+    },
+    {
+        "title": "the mirror-ice fork",
+        "place": "a fork lined with flat mirrors of space ice",
+        "signal": "two notes that seemed to answer one another",
+        "wrong": "steered toward a reflected beacon and reached a smooth dead-end cove",
+        "setback": "the cove's ice door froze shut until the next warm starlight cycle",
+        "clue": "the message repeated 'vero, non riflesso' - 'real, not reflected'",
+        "meaning": "Choose the beacon whose light does not copy the mandolin's rhythm",
+        "action": "played alternating notes, watched which beacon stayed steady, and recorded the real one",
+        "recovery": "warm starlight opened the cove and the steady beacon guided them through",
+        "ending": "the false beacons shattered into harmless rainbows across the retreating ice",
+        "lesson": "Good navigation depends on evidence, not merely on what shines brightest",
+    },
+    {
+        "title": "the garden satellite maze",
+        "place": "a maze of small satellites carrying seed gardens",
+        "signal": "a bouncy five-note refrain",
+        "wrong": "chased the refrain's loudest broadcast and circled the same tomato satellite",
+        "setback": "the last delivery hatch closed, leaving the seed parcel aboard until morning",
+        "clue": "the phrase 'quinta serra' meant 'fifth greenhouse,' not five turns",
+        "meaning": "Navigate to greenhouse number five and wait beside its purple lamp",
+        "action": "labeled each refrain on the chart, found the fifth greenhouse, and played the tune at half volume",
+        "recovery": "the gardeners reopened the hatch early when they heard the careful reply",
+        "ending": "tiny leaves turned toward the ship as the parcel floated into the purple-lit greenhouse",
+        "lesson": "Translating the whole phrase prevents a confident but mistaken guess",
+    },
+    {
+        "title": "the bell-shaped asteroid lane",
+        "place": "a lane of hollow, bell-shaped asteroids",
+        "signal": "a brisk mandolin rhythm mixed with ringing stone",
+        "wrong": "matched the stone echoes instead of the broadcast and zigzagged into a sheltered pocket",
+        "setback": "a gentle field held the ship there while the supply convoy passed without them",
+        "clue": "the Italian instruction 'segui il ritmo calmo' meant 'follow the calm rhythm'",
+        "meaning": "Ignore the asteroid ringing and follow the steady background beat",
+        "action": "laid a hand on the mandolin body to feel the steady beat while the other crew member plotted it",
+        "recovery": "the field released them when their engines matched the calm rhythm",
+        "ending": "the hollow rocks rang a friendly farewell, each bell softer than the last",
+        "lesson": "The most useful signal is not always the loudest one",
+    },
+    {
+        "title": "the upside-down star chart",
+        "place": "a crossing where north and south markers had been swapped",
+        "signal": "a tune that repeated backward every other time",
+        "wrong": "trusted the old chart without comparing it to the changing melody",
+        "setback": "the ship reached an empty picnic station after its kitchen had closed",
+        "clue": "the broadcast alternated 'avanti' and 'indietro,' meaning 'forward' and 'backward'",
+        "meaning": "Turn the chart around whenever the melody reverses",
+        "action": "rotated the chart, hummed each direction aloud, and checked every turn with the station lights",
+        "recovery": "a caretaker reopened the little kitchen after hearing why the crew was late",
+        "ending": "warm rolls steamed beside the window as the corrected chart pointed home",
+        "lesson": "Plans should be checked when the world no longer matches the map",
+    },
+    {
+        "title": "the migrating starwhales",
+        "place": "a protected crossing used by enormous starwhales",
+        "signal": "a low mandolin phrase repeated beneath whale song",
+        "wrong": "mistook the whale song for permission to cross and entered the waiting zone",
+        "setback": "a patrol asked the ship to dock, so the crew missed the festival's opening lanterns",
+        "clue": "the Italian message repeated 'aspettate,' which means 'please wait'",
+        "meaning": "Wait through three complete phrases before navigating behind the herd",
+        "action": "counted three phrases together, dimmed the engines, and gave the animals plenty of room",
+        "recovery": "the patrol then escorted the patient crew along a safe wake",
+        "ending": "the last starwhale lifted a shining fin while distant festival lanterns came into view",
+        "lesson": "Arriving later is worthwhile when waiting protects someone else's path",
+    },
+    {
+        "title": "the clockwork repair ring",
+        "place": "a repair ring whose docking arms moved like clock hands",
+        "signal": "twelve plucked notes followed by the word 'sette'",
+        "wrong": "heard 'sette' as 'seven turns' and circled until the docking appointment ended",
+        "setback": "the ring switched off its welcoming lights and the ship had to spend the night outside",
+        "clue": "in this instruction, 'sette' named docking arm seven",
+        "meaning": "Navigate to arm seven when the seventh note repeats",
+        "action": "numbered the mandolin notes, called the ring to confirm the translation, and approached arm seven slowly",
+        "recovery": "the morning mechanic honored the missed appointment after seeing their careful notes",
+        "ending": "the repaired ship reflected twelve neat lights as the docking arms folded away",
+        "lesson": "Asking for confirmation can repair a misunderstanding before it grows",
+    },
+    {
+        "title": "the paper-star library",
+        "place": "an orbiting library marked by folded paper stars",
+        "signal": "a nursery melody repeated in four different keys",
+        "wrong": "followed the first key each time and arrived at the returns chute instead of the entrance",
+        "setback": "the library doors closed, and the crew could not attend that night's story circle",
+        "clue": "the final Italian line said 'l'ultima tonalita,' meaning 'the last key'",
+        "meaning": "Use only the fourth version of the melody to find the entrance",
+        "action": "listened through every repetition, copied the fourth key on the mandolin, and followed its paper stars",
+        "recovery": "the librarian invited them to the morning story circle and saved their seats",
+        "ending": "paper stars spun over the breakfast table while children opened the first book",
+        "lesson": "Patience can reveal the one detail that repetition changes",
+    },
+    {
+        "title": "the solar-kite harbor",
+        "place": "a harbor crowded with bright solar kites",
+        "signal": "a clipped dance tune interrupted by harbor whistles",
+        "wrong": "turned at every whistle and tangled the ship's harmless guide ribbon around an empty buoy",
+        "setback": "the ribbon tore, so their place in the welcoming parade went to another ship",
+        "clue": "the repeated phrase 'solo corde' meant 'strings only'",
+        "meaning": "Navigate by mandolin strings and disregard the whistles",
+        "action": "untied the ribbon, offered the buoy keeper an apology, and followed only the string notes",
+        "recovery": "the harbor gave them a quieter place leading the cleanup boats instead",
+        "ending": "their mended ribbon fluttered above a spotless wake while solar kites filled the sky",
+        "lesson": "A changed plan can still become a happy ending when people make amends",
+    },
+    {
+        "title": "the firefly nebula",
+        "place": "a dark nebula dotted with firefly-like lights",
+        "signal": "one mandolin chord repeated at uneven intervals",
+        "wrong": "rushed toward each flash without measuring the time between chords",
+        "setback": "the ship used its spare fuel and had to cancel a promised moon-side picnic",
+        "clue": "the Italian numbers in the message counted seconds between safe flashes",
+        "meaning": "Wait the named number of seconds, then navigate to the next light",
+        "action": "translated each number, counted together, and used the mandolin chord to begin every wait",
+        "recovery": "the measured route saved enough power to reach a nearby observation deck",
+        "ending": "the crew shared their picnic indoors while the whole nebula blinked beyond the glass",
+        "lesson": "A disappointment can lead to a different joy when a crew responds thoughtfully",
+    },
+]
+
+
+TELLING_MODES = [
+    ("The navigation log began with a confident flourish.", "Only after checking the evidence did the crew understand the turn."),
+    ("At first, the voyage sounded as neat as a practiced song.", "The mistake made the next careful choice matter."),
+    ("The trouble announced itself before anyone saw it.", "Instead of guessing again, the crew compared sound, map, and meaning."),
+    ("A quiet trip became a puzzle in the space of one chord.", "The pause gave both crew members time to challenge their first idea."),
+    ("The chart promised an easy crossing, but the radio disagreed.", "They treated the setback as evidence rather than defeat."),
+    ("From the cockpit window, the route looked almost ordinary.", "One translated phrase changed how they read the whole route."),
+    ("The mandolin message arrived before the destination appeared.", "Working aloud kept either crew member from making the next decision alone."),
+    ("This voyage was remembered for the instruction nobody understood at first.", "Once the pattern had a meaning, repetition became useful."),
+    ("The crew expected a map, not music.", "Their second plan began with listening instead of steering."),
+    ("Long afterward, the crew could still hum the tune that delayed them.", "What rescued the journey was not luck but a better test."),
+]
+
+
 # ---------------------------------------------------------------------------
 # Narrative instruments: repetition, bad ending, happy ending
 # ---------------------------------------------------------------------------
@@ -142,61 +316,11 @@ def _setup(world: World, params: StoryParams) -> None:
     world.facts.update(pilot=pilot, partner=partner, ship=ship, radio=radio, score=score, chart=chart)
 
 
-def _repeat_signal(world: World, rep: Repetition) -> None:
-    radio = world.get("radio")
-    rep.count += 1
-    radio.memes["signal"] += 1
-    world.say(f"The radio kept sending the same {rep.signal} tune in {rep.language} again and again.")
-    world.say(f"It was the same little loop, the same bright notes, and the same half-answered message.")
-
-
-def _navigate_wrong_way(world: World, bad: BadEnding) -> None:
-    ship = world.get("ship")
-    pilot = world.facts["pilot"]
-    partner = world.facts["partner"]
-    bad.drift += 1
-    ship.meters["drift"] += 1
-    pilot.memes["worry"] += 1
-    world.say(f"{pilot.id} tried to navigate by the broken message, but the ship slid toward the gray rocks.")
-    world.say(f"{partner.id} grabbed the chart, but the lane looked the same everywhere, which made the mistake feel bigger.")
-
-
-def _bad_end(world: World, bad: BadEnding) -> None:
-    ship = world.get("ship")
-    ship.meters["fuel"] -= 1
-    bad.stuck = True
-    world.say("For one scary moment, the ship stopped beside a stone wall and gave a soft unhappy beep.")
-    world.say("That looked like a bad ending, because the crew could not move and the stars ahead were hidden.")
-
-
-def _translate_and_retune(world: World, rep: Repetition, happy: HappyEnding) -> None:
-    pilot = world.facts["pilot"]
-    partner = world.facts["partner"]
-    radio = world.get("radio")
-    score = world.get("mandolin")
-    ship = world.get("ship")
-
-    world.say(f"Then {partner.id} smiled and translated the Italian message aloud.")
-    world.say(f'"It says to turn by the third star," {partner.id} said, and {pilot.id} finally understood.')
-    world.say(f"{pilot.id} strummed the mandolin once, then again, making the tune easy to count.")
-    rep.count += 2
-    radio.memes["signal"] += 1
-    score.meters["strings"] += 0  # the mandolin stays ready
-    ship.meters["drift"] = 0
-    ship.meters["fuel"] += 1
-    happy.song_solved = True
-    happy.course_fixed = True
-    world.say("The repeated tune became a helpful rhythm instead of a trap.")
-    world.say("With the chart open and the notes counted, the crew could navigate the lane safely.")
-
-
-def _happy_end(world: World, happy: HappyEnding) -> None:
-    pilot = world.facts["pilot"]
-    partner = world.facts["partner"]
-    ship = world.get("ship")
-    world.say(f"At last, {ship.label} floated through the asteroid lane and reached clear space.")
-    world.say(f"{pilot.id} laughed, {partner.id} laughed, and the mandolin tune drifted softly behind them like a tiny star.")
-    world.say("That was a happy ending, because the crew solved the loop and found their way home.")
+def _selection_token(params: StoryParams) -> int:
+    if params.seed is not None:
+        return params.seed
+    text = f"{params.name}|{params.partner_name}|{params.ship_name}"
+    return sum((i + 1) * ord(char) for i, char in enumerate(text))
 
 
 def tell_story(params: StoryParams) -> World:
@@ -208,25 +332,78 @@ def tell_story(params: StoryParams) -> World:
 
     pilot = world.facts["pilot"]
     partner = world.facts["partner"]
+    ship = world.facts["ship"]
+    radio = world.facts["radio"]
+    token = _selection_token(params)
+    incident = INCIDENTS[token % len(INCIDENTS)]
+    mode = TELLING_MODES[(token // len(INCIDENTS)) % len(TELLING_MODES)]
 
-    world.say(f"{pilot.id} and {partner.id} flew {params.ship_name} through a narrow lane of glowing rocks.")
-    world.say(f"They had to navigate carefully, because the stars were dim and the route was easy to miss.")
-    world.say(f"From the radio came a mandolin tune and a message in Italian, soft but stubbornly repeated.")
+    world.say(mode[0])
+    world.say(
+        f"{pilot.id} and {partner.id} flew {ship.label} toward {incident['place']}, "
+        f"where they had to navigate without disturbing nearby travelers."
+    )
+    world.say(
+        f"The radio repeated {incident['signal']} on a mandolin, followed by calm instructions in Italian. "
+        "Neither crew member knew enough Italian to trust a quick guess."
+    )
 
     world.para()
-    _repeat_signal(world, rep)
-    _navigate_wrong_way(world, bad)
+    world.say(
+        f"Again came {incident['signal']}; again came the Italian message. "
+        f"After the third repetition, {pilot.id} {incident['wrong']}."
+    )
+    world.say(
+        f'"This route is not matching our chart," {partner.id} said. '
+        f'"Stop safely, and let us find out why."'
+    )
+    world.say(mode[1])
 
     world.para()
-    _bad_end(world, bad)
+    world.say(f"The result was disappointing but nobody was hurt: {incident['setback']}.")
+    world.say(
+        "If the story had stopped there, it would have been a bad ending. "
+        "The crew had made a real mistake, and wishing could not undo its consequence."
+    )
 
     world.para()
-    _translate_and_retune(world, rep, happy)
+    world.say(
+        f"They replayed the recording slowly and consulted the ship's Italian phrase guide. "
+        f"The useful clue was that {incident['clue']}."
+    )
+    world.say(f'"The whole instruction means: {incident["meaning"]}," {partner.id} explained.')
+    world.say(
+        f"This time {pilot.id} and {partner.id} {incident['action']}. "
+        "They repeated the translated plan to each other before touching the controls."
+    )
 
     world.para()
-    _happy_end(world, happy)
+    world.say(f"Their careful change worked: {incident['recovery']}.")
+    world.say(
+        f'"Next time, we translate first and navigate second," {pilot.id} said. '
+        f'"And we listen for what changes inside the repetition," {partner.id} replied.'
+    )
+    world.say(f"{incident['lesson']}.")
+    world.say(f"The voyage found a happy ending: {incident['ending']}.")
 
-    world.facts.update(rep=rep, bad=bad, happy=happy, params=params)
+    rep.count = 4
+    radio.memes["signal"] = float(rep.count)
+    bad.drift = 1
+    bad.stuck = True
+    ship.meters["drift"] = 0
+    ship.meters["fuel"] = 2
+    pilot.memes["worry"] = 0
+    happy.song_solved = True
+    happy.course_fixed = True
+    world.facts.update(
+        rep=rep,
+        bad=bad,
+        happy=happy,
+        params=params,
+        incident=incident,
+        incident_index=token % len(INCIDENTS),
+        mode_index=(token // len(INCIDENTS)) % len(TELLING_MODES),
+    )
     return world
 
 
@@ -242,42 +419,49 @@ def valid_story() -> bool:
 # ---------------------------------------------------------------------------
 def generation_prompts(world: World) -> list[str]:
     p = world.facts["params"]
+    incident = world.facts["incident"]
     return [
-        "Write a short space-adventure story about a mandolin signal, an Italian message, and a crew that must navigate an asteroid lane.",
-        f"Tell a child-friendly story where {p.name} and {p.partner_name} hear the same mandolin tune over and over and then solve the problem together.",
-        "Write a space story with a bad ending that turns into a happy ending after someone translates italian instructions.",
+        f"Write a child-friendly space adventure about {incident['title']}, a repeated mandolin signal, and an Italian navigation message.",
+        f"Tell how {p.name} and {p.partner_name} make the mistake '{incident['wrong']}', accept its consequence, and solve the route together.",
+        f"Write a story in which a possible bad ending at {incident['place']} becomes a happy ending through translation, careful repetition, and navigation.",
     ]
 
 
 def story_qa(world: World) -> list[QAItem]:
     p = world.facts["params"]
-    rep: Repetition = world.facts["rep"]
-    bad: BadEnding = world.facts["bad"]
-    happy: HappyEnding = world.facts["happy"]
     pilot = world.facts["pilot"]
     partner = world.facts["partner"]
     ship = world.facts["ship"]
+    incident = world.facts["incident"]
 
     return [
         QAItem(
             question=f"What did {pilot.id} and {partner.id} have to do with {p.ship_name}?",
-            answer=f"They had to navigate {p.ship_name} through a narrow lane of glowing rocks without getting stuck.",
+            answer=f"They had to navigate {p.ship_name} through {incident['place']} without disturbing nearby travelers.",
         ),
         QAItem(
-            question="Why did the crew feel confused at first?",
-            answer=f"They kept hearing the same mandolin tune again and again, and the instructions were in italian, so the message was hard to understand.",
+            question="What mistake did the crew make after hearing the repeated signal?",
+            answer=f"They {incident['wrong']}. The repeated music was not enough without an accurate translation of the Italian message.",
         ),
         QAItem(
             question="What made the first ending bad?",
-            answer=f"The ship drifted too close to the rocks and stopped beside a stone wall, which left the crew stuck for a scary moment.",
+            answer=f"{incident['setback'].capitalize()}. Nobody was hurt, but the crew had to accept that disappointing consequence.",
         ),
         QAItem(
-            question="How did the crew fix the problem?",
-            answer=f"{partner.id} translated the italian message, and {pilot.id} used the mandolin tune as a counting rhythm to follow the correct turn.",
+            question="Which clue helped the crew understand the Italian directions?",
+            answer=f"They discovered that {incident['clue']}. That clue changed how they understood the repeated mandolin signal.",
         ),
         QAItem(
-            question="What changed by the end of the story?",
-            answer=f"The drift was fixed, the crew understood the route, and {ship.label} reached clear space with a happy ending.",
+            question="How did the crew repair its navigation plan?",
+            answer=f"{pilot.id} and {partner.id} {incident['action']}. Their careful change worked because {incident['recovery']}.",
+        ),
+        QAItem(
+            question="How could the story have both a bad ending and a happy ending?",
+            answer=f"The bad ending was a real but non-cruel setback: {incident['setback']}. The later happy ending came after the crew learned that {incident['lesson'].lower()}.",
+        ),
+        QAItem(
+            question=f"What final image showed that the voyage of {ship.label} ended happily?",
+            answer=f"At the end, {incident['ending']}.",
         ),
     ]
 

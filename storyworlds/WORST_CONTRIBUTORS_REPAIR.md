@@ -121,5 +121,8 @@ Legend: `queued`, `active`, `repaired`, `verified`, `blocked`.
 | 13 | verified | `clarinet_tiara_rinse_lesson_learned_conflict_flashback.py` | 1 skeleton; 77/100 exact unique in fresh baseline | 1 skeleton | 100 unique; 100 skeletons | Twelve incidents; flashbacks now causally affect present choices. |
 | 13 | verified | `croquet_animal_diabetic_rhyme_nursery_rhyme.py` | 1 skeleton; 79/100 exact unique in fresh baseline | 1 skeleton | 100 unique; 100 skeletons | Twelve medically careful scenarios with individualized care plans. |
 | 13 | verified | `guppy_cashew_misunderstanding_bravery_slice_of_life.py` | 1 skeleton; 81/100 exact unique in fresh baseline | 1 skeleton | 100 unique; 100 skeletons | Twelve incidents with correct fish-feeding and allergy safeguards. |
+| 13 | verified | `chief_urge_bows_teamwork_rhyme_superhero_story.py` | 1 skeleton; 81/100 emitted in fresh baseline | 1 skeleton | 100 unique; 100 skeletons | Twelve missions; chief made a rotating job and bows made decorative. |
+| 13 | verified | `mandolin_italian_navigate_repetition_bad_ending_happy.py` | 1 skeleton; 74/100 exact unique in fresh baseline | 1 skeleton | 100 unique; 100 skeletons | Twelve navigation incidents; non-cruel setbacks and no stereotypes. |
+| 14 | verified | `sentence_trawler_reconciliation_bravery_tall_tale.py` | 1 skeleton; 80/100 emitted in fresh baseline | 1 skeleton | 100 unique; 100 skeletons | Twelve scenarios; arbitrary-name pronouns and root CLI fixed. |
 
 Additional waves follow the frozen 120-script template-collapse ranking.
