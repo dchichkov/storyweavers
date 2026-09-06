@@ -15,7 +15,9 @@ import sys
 from dataclasses import dataclass, field
 from typing import Optional
 
-sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+sys.path.insert(
+    0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+)
 from results import QAItem, StoryError, StorySample  # noqa: E402
 
 TITLE = "castle_magic_reconciliation_inner_monologue_rhyming_story"
@@ -34,6 +36,161 @@ MAGIC_OBJECTS = ["a silver bell", "a tiny wand", "a ribbon star", "a glowing key
 SPELLS = ["sparkle a door open", "mend a torn banner", "make a pebble sing", "light a dark stair", "turn crumbs to crumbs of gold"]
 FEELINGS = ["sad", "cross", "hurt", "lonely", "worried"]
 FIXES = ["say sorry", "share the spell", "listen carefully", "give back the charm", "make it right"]
+SCENARIOS = [
+    {
+        "place": "the map room",
+        "goal": "hang paper stars above the map table",
+        "mistake": "sent every paper star whirling into the rafters",
+        "harm": "knocked down the careful map labels {friend} had spent all morning tying",
+        "evidence": "One label clung to {friend}'s sleeve while the rest sailed out of reach",
+        "repair": "lower the stars one by one and retie every label beside {friend}",
+        "result": "the map showed every road again",
+        "image": "Two last paper stars turned slowly above the mended map",
+    },
+    {
+        "place": "the moonlit kitchen",
+        "goal": "help the cooks decorate a welcome pie",
+        "mistake": "made the pie plates skate in a glittering line",
+        "harm": "splashed berry filling across {friend}'s finished sugar crown",
+        "evidence": "Purple drops slid from the crown as {friend} stared at the floor",
+        "repair": "wipe the tables, mix fresh icing, and rebuild the crown with {friend}",
+        "result": "a new sugar crown stood straight on the welcome pie",
+        "image": "The friends carried the pie beneath one steady candle flame",
+    },
+    {
+        "place": "the echoing music hall",
+        "goal": "add a little magic to {friend}'s first concert",
+        "mistake": "woke every brass horn before the concert began",
+        "harm": "drowned out the quiet solo {friend} had practiced for weeks",
+        "evidence": "The final soft note vanished beneath a hundred noisy toots",
+        "repair": "hush each horn and stand beside {friend} for a second beginning",
+        "result": "the quiet solo floated clearly from wall to wall",
+        "image": "One silver note lingered while the candles burned low",
+    },
+    {
+        "place": "the high tower garden",
+        "goal": "make the night flowers open for the moth count",
+        "mistake": "called up a gust that scattered the counting cards",
+        "harm": "erased the neat tally {friend} had promised the gardener",
+        "evidence": "Blank cards fluttered among the pots, and {friend}'s pencil went still",
+        "repair": "search every pot, count every moth again, and let {friend} lead",
+        "result": "each moth had a mark beside its flower",
+        "image": "The hundredth moth folded its wings on the final checked card",
+    },
+    {
+        "place": "the little throne-room stage",
+        "goal": "brighten the scenery for a puppet play",
+        "mistake": "made the painted dragon leap off its cloth",
+        "harm": "tore the moon backdrop {friend} had painted for the final scene",
+        "evidence": "The cloth moon lay in two pieces at {friend}'s shoes",
+        "repair": "catch the paper dragon and stitch the moon while {friend} chose the thread",
+        "result": "the puppet moon rose whole for the final scene",
+        "image": "A patched white moon shone over the puppets' closing bow",
+    },
+    {
+        "place": "the castle library",
+        "goal": "find a missing rhyme for the librarian's new book",
+        "mistake": "made all the loose words hop from page to page",
+        "harm": "mixed up the poem {friend} was about to read aloud",
+        "evidence": "The word 'blue' sat beside 'shoe,' but every other rhyme had fled",
+        "repair": "gather the hopping words and ask {friend} where each one belonged",
+        "result": "the poem returned in the order {friend} had written",
+        "image": "The book closed softly with a blue ribbon marking the rescued rhyme",
+    },
+    {
+        "place": "the rain-washed courtyard",
+        "goal": "float a toy fleet across the puddles",
+        "mistake": "turned one puddle into a rushing silver stream",
+        "harm": "swept away the tiny boat {friend} had carved for the race",
+        "evidence": "Only the boat's red flag showed beneath the drain gate",
+        "repair": "stop the stream, lift the gate, and dry the little boat with {friend}",
+        "result": "the red-flagged boat sailed in the race after all",
+        "image": "Its red flag crossed the last puddle beside a reflection of the moon",
+    },
+    {
+        "place": "the armor gallery",
+        "goal": "polish the shields before the castle parade",
+        "mistake": "set twelve empty suits of armor marching",
+        "harm": "crushed the flower garland {friend} had woven for the smallest shield",
+        "evidence": "Bent daisies poked from one iron boot while {friend} held the broken string",
+        "repair": "halt the armor and weave a wider garland together from fresh stems",
+        "result": "the smallest shield wore the brightest ring of flowers",
+        "image": "A daisy nodded from the shield as the quiet parade went by",
+    },
+    {
+        "place": "the snowy gatehouse",
+        "goal": "warm the nest of a shivering castle wren",
+        "mistake": "melted the snow roof faster than anyone expected",
+        "harm": "soaked the wool blanket {friend} had carried up for the bird",
+        "evidence": "The blanket dripped in {friend}'s hands, and the wren chirped from the sill",
+        "repair": "dry the wool gently and build a wooden cover at {friend}'s side",
+        "result": "the wren settled into a warm and sheltered nest",
+        "image": "Three small tracks ended beneath the new roof as snow began to fall",
+    },
+    {
+        "place": "the lantern stair",
+        "goal": "guide younger children safely to the feast",
+        "mistake": "filled the stair with bouncing balls of light",
+        "harm": "hid the careful direction signs {friend} had placed on every turn",
+        "evidence": "A lost child called from the landing while {friend} searched through the glow",
+        "repair": "dim the wild lights, find the child, and follow {friend}'s signs together",
+        "result": "every child reached the feast by the marked path",
+        "image": "One calm lantern lit the final arrow toward the open hall",
+    },
+    {
+        "place": "the old clock chamber",
+        "goal": "help the clock strike in time for the noon picnic",
+        "mistake": "sent the clock hands racing around and around",
+        "harm": "spoiled the bell cue {friend} needed to open the picnic doors",
+        "evidence": "The basket line waited below while {friend} counted the wrong chimes",
+        "repair": "slow each gear and let {friend} call the true count",
+        "result": "twelve clear chimes opened the picnic doors",
+        "image": "The twelfth chime faded over twelve baskets on the grass",
+    },
+    {
+        "place": "the glass-roofed bird room",
+        "goal": "teach the castle ravens a birthday tune",
+        "mistake": "made the ravens repeat every sound at once",
+        "harm": "buried {friend}'s gentle flute tune beneath a storm of echoes",
+        "evidence": "The flute lowered, but one raven kept copying {friend}'s unhappy sigh",
+        "repair": "quiet the echoes and teach the tune one note at a time with {friend}",
+        "result": "the ravens sang the birthday tune in a bright little chorus",
+        "image": "A black feather drifted onto the final note of {friend}'s music sheet",
+    },
+]
+
+OPENINGS = [
+    "In {castle}, morning windows caught the light;\n{hero}, the {role}, planned a magical delight.",
+    "Rain tapped the roof of {castle} that day;\n{hero}, the {role}, had a spell to play.",
+    "A bell welcomed dawn at {castle}'s wall;\n{hero}, the {role}, hurried down the hall.",
+    "At {castle}, flags danced high in the air;\n{hero}, the {role}, had magic to share.",
+    "Soft moonbeams silvered {castle}'s old stone;\n{hero}, the {role}, practiced a spell alone.",
+    "{castle} woke to a skylark's song;\n{hero}, the {role}, hoped magic would help things along.",
+    "Warm kitchen bells rang through {castle} bright;\n{hero}, the {role}, held a charm very tight.",
+    "Beyond {castle}'s windows, clouds sailed blue;\n{hero}, the {role}, had magical work to do.",
+]
+
+THOUGHTS = [
+    "Inside, {hero} thought, 'I wanted cheers, not tears.\nI rushed past my friend and ignored all their fears.'",
+    "{hero}'s inner monologue whispered, 'That look tells me why: freed magic is easy, but trust can run dry.'",
+    "'My spell caused this trouble; I see it at last,' {hero} thought. 'Being clever means learning, not hiding the past.'",
+    "A thought tapped inside {hero}'s mind like a bell: 'Ask what was hurt, then listen well.'",
+    "'I meant to bring wonder, yet caused this sad sight. I must face what I changed and help set it right,' {hero} thought.",
+    "Deep in {hero}'s thoughts came a brave little start: 'A true magic mend must begin with the heart.'",
+    "{hero} thought, 'If I make an excuse and race on, the spell may be fixed but our friendship is gone.'",
+    "'I chose on my own, so the trouble is mine. I'll listen to {friend}'s plan and follow their sign,' {hero} thought.",
+]
+
+ENDINGS = [
+    "That was reconciliation, patient and true: not hiding a mistake, but repairing it through.\n{image}.",
+    "The castle grew peaceful as evening drew near; trust had returned because both friends could hear.\n{image}.",
+    "No grander enchantment lit tower or hall than making things right after causing a fall.\n{image}.",
+    "Their quarrel was over, their friendship made bright; reconciliation had changed wrong into right.\n{image}.",
+    "The best castle magic was plain to behold: a truth bravely spoken and kindness retold.\n{image}.",
+    "Together they learned what a good repair brings: room for two voices and care for small things.\n{image}.",
+    "Forgiveness came softly, not quick as a spell; it grew from kind actions done carefully well.\n{image}.",
+    "So magic brought wonder, but friendship brought more: two helpers stood smiling where hurt stood before.\n{image}.",
+]
 RHYMES = {
     "castle": "brassel",
     "magic": "tragic",
@@ -161,7 +318,8 @@ def resolve_params(args: argparse.Namespace, rng: random.Random) -> StoryParams:
 
 
 def _build_world(params: StoryParams) -> World:
-    world = World(castle=CASTLE_NAMES[0])
+    castle_index = (params.seed or 0) % len(CASTLE_NAMES)
+    world = World(castle=CASTLE_NAMES[castle_index])
     hero = world.add(Entity(id=params.hero, kind="character", type=params.role, label=params.hero))
     friend = world.add(Entity(id=params.friend, kind="character", type="friend", label=params.friend))
     charm = world.add(Entity(id="charm", type="magic_object", label=params.magic_object, phrase=params.magic_object, owner=hero.id))
@@ -176,39 +334,123 @@ def generate(params: StoryParams) -> StorySample:
     hero: Entity = world.facts["hero"]
     friend: Entity = world.facts["friend"]
     charm: Entity = world.facts["charm"]
+    rng = random.Random((params.seed or 0) ^ 0xCA571E)
+    scenario = dict(rng.choice(SCENARIOS))
+    details = {
+        "castle": world.castle,
+        "hero": hero.id,
+        "friend": friend.id,
+        "role": params.role,
+        "object": charm.label,
+        "spell": params.spell,
+        **scenario,
+    }
+    scenario = {key: value.format(**details) for key, value in scenario.items()}
+    details.update(scenario)
 
-    world.say(f"In {world.castle}, {hero.id} was small and spry,")
-    world.say(f"With {charm.label} in hand and a twinkle in eye.")
-    world.say(f"{hero.id} loved one spell and liked its bright tune,")
-    world.say(f"To {params.spell} by morning or by moon.")
+    world.say(rng.choice(OPENINGS).format(**details))
+    world.say(
+        rng.choice(
+            [
+                "In {place}, {friend} was ready to {goal}.\n'{hero}, will you help?' came the hopeful reply.",
+                "The two friends met in {place} with work to begin: they hoped to {goal}, and both longed to win.",
+                "A castle job waited in {place} that noon: {friend} hoped to {goal}, and {hero} came soon.",
+                "'{goal_cap},' said {friend} with care.\n{hero} raised {object}. 'My magic can help us there!'",
+                "Down in {place}, a promise was due: {friend} would {goal}, with help from {hero} too.",
+                "The plan in {place} was modest and clear: {goal}, with one helpful friend standing near.",
+            ]
+        ).format(goal_cap=scenario["goal"].capitalize(), **details)
+    )
 
     world.para()
-    world.say(f"But {friend.id} came near with a worried face,")
-    world.say(f"For the magic had happened too quickly in place.")
+    world.say(
+        rng.choice(
+            [
+                "But {hero} hurried ahead before asking what to do. To {spell}, they waved {object}; a fizzing wind blew.",
+                "'Please wait for my signal,' {friend} started to say. But {hero} tried to {spell}, and magic leaped away.",
+                "Wanting the glory, {hero} stepped out alone and used {object} with a bright ringing tone.",
+                "The careful plan needed two voices in time, yet {hero} began with a solo spell-rhyme.",
+                "{friend} reached for the plan, but {hero} reached first: {object} flashed once, and the loose magic burst.",
+                "'I know how to {spell}!' {hero} cried with delight, and cast before checking if all was just right.",
+            ]
+        ).format(**details)
+    )
+    world.say(f"The spell {scenario['mistake']}; it {scenario['harm']}.")
+    world.say(f"{scenario['evidence']}.")
     friend.memes[params.feeling] = 1
     hero.memes["pride"] = 1
-    world.say(f"Inside {hero.id}'s heart came a hush and a hum,")
-    world.say(f"An inner monologue: 'Oh no, what have I done?'")
 
     world.para()
-    world.say(f"'I felt so {params.feeling},' thought {hero.id} with care,")
-    world.say(f"'Yet I can make room for a kinder repair.'")
+    world.say(
+        rng.choice(
+            [
+                "'{hero}, I feel {feeling},' said {friend}. 'You rushed on alone.' The words felt much heavier than turret stone.",
+                "{friend} said, 'I feel {feeling}. My work mattered too.' {hero}'s proud little answer shrank before it was through.",
+                "'I am {feeling},' whispered {friend}. 'You did not wait.' The castle clock ticked while {hero} looked at the state.",
+                "{friend} did not shout, but their voice sounded small: 'I feel {feeling}; you did not hear me at all.'",
+                "'The magic was dazzling, but I feel {feeling},' said {friend}. 'A helper should listen before they begin.'",
+            ]
+        ).format(feeling=params.feeling, **details)
+    )
+    world.say(rng.choice(THOUGHTS).format(**details))
     hero.memes["remorse"] = 1
     friend.memes["hurt"] = 1
-    world.say(f"{hero.id} chose to {params.fix}, soft as a dove,")
-    world.say(f"And offered the charm with apology and love.")
 
     world.para()
+    world.say(
+        rng.choice(
+            [
+                "'I am sorry I rushed and ignored what you said,' {hero} replied. 'I will {fix}, then follow your lead.'",
+                "{hero} lowered {object}. 'I caused this,' they said. 'May I {fix} and help with your plan instead?'",
+                "'No spell can excuse me,' said {hero}. 'That is true. I will {fix}, and the next choice belongs to you.'",
+                "{hero} faced {friend}. 'I see why you hurt. I will {fix}, then stay for the patient work.'",
+                "'I cared more for showing my magic than you,' {hero} said. 'I will {fix}, and repair what I threw askew.'",
+                "{hero} put the charm down where both friends could see. 'I'll {fix}. Will you mend this with me?'",
+            ]
+        ).format(fix=params.fix, **details)
+    )
+    world.say(
+        rng.choice(
+            [
+                "Not with a shortcut or one flashy spell, they worked to {repair}, and worked at it well.",
+                "Then shoulder to shoulder, with no boastful sound, they began to {repair} on the ground.",
+                "{friend} named the first step; {hero} answered, 'All right.' Together they started to {repair} before night.",
+                "The apology opened a door, but their actions went through: they stayed to {repair}, both seeing it through.",
+                "A promise needs footsteps, not only a rhyme, so they chose to {repair}, taking their time.",
+                "Magic rested quietly while patient hands learned to {repair}, following careful commands.",
+            ]
+        ).format(**details)
+    )
+
     friend.memes["forgive"] = 1
     friend.memes["hurt"] = 0
+    friend.memes[params.feeling] = 0
+    friend.memes["trust"] = 2
     hero.memes["peace"] = 1
     hero.memes["remorse"] = 0
-    world.say(f"{friend.id} smiled, and the cloud drifted light,")
-    world.say(f"Reconciliation glimmered, warm and bright.")
-    world.say(f"They shared the spell, and the castle rang clear,")
-    world.say(f"With laughter and trust blooming near.")
+    world.say(
+        rng.choice(
+            [
+                "At last, {result}. '{hero}, I forgive you,' said {friend}. 'We repaired it together.'",
+                "Soon {result}. {friend}'s smile returned: 'Next time, let us plan the magic together.'",
+                "When {result}, {friend} nodded. 'Your listening helped more than a spell.'",
+                "By supper, {result}. 'We are friends again,' said {friend}, and this time {hero} listened well.",
+                "Before the last bell, {result}. {friend} offered {object} back: 'We can share its magic now.'",
+            ]
+        ).format(**details)
+    )
+    world.para()
+    world.say(rng.choice(ENDINGS).format(**details))
 
-    world.facts["resolved"] = True
+    world.facts.update(
+        resolved=True,
+        scenario=scenario,
+        mistake=scenario["mistake"],
+        harm=scenario["harm"],
+        repair=scenario["repair"],
+        result=scenario["result"],
+        ending_image=scenario["image"],
+    )
     return StorySample(
         params=params,
         story=world.render(),
@@ -221,33 +463,33 @@ def generate(params: StoryParams) -> StorySample:
 
 def generation_prompts(world: World) -> list[str]:
     p = world.facts["params"]
+    scenario = world.facts["scenario"]
     return [
-        f'Write a short rhyming story set in a castle where {p.hero} uses magic and then makes things right.',
-        f"Tell a gentle castle tale about {p.hero} and {p.friend} with an inner monologue, a mistake, and reconciliation.",
-        f'Write a child-friendly rhyme using the word "castle" and ending in a kind apology.',
+        f'Write a short rhyming story set in a castle where {p.hero} uses magic in {scenario["place"]} and then makes things right.',
+        f"Tell a gentle castle tale about {p.hero} and {p.friend}, using an inner monologue to turn a mistake into reconciliation.",
+        f'Write a child-friendly rhyme using the word "castle," a sincere apology, and a concrete ending image.',
     ]
 
 
 def story_qa(world: World) -> list[QAItem]:
     p = world.facts["params"]
-    hero: Entity = world.facts["hero"]
-    friend: Entity = world.facts["friend"]
+    scenario = world.facts["scenario"]
     qa = [
         QAItem(
             question=f"Where does the story happen?",
-            answer=f"It happens in {world.castle}, a castle where {p.hero} and {p.friend} can meet, worry, and then mend things together.",
+            answer=f"It happens in {world.castle}, especially in {scenario['place']}, where {p.hero} and {p.friend} try to complete a castle job.",
         ),
         QAItem(
-            question=f"What did {p.hero} want to do with the magic?",
-            answer=f"{p.hero} wanted to {p.spell}, because the magic object made the spell feel exciting and new.",
+            question=f"What went wrong when {p.hero} used the magic?",
+            answer=f"The spell {scenario['mistake']}. As a result, it {scenario['harm']}.",
         ),
         QAItem(
-            question=f"How did {p.hero} feel after the problem?",
-            answer=f"{p.hero} felt {p.feeling} at first, and then felt peaceful after choosing to {p.fix}.",
+            question=f"What did {p.hero} realize during the inner monologue?",
+            answer=f"{p.hero} realized that rushing ahead had hurt {p.friend}. A real repair required listening and responsible action, not another quick spell.",
         ),
         QAItem(
-            question=f"What changed by the end of the story?",
-            answer=f"By the end, {p.hero} and {p.friend} were reconciled, the hurt was gone, and they shared the magic kindly.",
+            question=f"How did {p.hero} and {p.friend} reconcile?",
+            answer=f"{p.hero} promised to {p.fix}, and together they worked to {scenario['repair']}. By the end, {scenario['result']}, and the friends trusted each other again.",
         ),
     ]
     return qa

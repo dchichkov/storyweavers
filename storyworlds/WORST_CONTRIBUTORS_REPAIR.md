@@ -148,5 +148,10 @@ Legend: `queued`, `active`, `repaired`, `verified`, `blocked`.
 | 17 | verified | `bead_sound_effects_cautionary_repetition_animal_story.py` | 2 skeletons/100 exact-unique stories | 2 skeletons | 100 unique; 100 skeletons | Six compatible premise/mishap/recovery families; bead safety preserved. |
 | 17 | verified | `nation_slap_lotto_grandparent_s_house_kindness.py` | 1 skeleton; 54/100 emitted in fresh baseline | 1 skeleton | 100 unique; 100 skeletons | Twelve incidents; slap made an object sound and lotto a no-money game. |
 | 17 | verified | `raviolo_pillar_neighborhood_bad_ending_conflict_sharing.py` | 1 skeleton; 56/100 emitted in fresh baseline | 1 skeleton | 100 unique; 100 skeletons | Twelve non-cruel incidents with professional structural handling. |
+| 17 | verified | `accord_thunk_bad_ending_detective_story.py` | 2 skeletons; 90/100 exact unique in fresh baseline | 2 skeletons | 100 unique; 100 skeletons | Ten mysteries with non-cruel bad endings. |
+| 18 | verified | `caboose_messenger_tidal_pool_foreshadowing_kindness_mystery.py` | 2 skeletons/100 exact-unique stories | 2 skeletons | 100 unique; 100 skeletons | Six habitat-safe mystery premises; dynamic QA added. |
+| 18 | verified | `castle_magic_reconciliation_inner_monologue_rhyming_story.py` | 2 skeletons/100 exact-unique stories | 2 skeletons | 100 unique; 100 skeletons | Twelve premises; broken root CLI and QA grounding fixed. |
+| 18 | verified | `chocolate_ado_chariot_sharing_friendship_moral_value.py` | 4 skeletons/100 exact-unique stories | 4 skeletons | 100 unique; 100 skeletons | Twelve plots with food, allergy, and chariot safety. |
+| 18 | verified | `xyz_cautionary_rhyming_story.py` | 2 skeletons/100 exact-unique stories | 2 skeletons | 100 unique; 100 skeletons | XYZ made a functional three-step safety code. |
 
 Additional waves follow the frozen 120-script template-collapse ranking.

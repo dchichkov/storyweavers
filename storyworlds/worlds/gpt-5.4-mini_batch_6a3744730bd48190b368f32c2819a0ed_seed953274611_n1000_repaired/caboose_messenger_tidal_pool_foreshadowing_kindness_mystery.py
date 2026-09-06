@@ -225,6 +225,11 @@ class StoryParams:
     caboose: str
     tide_level: int = 1
     clue_kind: str = "shell"
+    scenario: str = "missing_logbook"
+    opening_variant: int = 0
+    investigation_variant: int = 0
+    kindness_variant: int = 0
+    ending_variant: int = 0
     seed: Optional[int] = None
     @property
     def meters(self):
@@ -259,6 +264,57 @@ STYLES = {"mystery": "mystery"}
 HERO_NAMES = ["Mira", "Nina", "Owen", "Tess", "Arlo", "Ivy", "Jun", "Lena"]
 MESSENGER_NAMES = ["Pip", "Wren", "Rowan", "Bea", "Moss", "June", "Rae", "Kit"]
 CABOOSE_NAMES = ["Caboose", "the caboose", "old caboose"]
+
+SCENARIOS = {
+    "missing_logbook": {
+        "oddity": "the nature logbook was gone and its empty strap tapped the wall",
+        "message": "The last page is still telling us where it went",
+        "sign": "a line of damp paper flecks led away from the door",
+        "cause": "a gust had lifted the unfastened logbook from the nature station",
+        "solution": "They followed the paper flecks from the dry path and found the logbook wedged beneath the boardwalk ramp",
+        "proof": "The messenger buckled the logbook into its strap, and its pages lay flat beneath the caboose window",
+    },
+    "silent_bell": {
+        "oddity": "the caboose's warning bell had stopped ringing before the incoming tide",
+        "message": "Something small has silenced the bell, but nothing should be pulled from a pool",
+        "sign": "a loose blue cord made a wavy mark across the dry gravel",
+        "cause": "wind had slipped the bell cord off its hook and wrapped it around a railing post",
+        "solution": "They traced the cord along the gravel and, from the boardwalk, looped it back over its painted hook",
+        "proof": "One clear bell note floated over the pools while the cord hung safely above the rocks",
+    },
+    "mixed_markers": {
+        "oddity": "the colored tide markers beside the caboose were in the wrong order",
+        "message": "Read the colors from the shadows, not from where the pieces landed",
+        "sign": "three clean rectangles showed where signs had blocked the morning sun",
+        "cause": "a night wind had knocked the removable markers onto the station deck",
+        "solution": "They matched each marker to its sun-pale rectangle without stepping off the deck",
+        "proof": "The markers made a neat green-yellow-red row, and the red one gleamed above the rising water",
+    },
+    "mystery_knock": {
+        "oddity": "a hollow knock came from the caboose whenever the cove grew quiet",
+        "message": "Count the knocks and watch what moves between them",
+        "sign": "a narrow shadow swung across the same patch of gravel after every third knock",
+        "cause": "the wind was swinging a loose wooden tide ruler against the caboose",
+        "solution": "They timed the knocks, spotted the ruler from the viewing rail, and asked the ranger to tighten its top hinge",
+        "proof": "The ruler stood still beside the caboose, and the next quiet moment held only wave sounds",
+    },
+    "vanishing_flags": {
+        "oddity": "two orange safety flags had vanished from their rack on the caboose",
+        "message": "The flags did not go toward the water; look where the wind had to turn",
+        "sign": "orange threads clung to a splinter on the landward fence",
+        "cause": "a strong breeze had carried the flags inland behind the visitor bench",
+        "solution": "They searched the landward side and found both flags folded together under the bench",
+        "proof": "Both flags fluttered from the caboose rack, pointing visitors toward the safe overlook",
+    },
+    "covered_map": {
+        "oddity": "the caboose map showed every pool except the one marked for today's observation",
+        "message": "The missing pool has not moved; a newer clue is lying over it",
+        "sign": "one corner of the map looked twice as thick and smelled faintly of fresh paste",
+        "cause": "a new visitor notice had accidentally been pasted over part of the tide-pool map",
+        "solution": "They compared the map with the shore from the overlook, then asked the ranger to lift the notice with a safe paper tool",
+        "proof": "The restored map showed the little pool again, with a bright circle around the no-touch viewing spot",
+    },
+}
 
 CURATED = [
     StoryParams(
@@ -311,6 +367,7 @@ def build_parser() -> argparse.ArgumentParser:
     ap.add_argument("--caboose")
     ap.add_argument("--tide-level", type=int, choices=[1, 2, 3])
     ap.add_argument("--clue-kind", choices=["shell", "rope", "key", "map"])
+    ap.add_argument("--scenario", choices=SCENARIOS)
     ap.add_argument("-n", type=int, default=1)
     ap.add_argument("--all", action="store_true")
     ap.add_argument("--seed", type=int, default=None)
@@ -352,7 +409,10 @@ def _make_world(params: StoryParams) -> World:
     w = World()
     hero = w.add(Entity(id=params.hero, kind="character", type=params.hero_gender, role="child"))
     messenger = w.add(Entity(id=params.messenger, kind="character", type=params.messenger_gender, role="messenger"))
-    caboose = w.add(Entity(id="caboose", kind="thing", type="thing", label=params.caboose))
+    caboose_label = params.caboose
+    if caboose_label in {"caboose", "old caboose"}:
+        caboose_label = f"the {caboose_label}"
+    caboose = w.add(Entity(id="caboose", kind="thing", type="thing", label=caboose_label))
     tide = w.add(Entity(id="tide", kind="thing", type="thing", label="tide"))
     clue = w.add(Entity(id="clue", kind="thing", type="thing", label=params.clue_kind))
     tide.meters["level"] = float(params.tide_level)
@@ -371,52 +431,77 @@ def tell(world: World) -> None:
     caboose: Entity = f["caboose"]
     tide: Entity = f["tide"]
     clue: Entity = f["clue"]
-    scene = SETTINGS["tidal_pool"]["scene"]
+    params: StoryParams = f["params"]
+    plot = SCENARIOS[params.scenario]
+    openings = [
+        f"At the morning low tide, {hero.id} followed the tidal pool boardwalk to {caboose.label_word}, a retired rail car now used as a shore nature station.",
+        f"Cloud shadows crossed the tidal pool when {hero.id} reached {caboose.label_word}, the bright little nature station above the high-water line.",
+        f"From the safe tidal pool overlook, {hero.id} watched anemones fold and tiny fish flash while {caboose.label_word} waited on the gravel behind the rail.",
+        f"The tidal pool cove smelled of salt when {hero.id} arrived at {caboose.label_word}, where visitors recorded what they saw without touching the pools.",
+    ]
+    tide_hints = [
+        "A wet line was already climbing the lowest rock, a quiet hint that there would not be forever to investigate.",
+        "Farther out, a gull hopped away from a rock just before a wave washed over it.",
+        "The ranger's tide clock clicked one mark higher, and silver water filled a crack below.",
+        "A ribbon of foam curled around the seaward stones, then returned a little closer than before.",
+    ]
+    investigations = [
+        f"They crouched on the dry path and compared the {clue.label_word} clue with the station map instead of picking up anything living.",
+        f"They took a photograph of the {clue.label_word} clue and enlarged it on the messenger's screen, leaving the pool exactly as they found it.",
+        f"Using the viewing rail as a boundary, they looked from the {clue.label_word} clue to the caboose and searched for a repeating shape.",
+        f"They sketched the {clue.label_word} clue in a notebook, then checked which direction its marks pointed from the boardwalk.",
+    ]
+    kindness_beats = [
+        (f"{messenger.id}'s words tumbled together, so {hero.id} waited, offered a dry towel, and let the messenger begin again.",
+         f'"Thank you for listening," {messenger.id} said. "Here is the part I was afraid I had spoiled."'),
+        (f"When {messenger.id} admitted losing track of the clue, {hero.id} said that mistakes were easier to solve when nobody had to hide them.",
+         f'"Then I can show you my whole message," {messenger.id} said, smoothing the damp paper.'),
+        (f"{hero.id} noticed {messenger.id} shivering and shared the sheltered side of the caboose before asking another question.",
+         f'"I remember one more detail now," {messenger.id} said. "It happened when the wind changed."'),
+        (f"Instead of grabbing the message, {hero.id} held out a notebook and asked {messenger.id} to draw the clue at a comfortable pace.",
+         f'"That helps," {messenger.id} said. "The strange part was beside the caboose, not inside a pool."'),
+    ]
+    endings = [
+        "In the last light, a bead of seawater shone below the boardwalk while the solved clue stayed safe and dry above it.",
+        "As they left, a tiny fish crossed the pool's reflection and the caboose window answered with one warm square of light.",
+        "The next wave filled the pool without carrying away a single shell, sign, or secret.",
+        "Behind them, the caboose cast a tidy red reflection, and every creature in the pool remained undisturbed.",
+    ]
 
-    world.say(
-        f"{hero.id} came to {SETTINGS['tidal_pool']['place']} where the shore felt like a little secret, "
-        f"{scene}. Near the water stood {caboose.label_word}, and {hero.id} wanted to know why it seemed out of place."
-    )
-    world.say(
-        f"Then a messenger named {messenger.id} arrived with a damp note tucked under one arm. "
-        f'"Look for the sign before the tide turns," {messenger.id} said, and pointed toward the rocks.'
-    )
+    world.say(openings[params.opening_variant % len(openings)])
+    world.say(f"Something was wrong: {plot['oddity']}.")
+    world.say(tide_hints[(params.opening_variant + params.ending_variant) % len(tide_hints)])
 
     world.para()
+    world.say(f"A messenger named {messenger.id} hurried up the path with a damp note. \"{plot['message']},\" {messenger.id} read.")
     clue.meters["seen"] = 1.0
-    world.say(
-        f"{hero.id} found {clue.label_word} pressed into the sand. That felt like a clue, but it also felt like a warning."
-    )
-    if tide.meters["level"] >= TIDE_WARN_LEVEL:
-        world.say(
-            f"The water kept edging closer. Every small wave made the tip of {caboose.label_word} look less forgotten and more important."
-        )
+    world.say(f"Near the caboose, {plot['sign']}. Beside it was the {clue.label_word} symbol from the note.")
+    world.say(investigations[params.investigation_variant % len(investigations)])
     propagate(world)
 
     world.para()
     messenger.memes["kindness"] = 1.0
     hero.memes["kindness"] = 1.0
-    world.say(
-        f"{hero.id} did not brush the messenger aside. Instead, {hero.id} listened carefully and shared a dry towel, and that kindness made {messenger.id} tell the whole truth."
-    )
-    world.say(
-        f"The note was about a hidden latch in {caboose.label_word}. Someone had been leaving little signs so the right person would notice before the tide covered everything."
-    )
+    kind_action, kind_reply = kindness_beats[params.kindness_variant % len(kindness_beats)]
+    world.say(kind_action)
+    world.say(kind_reply)
+    world.say(f"That small kindness gave {messenger.id} time to remember the missing detail.")
+    world.say(f"Now the early hint made sense: {plot['cause']}.")
+    world.say("The odd detail had quietly foreshadowed the answer without giving the mystery away.")
 
     world.para()
     clue.meters["evidence"] += 1
-    tide.meters["level"] = max(0.0, tide.meters["level"] - 1.0)
-    world.say(
-        f"Together they checked the sand, followed the foreshadowed clues, and found the lost latch before the water could swallow it."
-    )
-    world.say(
-        f"{hero.id} opened {caboose.label_word} and found a tiny box of returned treasures inside, each one tagged and waiting."
-    )
-    world.say(
-        f"The messenger smiled, and {hero.id} smiled back. The mystery was small, but the kindness made it feel important."
-    )
-    world.say(
-        f"When they left, the tide was lower, the note was dry, and {caboose.label_word} no longer looked lonely at the edge of the pool."
+    world.say(f"{plot['solution']}. They never entered a pool or moved a shell or animal.")
+    world.say(f"{plot['proof']}.")
+    world.say(f'"Mystery solved," {hero.id} said. "And nothing here had to be harmed to solve it."')
+    world.say(endings[params.ending_variant % len(endings)])
+    world.facts.update(
+        mystery_oddity=plot["oddity"],
+        mystery_sign=plot["sign"],
+        mystery_cause=plot["cause"],
+        mystery_solution=plot["solution"],
+        mystery_proof=plot["proof"],
+        kindness_action=kind_action,
     )
 
 
@@ -425,23 +510,26 @@ def story_qa(world: World) -> list[QAItem]:
     hero: Entity = f["hero"]
     messenger: Entity = f["messenger"]
     caboose: Entity = f["caboose"]
-    tide: Entity = f["tide"]
     return [
         QAItem(
             question="What was the story about?",
-            answer=f"It was about {hero.id}, a messenger named {messenger.id}, and a mystery at the tidal pool. The clues pointed toward {caboose.label_word}, and the answer came from paying attention kindly."
+            answer=f"It was about {hero.id} and a messenger named {messenger.id} investigating why {f['mystery_oddity']}. They solved the mystery near {caboose.label_word} by studying clues and trusting each other."
         ),
         QAItem(
-            question=f"Why did the clue matter?",
-            answer=f"The clue warned that the tide was moving and that something near {caboose.label_word} needed to be found before the water covered it. Because {hero.id} followed the clue, the hidden latch was discovered in time."
+            question="How did the early clue foreshadow the answer?",
+            answer=f"The early clue was that {f['mystery_sign']}. It pointed toward the later discovery that {f['mystery_cause']}."
         ),
         QAItem(
             question="How did kindness help?",
-            answer=f"{hero.id} listened to {messenger.id}, shared a towel, and stayed calm. That made {messenger.id} trust {hero.id} enough to explain the secret, and the two of them solved the mystery together."
+            answer=f"{f['kindness_action']} That kindness helped {messenger.id} share the missing detail, so the two children could reason from the complete message."
         ),
         QAItem(
-            question="What changed by the end?",
-            answer=f"The tide was lower, the clues were understood, and {caboose.label_word} was no longer a puzzle. The small box of returned treasures showed that the mystery had been solved."
+            question="What proved that the mystery was solved?",
+            answer=f"{f['mystery_solution']}. The visible proof was that {f['mystery_proof']}."
+        ),
+        QAItem(
+            question="How did the children protect the tidal pool?",
+            answer="They investigated from the dry path, boardwalk, or viewing rail and did not enter the pools. They left shells and animals where they were and asked a ranger for help when a repair needed tools."
         ),
     ]
 
@@ -606,6 +694,7 @@ def resolve_params(args: argparse.Namespace, rng: random.Random) -> StoryParams:
     caboose = args.caboose or rng.choice(CABOOSE_NAMES)
     tide_level = args.tide_level or rng.choice([1, 2, 3])
     clue_kind = args.clue_kind or rng.choice(["shell", "rope", "key", "map"])
+    scenario = args.scenario or rng.choice(list(SCENARIOS))
     if setting != "tidal_pool":
         raise StoryError("Only tidal_pool is valid in this storyworld.")
     if style != "mystery":
@@ -622,6 +711,11 @@ def resolve_params(args: argparse.Namespace, rng: random.Random) -> StoryParams:
         caboose=caboose,
         tide_level=tide_level,
         clue_kind=clue_kind,
+        scenario=scenario,
+        opening_variant=rng.randrange(4),
+        investigation_variant=rng.randrange(4),
+        kindness_variant=rng.randrange(4),
+        ending_variant=rng.randrange(4),
     )
 
 

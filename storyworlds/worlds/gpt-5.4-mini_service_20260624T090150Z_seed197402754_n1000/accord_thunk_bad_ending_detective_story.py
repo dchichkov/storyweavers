@@ -17,8 +17,11 @@ import sys
 from dataclasses import dataclass, field, asdict
 from typing import Optional
 
-sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-from results import QAItem, StoryError, StorySample  # noqa: E402
+REPO_ROOT = os.path.dirname(
+    os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+)
+sys.path.insert(0, REPO_ROOT)
+from storyworlds.results import QAItem, StoryError, StorySample  # noqa: E402
 
 
 @dataclass
@@ -80,6 +83,12 @@ class StoryParams:
     clue_place: str = "the alley"
     sound: str = "thunk"
     object_name: str = "tin box"
+    case_id: int = 0
+    opening_id: int = 0
+    inquiry_id: int = 0
+    dialogue_id: int = 0
+    mistake_id: int = 0
+    ending_id: int = 0
     seed: Optional[int] = None
 
 
@@ -92,6 +101,156 @@ PLACES = {
 DETECTIVE_NAMES = ["Mina", "Noel", "Tess", "Ivy", "Rowan", "Pip", "June", "Eli"]
 SUSPECT_NAMES = ["Mr. Bell", "Aunt Ora", "Benji", "Nina", "Coach Sam", "Mrs. Lane"]
 WITNESS_NAMES = ["Lulu", "Omar", "Ria", "Tom", "Mila", "Jae"]
+
+CASES = [
+    {
+        "premise": "Neighbors were arranging a welcome display, and the last bundle of paper stars was stored in the {object}.",
+        "witness": "{W} said the {object} jumped when a delivery cart passed.",
+        "clue": "a strip of blue wool snagged on the lid",
+        "suspicion": "{S}'s blue scarf",
+        "truth": "the wool had torn from the cart driver's blanket",
+        "proof": "a matching ragged corner still hung from the cart",
+        "consequence": "The welcome display opened with a bare patch where the stars should have shone",
+    },
+    {
+        "premise": "A jar of concert tickets vanished just before the children's music night, and the empty {object} rocked beside the wall.",
+        "witness": "{W} remembered seeing {S} carry chairs past the {object}.",
+        "clue": "a curl of silver ribbon under one corner",
+        "suspicion": "the silver ribbon on {S}'s chair bundle",
+        "truth": "a gust had rolled the ticket jar behind a curtain",
+        "proof": "the jar made the same {sound} when the curtain tugged it back",
+        "consequence": "The first song began before the waiting families received their tickets",
+    },
+    {
+        "premise": "The seed-swap table needed its label cards, but they disappeared after a {sound} rattled the {object}.",
+        "witness": "{W} had noticed muddy half-moons leading toward {S}.",
+        "clue": "three muddy marks shaped like small heels",
+        "suspicion": "the mud on {S}'s boots",
+        "truth": "the marks came from a toppled flowerpot's curved rim",
+        "proof": "the broken pot made identical half-moons in damp soil",
+        "consequence": "Gardeners went home with seed packets whose names had been mixed up",
+    },
+    {
+        "premise": "A painted direction sign fell moments before the neighborhood walk, landing beside the {object} with a {sound}.",
+        "witness": "{W} said {S} had complained that the arrow pointed the wrong way.",
+        "clue": "a short red thread caught on the signpost",
+        "suspicion": "a red patch on {S}'s sleeve",
+        "truth": "the thread came from a kite that had wrapped around the loose sign",
+        "proof": "the kite's tail was missing one short red tassel",
+        "consequence": "The walkers followed the fallen arrow and missed the lantern garden",
+    },
+    {
+        "premise": "Two friends had promised to share a model bridge, but one wooden span disappeared from the open {object}.",
+        "witness": "{W} heard the {sound} just after {S} borrowed a ruler.",
+        "clue": "a dusting of pale sawdust near the latch",
+        "suspicion": "the sawdust on {S}'s ruler case",
+        "truth": "a mouse had dragged the light span behind a stack of boards",
+        "proof": "tiny tooth marks crossed the hidden span",
+        "consequence": "The bridge display sagged between its towers, and the two builders stood apart",
+    },
+    {
+        "premise": "The town's accord bell was due to ring, yet its padded striker was missing from the {object}.",
+        "witness": "{W} saw {S} reach near the bell rope before the {sound}.",
+        "clue": "a smudge of green chalk on the clasp",
+        "suspicion": "green chalk on {S}'s fingers",
+        "truth": "the caretaker had moved the striker while marking a repair",
+        "proof": "a chalk arrow beneath the shelf pointed to its safe hiding place",
+        "consequence": "The hour for the accord bell passed in an uncomfortable silence",
+    },
+    {
+        "premise": "A box of apology notes was meant to settle a playground quarrel, but the {object} tipped and the notes vanished.",
+        "witness": "{W} said {S} had walked away from the writing table in a hurry.",
+        "clue": "a square crease pressed into the dust",
+        "suspicion": "the square notebook in {S}'s pocket",
+        "truth": "the notes had slid through a gap into a folded tablecloth",
+        "proof": "one paper corner peeked from the cloth's hem",
+        "consequence": "The two quarreling teams left without reading one another's apologies",
+    },
+    {
+        "premise": "The shared supper could not begin because the recipe card was gone from the {object} after a hollow {sound}.",
+        "witness": "{W} recalled {S} saying the soup needed a different herb.",
+        "clue": "a crushed leaf beside the handle",
+        "suspicion": "the same herb tucked into {S}'s basket",
+        "truth": "the recipe had stuck to the damp bottom of a serving tray",
+        "proof": "backward letters from the card showed through the wet tray",
+        "consequence": "The supper tables stayed empty while everyone argued about the missing recipe",
+    },
+    {
+        "premise": "Children had built a message lantern for the evening parade, but its paper moon was gone when the {object} gave a {sound}.",
+        "witness": "{W} had seen {S} fold a pale piece of paper nearby.",
+        "clue": "a sprinkle of gold paste on the floor",
+        "suspicion": "gold paste on {S}'s cuff",
+        "truth": "the moon had clung to the back of a drying poster",
+        "proof": "its round outline gleamed through the poster paper",
+        "consequence": "The parade started with a dark lantern at its front",
+    },
+    {
+        "premise": "A borrowed puzzle piece was due back before closing, but only the shut {object} remained after a sharp {sound}.",
+        "witness": "{W} thought {S} had slipped something bright into a pocket.",
+        "clue": "a tiny triangle of yellow card by the hinge",
+        "suspicion": "a yellow library card in {S}'s pocket",
+        "truth": "the puzzle piece had wedged beneath the {object}'s false bottom",
+        "proof": "tilting the box made the hidden piece answer with a faint scrape",
+        "consequence": "The puzzle's owner carried home an unfinished picture and no explanation",
+    },
+]
+
+OPENINGS = [
+    "{D} kept a notebook of small mysteries, but had never solved one with so many neighbors watching.",
+    "Whenever neighbors disagreed at {place}, {D} listened for the detail everyone else had missed.",
+    "{D}, the youngest detective near {place}, believed accord began with patient questions.",
+    "Rain had polished the stones around {place} when {D} arrived with a pencil and a promise to be fair.",
+    "A community notice at {place} asked for a careful detective, so {D} buttoned a little clue pouch and came running.",
+    "The day had begun peacefully at {place}; {D} hoped to help it end in accord too.",
+    "{D} was drawing a map of {place} when a worried crowd gathered around the detective's table.",
+    "At {place}, people trusted {D} to notice quiet truths hidden beneath noisy guesses.",
+]
+
+INQUIRIES = [
+    "{D} measured the clue, sketched where everyone had stood, and asked for the story in reverse.",
+    "{D} rolled the {object} gently, compared its sound with the first {sound}, and checked the floor for a second trail.",
+    "{D} made a timeline on three cards, but placed {S}'s card before checking the final minute.",
+    "{D} inspected the latch with a magnifying glass and asked {W} to demonstrate exactly where the noise began.",
+    "{D} dusted the clue with flour, held it to the light, and searched nearby corners for a matching mark.",
+    "{D} asked each person the same three questions, then tested which nearby object could make a similar {sound}.",
+    "{D} traced a circle around the clue, checked the wind, and listened beside the {object} without touching it.",
+    "{D} photographed the scene in a notebook, examined the clue's edges, and asked what had changed since morning.",
+    "{D} counted the steps from {clue_place}, tested the loose floorboards, and compared every answer twice.",
+    "{D} tied a string from the clue to the {object}, hoping the straight line would reveal a simple answer.",
+]
+
+DIALOGUES = [
+    ('"Please test the clue before you name anyone," {W} whispered.', '"It points straight to {S}," {D} replied, though one question remained.'),
+    ('"I was nearby, but that is not the same as causing it," said {S}.', '"Nearby is enough for now," {D} said, closing the notebook.'),
+    ('"Could two things leave the same mark?" {W} asked.', '"Not this time," said {D}, more certain than the evidence allowed.'),
+    ('"Let me explain the last minute," {S} began.', '"The clue has already explained it," {D} answered.'),
+    ('"Accord needs everyone to be heard," {W} reminded the detective.', '"We need an answer before we need another story," {D} said.'),
+    ('"What if the {sound} came first and the clue came later?" asked {S}.', '"That would make everything harder," {D} admitted, and chose the easier guess.'),
+    ('"There may be a second trail," said {W}.', '"One trail is plenty," {D} replied, pointing toward {S}.'),
+    ('"Your map has an empty corner," {S} said softly.', '"Empty corners do not solve cases," {D} said, folding the map.'),
+]
+
+MISTAKES = [
+    "Wanting the crowd to stop worrying, {D} treated {suspicion} as proof and publicly blamed {S}.",
+    "When two neighbors demanded an answer, {D} skipped the last test and declared that {S} had caused the trouble.",
+    "{D} circled {S}'s name in the notebook, mistaking a possible connection for a certain one.",
+    "Because the clue fit the first guess neatly, {D} ignored the part of {W}'s account that did not fit and accused {S}.",
+    "The fading daylight made {D} hurry; the detective announced {S}'s guilt before examining the clue's other side.",
+    "{D} asked the crowd for a show of hands, and their worried guesses pushed the detective into blaming {S}.",
+    "Instead of repeating the sound test, {D} trusted memory and told everyone that {S} was responsible.",
+    "{D} saw {S} hesitate, called that hesitation suspicious, and made the accusation too soon.",
+]
+
+ENDINGS = [
+    "But by then {S} had gone home unheard. {consequence}. {D}'s unopened apology lay beside the {object} as its lid settled with one last {sound}.",
+    "{S} would not return that evening, and accord did not return either. {consequence}.",
+    "The detective erased the accusation, but could not erase the hurt it had caused. {consequence}.",
+    "The crowd drifted away before {D} could correct the story. No one was harmed, yet the unfair blame remained uncorrected that night. {consequence}.",
+    "The discovery came after {S} had stopped answering the detective's questions. {consequence}. The clue notebook closed on a page with no accord at the bottom.",
+    "The real explanation was gentle; the rushed accusation was not. {consequence}, while {S}'s empty place showed what the mistake had cost.",
+    "{D} wrote 'I was wrong,' but {S} was no longer there to read it. {consequence}.",
+    "The mystery was solved too late to mend the evening: {consequence}. {D} walked home carrying a very heavy, very quiet notebook.",
+]
 
 
 ASP_RULES = r"""
@@ -177,11 +336,18 @@ def resolve_params(args: argparse.Namespace, rng: random.Random) -> StoryParams:
         clue_place=scene.clue_place,
         sound=scene.sound,
         object_name=scene.object_name,
+        case_id=rng.randrange(len(CASES)),
+        opening_id=rng.randrange(len(OPENINGS)),
+        inquiry_id=rng.randrange(len(INQUIRIES)),
+        dialogue_id=rng.randrange(len(DIALOGUES)),
+        mistake_id=rng.randrange(len(MISTAKES)),
+        ending_id=rng.randrange(len(ENDINGS)),
     )
 
 
 def _build_world(params: StoryParams) -> World:
     scene = PLACES[params.place]
+    case = CASES[params.case_id % len(CASES)]
     world = World(scene)
     det = world.add(Entity(id="det", kind="detective", label=params.detective_name, role="detective"))
     sus = world.add(Entity(id="sus", kind="suspect", label=params.suspect_name, role="suspect"))
@@ -192,21 +358,50 @@ def _build_world(params: StoryParams) -> World:
     sus.memes["nervous"] = 1
     wit.memes["uneasy"] = 1
 
-    world.say(f"{det.label} was a small detective at {scene.place}, and {det.pronoun('subject')} liked neat clues and quiet maps.")
-    world.say(f"One evening, {det.label} heard a soft {scene.sound} from {scene.clue_place}, where a {scene.object_name} sat in the dark.")
-    world.say(f"{det.label} wanted to keep the town in {scene.accord_word}, so {det.pronoun('subject')} followed the sound.")
+    values = {
+        "D": det.label,
+        "S": sus.label,
+        "W": wit.label,
+        "place": scene.place,
+        "clue_place": scene.clue_place,
+        "object": scene.object_name,
+        "sound": scene.sound,
+        "suspicion": case["suspicion"].format(S=sus.label),
+        "truth": case["truth"].format(
+            object=scene.object_name, sound=scene.sound
+        ),
+        "proof": case["proof"].format(
+            object=scene.object_name, sound=scene.sound
+        ),
+        "consequence": case["consequence"],
+    }
+
+    world.say(OPENINGS[params.opening_id % len(OPENINGS)].format(**values))
+    world.say(case["premise"].format(**values))
+    world.say(
+        f"Then a clear {scene.sound} came from {scene.clue_place}, and talk of "
+        f"{scene.accord_word} gave way to worried guesses."
+    )
 
     world.para()
-    world.say(f"At {scene.clue_place}, {wit.label} pointed at the {scene.object_name} and said it had rolled there after a bump.")
-    world.say(f"{sus.label} stood nearby, looking worried, and {det.label} thought the worry itself was a clue.")
-    world.say(f"{det.label} asked careful questions, but the answers came out mixed, like footprints in wet paint.")
+    world.say(case["witness"].format(**values))
+    world.say(
+        f"Near the {scene.object_name}, {det.label} found {case['clue']}. "
+        f"It seemed to match {values['suspicion']}."
+    )
+    world.say(INQUIRIES[params.inquiry_id % len(INQUIRIES)].format(**values))
 
     world.para()
-    world.say(f"Then {det.label} found a shiny button under a bench and decided it must belong to {sus.label}.")
-    world.say(f"{det.label} announced the answer too fast, and the nice plan for {scene.accord_word} began to crack.")
-    world.say(f"In the end, the button came from {wit.label}'s coat, not from the suspect at all.")
-    world.say(f"{sus.label} walked away hurt, {wit.label} looked ashamed, and the little station felt less peaceful than before.")
-    world.say(f"{det.label} had solved the sound of the {scene.sound}, but not the trouble it caused.")
+    exchange = DIALOGUES[params.dialogue_id % len(DIALOGUES)]
+    world.say(exchange[0].format(**values))
+    world.say(exchange[1].format(**values))
+    world.say(MISTAKES[params.mistake_id % len(MISTAKES)].format(**values))
+
+    world.para()
+    world.say(
+        f"A late check showed that {values['truth']}; {values['proof']}."
+    )
+    world.say(ENDINGS[params.ending_id % len(ENDINGS)].format(**values))
 
     world.facts.update(
         detective=det,
@@ -217,6 +412,14 @@ def _build_world(params: StoryParams) -> World:
         object_name=scene.object_name,
         sound=scene.sound,
         accord_word=scene.accord_word,
+        mystery=case["premise"].format(**values),
+        witness_statement=case["witness"].format(**values),
+        clue=case["clue"],
+        suspicion=values["suspicion"],
+        inquiry=INQUIRIES[params.inquiry_id % len(INQUIRIES)].format(**values),
+        true_cause=values["truth"],
+        proof=values["proof"],
+        consequence=case["consequence"],
         wrong_blame=True,
     )
     return world
@@ -228,9 +431,9 @@ def generation_prompts(world: World) -> list[str]:
     sus = f["suspect"]
     wit = f["witness"]
     return [
-        f"Write a short detective story for a young child that includes the word '{f['sound']}' and ends badly.",
-        f"Tell a story where {det.label} tries to keep {f['accord_word']} at {f['place']}, but the clue from {f['clue_place']} is misunderstood.",
-        f"Write a gentle mystery about {det.label}, {sus.label}, and {wit.label} with a clear clue, a mistake, and a sad ending.",
+        f"Write a short detective story for a young child that includes '{f['sound']}', accord, and a gentle bad ending.",
+        f"Tell how {det.label} investigates {f['clue']} at {f['place']} but unfairly suspects {sus.label}.",
+        f"Write a mystery about {det.label}, {sus.label}, and {wit.label}. Reveal this truth too late: {f['true_cause']}.",
     ]
 
 
@@ -245,12 +448,16 @@ def story_qa(world: World) -> list[QAItem]:
             answer=f"The detective was {det.label}. {det.label} listened for clues and tried to keep things calm.",
         ),
         QAItem(
-            question=f"What sound started the mystery?",
-            answer=f"The mystery started with a soft {f['sound']} from {f['clue_place']}. That sound led {det.label} to look closer.",
+            question="What clue made the detective suspicious?",
+            answer=f"{det.label} found {f['clue']}. It seemed to match {f['suspicion']}, but that resemblance did not prove anything.",
         ),
         QAItem(
             question=f"Why was the ending bad?",
-            answer=f"The ending was bad because {det.label} blamed {sus.label} too quickly, but the button really belonged to {wit.label}. That mistake hurt feelings and broke the accord.",
+            answer=f"The ending was bad because {det.label} blamed {sus.label} before finishing the investigation. In truth, {f['true_cause']}, and {f['consequence'].lower()}.",
+        ),
+        QAItem(
+            question="What evidence showed the first guess was wrong?",
+            answer=f"The later evidence was that {f['proof']}. It showed why the clue did not fairly point to {sus.label}.",
         ),
     ]
 
@@ -297,9 +504,24 @@ def format_qa(sample: StorySample) -> str:
 
 
 CURATED = [
-    StoryParams("Mina", "Mr. Bell", "Lulu", place="the little station", clue_place="the alley", sound="thunk", object_name="tin box"),
-    StoryParams("Tess", "Aunt Ora", "Omar", place="the market corner", clue_place="the stairwell", sound="thunk", object_name="wooden crate"),
-    StoryParams("Ivy", "Mrs. Lane", "Ria", place="the school yard", clue_place="the shed", sound="thunk", object_name="lunch pail"),
+    StoryParams(
+        detective_name="Mina", suspect_name="Mr. Bell", witness_name="Lulu",
+        place="the little station", clue_place="the alley", sound="thunk",
+        object_name="tin box", case_id=0, opening_id=0, inquiry_id=0,
+        dialogue_id=0, mistake_id=0, ending_id=0,
+    ),
+    StoryParams(
+        detective_name="Tess", suspect_name="Aunt Ora", witness_name="Omar",
+        place="the market corner", clue_place="the stairwell", sound="thunk",
+        object_name="wooden crate", case_id=4, opening_id=3, inquiry_id=5,
+        dialogue_id=3, mistake_id=4, ending_id=3,
+    ),
+    StoryParams(
+        detective_name="Ivy", suspect_name="Mrs. Lane", witness_name="Ria",
+        place="the school yard", clue_place="the shed", sound="thunk",
+        object_name="lunch pail", case_id=8, opening_id=6, inquiry_id=8,
+        dialogue_id=6, mistake_id=7, ending_id=7,
+    ),
 ]
 
 
