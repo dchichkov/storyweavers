@@ -9,13 +9,13 @@ from __future__ import annotations
 
 import argparse
 import json
-import os
 import random
 import sys
 from dataclasses import dataclass, field
+from pathlib import Path
 from typing import Optional
 
-sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 from results import QAItem, StoryError, StorySample  # noqa: E402
 
 
@@ -70,6 +70,178 @@ SETTINGS = {
         "safe_end": True,
     }
 }
+
+SCENARIOS = [
+    {
+        "key": "leaf_jam",
+        "premise": "a curbside garden cart had tipped, and one yam rolled beside a leaf-clogged grate",
+        "problem": "Rain began pooling because the leaves covered the drain slots",
+        "mistake": "At first, {name} tried to point out every leaf with the laser, but the dancing dot only made the {companion} chase shadows",
+        "memory": "that afternoon, a crossing guard had said that a tool helps only when it makes the next safe step clearer",
+        "clue": "a dry crescent around one slot showed where water still slipped through",
+        "dialogue": "'The dot can show the dry edge, but our hands stay away from the grate,' {name} said",
+        "action": "An adult used a long-handled rake from the sidewalk while {name} held a flashlight and counted the clearing slots",
+        "result": "The puddle spiraled down, and the cart owner reclaimed the clean yam instead of treating drain water as a pantry",
+        "ending": "A single leaf sailed through the gutter like a tiny green boat while the grate gave a bubbly chuckle",
+        "lesson": "good humor can settle a worried team, but a safe plan does the useful work",
+    },
+    {
+        "key": "label_mixup",
+        "premise": "a produce-delivery label marked YAM had stuck to the storm-drain sign after a gust",
+        "problem": "Neighbors thought the label meant a yam was trapped below and crowded around the curb",
+        "mistake": "{name} swept the toy laser across the sign like a detective, which made the letters look even more mysterious",
+        "memory": "last week, {name} had mistaken an upside-down lunch label for a secret map until the {companion} nudged it straight",
+        "clue": "the label's torn corner matched an empty crate on the garden cart",
+        "dialogue": "'It is a traveling sticker, not a drain menu,' {name} said, and everyone chuckled",
+        "action": "With the laser switched off, {name} asked an adult to peel up the litter and place it in the bin",
+        "result": "The cart owner checked the crate, found every yam accounted for, and thanked the careful investigators",
+        "ending": "The clean sign shone under the streetlamp, and the empty crate rattled home on the cart",
+        "lesson": "checking ordinary evidence is wiser than making a dramatic guess",
+    },
+    {
+        "key": "echo_count",
+        "premise": "a harvest-game yam had bounced from a chalk circle and stopped safely on the pavement beside the storm drain",
+        "problem": "A hollow plink below sounded like a second yam falling into the pipe",
+        "mistake": "{name} aimed the laser at a cardboard target near the curb and counted each returning echo as another lost vegetable",
+        "memory": "during music club, three claps near a wall had sounded like six until the teacher explained echoes",
+        "clue": "one gentle tap on the target made the same double plink even though the yam did not move",
+        "dialogue": "'One sound went down and one came back,' {name} explained; the {companion} answered with a comic squeak",
+        "action": "They moved the game well back from the curb and marked a new throwing line with adult permission",
+        "result": "The single clean yam returned to the harvest basket, and no one reached into or entered the drain",
+        "ending": "Their final chuckle came back faint and round, then rain softened it into silence",
+        "lesson": "a funny echo can be a clue when someone tests it carefully",
+    },
+    {
+        "key": "reflection",
+        "premise": "a yam-shaped festival lantern cast a brown reflection into a shallow puddle beside the storm drain",
+        "problem": "The {companion} mistook the reflection for food under the grate and crept too close to traffic",
+        "mistake": "{name} wiggled a low-power laser dot on a closed practice board, hoping to lure the {companion} back, but the extra motion caused confusion",
+        "memory": "earlier, an animal-care volunteer had taught {name} never to shine a laser toward an animal or use one to tease it",
+        "clue": "when the lantern swayed left, the puddle-yam swayed left at exactly the same time",
+        "dialogue": "'That yam is made of reflected light,' {name} said, turning the laser off",
+        "action": "An adult blocked the curb while {name} called the {companion} toward a familiar treat placed far from the road",
+        "result": "The animal returned safely, and the lantern was tied where its reflection could not tempt anyone toward the drain",
+        "ending": "The real lantern glowed above them while its harmless twin trembled in a flowerpot saucer",
+        "lesson": "kindness means changing a clever idea when it unsettles someone else",
+    },
+    {
+        "key": "survey_marks",
+        "premise": "a gardener set a prize yam on a bench while volunteers measured rainwater near the storm drain",
+        "problem": "Their chalk measurements vanished whenever a new shower crossed the pavement",
+        "mistake": "{name} tried using the laser as a lasting mark, then chuckled on realizing light disappears as soon as it is switched off",
+        "memory": "at a science table that morning, a beam had shown a point clearly but had left no mark on the paper",
+        "clue": "a row of removable blue tabs remained readable above the wet curb",
+        "dialogue": "'The laser can point while an adult places a tab, but it cannot save the measurement,' {name} said",
+        "action": "From the sidewalk, the team recorded each water line on a clipboard and kept every person away from the opening",
+        "result": "The measurements helped the gardener choose a safer rain-barrel spot, and the yam became the winner's supper at home",
+        "ending": "Blue tabs made a tiny staircase above the drying gutter as the volunteers shared one last chuckle",
+        "lesson": "the right tool depends on whether a clue must merely be shown or carefully recorded",
+    },
+    {
+        "key": "paper_boat",
+        "premise": "a paper boat named Yam sailed along the gutter during a supervised rain experiment",
+        "problem": "The boat snagged on a twig before the storm drain, carrying its drawn-on smile toward the grate",
+        "mistake": "{name} flashed the laser on a wall-mounted target as a pretend lighthouse, but light could not push the boat sideways",
+        "memory": "on a previous rainy day, {name} had learned that even shallow moving water can pull harder than it looks",
+        "clue": "water curled around the upstream side of each pebble and left a calm pocket behind it",
+        "dialogue": "'We stay on dry pavement and redirect the water, not ourselves,' {name} told the {companion}",
+        "action": "An adult used a long grabber to lift the boat while {name} placed cones to keep the game far from the drain",
+        "result": "The soggy Yam boat was rescued for recycling, and the next boats floated in a tub instead",
+        "ending": "In the tub, a new paper boat bobbed beneath a lamp and wore a yam-colored flag",
+        "lesson": "pretend adventure is funniest when its boundaries keep everyone safe",
+    },
+    {
+        "key": "mural_shadow",
+        "premise": "a mural beside the storm drain showed a heroic yam wearing boots and a purple cape",
+        "problem": "A loose branch cast a moving shadow that made the painted yam appear to kick passing feet",
+        "mistake": "{name} blamed the mural and challenged it with a laser dot on the blank wall beside it",
+        "memory": "at bedtime yesterday, a coat on a chair had looked like a monster until the room light came on",
+        "clue": "the yam's painted boot stayed still whenever the wind stopped moving the branch",
+        "dialogue": "'The hero is innocent; the branch is doing the dancing,' {name} announced, and the {companion} gave a chuckle-like chirp",
+        "action": "They switched off the laser, stepped back from the curb, and asked a park worker to secure the branch",
+        "result": "The shadow stopped kicking, and visitors could admire the humorous mural without stumbling",
+        "ending": "Moonlight rested on the painted cape, perfectly still above the whispering drain",
+        "lesson": "a surprising shadow deserves observation before accusation",
+    },
+    {
+        "key": "recipe_card",
+        "premise": "a recipe card for yam soup fluttered from a tote and landed on the dry grate above the storm drain",
+        "problem": "Every breeze edged the card closer to a narrow slot",
+        "mistake": "{name} used the laser to circle the card's picture from a safe distance, then admitted that pointing was not rescuing",
+        "memory": "a librarian had once shown {name} how chasing loose pages can push them farther away",
+        "clue": "the card paused whenever the {companion} stood between it and the wind",
+        "dialogue": "'Be the windbreak, not the whirlwind,' {name} said with a chuckle",
+        "action": "An adult held a flat basket over the card, lifted both together, and returned the recipe without touching the grate",
+        "result": "The family cooked their clean yams at home and copied the recipe onto sturdier paper",
+        "ending": "Steam drew a soft cloud above the soup while the rescued card dried beneath a cookbook",
+        "lesson": "calm teamwork can protect something fragile better than a flashy signal",
+    },
+    {
+        "key": "maintenance_tag",
+        "premise": "a maintenance worker hung a yellow tag near the storm drain, beside a lunch bag printed with a smiling yam",
+        "problem": "{name} thought the tag was a treasure clue and nearly interrupted the worker's inspection",
+        "mistake": "A laser dot on {name}'s own clipboard became a pretend treasure pointer, making the guess feel more certain than it was",
+        "memory": "during a museum visit, {name} had learned that work tags are instructions, not decorations or invitations",
+        "clue": "the tag said KEEP CLEAR and carried the same number as the worker's safety cone",
+        "dialogue": "'The yam is only on the lunch bag; the real message is to give the worker room,' {name} said",
+        "action": "They put the laser away, moved behind the cones, and helped remind walkers to use the other side of the path",
+        "result": "The worker cleared the inspection safely and later showed them the lunch-bag picture from a comfortable distance",
+        "ending": "The cone tops gleamed in the sunset, and the printed yam seemed to chuckle from the departing bag",
+        "lesson": "curiosity grows stronger when it respects signs and other people's work",
+    },
+    {
+        "key": "shadow_show",
+        "premise": "a neighborhood shadow show used a cardboard yam puppet on a screen set well away from the storm drain",
+        "problem": "A gust toppled one screen leg, tilting the show toward the wet curb",
+        "mistake": "{name} kept the laser's stage dot moving for one extra joke before noticing the sagging corner",
+        "memory": "during rehearsal, the director had said that performers stop the scene whenever scenery becomes unsafe",
+        "clue": "the puppet's round shadow stretched longer each time the screen leaned farther",
+        "dialogue": "'Pause the chuckle; the stage needs us,' {name} called, switching the laser off",
+        "action": "Adults carried the screen to level ground while the children gathered puppets and checked every weighted foot",
+        "result": "The show resumed safely, and the yam puppet's rescue joke earned a bigger laugh because the team had earned it",
+        "ending": "A crisp yam shadow bowed on the steady screen as rainwater murmured far behind the cones",
+        "lesson": "humor can wait while a team fixes a real hazard",
+    },
+    {
+        "key": "glow_sticker",
+        "premise": "a glow-in-the-dark yam sticker clung to a rain gauge beside the storm drain",
+        "problem": "Its green glow made the {companion} give an alarmed call whenever the gauge filled",
+        "mistake": "{name} added a red laser dot to test the reaction, then stopped immediately when the {companion} became more worried",
+        "memory": "an earlier flashlight game had taught {name} that animals do not know when a moving light is only a joke",
+        "clue": "covering the sticker with a notebook made the {companion} relax even while the rain gauge kept dripping",
+        "dialogue": "'Mystery solved, and no more light tricks for our friend,' {name} said",
+        "action": "An adult moved the sticker to a bedroom star chart and left the working gauge plainly marked outside",
+        "result": "The measurements continued without frightening the animal, and the laser stayed packed away",
+        "ending": "That night the little yam glowed among paper stars while the {companion} slept in a round, quiet curl",
+        "lesson": "a joke stops being funny when another creature feels afraid",
+    },
+    {
+        "key": "seedling_delivery",
+        "premise": "a school garden delivery included one sprouting yam and a route past the storm drain",
+        "problem": "A broken wagon wheel left the plant tray wobbling beside the curb as rain approached",
+        "mistake": "{name} traced a shortcut on a map with the toy laser, forgetting that the shortest route crossed the slickest pavement",
+        "memory": "on the last garden trip, a teacher had praised the longer dry path because roots dislike sudden tumbles",
+        "clue": "chalk arrows on the covered walkway remained bright while the curbside arrows had washed away",
+        "dialogue": "'The yam needs the dry route, even if our feet take more steps,' {name} said with a relieved chuckle",
+        "action": "The group put away the laser, transferred the tray to an adult's sturdy cart, and followed the covered path",
+        "result": "The sprouting yam reached its raised bed upright and the damaged wagon went to the repair shed",
+        "ending": "One purple-green leaf lifted above fresh soil while raindrops ticked safely on the garden roof",
+        "lesson": "a careful detour can bring a small living thing safely home",
+    },
+]
+
+TELLINGS = [
+    ("Just after the rain eased", "The odd moment tugged open a flashback", "By the time the clouds thinned"),
+    ("Before the streetlamps blinked on", "A memory returned as clearly as a picture", "When the first star appeared"),
+    ("During a silver, drizzly afternoon", "That was when yesterday's lesson came back", "After the last drop fell"),
+    ("At the start of a neighborhood walk", "The puzzle reminded {name} of something important", "At the walk's quiet end"),
+    ("While gutters made plinking music", "For a moment, the present folded into a flashback", "Once the gutter song softened"),
+    ("Under a row of bright umbrellas", "A useful memory interrupted the commotion", "As the umbrellas closed"),
+    ("Near the end of a gentle shower", "Then an earlier scene replayed in {name}'s mind", "In the clean-smelling evening"),
+    ("As puddles reflected the evening sky", "One clue unlocked a flashback", "When the reflections grew still"),
+    ("On a calm walk after supper", "The mystery suddenly rhymed with an older mistake", "Before it was time for bed"),
+    ("While a distant drainpipe went plink-plonk", "A flashback supplied the missing piece", "As the last plink faded"),
+]
 
 ASP_RULES = r"""
 #show valid/1.
@@ -132,6 +304,9 @@ def asp_facts() -> str:
     for c in COMPANIONS:
         lines.append(asp.fact("companion", "p1", c))
     lines.append(asp.fact("params", "p1"))
+    lines.append(asp.fact("humored", "p1"))
+    lines.append(asp.fact("flashback", "p1"))
+    lines.append(asp.fact("resolved", "p1"))
     return "\n".join(lines)
 
 
@@ -154,21 +329,66 @@ def generate(params: StoryParams) -> StorySample:
     companion = world.add(Entity(name=params.companion, kind="creature", label=f"the {params.companion}"))
     yam = world.add(Entity(name="yam", kind="object", label=params.prize))
 
+    stable_seed = params.seed
+    if stable_seed is None:
+        stable_seed = sum(ord(ch) for ch in f"{params.name}|{params.companion}|{params.prize}")
+    route = stable_seed % (len(SCENARIOS) * len(TELLINGS))
+    scenario = SCENARIOS[route % len(SCENARIOS)]
+    opening, memory_lead, closing_lead = TELLINGS[route // len(SCENARIOS)]
+    values = {
+        "name": params.name,
+        "companion": params.companion,
+        "prize": params.prize,
+    }
+    detail = {key: value.format(**values) for key, value in scenario.items() if key != "key"}
+    opening = opening.format(**values)
+    memory_lead = memory_lead.format(**values)
+    closing_lead = closing_lead.format(**values)
+
     child.memes["curious"] = 1.0
     child.memes["humor"] = 1.0
-    yam.meters["hidden"] = 1.0
+    child.memes["careful"] = 1.0
+    yam.meters["safe"] = 1.0
     world.facts["setting"] = "storm drain"
+    world.facts["scenario"] = scenario["key"]
+    world.facts["problem"] = detail["problem"]
+    world.facts["clue"] = detail["clue"]
+    world.facts["safe_action"] = detail["action"]
+    world.facts["outcome"] = detail["result"]
+    world.facts["lesson"] = detail["lesson"]
+    world.facts["laser_switched_off"] = True
+    world.facts["entered_storm_drain"] = False
     world.facts["humored"] = True
     world.facts["flashback"] = True
     world.facts["resolved"] = True
 
-    world.say(f"On a sleepy night, {params.name} tiptoed beside the storm drain, where water sang softly under the street.")
-    world.say(f"A {params.companion} peeped from a grate and made {params.name} { 'chuckle' } at the echo, because even the rain seemed to giggle there.")
-    world.say(f"Down below, something round and brown waited in the dim water: a little {params.prize}. {params.name} was surprised, then delighted, as if the drain had hidden a bedtime snack for the moon.")
-    world.say(f"{params.name} reached for a toy { 'laser' }, but the bright dot skittered on the wet stone and bumped into a memory.")
-    world.say(f"In a small flashback, {params.name} remembered earlier that day, when the same laser had scared away the {params.companion} and made everyone feel too busy to laugh.")
-    world.say(f"So {params.name} turned the toy off, smiled at the {params.companion}, and used the flashlight instead, which was much kinder and much quieter.")
-    world.say(f"Together they carried the {params.prize} home, and the storm drain fell still again, humming like a cradle. {params.name} chuckled one last time and went to bed with a warm, gentle heart.")
+    world.say(
+        f"{opening}, {params.name} and a {params.companion} stopped on the sidewalk near a storm drain. "
+        f"There, {detail['premise']}. The sight was so unexpected that {params.name} let out a small chuckle."
+    )
+    world.say(
+        f"The humor did not hide the problem for long. {detail['problem']}. "
+        f"{detail['mistake']}."
+    )
+    world.say(
+        f"{memory_lead}: {detail['memory']}. In the flashback, the lesson had seemed ordinary; "
+        f"beside the wet curb, it suddenly mattered."
+    )
+    world.say(
+        f"Instead of rushing closer, {params.name} watched from the dry sidewalk. "
+        f"The useful clue was this: {detail['clue']}. {detail['dialogue']}."
+    )
+    world.say(
+        f"The toy laser was switched off and kept pointed away from faces and animals. {detail['action']}. "
+        f"No child entered the storm drain or reached through its grate."
+    )
+    world.say(
+        f"The plan changed what happened next. {detail['result']}. {params.name} understood that {detail['lesson']}."
+    )
+    world.say(
+        f"{closing_lead}, the danger and the fuss were over. {detail['ending']}. "
+        f"That quiet picture, not the laser's bright dot, was the part {params.name} carried into bedtime."
+    )
 
     world.facts.update(
         child=child,
@@ -177,16 +397,28 @@ def generate(params: StoryParams) -> StorySample:
     )
     story_qa = [
         QAItem(
-            question=f"What did {params.name} find in the storm drain?",
-            answer=f"{params.name} found a little {params.prize} hidden in the storm drain water.",
+            question=f"What problem did {params.name} notice near the storm drain?",
+            answer=f"The problem {params.name} noticed was this: {detail['problem']}. This made the group pause instead of treating the moment as only a joke.",
         ),
         QAItem(
-            question=f"Why did {params.name} chuckle near the drain?",
-            answer=f"{params.name} chuckled because the water echoed back and the {params.companion} made the moment feel funny.",
+            question=f"What clue helped {params.name} understand the situation?",
+            answer=f"The key clue was that {detail['clue']}. It pointed the team toward the real cause of the problem.",
         ),
         QAItem(
             question=f"What did {params.name} remember in the flashback?",
-            answer=f"{params.name} remembered that the toy laser had once frightened the {params.companion} and made the moment feel less gentle.",
+            answer=f"{params.name} remembered that {detail['memory']}. That memory helped with the choice made in the present.",
+        ),
+        QAItem(
+            question="How did the group act safely around the storm drain and laser?",
+            answer=f"They switched off the toy laser and kept it away from faces and animals. {detail['action']}. No child entered the drain or reached through its grate.",
+        ),
+        QAItem(
+            question=f"What changed because of {params.name}'s plan?",
+            answer=f"{detail['result']}. The concrete result showed that the careful plan worked.",
+        ),
+        QAItem(
+            question="What lesson did the story teach?",
+            answer=f"The story taught that {detail['lesson']}. The ending showed that lesson through what the group chose to do.",
         ),
     ]
     world_qa = [
@@ -195,8 +427,8 @@ def generate(params: StoryParams) -> StorySample:
             answer="A storm drain is a street opening that helps rainwater flow away so puddles do not stay everywhere.",
         ),
         QAItem(
-            question="Why can a laser dot be playful?",
-            answer="A laser dot can be playful because it moves quickly and can make a pet or child want to chase it.",
+            question="How should a toy laser be used safely?",
+            answer="A toy laser should be used only with adult permission and pointed at a safe target, never at eyes, faces, animals, vehicles, or aircraft.",
         ),
         QAItem(
             question="What is a flashback in a story?",
@@ -208,9 +440,9 @@ def generate(params: StoryParams) -> StorySample:
         ),
     ]
     prompts = [
-        'Write a gentle bedtime story about a child, a storm drain, and a hidden yam.',
-        f'Write a cozy story where {params.name} hears a funny echo in a storm drain and remembers an earlier moment with a laser.',
-        'Tell a child-friendly story with humor, a flashback, and a calm ending image.',
+        f"Write a gentle story in which {params.name} solves the {scenario['key'].replace('_', ' ')} problem near a storm drain.",
+        f"Tell a child-safe story about {params.name}, a {params.companion}, a {params.prize}, and a toy laser that gets switched off.",
+        "Tell a humorous story with a useful flashback, a cause-and-effect solution, and a calm final image.",
     ]
     return StorySample(
         params=params,

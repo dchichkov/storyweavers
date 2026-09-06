@@ -101,5 +101,9 @@ Legend: `queued`, `active`, `repaired`, `verified`, `blocked`.
 | 9 | verified | `transcribe_children_s_museum_misunderstanding_friendship_repetition.py` | 1 skeleton/100 exact-unique stories | 1 skeleton | 100 unique; 100 skeletons | Twelve museum incidents and ten telling modes. |
 | 10 | verified | `transmission_mushroom_lesson_learned_sound_effects_misunderstanding.py` | 1 skeleton; 89/100 exact unique in fresh baseline | 1 skeleton | 100 unique; 100 skeletons | Twelve cases; ASP and curated-place defects fixed. |
 | 10 | verified | `tube_cliff_lookout_quest_curiosity_sharing_nursery.py` | 1 skeleton; 65/100 exact unique in fresh baseline | 1 skeleton | 100 unique; 100 skeletons | Twelve child-safe cliff quests; disconnected world state fixed. |
+| 10 | verified | `treat_kefir_hyacinth_teamwork_misunderstanding_fairy_tale.py` | 1 skeleton/100 exact-unique stories | 1 skeleton | 100 unique; 100 skeletons | Twelve incidents; unsafe use of hyacinth petals removed. |
+| 10 | verified | `yam_chuckle_laser_storm_drain_humor_flashback.py` | 1 skeleton; 67/100 exact unique in fresh baseline | 1 skeleton | 100 unique; 100 skeletons | Twelve child-safe drain incidents; 310/600 unique story-QA pairs. |
+| 10 | verified | `yum_dim_crest_noon_curiosity_bravery_happy.py` | 1 skeleton; 72/100 exact unique in fresh baseline | 1 skeleton | 100 unique; 100 skeletons | Twelve scenarios; incorrect universal-key narration fixed. |
+| 10 | verified | `yell_surprise_suspense_dialogue_animal_story.py` | 1 skeleton/100 exact-unique stories | 1 skeleton | 100 unique; 100 skeletons | Twelve suspense incidents; 424/500 unique story-QA pairs. |
 
 Additional waves follow the frozen 120-script template-collapse ranking.
