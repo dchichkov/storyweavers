@@ -25,13 +25,13 @@ from __future__ import annotations
 
 import argparse
 import json
-import os
 import random
 import sys
 from dataclasses import dataclass, field
+from pathlib import Path
 from typing import Optional
 
-sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 from results import QAItem, StoryError, StorySample  # noqa: E402
 
 
@@ -84,6 +84,25 @@ class Sign:
     meaning: str
 
 
+@dataclass(frozen=True)
+class Incident:
+    id: str
+    room: str
+    exhibit: str
+    sign_text: str
+    intended: str
+    mistaken_belief: str
+    mistaken_action: str
+    consequence: str
+    clue: str
+    failed_attempt: str
+    friend_line: str
+    repeated_words: str
+    shared_action: str
+    lesson: str
+    ending: str
+
+
 @dataclass
 class World:
     setting: Setting
@@ -132,16 +151,16 @@ SETTINGS = {
 ACTIVITIES = {
     "transcribe": Activity(
         id="transcribe",
-        verb="transcribe the map labels",
-        gerund="transcribing the map labels",
+        verb="transcribe the exhibit notes",
+        gerund="transcribing the exhibit notes",
         sound="soft tapping",
         keyword="transcribe",
         causes_misunderstanding=True,
     ),
     "repeat": Activity(
         id="repeat",
-        verb="repeat the directions",
-        gerund="repeating the directions",
+        verb="repeat the exhibit directions",
+        gerund="repeating the exhibit directions",
         sound="clear echoing",
         keyword="repeat",
         causes_misunderstanding=False,
@@ -164,6 +183,196 @@ SIGNS = {
 GIRL_NAMES = ["Mina", "Lily", "Tara", "Nora", "Pia", "Ivy"]
 BOY_NAMES = ["Owen", "Theo", "Finn", "Milo", "Ezra", "Noah"]
 TRAITS = ["curious", "gentle", "brave", "bright", "careful", "lively"]
+
+
+INCIDENTS = [
+    Incident(
+        id="echo_map", room="the echo tunnel", exhibit="a map of sound stations",
+        sign_text="Transcribe one echo, then pass the pencil on.",
+        intended="write down one sound and give the pencil to the next visitor",
+        mistaken_belief="copy every echo before anyone else could touch the pencil",
+        mistaken_action="filled the whole card while a line of children waited",
+        consequence="the line curled around the tunnel and the quietest echoes went unheard",
+        clue="a painted hand beside the words was offering the pencil forward",
+        failed_attempt="rushed through the last boxes, which only made the line longer",
+        friend_line="The hand is passing, not pointing. One echo each means everyone gets a turn.",
+        repeated_words="one echo, pass it on",
+        shared_action="recorded a plink and a whoosh, then handed the pencil down the line",
+        lesson="a shared record can hold many voices when nobody tries to own every space",
+        ending="the finished card fluttered beneath twelve different sound-words",
+    ),
+    Incident(
+        id="shadow_labels", room="the shadow theater", exhibit="a wall of animal silhouettes",
+        sign_text="Trace your shadow; leave the light clear.",
+        intended="outline a shadow and then step away from the lamp",
+        mistaken_belief="keep standing in the light so the traced shape would not escape",
+        mistaken_action="stayed planted before the lamp after the outline was finished",
+        consequence="every new shadow disappeared behind one enormous silhouette",
+        clue="three empty footprints led away from the lamp toward the viewing bench",
+        failed_attempt="made the shadow smaller by crouching, but still blocked the beam",
+        friend_line="Those footprints finish the instruction. Trace, then clear the light.",
+        repeated_words="trace, step back, let light through",
+        shared_action="outlined a rabbit, stepped aside, and helped two younger children make birds",
+        lesson="making room for a friend can reveal something neither person could see alone",
+        ending="rabbit ears and paper wings danced together across the bright wall",
+    ),
+    Incident(
+        id="water_notes", room="the water laboratory", exhibit="a channel of spinning gates",
+        sign_text="Copy the gate order before releasing the stream.",
+        intended="write the gate positions first and open the water afterward",
+        mistaken_belief="copy what the water did while it was already rushing",
+        mistaken_action="pulled the release lever before noting a single gate",
+        consequence="the current spun every marker around and soaked the observation card",
+        clue="the numbered pencil boxes came before the blue lever in the diagram",
+        failed_attempt="tried to remember the spinning pattern, but each gate had moved twice",
+        friend_line="The little numbers show the order: transcribe first, release second.",
+        repeated_words="write, check, then flow",
+        shared_action="dried the card, reset the gates together, and recorded each position before trying again",
+        lesson="careful order turns a muddle into an experiment friends can repeat",
+        ending="one silver stream curled neatly through every gate without wetting the new notes",
+    ),
+    Incident(
+        id="market_recipe", room="the pretend market", exhibit="a bakery recipe wall",
+        sign_text="Transcribe the recipe; take only a pretend scoop.",
+        intended="copy the recipe and measure with the toy scoop",
+        mistaken_belief="take the recipe card itself to use as a scoop",
+        mistaken_action="folded the display card toward the bin of wooden oats",
+        consequence="the old paper creased and the next baker could no longer read the last line",
+        clue="a bright red toy scoop hung directly under a matching scoop picture",
+        failed_attempt="flattened the card with both elbows, making the crease sharper",
+        friend_line="The picture points to the red scoop. The recipe stays here for every baker.",
+        repeated_words="copy the card, share the scoop",
+        shared_action="smoothed the card under a clear cover and transcribed the missing line from its twin",
+        lesson="asking before taking protects things that a whole community shares",
+        ending="a wooden loaf sat beside the rescued recipe, dusted with make-believe flour",
+    ),
+    Incident(
+        id="dinosaur_tags", room="the fossil hall", exhibit="a tray of replica dinosaur bones",
+        sign_text="Match, transcribe, return each tag.",
+        intended="match one label to one bone, copy it, and put the label back",
+        mistaken_belief="return every tag to the large dinosaur picture",
+        mistaken_action="stacked all the labels beneath the same enormous footprint",
+        consequence="a tiny tooth was called a tail and nobody could finish the matching game",
+        clue="colored dots on the bones matched dots on the backs of the labels",
+        failed_attempt="sorted the tags by word length, which paired claw with crest",
+        friend_line="Turn them over. The colors are clues, and return means return each one home.",
+        repeated_words="match, write, return",
+        shared_action="used the colored dots to restore every label and copied the tooth's real name",
+        lesson="good friends test an idea with evidence instead of laughing at a mistake",
+        ending="the final green tag rested beside the little tooth like a leaf beside a pebble",
+    ),
+    Incident(
+        id="mail_route", room="the child-size town", exhibit="a post-office route board",
+        sign_text="Transcribe the address and repeat it at the window.",
+        intended="copy the address, then say it to the postal clerk",
+        mistaken_belief="say the word address again and again without reading the actual address",
+        mistaken_action="called 'address, address, address' through the brass window",
+        consequence="three pretend parcels rolled onto the wrong delivery cart",
+        clue="the envelope showed a house number and street name inside a dotted copying box",
+        failed_attempt="shouted the single word louder, which did not tell the clerk where to send anything",
+        friend_line="Repeat the words inside the box, not the instruction above it.",
+        repeated_words="four Garden Lane",
+        shared_action="copied the full address, called it clearly together, and rerouted each parcel",
+        lesson="repetition helps only when friends first agree on which message matters",
+        ending="the smallest parcel clicked into the mailbox marked with a painted sunflower",
+    ),
+    Incident(
+        id="music_pattern", room="the music loft", exhibit="a row of colored handbells",
+        sign_text="Transcribe the pattern; repeat after the pause.",
+        intended="write the color sequence and play it after a silent beat",
+        mistaken_belief="ring each bell continuously until a pause appeared",
+        mistaken_action="shook the blue bell through every beat of the tune",
+        consequence="the guide's gentle melody vanished beneath one long clang",
+        clue="an empty square in the pattern sat between two groups of colored notes",
+        failed_attempt="rang more softly without ever stopping, so the missing pause stayed missing",
+        friend_line="An empty square is part of music too. It asks us to wait one beat.",
+        repeated_words="red, gold, rest, blue",
+        shared_action="copied the pattern, counted the quiet beat together, and played the whole phrase",
+        lesson="listening to silence can be as important as repeating a sound",
+        ending="the last blue note floated alone while both children held perfectly still",
+    ),
+    Incident(
+        id="garden_code", room="the rooftop garden", exhibit="a pollinator observation chart",
+        sign_text="Transcribe what lands; do not chase visitors.",
+        intended="record insects that land naturally without following them",
+        mistaken_belief="treat the instruction as saying museum visitors must not be followed through the garden",
+        mistaken_action="waved a family away from the butterfly bed",
+        consequence="the family felt unwelcome and the children missed a bumblebee landing",
+        clue="tiny wings decorated the word visitors while an arrow pointed to the flower",
+        failed_attempt="whispered the same warning more politely, but it was still the wrong warning",
+        friend_line="Here, visitors means bees and butterflies. People are welcome beside the path.",
+        repeated_words="watch the wings, welcome the people",
+        shared_action="apologized to the family and transcribed two bee landings beside them",
+        lesson="when a word has two meanings, a picture and a patient friend can settle the question",
+        ending="a striped bee rested on a purple flower beside four careful tally marks",
+    ),
+    Incident(
+        id="bubble_message", room="the bubble studio", exhibit="a table for testing bubble wands",
+        sign_text="Copy the shape; repeat with one change.",
+        intended="draw a wand shape, test it, then alter one feature",
+        mistaken_belief="make an exact copy every time and never change anything",
+        mistaken_action="bent six identical triangle wands and expected six different bubbles",
+        consequence="the wire supply ran low while every bubble still came out round",
+        clue="a penciled plus sign joined the second drawing to one extra loop",
+        failed_attempt="changed only the wire color, which did not change the wand's structure",
+        friend_line="Repeat the test, not the mistake. Add one loop so we can compare fairly.",
+        repeated_words="same test, one change",
+        shared_action="rebuilt one wand, transcribed both designs, and compared their round bubbles",
+        lesson="friends can repeat an experiment while changing one useful thing at a time",
+        ending="two bubbles touched above the table and trembled like a pair of glass moons",
+    ),
+    Incident(
+        id="costume_caption", room="the costume workshop", exhibit="a wall of historical hats",
+        sign_text="Transcribe a caption; return costumes to their hooks.",
+        intended="copy one display caption and hang worn costumes back up",
+        mistaken_belief="write a new caption directly on each costume's hook",
+        mistaken_action="lifted a marker toward the polished wooden labels",
+        consequence="another child grabbed the last paper card and both thought the other was being unfair",
+        clue="a stack of blank cards bore the same feather symbol as the captions",
+        failed_attempt="argued about who had read the sign first while the marker cap dried",
+        friend_line="We both missed the feather. It marks the cards where captions belong.",
+        repeated_words="cards for writing, hooks for hats",
+        shared_action="split the blank cards, wrote two captions, and returned a velvet hat together",
+        lesson="friendship grows when both people can admit the same misunderstanding",
+        ending="two fresh captions hung below the hats, their ink drying in the afternoon light",
+    ),
+    Incident(
+        id="building_plan", room="the block workshop", exhibit="a bridge-building table",
+        sign_text="Transcribe the plan, then repeat the strongest span.",
+        intended="copy the tested design and build another strong bridge section",
+        mistaken_belief="repeat the longest row of blocks because longest must mean strongest",
+        mistaken_action="extended a thin bridge across the entire table",
+        consequence="the center sagged and trapped a wooden ferry underneath",
+        clue="three short triangles on the plan carried little weight symbols",
+        failed_attempt="added more blocks to the ends, making the weak middle bend further",
+        friend_line="The weight marks point to the triangles. Strongest is not the same as longest.",
+        repeated_words="triangle, test, repeat",
+        shared_action="freed the ferry, transcribed the supports, and rebuilt the center as a team",
+        lesson="clear evidence and shared work are stronger than a confident guess",
+        ending="the wooden ferry passed under three sturdy arches without brushing a block",
+    ),
+    Incident(
+        id="story_order", room="the puppet nook", exhibit="a table of picture-story tiles",
+        sign_text="Transcribe the tale; repeat the ending to your partner.",
+        intended="put the pictures in order, write the tale, and retell its ending",
+        mistaken_belief="place every repeated picture at the end of the story",
+        mistaken_action="moved three pictures of rain behind the sunny final scene",
+        consequence="the puppet tale ended with a picnic under a sudden indoor storm",
+        clue="small sunrise numbers on the backs showed when each scene occurred",
+        failed_attempt="invented an umbrella for the final puppet, but the beginning still made no sense",
+        friend_line="Repeated rain can happen in different parts. The sunrise numbers show the order.",
+        repeated_words="first clouds, then rain, last sun",
+        shared_action="ordered the tiles, transcribed the repaired tale, and performed its ending together",
+        lesson="repetition can connect a story when friends also pay attention to what changed",
+        ending="the two puppets bowed beneath a paper sun while the rain tiles slept in their proper places",
+    ),
+]
+
+
+TELLING_MODES = (
+    "question_first", "dialogue_first", "object_first", "motion_first", "memory_first",
+    "rule_first", "friend_first", "sound_first", "goal_first", "room_first",
+)
 
 
 # ---------------------------------------------------------------------------
@@ -247,46 +456,99 @@ def tell(params: StoryParams) -> World:
     sign = world.add(Entity(id="sign", type="sign", label="museum sign"))
     activity = ACTIVITIES[params.activity]
 
-    # Setup
-    world.say(f"Once, in the children's museum, there was a {params.trait} child named {child.id}.")
-    world.say(f"{child.id} loved {activity.gerund}, because the words and pictures felt like a small puzzle.")
-    world.say(f"Near the hall stood a sign that read, “{SIGNS['copy_sign'].text}”")
-    world.say(f"{child.id} looked at the letters and began to copy them with great care.")
+    route = params.seed if params.seed is not None else sum(ord(c) for c in child.id + friend.id)
+    incident = INCIDENTS[route % len(INCIDENTS)]
+    mode = TELLING_MODES[(route // len(INCIDENTS)) % len(TELLING_MODES)]
 
-    # Middle: misunderstanding
+    openings = {
+        "question_first": [
+            f'"How can one little sign cause such a big misunderstanding?" {child.id} wondered at the children\'s museum.',
+            f"The question followed the {params.trait} child into {incident.room}, where {friend.id} was waiting.",
+        ],
+        "dialogue_first": [
+            f'"Let us transcribe something nobody has noticed," {child.id} told {friend.id}.',
+            f"The two friends hurried into {incident.room} at the children's museum.",
+        ],
+        "object_first": [
+            f"At the children's museum, {incident.exhibit} waited in {incident.room}.",
+            f"A {params.trait} child named {child.id} approached it with {friend.id} and a pencil.",
+        ],
+        "motion_first": [
+            f"{child.id} and {friend.id} followed painted arrows through the children's museum until they reached {incident.room}.",
+            f"{child.id}, always {params.trait}, hurried toward {incident.exhibit}.",
+        ],
+        "memory_first": [
+            f"Long afterward, {child.id} remembered one visit to the children's museum whenever a direction seemed unclear.",
+            f"It began in {incident.room}, beside {incident.exhibit}, with {friend.id} close by.",
+        ],
+        "rule_first": [
+            "The children's museum had a friendly rule: read, think, and ask before acting.",
+            f"In {incident.room}, {params.trait} {child.id} meant to follow it while {friend.id} studied {incident.exhibit}.",
+        ],
+        "friend_first": [
+            f"{friend.id} saved a place for {child.id} beside {incident.exhibit} in the children's museum.",
+            f"When the {params.trait} child arrived at {incident.room}, they promised to solve the activity as friends.",
+        ],
+        "sound_first": [
+            f"{activity.sound.capitalize()} drifted out of {incident.room} and down a hall of the children's museum.",
+            f"{params.trait.capitalize()} {child.id} followed it to {incident.exhibit}, where {friend.id} waved.",
+        ],
+        "goal_first": [
+            f"{child.id} had one goal at the children's museum: transcribe a useful clue for the visitor notebook.",
+            f"{friend.id} joined the search at {incident.exhibit} in {incident.room}.",
+        ],
+        "room_first": [
+            f"In {incident.room}, every corner of the children's museum seemed to invite a different kind of play.",
+            f"There, {params.trait} {child.id} and loyal {friend.id} chose {incident.exhibit}.",
+        ],
+    }
+    for sentence in openings[mode]:
+        world.say(sentence)
+    world.say(f'The sign said, "{incident.sign_text}"')
+    world.say(f"{child.id} wanted to {activity.verb}, but decided the words must mean to {incident.mistaken_belief}.")
+
     world.para()
     mem(child, "confusion", 1)
     meter(child, "attention", 1)
-    meter(child, "sound", 1)
-    world.say(f"Then {child.id} noticed the word “trace” and thought it meant to stay silent and whisper.")
-    world.say(f"So {child.id} kept making only a tiny sound while {activity.sound} filled the table.")
+    world.say(f"Acting on that misunderstanding, {child.id} {incident.mistaken_action}.")
+    world.say(f"As a result, {incident.consequence}.")
     mem(friend, "worry", 1)
-    world.say(f"{friend.id}, who was nearby, worried that the game had gone wrong.")
+    if mode in {"question_first", "object_first", "memory_first", "friend_first", "goal_first"}:
+        world.say(f"{child.id} tried to fix things alone and {incident.failed_attempt}.")
+        world.say(f"{friend.id} did not tease. Instead, the friend pointed out that {incident.clue}.")
+    else:
+        world.say(f"{friend.id} noticed that {incident.clue}.")
+        world.say(f"Before listening, {child.id} {incident.failed_attempt}. That made it clear that guessing again would not help.")
 
-    # Friendship and repetition
     world.para()
     mem(friend, "kindness", 1)
     mem(friend, "friendship", 1)
-    world.say(f"{friend.id} came close and spoke gently: “No, dear friend, this sign says to copy the words aloud.”")
-    world.say(f"{friend.id} repeated it once more, slower and clearer, so the meaning would not slip away.")
+    world.say(f'{friend.id} said, "{incident.friend_line}"')
+    world.say(f'Together they repeated, "{incident.repeated_words}." They said it once to understand it and once more to remember it.')
+    world.say(f"Now {child.id} understood: the sign meant to {incident.intended}.")
     meter(friend, "support", 1)
     meter(child, "understanding", 1)
     mem(child, "relief", 1)
     mem(child, "friendship", 1)
     mem(child, "confusion", -1)
 
-    # Resolution
     world.para()
-    world.say(f"At last {child.id} smiled, and the two children said the words together three times, softly and then clearly.")
-    world.say(f"After that, {child.id} and {friend.id} followed the arrows, copied the labels, and laughed at how one small word could be misunderstood.")
-    world.say(f"The museum seemed warmer after the misunderstanding had turned into friendship.")
-    world.say(f"And before the day was done, the children were still {activity.gerund}, side by side, as if they had always been meant to walk together.")
+    world.say(f"The friends {incident.shared_action}.")
+    if mode in {"dialogue_first", "motion_first", "rule_first", "sound_first", "room_first"}:
+        world.say(f'"Repeating is useful when we repeat the right idea," {child.id} said. "And friendship makes it easier to change our minds."')
+    else:
+        world.say(f"{child.id} thanked {friend.id} for correcting the mistake kindly instead of taking over.")
+    world.say("Their friendship felt sturdier because they had listened, checked, and repaired the trouble together.")
+    world.say(f"They learned that {incident.lesson}.")
+    world.say(f"Before they left {incident.room}, {incident.ending}.")
 
     world.facts.update(
         child=child,
         friend=friend,
         sign=sign,
         activity=activity,
+        incident=incident,
+        mode=mode,
         misunderstood=True,
         resolved=True,
         repetition=True,
@@ -305,29 +567,38 @@ def generation_prompts(world: World) -> list[str]:
     c = world.facts["child"]
     f = world.facts["friend"]
     act = world.facts["activity"]
+    incident = world.facts["incident"]
     return [
-        'Write a folk-tale style story for a child in a children\'s museum about a misunderstanding and a kind friend who repeats the meaning clearly.',
-        f"Tell a gentle story where {c.id} wants to {act.verb}, misunderstands a museum sign, and {f.id} helps by repeating the instructions.",
-        'Write a short story that includes the word "transcribe" and ends with friendship after a small confusion is cleared up.',
+        f"Write a child-friendly tale in {incident.room} at a children's museum about a misunderstanding, repetition, and friendship.",
+        f"Tell a gentle story where {c.id} wants to {act.verb} at {incident.exhibit}, makes a consequential mistake, and {f.id} helps interpret a clue.",
+        f'Write a complete story using the word "transcribe," the repeated phrase "{incident.repeated_words}," and a concrete ending image.',
     ]
 
 
 def story_qa(world: World) -> list[QAItem]:
     c = world.facts["child"]
     f = world.facts["friend"]
-    act = world.facts["activity"]
+    incident = world.facts["incident"]
     return [
         QAItem(
             question=f"What did {c.id} think the sign meant at first?",
-            answer=f"{c.id} thought the sign meant to stay quiet and whisper, because the word sounded tricky and the letters made the message feel unclear.",
+            answer=f"{c.id} thought it meant to {incident.mistaken_belief}. That misunderstanding led the child to act before checking the whole sign.",
         ),
         QAItem(
-            question=f"How did {f.id} help after the misunderstanding?",
-            answer=f"{f.id} helped by repeating the meaning slowly and clearly, so {c.id} could understand that the children were meant to copy the words aloud.",
+            question=f"What evidence helped {f.id} explain the sign?",
+            answer=f"{f.id} noticed that {incident.clue}. The friend used that evidence instead of merely insisting that {c.id} was wrong.",
         ),
         QAItem(
-            question=f"What did the children do together at the end?",
-            answer=f"At the end, the children repeated the words together, followed the arrows, and kept {act.gerund} side by side.",
+            question=f"How did {c.id} and {f.id} repair the problem together?",
+            answer=f"The friends {incident.shared_action}. Their cooperation turned the misunderstanding into a stronger friendship.",
+        ),
+        QAItem(
+            question="What lesson did the children learn from repeating the instruction?",
+            answer=f"They learned that {incident.lesson}. Repetition worked because they first checked which meaning fit the evidence.",
+        ),
+        QAItem(
+            question="What final image showed that the problem was resolved?",
+            answer=f"At the end, {incident.ending}. That concrete image showed the exhibit working peacefully again.",
         ),
     ]
 

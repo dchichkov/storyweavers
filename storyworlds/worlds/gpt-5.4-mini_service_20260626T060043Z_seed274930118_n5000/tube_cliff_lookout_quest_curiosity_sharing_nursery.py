@@ -16,7 +16,9 @@ import sys
 from dataclasses import dataclass, field
 from typing import Optional
 
-sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+if ROOT not in sys.path:
+    sys.path.insert(0, ROOT)
 from results import QAItem, StoryError, StorySample  # noqa: E402
 
 LOOKOUT_WORDS = {"cliff", "lookout", "quest", "curiosity", "sharing", "tube"}
@@ -66,6 +68,22 @@ class StoryParams:
     helper_type: str
     item: str
     seed: Optional[int] = None
+
+
+@dataclass(frozen=True)
+class QuestScenario:
+    title: str
+    premise: str
+    problem: str
+    first_try: str
+    clue: str
+    tube_use: str
+    hero_action: str
+    helper_action: str
+    discovery: str
+    resolution: str
+    lesson: str
+    ending: str
 
 
 class World:
@@ -120,6 +138,11 @@ class StoryState:
     shared: bool = False
     resolved: bool = False
     wonder: bool = False
+    scenario: Optional[QuestScenario] = None
+    first_try: str = ""
+    clue: str = ""
+    discovery: str = ""
+    resolution: str = ""
 
 
 def build_parser() -> argparse.ArgumentParser:
@@ -158,8 +181,7 @@ def resolve_params(args: argparse.Namespace, rng: random.Random) -> StoryParams:
     )
 
 
-def make_world(params: StoryParams) -> StoryState:
-    world = World(SETTING)
+def make_world(world: World, params: StoryParams) -> StoryState:
     hero = world.add(Entity(id="hero", kind="character", type=params.hero_type, label=params.hero_name))
     helper = world.add(Entity(id="helper", kind="character", type=params.helper_type, label=params.helper_name))
     item_cfg = ITEMS[params.item]
@@ -167,70 +189,247 @@ def make_world(params: StoryParams) -> StoryState:
     return StoryState(hero=hero, helper=helper, item=item, setting=world.setting)
 
 
-def intro(world: World, state: StoryState) -> None:
-    world.say(
-        f"At the cliff lookout, {state.hero.label} was a little {state.hero.type} with a bright, busy mind."
-    )
-    world.say(
-        f"{state.hero.label.capitalize()} loved a quest and a question, and even the breeze felt like a song."
-    )
+SCENARIOS = (
+    QuestScenario(
+        "the fog-bell quest",
+        "a bank of pearl-gray fog hid the harbor bell from view",
+        "three visiting ducklings could hear their pond but could not tell which safe path led downhill",
+        "held the tube like a horn and called toward every path, which only made echoes bounce back",
+        "one echo returned with a soft bell-note beneath it",
+        "a listening trumpet",
+        "aimed the wide end from one marked trail sign to the next",
+        "rang the lookout's handbell beside the correct fenced path",
+        "the bell-note sounded clearest through the tube when it pointed toward the pond trail",
+        "guided the ducklings along the fenced path and delivered them to the ranger at its gate",
+        "curiosity works best when friends compare what they notice",
+        "Below the railing, the fog opened like a curtain, and three ducklings paddled a silver V across the pond",
+    ),
+    QuestScenario(
+        "the missing-map quest",
+        "a gust scattered the ranger's picture-map into a patch of lookout daisies",
+        "the smallest map strip had slipped beneath a bench and nobody knew which picture completed the route",
+        "grabbed the nearest strips and joined a lighthouse to a picnic table, but the path lines did not meet",
+        "a curled blue corner showed through a gap under the bench",
+        "a gentle map-strip roller",
+        "rolled the tube beneath the bench without reaching under it",
+        "caught the loosened strip in a shared scarf",
+        "the blue corner completed the stream crossing on the picture-map",
+        "rebuilt the map in order and returned it to the ranger's weatherproof case",
+        "sharing both tools and ideas can put a mixed-up plan right",
+        "The restored map fluttered behind its clear cover while the daisies nodded below",
+    ),
+    QuestScenario(
+        "the lighthouse-flash quest",
+        "the lookout keeper needed to test a tiny practice signal before sunset",
+        "the cardboard signal flags kept folding in the breeze before anyone below could read them",
+        "waved both flags faster, until they wrapped around each other like sleepy ribbons",
+        "a sunbeam made a bright coin on the tube's smooth rim",
+        "a safe light viewer held below eye level",
+        "turned the tube toward a white marker board, never toward the sun",
+        "held the marker steady and counted each reflected blink",
+        "the reflected pattern matched the keeper's three-short, one-long practice card",
+        "completed the supervised signal test and packed every flag into its proper sleeve",
+        "careful curiosity follows safety rules and asks an expert",
+        "Far across the water, the lighthouse answered with one warm blink as evening turned the waves pink",
+    ),
+    QuestScenario(
+        "the rain-measure quest",
+        "a quick shower drummed on the lookout roof and filled every leaf with beads",
+        "the garden club could not decide which sheltered planter had received the least rain",
+        "guessed by touching the soil, but both top layers felt equally damp",
+        "droplets clung at different heights inside two empty jars",
+        "a pouring guide for a simple rain gauge",
+        "used the tube to pour each jar into matching marked cups without spilling",
+        "read the marks aloud and wrote the numbers on a slate",
+        "the rosemary planter had received only half as much water as the thyme",
+        "shared the watering can and gave the rosemary exactly the missing amount",
+        "a fair answer comes from measuring together instead of guessing",
+        "A last raindrop chimed from the tube into the cup, and the rosemary leaves shone clean and green",
+    ),
+    QuestScenario(
+        "the burrow-message quest",
+        "a ranger found tiny pawprints beside a rabbit shelter well inland from the cliff edge",
+        "a maintenance cart blocked the rabbits' usual covered passage to the meadow",
+        "set out carrots near the cart, but the shy rabbits would not approach while people stood there",
+        "the tracks curved toward a second tunnel hidden behind tall grass",
+        "a message holder for the ranger's detour sketch",
+        "slid the rolled sketch into the tube so the breeze could not carry it away",
+        "carried it to the groundskeeper and helped place quiet arrow signs",
+        "the second tunnel opened safely into the clover meadow",
+        "cleared the covered passage and watched from behind the viewing fence as the rabbits chose their route",
+        "kind quests protect animals by giving them space and sharing observations",
+        "At dusk, two white tails bobbed through the clover while the little detour signs stood straight",
+    ),
+    QuestScenario(
+        "the tide-song quest",
+        "a low humming note drifted up from the sheltered cove",
+        "the sound stopped whenever the friends spoke, so they could not discover what made it",
+        "hummed back as loudly as possible, which covered the faint note completely",
+        "the note returned only when the breeze crossed a row of hollow reeds",
+        "a listening tube on the safe lookout deck",
+        "held one end near the reed-box display and listened from behind the railing",
+        "covered and uncovered the display's air holes one at a time",
+        "moving air through three different reeds made the cove's gentle chord",
+        "showed the ranger which loose reed needed fastening, then helped label the outdoor instrument",
+        "quiet listening can answer a question that noise cannot",
+        "The repaired reeds sang hum, hoo, home while a round moon rose over the cove",
+    ),
+    QuestScenario(
+        "the seed-delivery quest",
+        "the lookout's wind garden was ready for a row of sturdy sea-pink seeds",
+        "the tiny seeds kept skipping out of open hands before they reached the sheltered planting boxes",
+        "poured a handful straight from the packet, and the breeze whisked two onto the path",
+        "the tube's cap clicked snugly and left only a narrow pouring mouth",
+        "a covered seed carrier",
+        "gathered the two path seeds with the ranger and tucked the packet safely inside",
+        "shielded each planting hole with both hands while counting one seed at a time",
+        "the capped tube carried every remaining seed without losing one",
+        "shared planting jobs, pressed the soil gently, and returned the empty packet for reuse",
+        "planning and teamwork keep small treasures from being wasted",
+        "Along the sheltered wall, twelve neat soil dimples waited for their first green shoots",
+    ),
+    QuestScenario(
+        "the picture-scope quest",
+        "families had gathered to name the seabirds circling beyond the lookout",
+        "the bird chart was too small for everyone to inspect at once",
+        "called every gray bird a gull, but a child nearby noticed one had a bright orange beak",
+        "the chart showed that beak beside the picture of a puffin",
+        "a pretend spotting scope aimed only across the open water",
+        "used the tube to frame one bird at a time without magnifying or staring at bright light",
+        "held up the chart and invited each waiting child to compare one feature",
+        "beak shape, wing beat, and color identified three different seabirds",
+        "made a sharing circle so everyone had a turn with the tube and the chart",
+        "curiosity grows when everyone gets a chance to look and contribute",
+        "One puffin skimmed the blue water, and the tube passed gently to the next pair of hands",
+    ),
+    QuestScenario(
+        "the lost-note quest",
+        "a nursery-rhyme concert was about to begin in the lookout pavilion",
+        "the final rolled music card had vanished from its numbered basket",
+        "searched the instrument box twice, making the bells jingle but finding no card",
+        "a faint paper rustle came from the tube rack whenever the breeze rose",
+        "a keeper for rolled song cards",
+        "tipped the blue tube over a clean cloth and caught the hidden card",
+        "matched its star sticker to the final space in the music basket",
+        "the missing card held the quiet last line of the moon-and-sea rhyme",
+        "returned the card, shared the tube as a rhythm tapper, and helped the concert finish softly",
+        "good detectives pause, listen, and let friends test their clues",
+        "The last note faded as the children tapped the tube once: tip, tap, hush",
+    ),
+    QuestScenario(
+        "the shadow-clock quest",
+        "the lookout's painted shadow clock was due for its midday check",
+        "a fallen leaf covered the mark where the short shadow should point",
+        "moved the clock's pointer by hand, but the ranger explained that only sunlight should move its shadow",
+        "the tube cast a narrow shadow that lined up neatly beside the covered mark",
+        "a comparison pointer set on the supervised activity table",
+        "placed the tube in the table's holder and stepped back",
+        "lifted the leaf with a brush and compared both shadows to the ranger's guide",
+        "the original pointer was correct; only the numbered mark had been hidden",
+        "brushed the dial clean and made a leaf screen that would not touch the clock",
+        "curiosity means testing an idea without changing the thing being tested",
+        "At noon, two slim shadows rested together on twelve while the leaf screen whispered nearby",
+    ),
+    QuestScenario(
+        "the kindness-post quest",
+        "the lookout hosted a basket of picture notes for children visiting the quiet rest shelter",
+        "one child's thank-you picture had no name and no matching envelope",
+        "nearly chose the brightest envelope, but its moon sticker did not appear on the picture",
+        "a tiny acorn stamp hid beneath one curled corner",
+        "a dry carrier for the rolled picture",
+        "placed the picture in the tube so curious hands would not smudge it",
+        "found the acorn envelope and asked the ranger to confirm the match",
+        "the picture thanked the garden volunteer for repairing a low bird bath",
+        "delivered the matched note, then shared the tube so other children could post pictures safely",
+        "kindness includes protecting another person's message and checking before acting",
+        "The volunteer pinned up the acorn picture, and its yellow sun brightened the shelter wall",
+    ),
+    QuestScenario(
+        "the echo-count quest",
+        "the ranger invited visitors to compare echoes from the covered lookout pavilion",
+        "two groups counted different numbers because they clapped at the same time",
+        "clapped even faster, which tangled every echo into one noisy rumble",
+        "a single tap on the tube made one clean tok followed by two soft replies",
+        "a rhythm stick for a turn-taking sound test",
+        "tapped once, waited, and raised one finger for each reply",
+        "kept the group quiet and recorded the count on a shared card",
+        "slow turn-taking revealed two echoes from the wooded hillside, not from the cliff below",
+        "gave every group one careful turn and posted the matching counts on the pavilion board",
+        "sharing time and listening fairly can settle a disagreement",
+        "The final tok floated away, and two chalk stars remained beside the number two",
+    ),
+)
+
+OPENINGS = (
+    "At the cliff lookout, {hero} arrived with {helper} for a small morning quest.",
+    "Beyond the safe wooden railing, waves winked while {hero} and {helper} met at the cliff lookout.",
+    "The breeze said swish, swish, slow when {hero} joined {helper} at the cliff lookout.",
+    "At the cliff lookout's fenced activity deck, {hero} and {helper} opened the quest book together.",
+    "Clouds sailed above the cliff lookout as curious {hero} and careful {helper} began exploring.",
+    "The ranger's bell went ting at the cliff lookout, calling {hero} and {helper} to a gentle quest.",
+    "At the cliff lookout, {hero} kept well behind the railing and wondered what today's quest might be.",
+    "Sea breeze, safe rail, gulls in flight: {hero} met {helper} at the cliff lookout bright.",
+)
+
+SHARING_LINES = (
+    "'One tube, two thinkers,' said {helper}. 'Let us each do the part we can do safely.'",
+    "{hero} took a breath. 'I have the tube, but you may have the clue. Shall we share both?'",
+    "'Your eyes and my hands can work as a team,' {helper} said, and {hero} offered the tube.",
+    "{hero} held out the tube. 'A quest belongs to everyone who helps solve it.'",
+    "'Turn by turn and clue by clue,' sang {helper}. 'I will share my idea if you share your tube.'",
+    "The tube was a tempting treasure, yet {hero} said, 'It will be more useful between us.'",
+    "{helper} did not grab. 'May I help?' came the question, and {hero} answered, 'Yes, let us share.'",
+    "'Mine for a moment can become ours for the quest,' {hero} decided, passing the tube carefully.",
+)
 
 
-def curiosity(world: World, state: StoryState) -> None:
+def tell_story(params: StoryParams) -> tuple[World, StoryState]:
+    world = World(SETTING)
+    state = make_world(world, params)
+    variant = params.seed
+    if variant is None:
+        variant = sum((i + 1) * ord(ch) for i, ch in enumerate(params.hero_name + params.helper_name))
+    scenario = SCENARIOS[variant % len(SCENARIOS)]
+    state.scenario = scenario
     state.wonder = True
+    state.first_try = scenario.first_try
+    state.clue = scenario.clue
+
+    opening = OPENINGS[(variant // len(SCENARIOS)) % len(OPENINGS)].format(
+        hero=state.hero.label,
+        helper=state.helper.label,
+    )
+    world.say(opening)
+    world.say(f"Their adventure was {scenario.title}: {scenario.premise}. But {scenario.problem}.")
     world.say(
-        f"One day, {state.hero.label} found {state.item.phrase} by the path."
+        f"Curious {state.hero.label} found {state.item.phrase}, which {ITEMS['tube'].curiosity_hook}. "
+        f"'Could this tube help?' {state.hero.pronoun()} wondered."
     )
     world.say(
-        f"It {ITEMS['tube'].curiosity_hook}, and that made {state.hero.label} peek, peer, and wonder, 'What can it be?'"
+        f"First, {state.hero.label} {scenario.first_try}. That did not solve the problem, because "
+        f"{scenario.clue}."
     )
+    sharing_index = (variant // (len(SCENARIOS) * len(OPENINGS))) % len(SHARING_LINES)
+    world.say(SHARING_LINES[sharing_index].format(hero=state.hero.label, helper=state.helper.label))
 
-
-def wanting(world: World, state: StoryState) -> None:
-    world.say(
-        f"{state.hero.label} tucked the tube close and wanted it for the whole quest."
-    )
-    world.say(
-        f"But {state.helper.label} came along and said, 'A shared find can shine more than a lone one.'"
-    )
-
-
-def sharing_turn(world: World, state: StoryState) -> None:
     state.shared = True
     state.item.receiver = state.helper.id
     state.hero.memes["want"] = state.hero.memes.get("want", 0) + 1
     state.hero.memes["share"] = state.hero.memes.get("share", 0) + 1
     state.helper.memes["share"] = state.helper.memes.get("share", 0) + 1
     world.say(
-        f"So {state.hero.label} passed the tube to {state.helper.label}, and they shared the wonder."
+        f"They used it as {scenario.tube_use}. {state.hero.label} {scenario.hero_action}; "
+        f"{state.helper.label} {scenario.helper_action}."
     )
-    world.say(
-        f"Together they set a tiny map inside, because the tube {ITEMS['tube'].share_use}."
-    )
+    state.discovery = scenario.discovery
+    world.say(f"Peek and ponder, test and see: {scenario.discovery}.")
 
-
-def quest_end(world: World, state: StoryState) -> None:
     state.resolved = True
-    world.say(
-        f"Then the two friends followed the map to a little stone nook near the cliff lookout, where a shell heart had been waiting."
-    )
-    world.say(
-        f"{state.hero.label} held the tube, {state.helper.label} held the shell heart, and the quest felt complete."
-    )
-    world.say(
-        f"So at the cliff lookout, curiosity led the way, sharing kept the joy, and the tube became part of the tale."
-    )
+    state.resolution = scenario.resolution
+    world.say(f"Together they {scenario.resolution}. The quest was complete.")
+    world.say(f"{state.hero.label} learned that {scenario.lesson}.")
+    world.say(f"{scenario.ending}. Curiosity had opened the quest, and sharing had carried it home.")
 
-
-def tell_story(params: StoryParams) -> tuple[World, StoryState]:
-    world = World(SETTING)
-    state = make_world(params)
-    intro(world, state)
-    world.say("")
-    curiosity(world, state)
-    wanting(world, state)
-    sharing_turn(world, state)
-    quest_end(world, state)
     world.facts = {
         "hero": state.hero,
         "helper": state.helper,
@@ -238,6 +437,15 @@ def tell_story(params: StoryParams) -> tuple[World, StoryState]:
         "shared": state.shared,
         "resolved": state.resolved,
         "wonder": state.wonder,
+        "scenario_title": scenario.title,
+        "problem": scenario.problem,
+        "first_try": scenario.first_try,
+        "clue": scenario.clue,
+        "tube_use": scenario.tube_use,
+        "discovery": scenario.discovery,
+        "resolution": scenario.resolution,
+        "lesson": scenario.lesson,
+        "ending": scenario.ending,
     }
     return world, state
 
@@ -246,10 +454,12 @@ def generation_prompts(world: World) -> list[str]:
     hero: Entity = world.facts["hero"]  # type: ignore[index]
     item: Entity = world.facts["item"]  # type: ignore[index]
     helper: Entity = world.facts["helper"]  # type: ignore[index]
+    scenario_title = str(world.facts["scenario_title"])
+    problem = str(world.facts["problem"])
     return [
-        f"Write a nursery-rhyme story about {hero.label} at the cliff lookout who finds a {item.label}.",
-        f"Tell a gentle quest about curiosity and sharing where {hero.label} and {helper.label} use a tube together.",
-        "Write a short child-friendly rhyme set at a cliff lookout with a bright tube, a small quest, and a kind share.",
+        f"Write a nursery-rhyme story about {scenario_title}, led by {hero.label} at the cliff lookout, using a {item.label} safely.",
+        f"Tell a gentle quest in which {hero.label} and {helper.label} share a tube to solve this problem: {problem}.",
+        f"Write a child-friendly cliff-lookout tale about curiosity, sharing, and {world.facts['tube_use']}.",
     ]
 
 
@@ -259,16 +469,35 @@ def story_qa(world: World) -> list[QAItem]:
     item: Entity = world.facts["item"]  # type: ignore[index]
     return [
         QAItem(
-            question=f"Where is the story set?",
-            answer="The story is set at the cliff lookout, where the wind is soft and the path looks out over the sea.",
+            question="Where did the quest take place, and how did the children stay safe?",
+            answer=(
+                "The quest took place at the cliff lookout. The children worked on its fenced paths or activity deck, "
+                "followed the ranger's rules, and stayed behind the railing."
+            ),
         ),
         QAItem(
-            question=f"What did {hero.label} find on the path?",
-            answer=f"{hero.label} found {item.phrase} on the path at the cliff lookout.",
+            question=f"What problem did {hero.label} and {helper.label} need to solve?",
+            answer=f"They needed to help because {world.facts['problem']}.",
         ),
         QAItem(
-            question=f"How did {hero.label} and {helper.label} finish the quest?",
-            answer=f"They finished it by sharing the tube and using it together for the tiny map and the shell-heart treasure.",
+            question=f"What did {hero.label} try first, and what clue showed them to reconsider?",
+            answer=(
+                f"First, {hero.label} {world.facts['first_try']}. They reconsidered when they noticed that "
+                f"{world.facts['clue']}."
+            ),
+        ),
+        QAItem(
+            question=f"How did sharing the {item.label} help the friends complete their quest?",
+            answer=(
+                f"They shared the tube and used it as {world.facts['tube_use']}. By combining their actions, "
+                f"they discovered that {world.facts['discovery']}."
+            ),
+        ),
+        QAItem(
+            question="How did the quest end, and what did the friends learn?",
+            answer=(
+                f"Together they {world.facts['resolution']}. {hero.label} learned that {world.facts['lesson']}."
+            ),
         ),
     ]
 

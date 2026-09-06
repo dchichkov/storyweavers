@@ -96,5 +96,10 @@ Legend: `queued`, `active`, `repaired`, `verified`, `blocked`.
 | 9 | verified | `tar_endanger_thin_flower_field_repetition_animal.py` | 1 skeleton; 68/100 exact unique in fresh baseline | 1 skeleton | 100 unique; 100 skeletons | Twelve child-safe hazard incidents; 237/600 unique story-QA pairs. |
 | 9 | verified | `teller_remainder_margarita_quest_animal_story.py` | 1 skeleton/100 exact-unique stories | 1 skeleton | 100 unique; 100 skeletons | Twelve quests; margarita kept in a flower/name context. |
 | 9 | verified | `thorn_like_foil_surprise_reconciliation_magic_space.py` | 1 skeleton/100 exact-unique stories | 1 skeleton | 100 unique; 100 skeletons | Twelve reconciliation scenarios and eight telling modes. |
+| 9 | verified | `toe_pl_moisture_county_misunderstanding_teamwork_animal.py` | 1 skeleton/100 exact-unique stories | 1 skeleton | 100 unique; 100 skeletons | Twelve incidents; awkward seed term made natural and child-safe. |
+| 9 | verified | `toss_definitive_friendship_sharing_nursery_rhyme.py` | 1 skeleton/100 exact-unique stories | 1 skeleton | 100 unique; 100 skeletons | Twelve nursery-rhyme scenarios; 255/500 unique story-QA pairs. |
+| 9 | verified | `transcribe_children_s_museum_misunderstanding_friendship_repetition.py` | 1 skeleton/100 exact-unique stories | 1 skeleton | 100 unique; 100 skeletons | Twelve museum incidents and ten telling modes. |
+| 10 | verified | `transmission_mushroom_lesson_learned_sound_effects_misunderstanding.py` | 1 skeleton; 89/100 exact unique in fresh baseline | 1 skeleton | 100 unique; 100 skeletons | Twelve cases; ASP and curated-place defects fixed. |
+| 10 | verified | `tube_cliff_lookout_quest_curiosity_sharing_nursery.py` | 1 skeleton; 65/100 exact unique in fresh baseline | 1 skeleton | 100 unique; 100 skeletons | Twelve child-safe cliff quests; disconnected world state fixed. |
 
 Additional waves follow the frozen 120-script template-collapse ranking.
