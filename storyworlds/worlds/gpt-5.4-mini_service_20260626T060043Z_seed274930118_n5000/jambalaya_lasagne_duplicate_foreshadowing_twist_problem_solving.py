@@ -24,11 +24,11 @@ import sys
 from dataclasses import dataclass, field
 from typing import Optional
 
-_storyworlds_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-if not os.path.exists(os.path.join(_storyworlds_dir, "results.py")):
-    _storyworlds_dir = os.path.dirname(_storyworlds_dir)
-sys.path.insert(0, _storyworlds_dir)
-from results import QAItem, StoryError, StorySample  # noqa: E402
+REPO_ROOT = os.path.dirname(
+    os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+)
+sys.path.insert(0, REPO_ROOT)
+from storyworlds.results import QAItem, StoryError, StorySample  # noqa: E402
 
 
 # ---------------------------------------------------------------------------
@@ -267,6 +267,9 @@ class StoryParams:
     place: str
     hero_name: str
     helper_name: str
+    case_id: str = "copied_labels"
+    telling_mode: str = "clue_first"
+    detail_id: int = 0
     seed: Optional[int] = None
     @property
     def meters(self):
@@ -341,6 +344,195 @@ DISHES = {
 DUPLICATE_KINDS = ["label", "tray", "bowl", "lid"]
 
 
+@dataclass(frozen=True)
+class KitchenCase:
+    case_id: str
+    duplicate: str
+    setup: str
+    clue: str
+    trouble: str
+    first_guess: str
+    test: str
+    twist: str
+    repair: str
+    lesson: str
+    ending: str
+
+
+CASES = {
+    case.case_id: case
+    for case in [
+        KitchenCase(
+            case_id="copied_labels",
+            duplicate="two identical food labels",
+            setup="A label printer chattered beside the cooling dishes",
+            clue="one label had a tiny blue ink crescent under its last letter",
+            trouble="both labels said 'lasagne,' leaving the jambalaya pot unnamed",
+            first_guess="that someone had cooked two trays of lasagne",
+            test="compare the blue crescent with the printer's test strip and check each dish's ingredients",
+            twist="the printer had copied a label, not the meal",
+            repair="write one fresh jambalaya label and place both labels beside the correct dishes",
+            lesson="copies can look convincing, so evidence matters more than a quick guess",
+            ending="the blue-crescent misprint rested in the recycling basket beside two plainly named dishes",
+        ),
+        KitchenCase(
+            case_id="recipe_cards",
+            duplicate="two recipe cards with the same title",
+            setup="Two flour-dusted cards peeked from beneath the mixing bowl",
+            clue="only one card carried Nana's green note about when to add the rice",
+            trouble="the cooks began following different jambalaya instructions while the lasagne sauce bubbled",
+            first_guess="that Nana had written the recipe twice by mistake",
+            test="line up the steps and match the green note to the simmering rice",
+            twist="one card was an old draft saved for comparison, not a second finished recipe",
+            repair="mark the draft 'practice,' keep the finished card by the jambalaya, and return to the correct step",
+            lesson="a duplicate document may have a different purpose, so its details should be checked",
+            ending="the practice card hung on a clip while the finished card stood cleanly beside the golden pot",
+        ),
+        KitchenCase(
+            case_id="twin_timers",
+            duplicate="two matching kitchen timers",
+            setup="Two silver timers ticked in perfect unison on the shelf",
+            clue="a strand of red yarn was tied around just one timer's foot",
+            trouble="one bell rang early and made everyone think the lasagne was done",
+            first_guess="that both timers measured the same oven",
+            test="follow each timer's yarn tag and compare its remaining minutes with the written cooking plan",
+            twist="the red-tagged timer belonged to the rice pot, while the other watched the lasagne",
+            repair="set the timers beside their dishes and add large picture cards showing a pot and a tray",
+            lesson="matching tools can have separate jobs, and clear links prevent rushed decisions",
+            ending="the pot card and tray card stood upright as the two timers gave their bells at different, proper moments",
+        ),
+        KitchenCase(
+            case_id="lookalike_trays",
+            duplicate="two red-and-gold lasagne trays",
+            setup="A second red-and-gold rectangle appeared at the far end of the counter",
+            clue="it stayed cool and made no cheesy smell at all",
+            trouble="the serving team nearly carried the real lasagne to the display table",
+            first_guess="that an extra lasagne had somehow been baked",
+            test="feel for warmth from a safe distance, notice the scent, and ask the helper who built the display",
+            twist="the duplicate was a cardboard model for the menu board",
+            repair="hang the model on the menu board and leave the warm tray on its heat-safe mat",
+            lesson="appearance alone cannot tell what an object is or how it should be handled",
+            ending="the cardboard lasagne smiled from the menu board while steam curled from the real supper below",
+        ),
+        KitchenCase(
+            case_id="double_order",
+            duplicate="two matching supper tickets",
+            setup="The order rail held two slips numbered twelve",
+            clue="one slip had a star punched through its corner",
+            trouble="the team started packing the same jambalaya-and-lasagne meal twice while another table waited",
+            first_guess="that table twelve had ordered a duplicate feast",
+            test="ask the dining-room helper, compare the handwriting, and check the punched star against the practice pad",
+            twist="the starred ticket was the helper's rehearsal copy from before supper",
+            repair="file the rehearsal slip, finish one meal for table twelve, and prepare the waiting table's real order",
+            lesson="confirming a duplicate prevents waste and makes sharing fair",
+            ending="one neat tray traveled to table twelve as the starred practice slip slid into the lesson folder",
+        ),
+        KitchenCase(
+            case_id="inventory_echo",
+            duplicate="a repeated pantry entry",
+            setup="The pantry tablet displayed 'rice: two sacks' on neighboring lines",
+            clue="both lines carried the very same scan time down to the second",
+            trouble="the cooks planned portions using rice that was not actually there",
+            first_guess="that a new sack had arrived unnoticed",
+            test="count the sealed sacks together and compare the two scan records",
+            twist="one barcode scan had echoed into the list twice",
+            repair="remove the duplicate entry, adjust the portions, and add a second-person check for future deliveries",
+            lesson="a repeated record is not the same as a repeated real object",
+            ending="a single rice sack stood beneath a corrected screen while every bowl still received a fair scoop",
+        ),
+        KitchenCase(
+            case_id="vented_lids",
+            duplicate="two round pot lids",
+            setup="Two round lids gleamed beside the jambalaya pot",
+            clue="one lid had a tiny steam vent shaped like a moon",
+            trouble="the unvented lid trapped too much steam and made the pot rattle",
+            first_guess="that the lids were safe duplicates and either one would do",
+            test="turn off the heat with adult help, inspect both cooled lids, and read the pot maker's guide",
+            twist="only the moon-vented lid was made for the jambalaya pot",
+            repair="use the proper vented lid and label the other for its matching storage bowl",
+            lesson="near-duplicates may work differently, especially around heat",
+            ending="one quiet puff rose through the moon-shaped vent while the other lid waited on its clearly marked shelf",
+        ),
+        KitchenCase(
+            case_id="spice_twins",
+            duplicate="two jars marked 'mild spice'",
+            setup="Twin spice jars stood shoulder to shoulder near the jambalaya",
+            clue="one jar's paper seal showed a small cinnamon-colored thumbprint",
+            trouble="the wrong jar would make the savory rice taste like sweet toast",
+            first_guess="that the jars held duplicate batches of the same seasoning",
+            test="read the ingredient lists and let the helper compare each scent away from the cooking steam",
+            twist="a reused jar held cinnamon even though its old front label remained",
+            repair="replace the stale label, return the cinnamon to the baking shelf, and season the jambalaya from the verified jar",
+            lesson="containers can be reused, so their current contents must be identified carefully",
+            ending="the cinnamon jar sat by the flour while the savory spice made a warm little cloud above the rice",
+        ),
+        KitchenCase(
+            case_id="photo_plate",
+            duplicate="a picture of the finished supper",
+            setup="A glossy plate of jambalaya and lasagne seemed to appear in the serving hatch",
+            clue="its steam never moved, even when the kitchen door swung open",
+            trouble="the team paused, unsure which supper plate still needed serving",
+            first_guess="that someone had prepared a duplicate plate",
+            test="look from the side, trace the flat edge, and ask why the photographer had visited",
+            twist="the duplicate meal was a life-size photograph for the recipe book",
+            repair="mount the photograph on the wall and place the real meal on the serving cart",
+            lesson="a duplicate image can preserve information without being the object itself",
+            ending="the photograph shone above the sink while the real plate rolled away beneath a silver cover",
+        ),
+        KitchenCase(
+            case_id="shopping_line",
+            duplicate="a duplicated line on the shopping list",
+            setup="The shopping list named tomatoes twice in a row",
+            clue="the second line began with the same crooked letter and ended at the same torn fold",
+            trouble="the cooks almost opened twice as many tomatoes and crowded the sauce pan",
+            first_guess="that both jambalaya and lasagne required separate full baskets",
+            test="check each recipe's amount, add the totals, and compare them with the unopened tins",
+            twist="the folded paper had made one line show through and look duplicated",
+            repair="rewrite one clear total and save the extra tomatoes for another meal",
+            lesson="solving a duplicate can protect ingredients from being wasted",
+            ending="the spare tomatoes formed a tidy red row in the pantry as one well-measured sauce simmered",
+        ),
+        KitchenCase(
+            case_id="serving_spoons",
+            duplicate="two long wooden spoons",
+            setup="Two long spoons crossed like drumsticks between the dishes",
+            clue="one handle bore three shallow measuring notches",
+            trouble="using the larger spoon for both foods would give some guests far more than others",
+            first_guess="that the spoons were interchangeable duplicates",
+            test="compare their bowl sizes, count the notches, and make one practice scoop into empty cups",
+            twist="the notched spoon was a portion measure while the plain spoon was only for stirring",
+            repair="serve equal jambalaya portions with the notched spoon and use a flat server for the lasagne",
+            lesson="tools that look alike can support fairness in different ways",
+            ending="equal golden scoops circled the table while the plain spoon dried above the empty pot",
+        ),
+        KitchenCase(
+            case_id="recipe_projection",
+            duplicate="a second recipe projected on the wall",
+            setup="A pale copy of the lasagne recipe floated beside the paper original",
+            clue="the floating words vanished whenever someone covered the tablet lens",
+            trouble="the reflected instructions appeared backward and sent the team toward the wrong shelf",
+            first_guess="that a mysterious cook had posted duplicate directions",
+            test="move the tablet, cover its lens once more, and read the paper card aloud together",
+            twist="a shiny ladle had reflected the tablet's recipe onto the wall",
+            repair="turn the ladle face down, prop the real recipe where everyone can see it, and resume the correct step",
+            lesson="a duplicate can be a reflection, so tracing its source reveals what is real",
+            ending="the wall turned blank again while the lasagne's bubbling corners matched the final picture on the card",
+        ),
+    ]
+}
+
+TELLING_MODES = (
+    "clue_first",
+    "bell_first",
+    "dialogue_first",
+    "question_first",
+    "quiet_first",
+    "helper_first",
+    "rhyme_first",
+    "result_first",
+)
+
+
 # ---------------------------------------------------------------------------
 # Reasonableness gate
 # ---------------------------------------------------------------------------
@@ -353,105 +545,107 @@ def explain_rejection(place: str) -> str:
 
 
 # ---------------------------------------------------------------------------
-# Narration helpers
+# Narration and world building
 # ---------------------------------------------------------------------------
-def _article(noun: str) -> str:
-    return "an" if noun[:1].lower() in "aeiou" else "a"
+OPENINGS = {
+    "clue_first": "Before the first spoon clinked, {hero} noticed something that did not quite belong.",
+    "bell_first": "Ding went the kitchen bell, and {hero} looked up from the supper table.",
+    "dialogue_first": "'Two dishes, one careful plan,' said {helper}, as {hero} tied on an apron.",
+    "question_first": "How could one supper seem to contain an extra copy? {hero} was about to find out.",
+    "quiet_first": "For one quiet minute, the kitchen held only the burble of rice and the soft hiss of sauce.",
+    "helper_first": "{helper} checked the oven while {hero} arranged bowls for the evening meal.",
+    "rhyme_first": "Rice in a pot and pasta in rows; watch every copy, and follow what shows.",
+    "result_first": "Later, everyone would remember the duplicate that nearly muddled supper.",
+}
+
+BRIDGES = (
+    "The small detail seemed unimportant, yet {hero} tucked it away like a puzzle piece.",
+    "{hero} pointed it out. 'That may matter later,' {helper} agreed.",
+    "No one stopped cooking, but the clue stayed in {hero}'s thoughts.",
+    "It was the sort of clue that whispers before a mystery speaks aloud.",
+    "{helper} drew a tiny star beside the clue on the kitchen notepad.",
+    "{hero} did not guess yet; careful problem solvers collect facts first.",
+    "The clue waited while the jambalaya simmered and the lasagne browned.",
+    "A quick rhyme helped {hero} remember: 'See it twice? Check it twice.'",
+    "They left the clue untouched so they could compare it later.",
+    "That odd detail made {hero} slow down and look again.",
+    "The clue did not give the answer, but it promised one.",
+    "{hero} asked {helper} to remember exactly where they had found it.",
+    "They photographed the clue before moving anything nearby.",
+)
+
+REACTIONS = (
+    "'Let's test that idea before we act,' said {hero}.",
+    "{helper} nodded. 'A duplicate is a copy, but copies do not always have the same job.'",
+    "'We have a guess, not an answer,' {hero} reminded everyone.",
+    "They paused the serving line so a little confusion could not become a larger one.",
+    "{hero} made two columns on the notepad: what matched and what differed.",
+    "Instead of blaming anyone, {helper} asked, 'What can the clue prove?'",
+    "They agreed to change nothing until they understood the duplicate.",
+    "'Look, ask, compare,' {hero} chanted. 'That is how we'll repair.'",
+    "The team took one calm breath and turned the mix-up into a question.",
+    "{helper} moved both hot dishes to safe mats before the investigation began.",
+    "They told the waiting guests there was a short puzzle to solve, not a disaster.",
+)
 
 
-def intro(world: World, hero: Entity, helper: Entity, first: Dish, second: Dish) -> None:
-    world.say(
-        f"In {world.kitchen.place}, {hero.id} and {helper.id} hummed a tune so bright, "
-        f"they stirred {first.label} and {second.label} by morning light."
-    )
-    world.say(
-        f"{hero.id} loved the warm smells, the clink and clatter, and the way the bowls "
-        f"all shone like stars."
-    )
-
-
-def foreshadow(world: World, duplicate_kind: str) -> None:
-    world.say(
-        f"Then came a tiny clue, as soft as a feather: there was { _article(duplicate_kind) } "
-        f"{duplicate_kind} set near the oven, waiting with a quiet shine."
-    )
-    world.say(
-        "The clue was little, but it winked and glimmered, as if it knew a mix-up might come."
-    )
-
-
-def twist(world: World, hero: Entity, helper: Entity, first: Dish, second: Dish, duplicate_kind: str) -> None:
-    world.say(
-        f"When the bell went ding, {hero.id} gasped and blinked twice: the duplicate was not "
-        f"what anyone first thought."
-    )
-    world.say(
-        f"It was not a second {first.label} after all. It was a duplicate {duplicate_kind}, "
-        f"wearing the wrong little tag beside {second.label}."
-    )
-    world.say(
-        f"{helper.id} frowned, then smiled. 'Oh! The clue was telling us the labels might swap.'"
-    )
-
-
-def solve(world: World, hero: Entity, helper: Entity, first: Dish, second: Dish) -> None:
-    world.say(
-        f"So {hero.id} and {helper.id} solved the tangle with care. They read each label, "
-        f"sniffed each scent, and checked the colors once more."
-    )
-    world.say(
-        f"The {first.label} smelled {first.scent}, and the {second.label} smelled {second.scent}; "
-        f"that made the answer easy to know."
-    )
-    world.say(
-        f"They set the dishes in the right places at last, and the table looked neat and merry."
-    )
-
-
-def ending(world: World, hero: Entity, helper: Entity, first: Dish, second: Dish) -> None:
-    world.say(
-        f"By supper time, {hero.id} smiled at the tidy table. The right bowls sat in the right spots, "
-        f"and no one mixed up the feast again."
-    )
-    world.say(
-        f"{helper.id} laughed, {hero.id} clapped, and the kitchen kept its happy glow."
-    )
-
-
-# ---------------------------------------------------------------------------
-# World building
-# ---------------------------------------------------------------------------
-def tell(place: str, hero_name: str, helper_name: str) -> World:
-    kitchen = _safe_lookup(KITCHENS, place)
+def tell(params: StoryParams) -> World:
+    kitchen = _safe_lookup(KITCHENS, params.place)
+    case = _safe_lookup(CASES, params.case_id)
+    mode = params.telling_mode if params.telling_mode in OPENINGS else TELLING_MODES[0]
+    detail = params.detail_id
     world = World(kitchen)
 
-    hero = world.add(Entity(id=hero_name, kind="character", label=hero_name))
-    helper = world.add(Entity(id=helper_name, kind="character", label=helper_name))
+    hero = world.add(Entity(id=params.hero_name, kind="character", label=params.hero_name))
+    helper = world.add(Entity(id=params.helper_name, kind="character", label=params.helper_name))
     first = world.add(Entity(id="dish_a", label="jambalaya", phrase="a pot of jambalaya"))
     second = world.add(Entity(id="dish_b", label="lasagne", phrase="a tray of lasagne"))
 
-    duplicate_kind = "label"
-
-    world.facts["hero"] = hero
-    world.facts["helper"] = helper
-    world.facts["first"] = first
-    world.facts["second"] = second
-    world.facts["duplicate_kind"] = duplicate_kind
-    world.facts["place"] = place
-
-    intro(world, hero, helper, first, second)
-    world.say(
-        f"On the counter sat {first.phrase}, and beside it {second.phrase}, both warm and ready."
+    world.facts.update(
+        hero=hero,
+        helper=helper,
+        first=first,
+        second=second,
+        place=params.place,
+        case=case,
+        duplicate=case.duplicate,
+        clue=case.clue,
+        trouble=case.trouble,
+        first_guess=case.first_guess,
+        test=case.test,
+        twist=case.twist,
+        repair=case.repair,
+        lesson=case.lesson,
+        ending=case.ending,
     )
-    foreshadow(world, duplicate_kind)
-    world.say(
-        f"The helper had made {first.label} first, then {second.label}; but a second tag sat nearby, "
-        f"ready to cause a twist."
-    )
-    twist(world, hero, helper, first, second, duplicate_kind)
-    solve(world, hero, helper, first, second)
-    ending(world, hero, helper, first, second)
 
+    world.say(OPENINGS[mode].format(hero=hero.id, helper=helper.id))
+    world.say(
+        f"In {kitchen.place}, {hero.id} and {helper.id} were making spicy jambalaya and layered lasagne "
+        "for a shared supper."
+    )
+    world.say(
+        f"{case.setup}. It looked like {case.duplicate}. "
+        f"The foreshadowing clue was plain once they looked closely: {case.clue}."
+    )
+    world.say(BRIDGES[detail % len(BRIDGES)].format(hero=hero.id, helper=helper.id))
+    world.say(f"Soon the clue mattered because {case.trouble}.")
+    world.say(f"At first, everyone guessed {case.first_guess}.")
+    world.say(REACTIONS[(detail * 3 + 2) % len(REACTIONS)].format(hero=hero.id, helper=helper.id))
+    world.say(
+        f"To solve the problem, {hero.id} and {helper.id} decided to {case.test}. "
+        "They compared the duplicate with the original instead of merely trusting the matching parts."
+    )
+    world.say(f"Then came the twist: {case.twist}.")
+    world.say(
+        f"That discovery changed their plan. Together they chose to {case.repair}. "
+        f"'Copy found, problem unwound,' {hero.id} said, and {helper.id} answered, 'Check the clue, then follow through.'"
+    )
+    world.say(f"They learned that {case.lesson}.")
+    world.say(
+        f"At supper's end, {case.ending}. Jambalaya and lasagne reached the table correctly, "
+        "and the solved duplicate had become part of the kitchen's story."
+    )
     return world
 
 
@@ -459,44 +653,47 @@ def tell(place: str, hero_name: str, helper_name: str) -> World:
 # QA
 # ---------------------------------------------------------------------------
 def generation_prompts(world: World) -> list[str]:
+    case: KitchenCase = world.facts["case"]  # type: ignore[assignment]
+    hero: Entity = _safe_fact(world, world.facts, "hero")  # type: ignore[assignment]
     return [
-        "Write a nursery-rhyme story about a kitchen where jambalaya and lasagne are being made, "
-        "and a duplicate clue causes a gentle twist.",
-        "Tell a small rhyming tale in which a child notices a duplicate and helps solve the mix-up "
-        "with labels and smells.",
-        "Write a child-friendly story with foreshadowing, a twist, and problem solving around "
-        "jambalaya, lasagne, and a duplicate tag.",
+        f"Write a child-friendly kitchen mystery in which {hero.id} helps prepare jambalaya and lasagne "
+        f"and investigates {case.duplicate}.",
+        f"Tell a rhyming supper tale that foreshadows trouble with this clue: {case.clue}. "
+        "Include a fair test, a twist, and a concrete ending image.",
+        f"Write a problem-solving story where a duplicate is narratively important because {case.trouble}. "
+        "Let evidence reveal what the copy really means.",
     ]
 
 
 def story_qa(world: World) -> list[QAItem]:
     hero: Entity = _safe_fact(world, world.facts, "hero")  # type: ignore[assignment]
     helper: Entity = _safe_fact(world, world.facts, "helper")  # type: ignore[assignment]
-    first: Entity = _safe_fact(world, world.facts, "first")  # type: ignore[assignment]
-    second: Entity = _safe_fact(world, world.facts, "second")  # type: ignore[assignment]
-    place = _safe_fact(world, world.facts, "place")
-    duplicate_kind = _safe_fact(world, world.facts, "duplicate_kind")
-
+    case: KitchenCase = world.facts["case"]  # type: ignore[assignment]
+    place: str = world.facts["place"]  # type: ignore[assignment]
     return [
         QAItem(
-            question=f"Where did {hero.id} and {helper.id} make the meal?",
-            answer=f"They made it in {_safe_lookup(KITCHENS, place).place}, where the air smelled warm and nice.",
+            question=f"What duplicate did {hero.id} and {helper.id} investigate?",
+            answer=f"They investigated {case.duplicate}. It mattered because {case.trouble}.",
         ),
         QAItem(
-            question=f"What two foods were being prepared in the story?",
-            answer=f"The two foods were {first.label} and {second.label}.",
+            question="What clue foreshadowed the kitchen problem?",
+            answer=f"The foreshadowing clue was that {case.clue}. They remembered it when the trouble began.",
         ),
         QAItem(
-            question="What little clue foreshadowed the mix-up?",
-            answer=f"The story foreshadowed trouble with a duplicate {duplicate_kind} waiting by the oven.",
+            question="What did the cooks first believe?",
+            answer=f"They first believed {case.first_guess}. They treated that as a guess and gathered evidence before acting.",
         ),
         QAItem(
-            question="What was the twist in the story?",
-            answer="The twist was that the duplicate was not a second dish at all; it was a duplicate label.",
+            question="How did they test their idea?",
+            answer=f"They tested it by choosing to {case.test}. That comparison revealed the duplicate's real role.",
         ),
         QAItem(
-            question="How did they solve the problem?",
-            answer="They solved it by reading the labels, smelling the food, checking the colors, and putting everything in the right place.",
+            question="What was the twist, and how did they repair the problem?",
+            answer=f"The twist was that {case.twist}. Afterward, they chose to {case.repair}.",
+        ),
+        QAItem(
+            question=f"Where did the final scene leave {hero.id}'s kitchen?",
+            answer=f"The story ended in {_safe_lookup(KITCHENS, place).place}, where {case.ending}. The two foods reached the table correctly.",
         ),
     ]
 
@@ -606,17 +803,33 @@ def build_parser() -> argparse.ArgumentParser:
     return ap
 
 
-def resolve_params(args: argparse.Namespace, rng: random.Random) -> StoryParams:
+def resolve_params(
+    args: argparse.Namespace,
+    rng: random.Random,
+    sample_seed: Optional[int] = None,
+) -> StoryParams:
     place = getattr(args, "place", None) or rng.choice(list(KITCHENS))
     if not story_reasonable(place):
         return _fallback_storyparams(args, rng, StoryParams, globals())
     hero_name = getattr(args, "hero_name", None) or rng.choice(["Mina", "Lulu", "Nico", "Toby", "Pip"])
     helper_name = getattr(args, "helper_name", None) or rng.choice(["Mum", "Dad", "Nana", "Uncle Ben", "Aunt Joy"])
-    return StoryParams(place=place, hero_name=hero_name, helper_name=helper_name)
+    index = sample_seed if sample_seed is not None else rng.randrange(2**31)
+    case_id = tuple(CASES)[index % len(CASES)]
+    telling_mode = TELLING_MODES[(index // len(CASES)) % len(TELLING_MODES)]
+    detail_id = (index // (len(CASES) * len(TELLING_MODES))) % len(BRIDGES)
+    return StoryParams(
+        place=place,
+        hero_name=hero_name,
+        helper_name=helper_name,
+        case_id=case_id,
+        telling_mode=telling_mode,
+        detail_id=detail_id,
+        seed=sample_seed,
+    )
 
 
 def generate(params: StoryParams) -> StorySample:
-    world = tell(params.place, params.hero_name, params.helper_name)
+    world = tell(params)
     return StorySample(
         params=params,
         story=world.render(),
@@ -647,9 +860,30 @@ def emit(sample: StorySample, *, trace: bool = False, qa: bool = False, header: 
 
 
 CURATED = [
-    StoryParams(place="sunny", hero_name="Mina", helper_name="Mum"),
-    StoryParams(place="cozy", hero_name="Pip", helper_name="Nana"),
-    StoryParams(place="busy", hero_name="Lulu", helper_name="Dad"),
+    StoryParams(
+        place="sunny",
+        hero_name="Mina",
+        helper_name="Mum",
+        case_id="copied_labels",
+        telling_mode="clue_first",
+        detail_id=0,
+    ),
+    StoryParams(
+        place="cozy",
+        hero_name="Pip",
+        helper_name="Nana",
+        case_id="twin_timers",
+        telling_mode="dialogue_first",
+        detail_id=3,
+    ),
+    StoryParams(
+        place="busy",
+        hero_name="Lulu",
+        helper_name="Dad",
+        case_id="lookalike_trays",
+        telling_mode="rhyme_first",
+        detail_id=7,
+    ),
 ]
 
 
@@ -676,8 +910,7 @@ def main() -> None:
         while len(samples) < getattr(args, "n", None) and i < max(50, getattr(args, "n", None) * 50):
             seed = base_seed + i
             i += 1
-            params = resolve_params(args, random.Random(seed))
-            params.seed = seed
+            params = resolve_params(args, random.Random(seed), seed)
             sample = generate(params)
             if sample.story in seen:
                 continue

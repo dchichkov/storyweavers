@@ -609,6 +609,182 @@ BOY_NAMES = ["Bram", "Jory", "Finn"]
 PIRATE_TRAITS = ["brisk", "greedy", "cheeky", "sunburnt"]
 
 
+@dataclass(frozen=True)
+class Incident:
+    title: str
+    premise: str
+    warning: str
+    mistake: str
+    consequence: str
+    evidence: str
+    repair: str
+    lesson: str
+    ending: str
+    rhyme: tuple[str, str]
+
+
+INCIDENTS = [
+    Incident(
+        title="the rolling-bowl supper",
+        premise="The cook set a covered bowl of chowmein in a rack until the ship stopped rocking.",
+        warning="the deck was tilting and the hot bowl needed to stay in its rack",
+        mistake="unlatched the rack and tried to carry the bowl alone",
+        consequence="A swell rolled the bowl into an empty wash tub. Supper was too cold and soggy to serve.",
+        evidence="a line of sauce pointed from the open latch to the tub",
+        repair="scrubbed the tub, secured the latch, and helped the cook label a safe cooling shelf",
+        lesson="waiting for a steady deck protects both people and food",
+        ending="Moonlight shone through the clean, empty rack while everyone shared dry crackers",
+        rhyme=("Latch the rack before waves attack", "Wait for the bell, and supper goes well"),
+    ),
+    Incident(
+        title="the missing supper bell",
+        premise="Chowmein waited beneath a lid while the cook searched for the brass supper bell.",
+        warning="no food could be served until clean bowls were set and every crewmate had washed up",
+        mistake="rang a tin cup and announced supper before the table was ready",
+        consequence="The uncovered pot cooled while the crew formed the wrong line, so the cook saved it for tomorrow instead.",
+        evidence="the real bell was hanging behind a freshly washed apron",
+        repair="returned the cup, found the bell, and wrote a simple serving checklist with the cook",
+        lesson="pretending a job is finished can waste the work everyone was protecting",
+        ending="The true bell hung silent above a neat table, but every plate remained empty that night",
+        rhyme=("A borrowed clang can steer things wrong", "Check what is true before calling the crew"),
+    ),
+    Incident(
+        title="the salt-spray window",
+        premise="The galley window stood open to cool a fresh pan of chowmein without anyone touching it.",
+        warning="the weather vane showed that spray would soon blow through the window",
+        mistake="ignored the vane and wedged the window wider for a stronger breeze",
+        consequence="A salty gust splashed the pan, and the cook discarded the spoiled supper.",
+        evidence="wet salt crystals glittered only on the sill and the near side of the pan",
+        repair="closed the window, wiped the galley, and helped fit a screened cooling shelf indoors",
+        lesson="curiosity should lead to checking signs, not brushing them aside",
+        ending="The dry screen clicked into place as the untouched plates were stacked away",
+        rhyme=("Read the vane before wind and rain", "A careful eye keeps supper dry"),
+    ),
+    Incident(
+        title="the knotted serving rope",
+        premise="The cook planned to lower sealed portions of chowmein to a watch crew on the dock.",
+        warning="the serving rope had to be tested with a practice weight before carrying food",
+        mistake="trusted a fancy-looking knot and skipped the practice test",
+        consequence="The sealed carrier dropped onto the dock and cracked, so none of its food could be served.",
+        evidence="the loose rope end showed that the knot had never been tucked through its final loop",
+        repair="kept everyone back, fetched the cook, and practiced the correct knot with an empty carrier",
+        lesson="confidence is not a substitute for a safe test",
+        ending="A sound practice knot held an empty bucket above the dock where supper should have been",
+        rhyme=("Test every knot before lifting the pot", "Practice it right before cargo takes flight"),
+    ),
+    Incident(
+        title="the painted menu mix-up",
+        premise="Two covered pans sat apart: mild chowmein for the crew and a marked pan for a crewmate with food allergies.",
+        warning="only the cook could move the pans because their labels kept each meal safe",
+        mistake="swapped the bright lids to make the table look more colorful",
+        consequence="The cook could no longer prove which pan was safe, so both meals had to be set aside.",
+        evidence="matching paint smudges showed exactly when the lids had been exchanged",
+        repair="admitted the swap, cleaned the table, and helped make large labels that stayed with each pan",
+        lesson="food labels protect people and must never be treated as decorations",
+        ending="Two bold new labels dried beside two closed pans that nobody ate from",
+        rhyme=("Keep labels in place for each person's case", "When markings stay clear, safe supper is near"),
+    ),
+    Incident(
+        title="the galley shortcut",
+        premise="A narrow galley aisle led past a tray of cooling chowmein to the supper table.",
+        warning="a coil of clean rope blocked the aisle and needed to be put away before anyone carried food",
+        mistake="stepped over the coil instead of asking a deckhand to clear it",
+        consequence="A serving tray tipped onto the floor. The cook threw the food away rather than serve it.",
+        evidence="one sandal print crossed the rope beside the fallen tray",
+        repair="marked the spill, called the cook, and helped clear and mop the aisle without touching the hot pan",
+        lesson="a short delay is better than an unsafe shortcut",
+        ending="The mopped boards gleamed, and an empty serving spoon rested across the cold stove",
+        rhyme=("Clear the way before trays sway", "Slow feet keep a meal complete"),
+    ),
+    Incident(
+        title="the gull-proof cover",
+        premise="A covered bowl of chowmein cooled on a high galley counter while gulls circled outside.",
+        warning="the fitted cover had to remain closed until the cook returned",
+        mistake="lifted the cover to show a friend the curly noodles",
+        consequence="A gull swooped through the hatch and pecked the food, making the whole bowl unsafe to eat.",
+        evidence="one white feather lay beside the shifted cover",
+        repair="shooed the gull from a distance, shut the hatch, and helped the cook sanitize the counter",
+        lesson="sharing a look is not worth uncovering protected food",
+        ending="The scrubbed counter smelled of soap while the gull watched an empty bowl from the mast",
+        rhyme=("Cover the fare when gulls fill the air", "Guard every bite by closing it tight"),
+    ),
+    Incident(
+        title="the cracked ladle",
+        premise="The cook left chowmein warming safely and asked the crew to set out clean serving tools.",
+        warning="a ladle with a split handle belonged in the repair bin, not beside the food",
+        mistake="hid the crack with ribbon and placed the ladle on the table",
+        consequence="The handle snapped before serving. The ladle fell into the pan, and supper was discarded.",
+        evidence="the loose ribbon revealed the old split beneath it",
+        repair="told the truth, carried the broken tool to the repair bin, and checked every replacement with the cook",
+        lesson="hiding damage turns a small problem into a larger one",
+        ending="A sturdy clean ladle waited for tomorrow beside the ribbonless repair bin",
+        rhyme=("Never disguise a crack from wise eyes", "Name what is wrong, and tools stay strong"),
+    ),
+    Incident(
+        title="the lantern-shadow race",
+        premise="Lantern shadows stretched across the deck while chowmein stayed covered in the galley.",
+        warning="the captain had ended running games because the evening deck was damp",
+        mistake="challenged a friend to race the longest shadow toward the galley door",
+        consequence="The racers struck the supper cart. Its covered pot stayed shut, but the wheels bent and dinner could not be delivered.",
+        evidence="two sliding footprints ended beside the crooked front wheel",
+        repair="checked that everyone was unhurt, fetched the captain, and helped chock the cart for repair",
+        lesson="a fun idea belongs in a place where it cannot spoil someone else's work",
+        ending="Two still shadows lay across the deck beside the bent cart and its cooling pot",
+        rhyme=("Race in the light where the footing is right", "On boards that are wet, choose quiet play yet"),
+    ),
+    Incident(
+        title="the false spice clue",
+        premise="A fragrant bowl of chowmein waited for a tasting by the cook, who kept every spice jar clearly marked.",
+        warning="nobody should season the finished dish without permission",
+        mistake="guessed that an unmarked shaker held pepper and sprinkled it into the bowl",
+        consequence="The shaker held bitter cleaning powder for the stove, so the cook discarded the food immediately.",
+        evidence="a faded brush symbol on the shaker matched the cleaning cupboard",
+        repair="closed the galley, told the cook, and helped move every cleaning supply away from ingredients",
+        lesson="unknown substances must never be guessed at or put near food",
+        ending="The locked cleaning cupboard clicked shut as the empty supper bowls cooled",
+        rhyme=("If labels are slight, stop and ask what is right", "Never taste or pour what you are not sure"),
+    ),
+    Incident(
+        title="the leaky rain barrel",
+        premise="The crew carried a sealed pot of chowmein below deck before a rainstorm arrived.",
+        warning="a dripping barrel had made the storage floor slippery and the route was closed",
+        mistake="removed the warning rope to fetch a favorite spoon from the closed room",
+        consequence="The returning cook slipped but kept hold of the sealed pot; dinner was delayed until it was no longer safe to serve.",
+        evidence="fresh drops led from the barrel to the place where the warning rope had been moved",
+        repair="apologized, restored the rope, and brought towels while an adult repaired the barrel",
+        lesson="safety barriers matter even when the thing you want seems close",
+        ending="Rain tapped the hatch above a roped-off floor and a sealed pot bound for the waste pail",
+        rhyme=("Leave the rope where warning signs spoke", "A spoon can wait when the floor is not straight"),
+    ),
+    Incident(
+        title="the captain's portion count",
+        premise="The cook counted equal covered portions of chowmein for a crew returning from a long watch.",
+        warning="each bowl had a name card so nobody would be left without supper",
+        mistake="took a second covered bowl and hid it behind a flour sack",
+        consequence="The search lasted too long, and the hidden portion passed its safe serving time.",
+        evidence="a corner of the missing name card stuck out beneath the sack",
+        repair="returned the bowl unopened, admitted the choice, and helped record every discarded portion",
+        lesson="taking more than one's share can leave everyone with less",
+        ending="One crossed-out name card remained on the table beside the unopened bowl that had to be thrown away",
+        rhyme=("Count every share and leave each one there", "More for just one can mean supper for none"),
+    ),
+]
+
+
+TELLING_MODES = [
+    ("At dawn, the ship's log opened on", "The clue changed a boast into a question."),
+    ("One windy afternoon brought", "For once, the loudest pirate listened first."),
+    ("The quietest watch of the week began with", "The deck went quiet while the evidence did the talking."),
+    ("Just before the supper bell came", "A quick plan failed, but a careful look explained why."),
+    ("Under a sky striped pink and gray waited", "What seemed unlucky had begun with one avoidable choice."),
+    ("The crew would long remember", "Nobody needed a villain; they needed the truth."),
+    ("A page titled 'Lessons Learned' described", "The smallest clue proved more useful than the biggest guess."),
+    ("Between two rolling waves unfolded", "An honest answer arrived after an unwise action."),
+    ("The cook's empty supper board later recorded", "The bad ending was already taking shape before anyone noticed."),
+    ("A gull on the mast witnessed", "The rhyme came later; first came the consequence."),
+]
+
+
 @dataclass
 class StoryParams:
     setting: str
@@ -681,11 +857,15 @@ class StoryParams:
 
 def build_story(params: StoryParams) -> World:
     world = World(_safe_lookup(SETTINGS, params.setting))
+    seed = params.seed if params.seed is not None else 0
+    incident = INCIDENTS[seed % len(INCIDENTS)]
+    opening, turn = TELLING_MODES[(seed // len(INCIDENTS)) % len(TELLING_MODES)]
+    girl = params.name in GIRL_NAMES
     hero = world.add(Entity(
         id=params.name,
         kind="character",
-        type="pirate" if params.role == "pirate" else params.role,
-        traits=["little", params.trait, "pirate"],
+        type="girl" if girl else "boy",
+        traits=[params.trait, "pirate"],
     ))
     captain = world.add(Entity(
         id=params.captain,
@@ -696,29 +876,65 @@ def build_story(params: StoryParams) -> World:
     prize = world.add(Entity(
         id="bowl",
         type="bowl",
-        label="bowl",
+        label="chowmein",
         phrase=_safe_lookup(PRIZES, params.prize).phrase,
         owner=hero.id,
         caretaker=captain.id,
-        region="deck",
+        region="galley",
     ))
-    prize.worn_by = hero.id
+    hero.meters["hunger"] = 1.0
+    hero.memes["impatience"] = 1.0
 
-    introduce(world, hero)
-    craving(world, hero, _safe_lookup(ACTIONS, params.action))
-    set_out(world, hero, _safe_lookup(ACTIONS, params.action), prize)
+    world.say(
+        f"{opening} {incident.title}. On the little ship, {params.name} was a {params.trait} young pirate, "
+        f"and {params.captain} was the steady captain on watch. {incident.premise}"
+    )
+    world.say(
+        f"The smell of chowmein curled through the galley. {params.name}'s stomach rumbled, but "
+        f"{params.captain} warned that {incident.warning}."
+    )
 
     world.para()
-    warned = warn(world, captain, hero, _safe_lookup(ACTIONS, params.action), prize)
-    if warned:
-        ignore_warning(world, hero, _safe_lookup(ACTIONS, params.action))
-    _do_action(world, hero, _safe_lookup(ACTIONS, params.action), narrate=True)
-    slip_and_spill(world, hero, prize)
+    world.say(
+        f"\"I can manage one tiny shortcut,\" said {params.name}. Then {hero.pronoun()} "
+        f"{incident.mistake}. {turn}"
+    )
+    world.say(f"The choice had a real cost. {incident.consequence}")
+    world.say(
+        f"\"Stop and look,\" said {params.captain}. Together they noticed that {incident.evidence}. "
+        f"{params.name} understood how {hero.pronoun('possessive')} own choice had caused the trouble."
+    )
 
     world.para()
-    lesson(world, captain, hero, prize)
-    world.say(chorus("Yo-ho", "The ship sailed on with an empty bowl and a wiser deck"))
-    world.facts.update(hero=hero, captain=captain, prize=prize, action=_safe_lookup(ACTIONS, params.action), warned=warned)
+    world.say(
+        f"Without tasting or rescuing any unsafe food, {params.name} {incident.repair}. "
+        f"This became one instance in the ship's lesson book. "
+        f"\"My lesson learned is that {incident.lesson},\" {hero.pronoun()} said."
+    )
+    world.say(
+        f"It was a bad ending for supper, not for the crew: everyone was safe, but there was no chowmein to eat. "
+        f"{incident.ending}."
+    )
+    world.say(f"{incident.rhyme[0]}; {incident.rhyme[1]}. Yo-ho, that was the rhyme!")
+
+    hero.meters["hunger"] = 2.0
+    hero.memes["lesson"] = 1.0
+    hero.memes["honesty"] = 1.0
+    prize.meters["unservable"] = 1.0
+    world.fired.add(("incident", incident.title))
+    world.facts.update(
+        hero=hero,
+        captain=captain,
+        prize=prize,
+        action=_safe_lookup(ACTIONS, params.action),
+        incident=incident,
+        warning=incident.warning,
+        consequence=incident.consequence,
+        evidence=incident.evidence,
+        repair=incident.repair,
+        lesson=incident.lesson,
+        ending=incident.ending,
+    )
     return world
 
 
@@ -726,10 +942,11 @@ def generation_prompts(world: World) -> list[str]:
     f = world.facts
     hero = _safe_fact(world, f, "hero")
     act = _safe_fact(world, f, "action")
+    incident: Incident = f["incident"]
     return [
-        f'Write a short pirate tale that includes the word "{act.keyword}" and ends with a rhyme.',
-        f"Tell a story where a pirate named {hero.id} wants to {act.verb} but learns a lesson the hard way.",
-        f"Make a child-friendly bad-ending ship tale about {act.keyword}, a spill, and a lesson learned.",
+        f'Write a child-friendly pirate tale called "{incident.title}" that includes "{act.keyword}" and ends in rhyme.',
+        f"Tell how {hero.id} caused a supper problem when {hero.pronoun()} {incident.mistake}, then learned a grounded lesson.",
+        f"Make a safe bad-ending ship story with this consequence: {incident.consequence} End with the image: {incident.ending}.",
     ]
 
 
@@ -738,23 +955,27 @@ def story_qa(world: World) -> list[QAItem]:
     hero: Entity = _safe_fact(world, f, "hero")
     captain: Entity = _safe_fact(world, f, "captain")
     prize: Entity = _safe_fact(world, f, "prize")
-    act: Action = _safe_fact(world, f, "action")
+    incident: Incident = f["incident"]
     qa = [
         QAItem(
-            question=f"Who wanted to {act.verb} on the ship?",
-            answer=f"{hero.id} the pirate wanted to {act.verb} on the little ship.",
+            question=f"What unsafe or unfair shortcut did {hero.id} take?",
+            answer=f"{hero.id} {incident.mistake}. That choice set the supper problem in motion.",
         ),
         QAItem(
-            question=f"What did {captain.id} warn would happen if {hero.id} rushed?",
-            answer=f"{captain.id} warned that the chowmein would spill on the deck if {hero.id} rushed.",
+            question=f"What warning did {captain.id} give before the trouble?",
+            answer=f"{captain.id} warned that {incident.warning}. {hero.id} acted before following that warning.",
         ),
         QAItem(
-            question=f"What happened to the {prize.label} at the end?",
-            answer="The bowl tipped over, the chowmein spilled, and the gulls pecked at the noodles.",
+            question=f"What evidence explained the trouble in {incident.title}?",
+            answer=f"They found that {incident.evidence}. It connected {hero.id}'s choice to what happened.",
         ),
         QAItem(
-            question=f"What lesson did {hero.id} learn?",
-            answer="The pirate learned to ask first and to keep a careful step on a slippery deck.",
+            question=f"How did {hero.id} respond after the chowmein could not be served?",
+            answer=f"{hero.id} {incident.repair}. The repair did not include eating or saving unsafe food.",
+        ),
+        QAItem(
+            question=f"What lesson was learned from the bad ending?",
+            answer=f"{hero.id} learned that {incident.lesson}. Everyone stayed safe even though the {prize.label} was not served.",
         ),
     ]
     return qa

@@ -124,5 +124,9 @@ Legend: `queued`, `active`, `repaired`, `verified`, `blocked`.
 | 13 | verified | `chief_urge_bows_teamwork_rhyme_superhero_story.py` | 1 skeleton; 81/100 emitted in fresh baseline | 1 skeleton | 100 unique; 100 skeletons | Twelve missions; chief made a rotating job and bows made decorative. |
 | 13 | verified | `mandolin_italian_navigate_repetition_bad_ending_happy.py` | 1 skeleton; 74/100 exact unique in fresh baseline | 1 skeleton | 100 unique; 100 skeletons | Twelve navigation incidents; non-cruel setbacks and no stereotypes. |
 | 14 | verified | `sentence_trawler_reconciliation_bravery_tall_tale.py` | 1 skeleton; 80/100 emitted in fresh baseline | 1 skeleton | 100 unique; 100 skeletons | Twelve scenarios; arbitrary-name pronouns and root CLI fixed. |
+| 14 | verified | `banner_transformation_lesson_learned_space_adventure.py` | 1 skeleton; 75/100 emitted in fresh baseline | 1 skeleton | 100 unique; 100 skeletons | Twelve cabin-safe space incidents and eight narrative routes. |
+| 14 | verified | `instance_chowmein_lesson_learned_bad_ending_rhyme.py` | 1 skeleton; 54/100 exact unique in fresh baseline | 1 skeleton | 100 unique; 100 skeletons | Twelve food-safe, non-cruel incidents; pronouns fixed. |
+| 14 | verified | `jambalaya_lasagne_duplicate_foreshadowing_twist_problem_solving.py` | 1 skeleton; 75/100 emitted in fresh baseline | 1 skeleton | 100 unique; 100 skeletons | Twelve duplicate mysteries; duplication made causally meaningful. |
+| 14 | verified | `putty_pupil_exclusion_playground_quest_conflict_pirate.py` | 1 skeleton; 71/100 exact unique in fresh baseline | 1 skeleton | 100 unique; 99 skeletons | Twelve inclusive playground quests; 312/500 unique story-QA pairs. |
 
 Additional waves follow the frozen 120-script template-collapse ranking.
