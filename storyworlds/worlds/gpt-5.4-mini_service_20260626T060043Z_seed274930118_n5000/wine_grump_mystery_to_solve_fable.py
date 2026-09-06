@@ -248,6 +248,8 @@ class StoryParams:
     grump_type: str = "man"
     helper: str = "Rowan"
     helper_type: str = "boy"
+    incident_id: int = 0
+    telling_mode: int = 0
     sample: object | None = None
     @property
     def meters(self):
@@ -271,6 +273,168 @@ class StoryParams:
         if name.startswith("__"):
             raise AttributeError(name)
         return None
+
+
+INCIDENTS = [
+    {
+        "title": "the warm shelf",
+        "premise": "A stripe of afternoon sun had reached a shelf meant to stay cool.",
+        "problem": "one sealed bottle of adult wine was missing from its numbered place",
+        "false_step": "The caretaker first blamed a hurried delivery without checking the room.",
+        "clue": "a fresh rectangle in the dust beside the locked cooling cabinet",
+        "cause": "the cellar manager had moved the sealed bottle away from the warming sunlight",
+        "action": "matched the dust mark to the bottle number and asked the manager to unlock the cabinet",
+        "resolution": "The manager showed the safety log, and the bottle stayed sealed in the cooler place.",
+        "ending": "A thin bar of sunlight stopped just short of the empty dust mark.",
+    },
+    {
+        "title": "the wandering label",
+        "premise": "A loose paper label fluttered beneath the tasting-room door after closing time.",
+        "problem": "a sealed adult wine bottle seemed to have the wrong name",
+        "false_step": "The caretaker nearly moved every bottle before reading the batch cards.",
+        "clue": "a curl of harmless paste on the fallen label matched an empty corner on one bottle",
+        "cause": "dry air had loosened the label while the bottle itself never moved",
+        "action": "compared the batch card, shelf map, and printed number without opening anything",
+        "resolution": "An adult worker restored the label and added a clear sleeve to protect it.",
+        "ending": "The repaired label lay smooth beneath the cellar lamp.",
+    },
+    {
+        "title": "the extra bottle",
+        "premise": "The inventory slate listed twelve bottles, but thirteen shadows stood on the wall.",
+        "problem": "the adult wine count appeared to be wrong",
+        "false_step": "The caretaker assumed someone had hidden an unrecorded bottle.",
+        "clue": "one narrow shadow that began at a wooden divider rather than at glass",
+        "cause": "a shifted shelf divider had cast a bottle-shaped shadow",
+        "action": "used a hand mirror from the doorway to compare each shadow with the sealed bottles",
+        "resolution": "The adults straightened the divider and confirmed the inventory without moving the wine.",
+        "ending": "Twelve round shadows rested beside one plainly square divider-shadow.",
+    },
+    {
+        "title": "the purple footprint",
+        "premise": "A purple footprint appeared beside the locked adult-wine cabinet.",
+        "problem": "the mark looked like a wine spill even though every bottle was sealed",
+        "false_step": "The caretaker wanted to accuse the newest helper of making a mess.",
+        "clue": "a sweet grape smell on the footprint and a trail toward a basket of fallen fruit",
+        "cause": "a grape had rolled under a boot during delivery and left juice on the floor",
+        "action": "followed the prints backward and asked an adult to inspect every seal before cleanup",
+        "resolution": "The seals were sound, and the adults cleaned the grape juice with the proper floor kit.",
+        "ending": "A clean stone floor shone beside a basket with one grape-shaped gap.",
+    },
+    {
+        "title": "the ringing crate",
+        "premise": "A closed shipping crate chimed whenever the cellar door moved.",
+        "problem": "the sound suggested a sealed wine bottle might be loose inside",
+        "false_step": "The caretaker reached for the latch before checking the delivery note.",
+        "clue": "the note mentioned a sample bell used to test whether crates tilted in transit",
+        "cause": "a tiny safety bell, not a bottle, was swinging inside its padded pocket",
+        "action": "read the note aloud and called the adult receiver to open the crate safely",
+        "resolution": "The receiver secured the bell and found every adult-wine bottle upright and sealed.",
+        "ending": "The quiet bell sat in its blue pocket above a row of snug corks.",
+    },
+    {
+        "title": "the backward ledger",
+        "premise": "The cellar ledger claimed that a sealed bottle had traveled from shelf nine to shelf six.",
+        "problem": "the wine record contradicted the shelf map",
+        "false_step": "The caretaker declared the map careless before testing the writing.",
+        "clue": "a mirror-image print of the wet ink on the facing page",
+        "cause": "the book had been closed too quickly, making nine look like six",
+        "action": "held a mirror over the copy and compared it with the original adult inventory entry",
+        "resolution": "The caretaker corrected the ledger and left the sealed bottle where it belonged.",
+        "ending": "The true nine dried beside its pale, backward twin.",
+    },
+    {
+        "title": "the cork on the floor",
+        "premise": "A clean cork lay in the passage while the adult-wine cabinet remained locked.",
+        "problem": "the loose cork made it seem that a wine bottle had been opened",
+        "false_step": "The caretaker began counting bottles before noticing the craft table.",
+        "clue": "a dot of blue paint on the cork matched a model boat under repair",
+        "cause": "an adult guide had dropped a spare craft cork used as the boat's chimney",
+        "action": "checked the cabinet seal, then returned the painted cork to the guide",
+        "resolution": "No bottle had been opened, and the little model boat regained its chimney.",
+        "ending": "The blue cork puffed an imaginary cloud above the paper boat.",
+    },
+    {
+        "title": "the humming shelf",
+        "premise": "A low hum seemed to come from behind the adult-wine racks.",
+        "problem": "the vibration might have disturbed the sealed bottles",
+        "false_step": "The caretaker told everyone to be silent instead of locating the sound.",
+        "clue": "a ribbon tied to the vent that trembled in time with the hum",
+        "cause": "a clogged cooling-vent screen had made the fan work too hard",
+        "action": "observed from the marked walkway and called the facilities adult",
+        "resolution": "The adult cleaned the screen, and the cool shelf became still and quiet.",
+        "ending": "The ribbon hung straight while the last soft hum faded away.",
+    },
+    {
+        "title": "the secret chalk arrow",
+        "premise": "A white arrow appeared on the cellar floor before the morning inventory.",
+        "problem": "the arrow pointed away from the sealed adult wine",
+        "false_step": "The caretaker called it a prank and reached for a scrub brush.",
+        "clue": "three tiny wheel marks crossed the arrow and ended at a loose drain cover",
+        "cause": "a night inspector had drawn the arrow to warn adults about the cover",
+        "action": "followed the wheel marks, read the inspection tag, and blocked the walkway",
+        "resolution": "Facilities secured the cover before any adult moved the wine cart nearby.",
+        "ending": "A bright safety cone stood where the chalk arrow had begun.",
+    },
+    {
+        "title": "the dusty ribbon",
+        "premise": "A red ribbon was tied around one sealed bottle in the adult collection.",
+        "problem": "nobody remembered marking that wine bottle",
+        "false_step": "The caretaker guessed that the ribbon meant the bottle was a prize.",
+        "clue": "dust covered the bow except where a tiny tag had recently been removed",
+        "cause": "the archivist had marked the bottle for a label-history exhibit, not for drinking",
+        "action": "found the exhibit card in the catalogue and asked the archivist to confirm it",
+        "resolution": "The sealed bottle went into a locked display case with its full history card.",
+        "ending": "The red bow glowed behind glass beside a neatly printed date.",
+    },
+    {
+        "title": "the cold key",
+        "premise": "The cabinet key felt cold even though it hung far from the cooling wall.",
+        "problem": "the strange chill raised worry about the adult-wine storage system",
+        "false_step": "The caretaker suspected a broken pipe without looking above the hook.",
+        "clue": "a line of clear drops led upward to a thawing lunch-pack pocket",
+        "cause": "an adult worker's cold pack had rested above the key and dripped condensation",
+        "action": "traced the clean drops, moved nothing, and asked the worker to dry the hook",
+        "resolution": "The key was dried and logged; the locked wine cabinet had never warmed or opened.",
+        "ending": "One last clear drop sparkled on the empty lunch-pack pocket.",
+    },
+    {
+        "title": "the missing crate card",
+        "premise": "A delivery crate arrived with a blank string where its card should have hung.",
+        "problem": "the adults could not confirm where the sealed wine shipment belonged",
+        "false_step": "The caretaker wanted to shelve it by the color of the wooden crate.",
+        "clue": "a square outline on the driver's clipboard that matched the missing card's dusty edge",
+        "cause": "the card had stuck beneath the signed receipt during the bumpy trip",
+        "action": "compared the card code with the locked receiving map and called the adult receiver",
+        "resolution": "The receiver placed the unopened crate in the correct secure bay.",
+        "ending": "The recovered card swung gently from its string on the proper bay.",
+    },
+]
+
+
+OPENINGS = [
+    "The mystery began with a detail that did not fit.",
+    "At first, the cellar offered only a question and a quiet echo.",
+    "A small oddity turned an ordinary errand into a mystery to solve.",
+    "Before anyone reached a conclusion, the room presented one stubborn puzzle.",
+    "The best fables sometimes begin with a mark no one can explain.",
+    "Nothing seemed dangerous, yet one clue asked everyone to slow down.",
+    "A puzzling sign waited where the morning checklist should have been simple.",
+    "The cellar was orderly except for one thing that made no sense.",
+    "An unanswered question sat among the shelves like a pebble in a shoe.",
+    "Careful eyes found a mystery where a quick glance found only trouble.",
+]
+
+
+REFLECTIONS = [
+    "A feeling can warn us, but evidence must guide what we say.",
+    "Questions open doors that blame keeps shut.",
+    "Careful looking is kinder than a hurried accusation.",
+    "A clue grows useful when someone checks what it truly means.",
+    "Worry becomes wisdom when it pauses long enough to listen.",
+    "The safest answer is often found before anything is touched.",
+    "Names can hurt, but a passing mood can change after the truth appears.",
+    "Good caretaking joins patience, records, and honest questions.",
+]
 
 
 class World:
@@ -365,8 +529,8 @@ def build_world(params: StoryParams) -> World:
     wine = world.add(Entity(
         id="wine",
         type="bottle",
-        label="bottle of wine",
-        phrase="a bottle of dark red wine",
+        label="sealed bottle of adult wine",
+        phrase="a sealed bottle of adult wine",
         owner=grump.id,
         caretaker=grump.id,
         meters={"moved": 0.0, "hidden": 0.0, "spilled": 0.0, "warm": 0.0},
@@ -442,60 +606,64 @@ def tell(params: StoryParams) -> World:
     grump = world.get("grump")
     helper = world.get("helper")
     wine = world.get("wine")
-    note = world.get("note")
-    crate = world.get("crate")
+    incident = INCIDENTS[params.incident_id % len(INCIDENTS)]
+    opening = OPENINGS[params.telling_mode % len(OPENINGS)]
+    reflection = REFLECTIONS[(params.incident_id + params.telling_mode) % len(REFLECTIONS)]
+
+    world.facts.update(
+        incident_title=incident["title"],
+        problem=incident["problem"],
+        clue=incident["clue"],
+        cause=incident["cause"],
+        action=incident["action"],
+        resolution=incident["resolution"],
+        ending=incident["ending"],
+        solved=True,
+        lesson=reflection,
+    )
+    hero.memes["curiosity"] += 1.0
+    grump.memes["worry"] += 1.0
 
     world.say(
-        f"Once upon a time, {hero.label} went down into {world.room.place} with {helper.label}, "
-        f"while {grump.label} waited nearby with a stern look."
+        f"Once upon a time, {hero.label} and {helper.label} joined {grump.label}, the adult caretaker, "
+        f"in {world.room.place}. {world.room.detail} {_describe_wine(wine).capitalize()} stood in locked, "
+        "adult-managed storage; the children would not open, carry, or taste it."
     )
-    world.say(f"{world.room.detail} On a low table stood {_describe_wine(wine)}.")
+    world.say(f"{opening} {incident['premise']}")
     world.say(
-        f"{grump.label} was a true grump that morning; {grump.pronoun().capitalize()} muttered that no one should move anything without asking."
+        f"A grump had settled over {grump.label}'s mood, but {hero.label} knew a mood was not a fair name "
+        f"for a person. The puzzle was this: {incident['problem']}."
     )
 
     world.para()
     world.say(
-        f"Then {hero.label} saw that the wine was not on the table anymore. "
-        f"It had been moved, and the empty space looked strangely important."
+        f"{incident['false_step']} 'Let us solve the mystery before we blame anyone,' {hero.label} said."
     )
-    wine.meters["moved"] += 1.0
-    wine.meters["hidden"] += 1.0
-    propagate(world)
-
     world.say(
-        f"{helper.label} pointed at the old crate and said there might be a clue hiding there."
+        f"{helper.label} stayed on the marked visitor path and spotted {incident['clue']}. "
+        f"'That clue points somewhere specific,' {helper.pronoun()} said."
     )
-    note.hidden_in = "crate"
-    propagate(world)
+    world.say(
+        f"Together they {incident['action']}. The evidence showed that {incident['cause']}."
+    )
 
     world.para()
+    world.say(incident["resolution"])
     world.say(
-        f"{hero.label} lifted the crate lid and found the paper note. "
-        f"It explained that {helper.label} had moved the wine only to keep it safe while making room for the note."
+        f"{grump.label}'s grumpy mood eased. 'I should have asked before guessing,' "
+        f"{grump.pronoun()} said. 'You followed the clue and kept everyone safe.'"
     )
-    if not world.facts.get("solved"):
-        world.facts["solved"] = True
-        world.facts["clue"] = "the paper note hidden in the crate"
-        world.facts["culprit"] = helper.id
-        world.facts["reason"] = "the helper had moved the wine aside to make room for the note"
+    world.say(
+        f"The fable's lesson was this: {reflection} No child handled or drank wine; responsible adults "
+        "managed every bottle from beginning to end."
+    )
+    world.say(incident["ending"])
 
+    wine.meters["moved"] = 1.0 if "moved" in incident["cause"] or "placed" in incident["resolution"] else 0.0
     grump.memes["grump"] = 0.0
     grump.memes["trust"] += 1.0
     hero.memes["trust"] += 1.0
     helper.memes["trust"] += 1.0
-
-    world.say(
-        f"{grump.label} stopped grumping and gave a small nod. "
-        f"'{world.facts['reason']},' {grump.pronoun().capitalize()} admitted. "
-        f"'A careful heart sometimes looks like a mystery until the clue is found.'"
-    )
-    world.say(
-        f"So the bottle of wine was returned to its place, the note was kept safe, and the cellar grew quiet again."
-    )
-    world.say(
-        f"And the lesson was simple: when people look after one another's things, a grump may be soothed and a mystery may be solved."
-    )
 
     return world
 
@@ -503,10 +671,9 @@ def tell(params: StoryParams) -> World:
 def generation_prompts(world: World) -> list[str]:
     f = world.facts
     return [
-        'Write a short fable about a wine cellar mystery, a grump, and a clue hidden in a crate.',
-        f"Tell a gentle story where {f['hero'].label} notices the wine is missing, "
-        f"{f['grump'].label} gets grumpy, and the mystery is solved with a small clue.",
-        "Write a child-friendly fable in which a worried search ends with a calm lesson about care and honesty.",
+        f"Write a child-friendly fable about {f['incident_title']} in an adult-managed wine cellar.",
+        f"Tell how {f['hero'].label} and {f['helper'].label} use {f['clue']} to solve a mystery without blaming anyone.",
+        f"Write a gentle mystery whose lesson is: {f['lesson']}",
     ]
 
 
@@ -514,32 +681,33 @@ def story_qa(world: World) -> list[QAItem]:
     hero = _safe_fact(world, world.facts, "hero")
     grump = _safe_fact(world, world.facts, "grump")
     helper = _safe_fact(world, world.facts, "helper")
-    wine = _safe_fact(world, world.facts, "wine")
+    f = world.facts
     qa = [
         QAItem(
-            question=f"Who went down into the cellar first?",
-            answer=f"{hero.label} went down into the cellar with {helper.label} while {grump.label} waited nearby.",
+            question=f"What mystery did {hero.label}, {helper.label}, and {grump.label} need to solve in {f['incident_title']}?",
+            answer=f"They needed to explain why {f['problem']}. They paused instead of treating a first guess as proof.",
         ),
         QAItem(
-            question=f"What was the grump worried about?",
-            answer=f"{grump.label} was worried because the bottle of wine was no longer where it should have been.",
+            question=f"What clue did {helper.label} notice in {f['incident_title']}?",
+            answer=f"{helper.label} noticed {f['clue']}. That evidence gave the group something specific to check.",
         ),
         QAItem(
-            question="What clue solved the mystery?",
-            answer=f"The mystery was solved by the paper note hidden in the old crate.",
+            question=f"What did {hero.label} learn was the real cause in {f['incident_title']}?",
+            answer=f"The real cause was that {f['cause']}. The clue supported that explanation.",
         ),
         QAItem(
-            question="What happened to the wine at the end?",
-            answer="It was returned to its place after everyone understood why it had been moved.",
+            question=f"How did the group resolve {f['incident_title']} safely?",
+            answer=f"{f['resolution']} The children stayed on the visitor path and left all wine handling to adults.",
+        ),
+        QAItem(
+            question=f"Why did {grump.label}'s grumpy mood ease after {f['incident_title']}?",
+            answer=f"The mood eased because {hero.label} and {helper.label} found evidence and solved the mystery without an accusation. {grump.label} then admitted the first guess was unfair.",
+        ),
+        QAItem(
+            question=f"What lesson did {hero.label} take from the fable of {f['incident_title']}?",
+            answer=f"The fable taught that {f['lesson'].lower()} It also showed that wine is for responsible adults to manage, not for children to handle or drink.",
         ),
     ]
-    if world.facts.get("solved"):
-        qa.append(
-            QAItem(
-                question="Why did the grump stop grumping?",
-                answer=f"{grump.label} stopped grumping after the clue showed that the wine had been moved safely, not stolen.",
-            )
-        )
     return qa
 
 
@@ -550,11 +718,11 @@ WORLD_KNOWLEDGE = [
     ),
     QAItem(
         question="What is a grump?",
-        answer="A grump is a person who often complains or frowns when they are unhappy.",
+        answer="People sometimes use grump for a complaining mood, but it is kinder to describe the temporary mood than to label a person.",
     ),
     QAItem(
         question="Why do people keep wine in a cool place?",
-        answer="People keep wine in a cool place so it stays pleasant and does not get spoiled by heat.",
+        answer="Responsible adults may keep sealed wine in cool, secure storage so heat does not damage it and children cannot access it.",
     ),
 ]
 
@@ -670,7 +838,7 @@ def build_parser() -> argparse.ArgumentParser:
     return ap
 
 
-def resolve_params(args: argparse.Namespace, rng: random.Random) -> StoryParams:
+def resolve_params(args: argparse.Namespace, rng: random.Random, sample_seed: int) -> StoryParams:
     protagonist = getattr(args, "protagonist", None) or rng.choice(["Mina", "Nora", "Iris", "Lena"])
     grump = getattr(args, "grump", None) or rng.choice(["Old Bram", "Mister Rowe", "Uncle Fen", "Hob"])
     helper = getattr(args, "helper", None) or rng.choice(["Rowan", "Pip", "Tomas", "Ada"])
@@ -685,6 +853,8 @@ def resolve_params(args: argparse.Namespace, rng: random.Random) -> StoryParams:
         grump_type=getattr(args, "grump_type", None),
         helper=helper,
         helper_type=getattr(args, "helper_type", None),
+        incident_id=sample_seed % len(INCIDENTS),
+        telling_mode=(sample_seed // len(INCIDENTS)) % len(OPENINGS),
     )
 
 
@@ -737,7 +907,7 @@ def main() -> None:
             seed = base_seed + i
             i += 1
             try:
-                params = resolve_params(args, random.Random(seed))
+                params = resolve_params(args, random.Random(seed), seed)
             except StoryError:
                 continue
             params.seed = seed

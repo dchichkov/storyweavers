@@ -137,5 +137,9 @@ Legend: `queued`, `active`, `repaired`, `verified`, `blocked`.
 | 15 | verified | `bulls_lullabye_marina_transformation_friendship_mystery.py` | 1 skeleton; 48/100 exact unique in fresh baseline | 1 skeleton | 100 unique; 100 skeletons | Twelve marina mysteries; trained workers handle livestock. |
 | 15 | verified | `fair_scrub_problem_solving_inner_monologue_bad.py` | 1 skeleton; 65/100 exact unique in fresh baseline | 1 skeleton | 100 unique; 100 skeletons | Twelve incidents with safe cleaning and non-cruel setbacks. |
 | 16 | verified | `iguana_canal_path_misunderstanding_animal_story.py` | 1 skeleton; 64/100 emitted in fresh baseline | 1 skeleton | 100 unique; 100 skeletons | Twelve canal incidents; animals remain behind barriers. |
+| 16 | verified | `connect_yak_quest_lesson_learned_suspense_whodunit.py` | 2 skeletons; 60/100 emitted in fresh baseline | 2 skeletons | 100 unique; 100 skeletons | Twelve whodunits; inherited ASP contradiction fixed. |
+| 16 | verified | `coward_chord_bonus_friendship_happy_ending_fable.py` | 1 skeleton; 55/100 exact unique in fresh baseline | 1 skeleton | 100 unique; 100 skeletons | Twelve incidents; loaded label explicitly challenged. |
+| 16 | verified | `equity_gamble_marmoset_mystery_to_solve_lesson.py` | 1 skeleton; 60/100 emitted in fresh baseline | 1 skeleton | 100 unique; 100 skeletons | Twelve equity mysteries; gambling made non-monetary and reversible. |
+| 16 | verified | `wine_grump_mystery_to_solve_fable.py` | 1 skeleton; 64/100 emitted in fresh baseline | 1 skeleton | 100 unique; 100 skeletons | Twelve mysteries; wine adult-managed and grump made a temporary mood. |
 
 Additional waves follow the frozen 120-script template-collapse ranking.

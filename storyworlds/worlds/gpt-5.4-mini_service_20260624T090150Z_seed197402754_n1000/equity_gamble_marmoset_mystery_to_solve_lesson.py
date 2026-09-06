@@ -395,21 +395,21 @@ SETTINGS = {
     "sunlit_square": Setting(
         place="the sunlit square",
         epithet="where old stones hummed at noon",
-        affords={"gamble"},
+        affords={"shell_toss"},
     )
 }
 
 GAMBLES = {
     "shell_toss": Gamble(
         id="shell_toss",
-        verb="throw the three shells",
-        risk="the wrong shell would hide the answer",
-        twist="one shell was painted with a tiny leaf sign",
-        outcome_good="the right shell was found",
-        outcome_bad="the crowd chose the wrong path",
-        clue="the leaf sign",
-        lesson="fairness means everyone can see the same clues",
-        humor_tag="the marmoset kept stealing shiny pebbles for luck",
+        verb="test one uncertain idea before checking every clue",
+        risk="choosing too soon could waste time or make the puzzle harder",
+        twist="the apparent shortcut concealed the most useful evidence",
+        outcome_good="the risk was checked against evidence",
+        outcome_bad="a hurried guess delayed the answer",
+        clue="a tiny leaf-shaped mark",
+        lesson="equity means giving each person the support needed for a fair chance",
+        humor_tag="the marmoset treated every discarded clue like treasure",
     )
 }
 
@@ -423,8 +423,178 @@ PRIZES = {
     )
 }
 
-NAMES = ["Ari", "Mina", "Taro", "Lina", "Suri", "Pavo"]
+NAMES = {
+    "girl": ["Ari", "Mina", "Lina", "Suri"],
+    "boy": ["Ari", "Taro", "Pavo", "Nico"],
+}
 TRAITS = ["curious", "brave", "gentle", "quick-thinking", "cheerful"]
+
+MYSTERIES = [
+    {
+        "id": "silent_bells",
+        "premise": "the six festival bells rang, but the smallest bell stayed silent",
+        "inequity": "the bell rope was too high for the youngest musicians to reach",
+        "bad_idea": "pull the largest rope and hope its echo covered the missing note",
+        "clue": "pale fibers caught on a low cedar peg",
+        "marmoset_action": "tapped the low peg, then pointed from it to the silent bell",
+        "cause": "a caretaker had moved the small bell's rope to the low peg for shorter players, but no sign explained the change",
+        "solution": "hung ropes at several heights and added matching leaf signs",
+        "proof": "every musician rang one clear note in the next song",
+        "ending": "six bell notes crossed the square while the marmoset conducted with a cedar twig",
+    },
+    {
+        "id": "vanishing_water",
+        "premise": "water vanished from the public jug before the afternoon games",
+        "inequity": "children at the end of the path received empty cups while taller visitors reached a hidden reserve",
+        "bad_idea": "race to the fountain and claim the first refill",
+        "clue": "a trail of round wet pawprints beneath the serving table",
+        "marmoset_action": "rolled out a stoppered cup that had wedged the jug's tap open",
+        "cause": "the loose cup pressed the tap, and the water had drained into a covered garden basin",
+        "solution": "fixed the tap and placed equal pitchers at two reachable tables",
+        "proof": "the line moved steadily and every waiting cup was filled",
+        "ending": "sunlight flashed in a hundred cups as the marmoset sipped from a thimble-sized bowl",
+    },
+    {
+        "id": "mixed_seed_tokens",
+        "premise": "the seed tokens for the spring garden appeared to have been counted wrongly",
+        "inequity": "one neighborhood had rich soil but few tokens, while another needed extra seeds after a flood",
+        "bad_idea": "toss a shell to decide which neighborhood received the last packet",
+        "clue": "purple pollen dust on only one stack of tokens",
+        "marmoset_action": "sneezed beside the purple stack and uncovered a folded flood report",
+        "cause": "the stacks were equal by number, but the flood report showing different needs had slipped underneath",
+        "solution": "shared seeds according to usable soil and flood loss, then wrote the reasons on a public board",
+        "proof": "both gardens had enough rows to plant and everyone could inspect the count",
+        "ending": "two gardens raised green shoots beneath signs painted with the same open hand",
+    },
+    {
+        "id": "shadow_map",
+        "premise": "a map to the evening story circle showed a path that ended at a blank wall",
+        "inequity": "the usual stair route excluded a visitor whose chair needed the smooth ramp",
+        "bad_idea": "take the dark stairway because it looked shorter",
+        "clue": "a crescent of chalk glowing near the ramp gate",
+        "marmoset_action": "held a shiny spoon so moonlight bounced onto the faded ramp arrows",
+        "cause": "rain had washed away the accessible route marks while leaving the stair marks untouched",
+        "solution": "repainted both routes with raised markers and posted the same story schedule at each entrance",
+        "proof": "the whole group arrived together without anyone being carried or left behind",
+        "ending": "raised silver arrows gleamed under the moon as cushions formed one unbroken circle",
+    },
+    {
+        "id": "missing_drumbeat",
+        "premise": "the parade drummer kept missing a signal that everyone else claimed was obvious",
+        "inequity": "the signal was only a whistle, which the drummer could not hear clearly",
+        "bad_idea": "guess when to begin from the crowd's movement",
+        "clue": "the trembling in the marmoset's paws whenever the great drum sounded",
+        "marmoset_action": "pressed both paws to the drumhead and copied its vibration",
+        "cause": "the organizers had provided one sound cue but no visible or vibrating cue",
+        "solution": "paired the whistle with a bright flag and a gentle tap through the drum stand",
+        "proof": "the drummer began exactly with the flag on three practice turns",
+        "ending": "a red flag rose, the drum answered boom, and the marmoset bounced in perfect time",
+    },
+    {
+        "id": "crooked_scale",
+        "premise": "the grain scale declared identical baskets strangely unequal",
+        "inequity": "families were being given different portions because nobody had checked the measuring tool",
+        "bad_idea": "accept the next reading and hope the scale corrected itself",
+        "clue": "one brass foot left no dust mark on the counter",
+        "marmoset_action": "slid a flat seed hull from beneath the raised brass foot",
+        "cause": "the hull tilted the scale and changed every reading on that side",
+        "solution": "leveled and tested the scale with standard stones before remeasuring every basket",
+        "proof": "equal test stones balanced and the corrected portions matched the posted plan",
+        "ending": "the scale stood level beside neat baskets while a seed hull rode on the marmoset's head",
+    },
+    {
+        "id": "locked_storybox",
+        "premise": "the town story box opened for some carved tokens but rejected others",
+        "inequity": "worn tokens used by the oldest reading group no longer fit the narrow slot",
+        "bad_idea": "force one worn token into the lock and hope nothing cracked",
+        "clue": "soft gold dust gathered along the slot's upper edge",
+        "marmoset_action": "held a worn token sideways beside a new one so their different thicknesses showed",
+        "cause": "new paint had narrowed the slot, not made the older tokens invalid",
+        "solution": "widened the guide safely and tested old and new tokens in public",
+        "proof": "every reading group opened the box with its own token",
+        "ending": "the story box stood open as pages rustled and the marmoset listened upside down",
+    },
+    {
+        "id": "lantern_queue",
+        "premise": "only the first lanterns in the decorating line kept their flames",
+        "inequity": "slow crafters reached the oil table after all the filled cups were gone",
+        "bad_idea": "stretch one cup of oil among all the remaining lanterns",
+        "clue": "empty cups nested beneath a cloth at the front table",
+        "marmoset_action": "lifted the cloth and stacked the hidden cups into a wobbling tower",
+        "cause": "helpers had filled every cup at once, so early groups accidentally collected extras",
+        "solution": "issued one marked cup per lantern and reserved supplies for later groups",
+        "proof": "the last lantern burned as steadily as the first",
+        "ending": "an even chain of lantern light curved around the square, with no dark gap at its tail",
+    },
+    {
+        "id": "echoing_names",
+        "premise": "the announcement wall repeated some helpers' names and erased others",
+        "inequity": "quiet work done behind the stage received no credit while public jobs appeared twice",
+        "bad_idea": "draw a shell to choose one name for the final empty space",
+        "clue": "two lists bore matching berry-juice thumbprints",
+        "marmoset_action": "matched the sticky lists and chirped whenever the same line appeared twice",
+        "cause": "the public-job list had been copied twice while the backstage list remained folded",
+        "solution": "combined both signed lists, checked each contribution, and invited corrections",
+        "proof": "every helper found one accurate name and task on the wall",
+        "ending": "the complete list fluttered above the feast while the marmoset guarded the inkpot",
+    },
+    {
+        "id": "puzzle_tiles",
+        "premise": "a floor puzzle offered no path to the prize no matter how the tiles turned",
+        "inequity": "color alone marked matching edges, leaving one solver without usable clues",
+        "bad_idea": "place a random final tile before sunset",
+        "clue": "tiny scratches formed circles, lines, and stars beneath the colored paint",
+        "marmoset_action": "rubbed dust across the scratches until the shapes became visible",
+        "cause": "the shape key had been covered by a decorative border",
+        "solution": "restored the shape key so color and texture both guided the solvers",
+        "proof": "two teams using different clues built the same safe path",
+        "ending": "stars, circles, and bright colors made one path, and the seed-crown waited at its center",
+    },
+    {
+        "id": "fruit_vote",
+        "premise": "the feast vote showed fifty mango marks although only thirty people had voted",
+        "inequity": "children who could not read the written fruit names depended on unclear pictures",
+        "bad_idea": "trust the surprising total because mango was popular",
+        "clue": "two stamps, mango and melon, shared the same round outline",
+        "marmoset_action": "placed a real mango and melon beside their stamps and frowned at the mismatch",
+        "cause": "the nearly identical stamps sent both choices into the mango jar",
+        "solution": "made distinct raised stamps, explained each option aloud, and held a fresh vote",
+        "proof": "the new totals matched the number of voters and every choice could be checked",
+        "ending": "three clearly labeled fruit bowls circled the seed-crown while everyone tasted the winner",
+    },
+    {
+        "id": "borrowed_shade",
+        "premise": "the shared shade cloth vanished just before the hottest lesson",
+        "inequity": "the sunny learning table became unusable for children who needed a cooler place",
+        "bad_idea": "wait and hope clouds arrived before the lesson began",
+        "clue": "a line of blue knots led from the empty hooks toward the seedling beds",
+        "marmoset_action": "followed the knots and tugged one loose corner from behind the watering screen",
+        "cause": "gardeners had borrowed the cloth to protect seedlings and left no note",
+        "solution": "returned the cloth, moved spare shade to the seedlings, and started a signed borrowing board",
+        "proof": "both the learning table and seedlings stayed cool through noon",
+        "ending": "two patches of shade rested side by side while the marmoset napped between them",
+    },
+]
+
+OPENINGS = [
+    "Long ago, the sunlit square kept its promises in public.",
+    "At noon, old stones warmed the feet of everyone entering the sunlit square.",
+    "The sunlit square was famous for puzzles, festivals, and rules anyone could inspect.",
+    "On a bright market morning, a question traveled quickly across the sunlit square.",
+    "In the sunlit square, even small clues were supposed to receive a hearing.",
+    "Before the noon bell, the sunlit square looked orderly, but one detail did not fit.",
+    "People came to the sunlit square to share work as well as celebration.",
+    "A seed-crown glittered above the sunlit square on the day fairness was tested.",
+]
+
+REFLECTIONS = [
+    "A fair result needs more than identical treatment; it needs barriers noticed and removed.",
+    "Equity is not giving everyone the same tool when different people need different tools to participate.",
+    "No loud guess deserves more weight than evidence everyone can examine.",
+    "A risk becomes wiser when its cost is small, visible, and reversible.",
+    "Fair rules explain both the choice and the reason behind it.",
+    "Making room for every person's way of participating strengthens the whole group.",
+]
 
 # ---------------------------------------------------------------------------
 # Contract-required params
@@ -484,55 +654,92 @@ def build_world(params: StoryParams) -> World:
         owner=hero.id,
     ))
 
-    world.facts.update(hero=hero, elder=elder, marmoset=marmoset, relic=relic, gamble=gamble, prize=prize)
+    rng = random.Random(params.seed)
+    case = MYSTERIES[rng.randrange(len(MYSTERIES))]
+    opening = OPENINGS[rng.randrange(len(OPENINGS))]
+    reflection = REFLECTIONS[rng.randrange(len(REFLECTIONS))]
+    wager_object = rng.choice(["a painted shell", "a smooth acorn", "a blue ribbon", "a carved seed"])
+    investigation = rng.choice([
+        "made a list of what everyone had observed before touching anything",
+        "asked each group to describe the last moment when the system worked",
+        "marked the known facts in chalk and left the guesses unmarked",
+        "tested the safest explanation first and recorded what changed",
+        "invited the person most affected by the barrier to inspect the clues first",
+        "compared the ordinary arrangement with the puzzling one piece by piece",
+    ])
+    dialogue = rng.choice([
+        f'"The same chance is not always a fair chance," {hero.id} said. "Let us find the barrier."',
+        f'"We can risk one small test, not somebody else\'s safety," {hero.id} told the elder.',
+        f'"First evidence, then guesses," {hero.id} said as the marmoset chirped agreement.',
+        f'"Who cannot use the arrangement as it is?" {hero.id} asked. "That answer matters."',
+        f'"A mystery is not solved when one person wins," {hero.id} said. "It is solved when the facts fit."',
+    ])
+    response = rng.choice([
+        "The elder paused the crowd and gave every witness an equal turn to speak.",
+        "The crowd stepped back, leaving a clear workspace and enough time for careful checking.",
+        "Two helpers repeated the test while everyone watched for the same result.",
+        "A younger child drew the clue while an older helper read the written notes aloud.",
+        "The town posted each observation so quiet voices could be considered with loud ones.",
+    ])
 
-    # Act 1: the mythic setup.
-    world.say(
-        f"Long ago, in {setting.place}, {setting.epithet}, there lived a {params.trait} "
-        f"{hero.type} named {hero.id}."
-    )
-    world.say(
-        f"{hero.id} kept a {prize.label} close, and the {prize.label} gleamed like a small promise."
-    )
-    world.say(
-        f"Near the steps lived a clever marmoset, quick as a leaf in the wind, and it loved to watch tricks."
+    world.facts.update(
+        hero=hero,
+        elder=elder,
+        marmoset=marmoset,
+        relic=relic,
+        gamble=gamble,
+        prize=prize,
+        case=case,
+        mystery=case["premise"],
+        inequity=case["inequity"],
+        clue=case["clue"],
+        cause=case["cause"],
+        solution=case["solution"],
+        proof=case["proof"],
+        reflection=reflection,
+        investigation=investigation,
+        response=response,
+        wager_object=wager_object,
     )
 
-    # Act 2: the mystery and gamble.
+    world.say(opening)
+    world.say(
+        f"There lived {hero.id}, a {params.trait} {hero.type} trusted to carry the {prize.label}, "
+        f"{prize.phrase}. A bright-eyed marmoset followed close behind."
+    )
+    world.say(
+        f"That day brought a mystery to solve: {case['premise']}. Worse, {case['inequity']}."
+    )
+
     world.para()
     world.say(
-        f"One market day, the town faced a mystery: the lamps would not light, and no one knew why."
+        f"Someone proposed a gamble: place {wager_object} beneath one of three cups and let chance decide whether to "
+        f"{case['bad_idea']}. No money or prize was at stake, but a wrong risk could still cost time or fairness."
+    )
+    world.say(dialogue)
+    world.say(
+        f"Instead of letting chance settle the matter, {hero.id} {investigation}."
+    )
+    world.say(f"The first useful clue was {case['clue']}.")
+
+    world.para()
+    world.say(f"The marmoset {case['marmoset_action']}.")
+    world.say(response)
+    world.say(
+        f"Piece by piece, the evidence revealed the cause: {case['cause']}. The mystery had an answer, but the old "
+        f"arrangement still did not offer equity."
     )
     world.say(
-        f"The elder said, \"We may {gamble.verb} for the answer, but {gamble.risk}.\""
-    )
-    world.say(
-        f"{hero.id} was tempted, because the answer might bring honor, but the gamble could also bring a foolish laugh."
-    )
-    world.say(
-        f"Then the marmoset chirped and pointed at {gamble.clue}; that was the missing sign."
-    )
-    world.say(
-        f"The clue showed that the painted shell had been moved, and the mystery was not magic at all."
+        f"So {hero.id} and the town {case['solution']}. They checked their work: {case['proof']}."
     )
 
-    # Act 3: solve + lesson + humor.
     world.para()
     world.say(
-        f"{hero.id} chose the shell marked by {gamble.clue}, and the crowd gasped as the lamp oil jar was found behind it."
+        f"The elder returned the {prize.label} to {hero.id}, not as winnings from a gamble, but as thanks for solving "
+        f"the mystery without making another person's needs the price of a guess."
     )
-    world.say(
-        f"The lamps rose bright again, because the town had looked together instead of trusting the loudest guess."
-    )
-    world.say(
-        f"The marmoset then snatched a strip of ribbon and wore it like a tiny crown, which made even the elder laugh."
-    )
-    world.say(
-        f"That was the humor of the day, and the town remembered the lesson: {gamble.lesson}."
-    )
-    world.say(
-        f"{hero.id} went home with the seed-crown, wiser than before, and the square shone softly under the evening sky."
-    )
+    world.say(f"The lesson learned was this: {reflection}")
+    world.say(f"By evening, {case['ending']}.")
 
     world.facts["resolved"] = True
     return world
@@ -551,7 +758,7 @@ def valid_combos() -> list[tuple[str, str, str]]:
 
 
 def explain_rejection() -> str:
-    return "(No story: this world only supports the temple-square gamble that reveals a clue and teaches fairness.)"
+    return "(No story: the selected square, non-monetary risk choice, and seed-crown are not compatible.)"
 
 
 # ---------------------------------------------------------------------------
@@ -600,40 +807,53 @@ KNOWLEDGE = {
 def generation_prompts(world: World) -> list[str]:
     f = world.facts
     hero = _safe_fact(world, f, "hero")
-    gamble = _safe_fact(world, f, "gamble")
-    prize = _safe_fact(world, f, "prize")
+    case = f["case"]
     return [
-        f'Write a short myth for a child about equity, a gamble, and a marmoset, using the word "{gamble.id}".',
-        f"Tell a gentle legend where {hero.id} faces a mystery to solve and learns a lesson about fairness.",
-        f"Write a funny myth in which a marmoset helps solve a town mystery without losing the prize.",
+        f"Write a child-facing mystery about equity, a non-monetary gamble, and a marmoset, beginning when {case['premise']}.",
+        f"Tell a gentle legend where {hero.id} investigates {case['clue']} and learns why fairness may require different support.",
+        f"Write a mystery to solve in which a marmoset helps reveal that {case['cause']}.",
     ]
 
 
 def story_qa(world: World) -> list[QAItem]:
     f = world.facts
     hero = _safe_fact(world, f, "hero")
-    gamble = _safe_fact(world, f, "gamble")
-    prize = _safe_fact(world, f, "prize")
+    case = f["case"]
     qa = [
         QAItem(
-            question=f"Who is the story about?",
-            answer=f"The story is about {hero.id}, a small hero who faces a mystery in {world.setting.place}.",
+            question="What mystery did the town need to solve?",
+            answer=f"The town needed to discover why {case['premise']}. The problem mattered because {case['inequity']}.",
         ),
         QAItem(
-            question=f"What was the gamble in the story?",
-            answer=f"The gamble was to {gamble.verb}, even though {gamble.risk}.",
+            question=f"Why did {hero.id} reject the proposed gamble?",
+            answer=(
+                f"{hero.id} would not let chance decide whether to {case['bad_idea']}. "
+                "Even without money, a careless gamble could waste time or deny someone a fair chance."
+            ),
         ),
         QAItem(
-            question=f"What helped solve the mystery?",
-            answer=f"The clue {gamble.clue} helped solve the mystery, and the answer led to the lost lamp oil jar.",
+            question="Which clue helped the investigation turn toward the truth?",
+            answer=(
+                f"The turning clue was {case['clue']}. Before using it, {hero.id} {f['investigation']}."
+            ),
         ),
         QAItem(
-            question=f"What lesson was learned?",
-            answer=f"The lesson learned was that {gamble.lesson}.",
+            question="What actually caused the mystery?",
+            answer=f"The evidence showed that {case['cause']}. That explanation fit the clue better than the crowd's guesses.",
         ),
         QAItem(
-            question=f"What funny thing happened?",
-            answer="The marmoset stole a ribbon and wore it like a tiny crown, which made everyone laugh.",
+            question="How did the town create a more equitable solution?",
+            answer=(
+                f"{f['response']} Then the town {case['solution']}. "
+                f"The result was equitable because {case['proof']}."
+            ),
+        ),
+        QAItem(
+            question="What lesson did the hero learn?",
+            answer=(
+                f"{hero.id} learned that {f['reflection'][0].lower() + f['reflection'][1:]} "
+                "The town solved the puzzle by considering evidence and people's different needs."
+            ),
         ),
     ]
     return qa
@@ -787,7 +1007,7 @@ def resolve_params(args: argparse.Namespace, rng: random.Random) -> StoryParams:
     gender = getattr(args, "gender", None) or rng.choice(sorted(prize_obj.genders))
     if gender not in prize_obj.genders:
         return _fallback_storyparams(args, rng, StoryParams, globals())
-    name = getattr(args, "name", None) or rng.choice(NAMES)
+    name = getattr(args, "name", None) or rng.choice(NAMES[gender])
     parent = getattr(args, "parent", None) or rng.choice(["mother", "father"])
     trait = getattr(args, "trait", None) or rng.choice(TRAITS)
     return StoryParams(place=place, gamble=gamble, prize=prize, hero_name=name, hero_type=gender, trait=trait)
@@ -805,7 +1025,15 @@ def emit(sample: StorySample, *, trace: bool = False, qa: bool = False, header: 
 
 
 CURATED = [
-    StoryParams(place="sunlit_square", gamble="shell_toss", prize="crown_seed", hero_name="Ari", hero_type="boy", trait="curious"),
+    StoryParams(
+        place="sunlit_square",
+        gamble="shell_toss",
+        prize="crown_seed",
+        hero_name="Ari",
+        hero_type="boy",
+        trait="curious",
+        seed=197402754,
+    ),
 ]
 
 

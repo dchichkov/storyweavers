@@ -26,13 +26,13 @@ from __future__ import annotations
 import argparse
 import copy
 import json
-import os
 import random
 import sys
 from dataclasses import dataclass, field
+from pathlib import Path
 from typing import Optional
 
-sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 from results import QAItem, StoryError, StorySample  # noqa: E402
 
 THRESHOLD = 1.0
@@ -196,68 +196,126 @@ def propagate(world: World, narrate: bool = True) -> list[str]:
     return produced
 
 
-def build_scene() -> tuple[Setting, list[Clue], list[Suspect]]:
-    setting = Setting(place="the little museum", indoors=True, affords={"quest", "inspect"})
+CASES = [
+    {
+        "place": "the little museum", "missing": "brass moon token",
+        "alarm": "the moon display stood open beneath a fluttering skylight",
+        "clues": ("a crescent of blue wool", "a damp hoofprint", "a token-shaped dent in a feed scoop"),
+        "false": "the nervous keeper, who had polished the case", "cause": "a gust had flipped the token into the yak's feed scoop",
+        "action": "matched the wool to the yak's blanket and followed the hoofprints to the quiet yard",
+        "repair": "returned the token and latched the skylight", "image": "the brass moon gleamed above the yak's blue blanket",
+    },
+    {
+        "place": "the mountain library", "missing": "silver bookmark",
+        "alarm": "a shelf ladder creaked although nobody stood on it",
+        "clues": ("three nibbled paper corners", "a strand of yak hair", "a silver glint inside an atlas chute"),
+        "false": "the page helper, who had reshelved the atlas", "cause": "the yak had nudged the atlas chute while reaching for an apple picture",
+        "action": "connected the nibbled corners to the open atlas and checked the chute with a librarian",
+        "repair": "retrieved the bookmark with a reacher and moved the picture book lower", "image": "the bookmark shone between two closed atlases while the yak watched from the doorway",
+    },
+    {
+        "place": "the village observatory", "missing": "red lens cap",
+        "alarm": "the telescope pointed at the floor instead of the noon sky",
+        "clues": ("a round red mark in dust", "a chewed carrot top", "a soft bump from the map cabinet"),
+        "false": "the astronomy guide, whose keys jingled nearby", "cause": "the rolling cap had followed a sloped chart and stopped beneath the cabinet when the yak bumped it",
+        "action": "tested the chart's slope with a wooden disk and listened at the cabinet",
+        "repair": "asked an adult to lift the cabinet edge and clipped the cap to the telescope", "image": "a red cap hung safely beside a sharp white moon on the chart",
+    },
+    {
+        "place": "the winter fair tent", "missing": "judge's blue ribbon",
+        "alarm": "the prize tablecloth kept twitching in the still air",
+        "clues": ("a loose blue thread", "two oat flakes", "a bell-shaped scrape under the table"),
+        "false": "the pie judge, who had moved the prizes", "cause": "the yak's collar bell had caught the ribbon and pulled it beneath the cloth",
+        "action": "connected the scrape to the bell and tempted the yak backward with its keeper's oat bucket",
+        "repair": "freed the ribbon without tugging and pinned prizes above hoof height", "image": "the blue ribbon hung straight as the yak's bell gave one tiny chime",
+    },
+    {
+        "place": "the train-station garden", "missing": "painted route tile",
+        "alarm": "travelers were following an arrow that ended at a flower bed",
+        "clues": ("a square patch of clean wall", "yellow paint on a cart wheel", "fresh soil beside the yak's water tub"),
+        "false": "the sign painter, who had packed yellow paint", "cause": "a delivery cart had knocked down the loose tile and the yak had nosed it into soft soil",
+        "action": "connected the clean square to the yellow wheel mark and searched only from the path",
+        "repair": "had the station crew reset the tile and tighten all four clips", "image": "the bright arrow pointed home while hoof-shaped shadows crossed the flowers",
+    },
+    {
+        "place": "the puppet theater", "missing": "wooden crown prop",
+        "alarm": "a king puppet bowed whenever the backstage curtain moved",
+        "clues": ("gold paint on a curtain cord", "a tuft of brown wool", "a hollow knock inside the scenery hill"),
+        "false": "the puppeteer, who had changed the final scene", "cause": "the yak had tugged the curtain cord and swung the crown into the hollow scenery",
+        "action": "connected the paint, wool, and pendulum-like cord instead of accusing the puppeteer",
+        "repair": "opened the scenery panel with the stage manager and tied the cord higher", "image": "the crowned puppet bowed once to a yak peeking through the stage door",
+    },
+    {
+        "place": "the riverside map room", "missing": "green compass card",
+        "alarm": "the map drawers whispered open one after another",
+        "clues": ("a wet nose mark", "green paper caught on a buckle", "a trail of reeds across the tiles"),
+        "false": "the canoe coach, whose boots were wet", "cause": "the yak's blanket buckle had hooked the card after reeds jammed a drawer",
+        "action": "connected the reeds to the stuck drawer and calmly inspected the yak's blanket",
+        "repair": "unhooked the card with the caretaker and swept the reeds into a basket", "image": "the green compass card dried beside a neat basket of silver reeds",
+    },
+    {
+        "place": "the school music room", "missing": "triangle beater",
+        "alarm": "a faint ting sounded each time the outside gate swung",
+        "clues": ("a silver scratch on the gate latch", "one bent music stand", "a cord trailing toward the yak pen"),
+        "false": "the drummer, who had borrowed several beaters", "cause": "the beater had rolled into a cord loop that the yak pulled through the gate",
+        "action": "connected the repeating ting to the moving gate and stopped everyone from pulling the cord",
+        "repair": "loosened the loop with the teacher and stored small instruments in a lidded tray", "image": "the triangle rang clearly while the yak chewed hay beyond the closed gate",
+    },
+    {
+        "place": "the seed conservatory", "missing": "packet of snow peas",
+        "alarm": "tiny green circles appeared along the stone walkway",
+        "clues": ("a torn paper seam", "hoofprints that avoided every seed", "a packet corner under a watering can"),
+        "false": "the garden volunteer, who had sorted the packets", "cause": "a fan had torn the packet and the yak had carefully stepped around the rolling peas",
+        "action": "connected the paper corner to the fan's breeze and counted the peas without touching unknown seeds",
+        "repair": "helped an adult collect and relabel them, then closed the fan-side drawer", "image": "the rescued peas rested in a clear jar beside one careful hoofprint",
+    },
+    {
+        "place": "the clockmaker's classroom", "missing": "copper hour hand",
+        "alarm": "twelve practice clocks all showed a different noon",
+        "clues": ("a copper streak on a low bench", "a circle pressed into hay", "steady ticking from the yak's supply basket"),
+        "false": "the clockmaker's apprentice, who had reset the clocks", "cause": "the hour hand had stuck to a magnetic lesson wheel carried past the yak's basket",
+        "action": "connected the copper streak to the magnetic wheel and compared every clock before opening the basket",
+        "repair": "separated the parts and added a nonmagnetic storage cup", "image": "all twelve clocks pointed upward as the yak blinked at their gentle chorus",
+    },
+    {
+        "place": "the lakeside nature center", "missing": "wooden fish stamp",
+        "alarm": "fish shapes appeared on papers nobody had stamped",
+        "clues": ("violet ink on a doorstop", "a blank card stuck to wool", "a damp stamp-pad corner"),
+        "false": "the visiting illustrator, whose fingers were violet", "cause": "the yak had brushed a card onto the inked stamp resting upside down by the door",
+        "action": "connected the reversed fish prints to pressure from the door and compared the harmless ink marks",
+        "repair": "washed the doorstop, returned the stamp, and moved art supplies to a closed shelf", "image": "one tidy violet fish dried on a card above the yak's empty doorway",
+    },
+    {
+        "place": "the hilltop post office", "missing": "parcel number seven",
+        "alarm": "the sorting bell rang whenever the wind pressed the back flap",
+        "clues": ("a seven-shaped tear in wrapping", "twine looped around a fence knob", "lavender soap scent near the yak"),
+        "false": "the bicycle courier, who had signed for parcel seven", "cause": "wind had slid the light parcel outside, where its twine caught safely beside the yak pen",
+        "action": "connected the ringing flap, torn wrapping, and soap scent before checking the fence with the postmaster",
+        "repair": "repacked the soap and fitted a latch to the sorting flap", "image": "parcel seven sat squarely on the shelf while lavender drifted through the quiet room",
+    },
+]
+
+
+def build_scene(case: dict[str, object]) -> tuple[Setting, list[Clue], list[Suspect]]:
+    setting = Setting(place=str(case["place"]), indoors=True, affords={"quest", "inspect"})
+    clue_texts = case["clues"]
     clues = [
-        Clue(
-            id="mudprint",
-            label="muddy print",
-            phrase="a muddy print near the side door",
-            reveal="someone had come in from the yard",
-            hide_with="a rolled rug",
-            place="the side hall",
-            tags={"mud", "door"},
-        ),
-        Clue(
-            id="bell",
-            label="tiny bell",
-            phrase="a tiny bell snagged on a chair leg",
-            reveal="it matched the yak's collar",
-            hide_with="a curtain",
-            place="the reading room",
-            tags={"yak", "bell"},
-        ),
-        Clue(
-            id="ticket",
-            label="ticket stub",
-            phrase="a torn ticket stub from the evening show",
-            reveal="the missing token had been carried during the show",
-            hide_with="a book",
-            place="the front desk",
-            tags={"ticket", "show"},
-        ),
+        Clue(id=f"clue{i}", label=str(text), phrase=str(text), reveal=str(case["cause"]),
+             hide_with="the scene", place=setting.place, tags={"yak", "evidence"})
+        for i, text in enumerate(clue_texts, 1)
     ]
     suspects = [
-        Suspect(
-            id="keeper",
-            label="the museum keeper",
-            type="man",
-            traits=["tidy", "nervous"],
-            alibi="he was locking the glass cases",
-            shaky_about={"bell"},
-        ),
-        Suspect(
-            id="tutor",
-            label="the art tutor",
-            type="woman",
-            traits=["calm", "careful"],
-            alibi="she was counting paint brushes",
-            shaky_about={"ticket"},
-        ),
-        Suspect(
-            id="yak",
-            label="the woolly yak",
-            type="yak",
-            traits=["curious", "gentle"],
-            alibi="it was outside by the fence",
-            shaky_about={"mud"},
-        ),
+        Suspect(id="adult", label=str(case["false"]), type="adult", traits=["helpful"], alibi="had a relevant task"),
+        Suspect(id="yak", label="the woolly yak", type="yak", traits=["gentle", "curious"], alibi="was near the yard"),
+        Suspect(id="weather", label="the changing weather", type="cause", traits=["unnoticed"], alibi="left no spoken alibi"),
     ]
     return setting, clues, suspects
 
 
-def tell(hero_name: str = "Mina", hero_type: str = "girl", helper_name: str = "Aunt June") -> World:
-    setting, clues, suspects = build_scene()
+def tell(hero_name: str = "Mina", hero_type: str = "girl", helper_name: str = "Aunt June",
+         case_index: int = 0, route: int = 0) -> World:
+    case = CASES[case_index % len(CASES)]
+    setting, clues, suspects = build_scene(case)
     world = World(setting)
 
     detective = world.add(Entity(
@@ -303,35 +361,67 @@ def tell(hero_name: str = "Mina", hero_type: str = "girl", helper_name: str = "A
         clues=clues,
         clue_ents=clue_ents,
         suspects=suspects,
+        case_index=case_index % len(CASES),
+        missing=case["missing"],
+        alarm=case["alarm"],
+        false_suspect=case["false"],
+        cause=case["cause"],
+        investigation=case["action"],
+        repair=case["repair"],
+        ending_image=case["image"],
         mystery_unsolved=True,
         clue_handled=False,
         yak_seen=False,
     )
 
-    world.say(f"{hero_name} loved solving little puzzles, especially when she could connect the clues.")
-    world.say(f"That afternoon, {hero_name} and {helper_name} stepped into {setting.place}, where something strange had gone missing.")
-    world.say(f"On the floor, {hero_name} found a {clues[0].phrase}, and that made her heart beat faster.")
+    openings = [
+        f"The quest began with an empty hook: the {case['missing']} had vanished from {setting.place}.",
+        f"At {setting.place}, {hero_name} heard a worried whisper: the {case['missing']} was missing.",
+        f"Nobody called it a case until {hero_name} noticed that the {case['missing']} was gone.",
+        f"A visit to {setting.place} turned into a detective quest when the {case['missing']} disappeared.",
+        f"{helper_name} had promised a quiet afternoon, but {setting.place} was missing its {case['missing']}.",
+        f"The first mystery was what was absent: the {case['missing']} from {setting.place}.",
+        f"Just before closing time, an alarm went up over the missing {case['missing']}.",
+        f"{hero_name} entered {setting.place} as a visitor and became a detective when the {case['missing']} vanished.",
+        f"A blank space where the {case['missing']} belonged gave {hero_name} a new quest.",
+        f"The day looked ordinary until someone asked, 'Where is the {case['missing']}?'",
+    ]
+    world.say(openings[route % len(openings)])
+    world.say(f"The strangest warning was this: {case['alarm']}.")
+    world.say(f"Nearby, {hero_name} discovered {clues[0].phrase}. Suspense prickled, but one clue was not proof.")
     world.para()
 
     detective.memes["worry"] += 1.0
-    world.say(f"{hero_name} wanted to race ahead, but {helper_name} put a gentle hand on her shoulder.")
-    world.say(f'"A good case needs patience," {helper_name} said. "Look closely first."')
+    world.say(f"A quick guess pointed toward {case['false']}. {hero_name} nearly announced it.")
+    world.say(f'"Connect facts before names," {helper_name} said. "A clue can explain an accident without blaming anyone."')
     propagate(world)
 
     world.para()
-    world.say(f"{hero_name} walked from room to room, thinking like a tiny detective.")
-    world.say(f"In the reading room, she spotted {clues[1].phrase}.")
+    investigations = [
+        f"First came a question, then a careful test: {hero_name} {case['action']}.",
+        f"Instead of chasing the loudest theory, {hero_name} {case['action']}.",
+        f"The quest narrowed when {hero_name} {case['action']}.",
+        f"{hero_name} drew three boxes in a notebook and {case['action']}.",
+        f"Working backward from what had moved, {hero_name} {case['action']}.",
+    ]
+    world.say(investigations[route % len(investigations)])
+    world.say(f'Then {hero_name} found {clues[1].phrase}. "That connects to the first clue," the young detective said.')
+    world.say(f"The last piece was {clues[2].phrase}. Somewhere nearby, the woolly yak gave a soft snort.")
     world.facts["clue_handled"] = True
     world.facts["yak_seen"] = True
-    world.say(f"Then, through the open back door, she saw a woolly yak blinking in the yard as if it had wandered into the wrong story.")
     propagate(world)
 
     world.para()
-    world.say(f"{hero_name} connected the muddy print, the bell, and the torn ticket stub.")
-    world.say(f"The yak had slipped inside, brushed the chair, and snatched the show ticket off the desk while it chased the shiny bell on its collar.")
-    world.say(f"{helper_name} laughed softly when the case finally made sense.")
-    world.say(f'"So the answer was never a thief," she said. "It was a curious yak and a messy trail."')
-    world.say(f"{hero_name} smiled, because the clues fit together at last, and the whole room felt lighter.")
+    reveals = [
+        f"Together the clues proved that {case['cause']}. The suspected adult had not taken a thing.",
+        f"The answer arrived all at once: {case['cause']}. It was a chain of events, not a thief.",
+        f'"I can explain every mark," {hero_name} said. {case["cause"].capitalize()}.',
+        f"When the three clues were placed in order, they showed that {case['cause']}.",
+    ]
+    world.say(reveals[route % len(reveals)])
+    world.say(f"To finish the quest, they {case['repair']}.")
+    world.say(f'"Today I learned that suspense is not permission to accuse," {hero_name} said. "Patience lets evidence connect."')
+    world.say(f"At the end, {case['image']}.")
     world.facts["mystery_unsolved"] = False
     world.facts["connected"] = 1.0
     detective.memes["relief"] += 1.0
@@ -340,10 +430,11 @@ def tell(hero_name: str = "Mina", hero_type: str = "girl", helper_name: str = "A
 
 
 def generation_prompts(world: World) -> list[str]:
+    f = world.facts
     return [
-        'Write a child-friendly whodunit about a detective who must connect clues and notice a yak.',
-        'Tell a suspenseful mystery story in which a little detective solves the case by being patient.',
-        'Write a short story with the words "connect" and "yak" where the ending teaches a gentle lesson learned.',
+        f"Write a child-friendly whodunit at {world.setting.place} about the missing {f['missing']}, where a detective must connect clues involving a yak.",
+        f"Tell a suspenseful quest in which a young detective investigates why {f['alarm']} and learns not to accuse anyone too quickly.",
+        f"Write a mystery with the words connect and yak whose evidence reveals that {f['cause']}.",
     ]
 
 
@@ -354,28 +445,28 @@ def story_qa(world: World) -> list[QAItem]:
     qa = [
         QAItem(
             question=f"What was {detective.label} trying to do at {world.setting.place}?",
-            answer=f"{detective.label} was trying to connect the clues and solve the little mystery.",
+            answer=f"{detective.label} was trying to find the missing {f['missing']}. The quest required connecting evidence instead of making a quick accusation.",
         ),
         QAItem(
-            question=f"Who told {detective.label} to be patient?",
-            answer=f"{helper.label} told her to look closely first and not rush the case.",
+            question=f"Why did {helper.label} stop {detective.label} from naming a suspect?",
+            answer=f"The early clues seemed to point toward {f['false_suspect']}, but they did not prove guilt. {helper.label} wanted the detective to connect facts before names.",
         ),
         QAItem(
-            question="What animal made the mystery feel surprising?",
-            answer="A woolly yak made the mystery surprising, because it was the oddest thing in the museum.",
+            question=f"Which three clues solved the case of the missing {f['missing']}?",
+            answer=f"The clues were {f['clues'][0].phrase}, {f['clues'][1].phrase}, and {f['clues'][2].phrase}. Together they explained the yak's connection to the mystery.",
         ),
     ]
     if f.get("connected"):
         qa.append(
             QAItem(
                 question="How was the mystery solved?",
-                answer="It was solved when the detective connected the muddy print, the tiny bell, and the ticket stub, which showed the yak had wandered inside and caused the mess.",
+                answer=f"It was solved when the evidence showed that {f['cause']}. Then the group {f['repair']}.",
             )
         )
         qa.append(
             QAItem(
                 question="What lesson did the detective learn?",
-                answer="She learned that patience helps a mystery make sense, because looking carefully at each clue can reveal the truth.",
+                answer="The detective learned that suspense is not permission to accuse someone. Patient tests let separate clues connect into a fair explanation.",
             )
         )
     return qa
@@ -439,6 +530,8 @@ class StoryParams:
     name: str
     gender: str
     helper: str
+    case_index: int = 0
+    route: int = 0
     seed: Optional[int] = None
 
 
@@ -458,7 +551,6 @@ def asp_facts() -> str:
     lines: list[str] = []
     lines.append(asp.fact("clue_handled"))
     lines.append(asp.fact("yak_seen"))
-    lines.append(asp.fact("mystery_unsolved"))
     return "\n".join(lines)
 
 
@@ -491,7 +583,13 @@ def resolve_params(args: argparse.Namespace, rng: random.Random) -> StoryParams:
 
 
 def generate(params: StoryParams) -> StorySample:
-    world = tell(params.name, "girl" if params.gender == "girl" else "boy", params.helper)
+    world = tell(
+        params.name,
+        "girl" if params.gender == "girl" else "boy",
+        params.helper,
+        params.case_index,
+        params.route,
+    )
     return StorySample(
         params=params,
         story=world.render(),
@@ -518,8 +616,8 @@ def asp_verify() -> int:
     program = asp_program("#show connected/0.\n#show suspense/0.")
     model = asp.one_model(program)
     atoms = {sym.name for sym in model}
-    if {"connected", "suspense"} <= atoms:
-        print("OK: ASP twin matches the simple Python story gate.")
+    if "connected" in atoms and "suspense" not in atoms:
+        print("OK: ASP twin matches the solved Python story state.")
         return 0
     print("MISMATCH: ASP program did not derive the expected atoms.")
     return 1
@@ -543,8 +641,11 @@ def main() -> None:
     samples: list[StorySample] = []
     if args.all:
         for i in range(5):
-            p = resolve_params(args, random.Random(base_seed + i))
-            p.seed = base_seed + i
+            seed = base_seed + i
+            p = resolve_params(args, random.Random(seed))
+            p.seed = seed
+            p.case_index = seed % len(CASES)
+            p.route = (seed // len(CASES)) % 10
             samples.append(generate(p))
     else:
         seen: set[str] = set()
@@ -554,6 +655,8 @@ def main() -> None:
             i += 1
             p = resolve_params(args, random.Random(seed))
             p.seed = seed
+            p.case_index = seed % len(CASES)
+            p.route = (seed // len(CASES)) % 10
             s = generate(p)
             if s.story in seen:
                 continue
