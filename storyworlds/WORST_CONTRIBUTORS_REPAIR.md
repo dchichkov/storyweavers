@@ -114,5 +114,9 @@ Legend: `queued`, `active`, `repaired`, `verified`, `blocked`.
 | 12 | verified | `commit_riverbank_transformation_quest_slice_of_life.py` | 2 skeletons; 88/100 exact unique in fresh baseline | 2 skeletons | 100 unique; 100 skeletons | Twelve riverbank incidents and ten narrative routes. |
 | 12 | verified | `head_scrawny_sneer_sound_effects_lesson_learned.py` | 1 skeleton; 96/100 emitted in fresh baseline | 1 skeleton | 100 unique; 100 skeletons | Twelve incidents; body-shaming and sneering explicitly corrected. |
 | 12 | verified | `subjunctive_aquarium_sharing_slice_of_life.py` | 1 skeleton; 95/100 exact unique in fresh baseline | 1 skeleton | 100 unique; 100 skeletons | Twelve aquarium incidents; duplicate parameter class removed. |
+| 12 | verified | `engrave_ceiling_conflict_friendship_detective_story.py` | 1 skeleton; 90/100 exact unique in fresh baseline | 1 skeleton | 100 unique; 100 skeletons | Twelve child-safe ceiling mysteries; 389/500 unique story-QA pairs. |
+| 12 | verified | `ghetto_chowder_repetition_happy_ending_ghost_story.py` | 1 skeleton; 80/100 exact unique in fresh baseline | 1 skeleton | 100 unique; 100 skeletons | Twelve incidents; loaded term restricted to accurate historical context. |
+| 12 | verified | `progeny_cemetery_semi_sharing_magic_dialogue_comedy.py` | 1 skeleton; 86/100 exact unique in fresh baseline | 1 skeleton | 100 unique; 100 skeletons | Twelve respectful cemetery scenarios; vehicle actions made adult-controlled. |
+| 13 | verified | `whatchamacallem_mansion_three_sharing_bad_ending_nursery.py` | 1 skeleton; 81/100 exact unique in fresh baseline | 1 skeleton | 100 unique; 100 skeletons | Twelve non-cruel bad-ending incidents and eight telling modes. |
 
 Additional waves follow the frozen 120-script template-collapse ranking.

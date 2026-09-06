@@ -38,7 +38,7 @@ import sys
 from dataclasses import dataclass, field
 from typing import Optional
 
-sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 from results import QAItem, StoryError, StorySample  # noqa: E402
 
 SETTINGS = {
@@ -50,8 +50,194 @@ SETTINGS = {
 }
 
 NAMES = ["Maya", "Leo", "Nia", "Owen", "Iris", "Ben", "Mina", "Toby"]
+NAME_GENDERS = {
+    "Maya": "girl", "Leo": "boy", "Nia": "girl", "Owen": "boy",
+    "Iris": "girl", "Ben": "boy", "Mina": "girl", "Toby": "boy",
+}
 PARENT_NAMES = ["Mom", "Dad", "Aunt Jo", "Uncle Ray"]
 TRAITS = ["curious", "gentle", "silly", "cheerful", "careful", "bouncy"]
+
+INCIDENTS = [
+    {
+        "id": "windy_cards",
+        "arrival": "A gust skipped through the gate just as the semi delivered boxes of memorial cards.",
+        "problem": "The cards whirled across two paths, and the driver stopped well short of them.",
+        "mistake": "At first, the child tried to catch every card alone and caught only a leaf on their head.",
+        "clue": "The lantern made the tiny leaf emblems on each family's cards shimmer in matching colors.",
+        "plan": "The visitors shared empty flower trays, sorting one glowing family emblem into each tray while the adults kept the lane closed.",
+        "driver_line": "I can wait; paper is quicker than a truck only when the wind is helping it!",
+        "child_line": "Then our sharing magic needs more hands, not faster feet.",
+        "result": "When the last card was safe, the caretaker signaled the driver to use the clear delivery bay.",
+        "ending": "Behind them, four neat trays rested beside the office door, and one harmless leaf wore a name card like a hat.",
+        "lesson": "asking others to share a careful job can work better than racing alone",
+        "object": "memorial cards",
+    },
+    {
+        "id": "pebble_latch",
+        "arrival": "The semi arrived with young trees, but the cemetery's service gate would not open.",
+        "problem": "The driver waited outside while the caretaker tugged the latch without forcing it.",
+        "mistake": "The child announced that the enormous truck must have frightened the tiny gate shut.",
+        "clue": "Shared lantern light revealed a round pebble wedged beneath the latch plate.",
+        "plan": "The child held the light, the parent fetched the caretaker's brush, and the caretaker cleared the pebble and tested the gate.",
+        "driver_line": "Good. My semi is big, but it has never won an argument with a pebble.",
+        "child_line": "The pebble was small enough to be the boss for one minute.",
+        "result": "Only the caretaker opened the gate; then the driver rolled slowly to the marked unloading place.",
+        "ending": "At sunset, the new trees stood straight, and the famous pebble sat harmlessly in a little gravel bucket.",
+        "lesson": "a small clue can solve a large-looking problem when people share what they notice",
+        "object": "young trees",
+    },
+    {
+        "id": "rolling_buckets",
+        "arrival": "A delivery cart bumped a curb while a semi waited to bring soil to the cemetery garden.",
+        "problem": "Three empty flower buckets rolled into the lane, so the driver parked and set the brake.",
+        "mistake": "The child chased the loudest bucket, which curved away as if it had changed its mind.",
+        "clue": "The lantern cast bright rings around the buckets whenever they crossed the flat paving stones.",
+        "plan": "Everyone shared jobs: the child pointed from the path, the parent gathered buckets, and the caretaker checked the lane.",
+        "driver_line": "Those buckets have wheels in their imaginations.",
+        "child_line": "This one is pretending to be a very tiny semi.",
+        "result": "The caretaker stacked the buckets, inspected the route, and waved the semi toward the garden bay.",
+        "ending": "The smallest bucket ended upside down beside the flowers, looking quite proud of its parking job.",
+        "lesson": "sharing clear roles keeps a funny scramble from becoming an unsafe one",
+        "object": "flower buckets",
+    },
+    {
+        "id": "mixed_tree_tags",
+        "arrival": "The semi brought six memorial saplings whose rain-spotted labels had come loose.",
+        "problem": "No one wanted a tree planted beside the wrong family marker, so unloading paused.",
+        "mistake": "The child guessed that the tallest tree must belong to the family with the longest surname.",
+        "clue": "Under the shared lantern, pressed leaf shapes on the labels matched leaves tied safely to each root wrap.",
+        "plan": "The parent read the names, the child matched leaf shapes, and the caretaker checked every result against the cemetery map.",
+        "driver_line": "A tree cannot read its tag, so I am glad this team can.",
+        "child_line": "My first rule about tall trees and long names was extremely scientific-looking nonsense.",
+        "result": "The adults confirmed all six matches before the driver and caretaker unloaded the saplings.",
+        "ending": "Six correct tags fluttered beneath six young trees, each beside the family that had chosen it.",
+        "lesson": "good evidence should be shared and checked instead of replaced by a confident guess",
+        "object": "memorial saplings",
+    },
+    {
+        "id": "backward_arrows",
+        "arrival": "After rain, a semi carrying benches stopped at a fork inside the cemetery grounds.",
+        "problem": "An arrow reflected in a puddle seemed to point the opposite way, confusing everyone for a moment.",
+        "mistake": "The child leaned toward the puddle and declared that the road signs had turned upside down for lunch.",
+        "clue": "When parent and child shared the lantern above the dry sign, its real arrow and the watery reflection became easy to compare.",
+        "plan": "They stayed on the footpath and read the sign aloud while the caretaker radioed the approved route to the driver.",
+        "driver_line": "My semi follows roads, not puddle roads.",
+        "child_line": "Good, because the puddle route ends in one very damp cloud.",
+        "result": "The caretaker guided the semi to the bench bay, far from visitors and grave markers.",
+        "ending": "As they left, the puddle still pointed backward, but now it only fooled a curious robin.",
+        "lesson": "sharing observations helps people tell a real direction from a misleading reflection",
+        "object": "memorial benches",
+    },
+    {
+        "id": "quiet_chime",
+        "arrival": "A semi delivered a carved remembrance bell, wrapped so it would stay silent in the cemetery.",
+        "problem": "A faint ding came from the cargo whenever the wind moved, and the driver worried that a strap was loose.",
+        "mistake": "The child whispered that a very polite ghost might be ringing for room service.",
+        "clue": "The shared lantern showed one ribbon end tapping a metal corner; the bell itself was secure.",
+        "plan": "The child pointed from a safe distance while the driver and caretaker rewrapped the ribbon and checked every strap.",
+        "driver_line": "Mystery solved: one ribbon, no ghost, and no room service.",
+        "child_line": "Please tell the ribbon that breakfast ends at ten.",
+        "result": "After the adults finished their safety check, the semi continued quietly to the installation area.",
+        "ending": "The wrapped bell made no sound at all, though the ribbon gave one last embarrassed flutter.",
+        "lesson": "a shared clue can replace a spooky guess with a calm, testable answer",
+        "object": "remembrance bell",
+    },
+    {
+        "id": "bench_pieces",
+        "arrival": "The semi brought pieces for two new memorial benches to the cemetery workshop.",
+        "problem": "Two matching crates had swapped chalk marks, and unloading the wrong one would waste time.",
+        "mistake": "The child proposed choosing the crate that looked more bench-like, although both looked exactly like boxes.",
+        "clue": "Lantern light picked out shallow carved numbers beneath the dusty handles.",
+        "plan": "They shared a measuring tape and the order sheet: the child called numbers, the parent read dimensions, and the caretaker verified them.",
+        "driver_line": "I have inspected both boxes. Neither one is willing to admit it is a bench.",
+        "child_line": "They are shy benches. We must use mathematics.",
+        "result": "The caretaker marked the correct crate, and trained adults moved it into the workshop.",
+        "ending": "A week later, the finished bench held flowers, two visitors, and absolutely no shy cardboard box.",
+        "lesson": "sharing measurements and checking labels makes teamwork more reliable",
+        "object": "bench pieces",
+    },
+    {
+        "id": "lost_photo",
+        "arrival": "A family gathering began as a semi finished delivering stone safely near the cemetery office.",
+        "problem": "An old family photograph slipped from the progeny album before anyone could identify the people in it.",
+        "mistake": "The child searched inside the semi's enormous shadow, where every gray leaf looked like a photograph.",
+        "clue": "The driver's mirror flashed shared lantern light onto a pale rectangle tucked behind the visitor map.",
+        "plan": "The driver kept the semi parked, the parent held the lantern, and the child asked the caretaker to retrieve the photograph.",
+        "driver_line": "My mirror has finally taken a picture of a picture.",
+        "child_line": "That makes it the cemetery's fanciest detective.",
+        "result": "The photograph returned to its sleeve, and the older relatives shared the names of the family members pictured there.",
+        "ending": "By the gate, three generations bent over the album while the mirror reflected a neat square of evening sky.",
+        "lesson": "family history grows clearer when progeny share memories and protect old records",
+        "object": "family photograph",
+    },
+    {
+        "id": "ribbon_map",
+        "arrival": "The semi arrived with flat stones for a repaired path, but a map ribbon had torn free.",
+        "problem": "Without the ribbon, the driver could not tell which service bay was open and wisely stayed parked.",
+        "mistake": "The child offered to point toward whichever bay had the friendliest-looking wheelbarrow.",
+        "clue": "The lantern made three tiny dots on the loose ribbon gleam beside three matching dots on the official map.",
+        "plan": "Parent and child shared the ribbon ends while the caretaker aligned the dots and radioed the correct route.",
+        "driver_line": "I trust a checked map more than a charming wheelbarrow.",
+        "child_line": "The wheelbarrow will be disappointed, but it will recover.",
+        "result": "The caretaker directed the semi to the open bay, and the closed path remained protected.",
+        "ending": "The repaired ribbon lay flat on the map while the friendly wheelbarrow waited beside a stack of stone.",
+        "lesson": "shared tools are most useful when people check them together",
+        "object": "path stones",
+    },
+    {
+        "id": "seed_packets",
+        "arrival": "A semi brought garden soil while families placed seed packets beside the cemetery's remembrance beds.",
+        "problem": "A breeze mixed packets meant for sunny beds with packets meant for shade.",
+        "mistake": "The child suggested planting every seed halfway between sun and shade so nobody would complain.",
+        "clue": "The shared lantern revealed little sun and moon stamps printed in pale ink on the packet corners.",
+        "plan": "The progeny of several families formed a quiet line, sharing baskets while the gardener checked each stamp.",
+        "driver_line": "Even my semi cannot deliver half a sunshine.",
+        "child_line": "Then we should stop asking it to do advanced weather.",
+        "result": "The packets reached the correct beds before the gardener signaled the semi into the soil bay.",
+        "ending": "Sun packets and moon packets sat in separate baskets, each wearing a bright paper label.",
+        "lesson": "many descendants can share a respectful task without losing track of careful details",
+        "object": "seed packets",
+    },
+    {
+        "id": "fallen_cones",
+        "arrival": "A grounds crew's semi waited beyond the gate while families visited the cemetery after a storm.",
+        "problem": "Orange safety cones had fallen over, so the service lane boundary was unclear.",
+        "mistake": "The child tried to make one cone stand by whispering a magic command from the footpath.",
+        "clue": "The lantern's shared beam showed muddy footprints leading from the cones to the caretaker's storage cart.",
+        "plan": "The family reported the clue and waited; the caretaker reset the cones and inspected the entire boundary.",
+        "driver_line": "That cone understood your magic perfectly and chose to keep napping.",
+        "child_line": "It is a semi-professional napper near a professional semi.",
+        "result": "Once the caretaker declared the lane safe, the driver moved at walking speed to the work area.",
+        "ending": "Every cone stood bright and straight, except its long shadow, which continued lying down.",
+        "lesson": "sharing a safety concern with the responsible adult is a brave and useful action",
+        "object": "safety cones",
+    },
+    {
+        "id": "memory_tiles",
+        "arrival": "The semi delivered boxes of small memory tiles made by the progeny of local families.",
+        "problem": "One box label had smeared, and the caretaker would not place any tile without confirming its garden.",
+        "mistake": "The child sorted by favorite color until two blue tiles politely disagreed by having different flower symbols.",
+        "clue": "When the lantern was shared over the box, hidden wax rubbings showed a rose, an oak leaf, or a star on every tile.",
+        "plan": "The child grouped symbols, the parent read the garden list, and the caretaker checked names before adults moved the boxes.",
+        "driver_line": "Those blue tiles have presented a strong argument.",
+        "child_line": "I withdraw my case and appoint the flowers as judges.",
+        "result": "Each box reached its proper garden, and no memorial name was separated from its family's design.",
+        "ending": "Rose, oak, and star tiles formed three tidy rows beneath the lantern's warm circle.",
+        "lesson": "respectful work means sharing evidence and correcting a mistake without embarrassment",
+        "object": "memory tiles",
+    },
+]
+
+ROUTES = [
+    ("On a quiet visit", "That was when", "Soon"),
+    ("Just inside the gate", "After the first idea failed,", "With everyone helping"),
+    ("One gentle afternoon", "Then", "A few careful minutes later"),
+    ("During a family visit", "Instead of guessing again,", "Once the plan was checked"),
+    ("Near the cemetery office", "At last,", "By working in turns"),
+    ("Beneath the old trees", "With the semi still safely parked,", "After a final safety check"),
+    ("While visitors walked quietly", "A small detail finally mattered:", "Because each person had a job"),
+    ("At the edge of the remembrance garden", "The better plan began with this clue:", "Before long"),
+]
 
 
 @dataclass
@@ -115,6 +301,11 @@ class StoryParams:
     parent: str
     trait: str
     seed: Optional[int] = None
+    incident: int = 0
+    route: int = 0
+    humor: int = 0
+    cadence: int = 0
+    beat: int = 0
 
 
 def build_parser() -> argparse.ArgumentParser:
@@ -141,10 +332,21 @@ def build_parser() -> argparse.ArgumentParser:
 def resolve_params(args: argparse.Namespace, rng: random.Random) -> StoryParams:
     place = args.place or "cemetery_gate"
     name = args.name or rng.choice(NAMES)
-    gender = args.gender or rng.choice(["girl", "boy"])
+    gender = args.gender or NAME_GENDERS[name]
     parent = args.parent or rng.choice(PARENT_NAMES)
     trait = args.trait or rng.choice(TRAITS)
-    return StoryParams(place=place, name=name, gender=gender, parent=parent, trait=trait)
+    return StoryParams(
+        place=place,
+        name=name,
+        gender=gender,
+        parent=parent,
+        trait=trait,
+        incident=rng.randrange(len(INCIDENTS)),
+        route=rng.randrange(len(ROUTES)),
+        humor=rng.randrange(8),
+        cadence=rng.randrange(32),
+        beat=rng.randrange(4096),
+    )
 
 
 def reasonableness_gate(params: StoryParams) -> None:
@@ -196,7 +398,7 @@ def _build_world(params: StoryParams) -> World:
         type="semi",
         label="semi",
         phrase="a big red semi",
-        meters={"blocked": 1.0},
+        meters={"parked": 1.0, "safe_to_move": 0.0},
     ))
     lantern = world.add(Entity(
         id="Lantern",
@@ -226,43 +428,133 @@ def _build_world(params: StoryParams) -> World:
         phrase="a family grave",
     ))
 
+    incident = INCIDENTS[params.incident % len(INCIDENTS)]
+    opening, turn, resolution = ROUTES[params.route % len(ROUTES)]
+    magic_descriptions = [
+        "a brass lantern whose painted symbols glow when two people hold its handle",
+        "a little lantern that reveals pale markings only when its light is shared",
+        "a family lantern nicknamed Sharing Magic because it works best in two pairs of hands",
+        "a warm lantern that never moves objects but often helps people notice the same clue",
+        "a pocket lantern whose soft light becomes steadier when someone helps hold it",
+        "an old brass lantern used by the family for shared searching",
+        "a tiny light whose only spell is helping careful people look together",
+        "a lantern with painted stars that brighten when its holder accepts help",
+    ]
+    chuckles = [
+        "The driver's eyebrows rose so high that they seemed ready to inspect the truck roof.",
+        "The child tried a solemn detective face, but one cheek kept turning into a grin.",
+        "Parent hid a laugh behind the flower paper, which crinkled suspiciously.",
+        "Even the caretaker smiled, though the stone angels remained excellent at keeping straight faces.",
+        "A crow gave one doubtful caw, as if reviewing the plan from a nearby branch.",
+        "The driver nodded gravely, then ruined the effect with a tiny snort of laughter.",
+        "The child bowed to the clue, nearly losing a hat that was not actually being worn.",
+        "Parent's quiet chuckle sounded like a zipper trying not to wake anyone.",
+    ]
+    family_notes = [
+        "That made the visit part remembrance and part family-history lesson.",
+        "The child liked knowing that one formal word could hold so many generations.",
+        "They paused to read a few names and think about the families connected to them.",
+        "The explanation made the old album in the parent's bag feel newly important.",
+    ]
+    cooperation_notes = [
+        "Each person repeated their job before anyone began.",
+        "They checked the plan once aloud and once with the caretaker.",
+        "Nobody rushed; sharing also meant leaving room for another person to check.",
+        "The child discovered that a useful helper can point, listen, and wait.",
+    ]
+    magic_notes = [
+        "The warm circle joined their hands without pretending to replace good judgment.",
+        "Its glow made the clue visible, while their shared thinking made the clue useful.",
+        "The little light seemed brightest whenever someone said what they had noticed.",
+        "Its painted stars shone over a plan that every helper understood.",
+    ]
+    farewell_notes = [
+        "They thanked the caretaker and gave the driver a quiet wave.",
+        "Before leaving, they checked that the visitor path was calm again.",
+        "The family took one last peaceful look along the row of memorials.",
+        "Their final whisper was a thank-you to everyone who had helped.",
+    ]
+    observations = [
+        "paused at the path edge and looked from the problem to the caretaker",
+        "counted the safe landmarks without stepping toward the service lane",
+        "noticed which objects were still and which ones had changed",
+        "listened for a full moment before offering another theory",
+        "compared the driver's view with the view from the visitor path",
+        "pointed out the smallest detail instead of making the biggest guess",
+        "asked which part of the scene the caretaker wanted everyone to leave untouched",
+        "described the puzzle aloud so each helper could add one observation",
+    ]
+    responses = [
+        "said that careful noticing was already a useful share",
+        "agreed that a safe plan should begin before anyone picked something up",
+        "reminded everyone that waiting can be an active part of helping",
+        "asked the caretaker to confirm which task a child could safely do",
+        "suggested separating facts from funny guesses",
+        "praised the question and asked for one piece of evidence",
+        "made room for the driver to explain what could be seen from the cab",
+        "turned the observations into a short checklist",
+    ]
+    cadence = params.cadence % 32
+    family_note = family_notes[cadence & 3]
+    cooperation_note = cooperation_notes[(cadence >> 2) & 3]
+    magic_note = magic_notes[(cadence >> 3) & 3]
+    farewell_note = farewell_notes[(cadence >> 1) & 3]
+    observation = observations[params.beat & 7]
+    response = responses[(params.beat >> 3) & 7]
+    chuckle = chuckles[params.humor % len(chuckles)].replace("Parent", params.parent)
+    clue = incident["clue"][0].lower() + incident["clue"][1:]
+    plan = incident["plan"].replace("The child", params.name).replace("the child", params.name)
+    plan = plan.replace("Parent and child", f"{params.parent} and {params.name}")
+    plan = plan.replace("the parent", params.parent)
+
     world.say(
-        f"{params.name} was a {params.trait} {params.gender} who came with {params.parent} to {world.place}."
+        f"{opening}, {params.name}, a {params.trait} {params.gender}, came with {params.parent} to {world.place} to leave yellow flowers."
     )
+    world.say(
+        f"{params.parent} explained that progeny means someone's children and later descendants; many families' progeny cared for the memorials there."
+    )
+    world.say(family_note)
     world.say(place_cfg["detail"])
-    world.say(
-        f"Near the gate, a shiny semi was parked a little too close to the lane, "
-        f"and the driver kept scratching his head."
-    )
+    world.say(incident["arrival"])
     world.para()
     world.say(
-        f"{params.name} saw the lantern and whispered, \"Can I use the magic?\""
+        f"The family carried {magic_descriptions[params.humor % len(magic_descriptions)]}."
+    )
+    world.say(incident["problem"])
+    world.say(incident["mistake"])
+    world.say(f"Before acting again, {params.name} {observation}. {params.parent} {response}.")
+    world.say(
+        f'{params.parent} said, "We will stay on the visitor path. The driver and caretaker are the only people who decide when the semi moves."'
     )
     world.say(
-        f"{params.parent} said, \"Only if you share it kindly.\""
+        f'The driver called, "{incident["driver_line"]}"'
     )
     world.say(
-        f"The child puffed up. \"But if I share it, it will not be my magic anymore!\""
+        f'{params.name} replied, "{incident["child_line"]}"'
     )
-    world.say(
-        f"The driver leaned over and asked, \"Could your magic make my semi shrink?\""
-    )
-    world.say(
-        f"{params.name} giggled. \"No, but it can make sharing easier.\""
-    )
+    world.say(chuckle)
     world.para()
+    world.say(f"{turn} {clue}")
+    world.say(plan)
+    world.say(cooperation_note)
+    world.say(magic_note)
+    world.say(f"Their dialogue stayed quiet and respectful, but the jokes made the careful work feel light.")
+    world.para()
+    world.say(f"{resolution}, {incident['result'][0].lower() + incident['result'][1:]}")
     world.say(
-        f"So {params.name} held the lantern with both hands, and {params.parent} held it too."
+        f"They placed the yellow flowers at the family grave. {params.name} learned that {incident['lesson']}."
     )
     world.say(
-        f"The lantern glowed like a bedtime star, and the lane felt roomy enough for the semi to back up."
+        "That was the lantern's sharing magic: it did not push a semi or disturb a grave; it helped people share light, evidence, and responsibility."
     )
-    world.say(
-        f"Together they carried the flowers to the grave, and the driver waved with a relieved smile."
-    )
-    world.say(
-        f"By the time they left, {params.name} was still carrying the lantern, but now it felt even more magical because it had been shared."
-    )
+    world.say(farewell_note)
+    world.say(incident["ending"])
+
+    semi.meters["safe_to_move"] = 1.0
+    semi.meters["parked"] = 0.0
+    lantern.owner = child.id
+    lantern.caretaker = parent.id
+    child.memes["sharing"] = 1.0
 
     world.facts.update(
         child=child,
@@ -274,37 +566,46 @@ def _build_world(params: StoryParams) -> World:
         grave=grave,
         place=place_cfg,
         params=params,
+        incident=incident,
+        plan=plan,
     )
     return world
 
 
 def generation_prompts(world: World) -> list[str]:
     p = world.facts["params"]
+    incident = world.facts["incident"]
     return [
-        f'Write a funny short story for a young child about {p.name}, a cemetery visit, and a semi truck.',
-        f"Tell a gentle comedy where {p.name} learns that sharing a little magic can help a big semi move safely.",
-        f'Write a story that includes dialogue, a cemetery gate, and the word "sharing".',
+        f'Write a funny, respectful story for a young child about {p.name}, a cemetery visit, and a parked semi carrying {incident["object"]}.',
+        f"Tell a gentle comedy in which sharing a magic lantern helps people notice evidence and solve a practical problem safely.",
+        f'Write a story with dialogue, family progeny, a cemetery, a semi truck, and the lesson that {incident["lesson"]}.',
     ]
 
 
 def story_qa(world: World) -> list[QAItem]:
     p = world.facts["params"]
+    incident = world.facts["incident"]
+    plan = world.facts["plan"]
     return [
         QAItem(
             question=f"Who is the story about?",
-            answer=f"The story is about {p.name}, a {p.trait} {p.gender} who visits the cemetery with {p.parent}.",
+            answer=f"The story is about {p.name}, a {p.trait} {p.gender} who visits the cemetery with {p.parent} to leave flowers.",
         ),
         QAItem(
-            question=f"What was blocking the narrow lane near the gate?",
-            answer="A shiny semi was parked too close to the lane, so it made the way feel cramped and funny.",
+            question="What practical problem interrupted the cemetery visit?",
+            answer=f"{incident['problem']} The adults kept the semi parked until the situation was checked.",
         ),
         QAItem(
-            question=f"What did {p.name} learn about the lantern?",
-            answer="The lantern felt more magical when it was shared kindly, because sharing helped everyone work together.",
+            question="What clue did the shared lantern help everyone notice?",
+            answer=incident["clue"],
         ),
         QAItem(
-            question=f"How did the problem get solved?",
-            answer="They shared the lantern, the lane felt roomier, and the semi driver could back up safely.",
+            question="How did everyone solve the problem safely?",
+            answer=f"{plan} {incident['result']}",
+        ),
+        QAItem(
+            question=f"What did {p.name} learn?",
+            answer=f"{p.name} learned that {incident['lesson']}.",
         ),
     ]
 
@@ -322,6 +623,10 @@ def world_knowledge_qa(world: World) -> list[QAItem]:
         QAItem(
             question="What does sharing mean?",
             answer="Sharing means letting other people use or enjoy something with you.",
+        ),
+        QAItem(
+            question="What does progeny mean?",
+            answer="Progeny means a person's children or descendants. It is a formal word often used when talking about family generations.",
         ),
         QAItem(
             question="What is a lantern for?",
@@ -383,9 +688,9 @@ def dump_trace(world: World) -> str:
 
 
 CURATED = [
-    StoryParams(place="cemetery_gate", name="Maya", gender="girl", parent="Mom", trait="curious"),
-    StoryParams(place="cemetery_gate", name="Leo", gender="boy", parent="Dad", trait="silly"),
-    StoryParams(place="cemetery_gate", name="Nia", gender="girl", parent="Aunt Jo", trait="gentle"),
+    StoryParams(place="cemetery_gate", name="Maya", gender="girl", parent="Mom", trait="curious", incident=0, route=0, humor=0, cadence=2, beat=11),
+    StoryParams(place="cemetery_gate", name="Leo", gender="boy", parent="Dad", trait="silly", incident=5, route=3, humor=5, cadence=17, beat=93),
+    StoryParams(place="cemetery_gate", name="Nia", gender="girl", parent="Aunt Jo", trait="gentle", incident=11, route=6, humor=3, cadence=29, beat=201),
 ]
 
 

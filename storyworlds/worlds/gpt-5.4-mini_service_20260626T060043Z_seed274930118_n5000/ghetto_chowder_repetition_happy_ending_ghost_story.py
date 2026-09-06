@@ -4,7 +4,7 @@ storyworlds/worlds/ghetto_chowder_repetition_happy_ending_ghost_story.py
 ========================================================================
 
 A small story world about a child, a friendly ghost, a pot of chowder,
-repeated warnings, and a happy ending in an old neighborhood block.
+repeated clues, and a happy ending in a neighborhood community kitchen.
 
 Seed tale inspiration:
 ---
@@ -20,13 +20,14 @@ from __future__ import annotations
 
 import argparse
 import json
-import os
 import random
 import sys
 from dataclasses import dataclass, field
+from pathlib import Path
 from typing import Optional
 
-sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+ROOT = Path(__file__).resolve().parents[3]
+sys.path.insert(0, str(ROOT / "storyworlds"))
 from results import QAItem, StoryError, StorySample  # noqa: E402
 
 
@@ -105,6 +106,21 @@ class StoryParams:
     seed: Optional[int] = None
 
 
+@dataclass(frozen=True)
+class Incident:
+    id: str
+    occasion: str
+    repeated_clue: str
+    obstacle: str
+    first_guess: str
+    evidence: str
+    action: str
+    truth: str
+    repair: str
+    lesson: str
+    ending: str
+
+
 NAMES = {
     "girl": ["Maya", "Nina", "Lena", "Ava", "Zuri", "Ivy"],
     "boy": ["Owen", "Theo", "Malik", "Eli", "Noah", "Jace"],
@@ -113,88 +129,266 @@ PARENTS = ["mother", "father", "grandmother", "grandfather"]
 GHOST_NAMES = ["Moss", "Bells", "Milo", "Penny", "Soot", "Rue"]
 
 
-def _repeat(world: World, speaker: Entity, word: str, times: int = 3) -> None:
+INCIDENTS = [
+    Incident(
+        id="blue_door",
+        occasion="the neighbors were preparing a welcome supper for a new family",
+        repeated_clue="blue door, chowder",
+        obstacle="the chowder pot had vanished before anyone could fill the bowls",
+        first_guess="that a gust had rolled the pot behind the pantry shelves",
+        evidence="a trail of dried bay leaves ended at the blue cupboard in the history room",
+        action="matched the leaves to the recipe card and asked an adult to unlock the cupboard",
+        truth="the cook had stored the pot there during a fire drill and forgotten to leave a note",
+        repair="carried the covered pot back on a sturdy cart and set out bowls for every guest",
+        lesson="good clues deserve a careful check before anyone is blamed",
+        ending="blue bowls circled the table while steam drew silver curls above them",
+    ),
+    Incident(
+        id="bell_rope",
+        occasion="a winter wind rattled the windows during the block's lantern walk",
+        repeated_clue="bell, then chowder",
+        obstacle="the supper bell rang, but the kitchen serving hatch would not open",
+        first_guess="that the old ghost had tied the hatch shut as a joke",
+        evidence="each tug of the bell rope made a loose wooden peg tap beneath the counter",
+        action="listened between the clangs, found the fallen latch peg, and fetched the caretaker",
+        truth="the peg had slipped into the track and jammed the hatch",
+        repair="held a lamp while the caretaker reset the peg and tested the hatch twice",
+        lesson="repeated sounds can be useful evidence when people stop and listen",
+        ending="lantern stars shone through the open hatch onto a neat row of chowder cups",
+    ),
+    Incident(
+        id="cold_pot",
+        occasion="the community kitchen was opening after a snowy afternoon",
+        repeated_clue="cold chowder, wait",
+        obstacle="the pot was on the stove, yet its safety thermometer showed that it was still cold",
+        first_guess="that the thermometer was broken because the lid felt warm",
+        evidence="a second clean thermometer gave the same reading and the burner light was dark",
+        action="kept everyone from tasting the soup and asked the cook to inspect the stove",
+        truth="a tripped safety switch had turned the burner off",
+        repair="waited while the cook reset the switch and reheated the chowder to a safe temperature",
+        lesson="patient checking matters more than rushing toward a treat",
+        ending="snow tapped the glass as safely warmed bowls brightened the long table",
+    ),
+    Incident(
+        id="recipe_pages",
+        occasion="families were gathering to copy recipes for the neighborhood archive",
+        repeated_clue="page three, chowder",
+        obstacle="the chowder recipe ended halfway through and nobody knew the final steps",
+        first_guess="that the ghost wanted them to invent whatever ingredients they liked",
+        evidence="three pale flour marks crossed the floor toward a display case of old notebooks",
+        action="followed the marks, compared page numbers, and asked the archivist to open the case",
+        truth="page three had been filed with a photograph after the pages stuck together",
+        repair="returned the page, copied the complete recipe, and marked every common allergen clearly",
+        lesson="records become useful when they are complete and shared responsibly",
+        ending="the restored recipe dried beside a bowl painted with tiny white boats",
+    ),
+    Incident(
+        id="steam_window",
+        occasion="the block was rehearsing songs for its spring supper",
+        repeated_clue="wipe, read, chowder",
+        obstacle="the ghost's message appeared backward in steam on the kitchen window",
+        first_guess="that the swirls were only random marks from the damp air",
+        evidence="wiping one corner revealed an arrow that returned after the next puff of steam",
+        action="held paper to the glass, copied the marks in reverse, and read the hidden direction",
+        truth="the message pointed to a covered vegetarian chowder cooling on the safe pantry shelf",
+        repair="asked the cook to label both chowders and place them at separate serving stations",
+        lesson="a puzzling message can become clear when it is viewed another way",
+        ending="two labeled ladles gleamed beneath a window cleared to the evening sky",
+    ),
+    Incident(
+        id="roof_leak",
+        occasion="rain began during a rooftop-garden harvest supper",
+        repeated_clue="drip, move the chowder",
+        obstacle="water started dripping from the ceiling near the serving table",
+        first_guess="that the ghost was making rain indoors to get attention",
+        evidence="every drip landed beneath a dark seam that led toward a loose roof drain cover",
+        action="moved people and food away from the wet area and called the building manager",
+        truth="leaves had blocked the roof drain and backed water over the flashing",
+        repair="helped set up supper in the dry hall while trained adults cleared the drain",
+        lesson="the safest first step is often to protect people before solving the mystery",
+        ending="rainwater ticked into a bucket while neighbors ate together under paper sunflowers",
+    ),
+    Incident(
+        id="missing_ladle",
+        occasion="the youngest children were setting places for a story-night supper",
+        repeated_clue="count the ladles, chowder",
+        obstacle="one serving station had no ladle and its line could not move",
+        first_guess="that someone had selfishly taken the shiny utensil home",
+        evidence="round drops crossed the clean floor toward a box of puppet-stage props",
+        action="counted every utensil, followed the drops, and checked the prop box with the teacher",
+        truth="a helper had mistaken the ladle for the moon in a puppet show",
+        repair="washed and sanitized the ladle, then made a cardboard moon for the show",
+        lesson="asking what happened is kinder and wiser than making an accusation",
+        ending="a paper moon rose over the puppets as the real ladle rested beside the chowder",
+    ),
+    Incident(
+        id="faded_labels",
+        occasion="the kitchen volunteers were arranging a choose-your-own-toppings supper",
+        repeated_clue="labels first, chowder second",
+        obstacle="steam had blurred the labels on three covered topping bowls",
+        first_guess="that everyone could identify the toppings by smell alone",
+        evidence="one volunteer's written checklist still listed each bowl by its colored handle",
+        action="closed the serving line, compared handle colors, and confirmed the list with the cook",
+        truth="the lids had been switched while the bowls were being washed",
+        repair="restored the lids and made large fresh labels before service resumed",
+        lesson="clear labels help people make safe and comfortable choices",
+        ending="green, red, and gold cards stood crisp beside the gently bubbling pot",
+    ),
+    Incident(
+        id="power_outage",
+        occasion="a thunderstorm darkened the block just before supper",
+        repeated_clue="do not open, save the chowder",
+        obstacle="the power failed while chilled chowder waited in the refrigerator",
+        first_guess="that opening the door often would prove whether the food was still cold",
+        evidence="the ghost pointed to the refrigerator thermometer and covered the handle with both hands",
+        action="left the door shut, read the emergency card, and asked an adult to note the outage time",
+        truth="the closed refrigerator could keep the food cold while the crew checked the safety plan",
+        repair="served shelf-stable snacks first and used the chowder only after the cook confirmed it was safe",
+        lesson="a calm plan can protect a celebration when the lights go out",
+        ending="battery lanterns made warm circles while thunder faded beyond the courtyard",
+    ),
+    Incident(
+        id="wrong_address",
+        occasion="neighbors were packing supper for an elder who could not come downstairs",
+        repeated_clue="fourteen, not forty, chowder",
+        obstacle="the delivery card seemed to send the chowder to an empty apartment",
+        first_guess="that the elder had moved without telling anyone",
+        evidence="the ghost traced a small one beside the large four on an old handwritten card",
+        action="checked the current resident list with the coordinator and called upstairs before leaving",
+        truth="a faded numeral made apartment fourteen look like apartment forty",
+        repair="wrote a clear new card and delivered the sealed bowl to the correct door with an adult",
+        lesson="confirming a detail can prevent a small mark from becoming a large mistake",
+        ending="a porch light blinked thanks as the empty cart rolled softly home",
+    ),
+    Incident(
+        id="memory_table",
+        occasion="the block was holding a supper to remember neighbors from long ago",
+        repeated_clue="one bowl for Alma, chowder",
+        obstacle="nobody knew why the ghost kept asking for a bowl bearing an unfamiliar name",
+        first_guess="that Alma must be another ghost waiting in the cellar",
+        evidence="a faded group photograph showed Alma serving soup from the same copper pot",
+        action="read the photograph's caption aloud and invited the oldest neighbor to tell Alma's story",
+        truth="Alma had started the shared supper tradition many years earlier",
+        repair="placed an empty commemorative bowl beside the photograph and served the living guests",
+        lesson="remembering a generous person can help a community continue their kindness",
+        ending="the copper pot reflected Alma's photograph and every smiling face around it",
+    ),
+    Incident(
+        id="garden_herbs",
+        occasion="children had harvested herbs for the last courtyard supper of summer",
+        repeated_clue="not that leaf, chowder",
+        obstacle="two baskets of green leaves had been placed beside the cooking table",
+        first_guess="that every fragrant courtyard leaf must be safe to stir into soup",
+        evidence="the garden map marked one basket as edible herbs and the other as leaves for a craft",
+        action="kept both baskets away from the pot and asked the garden leader to identify them",
+        truth="the craft leaves were not food and had been carried to the wrong table",
+        repair="returned the craft leaves, washed the approved herbs, and let the cook add them",
+        lesson="unknown plants should never be tasted without a knowledgeable adult's approval",
+        ending="safe green herbs flecked the chowder while leaf prints fluttered on a nearby clothesline",
+    ),
+]
+
+OPENINGS = [
+    "A friendly ghost mystery began when",
+    "The old building had been quiet all afternoon, but that changed when",
+    "No one expected a pale visitor on the evening when",
+    "A soft spoon-shaped glow appeared just as",
+    "The neighborhood's gentlest mystery arrived while",
+    "A floorboard creaked three times on the night when",
+    "The courtyard clock had barely chimed when",
+    "Warm kitchen smells filled the hall as",
+]
+
+THINKING_LINES = [
+    '"A repeated clue is trying to point somewhere," {child} said.',
+    '"Let us test one idea at a time," {child} suggested.',
+    '"We know what we saw, but not what caused it," {child} reminded everyone.',
+    '"Before we guess about anyone, we should gather evidence," {child} said.',
+    '"Maybe the words matter in the order {ghost} says them," {child} wondered.',
+    '"The ghost sounds urgent, not unkind," {child} told {parent}.',
+    '"What changes each time the clue repeats?" {child} asked.',
+    '"There must be a safe way to check," {child} said.',
+]
+
+HISTORY_LINES = [
+    "In the history room, a plaque quoted an old city record that used the word 'ghetto.' It explained that this is a historically loaded word tied to forced separation and hardship, not a casual name for people or a neighborhood today.",
+    "An archive label included the old word 'ghetto' because it appeared in a historical record. The label carefully explained its painful connection to segregation and warned visitors not to use it loosely about people or places.",
+    "A local-history display preserved the word 'ghetto' inside a quotation from the past. Beside it, a note explained that the term carries a history of confinement and discrimination and should be handled with care.",
+    "The community archive showed the old word 'ghetto' only in its historical context. A curator's note described its association with enforced separation and made clear that it was not a nickname for anyone there.",
+]
+
+
+def _repeat(world: World, speaker: Entity, words: str, times: int = 3) -> None:
     speaker.memes["repetition"] = speaker.memes.get("repetition", 0.0) + times
-    world.say(f'{speaker.id} kept saying "{word}, {word}."')
-
-
-def _find_pot(world: World, child: Entity, ghost: Entity, pot: Entity) -> None:
-    child.memes["curiosity"] = child.memes.get("curiosity", 0.0) + 1
-    world.say(
-        f"{child.id} followed the soft repeating voice down the hall and behind the "
-        f"stairs. There, under an old crate, was a heavy pot of chowder."
-    )
-    pot.container = "hidden spot"
-
-
-def _share_chowder(world: World, child: Entity, parent: Entity, ghost: Entity, pot: Entity) -> None:
-    ghost.memes["sad"] = 0.0
-    ghost.memes["joy"] = ghost.memes.get("joy", 0.0) + 1
-    child.memes["joy"] = child.memes.get("joy", 0.0) + 1
-    world.say(
-        f"{child.id} carried the pot back to the courtyard. {parent.id} lifted the lid, "
-        f"and the warm chowder smelled like supper and home."
-    )
-    world.say(
-        f"They poured bowls for the neighbors too. The ghost tasted a spoonful, smiled "
-        f"wide, and said, 'Chowder!' one last time, but this time it sounded happy."
-    )
-    world.say(
-        f"After that, {ghost.id} floated by the window like a soft lamp, and the whole "
-        f"block felt peaceful."
-    )
+    world.say(f'{speaker.id} repeated, "{words}. {words}."')
 
 
 def tell_story(params: StoryParams) -> World:
-    world = World(Setting())
+    rng = random.Random(params.seed)
+    incident = INCIDENTS[rng.randrange(len(INCIDENTS))]
+    opening = OPENINGS[rng.randrange(len(OPENINGS))]
+    thinking = THINKING_LINES[rng.randrange(len(THINKING_LINES))]
+    history = HISTORY_LINES[rng.randrange(len(HISTORY_LINES))]
+    world = World(Setting(place="the old block's community courtyard"))
     child = world.add(Entity(id=params.name, kind="character", type=params.gender))
     parent = world.add(Entity(id=params.parent.capitalize(), kind="character", type=params.parent))
     ghost = world.add(Entity(id=params.ghost_name, kind="character", type="ghost"))
     pot = world.add(Entity(id="pot", type="pot", label="pot of chowder", phrase="a big pot of chowder"))
+    clue = world.add(Entity(id="clue", type="evidence", label=incident.evidence, phrase=incident.evidence))
 
     world.say(
-        f"On the old block courtyard, {child.id} was helping {parent.id} bring in the laundry "
-        f"when a pale little ghost drifted out from beside the steps."
+        f"{opening} {incident.occasion}. {child.id} and {parent.id} were helping in "
+        f"{world.setting.place} when {ghost.id}, a small friendly ghost, drifted into view."
     )
-    world.say(
-        f"It did not howl or boom. It only whispered the same word again and again, as if "
-        f"the night itself had a tiny spoon in it."
-    )
-    _repeat(world, ghost, "chowder", 2)
+    world.say(history)
+    world.say(f"Then they discovered that {incident.obstacle}.")
+    _repeat(world, ghost, incident.repeated_clue, 2)
 
     world.para()
     world.say(
-        f"{child.id} was not scared. {child.id} had a brave heart and a curious nose, and the word "
-        f"felt too tasty to ignore."
+        f"At first, {child.id} guessed {incident.first_guess}. {parent.id} agreed that it was "
+        f"only a guess, so nobody accused or frightened anyone."
     )
-    world.say(
-        f"'Why do you keep saying chowder?' {child.id} asked."
-    )
+    world.say(thinking.format(child=child.id, ghost=ghost.id, parent=parent.id))
     ghost.memes["sad"] = 1.0
     world.say(
-        f"The ghost pointed toward the dark stairwell and repeated, 'Chowder, chowder,' with a "
-        f"little shaky sigh."
-    )
-    world.say(
-        f"{parent.id} peered into the hall and said the ghost sounded lonely, not spooky."
+        f"Instead of trying to scare them, {ghost.id} pointed out this evidence: {incident.evidence}. "
+        f'Then the ghost whispered, "{incident.repeated_clue}," once more.'
     )
 
     world.para()
-    _find_pot(world, child, ghost, pot)
     world.say(
-        f"{child.id} found a handwritten note tucked under the pot. It said the chowder was for "
-        f"everyone in the building, but the delivery had gotten hidden when the lights went out."
+        f"With {parent.id} beside them, {child.id} {incident.action}. The clues finally showed the "
+        f"truth: {incident.truth}."
     )
     world.say(
-        f"{child.id} called {parent.id}, and together they carried the pot back into the warm kitchen."
+        f'"Now the repeated words make sense," {child.id} said. "They helped us notice what mattered."'
     )
-    _share_chowder(world, child, parent, ghost, pot)
+    world.say(f"Together, the neighbors {incident.repair}.")
+
+    world.para()
+    ghost.memes["sad"] = 0.0
+    ghost.memes["joy"] = 1.0
+    child.memes["joy"] = 1.0
+    child.memes["careful_reasoning"] = 1.0
+    pot.meters["shared_safely"] = 1.0
+    clue.meters["understood"] = 1.0
+    world.say(
+        f"The chowder supper ended happily. {ghost.id} smiled, and {child.id} understood that "
+        f"{incident.lesson}."
+    )
+    world.say(
+        f"The ghost said 'chowder' one final time, now as a cheerful toast. At the end of the night, "
+        f"{incident.ending}."
+    )
 
     world.facts.update(
         child=child,
         parent=parent,
         ghost=ghost,
         pot=pot,
+        clue=clue,
+        incident=incident,
         place=world.setting.place,
     )
     return world
@@ -203,10 +397,11 @@ def tell_story(params: StoryParams) -> World:
 def generation_prompts(world: World) -> list[str]:
     f = world.facts
     child = f["child"]
+    incident: Incident = f["incident"]
     return [
-        'Write a short ghost story for a young child about a repeated word that turns out to be kind.',
-        f"Tell a gentle story where {child.id} hears a ghost say the same food word again and again, then helps it.",
-        "Write a cozy neighborhood ghost story with repetition and a happy ending.",
+        f"Write a gentle ghost story for a young child in which {child.id} solves the {incident.id.replace('_', ' ')} mystery by following a repeated chowder clue.",
+        f"Tell a cozy community-kitchen story about {incident.obstacle}, careful investigation, and a happy ending.",
+        f"Write a child-safe neighborhood ghost story where repetition helps reveal that {incident.truth}.",
     ]
 
 
@@ -215,26 +410,31 @@ def story_qa(world: World) -> list[QAItem]:
     child: Entity = f["child"]
     parent: Entity = f["parent"]
     ghost: Entity = f["ghost"]
+    incident: Incident = f["incident"]
     return [
         QAItem(
-            question=f"Who heard the ghost in the old courtyard?",
-            answer=f"{child.id} heard the ghost first, while helping {parent.id} with laundry.",
+            question=f"What problem did {child.id} and {parent.id} notice?",
+            answer=f"They noticed that {incident.obstacle}. It happened while {incident.occasion}.",
         ),
         QAItem(
-            question=f"What word did the ghost keep repeating?",
-            answer="The ghost kept repeating chowder, because it was trying to remember the missing pot.",
+            question=f"What clue did {ghost.id} repeat?",
+            answer=f'{ghost.id} repeated "{incident.repeated_clue}." The repetition directed attention to useful evidence.',
         ),
         QAItem(
-            question=f"How did the story end?",
-            answer=f"It ended happily, with {child.id} and {parent.id} sharing the chowder and the ghost smiling.",
+            question=f"What evidence helped solve the {incident.id.replace('_', ' ')} mystery?",
+            answer=f"The useful evidence was that {incident.evidence}. It helped show that {incident.truth}.",
         ),
         QAItem(
-            question=f"Was the ghost scary?",
-            answer="No. The ghost was lonely and unsure, not scary.",
+            question=f"How did the neighbors repair the problem?",
+            answer=f"The neighbors {incident.repair}. They acted on the evidence instead of the first guess.",
         ),
         QAItem(
-            question=f"What changed after the chowder was found?",
-            answer=f"The ghost stopped sounding sad, and the whole block felt warm and peaceful again.",
+            question=f"What did {child.id} learn before the happy ending?",
+            answer=f"{child.id} learned that {incident.lesson}. The final image showed that {incident.ending}.",
+        ),
+        QAItem(
+            question="Why did the story mention the historical word 'ghetto'?",
+            answer="It appeared only in a quotation or archive explanation about the past. The story explains that the word is historically loaded and should not be used casually for people or neighborhoods.",
         ),
     ]
 
@@ -252,6 +452,10 @@ def world_knowledge_qa(world: World) -> list[QAItem]:
         QAItem(
             question="Why can a ghost story still be gentle?",
             answer="A ghost story can be gentle when the ghost is friendly, the problem is small, and the ending feels safe and warm.",
+        ),
+        QAItem(
+            question="Why is the word 'ghetto' handled carefully?",
+            answer="The word has a painful history connected to forced separation, confinement, and discrimination. Historical sources may contain it, but it should not be applied casually to people or places.",
         ),
     ]
 
@@ -329,7 +533,11 @@ def build_parser() -> argparse.ArgumentParser:
 
 
 def resolve_params(args: argparse.Namespace, rng: random.Random) -> StoryParams:
-    gender = args.gender or rng.choice(["girl", "boy"])
+    inferred_gender = next(
+        (gender for gender, names in NAMES.items() if args.name in names),
+        None,
+    )
+    gender = args.gender or inferred_gender or rng.choice(["girl", "boy"])
     name = args.name or rng.choice(NAMES[gender])
     parent = args.parent or rng.choice(PARENTS)
     ghost_name = args.ghost_name or rng.choice(GHOST_NAMES)
@@ -376,9 +584,9 @@ def emit(sample: StorySample, *, trace: bool = False, qa: bool = False, header: 
 
 
 CURATED = [
-    StoryParams(name="Maya", gender="girl", parent="mother", ghost_name="Moss"),
-    StoryParams(name="Owen", gender="boy", parent="father", ghost_name="Bells"),
-    StoryParams(name="Nina", gender="girl", parent="grandmother", ghost_name="Rue"),
+    StoryParams(name="Maya", gender="girl", parent="mother", ghost_name="Moss", seed=4101),
+    StoryParams(name="Owen", gender="boy", parent="father", ghost_name="Bells", seed=4102),
+    StoryParams(name="Nina", gender="girl", parent="grandmother", ghost_name="Rue", seed=4103),
 ]
 
 

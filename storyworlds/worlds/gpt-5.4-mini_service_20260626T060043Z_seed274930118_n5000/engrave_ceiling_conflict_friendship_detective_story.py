@@ -221,6 +221,218 @@ FRIENDS = ["Pip", "Sage", "Lena", "Omar", "Mina", "Rae"]
 CLUES = ["engrave", "ceiling"]
 
 
+@dataclass(frozen=True)
+class Incident:
+    title: str
+    problem: str
+    accusation: str
+    first_try: str
+    clue: str
+    test: str
+    cause: str
+    repair: str
+    apology: str
+    lesson: str
+    ending: str
+
+
+INCIDENTS = [
+    Incident(
+        title="the backward swallow",
+        problem="a carved swallow seemed to point away from the museum's exit map",
+        accusation="had turned the arrow as a joke while arranging the display",
+        first_try="compared the bird with a sketch, but the sketch had been copied backward",
+        clue="the letters beside the swallow were reversed too",
+        test="held a hand mirror at chest height and studied the ceiling's reflection from the floor",
+        cause="the polished display case was reflecting a second, backward image beside the real engraving",
+        repair="moved the shiny case a little and placed a floor marker at the clearest viewing spot",
+        apology="trusted a reflection more than a friend",
+        lesson="A surprising picture is a clue to test, not a reason to blame someone",
+        ending="the true swallow pointed home while its faint reflection fluttered harmlessly beside it",
+    ),
+    Incident(
+        title="the missing moon ray",
+        problem="one silver ray in a ceiling engraving appeared to have vanished overnight",
+        accusation="had rubbed out the ray after asking to borrow the exhibit pencil",
+        first_try="counted the rays from one doorway, yet the number kept changing",
+        clue="a paper festival lantern swayed across the same patch whenever the air vent hummed",
+        test="marked safe places on the floor and counted again as an adult guide steadied the lantern cord",
+        cause="the lantern's moving shadow covered one engraved ray",
+        repair="helped the guide shorten the lantern cord so it could not shade the old design",
+        apology="mistook a moving shadow for missing metal",
+        lesson="Wait, watch, and gather more than one clue before deciding what happened",
+        ending="all eight moon rays shone above three friends sharing the same counting card",
+    ),
+    Incident(
+        title="the humming compass rose",
+        problem="a compass rose engraved on the ceiling seemed to hum whenever one friend entered",
+        accusation="was carrying a noisy trick hidden in a pocket",
+        first_try="asked for empty pockets, but the humming returned with no toy in sight",
+        clue="a loose air-vent ribbon trembled exactly when the hum began",
+        test="listened from four floor markers while a custodian safely switched the vent off and on",
+        cause="air crossing the loose ribbon made the sound; no friend had caused it",
+        repair="wrote down the evidence while the custodian secured the ribbon",
+        apology="let a coincidence sound like proof",
+        lesson="Coincidence can start a mystery, but only a fair test can finish one",
+        ending="the quiet compass rose gleamed over their new map of listening spots",
+    ),
+    Incident(
+        title="the red crown",
+        problem="the engraved crown above the library arch suddenly looked bright red",
+        accusation="had colored the historic ceiling after using a red bookmark",
+        first_try="searched the tables for red dust and found none",
+        clue="the color faded whenever a delivery bicycle passed the window",
+        test="watched from the reading rug while the librarian covered each windowpane in turn",
+        cause="sunlight was bouncing from a red bicycle reflector onto the engraving",
+        repair="helped the librarian angle a harmless paper shade away from the old ceiling",
+        apology="matched two red things without proving that they were connected",
+        lesson="Things that look alike do not always share the same cause",
+        ending="the crown returned to warm gold above a windowsill lined with red bookmarks",
+    ),
+    Incident(
+        title="the broken music line",
+        problem="a line of engraved music near the ceiling appeared to end in the middle of a tune",
+        accusation="had hidden the final notes to win the music-clue contest",
+        first_try="hummed the visible notes, but every guessed ending sounded wrong",
+        clue="a tall banner covered a narrow strip exactly where the tune stopped",
+        test="asked the caretaker to lower the banner while everyone stayed behind the floor rope",
+        cause="the complete tune had always continued behind the banner",
+        repair="made a new banner plan that left the engraving visible without touching it",
+        apology="called an obstruction a secret and a friend a cheater",
+        lesson="Look for what blocks a clue before imagining what another person did",
+        ending="the whole tune curved above them as the friends softly sang its final three notes",
+    ),
+    Incident(
+        title="the extra acorn",
+        problem="a ceiling border seemed to contain one more engraved acorn than the old catalogue promised",
+        accusation="had added a pretend acorn to confuse the detective club",
+        first_try="counted quickly from the center of the room and got three different totals",
+        clue="the last shape had a tiny stem made from a crack in dried paint",
+        test="used a museum-approved zoom camera from the floor and enlarged each shape on a tablet",
+        cause="a leaf engraving plus a harmless paint crack only looked like an extra acorn",
+        repair="gave the photograph to the conservator and corrected the club's count",
+        apology="turned an uncertain count into an unfair claim",
+        lesson="Careful counting includes checking what each shape really is",
+        ending="twelve acorns and one leaf circled the ceiling above their corrected catalogue page",
+    ),
+    Incident(
+        title="the wandering initials",
+        problem="two engraved initials seemed to move from one ceiling beam to another",
+        accusation="had made copies to send the search in circles",
+        first_try="followed the initials from below, only to find them gone after a cloud passed",
+        clue="the second pair appeared only inside a bright rectangle of light",
+        test="placed removable cards on the floor beneath both sightings and waited for the sunbeam to shift",
+        cause="a glass sign was projecting the initials onto a different beam",
+        repair="helped the curator turn the sign so its reflection landed on a blank wall",
+        apology="confused projected light with a new engraving",
+        lesson="A clue that moves may belong to light rather than to the object it crosses",
+        ending="the real initials stayed still while a square of sunlight slid quietly away",
+    ),
+    Incident(
+        title="the dusty fox tail",
+        problem="the tail of an engraved fox looked freshly shortened near the ceiling",
+        accusation="had damaged it with a tossed paper airplane",
+        first_try="measured the paper airplane's path, which never came close to the old carving",
+        clue="a clean crescent ended exactly where warm air rose from a vent",
+        test="photographed the fox from the floor before and after the custodian briefly changed the airflow",
+        cause="moving dust had covered the tail's final curl while leaving a clean crescent nearby",
+        repair="roped off the viewing area while a trained conservator cleaned and documented the engraving",
+        apology="blamed a silly choice for damage it could not have reached",
+        lesson="Even when someone broke one rule, every new claim still needs evidence",
+        ending="the fox's full tail curled above a safely folded paper airplane on the desk",
+    ),
+    Incident(
+        title="the doubled lighthouse",
+        problem="a second lighthouse appeared beside the one engraved on the station ceiling",
+        accusation="had secretly pasted up a copy for the treasure hunt",
+        first_try="looked for paper edges, but neither lighthouse had any",
+        clue="one tower grew dim when the glass clock door was opened",
+        test="stood at marked viewing points while the station manager opened and closed the clock door",
+        cause="curved clock glass was reflecting and stretching the original engraving",
+        repair="helped move the clue table so visitors would see the reflection without mistaking it for damage",
+        apology="treated a clever guess as if it were a fact",
+        lesson="A detective explains every clue, including why an image appears and disappears",
+        ending="one carved lighthouse and one pale reflection kept watch over their joined hands",
+    ),
+    Incident(
+        title="the star with a chalk ring",
+        problem="a chalky ring appeared around a star engraved above the studio doorway",
+        accusation="had marked the star while practicing a ceiling-design sketch",
+        first_try="compared the chalk colors, but the sketch chalk was blue and the ring was white",
+        clue="the ring was brightest after the studio's cool-air fan started",
+        test="set dark paper on a table below and asked an adult to inspect the nearby vent grille",
+        cause="fine plaster dust from a loose vent cover was settling around the raised engraving",
+        repair="kept the doorway clear while the building manager secured the cover and called a conservator",
+        apology="ignored the color mismatch because the accusation felt convenient",
+        lesson="Evidence that disagrees with a theory is a reason to change the theory",
+        ending="the clean star shone above a blue sketch signed by all three friends",
+    ),
+    Incident(
+        title="the upside-down garden",
+        problem="an engraved ceiling garden seemed to show its flowers pointing the wrong way",
+        accusation="had switched the exhibit guide to make everyone read the scene upside down",
+        first_try="rotated the guide twice, but the doorway in its drawing still did not match",
+        clue="a tiny engraved boot beside the flowers pointed toward the room's oldest entrance",
+        test="walked the safe floor route to that entrance and compared the ceiling through a viewing mirror",
+        cause="the modern room entrance was opposite the doorway used when the garden was engraved",
+        repair="added an orientation arrow to the visitor guide after the curator approved it",
+        apology="assumed the newest doorway had always been the front",
+        lesson="The past can look backward until you find the viewpoint people once used",
+        ending="the ceiling garden stood upright in the mirror above their freshly arrowed guide",
+    ),
+    Incident(
+        title="the blinking ship's bell",
+        problem="the bell in an engraved ship appeared to blink silver and black",
+        accusation="was flashing a pocket light to distract the other clue hunters",
+        first_try="put every pocket light on the table, yet the blinking continued",
+        clue="each flash arrived when the station's glass door swung inward",
+        test="timed the flashes from the floor while an adult attendant moved the door slowly",
+        cause="the door's metal handle sent a traveling reflection across the ceiling engraving",
+        repair="helped place the clue station where the harmless reflection became part of the exhibit",
+        apology="noticed who was nearby but not what else was moving",
+        lesson="Ask what changed at the same moment before deciding who caused it",
+        ending="the silver bell flashed once more above three detectives comparing the same stopwatch",
+    ),
+]
+
+
+OPENINGS = [
+    "A quiet room can hold a surprisingly noisy mystery.",
+    "The detective club expected a calm visit, not a puzzle overhead.",
+    "Before the first clue card was opened, something near the ceiling looked wrong.",
+    "Rain tapped the windows while three friends began an indoor investigation.",
+    "The room smelled of old paper and polish when the ceiling offered its first clue.",
+    "At the start of friendship day, an engraving turned into a mystery.",
+]
+
+CONFLICT_LINES = [
+    '"That is a possibility, not proof," the detective said. "Let us check before this conflict grows."',
+    'The accused friend folded both arms. "Friends ask questions before blaming each other."',
+    'The sharp guess started a conflict, and for a moment nobody listened well.',
+    '"Pause," said the detective. "A mystery needs evidence, and friendship needs fairness."',
+    'Hurt crowded out curiosity until the detective placed the clue notebook between them.',
+    'Their friendship felt suddenly wobbly, but the detective refused to let one guess decide the case.',
+]
+
+SEARCH_LEADS = [
+    "They began by recording what changed and what stayed still.",
+    "Nobody touched the ceiling; they searched from safe marked places below.",
+    "The detective drew a small evidence table with columns for sight, sound, and timing.",
+    "First they tried to disprove the accusation instead of trying to defend it.",
+    "They asked an adult guide about the room before testing their strongest clue.",
+    "Each friend described the same scene, and their different viewpoints became useful.",
+]
+
+RESOLUTION_LEADS = [
+    "The pieces finally fitted without blaming anyone.",
+    "At once, the odd detail had an ordinary explanation.",
+    "Their careful test changed the argument into a solution.",
+    "The last clue cleared the accused friend completely.",
+    "Instead of finding a culprit, they found a cause they could fix.",
+    "The detective read the notes aloud, and every fact agreed.",
+]
+
+
 @dataclass
 class World:
     place: str
@@ -341,46 +553,169 @@ def propagate(world: World, narrate: bool = True) -> list[str]:
 
 
 def build_world(params: StoryParams) -> World:
+    stable_seed = params.seed
+    if stable_seed is None:
+        text = f"{params.place}|{params.hero}|{params.friend_a}|{params.friend_b}|{params.clue}"
+        stable_seed = sum((index + 1) * ord(char) for index, char in enumerate(text))
+    rng = random.Random(stable_seed ^ 0xE67A9E)
+    incident = rng.choice(INCIDENTS)
+    opening = rng.choice(OPENINGS)
+    conflict_line = rng.choice(CONFLICT_LINES)
+    search_lead = rng.choice(SEARCH_LEADS)
+    resolution_lead = rng.choice(RESOLUTION_LEADS)
+    intro_style = rng.randrange(6)
+    clue_style = rng.randrange(6)
+    test_style = rng.randrange(6)
+    ending_style = rng.randrange(6)
+
     w = World(params.place)
-    hero = w.add(Entity(id="Hero", kind="character", type="girl", label=params.hero))
-    a = w.add(Entity(id="FriendA", kind="character", type="boy", label=params.friend_a))
-    b = w.add(Entity(id="FriendB", kind="character", type="girl", label=params.friend_b))
-    clue = w.add(Entity(id="Clue", type="object", label=params.clue, phrase=f"an old {params.clue} mark"))
+    hero = w.add(Entity(id="Hero", kind="character", type="child", label=params.hero))
+    a = w.add(Entity(id="FriendA", kind="character", type="child", label=params.friend_a))
+    b = w.add(Entity(id="FriendB", kind="character", type="child", label=params.friend_b))
+    clue = w.add(Entity(id="Clue", type="object", label=params.clue, phrase=incident.title))
     ceiling = w.add(Entity(id="Ceiling", type="object", label="ceiling", phrase="the high ceiling"))
     ceiling.meters["height"] = 10.0
     clue.meters["height"] = 10.0
     clue.meters["light"] = 1.0
 
-    w.facts.update(hero=hero, friend_a=a, friend_b=b, clue_obj=clue, ceiling=ceiling, place=params.place)
+    w.facts.update(
+        hero=hero,
+        friend_a=a,
+        friend_b=b,
+        clue_obj=clue,
+        ceiling=ceiling,
+        place=params.place,
+        incident=incident,
+        mystery=incident.problem,
+        accusation=incident.accusation,
+        evidence=incident.clue,
+        test=incident.test,
+        cause=incident.cause,
+        repair=incident.repair,
+        lesson=incident.lesson,
+        ending=incident.ending,
+    )
 
-    w.say(f"{hero.label} was a little detective who loved noticing tiny details in quiet places.")
-    w.say(f"{hero.pronoun().capitalize()} met {a.label} and {b.label} at the {params.place} to look for a clue.")
-    w.say(f"Something strange was hidden near the {ceiling.label}, and the children all felt curious.")
+    detective_intros = [
+        f"{hero.label}, the youngest detective at the {params.place}, carried a notebook with more questions than answers.",
+        f"Detective {hero.label} believed that a good clue should survive a fair test.",
+        f"At the {params.place}, {hero.label} was known for noticing details without rushing to blame anyone.",
+        f"Young detective {hero.label} brought a pencil, a floor map, and plenty of patience to the {params.place}.",
+        f"{hero.label} liked mysteries best when friends could solve them together.",
+        f"The {params.place} had chosen {hero.label} to lead its child detective club that afternoon.",
+    ]
+    friend_intros = [
+        f"Friends {a.label} and {b.label} joined the search beneath the decorated ceiling.",
+        f"At floor level, {a.label} carried the clue cards while {b.label} checked the room map.",
+        f"{a.label} and {b.label} promised to share every observation with their detective friend.",
+        f"The other investigators were {a.label}, who liked quick guesses, and {b.label}, who preferred slow checks.",
+        f"Beside {hero.label} stood two good friends, {a.label} and {b.label}, ready for the ceiling tour.",
+        f"{a.label} brought a viewing mirror, and {b.label} brought the exhibit catalogue.",
+    ]
+    w.say(opening)
+    w.say(detective_intros[intro_style])
+    w.say(friend_intros[(intro_style + rng.randrange(6)) % 6])
+    w.say(
+        f'The detective guide invited them to find how the original artist had used a tiny tool to engrave the design called "{incident.title}" near the ceiling.'
+    )
 
     w.para()
-    clue.meters["dust"] += 0.5
+    problem_leads = [
+        f"Their investigation changed when {incident.problem}.",
+        f"The first puzzle was unmistakable: {incident.problem}.",
+        f"Looking through the floor-mounted viewer, they discovered that {incident.problem}.",
+        f"A moment later, {incident.problem}, and the room went quiet.",
+        f"According to the catalogue, something was wrong because {incident.problem}.",
+        f"Before anyone could copy the design, {incident.problem}.",
+    ]
+    accusation_lines = [
+        f'{a.label} pointed at {b.label}. "I think you {incident.accusation}."',
+        f'"Maybe {b.label} {incident.accusation}," {a.label} said too quickly.',
+        f'{a.label} announced a theory: {b.label} {incident.accusation}.',
+        f'Without checking another clue, {a.label} claimed that {b.label} {incident.accusation}.',
+        f'{a.label} remembered one small detail and accused {b.label}, saying that {b.label} {incident.accusation}.',
+        f'"This must be your doing," {a.label} told {b.label}. "You {incident.accusation}."',
+    ]
+    w.say(problem_leads[clue_style])
     a.memes["suspicion"] += 1.0
     b.memes["hurt"] += 1.0
-    w.say(f"{a.label} pointed up and said, \"I think {b.label} is hiding something.\"")
-    w.say(f"{b.label} frowned. \"I didn't do anything,\" {b.pronoun('subject')} said, sounding hurt.")
-    w.say(f"{hero.label} looked closer and saw that the {clue.label} mark was not a secret at all.")
-
-    propagate(w, narrate=True)
+    w.say(accusation_lines[(clue_style + test_style) % 6])
+    w.say(f'{b.label} answered, "That is not what happened. I want a fair investigation."')
+    w.say(conflict_line)
+    w.say("The accusation had turned a ceiling puzzle into a conflict between friends.")
+    _r_conflict(w)
     w.para()
 
-    w.say(f"{hero.label} fetched a small ladder and checked the mark near the ceiling.")
-    w.say(f"It was an old engraving, left by a maker long ago, and it matched a note in the room.")
+    first_try_lines = [
+        f"Their first idea did not settle anything: they {incident.first_try}.",
+        f"At first they {incident.first_try}. That left the mystery open.",
+        f"They began badly and {incident.first_try}; the result did not support the accusation.",
+        f"One attempt led nowhere because they {incident.first_try}.",
+        f"Before making a plan, they {incident.first_try}, but the ceiling still puzzled them.",
+        f"They tested the quickest explanation and {incident.first_try}. It failed.",
+    ]
+    clue_lines = [
+        f"Then {b.label} noticed the decisive clue: {incident.clue}.",
+        f"A careful look from below revealed that {incident.clue}.",
+        f"In the notebook, {hero.label} underlined one observation: {incident.clue}.",
+        f"They changed viewpoints and discovered that {incident.clue}.",
+        f"The clue that changed the case was simple: {incident.clue}.",
+        f"After everyone grew quiet, {a.label} finally saw that {incident.clue}.",
+    ]
+    test_lines = [
+        f"To check it safely, they {incident.test}.",
+        f"They made a prediction, then {incident.test}.",
+        f"No child climbed or touched the old work; instead, they {incident.test}.",
+        f"With the room staff's permission, they {incident.test}.",
+        f"Their fairest experiment was to {incident.test}.",
+        f"They kept both feet on the floor and {incident.test}.",
+    ]
+    w.say(search_lead)
+    w.say(first_try_lines[(test_style + intro_style) % 6])
+    w.say(clue_lines[clue_style])
+    w.say(test_lines[test_style])
     hero.memes["curiosity"] += 1.0
+
+    w.para()
+    cause_lines = [
+        f"The evidence showed that {incident.cause}.",
+        f"Now every clue agreed: {incident.cause}.",
+        f"The test supplied the answer: {incident.cause}.",
+        f"Their test repeated the effect and proved that {incident.cause}.",
+        f"There was no secret trick by a friend; {incident.cause}.",
+        f"When the notes were compared, the true chain was clear: {incident.cause}.",
+    ]
+    w.say(resolution_lead)
+    w.say(cause_lines[(test_style + ending_style) % 6])
+    w.say(f"Together they {incident.repair}.")
+    w.say(f'{a.label} faced {b.label}. "I am sorry. I {incident.apology}."')
+    w.say(f'{b.label} accepted the apology but added, "Next time, let friendship come before a fast guess."')
     hero.memes["trust"] += 1.0
     hero.memes["relief"] += 1.0
-
     a.memes["suspicion"] = 0.0
     b.memes["hurt"] = 0.0
     w.facts["resolved"] = True
-    propagate(w, narrate=True)
-
-    w.say(f"{a.label} apologized to {b.label}, and {b.label} smiled again.")
-    w.say(f"The three friends left the {params.place} together, laughing under the high ceiling.")
+    friendship_lines = _r_friendship(w)
+    for line in friendship_lines:
+        w.say(line)
+    lesson_lines = [
+        f'{hero.label} wrote the lesson beneath the case title: "{incident.lesson}."',
+        f'In the detective log, all three signed one lesson: "{incident.lesson}."',
+        f'{b.label} chose the final words for their report: "{incident.lesson}."',
+        f'Before closing the notebook, {a.label} repeated what the case had taught them: "{incident.lesson}."',
+        f'Their new friendship rule was clear: "{incident.lesson}."',
+        f'{hero.label} read the last line aloud: "{incident.lesson}."',
+    ]
+    endings = [
+        f"When they left the {params.place}, {incident.ending}.",
+        f"They paused over their shared clue sheet. Beyond it, {incident.ending}.",
+        f"The solved case ended with a clear image: {incident.ending}.",
+        f"As afternoon light crossed the {params.place}, {incident.ending}.",
+        f"They looked up together one final time; {incident.ending}.",
+        f"One final sight closed the case: {incident.ending}.",
+    ]
+    w.say(lesson_lines[ending_style])
+    w.say(endings[(ending_style + clue_style) % 6])
     return w
 
 
@@ -388,8 +723,8 @@ def generation_prompts(world: World) -> list[str]:
     f = world.facts
     return [
         f'Write a gentle detective story for children that includes the words "engrave" and "ceiling".',
-        f"Tell a short mystery where {f['hero'].label} notices a clue near the ceiling and helps {f['friend_a'].label} and {f['friend_b'].label} stop arguing.",
-        f"Write a small friendship story with a detective clue, a ceiling detail, and a happy ending.",
+        f"Tell a short mystery where {f['hero'].label} investigates {f['incident'].title} and helps {f['friend_a'].label} and {f['friend_b'].label} resolve a conflict fairly.",
+        f"Write a friendship detective story in which the clue is that {f['evidence']}, and the children safely discover that {f['cause']}.",
     ]
 
 
@@ -397,24 +732,27 @@ def story_qa(world: World) -> list[QAItem]:
     hero = _safe_fact(world, world.facts, "hero")
     a = _safe_fact(world, world.facts, "friend_a")
     b = _safe_fact(world, world.facts, "friend_b")
-    clue = _safe_fact(world, world.facts, "clue_obj")
-    place = _safe_fact(world, world.facts, "place")
+    place = world.facts["place"]
     return [
         QAItem(
             question=f"Who was the little detective at the {place}?",
-            answer=f"The little detective was {hero.label}. {hero.label} paid attention to tiny clues and helped the friends talk kindly.",
+            answer=f"The little detective was {hero.label}. {hero.label} recorded and tested evidence before deciding what had happened.",
         ),
         QAItem(
-            question=f"What did the children notice near the ceiling?",
-            answer=f"They noticed an old {clue.label} engraving near the ceiling. It looked strange at first, but it was really an old mark from long ago.",
+            question=f"What evidence did {hero.label} record at the {place} in the case of {world.facts['incident'].title}?",
+            answer=f"{hero.label} recorded that {world.facts['evidence']}. The three friends tested that observation instead of touching the ceiling.",
         ),
         QAItem(
-            question=f"Why did {a.label} and {b.label} stop arguing?",
-            answer=f"{a.label} thought there was a secret, and {b.label} felt hurt. {hero.label} checked the clue, found the truth, and the worry went away.",
+            question=f"What did the investigation prove to {hero.label} and {b.label} about the strange ceiling clue?",
+            answer=f"The investigation showed {hero.label} that {world.facts['cause']}. That explanation fitted the evidence and cleared {b.label}.",
         ),
         QAItem(
-            question="What changed by the end of the story?",
-            answer=f"The conflict turned into friendship. {a.label} apologized, {b.label} smiled, and the three friends left together happily.",
+            question=f"How did {a.label} repair the conflict with {b.label}?",
+            answer=f'{a.label} admitted the accusation was unfair and said, "I {world.facts["incident"].apology}." The friends recorded this lesson: "{world.facts["lesson"]}."',
+        ),
+        QAItem(
+            question=f"How did {hero.label}, {a.label}, and {b.label} inspect the high engraving safely?",
+            answer=f"The three friends stayed below and {world.facts['test']}. They did not climb up or touch the ceiling engraving.",
         ),
     ]
 
