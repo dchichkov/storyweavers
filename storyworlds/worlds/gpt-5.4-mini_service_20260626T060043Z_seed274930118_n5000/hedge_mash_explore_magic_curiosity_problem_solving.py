@@ -722,6 +722,240 @@ BOY_NAMES = ["Pip", "Finn", "Rufus", "Milo", "Theo"]
 TRAITS = ["curious", "gentle", "brave", "thoughtful", "patient"]
 
 
+@dataclass(frozen=True)
+class StoryArc:
+    id: str
+    destination: str
+    magic_sign: str
+    mash_problem: str
+    danger: str
+    clue: str
+    tool_phrase: str
+    first_action: str
+    helper_action: str
+    result: str
+    ending_image: str
+
+
+STORY_ARCS = {
+    arc.id: arc
+    for arc in [
+        StoryArc(
+            id="singing_gate",
+            destination="a gate where blue hedge-berries sang directions",
+            magic_sign="three blue berries chimed whenever the correct path opened",
+            mash_problem="sticky berry mash had sealed the singing gate's root-latch",
+            danger="Pulling the gate would snap the roots that made the berries sing.",
+            clue="one clean root twitched whenever a drop of rain touched it",
+            tool_phrase="a curled dock leaf and a hollow acorn cup",
+            first_action="lifted the thick mash with the dock leaf, one patient scoop at a time",
+            helper_action="tapped a quiet rhythm while the acorn cup rinsed the latch",
+            result="the root-latch loosened and the blue berries sang the left-hand path",
+            ending_image="the open gate hummed behind them while three clean berries shone like tiny bells",
+        ),
+        StoryArc(
+            id="moon_maze",
+            destination="a moonlit maze said to hide a silver seed",
+            magic_sign="pale arrows appeared on the hedge only when moonlight touched their leaves",
+            mash_problem="purple mash had splashed over the first two moon-arrows",
+            danger="Guessing at the turns could lead an explorer in circles until dawn.",
+            clue="an uncovered arrow pointed toward a puddle clear enough to reflect the moon",
+            tool_phrase="a fan of fern fronds and a shell of clear water",
+            first_action="brushed away the lumpy mash without tearing the arrow-shaped leaves",
+            helper_action="held moonlight in the water shell so each cleaned arrow gleamed",
+            result="the restored arrows led to the silver seed and then safely home",
+            ending_image="the silver seed rested in an acorn cap as moon-arrows glimmered all the way back",
+        ),
+        StoryArc(
+            id="sleeping_topiary",
+            destination="a round clearing where animal-shaped hedges woke to dance",
+            magic_sign="a leafy rabbit yawned and wiggled one green ear",
+            mash_problem="warm apple mash had glued the little wake-up bells together",
+            danger="Shaking the bells hard would frighten the sleeping topiary animals.",
+            clue="the mash softened where a patch of mint made the air cool",
+            tool_phrase="cool mint leaves wrapped around a smooth twig",
+            first_action="pressed the mint against each bell and eased the mash from its rim",
+            helper_action="caught every loosened blob before it could fall on a sleeping animal",
+            result="the bells rang softly and the leafy rabbit led a quiet green parade",
+            ending_image="a fox-shaped hedge bowed beneath the stars while the clean bells tinkled good night",
+        ),
+        StoryArc(
+            id="living_library",
+            destination="a hidden library whose stories grew as words on leaves",
+            magic_sign="golden letters traveled from leaf to leaf like patient fireflies",
+            mash_problem="red mash had covered the vine that indexed every leafy book",
+            danger="Wiping at random might mix the titles and send each story to the wrong branch.",
+            clue="tiny stem marks divided the index into neat rows",
+            tool_phrase="a grass blade used as a ruler and a pad of soft moss",
+            first_action="cleaned one indexed row at a time, checking each stem mark before moving on",
+            helper_action="read the returning golden titles aloud so none slipped onto the wrong branch",
+            result="the index vine found every story and opened a tale about a cloud ship",
+            ending_image="one clean story-leaf turned its own page as golden words drifted across it",
+        ),
+        StoryArc(
+            id="cloud_bridge",
+            destination="the hedge's high arch, where a leaf bridge crossed into a cloud garden",
+            magic_sign="silver dew climbed upward instead of falling to the ground",
+            mash_problem="oat mash had made the narrow leaf bridge heavy and slick",
+            danger="Stepping onto it too soon could bend the bridge away from its supporting vines.",
+            clue="the bridge rose a little whenever a breeze passed beneath a clean section",
+            tool_phrase="two broad bark scrapers and a woven-grass basket",
+            first_action="worked from the supported end, scraping the mash into the basket",
+            helper_action="sent small guiding breezes beneath each newly cleaned section",
+            result="the lightened bridge lifted level and carried them into the cloud garden",
+            ending_image="the empty basket hung from the arch while cloud-flowers opened above the clean bridge",
+        ),
+        StoryArc(
+            id="root_railway",
+            destination="a root railway where seed-sized carriages toured the deepest hedge tunnels",
+            magic_sign="a walnut carriage whistled although it had no driver",
+            mash_problem="chestnut mash had packed around the switch that moved the root rails",
+            danger="Forcing the switch could send the carriage toward a tunnel closed by stones.",
+            clue="ants walked safely along the rail that led to the open tunnel",
+            tool_phrase="a forked twig, a reed straw, and a folded leaf tray",
+            first_action="loosened the mash with the twig and blew crumbs onto the leaf tray",
+            helper_action="marked the safe rail with a dotted trail of beetle-light",
+            result="the switch clicked toward the open tunnel and the walnut carriage rolled forward",
+            ending_image="the tiny carriage carried them home with a fern ticket fluttering from its clean wheel",
+        ),
+        StoryArc(
+            id="mirror_bower",
+            destination="a mirror bower that showed which hedge creatures needed help",
+            magic_sign="a dewdrop mirror briefly showed a wren beside an empty nest",
+            mash_problem="blackberry mash had clouded the mirrors and joined three reflections into one blur",
+            danger="Following the blurred image could send help to the wrong corner of the hedge.",
+            clue="each mirror had a different flower carved beneath it",
+            tool_phrase="petals matched to the carvings and a soft dandelion brush",
+            first_action="cleaned the mirrors separately and set each matching petal below it",
+            helper_action="shone a narrow beam on one mirror at a time",
+            result="the clear wren mirror revealed a fallen twig beside the real nest",
+            ending_image="the repaired nest appeared whole in one bright dewdrop as the wren tucked in a feather",
+        ),
+        StoryArc(
+            id="winter_door",
+            destination="a summer room hidden behind a frosty door in the hedge",
+            magic_sign="warm green light leaked through a keyhole rimmed with snow",
+            mash_problem="pear mash had frozen solid around the living wooden key",
+            danger="Hot water would free the key quickly but might wake and crack the winter bark.",
+            clue="sunlit pebbles melted tiny round holes without harming the bark",
+            tool_phrase="a ring of sun-warmed pebbles and a strip of dry moss",
+            first_action="placed the warm pebbles around the frozen mash and waited for it to soften",
+            helper_action="wicked away each drop with dry moss before it froze again",
+            result="the wooden key turned and the summer room breathed out the scent of strawberries",
+            ending_image="snow rested beside one open summer flower while the unharmed wooden key curled back to sleep",
+        ),
+        StoryArc(
+            id="whisper_post",
+            destination="a whispering post that carried messages through the hedge roots",
+            magic_sign="the post murmured half of a warning from somewhere beyond the garden",
+            mash_problem="seed mash had clogged the listening holes and broken every message into riddles",
+            danger="Poking the holes could push the mash deeper and silence the post completely.",
+            clue="a family of ants carried loose crumbs from one hole without entering it",
+            tool_phrase="a crumb trail, a paper cone, and a clean seed husk",
+            first_action="used the crumb trail to draw the ants across the clogged holes",
+            helper_action="caught the freed mash in the paper cone and tested each hole with the seed husk",
+            result="the post clearly warned that a baby mole was lost near the orchard roots",
+            ending_image="a grateful mole waved below as the whispering post carried its soft thank-you home",
+        ),
+        StoryArc(
+            id="clockwork_hollow",
+            destination="a clockwork hollow where hedge blossoms opened exactly at tea time",
+            magic_sign="brass ladybugs marched around a clock with petals for hands",
+            mash_problem="plum mash had gummed the smallest gear and stopped the blossom clock",
+            danger="Turning the large hand would strip the tiny gear and spoil every flower's timing.",
+            clue="one brass ladybug repeatedly pointed to a narrow cleaning notch",
+            tool_phrase="a pine-needle hook and a twist of absorbent wool",
+            first_action="drew mash through the cleaning notch instead of touching the gear teeth",
+            helper_action="counted the clock's clicks and called stop when the tiny gear moved freely",
+            result="the clock chimed and rows of hedge blossoms opened in a wave",
+            ending_image="the last flower opened beneath the turning petal-hand as brass ladybugs rang acorn cups",
+        ),
+        StoryArc(
+            id="floating_nursery",
+            destination="a floating nursery where young hedge shoots learned to steer on the wind",
+            magic_sign="three baby shrubs bobbed above the hedge in baskets of woven roots",
+            mash_problem="banana mash had weighed down the lift-vines of the smallest basket",
+            danger="Cutting the sticky vines would drop the basket instead of freeing it.",
+            clue="clean lift-vines tightened whenever the floating seeds spun",
+            tool_phrase="a spinning milkweed tuft and a spoon carved from bark",
+            first_action="spun the tuft to lift one vine while scraping mash from the next",
+            helper_action="balanced the basket with a thread of light as each vine tightened",
+            result="the cleaned lift-vines raised the baby shrub beside its classmates",
+            ending_image="three root baskets sailed across the sunset, and the smallest left a trail of clean green sparks",
+        ),
+        StoryArc(
+            id="lantern_festival",
+            destination="a lantern festival in the heart of the hedge",
+            magic_sign="unlit flower lanterns whispered the colors they hoped to glow",
+            mash_problem="golden mash had clogged the dew channels that fed every lantern",
+            danger="Lighting dry lanterns by hand could scorch their delicate petals.",
+            clue="one clear channel carried a bead of dew toward a dark blue lantern",
+            tool_phrase="a hollow grass stem, a thistle brush, and a catching bowl",
+            first_action="cleared each channel from the lantern end and caught the mash below",
+            helper_action="sent a bead of glowing dew through every channel as it was tested",
+            result="the lanterns filled safely and lit the hedge in twelve gentle colors",
+            ending_image="the cleaned channels glittered under a roof of flower lanterns while the catching bowl held a golden moon",
+        ),
+    ]
+}
+
+OPENING_FORMS = [
+    "{hero} had mapped the ordinary edge of {place}, but today {magic_sign}.",
+    "At {place}, {hero} followed a question no map could answer: why had {magic_sign}?",
+    "The hedge near {place} usually rustled like any hedge. Then {hero} saw that {magic_sign}.",
+    "While others hurried past {place}, {hero} stopped, listened, and discovered that {magic_sign}.",
+    "A curious explorer notices small impossibilities. That morning near {place}, {hero} noticed that {magic_sign}.",
+    "Just after breakfast, the hedge beyond {place} performed its first bit of magic: {magic_sign}.",
+]
+
+QUESTION_FORMS = [
+    '"What makes it do that?" {hero} wondered. "And where does it lead?"',
+    '{hero} felt curiosity tug harder than caution, but asked, "What should we understand before we explore?"',
+    'Instead of calling the sight impossible, {hero} whispered, "There must be a reason. Let us explore carefully."',
+    '"A mystery is an invitation to look," said {hero}. "Not an invitation to rush."',
+    '{hero} wanted to explore at once, yet took one slow breath and asked what the hedge might be showing them.',
+    'Curiosity filled {hero} with questions: what had changed, what might break, and what clue had been left behind?',
+]
+
+PLAN_FORMS = [
+    "{hero} compared the clean parts with the messy ones and noticed that {clue}.",
+    "Kneeling beside the mash, {hero} checked the edges first. That careful search revealed that {clue}.",
+    "They drew a little plan in the soil: observe, test one small spot, then repair. During the first step, {hero} saw that {clue}.",
+    "Rather than blame the magic, {hero} traced cause and effect until it was clear that {clue}.",
+    "{mentor} lit the scene from three sides while {hero} looked for a pattern. Soon they found that {clue}.",
+    "{hero} asked what was different, what was still working, and what could be tested safely. The answer was that {clue}.",
+    "A rushed solution would only move the mess. {hero} studied the hedge until it became apparent that {clue}.",
+    "First {hero} watched. Next came a gentle test. Only then did the clue make sense: {clue}.",
+]
+
+DIALOGUE_FORMS = [
+    '"So the mash is not the whole puzzle," {hero} said. "We must protect what is underneath it." "Exactly," replied {mentor}.',
+    '"Tell me your plan before you begin," said {mentor}. {hero} explained it step by step, and together they found one risky step to change.',
+    '"Could we force it?" asked {mentor}. "We could," said {hero}, "but solving a problem means fixing the cause without making a new one."',
+    '"I will handle the tool," said {hero}. "Then I will watch the fragile part," {mentor} answered. Their two jobs fit together.',
+    '{mentor} asked, "What will show us that the plan is working?" {hero} pointed to the clue and named the change they expected to see.',
+    '"Small test first," {hero} decided. {mentor} nodded. "And if the hedge responds well, we continue."',
+]
+
+ACTION_FORMS = [
+    "Using {tool}, {hero} {first_action}. Meanwhile, {mentor} {helper_action}.",
+    "Their first careful test worked, so {hero} {first_action}. Beside them, {mentor} {helper_action}.",
+    "The work took patience: {hero} {first_action}; at the same time, {mentor} {helper_action}.",
+    "They divided the problem into two useful jobs. {hero} {first_action}, while {mentor} {helper_action}.",
+    "With {tool}, the plan became action. {hero} {first_action}, and {mentor} {helper_action}.",
+    "Nothing was yanked or hurried. {hero} {first_action}. To keep the repair safe, {mentor} {helper_action}.",
+]
+
+REFLECTION_FORMS = [
+    "That was problem solving: curiosity had found the clue, but patience had turned it into a safe answer.",
+    "{hero} understood that curiosity asks the first question, while problem solving tests the answer.",
+    "The magic had not solved the difficulty for them. It had waited for curiosity, evidence, and a careful plan.",
+    "Exploring meant more than going forward. Sometimes it meant stopping long enough to leave a place better than they found it.",
+    "A clever answer was not merely quick; it explained the clue, protected the hedge, and repaired the real cause.",
+    "{mentor} called it hedge magic. {hero} called it looking closely enough to know what to do next.",
+]
+
+
 @dataclass
 class StoryParams:
     place: str
@@ -733,6 +967,7 @@ class StoryParams:
     mentor: str
     trait: str
     seed: Optional[int] = None
+    arc: str = "singing_gate"
     @property
     def label_word(self) -> str:
         return str(getattr(self, "name", None) or getattr(self, "id", None) or getattr(self, "type", self.__class__.__name__.lower()))
@@ -804,27 +1039,101 @@ def valid_combos() -> list[tuple[str, str, str]]:
 
 
 def tell(setting: Setting, activity: Activity, problem: Problem, tool: Tool,
-         hero_name: str, hero_type: str, mentor_name: str, trait: str) -> World:
+         hero_name: str, hero_type: str, mentor_name: str, trait: str,
+         arc: StoryArc, rng: random.Random) -> World:
     world = World(setting)
     hero = world.add(Entity(id=hero_name, kind="character", type=hero_type, traits=["small", trait]))
     mentor = world.add(Entity(id=mentor_name, kind="character", type="sprite", label="the glowing beetle"))
-    prob = world.add(Entity(id=problem.id, kind="problem", type="problem", label=problem.label, phrase=problem.phrase))
-    t = world.add(Entity(id=tool.id, type="tool", label=tool.label, phrase=tool.phrase, protective=True))
+    prob = world.add(Entity(
+        id=problem.id,
+        kind="problem",
+        type="problem",
+        label="the mash problem",
+        phrase=arc.mash_problem,
+    ))
+    t = world.add(Entity(
+        id=tool.id,
+        type="tool",
+        label=arc.tool_phrase,
+        phrase=arc.tool_phrase,
+        protective=True,
+    ))
     t.worn_by = hero.id
 
-    introduce(world, hero, mentor)
+    place = setting.place
+    mentor_ref = mentor.id.capitalize()
+    opening = rng.choice(OPENING_FORMS).format(
+        hero=hero.id,
+        place=place,
+        magic_sign=arc.magic_sign,
+    )
+    world.say(
+        f"{hero.id} was a small {trait} {hero.type} who loved to explore; "
+        "curiosity often led to the best questions."
+    )
+    world.say(f"Beside {hero.id} floated {mentor_ref}, a glowing beetle whose gentle magic lit hidden details.")
+    world.say(opening)
     world.para()
-    world.say(setting_line(setting))
-    want_explore(world, hero, activity)
-    show_problem(world, problem)
-    warn(world, mentor, hero, activity, problem)
-    hesitate(world, hero)
-    world.say(f"{hero.id} did not give up. {hero.id} chose to look for a better answer.")
-    observe(world, hero, problem)
-    solve(world, hero, tool, problem)
-    finish(world, hero, mentor, activity, problem)
+    world.say(f"Beyond the outer hedge lay {arc.destination}.")
+    world.say(rng.choice(QUESTION_FORMS).format(hero=hero.id))
+    _to_memes(hero, "curiosity", 1.0)
+    _to_meters(hero, "explore", 1.0)
+    world.say(
+        f"At the entrance, however, {arc.mash_problem}. "
+        f"{mentor_ref} warned, \"{arc.danger}\""
+    )
+    _to_meters(prob, "blocked", 1.0)
+    _to_memes(hero, "worry", 1.0)
 
-    world.facts.update(hero=hero, mentor=mentor, problem=prob, tool=t, activity=activity, setting=setting)
+    world.para()
+    world.say(rng.choice(PLAN_FORMS).format(
+        hero=hero.id,
+        mentor=mentor_ref,
+        clue=arc.clue,
+    ))
+    _to_meters(hero, "observed", 1.0)
+    _to_memes(hero, "problem_solving", 1.0)
+    world.say(rng.choice(DIALOGUE_FORMS).format(hero=hero.id, mentor=mentor_ref))
+    world.say(rng.choice(ACTION_FORMS).format(
+        hero=hero.id,
+        mentor=mentor_ref,
+        tool=arc.tool_phrase,
+        first_action=arc.first_action,
+        helper_action=arc.helper_action,
+    ))
+    _to_meters(prob, "blocked", -1.0)
+
+    world.para()
+    result_forms = [
+        "Their reasoning proved sound: {result}.",
+        "A final careful check confirmed the change. Now {result}.",
+        "The hedge answered with a rustle of magic, and {result}.",
+        "Cause by cause, the trouble was gone; {result}.",
+        "For a breath, everything stayed still. Then {result}.",
+        "The repair held. Better still, {result}.",
+    ]
+    world.say(rng.choice(result_forms).format(result=arc.result))
+    world.say("Their problem solving had removed the cause of the trouble, not merely hidden the mash.")
+    world.say(rng.choice(REFLECTION_FORMS).format(hero=hero.id, mentor=mentor_ref))
+    world.say(f"When the exploring was done, {arc.ending_image}.")
+    _to_memes(hero, "joy", 1.0)
+
+    world.facts.update(
+        hero=hero,
+        mentor=mentor,
+        problem=prob,
+        tool=t,
+        activity=activity,
+        setting=setting,
+        arc=arc.id,
+        destination=arc.destination,
+        danger=arc.danger,
+        clue=arc.clue,
+        action=arc.first_action,
+        helper_action=arc.helper_action,
+        result=arc.result,
+        ending=arc.ending_image,
+    )
     return world
 
 
@@ -833,9 +1142,9 @@ def generation_prompts(world: World) -> list[str]:
     hero: Entity = _safe_fact(world, f, "hero")
     prob: Entity = _safe_fact(world, f, "problem")
     return [
-        f'Write a short fable about a curious {hero.type} who wants to explore a hedge.',
-        f"Tell a simple story in which {hero.id} meets {prob.label}, feels curious, and solves the problem wisely.",
-        "Write a child-friendly fable with magic, curiosity, and problem solving near a hedge.",
+        f"Write a child-friendly magical story about a curious {hero.type} exploring {f['destination']}.",
+        f"Tell how {hero.id} investigates why {prob.phrase}, then solves the underlying problem without causing new harm.",
+        f"Write a hedge adventure in which curiosity reveals that {f['clue']}, leading to careful problem solving.",
     ]
 
 
@@ -849,24 +1158,24 @@ def story_qa(world: World) -> list[QAItem]:
     place = _safe_fact(world, f, "setting").place
     return [
         QAItem(
-            question=f"Who wanted to {act.verb} near {place}?",
-            answer=f"{hero.id}, a small {next(t for t in hero.traits if t != 'small')} {hero.type}, wanted to {act.verb}."
+            question=f"What magical place did {hero.id} want to explore near {place}?",
+            answer=f"{hero.id} wanted to explore {f['destination']} near {place}."
         ),
         QAItem(
-            question=f"What blocked the way by the hedge?",
-            answer=f"A bowl of {prob.phrase} blocked the way by the hedge gate."
+            question="What mash problem blocked the exploration?",
+            answer=f"The exploration was blocked because {prob.phrase}."
         ),
         QAItem(
-            question=f"Who warned {hero.id} about the mess?",
-            answer=f"{mentor.id}, the glowing beetle, warned {hero.id} that the mash would smear the path."
+            question=f"What clue rewarded {hero.id}'s curiosity?",
+            answer=f"By looking closely, {hero.id} discovered that {f['clue']}."
         ),
         QAItem(
-            question=f"What tool helped solve the problem?",
-            answer=f"{tool.phrase} helped {hero.id} scoop the berry mash aside."
+            question=f"How did {hero.id} and {mentor.id} solve the problem together?",
+            answer=f"Using {tool.phrase}, {hero.id} {f['action']}, while {mentor.id} {f['helper_action']}."
         ),
         QAItem(
-            question=f"How did the story end?",
-            answer=f"The path opened, the hedge shimmered, and {hero.id} kept exploring."
+            question="What proved that their problem-solving plan worked?",
+            answer=f"Their plan worked because {f['result']}; at the end, {f['ending']}."
         ),
     ]
 
@@ -928,9 +1237,9 @@ def dump_trace(world: World) -> str:
 
 CURATED = [
     StoryParams(place="field", activity="explore", problem="berry_mash", tool="leaf_scoop",
-                name="Pip", gender="boy", mentor="beetle", trait="curious"),
+                name="Pip", gender="boy", mentor="beetle", trait="curious", arc="singing_gate"),
     StoryParams(place="garden", activity="explore", problem="berry_mash", tool="leaf_scoop",
-                name="Mina", gender="girl", mentor="beetle", trait="thoughtful"),
+                name="Mina", gender="girl", mentor="beetle", trait="thoughtful", arc="moon_maze"),
 ]
 
 
@@ -951,13 +1260,16 @@ def resolve_params(args: argparse.Namespace, rng: random.Random) -> StoryParams:
     name = getattr(args, "name", None) or rng.choice(BOY_NAMES if hero_type == "boy" else GIRL_NAMES)
     mentor = getattr(args, "mentor", None) or "beetle"
     trait = getattr(args, "trait", None) or rng.choice(TRAITS)
+    arc = getattr(args, "arc", None) or rng.choice(list(STORY_ARCS))
     return StoryParams(place=place, activity=activity, problem=problem, tool="leaf_scoop",
-                       name=name, gender=hero_type, mentor=mentor, trait=trait)
+                       name=name, gender=hero_type, mentor=mentor, trait=trait, arc=arc)
 
 
 def generate(params: StoryParams) -> StorySample:
+    rng = random.Random(params.seed if params.seed is not None else f"{params.name}:{params.arc}")
     world = tell(_safe_lookup(SETTINGS, params.place), _safe_lookup(ACTIVITIES, params.activity), _safe_lookup(PROBLEMS, params.problem),
-                 _safe_lookup(TOOLS, params.tool), params.name, params.gender, params.mentor, params.trait)
+                 _safe_lookup(TOOLS, params.tool), params.name, params.gender, params.mentor, params.trait,
+                 _safe_lookup(STORY_ARCS, params.arc), rng)
     return StorySample(
         params=params,
         story=world.render(),
@@ -1031,6 +1343,7 @@ def build_parser() -> argparse.ArgumentParser:
     ap.add_argument("--gender", choices=["girl", "boy"])
     ap.add_argument("--mentor")
     ap.add_argument("--trait")
+    ap.add_argument("--arc", choices=STORY_ARCS)
     ap.add_argument("-n", type=int, default=1)
     ap.add_argument("--seed", type=int, default=None)
     ap.add_argument("--all", action="store_true")

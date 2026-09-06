@@ -1,9 +1,11 @@
 #!/usr/bin/env python3
 """
-Story world: a teeny playroom mystery with a tall-tale feel.
+Story world: a teeny Romani child's playroom mystery with a tall-tale feel.
 
 Premise:
-- A teeny gypsy child is in a playroom full of toy props.
+- A teeny Romani child is in a playroom full of toy props. The source term
+  "gypsy" is acknowledged as an old, often hurtful label rather than used as a
+  costume, personality, or stereotype.
 - A shiny puzzle piece goes missing.
 - The child follows clues, but the wrong shortcut leads to a bad ending.
 - A lesson is learned: a mystery can be solved best by careful looking and asking for help.
@@ -22,7 +24,13 @@ import sys
 from dataclasses import dataclass, field
 from typing import Optional
 
-sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+HERE = os.path.dirname(os.path.abspath(__file__))
+ROOT = HERE
+while ROOT != os.path.dirname(ROOT):
+    if os.path.exists(os.path.join(ROOT, "results.py")):
+        break
+    ROOT = os.path.dirname(ROOT)
+sys.path.insert(0, ROOT)
 from results import QAItem, StoryError, StorySample  # noqa: E402
 
 
@@ -93,6 +101,20 @@ class StoryParams:
     setting: str = "playroom"
 
 
+@dataclass(frozen=True)
+class MysteryArc:
+    key: str
+    premise: str
+    clue_detail: str
+    mistaken_action: str
+    consequence: str
+    careful_action: str
+    cause: str
+    resolution: str
+    lesson: str
+    ending: str
+
+
 SETTINGS = {
     "playroom": {
         "place": "the playroom",
@@ -108,6 +130,178 @@ OBJECTS = ["glimmer chip", "gold star token", "tiny brass key", "silver button"]
 CLUES = ["blue block", "red scarf", "yellow cup", "striped basket"]
 TRAITS = ["bold", "curious", "quick-footed", "bright-eyed", "stubborn", "cheerful"]
 
+MYSTERY_ARCS = [
+    MysteryArc(
+        key="wobbly_floorboard",
+        premise="the dress-up trunk gave a tiny click each time someone crossed the rug",
+        clue_detail="a trail of square dents led from the clue toward one springy floorboard",
+        mistaken_action="pulled every costume from the trunk, certain the prize was wrapped in a cape",
+        consequence="the capes buried the trail and left the trunk lid propped dangerously open",
+        careful_action="matched the clue's bent corner to the square dents and pressed each floorboard with one careful finger",
+        cause="a loose board had tipped when the toy rolled across it, dropping the prize into a shallow gap",
+        resolution="held the board while the helper lifted it safely and recovered the prize",
+        lesson="evidence is more useful than the first exciting guess",
+        ending="the repaired board lay flat beneath a neat row of bright costumes",
+    ),
+    MysteryArc(
+        key="magnet_wagon",
+        premise="a toy wagon kept turning by itself beside the block castle",
+        clue_detail="the clue trembled whenever it came near the wagon's painted red wheel",
+        mistaken_action="chased the wagon in circles and accused the nearest toy of stealing",
+        consequence="the block castle toppled, while the wagon rolled farther from the truth",
+        careful_action="asked everyone to stand still and tested the clue near each wheel without touching anything else",
+        cause="a craft magnet under the wagon had pulled the metal prize against its axle",
+        resolution="slid a wooden ruler beneath the axle and freed the prize without pinching a finger",
+        lesson="a fair investigator tests a suspicion before blaming anyone",
+        ending="the wagon rested beside a rebuilt castle with the harmless magnet in a labeled cup",
+    ),
+    MysteryArc(
+        key="puppet_pocket",
+        premise="the puppet theater whispered whenever its curtain swayed",
+        clue_detail="one thread from the clue was caught on the curtain's brass hook",
+        mistaken_action="shook every puppet and made their wooden heads knock together",
+        consequence="a puppet's hat fell off, but the missing prize did not",
+        careful_action="followed the loose thread from hook to curtain to the deep pocket sewn along its hem",
+        cause="the toy had bumped the prize off the table and the swaying curtain had scooped it into its pocket",
+        resolution="unhooked the curtain with the helper and eased the prize from the hidden pocket",
+        lesson="small connected clues can tell a complete story",
+        ending="the curtain opened on a puppet bowing beside the recovered prize",
+    ),
+    MysteryArc(
+        key="marble_maze",
+        premise="a soft rolling sound traveled beneath the cardboard marble maze",
+        clue_detail="a chalky streak matching the clue curved around the maze's last tunnel",
+        mistaken_action="tilted the whole maze steeply and shouted for the prize to roll out",
+        consequence="the marbles jammed together and hid the sound completely",
+        careful_action="drew the tunnel route on paper and opened its numbered flaps in order",
+        cause="the toy had nudged the prize into the maze, where it lodged behind two marbles",
+        resolution="removed the marbles one at a time until the prize slid into the helper's palm",
+        lesson="a complicated problem becomes manageable when it is divided into steps",
+        ending="three marbles clicked through the clear maze while the prize gleamed beside the route map",
+    ),
+    MysteryArc(
+        key="shadow_lantern",
+        premise="a star-shaped shadow blinked across the ceiling although the paper lantern was still",
+        clue_detail="a bright speck on the clue flashed only when the lantern faced the puzzle shelf",
+        mistaken_action="switched off every lamp and crawled after the shadow in the dark",
+        consequence="the searcher bumped a cushion fort and frightened themself with its collapse",
+        careful_action="rebuilt the fort, dimmed one lamp at a time, and traced the reflected beam backward",
+        cause="sunlight had struck the prize where the toy left it atop the puzzle shelf",
+        resolution="used the helper's step stool and two steady hands to bring the prize down",
+        lesson="changing one thing at a time makes a puzzling pattern easier to understand",
+        ending="one calm beam made a little star above the tidy cushion fort",
+    ),
+    MysteryArc(
+        key="music_box",
+        premise="the music box played one extra plink after its tune had ended",
+        clue_detail="the clue carried a fresh scratch shaped like the music box's winding key",
+        mistaken_action="wound the box as hard as possible, hoping it would sing an answer",
+        consequence="the tune raced into a squeak and the key became too tight to turn",
+        careful_action="listened through one slow tune and marked exactly when the extra plink sounded",
+        cause="the toy had dropped the prize through the handle slot, where it tapped the final metal tine",
+        resolution="let the spring unwind before the helper opened the bottom panel and returned the prize",
+        lesson="patient listening can reveal what noisy guessing conceals",
+        ending="the music box played at its proper pace beside the prize on a square of felt",
+    ),
+    MysteryArc(
+        key="painted_footprints",
+        premise="three tiny green footprints crossed the train table and stopped in midair",
+        clue_detail="a dab of the same green paint dried along the clue's rim",
+        mistaken_action="scrubbed at the prints before remembering to learn where they led",
+        consequence="the first print vanished and the wet cloth spread green smears across the table",
+        careful_action="photographed the remaining prints, compared their shapes, and checked above the place where they stopped",
+        cause="the toy had stepped in washable paint, climbed a hanging cord, and tucked the prize into a toy balloon basket",
+        resolution="steadied the balloon while the helper lowered its basket and washed the paint away",
+        lesson="recording a clue before changing it protects important evidence",
+        ending="the clean train circled beneath a balloon carrying only a paper passenger",
+    ),
+    MysteryArc(
+        key="book_domino",
+        premise="a row of picture books leaned in a perfect staircase along the reading nook",
+        clue_detail="the clue showed a dusty stripe exactly as wide as one missing book",
+        mistaken_action="yanked the middle book free to inspect it first",
+        consequence="the row slid down with seven soft thumps and mixed every dusty stripe",
+        careful_action="restacked the books by height and compared the stripe with each clean gap on the shelf",
+        cause="the toy had used a book as a ramp, sending the prize into the hollow bookend",
+        resolution="tipped the bookend over a cushion so the prize fell out without a scratch",
+        lesson="putting disturbed evidence back in order can restore a lost pattern",
+        ending="the books made a tidy rainbow beside the bookend, with the prize marking everyone's page",
+    ),
+    MysteryArc(
+        key="bubble_echo",
+        premise="a faint pop answered whenever someone tapped the toy kitchen sink",
+        clue_detail="a ring of dried soap bubbles circled the clue like a foamy crown",
+        mistaken_action="filled every toy cup with water and splashed beneath the sink",
+        consequence="the wet floor became slippery and the tap still answered with a pop",
+        careful_action="dried the floor, tapped each hollow part once, and compared the echoes",
+        cause="the toy had hidden the prize inside an upside-down cup, trapping a bubble of air beneath it",
+        resolution="turned the matching cup over on a towel and caught the prize as the last bubble burst",
+        lesson="safety comes before solving, and sounds can be tested without making a bigger mess",
+        ending="dry cups stood upside down on the towel while one final bubble shone in the window",
+    ),
+    MysteryArc(
+        key="paper_bridge",
+        premise="the paper bridge over the toy river sagged though no toy stood on it",
+        clue_detail="a crease in the clue matched the bridge's folded center beam",
+        mistaken_action="poked beneath the bridge with a long flagpole",
+        consequence="the bridge tore at one end and the flagpole pushed the hidden weight farther away",
+        careful_action="measured the sag, supported both banks with blocks, and unfolded the bridge layer by layer",
+        cause="the prize had slipped between two folded sheets after the toy used the bridge as a slide",
+        resolution="opened the final fold with the helper, removed the prize, and rebuilt a stronger bridge",
+        lesson="supporting a fragile problem before opening it prevents new damage",
+        ending="the stronger bridge held a tiny parade above the blue-paper river",
+    ),
+    MysteryArc(
+        key="clockwork_door",
+        premise="the dollhouse door opened every seventh tick of the playroom clock",
+        clue_detail="seven pencil dots marched along one side of the clue",
+        mistaken_action="held the dollhouse door shut to catch whoever was inside",
+        consequence="the little hinge bent and the ticking continued behind the wall",
+        careful_action="counted the ticks aloud with the helper and watched which gears moved on seven",
+        cause="a loose clockwork arm brushed the dollhouse wall and had swept the prize through its open window",
+        resolution="stopped the clock, straightened the hinge, and retrieved the prize from the dollhouse bed",
+        lesson="counting repeated events can turn a spooky coincidence into a useful pattern",
+        ending="the straight door opened once by hand as the quiet clock showed seven",
+    ),
+    MysteryArc(
+        key="seed_rattle",
+        premise="the pretend garden pot rattled even though it was filled with cloth flowers",
+        clue_detail="three sunflower seeds clung inside the clue's folded edge",
+        mistaken_action="dumped every pot onto the rug and searched the cloth petals",
+        consequence="flowers and labels became mixed, while one pot still rattled",
+        careful_action="sorted the labels, shook each empty pot gently, and weighed the rattling one against the others",
+        cause="the toy had buried the prize with play seeds while pretending to plant treasure",
+        resolution="sifted the seeds through a colander with the helper and found the prize without losing one",
+        lesson="sorting and comparing can expose the one detail that does not belong",
+        ending="the labeled pots stood in a row, each holding a cloth flower and not a single lost treasure",
+    ),
+]
+
+OPENINGS = [
+    "Rain ticked softly at the playroom window",
+    "Morning sun made colored squares on the playroom rug",
+    "Just before tidy-up time, the playroom fell unusually quiet",
+    "During a windy afternoon, every paper star in the playroom spun",
+    "After snack time, a stripe of gold light crossed the playroom floor",
+    "While a clock hummed in the hall, the toys waited in their playroom places",
+]
+
+DIALOGUE_FORMS = [
+    ('"I have a grand guess!" {hero} cried. "But I need a small test."', '"Tell me what you noticed, not only what you suspect," {helper} replied.'),
+    ('{hero} whispered, "The room is giving us a riddle."', '"Then let us answer one clue at a time," said {helper}.'),
+    ('"May I start again more carefully?" {hero} asked.', '"That is what good problem-solvers do," {helper} said.'),
+    ('{hero} said, "My first idea made matters worse."', '"A mistake can become information when we examine it," said {helper}.'),
+    ('"I will not accuse another toy without proof," {hero} decided.', '"Careful and kind," {helper} agreed. "Now show me the evidence."'),
+]
+
+ENDING_FORMS = [
+    "Before bedtime, {hero} drew the clue trail in a little mystery notebook; {ending}.",
+    "At tidy-up time, {hero} placed the {prize} in its proper tray, and {ending}.",
+    "When the room grew quiet again, {hero} and {helper} shared a proud smile; {ending}.",
+    "The solved mystery became that evening's tall tale, though its final picture was perfectly true: {ending}.",
+    "From the doorway, {hero} looked back once at the orderly room; {ending}.",
+]
+
 
 def build_world(params: StoryParams) -> World:
     if params.setting not in SETTINGS:
@@ -115,10 +309,10 @@ def build_world(params: StoryParams) -> World:
     world = World(setting=params.setting)
     hero = world.add_character(Character(
         name=params.name,
-        label="teeny gypsy",
+        label="teeny Romani child",
         age_word="teeny",
         role="child",
-        traits=["tall-tale", "curious", "stubborn"],
+        traits=["Romani", "curious", "learning"],
     ))
     helper = world.add_character(Character(
         name=params.helper_name,
@@ -133,50 +327,97 @@ def build_world(params: StoryParams) -> World:
     return world
 
 
-def narrate_story(world: World) -> None:
+def narrate_story(world: World, seed: int) -> None:
     hero: Character = world.facts["hero"]
     helper: Character = world.facts["helper"]
     culprit: Object = world.facts["culprit"]
     prize: Object = world.facts["prize"]
     clue: Object = world.facts["clue"]
 
-    world.say(f"Once in the playroom, there was a teeny gypsy child named {hero.name}, small as a thimble and brave as a drum.")
-    world.say(f"{hero.name} loved tall tales, and {hero.pronoun()} liked to say the rug had one hundred and one magic bumps.")
-    world.say(f"One bright afternoon, {hero.name} reached for the {prize.label}, but it was gone, vanished like a whisper in a pocket.")
-    world.say(f"Under the toy shelf sat a {culprit.label}, and beside it lay a {clue.label} with one corner bent like a tiny ear.")
+    rng = random.Random(seed ^ 0x5A17C0DE)
+    arc = rng.choice(MYSTERY_ARCS)
+    opening = rng.choice(OPENINGS)
+    hero_line, helper_line = rng.choice(DIALOGUE_FORMS)
+    ending_form = rng.choice(ENDING_FORMS)
+    method = rng.choice([
+        "made a three-box chart labeled noticed, tested, and learned",
+        "marked each checked place with a wooden counter",
+        "sketched the playroom and drew arrows between connected clues",
+        "told the clues back in time order before touching anything",
+        "compared what moved, what made a sound, and what stayed still",
+        "asked one clear question after every observation",
+    ])
+    tall_tale = rng.choice([
+        "the rug had one hundred and one hills",
+        "a lost button could hide behind the moon",
+        "the toy shelf was taller than a mountain",
+        "one quiet clue could whisper across seven rooms",
+        "the smallest detective could carry a question bigger than a house",
+        "the block castle had enough towers for every star",
+    ])
+    cause = arc.cause.replace("the toy", f"the {culprit.label}")
+    careful_action = arc.careful_action.replace("the helper", helper.name)
+    resolution = arc.resolution.replace("the helper", helper.name)
+    world.facts.update(
+        arc=arc,
+        method=method,
+        lesson=arc.lesson,
+        cause=cause,
+        resolution=resolution,
+        ending=arc.ending,
+    )
+
+    world.say(f"{opening}, and {hero.name} was arranging toys for a game.")
+    world.say(
+        f"{hero.name} was a teeny Romani child. An old prompt for this tale used the word 'gypsy,' "
+        "but that label has often been used carelessly for Roma people, and Romani was the word "
+        f"{hero.name}'s family chose."
+    )
+    world.say(f"{hero.name} adored tall tales and claimed that {tall_tale}.")
+    world.say(f"Today's true mystery began when the {prize.label} disappeared: {arc.premise}.")
+    world.say(f"Near the {culprit.label}, {hero.name} found a {clue.label}; {arc.clue_detail}.")
 
     world.para()
     hero.memes["curiosity"] += 1.0
-    world.say(f"{hero.name} squinted and stomped around the playroom, hunting fast instead of thinking slow.")
-    world.say(f"{hero.name} lifted a basket, tipped over a stack of cushions, and peeked in every shadow like a fox with a flashlight.")
+    world.say(hero_line.format(hero=hero.name, helper=helper.name))
+    world.say(f"In a hurry, {hero.name} {arc.mistaken_action}.")
     hero.memes["worry"] += 1.0
-    world.say(f"That only made the room messier, and the missing {prize.label} stayed hidden as a moon behind cloud scraps.")
+    world.say(f"That shortcut failed: {arc.consequence}.")
+    world.say(f"The {prize.label} remained missing, and {hero.name} felt worry squeeze out the fun.")
 
     world.para()
-    world.say(f"Then {helper.name} came in and laughed a little laugh that sounded like spoons in a cup.")
-    world.say(f'"A mystery to solve," {helper.name} said, "is not a race. First we look where the clues point."')
-    world.say(f"So {hero.name} stopped tumbling things over and looked at the bent {clue.label}.")
+    world.say(f"When {helper.name} entered, {hero.name} explained both the clues and the mistake.")
+    world.say(helper_line.format(hero=hero.name, helper=helper.name))
+    world.say(f"Together they {method}.")
+    world.say(f"Then {hero.name} {careful_action}.")
     clue.found = True
-    world.say(f"The clue pointed to the {culprit.label}, and the {culprit.label} pointed to the gap behind the puzzle bin.")
+    world.say(f"The evidence revealed the cause: {cause}.")
 
     world.para()
     prize.hidden = False
     prize.found = True
     hero.memes["lesson"] += 1.0
     hero.memes["pride"] += 1.0
-    world.say(f"Behind the puzzle bin, there sat the {prize.label}, tucked safe under a soft blue scarf.")
-    world.say(f"It turned out the {culprit.label} had dragged it there for a game, not for a trick.")
-    world.say(f"{hero.name} learned that a mystery is solved better with careful eyes and a calm heart than with a wild dash.")
-    world.say(f"In the end, the playroom was tidy again, the {prize.label} was back where it belonged, and the teeny gypsy child stood tall beside {helper.name}, wiser than before.")
+    world.say(f"To put matters right, {hero.name} {resolution}.")
+    world.say(f"The recovered {prize.label} proved the mystery was solved, not merely guessed.")
+    world.say(f"{hero.name} learned that {arc.lesson}.")
+    world.say(
+        ending_form.format(
+            hero=hero.name,
+            helper=helper.name,
+            prize=prize.label,
+            ending=arc.ending,
+        )
+    )
 
 
 def generation_prompts(world: World) -> list[str]:
     hero: Character = world.facts["hero"]
     prize: Object = world.facts["prize"]
     return [
-        f"Write a tall-tale style story about a teeny gypsy child named {hero.name} who solves a mystery in a playroom.",
+        f"Write a tall-tale-style playroom mystery about a teeny Romani child named {hero.name}; preserve the source term 'gypsy' only to explain respectfully why it is an outdated label, never as a stereotype.",
         f"Tell a short children's story where {hero.name} looks for a missing {prize.label} and learns a lesson.",
-        "Write a playroom mystery with a bad ending turned into a lesson learned.",
+        "Write a mystery-to-solve story in which a hasty choice goes badly, careful evidence repairs the problem, and the lesson learned is shown by the ending image.",
     ]
 
 
@@ -185,26 +426,29 @@ def story_qa(world: World) -> list[QAItem]:
     helper: Character = world.facts["helper"]
     prize: Object = world.facts["prize"]
     culprit: Object = world.facts["culprit"]
+    arc: MysteryArc = world.facts["arc"]
+    cause: str = world.facts["cause"]
+    method: str = world.facts["method"]
     return [
         QAItem(
-            question=f"Who is the teeny gypsy child in the story?",
-            answer=f"The teeny gypsy child is {hero.name}.",
+            question=f"Who is the teeny Romani child investigating the playroom mystery?",
+            answer=f"The child is {hero.name}. The story explains that 'gypsy' is an old label rather than using it as a stereotype.",
         ),
         QAItem(
             question=f"What was missing in the playroom?",
             answer=f"The missing thing was the {prize.label}.",
         ),
         QAItem(
-            question=f"Who helped {hero.name} solve the mystery?",
-            answer=f"{helper.name} helped {hero.name} solve the mystery by telling them to follow the clues.",
+            question=f"How did {hero.name} and {helper.name} organize their careful search?",
+            answer=f"They {method}. That helped them test the evidence instead of making another hurried guess.",
         ),
         QAItem(
-            question=f"What animal-like toy caused the clue trail?",
-            answer=f"The {culprit.label} was the toy tied to the clue trail.",
+            question=f"What actually caused the {prize.label} to disappear?",
+            answer=f"The mystery's cause was that {cause}.",
         ),
         QAItem(
-            question="What lesson did the child learn?",
-            answer="The child learned to look carefully and stay calm instead of making a bigger mess.",
+            question=f"What lesson did {hero.name} learn after the first shortcut failed?",
+            answer=f"{hero.name} learned that {arc.lesson}. The recovered {prize.label} showed that the careful approach worked.",
         ),
     ]
 
@@ -222,6 +466,10 @@ def world_knowledge_qa(world: World) -> list[QAItem]:
         QAItem(
             question="What does it mean to learn a lesson?",
             answer="To learn a lesson means to understand something important that can help you do better next time.",
+        ),
+        QAItem(
+            question="Why should the word 'gypsy' be handled carefully?",
+            answer="The word has often been imposed on Roma people and can carry stereotypes. Romani or Roma is generally more respectful when referring to the people and culture, while individuals' own preferences should be honored.",
         ),
     ]
 
@@ -330,7 +578,7 @@ def resolve_params(args: argparse.Namespace, rng: random.Random) -> StoryParams:
 
 def generate(params: StoryParams) -> StorySample:
     world = build_world(params)
-    narrate_story(world)
+    narrate_story(world, params.seed if params.seed is not None else 0)
     return StorySample(
         params=params,
         story=world.render(),

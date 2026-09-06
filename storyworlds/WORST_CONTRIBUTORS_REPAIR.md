@@ -70,5 +70,8 @@ Legend: `queued`, `active`, `repaired`, `verified`, `blocked`.
 | 5 | verified | `dress_sweetwilliam_curiosity_quest_bad_ending_fairy.py` | 1 skeleton/100 exact-unique stories | 1 skeleton | 100 unique; 100 skeletons | Independent replay check passed; 271/400 unique story-QA pairs. |
 | 5 | verified | `emergency_clamp_starfish_friendship_quest_transformation_animal.py` | 1 skeleton/100 exact-unique stories | 1 skeleton | 100 unique; 100 skeletons | Independent replay check passed; 680/800 unique story-QA pairs. |
 | 5 | verified | `fluid_illegal_medal_inner_monologue_fable.py` | 1 skeleton/100 exported stories | 88/100 exact unique; 1 skeleton | 100 unique; 100 skeletons | Twelve causal arcs; independent replay and QA checks passed. |
+| 5 | verified | `folly_chimp_rhyme_cautionary_pirate_tale.py` | 1 skeleton/100 exact-unique stories | 1 skeleton | 100 unique; 100 skeletons | Twelve pirate incidents; 574/600 unique story-QA pairs. |
+| 5 | verified | `gypsy_teeny_playroom_lesson_learned_mystery_to.py` | 1 skeleton/100 exact-unique stories | 1 skeleton | 100 unique; 100 skeletons | Twelve mysteries; source term handled as an old, potentially hurtful label. |
+| 5 | verified | `hedge_mash_explore_magic_curiosity_problem_solving.py` | 1 skeleton/100 exact-unique stories | 1 skeleton | 100 unique; 100 skeletons | Twelve magical problems; independent replay and QA checks passed. |
 
 Additional waves follow the frozen 120-script template-collapse ranking.
