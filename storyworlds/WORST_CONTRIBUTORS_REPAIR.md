@@ -118,5 +118,8 @@ Legend: `queued`, `active`, `repaired`, `verified`, `blocked`.
 | 12 | verified | `ghetto_chowder_repetition_happy_ending_ghost_story.py` | 1 skeleton; 80/100 exact unique in fresh baseline | 1 skeleton | 100 unique; 100 skeletons | Twelve incidents; loaded term restricted to accurate historical context. |
 | 12 | verified | `progeny_cemetery_semi_sharing_magic_dialogue_comedy.py` | 1 skeleton; 86/100 exact unique in fresh baseline | 1 skeleton | 100 unique; 100 skeletons | Twelve respectful cemetery scenarios; vehicle actions made adult-controlled. |
 | 13 | verified | `whatchamacallem_mansion_three_sharing_bad_ending_nursery.py` | 1 skeleton; 81/100 exact unique in fresh baseline | 1 skeleton | 100 unique; 100 skeletons | Twelve non-cruel bad-ending incidents and eight telling modes. |
+| 13 | verified | `clarinet_tiara_rinse_lesson_learned_conflict_flashback.py` | 1 skeleton; 77/100 exact unique in fresh baseline | 1 skeleton | 100 unique; 100 skeletons | Twelve incidents; flashbacks now causally affect present choices. |
+| 13 | verified | `croquet_animal_diabetic_rhyme_nursery_rhyme.py` | 1 skeleton; 79/100 exact unique in fresh baseline | 1 skeleton | 100 unique; 100 skeletons | Twelve medically careful scenarios with individualized care plans. |
+| 13 | verified | `guppy_cashew_misunderstanding_bravery_slice_of_life.py` | 1 skeleton; 81/100 exact unique in fresh baseline | 1 skeleton | 100 unique; 100 skeletons | Twelve incidents with correct fish-feeding and allergy safeguards. |
 
 Additional waves follow the frozen 120-script template-collapse ranking.
