@@ -47,7 +47,7 @@ DEFAULT_ENDPOINT = "/v1/responses"
 DEFAULT_REASONING_EFFORT = "none"
 DEFAULT_SERVICE_TIER = "flex"
 DEFAULT_REQUEST_TIMEOUT = 900.0
-PROMPT_PROTOCOL = "custom_tool_python_v11"
+PROMPT_PROTOCOL = "custom_tool_python_v12"
 EMIT_TOOL_NAME = "emit_python_file"
 EMIT_MODES = ("tool", "source")
 SLUG_WORD_RE = re.compile(r"[a-z0-9]+")
@@ -485,7 +485,7 @@ from the Seed request. Emit only raw Python source as the tool input:
 - no explanation before or after the code
 - no omitted sections or placeholders"""
 
-    return f"""You are generating one standalone storyworld source file for the Storyweavers repo.
+    prompt = f"""You are generating one standalone storyworld source file for the Storyweavers repo.
 {output_instructions}
 
 Storyworld contract from storyworlds/STORY.md:
@@ -497,7 +497,7 @@ Implementation details and reliability requirements:
 - You must instantiate the shared result containers exactly as defined, for example:
   StorySample(params=..., story=..., prompts=..., story_qa=..., world_qa=..., world=...)
 - Invalid fields include prompt=, kind=, text=, qa=, trace=, data=, meta=, index=, and history= on these shared dataclasses.
-{addendum_block}
+
 
 Shared result API from storyworlds/results.py:
 
@@ -526,6 +526,7 @@ Include the following words and narrative instruments:
 - Features: {", ".join(job.features)}
 - Style: {job.style}
 """
+    return prompt + (f"\n{addendum_block}\n" if addendum_block else "")
 
 
 def request_line(

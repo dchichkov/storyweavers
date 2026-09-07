@@ -169,6 +169,16 @@ to 5.91/100. All 21 final scripts pass after ten separately recorded manual
 recoveries; estimated API spend was $0.3195. More dialogue did not fix template
 collapse or make the entire output pool training-ready.
 
+The [three sequential prompt trials](batches/prompt_optimization_20260907.report.md)
+preserve separate automatic and manually assisted results. Protocol v12 moves
+explicit addenda after examples and seed fields; it does not change the vanilla
+prompt text or enable any candidate by default. Frozen older requests retain
+their original prompts.
+All three trials are complete (63 worlds, 630 Terra story ratings, about $0.89).
+R1 raises the assisted composite to 7.62; R3 improves quality to 7.16/9 but
+collapses to 3,032 unique texts from 21,000 draws. None beats the previous
+baseline's automatic-only composite, so no candidate is promoted by default.
+
 The current reference set is **Puddles, Pirates, Garnet, Library Words,
 One Cart, Bridge Builders, Nell v2**, version **`dialogue_v2`**. The latest
 Puddles is retained unchanged. These are generation references, not claims that

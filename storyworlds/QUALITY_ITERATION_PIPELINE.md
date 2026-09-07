@@ -148,6 +148,13 @@ defaults. Concurrency is global, not multiplied by seven arms. `--model` and
 from the retained local samples: 21 calls, 210 judged stories per full trial.
 The 1,000 local samples measure large-pool diversity and deterministic checks.
 This is a new judge protocol, not a directly interchangeable Mini score.
+
+Prompt protocol `custom_tool_python_v12` puts an explicitly supplied addendum
+after the complete example and seed request. The no-addendum prompt text is
+unchanged from v11; no optimization candidate is enabled by default. Older
+prepared requests retain their original placement. The [three-run optimization
+record](batches/prompt_optimization_20260907.report.md) distinguishes the first
+two content-only trials from the third content-plus-placement experiment.
 Re-evaluating an older prepared trial explicitly uses the current Terra set
 protocol and logs it in the new evaluation's settings; frozen generation
 requests and old evaluation results stay untouched.
@@ -542,6 +549,21 @@ on disk. Exit status 1 can mean the trial finished with failed worlds or missing
 ratings, not necessarily that the whole run crashed. Read the report before
 retrying. `archive` writes a timestamped `.tar.gz` and SHA-256 sidecar in
 `storyworlds/batch_archives/`, which is already covered by Git LFS.
+
+For sequential optimization, decide the next prompt only after the previous
+trial's metrics and manual reading. Keep automatic-only and manually assisted
+scores separate. A verifier can contain a false speech quota, but it can also
+correctly expose a missing state transition: inspect the actual trace before
+changing it. Check that repairs have not replaced validation with `pass` or
+fallback defaults, and add negative tests for each such recovery. Passing the
+script's own verifier is not an independent proof of semantic correctness.
+
+Read the same fixed selected story plus its QA from each world before looking
+at ratings. Do not edit prose after seeing its score. For recovered worlds,
+reuse an earlier judgment only when the entire sampled pool is identical; judge
+only previously unjudged pools. Preserve every attempt and its source diff.
+After selecting a provisional winner, use new task seeds for confirmation;
+improvement on this repeatedly inspected 21-world set is not held-out evidence.
 
 ## Repair Policy
 

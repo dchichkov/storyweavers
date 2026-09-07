@@ -37,6 +37,20 @@ class FactoryExamplesTest(unittest.TestCase):
         self.assertEqual(batch.example_world_paths("puddles"), (batch.WORLDS_DIR / "puddles.py",))
         self.assertEqual(batch.example_world_paths(), batch.EXAMPLE_WORLD_PATHS)
 
+    def test_addendum_follows_example_and_seed_once(self):
+        addendum = self.example.with_name("addendum.md")
+        addendum.write_text("Final trial guidance marker.\n")
+        for mode in batch.EMIT_MODES:
+            prompt = batch.build_storyworld_prompt(self.job, example_files=[self.relative],
+                                                  prompt_addendum=addendum, emit_mode=mode)
+            self.assertEqual(prompt.count("Final trial guidance marker."), 1)
+            self.assertGreater(prompt.index("Final trial guidance marker."), prompt.index("- Style: bedtime"))
+            self.assertGreater(prompt.index("- Style: bedtime"), prompt.index("# custom example marker"))
+            self.assertTrue(prompt.endswith("Final trial guidance marker.\n"))
+        before = batch.prompt_cache_key(example_files=[self.relative], prompt_addendum=addendum)
+        addendum.write_text("Different final guidance.\n")
+        self.assertNotEqual(before, batch.prompt_cache_key(example_files=[self.relative], prompt_addendum=addendum))
+
     def test_dialogue_required_without_dialogue_seed_feature(self):
         original_job = asdict(self.job)
         for mode in batch.EMIT_MODES:
