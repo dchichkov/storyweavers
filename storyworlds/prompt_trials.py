@@ -23,17 +23,19 @@ import sys
 import tarfile
 
 import canonical_examples
+import dataset_score
 import openai_batch_world_factory as batch
 import openai_service_world_factory as service
 import openai_story_quality as quality
+import openai_world_set_quality as set_quality
 import qa_static_check as qa
 import repair_batch_output
+import trial_cost
 
 ROOT = batch.ROOT
 TRIALS = ROOT / "storyworlds/batches/prompt_trials"
 TARGETS = ROOT / "storyworlds/worlds/prompt_trials"
-JUDGE = "gpt-5.4-mini"
-SCORE_WEIGHTS = dict(quality=0.60, exact=0.20, skeleton=0.15, lzma=0.05)
+JUDGE = set_quality.DEFAULT_MODEL
 sys.path.insert(0, str(ROOT))
 from training.storyworld_chat.analyze_world_contributors import story_skeleton
 
@@ -85,6 +87,7 @@ def trial_lock(directory: Path):
 
 
 def prepare(args) -> Path:
+    score_policy = dataset_score.policy(args.minimum_quality)
     directory = trial_path(args.name)
     target_root = TARGETS / args.name
     if directory.exists() or target_root.exists():
@@ -110,12 +113,14 @@ def prepare(args) -> Path:
         requests = [{"job": asdict(job), "body": service.request_body(factory_args, job)} for job in jobs]
         prepared.append((label, target_dir, requests))
     directory.mkdir(parents=True)
-    sources = [canonical_examples.CANONICAL_EXAMPLES[label] for label in labels]
+    sources = [canonical_examples.EXAMPLE_SOURCES[label] for label in labels]
     sources += [batch.STORY_CONTRACT_PATH, batch.RESULTS_PATH, batch.ASP_PATH,
                 Path(batch.__file__), Path(service.__file__), Path(quality.__file__),
                 Path(qa.__file__), Path(repair_batch_output.__file__),
                 Path(canonical_examples.__file__), Path(__file__),
                 ROOT / "storyworlds/compression_review.py",
+                Path(dataset_score.__file__),
+                Path(set_quality.__file__), Path(trial_cost.__file__),
                 ROOT / "storyworlds/seed.py",
                 ROOT / "training/storyworld_chat/analyze_world_contributors.py"]
     if args.prompt_addendum:
@@ -127,10 +132,12 @@ def prepare(args) -> Path:
         shutil.copyfile(source, destination)
         snapshots.append({"source": relative(source), "snapshot": relative(destination), "sha256": digest(destination)})
     config = dict(name=args.name, created_at=service.now_stamp(), model=args.model,
+                  example_set=canonical_examples.CANONICAL_SET_ID if labels == list(canonical_examples.CANONICAL_EXAMPLES) else "custom",
                   reasoning_effort=args.reasoning_effort, service_tier="flex", judge=JUDGE,
+                  judge_protocol=set_quality.PROTOCOL, judge_stories=set_quality.DEFAULT_COUNT,
                   seed=args.seed, per_example=args.per_example, concurrency=args.concurrency,
                   local_samples=args.local_samples, sample_seed=777, timeout=args.timeout,
-                  score_weights=SCORE_WEIGHTS,
+                  score_policy=score_policy,
                   prompt_addendum=relative(args.prompt_addendum) if args.prompt_addendum else None,
                   prompt_protocol=batch.PROMPT_PROTOCOL, snapshots=snapshots, arms=[])
     for label, target_dir, requests in prepared:
@@ -141,6 +148,7 @@ def prepare(args) -> Path:
             append(request_path, request)
         manifest_path = arm_dir / "generation.manifest.json"
         manifest = dict(count=len(requests), base_seed=args.seed, model=args.model,
+                        example_set=config["example_set"],
                         reasoning_effort=args.reasoning_effort, service_tier="flex", emit_mode="source",
                         example_worlds=label, example_files=None,
                         prompt_addendum=config["prompt_addendum"], target_dir=relative(target_dir),
@@ -156,8 +164,6 @@ def prepare(args) -> Path:
 def load_trial(name: str) -> tuple[Path, dict]:
     directory = trial_path(name)
     config = read(directory / "trial.json")
-    if config["judge"] != JUDGE:
-        raise ValueError(f"canonical trials must use {JUDGE} as judge")
     for arm in config["arms"]:
         if digest(ROOT / arm["requests"]) != arm["requests_sha256"]:
             raise ValueError(f"frozen requests changed for {arm['label']}; prepare a new trial")
@@ -295,17 +301,6 @@ def sample_metrics(rows: list[dict], requested: int) -> dict:
                     for item in row.get("story_qa", []) if isinstance(item, dict)) for row in rows) if rows else None)
 
 
-def weighted_score(check: dict, rating: dict | None) -> float | None:
-    if not check["final"]["ok"] or not check["verify"]["ok"]:
-        return 0.0
-    if not rating or not rating.get("ok"):
-        return None
-    components = dict(quality=rating["rating"]["overall"] / 9,
-                      exact=check["exact_unique_fraction"], skeleton=check["skeleton_unique_fraction"],
-                      lzma=check["lzma_all"]["ratio"])
-    return 100 * sum(SCORE_WEIGHTS[key] * min(1.0, max(0.0, value)) for key, value in components.items())
-
-
 def audit_one(task) -> dict:
     job, arm_dir, output, config, index = task
     script = ROOT / job["target"]
@@ -334,13 +329,6 @@ def audit_one(task) -> dict:
     final, rows = sample(script, config["local_samples"], seed, timeout)
     verify = local_run(script, ["--verify"], timeout)
     standalone = local_run(script, ["-n", "1", "--seed", str(seed), "--json"], timeout, standalone=True)
-    judge_sample = local_run(script, ["--json", "--seed", str(seed)], timeout)
-    judge_rows = []
-    if judge_sample["ok"]:
-        try:
-            judge_rows = qa.parse_json_samples(judge_sample["stdout"])
-        except ValueError:
-            pass
     replay = local_run(script, ["-n", str(config["local_samples"]), "--seed", str(seed), "--qa", "--json"],
                        timeout, hash_seed="1") if rows else {"ok": False}
     replay_equal = False
@@ -363,7 +351,6 @@ def audit_one(task) -> dict:
                   final=final, verify=verify, standalone=standalone, hash_seed_replay_equal=replay_equal,
                   static_qa_duplicate_groups=len(static.duplicates),
                   static_qa_source_hits=sum(len(hits) for hits in static.source_hits.values()),
-                  judge_story=judge_rows[0].get("story") if judge_rows else None,
                   **sample_metrics(rows, config["local_samples"]))
     save(output / "check.json", result)
     print(f"Checked {script.name}: runnable={final['ok']}, verify={verify['ok']}", flush=True)
@@ -375,12 +362,14 @@ async def evaluate(directory: Path, config: dict, *, skip_quality: bool) -> Path
         raise ValueError("generation is incomplete; run the trial first")
     output = directory / f"eval_{len(list(directory.glob('eval_*'))) + 1:03d}"
     output.mkdir()
-    save(output / "settings.json", dict(judge=JUDGE, skip_quality=skip_quality,
+    minimum_quality = config.get("score_policy", {}).get("minimum_quality", dataset_score.DEFAULT_MINIMUM_QUALITY)
+    save(output / "settings.json", dict(judge=JUDGE, judge_protocol=set_quality.PROTOCOL,
+                                        judge_stories=set_quality.DEFAULT_COUNT, judge_reasoning="none",
+                                        judge_service_tier="flex", skip_quality=skip_quality,
                                         sample_seed=config["sample_seed"], local_samples=config["local_samples"],
-                                        score_weights=SCORE_WEIGHTS, lzma_preset=6,
+                                        score_policy=dataset_score.policy(minimum_quality), lzma_preset=6,
                                         code_sha256={relative(Path(module.__file__)): digest(Path(module.__file__))
-                                                     for module in (quality, qa, repair_batch_output)},
-                                        quality_cache_key=quality.prompt_cache_key()))
+                                                     for module in (quality, set_quality, qa, repair_batch_output, dataset_score, trial_cost)}))
     tasks = []
     for arm in config["arms"]:
         manifest_path = ROOT / arm["manifest"]
@@ -392,54 +381,84 @@ async def evaluate(directory: Path, config: dict, *, skip_quality: bool) -> Path
     from compression_review import pooled_review
     groups = [jsonl(task[2] / "samples.jsonl") for task in tasks]
     pooled_review([row for group in groups for row in group], output / "pooled", groups=groups)
-    inputs = [quality.StoryInput(index=index + 1, script=row["script"], seed=row["seed"], story=row["judge_story"])
-              for index, row in enumerate(checks) if isinstance(row["judge_story"], str) and row["judge_story"].strip()]
-    save(output / "judge_inputs.json", [asdict(item) for item in inputs])
+    inputs = [dict(set_quality.select_set(check["script"], group, check["seed"]),
+                   source_sha256=digest(task[2] / "after.py"), sample_file=relative(task[2] / "samples.jsonl"))
+              for check, group, task in zip(checks, groups, tasks)
+              if check["final"]["ok"] and check["verify"]["ok"] and len(group) >= 2]
+    save(output / "judge_inputs.json", inputs)
     if not skip_quality and inputs:
-        args = quality.build_parser().parse_args(["--model", JUDGE, "--service-tier", "flex",
-                                                 "--batch-size", str(config["concurrency"])])
-        args.base_url = None
-        await quality.run_ratings(args, inputs, output / "quality.jsonl")
-    ratings = jsonl(output / "quality.jsonl")
+        await set_quality.run_sets(inputs, output / "set_judge", concurrency=config["concurrency"])
+    ratings = jsonl(output / "set_judge/quality.jsonl")
     by_script = {row["script"]: row for row in ratings}
-    for check in checks:
-        check["weighted_score"] = weighted_score(check, by_script.get(check["script"]))
+    for check, samples in zip(checks, groups):
+        check["geometric_score"] = dataset_score.score_dataset(
+            [check], by_script, [samples], config["local_samples"], minimum_quality=minimum_quality)["score"]
+    scores = {}
+    for arm in config["arms"]:
+        targets = {job["target"] for job in read(ROOT / arm["manifest"])["jobs"]}
+        selected = [(check, samples) for check, samples in zip(checks, groups) if check["script"] in targets]
+        scores[arm["label"]] = dataset_score.score_dataset(
+            [check for check, _ in selected], by_script, [samples for _, samples in selected],
+            config["local_samples"], minimum_quality=minimum_quality)
+    scores["ALL"] = dataset_score.score_dataset(checks, by_script, groups, config["local_samples"],
+                                                  minimum_quality=minimum_quality)
+    save(output / "dataset_scores.json", scores)
     save(output / "checks.json", checks)
-    save(output / "summary.json", quality.aggregate_rows(ratings, top_n=5))
+    save(output / "summary.json", set_quality.summarize(ratings))
+    generation_rows = [row for arm in config["arms"]
+                       for row in jsonl((ROOT / arm["manifest"]).parent / "responses.jsonl")]
+    save(output / "costs.json", dict(generation=trial_cost.summarize(generation_rows),
+                                     this_judge_pass=trial_cost.summarize(ratings)))
     save(output / "completed.json", dict(completed_at=service.now_stamp()))
     return output
 
 
 def report(names: list[str]) -> str:
     lines = ["# Canonical Prompt Trials", "",
-             "Each arm uses the same tasks. Mini scores are conditional on successful ratings, on a 0-9 scale.",
-             "Weighted score /100: 60% Mini/9 + 20% exact uniques/requested + 15% skeletons/requested + 5% LZMA ratio.",
-             "Runtime or own-verify failure scores zero. Unrated runnable worlds remain unscored, not silently excluded.",
+             "Each arm uses the same tasks. Quality and semantic-diversity scores are conditional on successful ratings, on a 0-9 scale.",
+             "Geometric score: 100 * usable-unique-story yield * sqrt(quality/9 * pooled compression retention).",
+             "Only runtime/verify-passing worlds meeting the configured quality floor contribute. Missing ratings leave the score uncomputed.",
+             "Compression retention = pooled compressed size / sum of independently compressed story sizes, using raw LZMA2 on qualified exact-deduplicated text.",
              "Skeletons remove parameter values; they are a repetition diagnostic, not a count of causal plots.",
              "LZMA ratio is compressed/input bytes of shuffled story-only text: higher means less compressible, not necessarily better prose.", ""]
     for name in names:
         directory, config = load_trial(name)
         completed = sorted(directory.glob("eval_*/completed.json"))
         checks = read(completed[-1].parent / "checks.json") if completed else []
-        ratings = {row["script"]: row for row in jsonl(completed[-1].parent / "quality.jsonl")} if completed else {}
+        settings = read(completed[-1].parent / "settings.json") if completed else config
+        rating_path = completed[-1].parent / "set_judge/quality.jsonl" if completed else None
+        if rating_path and not rating_path.exists():
+            rating_path = completed[-1].parent / "quality.jsonl"
+        ratings = {row["script"]: row for row in jsonl(rating_path)} if rating_path else {}
+        score_path = completed[-1].parent / "dataset_scores.json" if completed else None
+        dataset_scores = read(score_path) if score_path and score_path.exists() else {}
         lines += [f"## {name}", "",
-                  "| Example | Worlds | Raw runnable | Repaired | Runnable | Verify | CLI | Rated | Mini | Weighted /100 |",
+                  "| Example | Worlds | Raw runnable | Repaired | Runnable | Verify | CLI | Rated worlds | Quality | Geometric /100 |",
                   "| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |"]
+        pending_judge_upgrade = not completed and config.get("judge") != JUDGE
         diversity = ["| Example | Returned / requested | Median exact / skeletons | Median LZMA all / dedup | Mean story / story+QA words |",
                      "| --- | ---: | ---: | ---: | ---: |"]
+        semantic = ["| Example | Stories judged | Semantic diversity /9 | Mean plot groups / judged set |",
+                    "| --- | ---: | ---: | ---: |"]
         arms = [(arm["label"], read(ROOT / arm["manifest"])["jobs"]) for arm in config["arms"]]
         arms.append(("ALL", [job for _, jobs in arms for job in jobs]))
         for label, jobs in arms:
             targets = {job["target"] for job in jobs}
             rows = [row for row in checks if row["script"] in targets]
             scores = [ratings[target]["rating"]["overall"] for target in targets if ratings.get(target, {}).get("ok")]
+            sets = [ratings[target] for target in targets if ratings.get(target, {}).get("ok")
+                    and "diversity" in ratings[target]]
+            if sets:
+                semantic.append(f"| {label} | {sum(row['judged_stories'] for row in sets)} | "
+                                f"{statistics.mean(row['diversity']['overall'] for row in sets):.2f} | "
+                                f"{statistics.mean(len(row['plot_groups']) for row in sets):.2f} |")
             valid = [row for row in rows if row["final"]["ok"]]
             average = lambda key: f"{statistics.mean(row[key] for row in valid):.1f}" if valid else "-"
             median = lambda key: f"{statistics.median(row[key] for row in valid):g}" if valid else "-"
             raw = str(sum(row["raw_runnable"] is True for row in rows)) if rows and all(row["raw_runnable"] is not None for row in rows) else "-"
             score = f"{statistics.mean(scores):.2f}" if scores else "-"
-            weighted = [row.get("weighted_score") for row in rows]
-            composite = f"{statistics.mean(weighted):.2f}" if len(weighted) == len(jobs) and all(value is not None for value in weighted) else "-"
+            composite_value = dataset_scores.get(label, {}).get("score")
+            composite = f"{composite_value:.2f}" if composite_value is not None else "-"
             fields = [label, len(jobs), raw,
                       sum(row["repair_accepted"] for row in rows), len(valid),
                       sum(row["verify"]["ok"] for row in rows), sum(row["standalone"]["ok"] for row in rows),
@@ -451,6 +470,19 @@ def report(names: list[str]) -> str:
                              f"{median('exact_unique')} / {median('skeleton_unique')} | {' / '.join(ratios)} | "
                              f"{average('mean_story_words')} / {average('mean_story_qa_words')} |")
         lines += ["", *diversity]
+        if len(semantic) > 2:
+            lines += ["", *semantic, "", "Semantic diversity is a separate small-sample diagnostic, not an extra factor in the geometric score."]
+        if dataset_scores:
+            lines += ["", "| Scoring Pool | Usable Unique Yield | Qualified Quality | Compression Retention | Quality-Rejected Worlds |",
+                      "| --- | ---: | ---: | ---: | ---: |"]
+            for label, values in dataset_scores.items():
+                number = lambda key, fmt: format(values[key], fmt) if values.get(key) is not None else "-"
+                lines.append(f"| {label} | {number('yield_fraction', '.1%')} | {number('quality_mean', '.2f')} | "
+                             f"{number('diversity', '.2%')} | {values['quality_rejected_worlds']} |")
+            lines += ["", f"Scoring protocol: {dataset_scores['ALL']['policy']['protocol']}; quality floor: {dataset_scores['ALL']['policy']['minimum_quality']:g}/9. "
+                      "Arm and whole-trial scores recompress their own pooled stories; they are not averages of per-world scores."]
+        elif completed:
+            lines += ["", "This older evaluation has no geometric scores. Its original weighted scores remain in checks.json; they are not relabeled or overwritten."]
         if completed and (completed[-1].parent / "pooled/compression.json").exists():
             pooled = read(completed[-1].parent / "pooled/compression.json")
             stats = pooled["variants"]["all_shuffled"]
@@ -460,8 +492,53 @@ def report(names: list[str]) -> str:
                           f"XZ/input {stats['ratio']:.2%}; {stats['bytes_per_story']:.1f} compressed bytes/story. "
                           "Explicit 64 MiB LZMA2 dictionary; grouped, deduplicated, and skeleton controls are retained."]
         lines += ["", f"`{name}`: seed {config['seed']}, {config['model']}, reasoning {config['reasoning_effort']}, "
-                  f"Flex; judge {JUDGE}; {config['local_samples']} local samples requested per world.", ""]
+                  f"example set {config.get('example_set', 'legacy/unversioned')}; "
+                  f"Flex; judge {settings.get('judge', config.get('judge'))}; "
+                  f"{settings.get('judge_protocol', quality.PROMPT_PROTOCOL)}; "
+                  f"{settings.get('judge_stories', 1)} judge stories/world; {config['local_samples']} local samples requested per world.", ""]
+        if pending_judge_upgrade:
+            lines += [f"No completed evaluation yet. The saved plan above predates the judge upgrade; the next evaluation uses "
+                      f"{JUDGE}, {set_quality.PROTOCOL}, {set_quality.DEFAULT_COUNT} stories/world and records new settings.", ""]
+        cost_path = completed[-1].parent / "costs.json" if completed else None
+        if cost_path and cost_path.exists():
+            for label, cost in read(cost_path).items():
+                lines.append(f"{label}: returned-usage estimate ${cost['usd_low']:.4f}-${cost['usd_high']:.4f}; "
+                             f"{cost['unpriced_requests']} requests unpriced. Generation is a one-time cost; each explicit re-evaluation adds a judge pass.")
     return "\n".join(lines) + "\n"
+
+
+def budget(name: str, *, generation_output=4200, judge_input=3950, judge_output=1014) -> dict:
+    if min(generation_output, judge_input, judge_output) < 1:
+        raise ValueError("token estimates must be positive")
+    _, config = load_trial(name)
+    requests = [row["body"] for arm in config["arms"] for row in jsonl(ROOT / arm["requests"])]
+    if any(body.get("service_tier") != "flex" for body in requests):
+        raise ValueError("this budget command assumes frozen Flex requests")
+    def generation_cost(outputs):
+        values = [trial_cost.estimate(body["model"], max(1, round(len(json.dumps(body["input"])) / 4)), count)
+                  for body, count in zip(requests, outputs)]
+        if not all(value["known"] for value in values):
+            raise ValueError("no budget rates for this generation model")
+        return {key: sum(value[key] for value in values) for key in ("usd_low", "usd_high")}
+    generation = generation_cost([generation_output] * len(requests))
+    capped_generation = generation_cost([body["max_output_tokens"] for body in requests])
+    judge = trial_cost.estimate(JUDGE, judge_input, judge_output)
+    judge_cap = trial_cost.estimate(JUDGE, judge_input, set_quality.MAX_OUTPUT_TOKENS)
+    if not judge["known"] or not judge_cap["known"]:
+        raise ValueError("no budget rates for this judge input size")
+    for value in (judge, judge_cap):
+        for key in ("usd_low", "usd_high"):
+            value[key] *= len(requests)
+    return dict(worlds=len(requests), generation=generation, judge=judge,
+                total_usd_low=generation["usd_low"] + judge["usd_low"],
+                total_usd_high=generation["usd_high"] + judge["usd_high"],
+                output_caps_scenario_usd=capped_generation["usd_high"] + judge_cap["usd_high"],
+                assumptions=dict(service_tier="flex", pricing_date=trial_cost.PRICING_DATE,
+                    pricing_url=trial_cost.PRICING_URL, generation_input="frozen input JSON characters / 4, approximate",
+                    generation_output_tokens=generation_output, judge_input_tokens=judge_input,
+                    judge_output_tokens=judge_output, judge_model=JUDGE, judged_stories_per_world=set_quality.DEFAULT_COUNT,
+                    caching="no reads assumed; range covers zero to all input being cache writes",
+                    warning="Estimate, not a spend limit. Output-cap scenario still assumes estimated inputs. Excludes retries and further evaluations."))
 
 
 def archive(name: str) -> Path:
@@ -483,7 +560,8 @@ def build_parser():
     plan = commands.add_parser("prepare", help="freeze requests and sources; no API calls")
     plan.add_argument("name")
     plan.add_argument("--seed", type=int, required=True)
-    plan.add_argument("--examples", nargs="+", choices=list(canonical_examples.CANONICAL_EXAMPLES))
+    plan.add_argument("--examples", nargs="+", choices=list(canonical_examples.EXAMPLE_SOURCES),
+                      help="explicit reference names, including retired examples; default: current seven-world canonical set")
     plan.add_argument("--per-example", type=int, default=3)
     plan.add_argument("--model", default="gpt-5.6-luna")
     plan.add_argument("--reasoning-effort", default="none", choices=["none", "low", "medium", "high", "xhigh"])
@@ -491,6 +569,7 @@ def build_parser():
     plan.add_argument("--local-samples", type=int, default=1000)
     plan.add_argument("--timeout", type=float, default=120)
     plan.add_argument("--prompt-addendum", type=Path)
+    plan.add_argument("--minimum-quality", type=float, default=dataset_score.DEFAULT_MINIMUM_QUALITY)
     run = commands.add_parser("run", help="generate pending requests, then repair and evaluate once")
     run.add_argument("name")
     run.add_argument("--generation-only", action="store_true")
@@ -500,6 +579,11 @@ def build_parser():
     evaluate_parser.add_argument("--skip-quality", action="store_true")
     compare = commands.add_parser("report", help="compare trials without API calls")
     compare.add_argument("names", nargs="+")
+    cost = commands.add_parser("cost", help="estimate one trial's generation and ten-story Terra judge cost; no API calls")
+    cost.add_argument("name")
+    cost.add_argument("--generation-output-tokens", type=int, default=4200)
+    cost.add_argument("--judge-input-tokens", type=int, default=3950)
+    cost.add_argument("--judge-output-tokens", type=int, default=1014)
     commands.add_parser("archive", help="preserve data in an LFS-ready archive").add_argument("name")
     return parser
 
@@ -507,7 +591,7 @@ def build_parser():
 def evaluation_exit_code(output: Path, *, skip_quality: bool) -> int:
     checks = read(output / "checks.json")
     return int(any(not row["final"]["ok"] or not row["verify"]["ok"] or
-                   (not skip_quality and row["weighted_score"] is None) for row in checks))
+                   (not skip_quality and row.get("geometric_score", row.get("weighted_score")) is None) for row in checks))
 
 
 def main() -> int:
@@ -518,6 +602,11 @@ def main() -> int:
         print(f"Prepared {len(config['arms']) * config['per_example']} requests: {relative(directory)}. No API calls made.")
     elif args.command == "report":
         print(report(args.names))
+    elif args.command == "cost":
+        if min(args.generation_output_tokens, args.judge_input_tokens, args.judge_output_tokens) < 1:
+            raise ValueError("token estimates must be positive")
+        print(json.dumps(budget(args.name, generation_output=args.generation_output_tokens,
+                                judge_input=args.judge_input_tokens, judge_output=args.judge_output_tokens), indent=2))
     elif args.command == "archive":
         with trial_lock(trial_path(args.name)):
             print(relative(archive(args.name)))

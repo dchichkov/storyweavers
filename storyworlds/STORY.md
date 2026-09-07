@@ -38,6 +38,9 @@ TinyStories-style domain.
 - Avoid event-log prose, raw fact fragments, generic endings, missing endings,
   and weak turns.
 - Keep prose child-facing, concrete, and authored.
+- Every sample should include a brief back-and-forth exchange of spoken dialogue
+  between characters. Let their words change what someone knows, decides, or
+  does. Inner monologue, quoted notes, and narrator summaries do not count.
 - Never leak internal ids, raw meter/debug language, unresolved template fields,
   doubled articles, or scaffold phrases into story text or child-facing QA.
 - Story-grounded answers should be full natural-language explanations.

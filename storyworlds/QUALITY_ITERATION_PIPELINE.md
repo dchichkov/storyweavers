@@ -2,8 +2,10 @@
 
 This loop is for improving the storyworld prompt and the cheap scripted repair
 layer without using an LLM repair pass. Generation now defaults to
-`gpt-5.6-luna` with reasoning effort `none`; the quality judge remains
-`gpt-5.4-mini`. Older Mini batch examples below are retained for reproducibility.
+`gpt-5.6-luna` with reasoning effort `none`. Canonical prompt trials now use
+`gpt-5.6-terra` to judge ten stories together per world. Both use Flex.
+The older direct-service pipeline and single-story Mini judge below are
+retained for reproducibility; their historical ratings are never overwritten.
 
 The loop has two distinct phases:
 
@@ -19,6 +21,8 @@ Raise downstream storyworld quality while keeping the generated scripts runnable
 auditable, and close to the original prompt. The main scorecard is:
 
 - `openai_story_quality.py`: story quality averages and low-scoring examples.
+- `openai_world_set_quality.py`: ten-story Terra quality plus semantic diversity
+  for canonical trials, keeping individual ratings and plot-group evidence.
 - `qa_static_check.py`: runnable count, static QA duplication, and script errors.
 - Manual reading: generated stories, prompts, scripts, and report excerpts.
 
@@ -88,17 +92,27 @@ prompt, repair, and quality changes without regenerating the same batch.
 `prompt_trials.py` replaces the one-off experiment drivers for controlled
 comparisons. The starting matrix is **seven source examples, each generating
 the same three tasks: 21 worlds per prompt variant**. Each request includes
-only its own arm's example, not all seven examples concatenated together.
+only its own arm's example, not all seven examples concatenated together. The
+current reference set is **`dialogue_v2`**, selected on 2026-09-07 before prompt
+optimization. This deliberately replaces the original seven-world matrix;
+historical evaluations remain attached to their original source snapshots.
 
 | Name | Reference | Purpose / Caveat |
 | --- | --- | --- |
 | `puddles` | Upgraded bundled Puddles | State-driven problems, compatible responses, trace-grounded QA |
 | `pirates` | Bundled Pirates | Existing simulation / ASP reference |
-| `quesadilla` | Repaired bedtime mystery | Low-diversity control; source has few normalized templates |
-| `thud` | Repaired rhyming teamwork | Rhyming control; can encourage authored-story/template copying |
-| `dining` | Repaired dining-room detective | Broader normalized variation in the earlier source audit |
 | `garnet` | Repaired humorous tall tale | Stronger prose in the earlier five-world pilot |
-| `grocery` | Repaired grocery-store moral | Broader variation, but still inspect causal endings and QA |
+| `library` | Library Words | Clarify an ambiguous request; transfer knowledge before acting |
+| `cart` | One Cart, Two Plans | Negotiate different needs, agree, and complete both deliveries |
+| `bridge` | Bridge Builders | Discuss a physical fault, revise the design, test the repair |
+| `nell` | Nell and the Dragon v2 | Question ownership; state-driven resolution; independently seeded dialogue/prose |
+
+Puddles stays at its latest source, unchanged. Quesadilla, Thud, Dining, and
+Grocery are retired from the default matrix but remain explicit named choices
+for historical/custom trials. No old score is transferred to a replacement.
+The dialogue references have small plot spaces: their inclusion prioritizes
+what they demonstrate to the generator, not their exact-string yield. See the
+[curation and local verification record](batches/canonical_dialogue_v2_20260907.report.md).
 
 `canonical_examples.py` is the single registry of tracked source paths. No
 extra copies become competing editable canon. `prepare` snapshots the selected
@@ -106,30 +120,39 @@ sources, contract, helper modules, factory, repair, judge, and addendum. It
 stores **every complete request body before any API call**, with SHA-256
 fingerprints. Generation submits those bodies unchanged even if the working
 prompt/example files are subsequently edited.
+New manifests record `example_set=dialogue_v2` for the full current matrix and
+`custom` for explicit subsets/mixes; old unversioned manifests remain readable.
+`--example-worlds all` in the standalone factories still means Puddles + Pirates.
 
 ```bash
-./.venv/bin/python storyworlds/prompt_trials.py prepare baseline --seed 2026090605
-OPENAI_API_KEY="$(cat .API_KEY)" ./.venv/bin/python storyworlds/prompt_trials.py run baseline
+./.venv/bin/python storyworlds/prompt_trials.py prepare dialogue_trial_01 --seed 2026090605
+./.venv/bin/python storyworlds/prompt_trials.py cost dialogue_trial_01
+OPENAI_API_KEY="$(cat .API_KEY)" ./.venv/bin/python storyworlds/prompt_trials.py run dialogue_trial_01
 
 # Change only the addendum; task seeds and reference sources stay matched.
-./.venv/bin/python storyworlds/prompt_trials.py prepare causal_v1 --seed 2026090605 \
+./.venv/bin/python storyworlds/prompt_trials.py prepare dialogue_causal_01 --seed 2026090605 \
   --prompt-addendum storyworlds/prompts/causal_v1.md
-OPENAI_API_KEY="$(cat .API_KEY)" ./.venv/bin/python storyworlds/prompt_trials.py run causal_v1
-./.venv/bin/python storyworlds/prompt_trials.py report baseline causal_v1
+OPENAI_API_KEY="$(cat .API_KEY)" ./.venv/bin/python storyworlds/prompt_trials.py run dialogue_causal_01
+./.venv/bin/python storyworlds/prompt_trials.py report dialogue_trial_01 dialogue_causal_01
 ```
 
 The addendum filename above is illustrative: create the proposed prompt change
 before preparing that trial. Do not alter the example code, reasoning setting,
-and addendum in the same experiment. `--examples puddles grocery` selects a
+and addendum in the same experiment. `--examples puddles library nell` selects a
 subset; `--per-example 3`, `--local-samples 1000`, and `--concurrency 5` are
 defaults. Concurrency is global, not multiplied by seven arms. `--model` and
-`--reasoning-effort` are explicit generation overrides; the judge remains
-`gpt-5.4-mini`, using the existing calibrated story-quality protocol on direct
-OpenAI/Flex. Each arm's task index uses the same local/quality seed (777 + index).
-The judge rates one story per generated world; the 1,000 local samples are for
-diversity and deterministic checks, not 1,000 paid judgments.
+`--reasoning-effort` are explicit generation overrides. The canonical judge is
+`gpt-5.6-terra`, reasoning `none`, direct OpenAI/Flex, protocol
+`story_set_quality_v1`. Each arm's task index uses the same local/selection seed
+(777 + index). It reads **ten randomly selected stories together per world**
+from the retained local samples: 21 calls, 210 judged stories per full trial.
+The 1,000 local samples measure large-pool diversity and deterministic checks.
+This is a new judge protocol, not a directly interchangeable Mini score.
+Re-evaluating an older prepared trial explicitly uses the current Terra set
+protocol and logs it in the new evaluation's settings; frozen generation
+requests and old evaluation results stay untouched.
 
-### Diversity And Weighted Score
+### Diversity And Geometric Score
 
 For each generated world, request 1,000 stories with QA in one JSON run. Keep
 returned counts even when a script caps its output or returns fewer stories.
@@ -152,36 +175,80 @@ Store one `samples.jsonl` per world, not one Markdown document per story.
   replay under two `PYTHONHASHSEED` values, static QA duplication/source hits,
   and mean story / story+QA word counts.
 
-Initial **weighted score**, on a 0-100 scale:
+`dataset_score.py` replaces the initial additive weighted score with protocol
+`quality_diversity_geometric_v1`. It scores each arm and the complete trial from
+their own pooled corpus, **not by averaging per-world scores**:
 
 ```text
-100 * (0.60 * Mini_overall/9
-     + 0.20 * exact_unique/requested
-     + 0.15 * skeleton_unique/requested
-     + 0.05 * min(1, lzma_all_compressed_bytes/lzma_all_input_bytes))
+score = 100 * Y * sqrt(Q * D)
+
+Y = usable distinct stories / requested stories
+Q = mean assigned world quality of usable distinct stories / 9
+D = min(1, compressed(pooled usable distinct stories)
+           / sum(compressed(each usable distinct story independently)))
 ```
 
-Runtime or own-verify failure makes the score zero. Runnable, verifying worlds
-without a successful judge rating are unscored, not excluded from the trial
-average. Arm and overall weighted means are shown only when every planned world
-has a score. The Mini-only average remains conditional on successful ratings,
-with the rated/planned denominator beside it. Raw runnable count, accepted
-repairs, and final runnable count are separate columns.
+**Usable** means the source world passes runtime and its own `--verify`, and
+its mean judged overall rating is at least **6/9**. Set `prepare --minimum-quality 6` to change
+that explicit policy; the actual policy and code hash are recorded per
+evaluation. Failed or below-floor worlds contribute no text, but their
+requested slots stay in the denominator. Missing ratings on otherwise usable
+worlds leave the pool unscored, rather than silently dropping those worlds.
 
-Weights are **provisional**, not a validated training-utility metric. Quality
-dominates; compression gets only 5% because nonsense, long prose, and arbitrary
-tokens can resist compression. Inspect all components and representative
-stories before promoting a prompt. A green `--verify` is only the generated
-script's own check, not an independent proof of semantics. Confirm gains on
-fresh seed tasks after optimizing the fixed matrix.
+Exact duplicate strings count once across the whole scoring pool. If the same
+string is assigned different qualifying source-world ratings, use the lowest.
+Each unique story inherits its world's measured quality estimate: the mean of
+the ten individual overall ratings, not a judgment of every variant. `Q`
+averages those assigned estimates. Cap each world's contribution
+at the requested sample count, so overproducing cannot inflate the score.
+
+`D` measures **cross-story compression retention**, not compressed/raw ratio.
+The denominator compresses each story independently, accounting for some
+ordinary language redundancy within a story. The numerator allows reuse across
+stories. Compress the same UTF-8 JSON story-string lines using raw LZMA2,
+preset 6; subtract empty-stream bytes to avoid per-file container overhead.
+The pooled dictionary is 64 MiB. An independent story fitting in 64 KiB uses
+that smaller dictionary, which can still retain its entire input; larger
+stories use 64 MiB. Sort and shuffle pooled text with seed 0. Independent
+compression sizes are cached. Params, QA, traces, and filenames never enter
+this calculation.
+
+Exact duplicate loss is penalized by `Y`; repetition among surviving distinct
+stories is penalized by `D`. Repeating a returned story cannot increase the
+score. Quality and compression retention have equal geometric weight: doubling
+either, with the other components held fixed, multiplies the score by sqrt(2).
+Low quality or diversity cannot be offset by merely adding the other score.
+
+Hypothetical examples, not measured quality results:
+
+| Quality | Retention D | Usable Yield Y | Score |
+| ---: | ---: | ---: | ---: |
+| 8/9 | 25% | 100% | 47.14 |
+| 8/9 | 4% | 100% | 18.86 |
+| 8/9 | 25% | 80% | 37.71 |
+| 5/9 | 90% | 0%: below floor | 0 |
+
+Keep the raw quality average, exact/skeleton counts, all-text XZ ratios, and
+runtime/repair counts visible. `dataset_scores.json` stores yield, quality,
+retention, rejected/unrated counts, policy, and composite for each arm and ALL.
+Old evaluations are not rescored or overwritten; old `weighted_score` fields
+remain historical and are not relabeled as geometric scores.
+
+This is an **optimization index**, not a calibrated probability of usefulness
+or a count of independent plots. Keep planned corpus size, sampling, judge,
+and compression settings matched across trials. Ordinary shared language also
+affects retention; a TinyStories control is still useful. A green `--verify`
+is only the generated script's own check, and even ten judged stories can miss
+bad variants. Confirm promising changes on fresh tasks and broader judging.
+The set-level semantic-diversity rating is reported separately for now: it is
+not silently multiplied into this established compression-based formula.
 
 ### Pooled Compressibility Review
 
-The 5% per-world coefficient above is an initial placeholder, **not a settled
-optimization objective**. Following the first canonical audit, pooled corpus
-compression is a primary diversity diagnostic alongside quality. Review and
-calibrate it before choosing final weights; a per-world average misses the
-cross-world question.
+The original 5% per-world compression coefficient is superseded by the
+geometric score above. The all-text corpus measurements below remain separate
+diagnostics; they include rejected worlds and repeated stories, while the
+score's compression component uses only qualifying, distinct text.
 
 Every evaluation also writes **one pooled archive of all returned stories** in
 `eval_NNN/pooled/all_shuffled.stories.jsonl.xz`: up to 21,000 stories for the
@@ -217,7 +284,208 @@ input. Exact dedup barely changed this (2.87%). Thus exact uniqueness greatly
 overstates new text information in this sample. The word-order-destroyed
 control compressed to 28.44%, showing why compression needs a prose-quality
 gate. A same-size natural-story control is still needed before setting an
-absolute accept/reject threshold. The paid 21-world baseline has not run.
+absolute accept/reject threshold. The later [paid dialogue-v2 generated baseline](batches/dialogue_v2_baseline_20260907.report.md)
+returned 20,915/21,000 stories and compressed them together to 1.94% of input;
+exact dedup left 11,637 texts, still compressing to 2.24% of input.
+
+### Judge Cost And Coverage
+
+The canonical judge selects **10 raw sample positions per world**, uniformly
+without replacement with a saved seed. Do not dedup first or pick the most
+different stories. Preserve identical stories at different positions. A short
+pool contributes only the available positions; fewer than two leaves the world
+unrated. Judge only runtime/verify-passing worlds. Failed slots remain in the
+score denominator, but do not spend judge calls on them.
+
+One Terra call returns five 0-9 scores per story (coherence, style, grammar,
+storytelling, overall), a short note per story, and set-level 0-9 diversity
+scores (premise, causal path, ending, language, overall). It partitions all
+selected IDs into causal plot groups, ignoring cosmetic name/color/object
+swaps, with a short summary per group. Missing ratings, duplicate/unknown IDs,
+invalid scores, incomplete responses, and invalid partitions fail validation.
+Individual quality and cross-story repetition are separate judgments.
+The original calibration story and ratings remain in the prompt, but the
+model/set context changed, so do not directly pool these scores with Mini.
+
+The new helper is `openai_world_set_quality.py`. It preserves selected source
+indices, pool hash, exact requests, source fingerprints, judge-module snapshots, raw responses,
+parsed ratings, evidence, usage and actual model/tier. It uses a 900-second
+timeout and **no automatic retries or standard-tier fallback**. A failed or
+interrupted paid attempt is retained for inspection. Use a fresh output path
+for any deliberate retry. `run` itself never silently pays for a second eval.
+
+To judge the seven reference worlds' already saved samples, without generating
+new scripts or resampling worlds:
+
+```bash
+# Add --dry-run and a different --out path to save requests without API calls.
+OPENAI_API_KEY="$(cat .API_KEY)" ./.venv/bin/python storyworlds/openai_world_set_quality.py \
+  --compression-review storyworlds/batches/canonical_compression_20260907_v2 \
+  --out storyworlds/batches/canonical_set_quality_<new-name>
+```
+
+Ten stories provide a finer semantic diagnostic, not certification of all
+1,000 samples or diversity across different worlds. For example, independent
+sampling has only about a 40% chance of hitting a failure that occurs 5% of the
+time (1 - 0.95^10). Keep the local compression, duplicates, and runtime checks.
+
+#### Cost Per 21-World Attempt
+
+Pricing checked 2026-09-07, USD per million tokens, short context:
+
+| Model / Tier | Input | Cached Input | Cache Write | Output |
+| --- | ---: | ---: | ---: | ---: |
+| Luna / Flex | $0.10 | $0.01 | $0.125 | $0.60 |
+| Terra / Flex | $1.00 | $0.10 | $1.25 | $6.00 |
+
+Source: [OpenAI pricing](https://developers.openai.com/api/docs/pricing).
+[Flex](https://developers.openai.com/api/docs/guides/flex-processing) trades
+latency and availability for the lower rate; it is not a lower-quality model.
+Both generation and judging explicitly request Flex. No standard-tier fallback
+is configured. Generation retains the factory's existing SDK transport retries;
+the new judge disables retries so an uncertain paid call is not resubmitted.
+
+The 25 recent Luna/repaired-example generations averaged **10,670 input and
+4,123 output tokens** each. Scaling those observed responses to 21 worlds is
+roughly **$0.08**, including reported cache-write tokens. Canonical prompts vary
+in size, so the preflight command uses the actual frozen request text:
+
+```bash
+./.venv/bin/python storyworlds/prompt_trials.py cost canonical_baseline_20260907
+# Override planning assumptions after measuring the new judge.
+./.venv/bin/python storyworlds/prompt_trials.py cost canonical_baseline_20260907 \
+  --generation-output-tokens 4200 --judge-input-tokens 3950 --judge-output-tokens 1014
+```
+
+The completed [original seven-world reference baseline](batches/canonical_set_quality_20260907.report.md)
+used 27,652 input and 7,098 output tokens across seven Terra calls, costing
+**$0.07714775** including cache writes. The calculator now defaults to the
+rounded observed judge means: **3,950 input + 1,014 output tokens per call**.
+All seven calls used Flex, with no reasoning tokens or retries.
+
+For the original prepared 21-world trial, with 4,200 output tokens/generated script and
+those measured judge-token assumptions:
+
+| Stage | Calls | Estimated Cost |
+| --- | ---: | ---: |
+| Luna generation | 21 | $0.082-$0.090 |
+| Terra judging, 210 stories | 21 | $0.211-$0.231 |
+| Repair, 21,000 local samples, dedup, LZMA | local | $0 API |
+| Total | 42 | **$0.293-$0.321** |
+
+Scaling actual recent Luna and Terra responses gives **$0.3114**. Budget
+roughly **$0.32 typical, $1 with headroom**, not a hard spending cap.
+The range above covers unreported cache writes, not all uncertainty. Input
+estimation is frozen input JSON characters / 4, not exact API tokenization;
+judge counts are measured on reference worlds, whose story lengths may differ
+from newly generated worlds. The earlier unmeasured planning estimate was
+$0.435-$0.474 using 6,000 input and 1,800 output judge tokens per request.
+At every request's current output cap (32k generation, 4k judge), the same
+estimated inputs would cost about **$1.05**, before retries. Failed/truncated
+responses can still cost money. A quality-only re-evaluation pays just the
+judge portion, not another generation batch.
+
+Those projections predate `dialogue_v2`. Its first live 21-world run now has
+returned-usage estimates of **$0.081549 generation + $0.210983 judging =
+$0.292532 total**. All 42 returned tiers were Flex. Ten stories from each world
+were judged exactly once: 140 after automatic repair, then 70 newly recovered
+stories; unchanged ratings were reused. See the [full report](batches/dialogue_v2_baseline_20260907.report.md)
+for token counts, manual repair caveats, and the retained batch archive.
+
+`trial_cost.py` prices actual returned model/tier/usage, separates ordinary
+input from cache reads and writes, and includes billed reasoning in total
+output tokens. Missing cache-write breakdown produces a lower/upper estimate;
+missing usage or unknown model/tier is marked unpriced, never presumed free.
+Completed trial `costs.json` separates one-time generation from this judge pass.
+These are usage estimates, not invoice reconciliation or account-wide totals.
+
+#### Baseline Calibration Findings
+
+The original seven canonical references were judged on ten random stories each; all 70
+were also read manually before examining Terra's ratings. Mean quality was
+**7.89/9**, semantic diversity **3.29/9**, and the pooled geometric score
+**19.88/100** on 6,596 distinct stories out of 7,000 requested. All source
+fingerprints matched and all seven sources passed a fresh own `--verify`.
+This reference calibration is distinct from the later 21-world Luna
+generation trial.
+These are historical results for Puddles/Pirates/Quesadilla/Thud/Dining/Garnet/
+Grocery, not ratings for the later `dialogue_v2` reference set.
+
+The broad semantic ranking made sense: Garnet scored quality/diversity
+**8.9/5**, Quesadilla **8/1**. But quality scores missed concrete continuity
+defects, and plot-group counts used inconsistent granularity. Quesadilla had
+six minor reason-based groups despite its justified diversity score of one.
+Treat plot groups as inspectable evidence, not a comparable numeric objective.
+
+The compression-based composite placed Pirates/Puddles ahead of Garnet and
+penalized Thud's 600/1000 yield. This measures retained text information and
+output coverage, not just storytelling or causal diversity. Keep its components
+and Terra's semantic scores visible; do not optimize only the composite yet.
+The baseline prompt/formula is unchanged. Pin the manual failures and matched
+corrected controls before trying a new judge prompt. Details and sample IDs
+are in the linked reference-baseline report.
+
+#### First Dialogue-V2 Generated Baseline
+
+**Post-baseline prompt change:** `custom_tool_python_v11` makes a brief spoken
+back-and-forth exchange mandatory in each sample via the shared `STORY.md`
+contract, regardless of reference or sampled features. Speech should change
+knowledge, decisions, or actions; inner thoughts and quoted notes do not count.
+This is prompt guidance, not a newly implemented semantic validation gate.
+The feature sampler and matched seeds are unchanged. The completed baseline
+used `custom_tool_python_v10`; its frozen requests, ratings, and source snapshots
+were not rebuilt. A future trial must use a fresh name to measure this change.
+
+The [completed 21-world trial](batches/dialogue_v2_baseline_20260907.report.md)
+uses the same three tasks in each of seven arms, no addendum, and the unchanged
+score formula. Raw sampling passed 11/21; automatic repairs recovered three;
+seven needed separately retained manual patches. All 21 needed a nested import
+path correction for standalone execution. The original automated `eval_001`
+remains unchanged; `manual_001` holds assisted recovery and provenance.
+
+Final means: **quality 6.41/9, semantic diversity 1.19/9**. Thirteen worlds meet
+the mean-quality floor; their 7,135 exact unique texts yield a **6.26/100**
+geometric score. Nell leads quality at 7.77/9, Garnet leads semantic diversity
+at 2.67/9. With three tasks per arm, these are exploratory comparisons.
+Dialogue did not transfer reliably: Cart has sustained exchanges, while Nell
+outputs often have little or no direct dialogue. Quote counts include thoughts,
+chants, and notes, so they are diagnostic rather than a conversation score.
+
+Read one preselected story plus QA from each generated world before inspecting
+ratings. The judge catches major prose defects and repeated plots, but misses
+some clue/continuity errors. It does not receive QA: object-repr leakage and
+answers contradicting prose remain training blockers despite green self-checks.
+
+Known pipeline gaps exposed by this run, not changed mid-baseline:
+
+- The sampler injects `PYTHONPATH`; all 21 automatic standalone CLI checks fail
+  at the deeper trial directory. Standalone/hash replay are recorded but are
+  not currently part of the score gate. Require them before accepting a future
+  trial as independently runnable.
+- Puddles/nose silently deduplicates its own 1,000 draws to 915. Do not pad or
+  hide the shortfall; a uniform sample from this pool is not a uniform sample
+  of original draws. Enforce raw sampling for the next trial.
+- Pin placeholder, doubled-article, object-repr, clue/payoff, and grounded-QA
+  cases before optimizing the prompt or treating the composite as sufficient.
+
+For manual recovery, snapshot post-automatic sources first and retain each
+failed check attempt. Reuse old ratings only after proving the full local
+sample pools unchanged, retaining source hashes and the originating judge run.
+Judge only newly recovered/changed worlds within the authorized sample budget.
+This batch verified equality for all 14 old pools and judged seven new pools;
+it did not pay to judge all 21 a second time. The batch-local recovery driver,
+seven repair regression tests, and analysis helper are in the retained archive.
+
+#### Historical Mini Cost
+
+On 2026-09-07, the 20 final repaired-example ratings used 13,297 input tokens
+and 640 output tokens, no cached tokens, served on Mini/Flex. At the documented
+standard Mini rates of $0.75/$4.50 per million input/output tokens and Flex's
+Batch-rate discount, this estimates **$0.00643 total**, or **$0.000321 per
+world**. This is a token-based estimate, not an account billing reconciliation.
+See [Mini pricing](https://developers.openai.com/api/docs/models/gpt-5.4-mini),
+[Flex pricing policy](https://developers.openai.com/api/docs/guides/flex-processing),
+and [Batch discount](https://developers.openai.com/api/docs/guides/batch).
 
 ### Artifacts And Recovery
 
@@ -233,6 +501,10 @@ scripts live in `storyworlds/worlds/prompt_trials/<name>/<example>/`.
   checks, repair outcomes, exact judge inputs, quality JSONL, summary, report.
   Repairs use `repair_batch_output.repair_source`; a failed local repair is
   rolled back. No LLM repair is involved.
+- `eval_NNN/set_judge/`: frozen ten-story requests and pool hashes, request
+  ledger, raw responses, quality/diversity ratings and plot groups, report.
+- `eval_NNN/costs.json`: one-time generation and this evaluation's judge costs
+  estimated from returned usage, with missing-usage counts.
 
 ```bash
 # Stage generation and evaluation separately.
@@ -252,7 +524,7 @@ before explicitly preparing any replacement. SDK transport retries remain the
 service factory's existing behavior.
 
 Repeated `run` does not launch a second judge pass. Use `evaluate` explicitly;
-each invocation makes a new evaluation directory and can spend on Mini again.
+each invocation makes a new evaluation directory and can spend on Terra again.
 Reports show the latest completed evaluation; incomplete evaluations remain
 on disk. Exit status 1 can mean the trial finished with failed worlds or missing
 ratings, not necessarily that the whole run crashed. Read the report before

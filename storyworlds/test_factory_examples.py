@@ -8,6 +8,7 @@ import tempfile
 import unittest
 from unittest.mock import patch
 
+import canonical_examples
 import openai_batch_world_factory as batch
 import openai_service_world_factory as service
 import openai_service_world_pipeline as pipeline
@@ -35,6 +36,43 @@ class FactoryExamplesTest(unittest.TestCase):
     def test_default_selection_unchanged(self):
         self.assertEqual(batch.example_world_paths("puddles"), (batch.WORLDS_DIR / "puddles.py",))
         self.assertEqual(batch.example_world_paths(), batch.EXAMPLE_WORLD_PATHS)
+
+    def test_dialogue_required_without_dialogue_seed_feature(self):
+        original_job = asdict(self.job)
+        for mode in batch.EMIT_MODES:
+            with self.subTest(mode=mode):
+                prompt = batch.build_storyworld_prompt(self.job, emit_mode=mode,
+                                                      example_files=[self.relative])
+                self.assertIn("Every sample should include a brief back-and-forth exchange of spoken dialogue", prompt)
+                self.assertIn("Inner monologue, quoted notes, and narrator summaries do not count.", prompt)
+                self.assertIn("current contract above where an older example differs.", prompt)
+        self.assertEqual(asdict(self.job), original_job)
+        self.assertNotIn("Dialogue", self.job.features)
+
+    def test_contract_changes_invalidate_prompt_cache(self):
+        before = batch.prompt_cache_key(example_files=[self.relative])
+        read = batch.read_prompt_file
+
+        def changed_contract(path):
+            content = read(path)
+            return content + "\nNew contract requirement." if path == batch.STORY_CONTRACT_PATH else content
+
+        with patch.object(batch, "read_prompt_file", side_effect=changed_contract):
+            self.assertNotEqual(before, batch.prompt_cache_key(example_files=[self.relative]))
+
+    def test_current_and_retired_names_resolve_in_all_three_clis(self):
+        for name, source in canonical_examples.EXAMPLE_SOURCES.items():
+            with self.subTest(name=name):
+                self.assertEqual(batch.example_world_paths(name), (source,))
+                flags = ["--example-worlds", name]
+                self.assertEqual(batch.build_parser().parse_args(["prepare", *flags]).example_worlds, name)
+                args = service.build_parser().parse_args(flags)
+                body = service.request_body(args, self.job)
+                expected = batch.build_storyworld_prompt(self.job, example_worlds=name)
+                self.assertEqual(body["input"][0]["content"][0]["text"], expected)
+                pa = pipeline.build_parser().parse_args(flags)
+                self.assertEqual(pipeline.service_prompt(asdict(self.job), pa), expected)
+                self.assertIn(source.read_text(), expected)
 
     def test_cache_tracks_paths_and_content(self):
         first = batch.prompt_cache_key(example_files=[self.relative])

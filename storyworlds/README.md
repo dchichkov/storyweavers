@@ -29,33 +29,203 @@ not only unique strings or a passing ASP gate.
 ./.venv/bin/python storyworlds/test_puddles.py
 ```
 
+## Dialogue Examples
+
+Three standalone, hand-authored references put conversation at the center of
+the action:
+
+- [Library Words](worlds/library_words_dialogue.py): clarify an ambiguous request
+  and use what the other character says to recover a page, book, or shared reading.
+- [One Cart, Two Plans](worlds/one_cart_dialogue.py): negotiate conflicting needs,
+  agree on a workable plan, then actually deliver both loads.
+- [Bridge Builders](worlds/bridge_builders_dialogue.py): disagree, inspect a failed
+  design, explain a revision, and test the repaired bridge.
+
+[Read three complete stories with QA](DIALOGUE_SAMPLES.md). Each script has three
+core problems and two conversation approaches (`ask` or `guess`). Dialogue
+transfers character beliefs; domain actions change physical state; QA comes from
+the recorded events. These are conversation examples, not large independent
+plot spaces. The [local sampling audit](batches/dialogue_examples_20260907.report.md)
+includes dialogue counts, duplicate rates, and compression.
+
+```bash
+./.venv/bin/python storyworlds/worlds/library_words_dialogue.py --all --qa
+./.venv/bin/python storyworlds/worlds/one_cart_dialogue.py --problem gate --approach guess --qa
+./.venv/bin/python storyworlds/worlds/bridge_builders_dialogue.py --problem short --approach ask --trace --qa
+env PYTHONPATH=storyworlds ./.venv/bin/python -m unittest storyworlds/test_dialogue_worlds.py
+```
+
+The generation factory can use these by name through `--example-worlds library`,
+`cart`, or `bridge`, or through `--example-file <path>`. All three are now in the
+`dialogue_v2` canonical comparison below. The standalone factory default still
+means Puddles + Pirates. No generation or judge API was used to author or check
+these examples; their prior local audit remains historical, not a judged rating.
+
+## Nell and the Dragon
+
+[nell_and_the_dragon.py](worlds/nell_and_the_dragon.py) adapts the supplied
+Nell/dragon/magpie story. The default keeps Nell, the emerald, the brass button,
+and the promised payment in true stories. Short alternating dialogue drops
+redundant speaker tags while preserving speaker identities in the trace.
+
+The bird's preference, carrying capacity, the dragon's distance, visible teeth,
+and noise govern whether she takes an offer. Taking it does not return the
+jewel: she must carry it to the nest and install it before the dragon can catch
+the displaced jewel. Ownership and the intact nest/tree are checked at the end.
+The payment remains a promise, not a story falsely reported as already told.
+
+```bash
+# Faithful default adaptation, with grounded QA.
+./.venv/bin/python storyworlds/worlds/nell_and_the_dragon.py --qa
+
+# A different need changes which object works and why the jewel is discarded.
+./.venv/bin/python storyworlds/worlds/nell_and_the_dragon.py --need fasten --approach hasty --qa
+./.venv/bin/python storyworlds/worlds/nell_and_the_dragon.py --all --qa
+./.venv/bin/python storyworlds/worlds/nell_and_the_dragon.py --verify
+env PYTHONPATH=storyworlds ./.venv/bin/python -m unittest storyworlds/test_nell_and_the_dragon.py
+```
+
+`--need` selects `shine`, `fasten`, or `softness`; compatible dishes supply a
+button, a wire loop, or wool. `--approach hasty` adds a failed visit caused by the
+dragon advancing too soon. These are **six variants of one plot**, not six
+independent plots. `--all` holds names and jewel fixed; `-n` greater than one
+samples names, jewels, needs, and approaches reproducibly with `--seed`.
+An incompatible explicit `--solution` is rejected. The bird's preferences are
+fictional individual traits, not zoological claims about magpies.
+
+The [Terra/Flex protocol evaluation](batches/nell_dragon_quality_20260907.report.md)
+rated all ten sampled stories **9/9 overall**, but set diversity **1/9**.
+Only 72 of 1,000 story strings are distinct; the geometric dataset score is
+**1.45/100**. This is a strong prose reference with a deliberately small plot
+space, not a large training contribution.
+
+### Nell V2: State and Telling
+
+[nell_and_the_dragon_v2.py](worlds/nell_and_the_dragon_v2.py) is a separate
+prototype; the evaluated original above remains unchanged. [Four complete
+samples](NELL_V2_SAMPLES.md) compare two tellings of identical events, a nest
+repair, and an ownership discovery. The v1 judge score does **not** apply to v2.
+
+The bounded policy selects eligible actions from character knowledge and
+physical state. Questions establish the jewel's origin; observation reveals
+whether it is an ornament or a structural support. Materials may need fetching,
+polishing, or assembly. The four resolutions are an exchange, an explicit
+return request after the bird keeps both ornaments, a tested cooperative nest
+repair, and recognizing a gift that should remain with the bird.
+
+Prose is rendered separately from the recorded events. `--prose-seed` changes
+authored wording and complete dialogue exchanges, never ownership, actions,
+outcomes, or QA answers. There is no blind thesaurus replacement. `--voice`
+selects `plain`, `dry`, or `playful`; `--dialogue-level` selects `spare`,
+`balanced`, or `conversational`; `--detail-level` selects `compact`, `normal`,
+or `rich`. `--flourish-budget` caps optional embellishment blocks; compact
+suppresses them. Currently only two event types have such blocks, so a budget
+of five does not promise five additions. Essential dialogue and evidence remain
+even in spare mode; QA wording deliberately stays stable across retellings.
+
+```bash
+# Same world and events, different tellings.
+./.venv/bin/python storyworlds/worlds/nell_and_the_dragon_v2.py --world-seed 777 --prose-seed 1 --qa
+./.venv/bin/python storyworlds/worlds/nell_and_the_dragon_v2.py --world-seed 777 --prose-seed 2 --voice plain --dialogue-level spare --detail-level compact --flourish-budget 0 --qa
+
+# Change the actual problem or resolution.
+./.venv/bin/python storyworlds/worlds/nell_and_the_dragon_v2.py --use support --supplies raw --qa
+./.venv/bin/python storyworlds/worlds/nell_and_the_dragon_v2.py --nest-slots 2 --supplies home --qa
+./.venv/bin/python storyworlds/worlds/nell_and_the_dragon_v2.py --owner bird --qa
+./.venv/bin/python storyworlds/worlds/nell_and_the_dragon_v2.py --verify
+env PYTHONPATH=storyworlds ./.venv/bin/python -m unittest storyworlds/test_nell_and_the_dragon_v2.py
+```
+
+For a single story, unspecified world parameters use stable defaults and
+`--world-seed` controls ordering among eligible investigative actions. With
+`-n > 1`, `--seed` (alias `--world-seed`) also samples unspecified world
+parameters; per-sample world and prose seeds advance independently. `--all`
+enumerates eight use/owner/display-space configurations, not eight unique plots;
+other fields remain at defaults unless specified. Some settings become irrelevant
+once a gift is recognized. The model is a small fictional domain policy, not a
+general planner or a claim about real bird behavior.
+
+The [matched local audit](batches/nell_dragon_v2_20260907.report.md) retained three
+1,000-sample controls and a historical v1 pool. V2 has 999/1,000 exact unique
+texts, four resolution types, and 22 coarse event-dependency signatures in the
+mixed pool. But **one unchanged world also gives 1,000 unique tellings**: neither
+exact dedup nor slot normalization establishes meaningful plot diversity.
+Story-only XZ/raw is still 2.33%; cross-story compression retention after dedup
+is 4.82%. No new API judging was performed. Local batches, source snapshots,
+traces, and compression data are retained in the linked report's archive.
+
 ## Canonical Prompt Trials
 
-The named reference set is **Puddles, Pirates, Quesadilla, Thud, Dining,
-Garnet, Grocery**. These are stable comparison examples, not claims that each
-is an ideal dataset generator. Their source paths live in
-[`canonical_examples.py`](canonical_examples.py). All three factory/pipeline
-CLIs accept them through `--example-worlds grocery`, etc. The legacy `all`
-selection still means Puddles + Pirates, not all seven.
+New generation prompts require a brief, consequential spoken exchange in every
+sample, regardless of whether the seed explicitly includes `Dialogue`. This is
+in [`STORY.md`](STORY.md#story-quality), embedded by the shared prompt builder
+for batch, direct-service, and canonical-trial generation. Inner monologue and
+quoted notes do not qualify. Prompt protocol `custom_tool_python_v11` introduces
+this requirement **after** the measured dialogue-v2 baseline below. Seed tasks
+and their feature-sampling distribution are unchanged; the new prompt has not
+yet had a paid trial.
+
+The current reference set is **Puddles, Pirates, Garnet, Library Words,
+One Cart, Bridge Builders, Nell v2**, version **`dialogue_v2`**. The latest
+Puddles is retained unchanged. These are generation references, not claims that
+each is an ideal training-data generator. Their source paths live in
+[`canonical_examples.py`](canonical_examples.py).
+
+The [curation record](batches/canonical_dialogue_v2_20260907.report.md) explains
+the replacements: Quesadilla, Thud, Dining, and Grocery leave the default matrix
+to make room for clarification, negotiation, physical repair, and questioning
+ownership through dialogue. The four retired names still work when explicitly
+selected. All three factory/pipeline CLIs accept `--example-worlds library`,
+`cart`, `bridge`, `nell`, etc.; `nell` is the new v2, not the original adaptation.
+The legacy `all` selection still means Puddles + Pirates, not all seven.
+
+New trial manifests and compression reviews record the reference-set version.
+Previously prepared requests and old evaluation reports are not rewritten, and
+the old seven-world Terra baseline does not rate this new set. Use a new trial
+name for the new matrix. The [first live 21-world baseline](batches/dialogue_v2_baseline_20260907.report.md)
+is complete: 11 raw runnable, 14 after automatic repair, and 21 after separately
+recorded manual recovery. Terra judged ten stories per world: **6.41/9 quality,
+1.19/9 semantic diversity**, geometric score **6.26/100**. All 21 final scripts
+pass verification and standalone execution, but story and QA defects remain.
+The 20,915 returned stories compress together to **1.94%** of story-text bytes;
+exact dedup leaves 11,637 texts. Raw and repaired artifacts remain separate.
 
 [`prompt_trials.py`](prompt_trials.py) automates **7 examples x 3 matched seed
 tasks = 21 generated worlds**, with one reference per request:
 
 ```bash
 # Local only: freeze all 21 exact request bodies and source snapshots.
-./.venv/bin/python storyworlds/prompt_trials.py prepare baseline --seed 2026090605
+./.venv/bin/python storyworlds/prompt_trials.py prepare dialogue_trial_01 --seed 2026090605
 
-# Paid generation + deterministic repair + local diversity checks + Mini judge.
-OPENAI_API_KEY="$(cat .API_KEY)" ./.venv/bin/python storyworlds/prompt_trials.py run baseline
+# Estimate generation and ten-story Terra judging costs; no API calls.
+./.venv/bin/python storyworlds/prompt_trials.py cost dialogue_trial_01
+
+# Paid generation + deterministic repair + local diversity checks + Terra judge.
+OPENAI_API_KEY="$(cat .API_KEY)" ./.venv/bin/python storyworlds/prompt_trials.py run dialogue_trial_01
 
 # Preserve everything, including raw and repaired sources, in an LFS-ready tar.gz.
-./.venv/bin/python storyworlds/prompt_trials.py archive baseline
+./.venv/bin/python storyworlds/prompt_trials.py archive dialogue_trial_01
 ```
 
-Defaults: Luna / no reasoning / Flex, global concurrency 5, fixed Mini judge,
+Defaults: Luna / no reasoning / Flex, global concurrency 5, Terra / no reasoning /
+Flex judge reviewing **10 randomly selected stories together per world**,
 and **1,000 local samples per generated world**. The scorecard includes exact
 and slot-normalized diversity, story-only LZMA compression before/after dedup,
-story/QA lengths, runtime, own verification, and a provisional weighted score.
+story/QA lengths, runtime, own verification, and a quality-gated geometric
+score: usable unique yield times the geometric mean of quality and pooled
+compression retention. `dataset_score.py` defines the versioned score;
+`--minimum-quality 6` is the default floor, applied to the mean of ten individual
+quality ratings. The judge also scores set-level semantic diversity and groups
+stories by causal plot; these diagnostics remain separate from LZMA and the
+geometric score. Duplicates are retained in the random judge sample. The older
+single-story Mini judge remains available for historical replay.
+The first live dialogue-v2 attempt estimates **$0.2925** from returned usage:
+**$0.0815 generation + $0.2110 judging**. Earlier reference-based projections
+were $0.31-$0.32; keep **$1 per attempt** as practical headroom, not a hard cap.
+The seven-world reference judge pass cost $0.0771; its [manual review](batches/canonical_set_quality_20260907.report.md)
+is historical calibration, not a direct comparison to generated-world quality.
+`cost` reads frozen generation prompts; completed evaluations record returned
+usage cost estimates in `costs.json`. No automatic standard-tier fallback.
 Evaluations also compress the entire returned corpus together, up to 21,000
 stories, with a 64 MiB LZMA2 dictionary. For an API-free audit of the reference
 worlds themselves, use `compression_review.py --out <new-directory>`; see the
@@ -149,7 +319,9 @@ manifest, a raw response JSONL, and a run-specific world directory under
 `storyworlds/worlds/`.
 
 Generation defaults to `gpt-5.6-luna`, reasoning effort `none`, and service tier
-`flex`. The pipeline's quality judge remains `gpt-5.4-mini`. Select
+`flex`. The older direct-service pipeline retains its single-story
+`gpt-5.4-mini` judge; canonical `prompt_trials.py` uses the new ten-story Terra
+protocol above. Select
 `--example-worlds puddles` for the Puddles-only template; the default is still
 both examples. No prompt addendum is included unless explicitly supplied.
 

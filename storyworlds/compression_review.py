@@ -159,8 +159,9 @@ def main() -> int:
         groups.append(rows)
         print(f"{name}: {len(rows)} samples, {result['exact_unique']} exact, XZ/input={stats['ratio']}", flush=True)
     pooled = pooled_review(all_rows, args.out / "pooled", groups=groups)
-    trials.save(args.out / "review.json", dict(requested_per_world=args.count, seed=args.seed, worlds=worlds, pooled=pooled))
-    (args.out / "report.md").write_text(render_report(worlds, pooled, args.count, args.seed))
+    example_set = "custom" if args.samples_jsonl else canonical_examples.CANONICAL_SET_ID
+    trials.save(args.out / "review.json", dict(example_set=example_set, requested_per_world=args.count, seed=args.seed, worlds=worlds, pooled=pooled))
+    (args.out / "report.md").write_text(f"Reference set: `{example_set}`.\n\n" + render_report(worlds, pooled, args.count, args.seed))
     print(f"Wrote {args.out / 'report.md'}")
     return int(any(not row["ok"] for row in worlds))
 

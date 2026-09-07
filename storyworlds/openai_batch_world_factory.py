@@ -24,7 +24,7 @@ from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any
 
-from canonical_examples import CANONICAL_EXAMPLES
+from canonical_examples import EXAMPLE_SOURCES
 
 ROOT = Path(__file__).resolve().parents[1]
 STORYWORLDS_DIR = Path(__file__).resolve().parent
@@ -36,9 +36,9 @@ EXAMPLE_WORLD_PATHS = (
     WORLDS_DIR / "puddles.py",
     WORLDS_DIR / "pirates.py",
 )
-EXAMPLE_WORLD_CHOICES = ("all", *CANONICAL_EXAMPLES)
+EXAMPLE_WORLD_CHOICES = ("all", *EXAMPLE_SOURCES)
 EXAMPLE_WORLD_MAP = {
-    **{name: (path,) for name, path in CANONICAL_EXAMPLES.items()},
+    **{name: (path,) for name, path in EXAMPLE_SOURCES.items()},
     "all": EXAMPLE_WORLD_PATHS,
 }
 BATCH_DIR = STORYWORLDS_DIR / "batches"
@@ -47,7 +47,7 @@ DEFAULT_ENDPOINT = "/v1/responses"
 DEFAULT_REASONING_EFFORT = "none"
 DEFAULT_SERVICE_TIER = "flex"
 DEFAULT_REQUEST_TIMEOUT = 900.0
-PROMPT_PROTOCOL = "custom_tool_python_v10"
+PROMPT_PROTOCOL = "custom_tool_python_v11"
 EMIT_TOOL_NAME = "emit_python_file"
 EMIT_MODES = ("tool", "source")
 SLUG_WORD_RE = re.compile(r"[a-z0-9]+")
@@ -512,7 +512,8 @@ Shared ASP/clingo helper API from storyworlds/asp.py:
 ```
 
 Complete examples of acceptable existing worlds follow. Use them as style
-and contract references, but do not copy their domain content. 
+and structural references, but do not copy their domain content. Follow the
+current contract above where an older example differs.
 
 {examples}
 

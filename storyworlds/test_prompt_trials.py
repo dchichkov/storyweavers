@@ -47,7 +47,10 @@ class PromptTrialsTest(unittest.TestCase):
         return directory, trials.read(directory / "trial.json")
 
     def test_seven_names_available_in_existing_factories(self):
-        self.assertEqual(len(canonical_examples.CANONICAL_EXAMPLES), 7)
+        self.assertEqual(list(canonical_examples.CANONICAL_EXAMPLES),
+                         ["puddles", "pirates", "garnet", "library", "cart", "bridge", "nell"])
+        self.assertEqual(canonical_examples.CANONICAL_EXAMPLES["puddles"], batch.WORLDS_DIR / "puddles.py")
+        self.assertEqual(canonical_examples.CANONICAL_EXAMPLES["nell"], batch.WORLDS_DIR / "nell_and_the_dragon_v2.py")
         for name, path in canonical_examples.CANONICAL_EXAMPLES.items():
             self.assertTrue(path.is_file())
             self.assertEqual(batch.example_world_paths(name), (path,))
@@ -57,9 +60,14 @@ class PromptTrialsTest(unittest.TestCase):
         with patch.object(service, "make_client", side_effect=AssertionError("no API during prepare")):
             directory, config = self.prepare()
         self.assertEqual(len(config["arms"]), 7)
+        self.assertEqual([arm["label"] for arm in config["arms"]], list(canonical_examples.CANONICAL_EXAMPLES))
+        self.assertEqual(config["example_set"], "dialogue_v2")
         self.assertEqual(config["local_samples"], 1000)
+        self.assertEqual(config["judge"], "gpt-5.6-terra")
+        self.assertEqual(config["judge_stories"], 10)
         baseline = None
         for arm in config["arms"]:
+            self.assertEqual(trials.read(batch.ROOT / arm["manifest"])["example_set"], "dialogue_v2")
             requests = trials.jsonl(batch.ROOT / arm["requests"])
             self.assertEqual(len(requests), 3)
             tasks = [{key: job[key] for key in ("seed", "words", "features", "setting", "style", "domain")}
@@ -68,11 +76,38 @@ class PromptTrialsTest(unittest.TestCase):
             self.assertEqual(tasks, baseline)
             self.assertEqual(requests[0]["body"]["model"], "gpt-5.6-luna")
             self.assertEqual(requests[0]["body"]["reasoning"], {"effort": "none"})
+            self.assertEqual(requests[0]["body"]["service_tier"], "flex")
             self.assertIn(str(canonical_examples.CANONICAL_EXAMPLES[arm["label"]].relative_to(batch.ROOT)),
                           requests[0]["body"]["input"][0]["content"][0]["text"])
+            snapshot = directory / "inputs" / canonical_examples.CANONICAL_EXAMPLES[arm["label"]].relative_to(batch.ROOT)
+            self.assertEqual(snapshot.read_bytes(), canonical_examples.CANONICAL_EXAMPLES[arm["label"]].read_bytes())
         with self.assertRaises(ValueError):
             self.prepare()
         self.assertTrue((directory / "inputs/storyworlds/STORY.md").exists())
+        cost = trials.budget("test")
+        self.assertEqual(cost["worlds"], 21)
+        self.assertGreater(cost["total_usd_high"], cost["total_usd_low"])
+        self.assertGreater(cost["output_caps_scenario_usd"], cost["total_usd_high"])
+
+    def test_legacy_prepared_trial_retains_old_judge_label(self):
+        directory, config = self.prepare("--examples", "puddles", "--per-example", "1")
+        config["judge"] = "gpt-5.4-mini"
+        config.pop("judge_protocol")
+        config.pop("judge_stories")
+        config.pop("example_set")
+        trials.save(directory / "trial.json", config)
+        self.assertEqual(trials.load_trial("test")[1]["judge"], "gpt-5.4-mini")
+        self.assertIn("judge gpt-5.4-mini", trials.report(["test"]))
+        self.assertIn("example set legacy/unversioned", trials.report(["test"]))
+
+    def test_retired_references_can_prepare_explicit_custom_trial(self):
+        _, config = self.prepare("--examples", *canonical_examples.RETIRED_EXAMPLES, "--per-example", "1")
+        self.assertEqual(config["example_set"], "custom")
+        self.assertEqual([arm["label"] for arm in config["arms"]], list(canonical_examples.RETIRED_EXAMPLES))
+        for arm in config["arms"]:
+            request = trials.jsonl(batch.ROOT / arm["requests"])[0]
+            source = canonical_examples.RETIRED_EXAMPLES[arm["label"]]
+            self.assertIn(source.read_text(), request["body"]["input"][0]["content"][0]["text"])
 
     def test_tampered_requests_refused(self):
         _, config = self.prepare("--examples", "puddles", "--per-example", "1")
@@ -81,7 +116,7 @@ class PromptTrialsTest(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "frozen requests changed"):
             trials.load_trial("test")
 
-    def test_weighted_score_and_compression_measure_collapse(self):
+    def test_compression_measures_collapse(self):
         rows = [dict(story=f"Name{i} found a cup.", params=dict(name=f"Name{i}"), story_qa=[]) for i in range(1000)]
         metrics = trials.sample_metrics(rows, 1000)
         self.assertEqual(metrics["exact_unique"], 1000)
@@ -89,13 +124,6 @@ class PromptTrialsTest(unittest.TestCase):
         duplicates = trials.sample_metrics([rows[0]] * 1000, 1000)
         self.assertLess(duplicates["lzma_all"]["ratio"], metrics["lzma_all"]["ratio"])
         self.assertEqual(duplicates["exact_unique_fraction"], .001)
-        check = dict(final=dict(ok=True), verify=dict(ok=True), **metrics)
-        rating = dict(ok=True, rating=dict(overall=9))
-        expected = 100 * (.60 + .20 + .15 * .001 + .05 * min(1, metrics["lzma_all"]["ratio"]))
-        self.assertAlmostEqual(trials.weighted_score(check, rating), expected)
-        self.assertIsNone(trials.weighted_score(check, None))
-        check["verify"]["ok"] = False
-        self.assertEqual(trials.weighted_score(check, rating), 0)
         self.assertEqual(trials.compression_metrics([])["ratio"], 0)
         self.assertEqual(trials.compression_metrics([r["story"] for r in rows]),
                          trials.compression_metrics([r["story"] for r in reversed(rows)]))
@@ -136,7 +164,7 @@ class PromptTrialsTest(unittest.TestCase):
             self.assertEqual(len(trials.jsonl(parent / "received.jsonl")), 1)
             self.assertEqual(len(trials.jsonl(parent / "responses.jsonl")), 1)
             self.assertEqual(len(list((parent / "raw").glob("*.py"))), 1)
-        with patch.object(trials.quality, "make_client", side_effect=AssertionError("no judge requested")), \
+        with patch.object(trials.set_quality, "run_sets", side_effect=AssertionError("no judge requested")), \
              contextlib.redirect_stdout(io.StringIO()):
             output = asyncio.run(trials.evaluate(directory, config, skip_quality=True))
         checks = trials.read(output / "checks.json")
@@ -144,10 +172,32 @@ class PromptTrialsTest(unittest.TestCase):
         self.assertTrue(all(row["final"]["ok"] and row["verify"]["ok"] for row in checks))
         self.assertTrue(all(row["hash_seed_replay_equal"] for row in checks))
         self.assertEqual([row["exact_unique"] for row in checks], [4, 4])
-        self.assertTrue(all(row["weighted_score"] is None for row in checks))
+        self.assertTrue(all(row["geometric_score"] is None for row in checks))
+        self.assertIsNone(trials.read(output / "dataset_scores.json")["ALL"]["score"])
         report = trials.report(["test"])
         self.assertIn("LZMA", report)
         self.assertIn("| ALL | 2 |", report)
+
+        async def fake_ratings(inputs, path, *, concurrency):
+            path.mkdir()
+            for item in inputs:
+                self.assertEqual(len(item["stories"]), 4)
+                trials.append(path / "quality.jsonl", dict(ok=True, script=item["script"],
+                    rating={key: 7.5 for key in trials.quality.RATING_KEYS}, judged_stories=4,
+                    story_ratings=[dict(rating={key: score for key in trials.quality.RATING_KEYS}) for score in (7, 8, 7, 8)],
+                    diversity={key: 2 for key in trials.set_quality.DIVERSITY_KEYS}, plot_groups=[{}]))
+
+        with patch.object(trials.set_quality, "run_sets", side_effect=fake_ratings), \
+             contextlib.redirect_stdout(io.StringIO()):
+            rated_output = asyncio.run(trials.evaluate(directory, config, skip_quality=False))
+        scores = trials.read(rated_output / "dataset_scores.json")
+        self.assertEqual(scores["ALL"]["usable_samples"], 4)
+        self.assertEqual(scores["ALL"]["yield_fraction"], .5)
+        self.assertEqual(scores["ALL"]["score"], scores["puddles"]["score"] / 2)
+        self.assertIn("quality_diversity_geometric_v1", trials.report(["test"]))
+        self.assertIn("Semantic diversity", trials.report(["test"]))
+        self.assertEqual(trials.read(rated_output / "summary.json")["mean_quality"]["overall"], 7.5)
+        self.assertEqual(trials.read(rated_output / "settings.json")["judge"], "gpt-5.6-terra")
 
     def test_interrupted_attempt_not_rebilled_and_received_recovered(self):
         directory, config = self.prepare("--examples", "puddles", "--per-example", "2")
@@ -171,12 +221,12 @@ class PromptTrialsTest(unittest.TestCase):
         trials.append(parent / "attempts.jsonl", dict(custom_id=job["custom_id"]))
         with patch.object(service, "make_client", side_effect=AssertionError("must not retry")):
             asyncio.run(trials.generate(directory, config))
-        with patch.object(trials.quality, "make_client", side_effect=AssertionError("no stories to judge")), \
+        with patch.object(trials.set_quality, "run_sets", side_effect=AssertionError("no stories to judge")), \
              contextlib.redirect_stdout(io.StringIO()):
             output = asyncio.run(trials.evaluate(directory, config, skip_quality=False))
         row = trials.read(output / "checks.json")[0]
         self.assertFalse(row["raw_runnable"])
-        self.assertEqual(row["weighted_score"], 0)
+        self.assertEqual(row["geometric_score"], 0)
         self.assertEqual(trials.evaluation_exit_code(output, skip_quality=False), 1)
 
     def test_call_one_sends_frozen_body(self):
