@@ -31,8 +31,9 @@ Prefer changes in this order:
 
 ## Default Run
 
-The direct-service pipeline defaults to 100 storyworlds. Use a new seed for each
-iteration so the score is not tuned to one lucky or unlucky sample:
+The direct-service pipeline defaults to 100 storyworlds. For controlled prompt
+optimization, prefer the 21-world canonical trial below. Keep seeds matched
+within a comparison, then validate the selected prompt on fresh seeds:
 
 ```bash
 OPENAI_API_KEY="$(cat .API_KEY)" ./.venv/bin/python storyworlds/openai_service_world_pipeline.py \
@@ -45,9 +46,9 @@ OPENAI_API_KEY="$(cat .API_KEY)" ./.venv/bin/python storyworlds/openai_service_w
   --repair-failures
 ```
 
-Omitting `-n` intentionally means `-n 100`. Use a different `--seed` every time
-you compare a prompt change. Reuse an old seed only for an A/B check where the
-prompt is the only thing you want to vary.
+Omitting `-n` intentionally means `-n 100`. Reuse the same `--seed` for an A/B
+check where the prompt is the only thing you want to vary. Use fresh seeds for
+the subsequent validation run.
 
 For a five-world Puddles-only pilot, add `-n 5 --concurrency 5
 --example-worlds puddles`. Without `--example-worlds`, both Puddles and Pirates
@@ -81,6 +82,182 @@ The command writes:
 Keep these artifacts. Do not delete raw responses, manifests, prompt snapshots,
 or earlier reports when iterating. They are the audit trail that lets us compare
 prompt, repair, and quality changes without regenerating the same batch.
+
+## Canonical Trials
+
+`prompt_trials.py` replaces the one-off experiment drivers for controlled
+comparisons. The starting matrix is **seven source examples, each generating
+the same three tasks: 21 worlds per prompt variant**. Each request includes
+only its own arm's example, not all seven examples concatenated together.
+
+| Name | Reference | Purpose / Caveat |
+| --- | --- | --- |
+| `puddles` | Upgraded bundled Puddles | State-driven problems, compatible responses, trace-grounded QA |
+| `pirates` | Bundled Pirates | Existing simulation / ASP reference |
+| `quesadilla` | Repaired bedtime mystery | Low-diversity control; source has few normalized templates |
+| `thud` | Repaired rhyming teamwork | Rhyming control; can encourage authored-story/template copying |
+| `dining` | Repaired dining-room detective | Broader normalized variation in the earlier source audit |
+| `garnet` | Repaired humorous tall tale | Stronger prose in the earlier five-world pilot |
+| `grocery` | Repaired grocery-store moral | Broader variation, but still inspect causal endings and QA |
+
+`canonical_examples.py` is the single registry of tracked source paths. No
+extra copies become competing editable canon. `prepare` snapshots the selected
+sources, contract, helper modules, factory, repair, judge, and addendum. It
+stores **every complete request body before any API call**, with SHA-256
+fingerprints. Generation submits those bodies unchanged even if the working
+prompt/example files are subsequently edited.
+
+```bash
+./.venv/bin/python storyworlds/prompt_trials.py prepare baseline --seed 2026090605
+OPENAI_API_KEY="$(cat .API_KEY)" ./.venv/bin/python storyworlds/prompt_trials.py run baseline
+
+# Change only the addendum; task seeds and reference sources stay matched.
+./.venv/bin/python storyworlds/prompt_trials.py prepare causal_v1 --seed 2026090605 \
+  --prompt-addendum storyworlds/prompts/causal_v1.md
+OPENAI_API_KEY="$(cat .API_KEY)" ./.venv/bin/python storyworlds/prompt_trials.py run causal_v1
+./.venv/bin/python storyworlds/prompt_trials.py report baseline causal_v1
+```
+
+The addendum filename above is illustrative: create the proposed prompt change
+before preparing that trial. Do not alter the example code, reasoning setting,
+and addendum in the same experiment. `--examples puddles grocery` selects a
+subset; `--per-example 3`, `--local-samples 1000`, and `--concurrency 5` are
+defaults. Concurrency is global, not multiplied by seven arms. `--model` and
+`--reasoning-effort` are explicit generation overrides; the judge remains
+`gpt-5.4-mini`, using the existing calibrated story-quality protocol on direct
+OpenAI/Flex. Each arm's task index uses the same local/quality seed (777 + index).
+The judge rates one story per generated world; the 1,000 local samples are for
+diversity and deterministic checks, not 1,000 paid judgments.
+
+### Diversity And Weighted Score
+
+For each generated world, request 1,000 stories with QA in one JSON run. Keep
+returned counts even when a script caps its output or returns fewer stories.
+Store one `samples.jsonl` per world, not one Markdown document per story.
+
+- **Exact uniques:** distinct story strings; uniqueness fractions divide by the
+  requested count, not just the successfully returned count.
+- **Skeleton uniques:** remove sampled parameter values and normalize numbers
+  with the existing training contributor analyzer. Compute this after exact
+  deduplication. This is a template-collapse diagnostic, not proof of distinct
+  plots: unrecorded substitutions can escape it, and structural parameter
+  values can also be removed.
+- **LZMA:** XZ format, preset 6, on a compact UTF-8 JSON array of story strings
+  only. Sort, then shuffle with fixed seed 0 before compression. Measure all
+  returned stories, exact-deduplicated stories, and unique skeletons separately.
+  Preserve input bytes, compressed bytes, and compressed/input ratio. Lower
+  ratio means greater compressibility; higher ratio is the weak diversity
+  signal. Excluding params/trace/QA prevents metadata from inflating diversity.
+- Also record own `--verify`, bare CLI execution without injected `PYTHONPATH`,
+  replay under two `PYTHONHASHSEED` values, static QA duplication/source hits,
+  and mean story / story+QA word counts.
+
+Initial **weighted score**, on a 0-100 scale:
+
+```text
+100 * (0.60 * Mini_overall/9
+     + 0.20 * exact_unique/requested
+     + 0.15 * skeleton_unique/requested
+     + 0.05 * min(1, lzma_all_compressed_bytes/lzma_all_input_bytes))
+```
+
+Runtime or own-verify failure makes the score zero. Runnable, verifying worlds
+without a successful judge rating are unscored, not excluded from the trial
+average. Arm and overall weighted means are shown only when every planned world
+has a score. The Mini-only average remains conditional on successful ratings,
+with the rated/planned denominator beside it. Raw runnable count, accepted
+repairs, and final runnable count are separate columns.
+
+Weights are **provisional**, not a validated training-utility metric. Quality
+dominates; compression gets only 5% because nonsense, long prose, and arbitrary
+tokens can resist compression. Inspect all components and representative
+stories before promoting a prompt. A green `--verify` is only the generated
+script's own check, not an independent proof of semantics. Confirm gains on
+fresh seed tasks after optimizing the fixed matrix.
+
+### Pooled Compressibility Review
+
+The 5% per-world coefficient above is an initial placeholder, **not a settled
+optimization objective**. Following the first canonical audit, pooled corpus
+compression is a primary diversity diagnostic alongside quality. Review and
+calibrate it before choosing final weights; a per-world average misses the
+cross-world question.
+
+Every evaluation also writes **one pooled archive of all returned stories** in
+`eval_NNN/pooled/all_shuffled.stories.jsonl.xz`: up to 21,000 stories for the
+default matrix. These files contain one JSON story string per line, nothing
+else. The pooled comparison uses LZMA2 preset 6 with an explicit **64 MiB
+dictionary**, large enough to look across much of this small corpus. Keep this
+recipe fixed when comparing trials; it differs from the older per-world
+default-preset measurements.
+
+`compression_review.py` can audit the seven canonical references without
+generation APIs, judging, or repairs:
+
+```bash
+./.venv/bin/python storyworlds/compression_review.py \
+  --out storyworlds/batches/canonical_compression_review --count 1000 --seed 777
+
+# Or pool previously retained samples without executing any world scripts.
+./.venv/bin/python storyworlds/compression_review.py \
+  --out storyworlds/batches/review_saved_samples \
+  --samples-jsonl storyworlds/batches/prompt_trials/baseline/eval_001/*/*/samples.jsonl
+```
+
+It retains grouped and shuffled full corpora, exact-deduplicated text, all and
+unique skeletons, and a word-order-destroyed control. The growth curve pools up
+to 10/50/100/250/500/1,000 stories per world. Inspect compressed bytes/story as
+well as compressed/input ratio: padding a story with predictable text changes
+the latter. Do not pad short batches or hide returned counts.
+
+First result: [canonical compression review](batches/canonical_compression_20260907.report.md).
+Seven worlds returned 6,600 stories (Thud stopped at 600), with 6,596 exact
+uniques. Their 8.26 MiB story-only corpus compressed to 243.3 KiB, **2.88%** of
+input. Exact dedup barely changed this (2.87%). Thus exact uniqueness greatly
+overstates new text information in this sample. The word-order-destroyed
+control compressed to 28.44%, showing why compression needs a prose-quality
+gate. A same-size natural-story control is still needed before setting an
+absolute accept/reject threshold. The paid 21-world baseline has not run.
+
+### Artifacts And Recovery
+
+Each trial lives in `storyworlds/batches/prompt_trials/<name>/`; materialized
+scripts live in `storyworlds/worlds/prompt_trials/<name>/<example>/`.
+
+- `trial.json`, `inputs/`, per-arm `requests.jsonl` and generation manifests:
+  frozen configuration, source snapshots, exact request bodies, matched tasks.
+- Per-arm `attempts.jsonl`, `received.jsonl`, `responses.jsonl`, `raw/`:
+  attempt ledger, durable original responses, materialization outcomes, and
+  original generated scripts. Records are appended, never truncated on resume.
+- `eval_001/`, `eval_002/`, etc.: per-world before/after sources, local samples,
+  checks, repair outcomes, exact judge inputs, quality JSONL, summary, report.
+  Repairs use `repair_batch_output.repair_source`; a failed local repair is
+  rolled back. No LLM repair is involved.
+
+```bash
+# Stage generation and evaluation separately.
+OPENAI_API_KEY="$(cat .API_KEY)" ./.venv/bin/python storyworlds/prompt_trials.py run baseline --generation-only
+./.venv/bin/python storyworlds/prompt_trials.py evaluate baseline --skip-quality
+OPENAI_API_KEY="$(cat .API_KEY)" ./.venv/bin/python storyworlds/prompt_trials.py evaluate baseline
+
+# Archive all raw/repaired data and materialized sources under the existing LFS rule.
+./.venv/bin/python storyworlds/prompt_trials.py archive baseline
+```
+
+`prepare` refuses existing trial names. `run` skips recorded requests and uses
+a per-trial process lock. Saved responses can be materialized on resume without
+another API call. A started request whose response was not saved has an unknown
+billing outcome and is **not automatically resubmitted**; inspect its ledger
+before explicitly preparing any replacement. SDK transport retries remain the
+service factory's existing behavior.
+
+Repeated `run` does not launch a second judge pass. Use `evaluate` explicitly;
+each invocation makes a new evaluation directory and can spend on Mini again.
+Reports show the latest completed evaluation; incomplete evaluations remain
+on disk. Exit status 1 can mean the trial finished with failed worlds or missing
+ratings, not necessarily that the whole run crashed. Read the report before
+retrying. `archive` writes a timestamped `.tar.gz` and SHA-256 sidecar in
+`storyworlds/batch_archives/`, which is already covered by Git LFS.
 
 ## Repair Policy
 

@@ -393,8 +393,11 @@ async def call_one(
     args: argparse.Namespace,
     job: StoryworldJob,
     semaphore: asyncio.Semaphore,
+    *,
+    request: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
-    request = request_body(args, job)
+    if request is None:
+        request = request_body(args, job)
     started = time.monotonic()
     async with semaphore:
         try:

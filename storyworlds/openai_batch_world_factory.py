@@ -24,6 +24,7 @@ from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any
 
+from canonical_examples import CANONICAL_EXAMPLES
 
 ROOT = Path(__file__).resolve().parents[1]
 STORYWORLDS_DIR = Path(__file__).resolve().parent
@@ -35,10 +36,9 @@ EXAMPLE_WORLD_PATHS = (
     WORLDS_DIR / "puddles.py",
     WORLDS_DIR / "pirates.py",
 )
-EXAMPLE_WORLD_CHOICES = ("all", "puddles", "pirates")
+EXAMPLE_WORLD_CHOICES = ("all", *CANONICAL_EXAMPLES)
 EXAMPLE_WORLD_MAP = {
-    "puddles": (WORLDS_DIR / "puddles.py",),
-    "pirates": (WORLDS_DIR / "pirates.py",),
+    **{name: (path,) for name, path in CANONICAL_EXAMPLES.items()},
     "all": EXAMPLE_WORLD_PATHS,
 }
 BATCH_DIR = STORYWORLDS_DIR / "batches"

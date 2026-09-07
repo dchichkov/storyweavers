@@ -4,7 +4,7 @@
 `worlds/` models one small story domain with typed state, a reasonableness gate,
 grounded Q&A, and an inline ASP twin for self-checking.
 
-For authoring rules, use [`AGENTS.md`](AGENTS.md). This README is for practical
+For authoring rules, use [`STORY.md`](STORY.md). This README is for practical
 workflow notes that are useful to humans coordinating batches of worlds.
 
 ## Puddles Generation Example
@@ -28,6 +28,41 @@ not only unique strings or a passing ASP gate.
 ./.venv/bin/python storyworlds/worlds/puddles.py --verify
 ./.venv/bin/python storyworlds/test_puddles.py
 ```
+
+## Canonical Prompt Trials
+
+The named reference set is **Puddles, Pirates, Quesadilla, Thud, Dining,
+Garnet, Grocery**. These are stable comparison examples, not claims that each
+is an ideal dataset generator. Their source paths live in
+[`canonical_examples.py`](canonical_examples.py). All three factory/pipeline
+CLIs accept them through `--example-worlds grocery`, etc. The legacy `all`
+selection still means Puddles + Pirates, not all seven.
+
+[`prompt_trials.py`](prompt_trials.py) automates **7 examples x 3 matched seed
+tasks = 21 generated worlds**, with one reference per request:
+
+```bash
+# Local only: freeze all 21 exact request bodies and source snapshots.
+./.venv/bin/python storyworlds/prompt_trials.py prepare baseline --seed 2026090605
+
+# Paid generation + deterministic repair + local diversity checks + Mini judge.
+OPENAI_API_KEY="$(cat .API_KEY)" ./.venv/bin/python storyworlds/prompt_trials.py run baseline
+
+# Preserve everything, including raw and repaired sources, in an LFS-ready tar.gz.
+./.venv/bin/python storyworlds/prompt_trials.py archive baseline
+```
+
+Defaults: Luna / no reasoning / Flex, global concurrency 5, fixed Mini judge,
+and **1,000 local samples per generated world**. The scorecard includes exact
+and slot-normalized diversity, story-only LZMA compression before/after dedup,
+story/QA lengths, runtime, own verification, and a provisional weighted score.
+Evaluations also compress the entire returned corpus together, up to 21,000
+stories, with a 64 MiB LZMA2 dictionary. For an API-free audit of the reference
+worlds themselves, use `compression_review.py --out <new-directory>`; see the
+[initial compression results](batches/canonical_compression_20260907.report.md).
+No per-story Markdown files are created. See
+[Canonical Trials](QUALITY_ITERATION_PIPELINE.md#canonical-trials) for matched
+prompt changes, score definitions, recovery behavior, and artifact locations.
 
 ## Subagent Swarm Notes
 
@@ -130,8 +165,8 @@ For the usual generate-plus-eval pass, use the one-command pipeline. It uses the
 same prompt text as `openai_batch_world_factory.py` by default, creates the
 worlds, runs `openai_story_quality.py`, runs `qa_static_check.py`, and writes a
 Markdown report beside the manifest. The service pipeline defaults to 100
-storyworlds; use a different `--seed` for each optimization iteration so results
-are not tuned to one sample. See
+storyworlds. Use matched seeds for prompt comparisons, then fresh seeds to
+validate the winner. See
 [`QUALITY_ITERATION_PIPELINE.md`](QUALITY_ITERATION_PIPELINE.md) for the full
 prompt/repair/quality loop:
 
