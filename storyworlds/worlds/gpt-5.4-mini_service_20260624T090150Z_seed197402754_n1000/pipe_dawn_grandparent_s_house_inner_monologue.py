@@ -14,12 +14,138 @@ import sys
 from dataclasses import dataclass, field
 from typing import Optional
 
-sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+STORYWORLDS_DIR = os.path.dirname(
+    os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+)
+sys.path[:0] = [STORYWORLDS_DIR, os.path.dirname(STORYWORLDS_DIR)]
 from results import QAItem, StoryError, StorySample  # noqa: E402
 
 HOUSE_ROOMS = ["kitchen", "hallway", "attic", "basement", "porch"]
 SCARE_SOURCES = ["pipe", "old pipe", "banging pipe", "dripping pipe"]
 HELPERS = ["flashlight", "grandparent", "warm blanket", "careful listening"]
+
+PREMISES = [
+    (
+        "A pale stripe of dawn had just reached the curtains when {name} woke in {gp}'s house.",
+        "{name} was trying to remember the last piece of a dream when the quiet house made room for another sound.",
+    ),
+    (
+        "Before breakfast, {name} padded toward the window of {gp}'s house to look for the first pink cloud.",
+        "The floor felt cool, and every room seemed to be holding its breath.",
+    ),
+    (
+        "Dawn found {name} awake early in {gp}'s house, waiting for the smell of toast to reach the bedroom.",
+        "Instead, a small noise traveled through the wall like a secret asking to be heard.",
+    ),
+    (
+        "{name} had promised to draw the sunrise during this visit to {gp}'s house.",
+        "Just as the sky turned peach at dawn, the old house supplied a much spookier subject.",
+    ),
+    (
+        "At dawn, {name} sat on the guest-room rug in {gp}'s house, sorting socks before anyone else was fully awake.",
+        "The ordinary morning changed when a sound arrived from the {room}.",
+    ),
+    (
+        "At dawn, the first bird had only just begun singing when {name} opened one eye in {gp}'s house.",
+        "A noise from the {room} answered the bird, but it did not sound like a song.",
+    ),
+    (
+        "{name} woke at dawn in {gp}'s house and listened for the familiar tick of the hallway clock.",
+        "Between two ticks came a sound that did not seem to belong to any clock.",
+    ),
+]
+
+CONFLICTS = [
+    "The {source} knocked three times, paused, and knocked once more. To {name}, it sounded almost like tiny footsteps stopping to listen.",
+    "A hollow clunk ran through the {source}, making a cup on a nearby shelf tremble. For one breath, {name} imagined a ghost tapping from inside the wall.",
+    "The {source} gave a low groan and then a bright little ping. The two sounds together seemed to say, 'Come closer,' though the {room} was empty.",
+    "First the {source} whispered drip-drip; then it bumped hard enough to startle {name}. A ghost story from the night before suddenly felt much too easy to believe.",
+    "The {source} rattled whenever the water began moving elsewhere in the house. {name} did not notice that pattern yet and pictured a chilly visitor wandering the {room}.",
+    "A knock moved along the {source} from one end of the {room} to the other. {name}'s stomach tightened as if the sound were searching for someone.",
+    "The {source} clicked, fell silent, and clicked again just after {name} whispered, 'Hello?' It felt like an answer, which was exciting and frightening at once.",
+]
+
+TURNS = [
+    (
+        '"I am frightened, but a feeling is not proof of a ghost," {name} told {reflexive}.',
+        "{name} counted the knocks and noticed that each set began just after water rushed in the wall.",
+    ),
+    (
+        'Inside, {name} thought, "My imagination has made a monster. I can look for a small, real clue without touching anything."',
+        "From a safe distance, {name} saw the pipe quiver at exactly the moment the sound returned.",
+    ),
+    (
+        '"Running would make the mystery bigger," {name} reasoned. "First I can tell {gp} exactly what I heard."',
+        "Saying the rhythm aloud made it sound less like footsteps and more like something mechanical.",
+    ),
+    (
+        '{name} took one slow breath and thought, "Brave does not mean going near a pipe alone. Brave can mean asking for help."',
+        "That thought loosened the tight feeling in {possessive} stomach enough to call for {gp}.",
+    ),
+    (
+        '"What changed just before the noise?" {name} asked silently. "The taps started when the kitchen faucet started."',
+        "The question turned the scare into a puzzle with a useful clue.",
+    ),
+    (
+        '{name} thought, "A ghost is one guess, not the only guess. Old houses have pipes, and pipes can make sounds."',
+        "Instead of creeping closer, {name} listened for where the sound began and where it ended.",
+    ),
+    (
+        "For a moment {name}'s thoughts shouted, 'Hide!' Then a quieter thought answered, 'Stay where it is safe, breathe, and get {gp}.'",
+        "{name} followed the quieter thought and felt fear shrink from enormous to manageable.",
+    ),
+]
+
+DIALOGUES = [
+    '"Good noticing," {gp} said. "We will investigate together, and I will handle the pipe."',
+    '"Sounds can be mysterious before we find their cause," {gp} said. "You stay beside me while I check it."',
+    '"Thank you for telling me instead of touching it," {gp} said. "That is careful courage."',
+    '"Let us test your clue," {gp} said. "You may listen from here while I safely check the water."',
+    '"Your ghost has excellent timing," {gp} joked gently. "It knocks whenever the water moves, so I suspect plumbing."',
+    '"We do not have to pretend you were never scared," {gp} said. "We only have to choose a safe next step."',
+    '"A good mystery solver uses ears, eyes, and help from a grown-up," {gp} said. "You have already used all three."',
+]
+
+RESOLUTIONS = [
+    (
+        "a pipe warming and expanding against its wooden bracket",
+        "{gp} ran warm water while {name} listened from the doorway. The {source} ticked as it warmed against a wooden bracket, and {gp} marked the spot for a plumber to pad later.",
+    ),
+    (
+        "a loose pipe clip rattling when water moved",
+        "With {name} well back, {gp} checked the sound and found a loose clip rattling around the {source}. {gp} turned off the water and said a plumber would fasten it properly.",
+    ),
+    (
+        "air moving through the old water pipe",
+        "{gp} carefully tested a faucet, and the {source} answered with the same hollow bump. It was air moving through the old water pipe, something for a grown-up or plumber to check.",
+    ),
+    (
+        "a slow drip landing in an empty metal basin",
+        "{gp} found that a slow drip from the {source} was landing in an empty metal basin below. {gp} shut the nearby valve and put calling the plumber on the morning list.",
+    ),
+    (
+        "the heating pipe cooling in its snug wall opening",
+        "From the safe side of the {room}, {name} heard the knock fade as the house warmed. {gp} explained that the heating pipe had cooled in a snug opening and would be inspected before it was used again.",
+    ),
+    (
+        "water pressure making the pipe nudge its support",
+        "{gp} operated the faucet while {name} reported when each knock came. Their test showed that water pressure made the {source} nudge its support, so {gp} stopped the test and arranged a proper repair.",
+    ),
+    (
+        "a dangling tag tapping the pipe",
+        "{gp} shone a light into the utility space and spotted a paper service tag tapping the {source} whenever air stirred. Only {gp} reached in to remove it, and the ghostly reply stopped.",
+    ),
+]
+
+ENDINGS = [
+    "When sunrise filled the {room}, {name} drew three little music notes beside a pipe in the sunrise picture. The old house was quiet again, but now its quiet felt friendly.",
+    "At breakfast, every harmless tick made {name} grin instead of jump. The mystery had left behind a warm mug, a bright window, and one carefully earned bit of courage.",
+    "{name} named the mystery 'The Dawn Knocker' and wrote its very ordinary answer underneath. Sunlight crossed the floor where the imagined ghost had never been.",
+    "Soon toast popped up and made both of them jump anyway. Their laughter followed the dawn light through the house, louder and happier than the pipe had been.",
+    "{name} kept one hand near {gp}'s and listened to the last tiny ping disappear. Outside, the first bird sang again, and this time the house seemed to sing back.",
+    "Before breakfast, {name} added a new rule to the family ghost stories: every ghostly noise deserved a safe investigation by a grown-up. Dawn gleamed on the now-silent wall.",
+    "The sunrise finally reached the {room}, turning dust motes gold. {name} watched them float and felt proud that careful thinking, not pretending, had carried the morning out of fear.",
+]
 
 
 @dataclass
@@ -157,9 +283,63 @@ def resolve_params(args: argparse.Namespace, rng: random.Random) -> StoryParams:
     room = args.room or rng.choice(HOUSE_ROOMS)
     source = args.source or rng.choice(SCARE_SOURCES)
     helper = args.helper or rng.choice(HELPERS)
-    if helper == "warm blanket" and source == "pipe":
-        pass
-    return StoryParams(name, child_type, grandparent_type, room, source, helper)
+    return StoryParams(
+        child_name=name,
+        child_type=child_type,
+        grandparent_type=grandparent_type,
+        room=room,
+        source=source,
+        helper=helper,
+    )
+
+
+def _plan_indices(seed: Optional[int]) -> tuple[int, ...]:
+    """Spread adjacent replay seeds across every narrative axis without collisions."""
+    sizes = (
+        len(PREMISES),
+        len(CONFLICTS),
+        len(TURNS),
+        7,
+        len(DIALOGUES),
+        len(RESOLUTIONS),
+        len(ENDINGS),
+    )
+    span = 1
+    for size in sizes:
+        span *= size
+    code = (((seed or 0) * 104729) + 8191) % span
+    indices = []
+    for size in sizes:
+        indices.append(code % size)
+        code //= size
+    return tuple(indices)
+
+
+def _safe_action(params: StoryParams, action_index: int) -> tuple[str, str]:
+    gp = params.grandparent_type
+    name = params.child_name
+    support = {
+        "flashlight": f"carried the flashlight to {gp}, who took it before approaching the pipe",
+        "grandparent": f"called {gp} and waited until the grown-up came beside {name}",
+        "warm blanket": f"wrapped up in the warm blanket and called {gp} from the doorway",
+        "careful listening": f"listened from the doorway, then described the rhythm to {gp}",
+    }[params.helper]
+    support_label = {
+        "flashlight": "the flashlight",
+        "grandparent": gp,
+        "warm blanket": "the warm blanket",
+        "careful listening": "careful listening",
+    }[params.helper]
+    actions = [
+        f"{name} {support}. {name} pointed toward the sound but did not touch the pipe.",
+        f"With {support_label} for support, {name} {support}. Together they agreed that only {gp} would inspect the pipe.",
+        f"{name} {support}. From a safe spot, {name} tapped the sound's rhythm on one knee so {gp} knew what to listen for.",
+        f"Rather than entering the {params.room} alone, {name} {support}. The pipe stayed a grown-up job.",
+        f"{name} {support}. When the noise came again, {name} said where it started while {gp} controlled the investigation.",
+        f"The next safe step was simple: {name} {support}. {name} watched from well away from the plumbing.",
+        f"{name} {support}. They made a team: {name} would notice and report, while {gp} would handle anything near the pipe.",
+    ]
+    return actions[action_index], support
 
 
 def generate(params: StoryParams) -> StorySample:
@@ -173,28 +353,44 @@ def generate(params: StoryParams) -> StorySample:
     pipe.meters["noise"] = 1.0
     world.facts.update(child=child, grandparent=grandparent, pipe=pipe, helper=helper)
 
-    world.say(
-        f"At dawn, {params.child_name} woke up in {params.grandparent_type}'s house and listened to the quiet house breathe."
-    )
-    world.say(
-        f"Then a strange sound came from the {params.room}: the {params.source} gave one slow knock, and {params.child_name}'s stomach went tight."
-    )
+    premise_i, conflict_i, turn_i, action_i, dialogue_i, resolution_i, ending_i = _plan_indices(params.seed)
+    reflexive = "herself" if params.child_type == "girl" else "himself"
+    possessive = "her" if params.child_type == "girl" else "his"
+    fmt = {
+        "name": params.child_name,
+        "gp": params.grandparent_type,
+        "room": params.room,
+        "source": params.source,
+        "reflexive": reflexive,
+        "possessive": possessive,
+    }
+    premise = PREMISES[premise_i]
+    turn_thought, turn_clue = TURNS[turn_i]
+    safe_action, safe_action_fact = _safe_action(params, action_i)
+    cause, reveal = RESOLUTIONS[resolution_i]
+
+    world.say(premise[0].format(**fmt))
+    world.say(premise[1].format(**fmt))
+    world.say(CONFLICTS[conflict_i].format(**fmt))
     world.para()
-    world.say(
-        f'{params.child_name} thought, "That sound could be a ghost, but it could also be an old house making morning noises."'
-    )
-    world.say(
-        f'{params.child_name} thought, "I should stay close to {params.grandparent_type} and look carefully instead of running away."'
-    )
-    world.say(
-        f"{params.child_name} took a small step toward the sound, holding the {params.helper} and breathing a little slower."
-    )
+    world.say(turn_thought.format(**fmt))
+    world.say(turn_clue.format(**fmt))
+    world.say(safe_action)
+    world.say(DIALOGUES[dialogue_i].format(**fmt))
     world.para()
-    world.say(
-        f"In the end, the {params.source} was only a loose pipe that clinked when the house cooled at dawn."
-    )
-    world.say(
-        f"{params.child_name} smiled, and {params.grandparent_type} laughed softly, because the scary mystery had turned into a brave morning in the old house."
+    reveal_text = reveal.format(**fmt)
+    world.say(reveal_text[:1].upper() + reveal_text[1:])
+    world.say(ENDINGS[ending_i].format(**fmt))
+
+    child.memes["fear"] = 0.25
+    child.memes["courage"] = 1.0
+    pipe.meters["noise"] = 0.0
+    world.facts.update(
+        cause=cause,
+        safe_action=safe_action_fact,
+        adult_controlled=True,
+        child_feeling_before="frightened and curious",
+        child_feeling_after="calm and proud",
     )
 
     story = world.render()
@@ -209,12 +405,16 @@ def generate(params: StoryParams) -> StorySample:
             answer=f"{params.child_name} hears it in the {params.room} of {params.grandparent_type}'s house.",
         ),
         QAItem(
-            question=f"What does {params.child_name} think the sound might be at first?",
-            answer=f"{params.child_name} first thinks it might be a ghost, but then decides it could just be the old house and the pipe making a morning noise.",
+            question=f"How does {params.child_name} think through the scary sound?",
+            answer=f"{params.child_name} notices that being afraid is not proof of a ghost and looks for a real clue. Instead of touching the pipe, {params.child_name} gets help from {params.grandparent_type}.",
         ),
         QAItem(
-            question=f"How does the story end?",
-            answer=f"It ends with {params.child_name} feeling brave, because the pipe is only a loose pipe clinking at dawn and the scary moment turns calm.",
+            question="What really causes the ghostly noise?",
+            answer=f"The noise comes from {cause}, not a ghost. {params.grandparent_type} safely checks the cause while {params.child_name} stays back.",
+        ),
+        QAItem(
+            question=f"What safe choice does {params.child_name} make?",
+            answer=f"{params.child_name} {safe_action_fact}. {params.child_name} observes and reports, while {params.grandparent_type} handles the pipe.",
         ),
     ]
     world_qa = [
@@ -229,6 +429,10 @@ def generate(params: StoryParams) -> StorySample:
         QAItem(
             question="Why can old houses make spooky sounds?",
             answer="Old houses can make spooky sounds because wood, walls, and pipes can settle, cool, or move a little as the temperature changes.",
+        ),
+        QAItem(
+            question="What should a child do after noticing a strange pipe sound?",
+            answer="A child should stay away from the pipe and tell a trusted grown-up what they heard. A grown-up can inspect the area or call a plumber.",
         ),
     ]
     return StorySample(params=params, story=story, prompts=prompts, story_qa=story_qa, world_qa=world_qa, world=world)
@@ -266,9 +470,9 @@ def format_qa(sample: StorySample) -> str:
 
 
 CURATED = [
-    StoryParams("Maya", "girl", "grandmother", "kitchen", "pipe", "flashlight"),
-    StoryParams("Leo", "boy", "grandfather", "hallway", "dripping pipe", "grandparent"),
-    StoryParams("June", "girl", "grandmother", "basement", "banging pipe", "warm blanket"),
+    StoryParams(child_name="Maya", child_type="girl", grandparent_type="grandmother", room="kitchen", source="pipe", helper="flashlight", seed=11),
+    StoryParams(child_name="Leo", child_type="boy", grandparent_type="grandfather", room="hallway", source="dripping pipe", helper="grandparent", seed=22),
+    StoryParams(child_name="June", child_type="girl", grandparent_type="grandmother", room="basement", source="banging pipe", helper="warm blanket", seed=33),
 ]
 
 

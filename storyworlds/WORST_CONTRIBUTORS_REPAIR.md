@@ -158,5 +158,8 @@ Legend: `queued`, `active`, `repaired`, `verified`, `blocked`.
 | 18 | verified | `cob_canopy_encourage_reconciliation_fable.py` | 2 skeletons/100 exact-unique stories | 2 skeletons | 100 unique; 100 skeletons | Varied canopy conflicts and reconciliation paths; root CLI import fixed. |
 | 18 | verified | `experience_sophomore_kindness_animal_story.py` | 2 skeletons/100 exact-unique stories | 2 skeletons | 100 unique; 100 skeletons | Varied animal-story premises, kindness choices, consequences, and endings. |
 | 18 | verified | `kernel_pocket_sharing_problem_solving_tall_tale.py` | 4 skeletons/100 exact-unique stories | 4 skeletons | 100 unique; 100 skeletons | Varied tall-tale problems, sharing decisions, solutions, and final images. |
+| 19 | verified | `nigger_holder_gun_kindness_problem_solving_friendship.py` | 2 skeletons/100 exact-unique stories | 2 skeletons | 100 unique; 100 skeletons | Loaded source term excluded from all emitted content; harmless glue-gun context, varied friendship problems, and explicit safety check. |
+| 19 | verified | `pipe_dawn_grandparent_s_house_inner_monologue.py` | 2 skeletons/100 exact-unique stories | 2 skeletons | 100 unique; 100 skeletons | Varied dawn mysteries, inner decisions, investigations, and concrete ending images; root CLI fixed. |
+| 19 | verified | `service_budgetary_enroll_repetition_dialogue_fable.py` | 2 skeletons/100 exact-unique stories | 2 skeletons | 100 unique; 99 skeletons | Varied service dilemmas, budget choices, dialogue turns, and consequences; root CLI fixed. |
 
 Additional waves follow the frozen 120-script template-collapse ranking.

@@ -10,7 +10,10 @@ import sys
 from dataclasses import dataclass, field
 from typing import Optional
 
-sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+STORYWORLDS_DIR = os.path.dirname(
+    os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+)
+sys.path[:0] = [STORYWORLDS_DIR, os.path.dirname(STORYWORLDS_DIR)]
 from results import QAItem, StoryError, StorySample  # noqa: E402
 
 
@@ -88,12 +91,10 @@ BUDGETS = [1, 2, 3, 4, 5, 6, 7, 8]
 
 
 ASP_RULES = r"""
-need_enroll(P) :- budget(P), fee(P, F), F =< B.
-can_enroll(P) :- need_enroll(P), service(S), useful(S).
-fair_choice(P) :- can_enroll(P), pays(P, F).
-#show need_enroll/1.
-#show can_enroll/1.
-#show fair_choice/1.
+need_enroll(B, F) :- budget(B), fee(F), F <= B.
+can_enroll(B, F) :- need_enroll(B, F), service(S), useful(S).
+#show need_enroll/2.
+#show can_enroll/2.
 """
 
 
@@ -139,7 +140,7 @@ def build_parser() -> argparse.ArgumentParser:
 def resolve_params(args: argparse.Namespace, rng: random.Random) -> StoryParams:
     name, kind = rng.choice(HEROES)
     job = args.job or rng.choice(list(SERVICES))
-    service = args.service or SERVICES[job]
+    service = SERVICES[args.service] if args.service else SERVICES[job]
     budget = args.budget if args.budget is not None else rng.choice(BUDGETS)
     fee = args.fee if args.fee is not None else rng.choice(FEES)
     if args.kind:
@@ -154,6 +155,11 @@ def resolve_params(args: argparse.Namespace, rng: random.Random) -> StoryParams:
 
 
 def generate(params: StoryParams) -> StorySample:
+    seed = params.seed
+    if seed is None:
+        seed = sum(ord(ch) for ch in f"{params.name}:{params.kind}:{params.job}:{params.budget}:{params.fee}")
+    rng = random.Random(seed ^ 0xB0D6E7)
+
     w = World()
     hero = w.add(Entity(id=params.name, kind="character", type=params.kind, label=params.name))
     clerk = w.add(Entity(id="Clerk", kind="character", type="mouse", label="the clerk"))
@@ -162,34 +168,166 @@ def generate(params: StoryParams) -> StorySample:
     hero.meters["budget"] = params.budget
     service.meters["fee"] = params.fee
 
-    w.say(f"Once there was a little {params.kind} named {params.name}.")
-    w.say(f"{params.name} loved useful work, and {params.name} loved service, service, service.")
-    w.say(f"One bright day, {params.name} heard about the {params.service} and wanted to enroll.")
+    service_details = {
+        "garden service": {
+            "place": "the community garden",
+            "goal": "help plant a crooked row of bean seedlings",
+            "badge": "a green leaf badge",
+            "tasks": [
+                "filled tiny watering cans",
+                "sorted smooth seeds from wrinkled ones",
+                "tied drooping bean stems to stakes",
+                "carried peelings to the compost bin",
+                "painted signs for the herb beds",
+            ],
+            "finals": [
+                "A new bean leaf curled around its stake beside the green badge.",
+                "Under the sunset, the watered seedlings stood straight in one shining row.",
+                "A ladybug rested on the leaf badge while the last watering can dripped dry.",
+            ],
+        },
+        "market service": {
+            "place": "the covered market",
+            "goal": "help neighbors carry their baskets before the lunch bell",
+            "badge": "a blue basket badge",
+            "tasks": [
+                "stacked empty berry boxes",
+                "returned rolling apples to their crate",
+                "carried a light basket for an old badger",
+                "swept oat husks from the stall",
+                "wrote neat price cards for the baker",
+            ],
+            "finals": [
+                "The lunch bell rang as the blue badge gleamed above one last tidy basket.",
+                "A red apple sat safely in its crate beneath the hero's new basket badge.",
+                "The closing shutters clicked, and every neighbor's basket was safely home.",
+            ],
+        },
+        "library service": {
+            "place": "the little library",
+            "goal": "prepare the reading room before the toddlers arrived",
+            "badge": "a silver book badge",
+            "tasks": [
+                "matched lost books to their shelf labels",
+                "mended a torn paper moon with tape",
+                "set round cushions beside the story rug",
+                "carried returned books from the cart",
+                "sharpened colored pencils for the picture table",
+            ],
+            "finals": [
+                "The silver badge caught the lamplight as the first storybook opened.",
+                "On the quiet rug, a toddler pointed to the newly mended paper moon.",
+                "The final book slid home, and the reading-room lamp made a warm golden circle.",
+            ],
+        },
+    }
+    detail = service_details[params.service]
+    opener = rng.choice([
+        f"On the morning after a windy night, {params.name} hurried to {detail['place']}.",
+        f"Once, a little {params.kind} named {params.name} followed a hand-painted sign to {detail['place']}.",
+        f"Before breakfast one Saturday, {params.name} heard the busy bell at {detail['place']}.",
+        f"A neighbor's call for helpers brought {params.name}, a little {params.kind}, to {detail['place']}.",
+        f"Rain had finally stopped when {params.name} found an open service day at {detail['place']}.",
+    ])
+    reasons = [
+        "The work looked useful, and the small badge would show that its wearer had promised to return.",
+        "The helpers were busy, and joining them meant taking a real turn at caring for the place.",
+        "The job mattered to the whole neighborhood, not just to one animal.",
+        "A younger animal was waiting for help, so the work suddenly felt important.",
+    ]
+    w.say(opener)
+    w.say(f"{params.name} wanted to enroll in the {params.service} and {detail['goal']}.")
+    w.say(rng.choice(reasons))
     w.para()
-    w.say(f'"To enroll, you need {params.fee} coins," said {clerk.label}.')
-    w.say(f'"I have only {params.budget} coins," said {params.name}.')
-    w.say(f'"Then you cannot enroll yet," said the clerk. "Budgetary worries are real worries."')
-    w.say(f"{params.name} nodded. {params.name} counted the coins again: one, two, three, and more if work was done.")
-    w.para()
+
+    w.say(f'"Enrollment costs {params.fee} coins for tools and supplies," said {clerk.label}.')
+    w.say(f'{params.name} spread {params.budget} coins on the counter. "This is every coin in my budget."')
+    w.say(rng.choice([
+        '"Then we need a budgetary plan," said the clerk. "That just means a careful plan for the coins."',
+        '"Let us solve the budgetary part," said the clerk. "We will count what comes in and what goes out."',
+        '"A budgetary worry is a money-plan worry," the clerk explained. "Counting clearly is the first step."',
+        'The clerk drew two boxes on a slate: COINS SAVED and COINS NEEDED. "That is our budgetary picture," she said.',
+    ]))
+
+    actions = rng.sample(detail["tasks"], 3)
     if params.budget >= params.fee:
+        remaining = params.budget - params.fee
+        conflicts = [
+            (f"A gust scattered the enrollment forms across {detail['place']} before the fee could be paid.",
+             f'"Forms first, coins second!" called {params.name}.',
+             f"Together, {params.name} and the clerk gathered every page and weighed the stack down with a smooth stone."),
+            (f"Just then, a younger helper whispered that there were not enough supplies for today's work.",
+             f'"Can my enrollment fee buy the missing supplies?" asked {params.name}.',
+             f'The clerk checked the list. "Exactly," she said. "Now every coin has a purpose."'),
+            (f"The coin box had three slots, but none was labeled, so nobody knew where an enrollment fee belonged.",
+             f'"Tools, repairs, and new helpers," {params.name} repeated. "Let us label them."',
+             f"They made three clear labels and placed the fee in the tools slot."),
+            (f"A wheel squeaked on the supply cart, and the waiting helpers could not move it.",
+             f'"Let us fix what the fee is meant to support," said {params.name}.',
+             f"The clerk found a washer, and {params.name} held the wheel steady until it rolled quietly."),
+        ]
+        conflict, refrain, turn = rng.choice(conflicts)
+        w.say(conflict)
+        w.say(refrain)
+        w.say(turn)
+        w.para()
+        w.say(f"The clerk counted {params.fee} coins into the enrollment box, leaving {remaining} with {params.name}.")
         hero.meters["budget"] -= params.fee
         hero.memes["hope"] = 1
-        w.say(f'"I can earn the rest by helping," said {params.name}. "I can serve, serve, serve."')
-        w.say(f"{params.name} carried water, swept leaves, and carried seeds. The service was steady, and the coins grew steady too.")
-        hero.meters["budget"] = params.budget
-        w.say(f'At last, {params.name} had enough. "Now I may enroll," said {params.name}.')
-        w.say(f'"Yes," said the clerk. "Now you may enroll."')
-        w.say(f"So {params.name} enrolled in the {params.service}, and the little {params.kind} worked with a happy heart.")
-        w.say("And from that day on, the animal remembered: a fair fee can be met by fair work.")
+        w.say(f'"To enroll means to join officially," said the clerk, pinning {detail["badge"]} on {params.name}.')
+        w.say(f"For the first service shift, {params.name} {actions[0]}, {actions[1]}, and {actions[2]}.")
+        outcomes = [
+            f'"Count, choose, then use," {params.name} said at each new job.',
+            f'"A coin plan should help the work," {params.name} repeated, "help the work, help the work."',
+            f'"Every coin had a job, and now I do too," {params.name} told the younger helpers.',
+        ]
+        w.say(rng.choice(outcomes))
+        outcome = f"{params.name} paid the {params.fee}-coin fee, enrolled, and completed a first service shift."
+        lesson = "A good budget gives each coin a clear purpose, and service gives willing paws a useful purpose."
     else:
-        w.say(f'"I will work first," said {params.name}. "I will serve, serve, serve until I can pay."')
-        w.say(f"{params.name} helped with bags, swept paths, and fetched water. The coins clinked little by little.")
-        w.say(f"By evening, {params.name} still could not enroll, but the path to enroll had begun.")
-        w.say("The little animal learned that patience can grow a budget as surely as rain grows a field.")
-    w.para()
-    w.say("Moral: Service is sweetest when patience and honest work help pay the way.")
+        shortfall = params.fee - params.budget
+        plans = [
+            (f'The slate showed a gap of {shortfall} coin{"s" if shortfall != 1 else ""}. "I will earn it without pretending I have it," said {params.name}.',
+             f"The clerk offered service credit for a set of finished tasks. {params.name} {actions[0]}, {actions[1]}, and {actions[2]}.",
+             f'"Count the work, count the credit," they repeated until the two sides of the slate matched.'),
+            (f'A savings jar stood beside the slate. "I can come back after doing small paid chores," said {params.name}.',
+             f"Over several mornings, {params.name} {actions[0]}, then {actions[1]}, and finally {actions[2]}. Each earned coin went straight into the jar.",
+             f'"Save a little, mark it down; save a little, mark it down," {params.name} repeated.'),
+            (f'The clerk pointed to a sign offering reduced fees to helpers who completed an open job. "That is fair to everyone," said {params.name}.',
+             f"To earn the reduction, {params.name} {actions[0]}, {actions[1]}, and {actions[2]} while the clerk checked each job.",
+             f'"Done with care, counted fair," the two of them said after every check mark.'),
+            (f'"Could I pay part now and the rest after my first supervised shift?" asked {params.name}. The clerk showed the written installment rule.',
+             f"After paying the first part, {params.name} {actions[0]}, {actions[1]}, and {actions[2]}. The earned coins covered the final part exactly.",
+             f'"Part by part, keep the chart," {params.name} repeated while marking each payment.'),
+        ]
+        conflict, turn, refrain = rng.choice(plans)
+        w.say(conflict)
+        w.say(turn)
+        w.say(refrain)
+        w.para()
+        w.say(f"At last, the clerk counted all {params.fee} coins and crossed out the gap on the slate.")
+        hero.meters["budget"] = 0
+        hero.memes["patience"] = 1
+        w.say(f'"You planned honestly and finished the work," she said. "Now you may enroll."')
+        w.say(f"She pinned {detail['badge']} on {params.name}, who joined the {params.service} and began to {detail['goal']}.")
+        outcome = f"{params.name} followed a fair plan to cover the {shortfall}-coin gap, enrolled, and joined the work."
+        lesson = "When money is short, an honest plan and patient work can make the next step possible."
 
-    w.facts.update(hero=hero, clerk=clerk, service=service, params=params)
+    w.para()
+    final_image = rng.choice(detail["finals"])
+    w.say(final_image)
+    w.say(f"Moral: {lesson}")
+
+    w.facts.update(
+        hero=hero,
+        clerk=clerk,
+        service=service,
+        params=params,
+        goal=detail["goal"],
+        actions=actions,
+        outcome=outcome,
+        final_image=final_image,
+    )
     return StorySample(
         params=params,
         story=w.render(),
@@ -202,27 +340,41 @@ def generate(params: StoryParams) -> StorySample:
 
 def generation_prompts(world: World) -> list[str]:
     p = world.facts["params"]
+    money_prompt = (
+        f"Tell a gentle story where {p.name} makes a budgetary plan before enrolling."
+        if p.budget >= p.fee
+        else f"Tell a gentle story where a budgetary shortfall keeps {p.name} from enrolling right away."
+    )
     return [
         f"Write a short fable about a {p.kind} who wants to enroll in a {p.service}.",
-        f"Tell a gentle story where budgetary worries keep {p.name} from enrolling right away.",
+        money_prompt,
         f"Write a child-friendly dialogue story using the words service, budgetary, and enroll.",
     ]
 
 
 def story_qa(world: World) -> list[QAItem]:
     p = world.facts["params"]
+    actions = world.facts["actions"]
     return [
         QAItem(
             question=f"Who wanted to enroll in the {p.service}?",
             answer=f"{p.name}, the little {p.kind}, wanted to enroll in the {p.service}.",
         ),
         QAItem(
-            question="Why did the clerk say the animal could not enroll yet?",
-            answer=f"The clerk said that because {p.name} had only {p.budget} coins, but the fee was {p.fee} coins.",
+            question=f"What did {p.name} hope to do after enrolling?",
+            answer=f"{p.name} hoped to {world.facts['goal']} after enrolling.",
         ),
         QAItem(
-            question="What did the animal do to solve the budgetary problem?",
-            answer=f"{p.name} chose to work and serve, serve, serve until enough coins were ready.",
+            question="What service work did the animal do?",
+            answer=f"{p.name} {actions[0]}, {actions[1]}, and {actions[2]}.",
+        ),
+        QAItem(
+            question="How was the enrollment problem resolved?",
+            answer=world.facts["outcome"],
+        ),
+        QAItem(
+            question="What picture closes the fable?",
+            answer=world.facts["final_image"],
         ),
     ]
 
@@ -276,11 +428,11 @@ def valid_pairs() -> list[tuple[int, int]]:
 
 def asp_verify() -> int:
     import asp
-    prog = asp_program("#show need_enroll/1.\n#show can_enroll/1.\n")
+    prog = asp_program("#show need_enroll/2.\n#show can_enroll/2.\n")
     model = asp.one_model(prog)
     need = set(asp.atoms(model, "need_enroll"))
     can = set(asp.atoms(model, "can_enroll"))
-    py = set((b,) for b, f in valid_pairs())
+    py = set(valid_pairs())
     if need == py and can == py:
         print(f"OK: ASP parity matches Python ({len(py)} feasible budget/fee pairs).")
         return 0
@@ -300,22 +452,22 @@ def emit(sample: StorySample, *, trace: bool = False, qa: bool = False, header: 
 
 
 CURATED = [
-    StoryParams(name="Fenn", kind="fox", job="garden", service="garden", budget=2, fee=4),
-    StoryParams(name="Mira", kind="hare", job="market", service="market", budget=5, fee=4),
-    StoryParams(name="Pip", kind="mouse", job="library", service="library", budget=3, fee=3),
+    StoryParams(name="Fenn", kind="fox", job="garden", service="garden service", budget=2, fee=4),
+    StoryParams(name="Mira", kind="hare", job="market", service="market service", budget=5, fee=4),
+    StoryParams(name="Pip", kind="mouse", job="library", service="library service", budget=3, fee=3),
 ]
 
 
 def main() -> None:
     args = build_parser().parse_args()
     if args.show_asp:
-        print(asp_program("#show need_enroll/1.\n#show can_enroll/1.\n"))
+        print(asp_program("#show need_enroll/2.\n#show can_enroll/2.\n"))
         return
     if args.verify:
         sys.exit(asp_verify())
     if args.asp:
         import asp
-        model = asp.one_model(asp_program("#show need_enroll/1.\n#show can_enroll/1.\n"))
+        model = asp.one_model(asp_program("#show need_enroll/2.\n#show can_enroll/2.\n"))
         print("need_enroll:", sorted(set(asp.atoms(model, "need_enroll"))))
         print("can_enroll:", sorted(set(asp.atoms(model, "can_enroll"))))
         return
