@@ -36,6 +36,7 @@ from openai_batch_world_factory import (
     StoryworldJob,
     build_storyworld_prompt,
     emit_python_tool,
+    example_world_paths,
     extract_python_source,
     generated_domain,
     model_dir_name,
@@ -152,11 +153,16 @@ def build_parser() -> argparse.ArgumentParser:
         default=None,
         help="optional extra prompt instructions appended to every storyworld request",
     )
-    parser.add_argument(
+    examples = parser.add_mutually_exclusive_group()
+    examples.add_argument(
         "--example-worlds",
         choices=EXAMPLE_WORLD_CHOICES,
         default="all",
         help="which bundled example worlds to include in prompts; default: all",
+    )
+    examples.add_argument(
+        "--example-file", dest="example_files", type=Path, action="append",
+        help="repository Python source to use instead of bundled examples; repeat for multiple examples",
     )
     parser.add_argument(
         "--overwrite",
@@ -276,6 +282,7 @@ def request_body(args: argparse.Namespace, job: StoryworldJob) -> dict[str, Any]
         job,
         prompt_addendum=args.prompt_addendum,
         example_worlds=args.example_worlds,
+        example_files=args.example_files,
         emit_mode=args.emit_mode,
     )
     request = {
@@ -283,6 +290,7 @@ def request_body(args: argparse.Namespace, job: StoryworldJob) -> dict[str, Any]
         "prompt_cache_key": prompt_cache_key(
             prompt_addendum=args.prompt_addendum,
             example_worlds=args.example_worlds,
+            example_files=args.example_files,
             emit_mode=args.emit_mode,
         ),
         "prompt_cache_retention": args.prompt_cache_retention,
@@ -442,11 +450,16 @@ async def run(args: argparse.Namespace) -> int:
         "prompt_cache_key": prompt_cache_key(
             prompt_addendum=args.prompt_addendum,
             example_worlds=args.example_worlds,
+            example_files=args.example_files,
             emit_mode=args.emit_mode,
         ),
         "prompt_cache_retention": args.prompt_cache_retention,
         "prompt_addendum": None if args.prompt_addendum is None else str(args.prompt_addendum),
         "example_worlds": args.example_worlds,
+        "example_files": (
+            [path.relative_to(ROOT).as_posix() for path in example_world_paths(example_files=args.example_files)]
+            if args.example_files is not None else None
+        ),
         "target_dir": target_dir.relative_to(ROOT).as_posix(),
         "response_jsonl": response_jsonl.relative_to(ROOT).as_posix(),
         "manifest_path": manifest_path.relative_to(ROOT).as_posix(),

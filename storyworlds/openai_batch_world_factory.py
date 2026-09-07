@@ -42,12 +42,12 @@ EXAMPLE_WORLD_MAP = {
     "all": EXAMPLE_WORLD_PATHS,
 }
 BATCH_DIR = STORYWORLDS_DIR / "batches"
-DEFAULT_MODEL = "gpt-5.4-mini"
+DEFAULT_MODEL = "gpt-5.6-luna"
 DEFAULT_ENDPOINT = "/v1/responses"
-DEFAULT_REASONING_EFFORT = "low"
+DEFAULT_REASONING_EFFORT = "none"
 DEFAULT_SERVICE_TIER = "flex"
 DEFAULT_REQUEST_TIMEOUT = 900.0
-PROMPT_PROTOCOL = "custom_tool_python_v9"
+PROMPT_PROTOCOL = "custom_tool_python_v10"
 EMIT_TOOL_NAME = "emit_python_file"
 EMIT_MODES = ("tool", "source")
 SLUG_WORD_RE = re.compile(r"[a-z0-9]+")
@@ -144,11 +144,16 @@ def build_parser() -> argparse.ArgumentParser:
             default="storyworld_factory",
             help="short metadata tag attached to submitted batches",
         )
-        ap.add_argument(
+        examples = ap.add_mutually_exclusive_group()
+        examples.add_argument(
             "--example-worlds",
             choices=EXAMPLE_WORLD_CHOICES,
             default="all",
             help="which bundled example worlds to include in prompts; default: all",
+        )
+        examples.add_argument(
+            "--example-file", dest="example_files", type=Path, action="append",
+            help="repository Python source to use instead of bundled examples; repeat for multiple examples",
         )
         ap.add_argument(
             "--output-dir",
@@ -274,10 +279,27 @@ def prompt_file_cache_name(path: Path) -> str:
         return path.as_posix()
 
 
+def example_world_paths(
+    example_worlds: str = "all", example_files: list[Path] | None = None,
+) -> tuple[Path, ...]:
+    if example_files is None:
+        return EXAMPLE_WORLD_MAP[example_worlds]
+    if not example_files:
+        raise ValueError("at least one example file is required")
+    paths = tuple((ROOT / path).resolve() for path in example_files)
+    for path in paths:
+        if not path.is_relative_to(ROOT) or path.suffix != ".py" or not path.is_file():
+            raise ValueError(f"example must be an existing repository Python file: {path}")
+    if len(set(paths)) != len(paths):
+        raise ValueError("duplicate example files are not allowed")
+    return paths
+
+
 def prompt_cache_key(
     *,
     prompt_addendum: Path | None = None,
     example_worlds: str = "all",
+    example_files: list[Path] | None = None,
     emit_mode: str = "source",
 ) -> str:
     digest = hashlib.sha256()
@@ -291,7 +313,7 @@ def prompt_cache_key(
         STORY_CONTRACT_PATH,
         RESULTS_PATH,
         ASP_PATH,
-        *EXAMPLE_WORLD_MAP[example_worlds],
+        *example_world_paths(example_worlds, example_files),
     ):
         digest.update(path.relative_to(ROOT).as_posix().encode("utf-8"))
         digest.update(b"\0")
@@ -424,6 +446,7 @@ def build_storyworld_prompt(
     *,
     prompt_addendum: Path | None = None,
     example_worlds: str = "all",
+    example_files: list[Path] | None = None,
     emit_mode: str = "source",
 ) -> str:
     if emit_mode not in EMIT_MODES:
@@ -431,7 +454,7 @@ def build_storyworld_prompt(
     story_contract = read_prompt_file(STORY_CONTRACT_PATH)
     results_contract = read_prompt_file(RESULTS_PATH)
     asp_contract = read_prompt_file(ASP_PATH)
-    example_paths = EXAMPLE_WORLD_MAP[example_worlds]
+    example_paths = example_world_paths(example_worlds, example_files)
     examples = "\n\n".join(
         f"### {path.relative_to(ROOT).as_posix()}\n\n```python\n{read_prompt_file(path)}\n```"
         for path in example_paths
@@ -488,7 +511,7 @@ Shared ASP/clingo helper API from storyworlds/asp.py:
 {asp_contract}
 ```
 
-Two complete examples of acceptable existing worlds follow. Use them as style
+Complete examples of acceptable existing worlds follow. Use them as style
 and contract references, but do not copy their domain content. 
 
 {examples}
@@ -513,12 +536,14 @@ def request_line(
     reasoning_effort: str,
     service_tier: str,
     example_worlds: str = "all",
+    example_files: list[Path] | None = None,
     emit_mode: str = "source",
 ) -> dict[str, Any]:
     body = {
         "model": model,
         "prompt_cache_key": prompt_cache_key(
             example_worlds=example_worlds,
+            example_files=example_files,
             emit_mode=emit_mode,
         ),
         "prompt_cache_retention": "24h",
@@ -532,6 +557,7 @@ def request_line(
                         "text": build_storyworld_prompt(
                             job,
                             example_worlds=example_worlds,
+                            example_files=example_files,
                             emit_mode=emit_mode,
                         ),
                     }
@@ -574,6 +600,7 @@ def prepare_files(args: argparse.Namespace) -> dict[str, Any]:
             reasoning_effort=args.reasoning_effort,
             service_tier=args.service_tier,
             example_worlds=args.example_worlds,
+            example_files=args.example_files,
             emit_mode=args.emit_mode,
         )
         for job in jobs
@@ -611,6 +638,10 @@ def prepare_files(args: argparse.Namespace) -> dict[str, Any]:
         "service_tier": args.service_tier,
         "emit_mode": args.emit_mode,
         "example_worlds": args.example_worlds,
+        "example_files": (
+            [path.relative_to(ROOT).as_posix() for path in example_world_paths(example_files=args.example_files)]
+            if args.example_files is not None else None
+        ),
         "jsonl_path": str(jsonl_path),
         "manifest_path": str(manifest_path),
         "jobs": [asdict(job) for job in jobs],
@@ -745,7 +776,7 @@ def safe_target_path(target: str) -> Path:
 def output_text_from_response(body: dict[str, Any]) -> str:
     chunks: list[str] = []
     for item in body.get("output", []):
-        if item.get("type") != "message":
+        if item.get("type") != "message" or item.get("phase") == "commentary":
             continue
         for content in item.get("content", []):
             if content.get("type") == "output_text":

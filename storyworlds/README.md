@@ -7,6 +7,28 @@ grounded Q&A, and an inline ASP twin for self-checking.
 For authoring rules, use [`AGENTS.md`](AGENTS.md). This README is for practical
 workflow notes that are useful to humans coordinating batches of worlds.
 
+## Puddles Generation Example
+
+`worlds/puddles.py` demonstrates eight causal paths from four problems and their
+compatible responses. `--problem` selects `temptation`, `splash`, `wrong_cover`,
+or `missing_gear`; `--solution` selects a compatible response. Unspecified
+choices are sampled reproducibly.
+
+The example predicts on a copy, executes actions in the real world, and records
+events for prose and QA. Washing clears an actual cleaning debt; changing
+clothes stores the original item without making old clothes waterproof. A dry
+game creates a drawing without pretending the messy activity took place.
+Short comments explain these decisions so a code-generation model can follow
+the reasoning while emitting source. Tests check event paths and final state,
+not only unique strings or a passing ASP gate.
+
+```bash
+./.venv/bin/python storyworlds/worlds/puddles.py --all --qa
+./.venv/bin/python storyworlds/worlds/puddles.py --problem splash --solution change --trace --qa
+./.venv/bin/python storyworlds/worlds/puddles.py --verify
+./.venv/bin/python storyworlds/test_puddles.py
+```
+
 ## Subagent Swarm Notes
 
 On 2026-06-16, a 10-task storyworld generation batch was run with Codex
@@ -77,7 +99,7 @@ completions, token updates, and final status while they run.
 ## OpenAI Batch World Factory
 
 `openai_batch_world_factory.py` prepares OpenAI Batch API requests for many
-storyworld drafts using `gpt-5.4-mini` by default. Batch jobs cannot edit this
+storyworld drafts using `gpt-5.6-luna` by default. Batch jobs cannot edit this
 checkout directly, so each request asks the model to call the `emit_python_file`
 custom tool with the target path, complete Python source, checks to run, and
 quality risks. Older JSON-object results can still be materialized by the
@@ -91,6 +113,19 @@ with ordinary async Responses API calls instead of Batch. It writes a run
 manifest, a raw response JSONL, and a run-specific world directory under
 `storyworlds/worlds/`.
 
+Generation defaults to `gpt-5.6-luna`, reasoning effort `none`, and service tier
+`flex`. The pipeline's quality judge remains `gpt-5.4-mini`. Select
+`--example-worlds puddles` for the Puddles-only template; the default is still
+both examples. No prompt addendum is included unless explicitly supplied.
+
+Use `--example-file storyworlds/worlds/<repaired-world>.py` to replace the
+bundled examples with a specific repository source file. Repeat the flag to
+include multiple complete examples in each prompt. It is mutually exclusive
+with `--example-worlds`. The selected paths are saved in `example_files` in
+the manifest, and their contents contribute to the prompt cache fingerprint.
+`--from-manifest` restores this selection. Preserve source snapshots alongside
+an experiment when the originals may change later.
+
 For the usual generate-plus-eval pass, use the one-command pipeline. It uses the
 same prompt text as `openai_batch_world_factory.py` by default, creates the
 worlds, runs `openai_story_quality.py`, runs `qa_static_check.py`, and writes a
@@ -102,7 +137,7 @@ prompt/repair/quality loop:
 
 ```bash
 OPENAI_API_KEY="$(cat .API_KEY)" ./.venv/bin/python storyworlds/openai_service_world_pipeline.py \
-  --seed <new-seed> --model gpt-5.4-mini --reasoning-effort low --max-output-tokens 32000 \
+  --seed <new-seed> --model gpt-5.6-luna --reasoning-effort none --max-output-tokens 32000 \
   --repair-failures
 ```
 
@@ -112,7 +147,7 @@ against the original batch prompt:
 
 ```bash
 OPENAI_API_KEY="$(cat .API_KEY)" ./.venv/bin/python storyworlds/openai_service_world_pipeline.py \
-  --seed <new-seed> --model gpt-5.4-mini --reasoning-effort low --max-output-tokens 32000 \
+  --seed <new-seed> --model gpt-5.6-luna --reasoning-effort none --max-output-tokens 32000 \
   --repair-failures \
   --prompt-addendum storyworlds/prompts/<prompt_tweak>.md
 ```
@@ -128,7 +163,7 @@ To build a report from an already-generated manifest without regenerating:
 
 ```bash
 OPENAI_API_KEY="$(cat .API_KEY)" ./.venv/bin/python storyworlds/openai_service_world_factory.py \
-  --seed <new-seed> --model gpt-5.4-mini --reasoning-effort low --max-output-tokens 32000
+  --seed <new-seed> --model gpt-5.6-luna --reasoning-effort none --max-output-tokens 32000
 ```
 
 The resulting manifest can be passed directly to the quality eval:
@@ -143,7 +178,7 @@ For duplicate/static QA checks over that exact run directory:
 
 ```bash
 ./.venv/bin/python storyworlds/qa_static_check.py \
-  --worlds-dir storyworlds/worlds/gpt-5.4-mini_service_<stamp>_seed<seed>_n100 \
+  --worlds-dir storyworlds/worlds/gpt-5.6-luna_service_<stamp>_seed<seed>_n100 \
   -n 100 --variants 3 --seed 42
 ```
 

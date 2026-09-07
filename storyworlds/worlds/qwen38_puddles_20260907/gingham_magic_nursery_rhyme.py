@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
-"""A child, some treasured clothes, and several ways to make room for play.
+"""A gingham patch, a magic button, and a nursery rhyme that makes the patch grow.
 
-Build the physics first: exposure soils uncovered clothing and creates work.
-Predict on a copy before choosing a cover; execute on the real world afterward.
-Different problems permit different actions: protect, wash, change, fetch, or
-choose a dry game. Record each turn after changing state, then derive QA from
-those events. Names and wording are not the source of plot variation.
+Build the physics first: a torn dress creates a problem. A magic gingham patch
+offers a solution, but it only works if sung to properly. Different problems
+permit different actions: sing the rhyme, fix the button, or sew the patch.
+Record each turn after changing state, then derive QA from those events.
+Names and wording are not the source of plot variation.
 """
 
 from __future__ import annotations
@@ -27,11 +27,8 @@ from results import QAItem, StoryError, StorySample  # noqa: E402
 # Magnitude at which an accumulated effect is "embedded enough" to be narrated.
 THRESHOLD = 1.0
 
-# Physical meter keys that count as a "mess" the activity spreads onto worn items.
-MESS_KINDS = {"wet", "muddy", "painted", "sandy"}
-
-# Body regions, used for the gear-coverage constraint.
-REGIONS = {"feet", "legs", "torso"}
+# Body regions, used for the patch-coverage constraint.
+REGIONS = {"skirt", "bodice"}
 
 
 # ---------------------------------------------------------------------------
@@ -41,18 +38,18 @@ REGIONS = {"feet", "legs", "torso"}
 class Entity:
     id: str
     kind: str = "thing"            # "character" | "thing"
-    type: str = "thing"            # girl, boy, mother, father, jacket, shoes, gear ...
-    label: str = ""                # short reference, e.g. "jacket", "rain boots"
-    phrase: str = ""               # full noun phrase, e.g. "a new jacket with a tough zipper"
+    type: str = "thing"            # girl, boy, mother, father, patch, dress, button ...
+    label: str = ""                # short reference, e.g. "patch", "gingham"
+    phrase: str = ""               # full noun phrase, e.g. "a red and white gingham patch"
     traits: list[str] = field(default_factory=list)
     owner: Optional[str] = None
     caretaker: Optional[str] = None   # who has to clean up after this object
     worn_by: Optional[str] = None
-    region: str = ""                  # where a worn item sits: feet | legs | torso
-    protective: bool = False
-    covers: set[str] = field(default_factory=set)   # regions the gear shields
+    region: str = ""                  # where a worn item sits: skirt | bodice
+    magical: bool = False
+    covers: set[str] = field(default_factory=set)   # regions the patch mends
     guards: set[str] = field(default_factory=set)
-    plural: bool = False              # "shoes" -> them, "jacket" -> it
+    plural: bool = False              # "buttons" -> them, "patch" -> it
     # Two numeric dimensions, treated uniformly (cf. story.py memeplex model):
     meters: dict[str, float] = field(default_factory=lambda: defaultdict(float))  # physical
     memes: dict[str, float] = field(default_factory=lambda: defaultdict(float))   # emotional
@@ -79,22 +76,22 @@ class Entity:
 # ---------------------------------------------------------------------------
 @dataclass
 class Setting:
-    place: str = "the park"
-    indoor: bool = False
+    place: str = "the cottage"
+    indoor: bool = True
     affords: set[str] = field(default_factory=set)   # which activities this place supports
 
 
 @dataclass
 class Activity:
-    """A messy thing the hero loves to do."""
+    """A magical thing the hero loves to do."""
     id: str
-    verb: str            # after "wanted to ..."             : "jump in the puddles"
-    gerund: str          # after "loved playing ... and ..." : "jumping in puddles"
-    mess: str            # mess kind key, one of MESS_KINDS  : "wet"
-    soil: str            # how the prize gets ruined         : "wet and dirty"
-    zone: set[str]       # body regions the activity splashes: {"feet", "legs"}
+    verb: str            # after "wanted to ..."             : "sing the nursery rhyme"
+    gerund: str          # after "loved playing ... and ..." : "singing the nursery rhyme"
+    mess: str            # mess kind key, one of MESS_KINDS  : "torn"
+    soil: str            # how the prize gets ruined         : "torn and ragged"
+    zone: set[str]       # body regions the activity affects: {"skirt"}
     weather: str         # "rainy" | "sunny" | ""
-    keyword: str = ""    # topic word for generation prompts : "puddles"
+    keyword: str = ""    # topic word for generation prompts : "gingham"
     tags: set[str] = field(default_factory=set)   # world-knowledge topics it touches
 
 
@@ -104,20 +101,21 @@ class Prize:
     label: str
     phrase: str
     type: str
-    region: str          # feet | legs | torso  -- where it sits on the body
+    region: str          # skirt | bodice  -- where it sits on the body
     plural: bool = False
     genders: set[str] = field(default_factory=lambda: {"girl", "boy"})  # who plausibly wears it
 
 
 @dataclass
 class Gear:
-    """A cover blocks a mess; replacement clothes remove the prize from exposure."""
+    """A patch mends a mess; replacement clothes remove the prize from exposure."""
     id: str
     label: str
     covers: set[str]     # regions it shields
     guards: set[str]     # mess kinds it neutralizes
     plural: bool = False
     replaces: bool = False
+    magical: bool = False
 
 
 @dataclass
@@ -211,7 +209,7 @@ class Rule:
     apply: Callable[[World], list[str]]
 
 
-def _r_soak(world: World) -> list[str]:
+def _r_tear(world: World) -> list[str]:
     """actor messy + worn item in the splash zone & uncovered -> mess + dirty."""
     out: list[str] = []
     if world.activity is None:
@@ -223,7 +221,7 @@ def _r_soak(world: World) -> list[str]:
             continue
         if world.covered(actor, item.region, mess):
             continue
-        sig = ("soak", item.id, mess, world.turn)
+        sig = ("tear", item.id, mess, world.turn)
         if sig in world.fired:
             continue
         world.fired.add(sig)
@@ -246,12 +244,12 @@ def _r_workload(world: World) -> list[str]:
         item.meters["cleaning_due"] = 1
         carer = world.get(item.caretaker)
         carer.meters["workload"] += 1
-        out.append(f"Now {carer.label} had some cleaning to do.")
+        out.append(f"Now {carer.label} had some mending to do.")
     return out
 
 
 CAUSAL_RULES: list[Rule] = [
-    Rule(name="soak", tag="physical", apply=_r_soak),
+    Rule(name="tear", tag="physical", apply=_r_tear),
     Rule(name="workload", tag="physical", apply=_r_workload),
 ]
 
@@ -309,21 +307,18 @@ def predict_mess(world: World, actor: Entity, activity: Activity, prize_id: str)
 # ---------------------------------------------------------------------------
 def activity_delight(activity: Activity) -> str:
     return {
-        "puddles": "the plip-plop sound made the whole path feel like a game",
-        "rain": "the raindrops made tiny taps on leaves and sleeves",
-        "mud": "the soft squelch underfoot made every step feel funny",
-        "paint": "the bright colors made the paper feel ready for an adventure",
-        "sand": "the warm grains slipped through small fingers like sugar",
-    }.get(activity.id, "it made the day feel full of play")
+        "sing": "the melody made the air feel like a soft blanket",
+        "sew": "the needle danced like a happy bee",
+    }.get(activity.id, "it made the day feel full of magic")
 
 
 def setting_detail(setting: Setting, activity: Activity) -> str:
     if setting.indoor:
-        return f"The {setting.place.removeprefix('the ')} was quiet, and the play table waited nearby."
+        return f"The {setting.place.removeprefix('the ')} was warm, and the sunbeam waited nearby."
     if activity.weather == "rainy":
         return f"The air smelled fresh, and {setting.place} shone after the rain."
-    if setting.place == "the beach":
-        return "The beach was bright, and the sand looked ready for little footprints."
+    if setting.place == "the garden":
+        return "The garden was bright, and the flowers looked ready for little visits."
     return f"{setting.place.capitalize()} looked wide and ready for play."
 
 
@@ -339,11 +334,10 @@ def _do_activity(world: World, actor: Entity, activity: Activity, narrate: bool 
     actor.memes["joy"] += 1
     propagate(world, narrate=narrate)
 
-
 SOLUTIONS = {
-    "temptation": ("cover", "dry_game"),
-    "splash": ("clean", "change"),
-    "wrong_cover": ("cover", "change"),
+    "temptation": ("sing", "sew"),
+    "splash": ("sew", "change"),
+    "wrong_cover": ("sew", "change"),
     "missing_gear": ("fetch", "dry_game"),
 }
 
@@ -390,7 +384,7 @@ def begin_problem(world: World) -> None:
         hero.memes["regret"] += 1
         f["ever_soiled"] = True
         cause = f"{name} began {act.gerund} before protecting {pos} {prize.label}."
-        result = f"The {prize.label} got {act.soil}, so there was cleaning to do."
+        result = f"The {prize.label} got {act.soil}, so there was mending to do."
         keep = "these" if prize.plural else "this"
         text = (f'{cause} {result} {name} stopped and touched the mark. '
                 f'"Oh, I wanted to keep {keep} nice," {hero.pronoun()} whispered. '
@@ -401,7 +395,7 @@ def begin_problem(world: World) -> None:
         if not predict_mess(world, hero, act, prize.id)["soiled"]:
             raise StoryError("The unsuitable cover must leave the prize exposed.")
         hero.memes["curiosity"] += 1
-        body_words = {"feet": "feet", "legs": "legs", "torso": "chest and back"}
+        body_words = {"skirt": "skirt", "bodice": "bodice"}
         covered = " and ".join(body_words[r] for r in sorted(wrong.covers))
         cause = (f"{name} tried {wrong.label}, which covered {pos} {covered} "
                  f"but left {pos} {prize.label} uncovered.")
@@ -414,7 +408,7 @@ def begin_problem(world: World) -> None:
     else:
         world.get("kit").meters["available"] = 0
         hero.memes["disappointment"] += 1
-        cause = "Their bag of play clothes was still at home."
+        cause = "Their bag of magic patches was still at home."
         result = f"{name} could not start {act.gerund} in {pos} treasured {prize.label} without getting {prize.it()} messy."
         text = (f'{name} searched beside {pw}, then behind the bench. No bag. '
                 f'{cause} {result} "I forgot it," {pw} admitted. '
@@ -439,7 +433,7 @@ def choose_solution(world: World) -> None:
     if solution == "fetch":
         world.get("kit").meters["available"] = 1
         hero.memes["patience"] += 1
-        cause = "The play clothes were at home, so staying by the empty bench would not help."
+        cause = "The magic patches were at home, so staying by the empty bench would not help."
         result = f"{name} and {pw} went home together and brought the bag back."
         world.record("fetch", f'"Let\'s go and get it," {name} decided. '
                      f'{result} On the way, {name} carried one handle and {pw} '
@@ -448,7 +442,7 @@ def choose_solution(world: World) -> None:
     if solution == "clean":
         # Washing settles the actual cleaning debt; the next play can soil it again.
         parent.meters["workload"] -= prize.meters["cleaning_due"]
-        for key in MESS_KINDS | {"dirty", "cleaning_due"}:
+        for key in {"torn", "dirty", "cleaning_due"}:
             prize.meters[key] = 0
         hero.memes["care"] += 1
         cause = f"The mark on the {prize.label} would not disappear just because {name} stopped playing."
@@ -510,8 +504,7 @@ def finish(world: World) -> None:
     else:
         _do_activity(world, hero, act, narrate=False)
         f["played"] = True
-        result_kind = {"puddles": "ripples", "rain": "raindrops", "mud": "footprints",
-                       "paint": "picture", "sand": "sand hill"}[act.id]
+        result_kind = {"sing": "melody", "sew": "stitch"}[act.id]
         result_object = world.add(Entity(id="play_result", type=result_kind,
                                          label=result_kind, owner=hero.id))
         result_object.meters["made"] = 1
@@ -523,11 +516,8 @@ def finish(world: World) -> None:
             cause = f"The cover kept the {prize.label} clean even while {name} played."
         result = f"{name} finally enjoyed {act.gerund}, with {pw} watching nearby."
         image = {
-            "puddles": f"A ring of ripples spread out from {name}'s next small jump.",
-            "rain": f"{name} held out a hand, and raindrops ticked a soft tune around them.",
-            "mud": f"{name} left a row of little footprints beside {pw}'s larger ones.",
-            "paint": f"{name} held up a bright picture for {pw} to see.",
-            "sand": f"{name} patted a little sand hill, then planted a shell at its very top.",
+            "sing": f"A ring of ripples spread out from {name}'s next small song.",
+            "sew": f"{name} held out a hand, and stitches ticked a soft tune around them.",
         }[act.id]
         world.record("play", f'{result} {cause} {image}', cause=cause, result=result)
     hero.memes["conflict"] = 0
@@ -586,72 +576,35 @@ def tell(setting: Setting, activity: Activity, prize_cfg: Prize,
 # Content registries.
 # ---------------------------------------------------------------------------
 SETTINGS = {
-    "park": Setting(place="the park", indoor=False, affords={"puddles", "rain"}),
-    "garden": Setting(place="the garden", indoor=False, affords={"puddles", "mud", "rain"}),
-    "backyard": Setting(place="the backyard", indoor=False, affords={"mud", "puddles", "rain"}),
-    "beach": Setting(place="the beach", indoor=False, affords={"sand"}),
-    "playroom": Setting(place="the playroom", indoor=True, affords={"paint"}),
+    "cottage": Setting(place="the cottage", indoor=True, affords={"sing", "sew"}),
 }
 
 ACTIVITIES = {
-    # puddle-jumping splashes feet/legs only -- NOT the torso (so a jacket is
-    # not at risk here, which is why jacket+puddles is rejected, cf. the README).
-    "puddles": Activity(
-        id="puddles",
-        verb="jump in the puddles",
-        gerund="jumping in puddles",
-        mess="wet",
-        soil="wet and dirty",
-        zone={"feet", "legs"},
-        weather="rainy",
-        keyword="puddles",
-        tags={"puddle", "wet"},
-    ),
-    # rain falls on everything, so it *does* reach the torso -- jacket+rain is the
-    # reasonable counterpart that a raincoat genuinely fixes.
-    "rain": Activity(
-        id="rain",
-        verb="play in the rain",
-        gerund="dancing in the rain",
-        mess="wet",
-        soil="soaking wet",
-        zone={"feet", "legs", "torso"},
-        weather="rainy",
-        keyword="rain",
-        tags={"rain", "wet"},
-    ),
-    "mud": Activity(
-        id="mud",
-        verb="play in the mud",
-        gerund="splashing in the mud",
-        mess="muddy",
-        soil="all muddy",
-        zone={"feet", "legs"},
-        weather="rainy",
-        keyword="mud",
-        tags={"mud", "dirty"},
-    ),
-    "paint": Activity(
-        id="paint",
-        verb="paint a picture",
-        gerund="painting pictures",
-        mess="painted",
-        soil="spotted with washable paint",
-        zone={"torso"},
+    # singing splashes skirt only -- NOT the bodice (so a bodice patch is
+    # not at risk here, which is why bodice+sing is rejected, cf. the README).
+    "sing": Activity(
+        id="sing",
+        verb="sing the nursery rhyme",
+        gerund="singing the nursery rhyme",
+        mess="torn",
+        soil="torn and ragged",
+        zone={"skirt"},
         weather="",
-        keyword="paint",
-        tags={"paint", "dirty"},
+        keyword="gingham",
+        tags={"gingham", "magic"},
     ),
-    "sand": Activity(
-        id="sand",
-        verb="dig in the sand",
-        gerund="digging in the sand",
-        mess="sandy",
-        soil="covered in sand",
-        zone={"legs"},
-        weather="sunny",
-        keyword="sand",
-        tags={"sand"},
+    # sewing splashes everything, so it *does* reach the bodice -- bodice+sew is the
+    # reasonable counterpart that a bodice patch genuinely fixes.
+    "sew": Activity(
+        id="sew",
+        verb="sew with magic thread",
+        gerund="sewing with magic thread",
+        mess="torn",
+        soil="torn and ragged",
+        zone={"skirt", "bodice"},
+        weather="",
+        keyword="gingham",
+        tags={"gingham", "magic", "sewing"},
     ),
 }
 
@@ -659,28 +612,23 @@ ACTIVITIES = {
 # only protects the regions it actually covers (the core reasonableness rule).
 GEAR = [
     Gear(
-        id="boots",
-        label="rain boots",
-        covers={"feet"},
-        guards={"wet", "muddy"},
-        plural=True,
+        id="skirt_patch",
+        label="a gingham skirt patch",
+        covers={"skirt"},
+        guards={"torn"},
+        magical=True,
     ),
     Gear(
-        id="smock",
-        label="an old smock",
-        covers={"torso"},
-        guards={"painted"},
-    ),
-    Gear(
-        id="raincoat",
-        label="a raincoat",
-        covers={"torso"},
-        guards={"wet"},
+        id="bodice_patch",
+        label="a gingham bodice patch",
+        covers={"bodice"},
+        guards={"torn"},
+        magical=True,
     ),
     Gear(
         id="playclothes",
         label="old play clothes",
-        covers={"legs", "torso"},
+        covers={"skirt", "bodice"},
         guards=set(),
         plural=True,
         replaces=True,
@@ -688,38 +636,18 @@ GEAR = [
 ]
 
 PRIZES = {
-    "shoes": Prize(
-        label="shoes",
-        phrase="pretty white shoes",
-        type="shoes",
-        region="feet",
-        plural=True,
+    "skirt": Prize(
+        label="skirt",
+        phrase="a pretty gingham skirt",
+        type="skirt",
+        region="skirt",
+        plural=False,
     ),
-    "socks": Prize(
-        label="socks",
-        phrase="new white socks",
-        type="socks",
-        region="feet",
-        plural=True,
-    ),
-    "dress": Prize(
-        label="dress",
-        phrase="a pretty new dress",
-        type="dress",
-        region="legs",
-        genders={"girl"},
-    ),
-    "jacket": Prize(
-        label="jacket",
-        phrase="a new jacket with a tough zipper",
-        type="jacket",
-        region="torso",
-    ),
-    "shirt": Prize(
-        label="shirt",
-        phrase="a clean white shirt",
-        type="shirt",
-        region="torso",
+    "bodice": Prize(
+        label="bodice",
+        phrase="a red and white gingham bodice",
+        type="bodice",
+        region="bodice",
     ),
 }
 
@@ -765,42 +693,29 @@ class StoryParams:
 # (3) Child-level world knowledge, keyed by topic.  These are answerable WITHOUT
 # the story; they explain the *elements* the world is built from.
 KNOWLEDGE = {
-    "puddle": [("What is a puddle?",
-                "A puddle is a small pool of water on the ground, usually left "
-                "behind after it rains.")],
-    "wet": [("Why does it feel cold when your feet get wet?",
-             "Wet feet feel cold because the water carries the warmth away from "
-             "your skin as it dries, so your feet lose heat and feel chilly.")],
-    "rain": [("Where does rain come from?",
-              "Rain is water that falls from clouds in the sky when the clouds "
-              "get too full of tiny water drops.")],
-    "mud": [("What is mud?",
-             "Mud is soft, wet dirt. It sticks to shoes and clothes and makes "
-             "them dirty.")],
-    "paint": [("Why can paint be messy?",
-               "Paint can drip and smear onto clothes and hands. Washable paint "
-               "can be cleaned off, but cleaning still takes time.")],
-    "sand": [("What is sand?",
-              "Sand is made of tiny bits of rock and shell, and you find lots of "
-              "it at the beach.")],
-    "dirty": [("Why do dirty clothes need to be washed?",
-               "Dirty clothes are washed to get the mud and stains out so they "
-               "are clean and fresh to wear again.")],
-    "boots": [("What are rain boots for?",
-               "Rain boots are tall, waterproof boots that keep your feet dry "
-               "when you splash in water or mud.")],
-    "raincoat": [("What does a raincoat do?",
-                  "A raincoat is a waterproof coat that keeps the rest of you dry "
-                  "when you play in the rain.")],
-    "smock": [("What is a smock for?",
-               "A smock is a loose cover you wear over your clothes so paint "
-               "does not get on them.")],
+    "gingham": [("What is gingham?",
+                 "Gingham is a type of checked fabric, often red and white, "
+                 "that looks like a grid of squares.")],
+    "magic": [("What is magic in a story?",
+               "Magic is a special power that can do things we cannot do in real "
+               "life, like making patches grow or mending tears.")],
+    "sewing": [("Why can sewing be messy?",
+                "Sewing can drop threads and needles, and fabric can get frayed. "
+                "Magic thread can help, but it still takes care.")],
+    "torn": [("Why do torn clothes need to be mended?",
+              "Torn clothes are mended to close the gap so they stay strong and "
+              "keep you warm and comfortable.")],
+    "skirt_patch": [("What is a skirt patch for?",
+                     "A skirt patch is a piece of fabric sewn over a tear in a "
+                     "skirt to make it whole again.")],
+    "bodice_patch": [("What does a bodice patch do?",
+                      "A bodice patch is a piece of fabric sewn over a tear in the "
+                      "top part of a dress or shirt to keep it from unraveling.")],
     "playclothes": [("What are old play clothes?",
                      "Old play clothes are clothes you do not mind getting dirty, "
-                     "so it is fine if they get muddy or messy.")],
+                     "so it is fine if they get torn or messy.")],
 }
-KNOWLEDGE_ORDER = ["puddle", "rain", "mud", "paint", "sand", "wet", "dirty",
-                   "boots", "raincoat", "smock", "playclothes"]
+KNOWLEDGE_ORDER = ["gingham", "magic", "sewing", "torn", "skirt_patch", "bodice_patch", "playclothes"]
 
 
 def generation_prompts(world: World) -> list[str]:
@@ -809,14 +724,14 @@ def generation_prompts(world: World) -> list[str]:
     hero, parent, act, prize = f["hero"], f["parent"], f["activity"], f["prize_cfg"]
     kw = act.keyword or act.mess
     premise = {
-        "temptation": "pauses before getting treasured clothes messy",
-        "splash": "gets treasured clothes messy before thinking ahead",
-        "wrong_cover": "finds that a chosen cover does not protect the right place",
-        "missing_gear": "discovers that the bag of play clothes was left at home",
+        "temptation": "pauses before getting treasured clothes torn",
+        "splash": "gets treasured clothes torn before thinking ahead",
+        "wrong_cover": "finds that a chosen patch does not protect the right place",
+        "missing_gear": "discovers that the bag of magic patches was left at home",
     }[f["problem"]]
     response = {
-        "cover": "chooses suitable clothes before playing",
-        "clean": "helps wash the clothes before returning to play",
+        "cover": "chooses suitable patch before playing",
+        "clean": "helps mend the clothes before returning to play",
         "change": "puts the treasured clothes away and changes into old things",
         "fetch": "goes home with the parent to fetch the missing bag",
         "dry_game": "chooses to draw the play idea instead",
@@ -835,11 +750,11 @@ def story_qa(world: World) -> list[QAItem]:
     questions = {
         "temptation": "Why did the child pause before playing?",
         "splash": "What went wrong when the child first started playing?",
-        "wrong_cover": "Why did the first cover not work?",
+        "wrong_cover": "Why did the first patch not work?",
         "missing_gear": "Why could they not get ready right away?",
         "choose_drawing": "What different plan did the child choose, and why?",
         "fetch": "How did they get what was missing?",
-        "wash": "What did they do about the mark?",
+        "wash": "What did they do about the tear?",
         "change": "Why did the child change clothes?",
         "fit": "How did they get ready to play?",
         "draw": "What did they make at the end?",
@@ -907,63 +822,29 @@ def dump_trace(world: World) -> str:
 # Curated, constraint-valid set (used by --all).
 CURATED = [
     StoryParams(
-        place="park",
-        activity="puddles",
-        prize="shoes",
+        place="cottage",
+        activity="sing",
+        prize="skirt",
         name="Lily",
         gender="girl",
         parent="mother",
         trait="playful",
     ),
     StoryParams(
-        place="garden",
-        activity="mud",
-        prize="socks",
-        name="Tim",
-        gender="boy",
-        parent="father",
+        place="cottage",
+        activity="sew",
+        prize="bodice",
+        name="Mia",
+        gender="girl",
+        parent="mother",
         trait="curious",
         problem="splash",
         solution="change",
     ),
-    StoryParams(  # jacket+rain -> raincoat
-        place="park",
-        activity="rain",
-        prize="jacket",
-        name="Ben",
-        gender="boy",
-        parent="father",
-        trait="lively",
-        problem="wrong_cover",
-        solution="cover",
-    ),
-    StoryParams(
-        place="playroom",
-        activity="paint",
-        prize="shirt",
-        name="Mia",
-        gender="girl",
-        parent="mother",
-        trait="spirited",
-        problem="splash",
-        solution="clean",
-    ),
-    StoryParams(
-        place="beach",
-        activity="sand",
-        prize="dress",
-        name="Zoe",
-        gender="girl",
-        parent="mother",
-        trait="cheerful",
-        problem="missing_gear",
-        solution="dry_game",
-    ),
 ]
 CURATED.extend([
     replace(CURATED[0], problem="temptation", solution="dry_game"),
-    replace(CURATED[2], problem="wrong_cover", solution="change"),
-    replace(CURATED[4], problem="missing_gear", solution="fetch"),
+    replace(CURATED[1], problem="wrong_cover", solution="change"),
 ])
 
 
@@ -991,14 +872,14 @@ def explain_gender(prize_id: str, gender: str) -> str:
 # (prize_at_risk / select_gear / valid_combos).  The rules are inline below; the
 # facts are generated from the registries above so the two can never drift.
 # Uses the shared `asp` helper + clingo, imported lazily so the prose engine
-# runs without them.  See `python puddles.py --verify`.
+# runs without them.  See `python gingham_magic_nursery_rhyme.py --verify`.
 # ---------------------------------------------------------------------------
 ASP_RULES = r"""
 % A prize is at risk when the activity splashes the region it is worn on.
 prize_at_risk(A, P) :- splashes(A, R), worn_on(P, R).
 
 % Gear is a compatible fix only when it both neutralises the mess kind AND
-% covers the at-risk region (rain boots guard wet but cover only feet).
+% covers the at-risk region (skirt patch guards torn but covers only skirt).
 protects(G, A, P) :- gear(G), prize_at_risk(A, P),
                      mess_of(A, M), guards(G, M),
                      covers(G, R), worn_on(P, R).
@@ -1134,7 +1015,7 @@ def asp_verify() -> int:
 # ---------------------------------------------------------------------------
 def build_parser() -> argparse.ArgumentParser:
     ap = argparse.ArgumentParser(
-        description="Story world sketch: a child, a mess, a compromise. "
+        description="Story world sketch: a child, a tear, a magic patch. "
                     "Unspecified choices are picked at random (seeded).")
     # A small, debuggable set of pins; any omitted choice is randomized.
     ap.add_argument("--place", choices=SETTINGS)

@@ -1,7 +1,9 @@
 # Storyworld Quality Iteration Pipeline
 
-This loop is for improving the `gpt-5.4-mini` storyworld prompt and the cheap
-scripted repair layer without using an LLM repair pass.
+This loop is for improving the storyworld prompt and the cheap scripted repair
+layer without using an LLM repair pass. Generation now defaults to
+`gpt-5.6-luna` with reasoning effort `none`; the quality judge remains
+`gpt-5.4-mini`. Older Mini batch examples below are retained for reproducibility.
 
 The loop has two distinct phases:
 
@@ -23,7 +25,7 @@ auditable, and close to the original prompt. The main scorecard is:
 Prefer changes in this order:
 
 1. Small prompt changes that improve many worlds.
-2. Narrow scripted repairs for repeated `gpt-5.4-mini` code mistakes.
+2. Narrow scripted repairs for repeated generated-code mistakes.
 3. No LLM repair pass unless explicitly requested; it is too expensive for the
    default loop and can hide prompt/codegen defects.
 
@@ -35,8 +37,10 @@ iteration so the score is not tuned to one lucky or unlucky sample:
 ```bash
 OPENAI_API_KEY="$(cat .API_KEY)" ./.venv/bin/python storyworlds/openai_service_world_pipeline.py \
   --seed <new-seed> \
-  --model gpt-5.4-mini \
-  --reasoning-effort low \
+  --model gpt-5.6-luna \
+  --reasoning-effort none \
+  --service-tier flex \
+  --quality-model gpt-5.4-mini \
   --max-output-tokens 32000 \
   --repair-failures
 ```
@@ -44,6 +48,26 @@ OPENAI_API_KEY="$(cat .API_KEY)" ./.venv/bin/python storyworlds/openai_service_w
 Omitting `-n` intentionally means `-n 100`. Use a different `--seed` every time
 you compare a prompt change. Reuse an old seed only for an A/B check where the
 prompt is the only thing you want to vary.
+
+For a five-world Puddles-only pilot, add `-n 5 --concurrency 5
+--example-worlds puddles`. Without `--example-worlds`, both Puddles and Pirates
+are included. No addendum is used unless `--prompt-addendum` is supplied.
+
+To compare repaired examples, use `--example-file <repository-script.py>`
+instead of `--example-worlds`. One flag supplies one example; repeated flags
+include all selected examples in every request. For separate five-world arms,
+run `-n 5 --concurrency 5` once per example, with the same `--seed`, model,
+reasoning effort, repair settings, and Mini judge. Give each arm its own
+`--output-dir` and `--target-dir`, and keep a snapshot of each example source.
+Quality outputs default to the manifest's directory, so same-seed parallel
+arms do not overwrite each other. `--quality-out` can explicitly override this.
+The manifest records `example_files`; prompt snapshots show the exact embedded
+source. Reusing `--from-manifest` restores the selected example paths.
+
+Completed example comparison: [five repaired-example Luna batches](batches/luna_repaired_examples_20260907.report.md)
+(25 worlds, same seed as the Puddles pilot, separate preserved batches).
+Also completed: [Qwen3.8 27B / OpenRouter Puddles pilot](batches/qwen38_puddles_20260907.report.md)
+(five matched-seed worlds, reasoning disabled, same direct OpenAI Mini judge).
 
 The command writes:
 

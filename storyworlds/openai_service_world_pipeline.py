@@ -55,11 +55,16 @@ def build_parser() -> argparse.ArgumentParser:
         default=None,
         help="optional extra prompt instructions appended to every storyworld request",
     )
-    parser.add_argument(
+    examples = parser.add_mutually_exclusive_group()
+    examples.add_argument(
         "--example-worlds",
         choices=batch_factory.EXAMPLE_WORLD_CHOICES,
         default="all",
         help="which bundled example worlds to include in prompts; default: all",
+    )
+    examples.add_argument(
+        "--example-file", dest="example_files", type=Path, action="append",
+        help="repository Python source to use instead of bundled examples; repeat for multiple examples",
     )
     parser.add_argument("--overwrite", action="store_true")
     parser.add_argument("--allow-incomplete", action="store_true")
@@ -180,7 +185,10 @@ def factory_command(args: argparse.Namespace) -> list[str]:
         cmd += ["--target-dir", str(args.target_dir)]
     if args.prompt_addendum is not None:
         cmd += ["--prompt-addendum", str(args.prompt_addendum)]
-    if args.example_worlds != "all":
+    if args.example_files is not None:
+        for path in args.example_files:
+            cmd += ["--example-file", str(path)]
+    elif args.example_worlds != "all":
         cmd += ["--example-worlds", args.example_worlds]
     if args.overwrite:
         cmd.append("--overwrite")
@@ -203,6 +211,7 @@ def service_prompt(job: dict[str, Any], args: argparse.Namespace) -> str:
         story_job,
         prompt_addendum=addendum_path,
         example_worlds=str(job.get("example_worlds") or args.example_worlds),
+        example_files=args.example_files,
         emit_mode=str(job.get("emit_mode") or args.emit_mode),
     )
     return prompt
@@ -417,7 +426,7 @@ def quality_paths(manifest_path: Path, args: argparse.Namespace) -> tuple[Path, 
         quality_out = args.quality_out
     else:
         stem = manifest_path.name.removesuffix(".manifest.json")
-        quality_out = BATCH_DIR / f"{stem}.quality.jsonl"
+        quality_out = manifest_path.with_name(f"{stem}.quality.jsonl")
     summary_out = quality_out.with_suffix(".summary.json") if quality_out.suffix == ".jsonl" else quality_out.with_name(f"{quality_out.name}.summary.json")
     return quality_out, summary_out
 
@@ -681,6 +690,8 @@ def main() -> int:
         args.prompt_addendum = Path(str(manifest["prompt_addendum"]))
     if args.example_worlds == "all" and isinstance(manifest.get("example_worlds"), str):
         args.example_worlds = str(manifest["example_worlds"])
+    if args.example_files is None and isinstance(manifest.get("example_files"), list):
+        args.example_files = [Path(path) for path in manifest["example_files"]]
 
     report_path = args.report_out
     if report_path is None:
