@@ -434,7 +434,19 @@ knowledge, decisions, or actions; inner thoughts and quoted notes do not count.
 This is prompt guidance, not a newly implemented semantic validation gate.
 The feature sampler and matched seeds are unchanged. The completed baseline
 used `custom_tool_python_v10`; its frozen requests, ratings, and source snapshots
-were not rebuilt. A future trial must use a fresh name to measure this change.
+were not rebuilt. Each subsequent trial must use a fresh name.
+
+That matched [paid v11 trial is now complete](batches/dialogue_required_v11_20260907.report.md):
+same 21 tasks, source hashes, seeds, Luna/Flex, Terra/Flex, and score formula.
+After separately retained manual recovery, quality rose 6.41 -> 6.92/9 and
+quoted-word share 17.7% -> 34.0%. Semantic diversity stayed 1.19/9; exact unique
+texts fell 11,637 -> 9,720 and composite score 6.26 -> 5.91/100. Nell-based
+outputs collapsed to 120 exact strings across three 1,000-draw pools.
+Automatic verification passed 11/21 versus 14/21 in v10; final verification,
+standalone execution, and replay pass 21/21. Eleven unchanged judged pools were
+reused, and ten recovered pools added 100 judgments, for 210 stories total.
+Estimated API spend: $0.319511. Retain the dialogue change for its demonstrated
+dialogue benefit, not as proof that quality/diversity or training readiness is solved.
 
 The [completed 21-world trial](batches/dialogue_v2_baseline_20260907.report.md)
 uses the same three tasks in each of seven arms, no addendum, and the unchanged

@@ -162,8 +162,12 @@ in [`STORY.md`](STORY.md#story-quality), embedded by the shared prompt builder
 for batch, direct-service, and canonical-trial generation. Inner monologue and
 quoted notes do not qualify. Prompt protocol `custom_tool_python_v11` introduces
 this requirement **after** the measured dialogue-v2 baseline below. Seed tasks
-and their feature-sampling distribution are unchanged; the new prompt has not
-yet had a paid trial.
+and their feature-sampling distribution are unchanged. The [matched paid v11 trial](batches/dialogue_required_v11_20260907.report.md)
+is complete: quoted text rose from 17.7% to 34.0%, quality from 6.41 to 6.92/9,
+but semantic diversity stayed at 1.19/9 and the geometric score fell from 6.26
+to 5.91/100. All 21 final scripts pass after ten separately recorded manual
+recoveries; estimated API spend was $0.3195. More dialogue did not fix template
+collapse or make the entire output pool training-ready.
 
 The current reference set is **Puddles, Pirates, Garnet, Library Words,
 One Cart, Bridge Builders, Nell v2**, version **`dialogue_v2`**. The latest
