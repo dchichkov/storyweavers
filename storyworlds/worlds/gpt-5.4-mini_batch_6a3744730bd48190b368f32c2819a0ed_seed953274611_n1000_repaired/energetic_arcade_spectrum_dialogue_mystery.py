@@ -235,17 +235,15 @@ class Rule:
 
 
 def _r_fear(world: World) -> list[str]:
-    out: list[str] = []
-    for ent in list(world.entities.values()):
-        if ent.meters["oddity"] < THRESHOLD:
-            continue
-        sig = ("fear", ent.id)
-        if sig in world.fired:
-            continue
-        world.fired.add(sig)
-        ent.memes["worry"] += 1
-        out.append("__worry__")
-    return out
+    signal = world.get("Signal")
+    if signal.meters["oddity"] < THRESHOLD:
+        return []
+    sig = ("fear", "Child")
+    if sig in world.fired:
+        return []
+    world.fired.add(sig)
+    world.get("Child").memes["worry"] += 1
+    return ["__worry__"]
 
 
 def _r_clue(world: World) -> list[str]:
@@ -295,7 +293,7 @@ def valid_combos() -> list[tuple[str, str, str]]:
     for place_id, place in PLACES.items():
         for mystery_id, mystery in MYSTERIES.items():
             for answer_id, answer in ANSWERS.items():
-                if mystery_id in answer.tags and place_id in {"arcade"}:
+                if mystery.tags & answer.tags and place_id == "arcade":
                     combos.append((place_id, mystery_id, answer_id))
     return combos
 
@@ -351,7 +349,7 @@ MYSTERIES = {
         dialogue_prompt="Why is that machine flashing like a rainbow?",
         resolution="the loose color strip was plugged back in",
         danger="the floor became hard to see",
-        tags={"signal", "spectrum"},
+        tags={"signal"},
     ),
     "lights": Mystery(
         id="lights",
@@ -385,6 +383,110 @@ ANSWERS = {
 }
 
 NAMES = ["Mina", "Leo", "Ari", "Zoe", "Noah", "Luna", "Milo", "Ivy"]
+
+OPENINGS = [
+    "The after-school arcade challenge had just begun",
+    "A birthday group was choosing its first game",
+    "The arcade was about to award its hundredth prize ticket",
+    "A rain shower had sent a crowd indoors to play",
+    "The last round of the neighborhood game night was starting",
+    "A younger player was learning the dance game for the first time",
+    "The high-score board had drawn everyone to the center aisle",
+    "The arcade attendant was testing the cabinets before opening",
+]
+
+CASES = {
+    "plug": {
+        "machine": "the Comet Racer cabinet",
+        "interruptions": [
+            "its steering lights blinked out halfway through every lap",
+            "its score vanished whenever the blue band crossed the screen",
+            "its start button chimed, but the race would not begin",
+            "its rainbow track froze and sent players back to the starting line",
+        ],
+        "clues": [
+            "a loose data cable shifted whenever the cabinet vibrated",
+            "the blue light disappeared at the same moment the score reset",
+            "a tiny amber connection lamp winked on and off behind the clear service panel",
+            "the picture steadied when everyone stopped bumping the cabinet",
+        ],
+        "false_leads": [
+            "a sticky steering wheel",
+            "a scratched token",
+            "the blinking prize counter",
+            "a reflection from the snack sign",
+        ],
+        "diagnosis": "a loose data cable was breaking the cabinet's signal",
+        "repair": "the attendant switched off the cabinet, secured the loose cable, and restarted it",
+        "result": "the racer kept its score through a complete rainbow lap",
+    },
+    "clean": {
+        "machine": "the Prism Puzzle projector",
+        "interruptions": [
+            "its colored clues melted into one cloudy patch",
+            "its violet arrow pointed players toward the wrong door",
+            "its rainbow map looked sharp at the top and fuzzy at the bottom",
+            "its color-matching round rejected every correct answer",
+        ],
+        "clues": [
+            "a gray crescent covered one edge of the lamp window",
+            "fingerprints bent the projected colors into blurry halos",
+            "the wall image cleared when a clean card briefly shaded the lamp",
+            "dust sparkled in the projector beam but nowhere else",
+        ],
+        "false_leads": [
+            "a faded picture on the wall",
+            "the players' colored wristbands",
+            "a purple bulb in the next cabinet",
+            "the projector's cheerful warning tune",
+        ],
+        "diagnosis": "dust and fingerprints were blurring the projector's spectrum",
+        "repair": "the attendant powered down the projector, cleaned its cover, and set it straight",
+        "result": "each colored clue landed in its proper place on the puzzle wall",
+    },
+    "tape": {
+        "machine": "the Spectrum Step dance game",
+        "interruptions": [
+            "a loose light strip flashed even when nobody stepped on it",
+            "its green path flickered and made the next safe step unclear",
+            "one edge of the glowing floor curled up after every song",
+            "its colors raced in the opposite direction from the music",
+        ],
+        "clues": [
+            "one corner of the light strip lifted whenever the floor thumped",
+            "the false flash always began beside the same loose edge",
+            "a narrow shadow appeared beneath the strip before each wrong color",
+            "the color pattern behaved normally when the loose edge lay flat",
+        ],
+        "false_leads": [
+            "a player's flashing shoelaces",
+            "the energetic drumbeat",
+            "a reflection in the prize-case glass",
+            "the game's fastest difficulty setting",
+        ],
+        "diagnosis": "a lifting light strip was making false flashes and creating a tripping hazard",
+        "repair": "the attendant closed the dance pad, fastened the strip beneath its clear guard, and tested every edge",
+        "result": "the floor showed one steady path and stayed flat through the whole song",
+    },
+}
+
+ENDING_IMAGES = [
+    "A clean rainbow loop circled the cabinet while the next player cheered.",
+    "On the polished floor, seven steady colors pointed all the way to the prize desk.",
+    "The final blue light held still as a silver prize ticket curled into the tray.",
+    "Across the quiet screen, the spectrum opened like a bright fan and did not flicker once.",
+    "The younger players followed the clear colored path, one safe step at a time.",
+    "A row of calm lights reflected in the two detectives' grinning faces.",
+    "The high-score bell rang beneath a crisp rainbow that stayed exactly where it belonged.",
+    "When the arcade doors opened, every color was bright, orderly, and ready for play.",
+]
+
+
+def _story_rng(params: StoryParams) -> random.Random:
+    key = params.seed if params.seed is not None else (
+        f"{params.place}|{params.mystery}|{params.answer}|{params.child}|{params.helper}"
+    )
+    return random.Random(key)
 
 
 def build_parser() -> argparse.ArgumentParser:
@@ -429,43 +531,107 @@ def resolve_params(args: argparse.Namespace, rng: random.Random) -> StoryParams:
 
 def tell(params: StoryParams) -> World:
     world = World()
-    child = world.add(Entity(id="Child", kind="character", type="girl", label=params.child, role="child"))
-    helper = world.add(Entity(id="Helper", kind="character", type="boy", label=params.helper, role="helper"))
+    child = world.add(Entity(id="Child", kind="character", type="child", label=params.child, role="detective"))
+    helper = world.add(Entity(id="Helper", kind="character", type="child", label=params.helper, role="clue keeper"))
     arcade = world.add(Entity(id="Arcade", kind="place", type="place", label=PLACES[params.place].label))
     signal = world.add(Entity(id="Signal", type="object", label=MYSTERIES[params.mystery].id))
     child.memes["energy"] = 1
     child.memes["curiosity"] = 1
 
+    rng = _story_rng(params)
+    case = CASES[params.answer]
+    opening = rng.choice(OPENINGS)
+    interruption = rng.choice(case["interruptions"])
+    clue = rng.choice(case["clues"])
+    false_lead = rng.choice(case["false_leads"])
+    ending = rng.choice(ENDING_IMAGES)
+    route = rng.randrange(6)
+    investigation_method = [
+        "comparing the first suspect's pattern with the flicker",
+        "interviewing waiting players and watching another cycle",
+        "mapping the changing colors on a prize slip",
+        "listening between game sounds and matching cause to effect",
+        "comparing the troubled game with a working neighbor",
+        "clearing the area and observing the machine from farther away",
+    ][route]
+
     world.say(
-        f"{child.label_word} was an energetic kid who loved the arcade. "
-        f"The place glittered with {PLACES[params.place].glow}."
+        f"{opening} when {child.label_word}, an energetic young detective, hurried inside. "
+        f"The arcade shimmered with {PLACES[params.place].glow}, a lively spectrum of color, "
+        f"but {case['machine']} showed {MYSTERIES[params.mystery].oddity}: {interruption}."
     )
     world.say(
         f'“{MYSTERIES[params.mystery].dialogue_prompt}” {child.label_word} asked. '
-        f'“It feels like a mystery.”'
-    )
-    world.para()
-    world.say(
-        f"{helper.label_word} leaned in and said, “Look closely. A spectrum can hide a clue.”"
+        f'“Let’s find evidence before anyone guesses,” {helper.label_word} replied.'
     )
     signal.meters["oddity"] += 1
     arcade.meters["signal"] += 1
     propagate(world, narrate=False)
-    world.say(
-        f"The machine gave off {MYSTERIES[params.mystery].danger}, and the colors kept sliding across the screen."
-    )
-    world.say(
-        f'"{MYSTERIES[params.mystery].resolution}," {helper.label_word} said after '
-        f'{ANSWERS[params.answer].clue}.'
-    )
+
+    world.para()
+    if route == 0:
+        world.say(
+            f"They first checked {false_lead}, but its pattern did not match the flicker. "
+            f"Then {helper.label_word} crouched at a safe distance and spotted that {clue}."
+        )
+        world.say(
+            f'“The same color vanishes each time,” said {child.label_word}. '
+            f'“Our best explanation is that {case["diagnosis"]}.”'
+        )
+    elif route == 1:
+        world.say(
+            f"They asked two waiting players what they had seen. Both ruled out {false_lead} and pointed toward {case['machine']}. "
+            f"Watching one more cycle revealed that {clue}."
+        )
+        world.say(
+            f'“The stories agree with the spectrum,” {helper.label_word} said. '
+            f'“Yes,” answered {child.label_word}, “{case["diagnosis"].capitalize()}.”'
+        )
+    elif route == 2:
+        world.say(
+            f"Instead of touching the machine, they drew the changing spectrum on a prize slip. "
+            f"The repeated gap led them past {false_lead}, where they noticed that {clue}."
+        )
+        world.say(
+            f'“Our color map repeats the mistake,” said {child.label_word}. '
+            f'“So {case["diagnosis"]},” {helper.label_word} concluded.'
+        )
+    elif route == 3:
+        world.say(
+            f"They paused beside the cabinet and listened between its cheerful sounds. {false_lead.capitalize()} stayed unchanged, "
+            f"but each faulty flash happened just as they observed this clue: {clue}."
+        )
+        world.say(
+            f'“One event causes the next,” {helper.label_word} whispered. '
+            f'“Then our answer is that {case["diagnosis"]},” said {child.label_word}.'
+        )
+    elif route == 4:
+        world.say(
+            f"They compared the troubled game with the cabinet beside it. They found {false_lead} nearby, yet the neighboring machine worked. "
+            f"Only the troubled game showed that {clue}."
+        )
+        world.say(
+            f'“We can cross out the reflection,” said {child.label_word}. '
+            f'“The real cause is that {case["diagnosis"]},” {helper.label_word} replied.'
+        )
+    else:
+        world.say(
+            f"They warned the waiting players to give the machine room, then watched from the prize desk. "
+            f"From there, {false_lead} stopped looking suspicious, and they could see that {clue}."
+        )
+        world.say(
+            f'“Now the whole pattern makes sense,” said {helper.label_word}. '
+            f'“It shows that {case["diagnosis"]},” {child.label_word} agreed.'
+        )
+
     world.para()
     world.say(
-        f"{child.label_word} nodded. “So that was it,” {child.pronoun()} said. "
-        f'“The arcade looks calm again.”'
+        f"They told the arcade attendant what they had observed. After putting up a safety sign, {case['repair']}. "
+        f"The detectives tested their conclusion by watching a full round: {case['result']}."
     )
     world.say(
-        f"Together they fixed it by {ANSWERS[params.answer].text}. "
-        f"In the end, the energetic arcade felt bright again, and the spectrum of lights stayed steady."
+        f'“Mystery solved by looking, listening, and talking,” {child.label_word} said. '
+        f'“And by letting an adult handle the repair,” added {helper.label_word}. {ending}'
     )
     world.facts.update(
         child=child,
@@ -475,6 +641,17 @@ def tell(params: StoryParams) -> World:
         mystery=MYSTERIES[params.mystery],
         answer=ANSWERS[params.answer],
         place=PLACES[params.place],
+        opening=opening,
+        machine=case["machine"],
+        interruption=interruption,
+        clue=clue,
+        false_lead=false_lead,
+        diagnosis=case["diagnosis"],
+        repair=case["repair"],
+        result=case["result"],
+        ending=ending,
+        investigation_route=route,
+        investigation_method=investigation_method,
         resolved=True,
     )
     return world
@@ -484,8 +661,8 @@ def generation_prompts(world: World) -> list[str]:
     f = world.facts
     return [
         f'Write a mystery story for a young child that includes the words "energetic", "arcade", and "spectrum".',
-        f"Tell a dialogue-driven story where {f['child'].label_word} and {f['helper'].label_word} solve a mystery in an arcade.",
-        f"Write a short child-friendly mystery with talking characters, a flashing clue, and a calm ending.",
+        f"Tell a dialogue-driven story where {f['child'].label_word} and {f['helper'].label_word} use evidence to solve a mystery involving {f['machine']}.",
+        f"Write a child-friendly arcade mystery in which the clue that {f['clue']} leads to a safe repair and a visible ending.",
     ]
 
 
@@ -493,20 +670,22 @@ def story_qa(world: World) -> list[QAItem]:
     f = world.facts
     child = f["child"]
     helper = f["helper"]
-    answer = f["answer"]
-    mystery = f["mystery"]
     return [
         QAItem(
-            question="What kind of story is this?",
-            answer="It is a mystery story about a child and a helper solving a strange problem at an arcade. They talk through the clues and find what was causing the flashing change.",
+            question=f"When {f['opening'].lower()}, what problem did {child.label_word} and {helper.label_word} investigate at {f['machine']}?",
+            answer=f"They investigated why {f['interruption']} while the machine showed {f['mystery'].oddity}. After ruling out {f['false_lead']}, they investigated by {f['investigation_method']} and discovered that {f['clue']}. The final proof was visible: {f['ending']}",
         ),
         QAItem(
-            question=f"What did {child.label_word} and {helper.label_word} do to solve the problem?",
-            answer=f"They followed the clue, noticed the spectrum, and fixed the machine by {answer.text}. That made the arcade steady and safe again.",
+            question=f"While {f['opening'].lower()}, the machine showed {f['mystery'].oddity} and {f['interruption']}. After ruling out {f['false_lead']}, what clue helped {child.label_word} and {helper.label_word} identify the cause?",
+            answer=f"They investigated by {f['investigation_method']}. This let them observe that {f['clue']}, supporting their conclusion that {f['diagnosis']}. Their conclusion was confirmed when {f['ending'][0].lower() + f['ending'][1:]}",
         ),
         QAItem(
-            question=f"Why did the arcade seem strange at first?",
-            answer=f"It was showing {mystery.oddity}, so the lights and colors did not look normal. The odd glow made the place feel mysterious until they found the source.",
+            question=f"When {f['opening'].lower()}, {f['machine']} had a problem: {f['interruption']}. How did {child.label_word} and {helper.label_word} safely solve the mystery of {f['mystery'].oddity}?",
+            answer=f"After ruling out {f['false_lead']}, they investigated by {f['investigation_method']} and observed that {f['clue']}. They reported the evidence instead of repairing the machine themselves, so {f['repair']}. Afterward, {f['result']}. {f['ending']}",
+        ),
+        QAItem(
+            question=f"While {f['opening'].lower()}, why did {child.label_word} and {helper.label_word} reject {f['false_lead']} as the cause of {f['mystery'].oddity}?",
+            answer=f"It did not explain why {f['interruption']}. By the time they finished {f['investigation_method']}, the stronger clue was that {f['clue']}. The result was confirmed when {f['ending'][0].lower() + f['ending'][1:]}",
         ),
     ]
 
@@ -598,7 +777,7 @@ def asp_facts() -> str:
 
 
 ASP_RULES = r"""
-valid(P, M, A) :- place(P), mystery(M), answer(A), tag(M, "arcade"), fits(A, T), tag(M, T).
+valid("arcade", M, A) :- mystery(M), answer(A), fits(A, T), tag(M, T).
 """
 
 

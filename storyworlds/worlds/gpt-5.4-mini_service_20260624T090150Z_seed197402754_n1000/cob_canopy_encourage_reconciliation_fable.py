@@ -21,7 +21,10 @@ import sys
 from dataclasses import dataclass, field
 from typing import Optional
 
-sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+STORYWORLDS_DIR = os.path.dirname(
+    os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+)
+sys.path[:0] = [STORYWORLDS_DIR, os.path.dirname(STORYWORLDS_DIR)]
 from results import QAItem, StoryError, StorySample  # noqa: E402
 
 
@@ -73,6 +76,12 @@ class StoryParams:
     hero: str
     friend: str
     helper: str
+    scenario: str = "picnic"
+    opening_style: int = 0
+    conflict_style: int = 0
+    encouragement_style: int = 0
+    repair_style: int = 0
+    ending_style: int = 0
     seed: Optional[int] = None
 
 
@@ -146,10 +155,134 @@ THINGS = {
 }
 
 CURATED = [
-    StoryParams(place="meadow", hero="fox", friend="crow", helper="owl"),
-    StoryParams(place="orchard", hero="rabbit", friend="hare", helper="deer"),
-    StoryParams(place="lane", hero="mouse", friend="mole", helper="turtle"),
+    StoryParams(place="meadow", hero="fox", friend="crow", helper="owl", scenario="picnic"),
+    StoryParams(place="orchard", hero="rabbit", friend="hare", helper="deer", scenario="garden"),
+    StoryParams(place="lane", hero="mouse", friend="mole", helper="turtle", scenario="art"),
 ]
+
+
+SCENARIOS = {
+    "picnic": {
+        "premise": "They had carried one roasted ear of corn for their picnic",
+        "trigger": "each believed the other had promised them the last piece",
+        "need_hero": "I was saving it because I am still hungry",
+        "need_friend": "I thought we agreed to divide it at lunch",
+        "cob_role": "It held the corn they brought for their picnic, and they later saved the bare cob for a bird feeder",
+        "repair": "broke the corn into two fair portions and counted the kernels on each",
+        "outcome": "shared the corn and saved the bare cob for a bird feeder",
+        "proof": "Two neat piles of kernels rested on one leaf plate",
+    },
+    "garden": {
+        "premise": "They had found a dry corn cob full of seeds for the spring garden",
+        "trigger": "one wanted a sunny row while the other wanted to plant beside the path",
+        "need_hero": "I want enough sun for the seedlings",
+        "need_friend": "I want us to notice when the seedlings need water",
+        "cob_role": "It held the kernels they wanted to plant in their garden",
+        "repair": "drew two adjoining garden rows and divided the kernels between them",
+        "outcome": "planted one sunny row beside one easy-to-watch row",
+        "proof": "Two little rows of fresh soil met at a shared watering stone",
+    },
+    "art": {
+        "premise": "They had brought a clean corn cob to roll patterns in washable paint",
+        "trigger": "both wanted their own pattern to fill the festival banner",
+        "need_hero": "I hoped to print bright circles",
+        "need_friend": "I hoped to leave room for my wavy border",
+        "cob_role": "It was a safe printing roller for their washable-paint pattern",
+        "repair": "tested both patterns on scrap paper and planned alternating bands",
+        "outcome": "rolled circles and waves across the same banner",
+        "proof": "The finished banner fluttered with circles beside waves",
+    },
+    "game": {
+        "premise": "They were using a smooth dry cob as the finish marker in a seed-pod race",
+        "trigger": "the marker shifted and each accused the other of moving it",
+        "need_hero": "I only wanted the finish line to stay fair",
+        "need_friend": "I moved it away from a muddy patch so nobody would slip",
+        "cob_role": "It marked the finish line in their seed-pod race",
+        "repair": "chose a dry patch and marked it with two stones beside the cob",
+        "outcome": "restarted the race with a finish line everyone could see",
+        "proof": "The cob stood between two stones while both racers crossed laughing",
+    },
+    "music": {
+        "premise": "They had found that a dry cob made a cheerful rasp when stroked with a twig",
+        "trigger": "one wanted a quick rhythm while the other kept interrupting with a slow one",
+        "need_hero": "The quick beat sounds like dancing feet",
+        "need_friend": "The slow beat gives our song a steady heart",
+        "cob_role": "It was a simple rhythm instrument that made a rasping sound",
+        "repair": "tapped out four quick beats followed by four slow beats",
+        "outcome": "played a tune that gave each rhythm a turn",
+        "proof": "Seed-pod bells jingled while the cob answered fast, then slow",
+    },
+    "marker": {
+        "premise": "They had set a bright corn cob beneath the canopy as a picnic trail marker",
+        "trigger": "each turned it toward a different path and the arriving guests grew confused",
+        "need_hero": "My path is shorter for the little guests",
+        "need_friend": "My path stays clear of the thorny hedge",
+        "cob_role": "It was the bright marker where the picnic-path signs belonged",
+        "repair": "walked both routes from the ground and made two clear arrow signs",
+        "outcome": "pointed small guests along the short safe path and taller guests around the hedge",
+        "proof": "Two painted arrows met beside the golden cob",
+    },
+    "stall": {
+        "premise": "They were minding a vegetable stall under a cloth canopy when one fine cob remained",
+        "trigger": "two customers arrived together and each friend promised the cob to someone else",
+        "need_hero": "I gave my word to the hedgehog first",
+        "need_friend": "I did not hear you, and I gave my word to the badger",
+        "cob_role": "It was the last whole ear of corn at their market stall",
+        "repair": "apologized to both customers and checked the basket for loose kernels and smaller ears",
+        "outcome": "made two mixed corn parcels and wrote down every new promise",
+        "proof": "Two equal market parcels sat beside an open promise book",
+    },
+    "storm": {
+        "premise": "A gust had rolled their picnic cob from the blanket toward a puddle",
+        "trigger": "each blamed the other for leaving it near the blanket's edge",
+        "need_hero": "I thought you were holding the basket",
+        "need_friend": "I thought you had tucked the blanket corner down",
+        "cob_role": "It was part of their picnic and rolled toward a puddle in the wind",
+        "repair": "used a ground-level leaf rake together to guide the cob into a basket",
+        "outcome": "secured the blanket corners and washed the rescued cob",
+        "proof": "The clean cob dried in its basket while four stones held the blanket",
+    },
+    "welcome": {
+        "premise": "They were preparing corn-cob place markers for a welcome supper",
+        "trigger": "both put their name beside the same sheltered seat",
+        "need_hero": "That seat helps me hear the stories",
+        "need_friend": "That seat keeps the bright sunset out of my eyes",
+        "cob_role": "It was one of the name markers for seats at their welcome supper",
+        "repair": "turned the table so two sheltered seats faced the storyteller",
+        "outcome": "made room for each other and gave the best central place to their new guest",
+        "proof": "Three named cobs stood in a welcoming row on the supper table",
+    },
+    "measure": {
+        "premise": "They were using a corn cob as a playful measuring tool for their model bridge",
+        "trigger": "their measurements disagreed because one began at the cob's tip",
+        "need_hero": "I counted from the pointed end",
+        "need_friend": "I counted only the straight middle part",
+        "cob_role": "It was the unit they used to measure a model bridge",
+        "repair": "placed a pebble at one starting line and measured again side by side",
+        "outcome": "agreed on one method and rebuilt the bridge deck evenly",
+        "proof": "The little bridge lay straight at exactly four cob-lengths",
+    },
+    "puppet": {
+        "premise": "They were turning a husked corn cob into a puppet for the evening fable",
+        "trigger": "one wanted the puppet to be brave while the other wanted it to be gentle",
+        "need_hero": "A brave hero can face the storm",
+        "need_friend": "A gentle hero can listen before acting",
+        "cob_role": "It became the puppet who acted in their evening fable",
+        "repair": "rewrote the puppet's choice so courage began with listening",
+        "outcome": "performed a fable about a hero who heard everyone and then helped",
+        "proof": "The cob puppet bowed between its tiny shield and listening horn",
+    },
+    "cleanup": {
+        "premise": "After lunch, one bare cob and several husks remained on their blanket",
+        "trigger": "each insisted that cleaning the picnic spot was the other's job",
+        "need_hero": "I carried the food all the way here",
+        "need_friend": "I spread the blanket and filled the water cups",
+        "cob_role": "It was the leftover middle of their corn and belonged in the compost pail",
+        "repair": "listed the jobs already done and chose two final chores apiece",
+        "outcome": "put the cob in the compost pail and folded the clean blanket together",
+        "proof": "Only smooth grass remained beneath the folded canopy blanket",
+    },
+}
 
 
 # ---------------------------------------------------------------------------
@@ -237,30 +370,45 @@ def build_world(params: StoryParams) -> World:
     cob = world.add(Entity(id="cob", label="cob", phrase="a golden corn cob"))
     canopy = world.add(Entity(id="canopy", label="canopy", phrase="a cool green canopy of leaves"))
 
-    world.facts.update(hero=hero, friend=friend, helper=helper, cob=cob, canopy=canopy)
+    world.facts.update(
+        hero=hero,
+        friend=friend,
+        helper=helper,
+        cob=cob,
+        canopy=canopy,
+        params=params,
+        plan=SCENARIOS[params.scenario],
+    )
     return world
 
 
 def open_story(world: World) -> None:
     hero: Entity = world.facts["hero"]
     friend: Entity = world.facts["friend"]
-    canopy: Entity = world.facts["canopy"]
-    cob: Entity = world.facts["cob"]
-
-    world.say(
-        f"In {world.setting.place}, a little {hero.label} and a little {friend.label} "
-        f"liked to rest beneath the {canopy.label}."
-    )
-    world.say(
-        f"They found a bright {cob.label} there one warm morning, and both of them "
-        f"wanted to keep it."
-    )
+    plan = world.facts["plan"]
+    params: StoryParams = world.facts["params"]
+    canopy_text = {
+        "meadow": "the broad canopy of an old beech tree",
+        "orchard": "the orchard's low green canopy",
+        "lane": "a striped cloth canopy beside the lane",
+    }[params.place]
+    openings = [
+        f"In {world.setting.place}, a little {hero.label} and a little {friend.label} had made a worktable beneath {canopy_text}.",
+        f"Morning light flickered through {canopy_text} as a {hero.label} met a {friend.label} beside their worktable.",
+        f"The {hero.label} and the {friend.label} often solved small problems together under {canopy_text}.",
+        f"A cool patch beneath {canopy_text} was the {hero.label}'s and the {friend.label}'s favorite meeting place.",
+        f"One busy day in {world.setting.place}, the {hero.label} and the {friend.label} spread their supplies on a low table beneath {canopy_text}.",
+    ]
+    world.say(openings[params.opening_style % len(openings)])
+    world.say(f"{plan['premise']}, but {plan['trigger']}.")
+    world.facts["canopy_text"] = canopy_text
 
 
 def start_argument(world: World) -> None:
     hero: Entity = world.facts["hero"]
     friend: Entity = world.facts["friend"]
-    cob: Entity = world.facts["cob"]
+    plan = world.facts["plan"]
+    params: StoryParams = world.facts["params"]
 
     hero.memes["want"] = 1
     friend.memes["want"] = 1
@@ -270,37 +418,43 @@ def start_argument(world: World) -> None:
     friend.memes["hurt"] = 1
 
     world.para()
-    world.say(
-        f"{hero.label} reached for the {cob.label}, and {friend.label} reached too. "
-        f"Each small friend thought the cob should be theirs."
-    )
-    world.say(
-        f"Their voices grew sharp, and the shade under the canopy felt less peaceful."
-    )
+    conflicts = [
+        f'"{plan["need_hero"]}," said the {hero.label}. "{plan["need_friend"]}," replied the {friend.label}. Neither paused to hear the reason inside the other answer.',
+        f"The {hero.label} pointed toward the cob and insisted on one plan. The {friend.label} frowned and insisted on another. Soon they were defending ideas instead of solving the problem.",
+        f"First the {hero.label} interrupted; then the {friend.label} spoke even louder. Their disagreement made the friendly shade feel narrow.",
+        f'"You never listen!" cried the {hero.label}. "Neither do you!" answered the {friend.label}. The problem waited between them.',
+        f"Each repeated the same reason more firmly, but neither heard anything new. Hurt replaced patience, and their shared work stopped.",
+    ]
+    world.say(conflicts[params.conflict_style % len(conflicts)])
+    world.facts["conflict"] = plan["trigger"]
 
 
 def encourage(world: World) -> None:
     helper: Entity = world.facts["helper"]
     hero: Entity = world.facts["hero"]
     friend: Entity = world.facts["friend"]
-    cob: Entity = world.facts["cob"]
+    plan = world.facts["plan"]
+    params: StoryParams = world.facts["params"]
 
     helper.memes["kind"] = 1
     world.para()
-    world.say(
-        f"Then {helper.label} came by and said, \"Please, children, choose a kinder way. "
-        f"Sharing can make a small thing grow sweet.\""
-    )
-    world.say(
-        f"{helper.label} encouraged them to sit together, breathe slowly, and look at the {cob.label} again."
-    )
+    interventions = [
+        f'The {helper.label} listened and said, "A cob cannot tell us what is fair, but each of you can tell the other what you need." The {helper.label} encouraged one friend to speak and the other to repeat what had been heard.',
+        f'The {helper.label} placed one leaf beside each friend. "Put an idea on your leaf before you judge the other idea," the helper encouraged. Soon both leaves held something useful.',
+        f'"Let us lower our voices and raise our questions," said the {helper.label}. The helper encouraged them to ask why, not merely argue who was right.',
+        f'The {helper.label} drew two circles in the dust, with an overlap in the middle. "Show me what each of you needs and what you can share," the helper encouraged.',
+        f'The {helper.label} encouraged them to take three calm breaths. Then each friend said one apology and one hope for their shared task.',
+    ]
+    world.say(interventions[params.encouragement_style % len(interventions)])
+    world.facts["helper_action"] = "encouraged both friends to listen, explain their needs, and seek a fair plan"
 
 
 def reconcile(world: World) -> None:
     hero: Entity = world.facts["hero"]
     friend: Entity = world.facts["friend"]
     cob: Entity = world.facts["cob"]
-    canopy: Entity = world.facts["canopy"]
+    plan = world.facts["plan"]
+    params: StoryParams = world.facts["params"]
 
     if "reconciled" in world.fired:
         return
@@ -313,12 +467,25 @@ def reconcile(world: World) -> None:
     cob.owner = "shared"
 
     world.para()
-    world.say(
-        f"The two friends listened. They decided to split the {cob.label} and share it kindly."
-    )
-    world.say(
-        f"After that, they sat side by side under the {canopy.label}, and the day felt gentle again."
-    )
+    repairs = [
+        f'The {hero.label} began, "I am sorry I stopped listening." The {friend.label} apologized for answering sharply. Together they {plan["repair"]}.',
+        f"Once each could explain the other's need, the quarrel looked smaller. They {plan['repair']}, checking the plan together at every step.",
+        f"The friends compared both needs point by point. Side by side, they {plan['repair']}.",
+        f'"Your idea helps with one part," the {hero.label} admitted. "And yours helps with another," said the {friend.label}. So they {plan["repair"]}.',
+        f"They named what was fair in each idea and made room for both needs. At last they {plan['repair']}.",
+    ]
+    world.say(repairs[params.repair_style % len(repairs)])
+
+    endings = [
+        f"Then they {plan['outcome']}. {plan['proof']}. Their reconciliation made friendship feel roomy again beneath the canopy.",
+        f"Before the helper left, the friends promised to ask before assuming. That reconciliation prepared them to act together. They {plan['outcome']}. At sunset, {plan['proof'].lower()}.",
+        f"Their reconciliation gave them a plan they had both shaped. They {plan['outcome']}. When a breeze stirred the canopy, {plan['proof'].lower()}.",
+        f"Their disagreement had not vanished by magic; reconciliation had changed what they could do next. They {plan['outcome']}, and {plan['proof'].lower()}.",
+        f"From then on, they remembered that reconciliation means returning to the work as friends. After they {plan['outcome']}, {plan['proof'].lower()}.",
+    ]
+    world.say(endings[params.ending_style % len(endings)])
+    world.facts["resolution"] = plan["outcome"]
+    world.facts["final_image"] = plan["proof"]
 
 
 def tell(world: World) -> None:
@@ -333,10 +500,11 @@ def tell(world: World) -> None:
 # Q&A
 # ---------------------------------------------------------------------------
 def generation_prompts(world: World) -> list[str]:
+    plan = world.facts["plan"]
     return [
         'Write a short fable about a cob, a canopy, and a gentle reconciliation.',
-        f"Tell a child-friendly story in {world.setting.place} where two small animals argue over a cob, then encourage them to make peace.",
-        "Write a simple moral tale that uses the words cob, canopy, and encourage.",
+        f"Tell a child-friendly story in {world.setting.place} where two small animals disagree because {plan['trigger']}, then encourage them to make peace.",
+        f"Write a simple moral tale in which friends {plan['outcome']}. Use the words cob, canopy, encourage, and reconciliation.",
     ]
 
 
@@ -344,25 +512,28 @@ def story_qa(world: World) -> list[QAItem]:
     hero: Entity = world.facts["hero"]
     friend: Entity = world.facts["friend"]
     helper: Entity = world.facts["helper"]
-    cob: Entity = world.facts["cob"]
-    canopy: Entity = world.facts["canopy"]
+    plan = world.facts["plan"]
 
     return [
         QAItem(
             question=f"Who were the little friends in the story?",
-            answer=f"The little friends were the {hero.label} and the {friend.label}. They met under the {canopy.label} in {world.setting.place}.",
+            answer=f"The little friends were the {hero.label} and the {friend.label}. They worked together beneath a canopy in {world.setting.place}.",
         ),
         QAItem(
-            question=f"What did the two friends want at the same time?",
-            answer=f"They both wanted the {cob.label}. That is why their small argument began.",
+            question="Why did the two friends begin to argue?",
+            answer=f"They began to argue because {world.facts['conflict']}. Each friend defended a different need instead of listening.",
         ),
         QAItem(
             question=f"Who helped them calm down?",
-            answer=f"The {helper.label} helped them calm down and encouraged them to share kindly.",
+            answer=f"The {helper.label} helped them calm down and {world.facts['helper_action']}.",
         ),
         QAItem(
             question=f"What changed at the end of the story?",
-            answer=f"At the end, the friends made peace and shared the {cob.label}, so they could rest happily together under the {canopy.label}.",
+            answer=f"The friends made peace and {world.facts['resolution']}. The ending shows the change: {world.facts['final_image']}.",
+        ),
+        QAItem(
+            question="How did the friends use the cob in this story?",
+            answer=f"{plan['cob_role']}. It remained part of the fair solution they made together.",
         ),
     ]
 
@@ -448,7 +619,18 @@ def resolve_params(args: argparse.Namespace, rng: random.Random) -> StoryParams:
         helper = rng.choice([h for h in sorted(HELPERS) if h != friend])
     if hero == friend:
         friend = rng.choice([f for f in sorted(FRIENDS) if f != hero])
-    return StoryParams(place=place, hero=hero, friend=friend, helper=helper)
+    return StoryParams(
+        place=place,
+        hero=hero,
+        friend=friend,
+        helper=helper,
+        scenario=rng.choice(sorted(SCENARIOS)),
+        opening_style=rng.randrange(5),
+        conflict_style=rng.randrange(5),
+        encouragement_style=rng.randrange(5),
+        repair_style=rng.randrange(5),
+        ending_style=rng.randrange(5),
+    )
 
 
 def generate(params: StoryParams) -> StorySample:

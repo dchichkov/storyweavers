@@ -18,7 +18,7 @@ import sys
 from dataclasses import dataclass, field, asdict
 from typing import Optional
 
-sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 from results import QAItem, StoryError, StorySample  # noqa: E402
 
 
@@ -76,6 +76,18 @@ class StoryParams:
     seed: Optional[int] = None
 
 
+@dataclass(frozen=True)
+class NarrativePlan:
+    problem_key: str
+    problem: str
+    first_try: str
+    clue: str
+    solution: str
+    result: str
+    shared_result: str
+    kernel_location: str
+
+
 class World:
     def __init__(self, setting: Setting) -> None:
         self.setting = setting
@@ -116,82 +128,214 @@ def _capital(s: str) -> str:
     return s[:1].upper() + s[1:]
 
 
-def character_intro(world: World, hero: Character, sidekick: Character) -> None:
-    world.say(
-        f"{hero.name} was a tall-tale child with a pocket that seemed as deep as a well, "
-        f"and {sidekick.name} was the kind of friend who could laugh at a shadow and still help carry a bucket."
+INTRODUCTIONS = [
+    "At {place}, {hero} wore a patched coat whose pocket was said to be deeper than a mine shaft. {sidekick}, {hero}'s practical friend, never believed that boast without checking.",
+    "Folks around {place} said {hero} could carry a week's weather in one pocket. {sidekick} could usually sort the truth from {hero}'s tall tales.",
+    "{hero} and {sidekick} measured adventures by how dusty their shoes became. That morning, they had barely reached {place} when {hero}'s pocket gave a mysterious bump.",
+    "At {place}, {hero} told stories so enormous that clouds seemed to lean closer. That day, one began with a bump in {hero_poss} pocket, while {sidekick} supplied the careful questions.",
+    "At {place}, {hero}'s favorite pocket had held string, chalk, and once, according to {hero}, a sleeping rainbow. {sidekick} was there when it produced a new surprise.",
+    "The day began quietly at {place}, although quiet days seldom stayed quiet near {hero}. {sidekick} noticed {hero} patting one pocket as if it had whispered.",
+]
+
+DISCOVERIES = [
+    "From the pocket, {hero} drew one {kernel}, small enough to balance on a fingernail.",
+    "{hero} reached past a button and a loop of string and found one smooth {kernel} at the very bottom.",
+    "Out rolled a lone {kernel}. It flashed in the {sky} light like a seed-sized lantern.",
+    "The bump was one {kernel}, no larger than a freckle and much too interesting to ignore.",
+    "When {hero} turned the pocket inside out, a single {kernel} landed in {hero_poss} palm.",
+    "There was no treasure chest in the pocket, only one {kernel}. To {hero} and {sidekick}, that was treasure enough.",
+]
+
+SHARING_LINES = [
+    '"Let us share it: half for you and half for me," {hero} said. {sidekick} nodded, but one tiny kernel did not come with instructions for making fair halves.',
+    '"Let us share it," said {sidekick}. {hero} agreed at once; deciding how was the difficult part.',
+    "Neither friend wanted the whole treasure while the other got nothing. To share it fairly, they set the {kernel} between them and studied it.",
+    '"One kernel, two friends," {hero} said. "Sharing it sounds like a problem looking for an idea."',
+    "The friends agreed that finding a treasure was less important than sharing it fairly. Then they discovered that fairness could require some thinking.",
+]
+
+EPISODES = [
+    NarrativePlan(
+        problem_key="one_seed_two_gardens",
+        problem="They each had a garden patch, but cutting the kernel might keep it from growing in either one.",
+        first_try="They carried it back and forth between the two patches until both had walked a furrow into the ground.",
+        clue="A stripe of sunlight lay exactly across the border between the gardens.",
+        solution="They dug one shared hole on that border, planted the kernel, and made a watering schedule with alternating days.",
+        result="The earth lifted and a green shoot rose between the two plots, tall enough to tickle a low cloud.",
+        shared_result="They shared its care and would share whatever it grew.",
+        kernel_location="shared garden border",
+    ),
+    NarrativePlan(
+        problem_key="kernel_rolls_away",
+        problem="Before they could decide what to do, the round kernel rolled downhill and vanished beneath a fence.",
+        first_try="{hero} reached with a stick, but every poke sent it farther into the shadow.",
+        clue="{sidekick} noticed a broad dock leaf curving toward the kernel like a green slide.",
+        solution="One friend trickled a cup of water down the leaf while the other held a hat at the far end.",
+        result="The little current carried the kernel neatly into the waiting hat.",
+        shared_result="They planted their rescued treasure and promised to tend it together.",
+        kernel_location="shared planting hole",
+    ),
+    NarrativePlan(
+        problem_key="unequal_pieces",
+        problem="The kernel had one plump side and one thin side, so simply breaking it would not make equal pieces.",
+        first_try="They balanced it on a twig, but the twig rolled away and the kernel nearly followed.",
+        clue="A fallen leaf folded into two matching cups when {sidekick} pressed its middle vein.",
+        solution="They crushed the kernel safely between two flat stones, poured the crumbs into the folded leaf, and adjusted the piles until they balanced.",
+        result="The two portions matched, right down to the last golden crumb.",
+        shared_result="Each friend took an equal pile to show at home, and they saved the leaf as their tiny measuring tray.",
+        kernel_location="two equal leaf cups",
+    ),
+    NarrativePlan(
+        problem_key="who_carries_it",
+        problem="Both friends wanted to carry the kernel, yet it was too small for two hands to hold at once.",
+        first_try="They passed it back and forth every ten steps, until a sneeze almost sent it into the grass.",
+        clue="{hero} saw that the drawstrings from their two pockets could reach each other.",
+        solution="They tied the strings around a little cloth pouch and carried it between them, one string in each hand.",
+        result="The shared pouch swung in the middle and the kernel stayed safe as they walked.",
+        shared_result="They became joint keepers and took turns choosing where their treasure went next.",
+        kernel_location="shared cloth pouch",
+    ),
+    NarrativePlan(
+        problem_key="tiny_feast",
+        problem="They hoped for a snack, but the hard kernel was too small and too tough to divide with their fingers.",
+        first_try="They sang a popping song at it. The kernel remained stubbornly silent.",
+        clue="When they set it in an old tin cup, a warm sunbeam made the cup give a bright little ping.",
+        solution="They covered the cup with a flat stone and waited in the sunshine instead of using a flame.",
+        result="POP! The lid hopped, and out billowed a puff as wide as a washbasin, which is the honest truth according to {hero}.",
+        shared_result="They tore the airy puff into two generous pieces and ate their ridiculous feast together.",
+        kernel_location="empty tin cup and two last crumbs",
+    ),
+    NarrativePlan(
+        problem_key="lost_in_pocket",
+        problem="When {hero} reached for the kernel again, it had slipped through a hole into the coat lining.",
+        first_try="They shook the coat, but the kernel only rattled from one unreachable corner to another.",
+        clue="{sidekick} held the coat toward the light and spotted the kernel's round shadow.",
+        solution="One friend held the lining flat while the other guided the kernel with a spoon handle toward the pocket hole.",
+        result="The kernel popped back into view and landed between their two thumbs.",
+        shared_result="They patched the hole together, then placed the rescued kernel in a jar they both could visit.",
+        kernel_location="shared keepsake jar",
+    ),
+    NarrativePlan(
+        problem_key="two_promises",
+        problem="{hero} wanted to plant the kernel, while {sidekick} wanted to keep it as a lucky treasure.",
+        first_try="They argued their cases so loudly that, in {hero}'s telling, every fence post leaned in to listen.",
+        clue="A dry seedpod nearby held seeds and also made a splendid rattle.",
+        solution="They planted the kernel but marked the spot with a tiny treasure flag made from their loop of string.",
+        result="The flag guarded the mound, and soon a sprout curled around its stick.",
+        shared_result="{hero} got a growing seed, {sidekick} got a treasure marker, and both owned the new plant.",
+        kernel_location="flagged shared garden mound",
+    ),
+    NarrativePlan(
+        problem_key="fair_game",
+        problem="The kernel was too little to be a meal, and neither friend could think of a fair way to claim it.",
+        first_try="They tried flipping it like a coin, but it landed on its round edge three times in a row.",
+        clue="The kernel rolled around a chalk circle and stopped beside two matching stones.",
+        solution="They invented a game in which the kernel was the shared marker and the stones were their playing pieces.",
+        result="Soon their chalk path wound clear around {place}, at least if the longest part of {hero}'s story is believed.",
+        shared_result="No one had to own the marker alone; every turn belonged to their game together.",
+        kernel_location="shared game circle",
+    ),
+]
+
+ENDINGS = [
+    "At sunset, {image}. The empty pocket felt lighter, but the friendship beside it felt large enough to fill a wagon.",
+    "By the time the sky changed color, {image}. {hero} called it the smallest treasure that had ever made such a large day.",
+    "That evening, {image}. Whenever the friends told the tale later, the kernel grew smaller and their solution grew grander.",
+    "As the first star appeared, {image}. {sidekick} said the best part was not the kernel at all, but the idea they had built together.",
+    "Before they went home, {image}. Their two shadows stretched across {place}, side by side like the hands of one enormous clock.",
+    "The problem was over when {image}. In {hero}'s next telling, even the moon applauded, though {sidekick} only promised there had been a breeze.",
+]
+
+
+def _fill(text: str, world: World, hero: Character, sidekick: Character, kernel: Item) -> str:
+    return text.format(
+        hero=hero.name,
+        hero_poss=hero.pronoun("possessive"),
+        sidekick=sidekick.name,
+        kernel=kernel.label,
+        place=world.setting.place,
+        sky=world.setting.sky,
+        image=world.facts.get("ending_image", "their shared solution"),
     )
 
 
-def find_kernel(world: World, hero: Character, kernel: Item) -> None:
+def character_intro(world: World, hero: Character, sidekick: Character, kernel: Item, rng: random.Random) -> None:
+    world.say(_fill(rng.choice(INTRODUCTIONS), world, hero, sidekick, kernel))
+
+
+def find_kernel(world: World, hero: Character, sidekick: Character, kernel: Item, rng: random.Random) -> None:
     hero.memes["wonder"] = hero.memes.get("wonder", 0) + 1
     hero.pocket.append(kernel.id)
     kernel.carried_by = hero.id
     kernel.location = "pocket"
-    world.say(
-        f"One day, {hero.name} found a single {kernel.label} in {hero.pronoun('possessive')} pocket, "
-        f"shining like a tiny moon in a brown canyon."
-    )
+    world.facts["discovery"] = _fill(rng.choice(DISCOVERIES), world, hero, sidekick, kernel)
+    world.say(world.facts["discovery"])
 
 
-def want_to_share(world: World, hero: Character, sidekick: Character, kernel: Item) -> None:
+def want_to_share(world: World, hero: Character, sidekick: Character, kernel: Item, rng: random.Random) -> None:
     hero.memes["share"] = hero.memes.get("share", 0) + 1
-    world.say(
-        f"{hero.name} wanted to share the {kernel.label} with {sidekick.name}, "
-        f"because a good surprise feels bigger when two friends can hold the same grin."
-    )
+    sidekick.memes["share"] = sidekick.memes.get("share", 0) + 1
+    world.say(_fill(rng.choice(SHARING_LINES), world, hero, sidekick, kernel))
 
 
-def problem_arises(world: World, hero: Character, sidekick: Character, kernel: Item) -> None:
+def problem_arises(world: World, hero: Character, sidekick: Character, kernel: Item, plan: NarrativePlan) -> None:
     kernel.meters["hardness"] = kernel.meters.get("hardness", 0) + 1
     hero.memes["trouble"] = hero.memes.get("trouble", 0) + 1
-    world.say(
-        f"But the {kernel.label} was too hard to eat as it was, and there was no fire, no pan, and not a speck of steam in sight."
-    )
-    world.say(
-        f"{hero.name} and {sidekick.name} looked at the little speck and knew they needed a clever trick."
-    )
+    world.facts["problem"] = "The sharing problem was clear: " + _fill(plan.problem, world, hero, sidekick, kernel)
+    world.say(world.facts["problem"])
+    world.say(_fill(plan.first_try, world, hero, sidekick, kernel))
 
 
-def problem_solve(world: World, hero: Character, sidekick: Character, kernel: Item) -> None:
-    kernel.meters["split"] = kernel.meters.get("split", 0) + 1
+def problem_solve(world: World, hero: Character, sidekick: Character, kernel: Item, plan: NarrativePlan) -> None:
+    hero.memes["problem_solving"] = hero.memes.get("problem_solving", 0) + 1
+    sidekick.memes["problem_solving"] = sidekick.memes.get("problem_solving", 0) + 1
     kernel.memes["shared"] = kernel.memes.get("shared", 0) + 1
+    world.say(_fill(plan.clue, world, hero, sidekick, kernel))
+    world.facts["solution"] = _fill(plan.solution, world, hero, sidekick, kernel)
+    world.say(world.facts["solution"])
+    world.say(_fill(plan.result, world, hero, sidekick, kernel))
+    world.facts["shared_result"] = _fill(plan.shared_result, world, hero, sidekick, kernel)
+    world.say(world.facts["shared_result"])
+    kernel.location = plan.kernel_location
+    kernel.carried_by = None
+    kernel.meters["problem_solved"] = 1
+    world.facts["shared_by"] = (hero.id, sidekick.id)
     world.facts["solved"] = True
-    world.say(
-        f"{sidekick.name} tapped the side of an old tin cup, and {hero.name} rolled the {kernel.label} between two smooth stones."
-    )
-    world.say(
-        f"With a tiny pop of imagination, they split the {kernel.label} into two buttery halves, "
-        f"and each friend got an equal piece."
-    )
 
 
-def ending(world: World, hero: Character, sidekick: Character, kernel: Item) -> None:
+def ending(world: World, hero: Character, sidekick: Character, kernel: Item, rng: random.Random) -> None:
     hero.memes["joy"] = hero.memes.get("joy", 0) + 1
     sidekick.memes["joy"] = sidekick.memes.get("joy", 0) + 1
-    world.say(
-        f"By sunset, the pocket was empty, the problem was solved, and {hero.name} and {sidekick.name} were smiling as if they had found a feast in a thimble."
-    )
-    world.say(
-        f"Their laughter went down the lane like wagon wheels on a hill, and even the {kernel.label}'s tiny crumbs seemed proud to have been shared."
-    )
+    images = [
+        f"{hero.name} and {sidekick.name} stood over the {kernel.location}",
+        f"the friends touched two dusty thumbs above the {kernel.location}",
+        f"the last light rested on the {kernel.location}",
+        f"their joined footprints circled the {kernel.location}",
+    ]
+    world.facts["ending_image"] = rng.choice(images)
+    world.say(_fill(rng.choice(ENDINGS), world, hero, sidekick, kernel))
 
 
 def tell(setting: Setting, params: StoryParams) -> World:
     world = World(setting)
+    rng = random.Random(params.seed if params.seed is not None else f"{params.place}|{params.hero}|{params.sidekick}|{params.kernel_kind}")
     hero = world.add(Character(id="hero", name=params.hero, traits=["curious", "generous"]))
     sidekick = world.add(Character(id="sidekick", name=params.sidekick, traits=["bright", "helpful"]))
     kernel = world.add(Item(id="kernel", label=params.kernel_kind))
 
-    character_intro(world, hero, sidekick)
+    eligible_plans = [plan for plan in EPISODES if plan.problem_key != "tiny_feast" or params.kernel_kind == "popcorn kernel"]
+    plan = rng.choice(eligible_plans)
+    world.facts["plan"] = plan
+
+    character_intro(world, hero, sidekick, kernel, rng)
     world.para()
-    find_kernel(world, hero, kernel)
-    want_to_share(world, hero, sidekick, kernel)
+    find_kernel(world, hero, sidekick, kernel, rng)
+    want_to_share(world, hero, sidekick, kernel, rng)
     world.para()
-    problem_arises(world, hero, sidekick, kernel)
-    problem_solve(world, hero, sidekick, kernel)
+    problem_arises(world, hero, sidekick, kernel, plan)
+    problem_solve(world, hero, sidekick, kernel, plan)
     world.para()
-    ending(world, hero, sidekick, kernel)
+    ending(world, hero, sidekick, kernel, rng)
 
     world.facts.update(hero=hero, sidekick=sidekick, kernel=kernel, setting=setting)
     return world
@@ -207,6 +351,11 @@ KERNELS = {
     "popcorn kernel": "popcorn kernel",
     "golden kernel": "golden kernel",
     "bean kernel": "bean kernel",
+}
+ASP_KERNEL_NAMES = {
+    "popcorn_kernel": "popcorn kernel",
+    "golden_kernel": "golden kernel",
+    "bean_kernel": "bean kernel",
 }
 
 HERO_NAMES = ["Milo", "Nina", "Jo", "Teddy", "Luz", "June", "Otis", "Penny"]
@@ -261,7 +410,7 @@ valid(P,K) :- place(P), kernel(K).
 
 def asp_facts() -> str:
     import asp
-    return "\n".join([asp.fact("place", p) for p in SETTINGS] + [asp.fact("kernel", k) for k in KERNELS])
+    return "\n".join([asp.fact("place", p) for p in SETTINGS] + [asp.fact("kernel", k) for k in ASP_KERNEL_NAMES])
 
 
 def asp_program(show: str) -> str:
@@ -271,7 +420,7 @@ def asp_program(show: str) -> str:
 def asp_valid_combos() -> list[tuple]:
     import asp
     model = asp.one_model(asp_program("#show valid/2."))
-    return sorted(set(asp.atoms(model, "valid")))
+    return sorted((place, ASP_KERNEL_NAMES[kernel]) for place, kernel in set(asp.atoms(model, "valid")))
 
 
 def asp_verify() -> int:
@@ -295,7 +444,7 @@ def generation_prompts(world: World) -> list[str]:
     kernel: Item = f["kernel"]
     return [
         f'Write a tall tale for children about {hero.name} finding a {kernel.label} in a pocket and sharing it with {sidekick.name}.',
-        f"Tell a problem-solving story where {hero.name} and {sidekick.name} cannot eat a {kernel.label} at once, so they need a clever fix.",
+        f"Tell a problem-solving story where {hero.name} and {sidekick.name} must find a fair way to share one {kernel.label}.",
         f'Write a short story that includes the words "kernel" and "pocket" and ends with two friends sharing something tiny.',
     ]
 
@@ -309,19 +458,19 @@ def story_qa(world: World) -> list[QAItem]:
     return [
         QAItem(
             question=f"What did {hero.name} find in {hero.pronoun('possessive')} pocket?",
-            answer=f"{hero.name} found a {kernel.label} in {hero.pronoun('possessive')} pocket.",
+            answer=str(f["discovery"]),
         ),
         QAItem(
-            question=f"Why did {hero.name} and {sidekick.name} need a problem solved?",
-            answer=f"They wanted to share the {kernel.label}, but it was too hard to eat the way it was.",
+            question=f"What problem did {hero.name} and {sidekick.name} face?",
+            answer=str(f["problem"]),
         ),
         QAItem(
             question=f"How did {hero.name} and {sidekick.name} solve the problem at {place.place}?",
-            answer=f"They used a clever trick with a tin cup and smooth stones, then split the {kernel.label} into two equal pieces.",
+            answer=str(f["solution"]),
         ),
         QAItem(
-            question=f"How did the story end for {hero.name} and {sidekick.name}?",
-            answer=f"They ended the day smiling because they had shared the tiny treat and solved the problem together.",
+            question=f"How did the friends finally share the {kernel.label}?",
+            answer=str(f["shared_result"]),
         ),
     ]
 

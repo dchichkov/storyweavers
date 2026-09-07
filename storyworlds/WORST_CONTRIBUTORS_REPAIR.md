@@ -153,5 +153,10 @@ Legend: `queued`, `active`, `repaired`, `verified`, `blocked`.
 | 18 | verified | `castle_magic_reconciliation_inner_monologue_rhyming_story.py` | 2 skeletons/100 exact-unique stories | 2 skeletons | 100 unique; 100 skeletons | Twelve premises; broken root CLI and QA grounding fixed. |
 | 18 | verified | `chocolate_ado_chariot_sharing_friendship_moral_value.py` | 4 skeletons/100 exact-unique stories | 4 skeletons | 100 unique; 100 skeletons | Twelve plots with food, allergy, and chariot safety. |
 | 18 | verified | `xyz_cautionary_rhyming_story.py` | 2 skeletons/100 exact-unique stories | 2 skeletons | 100 unique; 100 skeletons | XYZ made a functional three-step safety code. |
+| 18 | verified | `coo_web_remainder_humor_misunderstanding_pirate_tale.py` | 1 skeleton; 56/100 emitted in fresh baseline | 1 skeleton | 100 unique; 100 skeletons | Twelve pirate misunderstandings with varied causal turns and grounded QA. |
+| 18 | verified | `energetic_arcade_spectrum_dialogue_mystery.py` | 2 skeletons/100 exact-unique stories | 2 skeletons | 100 unique; 100 skeletons | Varied arcade mysteries, clue paths, dialogue, and concrete resolutions. |
+| 18 | verified | `cob_canopy_encourage_reconciliation_fable.py` | 2 skeletons/100 exact-unique stories | 2 skeletons | 100 unique; 100 skeletons | Varied canopy conflicts and reconciliation paths; root CLI import fixed. |
+| 18 | verified | `experience_sophomore_kindness_animal_story.py` | 2 skeletons/100 exact-unique stories | 2 skeletons | 100 unique; 100 skeletons | Varied animal-story premises, kindness choices, consequences, and endings. |
+| 18 | verified | `kernel_pocket_sharing_problem_solving_tall_tale.py` | 4 skeletons/100 exact-unique stories | 4 skeletons | 100 unique; 100 skeletons | Varied tall-tale problems, sharing decisions, solutions, and final images. |
 
 Additional waves follow the frozen 120-script template-collapse ranking.

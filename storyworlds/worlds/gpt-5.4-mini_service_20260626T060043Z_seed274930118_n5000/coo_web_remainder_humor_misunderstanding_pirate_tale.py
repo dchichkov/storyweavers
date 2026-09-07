@@ -20,7 +20,10 @@ import sys
 from dataclasses import dataclass, field
 from typing import Optional
 
-sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+STORYWORLDS_ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+REPOSITORY_ROOT = os.path.dirname(STORYWORLDS_ROOT)
+sys.path.insert(0, REPOSITORY_ROOT)
+sys.path.insert(0, STORYWORLDS_ROOT)
 from results import QAItem, StoryError, StorySample  # noqa: E402
 
 
@@ -68,6 +71,8 @@ class StoryParams:
     mate_type: str = "pirate"
     bird_name: str = "Pip"
     bird_type: str = "seabird"
+    scenario: int = 0
+    route: int = 0
 
 
 class World:
@@ -106,77 +111,252 @@ class World:
         return w
 
 
-def _story_opening(world: World, hero: Entity, mate: Entity, bird: Entity) -> None:
-    world.say(
-        f"On {world.ship.name}, little {hero.id} was a brave {hero.type} who loved "
-        f"shining maps and silly sea tales."
-    )
-    world.say(
-        f"{mate.id}, {mate.pronoun('subject')} stayed close by with a grin, and "
-        f"{bird.id} the {bird.type} perched in the rigging, ready to coo."
-    )
+SCENARIOS = (
+    {
+        "title": "the breakfast count",
+        "premise": "Three berry buns remained after breakfast, but the galley slate claimed four.",
+        "mistake": "Patch blamed a tiny web above the cupboard, certain a spider had carried off the remainder.",
+        "coo": "Pip cooed whenever the cupboard door swung open, which sounded suspiciously like a confession.",
+        "failed": "They counted plates twice and even questioned a very innocent wooden spoon.",
+        "clue": "a purple crumb on the ship's log and a web strand stuck harmlessly to its clasp",
+        "cause": "a rolling bun had wedged beneath the closed log when the ship tilted",
+        "action": "Mira held the slate while Patch retraced every serving and Pip pointed with one wing",
+        "resolution": "They found the last bun, corrected the remainder to three, and saved the web by moving the log.",
+        "joke": "The spoon received a formal apology and demanded a butter holiday.",
+        "ending": "At dusk, three clean plates gleamed beside the untouched silver web.",
+    },
+    {
+        "title": "the signal-flag remainder",
+        "premise": "A red signal flag vanished just before the crew needed to greet a lighthouse keeper.",
+        "mistake": "Mira thought Pip's urgent coo meant pirates were hiding beyond the fog.",
+        "coo": "Pip was actually calling toward a web stretched between two folded flags.",
+        "failed": "Patch waved the blue flag instead, accidentally announcing that the soup felt lonely.",
+        "clue": "one red thread showing beneath the remaining flags",
+        "cause": "the missing flag had folded around the others and caught on the edge of the web",
+        "action": "Patch lowered the bundle while Mira followed the red thread without tearing the web",
+        "resolution": "They freed the flag, left the spider's corner intact, and sent the proper greeting.",
+        "joke": "The lighthouse keeper replied with a flag that meant, 'Please cheer up your soup.'",
+        "ending": "The red flag snapped brightly above a web beaded with fog.",
+    },
+    {
+        "title": "the divided treasure tokens",
+        "premise": "The crew shared seventeen wooden treasure tokens among four sailors and puzzled over the remainder.",
+        "mistake": "Patch heard Pip coo four times and declared that four tokens must be left.",
+        "coo": "Pip was cooing at a loose feather resting in a web, not doing arithmetic.",
+        "failed": "Their first piles were uneven, and Patch tried to make a token by painting a biscuit.",
+        "clue": "four equal rows scratched in chalk with one token still outside them",
+        "cause": "seventeen makes four groups of four with a remainder of one",
+        "action": "Mira arranged the tokens in rows while everyone checked the count aloud",
+        "resolution": "Each sailor received four tokens, and they placed the one-token remainder in the repair fund.",
+        "joke": "Patch ate the painted biscuit before anyone could spend it.",
+        "ending": "Four neat token rows shone below the little feathered web.",
+    },
+    {
+        "title": "the bell-rope puzzle",
+        "premise": "The watch bell rang once although no one had pulled its rope.",
+        "mistake": "Mira mistook Pip's answering coo for a warning that the anchor had broken.",
+        "coo": "Pip kept looking at a web beside the bell rather than toward the anchor.",
+        "failed": "Patch inspected the anchor chain and returned wearing a bucket like a helmet.",
+        "clue": "a loose remainder of rope brushing the bell whenever the sail filled",
+        "cause": "the trimmed end of the new bell rope had not been tied back",
+        "action": "Mira watched one gust, then asked Patch to secure the loose end well away from the web",
+        "resolution": "The bell stayed quiet until the proper watch, and the crew wrote down the repair.",
+        "joke": "Patch kept the bucket helmet because it made every order sound important.",
+        "ending": "One true evening bell rang while Pip cooed from the peaceful mast.",
+    },
+    {
+        "title": "the sailmaker's measure",
+        "premise": "A new patch for the mainsail came out shorter than the sailmaker expected.",
+        "mistake": "Patch decided a spider had nibbled the cloth because a web crossed the measuring table.",
+        "coo": "Pip's coo seemed to agree, until the bird tapped the rolled measuring cord.",
+        "failed": "They measured with Patch's boot, but every step made the answer wobblier.",
+        "clue": "a blue knot marking the unused remainder of the measuring cord",
+        "cause": "the cord had been read from the wrong end after part of it stayed rolled",
+        "action": "Mira unrolled the full cord, aligned its zero knot, and had Patch check the number",
+        "resolution": "They cut a correctly sized patch and moved the table so the web could remain.",
+        "joke": "Patch's boot was officially certified as exactly one Patch-boot long.",
+        "ending": "The mended sail curved overhead while the old web trembled safely nearby.",
+    },
+    {
+        "title": "the echoing chart room",
+        "premise": "A soft coo sounded from inside the locked chart room while Pip sat on deck.",
+        "mistake": "Mira feared another bird had become trapped behind the door.",
+        "coo": "Pip answered the sound, and every reply came back a little flatter.",
+        "failed": "Patch called, 'State your pirate business!' and heard only a very polite coo.",
+        "clue": "a speaking tube ending beside a dusty web in the chart room",
+        "cause": "Pip's voice traveled down the tube and echoed from its metal cap",
+        "action": "They opened the room normally, traced the tube together, and tested one quiet sound",
+        "resolution": "They labeled the tube and stopped worrying; the remainder of their watch stayed calm.",
+        "joke": "Patch asked the echo for advice, and it wisely repeated only the last word.",
+        "ending": "Moonlight circled the tube, the web, and three relieved smiles.",
+    },
+    {
+        "title": "the missing invitation",
+        "premise": "Only half of an island festival invitation could be found in the message box.",
+        "mistake": "Patch assumed the phrase 'bring the remainder' meant the islanders wanted leftover stew.",
+        "coo": "Pip cooed beside the message box whenever the lid rattled.",
+        "failed": "Patch packed a cold potato and called it diplomatic stew.",
+        "clue": "matching torn paper caught against a web under the lid",
+        "cause": "a gust had torn the invitation, leaving the remainder tucked beneath the hinge",
+        "action": "Mira held the lid steady while Patch lifted the paper with a smooth card",
+        "resolution": "The joined invitation asked them to bring the remainder of their music rehearsal, so they practiced a song.",
+        "joke": "The cold potato attended anyway and sat in the front row.",
+        "ending": "Their finished song floated over lanterns while the mended invitation rested flat.",
+    },
+    {
+        "title": "the water-barrel mark",
+        "premise": "The drinking-water gauge showed less water than the morning tally promised.",
+        "mistake": "Mira thought Pip's worried coo meant a leak was hiding behind the barrels.",
+        "coo": "Pip stared at a web across the old gauge rather than at the dry deck.",
+        "failed": "Patch listened to every barrel and claimed one sounded slightly seasick.",
+        "clue": "a clean gauge line visible through a gap in the dusty web",
+        "cause": "the web made an old scratch look like the current water mark",
+        "action": "They checked for dampness, measured the barrels directly, and marked the true level without touching the web",
+        "resolution": "Nothing had leaked; they corrected the tally and added a clear gauge cover.",
+        "joke": "The seasick barrel recovered the moment Patch stopped singing to it.",
+        "ending": "Fresh water cups caught the sunrise beneath the new clear marker.",
+    },
+    {
+        "title": "the compass-card remainder",
+        "premise": "A paper compass lesson had been cut into eight direction cards, but only seven lay on the table.",
+        "mistake": "Patch followed Pip's coo north and nearly searched the mop closet for the remainder.",
+        "coo": "Pip was facing north only because a warm sunbeam reached the rigging there.",
+        "failed": "The mop was questioned and remained stubbornly directionless.",
+        "clue": "the corner of the west card visible behind a web-framed chart",
+        "cause": "the card had slid behind the chart when the table tilted",
+        "action": "Mira compared the seven labels, identified west as missing, and asked Patch to lift the chart carefully",
+        "resolution": "They recovered the west card and completed the compass lesson without disturbing the web.",
+        "joke": "Patch promoted the mop to Admiral of Nowhere in Particular.",
+        "ending": "Eight direction cards formed a bright compass rose on the steady table.",
+    },
+    {
+        "title": "the cargo-label mix-up",
+        "premise": "Two crates arrived marked COCOA and COCO, and the cargo list showed one crate remaining.",
+        "mistake": "Mira heard Pip coo and thought the list was calling for the bird instead of cocoa.",
+        "coo": "Pip cooed louder each time Patch read COCO aloud.",
+        "failed": "Patch offered the bird a tiny customs form, which Pip promptly sat on.",
+        "clue": "a missing letter A printed on a label corner caught in a web",
+        "cause": "the cocoa label had torn, making its word look like the bird's sound",
+        "action": "They matched weights and seals, restored the label, and checked the remainder against the full list",
+        "resolution": "The final crate was cocoa for the galley; Pip was a passenger and owed no paperwork.",
+        "joke": "Pip signed the rejected form with one magnificent feather mark.",
+        "ending": "Warm cocoa steamed in mugs beside the neatly corrected cargo list.",
+    },
+    {
+        "title": "the moonlit fishing line",
+        "premise": "A bright strand stretched across the stern, and the crew feared a fishing line had snagged the ship.",
+        "mistake": "Patch counted Pip's coos as tugs from an enormous invisible fish.",
+        "coo": "Pip was greeting the moon, not reporting anything beneath the water.",
+        "failed": "Patch introduced himself to the supposed fish and offered it command of the night watch.",
+        "clue": "dew drops forming a perfect wheel on the bright strand",
+        "cause": "moonlight was shining through a harmless spider web between two unused rails",
+        "action": "Mira checked from a safe distance, compared the strand with real line, and rerouted foot traffic",
+        "resolution": "They left the web alone and finished the remainder of the watch without a snag.",
+        "joke": "The invisible fish never reported for duty, which Patch called poor manners.",
+        "ending": "The moon turned every drop on the web into a tiny silver lantern.",
+    },
+    {
+        "title": "the mapmaker's subtraction",
+        "premise": "A mapmaker sent twelve island stamps and asked the crew to use nine, then record the remainder.",
+        "mistake": "Mira thought a coo from the shelf meant Pip had hidden the unused stamps.",
+        "coo": "Pip was calling to its reflection in a brass compass below a web.",
+        "failed": "Patch searched his hat and discovered only yesterday's sandwich receipt.",
+        "clue": "three square outlines beneath a transparent map weight",
+        "cause": "the three remaining stamps were under the weight where Mira had placed them for safety",
+        "action": "They reconstructed each step, subtracted nine from twelve, and lifted the weight together",
+        "resolution": "The record correctly showed a remainder of three, and Pip was cleared of all stamp-related charges.",
+        "joke": "Patch filed the sandwich receipt under Very Important Crumbs.",
+        "ending": "Three unused stamps rested in an envelope below the gleaming compass.",
+    },
+)
 
 
-def _story_setup(world: World, hero: Entity, mate: Entity, bird: Entity) -> None:
+OPENINGS = (
+    "The puzzle began before the morning bell.",
+    "Patch later swore the sea itself had arranged the joke.",
+    "On a calm blue watch, one small mismatch stopped the crew.",
+    "The Wobblefin had weathered storms, but that day it faced a quieter mystery.",
+    "Mira first noticed trouble when Patch counted aloud and then counted again.",
+    "Pip's coo reached the deck just as an ordinary task became puzzling.",
+    "A shipboard record, a silver web, and one wrong guess began the adventure.",
+    "Nobody expected the remainder to cause so much commotion.",
+    "The crew's funniest investigation started with careful work and a sudden coo.",
+    "Near noon, the Wobblefin carried a mystery too small for a cannon and too odd to ignore.",
+)
+
+
+def _sentence_start(text: str) -> str:
+    return text[:1].upper() + text[1:]
+
+
+def _ground_text(text: str, hero: Entity, mate: Entity, bird: Entity) -> str:
+    replacements = (("Mira", hero.id), ("Patch", mate.id), ("Pip", bird.id))
+    for old, new in replacements:
+        text = text.replace(old, new)
+    return text
+
+
+def _ground_case(case: dict[str, str], hero: Entity, mate: Entity, bird: Entity) -> dict[str, str]:
+    grounded: dict[str, str] = {}
+    for key, value in case.items():
+        grounded[key] = _ground_text(value, hero, mate, bird)
+    return grounded
+
+
+def _tell_case(world: World, hero: Entity, mate: Entity, bird: Entity, case: dict[str, str], route: int) -> None:
     hero.memes["curiosity"] = 1
-    mate.memes["cheer"] = 1
+    mate.memes["confusion"] = 1
     bird.memes["play"] = 1
+    world.say(_ground_text(OPENINGS[route % len(OPENINGS)], hero, mate, bird))
     world.say(
-        f"The crew was hunting for the remainder of an old treasure share: the "
-        f"last scrap of map that should have told them where to sail."
+        f"Aboard {world.ship.name}, {hero.id} the young {hero.type}, {mate.id} the {mate.type}, "
+        f"and {bird.id} the {bird.type} faced {case['title']}."
     )
+    world.say(case["premise"])
+    world.para()
+
+    if route % 3 == 0:
+        world.say(case["coo"])
+        world.say(f"'Then we should test what we think we heard,' {hero.id} said. {case['mistake']}")
+    elif route % 3 == 1:
+        world.say(case["mistake"])
+        world.say(f"'A coo is a sound, not proof,' {hero.id} replied. {case['coo']}")
+    else:
+        world.say(f"'Before we decide, what do we actually know?' asked {hero.id}. {case['coo']}")
+        world.say(case["mistake"])
+    world.say(case["failed"])
+    world.say(f"Instead of guessing again, they looked for evidence and found {case['clue']}.")
+    world.para()
+
+    world.say(f"That clue changed the story: {case['cause']}.")
+    world.say(f"{_sentence_start(case['action'])}.")
+    world.say(case["resolution"])
+    world.say(f"'So the coo made us curious, but the clue made us certain,' said {mate.id}. {case['joke']}")
+    world.para()
     world.say(
-        f"But whenever the wind went soft, {bird.id} gave a happy coo, and the "
-        f"sound bounced across the deck like a tiny drumbeat."
+        "They learned that a misunderstanding grows when people defend a guess, "
+        "and shrinks when friends compare evidence and listen to one another."
     )
+    world.say(case["ending"])
 
-
-def _misunderstanding(world: World, hero: Entity, mate: Entity, bird: Entity) -> None:
-    hero.memes["confusion"] = hero.memes.get("confusion", 0) + 1
-    mate.memes["confusion"] = mate.memes.get("confusion", 0) + 1
-    world.say(
-        f"{mate.id} squinted upward and said, 'A coo! The captain's got a clue!' "
-        f"But {hero.id} laughed, because {bird.id} was only talking to the waves."
-    )
-    world.say(
-        f"Still, the crew searched the ropes, the barrels, and the wheel, looking "
-        f"for the missing remainder of the map."
-    )
-
-
-def _discover_web(world: World, hero: Entity, mate: Entity, bird: Entity) -> None:
-    world.say(
-        f"Then {hero.id} noticed a silver web tucked beside the mast, sparkling "
-        f"with a tiny folded strip caught in the threads."
-    )
-    world.say(
-        f"It was not a leftover crumb at all. It was the remainder they needed: a "
-        f"slip of map stuck fast in the web."
-    )
-    world.facts["web_found"] = True
-    world.facts["remainder_found"] = True
-    world.facts["coo_source"] = bird.id
-    world.facts["misunderstanding"] = True
-
-
-def _resolve(world: World, hero: Entity, mate: Entity, bird: Entity) -> None:
-    hero.memes["joy"] = hero.memes.get("joy", 0) + 1
-    mate.memes["joy"] = mate.memes.get("joy", 0) + 1
-    hero.memes["confusion"] = 0
+    hero.memes["joy"] = 1
     mate.memes["confusion"] = 0
-    world.say(
-        f"{mate.id} laughed so hard {mate.pronoun('subject')} nearly dropped the "
-        f"spyglass. 'We chased a coo and found a web!' {mate.pronoun('subject').capitalize()} said."
+    mate.memes["joy"] = 1
+    world.facts.update(
+        scenario_title=case["title"],
+        premise=case["premise"],
+        misunderstanding=case["mistake"],
+        coo_event=case["coo"],
+        clue=case["clue"],
+        cause=case["cause"],
+        action=case["action"],
+        resolution=case["resolution"],
+        ending=case["ending"],
+        coo_source=bird.id,
+        web_found=True,
+        remainder_found=True,
+        resolved=True,
     )
-    world.say(
-        f"{hero.id} carefully freed the map scrap, and {bird.id} cooed again as if "
-        f"{bird.pronoun('subject')} approved of the joke."
-    )
-    world.say(
-        f"By sunset, the crew had stitched the scrap into the full chart and set "
-        f"sail with a grin, the little mystery solved at last."
-    )
-    world.facts["resolved"] = True
 
 
 def tell(params: StoryParams) -> World:
@@ -186,13 +366,8 @@ def tell(params: StoryParams) -> World:
     bird = world.add(Entity(id=params.bird_name, kind="character", type=params.bird_type))
     world.facts.update(hero=hero, mate=mate, bird=bird)
 
-    _story_opening(world, hero, mate, bird)
-    world.para()
-    _story_setup(world, hero, mate, bird)
-    _misunderstanding(world, hero, mate, bird)
-    world.para()
-    _discover_web(world, hero, mate, bird)
-    _resolve(world, hero, mate, bird)
+    case = _ground_case(SCENARIOS[params.scenario % len(SCENARIOS)], hero, mate, bird)
+    _tell_case(world, hero, mate, bird, case, params.route)
     return world
 
 
@@ -201,9 +376,9 @@ def generation_prompts(world: World) -> list[str]:
     mate = world.facts["mate"]
     bird = world.facts["bird"]
     return [
-        f"Write a short pirate tale for a small child about {hero.id}, {mate.id}, and {bird.id}, including a coo and a web.",
-        f"Tell a funny shipboard story where a pirate hears a coo, mistakes it, and finds the remainder of a map in a web.",
-        f"Write a gentle pirate adventure with a misunderstanding, a tiny joke, and a happy ending at sea.",
+        f"Write a short pirate tale for a small child about {hero.id}, {mate.id}, and {bird.id} solving {world.facts['scenario_title']}.",
+        f"Tell a funny shipboard misunderstanding involving a coo, a web, and a remainder; the decisive clue is {world.facts['clue']}.",
+        f"Write a gentle pirate adventure where friends test a mistaken guess, discover that {world.facts['cause']}, and repair the problem together.",
     ]
 
 
@@ -217,20 +392,24 @@ def story_qa(world: World) -> list[QAItem]:
             answer=f"The story was mostly about {hero.id}, the little {hero.type}, sailing with {mate.id} and {bird.id}.",
         ),
         QAItem(
-            question=f"What did {bird.id} keep doing that caused the funny mix-up?",
-            answer=f"{bird.id} kept giving a soft coo from the rigging, and the crew thought it might be a clue.",
+            question=f"What did {bird.id}'s coo make the crew misunderstand?",
+            answer=f"{world.facts['misunderstanding']} The coo drew their attention, but it did not prove their guess.",
         ),
         QAItem(
-            question="What did the crew think they were searching for?",
-            answer="They thought they were searching for the remainder of the treasure map, the last missing scrap.",
+            question=f"What evidence helped solve {world.facts['scenario_title']}?",
+            answer=f"They found {world.facts['clue']}. That evidence gave them something stronger than a guess.",
         ),
         QAItem(
-            question="Where did they finally find that scrap?",
-            answer="They found it caught in a silver web beside the mast.",
+            question="What was the real cause of the problem?",
+            answer=f"The real cause was that {world.facts['cause']}. Once the friends understood that, they could act safely.",
         ),
         QAItem(
-            question="Why was it funny?",
-            answer="It was funny because the crew misheard the bird's coo as a clue, but the real clue was hidden in the web.",
+            question=f"How did {hero.id} and {mate.id} resolve the misunderstanding?",
+            answer=f"{_sentence_start(world.facts['action'])}. {world.facts['resolution']}",
+        ),
+        QAItem(
+            question="What did the friends learn from the mix-up?",
+            answer="They learned to compare evidence and listen to one another before defending a guess. That turned the misunderstanding into a solution.",
         ),
     ]
 
@@ -342,15 +521,22 @@ def build_parser() -> argparse.ArgumentParser:
     return ap
 
 
-def resolve_params(args: argparse.Namespace, rng: random.Random) -> StoryParams:
+def resolve_params(
+    args: argparse.Namespace, rng: random.Random, sample_seed: Optional[int] = None
+) -> StoryParams:
+    seed = sample_seed if sample_seed is not None else args.seed
+    if seed is None:
+        seed = rng.randrange(2**31)
     return StoryParams(
-        seed=args.seed,
+        seed=seed,
         name=args.name or rng.choice(["Mira", "Nell", "Jory", "Rae", "Finn"]),
         hero_type="captain",
         mate_name=args.mate or rng.choice(["Patch", "Moss", "Brine", "Wren"]),
         mate_type="pirate",
         bird_name=args.bird or rng.choice(["Pip", "Coco", "Skim", "Twee"]),
         bird_type="seabird",
+        scenario=seed % len(SCENARIOS),
+        route=(seed // len(SCENARIOS)) % len(OPENINGS),
     )
 
 
@@ -399,7 +585,7 @@ def main() -> None:
     seen: set[str] = set()
     for i, seed in enumerate(seeds):
         rng = random.Random(seed)
-        params = resolve_params(args, rng)
+        params = resolve_params(args, rng, seed)
         params.seed = seed
         sample = generate(params)
         if sample.story in seen:

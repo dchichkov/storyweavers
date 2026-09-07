@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import os
 import random
@@ -9,7 +10,8 @@ import sys
 from dataclasses import dataclass, field
 from typing import Optional
 
-sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+STORYWORLDS_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+sys.path[:0] = [STORYWORLDS_DIR, os.path.dirname(STORYWORLDS_DIR)]
 from results import QAItem, StoryError, StorySample  # noqa: E402
 
 
@@ -98,6 +100,134 @@ NAMES = {
 
 TRAITS = ["kind", "shy", "brave", "gentle", "curious", "patient"]
 
+OPENINGS = [
+    "The morning had begun smoothly",
+    "Between lessons, the school hummed with busy paws",
+    "Just before the next bell, everyone seemed to know where to go",
+    "It was an ordinary school day until a small problem appeared",
+    "The day felt familiar to the returning students",
+    "During a busy part of the day, voices and footsteps filled the school",
+]
+
+SOPHOMORE_INSIGHTS = [
+    "being experienced meant noticing who had not learned the routine yet",
+    "a second year at school was useful only if it helped someone else",
+    "knowing the school gave a student the chance to make it kinder",
+    "experience was not about showing off; it was about knowing how to help",
+    "the best part of being a returning student was making room for someone new",
+]
+
+APPROACHES = [
+    "asked, \"Would you like company while we solve this?\"",
+    "sat beside {newcomer} and said, \"We can take this one step at a time.\"",
+    "said, \"That happened to me before. Let me show you what helped.\"",
+    "lowered {possessive} voice and asked, \"What would make this easier?\"",
+    "invited {helper} over and said, \"Three heads can find a gentle answer.\"",
+    "said, \"You do not have to figure everything out alone.\"",
+]
+
+ENDING_IMAGES = [
+    "At the next bell, the three friends crossed the school together, their steps keeping the same cheerful beat.",
+    "Before going home, {newcomer} drew a tiny heart beside today's date and tucked the page safely away.",
+    "As afternoon light reached the floor, {newcomer}'s ears stood tall, and {hero} knew the school felt smaller in the best way.",
+    "On the way out, {newcomer} held the door for another student, passing the kindness onward without being asked.",
+    "The final bell rang over three voices laughing together instead of one quiet voice worrying alone.",
+    "By day's end, the problem was only a memory, and a new friendship had taken its place.",
+]
+
+SCENARIOS = [
+    {
+        "problem": "a gust scattered {newcomer}'s hand-drawn classroom map across the ground",
+        "memory": "once following the wrong arrows and arriving late to music",
+        "action": "caught the nearest page while {helper} stopped another with a paw; then they numbered the pages and walked the route together",
+        "outcome": "the map was complete again, and {newcomer} could point out every turn without guessing",
+        "proof": "held the repaired map like a guide instead of a puzzle",
+    },
+    {
+        "problem": "the handle tore from {newcomer}'s project box, spilling paper animals just before class",
+        "memory": "carrying a wobbly project alone during the first year",
+        "action": "made a sling from two spare ribbons while {helper} gathered the paper animals in their proper order",
+        "outcome": "the class display arrived safely, with every paper animal standing in its place",
+        "proof": "carried one end of the ribbon sling with a steady smile",
+    },
+    {
+        "problem": "{newcomer} froze at the edge of a game because nobody had explained the rules",
+        "memory": "pretending to understand a game and feeling more confused with every turn",
+        "action": "paused the game, demonstrated one slow practice round, and asked {helper} to play beside {newcomer}",
+        "outcome": "{newcomer} learned the rules and made the pass that completed the next round",
+        "proof": "called out the next play clearly while the others listened",
+    },
+    {
+        "problem": "a stack of returned books slid from {newcomer}'s cart and blocked the quiet corner",
+        "memory": "trying to shelve books by color before learning about their labels",
+        "action": "showed {newcomer} how to read one shelf label while {helper} sorted the books into small, manageable piles",
+        "outcome": "every book found its shelf, and {newcomer} understood how the labels worked",
+        "proof": "slid the last book home and whispered, \"Now I know where it belongs.\"",
+    },
+    {
+        "problem": "{newcomer}'s lunch tray tipped, leaving the only meal in a puddle on the floor",
+        "memory": "dropping a snack and being too embarrassed to ask what to do",
+        "action": "shared half of {possessive} lunch, found a cloth with {helper}, and quietly helped clean the spill",
+        "outcome": "the floor was clean, both students had enough to eat, and the embarrassing moment became a friendly lunch",
+        "proof": "saved the last berry to split with {hero}",
+    },
+    {
+        "problem": "the wheels on {newcomer}'s supply cart caught in a floor groove while hurried students squeezed past",
+        "memory": "pulling a jammed cart harder until its boxes nearly fell",
+        "action": "asked everyone for a little space, lifted one side with {helper}, and guided the wheel around the groove",
+        "outcome": "the cart rolled safely to class without losing a single supply",
+        "proof": "steered the cart around the groove on the return trip",
+    },
+    {
+        "problem": "{newcomer} could not make the first sound during rehearsal for a class reading",
+        "memory": "forgetting a line when a whole room seemed to be waiting",
+        "action": "practiced the opening sentence in a whisper, then invited {helper} to add the next line like a friendly echo",
+        "outcome": "{newcomer} read the whole passage aloud at a comfortable pace",
+        "proof": "closed the book only after the listeners applauded",
+    },
+    {
+        "problem": "water leaked from {newcomer}'s plant jar and soaked the observation notes",
+        "memory": "losing careful work to a bottle that had not been closed tightly",
+        "action": "moved the plant to safety, blotted each page with {helper}, and helped rewrite the blurred measurements from the class chart",
+        "outcome": "the plant and its record were both saved before the lesson began",
+        "proof": "set the dry notes beside the upright plant and checked the lid twice",
+    },
+    {
+        "problem": "{newcomer} searched every pocket for a missing hall pass as the line began to leave",
+        "memory": "panicking over a lost pass that had slipped behind a folder",
+        "action": "helped retrace the morning in order while {helper} checked beneath the nearby bench",
+        "outcome": "the pass turned up inside a folded timetable, exactly where the clues led",
+        "proof": "placed the pass in a bright front pocket before joining the line",
+    },
+    {
+        "problem": "two students claimed the same costume piece, and {newcomer} was too nervous to speak",
+        "memory": "giving up a turn because arguing had seemed easier for everyone else",
+        "action": "asked each student to explain, then helped them plan two scenes so both could use the costume with {helper} keeping time",
+        "outcome": "both scenes worked, and {newcomer} got a fair turn without a quarrel",
+        "proof": "returned the costume at the agreed signal and bowed with confidence",
+    },
+    {
+        "problem": "{newcomer}'s carefully built tower leaned after one block cracked",
+        "memory": "starting an entire project over instead of repairing the weak part",
+        "action": "tested the base with {newcomer} while {helper} found two flat blocks to brace the cracked one",
+        "outcome": "the tower stood through the class demonstration and showed how a repair could strengthen a design",
+        "proof": "tapped the sturdy base and explained the repair to the class",
+    },
+    {
+        "problem": "a wrong turn left {newcomer} outside the practice room as the club meeting began",
+        "memory": "wandering past the same doorway twice during the first week",
+        "action": "pointed out a painted star beside the correct door and asked {helper} to make a matching star for {newcomer}'s schedule",
+        "outcome": "{newcomer} reached the meeting and learned a landmark that would work tomorrow too",
+        "proof": "found the painted star first when the group left together",
+    },
+]
+
+SCENARIOS_BY_PLACE = {
+    "schoolyard": [0, 2, 4, 7, 10],
+    "hallway": [0, 1, 5, 8, 9, 11],
+    "library": [1, 3, 6, 7, 10],
+}
+
 
 def build_parser() -> argparse.ArgumentParser:
     ap = argparse.ArgumentParser(description="Animal Story world: kindness, experience, and a sophomore animal at school.")
@@ -137,56 +267,79 @@ def select_name(species: str, used: set[str], rng: random.Random) -> str:
 
 
 def generate_story(world: World, params: StoryParams) -> None:
+    seed_text = f"{params.seed}|{params.place}|{params.protagonist}|{params.helper}|{params.name}|{params.helper_name}"
+    story_seed = int.from_bytes(hashlib.sha256(seed_text.encode("utf-8")).digest()[:8], "big")
+    rng = random.Random(story_seed)
     hero = world.add(Entity(id="hero", species=params.protagonist, name=params.name, role="sophomore"))
     helper = world.add(Entity(id="helper", species=params.helper, name=params.helper_name, role="friend"))
-    new_student = world.add(Entity(id="new_student", species="mouse", name="Mimi", role="new student"))
+    newcomer_species = rng.choice([species for species in SPECIES if species not in {hero.species, helper.species}])
+    newcomer_name = select_name(newcomer_species, {hero.name, helper.name}, rng)
+    new_student = world.add(Entity(id="new_student", species=newcomer_species, name=newcomer_name, role="new student"))
+    scenario = SCENARIOS[rng.choice(SCENARIOS_BY_PLACE[params.place])]
+    opening = rng.choice(OPENINGS)
+    insight = rng.choice(SOPHOMORE_INSIGHTS)
+    approach = rng.choice(APPROACHES)
+    ending = rng.choice(ENDING_IMAGES)
+    details = {
+        "hero": hero.subject(),
+        "helper": helper.subject(),
+        "newcomer": new_student.subject(),
+        "possessive": "their",
+    }
+    problem = scenario["problem"].format(**details)
+    memory = scenario["memory"].format(**details)
+    action = scenario["action"].format(**details)
+    outcome = scenario["outcome"].format(**details)
+    proof = scenario["proof"].format(**details)
+    approach_text = approach.format(**details)
+    ending_text = ending.format(**details)
 
     hero.meters["experience"] = 2.0
     hero.memes["kindness"] = 1.0
     helper.memes["worry"] = 1.0
     new_student.memes["nervous"] = 2.0
 
+    place_preposition = "In" if world.place.id in {"hallway", "library"} else "At"
+    world.say(f"{place_preposition} {world.place.label}, {opening[:1].lower() + opening[1:]}.")
     world.say(
-        f"{hero.subject()} was a sophomore {hero.species} who had a little experience with school, "
-        f"but {hero.possessive()} heart was full of kindness."
+        f"{hero.subject()}, a sophomore {hero.species} in the second year of school, had enough experience to know the routines "
+        f"but still remembered {memory}."
     )
-    world.say(
-        f"At {world.place.label}, {hero.subject()} saw {new_student.subject()} standing alone with a too-big bag and droopy ears."
-    )
-    world.say(
-        f"{hero.subject()} remembered how scary the first days of school could feel, so {hero.subject()} walked over and said hello in a soft voice."
-    )
+    world.say(f"That was why {hero.subject()} noticed when {new_student.subject()}, a new {new_student.species}, faced a problem: {problem}.")
+    world.say(f"{helper.subject()}, a {helper.species} classmate, noticed too and waited to see what {new_student.subject()} wanted.")
     world.para()
 
     hero.memes["kindness"] += 1.0
     helper.meters["experience"] = 1.0
-    new_student.memes["nervous"] -= 1.5
-    new_student.memes["hope"] = 1.0
+    new_student.memes["nervous"] -= 1.0
+    new_student.memes["hope"] = 1.5
 
-    world.say(
-        f"First {hero.subject()} showed {new_student.subject()} where to hang the bag, then {hero.subject()} shared a pencil and a smile."
-    )
-    world.say(
-        f"{helper.subject()} watched from nearby and noticed that {hero.subject()} made the whole corner feel less lonely."
-    )
+    world.say(f"Kindness, {hero.subject()} decided, meant offering help and letting {new_student.subject()} choose instead of taking over.")
+    world.say(f"{hero.subject()} {approach_text}")
+    world.say(f"When {new_student.subject()} nodded, {hero.subject()} {action}.")
+    world.say(f"The plan worked: {outcome}.")
     world.para()
 
     hero.meters["experience"] += 1.0
     new_student.memes["safe"] = 1.0
     helper.memes["admiration"] = 1.0
 
-    world.say(
-        f"When the bell rang, {new_student.subject()} walked beside {hero.subject()} instead of behind."
-    )
-    world.say(
-        f"{hero.subject()} felt proud, because a little kindness had turned an ordinary school day into a good experience for everyone."
-    )
+    proof_sentence = f"A little later, {new_student.subject()} {proof}"
+    world.say(proof_sentence if proof_sentence.endswith((".", "!", "?", '."', '!"', '?"')) else proof_sentence + ".")
+    world.say(f"{hero.subject()} understood that {insight}.")
+    world.say(ending_text)
 
     world.facts.update(
         hero=hero,
         helper=helper,
         new_student=new_student,
         place=world.place,
+        problem=problem,
+        memory=memory,
+        action=action,
+        outcome=outcome,
+        proof=proof,
+        insight=insight,
     )
 
 
@@ -202,16 +355,20 @@ def story_qa(world: World) -> list[QAItem]:
             answer=f"{hero.subject()} was the sophomore {hero.species} in the story.",
         ),
         QAItem(
-            question=f"Why did {hero.subject()} help {new_student.subject()} at {place.label}?",
-            answer=f"{hero.subject()} helped because {hero.subject()} remembered an experience with school that felt scary and wanted to show kindness.",
+            question=f"What problem did {new_student.subject()} face at {place.label}?",
+            answer=f"{new_student.subject()} needed help because {f['problem']}.",
         ),
         QAItem(
-            question=f"What changed after {hero.subject()} was kind?",
-            answer=f"{new_student.subject()} felt less nervous, and the school day turned into a better experience for everyone.",
+            question=f"How did {hero.subject()} and {helper.subject()} show kindness?",
+            answer=f"They helped when {hero.subject()} {f['action']}.",
         ),
         QAItem(
-            question=f"What did {helper.subject()} notice about {hero.subject()}?",
-            answer=f"{helper.subject()} noticed that {hero.subject()} made the corner feel less lonely by being kind.",
+            question="How did the story show that the plan worked?",
+            answer=f"The plan worked because {f['outcome']}. Later, {new_student.subject()} {f['proof']}.",
+        ),
+        QAItem(
+            question=f"What did {hero.subject()} learn about being a sophomore?",
+            answer=f"{hero.subject()} learned that {f['insight']}.",
         ),
     ]
 
@@ -236,11 +393,12 @@ def world_knowledge_qa(world: World) -> list[QAItem]:
 def generation_prompts(world: World) -> list[str]:
     f = world.facts
     hero = f["hero"]
+    new_student = f["new_student"]
     place = f["place"]
     return [
-        f"Write an animal story about a sophomore {hero.species} at {place.label} who uses kindness to help a new student.",
-        f"Tell a child-friendly story where experience helps {hero.subject()} notice someone who feels shy.",
-        f"Write a gentle school story with animals, a sophomore, and a kind choice that makes the day better.",
+        f"Write an animal story about a sophomore {hero.species} at {place.label} who uses kindness to help a new {new_student.species}.",
+        f"Tell a child-friendly story where {hero.subject()}'s school experience helps solve this problem: {f['problem']}.",
+        "Write a gentle school story in which animals ask before helping, solve a problem together, and show what changed.",
     ]
 
 
