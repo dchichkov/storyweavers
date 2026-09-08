@@ -1,6 +1,6 @@
 import asyncio
 import contextlib
-from dataclasses import asdict
+from dataclasses import asdict, replace
 import io
 import json
 from pathlib import Path
@@ -32,6 +32,59 @@ class FactoryExamplesTest(unittest.TestCase):
         self.assertIn("# custom example marker", prompt)
         self.assertNotIn("### storyworlds/worlds/puddles.py", prompt)
         self.assertNotIn("### storyworlds/worlds/pirates.py", prompt)
+
+    def test_explicit_cache_preserves_prompt_and_separates_changing_task(self):
+        addendum = self.example.with_name("addendum.md")
+        addendum.write_text("Keep this final guidance after the task.\n")
+        for mode in batch.EMIT_MODES:
+            args = service.build_parser().parse_args([
+                "--example-file", str(self.relative), "--emit-mode", mode,
+                "--prompt-addendum", str(addendum), "--prompt-cache-mode", "explicit",
+            ])
+            first = service.request_body(args, self.job)
+            other = service.request_body(args, replace(self.job, target="different.py", words=["newword"]))
+            blocks = first["input"][0]["content"]
+            self.assertEqual(len(blocks), 2)
+            self.assertEqual(blocks[0], other["input"][0]["content"][0])
+            self.assertNotIn(self.job.target, blocks[0]["text"])
+            self.assertIn(self.job.target, blocks[1]["text"])
+            self.assertEqual(blocks[0]["prompt_cache_breakpoint"], {"mode": "explicit"})
+            self.assertNotIn("prompt_cache_breakpoint", blocks[1])
+            self.assertEqual(first["prompt_cache_options"], {"mode": "explicit", "ttl": "30m"})
+            self.assertNotIn("prompt_cache_retention", first)
+            self.assertEqual(first["prompt_cache_key"], other["prompt_cache_key"])
+            args.prompt_cache_mode = "legacy"
+            legacy = service.request_body(args, self.job)
+            self.assertEqual("".join(block["text"] for block in blocks), legacy["input"][0]["content"][0]["text"])
+            self.assertNotIn("prompt_cache_options", legacy)
+            self.assertEqual(legacy["prompt_cache_retention"], "24h")
+
+    def test_explicit_cache_reaches_wire_with_installed_sdk(self):
+        import httpx
+        from openai import AsyncOpenAI
+
+        args = service.build_parser().parse_args([
+            "--example-file", str(self.relative), "--prompt-cache-mode", "explicit",
+        ])
+        request = service.request_body(args, self.job)
+        original = json.dumps(request, sort_keys=True)
+        sent = []
+
+        def receive(req):
+            sent.append(json.loads(req.content))
+            return httpx.Response(200, json=dict(id="resp_test", object="response", created_at=1,
+                                  status="completed", model=args.model, output=[]))
+
+        async def run():
+            async with AsyncOpenAI(api_key="not-a-real-key", base_url="https://example.invalid/v1",
+                    http_client=httpx.AsyncClient(transport=httpx.MockTransport(receive))) as client:
+                return await service.call_one(client, args, self.job, asyncio.Semaphore(1), request=request)
+
+        row = asyncio.run(run())
+        self.assertIsNone(row["error"])
+        self.assertEqual(sent, [request])
+        self.assertEqual(json.dumps(request, sort_keys=True), original)
+        self.assertEqual(row["request"]["prompt_cache_options"], request["prompt_cache_options"])
 
     def test_default_selection_unchanged(self):
         self.assertEqual(batch.example_world_paths("puddles"), (batch.WORLDS_DIR / "puddles.py",))

@@ -199,6 +199,41 @@ class PromptTrialsTest(unittest.TestCase):
         self.assertEqual(trials.read(rated_output / "summary.json")["mean_quality"]["overall"], 7.5)
         self.assertEqual(trials.read(rated_output / "settings.json")["judge"], "gpt-5.6-terra")
 
+    def test_cache_warmup_is_real_generation_and_obeys_concurrency(self):
+        directory, config = self.prepare("--examples", "puddles", "pirates", "--per-example", "3",
+                                         "--concurrency", "2", "--prompt-cache-mode", "explicit", "--cache-warmup")
+        starts = {}
+        warmed = set()
+        active = 0
+        peak = 0
+
+        async def fake_call(client, args, job, semaphore, *, request):
+            nonlocal active, peak
+            key = request["prompt_cache_key"]
+            self.assertEqual(request["prompt_cache_options"]["mode"], "explicit")
+            if starts.get(key):
+                self.assertIn(key, warmed)
+            starts[key] = starts.get(key, 0) + 1
+            active += 1
+            peak = max(peak, active)
+            await asyncio.sleep(0.01)
+            active -= 1
+            warmed.add(key)
+            return self.fake_row(job)
+
+        with patch.object(service, "make_client", return_value=AsyncMock()), \
+             patch.object(service, "call_one", side_effect=fake_call), contextlib.redirect_stdout(io.StringIO()):
+            asyncio.run(trials.generate(directory, config))
+            asyncio.run(trials.generate(directory, config))
+        self.assertEqual(sorted(starts.values()), [3, 3])
+        self.assertEqual(peak, 2)
+        self.assertTrue(all(trials.read(batch.ROOT / arm["manifest"])["ok"] == 3 for arm in config["arms"]))
+
+    def test_cache_warmup_requires_explicit_requests_before_preparation(self):
+        with self.assertRaisesRegex(ValueError, "requires --prompt-cache-mode explicit"):
+            self.prepare("--cache-warmup")
+        self.assertFalse(trials.trial_path("test").exists())
+
     def test_interrupted_attempt_not_rebilled_and_received_recovered(self):
         directory, config = self.prepare("--examples", "puddles", "--per-example", "2")
         arm = config["arms"][0]

@@ -6,6 +6,8 @@ PRICING_DATE = "2026-09-07"
 PRICING_URL = "https://developers.openai.com/api/docs/pricing"
 # USD / million tokens: ordinary input, cache reads, cache writes, output.
 FLEX_RATES = {
+    # Mini has no separate cache-write premium; Flex is half standard pricing.
+    "gpt-5.4-mini": (0.375, 0.0375, 0.375, 2.25),
     "gpt-5.6-luna": (0.10, 0.01, 0.125, 0.60),
     "gpt-5.6-terra": (1.00, 0.10, 1.25, 6.00),
 }

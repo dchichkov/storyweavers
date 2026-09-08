@@ -50,7 +50,10 @@ def compression_retention(stories: list[str]) -> dict:
         raise ValueError("compression scoring requires nonempty story strings")
     ordered = sorted(stories)
     random.Random(0).shuffle(ordered)
-    pooled = compressed_size(b"".join(map(encode_story, ordered)), DICTIONARY_BYTES)
+    filters = [dict(id=lzma.FILTER_LZMA2, preset=6, dict_size=DICTIONARY_BYTES)]
+    compressor = lzma.LZMACompressor(format=lzma.FORMAT_RAW, filters=filters)
+    pooled = sum(len(compressor.compress(encode_story(story))) for story in ordered)
+    pooled += len(compressor.flush()) - len(lzma.compress(b"", format=lzma.FORMAT_RAW, filters=filters))
     independent = sum(individual_size(story) for story in ordered)
     return dict(stories=len(stories), pooled_bytes=pooled, independent_bytes=independent,
                 retention=min(1.0, pooled / independent) if independent else 0.0)

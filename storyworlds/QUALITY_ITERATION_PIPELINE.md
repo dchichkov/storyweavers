@@ -87,6 +87,218 @@ Keep these artifacts. Do not delete raw responses, manifests, prompt snapshots,
 or earlier reports when iterating. They are the audit trail that lets us compare
 prompt, repair, and quality changes without regenerating the same batch.
 
+## Explicit Generation Caching
+
+The direct-service factory and `prompt_trials.py prepare` accept
+`--prompt-cache-mode explicit` for GPT-5.6+ requests. This separates the fixed
+contract/helpers/example from the variable seed fields, marks the fixed block
+with `prompt_cache_breakpoint`, and sends
+`prompt_cache_options={"mode": "explicit", "ttl": "30m"}` instead of legacy
+`prompt_cache_retention`. Concatenating the two blocks reproduces the original
+prompt exactly; addenda still follow the task. Existing commands default to
+`legacy`, and frozen historical requests are never rewritten.
+
+Use `--cache-warmup` when preparing a prompt trial to complete one real request
+per cache key before releasing that key's remaining requests. Warm-ups count
+toward the requested generation total. Independent keys can warm concurrently,
+and all requests still share the trial's concurrency limit. Resume retains the
+existing attempt/response ledgers and does not silently retry unknown outcomes.
+The factory alone does not implement this scheduling option.
+
+```bash
+./.venv/bin/python storyworlds/prompt_trials.py prepare <new-name> \
+  --seed 2026091800 \
+  --example-manifest storyworlds/reference_sets/luna_top20_20260907.json \
+  --per-example 5 --model gpt-5.6-luna --reasoning-effort none \
+  --concurrency 50 --local-samples 1000 \
+  --prompt-cache-mode explicit --cache-warmup
+```
+
+GPT-5.6's default implicit breakpoint includes the changing last message. A
+shared prefix alone is insufficient: explicitly mark its end so later requests
+can reuse it. See the [official caching guide](https://developers.openai.com/api/docs/guides/prompt-caching#gotchas).
+The installed Python SDK can pass the new top-level option through `extra_body`;
+the saved requests remain the exact wire JSON, and a mock-transport test checks
+both that option and the nested breakpoint survive serialization.
+
+Measure `usage.input_tokens_details.cached_tokens` and `cache_write_tokens`
+separately. Writes are not cache hits and have a different price. Report input
+cost separately from output cost, and compare input at matched token counts.
+With five requests per reference and one cold write each, the within-reference
+cache-read ceiling is about 80%, not the near-100% ceiling of a much larger run.
+Quality can be omitted: run generation, local audit/repair, and import repairs
+without invoking `judge`. Local sample/verification success is not a quality
+rating. Preserve raw and repaired source, compressed samples, usage, and archives.
+
+Caching experiment: [100 matched Luna worlds, repairs without judging](batches/top20_luna100_cached_20260907.notes.md).
+
+## Large Reference-Seeded Runs
+
+`large_world_batch.py` scales the canonical protocol without retaining a million
+full StorySample objects in memory or writing uncompressed per-story Markdown.
+It selects the first 100 **verified entries in repair-ledger order** from
+`WORST_CONTRIBUTORS_REPAIR.md`, resolves their current tracked source files
+(excluding historical `tmp` copies), and adds the current canonical set.
+Garnet overlaps both sets, giving 106 distinct references. This is a reproducible
+subset of the 117 verified ledger entries, not a claim that the campaign had
+exactly 100 repairs.
+
+Each reference must pass `--verify`, a 100-sample draw, and deterministic replay
+before any paid call. The preparation step freezes reference sources, their
+hashes, the preflight evidence, and every request body. Exactly 1,000 fresh tasks
+are balanced across references, 9 or 10 each. Unlike a matched prompt trial,
+these tasks use disjoint seeds, and each request contains only one example.
+
+```bash
+./.venv/bin/python storyworlds/large_world_batch.py prepare repaired100_canonical_luna_20260907 \
+  --count 1000 --seed 2026090710 --concurrency 50 --local-workers 4
+
+OPENAI_API_KEY="$(cat .API_KEY)" OPENAI_BASE_URL=https://api.openai.com/v1 \
+  ./.venv/bin/python -u storyworlds/large_world_batch.py generate repaired100_canonical_luna_20260907
+
+./.venv/bin/python -u storyworlds/large_world_batch.py audit repaired100_canonical_luna_20260907
+
+./.venv/bin/python -u storyworlds/large_world_batch.py repair-imports repaired100_canonical_luna_20260907
+
+OPENAI_API_KEY="$(cat .API_KEY)" OPENAI_BASE_URL=https://api.openai.com/v1 \
+  ./.venv/bin/python -u storyworlds/large_world_batch.py judge repaired100_canonical_luna_20260907
+
+./.venv/bin/python -u storyworlds/large_world_batch.py summarize repaired100_canonical_luna_20260907
+./.venv/bin/python storyworlds/large_world_batch.py archive repaired100_canonical_luna_20260907
+```
+
+Generation uses Luna, no reasoning, Flex, the current base prompt, and no
+addendum unless explicitly supplied at preparation. API concurrency and local
+worker count are separate. Generation and judging require authorization to send
+the reference code and sampled story text to OpenAI. An interrupted generation
+attempt with unknown billing is never automatically resubmitted; the underlying
+generation SDK retains its existing bounded transport retries.
+
+On a Mac, wrap long-running commands with `caffeinate -is` to prevent idle/system
+sleep while the command runs. Sleeping can interrupt in-flight requests and
+delay timeout handling. Preserve any uncertain attempt in the ledger instead
+of blindly submitting the same paid request again.
+
+To overlap local work with a running generation process, use `audit-stream`
+instead of `audit` in a second process. It consumes only complete, durable
+response records after raw-source preservation; generation and QC use separate
+phase locks. Partial JSONL tails are deferred until the writer finishes them.
+No additional generation requests or judge calls are made by streaming audit.
+
+`repair-imports` addresses only missing `results`, `asp`, or `storyworlds`
+module errors in standalone execution. It adds ancestor-based helper discovery,
+preserves the pre-import audit and source, and reruns sampling/verification/CLI/
+replay with general repair rules disabled. An existing sample pool must remain
+exactly unchanged before the path repair is accepted. Newly runnable worlds
+retain their original failed audit alongside the new pool. Run this before
+judging; it will refuse to modify an already-judged pass.
+
+The local audit reuses `repair_batch_output.py`, preserving raw, before, and
+after sources. It requests 1,000 samples per generated world, runs verification,
+checks standalone CLI execution and hash-seed replay, and measures exact/textual
+skeleton uniqueness and QA duplication. Samples are retained as one compressed
+`samples.jsonl.gz` per world, not 1,000 files. Successful subprocess stdout is
+stored once as samples; checks retain its byte count/hash instead of another
+large embedded copy. Completed local audits are resumed without rerunning them.
+
+Terra/Flex judges ten randomly selected samples from each eligible world,
+without deduplicating away repetition. The existing geometric formula and
+runtime/verify gates remain; scoring also enforces the judge's minimum of two
+returned stories. Smaller sets are counted as `insufficient_sample_set_worlds`,
+not assigned fabricated ratings or left pending indefinitely. Full sample count, standalone
+CLI, and replay are also reported as a stricter tally; neither a successful
+repair nor a high story score establishes full world-state/QA correctness.
+In particular, review any repair that introduces fallbacks or weakens guards
+before admitting its source to a curated training dataset.
+
+Inspect the generated sampler itself when counts are short or sampling times
+out. Some generated CLIs deduplicate internally, so 1,000 requested outputs do
+not necessarily represent 1,000 independent raw draws. A loop that insists on
+1,000 unique stories can stall when its finite variation space is smaller.
+Retain these failures and underfilled pools; do not pad them with copied stories
+or silently relax their denominator. The judge selects uniformly from the
+returned pool, which cannot undo any selection bias inside that CLI.
+
+Aggregate scoring streams one world's samples at a time and recompresses the
+actual pooled, quality-qualified exact-unique stories. Separate shuffled full
+and exact-deduplicated story-only XZ archives use the same 64 MiB LZMA2 dictionary.
+The large-run report omits the full-corpus word-scrambling/skeleton/growth-curve
+controls used in the small canonical diagnostic; per-world skeleton and
+compression metrics remain. Corpus size and composition affect compression, so
+do not interpret its aggregate score as a matched comparison with 21-world trials.
+
+Artifacts live under `storyworlds/batches/prompt_trials/<name>/`, materialized
+sources under `storyworlds/worlds/prompt_trials/<name>/`, and the final summary
+at `storyworlds/batches/<name>.report.md`. Preparation is offline; do not mistake
+a prepared manifest for a completed generation run. At the frozen input lengths,
+the 1,000-world plan estimates $4.74-5.03 generation plus $14.60-15.85 judging if
+all worlds qualify. These are estimates, not billing or a hard spend cap.
+
+First large-run result: [1,000-world Luna reference-seeded batch](batches/repaired100_canonical_luna_20260907.report.md).
+It materialized 998 worlds; 684 passed sample-plus-verify and 566 passed the
+stricter full-count/standalone/replay gate. Terra rated 631 worlds at 5.900/9
+quality and 2.222/9 diversity. Fifty timed-out calls and two invalid judge
+responses remain unrated, so the full-batch composite is withheld. Returned
+usage totals $11.0329, excluding uncertain timeout billing. Raw, repaired,
+rejected, sampled, judged, and manually reviewed evidence is retained.
+
+### Screening Reference Examples
+
+Use `rank_reference_worlds.py` to analyze a retained large-run catalog offline:
+
+```bash
+./.venv/bin/python storyworlds/rank_reference_worlds.py repaired100_canonical_luna_20260907 \
+  --out storyworlds/batches/new_reference_screen.md \
+  --shortlist garnet repaired_013 repaired_069 repaired_037 repaired_011 repaired_098 repaired_007 repaired_012
+```
+
+It writes a Markdown table, all-reference JSON metrics, and an explicit
+candidate reference manifest. Existing output paths are refused. No API calls,
+generation, repairs, or canonical changes occur. The manifest can be supplied
+to `prompt_trials.py prepare --example-manifest`; omit `--unique-tasks` for a
+matched-seed comparison. Revalidate current reference sources before paid use.
+
+Quality and semantic diversity are conditional, equal-weighted world means;
+ten sibling stories do not become ten independent reference experiments. Keep
+attempted, eligible, rated, missing, strict-pass, and quality-qualified counts
+alongside them. Never assign zero quality to an unjudged world. The exploratory
+strict joint-delivery screen requires quality >=6 and diversity >=3 on the same
+strictly passing world, with sensitivity counts at Q>=6,D>=4 and Q>=7,D>=3.
+These screening thresholds do not replace the existing dataset-score protocol.
+Small unmatched arms and selecting winners among many examples require fresh,
+matched confirmation, not confidence from a precise-looking ranking.
+
+See the [106-reference screen and eight-candidate shortlist](batches/repaired100_canonical_luna_20260907.reference_rankings.md).
+
+The expanded [20-reference working set](batches/repaired100_canonical_luna_20260907.top20.md)
+is available as `storyworlds/reference_sets/luna_top20_20260907.json`: 18 core
+candidates plus Thud and Loop/Ginger as quality probes. It preserves the
+eight-candidate shortlist and leaves the canonical set, including the latest
+Puddles, unchanged. Pass this manifest to `prompt_trials.py prepare
+--example-manifest` for a future matched trial. No paid run accompanies selection.
+
+The subsequent [100-world Mini trial](batches/top20_mini100_20260907.report.md)
+used this exact 20-reference manifest with five matched tasks per reference,
+numeric seeds 2026091800-2026091804, `gpt-5.4-mini`/Flex/none, and concurrency 50.
+Terra and all scoring/repair rules remained unchanged. It produced 100 files;
+72 passed sample-plus-verify, 65 passed the strict local gate, and all 72 eligible
+worlds were judged (715 stories). Mean quality was 5.817/9 and semantic diversity
+2.389/9; 32 worlds passed both strict local checks and mean quality >=6.
+The existing geometric score was 5.554/100. Returned usage cost $1.9901.
+See [plan, commands, limitations, and manual QA checks](batches/top20_mini100_20260907.notes.md).
+Wrong-branch QA persists even in readable stories; story-only judging is not a
+QA correctness certificate. This trial is not a matched Mini-versus-Luna test.
+
+The subsequent [matched 100-world Luna run](batches/top20_luna100_20260907.notes.md)
+reused all 100 Mini source/task pairs; normalized request bodies differed only
+in model and output path. Luna passed sample-plus-verify on 66 worlds and strict
+local checks on 54 (Mini: 72 and 65). Valid judged-world means were Q=6.459 and
+D=2.984; on 50 common judged pairs, Luna scored Q=6.402/D=2.860 versus Mini's
+5.938/2.420. Confirmed strict-plus-Q>=6 worlds were 39 versus 32. Two invalid
+Terra plot partitions remain unrated, so the full Luna composite is withheld.
+Returned Luna usage cost $0.4062 generation plus $0.7305 judging. All original,
+repaired, sampled, judged, and matched-comparison evidence is retained separately.
+
 ## Canonical Trials
 
 `prompt_trials.py` replaces the one-off experiment drivers for controlled

@@ -97,6 +97,14 @@ class SetQualityTest(unittest.TestCase):
 
 
 class TrialCostTest(unittest.TestCase):
+    def test_mini_has_no_cache_write_premium(self):
+        usage = dict(input_tokens=10000, input_tokens_details=dict(cached_tokens=2000), output_tokens=4000)
+        cost = trial_cost.token_cost("gpt-5.4-mini-2026-03-17", usage)
+        self.assertTrue(cost["known"])
+        self.assertAlmostEqual(cost["usd_low"], (8000*.375 + 2000*.0375 + 4000*2.25)/1e6)
+        self.assertEqual(cost["usd_low"], cost["usd_high"])
+        self.assertEqual(trial_cost.token_cost("gpt-5.4-mini", usage, "default")["usd_low"], 2*cost["usd_low"])
+
     def test_cache_writes_reads_output_not_double_counted(self):
         usage = dict(input_tokens=10000, input_tokens_details=dict(cached_tokens=2000, cache_write_tokens=3000), output_tokens=4000)
         cost = trial_cost.token_cost("gpt-5.6-luna-2026-08-01", usage)

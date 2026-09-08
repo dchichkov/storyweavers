@@ -35,6 +35,7 @@ from openai_batch_world_factory import (
     WORLDS_DIR,
     StoryworldJob,
     build_storyworld_prompt,
+    build_storyworld_prompt_parts,
     emit_python_tool,
     example_world_paths,
     extract_python_source,
@@ -125,6 +126,12 @@ def build_parser() -> argparse.ArgumentParser:
         type=int,
         default=DEFAULT_CONCURRENCY,
         help=f"concurrent Responses calls; default: {DEFAULT_CONCURRENCY}",
+    )
+    parser.add_argument(
+        "--prompt-cache-mode",
+        choices=("legacy", "explicit"),
+        default="legacy",
+        help="explicit caches the fixed prefix on GPT-5.6+; legacy preserves existing requests",
     )
     parser.add_argument(
         "--prompt-cache-retention",
@@ -278,13 +285,14 @@ def make_jobs(args: argparse.Namespace, *, stamp: str) -> tuple[int, Path, list[
 
 
 def request_body(args: argparse.Namespace, job: StoryworldJob) -> dict[str, Any]:
-    prompt = build_storyworld_prompt(
+    prefix, task = build_storyworld_prompt_parts(
         job,
         prompt_addendum=args.prompt_addendum,
         example_worlds=args.example_worlds,
         example_files=args.example_files,
         emit_mode=args.emit_mode,
     )
+    prompt = prefix + task
     request = {
         "model": args.model,
         "prompt_cache_key": prompt_cache_key(
@@ -317,6 +325,14 @@ def request_body(args: argparse.Namespace, job: StoryworldJob) -> dict[str, Any]
             else {}
         ),
     }
+    if getattr(args, "prompt_cache_mode", "legacy") == "explicit":
+        request.pop("prompt_cache_retention")
+        request["prompt_cache_options"] = {"mode": "explicit", "ttl": "30m"}
+        request["input"][0]["content"] = [
+            {"type": "input_text", "text": prefix,
+             "prompt_cache_breakpoint": {"mode": "explicit"}},
+            {"type": "input_text", "text": task},
+        ]
     if args.reasoning_effort != "off":
         request["reasoning"] = {"effort": args.reasoning_effort}
     return request
@@ -346,6 +362,7 @@ def response_row(
             "model": request.get("model"),
             "prompt_cache_key": request.get("prompt_cache_key"),
             "prompt_cache_retention": request.get("prompt_cache_retention"),
+            "prompt_cache_options": request.get("prompt_cache_options"),
             "reasoning": request.get("reasoning"),
             "service_tier": request.get("service_tier"),
             "max_output_tokens": request.get("max_output_tokens"),
@@ -401,7 +418,12 @@ async def call_one(
     started = time.monotonic()
     async with semaphore:
         try:
-            response = await client.with_options(timeout=DEFAULT_REQUEST_TIMEOUT).responses.create(**request)
+            # The installed SDK predates this field; keep frozen requests as wire JSON.
+            sdk_request = dict(request)
+            if "prompt_cache_options" in sdk_request:
+                sdk_request["extra_body"] = dict(sdk_request.get("extra_body") or {},
+                    prompt_cache_options=sdk_request.pop("prompt_cache_options"))
+            response = await client.with_options(timeout=DEFAULT_REQUEST_TIMEOUT).responses.create(**sdk_request)
             elapsed = time.monotonic() - started
             return response_row(
                 job=job,
@@ -457,6 +479,7 @@ async def run(args: argparse.Namespace) -> int:
             emit_mode=args.emit_mode,
         ),
         "prompt_cache_retention": args.prompt_cache_retention,
+        "prompt_cache_mode": args.prompt_cache_mode,
         "prompt_addendum": None if args.prompt_addendum is None else str(args.prompt_addendum),
         "example_worlds": args.example_worlds,
         "example_files": (

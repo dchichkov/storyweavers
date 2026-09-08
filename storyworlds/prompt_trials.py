@@ -9,6 +9,7 @@ from concurrent.futures import ThreadPoolExecutor
 from contextlib import contextmanager
 from dataclasses import asdict
 import fcntl
+import gzip
 import hashlib
 import json
 import lzma
@@ -60,7 +61,11 @@ def read(path: Path):
 
 
 def jsonl(path: Path) -> list[dict]:
-    return [json.loads(line) for line in path.read_text().splitlines() if line.strip()] if path.exists() else []
+    if not path.exists():
+        return []
+    opener = gzip.open if path.suffix == ".gz" else open
+    with opener(path, "rt", encoding="utf-8") as handle:
+        return [json.loads(line) for line in handle if line.strip()]
 
 
 def append(path: Path, row: dict) -> None:
@@ -94,26 +99,52 @@ def prepare(args) -> Path:
         raise ValueError("trial already exists; use a new name or run the existing prepared trial")
     if args.per_example < 1 or args.concurrency < 1 or args.local_samples < 1 or args.timeout <= 0:
         raise ValueError("counts, concurrency, sample count, and timeout must be positive")
-    labels = args.examples or list(canonical_examples.CANONICAL_EXAMPLES)
+    examples = dict(canonical_examples.EXAMPLE_SOURCES)
+    if args.example_manifest:
+        if args.examples:
+            raise ValueError("choose named examples or an example manifest, not both")
+        entries = read(args.example_manifest)
+        if not entries or len({item["label"] for item in entries}) != len(entries):
+            raise ValueError("example manifest must contain unique, nonempty entries")
+        examples = {item["label"]: (ROOT / item["source"]).resolve() for item in entries}
+        for label, source in examples.items():
+            trial_path(label)
+            source.relative_to(batch.WORLDS_DIR)
+            if not source.is_file():
+                raise ValueError(f"missing example: {source}")
+        labels = list(examples)
+    else:
+        labels = args.examples or list(canonical_examples.CANONICAL_EXAMPLES)
     if len(set(labels)) != len(labels):
         raise ValueError("duplicate example names")
+    if args.total is not None and (args.total < len(labels) or not args.unique_tasks):
+        raise ValueError("--total requires --unique-tasks and at least one task per example")
+    if args.cache_warmup and args.prompt_cache_mode != "explicit":
+        raise ValueError("--cache-warmup requires --prompt-cache-mode explicit")
     factory_args = service.build_parser().parse_args([
         "--model", args.model, "--reasoning-effort", args.reasoning_effort,
         "--service-tier", "flex", "--concurrency", str(args.concurrency),
         "--seed", str(args.seed), "-n", str(args.per_example),
+        "--prompt-cache-mode", args.prompt_cache_mode,
     ])
     factory_args.prompt_addendum = args.prompt_addendum
     service.validate_args(factory_args)
     # Build every request before creating a trial or contacting the service.
     prepared = []
-    for label in labels:
-        factory_args.example_worlds = label
+    offset = 0
+    for index, label in enumerate(labels):
+        factory_args.example_worlds = label if not args.example_manifest else "puddles"
+        factory_args.example_files = [examples[label]] if args.example_manifest else None
+        factory_args.count = (args.total // len(labels) + (index < args.total % len(labels))
+                              if args.total is not None else args.per_example)
+        factory_args.seed = args.seed + offset if args.unique_tasks else args.seed
         factory_args.target_dir = target_root / label
         _, target_dir, jobs = service.make_jobs(factory_args, stamp="prepared")
         requests = [{"job": asdict(job), "body": service.request_body(factory_args, job)} for job in jobs]
         prepared.append((label, target_dir, requests))
+        offset += len(jobs)
     directory.mkdir(parents=True)
-    sources = [canonical_examples.EXAMPLE_SOURCES[label] for label in labels]
+    sources = [examples[label] for label in labels]
     sources += [batch.STORY_CONTRACT_PATH, batch.RESULTS_PATH, batch.ASP_PATH,
                 Path(batch.__file__), Path(service.__file__), Path(quality.__file__),
                 Path(qa.__file__), Path(repair_batch_output.__file__),
@@ -125,6 +156,8 @@ def prepare(args) -> Path:
                 ROOT / "training/storyworld_chat/analyze_world_contributors.py"]
     if args.prompt_addendum:
         sources.append(args.prompt_addendum.resolve())
+    if args.example_manifest:
+        sources.append(args.example_manifest.resolve())
     snapshots = []
     for source in dict.fromkeys(sources):
         destination = directory / "inputs" / relative(source)
@@ -132,10 +165,12 @@ def prepare(args) -> Path:
         shutil.copyfile(source, destination)
         snapshots.append({"source": relative(source), "snapshot": relative(destination), "sha256": digest(destination)})
     config = dict(name=args.name, created_at=service.now_stamp(), model=args.model,
-                  example_set=canonical_examples.CANONICAL_SET_ID if labels == list(canonical_examples.CANONICAL_EXAMPLES) else "custom",
+                  example_set=canonical_examples.CANONICAL_SET_ID if not args.example_manifest and labels == list(canonical_examples.CANONICAL_EXAMPLES) else "custom",
                   reasoning_effort=args.reasoning_effort, service_tier="flex", judge=JUDGE,
+                  prompt_cache_mode=args.prompt_cache_mode, cache_warmup=args.cache_warmup,
                   judge_protocol=set_quality.PROTOCOL, judge_stories=set_quality.DEFAULT_COUNT,
                   seed=args.seed, per_example=args.per_example, concurrency=args.concurrency,
+                  total=offset, unique_tasks=args.unique_tasks,
                   local_samples=args.local_samples, sample_seed=777, timeout=args.timeout,
                   score_policy=score_policy,
                   prompt_addendum=relative(args.prompt_addendum) if args.prompt_addendum else None,
@@ -147,10 +182,12 @@ def prepare(args) -> Path:
         for request in requests:
             append(request_path, request)
         manifest_path = arm_dir / "generation.manifest.json"
-        manifest = dict(count=len(requests), base_seed=args.seed, model=args.model,
+        manifest = dict(count=len(requests), base_seed=requests[0]["job"]["seed"], model=args.model,
                         example_set=config["example_set"],
                         reasoning_effort=args.reasoning_effort, service_tier="flex", emit_mode="source",
-                        example_worlds=label, example_files=None,
+                        prompt_cache_mode=args.prompt_cache_mode,
+                        example_worlds=label if not args.example_manifest else None,
+                        example_files=[relative(examples[label])] if args.example_manifest else None,
                         prompt_addendum=config["prompt_addendum"], target_dir=relative(target_dir),
                         response_jsonl=relative(arm_dir / "responses.jsonl"),
                         jobs=[item["job"] for item in requests])
@@ -211,7 +248,22 @@ async def generate(directory: Path, config: dict) -> None:
                 print(f"{parent.name}: {job.name}: {'written' if row['materialized'] else 'failed'}", flush=True)
 
         async with client:
-            await asyncio.gather(*(one(*item) for item in pending))
+            if config.get("cache_warmup"):
+                groups = {}
+                for item in pending:
+                    request = item[2]
+                    if not request.get("prompt_cache_key") or request.get("prompt_cache_options", {}).get("mode") != "explicit":
+                        raise ValueError("cache warm-up requires keyed explicit-cache requests")
+                    groups.setdefault(request["prompt_cache_key"], []).append(item)
+
+                async def warmed_group(items):
+                    # The first real generation warms its reference; no extra API call.
+                    await one(*items[0])
+                    await asyncio.gather(*(one(*item) for item in items[1:]))
+
+                await asyncio.gather(*(warmed_group(items) for items in groups.values()))
+            else:
+                await asyncio.gather(*(one(*item) for item in pending))
     for arm in config["arms"]:
         manifest_path = ROOT / arm["manifest"]
         manifest = read(manifest_path)
@@ -317,7 +369,7 @@ def audit_one(task) -> dict:
     raw_ok = read(raw_check_path)["ok"] if raw_check_path.exists() else (False if not script.exists() else None)
     changes = []
     accepted = False
-    if not before["ok"] and script.exists():
+    if not before["ok"] and script.exists() and not config.get("skip_repairs"):
         original = script.read_bytes()
         repaired, changes = repair_batch_output.repair_source(original.decode("utf-8"))
         if changes:
@@ -339,8 +391,13 @@ def audit_one(task) -> dict:
             pass
     if script.exists():
         shutil.copyfile(script, output / "after.py")
-    for row in rows:
-        append(output / "samples.jsonl", row)
+    if config.get("compress_samples"):
+        with gzip.open(output / "samples.jsonl.gz", "wt", encoding="utf-8") as handle:
+            for row in rows:
+                handle.write(json.dumps(row, ensure_ascii=False) + "\n")
+    else:
+        for row in rows:
+            append(output / "samples.jsonl", row)
     # Use the existing static-QA source analysis on the already collected samples.
     static = qa.CheckResult()
     qa.collect_occurrences(static, script, seed, rows)
@@ -352,9 +409,24 @@ def audit_one(task) -> dict:
                   static_qa_duplicate_groups=len(static.duplicates),
                   static_qa_source_hits=sum(len(hits) for hits in static.source_hits.values()),
                   **sample_metrics(rows, config["local_samples"]))
+    if config.get("compact_checks"):
+        for run in (result["before"], result["final"], result["verify"], result["standalone"]):
+            compact_run(run)
+        if raw_check_path.exists():
+            raw_check = read(raw_check_path)
+            compact_run(raw_check)
+            save(raw_check_path, raw_check)
     save(output / "check.json", result)
     print(f"Checked {script.name}: runnable={final['ok']}, verify={verify['ok']}", flush=True)
     return result
+
+
+def compact_run(run: dict) -> None:
+    stdout = run.pop("stdout", None)
+    if stdout is not None:
+        run.update(stdout_bytes=len(stdout.encode("utf-8")),
+                   stdout_sha256=hashlib.sha256(stdout.encode("utf-8")).hexdigest(),
+                   stdout_excerpt=stdout[:2000] if not run["ok"] else "")
 
 
 async def evaluate(directory: Path, config: dict, *, skip_quality: bool) -> Path:
@@ -563,9 +635,15 @@ def build_parser():
     plan.add_argument("--examples", nargs="+", choices=list(canonical_examples.EXAMPLE_SOURCES),
                       help="explicit reference names, including retired examples; default: current seven-world canonical set")
     plan.add_argument("--per-example", type=int, default=3)
+    plan.add_argument("--example-manifest", type=Path, help="JSON list of {label, source} repository paths")
+    plan.add_argument("--unique-tasks", action="store_true", help="use disjoint seed tasks, not matched tasks across arms")
+    plan.add_argument("--total", type=int, help="balance exactly this many unique tasks across references")
     plan.add_argument("--model", default="gpt-5.6-luna")
     plan.add_argument("--reasoning-effort", default="none", choices=["none", "low", "medium", "high", "xhigh"])
     plan.add_argument("--concurrency", type=int, default=5)
+    plan.add_argument("--prompt-cache-mode", choices=("legacy", "explicit"), default="legacy")
+    plan.add_argument("--cache-warmup", action="store_true",
+                      help="finish one real generation per cache key before releasing its remaining jobs")
     plan.add_argument("--local-samples", type=int, default=1000)
     plan.add_argument("--timeout", type=float, default=120)
     plan.add_argument("--prompt-addendum", type=Path)

@@ -449,6 +449,21 @@ def build_storyworld_prompt(
     example_files: list[Path] | None = None,
     emit_mode: str = "source",
 ) -> str:
+    return "".join(build_storyworld_prompt_parts(
+        job, prompt_addendum=prompt_addendum, example_worlds=example_worlds,
+        example_files=example_files, emit_mode=emit_mode,
+    ))
+
+
+def build_storyworld_prompt_parts(
+    job: StoryworldJob,
+    *,
+    prompt_addendum: Path | None = None,
+    example_worlds: str = "all",
+    example_files: list[Path] | None = None,
+    emit_mode: str = "source",
+) -> tuple[str, str]:
+    """Separate the reusable prefix without changing the legacy prompt text."""
     if emit_mode not in EMIT_MODES:
         raise ValueError(f"unsupported emit_mode: {emit_mode}")
     story_contract = read_prompt_file(STORY_CONTRACT_PATH)
@@ -518,7 +533,8 @@ current contract above where an older example differs.
 {examples}
 
 
-Include the following words and narrative instruments:
+"""
+    task = f"""Include the following words and narrative instruments:
 - Target file: {job.target}
 - Domain: {job.domain}
 - Seed words: {", ".join(job.words)}
@@ -526,7 +542,7 @@ Include the following words and narrative instruments:
 - Features: {", ".join(job.features)}
 - Style: {job.style}
 """
-    return prompt + (f"\n{addendum_block}\n" if addendum_block else "")
+    return prompt, task + (f"\n{addendum_block}\n" if addendum_block else "")
 
 
 def request_line(
