@@ -1,0 +1,21 @@
+{
+  "issues": [
+    {
+      "seed": 124,
+      "severity": "major",
+      "layer": "simulation",
+      "defect": "contradiction",
+      "evidence": "The story says, “The neighbor woke with a startled grin and peered into the tower,” but the final trace still sets `neighbor.awake` to `false`; the only neighbor event changes the response to `startled`.",
+      "fix": "Add a trace change setting `neighbor.awake` from `false` to `true` when the bell wakes them, or revise the prose so the neighbor remains asleep."
+    },
+    {
+      "seed": 791,
+      "severity": "minor",
+      "layer": "prose",
+      "defect": "contradiction",
+      "evidence": "Pip “tugged the short rope” and rang the bell before the later scene says the latch “clicked open, revealing two ropes,” despite the trace placing `inspect_soft_rope` before `unlock_bell`.",
+      "fix": "Have Pip inspect or identify the short practice rope without pulling it before unlocking, or move the early soft-ring event to after the unlocking scene."
+    }
+  ],
+  "strengths": "Seeds 123 and 791 otherwise closely realize their ownership, knowledge transfer, unlocking, choice, meeting, and neighbor-response traces; none expose raw enum values or duplicate event-log prose."
+}

@@ -1,0 +1,362 @@
+{
+  "id": "resp_00505574b19e9b41006a9f33b84bd887d0854cbb86cf499040",
+  "created_at": 1788818360.0,
+  "error": null,
+  "incomplete_details": null,
+  "instructions": null,
+  "metadata": {},
+  "model": "gpt-5.6-terra",
+  "object": "response",
+  "output": [
+    {
+      "id": "msg_00505574b19e9b41006a9f33b8d71887d090fe94de9e804974",
+      "content": [
+        {
+          "annotations": [],
+          "text": "{\"stories\":[{\"id\":\"s000029\",\"rating\":{\"coherence\":6,\"style\":5,\"grammar\":6,\"storytelling\":6,\"overall\":6},\"note\":\"The accessible-garden choice follows the blocked route and reader needs, but the many checklist-like preparations and the ungrammatical “garden reading stops” weaken the flow.\"},{\"id\":\"s000057\",\"rating\":{\"coherence\":6,\"style\":5,\"grammar\":6,\"storytelling\":6,\"overall\":6},\"note\":\"It has a clear shift from a grand parade to a reachable reading garden, with a concrete final reader image, though the repeated inspection beats feel procedural and “garden reading stops” is malformed.\"},{\"id\":\"s000047\",\"rating\":{\"coherence\":7,\"style\":5,\"grammar\":6,\"storytelling\":7,\"overall\":6},\"note\":\"The narrow lane creates a direct use for the rope, and the cart’s safe arrival resolves the problem clearly; however, the prose remains repetitive and the final “square reading parade” construction is awkward.\"},{\"id\":\"s000073\",\"rating\":{\"coherence\":7,\"style\":5,\"grammar\":6,\"storytelling\":7,\"overall\":6},\"note\":\"Testing on the steep stretch meaningfully uses the chock before the open-route journey, producing a coherent safe-arrival ending, but the narration is heavily instructional and formulaic.\"},{\"id\":\"s000034\",\"rating\":{\"coherence\":7,\"style\":5,\"grammar\":6,\"storytelling\":7,\"overall\":6},\"note\":\"A poorly balanced load is repaired and then successfully guided through a narrow lane, giving the story a sound causal arc; repetitive phrasing and the awkward closing label limit polish.\"},{\"id\":\"s000043\",\"rating\":{\"coherence\":6,\"style\":5,\"grammar\":6,\"storytelling\":6,\"overall\":6},\"note\":\"The blocked route leads reasonably to the reading garden, and the ending shows a reader approaching the books, but the stated reader preference for the usual gathering sits oddly beside the accessibility rationale.\"},{\"id\":\"s000068\",\"rating\":{\"coherence\":7,\"style\":5,\"grammar\":6,\"storytelling\":6,\"overall\":6},\"note\":\"The repaired cart travels safely along an open route, but the rope and chock are introduced without affecting the outcome, making much of the middle feel like unused setup.\"},{\"id\":\"s000096\",\"rating\":{\"coherence\":5,\"style\":5,\"grammar\":6,\"storytelling\":5,\"overall\":5},\"note\":\"The cart is balanced and tested before Mayor Bramble’s biggest-cart proposal appears, so the problem-resolution order is muddled despite a clear final image at the square.\"},{\"id\":\"s000005\",\"rating\":{\"coherence\":5,\"style\":5,\"grammar\":6,\"storytelling\":5,\"overall\":5},\"note\":\"The load is rearranged before the mayor introduces his oversized-cart goal, weakening the causal sequence; the open-route ending is concrete but mostly repeats the same prepared solution.\"},{\"id\":\"s000085\",\"rating\":{\"coherence\":6,\"style\":5,\"grammar\":6,\"storytelling\":6,\"overall\":6},\"note\":\"A blocked route motivates the garden destination and the ending is tangible, though the story is dominated by repeated setup beats and includes the malformed phrase “garden reading stops.”\"}],\"diversity\":{\"premise\":1,\"causal_path\":3,\"ending\":3,\"language\":1,\"overall\":2},\"diversity_evidence\":\"All ten stories share the same library-cart premise, characters, load-balancing repair, welcoming-sign lesson, and final reader image. The only material branch is destination: s000047 and s000034 navigate a narrow lane, s000073 uses a chock on a steep stretch, s000068/s000096/s000005 take an open route, and s000029/s000057/s000043/s000085 choose the reading garden after finding the route blocked. These are limited route variations within one otherwise near-identical template; this sample does not establish diversity for the entire generator.\",\"plot_groups\":[{\"story_ids\":[\"s000047\",\"s000034\"],\"summary\":\"After balancing and protecting the books, the group uses a rope to guide the cart through a narrow lane to the town square.\"},{\"story_ids\":[\"s000073\"],\"summary\":\"After preparing the cart, the group tests it with a wheel chock on a steep stretch and then safely follows the open route to the square.\"},{\"story_ids\":[\"s000068\",\"s000096\",\"s000005\"],\"summary\":\"The group balances and tests the cart, then carries it safely along an open route to the town-square reading parade.\"},{\"story_ids\":[\"s000029\",\"s000057\",\"s000043\",\"s000085\"],\"summary\":\"A blocked or unsuitable route leads the group to abandon the square parade and create an accessible reading stop in the garden.\"}]}",
+          "type": "output_text",
+          "logprobs": []
+        }
+      ],
+      "role": "assistant",
+      "status": "completed",
+      "type": "message",
+      "phase": "final_answer"
+    }
+  ],
+  "parallel_tool_calls": true,
+  "temperature": 1.0,
+  "tool_choice": "auto",
+  "tools": [],
+  "top_p": 0.98,
+  "background": false,
+  "completed_at": 1788818367.0,
+  "conversation": null,
+  "max_output_tokens": 4000,
+  "max_tool_calls": null,
+  "moderation": null,
+  "previous_response_id": null,
+  "prompt": null,
+  "prompt_cache_key": null,
+  "prompt_cache_retention": "24h",
+  "reasoning": {
+    "context": "all_turns",
+    "effort": "none",
+    "generate_summary": null,
+    "summary": null,
+    "mode": "standard"
+  },
+  "safety_identifier": null,
+  "service_tier": "flex",
+  "status": "completed",
+  "text": {
+    "format": {
+      "name": "story_set_quality_v1",
+      "schema_": {
+        "type": "object",
+        "properties": {
+          "stories": {
+            "type": "array",
+            "minItems": 10,
+            "maxItems": 10,
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "enum": [
+                    "s000029",
+                    "s000057",
+                    "s000047",
+                    "s000073",
+                    "s000034",
+                    "s000043",
+                    "s000068",
+                    "s000096",
+                    "s000005",
+                    "s000085"
+                  ]
+                },
+                "rating": {
+                  "type": "object",
+                  "properties": {
+                    "coherence": {
+                      "type": "integer",
+                      "enum": [
+                        0,
+                        1,
+                        2,
+                        3,
+                        4,
+                        5,
+                        6,
+                        7,
+                        8,
+                        9
+                      ]
+                    },
+                    "style": {
+                      "type": "integer",
+                      "enum": [
+                        0,
+                        1,
+                        2,
+                        3,
+                        4,
+                        5,
+                        6,
+                        7,
+                        8,
+                        9
+                      ]
+                    },
+                    "grammar": {
+                      "type": "integer",
+                      "enum": [
+                        0,
+                        1,
+                        2,
+                        3,
+                        4,
+                        5,
+                        6,
+                        7,
+                        8,
+                        9
+                      ]
+                    },
+                    "storytelling": {
+                      "type": "integer",
+                      "enum": [
+                        0,
+                        1,
+                        2,
+                        3,
+                        4,
+                        5,
+                        6,
+                        7,
+                        8,
+                        9
+                      ]
+                    },
+                    "overall": {
+                      "type": "integer",
+                      "enum": [
+                        0,
+                        1,
+                        2,
+                        3,
+                        4,
+                        5,
+                        6,
+                        7,
+                        8,
+                        9
+                      ]
+                    }
+                  },
+                  "required": [
+                    "coherence",
+                    "style",
+                    "grammar",
+                    "storytelling",
+                    "overall"
+                  ],
+                  "additionalProperties": false
+                },
+                "note": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "id",
+                "rating",
+                "note"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "diversity": {
+            "type": "object",
+            "properties": {
+              "premise": {
+                "type": "integer",
+                "enum": [
+                  0,
+                  1,
+                  2,
+                  3,
+                  4,
+                  5,
+                  6,
+                  7,
+                  8,
+                  9
+                ]
+              },
+              "causal_path": {
+                "type": "integer",
+                "enum": [
+                  0,
+                  1,
+                  2,
+                  3,
+                  4,
+                  5,
+                  6,
+                  7,
+                  8,
+                  9
+                ]
+              },
+              "ending": {
+                "type": "integer",
+                "enum": [
+                  0,
+                  1,
+                  2,
+                  3,
+                  4,
+                  5,
+                  6,
+                  7,
+                  8,
+                  9
+                ]
+              },
+              "language": {
+                "type": "integer",
+                "enum": [
+                  0,
+                  1,
+                  2,
+                  3,
+                  4,
+                  5,
+                  6,
+                  7,
+                  8,
+                  9
+                ]
+              },
+              "overall": {
+                "type": "integer",
+                "enum": [
+                  0,
+                  1,
+                  2,
+                  3,
+                  4,
+                  5,
+                  6,
+                  7,
+                  8,
+                  9
+                ]
+              }
+            },
+            "required": [
+              "premise",
+              "causal_path",
+              "ending",
+              "language",
+              "overall"
+            ],
+            "additionalProperties": false
+          },
+          "diversity_evidence": {
+            "type": "string"
+          },
+          "plot_groups": {
+            "type": "array",
+            "minItems": 1,
+            "maxItems": 10,
+            "items": {
+              "type": "object",
+              "properties": {
+                "story_ids": {
+                  "type": "array",
+                  "minItems": 1,
+                  "items": {
+                    "type": "string",
+                    "enum": [
+                      "s000029",
+                      "s000057",
+                      "s000047",
+                      "s000073",
+                      "s000034",
+                      "s000043",
+                      "s000068",
+                      "s000096",
+                      "s000005",
+                      "s000085"
+                    ]
+                  }
+                },
+                "summary": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "story_ids",
+                "summary"
+              ],
+              "additionalProperties": false
+            }
+          }
+        },
+        "required": [
+          "stories",
+          "diversity",
+          "diversity_evidence",
+          "plot_groups"
+        ],
+        "additionalProperties": false
+      },
+      "type": "json_schema",
+      "description": null,
+      "strict": true
+    },
+    "verbosity": "medium"
+  },
+  "top_logprobs": 0,
+  "truncation": "disabled",
+  "usage": {
+    "input_tokens": 8616,
+    "input_tokens_details": {
+      "cached_tokens": 0,
+      "cache_write_tokens": 8613
+    },
+    "output_tokens": 1018,
+    "output_tokens_details": {
+      "reasoning_tokens": 0
+    },
+    "total_tokens": 9634
+  },
+  "user": null,
+  "billing": {
+    "payer": "developer"
+  },
+  "frequency_penalty": 0.0,
+  "presence_penalty": 0.0,
+  "store": true,
+  "tool_usage": {
+    "image_gen": {
+      "input_tokens": 0,
+      "input_tokens_details": {
+        "image_tokens": 0,
+        "text_tokens": 0
+      },
+      "output_tokens": 0,
+      "output_tokens_details": {
+        "image_tokens": 0,
+        "text_tokens": 0
+      },
+      "total_tokens": 0
+    },
+    "web_search": {
+      "num_requests": 0
+    }
+  }
+}

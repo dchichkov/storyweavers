@@ -1,0 +1,103 @@
+{
+  "edits": [
+    {
+      "section": "compose",
+      "id": "deliver_books",
+      "value": {
+        "op": "Act",
+        "actors": [
+          "ada"
+        ],
+        "when": {
+          "books.location": "square",
+          "books.contents": "books",
+          "readers.need": "books",
+          "mayor.plan": "helpful"
+        },
+        "set": {
+          "books.delivered": true,
+          "mayor.parade.outcome": "useful_books"
+        },
+        "summary": "Ada delivers the storybooks",
+        "pivotal": true
+      }
+    },
+    {
+      "section": "compose",
+      "id": "deliver_maps",
+      "value": {
+        "op": "Act",
+        "actors": [
+          "ada"
+        ],
+        "when": {
+          "books.location": "square",
+          "books.contents": "maps",
+          "readers.need": "maps",
+          "mayor.plan": "helpful"
+        },
+        "set": {
+          "books.delivered": true,
+          "mayor.parade.outcome": "useful_maps"
+        },
+        "summary": "Ada delivers the maps",
+        "pivotal": true
+      }
+    },
+    {
+      "section": "compose",
+      "id": "parade_still",
+      "value": {
+        "op": "Act",
+        "actors": [
+          "mayor"
+        ],
+        "when": {
+          "cart.location": "square",
+          "books.delivered": true,
+          "square.wind": "still",
+          "mayor.plan": "helpful"
+        },
+        "set": {
+          "mayor.performed": true,
+          "mayor.performance_style": "welcoming"
+        },
+        "summary": "Mayor Bell leads a welcoming book parade"
+      }
+    },
+    {
+      "section": "compose",
+      "id": "parade_breezy",
+      "value": {
+        "op": "Act",
+        "actors": [
+          "mayor"
+        ],
+        "when": {
+          "cart.location": "square",
+          "books.delivered": true,
+          "square.wind": "breezy",
+          "banner.secured": true,
+          "mayor.plan": "helpful"
+        },
+        "set": {
+          "mayor.performed": true,
+          "mayor.performance_style": "welcoming"
+        },
+        "summary": "Mayor Bell leads a banner-bright book parade"
+      }
+    },
+    {
+      "section": "outcomes",
+      "id": "outcomes",
+      "value": [
+        "books.delivered",
+        "mayor.performed",
+        "mayor.parade.outcome",
+        "readers.response",
+        "readers.mood",
+        "mayor.boastful"
+      ]
+    }
+  ]
+}

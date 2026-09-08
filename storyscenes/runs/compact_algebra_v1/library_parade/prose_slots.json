@@ -1,0 +1,2762 @@
+{
+  "slots": {
+    "opening.6b19280b9785": {
+      "section": "openings",
+      "scene": null,
+      "role": "beat",
+      "when": [
+        {
+          "at": "initial",
+          "key": "books.contents",
+          "op": "eq",
+          "value": "books"
+        },
+        {
+          "at": "initial",
+          "key": "cart.wheel",
+          "op": "eq",
+          "value": "wobbly"
+        },
+        {
+          "at": "initial",
+          "key": "readers.need",
+          "op": "eq",
+          "value": "books"
+        },
+        {
+          "at": "initial",
+          "key": "square.wind",
+          "op": "eq",
+          "value": "still"
+        }
+      ],
+      "evidence": {
+        "state": {
+          "ada.want": "deliver useful books",
+          "ada.memes.Care": 2,
+          "ada.performance_style": "careful",
+          "mayor.want": "the biggest parade",
+          "mayor.memes.Care": 1,
+          "mayor.boastful": true,
+          "mayor.plan": null,
+          "mayor.performed": false,
+          "mayor.performance_style": "boastful",
+          "mayor.parade.outcome": null,
+          "bram.want": "help the parade work",
+          "bram.memes.Care": 2,
+          "readers.need": "books",
+          "readers.response": false,
+          "readers.mood": "waiting",
+          "square.wind": "still",
+          "cart.owner": "bram",
+          "cart.location": "workshop",
+          "cart.loaned_by": null,
+          "cart.wheel": "wobbly",
+          "books.owner": "ada",
+          "books.location": "library",
+          "books.contents": "books",
+          "books.delivered": false,
+          "banner.owner": "mayor",
+          "banner.location": "hall",
+          "banner.secured": false,
+          "ada.knows.square.wind": null,
+          "mayor.knows.square.wind": null,
+          "ada.knows.readers.need": null,
+          "mayor.knows.readers.need": null
+        }
+      },
+      "variants": 2
+    },
+    "scene.repair_cart.a591201f95ac": {
+      "section": "scenes",
+      "scene": "repair_cart",
+      "role": "beat",
+      "when": [
+        {
+          "at": "before",
+          "key": "cart.location",
+          "op": "eq",
+          "value": "workshop"
+        },
+        {
+          "at": "before",
+          "key": "cart.wheel",
+          "op": "eq",
+          "value": "wobbly"
+        },
+        {
+          "at": "after",
+          "key": "cart.wheel",
+          "op": "eq",
+          "value": "ready"
+        }
+      ],
+      "evidence": {
+        "summary": "Bram steadies the cart wheel",
+        "actors": [
+          "bram"
+        ],
+        "changes": {
+          "cart.wheel": {
+            "before": "wobbly",
+            "after": "ready"
+          }
+        },
+        "before": {
+          "cart.location": "workshop",
+          "cart.wheel": "wobbly"
+        }
+      },
+      "variants": 1
+    },
+    "scene.lend_cart.349586cdaa4e": {
+      "section": "scenes",
+      "scene": "lend_cart",
+      "role": "bridge",
+      "when": [
+        {
+          "at": "before",
+          "key": "cart.loaned_by",
+          "op": "eq",
+          "value": null
+        },
+        {
+          "at": "before",
+          "key": "cart.owner",
+          "op": "eq",
+          "value": "bram"
+        },
+        {
+          "at": "before",
+          "key": "cart.wheel",
+          "op": "eq",
+          "value": "ready"
+        },
+        {
+          "at": "after",
+          "key": "cart.loaned_by",
+          "op": "eq",
+          "value": "bram"
+        },
+        {
+          "at": "after",
+          "key": "cart.owner",
+          "op": "eq",
+          "value": "ada"
+        }
+      ],
+      "evidence": {
+        "summary": "Bram lends Ada the cart",
+        "actors": [
+          "bram",
+          "ada"
+        ],
+        "changes": {
+          "cart.owner": {
+            "before": "bram",
+            "after": "ada"
+          },
+          "cart.loaned_by": {
+            "before": null,
+            "after": "bram"
+          }
+        },
+        "before": {
+          "cart.loaned_by": null,
+          "cart.owner": "bram",
+          "cart.wheel": "ready"
+        }
+      },
+      "variants": 1
+    },
+    "scene.need_news.notice.319e93dd3921": {
+      "section": "scenes",
+      "scene": "need_news.notice",
+      "role": "bridge",
+      "when": [
+        {
+          "at": "before",
+          "key": "ada.knows.readers.need",
+          "op": "eq",
+          "value": null
+        },
+        {
+          "at": "before",
+          "key": "readers.need",
+          "op": "eq",
+          "value": "books"
+        },
+        {
+          "at": "after",
+          "key": "ada.knows.readers.need",
+          "op": "eq",
+          "value": "books"
+        }
+      ],
+      "evidence": {
+        "summary": "",
+        "actors": [
+          "ada"
+        ],
+        "changes": {
+          "ada.knows.readers.need": {
+            "before": null,
+            "after": "books"
+          }
+        },
+        "before": {
+          "ada.knows.readers.need": null,
+          "readers.need": "books"
+        }
+      },
+      "variants": 1
+    },
+    "scene.need_news.share.4c0e87b17d69": {
+      "section": "scenes",
+      "scene": "need_news.share",
+      "role": "bridge",
+      "when": [
+        {
+          "at": "before",
+          "key": "ada.knows.readers.need",
+          "op": "eq",
+          "value": "books"
+        },
+        {
+          "at": "before",
+          "key": "mayor.knows.readers.need",
+          "op": "eq",
+          "value": null
+        },
+        {
+          "at": "after",
+          "key": "mayor.knows.readers.need",
+          "op": "eq",
+          "value": "books"
+        }
+      ],
+      "evidence": {
+        "summary": "",
+        "actors": [
+          "ada",
+          "mayor"
+        ],
+        "changes": {
+          "mayor.knows.readers.need": {
+            "before": null,
+            "after": "books"
+          }
+        },
+        "before": {
+          "ada.knows.readers.need": "books",
+          "mayor.knows.readers.need": null
+        }
+      },
+      "variants": 1
+    },
+    "scene.choose_helpful.99b2d88700af": {
+      "section": "scenes",
+      "scene": "choose_helpful",
+      "role": "beat",
+      "when": [
+        {
+          "at": "before",
+          "key": "mayor.boastful",
+          "op": "eq",
+          "value": true
+        },
+        {
+          "at": "before",
+          "key": "mayor.knows.readers.need",
+          "op": "eq",
+          "value": "books"
+        },
+        {
+          "at": "before",
+          "key": "mayor.memes.Care",
+          "op": "eq",
+          "value": 1
+        },
+        {
+          "at": "before",
+          "key": "mayor.plan",
+          "op": "eq",
+          "value": null
+        },
+        {
+          "at": "after",
+          "key": "mayor.boastful",
+          "op": "eq",
+          "value": false
+        },
+        {
+          "at": "after",
+          "key": "mayor.memes.Care",
+          "op": "eq",
+          "value": 2
+        },
+        {
+          "at": "after",
+          "key": "mayor.plan",
+          "op": "eq",
+          "value": "helpful"
+        }
+      ],
+      "evidence": {
+        "summary": "Mayor Bell chooses usefulness over boasting",
+        "actors": [
+          "mayor"
+        ],
+        "changes": {
+          "mayor.memes.Care": {
+            "before": 1,
+            "after": 2
+          },
+          "mayor.boastful": {
+            "before": true,
+            "after": false
+          },
+          "mayor.plan": {
+            "before": null,
+            "after": "helpful"
+          }
+        },
+        "before": {
+          "mayor.boastful": true,
+          "mayor.knows.readers.need": "books",
+          "mayor.memes.Care": 1,
+          "mayor.plan": null
+        }
+      },
+      "variants": 1
+    },
+    "scene.move_cart.43596038ba8d": {
+      "section": "scenes",
+      "scene": "move_cart",
+      "role": "bridge",
+      "when": [
+        {
+          "at": "before",
+          "key": "cart.location",
+          "op": "eq",
+          "value": "workshop"
+        },
+        {
+          "at": "before",
+          "key": "cart.owner",
+          "op": "eq",
+          "value": "ada"
+        },
+        {
+          "at": "after",
+          "key": "cart.location",
+          "op": "eq",
+          "value": "square"
+        }
+      ],
+      "evidence": {
+        "summary": "Ada rolls the cart to the square",
+        "actors": [
+          "ada",
+          "square"
+        ],
+        "changes": {
+          "cart.location": {
+            "before": "workshop",
+            "after": "square"
+          }
+        },
+        "before": {
+          "cart.location": "workshop",
+          "cart.owner": "ada"
+        }
+      },
+      "variants": 1
+    },
+    "scene.move_books.fd39edd9892f": {
+      "section": "scenes",
+      "scene": "move_books",
+      "role": "bridge",
+      "when": [
+        {
+          "at": "before",
+          "key": "books.location",
+          "op": "eq",
+          "value": "library"
+        },
+        {
+          "at": "before",
+          "key": "books.owner",
+          "op": "eq",
+          "value": "ada"
+        },
+        {
+          "at": "before",
+          "key": "cart.location",
+          "op": "eq",
+          "value": "square"
+        },
+        {
+          "at": "after",
+          "key": "books.location",
+          "op": "eq",
+          "value": "square"
+        }
+      ],
+      "evidence": {
+        "summary": "Ada brings the books to the square",
+        "actors": [
+          "ada",
+          "square"
+        ],
+        "changes": {
+          "books.location": {
+            "before": "library",
+            "after": "square"
+          }
+        },
+        "before": {
+          "books.location": "library",
+          "books.owner": "ada",
+          "cart.location": "square"
+        }
+      },
+      "variants": 1
+    },
+    "scene.deliver_books.3a17ca15dc02": {
+      "section": "scenes",
+      "scene": "deliver_books",
+      "role": "beat",
+      "when": [
+        {
+          "at": "before",
+          "key": "books.contents",
+          "op": "eq",
+          "value": "books"
+        },
+        {
+          "at": "before",
+          "key": "books.delivered",
+          "op": "eq",
+          "value": false
+        },
+        {
+          "at": "before",
+          "key": "books.location",
+          "op": "eq",
+          "value": "square"
+        },
+        {
+          "at": "before",
+          "key": "mayor.parade.outcome",
+          "op": "eq",
+          "value": null
+        },
+        {
+          "at": "before",
+          "key": "mayor.plan",
+          "op": "eq",
+          "value": "helpful"
+        },
+        {
+          "at": "before",
+          "key": "readers.need",
+          "op": "eq",
+          "value": "books"
+        },
+        {
+          "at": "after",
+          "key": "books.delivered",
+          "op": "eq",
+          "value": true
+        },
+        {
+          "at": "after",
+          "key": "mayor.parade.outcome",
+          "op": "eq",
+          "value": "useful_books"
+        }
+      ],
+      "evidence": {
+        "summary": "Ada delivers the storybooks",
+        "actors": [
+          "ada"
+        ],
+        "changes": {
+          "mayor.parade.outcome": {
+            "before": null,
+            "after": "useful_books"
+          },
+          "books.delivered": {
+            "before": false,
+            "after": true
+          }
+        },
+        "before": {
+          "books.contents": "books",
+          "books.delivered": false,
+          "books.location": "square",
+          "mayor.parade.outcome": null,
+          "mayor.plan": "helpful",
+          "readers.need": "books"
+        }
+      },
+      "variants": 1
+    },
+    "scene.parade_still.ef953fcf185a": {
+      "section": "scenes",
+      "scene": "parade_still",
+      "role": "beat",
+      "when": [
+        {
+          "at": "before",
+          "key": "books.delivered",
+          "op": "eq",
+          "value": true
+        },
+        {
+          "at": "before",
+          "key": "cart.location",
+          "op": "eq",
+          "value": "square"
+        },
+        {
+          "at": "before",
+          "key": "mayor.performance_style",
+          "op": "eq",
+          "value": "boastful"
+        },
+        {
+          "at": "before",
+          "key": "mayor.performed",
+          "op": "eq",
+          "value": false
+        },
+        {
+          "at": "before",
+          "key": "mayor.plan",
+          "op": "eq",
+          "value": "helpful"
+        },
+        {
+          "at": "before",
+          "key": "square.wind",
+          "op": "eq",
+          "value": "still"
+        },
+        {
+          "at": "after",
+          "key": "mayor.performance_style",
+          "op": "eq",
+          "value": "welcoming"
+        },
+        {
+          "at": "after",
+          "key": "mayor.performed",
+          "op": "eq",
+          "value": true
+        }
+      ],
+      "evidence": {
+        "summary": "Mayor Bell leads a welcoming book parade",
+        "actors": [
+          "mayor"
+        ],
+        "changes": {
+          "mayor.performed": {
+            "before": false,
+            "after": true
+          },
+          "mayor.performance_style": {
+            "before": "boastful",
+            "after": "welcoming"
+          }
+        },
+        "before": {
+          "books.delivered": true,
+          "cart.location": "square",
+          "mayor.performance_style": "boastful",
+          "mayor.performed": false,
+          "mayor.plan": "helpful",
+          "square.wind": "still"
+        }
+      },
+      "variants": 1
+    },
+    "scene.readers_respond.8459e88834fd": {
+      "section": "scenes",
+      "scene": "readers_respond",
+      "role": "beat",
+      "when": [
+        {
+          "at": "before",
+          "key": "books.delivered",
+          "op": "eq",
+          "value": true
+        },
+        {
+          "at": "before",
+          "key": "mayor.performed",
+          "op": "eq",
+          "value": true
+        },
+        {
+          "at": "before",
+          "key": "readers.mood",
+          "op": "eq",
+          "value": "waiting"
+        },
+        {
+          "at": "before",
+          "key": "readers.response",
+          "op": "eq",
+          "value": false
+        },
+        {
+          "at": "after",
+          "key": "readers.mood",
+          "op": "eq",
+          "value": "delighted"
+        },
+        {
+          "at": "after",
+          "key": "readers.response",
+          "op": "eq",
+          "value": true
+        }
+      ],
+      "evidence": {
+        "summary": "The young readers cheer for the useful parade",
+        "actors": [
+          "readers"
+        ],
+        "changes": {
+          "readers.response": {
+            "before": false,
+            "after": true
+          },
+          "readers.mood": {
+            "before": "waiting",
+            "after": "delighted"
+          }
+        },
+        "before": {
+          "books.delivered": true,
+          "mayor.performed": true,
+          "readers.mood": "waiting",
+          "readers.response": false
+        }
+      },
+      "variants": 1
+    },
+    "ending.5c871068e2f7": {
+      "section": "endings",
+      "scene": null,
+      "role": "beat",
+      "when": [
+        {
+          "at": "after",
+          "key": "ada.knows.readers.need",
+          "op": "eq",
+          "value": "books"
+        },
+        {
+          "at": "after",
+          "key": "ada.knows.square.wind",
+          "op": "eq",
+          "value": null
+        },
+        {
+          "at": "after",
+          "key": "banner.location",
+          "op": "eq",
+          "value": "hall"
+        },
+        {
+          "at": "after",
+          "key": "banner.secured",
+          "op": "eq",
+          "value": false
+        },
+        {
+          "at": "after",
+          "key": "books.contents",
+          "op": "eq",
+          "value": "books"
+        },
+        {
+          "at": "after",
+          "key": "mayor.knows.readers.need",
+          "op": "eq",
+          "value": "books"
+        },
+        {
+          "at": "after",
+          "key": "mayor.knows.square.wind",
+          "op": "eq",
+          "value": null
+        },
+        {
+          "at": "after",
+          "key": "mayor.parade.outcome",
+          "op": "eq",
+          "value": "useful_books"
+        },
+        {
+          "at": "after",
+          "key": "readers.need",
+          "op": "eq",
+          "value": "books"
+        },
+        {
+          "at": "after",
+          "key": "square.wind",
+          "op": "eq",
+          "value": "still"
+        }
+      ],
+      "evidence": {
+        "state": {
+          "ada.want": "deliver useful books",
+          "ada.memes.Care": 2,
+          "ada.performance_style": "careful",
+          "mayor.want": "the biggest parade",
+          "mayor.memes.Care": 2,
+          "mayor.boastful": false,
+          "mayor.plan": "helpful",
+          "mayor.performed": true,
+          "mayor.performance_style": "welcoming",
+          "mayor.parade.outcome": "useful_books",
+          "bram.want": "help the parade work",
+          "bram.memes.Care": 2,
+          "readers.need": "books",
+          "readers.response": true,
+          "readers.mood": "delighted",
+          "square.wind": "still",
+          "cart.owner": "ada",
+          "cart.location": "square",
+          "cart.loaned_by": "bram",
+          "cart.wheel": "ready",
+          "books.owner": "ada",
+          "books.location": "square",
+          "books.contents": "books",
+          "books.delivered": true,
+          "banner.owner": "mayor",
+          "banner.location": "hall",
+          "banner.secured": false,
+          "ada.knows.square.wind": null,
+          "mayor.knows.square.wind": null,
+          "ada.knows.readers.need": "books",
+          "mayor.knows.readers.need": "books"
+        }
+      },
+      "variants": 2
+    },
+    "opening.dbd82c229640": {
+      "section": "openings",
+      "scene": null,
+      "role": "beat",
+      "when": [
+        {
+          "at": "initial",
+          "key": "books.contents",
+          "op": "eq",
+          "value": "maps"
+        },
+        {
+          "at": "initial",
+          "key": "cart.wheel",
+          "op": "eq",
+          "value": "wobbly"
+        },
+        {
+          "at": "initial",
+          "key": "readers.need",
+          "op": "eq",
+          "value": "maps"
+        },
+        {
+          "at": "initial",
+          "key": "square.wind",
+          "op": "eq",
+          "value": "still"
+        }
+      ],
+      "evidence": {
+        "state": {
+          "ada.want": "deliver useful books",
+          "ada.memes.Care": 2,
+          "ada.performance_style": "careful",
+          "mayor.want": "the biggest parade",
+          "mayor.memes.Care": 1,
+          "mayor.boastful": true,
+          "mayor.plan": null,
+          "mayor.performed": false,
+          "mayor.performance_style": "boastful",
+          "mayor.parade.outcome": null,
+          "bram.want": "help the parade work",
+          "bram.memes.Care": 2,
+          "readers.need": "maps",
+          "readers.response": false,
+          "readers.mood": "waiting",
+          "square.wind": "still",
+          "cart.owner": "bram",
+          "cart.location": "workshop",
+          "cart.loaned_by": null,
+          "cart.wheel": "wobbly",
+          "books.owner": "ada",
+          "books.location": "library",
+          "books.contents": "maps",
+          "books.delivered": false,
+          "banner.owner": "mayor",
+          "banner.location": "hall",
+          "banner.secured": false,
+          "ada.knows.square.wind": null,
+          "mayor.knows.square.wind": null,
+          "ada.knows.readers.need": null,
+          "mayor.knows.readers.need": null
+        }
+      },
+      "variants": 2
+    },
+    "scene.need_news.notice.3d41e500c55a": {
+      "section": "scenes",
+      "scene": "need_news.notice",
+      "role": "bridge",
+      "when": [
+        {
+          "at": "before",
+          "key": "ada.knows.readers.need",
+          "op": "eq",
+          "value": null
+        },
+        {
+          "at": "before",
+          "key": "readers.need",
+          "op": "eq",
+          "value": "maps"
+        },
+        {
+          "at": "after",
+          "key": "ada.knows.readers.need",
+          "op": "eq",
+          "value": "maps"
+        }
+      ],
+      "evidence": {
+        "summary": "",
+        "actors": [
+          "ada"
+        ],
+        "changes": {
+          "ada.knows.readers.need": {
+            "before": null,
+            "after": "maps"
+          }
+        },
+        "before": {
+          "ada.knows.readers.need": null,
+          "readers.need": "maps"
+        }
+      },
+      "variants": 1
+    },
+    "scene.need_news.share.604228b6e0a1": {
+      "section": "scenes",
+      "scene": "need_news.share",
+      "role": "bridge",
+      "when": [
+        {
+          "at": "before",
+          "key": "ada.knows.readers.need",
+          "op": "eq",
+          "value": "maps"
+        },
+        {
+          "at": "before",
+          "key": "mayor.knows.readers.need",
+          "op": "eq",
+          "value": null
+        },
+        {
+          "at": "after",
+          "key": "mayor.knows.readers.need",
+          "op": "eq",
+          "value": "maps"
+        }
+      ],
+      "evidence": {
+        "summary": "",
+        "actors": [
+          "ada",
+          "mayor"
+        ],
+        "changes": {
+          "mayor.knows.readers.need": {
+            "before": null,
+            "after": "maps"
+          }
+        },
+        "before": {
+          "ada.knows.readers.need": "maps",
+          "mayor.knows.readers.need": null
+        }
+      },
+      "variants": 1
+    },
+    "scene.choose_helpful_maps.412189a8461d": {
+      "section": "scenes",
+      "scene": "choose_helpful_maps",
+      "role": "beat",
+      "when": [
+        {
+          "at": "before",
+          "key": "mayor.boastful",
+          "op": "eq",
+          "value": true
+        },
+        {
+          "at": "before",
+          "key": "mayor.knows.readers.need",
+          "op": "eq",
+          "value": "maps"
+        },
+        {
+          "at": "before",
+          "key": "mayor.memes.Care",
+          "op": "eq",
+          "value": 1
+        },
+        {
+          "at": "before",
+          "key": "mayor.plan",
+          "op": "eq",
+          "value": null
+        },
+        {
+          "at": "after",
+          "key": "mayor.boastful",
+          "op": "eq",
+          "value": false
+        },
+        {
+          "at": "after",
+          "key": "mayor.memes.Care",
+          "op": "eq",
+          "value": 2
+        },
+        {
+          "at": "after",
+          "key": "mayor.plan",
+          "op": "eq",
+          "value": "helpful"
+        }
+      ],
+      "evidence": {
+        "summary": "Mayor Bell chooses usefulness over boasting",
+        "actors": [
+          "mayor"
+        ],
+        "changes": {
+          "mayor.memes.Care": {
+            "before": 1,
+            "after": 2
+          },
+          "mayor.boastful": {
+            "before": true,
+            "after": false
+          },
+          "mayor.plan": {
+            "before": null,
+            "after": "helpful"
+          }
+        },
+        "before": {
+          "mayor.boastful": true,
+          "mayor.knows.readers.need": "maps",
+          "mayor.memes.Care": 1,
+          "mayor.plan": null
+        }
+      },
+      "variants": 1
+    },
+    "scene.deliver_maps.ed66218c2e7a": {
+      "section": "scenes",
+      "scene": "deliver_maps",
+      "role": "beat",
+      "when": [
+        {
+          "at": "before",
+          "key": "books.contents",
+          "op": "eq",
+          "value": "maps"
+        },
+        {
+          "at": "before",
+          "key": "books.delivered",
+          "op": "eq",
+          "value": false
+        },
+        {
+          "at": "before",
+          "key": "books.location",
+          "op": "eq",
+          "value": "square"
+        },
+        {
+          "at": "before",
+          "key": "mayor.parade.outcome",
+          "op": "eq",
+          "value": null
+        },
+        {
+          "at": "before",
+          "key": "mayor.plan",
+          "op": "eq",
+          "value": "helpful"
+        },
+        {
+          "at": "before",
+          "key": "readers.need",
+          "op": "eq",
+          "value": "maps"
+        },
+        {
+          "at": "after",
+          "key": "books.delivered",
+          "op": "eq",
+          "value": true
+        },
+        {
+          "at": "after",
+          "key": "mayor.parade.outcome",
+          "op": "eq",
+          "value": "useful_maps"
+        }
+      ],
+      "evidence": {
+        "summary": "Ada delivers the maps",
+        "actors": [
+          "ada"
+        ],
+        "changes": {
+          "mayor.parade.outcome": {
+            "before": null,
+            "after": "useful_maps"
+          },
+          "books.delivered": {
+            "before": false,
+            "after": true
+          }
+        },
+        "before": {
+          "books.contents": "maps",
+          "books.delivered": false,
+          "books.location": "square",
+          "mayor.parade.outcome": null,
+          "mayor.plan": "helpful",
+          "readers.need": "maps"
+        }
+      },
+      "variants": 1
+    },
+    "ending.d80c3f0ce099": {
+      "section": "endings",
+      "scene": null,
+      "role": "beat",
+      "when": [
+        {
+          "at": "after",
+          "key": "ada.knows.readers.need",
+          "op": "eq",
+          "value": "maps"
+        },
+        {
+          "at": "after",
+          "key": "ada.knows.square.wind",
+          "op": "eq",
+          "value": null
+        },
+        {
+          "at": "after",
+          "key": "banner.location",
+          "op": "eq",
+          "value": "hall"
+        },
+        {
+          "at": "after",
+          "key": "banner.secured",
+          "op": "eq",
+          "value": false
+        },
+        {
+          "at": "after",
+          "key": "books.contents",
+          "op": "eq",
+          "value": "maps"
+        },
+        {
+          "at": "after",
+          "key": "mayor.knows.readers.need",
+          "op": "eq",
+          "value": "maps"
+        },
+        {
+          "at": "after",
+          "key": "mayor.knows.square.wind",
+          "op": "eq",
+          "value": null
+        },
+        {
+          "at": "after",
+          "key": "mayor.parade.outcome",
+          "op": "eq",
+          "value": "useful_maps"
+        },
+        {
+          "at": "after",
+          "key": "readers.need",
+          "op": "eq",
+          "value": "maps"
+        },
+        {
+          "at": "after",
+          "key": "square.wind",
+          "op": "eq",
+          "value": "still"
+        }
+      ],
+      "evidence": {
+        "state": {
+          "ada.want": "deliver useful books",
+          "ada.memes.Care": 2,
+          "ada.performance_style": "careful",
+          "mayor.want": "the biggest parade",
+          "mayor.memes.Care": 2,
+          "mayor.boastful": false,
+          "mayor.plan": "helpful",
+          "mayor.performed": true,
+          "mayor.performance_style": "welcoming",
+          "mayor.parade.outcome": "useful_maps",
+          "bram.want": "help the parade work",
+          "bram.memes.Care": 2,
+          "readers.need": "maps",
+          "readers.response": true,
+          "readers.mood": "delighted",
+          "square.wind": "still",
+          "cart.owner": "ada",
+          "cart.location": "square",
+          "cart.loaned_by": "bram",
+          "cart.wheel": "ready",
+          "books.owner": "ada",
+          "books.location": "square",
+          "books.contents": "maps",
+          "books.delivered": true,
+          "banner.owner": "mayor",
+          "banner.location": "hall",
+          "banner.secured": false,
+          "ada.knows.square.wind": null,
+          "mayor.knows.square.wind": null,
+          "ada.knows.readers.need": "maps",
+          "mayor.knows.readers.need": "maps"
+        }
+      },
+      "variants": 2
+    },
+    "opening.7eeed94dc8fd": {
+      "section": "openings",
+      "scene": null,
+      "role": "beat",
+      "when": [
+        {
+          "at": "initial",
+          "key": "books.contents",
+          "op": "eq",
+          "value": "stories"
+        },
+        {
+          "at": "initial",
+          "key": "cart.wheel",
+          "op": "eq",
+          "value": "wobbly"
+        },
+        {
+          "at": "initial",
+          "key": "readers.need",
+          "op": "eq",
+          "value": "stories"
+        },
+        {
+          "at": "initial",
+          "key": "square.wind",
+          "op": "eq",
+          "value": "still"
+        }
+      ],
+      "evidence": {
+        "state": {
+          "ada.want": "deliver useful books",
+          "ada.memes.Care": 2,
+          "ada.performance_style": "careful",
+          "mayor.want": "the biggest parade",
+          "mayor.memes.Care": 1,
+          "mayor.boastful": true,
+          "mayor.plan": null,
+          "mayor.performed": false,
+          "mayor.performance_style": "boastful",
+          "mayor.parade.outcome": null,
+          "bram.want": "help the parade work",
+          "bram.memes.Care": 2,
+          "readers.need": "stories",
+          "readers.response": false,
+          "readers.mood": "waiting",
+          "square.wind": "still",
+          "cart.owner": "bram",
+          "cart.location": "workshop",
+          "cart.loaned_by": null,
+          "cart.wheel": "wobbly",
+          "books.owner": "ada",
+          "books.location": "library",
+          "books.contents": "stories",
+          "books.delivered": false,
+          "banner.owner": "mayor",
+          "banner.location": "hall",
+          "banner.secured": false,
+          "ada.knows.square.wind": null,
+          "mayor.knows.square.wind": null,
+          "ada.knows.readers.need": null,
+          "mayor.knows.readers.need": null
+        }
+      },
+      "variants": 2
+    },
+    "scene.need_news.notice.0d54b2cbea7a": {
+      "section": "scenes",
+      "scene": "need_news.notice",
+      "role": "bridge",
+      "when": [
+        {
+          "at": "before",
+          "key": "ada.knows.readers.need",
+          "op": "eq",
+          "value": null
+        },
+        {
+          "at": "before",
+          "key": "readers.need",
+          "op": "eq",
+          "value": "stories"
+        },
+        {
+          "at": "after",
+          "key": "ada.knows.readers.need",
+          "op": "eq",
+          "value": "stories"
+        }
+      ],
+      "evidence": {
+        "summary": "",
+        "actors": [
+          "ada"
+        ],
+        "changes": {
+          "ada.knows.readers.need": {
+            "before": null,
+            "after": "stories"
+          }
+        },
+        "before": {
+          "ada.knows.readers.need": null,
+          "readers.need": "stories"
+        }
+      },
+      "variants": 1
+    },
+    "scene.need_news.share.84672d0ed3ce": {
+      "section": "scenes",
+      "scene": "need_news.share",
+      "role": "bridge",
+      "when": [
+        {
+          "at": "before",
+          "key": "ada.knows.readers.need",
+          "op": "eq",
+          "value": "stories"
+        },
+        {
+          "at": "before",
+          "key": "mayor.knows.readers.need",
+          "op": "eq",
+          "value": null
+        },
+        {
+          "at": "after",
+          "key": "mayor.knows.readers.need",
+          "op": "eq",
+          "value": "stories"
+        }
+      ],
+      "evidence": {
+        "summary": "",
+        "actors": [
+          "ada",
+          "mayor"
+        ],
+        "changes": {
+          "mayor.knows.readers.need": {
+            "before": null,
+            "after": "stories"
+          }
+        },
+        "before": {
+          "ada.knows.readers.need": "stories",
+          "mayor.knows.readers.need": null
+        }
+      },
+      "variants": 1
+    },
+    "scene.choose_helpful_stories.a7559c5040e5": {
+      "section": "scenes",
+      "scene": "choose_helpful_stories",
+      "role": "beat",
+      "when": [
+        {
+          "at": "before",
+          "key": "mayor.boastful",
+          "op": "eq",
+          "value": true
+        },
+        {
+          "at": "before",
+          "key": "mayor.knows.readers.need",
+          "op": "eq",
+          "value": "stories"
+        },
+        {
+          "at": "before",
+          "key": "mayor.memes.Care",
+          "op": "eq",
+          "value": 1
+        },
+        {
+          "at": "before",
+          "key": "mayor.plan",
+          "op": "eq",
+          "value": null
+        },
+        {
+          "at": "after",
+          "key": "mayor.boastful",
+          "op": "eq",
+          "value": false
+        },
+        {
+          "at": "after",
+          "key": "mayor.memes.Care",
+          "op": "eq",
+          "value": 2
+        },
+        {
+          "at": "after",
+          "key": "mayor.plan",
+          "op": "eq",
+          "value": "helpful"
+        }
+      ],
+      "evidence": {
+        "summary": "Mayor Bell chooses usefulness over boasting",
+        "actors": [
+          "mayor"
+        ],
+        "changes": {
+          "mayor.memes.Care": {
+            "before": 1,
+            "after": 2
+          },
+          "mayor.boastful": {
+            "before": true,
+            "after": false
+          },
+          "mayor.plan": {
+            "before": null,
+            "after": "helpful"
+          }
+        },
+        "before": {
+          "mayor.boastful": true,
+          "mayor.knows.readers.need": "stories",
+          "mayor.memes.Care": 1,
+          "mayor.plan": null
+        }
+      },
+      "variants": 1
+    },
+    "scene.deliver_stories.f828548d8ad6": {
+      "section": "scenes",
+      "scene": "deliver_stories",
+      "role": "beat",
+      "when": [
+        {
+          "at": "before",
+          "key": "books.contents",
+          "op": "eq",
+          "value": "stories"
+        },
+        {
+          "at": "before",
+          "key": "books.delivered",
+          "op": "eq",
+          "value": false
+        },
+        {
+          "at": "before",
+          "key": "books.location",
+          "op": "eq",
+          "value": "square"
+        },
+        {
+          "at": "before",
+          "key": "mayor.parade.outcome",
+          "op": "eq",
+          "value": null
+        },
+        {
+          "at": "before",
+          "key": "mayor.plan",
+          "op": "eq",
+          "value": "helpful"
+        },
+        {
+          "at": "before",
+          "key": "readers.need",
+          "op": "eq",
+          "value": "stories"
+        },
+        {
+          "at": "after",
+          "key": "books.delivered",
+          "op": "eq",
+          "value": true
+        },
+        {
+          "at": "after",
+          "key": "mayor.parade.outcome",
+          "op": "eq",
+          "value": "useful_stories"
+        }
+      ],
+      "evidence": {
+        "summary": "Ada delivers the story collection",
+        "actors": [
+          "ada"
+        ],
+        "changes": {
+          "mayor.parade.outcome": {
+            "before": null,
+            "after": "useful_stories"
+          },
+          "books.delivered": {
+            "before": false,
+            "after": true
+          }
+        },
+        "before": {
+          "books.contents": "stories",
+          "books.delivered": false,
+          "books.location": "square",
+          "mayor.parade.outcome": null,
+          "mayor.plan": "helpful",
+          "readers.need": "stories"
+        }
+      },
+      "variants": 1
+    },
+    "ending.be6245253628": {
+      "section": "endings",
+      "scene": null,
+      "role": "beat",
+      "when": [
+        {
+          "at": "after",
+          "key": "ada.knows.readers.need",
+          "op": "eq",
+          "value": "stories"
+        },
+        {
+          "at": "after",
+          "key": "ada.knows.square.wind",
+          "op": "eq",
+          "value": null
+        },
+        {
+          "at": "after",
+          "key": "banner.location",
+          "op": "eq",
+          "value": "hall"
+        },
+        {
+          "at": "after",
+          "key": "banner.secured",
+          "op": "eq",
+          "value": false
+        },
+        {
+          "at": "after",
+          "key": "books.contents",
+          "op": "eq",
+          "value": "stories"
+        },
+        {
+          "at": "after",
+          "key": "mayor.knows.readers.need",
+          "op": "eq",
+          "value": "stories"
+        },
+        {
+          "at": "after",
+          "key": "mayor.knows.square.wind",
+          "op": "eq",
+          "value": null
+        },
+        {
+          "at": "after",
+          "key": "mayor.parade.outcome",
+          "op": "eq",
+          "value": "useful_stories"
+        },
+        {
+          "at": "after",
+          "key": "readers.need",
+          "op": "eq",
+          "value": "stories"
+        },
+        {
+          "at": "after",
+          "key": "square.wind",
+          "op": "eq",
+          "value": "still"
+        }
+      ],
+      "evidence": {
+        "state": {
+          "ada.want": "deliver useful books",
+          "ada.memes.Care": 2,
+          "ada.performance_style": "careful",
+          "mayor.want": "the biggest parade",
+          "mayor.memes.Care": 2,
+          "mayor.boastful": false,
+          "mayor.plan": "helpful",
+          "mayor.performed": true,
+          "mayor.performance_style": "welcoming",
+          "mayor.parade.outcome": "useful_stories",
+          "bram.want": "help the parade work",
+          "bram.memes.Care": 2,
+          "readers.need": "stories",
+          "readers.response": true,
+          "readers.mood": "delighted",
+          "square.wind": "still",
+          "cart.owner": "ada",
+          "cart.location": "square",
+          "cart.loaned_by": "bram",
+          "cart.wheel": "ready",
+          "books.owner": "ada",
+          "books.location": "square",
+          "books.contents": "stories",
+          "books.delivered": true,
+          "banner.owner": "mayor",
+          "banner.location": "hall",
+          "banner.secured": false,
+          "ada.knows.square.wind": null,
+          "mayor.knows.square.wind": null,
+          "ada.knows.readers.need": "stories",
+          "mayor.knows.readers.need": "stories"
+        }
+      },
+      "variants": 2
+    },
+    "opening.832a142faff7": {
+      "section": "openings",
+      "scene": null,
+      "role": "beat",
+      "when": [
+        {
+          "at": "initial",
+          "key": "books.contents",
+          "op": "eq",
+          "value": "books"
+        },
+        {
+          "at": "initial",
+          "key": "cart.wheel",
+          "op": "eq",
+          "value": "ready"
+        },
+        {
+          "at": "initial",
+          "key": "readers.need",
+          "op": "eq",
+          "value": "books"
+        },
+        {
+          "at": "initial",
+          "key": "square.wind",
+          "op": "eq",
+          "value": "still"
+        }
+      ],
+      "evidence": {
+        "state": {
+          "ada.want": "deliver useful books",
+          "ada.memes.Care": 2,
+          "ada.performance_style": "careful",
+          "mayor.want": "the biggest parade",
+          "mayor.memes.Care": 1,
+          "mayor.boastful": true,
+          "mayor.plan": null,
+          "mayor.performed": false,
+          "mayor.performance_style": "boastful",
+          "mayor.parade.outcome": null,
+          "bram.want": "help the parade work",
+          "bram.memes.Care": 2,
+          "readers.need": "books",
+          "readers.response": false,
+          "readers.mood": "waiting",
+          "square.wind": "still",
+          "cart.owner": "bram",
+          "cart.location": "workshop",
+          "cart.loaned_by": null,
+          "cart.wheel": "ready",
+          "books.owner": "ada",
+          "books.location": "library",
+          "books.contents": "books",
+          "books.delivered": false,
+          "banner.owner": "mayor",
+          "banner.location": "hall",
+          "banner.secured": false,
+          "ada.knows.square.wind": null,
+          "mayor.knows.square.wind": null,
+          "ada.knows.readers.need": null,
+          "mayor.knows.readers.need": null
+        }
+      },
+      "variants": 2
+    },
+    "opening.bc1df1318d79": {
+      "section": "openings",
+      "scene": null,
+      "role": "beat",
+      "when": [
+        {
+          "at": "initial",
+          "key": "books.contents",
+          "op": "eq",
+          "value": "maps"
+        },
+        {
+          "at": "initial",
+          "key": "cart.wheel",
+          "op": "eq",
+          "value": "ready"
+        },
+        {
+          "at": "initial",
+          "key": "readers.need",
+          "op": "eq",
+          "value": "maps"
+        },
+        {
+          "at": "initial",
+          "key": "square.wind",
+          "op": "eq",
+          "value": "still"
+        }
+      ],
+      "evidence": {
+        "state": {
+          "ada.want": "deliver useful books",
+          "ada.memes.Care": 2,
+          "ada.performance_style": "careful",
+          "mayor.want": "the biggest parade",
+          "mayor.memes.Care": 1,
+          "mayor.boastful": true,
+          "mayor.plan": null,
+          "mayor.performed": false,
+          "mayor.performance_style": "boastful",
+          "mayor.parade.outcome": null,
+          "bram.want": "help the parade work",
+          "bram.memes.Care": 2,
+          "readers.need": "maps",
+          "readers.response": false,
+          "readers.mood": "waiting",
+          "square.wind": "still",
+          "cart.owner": "bram",
+          "cart.location": "workshop",
+          "cart.loaned_by": null,
+          "cart.wheel": "ready",
+          "books.owner": "ada",
+          "books.location": "library",
+          "books.contents": "maps",
+          "books.delivered": false,
+          "banner.owner": "mayor",
+          "banner.location": "hall",
+          "banner.secured": false,
+          "ada.knows.square.wind": null,
+          "mayor.knows.square.wind": null,
+          "ada.knows.readers.need": null,
+          "mayor.knows.readers.need": null
+        }
+      },
+      "variants": 2
+    },
+    "opening.4c51de3fffa0": {
+      "section": "openings",
+      "scene": null,
+      "role": "beat",
+      "when": [
+        {
+          "at": "initial",
+          "key": "books.contents",
+          "op": "eq",
+          "value": "stories"
+        },
+        {
+          "at": "initial",
+          "key": "cart.wheel",
+          "op": "eq",
+          "value": "ready"
+        },
+        {
+          "at": "initial",
+          "key": "readers.need",
+          "op": "eq",
+          "value": "stories"
+        },
+        {
+          "at": "initial",
+          "key": "square.wind",
+          "op": "eq",
+          "value": "still"
+        }
+      ],
+      "evidence": {
+        "state": {
+          "ada.want": "deliver useful books",
+          "ada.memes.Care": 2,
+          "ada.performance_style": "careful",
+          "mayor.want": "the biggest parade",
+          "mayor.memes.Care": 1,
+          "mayor.boastful": true,
+          "mayor.plan": null,
+          "mayor.performed": false,
+          "mayor.performance_style": "boastful",
+          "mayor.parade.outcome": null,
+          "bram.want": "help the parade work",
+          "bram.memes.Care": 2,
+          "readers.need": "stories",
+          "readers.response": false,
+          "readers.mood": "waiting",
+          "square.wind": "still",
+          "cart.owner": "bram",
+          "cart.location": "workshop",
+          "cart.loaned_by": null,
+          "cart.wheel": "ready",
+          "books.owner": "ada",
+          "books.location": "library",
+          "books.contents": "stories",
+          "books.delivered": false,
+          "banner.owner": "mayor",
+          "banner.location": "hall",
+          "banner.secured": false,
+          "ada.knows.square.wind": null,
+          "mayor.knows.square.wind": null,
+          "ada.knows.readers.need": null,
+          "mayor.knows.readers.need": null
+        }
+      },
+      "variants": 2
+    },
+    "opening.8e400a6723fa": {
+      "section": "openings",
+      "scene": null,
+      "role": "beat",
+      "when": [
+        {
+          "at": "initial",
+          "key": "books.contents",
+          "op": "eq",
+          "value": "books"
+        },
+        {
+          "at": "initial",
+          "key": "cart.wheel",
+          "op": "eq",
+          "value": "wobbly"
+        },
+        {
+          "at": "initial",
+          "key": "readers.need",
+          "op": "eq",
+          "value": "books"
+        },
+        {
+          "at": "initial",
+          "key": "square.wind",
+          "op": "eq",
+          "value": "breezy"
+        }
+      ],
+      "evidence": {
+        "state": {
+          "ada.want": "deliver useful books",
+          "ada.memes.Care": 2,
+          "ada.performance_style": "careful",
+          "mayor.want": "the biggest parade",
+          "mayor.memes.Care": 1,
+          "mayor.boastful": true,
+          "mayor.plan": null,
+          "mayor.performed": false,
+          "mayor.performance_style": "boastful",
+          "mayor.parade.outcome": null,
+          "bram.want": "help the parade work",
+          "bram.memes.Care": 2,
+          "readers.need": "books",
+          "readers.response": false,
+          "readers.mood": "waiting",
+          "square.wind": "breezy",
+          "cart.owner": "bram",
+          "cart.location": "workshop",
+          "cart.loaned_by": null,
+          "cart.wheel": "wobbly",
+          "books.owner": "ada",
+          "books.location": "library",
+          "books.contents": "books",
+          "books.delivered": false,
+          "banner.owner": "mayor",
+          "banner.location": "hall",
+          "banner.secured": false,
+          "ada.knows.square.wind": null,
+          "mayor.knows.square.wind": null,
+          "ada.knows.readers.need": null,
+          "mayor.knows.readers.need": null
+        }
+      },
+      "variants": 2
+    },
+    "scene.wind_news.notice.d9f08fa30eb2": {
+      "section": "scenes",
+      "scene": "wind_news.notice",
+      "role": "bridge",
+      "when": [
+        {
+          "at": "before",
+          "key": "ada.knows.square.wind",
+          "op": "eq",
+          "value": null
+        },
+        {
+          "at": "before",
+          "key": "square.wind",
+          "op": "eq",
+          "value": "breezy"
+        },
+        {
+          "at": "after",
+          "key": "ada.knows.square.wind",
+          "op": "eq",
+          "value": "breezy"
+        }
+      ],
+      "evidence": {
+        "summary": "",
+        "actors": [
+          "ada"
+        ],
+        "changes": {
+          "ada.knows.square.wind": {
+            "before": null,
+            "after": "breezy"
+          }
+        },
+        "before": {
+          "ada.knows.square.wind": null,
+          "square.wind": "breezy"
+        }
+      },
+      "variants": 1
+    },
+    "scene.move_banner.f196a0a6de7b": {
+      "section": "scenes",
+      "scene": "move_banner",
+      "role": "bridge",
+      "when": [
+        {
+          "at": "before",
+          "key": "banner.location",
+          "op": "eq",
+          "value": "hall"
+        },
+        {
+          "at": "before",
+          "key": "banner.owner",
+          "op": "eq",
+          "value": "mayor"
+        },
+        {
+          "at": "after",
+          "key": "banner.location",
+          "op": "eq",
+          "value": "square"
+        }
+      ],
+      "evidence": {
+        "summary": "Mayor Bell carries the banner to the square",
+        "actors": [
+          "mayor",
+          "square"
+        ],
+        "changes": {
+          "banner.location": {
+            "before": "hall",
+            "after": "square"
+          }
+        },
+        "before": {
+          "banner.location": "hall",
+          "banner.owner": "mayor"
+        }
+      },
+      "variants": 1
+    },
+    "scene.wind_news.share.2f5335c16764": {
+      "section": "scenes",
+      "scene": "wind_news.share",
+      "role": "bridge",
+      "when": [
+        {
+          "at": "before",
+          "key": "ada.knows.square.wind",
+          "op": "eq",
+          "value": "breezy"
+        },
+        {
+          "at": "before",
+          "key": "mayor.knows.square.wind",
+          "op": "eq",
+          "value": null
+        },
+        {
+          "at": "after",
+          "key": "mayor.knows.square.wind",
+          "op": "eq",
+          "value": "breezy"
+        }
+      ],
+      "evidence": {
+        "summary": "",
+        "actors": [
+          "ada",
+          "mayor"
+        ],
+        "changes": {
+          "mayor.knows.square.wind": {
+            "before": null,
+            "after": "breezy"
+          }
+        },
+        "before": {
+          "ada.knows.square.wind": "breezy",
+          "mayor.knows.square.wind": null
+        }
+      },
+      "variants": 1
+    },
+    "scene.secure_banner.143f495cca4d": {
+      "section": "scenes",
+      "scene": "secure_banner",
+      "role": "beat",
+      "when": [
+        {
+          "at": "before",
+          "key": "banner.location",
+          "op": "eq",
+          "value": "square"
+        },
+        {
+          "at": "before",
+          "key": "banner.secured",
+          "op": "eq",
+          "value": false
+        },
+        {
+          "at": "before",
+          "key": "mayor.knows.square.wind",
+          "op": "eq",
+          "value": "breezy"
+        },
+        {
+          "at": "before",
+          "key": "square.wind",
+          "op": "eq",
+          "value": "breezy"
+        },
+        {
+          "at": "after",
+          "key": "banner.secured",
+          "op": "eq",
+          "value": true
+        }
+      ],
+      "evidence": {
+        "summary": "Mayor Bell secures the windy banner",
+        "actors": [
+          "mayor"
+        ],
+        "changes": {
+          "banner.secured": {
+            "before": false,
+            "after": true
+          }
+        },
+        "before": {
+          "banner.location": "square",
+          "banner.secured": false,
+          "mayor.knows.square.wind": "breezy",
+          "square.wind": "breezy"
+        }
+      },
+      "variants": 1
+    },
+    "scene.parade_breezy.b18838fab409": {
+      "section": "scenes",
+      "scene": "parade_breezy",
+      "role": "beat",
+      "when": [
+        {
+          "at": "before",
+          "key": "banner.secured",
+          "op": "eq",
+          "value": true
+        },
+        {
+          "at": "before",
+          "key": "books.delivered",
+          "op": "eq",
+          "value": true
+        },
+        {
+          "at": "before",
+          "key": "cart.location",
+          "op": "eq",
+          "value": "square"
+        },
+        {
+          "at": "before",
+          "key": "mayor.performance_style",
+          "op": "eq",
+          "value": "boastful"
+        },
+        {
+          "at": "before",
+          "key": "mayor.performed",
+          "op": "eq",
+          "value": false
+        },
+        {
+          "at": "before",
+          "key": "mayor.plan",
+          "op": "eq",
+          "value": "helpful"
+        },
+        {
+          "at": "before",
+          "key": "square.wind",
+          "op": "eq",
+          "value": "breezy"
+        },
+        {
+          "at": "after",
+          "key": "mayor.performance_style",
+          "op": "eq",
+          "value": "welcoming"
+        },
+        {
+          "at": "after",
+          "key": "mayor.performed",
+          "op": "eq",
+          "value": true
+        }
+      ],
+      "evidence": {
+        "summary": "Mayor Bell leads a banner-bright book parade",
+        "actors": [
+          "mayor"
+        ],
+        "changes": {
+          "mayor.performed": {
+            "before": false,
+            "after": true
+          },
+          "mayor.performance_style": {
+            "before": "boastful",
+            "after": "welcoming"
+          }
+        },
+        "before": {
+          "banner.secured": true,
+          "books.delivered": true,
+          "cart.location": "square",
+          "mayor.performance_style": "boastful",
+          "mayor.performed": false,
+          "mayor.plan": "helpful",
+          "square.wind": "breezy"
+        }
+      },
+      "variants": 1
+    },
+    "ending.fc964a5ed433": {
+      "section": "endings",
+      "scene": null,
+      "role": "beat",
+      "when": [
+        {
+          "at": "after",
+          "key": "ada.knows.readers.need",
+          "op": "eq",
+          "value": "books"
+        },
+        {
+          "at": "after",
+          "key": "ada.knows.square.wind",
+          "op": "eq",
+          "value": "breezy"
+        },
+        {
+          "at": "after",
+          "key": "banner.location",
+          "op": "eq",
+          "value": "square"
+        },
+        {
+          "at": "after",
+          "key": "banner.secured",
+          "op": "eq",
+          "value": true
+        },
+        {
+          "at": "after",
+          "key": "books.contents",
+          "op": "eq",
+          "value": "books"
+        },
+        {
+          "at": "after",
+          "key": "mayor.knows.readers.need",
+          "op": "eq",
+          "value": "books"
+        },
+        {
+          "at": "after",
+          "key": "mayor.knows.square.wind",
+          "op": "eq",
+          "value": "breezy"
+        },
+        {
+          "at": "after",
+          "key": "mayor.parade.outcome",
+          "op": "eq",
+          "value": "useful_books"
+        },
+        {
+          "at": "after",
+          "key": "readers.need",
+          "op": "eq",
+          "value": "books"
+        },
+        {
+          "at": "after",
+          "key": "square.wind",
+          "op": "eq",
+          "value": "breezy"
+        }
+      ],
+      "evidence": {
+        "state": {
+          "ada.want": "deliver useful books",
+          "ada.memes.Care": 2,
+          "ada.performance_style": "careful",
+          "mayor.want": "the biggest parade",
+          "mayor.memes.Care": 2,
+          "mayor.boastful": false,
+          "mayor.plan": "helpful",
+          "mayor.performed": true,
+          "mayor.performance_style": "welcoming",
+          "mayor.parade.outcome": "useful_books",
+          "bram.want": "help the parade work",
+          "bram.memes.Care": 2,
+          "readers.need": "books",
+          "readers.response": true,
+          "readers.mood": "delighted",
+          "square.wind": "breezy",
+          "cart.owner": "ada",
+          "cart.location": "square",
+          "cart.loaned_by": "bram",
+          "cart.wheel": "ready",
+          "books.owner": "ada",
+          "books.location": "square",
+          "books.contents": "books",
+          "books.delivered": true,
+          "banner.owner": "mayor",
+          "banner.location": "square",
+          "banner.secured": true,
+          "ada.knows.square.wind": "breezy",
+          "mayor.knows.square.wind": "breezy",
+          "ada.knows.readers.need": "books",
+          "mayor.knows.readers.need": "books"
+        }
+      },
+      "variants": 2
+    },
+    "opening.49fbf95cd945": {
+      "section": "openings",
+      "scene": null,
+      "role": "beat",
+      "when": [
+        {
+          "at": "initial",
+          "key": "books.contents",
+          "op": "eq",
+          "value": "maps"
+        },
+        {
+          "at": "initial",
+          "key": "cart.wheel",
+          "op": "eq",
+          "value": "wobbly"
+        },
+        {
+          "at": "initial",
+          "key": "readers.need",
+          "op": "eq",
+          "value": "maps"
+        },
+        {
+          "at": "initial",
+          "key": "square.wind",
+          "op": "eq",
+          "value": "breezy"
+        }
+      ],
+      "evidence": {
+        "state": {
+          "ada.want": "deliver useful books",
+          "ada.memes.Care": 2,
+          "ada.performance_style": "careful",
+          "mayor.want": "the biggest parade",
+          "mayor.memes.Care": 1,
+          "mayor.boastful": true,
+          "mayor.plan": null,
+          "mayor.performed": false,
+          "mayor.performance_style": "boastful",
+          "mayor.parade.outcome": null,
+          "bram.want": "help the parade work",
+          "bram.memes.Care": 2,
+          "readers.need": "maps",
+          "readers.response": false,
+          "readers.mood": "waiting",
+          "square.wind": "breezy",
+          "cart.owner": "bram",
+          "cart.location": "workshop",
+          "cart.loaned_by": null,
+          "cart.wheel": "wobbly",
+          "books.owner": "ada",
+          "books.location": "library",
+          "books.contents": "maps",
+          "books.delivered": false,
+          "banner.owner": "mayor",
+          "banner.location": "hall",
+          "banner.secured": false,
+          "ada.knows.square.wind": null,
+          "mayor.knows.square.wind": null,
+          "ada.knows.readers.need": null,
+          "mayor.knows.readers.need": null
+        }
+      },
+      "variants": 2
+    },
+    "ending.135bc0ad3bb6": {
+      "section": "endings",
+      "scene": null,
+      "role": "beat",
+      "when": [
+        {
+          "at": "after",
+          "key": "ada.knows.readers.need",
+          "op": "eq",
+          "value": "maps"
+        },
+        {
+          "at": "after",
+          "key": "ada.knows.square.wind",
+          "op": "eq",
+          "value": "breezy"
+        },
+        {
+          "at": "after",
+          "key": "banner.location",
+          "op": "eq",
+          "value": "square"
+        },
+        {
+          "at": "after",
+          "key": "banner.secured",
+          "op": "eq",
+          "value": true
+        },
+        {
+          "at": "after",
+          "key": "books.contents",
+          "op": "eq",
+          "value": "maps"
+        },
+        {
+          "at": "after",
+          "key": "mayor.knows.readers.need",
+          "op": "eq",
+          "value": "maps"
+        },
+        {
+          "at": "after",
+          "key": "mayor.knows.square.wind",
+          "op": "eq",
+          "value": "breezy"
+        },
+        {
+          "at": "after",
+          "key": "mayor.parade.outcome",
+          "op": "eq",
+          "value": "useful_maps"
+        },
+        {
+          "at": "after",
+          "key": "readers.need",
+          "op": "eq",
+          "value": "maps"
+        },
+        {
+          "at": "after",
+          "key": "square.wind",
+          "op": "eq",
+          "value": "breezy"
+        }
+      ],
+      "evidence": {
+        "state": {
+          "ada.want": "deliver useful books",
+          "ada.memes.Care": 2,
+          "ada.performance_style": "careful",
+          "mayor.want": "the biggest parade",
+          "mayor.memes.Care": 2,
+          "mayor.boastful": false,
+          "mayor.plan": "helpful",
+          "mayor.performed": true,
+          "mayor.performance_style": "welcoming",
+          "mayor.parade.outcome": "useful_maps",
+          "bram.want": "help the parade work",
+          "bram.memes.Care": 2,
+          "readers.need": "maps",
+          "readers.response": true,
+          "readers.mood": "delighted",
+          "square.wind": "breezy",
+          "cart.owner": "ada",
+          "cart.location": "square",
+          "cart.loaned_by": "bram",
+          "cart.wheel": "ready",
+          "books.owner": "ada",
+          "books.location": "square",
+          "books.contents": "maps",
+          "books.delivered": true,
+          "banner.owner": "mayor",
+          "banner.location": "square",
+          "banner.secured": true,
+          "ada.knows.square.wind": "breezy",
+          "mayor.knows.square.wind": "breezy",
+          "ada.knows.readers.need": "maps",
+          "mayor.knows.readers.need": "maps"
+        }
+      },
+      "variants": 2
+    },
+    "opening.45ddff537795": {
+      "section": "openings",
+      "scene": null,
+      "role": "beat",
+      "when": [
+        {
+          "at": "initial",
+          "key": "books.contents",
+          "op": "eq",
+          "value": "stories"
+        },
+        {
+          "at": "initial",
+          "key": "cart.wheel",
+          "op": "eq",
+          "value": "wobbly"
+        },
+        {
+          "at": "initial",
+          "key": "readers.need",
+          "op": "eq",
+          "value": "stories"
+        },
+        {
+          "at": "initial",
+          "key": "square.wind",
+          "op": "eq",
+          "value": "breezy"
+        }
+      ],
+      "evidence": {
+        "state": {
+          "ada.want": "deliver useful books",
+          "ada.memes.Care": 2,
+          "ada.performance_style": "careful",
+          "mayor.want": "the biggest parade",
+          "mayor.memes.Care": 1,
+          "mayor.boastful": true,
+          "mayor.plan": null,
+          "mayor.performed": false,
+          "mayor.performance_style": "boastful",
+          "mayor.parade.outcome": null,
+          "bram.want": "help the parade work",
+          "bram.memes.Care": 2,
+          "readers.need": "stories",
+          "readers.response": false,
+          "readers.mood": "waiting",
+          "square.wind": "breezy",
+          "cart.owner": "bram",
+          "cart.location": "workshop",
+          "cart.loaned_by": null,
+          "cart.wheel": "wobbly",
+          "books.owner": "ada",
+          "books.location": "library",
+          "books.contents": "stories",
+          "books.delivered": false,
+          "banner.owner": "mayor",
+          "banner.location": "hall",
+          "banner.secured": false,
+          "ada.knows.square.wind": null,
+          "mayor.knows.square.wind": null,
+          "ada.knows.readers.need": null,
+          "mayor.knows.readers.need": null
+        }
+      },
+      "variants": 2
+    },
+    "ending.6c6ffea3fc8c": {
+      "section": "endings",
+      "scene": null,
+      "role": "beat",
+      "when": [
+        {
+          "at": "after",
+          "key": "ada.knows.readers.need",
+          "op": "eq",
+          "value": "stories"
+        },
+        {
+          "at": "after",
+          "key": "ada.knows.square.wind",
+          "op": "eq",
+          "value": "breezy"
+        },
+        {
+          "at": "after",
+          "key": "banner.location",
+          "op": "eq",
+          "value": "square"
+        },
+        {
+          "at": "after",
+          "key": "banner.secured",
+          "op": "eq",
+          "value": true
+        },
+        {
+          "at": "after",
+          "key": "books.contents",
+          "op": "eq",
+          "value": "stories"
+        },
+        {
+          "at": "after",
+          "key": "mayor.knows.readers.need",
+          "op": "eq",
+          "value": "stories"
+        },
+        {
+          "at": "after",
+          "key": "mayor.knows.square.wind",
+          "op": "eq",
+          "value": "breezy"
+        },
+        {
+          "at": "after",
+          "key": "mayor.parade.outcome",
+          "op": "eq",
+          "value": "useful_stories"
+        },
+        {
+          "at": "after",
+          "key": "readers.need",
+          "op": "eq",
+          "value": "stories"
+        },
+        {
+          "at": "after",
+          "key": "square.wind",
+          "op": "eq",
+          "value": "breezy"
+        }
+      ],
+      "evidence": {
+        "state": {
+          "ada.want": "deliver useful books",
+          "ada.memes.Care": 2,
+          "ada.performance_style": "careful",
+          "mayor.want": "the biggest parade",
+          "mayor.memes.Care": 2,
+          "mayor.boastful": false,
+          "mayor.plan": "helpful",
+          "mayor.performed": true,
+          "mayor.performance_style": "welcoming",
+          "mayor.parade.outcome": "useful_stories",
+          "bram.want": "help the parade work",
+          "bram.memes.Care": 2,
+          "readers.need": "stories",
+          "readers.response": true,
+          "readers.mood": "delighted",
+          "square.wind": "breezy",
+          "cart.owner": "ada",
+          "cart.location": "square",
+          "cart.loaned_by": "bram",
+          "cart.wheel": "ready",
+          "books.owner": "ada",
+          "books.location": "square",
+          "books.contents": "stories",
+          "books.delivered": true,
+          "banner.owner": "mayor",
+          "banner.location": "square",
+          "banner.secured": true,
+          "ada.knows.square.wind": "breezy",
+          "mayor.knows.square.wind": "breezy",
+          "ada.knows.readers.need": "stories",
+          "mayor.knows.readers.need": "stories"
+        }
+      },
+      "variants": 2
+    },
+    "opening.a65e0c981688": {
+      "section": "openings",
+      "scene": null,
+      "role": "beat",
+      "when": [
+        {
+          "at": "initial",
+          "key": "books.contents",
+          "op": "eq",
+          "value": "books"
+        },
+        {
+          "at": "initial",
+          "key": "cart.wheel",
+          "op": "eq",
+          "value": "ready"
+        },
+        {
+          "at": "initial",
+          "key": "readers.need",
+          "op": "eq",
+          "value": "books"
+        },
+        {
+          "at": "initial",
+          "key": "square.wind",
+          "op": "eq",
+          "value": "breezy"
+        }
+      ],
+      "evidence": {
+        "state": {
+          "ada.want": "deliver useful books",
+          "ada.memes.Care": 2,
+          "ada.performance_style": "careful",
+          "mayor.want": "the biggest parade",
+          "mayor.memes.Care": 1,
+          "mayor.boastful": true,
+          "mayor.plan": null,
+          "mayor.performed": false,
+          "mayor.performance_style": "boastful",
+          "mayor.parade.outcome": null,
+          "bram.want": "help the parade work",
+          "bram.memes.Care": 2,
+          "readers.need": "books",
+          "readers.response": false,
+          "readers.mood": "waiting",
+          "square.wind": "breezy",
+          "cart.owner": "bram",
+          "cart.location": "workshop",
+          "cart.loaned_by": null,
+          "cart.wheel": "ready",
+          "books.owner": "ada",
+          "books.location": "library",
+          "books.contents": "books",
+          "books.delivered": false,
+          "banner.owner": "mayor",
+          "banner.location": "hall",
+          "banner.secured": false,
+          "ada.knows.square.wind": null,
+          "mayor.knows.square.wind": null,
+          "ada.knows.readers.need": null,
+          "mayor.knows.readers.need": null
+        }
+      },
+      "variants": 2
+    },
+    "opening.899564b0a082": {
+      "section": "openings",
+      "scene": null,
+      "role": "beat",
+      "when": [
+        {
+          "at": "initial",
+          "key": "books.contents",
+          "op": "eq",
+          "value": "maps"
+        },
+        {
+          "at": "initial",
+          "key": "cart.wheel",
+          "op": "eq",
+          "value": "ready"
+        },
+        {
+          "at": "initial",
+          "key": "readers.need",
+          "op": "eq",
+          "value": "maps"
+        },
+        {
+          "at": "initial",
+          "key": "square.wind",
+          "op": "eq",
+          "value": "breezy"
+        }
+      ],
+      "evidence": {
+        "state": {
+          "ada.want": "deliver useful books",
+          "ada.memes.Care": 2,
+          "ada.performance_style": "careful",
+          "mayor.want": "the biggest parade",
+          "mayor.memes.Care": 1,
+          "mayor.boastful": true,
+          "mayor.plan": null,
+          "mayor.performed": false,
+          "mayor.performance_style": "boastful",
+          "mayor.parade.outcome": null,
+          "bram.want": "help the parade work",
+          "bram.memes.Care": 2,
+          "readers.need": "maps",
+          "readers.response": false,
+          "readers.mood": "waiting",
+          "square.wind": "breezy",
+          "cart.owner": "bram",
+          "cart.location": "workshop",
+          "cart.loaned_by": null,
+          "cart.wheel": "ready",
+          "books.owner": "ada",
+          "books.location": "library",
+          "books.contents": "maps",
+          "books.delivered": false,
+          "banner.owner": "mayor",
+          "banner.location": "hall",
+          "banner.secured": false,
+          "ada.knows.square.wind": null,
+          "mayor.knows.square.wind": null,
+          "ada.knows.readers.need": null,
+          "mayor.knows.readers.need": null
+        }
+      },
+      "variants": 2
+    },
+    "opening.fa1e43451312": {
+      "section": "openings",
+      "scene": null,
+      "role": "beat",
+      "when": [
+        {
+          "at": "initial",
+          "key": "books.contents",
+          "op": "eq",
+          "value": "stories"
+        },
+        {
+          "at": "initial",
+          "key": "cart.wheel",
+          "op": "eq",
+          "value": "ready"
+        },
+        {
+          "at": "initial",
+          "key": "readers.need",
+          "op": "eq",
+          "value": "stories"
+        },
+        {
+          "at": "initial",
+          "key": "square.wind",
+          "op": "eq",
+          "value": "breezy"
+        }
+      ],
+      "evidence": {
+        "state": {
+          "ada.want": "deliver useful books",
+          "ada.memes.Care": 2,
+          "ada.performance_style": "careful",
+          "mayor.want": "the biggest parade",
+          "mayor.memes.Care": 1,
+          "mayor.boastful": true,
+          "mayor.plan": null,
+          "mayor.performed": false,
+          "mayor.performance_style": "boastful",
+          "mayor.parade.outcome": null,
+          "bram.want": "help the parade work",
+          "bram.memes.Care": 2,
+          "readers.need": "stories",
+          "readers.response": false,
+          "readers.mood": "waiting",
+          "square.wind": "breezy",
+          "cart.owner": "bram",
+          "cart.location": "workshop",
+          "cart.loaned_by": null,
+          "cart.wheel": "ready",
+          "books.owner": "ada",
+          "books.location": "library",
+          "books.contents": "stories",
+          "books.delivered": false,
+          "banner.owner": "mayor",
+          "banner.location": "hall",
+          "banner.secured": false,
+          "ada.knows.square.wind": null,
+          "mayor.knows.square.wind": null,
+          "ada.knows.readers.need": null,
+          "mayor.knows.readers.need": null
+        }
+      },
+      "variants": 2
+    }
+  },
+  "unselected_scenes": []
+}

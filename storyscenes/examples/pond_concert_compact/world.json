@@ -1,0 +1,497 @@
+{
+  "title": "The Pond Concert and the Neighbor with the Quietest Ears",
+  "entities": {
+    "frog": {
+      "name": "Frog",
+      "kind": "animal",
+      "state": {
+        "belief": "loud",
+        "performed": false
+      }
+    },
+    "mia": {
+      "name": "Mia",
+      "kind": "child",
+      "state": {
+        "want": "concert"
+      }
+    },
+    "teo": {
+      "name": "Teo",
+      "kind": "child",
+      "state": {
+        "want": "concert"
+      }
+    },
+    "nora": {
+      "name": "Nora",
+      "kind": "neighbor",
+      "state": {
+        "want": "quiet",
+        "content": false,
+        "response": "none"
+      }
+    },
+    "lily": {
+      "name": "floating lily",
+      "kind": "prop",
+      "state": {
+        "owner": "frog"
+      }
+    },
+    "bell": {
+      "name": "silver bell",
+      "kind": "prop",
+      "state": {
+        "owner": "mia"
+      }
+    },
+    "reed": {
+      "name": "reed flute",
+      "kind": "prop",
+      "state": {
+        "owner": "teo"
+      }
+    },
+    "boat": {
+      "name": "leaf boat",
+      "kind": "prop",
+      "state": {
+        "owner": "nora"
+      }
+    },
+    "invitation": {
+      "name": "pond invitation",
+      "kind": "prop",
+      "state": {
+        "sent": false
+      }
+    },
+    "concert": {
+      "name": "pond concert",
+      "kind": "prop",
+      "state": {
+        "style": "none"
+      }
+    }
+  },
+  "vary": {
+    "situation": [
+      {
+        "frog.belief": "loud",
+        "mia.want": "concert",
+        "teo.want": "concert",
+        "nora.want": "quiet",
+        "lily.owner": "frog"
+      },
+      {
+        "frog.belief": "unknown",
+        "mia.want": "dance",
+        "teo.want": "lullaby",
+        "nora.want": "lullaby",
+        "lily.owner": "frog"
+      },
+      {
+        "frog.belief": "unknown",
+        "mia.want": "concert",
+        "teo.want": "concert",
+        "nora.want": "join",
+        "lily.owner": "nora"
+      }
+    ]
+  },
+  "compose": {
+    "notice_nora": {
+      "op": "Observe",
+      "args": [
+        "frog",
+        "nora.want"
+      ],
+      "when": [
+        [
+          "frog.knows.nora.want",
+          "eq",
+          null
+        ]
+      ],
+      "summary": "Frog watched Nora beside the pond"
+    },
+    "tell_mia": {
+      "op": "Tell",
+      "args": [
+        "frog",
+        "mia",
+        "nora.want"
+      ],
+      "when": [
+        [
+          "frog.knows.nora.want",
+          "ne",
+          null
+        ]
+      ],
+      "summary": "Frog told Mia what Nora wanted"
+    },
+    "tell_teo": {
+      "op": "Tell",
+      "args": [
+        "frog",
+        "teo",
+        "nora.want"
+      ],
+      "when": [
+        [
+          "frog.knows.nora.want",
+          "ne",
+          null
+        ]
+      ],
+      "summary": "Frog told Teo what Nora wanted"
+    },
+    "choose_soft": {
+      "op": "Act",
+      "label": "Choice",
+      "actors": [
+        "frog",
+        "teo"
+      ],
+      "set": {
+        "concert.style": "soft"
+      },
+      "when": [
+        [
+          "frog.knows.nora.want",
+          "eq",
+          "quiet"
+        ],
+        [
+          "teo.knows.nora.want",
+          "eq",
+          "quiet"
+        ],
+        [
+          "nora.want",
+          "eq",
+          "quiet"
+        ]
+      ],
+      "summary": "They chose a hush-soft concert",
+      "pivotal": true
+    },
+    "choose_duet": {
+      "op": "Act",
+      "label": "Choice",
+      "actors": [
+        "mia",
+        "teo"
+      ],
+      "set": {
+        "concert.style": "duet"
+      },
+      "when": [
+        [
+          "mia.want",
+          "eq",
+          "dance"
+        ],
+        [
+          "teo.want",
+          "eq",
+          "lullaby"
+        ],
+        [
+          "mia.knows.nora.want",
+          "eq",
+          "lullaby"
+        ],
+        [
+          "teo.knows.nora.want",
+          "eq",
+          "lullaby"
+        ],
+        [
+          "nora.want",
+          "eq",
+          "lullaby"
+        ]
+      ],
+      "summary": "They chose a dancing lullaby",
+      "pivotal": true
+    },
+    "invite_nora": {
+      "op": "Act",
+      "label": "Invitation",
+      "actors": [
+        "mia",
+        "nora"
+      ],
+      "set": {
+        "invitation.sent": true
+      },
+      "when": [
+        [
+          "mia.knows.nora.want",
+          "eq",
+          "join"
+        ],
+        [
+          "nora.want",
+          "eq",
+          "join"
+        ],
+        [
+          "lily.owner",
+          "eq",
+          "nora"
+        ]
+      ],
+      "summary": "Mia invited Nora onto the water"
+    },
+    "lend_lily": {
+      "op": "Transfer",
+      "args": [
+        "nora",
+        "frog",
+        "lily"
+      ],
+      "when": [
+        [
+          "invitation.sent",
+          "eq",
+          true
+        ]
+      ],
+      "summary": "Nora lent over the floating lily"
+    },
+    "choose_boat": {
+      "op": "Act",
+      "label": "Choice",
+      "actors": [
+        "frog",
+        "mia",
+        "teo"
+      ],
+      "set": {
+        "concert.style": "boat"
+      },
+      "when": [
+        [
+          "teo.knows.nora.want",
+          "eq",
+          "join"
+        ],
+        [
+          "nora.want",
+          "eq",
+          "join"
+        ],
+        [
+          "lily.owner",
+          "eq",
+          "frog"
+        ]
+      ],
+      "summary": "They chose a floating boat concert",
+      "pivotal": true
+    },
+    "trade_bell": {
+      "op": "Transfer",
+      "args": [
+        "mia",
+        "teo",
+        "bell"
+      ],
+      "when": [
+        [
+          "concert.style",
+          "eq",
+          "duet"
+        ]
+      ],
+      "summary": "Mia handed Teo the silver bell"
+    },
+    "perform_soft": {
+      "op": "Act",
+      "label": "Performance",
+      "actors": [
+        "frog",
+        "teo"
+      ],
+      "set": {
+        "frog.performed": true,
+        "nora.content": true
+      },
+      "when": [
+        [
+          "concert.style",
+          "eq",
+          "soft"
+        ],
+        [
+          "teo.knows.nora.want",
+          "eq",
+          "quiet"
+        ]
+      ],
+      "summary": "Frog performed a soft pond song"
+    },
+    "perform_duet": {
+      "op": "Act",
+      "label": "Performance",
+      "actors": [
+        "frog",
+        "mia",
+        "teo"
+      ],
+      "set": {
+        "frog.performed": true,
+        "nora.content": true
+      },
+      "when": [
+        [
+          "concert.style",
+          "eq",
+          "duet"
+        ],
+        [
+          "bell.owner",
+          "eq",
+          "teo"
+        ]
+      ],
+      "summary": "Frog performed a dancing lullaby"
+    },
+    "perform_boat": {
+      "op": "Act",
+      "label": "Performance",
+      "actors": [
+        "frog",
+        "mia",
+        "teo",
+        "nora"
+      ],
+      "set": {
+        "frog.performed": true,
+        "nora.content": true
+      },
+      "when": [
+        [
+          "concert.style",
+          "eq",
+          "boat"
+        ],
+        [
+          "lily.owner",
+          "eq",
+          "frog"
+        ]
+      ],
+      "summary": "Frog performed from the floating lily"
+    },
+    "quiet_bow": {
+      "op": "Act",
+      "label": "Ending",
+      "actors": [
+        "frog"
+      ],
+      "set": {
+        "nora.response": "bubble"
+      },
+      "when": [
+        [
+          "concert.style",
+          "eq",
+          "soft"
+        ],
+        [
+          "frog.performed",
+          "eq",
+          true
+        ]
+      ],
+      "summary": "Nora answered with one round silver bubble"
+    },
+    "duet_bow": {
+      "op": "Act",
+      "label": "Ending",
+      "actors": [
+        "frog"
+      ],
+      "set": {
+        "nora.response": "ripples"
+      },
+      "when": [
+        [
+          "concert.style",
+          "eq",
+          "duet"
+        ],
+        [
+          "frog.performed",
+          "eq",
+          true
+        ]
+      ],
+      "summary": "Nora tapped the water in time"
+    },
+    "boat_bow": {
+      "op": "Act",
+      "label": "Ending",
+      "actors": [
+        "frog"
+      ],
+      "set": {
+        "nora.response": "parade"
+      },
+      "when": [
+        [
+          "concert.style",
+          "eq",
+          "boat"
+        ],
+        [
+          "frog.performed",
+          "eq",
+          true
+        ]
+      ],
+      "summary": "Nora sailed the lily in a slow circle"
+    }
+  },
+  "goal": [
+    [
+      "frog.performed",
+      "eq",
+      true
+    ],
+    [
+      "nora.content",
+      "eq",
+      true
+    ],
+    [
+      "nora.response",
+      "ne",
+      "none"
+    ]
+  ],
+  "rules": {},
+  "labels": {
+    "concert.style": "concert style",
+    "nora.want": "Nora's wish",
+    "nora.response": "Nora's response"
+  },
+  "prune": true,
+  "premises": [
+    "frog.belief",
+    "mia.want",
+    "lily.owner",
+    "nora.want"
+  ],
+  "outcomes": [
+    "concert.style",
+    "frog.performed",
+    "nora.response",
+    "lily.owner"
+  ]
+}

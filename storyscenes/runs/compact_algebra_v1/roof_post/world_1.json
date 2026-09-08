@@ -1,0 +1,289 @@
+{
+  "title": "The Windwise Invitations",
+  "premise": "Ada and a young dragon must deliver invitations across a roof garden while wind, fragile cargo, and the dragon's wish to help interact.",
+  "entities": {
+    "ada": {
+      "name": "Ada",
+      "kind": "child",
+      "state": {
+        "want": "deliver invitations",
+        "memes.Care": 2
+      }
+    },
+    "ember": {
+      "name": "Ember",
+      "kind": "young dragon",
+      "state": {
+        "want": "help deliver invitations",
+        "confidence": "hesitant",
+        "memes.Care": 1,
+        "ready": false,
+        "shielding": false
+      }
+    },
+    "invitations": {
+      "name": "invitations",
+      "kind": "fragile cargo",
+      "state": {
+        "owner": "ada",
+        "location": "ada",
+        "fragile": true,
+        "secured": false,
+        "intact": true,
+        "delivered": false
+      }
+    },
+    "ribbon": {
+      "name": "blue ribbon",
+      "kind": "prop",
+      "state": {
+        "owner": "ada",
+        "location": "ada",
+        "tied": false
+      }
+    },
+    "garden": {
+      "name": "roof garden",
+      "kind": "place",
+      "state": {
+        "wind": "still"
+      }
+    },
+    "neighbor": {
+      "name": "Mina",
+      "kind": "neighbor",
+      "state": {
+        "want": "quiet",
+        "received": false,
+        "response": "none"
+      }
+    }
+  },
+  "vary": {
+    "weather": [
+      {
+        "garden.wind": "still"
+      },
+      {
+        "garden.wind": "breezy"
+      },
+      {
+        "garden.wind": "gusty"
+      }
+    ],
+    "recipient": [
+      {
+        "neighbor.want": "quiet"
+      },
+      {
+        "neighbor.want": "join"
+      }
+    ],
+    "confidence": [
+      {
+        "ember.confidence": "hesitant"
+      },
+      {
+        "ember.confidence": "eager"
+      }
+    ]
+  },
+  "premises": [
+    "garden.wind",
+    "neighbor.want",
+    "ember.confidence"
+  ],
+  "kernels": {},
+  "compose": {
+    "wind_news": {
+      "op": "DiscoverAndShare",
+      "args": [
+        "ada",
+        "ember",
+        "garden.wind"
+      ]
+    },
+    "wish_news": {
+      "op": "DiscoverAndShare",
+      "args": [
+        "ember",
+        "ada",
+        "neighbor.want"
+      ]
+    },
+    "secure_cargo": {
+      "op": "Act",
+      "actors": [
+        "ada"
+      ],
+      "when": {
+        "ada.knows.garden.wind": [
+          "ne",
+          null
+        ],
+        "invitations.owner": "ada",
+        "ribbon.owner": "ada",
+        "ribbon.tied": false,
+        "invitations.secured": false
+      },
+      "set": {
+        "invitations.secured": true,
+        "ribbon.tied": true
+      },
+      "summary": "Ada ties the invitations securely"
+    },
+    "choose_to_help": {
+      "op": "Act",
+      "actors": [
+        "ember"
+      ],
+      "when": {
+        "ember.knows.garden.wind": [
+          "ne",
+          null
+        ],
+        "ember.knows.neighbor.want": [
+          "ne",
+          null
+        ],
+        "ember.want": "help deliver invitations",
+        "ember.ready": false
+      },
+      "set": {
+        "ember.ready": true,
+        "ember.shielding": true
+      },
+      "inc": {
+        "ember.memes.Care": 1
+      },
+      "pivotal": true,
+      "label": "Ember chooses to help",
+      "summary": "Ember chooses to shield the cargo"
+    },
+    "lend_invitations": {
+      "op": "Lend",
+      "args": [
+        "ada",
+        "ember",
+        "invitations"
+      ],
+      "when": {
+        "ember.ready": true,
+        "invitations.secured": true,
+        "invitations.location": "ada"
+      },
+      "summary": "Ada lends Ember the invitations"
+    },
+    "ada_carries": {
+      "op": "Move",
+      "args": [
+        "ada",
+        "invitations",
+        "neighbor"
+      ],
+      "when": {
+        "invitations.owner": "ada",
+        "invitations.secured": true,
+        "invitations.intact": true,
+        "invitations.delivered": false
+      },
+      "summary": "Ada carries the invitations to Mina"
+    },
+    "ember_carries": {
+      "op": "Move",
+      "args": [
+        "ember",
+        "invitations",
+        "neighbor"
+      ],
+      "when": {
+        "invitations.owner": "ember",
+        "ember.ready": true,
+        "ember.shielding": true,
+        "invitations.intact": true,
+        "invitations.delivered": false
+      },
+      "summary": "Ember carries the shielded invitations to Mina"
+    },
+    "ada_delivers": {
+      "op": "Act",
+      "actors": [
+        "ada"
+      ],
+      "when": {
+        "invitations.owner": "ada",
+        "invitations.location": "neighbor",
+        "invitations.intact": true,
+        "invitations.delivered": false
+      },
+      "set": {
+        "invitations.delivered": true,
+        "neighbor.received": true
+      },
+      "summary": "Ada delivers the intact invitations"
+    },
+    "ember_delivers": {
+      "op": "Act",
+      "actors": [
+        "ember"
+      ],
+      "when": {
+        "invitations.owner": "ember",
+        "invitations.location": "neighbor",
+        "invitations.intact": true,
+        "invitations.delivered": false
+      },
+      "set": {
+        "invitations.delivered": true,
+        "neighbor.received": true
+      },
+      "summary": "Ember delivers the intact invitations"
+    },
+    "quiet_response": {
+      "op": "Act",
+      "actors": [
+        "neighbor"
+      ],
+      "when": {
+        "neighbor.received": true,
+        "neighbor.want": "quiet",
+        "neighbor.response": "none"
+      },
+      "set": {
+        "neighbor.response": "thanks for the quiet invitation"
+      },
+      "summary": "Mina thanks them for the quiet invitation"
+    },
+    "join_response": {
+      "op": "Act",
+      "actors": [
+        "neighbor"
+      ],
+      "when": {
+        "neighbor.received": true,
+        "neighbor.want": "join",
+        "neighbor.response": "none"
+      },
+      "set": {
+        "neighbor.response": "Mina joins the garden gathering"
+      },
+      "summary": "Mina joins the garden gathering"
+    }
+  },
+  "goal": {
+    "invitations.delivered": true,
+    "neighbor.received": true,
+    "neighbor.response": [
+      "ne",
+      "none"
+    ]
+  },
+  "outcomes": [
+    "invitations.delivered",
+    "invitations.intact",
+    "neighbor.received",
+    "neighbor.response",
+    "ember.memes.Care"
+  ],
+  "prune": true
+}

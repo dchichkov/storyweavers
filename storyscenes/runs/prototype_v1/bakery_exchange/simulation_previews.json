@@ -1,0 +1,1754 @@
+[
+  {
+    "seed": 0,
+    "title": "The Crumb-and-Label Exchange",
+    "initial": {
+      "ada.location": "stall",
+      "pip.location": "stall",
+      "noor.location": "stall",
+      "mara.location": "stall",
+      "tray.location": "stall",
+      "basket.location": "stall",
+      "label.location": "tray",
+      "plate.location": "stall",
+      "scale.location": "stall",
+      "nut.location": "tray",
+      "berry.location": "tray",
+      "plain.location": "tray",
+      "nut.owner": "mara",
+      "berry.owner": "mara",
+      "plain.owner": "mara",
+      "label.owner": "mara",
+      "nut.filling": "nut",
+      "berry.filling": "berry",
+      "plain.filling": "plain",
+      "label.present": true,
+      "label.accurate": false,
+      "plate.available": true,
+      "scale.available": false,
+      "mara.generous": false,
+      "mara.evidence_seen": false,
+      "mara.memes.Care": 1,
+      "mara.knows.label.accurate": null,
+      "ada.memes.Curiosity": 1,
+      "ada.memes.Care": 1,
+      "ada.memes.Ambition": 1,
+      "ada.evidence_ready": false,
+      "ada.knows.label.accurate": null,
+      "ada.knows.berry.filling": null,
+      "ada.knows.noor.need": null,
+      "pip.memes.Pride": 2,
+      "pip.priority": "taste",
+      "pip.claimed": false,
+      "pip.satisfied": false,
+      "noor.hungry": true,
+      "noor.need": "berry",
+      "noor.received": null,
+      "stall.display": "confusing",
+      "exchange.success": false,
+      "exchange.fair": false
+    },
+    "final": {
+      "ada.location": "stall",
+      "pip.location": "stall",
+      "noor.location": "stall",
+      "mara.location": "stall",
+      "tray.location": "stall",
+      "basket.location": "stall",
+      "label.location": "tray",
+      "plate.location": "stall",
+      "scale.location": "stall",
+      "nut.location": "tray",
+      "berry.location": "basket",
+      "plain.location": "tray",
+      "nut.owner": "pip",
+      "berry.owner": "noor",
+      "plain.owner": "mara",
+      "label.owner": "ada",
+      "nut.filling": "nut",
+      "berry.filling": "berry",
+      "plain.filling": "plain",
+      "label.present": true,
+      "label.accurate": true,
+      "plate.available": true,
+      "scale.available": false,
+      "mara.generous": false,
+      "mara.evidence_seen": true,
+      "mara.memes.Care": 1,
+      "mara.knows.label.accurate": false,
+      "ada.memes.Curiosity": 3,
+      "ada.memes.Care": 2,
+      "ada.memes.Ambition": 3,
+      "ada.evidence_ready": true,
+      "ada.knows.label.accurate": false,
+      "ada.knows.berry.filling": "berry",
+      "ada.knows.noor.need": "berry",
+      "pip.memes.Pride": 2,
+      "pip.priority": "taste",
+      "pip.claimed": false,
+      "pip.satisfied": true,
+      "noor.hungry": false,
+      "noor.need": "berry",
+      "noor.received": "berry",
+      "stall.display": "clear",
+      "exchange.success": true,
+      "exchange.fair": true
+    },
+    "events": [
+      {
+        "id": 1,
+        "scene": "inspect_label",
+        "kernel": "observation",
+        "actors": [
+          "ada",
+          "label",
+          "tray"
+        ],
+        "summary": "Ada inspected the label beside the tray",
+        "causes": [],
+        "requires": [
+          {
+            "key": "ada.location",
+            "op": "eq",
+            "value": "stall"
+          },
+          {
+            "key": "label.location",
+            "op": "eq",
+            "value": "tray"
+          },
+          {
+            "key": "label.present",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "ada.memes.Curiosity",
+            "op": "ge",
+            "value": 1
+          }
+        ],
+        "changes": {
+          "ada.memes.Curiosity": {
+            "before": 1,
+            "after": 2
+          },
+          "ada.evidence_ready": {
+            "before": false,
+            "after": true
+          },
+          "ada.knows.label.accurate": {
+            "before": null,
+            "after": false
+          }
+        }
+      },
+      {
+        "id": 2,
+        "scene": "ask_noor",
+        "kernel": "care",
+        "actors": [
+          "ada",
+          "noor",
+          "stall"
+        ],
+        "summary": "Ada asked Noor which filling would be gentle and filling",
+        "causes": [],
+        "requires": [
+          {
+            "key": "ada.location",
+            "op": "eq",
+            "value": "stall"
+          },
+          {
+            "key": "noor.location",
+            "op": "eq",
+            "value": "stall"
+          },
+          {
+            "key": "noor.hungry",
+            "op": "eq",
+            "value": true
+          }
+        ],
+        "changes": {
+          "ada.memes.Care": {
+            "before": 1,
+            "after": 2
+          },
+          "ada.knows.noor.need": {
+            "before": null,
+            "after": "berry"
+          }
+        }
+      },
+      {
+        "id": 3,
+        "scene": "taste_berry_crumb",
+        "kernel": "observation",
+        "actors": [
+          "ada",
+          "berry",
+          "plate"
+        ],
+        "summary": "Ada sampled one careful crumb on the tasting plate",
+        "causes": [
+          1
+        ],
+        "requires": [
+          {
+            "key": "ada.location",
+            "op": "eq",
+            "value": "stall"
+          },
+          {
+            "key": "berry.location",
+            "op": "eq",
+            "value": "tray"
+          },
+          {
+            "key": "plate.location",
+            "op": "eq",
+            "value": "stall"
+          },
+          {
+            "key": "plate.available",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "ada.memes.Curiosity",
+            "op": "ge",
+            "value": 1
+          }
+        ],
+        "changes": {
+          "ada.memes.Curiosity": {
+            "before": 2,
+            "after": 3
+          },
+          "ada.knows.berry.filling": {
+            "before": null,
+            "after": "berry"
+          }
+        }
+      },
+      {
+        "id": 4,
+        "scene": "pip_chooses_nut",
+        "kernel": "cooperation",
+        "actors": [
+          "pip",
+          "mara",
+          "nut"
+        ],
+        "summary": "Pip chose the nut bun he liked best",
+        "causes": [],
+        "requires": [
+          {
+            "key": "pip.location",
+            "op": "eq",
+            "value": "stall"
+          },
+          {
+            "key": "mara.location",
+            "op": "eq",
+            "value": "stall"
+          },
+          {
+            "key": "pip.priority",
+            "op": "eq",
+            "value": "taste"
+          },
+          {
+            "key": "nut.owner",
+            "op": "eq",
+            "value": "mara"
+          }
+        ],
+        "changes": {
+          "nut.owner": {
+            "before": "mara",
+            "after": "pip"
+          },
+          "pip.satisfied": {
+            "before": false,
+            "after": true
+          }
+        }
+      },
+      {
+        "id": 5,
+        "scene": "tell_mara_label",
+        "kernel": "Tell",
+        "actors": [
+          "ada",
+          "mara"
+        ],
+        "summary": "Ada told Mara what the tray label seemed to say",
+        "causes": [
+          1
+        ],
+        "requires": [
+          {
+            "key": "ada.knows.label.accurate",
+            "op": "ne",
+            "value": null
+          },
+          {
+            "key": "ada.knows.label.accurate",
+            "op": "ne",
+            "value": null
+          },
+          {
+            "key": "ada.location",
+            "op": "eq",
+            "value": "stall"
+          },
+          {
+            "key": "mara.location",
+            "op": "eq",
+            "value": "stall"
+          }
+        ],
+        "changes": {
+          "mara.knows.label.accurate": {
+            "before": null,
+            "after": false
+          }
+        }
+      },
+      {
+        "id": 6,
+        "scene": "show_mara_evidence",
+        "kernel": "communication",
+        "actors": [
+          "ada",
+          "mara",
+          "tray"
+        ],
+        "summary": "Ada showed Mara the careful evidence before suggesting a share",
+        "causes": [
+          1,
+          2
+        ],
+        "requires": [
+          {
+            "key": "ada.location",
+            "op": "eq",
+            "value": "stall"
+          },
+          {
+            "key": "mara.location",
+            "op": "eq",
+            "value": "stall"
+          },
+          {
+            "key": "ada.evidence_ready",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "ada.knows.noor.need",
+            "op": "ne",
+            "value": null
+          }
+        ],
+        "changes": {
+          "mara.evidence_seen": {
+            "before": false,
+            "after": true
+          },
+          "ada.memes.Ambition": {
+            "before": 1,
+            "after": 2
+          }
+        }
+      },
+      {
+        "id": 7,
+        "scene": "grant_cautious_permission",
+        "kernel": "cooperation",
+        "actors": [
+          "mara",
+          "ada",
+          "tray"
+        ],
+        "summary": "Cautious Mara agreed after Ada explained whom the bun would help",
+        "causes": [
+          2,
+          6
+        ],
+        "requires": [
+          {
+            "key": "mara.generous",
+            "op": "eq",
+            "value": false
+          },
+          {
+            "key": "mara.evidence_seen",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "ada.knows.noor.need",
+            "op": "ne",
+            "value": null
+          },
+          {
+            "key": "ada.memes.Care",
+            "op": "ge",
+            "value": 2
+          }
+        ],
+        "changes": {
+          "ada.memes.Ambition": {
+            "before": 2,
+            "after": 3
+          }
+        }
+      },
+      {
+        "id": 8,
+        "scene": "lend_spare_label",
+        "kernel": "Transfer",
+        "actors": [
+          "mara",
+          "ada"
+        ],
+        "summary": "Mara lent Ada the spare paper label",
+        "causes": [],
+        "requires": [
+          {
+            "key": "label.owner",
+            "op": "eq",
+            "value": "mara"
+          },
+          {
+            "key": "mara.memes.Care",
+            "op": "ge",
+            "value": 1
+          },
+          {
+            "key": "mara.location",
+            "op": "eq",
+            "value": "stall"
+          },
+          {
+            "key": "ada.location",
+            "op": "eq",
+            "value": "stall"
+          }
+        ],
+        "changes": {
+          "label.owner": {
+            "before": "mara",
+            "after": "ada"
+          }
+        }
+      },
+      {
+        "id": 9,
+        "scene": "give_berry_bun",
+        "kernel": "care",
+        "actors": [
+          "ada",
+          "noor",
+          "berry",
+          "basket"
+        ],
+        "summary": "Ada placed the berry bun in Noor's portion of the basket",
+        "causes": [
+          2,
+          6
+        ],
+        "requires": [
+          {
+            "key": "ada.knows.noor.need",
+            "op": "eq",
+            "value": "berry"
+          },
+          {
+            "key": "noor.need",
+            "op": "eq",
+            "value": "berry"
+          },
+          {
+            "key": "berry.owner",
+            "op": "eq",
+            "value": "mara"
+          },
+          {
+            "key": "berry.location",
+            "op": "eq",
+            "value": "tray"
+          },
+          {
+            "key": "mara.evidence_seen",
+            "op": "eq",
+            "value": true
+          }
+        ],
+        "changes": {
+          "berry.location": {
+            "before": "tray",
+            "after": "basket"
+          },
+          "berry.owner": {
+            "before": "mara",
+            "after": "noor"
+          },
+          "noor.hungry": {
+            "before": true,
+            "after": false
+          },
+          "noor.received": {
+            "before": null,
+            "after": "berry"
+          },
+          "exchange.success": {
+            "before": false,
+            "after": true
+          },
+          "exchange.fair": {
+            "before": false,
+            "after": true
+          }
+        }
+      },
+      {
+        "id": 10,
+        "scene": "display_checked_labels",
+        "kernel": "arrangement",
+        "actors": [
+          "ada",
+          "mara",
+          "label",
+          "tray"
+        ],
+        "summary": "Ada and Mara set out a checked, accurate label beside the tray",
+        "causes": [
+          4,
+          6,
+          9
+        ],
+        "requires": [
+          {
+            "key": "label.present",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "mara.evidence_seen",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "exchange.success",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "pip.satisfied",
+            "op": "eq",
+            "value": true
+          }
+        ],
+        "changes": {
+          "label.accurate": {
+            "before": false,
+            "after": true
+          },
+          "stall.display": {
+            "before": "confusing",
+            "after": "clear"
+          }
+        }
+      }
+    ]
+  },
+  {
+    "seed": 1,
+    "title": "The Crumb-and-Label Exchange",
+    "initial": {
+      "ada.location": "stall",
+      "pip.location": "stall",
+      "noor.location": "stall",
+      "mara.location": "stall",
+      "tray.location": "stall",
+      "basket.location": "stall",
+      "label.location": "tray",
+      "plate.location": "stall",
+      "scale.location": "stall",
+      "nut.location": "tray",
+      "berry.location": "tray",
+      "plain.location": "tray",
+      "nut.owner": "mara",
+      "berry.owner": "mara",
+      "plain.owner": "mara",
+      "label.owner": "mara",
+      "nut.filling": "nut",
+      "berry.filling": "berry",
+      "plain.filling": "plain",
+      "label.present": true,
+      "label.accurate": true,
+      "plate.available": false,
+      "scale.available": true,
+      "mara.generous": true,
+      "mara.evidence_seen": false,
+      "mara.memes.Care": 1,
+      "mara.knows.label.accurate": null,
+      "ada.memes.Curiosity": 1,
+      "ada.memes.Care": 1,
+      "ada.memes.Ambition": 1,
+      "ada.evidence_ready": false,
+      "ada.knows.label.accurate": null,
+      "ada.knows.berry.filling": null,
+      "ada.knows.noor.need": null,
+      "pip.memes.Pride": 2,
+      "pip.priority": "promise",
+      "pip.claimed": false,
+      "pip.satisfied": false,
+      "noor.hungry": true,
+      "noor.need": "plain",
+      "noor.received": null,
+      "stall.display": "confusing",
+      "exchange.success": false,
+      "exchange.fair": false
+    },
+    "final": {
+      "ada.location": "stall",
+      "pip.location": "stall",
+      "noor.location": "stall",
+      "mara.location": "stall",
+      "tray.location": "stall",
+      "basket.location": "stall",
+      "label.location": "tray",
+      "plate.location": "stall",
+      "scale.location": "stall",
+      "nut.location": "tray",
+      "berry.location": "tray",
+      "plain.location": "basket",
+      "nut.owner": "pip",
+      "berry.owner": "mara",
+      "plain.owner": "noor",
+      "label.owner": "ada",
+      "nut.filling": "nut",
+      "berry.filling": "berry",
+      "plain.filling": "plain",
+      "label.present": true,
+      "label.accurate": true,
+      "plate.available": false,
+      "scale.available": true,
+      "mara.generous": true,
+      "mara.evidence_seen": true,
+      "mara.memes.Care": 1,
+      "mara.knows.label.accurate": true,
+      "ada.memes.Curiosity": 2,
+      "ada.memes.Care": 2,
+      "ada.memes.Ambition": 3,
+      "ada.evidence_ready": true,
+      "ada.knows.label.accurate": true,
+      "ada.knows.berry.filling": "berry",
+      "ada.knows.noor.need": "plain",
+      "pip.memes.Pride": 3,
+      "pip.priority": "promise",
+      "pip.claimed": false,
+      "pip.satisfied": true,
+      "noor.hungry": false,
+      "noor.need": "plain",
+      "noor.received": "plain",
+      "stall.display": "clear",
+      "exchange.success": true,
+      "exchange.fair": true
+    },
+    "events": [
+      {
+        "id": 1,
+        "scene": "weigh_buns",
+        "kernel": "observation",
+        "actors": [
+          "ada",
+          "scale",
+          "tray"
+        ],
+        "summary": "Ada compared the bun shapes and weights on the small scale",
+        "causes": [],
+        "requires": [
+          {
+            "key": "ada.location",
+            "op": "eq",
+            "value": "stall"
+          },
+          {
+            "key": "scale.location",
+            "op": "eq",
+            "value": "stall"
+          },
+          {
+            "key": "scale.available",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "ada.memes.Curiosity",
+            "op": "ge",
+            "value": 1
+          }
+        ],
+        "changes": {
+          "ada.memes.Ambition": {
+            "before": 1,
+            "after": 2
+          },
+          "ada.evidence_ready": {
+            "before": false,
+            "after": true
+          },
+          "ada.knows.berry.filling": {
+            "before": null,
+            "after": "berry"
+          }
+        }
+      },
+      {
+        "id": 2,
+        "scene": "pip_claims_saved_nut",
+        "kernel": "pride",
+        "actors": [
+          "pip",
+          "nut",
+          "tray"
+        ],
+        "summary": "Pip proudly reminded everyone about his saved nut bun",
+        "causes": [],
+        "requires": [
+          {
+            "key": "pip.location",
+            "op": "eq",
+            "value": "stall"
+          },
+          {
+            "key": "nut.location",
+            "op": "eq",
+            "value": "tray"
+          },
+          {
+            "key": "nut.owner",
+            "op": "eq",
+            "value": "mara"
+          },
+          {
+            "key": "pip.priority",
+            "op": "in",
+            "value": [
+              "ownership",
+              "promise"
+            ]
+          },
+          {
+            "key": "pip.memes.Pride",
+            "op": "ge",
+            "value": 1
+          }
+        ],
+        "changes": {
+          "pip.memes.Pride": {
+            "before": 2,
+            "after": 3
+          },
+          "pip.claimed": {
+            "before": false,
+            "after": true
+          }
+        }
+      },
+      {
+        "id": 3,
+        "scene": "ask_noor",
+        "kernel": "care",
+        "actors": [
+          "ada",
+          "noor",
+          "stall"
+        ],
+        "summary": "Ada asked Noor which filling would be gentle and filling",
+        "causes": [],
+        "requires": [
+          {
+            "key": "ada.location",
+            "op": "eq",
+            "value": "stall"
+          },
+          {
+            "key": "noor.location",
+            "op": "eq",
+            "value": "stall"
+          },
+          {
+            "key": "noor.hungry",
+            "op": "eq",
+            "value": true
+          }
+        ],
+        "changes": {
+          "ada.memes.Care": {
+            "before": 1,
+            "after": 2
+          },
+          "ada.knows.noor.need": {
+            "before": null,
+            "after": "plain"
+          }
+        }
+      },
+      {
+        "id": 4,
+        "scene": "reserve_claimed_nut",
+        "kernel": "cooperation",
+        "actors": [
+          "pip",
+          "mara",
+          "nut"
+        ],
+        "summary": "Mara reserved Pip's promised nut bun for him",
+        "causes": [
+          2
+        ],
+        "requires": [
+          {
+            "key": "pip.claimed",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "nut.owner",
+            "op": "eq",
+            "value": "mara"
+          },
+          {
+            "key": "mara.location",
+            "op": "eq",
+            "value": "stall"
+          }
+        ],
+        "changes": {
+          "nut.owner": {
+            "before": "mara",
+            "after": "pip"
+          },
+          "pip.claimed": {
+            "before": true,
+            "after": false
+          },
+          "pip.satisfied": {
+            "before": false,
+            "after": true
+          }
+        }
+      },
+      {
+        "id": 5,
+        "scene": "inspect_label",
+        "kernel": "observation",
+        "actors": [
+          "ada",
+          "label",
+          "tray"
+        ],
+        "summary": "Ada inspected the label beside the tray",
+        "causes": [],
+        "requires": [
+          {
+            "key": "ada.location",
+            "op": "eq",
+            "value": "stall"
+          },
+          {
+            "key": "label.location",
+            "op": "eq",
+            "value": "tray"
+          },
+          {
+            "key": "label.present",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "ada.memes.Curiosity",
+            "op": "ge",
+            "value": 1
+          }
+        ],
+        "changes": {
+          "ada.memes.Curiosity": {
+            "before": 1,
+            "after": 2
+          },
+          "ada.knows.label.accurate": {
+            "before": null,
+            "after": true
+          }
+        }
+      },
+      {
+        "id": 6,
+        "scene": "lend_spare_label",
+        "kernel": "Transfer",
+        "actors": [
+          "mara",
+          "ada"
+        ],
+        "summary": "Mara lent Ada the spare paper label",
+        "causes": [],
+        "requires": [
+          {
+            "key": "label.owner",
+            "op": "eq",
+            "value": "mara"
+          },
+          {
+            "key": "mara.memes.Care",
+            "op": "ge",
+            "value": 1
+          },
+          {
+            "key": "mara.location",
+            "op": "eq",
+            "value": "stall"
+          },
+          {
+            "key": "ada.location",
+            "op": "eq",
+            "value": "stall"
+          }
+        ],
+        "changes": {
+          "label.owner": {
+            "before": "mara",
+            "after": "ada"
+          }
+        }
+      },
+      {
+        "id": 7,
+        "scene": "tell_mara_label",
+        "kernel": "Tell",
+        "actors": [
+          "ada",
+          "mara"
+        ],
+        "summary": "Ada told Mara what the tray label seemed to say",
+        "causes": [
+          5
+        ],
+        "requires": [
+          {
+            "key": "ada.knows.label.accurate",
+            "op": "ne",
+            "value": null
+          },
+          {
+            "key": "ada.knows.label.accurate",
+            "op": "ne",
+            "value": null
+          },
+          {
+            "key": "ada.location",
+            "op": "eq",
+            "value": "stall"
+          },
+          {
+            "key": "mara.location",
+            "op": "eq",
+            "value": "stall"
+          }
+        ],
+        "changes": {
+          "mara.knows.label.accurate": {
+            "before": null,
+            "after": true
+          }
+        }
+      },
+      {
+        "id": 8,
+        "scene": "show_mara_evidence",
+        "kernel": "communication",
+        "actors": [
+          "ada",
+          "mara",
+          "tray"
+        ],
+        "summary": "Ada showed Mara the careful evidence before suggesting a share",
+        "causes": [
+          1,
+          3
+        ],
+        "requires": [
+          {
+            "key": "ada.location",
+            "op": "eq",
+            "value": "stall"
+          },
+          {
+            "key": "mara.location",
+            "op": "eq",
+            "value": "stall"
+          },
+          {
+            "key": "ada.evidence_ready",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "ada.knows.noor.need",
+            "op": "ne",
+            "value": null
+          }
+        ],
+        "changes": {
+          "mara.evidence_seen": {
+            "before": false,
+            "after": true
+          },
+          "ada.memes.Ambition": {
+            "before": 2,
+            "after": 3
+          }
+        }
+      },
+      {
+        "id": 9,
+        "scene": "give_plain_bun",
+        "kernel": "care",
+        "actors": [
+          "ada",
+          "noor",
+          "plain",
+          "basket"
+        ],
+        "summary": "Ada placed the plain bun in Noor's portion of the basket",
+        "causes": [
+          3,
+          8
+        ],
+        "requires": [
+          {
+            "key": "ada.knows.noor.need",
+            "op": "eq",
+            "value": "plain"
+          },
+          {
+            "key": "noor.need",
+            "op": "eq",
+            "value": "plain"
+          },
+          {
+            "key": "plain.owner",
+            "op": "eq",
+            "value": "mara"
+          },
+          {
+            "key": "plain.location",
+            "op": "eq",
+            "value": "tray"
+          },
+          {
+            "key": "mara.evidence_seen",
+            "op": "eq",
+            "value": true
+          }
+        ],
+        "changes": {
+          "plain.location": {
+            "before": "tray",
+            "after": "basket"
+          },
+          "plain.owner": {
+            "before": "mara",
+            "after": "noor"
+          },
+          "noor.hungry": {
+            "before": true,
+            "after": false
+          },
+          "noor.received": {
+            "before": null,
+            "after": "plain"
+          },
+          "exchange.success": {
+            "before": false,
+            "after": true
+          },
+          "exchange.fair": {
+            "before": false,
+            "after": true
+          }
+        }
+      },
+      {
+        "id": 10,
+        "scene": "display_checked_labels",
+        "kernel": "arrangement",
+        "actors": [
+          "ada",
+          "mara",
+          "label",
+          "tray"
+        ],
+        "summary": "Ada and Mara set out a checked, accurate label beside the tray",
+        "causes": [
+          4,
+          8,
+          9
+        ],
+        "requires": [
+          {
+            "key": "label.present",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "mara.evidence_seen",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "exchange.success",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "pip.satisfied",
+            "op": "eq",
+            "value": true
+          }
+        ],
+        "changes": {
+          "stall.display": {
+            "before": "confusing",
+            "after": "clear"
+          }
+        }
+      }
+    ]
+  },
+  {
+    "seed": 2,
+    "title": "The Crumb-and-Label Exchange",
+    "initial": {
+      "ada.location": "stall",
+      "pip.location": "stall",
+      "noor.location": "stall",
+      "mara.location": "stall",
+      "tray.location": "stall",
+      "basket.location": "stall",
+      "label.location": "tray",
+      "plate.location": "stall",
+      "scale.location": "stall",
+      "nut.location": "tray",
+      "berry.location": "tray",
+      "plain.location": "tray",
+      "nut.owner": "mara",
+      "berry.owner": "mara",
+      "plain.owner": "mara",
+      "label.owner": "mara",
+      "nut.filling": "nut",
+      "berry.filling": "berry",
+      "plain.filling": "plain",
+      "label.present": true,
+      "label.accurate": true,
+      "plate.available": true,
+      "scale.available": false,
+      "mara.generous": false,
+      "mara.evidence_seen": false,
+      "mara.memes.Care": 1,
+      "mara.knows.label.accurate": null,
+      "ada.memes.Curiosity": 1,
+      "ada.memes.Care": 1,
+      "ada.memes.Ambition": 1,
+      "ada.evidence_ready": false,
+      "ada.knows.label.accurate": null,
+      "ada.knows.berry.filling": null,
+      "ada.knows.noor.need": null,
+      "pip.memes.Pride": 2,
+      "pip.priority": "ownership",
+      "pip.claimed": false,
+      "pip.satisfied": false,
+      "noor.hungry": true,
+      "noor.need": "plain",
+      "noor.received": null,
+      "stall.display": "confusing",
+      "exchange.success": false,
+      "exchange.fair": false
+    },
+    "final": {
+      "ada.location": "stall",
+      "pip.location": "stall",
+      "noor.location": "stall",
+      "mara.location": "stall",
+      "tray.location": "stall",
+      "basket.location": "stall",
+      "label.location": "tray",
+      "plate.location": "stall",
+      "scale.location": "stall",
+      "nut.location": "tray",
+      "berry.location": "tray",
+      "plain.location": "basket",
+      "nut.owner": "pip",
+      "berry.owner": "mara",
+      "plain.owner": "noor",
+      "label.owner": "ada",
+      "nut.filling": "nut",
+      "berry.filling": "berry",
+      "plain.filling": "plain",
+      "label.present": true,
+      "label.accurate": true,
+      "plate.available": true,
+      "scale.available": false,
+      "mara.generous": false,
+      "mara.evidence_seen": true,
+      "mara.memes.Care": 1,
+      "mara.knows.label.accurate": true,
+      "ada.memes.Curiosity": 3,
+      "ada.memes.Care": 2,
+      "ada.memes.Ambition": 3,
+      "ada.evidence_ready": true,
+      "ada.knows.label.accurate": true,
+      "ada.knows.berry.filling": "berry",
+      "ada.knows.noor.need": "plain",
+      "pip.memes.Pride": 3,
+      "pip.priority": "ownership",
+      "pip.claimed": false,
+      "pip.satisfied": true,
+      "noor.hungry": false,
+      "noor.need": "plain",
+      "noor.received": "plain",
+      "stall.display": "clear",
+      "exchange.success": true,
+      "exchange.fair": true
+    },
+    "events": [
+      {
+        "id": 1,
+        "scene": "inspect_label",
+        "kernel": "observation",
+        "actors": [
+          "ada",
+          "label",
+          "tray"
+        ],
+        "summary": "Ada inspected the label beside the tray",
+        "causes": [],
+        "requires": [
+          {
+            "key": "ada.location",
+            "op": "eq",
+            "value": "stall"
+          },
+          {
+            "key": "label.location",
+            "op": "eq",
+            "value": "tray"
+          },
+          {
+            "key": "label.present",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "ada.memes.Curiosity",
+            "op": "ge",
+            "value": 1
+          }
+        ],
+        "changes": {
+          "ada.memes.Curiosity": {
+            "before": 1,
+            "after": 2
+          },
+          "ada.evidence_ready": {
+            "before": false,
+            "after": true
+          },
+          "ada.knows.label.accurate": {
+            "before": null,
+            "after": true
+          }
+        }
+      },
+      {
+        "id": 2,
+        "scene": "taste_berry_crumb",
+        "kernel": "observation",
+        "actors": [
+          "ada",
+          "berry",
+          "plate"
+        ],
+        "summary": "Ada sampled one careful crumb on the tasting plate",
+        "causes": [
+          1
+        ],
+        "requires": [
+          {
+            "key": "ada.location",
+            "op": "eq",
+            "value": "stall"
+          },
+          {
+            "key": "berry.location",
+            "op": "eq",
+            "value": "tray"
+          },
+          {
+            "key": "plate.location",
+            "op": "eq",
+            "value": "stall"
+          },
+          {
+            "key": "plate.available",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "ada.memes.Curiosity",
+            "op": "ge",
+            "value": 1
+          }
+        ],
+        "changes": {
+          "ada.memes.Curiosity": {
+            "before": 2,
+            "after": 3
+          },
+          "ada.knows.berry.filling": {
+            "before": null,
+            "after": "berry"
+          }
+        }
+      },
+      {
+        "id": 3,
+        "scene": "ask_noor",
+        "kernel": "care",
+        "actors": [
+          "ada",
+          "noor",
+          "stall"
+        ],
+        "summary": "Ada asked Noor which filling would be gentle and filling",
+        "causes": [],
+        "requires": [
+          {
+            "key": "ada.location",
+            "op": "eq",
+            "value": "stall"
+          },
+          {
+            "key": "noor.location",
+            "op": "eq",
+            "value": "stall"
+          },
+          {
+            "key": "noor.hungry",
+            "op": "eq",
+            "value": true
+          }
+        ],
+        "changes": {
+          "ada.memes.Care": {
+            "before": 1,
+            "after": 2
+          },
+          "ada.knows.noor.need": {
+            "before": null,
+            "after": "plain"
+          }
+        }
+      },
+      {
+        "id": 4,
+        "scene": "show_mara_evidence",
+        "kernel": "communication",
+        "actors": [
+          "ada",
+          "mara",
+          "tray"
+        ],
+        "summary": "Ada showed Mara the careful evidence before suggesting a share",
+        "causes": [
+          1,
+          3
+        ],
+        "requires": [
+          {
+            "key": "ada.location",
+            "op": "eq",
+            "value": "stall"
+          },
+          {
+            "key": "mara.location",
+            "op": "eq",
+            "value": "stall"
+          },
+          {
+            "key": "ada.evidence_ready",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "ada.knows.noor.need",
+            "op": "ne",
+            "value": null
+          }
+        ],
+        "changes": {
+          "mara.evidence_seen": {
+            "before": false,
+            "after": true
+          },
+          "ada.memes.Ambition": {
+            "before": 1,
+            "after": 2
+          }
+        }
+      },
+      {
+        "id": 5,
+        "scene": "lend_spare_label",
+        "kernel": "Transfer",
+        "actors": [
+          "mara",
+          "ada"
+        ],
+        "summary": "Mara lent Ada the spare paper label",
+        "causes": [],
+        "requires": [
+          {
+            "key": "label.owner",
+            "op": "eq",
+            "value": "mara"
+          },
+          {
+            "key": "mara.memes.Care",
+            "op": "ge",
+            "value": 1
+          },
+          {
+            "key": "mara.location",
+            "op": "eq",
+            "value": "stall"
+          },
+          {
+            "key": "ada.location",
+            "op": "eq",
+            "value": "stall"
+          }
+        ],
+        "changes": {
+          "label.owner": {
+            "before": "mara",
+            "after": "ada"
+          }
+        }
+      },
+      {
+        "id": 6,
+        "scene": "grant_cautious_permission",
+        "kernel": "cooperation",
+        "actors": [
+          "mara",
+          "ada",
+          "tray"
+        ],
+        "summary": "Cautious Mara agreed after Ada explained whom the bun would help",
+        "causes": [
+          3,
+          4
+        ],
+        "requires": [
+          {
+            "key": "mara.generous",
+            "op": "eq",
+            "value": false
+          },
+          {
+            "key": "mara.evidence_seen",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "ada.knows.noor.need",
+            "op": "ne",
+            "value": null
+          },
+          {
+            "key": "ada.memes.Care",
+            "op": "ge",
+            "value": 2
+          }
+        ],
+        "changes": {
+          "ada.memes.Ambition": {
+            "before": 2,
+            "after": 3
+          }
+        }
+      },
+      {
+        "id": 7,
+        "scene": "tell_mara_label",
+        "kernel": "Tell",
+        "actors": [
+          "ada",
+          "mara"
+        ],
+        "summary": "Ada told Mara what the tray label seemed to say",
+        "causes": [
+          1
+        ],
+        "requires": [
+          {
+            "key": "ada.knows.label.accurate",
+            "op": "ne",
+            "value": null
+          },
+          {
+            "key": "ada.knows.label.accurate",
+            "op": "ne",
+            "value": null
+          },
+          {
+            "key": "ada.location",
+            "op": "eq",
+            "value": "stall"
+          },
+          {
+            "key": "mara.location",
+            "op": "eq",
+            "value": "stall"
+          }
+        ],
+        "changes": {
+          "mara.knows.label.accurate": {
+            "before": null,
+            "after": true
+          }
+        }
+      },
+      {
+        "id": 8,
+        "scene": "pip_claims_saved_nut",
+        "kernel": "pride",
+        "actors": [
+          "pip",
+          "nut",
+          "tray"
+        ],
+        "summary": "Pip proudly reminded everyone about his saved nut bun",
+        "causes": [],
+        "requires": [
+          {
+            "key": "pip.location",
+            "op": "eq",
+            "value": "stall"
+          },
+          {
+            "key": "nut.location",
+            "op": "eq",
+            "value": "tray"
+          },
+          {
+            "key": "nut.owner",
+            "op": "eq",
+            "value": "mara"
+          },
+          {
+            "key": "pip.priority",
+            "op": "in",
+            "value": [
+              "ownership",
+              "promise"
+            ]
+          },
+          {
+            "key": "pip.memes.Pride",
+            "op": "ge",
+            "value": 1
+          }
+        ],
+        "changes": {
+          "pip.memes.Pride": {
+            "before": 2,
+            "after": 3
+          },
+          "pip.claimed": {
+            "before": false,
+            "after": true
+          }
+        }
+      },
+      {
+        "id": 9,
+        "scene": "give_plain_bun",
+        "kernel": "care",
+        "actors": [
+          "ada",
+          "noor",
+          "plain",
+          "basket"
+        ],
+        "summary": "Ada placed the plain bun in Noor's portion of the basket",
+        "causes": [
+          3,
+          4
+        ],
+        "requires": [
+          {
+            "key": "ada.knows.noor.need",
+            "op": "eq",
+            "value": "plain"
+          },
+          {
+            "key": "noor.need",
+            "op": "eq",
+            "value": "plain"
+          },
+          {
+            "key": "plain.owner",
+            "op": "eq",
+            "value": "mara"
+          },
+          {
+            "key": "plain.location",
+            "op": "eq",
+            "value": "tray"
+          },
+          {
+            "key": "mara.evidence_seen",
+            "op": "eq",
+            "value": true
+          }
+        ],
+        "changes": {
+          "plain.location": {
+            "before": "tray",
+            "after": "basket"
+          },
+          "plain.owner": {
+            "before": "mara",
+            "after": "noor"
+          },
+          "noor.hungry": {
+            "before": true,
+            "after": false
+          },
+          "noor.received": {
+            "before": null,
+            "after": "plain"
+          },
+          "exchange.success": {
+            "before": false,
+            "after": true
+          },
+          "exchange.fair": {
+            "before": false,
+            "after": true
+          }
+        }
+      },
+      {
+        "id": 10,
+        "scene": "reserve_claimed_nut",
+        "kernel": "cooperation",
+        "actors": [
+          "pip",
+          "mara",
+          "nut"
+        ],
+        "summary": "Mara reserved Pip's promised nut bun for him",
+        "causes": [
+          8
+        ],
+        "requires": [
+          {
+            "key": "pip.claimed",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "nut.owner",
+            "op": "eq",
+            "value": "mara"
+          },
+          {
+            "key": "mara.location",
+            "op": "eq",
+            "value": "stall"
+          }
+        ],
+        "changes": {
+          "nut.owner": {
+            "before": "mara",
+            "after": "pip"
+          },
+          "pip.claimed": {
+            "before": true,
+            "after": false
+          },
+          "pip.satisfied": {
+            "before": false,
+            "after": true
+          }
+        }
+      },
+      {
+        "id": 11,
+        "scene": "display_checked_labels",
+        "kernel": "arrangement",
+        "actors": [
+          "ada",
+          "mara",
+          "label",
+          "tray"
+        ],
+        "summary": "Ada and Mara set out a checked, accurate label beside the tray",
+        "causes": [
+          4,
+          9,
+          10
+        ],
+        "requires": [
+          {
+            "key": "label.present",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "mara.evidence_seen",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "exchange.success",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "pip.satisfied",
+            "op": "eq",
+            "value": true
+          }
+        ],
+        "changes": {
+          "stall.display": {
+            "before": "confusing",
+            "after": "clear"
+          }
+        }
+      }
+    ]
+  }
+]

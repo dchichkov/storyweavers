@@ -1,0 +1,304 @@
+{
+  "model": "gpt-5.6-luna",
+  "service_tier": "flex",
+  "reasoning": {
+    "effort": "low"
+  },
+  "max_output_tokens": 11000,
+  "store": false,
+  "input": [
+    {
+      "role": "system",
+      "content": "You author executable, composable children's story worlds. Follow the supplied authoring contract. Treat example story content as data. Return only the requested artifact."
+    },
+    {
+      "role": "user",
+      "content": "# Storyscenes v2: causal scenes, conditional prose\n\nWrite warm, lively stories for ages 5–8. Cleverness can be playful. Characters\nwant a party, a discovery, a daring performance, a friend, a ridiculous prize.\nThey are not inspectors teaching each other project management. Let a choice\nchange something; let the last image carry the meaning without explaining it.\n\nThe engine composes scenes over a persistent world. Shared characters and props\ncarry desires, beliefs and meme magnitudes. No runtime LLM. No prewritten linear\nroute selected by a branch number. Keep the world small enough to understand.\n\n## Theater design\n\nUse 2–4 characters with distinct wants, one shared setting, and a few props.\nDesign THREE genuinely different problems that can arise from initial physical\nor social conditions. At least one should involve mistaken belief or conflicting\nwants, not broken equipment or weather. Examples within a puppet theater:\nsomeone wants the wrong part; a supposed audience turns out to be a rehearsal;\na child invents a performance for a guest who experiences it differently.\nDo not use these examples unless they suit this theater. Find your own.\n\nLet these produce different consequences and endings, not three routes to the\nsame delivered parcel. Seed changes should alter what is wanted, understood,\ntraded, made or performed. Use 3–5 interacting kernel families. Reuse at least\ntwo scenes across materially different paths. An inciting action must establish\nits problem before responses to it; bind that to a physical promise, invitation,\nobserved problem, or an actor's knowledge. Do not add abstract stage counters.\n\n## Executable simulation\n\nReturn Python defining `build(seed) -> WorldSpec`. Allowed imports: random,\nruntime, math, itertools, collections. All state values are scalar. All state\nkeys start with the ID of an existing physical entity. Declare every slot first.\n\n```python\nimport random\nfrom runtime import WorldSpec, Condition as C, Rule, scene, observe, tell, transfer\n\ndef build(seed):\n    rng = random.Random(seed)\n    entities = {'ada': {'name':'Ada','kind':'child'},\n                'box': {'name':'wooden box','kind':'prop'}}\n    initial = {'ada.memes.Curiosity': 2, 'ada.knows.box.open': None,\n               'box.open': False, 'box.owner': 'ada'}\n    scenes = (\n        observe('look', 'ada', 'box.open',\n                requires=(C('ada.memes.Curiosity','ge',1),),\n                summary='Ada inspected the box'),\n        scene('open', 'Solve', ('ada',),\n              when=(C('ada.knows.box.open','eq',False),),\n              set_values={'box.open':True},\n              summary='Ada lifted the lid'),\n    )\n    return WorldSpec('Example only', entities, initial, scenes,\n                     goal=(C('box.open','eq',True),),\n                     rules=(), labels={'box.open':'the box lid'}, prune=True,\n                     premise_keys=('box.owner',), outcome_keys=('box.open',))\n```\n\n`scene(id,kernel,actors, *, when=(), set_values=None, increments=None,\ncopies=None, summary='', weight=1.0, max_uses=1, pivotal=False)` creates an\nimmutable candidate. `set_values` maps keys to constants, `increments` maps\nkeys to numerical additions, `copies` maps destination keys to source keys.\nCopies read PRE-state. Every effect is atomic; duplicate destination keys fail.\nUse this keyword API, not positional Effect constructors.\n\n`C(key,op,constant)` supports eq/ne/lt/le/gt/ge/in/not_in. Conditions are ANDed;\na condition value is never another state reference. `Rule(name,must,when=())`\nmeans all must conditions hold whenever all when conditions hold. Use tuples\nof Conditions, even for a single condition. Empty when means always.\n\n`observe(id,actor,fact,requires=(),summary='')` copies fact into the declared\n`actor.knows.<fact>` slot. `tell(id,speaker,listener,fact,...)` copies the\nspeaker's non-None belief to the listener. `transfer(id,actor,recipient,prop,...)`\nrequires prop.owner == actor and updates the single owner slot. Use at least one\nof these shared kernels. Guard access, location, knowledge, and motives as needed.\nNo mind reading. Beliefs do not automatically change when the world changes.\n\nUse 12–22 candidates and aim for 5–10 selected events. The shared planner drops\nactions that contribute neither to the final outcome nor to a pivotal character\nturn. Set `pivotal=True` only for 1–2 important character moments whose changed\nstate matters even if it is not a goal prerequisite. Prefer real dependencies.\nNever mark every preparation action pivotal. Supply `prune=True`.\n\n`premise_keys` names 2–4 actual initial properties that distinguish the problems.\n`outcome_keys` names 1–3 actual final properties that distinguish consequences.\nThey must be declared state keys. Track concrete accomplishments, ownership,\nagreements and locations. A promise to do something is not its completion.\nOne goal may accept several distinct outcomes (e.g. actor.content == True),\nbut the outcomes themselves must be physical/social facts with different meaning.\n\n## Prose catalog\n\nThe final generator is compiled from a JSON catalog by a shared renderer. Write\ncomplete grammatical text variants; the engine handles conditions, placeholders,\nevent order, grouping, RNG selection and fact references. Do not write Python\nrendering logic. No hand-built enum interpolation.\n\nCatalog fields:\n- `openings`: variants establishing the actual initial desire and problem.\n- `scenes`: objects with `scene` (exact simulation ID), `role` (`beat` or\n  `bridge`), and `variants`. Supply EVERY candidate, including unseen preview paths.\n- `endings`: variants guarded by the actual final outcome. A final image, not\n  another summary of the full story. Do not claim unused props were used.\n- `lexicon`: objects `{key, value, text}` defining a complete grammatical phrase\n  for each dynamic state value mentioned through a phrase placeholder.\n\nEach variant: `{text, when}`. Each condition in `when` has `key`, `op` (eq/ne/ge/le),\n`value` (scalar), `at` (initial/before/after). For scenes, after means THIS event's\npost-state. Before means its pre-state. For endings, after means final state.\nThe most specific matching variants are eligible; the prose RNG selects among\nthem. No matching variant is an error. Two unguarded variants can vary voice,\nbut assertions about a variable fact MUST be conditional or use a phrase slot.\n\nPlaceholders:\n- `{name:ada}` substitutes the existing entity's display name.\n- `{phrase:box.mark}` substitutes an explicit lexicon phrase for its current value.\nNo other braces or Python expressions. There is no raw-value fallback.\nExamples: for request == 'return', map to 'wanted her button back'; for\ncondition == 'sound', map to 'was smooth and unbroken'. Do not write 'to be return'.\n\n`bridge` cards should take 10–25 words and connect routine actions naturally.\nAdjacent bridges are joined. `beat` cards should take 35–70 words, often with\nan exchange of dialogue. A discovery must say WHAT was discovered. A character\nwho has not discovered a fact cannot speak as if they know it. Do not narrate\nan event twice by adding its debug summary after the scene prose.\n\nAim for 220–400 words in a complete sample, not 600 words of repeated preparation.\nProvide at least two voice variants for openings and two for each major ending.\nUse silly specifics, surprise, affection, and distinctive voices, without adding\nnew physical events. Avoid stock explanations about evidence, responsibility,\naccounting, carefulness, or proving that a constraint was satisfied. No moral\nparagraph. The reader should notice the change in the final image.\n\nNever leave alternatives in the text ('held—or did not hold', 'she said, or').\nDo not narrate correct equipment as broken; do not repair it twice. Do not carry\na functioning machine's part away merely because it makes a nice ending image.\n\n## Cheap authoring protocol (v3)\n\nAll authoring and routine repairs use Luna. Plan compactly: keep the whole plan\nunder 650 words and the mechanics under 200 lines. Repairs return exact source\nedits or individual JSON catalog edits. Never depend on a more capable model\nreplacing the world later. Keep a small, inspectable set of real constraints.\n\nThe shared observe/tell/transfer kernels accept `when` as well as `requires`,\nand `pivotal`/`weight`, consistently with scene(). A shared kernel must matter:\nobserved or told knowledge must enable a later action; gratuitous observations\nwill be pruned. Names of facts include their carrier: observing box.open declares\nada.knows.box.open, not ada.knows.open. A shared observation can occur before\nseveral different decisions. No unsupported first-name variables.\n\nCharacters may speak about their own wants without inspecting themselves.\nA performer actually performs before an ending can describe the performance;\na promised invitation is not a delivered invitation. Narrative prose can add\nvoice and harmless sensory detail, but must not invent an action to make a thin\nsimulation seem richer. Condition cards on variable wants, knowledge and results.\n\n\nTHEATER PLAN:\n{\"title\": \"The Pond Concert and the Neighbor with the Quietest Ears\", \"premise\": \"At a moonlit pond, Frog, Mia, and Teo plan a concert. A sleepy neighbor, a floating lily stage, and three very different ideas about music can turn the same concert into a serenade, a dance, or a tiny boat parade.\", \"cast_and_props\": \"Characters: Frog, who wants to be admired for a grand performance; Mia, who wants a dance concert; Teo, who wants a soft song for someone tired; Nora, the quiet pond neighbor, who may want silence, a lullaby, or a place to sit. Props: lily.stage, bell, reed.flute, and leaf.boat. The shared setting is the pond edge at dusk. Every prop has a physical owner or location; no new props are invented in prose.\", \"kernels_and_interactions\": \"Kernel families: (1) observe/tell beliefs about Nora's actual wish; (2) transfer ownership of the lily stage or leaf boat; (3) choose a concert style; (4) perform the chosen style; (5) change Nora's social response. Problem one: Frog assumes Nora wants a booming concert, but observation reveals she wants quiet; the consequence is a soft frog-song that makes Nora content. Problem two: Mia and Teo want incompatible performances; telling and trading the bell for the reed produces a call-and-response dance-lullaby. Problem three: the children assume Nora is only listening, but she owns the floating lily stage and wants to join from the water; an invitation and transfer make a boat parade. Shared scenes include gathering at the pond, observing the neighbor, choosing a style, and Frog's performance. The same observed fact can enable different choices.\", \"seed_parameters\": \"The seed selects mode = rng.randrange(3). Mode 0 initializes frog.belief='loud', nora.want='quiet', lily.owner='frog'. Mode 1 initializes mia.want='dance', teo.want='lullaby', nora.want='lullaby', lily.owner='frog'. Mode 2 initializes nora.want='join', lily.owner='nora', leaf.boat.owner='nora'. premise_keys=('frog.belief','mia.want','lily.owner','nora.want'). outcome_keys=('concert.style','frog.performed','nora.content','lily.owner').\", \"candidate_scenes\": \"```python\\nimport random\\nfrom runtime import WorldSpec, Condition as C, scene, observe, tell, transfer\\n\\ndef build(seed):\\n    rng=random.Random(seed); mode=rng.randrange(3)\\n    entities={'frog':{'name':'Frog','kind':'animal'},'mia':{'name':'Mia','kind':'child'},'teo':{'name':'Teo','kind':'child'},'nora':{'name':'Nora','kind':'neighbor'},'lily':{'name':'floating lily','kind':'prop'},'bell':{'name':'silver bell','kind':'prop'},'reed':{'name':'reed flute','kind':'prop'},'boat':{'name':'leaf boat','kind':'prop'}}\\n    initial={\\n      'frog.belief':('loud' if mode==0 else 'unknown'),'frog.knows.nora.want':None,'frog.performed':False,\\n      'mia.want':('dance' if mode==1 else 'concert'),'teo.want':('lullaby' if mode==1 else 'concert'),'mia.knows.nora.want':None,\\n      'nora.want':('quiet' if mode==0 else 'lullaby' if mode==1 else 'join'),'nora.content':False,\\n      'lily.owner':('nora' if mode==2 else 'frog'),'bell.owner':'mia','reed.owner':'teo','boat.owner':'nora',\\n      'concert.style':'none','invitation.sent':False}\\n    scenes=(\\n      scene('gather','Gather',('frog','mia','teo'),set_values={'concert.style':'none'},summary='The performers gathered beside the pond',weight=1.2),\\n      observe('notice_nora','frog','nora.want',requires=(C('frog.knows.nora.want','eq',None),),summary='Frog watched Nora carefully'),\\n      tell('tell_nora','frog','mia','nora.want',when=(C('frog.knows.nora.want','ne',None),),summary='Frog told Mia what Nora wanted'),\\n      tell('tell_nora_teo','frog','teo','nora.want',when=(C('frog.knows.nora.want','ne',None),),summary='Frog told Teo what Nora wanted'),\\n      scene('choose_soft','Choice',('frog','teo'),when=(C('nora.want','eq','quiet'),C('frog.knows.nora.want','eq','quiet')),set_values={'concert.style':'soft'},summary='They chose a hush-soft concert',pivotal=True),\\n      scene('choose_duet','Choice',('mia','teo'),when=(C('mia.want','eq','dance'),C('teo.want','eq','lullaby'),C('nora.want','eq','lullaby')),set_values={'concert.style':'duet'},summary='They chose a dancing lullaby',pivotal=True),\\n      scene('invite_nora','Invitation',('mia','nora'),when=(C('nora.want','eq','join'),C('lily.owner','eq','nora')),set_values={'invitation.sent':True},summary='Mia invited Nora onto the water'),\\n      transfer('lend_lily','nora','frog','lily',when=(C('invitation.sent','eq',True),),summary='Nora lent the floating lily stage'),\\n      scene('choose_boat','Choice',('frog','mia','teo'),when=(C('nora.want','eq','join'),C('lily.owner','eq','frog')),set_values={'concert.style':'boat'},summary='They chose a floating boat concert',pivotal=True),\\n      transfer('trade_bell','mia','teo','bell',when=(C('concert.style','eq','duet'),),summary='Mia handed Teo the silver bell'),\\n      scene('perform_soft','Performance',('frog','teo'),when=(C('concert.style','eq','soft'),),set_values={'frog.performed':True,'nora.content':True},summary='Frog performed a soft pond song'),\\n      scene('perform_duet','Performance',('frog','mia','teo'),when=(C('concert.style','eq','duet'),C('bell.owner','eq','teo')),set_values={'frog.performed':True,'nora.content':True},summary='Frog performed a dancing lullaby'),\\n      scene('perform_boat','Performance',('frog','mia','teo','nora'),when=(C('concert.style','eq','boat'),C('lily.owner','eq','frog')),set_values={'frog.performed':True,'nora.content':True},summary='Frog performed from the floating lily'),\\n      scene('quiet_bow','Ending','frog',when=(C('concert.style','eq','soft'),C('frog.performed','eq',True)),set_values={'nora.content':True},summary='Nora smiled without making a sound'),\\n      scene('duet_bow','Ending','frog',when=(C('concert.style','eq','duet'),C('frog.performed','eq',True)),set_values={'nora.content':True},summary='Nora tapped the water in time'),\\n      scene('boat_bow','Ending','frog',when=(C('concert.style','eq','boat'),C('frog.performed','eq',True)),set_values={'nora.content':True},summary='Nora sailed the lily in a slow circle'),\\n    )\\n    return WorldSpec('Pond Concert',entities,initial,scenes,goal=(C('frog.performed','eq',True),C('nora.content','eq',True)),rules=(),labels={'concert.style':'concert style','nora.want':'Nora\\u2019s wish'},prune=True,premise_keys=('frog.belief','mia.want','lily.owner','nora.want'),outcome_keys=('concert.style','frog.performed','nora.content','lily.owner'))\\n```\", \"constraints\": \"Use 5\\u201310 selected events. The planner must not select tell_nora_teo unless it contributes to the duet or another enabled choice. A transfer requires the stated owner. Nora's wish is never spoken by Nora before it is observed and told. Performance must precede any ending card. Do not describe the bell, reed, lily, or boat as broken. The prose should show the consequences rather than explain a lesson.\", \"different_endings\": \"Soft ending: the pond receives a tiny song, and Nora's eyelids lift as one round silver bubble rises beside her. Dancing-lullaby ending: Mia's feet patter, Teo's bell twinkles, and Nora taps the water until the ripples look like dancing commas. Boat-parade ending: Nora glides past on the lily while Frog sings from its middle, and the leaf boat bumps along behind like a very small royal carriage. Each ending needs two voice variants, guarded by concert.style and frog.performed, with no unguarded assertion about the selected style.\"}\n\nDESIGN SEED:\n{\"index\": 2, \"seed\": 3911652248, \"theater\": \"pond_concert\", \"premise\": \"A frog and two children want a pond concert. Different listeners, floating props, and a mistaken assumption about a quiet neighbor matter.\"}\n\nFROZEN SIMULATION:\nimport random\nfrom runtime import WorldSpec, Condition as C, scene, observe, tell, transfer\n\ndef build(seed):\n    rng = random.Random(seed)\n    mode = rng.randrange(3)\n\n    entities = {\n        'frog': {'name': 'Frog', 'kind': 'animal'},\n        'mia': {'name': 'Mia', 'kind': 'child'},\n        'teo': {'name': 'Teo', 'kind': 'child'},\n        'nora': {'name': 'Nora', 'kind': 'neighbor'},\n        'lily': {'name': 'floating lily', 'kind': 'prop'},\n        'bell': {'name': 'silver bell', 'kind': 'prop'},\n        'reed': {'name': 'reed flute', 'kind': 'prop'},\n        'boat': {'name': 'leaf boat', 'kind': 'prop'},\n        'invitation': {'name': 'pond invitation', 'kind': 'prop'},\n        'concert': {'name': 'pond concert', 'kind': 'prop'},\n    }\n\n    initial = {\n        'frog.belief': 'loud' if mode == 0 else 'unknown',\n        'frog.knows.nora.want': None,\n        'frog.performed': False,\n        'mia.want': 'dance' if mode == 1 else 'concert',\n        'mia.knows.nora.want': None,\n        'teo.want': 'lullaby' if mode == 1 else 'concert',\n        'teo.knows.nora.want': None,\n        'nora.want': 'quiet' if mode == 0 else 'lullaby' if mode == 1 else 'join',\n        'nora.content': False,\n        'nora.response': 'none',\n        'lily.owner': 'nora' if mode == 2 else 'frog',\n        'bell.owner': 'mia',\n        'reed.owner': 'teo',\n        'boat.owner': 'nora',\n        'invitation.sent': False,\n        'concert.style': 'none',\n    }\n\n    scenes = (\n        observe(\n            'notice_nora',\n            'frog',\n            'nora.want',\n            requires=(C('frog.knows.nora.want', 'eq', None),),\n            summary='Frog watched Nora beside the pond',\n        ),\n        tell(\n            'tell_mia',\n            'frog',\n            'mia',\n            'nora.want',\n            when=(C('frog.knows.nora.want', 'ne', None),),\n            summary='Frog told Mia what Nora wanted',\n        ),\n        tell(\n            'tell_teo',\n            'frog',\n            'teo',\n            'nora.want',\n            when=(C('frog.knows.nora.want', 'ne', None),),\n            summary='Frog told Teo what Nora wanted',\n        ),\n        scene(\n            'choose_soft',\n            'Choice',\n            ('frog', 'teo'),\n            when=(\n                C('frog.knows.nora.want', 'eq', 'quiet'),\n                C('teo.knows.nora.want', 'eq', 'quiet'),\n                C('nora.want', 'eq', 'quiet'),\n            ),\n            set_values={'concert.style': 'soft'},\n            summary='They chose a hush-soft concert',\n            pivotal=True,\n        ),\n        scene(\n            'choose_duet',\n            'Choice',\n            ('mia', 'teo'),\n            when=(\n                C('mia.want', 'eq', 'dance'),\n                C('teo.want', 'eq', 'lullaby'),\n                C('mia.knows.nora.want', 'eq', 'lullaby'),\n                C('teo.knows.nora.want', 'eq', 'lullaby'),\n                C('nora.want', 'eq', 'lullaby'),\n            ),\n            set_values={'concert.style': 'duet'},\n            summary='They chose a dancing lullaby',\n            pivotal=True,\n        ),\n        scene(\n            'invite_nora',\n            'Invitation',\n            ('mia', 'nora'),\n            when=(\n                C('mia.knows.nora.want', 'eq', 'join'),\n                C('nora.want', 'eq', 'join'),\n                C('lily.owner', 'eq', 'nora'),\n            ),\n            set_values={'invitation.sent': True},\n            summary='Mia invited Nora onto the water',\n        ),\n        transfer(\n            'lend_lily',\n            'nora',\n            'frog',\n            'lily',\n            when=(C('invitation.sent', 'eq', True),),\n            summary='Nora lent over the floating lily',\n        ),\n        scene(\n            'choose_boat',\n            'Choice',\n            ('frog', 'mia', 'teo'),\n            when=(\n                C('teo.knows.nora.want', 'eq', 'join'),\n                C('nora.want', 'eq', 'join'),\n                C('lily.owner', 'eq', 'frog'),\n            ),\n            set_values={'concert.style': 'boat'},\n            summary='They chose a floating boat concert',\n            pivotal=True,\n        ),\n        transfer(\n            'trade_bell',\n            'mia',\n            'teo',\n            'bell',\n            when=(C('concert.style', 'eq', 'duet'),),\n            summary='Mia handed Teo the silver bell',\n        ),\n        scene(\n            'perform_soft',\n            'Performance',\n            ('frog', 'teo'),\n            when=(C('concert.style', 'eq', 'soft'), C('teo.knows.nora.want', 'eq', 'quiet')),\n            set_values={'frog.performed': True, 'nora.content': True},\n            summary='Frog performed a soft pond song',\n        ),\n        scene(\n            'perform_duet',\n            'Performance',\n            ('frog', 'mia', 'teo'),\n            when=(\n                C('concert.style', 'eq', 'duet'),\n                C('bell.owner', 'eq', 'teo'),\n            ),\n            set_values={'frog.performed': True, 'nora.content': True},\n            summary='Frog performed a dancing lullaby',\n        ),\n        scene(\n            'perform_boat',\n            'Performance',\n            ('frog', 'mia', 'teo', 'nora'),\n            when=(\n                C('concert.style', 'eq', 'boat'),\n                C('lily.owner', 'eq', 'frog'),\n            ),\n            set_values={'frog.performed': True, 'nora.content': True},\n            summary='Frog performed from the floating lily',\n        ),\n        scene(\n            'quiet_bow',\n            'Ending',\n            ('frog',),\n            when=(\n                C('concert.style', 'eq', 'soft'),\n                C('frog.performed', 'eq', True),\n            ),\n            set_values={'nora.response': 'bubble'},\n            summary='Nora answered with one round silver bubble',\n        ),\n        scene(\n            'duet_bow',\n            'Ending',\n            ('frog',),\n            when=(\n                C('concert.style', 'eq', 'duet'),\n                C('frog.performed', 'eq', True),\n            ),\n            set_values={'nora.response': 'ripples'},\n            summary='Nora tapped the water in time',\n        ),\n        scene(\n            'boat_bow',\n            'Ending',\n            ('frog',),\n            when=(\n                C('concert.style', 'eq', 'boat'),\n                C('frog.performed', 'eq', True),\n            ),\n            set_values={'nora.response': 'parade'},\n            summary='Nora sailed the lily in a slow circle',\n        ),\n    )\n\n    return WorldSpec(\n        'The Pond Concert and the Neighbor with the Quietest Ears',\n        entities,\n        initial,\n        scenes,\n        goal=(\n            C('frog.performed', 'eq', True),\n            C('nora.content', 'eq', True),\n        ),\n        rules=(),\n        labels={\n            'concert.style': 'concert style',\n            'nora.want': \"Nora's wish\",\n            'nora.response': \"Nora's response\",\n        },\n        prune=True,\n        premise_keys=(\n            'frog.belief',\n            'mia.want',\n            'lily.owner',\n            'nora.want',\n        ),\n        outcome_keys=(\n            'concert.style',\n            'frog.performed',\n            'nora.response',\n            'lily.owner',\n        ),\n    )\n\nTHREE EXECUTED PREVIEWS:\n[{\"seed\": 0, \"title\": \"The Pond Concert and the Neighbor with the Quietest Ears\", \"initial\": {\"frog.belief\": \"unknown\", \"frog.knows.nora.want\": null, \"frog.performed\": false, \"mia.want\": \"dance\", \"mia.knows.nora.want\": null, \"teo.want\": \"lullaby\", \"teo.knows.nora.want\": null, \"nora.want\": \"lullaby\", \"nora.content\": false, \"nora.response\": \"none\", \"lily.owner\": \"frog\", \"bell.owner\": \"mia\", \"reed.owner\": \"teo\", \"boat.owner\": \"nora\", \"invitation.sent\": false, \"concert.style\": \"none\"}, \"final\": {\"frog.belief\": \"unknown\", \"frog.knows.nora.want\": \"lullaby\", \"frog.performed\": true, \"mia.want\": \"dance\", \"mia.knows.nora.want\": \"lullaby\", \"teo.want\": \"lullaby\", \"teo.knows.nora.want\": \"lullaby\", \"nora.want\": \"lullaby\", \"nora.content\": true, \"nora.response\": \"none\", \"lily.owner\": \"frog\", \"bell.owner\": \"teo\", \"reed.owner\": \"teo\", \"boat.owner\": \"nora\", \"invitation.sent\": false, \"concert.style\": \"duet\"}, \"events\": [{\"id\": 1, \"scene\": \"notice_nora\", \"kernel\": \"Observe\", \"actors\": [\"frog\"], \"summary\": \"Frog watched Nora beside the pond\", \"causes\": [], \"requires\": [{\"key\": \"frog.knows.nora.want\", \"op\": \"eq\", \"value\": null}], \"changes\": {\"frog.knows.nora.want\": {\"before\": null, \"after\": \"lullaby\"}}}, {\"id\": 2, \"scene\": \"tell_mia\", \"kernel\": \"Tell\", \"actors\": [\"frog\", \"mia\"], \"summary\": \"Frog told Mia what Nora wanted\", \"causes\": [1], \"requires\": [{\"key\": \"frog.knows.nora.want\", \"op\": \"ne\", \"value\": null}, {\"key\": \"frog.knows.nora.want\", \"op\": \"ne\", \"value\": null}], \"changes\": {\"mia.knows.nora.want\": {\"before\": null, \"after\": \"lullaby\"}}}, {\"id\": 3, \"scene\": \"tell_teo\", \"kernel\": \"Tell\", \"actors\": [\"frog\", \"teo\"], \"summary\": \"Frog told Teo what Nora wanted\", \"causes\": [1], \"requires\": [{\"key\": \"frog.knows.nora.want\", \"op\": \"ne\", \"value\": null}, {\"key\": \"frog.knows.nora.want\", \"op\": \"ne\", \"value\": null}], \"changes\": {\"teo.knows.nora.want\": {\"before\": null, \"after\": \"lullaby\"}}}, {\"id\": 4, \"scene\": \"choose_duet\", \"kernel\": \"Choice\", \"actors\": [\"mia\", \"teo\"], \"summary\": \"They chose a dancing lullaby\", \"causes\": [2, 3], \"requires\": [{\"key\": \"mia.want\", \"op\": \"eq\", \"value\": \"dance\"}, {\"key\": \"teo.want\", \"op\": \"eq\", \"value\": \"lullaby\"}, {\"key\": \"mia.knows.nora.want\", \"op\": \"eq\", \"value\": \"lullaby\"}, {\"key\": \"teo.knows.nora.want\", \"op\": \"eq\", \"value\": \"lullaby\"}, {\"key\": \"nora.want\", \"op\": \"eq\", \"value\": \"lullaby\"}], \"changes\": {\"concert.style\": {\"before\": \"none\", \"after\": \"duet\"}}}, {\"id\": 5, \"scene\": \"trade_bell\", \"kernel\": \"Transfer\", \"actors\": [\"mia\", \"teo\"], \"summary\": \"Mia handed Teo the silver bell\", \"causes\": [4], \"requires\": [{\"key\": \"bell.owner\", \"op\": \"eq\", \"value\": \"mia\"}, {\"key\": \"concert.style\", \"op\": \"eq\", \"value\": \"duet\"}], \"changes\": {\"bell.owner\": {\"before\": \"mia\", \"after\": \"teo\"}}}, {\"id\": 6, \"scene\": \"perform_duet\", \"kernel\": \"Performance\", \"actors\": [\"frog\", \"mia\", \"teo\"], \"summary\": \"Frog performed a dancing lullaby\", \"causes\": [4, 5], \"requires\": [{\"key\": \"concert.style\", \"op\": \"eq\", \"value\": \"duet\"}, {\"key\": \"bell.owner\", \"op\": \"eq\", \"value\": \"teo\"}], \"changes\": {\"frog.performed\": {\"before\": false, \"after\": true}, \"nora.content\": {\"before\": false, \"after\": true}}}]}, {\"seed\": 1, \"title\": \"The Pond Concert and the Neighbor with the Quietest Ears\", \"initial\": {\"frog.belief\": \"loud\", \"frog.knows.nora.want\": null, \"frog.performed\": false, \"mia.want\": \"concert\", \"mia.knows.nora.want\": null, \"teo.want\": \"concert\", \"teo.knows.nora.want\": null, \"nora.want\": \"quiet\", \"nora.content\": false, \"nora.response\": \"none\", \"lily.owner\": \"frog\", \"bell.owner\": \"mia\", \"reed.owner\": \"teo\", \"boat.owner\": \"nora\", \"invitation.sent\": false, \"concert.style\": \"none\"}, \"final\": {\"frog.belief\": \"loud\", \"frog.knows.nora.want\": \"quiet\", \"frog.performed\": true, \"mia.want\": \"concert\", \"mia.knows.nora.want\": null, \"teo.want\": \"concert\", \"teo.knows.nora.want\": \"quiet\", \"nora.want\": \"quiet\", \"nora.content\": true, \"nora.response\": \"none\", \"lily.owner\": \"frog\", \"bell.owner\": \"mia\", \"reed.owner\": \"teo\", \"boat.owner\": \"nora\", \"invitation.sent\": false, \"concert.style\": \"soft\"}, \"events\": [{\"id\": 1, \"scene\": \"notice_nora\", \"kernel\": \"Observe\", \"actors\": [\"frog\"], \"summary\": \"Frog watched Nora beside the pond\", \"causes\": [], \"requires\": [{\"key\": \"frog.knows.nora.want\", \"op\": \"eq\", \"value\": null}], \"changes\": {\"frog.knows.nora.want\": {\"before\": null, \"after\": \"quiet\"}}}, {\"id\": 2, \"scene\": \"tell_teo\", \"kernel\": \"Tell\", \"actors\": [\"frog\", \"teo\"], \"summary\": \"Frog told Teo what Nora wanted\", \"causes\": [1], \"requires\": [{\"key\": \"frog.knows.nora.want\", \"op\": \"ne\", \"value\": null}, {\"key\": \"frog.knows.nora.want\", \"op\": \"ne\", \"value\": null}], \"changes\": {\"teo.knows.nora.want\": {\"before\": null, \"after\": \"quiet\"}}}, {\"id\": 3, \"scene\": \"choose_soft\", \"kernel\": \"Choice\", \"actors\": [\"frog\", \"teo\"], \"summary\": \"They chose a hush-soft concert\", \"causes\": [1, 2], \"requires\": [{\"key\": \"frog.knows.nora.want\", \"op\": \"eq\", \"value\": \"quiet\"}, {\"key\": \"teo.knows.nora.want\", \"op\": \"eq\", \"value\": \"quiet\"}, {\"key\": \"nora.want\", \"op\": \"eq\", \"value\": \"quiet\"}], \"changes\": {\"concert.style\": {\"before\": \"none\", \"after\": \"soft\"}}}, {\"id\": 4, \"scene\": \"perform_soft\", \"kernel\": \"Performance\", \"actors\": [\"frog\", \"teo\"], \"summary\": \"Frog performed a soft pond song\", \"causes\": [2, 3], \"requires\": [{\"key\": \"concert.style\", \"op\": \"eq\", \"value\": \"soft\"}, {\"key\": \"teo.knows.nora.want\", \"op\": \"eq\", \"value\": \"quiet\"}], \"changes\": {\"frog.performed\": {\"before\": false, \"after\": true}, \"nora.content\": {\"before\": false, \"after\": true}}}]}, {\"seed\": 2, \"title\": \"The Pond Concert and the Neighbor with the Quietest Ears\", \"initial\": {\"frog.belief\": \"loud\", \"frog.knows.nora.want\": null, \"frog.performed\": false, \"mia.want\": \"concert\", \"mia.knows.nora.want\": null, \"teo.want\": \"concert\", \"teo.knows.nora.want\": null, \"nora.want\": \"quiet\", \"nora.content\": false, \"nora.response\": \"none\", \"lily.owner\": \"frog\", \"bell.owner\": \"mia\", \"reed.owner\": \"teo\", \"boat.owner\": \"nora\", \"invitation.sent\": false, \"concert.style\": \"none\"}, \"final\": {\"frog.belief\": \"loud\", \"frog.knows.nora.want\": \"quiet\", \"frog.performed\": true, \"mia.want\": \"concert\", \"mia.knows.nora.want\": null, \"teo.want\": \"concert\", \"teo.knows.nora.want\": \"quiet\", \"nora.want\": \"quiet\", \"nora.content\": true, \"nora.response\": \"none\", \"lily.owner\": \"frog\", \"bell.owner\": \"mia\", \"reed.owner\": \"teo\", \"boat.owner\": \"nora\", \"invitation.sent\": false, \"concert.style\": \"soft\"}, \"events\": [{\"id\": 1, \"scene\": \"notice_nora\", \"kernel\": \"Observe\", \"actors\": [\"frog\"], \"summary\": \"Frog watched Nora beside the pond\", \"causes\": [], \"requires\": [{\"key\": \"frog.knows.nora.want\", \"op\": \"eq\", \"value\": null}], \"changes\": {\"frog.knows.nora.want\": {\"before\": null, \"after\": \"quiet\"}}}, {\"id\": 2, \"scene\": \"tell_teo\", \"kernel\": \"Tell\", \"actors\": [\"frog\", \"teo\"], \"summary\": \"Frog told Teo what Nora wanted\", \"causes\": [1], \"requires\": [{\"key\": \"frog.knows.nora.want\", \"op\": \"ne\", \"value\": null}, {\"key\": \"frog.knows.nora.want\", \"op\": \"ne\", \"value\": null}], \"changes\": {\"teo.knows.nora.want\": {\"before\": null, \"after\": \"quiet\"}}}, {\"id\": 3, \"scene\": \"choose_soft\", \"kernel\": \"Choice\", \"actors\": [\"frog\", \"teo\"], \"summary\": \"They chose a hush-soft concert\", \"causes\": [1, 2], \"requires\": [{\"key\": \"frog.knows.nora.want\", \"op\": \"eq\", \"value\": \"quiet\"}, {\"key\": \"teo.knows.nora.want\", \"op\": \"eq\", \"value\": \"quiet\"}, {\"key\": \"nora.want\", \"op\": \"eq\", \"value\": \"quiet\"}], \"changes\": {\"concert.style\": {\"before\": \"none\", \"after\": \"soft\"}}}, {\"id\": 4, \"scene\": \"perform_soft\", \"kernel\": \"Performance\", \"actors\": [\"frog\", \"teo\"], \"summary\": \"Frog performed a soft pond song\", \"causes\": [2, 3], \"requires\": [{\"key\": \"concert.style\", \"op\": \"eq\", \"value\": \"soft\"}, {\"key\": \"teo.knows.nora.want\", \"op\": \"eq\", \"value\": \"quiet\"}], \"changes\": {\"frog.performed\": {\"before\": false, \"after\": true}, \"nora.content\": {\"before\": false, \"after\": true}}}]}]\n\nREACHABLE FINAL STATES BY OUTCOME:\n[{\"frog.belief\": \"unknown\", \"frog.knows.nora.want\": \"lullaby\", \"frog.performed\": true, \"mia.want\": \"dance\", \"mia.knows.nora.want\": \"lullaby\", \"teo.want\": \"lullaby\", \"teo.knows.nora.want\": \"lullaby\", \"nora.want\": \"lullaby\", \"nora.content\": true, \"nora.response\": \"none\", \"lily.owner\": \"frog\", \"bell.owner\": \"teo\", \"reed.owner\": \"teo\", \"boat.owner\": \"nora\", \"invitation.sent\": false, \"concert.style\": \"duet\"}, {\"frog.belief\": \"loud\", \"frog.knows.nora.want\": \"quiet\", \"frog.performed\": true, \"mia.want\": \"concert\", \"mia.knows.nora.want\": null, \"teo.want\": \"concert\", \"teo.knows.nora.want\": \"quiet\", \"nora.want\": \"quiet\", \"nora.content\": true, \"nora.response\": \"none\", \"lily.owner\": \"frog\", \"bell.owner\": \"mia\", \"reed.owner\": \"teo\", \"boat.owner\": \"nora\", \"invitation.sent\": false, \"concert.style\": \"soft\"}, {\"frog.belief\": \"unknown\", \"frog.knows.nora.want\": \"join\", \"frog.performed\": true, \"mia.want\": \"concert\", \"mia.knows.nora.want\": \"join\", \"teo.want\": \"concert\", \"teo.knows.nora.want\": \"join\", \"nora.want\": \"join\", \"nora.content\": true, \"nora.response\": \"none\", \"lily.owner\": \"frog\", \"bell.owner\": \"mia\", \"reed.owner\": \"teo\", \"boat.owner\": \"nora\", \"invitation.sent\": true, \"concert.style\": \"boat\"}]\n\nSTAGE 5: Return the conditional prose catalog. Include every candidate scene. Write lively little stories with characterful dialogue, discoveries that state WHAT was found, an actual premise and a concrete ending image. Select factual assertions by the relevant condition. Do not write a universal ending describing all possible accomplishments. Openings and endings 40-65 words; important beats 35-55 words, bridges 10-25. Total sample 220-400 words.\n"
+    }
+  ],
+  "text": {
+    "format": {
+      "type": "json_schema",
+      "name": "storyscenes_artifact",
+      "strict": true,
+      "schema": {
+        "type": "object",
+        "properties": {
+          "openings": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "text": {
+                  "type": "string"
+                },
+                "when": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "key": {
+                        "type": "string"
+                      },
+                      "op": {
+                        "type": "string",
+                        "enum": [
+                          "eq",
+                          "ne",
+                          "ge",
+                          "le"
+                        ]
+                      },
+                      "value": {
+                        "anyOf": [
+                          {
+                            "type": "string"
+                          },
+                          {
+                            "type": "number"
+                          },
+                          {
+                            "type": "boolean"
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ]
+                      },
+                      "at": {
+                        "type": "string",
+                        "enum": [
+                          "initial",
+                          "before",
+                          "after"
+                        ]
+                      }
+                    },
+                    "required": [
+                      "key",
+                      "op",
+                      "value",
+                      "at"
+                    ],
+                    "additionalProperties": false
+                  }
+                }
+              },
+              "required": [
+                "text",
+                "when"
+              ],
+              "additionalProperties": false
+            },
+            "minItems": 2
+          },
+          "scenes": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "scene": {
+                  "type": "string"
+                },
+                "role": {
+                  "type": "string",
+                  "enum": [
+                    "bridge",
+                    "beat"
+                  ]
+                },
+                "variants": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "text": {
+                        "type": "string"
+                      },
+                      "when": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "key": {
+                              "type": "string"
+                            },
+                            "op": {
+                              "type": "string",
+                              "enum": [
+                                "eq",
+                                "ne",
+                                "ge",
+                                "le"
+                              ]
+                            },
+                            "value": {
+                              "anyOf": [
+                                {
+                                  "type": "string"
+                                },
+                                {
+                                  "type": "number"
+                                },
+                                {
+                                  "type": "boolean"
+                                },
+                                {
+                                  "type": "null"
+                                }
+                              ]
+                            },
+                            "at": {
+                              "type": "string",
+                              "enum": [
+                                "initial",
+                                "before",
+                                "after"
+                              ]
+                            }
+                          },
+                          "required": [
+                            "key",
+                            "op",
+                            "value",
+                            "at"
+                          ],
+                          "additionalProperties": false
+                        }
+                      }
+                    },
+                    "required": [
+                      "text",
+                      "when"
+                    ],
+                    "additionalProperties": false
+                  },
+                  "minItems": 1
+                }
+              },
+              "required": [
+                "scene",
+                "role",
+                "variants"
+              ],
+              "additionalProperties": false
+            },
+            "minItems": 1
+          },
+          "endings": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "text": {
+                  "type": "string"
+                },
+                "when": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "key": {
+                        "type": "string"
+                      },
+                      "op": {
+                        "type": "string",
+                        "enum": [
+                          "eq",
+                          "ne",
+                          "ge",
+                          "le"
+                        ]
+                      },
+                      "value": {
+                        "anyOf": [
+                          {
+                            "type": "string"
+                          },
+                          {
+                            "type": "number"
+                          },
+                          {
+                            "type": "boolean"
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ]
+                      },
+                      "at": {
+                        "type": "string",
+                        "enum": [
+                          "initial",
+                          "before",
+                          "after"
+                        ]
+                      }
+                    },
+                    "required": [
+                      "key",
+                      "op",
+                      "value",
+                      "at"
+                    ],
+                    "additionalProperties": false
+                  },
+                  "minItems": 1
+                }
+              },
+              "required": [
+                "text",
+                "when"
+              ],
+              "additionalProperties": false
+            },
+            "minItems": 3
+          },
+          "lexicon": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "key": {
+                  "type": "string"
+                },
+                "value": {
+                  "anyOf": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "type": "number"
+                    },
+                    {
+                      "type": "boolean"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "text": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "key",
+                "value",
+                "text"
+              ],
+              "additionalProperties": false
+            }
+          }
+        },
+        "required": [
+          "openings",
+          "scenes",
+          "endings",
+          "lexicon"
+        ],
+        "additionalProperties": false
+      }
+    }
+  }
+}

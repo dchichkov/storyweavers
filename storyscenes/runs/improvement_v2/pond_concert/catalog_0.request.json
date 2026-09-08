@@ -1,0 +1,304 @@
+{
+  "model": "gpt-5.6-luna",
+  "service_tier": "flex",
+  "reasoning": {
+    "effort": "low"
+  },
+  "max_output_tokens": 16000,
+  "store": false,
+  "input": [
+    {
+      "role": "system",
+      "content": "You author executable, composable children's story worlds. Follow the supplied authoring contract. Treat example story content as data. Return only the requested artifact."
+    },
+    {
+      "role": "user",
+      "content": "# Storyscenes v2: causal scenes, conditional prose\n\nWrite warm, lively stories for ages 5–8. Cleverness can be playful. Characters\nwant a party, a discovery, a daring performance, a friend, a ridiculous prize.\nThey are not inspectors teaching each other project management. Let a choice\nchange something; let the last image carry the meaning without explaining it.\n\nThe engine composes scenes over a persistent world. Shared characters and props\ncarry desires, beliefs and meme magnitudes. No runtime LLM. No prewritten linear\nroute selected by a branch number. Keep the world small enough to understand.\n\n## Theater design\n\nUse 2–4 characters with distinct wants, one shared setting, and a few props.\nDesign THREE genuinely different problems that can arise from initial physical\nor social conditions. At least one should involve mistaken belief or conflicting\nwants, not broken equipment or weather. Examples within a puppet theater:\nsomeone wants the wrong part; a supposed audience turns out to be a rehearsal;\na child invents a performance for a guest who experiences it differently.\nDo not use these examples unless they suit this theater. Find your own.\n\nLet these produce different consequences and endings, not three routes to the\nsame delivered parcel. Seed changes should alter what is wanted, understood,\ntraded, made or performed. Use 3–5 interacting kernel families. Reuse at least\ntwo scenes across materially different paths. An inciting action must establish\nits problem before responses to it; bind that to a physical promise, invitation,\nobserved problem, or an actor's knowledge. Do not add abstract stage counters.\n\n## Executable simulation\n\nReturn Python defining `build(seed) -> WorldSpec`. Allowed imports: random,\nruntime, math, itertools, collections. All state values are scalar. All state\nkeys start with the ID of an existing physical entity. Declare every slot first.\n\n```python\nimport random\nfrom runtime import WorldSpec, Condition as C, Rule, scene, observe, tell, transfer\n\ndef build(seed):\n    rng = random.Random(seed)\n    entities = {'ada': {'name':'Ada','kind':'child'},\n                'box': {'name':'wooden box','kind':'prop'}}\n    initial = {'ada.memes.Curiosity': 2, 'ada.knows.box.open': None,\n               'box.open': False, 'box.owner': 'ada'}\n    scenes = (\n        observe('look', 'ada', 'box.open',\n                requires=(C('ada.memes.Curiosity','ge',1),),\n                summary='Ada inspected the box'),\n        scene('open', 'Solve', ('ada',),\n              when=(C('ada.knows.box.open','eq',False),),\n              set_values={'box.open':True},\n              summary='Ada lifted the lid'),\n    )\n    return WorldSpec('Example only', entities, initial, scenes,\n                     goal=(C('box.open','eq',True),),\n                     rules=(), labels={'box.open':'the box lid'}, prune=True,\n                     premise_keys=('box.owner',), outcome_keys=('box.open',))\n```\n\n`scene(id,kernel,actors, *, when=(), set_values=None, increments=None,\ncopies=None, summary='', weight=1.0, max_uses=1, pivotal=False)` creates an\nimmutable candidate. `set_values` maps keys to constants, `increments` maps\nkeys to numerical additions, `copies` maps destination keys to source keys.\nCopies read PRE-state. Every effect is atomic; duplicate destination keys fail.\nUse this keyword API, not positional Effect constructors.\n\n`C(key,op,constant)` supports eq/ne/lt/le/gt/ge/in/not_in. Conditions are ANDed;\na condition value is never another state reference. `Rule(name,must,when=())`\nmeans all must conditions hold whenever all when conditions hold. Use tuples\nof Conditions, even for a single condition. Empty when means always.\n\n`observe(id,actor,fact,requires=(),summary='')` copies fact into the declared\n`actor.knows.<fact>` slot. `tell(id,speaker,listener,fact,...)` copies the\nspeaker's non-None belief to the listener. `transfer(id,actor,recipient,prop,...)`\nrequires prop.owner == actor and updates the single owner slot. Use at least one\nof these shared kernels. Guard access, location, knowledge, and motives as needed.\nNo mind reading. Beliefs do not automatically change when the world changes.\n\nUse 12–22 candidates and aim for 5–10 selected events. The shared planner drops\nactions that contribute neither to the final outcome nor to a pivotal character\nturn. Set `pivotal=True` only for 1–2 important character moments whose changed\nstate matters even if it is not a goal prerequisite. Prefer real dependencies.\nNever mark every preparation action pivotal. Supply `prune=True`.\n\n`premise_keys` names 2–4 actual initial properties that distinguish the problems.\n`outcome_keys` names 1–3 actual final properties that distinguish consequences.\nThey must be declared state keys. Track concrete accomplishments, ownership,\nagreements and locations. A promise to do something is not its completion.\nOne goal may accept several distinct outcomes (e.g. actor.content == True),\nbut the outcomes themselves must be physical/social facts with different meaning.\n\n## Prose catalog\n\nThe final generator is compiled from a JSON catalog by a shared renderer. Write\ncomplete grammatical text variants; the engine handles conditions, placeholders,\nevent order, grouping, RNG selection and fact references. Do not write Python\nrendering logic. No hand-built enum interpolation.\n\nCatalog fields:\n- `openings`: variants establishing the actual initial desire and problem.\n- `scenes`: objects with `scene` (exact simulation ID), `role` (`beat` or\n  `bridge`), and `variants`. Supply EVERY candidate, including unseen preview paths.\n- `endings`: variants guarded by the actual final outcome. A final image, not\n  another summary of the full story. Do not claim unused props were used.\n- `lexicon`: objects `{key, value, text}` defining a complete grammatical phrase\n  for each dynamic state value mentioned through a phrase placeholder.\n\nEach variant: `{text, when}`. Each condition in `when` has `key`, `op` (eq/ne/ge/le),\n`value` (scalar), `at` (initial/before/after). For scenes, after means THIS event's\npost-state. Before means its pre-state. For endings, after means final state.\nThe most specific matching variants are eligible; the prose RNG selects among\nthem. No matching variant is an error. Two unguarded variants can vary voice,\nbut assertions about a variable fact MUST be conditional or use a phrase slot.\n\nPlaceholders:\n- `{name:ada}` substitutes the existing entity's display name.\n- `{phrase:box.mark}` substitutes an explicit lexicon phrase for its current value.\nNo other braces or Python expressions. There is no raw-value fallback.\nExamples: for request == 'return', map to 'wanted her button back'; for\ncondition == 'sound', map to 'was smooth and unbroken'. Do not write 'to be return'.\n\n`bridge` cards should take 10–25 words and connect routine actions naturally.\nAdjacent bridges are joined. `beat` cards should take 35–70 words, often with\nan exchange of dialogue. A discovery must say WHAT was discovered. A character\nwho has not discovered a fact cannot speak as if they know it. Do not narrate\nan event twice by adding its debug summary after the scene prose.\n\nAim for 220–400 words in a complete sample, not 600 words of repeated preparation.\nProvide at least two voice variants for openings and two for each major ending.\nUse silly specifics, surprise, affection, and distinctive voices, without adding\nnew physical events. Avoid stock explanations about evidence, responsibility,\naccounting, carefulness, or proving that a constraint was satisfied. No moral\nparagraph. The reader should notice the change in the final image.\n\nNever leave alternatives in the text ('held—or did not hold', 'she said, or').\nDo not narrate correct equipment as broken; do not repair it twice. Do not carry\na functioning machine's part away merely because it makes a nice ending image.\n\n\nTHEATER PLAN:\n{\"title\": \"The Moonlit Pond Concert\", \"premise\": \"At a lily-pad pond, Mira wants a grand concert for the frogs, Tom wants to win the ridiculous Golden Tadpole Spoon, and Pip the frog wants one quiet song for a neighbor. A floating reed stage, a ribbon of lanterns, and a silver kettle-drum can make the concert splendid\\u2014but the children mistakenly assume the quiet neighbor cannot hear. Seed conditions decide whether the neighbor is shy, away, or secretly eager for music, changing what the performers prepare and what the concert becomes.\", \"cast_and_props\": \"Characters: Mira, an enthusiastic child who wants a dazzling concert and believes every good audience should cheer; Tom, a competitive child who wants the Golden Tadpole Spoon and believes the loudest finale wins; Pip, a frog who wants to perform a gentle moon-song for the quiet neighbor and knows the pond\\u2019s small sounds well. Optional persistent listener entity: Nella, the quiet neighbor behind the cattails, whose hearing and invitation state can differ by seed. Props: floating reed stage (reedstage), silver kettle-drum (drum), lantern ribbon (lanterns), Golden Tadpole Spoon (spoon), and a paper invitation (invitation). Shared setting: one pond edge with cattails, lily pads, and a small audience space.\", \"kernels_and_interactions\": \"1. Desire and belief: Mira wants spectacle; Tom wants the Spoon; Pip wants a particular song for Nella. Belief slots include Mira.knows.nella.hears, Tom.knows.best_song, and Pip.knows.nella.invited. 2. Invitation and knowledge: Mira or Pip can observe Nella\\u2019s presence, tell another character, and deliver the invitation; Nella\\u2019s response changes the intended audience without mind reading. 3. Prop ownership and placement: the children transfer the drum, lanterns, and Spoon; floating props can be placed on the reed stage or kept beside the pond. 4. Performance and audience reaction: a loud finale, a soft moon-song, or a mixed concert sets concrete facts such as concert.style, audience.delighted, and spoon.awarded. 5. Character turn: Tom may trade the winning finale for Pip\\u2019s quiet song, or Mira may invite Nella into the audience; this is pivotal because it changes the final performance, not merely a score.\", \"seed_parameters\": \"Use the supplied seed to choose scalar initial conditions, not a route number. Vary 2\\u20134 premise keys such as n\\u200bella.presence (pond/cattails/away), n\\u200bella.hearing (keen/muffled), invitation.owner (mira/pip), and tom.plan (loud/clever). Preserve every chosen value as an actual declared state key. The seed may also set which prop begins on the bank, whether the Spoon is available to award, and whether Pip already knows Nella enjoys soft music. These changes should alter what is wanted, understood, traded, made, or performed.\", \"candidate_scenes\": \"Aim for 16\\u201320 candidates and 5\\u20139 selected events. Suggested IDs: look_nella (observe Nella\\u2019s presence), notice_quiet (Pip observes the quiet neighbor\\u2019s condition), ask_mira (Mira tells Tom what she believes), invite_nella (transfer invitation or establish invited=True), hear_answer (Nella\\u2019s response becomes known), float_stage (move reedstage to pond.performance), hang_lanterns (place lanterns on stage), claim_drum (transfer drum to Tom or Mira), rehearse_roar (Tom establishes loud finale), rehearse_moon (Pip establishes soft song), tom_hears_pip (tell Tom Pip\\u2019s wish), choose_kind_finale (pivotal choice setting tom.agrees=True), call_concert (establish concert.started), perform_roar (concert.style=loud and audience reaction), perform_moon (concert.style=soft and audience reaction), perform_mixed (concert.style=mixed and audience reaction), award_spoon (Spoon ownership changes only after a qualifying performance), welcome_nella (Nella joins or listens from cattails), and lantern_close (a reusable bridge before endings). Reuse look_nella, float_stage, hang_lanterns, call_concert, and lantern_close across materially different paths. An inciting action must be call_concert only after an invitation, promised performance, or observed audience condition has established the problem.\", \"constraints\": \"Declare every slot before use; all state keys begin with an existing entity ID. Use 3\\u20135 kernel families, scalar state only, and no abstract counters. Use observe, tell, and transfer at least once, with guarded access and ownership. Use 1\\u20132 pivotal scenes only: choose_kind_finale and possibly welcome_nella. Mark ordinary setup scenes non-pivotal. The shared planner must prune actions that do not affect an outcome or pivotal turn. Goals should accept several concrete endings, for example concert.finished=True and one of concert.style in {loud, soft, mixed}; outcome_keys should include concert.style, audience.delighted, and spoon.owner or Nella\\u2019s final location. Catalog prose must include every candidate scene, with conditional variants for who is present, who knows what, and which style was performed. No character may speak as if they know Nella\\u2019s condition before observing or being told it.\", \"different_endings\": \"1. Loud triumph: If Nella is away or Tom\\u2019s loud plan remains dominant, the drum booms, Tom receives the Golden Tadpole Spoon, and the final image is the Spoon wobbling like a tiny brass moon while frogs cheer. 2. Quiet welcome: If Nella is present with keen hearing and Pip\\u2019s wish survives, the performers play the moon-song; Nella steps from the cattails, and the final image is one lantern reflected beside her still, smiling face. 3. Mixed concert: If Mira learns Nella is listening but Tom still wants a finale, the group begins softly and ends with a playful drum ripple; the audience reaction is shared rather than a simple prize, and the final image is the reed stage carrying both a curled cattail and the shining Spoon. 4. Empty-but-tender concert: If Nella is away, Pip still performs the moon-song for the pond itself; Tom may keep or surrender the Spoon according to whether he accepts the kind finale. The last image is the invitation floating home on a lily pad, its ink sparkling under the moon. Each ending needs at least two prose variants, guarded by actual final facts rather than by a branch number.\"}\n\nDESIGN SEED:\n{\"index\": 2, \"seed\": 3911652248, \"theater\": \"pond_concert\", \"premise\": \"A frog and two children want a pond concert. Different listeners, floating props, and a mistaken assumption about a quiet neighbor matter.\"}\n\nFROZEN SIMULATION:\nimport random\nfrom runtime import WorldSpec, Condition as C, Rule, scene, observe, tell, transfer\n\n\ndef build(seed):\n    rng = random.Random(seed)\n\n    presence = rng.choice((\"cattails\", \"cattails\", \"away\"))\n    hearing = rng.choice((\"keen\", \"muffled\"))\n    tom_plan = rng.choice((\"loud\", \"clever\"))\n    pip_knows_enjoys = rng.choice((True, True, False))\n\n    entities = {\n        \"mira\": {\"name\": \"Mira\", \"kind\": \"child\"},\n        \"tom\": {\"name\": \"Tom\", \"kind\": \"child\"},\n        \"pip\": {\"name\": \"Pip\", \"kind\": \"frog\"},\n        \"nella\": {\"name\": \"Nella\", \"kind\": \"neighbor\"},\n        \"reedstage\": {\"name\": \"floating reed stage\", \"kind\": \"prop\"},\n        \"drum\": {\"name\": \"silver kettle-drum\", \"kind\": \"prop\"},\n        \"lanterns\": {\"name\": \"lantern ribbon\", \"kind\": \"prop\"},\n        \"spoon\": {\"name\": \"Golden Tadpole Spoon\", \"kind\": \"prop\"},\n        \"invitation\": {\"name\": \"paper invitation\", \"kind\": \"prop\"},\n        \"concert\": {\"name\": \"pond concert\", \"kind\": \"event\"},\n        \"audience\": {\"name\": \"frog audience\", \"kind\": \"group\"},\n        \"pond\": {\"name\": \"moonlit pond\", \"kind\": \"setting\"},\n    }\n\n    initial = {\n        \"mira.wants\": \"spectacle\",\n        \"mira.believes.cheering\": True,\n        \"mira.knows.nella.presence\": None,\n        \"tom.wants\": \"spoon\",\n        \"tom.plan\": tom_plan,\n        \"tom.agrees\": False,\n        \"tom.knows.nella.hearing\": None,\n        \"tom.knows.pip.wish\": None,\n        \"pip.wants\": \"moon_song\",\n        \"pip.wish\": \"moon_song\",\n        \"pip.knows.nella.hearing\": None,\n        \"pip.knows.pip.wish\": \"moon_song\",\n        \"pip.knows.nella.enjoys\": pip_knows_enjoys,\n        \"nella.presence\": presence,\n        \"nella.hearing\": hearing,\n        \"nella.invited\": False,\n        \"nella.location\": presence,\n        \"reedstage.location\": \"bank\",\n        \"drum.owner\": \"tom\",\n        \"lanterns.location\": \"bank\",\n        \"spoon.owner\": \"pond\",\n        \"invitation.owner\": \"pip\",\n        \"concert.started\": False,\n        \"concert.finished\": False,\n        \"concert.rehearsal\": \"none\",\n        \"concert.style\": \"none\",\n        \"audience.delighted\": False,\n    }\n\n    scenes = (\n        observe(\n            \"look_nella\",\n            \"mira\",\n            \"nella.presence\",\n            requires=(C(\"nella.location\", \"in\", (\"cattails\", \"away\")),),\n            summary=\"Mira looked toward the cattails for Nella.\",\n        ),\n        observe(\n            \"notice_quiet\",\n            \"pip\",\n            \"nella.hearing\",\n            requires=(C(\"nella.presence\", \"eq\", \"cattails\"),),\n            summary=\"Pip listened closely and noticed how Nella could hear.\",\n        ),\n        tell(\n            \"tell_tom_hearing\",\n            \"pip\",\n            \"tom\",\n            \"nella.hearing\",\n            requires=(\n                C(\"pip.knows.nella.hearing\", \"in\", (\"keen\", \"muffled\")),\n                C(\"nella.presence\", \"eq\", \"cattails\"),\n            ),\n            summary=\"Pip told Tom what he had learned about Nella's hearing.\",\n        ),\n        tell(\n            \"tell_tom_wish\",\n            \"pip\",\n            \"tom\",\n            \"pip.wish\",\n            requires=(C(\"pip.knows.pip.wish\", \"eq\", \"moon_song\"),),\n            summary=\"Pip told Tom about the moon-song he hoped to play.\",\n        ),\n        transfer(\n            \"invite_nella\",\n            \"pip\",\n            \"nella\",\n            \"invitation\",\n            requires=(\n                C(\"nella.presence\", \"eq\", \"cattails\"),\n                C(\"nella.location\", \"eq\", \"cattails\"),\n            ),\n            summary=\"Pip sent the paper invitation through the cattails.\",\n        ),\n        scene(\n            \"accept_invitation\",\n            \"Invitation\",\n            (\"nella\",),\n            when=(\n                C(\"invitation.owner\", \"eq\", \"nella\"),\n                C(\"nella.presence\", \"eq\", \"cattails\"),\n            ),\n            set_values={\"nella.invited\": True},\n            summary=\"Nella accepted the invitation from behind the cattails.\",\n        ),\n        scene(\n            \"float_stage\",\n            \"Prepare\",\n            (\"mira\", \"pip\"),\n            when=(C(\"reedstage.location\", \"eq\", \"bank\"),),\n            set_values={\"reedstage.location\": \"pond\"},\n            summary=\"Mira and Pip floated the reed stage onto the pond.\",\n        ),\n        scene(\n            \"hang_lanterns\",\n            \"Prepare\",\n            (\"mira\",),\n            when=(\n                C(\"reedstage.location\", \"eq\", \"pond\"),\n                C(\"lanterns.location\", \"eq\", \"bank\"),\n            ),\n            set_values={\"lanterns.location\": \"reedstage\"},\n            summary=\"Mira draped the lantern ribbon over the reed stage.\",\n        ),\n        scene(\n            \"rehearse_roar\",\n            \"Rehearse\",\n            (\"tom\",),\n            when=(\n                C(\"drum.owner\", \"eq\", \"tom\"),\n                C(\"tom.plan\", \"eq\", \"loud\"),\n            ),\n            set_values={\"concert.rehearsal\": \"roar\"},\n            summary=\"Tom rehearsed a booming kettle-drum finale.\",\n        ),\n        scene(\n            \"rehearse_ripple\",\n            \"Rehearse\",\n            (\"tom\",),\n            when=(\n                C(\"drum.owner\", \"eq\", \"tom\"),\n                C(\"tom.plan\", \"eq\", \"clever\"),\n            ),\n            set_values={\"concert.rehearsal\": \"roar\"},\n            summary=\"Tom practiced a clever drum ripple that grew wonderfully loud.\",\n        ),\n        scene(\n            \"rehearse_moon\",\n            \"Rehearse\",\n            (\"pip\",),\n            when=(C(\"reedstage.location\", \"eq\", \"pond\"),),\n            set_values={\"concert.rehearsal\": \"moon\"},\n            summary=\"Pip rehearsed his gentle moon-song on the floating stage.\",\n        ),\n        scene(\n            \"choose_kind_finale\",\n            \"Choose\",\n            (\"tom\", \"pip\"),\n            when=(\n                C(\"tom.plan\", \"eq\", \"clever\"),\n                C(\"tom.knows.pip.wish\", \"eq\", \"moon_song\"),\n                C(\"tom.knows.nella.hearing\", \"eq\", \"keen\"),\n                C(\"nella.presence\", \"eq\", \"cattails\"),\n                C(\"pip.knows.nella.enjoys\", \"eq\", True),\n            ),\n            set_values={\"tom.agrees\": True, \"tom.plan\": \"gentle\"},\n            summary=\"Tom chose Pip's moon-song over a prize-winning roar.\",\n            pivotal=True,\n        ),\n        scene(\n            \"call_concert_away\",\n            \"Invite\",\n            (\"mira\", \"tom\", \"pip\"),\n            when=(\n                C(\"mira.knows.nella.presence\", \"eq\", \"away\"),\n                C(\"reedstage.location\", \"eq\", \"pond\"),\n                C(\"lanterns.location\", \"eq\", \"reedstage\"),\n                C(\"concert.started\", \"eq\", False),\n            ),\n            set_values={\"concert.started\": True},\n            summary=\"With Nella away, the friends called the frogs to the pond concert.\",\n        ),\n        scene(\n            \"call_concert_guest\",\n            \"Invite\",\n            (\"mira\", \"tom\", \"pip\", \"nella\"),\n            when=(\n                C(\"nella.invited\", \"eq\", True),\n                C(\"reedstage.location\", \"eq\", \"pond\"),\n                C(\"lanterns.location\", \"eq\", \"reedstage\"),\n                C(\"concert.started\", \"eq\", False),\n            ),\n            set_values={\"concert.started\": True},\n            summary=\"The invited concert began beneath the pond lanterns.\",\n        ),\n        scene(\n            \"perform_roar\",\n            \"Perform\",\n            (\"tom\",),\n            when=(\n                C(\"concert.started\", \"eq\", True),\n                C(\"concert.rehearsal\", \"eq\", \"roar\"),\n            ),\n            set_values={\n                \"concert.style\": \"loud\",\n                \"audience.delighted\": True,\n            },\n            summary=\"Tom's kettle-drum finale boomed across the lily pads.\",\n        ),\n        scene(\n            \"perform_moon\",\n            \"Perform\",\n            (\"pip\",),\n            when=(\n                C(\"concert.started\", \"eq\", True),\n                C(\"concert.rehearsal\", \"eq\", \"moon\"),\n                C(\"tom.agrees\", \"eq\", True),\n            ),\n            set_values={\n                \"concert.style\": \"soft\",\n                \"audience.delighted\": True,\n            },\n            summary=\"Pip played the moon-song softly enough for the reeds to listen.\",\n        ),\n        scene(\n            \"perform_mixed\",\n            \"Perform\",\n            (\"pip\", \"tom\"),\n            when=(\n                C(\"concert.started\", \"eq\", True),\n                C(\"concert.rehearsal\", \"eq\", \"moon\"),\n                C(\"tom.agrees\", \"eq\", True),\n                C(\"drum.owner\", \"eq\", \"tom\"),\n            ),\n            set_values={\n                \"concert.style\": \"mixed\",\n                \"audience.delighted\": True,\n            },\n            summary=\"Pip's moon-song ended in Tom's playful silver drum ripple.\",\n        ),\n        transfer(\n            \"award_spoon_loud\",\n            \"pond\",\n            \"tom\",\n            \"spoon\",\n            requires=(\n                C(\"concert.style\", \"eq\", \"loud\"),\n                C(\"audience.delighted\", \"eq\", True),\n            ),\n            summary=\"The frogs awarded Tom the Golden Tadpole Spoon.\",\n        ),\n        transfer(\n            \"award_spoon_mixed\",\n            \"pond\",\n            \"tom\",\n            \"spoon\",\n            requires=(\n                C(\"concert.style\", \"eq\", \"mixed\"),\n                C(\"audience.delighted\", \"eq\", True),\n            ),\n            summary=\"The frogs gave Tom the Golden Tadpole Spoon for the mixed finale.\",\n        ),\n        scene(\n            \"close_loud\",\n            \"Close\",\n            (\"tom\",),\n            when=(\n                C(\"concert.style\", \"eq\", \"loud\"),\n                C(\"spoon.owner\", \"eq\", \"tom\"),\n                C(\"concert.finished\", \"eq\", False),\n            ),\n            set_values={\"concert.finished\": True},\n            summary=\"The loud pond concert ended with Tom's prize held high.\",\n        ),\n        scene(\n            \"close_soft\",\n            \"Close\",\n            (\"pip\", \"nella\"),\n            when=(\n                C(\"concert.style\", \"eq\", \"soft\"),\n                C(\"concert.finished\", \"eq\", False),\n            ),\n            set_values={\"concert.finished\": True},\n            summary=\"The moon-song concert ended in a warm, quiet hush.\",\n        ),\n        scene(\n            \"close_mixed\",\n            \"Close\",\n            (\"pip\", \"tom\"),\n            when=(\n                C(\"concert.style\", \"eq\", \"mixed\"),\n                C(\"spoon.owner\", \"eq\", \"tom\"),\n                C(\"concert.finished\", \"eq\", False),\n            ),\n            set_values={\"concert.finished\": True},\n            summary=\"The mixed pond concert ended with cheers and a shining spoon.\",\n        ),\n    )\n\n    rules = (\n        Rule(\n            \"finished_concert_has_a_style\",\n            (C(\"concert.style\", \"ne\", \"none\"),),\n            when=(C(\"concert.finished\", \"eq\", True),),\n        ),\n        Rule(\n            \"delighted_audience_heard_a_concert\",\n            (C(\"concert.style\", \"in\", (\"loud\", \"soft\", \"mixed\")),),\n            when=(C(\"audience.delighted\", \"eq\", True),),\n        ),\n    )\n\n    return WorldSpec(\n        \"The Moonlit Pond Concert\",\n        entities,\n        initial,\n        scenes,\n        goal=(\n            C(\"concert.finished\", \"eq\", True),\n            C(\"audience.delighted\", \"eq\", True),\n        ),\n        rules=rules,\n        labels={\n            \"nella.presence\": \"where Nella is\",\n            \"nella.hearing\": \"Nella's hearing\",\n            \"tom.plan\": \"Tom's planned finale\",\n            \"concert.style\": \"the concert's style\",\n            \"spoon.owner\": \"keeper of the Golden Tadpole Spoon\",\n        },\n        prune=True,\n        premise_keys=(\n            \"nella.presence\",\n            \"nella.hearing\",\n            \"tom.plan\",\n            \"pip.knows.nella.enjoys\",\n        ),\n        outcome_keys=(\n            \"concert.style\",\n            \"audience.delighted\",\n            \"spoon.owner\",\n        ),\n    )\n\nTHREE EXECUTED PREVIEWS:\n[{\"seed\": 0, \"title\": \"The Moonlit Pond Concert\", \"initial\": {\"mira.wants\": \"spectacle\", \"mira.believes.cheering\": true, \"mira.knows.nella.presence\": null, \"tom.wants\": \"spoon\", \"tom.plan\": \"loud\", \"tom.agrees\": false, \"tom.knows.nella.hearing\": null, \"tom.knows.pip.wish\": null, \"pip.wants\": \"moon_song\", \"pip.wish\": \"moon_song\", \"pip.knows.nella.hearing\": null, \"pip.knows.pip.wish\": \"moon_song\", \"pip.knows.nella.enjoys\": true, \"nella.presence\": \"cattails\", \"nella.hearing\": \"muffled\", \"nella.invited\": false, \"nella.location\": \"cattails\", \"reedstage.location\": \"bank\", \"drum.owner\": \"tom\", \"lanterns.location\": \"bank\", \"spoon.owner\": \"pond\", \"invitation.owner\": \"pip\", \"concert.started\": false, \"concert.finished\": false, \"concert.rehearsal\": \"none\", \"concert.style\": \"none\", \"audience.delighted\": false}, \"final\": {\"mira.wants\": \"spectacle\", \"mira.believes.cheering\": true, \"mira.knows.nella.presence\": null, \"tom.wants\": \"spoon\", \"tom.plan\": \"loud\", \"tom.agrees\": false, \"tom.knows.nella.hearing\": null, \"tom.knows.pip.wish\": null, \"pip.wants\": \"moon_song\", \"pip.wish\": \"moon_song\", \"pip.knows.nella.hearing\": null, \"pip.knows.pip.wish\": \"moon_song\", \"pip.knows.nella.enjoys\": true, \"nella.presence\": \"cattails\", \"nella.hearing\": \"muffled\", \"nella.invited\": true, \"nella.location\": \"cattails\", \"reedstage.location\": \"pond\", \"drum.owner\": \"tom\", \"lanterns.location\": \"reedstage\", \"spoon.owner\": \"tom\", \"invitation.owner\": \"nella\", \"concert.started\": true, \"concert.finished\": true, \"concert.rehearsal\": \"roar\", \"concert.style\": \"loud\", \"audience.delighted\": true}, \"events\": [{\"id\": 1, \"scene\": \"rehearse_roar\", \"kernel\": \"Rehearse\", \"actors\": [\"tom\"], \"summary\": \"Tom rehearsed a booming kettle-drum finale.\", \"causes\": [], \"requires\": [{\"key\": \"drum.owner\", \"op\": \"eq\", \"value\": \"tom\"}, {\"key\": \"tom.plan\", \"op\": \"eq\", \"value\": \"loud\"}], \"changes\": {\"concert.rehearsal\": {\"before\": \"none\", \"after\": \"roar\"}}}, {\"id\": 2, \"scene\": \"invite_nella\", \"kernel\": \"Transfer\", \"actors\": [\"pip\", \"nella\"], \"summary\": \"Pip sent the paper invitation through the cattails.\", \"causes\": [], \"requires\": [{\"key\": \"invitation.owner\", \"op\": \"eq\", \"value\": \"pip\"}, {\"key\": \"nella.presence\", \"op\": \"eq\", \"value\": \"cattails\"}, {\"key\": \"nella.location\", \"op\": \"eq\", \"value\": \"cattails\"}], \"changes\": {\"invitation.owner\": {\"before\": \"pip\", \"after\": \"nella\"}}}, {\"id\": 3, \"scene\": \"accept_invitation\", \"kernel\": \"Invitation\", \"actors\": [\"nella\"], \"summary\": \"Nella accepted the invitation from behind the cattails.\", \"causes\": [2], \"requires\": [{\"key\": \"invitation.owner\", \"op\": \"eq\", \"value\": \"nella\"}, {\"key\": \"nella.presence\", \"op\": \"eq\", \"value\": \"cattails\"}], \"changes\": {\"nella.invited\": {\"before\": false, \"after\": true}}}, {\"id\": 4, \"scene\": \"float_stage\", \"kernel\": \"Prepare\", \"actors\": [\"mira\", \"pip\"], \"summary\": \"Mira and Pip floated the reed stage onto the pond.\", \"causes\": [], \"requires\": [{\"key\": \"reedstage.location\", \"op\": \"eq\", \"value\": \"bank\"}], \"changes\": {\"reedstage.location\": {\"before\": \"bank\", \"after\": \"pond\"}}}, {\"id\": 5, \"scene\": \"hang_lanterns\", \"kernel\": \"Prepare\", \"actors\": [\"mira\"], \"summary\": \"Mira draped the lantern ribbon over the reed stage.\", \"causes\": [4], \"requires\": [{\"key\": \"reedstage.location\", \"op\": \"eq\", \"value\": \"pond\"}, {\"key\": \"lanterns.location\", \"op\": \"eq\", \"value\": \"bank\"}], \"changes\": {\"lanterns.location\": {\"before\": \"bank\", \"after\": \"reedstage\"}}}, {\"id\": 6, \"scene\": \"call_concert_guest\", \"kernel\": \"Invite\", \"actors\": [\"mira\", \"tom\", \"pip\", \"nella\"], \"summary\": \"The invited concert began beneath the pond lanterns.\", \"causes\": [3, 4, 5], \"requires\": [{\"key\": \"nella.invited\", \"op\": \"eq\", \"value\": true}, {\"key\": \"reedstage.location\", \"op\": \"eq\", \"value\": \"pond\"}, {\"key\": \"lanterns.location\", \"op\": \"eq\", \"value\": \"reedstage\"}, {\"key\": \"concert.started\", \"op\": \"eq\", \"value\": false}], \"changes\": {\"concert.started\": {\"before\": false, \"after\": true}}}, {\"id\": 7, \"scene\": \"perform_roar\", \"kernel\": \"Perform\", \"actors\": [\"tom\"], \"summary\": \"Tom's kettle-drum finale boomed across the lily pads.\", \"causes\": [1, 6], \"requires\": [{\"key\": \"concert.started\", \"op\": \"eq\", \"value\": true}, {\"key\": \"concert.rehearsal\", \"op\": \"eq\", \"value\": \"roar\"}], \"changes\": {\"concert.style\": {\"before\": \"none\", \"after\": \"loud\"}, \"audience.delighted\": {\"before\": false, \"after\": true}}}, {\"id\": 8, \"scene\": \"award_spoon_loud\", \"kernel\": \"Transfer\", \"actors\": [\"pond\", \"tom\"], \"summary\": \"The frogs awarded Tom the Golden Tadpole Spoon.\", \"causes\": [7], \"requires\": [{\"key\": \"spoon.owner\", \"op\": \"eq\", \"value\": \"pond\"}, {\"key\": \"concert.style\", \"op\": \"eq\", \"value\": \"loud\"}, {\"key\": \"audience.delighted\", \"op\": \"eq\", \"value\": true}], \"changes\": {\"spoon.owner\": {\"before\": \"pond\", \"after\": \"tom\"}}}, {\"id\": 9, \"scene\": \"close_loud\", \"kernel\": \"Close\", \"actors\": [\"tom\"], \"summary\": \"The loud pond concert ended with Tom's prize held high.\", \"causes\": [7, 8], \"requires\": [{\"key\": \"concert.style\", \"op\": \"eq\", \"value\": \"loud\"}, {\"key\": \"spoon.owner\", \"op\": \"eq\", \"value\": \"tom\"}, {\"key\": \"concert.finished\", \"op\": \"eq\", \"value\": false}], \"changes\": {\"concert.finished\": {\"before\": false, \"after\": true}}}]}, {\"seed\": 1, \"title\": \"The Moonlit Pond Concert\", \"initial\": {\"mira.wants\": \"spectacle\", \"mira.believes.cheering\": true, \"mira.knows.nella.presence\": null, \"tom.wants\": \"spoon\", \"tom.plan\": \"clever\", \"tom.agrees\": false, \"tom.knows.nella.hearing\": null, \"tom.knows.pip.wish\": null, \"pip.wants\": \"moon_song\", \"pip.wish\": \"moon_song\", \"pip.knows.nella.hearing\": null, \"pip.knows.pip.wish\": \"moon_song\", \"pip.knows.nella.enjoys\": true, \"nella.presence\": \"cattails\", \"nella.hearing\": \"keen\", \"nella.invited\": false, \"nella.location\": \"cattails\", \"reedstage.location\": \"bank\", \"drum.owner\": \"tom\", \"lanterns.location\": \"bank\", \"spoon.owner\": \"pond\", \"invitation.owner\": \"pip\", \"concert.started\": false, \"concert.finished\": false, \"concert.rehearsal\": \"none\", \"concert.style\": \"none\", \"audience.delighted\": false}, \"final\": {\"mira.wants\": \"spectacle\", \"mira.believes.cheering\": true, \"mira.knows.nella.presence\": null, \"tom.wants\": \"spoon\", \"tom.plan\": \"gentle\", \"tom.agrees\": true, \"tom.knows.nella.hearing\": \"keen\", \"tom.knows.pip.wish\": \"moon_song\", \"pip.wants\": \"moon_song\", \"pip.wish\": \"moon_song\", \"pip.knows.nella.hearing\": \"keen\", \"pip.knows.pip.wish\": \"moon_song\", \"pip.knows.nella.enjoys\": true, \"nella.presence\": \"cattails\", \"nella.hearing\": \"keen\", \"nella.invited\": true, \"nella.location\": \"cattails\", \"reedstage.location\": \"pond\", \"drum.owner\": \"tom\", \"lanterns.location\": \"reedstage\", \"spoon.owner\": \"pond\", \"invitation.owner\": \"nella\", \"concert.started\": true, \"concert.finished\": true, \"concert.rehearsal\": \"moon\", \"concert.style\": \"soft\", \"audience.delighted\": true}, \"events\": [{\"id\": 1, \"scene\": \"notice_quiet\", \"kernel\": \"Observe\", \"actors\": [\"pip\"], \"summary\": \"Pip listened closely and noticed how Nella could hear.\", \"causes\": [], \"requires\": [{\"key\": \"nella.presence\", \"op\": \"eq\", \"value\": \"cattails\"}], \"changes\": {\"pip.knows.nella.hearing\": {\"before\": null, \"after\": \"keen\"}}}, {\"id\": 2, \"scene\": \"float_stage\", \"kernel\": \"Prepare\", \"actors\": [\"mira\", \"pip\"], \"summary\": \"Mira and Pip floated the reed stage onto the pond.\", \"causes\": [], \"requires\": [{\"key\": \"reedstage.location\", \"op\": \"eq\", \"value\": \"bank\"}], \"changes\": {\"reedstage.location\": {\"before\": \"bank\", \"after\": \"pond\"}}}, {\"id\": 3, \"scene\": \"invite_nella\", \"kernel\": \"Transfer\", \"actors\": [\"pip\", \"nella\"], \"summary\": \"Pip sent the paper invitation through the cattails.\", \"causes\": [], \"requires\": [{\"key\": \"invitation.owner\", \"op\": \"eq\", \"value\": \"pip\"}, {\"key\": \"nella.presence\", \"op\": \"eq\", \"value\": \"cattails\"}, {\"key\": \"nella.location\", \"op\": \"eq\", \"value\": \"cattails\"}], \"changes\": {\"invitation.owner\": {\"before\": \"pip\", \"after\": \"nella\"}}}, {\"id\": 4, \"scene\": \"hang_lanterns\", \"kernel\": \"Prepare\", \"actors\": [\"mira\"], \"summary\": \"Mira draped the lantern ribbon over the reed stage.\", \"causes\": [2], \"requires\": [{\"key\": \"reedstage.location\", \"op\": \"eq\", \"value\": \"pond\"}, {\"key\": \"lanterns.location\", \"op\": \"eq\", \"value\": \"bank\"}], \"changes\": {\"lanterns.location\": {\"before\": \"bank\", \"after\": \"reedstage\"}}}, {\"id\": 5, \"scene\": \"tell_tom_wish\", \"kernel\": \"Tell\", \"actors\": [\"pip\", \"tom\"], \"summary\": \"Pip told Tom about the moon-song he hoped to play.\", \"causes\": [], \"requires\": [{\"key\": \"pip.knows.pip.wish\", \"op\": \"ne\", \"value\": null}, {\"key\": \"pip.knows.pip.wish\", \"op\": \"eq\", \"value\": \"moon_song\"}], \"changes\": {\"tom.knows.pip.wish\": {\"before\": null, \"after\": \"moon_song\"}}}, {\"id\": 6, \"scene\": \"tell_tom_hearing\", \"kernel\": \"Tell\", \"actors\": [\"pip\", \"tom\"], \"summary\": \"Pip told Tom what he had learned about Nella's hearing.\", \"causes\": [1], \"requires\": [{\"key\": \"pip.knows.nella.hearing\", \"op\": \"ne\", \"value\": null}, {\"key\": \"pip.knows.nella.hearing\", \"op\": \"in\", \"value\": [\"keen\", \"muffled\"]}, {\"key\": \"nella.presence\", \"op\": \"eq\", \"value\": \"cattails\"}], \"changes\": {\"tom.knows.nella.hearing\": {\"before\": null, \"after\": \"keen\"}}}, {\"id\": 7, \"scene\": \"rehearse_moon\", \"kernel\": \"Rehearse\", \"actors\": [\"pip\"], \"summary\": \"Pip rehearsed his gentle moon-song on the floating stage.\", \"causes\": [2], \"requires\": [{\"key\": \"reedstage.location\", \"op\": \"eq\", \"value\": \"pond\"}], \"changes\": {\"concert.rehearsal\": {\"before\": \"none\", \"after\": \"moon\"}}}, {\"id\": 8, \"scene\": \"accept_invitation\", \"kernel\": \"Invitation\", \"actors\": [\"nella\"], \"summary\": \"Nella accepted the invitation from behind the cattails.\", \"causes\": [3], \"requires\": [{\"key\": \"invitation.owner\", \"op\": \"eq\", \"value\": \"nella\"}, {\"key\": \"nella.presence\", \"op\": \"eq\", \"value\": \"cattails\"}], \"changes\": {\"nella.invited\": {\"before\": false, \"after\": true}}}, {\"id\": 9, \"scene\": \"choose_kind_finale\", \"kernel\": \"Choose\", \"actors\": [\"tom\", \"pip\"], \"summary\": \"Tom chose Pip's moon-song over a prize-winning roar.\", \"causes\": [5, 6], \"requires\": [{\"key\": \"tom.plan\", \"op\": \"eq\", \"value\": \"clever\"}, {\"key\": \"tom.knows.pip.wish\", \"op\": \"eq\", \"value\": \"moon_song\"}, {\"key\": \"tom.knows.nella.hearing\", \"op\": \"eq\", \"value\": \"keen\"}, {\"key\": \"nella.presence\", \"op\": \"eq\", \"value\": \"cattails\"}, {\"key\": \"pip.knows.nella.enjoys\", \"op\": \"eq\", \"value\": true}], \"changes\": {\"tom.plan\": {\"before\": \"clever\", \"after\": \"gentle\"}, \"tom.agrees\": {\"before\": false, \"after\": true}}}, {\"id\": 10, \"scene\": \"call_concert_guest\", \"kernel\": \"Invite\", \"actors\": [\"mira\", \"tom\", \"pip\", \"nella\"], \"summary\": \"The invited concert began beneath the pond lanterns.\", \"causes\": [2, 4, 8], \"requires\": [{\"key\": \"nella.invited\", \"op\": \"eq\", \"value\": true}, {\"key\": \"reedstage.location\", \"op\": \"eq\", \"value\": \"pond\"}, {\"key\": \"lanterns.location\", \"op\": \"eq\", \"value\": \"reedstage\"}, {\"key\": \"concert.started\", \"op\": \"eq\", \"value\": false}], \"changes\": {\"concert.started\": {\"before\": false, \"after\": true}}}, {\"id\": 11, \"scene\": \"perform_mixed\", \"kernel\": \"Perform\", \"actors\": [\"pip\", \"tom\"], \"summary\": \"Pip's moon-song ended in Tom's playful silver drum ripple.\", \"causes\": [7, 9, 10], \"requires\": [{\"key\": \"concert.started\", \"op\": \"eq\", \"value\": true}, {\"key\": \"concert.rehearsal\", \"op\": \"eq\", \"value\": \"moon\"}, {\"key\": \"tom.agrees\", \"op\": \"eq\", \"value\": true}, {\"key\": \"drum.owner\", \"op\": \"eq\", \"value\": \"tom\"}], \"changes\": {\"concert.style\": {\"before\": \"none\", \"after\": \"mixed\"}, \"audience.delighted\": {\"before\": false, \"after\": true}}}, {\"id\": 12, \"scene\": \"perform_moon\", \"kernel\": \"Perform\", \"actors\": [\"pip\"], \"summary\": \"Pip played the moon-song softly enough for the reeds to listen.\", \"causes\": [7, 9, 10, 11], \"requires\": [{\"key\": \"concert.started\", \"op\": \"eq\", \"value\": true}, {\"key\": \"concert.rehearsal\", \"op\": \"eq\", \"value\": \"moon\"}, {\"key\": \"tom.agrees\", \"op\": \"eq\", \"value\": true}], \"changes\": {\"concert.style\": {\"before\": \"mixed\", \"after\": \"soft\"}}}, {\"id\": 13, \"scene\": \"close_soft\", \"kernel\": \"Close\", \"actors\": [\"pip\", \"nella\"], \"summary\": \"The moon-song concert ended in a warm, quiet hush.\", \"causes\": [11, 12], \"requires\": [{\"key\": \"concert.style\", \"op\": \"eq\", \"value\": \"soft\"}, {\"key\": \"concert.finished\", \"op\": \"eq\", \"value\": false}], \"changes\": {\"concert.finished\": {\"before\": false, \"after\": true}}}]}, {\"seed\": 2, \"title\": \"The Moonlit Pond Concert\", \"initial\": {\"mira.wants\": \"spectacle\", \"mira.believes.cheering\": true, \"mira.knows.nella.presence\": null, \"tom.wants\": \"spoon\", \"tom.plan\": \"loud\", \"tom.agrees\": false, \"tom.knows.nella.hearing\": null, \"tom.knows.pip.wish\": null, \"pip.wants\": \"moon_song\", \"pip.wish\": \"moon_song\", \"pip.knows.nella.hearing\": null, \"pip.knows.pip.wish\": \"moon_song\", \"pip.knows.nella.enjoys\": true, \"nella.presence\": \"cattails\", \"nella.hearing\": \"keen\", \"nella.invited\": false, \"nella.location\": \"cattails\", \"reedstage.location\": \"bank\", \"drum.owner\": \"tom\", \"lanterns.location\": \"bank\", \"spoon.owner\": \"pond\", \"invitation.owner\": \"pip\", \"concert.started\": false, \"concert.finished\": false, \"concert.rehearsal\": \"none\", \"concert.style\": \"none\", \"audience.delighted\": false}, \"final\": {\"mira.wants\": \"spectacle\", \"mira.believes.cheering\": true, \"mira.knows.nella.presence\": null, \"tom.wants\": \"spoon\", \"tom.plan\": \"loud\", \"tom.agrees\": false, \"tom.knows.nella.hearing\": null, \"tom.knows.pip.wish\": null, \"pip.wants\": \"moon_song\", \"pip.wish\": \"moon_song\", \"pip.knows.nella.hearing\": null, \"pip.knows.pip.wish\": \"moon_song\", \"pip.knows.nella.enjoys\": true, \"nella.presence\": \"cattails\", \"nella.hearing\": \"keen\", \"nella.invited\": true, \"nella.location\": \"cattails\", \"reedstage.location\": \"pond\", \"drum.owner\": \"tom\", \"lanterns.location\": \"reedstage\", \"spoon.owner\": \"tom\", \"invitation.owner\": \"nella\", \"concert.started\": true, \"concert.finished\": true, \"concert.rehearsal\": \"roar\", \"concert.style\": \"loud\", \"audience.delighted\": true}, \"events\": [{\"id\": 1, \"scene\": \"rehearse_roar\", \"kernel\": \"Rehearse\", \"actors\": [\"tom\"], \"summary\": \"Tom rehearsed a booming kettle-drum finale.\", \"causes\": [], \"requires\": [{\"key\": \"drum.owner\", \"op\": \"eq\", \"value\": \"tom\"}, {\"key\": \"tom.plan\", \"op\": \"eq\", \"value\": \"loud\"}], \"changes\": {\"concert.rehearsal\": {\"before\": \"none\", \"after\": \"roar\"}}}, {\"id\": 2, \"scene\": \"float_stage\", \"kernel\": \"Prepare\", \"actors\": [\"mira\", \"pip\"], \"summary\": \"Mira and Pip floated the reed stage onto the pond.\", \"causes\": [], \"requires\": [{\"key\": \"reedstage.location\", \"op\": \"eq\", \"value\": \"bank\"}], \"changes\": {\"reedstage.location\": {\"before\": \"bank\", \"after\": \"pond\"}}}, {\"id\": 3, \"scene\": \"hang_lanterns\", \"kernel\": \"Prepare\", \"actors\": [\"mira\"], \"summary\": \"Mira draped the lantern ribbon over the reed stage.\", \"causes\": [2], \"requires\": [{\"key\": \"reedstage.location\", \"op\": \"eq\", \"value\": \"pond\"}, {\"key\": \"lanterns.location\", \"op\": \"eq\", \"value\": \"bank\"}], \"changes\": {\"lanterns.location\": {\"before\": \"bank\", \"after\": \"reedstage\"}}}, {\"id\": 4, \"scene\": \"invite_nella\", \"kernel\": \"Transfer\", \"actors\": [\"pip\", \"nella\"], \"summary\": \"Pip sent the paper invitation through the cattails.\", \"causes\": [], \"requires\": [{\"key\": \"invitation.owner\", \"op\": \"eq\", \"value\": \"pip\"}, {\"key\": \"nella.presence\", \"op\": \"eq\", \"value\": \"cattails\"}, {\"key\": \"nella.location\", \"op\": \"eq\", \"value\": \"cattails\"}], \"changes\": {\"invitation.owner\": {\"before\": \"pip\", \"after\": \"nella\"}}}, {\"id\": 5, \"scene\": \"accept_invitation\", \"kernel\": \"Invitation\", \"actors\": [\"nella\"], \"summary\": \"Nella accepted the invitation from behind the cattails.\", \"causes\": [4], \"requires\": [{\"key\": \"invitation.owner\", \"op\": \"eq\", \"value\": \"nella\"}, {\"key\": \"nella.presence\", \"op\": \"eq\", \"value\": \"cattails\"}], \"changes\": {\"nella.invited\": {\"before\": false, \"after\": true}}}, {\"id\": 6, \"scene\": \"call_concert_guest\", \"kernel\": \"Invite\", \"actors\": [\"mira\", \"tom\", \"pip\", \"nella\"], \"summary\": \"The invited concert began beneath the pond lanterns.\", \"causes\": [2, 3, 5], \"requires\": [{\"key\": \"nella.invited\", \"op\": \"eq\", \"value\": true}, {\"key\": \"reedstage.location\", \"op\": \"eq\", \"value\": \"pond\"}, {\"key\": \"lanterns.location\", \"op\": \"eq\", \"value\": \"reedstage\"}, {\"key\": \"concert.started\", \"op\": \"eq\", \"value\": false}], \"changes\": {\"concert.started\": {\"before\": false, \"after\": true}}}, {\"id\": 7, \"scene\": \"perform_roar\", \"kernel\": \"Perform\", \"actors\": [\"tom\"], \"summary\": \"Tom's kettle-drum finale boomed across the lily pads.\", \"causes\": [1, 6], \"requires\": [{\"key\": \"concert.started\", \"op\": \"eq\", \"value\": true}, {\"key\": \"concert.rehearsal\", \"op\": \"eq\", \"value\": \"roar\"}], \"changes\": {\"concert.style\": {\"before\": \"none\", \"after\": \"loud\"}, \"audience.delighted\": {\"before\": false, \"after\": true}}}, {\"id\": 8, \"scene\": \"award_spoon_loud\", \"kernel\": \"Transfer\", \"actors\": [\"pond\", \"tom\"], \"summary\": \"The frogs awarded Tom the Golden Tadpole Spoon.\", \"causes\": [7], \"requires\": [{\"key\": \"spoon.owner\", \"op\": \"eq\", \"value\": \"pond\"}, {\"key\": \"concert.style\", \"op\": \"eq\", \"value\": \"loud\"}, {\"key\": \"audience.delighted\", \"op\": \"eq\", \"value\": true}], \"changes\": {\"spoon.owner\": {\"before\": \"pond\", \"after\": \"tom\"}}}, {\"id\": 9, \"scene\": \"close_loud\", \"kernel\": \"Close\", \"actors\": [\"tom\"], \"summary\": \"The loud pond concert ended with Tom's prize held high.\", \"causes\": [7, 8], \"requires\": [{\"key\": \"concert.style\", \"op\": \"eq\", \"value\": \"loud\"}, {\"key\": \"spoon.owner\", \"op\": \"eq\", \"value\": \"tom\"}, {\"key\": \"concert.finished\", \"op\": \"eq\", \"value\": false}], \"changes\": {\"concert.finished\": {\"before\": false, \"after\": true}}}]}]\n\nSTAGE 5: Return a complete conditional prose catalog matching the supplied JSON schema. The shared renderer, not model code, handles state selection and grouping. Write lively little stories, with characterful dialogue and specific discoveries. Cover every scene and every possible initial/final condition. Give guarded endings for all three or more genuinely different consequences. No blanket moral or debug summary. A missing condition/lexicon value fails closed.\n"
+    }
+  ],
+  "text": {
+    "format": {
+      "type": "json_schema",
+      "name": "storyscenes_artifact",
+      "strict": true,
+      "schema": {
+        "type": "object",
+        "properties": {
+          "openings": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "text": {
+                  "type": "string"
+                },
+                "when": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "key": {
+                        "type": "string"
+                      },
+                      "op": {
+                        "type": "string",
+                        "enum": [
+                          "eq",
+                          "ne",
+                          "ge",
+                          "le"
+                        ]
+                      },
+                      "value": {
+                        "anyOf": [
+                          {
+                            "type": "string"
+                          },
+                          {
+                            "type": "number"
+                          },
+                          {
+                            "type": "boolean"
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ]
+                      },
+                      "at": {
+                        "type": "string",
+                        "enum": [
+                          "initial",
+                          "before",
+                          "after"
+                        ]
+                      }
+                    },
+                    "required": [
+                      "key",
+                      "op",
+                      "value",
+                      "at"
+                    ],
+                    "additionalProperties": false
+                  }
+                }
+              },
+              "required": [
+                "text",
+                "when"
+              ],
+              "additionalProperties": false
+            },
+            "minItems": 2
+          },
+          "scenes": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "scene": {
+                  "type": "string"
+                },
+                "role": {
+                  "type": "string",
+                  "enum": [
+                    "bridge",
+                    "beat"
+                  ]
+                },
+                "variants": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "text": {
+                        "type": "string"
+                      },
+                      "when": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "key": {
+                              "type": "string"
+                            },
+                            "op": {
+                              "type": "string",
+                              "enum": [
+                                "eq",
+                                "ne",
+                                "ge",
+                                "le"
+                              ]
+                            },
+                            "value": {
+                              "anyOf": [
+                                {
+                                  "type": "string"
+                                },
+                                {
+                                  "type": "number"
+                                },
+                                {
+                                  "type": "boolean"
+                                },
+                                {
+                                  "type": "null"
+                                }
+                              ]
+                            },
+                            "at": {
+                              "type": "string",
+                              "enum": [
+                                "initial",
+                                "before",
+                                "after"
+                              ]
+                            }
+                          },
+                          "required": [
+                            "key",
+                            "op",
+                            "value",
+                            "at"
+                          ],
+                          "additionalProperties": false
+                        }
+                      }
+                    },
+                    "required": [
+                      "text",
+                      "when"
+                    ],
+                    "additionalProperties": false
+                  },
+                  "minItems": 1
+                }
+              },
+              "required": [
+                "scene",
+                "role",
+                "variants"
+              ],
+              "additionalProperties": false
+            },
+            "minItems": 1
+          },
+          "endings": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "text": {
+                  "type": "string"
+                },
+                "when": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "key": {
+                        "type": "string"
+                      },
+                      "op": {
+                        "type": "string",
+                        "enum": [
+                          "eq",
+                          "ne",
+                          "ge",
+                          "le"
+                        ]
+                      },
+                      "value": {
+                        "anyOf": [
+                          {
+                            "type": "string"
+                          },
+                          {
+                            "type": "number"
+                          },
+                          {
+                            "type": "boolean"
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ]
+                      },
+                      "at": {
+                        "type": "string",
+                        "enum": [
+                          "initial",
+                          "before",
+                          "after"
+                        ]
+                      }
+                    },
+                    "required": [
+                      "key",
+                      "op",
+                      "value",
+                      "at"
+                    ],
+                    "additionalProperties": false
+                  },
+                  "minItems": 1
+                }
+              },
+              "required": [
+                "text",
+                "when"
+              ],
+              "additionalProperties": false
+            },
+            "minItems": 3
+          },
+          "lexicon": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "key": {
+                  "type": "string"
+                },
+                "value": {
+                  "anyOf": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "type": "number"
+                    },
+                    {
+                      "type": "boolean"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "text": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "key",
+                "value",
+                "text"
+              ],
+              "additionalProperties": false
+            }
+          }
+        },
+        "required": [
+          "openings",
+          "scenes",
+          "endings",
+          "lexicon"
+        ],
+        "additionalProperties": false
+      }
+    }
+  }
+}

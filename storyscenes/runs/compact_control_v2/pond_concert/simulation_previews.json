@@ -1,0 +1,964 @@
+[
+  {
+    "seed": 0,
+    "title": "The Pond Concert and the Listener in the Reeds",
+    "initial": {
+      "pip.location": "shore",
+      "pip.style": "unset",
+      "pip.performance.completed": false,
+      "mina.location": "shore",
+      "mina.knows.nella.location": null,
+      "mina.knows.nella.likes_music": null,
+      "jojo.location": "shore",
+      "jojo.knows.nella.location": "nook",
+      "jojo.knows.nella.likes_music": false,
+      "jojo.knows.chime.owner": "prize",
+      "nella.location": "nook",
+      "nella.likes_music": true,
+      "nella.attended": false,
+      "nella.response": null,
+      "mic.location": "shore",
+      "mic.owner": "pip",
+      "bells.location": "shore",
+      "bells.owner": "mina",
+      "prize.location": "shore",
+      "prize.owner": "jojo",
+      "invite.location": "shore",
+      "invite.delivered": true,
+      "chime.location": "reeds",
+      "chime.owner": "nella",
+      "stage.location": "pond",
+      "shore.location": "pond",
+      "reeds.location": "pond",
+      "nook.location": "reeds"
+    },
+    "final": {
+      "pip.location": "shore",
+      "pip.style": "quiet",
+      "pip.performance.completed": true,
+      "mina.location": "shore",
+      "mina.knows.nella.location": "nook",
+      "mina.knows.nella.likes_music": true,
+      "jojo.location": "shore",
+      "jojo.knows.nella.location": "nook",
+      "jojo.knows.nella.likes_music": true,
+      "jojo.knows.chime.owner": "prize",
+      "nella.location": "stage",
+      "nella.likes_music": true,
+      "nella.attended": true,
+      "nella.response": "delighted",
+      "mic.location": "shore",
+      "mic.owner": "pip",
+      "bells.location": "stage",
+      "bells.owner": "mina",
+      "prize.location": "shore",
+      "prize.owner": "nella",
+      "invite.location": "shore",
+      "invite.delivered": true,
+      "chime.location": "reeds",
+      "chime.owner": "pip",
+      "stage.location": "pond",
+      "shore.location": "pond",
+      "reeds.location": "pond",
+      "nook.location": "reeds"
+    },
+    "events": [
+      {
+        "id": 1,
+        "scene": "observe_nella_nook",
+        "kernel": "Observe",
+        "actors": [
+          "mina"
+        ],
+        "summary": "Mina noticed where Nella was listening",
+        "causes": [],
+        "requires": [
+          {
+            "key": "mina.knows.nella.location",
+            "op": "eq",
+            "value": null
+          }
+        ],
+        "changes": {
+          "mina.knows.nella.location": {
+            "before": null,
+            "after": "nook"
+          }
+        }
+      },
+      {
+        "id": 2,
+        "scene": "welcome_nella",
+        "kernel": "Welcome",
+        "actors": [
+          "nella",
+          "mina"
+        ],
+        "summary": "Nella came to the lily-pad stage",
+        "causes": [],
+        "requires": [
+          {
+            "key": "invite.delivered",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "nella.attended",
+            "op": "eq",
+            "value": false
+          }
+        ],
+        "changes": {
+          "nella.location": {
+            "before": "nook",
+            "after": "stage"
+          },
+          "nella.attended": {
+            "before": false,
+            "after": true
+          }
+        }
+      },
+      {
+        "id": 3,
+        "scene": "trade_prize_for_chime",
+        "kernel": "Trade",
+        "actors": [
+          "pip",
+          "nella"
+        ],
+        "summary": "Pip traded the Golden Pebble for Nella’s shell chime",
+        "causes": [
+          2
+        ],
+        "requires": [
+          {
+            "key": "chime.owner",
+            "op": "eq",
+            "value": "nella"
+          },
+          {
+            "key": "prize.owner",
+            "op": "eq",
+            "value": "jojo"
+          },
+          {
+            "key": "nella.attended",
+            "op": "eq",
+            "value": true
+          }
+        ],
+        "changes": {
+          "prize.owner": {
+            "before": "jojo",
+            "after": "nella"
+          },
+          "chime.owner": {
+            "before": "nella",
+            "after": "pip"
+          }
+        }
+      },
+      {
+        "id": 4,
+        "scene": "observe_nella_music",
+        "kernel": "Observe",
+        "actors": [
+          "mina"
+        ],
+        "summary": "Mina discovered that Nella liked music",
+        "causes": [
+          1
+        ],
+        "requires": [
+          {
+            "key": "mina.knows.nella.location",
+            "op": "ne",
+            "value": null
+          },
+          {
+            "key": "mina.knows.nella.likes_music",
+            "op": "eq",
+            "value": null
+          }
+        ],
+        "changes": {
+          "mina.knows.nella.likes_music": {
+            "before": null,
+            "after": true
+          }
+        }
+      },
+      {
+        "id": 5,
+        "scene": "place_bells",
+        "kernel": "Preparation",
+        "actors": [
+          "mina"
+        ],
+        "summary": "Mina hung the reed bells around the lily-pad stage",
+        "causes": [],
+        "requires": [
+          {
+            "key": "bells.location",
+            "op": "eq",
+            "value": "shore"
+          },
+          {
+            "key": "mina.location",
+            "op": "eq",
+            "value": "shore"
+          }
+        ],
+        "changes": {
+          "bells.location": {
+            "before": "shore",
+            "after": "stage"
+          }
+        }
+      },
+      {
+        "id": 6,
+        "scene": "tell_jojo_about_nella",
+        "kernel": "Tell",
+        "actors": [
+          "mina",
+          "jojo"
+        ],
+        "summary": "Mina told Jojo what she had discovered",
+        "causes": [
+          4
+        ],
+        "requires": [
+          {
+            "key": "mina.knows.nella.likes_music",
+            "op": "ne",
+            "value": null
+          },
+          {
+            "key": "mina.knows.nella.likes_music",
+            "op": "eq",
+            "value": true
+          }
+        ],
+        "changes": {
+          "jojo.knows.nella.likes_music": {
+            "before": false,
+            "after": true
+          }
+        }
+      },
+      {
+        "id": 7,
+        "scene": "promise_quiet_song",
+        "kernel": "Character Turn",
+        "actors": [
+          "pip",
+          "jojo"
+        ],
+        "summary": "Pip promised a gentle song instead of a booming finale",
+        "causes": [
+          6
+        ],
+        "requires": [
+          {
+            "key": "jojo.knows.nella.likes_music",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "pip.style",
+            "op": "ne",
+            "value": "quiet"
+          }
+        ],
+        "changes": {
+          "pip.style": {
+            "before": "unset",
+            "after": "quiet"
+          }
+        }
+      },
+      {
+        "id": 8,
+        "scene": "perform_quiet_concert",
+        "kernel": "Performance",
+        "actors": [
+          "pip",
+          "mina",
+          "jojo",
+          "nella"
+        ],
+        "summary": "Pip performed a quiet concert with Nella’s shell chime",
+        "causes": [
+          2,
+          3,
+          5,
+          7
+        ],
+        "requires": [
+          {
+            "key": "pip.style",
+            "op": "eq",
+            "value": "quiet"
+          },
+          {
+            "key": "mic.owner",
+            "op": "eq",
+            "value": "pip"
+          },
+          {
+            "key": "bells.location",
+            "op": "eq",
+            "value": "stage"
+          },
+          {
+            "key": "nella.attended",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "chime.owner",
+            "op": "eq",
+            "value": "pip"
+          }
+        ],
+        "changes": {
+          "pip.performance.completed": {
+            "before": false,
+            "after": true
+          },
+          "nella.response": {
+            "before": null,
+            "after": "delighted"
+          }
+        }
+      }
+    ]
+  },
+  {
+    "seed": 1,
+    "title": "The Pond Concert and the Listener in the Reeds",
+    "initial": {
+      "pip.location": "shore",
+      "pip.style": "unset",
+      "pip.performance.completed": false,
+      "mina.location": "shore",
+      "mina.knows.nella.location": null,
+      "mina.knows.nella.likes_music": null,
+      "jojo.location": "shore",
+      "jojo.knows.nella.location": null,
+      "jojo.knows.nella.likes_music": false,
+      "jojo.knows.chime.owner": null,
+      "nella.location": "nook",
+      "nella.likes_music": true,
+      "nella.attended": false,
+      "nella.response": null,
+      "mic.location": "shore",
+      "mic.owner": "pip",
+      "bells.location": "scattered",
+      "bells.owner": "mina",
+      "prize.location": "shore",
+      "prize.owner": "jojo",
+      "invite.location": "shore",
+      "invite.delivered": false,
+      "chime.location": "reeds",
+      "chime.owner": "pip",
+      "stage.location": "pond",
+      "shore.location": "pond",
+      "reeds.location": "pond",
+      "nook.location": "reeds"
+    },
+    "final": {
+      "pip.location": "shore",
+      "pip.style": "splash",
+      "pip.performance.completed": true,
+      "mina.location": "shore",
+      "mina.knows.nella.location": null,
+      "mina.knows.nella.likes_music": null,
+      "jojo.location": "shore",
+      "jojo.knows.nella.location": null,
+      "jojo.knows.nella.likes_music": false,
+      "jojo.knows.chime.owner": null,
+      "nella.location": "nook",
+      "nella.likes_music": true,
+      "nella.attended": false,
+      "nella.response": "pond_cheer",
+      "mic.location": "shore",
+      "mic.owner": "pip",
+      "bells.location": "stage",
+      "bells.owner": "mina",
+      "prize.location": "shore",
+      "prize.owner": "jojo",
+      "invite.location": "shore",
+      "invite.delivered": false,
+      "chime.location": "reeds",
+      "chime.owner": "pip",
+      "stage.location": "pond",
+      "shore.location": "pond",
+      "reeds.location": "pond",
+      "nook.location": "reeds"
+    },
+    "events": [
+      {
+        "id": 1,
+        "scene": "find_scattered_bells",
+        "kernel": "Preparation",
+        "actors": [
+          "mina",
+          "jojo"
+        ],
+        "summary": "Mina and Jojo gathered the scattered reed bells",
+        "causes": [],
+        "requires": [
+          {
+            "key": "bells.location",
+            "op": "eq",
+            "value": "scattered"
+          },
+          {
+            "key": "mina.location",
+            "op": "eq",
+            "value": "shore"
+          }
+        ],
+        "changes": {
+          "bells.location": {
+            "before": "scattered",
+            "after": "shore"
+          }
+        }
+      },
+      {
+        "id": 2,
+        "scene": "place_bells",
+        "kernel": "Preparation",
+        "actors": [
+          "mina"
+        ],
+        "summary": "Mina hung the reed bells around the lily-pad stage",
+        "causes": [
+          1
+        ],
+        "requires": [
+          {
+            "key": "bells.location",
+            "op": "eq",
+            "value": "shore"
+          },
+          {
+            "key": "mina.location",
+            "op": "eq",
+            "value": "shore"
+          }
+        ],
+        "changes": {
+          "bells.location": {
+            "before": "shore",
+            "after": "stage"
+          }
+        }
+      },
+      {
+        "id": 3,
+        "scene": "promise_splash_song",
+        "kernel": "Performance Plan",
+        "actors": [
+          "pip",
+          "jojo"
+        ],
+        "summary": "Pip kept the splashy concert plan",
+        "causes": [],
+        "requires": [
+          {
+            "key": "jojo.knows.nella.likes_music",
+            "op": "eq",
+            "value": false
+          },
+          {
+            "key": "nella.attended",
+            "op": "eq",
+            "value": false
+          },
+          {
+            "key": "pip.style",
+            "op": "ne",
+            "value": "splash"
+          }
+        ],
+        "changes": {
+          "pip.style": {
+            "before": "unset",
+            "after": "splash"
+          }
+        }
+      },
+      {
+        "id": 4,
+        "scene": "perform_splash_concert",
+        "kernel": "Performance",
+        "actors": [
+          "pip",
+          "mina",
+          "jojo"
+        ],
+        "summary": "Pip performed a booming splash concert for the pond crowd",
+        "causes": [
+          2,
+          3
+        ],
+        "requires": [
+          {
+            "key": "pip.style",
+            "op": "eq",
+            "value": "splash"
+          },
+          {
+            "key": "mic.owner",
+            "op": "eq",
+            "value": "pip"
+          },
+          {
+            "key": "bells.location",
+            "op": "eq",
+            "value": "stage"
+          },
+          {
+            "key": "nella.attended",
+            "op": "eq",
+            "value": false
+          }
+        ],
+        "changes": {
+          "pip.performance.completed": {
+            "before": false,
+            "after": true
+          },
+          "nella.response": {
+            "before": null,
+            "after": "pond_cheer"
+          }
+        }
+      }
+    ]
+  },
+  {
+    "seed": 2,
+    "title": "The Pond Concert and the Listener in the Reeds",
+    "initial": {
+      "pip.location": "shore",
+      "pip.style": "unset",
+      "pip.performance.completed": false,
+      "mina.location": "shore",
+      "mina.knows.nella.location": null,
+      "mina.knows.nella.likes_music": null,
+      "jojo.location": "shore",
+      "jojo.knows.nella.location": null,
+      "jojo.knows.nella.likes_music": false,
+      "jojo.knows.chime.owner": null,
+      "nella.location": "reeds",
+      "nella.likes_music": true,
+      "nella.attended": false,
+      "nella.response": null,
+      "mic.location": "shore",
+      "mic.owner": "jojo",
+      "bells.location": "shore",
+      "bells.owner": "mina",
+      "prize.location": "shore",
+      "prize.owner": "jojo",
+      "invite.location": "shore",
+      "invite.delivered": false,
+      "chime.location": "reeds",
+      "chime.owner": "nella",
+      "stage.location": "pond",
+      "shore.location": "pond",
+      "reeds.location": "pond",
+      "nook.location": "reeds"
+    },
+    "final": {
+      "pip.location": "shore",
+      "pip.style": "quiet",
+      "pip.performance.completed": true,
+      "mina.location": "shore",
+      "mina.knows.nella.location": "reeds",
+      "mina.knows.nella.likes_music": true,
+      "jojo.location": "shore",
+      "jojo.knows.nella.location": null,
+      "jojo.knows.nella.likes_music": true,
+      "jojo.knows.chime.owner": null,
+      "nella.location": "stage",
+      "nella.likes_music": true,
+      "nella.attended": true,
+      "nella.response": "delighted",
+      "mic.location": "shore",
+      "mic.owner": "pip",
+      "bells.location": "stage",
+      "bells.owner": "mina",
+      "prize.location": "shore",
+      "prize.owner": "nella",
+      "invite.location": "reeds",
+      "invite.delivered": true,
+      "chime.location": "reeds",
+      "chime.owner": "pip",
+      "stage.location": "pond",
+      "shore.location": "pond",
+      "reeds.location": "pond",
+      "nook.location": "reeds"
+    },
+    "events": [
+      {
+        "id": 1,
+        "scene": "observe_nella_nook",
+        "kernel": "Observe",
+        "actors": [
+          "mina"
+        ],
+        "summary": "Mina noticed where Nella was listening",
+        "causes": [],
+        "requires": [
+          {
+            "key": "mina.knows.nella.location",
+            "op": "eq",
+            "value": null
+          }
+        ],
+        "changes": {
+          "mina.knows.nella.location": {
+            "before": null,
+            "after": "reeds"
+          }
+        }
+      },
+      {
+        "id": 2,
+        "scene": "observe_nella_music",
+        "kernel": "Observe",
+        "actors": [
+          "mina"
+        ],
+        "summary": "Mina discovered that Nella liked music",
+        "causes": [
+          1
+        ],
+        "requires": [
+          {
+            "key": "mina.knows.nella.location",
+            "op": "ne",
+            "value": null
+          },
+          {
+            "key": "mina.knows.nella.likes_music",
+            "op": "eq",
+            "value": null
+          }
+        ],
+        "changes": {
+          "mina.knows.nella.likes_music": {
+            "before": null,
+            "after": true
+          }
+        }
+      },
+      {
+        "id": 3,
+        "scene": "tell_jojo_about_nella",
+        "kernel": "Tell",
+        "actors": [
+          "mina",
+          "jojo"
+        ],
+        "summary": "Mina told Jojo what she had discovered",
+        "causes": [
+          2
+        ],
+        "requires": [
+          {
+            "key": "mina.knows.nella.likes_music",
+            "op": "ne",
+            "value": null
+          },
+          {
+            "key": "mina.knows.nella.likes_music",
+            "op": "eq",
+            "value": true
+          }
+        ],
+        "changes": {
+          "jojo.knows.nella.likes_music": {
+            "before": false,
+            "after": true
+          }
+        }
+      },
+      {
+        "id": 4,
+        "scene": "lend_microphone",
+        "kernel": "Transfer",
+        "actors": [
+          "jojo",
+          "pip"
+        ],
+        "summary": "Jojo lent the pebble microphone to Pip",
+        "causes": [],
+        "requires": [
+          {
+            "key": "mic.owner",
+            "op": "eq",
+            "value": "jojo"
+          },
+          {
+            "key": "jojo.location",
+            "op": "eq",
+            "value": "shore"
+          },
+          {
+            "key": "pip.location",
+            "op": "eq",
+            "value": "shore"
+          },
+          {
+            "key": "mic.owner",
+            "op": "eq",
+            "value": "jojo"
+          }
+        ],
+        "changes": {
+          "mic.owner": {
+            "before": "jojo",
+            "after": "pip"
+          }
+        }
+      },
+      {
+        "id": 5,
+        "scene": "deliver_invitation",
+        "kernel": "Invitation",
+        "actors": [
+          "mina",
+          "nella"
+        ],
+        "summary": "Mina carried the invitation to Nella",
+        "causes": [
+          1
+        ],
+        "requires": [
+          {
+            "key": "invite.delivered",
+            "op": "eq",
+            "value": false
+          },
+          {
+            "key": "mina.knows.nella.location",
+            "op": "ne",
+            "value": null
+          },
+          {
+            "key": "invite.location",
+            "op": "eq",
+            "value": "shore"
+          }
+        ],
+        "changes": {
+          "invite.location": {
+            "before": "shore",
+            "after": "reeds"
+          },
+          "invite.delivered": {
+            "before": false,
+            "after": true
+          }
+        }
+      },
+      {
+        "id": 6,
+        "scene": "promise_quiet_song",
+        "kernel": "Character Turn",
+        "actors": [
+          "pip",
+          "jojo"
+        ],
+        "summary": "Pip promised a gentle song instead of a booming finale",
+        "causes": [
+          3
+        ],
+        "requires": [
+          {
+            "key": "jojo.knows.nella.likes_music",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "pip.style",
+            "op": "ne",
+            "value": "quiet"
+          }
+        ],
+        "changes": {
+          "pip.style": {
+            "before": "unset",
+            "after": "quiet"
+          }
+        }
+      },
+      {
+        "id": 7,
+        "scene": "welcome_nella",
+        "kernel": "Welcome",
+        "actors": [
+          "nella",
+          "mina"
+        ],
+        "summary": "Nella came to the lily-pad stage",
+        "causes": [
+          5
+        ],
+        "requires": [
+          {
+            "key": "invite.delivered",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "nella.attended",
+            "op": "eq",
+            "value": false
+          }
+        ],
+        "changes": {
+          "nella.location": {
+            "before": "reeds",
+            "after": "stage"
+          },
+          "nella.attended": {
+            "before": false,
+            "after": true
+          }
+        }
+      },
+      {
+        "id": 8,
+        "scene": "trade_prize_for_chime",
+        "kernel": "Trade",
+        "actors": [
+          "pip",
+          "nella"
+        ],
+        "summary": "Pip traded the Golden Pebble for Nella’s shell chime",
+        "causes": [
+          7
+        ],
+        "requires": [
+          {
+            "key": "chime.owner",
+            "op": "eq",
+            "value": "nella"
+          },
+          {
+            "key": "prize.owner",
+            "op": "eq",
+            "value": "jojo"
+          },
+          {
+            "key": "nella.attended",
+            "op": "eq",
+            "value": true
+          }
+        ],
+        "changes": {
+          "prize.owner": {
+            "before": "jojo",
+            "after": "nella"
+          },
+          "chime.owner": {
+            "before": "nella",
+            "after": "pip"
+          }
+        }
+      },
+      {
+        "id": 9,
+        "scene": "place_bells",
+        "kernel": "Preparation",
+        "actors": [
+          "mina"
+        ],
+        "summary": "Mina hung the reed bells around the lily-pad stage",
+        "causes": [],
+        "requires": [
+          {
+            "key": "bells.location",
+            "op": "eq",
+            "value": "shore"
+          },
+          {
+            "key": "mina.location",
+            "op": "eq",
+            "value": "shore"
+          }
+        ],
+        "changes": {
+          "bells.location": {
+            "before": "shore",
+            "after": "stage"
+          }
+        }
+      },
+      {
+        "id": 10,
+        "scene": "perform_quiet_concert",
+        "kernel": "Performance",
+        "actors": [
+          "pip",
+          "mina",
+          "jojo",
+          "nella"
+        ],
+        "summary": "Pip performed a quiet concert with Nella’s shell chime",
+        "causes": [
+          4,
+          6,
+          7,
+          8,
+          9
+        ],
+        "requires": [
+          {
+            "key": "pip.style",
+            "op": "eq",
+            "value": "quiet"
+          },
+          {
+            "key": "mic.owner",
+            "op": "eq",
+            "value": "pip"
+          },
+          {
+            "key": "bells.location",
+            "op": "eq",
+            "value": "stage"
+          },
+          {
+            "key": "nella.attended",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "chime.owner",
+            "op": "eq",
+            "value": "pip"
+          }
+        ],
+        "changes": {
+          "pip.performance.completed": {
+            "before": false,
+            "after": true
+          },
+          "nella.response": {
+            "before": null,
+            "after": "delighted"
+          }
+        }
+      }
+    ]
+  }
+]

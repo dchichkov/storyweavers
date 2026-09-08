@@ -1,0 +1,1245 @@
+[
+  {
+    "seed": 0,
+    "title": "The Pond Concert Promise",
+    "initial": {
+      "ada.location": "garden",
+      "ada.want": "invite the neighbor",
+      "ada.delivered": false,
+      "ben.location": "garden",
+      "ben.want": "help the concert",
+      "ben.helped": false,
+      "frog.location": "pond",
+      "frog.want": "perform a pond concert",
+      "frog.performance_style": "undecided",
+      "frog.performed": false,
+      "neighbor.location": "porch",
+      "neighbor.want": "join",
+      "neighbor.responded": false,
+      "neighbor.response": null,
+      "garden.kind": "garden",
+      "porch.kind": "porch",
+      "pond.wind": "breezy",
+      "pond.pad_secured": false,
+      "pond.outcome": "none",
+      "invitation.owner": "ada",
+      "invitation.location": "garden",
+      "invitation.delivered": false,
+      "drum.owner": "frog",
+      "drum.location": "garden",
+      "lily_pad.owner": "ada",
+      "lily_pad.location": "garden",
+      "frog.knows.pond.wind": null,
+      "ada.knows.pond.wind": null,
+      "ada.knows.neighbor.want": null,
+      "frog.knows.neighbor.want": null
+    },
+    "final": {
+      "ada.location": "porch",
+      "ada.want": "invite the neighbor",
+      "ada.delivered": true,
+      "ben.location": "garden",
+      "ben.want": "help the concert",
+      "ben.helped": true,
+      "frog.location": "pond",
+      "frog.want": "perform a pond concert",
+      "frog.performance_style": "anchored lily-pad rhythm",
+      "frog.performed": true,
+      "neighbor.location": "porch",
+      "neighbor.want": "join",
+      "neighbor.responded": true,
+      "neighbor.response": "joins the rhythm",
+      "garden.kind": "garden",
+      "porch.kind": "porch",
+      "pond.wind": "breezy",
+      "pond.pad_secured": true,
+      "pond.outcome": "lively_jam",
+      "invitation.owner": "neighbor",
+      "invitation.location": "porch",
+      "invitation.delivered": true,
+      "drum.owner": "frog",
+      "drum.location": "garden",
+      "lily_pad.owner": "ada",
+      "lily_pad.location": "pond",
+      "frog.knows.pond.wind": "breezy",
+      "ada.knows.pond.wind": "breezy",
+      "ada.knows.neighbor.want": "join",
+      "frog.knows.neighbor.want": "join"
+    },
+    "events": [
+      {
+        "id": 1,
+        "scene": "wind_news.notice",
+        "kernel": "Observe",
+        "actors": [
+          "frog"
+        ],
+        "summary": "",
+        "causes": [],
+        "requires": [],
+        "changes": {
+          "frog.knows.pond.wind": {
+            "before": null,
+            "after": "breezy"
+          }
+        }
+      },
+      {
+        "id": 2,
+        "scene": "wish_news.notice",
+        "kernel": "Observe",
+        "actors": [
+          "ada"
+        ],
+        "summary": "",
+        "causes": [],
+        "requires": [],
+        "changes": {
+          "ada.knows.neighbor.want": {
+            "before": null,
+            "after": "join"
+          }
+        }
+      },
+      {
+        "id": 3,
+        "scene": "wind_news.share",
+        "kernel": "Tell",
+        "actors": [
+          "frog",
+          "ada"
+        ],
+        "summary": "",
+        "causes": [
+          1
+        ],
+        "requires": [
+          {
+            "key": "frog.knows.pond.wind",
+            "op": "ne",
+            "value": null
+          }
+        ],
+        "changes": {
+          "ada.knows.pond.wind": {
+            "before": null,
+            "after": "breezy"
+          }
+        }
+      },
+      {
+        "id": 4,
+        "scene": "wish_news.share",
+        "kernel": "Tell",
+        "actors": [
+          "ada",
+          "frog"
+        ],
+        "summary": "",
+        "causes": [
+          2
+        ],
+        "requires": [
+          {
+            "key": "ada.knows.neighbor.want",
+            "op": "ne",
+            "value": null
+          }
+        ],
+        "changes": {
+          "frog.knows.neighbor.want": {
+            "before": null,
+            "after": "join"
+          }
+        }
+      },
+      {
+        "id": 5,
+        "scene": "move_invitation",
+        "kernel": "Move",
+        "actors": [
+          "ada",
+          "porch"
+        ],
+        "summary": "Ada carries the invitation to the porch",
+        "causes": [],
+        "requires": [
+          {
+            "key": "invitation.owner",
+            "op": "eq",
+            "value": "ada"
+          },
+          {
+            "key": "ada.location",
+            "op": "eq",
+            "value": "garden"
+          },
+          {
+            "key": "invitation.owner",
+            "op": "eq",
+            "value": "ada"
+          },
+          {
+            "key": "invitation.location",
+            "op": "eq",
+            "value": "garden"
+          }
+        ],
+        "changes": {
+          "invitation.location": {
+            "before": "garden",
+            "after": "porch"
+          }
+        }
+      },
+      {
+        "id": 6,
+        "scene": "move_lily_pad",
+        "kernel": "Move",
+        "actors": [
+          "ada",
+          "pond"
+        ],
+        "summary": "Ada floats the wide lily pad onto the pond",
+        "causes": [],
+        "requires": [
+          {
+            "key": "lily_pad.owner",
+            "op": "eq",
+            "value": "ada"
+          },
+          {
+            "key": "ada.location",
+            "op": "eq",
+            "value": "garden"
+          },
+          {
+            "key": "lily_pad.owner",
+            "op": "eq",
+            "value": "ada"
+          },
+          {
+            "key": "lily_pad.location",
+            "op": "eq",
+            "value": "garden"
+          }
+        ],
+        "changes": {
+          "lily_pad.location": {
+            "before": "garden",
+            "after": "pond"
+          }
+        }
+      },
+      {
+        "id": 7,
+        "scene": "secure_breezy_pad",
+        "kernel": "secure the lily pad",
+        "actors": [
+          "ada",
+          "ben"
+        ],
+        "summary": "Ada and Ben anchor the lily pad against the breeze",
+        "causes": [
+          3,
+          6
+        ],
+        "requires": [
+          {
+            "key": "pond.wind",
+            "op": "eq",
+            "value": "breezy"
+          },
+          {
+            "key": "lily_pad.location",
+            "op": "eq",
+            "value": "pond"
+          },
+          {
+            "key": "ada.knows.pond.wind",
+            "op": "eq",
+            "value": "breezy"
+          }
+        ],
+        "changes": {
+          "ben.helped": {
+            "before": false,
+            "after": true
+          },
+          "pond.pad_secured": {
+            "before": false,
+            "after": true
+          }
+        }
+      },
+      {
+        "id": 8,
+        "scene": "lively_breezy_performance",
+        "kernel": "anchored lily-pad rhythm",
+        "actors": [
+          "frog"
+        ],
+        "summary": "Frog turns the anchored pad into a lively rhythm",
+        "causes": [
+          4,
+          6,
+          7
+        ],
+        "requires": [
+          {
+            "key": "frog.knows.neighbor.want",
+            "op": "eq",
+            "value": "join"
+          },
+          {
+            "key": "pond.wind",
+            "op": "eq",
+            "value": "breezy"
+          },
+          {
+            "key": "pond.pad_secured",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "lily_pad.location",
+            "op": "eq",
+            "value": "pond"
+          },
+          {
+            "key": "frog.performed",
+            "op": "eq",
+            "value": false
+          }
+        ],
+        "changes": {
+          "frog.performance_style": {
+            "before": "undecided",
+            "after": "anchored lily-pad rhythm"
+          },
+          "frog.performed": {
+            "before": false,
+            "after": true
+          },
+          "pond.outcome": {
+            "before": "none",
+            "after": "lively_jam"
+          }
+        }
+      },
+      {
+        "id": 9,
+        "scene": "joining_response",
+        "kernel": "neighbor joins",
+        "actors": [
+          "neighbor"
+        ],
+        "summary": "Mira joins the lively pond rhythm",
+        "causes": [
+          8
+        ],
+        "requires": [
+          {
+            "key": "neighbor.want",
+            "op": "eq",
+            "value": "join"
+          },
+          {
+            "key": "pond.outcome",
+            "op": "eq",
+            "value": "lively_jam"
+          },
+          {
+            "key": "frog.performed",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "neighbor.responded",
+            "op": "eq",
+            "value": false
+          }
+        ],
+        "changes": {
+          "neighbor.responded": {
+            "before": false,
+            "after": true
+          },
+          "neighbor.response": {
+            "before": null,
+            "after": "joins the rhythm"
+          }
+        }
+      },
+      {
+        "id": 10,
+        "scene": "walk_to_porch",
+        "kernel": "walk to porch",
+        "actors": [
+          "ada"
+        ],
+        "summary": "Ada walks up to the porch",
+        "causes": [
+          5
+        ],
+        "requires": [
+          {
+            "key": "invitation.location",
+            "op": "eq",
+            "value": "porch"
+          },
+          {
+            "key": "ada.location",
+            "op": "eq",
+            "value": "garden"
+          }
+        ],
+        "changes": {
+          "ada.location": {
+            "before": "garden",
+            "after": "porch"
+          }
+        }
+      },
+      {
+        "id": 11,
+        "scene": "deliver_invitation",
+        "kernel": "Transfer",
+        "actors": [
+          "ada",
+          "neighbor"
+        ],
+        "summary": "Ada gives Mira the painted invitation",
+        "causes": [
+          2,
+          5,
+          10
+        ],
+        "requires": [
+          {
+            "key": "invitation.owner",
+            "op": "eq",
+            "value": "ada"
+          },
+          {
+            "key": "ada.location",
+            "op": "eq",
+            "value": "porch"
+          },
+          {
+            "key": "invitation.location",
+            "op": "eq",
+            "value": "porch"
+          },
+          {
+            "key": "neighbor.location",
+            "op": "eq",
+            "value": "porch"
+          },
+          {
+            "key": "ada.knows.neighbor.want",
+            "op": "ne",
+            "value": null
+          }
+        ],
+        "changes": {
+          "invitation.owner": {
+            "before": "ada",
+            "after": "neighbor"
+          }
+        }
+      },
+      {
+        "id": 12,
+        "scene": "mark_delivery",
+        "kernel": "invitation delivered",
+        "actors": [
+          "ada"
+        ],
+        "summary": "The invitation is safely delivered",
+        "causes": [
+          11
+        ],
+        "requires": [
+          {
+            "key": "invitation.owner",
+            "op": "eq",
+            "value": "neighbor"
+          }
+        ],
+        "changes": {
+          "ada.delivered": {
+            "before": false,
+            "after": true
+          },
+          "invitation.delivered": {
+            "before": false,
+            "after": true
+          }
+        }
+      }
+    ]
+  },
+  {
+    "seed": 1,
+    "title": "The Pond Concert Promise",
+    "initial": {
+      "ada.location": "garden",
+      "ada.want": "invite the neighbor",
+      "ada.delivered": false,
+      "ben.location": "garden",
+      "ben.want": "help the concert",
+      "ben.helped": false,
+      "frog.location": "pond",
+      "frog.want": "perform a pond concert",
+      "frog.performance_style": "undecided",
+      "frog.performed": false,
+      "neighbor.location": "porch",
+      "neighbor.want": "quiet",
+      "neighbor.responded": false,
+      "neighbor.response": null,
+      "garden.kind": "garden",
+      "porch.kind": "porch",
+      "pond.wind": "still",
+      "pond.pad_secured": false,
+      "pond.outcome": "none",
+      "invitation.owner": "ada",
+      "invitation.location": "garden",
+      "invitation.delivered": false,
+      "drum.owner": "frog",
+      "drum.location": "garden",
+      "lily_pad.owner": "ada",
+      "lily_pad.location": "garden",
+      "frog.knows.pond.wind": null,
+      "ada.knows.pond.wind": null,
+      "ada.knows.neighbor.want": null,
+      "frog.knows.neighbor.want": null
+    },
+    "final": {
+      "ada.location": "porch",
+      "ada.want": "invite the neighbor",
+      "ada.delivered": true,
+      "ben.location": "garden",
+      "ben.want": "help the concert",
+      "ben.helped": false,
+      "frog.location": "pond",
+      "frog.want": "perform a pond concert",
+      "frog.performance_style": "gentle",
+      "frog.performed": true,
+      "neighbor.location": "porch",
+      "neighbor.want": "quiet",
+      "neighbor.responded": true,
+      "neighbor.response": "smiles and listens",
+      "garden.kind": "garden",
+      "porch.kind": "porch",
+      "pond.wind": "still",
+      "pond.pad_secured": false,
+      "pond.outcome": "quiet_song",
+      "invitation.owner": "neighbor",
+      "invitation.location": "porch",
+      "invitation.delivered": true,
+      "drum.owner": "frog",
+      "drum.location": "pond",
+      "lily_pad.owner": "ada",
+      "lily_pad.location": "garden",
+      "frog.knows.pond.wind": null,
+      "ada.knows.pond.wind": null,
+      "ada.knows.neighbor.want": "quiet",
+      "frog.knows.neighbor.want": "quiet"
+    },
+    "events": [
+      {
+        "id": 1,
+        "scene": "wish_news.notice",
+        "kernel": "Observe",
+        "actors": [
+          "ada"
+        ],
+        "summary": "",
+        "causes": [],
+        "requires": [],
+        "changes": {
+          "ada.knows.neighbor.want": {
+            "before": null,
+            "after": "quiet"
+          }
+        }
+      },
+      {
+        "id": 2,
+        "scene": "move_invitation",
+        "kernel": "Move",
+        "actors": [
+          "ada",
+          "porch"
+        ],
+        "summary": "Ada carries the invitation to the porch",
+        "causes": [],
+        "requires": [
+          {
+            "key": "invitation.owner",
+            "op": "eq",
+            "value": "ada"
+          },
+          {
+            "key": "ada.location",
+            "op": "eq",
+            "value": "garden"
+          },
+          {
+            "key": "invitation.owner",
+            "op": "eq",
+            "value": "ada"
+          },
+          {
+            "key": "invitation.location",
+            "op": "eq",
+            "value": "garden"
+          }
+        ],
+        "changes": {
+          "invitation.location": {
+            "before": "garden",
+            "after": "porch"
+          }
+        }
+      },
+      {
+        "id": 3,
+        "scene": "walk_to_porch",
+        "kernel": "walk to porch",
+        "actors": [
+          "ada"
+        ],
+        "summary": "Ada walks up to the porch",
+        "causes": [
+          2
+        ],
+        "requires": [
+          {
+            "key": "invitation.location",
+            "op": "eq",
+            "value": "porch"
+          },
+          {
+            "key": "ada.location",
+            "op": "eq",
+            "value": "garden"
+          }
+        ],
+        "changes": {
+          "ada.location": {
+            "before": "garden",
+            "after": "porch"
+          }
+        }
+      },
+      {
+        "id": 4,
+        "scene": "deliver_invitation",
+        "kernel": "Transfer",
+        "actors": [
+          "ada",
+          "neighbor"
+        ],
+        "summary": "Ada gives Mira the painted invitation",
+        "causes": [
+          1,
+          2,
+          3
+        ],
+        "requires": [
+          {
+            "key": "invitation.owner",
+            "op": "eq",
+            "value": "ada"
+          },
+          {
+            "key": "ada.location",
+            "op": "eq",
+            "value": "porch"
+          },
+          {
+            "key": "invitation.location",
+            "op": "eq",
+            "value": "porch"
+          },
+          {
+            "key": "neighbor.location",
+            "op": "eq",
+            "value": "porch"
+          },
+          {
+            "key": "ada.knows.neighbor.want",
+            "op": "ne",
+            "value": null
+          }
+        ],
+        "changes": {
+          "invitation.owner": {
+            "before": "ada",
+            "after": "neighbor"
+          }
+        }
+      },
+      {
+        "id": 5,
+        "scene": "wish_news.share",
+        "kernel": "Tell",
+        "actors": [
+          "ada",
+          "frog"
+        ],
+        "summary": "",
+        "causes": [
+          1
+        ],
+        "requires": [
+          {
+            "key": "ada.knows.neighbor.want",
+            "op": "ne",
+            "value": null
+          }
+        ],
+        "changes": {
+          "frog.knows.neighbor.want": {
+            "before": null,
+            "after": "quiet"
+          }
+        }
+      },
+      {
+        "id": 6,
+        "scene": "mark_delivery",
+        "kernel": "invitation delivered",
+        "actors": [
+          "ada"
+        ],
+        "summary": "The invitation is safely delivered",
+        "causes": [
+          4
+        ],
+        "requires": [
+          {
+            "key": "invitation.owner",
+            "op": "eq",
+            "value": "neighbor"
+          }
+        ],
+        "changes": {
+          "ada.delivered": {
+            "before": false,
+            "after": true
+          },
+          "invitation.delivered": {
+            "before": false,
+            "after": true
+          }
+        }
+      },
+      {
+        "id": 7,
+        "scene": "move_drum",
+        "kernel": "Move",
+        "actors": [
+          "frog",
+          "pond"
+        ],
+        "summary": "Frog brings the acorn drum to the pond",
+        "causes": [],
+        "requires": [
+          {
+            "key": "drum.owner",
+            "op": "eq",
+            "value": "frog"
+          },
+          {
+            "key": "drum.owner",
+            "op": "eq",
+            "value": "frog"
+          },
+          {
+            "key": "drum.location",
+            "op": "eq",
+            "value": "garden"
+          }
+        ],
+        "changes": {
+          "drum.location": {
+            "before": "garden",
+            "after": "pond"
+          }
+        }
+      },
+      {
+        "id": 8,
+        "scene": "quiet_performance",
+        "kernel": "gentle pond song",
+        "actors": [
+          "frog"
+        ],
+        "summary": "Frog plays a gentle song for a quiet listener",
+        "causes": [
+          5,
+          7
+        ],
+        "requires": [
+          {
+            "key": "frog.knows.neighbor.want",
+            "op": "eq",
+            "value": "quiet"
+          },
+          {
+            "key": "drum.location",
+            "op": "eq",
+            "value": "pond"
+          },
+          {
+            "key": "frog.performed",
+            "op": "eq",
+            "value": false
+          }
+        ],
+        "changes": {
+          "frog.performance_style": {
+            "before": "undecided",
+            "after": "gentle"
+          },
+          "frog.performed": {
+            "before": false,
+            "after": true
+          },
+          "pond.outcome": {
+            "before": "none",
+            "after": "quiet_song"
+          }
+        }
+      },
+      {
+        "id": 9,
+        "scene": "quiet_response",
+        "kernel": "quiet welcome",
+        "actors": [
+          "neighbor"
+        ],
+        "summary": "Mira smiles at the gentle pond song",
+        "causes": [
+          8
+        ],
+        "requires": [
+          {
+            "key": "neighbor.want",
+            "op": "eq",
+            "value": "quiet"
+          },
+          {
+            "key": "pond.outcome",
+            "op": "eq",
+            "value": "quiet_song"
+          },
+          {
+            "key": "frog.performed",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "neighbor.responded",
+            "op": "eq",
+            "value": false
+          }
+        ],
+        "changes": {
+          "neighbor.responded": {
+            "before": false,
+            "after": true
+          },
+          "neighbor.response": {
+            "before": null,
+            "after": "smiles and listens"
+          }
+        }
+      }
+    ]
+  },
+  {
+    "seed": 2,
+    "title": "The Pond Concert Promise",
+    "initial": {
+      "ada.location": "garden",
+      "ada.want": "invite the neighbor",
+      "ada.delivered": false,
+      "ben.location": "garden",
+      "ben.want": "help the concert",
+      "ben.helped": false,
+      "frog.location": "pond",
+      "frog.want": "perform a pond concert",
+      "frog.performance_style": "undecided",
+      "frog.performed": false,
+      "neighbor.location": "porch",
+      "neighbor.want": "quiet",
+      "neighbor.responded": false,
+      "neighbor.response": null,
+      "garden.kind": "garden",
+      "porch.kind": "porch",
+      "pond.wind": "still",
+      "pond.pad_secured": false,
+      "pond.outcome": "none",
+      "invitation.owner": "ada",
+      "invitation.location": "garden",
+      "invitation.delivered": false,
+      "drum.owner": "frog",
+      "drum.location": "garden",
+      "lily_pad.owner": "ada",
+      "lily_pad.location": "garden",
+      "frog.knows.pond.wind": null,
+      "ada.knows.pond.wind": null,
+      "ada.knows.neighbor.want": null,
+      "frog.knows.neighbor.want": null
+    },
+    "final": {
+      "ada.location": "porch",
+      "ada.want": "invite the neighbor",
+      "ada.delivered": true,
+      "ben.location": "garden",
+      "ben.want": "help the concert",
+      "ben.helped": false,
+      "frog.location": "pond",
+      "frog.want": "perform a pond concert",
+      "frog.performance_style": "gentle",
+      "frog.performed": true,
+      "neighbor.location": "porch",
+      "neighbor.want": "quiet",
+      "neighbor.responded": true,
+      "neighbor.response": "smiles and listens",
+      "garden.kind": "garden",
+      "porch.kind": "porch",
+      "pond.wind": "still",
+      "pond.pad_secured": false,
+      "pond.outcome": "quiet_song",
+      "invitation.owner": "neighbor",
+      "invitation.location": "porch",
+      "invitation.delivered": true,
+      "drum.owner": "frog",
+      "drum.location": "pond",
+      "lily_pad.owner": "ada",
+      "lily_pad.location": "garden",
+      "frog.knows.pond.wind": null,
+      "ada.knows.pond.wind": null,
+      "ada.knows.neighbor.want": "quiet",
+      "frog.knows.neighbor.want": "quiet"
+    },
+    "events": [
+      {
+        "id": 1,
+        "scene": "wish_news.notice",
+        "kernel": "Observe",
+        "actors": [
+          "ada"
+        ],
+        "summary": "",
+        "causes": [],
+        "requires": [],
+        "changes": {
+          "ada.knows.neighbor.want": {
+            "before": null,
+            "after": "quiet"
+          }
+        }
+      },
+      {
+        "id": 2,
+        "scene": "move_invitation",
+        "kernel": "Move",
+        "actors": [
+          "ada",
+          "porch"
+        ],
+        "summary": "Ada carries the invitation to the porch",
+        "causes": [],
+        "requires": [
+          {
+            "key": "invitation.owner",
+            "op": "eq",
+            "value": "ada"
+          },
+          {
+            "key": "ada.location",
+            "op": "eq",
+            "value": "garden"
+          },
+          {
+            "key": "invitation.owner",
+            "op": "eq",
+            "value": "ada"
+          },
+          {
+            "key": "invitation.location",
+            "op": "eq",
+            "value": "garden"
+          }
+        ],
+        "changes": {
+          "invitation.location": {
+            "before": "garden",
+            "after": "porch"
+          }
+        }
+      },
+      {
+        "id": 3,
+        "scene": "wish_news.share",
+        "kernel": "Tell",
+        "actors": [
+          "ada",
+          "frog"
+        ],
+        "summary": "",
+        "causes": [
+          1
+        ],
+        "requires": [
+          {
+            "key": "ada.knows.neighbor.want",
+            "op": "ne",
+            "value": null
+          }
+        ],
+        "changes": {
+          "frog.knows.neighbor.want": {
+            "before": null,
+            "after": "quiet"
+          }
+        }
+      },
+      {
+        "id": 4,
+        "scene": "walk_to_porch",
+        "kernel": "walk to porch",
+        "actors": [
+          "ada"
+        ],
+        "summary": "Ada walks up to the porch",
+        "causes": [
+          2
+        ],
+        "requires": [
+          {
+            "key": "invitation.location",
+            "op": "eq",
+            "value": "porch"
+          },
+          {
+            "key": "ada.location",
+            "op": "eq",
+            "value": "garden"
+          }
+        ],
+        "changes": {
+          "ada.location": {
+            "before": "garden",
+            "after": "porch"
+          }
+        }
+      },
+      {
+        "id": 5,
+        "scene": "deliver_invitation",
+        "kernel": "Transfer",
+        "actors": [
+          "ada",
+          "neighbor"
+        ],
+        "summary": "Ada gives Mira the painted invitation",
+        "causes": [
+          1,
+          2,
+          4
+        ],
+        "requires": [
+          {
+            "key": "invitation.owner",
+            "op": "eq",
+            "value": "ada"
+          },
+          {
+            "key": "ada.location",
+            "op": "eq",
+            "value": "porch"
+          },
+          {
+            "key": "invitation.location",
+            "op": "eq",
+            "value": "porch"
+          },
+          {
+            "key": "neighbor.location",
+            "op": "eq",
+            "value": "porch"
+          },
+          {
+            "key": "ada.knows.neighbor.want",
+            "op": "ne",
+            "value": null
+          }
+        ],
+        "changes": {
+          "invitation.owner": {
+            "before": "ada",
+            "after": "neighbor"
+          }
+        }
+      },
+      {
+        "id": 6,
+        "scene": "mark_delivery",
+        "kernel": "invitation delivered",
+        "actors": [
+          "ada"
+        ],
+        "summary": "The invitation is safely delivered",
+        "causes": [
+          5
+        ],
+        "requires": [
+          {
+            "key": "invitation.owner",
+            "op": "eq",
+            "value": "neighbor"
+          }
+        ],
+        "changes": {
+          "ada.delivered": {
+            "before": false,
+            "after": true
+          },
+          "invitation.delivered": {
+            "before": false,
+            "after": true
+          }
+        }
+      },
+      {
+        "id": 7,
+        "scene": "move_drum",
+        "kernel": "Move",
+        "actors": [
+          "frog",
+          "pond"
+        ],
+        "summary": "Frog brings the acorn drum to the pond",
+        "causes": [],
+        "requires": [
+          {
+            "key": "drum.owner",
+            "op": "eq",
+            "value": "frog"
+          },
+          {
+            "key": "drum.owner",
+            "op": "eq",
+            "value": "frog"
+          },
+          {
+            "key": "drum.location",
+            "op": "eq",
+            "value": "garden"
+          }
+        ],
+        "changes": {
+          "drum.location": {
+            "before": "garden",
+            "after": "pond"
+          }
+        }
+      },
+      {
+        "id": 8,
+        "scene": "quiet_performance",
+        "kernel": "gentle pond song",
+        "actors": [
+          "frog"
+        ],
+        "summary": "Frog plays a gentle song for a quiet listener",
+        "causes": [
+          3,
+          7
+        ],
+        "requires": [
+          {
+            "key": "frog.knows.neighbor.want",
+            "op": "eq",
+            "value": "quiet"
+          },
+          {
+            "key": "drum.location",
+            "op": "eq",
+            "value": "pond"
+          },
+          {
+            "key": "frog.performed",
+            "op": "eq",
+            "value": false
+          }
+        ],
+        "changes": {
+          "frog.performance_style": {
+            "before": "undecided",
+            "after": "gentle"
+          },
+          "frog.performed": {
+            "before": false,
+            "after": true
+          },
+          "pond.outcome": {
+            "before": "none",
+            "after": "quiet_song"
+          }
+        }
+      },
+      {
+        "id": 9,
+        "scene": "quiet_response",
+        "kernel": "quiet welcome",
+        "actors": [
+          "neighbor"
+        ],
+        "summary": "Mira smiles at the gentle pond song",
+        "causes": [
+          8
+        ],
+        "requires": [
+          {
+            "key": "neighbor.want",
+            "op": "eq",
+            "value": "quiet"
+          },
+          {
+            "key": "pond.outcome",
+            "op": "eq",
+            "value": "quiet_song"
+          },
+          {
+            "key": "frog.performed",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "neighbor.responded",
+            "op": "eq",
+            "value": false
+          }
+        ],
+        "changes": {
+          "neighbor.responded": {
+            "before": false,
+            "after": true
+          },
+          "neighbor.response": {
+            "before": null,
+            "after": "smiles and listens"
+          }
+        }
+      }
+    ]
+  }
+]

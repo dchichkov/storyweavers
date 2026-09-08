@@ -1,0 +1,2002 @@
+[
+  {
+    "seed": 0,
+    "title": "The Clocktower Club",
+    "initial": {
+      "ada.location": "tower",
+      "brindle.location": "tower",
+      "keeper.location": "tower",
+      "nella.location": "house",
+      "tower.club_time": "unknown",
+      "upper.accessible": true,
+      "upper.cluttered": true,
+      "lower.accessible": true,
+      "lower.arranged": false,
+      "bell.location": "upper",
+      "bell.owner": "keeper",
+      "bell.stuck": false,
+      "rope.location": "upper",
+      "rope.owner": "keeper",
+      "gear.location": "upper",
+      "gear.aligned": true,
+      "gear.frosty": false,
+      "notice.location": "upper",
+      "notice.outdated": true,
+      "notice.clear": false,
+      "notice.open": false,
+      "cushions.location": "tower",
+      "cushions.owner": "ada",
+      "lantern.location": "tower",
+      "lantern.owner": "ada",
+      "flag.location": "tower",
+      "flag.owner": "ada",
+      "flag.signal": "none",
+      "flag.tested": false,
+      "papers.location": "upper",
+      "papers.safe": true,
+      "nella.asleep": false,
+      "nella.quiet_needed": true,
+      "nella.prefers_lower": false,
+      "nella.agreed": false,
+      "nella.relocation_requested": false,
+      "club.ready": false,
+      "club.meeting_place": "none",
+      "ada.memes.Curiosity": 0,
+      "ada.memes.Cooperation": 0,
+      "ada.memes.Ambition": 1,
+      "brindle.memes.Curiosity": 0,
+      "brindle.memes.Cooperation": 0,
+      "brindle.memes.Ambition": 1,
+      "keeper.memes.Care": 1,
+      "ada.knows.bell.stuck": null,
+      "ada.knows.notice.outdated": null,
+      "ada.knows.nella.quiet_needed": null,
+      "brindle.knows.gear.frosty": null,
+      "keeper.knows.nella.quiet_needed": true
+    },
+    "final": {
+      "ada.location": "tower",
+      "brindle.location": "tower",
+      "keeper.location": "tower",
+      "nella.location": "tower",
+      "tower.club_time": "daytime",
+      "upper.accessible": true,
+      "upper.cluttered": false,
+      "lower.accessible": true,
+      "lower.arranged": false,
+      "bell.location": "upper",
+      "bell.owner": "keeper",
+      "bell.stuck": false,
+      "rope.location": "upper",
+      "rope.owner": "keeper",
+      "gear.location": "upper",
+      "gear.aligned": true,
+      "gear.frosty": false,
+      "notice.location": "upper",
+      "notice.outdated": true,
+      "notice.clear": false,
+      "notice.open": true,
+      "cushions.location": "upper",
+      "cushions.owner": "ada",
+      "lantern.location": "upper",
+      "lantern.owner": "ada",
+      "flag.location": "tower",
+      "flag.owner": "ada",
+      "flag.signal": "bell",
+      "flag.tested": true,
+      "papers.location": "upper",
+      "papers.safe": true,
+      "nella.asleep": false,
+      "nella.quiet_needed": true,
+      "nella.prefers_lower": false,
+      "nella.agreed": true,
+      "nella.relocation_requested": false,
+      "club.ready": true,
+      "club.meeting_place": "upper",
+      "ada.memes.Curiosity": 1,
+      "ada.memes.Cooperation": 1,
+      "ada.memes.Ambition": 1,
+      "brindle.memes.Curiosity": 1,
+      "brindle.memes.Cooperation": 0,
+      "brindle.memes.Ambition": 1,
+      "keeper.memes.Care": 1,
+      "ada.knows.bell.stuck": false,
+      "ada.knows.notice.outdated": true,
+      "ada.knows.nella.quiet_needed": true,
+      "brindle.knows.gear.frosty": false,
+      "keeper.knows.nella.quiet_needed": true
+    },
+    "events": [
+      {
+        "id": 1,
+        "scene": "explore_tower",
+        "kernel": "observation",
+        "actors": [
+          "ada",
+          "brindle"
+        ],
+        "summary": "Ada and Brindle explored the clocktower together",
+        "causes": [],
+        "requires": [
+          {
+            "key": "ada.location",
+            "op": "eq",
+            "value": "tower"
+          },
+          {
+            "key": "brindle.location",
+            "op": "eq",
+            "value": "tower"
+          }
+        ],
+        "changes": {
+          "ada.memes.Curiosity": {
+            "before": 0,
+            "after": 1
+          },
+          "ada.memes.Cooperation": {
+            "before": 0,
+            "after": 1
+          },
+          "brindle.memes.Curiosity": {
+            "before": 0,
+            "after": 1
+          }
+        }
+      },
+      {
+        "id": 2,
+        "scene": "lend_rope",
+        "kernel": "Transfer",
+        "actors": [
+          "keeper",
+          "ada"
+        ],
+        "summary": "Keeper Moss lent Ada the bell-rope",
+        "causes": [],
+        "requires": [
+          {
+            "key": "rope.owner",
+            "op": "eq",
+            "value": "keeper"
+          },
+          {
+            "key": "keeper.location",
+            "op": "eq",
+            "value": "tower"
+          },
+          {
+            "key": "ada.location",
+            "op": "eq",
+            "value": "tower"
+          },
+          {
+            "key": "keeper.memes.Care",
+            "op": "ge",
+            "value": 1
+          }
+        ],
+        "changes": {
+          "rope.owner": {
+            "before": "keeper",
+            "after": "ada"
+          }
+        }
+      },
+      {
+        "id": 3,
+        "scene": "keeper_explains_quiet",
+        "kernel": "Tell",
+        "actors": [
+          "keeper",
+          "ada"
+        ],
+        "summary": "Keeper Moss explained Nella's need for quiet",
+        "causes": [],
+        "requires": [
+          {
+            "key": "keeper.knows.nella.quiet_needed",
+            "op": "ne",
+            "value": null
+          },
+          {
+            "key": "keeper.location",
+            "op": "eq",
+            "value": "tower"
+          },
+          {
+            "key": "ada.location",
+            "op": "eq",
+            "value": "tower"
+          },
+          {
+            "key": "keeper.memes.Care",
+            "op": "ge",
+            "value": 1
+          }
+        ],
+        "changes": {
+          "ada.knows.nella.quiet_needed": {
+            "before": null,
+            "after": true
+          }
+        }
+      },
+      {
+        "id": 4,
+        "scene": "inspect_machinery",
+        "kernel": "observation",
+        "actors": [
+          "ada",
+          "brindle"
+        ],
+        "summary": "Ada inspected the bell while Brindle inspected the brass gear",
+        "causes": [
+          1
+        ],
+        "requires": [
+          {
+            "key": "ada.location",
+            "op": "eq",
+            "value": "tower"
+          },
+          {
+            "key": "brindle.location",
+            "op": "eq",
+            "value": "tower"
+          },
+          {
+            "key": "ada.memes.Curiosity",
+            "op": "ge",
+            "value": 1
+          },
+          {
+            "key": "brindle.memes.Curiosity",
+            "op": "ge",
+            "value": 1
+          },
+          {
+            "key": "upper.accessible",
+            "op": "eq",
+            "value": true
+          }
+        ],
+        "changes": {
+          "ada.knows.bell.stuck": {
+            "before": null,
+            "after": false
+          },
+          "brindle.knows.gear.frosty": {
+            "before": null,
+            "after": false
+          }
+        }
+      },
+      {
+        "id": 5,
+        "scene": "inspect_notice",
+        "kernel": "Observe",
+        "actors": [
+          "ada"
+        ],
+        "summary": "Ada inspected the old noticeboard",
+        "causes": [
+          1
+        ],
+        "requires": [
+          {
+            "key": "ada.location",
+            "op": "eq",
+            "value": "tower"
+          },
+          {
+            "key": "ada.memes.Curiosity",
+            "op": "ge",
+            "value": 1
+          },
+          {
+            "key": "upper.accessible",
+            "op": "eq",
+            "value": true
+          }
+        ],
+        "changes": {
+          "ada.knows.notice.outdated": {
+            "before": null,
+            "after": true
+          }
+        }
+      },
+      {
+        "id": 6,
+        "scene": "secure_bell_gear",
+        "kernel": "cooperation",
+        "actors": [
+          "ada",
+          "keeper"
+        ],
+        "summary": "Ada and Keeper Moss fastened the bell gear carefully with the rope",
+        "causes": [
+          2,
+          4
+        ],
+        "requires": [
+          {
+            "key": "ada.location",
+            "op": "eq",
+            "value": "tower"
+          },
+          {
+            "key": "keeper.location",
+            "op": "eq",
+            "value": "tower"
+          },
+          {
+            "key": "ada.knows.bell.stuck",
+            "op": "in",
+            "value": [
+              true,
+              false
+            ]
+          },
+          {
+            "key": "rope.owner",
+            "op": "eq",
+            "value": "ada"
+          },
+          {
+            "key": "gear.frosty",
+            "op": "eq",
+            "value": false
+          }
+        ],
+        "changes": {
+          "rope.owner": {
+            "before": "ada",
+            "after": "keeper"
+          },
+          "flag.signal": {
+            "before": "none",
+            "after": "bell"
+          }
+        }
+      },
+      {
+        "id": 7,
+        "scene": "invite_nella_upstairs",
+        "kernel": "care",
+        "actors": [
+          "ada",
+          "nella"
+        ],
+        "summary": "Ada walked with Nella to the tower and agreed on a gentle daytime meeting",
+        "causes": [
+          3
+        ],
+        "requires": [
+          {
+            "key": "ada.location",
+            "op": "eq",
+            "value": "tower"
+          },
+          {
+            "key": "nella.location",
+            "op": "eq",
+            "value": "house"
+          },
+          {
+            "key": "ada.knows.nella.quiet_needed",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "nella.prefers_lower",
+            "op": "eq",
+            "value": false
+          }
+        ],
+        "changes": {
+          "nella.location": {
+            "before": "house",
+            "after": "tower"
+          },
+          "tower.club_time": {
+            "before": "unknown",
+            "after": "daytime"
+          },
+          "nella.agreed": {
+            "before": false,
+            "after": true
+          }
+        }
+      },
+      {
+        "id": 8,
+        "scene": "arrange_upper_room",
+        "kernel": "physical_arrangement",
+        "actors": [
+          "ada",
+          "brindle"
+        ],
+        "summary": "Ada and Brindle arranged cushions and a lantern in the upper clubroom",
+        "causes": [
+          7
+        ],
+        "requires": [
+          {
+            "key": "ada.location",
+            "op": "eq",
+            "value": "tower"
+          },
+          {
+            "key": "brindle.location",
+            "op": "eq",
+            "value": "tower"
+          },
+          {
+            "key": "nella.agreed",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "tower.club_time",
+            "op": "eq",
+            "value": "daytime"
+          }
+        ],
+        "changes": {
+          "upper.cluttered": {
+            "before": true,
+            "after": false
+          },
+          "cushions.location": {
+            "before": "tower",
+            "after": "upper"
+          },
+          "lantern.location": {
+            "before": "tower",
+            "after": "upper"
+          }
+        }
+      },
+      {
+        "id": 9,
+        "scene": "test_bell_signal",
+        "kernel": "experimentation",
+        "actors": [
+          "ada",
+          "keeper"
+        ],
+        "summary": "Ada and Keeper Moss tested one gentle daytime bell signal",
+        "causes": [
+          6,
+          7
+        ],
+        "requires": [
+          {
+            "key": "ada.location",
+            "op": "eq",
+            "value": "tower"
+          },
+          {
+            "key": "keeper.location",
+            "op": "eq",
+            "value": "tower"
+          },
+          {
+            "key": "flag.signal",
+            "op": "eq",
+            "value": "bell"
+          },
+          {
+            "key": "bell.stuck",
+            "op": "eq",
+            "value": false
+          },
+          {
+            "key": "gear.aligned",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "nella.agreed",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "nella.asleep",
+            "op": "eq",
+            "value": false
+          },
+          {
+            "key": "tower.club_time",
+            "op": "eq",
+            "value": "daytime"
+          }
+        ],
+        "changes": {
+          "flag.tested": {
+            "before": false,
+            "after": true
+          }
+        }
+      },
+      {
+        "id": 10,
+        "scene": "open_upper_club",
+        "kernel": "ambition",
+        "actors": [
+          "ada",
+          "brindle",
+          "keeper"
+        ],
+        "summary": "Ada and Brindle opened the first club meeting beneath one gentle chime",
+        "causes": [
+          6,
+          7,
+          8,
+          9
+        ],
+        "requires": [
+          {
+            "key": "ada.location",
+            "op": "eq",
+            "value": "tower"
+          },
+          {
+            "key": "brindle.location",
+            "op": "eq",
+            "value": "tower"
+          },
+          {
+            "key": "keeper.location",
+            "op": "eq",
+            "value": "tower"
+          },
+          {
+            "key": "cushions.location",
+            "op": "eq",
+            "value": "upper"
+          },
+          {
+            "key": "lantern.location",
+            "op": "eq",
+            "value": "upper"
+          },
+          {
+            "key": "flag.signal",
+            "op": "eq",
+            "value": "bell"
+          },
+          {
+            "key": "flag.tested",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "nella.agreed",
+            "op": "eq",
+            "value": true
+          }
+        ],
+        "changes": {
+          "notice.open": {
+            "before": false,
+            "after": true
+          },
+          "club.ready": {
+            "before": false,
+            "after": true
+          },
+          "club.meeting_place": {
+            "before": "none",
+            "after": "upper"
+          }
+        }
+      }
+    ]
+  },
+  {
+    "seed": 1,
+    "title": "The Clocktower Club",
+    "initial": {
+      "ada.location": "tower",
+      "brindle.location": "tower",
+      "keeper.location": "tower",
+      "nella.location": "house",
+      "tower.club_time": "unknown",
+      "upper.accessible": true,
+      "upper.cluttered": false,
+      "lower.accessible": true,
+      "lower.arranged": false,
+      "bell.location": "upper",
+      "bell.owner": "keeper",
+      "bell.stuck": true,
+      "rope.location": "upper",
+      "rope.owner": "keeper",
+      "gear.location": "upper",
+      "gear.aligned": false,
+      "gear.frosty": true,
+      "notice.location": "upper",
+      "notice.outdated": true,
+      "notice.clear": false,
+      "notice.open": false,
+      "cushions.location": "tower",
+      "cushions.owner": "ada",
+      "lantern.location": "tower",
+      "lantern.owner": "ada",
+      "flag.location": "tower",
+      "flag.owner": "ada",
+      "flag.signal": "none",
+      "flag.tested": false,
+      "papers.location": "upper",
+      "papers.safe": true,
+      "nella.asleep": false,
+      "nella.quiet_needed": true,
+      "nella.prefers_lower": true,
+      "nella.agreed": false,
+      "nella.relocation_requested": false,
+      "club.ready": false,
+      "club.meeting_place": "none",
+      "ada.memes.Curiosity": 0,
+      "ada.memes.Cooperation": 0,
+      "ada.memes.Ambition": 1,
+      "brindle.memes.Curiosity": 0,
+      "brindle.memes.Cooperation": 0,
+      "brindle.memes.Ambition": 1,
+      "keeper.memes.Care": 1,
+      "ada.knows.bell.stuck": null,
+      "ada.knows.notice.outdated": null,
+      "ada.knows.nella.quiet_needed": null,
+      "brindle.knows.gear.frosty": null,
+      "keeper.knows.nella.quiet_needed": true
+    },
+    "final": {
+      "ada.location": "tower",
+      "brindle.location": "tower",
+      "keeper.location": "tower",
+      "nella.location": "tower",
+      "tower.club_time": "daytime",
+      "upper.accessible": true,
+      "upper.cluttered": false,
+      "lower.accessible": true,
+      "lower.arranged": true,
+      "bell.location": "upper",
+      "bell.owner": "keeper",
+      "bell.stuck": false,
+      "rope.location": "upper",
+      "rope.owner": "keeper",
+      "gear.location": "upper",
+      "gear.aligned": true,
+      "gear.frosty": false,
+      "notice.location": "upper",
+      "notice.outdated": false,
+      "notice.clear": true,
+      "notice.open": true,
+      "cushions.location": "lower",
+      "cushions.owner": "ada",
+      "lantern.location": "lower",
+      "lantern.owner": "ada",
+      "flag.location": "lower",
+      "flag.owner": "ada",
+      "flag.signal": "visual",
+      "flag.tested": true,
+      "papers.location": "upper",
+      "papers.safe": true,
+      "nella.asleep": false,
+      "nella.quiet_needed": true,
+      "nella.prefers_lower": true,
+      "nella.agreed": false,
+      "nella.relocation_requested": true,
+      "club.ready": true,
+      "club.meeting_place": "lower",
+      "ada.memes.Curiosity": 1,
+      "ada.memes.Cooperation": 1,
+      "ada.memes.Ambition": 1,
+      "brindle.memes.Curiosity": 1,
+      "brindle.memes.Cooperation": 1,
+      "brindle.memes.Ambition": 1,
+      "keeper.memes.Care": 1,
+      "ada.knows.bell.stuck": true,
+      "ada.knows.notice.outdated": true,
+      "ada.knows.nella.quiet_needed": true,
+      "brindle.knows.gear.frosty": true,
+      "keeper.knows.nella.quiet_needed": true
+    },
+    "events": [
+      {
+        "id": 1,
+        "scene": "keeper_explains_quiet",
+        "kernel": "Tell",
+        "actors": [
+          "keeper",
+          "ada"
+        ],
+        "summary": "Keeper Moss explained Nella's need for quiet",
+        "causes": [],
+        "requires": [
+          {
+            "key": "keeper.knows.nella.quiet_needed",
+            "op": "ne",
+            "value": null
+          },
+          {
+            "key": "keeper.location",
+            "op": "eq",
+            "value": "tower"
+          },
+          {
+            "key": "ada.location",
+            "op": "eq",
+            "value": "tower"
+          },
+          {
+            "key": "keeper.memes.Care",
+            "op": "ge",
+            "value": 1
+          }
+        ],
+        "changes": {
+          "ada.knows.nella.quiet_needed": {
+            "before": null,
+            "after": true
+          }
+        }
+      },
+      {
+        "id": 2,
+        "scene": "invite_nella_lower",
+        "kernel": "care",
+        "actors": [
+          "ada",
+          "nella"
+        ],
+        "summary": "Ada walked with Nella to the tower and heard her lower-landing suggestion",
+        "causes": [
+          1
+        ],
+        "requires": [
+          {
+            "key": "ada.location",
+            "op": "eq",
+            "value": "tower"
+          },
+          {
+            "key": "nella.location",
+            "op": "eq",
+            "value": "house"
+          },
+          {
+            "key": "ada.knows.nella.quiet_needed",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "nella.prefers_lower",
+            "op": "eq",
+            "value": true
+          }
+        ],
+        "changes": {
+          "nella.location": {
+            "before": "house",
+            "after": "tower"
+          },
+          "tower.club_time": {
+            "before": "unknown",
+            "after": "daytime"
+          },
+          "nella.relocation_requested": {
+            "before": false,
+            "after": true
+          }
+        }
+      },
+      {
+        "id": 3,
+        "scene": "lend_rope",
+        "kernel": "Transfer",
+        "actors": [
+          "keeper",
+          "ada"
+        ],
+        "summary": "Keeper Moss lent Ada the bell-rope",
+        "causes": [],
+        "requires": [
+          {
+            "key": "rope.owner",
+            "op": "eq",
+            "value": "keeper"
+          },
+          {
+            "key": "keeper.location",
+            "op": "eq",
+            "value": "tower"
+          },
+          {
+            "key": "ada.location",
+            "op": "eq",
+            "value": "tower"
+          },
+          {
+            "key": "keeper.memes.Care",
+            "op": "ge",
+            "value": 1
+          }
+        ],
+        "changes": {
+          "rope.owner": {
+            "before": "keeper",
+            "after": "ada"
+          }
+        }
+      },
+      {
+        "id": 4,
+        "scene": "arrange_lower_landing",
+        "kernel": "physical_arrangement",
+        "actors": [
+          "ada",
+          "brindle"
+        ],
+        "summary": "Ada and Brindle arranged cushions, lantern, and flag on the lower landing",
+        "causes": [
+          2
+        ],
+        "requires": [
+          {
+            "key": "ada.location",
+            "op": "eq",
+            "value": "tower"
+          },
+          {
+            "key": "brindle.location",
+            "op": "eq",
+            "value": "tower"
+          },
+          {
+            "key": "nella.relocation_requested",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "tower.club_time",
+            "op": "eq",
+            "value": "daytime"
+          }
+        ],
+        "changes": {
+          "lower.arranged": {
+            "before": false,
+            "after": true
+          },
+          "cushions.location": {
+            "before": "tower",
+            "after": "lower"
+          },
+          "lantern.location": {
+            "before": "tower",
+            "after": "lower"
+          },
+          "flag.location": {
+            "before": "tower",
+            "after": "lower"
+          }
+        }
+      },
+      {
+        "id": 5,
+        "scene": "explore_tower",
+        "kernel": "observation",
+        "actors": [
+          "ada",
+          "brindle"
+        ],
+        "summary": "Ada and Brindle explored the clocktower together",
+        "causes": [],
+        "requires": [
+          {
+            "key": "ada.location",
+            "op": "eq",
+            "value": "tower"
+          },
+          {
+            "key": "brindle.location",
+            "op": "eq",
+            "value": "tower"
+          }
+        ],
+        "changes": {
+          "ada.memes.Curiosity": {
+            "before": 0,
+            "after": 1
+          },
+          "ada.memes.Cooperation": {
+            "before": 0,
+            "after": 1
+          },
+          "brindle.memes.Curiosity": {
+            "before": 0,
+            "after": 1
+          }
+        }
+      },
+      {
+        "id": 6,
+        "scene": "inspect_machinery",
+        "kernel": "observation",
+        "actors": [
+          "ada",
+          "brindle"
+        ],
+        "summary": "Ada inspected the bell while Brindle inspected the brass gear",
+        "causes": [
+          5
+        ],
+        "requires": [
+          {
+            "key": "ada.location",
+            "op": "eq",
+            "value": "tower"
+          },
+          {
+            "key": "brindle.location",
+            "op": "eq",
+            "value": "tower"
+          },
+          {
+            "key": "ada.memes.Curiosity",
+            "op": "ge",
+            "value": 1
+          },
+          {
+            "key": "brindle.memes.Curiosity",
+            "op": "ge",
+            "value": 1
+          },
+          {
+            "key": "upper.accessible",
+            "op": "eq",
+            "value": true
+          }
+        ],
+        "changes": {
+          "ada.knows.bell.stuck": {
+            "before": null,
+            "after": true
+          },
+          "brindle.knows.gear.frosty": {
+            "before": null,
+            "after": true
+          }
+        }
+      },
+      {
+        "id": 7,
+        "scene": "loosen_frost",
+        "kernel": "experimentation",
+        "actors": [
+          "ada",
+          "brindle"
+        ],
+        "summary": "Brindle used a small careful breath to loosen frost from the gear",
+        "causes": [
+          6
+        ],
+        "requires": [
+          {
+            "key": "ada.location",
+            "op": "eq",
+            "value": "tower"
+          },
+          {
+            "key": "brindle.location",
+            "op": "eq",
+            "value": "tower"
+          },
+          {
+            "key": "brindle.knows.gear.frosty",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "gear.frosty",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "papers.safe",
+            "op": "eq",
+            "value": true
+          }
+        ],
+        "changes": {
+          "gear.frosty": {
+            "before": true,
+            "after": false
+          },
+          "brindle.memes.Cooperation": {
+            "before": 0,
+            "after": 1
+          }
+        }
+      },
+      {
+        "id": 8,
+        "scene": "secure_bell_gear",
+        "kernel": "cooperation",
+        "actors": [
+          "ada",
+          "keeper"
+        ],
+        "summary": "Ada and Keeper Moss fastened the bell gear carefully with the rope",
+        "causes": [
+          3,
+          6,
+          7
+        ],
+        "requires": [
+          {
+            "key": "ada.location",
+            "op": "eq",
+            "value": "tower"
+          },
+          {
+            "key": "keeper.location",
+            "op": "eq",
+            "value": "tower"
+          },
+          {
+            "key": "ada.knows.bell.stuck",
+            "op": "in",
+            "value": [
+              true,
+              false
+            ]
+          },
+          {
+            "key": "rope.owner",
+            "op": "eq",
+            "value": "ada"
+          },
+          {
+            "key": "gear.frosty",
+            "op": "eq",
+            "value": false
+          }
+        ],
+        "changes": {
+          "bell.stuck": {
+            "before": true,
+            "after": false
+          },
+          "rope.owner": {
+            "before": "ada",
+            "after": "keeper"
+          },
+          "gear.aligned": {
+            "before": false,
+            "after": true
+          },
+          "flag.signal": {
+            "before": "none",
+            "after": "bell"
+          }
+        }
+      },
+      {
+        "id": 9,
+        "scene": "inspect_notice",
+        "kernel": "Observe",
+        "actors": [
+          "ada"
+        ],
+        "summary": "Ada inspected the old noticeboard",
+        "causes": [
+          5
+        ],
+        "requires": [
+          {
+            "key": "ada.location",
+            "op": "eq",
+            "value": "tower"
+          },
+          {
+            "key": "ada.memes.Curiosity",
+            "op": "ge",
+            "value": 1
+          },
+          {
+            "key": "upper.accessible",
+            "op": "eq",
+            "value": true
+          }
+        ],
+        "changes": {
+          "ada.knows.notice.outdated": {
+            "before": null,
+            "after": true
+          }
+        }
+      },
+      {
+        "id": 10,
+        "scene": "post_visual_schedule",
+        "kernel": "communication",
+        "actors": [
+          "ada",
+          "brindle"
+        ],
+        "summary": "Ada posted a clear schedule and chose a visual arrival signal",
+        "causes": [
+          9
+        ],
+        "requires": [
+          {
+            "key": "ada.location",
+            "op": "eq",
+            "value": "tower"
+          },
+          {
+            "key": "brindle.location",
+            "op": "eq",
+            "value": "tower"
+          },
+          {
+            "key": "ada.knows.notice.outdated",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "notice.outdated",
+            "op": "eq",
+            "value": true
+          }
+        ],
+        "changes": {
+          "notice.outdated": {
+            "before": true,
+            "after": false
+          },
+          "notice.clear": {
+            "before": false,
+            "after": true
+          },
+          "flag.signal": {
+            "before": "bell",
+            "after": "visual"
+          }
+        }
+      },
+      {
+        "id": 11,
+        "scene": "test_visual_signal",
+        "kernel": "experimentation",
+        "actors": [
+          "ada",
+          "brindle"
+        ],
+        "summary": "Ada and Brindle tested the quiet visual club signal",
+        "causes": [
+          2,
+          4,
+          10
+        ],
+        "requires": [
+          {
+            "key": "ada.location",
+            "op": "eq",
+            "value": "tower"
+          },
+          {
+            "key": "brindle.location",
+            "op": "eq",
+            "value": "tower"
+          },
+          {
+            "key": "flag.signal",
+            "op": "eq",
+            "value": "visual"
+          },
+          {
+            "key": "flag.location",
+            "op": "eq",
+            "value": "lower"
+          },
+          {
+            "key": "nella.relocation_requested",
+            "op": "eq",
+            "value": true
+          }
+        ],
+        "changes": {
+          "flag.tested": {
+            "before": false,
+            "after": true
+          }
+        }
+      },
+      {
+        "id": 12,
+        "scene": "open_lower_club",
+        "kernel": "ambition",
+        "actors": [
+          "ada",
+          "brindle"
+        ],
+        "summary": "Ada and Brindle opened the first no-bell club on the lower landing",
+        "causes": [
+          2,
+          4,
+          10,
+          11
+        ],
+        "requires": [
+          {
+            "key": "ada.location",
+            "op": "eq",
+            "value": "tower"
+          },
+          {
+            "key": "brindle.location",
+            "op": "eq",
+            "value": "tower"
+          },
+          {
+            "key": "lower.arranged",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "cushions.location",
+            "op": "eq",
+            "value": "lower"
+          },
+          {
+            "key": "lantern.location",
+            "op": "eq",
+            "value": "lower"
+          },
+          {
+            "key": "flag.signal",
+            "op": "eq",
+            "value": "visual"
+          },
+          {
+            "key": "flag.tested",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "nella.relocation_requested",
+            "op": "eq",
+            "value": true
+          }
+        ],
+        "changes": {
+          "notice.open": {
+            "before": false,
+            "after": true
+          },
+          "club.ready": {
+            "before": false,
+            "after": true
+          },
+          "club.meeting_place": {
+            "before": "none",
+            "after": "lower"
+          }
+        }
+      }
+    ]
+  },
+  {
+    "seed": 2,
+    "title": "The Clocktower Club",
+    "initial": {
+      "ada.location": "tower",
+      "brindle.location": "tower",
+      "keeper.location": "tower",
+      "nella.location": "house",
+      "tower.club_time": "unknown",
+      "upper.accessible": true,
+      "upper.cluttered": true,
+      "lower.accessible": true,
+      "lower.arranged": false,
+      "bell.location": "upper",
+      "bell.owner": "keeper",
+      "bell.stuck": true,
+      "rope.location": "upper",
+      "rope.owner": "keeper",
+      "gear.location": "upper",
+      "gear.aligned": false,
+      "gear.frosty": true,
+      "notice.location": "upper",
+      "notice.outdated": true,
+      "notice.clear": false,
+      "notice.open": false,
+      "cushions.location": "tower",
+      "cushions.owner": "ada",
+      "lantern.location": "tower",
+      "lantern.owner": "ada",
+      "flag.location": "tower",
+      "flag.owner": "ada",
+      "flag.signal": "none",
+      "flag.tested": false,
+      "papers.location": "upper",
+      "papers.safe": true,
+      "nella.asleep": true,
+      "nella.quiet_needed": true,
+      "nella.prefers_lower": false,
+      "nella.agreed": false,
+      "nella.relocation_requested": false,
+      "club.ready": false,
+      "club.meeting_place": "none",
+      "ada.memes.Curiosity": 0,
+      "ada.memes.Cooperation": 0,
+      "ada.memes.Ambition": 1,
+      "brindle.memes.Curiosity": 0,
+      "brindle.memes.Cooperation": 0,
+      "brindle.memes.Ambition": 1,
+      "keeper.memes.Care": 1,
+      "ada.knows.bell.stuck": null,
+      "ada.knows.notice.outdated": null,
+      "ada.knows.nella.quiet_needed": null,
+      "brindle.knows.gear.frosty": null,
+      "keeper.knows.nella.quiet_needed": true
+    },
+    "final": {
+      "ada.location": "tower",
+      "brindle.location": "tower",
+      "keeper.location": "tower",
+      "nella.location": "tower",
+      "tower.club_time": "daytime",
+      "upper.accessible": true,
+      "upper.cluttered": false,
+      "lower.accessible": true,
+      "lower.arranged": false,
+      "bell.location": "upper",
+      "bell.owner": "keeper",
+      "bell.stuck": false,
+      "rope.location": "upper",
+      "rope.owner": "keeper",
+      "gear.location": "upper",
+      "gear.aligned": true,
+      "gear.frosty": false,
+      "notice.location": "upper",
+      "notice.outdated": false,
+      "notice.clear": true,
+      "notice.open": true,
+      "cushions.location": "upper",
+      "cushions.owner": "ada",
+      "lantern.location": "upper",
+      "lantern.owner": "ada",
+      "flag.location": "tower",
+      "flag.owner": "ada",
+      "flag.signal": "bell",
+      "flag.tested": true,
+      "papers.location": "upper",
+      "papers.safe": true,
+      "nella.asleep": false,
+      "nella.quiet_needed": true,
+      "nella.prefers_lower": false,
+      "nella.agreed": true,
+      "nella.relocation_requested": false,
+      "club.ready": true,
+      "club.meeting_place": "upper",
+      "ada.memes.Curiosity": 1,
+      "ada.memes.Cooperation": 1,
+      "ada.memes.Ambition": 1,
+      "brindle.memes.Curiosity": 1,
+      "brindle.memes.Cooperation": 1,
+      "brindle.memes.Ambition": 1,
+      "keeper.memes.Care": 1,
+      "ada.knows.bell.stuck": true,
+      "ada.knows.notice.outdated": true,
+      "ada.knows.nella.quiet_needed": true,
+      "brindle.knows.gear.frosty": true,
+      "keeper.knows.nella.quiet_needed": true
+    },
+    "events": [
+      {
+        "id": 1,
+        "scene": "explore_tower",
+        "kernel": "observation",
+        "actors": [
+          "ada",
+          "brindle"
+        ],
+        "summary": "Ada and Brindle explored the clocktower together",
+        "causes": [],
+        "requires": [
+          {
+            "key": "ada.location",
+            "op": "eq",
+            "value": "tower"
+          },
+          {
+            "key": "brindle.location",
+            "op": "eq",
+            "value": "tower"
+          }
+        ],
+        "changes": {
+          "ada.memes.Curiosity": {
+            "before": 0,
+            "after": 1
+          },
+          "ada.memes.Cooperation": {
+            "before": 0,
+            "after": 1
+          },
+          "brindle.memes.Curiosity": {
+            "before": 0,
+            "after": 1
+          }
+        }
+      },
+      {
+        "id": 2,
+        "scene": "inspect_notice",
+        "kernel": "Observe",
+        "actors": [
+          "ada"
+        ],
+        "summary": "Ada inspected the old noticeboard",
+        "causes": [
+          1
+        ],
+        "requires": [
+          {
+            "key": "ada.location",
+            "op": "eq",
+            "value": "tower"
+          },
+          {
+            "key": "ada.memes.Curiosity",
+            "op": "ge",
+            "value": 1
+          },
+          {
+            "key": "upper.accessible",
+            "op": "eq",
+            "value": true
+          }
+        ],
+        "changes": {
+          "ada.knows.notice.outdated": {
+            "before": null,
+            "after": true
+          }
+        }
+      },
+      {
+        "id": 3,
+        "scene": "lend_rope",
+        "kernel": "Transfer",
+        "actors": [
+          "keeper",
+          "ada"
+        ],
+        "summary": "Keeper Moss lent Ada the bell-rope",
+        "causes": [],
+        "requires": [
+          {
+            "key": "rope.owner",
+            "op": "eq",
+            "value": "keeper"
+          },
+          {
+            "key": "keeper.location",
+            "op": "eq",
+            "value": "tower"
+          },
+          {
+            "key": "ada.location",
+            "op": "eq",
+            "value": "tower"
+          },
+          {
+            "key": "keeper.memes.Care",
+            "op": "ge",
+            "value": 1
+          }
+        ],
+        "changes": {
+          "rope.owner": {
+            "before": "keeper",
+            "after": "ada"
+          }
+        }
+      },
+      {
+        "id": 4,
+        "scene": "keeper_explains_quiet",
+        "kernel": "Tell",
+        "actors": [
+          "keeper",
+          "ada"
+        ],
+        "summary": "Keeper Moss explained Nella's need for quiet",
+        "causes": [],
+        "requires": [
+          {
+            "key": "keeper.knows.nella.quiet_needed",
+            "op": "ne",
+            "value": null
+          },
+          {
+            "key": "keeper.location",
+            "op": "eq",
+            "value": "tower"
+          },
+          {
+            "key": "ada.location",
+            "op": "eq",
+            "value": "tower"
+          },
+          {
+            "key": "keeper.memes.Care",
+            "op": "ge",
+            "value": 1
+          }
+        ],
+        "changes": {
+          "ada.knows.nella.quiet_needed": {
+            "before": null,
+            "after": true
+          }
+        }
+      },
+      {
+        "id": 5,
+        "scene": "invite_nella_upstairs",
+        "kernel": "care",
+        "actors": [
+          "ada",
+          "nella"
+        ],
+        "summary": "Ada walked with Nella to the tower and agreed on a gentle daytime meeting",
+        "causes": [
+          4
+        ],
+        "requires": [
+          {
+            "key": "ada.location",
+            "op": "eq",
+            "value": "tower"
+          },
+          {
+            "key": "nella.location",
+            "op": "eq",
+            "value": "house"
+          },
+          {
+            "key": "ada.knows.nella.quiet_needed",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "nella.prefers_lower",
+            "op": "eq",
+            "value": false
+          }
+        ],
+        "changes": {
+          "nella.location": {
+            "before": "house",
+            "after": "tower"
+          },
+          "tower.club_time": {
+            "before": "unknown",
+            "after": "daytime"
+          },
+          "nella.asleep": {
+            "before": true,
+            "after": false
+          },
+          "nella.agreed": {
+            "before": false,
+            "after": true
+          }
+        }
+      },
+      {
+        "id": 6,
+        "scene": "inspect_machinery",
+        "kernel": "observation",
+        "actors": [
+          "ada",
+          "brindle"
+        ],
+        "summary": "Ada inspected the bell while Brindle inspected the brass gear",
+        "causes": [
+          1
+        ],
+        "requires": [
+          {
+            "key": "ada.location",
+            "op": "eq",
+            "value": "tower"
+          },
+          {
+            "key": "brindle.location",
+            "op": "eq",
+            "value": "tower"
+          },
+          {
+            "key": "ada.memes.Curiosity",
+            "op": "ge",
+            "value": 1
+          },
+          {
+            "key": "brindle.memes.Curiosity",
+            "op": "ge",
+            "value": 1
+          },
+          {
+            "key": "upper.accessible",
+            "op": "eq",
+            "value": true
+          }
+        ],
+        "changes": {
+          "ada.knows.bell.stuck": {
+            "before": null,
+            "after": true
+          },
+          "brindle.knows.gear.frosty": {
+            "before": null,
+            "after": true
+          }
+        }
+      },
+      {
+        "id": 7,
+        "scene": "arrange_upper_room",
+        "kernel": "physical_arrangement",
+        "actors": [
+          "ada",
+          "brindle"
+        ],
+        "summary": "Ada and Brindle arranged cushions and a lantern in the upper clubroom",
+        "causes": [
+          5
+        ],
+        "requires": [
+          {
+            "key": "ada.location",
+            "op": "eq",
+            "value": "tower"
+          },
+          {
+            "key": "brindle.location",
+            "op": "eq",
+            "value": "tower"
+          },
+          {
+            "key": "nella.agreed",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "tower.club_time",
+            "op": "eq",
+            "value": "daytime"
+          }
+        ],
+        "changes": {
+          "upper.cluttered": {
+            "before": true,
+            "after": false
+          },
+          "cushions.location": {
+            "before": "tower",
+            "after": "upper"
+          },
+          "lantern.location": {
+            "before": "tower",
+            "after": "upper"
+          }
+        }
+      },
+      {
+        "id": 8,
+        "scene": "post_visual_schedule",
+        "kernel": "communication",
+        "actors": [
+          "ada",
+          "brindle"
+        ],
+        "summary": "Ada posted a clear schedule and chose a visual arrival signal",
+        "causes": [
+          2
+        ],
+        "requires": [
+          {
+            "key": "ada.location",
+            "op": "eq",
+            "value": "tower"
+          },
+          {
+            "key": "brindle.location",
+            "op": "eq",
+            "value": "tower"
+          },
+          {
+            "key": "ada.knows.notice.outdated",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "notice.outdated",
+            "op": "eq",
+            "value": true
+          }
+        ],
+        "changes": {
+          "notice.outdated": {
+            "before": true,
+            "after": false
+          },
+          "notice.clear": {
+            "before": false,
+            "after": true
+          },
+          "flag.signal": {
+            "before": "none",
+            "after": "visual"
+          }
+        }
+      },
+      {
+        "id": 9,
+        "scene": "loosen_frost",
+        "kernel": "experimentation",
+        "actors": [
+          "ada",
+          "brindle"
+        ],
+        "summary": "Brindle used a small careful breath to loosen frost from the gear",
+        "causes": [
+          6
+        ],
+        "requires": [
+          {
+            "key": "ada.location",
+            "op": "eq",
+            "value": "tower"
+          },
+          {
+            "key": "brindle.location",
+            "op": "eq",
+            "value": "tower"
+          },
+          {
+            "key": "brindle.knows.gear.frosty",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "gear.frosty",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "papers.safe",
+            "op": "eq",
+            "value": true
+          }
+        ],
+        "changes": {
+          "gear.frosty": {
+            "before": true,
+            "after": false
+          },
+          "brindle.memes.Cooperation": {
+            "before": 0,
+            "after": 1
+          }
+        }
+      },
+      {
+        "id": 10,
+        "scene": "secure_bell_gear",
+        "kernel": "cooperation",
+        "actors": [
+          "ada",
+          "keeper"
+        ],
+        "summary": "Ada and Keeper Moss fastened the bell gear carefully with the rope",
+        "causes": [
+          3,
+          6,
+          9
+        ],
+        "requires": [
+          {
+            "key": "ada.location",
+            "op": "eq",
+            "value": "tower"
+          },
+          {
+            "key": "keeper.location",
+            "op": "eq",
+            "value": "tower"
+          },
+          {
+            "key": "ada.knows.bell.stuck",
+            "op": "in",
+            "value": [
+              true,
+              false
+            ]
+          },
+          {
+            "key": "rope.owner",
+            "op": "eq",
+            "value": "ada"
+          },
+          {
+            "key": "gear.frosty",
+            "op": "eq",
+            "value": false
+          }
+        ],
+        "changes": {
+          "bell.stuck": {
+            "before": true,
+            "after": false
+          },
+          "rope.owner": {
+            "before": "ada",
+            "after": "keeper"
+          },
+          "gear.aligned": {
+            "before": false,
+            "after": true
+          },
+          "flag.signal": {
+            "before": "visual",
+            "after": "bell"
+          }
+        }
+      },
+      {
+        "id": 11,
+        "scene": "test_bell_signal",
+        "kernel": "experimentation",
+        "actors": [
+          "ada",
+          "keeper"
+        ],
+        "summary": "Ada and Keeper Moss tested one gentle daytime bell signal",
+        "causes": [
+          5,
+          10
+        ],
+        "requires": [
+          {
+            "key": "ada.location",
+            "op": "eq",
+            "value": "tower"
+          },
+          {
+            "key": "keeper.location",
+            "op": "eq",
+            "value": "tower"
+          },
+          {
+            "key": "flag.signal",
+            "op": "eq",
+            "value": "bell"
+          },
+          {
+            "key": "bell.stuck",
+            "op": "eq",
+            "value": false
+          },
+          {
+            "key": "gear.aligned",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "nella.agreed",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "nella.asleep",
+            "op": "eq",
+            "value": false
+          },
+          {
+            "key": "tower.club_time",
+            "op": "eq",
+            "value": "daytime"
+          }
+        ],
+        "changes": {
+          "flag.tested": {
+            "before": false,
+            "after": true
+          }
+        }
+      },
+      {
+        "id": 12,
+        "scene": "open_upper_club",
+        "kernel": "ambition",
+        "actors": [
+          "ada",
+          "brindle",
+          "keeper"
+        ],
+        "summary": "Ada and Brindle opened the first club meeting beneath one gentle chime",
+        "causes": [
+          5,
+          7,
+          10,
+          11
+        ],
+        "requires": [
+          {
+            "key": "ada.location",
+            "op": "eq",
+            "value": "tower"
+          },
+          {
+            "key": "brindle.location",
+            "op": "eq",
+            "value": "tower"
+          },
+          {
+            "key": "keeper.location",
+            "op": "eq",
+            "value": "tower"
+          },
+          {
+            "key": "cushions.location",
+            "op": "eq",
+            "value": "upper"
+          },
+          {
+            "key": "lantern.location",
+            "op": "eq",
+            "value": "upper"
+          },
+          {
+            "key": "flag.signal",
+            "op": "eq",
+            "value": "bell"
+          },
+          {
+            "key": "flag.tested",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "nella.agreed",
+            "op": "eq",
+            "value": true
+          }
+        ],
+        "changes": {
+          "notice.open": {
+            "before": false,
+            "after": true
+          },
+          "club.ready": {
+            "before": false,
+            "after": true
+          },
+          "club.meeting_place": {
+            "before": "none",
+            "after": "upper"
+          }
+        }
+      }
+    ]
+  }
+]

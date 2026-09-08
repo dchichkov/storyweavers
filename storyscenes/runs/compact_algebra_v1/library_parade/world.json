@@ -1,0 +1,408 @@
+{
+  "title": "The Parade That Helped",
+  "premise": "A boastful mayor wants the biggest parade. A child librarian, a helpful cart builder, and one shared cart turn that ambition toward something useful.",
+  "entities": {
+    "ada": {
+      "name": "Ada",
+      "kind": "child",
+      "state": {
+        "want": "deliver useful books",
+        "memes.Care": 2,
+        "performance_style": "careful"
+      }
+    },
+    "mayor": {
+      "name": "Mayor Bell",
+      "kind": "adult",
+      "state": {
+        "want": "the biggest parade",
+        "memes.Care": 1,
+        "boastful": true,
+        "plan": null,
+        "performed": false,
+        "performance_style": "boastful",
+        "parade.outcome": null
+      }
+    },
+    "bram": {
+      "name": "Bram",
+      "kind": "adult",
+      "state": {
+        "want": "help the parade work",
+        "memes.Care": 2
+      }
+    },
+    "readers": {
+      "name": "The Young Readers",
+      "kind": "audience",
+      "state": {
+        "need": "books",
+        "response": false,
+        "mood": "waiting"
+      }
+    },
+    "library": {
+      "name": "Library",
+      "kind": "place",
+      "state": {}
+    },
+    "workshop": {
+      "name": "Workshop",
+      "kind": "place",
+      "state": {}
+    },
+    "square": {
+      "name": "Parade Square",
+      "kind": "place",
+      "state": {
+        "wind": "still"
+      }
+    },
+    "cart": {
+      "name": "The Shared Cart",
+      "kind": "prop",
+      "state": {
+        "owner": "bram",
+        "location": "workshop",
+        "loaned_by": null,
+        "wheel": "wobbly"
+      }
+    },
+    "books": {
+      "name": "The Library Books",
+      "kind": "prop",
+      "state": {
+        "owner": "ada",
+        "location": "library",
+        "contents": "books",
+        "delivered": false
+      }
+    },
+    "banner": {
+      "name": "The Parade Banner",
+      "kind": "prop",
+      "state": {
+        "owner": "mayor",
+        "location": "hall",
+        "secured": false
+      }
+    },
+    "hall": {
+      "name": "Town Hall",
+      "kind": "place",
+      "state": {}
+    }
+  },
+  "vary": {
+    "weather": [
+      {
+        "square.wind": "still"
+      },
+      {
+        "square.wind": "breezy"
+      }
+    ],
+    "cart_condition": [
+      {
+        "cart.wheel": "wobbly"
+      },
+      {
+        "cart.wheel": "ready"
+      }
+    ],
+    "reader_need": [
+      {
+        "readers.need": "books",
+        "books.contents": "books"
+      },
+      {
+        "readers.need": "maps",
+        "books.contents": "maps"
+      },
+      {
+        "readers.need": "stories",
+        "books.contents": "stories"
+      }
+    ]
+  },
+  "premises": [
+    "square.wind",
+    "cart.wheel",
+    "readers.need",
+    "books.contents"
+  ],
+  "compose": {
+    "wind_news": {
+      "op": "DiscoverAndShare",
+      "args": [
+        "ada",
+        "mayor",
+        "square.wind"
+      ]
+    },
+    "need_news": {
+      "op": "DiscoverAndShare",
+      "args": [
+        "ada",
+        "mayor",
+        "readers.need"
+      ]
+    },
+    "repair_cart": {
+      "op": "Act",
+      "actors": [
+        "bram"
+      ],
+      "when": {
+        "cart.location": "workshop",
+        "cart.wheel": "wobbly"
+      },
+      "set": {
+        "cart.wheel": "ready"
+      },
+      "summary": "Bram steadies the cart wheel",
+      "pivotal": false
+    },
+    "lend_cart": {
+      "op": "Lend",
+      "args": [
+        "bram",
+        "ada",
+        "cart"
+      ],
+      "when": {
+        "cart.wheel": "ready"
+      },
+      "summary": "Bram lends Ada the cart"
+    },
+    "move_cart": {
+      "op": "Move",
+      "args": [
+        "ada",
+        "cart",
+        "square"
+      ],
+      "when": {
+        "cart.owner": "ada"
+      },
+      "summary": "Ada rolls the cart to the square"
+    },
+    "move_books": {
+      "op": "Move",
+      "args": [
+        "ada",
+        "books",
+        "square"
+      ],
+      "when": {
+        "books.owner": "ada",
+        "cart.location": "square"
+      },
+      "summary": "Ada brings the books to the square"
+    },
+    "deliver_books": {
+      "op": "Act",
+      "actors": [
+        "ada"
+      ],
+      "when": {
+        "books.location": "square",
+        "books.contents": "books",
+        "readers.need": "books",
+        "mayor.plan": "helpful"
+      },
+      "set": {
+        "books.delivered": true,
+        "mayor.parade.outcome": "useful_books"
+      },
+      "summary": "Ada delivers the storybooks",
+      "pivotal": true
+    },
+    "deliver_maps": {
+      "op": "Act",
+      "actors": [
+        "ada"
+      ],
+      "when": {
+        "books.location": "square",
+        "books.contents": "maps",
+        "readers.need": "maps",
+        "mayor.plan": "helpful"
+      },
+      "set": {
+        "books.delivered": true,
+        "mayor.parade.outcome": "useful_maps"
+      },
+      "summary": "Ada delivers the maps",
+      "pivotal": true
+    },
+    "move_banner": {
+      "op": "Move",
+      "args": [
+        "mayor",
+        "banner",
+        "square"
+      ],
+      "when": {
+        "banner.owner": "mayor"
+      },
+      "summary": "Mayor Bell carries the banner to the square"
+    },
+    "secure_banner": {
+      "op": "Act",
+      "actors": [
+        "mayor"
+      ],
+      "when": {
+        "square.wind": "breezy",
+        "banner.location": "square",
+        "mayor.knows.square.wind": "breezy"
+      },
+      "set": {
+        "banner.secured": true
+      },
+      "summary": "Mayor Bell secures the windy banner"
+    },
+    "choose_helpful": {
+      "op": "Act",
+      "actors": [
+        "mayor"
+      ],
+      "when": {
+        "mayor.knows.readers.need": "books"
+      },
+      "set": {
+        "mayor.plan": "helpful",
+        "mayor.boastful": false
+      },
+      "inc": {
+        "mayor.memes.Care": 1
+      },
+      "summary": "Mayor Bell chooses usefulness over boasting",
+      "pivotal": true
+    },
+    "choose_helpful_maps": {
+      "op": "Act",
+      "actors": [
+        "mayor"
+      ],
+      "when": {
+        "mayor.knows.readers.need": "maps"
+      },
+      "set": {
+        "mayor.plan": "helpful",
+        "mayor.boastful": false
+      },
+      "inc": {
+        "mayor.memes.Care": 1
+      },
+      "summary": "Mayor Bell chooses usefulness over boasting",
+      "pivotal": true
+    },
+    "parade_still": {
+      "op": "Act",
+      "actors": [
+        "mayor"
+      ],
+      "when": {
+        "cart.location": "square",
+        "books.delivered": true,
+        "square.wind": "still",
+        "mayor.plan": "helpful"
+      },
+      "set": {
+        "mayor.performed": true,
+        "mayor.performance_style": "welcoming"
+      },
+      "summary": "Mayor Bell leads a welcoming book parade"
+    },
+    "parade_breezy": {
+      "op": "Act",
+      "actors": [
+        "mayor"
+      ],
+      "when": {
+        "cart.location": "square",
+        "books.delivered": true,
+        "square.wind": "breezy",
+        "banner.secured": true,
+        "mayor.plan": "helpful"
+      },
+      "set": {
+        "mayor.performed": true,
+        "mayor.performance_style": "welcoming"
+      },
+      "summary": "Mayor Bell leads a banner-bright book parade"
+    },
+    "readers_respond": {
+      "op": "Act",
+      "actors": [
+        "readers"
+      ],
+      "when": {
+        "books.delivered": true,
+        "mayor.performed": true
+      },
+      "set": {
+        "readers.response": true,
+        "readers.mood": "delighted"
+      },
+      "summary": "The young readers cheer for the useful parade",
+      "pivotal": true
+    },
+    "choose_helpful_stories": {
+      "op": "Act",
+      "actors": [
+        "mayor"
+      ],
+      "when": {
+        "mayor.knows.readers.need": "stories"
+      },
+      "set": {
+        "mayor.plan": "helpful",
+        "mayor.boastful": false
+      },
+      "inc": {
+        "mayor.memes.Care": 1
+      },
+      "summary": "Mayor Bell chooses usefulness over boasting",
+      "pivotal": true
+    },
+    "deliver_stories": {
+      "op": "Act",
+      "actors": [
+        "ada"
+      ],
+      "when": {
+        "books.location": "square",
+        "books.contents": "stories",
+        "readers.need": "stories",
+        "mayor.plan": "helpful"
+      },
+      "set": {
+        "books.delivered": true,
+        "mayor.parade.outcome": "useful_stories"
+      },
+      "summary": "Ada delivers the story collection",
+      "pivotal": true
+    }
+  },
+  "goal": {
+    "books.delivered": true,
+    "mayor.performed": true,
+    "mayor.parade.outcome": [
+      "ne",
+      "none"
+    ],
+    "readers.response": true
+  },
+  "outcomes": [
+    "books.delivered",
+    "mayor.performed",
+    "mayor.parade.outcome",
+    "readers.response",
+    "readers.mood",
+    "mayor.boastful"
+  ],
+  "prune": true
+}

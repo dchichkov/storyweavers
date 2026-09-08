@@ -1,0 +1,517 @@
+[
+  {
+    "world": "roof_post",
+    "title": "The Roof-Post Invitation Flight",
+    "ok": true,
+    "samples": 100,
+    "simulation_sha256": "278b17a30ca0703678a360dabe62808b08310ba277b3fe1073be6b82c3c9401a",
+    "generator_sha256": "7ac683655a62fd306c25da58289213a42b9f07bd39e1a13da65b13c817f6d14a",
+    "catalog_sha256": "16905ff3bc7cf3ca6184a2d428640b0976bc04c6e13ccc3f653e87e5db2dfed0",
+    "distinct_texts": 50,
+    "distinct_scene_paths": 25,
+    "word_range": [
+      207,
+      296
+    ],
+    "prose_control_variants": 1,
+    "mechanics_model": "gpt-5.6-luna",
+    "mechanics_attempts": 1,
+    "prose_model": "gpt-5.6-luna",
+    "stats": {
+      "samples": 100,
+      "ordered_paths": 25,
+      "scene_sets": 6,
+      "causal_graphs": 6,
+      "outcomes": 8,
+      "premises": 25,
+      "events_range": [
+        5,
+        9
+      ],
+      "pruned_events": 254
+    },
+    "critic_before_revision": {
+      "issues": [
+        {
+          "seed": 123,
+          "severity": "major",
+          "layer": "simulation",
+          "defect": "literal_state_value",
+          "evidence": "The story calls it “one open hook” and “its little numbered perch,” but both the discovered and selected hook values are the raw enum “crowded.”",
+          "fix": "Use a concrete hook identity/state that supports the described open perch, or render the enum as grounded prose rather than treating “crowded” as the selected hook."
+        },
+        {
+          "seed": 457,
+          "severity": "major",
+          "layer": "simulation",
+          "defect": "literal_state_value",
+          "evidence": "The narrative says Mina finds “one open hook” and chooses it, while the trace records `roof_post.open_hook: \"crowded\"` and `roof_post.selected_hook: \"crowded\"`.",
+          "fix": "Replace the raw/contradictory hook value with a specific available-hook value, or revise the prose to match a crowded-hook selection."
+        },
+        {
+          "seed": 124,
+          "severity": "major",
+          "layer": "prose",
+          "defect": "weak_ending",
+          "evidence": "After the trace delivers the invitation to `high_hook`, the ending only says “Pip’s sail hung proudly from the high hook,” leaving Mina’s stated “Before the bell” promise and the party invitation’s outcome unacknowledged.",
+          "fix": "End by confirming the invitation is posted/delivered and advancing the promised bell or neighbor response, rather than ending on Pip’s bow practice."
+        }
+      ],
+      "strengths": "All three stories correctly sequence Mina’s promise, cargo inspection where present, ribbon tying, and the respective posting or sail-delivery actions; no unsupported ownership transfers or duplicated event-log sentences are evident."
+    },
+    "final_catalog_attempt": 1
+  },
+  {
+    "world": "library_parade",
+    "title": "The Library Parade and the Cart with Three Jobs",
+    "ok": true,
+    "samples": 100,
+    "simulation_sha256": "2b4b52cdedbb65375751207825ddf7b02591418cd60091dce0343a946d960b6b",
+    "generator_sha256": "99042d4aba028ff1113f686e78a070d636655af296d1a0604d67cefef7255aca",
+    "catalog_sha256": "eaee76f919bb9d15d93a39e970fae75e25d534be589083f92c1175a964e9cd32",
+    "distinct_texts": 59,
+    "distinct_scene_paths": 33,
+    "word_range": [
+      172,
+      283
+    ],
+    "prose_control_variants": 2,
+    "mechanics_model": "gpt-5.6-luna",
+    "mechanics_attempts": 1,
+    "prose_model": "gpt-5.6-luna",
+    "stats": {
+      "samples": 100,
+      "ordered_paths": 33,
+      "scene_sets": 10,
+      "causal_graphs": 10,
+      "outcomes": 3,
+      "premises": 3,
+      "events_range": [
+        4,
+        9
+      ],
+      "pruned_events": 216
+    },
+    "critic_before_revision": {
+      "issues": [
+        {
+          "seed": 123,
+          "severity": "major",
+          "layer": "simulation",
+          "defect": "ungrounded_outcome",
+          "evidence": "The story twice says “Tuck rang”/“Tuck rang the bell,” but the trace leaves `bell.rung` false and contains no bell-ringing event (the identical seed 457 has the same mismatch).",
+          "fix": "Add a bell-ringing state change/event, or remove the claims that Tuck rang the bell."
+        },
+        {
+          "seed": 791,
+          "severity": "major",
+          "layer": "simulation",
+          "defect": "ungrounded_outcome",
+          "evidence": "The route scenes say “Each child chose a book” and “children chose stories one by one,” although `books.waiting` remains true and the trace has no delivery/selection event to ground distribution.",
+          "fix": "Add an event and state changes representing the books being handed out, or describe the cart arriving ready for children to choose rather than completing choices."
+        },
+        {
+          "seed": 791,
+          "severity": "major",
+          "layer": "prose",
+          "defect": "event_log_prose",
+          "evidence": "The final paragraph largely repeats the immediately previous completed action: “Nia performed the book route...” followed by “At the neighborhood stop, Nia opened the bookmobile and children chose stories one by one.”",
+          "fix": "Replace the duplicate recap with a consequential closing beat after the route."
+        }
+      ],
+      "strengths": "The principal cart transformations, locations, performers, banner attachment, and Mallow’s shelf knowledge generally follow their ordered trace changes; no raw enum values appear in the prose."
+    },
+    "final_catalog_attempt": 2
+  },
+  {
+    "world": "pond_concert",
+    "title": "The Pond Concert and the Neighbor with the Quietest Ears",
+    "ok": true,
+    "samples": 100,
+    "simulation_sha256": "597699adeac0e96913f238e750209414b4908a03cb95614ed5c39ca0ca9c08ab",
+    "generator_sha256": "c60a722feee7313696ec235ab8cc1b21b40dd72d3c73881d370bf942e251ab70",
+    "catalog_sha256": "b18124d0aff7a711a0732a57edd043617a1605c547d3a296443fdccb17b927b5",
+    "distinct_texts": 14,
+    "distinct_scene_paths": 7,
+    "word_range": [
+      226,
+      312
+    ],
+    "prose_control_variants": 1,
+    "mechanics_model": "gpt-5.6-luna",
+    "mechanics_attempts": 1,
+    "prose_model": "gpt-5.6-luna",
+    "stats": {
+      "samples": 100,
+      "ordered_paths": 7,
+      "scene_sets": 3,
+      "causal_graphs": 3,
+      "outcomes": 3,
+      "premises": 3,
+      "events_range": [
+        5,
+        8
+      ],
+      "pruned_events": 34
+    },
+    "critic_before_revision": {
+      "issues": [
+        {
+          "seed": 123,
+          "severity": "minor",
+          "layer": "prose",
+          "defect": "event_log_prose",
+          "evidence": "After the ending action is already narrated—“Nora answered with one round silver bubble”—the final paragraph repeats it: “A single silver bubble rose beside the lily.”",
+          "fix": "Replace the repeated bubble sentence with a new closing image or consequence of Nora’s response."
+        },
+        {
+          "seed": 791,
+          "severity": "major",
+          "layer": "prose",
+          "defect": "event_log_prose",
+          "evidence": "The final two paragraphs nearly duplicate the trace’s closing image: “Nora glided past on the lily while Frog sang from its middle” and “The leaf boat bumped along behind like a very small royal carriage.”",
+          "fix": "Keep the traced parade/bow once, then end with a distinct consequential closing beat rather than restating the same action twice."
+        }
+      ],
+      "strengths": "All three stories accurately realize the ordered knowledge, invitation, ownership, concert-choice, performance, and response changes; seed 124 in particular cleanly grounds the bell transfer and duet."
+    },
+    "final_catalog_attempt": 3
+  },
+  {
+    "world": "night_garden",
+    "title": "The Moonlit Welcome",
+    "ok": true,
+    "samples": 100,
+    "simulation_sha256": "0bab5558b3fc34cf00b2659cc48d34c6bfa273aab7c9ba4f6297413d261743c7",
+    "generator_sha256": "91c361b82a44f62bc3f45a281bfe1d04a3f0b8501771b2c27f4e779d67f5e467",
+    "catalog_sha256": "9193bc18dd729ec73e702006de634798b2c8da828c4eafa4c74110ad7cc4f505",
+    "distinct_texts": 55,
+    "distinct_scene_paths": 39,
+    "word_range": [
+      164,
+      353
+    ],
+    "prose_control_variants": 2,
+    "mechanics_model": "gpt-5.6-luna",
+    "mechanics_attempts": 1,
+    "prose_model": "gpt-5.6-luna",
+    "stats": {
+      "samples": 100,
+      "ordered_paths": 39,
+      "scene_sets": 13,
+      "causal_graphs": 13,
+      "outcomes": 3,
+      "premises": 15,
+      "events_range": [
+        3,
+        11
+      ],
+      "pruned_events": 447
+    },
+    "critic_before_revision": {
+      "issues": [
+        {
+          "seed": 123,
+          "severity": "major",
+          "layer": "simulation",
+          "defect": "contradiction",
+          "evidence": "The trace leaves Pip at `pip.location: \"gate\"` throughout, but the story twice says Pip \"fluttered behind it\" and \"slipped behind the gate,\" treating a different location as accomplished.",
+          "fix": "Either add an event that moves Pip behind the gate and represent that location in state, or revise the prose so Pip remains at the gate."
+        },
+        {
+          "seed": 123,
+          "severity": "major",
+          "layer": "prose",
+          "defect": "event_log_prose",
+          "evidence": "The consequence is repeated almost verbatim in adjacent passages: \"Pip startled and fluttered behind it\" followed by \"Pip slipped behind the gate, startled by the bright dancing shapes.\"",
+          "fix": "Merge the duplicated reaction into one consequential beat, then use the final paragraph to advance the unfinished welcome rather than restate it."
+        }
+      ],
+      "strengths": "Seeds 457 and 791 closely follow their ordered state changes: the lamp inspection precedes softening, the ribbon and moon are placed before Pip reaches the ribbon, and seed 791 grounds Ada's change from moving show to tableau in her discovered knowledge of Pip's location."
+    },
+    "final_catalog_attempt": 3
+  },
+  {
+    "world": "kite_workshop",
+    "title": "The Kite That Carried Three Kinds of News",
+    "ok": true,
+    "samples": 100,
+    "simulation_sha256": "e1afa30e3259269a65ce430e642e4d4f9f1720d93ebcaf03779acaa6a87b3a2d",
+    "generator_sha256": "4d44932d24e68f80c6793d2ef9a385b8de860ba8478ac6c5acf6b76762368b60",
+    "catalog_sha256": "4a996d389f7ab83feddb90852c1e561be5de65ac417ae6d6fd56bed544ed7b14",
+    "distinct_texts": 97,
+    "distinct_scene_paths": 93,
+    "word_range": [
+      345,
+      412
+    ],
+    "prose_control_variants": 1,
+    "mechanics_model": "gpt-5.6-luna",
+    "mechanics_attempts": 1,
+    "prose_model": "gpt-5.6-luna",
+    "stats": {
+      "samples": 100,
+      "ordered_paths": 93,
+      "scene_sets": 8,
+      "causal_graphs": 5,
+      "outcomes": 6,
+      "premises": 35,
+      "events_range": [
+        12,
+        14
+      ],
+      "pruned_events": 0
+    },
+    "critic_before_revision": {
+      "issues": [
+        {
+          "seed": 123,
+          "severity": "minor",
+          "layer": "prose",
+          "defect": "event_log_prose",
+          "evidence": "The ending repeats the same image in adjacent paragraphs: “The red ribbon curled around the blue thread like a dancing dragon” and then “Above the children, the red ribbon curled around the blue thread like a dancing dragon.”",
+          "fix": "Remove or substantially vary the final repeated sentence so the ending advances from the delivery and reply."
+        },
+        {
+          "seed": 791,
+          "severity": "major",
+          "layer": "prose",
+          "defect": "contradiction",
+          "evidence": "The story says Nia finds “a gathering mark on the message,” but the trace grounds the message mark as `gathering` while Pip initially identifies it as a “tiny gathering mark”; calling it a “dragon drawing” as the message’s established purpose is fine, but the narration’s opening “Aunt Ember is getting a dragon drawing!” is Pip's mistaken assumption rather than knowledge and should be explicitly framed as such.",
+          "fix": "Clarify that Pip is guessing before Nia inspects the mark, e.g. “Pip hoped Aunt Ember was getting a dragon drawing,” preserving the later mark discovery."
+        },
+        {
+          "seed": 124,
+          "severity": "minor",
+          "layer": "prose",
+          "defect": "literal_state_value",
+          "evidence": "The opening describes “its no tail drooping,” exposing the raw state-like value “no tail” rather than natural story language.",
+          "fix": "Replace it with natural phrasing such as “its tail-less paper body drooping” or “with nothing trailing behind it.”"
+        }
+      ],
+      "strengths": "All three stories otherwise follow the ordered action traces closely: knowledge is acquired before it is shared, transfers and modifications occur in trace order, and each delivery, mailbox reply, and final contentment is grounded by the final event."
+    },
+    "final_catalog_attempt": 1
+  },
+  {
+    "world": "bakery_exchange",
+    "title": "The Cinnamon Button Exchange",
+    "ok": true,
+    "samples": 100,
+    "simulation_sha256": "f7582620c9de9bddea16dc8576c299ef9c47ba8295575f266a0535f3b774824e",
+    "generator_sha256": "ff7be6ae7b5945bf55fe876584b16e74e5cb2f1a43038083f1e5df0ce0b0950c",
+    "catalog_sha256": "ce6618ff930a2556e7d001397af796e97b4ffe529ef87b527f71e9be7b951de2",
+    "distinct_texts": 76,
+    "distinct_scene_paths": 46,
+    "word_range": [
+      182,
+      380
+    ],
+    "prose_control_variants": 3,
+    "mechanics_model": "gpt-5.6-luna",
+    "mechanics_attempts": 1,
+    "prose_model": "gpt-5.6-luna",
+    "stats": {
+      "samples": 100,
+      "ordered_paths": 46,
+      "scene_sets": 4,
+      "causal_graphs": 4,
+      "outcomes": 4,
+      "premises": 12,
+      "events_range": [
+        4,
+        11
+      ],
+      "pruned_events": 205
+    },
+    "critic_before_revision": {
+      "issues": [
+        {
+          "seed": 457,
+          "severity": "major",
+          "layer": "prose",
+          "defect": "contradiction",
+          "evidence": "The story says Pip “pinned a pepper label” and later calls it “Pip’s pepper label,” but the attachment scene has him announce “A cinnamon crown,” despite the traced label text being pepper.",
+          "fix": "Keep Pip’s spoken label and the attached-label references consistently pepper (or change the world label text to cinnamon)."
+        },
+        {
+          "seed": 457,
+          "severity": "major",
+          "layer": "prose",
+          "defect": "unresolved_alternative",
+          "evidence": "Ada’s initial promise is “brave_taste,” yet the story frames the mismatch as a “surprising sign” and finishes the ordinary sweet trade without any traced or narrated decision to pursue the promised daring tasting turn.",
+          "fix": "Add the consequential brave-taste acceptance/defense sequence and its savory outcome, or remove the brave-taste promise from this generated setup."
+        }
+      ],
+      "strengths": "Seeds 123 and 791 accurately realize the ownership transfers, discovery-and-telling order, jar opening, and final tasting outcomes; seed 791 also cleanly dramatizes the label/mark mismatch through the traced defense and acceptance events."
+    },
+    "final_catalog_attempt": 2
+  },
+  {
+    "world": "museum_of_small_things",
+    "title": "The Museum of Small Things",
+    "ok": true,
+    "samples": 100,
+    "simulation_sha256": "e1f391ed92a145968743c7915208f583ee73aeff51728e29fefcf50ca76982b4",
+    "generator_sha256": "754491a6eef2574a1e4117d70efa39d6e4158d591177e34cfabfddcace89a803",
+    "catalog_sha256": "4d0890734903a85eed19b7b1b8394bd0cb7d5ca11e3319b9a87b5d245277509c",
+    "distinct_texts": 78,
+    "distinct_scene_paths": 65,
+    "word_range": [
+      248,
+      338
+    ],
+    "prose_control_variants": 2,
+    "mechanics_model": "gpt-5.6-luna",
+    "mechanics_attempts": 1,
+    "prose_model": "gpt-5.6-luna",
+    "stats": {
+      "samples": 100,
+      "ordered_paths": 65,
+      "scene_sets": 6,
+      "causal_graphs": 8,
+      "outcomes": 4,
+      "premises": 3,
+      "events_range": [
+        6,
+        10
+      ],
+      "pruned_events": 166
+    },
+    "critic_before_revision": {
+      "issues": [
+        {
+          "seed": 123,
+          "severity": "major",
+          "layer": "prose",
+          "defect": "contradiction",
+          "evidence": "The story says, “The red marble rested beside its note,” but also says “a tiny empty circle showed where it had been,” despite no trace event removing the marble from the display (and its ownership remains Ben’s).",
+          "fix": "End with the marble still beside its loan note, or add and narrate a consequential event in which Ben’s sister takes it away."
+        },
+        {
+          "seed": 457,
+          "severity": "major",
+          "layer": "prose",
+          "defect": "contradiction",
+          "evidence": "The ending simultaneously places the marble “beside its note” and says an “empty circle showed where it had been,” although the ordered trace contains no removal or return action.",
+          "fix": "Resolve the alternative physical states: retain the displayed marble, or introduce a traced, narrated removal before describing the empty circle."
+        }
+      ],
+      "strengths": "All three stories otherwise follow the event order well: invitation transfer, box opening, visitor greeting and expectation discovery, quiet tour, and delighted visitor are grounded; seed 124 also cleanly narrates the traced button-for-key ownership swap."
+    },
+    "final_catalog_attempt": 3
+  },
+  {
+    "world": "hill_picnic",
+    "ok": false,
+    "error": "Catalog attempts exhausted"
+  },
+  {
+    "world": "puppet_weather",
+    "title": "The Courtyard Wind-Up Show",
+    "ok": true,
+    "samples": 100,
+    "simulation_sha256": "53741caa53d65485da8939258ece1aefd3aa4888e92109f0cd25a511c704d38f",
+    "generator_sha256": "c124d32d722527ef122029605af154ddf7a3d43c07308eb22d6aac560716bd95",
+    "catalog_sha256": "b66fec3f506b23c56fdfc30f13c4ed88c5543ac6d4cba4765b912e7e77e00285",
+    "distinct_texts": 40,
+    "distinct_scene_paths": 17,
+    "word_range": [
+      235,
+      316
+    ],
+    "prose_control_variants": 2,
+    "mechanics_model": "gpt-5.6-luna",
+    "mechanics_attempts": 1,
+    "prose_model": "gpt-5.6-luna",
+    "stats": {
+      "samples": 100,
+      "ordered_paths": 17,
+      "scene_sets": 3,
+      "causal_graphs": 3,
+      "outcomes": 3,
+      "premises": 3,
+      "events_range": [
+        5,
+        8
+      ],
+      "pruned_events": 87
+    },
+    "critic_before_revision": {
+      "issues": [
+        {
+          "seed": 791,
+          "severity": "major",
+          "layer": "simulation",
+          "defect": "contradiction",
+          "evidence": "The story says, “Unfortunately, nobody had been invited close,” but its second paragraph says “Mara clapped twice, and the courtyard audience gathered” before Mara later discovers and fixes that nobody invited them close; the trace does not make them invited or move them to the stage until event five.",
+          "fix": "Keep the audience merely present in the courtyard after the greeting, and reserve their approach to the stage for Bo’s later invitation."
+        },
+        {
+          "seed": 124,
+          "severity": "minor",
+          "layer": "prose",
+          "defect": "literal_state_value",
+          "evidence": "The ending says, “the audience left the stool in a neat moon-shaped circle around her,” which is physically unclear and reads as an accidental literal arrangement rather than a grounded closing image.",
+          "fix": "Specify that the audience forms the moon-shaped circle around Nia or around the stool, rather than saying they “left the stool” in one."
+        }
+      ],
+      "strengths": "Seeds 123 and 124 closely follow their event order for ownership, curtain transformation, and performance outcomes; seed 791 also grounds the plan discovery, invitation, prop placement, and weather-parade result apart from the premature gathering wording."
+    },
+    "final_catalog_attempt": 0
+  },
+  {
+    "world": "clocktower_club",
+    "title": "The Clocktower Club: Three Chimes and a Dragon",
+    "ok": true,
+    "samples": 100,
+    "simulation_sha256": "e6af81b5ad0aa12ad9728b13f8a10a8fc184b65f02cbf4071c9f0483620de9dc",
+    "generator_sha256": "116e65e78990ca9db5cb347f5ce05734728fc25e534820e25e248819c00c72c5",
+    "catalog_sha256": "05a7c395d335bd30e2ff2f55446c65652cff5b5ae11b7d8df4d0b78767ce4171",
+    "distinct_texts": 16,
+    "distinct_scene_paths": 12,
+    "word_range": [
+      398,
+      440
+    ],
+    "prose_control_variants": 1,
+    "mechanics_model": "gpt-5.6-luna",
+    "mechanics_attempts": 1,
+    "prose_model": "gpt-5.6-luna",
+    "stats": {
+      "samples": 100,
+      "ordered_paths": 12,
+      "scene_sets": 4,
+      "causal_graphs": 2,
+      "outcomes": 4,
+      "premises": 3,
+      "events_range": [
+        11,
+        12
+      ],
+      "pruned_events": 235
+    },
+    "critic_before_revision": {
+      "issues": [
+        {
+          "seed": 124,
+          "severity": "major",
+          "layer": "simulation",
+          "defect": "contradiction",
+          "evidence": "The story says, “The neighbor woke with a startled grin and peered into the tower,” but the final trace still sets `neighbor.awake` to `false`; the only neighbor event changes the response to `startled`.",
+          "fix": "Add a trace change setting `neighbor.awake` from `false` to `true` when the bell wakes them, or revise the prose so the neighbor remains asleep."
+        },
+        {
+          "seed": 791,
+          "severity": "minor",
+          "layer": "prose",
+          "defect": "contradiction",
+          "evidence": "Pip “tugged the short rope” and rang the bell before the later scene says the latch “clicked open, revealing two ropes,” despite the trace placing `inspect_soft_rope` before `unlock_bell`.",
+          "fix": "Have Pip inspect or identify the short practice rope without pulling it before unlocking, or move the early soft-ring event to after the unlocking scene."
+        }
+      ],
+      "strengths": "Seeds 123 and 791 otherwise closely realize their ownership, knowledge transfer, unlocking, choice, meeting, and neighbor-response traces; none expose raw enum values or duplicate event-log prose."
+    },
+    "final_catalog_attempt": 0
+  }
+]

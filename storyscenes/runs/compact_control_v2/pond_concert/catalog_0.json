@@ -1,0 +1,539 @@
+{
+  "openings": [
+    {
+      "text": "At sunset, Pip polished his frog-sized microphone while Jojo guarded it like a treasure. Nella was somewhere in the reeds, and Jojo was sure she disliked music. Mina frowned at the empty shore. “Before Pip booms,” she said, “we should find out who is listening.”",
+      "when": [
+        {
+          "key": "mic.owner",
+          "op": "eq",
+          "value": "jojo",
+          "at": "initial"
+        },
+        {
+          "key": "bells.location",
+          "op": "eq",
+          "value": "shore",
+          "at": "initial"
+        },
+        {
+          "key": "invite.delivered",
+          "op": "eq",
+          "value": false,
+          "at": "initial"
+        },
+        {
+          "key": "jojo.knows.nella.likes_music",
+          "op": "eq",
+          "value": false,
+          "at": "initial"
+        },
+        {
+          "key": "chime.owner",
+          "op": "eq",
+          "value": "nella",
+          "at": "initial"
+        }
+      ]
+    },
+    {
+      "text": "The reed-bell garland lay in a tangled heap, as if a squirrel had conducted a parade through it. Pip still dreamed of a booming finale. Jojo shrugged at the quiet reeds. “No audience, no problem!” he declared. But Mina heard a tiny shell click from the nook and leaned closer.",
+      "when": [
+        {
+          "key": "bells.location",
+          "op": "eq",
+          "value": "scattered",
+          "at": "initial"
+        },
+        {
+          "key": "invite.delivered",
+          "op": "eq",
+          "value": false,
+          "at": "initial"
+        },
+        {
+          "key": "jojo.knows.nella.likes_music",
+          "op": "eq",
+          "value": false,
+          "at": "initial"
+        },
+        {
+          "key": "mic.owner",
+          "op": "eq",
+          "value": "pip",
+          "at": "initial"
+        }
+      ]
+    },
+    {
+      "text": "Pip had promised a booming finale, and Jojo loved that promise almost as much as the Golden Pebble. Nella’s invitation was still waiting on the shore. Beyond the water, the reeds looked empty—but Mina wondered whether empty-looking reeds could listen. “Let’s make a concert worth hiding for,” she whispered.",
+      "when": [
+        {
+          "key": "bells.location",
+          "op": "eq",
+          "value": "shore",
+          "at": "initial"
+        },
+        {
+          "key": "invite.delivered",
+          "op": "eq",
+          "value": false,
+          "at": "initial"
+        },
+        {
+          "key": "jojo.knows.nella.likes_music",
+          "op": "eq",
+          "value": false,
+          "at": "initial"
+        },
+        {
+          "key": "mic.owner",
+          "op": "eq",
+          "value": "pip",
+          "at": "initial"
+        },
+        {
+          "key": "chime.owner",
+          "op": "eq",
+          "value": "nella",
+          "at": "initial"
+        }
+      ]
+    },
+    {
+      "text": "The concert began with one puzzle: a little shell chime had arrived from the reeds, and Jojo mistook it for a prize token. Nella’s invitation had already been delivered, but her answer had not. Pip tapped the lily pad. “A mystery audience!” he croaked. Mina smiled. “Then let’s play kindly.”",
+      "when": [
+        {
+          "key": "invite.delivered",
+          "op": "eq",
+          "value": true,
+          "at": "initial"
+        },
+        {
+          "key": "jojo.knows.chime.owner",
+          "op": "eq",
+          "value": "prize",
+          "at": "initial"
+        }
+      ]
+    }
+  ],
+  "scenes": [
+    {
+      "scene": "observe_nella_nook",
+      "role": "beat",
+      "variants": [
+        {
+          "text": "Mina followed the faint shell-click to the reed nook. There she discovered exactly where Nella was listening: tucked among the green stems, close enough to hear every splash. “Aha,” Mina whispered. “Our audience has a hiding place.”",
+          "when": [
+            {
+              "key": "mina.knows.nella.location",
+              "op": "eq",
+              "value": null,
+              "at": "before"
+            },
+            {
+              "key": "mina.knows.nella.location",
+              "op": "ne",
+              "value": null,
+              "at": "after"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "scene": "observe_nella_music",
+      "role": "beat",
+      "variants": [
+        {
+          "text": "Mina listened again and discovered something better than a guess: Nella liked music. The snail simply preferred songs that did not leap out like a startled frog. Mina tucked that discovery into her smile and hurried back to the others.",
+          "when": [
+            {
+              "key": "mina.knows.nella.likes_music",
+              "op": "eq",
+              "value": null,
+              "at": "before"
+            },
+            {
+              "key": "mina.knows.nella.likes_music",
+              "op": "eq",
+              "value": true,
+              "at": "after"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "scene": "tell_jojo_about_nella",
+      "role": "beat",
+      "variants": [
+        {
+          "text": "“Nella likes music,” Mina told Jojo. “She just likes it gentle.” Jojo blinked at the reeds. “So louder is not better?” Pip’s throat puffed, then softened. “I can croak like a moonbeam,” he said, looking rather proud of the impossible idea.",
+          "when": [
+            {
+              "key": "jojo.knows.nella.likes_music",
+              "op": "eq",
+              "value": false,
+              "at": "before"
+            },
+            {
+              "key": "jojo.knows.nella.likes_music",
+              "op": "eq",
+              "value": true,
+              "at": "after"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "scene": "deliver_invitation",
+      "role": "beat",
+      "variants": [
+        {
+          "text": "Mina carried the paper invitation to the reeds. “Nella, the lily-pad stage is ready,” she called. “You may come close, or listen from your favorite wrinkle in the grass.” The invitation slipped between the stems, and a shy shell gave one hopeful tick.",
+          "when": [
+            {
+              "key": "invite.delivered",
+              "op": "eq",
+              "value": false,
+              "at": "before"
+            },
+            {
+              "key": "invite.delivered",
+              "op": "eq",
+              "value": true,
+              "at": "after"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "scene": "find_scattered_bells",
+      "role": "bridge",
+      "variants": [
+        {
+          "text": "Mina and Jojo gathered the scattered reed bells, rescuing three from a puddle and one from a very surprised tadpole.",
+          "when": [
+            {
+              "key": "bells.location",
+              "op": "eq",
+              "value": "scattered",
+              "at": "before"
+            },
+            {
+              "key": "bells.location",
+              "op": "eq",
+              "value": "shore",
+              "at": "after"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "scene": "lend_microphone",
+      "role": "beat",
+      "variants": [
+        {
+          "text": "Jojo handed Pip the floating pebble microphone. “Use it wisely,” he said. Pip held it to his throat. “I shall use it croakfully.” The pebble bobbed between them like a silver duck waiting for its first song.",
+          "when": [
+            {
+              "key": "mic.owner",
+              "op": "eq",
+              "value": "jojo",
+              "at": "before"
+            },
+            {
+              "key": "mic.owner",
+              "op": "eq",
+              "value": "pip",
+              "at": "after"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "scene": "place_bells",
+      "role": "bridge",
+      "variants": [
+        {
+          "text": "Mina hung the reed bells around the lily-pad stage, where they trembled whenever Pip cleared his throat.",
+          "when": [
+            {
+              "key": "bells.location",
+              "op": "eq",
+              "value": "shore",
+              "at": "before"
+            },
+            {
+              "key": "bells.location",
+              "op": "eq",
+              "value": "stage",
+              "at": "after"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "scene": "promise_quiet_song",
+      "role": "beat",
+      "variants": [
+        {
+          "text": "Pip drew himself up for a mighty boom, then remembered Nella’s hidden ears. “Tonight,” he announced, “I will croak softly enough for a firefly to keep its nap.” Jojo surrendered a little gasp of surprise. Mina squeezed Pip’s shoulder. The frog’s grandest promise became a tiny, brave one.",
+          "when": [
+            {
+              "key": "pip.style",
+              "op": "ne",
+              "value": "quiet",
+              "at": "before"
+            },
+            {
+              "key": "pip.style",
+              "op": "eq",
+              "value": "quiet",
+              "at": "after"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "scene": "promise_splash_song",
+      "role": "beat",
+      "variants": [
+        {
+          "text": "Jojo pointed toward the pond. “Give us thunder!” Pip puffed his cheeks until he looked like a green balloon. With Nella still away, he chose the splashy plan. “Then thunder shall have warts,” he declared, and the tadpoles cheered before the concert even began.",
+          "when": [
+            {
+              "key": "pip.style",
+              "op": "ne",
+              "value": "splash",
+              "at": "before"
+            },
+            {
+              "key": "pip.style",
+              "op": "eq",
+              "value": "splash",
+              "at": "after"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "scene": "trade_prize_for_chime",
+      "role": "beat",
+      "variants": [
+        {
+          "text": "Nella offered her shell chime, but Pip offered something glitterier: the Golden Pebble. “For your music?” he asked. Nella accepted. Jojo stared as his prize rolled gently into the reeds, while Pip tucked the tiny chime beneath his chin like a new singing star.",
+          "when": [
+            {
+              "key": "prize.owner",
+              "op": "eq",
+              "value": "jojo",
+              "at": "before"
+            },
+            {
+              "key": "prize.owner",
+              "op": "eq",
+              "value": "nella",
+              "at": "after"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "scene": "welcome_nella",
+      "role": "beat",
+      "variants": [
+        {
+          "text": "Nella emerged from the reeds, carrying the invitation on her shell. Mina made room beside the lily pad. “Welcome!” Jojo said, much less loudly than usual. Nella settled near the stage, and Pip lowered his microphone. The audience had arrived—and it had brought its own small hello.",
+          "when": [
+            {
+              "key": "nella.attended",
+              "op": "eq",
+              "value": false,
+              "at": "before"
+            },
+            {
+              "key": "nella.attended",
+              "op": "eq",
+              "value": true,
+              "at": "after"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "scene": "perform_quiet_concert",
+      "role": "beat",
+      "variants": [
+        {
+          "text": "Pip sang a soft, wobbly croak. Nella answered with the shell chime: ting, ting, tingle. Mina swayed, Jojo held his breath, and the reed bells nodded along. When the last note faded, Nella’s smile was wide enough to catch a moonbeam.",
+          "when": [
+            {
+              "key": "pip.performance.completed",
+              "op": "eq",
+              "value": false,
+              "at": "before"
+            },
+            {
+              "key": "pip.performance.completed",
+              "op": "eq",
+              "value": true,
+              "at": "after"
+            },
+            {
+              "key": "nella.response",
+              "op": "eq",
+              "value": "delighted",
+              "at": "after"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "scene": "perform_splash_concert",
+      "role": "beat",
+      "variants": [
+        {
+          "text": "Pip blasted a booming croak across the pond. The bells rattled, the tadpoles cheered, and Jojo leaped so high he nearly applauded a dragonfly. The Golden Pebble landed in his hands at last. Beside the stage, the microphone bobbed like a silver duck enjoying every ridiculous note.",
+          "when": [
+            {
+              "key": "pip.performance.completed",
+              "op": "eq",
+              "value": false,
+              "at": "before"
+            },
+            {
+              "key": "pip.performance.completed",
+              "op": "eq",
+              "value": true,
+              "at": "after"
+            },
+            {
+              "key": "nella.response",
+              "op": "eq",
+              "value": "pond_cheer",
+              "at": "after"
+            },
+            {
+              "key": "prize.owner",
+              "op": "eq",
+              "value": "jojo",
+              "at": "after"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "scene": "perform_private_concert",
+      "role": "beat",
+      "variants": [
+        {
+          "text": "Pip sang softly toward the reeds, though no one stepped out. The shell chime answered from the hidden nook. Mina’s eyes shone. Jojo listened without shouting. In the grass, where nobody expected an audience, a small chime swung gently in the evening air.",
+          "when": [
+            {
+              "key": "pip.performance.completed",
+              "op": "eq",
+              "value": false,
+              "at": "before"
+            },
+            {
+              "key": "pip.performance.completed",
+              "op": "eq",
+              "value": true,
+              "at": "after"
+            },
+            {
+              "key": "nella.response",
+              "op": "eq",
+              "value": "private_warmth",
+              "at": "after"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "endings": [
+    {
+      "text": "Nella stayed beside the stage, her shell chime tucked close to Pip’s song. The Golden Pebble rested beside her, no longer quite a prize and not quite a payment. When Mina, Jojo, and Pip bowed together, two small treasures gleamed in the lily-pad’s last stripe of sunset.",
+      "when": [
+        {
+          "key": "nella.response",
+          "op": "eq",
+          "value": "delighted",
+          "at": "after"
+        },
+        {
+          "key": "prize.owner",
+          "op": "eq",
+          "value": "nella",
+          "at": "after"
+        }
+      ]
+    },
+    {
+      "text": "The pond erupted in cheers for Pip’s booming finale, and Jojo hugged the Golden Pebble to his chest. Farther out, the floating microphone bobbed on its cord like a silver duck. Even the ripples seemed to be laughing as the ridiculous prize flashed in the dusk.",
+      "when": [
+        {
+          "key": "nella.response",
+          "op": "eq",
+          "value": "pond_cheer",
+          "at": "after"
+        },
+        {
+          "key": "prize.owner",
+          "op": "eq",
+          "value": "jojo",
+          "at": "after"
+        }
+      ]
+    },
+    {
+      "text": "Nella did not come out of the reeds, but her shell chime answered every soft note. The sound traveled under the loud pond and returned as tiny ripples, one after another, carrying a secret rhythm toward the lily-pad stage.",
+      "when": [
+        {
+          "key": "nella.response",
+          "op": "eq",
+          "value": "private_warmth",
+          "at": "after"
+        },
+        {
+          "key": "nella.attended",
+          "op": "eq",
+          "value": false,
+          "at": "after"
+        }
+      ]
+    },
+    {
+      "text": "The concert ended with Pip’s gentle croak, Nella’s bright response, and the reed bells whispering around them. Mina leaned against Jojo, Jojo grinned at Pip, and the pond held their new little rhythm as carefully as a snail holds a shell.",
+      "when": [
+        {
+          "key": "nella.response",
+          "op": "eq",
+          "value": "delighted",
+          "at": "after"
+        },
+        {
+          "key": "nella.attended",
+          "op": "eq",
+          "value": true,
+          "at": "after"
+        }
+      ]
+    }
+  ],
+  "lexicon": []
+}

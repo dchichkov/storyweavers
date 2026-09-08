@@ -1,0 +1,1476 @@
+[
+  {
+    "seed": 0,
+    "title": "The Kite That Carried Three Kinds of Hello",
+    "initial": {
+      "mina.place": "roof",
+      "pip.place": "roof",
+      "tavi.place": "roof",
+      "kite.place": "roof",
+      "spool.place": "roof",
+      "scraps.place": "roof",
+      "tube.place": "table",
+      "bell.place": "table",
+      "table.place": "roof",
+      "mina.beliefs.recipient": "garden_birds",
+      "pip.beliefs.job": "quiet_delivery",
+      "tavi.beliefs.message": "birthday_secret",
+      "mina.knows.tube.label": null,
+      "pip.knows.tube.label": null,
+      "tavi.knows.tube.label": null,
+      "pip.knows.kite.owner": true,
+      "mina.wants": "smooth_flight",
+      "pip.wants": "dragon_flourish",
+      "tavi.wants": "included_surprise",
+      "kite.owner": "mina",
+      "spool.owner": "mina",
+      "scraps.owner": "mina",
+      "tube.owner": "mina",
+      "bell.owner": "mina",
+      "tube.label": "garden_birds",
+      "tube.delivered_to": null,
+      "tube.open": false,
+      "scraps.color": "gold",
+      "bell.tone": "low",
+      "kite.tail": false,
+      "kite.fin": false,
+      "kite.bell": false,
+      "kite.flight_style": null,
+      "kite.launched": false,
+      "kite.response": false,
+      "pip.agreement": null,
+      "tavi.trust": false,
+      "tavi.surprise_spoken": false
+    },
+    "final": {
+      "mina.place": "roof",
+      "pip.place": "roof",
+      "tavi.place": "roof",
+      "kite.place": "roof",
+      "spool.place": "roof",
+      "scraps.place": "roof",
+      "tube.place": "table",
+      "bell.place": "table",
+      "table.place": "roof",
+      "mina.beliefs.recipient": "garden_birds",
+      "pip.beliefs.job": "quiet_delivery",
+      "tavi.beliefs.message": "birthday_secret",
+      "mina.knows.tube.label": "garden_birds",
+      "pip.knows.tube.label": null,
+      "tavi.knows.tube.label": "garden_birds",
+      "pip.knows.kite.owner": true,
+      "mina.wants": "smooth_flight",
+      "pip.wants": "dragon_flourish",
+      "tavi.wants": "included_surprise",
+      "kite.owner": "mina",
+      "spool.owner": "mina",
+      "scraps.owner": "mina",
+      "tube.owner": "tavi",
+      "bell.owner": "tavi",
+      "tube.label": "garden_birds",
+      "tube.delivered_to": "garden_birds",
+      "tube.open": false,
+      "scraps.color": "gold",
+      "bell.tone": "low",
+      "kite.tail": true,
+      "kite.fin": false,
+      "kite.bell": true,
+      "kite.flight_style": "ringing_signal",
+      "kite.launched": true,
+      "kite.response": true,
+      "pip.agreement": null,
+      "tavi.trust": true,
+      "tavi.surprise_spoken": true
+    },
+    "events": [
+      {
+        "id": 1,
+        "scene": "read_label",
+        "kernel": "Observe",
+        "actors": [
+          "mina"
+        ],
+        "summary": "Mina opened the wooden tube and read its label",
+        "causes": [],
+        "requires": [
+          {
+            "key": "mina.place",
+            "op": "eq",
+            "value": "roof"
+          },
+          {
+            "key": "tube.place",
+            "op": "eq",
+            "value": "table"
+          },
+          {
+            "key": "tube.owner",
+            "op": "eq",
+            "value": "mina"
+          },
+          {
+            "key": "tube.open",
+            "op": "eq",
+            "value": false
+          }
+        ],
+        "changes": {
+          "mina.knows.tube.label": {
+            "before": null,
+            "after": "garden_birds"
+          }
+        }
+      },
+      {
+        "id": 2,
+        "scene": "tavi_blurts_secret",
+        "kernel": "Belief",
+        "actors": [
+          "tavi"
+        ],
+        "summary": "Tavi announced that the supposed birthday secret needed a grand audience",
+        "causes": [],
+        "requires": [
+          {
+            "key": "tavi.place",
+            "op": "eq",
+            "value": "roof"
+          },
+          {
+            "key": "tube.label",
+            "op": "eq",
+            "value": "garden_birds"
+          },
+          {
+            "key": "tavi.beliefs.message",
+            "op": "eq",
+            "value": "birthday_secret"
+          },
+          {
+            "key": "tavi.surprise_spoken",
+            "op": "eq",
+            "value": false
+          }
+        ],
+        "changes": {
+          "tavi.surprise_spoken": {
+            "before": false,
+            "after": true
+          }
+        }
+      },
+      {
+        "id": 3,
+        "scene": "tell_tavi_label",
+        "kernel": "Tell",
+        "actors": [
+          "mina",
+          "tavi"
+        ],
+        "summary": "Mina told Tavi the real name on the message tube",
+        "causes": [
+          1
+        ],
+        "requires": [
+          {
+            "key": "mina.knows.tube.label",
+            "op": "ne",
+            "value": null
+          },
+          {
+            "key": "mina.place",
+            "op": "eq",
+            "value": "roof"
+          },
+          {
+            "key": "tavi.place",
+            "op": "eq",
+            "value": "roof"
+          },
+          {
+            "key": "mina.knows.tube.label",
+            "op": "ne",
+            "value": null
+          },
+          {
+            "key": "tavi.beliefs.message",
+            "op": "eq",
+            "value": "birthday_secret"
+          }
+        ],
+        "changes": {
+          "tavi.knows.tube.label": {
+            "before": null,
+            "after": "garden_birds"
+          }
+        }
+      },
+      {
+        "id": 4,
+        "scene": "attach_tail",
+        "kernel": "Making",
+        "actors": [
+          "mina"
+        ],
+        "summary": "Mina fastened a bright paper tail to steady the kite",
+        "causes": [
+          1
+        ],
+        "requires": [
+          {
+            "key": "mina.place",
+            "op": "eq",
+            "value": "roof"
+          },
+          {
+            "key": "kite.owner",
+            "op": "eq",
+            "value": "mina"
+          },
+          {
+            "key": "scraps.owner",
+            "op": "eq",
+            "value": "mina"
+          },
+          {
+            "key": "kite.tail",
+            "op": "eq",
+            "value": false
+          },
+          {
+            "key": "mina.knows.tube.label",
+            "op": "ne",
+            "value": null
+          }
+        ],
+        "changes": {
+          "kite.tail": {
+            "before": false,
+            "after": true
+          }
+        }
+      },
+      {
+        "id": 5,
+        "scene": "tavi_learns_truth",
+        "kernel": "Turn",
+        "actors": [
+          "mina",
+          "tavi"
+        ],
+        "summary": "Tavi learned that the message belonged to the garden birds",
+        "causes": [
+          2,
+          3
+        ],
+        "requires": [
+          {
+            "key": "tube.label",
+            "op": "eq",
+            "value": "garden_birds"
+          },
+          {
+            "key": "tavi.surprise_spoken",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "tavi.knows.tube.label",
+            "op": "eq",
+            "value": "garden_birds"
+          },
+          {
+            "key": "tavi.trust",
+            "op": "eq",
+            "value": false
+          }
+        ],
+        "changes": {
+          "tavi.trust": {
+            "before": false,
+            "after": true
+          }
+        }
+      },
+      {
+        "id": 6,
+        "scene": "give_tube_tavi",
+        "kernel": "Transfer",
+        "actors": [
+          "mina",
+          "tavi"
+        ],
+        "summary": "Mina trusted Tavi with the tube for the garden birds",
+        "causes": [
+          5
+        ],
+        "requires": [
+          {
+            "key": "tube.owner",
+            "op": "eq",
+            "value": "mina"
+          },
+          {
+            "key": "mina.place",
+            "op": "eq",
+            "value": "roof"
+          },
+          {
+            "key": "tavi.place",
+            "op": "eq",
+            "value": "roof"
+          },
+          {
+            "key": "tube.owner",
+            "op": "eq",
+            "value": "mina"
+          },
+          {
+            "key": "tube.label",
+            "op": "eq",
+            "value": "garden_birds"
+          },
+          {
+            "key": "tavi.trust",
+            "op": "eq",
+            "value": true
+          }
+        ],
+        "changes": {
+          "tube.owner": {
+            "before": "mina",
+            "after": "tavi"
+          }
+        }
+      },
+      {
+        "id": 7,
+        "scene": "give_bell_tavi",
+        "kernel": "Transfer",
+        "actors": [
+          "mina",
+          "tavi"
+        ],
+        "summary": "Mina handed Tavi the little brass wind-bell",
+        "causes": [
+          5
+        ],
+        "requires": [
+          {
+            "key": "bell.owner",
+            "op": "eq",
+            "value": "mina"
+          },
+          {
+            "key": "mina.place",
+            "op": "eq",
+            "value": "roof"
+          },
+          {
+            "key": "tavi.place",
+            "op": "eq",
+            "value": "roof"
+          },
+          {
+            "key": "bell.owner",
+            "op": "eq",
+            "value": "mina"
+          },
+          {
+            "key": "tube.label",
+            "op": "eq",
+            "value": "garden_birds"
+          },
+          {
+            "key": "tavi.trust",
+            "op": "eq",
+            "value": true
+          }
+        ],
+        "changes": {
+          "bell.owner": {
+            "before": "mina",
+            "after": "tavi"
+          }
+        }
+      },
+      {
+        "id": 8,
+        "scene": "tie_bell",
+        "kernel": "Making",
+        "actors": [
+          "tavi"
+        ],
+        "summary": "Tavi tied the bell beneath the kite’s paper nose",
+        "causes": [
+          7
+        ],
+        "requires": [
+          {
+            "key": "tavi.place",
+            "op": "eq",
+            "value": "roof"
+          },
+          {
+            "key": "bell.owner",
+            "op": "eq",
+            "value": "tavi"
+          },
+          {
+            "key": "kite.place",
+            "op": "eq",
+            "value": "roof"
+          },
+          {
+            "key": "kite.bell",
+            "op": "eq",
+            "value": false
+          },
+          {
+            "key": "tube.label",
+            "op": "eq",
+            "value": "garden_birds"
+          }
+        ],
+        "changes": {
+          "kite.bell": {
+            "before": false,
+            "after": true
+          }
+        }
+      },
+      {
+        "id": 9,
+        "scene": "test_bird_signal",
+        "kernel": "Test",
+        "actors": [
+          "mina",
+          "tavi"
+        ],
+        "summary": "The kite lifted, and its small bell chimed toward the garden",
+        "causes": [
+          4,
+          5,
+          6,
+          8
+        ],
+        "requires": [
+          {
+            "key": "tube.label",
+            "op": "eq",
+            "value": "garden_birds"
+          },
+          {
+            "key": "kite.tail",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "kite.bell",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "tube.owner",
+            "op": "eq",
+            "value": "tavi"
+          },
+          {
+            "key": "tavi.trust",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "kite.flight_style",
+            "op": "eq",
+            "value": null
+          }
+        ],
+        "changes": {
+          "kite.flight_style": {
+            "before": null,
+            "after": "ringing_signal"
+          }
+        }
+      },
+      {
+        "id": 10,
+        "scene": "launch_kite",
+        "kernel": "Launch",
+        "actors": [
+          "mina"
+        ],
+        "summary": "Mina ran three steps and let the kite climb into the sunny air",
+        "causes": [
+          9
+        ],
+        "requires": [
+          {
+            "key": "mina.place",
+            "op": "eq",
+            "value": "roof"
+          },
+          {
+            "key": "kite.owner",
+            "op": "eq",
+            "value": "mina"
+          },
+          {
+            "key": "spool.owner",
+            "op": "eq",
+            "value": "mina"
+          },
+          {
+            "key": "kite.flight_style",
+            "op": "ne",
+            "value": null
+          },
+          {
+            "key": "kite.launched",
+            "op": "eq",
+            "value": false
+          }
+        ],
+        "changes": {
+          "kite.launched": {
+            "before": false,
+            "after": true
+          }
+        }
+      },
+      {
+        "id": 11,
+        "scene": "bird_response",
+        "kernel": "Response",
+        "actors": [
+          "tavi"
+        ],
+        "summary": "The ringing kite delivered its hello to the garden birds",
+        "causes": [
+          6,
+          9,
+          10
+        ],
+        "requires": [
+          {
+            "key": "kite.launched",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "tube.label",
+            "op": "eq",
+            "value": "garden_birds"
+          },
+          {
+            "key": "kite.flight_style",
+            "op": "eq",
+            "value": "ringing_signal"
+          },
+          {
+            "key": "tube.owner",
+            "op": "eq",
+            "value": "tavi"
+          },
+          {
+            "key": "tube.delivered_to",
+            "op": "eq",
+            "value": null
+          }
+        ],
+        "changes": {
+          "tube.delivered_to": {
+            "before": null,
+            "after": "garden_birds"
+          },
+          "kite.response": {
+            "before": false,
+            "after": true
+          }
+        }
+      }
+    ]
+  },
+  {
+    "seed": 1,
+    "title": "The Kite That Carried Three Kinds of Hello",
+    "initial": {
+      "mina.place": "roof",
+      "pip.place": "roof",
+      "tavi.place": "roof",
+      "kite.place": "roof",
+      "spool.place": "roof",
+      "scraps.place": "roof",
+      "tube.place": "table",
+      "bell.place": "table",
+      "table.place": "roof",
+      "mina.beliefs.recipient": "Pip",
+      "pip.beliefs.job": "quiet_delivery",
+      "tavi.beliefs.message": "ordinary_note",
+      "mina.knows.tube.label": null,
+      "pip.knows.tube.label": null,
+      "tavi.knows.tube.label": "Grandma",
+      "pip.knows.kite.owner": false,
+      "mina.wants": "smooth_flight",
+      "pip.wants": "dragon_flourish",
+      "tavi.wants": "included_surprise",
+      "kite.owner": "mina",
+      "spool.owner": "mina",
+      "scraps.owner": "mina",
+      "tube.owner": "mina",
+      "bell.owner": "mina",
+      "tube.label": "Grandma",
+      "tube.delivered_to": null,
+      "tube.open": false,
+      "scraps.color": "blue",
+      "bell.tone": "low",
+      "kite.tail": false,
+      "kite.fin": false,
+      "kite.bell": false,
+      "kite.flight_style": null,
+      "kite.launched": false,
+      "kite.response": false,
+      "pip.agreement": null,
+      "tavi.trust": false,
+      "tavi.surprise_spoken": false
+    },
+    "final": {
+      "mina.place": "roof",
+      "pip.place": "roof",
+      "tavi.place": "roof",
+      "kite.place": "roof",
+      "spool.place": "roof",
+      "scraps.place": "roof",
+      "tube.place": "table",
+      "bell.place": "table",
+      "table.place": "roof",
+      "mina.beliefs.recipient": "Pip",
+      "pip.beliefs.job": "quiet_delivery",
+      "tavi.beliefs.message": "ordinary_note",
+      "mina.knows.tube.label": "Grandma",
+      "pip.knows.tube.label": "Grandma",
+      "tavi.knows.tube.label": "Grandma",
+      "pip.knows.kite.owner": false,
+      "mina.wants": "smooth_flight",
+      "pip.wants": "dragon_flourish",
+      "tavi.wants": "included_surprise",
+      "kite.owner": "mina",
+      "spool.owner": "mina",
+      "scraps.owner": "mina",
+      "tube.owner": "pip",
+      "bell.owner": "mina",
+      "tube.label": "Grandma",
+      "tube.delivered_to": "Grandma",
+      "tube.open": false,
+      "scraps.color": "blue",
+      "bell.tone": "low",
+      "kite.tail": true,
+      "kite.fin": false,
+      "kite.bell": false,
+      "kite.flight_style": "smooth",
+      "kite.launched": true,
+      "kite.response": true,
+      "pip.agreement": "quiet_helper",
+      "tavi.trust": false,
+      "tavi.surprise_spoken": false
+    },
+    "events": [
+      {
+        "id": 1,
+        "scene": "read_label",
+        "kernel": "Observe",
+        "actors": [
+          "mina"
+        ],
+        "summary": "Mina opened the wooden tube and read its label",
+        "causes": [],
+        "requires": [
+          {
+            "key": "mina.place",
+            "op": "eq",
+            "value": "roof"
+          },
+          {
+            "key": "tube.place",
+            "op": "eq",
+            "value": "table"
+          },
+          {
+            "key": "tube.owner",
+            "op": "eq",
+            "value": "mina"
+          },
+          {
+            "key": "tube.open",
+            "op": "eq",
+            "value": false
+          }
+        ],
+        "changes": {
+          "mina.knows.tube.label": {
+            "before": null,
+            "after": "Grandma"
+          }
+        }
+      },
+      {
+        "id": 2,
+        "scene": "tell_pip_label",
+        "kernel": "Tell",
+        "actors": [
+          "mina",
+          "pip"
+        ],
+        "summary": "Mina told Pip what the tube label said",
+        "causes": [
+          1
+        ],
+        "requires": [
+          {
+            "key": "mina.knows.tube.label",
+            "op": "ne",
+            "value": null
+          },
+          {
+            "key": "mina.place",
+            "op": "eq",
+            "value": "roof"
+          },
+          {
+            "key": "pip.place",
+            "op": "eq",
+            "value": "roof"
+          },
+          {
+            "key": "mina.knows.tube.label",
+            "op": "ne",
+            "value": null
+          }
+        ],
+        "changes": {
+          "pip.knows.tube.label": {
+            "before": null,
+            "after": "Grandma"
+          }
+        }
+      },
+      {
+        "id": 3,
+        "scene": "attach_tail",
+        "kernel": "Making",
+        "actors": [
+          "mina"
+        ],
+        "summary": "Mina fastened a bright paper tail to steady the kite",
+        "causes": [
+          1
+        ],
+        "requires": [
+          {
+            "key": "mina.place",
+            "op": "eq",
+            "value": "roof"
+          },
+          {
+            "key": "kite.owner",
+            "op": "eq",
+            "value": "mina"
+          },
+          {
+            "key": "scraps.owner",
+            "op": "eq",
+            "value": "mina"
+          },
+          {
+            "key": "kite.tail",
+            "op": "eq",
+            "value": false
+          },
+          {
+            "key": "mina.knows.tube.label",
+            "op": "ne",
+            "value": null
+          }
+        ],
+        "changes": {
+          "kite.tail": {
+            "before": false,
+            "after": true
+          }
+        }
+      },
+      {
+        "id": 4,
+        "scene": "quiet_agreement",
+        "kernel": "Turn",
+        "actors": [
+          "pip"
+        ],
+        "summary": "Pip decided that a soft, steady flight could still be splendid",
+        "causes": [
+          2
+        ],
+        "requires": [
+          {
+            "key": "tube.label",
+            "op": "eq",
+            "value": "Grandma"
+          },
+          {
+            "key": "pip.knows.tube.label",
+            "op": "eq",
+            "value": "Grandma"
+          },
+          {
+            "key": "pip.beliefs.job",
+            "op": "eq",
+            "value": "quiet_delivery"
+          },
+          {
+            "key": "pip.agreement",
+            "op": "eq",
+            "value": null
+          }
+        ],
+        "changes": {
+          "pip.agreement": {
+            "before": null,
+            "after": "quiet_helper"
+          }
+        }
+      },
+      {
+        "id": 5,
+        "scene": "give_tube_pip",
+        "kernel": "Transfer",
+        "actors": [
+          "mina",
+          "pip"
+        ],
+        "summary": "Mina placed the message tube in Pip’s careful claws",
+        "causes": [
+          2
+        ],
+        "requires": [
+          {
+            "key": "tube.owner",
+            "op": "eq",
+            "value": "mina"
+          },
+          {
+            "key": "mina.place",
+            "op": "eq",
+            "value": "roof"
+          },
+          {
+            "key": "pip.place",
+            "op": "eq",
+            "value": "roof"
+          },
+          {
+            "key": "tube.owner",
+            "op": "eq",
+            "value": "mina"
+          },
+          {
+            "key": "pip.knows.tube.label",
+            "op": "ne",
+            "value": null
+          }
+        ],
+        "changes": {
+          "tube.owner": {
+            "before": "mina",
+            "after": "pip"
+          }
+        }
+      },
+      {
+        "id": 6,
+        "scene": "test_smooth",
+        "kernel": "Test",
+        "actors": [
+          "mina",
+          "pip"
+        ],
+        "summary": "The kite rose in a calm little arc above the worktable",
+        "causes": [
+          3,
+          4,
+          5
+        ],
+        "requires": [
+          {
+            "key": "tube.label",
+            "op": "eq",
+            "value": "Grandma"
+          },
+          {
+            "key": "kite.tail",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "tube.owner",
+            "op": "eq",
+            "value": "pip"
+          },
+          {
+            "key": "pip.agreement",
+            "op": "eq",
+            "value": "quiet_helper"
+          },
+          {
+            "key": "kite.flight_style",
+            "op": "eq",
+            "value": null
+          }
+        ],
+        "changes": {
+          "kite.flight_style": {
+            "before": null,
+            "after": "smooth"
+          }
+        }
+      },
+      {
+        "id": 7,
+        "scene": "launch_kite",
+        "kernel": "Launch",
+        "actors": [
+          "mina"
+        ],
+        "summary": "Mina ran three steps and let the kite climb into the sunny air",
+        "causes": [
+          6
+        ],
+        "requires": [
+          {
+            "key": "mina.place",
+            "op": "eq",
+            "value": "roof"
+          },
+          {
+            "key": "kite.owner",
+            "op": "eq",
+            "value": "mina"
+          },
+          {
+            "key": "spool.owner",
+            "op": "eq",
+            "value": "mina"
+          },
+          {
+            "key": "kite.flight_style",
+            "op": "ne",
+            "value": null
+          },
+          {
+            "key": "kite.launched",
+            "op": "eq",
+            "value": false
+          }
+        ],
+        "changes": {
+          "kite.launched": {
+            "before": false,
+            "after": true
+          }
+        }
+      },
+      {
+        "id": 8,
+        "scene": "grandma_response",
+        "kernel": "Response",
+        "actors": [
+          "mina",
+          "pip"
+        ],
+        "summary": "The smooth kite carried the tube down to Grandma",
+        "causes": [
+          5,
+          6,
+          7
+        ],
+        "requires": [
+          {
+            "key": "kite.launched",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "tube.label",
+            "op": "eq",
+            "value": "Grandma"
+          },
+          {
+            "key": "kite.flight_style",
+            "op": "eq",
+            "value": "smooth"
+          },
+          {
+            "key": "tube.owner",
+            "op": "eq",
+            "value": "pip"
+          },
+          {
+            "key": "tube.delivered_to",
+            "op": "eq",
+            "value": null
+          }
+        ],
+        "changes": {
+          "tube.delivered_to": {
+            "before": null,
+            "after": "Grandma"
+          },
+          "kite.response": {
+            "before": false,
+            "after": true
+          }
+        }
+      }
+    ]
+  },
+  {
+    "seed": 2,
+    "title": "The Kite That Carried Three Kinds of Hello",
+    "initial": {
+      "mina.place": "roof",
+      "pip.place": "roof",
+      "tavi.place": "roof",
+      "kite.place": "roof",
+      "spool.place": "roof",
+      "scraps.place": "roof",
+      "tube.place": "table",
+      "bell.place": "table",
+      "table.place": "roof",
+      "mina.beliefs.recipient": "Pip",
+      "pip.beliefs.job": "quiet_delivery",
+      "tavi.beliefs.message": "ordinary_note",
+      "mina.knows.tube.label": null,
+      "pip.knows.tube.label": null,
+      "tavi.knows.tube.label": "Grandma",
+      "pip.knows.kite.owner": true,
+      "mina.wants": "smooth_flight",
+      "pip.wants": "dragon_flourish",
+      "tavi.wants": "included_surprise",
+      "kite.owner": "mina",
+      "spool.owner": "mina",
+      "scraps.owner": "mina",
+      "tube.owner": "mina",
+      "bell.owner": "mina",
+      "tube.label": "Grandma",
+      "tube.delivered_to": null,
+      "tube.open": false,
+      "scraps.color": "gold",
+      "bell.tone": "bright",
+      "kite.tail": false,
+      "kite.fin": false,
+      "kite.bell": false,
+      "kite.flight_style": null,
+      "kite.launched": false,
+      "kite.response": false,
+      "pip.agreement": null,
+      "tavi.trust": false,
+      "tavi.surprise_spoken": false
+    },
+    "final": {
+      "mina.place": "roof",
+      "pip.place": "roof",
+      "tavi.place": "roof",
+      "kite.place": "roof",
+      "spool.place": "roof",
+      "scraps.place": "roof",
+      "tube.place": "table",
+      "bell.place": "table",
+      "table.place": "roof",
+      "mina.beliefs.recipient": "Pip",
+      "pip.beliefs.job": "quiet_delivery",
+      "tavi.beliefs.message": "ordinary_note",
+      "mina.knows.tube.label": "Grandma",
+      "pip.knows.tube.label": "Grandma",
+      "tavi.knows.tube.label": "Grandma",
+      "pip.knows.kite.owner": true,
+      "mina.wants": "smooth_flight",
+      "pip.wants": "dragon_flourish",
+      "tavi.wants": "included_surprise",
+      "kite.owner": "mina",
+      "spool.owner": "mina",
+      "scraps.owner": "mina",
+      "tube.owner": "pip",
+      "bell.owner": "mina",
+      "tube.label": "Grandma",
+      "tube.delivered_to": "Grandma",
+      "tube.open": false,
+      "scraps.color": "gold",
+      "bell.tone": "bright",
+      "kite.tail": true,
+      "kite.fin": false,
+      "kite.bell": false,
+      "kite.flight_style": "smooth",
+      "kite.launched": true,
+      "kite.response": true,
+      "pip.agreement": "quiet_helper",
+      "tavi.trust": false,
+      "tavi.surprise_spoken": false
+    },
+    "events": [
+      {
+        "id": 1,
+        "scene": "read_label",
+        "kernel": "Observe",
+        "actors": [
+          "mina"
+        ],
+        "summary": "Mina opened the wooden tube and read its label",
+        "causes": [],
+        "requires": [
+          {
+            "key": "mina.place",
+            "op": "eq",
+            "value": "roof"
+          },
+          {
+            "key": "tube.place",
+            "op": "eq",
+            "value": "table"
+          },
+          {
+            "key": "tube.owner",
+            "op": "eq",
+            "value": "mina"
+          },
+          {
+            "key": "tube.open",
+            "op": "eq",
+            "value": false
+          }
+        ],
+        "changes": {
+          "mina.knows.tube.label": {
+            "before": null,
+            "after": "Grandma"
+          }
+        }
+      },
+      {
+        "id": 2,
+        "scene": "tell_pip_label",
+        "kernel": "Tell",
+        "actors": [
+          "mina",
+          "pip"
+        ],
+        "summary": "Mina told Pip what the tube label said",
+        "causes": [
+          1
+        ],
+        "requires": [
+          {
+            "key": "mina.knows.tube.label",
+            "op": "ne",
+            "value": null
+          },
+          {
+            "key": "mina.place",
+            "op": "eq",
+            "value": "roof"
+          },
+          {
+            "key": "pip.place",
+            "op": "eq",
+            "value": "roof"
+          },
+          {
+            "key": "mina.knows.tube.label",
+            "op": "ne",
+            "value": null
+          }
+        ],
+        "changes": {
+          "pip.knows.tube.label": {
+            "before": null,
+            "after": "Grandma"
+          }
+        }
+      },
+      {
+        "id": 3,
+        "scene": "attach_tail",
+        "kernel": "Making",
+        "actors": [
+          "mina"
+        ],
+        "summary": "Mina fastened a bright paper tail to steady the kite",
+        "causes": [
+          1
+        ],
+        "requires": [
+          {
+            "key": "mina.place",
+            "op": "eq",
+            "value": "roof"
+          },
+          {
+            "key": "kite.owner",
+            "op": "eq",
+            "value": "mina"
+          },
+          {
+            "key": "scraps.owner",
+            "op": "eq",
+            "value": "mina"
+          },
+          {
+            "key": "kite.tail",
+            "op": "eq",
+            "value": false
+          },
+          {
+            "key": "mina.knows.tube.label",
+            "op": "ne",
+            "value": null
+          }
+        ],
+        "changes": {
+          "kite.tail": {
+            "before": false,
+            "after": true
+          }
+        }
+      },
+      {
+        "id": 4,
+        "scene": "give_tube_pip",
+        "kernel": "Transfer",
+        "actors": [
+          "mina",
+          "pip"
+        ],
+        "summary": "Mina placed the message tube in Pip’s careful claws",
+        "causes": [
+          2
+        ],
+        "requires": [
+          {
+            "key": "tube.owner",
+            "op": "eq",
+            "value": "mina"
+          },
+          {
+            "key": "mina.place",
+            "op": "eq",
+            "value": "roof"
+          },
+          {
+            "key": "pip.place",
+            "op": "eq",
+            "value": "roof"
+          },
+          {
+            "key": "tube.owner",
+            "op": "eq",
+            "value": "mina"
+          },
+          {
+            "key": "pip.knows.tube.label",
+            "op": "ne",
+            "value": null
+          }
+        ],
+        "changes": {
+          "tube.owner": {
+            "before": "mina",
+            "after": "pip"
+          }
+        }
+      },
+      {
+        "id": 5,
+        "scene": "quiet_agreement",
+        "kernel": "Turn",
+        "actors": [
+          "pip"
+        ],
+        "summary": "Pip decided that a soft, steady flight could still be splendid",
+        "causes": [
+          2
+        ],
+        "requires": [
+          {
+            "key": "tube.label",
+            "op": "eq",
+            "value": "Grandma"
+          },
+          {
+            "key": "pip.knows.tube.label",
+            "op": "eq",
+            "value": "Grandma"
+          },
+          {
+            "key": "pip.beliefs.job",
+            "op": "eq",
+            "value": "quiet_delivery"
+          },
+          {
+            "key": "pip.agreement",
+            "op": "eq",
+            "value": null
+          }
+        ],
+        "changes": {
+          "pip.agreement": {
+            "before": null,
+            "after": "quiet_helper"
+          }
+        }
+      },
+      {
+        "id": 6,
+        "scene": "test_smooth",
+        "kernel": "Test",
+        "actors": [
+          "mina",
+          "pip"
+        ],
+        "summary": "The kite rose in a calm little arc above the worktable",
+        "causes": [
+          3,
+          4,
+          5
+        ],
+        "requires": [
+          {
+            "key": "tube.label",
+            "op": "eq",
+            "value": "Grandma"
+          },
+          {
+            "key": "kite.tail",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "tube.owner",
+            "op": "eq",
+            "value": "pip"
+          },
+          {
+            "key": "pip.agreement",
+            "op": "eq",
+            "value": "quiet_helper"
+          },
+          {
+            "key": "kite.flight_style",
+            "op": "eq",
+            "value": null
+          }
+        ],
+        "changes": {
+          "kite.flight_style": {
+            "before": null,
+            "after": "smooth"
+          }
+        }
+      },
+      {
+        "id": 7,
+        "scene": "launch_kite",
+        "kernel": "Launch",
+        "actors": [
+          "mina"
+        ],
+        "summary": "Mina ran three steps and let the kite climb into the sunny air",
+        "causes": [
+          6
+        ],
+        "requires": [
+          {
+            "key": "mina.place",
+            "op": "eq",
+            "value": "roof"
+          },
+          {
+            "key": "kite.owner",
+            "op": "eq",
+            "value": "mina"
+          },
+          {
+            "key": "spool.owner",
+            "op": "eq",
+            "value": "mina"
+          },
+          {
+            "key": "kite.flight_style",
+            "op": "ne",
+            "value": null
+          },
+          {
+            "key": "kite.launched",
+            "op": "eq",
+            "value": false
+          }
+        ],
+        "changes": {
+          "kite.launched": {
+            "before": false,
+            "after": true
+          }
+        }
+      },
+      {
+        "id": 8,
+        "scene": "grandma_response",
+        "kernel": "Response",
+        "actors": [
+          "mina",
+          "pip"
+        ],
+        "summary": "The smooth kite carried the tube down to Grandma",
+        "causes": [
+          4,
+          6,
+          7
+        ],
+        "requires": [
+          {
+            "key": "kite.launched",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "tube.label",
+            "op": "eq",
+            "value": "Grandma"
+          },
+          {
+            "key": "kite.flight_style",
+            "op": "eq",
+            "value": "smooth"
+          },
+          {
+            "key": "tube.owner",
+            "op": "eq",
+            "value": "pip"
+          },
+          {
+            "key": "tube.delivered_to",
+            "op": "eq",
+            "value": null
+          }
+        ],
+        "changes": {
+          "tube.delivered_to": {
+            "before": null,
+            "after": "Grandma"
+          },
+          "kite.response": {
+            "before": false,
+            "after": true
+          }
+        }
+      }
+    ]
+  }
+]

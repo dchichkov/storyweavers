@@ -1,0 +1,140 @@
+{
+  "id": "resp_053339387c7f80f2016a9f0c8e063887d0afb345fa64ff64f6",
+  "created_at": 1788808334.0,
+  "error": null,
+  "incomplete_details": null,
+  "instructions": null,
+  "metadata": {},
+  "model": "gpt-5.6-luna",
+  "object": "response",
+  "output": [
+    {
+      "id": "msg_053339387c7f80f2016a9f0c8e9d9487d0812feee2195bd663",
+      "content": [
+        {
+          "annotations": [],
+          "text": "{\"title\":\"The Crumb-and-Label Exchange\",\"premise\":\"At a sunny market stall, young baker Ada must help share a tray of buns among a proud squirrel, Pip, and a hungry neighbor, Noor. A switched label and differing tastes make the first plan go awry. By inspecting, asking, tasting carefully, and arranging a fair exchange, Ada can solve the problem in more than one sensible way: relabel and redistribute the buns, or trade Pip’s preferred treat for Noor’s preferred one while preserving ownership.\",\"cast_and_props\":\"Characters: Ada, a child baker; Pip, a proud squirrel who values a special nut bun; Noor, a hungry neighbor who needs a filling, gentle-flavored bun; Mara, the stall keeper, who knows the recipe and owns the tray. Props and places: market stall, tray, three bun types (nut, berry, plain), paper labels, tasting plate, basket, and a small weighing scale. Physical ownership and locations should be explicit: Mara owns the baked goods initially; Ada may receive or rearrange them only after permission or a fair exchange.\",\"kernels_and_interactions\":\"Observation: Ada can inspect labels, buns, and the scale, but must be at the stall and have curiosity. Mistaken belief: the displayed label may not match a bun’s actual filling, and characters can hold outdated beliefs until someone checks or tells them. Care and cooperation: Pip’s pride and Noor’s hunger create competing needs; Mara’s care enables lending or permission, while Ada’s accumulated curiosity and fairness guide choices. Ambition: Ada wants the stall exchange to succeed and can gain momentum by making a careful comparison, inviting responses, or arranging a visible fair trade.\",\"seed_parameters\":\"Use seed to vary causal conditions: initial label accuracy (correct, swapped nut/berry, or missing), Noor’s dietary need (plain or berry acceptable, nut unsuitable), Pip’s priority (taste, ownership of his saved bun, or a public promise), available supplies (scale, tasting plate, or spare label), and whether Mara begins cautious or generous about lending. Also vary bun placement and initial ownership among the tray and basket. These knobs must alter which observations, permissions, and exchanges are useful, not merely names or colors. Initialize every location, filling, label, owner, hunger, preference, promise, meme, and knowledge slot, including null beliefs.\",\"candidate_scenes\":\"1. Ada notices the crowded stall and earns curiosity from examining the display. 2. Ada inspects a label beside the tray. 3. Ada cuts or samples a permitted crumb on the tasting plate and discovers an unexpected filling. 4. Ada checks the scale or compares bun shapes when a label is missing. 5. Pip proudly claims his saved bun, whether or not the label supports his belief. 6. Noor explains what flavor or ingredient is safe and why. 7. Ada tells Mara what she observed. 8. Mara lends Ada the spare label, tasting plate, basket, or scale when care is sufficient. 9. Ada proposes a trade to Pip, offering a bun he values less for the one Noor can eat. 10. Pip accepts a trade after his ownership or promise is respected. 11. Ada and Noor arrange the tray into clearly marked portions. 12. Mara corrects a public sign after Ada presents evidence. 13. Noor receives a suitable bun through a fair redistribution. 14. Pip receives the agreed bun or keeps his original bun while another arrangement satisfies Noor. 15. Ada weighs the final portions and displays the balanced exchange. 16. The group announces the stall’s new, accurate arrangement. Scenes should use reusable conditions based on locations, knowledge, ownership, suitability, and current arrangement rather than branch-specific routes.\",\"constraints\":\"Use 2–4 interacting characters in each relevant scene and about 5–10 selected events per run. Include physical carriers for every scene: label, bun, scale, tasting plate, basket, or stall. Guard deliberate choices with knowledge; Ada cannot act on an unseen filling or Noor’s need. Use built-in observe, tell, and transfer scenes at least once, with initialized knowledge and ownership slots. Rules must preserve one owner per bun, prevent Noor from receiving an unsuitable bun, ensure labels describe actual fillings after the final display, and prevent a bun from being in two places. No supernatural solutions, impossible food changes, horror, or moral lectures. The goal should require both a successful fair exchange and a physically consistent final arrangement, while allowing alternative routes.\",\"different_endings\":\"Ending A: Ada proves the label was switched, Mara corrects the sign, and Noor receives the plain or berry bun while Pip keeps his promised nut bun. Ending B: The label cannot be verified quickly, so Ada uses the scale and tasting plate to separate the buns, then Pip voluntarily trades his claimed bun for a different treat that better honors his promise. Ending C: With Mara’s permission, Ada creates a clearly marked shared basket: Noor receives a suitable portion and Pip retains ownership of his special bun, producing a cooperative stall arrangement. Different seeds should make one ending easier or impossible by changing dietary needs, supplies, ownership, and knowledge.\"}",
+          "type": "output_text",
+          "logprobs": []
+        }
+      ],
+      "role": "assistant",
+      "status": "completed",
+      "type": "message",
+      "phase": "final_answer"
+    }
+  ],
+  "parallel_tool_calls": true,
+  "temperature": 1.0,
+  "tool_choice": "auto",
+  "tools": [],
+  "top_p": 0.98,
+  "background": false,
+  "completed_at": 1788808361.0,
+  "conversation": null,
+  "max_output_tokens": 6000,
+  "max_tool_calls": null,
+  "moderation": null,
+  "previous_response_id": null,
+  "prompt": null,
+  "prompt_cache_key": null,
+  "prompt_cache_retention": "24h",
+  "reasoning": {
+    "context": "all_turns",
+    "effort": "none",
+    "generate_summary": null,
+    "summary": null,
+    "mode": "standard"
+  },
+  "safety_identifier": null,
+  "service_tier": "flex",
+  "status": "completed",
+  "text": {
+    "format": {
+      "name": "theater_plan",
+      "schema_": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string"
+          },
+          "premise": {
+            "type": "string"
+          },
+          "cast_and_props": {
+            "type": "string"
+          },
+          "kernels_and_interactions": {
+            "type": "string"
+          },
+          "seed_parameters": {
+            "type": "string"
+          },
+          "candidate_scenes": {
+            "type": "string"
+          },
+          "constraints": {
+            "type": "string"
+          },
+          "different_endings": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "title",
+          "premise",
+          "cast_and_props",
+          "kernels_and_interactions",
+          "seed_parameters",
+          "candidate_scenes",
+          "constraints",
+          "different_endings"
+        ],
+        "additionalProperties": false
+      },
+      "type": "json_schema",
+      "description": null,
+      "strict": true
+    },
+    "verbosity": "medium"
+  },
+  "top_logprobs": 0,
+  "truncation": "disabled",
+  "usage": {
+    "input_tokens": 1688,
+    "input_tokens_details": {
+      "cached_tokens": 0,
+      "cache_write_tokens": 1685
+    },
+    "output_tokens": 1060,
+    "output_tokens_details": {
+      "reasoning_tokens": 0
+    },
+    "total_tokens": 2748
+  },
+  "user": null,
+  "billing": {
+    "payer": "developer"
+  },
+  "frequency_penalty": 0.0,
+  "presence_penalty": 0.0,
+  "store": false,
+  "tool_usage": {
+    "image_gen": {
+      "input_tokens": 0,
+      "input_tokens_details": {
+        "image_tokens": 0,
+        "text_tokens": 0
+      },
+      "output_tokens": 0,
+      "output_tokens_details": {
+        "image_tokens": 0,
+        "text_tokens": 0
+      },
+      "total_tokens": 0
+    },
+    "web_search": {
+      "num_requests": 0
+    }
+  }
+}

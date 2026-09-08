@@ -1,0 +1,1356 @@
+[
+  {
+    "seed": 0,
+    "title": "The Courtyard Weather Show",
+    "initial": {
+      "ada.location": "courtyard",
+      "ada.memes.Curiosity": 2,
+      "ada.memes.Ambition": 2,
+      "ada.knows.wind.strength": null,
+      "ada.knows.alcove.sheltered": null,
+      "ada.knows.curtain.fastener_enough": null,
+      "ada.knows.bench.blocks_breeze": null,
+      "ada.knows.bell.stuck": null,
+      "ada.knows.cloud.safe_in_wind": null,
+      "pip.location": "courtyard",
+      "pip.confidence": 1,
+      "pip.memes.Care": 1,
+      "pip.knows.cloud.safe_in_wind": true,
+      "mara.location": "courtyard",
+      "mara.memes.Care": 2,
+      "mara.knows.wind.strength": null,
+      "alcove.sheltered": false,
+      "wind.strength": "lively",
+      "stage.location": "courtyard",
+      "curtain.location": "stage",
+      "curtain.secured": false,
+      "curtain.fastener_enough": true,
+      "sun.owner": "pip",
+      "sun.location": "stage",
+      "cloud.owner": "pip",
+      "cloud.location": "stage",
+      "cloud.safe_in_wind": true,
+      "bell.location": "stage",
+      "bell.stuck": false,
+      "rope.owner": "mara",
+      "rope.location": "courtyard",
+      "pins.location": "stage",
+      "bench.location": "courtyard",
+      "bench.blocks_breeze": false,
+      "show.signal_ready": false,
+      "show.signal": "none",
+      "show.performed": false,
+      "show.style": "none"
+    },
+    "final": {
+      "ada.location": "courtyard",
+      "ada.memes.Curiosity": 2,
+      "ada.memes.Ambition": 2,
+      "ada.knows.wind.strength": "lively",
+      "ada.knows.alcove.sheltered": null,
+      "ada.knows.curtain.fastener_enough": true,
+      "ada.knows.bench.blocks_breeze": null,
+      "ada.knows.bell.stuck": false,
+      "ada.knows.cloud.safe_in_wind": true,
+      "pip.location": "courtyard",
+      "pip.confidence": 2,
+      "pip.memes.Care": 1,
+      "pip.knows.cloud.safe_in_wind": true,
+      "mara.location": "courtyard",
+      "mara.memes.Care": 2,
+      "mara.knows.wind.strength": "lively",
+      "alcove.sheltered": false,
+      "wind.strength": "lively",
+      "stage.location": "courtyard",
+      "curtain.location": "stage",
+      "curtain.secured": true,
+      "curtain.fastener_enough": true,
+      "sun.owner": "pip",
+      "sun.location": "stage",
+      "cloud.owner": "pip",
+      "cloud.location": "stage",
+      "cloud.safe_in_wind": true,
+      "bell.location": "stage",
+      "bell.stuck": false,
+      "rope.owner": "ada",
+      "rope.location": "stage",
+      "pins.location": "stage",
+      "bench.location": "courtyard",
+      "bench.blocks_breeze": false,
+      "show.signal_ready": true,
+      "show.signal": "bell",
+      "show.performed": true,
+      "show.style": "windy"
+    },
+    "events": [
+      {
+        "id": 1,
+        "scene": "survey_breeze",
+        "kernel": "Observe",
+        "actors": [
+          "ada"
+        ],
+        "summary": "Ada watched the curtain and judged the strength of the breeze",
+        "causes": [],
+        "requires": [
+          {
+            "key": "ada.location",
+            "op": "eq",
+            "value": "courtyard"
+          },
+          {
+            "key": "ada.memes.Curiosity",
+            "op": "ge",
+            "value": 1
+          }
+        ],
+        "changes": {
+          "ada.knows.wind.strength": {
+            "before": null,
+            "after": "lively"
+          }
+        }
+      },
+      {
+        "id": 2,
+        "scene": "inspect_bell",
+        "kernel": "Observe",
+        "actors": [
+          "ada"
+        ],
+        "summary": "Ada inspected the bell before choosing an opening cue",
+        "causes": [],
+        "requires": [
+          {
+            "key": "ada.memes.Curiosity",
+            "op": "ge",
+            "value": 1
+          },
+          {
+            "key": "bell.location",
+            "op": "in",
+            "value": [
+              "stage",
+              "alcove"
+            ]
+          }
+        ],
+        "changes": {
+          "ada.knows.bell.stuck": {
+            "before": null,
+            "after": false
+          }
+        }
+      },
+      {
+        "id": 3,
+        "scene": "ring_ready_bell",
+        "kernel": "observation",
+        "actors": [
+          "ada",
+          "bell"
+        ],
+        "summary": "Ada chose the working bell as the opening signal",
+        "causes": [
+          2
+        ],
+        "requires": [
+          {
+            "key": "ada.knows.bell.stuck",
+            "op": "eq",
+            "value": false
+          },
+          {
+            "key": "bell.stuck",
+            "op": "eq",
+            "value": false
+          },
+          {
+            "key": "show.signal_ready",
+            "op": "eq",
+            "value": false
+          }
+        ],
+        "changes": {
+          "show.signal_ready": {
+            "before": false,
+            "after": true
+          },
+          "show.signal": {
+            "before": "none",
+            "after": "bell"
+          }
+        }
+      },
+      {
+        "id": 4,
+        "scene": "test_one_clothespin",
+        "kernel": "Observe",
+        "actors": [
+          "ada"
+        ],
+        "summary": "Ada tested whether a careful fastening plan would hold the curtain",
+        "causes": [
+          1
+        ],
+        "requires": [
+          {
+            "key": "ada.location",
+            "op": "eq",
+            "value": "courtyard"
+          },
+          {
+            "key": "ada.knows.wind.strength",
+            "op": "eq",
+            "value": "lively"
+          },
+          {
+            "key": "pins.location",
+            "op": "eq",
+            "value": "stage"
+          },
+          {
+            "key": "curtain.location",
+            "op": "eq",
+            "value": "stage"
+          }
+        ],
+        "changes": {
+          "ada.knows.curtain.fastener_enough": {
+            "before": null,
+            "after": true
+          }
+        }
+      },
+      {
+        "id": 5,
+        "scene": "tell_mara_about_breeze",
+        "kernel": "Tell",
+        "actors": [
+          "ada",
+          "mara"
+        ],
+        "summary": "Ada told Mara what the breeze was doing",
+        "causes": [
+          1
+        ],
+        "requires": [
+          {
+            "key": "ada.knows.wind.strength",
+            "op": "ne",
+            "value": null
+          },
+          {
+            "key": "ada.location",
+            "op": "eq",
+            "value": "courtyard"
+          },
+          {
+            "key": "mara.location",
+            "op": "eq",
+            "value": "courtyard"
+          }
+        ],
+        "changes": {
+          "mara.knows.wind.strength": {
+            "before": null,
+            "after": "lively"
+          }
+        }
+      },
+      {
+        "id": 6,
+        "scene": "borrow_rope",
+        "kernel": "Transfer",
+        "actors": [
+          "mara",
+          "ada"
+        ],
+        "summary": "Mara lent Ada the rope for the curtain",
+        "causes": [
+          5
+        ],
+        "requires": [
+          {
+            "key": "rope.owner",
+            "op": "eq",
+            "value": "mara"
+          },
+          {
+            "key": "mara.memes.Care",
+            "op": "ge",
+            "value": 1
+          },
+          {
+            "key": "mara.knows.wind.strength",
+            "op": "eq",
+            "value": "lively"
+          }
+        ],
+        "changes": {
+          "rope.owner": {
+            "before": "mara",
+            "after": "ada"
+          }
+        }
+      },
+      {
+        "id": 7,
+        "scene": "fasten_curtain_with_rope",
+        "kernel": "cooperation",
+        "actors": [
+          "ada",
+          "mara",
+          "curtain",
+          "rope",
+          "pins"
+        ],
+        "summary": "Ada and Mara tied the curtain with rope and clothespins",
+        "causes": [
+          4,
+          5,
+          6
+        ],
+        "requires": [
+          {
+            "key": "rope.owner",
+            "op": "eq",
+            "value": "ada"
+          },
+          {
+            "key": "ada.knows.curtain.fastener_enough",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "mara.knows.wind.strength",
+            "op": "eq",
+            "value": "lively"
+          },
+          {
+            "key": "curtain.secured",
+            "op": "eq",
+            "value": false
+          }
+        ],
+        "changes": {
+          "curtain.secured": {
+            "before": false,
+            "after": true
+          },
+          "rope.location": {
+            "before": "courtyard",
+            "after": "stage"
+          }
+        }
+      },
+      {
+        "id": 8,
+        "scene": "pip_names_the_sturdy_puppet",
+        "kernel": "Tell",
+        "actors": [
+          "pip",
+          "ada"
+        ],
+        "summary": "Pip explained that the cloud puppet could manage a breeze",
+        "causes": [],
+        "requires": [
+          {
+            "key": "pip.knows.cloud.safe_in_wind",
+            "op": "ne",
+            "value": null
+          },
+          {
+            "key": "pip.location",
+            "op": "eq",
+            "value": "courtyard"
+          },
+          {
+            "key": "ada.location",
+            "op": "eq",
+            "value": "courtyard"
+          }
+        ],
+        "changes": {
+          "ada.knows.cloud.safe_in_wind": {
+            "before": null,
+            "after": true
+          }
+        }
+      },
+      {
+        "id": 9,
+        "scene": "practice_behind_the_stage",
+        "kernel": "cooperation",
+        "actors": [
+          "ada",
+          "pip",
+          "stage"
+        ],
+        "summary": "Ada and Pip practiced one short cloud-puppet line behind the stage",
+        "causes": [
+          8
+        ],
+        "requires": [
+          {
+            "key": "ada.knows.cloud.safe_in_wind",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "pip.confidence",
+            "op": "lt",
+            "value": 2
+          },
+          {
+            "key": "stage.location",
+            "op": "eq",
+            "value": "courtyard"
+          }
+        ],
+        "changes": {
+          "pip.confidence": {
+            "before": 1,
+            "after": 2
+          }
+        }
+      },
+      {
+        "id": 10,
+        "scene": "perform_windy_show",
+        "kernel": "ambition",
+        "actors": [
+          "ada",
+          "pip",
+          "mara",
+          "stage",
+          "cloud",
+          "curtain"
+        ],
+        "summary": "Pip gave the cloud puppet a dramatic breezy entrance in the courtyard",
+        "causes": [
+          3,
+          7,
+          8,
+          9
+        ],
+        "requires": [
+          {
+            "key": "stage.location",
+            "op": "eq",
+            "value": "courtyard"
+          },
+          {
+            "key": "curtain.secured",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "ada.knows.cloud.safe_in_wind",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "pip.confidence",
+            "op": "ge",
+            "value": 2
+          },
+          {
+            "key": "show.signal_ready",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "show.performed",
+            "op": "eq",
+            "value": false
+          }
+        ],
+        "changes": {
+          "show.performed": {
+            "before": false,
+            "after": true
+          },
+          "show.style": {
+            "before": "none",
+            "after": "windy"
+          }
+        }
+      }
+    ]
+  },
+  {
+    "seed": 1,
+    "title": "The Courtyard Weather Show",
+    "initial": {
+      "ada.location": "courtyard",
+      "ada.memes.Curiosity": 2,
+      "ada.memes.Ambition": 2,
+      "ada.knows.wind.strength": null,
+      "ada.knows.alcove.sheltered": null,
+      "ada.knows.curtain.fastener_enough": null,
+      "ada.knows.bench.blocks_breeze": null,
+      "ada.knows.bell.stuck": null,
+      "ada.knows.cloud.safe_in_wind": null,
+      "pip.location": "courtyard",
+      "pip.confidence": 2,
+      "pip.memes.Care": 1,
+      "pip.knows.cloud.safe_in_wind": true,
+      "mara.location": "courtyard",
+      "mara.memes.Care": 2,
+      "mara.knows.wind.strength": null,
+      "alcove.sheltered": true,
+      "wind.strength": "gusty",
+      "stage.location": "courtyard",
+      "curtain.location": "stage",
+      "curtain.secured": false,
+      "curtain.fastener_enough": false,
+      "sun.owner": "pip",
+      "sun.location": "stage",
+      "cloud.owner": "pip",
+      "cloud.location": "stage",
+      "cloud.safe_in_wind": true,
+      "bell.location": "stage",
+      "bell.stuck": true,
+      "rope.owner": "mara",
+      "rope.location": "courtyard",
+      "pins.location": "stage",
+      "bench.location": "courtyard",
+      "bench.blocks_breeze": false,
+      "show.signal_ready": false,
+      "show.signal": "none",
+      "show.performed": false,
+      "show.style": "none"
+    },
+    "final": {
+      "ada.location": "alcove",
+      "ada.memes.Curiosity": 2,
+      "ada.memes.Ambition": 2,
+      "ada.knows.wind.strength": "gusty",
+      "ada.knows.alcove.sheltered": true,
+      "ada.knows.curtain.fastener_enough": null,
+      "ada.knows.bench.blocks_breeze": null,
+      "ada.knows.bell.stuck": true,
+      "ada.knows.cloud.safe_in_wind": true,
+      "pip.location": "alcove",
+      "pip.confidence": 2,
+      "pip.memes.Care": 1,
+      "pip.knows.cloud.safe_in_wind": true,
+      "mara.location": "alcove",
+      "mara.memes.Care": 2,
+      "mara.knows.wind.strength": "gusty",
+      "alcove.sheltered": true,
+      "wind.strength": "gusty",
+      "stage.location": "alcove",
+      "curtain.location": "alcove",
+      "curtain.secured": false,
+      "curtain.fastener_enough": false,
+      "sun.owner": "pip",
+      "sun.location": "alcove",
+      "cloud.owner": "pip",
+      "cloud.location": "alcove",
+      "cloud.safe_in_wind": true,
+      "bell.location": "alcove",
+      "bell.stuck": true,
+      "rope.owner": "mara",
+      "rope.location": "courtyard",
+      "pins.location": "stage",
+      "bench.location": "courtyard",
+      "bench.blocks_breeze": false,
+      "show.signal_ready": true,
+      "show.signal": "spoken",
+      "show.performed": true,
+      "show.style": "sheltered"
+    },
+    "events": [
+      {
+        "id": 1,
+        "scene": "pip_names_the_sturdy_puppet",
+        "kernel": "Tell",
+        "actors": [
+          "pip",
+          "ada"
+        ],
+        "summary": "Pip explained that the cloud puppet could manage a breeze",
+        "causes": [],
+        "requires": [
+          {
+            "key": "pip.knows.cloud.safe_in_wind",
+            "op": "ne",
+            "value": null
+          },
+          {
+            "key": "pip.location",
+            "op": "eq",
+            "value": "courtyard"
+          },
+          {
+            "key": "ada.location",
+            "op": "eq",
+            "value": "courtyard"
+          }
+        ],
+        "changes": {
+          "ada.knows.cloud.safe_in_wind": {
+            "before": null,
+            "after": true
+          }
+        }
+      },
+      {
+        "id": 2,
+        "scene": "inspect_bell",
+        "kernel": "Observe",
+        "actors": [
+          "ada"
+        ],
+        "summary": "Ada inspected the bell before choosing an opening cue",
+        "causes": [],
+        "requires": [
+          {
+            "key": "ada.memes.Curiosity",
+            "op": "ge",
+            "value": 1
+          },
+          {
+            "key": "bell.location",
+            "op": "in",
+            "value": [
+              "stage",
+              "alcove"
+            ]
+          }
+        ],
+        "changes": {
+          "ada.knows.bell.stuck": {
+            "before": null,
+            "after": true
+          }
+        }
+      },
+      {
+        "id": 3,
+        "scene": "use_spoken_opening_cue",
+        "kernel": "adaptation",
+        "actors": [
+          "ada",
+          "pip",
+          "stage"
+        ],
+        "summary": "Ada changed the opening signal to Pip's clear spoken cue",
+        "causes": [
+          2
+        ],
+        "requires": [
+          {
+            "key": "ada.knows.bell.stuck",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "show.signal_ready",
+            "op": "eq",
+            "value": false
+          }
+        ],
+        "changes": {
+          "show.signal_ready": {
+            "before": false,
+            "after": true
+          },
+          "show.signal": {
+            "before": "none",
+            "after": "spoken"
+          }
+        }
+      },
+      {
+        "id": 4,
+        "scene": "survey_breeze",
+        "kernel": "Observe",
+        "actors": [
+          "ada"
+        ],
+        "summary": "Ada watched the curtain and judged the strength of the breeze",
+        "causes": [],
+        "requires": [
+          {
+            "key": "ada.location",
+            "op": "eq",
+            "value": "courtyard"
+          },
+          {
+            "key": "ada.memes.Curiosity",
+            "op": "ge",
+            "value": 1
+          }
+        ],
+        "changes": {
+          "ada.knows.wind.strength": {
+            "before": null,
+            "after": "gusty"
+          }
+        }
+      },
+      {
+        "id": 5,
+        "scene": "tell_mara_about_breeze",
+        "kernel": "Tell",
+        "actors": [
+          "ada",
+          "mara"
+        ],
+        "summary": "Ada told Mara what the breeze was doing",
+        "causes": [
+          4
+        ],
+        "requires": [
+          {
+            "key": "ada.knows.wind.strength",
+            "op": "ne",
+            "value": null
+          },
+          {
+            "key": "ada.location",
+            "op": "eq",
+            "value": "courtyard"
+          },
+          {
+            "key": "mara.location",
+            "op": "eq",
+            "value": "courtyard"
+          }
+        ],
+        "changes": {
+          "mara.knows.wind.strength": {
+            "before": null,
+            "after": "gusty"
+          }
+        }
+      },
+      {
+        "id": 6,
+        "scene": "inspect_alcove",
+        "kernel": "Observe",
+        "actors": [
+          "ada"
+        ],
+        "summary": "Ada checked whether the alcove was truly sheltered",
+        "causes": [
+          4
+        ],
+        "requires": [
+          {
+            "key": "ada.location",
+            "op": "eq",
+            "value": "courtyard"
+          },
+          {
+            "key": "ada.knows.wind.strength",
+            "op": "eq",
+            "value": "gusty"
+          }
+        ],
+        "changes": {
+          "ada.knows.alcove.sheltered": {
+            "before": null,
+            "after": true
+          }
+        }
+      },
+      {
+        "id": 7,
+        "scene": "shift_stage_to_alcove",
+        "kernel": "care",
+        "actors": [
+          "ada",
+          "pip",
+          "mara",
+          "stage"
+        ],
+        "summary": "The group carried the small stage and its props into the alcove",
+        "causes": [
+          5,
+          6
+        ],
+        "requires": [
+          {
+            "key": "ada.knows.alcove.sheltered",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "mara.knows.wind.strength",
+            "op": "eq",
+            "value": "gusty"
+          },
+          {
+            "key": "stage.location",
+            "op": "eq",
+            "value": "courtyard"
+          },
+          {
+            "key": "ada.location",
+            "op": "eq",
+            "value": "courtyard"
+          },
+          {
+            "key": "pip.location",
+            "op": "eq",
+            "value": "courtyard"
+          },
+          {
+            "key": "mara.location",
+            "op": "eq",
+            "value": "courtyard"
+          }
+        ],
+        "changes": {
+          "ada.location": {
+            "before": "courtyard",
+            "after": "alcove"
+          },
+          "pip.location": {
+            "before": "courtyard",
+            "after": "alcove"
+          },
+          "mara.location": {
+            "before": "courtyard",
+            "after": "alcove"
+          },
+          "stage.location": {
+            "before": "courtyard",
+            "after": "alcove"
+          },
+          "curtain.location": {
+            "before": "stage",
+            "after": "alcove"
+          },
+          "sun.location": {
+            "before": "stage",
+            "after": "alcove"
+          },
+          "cloud.location": {
+            "before": "stage",
+            "after": "alcove"
+          },
+          "bell.location": {
+            "before": "stage",
+            "after": "alcove"
+          }
+        }
+      },
+      {
+        "id": 8,
+        "scene": "perform_sheltered_show",
+        "kernel": "cooperation",
+        "actors": [
+          "ada",
+          "pip",
+          "mara",
+          "stage",
+          "cloud"
+        ],
+        "summary": "Pip performed the weather play beside the sheltered stage",
+        "causes": [
+          1,
+          3,
+          7
+        ],
+        "requires": [
+          {
+            "key": "stage.location",
+            "op": "eq",
+            "value": "alcove"
+          },
+          {
+            "key": "ada.knows.cloud.safe_in_wind",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "pip.confidence",
+            "op": "ge",
+            "value": 2
+          },
+          {
+            "key": "show.signal_ready",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "show.performed",
+            "op": "eq",
+            "value": false
+          }
+        ],
+        "changes": {
+          "show.performed": {
+            "before": false,
+            "after": true
+          },
+          "show.style": {
+            "before": "none",
+            "after": "sheltered"
+          }
+        }
+      }
+    ]
+  },
+  {
+    "seed": 2,
+    "title": "The Courtyard Weather Show",
+    "initial": {
+      "ada.location": "courtyard",
+      "ada.memes.Curiosity": 2,
+      "ada.memes.Ambition": 2,
+      "ada.knows.wind.strength": null,
+      "ada.knows.alcove.sheltered": null,
+      "ada.knows.curtain.fastener_enough": null,
+      "ada.knows.bench.blocks_breeze": null,
+      "ada.knows.bell.stuck": null,
+      "ada.knows.cloud.safe_in_wind": null,
+      "pip.location": "courtyard",
+      "pip.confidence": 1,
+      "pip.memes.Care": 1,
+      "pip.knows.cloud.safe_in_wind": true,
+      "mara.location": "courtyard",
+      "mara.memes.Care": 2,
+      "mara.knows.wind.strength": null,
+      "alcove.sheltered": true,
+      "wind.strength": "gusty",
+      "stage.location": "courtyard",
+      "curtain.location": "stage",
+      "curtain.secured": false,
+      "curtain.fastener_enough": false,
+      "sun.owner": "pip",
+      "sun.location": "stage",
+      "cloud.owner": "pip",
+      "cloud.location": "stage",
+      "cloud.safe_in_wind": true,
+      "bell.location": "stage",
+      "bell.stuck": true,
+      "rope.owner": "mara",
+      "rope.location": "courtyard",
+      "pins.location": "stage",
+      "bench.location": "courtyard",
+      "bench.blocks_breeze": false,
+      "show.signal_ready": false,
+      "show.signal": "none",
+      "show.performed": false,
+      "show.style": "none"
+    },
+    "final": {
+      "ada.location": "alcove",
+      "ada.memes.Curiosity": 2,
+      "ada.memes.Ambition": 2,
+      "ada.knows.wind.strength": "gusty",
+      "ada.knows.alcove.sheltered": true,
+      "ada.knows.curtain.fastener_enough": null,
+      "ada.knows.bench.blocks_breeze": null,
+      "ada.knows.bell.stuck": true,
+      "ada.knows.cloud.safe_in_wind": true,
+      "pip.location": "alcove",
+      "pip.confidence": 2,
+      "pip.memes.Care": 1,
+      "pip.knows.cloud.safe_in_wind": true,
+      "mara.location": "alcove",
+      "mara.memes.Care": 2,
+      "mara.knows.wind.strength": "gusty",
+      "alcove.sheltered": true,
+      "wind.strength": "gusty",
+      "stage.location": "alcove",
+      "curtain.location": "alcove",
+      "curtain.secured": false,
+      "curtain.fastener_enough": false,
+      "sun.owner": "pip",
+      "sun.location": "alcove",
+      "cloud.owner": "pip",
+      "cloud.location": "alcove",
+      "cloud.safe_in_wind": true,
+      "bell.location": "alcove",
+      "bell.stuck": true,
+      "rope.owner": "mara",
+      "rope.location": "courtyard",
+      "pins.location": "stage",
+      "bench.location": "courtyard",
+      "bench.blocks_breeze": false,
+      "show.signal_ready": true,
+      "show.signal": "spoken",
+      "show.performed": true,
+      "show.style": "sheltered"
+    },
+    "events": [
+      {
+        "id": 1,
+        "scene": "survey_breeze",
+        "kernel": "Observe",
+        "actors": [
+          "ada"
+        ],
+        "summary": "Ada watched the curtain and judged the strength of the breeze",
+        "causes": [],
+        "requires": [
+          {
+            "key": "ada.location",
+            "op": "eq",
+            "value": "courtyard"
+          },
+          {
+            "key": "ada.memes.Curiosity",
+            "op": "ge",
+            "value": 1
+          }
+        ],
+        "changes": {
+          "ada.knows.wind.strength": {
+            "before": null,
+            "after": "gusty"
+          }
+        }
+      },
+      {
+        "id": 2,
+        "scene": "pip_names_the_sturdy_puppet",
+        "kernel": "Tell",
+        "actors": [
+          "pip",
+          "ada"
+        ],
+        "summary": "Pip explained that the cloud puppet could manage a breeze",
+        "causes": [],
+        "requires": [
+          {
+            "key": "pip.knows.cloud.safe_in_wind",
+            "op": "ne",
+            "value": null
+          },
+          {
+            "key": "pip.location",
+            "op": "eq",
+            "value": "courtyard"
+          },
+          {
+            "key": "ada.location",
+            "op": "eq",
+            "value": "courtyard"
+          }
+        ],
+        "changes": {
+          "ada.knows.cloud.safe_in_wind": {
+            "before": null,
+            "after": true
+          }
+        }
+      },
+      {
+        "id": 3,
+        "scene": "practice_behind_the_stage",
+        "kernel": "cooperation",
+        "actors": [
+          "ada",
+          "pip",
+          "stage"
+        ],
+        "summary": "Ada and Pip practiced one short cloud-puppet line behind the stage",
+        "causes": [
+          2
+        ],
+        "requires": [
+          {
+            "key": "ada.knows.cloud.safe_in_wind",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "pip.confidence",
+            "op": "lt",
+            "value": 2
+          },
+          {
+            "key": "stage.location",
+            "op": "eq",
+            "value": "courtyard"
+          }
+        ],
+        "changes": {
+          "pip.confidence": {
+            "before": 1,
+            "after": 2
+          }
+        }
+      },
+      {
+        "id": 4,
+        "scene": "inspect_alcove",
+        "kernel": "Observe",
+        "actors": [
+          "ada"
+        ],
+        "summary": "Ada checked whether the alcove was truly sheltered",
+        "causes": [
+          1
+        ],
+        "requires": [
+          {
+            "key": "ada.location",
+            "op": "eq",
+            "value": "courtyard"
+          },
+          {
+            "key": "ada.knows.wind.strength",
+            "op": "eq",
+            "value": "gusty"
+          }
+        ],
+        "changes": {
+          "ada.knows.alcove.sheltered": {
+            "before": null,
+            "after": true
+          }
+        }
+      },
+      {
+        "id": 5,
+        "scene": "inspect_bell",
+        "kernel": "Observe",
+        "actors": [
+          "ada"
+        ],
+        "summary": "Ada inspected the bell before choosing an opening cue",
+        "causes": [],
+        "requires": [
+          {
+            "key": "ada.memes.Curiosity",
+            "op": "ge",
+            "value": 1
+          },
+          {
+            "key": "bell.location",
+            "op": "in",
+            "value": [
+              "stage",
+              "alcove"
+            ]
+          }
+        ],
+        "changes": {
+          "ada.knows.bell.stuck": {
+            "before": null,
+            "after": true
+          }
+        }
+      },
+      {
+        "id": 6,
+        "scene": "tell_mara_about_breeze",
+        "kernel": "Tell",
+        "actors": [
+          "ada",
+          "mara"
+        ],
+        "summary": "Ada told Mara what the breeze was doing",
+        "causes": [
+          1
+        ],
+        "requires": [
+          {
+            "key": "ada.knows.wind.strength",
+            "op": "ne",
+            "value": null
+          },
+          {
+            "key": "ada.location",
+            "op": "eq",
+            "value": "courtyard"
+          },
+          {
+            "key": "mara.location",
+            "op": "eq",
+            "value": "courtyard"
+          }
+        ],
+        "changes": {
+          "mara.knows.wind.strength": {
+            "before": null,
+            "after": "gusty"
+          }
+        }
+      },
+      {
+        "id": 7,
+        "scene": "shift_stage_to_alcove",
+        "kernel": "care",
+        "actors": [
+          "ada",
+          "pip",
+          "mara",
+          "stage"
+        ],
+        "summary": "The group carried the small stage and its props into the alcove",
+        "causes": [
+          4,
+          6
+        ],
+        "requires": [
+          {
+            "key": "ada.knows.alcove.sheltered",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "mara.knows.wind.strength",
+            "op": "eq",
+            "value": "gusty"
+          },
+          {
+            "key": "stage.location",
+            "op": "eq",
+            "value": "courtyard"
+          },
+          {
+            "key": "ada.location",
+            "op": "eq",
+            "value": "courtyard"
+          },
+          {
+            "key": "pip.location",
+            "op": "eq",
+            "value": "courtyard"
+          },
+          {
+            "key": "mara.location",
+            "op": "eq",
+            "value": "courtyard"
+          }
+        ],
+        "changes": {
+          "ada.location": {
+            "before": "courtyard",
+            "after": "alcove"
+          },
+          "pip.location": {
+            "before": "courtyard",
+            "after": "alcove"
+          },
+          "mara.location": {
+            "before": "courtyard",
+            "after": "alcove"
+          },
+          "stage.location": {
+            "before": "courtyard",
+            "after": "alcove"
+          },
+          "curtain.location": {
+            "before": "stage",
+            "after": "alcove"
+          },
+          "sun.location": {
+            "before": "stage",
+            "after": "alcove"
+          },
+          "cloud.location": {
+            "before": "stage",
+            "after": "alcove"
+          },
+          "bell.location": {
+            "before": "stage",
+            "after": "alcove"
+          }
+        }
+      },
+      {
+        "id": 8,
+        "scene": "use_spoken_opening_cue",
+        "kernel": "adaptation",
+        "actors": [
+          "ada",
+          "pip",
+          "stage"
+        ],
+        "summary": "Ada changed the opening signal to Pip's clear spoken cue",
+        "causes": [
+          5
+        ],
+        "requires": [
+          {
+            "key": "ada.knows.bell.stuck",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "show.signal_ready",
+            "op": "eq",
+            "value": false
+          }
+        ],
+        "changes": {
+          "show.signal_ready": {
+            "before": false,
+            "after": true
+          },
+          "show.signal": {
+            "before": "none",
+            "after": "spoken"
+          }
+        }
+      },
+      {
+        "id": 9,
+        "scene": "perform_sheltered_show",
+        "kernel": "cooperation",
+        "actors": [
+          "ada",
+          "pip",
+          "mara",
+          "stage",
+          "cloud"
+        ],
+        "summary": "Pip performed the weather play beside the sheltered stage",
+        "causes": [
+          2,
+          3,
+          7,
+          8
+        ],
+        "requires": [
+          {
+            "key": "stage.location",
+            "op": "eq",
+            "value": "alcove"
+          },
+          {
+            "key": "ada.knows.cloud.safe_in_wind",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "pip.confidence",
+            "op": "ge",
+            "value": 2
+          },
+          {
+            "key": "show.signal_ready",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "show.performed",
+            "op": "eq",
+            "value": false
+          }
+        ],
+        "changes": {
+          "show.performed": {
+            "before": false,
+            "after": true
+          },
+          "show.style": {
+            "before": "none",
+            "after": "sheltered"
+          }
+        }
+      }
+    ]
+  }
+]

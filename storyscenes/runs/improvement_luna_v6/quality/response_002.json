@@ -1,0 +1,362 @@
+{
+  "id": "resp_0c634ee320283e13006a9f8fb6fa6087d0be11dad9fe7ecd33",
+  "created_at": 1788841911.0,
+  "error": null,
+  "incomplete_details": null,
+  "instructions": null,
+  "metadata": {},
+  "model": "gpt-5.6-terra",
+  "object": "response",
+  "output": [
+    {
+      "id": "msg_0c634ee320283e13006a9f8fb83d0487d0b5104a38d5554884",
+      "content": [
+        {
+          "annotations": [],
+          "text": "{\"stories\":[{\"id\":\"s000029\",\"rating\":{\"coherence\":7,\"style\":8,\"grammar\":9,\"storytelling\":7,\"overall\":8},\"note\":\"A clear inclusion problem is noticed and solved by moving the concert onto the lily; the moonlit final image is strong, though the repeated drifting description slows it.\"},{\"id\":\"s000057\",\"rating\":{\"coherence\":7,\"style\":8,\"grammar\":9,\"storytelling\":7,\"overall\":8},\"note\":\"A clear inclusion problem is noticed and solved by moving the concert onto the lily; the moonlit final image is strong, though the repeated drifting description slows it.\"},{\"id\":\"s000047\",\"rating\":{\"coherence\":8,\"style\":8,\"grammar\":9,\"storytelling\":8,\"overall\":8},\"note\":\"Frog's mistaken plan changes after he reads Nora's need for quiet, leading to a gentle concert and a concrete silver-bubble ending.\"},{\"id\":\"s000073\",\"rating\":{\"coherence\":8,\"style\":8,\"grammar\":9,\"storytelling\":8,\"overall\":8},\"note\":\"The competing dance and lullaby wishes are meaningfully combined after Nora's preference is learned; the ripples-as-commas ending is playful and visual.\"},{\"id\":\"s000034\",\"rating\":{\"coherence\":8,\"style\":8,\"grammar\":9,\"storytelling\":8,\"overall\":8},\"note\":\"Frog corrects his loud assumption and performs softly for Nora; the silver bubble and carefully held pond make a satisfying closing image.\"},{\"id\":\"s000043\",\"rating\":{\"coherence\":7,\"style\":8,\"grammar\":9,\"storytelling\":7,\"overall\":8},\"note\":\"The friends recognize Nora wants participation rather than an audience role and adapt the concert; repeated parade action makes the middle slightly redundant.\"},{\"id\":\"s000068\",\"rating\":{\"coherence\":8,\"style\":8,\"grammar\":9,\"storytelling\":8,\"overall\":8},\"note\":\"Nora's wish redirects the friends from a disagreement to a quiet dancing lullaby, resolved in a warm image of ripples and shared delight.\"},{\"id\":\"s000096\",\"rating\":{\"coherence\":7,\"style\":8,\"grammar\":9,\"storytelling\":7,\"overall\":8},\"note\":\"The invitation and floating-concert solution follow clearly from Nora's isolation, with a vivid still moonlit tableau at the end; action is somewhat repeated.\"},{\"id\":\"s000005\",\"rating\":{\"coherence\":8,\"style\":8,\"grammar\":9,\"storytelling\":8,\"overall\":8},\"note\":\"Nora's wish redirects the friends from a disagreement to a quiet dancing lullaby, resolved in a warm image of ripples and shared delight.\"},{\"id\":\"s000085\",\"rating\":{\"coherence\":7,\"style\":8,\"grammar\":9,\"storytelling\":7,\"overall\":8},\"note\":\"The friends shift from performing at Nora to including her on the lily, producing a clear emotional resolution and polished pond image, despite repeated action.\"}],\"diversity\":{\"premise\":4,\"causal_path\":4,\"ending\":3,\"language\":5,\"overall\":4},\"diversity_evidence\":\"This sample contains three substantive variants: correcting a too-loud concert for Nora (s000047, s000034), reconciling dance with a lullaby (s000073, s000068, s000005), and including Nora in a floating concert (s000029, s000057, s000043, s000096, s000085). However, each uses the same pond-concert setting, follows discovery of Nora's wish with an accommodating performance, and ends in moonlit ripples or a still pond image. Several entries are exact or near-exact duplicates, so this sample shows limited variation rather than evidence about the whole generator.\" ,\"plot_groups\":[{\"story_ids\":[\"s000029\",\"s000057\",\"s000043\",\"s000096\",\"s000085\"],\"summary\":\"The friends realize Nora feels excluded from a shore concert, invite her to participate, and relocate the performance onto the floating lily.\"},{\"story_ids\":[\"s000047\",\"s000034\"],\"summary\":\"Frog mistakes Nora's desire for quiet as a desire for a loud spectacle, then changes the concert into a soft performance.\"},{\"story_ids\":[\"s000073\",\"s000068\",\"s000005\"],\"summary\":\"Mia and Teo's dance-versus-lullaby disagreement is resolved by making a gentle dancing lullaby that suits Nora.\"}] }",
+          "type": "output_text",
+          "logprobs": []
+        }
+      ],
+      "role": "assistant",
+      "status": "completed",
+      "type": "message",
+      "phase": "final_answer"
+    }
+  ],
+  "parallel_tool_calls": true,
+  "temperature": 1.0,
+  "tool_choice": "auto",
+  "tools": [],
+  "top_p": 0.98,
+  "background": false,
+  "completed_at": 1788841918.0,
+  "conversation": null,
+  "max_output_tokens": 4000,
+  "max_tool_calls": null,
+  "moderation": null,
+  "previous_response_id": null,
+  "prompt": null,
+  "prompt_cache_key": null,
+  "prompt_cache_retention": "24h",
+  "reasoning": {
+    "context": "all_turns",
+    "effort": "none",
+    "generate_summary": null,
+    "summary": null,
+    "mode": "standard"
+  },
+  "safety_identifier": null,
+  "service_tier": "flex",
+  "status": "completed",
+  "text": {
+    "format": {
+      "name": "story_set_quality_v1",
+      "schema_": {
+        "type": "object",
+        "properties": {
+          "stories": {
+            "type": "array",
+            "minItems": 10,
+            "maxItems": 10,
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "enum": [
+                    "s000029",
+                    "s000057",
+                    "s000047",
+                    "s000073",
+                    "s000034",
+                    "s000043",
+                    "s000068",
+                    "s000096",
+                    "s000005",
+                    "s000085"
+                  ]
+                },
+                "rating": {
+                  "type": "object",
+                  "properties": {
+                    "coherence": {
+                      "type": "integer",
+                      "enum": [
+                        0,
+                        1,
+                        2,
+                        3,
+                        4,
+                        5,
+                        6,
+                        7,
+                        8,
+                        9
+                      ]
+                    },
+                    "style": {
+                      "type": "integer",
+                      "enum": [
+                        0,
+                        1,
+                        2,
+                        3,
+                        4,
+                        5,
+                        6,
+                        7,
+                        8,
+                        9
+                      ]
+                    },
+                    "grammar": {
+                      "type": "integer",
+                      "enum": [
+                        0,
+                        1,
+                        2,
+                        3,
+                        4,
+                        5,
+                        6,
+                        7,
+                        8,
+                        9
+                      ]
+                    },
+                    "storytelling": {
+                      "type": "integer",
+                      "enum": [
+                        0,
+                        1,
+                        2,
+                        3,
+                        4,
+                        5,
+                        6,
+                        7,
+                        8,
+                        9
+                      ]
+                    },
+                    "overall": {
+                      "type": "integer",
+                      "enum": [
+                        0,
+                        1,
+                        2,
+                        3,
+                        4,
+                        5,
+                        6,
+                        7,
+                        8,
+                        9
+                      ]
+                    }
+                  },
+                  "required": [
+                    "coherence",
+                    "style",
+                    "grammar",
+                    "storytelling",
+                    "overall"
+                  ],
+                  "additionalProperties": false
+                },
+                "note": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "id",
+                "rating",
+                "note"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "diversity": {
+            "type": "object",
+            "properties": {
+              "premise": {
+                "type": "integer",
+                "enum": [
+                  0,
+                  1,
+                  2,
+                  3,
+                  4,
+                  5,
+                  6,
+                  7,
+                  8,
+                  9
+                ]
+              },
+              "causal_path": {
+                "type": "integer",
+                "enum": [
+                  0,
+                  1,
+                  2,
+                  3,
+                  4,
+                  5,
+                  6,
+                  7,
+                  8,
+                  9
+                ]
+              },
+              "ending": {
+                "type": "integer",
+                "enum": [
+                  0,
+                  1,
+                  2,
+                  3,
+                  4,
+                  5,
+                  6,
+                  7,
+                  8,
+                  9
+                ]
+              },
+              "language": {
+                "type": "integer",
+                "enum": [
+                  0,
+                  1,
+                  2,
+                  3,
+                  4,
+                  5,
+                  6,
+                  7,
+                  8,
+                  9
+                ]
+              },
+              "overall": {
+                "type": "integer",
+                "enum": [
+                  0,
+                  1,
+                  2,
+                  3,
+                  4,
+                  5,
+                  6,
+                  7,
+                  8,
+                  9
+                ]
+              }
+            },
+            "required": [
+              "premise",
+              "causal_path",
+              "ending",
+              "language",
+              "overall"
+            ],
+            "additionalProperties": false
+          },
+          "diversity_evidence": {
+            "type": "string"
+          },
+          "plot_groups": {
+            "type": "array",
+            "minItems": 1,
+            "maxItems": 10,
+            "items": {
+              "type": "object",
+              "properties": {
+                "story_ids": {
+                  "type": "array",
+                  "minItems": 1,
+                  "items": {
+                    "type": "string",
+                    "enum": [
+                      "s000029",
+                      "s000057",
+                      "s000047",
+                      "s000073",
+                      "s000034",
+                      "s000043",
+                      "s000068",
+                      "s000096",
+                      "s000005",
+                      "s000085"
+                    ]
+                  }
+                },
+                "summary": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "story_ids",
+                "summary"
+              ],
+              "additionalProperties": false
+            }
+          }
+        },
+        "required": [
+          "stories",
+          "diversity",
+          "diversity_evidence",
+          "plot_groups"
+        ],
+        "additionalProperties": false
+      },
+      "type": "json_schema",
+      "description": null,
+      "strict": true
+    },
+    "verbosity": "medium"
+  },
+  "top_logprobs": 0,
+  "truncation": "disabled",
+  "usage": {
+    "input_tokens": 4955,
+    "input_tokens_details": {
+      "cached_tokens": 0,
+      "cache_write_tokens": 4952
+    },
+    "output_tokens": 944,
+    "output_tokens_details": {
+      "reasoning_tokens": 0
+    },
+    "total_tokens": 5899
+  },
+  "user": null,
+  "billing": {
+    "payer": "openai"
+  },
+  "frequency_penalty": 0.0,
+  "presence_penalty": 0.0,
+  "store": true,
+  "tool_usage": {
+    "image_gen": {
+      "input_tokens": 0,
+      "input_tokens_details": {
+        "image_tokens": 0,
+        "text_tokens": 0
+      },
+      "output_tokens": 0,
+      "output_tokens_details": {
+        "image_tokens": 0,
+        "text_tokens": 0
+      },
+      "total_tokens": 0
+    },
+    "web_search": {
+      "num_requests": 0
+    }
+  }
+}

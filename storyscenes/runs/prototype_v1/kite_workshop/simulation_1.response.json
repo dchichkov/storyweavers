@@ -1,0 +1,97 @@
+{
+  "id": "resp_0c2814d42c572bfc016a9f0cd73b2087d0bf1e1cae0fad24c8",
+  "created_at": 1788808407.0,
+  "error": null,
+  "incomplete_details": null,
+  "instructions": null,
+  "metadata": {},
+  "model": "gpt-5.6-luna",
+  "object": "response",
+  "output": [
+    {
+      "id": "msg_0c2814d42c572bfc016a9f0cd7c79087d0be59e13bd15d3d68",
+      "content": [
+        {
+          "annotations": [],
+          "text": "from runtime import WorldSpec, Scene, Condition as C, Effect as E, Rule\nfrom runtime import observe, tell, transfer\nimport random\n\n\ndef build(seed: int) -> WorldSpec:\n    rng = random.Random(seed)\n\n    wind = rng.choice((\"moderate\", \"strong\"))\n    direction = rng.choice((\"steady\", \"shifting\"))\n    defect = rng.choice((\"frame\", \"knot\", \"tail\", \"sound\"))\n    bulky = rng.choice((True, False))\n    scarce = rng.choice((True, False))\n    breath = rng.choice((\"unpracticed\", \"ready\"))\n    orra_available = rng.choice((True, False))\n\n    entities = {\n        \"mina\": {\"name\": \"Mina\", \"kind\": \"child\"},\n        \"brindle\": {\"name\": \"Brindle\", \"kind\": \"dragon\"},\n        \"orra\": {\"name\": \"Orra\", \"kind\": \"keeper\"},\n        \"workshop\": {\"name\": \"rooftop workshop\", \"kind\": \"place\"},\n        \"platform\": {\"name\": \"launch platform\", \"kind\": \"place\"},\n        \"basket\": {\"name\": \"marked basket\", \"kind\": \"place\"},\n        \"kite\": {\"name\": \"kite\", \"kind\": \"prop\"},\n        \"frame\": {\"name\": \"kite frame\", \"kind\": \"prop\"},\n        \"tube\": {\"name\": \"message tube\", \"kind\": \"prop\"},\n        \"note\": {\"name\": \"small note\", \"kind\": \"prop\"},\n        \"rope\": {\"name\": \"tether rope\", \"kind\": \"prop\"},\n        \"reed\": {\"name\": \"short reed\", \"kind\": \"prop\"},\n        \"cloth\": {\"name\": \"cloth scraps\", \"kind\": \"prop\"},\n        \"wax\": {\"name\": \"wax\", \"kind\": \"prop\"},\n        \"ribbon\": {\"name\": \"wind ribbon\", \"kind\": \"prop\"},\n        \"wind_sock\": {\"name\": \"wind sock\", \"kind\": \"prop\"},\n        \"packet\": {\"name\": \"light message packet\", \"kind\": \"prop\"},\n    }\n\n    initial = {\n        \"mina.location\": \"workshop\",\n        \"brindle.location\": \"workshop\",\n        \"orra.location\": \"workshop\" if orra_available else \"away\",\n        \"kite.location\": \"workshop\",\n        \"frame.location\": \"kite\",\n        \"tube.location\": \"workshop\",\n        \"note.location\": \"workshop\",\n        \"rope.location\": \"workshop\",\n        \"reed.location\": \"workshop\" if not scarce else \"orra\",\n        \"cloth.location\": \"workshop\" if not scarce else \"orra\",\n        \"wax.location\": \"workshop\" if not scarce else \"orra\",\n        \"ribbon.location\": \"workshop\",\n        \"wind_sock.location\": \"platform\",\n        \"packet.location\": \"workshop\",\n        \"kite.frame_condition\": defect,\n        \"kite.tail_condition\": \"short\" if defect == \"tail\" else \"ready\",\n        \"kite.knot_condition\": \"loose\" if defect == \"knot\" else \"secure\",\n        \"kite.balanced\": defect == \"sound\",\n        \"kite.tested\": False,\n        \"kite.route\": None,\n        \"kite.stable\": False,\n        \"kite.delivered\": False,\n        \"note.bulky\": bulky,\n        \"note.secured\": False,\n        \"note.container\": None,\n        \"packet.ready\": False,\n        \"rope.owner\": \"orra\",\n        \"reed.owner\": \"orra\" if scarce else \"mina\",\n        \"cloth.owner\": \"orra\" if scarce else \"mina\",\n        \"wax.owner\": \"orra\" if scarce else \"mina\",\n        \"wind.strength\": wind,\n        \"wind.direction\": direction,\n        \"brindle.breath_control\": breath,\n        \"brindle.memes.Ambition\": 2,\n        \"brindle.memes.Care\": 1,\n        \"brindle.memes.Curiosity\": 1,\n        \"mina.memes.Curiosity\": 2,\n        \"mina.memes.Care\": 2,\n        \"orra.memes.Care\": 2,\n        \"mina.knows.kite.frame_condition\": None,\n        \"mina.knows.kite.tail_condition\": None,\n        \"mina.knows.kite.knot_condition\": None,\n        \"mina.knows.wind.strength\": None,\n        \"mina.knows.wind.direction\": None,\n        \"brindle.knows.wind.strength\": None,\n        \"brindle.knows.wind.direction\": None,\n        \"brindle.knows.practice.safe\": False,\n        \"orra.knows.kite.frame_condition\": None,\n        \"orra.knows.kite.tail_condition\": None,\n        \"orra.knows.kite.knot_condition\": None,\n        \"mina.knows.reed.available\": False,\n        \"mina.knows.cloth.available\": False,\n        \"mina.knows.wax.available\": False,\n        \"mina.knows.rope.available\": False,\n        \"orra.knows.basket.route\": False,\n        \"basket.received\": False,\n        \"orra.confirmed\": False,\n    }\n\n    scenes = [\n        observe(\n            \"inspect_kite\",\n            \"mina\",\n            \"kite.frame_condition\",\n            requires=(\n                C(\"mina.location\", \"eq\", \"workshop\"),\n                C(\"mina.memes.Curiosity\", \"ge\", 1),\n            ),\n            summary=\"Mina inspected the kite frame\",\n        ),\n        observe(\n            \"inspect_tail\",\n            \"mina\",\n            \"kite.tail_condition\",\n            requires=(\n                C(\"mina.location\", \"eq\", \"workshop\"),\n                C(\"mina.memes.Curiosity\", \"ge\", 1),\n            ),\n            summary=\"Mina inspected the kite tail\",\n        ),\n        observe(\n            \"inspect_knot\",\n            \"mina\",\n            \"kite.knot_condition\",\n            requires=(\n                C(\"mina.location\", \"eq\", \"workshop\"),\n                C(\"mina.memes.Curiosity\", \"ge\", 1),\n            ),\n            summary=\"Mina inspected the kite knot\",\n        ),\n        observe(\n            \"read_wind\",\n            \"brindle\",\n            \"wind.strength\",\n            requires=(\n                C(\"brindle.location\", \"eq\", \"workshop\"),\n                C(\"brindle.memes.Curiosity\", \"ge\", 1),\n            ),\n            summary=\"Brindle checked the wind sock\",\n        ),\n        Scene(\n            \"read_direction\",\n            \"observation\",\n            (\"brindle\",),\n            (C(\"brindle.location\", \"eq\", \"workshop\"),),\n            (E(\"brindle.knows.wind.direction\", \"copy\", \"wind.direction\"),),\n            \"Brindle watched the wind ribbon for its direction\",\n        ),\n        tell(\n            \"explain_defect\",\n            \"mina\",\n            \"orra\",\n            \"kite.frame_condition\",\n            requires=(\n                C(\"mina.knows.kite.frame_condition\", \"ne\", None),\n                C(\"orra.location\", \"eq\", \"workshop\"),\n            ),\n            summary=\"Mina explained the frame inspection\",\n        ),\n        transfer(\n            \"lend_reed\",\n            \"orra\",\n            \"mina\",\n            \"reed\",\n            requires=(\n                C(\"orra.location\", \"eq\", \"workshop\"),\n                C(\"reed.owner\", \"eq\", \"orra\"),\n                C(\"orra.memes.Care\", \"ge\", 1),\n            ),\n            summary=\"Orra lent Mina the reed\",\n        ),\n        transfer(\n            \"lend_cloth\",\n            \"orra\",\n            \"mina\",\n            \"cloth\",\n            requires=(\n                C(\"orra.location\", \"eq\", \"workshop\"),\n                C(\"cloth.owner\", \"eq\", \"orra\"),\n                C(\"orra.memes.Care\", \"ge\", 1),\n            ),\n            summary=\"Orra lent Mina cloth scraps\",\n        ),\n        transfer(\n            \"lend_wax\",\n            \"orra\",\n            \"mina\",\n            \"wax\",\n            requires=(\n                C(\"orra.location\", \"eq\", \"workshop\"),\n                C(\"wax.owner\", \"eq\", \"orra\"),\n                C(\"orra.memes.Care\", \"ge\", 1),\n            ),\n            summary=\"Orra lent Mina wax\",\n        ),\n        transfer(\n            \"lend_rope\",\n            \"orra\",\n            \"mina\",\n            \"rope\",\n            requires=(\n                C(\"orra.location\", \"eq\", \"workshop\"),\n                C(\"rope.owner\", \"eq\", \"orra\"),\n                C(\"orra.memes.Care\", \"ge\", 1),\n            ),\n            summary=\"Orra lent Mina the tether rope\",\n        ),\n        Scene(\n            \"straighten_frame\",\n            \"repair\",\n            (\"mina\", \"brindle\"),\n            (\n                C(\"mina.knows.kite.frame_condition\", \"eq\", \"frame\"),\n                C(\"reed.owner\", \"eq\", \"mina\"),\n                C(\"kite.frame_condition\", \"eq\", \"frame\"),\n            ),\n            (\n                E(\"kite.frame_condition\", \"set\", \"ready\"),\n                E(\"kite.balanced\", \"set\", True),\n            ),\n            \"Mina straightened the bent frame with the reed\",\n        ),\n        Scene(\n            \"fix_knot\",\n            \"repair\",\n            (\"mina\",),\n            (\n                C(\"mina.knows.kite.knot_condition\", \"eq\", \"loose\"),\n                C(\"wax.owner\", \"eq\", \"mina\"),\n                C(\"kite.knot_condition\", \"eq\", \"loose\"),\n            ),\n            (\n                E(\"kite.knot_condition\", \"set\", \"secure\"),\n                E(\"kite.balanced\", \"set\", True),\n            ),\n            \"Mina secured the loose knot with wax\",\n        ),\n        Scene(\n            \"lengthen_tail\",\n            \"repair\",\n            (\"mina\",),\n            (\n                C(\"mina.knows.kite.tail_condition\", \"eq\", \"short\"),\n                C(\"cloth.owner\", \"eq\", \"mina\"),\n                C(\"kite.tail_condition\", \"eq\", \"short\"),\n            ),\n            (\n                E(\"kite.tail_condition\", \"set\", \"ready\"),\n                E(\"kite.balanced\", \"set\", True),\n            ),\n            \"Mina lengthened the short tail with cloth\",\n        ),\n        Scene(\n            \"practice_breath\",\n            \"practice\",\n            (\"brindle\",),\n            (\n                C(\"brindle.breath_control\", \"eq\", \"unpracticed\"),\n                C(\"brindle.knows.wind.strength\", \"eq\", \"moderate\"),\n                C(\"brindle.knows.wind.direction\", \"eq\", \"steady\"),\n            ),\n            (\n                E(\"brindle.breath_control\", \"set\", \"ready\"),\n                E(\"brindle.knows.practice.safe\", \"set\", True),\n            ),\n            \"Brindle practiced a small controlled breath against the ribbon\",\n        ),\n        Scene(\n            \"roll_message\",\n            \"preparation\",\n            (\"mina\",),\n            (C(\"note.bulky\", \"eq\", True),),\n            (\n                E(\"note.bulky\", \"set\", False),\n                E(\"packet.ready\", \"set\", True),\n            ),\n            \"Mina rolled the bulky note into a light packet\",\n        ),\n        Scene(\n            \"prepare_message\",\n            \"preparation\",\n            (\"mina\",),\n            (C(\"note.bulky\", \"eq\", False),),\n            (E(\"packet.ready\", \"set\", True),),\n            \"Mina prepared the light note for carrying\",\n        ),\n        Scene(\n            \"attach_message\",\n            \"cooperation\",\n            (\"mina\", \"brindle\"),\n            (\n                C(\"packet.ready\", \"eq\", True),\n                C(\"kite.balanced\", \"eq\", True),\n            ),\n            (\n                E(\"note.secured\", \"set\", True),\n                E(\"note.container\", \"set\", \"kite\"),\n            ),\n            \"Mina and Brindle secured the message to the kite\",\n        ),\n        Scene(\n            \"test_kite\",\n            \"experiment\",\n            (\"mina\", \"brindle\"),\n            (\n                C(\"kite.balanced\", \"eq\", True),\n                C(\"brindle.knows.wind.strength\", \"ne\", None),\n            ),\n            (\n                E(\"kite.tested\", \"set\", True),\n                E(\"kite.stable\", \"set\", True),\n            ),\n            \"They test-launched the empty kite\",\n        ),\n        Scene(\n            \"choose_low_route\",\n            \"planning\",\n            (\"mina\", \"brindle\"),\n            (\n                C(\"brindle.knows.wind.strength\", \"eq\", \"strong\"),\n                C(\"brindle.knows.wind.direction\", \"eq\", \"shifting\"),\n                C(\"rope.owner\", \"eq\", \"mina\"),\n            ),\n            (\n                E(\"kite.route\", \"set\", \"low\"),\n                E(\"kite.stable\", \"set\", True),\n            ),\n            \"Mina chose a low tethered basket route\",\n        ),\n        Scene(\n            \"choose_high_route\",\n            \"planning\",\n            (\"mina\", \"brindle\"),\n            (\n                C(\"brindle.knows.wind.strength\", \"eq\", \"moderate\"),\n                C(\"brindle.knows.wind.direction\", \"eq\", \"steady\"),\n                C(\"kite.tested\", \"eq\", True),\n            ),\n            (E(\"kite.route\", \"set\", \"high\"),),\n            \"Mina chose the tested high route\",\n        ),\n        Scene(\n            \"assist_launch\",\n            \"launch\",\n            (\"brindle\", \"mina\"),\n            (\n                C(\"kite.route\", \"eq\", \"high\"),\n                C(\"note.secured\", \"eq\", True),\n                C(\"kite.tested\", \"eq\", True),\n                C(\"brindle.breath_control\", \"eq\", \"ready\"),\n                C(\"brindle.knows.practice.safe\", \"eq\", True),\n            ),\n            (\n                E(\"kite.stable\", \"set\", True),\n                E(\"kite.location\", \"set\", \"platform\"),\n            ),\n            \"Brindle gave the balanced kite a measured launch assist\",\n        ),\n        Scene(\n            \"send_high\",\n            \"delivery\",\n            (\"mina\", \"brindle\"),\n            (\n                C(\"kite.route\", \"eq\", \"high\"),\n                C(\"kite.location\", \"eq\", \"platform\"),\n                C(\"kite.stable\", \"eq\", True),\n                C(\"note.secured\", \"eq\", True),\n            ),\n            (\n                E(\"kite.location\", \"set\", \"basket\"),\n                E(\"kite.delivered\", \"set\", True),\n                E(\"basket.received\", \"set\", True),\n            ),\n            \"The kite carried the secured message to the basket\",\n        ),\n        Scene(\n            \"send_low\",\n            \"delivery\",\n            (\"mina\", \"brindle\"),\n            (\n                C(\"kite.route\", \"eq\", \"low\"),\n                C(\"note.secured\", \"eq\", True),\n                C(\"rope.owner\", \"eq\", \"mina\"),\n            ),\n            (\n                E(\"kite.location\", \"set\", \"basket\"),\n                E(\"kite.delivered\", \"set\", True),\n                E(\"kite.stable\", \"set\", True),\n                E(\"basket.received\", \"set\", True),\n            ),\n            \"The tethered basket carried the message safely to the marker\",\n        ),\n        Scene(\n            \"confirm_receipt\",\n            \"communication\",\n            (\"orra\",),\n            (\n                C(\"orra.location\", \"eq\", \"workshop\"),\n                C(\"basket.received\", \"eq\", True),\n            ),\n            (E(\"orra.confirmed\", \"set\", True),),\n            \"Orra confirmed that the basket held the message\",\n        ),\n    ]\n\n    rules = (\n        Rule(\n            \"no_unsecured_delivery\",\n            (C(\"kite.delivered\", \"eq\", False),),\n            (C(\"note.secured\", \"eq\", False),),\n        ),\n        Rule(\n            \"strong_shifting_wind_uses_low_route\",\n            (C(\"kite.route\", \"eq\", \"low\"),),\n            (\n                C(\"wind.strength\", \"eq\", \"strong\"),\n                C(\"wind.direction\", \"eq\", \"shifting\"),\n            ),\n        ),\n        Rule(\n            \"delivered_message_is_received\",\n            (C(\"basket.received\", \"eq\", True),),\n            (C(\"kite.delivered\", \"eq\", True),),\n        ),\n    )\n\n    goal = (\n        C(\"basket.received\", \"eq\", True),\n        C(\"orra.confirmed\", \"eq\", True),\n    )\n\n    labels = {\n        \"kite.frame_condition\": \"frame condition\",\n        \"kite.tail_condition\": \"tail condition\",\n        \"kite.knot_condition\": \"knot condition\",\n        \"kite.route\": \"chosen route\",\n        \"kite.stable\": \"carrier stable\",\n        \"basket.received\": \"message at marked basket\",\n        \"orra.confirmed\": \"keeper confirmed receipt\",\n    }\n\n    return WorldSpec(\n        title=\"The Kite Workshop: A Message on the Wind\",\n        entities=entities,\n        initial=initial,\n        scenes=tuple(scenes),\n        goal=goal,\n        rules=rules,\n        labels=labels,\n    )",
+          "type": "output_text",
+          "logprobs": []
+        }
+      ],
+      "role": "assistant",
+      "status": "completed",
+      "type": "message",
+      "phase": "final_answer"
+    }
+  ],
+  "parallel_tool_calls": true,
+  "temperature": 1.0,
+  "tool_choice": "auto",
+  "tools": [],
+  "top_p": 0.98,
+  "background": false,
+  "completed_at": 1788808459.0,
+  "conversation": null,
+  "max_output_tokens": 16000,
+  "max_tool_calls": null,
+  "moderation": null,
+  "previous_response_id": null,
+  "prompt": null,
+  "prompt_cache_key": null,
+  "prompt_cache_retention": "24h",
+  "reasoning": {
+    "context": "all_turns",
+    "effort": "none",
+    "generate_summary": null,
+    "summary": null,
+    "mode": "standard"
+  },
+  "safety_identifier": null,
+  "service_tier": "flex",
+  "status": "completed",
+  "text": {
+    "format": {
+      "type": "text"
+    },
+    "verbosity": "medium"
+  },
+  "top_logprobs": 0,
+  "truncation": "disabled",
+  "usage": {
+    "input_tokens": 6477,
+    "input_tokens_details": {
+      "cached_tokens": 0,
+      "cache_write_tokens": 6474
+    },
+    "output_tokens": 3560,
+    "output_tokens_details": {
+      "reasoning_tokens": 0
+    },
+    "total_tokens": 10037
+  },
+  "user": null,
+  "billing": {
+    "payer": "developer"
+  },
+  "frequency_penalty": 0.0,
+  "presence_penalty": 0.0,
+  "store": false,
+  "tool_usage": {
+    "image_gen": {
+      "input_tokens": 0,
+      "input_tokens_details": {
+        "image_tokens": 0,
+        "text_tokens": 0
+      },
+      "output_tokens": 0,
+      "output_tokens_details": {
+        "image_tokens": 0,
+        "text_tokens": 0
+      },
+      "total_tokens": 0
+    },
+    "web_search": {
+      "num_requests": 0
+    }
+  }
+}

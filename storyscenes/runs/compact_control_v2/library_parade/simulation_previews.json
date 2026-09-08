@@ -1,0 +1,1052 @@
+[
+  {
+    "seed": 0,
+    "title": "The Library Cart Parade",
+    "initial": {
+      "mayor.case": 0,
+      "mayor.boast": "grand",
+      "mayor.order": "none",
+      "mayor.belief": "unknown",
+      "mayor.knows.lane.open": null,
+      "mayor.knows.cart.cargo": null,
+      "juniper.motive": "readers",
+      "juniper.knows.cart.cargo": null,
+      "juniper.knows.cart.location": null,
+      "juniper.knows.lane.open": null,
+      "juniper.knows.guest.invitation": null,
+      "juniper.knows.bram.promise": null,
+      "bram.promise": "none",
+      "bram.knows.guest.invitation": null,
+      "bram.knows.cart.cargo": null,
+      "cart.cargo": "empty",
+      "cart.owner": "bram",
+      "cart.location": "library",
+      "cart.decorated": "none",
+      "banner.owner": "bram",
+      "bell.owner": "bram",
+      "lane.open": true,
+      "square.open": true,
+      "guest.invitation": "none",
+      "audience.response": "none",
+      "audience.quiet_guest": "none",
+      "audience.books_reading": false,
+      "audience.book_distribution": false
+    },
+    "final": {
+      "mayor.case": 0,
+      "mayor.boast": "grand",
+      "mayor.order": "none",
+      "mayor.belief": "unknown",
+      "mayor.knows.lane.open": true,
+      "mayor.knows.cart.cargo": null,
+      "juniper.motive": "readers",
+      "juniper.knows.cart.cargo": "empty",
+      "juniper.knows.cart.location": null,
+      "juniper.knows.lane.open": true,
+      "juniper.knows.guest.invitation": null,
+      "juniper.knows.bram.promise": null,
+      "bram.promise": "none",
+      "bram.knows.guest.invitation": null,
+      "bram.knows.cart.cargo": null,
+      "cart.cargo": "books",
+      "cart.owner": "bram",
+      "cart.location": "lane",
+      "cart.decorated": "banner",
+      "banner.owner": "juniper",
+      "bell.owner": "bram",
+      "lane.open": true,
+      "square.open": true,
+      "guest.invitation": "none",
+      "audience.response": "delighted",
+      "audience.quiet_guest": "none",
+      "audience.books_reading": false,
+      "audience.book_distribution": false
+    },
+    "events": [
+      {
+        "id": 1,
+        "scene": "inspect_cart",
+        "kernel": "Observe",
+        "actors": [
+          "juniper"
+        ],
+        "summary": "Juniper peered at the cart shelves",
+        "causes": [],
+        "requires": [
+          {
+            "key": "juniper.motive",
+            "op": "eq",
+            "value": "readers"
+          }
+        ],
+        "changes": {
+          "juniper.knows.cart.cargo": {
+            "before": null,
+            "after": "empty"
+          }
+        }
+      },
+      {
+        "id": 2,
+        "scene": "inspect_lane",
+        "kernel": "Observe",
+        "actors": [
+          "juniper"
+        ],
+        "summary": "Juniper noticed the narrow lane",
+        "causes": [],
+        "requires": [
+          {
+            "key": "mayor.case",
+            "op": "eq",
+            "value": 0
+          }
+        ],
+        "changes": {
+          "juniper.knows.lane.open": {
+            "before": null,
+            "after": true
+          }
+        }
+      },
+      {
+        "id": 3,
+        "scene": "tell_lane",
+        "kernel": "Tell",
+        "actors": [
+          "juniper",
+          "mayor"
+        ],
+        "summary": "Juniper told Mayor Mallow about the lane",
+        "causes": [
+          2
+        ],
+        "requires": [
+          {
+            "key": "juniper.knows.lane.open",
+            "op": "ne",
+            "value": null
+          },
+          {
+            "key": "juniper.knows.lane.open",
+            "op": "eq",
+            "value": true
+          }
+        ],
+        "changes": {
+          "mayor.knows.lane.open": {
+            "before": null,
+            "after": true
+          }
+        }
+      },
+      {
+        "id": 4,
+        "scene": "load_books",
+        "kernel": "Loading",
+        "actors": [
+          "juniper",
+          "bram"
+        ],
+        "summary": "Juniper and Bram loaded picture books",
+        "causes": [
+          1
+        ],
+        "requires": [
+          {
+            "key": "mayor.case",
+            "op": "eq",
+            "value": 0
+          },
+          {
+            "key": "juniper.knows.cart.cargo",
+            "op": "eq",
+            "value": "empty"
+          },
+          {
+            "key": "cart.cargo",
+            "op": "eq",
+            "value": "empty"
+          }
+        ],
+        "changes": {
+          "cart.cargo": {
+            "before": "empty",
+            "after": "books"
+          }
+        }
+      },
+      {
+        "id": 5,
+        "scene": "offer_banner",
+        "kernel": "Transfer",
+        "actors": [
+          "bram",
+          "juniper"
+        ],
+        "summary": "Bram handed Juniper the enormous banner",
+        "causes": [
+          4
+        ],
+        "requires": [
+          {
+            "key": "banner.owner",
+            "op": "eq",
+            "value": "bram"
+          },
+          {
+            "key": "banner.owner",
+            "op": "eq",
+            "value": "bram"
+          },
+          {
+            "key": "cart.cargo",
+            "op": "eq",
+            "value": "books"
+          }
+        ],
+        "changes": {
+          "banner.owner": {
+            "before": "bram",
+            "after": "juniper"
+          }
+        }
+      },
+      {
+        "id": 6,
+        "scene": "decorate_cart",
+        "kernel": "Decorating",
+        "actors": [
+          "juniper",
+          "bram"
+        ],
+        "summary": "Juniper and Bram tied the banner to the cart",
+        "causes": [
+          4,
+          5
+        ],
+        "requires": [
+          {
+            "key": "cart.cargo",
+            "op": "eq",
+            "value": "books"
+          },
+          {
+            "key": "banner.owner",
+            "op": "eq",
+            "value": "juniper"
+          },
+          {
+            "key": "cart.decorated",
+            "op": "eq",
+            "value": "none"
+          },
+          {
+            "key": "mayor.case",
+            "op": "in",
+            "value": [
+              0,
+              1
+            ]
+          }
+        ],
+        "changes": {
+          "cart.decorated": {
+            "before": "none",
+            "after": "banner"
+          }
+        }
+      },
+      {
+        "id": 7,
+        "scene": "roll_lane",
+        "kernel": "Movement",
+        "actors": [
+          "juniper",
+          "bram"
+        ],
+        "summary": "The cart rolled into the narrow lane",
+        "causes": [
+          3,
+          4,
+          6
+        ],
+        "requires": [
+          {
+            "key": "mayor.case",
+            "op": "eq",
+            "value": 0
+          },
+          {
+            "key": "cart.cargo",
+            "op": "eq",
+            "value": "books"
+          },
+          {
+            "key": "cart.decorated",
+            "op": "eq",
+            "value": "banner"
+          },
+          {
+            "key": "mayor.knows.lane.open",
+            "op": "eq",
+            "value": true
+          }
+        ],
+        "changes": {
+          "cart.location": {
+            "before": "library",
+            "after": "lane"
+          }
+        }
+      },
+      {
+        "id": 8,
+        "scene": "lane_response",
+        "kernel": "Audience",
+        "actors": [
+          "audience"
+        ],
+        "summary": "Readers in the lane welcomed the book parade",
+        "causes": [
+          4,
+          7
+        ],
+        "requires": [
+          {
+            "key": "cart.location",
+            "op": "eq",
+            "value": "lane"
+          },
+          {
+            "key": "cart.cargo",
+            "op": "eq",
+            "value": "books"
+          }
+        ],
+        "changes": {
+          "audience.response": {
+            "before": "none",
+            "after": "delighted"
+          }
+        }
+      }
+    ]
+  },
+  {
+    "seed": 1,
+    "title": "The Library Cart Parade",
+    "initial": {
+      "mayor.case": 1,
+      "mayor.boast": "grand",
+      "mayor.order": "cover",
+      "mayor.belief": "decorations",
+      "mayor.knows.lane.open": null,
+      "mayor.knows.cart.cargo": null,
+      "juniper.motive": "readers",
+      "juniper.knows.cart.cargo": null,
+      "juniper.knows.cart.location": null,
+      "juniper.knows.lane.open": null,
+      "juniper.knows.guest.invitation": null,
+      "juniper.knows.bram.promise": null,
+      "bram.promise": "none",
+      "bram.knows.guest.invitation": null,
+      "bram.knows.cart.cargo": null,
+      "cart.cargo": "books",
+      "cart.owner": "bram",
+      "cart.location": "library",
+      "cart.decorated": "none",
+      "banner.owner": "bram",
+      "bell.owner": "bram",
+      "lane.open": true,
+      "square.open": true,
+      "guest.invitation": "none",
+      "audience.response": "none",
+      "audience.quiet_guest": "none",
+      "audience.books_reading": false,
+      "audience.book_distribution": false
+    },
+    "final": {
+      "mayor.case": 1,
+      "mayor.boast": "grand",
+      "mayor.order": "cover",
+      "mayor.belief": "books",
+      "mayor.knows.lane.open": null,
+      "mayor.knows.cart.cargo": null,
+      "juniper.motive": "readers",
+      "juniper.knows.cart.cargo": "books",
+      "juniper.knows.cart.location": null,
+      "juniper.knows.lane.open": null,
+      "juniper.knows.guest.invitation": null,
+      "juniper.knows.bram.promise": null,
+      "bram.promise": "none",
+      "bram.knows.guest.invitation": null,
+      "bram.knows.cart.cargo": null,
+      "cart.cargo": "books",
+      "cart.owner": "bram",
+      "cart.location": "square",
+      "cart.decorated": "banner",
+      "banner.owner": "juniper",
+      "bell.owner": "bram",
+      "lane.open": true,
+      "square.open": true,
+      "guest.invitation": "none",
+      "audience.response": "reading",
+      "audience.quiet_guest": "none",
+      "audience.books_reading": true,
+      "audience.book_distribution": true
+    },
+    "events": [
+      {
+        "id": 1,
+        "scene": "offer_banner",
+        "kernel": "Transfer",
+        "actors": [
+          "bram",
+          "juniper"
+        ],
+        "summary": "Bram handed Juniper the enormous banner",
+        "causes": [],
+        "requires": [
+          {
+            "key": "banner.owner",
+            "op": "eq",
+            "value": "bram"
+          },
+          {
+            "key": "banner.owner",
+            "op": "eq",
+            "value": "bram"
+          },
+          {
+            "key": "cart.cargo",
+            "op": "eq",
+            "value": "books"
+          }
+        ],
+        "changes": {
+          "banner.owner": {
+            "before": "bram",
+            "after": "juniper"
+          }
+        }
+      },
+      {
+        "id": 2,
+        "scene": "inspect_cart",
+        "kernel": "Observe",
+        "actors": [
+          "juniper"
+        ],
+        "summary": "Juniper peered at the cart shelves",
+        "causes": [],
+        "requires": [
+          {
+            "key": "juniper.motive",
+            "op": "eq",
+            "value": "readers"
+          }
+        ],
+        "changes": {
+          "juniper.knows.cart.cargo": {
+            "before": null,
+            "after": "books"
+          }
+        }
+      },
+      {
+        "id": 3,
+        "scene": "cover_books",
+        "kernel": "Misunderstanding",
+        "actors": [
+          "mayor",
+          "juniper"
+        ],
+        "summary": "The picture-book bundles were covered as party decorations",
+        "causes": [
+          2
+        ],
+        "requires": [
+          {
+            "key": "mayor.case",
+            "op": "eq",
+            "value": 1
+          },
+          {
+            "key": "juniper.knows.cart.cargo",
+            "op": "eq",
+            "value": "books"
+          },
+          {
+            "key": "mayor.order",
+            "op": "eq",
+            "value": "cover"
+          },
+          {
+            "key": "cart.cargo",
+            "op": "eq",
+            "value": "books"
+          }
+        ],
+        "changes": {
+          "cart.cargo": {
+            "before": "books",
+            "after": "covered_books"
+          }
+        }
+      },
+      {
+        "id": 4,
+        "scene": "reveal_books",
+        "kernel": "Discovery",
+        "actors": [
+          "juniper",
+          "mayor"
+        ],
+        "summary": "Juniper opened a bundle and revealed picture books",
+        "causes": [
+          2,
+          3
+        ],
+        "requires": [
+          {
+            "key": "mayor.case",
+            "op": "eq",
+            "value": 1
+          },
+          {
+            "key": "cart.cargo",
+            "op": "eq",
+            "value": "covered_books"
+          },
+          {
+            "key": "juniper.knows.cart.cargo",
+            "op": "eq",
+            "value": "books"
+          }
+        ],
+        "changes": {
+          "mayor.belief": {
+            "before": "decorations",
+            "after": "books"
+          },
+          "cart.cargo": {
+            "before": "covered_books",
+            "after": "books"
+          }
+        }
+      },
+      {
+        "id": 5,
+        "scene": "decorate_cart",
+        "kernel": "Decorating",
+        "actors": [
+          "juniper",
+          "bram"
+        ],
+        "summary": "Juniper and Bram tied the banner to the cart",
+        "causes": [
+          1,
+          4
+        ],
+        "requires": [
+          {
+            "key": "cart.cargo",
+            "op": "eq",
+            "value": "books"
+          },
+          {
+            "key": "banner.owner",
+            "op": "eq",
+            "value": "juniper"
+          },
+          {
+            "key": "cart.decorated",
+            "op": "eq",
+            "value": "none"
+          },
+          {
+            "key": "mayor.case",
+            "op": "in",
+            "value": [
+              0,
+              1
+            ]
+          }
+        ],
+        "changes": {
+          "cart.decorated": {
+            "before": "none",
+            "after": "banner"
+          }
+        }
+      },
+      {
+        "id": 6,
+        "scene": "book_rain",
+        "kernel": "Book Parade",
+        "actors": [
+          "mayor",
+          "juniper"
+        ],
+        "summary": "Mayor Mallow chose a book-sharing parade",
+        "causes": [
+          4
+        ],
+        "requires": [
+          {
+            "key": "mayor.case",
+            "op": "eq",
+            "value": 1
+          },
+          {
+            "key": "cart.cargo",
+            "op": "eq",
+            "value": "books"
+          },
+          {
+            "key": "mayor.belief",
+            "op": "eq",
+            "value": "books"
+          }
+        ],
+        "changes": {
+          "audience.book_distribution": {
+            "before": false,
+            "after": true
+          }
+        }
+      },
+      {
+        "id": 7,
+        "scene": "roll_square_books",
+        "kernel": "Movement",
+        "actors": [
+          "juniper",
+          "bram"
+        ],
+        "summary": "The cart rolled into the town square",
+        "causes": [
+          4,
+          5,
+          6
+        ],
+        "requires": [
+          {
+            "key": "mayor.case",
+            "op": "eq",
+            "value": 1
+          },
+          {
+            "key": "cart.cargo",
+            "op": "eq",
+            "value": "books"
+          },
+          {
+            "key": "cart.decorated",
+            "op": "eq",
+            "value": "banner"
+          },
+          {
+            "key": "audience.book_distribution",
+            "op": "eq",
+            "value": true
+          }
+        ],
+        "changes": {
+          "cart.location": {
+            "before": "library",
+            "after": "square"
+          }
+        }
+      },
+      {
+        "id": 8,
+        "scene": "reading_response",
+        "kernel": "Audience",
+        "actors": [
+          "audience"
+        ],
+        "summary": "Children sat on the square stones and began reading",
+        "causes": [
+          6,
+          7
+        ],
+        "requires": [
+          {
+            "key": "cart.location",
+            "op": "eq",
+            "value": "square"
+          },
+          {
+            "key": "audience.book_distribution",
+            "op": "eq",
+            "value": true
+          }
+        ],
+        "changes": {
+          "audience.response": {
+            "before": "none",
+            "after": "reading"
+          },
+          "audience.books_reading": {
+            "before": false,
+            "after": true
+          }
+        }
+      }
+    ]
+  },
+  {
+    "seed": 2,
+    "title": "The Library Cart Parade",
+    "initial": {
+      "mayor.case": 2,
+      "mayor.boast": "grand",
+      "mayor.order": "none",
+      "mayor.belief": "unknown",
+      "mayor.knows.lane.open": null,
+      "mayor.knows.cart.cargo": null,
+      "juniper.motive": "readers",
+      "juniper.knows.cart.cargo": null,
+      "juniper.knows.cart.location": null,
+      "juniper.knows.lane.open": null,
+      "juniper.knows.guest.invitation": null,
+      "juniper.knows.bram.promise": null,
+      "bram.promise": "bell_guest",
+      "bram.knows.guest.invitation": null,
+      "bram.knows.cart.cargo": null,
+      "cart.cargo": "books",
+      "cart.owner": "bram",
+      "cart.location": "library",
+      "cart.decorated": "none",
+      "banner.owner": "bram",
+      "bell.owner": "bram",
+      "lane.open": true,
+      "square.open": true,
+      "guest.invitation": "quiet",
+      "audience.response": "none",
+      "audience.quiet_guest": "invited",
+      "audience.books_reading": false,
+      "audience.book_distribution": false
+    },
+    "final": {
+      "mayor.case": 2,
+      "mayor.boast": "grand",
+      "mayor.order": "none",
+      "mayor.belief": "unknown",
+      "mayor.knows.lane.open": null,
+      "mayor.knows.cart.cargo": null,
+      "juniper.motive": "readers",
+      "juniper.knows.cart.cargo": null,
+      "juniper.knows.cart.location": null,
+      "juniper.knows.lane.open": null,
+      "juniper.knows.guest.invitation": "quiet",
+      "juniper.knows.bram.promise": "bell_guest",
+      "bram.promise": "bell_guest",
+      "bram.knows.guest.invitation": "quiet",
+      "bram.knows.cart.cargo": null,
+      "cart.cargo": "books",
+      "cart.owner": "bram",
+      "cart.location": "square",
+      "cart.decorated": "banner",
+      "banner.owner": "juniper",
+      "bell.owner": "guest",
+      "lane.open": true,
+      "square.open": true,
+      "guest.invitation": "quiet",
+      "audience.response": "welcoming",
+      "audience.quiet_guest": "included",
+      "audience.books_reading": false,
+      "audience.book_distribution": false
+    },
+    "events": [
+      {
+        "id": 1,
+        "scene": "inspect_invitation",
+        "kernel": "Observe",
+        "actors": [
+          "juniper"
+        ],
+        "summary": "Juniper checked who had been invited",
+        "causes": [],
+        "requires": [
+          {
+            "key": "mayor.case",
+            "op": "eq",
+            "value": 2
+          }
+        ],
+        "changes": {
+          "juniper.knows.guest.invitation": {
+            "before": null,
+            "after": "quiet"
+          }
+        }
+      },
+      {
+        "id": 2,
+        "scene": "offer_banner",
+        "kernel": "Transfer",
+        "actors": [
+          "bram",
+          "juniper"
+        ],
+        "summary": "Bram handed Juniper the enormous banner",
+        "causes": [],
+        "requires": [
+          {
+            "key": "banner.owner",
+            "op": "eq",
+            "value": "bram"
+          },
+          {
+            "key": "banner.owner",
+            "op": "eq",
+            "value": "bram"
+          },
+          {
+            "key": "cart.cargo",
+            "op": "eq",
+            "value": "books"
+          }
+        ],
+        "changes": {
+          "banner.owner": {
+            "before": "bram",
+            "after": "juniper"
+          }
+        }
+      },
+      {
+        "id": 3,
+        "scene": "inspect_bell",
+        "kernel": "Observe",
+        "actors": [
+          "juniper"
+        ],
+        "summary": "Juniper learned about Bram’s bell promise",
+        "causes": [],
+        "requires": [
+          {
+            "key": "mayor.case",
+            "op": "eq",
+            "value": 2
+          }
+        ],
+        "changes": {
+          "juniper.knows.bram.promise": {
+            "before": null,
+            "after": "bell_guest"
+          }
+        }
+      },
+      {
+        "id": 4,
+        "scene": "silent_ribbons",
+        "kernel": "Silent Parade",
+        "actors": [
+          "juniper",
+          "bram"
+        ],
+        "summary": "Bram and Juniper made a silent ribbon parade",
+        "causes": [
+          2
+        ],
+        "requires": [
+          {
+            "key": "mayor.case",
+            "op": "eq",
+            "value": 2
+          },
+          {
+            "key": "cart.cargo",
+            "op": "eq",
+            "value": "books"
+          },
+          {
+            "key": "banner.owner",
+            "op": "eq",
+            "value": "juniper"
+          },
+          {
+            "key": "bram.promise",
+            "op": "eq",
+            "value": "bell_guest"
+          },
+          {
+            "key": "cart.decorated",
+            "op": "eq",
+            "value": "none"
+          }
+        ],
+        "changes": {
+          "cart.decorated": {
+            "before": "none",
+            "after": "banner"
+          },
+          "audience.quiet_guest": {
+            "before": "invited",
+            "after": "included"
+          }
+        }
+      },
+      {
+        "id": 5,
+        "scene": "roll_square_quiet",
+        "kernel": "Movement",
+        "actors": [
+          "juniper",
+          "bram"
+        ],
+        "summary": "The cart rolled quietly into the square",
+        "causes": [
+          4
+        ],
+        "requires": [
+          {
+            "key": "mayor.case",
+            "op": "eq",
+            "value": 2
+          },
+          {
+            "key": "cart.cargo",
+            "op": "eq",
+            "value": "books"
+          },
+          {
+            "key": "cart.decorated",
+            "op": "eq",
+            "value": "banner"
+          },
+          {
+            "key": "audience.quiet_guest",
+            "op": "eq",
+            "value": "included"
+          }
+        ],
+        "changes": {
+          "cart.location": {
+            "before": "library",
+            "after": "square"
+          }
+        }
+      },
+      {
+        "id": 6,
+        "scene": "tell_conflict",
+        "kernel": "Tell",
+        "actors": [
+          "juniper",
+          "bram"
+        ],
+        "summary": "Juniper told Bram that quiet guests were coming",
+        "causes": [
+          1,
+          3
+        ],
+        "requires": [
+          {
+            "key": "juniper.knows.guest.invitation",
+            "op": "ne",
+            "value": null
+          },
+          {
+            "key": "juniper.knows.guest.invitation",
+            "op": "eq",
+            "value": "quiet"
+          },
+          {
+            "key": "juniper.knows.bram.promise",
+            "op": "eq",
+            "value": "bell_guest"
+          }
+        ],
+        "changes": {
+          "bram.knows.guest.invitation": {
+            "before": null,
+            "after": "quiet"
+          }
+        }
+      },
+      {
+        "id": 7,
+        "scene": "give_bell",
+        "kernel": "Transfer",
+        "actors": [
+          "bram",
+          "guest"
+        ],
+        "summary": "Bram gave the bell to the distant guest",
+        "causes": [
+          3,
+          6
+        ],
+        "requires": [
+          {
+            "key": "bell.owner",
+            "op": "eq",
+            "value": "bram"
+          },
+          {
+            "key": "mayor.case",
+            "op": "eq",
+            "value": 2
+          },
+          {
+            "key": "bram.promise",
+            "op": "eq",
+            "value": "bell_guest"
+          },
+          {
+            "key": "bram.knows.guest.invitation",
+            "op": "eq",
+            "value": "quiet"
+          },
+          {
+            "key": "juniper.knows.bram.promise",
+            "op": "eq",
+            "value": "bell_guest"
+          }
+        ],
+        "changes": {
+          "bell.owner": {
+            "before": "bram",
+            "after": "guest"
+          }
+        }
+      },
+      {
+        "id": 8,
+        "scene": "quiet_response",
+        "kernel": "Audience",
+        "actors": [
+          "audience"
+        ],
+        "summary": "The quiet guests welcomed the silent parade",
+        "causes": [
+          4,
+          5
+        ],
+        "requires": [
+          {
+            "key": "cart.location",
+            "op": "eq",
+            "value": "square"
+          },
+          {
+            "key": "audience.quiet_guest",
+            "op": "eq",
+            "value": "included"
+          }
+        ],
+        "changes": {
+          "audience.response": {
+            "before": "none",
+            "after": "welcoming"
+          }
+        }
+      }
+    ]
+  }
+]

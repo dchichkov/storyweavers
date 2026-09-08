@@ -1,0 +1,105 @@
+{
+  "id": "resp_0bb331bde1ac1cd2016a9f32b07cc887d0ae6c73e1e4baa083",
+  "created_at": 1788818096.0,
+  "error": null,
+  "incomplete_details": null,
+  "instructions": null,
+  "metadata": {},
+  "model": "gpt-5.6-luna",
+  "object": "response",
+  "output": [
+    {
+      "id": "rs_0bb331bde1ac1cd2016a9f32b1388887d0b27fc16ccb0c24db",
+      "summary": [],
+      "type": "reasoning",
+      "content": [],
+      "encrypted_content": "gAAAAABqnzLB0YFA3juhQzTgnzy1wedaTQuhDDIkose0Cn-X7RBSEM408eUebv6pDHahfPM80b-4x2CFzfCg_Xml7GNaU9Q_1MabgGFfgZvDnDvWZX8NFmEaqkxhf5Zyfqi2K4gKGd02KP8NccvCMNS2A8BjmhvtuwDeubdP_2MknMSZffe8wFmtTD5mwif8QA3kA2IVamLGIgcpa-R76z2XVQmd5vMMo24tH3slcEpTbZXy0YaX137JgmSTaCq5LEE3lTIp4EWQNfz-zsAfEpT77vU-0mR2E3lL7FRNakii0xUKoBfj80Ma-q0VPLaq3pKu1cn72wOEg-Vrm9qA6hwsLDohucFsCQyW1dALlDwX5ANbJC0jGWuhDxZgEdeTIGOXlc1L6_7VpWBQGvBQUe5qDJGoRZQny_-XWbpZltyjP2u7NudrytqCtggbdjFOg9xR4wz9ngQeMAC6zP3xqLIBg1b32H3RioJDgpJlXtdejThdpDdveMROUqsiEQpoF8aLcAwod6LUb8R-nWtICnqpfBfcOrTUinzxH8af_TByVtXn4VkRxb68Y7oPuYUOx7KF9Bm2OXmlkY7KgM8SFwxLaKSFNaoUilB0qGtSoUwcbtW98cSsL8puzzVyzRhsytIP1I479CP3Uzrza3YxC4oYlLhQs-3zUvm_xMw1R7otwTvr0iHiPnMsNhQHaXLBfWDN_jbX0AYfB0mevK5EYL8JV7SUEL8-dbesesmrHIIRkY344JkM2zuwiqVJ5tHoBSe1kyGunTRovueW6H_S2HsH90dZ7SkUygri5KRamfBRJZ79SkzTQUvH1BeBvuMik3EPKtmi2gahL1pxfSe9MHlIntCt5jAJnqenQrqhNnUfHTqgqY7aU5fBVseAoqgLqnLTq9K9VEer925FzjlNypRsz10_jgalytbdvU9FsS7Vqzq-Mie1eqAvtZ02iwn5D3rFTKxijFBJzOVepRZ-neA9-fzwBbeNe1eb_YWDB5R0Ss-LRY5XD4EjxHPAwDh6RhvziWrkF-JIWiu5lavoXq03k8EkvDtnefGgwFmTUdzaEUMuT39BUz35MjDsCHZzBaBLBReowrfqnfFo15GbiNdNJDDCOVx1frLXrO-eogPyJaJqsfLyeRcYt251jKrzDj7O23gKsMv6Z2-EQtdEvjGHIjPPaygCPg7sruIOy_ktyQURqAUSG3i8W8LEYiX304Amfk0-FCcjRd90kw1D8qCQWiEH54xe6MhKR24-AolbWFhc_tVfkBfV702FzVPoqusJCibFROLdziQiCk0cZK6batBRUW5SJ9Gn3VXGAO4nt9fh3Xh363t8FYwYxrfeTpDgN4KrYJjbviGpKgCUzI5qwiAtQyHjqf-BNw8f5y6UMnVKcsbpxe-SM5O2MNUEUaa8Hv-dSS-zErXHlnCVSUCqvWI002pkUYkerpuHCx3N8Bt-N0th8xm3bDFnq7Jl4H6LTprfaEQ5kHIZajaqYBYlLWXaxgPOwKCE8S3N2BS6mMg-OCoY4JDD4jx04NtdlVntCv5hJ5ipZMjvu_EstEtz6odwTq9XwAD4J4d8QuaE44Jvyxgm3IE6tanG6fkWjbkgLZSlFMtztKhEiKrtccEAXD2QtOSO1D6-ghrjc8fzYI66WJrw3xABuuYYppauBTlFraTmyIRtJE62kATZL2rRaCm0wujtw33aqMOdPUvl71QKTdVvDhZRR2Kg73PT460iPXjRz5kIHtb_4Vv1bFIqumCaVXcuCjw0Azoq-GDbT4ReYTGWCBo=",
+      "status": null
+    },
+    {
+      "id": "msg_0bb331bde1ac1cd2016a9f32b2bb7087d0b4046f5ea5892e81",
+      "content": [
+        {
+          "annotations": [],
+          "text": "from simulation import build\nfrom runtime import solve, realize\n\n\ndef render(run, rng):\n    entities = run[\"entities\"]\n    final = run[\"final\"]\n    events = run[\"events\"]\n\n    def name(entity_id):\n        return entities.get(entity_id, {}).get(\"name\", entity_id)\n\n    def place(value):\n        return {\n            \"library\": \"the library\",\n            \"square\": \"the town square\",\n            \"garden\": \"the reading garden\",\n        }.get(value, str(value))\n\n    def after(event, key, default=None):\n        change = event.get(\"changes\", {}).get(key)\n        if change is not None:\n            return change.get(\"after\", default)\n        return final.get(key, default)\n\n    def sentence_for(event):\n        sid = event[\"scene\"]\n\n        if sid == \"share_grand_sketch\":\n            return (\n                \"Mayor Bramble spread a huge sketch across a library table. \"\n                \"“The grandest parade needs the biggest-looking cart!” he declared. \"\n                \"Ada leaned close instead of clapping. The drawing made her curious \"\n                \"about what the real cart could safely carry.\"\n            )\n\n        if sid == \"inspect_balance\":\n            balance = after(event, \"ada.knows.cart.balance\", \"uncertain\")\n            return (\n                \"Ada knelt beside the cart and looked carefully at how the books sat. \"\n                f\"They had a {balance} arrangement, not quite as steady as the mayor's \"\n                \"splendid picture suggested. “Books have centers of weight,” she \"\n                \"murmured, tapping the floor thoughtfully.\"\n            )\n\n        if sid == \"inspect_route\":\n            accessible = after(event, \"ada.knows.route.square_access\", False)\n            answer = \"open\" if accessible else \"not open\"\n            return (\n                \"Ada went to the library doorway and studied the route to the square. \"\n                f\"She discovered that it was {answer}. “Now we know what the wheels \"\n                \"will meet,” she told the others, returning with bright, practical eyes.\"\n            )\n\n        if sid == \"measure_wheel\":\n            wheel = after(event, \"toma.knows.cart.wheel\", \"unknown\")\n            detail = (\n                \"The rim was weak and needed help.\"\n                if wheel == \"weak\"\n                else \"The rim was sound beneath his measuring fingers.\"\n            )\n            return (\n                f\"Toma crouched and measured the cart wheel. {detail} \"\n                \"“A cart can be handsome and still need careful work,” he said. \"\n                \"Ada nodded as the wheel gave a tiny squeak.\"\n            )\n\n        if sid == \"consult_readers\":\n            need = after(event, \"ada.knows.readers.need\", 0)\n            reply = (\n                \"Some readers needed an easier way to join.\"\n                if need\n                else \"The readers said they could come to the usual gathering.\"\n            )\n            return (\n                \"Ada asked the readers rather than guessing what they wanted. \"\n                f\"{reply} Mayor Bramble listened from behind a stack of atlases. \"\n                \"His proud expression softened. “Then the sign should welcome people, \"\n                \"not merely impress them,” he said.\"\n            )\n\n        if sid == \"lend_cushions\":\n            return (\n                \"The keeper brought Toma a bundle of cushions. “Use these between \"\n                \"the covers and the cart boards,” she advised. Toma accepted them \"\n                \"with both hands. “Good protection is part of good building,” he said.\"\n            )\n\n        if sid == \"lend_chock\":\n            return (\n                \"For the sloping stretch, the keeper lent Toma a sturdy wheel chock. \"\n                \"Toma tested it against the floor. “This will hold the cart while we \"\n                \"check each movement,” he explained, and tucked it beside the handle.\"\n            )\n\n        if sid == \"lend_rope\":\n            return (\n                \"The keeper handed Ada a coil of rope. “For the tight lane,” she said. \"\n                \"Ada ran it through her fingers and answered, “We will guide the cart \"\n                \"slowly, not tug it wildly.” The rope became one more careful hand.\"\n            )\n\n        if sid == \"repair_wheel\":\n            return (\n                \"Toma used the available building material to reinforce the weak wheel. \"\n                \"He tightened, tested, and tightened again while Ada watched the rim \"\n                \"turn. At last the squeak became a quiet roll. “It is sound now,” \"\n                \"Toma announced, and the cart seemed to stand a little taller.\"\n            )\n\n        if sid == \"balance_books\":\n            load = after(event, \"cart.load\", 2)\n            return (\n                \"Ada and Toma took the books out, placed cushions between them, and \"\n                \"rearranged the load. Heavy books went low; lighter ones rested above. \"\n                f\"The cart now carried {load} books in a good balance, and every cover \"\n                \"was protected. “Not biggest,” Ada said. “Ready.”\"\n            )\n\n        if sid == \"test_level_route\":\n            return (\n                \"Before any parade began, Ada and Toma tested the cart on the level \"\n                \"beginning of the route. They moved it a little, stopped, listened, \"\n                \"and checked the books. The wheels rolled smoothly. Ada grinned. \"\n                \"“Testing tells us what imagining cannot.”\"\n            )\n\n        if sid == \"test_steep_route\":\n            return (\n                \"Before any parade began, Ada and Toma tested the cart on the steep \"\n                \"stretch. Toma used the chock and called each careful step while Ada \"\n                \"watched the books. The cart stayed steady. “Testing tells us what \"\n                \"imagining cannot,” Ada said.\"\n            )\n\n        if sid == \"make_invitation_sign\":\n            return (\n                \"Ada and Mayor Bramble changed the sign together. The old boast about \"\n                \"being the “biggest” disappeared, replaced by an invitation: \"\n                \"“Books for everyone.” Bramble held it up and smiled. “That is a \"\n                \"promise I can be proud of,” he said.\"\n            )\n\n        if sid == \"guide_open_square_route\":\n            return (\n                \"The group guided the balanced cart along the open route. Toma watched \"\n                \"the wheels, Ada watched the books, and Bramble watched faces turning \"\n                \"toward the invitation. When they reached the square, every book was \"\n                \"still safe and ready to be opened.\"\n            )\n\n        if sid == \"guide_narrow_square_route\":\n            return (\n                \"The lane was narrow, so Ada held the rope while Toma guided the handle \"\n                \"and Bramble cleared the way. “A little left—now pause!” Ada called. \"\n                \"The cart slipped neatly between the walls and emerged at the square \"\n                \"without a single book sliding loose.\"\n            )\n\n        if sid == \"guide_garden_route\":\n            return (\n                \"The group chose the reachable reading garden instead of forcing an \"\n                \"unsuitable route. The cart rolled to a welcoming patch of shade, \"\n                \"where books could be displayed and readers could gather. Bramble \"\n                \"looked at the sign and said, “A parade can travel by serving its \"\n                \"readers.”\"\n            )\n\n        return event[\"summary\"] + \".\"\n\n    paragraphs = [{\n        \"text\": (\n            \"In the little town library, Mayor Bramble wanted a parade that looked \"\n            \"enormous. Ada, who noticed loose wheels and lopsided books, wondered \"\n            \"whether a grand parade might be measured another way. Toma, the careful \"\n            \"cart builder, was ready to inspect every useful detail. Together they \"\n            \"would discover what the cart, the route, and the readers actually needed.\"\n        ),\n        \"event_ids\": [],\n        \"kind\": \"beginning\",\n    }]\n\n    for event in events[:-1]:\n        paragraphs.append({\n            \"text\": sentence_for(event),\n            \"event_ids\": [event[\"id\"]],\n            \"kind\": \"scene\",\n        })\n\n    if events:\n        last = events[-1]\n        location = final.get(\"parade.location\", \"library\")\n        kind = final.get(\"parade.kind\", \"reading gathering\")\n        paragraphs.append({\n            \"text\": (\n                sentence_for(last)\n                + f\" At {place(location)}, the finished arrangement was a {kind}. \"\n                \"The cart stood steady, its protected books displayed where people \"\n                \"could reach them. Mayor Bramble touched the new sign and laughed \"\n                \"softly. Ada opened the first book, Toma settled the cart, and the \"\n                \"very first reader leaned in.\"\n            ),\n            \"event_ids\": [last[\"id\"]],\n            \"kind\": \"ending\",\n        })\n    else:\n        paragraphs.append({\n            \"text\": \"The library stayed quiet, with the cart waiting for another try.\",\n            \"event_ids\": [],\n            \"kind\": \"ending\",\n        })\n\n    return paragraphs\n\n\ndef generate(seed, prose_seed=None):\n    return realize(\n        solve(build(seed), seed),\n        render,\n        seed if prose_seed is None else prose_seed,\n    )",
+          "type": "output_text",
+          "logprobs": []
+        }
+      ],
+      "role": "assistant",
+      "status": "completed",
+      "type": "message",
+      "phase": "final_answer"
+    }
+  ],
+  "parallel_tool_calls": true,
+  "temperature": 1.0,
+  "tool_choice": "auto",
+  "tools": [],
+  "top_p": 0.98,
+  "background": false,
+  "completed_at": 1788818112.0,
+  "conversation": null,
+  "max_output_tokens": 16000,
+  "max_tool_calls": null,
+  "moderation": null,
+  "previous_response_id": null,
+  "prompt": null,
+  "prompt_cache_key": null,
+  "prompt_cache_retention": "24h",
+  "reasoning": {
+    "context": "all_turns",
+    "effort": "low",
+    "generate_summary": null,
+    "summary": null,
+    "mode": "standard"
+  },
+  "safety_identifier": null,
+  "service_tier": "flex",
+  "status": "completed",
+  "text": {
+    "format": {
+      "type": "text"
+    },
+    "verbosity": "medium"
+  },
+  "top_logprobs": 0,
+  "truncation": "disabled",
+  "usage": {
+    "input_tokens": 18243,
+    "input_tokens_details": {
+      "cached_tokens": 0,
+      "cache_write_tokens": 18240
+    },
+    "output_tokens": 2019,
+    "output_tokens_details": {
+      "reasoning_tokens": 90
+    },
+    "total_tokens": 20262
+  },
+  "user": null,
+  "billing": {
+    "payer": "developer"
+  },
+  "frequency_penalty": 0.0,
+  "presence_penalty": 0.0,
+  "store": false,
+  "tool_usage": {
+    "image_gen": {
+      "input_tokens": 0,
+      "input_tokens_details": {
+        "image_tokens": 0,
+        "text_tokens": 0
+      },
+      "output_tokens": 0,
+      "output_tokens_details": {
+        "image_tokens": 0,
+        "text_tokens": 0
+      },
+      "total_tokens": 0
+    },
+    "web_search": {
+      "num_requests": 0
+    }
+  }
+}

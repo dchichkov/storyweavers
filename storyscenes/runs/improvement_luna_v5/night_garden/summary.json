@@ -1,0 +1,54 @@
+{
+  "world": "night_garden",
+  "title": "The Moonlit Welcome",
+  "ok": true,
+  "samples": 100,
+  "simulation_sha256": "0bab5558b3fc34cf00b2659cc48d34c6bfa273aab7c9ba4f6297413d261743c7",
+  "generator_sha256": "91c361b82a44f62bc3f45a281bfe1d04a3f0b8501771b2c27f4e779d67f5e467",
+  "catalog_sha256": "9193bc18dd729ec73e702006de634798b2c8da828c4eafa4c74110ad7cc4f505",
+  "distinct_texts": 55,
+  "distinct_scene_paths": 39,
+  "word_range": [
+    164,
+    353
+  ],
+  "prose_control_variants": 2,
+  "mechanics_model": "gpt-5.6-luna",
+  "mechanics_attempts": 1,
+  "prose_model": "gpt-5.6-luna",
+  "stats": {
+    "samples": 100,
+    "ordered_paths": 39,
+    "scene_sets": 13,
+    "causal_graphs": 13,
+    "outcomes": 3,
+    "premises": 15,
+    "events_range": [
+      3,
+      11
+    ],
+    "pruned_events": 447
+  },
+  "critic_before_revision": {
+    "issues": [
+      {
+        "seed": 123,
+        "severity": "major",
+        "layer": "simulation",
+        "defect": "contradiction",
+        "evidence": "The trace leaves Pip at `pip.location: \"gate\"` throughout, but the story twice says Pip \"fluttered behind it\" and \"slipped behind the gate,\" treating a different location as accomplished.",
+        "fix": "Either add an event that moves Pip behind the gate and represent that location in state, or revise the prose so Pip remains at the gate."
+      },
+      {
+        "seed": 123,
+        "severity": "major",
+        "layer": "prose",
+        "defect": "event_log_prose",
+        "evidence": "The consequence is repeated almost verbatim in adjacent passages: \"Pip startled and fluttered behind it\" followed by \"Pip slipped behind the gate, startled by the bright dancing shapes.\"",
+        "fix": "Merge the duplicated reaction into one consequential beat, then use the final paragraph to advance the unfinished welcome rather than restate it."
+      }
+    ],
+    "strengths": "Seeds 457 and 791 closely follow their ordered state changes: the lamp inspection precedes softening, the ribbon and moon are placed before Pip reaches the ribbon, and seed 791 grounds Ada's change from moving show to tableau in her discovered knowledge of Pip's location."
+  },
+  "final_catalog_attempt": 3
+}

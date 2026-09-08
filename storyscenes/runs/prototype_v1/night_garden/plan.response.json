@@ -1,0 +1,140 @@
+{
+  "id": "resp_0bf2937715a7575c016a9f0c6812a087d0956c2d6c9a583dcd",
+  "created_at": 1788808296.0,
+  "error": null,
+  "incomplete_details": null,
+  "instructions": null,
+  "metadata": {},
+  "model": "gpt-5.6-luna",
+  "object": "response",
+  "output": [
+    {
+      "id": "msg_0bf2937715a7575c016a9f0c68d86887d0a8a124437ebf221d",
+      "content": [
+        {
+          "annotations": [],
+          "text": "{\"title\":\"The Moonlit Welcome\",\"premise\":\"In a night garden, two children prepare a welcome for a shy visiting moth. Their lamp makes a bright patch, but its changing position creates confusing shadows; the children must observe carefully, listen to the moth’s needs, and arrange the garden so the guest can approach safely and choose where to rest.\",\"cast_and_props\":\"Characters: Ada, an observant child who loves experiments; Ben, an eager child who wants the welcome to be impressive; and Mica, a shy moth whose flight and comfort reveal information indirectly. Physical entities: night_garden, stone_path, fern_corner, flower_bed, lamp, lamp_hook, pale_cloth, flower_sign, seed_pouch, and welcome_circle. Props should have explicit owners or locations. The lamp can be lit, dimmed, or moved between the hook and a low stone; the cloth can be hung or folded; flowers can be rearranged without being damaged.\",\"kernels_and_interactions\":\"Use observation, care, cooperation, and mistaken belief. Ada may inspect the lamp’s shadow or notice Mica’s resting place only when nearby and curious. Ben may begin with the mistaken belief that brighter light always makes a better welcome, while Mica prefers a dim edge and clear flight space. Communication can transmit observations but not magically update reality. Care governs lending or adjusting the lamp and making room. Cooperation lets the children combine a shadow experiment, a quieter light, and a clear landing place. Physical carriers include lamp brightness, lamp position, shadow direction, flower arrangement, Mica’s location, and the welcome circle’s readiness.\",\"seed_parameters\":\"Derive causal variations from the seed: choose whether the lamp initially hangs high or rests low; whether its shade is available or tucked beneath the cloth; whether the clearest landing area is near the fern corner or flower bed; whether Mica first approaches the bright side or waits in darkness; and whether wind makes the cloth flutter. These alter which observations are useful and which arrangement can work, rather than merely changing names. Seed values may also set Ada’s curiosity and Ben’s care/ambition levels, provided each remains actionable.\",\"candidate_scenes\":\"1. Ada inspects the lamp and records its current brightness or shadow direction. 2. Ben lights or brightens the lamp, making the garden welcoming but exposing a long shadow. 3. Mica circles the garden and pauses at a dim edge, changing its known location. 4. Ada follows the shadow to discover that the intended landing space is blocked. 5. Ben asks Ada what she observed, transmitting an accurate or incomplete belief. 6. The children clear fallen leaves or move a flower sign from the chosen landing area. 7. The keeper-like garden steward lends the shade or lamp only after a child explains the need. 8. Ada and Ben move the lamp from the hook to the low stone, changing the illuminated area. 9. They hang the pale cloth as a soft screen, if wind and access allow. 10. Ben tests two arrangements by watching where Mica pauses. 11. Mica approaches the quieter edge when a clear path exists. 12. The children place the flower sign beside the final welcome circle. 13. Mica settles on the flower sign or fern frond, proving the arrangement worked. 14. An alternate solution uses a dim lamp and open flower bed; another uses a screened lamp and fern-corner landing.\",\"constraints\":\"Use 8–16 reusable scene definitions and about 5–10 selected events per run. Every scene needs a physical carrier and nontrivial state change. Guard decisions by knowledge: characters cannot act on hidden lamp position, moth location, or shadow direction until observing or being told. Rules should prevent the lamp from being in two places, prevent the cloth from being both folded and hung, keep the landing area clear before Mica settles, and require the final welcome circle to contain a reachable resting place. No impossible flight, instant synchronization, or guaranteed cooperation. The goal should require Mica to settle safely and the welcome arrangement to be ready, with at least two reachable final arrangements.\",\"different_endings\":\"Ending A: the lamp remains high but is softened by the pale cloth, and Mica rests on the flower sign at the fern-corner edge. Ending B: the lamp is moved low and dimmed, the flower bed is cleared, and Mica settles among the flowers. A third variation can leave the cloth folded while the children succeed through careful placement and a broad dark flight path. The final concrete image should show Mica’s wings resting in the chosen glow or shadow, while the children notice that their welcome became better by making room rather than simply making more light.\"}",
+          "type": "output_text",
+          "logprobs": []
+        }
+      ],
+      "role": "assistant",
+      "status": "completed",
+      "type": "message",
+      "phase": "final_answer"
+    }
+  ],
+  "parallel_tool_calls": true,
+  "temperature": 1.0,
+  "tool_choice": "auto",
+  "tools": [],
+  "top_p": 0.98,
+  "background": false,
+  "completed_at": 1788808322.0,
+  "conversation": null,
+  "max_output_tokens": 6000,
+  "max_tool_calls": null,
+  "moderation": null,
+  "previous_response_id": null,
+  "prompt": null,
+  "prompt_cache_key": null,
+  "prompt_cache_retention": "24h",
+  "reasoning": {
+    "context": "all_turns",
+    "effort": "none",
+    "generate_summary": null,
+    "summary": null,
+    "mode": "standard"
+  },
+  "safety_identifier": null,
+  "service_tier": "flex",
+  "status": "completed",
+  "text": {
+    "format": {
+      "name": "theater_plan",
+      "schema_": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string"
+          },
+          "premise": {
+            "type": "string"
+          },
+          "cast_and_props": {
+            "type": "string"
+          },
+          "kernels_and_interactions": {
+            "type": "string"
+          },
+          "seed_parameters": {
+            "type": "string"
+          },
+          "candidate_scenes": {
+            "type": "string"
+          },
+          "constraints": {
+            "type": "string"
+          },
+          "different_endings": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "title",
+          "premise",
+          "cast_and_props",
+          "kernels_and_interactions",
+          "seed_parameters",
+          "candidate_scenes",
+          "constraints",
+          "different_endings"
+        ],
+        "additionalProperties": false
+      },
+      "type": "json_schema",
+      "description": null,
+      "strict": true
+    },
+    "verbosity": "medium"
+  },
+  "top_logprobs": 0,
+  "truncation": "disabled",
+  "usage": {
+    "input_tokens": 1686,
+    "input_tokens_details": {
+      "cached_tokens": 0,
+      "cache_write_tokens": 1683
+    },
+    "output_tokens": 971,
+    "output_tokens_details": {
+      "reasoning_tokens": 0
+    },
+    "total_tokens": 2657
+  },
+  "user": null,
+  "billing": {
+    "payer": "developer"
+  },
+  "frequency_penalty": 0.0,
+  "presence_penalty": 0.0,
+  "store": false,
+  "tool_usage": {
+    "image_gen": {
+      "input_tokens": 0,
+      "input_tokens_details": {
+        "image_tokens": 0,
+        "text_tokens": 0
+      },
+      "output_tokens": 0,
+      "output_tokens_details": {
+        "image_tokens": 0,
+        "text_tokens": 0
+      },
+      "total_tokens": 0
+    },
+    "web_search": {
+      "num_requests": 0
+    }
+  }
+}

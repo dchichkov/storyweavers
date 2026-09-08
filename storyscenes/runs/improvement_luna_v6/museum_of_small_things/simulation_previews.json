@@ -1,0 +1,1194 @@
+[
+  {
+    "seed": 0,
+    "title": "The Museum of Small Things",
+    "initial": {
+      "ada.memes.Curiosity": 2,
+      "ben.memes.Kindness": 2,
+      "pip.memes.Mischief": 2,
+      "ada.knows.box.contents": "dull",
+      "ada.knows.visitor.expectation": null,
+      "ada.knows.button.owner": null,
+      "ben.knows.box.contents": null,
+      "ben.knows.marble.owner": "ben",
+      "ben.knows.visitor.expectation": null,
+      "pip.knows.button.owner": "pip",
+      "box.contents": "button",
+      "box.open": false,
+      "box.owner": "ada",
+      "marble.owner": "ben",
+      "marble.borrowed_from": "sister",
+      "key.owner": "ada",
+      "button.owner": "pip",
+      "card.owner": "ada",
+      "card.status": "written",
+      "display.status": "empty",
+      "display.owner": "ada",
+      "visitor.arrived": true,
+      "visitor.expectation": "quiet",
+      "visitor.greeted": false,
+      "visitor.mood": "unknown",
+      "ben.agreement": "unagreed",
+      "pip.motive": "keep",
+      "display.mode": "unset"
+    },
+    "final": {
+      "ada.memes.Curiosity": 2,
+      "ben.memes.Kindness": 2,
+      "pip.memes.Mischief": 2,
+      "ada.knows.box.contents": "button",
+      "ada.knows.visitor.expectation": "quiet",
+      "ada.knows.button.owner": null,
+      "ben.knows.box.contents": null,
+      "ben.knows.marble.owner": "ben",
+      "ben.knows.visitor.expectation": "quiet",
+      "pip.knows.button.owner": "pip",
+      "box.contents": "button",
+      "box.open": true,
+      "box.owner": "ada",
+      "marble.owner": "ben",
+      "marble.borrowed_from": "sister",
+      "key.owner": "pip",
+      "button.owner": "ada",
+      "card.owner": "ben",
+      "card.status": "written",
+      "display.status": "dazzling",
+      "display.owner": "ada",
+      "visitor.arrived": true,
+      "visitor.expectation": "quiet",
+      "visitor.greeted": true,
+      "visitor.mood": "delighted",
+      "ben.agreement": "unagreed",
+      "pip.motive": "share",
+      "display.mode": "whisper"
+    },
+    "events": [
+      {
+        "id": 1,
+        "scene": "inspect_contents",
+        "kernel": "Observe",
+        "actors": [
+          "ada"
+        ],
+        "summary": "Ada peeked into the museum box",
+        "causes": [],
+        "requires": [
+          {
+            "key": "ada.memes.Curiosity",
+            "op": "ge",
+            "value": 1
+          }
+        ],
+        "changes": {
+          "ada.knows.box.contents": {
+            "before": "dull",
+            "after": "button"
+          }
+        }
+      },
+      {
+        "id": 2,
+        "scene": "invite_keeper",
+        "kernel": "Transfer",
+        "actors": [
+          "ada",
+          "ben"
+        ],
+        "summary": "Ada handed Ben the museum invitation",
+        "causes": [],
+        "requires": [
+          {
+            "key": "card.owner",
+            "op": "eq",
+            "value": "ada"
+          },
+          {
+            "key": "card.owner",
+            "op": "eq",
+            "value": "ada"
+          },
+          {
+            "key": "card.status",
+            "op": "eq",
+            "value": "written"
+          }
+        ],
+        "changes": {
+          "card.owner": {
+            "before": "ada",
+            "after": "ben"
+          }
+        }
+      },
+      {
+        "id": 3,
+        "scene": "greet_visitor",
+        "kernel": "Greeting",
+        "actors": [
+          "ben"
+        ],
+        "summary": "Ben greeted the arriving library keeper",
+        "causes": [
+          2
+        ],
+        "requires": [
+          {
+            "key": "visitor.arrived",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "visitor.greeted",
+            "op": "eq",
+            "value": false
+          },
+          {
+            "key": "card.owner",
+            "op": "eq",
+            "value": "ben"
+          }
+        ],
+        "changes": {
+          "visitor.greeted": {
+            "before": false,
+            "after": true
+          }
+        }
+      },
+      {
+        "id": 4,
+        "scene": "inspect_expectation",
+        "kernel": "Observe",
+        "actors": [
+          "ben"
+        ],
+        "summary": "Ben noticed what sort of museum the keeper expected",
+        "causes": [
+          3
+        ],
+        "requires": [
+          {
+            "key": "visitor.arrived",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "visitor.greeted",
+            "op": "eq",
+            "value": true
+          }
+        ],
+        "changes": {
+          "ben.knows.visitor.expectation": {
+            "before": null,
+            "after": "quiet"
+          }
+        }
+      },
+      {
+        "id": 5,
+        "scene": "tell_keeper_expectation",
+        "kernel": "Tell",
+        "actors": [
+          "ben",
+          "ada"
+        ],
+        "summary": "Ben told Ada what the keeper expected",
+        "causes": [
+          3,
+          4
+        ],
+        "requires": [
+          {
+            "key": "ben.knows.visitor.expectation",
+            "op": "ne",
+            "value": null
+          },
+          {
+            "key": "ben.knows.visitor.expectation",
+            "op": "ne",
+            "value": null
+          },
+          {
+            "key": "visitor.greeted",
+            "op": "eq",
+            "value": true
+          }
+        ],
+        "changes": {
+          "ada.knows.visitor.expectation": {
+            "before": null,
+            "after": "quiet"
+          }
+        }
+      },
+      {
+        "id": 6,
+        "scene": "open_box",
+        "kernel": "Opening Promise",
+        "actors": [
+          "ada"
+        ],
+        "summary": "Ada opened the museum box",
+        "causes": [
+          1
+        ],
+        "requires": [
+          {
+            "key": "box.open",
+            "op": "eq",
+            "value": false
+          },
+          {
+            "key": "ada.knows.box.contents",
+            "op": "ne",
+            "value": null
+          }
+        ],
+        "changes": {
+          "box.open": {
+            "before": false,
+            "after": true
+          }
+        }
+      },
+      {
+        "id": 7,
+        "scene": "offer_button",
+        "kernel": "Magpie Bargain",
+        "actors": [
+          "pip",
+          "ada"
+        ],
+        "summary": "Pip traded the blue button for the brass key",
+        "causes": [
+          1,
+          6
+        ],
+        "requires": [
+          {
+            "key": "box.open",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "box.contents",
+            "op": "eq",
+            "value": "button"
+          },
+          {
+            "key": "ada.knows.box.contents",
+            "op": "eq",
+            "value": "button"
+          },
+          {
+            "key": "pip.knows.button.owner",
+            "op": "eq",
+            "value": "pip"
+          },
+          {
+            "key": "button.owner",
+            "op": "eq",
+            "value": "pip"
+          },
+          {
+            "key": "key.owner",
+            "op": "eq",
+            "value": "ada"
+          }
+        ],
+        "changes": {
+          "key.owner": {
+            "before": "ada",
+            "after": "pip"
+          },
+          "button.owner": {
+            "before": "pip",
+            "after": "ada"
+          },
+          "pip.motive": {
+            "before": "keep",
+            "after": "share"
+          }
+        }
+      },
+      {
+        "id": 8,
+        "scene": "arrange_dazzling",
+        "kernel": "Curation",
+        "actors": [
+          "ada",
+          "pip"
+        ],
+        "summary": "Ada arranged the button and key as a dazzling display",
+        "causes": [
+          6,
+          7
+        ],
+        "requires": [
+          {
+            "key": "box.open",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "box.contents",
+            "op": "eq",
+            "value": "button"
+          },
+          {
+            "key": "button.owner",
+            "op": "eq",
+            "value": "ada"
+          },
+          {
+            "key": "key.owner",
+            "op": "eq",
+            "value": "pip"
+          },
+          {
+            "key": "pip.motive",
+            "op": "eq",
+            "value": "share"
+          }
+        ],
+        "changes": {
+          "display.status": {
+            "before": "empty",
+            "after": "dazzling"
+          }
+        }
+      },
+      {
+        "id": 9,
+        "scene": "perform_whisper_tour",
+        "kernel": "Performance",
+        "actors": [
+          "ada"
+        ],
+        "summary": "Ada performed a whisper tour of the small wonders",
+        "causes": [
+          3,
+          5,
+          8
+        ],
+        "requires": [
+          {
+            "key": "visitor.greeted",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "display.status",
+            "op": "in",
+            "value": [
+              "trusted",
+              "dazzling"
+            ]
+          },
+          {
+            "key": "ada.knows.visitor.expectation",
+            "op": "eq",
+            "value": "quiet"
+          }
+        ],
+        "changes": {
+          "display.mode": {
+            "before": "unset",
+            "after": "whisper"
+          }
+        }
+      },
+      {
+        "id": 10,
+        "scene": "visitor_delights",
+        "kernel": "Visitor Response",
+        "actors": [
+          "visitor"
+        ],
+        "summary": "The keeper smiled at the gentle tour",
+        "causes": [
+          9
+        ],
+        "requires": [
+          {
+            "key": "display.mode",
+            "op": "eq",
+            "value": "whisper"
+          },
+          {
+            "key": "visitor.mood",
+            "op": "eq",
+            "value": "unknown"
+          }
+        ],
+        "changes": {
+          "visitor.mood": {
+            "before": "unknown",
+            "after": "delighted"
+          }
+        }
+      }
+    ]
+  },
+  {
+    "seed": 1,
+    "title": "The Museum of Small Things",
+    "initial": {
+      "ada.memes.Curiosity": 2,
+      "ben.memes.Kindness": 2,
+      "pip.memes.Mischief": 2,
+      "ada.knows.box.contents": "marble",
+      "ada.knows.visitor.expectation": null,
+      "ada.knows.button.owner": null,
+      "ben.knows.box.contents": null,
+      "ben.knows.marble.owner": "ben",
+      "ben.knows.visitor.expectation": null,
+      "pip.knows.button.owner": "pip",
+      "box.contents": "marble",
+      "box.open": false,
+      "box.owner": "ada",
+      "marble.owner": "ben",
+      "marble.borrowed_from": "sister",
+      "key.owner": "ada",
+      "button.owner": "pip",
+      "card.owner": "ada",
+      "card.status": "written",
+      "display.status": "empty",
+      "display.owner": "ada",
+      "visitor.arrived": true,
+      "visitor.expectation": "quiet",
+      "visitor.greeted": false,
+      "visitor.mood": "unknown",
+      "ben.agreement": "unagreed",
+      "pip.motive": "keep",
+      "display.mode": "unset"
+    },
+    "final": {
+      "ada.memes.Curiosity": 2,
+      "ben.memes.Kindness": 2,
+      "pip.memes.Mischief": 2,
+      "ada.knows.box.contents": "marble",
+      "ada.knows.visitor.expectation": "quiet",
+      "ada.knows.button.owner": null,
+      "ben.knows.box.contents": null,
+      "ben.knows.marble.owner": "ben",
+      "ben.knows.visitor.expectation": "quiet",
+      "pip.knows.button.owner": "pip",
+      "box.contents": "marble",
+      "box.open": true,
+      "box.owner": "ada",
+      "marble.owner": "ben",
+      "marble.borrowed_from": "sister",
+      "key.owner": "ada",
+      "button.owner": "pip",
+      "card.owner": "ben",
+      "card.status": "written",
+      "display.status": "trusted",
+      "display.owner": "ada",
+      "visitor.arrived": true,
+      "visitor.expectation": "quiet",
+      "visitor.greeted": true,
+      "visitor.mood": "delighted",
+      "ben.agreement": "lend",
+      "pip.motive": "keep",
+      "display.mode": "whisper"
+    },
+    "events": [
+      {
+        "id": 1,
+        "scene": "invite_keeper",
+        "kernel": "Transfer",
+        "actors": [
+          "ada",
+          "ben"
+        ],
+        "summary": "Ada handed Ben the museum invitation",
+        "causes": [],
+        "requires": [
+          {
+            "key": "card.owner",
+            "op": "eq",
+            "value": "ada"
+          },
+          {
+            "key": "card.owner",
+            "op": "eq",
+            "value": "ada"
+          },
+          {
+            "key": "card.status",
+            "op": "eq",
+            "value": "written"
+          }
+        ],
+        "changes": {
+          "card.owner": {
+            "before": "ada",
+            "after": "ben"
+          }
+        }
+      },
+      {
+        "id": 2,
+        "scene": "open_box",
+        "kernel": "Opening Promise",
+        "actors": [
+          "ada"
+        ],
+        "summary": "Ada opened the museum box",
+        "causes": [],
+        "requires": [
+          {
+            "key": "box.open",
+            "op": "eq",
+            "value": false
+          },
+          {
+            "key": "ada.knows.box.contents",
+            "op": "ne",
+            "value": null
+          }
+        ],
+        "changes": {
+          "box.open": {
+            "before": false,
+            "after": true
+          }
+        }
+      },
+      {
+        "id": 3,
+        "scene": "greet_visitor",
+        "kernel": "Greeting",
+        "actors": [
+          "ben"
+        ],
+        "summary": "Ben greeted the arriving library keeper",
+        "causes": [
+          1
+        ],
+        "requires": [
+          {
+            "key": "visitor.arrived",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "visitor.greeted",
+            "op": "eq",
+            "value": false
+          },
+          {
+            "key": "card.owner",
+            "op": "eq",
+            "value": "ben"
+          }
+        ],
+        "changes": {
+          "visitor.greeted": {
+            "before": false,
+            "after": true
+          }
+        }
+      },
+      {
+        "id": 4,
+        "scene": "request_lend_marble",
+        "kernel": "Borrowed Treasure",
+        "actors": [
+          "ben"
+        ],
+        "summary": "Ben asked to lend the red marble proudly",
+        "causes": [
+          2
+        ],
+        "requires": [
+          {
+            "key": "box.open",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "box.contents",
+            "op": "eq",
+            "value": "marble"
+          },
+          {
+            "key": "ben.knows.marble.owner",
+            "op": "eq",
+            "value": "ben"
+          },
+          {
+            "key": "ben.agreement",
+            "op": "eq",
+            "value": "unagreed"
+          }
+        ],
+        "changes": {
+          "ben.agreement": {
+            "before": "unagreed",
+            "after": "lend"
+          }
+        }
+      },
+      {
+        "id": 5,
+        "scene": "arrange_trusted",
+        "kernel": "Curation",
+        "actors": [
+          "ada",
+          "ben"
+        ],
+        "summary": "Ada arranged the marble with its borrowing story",
+        "causes": [
+          2,
+          4
+        ],
+        "requires": [
+          {
+            "key": "box.open",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "box.contents",
+            "op": "eq",
+            "value": "marble"
+          },
+          {
+            "key": "ben.agreement",
+            "op": "in",
+            "value": [
+              "lend",
+              "return"
+            ]
+          }
+        ],
+        "changes": {
+          "display.status": {
+            "before": "empty",
+            "after": "trusted"
+          }
+        }
+      },
+      {
+        "id": 6,
+        "scene": "inspect_expectation",
+        "kernel": "Observe",
+        "actors": [
+          "ben"
+        ],
+        "summary": "Ben noticed what sort of museum the keeper expected",
+        "causes": [
+          3
+        ],
+        "requires": [
+          {
+            "key": "visitor.arrived",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "visitor.greeted",
+            "op": "eq",
+            "value": true
+          }
+        ],
+        "changes": {
+          "ben.knows.visitor.expectation": {
+            "before": null,
+            "after": "quiet"
+          }
+        }
+      },
+      {
+        "id": 7,
+        "scene": "tell_keeper_expectation",
+        "kernel": "Tell",
+        "actors": [
+          "ben",
+          "ada"
+        ],
+        "summary": "Ben told Ada what the keeper expected",
+        "causes": [
+          3,
+          6
+        ],
+        "requires": [
+          {
+            "key": "ben.knows.visitor.expectation",
+            "op": "ne",
+            "value": null
+          },
+          {
+            "key": "ben.knows.visitor.expectation",
+            "op": "ne",
+            "value": null
+          },
+          {
+            "key": "visitor.greeted",
+            "op": "eq",
+            "value": true
+          }
+        ],
+        "changes": {
+          "ada.knows.visitor.expectation": {
+            "before": null,
+            "after": "quiet"
+          }
+        }
+      },
+      {
+        "id": 8,
+        "scene": "perform_whisper_tour",
+        "kernel": "Performance",
+        "actors": [
+          "ada"
+        ],
+        "summary": "Ada performed a whisper tour of the small wonders",
+        "causes": [
+          3,
+          5,
+          7
+        ],
+        "requires": [
+          {
+            "key": "visitor.greeted",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "display.status",
+            "op": "in",
+            "value": [
+              "trusted",
+              "dazzling"
+            ]
+          },
+          {
+            "key": "ada.knows.visitor.expectation",
+            "op": "eq",
+            "value": "quiet"
+          }
+        ],
+        "changes": {
+          "display.mode": {
+            "before": "unset",
+            "after": "whisper"
+          }
+        }
+      },
+      {
+        "id": 9,
+        "scene": "visitor_delights",
+        "kernel": "Visitor Response",
+        "actors": [
+          "visitor"
+        ],
+        "summary": "The keeper smiled at the gentle tour",
+        "causes": [
+          8
+        ],
+        "requires": [
+          {
+            "key": "display.mode",
+            "op": "eq",
+            "value": "whisper"
+          },
+          {
+            "key": "visitor.mood",
+            "op": "eq",
+            "value": "unknown"
+          }
+        ],
+        "changes": {
+          "visitor.mood": {
+            "before": "unknown",
+            "after": "delighted"
+          }
+        }
+      }
+    ]
+  },
+  {
+    "seed": 2,
+    "title": "The Museum of Small Things",
+    "initial": {
+      "ada.memes.Curiosity": 2,
+      "ben.memes.Kindness": 2,
+      "pip.memes.Mischief": 2,
+      "ada.knows.box.contents": "marble",
+      "ada.knows.visitor.expectation": null,
+      "ada.knows.button.owner": null,
+      "ben.knows.box.contents": null,
+      "ben.knows.marble.owner": "ben",
+      "ben.knows.visitor.expectation": null,
+      "pip.knows.button.owner": "pip",
+      "box.contents": "marble",
+      "box.open": false,
+      "box.owner": "ada",
+      "marble.owner": "ben",
+      "marble.borrowed_from": "sister",
+      "key.owner": "ada",
+      "button.owner": "pip",
+      "card.owner": "ada",
+      "card.status": "written",
+      "display.status": "empty",
+      "display.owner": "ada",
+      "visitor.arrived": true,
+      "visitor.expectation": "quiet",
+      "visitor.greeted": false,
+      "visitor.mood": "unknown",
+      "ben.agreement": "unagreed",
+      "pip.motive": "keep",
+      "display.mode": "unset"
+    },
+    "final": {
+      "ada.memes.Curiosity": 2,
+      "ben.memes.Kindness": 2,
+      "pip.memes.Mischief": 2,
+      "ada.knows.box.contents": "marble",
+      "ada.knows.visitor.expectation": "quiet",
+      "ada.knows.button.owner": null,
+      "ben.knows.box.contents": null,
+      "ben.knows.marble.owner": "ben",
+      "ben.knows.visitor.expectation": "quiet",
+      "pip.knows.button.owner": "pip",
+      "box.contents": "marble",
+      "box.open": true,
+      "box.owner": "ada",
+      "marble.owner": "ben",
+      "marble.borrowed_from": "sister",
+      "key.owner": "ada",
+      "button.owner": "pip",
+      "card.owner": "ben",
+      "card.status": "written",
+      "display.status": "trusted",
+      "display.owner": "ada",
+      "visitor.arrived": true,
+      "visitor.expectation": "quiet",
+      "visitor.greeted": true,
+      "visitor.mood": "delighted",
+      "ben.agreement": "lend",
+      "pip.motive": "keep",
+      "display.mode": "whisper"
+    },
+    "events": [
+      {
+        "id": 1,
+        "scene": "open_box",
+        "kernel": "Opening Promise",
+        "actors": [
+          "ada"
+        ],
+        "summary": "Ada opened the museum box",
+        "causes": [],
+        "requires": [
+          {
+            "key": "box.open",
+            "op": "eq",
+            "value": false
+          },
+          {
+            "key": "ada.knows.box.contents",
+            "op": "ne",
+            "value": null
+          }
+        ],
+        "changes": {
+          "box.open": {
+            "before": false,
+            "after": true
+          }
+        }
+      },
+      {
+        "id": 2,
+        "scene": "request_lend_marble",
+        "kernel": "Borrowed Treasure",
+        "actors": [
+          "ben"
+        ],
+        "summary": "Ben asked to lend the red marble proudly",
+        "causes": [
+          1
+        ],
+        "requires": [
+          {
+            "key": "box.open",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "box.contents",
+            "op": "eq",
+            "value": "marble"
+          },
+          {
+            "key": "ben.knows.marble.owner",
+            "op": "eq",
+            "value": "ben"
+          },
+          {
+            "key": "ben.agreement",
+            "op": "eq",
+            "value": "unagreed"
+          }
+        ],
+        "changes": {
+          "ben.agreement": {
+            "before": "unagreed",
+            "after": "lend"
+          }
+        }
+      },
+      {
+        "id": 3,
+        "scene": "invite_keeper",
+        "kernel": "Transfer",
+        "actors": [
+          "ada",
+          "ben"
+        ],
+        "summary": "Ada handed Ben the museum invitation",
+        "causes": [],
+        "requires": [
+          {
+            "key": "card.owner",
+            "op": "eq",
+            "value": "ada"
+          },
+          {
+            "key": "card.owner",
+            "op": "eq",
+            "value": "ada"
+          },
+          {
+            "key": "card.status",
+            "op": "eq",
+            "value": "written"
+          }
+        ],
+        "changes": {
+          "card.owner": {
+            "before": "ada",
+            "after": "ben"
+          }
+        }
+      },
+      {
+        "id": 4,
+        "scene": "greet_visitor",
+        "kernel": "Greeting",
+        "actors": [
+          "ben"
+        ],
+        "summary": "Ben greeted the arriving library keeper",
+        "causes": [
+          3
+        ],
+        "requires": [
+          {
+            "key": "visitor.arrived",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "visitor.greeted",
+            "op": "eq",
+            "value": false
+          },
+          {
+            "key": "card.owner",
+            "op": "eq",
+            "value": "ben"
+          }
+        ],
+        "changes": {
+          "visitor.greeted": {
+            "before": false,
+            "after": true
+          }
+        }
+      },
+      {
+        "id": 5,
+        "scene": "arrange_trusted",
+        "kernel": "Curation",
+        "actors": [
+          "ada",
+          "ben"
+        ],
+        "summary": "Ada arranged the marble with its borrowing story",
+        "causes": [
+          1,
+          2
+        ],
+        "requires": [
+          {
+            "key": "box.open",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "box.contents",
+            "op": "eq",
+            "value": "marble"
+          },
+          {
+            "key": "ben.agreement",
+            "op": "in",
+            "value": [
+              "lend",
+              "return"
+            ]
+          }
+        ],
+        "changes": {
+          "display.status": {
+            "before": "empty",
+            "after": "trusted"
+          }
+        }
+      },
+      {
+        "id": 6,
+        "scene": "inspect_expectation",
+        "kernel": "Observe",
+        "actors": [
+          "ben"
+        ],
+        "summary": "Ben noticed what sort of museum the keeper expected",
+        "causes": [
+          4
+        ],
+        "requires": [
+          {
+            "key": "visitor.arrived",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "visitor.greeted",
+            "op": "eq",
+            "value": true
+          }
+        ],
+        "changes": {
+          "ben.knows.visitor.expectation": {
+            "before": null,
+            "after": "quiet"
+          }
+        }
+      },
+      {
+        "id": 7,
+        "scene": "tell_keeper_expectation",
+        "kernel": "Tell",
+        "actors": [
+          "ben",
+          "ada"
+        ],
+        "summary": "Ben told Ada what the keeper expected",
+        "causes": [
+          4,
+          6
+        ],
+        "requires": [
+          {
+            "key": "ben.knows.visitor.expectation",
+            "op": "ne",
+            "value": null
+          },
+          {
+            "key": "ben.knows.visitor.expectation",
+            "op": "ne",
+            "value": null
+          },
+          {
+            "key": "visitor.greeted",
+            "op": "eq",
+            "value": true
+          }
+        ],
+        "changes": {
+          "ada.knows.visitor.expectation": {
+            "before": null,
+            "after": "quiet"
+          }
+        }
+      },
+      {
+        "id": 8,
+        "scene": "perform_whisper_tour",
+        "kernel": "Performance",
+        "actors": [
+          "ada"
+        ],
+        "summary": "Ada performed a whisper tour of the small wonders",
+        "causes": [
+          4,
+          5,
+          7
+        ],
+        "requires": [
+          {
+            "key": "visitor.greeted",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "display.status",
+            "op": "in",
+            "value": [
+              "trusted",
+              "dazzling"
+            ]
+          },
+          {
+            "key": "ada.knows.visitor.expectation",
+            "op": "eq",
+            "value": "quiet"
+          }
+        ],
+        "changes": {
+          "display.mode": {
+            "before": "unset",
+            "after": "whisper"
+          }
+        }
+      },
+      {
+        "id": 9,
+        "scene": "visitor_delights",
+        "kernel": "Visitor Response",
+        "actors": [
+          "visitor"
+        ],
+        "summary": "The keeper smiled at the gentle tour",
+        "causes": [
+          8
+        ],
+        "requires": [
+          {
+            "key": "display.mode",
+            "op": "eq",
+            "value": "whisper"
+          },
+          {
+            "key": "visitor.mood",
+            "op": "eq",
+            "value": "unknown"
+          }
+        ],
+        "changes": {
+          "visitor.mood": {
+            "before": "unknown",
+            "after": "delighted"
+          }
+        }
+      }
+    ]
+  }
+]

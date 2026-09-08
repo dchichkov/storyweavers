@@ -1,0 +1,1054 @@
+[
+  {
+    "seed": 0,
+    "title": "The Pond Concert That Listened",
+    "initial": {
+      "ada.want": "deliver invitations",
+      "ada.memes.Care": 2,
+      "ada.delivered": false,
+      "ada.location": "cove",
+      "ben.want": "build floating stage",
+      "ben.location": "pond",
+      "frog.want": "perform for listeners",
+      "frog.performance_style": "lively",
+      "frog.performed": false,
+      "frog.location": "pond",
+      "neighbor.want": "join",
+      "neighbor.location": "cove",
+      "neighbor.received": false,
+      "neighbor.heard_music": false,
+      "neighbor.joined": false,
+      "neighbor.response": "none",
+      "pond.wind": "breezy",
+      "invitation_card.owner": "ada",
+      "invitation_card.location": "cove",
+      "stage.owner": "ben",
+      "stage.location": "bank",
+      "stage.stage_ready": false,
+      "ribbon.owner": "ada",
+      "ribbon.location": "bank",
+      "ribbon.secured": false,
+      "ada.knows.neighbor.want": null,
+      "frog.knows.neighbor.want": null,
+      "ben.knows.pond.wind": null,
+      "frog.knows.pond.wind": null,
+      "ribbon.loaned_by": null
+    },
+    "final": {
+      "ada.want": "deliver invitations",
+      "ada.memes.Care": 2,
+      "ada.delivered": true,
+      "ada.location": "pond",
+      "ben.want": "build floating stage",
+      "ben.location": "pond",
+      "frog.want": "perform for listeners",
+      "frog.performance_style": "lively chorus",
+      "frog.performed": true,
+      "frog.location": "pond",
+      "neighbor.want": "join",
+      "neighbor.location": "cove",
+      "neighbor.received": true,
+      "neighbor.heard_music": true,
+      "neighbor.joined": true,
+      "neighbor.response": "joined",
+      "pond.wind": "breezy",
+      "invitation_card.owner": "neighbor",
+      "invitation_card.location": "cove",
+      "stage.owner": "ben",
+      "stage.location": "pond",
+      "stage.stage_ready": true,
+      "ribbon.owner": "ben",
+      "ribbon.location": "pond",
+      "ribbon.secured": true,
+      "ada.knows.neighbor.want": "join",
+      "frog.knows.neighbor.want": "join",
+      "ben.knows.pond.wind": "breezy",
+      "frog.knows.pond.wind": null,
+      "ribbon.loaned_by": "ada"
+    },
+    "events": [
+      {
+        "id": 1,
+        "scene": "learn_listener_wish.notice",
+        "kernel": "Observe",
+        "actors": [
+          "ada"
+        ],
+        "summary": "",
+        "causes": [],
+        "requires": [],
+        "changes": {
+          "ada.knows.neighbor.want": {
+            "before": null,
+            "after": "join"
+          }
+        }
+      },
+      {
+        "id": 2,
+        "scene": "learn_pond_wind.notice",
+        "kernel": "Observe",
+        "actors": [
+          "ben"
+        ],
+        "summary": "",
+        "causes": [],
+        "requires": [],
+        "changes": {
+          "ben.knows.pond.wind": {
+            "before": null,
+            "after": "breezy"
+          }
+        }
+      },
+      {
+        "id": 3,
+        "scene": "learn_listener_wish.share",
+        "kernel": "Tell",
+        "actors": [
+          "ada",
+          "frog"
+        ],
+        "summary": "",
+        "causes": [
+          1
+        ],
+        "requires": [
+          {
+            "key": "ada.knows.neighbor.want",
+            "op": "ne",
+            "value": null
+          }
+        ],
+        "changes": {
+          "frog.knows.neighbor.want": {
+            "before": null,
+            "after": "join"
+          }
+        }
+      },
+      {
+        "id": 4,
+        "scene": "deliver_card",
+        "kernel": "Transfer",
+        "actors": [
+          "ada",
+          "neighbor"
+        ],
+        "summary": "Ada gives Mira the invitation",
+        "causes": [],
+        "requires": [
+          {
+            "key": "invitation_card.owner",
+            "op": "eq",
+            "value": "ada"
+          },
+          {
+            "key": "invitation_card.location",
+            "op": "eq",
+            "value": "cove"
+          }
+        ],
+        "changes": {
+          "invitation_card.owner": {
+            "before": "ada",
+            "after": "neighbor"
+          }
+        }
+      },
+      {
+        "id": 5,
+        "scene": "mark_delivery",
+        "kernel": "Act",
+        "actors": [
+          "ada"
+        ],
+        "summary": "Mira receives the invitation",
+        "causes": [
+          4
+        ],
+        "requires": [
+          {
+            "key": "invitation_card.owner",
+            "op": "eq",
+            "value": "neighbor"
+          }
+        ],
+        "changes": {
+          "ada.delivered": {
+            "before": false,
+            "after": true
+          },
+          "neighbor.received": {
+            "before": false,
+            "after": true
+          }
+        }
+      },
+      {
+        "id": 6,
+        "scene": "ada_to_pond",
+        "kernel": "Act",
+        "actors": [
+          "ada"
+        ],
+        "summary": "Ada walks from the cove to the pond",
+        "causes": [
+          5
+        ],
+        "requires": [
+          {
+            "key": "ada.delivered",
+            "op": "eq",
+            "value": true
+          }
+        ],
+        "changes": {
+          "ada.location": {
+            "before": "cove",
+            "after": "pond"
+          }
+        }
+      },
+      {
+        "id": 7,
+        "scene": "lend_ribbon",
+        "kernel": "Transfer",
+        "actors": [
+          "ada",
+          "ben"
+        ],
+        "summary": "Ada lends Ben the ribbon",
+        "causes": [
+          6
+        ],
+        "requires": [
+          {
+            "key": "ribbon.owner",
+            "op": "eq",
+            "value": "ada"
+          },
+          {
+            "key": "ribbon.loaned_by",
+            "op": "eq",
+            "value": null
+          },
+          {
+            "key": "ada.location",
+            "op": "eq",
+            "value": "pond"
+          }
+        ],
+        "changes": {
+          "ribbon.owner": {
+            "before": "ada",
+            "after": "ben"
+          },
+          "ribbon.loaned_by": {
+            "before": null,
+            "after": "ada"
+          }
+        }
+      },
+      {
+        "id": 8,
+        "scene": "move_ribbon",
+        "kernel": "Move",
+        "actors": [
+          "ben",
+          "pond"
+        ],
+        "summary": "Ben carries the ribbon to the pond",
+        "causes": [
+          7
+        ],
+        "requires": [
+          {
+            "key": "ribbon.owner",
+            "op": "eq",
+            "value": "ben"
+          },
+          {
+            "key": "ribbon.owner",
+            "op": "eq",
+            "value": "ben"
+          }
+        ],
+        "changes": {
+          "ribbon.location": {
+            "before": "bank",
+            "after": "pond"
+          }
+        }
+      },
+      {
+        "id": 9,
+        "scene": "secure_ribbon",
+        "kernel": "Act",
+        "actors": [
+          "ben"
+        ],
+        "summary": "Ben secures the stage against the breeze",
+        "causes": [
+          7,
+          8
+        ],
+        "requires": [
+          {
+            "key": "ribbon.owner",
+            "op": "eq",
+            "value": "ben"
+          },
+          {
+            "key": "ribbon.location",
+            "op": "eq",
+            "value": "pond"
+          },
+          {
+            "key": "pond.wind",
+            "op": "eq",
+            "value": "breezy"
+          }
+        ],
+        "changes": {
+          "ribbon.secured": {
+            "before": false,
+            "after": true
+          }
+        }
+      },
+      {
+        "id": 10,
+        "scene": "build_stage_breezy",
+        "kernel": "Act",
+        "actors": [
+          "ben"
+        ],
+        "summary": "Ben prepares the tied-down stage",
+        "causes": [
+          2,
+          9
+        ],
+        "requires": [
+          {
+            "key": "ben.knows.pond.wind",
+            "op": "eq",
+            "value": "breezy"
+          },
+          {
+            "key": "ribbon.secured",
+            "op": "eq",
+            "value": true
+          }
+        ],
+        "changes": {
+          "stage.stage_ready": {
+            "before": false,
+            "after": true
+          }
+        }
+      },
+      {
+        "id": 11,
+        "scene": "float_stage",
+        "kernel": "Move",
+        "actors": [
+          "ben",
+          "pond"
+        ],
+        "summary": "Ben floats the stage onto the pond",
+        "causes": [
+          10
+        ],
+        "requires": [
+          {
+            "key": "stage.owner",
+            "op": "eq",
+            "value": "ben"
+          },
+          {
+            "key": "stage.stage_ready",
+            "op": "eq",
+            "value": true
+          }
+        ],
+        "changes": {
+          "stage.location": {
+            "before": "bank",
+            "after": "pond"
+          }
+        }
+      },
+      {
+        "id": 12,
+        "scene": "welcoming_performance",
+        "kernel": "Act",
+        "actors": [
+          "frog"
+        ],
+        "summary": "Frog performs a lively chorus",
+        "causes": [
+          3,
+          10,
+          11
+        ],
+        "requires": [
+          {
+            "key": "frog.knows.neighbor.want",
+            "op": "eq",
+            "value": "join"
+          },
+          {
+            "key": "stage.location",
+            "op": "eq",
+            "value": "pond"
+          },
+          {
+            "key": "stage.stage_ready",
+            "op": "eq",
+            "value": true
+          }
+        ],
+        "changes": {
+          "frog.performance_style": {
+            "before": "lively",
+            "after": "lively chorus"
+          },
+          "frog.performed": {
+            "before": false,
+            "after": true
+          },
+          "neighbor.heard_music": {
+            "before": false,
+            "after": true
+          },
+          "neighbor.joined": {
+            "before": false,
+            "after": true
+          },
+          "neighbor.response": {
+            "before": "none",
+            "after": "joined"
+          }
+        }
+      }
+    ]
+  },
+  {
+    "seed": 1,
+    "title": "The Pond Concert That Listened",
+    "initial": {
+      "ada.want": "deliver invitations",
+      "ada.memes.Care": 2,
+      "ada.delivered": false,
+      "ada.location": "cove",
+      "ben.want": "build floating stage",
+      "ben.location": "pond",
+      "frog.want": "perform for listeners",
+      "frog.performance_style": "lively",
+      "frog.performed": false,
+      "frog.location": "pond",
+      "neighbor.want": "watch",
+      "neighbor.location": "cove",
+      "neighbor.received": false,
+      "neighbor.heard_music": false,
+      "neighbor.joined": false,
+      "neighbor.response": "none",
+      "pond.wind": "still",
+      "invitation_card.owner": "ada",
+      "invitation_card.location": "cove",
+      "stage.owner": "ben",
+      "stage.location": "bank",
+      "stage.stage_ready": false,
+      "ribbon.owner": "ada",
+      "ribbon.location": "bank",
+      "ribbon.secured": false,
+      "ada.knows.neighbor.want": null,
+      "frog.knows.neighbor.want": null,
+      "ben.knows.pond.wind": null,
+      "frog.knows.pond.wind": null,
+      "ribbon.loaned_by": null
+    },
+    "final": {
+      "ada.want": "deliver invitations",
+      "ada.memes.Care": 2,
+      "ada.delivered": true,
+      "ada.location": "cove",
+      "ben.want": "build floating stage",
+      "ben.location": "pond",
+      "frog.want": "perform for listeners",
+      "frog.performance_style": "gentle pond melody",
+      "frog.performed": true,
+      "frog.location": "pond",
+      "neighbor.want": "watch",
+      "neighbor.location": "cove",
+      "neighbor.received": true,
+      "neighbor.heard_music": true,
+      "neighbor.joined": false,
+      "neighbor.response": "watched",
+      "pond.wind": "still",
+      "invitation_card.owner": "neighbor",
+      "invitation_card.location": "cove",
+      "stage.owner": "ben",
+      "stage.location": "pond",
+      "stage.stage_ready": true,
+      "ribbon.owner": "ada",
+      "ribbon.location": "bank",
+      "ribbon.secured": false,
+      "ada.knows.neighbor.want": "watch",
+      "frog.knows.neighbor.want": "watch",
+      "ben.knows.pond.wind": "still",
+      "frog.knows.pond.wind": null,
+      "ribbon.loaned_by": null
+    },
+    "events": [
+      {
+        "id": 1,
+        "scene": "learn_pond_wind.notice",
+        "kernel": "Observe",
+        "actors": [
+          "ben"
+        ],
+        "summary": "",
+        "causes": [],
+        "requires": [],
+        "changes": {
+          "ben.knows.pond.wind": {
+            "before": null,
+            "after": "still"
+          }
+        }
+      },
+      {
+        "id": 2,
+        "scene": "build_stage_still",
+        "kernel": "Act",
+        "actors": [
+          "ben"
+        ],
+        "summary": "Ben prepares the stage in calm water",
+        "causes": [
+          1
+        ],
+        "requires": [
+          {
+            "key": "ben.knows.pond.wind",
+            "op": "eq",
+            "value": "still"
+          }
+        ],
+        "changes": {
+          "stage.stage_ready": {
+            "before": false,
+            "after": true
+          }
+        }
+      },
+      {
+        "id": 3,
+        "scene": "float_stage",
+        "kernel": "Move",
+        "actors": [
+          "ben",
+          "pond"
+        ],
+        "summary": "Ben floats the stage onto the pond",
+        "causes": [
+          2
+        ],
+        "requires": [
+          {
+            "key": "stage.owner",
+            "op": "eq",
+            "value": "ben"
+          },
+          {
+            "key": "stage.stage_ready",
+            "op": "eq",
+            "value": true
+          }
+        ],
+        "changes": {
+          "stage.location": {
+            "before": "bank",
+            "after": "pond"
+          }
+        }
+      },
+      {
+        "id": 4,
+        "scene": "deliver_card",
+        "kernel": "Transfer",
+        "actors": [
+          "ada",
+          "neighbor"
+        ],
+        "summary": "Ada gives Mira the invitation",
+        "causes": [],
+        "requires": [
+          {
+            "key": "invitation_card.owner",
+            "op": "eq",
+            "value": "ada"
+          },
+          {
+            "key": "invitation_card.location",
+            "op": "eq",
+            "value": "cove"
+          }
+        ],
+        "changes": {
+          "invitation_card.owner": {
+            "before": "ada",
+            "after": "neighbor"
+          }
+        }
+      },
+      {
+        "id": 5,
+        "scene": "mark_delivery",
+        "kernel": "Act",
+        "actors": [
+          "ada"
+        ],
+        "summary": "Mira receives the invitation",
+        "causes": [
+          4
+        ],
+        "requires": [
+          {
+            "key": "invitation_card.owner",
+            "op": "eq",
+            "value": "neighbor"
+          }
+        ],
+        "changes": {
+          "ada.delivered": {
+            "before": false,
+            "after": true
+          },
+          "neighbor.received": {
+            "before": false,
+            "after": true
+          }
+        }
+      },
+      {
+        "id": 6,
+        "scene": "learn_listener_wish.notice",
+        "kernel": "Observe",
+        "actors": [
+          "ada"
+        ],
+        "summary": "",
+        "causes": [],
+        "requires": [],
+        "changes": {
+          "ada.knows.neighbor.want": {
+            "before": null,
+            "after": "watch"
+          }
+        }
+      },
+      {
+        "id": 7,
+        "scene": "learn_listener_wish.share",
+        "kernel": "Tell",
+        "actors": [
+          "ada",
+          "frog"
+        ],
+        "summary": "",
+        "causes": [
+          6
+        ],
+        "requires": [
+          {
+            "key": "ada.knows.neighbor.want",
+            "op": "ne",
+            "value": null
+          }
+        ],
+        "changes": {
+          "frog.knows.neighbor.want": {
+            "before": null,
+            "after": "watch"
+          }
+        }
+      },
+      {
+        "id": 8,
+        "scene": "watching_performance",
+        "kernel": "Act",
+        "actors": [
+          "frog"
+        ],
+        "summary": "Frog performs a gentle pond melody",
+        "causes": [
+          2,
+          3,
+          7
+        ],
+        "requires": [
+          {
+            "key": "frog.knows.neighbor.want",
+            "op": "eq",
+            "value": "watch"
+          },
+          {
+            "key": "stage.location",
+            "op": "eq",
+            "value": "pond"
+          },
+          {
+            "key": "stage.stage_ready",
+            "op": "eq",
+            "value": true
+          }
+        ],
+        "changes": {
+          "frog.performance_style": {
+            "before": "lively",
+            "after": "gentle pond melody"
+          },
+          "frog.performed": {
+            "before": false,
+            "after": true
+          },
+          "neighbor.heard_music": {
+            "before": false,
+            "after": true
+          },
+          "neighbor.response": {
+            "before": "none",
+            "after": "watched"
+          }
+        }
+      }
+    ]
+  },
+  {
+    "seed": 2,
+    "title": "The Pond Concert That Listened",
+    "initial": {
+      "ada.want": "deliver invitations",
+      "ada.memes.Care": 2,
+      "ada.delivered": false,
+      "ada.location": "cove",
+      "ben.want": "build floating stage",
+      "ben.location": "pond",
+      "frog.want": "perform for listeners",
+      "frog.performance_style": "lively",
+      "frog.performed": false,
+      "frog.location": "pond",
+      "neighbor.want": "quiet",
+      "neighbor.location": "cove",
+      "neighbor.received": false,
+      "neighbor.heard_music": false,
+      "neighbor.joined": false,
+      "neighbor.response": "none",
+      "pond.wind": "still",
+      "invitation_card.owner": "ada",
+      "invitation_card.location": "cove",
+      "stage.owner": "ben",
+      "stage.location": "bank",
+      "stage.stage_ready": false,
+      "ribbon.owner": "ada",
+      "ribbon.location": "bank",
+      "ribbon.secured": false,
+      "ada.knows.neighbor.want": null,
+      "frog.knows.neighbor.want": null,
+      "ben.knows.pond.wind": null,
+      "frog.knows.pond.wind": null,
+      "ribbon.loaned_by": null
+    },
+    "final": {
+      "ada.want": "deliver invitations",
+      "ada.memes.Care": 3,
+      "ada.delivered": true,
+      "ada.location": "cove",
+      "ben.want": "build floating stage",
+      "ben.location": "pond",
+      "frog.want": "perform for listeners",
+      "frog.performance_style": "soft ripple-song",
+      "frog.performed": true,
+      "frog.location": "pond",
+      "neighbor.want": "quiet",
+      "neighbor.location": "cove",
+      "neighbor.received": true,
+      "neighbor.heard_music": true,
+      "neighbor.joined": false,
+      "neighbor.response": "listened",
+      "pond.wind": "still",
+      "invitation_card.owner": "neighbor",
+      "invitation_card.location": "cove",
+      "stage.owner": "ben",
+      "stage.location": "pond",
+      "stage.stage_ready": true,
+      "ribbon.owner": "ada",
+      "ribbon.location": "bank",
+      "ribbon.secured": false,
+      "ada.knows.neighbor.want": "quiet",
+      "frog.knows.neighbor.want": "quiet",
+      "ben.knows.pond.wind": "still",
+      "frog.knows.pond.wind": null,
+      "ribbon.loaned_by": null
+    },
+    "events": [
+      {
+        "id": 1,
+        "scene": "learn_listener_wish.notice",
+        "kernel": "Observe",
+        "actors": [
+          "ada"
+        ],
+        "summary": "",
+        "causes": [],
+        "requires": [],
+        "changes": {
+          "ada.knows.neighbor.want": {
+            "before": null,
+            "after": "quiet"
+          }
+        }
+      },
+      {
+        "id": 2,
+        "scene": "learn_pond_wind.notice",
+        "kernel": "Observe",
+        "actors": [
+          "ben"
+        ],
+        "summary": "",
+        "causes": [],
+        "requires": [],
+        "changes": {
+          "ben.knows.pond.wind": {
+            "before": null,
+            "after": "still"
+          }
+        }
+      },
+      {
+        "id": 3,
+        "scene": "respect_quiet",
+        "kernel": "Ada chooses to respect a quiet wish",
+        "actors": [
+          "ada"
+        ],
+        "summary": "Ada chooses care over her assumption",
+        "causes": [
+          1
+        ],
+        "requires": [
+          {
+            "key": "ada.knows.neighbor.want",
+            "op": "eq",
+            "value": "quiet"
+          }
+        ],
+        "changes": {
+          "ada.memes.Care": {
+            "before": 2,
+            "after": 3
+          }
+        }
+      },
+      {
+        "id": 4,
+        "scene": "build_stage_still",
+        "kernel": "Act",
+        "actors": [
+          "ben"
+        ],
+        "summary": "Ben prepares the stage in calm water",
+        "causes": [
+          2
+        ],
+        "requires": [
+          {
+            "key": "ben.knows.pond.wind",
+            "op": "eq",
+            "value": "still"
+          }
+        ],
+        "changes": {
+          "stage.stage_ready": {
+            "before": false,
+            "after": true
+          }
+        }
+      },
+      {
+        "id": 5,
+        "scene": "learn_listener_wish.share",
+        "kernel": "Tell",
+        "actors": [
+          "ada",
+          "frog"
+        ],
+        "summary": "",
+        "causes": [
+          1
+        ],
+        "requires": [
+          {
+            "key": "ada.knows.neighbor.want",
+            "op": "ne",
+            "value": null
+          }
+        ],
+        "changes": {
+          "frog.knows.neighbor.want": {
+            "before": null,
+            "after": "quiet"
+          }
+        }
+      },
+      {
+        "id": 6,
+        "scene": "float_stage",
+        "kernel": "Move",
+        "actors": [
+          "ben",
+          "pond"
+        ],
+        "summary": "Ben floats the stage onto the pond",
+        "causes": [
+          4
+        ],
+        "requires": [
+          {
+            "key": "stage.owner",
+            "op": "eq",
+            "value": "ben"
+          },
+          {
+            "key": "stage.stage_ready",
+            "op": "eq",
+            "value": true
+          }
+        ],
+        "changes": {
+          "stage.location": {
+            "before": "bank",
+            "after": "pond"
+          }
+        }
+      },
+      {
+        "id": 7,
+        "scene": "quiet_performance",
+        "kernel": "Act",
+        "actors": [
+          "frog"
+        ],
+        "summary": "Frog performs a soft ripple-song",
+        "causes": [
+          3,
+          4,
+          5,
+          6
+        ],
+        "requires": [
+          {
+            "key": "frog.knows.neighbor.want",
+            "op": "eq",
+            "value": "quiet"
+          },
+          {
+            "key": "ada.memes.Care",
+            "op": "ge",
+            "value": 3
+          },
+          {
+            "key": "stage.location",
+            "op": "eq",
+            "value": "pond"
+          },
+          {
+            "key": "stage.stage_ready",
+            "op": "eq",
+            "value": true
+          }
+        ],
+        "changes": {
+          "frog.performance_style": {
+            "before": "lively",
+            "after": "soft ripple-song"
+          },
+          "frog.performed": {
+            "before": false,
+            "after": true
+          },
+          "neighbor.heard_music": {
+            "before": false,
+            "after": true
+          },
+          "neighbor.response": {
+            "before": "none",
+            "after": "listened"
+          }
+        }
+      },
+      {
+        "id": 8,
+        "scene": "deliver_card",
+        "kernel": "Transfer",
+        "actors": [
+          "ada",
+          "neighbor"
+        ],
+        "summary": "Ada gives Mira the invitation",
+        "causes": [],
+        "requires": [
+          {
+            "key": "invitation_card.owner",
+            "op": "eq",
+            "value": "ada"
+          },
+          {
+            "key": "invitation_card.location",
+            "op": "eq",
+            "value": "cove"
+          }
+        ],
+        "changes": {
+          "invitation_card.owner": {
+            "before": "ada",
+            "after": "neighbor"
+          }
+        }
+      },
+      {
+        "id": 9,
+        "scene": "mark_delivery",
+        "kernel": "Act",
+        "actors": [
+          "ada"
+        ],
+        "summary": "Mira receives the invitation",
+        "causes": [
+          8
+        ],
+        "requires": [
+          {
+            "key": "invitation_card.owner",
+            "op": "eq",
+            "value": "neighbor"
+          }
+        ],
+        "changes": {
+          "ada.delivered": {
+            "before": false,
+            "after": true
+          },
+          "neighbor.received": {
+            "before": false,
+            "after": true
+          }
+        }
+      }
+    ]
+  }
+]

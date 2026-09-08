@@ -1,0 +1,12 @@
+{
+  "edits": [
+    {
+      "old": "when=(C('concert.style', 'eq', 'soft'),),\n            set_values={'frog.performed': True, 'nora.content': True},\n            summary='Frog performed a soft pond song',",
+      "new": "when=(C('concert.style', 'eq', 'soft'), C('teo.knows.nora.want', 'eq', 'quiet')),\n            set_values={'frog.performed': True, 'nora.content': True},\n            summary='Frog performed a soft pond song',"
+    },
+    {
+      "old": "when=(\n                C('concert.style', 'eq', 'soft'),\n                C('frog.performed', 'eq', True),\n            ),\n            set_values={'nora.response': 'bubble'},",
+      "new": "when=(\n                C('concert.style', 'eq', 'soft'),\n                C('frog.performed', 'eq', True),\n            ),\n            set_values={'nora.response': 'bubble'},"
+    }
+  ]
+}

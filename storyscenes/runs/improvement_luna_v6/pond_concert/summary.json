@@ -1,0 +1,54 @@
+{
+  "world": "pond_concert",
+  "title": "The Pond Concert and the Neighbor with the Quietest Ears",
+  "ok": true,
+  "samples": 100,
+  "simulation_sha256": "99bc8c4b6f8141c59a686fc81b67af5dabe3d405a1752cddd402ba6b3eba9d11",
+  "generator_sha256": "0eda7ff13b0cd502eb2116b0a04f15bd81ca8c920709da38c833ecb83279a32a",
+  "catalog_sha256": "d28d66b3361928cbf83a95bc058e1ff5a319abc48e7974fbcc93eedeb9f10d66",
+  "distinct_texts": 14,
+  "distinct_scene_paths": 7,
+  "word_range": [
+    226,
+    317
+  ],
+  "prose_control_variants": 1,
+  "mechanics_model": "gpt-5.6-luna",
+  "mechanics_attempts": 1,
+  "prose_model": "gpt-5.6-luna",
+  "stats": {
+    "samples": 100,
+    "ordered_paths": 7,
+    "scene_sets": 3,
+    "causal_graphs": 3,
+    "outcomes": 3,
+    "premises": 3,
+    "events_range": [
+      5,
+      8
+    ],
+    "pruned_events": 34
+  },
+  "critic_before_revision": {
+    "issues": [
+      {
+        "seed": 123,
+        "severity": "minor",
+        "layer": "prose",
+        "defect": "event_log_prose",
+        "evidence": "After the ending action is already narrated—“Nora answered with one round silver bubble”—the final paragraph repeats it: “A single silver bubble rose beside the lily.”",
+        "fix": "Replace the repeated bubble sentence with a new closing image or consequence of Nora’s response."
+      },
+      {
+        "seed": 791,
+        "severity": "major",
+        "layer": "prose",
+        "defect": "event_log_prose",
+        "evidence": "The final two paragraphs nearly duplicate the trace’s closing image: “Nora glided past on the lily while Frog sang from its middle” and “The leaf boat bumped along behind like a very small royal carriage.”",
+        "fix": "Keep the traced parade/bow once, then end with a distinct consequential closing beat rather than restating the same action twice."
+      }
+    ],
+    "strengths": "All three stories accurately realize the ordered knowledge, invitation, ownership, concert-choice, performance, and response changes; seed 124 in particular cleanly grounds the bell transfer and duet."
+  },
+  "final_catalog_attempt": 1
+}

@@ -1,0 +1,140 @@
+{
+  "id": "resp_000aa13916981049016a9f32f310ec87d0a866246ff070f053",
+  "created_at": 1788818163.0,
+  "error": null,
+  "incomplete_details": null,
+  "instructions": null,
+  "metadata": {},
+  "model": "gpt-5.6-luna",
+  "object": "response",
+  "output": [
+    {
+      "id": "msg_000aa13916981049016a9f32f3c8ac87d0ac5e321173d68157",
+      "content": [
+        {
+          "annotations": [],
+          "text": "{\"title\":\"The Courtyard Weather Show\",\"premise\":\"In a sunny courtyard, a child-led puppet theater must put on a weather play while a sudden breeze tugs at the curtains and props. A timid puppeteer knows the puppet’s lines but hesitates to perform, while an ambitious stage manager wants a grand show. Careful noticing, honest communication, and rearranging the stage can lead to different successful performances.\",\"cast_and_props\":\"Characters: Ada, an observant child stage manager; Pip, a shy puppeteer; Mara, the practical courtyard keeper. Places and props: courtyard, sheltered alcove, puppet stage, wind curtain, sun puppet, cloud puppet, bell, rope, clothespins, and a movable bench. The rope belongs initially to Mara; the puppets belong to Pip. The bench can be moved to block or redirect the breeze.\",\"kernels_and_interactions\":\"Ambition: Ada wants the performance to feel impressive and may overreach until evidence changes her plan. Observation: Ada can inspect the curtain, bell, or stage arrangement and gain specific knowledge. Mistaken belief: the children may initially assume the breeze is temporary or that the bell is broken, but observations can reveal the actual condition. Care and cooperation: Mara can lend equipment when she trusts the plan, while Pip can share puppet knowledge or gain confidence through supportive rehearsal. These kernels interact through knowledge, communication, ownership, location, and accumulated care or curiosity memes.\",\"seed_parameters\":\"The seed selects the breeze strength and direction, whether the bell is stuck, the useful shelter location, Pip’s starting confidence, and which prop arrangement creates the safest workable stage. It also varies whether the strongest solution is fastening the curtain with rope and clothespins, moving the bench to make a windbreak, performing in the alcove, or adapting the script so the breeze becomes part of the weather scene. Seeds change causal obstacles and available solutions rather than merely names or colors.\",\"candidate_scenes\":\"1. Ada surveys the courtyard and notices the curtain pulling toward the fountain. 2. Ada inspects the bell to learn whether its silence is caused by a stuck clapper. 3. Pip explains which puppet can safely be used in a breeze. 4. Ada tells Mara what she observed about the curtain or bell. 5. Mara lends the rope when she has enough care and the rope is available. 6. The children test the curtain with a clothespin and discover whether one fastener is enough. 7. Ada and Mara move the bench to form a windbreak. 8. Pip practices a short line behind the safer arrangement and gains confidence. 9. The group shifts the stage into the sheltered alcove. 10. Ada revises the performance plan so the wind puppet becomes the star. 11. Pip performs the opening scene. 12. The bell is repaired or replaced by a spoken signal. 13. The group secures the final prop and begins the show. 14. A successful performance ends with either a calm sheltered play, a cleverly wind-powered play, or a sturdy courtyard production.\",\"constraints\":\"Use 2–4 characters and declare every physical place, prop, ownership slot, location slot, meme, confidence value, and knowledge slot in the flat initial state. Every deliberate choice must require knowledge gained through observation or telling. No character may know the actual breeze, bell, or curtain condition without inspecting or being told. Preserve ownership and physical location consistently. Use 8–16 reusable scenes, about 5–10 selected events, and at least one built-in kernel such as observe, tell, or transfer. Avoid impossible weather control: characters may fasten, move, shelter, substitute, or adapt, but cannot magically stop the wind.\",\"different_endings\":\"One ending has the children move into the alcove, where Pip performs confidently beside a neatly folded curtain and the bell is replaced by a whispered cue. Another keeps the show in the courtyard: Ada and Mara secure the curtain with rope and clothespins, while Pip turns the lively breeze into the puppet’s dramatic entrance. A third uses the bench as a windbreak and reshapes the play around the bell’s limitations, ending with the audience following a rhythmic clap instead of a ring. All endings require an actual completed arrangement and Pip’s performance, but they prove different kinds of success.\"}",
+          "type": "output_text",
+          "logprobs": []
+        }
+      ],
+      "role": "assistant",
+      "status": "completed",
+      "type": "message",
+      "phase": "final_answer"
+    }
+  ],
+  "parallel_tool_calls": true,
+  "temperature": 1.0,
+  "tool_choice": "auto",
+  "tools": [],
+  "top_p": 0.98,
+  "background": false,
+  "completed_at": 1788818178.0,
+  "conversation": null,
+  "max_output_tokens": 6000,
+  "max_tool_calls": null,
+  "moderation": null,
+  "previous_response_id": null,
+  "prompt": null,
+  "prompt_cache_key": null,
+  "prompt_cache_retention": "24h",
+  "reasoning": {
+    "context": "all_turns",
+    "effort": "none",
+    "generate_summary": null,
+    "summary": null,
+    "mode": "standard"
+  },
+  "safety_identifier": null,
+  "service_tier": "flex",
+  "status": "completed",
+  "text": {
+    "format": {
+      "name": "theater_plan",
+      "schema_": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string"
+          },
+          "premise": {
+            "type": "string"
+          },
+          "cast_and_props": {
+            "type": "string"
+          },
+          "kernels_and_interactions": {
+            "type": "string"
+          },
+          "seed_parameters": {
+            "type": "string"
+          },
+          "candidate_scenes": {
+            "type": "string"
+          },
+          "constraints": {
+            "type": "string"
+          },
+          "different_endings": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "title",
+          "premise",
+          "cast_and_props",
+          "kernels_and_interactions",
+          "seed_parameters",
+          "candidate_scenes",
+          "constraints",
+          "different_endings"
+        ],
+        "additionalProperties": false
+      },
+      "type": "json_schema",
+      "description": null,
+      "strict": true
+    },
+    "verbosity": "medium"
+  },
+  "top_logprobs": 0,
+  "truncation": "disabled",
+  "usage": {
+    "input_tokens": 1673,
+    "input_tokens_details": {
+      "cached_tokens": 0,
+      "cache_write_tokens": 1670
+    },
+    "output_tokens": 890,
+    "output_tokens_details": {
+      "reasoning_tokens": 0
+    },
+    "total_tokens": 2563
+  },
+  "user": null,
+  "billing": {
+    "payer": "developer"
+  },
+  "frequency_penalty": 0.0,
+  "presence_penalty": 0.0,
+  "store": false,
+  "tool_usage": {
+    "image_gen": {
+      "input_tokens": 0,
+      "input_tokens_details": {
+        "image_tokens": 0,
+        "text_tokens": 0
+      },
+      "output_tokens": 0,
+      "output_tokens_details": {
+        "image_tokens": 0,
+        "text_tokens": 0
+      },
+      "total_tokens": 0
+    },
+    "web_search": {
+      "num_requests": 0
+    }
+  }
+}

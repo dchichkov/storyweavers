@@ -1,0 +1,722 @@
+[
+  {
+    "seed": 0,
+    "title": "The Courtyard Wind-Up Show",
+    "initial": {
+      "curtain.tangled": false,
+      "curtain.form": "hanging",
+      "curtain.location": "stage",
+      "ribbon.owner": "mara",
+      "ribbon.location": "basket",
+      "sun.location": "basket",
+      "clouds.location": "basket",
+      "stool.location": "stage",
+      "stage.performance": "none",
+      "stage.location": "courtyard",
+      "audience.invited": true,
+      "audience.present": false,
+      "audience.location": "courtyard",
+      "audience.response": "none",
+      "nia.brave": 0,
+      "nia.shadow_request": true,
+      "nia.agreed": false,
+      "nia.content": false,
+      "bo.plan": "quiet",
+      "mara.knows.curtain.tangled": null,
+      "mara.knows.bo.plan": null,
+      "mara.knows.audience.invited": null,
+      "mara.knows.nia.shadow_request": null,
+      "nia.knows.nia.shadow_request": true,
+      "bo.knows.audience.invited": null
+    },
+    "final": {
+      "curtain.tangled": false,
+      "curtain.form": "shadow_screen",
+      "curtain.location": "stage",
+      "ribbon.owner": "nia",
+      "ribbon.location": "basket",
+      "sun.location": "basket",
+      "clouds.location": "basket",
+      "stool.location": "stage",
+      "stage.performance": "shadow_story",
+      "stage.location": "courtyard",
+      "audience.invited": true,
+      "audience.present": true,
+      "audience.location": "courtyard",
+      "audience.response": "quietly_charmed",
+      "nia.brave": 1,
+      "nia.shadow_request": true,
+      "nia.agreed": true,
+      "nia.content": true,
+      "bo.plan": "quiet",
+      "mara.knows.curtain.tangled": null,
+      "mara.knows.bo.plan": null,
+      "mara.knows.audience.invited": null,
+      "mara.knows.nia.shadow_request": true,
+      "nia.knows.nia.shadow_request": true,
+      "bo.knows.audience.invited": null
+    },
+    "events": [
+      {
+        "id": 1,
+        "scene": "greet_audience",
+        "kernel": "Greeting",
+        "actors": [
+          "mara",
+          "nia",
+          "bo"
+        ],
+        "summary": "The children welcomed the courtyard audience",
+        "causes": [],
+        "requires": [
+          {
+            "key": "audience.present",
+            "op": "eq",
+            "value": false
+          }
+        ],
+        "changes": {
+          "audience.present": {
+            "before": false,
+            "after": true
+          }
+        }
+      },
+      {
+        "id": 2,
+        "scene": "tell_nia_to_mara",
+        "kernel": "Tell",
+        "actors": [
+          "nia",
+          "mara"
+        ],
+        "summary": "Nia told Mara she wanted a hidden shadow role",
+        "causes": [],
+        "requires": [
+          {
+            "key": "nia.knows.nia.shadow_request",
+            "op": "ne",
+            "value": null
+          },
+          {
+            "key": "nia.knows.nia.shadow_request",
+            "op": "eq",
+            "value": true
+          }
+        ],
+        "changes": {
+          "mara.knows.nia.shadow_request": {
+            "before": null,
+            "after": true
+          }
+        }
+      },
+      {
+        "id": 3,
+        "scene": "agree_small_role",
+        "kernel": "Courage",
+        "actors": [
+          "mara",
+          "nia"
+        ],
+        "summary": "Nia agreed to perform behind the curtain",
+        "causes": [
+          2
+        ],
+        "requires": [
+          {
+            "key": "mara.knows.nia.shadow_request",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "nia.brave",
+            "op": "eq",
+            "value": 0
+          },
+          {
+            "key": "ribbon.owner",
+            "op": "eq",
+            "value": "mara"
+          }
+        ],
+        "changes": {
+          "nia.brave": {
+            "before": 0,
+            "after": 1
+          },
+          "nia.agreed": {
+            "before": false,
+            "after": true
+          }
+        }
+      },
+      {
+        "id": 4,
+        "scene": "transfer_ribbon_to_nia",
+        "kernel": "Transfer",
+        "actors": [
+          "mara",
+          "nia"
+        ],
+        "summary": "Mara gave Nia the blue ribbon",
+        "causes": [
+          2
+        ],
+        "requires": [
+          {
+            "key": "ribbon.owner",
+            "op": "eq",
+            "value": "mara"
+          },
+          {
+            "key": "mara.knows.nia.shadow_request",
+            "op": "eq",
+            "value": true
+          }
+        ],
+        "changes": {
+          "ribbon.owner": {
+            "before": "mara",
+            "after": "nia"
+          }
+        }
+      },
+      {
+        "id": 5,
+        "scene": "fold_curtain_into_shadow_screen",
+        "kernel": "Shadows",
+        "actors": [
+          "nia",
+          "mara"
+        ],
+        "summary": "Nia folded the curtain into a glowing shadow screen",
+        "causes": [
+          3,
+          4
+        ],
+        "requires": [
+          {
+            "key": "nia.agreed",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "ribbon.owner",
+            "op": "eq",
+            "value": "nia"
+          },
+          {
+            "key": "curtain.tangled",
+            "op": "eq",
+            "value": false
+          }
+        ],
+        "changes": {
+          "curtain.form": {
+            "before": "hanging",
+            "after": "shadow_screen"
+          }
+        }
+      },
+      {
+        "id": 6,
+        "scene": "perform_shadow_story",
+        "kernel": "Performance",
+        "actors": [
+          "nia",
+          "mara"
+        ],
+        "summary": "Nia performed a quiet shadow story behind the screen",
+        "causes": [
+          1,
+          3,
+          5
+        ],
+        "requires": [
+          {
+            "key": "curtain.form",
+            "op": "eq",
+            "value": "shadow_screen"
+          },
+          {
+            "key": "nia.agreed",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "audience.present",
+            "op": "eq",
+            "value": true
+          }
+        ],
+        "changes": {
+          "stage.performance": {
+            "before": "none",
+            "after": "shadow_story"
+          },
+          "audience.response": {
+            "before": "none",
+            "after": "quietly_charmed"
+          },
+          "nia.content": {
+            "before": false,
+            "after": true
+          }
+        }
+      }
+    ]
+  },
+  {
+    "seed": 1,
+    "title": "The Courtyard Wind-Up Show",
+    "initial": {
+      "curtain.tangled": true,
+      "curtain.form": "hanging",
+      "curtain.location": "stage",
+      "ribbon.owner": "mara",
+      "ribbon.location": "basket",
+      "sun.location": "basket",
+      "clouds.location": "basket",
+      "stool.location": "stage",
+      "stage.performance": "none",
+      "stage.location": "courtyard",
+      "audience.invited": true,
+      "audience.present": false,
+      "audience.location": "courtyard",
+      "audience.response": "none",
+      "nia.brave": 1,
+      "nia.shadow_request": true,
+      "nia.agreed": false,
+      "nia.content": false,
+      "bo.plan": "quiet",
+      "mara.knows.curtain.tangled": null,
+      "mara.knows.bo.plan": null,
+      "mara.knows.audience.invited": null,
+      "mara.knows.nia.shadow_request": null,
+      "nia.knows.nia.shadow_request": true,
+      "bo.knows.audience.invited": null
+    },
+    "final": {
+      "curtain.tangled": false,
+      "curtain.form": "hanging",
+      "curtain.location": "stage",
+      "ribbon.owner": "bo",
+      "ribbon.location": "curtain",
+      "sun.location": "basket",
+      "clouds.location": "basket",
+      "stool.location": "stage",
+      "stage.performance": "kite_rescue",
+      "stage.location": "courtyard",
+      "audience.invited": true,
+      "audience.present": true,
+      "audience.location": "courtyard",
+      "audience.response": "delighted",
+      "nia.brave": 1,
+      "nia.shadow_request": true,
+      "nia.agreed": false,
+      "nia.content": true,
+      "bo.plan": "quiet",
+      "mara.knows.curtain.tangled": true,
+      "mara.knows.bo.plan": null,
+      "mara.knows.audience.invited": null,
+      "mara.knows.nia.shadow_request": null,
+      "nia.knows.nia.shadow_request": true,
+      "bo.knows.audience.invited": null
+    },
+    "events": [
+      {
+        "id": 1,
+        "scene": "notice_curtain",
+        "kernel": "Observe",
+        "actors": [
+          "mara"
+        ],
+        "summary": "Mara noticed the breeze-tangled curtain",
+        "causes": [],
+        "requires": [
+          {
+            "key": "curtain.tangled",
+            "op": "eq",
+            "value": true
+          }
+        ],
+        "changes": {
+          "mara.knows.curtain.tangled": {
+            "before": null,
+            "after": true
+          }
+        }
+      },
+      {
+        "id": 2,
+        "scene": "transfer_ribbon_to_bo",
+        "kernel": "Transfer",
+        "actors": [
+          "mara",
+          "bo"
+        ],
+        "summary": "Mara handed the blue ribbon to Bo",
+        "causes": [
+          1
+        ],
+        "requires": [
+          {
+            "key": "ribbon.owner",
+            "op": "eq",
+            "value": "mara"
+          },
+          {
+            "key": "mara.knows.curtain.tangled",
+            "op": "eq",
+            "value": true
+          }
+        ],
+        "changes": {
+          "ribbon.owner": {
+            "before": "mara",
+            "after": "bo"
+          }
+        }
+      },
+      {
+        "id": 3,
+        "scene": "untangle_curtain_with_ribbon",
+        "kernel": "Rescue",
+        "actors": [
+          "bo",
+          "mara"
+        ],
+        "summary": "Bo caught the curtain with the blue ribbon",
+        "causes": [
+          1,
+          2
+        ],
+        "requires": [
+          {
+            "key": "mara.knows.curtain.tangled",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "ribbon.owner",
+            "op": "eq",
+            "value": "bo"
+          },
+          {
+            "key": "curtain.tangled",
+            "op": "eq",
+            "value": true
+          }
+        ],
+        "changes": {
+          "curtain.tangled": {
+            "before": true,
+            "after": false
+          },
+          "ribbon.location": {
+            "before": "basket",
+            "after": "curtain"
+          }
+        }
+      },
+      {
+        "id": 4,
+        "scene": "greet_audience",
+        "kernel": "Greeting",
+        "actors": [
+          "mara",
+          "nia",
+          "bo"
+        ],
+        "summary": "The children welcomed the courtyard audience",
+        "causes": [],
+        "requires": [
+          {
+            "key": "audience.present",
+            "op": "eq",
+            "value": false
+          }
+        ],
+        "changes": {
+          "audience.present": {
+            "before": false,
+            "after": true
+          }
+        }
+      },
+      {
+        "id": 5,
+        "scene": "perform_kite_rescue",
+        "kernel": "Performance",
+        "actors": [
+          "bo",
+          "mara"
+        ],
+        "summary": "Puck flew as a kite puppet in the rescue show",
+        "causes": [
+          2,
+          3,
+          4
+        ],
+        "requires": [
+          {
+            "key": "curtain.tangled",
+            "op": "eq",
+            "value": false
+          },
+          {
+            "key": "ribbon.owner",
+            "op": "eq",
+            "value": "bo"
+          },
+          {
+            "key": "audience.present",
+            "op": "eq",
+            "value": true
+          }
+        ],
+        "changes": {
+          "stage.performance": {
+            "before": "none",
+            "after": "kite_rescue"
+          },
+          "audience.response": {
+            "before": "none",
+            "after": "delighted"
+          },
+          "nia.content": {
+            "before": false,
+            "after": true
+          }
+        }
+      }
+    ]
+  },
+  {
+    "seed": 2,
+    "title": "The Courtyard Wind-Up Show",
+    "initial": {
+      "curtain.tangled": true,
+      "curtain.form": "hanging",
+      "curtain.location": "stage",
+      "ribbon.owner": "mara",
+      "ribbon.location": "basket",
+      "sun.location": "basket",
+      "clouds.location": "basket",
+      "stool.location": "stage",
+      "stage.performance": "none",
+      "stage.location": "courtyard",
+      "audience.invited": true,
+      "audience.present": false,
+      "audience.location": "courtyard",
+      "audience.response": "none",
+      "nia.brave": 1,
+      "nia.shadow_request": true,
+      "nia.agreed": false,
+      "nia.content": false,
+      "bo.plan": "quiet",
+      "mara.knows.curtain.tangled": null,
+      "mara.knows.bo.plan": null,
+      "mara.knows.audience.invited": null,
+      "mara.knows.nia.shadow_request": null,
+      "nia.knows.nia.shadow_request": true,
+      "bo.knows.audience.invited": null
+    },
+    "final": {
+      "curtain.tangled": false,
+      "curtain.form": "hanging",
+      "curtain.location": "stage",
+      "ribbon.owner": "bo",
+      "ribbon.location": "curtain",
+      "sun.location": "basket",
+      "clouds.location": "basket",
+      "stool.location": "stage",
+      "stage.performance": "kite_rescue",
+      "stage.location": "courtyard",
+      "audience.invited": true,
+      "audience.present": true,
+      "audience.location": "courtyard",
+      "audience.response": "delighted",
+      "nia.brave": 1,
+      "nia.shadow_request": true,
+      "nia.agreed": false,
+      "nia.content": true,
+      "bo.plan": "quiet",
+      "mara.knows.curtain.tangled": true,
+      "mara.knows.bo.plan": null,
+      "mara.knows.audience.invited": null,
+      "mara.knows.nia.shadow_request": null,
+      "nia.knows.nia.shadow_request": true,
+      "bo.knows.audience.invited": null
+    },
+    "events": [
+      {
+        "id": 1,
+        "scene": "greet_audience",
+        "kernel": "Greeting",
+        "actors": [
+          "mara",
+          "nia",
+          "bo"
+        ],
+        "summary": "The children welcomed the courtyard audience",
+        "causes": [],
+        "requires": [
+          {
+            "key": "audience.present",
+            "op": "eq",
+            "value": false
+          }
+        ],
+        "changes": {
+          "audience.present": {
+            "before": false,
+            "after": true
+          }
+        }
+      },
+      {
+        "id": 2,
+        "scene": "notice_curtain",
+        "kernel": "Observe",
+        "actors": [
+          "mara"
+        ],
+        "summary": "Mara noticed the breeze-tangled curtain",
+        "causes": [],
+        "requires": [
+          {
+            "key": "curtain.tangled",
+            "op": "eq",
+            "value": true
+          }
+        ],
+        "changes": {
+          "mara.knows.curtain.tangled": {
+            "before": null,
+            "after": true
+          }
+        }
+      },
+      {
+        "id": 3,
+        "scene": "transfer_ribbon_to_bo",
+        "kernel": "Transfer",
+        "actors": [
+          "mara",
+          "bo"
+        ],
+        "summary": "Mara handed the blue ribbon to Bo",
+        "causes": [
+          2
+        ],
+        "requires": [
+          {
+            "key": "ribbon.owner",
+            "op": "eq",
+            "value": "mara"
+          },
+          {
+            "key": "mara.knows.curtain.tangled",
+            "op": "eq",
+            "value": true
+          }
+        ],
+        "changes": {
+          "ribbon.owner": {
+            "before": "mara",
+            "after": "bo"
+          }
+        }
+      },
+      {
+        "id": 4,
+        "scene": "untangle_curtain_with_ribbon",
+        "kernel": "Rescue",
+        "actors": [
+          "bo",
+          "mara"
+        ],
+        "summary": "Bo caught the curtain with the blue ribbon",
+        "causes": [
+          2,
+          3
+        ],
+        "requires": [
+          {
+            "key": "mara.knows.curtain.tangled",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "ribbon.owner",
+            "op": "eq",
+            "value": "bo"
+          },
+          {
+            "key": "curtain.tangled",
+            "op": "eq",
+            "value": true
+          }
+        ],
+        "changes": {
+          "curtain.tangled": {
+            "before": true,
+            "after": false
+          },
+          "ribbon.location": {
+            "before": "basket",
+            "after": "curtain"
+          }
+        }
+      },
+      {
+        "id": 5,
+        "scene": "perform_kite_rescue",
+        "kernel": "Performance",
+        "actors": [
+          "bo",
+          "mara"
+        ],
+        "summary": "Puck flew as a kite puppet in the rescue show",
+        "causes": [
+          1,
+          3,
+          4
+        ],
+        "requires": [
+          {
+            "key": "curtain.tangled",
+            "op": "eq",
+            "value": false
+          },
+          {
+            "key": "ribbon.owner",
+            "op": "eq",
+            "value": "bo"
+          },
+          {
+            "key": "audience.present",
+            "op": "eq",
+            "value": true
+          }
+        ],
+        "changes": {
+          "stage.performance": {
+            "before": "none",
+            "after": "kite_rescue"
+          },
+          "audience.response": {
+            "before": "none",
+            "after": "delighted"
+          },
+          "nia.content": {
+            "before": false,
+            "after": true
+          }
+        }
+      }
+    ]
+  }
+]

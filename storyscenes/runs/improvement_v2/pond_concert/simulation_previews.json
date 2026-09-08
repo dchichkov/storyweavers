@@ -1,0 +1,1237 @@
+[
+  {
+    "seed": 0,
+    "title": "The Moonlit Pond Concert",
+    "initial": {
+      "mira.wants": "spectacle",
+      "mira.believes.cheering": true,
+      "mira.knows.nella.presence": null,
+      "tom.wants": "spoon",
+      "tom.plan": "loud",
+      "tom.agrees": false,
+      "tom.knows.nella.hearing": null,
+      "tom.knows.pip.wish": null,
+      "pip.wants": "moon_song",
+      "pip.wish": "moon_song",
+      "pip.knows.nella.hearing": null,
+      "pip.knows.pip.wish": "moon_song",
+      "pip.knows.nella.enjoys": true,
+      "nella.presence": "cattails",
+      "nella.hearing": "muffled",
+      "nella.invited": false,
+      "nella.location": "cattails",
+      "reedstage.location": "bank",
+      "drum.owner": "tom",
+      "lanterns.location": "bank",
+      "spoon.owner": "pond",
+      "invitation.owner": "pip",
+      "concert.started": false,
+      "concert.finished": false,
+      "concert.rehearsal": "none",
+      "concert.style": "none",
+      "audience.delighted": false
+    },
+    "final": {
+      "mira.wants": "spectacle",
+      "mira.believes.cheering": true,
+      "mira.knows.nella.presence": null,
+      "tom.wants": "spoon",
+      "tom.plan": "loud",
+      "tom.agrees": false,
+      "tom.knows.nella.hearing": null,
+      "tom.knows.pip.wish": null,
+      "pip.wants": "moon_song",
+      "pip.wish": "moon_song",
+      "pip.knows.nella.hearing": null,
+      "pip.knows.pip.wish": "moon_song",
+      "pip.knows.nella.enjoys": true,
+      "nella.presence": "cattails",
+      "nella.hearing": "muffled",
+      "nella.invited": true,
+      "nella.location": "cattails",
+      "reedstage.location": "pond",
+      "drum.owner": "tom",
+      "lanterns.location": "reedstage",
+      "spoon.owner": "tom",
+      "invitation.owner": "nella",
+      "concert.started": true,
+      "concert.finished": true,
+      "concert.rehearsal": "roar",
+      "concert.style": "loud",
+      "audience.delighted": true
+    },
+    "events": [
+      {
+        "id": 1,
+        "scene": "rehearse_roar",
+        "kernel": "Rehearse",
+        "actors": [
+          "tom"
+        ],
+        "summary": "Tom rehearsed a booming kettle-drum finale.",
+        "causes": [],
+        "requires": [
+          {
+            "key": "drum.owner",
+            "op": "eq",
+            "value": "tom"
+          },
+          {
+            "key": "tom.plan",
+            "op": "eq",
+            "value": "loud"
+          }
+        ],
+        "changes": {
+          "concert.rehearsal": {
+            "before": "none",
+            "after": "roar"
+          }
+        }
+      },
+      {
+        "id": 2,
+        "scene": "invite_nella",
+        "kernel": "Transfer",
+        "actors": [
+          "pip",
+          "nella"
+        ],
+        "summary": "Pip sent the paper invitation through the cattails.",
+        "causes": [],
+        "requires": [
+          {
+            "key": "invitation.owner",
+            "op": "eq",
+            "value": "pip"
+          },
+          {
+            "key": "nella.presence",
+            "op": "eq",
+            "value": "cattails"
+          },
+          {
+            "key": "nella.location",
+            "op": "eq",
+            "value": "cattails"
+          }
+        ],
+        "changes": {
+          "invitation.owner": {
+            "before": "pip",
+            "after": "nella"
+          }
+        }
+      },
+      {
+        "id": 3,
+        "scene": "accept_invitation",
+        "kernel": "Invitation",
+        "actors": [
+          "nella"
+        ],
+        "summary": "Nella accepted the invitation from behind the cattails.",
+        "causes": [
+          2
+        ],
+        "requires": [
+          {
+            "key": "invitation.owner",
+            "op": "eq",
+            "value": "nella"
+          },
+          {
+            "key": "nella.presence",
+            "op": "eq",
+            "value": "cattails"
+          }
+        ],
+        "changes": {
+          "nella.invited": {
+            "before": false,
+            "after": true
+          }
+        }
+      },
+      {
+        "id": 4,
+        "scene": "float_stage",
+        "kernel": "Prepare",
+        "actors": [
+          "mira",
+          "pip"
+        ],
+        "summary": "Mira and Pip floated the reed stage onto the pond.",
+        "causes": [],
+        "requires": [
+          {
+            "key": "reedstage.location",
+            "op": "eq",
+            "value": "bank"
+          }
+        ],
+        "changes": {
+          "reedstage.location": {
+            "before": "bank",
+            "after": "pond"
+          }
+        }
+      },
+      {
+        "id": 5,
+        "scene": "hang_lanterns",
+        "kernel": "Prepare",
+        "actors": [
+          "mira"
+        ],
+        "summary": "Mira draped the lantern ribbon over the reed stage.",
+        "causes": [
+          4
+        ],
+        "requires": [
+          {
+            "key": "reedstage.location",
+            "op": "eq",
+            "value": "pond"
+          },
+          {
+            "key": "lanterns.location",
+            "op": "eq",
+            "value": "bank"
+          }
+        ],
+        "changes": {
+          "lanterns.location": {
+            "before": "bank",
+            "after": "reedstage"
+          }
+        }
+      },
+      {
+        "id": 6,
+        "scene": "call_concert_guest",
+        "kernel": "Invite",
+        "actors": [
+          "mira",
+          "tom",
+          "pip",
+          "nella"
+        ],
+        "summary": "The invited concert began beneath the pond lanterns.",
+        "causes": [
+          3,
+          4,
+          5
+        ],
+        "requires": [
+          {
+            "key": "nella.invited",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "reedstage.location",
+            "op": "eq",
+            "value": "pond"
+          },
+          {
+            "key": "lanterns.location",
+            "op": "eq",
+            "value": "reedstage"
+          },
+          {
+            "key": "concert.started",
+            "op": "eq",
+            "value": false
+          }
+        ],
+        "changes": {
+          "concert.started": {
+            "before": false,
+            "after": true
+          }
+        }
+      },
+      {
+        "id": 7,
+        "scene": "perform_roar",
+        "kernel": "Perform",
+        "actors": [
+          "tom"
+        ],
+        "summary": "Tom's kettle-drum finale boomed across the lily pads.",
+        "causes": [
+          1,
+          6
+        ],
+        "requires": [
+          {
+            "key": "concert.started",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "concert.rehearsal",
+            "op": "eq",
+            "value": "roar"
+          }
+        ],
+        "changes": {
+          "concert.style": {
+            "before": "none",
+            "after": "loud"
+          },
+          "audience.delighted": {
+            "before": false,
+            "after": true
+          }
+        }
+      },
+      {
+        "id": 8,
+        "scene": "award_spoon_loud",
+        "kernel": "Transfer",
+        "actors": [
+          "pond",
+          "tom"
+        ],
+        "summary": "The frogs awarded Tom the Golden Tadpole Spoon.",
+        "causes": [
+          7
+        ],
+        "requires": [
+          {
+            "key": "spoon.owner",
+            "op": "eq",
+            "value": "pond"
+          },
+          {
+            "key": "concert.style",
+            "op": "eq",
+            "value": "loud"
+          },
+          {
+            "key": "audience.delighted",
+            "op": "eq",
+            "value": true
+          }
+        ],
+        "changes": {
+          "spoon.owner": {
+            "before": "pond",
+            "after": "tom"
+          }
+        }
+      },
+      {
+        "id": 9,
+        "scene": "close_loud",
+        "kernel": "Close",
+        "actors": [
+          "tom"
+        ],
+        "summary": "The loud pond concert ended with Tom's prize held high.",
+        "causes": [
+          7,
+          8
+        ],
+        "requires": [
+          {
+            "key": "concert.style",
+            "op": "eq",
+            "value": "loud"
+          },
+          {
+            "key": "spoon.owner",
+            "op": "eq",
+            "value": "tom"
+          },
+          {
+            "key": "concert.finished",
+            "op": "eq",
+            "value": false
+          }
+        ],
+        "changes": {
+          "concert.finished": {
+            "before": false,
+            "after": true
+          }
+        }
+      }
+    ]
+  },
+  {
+    "seed": 1,
+    "title": "The Moonlit Pond Concert",
+    "initial": {
+      "mira.wants": "spectacle",
+      "mira.believes.cheering": true,
+      "mira.knows.nella.presence": null,
+      "tom.wants": "spoon",
+      "tom.plan": "clever",
+      "tom.agrees": false,
+      "tom.knows.nella.hearing": null,
+      "tom.knows.pip.wish": null,
+      "pip.wants": "moon_song",
+      "pip.wish": "moon_song",
+      "pip.knows.nella.hearing": null,
+      "pip.knows.pip.wish": "moon_song",
+      "pip.knows.nella.enjoys": true,
+      "nella.presence": "cattails",
+      "nella.hearing": "keen",
+      "nella.invited": false,
+      "nella.location": "cattails",
+      "reedstage.location": "bank",
+      "drum.owner": "tom",
+      "lanterns.location": "bank",
+      "spoon.owner": "pond",
+      "invitation.owner": "pip",
+      "concert.started": false,
+      "concert.finished": false,
+      "concert.rehearsal": "none",
+      "concert.style": "none",
+      "audience.delighted": false
+    },
+    "final": {
+      "mira.wants": "spectacle",
+      "mira.believes.cheering": true,
+      "mira.knows.nella.presence": null,
+      "tom.wants": "spoon",
+      "tom.plan": "gentle",
+      "tom.agrees": true,
+      "tom.knows.nella.hearing": "keen",
+      "tom.knows.pip.wish": "moon_song",
+      "pip.wants": "moon_song",
+      "pip.wish": "moon_song",
+      "pip.knows.nella.hearing": "keen",
+      "pip.knows.pip.wish": "moon_song",
+      "pip.knows.nella.enjoys": true,
+      "nella.presence": "cattails",
+      "nella.hearing": "keen",
+      "nella.invited": true,
+      "nella.location": "cattails",
+      "reedstage.location": "pond",
+      "drum.owner": "tom",
+      "lanterns.location": "reedstage",
+      "spoon.owner": "pond",
+      "invitation.owner": "nella",
+      "concert.started": true,
+      "concert.finished": true,
+      "concert.rehearsal": "moon",
+      "concert.style": "soft",
+      "audience.delighted": true
+    },
+    "events": [
+      {
+        "id": 1,
+        "scene": "notice_quiet",
+        "kernel": "Observe",
+        "actors": [
+          "pip"
+        ],
+        "summary": "Pip listened closely and noticed how Nella could hear.",
+        "causes": [],
+        "requires": [
+          {
+            "key": "nella.presence",
+            "op": "eq",
+            "value": "cattails"
+          }
+        ],
+        "changes": {
+          "pip.knows.nella.hearing": {
+            "before": null,
+            "after": "keen"
+          }
+        }
+      },
+      {
+        "id": 2,
+        "scene": "float_stage",
+        "kernel": "Prepare",
+        "actors": [
+          "mira",
+          "pip"
+        ],
+        "summary": "Mira and Pip floated the reed stage onto the pond.",
+        "causes": [],
+        "requires": [
+          {
+            "key": "reedstage.location",
+            "op": "eq",
+            "value": "bank"
+          }
+        ],
+        "changes": {
+          "reedstage.location": {
+            "before": "bank",
+            "after": "pond"
+          }
+        }
+      },
+      {
+        "id": 3,
+        "scene": "invite_nella",
+        "kernel": "Transfer",
+        "actors": [
+          "pip",
+          "nella"
+        ],
+        "summary": "Pip sent the paper invitation through the cattails.",
+        "causes": [],
+        "requires": [
+          {
+            "key": "invitation.owner",
+            "op": "eq",
+            "value": "pip"
+          },
+          {
+            "key": "nella.presence",
+            "op": "eq",
+            "value": "cattails"
+          },
+          {
+            "key": "nella.location",
+            "op": "eq",
+            "value": "cattails"
+          }
+        ],
+        "changes": {
+          "invitation.owner": {
+            "before": "pip",
+            "after": "nella"
+          }
+        }
+      },
+      {
+        "id": 4,
+        "scene": "hang_lanterns",
+        "kernel": "Prepare",
+        "actors": [
+          "mira"
+        ],
+        "summary": "Mira draped the lantern ribbon over the reed stage.",
+        "causes": [
+          2
+        ],
+        "requires": [
+          {
+            "key": "reedstage.location",
+            "op": "eq",
+            "value": "pond"
+          },
+          {
+            "key": "lanterns.location",
+            "op": "eq",
+            "value": "bank"
+          }
+        ],
+        "changes": {
+          "lanterns.location": {
+            "before": "bank",
+            "after": "reedstage"
+          }
+        }
+      },
+      {
+        "id": 5,
+        "scene": "tell_tom_wish",
+        "kernel": "Tell",
+        "actors": [
+          "pip",
+          "tom"
+        ],
+        "summary": "Pip told Tom about the moon-song he hoped to play.",
+        "causes": [],
+        "requires": [
+          {
+            "key": "pip.knows.pip.wish",
+            "op": "ne",
+            "value": null
+          },
+          {
+            "key": "pip.knows.pip.wish",
+            "op": "eq",
+            "value": "moon_song"
+          }
+        ],
+        "changes": {
+          "tom.knows.pip.wish": {
+            "before": null,
+            "after": "moon_song"
+          }
+        }
+      },
+      {
+        "id": 6,
+        "scene": "tell_tom_hearing",
+        "kernel": "Tell",
+        "actors": [
+          "pip",
+          "tom"
+        ],
+        "summary": "Pip told Tom what he had learned about Nella's hearing.",
+        "causes": [
+          1
+        ],
+        "requires": [
+          {
+            "key": "pip.knows.nella.hearing",
+            "op": "ne",
+            "value": null
+          },
+          {
+            "key": "pip.knows.nella.hearing",
+            "op": "in",
+            "value": [
+              "keen",
+              "muffled"
+            ]
+          },
+          {
+            "key": "nella.presence",
+            "op": "eq",
+            "value": "cattails"
+          }
+        ],
+        "changes": {
+          "tom.knows.nella.hearing": {
+            "before": null,
+            "after": "keen"
+          }
+        }
+      },
+      {
+        "id": 7,
+        "scene": "rehearse_moon",
+        "kernel": "Rehearse",
+        "actors": [
+          "pip"
+        ],
+        "summary": "Pip rehearsed his gentle moon-song on the floating stage.",
+        "causes": [
+          2
+        ],
+        "requires": [
+          {
+            "key": "reedstage.location",
+            "op": "eq",
+            "value": "pond"
+          }
+        ],
+        "changes": {
+          "concert.rehearsal": {
+            "before": "none",
+            "after": "moon"
+          }
+        }
+      },
+      {
+        "id": 8,
+        "scene": "accept_invitation",
+        "kernel": "Invitation",
+        "actors": [
+          "nella"
+        ],
+        "summary": "Nella accepted the invitation from behind the cattails.",
+        "causes": [
+          3
+        ],
+        "requires": [
+          {
+            "key": "invitation.owner",
+            "op": "eq",
+            "value": "nella"
+          },
+          {
+            "key": "nella.presence",
+            "op": "eq",
+            "value": "cattails"
+          }
+        ],
+        "changes": {
+          "nella.invited": {
+            "before": false,
+            "after": true
+          }
+        }
+      },
+      {
+        "id": 9,
+        "scene": "choose_kind_finale",
+        "kernel": "Choose",
+        "actors": [
+          "tom",
+          "pip"
+        ],
+        "summary": "Tom chose Pip's moon-song over a prize-winning roar.",
+        "causes": [
+          5,
+          6
+        ],
+        "requires": [
+          {
+            "key": "tom.plan",
+            "op": "eq",
+            "value": "clever"
+          },
+          {
+            "key": "tom.knows.pip.wish",
+            "op": "eq",
+            "value": "moon_song"
+          },
+          {
+            "key": "tom.knows.nella.hearing",
+            "op": "eq",
+            "value": "keen"
+          },
+          {
+            "key": "nella.presence",
+            "op": "eq",
+            "value": "cattails"
+          },
+          {
+            "key": "pip.knows.nella.enjoys",
+            "op": "eq",
+            "value": true
+          }
+        ],
+        "changes": {
+          "tom.plan": {
+            "before": "clever",
+            "after": "gentle"
+          },
+          "tom.agrees": {
+            "before": false,
+            "after": true
+          }
+        }
+      },
+      {
+        "id": 10,
+        "scene": "call_concert_guest",
+        "kernel": "Invite",
+        "actors": [
+          "mira",
+          "tom",
+          "pip",
+          "nella"
+        ],
+        "summary": "The invited concert began beneath the pond lanterns.",
+        "causes": [
+          2,
+          4,
+          8
+        ],
+        "requires": [
+          {
+            "key": "nella.invited",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "reedstage.location",
+            "op": "eq",
+            "value": "pond"
+          },
+          {
+            "key": "lanterns.location",
+            "op": "eq",
+            "value": "reedstage"
+          },
+          {
+            "key": "concert.started",
+            "op": "eq",
+            "value": false
+          }
+        ],
+        "changes": {
+          "concert.started": {
+            "before": false,
+            "after": true
+          }
+        }
+      },
+      {
+        "id": 11,
+        "scene": "perform_mixed",
+        "kernel": "Perform",
+        "actors": [
+          "pip",
+          "tom"
+        ],
+        "summary": "Pip's moon-song ended in Tom's playful silver drum ripple.",
+        "causes": [
+          7,
+          9,
+          10
+        ],
+        "requires": [
+          {
+            "key": "concert.started",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "concert.rehearsal",
+            "op": "eq",
+            "value": "moon"
+          },
+          {
+            "key": "tom.agrees",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "drum.owner",
+            "op": "eq",
+            "value": "tom"
+          }
+        ],
+        "changes": {
+          "concert.style": {
+            "before": "none",
+            "after": "mixed"
+          },
+          "audience.delighted": {
+            "before": false,
+            "after": true
+          }
+        }
+      },
+      {
+        "id": 12,
+        "scene": "perform_moon",
+        "kernel": "Perform",
+        "actors": [
+          "pip"
+        ],
+        "summary": "Pip played the moon-song softly enough for the reeds to listen.",
+        "causes": [
+          7,
+          9,
+          10,
+          11
+        ],
+        "requires": [
+          {
+            "key": "concert.started",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "concert.rehearsal",
+            "op": "eq",
+            "value": "moon"
+          },
+          {
+            "key": "tom.agrees",
+            "op": "eq",
+            "value": true
+          }
+        ],
+        "changes": {
+          "concert.style": {
+            "before": "mixed",
+            "after": "soft"
+          }
+        }
+      },
+      {
+        "id": 13,
+        "scene": "close_soft",
+        "kernel": "Close",
+        "actors": [
+          "pip",
+          "nella"
+        ],
+        "summary": "The moon-song concert ended in a warm, quiet hush.",
+        "causes": [
+          11,
+          12
+        ],
+        "requires": [
+          {
+            "key": "concert.style",
+            "op": "eq",
+            "value": "soft"
+          },
+          {
+            "key": "concert.finished",
+            "op": "eq",
+            "value": false
+          }
+        ],
+        "changes": {
+          "concert.finished": {
+            "before": false,
+            "after": true
+          }
+        }
+      }
+    ]
+  },
+  {
+    "seed": 2,
+    "title": "The Moonlit Pond Concert",
+    "initial": {
+      "mira.wants": "spectacle",
+      "mira.believes.cheering": true,
+      "mira.knows.nella.presence": null,
+      "tom.wants": "spoon",
+      "tom.plan": "loud",
+      "tom.agrees": false,
+      "tom.knows.nella.hearing": null,
+      "tom.knows.pip.wish": null,
+      "pip.wants": "moon_song",
+      "pip.wish": "moon_song",
+      "pip.knows.nella.hearing": null,
+      "pip.knows.pip.wish": "moon_song",
+      "pip.knows.nella.enjoys": true,
+      "nella.presence": "cattails",
+      "nella.hearing": "keen",
+      "nella.invited": false,
+      "nella.location": "cattails",
+      "reedstage.location": "bank",
+      "drum.owner": "tom",
+      "lanterns.location": "bank",
+      "spoon.owner": "pond",
+      "invitation.owner": "pip",
+      "concert.started": false,
+      "concert.finished": false,
+      "concert.rehearsal": "none",
+      "concert.style": "none",
+      "audience.delighted": false
+    },
+    "final": {
+      "mira.wants": "spectacle",
+      "mira.believes.cheering": true,
+      "mira.knows.nella.presence": null,
+      "tom.wants": "spoon",
+      "tom.plan": "loud",
+      "tom.agrees": false,
+      "tom.knows.nella.hearing": null,
+      "tom.knows.pip.wish": null,
+      "pip.wants": "moon_song",
+      "pip.wish": "moon_song",
+      "pip.knows.nella.hearing": null,
+      "pip.knows.pip.wish": "moon_song",
+      "pip.knows.nella.enjoys": true,
+      "nella.presence": "cattails",
+      "nella.hearing": "keen",
+      "nella.invited": true,
+      "nella.location": "cattails",
+      "reedstage.location": "pond",
+      "drum.owner": "tom",
+      "lanterns.location": "reedstage",
+      "spoon.owner": "tom",
+      "invitation.owner": "nella",
+      "concert.started": true,
+      "concert.finished": true,
+      "concert.rehearsal": "roar",
+      "concert.style": "loud",
+      "audience.delighted": true
+    },
+    "events": [
+      {
+        "id": 1,
+        "scene": "rehearse_roar",
+        "kernel": "Rehearse",
+        "actors": [
+          "tom"
+        ],
+        "summary": "Tom rehearsed a booming kettle-drum finale.",
+        "causes": [],
+        "requires": [
+          {
+            "key": "drum.owner",
+            "op": "eq",
+            "value": "tom"
+          },
+          {
+            "key": "tom.plan",
+            "op": "eq",
+            "value": "loud"
+          }
+        ],
+        "changes": {
+          "concert.rehearsal": {
+            "before": "none",
+            "after": "roar"
+          }
+        }
+      },
+      {
+        "id": 2,
+        "scene": "float_stage",
+        "kernel": "Prepare",
+        "actors": [
+          "mira",
+          "pip"
+        ],
+        "summary": "Mira and Pip floated the reed stage onto the pond.",
+        "causes": [],
+        "requires": [
+          {
+            "key": "reedstage.location",
+            "op": "eq",
+            "value": "bank"
+          }
+        ],
+        "changes": {
+          "reedstage.location": {
+            "before": "bank",
+            "after": "pond"
+          }
+        }
+      },
+      {
+        "id": 3,
+        "scene": "hang_lanterns",
+        "kernel": "Prepare",
+        "actors": [
+          "mira"
+        ],
+        "summary": "Mira draped the lantern ribbon over the reed stage.",
+        "causes": [
+          2
+        ],
+        "requires": [
+          {
+            "key": "reedstage.location",
+            "op": "eq",
+            "value": "pond"
+          },
+          {
+            "key": "lanterns.location",
+            "op": "eq",
+            "value": "bank"
+          }
+        ],
+        "changes": {
+          "lanterns.location": {
+            "before": "bank",
+            "after": "reedstage"
+          }
+        }
+      },
+      {
+        "id": 4,
+        "scene": "invite_nella",
+        "kernel": "Transfer",
+        "actors": [
+          "pip",
+          "nella"
+        ],
+        "summary": "Pip sent the paper invitation through the cattails.",
+        "causes": [],
+        "requires": [
+          {
+            "key": "invitation.owner",
+            "op": "eq",
+            "value": "pip"
+          },
+          {
+            "key": "nella.presence",
+            "op": "eq",
+            "value": "cattails"
+          },
+          {
+            "key": "nella.location",
+            "op": "eq",
+            "value": "cattails"
+          }
+        ],
+        "changes": {
+          "invitation.owner": {
+            "before": "pip",
+            "after": "nella"
+          }
+        }
+      },
+      {
+        "id": 5,
+        "scene": "accept_invitation",
+        "kernel": "Invitation",
+        "actors": [
+          "nella"
+        ],
+        "summary": "Nella accepted the invitation from behind the cattails.",
+        "causes": [
+          4
+        ],
+        "requires": [
+          {
+            "key": "invitation.owner",
+            "op": "eq",
+            "value": "nella"
+          },
+          {
+            "key": "nella.presence",
+            "op": "eq",
+            "value": "cattails"
+          }
+        ],
+        "changes": {
+          "nella.invited": {
+            "before": false,
+            "after": true
+          }
+        }
+      },
+      {
+        "id": 6,
+        "scene": "call_concert_guest",
+        "kernel": "Invite",
+        "actors": [
+          "mira",
+          "tom",
+          "pip",
+          "nella"
+        ],
+        "summary": "The invited concert began beneath the pond lanterns.",
+        "causes": [
+          2,
+          3,
+          5
+        ],
+        "requires": [
+          {
+            "key": "nella.invited",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "reedstage.location",
+            "op": "eq",
+            "value": "pond"
+          },
+          {
+            "key": "lanterns.location",
+            "op": "eq",
+            "value": "reedstage"
+          },
+          {
+            "key": "concert.started",
+            "op": "eq",
+            "value": false
+          }
+        ],
+        "changes": {
+          "concert.started": {
+            "before": false,
+            "after": true
+          }
+        }
+      },
+      {
+        "id": 7,
+        "scene": "perform_roar",
+        "kernel": "Perform",
+        "actors": [
+          "tom"
+        ],
+        "summary": "Tom's kettle-drum finale boomed across the lily pads.",
+        "causes": [
+          1,
+          6
+        ],
+        "requires": [
+          {
+            "key": "concert.started",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "concert.rehearsal",
+            "op": "eq",
+            "value": "roar"
+          }
+        ],
+        "changes": {
+          "concert.style": {
+            "before": "none",
+            "after": "loud"
+          },
+          "audience.delighted": {
+            "before": false,
+            "after": true
+          }
+        }
+      },
+      {
+        "id": 8,
+        "scene": "award_spoon_loud",
+        "kernel": "Transfer",
+        "actors": [
+          "pond",
+          "tom"
+        ],
+        "summary": "The frogs awarded Tom the Golden Tadpole Spoon.",
+        "causes": [
+          7
+        ],
+        "requires": [
+          {
+            "key": "spoon.owner",
+            "op": "eq",
+            "value": "pond"
+          },
+          {
+            "key": "concert.style",
+            "op": "eq",
+            "value": "loud"
+          },
+          {
+            "key": "audience.delighted",
+            "op": "eq",
+            "value": true
+          }
+        ],
+        "changes": {
+          "spoon.owner": {
+            "before": "pond",
+            "after": "tom"
+          }
+        }
+      },
+      {
+        "id": 9,
+        "scene": "close_loud",
+        "kernel": "Close",
+        "actors": [
+          "tom"
+        ],
+        "summary": "The loud pond concert ended with Tom's prize held high.",
+        "causes": [
+          7,
+          8
+        ],
+        "requires": [
+          {
+            "key": "concert.style",
+            "op": "eq",
+            "value": "loud"
+          },
+          {
+            "key": "spoon.owner",
+            "op": "eq",
+            "value": "tom"
+          },
+          {
+            "key": "concert.finished",
+            "op": "eq",
+            "value": false
+          }
+        ],
+        "changes": {
+          "concert.finished": {
+            "before": false,
+            "after": true
+          }
+        }
+      }
+    ]
+  }
+]

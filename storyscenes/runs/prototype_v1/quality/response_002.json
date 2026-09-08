@@ -1,0 +1,362 @@
+{
+  "id": "resp_0a0b21953099aadb006a9f33b122c887d085389456fb09592c",
+  "created_at": 1788818353.0,
+  "error": null,
+  "incomplete_details": null,
+  "instructions": null,
+  "metadata": {},
+  "model": "gpt-5.6-terra",
+  "object": "response",
+  "output": [
+    {
+      "id": "msg_0a0b21953099aadb006a9f33b201e087d0ba11e4f50f8b911e",
+      "content": [
+        {
+          "annotations": [],
+          "text": "{\"stories\":[{\"id\":\"s000029\",\"rating\":{\"coherence\":8,\"style\":7,\"grammar\":9,\"storytelling\":8,\"overall\":8},\"note\":\"The muddy-path constraint leads clearly to a split picnic that includes Noor; the note beside the basket gives the ending a concrete image, though the prose is somewhat adult and explanatory.\"},{\"id\":\"s000057\",\"rating\":{\"coherence\":8,\"style\":7,\"grammar\":9,\"storytelling\":8,\"overall\":8},\"note\":\"A coherent, considerate solution follows from mud and Noor's needs, ending with the hilltop note at the shared meal; some repeated moral explanation slows the child-focused story.\"},{\"id\":\"s000047\",\"rating\":{\"coherence\":9,\"style\":7,\"grammar\":9,\"storytelling\":8,\"overall\":8},\"note\":\"The firm path, manageable loads, and slow climb directly enable everyone to reach the hilltop together; the steady blanket and shining valley provide a satisfying concrete close.\"},{\"id\":\"s000073\",\"rating\":{\"coherence\":8,\"style\":7,\"grammar\":9,\"storytelling\":8,\"overall\":8},\"note\":\"Mud and gusts motivate the sheltered picnic and windbreak, with Noor actively testing the calm pocket; the final fluttering cloth makes the resolution visible, despite didactic phrasing.\"},{\"id\":\"s000034\",\"rating\":{\"coherence\":9,\"style\":7,\"grammar\":9,\"storytelling\":8,\"overall\":8},\"note\":\"The group adapts its grand hilltop plan to Noor's pace and Moss's manageable load, then reaches the view together; the valley beyond the blanket is an effective ending image.\"},{\"id\":\"s000043\",\"rating\":{\"coherence\":8,\"style\":7,\"grammar\":9,\"storytelling\":8,\"overall\":8},\"note\":\"The muddy route causes a practical two-place picnic, preserving both safety and a small hilltop experience; the note laid beside the basket closes the story concretely.\"},{\"id\":\"s000068\",\"rating\":{\"coherence\":8,\"style\":7,\"grammar\":9,\"storytelling\":8,\"overall\":8},\"note\":\"The characters respond sensibly to mud and wind by moving to a shelter and building a windbreak; the final quiet corner and fluttering windbreak complete the scene clearly.\"},{\"id\":\"s000096\",\"rating\":{\"coherence\":8,\"style\":7,\"grammar\":9,\"storytelling\":7,\"overall\":8},\"note\":\"The muddy-path solution is logical and inclusive, but it skips the stated return from the hilltop before showing the note at the lower picnic; otherwise the ending image is strong.\"},{\"id\":\"s000005\",\"rating\":{\"coherence\":8,\"style\":7,\"grammar\":9,\"storytelling\":8,\"overall\":8},\"note\":\"Noor's need for shelter and the gusty conditions drive a clear change from hilltop plans to a windbreak picnic; the sensory final image grounds the resolution.\"},{\"id\":\"s000085\",\"rating\":{\"coherence\":8,\"style\":7,\"grammar\":9,\"storytelling\":8,\"overall\":8},\"note\":\"A muddy route prompts the group to separate the tiny view trip from Noor's sheltered meal, and the hilltop note bridges both experiences; repeated explanation makes it slightly overlong.\"}],\"diversity\":{\"premise\":3,\"causal_path\":4,\"ending\":4,\"language\":3,\"overall\":3},\"diversity_evidence\":\"All ten stories share the same hill-picnic premise, characters, planning beats, and inclusion theme. There are three meaningful resolution branches: firm path permits a slow hilltop picnic (s000047, s000034); mud plus gusts leads to a sheltered windbreak picnic (s000073, s000068, s000005); mud with calm weather produces a split view-trip and lower picnic linked by a note (s000029, s000057, s000043, s000096, s000085). Most language and scenes are near-duplicates or reordered passages, so this sample shows limited variation rather than evidence about the whole generator.\" ,\"plot_groups\":[{\"story_ids\":[\"s000047\",\"s000034\"],\"summary\":\"A firm, gentle path allows the group to slow down, lighten Moss's load, and bring Noor and the full picnic to the hilltop together.\"},{\"story_ids\":[\"s000073\",\"s000068\",\"s000005\"],\"summary\":\"A muddy route and gusty weather redirect the picnic to a shelter, where the children make a windbreak so Noor can eat comfortably.\"},{\"story_ids\":[\"s000029\",\"s000057\",\"s000043\",\"s000096\",\"s000085\"],\"summary\":\"A muddy route prevents the full hilltop picnic, so the main meal stays below while a small group carries a tiny snack and note to the view, then brings the note back.\"}] }",
+          "type": "output_text",
+          "logprobs": []
+        }
+      ],
+      "role": "assistant",
+      "status": "completed",
+      "type": "message",
+      "phase": "final_answer"
+    }
+  ],
+  "parallel_tool_calls": true,
+  "temperature": 1.0,
+  "tool_choice": "auto",
+  "tools": [],
+  "top_p": 0.98,
+  "background": false,
+  "completed_at": 1788818361.0,
+  "conversation": null,
+  "max_output_tokens": 4000,
+  "max_tool_calls": null,
+  "moderation": null,
+  "previous_response_id": null,
+  "prompt": null,
+  "prompt_cache_key": null,
+  "prompt_cache_retention": "24h",
+  "reasoning": {
+    "context": "all_turns",
+    "effort": "none",
+    "generate_summary": null,
+    "summary": null,
+    "mode": "standard"
+  },
+  "safety_identifier": null,
+  "service_tier": "flex",
+  "status": "completed",
+  "text": {
+    "format": {
+      "name": "story_set_quality_v1",
+      "schema_": {
+        "type": "object",
+        "properties": {
+          "stories": {
+            "type": "array",
+            "minItems": 10,
+            "maxItems": 10,
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "enum": [
+                    "s000029",
+                    "s000057",
+                    "s000047",
+                    "s000073",
+                    "s000034",
+                    "s000043",
+                    "s000068",
+                    "s000096",
+                    "s000005",
+                    "s000085"
+                  ]
+                },
+                "rating": {
+                  "type": "object",
+                  "properties": {
+                    "coherence": {
+                      "type": "integer",
+                      "enum": [
+                        0,
+                        1,
+                        2,
+                        3,
+                        4,
+                        5,
+                        6,
+                        7,
+                        8,
+                        9
+                      ]
+                    },
+                    "style": {
+                      "type": "integer",
+                      "enum": [
+                        0,
+                        1,
+                        2,
+                        3,
+                        4,
+                        5,
+                        6,
+                        7,
+                        8,
+                        9
+                      ]
+                    },
+                    "grammar": {
+                      "type": "integer",
+                      "enum": [
+                        0,
+                        1,
+                        2,
+                        3,
+                        4,
+                        5,
+                        6,
+                        7,
+                        8,
+                        9
+                      ]
+                    },
+                    "storytelling": {
+                      "type": "integer",
+                      "enum": [
+                        0,
+                        1,
+                        2,
+                        3,
+                        4,
+                        5,
+                        6,
+                        7,
+                        8,
+                        9
+                      ]
+                    },
+                    "overall": {
+                      "type": "integer",
+                      "enum": [
+                        0,
+                        1,
+                        2,
+                        3,
+                        4,
+                        5,
+                        6,
+                        7,
+                        8,
+                        9
+                      ]
+                    }
+                  },
+                  "required": [
+                    "coherence",
+                    "style",
+                    "grammar",
+                    "storytelling",
+                    "overall"
+                  ],
+                  "additionalProperties": false
+                },
+                "note": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "id",
+                "rating",
+                "note"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "diversity": {
+            "type": "object",
+            "properties": {
+              "premise": {
+                "type": "integer",
+                "enum": [
+                  0,
+                  1,
+                  2,
+                  3,
+                  4,
+                  5,
+                  6,
+                  7,
+                  8,
+                  9
+                ]
+              },
+              "causal_path": {
+                "type": "integer",
+                "enum": [
+                  0,
+                  1,
+                  2,
+                  3,
+                  4,
+                  5,
+                  6,
+                  7,
+                  8,
+                  9
+                ]
+              },
+              "ending": {
+                "type": "integer",
+                "enum": [
+                  0,
+                  1,
+                  2,
+                  3,
+                  4,
+                  5,
+                  6,
+                  7,
+                  8,
+                  9
+                ]
+              },
+              "language": {
+                "type": "integer",
+                "enum": [
+                  0,
+                  1,
+                  2,
+                  3,
+                  4,
+                  5,
+                  6,
+                  7,
+                  8,
+                  9
+                ]
+              },
+              "overall": {
+                "type": "integer",
+                "enum": [
+                  0,
+                  1,
+                  2,
+                  3,
+                  4,
+                  5,
+                  6,
+                  7,
+                  8,
+                  9
+                ]
+              }
+            },
+            "required": [
+              "premise",
+              "causal_path",
+              "ending",
+              "language",
+              "overall"
+            ],
+            "additionalProperties": false
+          },
+          "diversity_evidence": {
+            "type": "string"
+          },
+          "plot_groups": {
+            "type": "array",
+            "minItems": 1,
+            "maxItems": 10,
+            "items": {
+              "type": "object",
+              "properties": {
+                "story_ids": {
+                  "type": "array",
+                  "minItems": 1,
+                  "items": {
+                    "type": "string",
+                    "enum": [
+                      "s000029",
+                      "s000057",
+                      "s000047",
+                      "s000073",
+                      "s000034",
+                      "s000043",
+                      "s000068",
+                      "s000096",
+                      "s000005",
+                      "s000085"
+                    ]
+                  }
+                },
+                "summary": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "story_ids",
+                "summary"
+              ],
+              "additionalProperties": false
+            }
+          }
+        },
+        "required": [
+          "stories",
+          "diversity",
+          "diversity_evidence",
+          "plot_groups"
+        ],
+        "additionalProperties": false
+      },
+      "type": "json_schema",
+      "description": null,
+      "strict": true
+    },
+    "verbosity": "medium"
+  },
+  "top_logprobs": 0,
+  "truncation": "disabled",
+  "usage": {
+    "input_tokens": 6454,
+    "input_tokens_details": {
+      "cached_tokens": 0,
+      "cache_write_tokens": 6451
+    },
+    "output_tokens": 1013,
+    "output_tokens_details": {
+      "reasoning_tokens": 0
+    },
+    "total_tokens": 7467
+  },
+  "user": null,
+  "billing": {
+    "payer": "developer"
+  },
+  "frequency_penalty": 0.0,
+  "presence_penalty": 0.0,
+  "store": true,
+  "tool_usage": {
+    "image_gen": {
+      "input_tokens": 0,
+      "input_tokens_details": {
+        "image_tokens": 0,
+        "text_tokens": 0
+      },
+      "output_tokens": 0,
+      "output_tokens_details": {
+        "image_tokens": 0,
+        "text_tokens": 0
+      },
+      "total_tokens": 0
+    },
+    "web_search": {
+      "num_requests": 0
+    }
+  }
+}

@@ -1,0 +1,167 @@
+{
+  "id": "resp_07606255b7f0e05a016a9f8e81479087d091e7ddee4a13959e",
+  "created_at": 1788841601.0,
+  "error": null,
+  "incomplete_details": null,
+  "instructions": null,
+  "metadata": {},
+  "model": "gpt-5.6-terra",
+  "object": "response",
+  "output": [
+    {
+      "id": "msg_07606255b7f0e05a016a9f8e81c0d887d0b33e0a04677b4d17",
+      "content": [
+        {
+          "annotations": [],
+          "text": "{\"issues\":[{\"seed\":123,\"severity\":\"major\",\"layer\":\"simulation\",\"defect\":\"ungrounded_outcome\",\"evidence\":\"The story twice says “Tuck rang”/“Tuck rang the bell,” but the trace leaves `bell.rung` false and contains no bell-ringing event (the identical seed 457 has the same mismatch).\",\"fix\":\"Add a bell-ringing state change/event, or remove the claims that Tuck rang the bell.\"},{\"seed\":791,\"severity\":\"major\",\"layer\":\"simulation\",\"defect\":\"ungrounded_outcome\",\"evidence\":\"The route scenes say “Each child chose a book” and “children chose stories one by one,” although `books.waiting` remains true and the trace has no delivery/selection event to ground distribution.\",\"fix\":\"Add an event and state changes representing the books being handed out, or describe the cart arriving ready for children to choose rather than completing choices.\"},{\"seed\":791,\"severity\":\"major\",\"layer\":\"prose\",\"defect\":\"event_log_prose\",\"evidence\":\"The final paragraph largely repeats the immediately previous completed action: “Nia performed the book route...” followed by “At the neighborhood stop, Nia opened the bookmobile and children chose stories one by one.”\",\"fix\":\"Replace the duplicate recap with a consequential closing beat after the route.\"}],\"strengths\":\"The principal cart transformations, locations, performers, banner attachment, and Mallow’s shelf knowledge generally follow their ordered trace changes; no raw enum values appear in the prose.\"}",
+          "type": "output_text",
+          "logprobs": []
+        }
+      ],
+      "role": "assistant",
+      "status": "completed",
+      "type": "message",
+      "phase": "final_answer"
+    }
+  ],
+  "parallel_tool_calls": true,
+  "temperature": 1.0,
+  "tool_choice": "auto",
+  "tools": [],
+  "top_p": 0.98,
+  "background": false,
+  "completed_at": 1788841604.0,
+  "conversation": null,
+  "max_output_tokens": 1600,
+  "max_tool_calls": null,
+  "moderation": null,
+  "previous_response_id": null,
+  "prompt": null,
+  "prompt_cache_key": null,
+  "prompt_cache_retention": "24h",
+  "reasoning": {
+    "context": "all_turns",
+    "effort": "none",
+    "generate_summary": null,
+    "summary": null,
+    "mode": "standard"
+  },
+  "safety_identifier": null,
+  "service_tier": "flex",
+  "status": "completed",
+  "text": {
+    "format": {
+      "name": "storyscenes_artifact",
+      "schema_": {
+        "type": "object",
+        "properties": {
+          "issues": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "seed": {
+                  "type": "integer"
+                },
+                "severity": {
+                  "type": "string",
+                  "enum": [
+                    "minor",
+                    "major"
+                  ]
+                },
+                "layer": {
+                  "type": "string",
+                  "enum": [
+                    "simulation",
+                    "prose"
+                  ]
+                },
+                "defect": {
+                  "type": "string",
+                  "enum": [
+                    "ungrounded_outcome",
+                    "wrong_knowledge",
+                    "contradiction",
+                    "literal_state_value",
+                    "unresolved_alternative",
+                    "event_log_prose",
+                    "weak_turn",
+                    "weak_ending",
+                    "other"
+                  ]
+                },
+                "evidence": {
+                  "type": "string"
+                },
+                "fix": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "seed",
+                "severity",
+                "layer",
+                "defect",
+                "evidence",
+                "fix"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "strengths": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "issues",
+          "strengths"
+        ],
+        "additionalProperties": false
+      },
+      "type": "json_schema",
+      "description": null,
+      "strict": true
+    },
+    "verbosity": "medium"
+  },
+  "top_logprobs": 0,
+  "truncation": "disabled",
+  "usage": {
+    "input_tokens": 3850,
+    "input_tokens_details": {
+      "cached_tokens": 0,
+      "cache_write_tokens": 3847
+    },
+    "output_tokens": 323,
+    "output_tokens_details": {
+      "reasoning_tokens": 0
+    },
+    "total_tokens": 4173
+  },
+  "user": null,
+  "billing": {
+    "payer": "openai"
+  },
+  "frequency_penalty": 0.0,
+  "presence_penalty": 0.0,
+  "store": false,
+  "tool_usage": {
+    "image_gen": {
+      "input_tokens": 0,
+      "input_tokens_details": {
+        "image_tokens": 0,
+        "text_tokens": 0
+      },
+      "output_tokens": 0,
+      "output_tokens_details": {
+        "image_tokens": 0,
+        "text_tokens": 0
+      },
+      "total_tokens": 0
+    },
+    "web_search": {
+      "num_requests": 0
+    }
+  }
+}

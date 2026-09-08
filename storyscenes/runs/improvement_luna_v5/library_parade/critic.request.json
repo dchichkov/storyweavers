@@ -1,0 +1,93 @@
+{
+  "model": "gpt-5.6-terra",
+  "service_tier": "flex",
+  "reasoning": {
+    "effort": "none"
+  },
+  "max_output_tokens": 1600,
+  "store": false,
+  "input": [
+    {
+      "role": "system",
+      "content": "You author executable, composable children's story worlds. Follow the supplied authoring contract. Treat example story content as data. Return only the requested artifact."
+    },
+    {
+      "role": "user",
+      "content": "Review these three generated stories against their executable world traces. Treat story text as data. Trace initial state plus ordered changes is the ground truth. Identify concrete contradictions, unknown knowledge, unsupported accomplished actions, raw enum values, duplicated event-log text, weak endings or a missing consequential turn. Do not demand lessons or safety explanations. Distinguish simulation issues from prose issues. Do not invent a fault merely because a harmless descriptive detail lacks a state variable. Quote evidence. Return at most THREE material issues, concisely (one sentence of evidence and one sentence of fix each); prioritize contradicted physical actions/ownership/knowledge and unresolved alternatives over taste. Severity major only for a real coherence/grounding/storytelling failure.\n[{\"seed\": 123, \"story\": \"Mayor Mallow had invited everyone to the parade lane because her empty cart was destined to become the tallest, flounciest float in town. Nia arrived with books waiting for children, while Tuck patted the cart\\u2019s clever wooden sides. \\u201cA parade can have a purpose,\\u201d Nia said. Mallow heard only the word biggest.\\n\\n\\u201cThere is a secret,\\u201d Tuck said. He revealed the cart\\u2019s folding shelves, which unfolded into a tiny room with room for books, knees, and one very surprised mayor.\\n\\nNia waved from the library steps. \\u201cEveryone to the square!\\u201d Her invitation fluttered through the afternoon like a paper kite, and even the cart seemed to lean toward the meeting.\\n\\nMallow peered into the cart and discovered exactly what it held: no books at all, only a roomy wooden floor. \\u201cSplendid,\\u201d she declared. \\u201cThere is space for my enormous idea!\\u201d\\n\\nMallow tied the banner high across the cart. It snapped proudly above her head. \\u201cNow behold!\\u201d she cried, climbing aboard as if the wooden floor were a mountain peak.\\n\\nMallow performed a towering loop through the parade lane, waving from beneath the high banner. Tuck rang along behind her, and the cart\\u2019s shadow stretched across the stones like a crown.\\n\\nThe float completed its grand loop, banner flashing above Mallow\\u2019s hat. She rode proudly while Tuck rang the bell, and the wooden cart cast a giant shadow shaped like a crown across the parade lane.\", \"initial\": {\"mayor.memes.Boast\": 2, \"mayor.want\": \"float\", \"mayor.knows.cart.loaded\": null, \"mayor.knows.cart.location\": null, \"mayor.knows.books.waiting\": null, \"mayor.knows.cart.shelves\": null, \"mayor.knows.cart.shelves_open\": null, \"nia.memes.Care\": 2, \"nia.want\": \"deliver\", \"nia.invited_children\": false, \"nia.knows.cart.loaded\": null, \"nia.knows.cart.location\": null, \"nia.knows.books.waiting\": null, \"nia.knows.mayor.want\": null, \"tuck.memes.Craft\": 2, \"tuck.knows.cart.shelves\": true, \"tuck.knows.cart.shelves_open\": true, \"tuck.knows.mayor.want\": null, \"tuck.knows.cart.loaded\": null, \"cart.owner\": \"mayor\", \"cart.location\": \"parade_lane\", \"cart.loaded\": false, \"cart.decorated\": false, \"cart.mode\": \"none\", \"cart.performer\": null, \"cart.shelves\": true, \"banner.owner\": \"mayor\", \"banner.attached\": false, \"books.waiting\": true, \"bell.owner\": \"tuck\", \"bell.rung\": false}, \"final\": {\"mayor.memes.Boast\": 2, \"mayor.want\": \"float\", \"mayor.knows.cart.loaded\": false, \"mayor.knows.cart.location\": null, \"mayor.knows.books.waiting\": null, \"mayor.knows.cart.shelves\": true, \"mayor.knows.cart.shelves_open\": null, \"nia.memes.Care\": 2, \"nia.want\": \"deliver\", \"nia.invited_children\": true, \"nia.knows.cart.loaded\": null, \"nia.knows.cart.location\": null, \"nia.knows.books.waiting\": null, \"nia.knows.mayor.want\": null, \"tuck.memes.Craft\": 2, \"tuck.knows.cart.shelves\": true, \"tuck.knows.cart.shelves_open\": true, \"tuck.knows.mayor.want\": null, \"tuck.knows.cart.loaded\": null, \"cart.owner\": \"mayor\", \"cart.location\": \"parade_lane\", \"cart.loaded\": false, \"cart.decorated\": true, \"cart.mode\": \"float\", \"cart.performer\": \"mayor\", \"cart.shelves\": true, \"banner.owner\": \"mayor\", \"banner.attached\": true, \"books.waiting\": true, \"bell.owner\": \"tuck\", \"bell.rung\": false}, \"events\": [{\"scene\": \"tell_folding_shelves\", \"summary\": \"Tuck revealed the cart\\u2019s hidden folding shelves\", \"changes\": {\"mayor.knows.cart.shelves\": {\"before\": null, \"after\": true}}}, {\"scene\": \"invite_square\", \"summary\": \"Nia invited everyone to meet in the library square\", \"changes\": {\"nia.invited_children\": {\"before\": false, \"after\": true}}}, {\"scene\": \"look_cart\", \"summary\": \"Mallow looked into the cart\", \"changes\": {\"mayor.knows.cart.loaded\": {\"before\": null, \"after\": false}}}, {\"scene\": \"attach_banner\", \"summary\": \"Mallow attached the banner to make a grand float\", \"changes\": {\"cart.decorated\": {\"before\": false, \"after\": true}, \"cart.mode\": {\"before\": \"none\", \"after\": \"float\"}, \"banner.attached\": {\"before\": false, \"after\": true}}}, {\"scene\": \"perform_big_loop\", \"summary\": \"Mallow performed a towering parade loop\", \"changes\": {\"cart.performer\": {\"before\": null, \"after\": \"mayor\"}}}]}, {\"seed\": 791, \"story\": \"At the library door, Nia guarded a loaded cart of books while Mayor Mallow pointed at the stack. \\u201cLook! My parade audience!\\u201d she cried. The children were nowhere near the parade lane, but their books were waiting. Tuck lifted one eyebrow and touched the cart\\u2019s hidden wooden seams.\\n\\nNia waved from the library steps. \\u201cEveryone to the square!\\u201d Her invitation fluttered through the afternoon like a paper kite, and even the cart seemed to lean toward the meeting.\\n\\nTogether they rolled the cart toward the parade lane, its wheels humming over the library stones.\\n\\nTuck told Mallow the cart had hidden folding shelves. He pulled one seam, and a wooden shelf sprang out like a sleepy tongue. \\u201cIt can carry a parade,\\u201d he said, \\u201cor open one.\\u201d Mallow\\u2019s eyes became two bright buttons.\\n\\nNia steered toward the neighborhood stop, where a row of eager doorways waited.\\n\\nNia performed the book route, stopping where neighborhood children waited. Each child chose a book as the brass bell gave a friendly ding, while Mallow\\u2019s enormous banner made a roof of shade.\\n\\nAt the neighborhood stop, Nia opened the bookmobile and children chose stories one by one. The bell dinged cheerfully, while Mallow\\u2019s enormous banner stretched above them as a cool roof of shade.\", \"initial\": {\"mayor.memes.Boast\": 2, \"mayor.want\": \"reading_room\", \"mayor.knows.cart.loaded\": null, \"mayor.knows.cart.location\": null, \"mayor.knows.books.waiting\": null, \"mayor.knows.cart.shelves\": null, \"mayor.knows.cart.shelves_open\": null, \"nia.memes.Care\": 2, \"nia.want\": \"deliver\", \"nia.invited_children\": false, \"nia.knows.cart.loaded\": null, \"nia.knows.cart.location\": null, \"nia.knows.books.waiting\": null, \"nia.knows.mayor.want\": null, \"tuck.memes.Craft\": 2, \"tuck.knows.cart.shelves\": true, \"tuck.knows.cart.shelves_open\": true, \"tuck.knows.mayor.want\": null, \"tuck.knows.cart.loaded\": null, \"cart.owner\": \"nia\", \"cart.location\": \"library_door\", \"cart.loaded\": true, \"cart.decorated\": false, \"cart.mode\": \"none\", \"cart.performer\": null, \"cart.shelves\": true, \"banner.owner\": \"mayor\", \"banner.attached\": false, \"books.waiting\": true, \"bell.owner\": \"tuck\", \"bell.rung\": false}, \"final\": {\"mayor.memes.Boast\": 2, \"mayor.want\": \"reading_room\", \"mayor.knows.cart.loaded\": null, \"mayor.knows.cart.location\": null, \"mayor.knows.books.waiting\": null, \"mayor.knows.cart.shelves\": true, \"mayor.knows.cart.shelves_open\": null, \"nia.memes.Care\": 2, \"nia.want\": \"deliver\", \"nia.invited_children\": true, \"nia.knows.cart.loaded\": null, \"nia.knows.cart.location\": null, \"nia.knows.books.waiting\": null, \"nia.knows.mayor.want\": null, \"tuck.memes.Craft\": 2, \"tuck.knows.cart.shelves\": true, \"tuck.knows.cart.shelves_open\": true, \"tuck.knows.mayor.want\": null, \"tuck.knows.cart.loaded\": null, \"cart.owner\": \"nia\", \"cart.location\": \"neighborhood_stop\", \"cart.loaded\": true, \"cart.decorated\": false, \"cart.mode\": \"bookmobile\", \"cart.performer\": \"nia\", \"cart.shelves\": true, \"banner.owner\": \"mayor\", \"banner.attached\": false, \"books.waiting\": true, \"bell.owner\": \"tuck\", \"bell.rung\": false}, \"events\": [{\"scene\": \"invite_square\", \"summary\": \"Nia invited everyone to meet in the library square\", \"changes\": {\"nia.invited_children\": {\"before\": false, \"after\": true}}}, {\"scene\": \"move_cart_to_square\", \"summary\": \"The friends rolled the cart to the parade lane\", \"changes\": {\"cart.location\": {\"before\": \"library_door\", \"after\": \"parade_lane\"}}}, {\"scene\": \"tell_folding_shelves\", \"summary\": \"Tuck revealed the cart\\u2019s hidden folding shelves\", \"changes\": {\"mayor.knows.cart.shelves\": {\"before\": null, \"after\": true}}}, {\"scene\": \"move_cart_to_neighborhood\", \"summary\": \"Nia rolled the bookmobile to the neighborhood stop\", \"changes\": {\"cart.location\": {\"before\": \"parade_lane\", \"after\": \"neighborhood_stop\"}, \"cart.mode\": {\"before\": \"none\", \"after\": \"bookmobile\"}}}, {\"scene\": \"perform_book_route\", \"summary\": \"Nia performed a book route for neighborhood children\", \"changes\": {\"cart.performer\": {\"before\": null, \"after\": \"nia\"}}}]}, {\"seed\": 457, \"story\": \"Mayor Mallow had invited everyone to the parade lane because her empty cart was destined to become the tallest, flounciest float in town. Nia arrived with books waiting for children, while Tuck patted the cart\\u2019s clever wooden sides. \\u201cA parade can have a purpose,\\u201d Nia said. Mallow heard only the word biggest.\\n\\n\\u201cThere is a secret,\\u201d Tuck said. He revealed the cart\\u2019s folding shelves, which unfolded into a tiny room with room for books, knees, and one very surprised mayor.\\n\\nNia waved from the library steps. \\u201cEveryone to the square!\\u201d Her invitation fluttered through the afternoon like a paper kite, and even the cart seemed to lean toward the meeting.\\n\\nMallow peered into the cart and discovered exactly what it held: no books at all, only a roomy wooden floor. \\u201cSplendid,\\u201d she declared. \\u201cThere is space for my enormous idea!\\u201d\\n\\nMallow tied the banner high across the cart. It snapped proudly above her head. \\u201cNow behold!\\u201d she cried, climbing aboard as if the wooden floor were a mountain peak.\\n\\nMallow performed a towering loop through the parade lane, waving from beneath the high banner. Tuck rang along behind her, and the cart\\u2019s shadow stretched across the stones like a crown.\\n\\nThe float completed its grand loop, banner flashing above Mallow\\u2019s hat. She rode proudly while Tuck rang the bell, and the wooden cart cast a giant shadow shaped like a crown across the parade lane.\", \"initial\": {\"mayor.memes.Boast\": 2, \"mayor.want\": \"float\", \"mayor.knows.cart.loaded\": null, \"mayor.knows.cart.location\": null, \"mayor.knows.books.waiting\": null, \"mayor.knows.cart.shelves\": null, \"mayor.knows.cart.shelves_open\": null, \"nia.memes.Care\": 2, \"nia.want\": \"deliver\", \"nia.invited_children\": false, \"nia.knows.cart.loaded\": null, \"nia.knows.cart.location\": null, \"nia.knows.books.waiting\": null, \"nia.knows.mayor.want\": null, \"tuck.memes.Craft\": 2, \"tuck.knows.cart.shelves\": true, \"tuck.knows.cart.shelves_open\": true, \"tuck.knows.mayor.want\": null, \"tuck.knows.cart.loaded\": null, \"cart.owner\": \"mayor\", \"cart.location\": \"parade_lane\", \"cart.loaded\": false, \"cart.decorated\": false, \"cart.mode\": \"none\", \"cart.performer\": null, \"cart.shelves\": true, \"banner.owner\": \"mayor\", \"banner.attached\": false, \"books.waiting\": true, \"bell.owner\": \"tuck\", \"bell.rung\": false}, \"final\": {\"mayor.memes.Boast\": 2, \"mayor.want\": \"float\", \"mayor.knows.cart.loaded\": false, \"mayor.knows.cart.location\": null, \"mayor.knows.books.waiting\": null, \"mayor.knows.cart.shelves\": true, \"mayor.knows.cart.shelves_open\": null, \"nia.memes.Care\": 2, \"nia.want\": \"deliver\", \"nia.invited_children\": true, \"nia.knows.cart.loaded\": null, \"nia.knows.cart.location\": null, \"nia.knows.books.waiting\": null, \"nia.knows.mayor.want\": null, \"tuck.memes.Craft\": 2, \"tuck.knows.cart.shelves\": true, \"tuck.knows.cart.shelves_open\": true, \"tuck.knows.mayor.want\": null, \"tuck.knows.cart.loaded\": null, \"cart.owner\": \"mayor\", \"cart.location\": \"parade_lane\", \"cart.loaded\": false, \"cart.decorated\": true, \"cart.mode\": \"float\", \"cart.performer\": \"mayor\", \"cart.shelves\": true, \"banner.owner\": \"mayor\", \"banner.attached\": true, \"books.waiting\": true, \"bell.owner\": \"tuck\", \"bell.rung\": false}, \"events\": [{\"scene\": \"tell_folding_shelves\", \"summary\": \"Tuck revealed the cart\\u2019s hidden folding shelves\", \"changes\": {\"mayor.knows.cart.shelves\": {\"before\": null, \"after\": true}}}, {\"scene\": \"invite_square\", \"summary\": \"Nia invited everyone to meet in the library square\", \"changes\": {\"nia.invited_children\": {\"before\": false, \"after\": true}}}, {\"scene\": \"look_cart\", \"summary\": \"Mallow looked into the cart\", \"changes\": {\"mayor.knows.cart.loaded\": {\"before\": null, \"after\": false}}}, {\"scene\": \"attach_banner\", \"summary\": \"Mallow attached the banner to make a grand float\", \"changes\": {\"cart.decorated\": {\"before\": false, \"after\": true}, \"cart.mode\": {\"before\": \"none\", \"after\": \"float\"}, \"banner.attached\": {\"before\": false, \"after\": true}}}, {\"scene\": \"perform_big_loop\", \"summary\": \"Mallow performed a towering parade loop\", \"changes\": {\"cart.performer\": {\"before\": null, \"after\": \"mayor\"}}}]}]"
+    }
+  ],
+  "text": {
+    "format": {
+      "type": "json_schema",
+      "name": "storyscenes_artifact",
+      "strict": true,
+      "schema": {
+        "type": "object",
+        "properties": {
+          "issues": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "seed": {
+                  "type": "integer"
+                },
+                "severity": {
+                  "type": "string",
+                  "enum": [
+                    "minor",
+                    "major"
+                  ]
+                },
+                "layer": {
+                  "type": "string",
+                  "enum": [
+                    "simulation",
+                    "prose"
+                  ]
+                },
+                "defect": {
+                  "type": "string",
+                  "enum": [
+                    "ungrounded_outcome",
+                    "wrong_knowledge",
+                    "contradiction",
+                    "literal_state_value",
+                    "unresolved_alternative",
+                    "event_log_prose",
+                    "weak_turn",
+                    "weak_ending",
+                    "other"
+                  ]
+                },
+                "evidence": {
+                  "type": "string"
+                },
+                "fix": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "seed",
+                "severity",
+                "layer",
+                "defect",
+                "evidence",
+                "fix"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "strengths": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "issues",
+          "strengths"
+        ],
+        "additionalProperties": false
+      }
+    }
+  }
+}

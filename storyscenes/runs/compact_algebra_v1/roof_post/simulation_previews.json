@@ -1,0 +1,939 @@
+[
+  {
+    "seed": 0,
+    "title": "The Windwise Invitations",
+    "initial": {
+      "ada.want": "deliver invitations",
+      "ada.memes.Care": 2,
+      "ember.want": "help deliver invitations",
+      "ember.confidence": "hesitant",
+      "ember.memes.Care": 1,
+      "ember.ready": false,
+      "ember.shielding": false,
+      "invitations.owner": "ada",
+      "invitations.location": "ada",
+      "invitations.fragile": true,
+      "invitations.secured": false,
+      "invitations.intact": true,
+      "invitations.delivered": false,
+      "ribbon.owner": "ada",
+      "ribbon.location": "ada",
+      "ribbon.tied": false,
+      "garden.wind": "breezy",
+      "neighbor.want": "join",
+      "neighbor.received": false,
+      "neighbor.response": "none",
+      "ada.knows.garden.wind": null,
+      "ember.knows.garden.wind": null,
+      "ember.knows.neighbor.want": null,
+      "ada.knows.neighbor.want": null,
+      "invitations.loaned_by": null
+    },
+    "final": {
+      "ada.want": "deliver invitations",
+      "ada.memes.Care": 2,
+      "ember.want": "help deliver invitations",
+      "ember.confidence": "hesitant",
+      "ember.memes.Care": 1,
+      "ember.ready": false,
+      "ember.shielding": false,
+      "invitations.owner": "ada",
+      "invitations.location": "neighbor",
+      "invitations.fragile": true,
+      "invitations.secured": true,
+      "invitations.intact": true,
+      "invitations.delivered": true,
+      "ribbon.owner": "ada",
+      "ribbon.location": "ada",
+      "ribbon.tied": true,
+      "garden.wind": "breezy",
+      "neighbor.want": "join",
+      "neighbor.received": true,
+      "neighbor.response": "Mina joins the garden gathering",
+      "ada.knows.garden.wind": "breezy",
+      "ember.knows.garden.wind": null,
+      "ember.knows.neighbor.want": null,
+      "ada.knows.neighbor.want": null,
+      "invitations.loaned_by": null
+    },
+    "events": [
+      {
+        "id": 1,
+        "scene": "wind_news.notice",
+        "kernel": "Observe",
+        "actors": [
+          "ada"
+        ],
+        "summary": "",
+        "causes": [],
+        "requires": [],
+        "changes": {
+          "ada.knows.garden.wind": {
+            "before": null,
+            "after": "breezy"
+          }
+        }
+      },
+      {
+        "id": 2,
+        "scene": "secure_cargo",
+        "kernel": "Act",
+        "actors": [
+          "ada"
+        ],
+        "summary": "Ada ties the invitations securely",
+        "causes": [
+          1
+        ],
+        "requires": [
+          {
+            "key": "ada.knows.garden.wind",
+            "op": "ne",
+            "value": null
+          },
+          {
+            "key": "invitations.owner",
+            "op": "eq",
+            "value": "ada"
+          },
+          {
+            "key": "ribbon.owner",
+            "op": "eq",
+            "value": "ada"
+          },
+          {
+            "key": "ribbon.tied",
+            "op": "eq",
+            "value": false
+          },
+          {
+            "key": "invitations.secured",
+            "op": "eq",
+            "value": false
+          }
+        ],
+        "changes": {
+          "invitations.secured": {
+            "before": false,
+            "after": true
+          },
+          "ribbon.tied": {
+            "before": false,
+            "after": true
+          }
+        }
+      },
+      {
+        "id": 3,
+        "scene": "ada_carries",
+        "kernel": "Move",
+        "actors": [
+          "ada",
+          "neighbor"
+        ],
+        "summary": "Ada carries the invitations to Mina",
+        "causes": [
+          2
+        ],
+        "requires": [
+          {
+            "key": "invitations.owner",
+            "op": "eq",
+            "value": "ada"
+          },
+          {
+            "key": "invitations.owner",
+            "op": "eq",
+            "value": "ada"
+          },
+          {
+            "key": "invitations.secured",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "invitations.intact",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "invitations.delivered",
+            "op": "eq",
+            "value": false
+          }
+        ],
+        "changes": {
+          "invitations.location": {
+            "before": "ada",
+            "after": "neighbor"
+          }
+        }
+      },
+      {
+        "id": 4,
+        "scene": "ada_delivers",
+        "kernel": "Act",
+        "actors": [
+          "ada"
+        ],
+        "summary": "Ada delivers the intact invitations",
+        "causes": [
+          3
+        ],
+        "requires": [
+          {
+            "key": "invitations.owner",
+            "op": "eq",
+            "value": "ada"
+          },
+          {
+            "key": "invitations.location",
+            "op": "eq",
+            "value": "neighbor"
+          },
+          {
+            "key": "invitations.intact",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "invitations.delivered",
+            "op": "eq",
+            "value": false
+          }
+        ],
+        "changes": {
+          "invitations.delivered": {
+            "before": false,
+            "after": true
+          },
+          "neighbor.received": {
+            "before": false,
+            "after": true
+          }
+        }
+      },
+      {
+        "id": 5,
+        "scene": "join_response",
+        "kernel": "Act",
+        "actors": [
+          "neighbor"
+        ],
+        "summary": "Mina joins the garden gathering",
+        "causes": [
+          4
+        ],
+        "requires": [
+          {
+            "key": "neighbor.received",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "neighbor.want",
+            "op": "eq",
+            "value": "join"
+          },
+          {
+            "key": "neighbor.response",
+            "op": "eq",
+            "value": "none"
+          }
+        ],
+        "changes": {
+          "neighbor.response": {
+            "before": "none",
+            "after": "Mina joins the garden gathering"
+          }
+        }
+      }
+    ]
+  },
+  {
+    "seed": 1,
+    "title": "The Windwise Invitations",
+    "initial": {
+      "ada.want": "deliver invitations",
+      "ada.memes.Care": 2,
+      "ember.want": "help deliver invitations",
+      "ember.confidence": "eager",
+      "ember.memes.Care": 1,
+      "ember.ready": false,
+      "ember.shielding": false,
+      "invitations.owner": "ada",
+      "invitations.location": "ada",
+      "invitations.fragile": true,
+      "invitations.secured": false,
+      "invitations.intact": true,
+      "invitations.delivered": false,
+      "ribbon.owner": "ada",
+      "ribbon.location": "ada",
+      "ribbon.tied": false,
+      "garden.wind": "still",
+      "neighbor.want": "quiet",
+      "neighbor.received": false,
+      "neighbor.response": "none",
+      "ada.knows.garden.wind": null,
+      "ember.knows.garden.wind": null,
+      "ember.knows.neighbor.want": null,
+      "ada.knows.neighbor.want": null,
+      "invitations.loaned_by": null
+    },
+    "final": {
+      "ada.want": "deliver invitations",
+      "ada.memes.Care": 2,
+      "ember.want": "help deliver invitations",
+      "ember.confidence": "eager",
+      "ember.memes.Care": 2,
+      "ember.ready": true,
+      "ember.shielding": true,
+      "invitations.owner": "ada",
+      "invitations.location": "neighbor",
+      "invitations.fragile": true,
+      "invitations.secured": true,
+      "invitations.intact": true,
+      "invitations.delivered": true,
+      "ribbon.owner": "ada",
+      "ribbon.location": "ada",
+      "ribbon.tied": true,
+      "garden.wind": "still",
+      "neighbor.want": "quiet",
+      "neighbor.received": true,
+      "neighbor.response": "thanks for the quiet invitation",
+      "ada.knows.garden.wind": "still",
+      "ember.knows.garden.wind": "still",
+      "ember.knows.neighbor.want": "quiet",
+      "ada.knows.neighbor.want": null,
+      "invitations.loaned_by": null
+    },
+    "events": [
+      {
+        "id": 1,
+        "scene": "wish_news.notice",
+        "kernel": "Observe",
+        "actors": [
+          "ember"
+        ],
+        "summary": "",
+        "causes": [],
+        "requires": [],
+        "changes": {
+          "ember.knows.neighbor.want": {
+            "before": null,
+            "after": "quiet"
+          }
+        }
+      },
+      {
+        "id": 2,
+        "scene": "wind_news.notice",
+        "kernel": "Observe",
+        "actors": [
+          "ada"
+        ],
+        "summary": "",
+        "causes": [],
+        "requires": [],
+        "changes": {
+          "ada.knows.garden.wind": {
+            "before": null,
+            "after": "still"
+          }
+        }
+      },
+      {
+        "id": 3,
+        "scene": "secure_cargo",
+        "kernel": "Act",
+        "actors": [
+          "ada"
+        ],
+        "summary": "Ada ties the invitations securely",
+        "causes": [
+          2
+        ],
+        "requires": [
+          {
+            "key": "ada.knows.garden.wind",
+            "op": "ne",
+            "value": null
+          },
+          {
+            "key": "invitations.owner",
+            "op": "eq",
+            "value": "ada"
+          },
+          {
+            "key": "ribbon.owner",
+            "op": "eq",
+            "value": "ada"
+          },
+          {
+            "key": "ribbon.tied",
+            "op": "eq",
+            "value": false
+          },
+          {
+            "key": "invitations.secured",
+            "op": "eq",
+            "value": false
+          }
+        ],
+        "changes": {
+          "invitations.secured": {
+            "before": false,
+            "after": true
+          },
+          "ribbon.tied": {
+            "before": false,
+            "after": true
+          }
+        }
+      },
+      {
+        "id": 4,
+        "scene": "wind_news.share",
+        "kernel": "Tell",
+        "actors": [
+          "ada",
+          "ember"
+        ],
+        "summary": "",
+        "causes": [
+          2
+        ],
+        "requires": [
+          {
+            "key": "ada.knows.garden.wind",
+            "op": "ne",
+            "value": null
+          }
+        ],
+        "changes": {
+          "ember.knows.garden.wind": {
+            "before": null,
+            "after": "still"
+          }
+        }
+      },
+      {
+        "id": 5,
+        "scene": "ada_carries",
+        "kernel": "Move",
+        "actors": [
+          "ada",
+          "neighbor"
+        ],
+        "summary": "Ada carries the invitations to Mina",
+        "causes": [
+          3
+        ],
+        "requires": [
+          {
+            "key": "invitations.owner",
+            "op": "eq",
+            "value": "ada"
+          },
+          {
+            "key": "invitations.owner",
+            "op": "eq",
+            "value": "ada"
+          },
+          {
+            "key": "invitations.secured",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "invitations.intact",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "invitations.delivered",
+            "op": "eq",
+            "value": false
+          }
+        ],
+        "changes": {
+          "invitations.location": {
+            "before": "ada",
+            "after": "neighbor"
+          }
+        }
+      },
+      {
+        "id": 6,
+        "scene": "choose_to_help",
+        "kernel": "Ember chooses to help",
+        "actors": [
+          "ember"
+        ],
+        "summary": "Ember chooses to shield the cargo",
+        "causes": [
+          1,
+          4
+        ],
+        "requires": [
+          {
+            "key": "ember.knows.garden.wind",
+            "op": "ne",
+            "value": null
+          },
+          {
+            "key": "ember.knows.neighbor.want",
+            "op": "ne",
+            "value": null
+          },
+          {
+            "key": "ember.want",
+            "op": "eq",
+            "value": "help deliver invitations"
+          },
+          {
+            "key": "ember.ready",
+            "op": "eq",
+            "value": false
+          }
+        ],
+        "changes": {
+          "ember.memes.Care": {
+            "before": 1,
+            "after": 2
+          },
+          "ember.ready": {
+            "before": false,
+            "after": true
+          },
+          "ember.shielding": {
+            "before": false,
+            "after": true
+          }
+        }
+      },
+      {
+        "id": 7,
+        "scene": "ada_delivers",
+        "kernel": "Act",
+        "actors": [
+          "ada"
+        ],
+        "summary": "Ada delivers the intact invitations",
+        "causes": [
+          5
+        ],
+        "requires": [
+          {
+            "key": "invitations.owner",
+            "op": "eq",
+            "value": "ada"
+          },
+          {
+            "key": "invitations.location",
+            "op": "eq",
+            "value": "neighbor"
+          },
+          {
+            "key": "invitations.intact",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "invitations.delivered",
+            "op": "eq",
+            "value": false
+          }
+        ],
+        "changes": {
+          "invitations.delivered": {
+            "before": false,
+            "after": true
+          },
+          "neighbor.received": {
+            "before": false,
+            "after": true
+          }
+        }
+      },
+      {
+        "id": 8,
+        "scene": "quiet_response",
+        "kernel": "Act",
+        "actors": [
+          "neighbor"
+        ],
+        "summary": "Mina thanks them for the quiet invitation",
+        "causes": [
+          7
+        ],
+        "requires": [
+          {
+            "key": "neighbor.received",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "neighbor.want",
+            "op": "eq",
+            "value": "quiet"
+          },
+          {
+            "key": "neighbor.response",
+            "op": "eq",
+            "value": "none"
+          }
+        ],
+        "changes": {
+          "neighbor.response": {
+            "before": "none",
+            "after": "thanks for the quiet invitation"
+          }
+        }
+      }
+    ]
+  },
+  {
+    "seed": 2,
+    "title": "The Windwise Invitations",
+    "initial": {
+      "ada.want": "deliver invitations",
+      "ada.memes.Care": 2,
+      "ember.want": "help deliver invitations",
+      "ember.confidence": "hesitant",
+      "ember.memes.Care": 1,
+      "ember.ready": false,
+      "ember.shielding": false,
+      "invitations.owner": "ada",
+      "invitations.location": "ada",
+      "invitations.fragile": true,
+      "invitations.secured": false,
+      "invitations.intact": true,
+      "invitations.delivered": false,
+      "ribbon.owner": "ada",
+      "ribbon.location": "ada",
+      "ribbon.tied": false,
+      "garden.wind": "still",
+      "neighbor.want": "quiet",
+      "neighbor.received": false,
+      "neighbor.response": "none",
+      "ada.knows.garden.wind": null,
+      "ember.knows.garden.wind": null,
+      "ember.knows.neighbor.want": null,
+      "ada.knows.neighbor.want": null,
+      "invitations.loaned_by": null
+    },
+    "final": {
+      "ada.want": "deliver invitations",
+      "ada.memes.Care": 2,
+      "ember.want": "help deliver invitations",
+      "ember.confidence": "hesitant",
+      "ember.memes.Care": 2,
+      "ember.ready": true,
+      "ember.shielding": true,
+      "invitations.owner": "ada",
+      "invitations.location": "neighbor",
+      "invitations.fragile": true,
+      "invitations.secured": true,
+      "invitations.intact": true,
+      "invitations.delivered": true,
+      "ribbon.owner": "ada",
+      "ribbon.location": "ada",
+      "ribbon.tied": true,
+      "garden.wind": "still",
+      "neighbor.want": "quiet",
+      "neighbor.received": true,
+      "neighbor.response": "thanks for the quiet invitation",
+      "ada.knows.garden.wind": "still",
+      "ember.knows.garden.wind": "still",
+      "ember.knows.neighbor.want": "quiet",
+      "ada.knows.neighbor.want": null,
+      "invitations.loaned_by": null
+    },
+    "events": [
+      {
+        "id": 1,
+        "scene": "wind_news.notice",
+        "kernel": "Observe",
+        "actors": [
+          "ada"
+        ],
+        "summary": "",
+        "causes": [],
+        "requires": [],
+        "changes": {
+          "ada.knows.garden.wind": {
+            "before": null,
+            "after": "still"
+          }
+        }
+      },
+      {
+        "id": 2,
+        "scene": "secure_cargo",
+        "kernel": "Act",
+        "actors": [
+          "ada"
+        ],
+        "summary": "Ada ties the invitations securely",
+        "causes": [
+          1
+        ],
+        "requires": [
+          {
+            "key": "ada.knows.garden.wind",
+            "op": "ne",
+            "value": null
+          },
+          {
+            "key": "invitations.owner",
+            "op": "eq",
+            "value": "ada"
+          },
+          {
+            "key": "ribbon.owner",
+            "op": "eq",
+            "value": "ada"
+          },
+          {
+            "key": "ribbon.tied",
+            "op": "eq",
+            "value": false
+          },
+          {
+            "key": "invitations.secured",
+            "op": "eq",
+            "value": false
+          }
+        ],
+        "changes": {
+          "invitations.secured": {
+            "before": false,
+            "after": true
+          },
+          "ribbon.tied": {
+            "before": false,
+            "after": true
+          }
+        }
+      },
+      {
+        "id": 3,
+        "scene": "wind_news.share",
+        "kernel": "Tell",
+        "actors": [
+          "ada",
+          "ember"
+        ],
+        "summary": "",
+        "causes": [
+          1
+        ],
+        "requires": [
+          {
+            "key": "ada.knows.garden.wind",
+            "op": "ne",
+            "value": null
+          }
+        ],
+        "changes": {
+          "ember.knows.garden.wind": {
+            "before": null,
+            "after": "still"
+          }
+        }
+      },
+      {
+        "id": 4,
+        "scene": "ada_carries",
+        "kernel": "Move",
+        "actors": [
+          "ada",
+          "neighbor"
+        ],
+        "summary": "Ada carries the invitations to Mina",
+        "causes": [
+          2
+        ],
+        "requires": [
+          {
+            "key": "invitations.owner",
+            "op": "eq",
+            "value": "ada"
+          },
+          {
+            "key": "invitations.owner",
+            "op": "eq",
+            "value": "ada"
+          },
+          {
+            "key": "invitations.secured",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "invitations.intact",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "invitations.delivered",
+            "op": "eq",
+            "value": false
+          }
+        ],
+        "changes": {
+          "invitations.location": {
+            "before": "ada",
+            "after": "neighbor"
+          }
+        }
+      },
+      {
+        "id": 5,
+        "scene": "wish_news.notice",
+        "kernel": "Observe",
+        "actors": [
+          "ember"
+        ],
+        "summary": "",
+        "causes": [],
+        "requires": [],
+        "changes": {
+          "ember.knows.neighbor.want": {
+            "before": null,
+            "after": "quiet"
+          }
+        }
+      },
+      {
+        "id": 6,
+        "scene": "ada_delivers",
+        "kernel": "Act",
+        "actors": [
+          "ada"
+        ],
+        "summary": "Ada delivers the intact invitations",
+        "causes": [
+          4
+        ],
+        "requires": [
+          {
+            "key": "invitations.owner",
+            "op": "eq",
+            "value": "ada"
+          },
+          {
+            "key": "invitations.location",
+            "op": "eq",
+            "value": "neighbor"
+          },
+          {
+            "key": "invitations.intact",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "invitations.delivered",
+            "op": "eq",
+            "value": false
+          }
+        ],
+        "changes": {
+          "invitations.delivered": {
+            "before": false,
+            "after": true
+          },
+          "neighbor.received": {
+            "before": false,
+            "after": true
+          }
+        }
+      },
+      {
+        "id": 7,
+        "scene": "choose_to_help",
+        "kernel": "Ember chooses to help",
+        "actors": [
+          "ember"
+        ],
+        "summary": "Ember chooses to shield the cargo",
+        "causes": [
+          3,
+          5
+        ],
+        "requires": [
+          {
+            "key": "ember.knows.garden.wind",
+            "op": "ne",
+            "value": null
+          },
+          {
+            "key": "ember.knows.neighbor.want",
+            "op": "ne",
+            "value": null
+          },
+          {
+            "key": "ember.want",
+            "op": "eq",
+            "value": "help deliver invitations"
+          },
+          {
+            "key": "ember.ready",
+            "op": "eq",
+            "value": false
+          }
+        ],
+        "changes": {
+          "ember.memes.Care": {
+            "before": 1,
+            "after": 2
+          },
+          "ember.ready": {
+            "before": false,
+            "after": true
+          },
+          "ember.shielding": {
+            "before": false,
+            "after": true
+          }
+        }
+      },
+      {
+        "id": 8,
+        "scene": "quiet_response",
+        "kernel": "Act",
+        "actors": [
+          "neighbor"
+        ],
+        "summary": "Mina thanks them for the quiet invitation",
+        "causes": [
+          6
+        ],
+        "requires": [
+          {
+            "key": "neighbor.received",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "neighbor.want",
+            "op": "eq",
+            "value": "quiet"
+          },
+          {
+            "key": "neighbor.response",
+            "op": "eq",
+            "value": "none"
+          }
+        ],
+        "changes": {
+          "neighbor.response": {
+            "before": "none",
+            "after": "thanks for the quiet invitation"
+          }
+        }
+      }
+    ]
+  }
+]

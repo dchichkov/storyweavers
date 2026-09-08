@@ -1,0 +1,362 @@
+{
+  "id": "resp_009d8eb270369f31006a9fa092ae7487d0a2cd60a332bbda36",
+  "created_at": 1788846226.0,
+  "error": null,
+  "incomplete_details": null,
+  "instructions": null,
+  "metadata": {},
+  "model": "gpt-5.6-terra",
+  "object": "response",
+  "output": [
+    {
+      "id": "msg_009d8eb270369f31006a9fa09362e487d0b804c7666de8f108",
+      "content": [
+        {
+          "annotations": [],
+          "text": "{\"stories\":[{\"id\":\"s000029\",\"rating\":{\"coherence\":8,\"style\":8,\"grammar\":9,\"storytelling\":8,\"overall\":8},\"note\":\"A clear access problem leads Juniper to stock Pip and redirect the parade; the lane full of open books gives the story a warm, concrete close.\"},{\"id\":\"s000057\",\"rating\":{\"coherence\":8,\"style\":8,\"grammar\":9,\"storytelling\":8,\"overall\":8},\"note\":\"Juniper’s discovery that the covered bundles are books changes the mayor’s plan, ending vividly with children reading together in the square.\"},{\"id\":\"s000047\",\"rating\":{\"coherence\":8,\"style\":8,\"grammar\":9,\"storytelling\":8,\"overall\":8},\"note\":\"The empty cart and inaccessible lane create a meaningful problem, resolved through a mobile library and a strongly visual final image.\"},{\"id\":\"s000073\",\"rating\":{\"coherence\":8,\"style\":8,\"grammar\":9,\"storytelling\":8,\"overall\":8},\"note\":\"The competing promise and quiet-reader invitation are reconciled thoughtfully: Bram gives away the bell and makes a ribbon-silent parade.\"},{\"id\":\"s000034\",\"rating\":{\"coherence\":7,\"style\":8,\"grammar\":9,\"storytelling\":7,\"overall\":7},\"note\":\"The quiet-parade solution is appealing and the ending is concrete, but the events are noticeably reordered: the ribbons are tied before Bram agrees to forgo the bell.\"},{\"id\":\"s000043\",\"rating\":{\"coherence\":7,\"style\":8,\"grammar\":9,\"storytelling\":7,\"overall\":7},\"note\":\"Gentle imagery and a satisfying silent-library ending work well, though the cart is prepared with ribbons before the discussion that motivates that choice.\"},{\"id\":\"s000068\",\"rating\":{\"coherence\":7,\"style\":8,\"grammar\":9,\"storytelling\":7,\"overall\":7},\"note\":\"The outreach premise and lane ending are strong, but Pip is loaded and decorated before Mayor Mallow accepts the redirected route, softening the causal sequence.\"},{\"id\":\"s000096\",\"rating\":{\"coherence\":7,\"style\":8,\"grammar\":9,\"storytelling\":7,\"overall\":7},\"note\":\"Books becoming the parade makes a clear turn and a lovely reading-centered ending, though the banner is attached before the packed books are discovered.\"},{\"id\":\"s000005\",\"rating\":{\"coherence\":8,\"style\":8,\"grammar\":9,\"storytelling\":8,\"overall\":8},\"note\":\"Juniper identifies readers who cannot reach the square and brings books to them, with polished child-friendly imagery and a complete visual resolution.\"},{\"id\":\"s000085\",\"rating\":{\"coherence\":4,\"style\":8,\"grammar\":9,\"storytelling\":4,\"overall\":5},\"note\":\"The quiet procession has graceful imagery, but the key resolution is missing: Bram’s bell promise is introduced and never shown being fulfilled or consciously changed.\"}],\"diversity\":{\"premise\":5,\"causal_path\":4,\"ending\":4,\"language\":5,\"overall\":4},\"diversity_evidence\":\"This sample contains three materially different problem frames: reaching isolated lane readers (s000029, s000047, s000068, s000005), recognizing books wrongly treated as decorations (s000057, s000096), and reconciling a bell promise with quiet guests (s000073, s000034, s000043, s000085). Within each frame, however, stories are duplicates or near-duplicates, and all resolve in a book-cart parade ending with readers and open books. The evidence reflects only this sample, not the entire generator.\",\"plot_groups\":[{\"story_ids\":[\"s000029\",\"s000047\",\"s000068\",\"s000005\"],\"summary\":\"Juniper redirects a grand parade to a narrow lane, fills the empty cart with books, and brings reading to people unable to reach the square.\"},{\"story_ids\":[\"s000057\",\"s000096\"],\"summary\":\"The mayor mistakes bundled books for decorations; Juniper reveals their true purpose, and the parade becomes a book-sharing event.\"},{\"story_ids\":[\"s000073\",\"s000034\",\"s000043\",\"s000085\"],\"summary\":\"A ringing bell parade conflicts with invited quiet readers; the intended solution replaces noise with ribbons, although s000085 omits the bell-promise resolution.\"}]}",
+          "type": "output_text",
+          "logprobs": []
+        }
+      ],
+      "role": "assistant",
+      "status": "completed",
+      "type": "message",
+      "phase": "final_answer"
+    }
+  ],
+  "parallel_tool_calls": true,
+  "temperature": 1.0,
+  "tool_choice": "auto",
+  "tools": [],
+  "top_p": 0.98,
+  "background": false,
+  "completed_at": 1788846233.0,
+  "conversation": null,
+  "max_output_tokens": 4000,
+  "max_tool_calls": null,
+  "moderation": null,
+  "previous_response_id": null,
+  "prompt": null,
+  "prompt_cache_key": null,
+  "prompt_cache_retention": "24h",
+  "reasoning": {
+    "context": "all_turns",
+    "effort": "none",
+    "generate_summary": null,
+    "summary": null,
+    "mode": "standard"
+  },
+  "safety_identifier": null,
+  "service_tier": "flex",
+  "status": "completed",
+  "text": {
+    "format": {
+      "name": "story_set_quality_v1",
+      "schema_": {
+        "type": "object",
+        "properties": {
+          "stories": {
+            "type": "array",
+            "minItems": 10,
+            "maxItems": 10,
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "enum": [
+                    "s000029",
+                    "s000057",
+                    "s000047",
+                    "s000073",
+                    "s000034",
+                    "s000043",
+                    "s000068",
+                    "s000096",
+                    "s000005",
+                    "s000085"
+                  ]
+                },
+                "rating": {
+                  "type": "object",
+                  "properties": {
+                    "coherence": {
+                      "type": "integer",
+                      "enum": [
+                        0,
+                        1,
+                        2,
+                        3,
+                        4,
+                        5,
+                        6,
+                        7,
+                        8,
+                        9
+                      ]
+                    },
+                    "style": {
+                      "type": "integer",
+                      "enum": [
+                        0,
+                        1,
+                        2,
+                        3,
+                        4,
+                        5,
+                        6,
+                        7,
+                        8,
+                        9
+                      ]
+                    },
+                    "grammar": {
+                      "type": "integer",
+                      "enum": [
+                        0,
+                        1,
+                        2,
+                        3,
+                        4,
+                        5,
+                        6,
+                        7,
+                        8,
+                        9
+                      ]
+                    },
+                    "storytelling": {
+                      "type": "integer",
+                      "enum": [
+                        0,
+                        1,
+                        2,
+                        3,
+                        4,
+                        5,
+                        6,
+                        7,
+                        8,
+                        9
+                      ]
+                    },
+                    "overall": {
+                      "type": "integer",
+                      "enum": [
+                        0,
+                        1,
+                        2,
+                        3,
+                        4,
+                        5,
+                        6,
+                        7,
+                        8,
+                        9
+                      ]
+                    }
+                  },
+                  "required": [
+                    "coherence",
+                    "style",
+                    "grammar",
+                    "storytelling",
+                    "overall"
+                  ],
+                  "additionalProperties": false
+                },
+                "note": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "id",
+                "rating",
+                "note"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "diversity": {
+            "type": "object",
+            "properties": {
+              "premise": {
+                "type": "integer",
+                "enum": [
+                  0,
+                  1,
+                  2,
+                  3,
+                  4,
+                  5,
+                  6,
+                  7,
+                  8,
+                  9
+                ]
+              },
+              "causal_path": {
+                "type": "integer",
+                "enum": [
+                  0,
+                  1,
+                  2,
+                  3,
+                  4,
+                  5,
+                  6,
+                  7,
+                  8,
+                  9
+                ]
+              },
+              "ending": {
+                "type": "integer",
+                "enum": [
+                  0,
+                  1,
+                  2,
+                  3,
+                  4,
+                  5,
+                  6,
+                  7,
+                  8,
+                  9
+                ]
+              },
+              "language": {
+                "type": "integer",
+                "enum": [
+                  0,
+                  1,
+                  2,
+                  3,
+                  4,
+                  5,
+                  6,
+                  7,
+                  8,
+                  9
+                ]
+              },
+              "overall": {
+                "type": "integer",
+                "enum": [
+                  0,
+                  1,
+                  2,
+                  3,
+                  4,
+                  5,
+                  6,
+                  7,
+                  8,
+                  9
+                ]
+              }
+            },
+            "required": [
+              "premise",
+              "causal_path",
+              "ending",
+              "language",
+              "overall"
+            ],
+            "additionalProperties": false
+          },
+          "diversity_evidence": {
+            "type": "string"
+          },
+          "plot_groups": {
+            "type": "array",
+            "minItems": 1,
+            "maxItems": 10,
+            "items": {
+              "type": "object",
+              "properties": {
+                "story_ids": {
+                  "type": "array",
+                  "minItems": 1,
+                  "items": {
+                    "type": "string",
+                    "enum": [
+                      "s000029",
+                      "s000057",
+                      "s000047",
+                      "s000073",
+                      "s000034",
+                      "s000043",
+                      "s000068",
+                      "s000096",
+                      "s000005",
+                      "s000085"
+                    ]
+                  }
+                },
+                "summary": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "story_ids",
+                "summary"
+              ],
+              "additionalProperties": false
+            }
+          }
+        },
+        "required": [
+          "stories",
+          "diversity",
+          "diversity_evidence",
+          "plot_groups"
+        ],
+        "additionalProperties": false
+      },
+      "type": "json_schema",
+      "description": null,
+      "strict": true
+    },
+    "verbosity": "medium"
+  },
+  "top_logprobs": 0,
+  "truncation": "disabled",
+  "usage": {
+    "input_tokens": 5253,
+    "input_tokens_details": {
+      "cached_tokens": 0,
+      "cache_write_tokens": 5250
+    },
+    "output_tokens": 917,
+    "output_tokens_details": {
+      "reasoning_tokens": 0
+    },
+    "total_tokens": 6170
+  },
+  "user": null,
+  "billing": {
+    "payer": "openai"
+  },
+  "frequency_penalty": 0.0,
+  "presence_penalty": 0.0,
+  "store": true,
+  "tool_usage": {
+    "image_gen": {
+      "input_tokens": 0,
+      "input_tokens_details": {
+        "image_tokens": 0,
+        "text_tokens": 0
+      },
+      "output_tokens": 0,
+      "output_tokens_details": {
+        "image_tokens": 0,
+        "text_tokens": 0
+      },
+      "total_tokens": 0
+    },
+    "web_search": {
+      "num_requests": 0
+    }
+  }
+}

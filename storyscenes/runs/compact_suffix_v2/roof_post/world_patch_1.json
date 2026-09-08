@@ -1,0 +1,149 @@
+{
+  "edits": [
+    {
+      "section": "entities",
+      "id": "invitations",
+      "value": {
+        "name": "invitations",
+        "kind": "prop",
+        "state": {
+          "owner": "ada",
+          "location": "garden",
+          "fragile": true,
+          "secured": false,
+          "delivered": false
+        }
+      }
+    },
+    {
+      "section": "entities",
+      "id": "ribbon",
+      "value": {
+        "name": "ribbon",
+        "kind": "prop",
+        "state": {
+          "owner": "dragon",
+          "location": "garden",
+          "tied": false
+        }
+      }
+    },
+    {
+      "section": "compose",
+      "id": "protect_fragile",
+      "value": {
+        "op": "Act",
+        "actors": [
+          "ada",
+          "dragon"
+        ],
+        "when": {
+          "dragon.knows.garden.wind": [
+            "ne",
+            null
+          ],
+          "dragon.knows.invitations.fragile": true,
+          "invitations.owner": "ada",
+          "ribbon.owner": "dragon",
+          "invitations.location": "garden",
+          "ribbon.location": "garden"
+        },
+        "set": {
+          "invitations.secured": true,
+          "ribbon.tied": true,
+          "dragon.carry_method": "ribbon_guarded"
+        },
+        "inc": {
+          "dragon.confidence": 1
+        },
+        "label": "secure fragile invitations",
+        "summary": "Pip ties the fragile invitations safely",
+        "pivotal": true
+      }
+    },
+    {
+      "section": "compose",
+      "id": "steady_cargo",
+      "value": {
+        "op": "Act",
+        "actors": [
+          "ada",
+          "dragon"
+        ],
+        "when": {
+          "dragon.knows.garden.wind": [
+            "ne",
+            null
+          ],
+          "dragon.knows.invitations.fragile": false,
+          "invitations.owner": "ada",
+          "invitations.location": "garden"
+        },
+        "set": {
+          "invitations.secured": true,
+          "dragon.carry_method": "balanced"
+        },
+        "inc": {
+          "dragon.confidence": 1
+        },
+        "label": "prepare sturdy invitations",
+        "summary": "Pip balances the sturdy invitations for travel",
+        "pivotal": true
+      }
+    },
+    {
+      "section": "compose",
+      "id": "ada_carries",
+      "value": {
+        "op": "Move",
+        "args": [
+          "ada",
+          "invitations",
+          "neighbor_roof"
+        ],
+        "when": {
+          "invitations.owner": "ada",
+          "invitations.secured": true,
+          "invitations.location": "garden"
+        },
+        "summary": "Ada carries the secured invitations across"
+      }
+    },
+    {
+      "section": "compose",
+      "id": "lend_to_pip",
+      "value": {
+        "op": "Lend",
+        "args": [
+          "ada",
+          "dragon",
+          "invitations"
+        ],
+        "when": {
+          "invitations.owner": "ada",
+          "invitations.secured": true,
+          "invitations.location": "garden"
+        },
+        "summary": "Ada lends Pip the secured invitations"
+      }
+    },
+    {
+      "section": "compose",
+      "id": "pip_carries",
+      "value": {
+        "op": "Move",
+        "args": [
+          "dragon",
+          "invitations",
+          "neighbor_roof"
+        ],
+        "when": {
+          "invitations.owner": "dragon",
+          "invitations.secured": true,
+          "invitations.location": "garden"
+        },
+        "summary": "Pip carries the invitations across"
+      }
+    }
+  ]
+}

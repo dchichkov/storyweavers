@@ -1,0 +1,404 @@
+{
+  "title": "The Roof-Garden Invitations",
+  "premise": "Ada and a young dragon must get invitations across a windy roof garden while learning how to help in the way their neighbor needs.",
+  "entities": {
+    "ada": {
+      "name": "Ada",
+      "kind": "child",
+      "state": {
+        "want": "deliver invitations",
+        "memes.Care": 2,
+        "delivered": false,
+        "performance_style": "careful"
+      }
+    },
+    "dragon": {
+      "name": "Pip",
+      "kind": "young_dragon",
+      "state": {
+        "want": "help",
+        "memes.Care": 1,
+        "confidence": 1,
+        "carry_method": "unset",
+        "performance_style": "ordinary"
+      }
+    },
+    "neighbor": {
+      "name": "Mina",
+      "kind": "neighbor_child",
+      "state": {
+        "want": "quiet",
+        "received": false,
+        "response": "none",
+        "location": "neighbor_roof"
+      }
+    },
+    "invitations": {
+      "name": "invitations",
+      "kind": "prop",
+      "state": {
+        "owner": "ada",
+        "location": "garden",
+        "fragile": true,
+        "secured": false,
+        "delivered": false
+      }
+    },
+    "ribbon": {
+      "name": "ribbon",
+      "kind": "prop",
+      "state": {
+        "owner": "dragon",
+        "location": "garden",
+        "tied": false
+      }
+    },
+    "bell": {
+      "name": "bell",
+      "kind": "prop",
+      "state": {
+        "owner": "dragon",
+        "location": "garden",
+        "rung": false
+      }
+    },
+    "garden": {
+      "name": "roof garden",
+      "kind": "place",
+      "state": {
+        "wind": "breezy"
+      }
+    },
+    "neighbor_roof": {
+      "name": "neighbor roof",
+      "kind": "place",
+      "state": {}
+    }
+  },
+  "vary": {
+    "weather": [
+      {
+        "garden.wind": "still"
+      },
+      {
+        "garden.wind": "breezy"
+      }
+    ],
+    "recipient": [
+      {
+        "neighbor.want": "quiet"
+      },
+      {
+        "neighbor.want": "join"
+      }
+    ],
+    "cargo": [
+      {
+        "invitations.fragile": true
+      },
+      {
+        "invitations.fragile": false
+      }
+    ]
+  },
+  "premises": [
+    "garden.wind",
+    "neighbor.want",
+    "invitations.fragile"
+  ],
+  "kernels": {},
+  "compose": {
+    "weather_news": {
+      "op": "DiscoverAndShare",
+      "args": [
+        "ada",
+        "dragon",
+        "garden.wind"
+      ],
+      "divide": 1
+    },
+    "wish_news": {
+      "op": "DiscoverAndShare",
+      "args": [
+        "dragon",
+        "ada",
+        "neighbor.want"
+      ],
+      "divide": 1
+    },
+    "cargo_news": {
+      "op": "DiscoverAndShare",
+      "args": [
+        "ada",
+        "dragon",
+        "invitations.fragile"
+      ],
+      "divide": 1
+    },
+    "protect_fragile": {
+      "op": "Act",
+      "actors": [
+        "ada",
+        "dragon"
+      ],
+      "when": {
+        "invitations.fragile": true,
+        "invitations.owner": "ada",
+        "ribbon.owner": "dragon",
+        "invitations.location": "garden",
+        "ribbon.location": "garden"
+      },
+      "set": {
+        "invitations.secured": true,
+        "ribbon.tied": true,
+        "dragon.carry_method": "ribbon_guarded"
+      },
+      "inc": {
+        "dragon.confidence": 1
+      },
+      "label": "secure fragile invitations",
+      "summary": "Pip ties the fragile invitations safely",
+      "pivotal": true
+    },
+    "steady_cargo": {
+      "op": "Act",
+      "actors": [
+        "ada",
+        "dragon"
+      ],
+      "when": {
+        "dragon.knows.garden.wind": [
+          "ne",
+          null
+        ],
+        "dragon.knows.invitations.fragile": false,
+        "invitations.owner": "ada",
+        "invitations.location": "garden"
+      },
+      "set": {
+        "invitations.secured": true,
+        "dragon.carry_method": "balanced"
+      },
+      "inc": {
+        "dragon.confidence": 1
+      },
+      "label": "prepare sturdy invitations",
+      "summary": "Pip balances the sturdy invitations for travel",
+      "pivotal": true
+    },
+    "choose_quiet_way": {
+      "op": "Act",
+      "actors": [
+        "ada",
+        "dragon"
+      ],
+      "when": {
+        "ada.knows.neighbor.want": "quiet",
+        "dragon.performance_style": "ordinary"
+      },
+      "set": {
+        "dragon.performance_style": "gentle"
+      },
+      "label": "choose a gentle greeting",
+      "summary": "Ada and Pip choose a quiet greeting",
+      "pivotal": true
+    },
+    "ring_for_joiners": {
+      "op": "Act",
+      "actors": [
+        "dragon"
+      ],
+      "when": {
+        "ada.knows.neighbor.want": "join",
+        "bell.owner": "dragon",
+        "bell.rung": false
+      },
+      "set": {
+        "bell.rung": true
+      },
+      "label": "ring welcome bell",
+      "summary": "Pip rings the welcome bell",
+      "pivotal": true
+    },
+    "ada_carries": {
+      "op": "Move",
+      "args": [
+        "ada",
+        "invitations",
+        "neighbor_roof"
+      ],
+      "when": {
+        "invitations.owner": "ada",
+        "invitations.secured": true,
+        "invitations.location": "garden"
+      },
+      "summary": "Ada carries the secured invitations across"
+    },
+    "lend_to_pip": {
+      "op": "Lend",
+      "args": [
+        "ada",
+        "dragon",
+        "invitations"
+      ],
+      "when": {
+        "invitations.owner": "ada",
+        "invitations.secured": true,
+        "invitations.location": "garden"
+      },
+      "summary": "Ada lends Pip the secured invitations"
+    },
+    "pip_carries": {
+      "op": "Move",
+      "args": [
+        "dragon",
+        "invitations",
+        "neighbor_roof"
+      ],
+      "when": {
+        "invitations.owner": "dragon",
+        "invitations.secured": true,
+        "invitations.location": "garden"
+      },
+      "summary": "Pip carries the invitations across"
+    },
+    "pip_returns_cargo": {
+      "op": "Return",
+      "args": [
+        "dragon",
+        "ada",
+        "invitations"
+      ],
+      "when": {
+        "invitations.location": "neighbor_roof",
+        "invitations.loaned_by": "ada"
+      },
+      "summary": "Pip returns the invitations to Ada"
+    },
+    "give_to_mina": {
+      "op": "Transfer",
+      "args": [
+        "ada",
+        "neighbor",
+        "invitations"
+      ],
+      "when": {
+        "invitations.owner": "ada",
+        "invitations.location": "neighbor_roof",
+        "neighbor.received": false
+      },
+      "summary": "Ada gives Mina the invitations"
+    },
+    "mark_delivery": {
+      "op": "Act",
+      "actors": [
+        "ada",
+        "neighbor"
+      ],
+      "when": {
+        "invitations.owner": "neighbor",
+        "invitations.location": "neighbor_roof",
+        "invitations.delivered": false
+      },
+      "set": {
+        "invitations.delivered": true,
+        "ada.delivered": true,
+        "neighbor.received": true
+      },
+      "label": "complete invitation delivery",
+      "summary": "Mina receives the invitations"
+    },
+    "quiet_response": {
+      "op": "Act",
+      "actors": [
+        "neighbor"
+      ],
+      "when": {
+        "neighbor.received": true,
+        "neighbor.want": "quiet",
+        "dragon.performance_style": "gentle",
+        "neighbor.response": "none"
+      },
+      "set": {
+        "neighbor.response": "quiet welcome"
+      },
+      "label": "answer with a quiet welcome",
+      "summary": "Mina answers with a quiet welcome",
+      "pivotal": true
+    },
+    "join_response": {
+      "op": "Act",
+      "actors": [
+        "neighbor",
+        "dragon"
+      ],
+      "when": {
+        "neighbor.received": true,
+        "neighbor.want": "join",
+        "bell.rung": true,
+        "neighbor.response": "none"
+      },
+      "set": {
+        "neighbor.response": "joins garden"
+      },
+      "label": "welcome Mina to the garden",
+      "summary": "Mina joins the garden gathering",
+      "pivotal": true
+    },
+    "return_bell": {
+      "op": "Act",
+      "actors": [
+        "dragon"
+      ],
+      "when": {
+        "bell.rung": true,
+        "neighbor.response": "joins garden"
+      },
+      "set": {
+        "dragon.performance_style": "welcoming"
+      },
+      "inc": {
+        "dragon.confidence": 1
+      },
+      "label": "share the welcome",
+      "summary": "Pip proudly shares the welcome"
+    }
+  },
+  "goal": {
+    "invitations.delivered": true,
+    "neighbor.received": true,
+    "neighbor.response": [
+      "ne",
+      "none"
+    ]
+  },
+  "outcomes": [
+    "invitations.delivered",
+    "neighbor.received",
+    "neighbor.response",
+    "dragon.carry_method",
+    "dragon.performance_style"
+  ],
+  "rules": {
+    "quiet_delivery": {
+      "must": {
+        "neighbor.want": "quiet",
+        "neighbor.response": "quiet welcome"
+      },
+      "when": {
+        "invitations.delivered": true
+      }
+    },
+    "shared_gathering": {
+      "must": {
+        "neighbor.want": "join",
+        "neighbor.response": "joins garden",
+        "bell.rung": true
+      },
+      "when": {
+        "invitations.delivered": true
+      }
+    }
+  },
+  "prune": true
+}

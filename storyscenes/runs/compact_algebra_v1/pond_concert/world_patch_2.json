@@ -1,0 +1,56 @@
+{
+  "edits": [
+    {
+      "section": "vary",
+      "id": "listener",
+      "value": [
+        {
+          "neighbor.want": "quiet"
+        },
+        {
+          "neighbor.want": "join"
+        },
+        {
+          "neighbor.want": "watch"
+        }
+      ]
+    },
+    {
+      "section": "compose",
+      "id": "watching_performance",
+      "value": {
+        "op": "Act",
+        "actors": [
+          "frog"
+        ],
+        "when": {
+          "frog.knows.neighbor.want": "watch",
+          "stage.location": "pond",
+          "stage.stage_ready": true
+        },
+        "set": {
+          "frog.performance_style": "gentle pond melody",
+          "frog.performed": true,
+          "neighbor.heard_music": true,
+          "neighbor.response": "watched"
+        },
+        "summary": "Frog performs a gentle pond melody",
+        "pivotal": true
+      }
+    },
+    {
+      "section": "outcomes",
+      "id": "outcomes",
+      "value": [
+        "ada.delivered",
+        "neighbor.received",
+        "stage.location",
+        "stage.stage_ready",
+        "frog.performance_style",
+        "frog.performed",
+        "neighbor.heard_music",
+        "neighbor.response"
+      ]
+    }
+  ]
+}

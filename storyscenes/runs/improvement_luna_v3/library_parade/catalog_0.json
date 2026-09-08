@@ -1,0 +1,442 @@
+{
+  "openings": [
+    {
+      "text": "Nia hurried into the library square with an invitation in one hand and a question in the other. Mayor Mallow wanted a parade people would remember, while Tuck loved making the wooden cart useful. But today the cart might be empty, crowded with books, or mistaken for a waiting audience. “Let’s see what it can do!” cried Nia.",
+      "when": []
+    },
+    {
+      "text": "The parade lane glittered with paper stars, and Mayor Mallow stretched her arms toward the sky. “Biggest parade ever!” she announced. Nia hugged her library list, and Tuck patted the cart’s sturdy handle. Somewhere between a grand float, a book journey, and a cozy reading room waited the cart’s real job.",
+      "when": []
+    }
+  ],
+  "scenes": [
+    {
+      "scene": "invite_square",
+      "role": "beat",
+      "variants": [
+        {
+          "text": "Nia waved her invitation like a tiny flag. “Mayor Mallow! Tuck! Meet me in the square—there are children waiting for a library surprise.” The mayor came jingling with plans, and Tuck rolled after her, eager to discover which job his wooden cart would choose.",
+          "when": []
+        }
+      ]
+    },
+    {
+      "scene": "look_cart",
+      "role": "beat",
+      "variants": [
+        {
+          "text": "Mallow peered into the cart and found it empty—so empty that a lost button could have held a parade in it. “Excellent!” she cried. “It shall become my enormous float.” Nia blinked at the bare boards, while Tuck’s eyebrows lifted like two curious caterpillars.",
+          "when": [
+            {
+              "key": "cart.loaded",
+              "op": "eq",
+              "value": false,
+              "at": "after"
+            }
+          ]
+        },
+        {
+          "text": "Mallow lifted the cart’s cover and discovered a snug stack of library books already riding inside. “That is not an empty float,” she said. “That is a very bookish mystery.” Nia smiled at the familiar spines, and Tuck tightened his hands around the handle.",
+          "when": [
+            {
+              "key": "cart.loaded",
+              "op": "eq",
+              "value": true,
+              "at": "after"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "scene": "look_books",
+      "role": "beat",
+      "variants": [
+        {
+          "text": "Mallow noticed the library books waiting nearby, their pages puffed up like little wings. She had thought only of cheering crowds, but these books seemed to be waiting for children who had not arrived yet. “Well,” she murmured, “that changes the shape of a parade.”",
+          "when": [
+            {
+              "key": "books.waiting",
+              "op": "eq",
+              "value": true,
+              "at": "after"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "scene": "learn_mayor_plan",
+      "role": "bridge",
+      "variants": [
+        {
+          "text": "Tuck listened while Mallow described her parade dream, then glanced at the cart’s polished hinges.",
+          "when": []
+        }
+      ]
+    },
+    {
+      "scene": "tell_cart_purpose",
+      "role": "beat",
+      "variants": [
+        {
+          "text": "Nia pointed to the waiting books. “They are meant for children who cannot come to the library.” Mallow’s grand boast wobbled. She looked from the books to the cart and said, “Then perhaps the biggest parade is the one that brings stories farther.”",
+          "when": [
+            {
+              "key": "nia.knows.books.waiting",
+              "op": "eq",
+              "value": true,
+              "at": "before"
+            }
+          ]
+        },
+        {
+          "text": "“The books are waiting for children,” Nia told Mallow. The mayor’s eyes moved from the empty parade lane to the neat stack. Her boast softened into a grin. “A parade that delivers stories? That could make an awfully fine rumble.”",
+          "when": [
+            {
+              "key": "nia.knows.books.waiting",
+              "op": "eq",
+              "value": true,
+              "at": "after"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "scene": "tell_folding_shelves",
+      "role": "beat",
+      "variants": [
+        {
+          "text": "Tuck tapped the cart’s side. “I know something you don’t,” he said. With a careful tug, he revealed hidden folding shelves. “This cart can open into a little room.” Mallow stared. The cart had been keeping a secret as neatly as a bookmark keeps a place.",
+          "when": [
+            {
+              "key": "mayor.knows.cart.shelves",
+              "op": "eq",
+              "value": true,
+              "at": "after"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "scene": "transfer_cart_to_nia",
+      "role": "beat",
+      "variants": [
+        {
+          "text": "At the neighborhood stop, Tuck placed the loaded cart’s handle into Nia’s hands. “Take it where the stories are,” he said. Nia nodded, suddenly keeper of wheels, books, and a wonderfully serious bell. The cart gave one proud wooden creak.",
+          "when": [
+            {
+              "key": "cart.owner",
+              "op": "eq",
+              "value": "nia",
+              "at": "after"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "scene": "load_books",
+      "role": "bridge",
+      "variants": [
+        {
+          "text": "At the library door, Nia tucked the waiting books into the cart, one colorful cover after another.",
+          "when": []
+        }
+      ]
+    },
+    {
+      "scene": "unload_books",
+      "role": "bridge",
+      "variants": [
+        {
+          "text": "For the cozy gathering, Nia lifted the books out and made a bright little nest of stories.",
+          "when": []
+        }
+      ]
+    },
+    {
+      "scene": "attach_banner",
+      "role": "beat",
+      "variants": [
+        {
+          "text": "Mallow tied her enormous banner to the empty cart. It climbed above her like a cheerful red sail. “Behold!” she cried. “A float so grand it needs its own introduction!” Tuck rang no bell yet, but he did give the cart an approving pat.",
+          "when": [
+            {
+              "key": "cart.mode",
+              "op": "eq",
+              "value": "float",
+              "at": "after"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "scene": "fold_shelves",
+      "role": "beat",
+      "variants": [
+        {
+          "text": "Tuck pulled, clicked, and unfolded. Shelves sprang out; a little reading nook appeared. Mallow’s mouth made a perfect O. “My cart is a room!” she whispered. Nia set down the books, and suddenly the parade had somewhere wonderful to stop.",
+          "when": [
+            {
+              "key": "cart.mode",
+              "op": "eq",
+              "value": "reading_room",
+              "at": "after"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "scene": "move_cart_to_square",
+      "role": "bridge",
+      "variants": [
+        {
+          "text": "Together they leaned into the handles, and the cart rolled toward the parade lane with a friendly wooden rumble.",
+          "when": []
+        }
+      ]
+    },
+    {
+      "scene": "move_cart_to_neighborhood",
+      "role": "bridge",
+      "variants": [
+        {
+          "text": "Nia steered past the parade flags toward the neighborhood stop, where small faces were already peeking from doorways.",
+          "when": [
+            {
+              "key": "cart.location",
+              "op": "eq",
+              "value": "neighborhood_stop",
+              "at": "after"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "scene": "invite_children",
+      "role": "beat",
+      "variants": [
+        {
+          "text": "Nia opened the shelves wide. “Come in, everyone. There is room for your elbows and your imaginations.” Children gathered around the little reading room, and Nia’s careful hug around the books became an open-handed welcome.",
+          "when": [
+            {
+              "key": "cart.mode",
+              "op": "eq",
+              "value": "reading_room",
+              "at": "before"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "scene": "ring_bell",
+      "role": "bridge",
+      "variants": [
+        {
+          "text": "Tuck lifted the brass bell and gave it one bright ding, which bounced ahead like a friendly invitation.",
+          "when": [
+            {
+              "key": "bell.rung",
+              "op": "eq",
+              "value": true,
+              "at": "after"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "scene": "perform_big_loop",
+      "role": "beat",
+      "variants": [
+        {
+          "text": "Mallow climbed aboard and swept around the lane in a towering parade loop. The banner streamed above her, Tuck rang the bell, and the cart’s giant shadow slid over the stones like a crown learning to dance.",
+          "when": [
+            {
+              "key": "cart.mode",
+              "op": "eq",
+              "value": "float",
+              "at": "before"
+            },
+            {
+              "key": "cart.performer",
+              "op": "eq",
+              "value": "mayor",
+              "at": "after"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "scene": "perform_book_route",
+      "role": "beat",
+      "variants": [
+        {
+          "text": "Nia guided the loaded cart from door to door. Children chose books while Tuck’s bell gave a friendly ding, ding, ding. Mallow’s enormous banner stretched overhead as a shady roof, and every new reader made the cart seem to roll a little taller.",
+          "when": [
+            {
+              "key": "cart.mode",
+              "op": "eq",
+              "value": "bookmobile",
+              "at": "before"
+            },
+            {
+              "key": "cart.performer",
+              "op": "eq",
+              "value": "nia",
+              "at": "after"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "scene": "perform_reading_room",
+      "role": "beat",
+      "variants": [
+        {
+          "text": "Nia began a story inside the opened cart. The parade gathered close, even Mallow, and the pages fluttered in the quiet. Soon the cart’s wheels disappeared beneath a soft circle of listening feet, as if the whole square had grown one enormous pair of ears.",
+          "when": [
+            {
+              "key": "cart.mode",
+              "op": "eq",
+              "value": "reading_room",
+              "at": "before"
+            },
+            {
+              "key": "cart.performer",
+              "op": "eq",
+              "value": "nia",
+              "at": "after"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "endings": [
+    {
+      "text": "The float rolled past admiring crowds, banner high and Mallow proudly waving. Behind it, the cart cast a giant shadow shaped like a crown—and Tuck’s bell made the crown wobble merrily over the parade stones.",
+      "when": [
+        {
+          "key": "cart.mode",
+          "op": "eq",
+          "value": "float",
+          "at": "after"
+        },
+        {
+          "key": "cart.performer",
+          "op": "eq",
+          "value": "mayor",
+          "at": "after"
+        }
+      ]
+    },
+    {
+      "text": "At the neighborhood stop, children chose books beneath Mallow’s banner-roof. The brass bell gave one friendly ding, and the bookmobile’s wheels pointed toward the next doorstep, where another eager hand was already waving.",
+      "when": [
+        {
+          "key": "cart.mode",
+          "op": "eq",
+          "value": "bookmobile",
+          "at": "after"
+        },
+        {
+          "key": "cart.location",
+          "op": "eq",
+          "value": "neighborhood_stop",
+          "at": "after"
+        },
+        {
+          "key": "cart.performer",
+          "op": "eq",
+          "value": "nia",
+          "at": "after"
+        }
+      ]
+    },
+    {
+      "text": "The parade paused around the traveling reading room. Nia’s story curled through the open shelves while listening feet covered the wheels in a soft circle. Even Mallow sat quietly, wearing the smallest, happiest crown in town.",
+      "when": [
+        {
+          "key": "cart.mode",
+          "op": "eq",
+          "value": "reading_room",
+          "at": "after"
+        },
+        {
+          "key": "cart.performer",
+          "op": "eq",
+          "value": "nia",
+          "at": "after"
+        }
+      ]
+    },
+    {
+      "text": "The cart found its grandest job in the square: not merely rolling past the crowd, but gathering the crowd close. Its shelves stood open, its books shone, and every child leaned toward the next page.",
+      "when": [
+        {
+          "key": "cart.mode",
+          "op": "eq",
+          "value": "reading_room",
+          "at": "after"
+        }
+      ]
+    }
+  ],
+  "lexicon": [
+    {
+      "key": "cart.mode",
+      "value": "float",
+      "text": "a towering parade float"
+    },
+    {
+      "key": "cart.mode",
+      "value": "bookmobile",
+      "text": "a bell-led bookmobile"
+    },
+    {
+      "key": "cart.mode",
+      "value": "reading_room",
+      "text": "a tiny traveling reading room"
+    },
+    {
+      "key": "cart.location",
+      "value": "parade_lane",
+      "text": "the parade lane"
+    },
+    {
+      "key": "cart.location",
+      "value": "neighborhood_stop",
+      "text": "the neighborhood stop"
+    },
+    {
+      "key": "cart.location",
+      "value": "library_door",
+      "text": "the library door"
+    },
+    {
+      "key": "cart.owner",
+      "value": "mayor",
+      "text": "Mayor Mallow"
+    },
+    {
+      "key": "cart.owner",
+      "value": "nia",
+      "text": "Nia"
+    },
+    {
+      "key": "cart.owner",
+      "value": "tuck",
+      "text": "Tuck"
+    }
+  ]
+}

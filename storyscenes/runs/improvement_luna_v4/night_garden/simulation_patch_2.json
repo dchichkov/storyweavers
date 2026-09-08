@@ -1,0 +1,9 @@
+{
+  "edits": [
+    {
+      "old": "        scene(\n            'perform_moving_shadows', 'Performance', ('ada',),",
+      "new": "        scene(\n            'brighten_lamp_ada', 'Adjustment', ('ada',),\n            when=(\n                C('lamp.owner', 'eq', 'ada'),\n                C('lamp.brightness', 'eq', 'soft'),\n                C('ada.plan', 'eq', 'moving'),\n                C('ada.knows.lamp.brightness', 'eq', 'soft'),\n            ),\n            set_values={'lamp.brightness': 'bright'},\n            summary='Ada turned up the lamp for her sweeping shadows',\n        ),\n        scene(\n            'perform_moving_shadows', 'Performance', ('ada',),"
+    }
+  ],
+  "renames": []
+}

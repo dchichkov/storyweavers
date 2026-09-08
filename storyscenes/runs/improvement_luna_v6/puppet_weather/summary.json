@@ -1,0 +1,54 @@
+{
+  "world": "puppet_weather",
+  "title": "The Courtyard Wind-Up Show",
+  "ok": true,
+  "samples": 100,
+  "simulation_sha256": "8fc95b5431f546c1bf6f9a0e426daaed534d745dd4439339653b0f059d04551a",
+  "generator_sha256": "85bfd4894456fe713ae713eae94abd90610044e425a64b0f670fe867f7c1b861",
+  "catalog_sha256": "132ddb7ddcac34e30454f8bd60c42cc051ea32e9c4c6b63939e6d502528bec97",
+  "distinct_texts": 40,
+  "distinct_scene_paths": 17,
+  "word_range": [
+    250,
+    331
+  ],
+  "prose_control_variants": 2,
+  "mechanics_model": "gpt-5.6-luna",
+  "mechanics_attempts": 1,
+  "prose_model": "gpt-5.6-luna",
+  "stats": {
+    "samples": 100,
+    "ordered_paths": 17,
+    "scene_sets": 3,
+    "causal_graphs": 3,
+    "outcomes": 3,
+    "premises": 3,
+    "events_range": [
+      5,
+      8
+    ],
+    "pruned_events": 87
+  },
+  "critic_before_revision": {
+    "issues": [
+      {
+        "seed": 791,
+        "severity": "major",
+        "layer": "simulation",
+        "defect": "contradiction",
+        "evidence": "The story says, “Unfortunately, nobody had been invited close,” but its second paragraph says “Mara clapped twice, and the courtyard audience gathered” before Mara later discovers and fixes that nobody invited them close; the trace does not make them invited or move them to the stage until event five.",
+        "fix": "Keep the audience merely present in the courtyard after the greeting, and reserve their approach to the stage for Bo’s later invitation."
+      },
+      {
+        "seed": 124,
+        "severity": "minor",
+        "layer": "prose",
+        "defect": "literal_state_value",
+        "evidence": "The ending says, “the audience left the stool in a neat moon-shaped circle around her,” which is physically unclear and reads as an accidental literal arrangement rather than a grounded closing image.",
+        "fix": "Specify that the audience forms the moon-shaped circle around Nia or around the stool, rather than saying they “left the stool” in one."
+      }
+    ],
+    "strengths": "Seeds 123 and 124 closely follow their event order for ownership, curtain transformation, and performance outcomes; seed 791 also grounds the plan discovery, invitation, prop placement, and weather-parade result apart from the premature gathering wording."
+  },
+  "final_catalog_attempt": 1
+}

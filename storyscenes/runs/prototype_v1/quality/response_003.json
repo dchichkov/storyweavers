@@ -1,0 +1,362 @@
+{
+  "id": "resp_03871ca81c15f327006a9f33b1284c87d0a70be42ac7cdf07a",
+  "created_at": 1788818353.0,
+  "error": null,
+  "incomplete_details": null,
+  "instructions": null,
+  "metadata": {},
+  "model": "gpt-5.6-terra",
+  "object": "response",
+  "output": [
+    {
+      "id": "msg_03871ca81c15f327006a9f33b1cf0487d088eba40f25945016",
+      "content": [
+        {
+          "annotations": [],
+          "text": "{\"stories\":[{\"id\":\"s000029\",\"rating\":{\"coherence\":7,\"style\":6,\"grammar\":8,\"storytelling\":7,\"overall\":7},\"note\":\"A clear gust-forces-tether solution delivers the message, with a concrete ending; the unexplained “knot condition” and repetitive procedural phrasing weaken the prose.\"},{\"id\":\"s000057\",\"rating\":{\"coherence\":4,\"style\":5,\"grammar\":8,\"storytelling\":5,\"overall\":5},\"note\":\"The gentle-wind high-flight route works and ends clearly, but calling the kite's “sound condition” a problem never leads to a diagnosis or repair.\"},{\"id\":\"s000047\",\"rating\":{\"coherence\":8,\"style\":7,\"grammar\":8,\"storytelling\":8,\"overall\":8},\"note\":\"Mina identifies and fixes the unstable tail, then uses the gentle wind for a successful flight; the sky-loop image gives the familiar resolution some charm.\"},{\"id\":\"s000073\",\"rating\":{\"coherence\":8,\"style\":6,\"grammar\":8,\"storytelling\":7,\"overall\":7},\"note\":\"A bowed frame is repaired and gusts consequentially require the low tether route; the sequence is sound, though the repair happens later than the route decision.\"},{\"id\":\"s000034\",\"rating\":{\"coherence\":8,\"style\":7,\"grammar\":8,\"storytelling\":8,\"overall\":8},\"note\":\"The frame repair, lightened message, gentle-weather choice, and successful flight form a complete, child-readable problem-solving arc.\"},{\"id\":\"s000043\",\"rating\":{\"coherence\":8,\"style\":6,\"grammar\":8,\"storytelling\":7,\"overall\":7},\"note\":\"The gusts force a safe tether plan while Mina repairs the whipping tail, and the tube reaches the basket securely; its repeated stock wording makes it feel mechanical.\"},{\"id\":\"s000068\",\"rating\":{\"coherence\":4,\"style\":5,\"grammar\":8,\"storytelling\":5,\"overall\":5},\"note\":\"The gusty-weather tether solution is coherent, but the stated “sound condition” is never explained or addressed, leaving a conspicuous dangling problem.\"},{\"id\":\"s000096\",\"rating\":{\"coherence\":8,\"style\":6,\"grammar\":8,\"storytelling\":7,\"overall\":7},\"note\":\"Gusts redirect the delivery to a tether while Mina straightens the bowed frame, producing a clear safe arrival despite formulaic language.\"},{\"id\":\"s000005\",\"rating\":{\"coherence\":4,\"style\":5,\"grammar\":8,\"storytelling\":5,\"overall\":5},\"note\":\"The message reaches the basket through a sensible tether route, but the kite's unspecified “sound condition” is introduced and then abandoned.\"},{\"id\":\"s000085\",\"rating\":{\"coherence\":8,\"style\":6,\"grammar\":8,\"storytelling\":7,\"overall\":7},\"note\":\"Mina lightens the note, repairs the frame, and adapts to gusts with a tether; the secure tube in the basket provides a complete concrete finish.\"}],\"diversity\":{\"premise\":1,\"causal_path\":3,\"ending\":0,\"language\":2,\"overall\":2},\"diversity_evidence\":\"All ten stories share the same rooftop message-delivery premise and identical success ending: Orra finds the tube in the marked basket. The meaningful branch is only route choice—gentle wind enables high flight in s000057, s000047, and s000034, while gusts require a tether in the others—along with minor repair substitutions; several stories retain an unresolved “sound condition” (s000057, s000068, s000005). This sample does not establish diversity for the full generator.\",\"plot_groups\":[{\"story_ids\":[\"s000057\",\"s000047\",\"s000034\"],\"summary\":\"Gentle wind permits a repaired/prepared kite to fly high and carry the message directly to the basket.\"},{\"story_ids\":[\"s000029\",\"s000073\",\"s000043\",\"s000068\",\"s000096\",\"s000005\",\"s000085\"],\"summary\":\"Gusty wind rules out high flight, so Mina prepares the message and uses a short tether to deliver it safely to the basket.\"}]}",
+          "type": "output_text",
+          "logprobs": []
+        }
+      ],
+      "role": "assistant",
+      "status": "completed",
+      "type": "message",
+      "phase": "final_answer"
+    }
+  ],
+  "parallel_tool_calls": true,
+  "temperature": 1.0,
+  "tool_choice": "auto",
+  "tools": [],
+  "top_p": 0.98,
+  "background": false,
+  "completed_at": 1788818360.0,
+  "conversation": null,
+  "max_output_tokens": 4000,
+  "max_tool_calls": null,
+  "moderation": null,
+  "previous_response_id": null,
+  "prompt": null,
+  "prompt_cache_key": null,
+  "prompt_cache_retention": "24h",
+  "reasoning": {
+    "context": "all_turns",
+    "effort": "none",
+    "generate_summary": null,
+    "summary": null,
+    "mode": "standard"
+  },
+  "safety_identifier": null,
+  "service_tier": "flex",
+  "status": "completed",
+  "text": {
+    "format": {
+      "name": "story_set_quality_v1",
+      "schema_": {
+        "type": "object",
+        "properties": {
+          "stories": {
+            "type": "array",
+            "minItems": 10,
+            "maxItems": 10,
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "enum": [
+                    "s000029",
+                    "s000057",
+                    "s000047",
+                    "s000073",
+                    "s000034",
+                    "s000043",
+                    "s000068",
+                    "s000096",
+                    "s000005",
+                    "s000085"
+                  ]
+                },
+                "rating": {
+                  "type": "object",
+                  "properties": {
+                    "coherence": {
+                      "type": "integer",
+                      "enum": [
+                        0,
+                        1,
+                        2,
+                        3,
+                        4,
+                        5,
+                        6,
+                        7,
+                        8,
+                        9
+                      ]
+                    },
+                    "style": {
+                      "type": "integer",
+                      "enum": [
+                        0,
+                        1,
+                        2,
+                        3,
+                        4,
+                        5,
+                        6,
+                        7,
+                        8,
+                        9
+                      ]
+                    },
+                    "grammar": {
+                      "type": "integer",
+                      "enum": [
+                        0,
+                        1,
+                        2,
+                        3,
+                        4,
+                        5,
+                        6,
+                        7,
+                        8,
+                        9
+                      ]
+                    },
+                    "storytelling": {
+                      "type": "integer",
+                      "enum": [
+                        0,
+                        1,
+                        2,
+                        3,
+                        4,
+                        5,
+                        6,
+                        7,
+                        8,
+                        9
+                      ]
+                    },
+                    "overall": {
+                      "type": "integer",
+                      "enum": [
+                        0,
+                        1,
+                        2,
+                        3,
+                        4,
+                        5,
+                        6,
+                        7,
+                        8,
+                        9
+                      ]
+                    }
+                  },
+                  "required": [
+                    "coherence",
+                    "style",
+                    "grammar",
+                    "storytelling",
+                    "overall"
+                  ],
+                  "additionalProperties": false
+                },
+                "note": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "id",
+                "rating",
+                "note"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "diversity": {
+            "type": "object",
+            "properties": {
+              "premise": {
+                "type": "integer",
+                "enum": [
+                  0,
+                  1,
+                  2,
+                  3,
+                  4,
+                  5,
+                  6,
+                  7,
+                  8,
+                  9
+                ]
+              },
+              "causal_path": {
+                "type": "integer",
+                "enum": [
+                  0,
+                  1,
+                  2,
+                  3,
+                  4,
+                  5,
+                  6,
+                  7,
+                  8,
+                  9
+                ]
+              },
+              "ending": {
+                "type": "integer",
+                "enum": [
+                  0,
+                  1,
+                  2,
+                  3,
+                  4,
+                  5,
+                  6,
+                  7,
+                  8,
+                  9
+                ]
+              },
+              "language": {
+                "type": "integer",
+                "enum": [
+                  0,
+                  1,
+                  2,
+                  3,
+                  4,
+                  5,
+                  6,
+                  7,
+                  8,
+                  9
+                ]
+              },
+              "overall": {
+                "type": "integer",
+                "enum": [
+                  0,
+                  1,
+                  2,
+                  3,
+                  4,
+                  5,
+                  6,
+                  7,
+                  8,
+                  9
+                ]
+              }
+            },
+            "required": [
+              "premise",
+              "causal_path",
+              "ending",
+              "language",
+              "overall"
+            ],
+            "additionalProperties": false
+          },
+          "diversity_evidence": {
+            "type": "string"
+          },
+          "plot_groups": {
+            "type": "array",
+            "minItems": 1,
+            "maxItems": 10,
+            "items": {
+              "type": "object",
+              "properties": {
+                "story_ids": {
+                  "type": "array",
+                  "minItems": 1,
+                  "items": {
+                    "type": "string",
+                    "enum": [
+                      "s000029",
+                      "s000057",
+                      "s000047",
+                      "s000073",
+                      "s000034",
+                      "s000043",
+                      "s000068",
+                      "s000096",
+                      "s000005",
+                      "s000085"
+                    ]
+                  }
+                },
+                "summary": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "story_ids",
+                "summary"
+              ],
+              "additionalProperties": false
+            }
+          }
+        },
+        "required": [
+          "stories",
+          "diversity",
+          "diversity_evidence",
+          "plot_groups"
+        ],
+        "additionalProperties": false
+      },
+      "type": "json_schema",
+      "description": null,
+      "strict": true
+    },
+    "verbosity": "medium"
+  },
+  "top_logprobs": 0,
+  "truncation": "disabled",
+  "usage": {
+    "input_tokens": 5609,
+    "input_tokens_details": {
+      "cached_tokens": 0,
+      "cache_write_tokens": 5606
+    },
+    "output_tokens": 887,
+    "output_tokens_details": {
+      "reasoning_tokens": 0
+    },
+    "total_tokens": 6496
+  },
+  "user": null,
+  "billing": {
+    "payer": "developer"
+  },
+  "frequency_penalty": 0.0,
+  "presence_penalty": 0.0,
+  "store": true,
+  "tool_usage": {
+    "image_gen": {
+      "input_tokens": 0,
+      "input_tokens_details": {
+        "image_tokens": 0,
+        "text_tokens": 0
+      },
+      "output_tokens": 0,
+      "output_tokens_details": {
+        "image_tokens": 0,
+        "text_tokens": 0
+      },
+      "total_tokens": 0
+    },
+    "web_search": {
+      "num_requests": 0
+    }
+  }
+}

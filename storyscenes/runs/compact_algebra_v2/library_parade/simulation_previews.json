@@ -1,0 +1,1170 @@
+[
+  {
+    "seed": 0,
+    "title": "The Parade That Carried Good News",
+    "initial": {
+      "ada.want": "deliver a book",
+      "ada.courage": 2,
+      "ada.delivered": false,
+      "ada.location": "library",
+      "mayor.want": "the biggest parade",
+      "mayor.boastful": true,
+      "mayor.performance_style": null,
+      "mayor.response": "none",
+      "mayor.location": "square",
+      "builder.want": "make useful things",
+      "builder.skill": 3,
+      "builder.location": "workshop",
+      "recipient.want": "join",
+      "recipient.received": false,
+      "recipient.response": "none",
+      "recipient.location": "square",
+      "cart.owner": "builder",
+      "cart.location": "workshop",
+      "cart.condition": "ready",
+      "cart.cover": "loose",
+      "book.owner": "ada",
+      "book.location": "library",
+      "library.open": true,
+      "workshop.open": true,
+      "square.wind": "breezy",
+      "ada.knows.square.wind": null,
+      "builder.knows.square.wind": null,
+      "ada.knows.recipient.want": null,
+      "mayor.knows.recipient.want": null,
+      "builder.knows.cart.condition": null,
+      "cart.loaned_by": null,
+      "mayor.knows.book.owner": null
+    },
+    "final": {
+      "ada.want": "deliver a book",
+      "ada.courage": 2,
+      "ada.delivered": false,
+      "ada.location": "library",
+      "mayor.want": "the biggest parade",
+      "mayor.boastful": false,
+      "mayor.performance_style": "welcoming_parade",
+      "mayor.response": "cheering",
+      "mayor.location": "square",
+      "builder.want": "make useful things",
+      "builder.skill": 3,
+      "builder.location": "workshop",
+      "recipient.want": "join",
+      "recipient.received": true,
+      "recipient.response": "delighted",
+      "recipient.location": "square",
+      "cart.owner": "ada",
+      "cart.location": "square",
+      "cart.condition": "ready",
+      "cart.cover": "tied",
+      "book.owner": "recipient",
+      "book.location": "library",
+      "library.open": true,
+      "workshop.open": true,
+      "square.wind": "breezy",
+      "ada.knows.square.wind": "breezy",
+      "builder.knows.square.wind": "breezy",
+      "ada.knows.recipient.want": "join",
+      "mayor.knows.recipient.want": "join",
+      "builder.knows.cart.condition": null,
+      "cart.loaned_by": "builder",
+      "mayor.knows.book.owner": "recipient"
+    },
+    "events": [
+      {
+        "id": 1,
+        "scene": "wind_news.notice",
+        "kernel": "Observe",
+        "actors": [
+          "ada"
+        ],
+        "summary": "",
+        "causes": [],
+        "requires": [],
+        "changes": {
+          "ada.knows.square.wind": {
+            "before": null,
+            "after": "breezy"
+          }
+        }
+      },
+      {
+        "id": 2,
+        "scene": "wish_news.notice",
+        "kernel": "Observe",
+        "actors": [
+          "ada"
+        ],
+        "summary": "",
+        "causes": [],
+        "requires": [],
+        "changes": {
+          "ada.knows.recipient.want": {
+            "before": null,
+            "after": "join"
+          }
+        }
+      },
+      {
+        "id": 3,
+        "scene": "wind_news.share",
+        "kernel": "Tell",
+        "actors": [
+          "ada",
+          "builder"
+        ],
+        "summary": "",
+        "causes": [
+          1
+        ],
+        "requires": [
+          {
+            "key": "ada.knows.square.wind",
+            "op": "ne",
+            "value": null
+          }
+        ],
+        "changes": {
+          "builder.knows.square.wind": {
+            "before": null,
+            "after": "breezy"
+          }
+        }
+      },
+      {
+        "id": 4,
+        "scene": "tie_cover",
+        "kernel": "Act",
+        "actors": [
+          "builder"
+        ],
+        "summary": "Bram ties down the cart cover",
+        "causes": [
+          3
+        ],
+        "requires": [
+          {
+            "key": "cart.owner",
+            "op": "eq",
+            "value": "builder"
+          },
+          {
+            "key": "square.wind",
+            "op": "eq",
+            "value": "breezy"
+          },
+          {
+            "key": "builder.knows.square.wind",
+            "op": "eq",
+            "value": "breezy"
+          }
+        ],
+        "changes": {
+          "cart.cover": {
+            "before": "loose",
+            "after": "tied"
+          }
+        }
+      },
+      {
+        "id": 5,
+        "scene": "wish_news.share",
+        "kernel": "Tell",
+        "actors": [
+          "ada",
+          "mayor"
+        ],
+        "summary": "",
+        "causes": [
+          2
+        ],
+        "requires": [
+          {
+            "key": "ada.knows.recipient.want",
+            "op": "ne",
+            "value": null
+          }
+        ],
+        "changes": {
+          "mayor.knows.recipient.want": {
+            "before": null,
+            "after": "join"
+          }
+        }
+      },
+      {
+        "id": 6,
+        "scene": "lend_cart_windy",
+        "kernel": "Transfer",
+        "actors": [
+          "builder",
+          "ada"
+        ],
+        "summary": "Bram lends Ada the secured cart",
+        "causes": [
+          4
+        ],
+        "requires": [
+          {
+            "key": "cart.owner",
+            "op": "eq",
+            "value": "builder"
+          },
+          {
+            "key": "cart.loaned_by",
+            "op": "eq",
+            "value": null
+          },
+          {
+            "key": "cart.condition",
+            "op": "eq",
+            "value": "ready"
+          },
+          {
+            "key": "square.wind",
+            "op": "eq",
+            "value": "breezy"
+          },
+          {
+            "key": "cart.cover",
+            "op": "eq",
+            "value": "tied"
+          }
+        ],
+        "changes": {
+          "cart.owner": {
+            "before": "builder",
+            "after": "ada"
+          },
+          "cart.loaned_by": {
+            "before": null,
+            "after": "builder"
+          }
+        }
+      },
+      {
+        "id": 7,
+        "scene": "bring_cart_to_library",
+        "kernel": "Move",
+        "actors": [
+          "ada",
+          "library"
+        ],
+        "summary": "Ada brings the cart to the library",
+        "causes": [
+          6
+        ],
+        "requires": [
+          {
+            "key": "cart.owner",
+            "op": "eq",
+            "value": "ada"
+          },
+          {
+            "key": "cart.location",
+            "op": "eq",
+            "value": "workshop"
+          }
+        ],
+        "changes": {
+          "cart.location": {
+            "before": "workshop",
+            "after": "library"
+          }
+        }
+      },
+      {
+        "id": 8,
+        "scene": "bring_cart_to_square",
+        "kernel": "Move",
+        "actors": [
+          "ada",
+          "square"
+        ],
+        "summary": "Ada rolls the cart to the square",
+        "causes": [
+          6,
+          7
+        ],
+        "requires": [
+          {
+            "key": "cart.owner",
+            "op": "eq",
+            "value": "ada"
+          },
+          {
+            "key": "cart.location",
+            "op": "eq",
+            "value": "library"
+          }
+        ],
+        "changes": {
+          "cart.location": {
+            "before": "library",
+            "after": "square"
+          }
+        }
+      },
+      {
+        "id": 9,
+        "scene": "deliver_for_joiners",
+        "kernel": "Transfer",
+        "actors": [
+          "ada",
+          "recipient"
+        ],
+        "summary": "Ada delivers the book to a new parade helper",
+        "causes": [
+          2,
+          8
+        ],
+        "requires": [
+          {
+            "key": "book.owner",
+            "op": "eq",
+            "value": "ada"
+          },
+          {
+            "key": "cart.location",
+            "op": "eq",
+            "value": "square"
+          },
+          {
+            "key": "ada.knows.recipient.want",
+            "op": "eq",
+            "value": "join"
+          },
+          {
+            "key": "cart.condition",
+            "op": "eq",
+            "value": "ready"
+          }
+        ],
+        "changes": {
+          "book.owner": {
+            "before": "ada",
+            "after": "recipient"
+          }
+        }
+      },
+      {
+        "id": 10,
+        "scene": "mayor_observes_delivery",
+        "kernel": "Observe",
+        "actors": [
+          "mayor"
+        ],
+        "summary": "The mayor notices the delivered book",
+        "causes": [
+          9
+        ],
+        "requires": [
+          {
+            "key": "book.owner",
+            "op": "eq",
+            "value": "recipient"
+          }
+        ],
+        "changes": {
+          "mayor.knows.book.owner": {
+            "before": null,
+            "after": "recipient"
+          }
+        }
+      },
+      {
+        "id": 11,
+        "scene": "welcoming_parade",
+        "kernel": "Act",
+        "actors": [
+          "mayor"
+        ],
+        "summary": "The mayor welcomes Nell into the parade",
+        "causes": [
+          5,
+          9,
+          10
+        ],
+        "requires": [
+          {
+            "key": "book.owner",
+            "op": "eq",
+            "value": "recipient"
+          },
+          {
+            "key": "mayor.knows.book.owner",
+            "op": "eq",
+            "value": "recipient"
+          },
+          {
+            "key": "mayor.knows.recipient.want",
+            "op": "eq",
+            "value": "join"
+          }
+        ],
+        "changes": {
+          "mayor.boastful": {
+            "before": true,
+            "after": false
+          },
+          "mayor.performance_style": {
+            "before": null,
+            "after": "welcoming_parade"
+          },
+          "mayor.response": {
+            "before": "none",
+            "after": "cheering"
+          },
+          "recipient.received": {
+            "before": false,
+            "after": true
+          },
+          "recipient.response": {
+            "before": "none",
+            "after": "delighted"
+          }
+        }
+      }
+    ]
+  },
+  {
+    "seed": 1,
+    "title": "The Parade That Carried Good News",
+    "initial": {
+      "ada.want": "deliver a book",
+      "ada.courage": 2,
+      "ada.delivered": false,
+      "ada.location": "library",
+      "mayor.want": "the biggest parade",
+      "mayor.boastful": true,
+      "mayor.performance_style": null,
+      "mayor.response": "none",
+      "mayor.location": "square",
+      "builder.want": "make useful things",
+      "builder.skill": 3,
+      "builder.location": "workshop",
+      "recipient.want": "quiet",
+      "recipient.received": false,
+      "recipient.response": "none",
+      "recipient.location": "square",
+      "cart.owner": "builder",
+      "cart.location": "workshop",
+      "cart.condition": "damaged",
+      "cart.cover": "loose",
+      "book.owner": "ada",
+      "book.location": "library",
+      "library.open": true,
+      "workshop.open": true,
+      "square.wind": "still",
+      "ada.knows.square.wind": null,
+      "builder.knows.square.wind": null,
+      "ada.knows.recipient.want": null,
+      "mayor.knows.recipient.want": null,
+      "builder.knows.cart.condition": null,
+      "cart.loaned_by": null,
+      "mayor.knows.book.owner": null
+    },
+    "final": {
+      "ada.want": "deliver a book",
+      "ada.courage": 2,
+      "ada.delivered": false,
+      "ada.location": "library",
+      "mayor.want": "the biggest parade",
+      "mayor.boastful": false,
+      "mayor.performance_style": "quiet_procession",
+      "mayor.response": "proud",
+      "mayor.location": "square",
+      "builder.want": "make useful things",
+      "builder.skill": 3,
+      "builder.location": "workshop",
+      "recipient.want": "quiet",
+      "recipient.received": true,
+      "recipient.response": "grateful",
+      "recipient.location": "square",
+      "cart.owner": "ada",
+      "cart.location": "square",
+      "cart.condition": "ready",
+      "cart.cover": "loose",
+      "book.owner": "recipient",
+      "book.location": "library",
+      "library.open": true,
+      "workshop.open": true,
+      "square.wind": "still",
+      "ada.knows.square.wind": null,
+      "builder.knows.square.wind": null,
+      "ada.knows.recipient.want": "quiet",
+      "mayor.knows.recipient.want": "quiet",
+      "builder.knows.cart.condition": "damaged",
+      "cart.loaned_by": "builder",
+      "mayor.knows.book.owner": "recipient"
+    },
+    "events": [
+      {
+        "id": 1,
+        "scene": "wish_news.notice",
+        "kernel": "Observe",
+        "actors": [
+          "ada"
+        ],
+        "summary": "",
+        "causes": [],
+        "requires": [],
+        "changes": {
+          "ada.knows.recipient.want": {
+            "before": null,
+            "after": "quiet"
+          }
+        }
+      },
+      {
+        "id": 2,
+        "scene": "wish_news.share",
+        "kernel": "Tell",
+        "actors": [
+          "ada",
+          "mayor"
+        ],
+        "summary": "",
+        "causes": [
+          1
+        ],
+        "requires": [
+          {
+            "key": "ada.knows.recipient.want",
+            "op": "ne",
+            "value": null
+          }
+        ],
+        "changes": {
+          "mayor.knows.recipient.want": {
+            "before": null,
+            "after": "quiet"
+          }
+        }
+      },
+      {
+        "id": 3,
+        "scene": "cart_notice",
+        "kernel": "Observe",
+        "actors": [
+          "builder"
+        ],
+        "summary": "Bram checks the cart",
+        "causes": [],
+        "requires": [],
+        "changes": {
+          "builder.knows.cart.condition": {
+            "before": null,
+            "after": "damaged"
+          }
+        }
+      },
+      {
+        "id": 4,
+        "scene": "repair_cart",
+        "kernel": "Act",
+        "actors": [
+          "builder"
+        ],
+        "summary": "Bram repairs the cart",
+        "causes": [
+          3
+        ],
+        "requires": [
+          {
+            "key": "cart.owner",
+            "op": "eq",
+            "value": "builder"
+          },
+          {
+            "key": "cart.condition",
+            "op": "eq",
+            "value": "damaged"
+          },
+          {
+            "key": "builder.knows.cart.condition",
+            "op": "eq",
+            "value": "damaged"
+          }
+        ],
+        "changes": {
+          "cart.condition": {
+            "before": "damaged",
+            "after": "ready"
+          }
+        }
+      },
+      {
+        "id": 5,
+        "scene": "lend_cart",
+        "kernel": "Transfer",
+        "actors": [
+          "builder",
+          "ada"
+        ],
+        "summary": "Bram lends Ada the cart",
+        "causes": [
+          4
+        ],
+        "requires": [
+          {
+            "key": "cart.owner",
+            "op": "eq",
+            "value": "builder"
+          },
+          {
+            "key": "cart.loaned_by",
+            "op": "eq",
+            "value": null
+          },
+          {
+            "key": "cart.condition",
+            "op": "eq",
+            "value": "ready"
+          },
+          {
+            "key": "square.wind",
+            "op": "eq",
+            "value": "still"
+          }
+        ],
+        "changes": {
+          "cart.owner": {
+            "before": "builder",
+            "after": "ada"
+          },
+          "cart.loaned_by": {
+            "before": null,
+            "after": "builder"
+          }
+        }
+      },
+      {
+        "id": 6,
+        "scene": "bring_cart_to_library",
+        "kernel": "Move",
+        "actors": [
+          "ada",
+          "library"
+        ],
+        "summary": "Ada brings the cart to the library",
+        "causes": [
+          5
+        ],
+        "requires": [
+          {
+            "key": "cart.owner",
+            "op": "eq",
+            "value": "ada"
+          },
+          {
+            "key": "cart.location",
+            "op": "eq",
+            "value": "workshop"
+          }
+        ],
+        "changes": {
+          "cart.location": {
+            "before": "workshop",
+            "after": "library"
+          }
+        }
+      },
+      {
+        "id": 7,
+        "scene": "bring_cart_to_square",
+        "kernel": "Move",
+        "actors": [
+          "ada",
+          "square"
+        ],
+        "summary": "Ada rolls the cart to the square",
+        "causes": [
+          5,
+          6
+        ],
+        "requires": [
+          {
+            "key": "cart.owner",
+            "op": "eq",
+            "value": "ada"
+          },
+          {
+            "key": "cart.location",
+            "op": "eq",
+            "value": "library"
+          }
+        ],
+        "changes": {
+          "cart.location": {
+            "before": "library",
+            "after": "square"
+          }
+        }
+      },
+      {
+        "id": 8,
+        "scene": "deliver_quietly",
+        "kernel": "Transfer",
+        "actors": [
+          "ada",
+          "recipient"
+        ],
+        "summary": "Ada delivers Nell's book quietly",
+        "causes": [
+          1,
+          7
+        ],
+        "requires": [
+          {
+            "key": "book.owner",
+            "op": "eq",
+            "value": "ada"
+          },
+          {
+            "key": "cart.location",
+            "op": "eq",
+            "value": "square"
+          },
+          {
+            "key": "ada.knows.recipient.want",
+            "op": "eq",
+            "value": "quiet"
+          },
+          {
+            "key": "square.wind",
+            "op": "eq",
+            "value": "still"
+          }
+        ],
+        "changes": {
+          "book.owner": {
+            "before": "ada",
+            "after": "recipient"
+          }
+        }
+      },
+      {
+        "id": 9,
+        "scene": "mayor_observes_delivery",
+        "kernel": "Observe",
+        "actors": [
+          "mayor"
+        ],
+        "summary": "The mayor notices the delivered book",
+        "causes": [
+          8
+        ],
+        "requires": [
+          {
+            "key": "book.owner",
+            "op": "eq",
+            "value": "recipient"
+          }
+        ],
+        "changes": {
+          "mayor.knows.book.owner": {
+            "before": null,
+            "after": "recipient"
+          }
+        }
+      },
+      {
+        "id": 10,
+        "scene": "quiet_procession",
+        "kernel": "Act",
+        "actors": [
+          "mayor"
+        ],
+        "summary": "The mayor leads a quiet book procession",
+        "causes": [
+          2,
+          8,
+          9
+        ],
+        "requires": [
+          {
+            "key": "book.owner",
+            "op": "eq",
+            "value": "recipient"
+          },
+          {
+            "key": "mayor.knows.book.owner",
+            "op": "eq",
+            "value": "recipient"
+          },
+          {
+            "key": "mayor.knows.recipient.want",
+            "op": "eq",
+            "value": "quiet"
+          }
+        ],
+        "changes": {
+          "mayor.boastful": {
+            "before": true,
+            "after": false
+          },
+          "mayor.performance_style": {
+            "before": null,
+            "after": "quiet_procession"
+          },
+          "mayor.response": {
+            "before": "none",
+            "after": "proud"
+          },
+          "recipient.received": {
+            "before": false,
+            "after": true
+          },
+          "recipient.response": {
+            "before": "none",
+            "after": "grateful"
+          }
+        }
+      }
+    ]
+  },
+  {
+    "seed": 2,
+    "title": "The Parade That Carried Good News",
+    "initial": {
+      "ada.want": "deliver a book",
+      "ada.courage": 2,
+      "ada.delivered": false,
+      "ada.location": "library",
+      "mayor.want": "the biggest parade",
+      "mayor.boastful": true,
+      "mayor.performance_style": null,
+      "mayor.response": "none",
+      "mayor.location": "square",
+      "builder.want": "make useful things",
+      "builder.skill": 3,
+      "builder.location": "workshop",
+      "recipient.want": "quiet",
+      "recipient.received": false,
+      "recipient.response": "none",
+      "recipient.location": "square",
+      "cart.owner": "builder",
+      "cart.location": "workshop",
+      "cart.condition": "ready",
+      "cart.cover": "loose",
+      "book.owner": "ada",
+      "book.location": "library",
+      "library.open": true,
+      "workshop.open": true,
+      "square.wind": "still",
+      "ada.knows.square.wind": null,
+      "builder.knows.square.wind": null,
+      "ada.knows.recipient.want": null,
+      "mayor.knows.recipient.want": null,
+      "builder.knows.cart.condition": null,
+      "cart.loaned_by": null,
+      "mayor.knows.book.owner": null
+    },
+    "final": {
+      "ada.want": "deliver a book",
+      "ada.courage": 2,
+      "ada.delivered": false,
+      "ada.location": "library",
+      "mayor.want": "the biggest parade",
+      "mayor.boastful": false,
+      "mayor.performance_style": "quiet_procession",
+      "mayor.response": "proud",
+      "mayor.location": "square",
+      "builder.want": "make useful things",
+      "builder.skill": 3,
+      "builder.location": "workshop",
+      "recipient.want": "quiet",
+      "recipient.received": true,
+      "recipient.response": "grateful",
+      "recipient.location": "square",
+      "cart.owner": "ada",
+      "cart.location": "square",
+      "cart.condition": "ready",
+      "cart.cover": "loose",
+      "book.owner": "recipient",
+      "book.location": "library",
+      "library.open": true,
+      "workshop.open": true,
+      "square.wind": "still",
+      "ada.knows.square.wind": null,
+      "builder.knows.square.wind": null,
+      "ada.knows.recipient.want": "quiet",
+      "mayor.knows.recipient.want": "quiet",
+      "builder.knows.cart.condition": null,
+      "cart.loaned_by": "builder",
+      "mayor.knows.book.owner": "recipient"
+    },
+    "events": [
+      {
+        "id": 1,
+        "scene": "lend_cart",
+        "kernel": "Transfer",
+        "actors": [
+          "builder",
+          "ada"
+        ],
+        "summary": "Bram lends Ada the cart",
+        "causes": [],
+        "requires": [
+          {
+            "key": "cart.owner",
+            "op": "eq",
+            "value": "builder"
+          },
+          {
+            "key": "cart.loaned_by",
+            "op": "eq",
+            "value": null
+          },
+          {
+            "key": "cart.condition",
+            "op": "eq",
+            "value": "ready"
+          },
+          {
+            "key": "square.wind",
+            "op": "eq",
+            "value": "still"
+          }
+        ],
+        "changes": {
+          "cart.owner": {
+            "before": "builder",
+            "after": "ada"
+          },
+          "cart.loaned_by": {
+            "before": null,
+            "after": "builder"
+          }
+        }
+      },
+      {
+        "id": 2,
+        "scene": "bring_cart_to_library",
+        "kernel": "Move",
+        "actors": [
+          "ada",
+          "library"
+        ],
+        "summary": "Ada brings the cart to the library",
+        "causes": [
+          1
+        ],
+        "requires": [
+          {
+            "key": "cart.owner",
+            "op": "eq",
+            "value": "ada"
+          },
+          {
+            "key": "cart.location",
+            "op": "eq",
+            "value": "workshop"
+          }
+        ],
+        "changes": {
+          "cart.location": {
+            "before": "workshop",
+            "after": "library"
+          }
+        }
+      },
+      {
+        "id": 3,
+        "scene": "wish_news.notice",
+        "kernel": "Observe",
+        "actors": [
+          "ada"
+        ],
+        "summary": "",
+        "causes": [],
+        "requires": [],
+        "changes": {
+          "ada.knows.recipient.want": {
+            "before": null,
+            "after": "quiet"
+          }
+        }
+      },
+      {
+        "id": 4,
+        "scene": "wish_news.share",
+        "kernel": "Tell",
+        "actors": [
+          "ada",
+          "mayor"
+        ],
+        "summary": "",
+        "causes": [
+          3
+        ],
+        "requires": [
+          {
+            "key": "ada.knows.recipient.want",
+            "op": "ne",
+            "value": null
+          }
+        ],
+        "changes": {
+          "mayor.knows.recipient.want": {
+            "before": null,
+            "after": "quiet"
+          }
+        }
+      },
+      {
+        "id": 5,
+        "scene": "bring_cart_to_square",
+        "kernel": "Move",
+        "actors": [
+          "ada",
+          "square"
+        ],
+        "summary": "Ada rolls the cart to the square",
+        "causes": [
+          1,
+          2
+        ],
+        "requires": [
+          {
+            "key": "cart.owner",
+            "op": "eq",
+            "value": "ada"
+          },
+          {
+            "key": "cart.location",
+            "op": "eq",
+            "value": "library"
+          }
+        ],
+        "changes": {
+          "cart.location": {
+            "before": "library",
+            "after": "square"
+          }
+        }
+      },
+      {
+        "id": 6,
+        "scene": "deliver_quietly",
+        "kernel": "Transfer",
+        "actors": [
+          "ada",
+          "recipient"
+        ],
+        "summary": "Ada delivers Nell's book quietly",
+        "causes": [
+          3,
+          5
+        ],
+        "requires": [
+          {
+            "key": "book.owner",
+            "op": "eq",
+            "value": "ada"
+          },
+          {
+            "key": "cart.location",
+            "op": "eq",
+            "value": "square"
+          },
+          {
+            "key": "ada.knows.recipient.want",
+            "op": "eq",
+            "value": "quiet"
+          },
+          {
+            "key": "square.wind",
+            "op": "eq",
+            "value": "still"
+          }
+        ],
+        "changes": {
+          "book.owner": {
+            "before": "ada",
+            "after": "recipient"
+          }
+        }
+      },
+      {
+        "id": 7,
+        "scene": "mayor_observes_delivery",
+        "kernel": "Observe",
+        "actors": [
+          "mayor"
+        ],
+        "summary": "The mayor notices the delivered book",
+        "causes": [
+          6
+        ],
+        "requires": [
+          {
+            "key": "book.owner",
+            "op": "eq",
+            "value": "recipient"
+          }
+        ],
+        "changes": {
+          "mayor.knows.book.owner": {
+            "before": null,
+            "after": "recipient"
+          }
+        }
+      },
+      {
+        "id": 8,
+        "scene": "quiet_procession",
+        "kernel": "Act",
+        "actors": [
+          "mayor"
+        ],
+        "summary": "The mayor leads a quiet book procession",
+        "causes": [
+          4,
+          6,
+          7
+        ],
+        "requires": [
+          {
+            "key": "book.owner",
+            "op": "eq",
+            "value": "recipient"
+          },
+          {
+            "key": "mayor.knows.book.owner",
+            "op": "eq",
+            "value": "recipient"
+          },
+          {
+            "key": "mayor.knows.recipient.want",
+            "op": "eq",
+            "value": "quiet"
+          }
+        ],
+        "changes": {
+          "mayor.boastful": {
+            "before": true,
+            "after": false
+          },
+          "mayor.performance_style": {
+            "before": null,
+            "after": "quiet_procession"
+          },
+          "mayor.response": {
+            "before": "none",
+            "after": "proud"
+          },
+          "recipient.received": {
+            "before": false,
+            "after": true
+          },
+          "recipient.response": {
+            "before": "none",
+            "after": "grateful"
+          }
+        }
+      }
+    ]
+  }
+]

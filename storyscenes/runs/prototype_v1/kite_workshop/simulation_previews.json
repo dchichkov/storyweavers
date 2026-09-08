@@ -1,0 +1,1487 @@
+[
+  {
+    "seed": 0,
+    "title": "The Kite Workshop: A Message on the Wind",
+    "initial": {
+      "mina.location": "workshop",
+      "brindle.location": "workshop",
+      "orra.location": "workshop",
+      "kite.location": "workshop",
+      "tube.location": "workshop",
+      "note.location": "workshop",
+      "rope.location": "workshop",
+      "repair_kit.location": "workshop",
+      "ribbon.location": "workshop",
+      "wind_sock.location": "workshop",
+      "basket.location": "workshop",
+      "wind.pattern": "gusty",
+      "kite.defect": "sound",
+      "kite.balanced": true,
+      "kite.route": null,
+      "kite.launched": false,
+      "kite.stable": false,
+      "kite.delivered": false,
+      "note.bulky": true,
+      "note.prepared": false,
+      "note.secured": false,
+      "note.carrier": null,
+      "note.delivered": false,
+      "tube.contains": null,
+      "tube.attachment": null,
+      "tube.ready": false,
+      "rope.owner": "orra",
+      "repair_kit.owner": "mina",
+      "brindle.breath_control": "ready",
+      "brindle.memes.Ambition": 2,
+      "brindle.memes.Care": 1,
+      "brindle.memes.Curiosity": 2,
+      "mina.memes.Care": 2,
+      "mina.memes.Curiosity": 2,
+      "orra.memes.Care": 2,
+      "mina.knows.kite.defect": null,
+      "brindle.knows.wind.pattern": null,
+      "brindle.knows.breath.practice": false,
+      "basket.received": false,
+      "orra.confirmed": false
+    },
+    "final": {
+      "mina.location": "workshop",
+      "brindle.location": "workshop",
+      "orra.location": "workshop",
+      "kite.location": "workshop",
+      "tube.location": "basket",
+      "note.location": "workshop",
+      "rope.location": "workshop",
+      "repair_kit.location": "workshop",
+      "ribbon.location": "workshop",
+      "wind_sock.location": "workshop",
+      "basket.location": "workshop",
+      "wind.pattern": "gusty",
+      "kite.defect": "sound",
+      "kite.balanced": true,
+      "kite.route": "low",
+      "kite.launched": false,
+      "kite.stable": false,
+      "kite.delivered": false,
+      "note.bulky": false,
+      "note.prepared": true,
+      "note.secured": true,
+      "note.carrier": "tube",
+      "note.delivered": true,
+      "tube.contains": "note",
+      "tube.attachment": "secured",
+      "tube.ready": true,
+      "rope.owner": "mina",
+      "repair_kit.owner": "mina",
+      "brindle.breath_control": "ready",
+      "brindle.memes.Ambition": 2,
+      "brindle.memes.Care": 1,
+      "brindle.memes.Curiosity": 2,
+      "mina.memes.Care": 2,
+      "mina.memes.Curiosity": 2,
+      "orra.memes.Care": 2,
+      "mina.knows.kite.defect": "sound",
+      "brindle.knows.wind.pattern": "gusty",
+      "brindle.knows.breath.practice": false,
+      "basket.received": true,
+      "orra.confirmed": true
+    },
+    "events": [
+      {
+        "id": 1,
+        "scene": "inspect_kite",
+        "kernel": "Observe",
+        "actors": [
+          "mina"
+        ],
+        "summary": "Mina inspected the kite for the trouble spot",
+        "causes": [],
+        "requires": [
+          {
+            "key": "mina.location",
+            "op": "eq",
+            "value": "workshop"
+          },
+          {
+            "key": "mina.memes.Curiosity",
+            "op": "ge",
+            "value": 1
+          }
+        ],
+        "changes": {
+          "mina.knows.kite.defect": {
+            "before": null,
+            "after": "sound"
+          }
+        }
+      },
+      {
+        "id": 2,
+        "scene": "prepare_message",
+        "kernel": "preparation",
+        "actors": [
+          "mina"
+        ],
+        "summary": "Mina rolled the note into the little message tube",
+        "causes": [],
+        "requires": [
+          {
+            "key": "note.prepared",
+            "op": "eq",
+            "value": false
+          },
+          {
+            "key": "note.location",
+            "op": "eq",
+            "value": "workshop"
+          }
+        ],
+        "changes": {
+          "note.bulky": {
+            "before": true,
+            "after": false
+          },
+          "note.prepared": {
+            "before": false,
+            "after": true
+          },
+          "tube.contains": {
+            "before": null,
+            "after": "note"
+          }
+        }
+      },
+      {
+        "id": 3,
+        "scene": "lend_tether_rope",
+        "kernel": "Transfer",
+        "actors": [
+          "orra",
+          "mina"
+        ],
+        "summary": "Orra lent Mina the short tether rope",
+        "causes": [],
+        "requires": [
+          {
+            "key": "rope.owner",
+            "op": "eq",
+            "value": "orra"
+          },
+          {
+            "key": "mina.location",
+            "op": "eq",
+            "value": "workshop"
+          },
+          {
+            "key": "orra.location",
+            "op": "eq",
+            "value": "workshop"
+          },
+          {
+            "key": "mina.memes.Care",
+            "op": "ge",
+            "value": 1
+          },
+          {
+            "key": "orra.memes.Care",
+            "op": "ge",
+            "value": 1
+          }
+        ],
+        "changes": {
+          "rope.owner": {
+            "before": "orra",
+            "after": "mina"
+          }
+        }
+      },
+      {
+        "id": 4,
+        "scene": "read_wind",
+        "kernel": "Observe",
+        "actors": [
+          "brindle"
+        ],
+        "summary": "Brindle watched the wind sock and ribbon",
+        "causes": [],
+        "requires": [
+          {
+            "key": "brindle.location",
+            "op": "eq",
+            "value": "workshop"
+          },
+          {
+            "key": "brindle.memes.Curiosity",
+            "op": "ge",
+            "value": 1
+          }
+        ],
+        "changes": {
+          "brindle.knows.wind.pattern": {
+            "before": null,
+            "after": "gusty"
+          }
+        }
+      },
+      {
+        "id": 5,
+        "scene": "choose_low_route",
+        "kernel": "planning",
+        "actors": [
+          "mina",
+          "brindle"
+        ],
+        "summary": "Mina chose a low tether route instead of risking the kite",
+        "causes": [
+          3,
+          4
+        ],
+        "requires": [
+          {
+            "key": "brindle.knows.wind.pattern",
+            "op": "eq",
+            "value": "gusty"
+          },
+          {
+            "key": "rope.owner",
+            "op": "eq",
+            "value": "mina"
+          }
+        ],
+        "changes": {
+          "kite.route": {
+            "before": null,
+            "after": "low"
+          },
+          "tube.ready": {
+            "before": false,
+            "after": true
+          }
+        }
+      },
+      {
+        "id": 6,
+        "scene": "attach_message",
+        "kernel": "cooperation",
+        "actors": [
+          "mina",
+          "brindle"
+        ],
+        "summary": "Mina and Brindle secured the message tube for its route",
+        "causes": [
+          2,
+          5
+        ],
+        "requires": [
+          {
+            "key": "note.prepared",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "tube.contains",
+            "op": "eq",
+            "value": "note"
+          },
+          {
+            "key": "kite.route",
+            "op": "in",
+            "value": [
+              "high",
+              "low"
+            ]
+          }
+        ],
+        "changes": {
+          "note.secured": {
+            "before": false,
+            "after": true
+          },
+          "note.carrier": {
+            "before": null,
+            "after": "tube"
+          },
+          "tube.attachment": {
+            "before": null,
+            "after": "secured"
+          }
+        }
+      },
+      {
+        "id": 7,
+        "scene": "send_low_message",
+        "kernel": "delivery",
+        "actors": [
+          "mina",
+          "brindle"
+        ],
+        "summary": "The tether guided the message tube safely to the marked basket",
+        "causes": [
+          3,
+          5,
+          6
+        ],
+        "requires": [
+          {
+            "key": "kite.route",
+            "op": "eq",
+            "value": "low"
+          },
+          {
+            "key": "rope.owner",
+            "op": "eq",
+            "value": "mina"
+          },
+          {
+            "key": "tube.ready",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "note.secured",
+            "op": "eq",
+            "value": true
+          }
+        ],
+        "changes": {
+          "tube.location": {
+            "before": "workshop",
+            "after": "basket"
+          },
+          "note.delivered": {
+            "before": false,
+            "after": true
+          },
+          "basket.received": {
+            "before": false,
+            "after": true
+          }
+        }
+      },
+      {
+        "id": 8,
+        "scene": "confirm_receipt",
+        "kernel": "communication",
+        "actors": [
+          "orra"
+        ],
+        "summary": "Orra checked the marked basket and confirmed the message",
+        "causes": [
+          7
+        ],
+        "requires": [
+          {
+            "key": "orra.location",
+            "op": "eq",
+            "value": "workshop"
+          },
+          {
+            "key": "basket.received",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "note.delivered",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "tube.location",
+            "op": "eq",
+            "value": "basket"
+          }
+        ],
+        "changes": {
+          "orra.confirmed": {
+            "before": false,
+            "after": true
+          }
+        }
+      }
+    ]
+  },
+  {
+    "seed": 1,
+    "title": "The Kite Workshop: A Message on the Wind",
+    "initial": {
+      "mina.location": "workshop",
+      "brindle.location": "workshop",
+      "orra.location": "workshop",
+      "kite.location": "workshop",
+      "tube.location": "workshop",
+      "note.location": "workshop",
+      "rope.location": "workshop",
+      "repair_kit.location": "workshop",
+      "ribbon.location": "workshop",
+      "wind_sock.location": "workshop",
+      "basket.location": "workshop",
+      "wind.pattern": "gentle",
+      "kite.defect": "frame",
+      "kite.balanced": false,
+      "kite.route": null,
+      "kite.launched": false,
+      "kite.stable": false,
+      "kite.delivered": false,
+      "note.bulky": false,
+      "note.prepared": false,
+      "note.secured": false,
+      "note.carrier": null,
+      "note.delivered": false,
+      "tube.contains": null,
+      "tube.attachment": null,
+      "tube.ready": false,
+      "rope.owner": "orra",
+      "repair_kit.owner": "orra",
+      "brindle.breath_control": "ready",
+      "brindle.memes.Ambition": 2,
+      "brindle.memes.Care": 1,
+      "brindle.memes.Curiosity": 2,
+      "mina.memes.Care": 2,
+      "mina.memes.Curiosity": 2,
+      "orra.memes.Care": 2,
+      "mina.knows.kite.defect": null,
+      "brindle.knows.wind.pattern": null,
+      "brindle.knows.breath.practice": false,
+      "basket.received": false,
+      "orra.confirmed": false
+    },
+    "final": {
+      "mina.location": "workshop",
+      "brindle.location": "workshop",
+      "orra.location": "workshop",
+      "kite.location": "basket",
+      "tube.location": "basket",
+      "note.location": "workshop",
+      "rope.location": "workshop",
+      "repair_kit.location": "workshop",
+      "ribbon.location": "workshop",
+      "wind_sock.location": "workshop",
+      "basket.location": "workshop",
+      "wind.pattern": "gentle",
+      "kite.defect": "sound",
+      "kite.balanced": true,
+      "kite.route": "high",
+      "kite.launched": true,
+      "kite.stable": true,
+      "kite.delivered": true,
+      "note.bulky": false,
+      "note.prepared": true,
+      "note.secured": true,
+      "note.carrier": "tube",
+      "note.delivered": true,
+      "tube.contains": "note",
+      "tube.attachment": "secured",
+      "tube.ready": true,
+      "rope.owner": "mina",
+      "repair_kit.owner": "mina",
+      "brindle.breath_control": "ready",
+      "brindle.memes.Ambition": 2,
+      "brindle.memes.Care": 1,
+      "brindle.memes.Curiosity": 2,
+      "mina.memes.Care": 2,
+      "mina.memes.Curiosity": 2,
+      "orra.memes.Care": 2,
+      "mina.knows.kite.defect": "frame",
+      "brindle.knows.wind.pattern": "gentle",
+      "brindle.knows.breath.practice": false,
+      "basket.received": true,
+      "orra.confirmed": true
+    },
+    "events": [
+      {
+        "id": 1,
+        "scene": "read_wind",
+        "kernel": "Observe",
+        "actors": [
+          "brindle"
+        ],
+        "summary": "Brindle watched the wind sock and ribbon",
+        "causes": [],
+        "requires": [
+          {
+            "key": "brindle.location",
+            "op": "eq",
+            "value": "workshop"
+          },
+          {
+            "key": "brindle.memes.Curiosity",
+            "op": "ge",
+            "value": 1
+          }
+        ],
+        "changes": {
+          "brindle.knows.wind.pattern": {
+            "before": null,
+            "after": "gentle"
+          }
+        }
+      },
+      {
+        "id": 2,
+        "scene": "prepare_message",
+        "kernel": "preparation",
+        "actors": [
+          "mina"
+        ],
+        "summary": "Mina rolled the note into the little message tube",
+        "causes": [],
+        "requires": [
+          {
+            "key": "note.prepared",
+            "op": "eq",
+            "value": false
+          },
+          {
+            "key": "note.location",
+            "op": "eq",
+            "value": "workshop"
+          }
+        ],
+        "changes": {
+          "note.prepared": {
+            "before": false,
+            "after": true
+          },
+          "tube.contains": {
+            "before": null,
+            "after": "note"
+          }
+        }
+      },
+      {
+        "id": 3,
+        "scene": "inspect_kite",
+        "kernel": "Observe",
+        "actors": [
+          "mina"
+        ],
+        "summary": "Mina inspected the kite for the trouble spot",
+        "causes": [],
+        "requires": [
+          {
+            "key": "mina.location",
+            "op": "eq",
+            "value": "workshop"
+          },
+          {
+            "key": "mina.memes.Curiosity",
+            "op": "ge",
+            "value": 1
+          }
+        ],
+        "changes": {
+          "mina.knows.kite.defect": {
+            "before": null,
+            "after": "frame"
+          }
+        }
+      },
+      {
+        "id": 4,
+        "scene": "lend_tether_rope",
+        "kernel": "Transfer",
+        "actors": [
+          "orra",
+          "mina"
+        ],
+        "summary": "Orra lent Mina the short tether rope",
+        "causes": [],
+        "requires": [
+          {
+            "key": "rope.owner",
+            "op": "eq",
+            "value": "orra"
+          },
+          {
+            "key": "mina.location",
+            "op": "eq",
+            "value": "workshop"
+          },
+          {
+            "key": "orra.location",
+            "op": "eq",
+            "value": "workshop"
+          },
+          {
+            "key": "mina.memes.Care",
+            "op": "ge",
+            "value": 1
+          },
+          {
+            "key": "orra.memes.Care",
+            "op": "ge",
+            "value": 1
+          }
+        ],
+        "changes": {
+          "rope.owner": {
+            "before": "orra",
+            "after": "mina"
+          }
+        }
+      },
+      {
+        "id": 5,
+        "scene": "borrow_repair_kit",
+        "kernel": "cooperation",
+        "actors": [
+          "mina",
+          "orra"
+        ],
+        "summary": "Orra lent Mina the repair kit after hearing what she found",
+        "causes": [
+          3
+        ],
+        "requires": [
+          {
+            "key": "repair_kit.owner",
+            "op": "eq",
+            "value": "orra"
+          },
+          {
+            "key": "mina.knows.kite.defect",
+            "op": "not_in",
+            "value": [
+              null,
+              "sound"
+            ]
+          },
+          {
+            "key": "orra.memes.Care",
+            "op": "ge",
+            "value": 1
+          }
+        ],
+        "changes": {
+          "repair_kit.owner": {
+            "before": "orra",
+            "after": "mina"
+          }
+        }
+      },
+      {
+        "id": 6,
+        "scene": "straighten_frame",
+        "kernel": "repair",
+        "actors": [
+          "mina"
+        ],
+        "summary": "Mina straightened the bowed frame with the repair kit",
+        "causes": [
+          3,
+          5
+        ],
+        "requires": [
+          {
+            "key": "mina.knows.kite.defect",
+            "op": "eq",
+            "value": "frame"
+          },
+          {
+            "key": "kite.defect",
+            "op": "eq",
+            "value": "frame"
+          },
+          {
+            "key": "repair_kit.owner",
+            "op": "eq",
+            "value": "mina"
+          }
+        ],
+        "changes": {
+          "kite.defect": {
+            "before": "frame",
+            "after": "sound"
+          },
+          "kite.balanced": {
+            "before": false,
+            "after": true
+          }
+        }
+      },
+      {
+        "id": 7,
+        "scene": "choose_high_route",
+        "kernel": "planning",
+        "actors": [
+          "mina",
+          "brindle"
+        ],
+        "summary": "Mina and Brindle chose the high kite route in gentle wind",
+        "causes": [
+          1,
+          6
+        ],
+        "requires": [
+          {
+            "key": "brindle.knows.wind.pattern",
+            "op": "eq",
+            "value": "gentle"
+          },
+          {
+            "key": "kite.balanced",
+            "op": "eq",
+            "value": true
+          }
+        ],
+        "changes": {
+          "kite.route": {
+            "before": null,
+            "after": "high"
+          }
+        }
+      },
+      {
+        "id": 8,
+        "scene": "attach_message",
+        "kernel": "cooperation",
+        "actors": [
+          "mina",
+          "brindle"
+        ],
+        "summary": "Mina and Brindle secured the message tube for its route",
+        "causes": [
+          2,
+          7
+        ],
+        "requires": [
+          {
+            "key": "note.prepared",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "tube.contains",
+            "op": "eq",
+            "value": "note"
+          },
+          {
+            "key": "kite.route",
+            "op": "in",
+            "value": [
+              "high",
+              "low"
+            ]
+          }
+        ],
+        "changes": {
+          "note.secured": {
+            "before": false,
+            "after": true
+          },
+          "note.carrier": {
+            "before": null,
+            "after": "tube"
+          },
+          "tube.attachment": {
+            "before": null,
+            "after": "secured"
+          }
+        }
+      },
+      {
+        "id": 9,
+        "scene": "launch_high_kite",
+        "kernel": "launch",
+        "actors": [
+          "mina",
+          "brindle"
+        ],
+        "summary": "Brindle gave the balanced kite one measured launch puff",
+        "causes": [
+          6,
+          7,
+          8
+        ],
+        "requires": [
+          {
+            "key": "kite.route",
+            "op": "eq",
+            "value": "high"
+          },
+          {
+            "key": "kite.balanced",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "note.secured",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "brindle.breath_control",
+            "op": "eq",
+            "value": "ready"
+          }
+        ],
+        "changes": {
+          "kite.location": {
+            "before": "workshop",
+            "after": "platform"
+          },
+          "kite.launched": {
+            "before": false,
+            "after": true
+          },
+          "kite.stable": {
+            "before": false,
+            "after": true
+          },
+          "tube.ready": {
+            "before": false,
+            "after": true
+          }
+        }
+      },
+      {
+        "id": 10,
+        "scene": "send_high_message",
+        "kernel": "delivery",
+        "actors": [
+          "mina",
+          "brindle"
+        ],
+        "summary": "The high kite carried the tube to the marked basket",
+        "causes": [
+          7,
+          8,
+          9
+        ],
+        "requires": [
+          {
+            "key": "kite.route",
+            "op": "eq",
+            "value": "high"
+          },
+          {
+            "key": "kite.launched",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "kite.stable",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "tube.ready",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "note.secured",
+            "op": "eq",
+            "value": true
+          }
+        ],
+        "changes": {
+          "kite.location": {
+            "before": "platform",
+            "after": "basket"
+          },
+          "tube.location": {
+            "before": "workshop",
+            "after": "basket"
+          },
+          "kite.delivered": {
+            "before": false,
+            "after": true
+          },
+          "note.delivered": {
+            "before": false,
+            "after": true
+          },
+          "basket.received": {
+            "before": false,
+            "after": true
+          }
+        }
+      },
+      {
+        "id": 11,
+        "scene": "confirm_receipt",
+        "kernel": "communication",
+        "actors": [
+          "orra"
+        ],
+        "summary": "Orra checked the marked basket and confirmed the message",
+        "causes": [
+          10
+        ],
+        "requires": [
+          {
+            "key": "orra.location",
+            "op": "eq",
+            "value": "workshop"
+          },
+          {
+            "key": "basket.received",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "note.delivered",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "tube.location",
+            "op": "eq",
+            "value": "basket"
+          }
+        ],
+        "changes": {
+          "orra.confirmed": {
+            "before": false,
+            "after": true
+          }
+        }
+      }
+    ]
+  },
+  {
+    "seed": 2,
+    "title": "The Kite Workshop: A Message on the Wind",
+    "initial": {
+      "mina.location": "workshop",
+      "brindle.location": "workshop",
+      "orra.location": "workshop",
+      "kite.location": "workshop",
+      "tube.location": "workshop",
+      "note.location": "workshop",
+      "rope.location": "workshop",
+      "repair_kit.location": "workshop",
+      "ribbon.location": "workshop",
+      "wind_sock.location": "workshop",
+      "basket.location": "workshop",
+      "wind.pattern": "gentle",
+      "kite.defect": "frame",
+      "kite.balanced": false,
+      "kite.route": null,
+      "kite.launched": false,
+      "kite.stable": false,
+      "kite.delivered": false,
+      "note.bulky": true,
+      "note.prepared": false,
+      "note.secured": false,
+      "note.carrier": null,
+      "note.delivered": false,
+      "tube.contains": null,
+      "tube.attachment": null,
+      "tube.ready": false,
+      "rope.owner": "orra",
+      "repair_kit.owner": "mina",
+      "brindle.breath_control": "unpracticed",
+      "brindle.memes.Ambition": 2,
+      "brindle.memes.Care": 1,
+      "brindle.memes.Curiosity": 2,
+      "mina.memes.Care": 2,
+      "mina.memes.Curiosity": 2,
+      "orra.memes.Care": 2,
+      "mina.knows.kite.defect": null,
+      "brindle.knows.wind.pattern": null,
+      "brindle.knows.breath.practice": false,
+      "basket.received": false,
+      "orra.confirmed": false
+    },
+    "final": {
+      "mina.location": "workshop",
+      "brindle.location": "workshop",
+      "orra.location": "workshop",
+      "kite.location": "basket",
+      "tube.location": "basket",
+      "note.location": "workshop",
+      "rope.location": "workshop",
+      "repair_kit.location": "workshop",
+      "ribbon.location": "workshop",
+      "wind_sock.location": "workshop",
+      "basket.location": "workshop",
+      "wind.pattern": "gentle",
+      "kite.defect": "sound",
+      "kite.balanced": true,
+      "kite.route": "high",
+      "kite.launched": true,
+      "kite.stable": true,
+      "kite.delivered": true,
+      "note.bulky": false,
+      "note.prepared": true,
+      "note.secured": true,
+      "note.carrier": "tube",
+      "note.delivered": true,
+      "tube.contains": "note",
+      "tube.attachment": "secured",
+      "tube.ready": true,
+      "rope.owner": "mina",
+      "repair_kit.owner": "mina",
+      "brindle.breath_control": "ready",
+      "brindle.memes.Ambition": 2,
+      "brindle.memes.Care": 1,
+      "brindle.memes.Curiosity": 2,
+      "mina.memes.Care": 2,
+      "mina.memes.Curiosity": 2,
+      "orra.memes.Care": 2,
+      "mina.knows.kite.defect": "frame",
+      "brindle.knows.wind.pattern": "gentle",
+      "brindle.knows.breath.practice": true,
+      "basket.received": true,
+      "orra.confirmed": true
+    },
+    "events": [
+      {
+        "id": 1,
+        "scene": "inspect_kite",
+        "kernel": "Observe",
+        "actors": [
+          "mina"
+        ],
+        "summary": "Mina inspected the kite for the trouble spot",
+        "causes": [],
+        "requires": [
+          {
+            "key": "mina.location",
+            "op": "eq",
+            "value": "workshop"
+          },
+          {
+            "key": "mina.memes.Curiosity",
+            "op": "ge",
+            "value": 1
+          }
+        ],
+        "changes": {
+          "mina.knows.kite.defect": {
+            "before": null,
+            "after": "frame"
+          }
+        }
+      },
+      {
+        "id": 2,
+        "scene": "read_wind",
+        "kernel": "Observe",
+        "actors": [
+          "brindle"
+        ],
+        "summary": "Brindle watched the wind sock and ribbon",
+        "causes": [],
+        "requires": [
+          {
+            "key": "brindle.location",
+            "op": "eq",
+            "value": "workshop"
+          },
+          {
+            "key": "brindle.memes.Curiosity",
+            "op": "ge",
+            "value": 1
+          }
+        ],
+        "changes": {
+          "brindle.knows.wind.pattern": {
+            "before": null,
+            "after": "gentle"
+          }
+        }
+      },
+      {
+        "id": 3,
+        "scene": "straighten_frame",
+        "kernel": "repair",
+        "actors": [
+          "mina"
+        ],
+        "summary": "Mina straightened the bowed frame with the repair kit",
+        "causes": [
+          1
+        ],
+        "requires": [
+          {
+            "key": "mina.knows.kite.defect",
+            "op": "eq",
+            "value": "frame"
+          },
+          {
+            "key": "kite.defect",
+            "op": "eq",
+            "value": "frame"
+          },
+          {
+            "key": "repair_kit.owner",
+            "op": "eq",
+            "value": "mina"
+          }
+        ],
+        "changes": {
+          "kite.defect": {
+            "before": "frame",
+            "after": "sound"
+          },
+          "kite.balanced": {
+            "before": false,
+            "after": true
+          }
+        }
+      },
+      {
+        "id": 4,
+        "scene": "choose_high_route",
+        "kernel": "planning",
+        "actors": [
+          "mina",
+          "brindle"
+        ],
+        "summary": "Mina and Brindle chose the high kite route in gentle wind",
+        "causes": [
+          2,
+          3
+        ],
+        "requires": [
+          {
+            "key": "brindle.knows.wind.pattern",
+            "op": "eq",
+            "value": "gentle"
+          },
+          {
+            "key": "kite.balanced",
+            "op": "eq",
+            "value": true
+          }
+        ],
+        "changes": {
+          "kite.route": {
+            "before": null,
+            "after": "high"
+          }
+        }
+      },
+      {
+        "id": 5,
+        "scene": "lend_tether_rope",
+        "kernel": "Transfer",
+        "actors": [
+          "orra",
+          "mina"
+        ],
+        "summary": "Orra lent Mina the short tether rope",
+        "causes": [],
+        "requires": [
+          {
+            "key": "rope.owner",
+            "op": "eq",
+            "value": "orra"
+          },
+          {
+            "key": "mina.location",
+            "op": "eq",
+            "value": "workshop"
+          },
+          {
+            "key": "orra.location",
+            "op": "eq",
+            "value": "workshop"
+          },
+          {
+            "key": "mina.memes.Care",
+            "op": "ge",
+            "value": 1
+          },
+          {
+            "key": "orra.memes.Care",
+            "op": "ge",
+            "value": 1
+          }
+        ],
+        "changes": {
+          "rope.owner": {
+            "before": "orra",
+            "after": "mina"
+          }
+        }
+      },
+      {
+        "id": 6,
+        "scene": "prepare_message",
+        "kernel": "preparation",
+        "actors": [
+          "mina"
+        ],
+        "summary": "Mina rolled the note into the little message tube",
+        "causes": [],
+        "requires": [
+          {
+            "key": "note.prepared",
+            "op": "eq",
+            "value": false
+          },
+          {
+            "key": "note.location",
+            "op": "eq",
+            "value": "workshop"
+          }
+        ],
+        "changes": {
+          "note.bulky": {
+            "before": true,
+            "after": false
+          },
+          "note.prepared": {
+            "before": false,
+            "after": true
+          },
+          "tube.contains": {
+            "before": null,
+            "after": "note"
+          }
+        }
+      },
+      {
+        "id": 7,
+        "scene": "attach_message",
+        "kernel": "cooperation",
+        "actors": [
+          "mina",
+          "brindle"
+        ],
+        "summary": "Mina and Brindle secured the message tube for its route",
+        "causes": [
+          4,
+          6
+        ],
+        "requires": [
+          {
+            "key": "note.prepared",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "tube.contains",
+            "op": "eq",
+            "value": "note"
+          },
+          {
+            "key": "kite.route",
+            "op": "in",
+            "value": [
+              "high",
+              "low"
+            ]
+          }
+        ],
+        "changes": {
+          "note.secured": {
+            "before": false,
+            "after": true
+          },
+          "note.carrier": {
+            "before": null,
+            "after": "tube"
+          },
+          "tube.attachment": {
+            "before": null,
+            "after": "secured"
+          }
+        }
+      },
+      {
+        "id": 8,
+        "scene": "practice_breath",
+        "kernel": "experiment",
+        "actors": [
+          "brindle"
+        ],
+        "summary": "Brindle practiced a small puff against the ribbon",
+        "causes": [
+          2
+        ],
+        "requires": [
+          {
+            "key": "brindle.breath_control",
+            "op": "eq",
+            "value": "unpracticed"
+          },
+          {
+            "key": "brindle.knows.wind.pattern",
+            "op": "eq",
+            "value": "gentle"
+          },
+          {
+            "key": "brindle.memes.Care",
+            "op": "ge",
+            "value": 1
+          }
+        ],
+        "changes": {
+          "brindle.breath_control": {
+            "before": "unpracticed",
+            "after": "ready"
+          },
+          "brindle.knows.breath.practice": {
+            "before": false,
+            "after": true
+          }
+        }
+      },
+      {
+        "id": 9,
+        "scene": "launch_high_kite",
+        "kernel": "launch",
+        "actors": [
+          "mina",
+          "brindle"
+        ],
+        "summary": "Brindle gave the balanced kite one measured launch puff",
+        "causes": [
+          3,
+          4,
+          7,
+          8
+        ],
+        "requires": [
+          {
+            "key": "kite.route",
+            "op": "eq",
+            "value": "high"
+          },
+          {
+            "key": "kite.balanced",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "note.secured",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "brindle.breath_control",
+            "op": "eq",
+            "value": "ready"
+          }
+        ],
+        "changes": {
+          "kite.location": {
+            "before": "workshop",
+            "after": "platform"
+          },
+          "kite.launched": {
+            "before": false,
+            "after": true
+          },
+          "kite.stable": {
+            "before": false,
+            "after": true
+          },
+          "tube.ready": {
+            "before": false,
+            "after": true
+          }
+        }
+      },
+      {
+        "id": 10,
+        "scene": "send_high_message",
+        "kernel": "delivery",
+        "actors": [
+          "mina",
+          "brindle"
+        ],
+        "summary": "The high kite carried the tube to the marked basket",
+        "causes": [
+          4,
+          7,
+          9
+        ],
+        "requires": [
+          {
+            "key": "kite.route",
+            "op": "eq",
+            "value": "high"
+          },
+          {
+            "key": "kite.launched",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "kite.stable",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "tube.ready",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "note.secured",
+            "op": "eq",
+            "value": true
+          }
+        ],
+        "changes": {
+          "kite.location": {
+            "before": "platform",
+            "after": "basket"
+          },
+          "tube.location": {
+            "before": "workshop",
+            "after": "basket"
+          },
+          "kite.delivered": {
+            "before": false,
+            "after": true
+          },
+          "note.delivered": {
+            "before": false,
+            "after": true
+          },
+          "basket.received": {
+            "before": false,
+            "after": true
+          }
+        }
+      },
+      {
+        "id": 11,
+        "scene": "confirm_receipt",
+        "kernel": "communication",
+        "actors": [
+          "orra"
+        ],
+        "summary": "Orra checked the marked basket and confirmed the message",
+        "causes": [
+          10
+        ],
+        "requires": [
+          {
+            "key": "orra.location",
+            "op": "eq",
+            "value": "workshop"
+          },
+          {
+            "key": "basket.received",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "note.delivered",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "tube.location",
+            "op": "eq",
+            "value": "basket"
+          }
+        ],
+        "changes": {
+          "orra.confirmed": {
+            "before": false,
+            "after": true
+          }
+        }
+      }
+    ]
+  }
+]

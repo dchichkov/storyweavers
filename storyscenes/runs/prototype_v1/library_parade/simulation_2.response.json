@@ -1,0 +1,97 @@
+{
+  "id": "resp_03920e40e08a0941016a9f0c4bc9e087d0baff69a72e79aca4",
+  "created_at": 1788808267.0,
+  "error": null,
+  "incomplete_details": null,
+  "instructions": null,
+  "metadata": {},
+  "model": "gpt-5.6-luna",
+  "object": "response",
+  "output": [
+    {
+      "id": "msg_03920e40e08a0941016a9f0c4c775c87d08afe90a070b80261",
+      "content": [
+        {
+          "annotations": [],
+          "text": "from runtime import WorldSpec, Scene, Condition as C, Effect as E, Rule\nfrom runtime import observe, tell, transfer\nimport random\n\n\ndef build(seed: int) -> WorldSpec:\n    rng = random.Random(seed)\n\n    obstacle = rng.randrange(5)\n    materials = 1 if rng.random() < 0.7 else 0\n    readers_need = 1 if rng.random() < 0.55 else 0\n    overloaded = obstacle == 3 or rng.random() < 0.3\n    weak_wheel = obstacle == 1 or rng.random() < 0.35\n    narrow = obstacle == 0\n    steep = obstacle == 2\n    square_access = obstacle != 4\n\n    entities = {\n        \"ada\": {\"name\": \"Ada\", \"kind\": \"child\"},\n        \"bramble\": {\"name\": \"Mayor Bramble\", \"kind\": \"person\"},\n        \"toma\": {\"name\": \"Toma\", \"kind\": \"person\"},\n        \"keeper\": {\"name\": \"Library Keeper\", \"kind\": \"person\"},\n        \"library\": {\"name\": \"library\", \"kind\": \"place\"},\n        \"square\": {\"name\": \"town square\", \"kind\": \"place\"},\n        \"garden\": {\"name\": \"reading garden\", \"kind\": \"place\"},\n        \"cart\": {\"name\": \"wooden cart\", \"kind\": \"prop\"},\n        \"books\": {\"name\": \"library books\", \"kind\": \"prop\"},\n        \"rope\": {\"name\": \"rope\", \"kind\": \"prop\"},\n        \"cushions\": {\"name\": \"cushions\", \"kind\": \"prop\"},\n        \"chock\": {\"name\": \"wheel chock\", \"kind\": \"prop\"},\n        \"sign\": {\"name\": \"signboard\", \"kind\": \"prop\"},\n        \"route\": {\"name\": \"library route\", \"kind\": \"group\"},\n        \"readers\": {\"name\": \"town readers\", \"kind\": \"group\"},\n        \"materials\": {\"name\": \"building materials\", \"kind\": \"group\"},\n        \"parade\": {\"name\": \"parade\", \"kind\": \"group\"},\n    }\n\n    initial = {\n        \"ada.location\": \"library\",\n        \"bramble.location\": \"square\",\n        \"toma.location\": \"library\",\n        \"keeper.location\": \"library\",\n        \"cart.location\": \"library\",\n        \"books.location\": \"library\",\n        \"sign.location\": \"library\",\n        \"rope.owner\": \"keeper\",\n        \"cushions.owner\": \"keeper\",\n        \"chock.owner\": \"keeper\",\n        \"cart.capacity\": 4,\n        \"cart.load\": 3 if overloaded else 2,\n        \"cart.balance\": \"poor\" if overloaded else \"fair\",\n        \"cart.wheel\": \"weak\" if weak_wheel else \"sound\",\n        \"cart.safe\": False,\n        \"cart.progress\": 0,\n        \"cart.books_safe\": False,\n        \"cart.reinforced\": False,\n        \"books.count\": 3,\n        \"books.delivered\": False,\n        \"books.displayed\": False,\n        \"route.narrow\": narrow,\n        \"route.steep\": steep,\n        \"route.square_access\": square_access,\n        \"readers.need\": readers_need,\n        \"materials.available\": materials,\n        \"parade.ready\": False,\n        \"parade.kind\": \"none\",\n        \"sign.message\": \"biggest\",\n        \"ada.memes.Curiosity\": 1 + rng.randrange(2),\n        \"ada.memes.Care\": 1,\n        \"ada.memes.Cooperation\": 1,\n        \"bramble.memes.Ambition\": 2 + rng.randrange(3),\n        \"bramble.memes.Care\": 0,\n        \"bramble.memes.Cooperation\": 0,\n        \"toma.memes.Care\": 2,\n        \"toma.memes.Cooperation\": 1,\n        \"keeper.memes.Care\": 2,\n        \"ada.knows.cart.capacity\": None,\n        \"ada.knows.cart.balance\": None,\n        \"ada.knows.cart.wheel\": None,\n        \"ada.knows.route.narrow\": None,\n        \"ada.knows.route.steep\": None,\n        \"ada.knows.route.square_access\": None,\n        \"ada.knows.readers.need\": None,\n        \"bramble.knows.route.narrow\": None,\n        \"bramble.knows.route.square_access\": None,\n        \"bramble.knows.readers.need\": None,\n        \"toma.knows.cart.balance\": None,\n        \"toma.knows.cart.wheel\": None,\n        \"toma.knows.route.narrow\": None,\n        \"toma.knows.route.steep\": None,\n    }\n\n    scenes = [\n        Scene(\n            \"measure_cart\", \"observation\", (\"toma\", \"cart\"),\n            (\n                C(\"toma.location\", \"eq\", \"library\"),\n                C(\"cart.location\", \"eq\", \"library\"),\n                C(\"toma.memes.Care\", \"ge\", 1),\n            ),\n            (\n                E(\"toma.knows.cart.balance\", \"cart.balance\", \"copy\"),\n                E(\"toma.knows.cart.wheel\", \"cart.wheel\", \"copy\"),\n                E(\"ada.memes.Curiosity\", 1, \"inc\"),\n            ),\n            \"Toma measured the cart and checked its balance and wheel\",\n        ),\n        observe(\n            \"inspect_cart\", \"ada\", \"cart.balance\",\n            requires=(\n                C(\"ada.location\", \"eq\", \"library\"),\n                C(\"ada.memes.Curiosity\", \"ge\", 1),\n            ),\n            summary=\"Ada inspected the cart balance\",\n        ),\n        observe(\n            \"inspect_wheel\", \"ada\", \"cart.wheel\",\n            requires=(\n                C(\"ada.location\", \"eq\", \"library\"),\n                C(\"ada.memes.Curiosity\", \"ge\", 1),\n            ),\n            summary=\"Ada inspected the cart wheel\",\n        ),\n        observe(\n            \"inspect_route\", \"ada\", \"route.narrow\",\n            requires=(\n                C(\"ada.location\", \"eq\", \"library\"),\n                C(\"ada.memes.Curiosity\", \"ge\", 1),\n            ),\n            summary=\"Ada inspected the route\",\n        ),\n        Scene(\n            \"explain_problem\", \"care\", (\"toma\", \"ada\"),\n            (\n                C(\"toma.location\", \"eq\", \"library\"),\n                C(\"ada.location\", \"eq\", \"library\"),\n                C(\"toma.knows.cart.balance\", \"ne\", None),\n                C(\"toma.knows.cart.wheel\", \"ne\", None),\n            ),\n            (\n                E(\"ada.knows.cart.balance\", \"toma.knows.cart.balance\", \"copy\"),\n                E(\"ada.knows.cart.wheel\", \"toma.knows.cart.wheel\", \"copy\"),\n                E(\"toma.memes.Cooperation\", 1, \"inc\"),\n            ),\n            \"Toma explained what the cart needed to travel safely\",\n        ),\n        tell(\n            \"tell_mayor_route\", \"ada\", \"bramble\", \"route.narrow\",\n            requires=(\n                C(\"ada.location\", \"eq\", \"library\"),\n                C(\"bramble.location\", \"eq\", \"square\"),\n            ),\n            summary=\"Ada told the mayor what she learned about the route\",\n        ),\n        Scene(\n            \"ask_readers\", \"care\", (\"bramble\", \"ada\"),\n            (\n                C(\"bramble.location\", \"eq\", \"square\"),\n                C(\"ada.location\", \"eq\", \"library\"),\n            ),\n            (\n                E(\"bramble.knows.readers.need\", \"readers.need\", \"copy\"),\n                E(\"ada.knows.readers.need\", \"readers.need\", \"copy\"),\n                E(\"bramble.memes.Care\", 1, \"inc\"),\n            ),\n            \"The mayor asked what readers needed from the parade\",\n        ),\n        transfer(\n            \"lend_rope\", \"keeper\", \"ada\", \"rope\",\n            requires=(C(\"keeper.location\", \"eq\", \"library\"),),\n            summary=\"The keeper lent Ada the rope\",\n        ),\n        transfer(\n            \"lend_cushions\", \"keeper\", \"toma\", \"cushions\",\n            requires=(C(\"keeper.location\", \"eq\", \"library\"),),\n            summary=\"The keeper lent Toma cushions\",\n        ),\n        transfer(\n            \"lend_chock\", \"keeper\", \"toma\", \"chock\",\n            requires=(C(\"keeper.location\", \"eq\", \"library\"),),\n            summary=\"The keeper lent Toma a wheel chock\",\n        ),\n        Scene(\n            \"repair_cart\", \"care\", (\"toma\", \"cart\"),\n            (\n                C(\"toma.location\", \"eq\", \"library\"),\n                C(\"cart.location\", \"eq\", \"library\"),\n                C(\"toma.knows.cart.wheel\", \"eq\", \"weak\"),\n                C(\"materials.available\", \"eq\", 1),\n                C(\"toma.memes.Care\", \"ge\", 1),\n            ),\n            (\n                E(\"cart.wheel\", \"sound\"),\n                E(\"cart.reinforced\", True),\n                E(\"cart.safe\", True),\n                E(\"materials.available\", 0),\n            ),\n            \"Toma repaired and reinforced the weak cart wheel\",\n        ),\n        Scene(\n            \"balance_load\", \"cooperation\", (\"ada\", \"toma\", \"cart\"),\n            (\n                C(\"ada.location\", \"eq\", \"library\"),\n                C(\"toma.location\", \"eq\", \"library\"),\n                C(\"cart.location\", \"eq\", \"library\"),\n                C(\"ada.knows.cart.balance\", \"ne\", None),\n                C(\"toma.knows.cart.balance\", \"ne\", None),\n            ),\n            (\n                E(\"cart.balance\", \"good\"),\n                E(\"cart.load\", 2),\n                E(\"cart.books_safe\", True),\n                E(\"cart.safe\", True),\n            ),\n            \"Ada and Toma rearranged the books into a balanced safe load\",\n        ),\n        Scene(\n            \"make_sign_useful\", \"cooperation\", (\"bramble\", \"ada\", \"sign\"),\n            (\n                C(\"bramble.memes.Care\", \"ge\", 1),\n                C(\"ada.knows.readers.need\", \"ne\", None),\n                C(\"sign.location\", \"eq\", \"library\"),\n            ),\n            (\n                E(\"sign.message\", \"books for everyone\"),\n                E(\"bramble.memes.Cooperation\", 1, \"inc\"),\n            ),\n            \"The mayor changed the sign into an invitation for everyone\",\n        ),\n        Scene(\n            \"test_cart\", \"observation\", (\"ada\", \"toma\", \"cart\"),\n            (\n                C(\"cart.safe\", \"eq\", True),\n                C(\"cart.books_safe\", \"eq\", True),\n                C(\"cart.location\", \"eq\", \"library\"),\n            ),\n            (\n                E(\"cart.progress\", 1, \"inc\"),\n                E(\"ada.memes.Curiosity\", 1, \"inc\"),\n            ),\n            \"Ada and Toma tested the cart along a short safe stretch\",\n        ),\n        Scene(\n            \"travel_square\", \"cooperation\", (\"ada\", \"toma\", \"bramble\", \"cart\"),\n            (\n                C(\"cart.safe\", \"eq\", True),\n                C(\"cart.books_safe\", \"eq\", True),\n                C(\"cart.progress\", \"ge\", 1),\n                C(\"route.square_access\", \"eq\", True),\n                C(\"sign.message\", \"ne\", \"biggest\"),\n                C(\"cart.location\", \"eq\", \"library\"),\n            ),\n            (\n                E(\"cart.location\", \"square\"),\n                E(\"cart.progress\", 2),\n                E(\"books.location\", \"square\"),\n                E(\"books.delivered\", True),\n                E(\"parade.kind\", \"square\"),\n                E(\"parade.ready\", True),\n            ),\n            \"The group guided the safe cart to the town square\",\n        ),\n        Scene(\n            \"travel_garden\", \"care\", (\"ada\", \"toma\", \"cart\"),\n            (\n                C(\"cart.safe\", \"eq\", True),\n                C(\"cart.books_safe\", \"eq\", True),\n                C(\"cart.progress\", \"ge\", 1),\n                C(\"route.square_access\", \"eq\", False),\n                C(\"cart.location\", \"eq\", \"library\"),\n            ),\n            (\n                E(\"cart.location\", \"garden\"),\n                E(\"books.location\", \"garden\"),\n                E(\"books.delivered\", True),\n                E(\"parade.kind\", \"traveling stops\"),\n                E(\"parade.ready\", True),\n            ),\n            \"The group guided the cart to a reachable reading garden\",\n        ),\n        Scene(\n            \"stationary_circle\", \"cooperation\", (\"ada\", \"toma\", \"bramble\", \"cart\"),\n            (\n                C(\"cart.location\", \"eq\", \"library\"),\n                C(\"books.location\", \"eq\", \"library\"),\n                C(\"ada.memes.Cooperation\", \"ge\", 1),\n                C(\"toma.memes.Cooperation\", \"ge\", 1),\n            ),\n            (\n                E(\"books.displayed\", True),\n                E(\"parade.kind\", \"reading circle\"),\n                E(\"parade.ready\", True),\n                E(\"sign.message\", \"books for everyone\"),\n            ),\n            \"The group made the library into a cooperative reading circle\",\n        ),\n    ]\n\n    rules = (\n        Rule(\n            \"safe_load\",\n            (C(\"cart.books_safe\", \"eq\", True),),\n            (C(\"cart.balance\", \"eq\", \"good\"), C(\"cart.load\", \"le\", 4)),\n        ),\n        Rule(\n            \"sound_wheel\",\n            (C(\"cart.safe\", \"eq\", True),),\n            (C(\"cart.wheel\", \"eq\", \"sound\"),),\n        ),\n        Rule(\n            \"delivered_books\",\n            (C(\"books.delivered\", \"eq\", True),),\n            (C(\"books.location\", \"in\", (\"square\", \"garden\"))),\n        ),\n    )\n\n    goal = (\n        C(\"parade.ready\", \"eq\", True),\n        C(\"books.delivered\", \"eq\", True),\n    )\n\n    labels = {\n        \"cart.capacity\": \"cart capacity\",\n        \"cart.load\": \"books loaded\",\n        \"cart.balance\": \"cart balance\",\n        \"cart.wheel\": \"wheel condition\",\n        \"cart.safe\": \"safe to travel\",\n        \"cart.location\": \"cart location\",\n        \"cart.progress\": \"route progress\",\n        \"books.location\": \"book location\",\n        \"books.delivered\": \"books delivered\",\n        \"parade.kind\": \"reading event\",\n        \"parade.ready\": \"event ready\",\n        \"sign.message\": \"sign message\",\n        \"route.narrow\": \"route narrowness\",\n        \"route.steep\": \"route steepness\",\n        \"route.square_access\": \"square accessibility\",\n        \"readers.need\": \"readers' needs\",\n        \"materials.available\": \"building materials available\",\n    }\n\n    return WorldSpec(\n        \"The Library Cart Parade\",\n        entities,\n        initial,\n        tuple(scenes),\n        goal,\n        rules=rules,\n        labels=labels,\n    )",
+          "type": "output_text",
+          "logprobs": []
+        }
+      ],
+      "role": "assistant",
+      "status": "completed",
+      "type": "message",
+      "phase": "final_answer"
+    }
+  ],
+  "parallel_tool_calls": true,
+  "temperature": 1.0,
+  "tool_choice": "auto",
+  "tools": [],
+  "top_p": 0.98,
+  "background": false,
+  "completed_at": 1788808315.0,
+  "conversation": null,
+  "max_output_tokens": 16000,
+  "max_tool_calls": null,
+  "moderation": null,
+  "previous_response_id": null,
+  "prompt": null,
+  "prompt_cache_key": null,
+  "prompt_cache_retention": "24h",
+  "reasoning": {
+    "context": "all_turns",
+    "effort": "none",
+    "generate_summary": null,
+    "summary": null,
+    "mode": "standard"
+  },
+  "safety_identifier": null,
+  "service_tier": "flex",
+  "status": "completed",
+  "text": {
+    "format": {
+      "type": "text"
+    },
+    "verbosity": "medium"
+  },
+  "top_logprobs": 0,
+  "truncation": "disabled",
+  "usage": {
+    "input_tokens": 6417,
+    "input_tokens_details": {
+      "cached_tokens": 0,
+      "cache_write_tokens": 6414
+    },
+    "output_tokens": 3185,
+    "output_tokens_details": {
+      "reasoning_tokens": 0
+    },
+    "total_tokens": 9602
+  },
+  "user": null,
+  "billing": {
+    "payer": "developer"
+  },
+  "frequency_penalty": 0.0,
+  "presence_penalty": 0.0,
+  "store": false,
+  "tool_usage": {
+    "image_gen": {
+      "input_tokens": 0,
+      "input_tokens_details": {
+        "image_tokens": 0,
+        "text_tokens": 0
+      },
+      "output_tokens": 0,
+      "output_tokens_details": {
+        "image_tokens": 0,
+        "text_tokens": 0
+      },
+      "total_tokens": 0
+    },
+    "web_search": {
+      "num_requests": 0
+    }
+  }
+}

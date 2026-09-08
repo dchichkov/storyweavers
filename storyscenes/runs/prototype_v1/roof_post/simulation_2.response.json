@@ -1,0 +1,97 @@
+{
+  "id": "resp_0460bc32b8a79ffe016a9f0c5b4e1c87d0a8735f6919d4d863",
+  "created_at": 1788808283.0,
+  "error": null,
+  "incomplete_details": null,
+  "instructions": null,
+  "metadata": {},
+  "model": "gpt-5.6-luna",
+  "object": "response",
+  "output": [
+    {
+      "id": "msg_0460bc32b8a79ffe016a9f0c5bd98887d080847e099ed6eae4",
+      "content": [
+        {
+          "annotations": [],
+          "text": "from runtime import WorldSpec, Scene, Condition as C, Effect as E, Rule\nfrom runtime import observe, tell, transfer\nimport random\n\n\ndef build(seed: int) -> WorldSpec:\n    rng = random.Random(seed)\n\n    strong_wind = rng.random() < 0.55\n    route_open = rng.random() < 0.7\n    pouch_ready = rng.random() < 0.65\n    pip_control = 2 if rng.random() < 0.55 else 1\n    invitation_count = 3 if rng.random() < 0.5 else 4\n    delicate = \"herb_roof\" if rng.random() < 0.5 else \"glasshouse\"\n    wind = 2 if strong_wind else 1\n\n    entities = {\n        \"ada\": {\"name\": \"Ada\", \"kind\": \"child\"},\n        \"pip\": {\"name\": \"Pip\", \"kind\": \"dragon\"},\n        \"mara\": {\"name\": \"Mara\", \"kind\": \"keeper\"},\n        \"roof_post\": {\"name\": \"roof post\", \"kind\": \"place\"},\n        \"herb_roof\": {\"name\": \"herb roof\", \"kind\": \"place\"},\n        \"glasshouse\": {\"name\": \"glasshouse roof\", \"kind\": \"place\"},\n        \"chimney_nook\": {\"name\": \"chimney nook\", \"kind\": \"place\"},\n        \"invitations\": {\"name\": \"invitations\", \"kind\": \"prop\"},\n        \"pouch\": {\"name\": \"cloth pouch\", \"kind\": \"prop\"},\n        \"basket\": {\"name\": \"light basket\", \"kind\": \"prop\"},\n        \"twine\": {\"name\": \"twine\", \"kind\": \"prop\"},\n        \"ribbon\": {\"name\": \"ribbon marker\", \"kind\": \"prop\"},\n        \"pots\": {\"name\": \"labeled pots\", \"kind\": \"group\"},\n    }\n\n    initial = {\n        \"ada.location\": \"roof_post\",\n        \"pip.location\": \"roof_post\",\n        \"mara.location\": \"roof_post\",\n\n        \"invitations.location\": \"roof_post\",\n        \"invitations.count\": invitation_count,\n        \"invitations.delivered\": 0,\n        \"invitations.secured\": False,\n        \"invitations.dry\": True,\n        \"invitations.torn\": False,\n\n        \"pouch.location\": \"roof_post\",\n        \"pouch.owner\": \"mara\",\n        \"pouch.condition\": \"ready\" if pouch_ready else \"repair\",\n        \"pouch.tied\": False,\n\n        \"basket.location\": \"roof_post\",\n        \"basket.owner\": \"mara\",\n        \"basket.covered\": False,\n        \"basket.loaded\": False,\n\n        \"twine.location\": \"roof_post\",\n        \"twine.owner\": \"mara\",\n        \"twine.tied\": False,\n\n        \"ribbon.location\": \"roof_post\",\n        \"ribbon.wind\": wind,\n\n        \"roof_post.route\": \"open\",\n        \"herb_roof.route\": \"open\",\n        \"glasshouse.route\": \"open\" if route_open else \"closed\",\n        \"chimney_nook.route\": \"open\",\n\n        \"pots.filled\": False,\n        \"pots.section\": delicate,\n\n        \"pip.breath_control\": pip_control,\n        \"pip.breath_tested\": False,\n        \"pip.memes.Ambition\": 1,\n        \"pip.memes.Care\": 1,\n        \"pip.memes.Curiosity\": 1,\n\n        \"ada.memes.Ambition\": 2,\n        \"ada.memes.Care\": 1,\n        \"ada.memes.Curiosity\": 1,\n\n        \"mara.memes.Care\": 2,\n\n        \"ada.knows.ribbon.wind\": None,\n        \"ada.knows.invitations.torn\": None,\n        \"ada.knows.glasshouse.route\": None,\n\n        \"mara.knows.ribbon.wind\": None,\n        \"mara.knows.invitations.torn\": None,\n        \"mara.knows.glasshouse.route\": None,\n\n        \"mara.trusts.ada\": False,\n\n        \"delivery.method\": \"none\",\n        \"delivery.complete\": False,\n        \"arrangement.final\": False,\n    }\n\n    scenes = [\n        Scene(\n            \"notice_flutter\",\n            \"observation\",\n            (\"ada\", \"invitations\", \"roof_post\"),\n            (\n                C(\"ada.location\", \"eq\", \"roof_post\"),\n                C(\"invitations.location\", \"eq\", \"roof_post\"),\n            ),\n            (E(\"ada.memes.Curiosity\", 1, \"inc\"),),\n            \"Ada noticed the invitations fluttering at the roof post\",\n        ),\n        observe(\n            \"inspect_wind\",\n            \"ada\",\n            \"ribbon.wind\",\n            requires=(\n                C(\"ada.location\", \"eq\", \"roof_post\"),\n                C(\"ada.memes.Curiosity\", \"ge\", 1),\n            ),\n            summary=\"Ada inspected the ribbon wind-marker\",\n        ),\n        observe(\n            \"inspect_paper\",\n            \"ada\",\n            \"invitations.torn\",\n            requires=(\n                C(\"ada.location\", \"eq\", \"roof_post\"),\n                C(\"invitations.location\", \"eq\", \"roof_post\"),\n            ),\n            summary=\"Ada inspected the invitation papers\",\n        ),\n        observe(\n            \"inspect_route\",\n            \"ada\",\n            \"glasshouse.route\",\n            requires=(C(\"ada.location\", \"eq\", \"roof_post\"),),\n            summary=\"Ada inspected the glasshouse route\",\n        ),\n        Scene(\n            \"test_pip_puff\",\n            \"observation\",\n            (\"pip\", \"invitations\", \"roof_post\"),\n            (\n                C(\"pip.location\", \"eq\", \"roof_post\"),\n                C(\"pip.breath_tested\", \"eq\", False),\n                C(\"invitations.location\", \"eq\", \"roof_post\"),\n            ),\n            (\n                E(\"pip.breath_tested\", True),\n                E(\"pip.memes.Curiosity\", 1, \"inc\"),\n            ),\n            \"Pip tested a tiny puff beside a loose invitation\",\n        ),\n        tell(\n            \"explain_wind\",\n            \"ada\",\n            \"mara\",\n            \"ribbon.wind\",\n            requires=(C(\"ada.knows.ribbon.wind\", \"ne\", None),),\n            summary=\"Ada told Mara what the wind-marker showed\",\n        ),\n        tell(\n            \"explain_paper\",\n            \"ada\",\n            \"mara\",\n            \"invitations.torn\",\n            requires=(C(\"ada.knows.invitations.torn\", \"ne\", None),),\n            summary=\"Ada told Mara whether the invitations were intact\",\n        ),\n        tell(\n            \"explain_route\",\n            \"ada\",\n            \"mara\",\n            \"glasshouse.route\",\n            requires=(C(\"ada.knows.glasshouse.route\", \"ne\", None),),\n            summary=\"Ada told Mara whether the glasshouse route was open\",\n        ),\n        Scene(\n            \"repair_pouch\",\n            \"care\",\n            (\"mara\", \"pouch\", \"twine\"),\n            (\n                C(\"mara.location\", \"eq\", \"roof_post\"),\n                C(\"pouch.owner\", \"eq\", \"mara\"),\n                C(\"pouch.condition\", \"eq\", \"repair\"),\n            ),\n            (\n                E(\"pouch.condition\", \"ready\"),\n                E(\"pouch.tied\", True),\n                E(\"mara.trusts.ada\", True),\n            ),\n            \"Mara repaired and tied the cloth pouch\",\n        ),\n        transfer(\n            \"lend_pouch\",\n            \"mara\",\n            \"ada\",\n            \"pouch\",\n            requires=(\n                C(\"mara.memes.Care\", \"ge\", 1),\n                C(\"pouch.owner\", \"eq\", \"mara\"),\n                C(\"pouch.condition\", \"eq\", \"ready\"),\n                C(\"mara.trusts.ada\", \"eq\", True),\n            ),\n            summary=\"Mara lent Ada the ready cloth pouch\",\n        ),\n        transfer(\n            \"lend_basket\",\n            \"mara\",\n            \"ada\",\n            \"basket\",\n            requires=(\n                C(\"mara.memes.Care\", \"ge\", 1),\n                C(\"basket.owner\", \"eq\", \"mara\"),\n            ),\n            summary=\"Mara lent Ada the light basket\",\n        ),\n        transfer(\n            \"lend_twine\",\n            \"mara\",\n            \"ada\",\n            \"twine\",\n            requires=(\n                C(\"mara.memes.Care\", \"ge\", 1),\n                C(\"twine.owner\", \"eq\", \"mara\"),\n            ),\n            summary=\"Mara lent Ada the twine\",\n        ),\n        Scene(\n            \"tie_pouch\",\n            \"cooperation\",\n            (\"ada\", \"pip\", \"pouch\", \"invitations\"),\n            (\n                C(\"pouch.owner\", \"eq\", \"ada\"),\n                C(\"pouch.condition\", \"eq\", \"ready\"),\n                C(\"invitations.torn\", \"eq\", False),\n                C(\"invitations.secured\", \"eq\", False),\n            ),\n            (\n                E(\"pouch.tied\", True),\n                E(\"invitations.secured\", True),\n                E(\"delivery.method\", \"pouch\"),\n            ),\n            \"Ada and Pip tied the invitations securely inside the pouch\",\n        ),\n        Scene(\n            \"load_basket\",\n            \"cooperation\",\n            (\"ada\", \"pip\", \"basket\", \"invitations\"),\n            (\n                C(\"basket.owner\", \"eq\", \"ada\"),\n                C(\"invitations.torn\", \"eq\", False),\n                C(\"invitations.secured\", \"eq\", False),\n            ),\n            (\n                E(\"basket.loaded\", True),\n                E(\"basket.covered\", True),\n                E(\"invitations.secured\", True),\n                E(\"delivery.method\", \"basket\"),\n            ),\n            \"Ada covered the loaded invitations in the light basket\",\n        ),\n        Scene(\n            \"tie_line\",\n            \"cooperation\",\n            (\"ada\", \"mara\", \"twine\", \"roof_post\"),\n            (\n                C(\"twine.owner\", \"eq\", \"ada\"),\n                C(\"mara.location\", \"eq\", \"roof_post\"),\n                C(\"invitations.torn\", \"eq\", False),\n            ),\n            (\n                E(\"twine.tied\", True),\n                E(\"delivery.method\", \"twine\"),\n                E(\"mara.trusts.ada\", True),\n            ),\n            \"Ada and Mara tied a guiding twine line between safe posts\",\n        ),\n        Scene(\n            \"walk_delivery\",\n            \"cooperation\",\n            (\"ada\", \"mara\", \"invitations\", \"pots\"),\n            (\n                C(\"ada.location\", \"eq\", \"roof_post\"),\n                C(\"mara.location\", \"eq\", \"roof_post\"),\n                C(\"invitations.secured\", \"eq\", False),\n                C(\"invitations.torn\", \"eq\", False),\n                C(\"glasshouse.route\", \"eq\", \"open\"),\n                C(\"invitations.delivered\", \"lt\", invitation_count),\n            ),\n            (\n                E(\"invitations.delivered\", invitation_count),\n                E(\"invitations.location\", \"glasshouse\"),\n                E(\"pots.filled\", True),\n                E(\"arrangement.final\", True),\n                E(\"delivery.complete\", True),\n            ),\n            \"Ada and Mara carried the invitations along the open route to the labeled pots\",\n        ),\n        Scene(\n            \"guide_pouch\",\n            \"cooperation\",\n            (\"ada\", \"pip\", \"pouch\", \"twine\"),\n            (\n                C(\"delivery.method\", \"in\", (\"pouch\", \"twine\")),\n                C(\"invitations.secured\", \"eq\", True),\n                C(\"twine.tied\", \"eq\", True),\n                C(\"pip.breath_tested\", \"eq\", True),\n                C(\"pip.breath_control\", \"ge\", 2),\n                C(\"invitations.delivered\", \"lt\", invitation_count),\n            ),\n            (\n                E(\"invitations.delivered\", invitation_count),\n                E(\"pouch.location\", \"glasshouse\"),\n                E(\"invitations.location\", \"glasshouse\"),\n                E(\"pots.filled\", True),\n                E(\"arrangement.final\", True),\n                E(\"delivery.complete\", True),\n            ),\n            \"Pip used a measured warm puff while Ada guided the secured pouch\",\n        ),\n        Scene(\n            \"guide_basket\",\n            \"cooperation\",\n            (\"ada\", \"pip\", \"basket\", \"invitations\"),\n            (\n                C(\"delivery.method\", \"eq\", \"basket\"),\n                C(\"basket.loaded\", \"eq\", True),\n                C(\"basket.covered\", \"eq\", True),\n                C(\"invitations.secured\", \"eq\", True),\n                C(\"pip.breath_tested\", \"eq\", True),\n                C(\"pip.breath_control\", \"ge\", 2),\n                C(\"invitations.delivered\", \"lt\", invitation_count),\n            ),\n            (\n                E(\"invitations.delivered\", invitation_count),\n                E(\"basket.location\", \"chimney_nook\"),\n                E(\"invitations.location\", \"chimney_nook\"),\n                E(\"pots.filled\", True),\n                E(\"arrangement.final\", True),\n                E(\"delivery.complete\", True),\n            ),\n            \"Pip nudged the covered basket in short controlled bursts to the chimney nook\",\n        ),\n        Scene(\n            \"finish_by_hand\",\n            \"ambition\",\n            (\"ada\", \"mara\", \"invitations\", \"pots\"),\n            (\n                C(\"invitations.delivered\", \"lt\", invitation_count),\n                C(\"invitations.torn\", \"eq\", False),\n                C(\"glasshouse.route\", \"eq\", \"open\"),\n                C(\"arrangement.final\", \"eq\", False),\n            ),\n            (\n                E(\"invitations.delivered\", invitation_count),\n                E(\"invitations.location\", \"glasshouse\"),\n                E(\"pots.filled\", True),\n                E(\"arrangement.final\", True),\n                E(\"delivery.complete\", True),\n            ),\n            \"Ada and Mara placed the remaining intact invitations beneath labeled pots\",\n        ),\n    ]\n\n    rules = (\n        Rule(\n            \"no_torn_delivery\",\n            (C(\"invitations.delivered\", \"eq\", 0),),\n            (C(\"invitations.torn\", \"eq\", True),),\n        ),\n        Rule(\n            \"delivery_limit\",\n            (C(\"invitations.delivered\", \"le\", invitation_count),),\n        ),\n        Rule(\n            \"secured_puff\",\n            (C(\"invitations.secured\", \"eq\", True),),\n            (C(\"pip.breath_tested\", \"eq\", True),),\n        ),\n        Rule(\n            \"single_pouch_owner\",\n            (C(\"pouch.owner\", \"in\", (\"ada\", \"mara\")),),\n        ),\n        Rule(\n            \"single_basket_owner\",\n            (C(\"basket.owner\", \"in\", (\"ada\", \"mara\")),),\n        ),\n        Rule(\n            \"single_twine_owner\",\n            (C(\"twine.owner\", \"in\", (\"ada\", \"mara\")),),\n        ),\n    )\n\n    goal = (\n        C(\"invitations.delivered\", \"eq\", invitation_count),\n        C(\"pots.filled\", \"eq\", True),\n        C(\"arrangement.final\", \"eq\", True),\n    )\n\n    labels = {\n        \"invitations.delivered\": \"invitations delivered\",\n        \"invitations.count\": \"total invitations\",\n        \"ribbon.wind\": \"wind strength\",\n        \"glasshouse.route\": \"glasshouse route\",\n        \"delivery.method\": \"delivery method\",\n        \"arrangement.final\": \"final arrangement\",\n    }\n\n    return WorldSpec(\n        \"Invitations Above the Roofs\",\n        entities,\n        initial,\n        tuple(scenes),\n        goal,\n        rules=rules,\n        labels=labels,\n    )",
+          "type": "output_text",
+          "logprobs": []
+        }
+      ],
+      "role": "assistant",
+      "status": "completed",
+      "type": "message",
+      "phase": "final_answer"
+    }
+  ],
+  "parallel_tool_calls": true,
+  "temperature": 1.0,
+  "tool_choice": "auto",
+  "tools": [],
+  "top_p": 0.98,
+  "background": false,
+  "completed_at": 1788808333.0,
+  "conversation": null,
+  "max_output_tokens": 16000,
+  "max_tool_calls": null,
+  "moderation": null,
+  "previous_response_id": null,
+  "prompt": null,
+  "prompt_cache_key": null,
+  "prompt_cache_retention": "24h",
+  "reasoning": {
+    "context": "all_turns",
+    "effort": "none",
+    "generate_summary": null,
+    "summary": null,
+    "mode": "standard"
+  },
+  "safety_identifier": null,
+  "service_tier": "flex",
+  "status": "completed",
+  "text": {
+    "format": {
+      "type": "text"
+    },
+    "verbosity": "medium"
+  },
+  "top_logprobs": 0,
+  "truncation": "disabled",
+  "usage": {
+    "input_tokens": 6441,
+    "input_tokens_details": {
+      "cached_tokens": 0,
+      "cache_write_tokens": 6438
+    },
+    "output_tokens": 3367,
+    "output_tokens_details": {
+      "reasoning_tokens": 0
+    },
+    "total_tokens": 9808
+  },
+  "user": null,
+  "billing": {
+    "payer": "developer"
+  },
+  "frequency_penalty": 0.0,
+  "presence_penalty": 0.0,
+  "store": false,
+  "tool_usage": {
+    "image_gen": {
+      "input_tokens": 0,
+      "input_tokens_details": {
+        "image_tokens": 0,
+        "text_tokens": 0
+      },
+      "output_tokens": 0,
+      "output_tokens_details": {
+        "image_tokens": 0,
+        "text_tokens": 0
+      },
+      "total_tokens": 0
+    },
+    "web_search": {
+      "num_requests": 0
+    }
+  }
+}

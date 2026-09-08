@@ -1,0 +1,93 @@
+{
+  "model": "gpt-5.6-terra",
+  "service_tier": "flex",
+  "reasoning": {
+    "effort": "none"
+  },
+  "max_output_tokens": 1600,
+  "store": false,
+  "input": [
+    {
+      "role": "system",
+      "content": "You author executable, composable children's story worlds. Follow the supplied authoring contract. Treat example story content as data. Return only the requested artifact."
+    },
+    {
+      "role": "user",
+      "content": "Review these three generated stories against their executable world traces. Treat story text as data. Trace initial state plus ordered changes is the ground truth. Identify concrete contradictions, unknown knowledge, unsupported accomplished actions, raw enum values, duplicated event-log text, weak endings or a missing consequential turn. Do not demand lessons or safety explanations. Distinguish simulation issues from prose issues. Do not invent a fault merely because a harmless descriptive detail lacks a state variable. Quote evidence. Return at most THREE material issues, concisely (one sentence of evidence and one sentence of fix each); prioritize contradicted physical actions/ownership/knowledge and unresolved alternatives over taste. Severity major only for a real coherence/grounding/storytelling failure.\n[{\"seed\": 123, \"story\": \"Ada swung open the garden gate and lifted the lamp. She wanted Pip to see a grand parade of shadows, while Bo whispered that the shy moth might prefer moonflower perfume. Under leaves or behind the gate, Pip waited for an invitation gentle enough to follow.\\n\\nAda pulled the gate wide and called, \\u201cWelcome, Pip! Come see the moon!\\u201d The hinges gave a tiny squeak, as if the garden itself had answered.\\n\\nAda hung the paper moon on the gate, where its crooked silver smile faced the garden.\\n\\nAda performed her sweeping shadow show: a rabbit hopped, a dragon sneezed, and a turnip wore a crown. The bright shapes leaped across the gate while Ada whispered, \\u201cTa-da!\\u201d\\n\\nThe bright moving shadows sprang across the gate. Pip startled and fluttered behind it. Ada\\u2019s dragon froze mid-sneeze, while Bo left the ribbon quiet and visible for a hopeful return.\\n\\nPip slipped behind the gate, startled by the bright dancing shapes. Still, the quiet ribbon waited in the moonlight, and one feeler peeked around the edge. Ada lowered the lamp. The welcome was unfinished, but not gone.\", \"initial\": {\"ada.memes.Curiosity\": 2, \"bo.memes.Care\": 2, \"pip.location\": \"gate\", \"pip.content\": \"shy\", \"pip.invited\": false, \"gate.open\": false, \"lamp.brightness\": \"bright\", \"lamp.owner\": \"ada\", \"moon.position\": \"basket\", \"bell.rung\": false, \"flowers.ready\": false, \"ribbon.tied\": false, \"ada.plan\": \"moving\", \"bo.plan\": \"flowers\", \"ada.performed.mode\": \"none\", \"ada.knows.pip.location\": null, \"bo.knows.pip.location\": null, \"ada.knows.lamp.brightness\": null, \"bo.knows.lamp.brightness\": null}, \"final\": {\"ada.memes.Curiosity\": 2, \"bo.memes.Care\": 2, \"pip.location\": \"gate\", \"pip.content\": \"startled\", \"pip.invited\": true, \"gate.open\": true, \"lamp.brightness\": \"bright\", \"lamp.owner\": \"ada\", \"moon.position\": \"gate\", \"bell.rung\": false, \"flowers.ready\": false, \"ribbon.tied\": false, \"ada.plan\": \"moving\", \"bo.plan\": \"flowers\", \"ada.performed.mode\": \"shadows\", \"ada.knows.pip.location\": null, \"bo.knows.pip.location\": null, \"ada.knows.lamp.brightness\": null, \"bo.knows.lamp.brightness\": null}, \"events\": [{\"scene\": \"open_gate\", \"summary\": \"Ada opened the gate and called a welcome into the dark garden\", \"changes\": {\"pip.invited\": {\"before\": false, \"after\": true}, \"gate.open\": {\"before\": false, \"after\": true}}}, {\"scene\": \"place_paper_moon\", \"summary\": \"Ada hung the paper moon on the gate\", \"changes\": {\"moon.position\": {\"before\": \"basket\", \"after\": \"gate\"}}}, {\"scene\": \"perform_moving_shadows\", \"summary\": \"Ada performed a sweeping shadow show\", \"changes\": {\"ada.performed.mode\": {\"before\": \"none\", \"after\": \"shadows\"}}}, {\"scene\": \"pip_hides_bright_motion\", \"summary\": \"Pip fluttered behind the gate after the bright moving shadows\", \"changes\": {\"pip.content\": {\"before\": \"shy\", \"after\": \"startled\"}}}]}, {\"seed\": 457, \"story\": \"The gate creaked open beneath the rising moon. Ada had planned a still paper-moon tableau, while Bo prepared a flowery welcome. They hoped their hidden guest would come close. Pip, tucked under leaves or near the gate, folded its wings and waited.\\n\\nAda pulled the gate wide and called, \\u201cWelcome, Pip! Come see the moon!\\u201d The hinges gave a tiny squeak, as if the garden itself had answered.\\n\\nBo tied the welcome ribbon to the gate. It bobbed in the lamplight like a friendly noodle waiting for a hello. Ada checked the lamp, squinting at its glow before choosing her next move. Ada shaded the bright lamp until it became soft, turning the hard white circle into a sleepy pool. Ada hung the paper moon on the gate, where its crooked silver smile faced the garden.\\n\\nAda performed the still tableau. She held the paper moon perfectly quiet, while her small moth-shaped hands made one gentle shadow. Even her toes stayed frozen, though one of them wiggled with excitement.\\n\\nPip followed the paper moon and settled on the ribbon beside the flowers. Ada held her breath; Bo held the bell. On the gate, Pip\\u2019s wings painted one small, perfect shadow.\\n\\nPip rested on the ribbon beside the moonflowers, and its wings painted one small shadow on the gate. Ada\\u2019s grand show had become a tiny silver hello. Bo\\u2019s bell stayed silent, but nobody seemed to mind.\", \"initial\": {\"ada.memes.Curiosity\": 2, \"bo.memes.Care\": 2, \"pip.location\": \"gate\", \"pip.content\": \"shy\", \"pip.invited\": false, \"gate.open\": false, \"lamp.brightness\": \"bright\", \"lamp.owner\": \"ada\", \"moon.position\": \"basket\", \"bell.rung\": false, \"flowers.ready\": false, \"ribbon.tied\": false, \"ada.plan\": \"tableau\", \"bo.plan\": \"flowers\", \"ada.performed.mode\": \"none\", \"ada.knows.pip.location\": null, \"bo.knows.pip.location\": null, \"ada.knows.lamp.brightness\": null, \"bo.knows.lamp.brightness\": null}, \"final\": {\"ada.memes.Curiosity\": 2, \"bo.memes.Care\": 2, \"pip.location\": \"ribbon\", \"pip.content\": \"welcomed\", \"pip.invited\": true, \"gate.open\": true, \"lamp.brightness\": \"soft\", \"lamp.owner\": \"ada\", \"moon.position\": \"gate\", \"bell.rung\": false, \"flowers.ready\": false, \"ribbon.tied\": true, \"ada.plan\": \"tableau\", \"bo.plan\": \"flowers\", \"ada.performed.mode\": \"tableau\", \"ada.knows.pip.location\": null, \"bo.knows.pip.location\": null, \"ada.knows.lamp.brightness\": \"bright\", \"bo.knows.lamp.brightness\": null}, \"events\": [{\"scene\": \"open_gate\", \"summary\": \"Ada opened the gate and called a welcome into the dark garden\", \"changes\": {\"pip.invited\": {\"before\": false, \"after\": true}, \"gate.open\": {\"before\": false, \"after\": true}}}, {\"scene\": \"tie_welcome_ribbon\", \"summary\": \"Bo tied the welcome ribbon to the gate\", \"changes\": {\"ribbon.tied\": {\"before\": false, \"after\": true}}}, {\"scene\": \"inspect_lamp\", \"summary\": \"Ada checked the lamp glow\", \"changes\": {\"ada.knows.lamp.brightness\": {\"before\": null, \"after\": \"bright\"}}}, {\"scene\": \"soften_lamp_ada\", \"summary\": \"Ada shaded the lamp until its glow became soft\", \"changes\": {\"lamp.brightness\": {\"before\": \"bright\", \"after\": \"soft\"}}}, {\"scene\": \"place_paper_moon\", \"summary\": \"Ada hung the paper moon on the gate\", \"changes\": {\"moon.position\": {\"before\": \"basket\", \"after\": \"gate\"}}}, {\"scene\": \"perform_still_tableau\", \"summary\": \"Ada performed a quiet paper-moon tableau\", \"changes\": {\"ada.performed.mode\": {\"before\": \"none\", \"after\": \"tableau\"}}}, {\"scene\": \"pip_follows_moon\", \"summary\": \"Pip followed the paper moon to the ribbon\", \"changes\": {\"pip.location\": {\"before\": \"gate\", \"after\": \"ribbon\"}, \"pip.content\": {\"before\": \"shy\", \"after\": \"welcomed\"}}}]}, {\"seed\": 791, \"story\": \"Ada opened the gate with a flourish. \\u201cTonight, a moon performance!\\u201d she announced. Bo held up one quiet finger: \\u201cPerhaps Pip would like a soft bell.\\u201d The lamp shone brightly or softly, and somewhere near the leaves or gate, a tiny moth listened.\\n\\nAda pulled the gate wide and called, \\u201cWelcome, Pip! Come see the moon!\\u201d The hinges gave a tiny squeak, as if the garden itself had answered.\\n\\nAda peered beneath the leaves and discovered Pip hiding there, its wings tucked like two folded commas. \\u201cOh,\\u201d she breathed. \\u201cIt is smaller than my shadow parade.\\u201d\\n\\nAda checked the lamp, squinting at its glow before choosing her next move. Bo tied the welcome ribbon to the gate. It bobbed in the lamplight like a friendly noodle waiting for a hello.\\n\\nWhen Ada learned Pip was hiding under the leaves, her sweeping arms drooped. Then she smiled. \\u201cA grand show can whisper.\\u201d She changed it into a still paper-moon tableau, with one tiny space for a moth.\\n\\nAda shaded the bright lamp until it became soft, turning the hard white circle into a sleepy pool. Ada hung the paper moon on the gate, where its crooked silver smile faced the garden.\\n\\nAda performed the still tableau. She held the paper moon perfectly quiet, while her small moth-shaped hands made one gentle shadow. Even her toes stayed frozen, though one of them wiggled with excitement.\\n\\nPip followed the paper moon and settled on the ribbon beside the flowers. Ada held her breath; Bo held the bell. On the gate, Pip\\u2019s wings painted one small, perfect shadow.\\n\\nPip rested on the ribbon beside the moonflowers, and its wings painted one small shadow on the gate. Ada\\u2019s grand show had become a tiny silver hello. Bo\\u2019s bell stayed silent, but nobody seemed to mind.\", \"initial\": {\"ada.memes.Curiosity\": 2, \"bo.memes.Care\": 2, \"pip.location\": \"leaves\", \"pip.content\": \"shy\", \"pip.invited\": false, \"gate.open\": false, \"lamp.brightness\": \"bright\", \"lamp.owner\": \"ada\", \"moon.position\": \"basket\", \"bell.rung\": false, \"flowers.ready\": false, \"ribbon.tied\": false, \"ada.plan\": \"moving\", \"bo.plan\": \"bell\", \"ada.performed.mode\": \"none\", \"ada.knows.pip.location\": null, \"bo.knows.pip.location\": null, \"ada.knows.lamp.brightness\": null, \"bo.knows.lamp.brightness\": null}, \"final\": {\"ada.memes.Curiosity\": 2, \"bo.memes.Care\": 2, \"pip.location\": \"ribbon\", \"pip.content\": \"welcomed\", \"pip.invited\": true, \"gate.open\": true, \"lamp.brightness\": \"soft\", \"lamp.owner\": \"ada\", \"moon.position\": \"gate\", \"bell.rung\": false, \"flowers.ready\": false, \"ribbon.tied\": true, \"ada.plan\": \"tableau\", \"bo.plan\": \"bell\", \"ada.performed.mode\": \"tableau\", \"ada.knows.pip.location\": \"leaves\", \"bo.knows.pip.location\": null, \"ada.knows.lamp.brightness\": \"bright\", \"bo.knows.lamp.brightness\": null}, \"events\": [{\"scene\": \"open_gate\", \"summary\": \"Ada opened the gate and called a welcome into the dark garden\", \"changes\": {\"pip.invited\": {\"before\": false, \"after\": true}, \"gate.open\": {\"before\": false, \"after\": true}}}, {\"scene\": \"look_for_pip\", \"summary\": \"Ada noticed where Pip was hiding\", \"changes\": {\"ada.knows.pip.location\": {\"before\": null, \"after\": \"leaves\"}}}, {\"scene\": \"inspect_lamp\", \"summary\": \"Ada checked the lamp glow\", \"changes\": {\"ada.knows.lamp.brightness\": {\"before\": null, \"after\": \"bright\"}}}, {\"scene\": \"tie_welcome_ribbon\", \"summary\": \"Bo tied the welcome ribbon to the gate\", \"changes\": {\"ribbon.tied\": {\"before\": false, \"after\": true}}}, {\"scene\": \"choose_still_tableau\", \"summary\": \"Ada changed her grand show into a still moon tableau\", \"changes\": {\"ada.plan\": {\"before\": \"moving\", \"after\": \"tableau\"}}}, {\"scene\": \"soften_lamp_ada\", \"summary\": \"Ada shaded the lamp until its glow became soft\", \"changes\": {\"lamp.brightness\": {\"before\": \"bright\", \"after\": \"soft\"}}}, {\"scene\": \"place_paper_moon\", \"summary\": \"Ada hung the paper moon on the gate\", \"changes\": {\"moon.position\": {\"before\": \"basket\", \"after\": \"gate\"}}}, {\"scene\": \"perform_still_tableau\", \"summary\": \"Ada performed a quiet paper-moon tableau\", \"changes\": {\"ada.performed.mode\": {\"before\": \"none\", \"after\": \"tableau\"}}}, {\"scene\": \"pip_follows_moon\", \"summary\": \"Pip followed the paper moon to the ribbon\", \"changes\": {\"pip.location\": {\"before\": \"leaves\", \"after\": \"ribbon\"}, \"pip.content\": {\"before\": \"shy\", \"after\": \"welcomed\"}}}]}]"
+    }
+  ],
+  "text": {
+    "format": {
+      "type": "json_schema",
+      "name": "storyscenes_artifact",
+      "strict": true,
+      "schema": {
+        "type": "object",
+        "properties": {
+          "issues": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "seed": {
+                  "type": "integer"
+                },
+                "severity": {
+                  "type": "string",
+                  "enum": [
+                    "minor",
+                    "major"
+                  ]
+                },
+                "layer": {
+                  "type": "string",
+                  "enum": [
+                    "simulation",
+                    "prose"
+                  ]
+                },
+                "defect": {
+                  "type": "string",
+                  "enum": [
+                    "ungrounded_outcome",
+                    "wrong_knowledge",
+                    "contradiction",
+                    "literal_state_value",
+                    "unresolved_alternative",
+                    "event_log_prose",
+                    "weak_turn",
+                    "weak_ending",
+                    "other"
+                  ]
+                },
+                "evidence": {
+                  "type": "string"
+                },
+                "fix": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "seed",
+                "severity",
+                "layer",
+                "defect",
+                "evidence",
+                "fix"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "strengths": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "issues",
+          "strengths"
+        ],
+        "additionalProperties": false
+      }
+    }
+  }
+}

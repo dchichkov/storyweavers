@@ -1,0 +1,97 @@
+{
+  "id": "resp_052da77d947d6a41016a9f33201d2087d0afe63e1430076f1a",
+  "created_at": 1788818208.0,
+  "error": null,
+  "incomplete_details": null,
+  "instructions": null,
+  "metadata": {},
+  "model": "gpt-5.6-luna",
+  "object": "response",
+  "output": [
+    {
+      "id": "msg_052da77d947d6a41016a9f3320a64087d0ae0d30550c664d3c",
+      "content": [
+        {
+          "annotations": [],
+          "text": "from simulation import build\nfrom runtime import solve, realize\n\n\ndef render(run, rng):\n    initial = run[\"initial\"]\n    final = run[\"final\"]\n    events = run[\"events\"]\n\n    borrowed = initial[\"museum.borrowed_id\"]\n    borrowed_name = run[\"entities\"][borrowed][\"name\"]\n    request = initial[\"owner_elsie.request\"]\n    condition = initial[borrowed + \".condition\"]\n    mark = initial[borrowed + \".mark\"]\n\n    openings = [\n        (\n            \"At the quiet end of the town museum, Ada and Bo were preparing \"\n            \"the Museum of Small Things. A borrowed \"\n            + borrowed_name\n            + \" rested among old objects, carrying a story too small to shout \"\n            \"and too interesting to ignore. Pip the magpie clicked from a shelf. \"\n            '\"Let\\'s make people look closely,\" Bo said. '\n            'Ada smiled. \"Closely—and respectfully.\"'\n        ),\n        (\n            \"The gallery was peaceful except for Pip's bright little clicks and \"\n            \"Bo's grand whispering. Ada had found a borrowed \"\n            + borrowed_name\n            + \" for the new exhibit, while an old key and other overlooked \"\n            \"treasures waited nearby. \"\n            '\"A centerpiece!\" Bo announced. '\n            '\"A carefully understood centerpiece,\" Ada corrected. '\n            'Mara, the keeper, tapped the empty case. '\n            '\"That difference matters.\"'\n        ),\n    ]\n\n    paragraphs = [{\n        \"text\": rng.choice(openings),\n        \"event_ids\": [],\n        \"kind\": \"beginning\",\n    }]\n\n    def text_for(event):\n        scene = event[\"scene\"]\n\n        if scene == \"inspect_borrowed_object\":\n            return (\n                \"Ada examined the borrowed \"\n                + borrowed_name\n                + \" without picking it up. She noticed that its condition \"\n                + condition\n                + \". \"\n                '\"It has been looked after,\" she said, '\n                '\"so we must keep looking after it.\"'\n            )\n\n        if scene == \"pip_notices_mark\":\n            return (\n                \"Pip hopped nearer and spotted a tiny \"\n                + mark\n                + \" on the \"\n                + borrowed_name\n                + \". He gave a careful chirp and pointed with one glossy wing \"\n                \"instead of grabbing. \"\n                '\"Even the smallest mark can be a clue,\" Bo said.'\n            )\n\n        if scene == \"pip_shares_mark\":\n            return (\n                \"Pip showed Ada the mark he had found on the \"\n                + borrowed_name\n                + \". Ada listened to his chirps and studied the place he indicated. \"\n                '\"We can describe what we know,\" she said, '\n                '\"but we must not invent the rest.\"'\n            )\n\n        if scene == \"read_owner_letter\":\n            return (\n                \"At the worktable, Mara opened Elsie's letter and read it aloud \"\n                \"with Ada. Elsie's request was clear: she wanted the object to be \"\n                + request\n                + \". \"\n                '\"So the owner gets a say, even when our idea is exciting?\" '\n                \"Bo asked. \"\n                '\"Especially then,\" Mara replied.'\n            )\n\n        if scene == \"test_display_case\":\n            return (\n                \"Bo tested the display case while Mara watched its shelves and \"\n                \"corners. He discovered that the case was \"\n                + initial[\"display_case.space\"]\n                + \". \"\n                '\"My dramatic arrangement may be dramatically crowded,\" he admitted. '\n                '\"A good display leaves room for objects and eyes,\" Mara said.'\n            )\n\n        if scene == \"clear_case_space\":\n            return (\n                \"With Ada and Pip helping, Bo removed extra objects from the \"\n                \"crowded case and returned them to the gallery. The shelves gained \"\n                \"breathing room. \"\n                '\"It is less busy,\" Bo said, looking again. '\n                '\"That means the important thing can finally speak.\"'\n            )\n\n        if scene == \"lend_velvet_pad\":\n            return (\n                \"Mara lent Ada the velvet pad. Ada accepted it with both hands and \"\n                \"set it beside the case. \"\n                '\"This is not decoration,\" Mara explained. '\n                '\"It keeps a borrowed object from being scraped.\" '\n                '\"A soft promise,\" Ada said.'\n            )\n\n        if scene == \"lend_lamp\":\n            return (\n                \"Mara lent Bo the small lamp. He carried it slowly, keeping its \"\n                \"cord clear of the case. \"\n                '\"Light can help people notice,\" Bo said. '\n                '\"Yes,\" Mara replied, \"but aim it like a question, not a shout.\"'\n            )\n\n        if scene == \"prepare_padded_display\":\n            return (\n                \"Ada placed the \"\n                + borrowed_name\n                + \" on the velvet pad while Bo watched the edges and empty space. \"\n                \"Nothing scraped or wobbled. The borrowed treasure became the \"\n                \"focus of the case without being squeezed among its neighbors. \"\n                '\"Now it looks important because we cared for it,\" Bo whispered.'\n            )\n\n        if scene == \"prepare_lit_display\":\n            return (\n                \"Bo aimed the small lamp, and Ada carefully placed the \"\n                + borrowed_name\n                + \" in the roomy case. The light caught its surface without \"\n                \"glare. Pip tilted his head. \"\n                '\"Not flashy,\" Ada said. \"Just enough for the mark to be seen.\"'\n            )\n\n        if scene == \"prepare_key_exhibit\":\n            return (\n                \"Because Elsie wanted her borrowed treasure home, the team changed \"\n                \"the centerpiece. They set the worn old key in the roomy case and \"\n                \"turned its locksmith mark outward. Bo stared at the space where \"\n                \"the borrowed object might have gone. \"\n                '\"An absence can tell part of a story too,\" Ada said.'\n            )\n\n        if scene == \"return_borrowed_object\":\n            return (\n                \"Mara and Ada placed the borrowed \"\n                + borrowed_name\n                + \" in the returning box. They carried it carefully toward the \"\n                \"courtyard, where it could go back to Elsie. \"\n                '\"Returning it is not giving up,\" Bo said. '\n                '\"No,\" Ada answered. \"It is finishing the borrowing properly.\"'\n            )\n\n        if scene == \"write_accurate_label\":\n            return (\n                \"Ada and Bo wrote the label only after Ada had learned the \"\n                + borrowed_name\n                + \"'s mark and Elsie's request. They named the mark and explained \"\n                \"the owner's wish instead of pretending the museum owned everything \"\n                \"it displayed. \"\n                '\"Accurate—and kind,\" Mara said when she read it.'\n            )\n\n        if scene == \"stabilize_arrangement\":\n            return (\n                \"Bo checked the arrangement from several angles while Ada held the \"\n                \"case steady. The centerpiece had space, the label was clear, and \"\n                \"nothing leaned against anything fragile. He gave the shelf a tiny \"\n                \"test. It stayed still. \"\n                '\"Stable,\" he announced. \"My favorite kind of impressive.\"'\n            )\n\n        if scene == \"open_small_things_exhibit\":\n            if final[\"museum.resolution\"] == \"displayed\":\n                return (\n                    \"Mara opened the Museum of Small Things. The case stood ready: \"\n                    \"labeled, balanced, and honest about the borrowed treasure. \"\n                    \"The small mark caught the lamp as the first visitors leaned \"\n                    \"close. \"\n                    '\"Look closely,\" Ada invited, \"but please do not touch.\"'\n                )\n            return (\n                \"Mara opened the Museum of Small Things. The old key held the \"\n                \"center of the balanced case, while the label explained that a \"\n                \"borrowed treasure had been returned to its owner. \"\n                '\"Look closely,\" Ada invited. \"The empty space is part of the story.\"'\n            )\n\n        return event[\"summary\"] + \".\"\n\n    for event in events:\n        paragraphs.append({\n            \"text\": text_for(event),\n            \"event_ids\": [event[\"id\"]],\n            \"kind\": \"scene\",\n        })\n\n    if final[\"museum.resolution\"] == \"displayed\":\n        ending = (\n            \"By closing time, the borrowed \"\n            + borrowed_name\n            + \" rested safely in the case. Its little mark glimmered beside an \"\n            \"accurate label, and visitors bent close without touching. Bo's grand \"\n            \"plan had become something better: an exhibit that made room for \"\n            \"another person's treasure and voice.\"\n        )\n    else:\n        ending = (\n            \"By closing time, Elsie's \"\n            + borrowed_name\n            + \" was safely on its way home in the returning box. The old key \"\n            \"held the center of the open case, and the label told visitors why \"\n            \"the empty space mattered. Ada looked at the arrangement and smiled: \"\n            \"the exhibit displayed not just an object, but a promise kept.\"\n        )\n\n    paragraphs.append({\n        \"text\": ending,\n        \"event_ids\": [events[-1][\"id\"]],\n        \"kind\": \"ending\",\n    })\n    return paragraphs\n\n\ndef generate(seed, prose_seed=None):\n    return realize(\n        solve(build(seed), seed),\n        render,\n        seed if prose_seed is None else prose_seed,\n    )",
+          "type": "output_text",
+          "logprobs": []
+        }
+      ],
+      "role": "assistant",
+      "status": "completed",
+      "type": "message",
+      "phase": "final_answer"
+    }
+  ],
+  "parallel_tool_calls": true,
+  "temperature": 1.0,
+  "tool_choice": "auto",
+  "tools": [],
+  "top_p": 0.98,
+  "background": false,
+  "completed_at": 1788818225.0,
+  "conversation": null,
+  "max_output_tokens": 16000,
+  "max_tool_calls": null,
+  "moderation": null,
+  "previous_response_id": null,
+  "prompt": null,
+  "prompt_cache_key": null,
+  "prompt_cache_retention": "24h",
+  "reasoning": {
+    "context": "all_turns",
+    "effort": "low",
+    "generate_summary": null,
+    "summary": null,
+    "mode": "standard"
+  },
+  "safety_identifier": null,
+  "service_tier": "flex",
+  "status": "completed",
+  "text": {
+    "format": {
+      "type": "text"
+    },
+    "verbosity": "medium"
+  },
+  "top_logprobs": 0,
+  "truncation": "disabled",
+  "usage": {
+    "input_tokens": 18168,
+    "input_tokens_details": {
+      "cached_tokens": 0,
+      "cache_write_tokens": 18165
+    },
+    "output_tokens": 1945,
+    "output_tokens_details": {
+      "reasoning_tokens": 0
+    },
+    "total_tokens": 20113
+  },
+  "user": null,
+  "billing": {
+    "payer": "developer"
+  },
+  "frequency_penalty": 0.0,
+  "presence_penalty": 0.0,
+  "store": false,
+  "tool_usage": {
+    "image_gen": {
+      "input_tokens": 0,
+      "input_tokens_details": {
+        "image_tokens": 0,
+        "text_tokens": 0
+      },
+      "output_tokens": 0,
+      "output_tokens_details": {
+        "image_tokens": 0,
+        "text_tokens": 0
+      },
+      "total_tokens": 0
+    },
+    "web_search": {
+      "num_requests": 0
+    }
+  }
+}

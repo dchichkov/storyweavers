@@ -1,0 +1,362 @@
+{
+  "id": "resp_0f62c66495207d11006a9f33b95e5087d0b29f3d66b55d5ea8",
+  "created_at": 1788818361.0,
+  "error": null,
+  "incomplete_details": null,
+  "instructions": null,
+  "metadata": {},
+  "model": "gpt-5.6-terra",
+  "object": "response",
+  "output": [
+    {
+      "id": "msg_0f62c66495207d11006a9f33b9f1a487d0aff26db228acdd54",
+      "content": [
+        {
+          "annotations": [],
+          "text": "{\"stories\":[{\"id\":\"s000029\",\"rating\":{\"coherence\":7,\"style\":6,\"grammar\":8,\"storytelling\":7,\"overall\":7},\"note\":\"A clear collaborative problem and resolution, with Tansy's answering tap providing a concrete ending; some explanatory repetition makes it feel engineered rather than lively.\"},{\"id\":\"s000057\",\"rating\":{\"coherence\":7,\"style\":6,\"grammar\":8,\"storytelling\":7,\"overall\":7},\"note\":\"The still-water call-and-response solution is easy to follow and ends tangibly, though the repeated technical observations slow the child-story pace.\"},{\"id\":\"s000047\",\"rating\":{\"coherence\":8,\"style\":7,\"grammar\":8,\"storytelling\":8,\"overall\":8},\"note\":\"Ripples create a meaningful obstacle, and tying the pads before changing to tapping gives the resolution a strong causal progression and vivid shared-drum image.\"},{\"id\":\"s000073\",\"rating\":{\"coherence\":7,\"style\":6,\"grammar\":8,\"storytelling\":7,\"overall\":7},\"note\":\"The log's low thrum and Tansy's reply make the concert solution concrete, but several setup steps repeat ideas and weaken momentum.\"},{\"id\":\"s000034\",\"rating\":{\"coherence\":7,\"style\":6,\"grammar\":8,\"storytelling\":7,\"overall\":7},\"note\":\"The characters observe Tansy's needs and build a workable setup, ending with her tap, but the pads bridge is not meaningfully used in the final call-and-response performance.\"},{\"id\":\"s000043\",\"rating\":{\"coherence\":6,\"style\":6,\"grammar\":8,\"storytelling\":6,\"overall\":6},\"note\":\"The rippling-water shift to tapping is sensible, but the raised sail is not integrated into the outcome and the final reference to pads and log contradicts the sail setup.\"},{\"id\":\"s000068\",\"rating\":{\"coherence\":7,\"style\":6,\"grammar\":8,\"storytelling\":7,\"overall\":7},\"note\":\"A coherent still-water adaptation with a clear listener-focused ending, though it relies on repetitive explanatory dialogue rather than dramatic action.\"},{\"id\":\"s000096\",\"rating\":{\"coherence\":7,\"style\":6,\"grammar\":8,\"storytelling\":7,\"overall\":7},\"note\":\"The group changes Pip's performance to fit Tansy's vibration listening, and her foot tap closes the story clearly; the prose remains somewhat formulaic and repetitive.\"},{\"id\":\"s000005\",\"rating\":{\"coherence\":8,\"style\":7,\"grammar\":8,\"storytelling\":8,\"overall\":8},\"note\":\"The pond's ripples directly cause Pip to abandon loud croaking for tapping, while the anchored log and answering foot create a satisfying, concrete finale.\"},{\"id\":\"s000085\",\"rating\":{\"coherence\":6,\"style\":6,\"grammar\":8,\"storytelling\":6,\"overall\":6},\"note\":\"The rippling-water solution and visual sail are understandable, but the closing image suddenly says pads and log tremble together, contradicting the established arrangement.\"}],\"diversity\":{\"premise\":1,\"causal_path\":3,\"ending\":1,\"language\":2,\"overall\":2},\"diversity_evidence\":\"All ten stories share the same central problem—Pip must make a concert reach vibration-listening Tansy—and the same successful endpoint of Tansy's answering tap. The modest branch is environmental: still-water stories such as s000029 and s000068 use a call-and-response song, while rippling-water stories such as s000047 and s000005 use tapping; carrier and location substitutions are otherwise mostly cosmetic. This sample does not establish diversity for the entire generator.\",\"plot_groups\":[{\"story_ids\":[\"s000029\",\"s000057\",\"s000073\",\"s000034\",\"s000068\",\"s000096\"],\"summary\":\"In still water, the friends arrange a stable listening setup near Tansy, and Pip changes his concert into a call-and-response song that she answers by tapping.\"},{\"story_ids\":[\"s000047\",\"s000005\"],\"summary\":\"Because pond ripples disrupt ordinary sound, the friends create an anchored vibration carrier and Pip switches from croaking to a tap rhythm that Tansy answers.\"},{\"story_ids\":[\"s000043\",\"s000085\"],\"summary\":\"Because ripples muddle sound, Milo adds a visible leaf sail and Pip changes to tapping; Tansy answers, though the stated final arrangement inconsistently invokes pads and a log.\"}]}",
+          "type": "output_text",
+          "logprobs": []
+        }
+      ],
+      "role": "assistant",
+      "status": "completed",
+      "type": "message",
+      "phase": "final_answer"
+    }
+  ],
+  "parallel_tool_calls": true,
+  "temperature": 1.0,
+  "tool_choice": "auto",
+  "tools": [],
+  "top_p": 0.98,
+  "background": false,
+  "completed_at": 1788818370.0,
+  "conversation": null,
+  "max_output_tokens": 4000,
+  "max_tool_calls": null,
+  "moderation": null,
+  "previous_response_id": null,
+  "prompt": null,
+  "prompt_cache_key": null,
+  "prompt_cache_retention": "24h",
+  "reasoning": {
+    "context": "all_turns",
+    "effort": "none",
+    "generate_summary": null,
+    "summary": null,
+    "mode": "standard"
+  },
+  "safety_identifier": null,
+  "service_tier": "flex",
+  "status": "completed",
+  "text": {
+    "format": {
+      "name": "story_set_quality_v1",
+      "schema_": {
+        "type": "object",
+        "properties": {
+          "stories": {
+            "type": "array",
+            "minItems": 10,
+            "maxItems": 10,
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "enum": [
+                    "s000029",
+                    "s000057",
+                    "s000047",
+                    "s000073",
+                    "s000034",
+                    "s000043",
+                    "s000068",
+                    "s000096",
+                    "s000005",
+                    "s000085"
+                  ]
+                },
+                "rating": {
+                  "type": "object",
+                  "properties": {
+                    "coherence": {
+                      "type": "integer",
+                      "enum": [
+                        0,
+                        1,
+                        2,
+                        3,
+                        4,
+                        5,
+                        6,
+                        7,
+                        8,
+                        9
+                      ]
+                    },
+                    "style": {
+                      "type": "integer",
+                      "enum": [
+                        0,
+                        1,
+                        2,
+                        3,
+                        4,
+                        5,
+                        6,
+                        7,
+                        8,
+                        9
+                      ]
+                    },
+                    "grammar": {
+                      "type": "integer",
+                      "enum": [
+                        0,
+                        1,
+                        2,
+                        3,
+                        4,
+                        5,
+                        6,
+                        7,
+                        8,
+                        9
+                      ]
+                    },
+                    "storytelling": {
+                      "type": "integer",
+                      "enum": [
+                        0,
+                        1,
+                        2,
+                        3,
+                        4,
+                        5,
+                        6,
+                        7,
+                        8,
+                        9
+                      ]
+                    },
+                    "overall": {
+                      "type": "integer",
+                      "enum": [
+                        0,
+                        1,
+                        2,
+                        3,
+                        4,
+                        5,
+                        6,
+                        7,
+                        8,
+                        9
+                      ]
+                    }
+                  },
+                  "required": [
+                    "coherence",
+                    "style",
+                    "grammar",
+                    "storytelling",
+                    "overall"
+                  ],
+                  "additionalProperties": false
+                },
+                "note": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "id",
+                "rating",
+                "note"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "diversity": {
+            "type": "object",
+            "properties": {
+              "premise": {
+                "type": "integer",
+                "enum": [
+                  0,
+                  1,
+                  2,
+                  3,
+                  4,
+                  5,
+                  6,
+                  7,
+                  8,
+                  9
+                ]
+              },
+              "causal_path": {
+                "type": "integer",
+                "enum": [
+                  0,
+                  1,
+                  2,
+                  3,
+                  4,
+                  5,
+                  6,
+                  7,
+                  8,
+                  9
+                ]
+              },
+              "ending": {
+                "type": "integer",
+                "enum": [
+                  0,
+                  1,
+                  2,
+                  3,
+                  4,
+                  5,
+                  6,
+                  7,
+                  8,
+                  9
+                ]
+              },
+              "language": {
+                "type": "integer",
+                "enum": [
+                  0,
+                  1,
+                  2,
+                  3,
+                  4,
+                  5,
+                  6,
+                  7,
+                  8,
+                  9
+                ]
+              },
+              "overall": {
+                "type": "integer",
+                "enum": [
+                  0,
+                  1,
+                  2,
+                  3,
+                  4,
+                  5,
+                  6,
+                  7,
+                  8,
+                  9
+                ]
+              }
+            },
+            "required": [
+              "premise",
+              "causal_path",
+              "ending",
+              "language",
+              "overall"
+            ],
+            "additionalProperties": false
+          },
+          "diversity_evidence": {
+            "type": "string"
+          },
+          "plot_groups": {
+            "type": "array",
+            "minItems": 1,
+            "maxItems": 10,
+            "items": {
+              "type": "object",
+              "properties": {
+                "story_ids": {
+                  "type": "array",
+                  "minItems": 1,
+                  "items": {
+                    "type": "string",
+                    "enum": [
+                      "s000029",
+                      "s000057",
+                      "s000047",
+                      "s000073",
+                      "s000034",
+                      "s000043",
+                      "s000068",
+                      "s000096",
+                      "s000005",
+                      "s000085"
+                    ]
+                  }
+                },
+                "summary": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "story_ids",
+                "summary"
+              ],
+              "additionalProperties": false
+            }
+          }
+        },
+        "required": [
+          "stories",
+          "diversity",
+          "diversity_evidence",
+          "plot_groups"
+        ],
+        "additionalProperties": false
+      },
+      "type": "json_schema",
+      "description": null,
+      "strict": true
+    },
+    "verbosity": "medium"
+  },
+  "top_logprobs": 0,
+  "truncation": "disabled",
+  "usage": {
+    "input_tokens": 6345,
+    "input_tokens_details": {
+      "cached_tokens": 0,
+      "cache_write_tokens": 6342
+    },
+    "output_tokens": 939,
+    "output_tokens_details": {
+      "reasoning_tokens": 0
+    },
+    "total_tokens": 7284
+  },
+  "user": null,
+  "billing": {
+    "payer": "developer"
+  },
+  "frequency_penalty": 0.0,
+  "presence_penalty": 0.0,
+  "store": true,
+  "tool_usage": {
+    "image_gen": {
+      "input_tokens": 0,
+      "input_tokens_details": {
+        "image_tokens": 0,
+        "text_tokens": 0
+      },
+      "output_tokens": 0,
+      "output_tokens_details": {
+        "image_tokens": 0,
+        "text_tokens": 0
+      },
+      "total_tokens": 0
+    },
+    "web_search": {
+      "num_requests": 0
+    }
+  }
+}

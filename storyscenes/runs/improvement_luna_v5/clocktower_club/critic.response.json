@@ -1,0 +1,167 @@
+{
+  "id": "resp_034b504d77213e2b016a9f8ecf25e087d093d3fca387af013b",
+  "created_at": 1788841679.0,
+  "error": null,
+  "incomplete_details": null,
+  "instructions": null,
+  "metadata": {},
+  "model": "gpt-5.6-terra",
+  "object": "response",
+  "output": [
+    {
+      "id": "msg_034b504d77213e2b016a9f8ecf9d9c87d0829f8d4a6dd7ae66",
+      "content": [
+        {
+          "annotations": [],
+          "text": "{\"issues\":[{\"seed\":124,\"severity\":\"major\",\"layer\":\"simulation\",\"defect\":\"contradiction\",\"evidence\":\"The story says, “The neighbor woke with a startled grin and peered into the tower,” but the final trace still sets `neighbor.awake` to `false`; the only neighbor event changes the response to `startled`.\",\"fix\":\"Add a trace change setting `neighbor.awake` from `false` to `true` when the bell wakes them, or revise the prose so the neighbor remains asleep.\"},{\"seed\":791,\"severity\":\"minor\",\"layer\":\"prose\",\"defect\":\"contradiction\",\"evidence\":\"Pip “tugged the short rope” and rang the bell before the later scene says the latch “clicked open, revealing two ropes,” despite the trace placing `inspect_soft_rope` before `unlock_bell`.\",\"fix\":\"Have Pip inspect or identify the short practice rope without pulling it before unlocking, or move the early soft-ring event to after the unlocking scene.\"}],\"strengths\":\"Seeds 123 and 791 otherwise closely realize their ownership, knowledge transfer, unlocking, choice, meeting, and neighbor-response traces; none expose raw enum values or duplicate event-log prose.\"}",
+          "type": "output_text",
+          "logprobs": []
+        }
+      ],
+      "role": "assistant",
+      "status": "completed",
+      "type": "message",
+      "phase": "final_answer"
+    }
+  ],
+  "parallel_tool_calls": true,
+  "temperature": 1.0,
+  "tool_choice": "auto",
+  "tools": [],
+  "top_p": 0.98,
+  "background": false,
+  "completed_at": 1788841681.0,
+  "conversation": null,
+  "max_output_tokens": 1600,
+  "max_tool_calls": null,
+  "moderation": null,
+  "previous_response_id": null,
+  "prompt": null,
+  "prompt_cache_key": null,
+  "prompt_cache_retention": "24h",
+  "reasoning": {
+    "context": "all_turns",
+    "effort": "none",
+    "generate_summary": null,
+    "summary": null,
+    "mode": "standard"
+  },
+  "safety_identifier": null,
+  "service_tier": "flex",
+  "status": "completed",
+  "text": {
+    "format": {
+      "name": "storyscenes_artifact",
+      "schema_": {
+        "type": "object",
+        "properties": {
+          "issues": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "seed": {
+                  "type": "integer"
+                },
+                "severity": {
+                  "type": "string",
+                  "enum": [
+                    "minor",
+                    "major"
+                  ]
+                },
+                "layer": {
+                  "type": "string",
+                  "enum": [
+                    "simulation",
+                    "prose"
+                  ]
+                },
+                "defect": {
+                  "type": "string",
+                  "enum": [
+                    "ungrounded_outcome",
+                    "wrong_knowledge",
+                    "contradiction",
+                    "literal_state_value",
+                    "unresolved_alternative",
+                    "event_log_prose",
+                    "weak_turn",
+                    "weak_ending",
+                    "other"
+                  ]
+                },
+                "evidence": {
+                  "type": "string"
+                },
+                "fix": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "seed",
+                "severity",
+                "layer",
+                "defect",
+                "evidence",
+                "fix"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "strengths": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "issues",
+          "strengths"
+        ],
+        "additionalProperties": false
+      },
+      "type": "json_schema",
+      "description": null,
+      "strict": true
+    },
+    "verbosity": "medium"
+  },
+  "top_logprobs": 0,
+  "truncation": "disabled",
+  "usage": {
+    "input_tokens": 5048,
+    "input_tokens_details": {
+      "cached_tokens": 0,
+      "cache_write_tokens": 5045
+    },
+    "output_tokens": 263,
+    "output_tokens_details": {
+      "reasoning_tokens": 0
+    },
+    "total_tokens": 5311
+  },
+  "user": null,
+  "billing": {
+    "payer": "openai"
+  },
+  "frequency_penalty": 0.0,
+  "presence_penalty": 0.0,
+  "store": false,
+  "tool_usage": {
+    "image_gen": {
+      "input_tokens": 0,
+      "input_tokens_details": {
+        "image_tokens": 0,
+        "text_tokens": 0
+      },
+      "output_tokens": 0,
+      "output_tokens_details": {
+        "image_tokens": 0,
+        "text_tokens": 0
+      },
+      "total_tokens": 0
+    },
+    "web_search": {
+      "num_requests": 0
+    }
+  }
+}

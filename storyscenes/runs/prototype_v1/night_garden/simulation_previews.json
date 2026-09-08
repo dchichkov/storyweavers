@@ -1,0 +1,1624 @@
+[
+  {
+    "seed": 0,
+    "title": "The Moonlit Welcome",
+    "initial": {
+      "ada.memes.Curiosity": 2,
+      "ada.memes.Care": 1,
+      "ben.memes.Ambition": 2,
+      "ben.memes.Care": 2,
+      "keeper.memes.Care": 2,
+      "ada.location": "night_garden",
+      "ben.location": "night_garden",
+      "mica.location": "dark_edge",
+      "mica.settled": false,
+      "mica.comfort": "waiting",
+      "mica.resting_place": null,
+      "lamp.lit": false,
+      "lamp.brightness": 0,
+      "lamp.position": "stone",
+      "lamp.shadow": "none",
+      "lamp.owner": "keeper",
+      "pale_cloth.owner": "keeper",
+      "pale_cloth.location": "folded",
+      "pale_cloth.hung": false,
+      "pale_cloth.flutters": false,
+      "flower_sign.owner": "keeper",
+      "flower_sign.location": "flower_bed",
+      "seed_pouch.owner": "keeper",
+      "flower_bed.clear": true,
+      "fern_corner.clear": false,
+      "welcome_circle.ready": false,
+      "welcome_circle.landing": null,
+      "welcome_circle.light_style": null,
+      "welcome_circle.resting_place": null,
+      "ada.knows.mica.location": null,
+      "ada.knows.lamp.shadow": null,
+      "ada.knows.lamp.position": null,
+      "ada.knows.landing": null,
+      "keeper.knows.landing": null
+    },
+    "final": {
+      "ada.memes.Curiosity": 2,
+      "ada.memes.Care": 1,
+      "ben.memes.Ambition": 2,
+      "ben.memes.Care": 2,
+      "keeper.memes.Care": 2,
+      "ada.location": "night_garden",
+      "ben.location": "night_garden",
+      "mica.location": "welcome_circle",
+      "mica.settled": true,
+      "mica.comfort": "safe",
+      "mica.resting_place": "flower_sign",
+      "lamp.lit": true,
+      "lamp.brightness": 1,
+      "lamp.position": "stone",
+      "lamp.shadow": "soft",
+      "lamp.owner": "keeper",
+      "pale_cloth.owner": "ada",
+      "pale_cloth.location": "folded",
+      "pale_cloth.hung": false,
+      "pale_cloth.flutters": false,
+      "flower_sign.owner": "keeper",
+      "flower_sign.location": "welcome_circle",
+      "seed_pouch.owner": "keeper",
+      "flower_bed.clear": true,
+      "fern_corner.clear": true,
+      "welcome_circle.ready": true,
+      "welcome_circle.landing": "fern",
+      "welcome_circle.light_style": "fern_edge",
+      "welcome_circle.resting_place": "flower_sign",
+      "ada.knows.mica.location": "dark_edge",
+      "ada.knows.lamp.shadow": "long",
+      "ada.knows.lamp.position": "stone",
+      "ada.knows.landing": "fern",
+      "keeper.knows.landing": "fern"
+    },
+    "events": [
+      {
+        "id": 1,
+        "scene": "light_lamp",
+        "kernel": "ambition",
+        "actors": [
+          "ben",
+          "lamp"
+        ],
+        "summary": "Ben lit the lamp brightly for the welcome",
+        "causes": [],
+        "requires": [
+          {
+            "key": "ben.location",
+            "op": "eq",
+            "value": "night_garden"
+          },
+          {
+            "key": "ben.memes.Ambition",
+            "op": "ge",
+            "value": 1
+          },
+          {
+            "key": "lamp.lit",
+            "op": "eq",
+            "value": false
+          }
+        ],
+        "changes": {
+          "lamp.lit": {
+            "before": false,
+            "after": true
+          },
+          "lamp.brightness": {
+            "before": 0,
+            "after": 2
+          },
+          "lamp.shadow": {
+            "before": "none",
+            "after": "long"
+          }
+        }
+      },
+      {
+        "id": 2,
+        "scene": "inspect_mica",
+        "kernel": "Observe",
+        "actors": [
+          "ada"
+        ],
+        "summary": "Ada watched the edge where Mica waited",
+        "causes": [
+          1
+        ],
+        "requires": [
+          {
+            "key": "ada.location",
+            "op": "eq",
+            "value": "night_garden"
+          },
+          {
+            "key": "ada.memes.Curiosity",
+            "op": "ge",
+            "value": 1
+          },
+          {
+            "key": "lamp.lit",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "mica.settled",
+            "op": "eq",
+            "value": false
+          }
+        ],
+        "changes": {
+          "ada.knows.mica.location": {
+            "before": null,
+            "after": "dark_edge"
+          }
+        }
+      },
+      {
+        "id": 3,
+        "scene": "inspect_lamp_position",
+        "kernel": "Observe",
+        "actors": [
+          "ada"
+        ],
+        "summary": "Ada checked where the lamp was standing",
+        "causes": [
+          1
+        ],
+        "requires": [
+          {
+            "key": "ada.location",
+            "op": "eq",
+            "value": "night_garden"
+          },
+          {
+            "key": "ada.memes.Curiosity",
+            "op": "ge",
+            "value": 1
+          },
+          {
+            "key": "lamp.lit",
+            "op": "eq",
+            "value": true
+          }
+        ],
+        "changes": {
+          "ada.knows.lamp.position": {
+            "before": null,
+            "after": "stone"
+          }
+        }
+      },
+      {
+        "id": 4,
+        "scene": "inspect_shadow",
+        "kernel": "Observe",
+        "actors": [
+          "ada"
+        ],
+        "summary": "Ada inspected the lamp's shadow",
+        "causes": [
+          1
+        ],
+        "requires": [
+          {
+            "key": "ada.location",
+            "op": "eq",
+            "value": "night_garden"
+          },
+          {
+            "key": "ada.memes.Curiosity",
+            "op": "ge",
+            "value": 1
+          },
+          {
+            "key": "lamp.lit",
+            "op": "eq",
+            "value": true
+          }
+        ],
+        "changes": {
+          "ada.knows.lamp.shadow": {
+            "before": null,
+            "after": "long"
+          }
+        }
+      },
+      {
+        "id": 5,
+        "scene": "find_landing",
+        "kernel": "observation",
+        "actors": [
+          "ada",
+          "stone_path"
+        ],
+        "summary": "Ada traced the long shadow to the clearer landing edge",
+        "causes": [
+          2,
+          4
+        ],
+        "requires": [
+          {
+            "key": "ada.knows.mica.location",
+            "op": "in",
+            "value": [
+              "bright_edge",
+              "dark_edge"
+            ]
+          },
+          {
+            "key": "ada.knows.lamp.shadow",
+            "op": "eq",
+            "value": "long"
+          },
+          {
+            "key": "ada.knows.landing",
+            "op": "eq",
+            "value": null
+          }
+        ],
+        "changes": {
+          "ada.knows.landing": {
+            "before": null,
+            "after": "fern"
+          }
+        }
+      },
+      {
+        "id": 6,
+        "scene": "explain_landing_need",
+        "kernel": "Tell",
+        "actors": [
+          "ada",
+          "keeper"
+        ],
+        "summary": "Ada explained which landing edge needed gentler light",
+        "causes": [
+          5
+        ],
+        "requires": [
+          {
+            "key": "ada.knows.landing",
+            "op": "ne",
+            "value": null
+          },
+          {
+            "key": "ada.memes.Care",
+            "op": "ge",
+            "value": 1
+          }
+        ],
+        "changes": {
+          "keeper.knows.landing": {
+            "before": null,
+            "after": "fern"
+          }
+        }
+      },
+      {
+        "id": 7,
+        "scene": "dim_lamp",
+        "kernel": "care",
+        "actors": [
+          "ben",
+          "lamp"
+        ],
+        "summary": "Ben turned the lamp down to a quieter glow",
+        "causes": [
+          1
+        ],
+        "requires": [
+          {
+            "key": "ben.memes.Care",
+            "op": "ge",
+            "value": 1
+          },
+          {
+            "key": "lamp.lit",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "lamp.brightness",
+            "op": "eq",
+            "value": 2
+          }
+        ],
+        "changes": {
+          "lamp.brightness": {
+            "before": 2,
+            "after": 1
+          },
+          "lamp.shadow": {
+            "before": "long",
+            "after": "soft"
+          }
+        }
+      },
+      {
+        "id": 8,
+        "scene": "lend_pale_cloth",
+        "kernel": "Transfer",
+        "actors": [
+          "keeper",
+          "ada"
+        ],
+        "summary": "The steward lent Ada the pale cloth",
+        "causes": [
+          6
+        ],
+        "requires": [
+          {
+            "key": "pale_cloth.owner",
+            "op": "eq",
+            "value": "keeper"
+          },
+          {
+            "key": "keeper.memes.Care",
+            "op": "ge",
+            "value": 1
+          },
+          {
+            "key": "keeper.knows.landing",
+            "op": "in",
+            "value": [
+              "fern",
+              "flowers"
+            ]
+          },
+          {
+            "key": "pale_cloth.location",
+            "op": "in",
+            "value": [
+              "under_cloth",
+              "folded"
+            ]
+          }
+        ],
+        "changes": {
+          "pale_cloth.owner": {
+            "before": "keeper",
+            "after": "ada"
+          }
+        }
+      },
+      {
+        "id": 9,
+        "scene": "clear_fern_landing",
+        "kernel": "care",
+        "actors": [
+          "ada",
+          "ben",
+          "fern_corner",
+          "flower_sign"
+        ],
+        "summary": "The children carried the sign aside and opened the fern corner",
+        "causes": [
+          5
+        ],
+        "requires": [
+          {
+            "key": "ada.knows.landing",
+            "op": "eq",
+            "value": "fern"
+          },
+          {
+            "key": "ben.memes.Care",
+            "op": "ge",
+            "value": 1
+          },
+          {
+            "key": "fern_corner.clear",
+            "op": "eq",
+            "value": false
+          },
+          {
+            "key": "flower_sign.location",
+            "op": "eq",
+            "value": "flower_bed"
+          }
+        ],
+        "changes": {
+          "flower_sign.location": {
+            "before": "flower_bed",
+            "after": "stone_path"
+          },
+          "fern_corner.clear": {
+            "before": false,
+            "after": true
+          }
+        }
+      },
+      {
+        "id": 10,
+        "scene": "mark_fern_circle",
+        "kernel": "cooperation",
+        "actors": [
+          "ada",
+          "ben",
+          "welcome_circle",
+          "flower_sign"
+        ],
+        "summary": "Ada and Ben set the flower-sign welcome circle by the fern edge",
+        "causes": [
+          5,
+          7,
+          9
+        ],
+        "requires": [
+          {
+            "key": "ada.knows.landing",
+            "op": "eq",
+            "value": "fern"
+          },
+          {
+            "key": "fern_corner.clear",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "flower_sign.location",
+            "op": "eq",
+            "value": "stone_path"
+          },
+          {
+            "key": "lamp.shadow",
+            "op": "in",
+            "value": [
+              "soft",
+              "short"
+            ]
+          },
+          {
+            "key": "welcome_circle.ready",
+            "op": "eq",
+            "value": false
+          }
+        ],
+        "changes": {
+          "flower_sign.location": {
+            "before": "stone_path",
+            "after": "welcome_circle"
+          },
+          "welcome_circle.ready": {
+            "before": false,
+            "after": true
+          },
+          "welcome_circle.landing": {
+            "before": null,
+            "after": "fern"
+          },
+          "welcome_circle.light_style": {
+            "before": null,
+            "after": "fern_edge"
+          },
+          "welcome_circle.resting_place": {
+            "before": null,
+            "after": "flower_sign"
+          }
+        }
+      },
+      {
+        "id": 11,
+        "scene": "mica_settles",
+        "kernel": "care",
+        "actors": [
+          "mica",
+          "welcome_circle",
+          "flower_sign"
+        ],
+        "summary": "Mica settled safely on the flower sign in the welcome circle",
+        "causes": [
+          7,
+          10
+        ],
+        "requires": [
+          {
+            "key": "mica.settled",
+            "op": "eq",
+            "value": false
+          },
+          {
+            "key": "welcome_circle.ready",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "welcome_circle.landing",
+            "op": "in",
+            "value": [
+              "fern",
+              "flowers"
+            ]
+          },
+          {
+            "key": "welcome_circle.light_style",
+            "op": "in",
+            "value": [
+              "flower_glow",
+              "fern_edge"
+            ]
+          },
+          {
+            "key": "welcome_circle.resting_place",
+            "op": "eq",
+            "value": "flower_sign"
+          },
+          {
+            "key": "lamp.shadow",
+            "op": "in",
+            "value": [
+              "soft",
+              "short"
+            ]
+          }
+        ],
+        "changes": {
+          "mica.location": {
+            "before": "dark_edge",
+            "after": "welcome_circle"
+          },
+          "mica.settled": {
+            "before": false,
+            "after": true
+          },
+          "mica.comfort": {
+            "before": "waiting",
+            "after": "safe"
+          },
+          "mica.resting_place": {
+            "before": null,
+            "after": "flower_sign"
+          }
+        }
+      }
+    ]
+  },
+  {
+    "seed": 1,
+    "title": "The Moonlit Welcome",
+    "initial": {
+      "ada.memes.Curiosity": 2,
+      "ada.memes.Care": 1,
+      "ben.memes.Ambition": 2,
+      "ben.memes.Care": 2,
+      "keeper.memes.Care": 2,
+      "ada.location": "night_garden",
+      "ben.location": "night_garden",
+      "mica.location": "bright_edge",
+      "mica.settled": false,
+      "mica.comfort": "waiting",
+      "mica.resting_place": null,
+      "lamp.lit": false,
+      "lamp.brightness": 0,
+      "lamp.position": "hook",
+      "lamp.shadow": "none",
+      "lamp.owner": "keeper",
+      "pale_cloth.owner": "keeper",
+      "pale_cloth.location": "under_cloth",
+      "pale_cloth.hung": false,
+      "pale_cloth.flutters": false,
+      "flower_sign.owner": "keeper",
+      "flower_sign.location": "flower_bed",
+      "seed_pouch.owner": "keeper",
+      "flower_bed.clear": false,
+      "fern_corner.clear": true,
+      "welcome_circle.ready": false,
+      "welcome_circle.landing": null,
+      "welcome_circle.light_style": null,
+      "welcome_circle.resting_place": null,
+      "ada.knows.mica.location": null,
+      "ada.knows.lamp.shadow": null,
+      "ada.knows.lamp.position": null,
+      "ada.knows.landing": null,
+      "keeper.knows.landing": null
+    },
+    "final": {
+      "ada.memes.Curiosity": 2,
+      "ada.memes.Care": 1,
+      "ben.memes.Ambition": 2,
+      "ben.memes.Care": 2,
+      "keeper.memes.Care": 2,
+      "ada.location": "night_garden",
+      "ben.location": "night_garden",
+      "mica.location": "welcome_circle",
+      "mica.settled": true,
+      "mica.comfort": "safe",
+      "mica.resting_place": "flower_sign",
+      "lamp.lit": true,
+      "lamp.brightness": 2,
+      "lamp.position": "stone",
+      "lamp.shadow": "short",
+      "lamp.owner": "keeper",
+      "pale_cloth.owner": "keeper",
+      "pale_cloth.location": "under_cloth",
+      "pale_cloth.hung": false,
+      "pale_cloth.flutters": false,
+      "flower_sign.owner": "keeper",
+      "flower_sign.location": "welcome_circle",
+      "seed_pouch.owner": "keeper",
+      "flower_bed.clear": true,
+      "fern_corner.clear": true,
+      "welcome_circle.ready": true,
+      "welcome_circle.landing": "flowers",
+      "welcome_circle.light_style": "flower_glow",
+      "welcome_circle.resting_place": "flower_sign",
+      "ada.knows.mica.location": "bright_edge",
+      "ada.knows.lamp.shadow": "long",
+      "ada.knows.lamp.position": "hook",
+      "ada.knows.landing": "flowers",
+      "keeper.knows.landing": null
+    },
+    "events": [
+      {
+        "id": 1,
+        "scene": "light_lamp",
+        "kernel": "ambition",
+        "actors": [
+          "ben",
+          "lamp"
+        ],
+        "summary": "Ben lit the lamp brightly for the welcome",
+        "causes": [],
+        "requires": [
+          {
+            "key": "ben.location",
+            "op": "eq",
+            "value": "night_garden"
+          },
+          {
+            "key": "ben.memes.Ambition",
+            "op": "ge",
+            "value": 1
+          },
+          {
+            "key": "lamp.lit",
+            "op": "eq",
+            "value": false
+          }
+        ],
+        "changes": {
+          "lamp.lit": {
+            "before": false,
+            "after": true
+          },
+          "lamp.brightness": {
+            "before": 0,
+            "after": 2
+          },
+          "lamp.shadow": {
+            "before": "none",
+            "after": "long"
+          }
+        }
+      },
+      {
+        "id": 2,
+        "scene": "inspect_mica",
+        "kernel": "Observe",
+        "actors": [
+          "ada"
+        ],
+        "summary": "Ada watched the edge where Mica waited",
+        "causes": [
+          1
+        ],
+        "requires": [
+          {
+            "key": "ada.location",
+            "op": "eq",
+            "value": "night_garden"
+          },
+          {
+            "key": "ada.memes.Curiosity",
+            "op": "ge",
+            "value": 1
+          },
+          {
+            "key": "lamp.lit",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "mica.settled",
+            "op": "eq",
+            "value": false
+          }
+        ],
+        "changes": {
+          "ada.knows.mica.location": {
+            "before": null,
+            "after": "bright_edge"
+          }
+        }
+      },
+      {
+        "id": 3,
+        "scene": "inspect_lamp_position",
+        "kernel": "Observe",
+        "actors": [
+          "ada"
+        ],
+        "summary": "Ada checked where the lamp was standing",
+        "causes": [
+          1
+        ],
+        "requires": [
+          {
+            "key": "ada.location",
+            "op": "eq",
+            "value": "night_garden"
+          },
+          {
+            "key": "ada.memes.Curiosity",
+            "op": "ge",
+            "value": 1
+          },
+          {
+            "key": "lamp.lit",
+            "op": "eq",
+            "value": true
+          }
+        ],
+        "changes": {
+          "ada.knows.lamp.position": {
+            "before": null,
+            "after": "hook"
+          }
+        }
+      },
+      {
+        "id": 4,
+        "scene": "inspect_shadow",
+        "kernel": "Observe",
+        "actors": [
+          "ada"
+        ],
+        "summary": "Ada inspected the lamp's shadow",
+        "causes": [
+          1
+        ],
+        "requires": [
+          {
+            "key": "ada.location",
+            "op": "eq",
+            "value": "night_garden"
+          },
+          {
+            "key": "ada.memes.Curiosity",
+            "op": "ge",
+            "value": 1
+          },
+          {
+            "key": "lamp.lit",
+            "op": "eq",
+            "value": true
+          }
+        ],
+        "changes": {
+          "ada.knows.lamp.shadow": {
+            "before": null,
+            "after": "long"
+          }
+        }
+      },
+      {
+        "id": 5,
+        "scene": "move_lamp_low",
+        "kernel": "cooperation",
+        "actors": [
+          "ada",
+          "ben",
+          "lamp",
+          "low_stone"
+        ],
+        "summary": "The children moved the lamp down to the low stone",
+        "causes": [
+          1,
+          3
+        ],
+        "requires": [
+          {
+            "key": "ada.knows.lamp.position",
+            "op": "eq",
+            "value": "hook"
+          },
+          {
+            "key": "ben.memes.Care",
+            "op": "ge",
+            "value": 1
+          },
+          {
+            "key": "lamp.lit",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "lamp.brightness",
+            "op": "eq",
+            "value": 2
+          },
+          {
+            "key": "lamp.position",
+            "op": "eq",
+            "value": "hook"
+          }
+        ],
+        "changes": {
+          "lamp.position": {
+            "before": "hook",
+            "after": "stone"
+          },
+          "lamp.shadow": {
+            "before": "long",
+            "after": "short"
+          }
+        }
+      },
+      {
+        "id": 6,
+        "scene": "find_landing",
+        "kernel": "observation",
+        "actors": [
+          "ada",
+          "stone_path"
+        ],
+        "summary": "Ada traced the long shadow to the clearer landing edge",
+        "causes": [
+          2,
+          4
+        ],
+        "requires": [
+          {
+            "key": "ada.knows.mica.location",
+            "op": "in",
+            "value": [
+              "bright_edge",
+              "dark_edge"
+            ]
+          },
+          {
+            "key": "ada.knows.lamp.shadow",
+            "op": "eq",
+            "value": "long"
+          },
+          {
+            "key": "ada.knows.landing",
+            "op": "eq",
+            "value": null
+          }
+        ],
+        "changes": {
+          "ada.knows.landing": {
+            "before": null,
+            "after": "flowers"
+          }
+        }
+      },
+      {
+        "id": 7,
+        "scene": "clear_flower_landing",
+        "kernel": "care",
+        "actors": [
+          "ada",
+          "ben",
+          "flower_bed",
+          "flower_sign"
+        ],
+        "summary": "The children moved the sign and cleared the flower bed",
+        "causes": [
+          6
+        ],
+        "requires": [
+          {
+            "key": "ada.knows.landing",
+            "op": "eq",
+            "value": "flowers"
+          },
+          {
+            "key": "ben.memes.Care",
+            "op": "ge",
+            "value": 1
+          },
+          {
+            "key": "flower_bed.clear",
+            "op": "eq",
+            "value": false
+          },
+          {
+            "key": "flower_sign.location",
+            "op": "eq",
+            "value": "flower_bed"
+          }
+        ],
+        "changes": {
+          "flower_sign.location": {
+            "before": "flower_bed",
+            "after": "stone_path"
+          },
+          "flower_bed.clear": {
+            "before": false,
+            "after": true
+          }
+        }
+      },
+      {
+        "id": 8,
+        "scene": "mark_flower_circle",
+        "kernel": "cooperation",
+        "actors": [
+          "ada",
+          "ben",
+          "welcome_circle",
+          "flower_sign"
+        ],
+        "summary": "Ada and Ben set the flower-sign welcome circle by the open bed",
+        "causes": [
+          5,
+          6,
+          7
+        ],
+        "requires": [
+          {
+            "key": "ada.knows.landing",
+            "op": "eq",
+            "value": "flowers"
+          },
+          {
+            "key": "flower_bed.clear",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "flower_sign.location",
+            "op": "eq",
+            "value": "stone_path"
+          },
+          {
+            "key": "lamp.shadow",
+            "op": "in",
+            "value": [
+              "soft",
+              "short"
+            ]
+          },
+          {
+            "key": "welcome_circle.ready",
+            "op": "eq",
+            "value": false
+          }
+        ],
+        "changes": {
+          "flower_sign.location": {
+            "before": "stone_path",
+            "after": "welcome_circle"
+          },
+          "welcome_circle.ready": {
+            "before": false,
+            "after": true
+          },
+          "welcome_circle.landing": {
+            "before": null,
+            "after": "flowers"
+          },
+          "welcome_circle.light_style": {
+            "before": null,
+            "after": "flower_glow"
+          },
+          "welcome_circle.resting_place": {
+            "before": null,
+            "after": "flower_sign"
+          }
+        }
+      },
+      {
+        "id": 9,
+        "scene": "mica_settles",
+        "kernel": "care",
+        "actors": [
+          "mica",
+          "welcome_circle",
+          "flower_sign"
+        ],
+        "summary": "Mica settled safely on the flower sign in the welcome circle",
+        "causes": [
+          5,
+          8
+        ],
+        "requires": [
+          {
+            "key": "mica.settled",
+            "op": "eq",
+            "value": false
+          },
+          {
+            "key": "welcome_circle.ready",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "welcome_circle.landing",
+            "op": "in",
+            "value": [
+              "fern",
+              "flowers"
+            ]
+          },
+          {
+            "key": "welcome_circle.light_style",
+            "op": "in",
+            "value": [
+              "flower_glow",
+              "fern_edge"
+            ]
+          },
+          {
+            "key": "welcome_circle.resting_place",
+            "op": "eq",
+            "value": "flower_sign"
+          },
+          {
+            "key": "lamp.shadow",
+            "op": "in",
+            "value": [
+              "soft",
+              "short"
+            ]
+          }
+        ],
+        "changes": {
+          "mica.location": {
+            "before": "bright_edge",
+            "after": "welcome_circle"
+          },
+          "mica.settled": {
+            "before": false,
+            "after": true
+          },
+          "mica.comfort": {
+            "before": "waiting",
+            "after": "safe"
+          },
+          "mica.resting_place": {
+            "before": null,
+            "after": "flower_sign"
+          }
+        }
+      }
+    ]
+  },
+  {
+    "seed": 2,
+    "title": "The Moonlit Welcome",
+    "initial": {
+      "ada.memes.Curiosity": 2,
+      "ada.memes.Care": 1,
+      "ben.memes.Ambition": 2,
+      "ben.memes.Care": 1,
+      "keeper.memes.Care": 2,
+      "ada.location": "night_garden",
+      "ben.location": "night_garden",
+      "mica.location": "dark_edge",
+      "mica.settled": false,
+      "mica.comfort": "waiting",
+      "mica.resting_place": null,
+      "lamp.lit": false,
+      "lamp.brightness": 0,
+      "lamp.position": "hook",
+      "lamp.shadow": "none",
+      "lamp.owner": "keeper",
+      "pale_cloth.owner": "keeper",
+      "pale_cloth.location": "under_cloth",
+      "pale_cloth.hung": false,
+      "pale_cloth.flutters": true,
+      "flower_sign.owner": "keeper",
+      "flower_sign.location": "flower_bed",
+      "seed_pouch.owner": "keeper",
+      "flower_bed.clear": true,
+      "fern_corner.clear": false,
+      "welcome_circle.ready": false,
+      "welcome_circle.landing": null,
+      "welcome_circle.light_style": null,
+      "welcome_circle.resting_place": null,
+      "ada.knows.mica.location": null,
+      "ada.knows.lamp.shadow": null,
+      "ada.knows.lamp.position": null,
+      "ada.knows.landing": null,
+      "keeper.knows.landing": null
+    },
+    "final": {
+      "ada.memes.Curiosity": 2,
+      "ada.memes.Care": 1,
+      "ben.memes.Ambition": 2,
+      "ben.memes.Care": 1,
+      "keeper.memes.Care": 2,
+      "ada.location": "night_garden",
+      "ben.location": "night_garden",
+      "mica.location": "welcome_circle",
+      "mica.settled": true,
+      "mica.comfort": "safe",
+      "mica.resting_place": "flower_sign",
+      "lamp.lit": true,
+      "lamp.brightness": 1,
+      "lamp.position": "hook",
+      "lamp.shadow": "soft",
+      "lamp.owner": "keeper",
+      "pale_cloth.owner": "keeper",
+      "pale_cloth.location": "under_cloth",
+      "pale_cloth.hung": false,
+      "pale_cloth.flutters": true,
+      "flower_sign.owner": "keeper",
+      "flower_sign.location": "welcome_circle",
+      "seed_pouch.owner": "keeper",
+      "flower_bed.clear": true,
+      "fern_corner.clear": true,
+      "welcome_circle.ready": true,
+      "welcome_circle.landing": "fern",
+      "welcome_circle.light_style": "fern_edge",
+      "welcome_circle.resting_place": "flower_sign",
+      "ada.knows.mica.location": "dark_edge",
+      "ada.knows.lamp.shadow": "long",
+      "ada.knows.lamp.position": "hook",
+      "ada.knows.landing": "fern",
+      "keeper.knows.landing": "fern"
+    },
+    "events": [
+      {
+        "id": 1,
+        "scene": "light_lamp",
+        "kernel": "ambition",
+        "actors": [
+          "ben",
+          "lamp"
+        ],
+        "summary": "Ben lit the lamp brightly for the welcome",
+        "causes": [],
+        "requires": [
+          {
+            "key": "ben.location",
+            "op": "eq",
+            "value": "night_garden"
+          },
+          {
+            "key": "ben.memes.Ambition",
+            "op": "ge",
+            "value": 1
+          },
+          {
+            "key": "lamp.lit",
+            "op": "eq",
+            "value": false
+          }
+        ],
+        "changes": {
+          "lamp.lit": {
+            "before": false,
+            "after": true
+          },
+          "lamp.brightness": {
+            "before": 0,
+            "after": 2
+          },
+          "lamp.shadow": {
+            "before": "none",
+            "after": "long"
+          }
+        }
+      },
+      {
+        "id": 2,
+        "scene": "inspect_mica",
+        "kernel": "Observe",
+        "actors": [
+          "ada"
+        ],
+        "summary": "Ada watched the edge where Mica waited",
+        "causes": [
+          1
+        ],
+        "requires": [
+          {
+            "key": "ada.location",
+            "op": "eq",
+            "value": "night_garden"
+          },
+          {
+            "key": "ada.memes.Curiosity",
+            "op": "ge",
+            "value": 1
+          },
+          {
+            "key": "lamp.lit",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "mica.settled",
+            "op": "eq",
+            "value": false
+          }
+        ],
+        "changes": {
+          "ada.knows.mica.location": {
+            "before": null,
+            "after": "dark_edge"
+          }
+        }
+      },
+      {
+        "id": 3,
+        "scene": "inspect_shadow",
+        "kernel": "Observe",
+        "actors": [
+          "ada"
+        ],
+        "summary": "Ada inspected the lamp's shadow",
+        "causes": [
+          1
+        ],
+        "requires": [
+          {
+            "key": "ada.location",
+            "op": "eq",
+            "value": "night_garden"
+          },
+          {
+            "key": "ada.memes.Curiosity",
+            "op": "ge",
+            "value": 1
+          },
+          {
+            "key": "lamp.lit",
+            "op": "eq",
+            "value": true
+          }
+        ],
+        "changes": {
+          "ada.knows.lamp.shadow": {
+            "before": null,
+            "after": "long"
+          }
+        }
+      },
+      {
+        "id": 4,
+        "scene": "find_landing",
+        "kernel": "observation",
+        "actors": [
+          "ada",
+          "stone_path"
+        ],
+        "summary": "Ada traced the long shadow to the clearer landing edge",
+        "causes": [
+          2,
+          3
+        ],
+        "requires": [
+          {
+            "key": "ada.knows.mica.location",
+            "op": "in",
+            "value": [
+              "bright_edge",
+              "dark_edge"
+            ]
+          },
+          {
+            "key": "ada.knows.lamp.shadow",
+            "op": "eq",
+            "value": "long"
+          },
+          {
+            "key": "ada.knows.landing",
+            "op": "eq",
+            "value": null
+          }
+        ],
+        "changes": {
+          "ada.knows.landing": {
+            "before": null,
+            "after": "fern"
+          }
+        }
+      },
+      {
+        "id": 5,
+        "scene": "clear_fern_landing",
+        "kernel": "care",
+        "actors": [
+          "ada",
+          "ben",
+          "fern_corner",
+          "flower_sign"
+        ],
+        "summary": "The children carried the sign aside and opened the fern corner",
+        "causes": [
+          4
+        ],
+        "requires": [
+          {
+            "key": "ada.knows.landing",
+            "op": "eq",
+            "value": "fern"
+          },
+          {
+            "key": "ben.memes.Care",
+            "op": "ge",
+            "value": 1
+          },
+          {
+            "key": "fern_corner.clear",
+            "op": "eq",
+            "value": false
+          },
+          {
+            "key": "flower_sign.location",
+            "op": "eq",
+            "value": "flower_bed"
+          }
+        ],
+        "changes": {
+          "flower_sign.location": {
+            "before": "flower_bed",
+            "after": "stone_path"
+          },
+          "fern_corner.clear": {
+            "before": false,
+            "after": true
+          }
+        }
+      },
+      {
+        "id": 6,
+        "scene": "inspect_lamp_position",
+        "kernel": "Observe",
+        "actors": [
+          "ada"
+        ],
+        "summary": "Ada checked where the lamp was standing",
+        "causes": [
+          1
+        ],
+        "requires": [
+          {
+            "key": "ada.location",
+            "op": "eq",
+            "value": "night_garden"
+          },
+          {
+            "key": "ada.memes.Curiosity",
+            "op": "ge",
+            "value": 1
+          },
+          {
+            "key": "lamp.lit",
+            "op": "eq",
+            "value": true
+          }
+        ],
+        "changes": {
+          "ada.knows.lamp.position": {
+            "before": null,
+            "after": "hook"
+          }
+        }
+      },
+      {
+        "id": 7,
+        "scene": "explain_landing_need",
+        "kernel": "Tell",
+        "actors": [
+          "ada",
+          "keeper"
+        ],
+        "summary": "Ada explained which landing edge needed gentler light",
+        "causes": [
+          4
+        ],
+        "requires": [
+          {
+            "key": "ada.knows.landing",
+            "op": "ne",
+            "value": null
+          },
+          {
+            "key": "ada.memes.Care",
+            "op": "ge",
+            "value": 1
+          }
+        ],
+        "changes": {
+          "keeper.knows.landing": {
+            "before": null,
+            "after": "fern"
+          }
+        }
+      },
+      {
+        "id": 8,
+        "scene": "dim_lamp",
+        "kernel": "care",
+        "actors": [
+          "ben",
+          "lamp"
+        ],
+        "summary": "Ben turned the lamp down to a quieter glow",
+        "causes": [
+          1
+        ],
+        "requires": [
+          {
+            "key": "ben.memes.Care",
+            "op": "ge",
+            "value": 1
+          },
+          {
+            "key": "lamp.lit",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "lamp.brightness",
+            "op": "eq",
+            "value": 2
+          }
+        ],
+        "changes": {
+          "lamp.brightness": {
+            "before": 2,
+            "after": 1
+          },
+          "lamp.shadow": {
+            "before": "long",
+            "after": "soft"
+          }
+        }
+      },
+      {
+        "id": 9,
+        "scene": "mark_fern_circle",
+        "kernel": "cooperation",
+        "actors": [
+          "ada",
+          "ben",
+          "welcome_circle",
+          "flower_sign"
+        ],
+        "summary": "Ada and Ben set the flower-sign welcome circle by the fern edge",
+        "causes": [
+          4,
+          5,
+          8
+        ],
+        "requires": [
+          {
+            "key": "ada.knows.landing",
+            "op": "eq",
+            "value": "fern"
+          },
+          {
+            "key": "fern_corner.clear",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "flower_sign.location",
+            "op": "eq",
+            "value": "stone_path"
+          },
+          {
+            "key": "lamp.shadow",
+            "op": "in",
+            "value": [
+              "soft",
+              "short"
+            ]
+          },
+          {
+            "key": "welcome_circle.ready",
+            "op": "eq",
+            "value": false
+          }
+        ],
+        "changes": {
+          "flower_sign.location": {
+            "before": "stone_path",
+            "after": "welcome_circle"
+          },
+          "welcome_circle.ready": {
+            "before": false,
+            "after": true
+          },
+          "welcome_circle.landing": {
+            "before": null,
+            "after": "fern"
+          },
+          "welcome_circle.light_style": {
+            "before": null,
+            "after": "fern_edge"
+          },
+          "welcome_circle.resting_place": {
+            "before": null,
+            "after": "flower_sign"
+          }
+        }
+      },
+      {
+        "id": 10,
+        "scene": "mica_settles",
+        "kernel": "care",
+        "actors": [
+          "mica",
+          "welcome_circle",
+          "flower_sign"
+        ],
+        "summary": "Mica settled safely on the flower sign in the welcome circle",
+        "causes": [
+          8,
+          9
+        ],
+        "requires": [
+          {
+            "key": "mica.settled",
+            "op": "eq",
+            "value": false
+          },
+          {
+            "key": "welcome_circle.ready",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "welcome_circle.landing",
+            "op": "in",
+            "value": [
+              "fern",
+              "flowers"
+            ]
+          },
+          {
+            "key": "welcome_circle.light_style",
+            "op": "in",
+            "value": [
+              "flower_glow",
+              "fern_edge"
+            ]
+          },
+          {
+            "key": "welcome_circle.resting_place",
+            "op": "eq",
+            "value": "flower_sign"
+          },
+          {
+            "key": "lamp.shadow",
+            "op": "in",
+            "value": [
+              "soft",
+              "short"
+            ]
+          }
+        ],
+        "changes": {
+          "mica.location": {
+            "before": "dark_edge",
+            "after": "welcome_circle"
+          },
+          "mica.settled": {
+            "before": false,
+            "after": true
+          },
+          "mica.comfort": {
+            "before": "waiting",
+            "after": "safe"
+          },
+          "mica.resting_place": {
+            "before": null,
+            "after": "flower_sign"
+          }
+        }
+      }
+    ]
+  }
+]

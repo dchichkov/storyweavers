@@ -1,0 +1,582 @@
+[
+  {
+    "seed": 0,
+    "title": "The Pond Concert and the Neighbor with the Quietest Ears",
+    "initial": {
+      "frog.belief": "unknown",
+      "frog.knows.nora.want": null,
+      "frog.performed": false,
+      "mia.want": "dance",
+      "mia.knows.nora.want": null,
+      "teo.want": "lullaby",
+      "teo.knows.nora.want": null,
+      "nora.want": "lullaby",
+      "nora.content": false,
+      "nora.response": "none",
+      "lily.owner": "frog",
+      "bell.owner": "mia",
+      "reed.owner": "teo",
+      "boat.owner": "nora",
+      "invitation.sent": false,
+      "concert.style": "none"
+    },
+    "final": {
+      "frog.belief": "unknown",
+      "frog.knows.nora.want": "lullaby",
+      "frog.performed": true,
+      "mia.want": "dance",
+      "mia.knows.nora.want": "lullaby",
+      "teo.want": "lullaby",
+      "teo.knows.nora.want": "lullaby",
+      "nora.want": "lullaby",
+      "nora.content": true,
+      "nora.response": "none",
+      "lily.owner": "frog",
+      "bell.owner": "teo",
+      "reed.owner": "teo",
+      "boat.owner": "nora",
+      "invitation.sent": false,
+      "concert.style": "duet"
+    },
+    "events": [
+      {
+        "id": 1,
+        "scene": "notice_nora",
+        "kernel": "Observe",
+        "actors": [
+          "frog"
+        ],
+        "summary": "Frog watched Nora beside the pond",
+        "causes": [],
+        "requires": [
+          {
+            "key": "frog.knows.nora.want",
+            "op": "eq",
+            "value": null
+          }
+        ],
+        "changes": {
+          "frog.knows.nora.want": {
+            "before": null,
+            "after": "lullaby"
+          }
+        }
+      },
+      {
+        "id": 2,
+        "scene": "tell_mia",
+        "kernel": "Tell",
+        "actors": [
+          "frog",
+          "mia"
+        ],
+        "summary": "Frog told Mia what Nora wanted",
+        "causes": [
+          1
+        ],
+        "requires": [
+          {
+            "key": "frog.knows.nora.want",
+            "op": "ne",
+            "value": null
+          },
+          {
+            "key": "frog.knows.nora.want",
+            "op": "ne",
+            "value": null
+          }
+        ],
+        "changes": {
+          "mia.knows.nora.want": {
+            "before": null,
+            "after": "lullaby"
+          }
+        }
+      },
+      {
+        "id": 3,
+        "scene": "tell_teo",
+        "kernel": "Tell",
+        "actors": [
+          "frog",
+          "teo"
+        ],
+        "summary": "Frog told Teo what Nora wanted",
+        "causes": [
+          1
+        ],
+        "requires": [
+          {
+            "key": "frog.knows.nora.want",
+            "op": "ne",
+            "value": null
+          },
+          {
+            "key": "frog.knows.nora.want",
+            "op": "ne",
+            "value": null
+          }
+        ],
+        "changes": {
+          "teo.knows.nora.want": {
+            "before": null,
+            "after": "lullaby"
+          }
+        }
+      },
+      {
+        "id": 4,
+        "scene": "choose_duet",
+        "kernel": "Choice",
+        "actors": [
+          "mia",
+          "teo"
+        ],
+        "summary": "They chose a dancing lullaby",
+        "causes": [
+          2,
+          3
+        ],
+        "requires": [
+          {
+            "key": "mia.want",
+            "op": "eq",
+            "value": "dance"
+          },
+          {
+            "key": "teo.want",
+            "op": "eq",
+            "value": "lullaby"
+          },
+          {
+            "key": "mia.knows.nora.want",
+            "op": "eq",
+            "value": "lullaby"
+          },
+          {
+            "key": "teo.knows.nora.want",
+            "op": "eq",
+            "value": "lullaby"
+          },
+          {
+            "key": "nora.want",
+            "op": "eq",
+            "value": "lullaby"
+          }
+        ],
+        "changes": {
+          "concert.style": {
+            "before": "none",
+            "after": "duet"
+          }
+        }
+      },
+      {
+        "id": 5,
+        "scene": "trade_bell",
+        "kernel": "Transfer",
+        "actors": [
+          "mia",
+          "teo"
+        ],
+        "summary": "Mia handed Teo the silver bell",
+        "causes": [
+          4
+        ],
+        "requires": [
+          {
+            "key": "bell.owner",
+            "op": "eq",
+            "value": "mia"
+          },
+          {
+            "key": "concert.style",
+            "op": "eq",
+            "value": "duet"
+          }
+        ],
+        "changes": {
+          "bell.owner": {
+            "before": "mia",
+            "after": "teo"
+          }
+        }
+      },
+      {
+        "id": 6,
+        "scene": "perform_duet",
+        "kernel": "Performance",
+        "actors": [
+          "frog",
+          "mia",
+          "teo"
+        ],
+        "summary": "Frog performed a dancing lullaby",
+        "causes": [
+          4,
+          5
+        ],
+        "requires": [
+          {
+            "key": "concert.style",
+            "op": "eq",
+            "value": "duet"
+          },
+          {
+            "key": "bell.owner",
+            "op": "eq",
+            "value": "teo"
+          }
+        ],
+        "changes": {
+          "frog.performed": {
+            "before": false,
+            "after": true
+          },
+          "nora.content": {
+            "before": false,
+            "after": true
+          }
+        }
+      }
+    ]
+  },
+  {
+    "seed": 1,
+    "title": "The Pond Concert and the Neighbor with the Quietest Ears",
+    "initial": {
+      "frog.belief": "loud",
+      "frog.knows.nora.want": null,
+      "frog.performed": false,
+      "mia.want": "concert",
+      "mia.knows.nora.want": null,
+      "teo.want": "concert",
+      "teo.knows.nora.want": null,
+      "nora.want": "quiet",
+      "nora.content": false,
+      "nora.response": "none",
+      "lily.owner": "frog",
+      "bell.owner": "mia",
+      "reed.owner": "teo",
+      "boat.owner": "nora",
+      "invitation.sent": false,
+      "concert.style": "none"
+    },
+    "final": {
+      "frog.belief": "loud",
+      "frog.knows.nora.want": "quiet",
+      "frog.performed": true,
+      "mia.want": "concert",
+      "mia.knows.nora.want": null,
+      "teo.want": "concert",
+      "teo.knows.nora.want": "quiet",
+      "nora.want": "quiet",
+      "nora.content": true,
+      "nora.response": "none",
+      "lily.owner": "frog",
+      "bell.owner": "mia",
+      "reed.owner": "teo",
+      "boat.owner": "nora",
+      "invitation.sent": false,
+      "concert.style": "soft"
+    },
+    "events": [
+      {
+        "id": 1,
+        "scene": "notice_nora",
+        "kernel": "Observe",
+        "actors": [
+          "frog"
+        ],
+        "summary": "Frog watched Nora beside the pond",
+        "causes": [],
+        "requires": [
+          {
+            "key": "frog.knows.nora.want",
+            "op": "eq",
+            "value": null
+          }
+        ],
+        "changes": {
+          "frog.knows.nora.want": {
+            "before": null,
+            "after": "quiet"
+          }
+        }
+      },
+      {
+        "id": 2,
+        "scene": "tell_teo",
+        "kernel": "Tell",
+        "actors": [
+          "frog",
+          "teo"
+        ],
+        "summary": "Frog told Teo what Nora wanted",
+        "causes": [
+          1
+        ],
+        "requires": [
+          {
+            "key": "frog.knows.nora.want",
+            "op": "ne",
+            "value": null
+          },
+          {
+            "key": "frog.knows.nora.want",
+            "op": "ne",
+            "value": null
+          }
+        ],
+        "changes": {
+          "teo.knows.nora.want": {
+            "before": null,
+            "after": "quiet"
+          }
+        }
+      },
+      {
+        "id": 3,
+        "scene": "choose_soft",
+        "kernel": "Choice",
+        "actors": [
+          "frog",
+          "teo"
+        ],
+        "summary": "They chose a hush-soft concert",
+        "causes": [
+          1,
+          2
+        ],
+        "requires": [
+          {
+            "key": "frog.knows.nora.want",
+            "op": "eq",
+            "value": "quiet"
+          },
+          {
+            "key": "teo.knows.nora.want",
+            "op": "eq",
+            "value": "quiet"
+          },
+          {
+            "key": "nora.want",
+            "op": "eq",
+            "value": "quiet"
+          }
+        ],
+        "changes": {
+          "concert.style": {
+            "before": "none",
+            "after": "soft"
+          }
+        }
+      },
+      {
+        "id": 4,
+        "scene": "perform_soft",
+        "kernel": "Performance",
+        "actors": [
+          "frog",
+          "teo"
+        ],
+        "summary": "Frog performed a soft pond song",
+        "causes": [
+          2,
+          3
+        ],
+        "requires": [
+          {
+            "key": "concert.style",
+            "op": "eq",
+            "value": "soft"
+          },
+          {
+            "key": "teo.knows.nora.want",
+            "op": "eq",
+            "value": "quiet"
+          }
+        ],
+        "changes": {
+          "frog.performed": {
+            "before": false,
+            "after": true
+          },
+          "nora.content": {
+            "before": false,
+            "after": true
+          }
+        }
+      }
+    ]
+  },
+  {
+    "seed": 2,
+    "title": "The Pond Concert and the Neighbor with the Quietest Ears",
+    "initial": {
+      "frog.belief": "loud",
+      "frog.knows.nora.want": null,
+      "frog.performed": false,
+      "mia.want": "concert",
+      "mia.knows.nora.want": null,
+      "teo.want": "concert",
+      "teo.knows.nora.want": null,
+      "nora.want": "quiet",
+      "nora.content": false,
+      "nora.response": "none",
+      "lily.owner": "frog",
+      "bell.owner": "mia",
+      "reed.owner": "teo",
+      "boat.owner": "nora",
+      "invitation.sent": false,
+      "concert.style": "none"
+    },
+    "final": {
+      "frog.belief": "loud",
+      "frog.knows.nora.want": "quiet",
+      "frog.performed": true,
+      "mia.want": "concert",
+      "mia.knows.nora.want": null,
+      "teo.want": "concert",
+      "teo.knows.nora.want": "quiet",
+      "nora.want": "quiet",
+      "nora.content": true,
+      "nora.response": "none",
+      "lily.owner": "frog",
+      "bell.owner": "mia",
+      "reed.owner": "teo",
+      "boat.owner": "nora",
+      "invitation.sent": false,
+      "concert.style": "soft"
+    },
+    "events": [
+      {
+        "id": 1,
+        "scene": "notice_nora",
+        "kernel": "Observe",
+        "actors": [
+          "frog"
+        ],
+        "summary": "Frog watched Nora beside the pond",
+        "causes": [],
+        "requires": [
+          {
+            "key": "frog.knows.nora.want",
+            "op": "eq",
+            "value": null
+          }
+        ],
+        "changes": {
+          "frog.knows.nora.want": {
+            "before": null,
+            "after": "quiet"
+          }
+        }
+      },
+      {
+        "id": 2,
+        "scene": "tell_teo",
+        "kernel": "Tell",
+        "actors": [
+          "frog",
+          "teo"
+        ],
+        "summary": "Frog told Teo what Nora wanted",
+        "causes": [
+          1
+        ],
+        "requires": [
+          {
+            "key": "frog.knows.nora.want",
+            "op": "ne",
+            "value": null
+          },
+          {
+            "key": "frog.knows.nora.want",
+            "op": "ne",
+            "value": null
+          }
+        ],
+        "changes": {
+          "teo.knows.nora.want": {
+            "before": null,
+            "after": "quiet"
+          }
+        }
+      },
+      {
+        "id": 3,
+        "scene": "choose_soft",
+        "kernel": "Choice",
+        "actors": [
+          "frog",
+          "teo"
+        ],
+        "summary": "They chose a hush-soft concert",
+        "causes": [
+          1,
+          2
+        ],
+        "requires": [
+          {
+            "key": "frog.knows.nora.want",
+            "op": "eq",
+            "value": "quiet"
+          },
+          {
+            "key": "teo.knows.nora.want",
+            "op": "eq",
+            "value": "quiet"
+          },
+          {
+            "key": "nora.want",
+            "op": "eq",
+            "value": "quiet"
+          }
+        ],
+        "changes": {
+          "concert.style": {
+            "before": "none",
+            "after": "soft"
+          }
+        }
+      },
+      {
+        "id": 4,
+        "scene": "perform_soft",
+        "kernel": "Performance",
+        "actors": [
+          "frog",
+          "teo"
+        ],
+        "summary": "Frog performed a soft pond song",
+        "causes": [
+          2,
+          3
+        ],
+        "requires": [
+          {
+            "key": "concert.style",
+            "op": "eq",
+            "value": "soft"
+          },
+          {
+            "key": "teo.knows.nora.want",
+            "op": "eq",
+            "value": "quiet"
+          }
+        ],
+        "changes": {
+          "frog.performed": {
+            "before": false,
+            "after": true
+          },
+          "nora.content": {
+            "before": false,
+            "after": true
+          }
+        }
+      }
+    ]
+  }
+]

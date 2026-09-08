@@ -1,0 +1,167 @@
+{
+  "id": "resp_06c311c1246e89ee016a9f8e81074887d0a54690f950a99a13",
+  "created_at": 1788841601.0,
+  "error": null,
+  "incomplete_details": null,
+  "instructions": null,
+  "metadata": {},
+  "model": "gpt-5.6-terra",
+  "object": "response",
+  "output": [
+    {
+      "id": "msg_06c311c1246e89ee016a9f8e8187c887d08cfc148140365c6c",
+      "content": [
+        {
+          "annotations": [],
+          "text": "{\"issues\":[{\"seed\":123,\"severity\":\"minor\",\"layer\":\"prose\",\"defect\":\"event_log_prose\",\"evidence\":\"After the ending action is already narrated—“Nora answered with one round silver bubble”—the final paragraph repeats it: “A single silver bubble rose beside the lily.”\",\"fix\":\"Replace the repeated bubble sentence with a new closing image or consequence of Nora’s response.\"},{\"seed\":791,\"severity\":\"major\",\"layer\":\"prose\",\"defect\":\"event_log_prose\",\"evidence\":\"The final two paragraphs nearly duplicate the trace’s closing image: “Nora glided past on the lily while Frog sang from its middle” and “The leaf boat bumped along behind like a very small royal carriage.”\",\"fix\":\"Keep the traced parade/bow once, then end with a distinct consequential closing beat rather than restating the same action twice.\"}],\"strengths\":\"All three stories accurately realize the ordered knowledge, invitation, ownership, concert-choice, performance, and response changes; seed 124 in particular cleanly grounds the bell transfer and duet.\"}",
+          "type": "output_text",
+          "logprobs": []
+        }
+      ],
+      "role": "assistant",
+      "status": "completed",
+      "type": "message",
+      "phase": "final_answer"
+    }
+  ],
+  "parallel_tool_calls": true,
+  "temperature": 1.0,
+  "tool_choice": "auto",
+  "tools": [],
+  "top_p": 0.98,
+  "background": false,
+  "completed_at": 1788841603.0,
+  "conversation": null,
+  "max_output_tokens": 1600,
+  "max_tool_calls": null,
+  "moderation": null,
+  "previous_response_id": null,
+  "prompt": null,
+  "prompt_cache_key": null,
+  "prompt_cache_retention": "24h",
+  "reasoning": {
+    "context": "all_turns",
+    "effort": "none",
+    "generate_summary": null,
+    "summary": null,
+    "mode": "standard"
+  },
+  "safety_identifier": null,
+  "service_tier": "flex",
+  "status": "completed",
+  "text": {
+    "format": {
+      "name": "storyscenes_artifact",
+      "schema_": {
+        "type": "object",
+        "properties": {
+          "issues": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "seed": {
+                  "type": "integer"
+                },
+                "severity": {
+                  "type": "string",
+                  "enum": [
+                    "minor",
+                    "major"
+                  ]
+                },
+                "layer": {
+                  "type": "string",
+                  "enum": [
+                    "simulation",
+                    "prose"
+                  ]
+                },
+                "defect": {
+                  "type": "string",
+                  "enum": [
+                    "ungrounded_outcome",
+                    "wrong_knowledge",
+                    "contradiction",
+                    "literal_state_value",
+                    "unresolved_alternative",
+                    "event_log_prose",
+                    "weak_turn",
+                    "weak_ending",
+                    "other"
+                  ]
+                },
+                "evidence": {
+                  "type": "string"
+                },
+                "fix": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "seed",
+                "severity",
+                "layer",
+                "defect",
+                "evidence",
+                "fix"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "strengths": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "issues",
+          "strengths"
+        ],
+        "additionalProperties": false
+      },
+      "type": "json_schema",
+      "description": null,
+      "strict": true
+    },
+    "verbosity": "medium"
+  },
+  "top_logprobs": 0,
+  "truncation": "disabled",
+  "usage": {
+    "input_tokens": 3322,
+    "input_tokens_details": {
+      "cached_tokens": 0,
+      "cache_write_tokens": 3319
+    },
+    "output_tokens": 231,
+    "output_tokens_details": {
+      "reasoning_tokens": 0
+    },
+    "total_tokens": 3553
+  },
+  "user": null,
+  "billing": {
+    "payer": "openai"
+  },
+  "frequency_penalty": 0.0,
+  "presence_penalty": 0.0,
+  "store": false,
+  "tool_usage": {
+    "image_gen": {
+      "input_tokens": 0,
+      "input_tokens_details": {
+        "image_tokens": 0,
+        "text_tokens": 0
+      },
+      "output_tokens": 0,
+      "output_tokens_details": {
+        "image_tokens": 0,
+        "text_tokens": 0
+      },
+      "total_tokens": 0
+    },
+    "web_search": {
+      "num_requests": 0
+    }
+  }
+}

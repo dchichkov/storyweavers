@@ -1,0 +1,362 @@
+{
+  "id": "resp_0da8cd6e6fb0449b006a9f8fb6e2ec87d09ca2abbfa331006f",
+  "created_at": 1788841910.0,
+  "error": null,
+  "incomplete_details": null,
+  "instructions": null,
+  "metadata": {},
+  "model": "gpt-5.6-terra",
+  "object": "response",
+  "output": [
+    {
+      "id": "msg_0da8cd6e6fb0449b006a9f8fb79e2087d08bb7f080c29c640c",
+      "content": [
+        {
+          "annotations": [],
+          "text": "{\"stories\":[{\"id\":\"s000029\",\"rating\":{\"coherence\":7,\"style\":7,\"grammar\":8,\"storytelling\":7,\"overall\":7},\"note\":\"The cart’s transformation naturally redirects the parade into a reading gathering, ending with a vivid circle of listening feet; a few transitions remain somewhat ornamental.\"},{\"id\":\"s000057\",\"rating\":{\"coherence\":6,\"style\":6,\"grammar\":8,\"storytelling\":5,\"overall\":6},\"note\":\"The promised book route is completed, but the folding-room reveal has little effect on the resolution and the final image says the books are still snug inside after the route.\"},{\"id\":\"s000047\",\"rating\":{\"coherence\":6,\"style\":7,\"grammar\":8,\"storytelling\":6,\"overall\":6},\"note\":\"Mallow clearly turns an empty cart into a silly float, with a strong crown-shadow ending, but the book premise is abandoned and the shelf reveal does not affect the outcome.\"},{\"id\":\"s000073\",\"rating\":{\"coherence\":7,\"style\":6,\"grammar\":8,\"storytelling\":6,\"overall\":7},\"note\":\"A clear conflict between parade ambitions and a promise to children resolves in favor of the book route; the quiet bell gives the ending a concrete, if subdued, image.\"},{\"id\":\"s000034\",\"rating\":{\"coherence\":5,\"style\":6,\"grammar\":8,\"storytelling\":5,\"overall\":6},\"note\":\"The float plot has a colorful finish, but the folding shelves are revealed after the banner is mounted and do not meaningfully change Mallow’s completed float action.\"},{\"id\":\"s000043\",\"rating\":{\"coherence\":7,\"style\":6,\"grammar\":8,\"storytelling\":6,\"overall\":7},\"note\":\"The cart is redirected from Mallow’s parade idea to the waiting children, creating a coherent small resolution, though the secret shelves do not drive the final action.\"},{\"id\":\"s000068\",\"rating\":{\"coherence\":7,\"style\":6,\"grammar\":8,\"storytelling\":6,\"overall\":7},\"note\":\"The explicit promise to children makes the choice of the neighborhood stop feel consequential, and the bookmobile with its quiet bell provides a complete closing image.\"},{\"id\":\"s000096\",\"rating\":{\"coherence\":7,\"style\":6,\"grammar\":8,\"storytelling\":6,\"overall\":7},\"note\":\"This follows a clear route from parade distraction to book delivery, but the magical shelf detail is decorative rather than necessary to the resolution.\"},{\"id\":\"s000005\",\"rating\":{\"coherence\":7,\"style\":6,\"grammar\":8,\"storytelling\":6,\"overall\":7},\"note\":\"The cart is treated as a promise and reaches the waiting children, giving the story a solid resolution; the tiny-room reveal remains disconnected from what happens next.\"},{\"id\":\"s000085\",\"rating\":{\"coherence\":6,\"style\":6,\"grammar\":8,\"storytelling\":6,\"overall\":6},\"note\":\"Specific book titles add child-friendly texture and the route reaches its audience, but Nia first lifts books out and then loads the already-loaded cart, muddying the action.\"}],\"diversity\":{\"premise\":3,\"causal_path\":3,\"ending\":4,\"language\":4,\"overall\":3},\"diversity_evidence\":\"Most samples repeat the same central conflict: Mayor Mallow imagines a parade while Nia and Tuck redirect a book cart to children, ending at the neighborhood stop (s000057, s000073, s000043, s000068, s000096, s000005, s000085). Only s000029 materially changes the outcome into a stationary/traveling reading gathering, while s000047 and s000034 instead carry out Mallow’s float plan. Wording and scene order vary more than causal structure; this small sample does not establish diversity for the entire generator.\",\"plot_groups\":[{\"story_ids\":[\"s000057\",\"s000073\",\"s000043\",\"s000068\",\"s000096\",\"s000005\",\"s000085\"],\"summary\":\"Parade ambitions conflict with books promised to children; the cart is taken to the neighborhood stop and becomes a bookmobile invitation.\"},{\"story_ids\":[\"s000047\",\"s000034\"],\"summary\":\"Mallow finds an empty cart, turns it into a bannered parade float, and completes a triumphant loop.\"},{\"story_ids\":[\"s000029\"],\"summary\":\"The cart’s hidden shelves transform it into a reading room, causing the parade to pause for a shared story.\"}]}",
+          "type": "output_text",
+          "logprobs": []
+        }
+      ],
+      "role": "assistant",
+      "status": "completed",
+      "type": "message",
+      "phase": "final_answer"
+    }
+  ],
+  "parallel_tool_calls": true,
+  "temperature": 1.0,
+  "tool_choice": "auto",
+  "tools": [],
+  "top_p": 0.98,
+  "background": false,
+  "completed_at": 1788841918.0,
+  "conversation": null,
+  "max_output_tokens": 4000,
+  "max_tool_calls": null,
+  "moderation": null,
+  "previous_response_id": null,
+  "prompt": null,
+  "prompt_cache_key": null,
+  "prompt_cache_retention": "24h",
+  "reasoning": {
+    "context": "all_turns",
+    "effort": "none",
+    "generate_summary": null,
+    "summary": null,
+    "mode": "standard"
+  },
+  "safety_identifier": null,
+  "service_tier": "flex",
+  "status": "completed",
+  "text": {
+    "format": {
+      "name": "story_set_quality_v1",
+      "schema_": {
+        "type": "object",
+        "properties": {
+          "stories": {
+            "type": "array",
+            "minItems": 10,
+            "maxItems": 10,
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "enum": [
+                    "s000029",
+                    "s000057",
+                    "s000047",
+                    "s000073",
+                    "s000034",
+                    "s000043",
+                    "s000068",
+                    "s000096",
+                    "s000005",
+                    "s000085"
+                  ]
+                },
+                "rating": {
+                  "type": "object",
+                  "properties": {
+                    "coherence": {
+                      "type": "integer",
+                      "enum": [
+                        0,
+                        1,
+                        2,
+                        3,
+                        4,
+                        5,
+                        6,
+                        7,
+                        8,
+                        9
+                      ]
+                    },
+                    "style": {
+                      "type": "integer",
+                      "enum": [
+                        0,
+                        1,
+                        2,
+                        3,
+                        4,
+                        5,
+                        6,
+                        7,
+                        8,
+                        9
+                      ]
+                    },
+                    "grammar": {
+                      "type": "integer",
+                      "enum": [
+                        0,
+                        1,
+                        2,
+                        3,
+                        4,
+                        5,
+                        6,
+                        7,
+                        8,
+                        9
+                      ]
+                    },
+                    "storytelling": {
+                      "type": "integer",
+                      "enum": [
+                        0,
+                        1,
+                        2,
+                        3,
+                        4,
+                        5,
+                        6,
+                        7,
+                        8,
+                        9
+                      ]
+                    },
+                    "overall": {
+                      "type": "integer",
+                      "enum": [
+                        0,
+                        1,
+                        2,
+                        3,
+                        4,
+                        5,
+                        6,
+                        7,
+                        8,
+                        9
+                      ]
+                    }
+                  },
+                  "required": [
+                    "coherence",
+                    "style",
+                    "grammar",
+                    "storytelling",
+                    "overall"
+                  ],
+                  "additionalProperties": false
+                },
+                "note": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "id",
+                "rating",
+                "note"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "diversity": {
+            "type": "object",
+            "properties": {
+              "premise": {
+                "type": "integer",
+                "enum": [
+                  0,
+                  1,
+                  2,
+                  3,
+                  4,
+                  5,
+                  6,
+                  7,
+                  8,
+                  9
+                ]
+              },
+              "causal_path": {
+                "type": "integer",
+                "enum": [
+                  0,
+                  1,
+                  2,
+                  3,
+                  4,
+                  5,
+                  6,
+                  7,
+                  8,
+                  9
+                ]
+              },
+              "ending": {
+                "type": "integer",
+                "enum": [
+                  0,
+                  1,
+                  2,
+                  3,
+                  4,
+                  5,
+                  6,
+                  7,
+                  8,
+                  9
+                ]
+              },
+              "language": {
+                "type": "integer",
+                "enum": [
+                  0,
+                  1,
+                  2,
+                  3,
+                  4,
+                  5,
+                  6,
+                  7,
+                  8,
+                  9
+                ]
+              },
+              "overall": {
+                "type": "integer",
+                "enum": [
+                  0,
+                  1,
+                  2,
+                  3,
+                  4,
+                  5,
+                  6,
+                  7,
+                  8,
+                  9
+                ]
+              }
+            },
+            "required": [
+              "premise",
+              "causal_path",
+              "ending",
+              "language",
+              "overall"
+            ],
+            "additionalProperties": false
+          },
+          "diversity_evidence": {
+            "type": "string"
+          },
+          "plot_groups": {
+            "type": "array",
+            "minItems": 1,
+            "maxItems": 10,
+            "items": {
+              "type": "object",
+              "properties": {
+                "story_ids": {
+                  "type": "array",
+                  "minItems": 1,
+                  "items": {
+                    "type": "string",
+                    "enum": [
+                      "s000029",
+                      "s000057",
+                      "s000047",
+                      "s000073",
+                      "s000034",
+                      "s000043",
+                      "s000068",
+                      "s000096",
+                      "s000005",
+                      "s000085"
+                    ]
+                  }
+                },
+                "summary": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "story_ids",
+                "summary"
+              ],
+              "additionalProperties": false
+            }
+          }
+        },
+        "required": [
+          "stories",
+          "diversity",
+          "diversity_evidence",
+          "plot_groups"
+        ],
+        "additionalProperties": false
+      },
+      "type": "json_schema",
+      "description": null,
+      "strict": true
+    },
+    "verbosity": "medium"
+  },
+  "top_logprobs": 0,
+  "truncation": "disabled",
+  "usage": {
+    "input_tokens": 3916,
+    "input_tokens_details": {
+      "cached_tokens": 0,
+      "cache_write_tokens": 3913
+    },
+    "output_tokens": 948,
+    "output_tokens_details": {
+      "reasoning_tokens": 0
+    },
+    "total_tokens": 4864
+  },
+  "user": null,
+  "billing": {
+    "payer": "openai"
+  },
+  "frequency_penalty": 0.0,
+  "presence_penalty": 0.0,
+  "store": true,
+  "tool_usage": {
+    "image_gen": {
+      "input_tokens": 0,
+      "input_tokens_details": {
+        "image_tokens": 0,
+        "text_tokens": 0
+      },
+      "output_tokens": 0,
+      "output_tokens_details": {
+        "image_tokens": 0,
+        "text_tokens": 0
+      },
+      "total_tokens": 0
+    },
+    "web_search": {
+      "num_requests": 0
+    }
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "issues": [
+    {
+      "seed": 123,
+      "severity": "minor",
+      "layer": "prose",
+      "defect": "event_log_prose",
+      "evidence": "The ending repeats the same image in adjacent paragraphs: “The red ribbon curled around the blue thread like a dancing dragon” and then “Above the children, the red ribbon curled around the blue thread like a dancing dragon.”",
+      "fix": "Remove or substantially vary the final repeated sentence so the ending advances from the delivery and reply."
+    },
+    {
+      "seed": 791,
+      "severity": "major",
+      "layer": "prose",
+      "defect": "contradiction",
+      "evidence": "The story says Nia finds “a gathering mark on the message,” but the trace grounds the message mark as `gathering` while Pip initially identifies it as a “tiny gathering mark”; calling it a “dragon drawing” as the message’s established purpose is fine, but the narration’s opening “Aunt Ember is getting a dragon drawing!” is Pip's mistaken assumption rather than knowledge and should be explicitly framed as such.",
+      "fix": "Clarify that Pip is guessing before Nia inspects the mark, e.g. “Pip hoped Aunt Ember was getting a dragon drawing,” preserving the later mark discovery."
+    },
+    {
+      "seed": 124,
+      "severity": "minor",
+      "layer": "prose",
+      "defect": "literal_state_value",
+      "evidence": "The opening describes “its no tail drooping,” exposing the raw state-like value “no tail” rather than natural story language.",
+      "fix": "Replace it with natural phrasing such as “its tail-less paper body drooping” or “with nothing trailing behind it.”"
+    }
+  ],
+  "strengths": "All three stories otherwise follow the ordered action traces closely: knowledge is acquired before it is shared, transfers and modifications occur in trace order, and each delivery, mailbox reply, and final contentment is grounded by the final event."
+}

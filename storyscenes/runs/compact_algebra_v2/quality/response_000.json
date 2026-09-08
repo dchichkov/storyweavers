@@ -1,0 +1,362 @@
+{
+  "id": "resp_028ad202445e1b25006a9fa25b202487d0b879e828ea6b45e5",
+  "created_at": 1788846683.0,
+  "error": null,
+  "incomplete_details": null,
+  "instructions": null,
+  "metadata": {},
+  "model": "gpt-5.6-terra",
+  "object": "response",
+  "output": [
+    {
+      "id": "msg_028ad202445e1b25006a9fa25c079487d0bf7b7056f04c7e9e",
+      "content": [
+        {
+          "annotations": [],
+          "text": "{\"stories\":[{\"id\":\"s000029\",\"rating\":{\"coherence\":8,\"style\":7,\"grammar\":9,\"storytelling\":8,\"overall\":8},\"note\":\"The cart repairs, protected delivery, and switch to a quiet procession connect clearly; the soft-shoe and tapping-knot ending is concrete and satisfying.\"},{\"id\":\"s000057\",\"rating\":{\"coherence\":8,\"style\":7,\"grammar\":9,\"storytelling\":8,\"overall\":8},\"note\":\"A clear delivery problem is repaired, Nell's wish is heard, and the parade makes room for her; the book held high gives the ending a strong image.\"},{\"id\":\"s000047\",\"rating\":{\"coherence\":8,\"style\":7,\"grammar\":9,\"storytelling\":8,\"overall\":8},\"note\":\"The repaired cart enables the book delivery, which enables Nell to join; the causal sequence is especially clean despite familiar, somewhat repetitive phrasing.\"},{\"id\":\"s000073\",\"rating\":{\"coherence\":8,\"style\":7,\"grammar\":9,\"storytelling\":8,\"overall\":8},\"note\":\"Bram's wheel and cover repairs credibly protect the book, while Nell's request changes the parade into a quiet procession with a concrete calm finale.\"},{\"id\":\"s000034\",\"rating\":{\"coherence\":8,\"style\":7,\"grammar\":9,\"storytelling\":8,\"overall\":8},\"note\":\"Ada borrows the ready cart, delivers the book quietly, and Mayor Bell responds by changing the parade; the ribbon-like procession ending is warm and complete.\"},{\"id\":\"s000043\",\"rating\":{\"coherence\":8,\"style\":7,\"grammar\":9,\"storytelling\":8,\"overall\":8},\"note\":\"Multiple setup details are integrated well: the cart is fixed and covered before the book reaches Nell, and her inclusion changes the parade's purpose.\"},{\"id\":\"s000068\",\"rating\":{\"coherence\":8,\"style\":7,\"grammar\":9,\"storytelling\":8,\"overall\":8},\"note\":\"The loose cover poses a focused practical obstacle, the knot resolves it, and Nell's delivered book leads directly to her welcome into the parade.\"},{\"id\":\"s000096\",\"rating\":{\"coherence\":8,\"style\":7,\"grammar\":9,\"storytelling\":8,\"overall\":8},\"note\":\"The story clearly resolves both the cart's practical problems and Nell's wish for quiet; its final wind, ribbons, cover, and book form a vivid closing image.\"},{\"id\":\"s000005\",\"rating\":{\"coherence\":8,\"style\":7,\"grammar\":9,\"storytelling\":8,\"overall\":8},\"note\":\"Wheel repair and cover tying make the delivery possible, then Nell's inclusion gives the parade an emotional turn and a complete visual ending.\"},{\"id\":\"s000085\",\"rating\":{\"coherence\":8,\"style\":7,\"grammar\":9,\"storytelling\":8,\"overall\":8},\"note\":\"The breezy-cover problem is resolved before the safe delivery, and Nell's desire for quiet consequentially transforms the noisy parade into a gentle procession.\"}],\"diversity\":{\"premise\":4,\"causal_path\":4,\"ending\":4,\"language\":3,\"overall\":4},\"diversity_evidence\":\"This sample has two meaningful outcome branches: Nell's wish produces either inclusion in the parade (s000057, s000047, s000043, s000068, s000005) or a quiet book procession (s000029, s000073, s000034, s000096, s000085). Within each branch, however, the same Ada–Bram–cart–library-book–Mayor sequence and much of the same wording recur; wheel and cover repairs are minor added obstacles rather than distinct plots. These ten stories do not establish diversity for the entire generator.\",\"plot_groups\":[{\"story_ids\":[\"s000057\",\"s000047\",\"s000043\",\"s000068\",\"s000005\"],\"summary\":\"Ada gets Bram's cart ready or secured, delivers Nell's book, reports Nell's wish to join, and Mayor Bell makes room for Nell in the parade.\"},{\"story_ids\":[\"s000029\",\"s000073\",\"s000034\",\"s000096\",\"s000085\"],\"summary\":\"Ada obtains a usable or protected cart, delivers Nell's book, conveys Nell's wish for quiet, and Mayor Bell changes the parade into a quiet book procession.\"}]}",
+          "type": "output_text",
+          "logprobs": []
+        }
+      ],
+      "role": "assistant",
+      "status": "completed",
+      "type": "message",
+      "phase": "final_answer"
+    }
+  ],
+  "parallel_tool_calls": true,
+  "temperature": 1.0,
+  "tool_choice": "auto",
+  "tools": [],
+  "top_p": 0.98,
+  "background": false,
+  "completed_at": 1788846690.0,
+  "conversation": null,
+  "max_output_tokens": 4000,
+  "max_tool_calls": null,
+  "moderation": null,
+  "previous_response_id": null,
+  "prompt": null,
+  "prompt_cache_key": null,
+  "prompt_cache_retention": "24h",
+  "reasoning": {
+    "context": "all_turns",
+    "effort": "none",
+    "generate_summary": null,
+    "summary": null,
+    "mode": "standard"
+  },
+  "safety_identifier": null,
+  "service_tier": "flex",
+  "status": "completed",
+  "text": {
+    "format": {
+      "name": "story_set_quality_v1",
+      "schema_": {
+        "type": "object",
+        "properties": {
+          "stories": {
+            "type": "array",
+            "minItems": 10,
+            "maxItems": 10,
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "enum": [
+                    "s000029",
+                    "s000057",
+                    "s000047",
+                    "s000073",
+                    "s000034",
+                    "s000043",
+                    "s000068",
+                    "s000096",
+                    "s000005",
+                    "s000085"
+                  ]
+                },
+                "rating": {
+                  "type": "object",
+                  "properties": {
+                    "coherence": {
+                      "type": "integer",
+                      "enum": [
+                        0,
+                        1,
+                        2,
+                        3,
+                        4,
+                        5,
+                        6,
+                        7,
+                        8,
+                        9
+                      ]
+                    },
+                    "style": {
+                      "type": "integer",
+                      "enum": [
+                        0,
+                        1,
+                        2,
+                        3,
+                        4,
+                        5,
+                        6,
+                        7,
+                        8,
+                        9
+                      ]
+                    },
+                    "grammar": {
+                      "type": "integer",
+                      "enum": [
+                        0,
+                        1,
+                        2,
+                        3,
+                        4,
+                        5,
+                        6,
+                        7,
+                        8,
+                        9
+                      ]
+                    },
+                    "storytelling": {
+                      "type": "integer",
+                      "enum": [
+                        0,
+                        1,
+                        2,
+                        3,
+                        4,
+                        5,
+                        6,
+                        7,
+                        8,
+                        9
+                      ]
+                    },
+                    "overall": {
+                      "type": "integer",
+                      "enum": [
+                        0,
+                        1,
+                        2,
+                        3,
+                        4,
+                        5,
+                        6,
+                        7,
+                        8,
+                        9
+                      ]
+                    }
+                  },
+                  "required": [
+                    "coherence",
+                    "style",
+                    "grammar",
+                    "storytelling",
+                    "overall"
+                  ],
+                  "additionalProperties": false
+                },
+                "note": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "id",
+                "rating",
+                "note"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "diversity": {
+            "type": "object",
+            "properties": {
+              "premise": {
+                "type": "integer",
+                "enum": [
+                  0,
+                  1,
+                  2,
+                  3,
+                  4,
+                  5,
+                  6,
+                  7,
+                  8,
+                  9
+                ]
+              },
+              "causal_path": {
+                "type": "integer",
+                "enum": [
+                  0,
+                  1,
+                  2,
+                  3,
+                  4,
+                  5,
+                  6,
+                  7,
+                  8,
+                  9
+                ]
+              },
+              "ending": {
+                "type": "integer",
+                "enum": [
+                  0,
+                  1,
+                  2,
+                  3,
+                  4,
+                  5,
+                  6,
+                  7,
+                  8,
+                  9
+                ]
+              },
+              "language": {
+                "type": "integer",
+                "enum": [
+                  0,
+                  1,
+                  2,
+                  3,
+                  4,
+                  5,
+                  6,
+                  7,
+                  8,
+                  9
+                ]
+              },
+              "overall": {
+                "type": "integer",
+                "enum": [
+                  0,
+                  1,
+                  2,
+                  3,
+                  4,
+                  5,
+                  6,
+                  7,
+                  8,
+                  9
+                ]
+              }
+            },
+            "required": [
+              "premise",
+              "causal_path",
+              "ending",
+              "language",
+              "overall"
+            ],
+            "additionalProperties": false
+          },
+          "diversity_evidence": {
+            "type": "string"
+          },
+          "plot_groups": {
+            "type": "array",
+            "minItems": 1,
+            "maxItems": 10,
+            "items": {
+              "type": "object",
+              "properties": {
+                "story_ids": {
+                  "type": "array",
+                  "minItems": 1,
+                  "items": {
+                    "type": "string",
+                    "enum": [
+                      "s000029",
+                      "s000057",
+                      "s000047",
+                      "s000073",
+                      "s000034",
+                      "s000043",
+                      "s000068",
+                      "s000096",
+                      "s000005",
+                      "s000085"
+                    ]
+                  }
+                },
+                "summary": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "story_ids",
+                "summary"
+              ],
+              "additionalProperties": false
+            }
+          }
+        },
+        "required": [
+          "stories",
+          "diversity",
+          "diversity_evidence",
+          "plot_groups"
+        ],
+        "additionalProperties": false
+      },
+      "type": "json_schema",
+      "description": null,
+      "strict": true
+    },
+    "verbosity": "medium"
+  },
+  "top_logprobs": 0,
+  "truncation": "disabled",
+  "usage": {
+    "input_tokens": 6630,
+    "input_tokens_details": {
+      "cached_tokens": 0,
+      "cache_write_tokens": 6627
+    },
+    "output_tokens": 914,
+    "output_tokens_details": {
+      "reasoning_tokens": 0
+    },
+    "total_tokens": 7544
+  },
+  "user": null,
+  "billing": {
+    "payer": "openai"
+  },
+  "frequency_penalty": 0.0,
+  "presence_penalty": 0.0,
+  "store": true,
+  "tool_usage": {
+    "image_gen": {
+      "input_tokens": 0,
+      "input_tokens_details": {
+        "image_tokens": 0,
+        "text_tokens": 0
+      },
+      "output_tokens": 0,
+      "output_tokens_details": {
+        "image_tokens": 0,
+        "text_tokens": 0
+      },
+      "total_tokens": 0
+    },
+    "web_search": {
+      "num_requests": 0
+    }
+  }
+}

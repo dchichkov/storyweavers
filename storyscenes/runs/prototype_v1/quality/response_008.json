@@ -1,0 +1,362 @@
+{
+  "id": "resp_0a55e027d392e572006a9f33bfdbb087d0b4f64d92e995ff48",
+  "created_at": 1788818367.0,
+  "error": null,
+  "incomplete_details": null,
+  "instructions": null,
+  "metadata": {},
+  "model": "gpt-5.6-terra",
+  "object": "response",
+  "output": [
+    {
+      "id": "msg_0a55e027d392e572006a9f33c07f9887d09c0c055d90056d6e",
+      "content": [
+        {
+          "annotations": [],
+          "text": "{\"stories\":[{\"id\":\"s000029\",\"rating\":{\"coherence\":7,\"style\":6,\"grammar\":8,\"storytelling\":7,\"overall\":7},\"note\":\"The breeze threatens the show, and testing a bench leads clearly to a workable windbreak; the final bench image closes the action, though repeated explanatory beats make it feel procedural.\"},{\"id\":\"s000057\",\"rating\":{\"coherence\":7,\"style\":6,\"grammar\":8,\"storytelling\":7,\"overall\":7},\"note\":\"Ada identifies the wind problem, substitutes Pip's spoken signal for the faulty bell, and moves the bench to protect the stage; the ending concretely shows the successful performance.\"},{\"id\":\"s000047\",\"rating\":{\"coherence\":7,\"style\":6,\"grammar\":8,\"storytelling\":7,\"overall\":7},\"note\":\"The strong breeze causes the group to test and choose the alcove, then relocate the show; the snug stage and still folded curtain provide a clear ending image, despite formulaic wording.\"},{\"id\":\"s000073\",\"rating\":{\"coherence\":7,\"style\":6,\"grammar\":8,\"storytelling\":7,\"overall\":7},\"note\":\"Testing shows that the curtain needs rope and clothespins, and securing it lets Pip perform in the wind; the held-fast curtain and bobbing puppet make a satisfying concrete resolution.\"},{\"id\":\"s000034\",\"rating\":{\"coherence\":7,\"style\":6,\"grammar\":8,\"storytelling\":7,\"overall\":7},\"note\":\"The children recognize the courtyard wind and move their show into a tested sheltered alcove; Pip's practiced voice and the resting curtain complete the show, though several setup details are redundant.\"},{\"id\":\"s000043\",\"rating\":{\"coherence\":7,\"style\":6,\"grammar\":8,\"storytelling\":7,\"overall\":7},\"note\":\"Ada's observation of airflow around the bench produces a sensible windbreak solution, allowing the puppet show to go ahead; the prose is clear but often sounds like instructional narration.\"},{\"id\":\"s000068\",\"rating\":{\"coherence\":7,\"style\":6,\"grammar\":8,\"storytelling\":7,\"overall\":7},\"note\":\"After investigating the wind and testing a clothespin, Ada and Mara tie down the curtain so the show can happen; its concrete final image works well, although the bell subplot has little consequence.\"},{\"id\":\"s000096\",\"rating\":{\"coherence\":7,\"style\":6,\"grammar\":8,\"storytelling\":7,\"overall\":7},\"note\":\"The group responds to the gusty courtyard by testing bench placement and building a windbreak; the successful show follows logically, with a clear visual closing image.\"},{\"id\":\"s000005\",\"rating\":{\"coherence\":7,\"style\":6,\"grammar\":8,\"storytelling\":7,\"overall\":7},\"note\":\"The wind problem leads to testing and then tying down the curtain with rope and clothespins; the final secured curtain and lively puppet show deliver a complete, child-readable resolution.\"},{\"id\":\"s000085\",\"rating\":{\"coherence\":7,\"style\":6,\"grammar\":8,\"storytelling\":7,\"overall\":7},\"note\":\"Ada tests the breeze around a bench and the group turns it into a windbreak, enabling the weather show; the ending is concrete and coherent, though the repeated report-and-test language is stiff.\"}],\"diversity\":{\"premise\":2,\"causal_path\":3,\"ending\":3,\"language\":2,\"overall\":3},\"diversity_evidence\":\"All ten stories share the same central premise: Ada, Pip, and Mara must stage a weather puppet show in a gusty courtyard. There are three material solution branches—bench windbreak (s000029, s000057, s000043, s000096, s000085), relocation to an alcove (s000047, s000034), and securing the curtain with rope and clothespins (s000073, s000068, s000005)—but the surrounding language, testing beats, bell issue, puppet, and successful-show ending are heavily reused. This sample does not establish diversity for the entire generator.\",\"plot_groups\":[{\"story_ids\":[\"s000029\",\"s000057\",\"s000043\",\"s000096\",\"s000085\"],\"summary\":\"A gusty courtyard threatens the puppet stage; Ada tests airflow around a bench, the group turns it into a windbreak, and the show succeeds behind it.\"},{\"story_ids\":[\"s000047\",\"s000034\"],\"summary\":\"A gusty courtyard is judged unsafe for the stage; testing reveals a sheltered alcove, so the group moves the show there and performs calmly.\"},{\"story_ids\":[\"s000073\",\"s000068\",\"s000005\"],\"summary\":\"Wind tugs at the curtain; testing and borrowed rope and clothespins lead the group to secure it, allowing the puppet show to proceed in the breeze.\"}]}",
+          "type": "output_text",
+          "logprobs": []
+        }
+      ],
+      "role": "assistant",
+      "status": "completed",
+      "type": "message",
+      "phase": "final_answer"
+    }
+  ],
+  "parallel_tool_calls": true,
+  "temperature": 1.0,
+  "tool_choice": "auto",
+  "tools": [],
+  "top_p": 0.98,
+  "background": false,
+  "completed_at": 1788818375.0,
+  "conversation": null,
+  "max_output_tokens": 4000,
+  "max_tool_calls": null,
+  "moderation": null,
+  "previous_response_id": null,
+  "prompt": null,
+  "prompt_cache_key": null,
+  "prompt_cache_retention": "24h",
+  "reasoning": {
+    "context": "all_turns",
+    "effort": "none",
+    "generate_summary": null,
+    "summary": null,
+    "mode": "standard"
+  },
+  "safety_identifier": null,
+  "service_tier": "flex",
+  "status": "completed",
+  "text": {
+    "format": {
+      "name": "story_set_quality_v1",
+      "schema_": {
+        "type": "object",
+        "properties": {
+          "stories": {
+            "type": "array",
+            "minItems": 10,
+            "maxItems": 10,
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "enum": [
+                    "s000029",
+                    "s000057",
+                    "s000047",
+                    "s000073",
+                    "s000034",
+                    "s000043",
+                    "s000068",
+                    "s000096",
+                    "s000005",
+                    "s000085"
+                  ]
+                },
+                "rating": {
+                  "type": "object",
+                  "properties": {
+                    "coherence": {
+                      "type": "integer",
+                      "enum": [
+                        0,
+                        1,
+                        2,
+                        3,
+                        4,
+                        5,
+                        6,
+                        7,
+                        8,
+                        9
+                      ]
+                    },
+                    "style": {
+                      "type": "integer",
+                      "enum": [
+                        0,
+                        1,
+                        2,
+                        3,
+                        4,
+                        5,
+                        6,
+                        7,
+                        8,
+                        9
+                      ]
+                    },
+                    "grammar": {
+                      "type": "integer",
+                      "enum": [
+                        0,
+                        1,
+                        2,
+                        3,
+                        4,
+                        5,
+                        6,
+                        7,
+                        8,
+                        9
+                      ]
+                    },
+                    "storytelling": {
+                      "type": "integer",
+                      "enum": [
+                        0,
+                        1,
+                        2,
+                        3,
+                        4,
+                        5,
+                        6,
+                        7,
+                        8,
+                        9
+                      ]
+                    },
+                    "overall": {
+                      "type": "integer",
+                      "enum": [
+                        0,
+                        1,
+                        2,
+                        3,
+                        4,
+                        5,
+                        6,
+                        7,
+                        8,
+                        9
+                      ]
+                    }
+                  },
+                  "required": [
+                    "coherence",
+                    "style",
+                    "grammar",
+                    "storytelling",
+                    "overall"
+                  ],
+                  "additionalProperties": false
+                },
+                "note": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "id",
+                "rating",
+                "note"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "diversity": {
+            "type": "object",
+            "properties": {
+              "premise": {
+                "type": "integer",
+                "enum": [
+                  0,
+                  1,
+                  2,
+                  3,
+                  4,
+                  5,
+                  6,
+                  7,
+                  8,
+                  9
+                ]
+              },
+              "causal_path": {
+                "type": "integer",
+                "enum": [
+                  0,
+                  1,
+                  2,
+                  3,
+                  4,
+                  5,
+                  6,
+                  7,
+                  8,
+                  9
+                ]
+              },
+              "ending": {
+                "type": "integer",
+                "enum": [
+                  0,
+                  1,
+                  2,
+                  3,
+                  4,
+                  5,
+                  6,
+                  7,
+                  8,
+                  9
+                ]
+              },
+              "language": {
+                "type": "integer",
+                "enum": [
+                  0,
+                  1,
+                  2,
+                  3,
+                  4,
+                  5,
+                  6,
+                  7,
+                  8,
+                  9
+                ]
+              },
+              "overall": {
+                "type": "integer",
+                "enum": [
+                  0,
+                  1,
+                  2,
+                  3,
+                  4,
+                  5,
+                  6,
+                  7,
+                  8,
+                  9
+                ]
+              }
+            },
+            "required": [
+              "premise",
+              "causal_path",
+              "ending",
+              "language",
+              "overall"
+            ],
+            "additionalProperties": false
+          },
+          "diversity_evidence": {
+            "type": "string"
+          },
+          "plot_groups": {
+            "type": "array",
+            "minItems": 1,
+            "maxItems": 10,
+            "items": {
+              "type": "object",
+              "properties": {
+                "story_ids": {
+                  "type": "array",
+                  "minItems": 1,
+                  "items": {
+                    "type": "string",
+                    "enum": [
+                      "s000029",
+                      "s000057",
+                      "s000047",
+                      "s000073",
+                      "s000034",
+                      "s000043",
+                      "s000068",
+                      "s000096",
+                      "s000005",
+                      "s000085"
+                    ]
+                  }
+                },
+                "summary": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "story_ids",
+                "summary"
+              ],
+              "additionalProperties": false
+            }
+          }
+        },
+        "required": [
+          "stories",
+          "diversity",
+          "diversity_evidence",
+          "plot_groups"
+        ],
+        "additionalProperties": false
+      },
+      "type": "json_schema",
+      "description": null,
+      "strict": true
+    },
+    "verbosity": "medium"
+  },
+  "top_logprobs": 0,
+  "truncation": "disabled",
+  "usage": {
+    "input_tokens": 5374,
+    "input_tokens_details": {
+      "cached_tokens": 0,
+      "cache_write_tokens": 5371
+    },
+    "output_tokens": 1021,
+    "output_tokens_details": {
+      "reasoning_tokens": 0
+    },
+    "total_tokens": 6395
+  },
+  "user": null,
+  "billing": {
+    "payer": "developer"
+  },
+  "frequency_penalty": 0.0,
+  "presence_penalty": 0.0,
+  "store": true,
+  "tool_usage": {
+    "image_gen": {
+      "input_tokens": 0,
+      "input_tokens_details": {
+        "image_tokens": 0,
+        "text_tokens": 0
+      },
+      "output_tokens": 0,
+      "output_tokens_details": {
+        "image_tokens": 0,
+        "text_tokens": 0
+      },
+      "total_tokens": 0
+    },
+    "web_search": {
+      "num_requests": 0
+    }
+  }
+}

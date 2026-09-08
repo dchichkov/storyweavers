@@ -1,0 +1,148 @@
+{
+  "id": "resp_0ab0a6d53d24aac8016a9f99db9ce087d090351d97abec78cd",
+  "created_at": 1788844507.0,
+  "error": null,
+  "incomplete_details": null,
+  "instructions": null,
+  "metadata": {},
+  "model": "gpt-5.6-luna",
+  "object": "response",
+  "output": [
+    {
+      "id": "rs_0ab0a6d53d24aac8016a9f99dc8f8c87d0a6157e164970fc76",
+      "summary": [],
+      "type": "reasoning",
+      "content": [],
+      "encrypted_content": "gAAAAABqn5n6GQMeZt8O_ChzDLbMtinZCP0vwFKqZoJpA-3kZ0jELgwLihV2uoPIaPuOgoDD0YML55qW6lPX_eMnvsD21Silfn3QKHOlRV9Nod5OIg-XdKc02W8ogPYk2DFF1MsQLoDdXudNuqTf-m1stDKafzH8zUC3VM-vtgcsJIU1pRux05YJh09nKha5dQpDpUnOjewNFX0T7zsW_U4NZo_07nYN_Tq9xXVpd4OrPi7zwhT3HElV-iWcqPfbrnwg2xzIJ-8Ie3gHkrACE_vR1Z1qCsUQjJe_xcFN4UBJHrVOgoNhB20ySn6f4By_eYbUHnnNIaigc7ekfv8cbFdUWqzewFgDX-gkVROm60BTa02gWkV-rkYtQblozBxFiHnaHgHdZQY-B0NMVU3CeFtMcq0zcMld9WM2AMpvNiYu9YnSBS9ZnyvthUoGKyQrTkWtjCQ_ypKJGEDiPEwA85QYnNCmBPrigZNGDRsIFs92mvgvdmXfaERn6SoyCR7TvepWHw_Mu8Pn9JUeuU-esU_CA4gRMBflestNEOFGzfjXRbBlWCa36JprtitH8omdf5y1AFFKQVJeHY0frNaSNNPi8xyG4mSpCAo2we4418LKqA0IG7DnWih-UO0SJlOKBufWyBbMk_Yio_BYceUDY0x9KOI11cEenYLhAEqcJip4rkg1cgXpse3ev-do04-YRx4kcOwM6SI-rtN1cYw9gS9VZqXcKEAbndnyqIr2bPaKoS16wYRXghHpiTUKxiTGUC-EWpvohmpSVJgHcTlBnfZ2h_NPmXslWaefeckFRVgYsnV_lkWZa1laaUouO6xQWQ2d0MyUq4sadEjTJDRn2UkHsxaHkhxiR3XR7aqX57v11xgn-J5RE9n7vU4HA9gx20vR43oc8C3FWtMTL4q8tVEzf63_AGMKe4Dy-wfEuKVNYrBqjqr689TSzPiTe-ID3wd1KMrQhWhZwrnZkqFZ1SyWTgjgKeeiqazqQ09pUrU5CRMimkH2SzYHrlQsuXHsrOetsXiHd6uGxtf47h0jZ9BRHLWkC8mQx6fNA20-U11pyKITTEH6U3ryXfGe8Lr8n47v_iEBLMLCEDbqkz7S_5HHvZoawT8bj85WAghYwzZEh4wBEiHmFwIpw1mNqdWiX_F1nfU5idEdsQ3ALEUXU7Nz61S-6QgXXyg6ce2q3VsbsbJrJIOLfE6pMpiXmNh4mA37iIkTio5era50wR7yReTF0IN2SksmoK0er7oo-w6fyvhDwjxd8DObkfsSzpYMXXoUaMRiWUvzE76L0-Icf09_Hk0IkE2uaRPXrZY01iTML8F-7MZrymYJ_Jym6msE_sLJv3fZUcCvDGe0vAM5JRM6npvMTJEc67Etm0z7oNXweT0aw-oxFpMyTVBcGOZLdGjFfYoFZS9Fh3d1DN8MhXWiG5sENjjLq7FYUS2u0qDXqYNcLmZBN2rP3XKv5KOY27bGx0BxgXc9ZQFOiALt8u3GHEEE_-hJPA==",
+      "status": null
+    },
+    {
+      "id": "msg_0ab0a6d53d24aac8016a9f99de55e487d0abf85e83e4e17cec",
+      "content": [
+        {
+          "annotations": [],
+          "text": "{\"title\":\"The Library Cart Parade\",\"premise\":\"Mayor Mallow boasts that the library parade will be the biggest ever. Juniper, a child librarian, wants every small reader to find a book; Bram, a cheerful cart builder, wants his new rolling cart admired. One shared cart, a town square, and three changing starting conditions turn the mayor’s boast into very different parades.\",\"cast_and_props\":\"Characters: Mayor Mallow (wants applause and a huge crowd), Juniper (wants books to reach overlooked readers), Bram (wants his cart to earn a ridiculous prize), and Pip the library cart (prop, with shelves, owner, location, decoration, and cargo slots). Setting: the library, its front square, and the lane beside it. Props: the shared cart, a bell, a banner, and book bundles. Keep all state scalar; every key begins with an entity ID.\",\"kernels_and_interactions\":\"Use 4 kernel families: movement/location, ownership and loading, knowledge through observe/tell, and performance/audience response. Juniper can observe the cart’s cargo or a lane sign, then tell Mayor or Bram; this knowledge must enable the correct loading or route choice. Transfer handles book bundles or the banner. A parade scene changes cart.location and audience response only after the cart is actually decorated and loaded. A pivotal scene changes Mayor’s belief or Juniper’s confidence, and that turn must affect which completion is reachable. No abstract score counters.\",\"seed_parameters\":\"Declare initial premise keys such as cart.cargo, cart.owner, cart.location, mayor.knows.lane, and juniper.motive. Seed 1: the cart is empty, the mayor insists on a grand lap, and Juniper has noticed the lane beside the library. Seed 2: the cart is already loaded with picture books, but Mayor believes the bundles are party decorations and demands they be hidden. Seed 3: Bram has promised the cart’s bell to a distant guest, while Juniper has invited quiet readers to the square; the conflicting promises must be discovered through observation or telling. Use rng only for harmless prose variation and candidate weights, not route selection.\",\"candidate_scenes\":\"Create 16–19 candidates, with 5–10 selected. Shared scenes: Juniper inspects the cart; Juniper tells Mayor or Bram what she learned; Bram decorates the cart; the cart rolls into the square; the audience responds. Problem-specific scenes: (1) Juniper observes that the narrow lane leads to readers who cannot reach the square, then persuades Mayor to make a small, useful book parade there; completion is cart.cargo == books, cart.location == lane, audience.response == delighted. (2) Mayor orders the loaded picture books covered as parade junk; Juniper opens a bundle, reveals the books, and Mayor must choose a “book rain” distribution; completion is books distributed and children reading in the square. (3) Bram learns his bell promise conflicts with Juniper’s quiet-reader invitation; he trades the bell for a banner or performs a silent ribbon parade; completion is cart.decorated == banner, audience.response == welcoming, and quiet_guest == included. Reuse preparation, reveal, decorating, rolling, and audience scenes across paths. The inciting action must be an observed lane, an explicit mayoral order, or Bram’s bell promise before any response.\",\"constraints\":\"Goal must require a completed parade and audience response, not a selected style or plan. Track concrete location, cargo, ownership, decoration, invitation, belief, and response. Supply every candidate with catalog prose, including preview-only cards. Openings must be guarded by the actual seed conditions and name the specific desire/problem. Use bridge cards for routine loading, walking, and banner tying; use beat cards for discovery, disagreement, choice, and audience reaction. Never let a character speak a fact before learning it. Use 1–2 pivotal actions only. premise_keys: cart.cargo, cart.location, mayor.knows.lane, bram.promise. outcome_keys: cart.location, cart.cargo, audience.response.\",\"different_endings\":\"Ending A: the cart appears in the narrow lane, books rise from its shelves, and readers who missed the grand square parade wave from doorways. Ending B: Mayor’s enormous banner droops while children sit on the square stones reading picture books; the boast has become a book-sharing parade. Ending C: the cart rolls silently beneath ribbons, and the once-worried quiet guests begin a tiny walking library, bell-free but full of smiles. Give each ending at least two guarded variants, with the final image carrying the meaning rather than an explanation.\"}",
+          "type": "output_text",
+          "logprobs": []
+        }
+      ],
+      "role": "assistant",
+      "status": "completed",
+      "type": "message",
+      "phase": "final_answer"
+    }
+  ],
+  "parallel_tool_calls": true,
+  "temperature": 1.0,
+  "tool_choice": "auto",
+  "tools": [],
+  "top_p": 0.98,
+  "background": false,
+  "completed_at": 1788844538.0,
+  "conversation": null,
+  "max_output_tokens": 3000,
+  "max_tool_calls": null,
+  "moderation": null,
+  "previous_response_id": null,
+  "prompt": null,
+  "prompt_cache_key": null,
+  "prompt_cache_retention": "24h",
+  "reasoning": {
+    "context": "all_turns",
+    "effort": "low",
+    "generate_summary": null,
+    "summary": null,
+    "mode": "standard"
+  },
+  "safety_identifier": null,
+  "service_tier": "flex",
+  "status": "completed",
+  "text": {
+    "format": {
+      "name": "theater_plan",
+      "schema_": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string"
+          },
+          "premise": {
+            "type": "string"
+          },
+          "cast_and_props": {
+            "type": "string"
+          },
+          "kernels_and_interactions": {
+            "type": "string"
+          },
+          "seed_parameters": {
+            "type": "string"
+          },
+          "candidate_scenes": {
+            "type": "string"
+          },
+          "constraints": {
+            "type": "string"
+          },
+          "different_endings": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "title",
+          "premise",
+          "cast_and_props",
+          "kernels_and_interactions",
+          "seed_parameters",
+          "candidate_scenes",
+          "constraints",
+          "different_endings"
+        ],
+        "additionalProperties": false
+      },
+      "type": "json_schema",
+      "description": null,
+      "strict": true
+    },
+    "verbosity": "medium"
+  },
+  "top_logprobs": 0,
+  "truncation": "disabled",
+  "usage": {
+    "input_tokens": 2380,
+    "input_tokens_details": {
+      "cached_tokens": 0,
+      "cache_write_tokens": 2377
+    },
+    "output_tokens": 1011,
+    "output_tokens_details": {
+      "reasoning_tokens": 52
+    },
+    "total_tokens": 3391
+  },
+  "user": null,
+  "billing": {
+    "payer": "openai"
+  },
+  "frequency_penalty": 0.0,
+  "presence_penalty": 0.0,
+  "store": false,
+  "tool_usage": {
+    "image_gen": {
+      "input_tokens": 0,
+      "input_tokens_details": {
+        "image_tokens": 0,
+        "text_tokens": 0
+      },
+      "output_tokens": 0,
+      "output_tokens_details": {
+        "image_tokens": 0,
+        "text_tokens": 0
+      },
+      "total_tokens": 0
+    },
+    "web_search": {
+      "num_requests": 0
+    }
+  }
+}

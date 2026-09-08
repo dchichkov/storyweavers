@@ -1,0 +1,1011 @@
+[
+  {
+    "seed": 0,
+    "title": "The Cinnamon Button Exchange",
+    "initial": {
+      "ada.promise": "trade",
+      "ada.agreement": null,
+      "ada.knows.label.text": null,
+      "ada.knows.button.mark": null,
+      "pip.agreement": null,
+      "pip.knows.label.text": null,
+      "pip.knows.button.mark": null,
+      "nia.belief": "pepper",
+      "nia.agreement": null,
+      "nia.content": false,
+      "nia.knows.label.text": null,
+      "nia.knows.button.mark": null,
+      "button.mark": "cinnamon",
+      "button.owner": "ada",
+      "button.location": "stall",
+      "button.shared": false,
+      "berryjar.owner": "nia",
+      "berryjar.open": false,
+      "berryjar.location": "stall",
+      "label.text": "pepper",
+      "label.attached": false,
+      "label.location": "stall",
+      "basket.owner": "ada",
+      "basket.location": "stall",
+      "stall.open": true
+    },
+    "final": {
+      "ada.promise": "trade",
+      "ada.agreement": null,
+      "ada.knows.label.text": null,
+      "ada.knows.button.mark": "cinnamon",
+      "pip.agreement": null,
+      "pip.knows.label.text": null,
+      "pip.knows.button.mark": "cinnamon",
+      "nia.belief": "pepper",
+      "nia.agreement": "jar_offer",
+      "nia.content": "sweet_trade",
+      "nia.knows.label.text": null,
+      "nia.knows.button.mark": "cinnamon",
+      "button.mark": "cinnamon",
+      "button.owner": "nia",
+      "button.location": "stall",
+      "button.shared": false,
+      "berryjar.owner": "ada",
+      "berryjar.open": true,
+      "berryjar.location": "stall",
+      "label.text": "pepper",
+      "label.attached": true,
+      "label.location": "stall",
+      "basket.owner": "ada",
+      "basket.location": "stall",
+      "stall.open": true
+    },
+    "events": [
+      {
+        "id": 1,
+        "scene": "attach_label",
+        "kernel": "Labeling",
+        "actors": [
+          "pip",
+          "label",
+          "button"
+        ],
+        "summary": "Pip pinned his chosen label to the pastry",
+        "causes": [],
+        "requires": [
+          {
+            "key": "label.attached",
+            "op": "eq",
+            "value": false
+          }
+        ],
+        "changes": {
+          "label.attached": {
+            "before": false,
+            "after": true
+          }
+        }
+      },
+      {
+        "id": 2,
+        "scene": "offer_jar",
+        "kernel": "Exchange",
+        "actors": [
+          "nia",
+          "berryjar"
+        ],
+        "summary": "Nia offered her berry jam",
+        "causes": [],
+        "requires": [
+          {
+            "key": "berryjar.owner",
+            "op": "eq",
+            "value": "nia"
+          },
+          {
+            "key": "nia.agreement",
+            "op": "eq",
+            "value": null
+          }
+        ],
+        "changes": {
+          "nia.agreement": {
+            "before": null,
+            "after": "jar_offer"
+          }
+        }
+      },
+      {
+        "id": 3,
+        "scene": "pip_observe_mark",
+        "kernel": "Observe",
+        "actors": [
+          "pip"
+        ],
+        "summary": "Pip inspected the pastry mark",
+        "causes": [
+          1
+        ],
+        "requires": [
+          {
+            "key": "label.attached",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "pip.knows.button.mark",
+            "op": "eq",
+            "value": null
+          }
+        ],
+        "changes": {
+          "pip.knows.button.mark": {
+            "before": null,
+            "after": "cinnamon"
+          }
+        }
+      },
+      {
+        "id": 4,
+        "scene": "open_jar",
+        "kernel": "Exchange",
+        "actors": [
+          "nia",
+          "berryjar"
+        ],
+        "summary": "Nia opened the berry jam",
+        "causes": [
+          2
+        ],
+        "requires": [
+          {
+            "key": "berryjar.owner",
+            "op": "eq",
+            "value": "nia"
+          },
+          {
+            "key": "berryjar.open",
+            "op": "eq",
+            "value": false
+          },
+          {
+            "key": "nia.agreement",
+            "op": "eq",
+            "value": "jar_offer"
+          }
+        ],
+        "changes": {
+          "berryjar.open": {
+            "before": false,
+            "after": true
+          }
+        }
+      },
+      {
+        "id": 5,
+        "scene": "give_jar",
+        "kernel": "Transfer",
+        "actors": [
+          "nia",
+          "ada"
+        ],
+        "summary": "Nia handed Ada the open jam jar",
+        "causes": [
+          4
+        ],
+        "requires": [
+          {
+            "key": "berryjar.owner",
+            "op": "eq",
+            "value": "nia"
+          },
+          {
+            "key": "berryjar.owner",
+            "op": "eq",
+            "value": "nia"
+          },
+          {
+            "key": "berryjar.open",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "ada.promise",
+            "op": "in",
+            "value": [
+              "trade",
+              "brave_taste"
+            ]
+          }
+        ],
+        "changes": {
+          "berryjar.owner": {
+            "before": "nia",
+            "after": "ada"
+          }
+        }
+      },
+      {
+        "id": 6,
+        "scene": "tell_mark_ada",
+        "kernel": "Tell",
+        "actors": [
+          "pip",
+          "ada"
+        ],
+        "summary": "Pip told Ada what mark was on the pastry",
+        "causes": [
+          3
+        ],
+        "requires": [
+          {
+            "key": "pip.knows.button.mark",
+            "op": "ne",
+            "value": null
+          },
+          {
+            "key": "pip.knows.button.mark",
+            "op": "ne",
+            "value": null
+          },
+          {
+            "key": "ada.knows.button.mark",
+            "op": "eq",
+            "value": null
+          }
+        ],
+        "changes": {
+          "ada.knows.button.mark": {
+            "before": null,
+            "after": "cinnamon"
+          }
+        }
+      },
+      {
+        "id": 7,
+        "scene": "tell_mark_nia",
+        "kernel": "Tell",
+        "actors": [
+          "ada",
+          "nia"
+        ],
+        "summary": "Ada told Nia what she had baked",
+        "causes": [
+          6
+        ],
+        "requires": [
+          {
+            "key": "ada.knows.button.mark",
+            "op": "ne",
+            "value": null
+          },
+          {
+            "key": "ada.knows.button.mark",
+            "op": "ne",
+            "value": null
+          },
+          {
+            "key": "nia.knows.button.mark",
+            "op": "eq",
+            "value": null
+          }
+        ],
+        "changes": {
+          "nia.knows.button.mark": {
+            "before": null,
+            "after": "cinnamon"
+          }
+        }
+      },
+      {
+        "id": 8,
+        "scene": "trade_button",
+        "kernel": "Transfer",
+        "actors": [
+          "ada",
+          "nia"
+        ],
+        "summary": "Ada traded the pastry for the jam",
+        "causes": [
+          4,
+          5,
+          7
+        ],
+        "requires": [
+          {
+            "key": "button.owner",
+            "op": "eq",
+            "value": "ada"
+          },
+          {
+            "key": "button.owner",
+            "op": "eq",
+            "value": "ada"
+          },
+          {
+            "key": "berryjar.owner",
+            "op": "eq",
+            "value": "ada"
+          },
+          {
+            "key": "berryjar.open",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "ada.promise",
+            "op": "in",
+            "value": [
+              "trade",
+              "brave_taste"
+            ]
+          },
+          {
+            "key": "nia.knows.button.mark",
+            "op": "ne",
+            "value": null
+          }
+        ],
+        "changes": {
+          "button.owner": {
+            "before": "ada",
+            "after": "nia"
+          }
+        }
+      },
+      {
+        "id": 9,
+        "scene": "taste_sweet",
+        "kernel": "Tasting",
+        "actors": [
+          "nia",
+          "button"
+        ],
+        "summary": "Nia tasted the cinnamon button",
+        "causes": [
+          4,
+          7,
+          8
+        ],
+        "requires": [
+          {
+            "key": "button.owner",
+            "op": "eq",
+            "value": "nia"
+          },
+          {
+            "key": "button.mark",
+            "op": "eq",
+            "value": "cinnamon"
+          },
+          {
+            "key": "berryjar.open",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "nia.knows.button.mark",
+            "op": "eq",
+            "value": "cinnamon"
+          },
+          {
+            "key": "nia.content",
+            "op": "eq",
+            "value": false
+          }
+        ],
+        "changes": {
+          "nia.content": {
+            "before": false,
+            "after": "sweet_trade"
+          }
+        }
+      }
+    ]
+  },
+  {
+    "seed": 1,
+    "title": "The Cinnamon Button Exchange",
+    "initial": {
+      "ada.promise": "share",
+      "ada.agreement": null,
+      "ada.knows.label.text": null,
+      "ada.knows.button.mark": null,
+      "pip.agreement": null,
+      "pip.knows.label.text": null,
+      "pip.knows.button.mark": null,
+      "nia.belief": "cinnamon",
+      "nia.agreement": null,
+      "nia.content": false,
+      "nia.knows.label.text": null,
+      "nia.knows.button.mark": null,
+      "button.mark": "cinnamon",
+      "button.owner": "ada",
+      "button.location": "stall",
+      "button.shared": false,
+      "berryjar.owner": "nia",
+      "berryjar.open": false,
+      "berryjar.location": "stall",
+      "label.text": "cinnamon",
+      "label.attached": false,
+      "label.location": "stall",
+      "basket.owner": "ada",
+      "basket.location": "stall",
+      "stall.open": true
+    },
+    "final": {
+      "ada.promise": "share",
+      "ada.agreement": "share",
+      "ada.knows.label.text": null,
+      "ada.knows.button.mark": null,
+      "pip.agreement": null,
+      "pip.knows.label.text": null,
+      "pip.knows.button.mark": null,
+      "nia.belief": "cinnamon",
+      "nia.agreement": "jar_offer",
+      "nia.content": "shared_treat",
+      "nia.knows.label.text": null,
+      "nia.knows.button.mark": null,
+      "button.mark": "cinnamon",
+      "button.owner": "ada",
+      "button.location": "stall",
+      "button.shared": true,
+      "berryjar.owner": "nia",
+      "berryjar.open": true,
+      "berryjar.location": "stall",
+      "label.text": "cinnamon",
+      "label.attached": false,
+      "label.location": "stall",
+      "basket.owner": "ada",
+      "basket.location": "stall",
+      "stall.open": true
+    },
+    "events": [
+      {
+        "id": 1,
+        "scene": "offer_jar",
+        "kernel": "Exchange",
+        "actors": [
+          "nia",
+          "berryjar"
+        ],
+        "summary": "Nia offered her berry jam",
+        "causes": [],
+        "requires": [
+          {
+            "key": "berryjar.owner",
+            "op": "eq",
+            "value": "nia"
+          },
+          {
+            "key": "nia.agreement",
+            "op": "eq",
+            "value": null
+          }
+        ],
+        "changes": {
+          "nia.agreement": {
+            "before": null,
+            "after": "jar_offer"
+          }
+        }
+      },
+      {
+        "id": 2,
+        "scene": "choose_share",
+        "kernel": "Agreement",
+        "actors": [
+          "ada",
+          "nia"
+        ],
+        "summary": "Ada chose to make the pastry a shared treat",
+        "causes": [
+          1
+        ],
+        "requires": [
+          {
+            "key": "ada.promise",
+            "op": "eq",
+            "value": "share"
+          },
+          {
+            "key": "nia.agreement",
+            "op": "eq",
+            "value": "jar_offer"
+          },
+          {
+            "key": "ada.agreement",
+            "op": "eq",
+            "value": null
+          }
+        ],
+        "changes": {
+          "ada.agreement": {
+            "before": null,
+            "after": "share"
+          }
+        }
+      },
+      {
+        "id": 3,
+        "scene": "open_jar",
+        "kernel": "Exchange",
+        "actors": [
+          "nia",
+          "berryjar"
+        ],
+        "summary": "Nia opened the berry jam",
+        "causes": [
+          1
+        ],
+        "requires": [
+          {
+            "key": "berryjar.owner",
+            "op": "eq",
+            "value": "nia"
+          },
+          {
+            "key": "berryjar.open",
+            "op": "eq",
+            "value": false
+          },
+          {
+            "key": "nia.agreement",
+            "op": "eq",
+            "value": "jar_offer"
+          }
+        ],
+        "changes": {
+          "berryjar.open": {
+            "before": false,
+            "after": true
+          }
+        }
+      },
+      {
+        "id": 4,
+        "scene": "share_button",
+        "kernel": "Tasting",
+        "actors": [
+          "ada",
+          "nia",
+          "pip",
+          "button"
+        ],
+        "summary": "Ada broke the pastry into shared pieces",
+        "causes": [
+          2,
+          3
+        ],
+        "requires": [
+          {
+            "key": "button.owner",
+            "op": "eq",
+            "value": "ada"
+          },
+          {
+            "key": "berryjar.open",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "ada.agreement",
+            "op": "eq",
+            "value": "share"
+          },
+          {
+            "key": "nia.content",
+            "op": "eq",
+            "value": false
+          }
+        ],
+        "changes": {
+          "nia.content": {
+            "before": false,
+            "after": "shared_treat"
+          },
+          "button.shared": {
+            "before": false,
+            "after": true
+          }
+        }
+      }
+    ]
+  },
+  {
+    "seed": 2,
+    "title": "The Cinnamon Button Exchange",
+    "initial": {
+      "ada.promise": "trade",
+      "ada.agreement": null,
+      "ada.knows.label.text": null,
+      "ada.knows.button.mark": null,
+      "pip.agreement": null,
+      "pip.knows.label.text": null,
+      "pip.knows.button.mark": null,
+      "nia.belief": "cinnamon",
+      "nia.agreement": null,
+      "nia.content": false,
+      "nia.knows.label.text": null,
+      "nia.knows.button.mark": null,
+      "button.mark": "cinnamon",
+      "button.owner": "ada",
+      "button.location": "stall",
+      "button.shared": false,
+      "berryjar.owner": "nia",
+      "berryjar.open": false,
+      "berryjar.location": "stall",
+      "label.text": "cinnamon",
+      "label.attached": false,
+      "label.location": "stall",
+      "basket.owner": "ada",
+      "basket.location": "stall",
+      "stall.open": true
+    },
+    "final": {
+      "ada.promise": "trade",
+      "ada.agreement": null,
+      "ada.knows.label.text": null,
+      "ada.knows.button.mark": "cinnamon",
+      "pip.agreement": null,
+      "pip.knows.label.text": null,
+      "pip.knows.button.mark": "cinnamon",
+      "nia.belief": "cinnamon",
+      "nia.agreement": "jar_offer",
+      "nia.content": "sweet_trade",
+      "nia.knows.label.text": null,
+      "nia.knows.button.mark": "cinnamon",
+      "button.mark": "cinnamon",
+      "button.owner": "nia",
+      "button.location": "stall",
+      "button.shared": false,
+      "berryjar.owner": "ada",
+      "berryjar.open": true,
+      "berryjar.location": "stall",
+      "label.text": "cinnamon",
+      "label.attached": true,
+      "label.location": "stall",
+      "basket.owner": "ada",
+      "basket.location": "stall",
+      "stall.open": true
+    },
+    "events": [
+      {
+        "id": 1,
+        "scene": "attach_label",
+        "kernel": "Labeling",
+        "actors": [
+          "pip",
+          "label",
+          "button"
+        ],
+        "summary": "Pip pinned his chosen label to the pastry",
+        "causes": [],
+        "requires": [
+          {
+            "key": "label.attached",
+            "op": "eq",
+            "value": false
+          }
+        ],
+        "changes": {
+          "label.attached": {
+            "before": false,
+            "after": true
+          }
+        }
+      },
+      {
+        "id": 2,
+        "scene": "offer_jar",
+        "kernel": "Exchange",
+        "actors": [
+          "nia",
+          "berryjar"
+        ],
+        "summary": "Nia offered her berry jam",
+        "causes": [],
+        "requires": [
+          {
+            "key": "berryjar.owner",
+            "op": "eq",
+            "value": "nia"
+          },
+          {
+            "key": "nia.agreement",
+            "op": "eq",
+            "value": null
+          }
+        ],
+        "changes": {
+          "nia.agreement": {
+            "before": null,
+            "after": "jar_offer"
+          }
+        }
+      },
+      {
+        "id": 3,
+        "scene": "open_jar",
+        "kernel": "Exchange",
+        "actors": [
+          "nia",
+          "berryjar"
+        ],
+        "summary": "Nia opened the berry jam",
+        "causes": [
+          2
+        ],
+        "requires": [
+          {
+            "key": "berryjar.owner",
+            "op": "eq",
+            "value": "nia"
+          },
+          {
+            "key": "berryjar.open",
+            "op": "eq",
+            "value": false
+          },
+          {
+            "key": "nia.agreement",
+            "op": "eq",
+            "value": "jar_offer"
+          }
+        ],
+        "changes": {
+          "berryjar.open": {
+            "before": false,
+            "after": true
+          }
+        }
+      },
+      {
+        "id": 4,
+        "scene": "pip_observe_mark",
+        "kernel": "Observe",
+        "actors": [
+          "pip"
+        ],
+        "summary": "Pip inspected the pastry mark",
+        "causes": [
+          1
+        ],
+        "requires": [
+          {
+            "key": "label.attached",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "pip.knows.button.mark",
+            "op": "eq",
+            "value": null
+          }
+        ],
+        "changes": {
+          "pip.knows.button.mark": {
+            "before": null,
+            "after": "cinnamon"
+          }
+        }
+      },
+      {
+        "id": 5,
+        "scene": "tell_mark_ada",
+        "kernel": "Tell",
+        "actors": [
+          "pip",
+          "ada"
+        ],
+        "summary": "Pip told Ada what mark was on the pastry",
+        "causes": [
+          4
+        ],
+        "requires": [
+          {
+            "key": "pip.knows.button.mark",
+            "op": "ne",
+            "value": null
+          },
+          {
+            "key": "pip.knows.button.mark",
+            "op": "ne",
+            "value": null
+          },
+          {
+            "key": "ada.knows.button.mark",
+            "op": "eq",
+            "value": null
+          }
+        ],
+        "changes": {
+          "ada.knows.button.mark": {
+            "before": null,
+            "after": "cinnamon"
+          }
+        }
+      },
+      {
+        "id": 6,
+        "scene": "give_jar",
+        "kernel": "Transfer",
+        "actors": [
+          "nia",
+          "ada"
+        ],
+        "summary": "Nia handed Ada the open jam jar",
+        "causes": [
+          3
+        ],
+        "requires": [
+          {
+            "key": "berryjar.owner",
+            "op": "eq",
+            "value": "nia"
+          },
+          {
+            "key": "berryjar.owner",
+            "op": "eq",
+            "value": "nia"
+          },
+          {
+            "key": "berryjar.open",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "ada.promise",
+            "op": "in",
+            "value": [
+              "trade",
+              "brave_taste"
+            ]
+          }
+        ],
+        "changes": {
+          "berryjar.owner": {
+            "before": "nia",
+            "after": "ada"
+          }
+        }
+      },
+      {
+        "id": 7,
+        "scene": "tell_mark_nia",
+        "kernel": "Tell",
+        "actors": [
+          "ada",
+          "nia"
+        ],
+        "summary": "Ada told Nia what she had baked",
+        "causes": [
+          5
+        ],
+        "requires": [
+          {
+            "key": "ada.knows.button.mark",
+            "op": "ne",
+            "value": null
+          },
+          {
+            "key": "ada.knows.button.mark",
+            "op": "ne",
+            "value": null
+          },
+          {
+            "key": "nia.knows.button.mark",
+            "op": "eq",
+            "value": null
+          }
+        ],
+        "changes": {
+          "nia.knows.button.mark": {
+            "before": null,
+            "after": "cinnamon"
+          }
+        }
+      },
+      {
+        "id": 8,
+        "scene": "trade_button",
+        "kernel": "Transfer",
+        "actors": [
+          "ada",
+          "nia"
+        ],
+        "summary": "Ada traded the pastry for the jam",
+        "causes": [
+          3,
+          6,
+          7
+        ],
+        "requires": [
+          {
+            "key": "button.owner",
+            "op": "eq",
+            "value": "ada"
+          },
+          {
+            "key": "button.owner",
+            "op": "eq",
+            "value": "ada"
+          },
+          {
+            "key": "berryjar.owner",
+            "op": "eq",
+            "value": "ada"
+          },
+          {
+            "key": "berryjar.open",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "ada.promise",
+            "op": "in",
+            "value": [
+              "trade",
+              "brave_taste"
+            ]
+          },
+          {
+            "key": "nia.knows.button.mark",
+            "op": "ne",
+            "value": null
+          }
+        ],
+        "changes": {
+          "button.owner": {
+            "before": "ada",
+            "after": "nia"
+          }
+        }
+      },
+      {
+        "id": 9,
+        "scene": "taste_sweet",
+        "kernel": "Tasting",
+        "actors": [
+          "nia",
+          "button"
+        ],
+        "summary": "Nia tasted the cinnamon button",
+        "causes": [
+          3,
+          7,
+          8
+        ],
+        "requires": [
+          {
+            "key": "button.owner",
+            "op": "eq",
+            "value": "nia"
+          },
+          {
+            "key": "button.mark",
+            "op": "eq",
+            "value": "cinnamon"
+          },
+          {
+            "key": "berryjar.open",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "nia.knows.button.mark",
+            "op": "eq",
+            "value": "cinnamon"
+          },
+          {
+            "key": "nia.content",
+            "op": "eq",
+            "value": false
+          }
+        ],
+        "changes": {
+          "nia.content": {
+            "before": false,
+            "after": "sweet_trade"
+          }
+        }
+      }
+    ]
+  }
+]

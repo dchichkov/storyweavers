@@ -1,0 +1,587 @@
+{
+  "openings": [
+    {
+      "text": "Ada hurried into the roof garden with three moonmelon-party invitations tucked under her arm. She wanted every card to reach a neighbor neat as a button.",
+      "when": []
+    },
+    {
+      "text": "Ada looked up and found the invitations pinned high on the roof post. “Oh dear,” she said. “The wind has made a bulletin board!”",
+      "when": [
+        {
+          "key": "post.invites_pinned",
+          "op": "eq",
+          "value": true,
+          "at": "initial"
+        }
+      ]
+    },
+    {
+      "text": "Ada peeked into the wicker basket and discovered a paper lantern nestled beside the invitations. Its moon-shaped handle tickled her nose.",
+      "when": [
+        {
+          "key": "basket.contains_lantern",
+          "op": "eq",
+          "value": true,
+          "at": "initial"
+        }
+      ]
+    },
+    {
+      "text": "Pip stretched his wings toward the roof tiles. Ada noticed that he was imagining a grand flying delivery, although she had imagined something much neater.",
+      "when": [
+        {
+          "key": "pip.believes_flight",
+          "op": "eq",
+          "value": true,
+          "at": "initial"
+        }
+      ]
+    },
+    {
+      "text": "The invitations waited on the little party table, the basket was plain, and Pip had his quietest toes ready. Ada smiled at the wonderfully ordinary delivery ahead.",
+      "when": [
+        {
+          "key": "post.invites_pinned",
+          "op": "eq",
+          "value": false,
+          "at": "initial"
+        },
+        {
+          "key": "basket.contains_lantern",
+          "op": "eq",
+          "value": false,
+          "at": "initial"
+        },
+        {
+          "key": "pip.believes_flight",
+          "op": "eq",
+          "value": false,
+          "at": "initial"
+        }
+      ]
+    }
+  ],
+  "scenes": [
+    {
+      "scene": "observe_pin",
+      "role": "beat",
+      "variants": [
+        {
+          "text": "Ada shaded her eyes and discovered that the wind had pinned the three invitations to the tall post. They fluttered there like tiny white flags.",
+          "when": [
+            {
+              "key": "post.invites_pinned",
+              "op": "eq",
+              "value": true,
+              "at": "after"
+            }
+          ]
+        },
+        {
+          "text": "Ada inspected the tall post and discovered that no invitations were pinned there. The cards were still waiting on the party table.",
+          "when": [
+            {
+              "key": "post.invites_pinned",
+              "op": "eq",
+              "value": false,
+              "at": "after"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "scene": "observe_cargo",
+      "role": "beat",
+      "variants": [
+        {
+          "text": "Ada opened the basket and discovered a paper lantern tucked among the invitations. “A glow-up for our party!” she whispered.",
+          "when": [
+            {
+              "key": "basket.contains_lantern",
+              "op": "eq",
+              "value": true,
+              "at": "after"
+            }
+          ]
+        },
+        {
+          "text": "Ada opened the basket and discovered only the invitations inside. “Plain and ready,” she said, tapping the basket.",
+          "when": [
+            {
+              "key": "basket.contains_lantern",
+              "op": "eq",
+              "value": false,
+              "at": "after"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "scene": "observe_belief",
+      "role": "beat",
+      "variants": [
+        {
+          "text": "Ada watched Pip’s wings wobble with excitement and discovered that he expected a grand flying delivery. His tail drew imaginary loops in the air.",
+          "when": [
+            {
+              "key": "pip.believes_flight",
+              "op": "eq",
+              "value": true,
+              "at": "after"
+            }
+          ]
+        },
+        {
+          "text": "Ada watched Pip fold his wings carefully and discovered that he expected a quiet delivery. His toes stood ready for a small job.",
+          "when": [
+            {
+              "key": "pip.believes_flight",
+              "op": "eq",
+              "value": false,
+              "at": "after"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "scene": "tell_plan",
+      "role": "beat",
+      "variants": [
+        {
+          "text": "Ada faced Pip. “I want the invitations delivered neatly,” she said. “No card upside down, and only a teeny-tiny flourish.” Pip listened closely.",
+          "when": [
+            {
+              "key": "pip.knows.ada.want",
+              "op": "eq",
+              "value": "neat",
+              "at": "after"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "scene": "transfer_ribbon",
+      "role": "beat",
+      "variants": [
+        {
+          "text": "Ada handed Pip the blue ribbon. He held it between two careful claws. “A ribbon for a ribbon-worthy mission!” he declared.",
+          "when": [
+            {
+              "key": "ribbon.owner",
+              "op": "eq",
+              "value": "pip",
+              "at": "after"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "scene": "tie_ribbon",
+      "role": "beat",
+      "variants": [
+        {
+          "text": "Pip tied the blue ribbon around the wind-pinned invitations. The roof post suddenly looked dressed for dancing, and the cards settled into a tidy little row.",
+          "when": [
+            {
+              "key": "post.ribboned",
+              "op": "eq",
+              "value": true,
+              "at": "after"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "scene": "pin_invites",
+      "role": "beat",
+      "variants": [
+        {
+          "text": "Ada secured the invitations neatly against the ribboned roof post. “There,” she said. “A delivery with its shoes polished.”",
+          "when": [
+            {
+              "key": "invites.route",
+              "op": "eq",
+              "value": "post",
+              "at": "after"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "scene": "lift_basket",
+      "role": "beat",
+      "variants": [
+        {
+          "text": "Pip lifted the plain basket with extremely serious dragon toes. “I can carry a basket without tickling it!” he announced, wearing his solemnest face.",
+          "when": [
+            {
+              "key": "basket.owner",
+              "op": "eq",
+              "value": "pip",
+              "at": "after"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "scene": "set_down_basket",
+      "role": "bridge",
+      "variants": [
+        {
+          "text": "At the moonmelon trellis, Pip set the basket down. Ada gathered the invitations while his toes gave one proud little wiggle.",
+          "when": [
+            {
+              "key": "basket.owner",
+              "op": "eq",
+              "value": "ada",
+              "at": "after"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "scene": "carry_plain",
+      "role": "beat",
+      "variants": [
+        {
+          "text": "Ada carried the plain invitations along the quiet roof-garden path. Pip marched beside her, whispering, “Left foot, right foot, no dramatic swooping.”",
+          "when": [
+            {
+              "key": "invites.route",
+              "op": "eq",
+              "value": "walk",
+              "at": "after"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "scene": "carry_to_trellis",
+      "role": "beat",
+      "variants": [
+        {
+          "text": "Ada carried the basket beneath the moonmelon trellis. The paper lantern stayed safe among the invitations, waiting like a sleepy moon for evening.",
+          "when": [
+            {
+              "key": "invites.route",
+              "op": "eq",
+              "value": "lantern",
+              "at": "after"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "scene": "light_lantern",
+      "role": "beat",
+      "variants": [
+        {
+          "text": "Ada lit the paper lantern beside the delivered invitations. Warm gold spilled over the trellis, and every moonmelon seemed to grow a smile.",
+          "when": [
+            {
+              "key": "lantern.lit",
+              "op": "eq",
+              "value": true,
+              "at": "after"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "scene": "tell_pip_quiet",
+      "role": "beat",
+      "variants": [
+        {
+          "text": "Ada told Pip, “I know you hoped for a grand flight. My neat plan can have one small flourish.” Pip’s eyes grew round. “A tidy swoop?” he asked.",
+          "when": [
+            {
+              "key": "pip.belief",
+              "op": "eq",
+              "value": "neat",
+              "at": "after"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "scene": "agree_flight",
+      "role": "beat",
+      "variants": [
+        {
+          "text": "Pip understood at last. “Neat first, spectacular second?” he asked. Ada nodded. “A tiny air-mail show.” Pip grinned with all his little dragon teeth.",
+          "when": [
+            {
+              "key": "pip.performance_agreed",
+              "op": "eq",
+              "value": true,
+              "at": "after"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "scene": "flap_delivery",
+      "role": "beat",
+      "variants": [
+        {
+          "text": "Pip swept upward in one careful flap. The three invitations floated down on the blue ribbon, looping once around the trellis before landing where Jun could catch them.",
+          "when": [
+            {
+              "key": "invites.route",
+              "op": "eq",
+              "value": "flight",
+              "at": "after"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "scene": "return_ribbon",
+      "role": "bridge",
+      "variants": [
+        {
+          "text": "Pip returned the blue ribbon to Ada with a bow so deep that his nose brushed the roof tiles.",
+          "when": [
+            {
+              "key": "ribbon.owner",
+              "op": "eq",
+              "value": "ada",
+              "at": "after"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "scene": "jun_accepts",
+      "role": "beat",
+      "variants": [
+        {
+          "text": "Jun climbed into the roof garden and caught an invitation. “Splendid delivery!” Jun called, holding the card high.",
+          "when": [
+            {
+              "key": "jun.invited",
+              "op": "eq",
+              "value": true,
+              "at": "after"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "scene": "jun_sees_delivery",
+      "role": "bridge",
+      "variants": [
+        {
+          "text": "Jun looked from the invitation to Ada and Pip. The card had arrived, and Jun’s smile became as wide as a moonmelon slice.",
+          "when": [
+            {
+              "key": "jun.knows.invites.delivered",
+              "op": "eq",
+              "value": true,
+              "at": "after"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "scene": "ring_bell",
+      "role": "bridge",
+      "variants": [
+        {
+          "text": "Ada rang the tiny brass bell. Ting! The moonmelon party began beneath the open sky.",
+          "when": [
+            {
+              "key": "garden.party_ready",
+              "op": "eq",
+              "value": true,
+              "at": "after"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "endings": [
+    {
+      "text": "The ribboned invitations fluttered on the roof post while Jun climbed up laughing, one hand raised to catch the next little shiver of paper.",
+      "when": [
+        {
+          "key": "invites.route",
+          "op": "eq",
+          "value": "post",
+          "at": "before"
+        },
+        {
+          "key": "garden.party_ready",
+          "op": "eq",
+          "value": true,
+          "at": "after"
+        }
+      ]
+    },
+    {
+      "text": "The roof post wore its blue ribbon proudly. Jun arrived laughing beneath it, and the invitations bobbed overhead like three tiny flags.",
+      "when": [
+        {
+          "key": "invites.route",
+          "op": "eq",
+          "value": "post",
+          "at": "before"
+        },
+        {
+          "key": "garden.party_ready",
+          "op": "eq",
+          "value": true,
+          "at": "after"
+        }
+      ]
+    },
+    {
+      "text": "The lit lantern glowed under the trellis, and the invitations rested safely beside its moon-shaped handle. Gold light trembled on Jun’s delighted cheeks.",
+      "when": [
+        {
+          "key": "invites.route",
+          "op": "eq",
+          "value": "lantern",
+          "at": "before"
+        },
+        {
+          "key": "lantern.lit",
+          "op": "eq",
+          "value": true,
+          "at": "before"
+        },
+        {
+          "key": "garden.party_ready",
+          "op": "eq",
+          "value": true,
+          "at": "after"
+        }
+      ]
+    },
+    {
+      "text": "Under the glowing trellis lantern, Jun found the invitations beside the moon-shaped handle and reached for one as the light hummed softly.",
+      "when": [
+        {
+          "key": "invites.route",
+          "op": "eq",
+          "value": "lantern",
+          "at": "before"
+        },
+        {
+          "key": "lantern.lit",
+          "op": "eq",
+          "value": true,
+          "at": "before"
+        },
+        {
+          "key": "garden.party_ready",
+          "op": "eq",
+          "value": true,
+          "at": "after"
+        }
+      ]
+    },
+    {
+      "text": "The blue ribbon looped through the air as Pip landed beside Jun, who held the invitation like a tiny flag. Pip’s wings folded into a proud, tidy zigzag.",
+      "when": [
+        {
+          "key": "invites.route",
+          "op": "eq",
+          "value": "flight",
+          "at": "before"
+        },
+        {
+          "key": "pip.performance_agreed",
+          "op": "eq",
+          "value": true,
+          "at": "before"
+        },
+        {
+          "key": "garden.party_ready",
+          "op": "eq",
+          "value": true,
+          "at": "after"
+        }
+      ]
+    },
+    {
+      "text": "Pip settled beside Jun, and the blue-ribbon air-mail curled between them. Jun waved the invitation overhead while Pip’s little wings gave one last happy flap.",
+      "when": [
+        {
+          "key": "invites.route",
+          "op": "eq",
+          "value": "flight",
+          "at": "before"
+        },
+        {
+          "key": "pip.performance_agreed",
+          "op": "eq",
+          "value": true,
+          "at": "before"
+        },
+        {
+          "key": "garden.party_ready",
+          "op": "eq",
+          "value": true,
+          "at": "after"
+        }
+      ]
+    }
+  ],
+  "lexicon": [
+    {
+      "key": "invites.route",
+      "value": "post",
+      "text": "on the ribboned roof post"
+    },
+    {
+      "key": "invites.route",
+      "value": "lantern",
+      "text": "under the glowing lantern"
+    },
+    {
+      "key": "invites.route",
+      "value": "flight",
+      "text": "on Pip’s blue-ribbon air-mail"
+    },
+    {
+      "key": "invites.route",
+      "value": "walk",
+      "text": "along the quiet garden path"
+    },
+    {
+      "key": "invites.route",
+      "value": "unknown",
+      "text": "waiting for its adventure"
+    },
+    {
+      "key": "pip.performance",
+      "value": "none",
+      "text": "without a performance"
+    },
+    {
+      "key": "pip.performance",
+      "value": "airmail",
+      "text": "as a tiny air-mail show"
+    }
+  ]
+}

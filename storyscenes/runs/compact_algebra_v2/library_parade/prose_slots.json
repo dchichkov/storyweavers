@@ -1,0 +1,1964 @@
+{
+  "slots": {
+    "opening.03ed43c30f6d": {
+      "section": "openings",
+      "scene": null,
+      "role": "beat",
+      "when": [
+        {
+          "at": "initial",
+          "key": "cart.condition",
+          "op": "eq",
+          "value": "ready"
+        },
+        {
+          "at": "initial",
+          "key": "recipient.want",
+          "op": "eq",
+          "value": "quiet"
+        },
+        {
+          "at": "initial",
+          "key": "square.wind",
+          "op": "eq",
+          "value": "still"
+        }
+      ],
+      "evidence": {
+        "state": {
+          "ada.want": "deliver a book",
+          "ada.courage": 2,
+          "ada.delivered": false,
+          "ada.location": "library",
+          "mayor.want": "the biggest parade",
+          "mayor.boastful": true,
+          "mayor.performance_style": null,
+          "mayor.response": "none",
+          "mayor.location": "square",
+          "builder.want": "make useful things",
+          "builder.skill": 3,
+          "builder.location": "workshop",
+          "recipient.want": "quiet",
+          "recipient.received": false,
+          "recipient.response": "none",
+          "recipient.location": "square",
+          "cart.owner": "builder",
+          "cart.location": "workshop",
+          "cart.condition": "ready",
+          "cart.cover": "loose",
+          "book.owner": "ada",
+          "book.location": "library",
+          "library.open": true,
+          "workshop.open": true,
+          "square.wind": "still",
+          "ada.knows.square.wind": null,
+          "builder.knows.square.wind": null,
+          "ada.knows.recipient.want": null,
+          "mayor.knows.recipient.want": null,
+          "builder.knows.cart.condition": null,
+          "cart.loaned_by": null,
+          "mayor.knows.book.owner": null
+        }
+      },
+      "variants": 1
+    },
+    "scene.lend_cart.dfbd9ac3328a": {
+      "section": "scenes",
+      "scene": "lend_cart",
+      "role": "bridge",
+      "when": [
+        {
+          "at": "before",
+          "key": "cart.condition",
+          "op": "eq",
+          "value": "ready"
+        },
+        {
+          "at": "before",
+          "key": "cart.loaned_by",
+          "op": "eq",
+          "value": null
+        },
+        {
+          "at": "before",
+          "key": "cart.owner",
+          "op": "eq",
+          "value": "builder"
+        },
+        {
+          "at": "before",
+          "key": "square.wind",
+          "op": "eq",
+          "value": "still"
+        },
+        {
+          "at": "after",
+          "key": "cart.loaned_by",
+          "op": "eq",
+          "value": "builder"
+        },
+        {
+          "at": "after",
+          "key": "cart.owner",
+          "op": "eq",
+          "value": "ada"
+        }
+      ],
+      "evidence": {
+        "summary": "Bram lends Ada the cart",
+        "actors": [
+          "builder",
+          "ada"
+        ],
+        "changes": {
+          "cart.owner": {
+            "before": "builder",
+            "after": "ada"
+          },
+          "cart.loaned_by": {
+            "before": null,
+            "after": "builder"
+          }
+        },
+        "before": {
+          "cart.condition": "ready",
+          "cart.loaned_by": null,
+          "cart.owner": "builder",
+          "square.wind": "still"
+        }
+      },
+      "variants": 1
+    },
+    "scene.bring_cart_to_library.8f4259ac66d7": {
+      "section": "scenes",
+      "scene": "bring_cart_to_library",
+      "role": "bridge",
+      "when": [
+        {
+          "at": "before",
+          "key": "cart.location",
+          "op": "eq",
+          "value": "workshop"
+        },
+        {
+          "at": "before",
+          "key": "cart.owner",
+          "op": "eq",
+          "value": "ada"
+        },
+        {
+          "at": "after",
+          "key": "cart.location",
+          "op": "eq",
+          "value": "library"
+        }
+      ],
+      "evidence": {
+        "summary": "Ada brings the cart to the library",
+        "actors": [
+          "ada",
+          "library"
+        ],
+        "changes": {
+          "cart.location": {
+            "before": "workshop",
+            "after": "library"
+          }
+        },
+        "before": {
+          "cart.location": "workshop",
+          "cart.owner": "ada"
+        }
+      },
+      "variants": 1
+    },
+    "scene.bring_cart_to_square.e3192388504a": {
+      "section": "scenes",
+      "scene": "bring_cart_to_square",
+      "role": "bridge",
+      "when": [
+        {
+          "at": "before",
+          "key": "cart.location",
+          "op": "eq",
+          "value": "library"
+        },
+        {
+          "at": "before",
+          "key": "cart.owner",
+          "op": "eq",
+          "value": "ada"
+        },
+        {
+          "at": "after",
+          "key": "cart.location",
+          "op": "eq",
+          "value": "square"
+        }
+      ],
+      "evidence": {
+        "summary": "Ada rolls the cart to the square",
+        "actors": [
+          "ada",
+          "square"
+        ],
+        "changes": {
+          "cart.location": {
+            "before": "library",
+            "after": "square"
+          }
+        },
+        "before": {
+          "cart.location": "library",
+          "cart.owner": "ada"
+        }
+      },
+      "variants": 1
+    },
+    "scene.wish_news.notice.a826397fe6f0": {
+      "section": "scenes",
+      "scene": "wish_news.notice",
+      "role": "bridge",
+      "when": [
+        {
+          "at": "before",
+          "key": "ada.knows.recipient.want",
+          "op": "eq",
+          "value": null
+        },
+        {
+          "at": "before",
+          "key": "recipient.want",
+          "op": "eq",
+          "value": "quiet"
+        },
+        {
+          "at": "after",
+          "key": "ada.knows.recipient.want",
+          "op": "eq",
+          "value": "quiet"
+        }
+      ],
+      "evidence": {
+        "summary": "",
+        "actors": [
+          "ada"
+        ],
+        "changes": {
+          "ada.knows.recipient.want": {
+            "before": null,
+            "after": "quiet"
+          }
+        },
+        "before": {
+          "ada.knows.recipient.want": null,
+          "recipient.want": "quiet"
+        }
+      },
+      "variants": 1
+    },
+    "scene.deliver_quietly.b64955155cd5": {
+      "section": "scenes",
+      "scene": "deliver_quietly",
+      "role": "beat",
+      "when": [
+        {
+          "at": "before",
+          "key": "ada.knows.recipient.want",
+          "op": "eq",
+          "value": "quiet"
+        },
+        {
+          "at": "before",
+          "key": "book.owner",
+          "op": "eq",
+          "value": "ada"
+        },
+        {
+          "at": "before",
+          "key": "cart.location",
+          "op": "eq",
+          "value": "square"
+        },
+        {
+          "at": "before",
+          "key": "square.wind",
+          "op": "eq",
+          "value": "still"
+        },
+        {
+          "at": "after",
+          "key": "book.owner",
+          "op": "eq",
+          "value": "recipient"
+        }
+      ],
+      "evidence": {
+        "summary": "Ada delivers Nell's book quietly",
+        "actors": [
+          "ada",
+          "recipient"
+        ],
+        "changes": {
+          "book.owner": {
+            "before": "ada",
+            "after": "recipient"
+          }
+        },
+        "before": {
+          "ada.knows.recipient.want": "quiet",
+          "book.owner": "ada",
+          "cart.location": "square",
+          "square.wind": "still"
+        }
+      },
+      "variants": 1
+    },
+    "scene.wish_news.share.deba86ef1498": {
+      "section": "scenes",
+      "scene": "wish_news.share",
+      "role": "bridge",
+      "when": [
+        {
+          "at": "before",
+          "key": "ada.knows.recipient.want",
+          "op": "eq",
+          "value": "quiet"
+        },
+        {
+          "at": "before",
+          "key": "mayor.knows.recipient.want",
+          "op": "eq",
+          "value": null
+        },
+        {
+          "at": "after",
+          "key": "mayor.knows.recipient.want",
+          "op": "eq",
+          "value": "quiet"
+        }
+      ],
+      "evidence": {
+        "summary": "",
+        "actors": [
+          "ada",
+          "mayor"
+        ],
+        "changes": {
+          "mayor.knows.recipient.want": {
+            "before": null,
+            "after": "quiet"
+          }
+        },
+        "before": {
+          "ada.knows.recipient.want": "quiet",
+          "mayor.knows.recipient.want": null
+        }
+      },
+      "variants": 1
+    },
+    "scene.mayor_observes_delivery.e4525e111a9c": {
+      "section": "scenes",
+      "scene": "mayor_observes_delivery",
+      "role": "bridge",
+      "when": [
+        {
+          "at": "before",
+          "key": "book.owner",
+          "op": "eq",
+          "value": "recipient"
+        },
+        {
+          "at": "before",
+          "key": "mayor.knows.book.owner",
+          "op": "eq",
+          "value": null
+        },
+        {
+          "at": "after",
+          "key": "mayor.knows.book.owner",
+          "op": "eq",
+          "value": "recipient"
+        }
+      ],
+      "evidence": {
+        "summary": "The mayor notices the delivered book",
+        "actors": [
+          "mayor"
+        ],
+        "changes": {
+          "mayor.knows.book.owner": {
+            "before": null,
+            "after": "recipient"
+          }
+        },
+        "before": {
+          "book.owner": "recipient",
+          "mayor.knows.book.owner": null
+        }
+      },
+      "variants": 1
+    },
+    "scene.quiet_procession.3a53dd462103": {
+      "section": "scenes",
+      "scene": "quiet_procession",
+      "role": "beat",
+      "when": [
+        {
+          "at": "before",
+          "key": "book.owner",
+          "op": "eq",
+          "value": "recipient"
+        },
+        {
+          "at": "before",
+          "key": "mayor.boastful",
+          "op": "eq",
+          "value": true
+        },
+        {
+          "at": "before",
+          "key": "mayor.knows.book.owner",
+          "op": "eq",
+          "value": "recipient"
+        },
+        {
+          "at": "before",
+          "key": "mayor.knows.recipient.want",
+          "op": "eq",
+          "value": "quiet"
+        },
+        {
+          "at": "before",
+          "key": "mayor.performance_style",
+          "op": "eq",
+          "value": null
+        },
+        {
+          "at": "before",
+          "key": "mayor.response",
+          "op": "eq",
+          "value": "none"
+        },
+        {
+          "at": "before",
+          "key": "recipient.received",
+          "op": "eq",
+          "value": false
+        },
+        {
+          "at": "before",
+          "key": "recipient.response",
+          "op": "eq",
+          "value": "none"
+        },
+        {
+          "at": "after",
+          "key": "mayor.boastful",
+          "op": "eq",
+          "value": false
+        },
+        {
+          "at": "after",
+          "key": "mayor.performance_style",
+          "op": "eq",
+          "value": "quiet_procession"
+        },
+        {
+          "at": "after",
+          "key": "mayor.response",
+          "op": "eq",
+          "value": "proud"
+        },
+        {
+          "at": "after",
+          "key": "recipient.received",
+          "op": "eq",
+          "value": true
+        },
+        {
+          "at": "after",
+          "key": "recipient.response",
+          "op": "eq",
+          "value": "grateful"
+        }
+      ],
+      "evidence": {
+        "summary": "The mayor leads a quiet book procession",
+        "actors": [
+          "mayor"
+        ],
+        "changes": {
+          "mayor.boastful": {
+            "before": true,
+            "after": false
+          },
+          "mayor.performance_style": {
+            "before": null,
+            "after": "quiet_procession"
+          },
+          "mayor.response": {
+            "before": "none",
+            "after": "proud"
+          },
+          "recipient.received": {
+            "before": false,
+            "after": true
+          },
+          "recipient.response": {
+            "before": "none",
+            "after": "grateful"
+          }
+        },
+        "before": {
+          "book.owner": "recipient",
+          "mayor.boastful": true,
+          "mayor.knows.book.owner": "recipient",
+          "mayor.knows.recipient.want": "quiet",
+          "mayor.performance_style": null,
+          "mayor.response": "none",
+          "recipient.received": false,
+          "recipient.response": "none"
+        }
+      },
+      "variants": 1
+    },
+    "ending.95925cf47786": {
+      "section": "endings",
+      "scene": null,
+      "role": "beat",
+      "when": [
+        {
+          "at": "after",
+          "key": "book.owner",
+          "op": "eq",
+          "value": "recipient"
+        },
+        {
+          "at": "after",
+          "key": "cart.condition",
+          "op": "eq",
+          "value": "ready"
+        },
+        {
+          "at": "after",
+          "key": "cart.cover",
+          "op": "eq",
+          "value": "loose"
+        },
+        {
+          "at": "after",
+          "key": "mayor.boastful",
+          "op": "eq",
+          "value": false
+        },
+        {
+          "at": "after",
+          "key": "mayor.performance_style",
+          "op": "eq",
+          "value": "quiet_procession"
+        },
+        {
+          "at": "after",
+          "key": "mayor.response",
+          "op": "eq",
+          "value": "proud"
+        },
+        {
+          "at": "after",
+          "key": "recipient.received",
+          "op": "eq",
+          "value": true
+        },
+        {
+          "at": "after",
+          "key": "recipient.response",
+          "op": "eq",
+          "value": "grateful"
+        }
+      ],
+      "evidence": {
+        "state": {
+          "ada.want": "deliver a book",
+          "ada.courage": 2,
+          "ada.delivered": false,
+          "ada.location": "library",
+          "mayor.want": "the biggest parade",
+          "mayor.boastful": false,
+          "mayor.performance_style": "quiet_procession",
+          "mayor.response": "proud",
+          "mayor.location": "square",
+          "builder.want": "make useful things",
+          "builder.skill": 3,
+          "builder.location": "workshop",
+          "recipient.want": "quiet",
+          "recipient.received": true,
+          "recipient.response": "grateful",
+          "recipient.location": "square",
+          "cart.owner": "ada",
+          "cart.location": "square",
+          "cart.condition": "ready",
+          "cart.cover": "loose",
+          "book.owner": "recipient",
+          "book.location": "library",
+          "library.open": true,
+          "workshop.open": true,
+          "square.wind": "still",
+          "ada.knows.square.wind": null,
+          "builder.knows.square.wind": null,
+          "ada.knows.recipient.want": "quiet",
+          "mayor.knows.recipient.want": "quiet",
+          "cart.loaned_by": "builder",
+          "mayor.knows.book.owner": "recipient"
+        }
+      },
+      "variants": 1
+    },
+    "opening.aad92e63c997": {
+      "section": "openings",
+      "scene": null,
+      "role": "beat",
+      "when": [
+        {
+          "at": "initial",
+          "key": "cart.condition",
+          "op": "eq",
+          "value": "damaged"
+        },
+        {
+          "at": "initial",
+          "key": "recipient.want",
+          "op": "eq",
+          "value": "quiet"
+        },
+        {
+          "at": "initial",
+          "key": "square.wind",
+          "op": "eq",
+          "value": "still"
+        }
+      ],
+      "evidence": {
+        "state": {
+          "ada.want": "deliver a book",
+          "ada.courage": 2,
+          "ada.delivered": false,
+          "ada.location": "library",
+          "mayor.want": "the biggest parade",
+          "mayor.boastful": true,
+          "mayor.performance_style": null,
+          "mayor.response": "none",
+          "mayor.location": "square",
+          "builder.want": "make useful things",
+          "builder.skill": 3,
+          "builder.location": "workshop",
+          "recipient.want": "quiet",
+          "recipient.received": false,
+          "recipient.response": "none",
+          "recipient.location": "square",
+          "cart.owner": "builder",
+          "cart.location": "workshop",
+          "cart.condition": "damaged",
+          "cart.cover": "loose",
+          "book.owner": "ada",
+          "book.location": "library",
+          "library.open": true,
+          "workshop.open": true,
+          "square.wind": "still",
+          "ada.knows.square.wind": null,
+          "builder.knows.square.wind": null,
+          "ada.knows.recipient.want": null,
+          "mayor.knows.recipient.want": null,
+          "builder.knows.cart.condition": null,
+          "cart.loaned_by": null,
+          "mayor.knows.book.owner": null
+        }
+      },
+      "variants": 1
+    },
+    "scene.cart_notice.fe50a8b0f43a": {
+      "section": "scenes",
+      "scene": "cart_notice",
+      "role": "bridge",
+      "when": [
+        {
+          "at": "before",
+          "key": "builder.knows.cart.condition",
+          "op": "eq",
+          "value": null
+        },
+        {
+          "at": "before",
+          "key": "cart.condition",
+          "op": "eq",
+          "value": "damaged"
+        },
+        {
+          "at": "after",
+          "key": "builder.knows.cart.condition",
+          "op": "eq",
+          "value": "damaged"
+        }
+      ],
+      "evidence": {
+        "summary": "Bram checks the cart",
+        "actors": [
+          "builder"
+        ],
+        "changes": {
+          "builder.knows.cart.condition": {
+            "before": null,
+            "after": "damaged"
+          }
+        },
+        "before": {
+          "builder.knows.cart.condition": null,
+          "cart.condition": "damaged"
+        }
+      },
+      "variants": 1
+    },
+    "scene.repair_cart.a100c276eaa3": {
+      "section": "scenes",
+      "scene": "repair_cart",
+      "role": "beat",
+      "when": [
+        {
+          "at": "before",
+          "key": "builder.knows.cart.condition",
+          "op": "eq",
+          "value": "damaged"
+        },
+        {
+          "at": "before",
+          "key": "cart.condition",
+          "op": "eq",
+          "value": "damaged"
+        },
+        {
+          "at": "before",
+          "key": "cart.owner",
+          "op": "eq",
+          "value": "builder"
+        },
+        {
+          "at": "after",
+          "key": "cart.condition",
+          "op": "eq",
+          "value": "ready"
+        }
+      ],
+      "evidence": {
+        "summary": "Bram repairs the cart",
+        "actors": [
+          "builder"
+        ],
+        "changes": {
+          "cart.condition": {
+            "before": "damaged",
+            "after": "ready"
+          }
+        },
+        "before": {
+          "builder.knows.cart.condition": "damaged",
+          "cart.condition": "damaged",
+          "cart.owner": "builder"
+        }
+      },
+      "variants": 1
+    },
+    "opening.4a97d14451a2": {
+      "section": "openings",
+      "scene": null,
+      "role": "beat",
+      "when": [
+        {
+          "at": "initial",
+          "key": "cart.condition",
+          "op": "eq",
+          "value": "ready"
+        },
+        {
+          "at": "initial",
+          "key": "recipient.want",
+          "op": "eq",
+          "value": "join"
+        },
+        {
+          "at": "initial",
+          "key": "square.wind",
+          "op": "eq",
+          "value": "still"
+        }
+      ],
+      "evidence": {
+        "state": {
+          "ada.want": "deliver a book",
+          "ada.courage": 2,
+          "ada.delivered": false,
+          "ada.location": "library",
+          "mayor.want": "the biggest parade",
+          "mayor.boastful": true,
+          "mayor.performance_style": null,
+          "mayor.response": "none",
+          "mayor.location": "square",
+          "builder.want": "make useful things",
+          "builder.skill": 3,
+          "builder.location": "workshop",
+          "recipient.want": "join",
+          "recipient.received": false,
+          "recipient.response": "none",
+          "recipient.location": "square",
+          "cart.owner": "builder",
+          "cart.location": "workshop",
+          "cart.condition": "ready",
+          "cart.cover": "loose",
+          "book.owner": "ada",
+          "book.location": "library",
+          "library.open": true,
+          "workshop.open": true,
+          "square.wind": "still",
+          "ada.knows.square.wind": null,
+          "builder.knows.square.wind": null,
+          "ada.knows.recipient.want": null,
+          "mayor.knows.recipient.want": null,
+          "builder.knows.cart.condition": null,
+          "cart.loaned_by": null,
+          "mayor.knows.book.owner": null
+        }
+      },
+      "variants": 1
+    },
+    "scene.wish_news.notice.99894ac9232e": {
+      "section": "scenes",
+      "scene": "wish_news.notice",
+      "role": "bridge",
+      "when": [
+        {
+          "at": "before",
+          "key": "ada.knows.recipient.want",
+          "op": "eq",
+          "value": null
+        },
+        {
+          "at": "before",
+          "key": "recipient.want",
+          "op": "eq",
+          "value": "join"
+        },
+        {
+          "at": "after",
+          "key": "ada.knows.recipient.want",
+          "op": "eq",
+          "value": "join"
+        }
+      ],
+      "evidence": {
+        "summary": "",
+        "actors": [
+          "ada"
+        ],
+        "changes": {
+          "ada.knows.recipient.want": {
+            "before": null,
+            "after": "join"
+          }
+        },
+        "before": {
+          "ada.knows.recipient.want": null,
+          "recipient.want": "join"
+        }
+      },
+      "variants": 1
+    },
+    "scene.deliver_for_joiners.63426e871d18": {
+      "section": "scenes",
+      "scene": "deliver_for_joiners",
+      "role": "beat",
+      "when": [
+        {
+          "at": "before",
+          "key": "ada.knows.recipient.want",
+          "op": "eq",
+          "value": "join"
+        },
+        {
+          "at": "before",
+          "key": "book.owner",
+          "op": "eq",
+          "value": "ada"
+        },
+        {
+          "at": "before",
+          "key": "cart.condition",
+          "op": "eq",
+          "value": "ready"
+        },
+        {
+          "at": "before",
+          "key": "cart.location",
+          "op": "eq",
+          "value": "square"
+        },
+        {
+          "at": "after",
+          "key": "book.owner",
+          "op": "eq",
+          "value": "recipient"
+        }
+      ],
+      "evidence": {
+        "summary": "Ada delivers the book to a new parade helper",
+        "actors": [
+          "ada",
+          "recipient"
+        ],
+        "changes": {
+          "book.owner": {
+            "before": "ada",
+            "after": "recipient"
+          }
+        },
+        "before": {
+          "ada.knows.recipient.want": "join",
+          "book.owner": "ada",
+          "cart.condition": "ready",
+          "cart.location": "square"
+        }
+      },
+      "variants": 1
+    },
+    "scene.wish_news.share.5530a8e8ee2c": {
+      "section": "scenes",
+      "scene": "wish_news.share",
+      "role": "bridge",
+      "when": [
+        {
+          "at": "before",
+          "key": "ada.knows.recipient.want",
+          "op": "eq",
+          "value": "join"
+        },
+        {
+          "at": "before",
+          "key": "mayor.knows.recipient.want",
+          "op": "eq",
+          "value": null
+        },
+        {
+          "at": "after",
+          "key": "mayor.knows.recipient.want",
+          "op": "eq",
+          "value": "join"
+        }
+      ],
+      "evidence": {
+        "summary": "",
+        "actors": [
+          "ada",
+          "mayor"
+        ],
+        "changes": {
+          "mayor.knows.recipient.want": {
+            "before": null,
+            "after": "join"
+          }
+        },
+        "before": {
+          "ada.knows.recipient.want": "join",
+          "mayor.knows.recipient.want": null
+        }
+      },
+      "variants": 1
+    },
+    "scene.welcoming_parade.29b196a49339": {
+      "section": "scenes",
+      "scene": "welcoming_parade",
+      "role": "beat",
+      "when": [
+        {
+          "at": "before",
+          "key": "book.owner",
+          "op": "eq",
+          "value": "recipient"
+        },
+        {
+          "at": "before",
+          "key": "mayor.boastful",
+          "op": "eq",
+          "value": true
+        },
+        {
+          "at": "before",
+          "key": "mayor.knows.book.owner",
+          "op": "eq",
+          "value": "recipient"
+        },
+        {
+          "at": "before",
+          "key": "mayor.knows.recipient.want",
+          "op": "eq",
+          "value": "join"
+        },
+        {
+          "at": "before",
+          "key": "mayor.performance_style",
+          "op": "eq",
+          "value": null
+        },
+        {
+          "at": "before",
+          "key": "mayor.response",
+          "op": "eq",
+          "value": "none"
+        },
+        {
+          "at": "before",
+          "key": "recipient.received",
+          "op": "eq",
+          "value": false
+        },
+        {
+          "at": "before",
+          "key": "recipient.response",
+          "op": "eq",
+          "value": "none"
+        },
+        {
+          "at": "after",
+          "key": "mayor.boastful",
+          "op": "eq",
+          "value": false
+        },
+        {
+          "at": "after",
+          "key": "mayor.performance_style",
+          "op": "eq",
+          "value": "welcoming_parade"
+        },
+        {
+          "at": "after",
+          "key": "mayor.response",
+          "op": "eq",
+          "value": "cheering"
+        },
+        {
+          "at": "after",
+          "key": "recipient.received",
+          "op": "eq",
+          "value": true
+        },
+        {
+          "at": "after",
+          "key": "recipient.response",
+          "op": "eq",
+          "value": "delighted"
+        }
+      ],
+      "evidence": {
+        "summary": "The mayor welcomes Nell into the parade",
+        "actors": [
+          "mayor"
+        ],
+        "changes": {
+          "mayor.boastful": {
+            "before": true,
+            "after": false
+          },
+          "mayor.performance_style": {
+            "before": null,
+            "after": "welcoming_parade"
+          },
+          "mayor.response": {
+            "before": "none",
+            "after": "cheering"
+          },
+          "recipient.received": {
+            "before": false,
+            "after": true
+          },
+          "recipient.response": {
+            "before": "none",
+            "after": "delighted"
+          }
+        },
+        "before": {
+          "book.owner": "recipient",
+          "mayor.boastful": true,
+          "mayor.knows.book.owner": "recipient",
+          "mayor.knows.recipient.want": "join",
+          "mayor.performance_style": null,
+          "mayor.response": "none",
+          "recipient.received": false,
+          "recipient.response": "none"
+        }
+      },
+      "variants": 1
+    },
+    "ending.cff6ac00c9b0": {
+      "section": "endings",
+      "scene": null,
+      "role": "beat",
+      "when": [
+        {
+          "at": "after",
+          "key": "book.owner",
+          "op": "eq",
+          "value": "recipient"
+        },
+        {
+          "at": "after",
+          "key": "cart.condition",
+          "op": "eq",
+          "value": "ready"
+        },
+        {
+          "at": "after",
+          "key": "cart.cover",
+          "op": "eq",
+          "value": "loose"
+        },
+        {
+          "at": "after",
+          "key": "mayor.boastful",
+          "op": "eq",
+          "value": false
+        },
+        {
+          "at": "after",
+          "key": "mayor.performance_style",
+          "op": "eq",
+          "value": "welcoming_parade"
+        },
+        {
+          "at": "after",
+          "key": "mayor.response",
+          "op": "eq",
+          "value": "cheering"
+        },
+        {
+          "at": "after",
+          "key": "recipient.received",
+          "op": "eq",
+          "value": true
+        },
+        {
+          "at": "after",
+          "key": "recipient.response",
+          "op": "eq",
+          "value": "delighted"
+        }
+      ],
+      "evidence": {
+        "state": {
+          "ada.want": "deliver a book",
+          "ada.courage": 2,
+          "ada.delivered": false,
+          "ada.location": "library",
+          "mayor.want": "the biggest parade",
+          "mayor.boastful": false,
+          "mayor.performance_style": "welcoming_parade",
+          "mayor.response": "cheering",
+          "mayor.location": "square",
+          "builder.want": "make useful things",
+          "builder.skill": 3,
+          "builder.location": "workshop",
+          "recipient.want": "join",
+          "recipient.received": true,
+          "recipient.response": "delighted",
+          "recipient.location": "square",
+          "cart.owner": "ada",
+          "cart.location": "square",
+          "cart.condition": "ready",
+          "cart.cover": "loose",
+          "book.owner": "recipient",
+          "book.location": "library",
+          "library.open": true,
+          "workshop.open": true,
+          "square.wind": "still",
+          "ada.knows.square.wind": null,
+          "builder.knows.square.wind": null,
+          "ada.knows.recipient.want": "join",
+          "mayor.knows.recipient.want": "join",
+          "cart.loaned_by": "builder",
+          "mayor.knows.book.owner": "recipient"
+        }
+      },
+      "variants": 1
+    },
+    "opening.11fb29853c57": {
+      "section": "openings",
+      "scene": null,
+      "role": "beat",
+      "when": [
+        {
+          "at": "initial",
+          "key": "cart.condition",
+          "op": "eq",
+          "value": "damaged"
+        },
+        {
+          "at": "initial",
+          "key": "recipient.want",
+          "op": "eq",
+          "value": "join"
+        },
+        {
+          "at": "initial",
+          "key": "square.wind",
+          "op": "eq",
+          "value": "still"
+        }
+      ],
+      "evidence": {
+        "state": {
+          "ada.want": "deliver a book",
+          "ada.courage": 2,
+          "ada.delivered": false,
+          "ada.location": "library",
+          "mayor.want": "the biggest parade",
+          "mayor.boastful": true,
+          "mayor.performance_style": null,
+          "mayor.response": "none",
+          "mayor.location": "square",
+          "builder.want": "make useful things",
+          "builder.skill": 3,
+          "builder.location": "workshop",
+          "recipient.want": "join",
+          "recipient.received": false,
+          "recipient.response": "none",
+          "recipient.location": "square",
+          "cart.owner": "builder",
+          "cart.location": "workshop",
+          "cart.condition": "damaged",
+          "cart.cover": "loose",
+          "book.owner": "ada",
+          "book.location": "library",
+          "library.open": true,
+          "workshop.open": true,
+          "square.wind": "still",
+          "ada.knows.square.wind": null,
+          "builder.knows.square.wind": null,
+          "ada.knows.recipient.want": null,
+          "mayor.knows.recipient.want": null,
+          "builder.knows.cart.condition": null,
+          "cart.loaned_by": null,
+          "mayor.knows.book.owner": null
+        }
+      },
+      "variants": 1
+    },
+    "opening.9b9a3d166a6c": {
+      "section": "openings",
+      "scene": null,
+      "role": "beat",
+      "when": [
+        {
+          "at": "initial",
+          "key": "cart.condition",
+          "op": "eq",
+          "value": "ready"
+        },
+        {
+          "at": "initial",
+          "key": "recipient.want",
+          "op": "eq",
+          "value": "quiet"
+        },
+        {
+          "at": "initial",
+          "key": "square.wind",
+          "op": "eq",
+          "value": "breezy"
+        }
+      ],
+      "evidence": {
+        "state": {
+          "ada.want": "deliver a book",
+          "ada.courage": 2,
+          "ada.delivered": false,
+          "ada.location": "library",
+          "mayor.want": "the biggest parade",
+          "mayor.boastful": true,
+          "mayor.performance_style": null,
+          "mayor.response": "none",
+          "mayor.location": "square",
+          "builder.want": "make useful things",
+          "builder.skill": 3,
+          "builder.location": "workshop",
+          "recipient.want": "quiet",
+          "recipient.received": false,
+          "recipient.response": "none",
+          "recipient.location": "square",
+          "cart.owner": "builder",
+          "cart.location": "workshop",
+          "cart.condition": "ready",
+          "cart.cover": "loose",
+          "book.owner": "ada",
+          "book.location": "library",
+          "library.open": true,
+          "workshop.open": true,
+          "square.wind": "breezy",
+          "ada.knows.square.wind": null,
+          "builder.knows.square.wind": null,
+          "ada.knows.recipient.want": null,
+          "mayor.knows.recipient.want": null,
+          "builder.knows.cart.condition": null,
+          "cart.loaned_by": null,
+          "mayor.knows.book.owner": null
+        }
+      },
+      "variants": 1
+    },
+    "scene.wind_news.notice.d9f08fa30eb2": {
+      "section": "scenes",
+      "scene": "wind_news.notice",
+      "role": "bridge",
+      "when": [
+        {
+          "at": "before",
+          "key": "ada.knows.square.wind",
+          "op": "eq",
+          "value": null
+        },
+        {
+          "at": "before",
+          "key": "square.wind",
+          "op": "eq",
+          "value": "breezy"
+        },
+        {
+          "at": "after",
+          "key": "ada.knows.square.wind",
+          "op": "eq",
+          "value": "breezy"
+        }
+      ],
+      "evidence": {
+        "summary": "",
+        "actors": [
+          "ada"
+        ],
+        "changes": {
+          "ada.knows.square.wind": {
+            "before": null,
+            "after": "breezy"
+          }
+        },
+        "before": {
+          "ada.knows.square.wind": null,
+          "square.wind": "breezy"
+        }
+      },
+      "variants": 1
+    },
+    "scene.wind_news.share.921a8dc62ff6": {
+      "section": "scenes",
+      "scene": "wind_news.share",
+      "role": "bridge",
+      "when": [
+        {
+          "at": "before",
+          "key": "ada.knows.square.wind",
+          "op": "eq",
+          "value": "breezy"
+        },
+        {
+          "at": "before",
+          "key": "builder.knows.square.wind",
+          "op": "eq",
+          "value": null
+        },
+        {
+          "at": "after",
+          "key": "builder.knows.square.wind",
+          "op": "eq",
+          "value": "breezy"
+        }
+      ],
+      "evidence": {
+        "summary": "",
+        "actors": [
+          "ada",
+          "builder"
+        ],
+        "changes": {
+          "builder.knows.square.wind": {
+            "before": null,
+            "after": "breezy"
+          }
+        },
+        "before": {
+          "ada.knows.square.wind": "breezy",
+          "builder.knows.square.wind": null
+        }
+      },
+      "variants": 1
+    },
+    "scene.tie_cover.189d752a576d": {
+      "section": "scenes",
+      "scene": "tie_cover",
+      "role": "beat",
+      "when": [
+        {
+          "at": "before",
+          "key": "builder.knows.square.wind",
+          "op": "eq",
+          "value": "breezy"
+        },
+        {
+          "at": "before",
+          "key": "cart.cover",
+          "op": "eq",
+          "value": "loose"
+        },
+        {
+          "at": "before",
+          "key": "cart.owner",
+          "op": "eq",
+          "value": "builder"
+        },
+        {
+          "at": "before",
+          "key": "square.wind",
+          "op": "eq",
+          "value": "breezy"
+        },
+        {
+          "at": "after",
+          "key": "cart.cover",
+          "op": "eq",
+          "value": "tied"
+        }
+      ],
+      "evidence": {
+        "summary": "Bram ties down the cart cover",
+        "actors": [
+          "builder"
+        ],
+        "changes": {
+          "cart.cover": {
+            "before": "loose",
+            "after": "tied"
+          }
+        },
+        "before": {
+          "builder.knows.square.wind": "breezy",
+          "cart.cover": "loose",
+          "cart.owner": "builder",
+          "square.wind": "breezy"
+        }
+      },
+      "variants": 1
+    },
+    "scene.lend_cart_windy.335ca6181241": {
+      "section": "scenes",
+      "scene": "lend_cart_windy",
+      "role": "bridge",
+      "when": [
+        {
+          "at": "before",
+          "key": "cart.condition",
+          "op": "eq",
+          "value": "ready"
+        },
+        {
+          "at": "before",
+          "key": "cart.cover",
+          "op": "eq",
+          "value": "tied"
+        },
+        {
+          "at": "before",
+          "key": "cart.loaned_by",
+          "op": "eq",
+          "value": null
+        },
+        {
+          "at": "before",
+          "key": "cart.owner",
+          "op": "eq",
+          "value": "builder"
+        },
+        {
+          "at": "before",
+          "key": "square.wind",
+          "op": "eq",
+          "value": "breezy"
+        },
+        {
+          "at": "after",
+          "key": "cart.loaned_by",
+          "op": "eq",
+          "value": "builder"
+        },
+        {
+          "at": "after",
+          "key": "cart.owner",
+          "op": "eq",
+          "value": "ada"
+        }
+      ],
+      "evidence": {
+        "summary": "Bram lends Ada the secured cart",
+        "actors": [
+          "builder",
+          "ada"
+        ],
+        "changes": {
+          "cart.owner": {
+            "before": "builder",
+            "after": "ada"
+          },
+          "cart.loaned_by": {
+            "before": null,
+            "after": "builder"
+          }
+        },
+        "before": {
+          "cart.condition": "ready",
+          "cart.cover": "tied",
+          "cart.loaned_by": null,
+          "cart.owner": "builder",
+          "square.wind": "breezy"
+        }
+      },
+      "variants": 1
+    },
+    "scene.deliver_under_cover.c6763abd2e5f": {
+      "section": "scenes",
+      "scene": "deliver_under_cover",
+      "role": "beat",
+      "when": [
+        {
+          "at": "before",
+          "key": "ada.knows.recipient.want",
+          "op": "eq",
+          "value": "quiet"
+        },
+        {
+          "at": "before",
+          "key": "book.owner",
+          "op": "eq",
+          "value": "ada"
+        },
+        {
+          "at": "before",
+          "key": "cart.cover",
+          "op": "eq",
+          "value": "tied"
+        },
+        {
+          "at": "before",
+          "key": "cart.location",
+          "op": "eq",
+          "value": "square"
+        },
+        {
+          "at": "before",
+          "key": "square.wind",
+          "op": "eq",
+          "value": "breezy"
+        },
+        {
+          "at": "after",
+          "key": "book.owner",
+          "op": "eq",
+          "value": "recipient"
+        }
+      ],
+      "evidence": {
+        "summary": "Ada delivers Nell's book under cover",
+        "actors": [
+          "ada",
+          "recipient"
+        ],
+        "changes": {
+          "book.owner": {
+            "before": "ada",
+            "after": "recipient"
+          }
+        },
+        "before": {
+          "ada.knows.recipient.want": "quiet",
+          "book.owner": "ada",
+          "cart.cover": "tied",
+          "cart.location": "square",
+          "square.wind": "breezy"
+        }
+      },
+      "variants": 1
+    },
+    "ending.fb0dcad29d48": {
+      "section": "endings",
+      "scene": null,
+      "role": "beat",
+      "when": [
+        {
+          "at": "after",
+          "key": "book.owner",
+          "op": "eq",
+          "value": "recipient"
+        },
+        {
+          "at": "after",
+          "key": "cart.condition",
+          "op": "eq",
+          "value": "ready"
+        },
+        {
+          "at": "after",
+          "key": "cart.cover",
+          "op": "eq",
+          "value": "tied"
+        },
+        {
+          "at": "after",
+          "key": "mayor.boastful",
+          "op": "eq",
+          "value": false
+        },
+        {
+          "at": "after",
+          "key": "mayor.performance_style",
+          "op": "eq",
+          "value": "quiet_procession"
+        },
+        {
+          "at": "after",
+          "key": "mayor.response",
+          "op": "eq",
+          "value": "proud"
+        },
+        {
+          "at": "after",
+          "key": "recipient.received",
+          "op": "eq",
+          "value": true
+        },
+        {
+          "at": "after",
+          "key": "recipient.response",
+          "op": "eq",
+          "value": "grateful"
+        }
+      ],
+      "evidence": {
+        "state": {
+          "ada.want": "deliver a book",
+          "ada.courage": 2,
+          "ada.delivered": false,
+          "ada.location": "library",
+          "mayor.want": "the biggest parade",
+          "mayor.boastful": false,
+          "mayor.performance_style": "quiet_procession",
+          "mayor.response": "proud",
+          "mayor.location": "square",
+          "builder.want": "make useful things",
+          "builder.skill": 3,
+          "builder.location": "workshop",
+          "recipient.want": "quiet",
+          "recipient.received": true,
+          "recipient.response": "grateful",
+          "recipient.location": "square",
+          "cart.owner": "ada",
+          "cart.location": "square",
+          "cart.condition": "ready",
+          "cart.cover": "tied",
+          "book.owner": "recipient",
+          "book.location": "library",
+          "library.open": true,
+          "workshop.open": true,
+          "square.wind": "breezy",
+          "ada.knows.square.wind": "breezy",
+          "builder.knows.square.wind": "breezy",
+          "ada.knows.recipient.want": "quiet",
+          "mayor.knows.recipient.want": "quiet",
+          "cart.loaned_by": "builder",
+          "mayor.knows.book.owner": "recipient"
+        }
+      },
+      "variants": 1
+    },
+    "opening.a1c1636db01e": {
+      "section": "openings",
+      "scene": null,
+      "role": "beat",
+      "when": [
+        {
+          "at": "initial",
+          "key": "cart.condition",
+          "op": "eq",
+          "value": "damaged"
+        },
+        {
+          "at": "initial",
+          "key": "recipient.want",
+          "op": "eq",
+          "value": "quiet"
+        },
+        {
+          "at": "initial",
+          "key": "square.wind",
+          "op": "eq",
+          "value": "breezy"
+        }
+      ],
+      "evidence": {
+        "state": {
+          "ada.want": "deliver a book",
+          "ada.courage": 2,
+          "ada.delivered": false,
+          "ada.location": "library",
+          "mayor.want": "the biggest parade",
+          "mayor.boastful": true,
+          "mayor.performance_style": null,
+          "mayor.response": "none",
+          "mayor.location": "square",
+          "builder.want": "make useful things",
+          "builder.skill": 3,
+          "builder.location": "workshop",
+          "recipient.want": "quiet",
+          "recipient.received": false,
+          "recipient.response": "none",
+          "recipient.location": "square",
+          "cart.owner": "builder",
+          "cart.location": "workshop",
+          "cart.condition": "damaged",
+          "cart.cover": "loose",
+          "book.owner": "ada",
+          "book.location": "library",
+          "library.open": true,
+          "workshop.open": true,
+          "square.wind": "breezy",
+          "ada.knows.square.wind": null,
+          "builder.knows.square.wind": null,
+          "ada.knows.recipient.want": null,
+          "mayor.knows.recipient.want": null,
+          "builder.knows.cart.condition": null,
+          "cart.loaned_by": null,
+          "mayor.knows.book.owner": null
+        }
+      },
+      "variants": 1
+    },
+    "opening.08d643eb285c": {
+      "section": "openings",
+      "scene": null,
+      "role": "beat",
+      "when": [
+        {
+          "at": "initial",
+          "key": "cart.condition",
+          "op": "eq",
+          "value": "ready"
+        },
+        {
+          "at": "initial",
+          "key": "recipient.want",
+          "op": "eq",
+          "value": "join"
+        },
+        {
+          "at": "initial",
+          "key": "square.wind",
+          "op": "eq",
+          "value": "breezy"
+        }
+      ],
+      "evidence": {
+        "state": {
+          "ada.want": "deliver a book",
+          "ada.courage": 2,
+          "ada.delivered": false,
+          "ada.location": "library",
+          "mayor.want": "the biggest parade",
+          "mayor.boastful": true,
+          "mayor.performance_style": null,
+          "mayor.response": "none",
+          "mayor.location": "square",
+          "builder.want": "make useful things",
+          "builder.skill": 3,
+          "builder.location": "workshop",
+          "recipient.want": "join",
+          "recipient.received": false,
+          "recipient.response": "none",
+          "recipient.location": "square",
+          "cart.owner": "builder",
+          "cart.location": "workshop",
+          "cart.condition": "ready",
+          "cart.cover": "loose",
+          "book.owner": "ada",
+          "book.location": "library",
+          "library.open": true,
+          "workshop.open": true,
+          "square.wind": "breezy",
+          "ada.knows.square.wind": null,
+          "builder.knows.square.wind": null,
+          "ada.knows.recipient.want": null,
+          "mayor.knows.recipient.want": null,
+          "builder.knows.cart.condition": null,
+          "cart.loaned_by": null,
+          "mayor.knows.book.owner": null
+        }
+      },
+      "variants": 1
+    },
+    "ending.929aa7cdb5e2": {
+      "section": "endings",
+      "scene": null,
+      "role": "beat",
+      "when": [
+        {
+          "at": "after",
+          "key": "book.owner",
+          "op": "eq",
+          "value": "recipient"
+        },
+        {
+          "at": "after",
+          "key": "cart.condition",
+          "op": "eq",
+          "value": "ready"
+        },
+        {
+          "at": "after",
+          "key": "cart.cover",
+          "op": "eq",
+          "value": "tied"
+        },
+        {
+          "at": "after",
+          "key": "mayor.boastful",
+          "op": "eq",
+          "value": false
+        },
+        {
+          "at": "after",
+          "key": "mayor.performance_style",
+          "op": "eq",
+          "value": "welcoming_parade"
+        },
+        {
+          "at": "after",
+          "key": "mayor.response",
+          "op": "eq",
+          "value": "cheering"
+        },
+        {
+          "at": "after",
+          "key": "recipient.received",
+          "op": "eq",
+          "value": true
+        },
+        {
+          "at": "after",
+          "key": "recipient.response",
+          "op": "eq",
+          "value": "delighted"
+        }
+      ],
+      "evidence": {
+        "state": {
+          "ada.want": "deliver a book",
+          "ada.courage": 2,
+          "ada.delivered": false,
+          "ada.location": "library",
+          "mayor.want": "the biggest parade",
+          "mayor.boastful": false,
+          "mayor.performance_style": "welcoming_parade",
+          "mayor.response": "cheering",
+          "mayor.location": "square",
+          "builder.want": "make useful things",
+          "builder.skill": 3,
+          "builder.location": "workshop",
+          "recipient.want": "join",
+          "recipient.received": true,
+          "recipient.response": "delighted",
+          "recipient.location": "square",
+          "cart.owner": "ada",
+          "cart.location": "square",
+          "cart.condition": "ready",
+          "cart.cover": "tied",
+          "book.owner": "recipient",
+          "book.location": "library",
+          "library.open": true,
+          "workshop.open": true,
+          "square.wind": "breezy",
+          "ada.knows.square.wind": "breezy",
+          "builder.knows.square.wind": "breezy",
+          "ada.knows.recipient.want": "join",
+          "mayor.knows.recipient.want": "join",
+          "cart.loaned_by": "builder",
+          "mayor.knows.book.owner": "recipient"
+        }
+      },
+      "variants": 1
+    },
+    "opening.b2b8e62b3f54": {
+      "section": "openings",
+      "scene": null,
+      "role": "beat",
+      "when": [
+        {
+          "at": "initial",
+          "key": "cart.condition",
+          "op": "eq",
+          "value": "damaged"
+        },
+        {
+          "at": "initial",
+          "key": "recipient.want",
+          "op": "eq",
+          "value": "join"
+        },
+        {
+          "at": "initial",
+          "key": "square.wind",
+          "op": "eq",
+          "value": "breezy"
+        }
+      ],
+      "evidence": {
+        "state": {
+          "ada.want": "deliver a book",
+          "ada.courage": 2,
+          "ada.delivered": false,
+          "ada.location": "library",
+          "mayor.want": "the biggest parade",
+          "mayor.boastful": true,
+          "mayor.performance_style": null,
+          "mayor.response": "none",
+          "mayor.location": "square",
+          "builder.want": "make useful things",
+          "builder.skill": 3,
+          "builder.location": "workshop",
+          "recipient.want": "join",
+          "recipient.received": false,
+          "recipient.response": "none",
+          "recipient.location": "square",
+          "cart.owner": "builder",
+          "cart.location": "workshop",
+          "cart.condition": "damaged",
+          "cart.cover": "loose",
+          "book.owner": "ada",
+          "book.location": "library",
+          "library.open": true,
+          "workshop.open": true,
+          "square.wind": "breezy",
+          "ada.knows.square.wind": null,
+          "builder.knows.square.wind": null,
+          "ada.knows.recipient.want": null,
+          "mayor.knows.recipient.want": null,
+          "builder.knows.cart.condition": null,
+          "cart.loaned_by": null,
+          "mayor.knows.book.owner": null
+        }
+      },
+      "variants": 1
+    }
+  },
+  "unselected_scenes": [
+    "load_book"
+  ]
+}

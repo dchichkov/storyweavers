@@ -1,0 +1,54 @@
+{
+  "world": "clocktower_club",
+  "title": "The Clocktower Club: Three Chimes and a Dragon",
+  "ok": true,
+  "samples": 100,
+  "simulation_sha256": "a26e4f59591d4dc2ea1a6dddfb7f8b0d68ede2205cf76a1327c96839f40efc06",
+  "generator_sha256": "82d58cebb9b12209535a1ebbf82ce184e63d3a5bc908ac9a1e8ab1602e205f0b",
+  "catalog_sha256": "7542279db53fde73fbdb85398901d9e6f93fa0ac4f207835e9c8f0483dc2eab4",
+  "distinct_texts": 16,
+  "distinct_scene_paths": 12,
+  "word_range": [
+    398,
+    440
+  ],
+  "prose_control_variants": 1,
+  "mechanics_model": "gpt-5.6-luna",
+  "mechanics_attempts": 1,
+  "prose_model": "gpt-5.6-luna",
+  "stats": {
+    "samples": 100,
+    "ordered_paths": 12,
+    "scene_sets": 4,
+    "causal_graphs": 2,
+    "outcomes": 4,
+    "premises": 3,
+    "events_range": [
+      11,
+      12
+    ],
+    "pruned_events": 235
+  },
+  "critic_before_revision": {
+    "issues": [
+      {
+        "seed": 124,
+        "severity": "major",
+        "layer": "simulation",
+        "defect": "contradiction",
+        "evidence": "The story says, “The neighbor woke with a startled grin and peered into the tower,” but the final trace still sets `neighbor.awake` to `false`; the only neighbor event changes the response to `startled`.",
+        "fix": "Add a trace change setting `neighbor.awake` from `false` to `true` when the bell wakes them, or revise the prose so the neighbor remains asleep."
+      },
+      {
+        "seed": 791,
+        "severity": "minor",
+        "layer": "prose",
+        "defect": "contradiction",
+        "evidence": "Pip “tugged the short rope” and rang the bell before the later scene says the latch “clicked open, revealing two ropes,” despite the trace placing `inspect_soft_rope` before `unlock_bell`.",
+        "fix": "Have Pip inspect or identify the short practice rope without pulling it before unlocking, or move the early soft-ring event to after the unlocking scene."
+      }
+    ],
+    "strengths": "Seeds 123 and 791 otherwise closely realize their ownership, knowledge transfer, unlocking, choice, meeting, and neighbor-response traces; none expose raw enum values or duplicate event-log prose."
+  },
+  "final_catalog_attempt": 1
+}

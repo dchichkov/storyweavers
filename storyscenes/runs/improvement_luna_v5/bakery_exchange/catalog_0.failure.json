@@ -1,0 +1,18 @@
+{
+  "error": "Traceback (most recent call last):\n  File \"/Users/dmitry/storyweavers/storyscenes/runs/improvement_luna_v5/_runtime/worker.py\", line 102, in <module>\n    main()\n  File \"/Users/dmitry/storyweavers/storyscenes/runs/improvement_luna_v5/_runtime/worker.py\", line 97, in main\n    for row in sample(args.world, seeds, prose=args.prose, prose_seed=args.prose_seed):\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/dmitry/storyweavers/storyscenes/runs/improvement_luna_v5/_runtime/worker.py\", line 63, in sample\n    row = generator.generate(seed, ps)\n          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/dmitry/storyweavers/storyscenes/runs/improvement_luna_v5/bakery_exchange/generator.py\", line 11, in generate\n    return realize(solve(build(seed), seed), render, seed if prose_seed is None else prose_seed)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/dmitry/storyweavers/storyscenes/runs/improvement_luna_v5/_runtime/runtime.py\", line 267, in realize\n    paragraphs = render(view, random.Random(prose_seed))\n                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/dmitry/storyweavers/storyscenes/runs/improvement_luna_v5/bakery_exchange/generator.py\", line 8, in render\n    return render_book(run, rng, BOOK)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/dmitry/storyweavers/storyscenes/runs/improvement_luna_v5/_runtime/prose.py\", line 79, in render_book\n    paragraphs.append(card(book[\"openings\"], None, \"beginning\"))\n                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/dmitry/storyweavers/storyscenes/runs/improvement_luna_v5/_runtime/prose.py\", line 55, in card\n    raise StoryError(f\"No eligible prose card: {kind}/{event['scene'] if event else 'opening'}; tested state: {values}\")\nruntime.StoryError: No eligible prose card: beginning/opening; tested state: {'initial': {'label.text': 'pepper', 'ada.promise': 'share', 'button.mark': 'cinnamon'}, 'before': {'label.text': 'pepper', 'ada.promise': 'share', 'button.mark': 'cinnamon'}, 'after': {'label.text': 'pepper', 'ada.promise': 'share', 'button.mark': 'cinnamon'}}\n",
+  "failed_seeds": [
+    1015,
+    1023,
+    1024,
+    1026,
+    1044,
+    1047,
+    1050,
+    1067,
+    1071,
+    1083
+  ],
+  "distinct_failures": [
+    "No eligible prose card: beginning/opening; tested state: {'initial': {'button.mark': 'cinnamon', 'ada.promise': 'share', 'label.text': 'pepper'}, 'before': {'button.mark': 'cinnamon', 'ada.promise': 'share', 'label.text': 'pepper'}, 'after': {'button.mark': 'cinnamon', 'ada.promise': 'share', 'label.text': 'pepper'}}"
+  ]
+}

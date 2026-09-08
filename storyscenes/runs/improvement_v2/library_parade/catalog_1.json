@@ -1,0 +1,550 @@
+{
+  "openings": [
+    {
+      "text": "Mayor Bramble tied a red sash to the book cart. “Tonight, the biggest parade wins my golden megaphone!” he boomed. Mina hugged the waiting books, while Tuck polished a wheel until it winked.",
+      "when": []
+    },
+    {
+      "text": "The library smelled of paper, dust, and one cinnamon biscuit. Bramble fastened the sash to the cart and promised a golden megaphone to the grandest parade. Mina watched the books waiting for readers; Tuck admired the cart’s splendid wheels.",
+      "when": [
+        {
+          "key": "bramble.motive",
+          "op": "eq",
+          "value": "biggest",
+          "at": "initial"
+        }
+      ]
+    },
+    {
+      "text": "Bramble tied on the sash. “A useful parade can be grand too,” he announced. Mina brightened, but Tuck still wondered whether the cart should march to readers or pose beneath the mayor’s judging eyes.",
+      "when": [
+        {
+          "key": "bramble.motive",
+          "op": "eq",
+          "value": "useful",
+          "at": "initial"
+        }
+      ]
+    },
+    {
+      "text": "Mina knew the readers were waiting at home, though Bramble pointed toward the square. Tuck heard the word “judge” and imagined every wheel receiving a shiny medal.",
+      "when": [
+        {
+          "key": "mina.knows.audience_location",
+          "op": "eq",
+          "value": "homes",
+          "at": "initial"
+        }
+      ]
+    },
+    {
+      "text": "Mina expected townspeople at the square, Tuck expected Mayor Bramble to judge the cart, and the red sash fluttered between them like a tiny flag with a secret.",
+      "when": [
+        {
+          "key": "mina.knows.audience_location",
+          "op": "eq",
+          "value": "square",
+          "at": "initial"
+        }
+      ]
+    },
+    {
+      "text": "Somewhere beyond the library, readers were waiting, but Mina did not yet know where. Bramble wanted noise, and Tuck wanted his cart admired.",
+      "when": [
+        {
+          "key": "mina.knows.audience_location",
+          "op": "eq",
+          "value": null,
+          "at": "initial"
+        }
+      ]
+    }
+  ],
+  "scenes": [
+    {
+      "scene": "tie_sash",
+      "role": "bridge",
+      "variants": [
+        {
+          "text": "Bramble tied the sash tight, and the cart suddenly looked ready to lead a parade—or a very fancy queue.",
+          "when": []
+        }
+      ]
+    },
+    {
+      "scene": "hear_boast",
+      "role": "beat",
+      "variants": [
+        {
+          "text": "Mina leaned close as Bramble explained his plan. “The largest-looking parade!” he said. “Noise enough to rattle the library dust.” Mina glanced at the waiting books.",
+          "when": [
+            {
+              "key": "mina.knows.bramble.motive",
+              "op": "eq",
+              "value": "biggest",
+              "at": "after"
+            }
+          ]
+        },
+        {
+          "text": "“A useful parade would be splendid too,” Bramble declared. Mina brightened. Tuck patted one wheel, as if it had just been invited to dinner.",
+          "when": [
+            {
+              "key": "mina.knows.bramble.motive",
+              "op": "eq",
+              "value": "useful",
+              "at": "after"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "scene": "tuck_hears_boast",
+      "role": "bridge",
+      "variants": [
+        {
+          "text": "Tuck listened with both hands on the handle. He pictured Mayor Bramble inspecting every wheel with a solemn, impressive squint.",
+          "when": []
+        }
+      ]
+    },
+    {
+      "scene": "inspect_waiting_books",
+      "role": "beat",
+      "variants": [
+        {
+          "text": "Mina opened the bundle and discovered moon tales, puzzle books, and dragon dictionaries still waiting for their readers. “They have places to go,” she whispered. “They just need wheels.”",
+          "when": [
+            {
+              "key": "mina.knows.books.waiting",
+              "op": "eq",
+              "value": true,
+              "at": "after"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "scene": "tell_tuck_about_readers",
+      "role": "bridge",
+      "variants": [
+        {
+          "text": "“These books are promised to readers beyond the steps,” Mina told Tuck. Tuck looked at the cart, then at his splendidly polished wheels.",
+          "when": []
+        }
+      ]
+    },
+    {
+      "scene": "prepare_for_mayor",
+      "role": "beat",
+      "variants": [
+        {
+          "text": "Tuck buffed the handle until it shone. “When Mayor Bramble judges us, this cart will stand taller than a giraffe in a hat!” Mina wondered about the readers.",
+          "when": [
+            {
+              "key": "cart.display_ready",
+              "op": "eq",
+              "value": true,
+              "at": "after"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "scene": "switch_to_matched",
+      "role": "beat",
+      "variants": [
+        {
+          "text": "Mina lifted the tallest stack, then set it down. “Not a tower,” she decided. “A book for each waiting reader.” The cart seemed to breathe easier.",
+          "when": [
+            {
+              "key": "cart.load_style",
+              "op": "eq",
+              "value": "matched",
+              "at": "after"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "scene": "load_matched_books",
+      "role": "beat",
+      "variants": [
+        {
+          "text": "Mina loaded reader-sized bundles: a dragon dictionary for one child, a puzzle book for another, and a moon tale on top. “Ready,” she said. “Not for showing off. For arriving.”",
+          "when": [
+            {
+              "key": "cart.loaded",
+              "op": "eq",
+              "value": true,
+              "at": "after"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "scene": "stack_high",
+      "role": "beat",
+      "variants": [
+        {
+          "text": "Tuck piled the books into a wobbling tower. “Behold!” he cried. The top book leaned left, the middle book leaned right, and the cart looked wonderfully enormous.",
+          "when": [
+            {
+              "key": "cart.loaded",
+              "op": "eq",
+              "value": true,
+              "at": "after"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "scene": "attach_bell",
+      "role": "bridge",
+      "variants": [
+        {
+          "text": "Tuck clipped on the brass bell. It gave a bright jingle, volunteering for the most important job in town.",
+          "when": [
+            {
+              "key": "cart.bell",
+              "op": "eq",
+              "value": true,
+              "at": "after"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "scene": "ring_square",
+      "role": "beat",
+      "variants": [
+        {
+          "text": "Tuck rang the bell—CLANG!—and rolled the tall cart to the steps. The sash streamed behind it while the book tower wobbled like a well-read pudding.",
+          "when": [
+            {
+              "key": "parade.kind",
+              "op": "eq",
+              "value": "spectacle",
+              "at": "after"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "scene": "turn_to_homes",
+      "role": "beat",
+      "variants": [
+        {
+          "text": "Mina seized the handle. “The readers are waiting this way.” Tuck pushed beside her, and the cart turned toward the homes, carrying books chosen for actual hands.",
+          "when": [
+            {
+              "key": "parade.kind",
+              "op": "eq",
+              "value": "delivery",
+              "at": "after"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "scene": "deliver_first_book",
+      "role": "beat",
+      "variants": [
+        {
+          "text": "At the first doorway, Mina handed over a book. The cart grew lighter, and a delighted gasp popped out like a cork. Tuck whispered, “That is excellent parade noise.”",
+          "when": [
+            {
+              "key": "books.delivered",
+              "op": "eq",
+              "value": true,
+              "at": "after"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "scene": "mayor_follows",
+      "role": "bridge",
+      "variants": [
+        {
+          "text": "Bramble hurried after the cart, expecting cheers to catch up. The wheels made only a friendly rumble, but he kept marching.",
+          "when": []
+        }
+      ]
+    },
+    {
+      "scene": "mayor_checks_steps",
+      "role": "beat",
+      "variants": [
+        {
+          "text": "Bramble marched to the steps and discovered only a small crowd. One pigeon looked interested. “Is that the audience?” he asked. The pigeon turned around.",
+          "when": [
+            {
+              "key": "bramble.location",
+              "op": "eq",
+              "value": "steps",
+              "at": "after"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "scene": "discover_small_crowd",
+      "role": "beat",
+      "variants": [
+        {
+          "text": "Bramble discovered that the square was quiet. Down the lane, warm windows waited like open book covers.",
+          "when": [
+            {
+              "key": "bramble.knows.steps.crowd",
+              "op": "eq",
+              "value": "small",
+              "at": "after"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "scene": "mayor_returns_to_library",
+      "role": "bridge",
+      "variants": [
+        {
+          "text": "Bramble returned to the library, folding his enormous announcement into a much smaller voice.",
+          "when": [
+            {
+              "key": "bramble.location",
+              "op": "eq",
+              "value": "library",
+              "at": "after"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "scene": "tell_mayor_about_readers",
+      "role": "beat",
+      "variants": [
+        {
+          "text": "Mina told Bramble about the readers waiting at home and the books chosen for them. His golden megaphone suddenly seemed very large.",
+          "when": [
+            {
+              "key": "bramble.knows.books.waiting",
+              "op": "eq",
+              "value": true,
+              "at": "after"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "scene": "agree_small_can_be_grand",
+      "role": "beat",
+      "variants": [
+        {
+          "text": "Bramble removed his mayoral hat. “Perhaps grand means arriving where someone is waiting,” he said. Tuck measured the megaphone with his elbow.",
+          "when": [
+            {
+              "key": "bramble.agreement",
+              "op": "eq",
+              "value": true,
+              "at": "after"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "scene": "give_prize_to_tuck",
+      "role": "beat",
+      "variants": [
+        {
+          "text": "Bramble handed Tuck the golden megaphone. Tuck held it like a handle, grinning brighter than the brass.",
+          "when": [
+            {
+              "key": "prize.owner",
+              "op": "eq",
+              "value": "tuck",
+              "at": "after"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "scene": "give_prize_to_mina",
+      "role": "beat",
+      "variants": [
+        {
+          "text": "Bramble placed the golden megaphone in Mina’s hands. She set it beside the books, where it looked like a shiny bookmark.",
+          "when": [
+            {
+              "key": "prize.owner",
+              "op": "eq",
+              "value": "mina",
+              "at": "after"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "scene": "quiet_parade",
+      "role": "beat",
+      "variants": [
+        {
+          "text": "On the steps, Mina chose a book for each listener. Tuck lowered the tower, and Bramble rang the bell once—softly. Children waved as the books opened like bright little doors.",
+          "when": [
+            {
+              "key": "parade.kind",
+              "op": "eq",
+              "value": "welcome",
+              "at": "after"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "endings": [
+    {
+      "text": "The cart stood at the steps, piled high beneath its streaming sash. Bramble shouted into the golden megaphone, so large that only his eyebrows could be seen.",
+      "when": [
+        {
+          "key": "parade.kind",
+          "op": "eq",
+          "value": "spectacle",
+          "at": "after"
+        }
+      ]
+    },
+    {
+      "text": "The tower wobbled, the bell clanged, and the mayor’s enormous prize swallowed his face while the books waited in their bundle.",
+      "when": [
+        {
+          "key": "parade.kind",
+          "op": "eq",
+          "value": "spectacle",
+          "at": "after"
+        },
+        {
+          "key": "books.delivered",
+          "op": "eq",
+          "value": false,
+          "at": "after"
+        }
+      ]
+    },
+    {
+      "text": "The cart rolled toward the waiting homes. Even before the first book left, the lane seemed to lean closer, listening.",
+      "when": [
+        {
+          "key": "parade.kind",
+          "op": "eq",
+          "value": "delivery",
+          "at": "after"
+        },
+        {
+          "key": "books.delivered",
+          "op": "eq",
+          "value": false,
+          "at": "after"
+        }
+      ]
+    },
+    {
+      "text": "Books left the cart one by one, and open pages glowed in separate doorways along the lane. Mina carried the prize while Tuck steadied the sash.",
+      "when": [
+        {
+          "key": "parade.kind",
+          "op": "eq",
+          "value": "delivery",
+          "at": "after"
+        },
+        {
+          "key": "books.delivered",
+          "op": "eq",
+          "value": true,
+          "at": "after"
+        },
+        {
+          "key": "prize.owner",
+          "op": "eq",
+          "value": "mina",
+          "at": "after"
+        }
+      ]
+    },
+    {
+      "text": "Books left the cart one by one, and open pages glowed in separate doorways along the lane. Tuck held the golden megaphone like a splendid handle.",
+      "when": [
+        {
+          "key": "parade.kind",
+          "op": "eq",
+          "value": "delivery",
+          "at": "after"
+        },
+        {
+          "key": "books.delivered",
+          "op": "eq",
+          "value": true,
+          "at": "after"
+        },
+        {
+          "key": "prize.owner",
+          "op": "eq",
+          "value": "tuck",
+          "at": "after"
+        }
+      ]
+    },
+    {
+      "text": "The parade became small enough for the library steps and large enough for every waiting reader. One soft bell chime floated out as children waved.",
+      "when": [
+        {
+          "key": "parade.kind",
+          "op": "eq",
+          "value": "welcome",
+          "at": "after"
+        },
+        {
+          "key": "bramble.agreement",
+          "op": "eq",
+          "value": true,
+          "at": "after"
+        }
+      ]
+    },
+    {
+      "text": "Tuck lowered the tower, Mina lined up the books, and Bramble smiled at the little procession. The brass bell gave one gentle chime.",
+      "when": [
+        {
+          "key": "parade.kind",
+          "op": "eq",
+          "value": "welcome",
+          "at": "after"
+        },
+        {
+          "key": "prize.owner",
+          "op": "eq",
+          "value": "mina",
+          "at": "after"
+        }
+      ]
+    }
+  ],
+  "lexicon": []
+}

@@ -1,0 +1,150 @@
+{
+  "id": "resp_08b9150e60ae0a79016a9f9fea66dc87d0ac131e1c584e107e",
+  "created_at": 1788846058.0,
+  "error": null,
+  "incomplete_details": null,
+  "instructions": null,
+  "metadata": {},
+  "model": "gpt-5.6-luna",
+  "object": "response",
+  "output": [
+    {
+      "id": "msg_08b9150e60ae0a79016a9f9febf25487d088434d397c11e819",
+      "content": [
+        {
+          "annotations": [],
+          "text": "{\"edits\":[{\"old\":\"            set_values={'bram.promise': 'settled'},\\n            pivotal=True,\",\"new\":\"            pivotal=True,\"}],\"renames\":[]}",
+          "type": "output_text",
+          "logprobs": []
+        }
+      ],
+      "role": "assistant",
+      "status": "completed",
+      "type": "message",
+      "phase": "final_answer"
+    }
+  ],
+  "parallel_tool_calls": true,
+  "temperature": 1.0,
+  "tool_choice": "auto",
+  "tools": [],
+  "top_p": 0.98,
+  "background": false,
+  "completed_at": 1788846060.0,
+  "conversation": null,
+  "max_output_tokens": 3500,
+  "max_tool_calls": null,
+  "moderation": null,
+  "previous_response_id": null,
+  "prompt": null,
+  "prompt_cache_key": null,
+  "prompt_cache_retention": "24h",
+  "reasoning": {
+    "context": "all_turns",
+    "effort": "low",
+    "generate_summary": null,
+    "summary": null,
+    "mode": "standard"
+  },
+  "safety_identifier": null,
+  "service_tier": "flex",
+  "status": "completed",
+  "text": {
+    "format": {
+      "name": "storyscenes_artifact",
+      "schema_": {
+        "type": "object",
+        "properties": {
+          "edits": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "old": {
+                  "type": "string"
+                },
+                "new": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "old",
+                "new"
+              ],
+              "additionalProperties": false
+            },
+            "maxItems": 8
+          },
+          "renames": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "old": {
+                  "type": "string"
+                },
+                "new": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "old",
+                "new"
+              ],
+              "additionalProperties": false
+            },
+            "maxItems": 4
+          }
+        },
+        "required": [
+          "edits",
+          "renames"
+        ],
+        "additionalProperties": false
+      },
+      "type": "json_schema",
+      "description": null,
+      "strict": true
+    },
+    "verbosity": "medium"
+  },
+  "top_logprobs": 0,
+  "truncation": "disabled",
+  "usage": {
+    "input_tokens": 6313,
+    "input_tokens_details": {
+      "cached_tokens": 0,
+      "cache_write_tokens": 6310
+    },
+    "output_tokens": 49,
+    "output_tokens_details": {
+      "reasoning_tokens": 0
+    },
+    "total_tokens": 6362
+  },
+  "user": null,
+  "billing": {
+    "payer": "openai"
+  },
+  "frequency_penalty": 0.0,
+  "presence_penalty": 0.0,
+  "store": false,
+  "tool_usage": {
+    "image_gen": {
+      "input_tokens": 0,
+      "input_tokens_details": {
+        "image_tokens": 0,
+        "text_tokens": 0
+      },
+      "output_tokens": 0,
+      "output_tokens_details": {
+        "image_tokens": 0,
+        "text_tokens": 0
+      },
+      "total_tokens": 0
+    },
+    "web_search": {
+      "num_requests": 0
+    }
+  }
+}

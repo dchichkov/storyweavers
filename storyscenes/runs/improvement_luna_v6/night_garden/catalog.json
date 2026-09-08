@@ -1,0 +1,542 @@
+{
+  "openings": [
+    {
+      "text": "Ada swung open the garden gate and called a welcome into the dark. She wanted a grand parade of shadows, while Bo prepared a moonflower welcome for their shy visitor. Somewhere in the garden, Pip waited for an invitation gentle enough to follow.",
+      "when": [
+        {
+          "key": "ada.plan",
+          "op": "eq",
+          "value": "moving",
+          "at": "initial"
+        },
+        {
+          "key": "bo.plan",
+          "op": "eq",
+          "value": "flowers",
+          "at": "initial"
+        }
+      ]
+    },
+    {
+      "text": "Ada opened the gate with a flourish. “Tonight, a moon performance!” she announced. Bo held up one quiet finger and prepared a soft-bell invitation. Somewhere nearby, a tiny moth listened.",
+      "when": [
+        {
+          "key": "ada.plan",
+          "op": "eq",
+          "value": "moving",
+          "at": "initial"
+        },
+        {
+          "key": "bo.plan",
+          "op": "eq",
+          "value": "bell",
+          "at": "initial"
+        }
+      ]
+    },
+    {
+      "text": "The gate creaked open beneath the rising moon. Ada had planned a still paper-moon tableau, while Bo prepared a flowery welcome. They hoped their hidden guest would come close. Pip folded its wings and waited.",
+      "when": [
+        {
+          "key": "ada.plan",
+          "op": "eq",
+          "value": "tableau",
+          "at": "initial"
+        },
+        {
+          "key": "bo.plan",
+          "op": "eq",
+          "value": "flowers",
+          "at": "initial"
+        }
+      ]
+    },
+    {
+      "text": "Ada opened the garden gate and bowed to the dark. “My paper moon is ready!” she said. Bo kept a silver bell nearby for a quiet invitation. The shy moth waited somewhere in the garden.",
+      "when": [
+        {
+          "key": "ada.plan",
+          "op": "eq",
+          "value": "tableau",
+          "at": "initial"
+        },
+        {
+          "key": "bo.plan",
+          "op": "eq",
+          "value": "bell",
+          "at": "initial"
+        }
+      ]
+    }
+  ],
+  "scenes": [
+    {
+      "scene": "open_gate",
+      "role": "beat",
+      "variants": [
+        {
+          "text": "Ada pulled the gate wide and called, “Welcome, Pip! Come see the moon!” The hinges gave a tiny squeak, as if the garden itself had answered.",
+          "when": []
+        }
+      ]
+    },
+    {
+      "scene": "look_for_pip",
+      "role": "beat",
+      "variants": [
+        {
+          "text": "Ada peered beneath the leaves and discovered Pip hiding there, its wings tucked like two folded commas. “Oh,” she breathed. “It is smaller than my shadow parade.”",
+          "when": [
+            {
+              "key": "ada.knows.pip.location",
+              "op": "eq",
+              "value": "leaves",
+              "at": "after"
+            }
+          ]
+        },
+        {
+          "text": "Ada glanced toward the gate and discovered Pip tucked behind it, only two feelers showing. “There you are,” she whispered, lowering her grand voice to a crumb.",
+          "when": [
+            {
+              "key": "ada.knows.pip.location",
+              "op": "eq",
+              "value": "gate",
+              "at": "after"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "scene": "inspect_lamp",
+      "role": "bridge",
+      "variants": [
+        {
+          "text": "Ada checked the lamp, squinting at its glow before choosing her next move.",
+          "when": []
+        }
+      ]
+    },
+    {
+      "scene": "tell_pip_place",
+      "role": "beat",
+      "variants": [
+        {
+          "text": "Ada hurried to Bo. “Pip is hiding under the leaves,” she said. Bo leaned closer, suddenly very interested in the quiet places.",
+          "when": [
+            {
+              "key": "ada.knows.pip.location",
+              "op": "eq",
+              "value": "leaves",
+              "at": "after"
+            }
+          ]
+        },
+        {
+          "text": "Ada hurried to Bo. “Pip is tucked behind the gate,” she said. Bo leaned closer, suddenly very interested in the quiet places.",
+          "when": [
+            {
+              "key": "ada.knows.pip.location",
+              "op": "eq",
+              "value": "gate",
+              "at": "after"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "scene": "tell_lamp",
+      "role": "bridge",
+      "variants": [
+        {
+          "text": "Ada told Bo exactly how the lamp glowed, and Bo took the news with a thoughtful little hum.",
+          "when": [
+            {
+              "key": "ada.knows.lamp.brightness",
+              "op": "ne",
+              "value": null,
+              "at": "after"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "scene": "pass_lamp",
+      "role": "beat",
+      "variants": [
+        {
+          "text": "Ada placed the lamp in Bo’s hands. “You hold the sun,” she said. Bo held it carefully. “A very small sun,” he replied, “with very large opinions.”",
+          "when": []
+        }
+      ]
+    },
+    {
+      "scene": "choose_still_tableau",
+      "role": "beat",
+      "variants": [
+        {
+          "text": "When Ada learned Pip was hiding under the leaves, her sweeping arms drooped. Then she smiled. \"A grand show can whisper.\" She changed it into a still paper-moon tableau, with one tiny space for a moth.",
+          "when": [
+            {
+              "key": "ada.plan",
+              "op": "eq",
+              "value": "tableau",
+              "at": "after"
+            },
+            {
+              "key": "ada.knows.pip.location",
+              "op": "eq",
+              "value": "leaves",
+              "at": "before"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "scene": "tie_welcome_ribbon",
+      "role": "bridge",
+      "variants": [
+        {
+          "text": "Bo tied the welcome ribbon to the gate. It bobbed in the lamplight like a friendly noodle waiting for a hello.",
+          "when": []
+        }
+      ]
+    },
+    {
+      "scene": "place_paper_moon",
+      "role": "bridge",
+      "variants": [
+        {
+          "text": "Ada hung the paper moon on the gate, where its crooked silver smile faced the garden.",
+          "when": []
+        }
+      ]
+    },
+    {
+      "scene": "ring_soft_bell",
+      "role": "beat",
+      "variants": [
+        {
+          "text": "Bo rang the bell once. Ting! The note floated away so softly that even the flowers seemed to listen.",
+          "when": []
+        }
+      ]
+    },
+    {
+      "scene": "scent_moonflowers",
+      "role": "beat",
+      "variants": [
+        {
+          "text": "Bo brushed the moonflowers, and their sweet scent drifted through the gate. “No trumpets,” he said. “Just noses.”",
+          "when": []
+        }
+      ]
+    },
+    {
+      "scene": "soften_lamp_ada",
+      "role": "bridge",
+      "variants": [
+        {
+          "text": "Ada shaded the bright lamp until it became soft, turning the hard white circle into a sleepy pool.",
+          "when": [
+            {
+              "key": "lamp.brightness",
+              "op": "eq",
+              "value": "soft",
+              "at": "after"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "scene": "soften_lamp_bo",
+      "role": "bridge",
+      "variants": [
+        {
+          "text": "Bo cupped his hands around the bright lamp until its glow softened. “There,” he whispered. “A moon, not a shout.”",
+          "when": [
+            {
+              "key": "lamp.brightness",
+              "op": "eq",
+              "value": "soft",
+              "at": "after"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "scene": "brighten_lamp_ada",
+      "role": "bridge",
+      "variants": [
+        {
+          "text": "Ada brightened the soft lamp. Her fingers twirled, and the gate filled with a splendid, bouncing rabbit shadow.",
+          "when": [
+            {
+              "key": "lamp.brightness",
+              "op": "eq",
+              "value": "bright",
+              "at": "after"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "scene": "perform_moving_shadows",
+      "role": "beat",
+      "variants": [
+        {
+          "text": "Ada performed her sweeping shadow show: a rabbit hopped, a dragon sneezed, and a turnip wore a crown. The bright shapes leaped across the gate while Ada whispered, “Ta-da!”",
+          "when": []
+        }
+      ]
+    },
+    {
+      "scene": "perform_still_tableau",
+      "role": "beat",
+      "variants": [
+        {
+          "text": "Ada performed the still tableau. She held the paper moon perfectly quiet, while her small moth-shaped hands made one gentle shadow. Even her toes stayed frozen, though one of them wiggled with excitement.",
+          "when": []
+        }
+      ]
+    },
+    {
+      "scene": "pip_lands_flowers",
+      "role": "beat",
+      "variants": [
+        {
+          "text": "Pip discovered the moonflower scent and landed among the pale blossoms. The moth’s wings opened and closed, opened and closed, as if the flowers had told a very interesting joke.",
+          "when": [
+            {
+              "key": "pip.content",
+              "op": "eq",
+              "value": "curious",
+              "at": "after"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "scene": "pip_follows_moon",
+      "role": "beat",
+      "variants": [
+        {
+          "text": "Pip followed the paper moon and settled on the ribbon beside the flowers. Ada held her breath; Bo held the bell. On the gate, Pip’s wings painted one small, perfect shadow.",
+          "when": [
+            {
+              "key": "pip.content",
+              "op": "eq",
+              "value": "welcomed",
+              "at": "after"
+            }
+          ]
+        },
+        {
+          "text": "The paper moon did not move, but Pip did. The moth drifted to the ribbon and rested there, turning Ada’s enormous imagined spectacle into one quiet silver flutter.",
+          "when": [
+            {
+              "key": "pip.location",
+              "op": "eq",
+              "value": "ribbon",
+              "at": "after"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "scene": "pip_hides_bright_motion",
+      "role": "beat",
+      "variants": [
+        {
+          "text": "The bright moving shadows sprang across the gate. Pip startled and fluttered behind it. Ada’s dragon froze mid-sneeze, while Bo left the ribbon quiet and visible for a hopeful return.",
+          "when": [
+            {
+              "key": "pip.content",
+              "op": "eq",
+              "value": "startled",
+              "at": "after"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "endings": [
+    {
+      "text": "Pip rested on the ribbon by the gate, and its wings painted one small shadow across the paper moon. Ada’s grand show had become a tiny silver hello. Bo’s bell stayed silent, but nobody seemed to mind. The children stood very still while the moth’s silver dust trembled like a little star in the lamplight.",
+      "when": [
+        {
+          "key": "pip.location",
+          "op": "eq",
+          "value": "ribbon",
+          "at": "after"
+        },
+        {
+          "key": "pip.content",
+          "op": "eq",
+          "value": "welcomed",
+          "at": "after"
+        },
+        {
+          "key": "ada.performed.mode",
+          "op": "eq",
+          "value": "tableau",
+          "at": "after"
+        }
+      ]
+    },
+    {
+      "text": "Among the moonflowers, Pip tasted the night with its delicate feet. Bo knelt nearby, and Ada watched without waving her hands. The blossoms nodded in the soft garden, keeping Pip’s curious little visit company. Somewhere above them, a leaf let go of one round drop of dew, and Pip’s wings gave a pleased little shiver.",
+      "when": [
+        {
+          "key": "pip.location",
+          "op": "eq",
+          "value": "moonflowers",
+          "at": "after"
+        },
+        {
+          "key": "pip.content",
+          "op": "eq",
+          "value": "curious",
+          "at": "after"
+        }
+      ]
+    },
+    {
+      "text": "Pip slipped behind the gate, startled by the bright dancing shapes. Still, the quiet gate opening remained moonlit, and one feeler peeked around the edge. The welcome was unfinished, but not gone. The garden stayed hushed, while a tiny wingbeat stirred the darkness like a question waiting for tomorrow.",
+      "when": [
+        {
+          "key": "pip.location",
+          "op": "eq",
+          "value": "gate",
+          "at": "after"
+        },
+        {
+          "key": "pip.content",
+          "op": "eq",
+          "value": "startled",
+          "at": "after"
+        },
+        {
+          "key": "ada.performed.mode",
+          "op": "eq",
+          "value": "shadows",
+          "at": "after"
+        }
+      ]
+    },
+    {
+      "text": "On the gate, the paper moon glowed softly while Pip made a tiny shadow of its own. Ada’s huge shadow-dream had folded down to moth-size, just right for the night. Bo’s hands rested beside the silent bell, and the children watched the little shadow flutter without asking it to become anything bigger.",
+      "when": [
+        {
+          "key": "pip.location",
+          "op": "eq",
+          "value": "ribbon",
+          "at": "after"
+        },
+        {
+          "key": "ada.performed.mode",
+          "op": "eq",
+          "value": "tableau",
+          "at": "after"
+        }
+      ]
+    }
+  ],
+  "lexicon": [
+    {
+      "key": "lamp.brightness",
+      "value": "bright",
+      "text": "bright"
+    },
+    {
+      "key": "lamp.brightness",
+      "value": "soft",
+      "text": "soft"
+    },
+    {
+      "key": "pip.location",
+      "value": "leaves",
+      "text": "under the leaves"
+    },
+    {
+      "key": "pip.location",
+      "value": "gate",
+      "text": "behind the gate"
+    },
+    {
+      "key": "pip.location",
+      "value": "moonflowers",
+      "text": "among the moonflowers"
+    },
+    {
+      "key": "pip.location",
+      "value": "ribbon",
+      "text": "on the welcome ribbon"
+    },
+    {
+      "key": "ada.plan",
+      "value": "moving",
+      "text": "a moving shadow show"
+    },
+    {
+      "key": "ada.plan",
+      "value": "tableau",
+      "text": "a still paper-moon tableau"
+    },
+    {
+      "key": "bo.plan",
+      "value": "bell",
+      "text": "a silver-bell invitation"
+    },
+    {
+      "key": "bo.plan",
+      "value": "flowers",
+      "text": "a moonflower welcome"
+    },
+    {
+      "key": "pip.content",
+      "value": "shy",
+      "text": "shy"
+    },
+    {
+      "key": "pip.content",
+      "value": "curious",
+      "text": "curious"
+    },
+    {
+      "key": "pip.content",
+      "value": "welcomed",
+      "text": "welcomed"
+    },
+    {
+      "key": "pip.content",
+      "value": "startled",
+      "text": "startled"
+    },
+    {
+      "key": "ada.performed.mode",
+      "value": "none",
+      "text": "no performance"
+    },
+    {
+      "key": "ada.performed.mode",
+      "value": "shadows",
+      "text": "the moving shadow show"
+    },
+    {
+      "key": "ada.performed.mode",
+      "value": "tableau",
+      "text": "the still tableau"
+    }
+  ]
+}

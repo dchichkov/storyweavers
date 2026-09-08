@@ -1,0 +1,167 @@
+{
+  "id": "resp_0e0b7961a3c1ba62016a9f8eca56b887d08dd245130615ddf3",
+  "created_at": 1788841674.0,
+  "error": null,
+  "incomplete_details": null,
+  "instructions": null,
+  "metadata": {},
+  "model": "gpt-5.6-terra",
+  "object": "response",
+  "output": [
+    {
+      "id": "msg_0e0b7961a3c1ba62016a9f8ecacbd487d0a4c9f6b5113db4e6",
+      "content": [
+        {
+          "annotations": [],
+          "text": "{\"issues\":[{\"seed\":791,\"severity\":\"major\",\"layer\":\"simulation\",\"defect\":\"contradiction\",\"evidence\":\"The story says, “Unfortunately, nobody had been invited close,” but its second paragraph says “Mara clapped twice, and the courtyard audience gathered” before Mara later discovers and fixes that nobody invited them close; the trace does not make them invited or move them to the stage until event five.\",\"fix\":\"Keep the audience merely present in the courtyard after the greeting, and reserve their approach to the stage for Bo’s later invitation.\"},{\"seed\":124,\"severity\":\"minor\",\"layer\":\"prose\",\"defect\":\"literal_state_value\",\"evidence\":\"The ending says, “the audience left the stool in a neat moon-shaped circle around her,” which is physically unclear and reads as an accidental literal arrangement rather than a grounded closing image.\",\"fix\":\"Specify that the audience forms the moon-shaped circle around Nia or around the stool, rather than saying they “left the stool” in one.\"}],\"strengths\":\"Seeds 123 and 124 closely follow their event order for ownership, curtain transformation, and performance outcomes; seed 791 also grounds the plan discovery, invitation, prop placement, and weather-parade result apart from the premature gathering wording.\"}",
+          "type": "output_text",
+          "logprobs": []
+        }
+      ],
+      "role": "assistant",
+      "status": "completed",
+      "type": "message",
+      "phase": "final_answer"
+    }
+  ],
+  "parallel_tool_calls": true,
+  "temperature": 1.0,
+  "tool_choice": "auto",
+  "tools": [],
+  "top_p": 0.98,
+  "background": false,
+  "completed_at": 1788841677.0,
+  "conversation": null,
+  "max_output_tokens": 1600,
+  "max_tool_calls": null,
+  "moderation": null,
+  "previous_response_id": null,
+  "prompt": null,
+  "prompt_cache_key": null,
+  "prompt_cache_retention": "24h",
+  "reasoning": {
+    "context": "all_turns",
+    "effort": "none",
+    "generate_summary": null,
+    "summary": null,
+    "mode": "standard"
+  },
+  "safety_identifier": null,
+  "service_tier": "flex",
+  "status": "completed",
+  "text": {
+    "format": {
+      "name": "storyscenes_artifact",
+      "schema_": {
+        "type": "object",
+        "properties": {
+          "issues": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "seed": {
+                  "type": "integer"
+                },
+                "severity": {
+                  "type": "string",
+                  "enum": [
+                    "minor",
+                    "major"
+                  ]
+                },
+                "layer": {
+                  "type": "string",
+                  "enum": [
+                    "simulation",
+                    "prose"
+                  ]
+                },
+                "defect": {
+                  "type": "string",
+                  "enum": [
+                    "ungrounded_outcome",
+                    "wrong_knowledge",
+                    "contradiction",
+                    "literal_state_value",
+                    "unresolved_alternative",
+                    "event_log_prose",
+                    "weak_turn",
+                    "weak_ending",
+                    "other"
+                  ]
+                },
+                "evidence": {
+                  "type": "string"
+                },
+                "fix": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "seed",
+                "severity",
+                "layer",
+                "defect",
+                "evidence",
+                "fix"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "strengths": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "issues",
+          "strengths"
+        ],
+        "additionalProperties": false
+      },
+      "type": "json_schema",
+      "description": null,
+      "strict": true
+    },
+    "verbosity": "medium"
+  },
+  "top_logprobs": 0,
+  "truncation": "disabled",
+  "usage": {
+    "input_tokens": 3976,
+    "input_tokens_details": {
+      "cached_tokens": 0,
+      "cache_write_tokens": 3973
+    },
+    "output_tokens": 269,
+    "output_tokens_details": {
+      "reasoning_tokens": 0
+    },
+    "total_tokens": 4245
+  },
+  "user": null,
+  "billing": {
+    "payer": "openai"
+  },
+  "frequency_penalty": 0.0,
+  "presence_penalty": 0.0,
+  "store": false,
+  "tool_usage": {
+    "image_gen": {
+      "input_tokens": 0,
+      "input_tokens_details": {
+        "image_tokens": 0,
+        "text_tokens": 0
+      },
+      "output_tokens": 0,
+      "output_tokens_details": {
+        "image_tokens": 0,
+        "text_tokens": 0
+      },
+      "total_tokens": 0
+    },
+    "web_search": {
+      "num_requests": 0
+    }
+  }
+}

@@ -1,0 +1,2129 @@
+[
+  {
+    "seed": 0,
+    "title": "The Library Cart Parade",
+    "initial": {
+      "ada.location": "library",
+      "bramble.location": "library",
+      "toma.location": "library",
+      "keeper.location": "library",
+      "readers.location": "library",
+      "cart.location": "library",
+      "books.location": "library",
+      "sign.location": "library",
+      "parade.location": "library",
+      "rope.owner": "keeper",
+      "cushions.owner": "keeper",
+      "chock.owner": "keeper",
+      "cart.capacity": 4,
+      "cart.load": 3,
+      "cart.balance": "poor",
+      "cart.wheel": "sound",
+      "cart.safe": false,
+      "cart.tested": false,
+      "cart.reinforced": false,
+      "cart.books_safe": false,
+      "books.delivered": false,
+      "books.displayed": false,
+      "route.narrow": false,
+      "route.steep": false,
+      "route.square_access": true,
+      "readers.need": 1,
+      "materials.available": 1,
+      "parade.ready": false,
+      "parade.kind": "none",
+      "sign.message": "biggest",
+      "ada.memes.Curiosity": 2,
+      "ada.memes.Care": 1,
+      "ada.memes.Cooperation": 1,
+      "bramble.memes.Ambition": 3,
+      "bramble.memes.Care": 0,
+      "bramble.memes.Cooperation": 0,
+      "toma.memes.Care": 2,
+      "toma.memes.Cooperation": 1,
+      "keeper.memes.Care": 2,
+      "ada.knows.cart.balance": null,
+      "ada.knows.route.square_access": null,
+      "ada.knows.readers.need": null,
+      "toma.knows.cart.wheel": null
+    },
+    "final": {
+      "ada.location": "square",
+      "bramble.location": "square",
+      "toma.location": "square",
+      "keeper.location": "library",
+      "readers.location": "library",
+      "cart.location": "square",
+      "books.location": "square",
+      "sign.location": "library",
+      "parade.location": "square",
+      "rope.owner": "ada",
+      "cushions.owner": "toma",
+      "chock.owner": "toma",
+      "cart.capacity": 4,
+      "cart.load": 2,
+      "cart.balance": "good",
+      "cart.wheel": "sound",
+      "cart.safe": true,
+      "cart.tested": true,
+      "cart.reinforced": false,
+      "cart.books_safe": true,
+      "books.delivered": true,
+      "books.displayed": true,
+      "route.narrow": false,
+      "route.steep": false,
+      "route.square_access": true,
+      "readers.need": 1,
+      "materials.available": 1,
+      "parade.ready": true,
+      "parade.kind": "square reading parade",
+      "sign.message": "books for everyone",
+      "ada.memes.Curiosity": 4,
+      "ada.memes.Care": 1,
+      "ada.memes.Cooperation": 1,
+      "bramble.memes.Ambition": 4,
+      "bramble.memes.Care": 1,
+      "bramble.memes.Cooperation": 1,
+      "toma.memes.Care": 2,
+      "toma.memes.Cooperation": 2,
+      "keeper.memes.Care": 2,
+      "ada.knows.cart.balance": "poor",
+      "ada.knows.route.square_access": true,
+      "ada.knows.readers.need": 1,
+      "toma.knows.cart.wheel": "sound"
+    },
+    "events": [
+      {
+        "id": 1,
+        "scene": "share_grand_sketch",
+        "kernel": "ambition",
+        "actors": [
+          "bramble",
+          "ada",
+          "cart"
+        ],
+        "summary": "Mayor Bramble showed Ada his grand sketch for a very large cart parade",
+        "causes": [],
+        "requires": [
+          {
+            "key": "bramble.location",
+            "op": "eq",
+            "value": "library"
+          },
+          {
+            "key": "ada.location",
+            "op": "eq",
+            "value": "library"
+          },
+          {
+            "key": "cart.location",
+            "op": "eq",
+            "value": "library"
+          },
+          {
+            "key": "bramble.memes.Ambition",
+            "op": "ge",
+            "value": 2
+          }
+        ],
+        "changes": {
+          "ada.memes.Curiosity": {
+            "before": 2,
+            "after": 3
+          },
+          "bramble.memes.Ambition": {
+            "before": 3,
+            "after": 4
+          }
+        }
+      },
+      {
+        "id": 2,
+        "scene": "measure_wheel",
+        "kernel": "observation",
+        "actors": [
+          "toma",
+          "cart"
+        ],
+        "summary": "Toma measured the cart wheel and found its condition",
+        "causes": [],
+        "requires": [
+          {
+            "key": "toma.location",
+            "op": "eq",
+            "value": "library"
+          },
+          {
+            "key": "cart.location",
+            "op": "eq",
+            "value": "library"
+          },
+          {
+            "key": "toma.memes.Care",
+            "op": "ge",
+            "value": 1
+          }
+        ],
+        "changes": {
+          "toma.memes.Cooperation": {
+            "before": 1,
+            "after": 2
+          },
+          "toma.knows.cart.wheel": {
+            "before": null,
+            "after": "sound"
+          }
+        }
+      },
+      {
+        "id": 3,
+        "scene": "consult_readers",
+        "kernel": "care",
+        "actors": [
+          "ada",
+          "readers"
+        ],
+        "summary": "Ada asked the visiting readers what would help them join",
+        "causes": [],
+        "requires": [
+          {
+            "key": "ada.location",
+            "op": "eq",
+            "value": "library"
+          },
+          {
+            "key": "readers.location",
+            "op": "eq",
+            "value": "library"
+          },
+          {
+            "key": "ada.memes.Care",
+            "op": "ge",
+            "value": 1
+          }
+        ],
+        "changes": {
+          "bramble.memes.Care": {
+            "before": 0,
+            "after": 1
+          },
+          "ada.knows.readers.need": {
+            "before": null,
+            "after": 1
+          }
+        }
+      },
+      {
+        "id": 4,
+        "scene": "inspect_route",
+        "kernel": "Observe",
+        "actors": [
+          "ada"
+        ],
+        "summary": "Ada checked whether the route could reach the square",
+        "causes": [
+          1
+        ],
+        "requires": [
+          {
+            "key": "ada.location",
+            "op": "eq",
+            "value": "library"
+          },
+          {
+            "key": "ada.memes.Curiosity",
+            "op": "ge",
+            "value": 1
+          }
+        ],
+        "changes": {
+          "ada.knows.route.square_access": {
+            "before": null,
+            "after": true
+          }
+        }
+      },
+      {
+        "id": 5,
+        "scene": "lend_chock",
+        "kernel": "Transfer",
+        "actors": [
+          "keeper",
+          "toma"
+        ],
+        "summary": "The keeper lent Toma a wheel chock for the steep stretch",
+        "causes": [],
+        "requires": [
+          {
+            "key": "chock.owner",
+            "op": "eq",
+            "value": "keeper"
+          },
+          {
+            "key": "keeper.location",
+            "op": "eq",
+            "value": "library"
+          },
+          {
+            "key": "toma.location",
+            "op": "eq",
+            "value": "library"
+          },
+          {
+            "key": "keeper.memes.Care",
+            "op": "ge",
+            "value": 1
+          }
+        ],
+        "changes": {
+          "chock.owner": {
+            "before": "keeper",
+            "after": "toma"
+          }
+        }
+      },
+      {
+        "id": 6,
+        "scene": "lend_cushions",
+        "kernel": "Transfer",
+        "actors": [
+          "keeper",
+          "toma"
+        ],
+        "summary": "The keeper lent Toma cushions for protecting the books",
+        "causes": [],
+        "requires": [
+          {
+            "key": "cushions.owner",
+            "op": "eq",
+            "value": "keeper"
+          },
+          {
+            "key": "keeper.location",
+            "op": "eq",
+            "value": "library"
+          },
+          {
+            "key": "toma.location",
+            "op": "eq",
+            "value": "library"
+          },
+          {
+            "key": "keeper.memes.Care",
+            "op": "ge",
+            "value": 1
+          }
+        ],
+        "changes": {
+          "cushions.owner": {
+            "before": "keeper",
+            "after": "toma"
+          }
+        }
+      },
+      {
+        "id": 7,
+        "scene": "make_invitation_sign",
+        "kernel": "cooperation",
+        "actors": [
+          "ada",
+          "bramble",
+          "sign"
+        ],
+        "summary": "Ada and the mayor changed the sign into an invitation for every reader",
+        "causes": [
+          3
+        ],
+        "requires": [
+          {
+            "key": "ada.location",
+            "op": "eq",
+            "value": "library"
+          },
+          {
+            "key": "bramble.location",
+            "op": "eq",
+            "value": "library"
+          },
+          {
+            "key": "sign.location",
+            "op": "eq",
+            "value": "library"
+          },
+          {
+            "key": "ada.knows.readers.need",
+            "op": "ne",
+            "value": null
+          },
+          {
+            "key": "bramble.memes.Care",
+            "op": "ge",
+            "value": 1
+          }
+        ],
+        "changes": {
+          "sign.message": {
+            "before": "biggest",
+            "after": "books for everyone"
+          },
+          "bramble.memes.Cooperation": {
+            "before": 0,
+            "after": 1
+          }
+        }
+      },
+      {
+        "id": 8,
+        "scene": "inspect_balance",
+        "kernel": "Observe",
+        "actors": [
+          "ada"
+        ],
+        "summary": "Ada inspected how the books sat in the cart",
+        "causes": [
+          1
+        ],
+        "requires": [
+          {
+            "key": "ada.location",
+            "op": "eq",
+            "value": "library"
+          },
+          {
+            "key": "cart.location",
+            "op": "eq",
+            "value": "library"
+          },
+          {
+            "key": "ada.memes.Curiosity",
+            "op": "ge",
+            "value": 1
+          }
+        ],
+        "changes": {
+          "ada.knows.cart.balance": {
+            "before": null,
+            "after": "poor"
+          }
+        }
+      },
+      {
+        "id": 9,
+        "scene": "balance_books",
+        "kernel": "cooperation",
+        "actors": [
+          "ada",
+          "toma",
+          "cart"
+        ],
+        "summary": "Ada and Toma cushioned and rearranged the books into a balanced load",
+        "causes": [
+          6,
+          8
+        ],
+        "requires": [
+          {
+            "key": "ada.location",
+            "op": "eq",
+            "value": "library"
+          },
+          {
+            "key": "toma.location",
+            "op": "eq",
+            "value": "library"
+          },
+          {
+            "key": "cart.location",
+            "op": "eq",
+            "value": "library"
+          },
+          {
+            "key": "ada.knows.cart.balance",
+            "op": "ne",
+            "value": null
+          },
+          {
+            "key": "cushions.owner",
+            "op": "eq",
+            "value": "toma"
+          },
+          {
+            "key": "cart.wheel",
+            "op": "eq",
+            "value": "sound"
+          }
+        ],
+        "changes": {
+          "cart.load": {
+            "before": 3,
+            "after": 2
+          },
+          "cart.balance": {
+            "before": "poor",
+            "after": "good"
+          },
+          "cart.safe": {
+            "before": false,
+            "after": true
+          },
+          "cart.books_safe": {
+            "before": false,
+            "after": true
+          }
+        }
+      },
+      {
+        "id": 10,
+        "scene": "test_level_route",
+        "kernel": "observation",
+        "actors": [
+          "ada",
+          "toma",
+          "cart"
+        ],
+        "summary": "Ada and Toma tested the cart on the level beginning of the route",
+        "causes": [
+          1,
+          9
+        ],
+        "requires": [
+          {
+            "key": "cart.location",
+            "op": "eq",
+            "value": "library"
+          },
+          {
+            "key": "cart.safe",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "cart.books_safe",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "route.steep",
+            "op": "eq",
+            "value": false
+          }
+        ],
+        "changes": {
+          "cart.tested": {
+            "before": false,
+            "after": true
+          },
+          "ada.memes.Curiosity": {
+            "before": 3,
+            "after": 4
+          }
+        }
+      },
+      {
+        "id": 11,
+        "scene": "lend_rope",
+        "kernel": "Transfer",
+        "actors": [
+          "keeper",
+          "ada"
+        ],
+        "summary": "The keeper lent Ada a rope for the narrow lane",
+        "causes": [],
+        "requires": [
+          {
+            "key": "rope.owner",
+            "op": "eq",
+            "value": "keeper"
+          },
+          {
+            "key": "keeper.location",
+            "op": "eq",
+            "value": "library"
+          },
+          {
+            "key": "ada.location",
+            "op": "eq",
+            "value": "library"
+          },
+          {
+            "key": "keeper.memes.Care",
+            "op": "ge",
+            "value": 1
+          }
+        ],
+        "changes": {
+          "rope.owner": {
+            "before": "keeper",
+            "after": "ada"
+          }
+        }
+      },
+      {
+        "id": 12,
+        "scene": "guide_open_square_route",
+        "kernel": "cooperation",
+        "actors": [
+          "ada",
+          "toma",
+          "bramble",
+          "cart"
+        ],
+        "summary": "The group guided the cart along the open route to the town square",
+        "causes": [
+          4,
+          7,
+          9,
+          10
+        ],
+        "requires": [
+          {
+            "key": "ada.location",
+            "op": "eq",
+            "value": "library"
+          },
+          {
+            "key": "toma.location",
+            "op": "eq",
+            "value": "library"
+          },
+          {
+            "key": "bramble.location",
+            "op": "eq",
+            "value": "library"
+          },
+          {
+            "key": "cart.location",
+            "op": "eq",
+            "value": "library"
+          },
+          {
+            "key": "cart.safe",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "cart.books_safe",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "cart.tested",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "ada.knows.route.square_access",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "route.narrow",
+            "op": "eq",
+            "value": false
+          },
+          {
+            "key": "sign.message",
+            "op": "eq",
+            "value": "books for everyone"
+          }
+        ],
+        "changes": {
+          "ada.location": {
+            "before": "library",
+            "after": "square"
+          },
+          "bramble.location": {
+            "before": "library",
+            "after": "square"
+          },
+          "toma.location": {
+            "before": "library",
+            "after": "square"
+          },
+          "cart.location": {
+            "before": "library",
+            "after": "square"
+          },
+          "books.location": {
+            "before": "library",
+            "after": "square"
+          },
+          "parade.location": {
+            "before": "library",
+            "after": "square"
+          },
+          "books.delivered": {
+            "before": false,
+            "after": true
+          },
+          "books.displayed": {
+            "before": false,
+            "after": true
+          },
+          "parade.ready": {
+            "before": false,
+            "after": true
+          },
+          "parade.kind": {
+            "before": "none",
+            "after": "square reading parade"
+          }
+        }
+      }
+    ]
+  },
+  {
+    "seed": 1,
+    "title": "The Library Cart Parade",
+    "initial": {
+      "ada.location": "library",
+      "bramble.location": "library",
+      "toma.location": "library",
+      "keeper.location": "library",
+      "readers.location": "library",
+      "cart.location": "library",
+      "books.location": "library",
+      "sign.location": "library",
+      "parade.location": "library",
+      "rope.owner": "keeper",
+      "cushions.owner": "keeper",
+      "chock.owner": "keeper",
+      "cart.capacity": 4,
+      "cart.load": 2,
+      "cart.balance": "fair",
+      "cart.wheel": "weak",
+      "cart.safe": false,
+      "cart.tested": false,
+      "cart.reinforced": false,
+      "cart.books_safe": false,
+      "books.delivered": false,
+      "books.displayed": false,
+      "route.narrow": false,
+      "route.steep": false,
+      "route.square_access": true,
+      "readers.need": 0,
+      "materials.available": 1,
+      "parade.ready": false,
+      "parade.kind": "none",
+      "sign.message": "biggest",
+      "ada.memes.Curiosity": 1,
+      "ada.memes.Care": 1,
+      "ada.memes.Cooperation": 1,
+      "bramble.memes.Ambition": 3,
+      "bramble.memes.Care": 0,
+      "bramble.memes.Cooperation": 0,
+      "toma.memes.Care": 2,
+      "toma.memes.Cooperation": 1,
+      "keeper.memes.Care": 2,
+      "ada.knows.cart.balance": null,
+      "ada.knows.route.square_access": null,
+      "ada.knows.readers.need": null,
+      "toma.knows.cart.wheel": null
+    },
+    "final": {
+      "ada.location": "square",
+      "bramble.location": "square",
+      "toma.location": "square",
+      "keeper.location": "library",
+      "readers.location": "library",
+      "cart.location": "square",
+      "books.location": "square",
+      "sign.location": "library",
+      "parade.location": "square",
+      "rope.owner": "ada",
+      "cushions.owner": "toma",
+      "chock.owner": "toma",
+      "cart.capacity": 4,
+      "cart.load": 2,
+      "cart.balance": "good",
+      "cart.wheel": "sound",
+      "cart.safe": true,
+      "cart.tested": true,
+      "cart.reinforced": true,
+      "cart.books_safe": true,
+      "books.delivered": true,
+      "books.displayed": true,
+      "route.narrow": false,
+      "route.steep": false,
+      "route.square_access": true,
+      "readers.need": 0,
+      "materials.available": 0,
+      "parade.ready": true,
+      "parade.kind": "square reading parade",
+      "sign.message": "books for everyone",
+      "ada.memes.Curiosity": 3,
+      "ada.memes.Care": 1,
+      "ada.memes.Cooperation": 1,
+      "bramble.memes.Ambition": 4,
+      "bramble.memes.Care": 1,
+      "bramble.memes.Cooperation": 1,
+      "toma.memes.Care": 2,
+      "toma.memes.Cooperation": 2,
+      "keeper.memes.Care": 2,
+      "ada.knows.cart.balance": "fair",
+      "ada.knows.route.square_access": true,
+      "ada.knows.readers.need": 0,
+      "toma.knows.cart.wheel": "weak"
+    },
+    "events": [
+      {
+        "id": 1,
+        "scene": "inspect_balance",
+        "kernel": "Observe",
+        "actors": [
+          "ada"
+        ],
+        "summary": "Ada inspected how the books sat in the cart",
+        "causes": [],
+        "requires": [
+          {
+            "key": "ada.location",
+            "op": "eq",
+            "value": "library"
+          },
+          {
+            "key": "cart.location",
+            "op": "eq",
+            "value": "library"
+          },
+          {
+            "key": "ada.memes.Curiosity",
+            "op": "ge",
+            "value": 1
+          }
+        ],
+        "changes": {
+          "ada.knows.cart.balance": {
+            "before": null,
+            "after": "fair"
+          }
+        }
+      },
+      {
+        "id": 2,
+        "scene": "measure_wheel",
+        "kernel": "observation",
+        "actors": [
+          "toma",
+          "cart"
+        ],
+        "summary": "Toma measured the cart wheel and found its condition",
+        "causes": [],
+        "requires": [
+          {
+            "key": "toma.location",
+            "op": "eq",
+            "value": "library"
+          },
+          {
+            "key": "cart.location",
+            "op": "eq",
+            "value": "library"
+          },
+          {
+            "key": "toma.memes.Care",
+            "op": "ge",
+            "value": 1
+          }
+        ],
+        "changes": {
+          "toma.memes.Cooperation": {
+            "before": 1,
+            "after": 2
+          },
+          "toma.knows.cart.wheel": {
+            "before": null,
+            "after": "weak"
+          }
+        }
+      },
+      {
+        "id": 3,
+        "scene": "consult_readers",
+        "kernel": "care",
+        "actors": [
+          "ada",
+          "readers"
+        ],
+        "summary": "Ada asked the visiting readers what would help them join",
+        "causes": [],
+        "requires": [
+          {
+            "key": "ada.location",
+            "op": "eq",
+            "value": "library"
+          },
+          {
+            "key": "readers.location",
+            "op": "eq",
+            "value": "library"
+          },
+          {
+            "key": "ada.memes.Care",
+            "op": "ge",
+            "value": 1
+          }
+        ],
+        "changes": {
+          "bramble.memes.Care": {
+            "before": 0,
+            "after": 1
+          },
+          "ada.knows.readers.need": {
+            "before": null,
+            "after": 0
+          }
+        }
+      },
+      {
+        "id": 4,
+        "scene": "share_grand_sketch",
+        "kernel": "ambition",
+        "actors": [
+          "bramble",
+          "ada",
+          "cart"
+        ],
+        "summary": "Mayor Bramble showed Ada his grand sketch for a very large cart parade",
+        "causes": [],
+        "requires": [
+          {
+            "key": "bramble.location",
+            "op": "eq",
+            "value": "library"
+          },
+          {
+            "key": "ada.location",
+            "op": "eq",
+            "value": "library"
+          },
+          {
+            "key": "cart.location",
+            "op": "eq",
+            "value": "library"
+          },
+          {
+            "key": "bramble.memes.Ambition",
+            "op": "ge",
+            "value": 2
+          }
+        ],
+        "changes": {
+          "ada.memes.Curiosity": {
+            "before": 1,
+            "after": 2
+          },
+          "bramble.memes.Ambition": {
+            "before": 3,
+            "after": 4
+          }
+        }
+      },
+      {
+        "id": 5,
+        "scene": "inspect_route",
+        "kernel": "Observe",
+        "actors": [
+          "ada"
+        ],
+        "summary": "Ada checked whether the route could reach the square",
+        "causes": [
+          4
+        ],
+        "requires": [
+          {
+            "key": "ada.location",
+            "op": "eq",
+            "value": "library"
+          },
+          {
+            "key": "ada.memes.Curiosity",
+            "op": "ge",
+            "value": 1
+          }
+        ],
+        "changes": {
+          "ada.knows.route.square_access": {
+            "before": null,
+            "after": true
+          }
+        }
+      },
+      {
+        "id": 6,
+        "scene": "lend_chock",
+        "kernel": "Transfer",
+        "actors": [
+          "keeper",
+          "toma"
+        ],
+        "summary": "The keeper lent Toma a wheel chock for the steep stretch",
+        "causes": [],
+        "requires": [
+          {
+            "key": "chock.owner",
+            "op": "eq",
+            "value": "keeper"
+          },
+          {
+            "key": "keeper.location",
+            "op": "eq",
+            "value": "library"
+          },
+          {
+            "key": "toma.location",
+            "op": "eq",
+            "value": "library"
+          },
+          {
+            "key": "keeper.memes.Care",
+            "op": "ge",
+            "value": 1
+          }
+        ],
+        "changes": {
+          "chock.owner": {
+            "before": "keeper",
+            "after": "toma"
+          }
+        }
+      },
+      {
+        "id": 7,
+        "scene": "lend_cushions",
+        "kernel": "Transfer",
+        "actors": [
+          "keeper",
+          "toma"
+        ],
+        "summary": "The keeper lent Toma cushions for protecting the books",
+        "causes": [],
+        "requires": [
+          {
+            "key": "cushions.owner",
+            "op": "eq",
+            "value": "keeper"
+          },
+          {
+            "key": "keeper.location",
+            "op": "eq",
+            "value": "library"
+          },
+          {
+            "key": "toma.location",
+            "op": "eq",
+            "value": "library"
+          },
+          {
+            "key": "keeper.memes.Care",
+            "op": "ge",
+            "value": 1
+          }
+        ],
+        "changes": {
+          "cushions.owner": {
+            "before": "keeper",
+            "after": "toma"
+          }
+        }
+      },
+      {
+        "id": 8,
+        "scene": "make_invitation_sign",
+        "kernel": "cooperation",
+        "actors": [
+          "ada",
+          "bramble",
+          "sign"
+        ],
+        "summary": "Ada and the mayor changed the sign into an invitation for every reader",
+        "causes": [
+          3
+        ],
+        "requires": [
+          {
+            "key": "ada.location",
+            "op": "eq",
+            "value": "library"
+          },
+          {
+            "key": "bramble.location",
+            "op": "eq",
+            "value": "library"
+          },
+          {
+            "key": "sign.location",
+            "op": "eq",
+            "value": "library"
+          },
+          {
+            "key": "ada.knows.readers.need",
+            "op": "ne",
+            "value": null
+          },
+          {
+            "key": "bramble.memes.Care",
+            "op": "ge",
+            "value": 1
+          }
+        ],
+        "changes": {
+          "sign.message": {
+            "before": "biggest",
+            "after": "books for everyone"
+          },
+          "bramble.memes.Cooperation": {
+            "before": 0,
+            "after": 1
+          }
+        }
+      },
+      {
+        "id": 9,
+        "scene": "repair_wheel",
+        "kernel": "care",
+        "actors": [
+          "toma",
+          "cart",
+          "materials"
+        ],
+        "summary": "Toma reinforced the weak wheel with the available materials",
+        "causes": [
+          2
+        ],
+        "requires": [
+          {
+            "key": "toma.location",
+            "op": "eq",
+            "value": "library"
+          },
+          {
+            "key": "cart.location",
+            "op": "eq",
+            "value": "library"
+          },
+          {
+            "key": "toma.knows.cart.wheel",
+            "op": "eq",
+            "value": "weak"
+          },
+          {
+            "key": "materials.available",
+            "op": "eq",
+            "value": 1
+          },
+          {
+            "key": "toma.memes.Care",
+            "op": "ge",
+            "value": 1
+          }
+        ],
+        "changes": {
+          "cart.wheel": {
+            "before": "weak",
+            "after": "sound"
+          },
+          "cart.reinforced": {
+            "before": false,
+            "after": true
+          },
+          "materials.available": {
+            "before": 1,
+            "after": 0
+          }
+        }
+      },
+      {
+        "id": 10,
+        "scene": "lend_rope",
+        "kernel": "Transfer",
+        "actors": [
+          "keeper",
+          "ada"
+        ],
+        "summary": "The keeper lent Ada a rope for the narrow lane",
+        "causes": [],
+        "requires": [
+          {
+            "key": "rope.owner",
+            "op": "eq",
+            "value": "keeper"
+          },
+          {
+            "key": "keeper.location",
+            "op": "eq",
+            "value": "library"
+          },
+          {
+            "key": "ada.location",
+            "op": "eq",
+            "value": "library"
+          },
+          {
+            "key": "keeper.memes.Care",
+            "op": "ge",
+            "value": 1
+          }
+        ],
+        "changes": {
+          "rope.owner": {
+            "before": "keeper",
+            "after": "ada"
+          }
+        }
+      },
+      {
+        "id": 11,
+        "scene": "balance_books",
+        "kernel": "cooperation",
+        "actors": [
+          "ada",
+          "toma",
+          "cart"
+        ],
+        "summary": "Ada and Toma cushioned and rearranged the books into a balanced load",
+        "causes": [
+          1,
+          7,
+          9
+        ],
+        "requires": [
+          {
+            "key": "ada.location",
+            "op": "eq",
+            "value": "library"
+          },
+          {
+            "key": "toma.location",
+            "op": "eq",
+            "value": "library"
+          },
+          {
+            "key": "cart.location",
+            "op": "eq",
+            "value": "library"
+          },
+          {
+            "key": "ada.knows.cart.balance",
+            "op": "ne",
+            "value": null
+          },
+          {
+            "key": "cushions.owner",
+            "op": "eq",
+            "value": "toma"
+          },
+          {
+            "key": "cart.wheel",
+            "op": "eq",
+            "value": "sound"
+          }
+        ],
+        "changes": {
+          "cart.balance": {
+            "before": "fair",
+            "after": "good"
+          },
+          "cart.safe": {
+            "before": false,
+            "after": true
+          },
+          "cart.books_safe": {
+            "before": false,
+            "after": true
+          }
+        }
+      },
+      {
+        "id": 12,
+        "scene": "test_level_route",
+        "kernel": "observation",
+        "actors": [
+          "ada",
+          "toma",
+          "cart"
+        ],
+        "summary": "Ada and Toma tested the cart on the level beginning of the route",
+        "causes": [
+          4,
+          11
+        ],
+        "requires": [
+          {
+            "key": "cart.location",
+            "op": "eq",
+            "value": "library"
+          },
+          {
+            "key": "cart.safe",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "cart.books_safe",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "route.steep",
+            "op": "eq",
+            "value": false
+          }
+        ],
+        "changes": {
+          "cart.tested": {
+            "before": false,
+            "after": true
+          },
+          "ada.memes.Curiosity": {
+            "before": 2,
+            "after": 3
+          }
+        }
+      },
+      {
+        "id": 13,
+        "scene": "guide_open_square_route",
+        "kernel": "cooperation",
+        "actors": [
+          "ada",
+          "toma",
+          "bramble",
+          "cart"
+        ],
+        "summary": "The group guided the cart along the open route to the town square",
+        "causes": [
+          5,
+          8,
+          11,
+          12
+        ],
+        "requires": [
+          {
+            "key": "ada.location",
+            "op": "eq",
+            "value": "library"
+          },
+          {
+            "key": "toma.location",
+            "op": "eq",
+            "value": "library"
+          },
+          {
+            "key": "bramble.location",
+            "op": "eq",
+            "value": "library"
+          },
+          {
+            "key": "cart.location",
+            "op": "eq",
+            "value": "library"
+          },
+          {
+            "key": "cart.safe",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "cart.books_safe",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "cart.tested",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "ada.knows.route.square_access",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "route.narrow",
+            "op": "eq",
+            "value": false
+          },
+          {
+            "key": "sign.message",
+            "op": "eq",
+            "value": "books for everyone"
+          }
+        ],
+        "changes": {
+          "ada.location": {
+            "before": "library",
+            "after": "square"
+          },
+          "bramble.location": {
+            "before": "library",
+            "after": "square"
+          },
+          "toma.location": {
+            "before": "library",
+            "after": "square"
+          },
+          "cart.location": {
+            "before": "library",
+            "after": "square"
+          },
+          "books.location": {
+            "before": "library",
+            "after": "square"
+          },
+          "parade.location": {
+            "before": "library",
+            "after": "square"
+          },
+          "books.delivered": {
+            "before": false,
+            "after": true
+          },
+          "books.displayed": {
+            "before": false,
+            "after": true
+          },
+          "parade.ready": {
+            "before": false,
+            "after": true
+          },
+          "parade.kind": {
+            "before": "none",
+            "after": "square reading parade"
+          }
+        }
+      }
+    ]
+  },
+  {
+    "seed": 2,
+    "title": "The Library Cart Parade",
+    "initial": {
+      "ada.location": "library",
+      "bramble.location": "library",
+      "toma.location": "library",
+      "keeper.location": "library",
+      "readers.location": "library",
+      "cart.location": "library",
+      "books.location": "library",
+      "sign.location": "library",
+      "parade.location": "library",
+      "rope.owner": "keeper",
+      "cushions.owner": "keeper",
+      "chock.owner": "keeper",
+      "cart.capacity": 4,
+      "cart.load": 2,
+      "cart.balance": "fair",
+      "cart.wheel": "weak",
+      "cart.safe": false,
+      "cart.tested": false,
+      "cart.reinforced": false,
+      "cart.books_safe": false,
+      "books.delivered": false,
+      "books.displayed": false,
+      "route.narrow": true,
+      "route.steep": false,
+      "route.square_access": true,
+      "readers.need": 1,
+      "materials.available": 1,
+      "parade.ready": false,
+      "parade.kind": "none",
+      "sign.message": "biggest",
+      "ada.memes.Curiosity": 2,
+      "ada.memes.Care": 1,
+      "ada.memes.Cooperation": 1,
+      "bramble.memes.Ambition": 3,
+      "bramble.memes.Care": 0,
+      "bramble.memes.Cooperation": 0,
+      "toma.memes.Care": 2,
+      "toma.memes.Cooperation": 1,
+      "keeper.memes.Care": 2,
+      "ada.knows.cart.balance": null,
+      "ada.knows.route.square_access": null,
+      "ada.knows.readers.need": null,
+      "toma.knows.cart.wheel": null
+    },
+    "final": {
+      "ada.location": "square",
+      "bramble.location": "square",
+      "toma.location": "square",
+      "keeper.location": "library",
+      "readers.location": "library",
+      "cart.location": "square",
+      "books.location": "square",
+      "sign.location": "library",
+      "parade.location": "square",
+      "rope.owner": "ada",
+      "cushions.owner": "toma",
+      "chock.owner": "toma",
+      "cart.capacity": 4,
+      "cart.load": 2,
+      "cart.balance": "good",
+      "cart.wheel": "sound",
+      "cart.safe": true,
+      "cart.tested": true,
+      "cart.reinforced": true,
+      "cart.books_safe": true,
+      "books.delivered": true,
+      "books.displayed": true,
+      "route.narrow": true,
+      "route.steep": false,
+      "route.square_access": true,
+      "readers.need": 1,
+      "materials.available": 0,
+      "parade.ready": true,
+      "parade.kind": "square reading parade",
+      "sign.message": "books for everyone",
+      "ada.memes.Curiosity": 4,
+      "ada.memes.Care": 1,
+      "ada.memes.Cooperation": 1,
+      "bramble.memes.Ambition": 4,
+      "bramble.memes.Care": 1,
+      "bramble.memes.Cooperation": 1,
+      "toma.memes.Care": 2,
+      "toma.memes.Cooperation": 2,
+      "keeper.memes.Care": 2,
+      "ada.knows.cart.balance": "fair",
+      "ada.knows.route.square_access": true,
+      "ada.knows.readers.need": 1,
+      "toma.knows.cart.wheel": "weak"
+    },
+    "events": [
+      {
+        "id": 1,
+        "scene": "share_grand_sketch",
+        "kernel": "ambition",
+        "actors": [
+          "bramble",
+          "ada",
+          "cart"
+        ],
+        "summary": "Mayor Bramble showed Ada his grand sketch for a very large cart parade",
+        "causes": [],
+        "requires": [
+          {
+            "key": "bramble.location",
+            "op": "eq",
+            "value": "library"
+          },
+          {
+            "key": "ada.location",
+            "op": "eq",
+            "value": "library"
+          },
+          {
+            "key": "cart.location",
+            "op": "eq",
+            "value": "library"
+          },
+          {
+            "key": "bramble.memes.Ambition",
+            "op": "ge",
+            "value": 2
+          }
+        ],
+        "changes": {
+          "ada.memes.Curiosity": {
+            "before": 2,
+            "after": 3
+          },
+          "bramble.memes.Ambition": {
+            "before": 3,
+            "after": 4
+          }
+        }
+      },
+      {
+        "id": 2,
+        "scene": "lend_rope",
+        "kernel": "Transfer",
+        "actors": [
+          "keeper",
+          "ada"
+        ],
+        "summary": "The keeper lent Ada a rope for the narrow lane",
+        "causes": [],
+        "requires": [
+          {
+            "key": "rope.owner",
+            "op": "eq",
+            "value": "keeper"
+          },
+          {
+            "key": "keeper.location",
+            "op": "eq",
+            "value": "library"
+          },
+          {
+            "key": "ada.location",
+            "op": "eq",
+            "value": "library"
+          },
+          {
+            "key": "keeper.memes.Care",
+            "op": "ge",
+            "value": 1
+          }
+        ],
+        "changes": {
+          "rope.owner": {
+            "before": "keeper",
+            "after": "ada"
+          }
+        }
+      },
+      {
+        "id": 3,
+        "scene": "inspect_balance",
+        "kernel": "Observe",
+        "actors": [
+          "ada"
+        ],
+        "summary": "Ada inspected how the books sat in the cart",
+        "causes": [
+          1
+        ],
+        "requires": [
+          {
+            "key": "ada.location",
+            "op": "eq",
+            "value": "library"
+          },
+          {
+            "key": "cart.location",
+            "op": "eq",
+            "value": "library"
+          },
+          {
+            "key": "ada.memes.Curiosity",
+            "op": "ge",
+            "value": 1
+          }
+        ],
+        "changes": {
+          "ada.knows.cart.balance": {
+            "before": null,
+            "after": "fair"
+          }
+        }
+      },
+      {
+        "id": 4,
+        "scene": "lend_chock",
+        "kernel": "Transfer",
+        "actors": [
+          "keeper",
+          "toma"
+        ],
+        "summary": "The keeper lent Toma a wheel chock for the steep stretch",
+        "causes": [],
+        "requires": [
+          {
+            "key": "chock.owner",
+            "op": "eq",
+            "value": "keeper"
+          },
+          {
+            "key": "keeper.location",
+            "op": "eq",
+            "value": "library"
+          },
+          {
+            "key": "toma.location",
+            "op": "eq",
+            "value": "library"
+          },
+          {
+            "key": "keeper.memes.Care",
+            "op": "ge",
+            "value": 1
+          }
+        ],
+        "changes": {
+          "chock.owner": {
+            "before": "keeper",
+            "after": "toma"
+          }
+        }
+      },
+      {
+        "id": 5,
+        "scene": "measure_wheel",
+        "kernel": "observation",
+        "actors": [
+          "toma",
+          "cart"
+        ],
+        "summary": "Toma measured the cart wheel and found its condition",
+        "causes": [],
+        "requires": [
+          {
+            "key": "toma.location",
+            "op": "eq",
+            "value": "library"
+          },
+          {
+            "key": "cart.location",
+            "op": "eq",
+            "value": "library"
+          },
+          {
+            "key": "toma.memes.Care",
+            "op": "ge",
+            "value": 1
+          }
+        ],
+        "changes": {
+          "toma.memes.Cooperation": {
+            "before": 1,
+            "after": 2
+          },
+          "toma.knows.cart.wheel": {
+            "before": null,
+            "after": "weak"
+          }
+        }
+      },
+      {
+        "id": 6,
+        "scene": "repair_wheel",
+        "kernel": "care",
+        "actors": [
+          "toma",
+          "cart",
+          "materials"
+        ],
+        "summary": "Toma reinforced the weak wheel with the available materials",
+        "causes": [
+          5
+        ],
+        "requires": [
+          {
+            "key": "toma.location",
+            "op": "eq",
+            "value": "library"
+          },
+          {
+            "key": "cart.location",
+            "op": "eq",
+            "value": "library"
+          },
+          {
+            "key": "toma.knows.cart.wheel",
+            "op": "eq",
+            "value": "weak"
+          },
+          {
+            "key": "materials.available",
+            "op": "eq",
+            "value": 1
+          },
+          {
+            "key": "toma.memes.Care",
+            "op": "ge",
+            "value": 1
+          }
+        ],
+        "changes": {
+          "cart.wheel": {
+            "before": "weak",
+            "after": "sound"
+          },
+          "cart.reinforced": {
+            "before": false,
+            "after": true
+          },
+          "materials.available": {
+            "before": 1,
+            "after": 0
+          }
+        }
+      },
+      {
+        "id": 7,
+        "scene": "lend_cushions",
+        "kernel": "Transfer",
+        "actors": [
+          "keeper",
+          "toma"
+        ],
+        "summary": "The keeper lent Toma cushions for protecting the books",
+        "causes": [],
+        "requires": [
+          {
+            "key": "cushions.owner",
+            "op": "eq",
+            "value": "keeper"
+          },
+          {
+            "key": "keeper.location",
+            "op": "eq",
+            "value": "library"
+          },
+          {
+            "key": "toma.location",
+            "op": "eq",
+            "value": "library"
+          },
+          {
+            "key": "keeper.memes.Care",
+            "op": "ge",
+            "value": 1
+          }
+        ],
+        "changes": {
+          "cushions.owner": {
+            "before": "keeper",
+            "after": "toma"
+          }
+        }
+      },
+      {
+        "id": 8,
+        "scene": "balance_books",
+        "kernel": "cooperation",
+        "actors": [
+          "ada",
+          "toma",
+          "cart"
+        ],
+        "summary": "Ada and Toma cushioned and rearranged the books into a balanced load",
+        "causes": [
+          3,
+          6,
+          7
+        ],
+        "requires": [
+          {
+            "key": "ada.location",
+            "op": "eq",
+            "value": "library"
+          },
+          {
+            "key": "toma.location",
+            "op": "eq",
+            "value": "library"
+          },
+          {
+            "key": "cart.location",
+            "op": "eq",
+            "value": "library"
+          },
+          {
+            "key": "ada.knows.cart.balance",
+            "op": "ne",
+            "value": null
+          },
+          {
+            "key": "cushions.owner",
+            "op": "eq",
+            "value": "toma"
+          },
+          {
+            "key": "cart.wheel",
+            "op": "eq",
+            "value": "sound"
+          }
+        ],
+        "changes": {
+          "cart.balance": {
+            "before": "fair",
+            "after": "good"
+          },
+          "cart.safe": {
+            "before": false,
+            "after": true
+          },
+          "cart.books_safe": {
+            "before": false,
+            "after": true
+          }
+        }
+      },
+      {
+        "id": 9,
+        "scene": "consult_readers",
+        "kernel": "care",
+        "actors": [
+          "ada",
+          "readers"
+        ],
+        "summary": "Ada asked the visiting readers what would help them join",
+        "causes": [],
+        "requires": [
+          {
+            "key": "ada.location",
+            "op": "eq",
+            "value": "library"
+          },
+          {
+            "key": "readers.location",
+            "op": "eq",
+            "value": "library"
+          },
+          {
+            "key": "ada.memes.Care",
+            "op": "ge",
+            "value": 1
+          }
+        ],
+        "changes": {
+          "bramble.memes.Care": {
+            "before": 0,
+            "after": 1
+          },
+          "ada.knows.readers.need": {
+            "before": null,
+            "after": 1
+          }
+        }
+      },
+      {
+        "id": 10,
+        "scene": "inspect_route",
+        "kernel": "Observe",
+        "actors": [
+          "ada"
+        ],
+        "summary": "Ada checked whether the route could reach the square",
+        "causes": [
+          1
+        ],
+        "requires": [
+          {
+            "key": "ada.location",
+            "op": "eq",
+            "value": "library"
+          },
+          {
+            "key": "ada.memes.Curiosity",
+            "op": "ge",
+            "value": 1
+          }
+        ],
+        "changes": {
+          "ada.knows.route.square_access": {
+            "before": null,
+            "after": true
+          }
+        }
+      },
+      {
+        "id": 11,
+        "scene": "test_level_route",
+        "kernel": "observation",
+        "actors": [
+          "ada",
+          "toma",
+          "cart"
+        ],
+        "summary": "Ada and Toma tested the cart on the level beginning of the route",
+        "causes": [
+          1,
+          8
+        ],
+        "requires": [
+          {
+            "key": "cart.location",
+            "op": "eq",
+            "value": "library"
+          },
+          {
+            "key": "cart.safe",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "cart.books_safe",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "route.steep",
+            "op": "eq",
+            "value": false
+          }
+        ],
+        "changes": {
+          "cart.tested": {
+            "before": false,
+            "after": true
+          },
+          "ada.memes.Curiosity": {
+            "before": 3,
+            "after": 4
+          }
+        }
+      },
+      {
+        "id": 12,
+        "scene": "make_invitation_sign",
+        "kernel": "cooperation",
+        "actors": [
+          "ada",
+          "bramble",
+          "sign"
+        ],
+        "summary": "Ada and the mayor changed the sign into an invitation for every reader",
+        "causes": [
+          9
+        ],
+        "requires": [
+          {
+            "key": "ada.location",
+            "op": "eq",
+            "value": "library"
+          },
+          {
+            "key": "bramble.location",
+            "op": "eq",
+            "value": "library"
+          },
+          {
+            "key": "sign.location",
+            "op": "eq",
+            "value": "library"
+          },
+          {
+            "key": "ada.knows.readers.need",
+            "op": "ne",
+            "value": null
+          },
+          {
+            "key": "bramble.memes.Care",
+            "op": "ge",
+            "value": 1
+          }
+        ],
+        "changes": {
+          "sign.message": {
+            "before": "biggest",
+            "after": "books for everyone"
+          },
+          "bramble.memes.Cooperation": {
+            "before": 0,
+            "after": 1
+          }
+        }
+      },
+      {
+        "id": 13,
+        "scene": "guide_narrow_square_route",
+        "kernel": "cooperation",
+        "actors": [
+          "ada",
+          "toma",
+          "bramble",
+          "cart"
+        ],
+        "summary": "The group used the rope to guide the cart neatly through the narrow lane to the square",
+        "causes": [
+          2,
+          8,
+          10,
+          11,
+          12
+        ],
+        "requires": [
+          {
+            "key": "ada.location",
+            "op": "eq",
+            "value": "library"
+          },
+          {
+            "key": "toma.location",
+            "op": "eq",
+            "value": "library"
+          },
+          {
+            "key": "bramble.location",
+            "op": "eq",
+            "value": "library"
+          },
+          {
+            "key": "cart.location",
+            "op": "eq",
+            "value": "library"
+          },
+          {
+            "key": "cart.safe",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "cart.books_safe",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "cart.tested",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "ada.knows.route.square_access",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "route.narrow",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "rope.owner",
+            "op": "eq",
+            "value": "ada"
+          },
+          {
+            "key": "sign.message",
+            "op": "eq",
+            "value": "books for everyone"
+          }
+        ],
+        "changes": {
+          "ada.location": {
+            "before": "library",
+            "after": "square"
+          },
+          "bramble.location": {
+            "before": "library",
+            "after": "square"
+          },
+          "toma.location": {
+            "before": "library",
+            "after": "square"
+          },
+          "cart.location": {
+            "before": "library",
+            "after": "square"
+          },
+          "books.location": {
+            "before": "library",
+            "after": "square"
+          },
+          "parade.location": {
+            "before": "library",
+            "after": "square"
+          },
+          "books.delivered": {
+            "before": false,
+            "after": true
+          },
+          "books.displayed": {
+            "before": false,
+            "after": true
+          },
+          "parade.ready": {
+            "before": false,
+            "after": true
+          },
+          "parade.kind": {
+            "before": "none",
+            "after": "square reading parade"
+          }
+        }
+      }
+    ]
+  }
+]

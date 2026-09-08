@@ -1,0 +1,1340 @@
+[
+  {
+    "seed": 0,
+    "title": "The Clocktower Club: Three Chimes and a Dragon",
+    "initial": {
+      "bell.owner": "keeper",
+      "bell.unlocked": false,
+      "bell.soft_rope": true,
+      "bell.last_sound": null,
+      "flag.color": "blue",
+      "flag.meaning": "signal_is_not_invitation",
+      "invitation.owner": "ada",
+      "invitation.delivered": false,
+      "notebook.owner": "ada",
+      "notebook.ready": false,
+      "key.owner": "keeper",
+      "neighbor.awake": false,
+      "neighbor.response": null,
+      "ada.promise.noisy": true,
+      "pip.believes.sneeze_loud": false,
+      "pip.chose.gentle": null,
+      "notebook.meeting_done": false,
+      "keeper.knows.flag.meaning": "signal_is_not_invitation",
+      "ada.knows.flag.color": null,
+      "ada.knows.flag.meaning": null,
+      "ada.knows.neighbor.awake": null,
+      "pip.knows.flag.meaning": null,
+      "pip.knows.bell.soft_rope": null,
+      "pip.knows.neighbor.awake": null
+    },
+    "final": {
+      "bell.owner": "keeper",
+      "bell.unlocked": true,
+      "bell.soft_rope": true,
+      "bell.last_sound": "grand",
+      "flag.color": "blue",
+      "flag.meaning": "signal_is_not_invitation",
+      "invitation.owner": "keeper",
+      "invitation.delivered": true,
+      "notebook.owner": "ada",
+      "notebook.ready": true,
+      "key.owner": "pip",
+      "neighbor.awake": false,
+      "neighbor.response": "startled",
+      "ada.promise.noisy": true,
+      "pip.believes.sneeze_loud": false,
+      "pip.chose.gentle": false,
+      "notebook.meeting_done": true,
+      "keeper.knows.flag.meaning": "signal_is_not_invitation",
+      "ada.knows.flag.color": "blue",
+      "ada.knows.flag.meaning": "signal_is_not_invitation",
+      "ada.knows.neighbor.awake": null,
+      "pip.knows.flag.meaning": "signal_is_not_invitation",
+      "pip.knows.bell.soft_rope": null,
+      "pip.knows.neighbor.awake": null
+    },
+    "events": [
+      {
+        "id": 1,
+        "scene": "notice_flag",
+        "kernel": "Observe",
+        "actors": [
+          "ada"
+        ],
+        "summary": "Ada noticed the feather flag",
+        "causes": [],
+        "requires": [
+          {
+            "key": "ada.knows.flag.color",
+            "op": "eq",
+            "value": null
+          }
+        ],
+        "changes": {
+          "ada.knows.flag.color": {
+            "before": null,
+            "after": "blue"
+          }
+        }
+      },
+      {
+        "id": 2,
+        "scene": "keeper_explains_flag",
+        "kernel": "Tell",
+        "actors": [
+          "keeper",
+          "ada"
+        ],
+        "summary": "Mr. Bellweather explained the flag",
+        "causes": [
+          1
+        ],
+        "requires": [
+          {
+            "key": "keeper.knows.flag.meaning",
+            "op": "ne",
+            "value": null
+          },
+          {
+            "key": "ada.knows.flag.color",
+            "op": "ne",
+            "value": null
+          }
+        ],
+        "changes": {
+          "ada.knows.flag.meaning": {
+            "before": null,
+            "after": "signal_is_not_invitation"
+          }
+        }
+      },
+      {
+        "id": 3,
+        "scene": "ada_tells_pip_flag",
+        "kernel": "Tell",
+        "actors": [
+          "ada",
+          "pip"
+        ],
+        "summary": "Ada told Pip what the flag meant",
+        "causes": [
+          2
+        ],
+        "requires": [
+          {
+            "key": "ada.knows.flag.meaning",
+            "op": "ne",
+            "value": null
+          },
+          {
+            "key": "ada.knows.flag.meaning",
+            "op": "ne",
+            "value": null
+          }
+        ],
+        "changes": {
+          "pip.knows.flag.meaning": {
+            "before": null,
+            "after": "signal_is_not_invitation"
+          }
+        }
+      },
+      {
+        "id": 4,
+        "scene": "hand_over_invitation",
+        "kernel": "Transfer",
+        "actors": [
+          "ada",
+          "keeper"
+        ],
+        "summary": "Ada handed over the ribbon invitation",
+        "causes": [
+          3
+        ],
+        "requires": [
+          {
+            "key": "invitation.owner",
+            "op": "eq",
+            "value": "ada"
+          },
+          {
+            "key": "pip.knows.flag.meaning",
+            "op": "eq",
+            "value": "signal_is_not_invitation"
+          },
+          {
+            "key": "invitation.owner",
+            "op": "eq",
+            "value": "ada"
+          }
+        ],
+        "changes": {
+          "invitation.owner": {
+            "before": "ada",
+            "after": "keeper"
+          }
+        }
+      },
+      {
+        "id": 5,
+        "scene": "deliver_invitation",
+        "kernel": "Welcome",
+        "actors": [
+          "keeper",
+          "ada",
+          "pip"
+        ],
+        "summary": "The keeper delivered the invitation",
+        "causes": [
+          4
+        ],
+        "requires": [
+          {
+            "key": "invitation.owner",
+            "op": "eq",
+            "value": "keeper"
+          },
+          {
+            "key": "invitation.delivered",
+            "op": "eq",
+            "value": false
+          }
+        ],
+        "changes": {
+          "invitation.delivered": {
+            "before": false,
+            "after": true
+          }
+        }
+      },
+      {
+        "id": 6,
+        "scene": "prepare_notebook",
+        "kernel": "Welcome",
+        "actors": [
+          "ada",
+          "pip"
+        ],
+        "summary": "Ada opened the club notebook",
+        "causes": [
+          5
+        ],
+        "requires": [
+          {
+            "key": "invitation.delivered",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "notebook.ready",
+            "op": "eq",
+            "value": false
+          }
+        ],
+        "changes": {
+          "notebook.ready": {
+            "before": false,
+            "after": true
+          }
+        }
+      },
+      {
+        "id": 7,
+        "scene": "lend_key",
+        "kernel": "Transfer",
+        "actors": [
+          "keeper",
+          "pip"
+        ],
+        "summary": "The keeper lent Pip the wooden key",
+        "causes": [
+          6
+        ],
+        "requires": [
+          {
+            "key": "key.owner",
+            "op": "eq",
+            "value": "keeper"
+          },
+          {
+            "key": "notebook.ready",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "key.owner",
+            "op": "eq",
+            "value": "keeper"
+          }
+        ],
+        "changes": {
+          "key.owner": {
+            "before": "keeper",
+            "after": "pip"
+          }
+        }
+      },
+      {
+        "id": 8,
+        "scene": "unlock_bell",
+        "kernel": "Welcome",
+        "actors": [
+          "pip",
+          "keeper"
+        ],
+        "summary": "Pip unlocked the bell",
+        "causes": [
+          7
+        ],
+        "requires": [
+          {
+            "key": "key.owner",
+            "op": "eq",
+            "value": "pip"
+          },
+          {
+            "key": "bell.unlocked",
+            "op": "eq",
+            "value": false
+          }
+        ],
+        "changes": {
+          "bell.unlocked": {
+            "before": false,
+            "after": true
+          }
+        }
+      },
+      {
+        "id": 9,
+        "scene": "choose_grand",
+        "kernel": "Turning",
+        "actors": [
+          "pip"
+        ],
+        "summary": "Pip chose the grand chime",
+        "causes": [
+          3,
+          8
+        ],
+        "requires": [
+          {
+            "key": "bell.unlocked",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "pip.knows.flag.meaning",
+            "op": "eq",
+            "value": "signal_is_not_invitation"
+          },
+          {
+            "key": "pip.believes.sneeze_loud",
+            "op": "eq",
+            "value": false
+          },
+          {
+            "key": "pip.chose.gentle",
+            "op": "eq",
+            "value": null
+          }
+        ],
+        "changes": {
+          "pip.chose.gentle": {
+            "before": null,
+            "after": false
+          }
+        }
+      },
+      {
+        "id": 10,
+        "scene": "perform_grand_meeting",
+        "kernel": "Performance",
+        "actors": [
+          "ada",
+          "pip",
+          "keeper"
+        ],
+        "summary": "The club performed a grand meeting",
+        "causes": [
+          5,
+          6,
+          8,
+          9
+        ],
+        "requires": [
+          {
+            "key": "invitation.delivered",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "notebook.ready",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "bell.unlocked",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "pip.chose.gentle",
+            "op": "eq",
+            "value": false
+          },
+          {
+            "key": "notebook.meeting_done",
+            "op": "eq",
+            "value": false
+          }
+        ],
+        "changes": {
+          "bell.last_sound": {
+            "before": null,
+            "after": "grand"
+          },
+          "notebook.meeting_done": {
+            "before": false,
+            "after": true
+          }
+        }
+      },
+      {
+        "id": 11,
+        "scene": "neighbor_startled",
+        "kernel": "Audience",
+        "actors": [
+          "neighbor",
+          "ada",
+          "pip"
+        ],
+        "summary": "The neighbor woke with a startled grin",
+        "causes": [
+          10
+        ],
+        "requires": [
+          {
+            "key": "notebook.meeting_done",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "bell.last_sound",
+            "op": "eq",
+            "value": "grand"
+          },
+          {
+            "key": "neighbor.awake",
+            "op": "eq",
+            "value": false
+          },
+          {
+            "key": "neighbor.response",
+            "op": "eq",
+            "value": null
+          }
+        ],
+        "changes": {
+          "neighbor.response": {
+            "before": null,
+            "after": "startled"
+          }
+        }
+      }
+    ]
+  },
+  {
+    "seed": 1,
+    "title": "The Clocktower Club: Three Chimes and a Dragon",
+    "initial": {
+      "bell.owner": "keeper",
+      "bell.unlocked": false,
+      "bell.soft_rope": true,
+      "bell.last_sound": null,
+      "flag.color": "red",
+      "flag.meaning": "signal_is_not_invitation",
+      "invitation.owner": "ada",
+      "invitation.delivered": false,
+      "notebook.owner": "ada",
+      "notebook.ready": false,
+      "key.owner": "keeper",
+      "neighbor.awake": true,
+      "neighbor.response": null,
+      "ada.promise.noisy": false,
+      "pip.believes.sneeze_loud": false,
+      "pip.chose.gentle": null,
+      "notebook.meeting_done": false,
+      "keeper.knows.flag.meaning": "signal_is_not_invitation",
+      "ada.knows.flag.color": null,
+      "ada.knows.flag.meaning": null,
+      "ada.knows.neighbor.awake": null,
+      "pip.knows.flag.meaning": null,
+      "pip.knows.bell.soft_rope": null,
+      "pip.knows.neighbor.awake": null
+    },
+    "final": {
+      "bell.owner": "keeper",
+      "bell.unlocked": true,
+      "bell.soft_rope": true,
+      "bell.last_sound": "grand",
+      "flag.color": "red",
+      "flag.meaning": "signal_is_not_invitation",
+      "invitation.owner": "keeper",
+      "invitation.delivered": true,
+      "notebook.owner": "ada",
+      "notebook.ready": true,
+      "key.owner": "pip",
+      "neighbor.awake": true,
+      "neighbor.response": "amused",
+      "ada.promise.noisy": false,
+      "pip.believes.sneeze_loud": false,
+      "pip.chose.gentle": false,
+      "notebook.meeting_done": true,
+      "keeper.knows.flag.meaning": "signal_is_not_invitation",
+      "ada.knows.flag.color": "red",
+      "ada.knows.flag.meaning": "signal_is_not_invitation",
+      "ada.knows.neighbor.awake": null,
+      "pip.knows.flag.meaning": "signal_is_not_invitation",
+      "pip.knows.bell.soft_rope": null,
+      "pip.knows.neighbor.awake": null
+    },
+    "events": [
+      {
+        "id": 1,
+        "scene": "notice_flag",
+        "kernel": "Observe",
+        "actors": [
+          "ada"
+        ],
+        "summary": "Ada noticed the feather flag",
+        "causes": [],
+        "requires": [
+          {
+            "key": "ada.knows.flag.color",
+            "op": "eq",
+            "value": null
+          }
+        ],
+        "changes": {
+          "ada.knows.flag.color": {
+            "before": null,
+            "after": "red"
+          }
+        }
+      },
+      {
+        "id": 2,
+        "scene": "keeper_explains_flag",
+        "kernel": "Tell",
+        "actors": [
+          "keeper",
+          "ada"
+        ],
+        "summary": "Mr. Bellweather explained the flag",
+        "causes": [
+          1
+        ],
+        "requires": [
+          {
+            "key": "keeper.knows.flag.meaning",
+            "op": "ne",
+            "value": null
+          },
+          {
+            "key": "ada.knows.flag.color",
+            "op": "ne",
+            "value": null
+          }
+        ],
+        "changes": {
+          "ada.knows.flag.meaning": {
+            "before": null,
+            "after": "signal_is_not_invitation"
+          }
+        }
+      },
+      {
+        "id": 3,
+        "scene": "ada_tells_pip_flag",
+        "kernel": "Tell",
+        "actors": [
+          "ada",
+          "pip"
+        ],
+        "summary": "Ada told Pip what the flag meant",
+        "causes": [
+          2
+        ],
+        "requires": [
+          {
+            "key": "ada.knows.flag.meaning",
+            "op": "ne",
+            "value": null
+          },
+          {
+            "key": "ada.knows.flag.meaning",
+            "op": "ne",
+            "value": null
+          }
+        ],
+        "changes": {
+          "pip.knows.flag.meaning": {
+            "before": null,
+            "after": "signal_is_not_invitation"
+          }
+        }
+      },
+      {
+        "id": 4,
+        "scene": "hand_over_invitation",
+        "kernel": "Transfer",
+        "actors": [
+          "ada",
+          "keeper"
+        ],
+        "summary": "Ada handed over the ribbon invitation",
+        "causes": [
+          3
+        ],
+        "requires": [
+          {
+            "key": "invitation.owner",
+            "op": "eq",
+            "value": "ada"
+          },
+          {
+            "key": "pip.knows.flag.meaning",
+            "op": "eq",
+            "value": "signal_is_not_invitation"
+          },
+          {
+            "key": "invitation.owner",
+            "op": "eq",
+            "value": "ada"
+          }
+        ],
+        "changes": {
+          "invitation.owner": {
+            "before": "ada",
+            "after": "keeper"
+          }
+        }
+      },
+      {
+        "id": 5,
+        "scene": "deliver_invitation",
+        "kernel": "Welcome",
+        "actors": [
+          "keeper",
+          "ada",
+          "pip"
+        ],
+        "summary": "The keeper delivered the invitation",
+        "causes": [
+          4
+        ],
+        "requires": [
+          {
+            "key": "invitation.owner",
+            "op": "eq",
+            "value": "keeper"
+          },
+          {
+            "key": "invitation.delivered",
+            "op": "eq",
+            "value": false
+          }
+        ],
+        "changes": {
+          "invitation.delivered": {
+            "before": false,
+            "after": true
+          }
+        }
+      },
+      {
+        "id": 6,
+        "scene": "prepare_notebook",
+        "kernel": "Welcome",
+        "actors": [
+          "ada",
+          "pip"
+        ],
+        "summary": "Ada opened the club notebook",
+        "causes": [
+          5
+        ],
+        "requires": [
+          {
+            "key": "invitation.delivered",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "notebook.ready",
+            "op": "eq",
+            "value": false
+          }
+        ],
+        "changes": {
+          "notebook.ready": {
+            "before": false,
+            "after": true
+          }
+        }
+      },
+      {
+        "id": 7,
+        "scene": "lend_key",
+        "kernel": "Transfer",
+        "actors": [
+          "keeper",
+          "pip"
+        ],
+        "summary": "The keeper lent Pip the wooden key",
+        "causes": [
+          6
+        ],
+        "requires": [
+          {
+            "key": "key.owner",
+            "op": "eq",
+            "value": "keeper"
+          },
+          {
+            "key": "notebook.ready",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "key.owner",
+            "op": "eq",
+            "value": "keeper"
+          }
+        ],
+        "changes": {
+          "key.owner": {
+            "before": "keeper",
+            "after": "pip"
+          }
+        }
+      },
+      {
+        "id": 8,
+        "scene": "unlock_bell",
+        "kernel": "Welcome",
+        "actors": [
+          "pip",
+          "keeper"
+        ],
+        "summary": "Pip unlocked the bell",
+        "causes": [
+          7
+        ],
+        "requires": [
+          {
+            "key": "key.owner",
+            "op": "eq",
+            "value": "pip"
+          },
+          {
+            "key": "bell.unlocked",
+            "op": "eq",
+            "value": false
+          }
+        ],
+        "changes": {
+          "bell.unlocked": {
+            "before": false,
+            "after": true
+          }
+        }
+      },
+      {
+        "id": 9,
+        "scene": "choose_grand",
+        "kernel": "Turning",
+        "actors": [
+          "pip"
+        ],
+        "summary": "Pip chose the grand chime",
+        "causes": [
+          3,
+          8
+        ],
+        "requires": [
+          {
+            "key": "bell.unlocked",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "pip.knows.flag.meaning",
+            "op": "eq",
+            "value": "signal_is_not_invitation"
+          },
+          {
+            "key": "pip.believes.sneeze_loud",
+            "op": "eq",
+            "value": false
+          },
+          {
+            "key": "pip.chose.gentle",
+            "op": "eq",
+            "value": null
+          }
+        ],
+        "changes": {
+          "pip.chose.gentle": {
+            "before": null,
+            "after": false
+          }
+        }
+      },
+      {
+        "id": 10,
+        "scene": "perform_grand_meeting",
+        "kernel": "Performance",
+        "actors": [
+          "ada",
+          "pip",
+          "keeper"
+        ],
+        "summary": "The club performed a grand meeting",
+        "causes": [
+          5,
+          6,
+          8,
+          9
+        ],
+        "requires": [
+          {
+            "key": "invitation.delivered",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "notebook.ready",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "bell.unlocked",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "pip.chose.gentle",
+            "op": "eq",
+            "value": false
+          },
+          {
+            "key": "notebook.meeting_done",
+            "op": "eq",
+            "value": false
+          }
+        ],
+        "changes": {
+          "bell.last_sound": {
+            "before": null,
+            "after": "grand"
+          },
+          "notebook.meeting_done": {
+            "before": false,
+            "after": true
+          }
+        }
+      },
+      {
+        "id": 11,
+        "scene": "neighbor_amused",
+        "kernel": "Audience",
+        "actors": [
+          "neighbor",
+          "ada",
+          "pip"
+        ],
+        "summary": "The neighbor laughed at the grand bonk",
+        "causes": [
+          10
+        ],
+        "requires": [
+          {
+            "key": "notebook.meeting_done",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "bell.last_sound",
+            "op": "eq",
+            "value": "grand"
+          },
+          {
+            "key": "neighbor.awake",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "neighbor.response",
+            "op": "eq",
+            "value": null
+          }
+        ],
+        "changes": {
+          "neighbor.response": {
+            "before": null,
+            "after": "amused"
+          }
+        }
+      }
+    ]
+  },
+  {
+    "seed": 2,
+    "title": "The Clocktower Club: Three Chimes and a Dragon",
+    "initial": {
+      "bell.owner": "keeper",
+      "bell.unlocked": false,
+      "bell.soft_rope": true,
+      "bell.last_sound": null,
+      "flag.color": "red",
+      "flag.meaning": "signal_is_not_invitation",
+      "invitation.owner": "ada",
+      "invitation.delivered": false,
+      "notebook.owner": "ada",
+      "notebook.ready": false,
+      "key.owner": "keeper",
+      "neighbor.awake": true,
+      "neighbor.response": null,
+      "ada.promise.noisy": false,
+      "pip.believes.sneeze_loud": false,
+      "pip.chose.gentle": null,
+      "notebook.meeting_done": false,
+      "keeper.knows.flag.meaning": "signal_is_not_invitation",
+      "ada.knows.flag.color": null,
+      "ada.knows.flag.meaning": null,
+      "ada.knows.neighbor.awake": null,
+      "pip.knows.flag.meaning": null,
+      "pip.knows.bell.soft_rope": null,
+      "pip.knows.neighbor.awake": null
+    },
+    "final": {
+      "bell.owner": "keeper",
+      "bell.unlocked": true,
+      "bell.soft_rope": true,
+      "bell.last_sound": "grand",
+      "flag.color": "red",
+      "flag.meaning": "signal_is_not_invitation",
+      "invitation.owner": "keeper",
+      "invitation.delivered": true,
+      "notebook.owner": "ada",
+      "notebook.ready": true,
+      "key.owner": "pip",
+      "neighbor.awake": true,
+      "neighbor.response": "amused",
+      "ada.promise.noisy": false,
+      "pip.believes.sneeze_loud": false,
+      "pip.chose.gentle": false,
+      "notebook.meeting_done": true,
+      "keeper.knows.flag.meaning": "signal_is_not_invitation",
+      "ada.knows.flag.color": "red",
+      "ada.knows.flag.meaning": "signal_is_not_invitation",
+      "ada.knows.neighbor.awake": null,
+      "pip.knows.flag.meaning": "signal_is_not_invitation",
+      "pip.knows.bell.soft_rope": null,
+      "pip.knows.neighbor.awake": null
+    },
+    "events": [
+      {
+        "id": 1,
+        "scene": "notice_flag",
+        "kernel": "Observe",
+        "actors": [
+          "ada"
+        ],
+        "summary": "Ada noticed the feather flag",
+        "causes": [],
+        "requires": [
+          {
+            "key": "ada.knows.flag.color",
+            "op": "eq",
+            "value": null
+          }
+        ],
+        "changes": {
+          "ada.knows.flag.color": {
+            "before": null,
+            "after": "red"
+          }
+        }
+      },
+      {
+        "id": 2,
+        "scene": "keeper_explains_flag",
+        "kernel": "Tell",
+        "actors": [
+          "keeper",
+          "ada"
+        ],
+        "summary": "Mr. Bellweather explained the flag",
+        "causes": [
+          1
+        ],
+        "requires": [
+          {
+            "key": "keeper.knows.flag.meaning",
+            "op": "ne",
+            "value": null
+          },
+          {
+            "key": "ada.knows.flag.color",
+            "op": "ne",
+            "value": null
+          }
+        ],
+        "changes": {
+          "ada.knows.flag.meaning": {
+            "before": null,
+            "after": "signal_is_not_invitation"
+          }
+        }
+      },
+      {
+        "id": 3,
+        "scene": "ada_tells_pip_flag",
+        "kernel": "Tell",
+        "actors": [
+          "ada",
+          "pip"
+        ],
+        "summary": "Ada told Pip what the flag meant",
+        "causes": [
+          2
+        ],
+        "requires": [
+          {
+            "key": "ada.knows.flag.meaning",
+            "op": "ne",
+            "value": null
+          },
+          {
+            "key": "ada.knows.flag.meaning",
+            "op": "ne",
+            "value": null
+          }
+        ],
+        "changes": {
+          "pip.knows.flag.meaning": {
+            "before": null,
+            "after": "signal_is_not_invitation"
+          }
+        }
+      },
+      {
+        "id": 4,
+        "scene": "hand_over_invitation",
+        "kernel": "Transfer",
+        "actors": [
+          "ada",
+          "keeper"
+        ],
+        "summary": "Ada handed over the ribbon invitation",
+        "causes": [
+          3
+        ],
+        "requires": [
+          {
+            "key": "invitation.owner",
+            "op": "eq",
+            "value": "ada"
+          },
+          {
+            "key": "pip.knows.flag.meaning",
+            "op": "eq",
+            "value": "signal_is_not_invitation"
+          },
+          {
+            "key": "invitation.owner",
+            "op": "eq",
+            "value": "ada"
+          }
+        ],
+        "changes": {
+          "invitation.owner": {
+            "before": "ada",
+            "after": "keeper"
+          }
+        }
+      },
+      {
+        "id": 5,
+        "scene": "deliver_invitation",
+        "kernel": "Welcome",
+        "actors": [
+          "keeper",
+          "ada",
+          "pip"
+        ],
+        "summary": "The keeper delivered the invitation",
+        "causes": [
+          4
+        ],
+        "requires": [
+          {
+            "key": "invitation.owner",
+            "op": "eq",
+            "value": "keeper"
+          },
+          {
+            "key": "invitation.delivered",
+            "op": "eq",
+            "value": false
+          }
+        ],
+        "changes": {
+          "invitation.delivered": {
+            "before": false,
+            "after": true
+          }
+        }
+      },
+      {
+        "id": 6,
+        "scene": "prepare_notebook",
+        "kernel": "Welcome",
+        "actors": [
+          "ada",
+          "pip"
+        ],
+        "summary": "Ada opened the club notebook",
+        "causes": [
+          5
+        ],
+        "requires": [
+          {
+            "key": "invitation.delivered",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "notebook.ready",
+            "op": "eq",
+            "value": false
+          }
+        ],
+        "changes": {
+          "notebook.ready": {
+            "before": false,
+            "after": true
+          }
+        }
+      },
+      {
+        "id": 7,
+        "scene": "lend_key",
+        "kernel": "Transfer",
+        "actors": [
+          "keeper",
+          "pip"
+        ],
+        "summary": "The keeper lent Pip the wooden key",
+        "causes": [
+          6
+        ],
+        "requires": [
+          {
+            "key": "key.owner",
+            "op": "eq",
+            "value": "keeper"
+          },
+          {
+            "key": "notebook.ready",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "key.owner",
+            "op": "eq",
+            "value": "keeper"
+          }
+        ],
+        "changes": {
+          "key.owner": {
+            "before": "keeper",
+            "after": "pip"
+          }
+        }
+      },
+      {
+        "id": 8,
+        "scene": "unlock_bell",
+        "kernel": "Welcome",
+        "actors": [
+          "pip",
+          "keeper"
+        ],
+        "summary": "Pip unlocked the bell",
+        "causes": [
+          7
+        ],
+        "requires": [
+          {
+            "key": "key.owner",
+            "op": "eq",
+            "value": "pip"
+          },
+          {
+            "key": "bell.unlocked",
+            "op": "eq",
+            "value": false
+          }
+        ],
+        "changes": {
+          "bell.unlocked": {
+            "before": false,
+            "after": true
+          }
+        }
+      },
+      {
+        "id": 9,
+        "scene": "choose_grand",
+        "kernel": "Turning",
+        "actors": [
+          "pip"
+        ],
+        "summary": "Pip chose the grand chime",
+        "causes": [
+          3,
+          8
+        ],
+        "requires": [
+          {
+            "key": "bell.unlocked",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "pip.knows.flag.meaning",
+            "op": "eq",
+            "value": "signal_is_not_invitation"
+          },
+          {
+            "key": "pip.believes.sneeze_loud",
+            "op": "eq",
+            "value": false
+          },
+          {
+            "key": "pip.chose.gentle",
+            "op": "eq",
+            "value": null
+          }
+        ],
+        "changes": {
+          "pip.chose.gentle": {
+            "before": null,
+            "after": false
+          }
+        }
+      },
+      {
+        "id": 10,
+        "scene": "perform_grand_meeting",
+        "kernel": "Performance",
+        "actors": [
+          "ada",
+          "pip",
+          "keeper"
+        ],
+        "summary": "The club performed a grand meeting",
+        "causes": [
+          5,
+          6,
+          8,
+          9
+        ],
+        "requires": [
+          {
+            "key": "invitation.delivered",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "notebook.ready",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "bell.unlocked",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "pip.chose.gentle",
+            "op": "eq",
+            "value": false
+          },
+          {
+            "key": "notebook.meeting_done",
+            "op": "eq",
+            "value": false
+          }
+        ],
+        "changes": {
+          "bell.last_sound": {
+            "before": null,
+            "after": "grand"
+          },
+          "notebook.meeting_done": {
+            "before": false,
+            "after": true
+          }
+        }
+      },
+      {
+        "id": 11,
+        "scene": "neighbor_amused",
+        "kernel": "Audience",
+        "actors": [
+          "neighbor",
+          "ada",
+          "pip"
+        ],
+        "summary": "The neighbor laughed at the grand bonk",
+        "causes": [
+          10
+        ],
+        "requires": [
+          {
+            "key": "notebook.meeting_done",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "bell.last_sound",
+            "op": "eq",
+            "value": "grand"
+          },
+          {
+            "key": "neighbor.awake",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "neighbor.response",
+            "op": "eq",
+            "value": null
+          }
+        ],
+        "changes": {
+          "neighbor.response": {
+            "before": null,
+            "after": "amused"
+          }
+        }
+      }
+    ]
+  }
+]

@@ -1,0 +1,54 @@
+{
+  "world": "bakery_exchange",
+  "title": "The Cinnamon Button Exchange",
+  "ok": true,
+  "samples": 100,
+  "simulation_sha256": "f7582620c9de9bddea16dc8576c299ef9c47ba8295575f266a0535f3b774824e",
+  "generator_sha256": "ff7be6ae7b5945bf55fe876584b16e74e5cb2f1a43038083f1e5df0ce0b0950c",
+  "catalog_sha256": "ce6618ff930a2556e7d001397af796e97b4ffe529ef87b527f71e9be7b951de2",
+  "distinct_texts": 76,
+  "distinct_scene_paths": 46,
+  "word_range": [
+    182,
+    380
+  ],
+  "prose_control_variants": 3,
+  "mechanics_model": "gpt-5.6-luna",
+  "mechanics_attempts": 1,
+  "prose_model": "gpt-5.6-luna",
+  "stats": {
+    "samples": 100,
+    "ordered_paths": 46,
+    "scene_sets": 4,
+    "causal_graphs": 4,
+    "outcomes": 4,
+    "premises": 12,
+    "events_range": [
+      4,
+      11
+    ],
+    "pruned_events": 205
+  },
+  "critic_before_revision": {
+    "issues": [
+      {
+        "seed": 457,
+        "severity": "major",
+        "layer": "prose",
+        "defect": "contradiction",
+        "evidence": "The story says Pip “pinned a pepper label” and later calls it “Pip’s pepper label,” but the attachment scene has him announce “A cinnamon crown,” despite the traced label text being pepper.",
+        "fix": "Keep Pip’s spoken label and the attached-label references consistently pepper (or change the world label text to cinnamon)."
+      },
+      {
+        "seed": 457,
+        "severity": "major",
+        "layer": "prose",
+        "defect": "unresolved_alternative",
+        "evidence": "Ada’s initial promise is “brave_taste,” yet the story frames the mismatch as a “surprising sign” and finishes the ordinary sweet trade without any traced or narrated decision to pursue the promised daring tasting turn.",
+        "fix": "Add the consequential brave-taste acceptance/defense sequence and its savory outcome, or remove the brave-taste promise from this generated setup."
+      }
+    ],
+    "strengths": "Seeds 123 and 791 accurately realize the ownership transfers, discovery-and-telling order, jar opening, and final tasting outcomes; seed 791 also cleanly dramatizes the label/mark mismatch through the traced defense and acceptance events."
+  },
+  "final_catalog_attempt": 2
+}

@@ -1,0 +1,1492 @@
+[
+  {
+    "seed": 0,
+    "title": "The Kite That Carried Three Kinds of News",
+    "initial": {
+      "kite.tail_material": "none",
+      "kite.selected_tail": null,
+      "kite.tail_attached": false,
+      "kite.airborne": false,
+      "kite.carrying": null,
+      "kite.owner": "nia",
+      "message.mark": "weather",
+      "message.text_kind": null,
+      "message.delivered": false,
+      "message.tucked": false,
+      "message.owner": "pip",
+      "mailbox.audience": "public",
+      "mailbox.reply": null,
+      "pip.knows.message.purpose": "dragon_drawing",
+      "pip.knows.message.mark": null,
+      "pip.knows.mailbox.audience": null,
+      "nia.knows.message.purpose": null,
+      "nia.knows.message.mark": null,
+      "nia.knows.mailbox.audience": null,
+      "nia.safe_preference": "feather",
+      "nia.agrees.public_flight": false,
+      "pip.content": false
+    },
+    "final": {
+      "kite.tail_material": "ribbon",
+      "kite.selected_tail": "ribbon",
+      "kite.tail_attached": true,
+      "kite.airborne": true,
+      "kite.carrying": "weather_note",
+      "kite.owner": "pip",
+      "message.mark": "weather",
+      "message.text_kind": "weather_note",
+      "message.delivered": true,
+      "message.tucked": true,
+      "message.owner": "nia",
+      "mailbox.audience": "public",
+      "mailbox.reply": "silver_sun",
+      "pip.knows.message.purpose": "dragon_drawing",
+      "pip.knows.message.mark": "weather",
+      "pip.knows.mailbox.audience": "public",
+      "nia.knows.message.purpose": null,
+      "nia.knows.message.mark": "weather",
+      "nia.knows.mailbox.audience": "public",
+      "nia.safe_preference": "feather",
+      "nia.agrees.public_flight": true,
+      "pip.content": true
+    },
+    "events": [
+      {
+        "id": 1,
+        "scene": "inspect_message",
+        "kernel": "Observe",
+        "actors": [
+          "nia"
+        ],
+        "summary": "Pip examined the little mark on the sealed message",
+        "causes": [],
+        "requires": [
+          {
+            "key": "message.owner",
+            "op": "eq",
+            "value": "pip"
+          }
+        ],
+        "changes": {
+          "nia.knows.message.mark": {
+            "before": null,
+            "after": "weather"
+          }
+        }
+      },
+      {
+        "id": 2,
+        "scene": "inspect_audience",
+        "kernel": "Observe",
+        "actors": [
+          "nia"
+        ],
+        "summary": "Nia noticed who gathered near Aunt Ember’s mailbox",
+        "causes": [],
+        "requires": [
+          {
+            "key": "message.delivered",
+            "op": "eq",
+            "value": false
+          }
+        ],
+        "changes": {
+          "nia.knows.mailbox.audience": {
+            "before": null,
+            "after": "public"
+          }
+        }
+      },
+      {
+        "id": 3,
+        "scene": "tell_mark",
+        "kernel": "Tell",
+        "actors": [
+          "nia",
+          "pip"
+        ],
+        "summary": "Nia told Pip what the mark really meant",
+        "causes": [
+          1
+        ],
+        "requires": [
+          {
+            "key": "nia.knows.message.mark",
+            "op": "ne",
+            "value": null
+          },
+          {
+            "key": "nia.knows.message.mark",
+            "op": "ne",
+            "value": null
+          }
+        ],
+        "changes": {
+          "pip.knows.message.mark": {
+            "before": null,
+            "after": "weather"
+          }
+        }
+      },
+      {
+        "id": 4,
+        "scene": "tell_audience",
+        "kernel": "Tell",
+        "actors": [
+          "nia",
+          "pip"
+        ],
+        "summary": "Nia told Pip whether the mailbox was private or public",
+        "causes": [
+          2
+        ],
+        "requires": [
+          {
+            "key": "nia.knows.mailbox.audience",
+            "op": "ne",
+            "value": null
+          },
+          {
+            "key": "nia.knows.mailbox.audience",
+            "op": "ne",
+            "value": null
+          }
+        ],
+        "changes": {
+          "pip.knows.mailbox.audience": {
+            "before": null,
+            "after": "public"
+          }
+        }
+      },
+      {
+        "id": 5,
+        "scene": "hand_message_to_nia",
+        "kernel": "Transfer",
+        "actors": [
+          "pip",
+          "nia"
+        ],
+        "summary": "Pip handed the sealed message to Nia for its final wording",
+        "causes": [
+          3
+        ],
+        "requires": [
+          {
+            "key": "message.owner",
+            "op": "eq",
+            "value": "pip"
+          },
+          {
+            "key": "pip.knows.message.mark",
+            "op": "ne",
+            "value": null
+          },
+          {
+            "key": "message.text_kind",
+            "op": "eq",
+            "value": null
+          }
+        ],
+        "changes": {
+          "message.owner": {
+            "before": "pip",
+            "after": "nia"
+          }
+        }
+      },
+      {
+        "id": 6,
+        "scene": "choose_ribbon",
+        "kernel": "Tail Choice",
+        "actors": [
+          "nia",
+          "pip"
+        ],
+        "summary": "They chose the red ribbon for a grand public swoop",
+        "causes": [
+          4
+        ],
+        "requires": [
+          {
+            "key": "pip.knows.mailbox.audience",
+            "op": "eq",
+            "value": "public"
+          },
+          {
+            "key": "kite.selected_tail",
+            "op": "eq",
+            "value": null
+          }
+        ],
+        "changes": {
+          "kite.selected_tail": {
+            "before": null,
+            "after": "ribbon"
+          }
+        }
+      },
+      {
+        "id": 7,
+        "scene": "hand_kite_to_pip",
+        "kernel": "Transfer",
+        "actors": [
+          "nia",
+          "pip"
+        ],
+        "summary": "Nia handed the prepared kite to Pip",
+        "causes": [
+          6
+        ],
+        "requires": [
+          {
+            "key": "kite.owner",
+            "op": "eq",
+            "value": "nia"
+          },
+          {
+            "key": "kite.selected_tail",
+            "op": "ne",
+            "value": null
+          }
+        ],
+        "changes": {
+          "kite.owner": {
+            "before": "nia",
+            "after": "pip"
+          }
+        }
+      },
+      {
+        "id": 8,
+        "scene": "rewrite_sky",
+        "kernel": "Message Turn",
+        "actors": [
+          "nia",
+          "pip"
+        ],
+        "summary": "They changed the message into a sky cheer for the gathering",
+        "causes": [
+          3,
+          5
+        ],
+        "requires": [
+          {
+            "key": "pip.knows.message.mark",
+            "op": "in",
+            "value": [
+              "dragon",
+              "weather",
+              "gathering"
+            ]
+          },
+          {
+            "key": "mailbox.audience",
+            "op": "eq",
+            "value": "public"
+          },
+          {
+            "key": "message.owner",
+            "op": "eq",
+            "value": "nia"
+          }
+        ],
+        "changes": {
+          "message.text_kind": {
+            "before": null,
+            "after": "sky_cheer"
+          }
+        }
+      },
+      {
+        "id": 9,
+        "scene": "rewrite_weather",
+        "kernel": "Message Turn",
+        "actors": [
+          "nia",
+          "pip"
+        ],
+        "summary": "They changed the message into a useful weather note",
+        "causes": [
+          3,
+          5
+        ],
+        "requires": [
+          {
+            "key": "pip.knows.message.mark",
+            "op": "eq",
+            "value": "weather"
+          },
+          {
+            "key": "message.owner",
+            "op": "eq",
+            "value": "nia"
+          }
+        ],
+        "changes": {
+          "message.text_kind": {
+            "before": "sky_cheer",
+            "after": "weather_note"
+          }
+        }
+      },
+      {
+        "id": 10,
+        "scene": "attach_tail",
+        "kernel": "Assembly",
+        "actors": [
+          "pip",
+          "nia"
+        ],
+        "summary": "They tied the chosen tail to the kite",
+        "causes": [
+          6,
+          7
+        ],
+        "requires": [
+          {
+            "key": "kite.owner",
+            "op": "eq",
+            "value": "pip"
+          },
+          {
+            "key": "kite.selected_tail",
+            "op": "ne",
+            "value": null
+          },
+          {
+            "key": "kite.tail_attached",
+            "op": "eq",
+            "value": false
+          }
+        ],
+        "changes": {
+          "kite.tail_material": {
+            "before": "none",
+            "after": "ribbon"
+          },
+          "kite.tail_attached": {
+            "before": false,
+            "after": true
+          }
+        }
+      },
+      {
+        "id": 11,
+        "scene": "tuck_message",
+        "kernel": "Assembly",
+        "actors": [
+          "nia",
+          "pip"
+        ],
+        "summary": "Nia tucked the newly worded message into the kite pocket",
+        "causes": [
+          5,
+          9
+        ],
+        "requires": [
+          {
+            "key": "message.owner",
+            "op": "eq",
+            "value": "nia"
+          },
+          {
+            "key": "message.text_kind",
+            "op": "ne",
+            "value": null
+          },
+          {
+            "key": "message.tucked",
+            "op": "eq",
+            "value": false
+          }
+        ],
+        "changes": {
+          "message.tucked": {
+            "before": false,
+            "after": true
+          }
+        }
+      },
+      {
+        "id": 12,
+        "scene": "invite_shared_flight",
+        "kernel": "Invitation",
+        "actors": [
+          "pip",
+          "nia"
+        ],
+        "summary": "Pip invited Nia to fly the kite before the gathering",
+        "causes": [
+          4,
+          7,
+          11
+        ],
+        "requires": [
+          {
+            "key": "pip.knows.mailbox.audience",
+            "op": "eq",
+            "value": "public"
+          },
+          {
+            "key": "kite.owner",
+            "op": "eq",
+            "value": "pip"
+          },
+          {
+            "key": "message.tucked",
+            "op": "eq",
+            "value": true
+          }
+        ],
+        "changes": {
+          "nia.agrees.public_flight": {
+            "before": false,
+            "after": true
+          }
+        }
+      },
+      {
+        "id": 13,
+        "scene": "launch_public_kite",
+        "kernel": "Performance",
+        "actors": [
+          "pip",
+          "nia"
+        ],
+        "summary": "Pip and Nia launched the kite over the gathering",
+        "causes": [
+          7,
+          10,
+          11,
+          12
+        ],
+        "requires": [
+          {
+            "key": "kite.owner",
+            "op": "eq",
+            "value": "pip"
+          },
+          {
+            "key": "kite.tail_attached",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "message.tucked",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "mailbox.audience",
+            "op": "eq",
+            "value": "public"
+          },
+          {
+            "key": "nia.agrees.public_flight",
+            "op": "eq",
+            "value": true
+          }
+        ],
+        "changes": {
+          "kite.airborne": {
+            "before": false,
+            "after": true
+          }
+        }
+      },
+      {
+        "id": 14,
+        "scene": "deliver_weather",
+        "kernel": "Delivery",
+        "actors": [
+          "pip",
+          "nia"
+        ],
+        "summary": "The low kite delivered the weather note safely",
+        "causes": [
+          9,
+          13
+        ],
+        "requires": [
+          {
+            "key": "kite.airborne",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "message.text_kind",
+            "op": "eq",
+            "value": "weather_note"
+          }
+        ],
+        "changes": {
+          "kite.carrying": {
+            "before": null,
+            "after": "weather_note"
+          },
+          "message.delivered": {
+            "before": false,
+            "after": true
+          },
+          "mailbox.reply": {
+            "before": null,
+            "after": "silver_sun"
+          },
+          "pip.content": {
+            "before": false,
+            "after": true
+          }
+        }
+      }
+    ]
+  },
+  {
+    "seed": 1,
+    "title": "The Kite That Carried Three Kinds of News",
+    "initial": {
+      "kite.tail_material": "ribbon",
+      "kite.selected_tail": null,
+      "kite.tail_attached": false,
+      "kite.airborne": false,
+      "kite.carrying": null,
+      "kite.owner": "nia",
+      "message.mark": "dragon",
+      "message.text_kind": null,
+      "message.delivered": false,
+      "message.tucked": false,
+      "message.owner": "pip",
+      "mailbox.audience": "private",
+      "mailbox.reply": null,
+      "pip.knows.message.purpose": "dragon_drawing",
+      "pip.knows.message.mark": null,
+      "pip.knows.mailbox.audience": null,
+      "nia.knows.message.purpose": null,
+      "nia.knows.message.mark": null,
+      "nia.knows.mailbox.audience": null,
+      "nia.safe_preference": "thread",
+      "nia.agrees.public_flight": false,
+      "pip.content": false
+    },
+    "final": {
+      "kite.tail_material": "thread",
+      "kite.selected_tail": "thread",
+      "kite.tail_attached": true,
+      "kite.airborne": true,
+      "kite.carrying": "private_message",
+      "kite.owner": "pip",
+      "message.mark": "dragon",
+      "message.text_kind": "dragon_drawing",
+      "message.delivered": true,
+      "message.tucked": true,
+      "message.owner": "nia",
+      "mailbox.audience": "private",
+      "mailbox.reply": "green_flag",
+      "pip.knows.message.purpose": "dragon_drawing",
+      "pip.knows.message.mark": "dragon",
+      "pip.knows.mailbox.audience": "private",
+      "nia.knows.message.purpose": null,
+      "nia.knows.message.mark": "dragon",
+      "nia.knows.mailbox.audience": "private",
+      "nia.safe_preference": "thread",
+      "nia.agrees.public_flight": false,
+      "pip.content": true
+    },
+    "events": [
+      {
+        "id": 1,
+        "scene": "inspect_audience",
+        "kernel": "Observe",
+        "actors": [
+          "nia"
+        ],
+        "summary": "Nia noticed who gathered near Aunt Ember’s mailbox",
+        "causes": [],
+        "requires": [
+          {
+            "key": "message.delivered",
+            "op": "eq",
+            "value": false
+          }
+        ],
+        "changes": {
+          "nia.knows.mailbox.audience": {
+            "before": null,
+            "after": "private"
+          }
+        }
+      },
+      {
+        "id": 2,
+        "scene": "inspect_message",
+        "kernel": "Observe",
+        "actors": [
+          "nia"
+        ],
+        "summary": "Pip examined the little mark on the sealed message",
+        "causes": [],
+        "requires": [
+          {
+            "key": "message.owner",
+            "op": "eq",
+            "value": "pip"
+          }
+        ],
+        "changes": {
+          "nia.knows.message.mark": {
+            "before": null,
+            "after": "dragon"
+          }
+        }
+      },
+      {
+        "id": 3,
+        "scene": "tell_mark",
+        "kernel": "Tell",
+        "actors": [
+          "nia",
+          "pip"
+        ],
+        "summary": "Nia told Pip what the mark really meant",
+        "causes": [
+          2
+        ],
+        "requires": [
+          {
+            "key": "nia.knows.message.mark",
+            "op": "ne",
+            "value": null
+          },
+          {
+            "key": "nia.knows.message.mark",
+            "op": "ne",
+            "value": null
+          }
+        ],
+        "changes": {
+          "pip.knows.message.mark": {
+            "before": null,
+            "after": "dragon"
+          }
+        }
+      },
+      {
+        "id": 4,
+        "scene": "hand_message_to_nia",
+        "kernel": "Transfer",
+        "actors": [
+          "pip",
+          "nia"
+        ],
+        "summary": "Pip handed the sealed message to Nia for its final wording",
+        "causes": [
+          3
+        ],
+        "requires": [
+          {
+            "key": "message.owner",
+            "op": "eq",
+            "value": "pip"
+          },
+          {
+            "key": "pip.knows.message.mark",
+            "op": "ne",
+            "value": null
+          },
+          {
+            "key": "message.text_kind",
+            "op": "eq",
+            "value": null
+          }
+        ],
+        "changes": {
+          "message.owner": {
+            "before": "pip",
+            "after": "nia"
+          }
+        }
+      },
+      {
+        "id": 5,
+        "scene": "tell_audience",
+        "kernel": "Tell",
+        "actors": [
+          "nia",
+          "pip"
+        ],
+        "summary": "Nia told Pip whether the mailbox was private or public",
+        "causes": [
+          1
+        ],
+        "requires": [
+          {
+            "key": "nia.knows.mailbox.audience",
+            "op": "ne",
+            "value": null
+          },
+          {
+            "key": "nia.knows.mailbox.audience",
+            "op": "ne",
+            "value": null
+          }
+        ],
+        "changes": {
+          "pip.knows.mailbox.audience": {
+            "before": null,
+            "after": "private"
+          }
+        }
+      },
+      {
+        "id": 6,
+        "scene": "choose_thread",
+        "kernel": "Tail Choice",
+        "actors": [
+          "nia",
+          "pip"
+        ],
+        "summary": "They chose the blue thread for a neat private flight",
+        "causes": [
+          5
+        ],
+        "requires": [
+          {
+            "key": "pip.knows.mailbox.audience",
+            "op": "eq",
+            "value": "private"
+          },
+          {
+            "key": "nia.safe_preference",
+            "op": "eq",
+            "value": "thread"
+          },
+          {
+            "key": "kite.selected_tail",
+            "op": "eq",
+            "value": null
+          }
+        ],
+        "changes": {
+          "kite.selected_tail": {
+            "before": null,
+            "after": "thread"
+          }
+        }
+      },
+      {
+        "id": 7,
+        "scene": "hand_kite_to_pip",
+        "kernel": "Transfer",
+        "actors": [
+          "nia",
+          "pip"
+        ],
+        "summary": "Nia handed the prepared kite to Pip",
+        "causes": [
+          6
+        ],
+        "requires": [
+          {
+            "key": "kite.owner",
+            "op": "eq",
+            "value": "nia"
+          },
+          {
+            "key": "kite.selected_tail",
+            "op": "ne",
+            "value": null
+          }
+        ],
+        "changes": {
+          "kite.owner": {
+            "before": "nia",
+            "after": "pip"
+          }
+        }
+      },
+      {
+        "id": 8,
+        "scene": "attach_tail",
+        "kernel": "Assembly",
+        "actors": [
+          "pip",
+          "nia"
+        ],
+        "summary": "They tied the chosen tail to the kite",
+        "causes": [
+          6,
+          7
+        ],
+        "requires": [
+          {
+            "key": "kite.owner",
+            "op": "eq",
+            "value": "pip"
+          },
+          {
+            "key": "kite.selected_tail",
+            "op": "ne",
+            "value": null
+          },
+          {
+            "key": "kite.tail_attached",
+            "op": "eq",
+            "value": false
+          }
+        ],
+        "changes": {
+          "kite.tail_material": {
+            "before": "ribbon",
+            "after": "thread"
+          },
+          "kite.tail_attached": {
+            "before": false,
+            "after": true
+          }
+        }
+      },
+      {
+        "id": 9,
+        "scene": "rewrite_dragon",
+        "kernel": "Message Turn",
+        "actors": [
+          "nia",
+          "pip"
+        ],
+        "summary": "They made the message a dragon drawing",
+        "causes": [
+          3,
+          4
+        ],
+        "requires": [
+          {
+            "key": "pip.knows.message.mark",
+            "op": "in",
+            "value": [
+              "dragon",
+              "gathering"
+            ]
+          },
+          {
+            "key": "mailbox.audience",
+            "op": "eq",
+            "value": "private"
+          },
+          {
+            "key": "message.owner",
+            "op": "eq",
+            "value": "nia"
+          }
+        ],
+        "changes": {
+          "message.text_kind": {
+            "before": null,
+            "after": "dragon_drawing"
+          }
+        }
+      },
+      {
+        "id": 10,
+        "scene": "tuck_message",
+        "kernel": "Assembly",
+        "actors": [
+          "nia",
+          "pip"
+        ],
+        "summary": "Nia tucked the newly worded message into the kite pocket",
+        "causes": [
+          4,
+          9
+        ],
+        "requires": [
+          {
+            "key": "message.owner",
+            "op": "eq",
+            "value": "nia"
+          },
+          {
+            "key": "message.text_kind",
+            "op": "ne",
+            "value": null
+          },
+          {
+            "key": "message.tucked",
+            "op": "eq",
+            "value": false
+          }
+        ],
+        "changes": {
+          "message.tucked": {
+            "before": false,
+            "after": true
+          }
+        }
+      },
+      {
+        "id": 11,
+        "scene": "launch_kite",
+        "kernel": "Performance",
+        "actors": [
+          "pip",
+          "nia"
+        ],
+        "summary": "Pip launched the kite toward the quiet mailbox",
+        "causes": [
+          7,
+          8,
+          10
+        ],
+        "requires": [
+          {
+            "key": "kite.owner",
+            "op": "eq",
+            "value": "pip"
+          },
+          {
+            "key": "kite.tail_attached",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "message.tucked",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "mailbox.audience",
+            "op": "eq",
+            "value": "private"
+          }
+        ],
+        "changes": {
+          "kite.airborne": {
+            "before": false,
+            "after": true
+          }
+        }
+      },
+      {
+        "id": 12,
+        "scene": "deliver_private",
+        "kernel": "Delivery",
+        "actors": [
+          "pip"
+        ],
+        "summary": "The kite carried the private message to Aunt Ember",
+        "causes": [
+          9,
+          11
+        ],
+        "requires": [
+          {
+            "key": "kite.airborne",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "mailbox.audience",
+            "op": "eq",
+            "value": "private"
+          },
+          {
+            "key": "message.text_kind",
+            "op": "ne",
+            "value": "weather_note"
+          }
+        ],
+        "changes": {
+          "kite.carrying": {
+            "before": null,
+            "after": "private_message"
+          },
+          "message.delivered": {
+            "before": false,
+            "after": true
+          },
+          "mailbox.reply": {
+            "before": null,
+            "after": "green_flag"
+          },
+          "pip.content": {
+            "before": false,
+            "after": true
+          }
+        }
+      }
+    ]
+  },
+  {
+    "seed": 2,
+    "title": "The Kite That Carried Three Kinds of News",
+    "initial": {
+      "kite.tail_material": "none",
+      "kite.selected_tail": null,
+      "kite.tail_attached": false,
+      "kite.airborne": false,
+      "kite.carrying": null,
+      "kite.owner": "nia",
+      "message.mark": "dragon",
+      "message.text_kind": null,
+      "message.delivered": false,
+      "message.tucked": false,
+      "message.owner": "pip",
+      "mailbox.audience": "private",
+      "mailbox.reply": null,
+      "pip.knows.message.purpose": "dragon_drawing",
+      "pip.knows.message.mark": null,
+      "pip.knows.mailbox.audience": null,
+      "nia.knows.message.purpose": null,
+      "nia.knows.message.mark": null,
+      "nia.knows.mailbox.audience": null,
+      "nia.safe_preference": "feather",
+      "nia.agrees.public_flight": false,
+      "pip.content": false
+    },
+    "final": {
+      "kite.tail_material": "feather",
+      "kite.selected_tail": "feather",
+      "kite.tail_attached": true,
+      "kite.airborne": true,
+      "kite.carrying": "private_message",
+      "kite.owner": "pip",
+      "message.mark": "dragon",
+      "message.text_kind": "dragon_drawing",
+      "message.delivered": true,
+      "message.tucked": true,
+      "message.owner": "nia",
+      "mailbox.audience": "private",
+      "mailbox.reply": "green_flag",
+      "pip.knows.message.purpose": "dragon_drawing",
+      "pip.knows.message.mark": "dragon",
+      "pip.knows.mailbox.audience": "private",
+      "nia.knows.message.purpose": null,
+      "nia.knows.message.mark": "dragon",
+      "nia.knows.mailbox.audience": "private",
+      "nia.safe_preference": "feather",
+      "nia.agrees.public_flight": false,
+      "pip.content": true
+    },
+    "events": [
+      {
+        "id": 1,
+        "scene": "inspect_message",
+        "kernel": "Observe",
+        "actors": [
+          "nia"
+        ],
+        "summary": "Pip examined the little mark on the sealed message",
+        "causes": [],
+        "requires": [
+          {
+            "key": "message.owner",
+            "op": "eq",
+            "value": "pip"
+          }
+        ],
+        "changes": {
+          "nia.knows.message.mark": {
+            "before": null,
+            "after": "dragon"
+          }
+        }
+      },
+      {
+        "id": 2,
+        "scene": "tell_mark",
+        "kernel": "Tell",
+        "actors": [
+          "nia",
+          "pip"
+        ],
+        "summary": "Nia told Pip what the mark really meant",
+        "causes": [
+          1
+        ],
+        "requires": [
+          {
+            "key": "nia.knows.message.mark",
+            "op": "ne",
+            "value": null
+          },
+          {
+            "key": "nia.knows.message.mark",
+            "op": "ne",
+            "value": null
+          }
+        ],
+        "changes": {
+          "pip.knows.message.mark": {
+            "before": null,
+            "after": "dragon"
+          }
+        }
+      },
+      {
+        "id": 3,
+        "scene": "inspect_audience",
+        "kernel": "Observe",
+        "actors": [
+          "nia"
+        ],
+        "summary": "Nia noticed who gathered near Aunt Ember’s mailbox",
+        "causes": [],
+        "requires": [
+          {
+            "key": "message.delivered",
+            "op": "eq",
+            "value": false
+          }
+        ],
+        "changes": {
+          "nia.knows.mailbox.audience": {
+            "before": null,
+            "after": "private"
+          }
+        }
+      },
+      {
+        "id": 4,
+        "scene": "tell_audience",
+        "kernel": "Tell",
+        "actors": [
+          "nia",
+          "pip"
+        ],
+        "summary": "Nia told Pip whether the mailbox was private or public",
+        "causes": [
+          3
+        ],
+        "requires": [
+          {
+            "key": "nia.knows.mailbox.audience",
+            "op": "ne",
+            "value": null
+          },
+          {
+            "key": "nia.knows.mailbox.audience",
+            "op": "ne",
+            "value": null
+          }
+        ],
+        "changes": {
+          "pip.knows.mailbox.audience": {
+            "before": null,
+            "after": "private"
+          }
+        }
+      },
+      {
+        "id": 5,
+        "scene": "hand_message_to_nia",
+        "kernel": "Transfer",
+        "actors": [
+          "pip",
+          "nia"
+        ],
+        "summary": "Pip handed the sealed message to Nia for its final wording",
+        "causes": [
+          2
+        ],
+        "requires": [
+          {
+            "key": "message.owner",
+            "op": "eq",
+            "value": "pip"
+          },
+          {
+            "key": "pip.knows.message.mark",
+            "op": "ne",
+            "value": null
+          },
+          {
+            "key": "message.text_kind",
+            "op": "eq",
+            "value": null
+          }
+        ],
+        "changes": {
+          "message.owner": {
+            "before": "pip",
+            "after": "nia"
+          }
+        }
+      },
+      {
+        "id": 6,
+        "scene": "choose_feather",
+        "kernel": "Tail Choice",
+        "actors": [
+          "nia",
+          "pip"
+        ],
+        "summary": "They chose the feather for a quiet private flight",
+        "causes": [
+          4
+        ],
+        "requires": [
+          {
+            "key": "pip.knows.mailbox.audience",
+            "op": "eq",
+            "value": "private"
+          },
+          {
+            "key": "nia.safe_preference",
+            "op": "eq",
+            "value": "feather"
+          },
+          {
+            "key": "kite.selected_tail",
+            "op": "eq",
+            "value": null
+          }
+        ],
+        "changes": {
+          "kite.selected_tail": {
+            "before": null,
+            "after": "feather"
+          }
+        }
+      },
+      {
+        "id": 7,
+        "scene": "hand_kite_to_pip",
+        "kernel": "Transfer",
+        "actors": [
+          "nia",
+          "pip"
+        ],
+        "summary": "Nia handed the prepared kite to Pip",
+        "causes": [
+          6
+        ],
+        "requires": [
+          {
+            "key": "kite.owner",
+            "op": "eq",
+            "value": "nia"
+          },
+          {
+            "key": "kite.selected_tail",
+            "op": "ne",
+            "value": null
+          }
+        ],
+        "changes": {
+          "kite.owner": {
+            "before": "nia",
+            "after": "pip"
+          }
+        }
+      },
+      {
+        "id": 8,
+        "scene": "attach_tail",
+        "kernel": "Assembly",
+        "actors": [
+          "pip",
+          "nia"
+        ],
+        "summary": "They tied the chosen tail to the kite",
+        "causes": [
+          6,
+          7
+        ],
+        "requires": [
+          {
+            "key": "kite.owner",
+            "op": "eq",
+            "value": "pip"
+          },
+          {
+            "key": "kite.selected_tail",
+            "op": "ne",
+            "value": null
+          },
+          {
+            "key": "kite.tail_attached",
+            "op": "eq",
+            "value": false
+          }
+        ],
+        "changes": {
+          "kite.tail_material": {
+            "before": "none",
+            "after": "feather"
+          },
+          "kite.tail_attached": {
+            "before": false,
+            "after": true
+          }
+        }
+      },
+      {
+        "id": 9,
+        "scene": "rewrite_dragon",
+        "kernel": "Message Turn",
+        "actors": [
+          "nia",
+          "pip"
+        ],
+        "summary": "They made the message a dragon drawing",
+        "causes": [
+          2,
+          5
+        ],
+        "requires": [
+          {
+            "key": "pip.knows.message.mark",
+            "op": "in",
+            "value": [
+              "dragon",
+              "gathering"
+            ]
+          },
+          {
+            "key": "mailbox.audience",
+            "op": "eq",
+            "value": "private"
+          },
+          {
+            "key": "message.owner",
+            "op": "eq",
+            "value": "nia"
+          }
+        ],
+        "changes": {
+          "message.text_kind": {
+            "before": null,
+            "after": "dragon_drawing"
+          }
+        }
+      },
+      {
+        "id": 10,
+        "scene": "tuck_message",
+        "kernel": "Assembly",
+        "actors": [
+          "nia",
+          "pip"
+        ],
+        "summary": "Nia tucked the newly worded message into the kite pocket",
+        "causes": [
+          5,
+          9
+        ],
+        "requires": [
+          {
+            "key": "message.owner",
+            "op": "eq",
+            "value": "nia"
+          },
+          {
+            "key": "message.text_kind",
+            "op": "ne",
+            "value": null
+          },
+          {
+            "key": "message.tucked",
+            "op": "eq",
+            "value": false
+          }
+        ],
+        "changes": {
+          "message.tucked": {
+            "before": false,
+            "after": true
+          }
+        }
+      },
+      {
+        "id": 11,
+        "scene": "launch_kite",
+        "kernel": "Performance",
+        "actors": [
+          "pip",
+          "nia"
+        ],
+        "summary": "Pip launched the kite toward the quiet mailbox",
+        "causes": [
+          7,
+          8,
+          10
+        ],
+        "requires": [
+          {
+            "key": "kite.owner",
+            "op": "eq",
+            "value": "pip"
+          },
+          {
+            "key": "kite.tail_attached",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "message.tucked",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "mailbox.audience",
+            "op": "eq",
+            "value": "private"
+          }
+        ],
+        "changes": {
+          "kite.airborne": {
+            "before": false,
+            "after": true
+          }
+        }
+      },
+      {
+        "id": 12,
+        "scene": "deliver_private",
+        "kernel": "Delivery",
+        "actors": [
+          "pip"
+        ],
+        "summary": "The kite carried the private message to Aunt Ember",
+        "causes": [
+          9,
+          11
+        ],
+        "requires": [
+          {
+            "key": "kite.airborne",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "mailbox.audience",
+            "op": "eq",
+            "value": "private"
+          },
+          {
+            "key": "message.text_kind",
+            "op": "ne",
+            "value": "weather_note"
+          }
+        ],
+        "changes": {
+          "kite.carrying": {
+            "before": null,
+            "after": "private_message"
+          },
+          "message.delivered": {
+            "before": false,
+            "after": true
+          },
+          "mailbox.reply": {
+            "before": null,
+            "after": "green_flag"
+          },
+          "pip.content": {
+            "before": false,
+            "after": true
+          }
+        }
+      }
+    ]
+  }
+]

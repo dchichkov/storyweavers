@@ -1,0 +1,61 @@
+{
+  "issues": [
+    {
+      "seed": 123,
+      "severity": "major",
+      "layer": "simulation",
+      "defect": "contradiction",
+      "evidence": "Event 1 says, “Mina opened the wooden tube,” and the story repeats that she “opened the wooden tube,” but `tube.open` is `false` initially and finally and event 1 changes only `mina.knows.tube.label`.",
+      "fix": "Either change `tube.open` to true in the read event (and add a later close event if needed), or revise the event and prose to say Mina read the outside label without opening the tube."
+    },
+    {
+      "seed": 123,
+      "severity": "major",
+      "layer": "prose",
+      "defect": "ungrounded_outcome",
+      "evidence": "The response paragraph says, “The smooth kite settled beside Grandma,” while `kite.place` remains `roof` throughout the trace, including the final state; no event moves it to Grandma or returns it to the roof.",
+      "fix": "Describe the tube/hello arriving without asserting that the kite settles beside Grandma, or add explicit movement and return changes for the kite."
+    },
+    {
+      "seed": 456,
+      "severity": "major",
+      "layer": "simulation",
+      "defect": "contradiction",
+      "evidence": "The trace’s read event summarizes “Mina opened the wooden tube,” and the story says the same, but `tube.open` remains `false` from initial state through final state and is never changed by any event.",
+      "fix": "Record the tube opening as a state change, or make the action a reading of an externally visible label."
+    },
+    {
+      "seed": 789,
+      "severity": "major",
+      "layer": "simulation",
+      "defect": "contradiction",
+      "evidence": "Event 2 and its prose say Mina “opened the wooden tube,” but `tube.open` stays `false` in both the initial and final states, with no ordered change to it.",
+      "fix": "Set `tube.open` to true when Mina opens it, or revise the event/story wording so that Mina only reads its label."
+    },
+    {
+      "seed": 789,
+      "severity": "major",
+      "layer": "simulation",
+      "defect": "wrong_knowledge",
+      "evidence": "`tavi.knows.tube.label` is already `garden_birds` in the initial state. Nevertheless event 4 is titled `tavi_learns_truth` and summarized as “Tavi learned that the message belonged to the garden birds”; it makes no knowledge change, only `tavi.trust: false → true`. The prose likewise presents “When Tavi saw the words the garden birds” as the corrective revelation.",
+      "fix": "Start Tavi without knowledge of the label and add a genuine informing/observing change, or frame event 4 as Tavi accepting or acting on information he already knew rather than learning it."
+    },
+    {
+      "seed": 789,
+      "severity": "minor",
+      "layer": "prose",
+      "defect": "unresolved_alternative",
+      "evidence": "The test paragraph says the bell “rang a bright or low little song,” even though the trace fixes `bell.tone` as `low` throughout.",
+      "fix": "Use the resolved value: for example, “rang a low little song.”"
+    },
+    {
+      "seed": 789,
+      "severity": "major",
+      "layer": "prose",
+      "defect": "contradiction",
+      "evidence": "Event 10 has already changed `tube.delivered_to` from `null` to `garden_birds`, but the ending says, “the message glided toward the garden birds,” which leaves the central delivery still in progress after it has been accomplished.",
+      "fix": "Make the ending acknowledge the completed delivery, such as describing the birds receiving the message or responding as it arrives."
+    }
+  ],
+  "strengths": "Seeds 123 and 456 have clear, ordered causal arcs: learning the recipient leads to a design choice, agreement, test, launch, and delivery. The prose generally realizes the stateful fin/tail, transfer, and flight-style changes vividly without exposing enum labels. Seed 789 also gives Tavi a meaningful role through the bell and tube transfers; its main weakness is that the intended realization turn is inconsistent with Tavi’s initial knowledge."
+}

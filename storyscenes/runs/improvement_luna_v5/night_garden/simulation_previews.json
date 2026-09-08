@@ -1,0 +1,683 @@
+[
+  {
+    "seed": 0,
+    "title": "The Moonlit Welcome",
+    "initial": {
+      "ada.memes.Curiosity": 2,
+      "bo.memes.Care": 2,
+      "pip.location": "gate",
+      "pip.content": "shy",
+      "pip.invited": false,
+      "gate.open": false,
+      "lamp.brightness": "soft",
+      "lamp.owner": "ada",
+      "moon.position": "basket",
+      "bell.rung": false,
+      "flowers.ready": false,
+      "ribbon.tied": false,
+      "ada.plan": "moving",
+      "bo.plan": "flowers",
+      "ada.performed.mode": "none",
+      "ada.knows.pip.location": null,
+      "bo.knows.pip.location": null,
+      "ada.knows.lamp.brightness": null,
+      "bo.knows.lamp.brightness": null
+    },
+    "final": {
+      "ada.memes.Curiosity": 2,
+      "bo.memes.Care": 2,
+      "pip.location": "moonflowers",
+      "pip.content": "curious",
+      "pip.invited": true,
+      "gate.open": true,
+      "lamp.brightness": "soft",
+      "lamp.owner": "ada",
+      "moon.position": "basket",
+      "bell.rung": false,
+      "flowers.ready": true,
+      "ribbon.tied": false,
+      "ada.plan": "moving",
+      "bo.plan": "flowers",
+      "ada.performed.mode": "none",
+      "ada.knows.pip.location": null,
+      "bo.knows.pip.location": null,
+      "ada.knows.lamp.brightness": null,
+      "bo.knows.lamp.brightness": null
+    },
+    "events": [
+      {
+        "id": 1,
+        "scene": "open_gate",
+        "kernel": "Invitation",
+        "actors": [
+          "ada"
+        ],
+        "summary": "Ada opened the gate and called a welcome into the dark garden",
+        "causes": [],
+        "requires": [
+          {
+            "key": "gate.open",
+            "op": "eq",
+            "value": false
+          }
+        ],
+        "changes": {
+          "pip.invited": {
+            "before": false,
+            "after": true
+          },
+          "gate.open": {
+            "before": false,
+            "after": true
+          }
+        }
+      },
+      {
+        "id": 2,
+        "scene": "scent_moonflowers",
+        "kernel": "Welcome",
+        "actors": [
+          "bo"
+        ],
+        "summary": "Bo brushed the moonflowers so their scent drifted out",
+        "causes": [
+          1
+        ],
+        "requires": [
+          {
+            "key": "gate.open",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "bo.plan",
+            "op": "eq",
+            "value": "flowers"
+          },
+          {
+            "key": "flowers.ready",
+            "op": "eq",
+            "value": false
+          }
+        ],
+        "changes": {
+          "flowers.ready": {
+            "before": false,
+            "after": true
+          }
+        }
+      },
+      {
+        "id": 3,
+        "scene": "pip_lands_flowers",
+        "kernel": "Guest Response",
+        "actors": [
+          "pip"
+        ],
+        "summary": "Pip landed among the moonflowers",
+        "causes": [
+          1,
+          2
+        ],
+        "requires": [
+          {
+            "key": "pip.invited",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "flowers.ready",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "ada.performed.mode",
+            "op": "eq",
+            "value": "none"
+          }
+        ],
+        "changes": {
+          "pip.location": {
+            "before": "gate",
+            "after": "moonflowers"
+          },
+          "pip.content": {
+            "before": "shy",
+            "after": "curious"
+          }
+        }
+      }
+    ]
+  },
+  {
+    "seed": 1,
+    "title": "The Moonlit Welcome",
+    "initial": {
+      "ada.memes.Curiosity": 2,
+      "bo.memes.Care": 2,
+      "pip.location": "leaves",
+      "pip.content": "shy",
+      "pip.invited": false,
+      "gate.open": false,
+      "lamp.brightness": "bright",
+      "lamp.owner": "ada",
+      "moon.position": "basket",
+      "bell.rung": false,
+      "flowers.ready": false,
+      "ribbon.tied": false,
+      "ada.plan": "tableau",
+      "bo.plan": "bell",
+      "ada.performed.mode": "none",
+      "ada.knows.pip.location": null,
+      "bo.knows.pip.location": null,
+      "ada.knows.lamp.brightness": null,
+      "bo.knows.lamp.brightness": null
+    },
+    "final": {
+      "ada.memes.Curiosity": 2,
+      "bo.memes.Care": 2,
+      "pip.location": "ribbon",
+      "pip.content": "welcomed",
+      "pip.invited": true,
+      "gate.open": true,
+      "lamp.brightness": "soft",
+      "lamp.owner": "bo",
+      "moon.position": "gate",
+      "bell.rung": false,
+      "flowers.ready": false,
+      "ribbon.tied": true,
+      "ada.plan": "tableau",
+      "bo.plan": "bell",
+      "ada.performed.mode": "tableau",
+      "ada.knows.pip.location": null,
+      "bo.knows.pip.location": null,
+      "ada.knows.lamp.brightness": "bright",
+      "bo.knows.lamp.brightness": null
+    },
+    "events": [
+      {
+        "id": 1,
+        "scene": "open_gate",
+        "kernel": "Invitation",
+        "actors": [
+          "ada"
+        ],
+        "summary": "Ada opened the gate and called a welcome into the dark garden",
+        "causes": [],
+        "requires": [
+          {
+            "key": "gate.open",
+            "op": "eq",
+            "value": false
+          }
+        ],
+        "changes": {
+          "pip.invited": {
+            "before": false,
+            "after": true
+          },
+          "gate.open": {
+            "before": false,
+            "after": true
+          }
+        }
+      },
+      {
+        "id": 2,
+        "scene": "place_paper_moon",
+        "kernel": "Preparation",
+        "actors": [
+          "ada"
+        ],
+        "summary": "Ada hung the paper moon on the gate",
+        "causes": [
+          1
+        ],
+        "requires": [
+          {
+            "key": "gate.open",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "moon.position",
+            "op": "eq",
+            "value": "basket"
+          }
+        ],
+        "changes": {
+          "moon.position": {
+            "before": "basket",
+            "after": "gate"
+          }
+        }
+      },
+      {
+        "id": 3,
+        "scene": "inspect_lamp",
+        "kernel": "Observe",
+        "actors": [
+          "ada"
+        ],
+        "summary": "Ada checked the lamp glow",
+        "causes": [
+          1
+        ],
+        "requires": [
+          {
+            "key": "gate.open",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "lamp.owner",
+            "op": "eq",
+            "value": "ada"
+          }
+        ],
+        "changes": {
+          "ada.knows.lamp.brightness": {
+            "before": null,
+            "after": "bright"
+          }
+        }
+      },
+      {
+        "id": 4,
+        "scene": "tie_welcome_ribbon",
+        "kernel": "Preparation",
+        "actors": [
+          "bo"
+        ],
+        "summary": "Bo tied the welcome ribbon to the gate",
+        "causes": [
+          1
+        ],
+        "requires": [
+          {
+            "key": "gate.open",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "ribbon.tied",
+            "op": "eq",
+            "value": false
+          }
+        ],
+        "changes": {
+          "ribbon.tied": {
+            "before": false,
+            "after": true
+          }
+        }
+      },
+      {
+        "id": 5,
+        "scene": "pass_lamp",
+        "kernel": "Transfer",
+        "actors": [
+          "ada",
+          "bo"
+        ],
+        "summary": "Ada passed the lamp to Bo",
+        "causes": [
+          1,
+          3
+        ],
+        "requires": [
+          {
+            "key": "lamp.owner",
+            "op": "eq",
+            "value": "ada"
+          },
+          {
+            "key": "gate.open",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "ada.knows.lamp.brightness",
+            "op": "ne",
+            "value": null
+          }
+        ],
+        "changes": {
+          "lamp.owner": {
+            "before": "ada",
+            "after": "bo"
+          }
+        }
+      },
+      {
+        "id": 6,
+        "scene": "soften_lamp_bo",
+        "kernel": "Adjustment",
+        "actors": [
+          "bo"
+        ],
+        "summary": "Bo shaded the lamp until its glow became soft",
+        "causes": [
+          5
+        ],
+        "requires": [
+          {
+            "key": "lamp.owner",
+            "op": "eq",
+            "value": "bo"
+          },
+          {
+            "key": "lamp.brightness",
+            "op": "eq",
+            "value": "bright"
+          },
+          {
+            "key": "lamp.brightness",
+            "op": "eq",
+            "value": "bright"
+          }
+        ],
+        "changes": {
+          "lamp.brightness": {
+            "before": "bright",
+            "after": "soft"
+          }
+        }
+      },
+      {
+        "id": 7,
+        "scene": "perform_still_tableau",
+        "kernel": "Performance",
+        "actors": [
+          "ada"
+        ],
+        "summary": "Ada performed a quiet paper-moon tableau",
+        "causes": [
+          1,
+          2,
+          6
+        ],
+        "requires": [
+          {
+            "key": "gate.open",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "ada.plan",
+            "op": "eq",
+            "value": "tableau"
+          },
+          {
+            "key": "lamp.brightness",
+            "op": "eq",
+            "value": "soft"
+          },
+          {
+            "key": "moon.position",
+            "op": "eq",
+            "value": "gate"
+          }
+        ],
+        "changes": {
+          "ada.performed.mode": {
+            "before": "none",
+            "after": "tableau"
+          }
+        }
+      },
+      {
+        "id": 8,
+        "scene": "pip_follows_moon",
+        "kernel": "Guest Response",
+        "actors": [
+          "pip"
+        ],
+        "summary": "Pip followed the paper moon to the ribbon",
+        "causes": [
+          1,
+          2,
+          4,
+          7
+        ],
+        "requires": [
+          {
+            "key": "pip.invited",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "ada.performed.mode",
+            "op": "eq",
+            "value": "tableau"
+          },
+          {
+            "key": "ribbon.tied",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "moon.position",
+            "op": "eq",
+            "value": "gate"
+          }
+        ],
+        "changes": {
+          "pip.location": {
+            "before": "leaves",
+            "after": "ribbon"
+          },
+          "pip.content": {
+            "before": "shy",
+            "after": "welcomed"
+          }
+        }
+      }
+    ]
+  },
+  {
+    "seed": 2,
+    "title": "The Moonlit Welcome",
+    "initial": {
+      "ada.memes.Curiosity": 2,
+      "bo.memes.Care": 2,
+      "pip.location": "leaves",
+      "pip.content": "shy",
+      "pip.invited": false,
+      "gate.open": false,
+      "lamp.brightness": "bright",
+      "lamp.owner": "ada",
+      "moon.position": "basket",
+      "bell.rung": false,
+      "flowers.ready": false,
+      "ribbon.tied": false,
+      "ada.plan": "moving",
+      "bo.plan": "flowers",
+      "ada.performed.mode": "none",
+      "ada.knows.pip.location": null,
+      "bo.knows.pip.location": null,
+      "ada.knows.lamp.brightness": null,
+      "bo.knows.lamp.brightness": null
+    },
+    "final": {
+      "ada.memes.Curiosity": 2,
+      "bo.memes.Care": 2,
+      "pip.location": "moonflowers",
+      "pip.content": "curious",
+      "pip.invited": true,
+      "gate.open": true,
+      "lamp.brightness": "bright",
+      "lamp.owner": "ada",
+      "moon.position": "basket",
+      "bell.rung": false,
+      "flowers.ready": true,
+      "ribbon.tied": false,
+      "ada.plan": "tableau",
+      "bo.plan": "flowers",
+      "ada.performed.mode": "none",
+      "ada.knows.pip.location": "leaves",
+      "bo.knows.pip.location": null,
+      "ada.knows.lamp.brightness": null,
+      "bo.knows.lamp.brightness": null
+    },
+    "events": [
+      {
+        "id": 1,
+        "scene": "open_gate",
+        "kernel": "Invitation",
+        "actors": [
+          "ada"
+        ],
+        "summary": "Ada opened the gate and called a welcome into the dark garden",
+        "causes": [],
+        "requires": [
+          {
+            "key": "gate.open",
+            "op": "eq",
+            "value": false
+          }
+        ],
+        "changes": {
+          "pip.invited": {
+            "before": false,
+            "after": true
+          },
+          "gate.open": {
+            "before": false,
+            "after": true
+          }
+        }
+      },
+      {
+        "id": 2,
+        "scene": "look_for_pip",
+        "kernel": "Observe",
+        "actors": [
+          "ada"
+        ],
+        "summary": "Ada noticed where Pip was hiding",
+        "causes": [
+          1
+        ],
+        "requires": [
+          {
+            "key": "gate.open",
+            "op": "eq",
+            "value": true
+          }
+        ],
+        "changes": {
+          "ada.knows.pip.location": {
+            "before": null,
+            "after": "leaves"
+          }
+        }
+      },
+      {
+        "id": 3,
+        "scene": "choose_still_tableau",
+        "kernel": "Character Turn",
+        "actors": [
+          "ada"
+        ],
+        "summary": "Ada changed her grand show into a still moon tableau",
+        "causes": [
+          2
+        ],
+        "requires": [
+          {
+            "key": "ada.plan",
+            "op": "eq",
+            "value": "moving"
+          },
+          {
+            "key": "ada.knows.pip.location",
+            "op": "eq",
+            "value": "leaves"
+          }
+        ],
+        "changes": {
+          "ada.plan": {
+            "before": "moving",
+            "after": "tableau"
+          }
+        }
+      },
+      {
+        "id": 4,
+        "scene": "scent_moonflowers",
+        "kernel": "Welcome",
+        "actors": [
+          "bo"
+        ],
+        "summary": "Bo brushed the moonflowers so their scent drifted out",
+        "causes": [
+          1
+        ],
+        "requires": [
+          {
+            "key": "gate.open",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "bo.plan",
+            "op": "eq",
+            "value": "flowers"
+          },
+          {
+            "key": "flowers.ready",
+            "op": "eq",
+            "value": false
+          }
+        ],
+        "changes": {
+          "flowers.ready": {
+            "before": false,
+            "after": true
+          }
+        }
+      },
+      {
+        "id": 5,
+        "scene": "pip_lands_flowers",
+        "kernel": "Guest Response",
+        "actors": [
+          "pip"
+        ],
+        "summary": "Pip landed among the moonflowers",
+        "causes": [
+          1,
+          4
+        ],
+        "requires": [
+          {
+            "key": "pip.invited",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "flowers.ready",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "ada.performed.mode",
+            "op": "eq",
+            "value": "none"
+          }
+        ],
+        "changes": {
+          "pip.location": {
+            "before": "leaves",
+            "after": "moonflowers"
+          },
+          "pip.content": {
+            "before": "shy",
+            "after": "curious"
+          }
+        }
+      }
+    ]
+  }
+]

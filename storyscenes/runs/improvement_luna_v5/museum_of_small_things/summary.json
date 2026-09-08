@@ -1,0 +1,54 @@
+{
+  "world": "museum_of_small_things",
+  "title": "The Museum of Small Things",
+  "ok": true,
+  "samples": 100,
+  "simulation_sha256": "e1f391ed92a145968743c7915208f583ee73aeff51728e29fefcf50ca76982b4",
+  "generator_sha256": "754491a6eef2574a1e4117d70efa39d6e4158d591177e34cfabfddcace89a803",
+  "catalog_sha256": "4d0890734903a85eed19b7b1b8394bd0cb7d5ca11e3319b9a87b5d245277509c",
+  "distinct_texts": 78,
+  "distinct_scene_paths": 65,
+  "word_range": [
+    248,
+    338
+  ],
+  "prose_control_variants": 2,
+  "mechanics_model": "gpt-5.6-luna",
+  "mechanics_attempts": 1,
+  "prose_model": "gpt-5.6-luna",
+  "stats": {
+    "samples": 100,
+    "ordered_paths": 65,
+    "scene_sets": 6,
+    "causal_graphs": 8,
+    "outcomes": 4,
+    "premises": 3,
+    "events_range": [
+      6,
+      10
+    ],
+    "pruned_events": 166
+  },
+  "critic_before_revision": {
+    "issues": [
+      {
+        "seed": 123,
+        "severity": "major",
+        "layer": "prose",
+        "defect": "contradiction",
+        "evidence": "The story says, “The red marble rested beside its note,” but also says “a tiny empty circle showed where it had been,” despite no trace event removing the marble from the display (and its ownership remains Ben’s).",
+        "fix": "End with the marble still beside its loan note, or add and narrate a consequential event in which Ben’s sister takes it away."
+      },
+      {
+        "seed": 457,
+        "severity": "major",
+        "layer": "prose",
+        "defect": "contradiction",
+        "evidence": "The ending simultaneously places the marble “beside its note” and says an “empty circle showed where it had been,” although the ordered trace contains no removal or return action.",
+        "fix": "Resolve the alternative physical states: retain the displayed marble, or introduce a traced, narrated removal before describing the empty circle."
+      }
+    ],
+    "strengths": "All three stories otherwise follow the event order well: invitation transfer, box opening, visitor greeting and expectation discovery, quiet tour, and delighted visitor are grounded; seed 124 also cleanly narrates the traced button-for-key ownership swap."
+  },
+  "final_catalog_attempt": 3
+}

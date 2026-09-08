@@ -1,0 +1,362 @@
+{
+  "id": "resp_025b794b6f6b90a1006a9f8fc6966487d08c077d57c5611288",
+  "created_at": 1788841926.0,
+  "error": null,
+  "incomplete_details": null,
+  "instructions": null,
+  "metadata": {},
+  "model": "gpt-5.6-terra",
+  "object": "response",
+  "output": [
+    {
+      "id": "msg_025b794b6f6b90a1006a9f8fc7278c87d09155038e74d0e01a",
+      "content": [
+        {
+          "annotations": [],
+          "text": "{\"stories\":[{\"id\":\"s000029\",\"rating\":{\"coherence\":6,\"style\":7,\"grammar\":8,\"storytelling\":6,\"overall\":7},\"note\":\"Playful images and a concrete parade ending work well, but the audience is said to appear before the story repeats that nobody invited them, weakening the causal flow.\"},{\"id\":\"s000057\",\"rating\":{\"coherence\":6,\"style\":7,\"grammar\":8,\"storytelling\":6,\"overall\":7},\"note\":\"The invitation solution leads clearly to a lively parade image, though repeated and out-of-order audience passages create a noticeable logic snag.\"},{\"id\":\"s000047\",\"rating\":{\"coherence\":6,\"style\":7,\"grammar\":8,\"storytelling\":6,\"overall\":7},\"note\":\"A curtain knot traps Puck and the ribbon rescue gives the story a satisfying visual finish, but the audience arrives before the rescue setup is fully clarified.\"},{\"id\":\"s000073\",\"rating\":{\"coherence\":7,\"style\":7,\"grammar\":8,\"storytelling\":7,\"overall\":7},\"note\":\"Nia's wish to avoid direct attention causes the shadow-show solution, and her smile beside the moon-shaped circle makes a gentle, concrete ending; the inserted audience arrival is slightly abrupt.\"},{\"id\":\"s000034\",\"rating\":{\"coherence\":6,\"style\":7,\"grammar\":8,\"storytelling\":6,\"overall\":7},\"note\":\"The ribbon frees Puck from the knotted curtain and his singing arc provides a strong ending image, though the generic audience passage interrupts the setup.\"},{\"id\":\"s000043\",\"rating\":{\"coherence\":6,\"style\":7,\"grammar\":8,\"storytelling\":6,\"overall\":7},\"note\":\"Bo adapts an oversized finale by inviting the audience into a parade, with charming figurative language, but the duplicated invitation logic muddies the sequence.\"},{\"id\":\"s000068\",\"rating\":{\"coherence\":7,\"style\":7,\"grammar\":8,\"storytelling\":7,\"overall\":7},\"note\":\"The story clearly transforms Nia's shyness into a shadow performance and closes on her quiet smile; the audience-introduction paragraph remains somewhat mechanically inserted.\"},{\"id\":\"s000096\",\"rating\":{\"coherence\":6,\"style\":7,\"grammar\":8,\"storytelling\":6,\"overall\":7},\"note\":\"The parade outcome follows Bo's need for participants and ends vividly with the stage's dancing feet, but the audience appears before the narration calls them uninvited.\"},{\"id\":\"s000005\",\"rating\":{\"coherence\":7,\"style\":7,\"grammar\":8,\"storytelling\":7,\"overall\":7},\"note\":\"Nia's concern about being watched motivates the screen and shadow play, ending in a fitting quiet audience circle; the audience's late arrival causes only a minor staging jump.\"},{\"id\":\"s000085\",\"rating\":{\"coherence\":6,\"style\":7,\"grammar\":8,\"storytelling\":6,\"overall\":7},\"note\":\"The paper-sun invitation turns an empty performance into a mobile finale with an appealing final confetti puff, but repeated audience setup creates a causal inconsistency.\"}],\"diversity\":{\"premise\":5,\"causal_path\":4,\"ending\":4,\"language\":5,\"overall\":4},\"diversity_evidence\":\"This sample contains three meaningful problem-resolution structures: Bo recruits nearby spectators into a parade (s000029, s000057, s000043, s000096, s000085); Mara and Bo free Puck from a knotted curtain with a ribbon (s000047, s000034); and Mara helps shy Nia perform from behind a shadow screen (s000073, s000068, s000005). However, most entries are near-duplicates within those structures, including exact duplicates, and their language and outcomes vary mainly in small closing details. This assesses only the supplied sample, not the full generator.\",\"plot_groups\":[{\"story_ids\":[\"s000029\",\"s000057\",\"s000043\",\"s000096\",\"s000085\"],\"summary\":\"Bo's grand parade lacks nearby participants, so he invites the courtyard audience to follow the paper sun and turns the finale into a moving weather parade.\"},{\"story_ids\":[\"s000047\",\"s000034\"],\"summary\":\"A breeze tangles the curtain and traps Puck; Bo uses the blue ribbon to release the puppet, who then flies above the stage.\"},{\"story_ids\":[\"s000073\",\"s000068\",\"s000005\"],\"summary\":\"Nia fears direct attention, so Mara helps her turn the curtain into a shadow screen, allowing her to perform safely behind it.\"}]}",
+          "type": "output_text",
+          "logprobs": []
+        }
+      ],
+      "role": "assistant",
+      "status": "completed",
+      "type": "message",
+      "phase": "final_answer"
+    }
+  ],
+  "parallel_tool_calls": true,
+  "temperature": 1.0,
+  "tool_choice": "auto",
+  "tools": [],
+  "top_p": 0.98,
+  "background": false,
+  "completed_at": 1788841934.0,
+  "conversation": null,
+  "max_output_tokens": 4000,
+  "max_tool_calls": null,
+  "moderation": null,
+  "previous_response_id": null,
+  "prompt": null,
+  "prompt_cache_key": null,
+  "prompt_cache_retention": "24h",
+  "reasoning": {
+    "context": "all_turns",
+    "effort": "none",
+    "generate_summary": null,
+    "summary": null,
+    "mode": "standard"
+  },
+  "safety_identifier": null,
+  "service_tier": "flex",
+  "status": "completed",
+  "text": {
+    "format": {
+      "name": "story_set_quality_v1",
+      "schema_": {
+        "type": "object",
+        "properties": {
+          "stories": {
+            "type": "array",
+            "minItems": 10,
+            "maxItems": 10,
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "enum": [
+                    "s000029",
+                    "s000057",
+                    "s000047",
+                    "s000073",
+                    "s000034",
+                    "s000043",
+                    "s000068",
+                    "s000096",
+                    "s000005",
+                    "s000085"
+                  ]
+                },
+                "rating": {
+                  "type": "object",
+                  "properties": {
+                    "coherence": {
+                      "type": "integer",
+                      "enum": [
+                        0,
+                        1,
+                        2,
+                        3,
+                        4,
+                        5,
+                        6,
+                        7,
+                        8,
+                        9
+                      ]
+                    },
+                    "style": {
+                      "type": "integer",
+                      "enum": [
+                        0,
+                        1,
+                        2,
+                        3,
+                        4,
+                        5,
+                        6,
+                        7,
+                        8,
+                        9
+                      ]
+                    },
+                    "grammar": {
+                      "type": "integer",
+                      "enum": [
+                        0,
+                        1,
+                        2,
+                        3,
+                        4,
+                        5,
+                        6,
+                        7,
+                        8,
+                        9
+                      ]
+                    },
+                    "storytelling": {
+                      "type": "integer",
+                      "enum": [
+                        0,
+                        1,
+                        2,
+                        3,
+                        4,
+                        5,
+                        6,
+                        7,
+                        8,
+                        9
+                      ]
+                    },
+                    "overall": {
+                      "type": "integer",
+                      "enum": [
+                        0,
+                        1,
+                        2,
+                        3,
+                        4,
+                        5,
+                        6,
+                        7,
+                        8,
+                        9
+                      ]
+                    }
+                  },
+                  "required": [
+                    "coherence",
+                    "style",
+                    "grammar",
+                    "storytelling",
+                    "overall"
+                  ],
+                  "additionalProperties": false
+                },
+                "note": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "id",
+                "rating",
+                "note"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "diversity": {
+            "type": "object",
+            "properties": {
+              "premise": {
+                "type": "integer",
+                "enum": [
+                  0,
+                  1,
+                  2,
+                  3,
+                  4,
+                  5,
+                  6,
+                  7,
+                  8,
+                  9
+                ]
+              },
+              "causal_path": {
+                "type": "integer",
+                "enum": [
+                  0,
+                  1,
+                  2,
+                  3,
+                  4,
+                  5,
+                  6,
+                  7,
+                  8,
+                  9
+                ]
+              },
+              "ending": {
+                "type": "integer",
+                "enum": [
+                  0,
+                  1,
+                  2,
+                  3,
+                  4,
+                  5,
+                  6,
+                  7,
+                  8,
+                  9
+                ]
+              },
+              "language": {
+                "type": "integer",
+                "enum": [
+                  0,
+                  1,
+                  2,
+                  3,
+                  4,
+                  5,
+                  6,
+                  7,
+                  8,
+                  9
+                ]
+              },
+              "overall": {
+                "type": "integer",
+                "enum": [
+                  0,
+                  1,
+                  2,
+                  3,
+                  4,
+                  5,
+                  6,
+                  7,
+                  8,
+                  9
+                ]
+              }
+            },
+            "required": [
+              "premise",
+              "causal_path",
+              "ending",
+              "language",
+              "overall"
+            ],
+            "additionalProperties": false
+          },
+          "diversity_evidence": {
+            "type": "string"
+          },
+          "plot_groups": {
+            "type": "array",
+            "minItems": 1,
+            "maxItems": 10,
+            "items": {
+              "type": "object",
+              "properties": {
+                "story_ids": {
+                  "type": "array",
+                  "minItems": 1,
+                  "items": {
+                    "type": "string",
+                    "enum": [
+                      "s000029",
+                      "s000057",
+                      "s000047",
+                      "s000073",
+                      "s000034",
+                      "s000043",
+                      "s000068",
+                      "s000096",
+                      "s000005",
+                      "s000085"
+                    ]
+                  }
+                },
+                "summary": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "story_ids",
+                "summary"
+              ],
+              "additionalProperties": false
+            }
+          }
+        },
+        "required": [
+          "stories",
+          "diversity",
+          "diversity_evidence",
+          "plot_groups"
+        ],
+        "additionalProperties": false
+      },
+      "type": "json_schema",
+      "description": null,
+      "strict": true
+    },
+    "verbosity": "medium"
+  },
+  "top_logprobs": 0,
+  "truncation": "disabled",
+  "usage": {
+    "input_tokens": 5321,
+    "input_tokens_details": {
+      "cached_tokens": 0,
+      "cache_write_tokens": 5318
+    },
+    "output_tokens": 963,
+    "output_tokens_details": {
+      "reasoning_tokens": 0
+    },
+    "total_tokens": 6284
+  },
+  "user": null,
+  "billing": {
+    "payer": "openai"
+  },
+  "frequency_penalty": 0.0,
+  "presence_penalty": 0.0,
+  "store": true,
+  "tool_usage": {
+    "image_gen": {
+      "input_tokens": 0,
+      "input_tokens_details": {
+        "image_tokens": 0,
+        "text_tokens": 0
+      },
+      "output_tokens": 0,
+      "output_tokens_details": {
+        "image_tokens": 0,
+        "text_tokens": 0
+      },
+      "total_tokens": 0
+    },
+    "web_search": {
+      "num_requests": 0
+    }
+  }
+}

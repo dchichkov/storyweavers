@@ -1,0 +1,1139 @@
+[
+  {
+    "seed": 0,
+    "title": "The Picnic That Came to You",
+    "initial": {
+      "lila.location": "foot",
+      "tomas.location": "foot",
+      "moss.location": "foot",
+      "juniper.location": "foot",
+      "juniper.can_climb": true,
+      "juniper.wish": "hill",
+      "juniper.invited": false,
+      "juniper.delighted": false,
+      "tomas.wish": "hill",
+      "moss.belief_role": "guest",
+      "moss.agreement": false,
+      "moss.content": false,
+      "moss.procession": false,
+      "wagon.load": 2,
+      "wagon.food_loaded": true,
+      "wagon.decor_loaded": true,
+      "wagon.location": "foot",
+      "basket.owner": "lila",
+      "quilt.owner": "lila",
+      "quilt.spread": false,
+      "quilt.location": "foot",
+      "bell.owner": "lila",
+      "bell.location": "top",
+      "bell.rung": false,
+      "bell.tied": false,
+      "crown.owner": "lila",
+      "crown.location": "foot",
+      "crown.worn": false,
+      "fizz.owner": "lila",
+      "fizz.shared": false,
+      "picnic.location": "wagon",
+      "picnic.performed": false,
+      "lila.knows.juniper.can_climb": null,
+      "lila.knows.juniper.location": null,
+      "lila.knows.juniper.wish": null,
+      "lila.knows.moss.belief_role": null,
+      "lila.knows.tomas.wish": null,
+      "tomas.knows.juniper.can_climb": null,
+      "tomas.knows.juniper.location": null,
+      "tomas.knows.juniper.wish": null,
+      "tomas.knows.moss.belief_role": null,
+      "tomas.knows.tomas.wish": null,
+      "moss.knows.juniper.can_climb": null,
+      "moss.knows.juniper.location": null,
+      "moss.knows.juniper.wish": null,
+      "moss.knows.moss.belief_role": null,
+      "juniper.knows.juniper.can_climb": null,
+      "juniper.knows.juniper.location": null,
+      "juniper.knows.juniper.wish": null,
+      "juniper.knows.moss.belief_role": null
+    },
+    "final": {
+      "lila.location": "foot",
+      "tomas.location": "foot",
+      "moss.location": "foot",
+      "juniper.location": "top",
+      "juniper.can_climb": true,
+      "juniper.wish": "hill",
+      "juniper.invited": true,
+      "juniper.delighted": true,
+      "tomas.wish": "hill",
+      "moss.belief_role": "guest",
+      "moss.agreement": false,
+      "moss.content": false,
+      "moss.procession": false,
+      "wagon.load": 2,
+      "wagon.food_loaded": true,
+      "wagon.decor_loaded": true,
+      "wagon.location": "foot",
+      "basket.owner": "lila",
+      "quilt.owner": "lila",
+      "quilt.spread": false,
+      "quilt.location": "foot",
+      "bell.owner": "lila",
+      "bell.location": "top",
+      "bell.rung": true,
+      "bell.tied": false,
+      "crown.owner": "lila",
+      "crown.location": "foot",
+      "crown.worn": false,
+      "fizz.owner": "lila",
+      "fizz.shared": true,
+      "picnic.location": "top",
+      "picnic.performed": true,
+      "lila.knows.juniper.can_climb": true,
+      "lila.knows.juniper.location": "foot",
+      "lila.knows.juniper.wish": "hill",
+      "lila.knows.moss.belief_role": null,
+      "lila.knows.tomas.wish": null,
+      "tomas.knows.juniper.can_climb": null,
+      "tomas.knows.juniper.location": "foot",
+      "tomas.knows.juniper.wish": null,
+      "tomas.knows.moss.belief_role": null,
+      "tomas.knows.tomas.wish": null,
+      "moss.knows.juniper.can_climb": null,
+      "moss.knows.juniper.location": null,
+      "moss.knows.juniper.wish": null,
+      "moss.knows.moss.belief_role": null,
+      "juniper.knows.juniper.can_climb": null,
+      "juniper.knows.juniper.location": null,
+      "juniper.knows.juniper.wish": null,
+      "juniper.knows.moss.belief_role": null
+    },
+    "events": [
+      {
+        "id": 1,
+        "scene": "notice_juniper",
+        "kernel": "Observe",
+        "actors": [
+          "lila"
+        ],
+        "summary": "Lila noticed whether Aunt Juniper could climb",
+        "causes": [],
+        "requires": [
+          {
+            "key": "lila.location",
+            "op": "eq",
+            "value": "foot"
+          }
+        ],
+        "changes": {
+          "lila.knows.juniper.can_climb": {
+            "before": null,
+            "after": true
+          }
+        }
+      },
+      {
+        "id": 2,
+        "scene": "notice_juniper_place",
+        "kernel": "Observe",
+        "actors": [
+          "lila"
+        ],
+        "summary": "Lila noticed where Aunt Juniper was waiting",
+        "causes": [],
+        "requires": [
+          {
+            "key": "lila.location",
+            "op": "eq",
+            "value": "foot"
+          }
+        ],
+        "changes": {
+          "lila.knows.juniper.location": {
+            "before": null,
+            "after": "foot"
+          }
+        }
+      },
+      {
+        "id": 3,
+        "scene": "correct_tomas_belief",
+        "kernel": "Tell",
+        "actors": [
+          "lila",
+          "tomas"
+        ],
+        "summary": "Lila told Tomas that Juniper was below the hill",
+        "causes": [
+          2
+        ],
+        "requires": [
+          {
+            "key": "lila.knows.juniper.location",
+            "op": "ne",
+            "value": null
+          },
+          {
+            "key": "lila.knows.juniper.location",
+            "op": "eq",
+            "value": "foot"
+          }
+        ],
+        "changes": {
+          "tomas.knows.juniper.location": {
+            "before": null,
+            "after": "foot"
+          }
+        }
+      },
+      {
+        "id": 4,
+        "scene": "notice_juniper_wish",
+        "kernel": "Observe",
+        "actors": [
+          "lila"
+        ],
+        "summary": "Lila learned what sort of picnic Juniper wanted",
+        "causes": [
+          2
+        ],
+        "requires": [
+          {
+            "key": "lila.knows.juniper.location",
+            "op": "eq",
+            "value": "foot"
+          }
+        ],
+        "changes": {
+          "lila.knows.juniper.wish": {
+            "before": null,
+            "after": "hill"
+          }
+        }
+      },
+      {
+        "id": 5,
+        "scene": "invite_hilltop",
+        "kernel": "Welcome",
+        "actors": [
+          "lila",
+          "juniper"
+        ],
+        "summary": "Lila invited Juniper to the hilltop",
+        "causes": [
+          1,
+          4
+        ],
+        "requires": [
+          {
+            "key": "lila.knows.juniper.can_climb",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "lila.knows.juniper.wish",
+            "op": "eq",
+            "value": "hill"
+          },
+          {
+            "key": "juniper.location",
+            "op": "eq",
+            "value": "foot"
+          }
+        ],
+        "changes": {
+          "juniper.invited": {
+            "before": false,
+            "after": true
+          }
+        }
+      },
+      {
+        "id": 6,
+        "scene": "juniper_climb",
+        "kernel": "Welcome",
+        "actors": [
+          "juniper"
+        ],
+        "summary": "Juniper climbed to the hilltop",
+        "causes": [
+          5
+        ],
+        "requires": [
+          {
+            "key": "juniper.invited",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "juniper.can_climb",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "juniper.location",
+            "op": "eq",
+            "value": "foot"
+          }
+        ],
+        "changes": {
+          "juniper.location": {
+            "before": "foot",
+            "after": "top"
+          }
+        }
+      },
+      {
+        "id": 7,
+        "scene": "ring_bell_for_guest",
+        "kernel": "Performance",
+        "actors": [
+          "tomas",
+          "juniper"
+        ],
+        "summary": "Tomas rang the brass bell for Juniper",
+        "causes": [
+          6
+        ],
+        "requires": [
+          {
+            "key": "juniper.location",
+            "op": "eq",
+            "value": "top"
+          },
+          {
+            "key": "bell.location",
+            "op": "eq",
+            "value": "top"
+          },
+          {
+            "key": "bell.owner",
+            "op": "eq",
+            "value": "lila"
+          }
+        ],
+        "changes": {
+          "bell.rung": {
+            "before": false,
+            "after": true
+          },
+          "picnic.location": {
+            "before": "wagon",
+            "after": "top"
+          },
+          "picnic.performed": {
+            "before": false,
+            "after": true
+          }
+        }
+      },
+      {
+        "id": 8,
+        "scene": "share_berry_fizz",
+        "kernel": "Sharing",
+        "actors": [
+          "lila",
+          "juniper"
+        ],
+        "summary": "Lila shared the berry fizz",
+        "causes": [
+          7
+        ],
+        "requires": [
+          {
+            "key": "wagon.food_loaded",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "picnic.performed",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "fizz.owner",
+            "op": "eq",
+            "value": "lila"
+          }
+        ],
+        "changes": {
+          "juniper.delighted": {
+            "before": false,
+            "after": true
+          },
+          "fizz.shared": {
+            "before": false,
+            "after": true
+          }
+        }
+      }
+    ]
+  },
+  {
+    "seed": 1,
+    "title": "The Picnic That Came to You",
+    "initial": {
+      "lila.location": "foot",
+      "tomas.location": "foot",
+      "moss.location": "foot",
+      "juniper.location": "foot",
+      "juniper.can_climb": false,
+      "juniper.wish": "hill",
+      "juniper.invited": false,
+      "juniper.delighted": false,
+      "tomas.wish": "hill",
+      "moss.belief_role": "cart",
+      "moss.agreement": false,
+      "moss.content": false,
+      "moss.procession": false,
+      "wagon.load": 0,
+      "wagon.food_loaded": false,
+      "wagon.decor_loaded": false,
+      "wagon.location": "foot",
+      "basket.owner": "lila",
+      "quilt.owner": "lila",
+      "quilt.spread": false,
+      "quilt.location": "foot",
+      "bell.owner": "lila",
+      "bell.location": "foot",
+      "bell.rung": false,
+      "bell.tied": false,
+      "crown.owner": "lila",
+      "crown.location": "foot",
+      "crown.worn": false,
+      "fizz.owner": "lila",
+      "fizz.shared": false,
+      "picnic.location": "wagon",
+      "picnic.performed": false,
+      "lila.knows.juniper.can_climb": null,
+      "lila.knows.juniper.location": null,
+      "lila.knows.juniper.wish": null,
+      "lila.knows.moss.belief_role": null,
+      "lila.knows.tomas.wish": null,
+      "tomas.knows.juniper.can_climb": null,
+      "tomas.knows.juniper.location": null,
+      "tomas.knows.juniper.wish": null,
+      "tomas.knows.moss.belief_role": null,
+      "tomas.knows.tomas.wish": null,
+      "moss.knows.juniper.can_climb": null,
+      "moss.knows.juniper.location": null,
+      "moss.knows.juniper.wish": null,
+      "moss.knows.moss.belief_role": null,
+      "juniper.knows.juniper.can_climb": null,
+      "juniper.knows.juniper.location": null,
+      "juniper.knows.juniper.wish": null,
+      "juniper.knows.moss.belief_role": null
+    },
+    "final": {
+      "lila.location": "foot",
+      "tomas.location": "foot",
+      "moss.location": "foot",
+      "juniper.location": "foot",
+      "juniper.can_climb": false,
+      "juniper.wish": "hill",
+      "juniper.invited": false,
+      "juniper.delighted": true,
+      "tomas.wish": "hill",
+      "moss.belief_role": "cart",
+      "moss.agreement": true,
+      "moss.content": true,
+      "moss.procession": true,
+      "wagon.load": 1,
+      "wagon.food_loaded": true,
+      "wagon.decor_loaded": false,
+      "wagon.location": "foot",
+      "basket.owner": "lila",
+      "quilt.owner": "lila",
+      "quilt.spread": false,
+      "quilt.location": "foot",
+      "bell.owner": "moss",
+      "bell.location": "foot",
+      "bell.rung": false,
+      "bell.tied": true,
+      "crown.owner": "lila",
+      "crown.location": "foot",
+      "crown.worn": false,
+      "fizz.owner": "lila",
+      "fizz.shared": false,
+      "picnic.location": "foot",
+      "picnic.performed": true,
+      "lila.knows.juniper.can_climb": null,
+      "lila.knows.juniper.location": "foot",
+      "lila.knows.juniper.wish": null,
+      "lila.knows.moss.belief_role": null,
+      "lila.knows.tomas.wish": null,
+      "tomas.knows.juniper.can_climb": null,
+      "tomas.knows.juniper.location": "foot",
+      "tomas.knows.juniper.wish": null,
+      "tomas.knows.moss.belief_role": null,
+      "tomas.knows.tomas.wish": null,
+      "moss.knows.juniper.can_climb": null,
+      "moss.knows.juniper.location": null,
+      "moss.knows.juniper.wish": null,
+      "moss.knows.moss.belief_role": null,
+      "juniper.knows.juniper.can_climb": null,
+      "juniper.knows.juniper.location": null,
+      "juniper.knows.juniper.wish": null,
+      "juniper.knows.moss.belief_role": null
+    },
+    "events": [
+      {
+        "id": 1,
+        "scene": "notice_juniper_place",
+        "kernel": "Observe",
+        "actors": [
+          "lila"
+        ],
+        "summary": "Lila noticed where Aunt Juniper was waiting",
+        "causes": [],
+        "requires": [
+          {
+            "key": "lila.location",
+            "op": "eq",
+            "value": "foot"
+          }
+        ],
+        "changes": {
+          "lila.knows.juniper.location": {
+            "before": null,
+            "after": "foot"
+          }
+        }
+      },
+      {
+        "id": 2,
+        "scene": "correct_tomas_belief",
+        "kernel": "Tell",
+        "actors": [
+          "lila",
+          "tomas"
+        ],
+        "summary": "Lila told Tomas that Juniper was below the hill",
+        "causes": [
+          1
+        ],
+        "requires": [
+          {
+            "key": "lila.knows.juniper.location",
+            "op": "ne",
+            "value": null
+          },
+          {
+            "key": "lila.knows.juniper.location",
+            "op": "eq",
+            "value": "foot"
+          }
+        ],
+        "changes": {
+          "tomas.knows.juniper.location": {
+            "before": null,
+            "after": "foot"
+          }
+        }
+      },
+      {
+        "id": 3,
+        "scene": "load_food",
+        "kernel": "Load",
+        "actors": [
+          "lila"
+        ],
+        "summary": "Lila loaded the picnic food",
+        "causes": [],
+        "requires": [
+          {
+            "key": "wagon.load",
+            "op": "lt",
+            "value": 2
+          },
+          {
+            "key": "wagon.food_loaded",
+            "op": "eq",
+            "value": false
+          },
+          {
+            "key": "basket.owner",
+            "op": "eq",
+            "value": "lila"
+          }
+        ],
+        "changes": {
+          "wagon.load": {
+            "before": 0,
+            "after": 1
+          },
+          "wagon.food_loaded": {
+            "before": false,
+            "after": true
+          }
+        }
+      },
+      {
+        "id": 4,
+        "scene": "moss_agree_cart",
+        "kernel": "Welcome",
+        "actors": [
+          "moss",
+          "lila"
+        ],
+        "summary": "Moss agreed to pull one bundle proudly",
+        "causes": [],
+        "requires": [
+          {
+            "key": "moss.belief_role",
+            "op": "eq",
+            "value": "cart"
+          },
+          {
+            "key": "moss.agreement",
+            "op": "eq",
+            "value": false
+          }
+        ],
+        "changes": {
+          "moss.agreement": {
+            "before": false,
+            "after": true
+          },
+          "moss.content": {
+            "before": false,
+            "after": true
+          }
+        }
+      },
+      {
+        "id": 5,
+        "scene": "tie_bell_to_moss",
+        "kernel": "Transfer",
+        "actors": [
+          "lila",
+          "moss"
+        ],
+        "summary": "The bell was tied to Moss’s harness",
+        "causes": [
+          3,
+          4
+        ],
+        "requires": [
+          {
+            "key": "bell.owner",
+            "op": "eq",
+            "value": "lila"
+          },
+          {
+            "key": "moss.agreement",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "bell.owner",
+            "op": "eq",
+            "value": "lila"
+          },
+          {
+            "key": "wagon.food_loaded",
+            "op": "eq",
+            "value": true
+          }
+        ],
+        "changes": {
+          "bell.owner": {
+            "before": "lila",
+            "after": "moss"
+          }
+        }
+      },
+      {
+        "id": 6,
+        "scene": "moss_leads_procession",
+        "kernel": "Performance",
+        "actors": [
+          "moss",
+          "tomas",
+          "juniper"
+        ],
+        "summary": "Moss led the one-bundle celebration to Juniper",
+        "causes": [
+          3,
+          4,
+          5
+        ],
+        "requires": [
+          {
+            "key": "moss.agreement",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "bell.owner",
+            "op": "eq",
+            "value": "moss"
+          },
+          {
+            "key": "juniper.location",
+            "op": "eq",
+            "value": "foot"
+          },
+          {
+            "key": "wagon.food_loaded",
+            "op": "eq",
+            "value": true
+          }
+        ],
+        "changes": {
+          "juniper.delighted": {
+            "before": false,
+            "after": true
+          },
+          "moss.procession": {
+            "before": false,
+            "after": true
+          },
+          "bell.tied": {
+            "before": false,
+            "after": true
+          },
+          "picnic.location": {
+            "before": "wagon",
+            "after": "foot"
+          },
+          "picnic.performed": {
+            "before": false,
+            "after": true
+          }
+        }
+      }
+    ]
+  },
+  {
+    "seed": 2,
+    "title": "The Picnic That Came to You",
+    "initial": {
+      "lila.location": "foot",
+      "tomas.location": "foot",
+      "moss.location": "foot",
+      "juniper.location": "foot",
+      "juniper.can_climb": false,
+      "juniper.wish": "quiet",
+      "juniper.invited": false,
+      "juniper.delighted": false,
+      "tomas.wish": "hill",
+      "moss.belief_role": "guest",
+      "moss.agreement": false,
+      "moss.content": false,
+      "moss.procession": false,
+      "wagon.load": 0,
+      "wagon.food_loaded": false,
+      "wagon.decor_loaded": false,
+      "wagon.location": "foot",
+      "basket.owner": "lila",
+      "quilt.owner": "lila",
+      "quilt.spread": false,
+      "quilt.location": "foot",
+      "bell.owner": "lila",
+      "bell.location": "foot",
+      "bell.rung": false,
+      "bell.tied": false,
+      "crown.owner": "lila",
+      "crown.location": "foot",
+      "crown.worn": false,
+      "fizz.owner": "lila",
+      "fizz.shared": false,
+      "picnic.location": "wagon",
+      "picnic.performed": false,
+      "lila.knows.juniper.can_climb": null,
+      "lila.knows.juniper.location": null,
+      "lila.knows.juniper.wish": null,
+      "lila.knows.moss.belief_role": null,
+      "lila.knows.tomas.wish": null,
+      "tomas.knows.juniper.can_climb": null,
+      "tomas.knows.juniper.location": null,
+      "tomas.knows.juniper.wish": null,
+      "tomas.knows.moss.belief_role": null,
+      "tomas.knows.tomas.wish": null,
+      "moss.knows.juniper.can_climb": null,
+      "moss.knows.juniper.location": null,
+      "moss.knows.juniper.wish": null,
+      "moss.knows.moss.belief_role": null,
+      "juniper.knows.juniper.can_climb": null,
+      "juniper.knows.juniper.location": null,
+      "juniper.knows.juniper.wish": null,
+      "juniper.knows.moss.belief_role": null
+    },
+    "final": {
+      "lila.location": "foot",
+      "tomas.location": "foot",
+      "moss.location": "foot",
+      "juniper.location": "foot",
+      "juniper.can_climb": false,
+      "juniper.wish": "quiet",
+      "juniper.invited": false,
+      "juniper.delighted": true,
+      "tomas.wish": "hill",
+      "moss.belief_role": "guest",
+      "moss.agreement": true,
+      "moss.content": true,
+      "moss.procession": false,
+      "wagon.load": 1,
+      "wagon.food_loaded": true,
+      "wagon.decor_loaded": false,
+      "wagon.location": "foot",
+      "basket.owner": "lila",
+      "quilt.owner": "lila",
+      "quilt.spread": true,
+      "quilt.location": "foot",
+      "bell.owner": "lila",
+      "bell.location": "foot",
+      "bell.rung": false,
+      "bell.tied": false,
+      "crown.owner": "moss",
+      "crown.location": "foot",
+      "crown.worn": true,
+      "fizz.owner": "lila",
+      "fizz.shared": true,
+      "picnic.location": "foot",
+      "picnic.performed": true,
+      "lila.knows.juniper.can_climb": null,
+      "lila.knows.juniper.location": "foot",
+      "lila.knows.juniper.wish": null,
+      "lila.knows.moss.belief_role": null,
+      "lila.knows.tomas.wish": null,
+      "tomas.knows.juniper.can_climb": null,
+      "tomas.knows.juniper.location": "foot",
+      "tomas.knows.juniper.wish": null,
+      "tomas.knows.moss.belief_role": null,
+      "tomas.knows.tomas.wish": null,
+      "moss.knows.juniper.can_climb": null,
+      "moss.knows.juniper.location": null,
+      "moss.knows.juniper.wish": null,
+      "moss.knows.moss.belief_role": null,
+      "juniper.knows.juniper.can_climb": null,
+      "juniper.knows.juniper.location": null,
+      "juniper.knows.juniper.wish": null,
+      "juniper.knows.moss.belief_role": null
+    },
+    "events": [
+      {
+        "id": 1,
+        "scene": "offer_crown_moss",
+        "kernel": "Transfer",
+        "actors": [
+          "lila",
+          "moss"
+        ],
+        "summary": "Lila offered Moss the paper crown",
+        "causes": [],
+        "requires": [
+          {
+            "key": "crown.owner",
+            "op": "eq",
+            "value": "lila"
+          },
+          {
+            "key": "juniper.wish",
+            "op": "eq",
+            "value": "quiet"
+          },
+          {
+            "key": "moss.location",
+            "op": "eq",
+            "value": "foot"
+          }
+        ],
+        "changes": {
+          "crown.owner": {
+            "before": "lila",
+            "after": "moss"
+          }
+        }
+      },
+      {
+        "id": 2,
+        "scene": "notice_juniper_place",
+        "kernel": "Observe",
+        "actors": [
+          "lila"
+        ],
+        "summary": "Lila noticed where Aunt Juniper was waiting",
+        "causes": [],
+        "requires": [
+          {
+            "key": "lila.location",
+            "op": "eq",
+            "value": "foot"
+          }
+        ],
+        "changes": {
+          "lila.knows.juniper.location": {
+            "before": null,
+            "after": "foot"
+          }
+        }
+      },
+      {
+        "id": 3,
+        "scene": "load_food",
+        "kernel": "Load",
+        "actors": [
+          "lila"
+        ],
+        "summary": "Lila loaded the picnic food",
+        "causes": [],
+        "requires": [
+          {
+            "key": "wagon.load",
+            "op": "lt",
+            "value": 2
+          },
+          {
+            "key": "wagon.food_loaded",
+            "op": "eq",
+            "value": false
+          },
+          {
+            "key": "basket.owner",
+            "op": "eq",
+            "value": "lila"
+          }
+        ],
+        "changes": {
+          "wagon.load": {
+            "before": 0,
+            "after": 1
+          },
+          "wagon.food_loaded": {
+            "before": false,
+            "after": true
+          }
+        }
+      },
+      {
+        "id": 4,
+        "scene": "moss_agree",
+        "kernel": "Welcome",
+        "actors": [
+          "moss",
+          "lila"
+        ],
+        "summary": "Moss agreed to pull one bundle proudly",
+        "causes": [
+          1
+        ],
+        "requires": [
+          {
+            "key": "crown.owner",
+            "op": "eq",
+            "value": "moss"
+          },
+          {
+            "key": "moss.agreement",
+            "op": "eq",
+            "value": false
+          }
+        ],
+        "changes": {
+          "moss.agreement": {
+            "before": false,
+            "after": true
+          },
+          "moss.content": {
+            "before": false,
+            "after": true
+          }
+        }
+      },
+      {
+        "id": 5,
+        "scene": "correct_tomas_belief",
+        "kernel": "Tell",
+        "actors": [
+          "lila",
+          "tomas"
+        ],
+        "summary": "Lila told Tomas that Juniper was below the hill",
+        "causes": [
+          2
+        ],
+        "requires": [
+          {
+            "key": "lila.knows.juniper.location",
+            "op": "ne",
+            "value": null
+          },
+          {
+            "key": "lila.knows.juniper.location",
+            "op": "eq",
+            "value": "foot"
+          }
+        ],
+        "changes": {
+          "tomas.knows.juniper.location": {
+            "before": null,
+            "after": "foot"
+          }
+        }
+      },
+      {
+        "id": 6,
+        "scene": "spread_quilt",
+        "kernel": "Welcome",
+        "actors": [
+          "lila"
+        ],
+        "summary": "Lila spread the blue quilt below the hill",
+        "causes": [],
+        "requires": [
+          {
+            "key": "quilt.owner",
+            "op": "eq",
+            "value": "lila"
+          },
+          {
+            "key": "quilt.spread",
+            "op": "eq",
+            "value": false
+          },
+          {
+            "key": "juniper.location",
+            "op": "eq",
+            "value": "foot"
+          }
+        ],
+        "changes": {
+          "quilt.spread": {
+            "before": false,
+            "after": true
+          }
+        }
+      },
+      {
+        "id": 7,
+        "scene": "make_meadow_party",
+        "kernel": "Welcome",
+        "actors": [
+          "tomas",
+          "juniper"
+        ],
+        "summary": "The food became a quiet meadow picnic",
+        "causes": [
+          3,
+          6
+        ],
+        "requires": [
+          {
+            "key": "juniper.location",
+            "op": "eq",
+            "value": "foot"
+          },
+          {
+            "key": "juniper.wish",
+            "op": "eq",
+            "value": "quiet"
+          },
+          {
+            "key": "quilt.spread",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "wagon.food_loaded",
+            "op": "eq",
+            "value": true
+          }
+        ],
+        "changes": {
+          "picnic.location": {
+            "before": "wagon",
+            "after": "foot"
+          }
+        }
+      },
+      {
+        "id": 8,
+        "scene": "crown_moss",
+        "kernel": "Performance",
+        "actors": [
+          "moss",
+          "tomas"
+        ],
+        "summary": "Moss wore the paper crown at the meadow party",
+        "causes": [
+          1,
+          6,
+          7
+        ],
+        "requires": [
+          {
+            "key": "crown.owner",
+            "op": "eq",
+            "value": "moss"
+          },
+          {
+            "key": "quilt.spread",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "picnic.location",
+            "op": "eq",
+            "value": "foot"
+          },
+          {
+            "key": "moss.location",
+            "op": "eq",
+            "value": "foot"
+          }
+        ],
+        "changes": {
+          "crown.worn": {
+            "before": false,
+            "after": true
+          },
+          "picnic.performed": {
+            "before": false,
+            "after": true
+          }
+        }
+      },
+      {
+        "id": 9,
+        "scene": "share_berry_fizz",
+        "kernel": "Sharing",
+        "actors": [
+          "lila",
+          "juniper"
+        ],
+        "summary": "Lila shared the berry fizz",
+        "causes": [
+          3,
+          8
+        ],
+        "requires": [
+          {
+            "key": "wagon.food_loaded",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "picnic.performed",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "fizz.owner",
+            "op": "eq",
+            "value": "lila"
+          }
+        ],
+        "changes": {
+          "juniper.delighted": {
+            "before": false,
+            "after": true
+          },
+          "fizz.shared": {
+            "before": false,
+            "after": true
+          }
+        }
+      }
+    ]
+  }
+]

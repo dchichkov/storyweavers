@@ -1,0 +1,167 @@
+{
+  "id": "resp_08b6f0602a483541016a9f8e811f9c87d0915bdbd8fe1bc88f",
+  "created_at": 1788841601.0,
+  "error": null,
+  "incomplete_details": null,
+  "instructions": null,
+  "metadata": {},
+  "model": "gpt-5.6-terra",
+  "object": "response",
+  "output": [
+    {
+      "id": "msg_08b6f0602a483541016a9f8e81ad3887d0bb591b2b2fbfc1e6",
+      "content": [
+        {
+          "annotations": [],
+          "text": "{\"issues\":[{\"seed\":123,\"severity\":\"major\",\"layer\":\"simulation\",\"defect\":\"contradiction\",\"evidence\":\"The trace leaves Pip at `pip.location: \\\"gate\\\"` throughout, but the story twice says Pip \\\"fluttered behind it\\\" and \\\"slipped behind the gate,\\\" treating a different location as accomplished.\",\"fix\":\"Either add an event that moves Pip behind the gate and represent that location in state, or revise the prose so Pip remains at the gate.\"},{\"seed\":123,\"severity\":\"major\",\"layer\":\"prose\",\"defect\":\"event_log_prose\",\"evidence\":\"The consequence is repeated almost verbatim in adjacent passages: \\\"Pip startled and fluttered behind it\\\" followed by \\\"Pip slipped behind the gate, startled by the bright dancing shapes.\\\"\",\"fix\":\"Merge the duplicated reaction into one consequential beat, then use the final paragraph to advance the unfinished welcome rather than restate it.\"}],\"strengths\":\"Seeds 457 and 791 closely follow their ordered state changes: the lamp inspection precedes softening, the ribbon and moon are placed before Pip reaches the ribbon, and seed 791 grounds Ada's change from moving show to tableau in her discovered knowledge of Pip's location.\"}",
+          "type": "output_text",
+          "logprobs": []
+        }
+      ],
+      "role": "assistant",
+      "status": "completed",
+      "type": "message",
+      "phase": "final_answer"
+    }
+  ],
+  "parallel_tool_calls": true,
+  "temperature": 1.0,
+  "tool_choice": "auto",
+  "tools": [],
+  "top_p": 0.98,
+  "background": false,
+  "completed_at": 1788841603.0,
+  "conversation": null,
+  "max_output_tokens": 1600,
+  "max_tool_calls": null,
+  "moderation": null,
+  "previous_response_id": null,
+  "prompt": null,
+  "prompt_cache_key": null,
+  "prompt_cache_retention": "24h",
+  "reasoning": {
+    "context": "all_turns",
+    "effort": "none",
+    "generate_summary": null,
+    "summary": null,
+    "mode": "standard"
+  },
+  "safety_identifier": null,
+  "service_tier": "flex",
+  "status": "completed",
+  "text": {
+    "format": {
+      "name": "storyscenes_artifact",
+      "schema_": {
+        "type": "object",
+        "properties": {
+          "issues": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "seed": {
+                  "type": "integer"
+                },
+                "severity": {
+                  "type": "string",
+                  "enum": [
+                    "minor",
+                    "major"
+                  ]
+                },
+                "layer": {
+                  "type": "string",
+                  "enum": [
+                    "simulation",
+                    "prose"
+                  ]
+                },
+                "defect": {
+                  "type": "string",
+                  "enum": [
+                    "ungrounded_outcome",
+                    "wrong_knowledge",
+                    "contradiction",
+                    "literal_state_value",
+                    "unresolved_alternative",
+                    "event_log_prose",
+                    "weak_turn",
+                    "weak_ending",
+                    "other"
+                  ]
+                },
+                "evidence": {
+                  "type": "string"
+                },
+                "fix": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "seed",
+                "severity",
+                "layer",
+                "defect",
+                "evidence",
+                "fix"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "strengths": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "issues",
+          "strengths"
+        ],
+        "additionalProperties": false
+      },
+      "type": "json_schema",
+      "description": null,
+      "strict": true
+    },
+    "verbosity": "medium"
+  },
+  "top_logprobs": 0,
+  "truncation": "disabled",
+  "usage": {
+    "input_tokens": 3314,
+    "input_tokens_details": {
+      "cached_tokens": 0,
+      "cache_write_tokens": 3311
+    },
+    "output_tokens": 261,
+    "output_tokens_details": {
+      "reasoning_tokens": 0
+    },
+    "total_tokens": 3575
+  },
+  "user": null,
+  "billing": {
+    "payer": "openai"
+  },
+  "frequency_penalty": 0.0,
+  "presence_penalty": 0.0,
+  "store": false,
+  "tool_usage": {
+    "image_gen": {
+      "input_tokens": 0,
+      "input_tokens_details": {
+        "image_tokens": 0,
+        "text_tokens": 0
+      },
+      "output_tokens": 0,
+      "output_tokens_details": {
+        "image_tokens": 0,
+        "text_tokens": 0
+      },
+      "total_tokens": 0
+    },
+    "web_search": {
+      "num_requests": 0
+    }
+  }
+}

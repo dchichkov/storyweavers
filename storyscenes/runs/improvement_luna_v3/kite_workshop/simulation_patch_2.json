@@ -1,0 +1,12 @@
+{
+  "edits": [
+    {
+      "old": "C('pip.knows.message.mark', 'eq', 'dragon'),\n                C('message.owner', 'eq', 'nia'),",
+      "new": "C('pip.knows.message.mark', 'eq', 'dragon'),\n                C('mailbox.audience', 'eq', 'private'),\n                C('message.owner', 'eq', 'nia'),"
+    },
+    {
+      "old": "C('pip.knows.message.mark', 'eq', 'gathering'),\n                C('message.owner', 'eq', 'nia'),",
+      "new": "C('pip.knows.message.mark', 'in', ('dragon', 'gathering')),\n                C('mailbox.audience', 'eq', 'public'),\n                C('message.owner', 'eq', 'nia'),"
+    }
+  ]
+}

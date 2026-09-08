@@ -1,0 +1,29 @@
+{
+  "issues": [
+    {
+      "seed": 123,
+      "severity": "major",
+      "layer": "simulation",
+      "defect": "ungrounded_outcome",
+      "evidence": "The story twice says “Tuck rang”/“Tuck rang the bell,” but the trace leaves `bell.rung` false and contains no bell-ringing event (the identical seed 457 has the same mismatch).",
+      "fix": "Add a bell-ringing state change/event, or remove the claims that Tuck rang the bell."
+    },
+    {
+      "seed": 791,
+      "severity": "major",
+      "layer": "simulation",
+      "defect": "ungrounded_outcome",
+      "evidence": "The route scenes say “Each child chose a book” and “children chose stories one by one,” although `books.waiting` remains true and the trace has no delivery/selection event to ground distribution.",
+      "fix": "Add an event and state changes representing the books being handed out, or describe the cart arriving ready for children to choose rather than completing choices."
+    },
+    {
+      "seed": 791,
+      "severity": "major",
+      "layer": "prose",
+      "defect": "event_log_prose",
+      "evidence": "The final paragraph largely repeats the immediately previous completed action: “Nia performed the book route...” followed by “At the neighborhood stop, Nia opened the bookmobile and children chose stories one by one.”",
+      "fix": "Replace the duplicate recap with a consequential closing beat after the route."
+    }
+  ],
+  "strengths": "The principal cart transformations, locations, performers, banner attachment, and Mallow’s shelf knowledge generally follow their ordered trace changes; no raw enum values appear in the prose."
+}

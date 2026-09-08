@@ -1,0 +1,2257 @@
+{
+  "slots": {
+    "opening.3c76267fd4a5": {
+      "section": "openings",
+      "scene": null,
+      "role": "beat",
+      "when": [
+        {
+          "at": "initial",
+          "key": "neighbor.want",
+          "op": "eq",
+          "value": "quiet"
+        },
+        {
+          "at": "initial",
+          "key": "pond.wind",
+          "op": "eq",
+          "value": "still"
+        }
+      ],
+      "evidence": {
+        "state": {
+          "ada.want": "deliver invitations",
+          "ada.memes.Care": 2,
+          "ada.delivered": false,
+          "ada.location": "cove",
+          "ben.want": "build floating stage",
+          "ben.location": "pond",
+          "frog.want": "perform for listeners",
+          "frog.performance_style": "lively",
+          "frog.performed": false,
+          "frog.location": "pond",
+          "neighbor.want": "quiet",
+          "neighbor.location": "cove",
+          "neighbor.received": false,
+          "neighbor.heard_music": false,
+          "neighbor.joined": false,
+          "neighbor.response": "none",
+          "pond.wind": "still",
+          "invitation_card.owner": "ada",
+          "invitation_card.location": "cove",
+          "stage.owner": "ben",
+          "stage.location": "bank",
+          "stage.stage_ready": false,
+          "ribbon.owner": "ada",
+          "ribbon.location": "bank",
+          "ribbon.secured": false,
+          "ada.knows.neighbor.want": null,
+          "frog.knows.neighbor.want": null,
+          "ben.knows.pond.wind": null,
+          "frog.knows.pond.wind": null,
+          "ribbon.loaned_by": null
+        }
+      },
+      "variants": 2
+    },
+    "scene.learn_listener_wish.notice.e72ce7a203a6": {
+      "section": "scenes",
+      "scene": "learn_listener_wish.notice",
+      "role": "bridge",
+      "when": [
+        {
+          "at": "before",
+          "key": "ada.knows.neighbor.want",
+          "op": "eq",
+          "value": null
+        },
+        {
+          "at": "before",
+          "key": "neighbor.want",
+          "op": "eq",
+          "value": "quiet"
+        },
+        {
+          "at": "after",
+          "key": "ada.knows.neighbor.want",
+          "op": "eq",
+          "value": "quiet"
+        }
+      ],
+      "evidence": {
+        "summary": "",
+        "actors": [
+          "ada"
+        ],
+        "changes": {
+          "ada.knows.neighbor.want": {
+            "before": null,
+            "after": "quiet"
+          }
+        },
+        "before": {
+          "ada.knows.neighbor.want": null,
+          "neighbor.want": "quiet"
+        }
+      },
+      "variants": 1
+    },
+    "scene.deliver_card.1a6549413be1": {
+      "section": "scenes",
+      "scene": "deliver_card",
+      "role": "bridge",
+      "when": [
+        {
+          "at": "before",
+          "key": "invitation_card.location",
+          "op": "eq",
+          "value": "cove"
+        },
+        {
+          "at": "before",
+          "key": "invitation_card.owner",
+          "op": "eq",
+          "value": "ada"
+        },
+        {
+          "at": "after",
+          "key": "invitation_card.owner",
+          "op": "eq",
+          "value": "neighbor"
+        }
+      ],
+      "evidence": {
+        "summary": "Ada gives Mira the invitation",
+        "actors": [
+          "ada",
+          "neighbor"
+        ],
+        "changes": {
+          "invitation_card.owner": {
+            "before": "ada",
+            "after": "neighbor"
+          }
+        },
+        "before": {
+          "invitation_card.location": "cove",
+          "invitation_card.owner": "ada"
+        }
+      },
+      "variants": 1
+    },
+    "scene.mark_delivery.eb4197ee95c7": {
+      "section": "scenes",
+      "scene": "mark_delivery",
+      "role": "beat",
+      "when": [
+        {
+          "at": "before",
+          "key": "ada.delivered",
+          "op": "eq",
+          "value": false
+        },
+        {
+          "at": "before",
+          "key": "invitation_card.owner",
+          "op": "eq",
+          "value": "neighbor"
+        },
+        {
+          "at": "before",
+          "key": "neighbor.received",
+          "op": "eq",
+          "value": false
+        },
+        {
+          "at": "after",
+          "key": "ada.delivered",
+          "op": "eq",
+          "value": true
+        },
+        {
+          "at": "after",
+          "key": "neighbor.received",
+          "op": "eq",
+          "value": true
+        }
+      ],
+      "evidence": {
+        "summary": "Mira receives the invitation",
+        "actors": [
+          "ada"
+        ],
+        "changes": {
+          "ada.delivered": {
+            "before": false,
+            "after": true
+          },
+          "neighbor.received": {
+            "before": false,
+            "after": true
+          }
+        },
+        "before": {
+          "ada.delivered": false,
+          "invitation_card.owner": "neighbor",
+          "neighbor.received": false
+        }
+      },
+      "variants": 1
+    },
+    "scene.respect_quiet.87e2e021f45e": {
+      "section": "scenes",
+      "scene": "respect_quiet",
+      "role": "beat",
+      "when": [
+        {
+          "at": "before",
+          "key": "ada.knows.neighbor.want",
+          "op": "eq",
+          "value": "quiet"
+        },
+        {
+          "at": "before",
+          "key": "ada.memes.Care",
+          "op": "eq",
+          "value": 2
+        },
+        {
+          "at": "after",
+          "key": "ada.memes.Care",
+          "op": "eq",
+          "value": 3
+        }
+      ],
+      "evidence": {
+        "summary": "Ada chooses care over her assumption",
+        "actors": [
+          "ada"
+        ],
+        "changes": {
+          "ada.memes.Care": {
+            "before": 2,
+            "after": 3
+          }
+        },
+        "before": {
+          "ada.knows.neighbor.want": "quiet",
+          "ada.memes.Care": 2
+        }
+      },
+      "variants": 1
+    },
+    "scene.learn_pond_wind.notice.d65dfe980e44": {
+      "section": "scenes",
+      "scene": "learn_pond_wind.notice",
+      "role": "bridge",
+      "when": [
+        {
+          "at": "before",
+          "key": "ben.knows.pond.wind",
+          "op": "eq",
+          "value": null
+        },
+        {
+          "at": "before",
+          "key": "pond.wind",
+          "op": "eq",
+          "value": "still"
+        },
+        {
+          "at": "after",
+          "key": "ben.knows.pond.wind",
+          "op": "eq",
+          "value": "still"
+        }
+      ],
+      "evidence": {
+        "summary": "",
+        "actors": [
+          "ben"
+        ],
+        "changes": {
+          "ben.knows.pond.wind": {
+            "before": null,
+            "after": "still"
+          }
+        },
+        "before": {
+          "ben.knows.pond.wind": null,
+          "pond.wind": "still"
+        }
+      },
+      "variants": 1
+    },
+    "scene.build_stage_still.b3034c6739ab": {
+      "section": "scenes",
+      "scene": "build_stage_still",
+      "role": "beat",
+      "when": [
+        {
+          "at": "before",
+          "key": "ben.knows.pond.wind",
+          "op": "eq",
+          "value": "still"
+        },
+        {
+          "at": "before",
+          "key": "stage.stage_ready",
+          "op": "eq",
+          "value": false
+        },
+        {
+          "at": "after",
+          "key": "stage.stage_ready",
+          "op": "eq",
+          "value": true
+        }
+      ],
+      "evidence": {
+        "summary": "Ben prepares the stage in calm water",
+        "actors": [
+          "ben"
+        ],
+        "changes": {
+          "stage.stage_ready": {
+            "before": false,
+            "after": true
+          }
+        },
+        "before": {
+          "ben.knows.pond.wind": "still",
+          "stage.stage_ready": false
+        }
+      },
+      "variants": 1
+    },
+    "scene.learn_listener_wish.share.d2b81372e3fc": {
+      "section": "scenes",
+      "scene": "learn_listener_wish.share",
+      "role": "bridge",
+      "when": [
+        {
+          "at": "before",
+          "key": "ada.knows.neighbor.want",
+          "op": "eq",
+          "value": "quiet"
+        },
+        {
+          "at": "before",
+          "key": "frog.knows.neighbor.want",
+          "op": "eq",
+          "value": null
+        },
+        {
+          "at": "after",
+          "key": "frog.knows.neighbor.want",
+          "op": "eq",
+          "value": "quiet"
+        }
+      ],
+      "evidence": {
+        "summary": "",
+        "actors": [
+          "ada",
+          "frog"
+        ],
+        "changes": {
+          "frog.knows.neighbor.want": {
+            "before": null,
+            "after": "quiet"
+          }
+        },
+        "before": {
+          "ada.knows.neighbor.want": "quiet",
+          "frog.knows.neighbor.want": null
+        }
+      },
+      "variants": 1
+    },
+    "scene.float_stage.23b08390e56c": {
+      "section": "scenes",
+      "scene": "float_stage",
+      "role": "bridge",
+      "when": [
+        {
+          "at": "before",
+          "key": "stage.location",
+          "op": "eq",
+          "value": "bank"
+        },
+        {
+          "at": "before",
+          "key": "stage.owner",
+          "op": "eq",
+          "value": "ben"
+        },
+        {
+          "at": "before",
+          "key": "stage.stage_ready",
+          "op": "eq",
+          "value": true
+        },
+        {
+          "at": "after",
+          "key": "stage.location",
+          "op": "eq",
+          "value": "pond"
+        }
+      ],
+      "evidence": {
+        "summary": "Ben floats the stage onto the pond",
+        "actors": [
+          "ben",
+          "pond"
+        ],
+        "changes": {
+          "stage.location": {
+            "before": "bank",
+            "after": "pond"
+          }
+        },
+        "before": {
+          "stage.location": "bank",
+          "stage.owner": "ben",
+          "stage.stage_ready": true
+        }
+      },
+      "variants": 1
+    },
+    "scene.quiet_performance.68d8d9f7f4dc": {
+      "section": "scenes",
+      "scene": "quiet_performance",
+      "role": "beat",
+      "when": [
+        {
+          "at": "before",
+          "key": "ada.memes.Care",
+          "op": "eq",
+          "value": 3
+        },
+        {
+          "at": "before",
+          "key": "frog.knows.neighbor.want",
+          "op": "eq",
+          "value": "quiet"
+        },
+        {
+          "at": "before",
+          "key": "frog.performance_style",
+          "op": "eq",
+          "value": "lively"
+        },
+        {
+          "at": "before",
+          "key": "frog.performed",
+          "op": "eq",
+          "value": false
+        },
+        {
+          "at": "before",
+          "key": "neighbor.heard_music",
+          "op": "eq",
+          "value": false
+        },
+        {
+          "at": "before",
+          "key": "neighbor.response",
+          "op": "eq",
+          "value": "none"
+        },
+        {
+          "at": "before",
+          "key": "stage.location",
+          "op": "eq",
+          "value": "pond"
+        },
+        {
+          "at": "before",
+          "key": "stage.stage_ready",
+          "op": "eq",
+          "value": true
+        },
+        {
+          "at": "after",
+          "key": "frog.performance_style",
+          "op": "eq",
+          "value": "soft ripple-song"
+        },
+        {
+          "at": "after",
+          "key": "frog.performed",
+          "op": "eq",
+          "value": true
+        },
+        {
+          "at": "after",
+          "key": "neighbor.heard_music",
+          "op": "eq",
+          "value": true
+        },
+        {
+          "at": "after",
+          "key": "neighbor.response",
+          "op": "eq",
+          "value": "listened"
+        }
+      ],
+      "evidence": {
+        "summary": "Frog performs a soft ripple-song",
+        "actors": [
+          "frog"
+        ],
+        "changes": {
+          "frog.performance_style": {
+            "before": "lively",
+            "after": "soft ripple-song"
+          },
+          "frog.performed": {
+            "before": false,
+            "after": true
+          },
+          "neighbor.heard_music": {
+            "before": false,
+            "after": true
+          },
+          "neighbor.response": {
+            "before": "none",
+            "after": "listened"
+          }
+        },
+        "before": {
+          "ada.memes.Care": 3,
+          "frog.knows.neighbor.want": "quiet",
+          "frog.performance_style": "lively",
+          "frog.performed": false,
+          "neighbor.heard_music": false,
+          "neighbor.response": "none",
+          "stage.location": "pond",
+          "stage.stage_ready": true
+        }
+      },
+      "variants": 1
+    },
+    "ending.da96b0d209da": {
+      "section": "endings",
+      "scene": null,
+      "role": "beat",
+      "when": [
+        {
+          "at": "after",
+          "key": "ada.knows.neighbor.want",
+          "op": "eq",
+          "value": "quiet"
+        },
+        {
+          "at": "after",
+          "key": "ada.location",
+          "op": "eq",
+          "value": "cove"
+        },
+        {
+          "at": "after",
+          "key": "ada.memes.Care",
+          "op": "eq",
+          "value": 3
+        },
+        {
+          "at": "after",
+          "key": "ben.knows.pond.wind",
+          "op": "eq",
+          "value": "still"
+        },
+        {
+          "at": "after",
+          "key": "frog.knows.neighbor.want",
+          "op": "eq",
+          "value": "quiet"
+        },
+        {
+          "at": "after",
+          "key": "frog.performance_style",
+          "op": "eq",
+          "value": "soft ripple-song"
+        },
+        {
+          "at": "after",
+          "key": "neighbor.joined",
+          "op": "eq",
+          "value": false
+        },
+        {
+          "at": "after",
+          "key": "neighbor.response",
+          "op": "eq",
+          "value": "listened"
+        },
+        {
+          "at": "after",
+          "key": "neighbor.want",
+          "op": "eq",
+          "value": "quiet"
+        },
+        {
+          "at": "after",
+          "key": "pond.wind",
+          "op": "eq",
+          "value": "still"
+        },
+        {
+          "at": "after",
+          "key": "ribbon.loaned_by",
+          "op": "eq",
+          "value": null
+        },
+        {
+          "at": "after",
+          "key": "ribbon.location",
+          "op": "eq",
+          "value": "bank"
+        },
+        {
+          "at": "after",
+          "key": "ribbon.owner",
+          "op": "eq",
+          "value": "ada"
+        },
+        {
+          "at": "after",
+          "key": "ribbon.secured",
+          "op": "eq",
+          "value": false
+        }
+      ],
+      "evidence": {
+        "state": {
+          "ada.want": "deliver invitations",
+          "ada.memes.Care": 3,
+          "ada.delivered": true,
+          "ada.location": "cove",
+          "ben.want": "build floating stage",
+          "ben.location": "pond",
+          "frog.want": "perform for listeners",
+          "frog.performance_style": "soft ripple-song",
+          "frog.performed": true,
+          "frog.location": "pond",
+          "neighbor.want": "quiet",
+          "neighbor.location": "cove",
+          "neighbor.received": true,
+          "neighbor.heard_music": true,
+          "neighbor.joined": false,
+          "neighbor.response": "listened",
+          "pond.wind": "still",
+          "invitation_card.owner": "neighbor",
+          "invitation_card.location": "cove",
+          "stage.owner": "ben",
+          "stage.location": "pond",
+          "stage.stage_ready": true,
+          "ribbon.owner": "ada",
+          "ribbon.location": "bank",
+          "ribbon.secured": false,
+          "ada.knows.neighbor.want": "quiet",
+          "frog.knows.neighbor.want": "quiet",
+          "ben.knows.pond.wind": "still",
+          "frog.knows.pond.wind": null,
+          "ribbon.loaned_by": null
+        }
+      },
+      "variants": 2
+    },
+    "opening.bd90405582b0": {
+      "section": "openings",
+      "scene": null,
+      "role": "beat",
+      "when": [
+        {
+          "at": "initial",
+          "key": "neighbor.want",
+          "op": "eq",
+          "value": "join"
+        },
+        {
+          "at": "initial",
+          "key": "pond.wind",
+          "op": "eq",
+          "value": "still"
+        }
+      ],
+      "evidence": {
+        "state": {
+          "ada.want": "deliver invitations",
+          "ada.memes.Care": 2,
+          "ada.delivered": false,
+          "ada.location": "cove",
+          "ben.want": "build floating stage",
+          "ben.location": "pond",
+          "frog.want": "perform for listeners",
+          "frog.performance_style": "lively",
+          "frog.performed": false,
+          "frog.location": "pond",
+          "neighbor.want": "join",
+          "neighbor.location": "cove",
+          "neighbor.received": false,
+          "neighbor.heard_music": false,
+          "neighbor.joined": false,
+          "neighbor.response": "none",
+          "pond.wind": "still",
+          "invitation_card.owner": "ada",
+          "invitation_card.location": "cove",
+          "stage.owner": "ben",
+          "stage.location": "bank",
+          "stage.stage_ready": false,
+          "ribbon.owner": "ada",
+          "ribbon.location": "bank",
+          "ribbon.secured": false,
+          "ada.knows.neighbor.want": null,
+          "frog.knows.neighbor.want": null,
+          "ben.knows.pond.wind": null,
+          "frog.knows.pond.wind": null,
+          "ribbon.loaned_by": null
+        }
+      },
+      "variants": 2
+    },
+    "scene.learn_listener_wish.notice.d5b5c2dbc2b2": {
+      "section": "scenes",
+      "scene": "learn_listener_wish.notice",
+      "role": "bridge",
+      "when": [
+        {
+          "at": "before",
+          "key": "ada.knows.neighbor.want",
+          "op": "eq",
+          "value": null
+        },
+        {
+          "at": "before",
+          "key": "neighbor.want",
+          "op": "eq",
+          "value": "join"
+        },
+        {
+          "at": "after",
+          "key": "ada.knows.neighbor.want",
+          "op": "eq",
+          "value": "join"
+        }
+      ],
+      "evidence": {
+        "summary": "",
+        "actors": [
+          "ada"
+        ],
+        "changes": {
+          "ada.knows.neighbor.want": {
+            "before": null,
+            "after": "join"
+          }
+        },
+        "before": {
+          "ada.knows.neighbor.want": null,
+          "neighbor.want": "join"
+        }
+      },
+      "variants": 1
+    },
+    "scene.learn_listener_wish.share.7b8f05862c31": {
+      "section": "scenes",
+      "scene": "learn_listener_wish.share",
+      "role": "bridge",
+      "when": [
+        {
+          "at": "before",
+          "key": "ada.knows.neighbor.want",
+          "op": "eq",
+          "value": "join"
+        },
+        {
+          "at": "before",
+          "key": "frog.knows.neighbor.want",
+          "op": "eq",
+          "value": null
+        },
+        {
+          "at": "after",
+          "key": "frog.knows.neighbor.want",
+          "op": "eq",
+          "value": "join"
+        }
+      ],
+      "evidence": {
+        "summary": "",
+        "actors": [
+          "ada",
+          "frog"
+        ],
+        "changes": {
+          "frog.knows.neighbor.want": {
+            "before": null,
+            "after": "join"
+          }
+        },
+        "before": {
+          "ada.knows.neighbor.want": "join",
+          "frog.knows.neighbor.want": null
+        }
+      },
+      "variants": 1
+    },
+    "scene.welcoming_performance.ac52a1ab3ee7": {
+      "section": "scenes",
+      "scene": "welcoming_performance",
+      "role": "beat",
+      "when": [
+        {
+          "at": "before",
+          "key": "frog.knows.neighbor.want",
+          "op": "eq",
+          "value": "join"
+        },
+        {
+          "at": "before",
+          "key": "frog.performance_style",
+          "op": "eq",
+          "value": "lively"
+        },
+        {
+          "at": "before",
+          "key": "frog.performed",
+          "op": "eq",
+          "value": false
+        },
+        {
+          "at": "before",
+          "key": "neighbor.heard_music",
+          "op": "eq",
+          "value": false
+        },
+        {
+          "at": "before",
+          "key": "neighbor.joined",
+          "op": "eq",
+          "value": false
+        },
+        {
+          "at": "before",
+          "key": "neighbor.response",
+          "op": "eq",
+          "value": "none"
+        },
+        {
+          "at": "before",
+          "key": "stage.location",
+          "op": "eq",
+          "value": "pond"
+        },
+        {
+          "at": "before",
+          "key": "stage.stage_ready",
+          "op": "eq",
+          "value": true
+        },
+        {
+          "at": "after",
+          "key": "frog.performance_style",
+          "op": "eq",
+          "value": "lively chorus"
+        },
+        {
+          "at": "after",
+          "key": "frog.performed",
+          "op": "eq",
+          "value": true
+        },
+        {
+          "at": "after",
+          "key": "neighbor.heard_music",
+          "op": "eq",
+          "value": true
+        },
+        {
+          "at": "after",
+          "key": "neighbor.joined",
+          "op": "eq",
+          "value": true
+        },
+        {
+          "at": "after",
+          "key": "neighbor.response",
+          "op": "eq",
+          "value": "joined"
+        }
+      ],
+      "evidence": {
+        "summary": "Frog performs a lively chorus",
+        "actors": [
+          "frog"
+        ],
+        "changes": {
+          "frog.performance_style": {
+            "before": "lively",
+            "after": "lively chorus"
+          },
+          "frog.performed": {
+            "before": false,
+            "after": true
+          },
+          "neighbor.heard_music": {
+            "before": false,
+            "after": true
+          },
+          "neighbor.joined": {
+            "before": false,
+            "after": true
+          },
+          "neighbor.response": {
+            "before": "none",
+            "after": "joined"
+          }
+        },
+        "before": {
+          "frog.knows.neighbor.want": "join",
+          "frog.performance_style": "lively",
+          "frog.performed": false,
+          "neighbor.heard_music": false,
+          "neighbor.joined": false,
+          "neighbor.response": "none",
+          "stage.location": "pond",
+          "stage.stage_ready": true
+        }
+      },
+      "variants": 1
+    },
+    "ending.28c2fba48741": {
+      "section": "endings",
+      "scene": null,
+      "role": "beat",
+      "when": [
+        {
+          "at": "after",
+          "key": "ada.knows.neighbor.want",
+          "op": "eq",
+          "value": "join"
+        },
+        {
+          "at": "after",
+          "key": "ada.location",
+          "op": "eq",
+          "value": "cove"
+        },
+        {
+          "at": "after",
+          "key": "ada.memes.Care",
+          "op": "eq",
+          "value": 2
+        },
+        {
+          "at": "after",
+          "key": "ben.knows.pond.wind",
+          "op": "eq",
+          "value": "still"
+        },
+        {
+          "at": "after",
+          "key": "frog.knows.neighbor.want",
+          "op": "eq",
+          "value": "join"
+        },
+        {
+          "at": "after",
+          "key": "frog.performance_style",
+          "op": "eq",
+          "value": "lively chorus"
+        },
+        {
+          "at": "after",
+          "key": "neighbor.joined",
+          "op": "eq",
+          "value": true
+        },
+        {
+          "at": "after",
+          "key": "neighbor.response",
+          "op": "eq",
+          "value": "joined"
+        },
+        {
+          "at": "after",
+          "key": "neighbor.want",
+          "op": "eq",
+          "value": "join"
+        },
+        {
+          "at": "after",
+          "key": "pond.wind",
+          "op": "eq",
+          "value": "still"
+        },
+        {
+          "at": "after",
+          "key": "ribbon.loaned_by",
+          "op": "eq",
+          "value": null
+        },
+        {
+          "at": "after",
+          "key": "ribbon.location",
+          "op": "eq",
+          "value": "bank"
+        },
+        {
+          "at": "after",
+          "key": "ribbon.owner",
+          "op": "eq",
+          "value": "ada"
+        },
+        {
+          "at": "after",
+          "key": "ribbon.secured",
+          "op": "eq",
+          "value": false
+        }
+      ],
+      "evidence": {
+        "state": {
+          "ada.want": "deliver invitations",
+          "ada.memes.Care": 2,
+          "ada.delivered": true,
+          "ada.location": "cove",
+          "ben.want": "build floating stage",
+          "ben.location": "pond",
+          "frog.want": "perform for listeners",
+          "frog.performance_style": "lively chorus",
+          "frog.performed": true,
+          "frog.location": "pond",
+          "neighbor.want": "join",
+          "neighbor.location": "cove",
+          "neighbor.received": true,
+          "neighbor.heard_music": true,
+          "neighbor.joined": true,
+          "neighbor.response": "joined",
+          "pond.wind": "still",
+          "invitation_card.owner": "neighbor",
+          "invitation_card.location": "cove",
+          "stage.owner": "ben",
+          "stage.location": "pond",
+          "stage.stage_ready": true,
+          "ribbon.owner": "ada",
+          "ribbon.location": "bank",
+          "ribbon.secured": false,
+          "ada.knows.neighbor.want": "join",
+          "frog.knows.neighbor.want": "join",
+          "ben.knows.pond.wind": "still",
+          "frog.knows.pond.wind": null,
+          "ribbon.loaned_by": null
+        }
+      },
+      "variants": 2
+    },
+    "opening.3545f0941ba9": {
+      "section": "openings",
+      "scene": null,
+      "role": "beat",
+      "when": [
+        {
+          "at": "initial",
+          "key": "neighbor.want",
+          "op": "eq",
+          "value": "watch"
+        },
+        {
+          "at": "initial",
+          "key": "pond.wind",
+          "op": "eq",
+          "value": "still"
+        }
+      ],
+      "evidence": {
+        "state": {
+          "ada.want": "deliver invitations",
+          "ada.memes.Care": 2,
+          "ada.delivered": false,
+          "ada.location": "cove",
+          "ben.want": "build floating stage",
+          "ben.location": "pond",
+          "frog.want": "perform for listeners",
+          "frog.performance_style": "lively",
+          "frog.performed": false,
+          "frog.location": "pond",
+          "neighbor.want": "watch",
+          "neighbor.location": "cove",
+          "neighbor.received": false,
+          "neighbor.heard_music": false,
+          "neighbor.joined": false,
+          "neighbor.response": "none",
+          "pond.wind": "still",
+          "invitation_card.owner": "ada",
+          "invitation_card.location": "cove",
+          "stage.owner": "ben",
+          "stage.location": "bank",
+          "stage.stage_ready": false,
+          "ribbon.owner": "ada",
+          "ribbon.location": "bank",
+          "ribbon.secured": false,
+          "ada.knows.neighbor.want": null,
+          "frog.knows.neighbor.want": null,
+          "ben.knows.pond.wind": null,
+          "frog.knows.pond.wind": null,
+          "ribbon.loaned_by": null
+        }
+      },
+      "variants": 2
+    },
+    "scene.learn_listener_wish.notice.ac9b103a92ae": {
+      "section": "scenes",
+      "scene": "learn_listener_wish.notice",
+      "role": "bridge",
+      "when": [
+        {
+          "at": "before",
+          "key": "ada.knows.neighbor.want",
+          "op": "eq",
+          "value": null
+        },
+        {
+          "at": "before",
+          "key": "neighbor.want",
+          "op": "eq",
+          "value": "watch"
+        },
+        {
+          "at": "after",
+          "key": "ada.knows.neighbor.want",
+          "op": "eq",
+          "value": "watch"
+        }
+      ],
+      "evidence": {
+        "summary": "",
+        "actors": [
+          "ada"
+        ],
+        "changes": {
+          "ada.knows.neighbor.want": {
+            "before": null,
+            "after": "watch"
+          }
+        },
+        "before": {
+          "ada.knows.neighbor.want": null,
+          "neighbor.want": "watch"
+        }
+      },
+      "variants": 1
+    },
+    "scene.learn_listener_wish.share.dfc16b42da3f": {
+      "section": "scenes",
+      "scene": "learn_listener_wish.share",
+      "role": "bridge",
+      "when": [
+        {
+          "at": "before",
+          "key": "ada.knows.neighbor.want",
+          "op": "eq",
+          "value": "watch"
+        },
+        {
+          "at": "before",
+          "key": "frog.knows.neighbor.want",
+          "op": "eq",
+          "value": null
+        },
+        {
+          "at": "after",
+          "key": "frog.knows.neighbor.want",
+          "op": "eq",
+          "value": "watch"
+        }
+      ],
+      "evidence": {
+        "summary": "",
+        "actors": [
+          "ada",
+          "frog"
+        ],
+        "changes": {
+          "frog.knows.neighbor.want": {
+            "before": null,
+            "after": "watch"
+          }
+        },
+        "before": {
+          "ada.knows.neighbor.want": "watch",
+          "frog.knows.neighbor.want": null
+        }
+      },
+      "variants": 1
+    },
+    "scene.watching_performance.e78d78fa853e": {
+      "section": "scenes",
+      "scene": "watching_performance",
+      "role": "beat",
+      "when": [
+        {
+          "at": "before",
+          "key": "frog.knows.neighbor.want",
+          "op": "eq",
+          "value": "watch"
+        },
+        {
+          "at": "before",
+          "key": "frog.performance_style",
+          "op": "eq",
+          "value": "lively"
+        },
+        {
+          "at": "before",
+          "key": "frog.performed",
+          "op": "eq",
+          "value": false
+        },
+        {
+          "at": "before",
+          "key": "neighbor.heard_music",
+          "op": "eq",
+          "value": false
+        },
+        {
+          "at": "before",
+          "key": "neighbor.response",
+          "op": "eq",
+          "value": "none"
+        },
+        {
+          "at": "before",
+          "key": "stage.location",
+          "op": "eq",
+          "value": "pond"
+        },
+        {
+          "at": "before",
+          "key": "stage.stage_ready",
+          "op": "eq",
+          "value": true
+        },
+        {
+          "at": "after",
+          "key": "frog.performance_style",
+          "op": "eq",
+          "value": "gentle pond melody"
+        },
+        {
+          "at": "after",
+          "key": "frog.performed",
+          "op": "eq",
+          "value": true
+        },
+        {
+          "at": "after",
+          "key": "neighbor.heard_music",
+          "op": "eq",
+          "value": true
+        },
+        {
+          "at": "after",
+          "key": "neighbor.response",
+          "op": "eq",
+          "value": "watched"
+        }
+      ],
+      "evidence": {
+        "summary": "Frog performs a gentle pond melody",
+        "actors": [
+          "frog"
+        ],
+        "changes": {
+          "frog.performance_style": {
+            "before": "lively",
+            "after": "gentle pond melody"
+          },
+          "frog.performed": {
+            "before": false,
+            "after": true
+          },
+          "neighbor.heard_music": {
+            "before": false,
+            "after": true
+          },
+          "neighbor.response": {
+            "before": "none",
+            "after": "watched"
+          }
+        },
+        "before": {
+          "frog.knows.neighbor.want": "watch",
+          "frog.performance_style": "lively",
+          "frog.performed": false,
+          "neighbor.heard_music": false,
+          "neighbor.response": "none",
+          "stage.location": "pond",
+          "stage.stage_ready": true
+        }
+      },
+      "variants": 1
+    },
+    "ending.1676a5b37b04": {
+      "section": "endings",
+      "scene": null,
+      "role": "beat",
+      "when": [
+        {
+          "at": "after",
+          "key": "ada.knows.neighbor.want",
+          "op": "eq",
+          "value": "watch"
+        },
+        {
+          "at": "after",
+          "key": "ada.location",
+          "op": "eq",
+          "value": "cove"
+        },
+        {
+          "at": "after",
+          "key": "ada.memes.Care",
+          "op": "eq",
+          "value": 2
+        },
+        {
+          "at": "after",
+          "key": "ben.knows.pond.wind",
+          "op": "eq",
+          "value": "still"
+        },
+        {
+          "at": "after",
+          "key": "frog.knows.neighbor.want",
+          "op": "eq",
+          "value": "watch"
+        },
+        {
+          "at": "after",
+          "key": "frog.performance_style",
+          "op": "eq",
+          "value": "gentle pond melody"
+        },
+        {
+          "at": "after",
+          "key": "neighbor.joined",
+          "op": "eq",
+          "value": false
+        },
+        {
+          "at": "after",
+          "key": "neighbor.response",
+          "op": "eq",
+          "value": "watched"
+        },
+        {
+          "at": "after",
+          "key": "neighbor.want",
+          "op": "eq",
+          "value": "watch"
+        },
+        {
+          "at": "after",
+          "key": "pond.wind",
+          "op": "eq",
+          "value": "still"
+        },
+        {
+          "at": "after",
+          "key": "ribbon.loaned_by",
+          "op": "eq",
+          "value": null
+        },
+        {
+          "at": "after",
+          "key": "ribbon.location",
+          "op": "eq",
+          "value": "bank"
+        },
+        {
+          "at": "after",
+          "key": "ribbon.owner",
+          "op": "eq",
+          "value": "ada"
+        },
+        {
+          "at": "after",
+          "key": "ribbon.secured",
+          "op": "eq",
+          "value": false
+        }
+      ],
+      "evidence": {
+        "state": {
+          "ada.want": "deliver invitations",
+          "ada.memes.Care": 2,
+          "ada.delivered": true,
+          "ada.location": "cove",
+          "ben.want": "build floating stage",
+          "ben.location": "pond",
+          "frog.want": "perform for listeners",
+          "frog.performance_style": "gentle pond melody",
+          "frog.performed": true,
+          "frog.location": "pond",
+          "neighbor.want": "watch",
+          "neighbor.location": "cove",
+          "neighbor.received": true,
+          "neighbor.heard_music": true,
+          "neighbor.joined": false,
+          "neighbor.response": "watched",
+          "pond.wind": "still",
+          "invitation_card.owner": "neighbor",
+          "invitation_card.location": "cove",
+          "stage.owner": "ben",
+          "stage.location": "pond",
+          "stage.stage_ready": true,
+          "ribbon.owner": "ada",
+          "ribbon.location": "bank",
+          "ribbon.secured": false,
+          "ada.knows.neighbor.want": "watch",
+          "frog.knows.neighbor.want": "watch",
+          "ben.knows.pond.wind": "still",
+          "frog.knows.pond.wind": null,
+          "ribbon.loaned_by": null
+        }
+      },
+      "variants": 2
+    },
+    "opening.c6cd456bbbb4": {
+      "section": "openings",
+      "scene": null,
+      "role": "beat",
+      "when": [
+        {
+          "at": "initial",
+          "key": "neighbor.want",
+          "op": "eq",
+          "value": "quiet"
+        },
+        {
+          "at": "initial",
+          "key": "pond.wind",
+          "op": "eq",
+          "value": "breezy"
+        }
+      ],
+      "evidence": {
+        "state": {
+          "ada.want": "deliver invitations",
+          "ada.memes.Care": 2,
+          "ada.delivered": false,
+          "ada.location": "cove",
+          "ben.want": "build floating stage",
+          "ben.location": "pond",
+          "frog.want": "perform for listeners",
+          "frog.performance_style": "lively",
+          "frog.performed": false,
+          "frog.location": "pond",
+          "neighbor.want": "quiet",
+          "neighbor.location": "cove",
+          "neighbor.received": false,
+          "neighbor.heard_music": false,
+          "neighbor.joined": false,
+          "neighbor.response": "none",
+          "pond.wind": "breezy",
+          "invitation_card.owner": "ada",
+          "invitation_card.location": "cove",
+          "stage.owner": "ben",
+          "stage.location": "bank",
+          "stage.stage_ready": false,
+          "ribbon.owner": "ada",
+          "ribbon.location": "bank",
+          "ribbon.secured": false,
+          "ada.knows.neighbor.want": null,
+          "frog.knows.neighbor.want": null,
+          "ben.knows.pond.wind": null,
+          "frog.knows.pond.wind": null,
+          "ribbon.loaned_by": null
+        }
+      },
+      "variants": 2
+    },
+    "scene.ada_to_pond.5ef3eca95697": {
+      "section": "scenes",
+      "scene": "ada_to_pond",
+      "role": "beat",
+      "when": [
+        {
+          "at": "before",
+          "key": "ada.delivered",
+          "op": "eq",
+          "value": true
+        },
+        {
+          "at": "before",
+          "key": "ada.location",
+          "op": "eq",
+          "value": "cove"
+        },
+        {
+          "at": "after",
+          "key": "ada.location",
+          "op": "eq",
+          "value": "pond"
+        }
+      ],
+      "evidence": {
+        "summary": "Ada walks from the cove to the pond",
+        "actors": [
+          "ada"
+        ],
+        "changes": {
+          "ada.location": {
+            "before": "cove",
+            "after": "pond"
+          }
+        },
+        "before": {
+          "ada.delivered": true,
+          "ada.location": "cove"
+        }
+      },
+      "variants": 1
+    },
+    "scene.learn_pond_wind.notice.d7d2592ba0c2": {
+      "section": "scenes",
+      "scene": "learn_pond_wind.notice",
+      "role": "bridge",
+      "when": [
+        {
+          "at": "before",
+          "key": "ben.knows.pond.wind",
+          "op": "eq",
+          "value": null
+        },
+        {
+          "at": "before",
+          "key": "pond.wind",
+          "op": "eq",
+          "value": "breezy"
+        },
+        {
+          "at": "after",
+          "key": "ben.knows.pond.wind",
+          "op": "eq",
+          "value": "breezy"
+        }
+      ],
+      "evidence": {
+        "summary": "",
+        "actors": [
+          "ben"
+        ],
+        "changes": {
+          "ben.knows.pond.wind": {
+            "before": null,
+            "after": "breezy"
+          }
+        },
+        "before": {
+          "ben.knows.pond.wind": null,
+          "pond.wind": "breezy"
+        }
+      },
+      "variants": 1
+    },
+    "scene.lend_ribbon.3c452364aecb": {
+      "section": "scenes",
+      "scene": "lend_ribbon",
+      "role": "bridge",
+      "when": [
+        {
+          "at": "before",
+          "key": "ada.location",
+          "op": "eq",
+          "value": "pond"
+        },
+        {
+          "at": "before",
+          "key": "ribbon.loaned_by",
+          "op": "eq",
+          "value": null
+        },
+        {
+          "at": "before",
+          "key": "ribbon.owner",
+          "op": "eq",
+          "value": "ada"
+        },
+        {
+          "at": "after",
+          "key": "ribbon.loaned_by",
+          "op": "eq",
+          "value": "ada"
+        },
+        {
+          "at": "after",
+          "key": "ribbon.owner",
+          "op": "eq",
+          "value": "ben"
+        }
+      ],
+      "evidence": {
+        "summary": "Ada lends Ben the ribbon",
+        "actors": [
+          "ada",
+          "ben"
+        ],
+        "changes": {
+          "ribbon.owner": {
+            "before": "ada",
+            "after": "ben"
+          },
+          "ribbon.loaned_by": {
+            "before": null,
+            "after": "ada"
+          }
+        },
+        "before": {
+          "ada.location": "pond",
+          "ribbon.loaned_by": null,
+          "ribbon.owner": "ada"
+        }
+      },
+      "variants": 1
+    },
+    "scene.move_ribbon.0fa97f25ac6a": {
+      "section": "scenes",
+      "scene": "move_ribbon",
+      "role": "bridge",
+      "when": [
+        {
+          "at": "before",
+          "key": "ribbon.location",
+          "op": "eq",
+          "value": "bank"
+        },
+        {
+          "at": "before",
+          "key": "ribbon.owner",
+          "op": "eq",
+          "value": "ben"
+        },
+        {
+          "at": "after",
+          "key": "ribbon.location",
+          "op": "eq",
+          "value": "pond"
+        }
+      ],
+      "evidence": {
+        "summary": "Ben carries the ribbon to the pond",
+        "actors": [
+          "ben",
+          "pond"
+        ],
+        "changes": {
+          "ribbon.location": {
+            "before": "bank",
+            "after": "pond"
+          }
+        },
+        "before": {
+          "ribbon.location": "bank",
+          "ribbon.owner": "ben"
+        }
+      },
+      "variants": 1
+    },
+    "scene.secure_ribbon.edffb6c9eae2": {
+      "section": "scenes",
+      "scene": "secure_ribbon",
+      "role": "beat",
+      "when": [
+        {
+          "at": "before",
+          "key": "pond.wind",
+          "op": "eq",
+          "value": "breezy"
+        },
+        {
+          "at": "before",
+          "key": "ribbon.location",
+          "op": "eq",
+          "value": "pond"
+        },
+        {
+          "at": "before",
+          "key": "ribbon.owner",
+          "op": "eq",
+          "value": "ben"
+        },
+        {
+          "at": "before",
+          "key": "ribbon.secured",
+          "op": "eq",
+          "value": false
+        },
+        {
+          "at": "after",
+          "key": "ribbon.secured",
+          "op": "eq",
+          "value": true
+        }
+      ],
+      "evidence": {
+        "summary": "Ben secures the stage against the breeze",
+        "actors": [
+          "ben"
+        ],
+        "changes": {
+          "ribbon.secured": {
+            "before": false,
+            "after": true
+          }
+        },
+        "before": {
+          "pond.wind": "breezy",
+          "ribbon.location": "pond",
+          "ribbon.owner": "ben",
+          "ribbon.secured": false
+        }
+      },
+      "variants": 1
+    },
+    "scene.build_stage_breezy.bcf9fe9d9bb9": {
+      "section": "scenes",
+      "scene": "build_stage_breezy",
+      "role": "beat",
+      "when": [
+        {
+          "at": "before",
+          "key": "ben.knows.pond.wind",
+          "op": "eq",
+          "value": "breezy"
+        },
+        {
+          "at": "before",
+          "key": "ribbon.secured",
+          "op": "eq",
+          "value": true
+        },
+        {
+          "at": "before",
+          "key": "stage.stage_ready",
+          "op": "eq",
+          "value": false
+        },
+        {
+          "at": "after",
+          "key": "stage.stage_ready",
+          "op": "eq",
+          "value": true
+        }
+      ],
+      "evidence": {
+        "summary": "Ben prepares the tied-down stage",
+        "actors": [
+          "ben"
+        ],
+        "changes": {
+          "stage.stage_ready": {
+            "before": false,
+            "after": true
+          }
+        },
+        "before": {
+          "ben.knows.pond.wind": "breezy",
+          "ribbon.secured": true,
+          "stage.stage_ready": false
+        }
+      },
+      "variants": 1
+    },
+    "ending.2dba5ecaa565": {
+      "section": "endings",
+      "scene": null,
+      "role": "beat",
+      "when": [
+        {
+          "at": "after",
+          "key": "ada.knows.neighbor.want",
+          "op": "eq",
+          "value": "quiet"
+        },
+        {
+          "at": "after",
+          "key": "ada.location",
+          "op": "eq",
+          "value": "pond"
+        },
+        {
+          "at": "after",
+          "key": "ada.memes.Care",
+          "op": "eq",
+          "value": 3
+        },
+        {
+          "at": "after",
+          "key": "ben.knows.pond.wind",
+          "op": "eq",
+          "value": "breezy"
+        },
+        {
+          "at": "after",
+          "key": "frog.knows.neighbor.want",
+          "op": "eq",
+          "value": "quiet"
+        },
+        {
+          "at": "after",
+          "key": "frog.performance_style",
+          "op": "eq",
+          "value": "soft ripple-song"
+        },
+        {
+          "at": "after",
+          "key": "neighbor.joined",
+          "op": "eq",
+          "value": false
+        },
+        {
+          "at": "after",
+          "key": "neighbor.response",
+          "op": "eq",
+          "value": "listened"
+        },
+        {
+          "at": "after",
+          "key": "neighbor.want",
+          "op": "eq",
+          "value": "quiet"
+        },
+        {
+          "at": "after",
+          "key": "pond.wind",
+          "op": "eq",
+          "value": "breezy"
+        },
+        {
+          "at": "after",
+          "key": "ribbon.loaned_by",
+          "op": "eq",
+          "value": "ada"
+        },
+        {
+          "at": "after",
+          "key": "ribbon.location",
+          "op": "eq",
+          "value": "pond"
+        },
+        {
+          "at": "after",
+          "key": "ribbon.owner",
+          "op": "eq",
+          "value": "ben"
+        },
+        {
+          "at": "after",
+          "key": "ribbon.secured",
+          "op": "eq",
+          "value": true
+        }
+      ],
+      "evidence": {
+        "state": {
+          "ada.want": "deliver invitations",
+          "ada.memes.Care": 3,
+          "ada.delivered": true,
+          "ada.location": "pond",
+          "ben.want": "build floating stage",
+          "ben.location": "pond",
+          "frog.want": "perform for listeners",
+          "frog.performance_style": "soft ripple-song",
+          "frog.performed": true,
+          "frog.location": "pond",
+          "neighbor.want": "quiet",
+          "neighbor.location": "cove",
+          "neighbor.received": true,
+          "neighbor.heard_music": true,
+          "neighbor.joined": false,
+          "neighbor.response": "listened",
+          "pond.wind": "breezy",
+          "invitation_card.owner": "neighbor",
+          "invitation_card.location": "cove",
+          "stage.owner": "ben",
+          "stage.location": "pond",
+          "stage.stage_ready": true,
+          "ribbon.owner": "ben",
+          "ribbon.location": "pond",
+          "ribbon.secured": true,
+          "ada.knows.neighbor.want": "quiet",
+          "frog.knows.neighbor.want": "quiet",
+          "ben.knows.pond.wind": "breezy",
+          "frog.knows.pond.wind": null,
+          "ribbon.loaned_by": "ada"
+        }
+      },
+      "variants": 2
+    },
+    "opening.30afe05c374d": {
+      "section": "openings",
+      "scene": null,
+      "role": "beat",
+      "when": [
+        {
+          "at": "initial",
+          "key": "neighbor.want",
+          "op": "eq",
+          "value": "join"
+        },
+        {
+          "at": "initial",
+          "key": "pond.wind",
+          "op": "eq",
+          "value": "breezy"
+        }
+      ],
+      "evidence": {
+        "state": {
+          "ada.want": "deliver invitations",
+          "ada.memes.Care": 2,
+          "ada.delivered": false,
+          "ada.location": "cove",
+          "ben.want": "build floating stage",
+          "ben.location": "pond",
+          "frog.want": "perform for listeners",
+          "frog.performance_style": "lively",
+          "frog.performed": false,
+          "frog.location": "pond",
+          "neighbor.want": "join",
+          "neighbor.location": "cove",
+          "neighbor.received": false,
+          "neighbor.heard_music": false,
+          "neighbor.joined": false,
+          "neighbor.response": "none",
+          "pond.wind": "breezy",
+          "invitation_card.owner": "ada",
+          "invitation_card.location": "cove",
+          "stage.owner": "ben",
+          "stage.location": "bank",
+          "stage.stage_ready": false,
+          "ribbon.owner": "ada",
+          "ribbon.location": "bank",
+          "ribbon.secured": false,
+          "ada.knows.neighbor.want": null,
+          "frog.knows.neighbor.want": null,
+          "ben.knows.pond.wind": null,
+          "frog.knows.pond.wind": null,
+          "ribbon.loaned_by": null
+        }
+      },
+      "variants": 2
+    },
+    "ending.02d487fcdf35": {
+      "section": "endings",
+      "scene": null,
+      "role": "beat",
+      "when": [
+        {
+          "at": "after",
+          "key": "ada.knows.neighbor.want",
+          "op": "eq",
+          "value": "join"
+        },
+        {
+          "at": "after",
+          "key": "ada.location",
+          "op": "eq",
+          "value": "pond"
+        },
+        {
+          "at": "after",
+          "key": "ada.memes.Care",
+          "op": "eq",
+          "value": 2
+        },
+        {
+          "at": "after",
+          "key": "ben.knows.pond.wind",
+          "op": "eq",
+          "value": "breezy"
+        },
+        {
+          "at": "after",
+          "key": "frog.knows.neighbor.want",
+          "op": "eq",
+          "value": "join"
+        },
+        {
+          "at": "after",
+          "key": "frog.performance_style",
+          "op": "eq",
+          "value": "lively chorus"
+        },
+        {
+          "at": "after",
+          "key": "neighbor.joined",
+          "op": "eq",
+          "value": true
+        },
+        {
+          "at": "after",
+          "key": "neighbor.response",
+          "op": "eq",
+          "value": "joined"
+        },
+        {
+          "at": "after",
+          "key": "neighbor.want",
+          "op": "eq",
+          "value": "join"
+        },
+        {
+          "at": "after",
+          "key": "pond.wind",
+          "op": "eq",
+          "value": "breezy"
+        },
+        {
+          "at": "after",
+          "key": "ribbon.loaned_by",
+          "op": "eq",
+          "value": "ada"
+        },
+        {
+          "at": "after",
+          "key": "ribbon.location",
+          "op": "eq",
+          "value": "pond"
+        },
+        {
+          "at": "after",
+          "key": "ribbon.owner",
+          "op": "eq",
+          "value": "ben"
+        },
+        {
+          "at": "after",
+          "key": "ribbon.secured",
+          "op": "eq",
+          "value": true
+        }
+      ],
+      "evidence": {
+        "state": {
+          "ada.want": "deliver invitations",
+          "ada.memes.Care": 2,
+          "ada.delivered": true,
+          "ada.location": "pond",
+          "ben.want": "build floating stage",
+          "ben.location": "pond",
+          "frog.want": "perform for listeners",
+          "frog.performance_style": "lively chorus",
+          "frog.performed": true,
+          "frog.location": "pond",
+          "neighbor.want": "join",
+          "neighbor.location": "cove",
+          "neighbor.received": true,
+          "neighbor.heard_music": true,
+          "neighbor.joined": true,
+          "neighbor.response": "joined",
+          "pond.wind": "breezy",
+          "invitation_card.owner": "neighbor",
+          "invitation_card.location": "cove",
+          "stage.owner": "ben",
+          "stage.location": "pond",
+          "stage.stage_ready": true,
+          "ribbon.owner": "ben",
+          "ribbon.location": "pond",
+          "ribbon.secured": true,
+          "ada.knows.neighbor.want": "join",
+          "frog.knows.neighbor.want": "join",
+          "ben.knows.pond.wind": "breezy",
+          "frog.knows.pond.wind": null,
+          "ribbon.loaned_by": "ada"
+        }
+      },
+      "variants": 2
+    },
+    "opening.09e1d265705d": {
+      "section": "openings",
+      "scene": null,
+      "role": "beat",
+      "when": [
+        {
+          "at": "initial",
+          "key": "neighbor.want",
+          "op": "eq",
+          "value": "watch"
+        },
+        {
+          "at": "initial",
+          "key": "pond.wind",
+          "op": "eq",
+          "value": "breezy"
+        }
+      ],
+      "evidence": {
+        "state": {
+          "ada.want": "deliver invitations",
+          "ada.memes.Care": 2,
+          "ada.delivered": false,
+          "ada.location": "cove",
+          "ben.want": "build floating stage",
+          "ben.location": "pond",
+          "frog.want": "perform for listeners",
+          "frog.performance_style": "lively",
+          "frog.performed": false,
+          "frog.location": "pond",
+          "neighbor.want": "watch",
+          "neighbor.location": "cove",
+          "neighbor.received": false,
+          "neighbor.heard_music": false,
+          "neighbor.joined": false,
+          "neighbor.response": "none",
+          "pond.wind": "breezy",
+          "invitation_card.owner": "ada",
+          "invitation_card.location": "cove",
+          "stage.owner": "ben",
+          "stage.location": "bank",
+          "stage.stage_ready": false,
+          "ribbon.owner": "ada",
+          "ribbon.location": "bank",
+          "ribbon.secured": false,
+          "ada.knows.neighbor.want": null,
+          "frog.knows.neighbor.want": null,
+          "ben.knows.pond.wind": null,
+          "frog.knows.pond.wind": null,
+          "ribbon.loaned_by": null
+        }
+      },
+      "variants": 2
+    },
+    "ending.a38fee319e20": {
+      "section": "endings",
+      "scene": null,
+      "role": "beat",
+      "when": [
+        {
+          "at": "after",
+          "key": "ada.knows.neighbor.want",
+          "op": "eq",
+          "value": "watch"
+        },
+        {
+          "at": "after",
+          "key": "ada.location",
+          "op": "eq",
+          "value": "pond"
+        },
+        {
+          "at": "after",
+          "key": "ada.memes.Care",
+          "op": "eq",
+          "value": 2
+        },
+        {
+          "at": "after",
+          "key": "ben.knows.pond.wind",
+          "op": "eq",
+          "value": "breezy"
+        },
+        {
+          "at": "after",
+          "key": "frog.knows.neighbor.want",
+          "op": "eq",
+          "value": "watch"
+        },
+        {
+          "at": "after",
+          "key": "frog.performance_style",
+          "op": "eq",
+          "value": "gentle pond melody"
+        },
+        {
+          "at": "after",
+          "key": "neighbor.joined",
+          "op": "eq",
+          "value": false
+        },
+        {
+          "at": "after",
+          "key": "neighbor.response",
+          "op": "eq",
+          "value": "watched"
+        },
+        {
+          "at": "after",
+          "key": "neighbor.want",
+          "op": "eq",
+          "value": "watch"
+        },
+        {
+          "at": "after",
+          "key": "pond.wind",
+          "op": "eq",
+          "value": "breezy"
+        },
+        {
+          "at": "after",
+          "key": "ribbon.loaned_by",
+          "op": "eq",
+          "value": "ada"
+        },
+        {
+          "at": "after",
+          "key": "ribbon.location",
+          "op": "eq",
+          "value": "pond"
+        },
+        {
+          "at": "after",
+          "key": "ribbon.owner",
+          "op": "eq",
+          "value": "ben"
+        },
+        {
+          "at": "after",
+          "key": "ribbon.secured",
+          "op": "eq",
+          "value": true
+        }
+      ],
+      "evidence": {
+        "state": {
+          "ada.want": "deliver invitations",
+          "ada.memes.Care": 2,
+          "ada.delivered": true,
+          "ada.location": "pond",
+          "ben.want": "build floating stage",
+          "ben.location": "pond",
+          "frog.want": "perform for listeners",
+          "frog.performance_style": "gentle pond melody",
+          "frog.performed": true,
+          "frog.location": "pond",
+          "neighbor.want": "watch",
+          "neighbor.location": "cove",
+          "neighbor.received": true,
+          "neighbor.heard_music": true,
+          "neighbor.joined": false,
+          "neighbor.response": "watched",
+          "pond.wind": "breezy",
+          "invitation_card.owner": "neighbor",
+          "invitation_card.location": "cove",
+          "stage.owner": "ben",
+          "stage.location": "pond",
+          "stage.stage_ready": true,
+          "ribbon.owner": "ben",
+          "ribbon.location": "pond",
+          "ribbon.secured": true,
+          "ada.knows.neighbor.want": "watch",
+          "frog.knows.neighbor.want": "watch",
+          "ben.knows.pond.wind": "breezy",
+          "frog.knows.pond.wind": null,
+          "ribbon.loaned_by": "ada"
+        }
+      },
+      "variants": 2
+    }
+  },
+  "unselected_scenes": [
+    "learn_pond_wind.share"
+  ]
+}

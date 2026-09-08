@@ -1,0 +1,692 @@
+{
+  "openings": [
+    {
+      "text": "Lila found the wagon already stuffed with two picnic bundles. “Food and decorations,” she said. Far above, the brass bell waited on the hilltop. Aunt Juniper could climb, and she wanted the hill picnic, but something would have to make the journey first.",
+      "when": [
+        {
+          "key": "wagon.load",
+          "op": "eq",
+          "value": 2,
+          "at": "initial"
+        },
+        {
+          "key": "juniper.can_climb",
+          "op": "eq",
+          "value": true,
+          "at": "initial"
+        },
+        {
+          "key": "juniper.wish",
+          "op": "eq",
+          "value": "hill",
+          "at": "initial"
+        }
+      ]
+    },
+    {
+      "text": "At the hill foot, Moss stood beside an empty wagon, certain he had been hired as a hauling machine. Tomas stared uphill, certain Aunt Juniper would soon arrive there. Lila looked between them. “Before anyone trots anywhere,” she said, “we need to find out what is actually happening.”",
+      "when": [
+        {
+          "key": "moss.belief_role",
+          "op": "eq",
+          "value": "cart",
+          "at": "initial"
+        },
+        {
+          "key": "juniper.can_climb",
+          "op": "eq",
+          "value": false,
+          "at": "initial"
+        },
+        {
+          "key": "juniper.wish",
+          "op": "eq",
+          "value": "hill",
+          "at": "initial"
+        }
+      ]
+    },
+    {
+      "text": "Aunt Juniper was waiting at the hill foot with a sore knee. “Quiet, please,” she said, while Tomas dreamed of a daring hilltop picnic. Moss hoped nobody would treat him like a cart. Lila tucked a paper crown under her arm and began inventing a kinder sort of celebration.",
+      "when": [
+        {
+          "key": "juniper.wish",
+          "op": "eq",
+          "value": "quiet",
+          "at": "initial"
+        },
+        {
+          "key": "juniper.location",
+          "op": "eq",
+          "value": "foot",
+          "at": "initial"
+        }
+      ]
+    }
+  ],
+  "scenes": [
+    {
+      "scene": "notice_juniper",
+      "role": "beat",
+      "variants": [
+        {
+          "text": "Lila watched Aunt Juniper’s careful step and discovered the important truth: Juniper could climb the hill. “Then the hilltop is not just a dream,” Lila whispered.",
+          "when": [
+            {
+              "key": "juniper.can_climb",
+              "op": "eq",
+              "value": true,
+              "at": "after"
+            }
+          ]
+        },
+        {
+          "text": "Lila watched Aunt Juniper’s careful step and discovered the important truth: Juniper could not climb the hill. “Then the picnic must come down to her,” she said.",
+          "when": [
+            {
+              "key": "juniper.can_climb",
+              "op": "eq",
+              "value": false,
+              "at": "after"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "scene": "notice_juniper_place",
+      "role": "bridge",
+      "variants": [
+        {
+          "text": "She glanced toward the path and noticed exactly where Aunt Juniper was waiting: at the hill foot, beside the wagon’s wheel.",
+          "when": [
+            {
+              "key": "juniper.location",
+              "op": "eq",
+              "value": "foot",
+              "at": "after"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "scene": "notice_juniper_wish",
+      "role": "beat",
+      "variants": [
+        {
+          "text": "Lila listened and discovered what Juniper wanted: a hill picnic, not a grand fuss. “Aha,” she said. “We can make the hill welcome her.”",
+          "when": [
+            {
+              "key": "juniper.wish",
+              "op": "eq",
+              "value": "hill",
+              "at": "after"
+            }
+          ]
+        },
+        {
+          "text": "Lila listened and discovered what Juniper wanted: a quiet picnic at the foot. “No trumpets,” she promised. “Unless the trumpet is Moss’s nose.”",
+          "when": [
+            {
+              "key": "juniper.wish",
+              "op": "eq",
+              "value": "quiet",
+              "at": "after"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "scene": "tell_tomas_climb",
+      "role": "bridge",
+      "variants": [
+        {
+          "text": "Lila passed the news to Tomas, who hugged the bell rope with a hopeful little bounce.",
+          "when": [
+            {
+              "key": "tomas.knows.juniper.can_climb",
+              "op": "ne",
+              "value": null,
+              "at": "after"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "scene": "correct_tomas_belief",
+      "role": "beat",
+      "variants": [
+        {
+          "text": "“Tomas,” Lila said, pointing downhill, “Aunt Juniper is right here at the foot.” His hilltop plan wobbled like jelly. Then he looked at the waiting wagon and began thinking of a new kind of grand.",
+          "when": [
+            {
+              "key": "tomas.knows.juniper.location",
+              "op": "eq",
+              "value": "foot",
+              "at": "after"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "scene": "tell_juniper_wish",
+      "role": "bridge",
+      "variants": [
+        {
+          "text": "Lila told Tomas Juniper’s wish, and his eyebrows made two surprised arches.",
+          "when": [
+            {
+              "key": "lila.knows.juniper.wish",
+              "op": "ne",
+              "value": null,
+              "at": "before"
+            }
+          ]
+        },
+        {
+          "text": "“She wants quiet,” Lila told Tomas. “Quiet?” he said. “I can whisper dramatically.”",
+          "when": [
+            {
+              "key": "lila.knows.juniper.wish",
+              "op": "eq",
+              "value": "quiet",
+              "at": "after"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "scene": "ask_moss",
+      "role": "beat",
+      "variants": [
+        {
+          "text": "Tomas asked Moss what he thought his job was. Moss lifted his chin. “I am a guest with excellent ears,” he said, “not a wagon with hooves.”",
+          "when": [
+            {
+              "key": "tomas.knows.moss.belief_role",
+              "op": "eq",
+              "value": "guest",
+              "at": "after"
+            }
+          ]
+        },
+        {
+          "text": "Tomas asked Moss what he thought his job was. Moss stamped once. “Cart,” he brayed. “Pull, pull, pull!” Tomas blinked. That was not the role he had imagined for his friend.",
+          "when": [
+            {
+              "key": "tomas.knows.moss.belief_role",
+              "op": "eq",
+              "value": "cart",
+              "at": "after"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "scene": "tell_moss_role",
+      "role": "bridge",
+      "variants": [
+        {
+          "text": "Tomas told Lila Moss’s opinion. Moss listened closely, especially to the word “guest.”",
+          "when": [
+            {
+              "key": "tomas.knows.moss.belief_role",
+              "op": "ne",
+              "value": null,
+              "at": "after"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "scene": "load_food",
+      "role": "beat",
+      "variants": [
+        {
+          "text": "Lila lifted the picnic basket into the wagon. The wagon settled with a friendly creak, as if it had just remembered the smell of sandwiches.",
+          "when": [
+            {
+              "key": "wagon.food_loaded",
+              "op": "eq",
+              "value": true,
+              "at": "after"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "scene": "load_decor",
+      "role": "bridge",
+      "variants": [
+        {
+          "text": "Tomas tucked in the decorations, though the wagon now looked ready to sneeze streamers.",
+          "when": [
+            {
+              "key": "wagon.decor_loaded",
+              "op": "eq",
+              "value": true,
+              "at": "after"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "scene": "invite_hilltop",
+      "role": "beat",
+      "variants": [
+        {
+          "text": "“Aunt Juniper, will you come to the hilltop?” Lila invited. Juniper smiled, tested her knee, and nodded. The hill path suddenly seemed less like a climb and more like a long green ribbon waiting to be followed.",
+          "when": [
+            {
+              "key": "juniper.invited",
+              "op": "eq",
+              "value": true,
+              "at": "after"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "scene": "juniper_climb",
+      "role": "beat",
+      "variants": [
+        {
+          "text": "Juniper climbed slowly, with Lila on one side and Tomas on the other. At the top she turned around. “I have conquered a hill,” she announced. “It was wearing grass.”",
+          "when": [
+            {
+              "key": "juniper.location",
+              "op": "eq",
+              "value": "top",
+              "at": "after"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "scene": "offer_crown_moss",
+      "role": "beat",
+      "variants": [
+        {
+          "text": "Lila handed Moss the paper crown. “For a guest,” she said. Moss lowered his head. The crown landed between his ears, and his proud ears stood even prouder.",
+          "when": [
+            {
+              "key": "crown.owner",
+              "op": "eq",
+              "value": "moss",
+              "at": "after"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "scene": "moss_agree",
+      "role": "beat",
+      "variants": [
+        {
+          "text": "Moss agreed to pull one bundle, but only after receiving his crown. “A guest may lead the parade,” he declared. Lila bowed. “Naturally, Your Donkeyship.”",
+          "when": [
+            {
+              "key": "moss.agreement",
+              "op": "eq",
+              "value": true,
+              "at": "after"
+            },
+            {
+              "key": "crown.owner",
+              "op": "eq",
+              "value": "moss",
+              "at": "after"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "scene": "moss_agree_cart",
+      "role": "beat",
+      "variants": [
+        {
+          "text": "Moss agreed to pull one bundle. Tomas held the wagon tongue while Moss gave a proud little snort. “Not a machine,” Lila said. “A very important parade donkey.”",
+          "when": [
+            {
+              "key": "moss.agreement",
+              "op": "eq",
+              "value": true,
+              "at": "after"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "scene": "spread_quilt",
+      "role": "bridge",
+      "variants": [
+        {
+          "text": "Lila spread the blue quilt at the hill foot, smoothing one corner and chasing away a tickly leaf.",
+          "when": [
+            {
+              "key": "quilt.spread",
+              "op": "eq",
+              "value": true,
+              "at": "after"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "scene": "make_meadow_party",
+      "role": "beat",
+      "variants": [
+        {
+          "text": "The food arrived beside the blue quilt, and the foot of the hill became Juniper’s quiet meadow party. Tomas whispered the fanfare. It sounded like a mouse applauding in mittens.",
+          "when": [
+            {
+              "key": "picnic.location",
+              "op": "eq",
+              "value": "foot",
+              "at": "after"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "scene": "crown_moss",
+      "role": "beat",
+      "variants": [
+        {
+          "text": "Moss wore the paper crown on the blue quilt while Tomas announced, “Behold: the Grand Duke of Snacks!” Moss bowed so deeply the crown nearly visited the sandwiches.",
+          "when": [
+            {
+              "key": "crown.worn",
+              "op": "eq",
+              "value": true,
+              "at": "after"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "scene": "ring_bell_for_guest",
+      "role": "beat",
+      "variants": [
+        {
+          "text": "At the hilltop, Tomas rang the brass bell for Juniper. Its bright notes skipped down the green slope, over the wagon, and into the empty picnic plates below.",
+          "when": [
+            {
+              "key": "bell.rung",
+              "op": "eq",
+              "value": true,
+              "at": "after"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "scene": "share_berry_fizz",
+      "role": "bridge",
+      "variants": [
+        {
+          "text": "Lila poured berry fizz into three cups, and Aunt Juniper’s smile rose with every purple bubble.",
+          "when": [
+            {
+              "key": "fizz.shared",
+              "op": "eq",
+              "value": true,
+              "at": "after"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "scene": "tie_bell_to_moss",
+      "role": "bridge",
+      "variants": [
+        {
+          "text": "Lila tied the brass bell to Moss’s harness. He gave one careful step, but for Juniper’s quiet celebration, the bell stayed still against his shoulder. Moss looked wonderfully grand.",
+          "when": [
+            {
+              "key": "bell.owner",
+              "op": "eq",
+              "value": "moss",
+              "at": "after"
+            },
+            {
+              "key": "juniper.wish",
+              "op": "eq",
+              "value": "quiet",
+              "at": "after"
+            }
+          ]
+        },
+        {
+          "text": "Lila tied the brass bell to Moss’s harness. He gave one testing step, and the bell answered, ding!",
+          "when": [
+            {
+              "key": "bell.owner",
+              "op": "eq",
+              "value": "moss",
+              "at": "after"
+            },
+            {
+              "key": "juniper.wish",
+              "op": "ne",
+              "value": "quiet",
+              "at": "after"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "scene": "moss_leads_procession",
+      "role": "beat",
+      "variants": [
+        {
+          "text": "Moss led the one-bundle procession to Juniper with his head held high. He stopped beside her and waited. Juniper smiled, and the hill seemed to hold its breath around their tiny, quiet celebration.",
+          "when": [
+            {
+              "key": "moss.procession",
+              "op": "eq",
+              "value": true,
+              "at": "after"
+            },
+            {
+              "key": "juniper.wish",
+              "op": "eq",
+              "value": "quiet",
+              "at": "after"
+            }
+          ]
+        },
+        {
+          "text": "Moss led the one-bundle procession to Juniper, bell chiming at his shoulder. He stopped beside her and lifted his nose, waiting. Tomas began clapping first.",
+          "when": [
+            {
+              "key": "moss.procession",
+              "op": "eq",
+              "value": true,
+              "at": "after"
+            },
+            {
+              "key": "juniper.wish",
+              "op": "ne",
+              "value": "quiet",
+              "at": "after"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "endings": [
+    {
+      "text": "At the hilltop, Aunt Juniper’s empty plates caught the last bell notes as they tumbled down the sunny slope. Below, the wagon waited with its decorations, ready for the next impossible picnic.",
+      "when": [
+        {
+          "key": "picnic.location",
+          "op": "eq",
+          "value": "top",
+          "at": "after"
+        },
+        {
+          "key": "bell.rung",
+          "op": "eq",
+          "value": true,
+          "at": "after"
+        },
+        {
+          "key": "juniper.delighted",
+          "op": "eq",
+          "value": true,
+          "at": "after"
+        }
+      ]
+    },
+    {
+      "text": "At the hilltop, Aunt Juniper laughed beside Lila as the bell’s tiny notes rolled toward the empty plates. Tomas waved from the path below, and the sunny slope glittered with crumbs.",
+      "when": [
+        {
+          "key": "picnic.location",
+          "op": "eq",
+          "value": "top",
+          "at": "after"
+        },
+        {
+          "key": "bell.rung",
+          "op": "eq",
+          "value": true,
+          "at": "after"
+        },
+        {
+          "key": "juniper.delighted",
+          "op": "eq",
+          "value": true,
+          "at": "after"
+        }
+      ]
+    },
+    {
+      "text": "On the bright quilt, Aunt Juniper sipped berry fizz while Moss wore the paper crown. Bubbles popped in his cup, and every pop made his ears tilt toward another round of applause.",
+      "when": [
+        {
+          "key": "picnic.location",
+          "op": "eq",
+          "value": "foot",
+          "at": "after"
+        },
+        {
+          "key": "crown.worn",
+          "op": "eq",
+          "value": true,
+          "at": "after"
+        },
+        {
+          "key": "fizz.shared",
+          "op": "eq",
+          "value": true,
+          "at": "after"
+        },
+        {
+          "key": "juniper.delighted",
+          "op": "eq",
+          "value": true,
+          "at": "after"
+        }
+      ]
+    },
+    {
+      "text": "The meadow party stayed wonderfully quiet—except for Moss’s pleased snort. His paper crown leaned sideways as berry fizz bubbled in his cup, making him look exactly like a royal snack.",
+      "when": [
+        {
+          "key": "picnic.location",
+          "op": "eq",
+          "value": "foot",
+          "at": "after"
+        },
+        {
+          "key": "crown.worn",
+          "op": "eq",
+          "value": true,
+          "at": "after"
+        },
+        {
+          "key": "fizz.shared",
+          "op": "eq",
+          "value": true,
+          "at": "after"
+        },
+        {
+          "key": "juniper.delighted",
+          "op": "eq",
+          "value": true,
+          "at": "after"
+        }
+      ]
+    },
+    {
+      "text": "Moss stopped beside Aunt Juniper with the bell tied to his harness. He waited for applause, and when it came, his tail swished so grandly that the wagon’s single bundle wiggled with pride.",
+      "when": [
+        {
+          "key": "moss.procession",
+          "op": "eq",
+          "value": true,
+          "at": "after"
+        },
+        {
+          "key": "moss.content",
+          "op": "eq",
+          "value": true,
+          "at": "after"
+        },
+        {
+          "key": "juniper.delighted",
+          "op": "eq",
+          "value": true,
+          "at": "after"
+        }
+      ]
+    },
+    {
+      "text": "The little procession ended at Juniper’s feet. Moss stood shining with donkey pride, the bell resting against his harness, waiting—and waiting—until Aunt Juniper applauded with both hands.",
+      "when": [
+        {
+          "key": "moss.procession",
+          "op": "eq",
+          "value": true,
+          "at": "after"
+        },
+        {
+          "key": "moss.content",
+          "op": "eq",
+          "value": true,
+          "at": "after"
+        },
+        {
+          "key": "juniper.delighted",
+          "op": "eq",
+          "value": true,
+          "at": "after"
+        }
+      ]
+    }
+  ],
+  "lexicon": []
+}

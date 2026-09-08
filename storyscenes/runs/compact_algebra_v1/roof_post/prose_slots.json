@@ -1,0 +1,5924 @@
+{
+  "slots": {
+    "opening.cf60cfaab87e": {
+      "section": "openings",
+      "scene": null,
+      "role": "beat",
+      "when": [
+        {
+          "at": "initial",
+          "key": "ember.confidence",
+          "op": "eq",
+          "value": "hesitant"
+        },
+        {
+          "at": "initial",
+          "key": "garden.wind",
+          "op": "eq",
+          "value": "still"
+        },
+        {
+          "at": "initial",
+          "key": "neighbor.want",
+          "op": "eq",
+          "value": "quiet"
+        }
+      ],
+      "evidence": {
+        "state": {
+          "ada.want": "deliver invitations",
+          "ada.memes.Care": 2,
+          "ember.want": "help deliver invitations",
+          "ember.confidence": "hesitant",
+          "ember.memes.Care": 1,
+          "ember.ready": false,
+          "ember.shielding": false,
+          "invitations.owner": "ada",
+          "invitations.location": "ada",
+          "invitations.fragile": true,
+          "invitations.secured": false,
+          "invitations.intact": true,
+          "invitations.delivered": false,
+          "ribbon.owner": "ada",
+          "ribbon.location": "ada",
+          "ribbon.tied": false,
+          "garden.wind": "still",
+          "neighbor.want": "quiet",
+          "neighbor.received": false,
+          "neighbor.response": "none",
+          "ada.knows.garden.wind": null,
+          "ember.knows.garden.wind": null,
+          "ember.knows.neighbor.want": null,
+          "ada.knows.neighbor.want": null,
+          "invitations.loaned_by": null
+        }
+      },
+      "variants": 2
+    },
+    "scene.wind_news.notice.fe1936c3cb4f": {
+      "section": "scenes",
+      "scene": "wind_news.notice",
+      "role": "bridge",
+      "when": [
+        {
+          "at": "before",
+          "key": "ada.knows.garden.wind",
+          "op": "eq",
+          "value": null
+        },
+        {
+          "at": "before",
+          "key": "garden.wind",
+          "op": "eq",
+          "value": "still"
+        },
+        {
+          "at": "after",
+          "key": "ada.knows.garden.wind",
+          "op": "eq",
+          "value": "still"
+        }
+      ],
+      "evidence": {
+        "summary": "",
+        "actors": [
+          "ada"
+        ],
+        "changes": {
+          "ada.knows.garden.wind": {
+            "before": null,
+            "after": "still"
+          }
+        },
+        "before": {
+          "ada.knows.garden.wind": null,
+          "garden.wind": "still"
+        }
+      },
+      "variants": 1
+    },
+    "scene.secure_cargo.3518d9da9442": {
+      "section": "scenes",
+      "scene": "secure_cargo",
+      "role": "beat",
+      "when": [
+        {
+          "at": "before",
+          "key": "ada.knows.garden.wind",
+          "op": "eq",
+          "value": "still"
+        },
+        {
+          "at": "before",
+          "key": "invitations.owner",
+          "op": "eq",
+          "value": "ada"
+        },
+        {
+          "at": "before",
+          "key": "invitations.secured",
+          "op": "eq",
+          "value": false
+        },
+        {
+          "at": "before",
+          "key": "ribbon.owner",
+          "op": "eq",
+          "value": "ada"
+        },
+        {
+          "at": "before",
+          "key": "ribbon.tied",
+          "op": "eq",
+          "value": false
+        },
+        {
+          "at": "after",
+          "key": "invitations.secured",
+          "op": "eq",
+          "value": true
+        },
+        {
+          "at": "after",
+          "key": "ribbon.tied",
+          "op": "eq",
+          "value": true
+        }
+      ],
+      "evidence": {
+        "summary": "Ada ties the invitations securely",
+        "actors": [
+          "ada"
+        ],
+        "changes": {
+          "invitations.secured": {
+            "before": false,
+            "after": true
+          },
+          "ribbon.tied": {
+            "before": false,
+            "after": true
+          }
+        },
+        "before": {
+          "ada.knows.garden.wind": "still",
+          "invitations.owner": "ada",
+          "invitations.secured": false,
+          "ribbon.owner": "ada",
+          "ribbon.tied": false
+        }
+      },
+      "variants": 1
+    },
+    "scene.ada_carries.5d01ef840aa2": {
+      "section": "scenes",
+      "scene": "ada_carries",
+      "role": "bridge",
+      "when": [
+        {
+          "at": "before",
+          "key": "invitations.delivered",
+          "op": "eq",
+          "value": false
+        },
+        {
+          "at": "before",
+          "key": "invitations.intact",
+          "op": "eq",
+          "value": true
+        },
+        {
+          "at": "before",
+          "key": "invitations.location",
+          "op": "eq",
+          "value": "ada"
+        },
+        {
+          "at": "before",
+          "key": "invitations.owner",
+          "op": "eq",
+          "value": "ada"
+        },
+        {
+          "at": "before",
+          "key": "invitations.secured",
+          "op": "eq",
+          "value": true
+        },
+        {
+          "at": "after",
+          "key": "invitations.location",
+          "op": "eq",
+          "value": "neighbor"
+        }
+      ],
+      "evidence": {
+        "summary": "Ada carries the invitations to Mina",
+        "actors": [
+          "ada",
+          "neighbor"
+        ],
+        "changes": {
+          "invitations.location": {
+            "before": "ada",
+            "after": "neighbor"
+          }
+        },
+        "before": {
+          "invitations.delivered": false,
+          "invitations.intact": true,
+          "invitations.location": "ada",
+          "invitations.owner": "ada",
+          "invitations.secured": true
+        }
+      },
+      "variants": 1
+    },
+    "scene.ada_delivers.6eb63f9cb9fc": {
+      "section": "scenes",
+      "scene": "ada_delivers",
+      "role": "beat",
+      "when": [
+        {
+          "at": "before",
+          "key": "invitations.delivered",
+          "op": "eq",
+          "value": false
+        },
+        {
+          "at": "before",
+          "key": "invitations.intact",
+          "op": "eq",
+          "value": true
+        },
+        {
+          "at": "before",
+          "key": "invitations.location",
+          "op": "eq",
+          "value": "neighbor"
+        },
+        {
+          "at": "before",
+          "key": "invitations.owner",
+          "op": "eq",
+          "value": "ada"
+        },
+        {
+          "at": "before",
+          "key": "neighbor.received",
+          "op": "eq",
+          "value": false
+        },
+        {
+          "at": "after",
+          "key": "invitations.delivered",
+          "op": "eq",
+          "value": true
+        },
+        {
+          "at": "after",
+          "key": "neighbor.received",
+          "op": "eq",
+          "value": true
+        }
+      ],
+      "evidence": {
+        "summary": "Ada delivers the intact invitations",
+        "actors": [
+          "ada"
+        ],
+        "changes": {
+          "invitations.delivered": {
+            "before": false,
+            "after": true
+          },
+          "neighbor.received": {
+            "before": false,
+            "after": true
+          }
+        },
+        "before": {
+          "invitations.delivered": false,
+          "invitations.intact": true,
+          "invitations.location": "neighbor",
+          "invitations.owner": "ada",
+          "neighbor.received": false
+        }
+      },
+      "variants": 1
+    },
+    "scene.quiet_response.ad59095bc490": {
+      "section": "scenes",
+      "scene": "quiet_response",
+      "role": "beat",
+      "when": [
+        {
+          "at": "before",
+          "key": "neighbor.received",
+          "op": "eq",
+          "value": true
+        },
+        {
+          "at": "before",
+          "key": "neighbor.response",
+          "op": "eq",
+          "value": "none"
+        },
+        {
+          "at": "before",
+          "key": "neighbor.want",
+          "op": "eq",
+          "value": "quiet"
+        },
+        {
+          "at": "after",
+          "key": "neighbor.response",
+          "op": "eq",
+          "value": "thanks for the quiet invitation"
+        }
+      ],
+      "evidence": {
+        "summary": "Mina thanks them for the quiet invitation",
+        "actors": [
+          "neighbor"
+        ],
+        "changes": {
+          "neighbor.response": {
+            "before": "none",
+            "after": "thanks for the quiet invitation"
+          }
+        },
+        "before": {
+          "neighbor.received": true,
+          "neighbor.response": "none",
+          "neighbor.want": "quiet"
+        }
+      },
+      "variants": 1
+    },
+    "ending.053a6b7696eb": {
+      "section": "endings",
+      "scene": null,
+      "role": "beat",
+      "when": [
+        {
+          "at": "after",
+          "key": "ada.knows.garden.wind",
+          "op": "eq",
+          "value": "still"
+        },
+        {
+          "at": "after",
+          "key": "ember.confidence",
+          "op": "eq",
+          "value": "hesitant"
+        },
+        {
+          "at": "after",
+          "key": "ember.knows.garden.wind",
+          "op": "eq",
+          "value": null
+        },
+        {
+          "at": "after",
+          "key": "ember.knows.neighbor.want",
+          "op": "eq",
+          "value": null
+        },
+        {
+          "at": "after",
+          "key": "ember.memes.Care",
+          "op": "eq",
+          "value": 1
+        },
+        {
+          "at": "after",
+          "key": "ember.ready",
+          "op": "eq",
+          "value": false
+        },
+        {
+          "at": "after",
+          "key": "ember.shielding",
+          "op": "eq",
+          "value": false
+        },
+        {
+          "at": "after",
+          "key": "garden.wind",
+          "op": "eq",
+          "value": "still"
+        },
+        {
+          "at": "after",
+          "key": "invitations.loaned_by",
+          "op": "eq",
+          "value": null
+        },
+        {
+          "at": "after",
+          "key": "invitations.owner",
+          "op": "eq",
+          "value": "ada"
+        },
+        {
+          "at": "after",
+          "key": "neighbor.response",
+          "op": "eq",
+          "value": "thanks for the quiet invitation"
+        },
+        {
+          "at": "after",
+          "key": "neighbor.want",
+          "op": "eq",
+          "value": "quiet"
+        }
+      ],
+      "evidence": {
+        "state": {
+          "ada.want": "deliver invitations",
+          "ada.memes.Care": 2,
+          "ember.want": "help deliver invitations",
+          "ember.confidence": "hesitant",
+          "ember.memes.Care": 1,
+          "ember.ready": false,
+          "ember.shielding": false,
+          "invitations.owner": "ada",
+          "invitations.location": "neighbor",
+          "invitations.fragile": true,
+          "invitations.secured": true,
+          "invitations.intact": true,
+          "invitations.delivered": true,
+          "ribbon.owner": "ada",
+          "ribbon.location": "ada",
+          "ribbon.tied": true,
+          "garden.wind": "still",
+          "neighbor.want": "quiet",
+          "neighbor.received": true,
+          "neighbor.response": "thanks for the quiet invitation",
+          "ada.knows.garden.wind": "still",
+          "ember.knows.garden.wind": null,
+          "ember.knows.neighbor.want": null,
+          "ada.knows.neighbor.want": null,
+          "invitations.loaned_by": null
+        }
+      },
+      "variants": 2
+    },
+    "scene.wish_news.notice.f838f195ab03": {
+      "section": "scenes",
+      "scene": "wish_news.notice",
+      "role": "bridge",
+      "when": [
+        {
+          "at": "before",
+          "key": "ember.knows.neighbor.want",
+          "op": "eq",
+          "value": null
+        },
+        {
+          "at": "before",
+          "key": "neighbor.want",
+          "op": "eq",
+          "value": "quiet"
+        },
+        {
+          "at": "after",
+          "key": "ember.knows.neighbor.want",
+          "op": "eq",
+          "value": "quiet"
+        }
+      ],
+      "evidence": {
+        "summary": "",
+        "actors": [
+          "ember"
+        ],
+        "changes": {
+          "ember.knows.neighbor.want": {
+            "before": null,
+            "after": "quiet"
+          }
+        },
+        "before": {
+          "ember.knows.neighbor.want": null,
+          "neighbor.want": "quiet"
+        }
+      },
+      "variants": 1
+    },
+    "scene.wind_news.share.a3cd8803e5bf": {
+      "section": "scenes",
+      "scene": "wind_news.share",
+      "role": "bridge",
+      "when": [
+        {
+          "at": "before",
+          "key": "ada.knows.garden.wind",
+          "op": "eq",
+          "value": "still"
+        },
+        {
+          "at": "before",
+          "key": "ember.knows.garden.wind",
+          "op": "eq",
+          "value": null
+        },
+        {
+          "at": "after",
+          "key": "ember.knows.garden.wind",
+          "op": "eq",
+          "value": "still"
+        }
+      ],
+      "evidence": {
+        "summary": "",
+        "actors": [
+          "ada",
+          "ember"
+        ],
+        "changes": {
+          "ember.knows.garden.wind": {
+            "before": null,
+            "after": "still"
+          }
+        },
+        "before": {
+          "ada.knows.garden.wind": "still",
+          "ember.knows.garden.wind": null
+        }
+      },
+      "variants": 1
+    },
+    "scene.choose_to_help.fd7b333c772d": {
+      "section": "scenes",
+      "scene": "choose_to_help",
+      "role": "beat",
+      "when": [
+        {
+          "at": "before",
+          "key": "ember.knows.garden.wind",
+          "op": "eq",
+          "value": "still"
+        },
+        {
+          "at": "before",
+          "key": "ember.knows.neighbor.want",
+          "op": "eq",
+          "value": "quiet"
+        },
+        {
+          "at": "before",
+          "key": "ember.memes.Care",
+          "op": "eq",
+          "value": 1
+        },
+        {
+          "at": "before",
+          "key": "ember.ready",
+          "op": "eq",
+          "value": false
+        },
+        {
+          "at": "before",
+          "key": "ember.shielding",
+          "op": "eq",
+          "value": false
+        },
+        {
+          "at": "before",
+          "key": "ember.want",
+          "op": "eq",
+          "value": "help deliver invitations"
+        },
+        {
+          "at": "after",
+          "key": "ember.memes.Care",
+          "op": "eq",
+          "value": 2
+        },
+        {
+          "at": "after",
+          "key": "ember.ready",
+          "op": "eq",
+          "value": true
+        },
+        {
+          "at": "after",
+          "key": "ember.shielding",
+          "op": "eq",
+          "value": true
+        }
+      ],
+      "evidence": {
+        "summary": "Ember chooses to shield the cargo",
+        "actors": [
+          "ember"
+        ],
+        "changes": {
+          "ember.memes.Care": {
+            "before": 1,
+            "after": 2
+          },
+          "ember.ready": {
+            "before": false,
+            "after": true
+          },
+          "ember.shielding": {
+            "before": false,
+            "after": true
+          }
+        },
+        "before": {
+          "ember.knows.garden.wind": "still",
+          "ember.knows.neighbor.want": "quiet",
+          "ember.memes.Care": 1,
+          "ember.ready": false,
+          "ember.shielding": false,
+          "ember.want": "help deliver invitations"
+        }
+      },
+      "variants": 1
+    },
+    "ending.6cf919a35242": {
+      "section": "endings",
+      "scene": null,
+      "role": "beat",
+      "when": [
+        {
+          "at": "after",
+          "key": "ada.knows.garden.wind",
+          "op": "eq",
+          "value": "still"
+        },
+        {
+          "at": "after",
+          "key": "ember.confidence",
+          "op": "eq",
+          "value": "hesitant"
+        },
+        {
+          "at": "after",
+          "key": "ember.knows.garden.wind",
+          "op": "eq",
+          "value": "still"
+        },
+        {
+          "at": "after",
+          "key": "ember.knows.neighbor.want",
+          "op": "eq",
+          "value": "quiet"
+        },
+        {
+          "at": "after",
+          "key": "ember.memes.Care",
+          "op": "eq",
+          "value": 2
+        },
+        {
+          "at": "after",
+          "key": "ember.ready",
+          "op": "eq",
+          "value": true
+        },
+        {
+          "at": "after",
+          "key": "ember.shielding",
+          "op": "eq",
+          "value": true
+        },
+        {
+          "at": "after",
+          "key": "garden.wind",
+          "op": "eq",
+          "value": "still"
+        },
+        {
+          "at": "after",
+          "key": "invitations.loaned_by",
+          "op": "eq",
+          "value": null
+        },
+        {
+          "at": "after",
+          "key": "invitations.owner",
+          "op": "eq",
+          "value": "ada"
+        },
+        {
+          "at": "after",
+          "key": "neighbor.response",
+          "op": "eq",
+          "value": "thanks for the quiet invitation"
+        },
+        {
+          "at": "after",
+          "key": "neighbor.want",
+          "op": "eq",
+          "value": "quiet"
+        }
+      ],
+      "evidence": {
+        "state": {
+          "ada.want": "deliver invitations",
+          "ada.memes.Care": 2,
+          "ember.want": "help deliver invitations",
+          "ember.confidence": "hesitant",
+          "ember.memes.Care": 2,
+          "ember.ready": true,
+          "ember.shielding": true,
+          "invitations.owner": "ada",
+          "invitations.location": "neighbor",
+          "invitations.fragile": true,
+          "invitations.secured": true,
+          "invitations.intact": true,
+          "invitations.delivered": true,
+          "ribbon.owner": "ada",
+          "ribbon.location": "ada",
+          "ribbon.tied": true,
+          "garden.wind": "still",
+          "neighbor.want": "quiet",
+          "neighbor.received": true,
+          "neighbor.response": "thanks for the quiet invitation",
+          "ada.knows.garden.wind": "still",
+          "ember.knows.garden.wind": "still",
+          "ember.knows.neighbor.want": "quiet",
+          "ada.knows.neighbor.want": null,
+          "invitations.loaned_by": null
+        }
+      },
+      "variants": 2
+    },
+    "opening.5ea11f2b3022": {
+      "section": "openings",
+      "scene": null,
+      "role": "beat",
+      "when": [
+        {
+          "at": "initial",
+          "key": "ember.confidence",
+          "op": "eq",
+          "value": "eager"
+        },
+        {
+          "at": "initial",
+          "key": "garden.wind",
+          "op": "eq",
+          "value": "still"
+        },
+        {
+          "at": "initial",
+          "key": "neighbor.want",
+          "op": "eq",
+          "value": "quiet"
+        }
+      ],
+      "evidence": {
+        "state": {
+          "ada.want": "deliver invitations",
+          "ada.memes.Care": 2,
+          "ember.want": "help deliver invitations",
+          "ember.confidence": "eager",
+          "ember.memes.Care": 1,
+          "ember.ready": false,
+          "ember.shielding": false,
+          "invitations.owner": "ada",
+          "invitations.location": "ada",
+          "invitations.fragile": true,
+          "invitations.secured": false,
+          "invitations.intact": true,
+          "invitations.delivered": false,
+          "ribbon.owner": "ada",
+          "ribbon.location": "ada",
+          "ribbon.tied": false,
+          "garden.wind": "still",
+          "neighbor.want": "quiet",
+          "neighbor.received": false,
+          "neighbor.response": "none",
+          "ada.knows.garden.wind": null,
+          "ember.knows.garden.wind": null,
+          "ember.knows.neighbor.want": null,
+          "ada.knows.neighbor.want": null,
+          "invitations.loaned_by": null
+        }
+      },
+      "variants": 2
+    },
+    "ending.ba6c20d37934": {
+      "section": "endings",
+      "scene": null,
+      "role": "beat",
+      "when": [
+        {
+          "at": "after",
+          "key": "ada.knows.garden.wind",
+          "op": "eq",
+          "value": "still"
+        },
+        {
+          "at": "after",
+          "key": "ember.confidence",
+          "op": "eq",
+          "value": "eager"
+        },
+        {
+          "at": "after",
+          "key": "ember.knows.garden.wind",
+          "op": "eq",
+          "value": null
+        },
+        {
+          "at": "after",
+          "key": "ember.knows.neighbor.want",
+          "op": "eq",
+          "value": null
+        },
+        {
+          "at": "after",
+          "key": "ember.memes.Care",
+          "op": "eq",
+          "value": 1
+        },
+        {
+          "at": "after",
+          "key": "ember.ready",
+          "op": "eq",
+          "value": false
+        },
+        {
+          "at": "after",
+          "key": "ember.shielding",
+          "op": "eq",
+          "value": false
+        },
+        {
+          "at": "after",
+          "key": "garden.wind",
+          "op": "eq",
+          "value": "still"
+        },
+        {
+          "at": "after",
+          "key": "invitations.loaned_by",
+          "op": "eq",
+          "value": null
+        },
+        {
+          "at": "after",
+          "key": "invitations.owner",
+          "op": "eq",
+          "value": "ada"
+        },
+        {
+          "at": "after",
+          "key": "neighbor.response",
+          "op": "eq",
+          "value": "thanks for the quiet invitation"
+        },
+        {
+          "at": "after",
+          "key": "neighbor.want",
+          "op": "eq",
+          "value": "quiet"
+        }
+      ],
+      "evidence": {
+        "state": {
+          "ada.want": "deliver invitations",
+          "ada.memes.Care": 2,
+          "ember.want": "help deliver invitations",
+          "ember.confidence": "eager",
+          "ember.memes.Care": 1,
+          "ember.ready": false,
+          "ember.shielding": false,
+          "invitations.owner": "ada",
+          "invitations.location": "neighbor",
+          "invitations.fragile": true,
+          "invitations.secured": true,
+          "invitations.intact": true,
+          "invitations.delivered": true,
+          "ribbon.owner": "ada",
+          "ribbon.location": "ada",
+          "ribbon.tied": true,
+          "garden.wind": "still",
+          "neighbor.want": "quiet",
+          "neighbor.received": true,
+          "neighbor.response": "thanks for the quiet invitation",
+          "ada.knows.garden.wind": "still",
+          "ember.knows.garden.wind": null,
+          "ember.knows.neighbor.want": null,
+          "ada.knows.neighbor.want": null,
+          "invitations.loaned_by": null
+        }
+      },
+      "variants": 2
+    },
+    "ending.1eaad7d9b48a": {
+      "section": "endings",
+      "scene": null,
+      "role": "beat",
+      "when": [
+        {
+          "at": "after",
+          "key": "ada.knows.garden.wind",
+          "op": "eq",
+          "value": "still"
+        },
+        {
+          "at": "after",
+          "key": "ember.confidence",
+          "op": "eq",
+          "value": "eager"
+        },
+        {
+          "at": "after",
+          "key": "ember.knows.garden.wind",
+          "op": "eq",
+          "value": "still"
+        },
+        {
+          "at": "after",
+          "key": "ember.knows.neighbor.want",
+          "op": "eq",
+          "value": "quiet"
+        },
+        {
+          "at": "after",
+          "key": "ember.memes.Care",
+          "op": "eq",
+          "value": 2
+        },
+        {
+          "at": "after",
+          "key": "ember.ready",
+          "op": "eq",
+          "value": true
+        },
+        {
+          "at": "after",
+          "key": "ember.shielding",
+          "op": "eq",
+          "value": true
+        },
+        {
+          "at": "after",
+          "key": "garden.wind",
+          "op": "eq",
+          "value": "still"
+        },
+        {
+          "at": "after",
+          "key": "invitations.loaned_by",
+          "op": "eq",
+          "value": null
+        },
+        {
+          "at": "after",
+          "key": "invitations.owner",
+          "op": "eq",
+          "value": "ada"
+        },
+        {
+          "at": "after",
+          "key": "neighbor.response",
+          "op": "eq",
+          "value": "thanks for the quiet invitation"
+        },
+        {
+          "at": "after",
+          "key": "neighbor.want",
+          "op": "eq",
+          "value": "quiet"
+        }
+      ],
+      "evidence": {
+        "state": {
+          "ada.want": "deliver invitations",
+          "ada.memes.Care": 2,
+          "ember.want": "help deliver invitations",
+          "ember.confidence": "eager",
+          "ember.memes.Care": 2,
+          "ember.ready": true,
+          "ember.shielding": true,
+          "invitations.owner": "ada",
+          "invitations.location": "neighbor",
+          "invitations.fragile": true,
+          "invitations.secured": true,
+          "invitations.intact": true,
+          "invitations.delivered": true,
+          "ribbon.owner": "ada",
+          "ribbon.location": "ada",
+          "ribbon.tied": true,
+          "garden.wind": "still",
+          "neighbor.want": "quiet",
+          "neighbor.received": true,
+          "neighbor.response": "thanks for the quiet invitation",
+          "ada.knows.garden.wind": "still",
+          "ember.knows.garden.wind": "still",
+          "ember.knows.neighbor.want": "quiet",
+          "ada.knows.neighbor.want": null,
+          "invitations.loaned_by": null
+        }
+      },
+      "variants": 2
+    },
+    "opening.5bae2baa2a88": {
+      "section": "openings",
+      "scene": null,
+      "role": "beat",
+      "when": [
+        {
+          "at": "initial",
+          "key": "ember.confidence",
+          "op": "eq",
+          "value": "hesitant"
+        },
+        {
+          "at": "initial",
+          "key": "garden.wind",
+          "op": "eq",
+          "value": "still"
+        },
+        {
+          "at": "initial",
+          "key": "neighbor.want",
+          "op": "eq",
+          "value": "join"
+        }
+      ],
+      "evidence": {
+        "state": {
+          "ada.want": "deliver invitations",
+          "ada.memes.Care": 2,
+          "ember.want": "help deliver invitations",
+          "ember.confidence": "hesitant",
+          "ember.memes.Care": 1,
+          "ember.ready": false,
+          "ember.shielding": false,
+          "invitations.owner": "ada",
+          "invitations.location": "ada",
+          "invitations.fragile": true,
+          "invitations.secured": false,
+          "invitations.intact": true,
+          "invitations.delivered": false,
+          "ribbon.owner": "ada",
+          "ribbon.location": "ada",
+          "ribbon.tied": false,
+          "garden.wind": "still",
+          "neighbor.want": "join",
+          "neighbor.received": false,
+          "neighbor.response": "none",
+          "ada.knows.garden.wind": null,
+          "ember.knows.garden.wind": null,
+          "ember.knows.neighbor.want": null,
+          "ada.knows.neighbor.want": null,
+          "invitations.loaned_by": null
+        }
+      },
+      "variants": 2
+    },
+    "scene.join_response.f2c35d4eed27": {
+      "section": "scenes",
+      "scene": "join_response",
+      "role": "beat",
+      "when": [
+        {
+          "at": "before",
+          "key": "neighbor.received",
+          "op": "eq",
+          "value": true
+        },
+        {
+          "at": "before",
+          "key": "neighbor.response",
+          "op": "eq",
+          "value": "none"
+        },
+        {
+          "at": "before",
+          "key": "neighbor.want",
+          "op": "eq",
+          "value": "join"
+        },
+        {
+          "at": "after",
+          "key": "neighbor.response",
+          "op": "eq",
+          "value": "Mina joins the garden gathering"
+        }
+      ],
+      "evidence": {
+        "summary": "Mina joins the garden gathering",
+        "actors": [
+          "neighbor"
+        ],
+        "changes": {
+          "neighbor.response": {
+            "before": "none",
+            "after": "Mina joins the garden gathering"
+          }
+        },
+        "before": {
+          "neighbor.received": true,
+          "neighbor.response": "none",
+          "neighbor.want": "join"
+        }
+      },
+      "variants": 1
+    },
+    "ending.9263db4a4897": {
+      "section": "endings",
+      "scene": null,
+      "role": "beat",
+      "when": [
+        {
+          "at": "after",
+          "key": "ada.knows.garden.wind",
+          "op": "eq",
+          "value": "still"
+        },
+        {
+          "at": "after",
+          "key": "ember.confidence",
+          "op": "eq",
+          "value": "hesitant"
+        },
+        {
+          "at": "after",
+          "key": "ember.knows.garden.wind",
+          "op": "eq",
+          "value": null
+        },
+        {
+          "at": "after",
+          "key": "ember.knows.neighbor.want",
+          "op": "eq",
+          "value": null
+        },
+        {
+          "at": "after",
+          "key": "ember.memes.Care",
+          "op": "eq",
+          "value": 1
+        },
+        {
+          "at": "after",
+          "key": "ember.ready",
+          "op": "eq",
+          "value": false
+        },
+        {
+          "at": "after",
+          "key": "ember.shielding",
+          "op": "eq",
+          "value": false
+        },
+        {
+          "at": "after",
+          "key": "garden.wind",
+          "op": "eq",
+          "value": "still"
+        },
+        {
+          "at": "after",
+          "key": "invitations.loaned_by",
+          "op": "eq",
+          "value": null
+        },
+        {
+          "at": "after",
+          "key": "invitations.owner",
+          "op": "eq",
+          "value": "ada"
+        },
+        {
+          "at": "after",
+          "key": "neighbor.response",
+          "op": "eq",
+          "value": "Mina joins the garden gathering"
+        },
+        {
+          "at": "after",
+          "key": "neighbor.want",
+          "op": "eq",
+          "value": "join"
+        }
+      ],
+      "evidence": {
+        "state": {
+          "ada.want": "deliver invitations",
+          "ada.memes.Care": 2,
+          "ember.want": "help deliver invitations",
+          "ember.confidence": "hesitant",
+          "ember.memes.Care": 1,
+          "ember.ready": false,
+          "ember.shielding": false,
+          "invitations.owner": "ada",
+          "invitations.location": "neighbor",
+          "invitations.fragile": true,
+          "invitations.secured": true,
+          "invitations.intact": true,
+          "invitations.delivered": true,
+          "ribbon.owner": "ada",
+          "ribbon.location": "ada",
+          "ribbon.tied": true,
+          "garden.wind": "still",
+          "neighbor.want": "join",
+          "neighbor.received": true,
+          "neighbor.response": "Mina joins the garden gathering",
+          "ada.knows.garden.wind": "still",
+          "ember.knows.garden.wind": null,
+          "ember.knows.neighbor.want": null,
+          "ada.knows.neighbor.want": null,
+          "invitations.loaned_by": null
+        }
+      },
+      "variants": 2
+    },
+    "scene.wish_news.notice.93dfc489cc6e": {
+      "section": "scenes",
+      "scene": "wish_news.notice",
+      "role": "bridge",
+      "when": [
+        {
+          "at": "before",
+          "key": "ember.knows.neighbor.want",
+          "op": "eq",
+          "value": null
+        },
+        {
+          "at": "before",
+          "key": "neighbor.want",
+          "op": "eq",
+          "value": "join"
+        },
+        {
+          "at": "after",
+          "key": "ember.knows.neighbor.want",
+          "op": "eq",
+          "value": "join"
+        }
+      ],
+      "evidence": {
+        "summary": "",
+        "actors": [
+          "ember"
+        ],
+        "changes": {
+          "ember.knows.neighbor.want": {
+            "before": null,
+            "after": "join"
+          }
+        },
+        "before": {
+          "ember.knows.neighbor.want": null,
+          "neighbor.want": "join"
+        }
+      },
+      "variants": 1
+    },
+    "scene.choose_to_help.846769f9733d": {
+      "section": "scenes",
+      "scene": "choose_to_help",
+      "role": "beat",
+      "when": [
+        {
+          "at": "before",
+          "key": "ember.knows.garden.wind",
+          "op": "eq",
+          "value": "still"
+        },
+        {
+          "at": "before",
+          "key": "ember.knows.neighbor.want",
+          "op": "eq",
+          "value": "join"
+        },
+        {
+          "at": "before",
+          "key": "ember.memes.Care",
+          "op": "eq",
+          "value": 1
+        },
+        {
+          "at": "before",
+          "key": "ember.ready",
+          "op": "eq",
+          "value": false
+        },
+        {
+          "at": "before",
+          "key": "ember.shielding",
+          "op": "eq",
+          "value": false
+        },
+        {
+          "at": "before",
+          "key": "ember.want",
+          "op": "eq",
+          "value": "help deliver invitations"
+        },
+        {
+          "at": "after",
+          "key": "ember.memes.Care",
+          "op": "eq",
+          "value": 2
+        },
+        {
+          "at": "after",
+          "key": "ember.ready",
+          "op": "eq",
+          "value": true
+        },
+        {
+          "at": "after",
+          "key": "ember.shielding",
+          "op": "eq",
+          "value": true
+        }
+      ],
+      "evidence": {
+        "summary": "Ember chooses to shield the cargo",
+        "actors": [
+          "ember"
+        ],
+        "changes": {
+          "ember.memes.Care": {
+            "before": 1,
+            "after": 2
+          },
+          "ember.ready": {
+            "before": false,
+            "after": true
+          },
+          "ember.shielding": {
+            "before": false,
+            "after": true
+          }
+        },
+        "before": {
+          "ember.knows.garden.wind": "still",
+          "ember.knows.neighbor.want": "join",
+          "ember.memes.Care": 1,
+          "ember.ready": false,
+          "ember.shielding": false,
+          "ember.want": "help deliver invitations"
+        }
+      },
+      "variants": 1
+    },
+    "ending.660a8929ed9e": {
+      "section": "endings",
+      "scene": null,
+      "role": "beat",
+      "when": [
+        {
+          "at": "after",
+          "key": "ada.knows.garden.wind",
+          "op": "eq",
+          "value": "still"
+        },
+        {
+          "at": "after",
+          "key": "ember.confidence",
+          "op": "eq",
+          "value": "hesitant"
+        },
+        {
+          "at": "after",
+          "key": "ember.knows.garden.wind",
+          "op": "eq",
+          "value": "still"
+        },
+        {
+          "at": "after",
+          "key": "ember.knows.neighbor.want",
+          "op": "eq",
+          "value": "join"
+        },
+        {
+          "at": "after",
+          "key": "ember.memes.Care",
+          "op": "eq",
+          "value": 2
+        },
+        {
+          "at": "after",
+          "key": "ember.ready",
+          "op": "eq",
+          "value": true
+        },
+        {
+          "at": "after",
+          "key": "ember.shielding",
+          "op": "eq",
+          "value": true
+        },
+        {
+          "at": "after",
+          "key": "garden.wind",
+          "op": "eq",
+          "value": "still"
+        },
+        {
+          "at": "after",
+          "key": "invitations.loaned_by",
+          "op": "eq",
+          "value": null
+        },
+        {
+          "at": "after",
+          "key": "invitations.owner",
+          "op": "eq",
+          "value": "ada"
+        },
+        {
+          "at": "after",
+          "key": "neighbor.response",
+          "op": "eq",
+          "value": "Mina joins the garden gathering"
+        },
+        {
+          "at": "after",
+          "key": "neighbor.want",
+          "op": "eq",
+          "value": "join"
+        }
+      ],
+      "evidence": {
+        "state": {
+          "ada.want": "deliver invitations",
+          "ada.memes.Care": 2,
+          "ember.want": "help deliver invitations",
+          "ember.confidence": "hesitant",
+          "ember.memes.Care": 2,
+          "ember.ready": true,
+          "ember.shielding": true,
+          "invitations.owner": "ada",
+          "invitations.location": "neighbor",
+          "invitations.fragile": true,
+          "invitations.secured": true,
+          "invitations.intact": true,
+          "invitations.delivered": true,
+          "ribbon.owner": "ada",
+          "ribbon.location": "ada",
+          "ribbon.tied": true,
+          "garden.wind": "still",
+          "neighbor.want": "join",
+          "neighbor.received": true,
+          "neighbor.response": "Mina joins the garden gathering",
+          "ada.knows.garden.wind": "still",
+          "ember.knows.garden.wind": "still",
+          "ember.knows.neighbor.want": "join",
+          "ada.knows.neighbor.want": null,
+          "invitations.loaned_by": null
+        }
+      },
+      "variants": 2
+    },
+    "opening.66bfba957e2c": {
+      "section": "openings",
+      "scene": null,
+      "role": "beat",
+      "when": [
+        {
+          "at": "initial",
+          "key": "ember.confidence",
+          "op": "eq",
+          "value": "eager"
+        },
+        {
+          "at": "initial",
+          "key": "garden.wind",
+          "op": "eq",
+          "value": "still"
+        },
+        {
+          "at": "initial",
+          "key": "neighbor.want",
+          "op": "eq",
+          "value": "join"
+        }
+      ],
+      "evidence": {
+        "state": {
+          "ada.want": "deliver invitations",
+          "ada.memes.Care": 2,
+          "ember.want": "help deliver invitations",
+          "ember.confidence": "eager",
+          "ember.memes.Care": 1,
+          "ember.ready": false,
+          "ember.shielding": false,
+          "invitations.owner": "ada",
+          "invitations.location": "ada",
+          "invitations.fragile": true,
+          "invitations.secured": false,
+          "invitations.intact": true,
+          "invitations.delivered": false,
+          "ribbon.owner": "ada",
+          "ribbon.location": "ada",
+          "ribbon.tied": false,
+          "garden.wind": "still",
+          "neighbor.want": "join",
+          "neighbor.received": false,
+          "neighbor.response": "none",
+          "ada.knows.garden.wind": null,
+          "ember.knows.garden.wind": null,
+          "ember.knows.neighbor.want": null,
+          "ada.knows.neighbor.want": null,
+          "invitations.loaned_by": null
+        }
+      },
+      "variants": 2
+    },
+    "ending.7145222d9403": {
+      "section": "endings",
+      "scene": null,
+      "role": "beat",
+      "when": [
+        {
+          "at": "after",
+          "key": "ada.knows.garden.wind",
+          "op": "eq",
+          "value": "still"
+        },
+        {
+          "at": "after",
+          "key": "ember.confidence",
+          "op": "eq",
+          "value": "eager"
+        },
+        {
+          "at": "after",
+          "key": "ember.knows.garden.wind",
+          "op": "eq",
+          "value": null
+        },
+        {
+          "at": "after",
+          "key": "ember.knows.neighbor.want",
+          "op": "eq",
+          "value": null
+        },
+        {
+          "at": "after",
+          "key": "ember.memes.Care",
+          "op": "eq",
+          "value": 1
+        },
+        {
+          "at": "after",
+          "key": "ember.ready",
+          "op": "eq",
+          "value": false
+        },
+        {
+          "at": "after",
+          "key": "ember.shielding",
+          "op": "eq",
+          "value": false
+        },
+        {
+          "at": "after",
+          "key": "garden.wind",
+          "op": "eq",
+          "value": "still"
+        },
+        {
+          "at": "after",
+          "key": "invitations.loaned_by",
+          "op": "eq",
+          "value": null
+        },
+        {
+          "at": "after",
+          "key": "invitations.owner",
+          "op": "eq",
+          "value": "ada"
+        },
+        {
+          "at": "after",
+          "key": "neighbor.response",
+          "op": "eq",
+          "value": "Mina joins the garden gathering"
+        },
+        {
+          "at": "after",
+          "key": "neighbor.want",
+          "op": "eq",
+          "value": "join"
+        }
+      ],
+      "evidence": {
+        "state": {
+          "ada.want": "deliver invitations",
+          "ada.memes.Care": 2,
+          "ember.want": "help deliver invitations",
+          "ember.confidence": "eager",
+          "ember.memes.Care": 1,
+          "ember.ready": false,
+          "ember.shielding": false,
+          "invitations.owner": "ada",
+          "invitations.location": "neighbor",
+          "invitations.fragile": true,
+          "invitations.secured": true,
+          "invitations.intact": true,
+          "invitations.delivered": true,
+          "ribbon.owner": "ada",
+          "ribbon.location": "ada",
+          "ribbon.tied": true,
+          "garden.wind": "still",
+          "neighbor.want": "join",
+          "neighbor.received": true,
+          "neighbor.response": "Mina joins the garden gathering",
+          "ada.knows.garden.wind": "still",
+          "ember.knows.garden.wind": null,
+          "ember.knows.neighbor.want": null,
+          "ada.knows.neighbor.want": null,
+          "invitations.loaned_by": null
+        }
+      },
+      "variants": 2
+    },
+    "ending.e743e0826664": {
+      "section": "endings",
+      "scene": null,
+      "role": "beat",
+      "when": [
+        {
+          "at": "after",
+          "key": "ada.knows.garden.wind",
+          "op": "eq",
+          "value": "still"
+        },
+        {
+          "at": "after",
+          "key": "ember.confidence",
+          "op": "eq",
+          "value": "eager"
+        },
+        {
+          "at": "after",
+          "key": "ember.knows.garden.wind",
+          "op": "eq",
+          "value": "still"
+        },
+        {
+          "at": "after",
+          "key": "ember.knows.neighbor.want",
+          "op": "eq",
+          "value": "join"
+        },
+        {
+          "at": "after",
+          "key": "ember.memes.Care",
+          "op": "eq",
+          "value": 2
+        },
+        {
+          "at": "after",
+          "key": "ember.ready",
+          "op": "eq",
+          "value": true
+        },
+        {
+          "at": "after",
+          "key": "ember.shielding",
+          "op": "eq",
+          "value": true
+        },
+        {
+          "at": "after",
+          "key": "garden.wind",
+          "op": "eq",
+          "value": "still"
+        },
+        {
+          "at": "after",
+          "key": "invitations.loaned_by",
+          "op": "eq",
+          "value": null
+        },
+        {
+          "at": "after",
+          "key": "invitations.owner",
+          "op": "eq",
+          "value": "ada"
+        },
+        {
+          "at": "after",
+          "key": "neighbor.response",
+          "op": "eq",
+          "value": "Mina joins the garden gathering"
+        },
+        {
+          "at": "after",
+          "key": "neighbor.want",
+          "op": "eq",
+          "value": "join"
+        }
+      ],
+      "evidence": {
+        "state": {
+          "ada.want": "deliver invitations",
+          "ada.memes.Care": 2,
+          "ember.want": "help deliver invitations",
+          "ember.confidence": "eager",
+          "ember.memes.Care": 2,
+          "ember.ready": true,
+          "ember.shielding": true,
+          "invitations.owner": "ada",
+          "invitations.location": "neighbor",
+          "invitations.fragile": true,
+          "invitations.secured": true,
+          "invitations.intact": true,
+          "invitations.delivered": true,
+          "ribbon.owner": "ada",
+          "ribbon.location": "ada",
+          "ribbon.tied": true,
+          "garden.wind": "still",
+          "neighbor.want": "join",
+          "neighbor.received": true,
+          "neighbor.response": "Mina joins the garden gathering",
+          "ada.knows.garden.wind": "still",
+          "ember.knows.garden.wind": "still",
+          "ember.knows.neighbor.want": "join",
+          "ada.knows.neighbor.want": null,
+          "invitations.loaned_by": null
+        }
+      },
+      "variants": 2
+    },
+    "opening.d6f107cc324e": {
+      "section": "openings",
+      "scene": null,
+      "role": "beat",
+      "when": [
+        {
+          "at": "initial",
+          "key": "ember.confidence",
+          "op": "eq",
+          "value": "hesitant"
+        },
+        {
+          "at": "initial",
+          "key": "garden.wind",
+          "op": "eq",
+          "value": "breezy"
+        },
+        {
+          "at": "initial",
+          "key": "neighbor.want",
+          "op": "eq",
+          "value": "quiet"
+        }
+      ],
+      "evidence": {
+        "state": {
+          "ada.want": "deliver invitations",
+          "ada.memes.Care": 2,
+          "ember.want": "help deliver invitations",
+          "ember.confidence": "hesitant",
+          "ember.memes.Care": 1,
+          "ember.ready": false,
+          "ember.shielding": false,
+          "invitations.owner": "ada",
+          "invitations.location": "ada",
+          "invitations.fragile": true,
+          "invitations.secured": false,
+          "invitations.intact": true,
+          "invitations.delivered": false,
+          "ribbon.owner": "ada",
+          "ribbon.location": "ada",
+          "ribbon.tied": false,
+          "garden.wind": "breezy",
+          "neighbor.want": "quiet",
+          "neighbor.received": false,
+          "neighbor.response": "none",
+          "ada.knows.garden.wind": null,
+          "ember.knows.garden.wind": null,
+          "ember.knows.neighbor.want": null,
+          "ada.knows.neighbor.want": null,
+          "invitations.loaned_by": null
+        }
+      },
+      "variants": 2
+    },
+    "scene.wind_news.notice.ada92b3e6559": {
+      "section": "scenes",
+      "scene": "wind_news.notice",
+      "role": "bridge",
+      "when": [
+        {
+          "at": "before",
+          "key": "ada.knows.garden.wind",
+          "op": "eq",
+          "value": null
+        },
+        {
+          "at": "before",
+          "key": "garden.wind",
+          "op": "eq",
+          "value": "breezy"
+        },
+        {
+          "at": "after",
+          "key": "ada.knows.garden.wind",
+          "op": "eq",
+          "value": "breezy"
+        }
+      ],
+      "evidence": {
+        "summary": "",
+        "actors": [
+          "ada"
+        ],
+        "changes": {
+          "ada.knows.garden.wind": {
+            "before": null,
+            "after": "breezy"
+          }
+        },
+        "before": {
+          "ada.knows.garden.wind": null,
+          "garden.wind": "breezy"
+        }
+      },
+      "variants": 1
+    },
+    "scene.secure_cargo.c02884c6c086": {
+      "section": "scenes",
+      "scene": "secure_cargo",
+      "role": "beat",
+      "when": [
+        {
+          "at": "before",
+          "key": "ada.knows.garden.wind",
+          "op": "eq",
+          "value": "breezy"
+        },
+        {
+          "at": "before",
+          "key": "invitations.owner",
+          "op": "eq",
+          "value": "ada"
+        },
+        {
+          "at": "before",
+          "key": "invitations.secured",
+          "op": "eq",
+          "value": false
+        },
+        {
+          "at": "before",
+          "key": "ribbon.owner",
+          "op": "eq",
+          "value": "ada"
+        },
+        {
+          "at": "before",
+          "key": "ribbon.tied",
+          "op": "eq",
+          "value": false
+        },
+        {
+          "at": "after",
+          "key": "invitations.secured",
+          "op": "eq",
+          "value": true
+        },
+        {
+          "at": "after",
+          "key": "ribbon.tied",
+          "op": "eq",
+          "value": true
+        }
+      ],
+      "evidence": {
+        "summary": "Ada ties the invitations securely",
+        "actors": [
+          "ada"
+        ],
+        "changes": {
+          "invitations.secured": {
+            "before": false,
+            "after": true
+          },
+          "ribbon.tied": {
+            "before": false,
+            "after": true
+          }
+        },
+        "before": {
+          "ada.knows.garden.wind": "breezy",
+          "invitations.owner": "ada",
+          "invitations.secured": false,
+          "ribbon.owner": "ada",
+          "ribbon.tied": false
+        }
+      },
+      "variants": 1
+    },
+    "ending.6d04c1bcddf2": {
+      "section": "endings",
+      "scene": null,
+      "role": "beat",
+      "when": [
+        {
+          "at": "after",
+          "key": "ada.knows.garden.wind",
+          "op": "eq",
+          "value": "breezy"
+        },
+        {
+          "at": "after",
+          "key": "ember.confidence",
+          "op": "eq",
+          "value": "hesitant"
+        },
+        {
+          "at": "after",
+          "key": "ember.knows.garden.wind",
+          "op": "eq",
+          "value": null
+        },
+        {
+          "at": "after",
+          "key": "ember.knows.neighbor.want",
+          "op": "eq",
+          "value": null
+        },
+        {
+          "at": "after",
+          "key": "ember.memes.Care",
+          "op": "eq",
+          "value": 1
+        },
+        {
+          "at": "after",
+          "key": "ember.ready",
+          "op": "eq",
+          "value": false
+        },
+        {
+          "at": "after",
+          "key": "ember.shielding",
+          "op": "eq",
+          "value": false
+        },
+        {
+          "at": "after",
+          "key": "garden.wind",
+          "op": "eq",
+          "value": "breezy"
+        },
+        {
+          "at": "after",
+          "key": "invitations.loaned_by",
+          "op": "eq",
+          "value": null
+        },
+        {
+          "at": "after",
+          "key": "invitations.owner",
+          "op": "eq",
+          "value": "ada"
+        },
+        {
+          "at": "after",
+          "key": "neighbor.response",
+          "op": "eq",
+          "value": "thanks for the quiet invitation"
+        },
+        {
+          "at": "after",
+          "key": "neighbor.want",
+          "op": "eq",
+          "value": "quiet"
+        }
+      ],
+      "evidence": {
+        "state": {
+          "ada.want": "deliver invitations",
+          "ada.memes.Care": 2,
+          "ember.want": "help deliver invitations",
+          "ember.confidence": "hesitant",
+          "ember.memes.Care": 1,
+          "ember.ready": false,
+          "ember.shielding": false,
+          "invitations.owner": "ada",
+          "invitations.location": "neighbor",
+          "invitations.fragile": true,
+          "invitations.secured": true,
+          "invitations.intact": true,
+          "invitations.delivered": true,
+          "ribbon.owner": "ada",
+          "ribbon.location": "ada",
+          "ribbon.tied": true,
+          "garden.wind": "breezy",
+          "neighbor.want": "quiet",
+          "neighbor.received": true,
+          "neighbor.response": "thanks for the quiet invitation",
+          "ada.knows.garden.wind": "breezy",
+          "ember.knows.garden.wind": null,
+          "ember.knows.neighbor.want": null,
+          "ada.knows.neighbor.want": null,
+          "invitations.loaned_by": null
+        }
+      },
+      "variants": 2
+    },
+    "scene.wind_news.share.d57c0e746ae3": {
+      "section": "scenes",
+      "scene": "wind_news.share",
+      "role": "bridge",
+      "when": [
+        {
+          "at": "before",
+          "key": "ada.knows.garden.wind",
+          "op": "eq",
+          "value": "breezy"
+        },
+        {
+          "at": "before",
+          "key": "ember.knows.garden.wind",
+          "op": "eq",
+          "value": null
+        },
+        {
+          "at": "after",
+          "key": "ember.knows.garden.wind",
+          "op": "eq",
+          "value": "breezy"
+        }
+      ],
+      "evidence": {
+        "summary": "",
+        "actors": [
+          "ada",
+          "ember"
+        ],
+        "changes": {
+          "ember.knows.garden.wind": {
+            "before": null,
+            "after": "breezy"
+          }
+        },
+        "before": {
+          "ada.knows.garden.wind": "breezy",
+          "ember.knows.garden.wind": null
+        }
+      },
+      "variants": 1
+    },
+    "scene.choose_to_help.30e7a43b0187": {
+      "section": "scenes",
+      "scene": "choose_to_help",
+      "role": "beat",
+      "when": [
+        {
+          "at": "before",
+          "key": "ember.knows.garden.wind",
+          "op": "eq",
+          "value": "breezy"
+        },
+        {
+          "at": "before",
+          "key": "ember.knows.neighbor.want",
+          "op": "eq",
+          "value": "quiet"
+        },
+        {
+          "at": "before",
+          "key": "ember.memes.Care",
+          "op": "eq",
+          "value": 1
+        },
+        {
+          "at": "before",
+          "key": "ember.ready",
+          "op": "eq",
+          "value": false
+        },
+        {
+          "at": "before",
+          "key": "ember.shielding",
+          "op": "eq",
+          "value": false
+        },
+        {
+          "at": "before",
+          "key": "ember.want",
+          "op": "eq",
+          "value": "help deliver invitations"
+        },
+        {
+          "at": "after",
+          "key": "ember.memes.Care",
+          "op": "eq",
+          "value": 2
+        },
+        {
+          "at": "after",
+          "key": "ember.ready",
+          "op": "eq",
+          "value": true
+        },
+        {
+          "at": "after",
+          "key": "ember.shielding",
+          "op": "eq",
+          "value": true
+        }
+      ],
+      "evidence": {
+        "summary": "Ember chooses to shield the cargo",
+        "actors": [
+          "ember"
+        ],
+        "changes": {
+          "ember.memes.Care": {
+            "before": 1,
+            "after": 2
+          },
+          "ember.ready": {
+            "before": false,
+            "after": true
+          },
+          "ember.shielding": {
+            "before": false,
+            "after": true
+          }
+        },
+        "before": {
+          "ember.knows.garden.wind": "breezy",
+          "ember.knows.neighbor.want": "quiet",
+          "ember.memes.Care": 1,
+          "ember.ready": false,
+          "ember.shielding": false,
+          "ember.want": "help deliver invitations"
+        }
+      },
+      "variants": 1
+    },
+    "ending.3667ac66f0d4": {
+      "section": "endings",
+      "scene": null,
+      "role": "beat",
+      "when": [
+        {
+          "at": "after",
+          "key": "ada.knows.garden.wind",
+          "op": "eq",
+          "value": "breezy"
+        },
+        {
+          "at": "after",
+          "key": "ember.confidence",
+          "op": "eq",
+          "value": "hesitant"
+        },
+        {
+          "at": "after",
+          "key": "ember.knows.garden.wind",
+          "op": "eq",
+          "value": "breezy"
+        },
+        {
+          "at": "after",
+          "key": "ember.knows.neighbor.want",
+          "op": "eq",
+          "value": "quiet"
+        },
+        {
+          "at": "after",
+          "key": "ember.memes.Care",
+          "op": "eq",
+          "value": 2
+        },
+        {
+          "at": "after",
+          "key": "ember.ready",
+          "op": "eq",
+          "value": true
+        },
+        {
+          "at": "after",
+          "key": "ember.shielding",
+          "op": "eq",
+          "value": true
+        },
+        {
+          "at": "after",
+          "key": "garden.wind",
+          "op": "eq",
+          "value": "breezy"
+        },
+        {
+          "at": "after",
+          "key": "invitations.loaned_by",
+          "op": "eq",
+          "value": null
+        },
+        {
+          "at": "after",
+          "key": "invitations.owner",
+          "op": "eq",
+          "value": "ada"
+        },
+        {
+          "at": "after",
+          "key": "neighbor.response",
+          "op": "eq",
+          "value": "thanks for the quiet invitation"
+        },
+        {
+          "at": "after",
+          "key": "neighbor.want",
+          "op": "eq",
+          "value": "quiet"
+        }
+      ],
+      "evidence": {
+        "state": {
+          "ada.want": "deliver invitations",
+          "ada.memes.Care": 2,
+          "ember.want": "help deliver invitations",
+          "ember.confidence": "hesitant",
+          "ember.memes.Care": 2,
+          "ember.ready": true,
+          "ember.shielding": true,
+          "invitations.owner": "ada",
+          "invitations.location": "neighbor",
+          "invitations.fragile": true,
+          "invitations.secured": true,
+          "invitations.intact": true,
+          "invitations.delivered": true,
+          "ribbon.owner": "ada",
+          "ribbon.location": "ada",
+          "ribbon.tied": true,
+          "garden.wind": "breezy",
+          "neighbor.want": "quiet",
+          "neighbor.received": true,
+          "neighbor.response": "thanks for the quiet invitation",
+          "ada.knows.garden.wind": "breezy",
+          "ember.knows.garden.wind": "breezy",
+          "ember.knows.neighbor.want": "quiet",
+          "ada.knows.neighbor.want": null,
+          "invitations.loaned_by": null
+        }
+      },
+      "variants": 2
+    },
+    "opening.678a52ac3b05": {
+      "section": "openings",
+      "scene": null,
+      "role": "beat",
+      "when": [
+        {
+          "at": "initial",
+          "key": "ember.confidence",
+          "op": "eq",
+          "value": "eager"
+        },
+        {
+          "at": "initial",
+          "key": "garden.wind",
+          "op": "eq",
+          "value": "breezy"
+        },
+        {
+          "at": "initial",
+          "key": "neighbor.want",
+          "op": "eq",
+          "value": "quiet"
+        }
+      ],
+      "evidence": {
+        "state": {
+          "ada.want": "deliver invitations",
+          "ada.memes.Care": 2,
+          "ember.want": "help deliver invitations",
+          "ember.confidence": "eager",
+          "ember.memes.Care": 1,
+          "ember.ready": false,
+          "ember.shielding": false,
+          "invitations.owner": "ada",
+          "invitations.location": "ada",
+          "invitations.fragile": true,
+          "invitations.secured": false,
+          "invitations.intact": true,
+          "invitations.delivered": false,
+          "ribbon.owner": "ada",
+          "ribbon.location": "ada",
+          "ribbon.tied": false,
+          "garden.wind": "breezy",
+          "neighbor.want": "quiet",
+          "neighbor.received": false,
+          "neighbor.response": "none",
+          "ada.knows.garden.wind": null,
+          "ember.knows.garden.wind": null,
+          "ember.knows.neighbor.want": null,
+          "ada.knows.neighbor.want": null,
+          "invitations.loaned_by": null
+        }
+      },
+      "variants": 2
+    },
+    "ending.54e4f1d0ee1f": {
+      "section": "endings",
+      "scene": null,
+      "role": "beat",
+      "when": [
+        {
+          "at": "after",
+          "key": "ada.knows.garden.wind",
+          "op": "eq",
+          "value": "breezy"
+        },
+        {
+          "at": "after",
+          "key": "ember.confidence",
+          "op": "eq",
+          "value": "eager"
+        },
+        {
+          "at": "after",
+          "key": "ember.knows.garden.wind",
+          "op": "eq",
+          "value": null
+        },
+        {
+          "at": "after",
+          "key": "ember.knows.neighbor.want",
+          "op": "eq",
+          "value": null
+        },
+        {
+          "at": "after",
+          "key": "ember.memes.Care",
+          "op": "eq",
+          "value": 1
+        },
+        {
+          "at": "after",
+          "key": "ember.ready",
+          "op": "eq",
+          "value": false
+        },
+        {
+          "at": "after",
+          "key": "ember.shielding",
+          "op": "eq",
+          "value": false
+        },
+        {
+          "at": "after",
+          "key": "garden.wind",
+          "op": "eq",
+          "value": "breezy"
+        },
+        {
+          "at": "after",
+          "key": "invitations.loaned_by",
+          "op": "eq",
+          "value": null
+        },
+        {
+          "at": "after",
+          "key": "invitations.owner",
+          "op": "eq",
+          "value": "ada"
+        },
+        {
+          "at": "after",
+          "key": "neighbor.response",
+          "op": "eq",
+          "value": "thanks for the quiet invitation"
+        },
+        {
+          "at": "after",
+          "key": "neighbor.want",
+          "op": "eq",
+          "value": "quiet"
+        }
+      ],
+      "evidence": {
+        "state": {
+          "ada.want": "deliver invitations",
+          "ada.memes.Care": 2,
+          "ember.want": "help deliver invitations",
+          "ember.confidence": "eager",
+          "ember.memes.Care": 1,
+          "ember.ready": false,
+          "ember.shielding": false,
+          "invitations.owner": "ada",
+          "invitations.location": "neighbor",
+          "invitations.fragile": true,
+          "invitations.secured": true,
+          "invitations.intact": true,
+          "invitations.delivered": true,
+          "ribbon.owner": "ada",
+          "ribbon.location": "ada",
+          "ribbon.tied": true,
+          "garden.wind": "breezy",
+          "neighbor.want": "quiet",
+          "neighbor.received": true,
+          "neighbor.response": "thanks for the quiet invitation",
+          "ada.knows.garden.wind": "breezy",
+          "ember.knows.garden.wind": null,
+          "ember.knows.neighbor.want": null,
+          "ada.knows.neighbor.want": null,
+          "invitations.loaned_by": null
+        }
+      },
+      "variants": 2
+    },
+    "ending.154d327aaf03": {
+      "section": "endings",
+      "scene": null,
+      "role": "beat",
+      "when": [
+        {
+          "at": "after",
+          "key": "ada.knows.garden.wind",
+          "op": "eq",
+          "value": "breezy"
+        },
+        {
+          "at": "after",
+          "key": "ember.confidence",
+          "op": "eq",
+          "value": "eager"
+        },
+        {
+          "at": "after",
+          "key": "ember.knows.garden.wind",
+          "op": "eq",
+          "value": "breezy"
+        },
+        {
+          "at": "after",
+          "key": "ember.knows.neighbor.want",
+          "op": "eq",
+          "value": "quiet"
+        },
+        {
+          "at": "after",
+          "key": "ember.memes.Care",
+          "op": "eq",
+          "value": 2
+        },
+        {
+          "at": "after",
+          "key": "ember.ready",
+          "op": "eq",
+          "value": true
+        },
+        {
+          "at": "after",
+          "key": "ember.shielding",
+          "op": "eq",
+          "value": true
+        },
+        {
+          "at": "after",
+          "key": "garden.wind",
+          "op": "eq",
+          "value": "breezy"
+        },
+        {
+          "at": "after",
+          "key": "invitations.loaned_by",
+          "op": "eq",
+          "value": null
+        },
+        {
+          "at": "after",
+          "key": "invitations.owner",
+          "op": "eq",
+          "value": "ada"
+        },
+        {
+          "at": "after",
+          "key": "neighbor.response",
+          "op": "eq",
+          "value": "thanks for the quiet invitation"
+        },
+        {
+          "at": "after",
+          "key": "neighbor.want",
+          "op": "eq",
+          "value": "quiet"
+        }
+      ],
+      "evidence": {
+        "state": {
+          "ada.want": "deliver invitations",
+          "ada.memes.Care": 2,
+          "ember.want": "help deliver invitations",
+          "ember.confidence": "eager",
+          "ember.memes.Care": 2,
+          "ember.ready": true,
+          "ember.shielding": true,
+          "invitations.owner": "ada",
+          "invitations.location": "neighbor",
+          "invitations.fragile": true,
+          "invitations.secured": true,
+          "invitations.intact": true,
+          "invitations.delivered": true,
+          "ribbon.owner": "ada",
+          "ribbon.location": "ada",
+          "ribbon.tied": true,
+          "garden.wind": "breezy",
+          "neighbor.want": "quiet",
+          "neighbor.received": true,
+          "neighbor.response": "thanks for the quiet invitation",
+          "ada.knows.garden.wind": "breezy",
+          "ember.knows.garden.wind": "breezy",
+          "ember.knows.neighbor.want": "quiet",
+          "ada.knows.neighbor.want": null,
+          "invitations.loaned_by": null
+        }
+      },
+      "variants": 2
+    },
+    "opening.6b1769f87fce": {
+      "section": "openings",
+      "scene": null,
+      "role": "beat",
+      "when": [
+        {
+          "at": "initial",
+          "key": "ember.confidence",
+          "op": "eq",
+          "value": "hesitant"
+        },
+        {
+          "at": "initial",
+          "key": "garden.wind",
+          "op": "eq",
+          "value": "breezy"
+        },
+        {
+          "at": "initial",
+          "key": "neighbor.want",
+          "op": "eq",
+          "value": "join"
+        }
+      ],
+      "evidence": {
+        "state": {
+          "ada.want": "deliver invitations",
+          "ada.memes.Care": 2,
+          "ember.want": "help deliver invitations",
+          "ember.confidence": "hesitant",
+          "ember.memes.Care": 1,
+          "ember.ready": false,
+          "ember.shielding": false,
+          "invitations.owner": "ada",
+          "invitations.location": "ada",
+          "invitations.fragile": true,
+          "invitations.secured": false,
+          "invitations.intact": true,
+          "invitations.delivered": false,
+          "ribbon.owner": "ada",
+          "ribbon.location": "ada",
+          "ribbon.tied": false,
+          "garden.wind": "breezy",
+          "neighbor.want": "join",
+          "neighbor.received": false,
+          "neighbor.response": "none",
+          "ada.knows.garden.wind": null,
+          "ember.knows.garden.wind": null,
+          "ember.knows.neighbor.want": null,
+          "ada.knows.neighbor.want": null,
+          "invitations.loaned_by": null
+        }
+      },
+      "variants": 2
+    },
+    "ending.1f637ca8a737": {
+      "section": "endings",
+      "scene": null,
+      "role": "beat",
+      "when": [
+        {
+          "at": "after",
+          "key": "ada.knows.garden.wind",
+          "op": "eq",
+          "value": "breezy"
+        },
+        {
+          "at": "after",
+          "key": "ember.confidence",
+          "op": "eq",
+          "value": "hesitant"
+        },
+        {
+          "at": "after",
+          "key": "ember.knows.garden.wind",
+          "op": "eq",
+          "value": null
+        },
+        {
+          "at": "after",
+          "key": "ember.knows.neighbor.want",
+          "op": "eq",
+          "value": null
+        },
+        {
+          "at": "after",
+          "key": "ember.memes.Care",
+          "op": "eq",
+          "value": 1
+        },
+        {
+          "at": "after",
+          "key": "ember.ready",
+          "op": "eq",
+          "value": false
+        },
+        {
+          "at": "after",
+          "key": "ember.shielding",
+          "op": "eq",
+          "value": false
+        },
+        {
+          "at": "after",
+          "key": "garden.wind",
+          "op": "eq",
+          "value": "breezy"
+        },
+        {
+          "at": "after",
+          "key": "invitations.loaned_by",
+          "op": "eq",
+          "value": null
+        },
+        {
+          "at": "after",
+          "key": "invitations.owner",
+          "op": "eq",
+          "value": "ada"
+        },
+        {
+          "at": "after",
+          "key": "neighbor.response",
+          "op": "eq",
+          "value": "Mina joins the garden gathering"
+        },
+        {
+          "at": "after",
+          "key": "neighbor.want",
+          "op": "eq",
+          "value": "join"
+        }
+      ],
+      "evidence": {
+        "state": {
+          "ada.want": "deliver invitations",
+          "ada.memes.Care": 2,
+          "ember.want": "help deliver invitations",
+          "ember.confidence": "hesitant",
+          "ember.memes.Care": 1,
+          "ember.ready": false,
+          "ember.shielding": false,
+          "invitations.owner": "ada",
+          "invitations.location": "neighbor",
+          "invitations.fragile": true,
+          "invitations.secured": true,
+          "invitations.intact": true,
+          "invitations.delivered": true,
+          "ribbon.owner": "ada",
+          "ribbon.location": "ada",
+          "ribbon.tied": true,
+          "garden.wind": "breezy",
+          "neighbor.want": "join",
+          "neighbor.received": true,
+          "neighbor.response": "Mina joins the garden gathering",
+          "ada.knows.garden.wind": "breezy",
+          "ember.knows.garden.wind": null,
+          "ember.knows.neighbor.want": null,
+          "ada.knows.neighbor.want": null,
+          "invitations.loaned_by": null
+        }
+      },
+      "variants": 2
+    },
+    "scene.choose_to_help.134ec5d6e588": {
+      "section": "scenes",
+      "scene": "choose_to_help",
+      "role": "beat",
+      "when": [
+        {
+          "at": "before",
+          "key": "ember.knows.garden.wind",
+          "op": "eq",
+          "value": "breezy"
+        },
+        {
+          "at": "before",
+          "key": "ember.knows.neighbor.want",
+          "op": "eq",
+          "value": "join"
+        },
+        {
+          "at": "before",
+          "key": "ember.memes.Care",
+          "op": "eq",
+          "value": 1
+        },
+        {
+          "at": "before",
+          "key": "ember.ready",
+          "op": "eq",
+          "value": false
+        },
+        {
+          "at": "before",
+          "key": "ember.shielding",
+          "op": "eq",
+          "value": false
+        },
+        {
+          "at": "before",
+          "key": "ember.want",
+          "op": "eq",
+          "value": "help deliver invitations"
+        },
+        {
+          "at": "after",
+          "key": "ember.memes.Care",
+          "op": "eq",
+          "value": 2
+        },
+        {
+          "at": "after",
+          "key": "ember.ready",
+          "op": "eq",
+          "value": true
+        },
+        {
+          "at": "after",
+          "key": "ember.shielding",
+          "op": "eq",
+          "value": true
+        }
+      ],
+      "evidence": {
+        "summary": "Ember chooses to shield the cargo",
+        "actors": [
+          "ember"
+        ],
+        "changes": {
+          "ember.memes.Care": {
+            "before": 1,
+            "after": 2
+          },
+          "ember.ready": {
+            "before": false,
+            "after": true
+          },
+          "ember.shielding": {
+            "before": false,
+            "after": true
+          }
+        },
+        "before": {
+          "ember.knows.garden.wind": "breezy",
+          "ember.knows.neighbor.want": "join",
+          "ember.memes.Care": 1,
+          "ember.ready": false,
+          "ember.shielding": false,
+          "ember.want": "help deliver invitations"
+        }
+      },
+      "variants": 1
+    },
+    "ending.2c20b59474e7": {
+      "section": "endings",
+      "scene": null,
+      "role": "beat",
+      "when": [
+        {
+          "at": "after",
+          "key": "ada.knows.garden.wind",
+          "op": "eq",
+          "value": "breezy"
+        },
+        {
+          "at": "after",
+          "key": "ember.confidence",
+          "op": "eq",
+          "value": "hesitant"
+        },
+        {
+          "at": "after",
+          "key": "ember.knows.garden.wind",
+          "op": "eq",
+          "value": "breezy"
+        },
+        {
+          "at": "after",
+          "key": "ember.knows.neighbor.want",
+          "op": "eq",
+          "value": "join"
+        },
+        {
+          "at": "after",
+          "key": "ember.memes.Care",
+          "op": "eq",
+          "value": 2
+        },
+        {
+          "at": "after",
+          "key": "ember.ready",
+          "op": "eq",
+          "value": true
+        },
+        {
+          "at": "after",
+          "key": "ember.shielding",
+          "op": "eq",
+          "value": true
+        },
+        {
+          "at": "after",
+          "key": "garden.wind",
+          "op": "eq",
+          "value": "breezy"
+        },
+        {
+          "at": "after",
+          "key": "invitations.loaned_by",
+          "op": "eq",
+          "value": null
+        },
+        {
+          "at": "after",
+          "key": "invitations.owner",
+          "op": "eq",
+          "value": "ada"
+        },
+        {
+          "at": "after",
+          "key": "neighbor.response",
+          "op": "eq",
+          "value": "Mina joins the garden gathering"
+        },
+        {
+          "at": "after",
+          "key": "neighbor.want",
+          "op": "eq",
+          "value": "join"
+        }
+      ],
+      "evidence": {
+        "state": {
+          "ada.want": "deliver invitations",
+          "ada.memes.Care": 2,
+          "ember.want": "help deliver invitations",
+          "ember.confidence": "hesitant",
+          "ember.memes.Care": 2,
+          "ember.ready": true,
+          "ember.shielding": true,
+          "invitations.owner": "ada",
+          "invitations.location": "neighbor",
+          "invitations.fragile": true,
+          "invitations.secured": true,
+          "invitations.intact": true,
+          "invitations.delivered": true,
+          "ribbon.owner": "ada",
+          "ribbon.location": "ada",
+          "ribbon.tied": true,
+          "garden.wind": "breezy",
+          "neighbor.want": "join",
+          "neighbor.received": true,
+          "neighbor.response": "Mina joins the garden gathering",
+          "ada.knows.garden.wind": "breezy",
+          "ember.knows.garden.wind": "breezy",
+          "ember.knows.neighbor.want": "join",
+          "ada.knows.neighbor.want": null,
+          "invitations.loaned_by": null
+        }
+      },
+      "variants": 2
+    },
+    "opening.23b49895cc8f": {
+      "section": "openings",
+      "scene": null,
+      "role": "beat",
+      "when": [
+        {
+          "at": "initial",
+          "key": "ember.confidence",
+          "op": "eq",
+          "value": "eager"
+        },
+        {
+          "at": "initial",
+          "key": "garden.wind",
+          "op": "eq",
+          "value": "breezy"
+        },
+        {
+          "at": "initial",
+          "key": "neighbor.want",
+          "op": "eq",
+          "value": "join"
+        }
+      ],
+      "evidence": {
+        "state": {
+          "ada.want": "deliver invitations",
+          "ada.memes.Care": 2,
+          "ember.want": "help deliver invitations",
+          "ember.confidence": "eager",
+          "ember.memes.Care": 1,
+          "ember.ready": false,
+          "ember.shielding": false,
+          "invitations.owner": "ada",
+          "invitations.location": "ada",
+          "invitations.fragile": true,
+          "invitations.secured": false,
+          "invitations.intact": true,
+          "invitations.delivered": false,
+          "ribbon.owner": "ada",
+          "ribbon.location": "ada",
+          "ribbon.tied": false,
+          "garden.wind": "breezy",
+          "neighbor.want": "join",
+          "neighbor.received": false,
+          "neighbor.response": "none",
+          "ada.knows.garden.wind": null,
+          "ember.knows.garden.wind": null,
+          "ember.knows.neighbor.want": null,
+          "ada.knows.neighbor.want": null,
+          "invitations.loaned_by": null
+        }
+      },
+      "variants": 2
+    },
+    "ending.0a9e68f22834": {
+      "section": "endings",
+      "scene": null,
+      "role": "beat",
+      "when": [
+        {
+          "at": "after",
+          "key": "ada.knows.garden.wind",
+          "op": "eq",
+          "value": "breezy"
+        },
+        {
+          "at": "after",
+          "key": "ember.confidence",
+          "op": "eq",
+          "value": "eager"
+        },
+        {
+          "at": "after",
+          "key": "ember.knows.garden.wind",
+          "op": "eq",
+          "value": null
+        },
+        {
+          "at": "after",
+          "key": "ember.knows.neighbor.want",
+          "op": "eq",
+          "value": null
+        },
+        {
+          "at": "after",
+          "key": "ember.memes.Care",
+          "op": "eq",
+          "value": 1
+        },
+        {
+          "at": "after",
+          "key": "ember.ready",
+          "op": "eq",
+          "value": false
+        },
+        {
+          "at": "after",
+          "key": "ember.shielding",
+          "op": "eq",
+          "value": false
+        },
+        {
+          "at": "after",
+          "key": "garden.wind",
+          "op": "eq",
+          "value": "breezy"
+        },
+        {
+          "at": "after",
+          "key": "invitations.loaned_by",
+          "op": "eq",
+          "value": null
+        },
+        {
+          "at": "after",
+          "key": "invitations.owner",
+          "op": "eq",
+          "value": "ada"
+        },
+        {
+          "at": "after",
+          "key": "neighbor.response",
+          "op": "eq",
+          "value": "Mina joins the garden gathering"
+        },
+        {
+          "at": "after",
+          "key": "neighbor.want",
+          "op": "eq",
+          "value": "join"
+        }
+      ],
+      "evidence": {
+        "state": {
+          "ada.want": "deliver invitations",
+          "ada.memes.Care": 2,
+          "ember.want": "help deliver invitations",
+          "ember.confidence": "eager",
+          "ember.memes.Care": 1,
+          "ember.ready": false,
+          "ember.shielding": false,
+          "invitations.owner": "ada",
+          "invitations.location": "neighbor",
+          "invitations.fragile": true,
+          "invitations.secured": true,
+          "invitations.intact": true,
+          "invitations.delivered": true,
+          "ribbon.owner": "ada",
+          "ribbon.location": "ada",
+          "ribbon.tied": true,
+          "garden.wind": "breezy",
+          "neighbor.want": "join",
+          "neighbor.received": true,
+          "neighbor.response": "Mina joins the garden gathering",
+          "ada.knows.garden.wind": "breezy",
+          "ember.knows.garden.wind": null,
+          "ember.knows.neighbor.want": null,
+          "ada.knows.neighbor.want": null,
+          "invitations.loaned_by": null
+        }
+      },
+      "variants": 2
+    },
+    "ending.ab2fffeb83e6": {
+      "section": "endings",
+      "scene": null,
+      "role": "beat",
+      "when": [
+        {
+          "at": "after",
+          "key": "ada.knows.garden.wind",
+          "op": "eq",
+          "value": "breezy"
+        },
+        {
+          "at": "after",
+          "key": "ember.confidence",
+          "op": "eq",
+          "value": "eager"
+        },
+        {
+          "at": "after",
+          "key": "ember.knows.garden.wind",
+          "op": "eq",
+          "value": "breezy"
+        },
+        {
+          "at": "after",
+          "key": "ember.knows.neighbor.want",
+          "op": "eq",
+          "value": "join"
+        },
+        {
+          "at": "after",
+          "key": "ember.memes.Care",
+          "op": "eq",
+          "value": 2
+        },
+        {
+          "at": "after",
+          "key": "ember.ready",
+          "op": "eq",
+          "value": true
+        },
+        {
+          "at": "after",
+          "key": "ember.shielding",
+          "op": "eq",
+          "value": true
+        },
+        {
+          "at": "after",
+          "key": "garden.wind",
+          "op": "eq",
+          "value": "breezy"
+        },
+        {
+          "at": "after",
+          "key": "invitations.loaned_by",
+          "op": "eq",
+          "value": null
+        },
+        {
+          "at": "after",
+          "key": "invitations.owner",
+          "op": "eq",
+          "value": "ada"
+        },
+        {
+          "at": "after",
+          "key": "neighbor.response",
+          "op": "eq",
+          "value": "Mina joins the garden gathering"
+        },
+        {
+          "at": "after",
+          "key": "neighbor.want",
+          "op": "eq",
+          "value": "join"
+        }
+      ],
+      "evidence": {
+        "state": {
+          "ada.want": "deliver invitations",
+          "ada.memes.Care": 2,
+          "ember.want": "help deliver invitations",
+          "ember.confidence": "eager",
+          "ember.memes.Care": 2,
+          "ember.ready": true,
+          "ember.shielding": true,
+          "invitations.owner": "ada",
+          "invitations.location": "neighbor",
+          "invitations.fragile": true,
+          "invitations.secured": true,
+          "invitations.intact": true,
+          "invitations.delivered": true,
+          "ribbon.owner": "ada",
+          "ribbon.location": "ada",
+          "ribbon.tied": true,
+          "garden.wind": "breezy",
+          "neighbor.want": "join",
+          "neighbor.received": true,
+          "neighbor.response": "Mina joins the garden gathering",
+          "ada.knows.garden.wind": "breezy",
+          "ember.knows.garden.wind": "breezy",
+          "ember.knows.neighbor.want": "join",
+          "ada.knows.neighbor.want": null,
+          "invitations.loaned_by": null
+        }
+      },
+      "variants": 2
+    },
+    "opening.29e7cd741f74": {
+      "section": "openings",
+      "scene": null,
+      "role": "beat",
+      "when": [
+        {
+          "at": "initial",
+          "key": "ember.confidence",
+          "op": "eq",
+          "value": "hesitant"
+        },
+        {
+          "at": "initial",
+          "key": "garden.wind",
+          "op": "eq",
+          "value": "gusty"
+        },
+        {
+          "at": "initial",
+          "key": "neighbor.want",
+          "op": "eq",
+          "value": "quiet"
+        }
+      ],
+      "evidence": {
+        "state": {
+          "ada.want": "deliver invitations",
+          "ada.memes.Care": 2,
+          "ember.want": "help deliver invitations",
+          "ember.confidence": "hesitant",
+          "ember.memes.Care": 1,
+          "ember.ready": false,
+          "ember.shielding": false,
+          "invitations.owner": "ada",
+          "invitations.location": "ada",
+          "invitations.fragile": true,
+          "invitations.secured": false,
+          "invitations.intact": true,
+          "invitations.delivered": false,
+          "ribbon.owner": "ada",
+          "ribbon.location": "ada",
+          "ribbon.tied": false,
+          "garden.wind": "gusty",
+          "neighbor.want": "quiet",
+          "neighbor.received": false,
+          "neighbor.response": "none",
+          "ada.knows.garden.wind": null,
+          "ember.knows.garden.wind": null,
+          "ember.knows.neighbor.want": null,
+          "ada.knows.neighbor.want": null,
+          "invitations.loaned_by": null
+        }
+      },
+      "variants": 2
+    },
+    "scene.wind_news.notice.42356104c69f": {
+      "section": "scenes",
+      "scene": "wind_news.notice",
+      "role": "bridge",
+      "when": [
+        {
+          "at": "before",
+          "key": "ada.knows.garden.wind",
+          "op": "eq",
+          "value": null
+        },
+        {
+          "at": "before",
+          "key": "garden.wind",
+          "op": "eq",
+          "value": "gusty"
+        },
+        {
+          "at": "after",
+          "key": "ada.knows.garden.wind",
+          "op": "eq",
+          "value": "gusty"
+        }
+      ],
+      "evidence": {
+        "summary": "",
+        "actors": [
+          "ada"
+        ],
+        "changes": {
+          "ada.knows.garden.wind": {
+            "before": null,
+            "after": "gusty"
+          }
+        },
+        "before": {
+          "ada.knows.garden.wind": null,
+          "garden.wind": "gusty"
+        }
+      },
+      "variants": 1
+    },
+    "scene.secure_cargo.efb98d13e205": {
+      "section": "scenes",
+      "scene": "secure_cargo",
+      "role": "beat",
+      "when": [
+        {
+          "at": "before",
+          "key": "ada.knows.garden.wind",
+          "op": "eq",
+          "value": "gusty"
+        },
+        {
+          "at": "before",
+          "key": "invitations.owner",
+          "op": "eq",
+          "value": "ada"
+        },
+        {
+          "at": "before",
+          "key": "invitations.secured",
+          "op": "eq",
+          "value": false
+        },
+        {
+          "at": "before",
+          "key": "ribbon.owner",
+          "op": "eq",
+          "value": "ada"
+        },
+        {
+          "at": "before",
+          "key": "ribbon.tied",
+          "op": "eq",
+          "value": false
+        },
+        {
+          "at": "after",
+          "key": "invitations.secured",
+          "op": "eq",
+          "value": true
+        },
+        {
+          "at": "after",
+          "key": "ribbon.tied",
+          "op": "eq",
+          "value": true
+        }
+      ],
+      "evidence": {
+        "summary": "Ada ties the invitations securely",
+        "actors": [
+          "ada"
+        ],
+        "changes": {
+          "invitations.secured": {
+            "before": false,
+            "after": true
+          },
+          "ribbon.tied": {
+            "before": false,
+            "after": true
+          }
+        },
+        "before": {
+          "ada.knows.garden.wind": "gusty",
+          "invitations.owner": "ada",
+          "invitations.secured": false,
+          "ribbon.owner": "ada",
+          "ribbon.tied": false
+        }
+      },
+      "variants": 1
+    },
+    "ending.8ce11411687e": {
+      "section": "endings",
+      "scene": null,
+      "role": "beat",
+      "when": [
+        {
+          "at": "after",
+          "key": "ada.knows.garden.wind",
+          "op": "eq",
+          "value": "gusty"
+        },
+        {
+          "at": "after",
+          "key": "ember.confidence",
+          "op": "eq",
+          "value": "hesitant"
+        },
+        {
+          "at": "after",
+          "key": "ember.knows.garden.wind",
+          "op": "eq",
+          "value": null
+        },
+        {
+          "at": "after",
+          "key": "ember.knows.neighbor.want",
+          "op": "eq",
+          "value": null
+        },
+        {
+          "at": "after",
+          "key": "ember.memes.Care",
+          "op": "eq",
+          "value": 1
+        },
+        {
+          "at": "after",
+          "key": "ember.ready",
+          "op": "eq",
+          "value": false
+        },
+        {
+          "at": "after",
+          "key": "ember.shielding",
+          "op": "eq",
+          "value": false
+        },
+        {
+          "at": "after",
+          "key": "garden.wind",
+          "op": "eq",
+          "value": "gusty"
+        },
+        {
+          "at": "after",
+          "key": "invitations.loaned_by",
+          "op": "eq",
+          "value": null
+        },
+        {
+          "at": "after",
+          "key": "invitations.owner",
+          "op": "eq",
+          "value": "ada"
+        },
+        {
+          "at": "after",
+          "key": "neighbor.response",
+          "op": "eq",
+          "value": "thanks for the quiet invitation"
+        },
+        {
+          "at": "after",
+          "key": "neighbor.want",
+          "op": "eq",
+          "value": "quiet"
+        }
+      ],
+      "evidence": {
+        "state": {
+          "ada.want": "deliver invitations",
+          "ada.memes.Care": 2,
+          "ember.want": "help deliver invitations",
+          "ember.confidence": "hesitant",
+          "ember.memes.Care": 1,
+          "ember.ready": false,
+          "ember.shielding": false,
+          "invitations.owner": "ada",
+          "invitations.location": "neighbor",
+          "invitations.fragile": true,
+          "invitations.secured": true,
+          "invitations.intact": true,
+          "invitations.delivered": true,
+          "ribbon.owner": "ada",
+          "ribbon.location": "ada",
+          "ribbon.tied": true,
+          "garden.wind": "gusty",
+          "neighbor.want": "quiet",
+          "neighbor.received": true,
+          "neighbor.response": "thanks for the quiet invitation",
+          "ada.knows.garden.wind": "gusty",
+          "ember.knows.garden.wind": null,
+          "ember.knows.neighbor.want": null,
+          "ada.knows.neighbor.want": null,
+          "invitations.loaned_by": null
+        }
+      },
+      "variants": 2
+    },
+    "scene.wind_news.share.6bec4469cea8": {
+      "section": "scenes",
+      "scene": "wind_news.share",
+      "role": "bridge",
+      "when": [
+        {
+          "at": "before",
+          "key": "ada.knows.garden.wind",
+          "op": "eq",
+          "value": "gusty"
+        },
+        {
+          "at": "before",
+          "key": "ember.knows.garden.wind",
+          "op": "eq",
+          "value": null
+        },
+        {
+          "at": "after",
+          "key": "ember.knows.garden.wind",
+          "op": "eq",
+          "value": "gusty"
+        }
+      ],
+      "evidence": {
+        "summary": "",
+        "actors": [
+          "ada",
+          "ember"
+        ],
+        "changes": {
+          "ember.knows.garden.wind": {
+            "before": null,
+            "after": "gusty"
+          }
+        },
+        "before": {
+          "ada.knows.garden.wind": "gusty",
+          "ember.knows.garden.wind": null
+        }
+      },
+      "variants": 1
+    },
+    "scene.choose_to_help.7d997ef1d570": {
+      "section": "scenes",
+      "scene": "choose_to_help",
+      "role": "beat",
+      "when": [
+        {
+          "at": "before",
+          "key": "ember.knows.garden.wind",
+          "op": "eq",
+          "value": "gusty"
+        },
+        {
+          "at": "before",
+          "key": "ember.knows.neighbor.want",
+          "op": "eq",
+          "value": "quiet"
+        },
+        {
+          "at": "before",
+          "key": "ember.memes.Care",
+          "op": "eq",
+          "value": 1
+        },
+        {
+          "at": "before",
+          "key": "ember.ready",
+          "op": "eq",
+          "value": false
+        },
+        {
+          "at": "before",
+          "key": "ember.shielding",
+          "op": "eq",
+          "value": false
+        },
+        {
+          "at": "before",
+          "key": "ember.want",
+          "op": "eq",
+          "value": "help deliver invitations"
+        },
+        {
+          "at": "after",
+          "key": "ember.memes.Care",
+          "op": "eq",
+          "value": 2
+        },
+        {
+          "at": "after",
+          "key": "ember.ready",
+          "op": "eq",
+          "value": true
+        },
+        {
+          "at": "after",
+          "key": "ember.shielding",
+          "op": "eq",
+          "value": true
+        }
+      ],
+      "evidence": {
+        "summary": "Ember chooses to shield the cargo",
+        "actors": [
+          "ember"
+        ],
+        "changes": {
+          "ember.memes.Care": {
+            "before": 1,
+            "after": 2
+          },
+          "ember.ready": {
+            "before": false,
+            "after": true
+          },
+          "ember.shielding": {
+            "before": false,
+            "after": true
+          }
+        },
+        "before": {
+          "ember.knows.garden.wind": "gusty",
+          "ember.knows.neighbor.want": "quiet",
+          "ember.memes.Care": 1,
+          "ember.ready": false,
+          "ember.shielding": false,
+          "ember.want": "help deliver invitations"
+        }
+      },
+      "variants": 1
+    },
+    "ending.d92fdec65192": {
+      "section": "endings",
+      "scene": null,
+      "role": "beat",
+      "when": [
+        {
+          "at": "after",
+          "key": "ada.knows.garden.wind",
+          "op": "eq",
+          "value": "gusty"
+        },
+        {
+          "at": "after",
+          "key": "ember.confidence",
+          "op": "eq",
+          "value": "hesitant"
+        },
+        {
+          "at": "after",
+          "key": "ember.knows.garden.wind",
+          "op": "eq",
+          "value": "gusty"
+        },
+        {
+          "at": "after",
+          "key": "ember.knows.neighbor.want",
+          "op": "eq",
+          "value": "quiet"
+        },
+        {
+          "at": "after",
+          "key": "ember.memes.Care",
+          "op": "eq",
+          "value": 2
+        },
+        {
+          "at": "after",
+          "key": "ember.ready",
+          "op": "eq",
+          "value": true
+        },
+        {
+          "at": "after",
+          "key": "ember.shielding",
+          "op": "eq",
+          "value": true
+        },
+        {
+          "at": "after",
+          "key": "garden.wind",
+          "op": "eq",
+          "value": "gusty"
+        },
+        {
+          "at": "after",
+          "key": "invitations.loaned_by",
+          "op": "eq",
+          "value": null
+        },
+        {
+          "at": "after",
+          "key": "invitations.owner",
+          "op": "eq",
+          "value": "ada"
+        },
+        {
+          "at": "after",
+          "key": "neighbor.response",
+          "op": "eq",
+          "value": "thanks for the quiet invitation"
+        },
+        {
+          "at": "after",
+          "key": "neighbor.want",
+          "op": "eq",
+          "value": "quiet"
+        }
+      ],
+      "evidence": {
+        "state": {
+          "ada.want": "deliver invitations",
+          "ada.memes.Care": 2,
+          "ember.want": "help deliver invitations",
+          "ember.confidence": "hesitant",
+          "ember.memes.Care": 2,
+          "ember.ready": true,
+          "ember.shielding": true,
+          "invitations.owner": "ada",
+          "invitations.location": "neighbor",
+          "invitations.fragile": true,
+          "invitations.secured": true,
+          "invitations.intact": true,
+          "invitations.delivered": true,
+          "ribbon.owner": "ada",
+          "ribbon.location": "ada",
+          "ribbon.tied": true,
+          "garden.wind": "gusty",
+          "neighbor.want": "quiet",
+          "neighbor.received": true,
+          "neighbor.response": "thanks for the quiet invitation",
+          "ada.knows.garden.wind": "gusty",
+          "ember.knows.garden.wind": "gusty",
+          "ember.knows.neighbor.want": "quiet",
+          "ada.knows.neighbor.want": null,
+          "invitations.loaned_by": null
+        }
+      },
+      "variants": 2
+    },
+    "opening.56fb236de82c": {
+      "section": "openings",
+      "scene": null,
+      "role": "beat",
+      "when": [
+        {
+          "at": "initial",
+          "key": "ember.confidence",
+          "op": "eq",
+          "value": "eager"
+        },
+        {
+          "at": "initial",
+          "key": "garden.wind",
+          "op": "eq",
+          "value": "gusty"
+        },
+        {
+          "at": "initial",
+          "key": "neighbor.want",
+          "op": "eq",
+          "value": "quiet"
+        }
+      ],
+      "evidence": {
+        "state": {
+          "ada.want": "deliver invitations",
+          "ada.memes.Care": 2,
+          "ember.want": "help deliver invitations",
+          "ember.confidence": "eager",
+          "ember.memes.Care": 1,
+          "ember.ready": false,
+          "ember.shielding": false,
+          "invitations.owner": "ada",
+          "invitations.location": "ada",
+          "invitations.fragile": true,
+          "invitations.secured": false,
+          "invitations.intact": true,
+          "invitations.delivered": false,
+          "ribbon.owner": "ada",
+          "ribbon.location": "ada",
+          "ribbon.tied": false,
+          "garden.wind": "gusty",
+          "neighbor.want": "quiet",
+          "neighbor.received": false,
+          "neighbor.response": "none",
+          "ada.knows.garden.wind": null,
+          "ember.knows.garden.wind": null,
+          "ember.knows.neighbor.want": null,
+          "ada.knows.neighbor.want": null,
+          "invitations.loaned_by": null
+        }
+      },
+      "variants": 2
+    },
+    "ending.6a1175a7873a": {
+      "section": "endings",
+      "scene": null,
+      "role": "beat",
+      "when": [
+        {
+          "at": "after",
+          "key": "ada.knows.garden.wind",
+          "op": "eq",
+          "value": "gusty"
+        },
+        {
+          "at": "after",
+          "key": "ember.confidence",
+          "op": "eq",
+          "value": "eager"
+        },
+        {
+          "at": "after",
+          "key": "ember.knows.garden.wind",
+          "op": "eq",
+          "value": null
+        },
+        {
+          "at": "after",
+          "key": "ember.knows.neighbor.want",
+          "op": "eq",
+          "value": null
+        },
+        {
+          "at": "after",
+          "key": "ember.memes.Care",
+          "op": "eq",
+          "value": 1
+        },
+        {
+          "at": "after",
+          "key": "ember.ready",
+          "op": "eq",
+          "value": false
+        },
+        {
+          "at": "after",
+          "key": "ember.shielding",
+          "op": "eq",
+          "value": false
+        },
+        {
+          "at": "after",
+          "key": "garden.wind",
+          "op": "eq",
+          "value": "gusty"
+        },
+        {
+          "at": "after",
+          "key": "invitations.loaned_by",
+          "op": "eq",
+          "value": null
+        },
+        {
+          "at": "after",
+          "key": "invitations.owner",
+          "op": "eq",
+          "value": "ada"
+        },
+        {
+          "at": "after",
+          "key": "neighbor.response",
+          "op": "eq",
+          "value": "thanks for the quiet invitation"
+        },
+        {
+          "at": "after",
+          "key": "neighbor.want",
+          "op": "eq",
+          "value": "quiet"
+        }
+      ],
+      "evidence": {
+        "state": {
+          "ada.want": "deliver invitations",
+          "ada.memes.Care": 2,
+          "ember.want": "help deliver invitations",
+          "ember.confidence": "eager",
+          "ember.memes.Care": 1,
+          "ember.ready": false,
+          "ember.shielding": false,
+          "invitations.owner": "ada",
+          "invitations.location": "neighbor",
+          "invitations.fragile": true,
+          "invitations.secured": true,
+          "invitations.intact": true,
+          "invitations.delivered": true,
+          "ribbon.owner": "ada",
+          "ribbon.location": "ada",
+          "ribbon.tied": true,
+          "garden.wind": "gusty",
+          "neighbor.want": "quiet",
+          "neighbor.received": true,
+          "neighbor.response": "thanks for the quiet invitation",
+          "ada.knows.garden.wind": "gusty",
+          "ember.knows.garden.wind": null,
+          "ember.knows.neighbor.want": null,
+          "ada.knows.neighbor.want": null,
+          "invitations.loaned_by": null
+        }
+      },
+      "variants": 2
+    },
+    "ending.7f661d7e3c3f": {
+      "section": "endings",
+      "scene": null,
+      "role": "beat",
+      "when": [
+        {
+          "at": "after",
+          "key": "ada.knows.garden.wind",
+          "op": "eq",
+          "value": "gusty"
+        },
+        {
+          "at": "after",
+          "key": "ember.confidence",
+          "op": "eq",
+          "value": "eager"
+        },
+        {
+          "at": "after",
+          "key": "ember.knows.garden.wind",
+          "op": "eq",
+          "value": "gusty"
+        },
+        {
+          "at": "after",
+          "key": "ember.knows.neighbor.want",
+          "op": "eq",
+          "value": "quiet"
+        },
+        {
+          "at": "after",
+          "key": "ember.memes.Care",
+          "op": "eq",
+          "value": 2
+        },
+        {
+          "at": "after",
+          "key": "ember.ready",
+          "op": "eq",
+          "value": true
+        },
+        {
+          "at": "after",
+          "key": "ember.shielding",
+          "op": "eq",
+          "value": true
+        },
+        {
+          "at": "after",
+          "key": "garden.wind",
+          "op": "eq",
+          "value": "gusty"
+        },
+        {
+          "at": "after",
+          "key": "invitations.loaned_by",
+          "op": "eq",
+          "value": null
+        },
+        {
+          "at": "after",
+          "key": "invitations.owner",
+          "op": "eq",
+          "value": "ada"
+        },
+        {
+          "at": "after",
+          "key": "neighbor.response",
+          "op": "eq",
+          "value": "thanks for the quiet invitation"
+        },
+        {
+          "at": "after",
+          "key": "neighbor.want",
+          "op": "eq",
+          "value": "quiet"
+        }
+      ],
+      "evidence": {
+        "state": {
+          "ada.want": "deliver invitations",
+          "ada.memes.Care": 2,
+          "ember.want": "help deliver invitations",
+          "ember.confidence": "eager",
+          "ember.memes.Care": 2,
+          "ember.ready": true,
+          "ember.shielding": true,
+          "invitations.owner": "ada",
+          "invitations.location": "neighbor",
+          "invitations.fragile": true,
+          "invitations.secured": true,
+          "invitations.intact": true,
+          "invitations.delivered": true,
+          "ribbon.owner": "ada",
+          "ribbon.location": "ada",
+          "ribbon.tied": true,
+          "garden.wind": "gusty",
+          "neighbor.want": "quiet",
+          "neighbor.received": true,
+          "neighbor.response": "thanks for the quiet invitation",
+          "ada.knows.garden.wind": "gusty",
+          "ember.knows.garden.wind": "gusty",
+          "ember.knows.neighbor.want": "quiet",
+          "ada.knows.neighbor.want": null,
+          "invitations.loaned_by": null
+        }
+      },
+      "variants": 2
+    },
+    "opening.44d6254f0b21": {
+      "section": "openings",
+      "scene": null,
+      "role": "beat",
+      "when": [
+        {
+          "at": "initial",
+          "key": "ember.confidence",
+          "op": "eq",
+          "value": "hesitant"
+        },
+        {
+          "at": "initial",
+          "key": "garden.wind",
+          "op": "eq",
+          "value": "gusty"
+        },
+        {
+          "at": "initial",
+          "key": "neighbor.want",
+          "op": "eq",
+          "value": "join"
+        }
+      ],
+      "evidence": {
+        "state": {
+          "ada.want": "deliver invitations",
+          "ada.memes.Care": 2,
+          "ember.want": "help deliver invitations",
+          "ember.confidence": "hesitant",
+          "ember.memes.Care": 1,
+          "ember.ready": false,
+          "ember.shielding": false,
+          "invitations.owner": "ada",
+          "invitations.location": "ada",
+          "invitations.fragile": true,
+          "invitations.secured": false,
+          "invitations.intact": true,
+          "invitations.delivered": false,
+          "ribbon.owner": "ada",
+          "ribbon.location": "ada",
+          "ribbon.tied": false,
+          "garden.wind": "gusty",
+          "neighbor.want": "join",
+          "neighbor.received": false,
+          "neighbor.response": "none",
+          "ada.knows.garden.wind": null,
+          "ember.knows.garden.wind": null,
+          "ember.knows.neighbor.want": null,
+          "ada.knows.neighbor.want": null,
+          "invitations.loaned_by": null
+        }
+      },
+      "variants": 2
+    },
+    "ending.d4f7d6128ee2": {
+      "section": "endings",
+      "scene": null,
+      "role": "beat",
+      "when": [
+        {
+          "at": "after",
+          "key": "ada.knows.garden.wind",
+          "op": "eq",
+          "value": "gusty"
+        },
+        {
+          "at": "after",
+          "key": "ember.confidence",
+          "op": "eq",
+          "value": "hesitant"
+        },
+        {
+          "at": "after",
+          "key": "ember.knows.garden.wind",
+          "op": "eq",
+          "value": null
+        },
+        {
+          "at": "after",
+          "key": "ember.knows.neighbor.want",
+          "op": "eq",
+          "value": null
+        },
+        {
+          "at": "after",
+          "key": "ember.memes.Care",
+          "op": "eq",
+          "value": 1
+        },
+        {
+          "at": "after",
+          "key": "ember.ready",
+          "op": "eq",
+          "value": false
+        },
+        {
+          "at": "after",
+          "key": "ember.shielding",
+          "op": "eq",
+          "value": false
+        },
+        {
+          "at": "after",
+          "key": "garden.wind",
+          "op": "eq",
+          "value": "gusty"
+        },
+        {
+          "at": "after",
+          "key": "invitations.loaned_by",
+          "op": "eq",
+          "value": null
+        },
+        {
+          "at": "after",
+          "key": "invitations.owner",
+          "op": "eq",
+          "value": "ada"
+        },
+        {
+          "at": "after",
+          "key": "neighbor.response",
+          "op": "eq",
+          "value": "Mina joins the garden gathering"
+        },
+        {
+          "at": "after",
+          "key": "neighbor.want",
+          "op": "eq",
+          "value": "join"
+        }
+      ],
+      "evidence": {
+        "state": {
+          "ada.want": "deliver invitations",
+          "ada.memes.Care": 2,
+          "ember.want": "help deliver invitations",
+          "ember.confidence": "hesitant",
+          "ember.memes.Care": 1,
+          "ember.ready": false,
+          "ember.shielding": false,
+          "invitations.owner": "ada",
+          "invitations.location": "neighbor",
+          "invitations.fragile": true,
+          "invitations.secured": true,
+          "invitations.intact": true,
+          "invitations.delivered": true,
+          "ribbon.owner": "ada",
+          "ribbon.location": "ada",
+          "ribbon.tied": true,
+          "garden.wind": "gusty",
+          "neighbor.want": "join",
+          "neighbor.received": true,
+          "neighbor.response": "Mina joins the garden gathering",
+          "ada.knows.garden.wind": "gusty",
+          "ember.knows.garden.wind": null,
+          "ember.knows.neighbor.want": null,
+          "ada.knows.neighbor.want": null,
+          "invitations.loaned_by": null
+        }
+      },
+      "variants": 2
+    },
+    "scene.choose_to_help.3488597ddfaf": {
+      "section": "scenes",
+      "scene": "choose_to_help",
+      "role": "beat",
+      "when": [
+        {
+          "at": "before",
+          "key": "ember.knows.garden.wind",
+          "op": "eq",
+          "value": "gusty"
+        },
+        {
+          "at": "before",
+          "key": "ember.knows.neighbor.want",
+          "op": "eq",
+          "value": "join"
+        },
+        {
+          "at": "before",
+          "key": "ember.memes.Care",
+          "op": "eq",
+          "value": 1
+        },
+        {
+          "at": "before",
+          "key": "ember.ready",
+          "op": "eq",
+          "value": false
+        },
+        {
+          "at": "before",
+          "key": "ember.shielding",
+          "op": "eq",
+          "value": false
+        },
+        {
+          "at": "before",
+          "key": "ember.want",
+          "op": "eq",
+          "value": "help deliver invitations"
+        },
+        {
+          "at": "after",
+          "key": "ember.memes.Care",
+          "op": "eq",
+          "value": 2
+        },
+        {
+          "at": "after",
+          "key": "ember.ready",
+          "op": "eq",
+          "value": true
+        },
+        {
+          "at": "after",
+          "key": "ember.shielding",
+          "op": "eq",
+          "value": true
+        }
+      ],
+      "evidence": {
+        "summary": "Ember chooses to shield the cargo",
+        "actors": [
+          "ember"
+        ],
+        "changes": {
+          "ember.memes.Care": {
+            "before": 1,
+            "after": 2
+          },
+          "ember.ready": {
+            "before": false,
+            "after": true
+          },
+          "ember.shielding": {
+            "before": false,
+            "after": true
+          }
+        },
+        "before": {
+          "ember.knows.garden.wind": "gusty",
+          "ember.knows.neighbor.want": "join",
+          "ember.memes.Care": 1,
+          "ember.ready": false,
+          "ember.shielding": false,
+          "ember.want": "help deliver invitations"
+        }
+      },
+      "variants": 1
+    },
+    "ending.acbdc2e0c1e2": {
+      "section": "endings",
+      "scene": null,
+      "role": "beat",
+      "when": [
+        {
+          "at": "after",
+          "key": "ada.knows.garden.wind",
+          "op": "eq",
+          "value": "gusty"
+        },
+        {
+          "at": "after",
+          "key": "ember.confidence",
+          "op": "eq",
+          "value": "hesitant"
+        },
+        {
+          "at": "after",
+          "key": "ember.knows.garden.wind",
+          "op": "eq",
+          "value": "gusty"
+        },
+        {
+          "at": "after",
+          "key": "ember.knows.neighbor.want",
+          "op": "eq",
+          "value": "join"
+        },
+        {
+          "at": "after",
+          "key": "ember.memes.Care",
+          "op": "eq",
+          "value": 2
+        },
+        {
+          "at": "after",
+          "key": "ember.ready",
+          "op": "eq",
+          "value": true
+        },
+        {
+          "at": "after",
+          "key": "ember.shielding",
+          "op": "eq",
+          "value": true
+        },
+        {
+          "at": "after",
+          "key": "garden.wind",
+          "op": "eq",
+          "value": "gusty"
+        },
+        {
+          "at": "after",
+          "key": "invitations.loaned_by",
+          "op": "eq",
+          "value": null
+        },
+        {
+          "at": "after",
+          "key": "invitations.owner",
+          "op": "eq",
+          "value": "ada"
+        },
+        {
+          "at": "after",
+          "key": "neighbor.response",
+          "op": "eq",
+          "value": "Mina joins the garden gathering"
+        },
+        {
+          "at": "after",
+          "key": "neighbor.want",
+          "op": "eq",
+          "value": "join"
+        }
+      ],
+      "evidence": {
+        "state": {
+          "ada.want": "deliver invitations",
+          "ada.memes.Care": 2,
+          "ember.want": "help deliver invitations",
+          "ember.confidence": "hesitant",
+          "ember.memes.Care": 2,
+          "ember.ready": true,
+          "ember.shielding": true,
+          "invitations.owner": "ada",
+          "invitations.location": "neighbor",
+          "invitations.fragile": true,
+          "invitations.secured": true,
+          "invitations.intact": true,
+          "invitations.delivered": true,
+          "ribbon.owner": "ada",
+          "ribbon.location": "ada",
+          "ribbon.tied": true,
+          "garden.wind": "gusty",
+          "neighbor.want": "join",
+          "neighbor.received": true,
+          "neighbor.response": "Mina joins the garden gathering",
+          "ada.knows.garden.wind": "gusty",
+          "ember.knows.garden.wind": "gusty",
+          "ember.knows.neighbor.want": "join",
+          "ada.knows.neighbor.want": null,
+          "invitations.loaned_by": null
+        }
+      },
+      "variants": 2
+    },
+    "opening.e0c86e34767c": {
+      "section": "openings",
+      "scene": null,
+      "role": "beat",
+      "when": [
+        {
+          "at": "initial",
+          "key": "ember.confidence",
+          "op": "eq",
+          "value": "eager"
+        },
+        {
+          "at": "initial",
+          "key": "garden.wind",
+          "op": "eq",
+          "value": "gusty"
+        },
+        {
+          "at": "initial",
+          "key": "neighbor.want",
+          "op": "eq",
+          "value": "join"
+        }
+      ],
+      "evidence": {
+        "state": {
+          "ada.want": "deliver invitations",
+          "ada.memes.Care": 2,
+          "ember.want": "help deliver invitations",
+          "ember.confidence": "eager",
+          "ember.memes.Care": 1,
+          "ember.ready": false,
+          "ember.shielding": false,
+          "invitations.owner": "ada",
+          "invitations.location": "ada",
+          "invitations.fragile": true,
+          "invitations.secured": false,
+          "invitations.intact": true,
+          "invitations.delivered": false,
+          "ribbon.owner": "ada",
+          "ribbon.location": "ada",
+          "ribbon.tied": false,
+          "garden.wind": "gusty",
+          "neighbor.want": "join",
+          "neighbor.received": false,
+          "neighbor.response": "none",
+          "ada.knows.garden.wind": null,
+          "ember.knows.garden.wind": null,
+          "ember.knows.neighbor.want": null,
+          "ada.knows.neighbor.want": null,
+          "invitations.loaned_by": null
+        }
+      },
+      "variants": 2
+    },
+    "ending.df31204bb4f0": {
+      "section": "endings",
+      "scene": null,
+      "role": "beat",
+      "when": [
+        {
+          "at": "after",
+          "key": "ada.knows.garden.wind",
+          "op": "eq",
+          "value": "gusty"
+        },
+        {
+          "at": "after",
+          "key": "ember.confidence",
+          "op": "eq",
+          "value": "eager"
+        },
+        {
+          "at": "after",
+          "key": "ember.knows.garden.wind",
+          "op": "eq",
+          "value": null
+        },
+        {
+          "at": "after",
+          "key": "ember.knows.neighbor.want",
+          "op": "eq",
+          "value": null
+        },
+        {
+          "at": "after",
+          "key": "ember.memes.Care",
+          "op": "eq",
+          "value": 1
+        },
+        {
+          "at": "after",
+          "key": "ember.ready",
+          "op": "eq",
+          "value": false
+        },
+        {
+          "at": "after",
+          "key": "ember.shielding",
+          "op": "eq",
+          "value": false
+        },
+        {
+          "at": "after",
+          "key": "garden.wind",
+          "op": "eq",
+          "value": "gusty"
+        },
+        {
+          "at": "after",
+          "key": "invitations.loaned_by",
+          "op": "eq",
+          "value": null
+        },
+        {
+          "at": "after",
+          "key": "invitations.owner",
+          "op": "eq",
+          "value": "ada"
+        },
+        {
+          "at": "after",
+          "key": "neighbor.response",
+          "op": "eq",
+          "value": "Mina joins the garden gathering"
+        },
+        {
+          "at": "after",
+          "key": "neighbor.want",
+          "op": "eq",
+          "value": "join"
+        }
+      ],
+      "evidence": {
+        "state": {
+          "ada.want": "deliver invitations",
+          "ada.memes.Care": 2,
+          "ember.want": "help deliver invitations",
+          "ember.confidence": "eager",
+          "ember.memes.Care": 1,
+          "ember.ready": false,
+          "ember.shielding": false,
+          "invitations.owner": "ada",
+          "invitations.location": "neighbor",
+          "invitations.fragile": true,
+          "invitations.secured": true,
+          "invitations.intact": true,
+          "invitations.delivered": true,
+          "ribbon.owner": "ada",
+          "ribbon.location": "ada",
+          "ribbon.tied": true,
+          "garden.wind": "gusty",
+          "neighbor.want": "join",
+          "neighbor.received": true,
+          "neighbor.response": "Mina joins the garden gathering",
+          "ada.knows.garden.wind": "gusty",
+          "ember.knows.garden.wind": null,
+          "ember.knows.neighbor.want": null,
+          "ada.knows.neighbor.want": null,
+          "invitations.loaned_by": null
+        }
+      },
+      "variants": 2
+    },
+    "ending.fb17089f3341": {
+      "section": "endings",
+      "scene": null,
+      "role": "beat",
+      "when": [
+        {
+          "at": "after",
+          "key": "ada.knows.garden.wind",
+          "op": "eq",
+          "value": "gusty"
+        },
+        {
+          "at": "after",
+          "key": "ember.confidence",
+          "op": "eq",
+          "value": "eager"
+        },
+        {
+          "at": "after",
+          "key": "ember.knows.garden.wind",
+          "op": "eq",
+          "value": "gusty"
+        },
+        {
+          "at": "after",
+          "key": "ember.knows.neighbor.want",
+          "op": "eq",
+          "value": "join"
+        },
+        {
+          "at": "after",
+          "key": "ember.memes.Care",
+          "op": "eq",
+          "value": 2
+        },
+        {
+          "at": "after",
+          "key": "ember.ready",
+          "op": "eq",
+          "value": true
+        },
+        {
+          "at": "after",
+          "key": "ember.shielding",
+          "op": "eq",
+          "value": true
+        },
+        {
+          "at": "after",
+          "key": "garden.wind",
+          "op": "eq",
+          "value": "gusty"
+        },
+        {
+          "at": "after",
+          "key": "invitations.loaned_by",
+          "op": "eq",
+          "value": null
+        },
+        {
+          "at": "after",
+          "key": "invitations.owner",
+          "op": "eq",
+          "value": "ada"
+        },
+        {
+          "at": "after",
+          "key": "neighbor.response",
+          "op": "eq",
+          "value": "Mina joins the garden gathering"
+        },
+        {
+          "at": "after",
+          "key": "neighbor.want",
+          "op": "eq",
+          "value": "join"
+        }
+      ],
+      "evidence": {
+        "state": {
+          "ada.want": "deliver invitations",
+          "ada.memes.Care": 2,
+          "ember.want": "help deliver invitations",
+          "ember.confidence": "eager",
+          "ember.memes.Care": 2,
+          "ember.ready": true,
+          "ember.shielding": true,
+          "invitations.owner": "ada",
+          "invitations.location": "neighbor",
+          "invitations.fragile": true,
+          "invitations.secured": true,
+          "invitations.intact": true,
+          "invitations.delivered": true,
+          "ribbon.owner": "ada",
+          "ribbon.location": "ada",
+          "ribbon.tied": true,
+          "garden.wind": "gusty",
+          "neighbor.want": "join",
+          "neighbor.received": true,
+          "neighbor.response": "Mina joins the garden gathering",
+          "ada.knows.garden.wind": "gusty",
+          "ember.knows.garden.wind": "gusty",
+          "ember.knows.neighbor.want": "join",
+          "ada.knows.neighbor.want": null,
+          "invitations.loaned_by": null
+        }
+      },
+      "variants": 2
+    },
+    "scene.lend_invitations.def1a085b09f": {
+      "section": "scenes",
+      "scene": "lend_invitations",
+      "role": "bridge",
+      "when": [
+        {
+          "at": "before",
+          "key": "ember.ready",
+          "op": "eq",
+          "value": true
+        },
+        {
+          "at": "before",
+          "key": "invitations.loaned_by",
+          "op": "eq",
+          "value": null
+        },
+        {
+          "at": "before",
+          "key": "invitations.location",
+          "op": "eq",
+          "value": "ada"
+        },
+        {
+          "at": "before",
+          "key": "invitations.owner",
+          "op": "eq",
+          "value": "ada"
+        },
+        {
+          "at": "before",
+          "key": "invitations.secured",
+          "op": "eq",
+          "value": true
+        },
+        {
+          "at": "after",
+          "key": "invitations.loaned_by",
+          "op": "eq",
+          "value": "ada"
+        },
+        {
+          "at": "after",
+          "key": "invitations.owner",
+          "op": "eq",
+          "value": "ember"
+        }
+      ],
+      "evidence": {
+        "summary": "Ada lends Ember the invitations",
+        "actors": [
+          "ada",
+          "ember"
+        ],
+        "changes": {
+          "invitations.owner": {
+            "before": "ada",
+            "after": "ember"
+          },
+          "invitations.loaned_by": {
+            "before": null,
+            "after": "ada"
+          }
+        },
+        "before": {
+          "ember.ready": true,
+          "invitations.loaned_by": null,
+          "invitations.location": "ada",
+          "invitations.owner": "ada",
+          "invitations.secured": true
+        }
+      },
+      "variants": 1
+    },
+    "scene.ember_carries.470f227221bc": {
+      "section": "scenes",
+      "scene": "ember_carries",
+      "role": "bridge",
+      "when": [
+        {
+          "at": "before",
+          "key": "ember.ready",
+          "op": "eq",
+          "value": true
+        },
+        {
+          "at": "before",
+          "key": "ember.shielding",
+          "op": "eq",
+          "value": true
+        },
+        {
+          "at": "before",
+          "key": "invitations.delivered",
+          "op": "eq",
+          "value": false
+        },
+        {
+          "at": "before",
+          "key": "invitations.intact",
+          "op": "eq",
+          "value": true
+        },
+        {
+          "at": "before",
+          "key": "invitations.location",
+          "op": "eq",
+          "value": "ada"
+        },
+        {
+          "at": "before",
+          "key": "invitations.owner",
+          "op": "eq",
+          "value": "ember"
+        },
+        {
+          "at": "after",
+          "key": "invitations.location",
+          "op": "eq",
+          "value": "neighbor"
+        }
+      ],
+      "evidence": {
+        "summary": "Ember carries the shielded invitations to Mina",
+        "actors": [
+          "ember",
+          "neighbor"
+        ],
+        "changes": {
+          "invitations.location": {
+            "before": "ada",
+            "after": "neighbor"
+          }
+        },
+        "before": {
+          "ember.ready": true,
+          "ember.shielding": true,
+          "invitations.delivered": false,
+          "invitations.intact": true,
+          "invitations.location": "ada",
+          "invitations.owner": "ember"
+        }
+      },
+      "variants": 1
+    },
+    "scene.ember_delivers.6d6c93d0f634": {
+      "section": "scenes",
+      "scene": "ember_delivers",
+      "role": "beat",
+      "when": [
+        {
+          "at": "before",
+          "key": "invitations.delivered",
+          "op": "eq",
+          "value": false
+        },
+        {
+          "at": "before",
+          "key": "invitations.intact",
+          "op": "eq",
+          "value": true
+        },
+        {
+          "at": "before",
+          "key": "invitations.location",
+          "op": "eq",
+          "value": "neighbor"
+        },
+        {
+          "at": "before",
+          "key": "invitations.owner",
+          "op": "eq",
+          "value": "ember"
+        },
+        {
+          "at": "before",
+          "key": "neighbor.received",
+          "op": "eq",
+          "value": false
+        },
+        {
+          "at": "after",
+          "key": "invitations.delivered",
+          "op": "eq",
+          "value": true
+        },
+        {
+          "at": "after",
+          "key": "neighbor.received",
+          "op": "eq",
+          "value": true
+        }
+      ],
+      "evidence": {
+        "summary": "Ember delivers the intact invitations",
+        "actors": [
+          "ember"
+        ],
+        "changes": {
+          "invitations.delivered": {
+            "before": false,
+            "after": true
+          },
+          "neighbor.received": {
+            "before": false,
+            "after": true
+          }
+        },
+        "before": {
+          "invitations.delivered": false,
+          "invitations.intact": true,
+          "invitations.location": "neighbor",
+          "invitations.owner": "ember",
+          "neighbor.received": false
+        }
+      },
+      "variants": 1
+    },
+    "ending.28031e87cafd": {
+      "section": "endings",
+      "scene": null,
+      "role": "beat",
+      "when": [
+        {
+          "at": "after",
+          "key": "ada.knows.garden.wind",
+          "op": "eq",
+          "value": "breezy"
+        },
+        {
+          "at": "after",
+          "key": "ember.confidence",
+          "op": "eq",
+          "value": "hesitant"
+        },
+        {
+          "at": "after",
+          "key": "ember.knows.garden.wind",
+          "op": "eq",
+          "value": "breezy"
+        },
+        {
+          "at": "after",
+          "key": "ember.knows.neighbor.want",
+          "op": "eq",
+          "value": "quiet"
+        },
+        {
+          "at": "after",
+          "key": "ember.memes.Care",
+          "op": "eq",
+          "value": 2
+        },
+        {
+          "at": "after",
+          "key": "ember.ready",
+          "op": "eq",
+          "value": true
+        },
+        {
+          "at": "after",
+          "key": "ember.shielding",
+          "op": "eq",
+          "value": true
+        },
+        {
+          "at": "after",
+          "key": "garden.wind",
+          "op": "eq",
+          "value": "breezy"
+        },
+        {
+          "at": "after",
+          "key": "invitations.loaned_by",
+          "op": "eq",
+          "value": "ada"
+        },
+        {
+          "at": "after",
+          "key": "invitations.owner",
+          "op": "eq",
+          "value": "ember"
+        },
+        {
+          "at": "after",
+          "key": "neighbor.response",
+          "op": "eq",
+          "value": "thanks for the quiet invitation"
+        },
+        {
+          "at": "after",
+          "key": "neighbor.want",
+          "op": "eq",
+          "value": "quiet"
+        }
+      ],
+      "evidence": {
+        "state": {
+          "ada.want": "deliver invitations",
+          "ada.memes.Care": 2,
+          "ember.want": "help deliver invitations",
+          "ember.confidence": "hesitant",
+          "ember.memes.Care": 2,
+          "ember.ready": true,
+          "ember.shielding": true,
+          "invitations.owner": "ember",
+          "invitations.location": "neighbor",
+          "invitations.fragile": true,
+          "invitations.secured": true,
+          "invitations.intact": true,
+          "invitations.delivered": true,
+          "ribbon.owner": "ada",
+          "ribbon.location": "ada",
+          "ribbon.tied": true,
+          "garden.wind": "breezy",
+          "neighbor.want": "quiet",
+          "neighbor.received": true,
+          "neighbor.response": "thanks for the quiet invitation",
+          "ada.knows.garden.wind": "breezy",
+          "ember.knows.garden.wind": "breezy",
+          "ember.knows.neighbor.want": "quiet",
+          "ada.knows.neighbor.want": null,
+          "invitations.loaned_by": "ada"
+        }
+      },
+      "variants": 2
+    },
+    "ending.d23668265785": {
+      "section": "endings",
+      "scene": null,
+      "role": "beat",
+      "when": [
+        {
+          "at": "after",
+          "key": "ada.knows.garden.wind",
+          "op": "eq",
+          "value": "breezy"
+        },
+        {
+          "at": "after",
+          "key": "ember.confidence",
+          "op": "eq",
+          "value": "hesitant"
+        },
+        {
+          "at": "after",
+          "key": "ember.knows.garden.wind",
+          "op": "eq",
+          "value": "breezy"
+        },
+        {
+          "at": "after",
+          "key": "ember.knows.neighbor.want",
+          "op": "eq",
+          "value": "join"
+        },
+        {
+          "at": "after",
+          "key": "ember.memes.Care",
+          "op": "eq",
+          "value": 2
+        },
+        {
+          "at": "after",
+          "key": "ember.ready",
+          "op": "eq",
+          "value": true
+        },
+        {
+          "at": "after",
+          "key": "ember.shielding",
+          "op": "eq",
+          "value": true
+        },
+        {
+          "at": "after",
+          "key": "garden.wind",
+          "op": "eq",
+          "value": "breezy"
+        },
+        {
+          "at": "after",
+          "key": "invitations.loaned_by",
+          "op": "eq",
+          "value": "ada"
+        },
+        {
+          "at": "after",
+          "key": "invitations.owner",
+          "op": "eq",
+          "value": "ember"
+        },
+        {
+          "at": "after",
+          "key": "neighbor.response",
+          "op": "eq",
+          "value": "Mina joins the garden gathering"
+        },
+        {
+          "at": "after",
+          "key": "neighbor.want",
+          "op": "eq",
+          "value": "join"
+        }
+      ],
+      "evidence": {
+        "state": {
+          "ada.want": "deliver invitations",
+          "ada.memes.Care": 2,
+          "ember.want": "help deliver invitations",
+          "ember.confidence": "hesitant",
+          "ember.memes.Care": 2,
+          "ember.ready": true,
+          "ember.shielding": true,
+          "invitations.owner": "ember",
+          "invitations.location": "neighbor",
+          "invitations.fragile": true,
+          "invitations.secured": true,
+          "invitations.intact": true,
+          "invitations.delivered": true,
+          "ribbon.owner": "ada",
+          "ribbon.location": "ada",
+          "ribbon.tied": true,
+          "garden.wind": "breezy",
+          "neighbor.want": "join",
+          "neighbor.received": true,
+          "neighbor.response": "Mina joins the garden gathering",
+          "ada.knows.garden.wind": "breezy",
+          "ember.knows.garden.wind": "breezy",
+          "ember.knows.neighbor.want": "join",
+          "ada.knows.neighbor.want": null,
+          "invitations.loaned_by": "ada"
+        }
+      },
+      "variants": 2
+    },
+    "ending.05fa3f66e7f0": {
+      "section": "endings",
+      "scene": null,
+      "role": "beat",
+      "when": [
+        {
+          "at": "after",
+          "key": "ada.knows.garden.wind",
+          "op": "eq",
+          "value": "still"
+        },
+        {
+          "at": "after",
+          "key": "ember.confidence",
+          "op": "eq",
+          "value": "hesitant"
+        },
+        {
+          "at": "after",
+          "key": "ember.knows.garden.wind",
+          "op": "eq",
+          "value": "still"
+        },
+        {
+          "at": "after",
+          "key": "ember.knows.neighbor.want",
+          "op": "eq",
+          "value": "join"
+        },
+        {
+          "at": "after",
+          "key": "ember.memes.Care",
+          "op": "eq",
+          "value": 2
+        },
+        {
+          "at": "after",
+          "key": "ember.ready",
+          "op": "eq",
+          "value": true
+        },
+        {
+          "at": "after",
+          "key": "ember.shielding",
+          "op": "eq",
+          "value": true
+        },
+        {
+          "at": "after",
+          "key": "garden.wind",
+          "op": "eq",
+          "value": "still"
+        },
+        {
+          "at": "after",
+          "key": "invitations.loaned_by",
+          "op": "eq",
+          "value": "ada"
+        },
+        {
+          "at": "after",
+          "key": "invitations.owner",
+          "op": "eq",
+          "value": "ember"
+        },
+        {
+          "at": "after",
+          "key": "neighbor.response",
+          "op": "eq",
+          "value": "Mina joins the garden gathering"
+        },
+        {
+          "at": "after",
+          "key": "neighbor.want",
+          "op": "eq",
+          "value": "join"
+        }
+      ],
+      "evidence": {
+        "state": {
+          "ada.want": "deliver invitations",
+          "ada.memes.Care": 2,
+          "ember.want": "help deliver invitations",
+          "ember.confidence": "hesitant",
+          "ember.memes.Care": 2,
+          "ember.ready": true,
+          "ember.shielding": true,
+          "invitations.owner": "ember",
+          "invitations.location": "neighbor",
+          "invitations.fragile": true,
+          "invitations.secured": true,
+          "invitations.intact": true,
+          "invitations.delivered": true,
+          "ribbon.owner": "ada",
+          "ribbon.location": "ada",
+          "ribbon.tied": true,
+          "garden.wind": "still",
+          "neighbor.want": "join",
+          "neighbor.received": true,
+          "neighbor.response": "Mina joins the garden gathering",
+          "ada.knows.garden.wind": "still",
+          "ember.knows.garden.wind": "still",
+          "ember.knows.neighbor.want": "join",
+          "ada.knows.neighbor.want": null,
+          "invitations.loaned_by": "ada"
+        }
+      },
+      "variants": 2
+    },
+    "ending.9eca651eb63d": {
+      "section": "endings",
+      "scene": null,
+      "role": "beat",
+      "when": [
+        {
+          "at": "after",
+          "key": "ada.knows.garden.wind",
+          "op": "eq",
+          "value": "still"
+        },
+        {
+          "at": "after",
+          "key": "ember.confidence",
+          "op": "eq",
+          "value": "eager"
+        },
+        {
+          "at": "after",
+          "key": "ember.knows.garden.wind",
+          "op": "eq",
+          "value": "still"
+        },
+        {
+          "at": "after",
+          "key": "ember.knows.neighbor.want",
+          "op": "eq",
+          "value": "quiet"
+        },
+        {
+          "at": "after",
+          "key": "ember.memes.Care",
+          "op": "eq",
+          "value": 2
+        },
+        {
+          "at": "after",
+          "key": "ember.ready",
+          "op": "eq",
+          "value": true
+        },
+        {
+          "at": "after",
+          "key": "ember.shielding",
+          "op": "eq",
+          "value": true
+        },
+        {
+          "at": "after",
+          "key": "garden.wind",
+          "op": "eq",
+          "value": "still"
+        },
+        {
+          "at": "after",
+          "key": "invitations.loaned_by",
+          "op": "eq",
+          "value": "ada"
+        },
+        {
+          "at": "after",
+          "key": "invitations.owner",
+          "op": "eq",
+          "value": "ember"
+        },
+        {
+          "at": "after",
+          "key": "neighbor.response",
+          "op": "eq",
+          "value": "thanks for the quiet invitation"
+        },
+        {
+          "at": "after",
+          "key": "neighbor.want",
+          "op": "eq",
+          "value": "quiet"
+        }
+      ],
+      "evidence": {
+        "state": {
+          "ada.want": "deliver invitations",
+          "ada.memes.Care": 2,
+          "ember.want": "help deliver invitations",
+          "ember.confidence": "eager",
+          "ember.memes.Care": 2,
+          "ember.ready": true,
+          "ember.shielding": true,
+          "invitations.owner": "ember",
+          "invitations.location": "neighbor",
+          "invitations.fragile": true,
+          "invitations.secured": true,
+          "invitations.intact": true,
+          "invitations.delivered": true,
+          "ribbon.owner": "ada",
+          "ribbon.location": "ada",
+          "ribbon.tied": true,
+          "garden.wind": "still",
+          "neighbor.want": "quiet",
+          "neighbor.received": true,
+          "neighbor.response": "thanks for the quiet invitation",
+          "ada.knows.garden.wind": "still",
+          "ember.knows.garden.wind": "still",
+          "ember.knows.neighbor.want": "quiet",
+          "ada.knows.neighbor.want": null,
+          "invitations.loaned_by": "ada"
+        }
+      },
+      "variants": 2
+    },
+    "ending.33a89d4184d0": {
+      "section": "endings",
+      "scene": null,
+      "role": "beat",
+      "when": [
+        {
+          "at": "after",
+          "key": "ada.knows.garden.wind",
+          "op": "eq",
+          "value": "breezy"
+        },
+        {
+          "at": "after",
+          "key": "ember.confidence",
+          "op": "eq",
+          "value": "eager"
+        },
+        {
+          "at": "after",
+          "key": "ember.knows.garden.wind",
+          "op": "eq",
+          "value": "breezy"
+        },
+        {
+          "at": "after",
+          "key": "ember.knows.neighbor.want",
+          "op": "eq",
+          "value": "join"
+        },
+        {
+          "at": "after",
+          "key": "ember.memes.Care",
+          "op": "eq",
+          "value": 2
+        },
+        {
+          "at": "after",
+          "key": "ember.ready",
+          "op": "eq",
+          "value": true
+        },
+        {
+          "at": "after",
+          "key": "ember.shielding",
+          "op": "eq",
+          "value": true
+        },
+        {
+          "at": "after",
+          "key": "garden.wind",
+          "op": "eq",
+          "value": "breezy"
+        },
+        {
+          "at": "after",
+          "key": "invitations.loaned_by",
+          "op": "eq",
+          "value": "ada"
+        },
+        {
+          "at": "after",
+          "key": "invitations.owner",
+          "op": "eq",
+          "value": "ember"
+        },
+        {
+          "at": "after",
+          "key": "neighbor.response",
+          "op": "eq",
+          "value": "Mina joins the garden gathering"
+        },
+        {
+          "at": "after",
+          "key": "neighbor.want",
+          "op": "eq",
+          "value": "join"
+        }
+      ],
+      "evidence": {
+        "state": {
+          "ada.want": "deliver invitations",
+          "ada.memes.Care": 2,
+          "ember.want": "help deliver invitations",
+          "ember.confidence": "eager",
+          "ember.memes.Care": 2,
+          "ember.ready": true,
+          "ember.shielding": true,
+          "invitations.owner": "ember",
+          "invitations.location": "neighbor",
+          "invitations.fragile": true,
+          "invitations.secured": true,
+          "invitations.intact": true,
+          "invitations.delivered": true,
+          "ribbon.owner": "ada",
+          "ribbon.location": "ada",
+          "ribbon.tied": true,
+          "garden.wind": "breezy",
+          "neighbor.want": "join",
+          "neighbor.received": true,
+          "neighbor.response": "Mina joins the garden gathering",
+          "ada.knows.garden.wind": "breezy",
+          "ember.knows.garden.wind": "breezy",
+          "ember.knows.neighbor.want": "join",
+          "ada.knows.neighbor.want": null,
+          "invitations.loaned_by": "ada"
+        }
+      },
+      "variants": 2
+    },
+    "ending.99359716b347": {
+      "section": "endings",
+      "scene": null,
+      "role": "beat",
+      "when": [
+        {
+          "at": "after",
+          "key": "ada.knows.garden.wind",
+          "op": "eq",
+          "value": "still"
+        },
+        {
+          "at": "after",
+          "key": "ember.confidence",
+          "op": "eq",
+          "value": "hesitant"
+        },
+        {
+          "at": "after",
+          "key": "ember.knows.garden.wind",
+          "op": "eq",
+          "value": "still"
+        },
+        {
+          "at": "after",
+          "key": "ember.knows.neighbor.want",
+          "op": "eq",
+          "value": "quiet"
+        },
+        {
+          "at": "after",
+          "key": "ember.memes.Care",
+          "op": "eq",
+          "value": 2
+        },
+        {
+          "at": "after",
+          "key": "ember.ready",
+          "op": "eq",
+          "value": true
+        },
+        {
+          "at": "after",
+          "key": "ember.shielding",
+          "op": "eq",
+          "value": true
+        },
+        {
+          "at": "after",
+          "key": "garden.wind",
+          "op": "eq",
+          "value": "still"
+        },
+        {
+          "at": "after",
+          "key": "invitations.loaned_by",
+          "op": "eq",
+          "value": "ada"
+        },
+        {
+          "at": "after",
+          "key": "invitations.owner",
+          "op": "eq",
+          "value": "ember"
+        },
+        {
+          "at": "after",
+          "key": "neighbor.response",
+          "op": "eq",
+          "value": "thanks for the quiet invitation"
+        },
+        {
+          "at": "after",
+          "key": "neighbor.want",
+          "op": "eq",
+          "value": "quiet"
+        }
+      ],
+      "evidence": {
+        "state": {
+          "ada.want": "deliver invitations",
+          "ada.memes.Care": 2,
+          "ember.want": "help deliver invitations",
+          "ember.confidence": "hesitant",
+          "ember.memes.Care": 2,
+          "ember.ready": true,
+          "ember.shielding": true,
+          "invitations.owner": "ember",
+          "invitations.location": "neighbor",
+          "invitations.fragile": true,
+          "invitations.secured": true,
+          "invitations.intact": true,
+          "invitations.delivered": true,
+          "ribbon.owner": "ada",
+          "ribbon.location": "ada",
+          "ribbon.tied": true,
+          "garden.wind": "still",
+          "neighbor.want": "quiet",
+          "neighbor.received": true,
+          "neighbor.response": "thanks for the quiet invitation",
+          "ada.knows.garden.wind": "still",
+          "ember.knows.garden.wind": "still",
+          "ember.knows.neighbor.want": "quiet",
+          "ada.knows.neighbor.want": null,
+          "invitations.loaned_by": "ada"
+        }
+      },
+      "variants": 2
+    },
+    "ending.cfb9e8889d8a": {
+      "section": "endings",
+      "scene": null,
+      "role": "beat",
+      "when": [
+        {
+          "at": "after",
+          "key": "ada.knows.garden.wind",
+          "op": "eq",
+          "value": "gusty"
+        },
+        {
+          "at": "after",
+          "key": "ember.confidence",
+          "op": "eq",
+          "value": "eager"
+        },
+        {
+          "at": "after",
+          "key": "ember.knows.garden.wind",
+          "op": "eq",
+          "value": "gusty"
+        },
+        {
+          "at": "after",
+          "key": "ember.knows.neighbor.want",
+          "op": "eq",
+          "value": "quiet"
+        },
+        {
+          "at": "after",
+          "key": "ember.memes.Care",
+          "op": "eq",
+          "value": 2
+        },
+        {
+          "at": "after",
+          "key": "ember.ready",
+          "op": "eq",
+          "value": true
+        },
+        {
+          "at": "after",
+          "key": "ember.shielding",
+          "op": "eq",
+          "value": true
+        },
+        {
+          "at": "after",
+          "key": "garden.wind",
+          "op": "eq",
+          "value": "gusty"
+        },
+        {
+          "at": "after",
+          "key": "invitations.loaned_by",
+          "op": "eq",
+          "value": "ada"
+        },
+        {
+          "at": "after",
+          "key": "invitations.owner",
+          "op": "eq",
+          "value": "ember"
+        },
+        {
+          "at": "after",
+          "key": "neighbor.response",
+          "op": "eq",
+          "value": "thanks for the quiet invitation"
+        },
+        {
+          "at": "after",
+          "key": "neighbor.want",
+          "op": "eq",
+          "value": "quiet"
+        }
+      ],
+      "evidence": {
+        "state": {
+          "ada.want": "deliver invitations",
+          "ada.memes.Care": 2,
+          "ember.want": "help deliver invitations",
+          "ember.confidence": "eager",
+          "ember.memes.Care": 2,
+          "ember.ready": true,
+          "ember.shielding": true,
+          "invitations.owner": "ember",
+          "invitations.location": "neighbor",
+          "invitations.fragile": true,
+          "invitations.secured": true,
+          "invitations.intact": true,
+          "invitations.delivered": true,
+          "ribbon.owner": "ada",
+          "ribbon.location": "ada",
+          "ribbon.tied": true,
+          "garden.wind": "gusty",
+          "neighbor.want": "quiet",
+          "neighbor.received": true,
+          "neighbor.response": "thanks for the quiet invitation",
+          "ada.knows.garden.wind": "gusty",
+          "ember.knows.garden.wind": "gusty",
+          "ember.knows.neighbor.want": "quiet",
+          "ada.knows.neighbor.want": null,
+          "invitations.loaned_by": "ada"
+        }
+      },
+      "variants": 2
+    },
+    "ending.a0090c0a456f": {
+      "section": "endings",
+      "scene": null,
+      "role": "beat",
+      "when": [
+        {
+          "at": "after",
+          "key": "ada.knows.garden.wind",
+          "op": "eq",
+          "value": "still"
+        },
+        {
+          "at": "after",
+          "key": "ember.confidence",
+          "op": "eq",
+          "value": "eager"
+        },
+        {
+          "at": "after",
+          "key": "ember.knows.garden.wind",
+          "op": "eq",
+          "value": "still"
+        },
+        {
+          "at": "after",
+          "key": "ember.knows.neighbor.want",
+          "op": "eq",
+          "value": "join"
+        },
+        {
+          "at": "after",
+          "key": "ember.memes.Care",
+          "op": "eq",
+          "value": 2
+        },
+        {
+          "at": "after",
+          "key": "ember.ready",
+          "op": "eq",
+          "value": true
+        },
+        {
+          "at": "after",
+          "key": "ember.shielding",
+          "op": "eq",
+          "value": true
+        },
+        {
+          "at": "after",
+          "key": "garden.wind",
+          "op": "eq",
+          "value": "still"
+        },
+        {
+          "at": "after",
+          "key": "invitations.loaned_by",
+          "op": "eq",
+          "value": "ada"
+        },
+        {
+          "at": "after",
+          "key": "invitations.owner",
+          "op": "eq",
+          "value": "ember"
+        },
+        {
+          "at": "after",
+          "key": "neighbor.response",
+          "op": "eq",
+          "value": "Mina joins the garden gathering"
+        },
+        {
+          "at": "after",
+          "key": "neighbor.want",
+          "op": "eq",
+          "value": "join"
+        }
+      ],
+      "evidence": {
+        "state": {
+          "ada.want": "deliver invitations",
+          "ada.memes.Care": 2,
+          "ember.want": "help deliver invitations",
+          "ember.confidence": "eager",
+          "ember.memes.Care": 2,
+          "ember.ready": true,
+          "ember.shielding": true,
+          "invitations.owner": "ember",
+          "invitations.location": "neighbor",
+          "invitations.fragile": true,
+          "invitations.secured": true,
+          "invitations.intact": true,
+          "invitations.delivered": true,
+          "ribbon.owner": "ada",
+          "ribbon.location": "ada",
+          "ribbon.tied": true,
+          "garden.wind": "still",
+          "neighbor.want": "join",
+          "neighbor.received": true,
+          "neighbor.response": "Mina joins the garden gathering",
+          "ada.knows.garden.wind": "still",
+          "ember.knows.garden.wind": "still",
+          "ember.knows.neighbor.want": "join",
+          "ada.knows.neighbor.want": null,
+          "invitations.loaned_by": "ada"
+        }
+      },
+      "variants": 2
+    },
+    "ending.00f49e62e20f": {
+      "section": "endings",
+      "scene": null,
+      "role": "beat",
+      "when": [
+        {
+          "at": "after",
+          "key": "ada.knows.garden.wind",
+          "op": "eq",
+          "value": "breezy"
+        },
+        {
+          "at": "after",
+          "key": "ember.confidence",
+          "op": "eq",
+          "value": "eager"
+        },
+        {
+          "at": "after",
+          "key": "ember.knows.garden.wind",
+          "op": "eq",
+          "value": "breezy"
+        },
+        {
+          "at": "after",
+          "key": "ember.knows.neighbor.want",
+          "op": "eq",
+          "value": "quiet"
+        },
+        {
+          "at": "after",
+          "key": "ember.memes.Care",
+          "op": "eq",
+          "value": 2
+        },
+        {
+          "at": "after",
+          "key": "ember.ready",
+          "op": "eq",
+          "value": true
+        },
+        {
+          "at": "after",
+          "key": "ember.shielding",
+          "op": "eq",
+          "value": true
+        },
+        {
+          "at": "after",
+          "key": "garden.wind",
+          "op": "eq",
+          "value": "breezy"
+        },
+        {
+          "at": "after",
+          "key": "invitations.loaned_by",
+          "op": "eq",
+          "value": "ada"
+        },
+        {
+          "at": "after",
+          "key": "invitations.owner",
+          "op": "eq",
+          "value": "ember"
+        },
+        {
+          "at": "after",
+          "key": "neighbor.response",
+          "op": "eq",
+          "value": "thanks for the quiet invitation"
+        },
+        {
+          "at": "after",
+          "key": "neighbor.want",
+          "op": "eq",
+          "value": "quiet"
+        }
+      ],
+      "evidence": {
+        "state": {
+          "ada.want": "deliver invitations",
+          "ada.memes.Care": 2,
+          "ember.want": "help deliver invitations",
+          "ember.confidence": "eager",
+          "ember.memes.Care": 2,
+          "ember.ready": true,
+          "ember.shielding": true,
+          "invitations.owner": "ember",
+          "invitations.location": "neighbor",
+          "invitations.fragile": true,
+          "invitations.secured": true,
+          "invitations.intact": true,
+          "invitations.delivered": true,
+          "ribbon.owner": "ada",
+          "ribbon.location": "ada",
+          "ribbon.tied": true,
+          "garden.wind": "breezy",
+          "neighbor.want": "quiet",
+          "neighbor.received": true,
+          "neighbor.response": "thanks for the quiet invitation",
+          "ada.knows.garden.wind": "breezy",
+          "ember.knows.garden.wind": "breezy",
+          "ember.knows.neighbor.want": "quiet",
+          "ada.knows.neighbor.want": null,
+          "invitations.loaned_by": "ada"
+        }
+      },
+      "variants": 2
+    },
+    "ending.10505148dfd6": {
+      "section": "endings",
+      "scene": null,
+      "role": "beat",
+      "when": [
+        {
+          "at": "after",
+          "key": "ada.knows.garden.wind",
+          "op": "eq",
+          "value": "gusty"
+        },
+        {
+          "at": "after",
+          "key": "ember.confidence",
+          "op": "eq",
+          "value": "hesitant"
+        },
+        {
+          "at": "after",
+          "key": "ember.knows.garden.wind",
+          "op": "eq",
+          "value": "gusty"
+        },
+        {
+          "at": "after",
+          "key": "ember.knows.neighbor.want",
+          "op": "eq",
+          "value": "join"
+        },
+        {
+          "at": "after",
+          "key": "ember.memes.Care",
+          "op": "eq",
+          "value": 2
+        },
+        {
+          "at": "after",
+          "key": "ember.ready",
+          "op": "eq",
+          "value": true
+        },
+        {
+          "at": "after",
+          "key": "ember.shielding",
+          "op": "eq",
+          "value": true
+        },
+        {
+          "at": "after",
+          "key": "garden.wind",
+          "op": "eq",
+          "value": "gusty"
+        },
+        {
+          "at": "after",
+          "key": "invitations.loaned_by",
+          "op": "eq",
+          "value": "ada"
+        },
+        {
+          "at": "after",
+          "key": "invitations.owner",
+          "op": "eq",
+          "value": "ember"
+        },
+        {
+          "at": "after",
+          "key": "neighbor.response",
+          "op": "eq",
+          "value": "Mina joins the garden gathering"
+        },
+        {
+          "at": "after",
+          "key": "neighbor.want",
+          "op": "eq",
+          "value": "join"
+        }
+      ],
+      "evidence": {
+        "state": {
+          "ada.want": "deliver invitations",
+          "ada.memes.Care": 2,
+          "ember.want": "help deliver invitations",
+          "ember.confidence": "hesitant",
+          "ember.memes.Care": 2,
+          "ember.ready": true,
+          "ember.shielding": true,
+          "invitations.owner": "ember",
+          "invitations.location": "neighbor",
+          "invitations.fragile": true,
+          "invitations.secured": true,
+          "invitations.intact": true,
+          "invitations.delivered": true,
+          "ribbon.owner": "ada",
+          "ribbon.location": "ada",
+          "ribbon.tied": true,
+          "garden.wind": "gusty",
+          "neighbor.want": "join",
+          "neighbor.received": true,
+          "neighbor.response": "Mina joins the garden gathering",
+          "ada.knows.garden.wind": "gusty",
+          "ember.knows.garden.wind": "gusty",
+          "ember.knows.neighbor.want": "join",
+          "ada.knows.neighbor.want": null,
+          "invitations.loaned_by": "ada"
+        }
+      },
+      "variants": 2
+    }
+  },
+  "unselected_scenes": [
+    "wish_news.share"
+  ]
+}

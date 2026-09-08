@@ -1,0 +1,93 @@
+{
+  "model": "gpt-5.6-terra",
+  "service_tier": "flex",
+  "reasoning": {
+    "effort": "none"
+  },
+  "max_output_tokens": 1600,
+  "store": false,
+  "input": [
+    {
+      "role": "system",
+      "content": "You author executable, composable children's story worlds. Follow the supplied authoring contract. Treat example story content as data. Return only the requested artifact."
+    },
+    {
+      "role": "user",
+      "content": "Review these three generated stories against their executable world traces. Treat story text as data. Trace initial state plus ordered changes is the ground truth. Identify concrete contradictions, unknown knowledge, unsupported accomplished actions, raw enum values, duplicated event-log text, weak endings or a missing consequential turn. Do not demand lessons or safety explanations. Distinguish simulation issues from prose issues. Do not invent a fault merely because a harmless descriptive detail lacks a state variable. Quote evidence. Return at most THREE material issues, concisely (one sentence of evidence and one sentence of fix each); prioritize contradicted physical actions/ownership/knowledge and unresolved alternatives over taste. Severity major only for a real coherence/grounding/storytelling failure.\n[{\"seed\": 123, \"story\": \"Mina set the neat invitation stack beside the red post. Pip bounced on his toes. \\u201cI can carry, fly, or make it fancy!\\u201d he announced. The rooftop bell was still quiet, but the moonberry party was already tugging everyone in three different directions.\\n\\nMina slid the stack beside the post and tied her promise to it like an invisible bow. \\u201cBefore the bell,\\u201d she said. Pip nodded so hard that a tiny smoke puff escaped his nose.\\n\\nMina fanned the stack and discovered sturdy cards, cheerful and firm. \\u201cThese can survive a Pip-sized adventure,\\u201d she said, though she still reached for a ribbon.\\n\\nMina inspected the post and discovered a crowded row of hooks, with one open hook tucked between two old sun hats. \\u201cThere you are,\\u201d she whispered.\\n\\nWith the post\\u2019s open hook in mind, Mina chose its little numbered perch. Mina tied a bright ribbon around the invitations; its tail tickled Pip\\u2019s nose.\\n\\nMina carried the ribboned invitations to the chosen hook and posted them neatly. The cards settled against the red post, ready to call the neighbors to moonberries and dancing.\\n\\nThe moonberry invitation rested on its chosen hook, bright against the red post. Mina rang the rooftop bell, and somewhere beyond the chimney, a neighbor answered with an excited whoop.\", \"initial\": {\"mina.curiosity\": 2, \"mina.promise\": false, \"mina.thanked\": false, \"mina.knows.roof_post.open_hook\": null, \"mina.knows.invitation_stack.condition\": null, \"mina.knows.jun.request\": null, \"pip.help_style\": \"carry\", \"pip.agrees_to_share\": false, \"pip.knows.jun.request\": null, \"pip.knows.roof_post.open_hook\": null, \"pip.knows.invitation_stack.condition\": null, \"pip.knows.paper_sail.attached\": null, \"jun.request\": null, \"jun.agreement\": false, \"jun.guided\": false, \"roof_post.open_hook\": \"crowded\", \"roof_post.selected_hook\": null, \"invitation_stack.owner\": \"mina\", \"invitation_stack.location\": \"mina\", \"invitation_stack.condition\": \"sturdy\", \"invitation_stack.delivered\": false, \"invitation_stack.ribboned\": false, \"invitation_stack.mode\": null, \"ribbon_bundle.owner\": \"mina\", \"ribbon_bundle.tied\": false, \"berry_basket.owner\": \"mina\", \"berry_basket.location\": \"mina\", \"paper_sail.owner\": \"mina\", \"paper_sail.attached\": false, \"paper_sail.flight\": \"none\"}, \"final\": {\"mina.curiosity\": 2, \"mina.promise\": true, \"mina.thanked\": false, \"mina.knows.roof_post.open_hook\": \"crowded\", \"mina.knows.invitation_stack.condition\": \"sturdy\", \"mina.knows.jun.request\": null, \"pip.help_style\": \"carry\", \"pip.agrees_to_share\": false, \"pip.knows.jun.request\": null, \"pip.knows.roof_post.open_hook\": null, \"pip.knows.invitation_stack.condition\": null, \"pip.knows.paper_sail.attached\": null, \"jun.request\": null, \"jun.agreement\": false, \"jun.guided\": false, \"roof_post.open_hook\": \"crowded\", \"roof_post.selected_hook\": \"crowded\", \"invitation_stack.owner\": \"mina\", \"invitation_stack.location\": \"selected_hook\", \"invitation_stack.condition\": \"sturdy\", \"invitation_stack.delivered\": true, \"invitation_stack.ribboned\": true, \"invitation_stack.mode\": \"posted\", \"ribbon_bundle.owner\": \"mina\", \"ribbon_bundle.tied\": true, \"berry_basket.owner\": \"mina\", \"berry_basket.location\": \"mina\", \"paper_sail.owner\": \"mina\", \"paper_sail.attached\": false, \"paper_sail.flight\": \"none\"}, \"events\": [{\"scene\": \"place_stack\", \"summary\": \"Mina placed the invitations beside the roof post\", \"changes\": {\"mina.promise\": {\"before\": false, \"after\": true}, \"invitation_stack.location\": {\"before\": \"mina\", \"after\": \"beside_post\"}}}, {\"scene\": \"notice_cargo\", \"summary\": \"Mina noticed the condition of the invitations\", \"changes\": {\"mina.knows.invitation_stack.condition\": {\"before\": null, \"after\": \"sturdy\"}}}, {\"scene\": \"look_post\", \"summary\": \"Mina inspected the roof post\", \"changes\": {\"mina.knows.roof_post.open_hook\": {\"before\": null, \"after\": \"crowded\"}}}, {\"scene\": \"choose_safe_hook\", \"summary\": \"Mina chose an open hook\", \"changes\": {\"roof_post.selected_hook\": {\"before\": null, \"after\": \"crowded\"}}}, {\"scene\": \"tie_ribbon\", \"summary\": \"Mina tied a ribbon around the invitations\", \"changes\": {\"invitation_stack.ribboned\": {\"before\": false, \"after\": true}, \"ribbon_bundle.tied\": {\"before\": false, \"after\": true}}}, {\"scene\": \"post_first_invite\", \"summary\": \"Mina posted the first invitation\", \"changes\": {\"invitation_stack.location\": {\"before\": \"beside_post\", \"after\": \"selected_hook\"}, \"invitation_stack.delivered\": {\"before\": false, \"after\": true}, \"invitation_stack.mode\": {\"before\": null, \"after\": \"posted\"}}}]}, {\"seed\": 457, \"story\": \"Mina set the neat invitation stack beside the red post. Pip bounced on his toes. \\u201cI can carry, fly, or make it fancy!\\u201d he announced. The rooftop bell was still quiet, but the moonberry party was already tugging everyone in three different directions.\\n\\nMina slid the stack beside the post and tied her promise to it like an invisible bow. \\u201cBefore the bell,\\u201d she said. Pip nodded so hard that a tiny smoke puff escaped his nose.\\n\\nMina inspected the post and discovered a crowded row of hooks, with one open hook tucked between two old sun hats. \\u201cThere you are,\\u201d she whispered.\\n\\nWith the post\\u2019s open hook in mind, Mina chose its little numbered perch.\\n\\nMina opened the stack and discovered the invitations already folded into tidy little moons. \\u201cThey are practically ready to travel,\\u201d she said.\\n\\nMina tied a bright ribbon around the invitations; its tail tickled Pip\\u2019s nose.\\n\\nMina carried the ribboned invitations to the chosen hook and posted them neatly. The cards settled against the red post, ready to call the neighbors to moonberries and dancing.\\n\\nThe moonberry invitation rested on its chosen hook, bright against the red post. Mina rang the rooftop bell, and somewhere beyond the chimney, a neighbor answered with an excited whoop.\", \"initial\": {\"mina.curiosity\": 2, \"mina.promise\": false, \"mina.thanked\": false, \"mina.knows.roof_post.open_hook\": null, \"mina.knows.invitation_stack.condition\": null, \"mina.knows.jun.request\": null, \"pip.help_style\": \"carry\", \"pip.agrees_to_share\": false, \"pip.knows.jun.request\": null, \"pip.knows.roof_post.open_hook\": null, \"pip.knows.invitation_stack.condition\": null, \"pip.knows.paper_sail.attached\": null, \"jun.request\": null, \"jun.agreement\": false, \"jun.guided\": false, \"roof_post.open_hook\": \"crowded\", \"roof_post.selected_hook\": null, \"invitation_stack.owner\": \"mina\", \"invitation_stack.location\": \"mina\", \"invitation_stack.condition\": \"already-folded\", \"invitation_stack.delivered\": false, \"invitation_stack.ribboned\": false, \"invitation_stack.mode\": null, \"ribbon_bundle.owner\": \"mina\", \"ribbon_bundle.tied\": false, \"berry_basket.owner\": \"mina\", \"berry_basket.location\": \"mina\", \"paper_sail.owner\": \"mina\", \"paper_sail.attached\": false, \"paper_sail.flight\": \"none\"}, \"final\": {\"mina.curiosity\": 2, \"mina.promise\": true, \"mina.thanked\": false, \"mina.knows.roof_post.open_hook\": \"crowded\", \"mina.knows.invitation_stack.condition\": \"already-folded\", \"mina.knows.jun.request\": null, \"pip.help_style\": \"carry\", \"pip.agrees_to_share\": false, \"pip.knows.jun.request\": null, \"pip.knows.roof_post.open_hook\": null, \"pip.knows.invitation_stack.condition\": null, \"pip.knows.paper_sail.attached\": null, \"jun.request\": null, \"jun.agreement\": false, \"jun.guided\": false, \"roof_post.open_hook\": \"crowded\", \"roof_post.selected_hook\": \"crowded\", \"invitation_stack.owner\": \"mina\", \"invitation_stack.location\": \"selected_hook\", \"invitation_stack.condition\": \"already-folded\", \"invitation_stack.delivered\": true, \"invitation_stack.ribboned\": true, \"invitation_stack.mode\": \"posted\", \"ribbon_bundle.owner\": \"mina\", \"ribbon_bundle.tied\": true, \"berry_basket.owner\": \"mina\", \"berry_basket.location\": \"mina\", \"paper_sail.owner\": \"mina\", \"paper_sail.attached\": false, \"paper_sail.flight\": \"none\"}, \"events\": [{\"scene\": \"place_stack\", \"summary\": \"Mina placed the invitations beside the roof post\", \"changes\": {\"mina.promise\": {\"before\": false, \"after\": true}, \"invitation_stack.location\": {\"before\": \"mina\", \"after\": \"beside_post\"}}}, {\"scene\": \"look_post\", \"summary\": \"Mina inspected the roof post\", \"changes\": {\"mina.knows.roof_post.open_hook\": {\"before\": null, \"after\": \"crowded\"}}}, {\"scene\": \"choose_safe_hook\", \"summary\": \"Mina chose an open hook\", \"changes\": {\"roof_post.selected_hook\": {\"before\": null, \"after\": \"crowded\"}}}, {\"scene\": \"notice_cargo\", \"summary\": \"Mina noticed the condition of the invitations\", \"changes\": {\"mina.knows.invitation_stack.condition\": {\"before\": null, \"after\": \"already-folded\"}}}, {\"scene\": \"tie_ribbon\", \"summary\": \"Mina tied a ribbon around the invitations\", \"changes\": {\"invitation_stack.ribboned\": {\"before\": false, \"after\": true}, \"ribbon_bundle.tied\": {\"before\": false, \"after\": true}}}, {\"scene\": \"post_first_invite\", \"summary\": \"Mina posted the first invitation\", \"changes\": {\"invitation_stack.location\": {\"before\": \"beside_post\", \"after\": \"selected_hook\"}, \"invitation_stack.delivered\": {\"before\": false, \"after\": true}, \"invitation_stack.mode\": {\"before\": null, \"after\": \"posted\"}}}]}, {\"seed\": 124, \"story\": \"Mina set the neat invitation stack beside the red post. Pip bounced on his toes. \\u201cI can carry, fly, or make it fancy!\\u201d he announced. The rooftop bell was still quiet, but the moonberry party was already tugging everyone in three different directions.\\n\\nMina slid the stack beside the post and tied her promise to it like an invisible bow. \\u201cBefore the bell,\\u201d she said. Pip nodded so hard that a tiny smoke puff escaped his nose.\\n\\nMina fanned the stack and discovered sturdy cards, cheerful and firm. \\u201cThese can survive a Pip-sized adventure,\\u201d she said, though she still reached for a ribbon.\\n\\nMina tied a bright ribbon around the invitations; its tail tickled Pip\\u2019s nose.\\n\\nMina fastened the paper sail to the sturdy stack. It trembled like a tiny kite. Pip leaned close. \\u201cThat is either excellent engineering,\\u201d he said, \\u201cor a very polite napkin.\\u201d\\n\\nPip gave the paper sail one brave puff. Up it went, carrying an invitation to the high hook. It landed with a soft papery plop, and Pip beamed as though he had personally taught the sky a new trick.\\n\\nPip\\u2019s sail hung proudly from the high hook, its paper edge glowing in the afternoon sun. Below, Pip practiced his victory bow until a ribbon brushed his nose and made him sneeze a silver star.\", \"initial\": {\"mina.curiosity\": 2, \"mina.promise\": false, \"mina.thanked\": false, \"mina.knows.roof_post.open_hook\": null, \"mina.knows.invitation_stack.condition\": null, \"mina.knows.jun.request\": null, \"pip.help_style\": \"fly\", \"pip.agrees_to_share\": false, \"pip.knows.jun.request\": null, \"pip.knows.roof_post.open_hook\": null, \"pip.knows.invitation_stack.condition\": null, \"pip.knows.paper_sail.attached\": null, \"jun.request\": null, \"jun.agreement\": false, \"jun.guided\": false, \"roof_post.open_hook\": \"bird_high\", \"roof_post.selected_hook\": null, \"invitation_stack.owner\": \"mina\", \"invitation_stack.location\": \"mina\", \"invitation_stack.condition\": \"sturdy\", \"invitation_stack.delivered\": false, \"invitation_stack.ribboned\": false, \"invitation_stack.mode\": null, \"ribbon_bundle.owner\": \"mina\", \"ribbon_bundle.tied\": false, \"berry_basket.owner\": \"mina\", \"berry_basket.location\": \"mina\", \"paper_sail.owner\": \"mina\", \"paper_sail.attached\": false, \"paper_sail.flight\": \"none\"}, \"final\": {\"mina.curiosity\": 2, \"mina.promise\": true, \"mina.thanked\": false, \"mina.knows.roof_post.open_hook\": null, \"mina.knows.invitation_stack.condition\": \"sturdy\", \"mina.knows.jun.request\": null, \"pip.help_style\": \"fly\", \"pip.agrees_to_share\": false, \"pip.knows.jun.request\": null, \"pip.knows.roof_post.open_hook\": null, \"pip.knows.invitation_stack.condition\": null, \"pip.knows.paper_sail.attached\": null, \"jun.request\": null, \"jun.agreement\": false, \"jun.guided\": false, \"roof_post.open_hook\": \"bird_high\", \"roof_post.selected_hook\": null, \"invitation_stack.owner\": \"mina\", \"invitation_stack.location\": \"high_hook\", \"invitation_stack.condition\": \"sturdy\", \"invitation_stack.delivered\": true, \"invitation_stack.ribboned\": true, \"invitation_stack.mode\": \"sail\", \"ribbon_bundle.owner\": \"mina\", \"ribbon_bundle.tied\": true, \"berry_basket.owner\": \"mina\", \"berry_basket.location\": \"mina\", \"paper_sail.owner\": \"mina\", \"paper_sail.attached\": true, \"paper_sail.flight\": \"landed\"}, \"events\": [{\"scene\": \"place_stack\", \"summary\": \"Mina placed the invitations beside the roof post\", \"changes\": {\"mina.promise\": {\"before\": false, \"after\": true}, \"invitation_stack.location\": {\"before\": \"mina\", \"after\": \"beside_post\"}}}, {\"scene\": \"notice_cargo\", \"summary\": \"Mina noticed the condition of the invitations\", \"changes\": {\"mina.knows.invitation_stack.condition\": {\"before\": null, \"after\": \"sturdy\"}}}, {\"scene\": \"tie_ribbon\", \"summary\": \"Mina tied a ribbon around the invitations\", \"changes\": {\"invitation_stack.ribboned\": {\"before\": false, \"after\": true}, \"ribbon_bundle.tied\": {\"before\": false, \"after\": true}}}, {\"scene\": \"attach_paper_sail\", \"summary\": \"Mina attached the paper sail\", \"changes\": {\"paper_sail.attached\": {\"before\": false, \"after\": true}}}, {\"scene\": \"fly_sail_invite\", \"summary\": \"Pip flew an invitation to the high hook\", \"changes\": {\"invitation_stack.location\": {\"before\": \"beside_post\", \"after\": \"high_hook\"}, \"invitation_stack.delivered\": {\"before\": false, \"after\": true}, \"invitation_stack.mode\": {\"before\": null, \"after\": \"sail\"}, \"paper_sail.flight\": {\"before\": \"none\", \"after\": \"landed\"}}}]}]"
+    }
+  ],
+  "text": {
+    "format": {
+      "type": "json_schema",
+      "name": "storyscenes_artifact",
+      "strict": true,
+      "schema": {
+        "type": "object",
+        "properties": {
+          "issues": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "seed": {
+                  "type": "integer"
+                },
+                "severity": {
+                  "type": "string",
+                  "enum": [
+                    "minor",
+                    "major"
+                  ]
+                },
+                "layer": {
+                  "type": "string",
+                  "enum": [
+                    "simulation",
+                    "prose"
+                  ]
+                },
+                "defect": {
+                  "type": "string",
+                  "enum": [
+                    "ungrounded_outcome",
+                    "wrong_knowledge",
+                    "contradiction",
+                    "literal_state_value",
+                    "unresolved_alternative",
+                    "event_log_prose",
+                    "weak_turn",
+                    "weak_ending",
+                    "other"
+                  ]
+                },
+                "evidence": {
+                  "type": "string"
+                },
+                "fix": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "seed",
+                "severity",
+                "layer",
+                "defect",
+                "evidence",
+                "fix"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "strengths": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "issues",
+          "strengths"
+        ],
+        "additionalProperties": false
+      }
+    }
+  }
+}

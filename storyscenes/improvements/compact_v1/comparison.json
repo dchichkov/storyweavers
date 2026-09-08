@@ -1,0 +1,1083 @@
+{
+  "control": {
+    "run": "/Users/dmitry/storyweavers/storyscenes/runs/compact_control_v2",
+    "attempted": 3,
+    "successful": 2,
+    "summaries": [
+      {
+        "world": "roof_post",
+        "ok": false,
+        "error": "Mechanics attempts exhausted; quarantined without stronger-model fallback"
+      },
+      {
+        "world": "library_parade",
+        "title": "The Library Cart Parade",
+        "ok": true,
+        "samples": 100,
+        "simulation_sha256": "28ec6e7d4894708511eb0e0676a33d8efc99e58d33bf02faf059b8a812041d7e",
+        "generator_sha256": "77ef5e6c2a045f7d49891dfdbf542457efb6391cfb1eadaae740597c3c4e225f",
+        "catalog_sha256": "d12d8426698ea5f302c359645874e54ef99ee3291566878abfe8618991260274",
+        "distinct_texts": 34,
+        "distinct_scene_paths": 34,
+        "word_range": [
+          191,
+          331
+        ],
+        "prose_control_variants": 1,
+        "mechanics_model": "gpt-5.6-luna",
+        "mechanics_attempts": 5,
+        "prose_model": "gpt-5.6-luna",
+        "stats": {
+          "samples": 100,
+          "ordered_paths": 34,
+          "scene_sets": 4,
+          "causal_graphs": 6,
+          "outcomes": 3,
+          "premises": 3,
+          "events_range": [
+            4,
+            8
+          ],
+          "pruned_events": 71
+        },
+        "critic_before_revision": null,
+        "final_catalog_attempt": 0
+      },
+      {
+        "world": "pond_concert",
+        "title": "The Pond Concert and the Listener in the Reeds",
+        "ok": true,
+        "samples": 100,
+        "simulation_sha256": "6cbdab7439faec998ecc19b62ac118620bcd98462089a78928cacd5ff3398842",
+        "generator_sha256": "b40a37bd5f7975c918a5b80ce88880ff3b80fe6f1ab8397618fe846f05f48476",
+        "catalog_sha256": "714d06943be160da402815d14effc61f939b59a6e95c1842baaa434b14462b82",
+        "distinct_texts": 65,
+        "distinct_scene_paths": 62,
+        "word_range": [
+          204,
+          487
+        ],
+        "prose_control_variants": 1,
+        "mechanics_model": "gpt-5.6-luna",
+        "mechanics_attempts": 1,
+        "prose_model": "gpt-5.6-luna",
+        "stats": {
+          "samples": 100,
+          "ordered_paths": 62,
+          "scene_sets": 7,
+          "causal_graphs": 8,
+          "outcomes": 4,
+          "premises": 3,
+          "events_range": [
+            3,
+            10
+          ],
+          "pruned_events": 76
+        },
+        "critic_before_revision": null,
+        "final_catalog_attempt": 0
+      }
+    ],
+    "authoring": {
+      "requests": 18,
+      "input": 104087,
+      "output": 27671,
+      "reasoning": 10967
+    },
+    "stages": {
+      "initial prose": {
+        "requests": 2,
+        "output": 5355,
+        "reasoning": 102,
+        "input": 23849
+      },
+      "initial mechanics/plan": {
+        "requests": 6,
+        "output": 16835,
+        "reasoning": 6669,
+        "input": 17622
+      },
+      "repair mechanics/plan": {
+        "requests": 10,
+        "output": 5481,
+        "reasoning": 4196,
+        "input": 62616
+      }
+    },
+    "worlds": {
+      "library_parade": {
+        "requests": 7,
+        "output": 9846,
+        "reasoning": 3519,
+        "input": 42853
+      },
+      "pond_concert": {
+        "requests": 3,
+        "output": 7617,
+        "reasoning": 1618,
+        "input": 17633
+      },
+      "roof_post": {
+        "requests": 8,
+        "output": 10208,
+        "reasoning": 5830,
+        "input": 43601
+      }
+    },
+    "requests": [
+      {
+        "world": "library_parade",
+        "stage": "catalog_0",
+        "requested_tier": "flex",
+        "returned": true,
+        "status": "completed",
+        "actual_model": "gpt-5.6-luna",
+        "actual_tier": "flex",
+        "requests": 1,
+        "input": 12118,
+        "output": 2599,
+        "reasoning": 50
+      },
+      {
+        "world": "library_parade",
+        "stage": "plan",
+        "requested_tier": "flex",
+        "returned": true,
+        "status": "completed",
+        "actual_model": "gpt-5.6-luna",
+        "actual_tier": "flex",
+        "requests": 1,
+        "input": 2380,
+        "output": 1011,
+        "reasoning": 52
+      },
+      {
+        "world": "library_parade",
+        "stage": "simulation_0",
+        "requested_tier": "flex",
+        "returned": true,
+        "status": "completed",
+        "actual_model": "gpt-5.6-luna",
+        "actual_tier": "flex",
+        "requests": 1,
+        "input": 3359,
+        "output": 4819,
+        "reasoning": 2300
+      },
+      {
+        "world": "library_parade",
+        "stage": "simulation_patch_1",
+        "requested_tier": "flex",
+        "returned": true,
+        "status": "completed",
+        "actual_model": "gpt-5.6-luna",
+        "actual_tier": "flex",
+        "requests": 1,
+        "input": 6313,
+        "output": 49,
+        "reasoning": 0
+      },
+      {
+        "world": "library_parade",
+        "stage": "simulation_patch_2",
+        "requested_tier": "flex",
+        "returned": true,
+        "status": "completed",
+        "actual_model": "gpt-5.6-luna",
+        "actual_tier": "flex",
+        "requests": 1,
+        "input": 6357,
+        "output": 676,
+        "reasoning": 516
+      },
+      {
+        "world": "library_parade",
+        "stage": "simulation_patch_3",
+        "requested_tier": "flex",
+        "returned": true,
+        "status": "completed",
+        "actual_model": "gpt-5.6-luna",
+        "actual_tier": "flex",
+        "requests": 1,
+        "input": 6025,
+        "output": 427,
+        "reasoning": 391
+      },
+      {
+        "world": "library_parade",
+        "stage": "simulation_patch_4",
+        "requested_tier": "flex",
+        "returned": true,
+        "status": "completed",
+        "actual_model": "gpt-5.6-luna",
+        "actual_tier": "flex",
+        "requests": 1,
+        "input": 6301,
+        "output": 265,
+        "reasoning": 210
+      },
+      {
+        "world": "pond_concert",
+        "stage": "catalog_0",
+        "requested_tier": "flex",
+        "returned": true,
+        "status": "completed",
+        "actual_model": "gpt-5.6-luna",
+        "actual_tier": "flex",
+        "requests": 1,
+        "input": 11731,
+        "output": 2756,
+        "reasoning": 52
+      },
+      {
+        "world": "pond_concert",
+        "stage": "plan",
+        "requested_tier": "flex",
+        "returned": true,
+        "status": "completed",
+        "actual_model": "gpt-5.6-luna",
+        "actual_tier": "flex",
+        "requests": 1,
+        "input": 2378,
+        "output": 1168,
+        "reasoning": 45
+      },
+      {
+        "world": "pond_concert",
+        "stage": "simulation_0",
+        "requested_tier": "flex",
+        "returned": true,
+        "status": "completed",
+        "actual_model": "gpt-5.6-luna",
+        "actual_tier": "flex",
+        "requests": 1,
+        "input": 3524,
+        "output": 3693,
+        "reasoning": 1521
+      },
+      {
+        "world": "roof_post",
+        "stage": "plan",
+        "requested_tier": "flex",
+        "returned": true,
+        "status": "completed",
+        "actual_model": "gpt-5.6-luna",
+        "actual_tier": "flex",
+        "requests": 1,
+        "input": 2380,
+        "output": 1420,
+        "reasoning": 206
+      },
+      {
+        "world": "roof_post",
+        "stage": "simulation_0",
+        "requested_tier": "flex",
+        "returned": true,
+        "status": "completed",
+        "actual_model": "gpt-5.6-luna",
+        "actual_tier": "flex",
+        "requests": 1,
+        "input": 3601,
+        "output": 4724,
+        "reasoning": 2545
+      },
+      {
+        "world": "roof_post",
+        "stage": "simulation_patch_1",
+        "requested_tier": "flex",
+        "returned": true,
+        "status": "completed",
+        "actual_model": "gpt-5.6-luna",
+        "actual_tier": "flex",
+        "requests": 1,
+        "input": 6446,
+        "output": 402,
+        "reasoning": 326
+      },
+      {
+        "world": "roof_post",
+        "stage": "simulation_patch_2",
+        "requested_tier": "flex",
+        "returned": true,
+        "status": "completed",
+        "actual_model": "gpt-5.6-luna",
+        "actual_tier": "flex",
+        "requests": 1,
+        "input": 6462,
+        "output": 1421,
+        "reasoning": 1034
+      },
+      {
+        "world": "roof_post",
+        "stage": "simulation_patch_3",
+        "requested_tier": "flex",
+        "returned": true,
+        "status": "completed",
+        "actual_model": "gpt-5.6-luna",
+        "actual_tier": "flex",
+        "requests": 1,
+        "input": 5901,
+        "output": 1051,
+        "reasoning": 966
+      },
+      {
+        "world": "roof_post",
+        "stage": "simulation_patch_4",
+        "requested_tier": "flex",
+        "returned": true,
+        "status": "completed",
+        "actual_model": "gpt-5.6-luna",
+        "actual_tier": "flex",
+        "requests": 1,
+        "input": 6461,
+        "output": 461,
+        "reasoning": 393
+      },
+      {
+        "world": "roof_post",
+        "stage": "simulation_patch_5",
+        "requested_tier": "flex",
+        "returned": true,
+        "status": "completed",
+        "actual_model": "gpt-5.6-luna",
+        "actual_tier": "flex",
+        "requests": 1,
+        "input": 5904,
+        "output": 367,
+        "reasoning": 292
+      },
+      {
+        "world": "roof_post",
+        "stage": "simulation_patch_6",
+        "requested_tier": "flex",
+        "returned": true,
+        "status": "completed",
+        "actual_model": "gpt-5.6-luna",
+        "actual_tier": "flex",
+        "requests": 1,
+        "input": 6446,
+        "output": 362,
+        "reasoning": 68
+      }
+    ],
+    "cost": {
+      "pricing_date": "2026-09-07",
+      "pricing_url": "https://developers.openai.com/api/docs/pricing",
+      "requests": 18,
+      "priced_requests": 18,
+      "unpriced_requests": 0,
+      "input_tokens": 104087,
+      "output_tokens": 27671,
+      "usd_low": 0.0284075,
+      "usd_high": 0.0284075,
+      "note": "Returned-usage estimate only; unknown outcomes/retries may add cost. Missing cache writes are bounded."
+    },
+    "evaluation_cost": {
+      "pricing_date": "2026-09-07",
+      "pricing_url": "https://developers.openai.com/api/docs/pricing",
+      "requests": 2,
+      "priced_requests": 2,
+      "unpriced_requests": 0,
+      "input_tokens": 11130,
+      "output_tokens": 1821,
+      "usd_low": 0.024836999999999998,
+      "usd_high": 0.024836999999999998,
+      "note": "Returned-usage estimate only; unknown outcomes/retries may add cost. Missing cache writes are bounded."
+    },
+    "unknown": [],
+    "ratings": {
+      "library_parade": {
+        "quality": {
+          "coherence": 7.2,
+          "style": 8,
+          "grammar": 9,
+          "storytelling": 7.2,
+          "overall": 7.3
+        },
+        "diversity": {
+          "premise": 5,
+          "causal_path": 4,
+          "ending": 4,
+          "language": 5,
+          "overall": 4
+        },
+        "stories_below_six": 1
+      },
+      "pond_concert": {
+        "quality": {
+          "coherence": 6,
+          "style": 6.5,
+          "grammar": 8.6,
+          "storytelling": 5.5,
+          "overall": 6.2
+        },
+        "diversity": {
+          "premise": 2,
+          "causal_path": 2,
+          "ending": 2,
+          "language": 3,
+          "overall": 2
+        },
+        "stories_below_six": 5
+      }
+    }
+  },
+  "compact": {
+    "run": "/Users/dmitry/storyweavers/storyscenes/runs/compact_algebra_v2",
+    "attempted": 3,
+    "successful": 2,
+    "summaries": [
+      {
+        "world": "roof_post",
+        "ok": false,
+        "error": "world_0: Incomplete authoring response: incomplete"
+      },
+      {
+        "world": "library_parade",
+        "title": "The Parade That Carried Good News",
+        "ok": true,
+        "samples": 100,
+        "simulation_sha256": "62da8914264ced794341befbabbb71915d5342bbeed4f8a1d6b026aa749a62b3",
+        "generator_sha256": "76af30ef7ac013e397ad45f15e270aa435254817353750a825bf92f3de1c2b3e",
+        "world_sha256": "74f903a28ea06b6b88331f021fefe18fcae4bfa40287185f2029a948ba52f5ff",
+        "word_range": [
+          319,
+          466
+        ],
+        "mechanics_attempts": 1,
+        "prose_attempts": 1,
+        "stats": {
+          "samples": 100,
+          "ordered_paths": 66,
+          "scene_sets": 8,
+          "causal_graphs": 7,
+          "outcomes": 4,
+          "premises": 8,
+          "events_range": [
+            8,
+            13
+          ],
+          "pruned_events": 136
+        },
+        "prose_slots": 31,
+        "unselected_scenes": [
+          "load_book"
+        ],
+        "mechanics_model": "gpt-5.6-luna",
+        "prose_model": "gpt-5.6-luna"
+      },
+      {
+        "world": "pond_concert",
+        "title": "The Pond Concert Promise",
+        "ok": true,
+        "samples": 100,
+        "simulation_sha256": "2f468506aeb30a018d038c381e28ae724d300b8be9092c849311e05578129818",
+        "generator_sha256": "64513d2933484464b89ae0e509643227cb231d2bcb1ad1ee9ede946970e5268a",
+        "world_sha256": "28ebe21d7f5ff37e7056b1732d9b4536b627247c07ed6bd4162b3053d01b51af",
+        "word_range": [
+          315,
+          426
+        ],
+        "mechanics_attempts": 2,
+        "prose_attempts": 1,
+        "stats": {
+          "samples": 100,
+          "ordered_paths": 96,
+          "scene_sets": 4,
+          "causal_graphs": 4,
+          "outcomes": 4,
+          "premises": 4,
+          "events_range": [
+            9,
+            13
+          ],
+          "pruned_events": 188
+        },
+        "prose_slots": 27,
+        "unselected_scenes": [],
+        "mechanics_model": "gpt-5.6-luna",
+        "prose_model": "gpt-5.6-luna"
+      }
+    ],
+    "authoring": {
+      "requests": 13,
+      "input": 67561,
+      "output": 20773,
+      "reasoning": 9163
+    },
+    "stages": {
+      "initial prose": {
+        "requests": 2,
+        "output": 3337,
+        "reasoning": 95,
+        "input": 34697
+      },
+      "initial mechanics/plan": {
+        "requests": 4,
+        "output": 15187,
+        "reasoning": 8006,
+        "input": 8478
+      },
+      "repair mechanics/plan": {
+        "requests": 7,
+        "output": 2249,
+        "reasoning": 1062,
+        "input": 24386
+      }
+    },
+    "worlds": {
+      "library_parade": {
+        "requests": 2,
+        "output": 6310,
+        "reasoning": 2217,
+        "input": 19553
+      },
+      "pond_concert": {
+        "requests": 3,
+        "output": 6253,
+        "reasoning": 2476,
+        "input": 21650
+      },
+      "roof_post": {
+        "requests": 8,
+        "output": 8210,
+        "reasoning": 4470,
+        "input": 26358
+      }
+    },
+    "requests": [
+      {
+        "world": "library_parade",
+        "stage": "text_0",
+        "requested_tier": "flex",
+        "returned": true,
+        "status": "completed",
+        "actual_model": "gpt-5.6-luna",
+        "actual_tier": "flex",
+        "requests": 1,
+        "input": 17980,
+        "output": 1835,
+        "reasoning": 37
+      },
+      {
+        "world": "library_parade",
+        "stage": "world_0",
+        "requested_tier": "flex",
+        "returned": true,
+        "status": "completed",
+        "actual_model": "gpt-5.6-luna",
+        "actual_tier": "flex",
+        "requests": 1,
+        "input": 1573,
+        "output": 4475,
+        "reasoning": 2180
+      },
+      {
+        "world": "pond_concert",
+        "stage": "text_0",
+        "requested_tier": "flex",
+        "returned": true,
+        "status": "completed",
+        "actual_model": "gpt-5.6-luna",
+        "actual_tier": "flex",
+        "requests": 1,
+        "input": 16717,
+        "output": 1502,
+        "reasoning": 58
+      },
+      {
+        "world": "pond_concert",
+        "stage": "world_0",
+        "requested_tier": "flex",
+        "returned": true,
+        "status": "completed",
+        "actual_model": "gpt-5.6-luna",
+        "actual_tier": "flex",
+        "requests": 1,
+        "input": 1571,
+        "output": 4637,
+        "reasoning": 2374
+      },
+      {
+        "world": "pond_concert",
+        "stage": "world_patch_1",
+        "requested_tier": "flex",
+        "returned": true,
+        "status": "completed",
+        "actual_model": "gpt-5.6-luna",
+        "actual_tier": "flex",
+        "requests": 1,
+        "input": 3362,
+        "output": 114,
+        "reasoning": 44
+      },
+      {
+        "world": "roof_post",
+        "stage": "world_0",
+        "requested_tier": "flex",
+        "returned": true,
+        "status": "incomplete",
+        "actual_model": "gpt-5.6-luna",
+        "actual_tier": "flex",
+        "requests": 1,
+        "input": 1573,
+        "output": 5500,
+        "reasoning": 3405
+      },
+      {
+        "world": "roof_post",
+        "stage": "world_patch_1",
+        "requested_tier": "flex",
+        "returned": true,
+        "status": "completed",
+        "actual_model": "gpt-5.6-luna",
+        "actual_tier": "flex",
+        "requests": 1,
+        "input": 3544,
+        "output": 216,
+        "reasoning": 70
+      },
+      {
+        "world": "roof_post",
+        "stage": "world_patch_2",
+        "requested_tier": "flex",
+        "returned": true,
+        "status": "completed",
+        "actual_model": "gpt-5.6-luna",
+        "actual_tier": "flex",
+        "requests": 1,
+        "input": 3530,
+        "output": 328,
+        "reasoning": 190
+      },
+      {
+        "world": "roof_post",
+        "stage": "world_patch_3",
+        "requested_tier": "flex",
+        "returned": true,
+        "status": "completed",
+        "actual_model": "gpt-5.6-luna",
+        "actual_tier": "flex",
+        "requests": 1,
+        "input": 3523,
+        "output": 159,
+        "reasoning": 45
+      },
+      {
+        "world": "roof_post",
+        "stage": "world_suffix",
+        "requested_tier": "flex",
+        "returned": true,
+        "status": "completed",
+        "actual_model": "gpt-5.6-luna",
+        "actual_tier": "flex",
+        "requests": 1,
+        "input": 3761,
+        "output": 575,
+        "reasoning": 47
+      },
+      {
+        "world": "roof_post",
+        "stage": "world_patch_1",
+        "requested_tier": "flex",
+        "returned": true,
+        "status": "completed",
+        "actual_model": "gpt-5.6-luna",
+        "actual_tier": "flex",
+        "requests": 1,
+        "input": 3484,
+        "output": 625,
+        "reasoning": 89
+      },
+      {
+        "world": "roof_post",
+        "stage": "world_patch_2",
+        "requested_tier": "flex",
+        "returned": true,
+        "status": "completed",
+        "actual_model": "gpt-5.6-luna",
+        "actual_tier": "flex",
+        "requests": 1,
+        "input": 3466,
+        "output": 91,
+        "reasoning": 42
+      },
+      {
+        "world": "roof_post",
+        "stage": "world_patch_3",
+        "requested_tier": "flex",
+        "returned": true,
+        "status": "completed",
+        "actual_model": "gpt-5.6-luna",
+        "actual_tier": "flex",
+        "requests": 1,
+        "input": 3477,
+        "output": 716,
+        "reasoning": 582
+      }
+    ],
+    "cost": {
+      "pricing_date": "2026-09-07",
+      "pricing_url": "https://developers.openai.com/api/docs/pricing",
+      "requests": 13,
+      "priced_requests": 13,
+      "unpriced_requests": 0,
+      "input_tokens": 67561,
+      "output_tokens": 20773,
+      "usd_low": 0.02036653,
+      "usd_high": 0.02036653,
+      "note": "Returned-usage estimate only; unknown outcomes/retries may add cost. Missing cache writes are bounded."
+    },
+    "evaluation_cost": {
+      "pricing_date": "2026-09-07",
+      "pricing_url": "https://developers.openai.com/api/docs/pricing",
+      "requests": 2,
+      "priced_requests": 2,
+      "unpriced_requests": 0,
+      "input_tokens": 12558,
+      "output_tokens": 1887,
+      "usd_low": 0.027018,
+      "usd_high": 0.027018,
+      "note": "Returned-usage estimate only; unknown outcomes/retries may add cost. Missing cache writes are bounded."
+    },
+    "unknown": [],
+    "ratings": {
+      "pond_concert": {
+        "quality": {
+          "coherence": 7.5,
+          "style": 7,
+          "grammar": 8,
+          "storytelling": 7.6,
+          "overall": 7.5
+        },
+        "diversity": {
+          "premise": 3,
+          "causal_path": 4,
+          "ending": 3,
+          "language": 4,
+          "overall": 3
+        },
+        "stories_below_six": 0
+      },
+      "library_parade": {
+        "quality": {
+          "coherence": 8,
+          "style": 7,
+          "grammar": 9,
+          "storytelling": 8,
+          "overall": 8
+        },
+        "diversity": {
+          "premise": 4,
+          "causal_path": 4,
+          "ending": 4,
+          "language": 3,
+          "overall": 4
+        },
+        "stories_below_six": 0
+      }
+    },
+    "recoveries": [
+      {
+        "run": "/Users/dmitry/storyweavers/storyscenes/runs/compact_suffix_v1",
+        "attempted": 1,
+        "successful": 0,
+        "summaries": [
+          {
+            "world": "roof_post",
+            "ok": false,
+            "error": "Compact mechanics repair budget exhausted"
+          }
+        ],
+        "authoring": {
+          "requests": 4,
+          "input": 14358,
+          "output": 1278,
+          "reasoning": 352
+        },
+        "stages": {
+          "repair mechanics/plan": {
+            "requests": 3,
+            "output": 703,
+            "reasoning": 305,
+            "input": 10597
+          },
+          "initial mechanics/plan": {
+            "requests": 1,
+            "output": 575,
+            "reasoning": 47,
+            "input": 3761
+          }
+        },
+        "worlds": {
+          "roof_post": {
+            "requests": 4,
+            "output": 1278,
+            "reasoning": 352,
+            "input": 14358
+          }
+        },
+        "requests": [
+          {
+            "world": "roof_post",
+            "stage": "world_patch_1",
+            "requested_tier": "flex",
+            "returned": true,
+            "status": "completed",
+            "actual_model": "gpt-5.6-luna",
+            "actual_tier": "flex",
+            "requests": 1,
+            "input": 3544,
+            "output": 216,
+            "reasoning": 70
+          },
+          {
+            "world": "roof_post",
+            "stage": "world_patch_2",
+            "requested_tier": "flex",
+            "returned": true,
+            "status": "completed",
+            "actual_model": "gpt-5.6-luna",
+            "actual_tier": "flex",
+            "requests": 1,
+            "input": 3530,
+            "output": 328,
+            "reasoning": 190
+          },
+          {
+            "world": "roof_post",
+            "stage": "world_patch_3",
+            "requested_tier": "flex",
+            "returned": true,
+            "status": "completed",
+            "actual_model": "gpt-5.6-luna",
+            "actual_tier": "flex",
+            "requests": 1,
+            "input": 3523,
+            "output": 159,
+            "reasoning": 45
+          },
+          {
+            "world": "roof_post",
+            "stage": "world_suffix",
+            "requested_tier": "flex",
+            "returned": true,
+            "status": "completed",
+            "actual_model": "gpt-5.6-luna",
+            "actual_tier": "flex",
+            "requests": 1,
+            "input": 3761,
+            "output": 575,
+            "reasoning": 47
+          }
+        ],
+        "cost": {
+          "pricing_date": "2026-09-07",
+          "pricing_url": "https://developers.openai.com/api/docs/pricing",
+          "requests": 4,
+          "priced_requests": 4,
+          "unpriced_requests": 0,
+          "input_tokens": 14358,
+          "output_tokens": 1278,
+          "usd_low": 0.00256125,
+          "usd_high": 0.00256125,
+          "note": "Returned-usage estimate only; unknown outcomes/retries may add cost. Missing cache writes are bounded."
+        },
+        "evaluation_cost": {
+          "pricing_date": "2026-09-07",
+          "pricing_url": "https://developers.openai.com/api/docs/pricing",
+          "requests": 0,
+          "priced_requests": 0,
+          "unpriced_requests": 0,
+          "input_tokens": 0,
+          "output_tokens": 0,
+          "usd_low": 0,
+          "usd_high": 0,
+          "note": "Returned-usage estimate only; unknown outcomes/retries may add cost. Missing cache writes are bounded."
+        },
+        "unknown": [],
+        "ratings": {}
+      },
+      {
+        "run": "/Users/dmitry/storyweavers/storyscenes/runs/compact_suffix_v2",
+        "attempted": 1,
+        "successful": 0,
+        "summaries": [
+          {
+            "world": "roof_post",
+            "ok": false,
+            "error": "Compact mechanics repair budget exhausted"
+          }
+        ],
+        "authoring": {
+          "requests": 3,
+          "input": 10427,
+          "output": 1432,
+          "reasoning": 713
+        },
+        "stages": {
+          "repair mechanics/plan": {
+            "requests": 3,
+            "output": 1432,
+            "reasoning": 713,
+            "input": 10427
+          }
+        },
+        "worlds": {
+          "roof_post": {
+            "requests": 3,
+            "output": 1432,
+            "reasoning": 713,
+            "input": 10427
+          }
+        },
+        "requests": [
+          {
+            "world": "roof_post",
+            "stage": "world_patch_1",
+            "requested_tier": "flex",
+            "returned": true,
+            "status": "completed",
+            "actual_model": "gpt-5.6-luna",
+            "actual_tier": "flex",
+            "requests": 1,
+            "input": 3484,
+            "output": 625,
+            "reasoning": 89
+          },
+          {
+            "world": "roof_post",
+            "stage": "world_patch_2",
+            "requested_tier": "flex",
+            "returned": true,
+            "status": "completed",
+            "actual_model": "gpt-5.6-luna",
+            "actual_tier": "flex",
+            "requests": 1,
+            "input": 3466,
+            "output": 91,
+            "reasoning": 42
+          },
+          {
+            "world": "roof_post",
+            "stage": "world_patch_3",
+            "requested_tier": "flex",
+            "returned": true,
+            "status": "completed",
+            "actual_model": "gpt-5.6-luna",
+            "actual_tier": "flex",
+            "requests": 1,
+            "input": 3477,
+            "output": 716,
+            "reasoning": 582
+          }
+        ],
+        "cost": {
+          "pricing_date": "2026-09-07",
+          "pricing_url": "https://developers.openai.com/api/docs/pricing",
+          "requests": 3,
+          "priced_requests": 3,
+          "unpriced_requests": 0,
+          "input_tokens": 10427,
+          "output_tokens": 1432,
+          "usd_low": 0.00216235,
+          "usd_high": 0.00216235,
+          "note": "Returned-usage estimate only; unknown outcomes/retries may add cost. Missing cache writes are bounded."
+        },
+        "evaluation_cost": {
+          "pricing_date": "2026-09-07",
+          "pricing_url": "https://developers.openai.com/api/docs/pricing",
+          "requests": 0,
+          "priced_requests": 0,
+          "unpriced_requests": 0,
+          "input_tokens": 0,
+          "output_tokens": 0,
+          "usd_low": 0,
+          "usd_high": 0,
+          "note": "Returned-usage estimate only; unknown outcomes/retries may add cost. Missing cache writes are bounded."
+        },
+        "unknown": [],
+        "ratings": {}
+      }
+    ]
+  },
+  "matched_rated_worlds": [
+    "library_parade",
+    "pond_concert"
+  ],
+  "matched_means": {
+    "control": {
+      "coherence": 6.6,
+      "style": 7.25,
+      "grammar": 8.8,
+      "storytelling": 6.35,
+      "overall": 6.75,
+      "diversity": 3
+    },
+    "compact": {
+      "coherence": 7.75,
+      "style": 7,
+      "grammar": 8.5,
+      "storytelling": 7.8,
+      "overall": 7.75,
+      "diversity": 3.5
+    }
+  },
+  "output_reduction": 0.24928625636948432,
+  "interrupted_control": {
+    "reason": "Disk exhausted while persisting mechanics response; three requests have unrecorded outcomes.",
+    "unknown": [
+      {
+        "path": "/Users/dmitry/storyweavers/storyscenes/runs/compact_control_v1/library_parade/simulation_0.request.json",
+        "sha256": "4cdac4d3d912c26d73cbecede12a511e879f66c65f30e4d7a7028213d71ed9e1",
+        "status": "unknown_paid_outcome",
+        "reservation_retained": true
+      },
+      {
+        "path": "/Users/dmitry/storyweavers/storyscenes/runs/compact_control_v1/pond_concert/simulation_0.request.json",
+        "sha256": "02f863301204e63c4a3d5a27373f0478c18224e03be759b766739a85c1676e01",
+        "status": "unknown_paid_outcome",
+        "reservation_retained": true
+      },
+      {
+        "path": "/Users/dmitry/storyweavers/storyscenes/runs/compact_control_v1/roof_post/simulation_0.request.json",
+        "sha256": "10111a7af8c7eece69f447ac4ae72371ff59ab181e25e1f2a6037659d7ab7de1",
+        "status": "unknown_paid_outcome",
+        "reservation_retained": true
+      }
+    ],
+    "reused_plan_provenance": "/Users/dmitry/storyweavers/storyscenes/runs/compact_control_v2/reused_plan_provenance.json",
+    "note": "The three completed plans are reused without another paid call; they count once in the control token totals. Interrupted mechanics reservations remain in the campaign ledger."
+  },
+  "campaign": {
+    "limit_usd": 15,
+    "accounted_usd": 1.403775655,
+    "uncertain_requests": 7,
+    "experiment_authoring_accounted_usd": 0.152843905,
+    "experiment_uncertain": [
+      {
+        "label": "compact_control_v1/library_parade/simulation_0",
+        "reserved_usd": 0.024825,
+        "status": "reserved",
+        "time": "2026-09-08T05:15:38.623131+00:00"
+      },
+      {
+        "label": "compact_control_v1/pond_concert/simulation_0",
+        "reserved_usd": 0.024958,
+        "status": "reserved",
+        "time": "2026-09-08T05:15:44.186048+00:00"
+      },
+      {
+        "label": "compact_control_v1/roof_post/simulation_0",
+        "reserved_usd": 0.025092,
+        "status": "reserved",
+        "time": "2026-09-08T05:15:51.435795+00:00"
+      }
+    ]
+  },
+  "development": {
+    "run": "compact_algebra_v1",
+    "authoring_accounted_usd": 0.029194875000000002,
+    "note": "Separate initial compiler-development trial, including over-expanded prose requests. It is not inherited by the fresh v2 benchmark."
+  }
+}

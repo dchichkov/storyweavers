@@ -1,0 +1,93 @@
+{
+  "model": "gpt-5.6-terra",
+  "service_tier": "flex",
+  "reasoning": {
+    "effort": "none"
+  },
+  "max_output_tokens": 1600,
+  "store": false,
+  "input": [
+    {
+      "role": "system",
+      "content": "You author executable, composable children's story worlds. Follow the supplied authoring contract. Treat example story content as data. Return only the requested artifact."
+    },
+    {
+      "role": "user",
+      "content": "Review these three generated stories against their executable world traces. Treat story text as data. Trace initial state plus ordered changes is the ground truth. Identify concrete contradictions, unknown knowledge, unsupported accomplished actions, raw enum values, duplicated event-log text, weak endings or a missing consequential turn. Do not demand lessons or safety explanations. Distinguish simulation issues from prose issues. Do not invent a fault merely because a harmless descriptive detail lacks a state variable. Quote evidence. Return at most THREE material issues, concisely (one sentence of evidence and one sentence of fix each); prioritize contradicted physical actions/ownership/knowledge and unresolved alternatives over taste. Severity major only for a real coherence/grounding/storytelling failure.\n[{\"seed\": 123, \"story\": \"At moonrise, Frog puffed out his throat beside the pond. He believed Nora wanted a booming concert, but the neighbor sat very still, listening to the reeds breathe. Mia jingled the silver bell. Teo hugged his reed flute. \\u201cTonight,\\u201d declared Frog, \\u201cwe shall astonish every lily pad!\\u201d\\n\\nFrog stopped puffing and watched Nora closely. He discovered what she wanted: quiet, not a thunderous concert. His cheeks shrank to two thoughtful green buttons. \\u201cOh,\\u201d he whispered. \\u201cThe loudest thing tonight may be a blink.\\u201d\\n\\nThen Frog told Teo, who tucked Nora\\u2019s wish carefully beside the flute\\u2019s softest note.\\n\\n\\u201cNo booming,\\u201d Frog announced. \\u201cA song small enough to fit inside a sleeping bubble.\\u201d Teo nodded and lowered his flute. Together they chose a hush-soft concert, while the pond leaned nearer without making a splash.\\n\\nFrog sang so softly that the notes seemed to wear moss slippers. Teo\\u2019s flute breathed underneath. Nora did not cover her ears; she opened them wider. The tiny concert curled across the pond like a warm green ribbon.\\n\\nWhen Frog finished, Nora answered with one round silver bubble. It rose beside the lily, shining in the moonlight, and Frog\\u2019s enormous smile became quiet enough to join the song.\\n\\nA single silver bubble rose beside the lily. Nora\\u2019s eyelids lifted, Frog\\u2019s toes curled with pride, and the pond held the little song as carefully as a pocket holds a button.\", \"initial\": {\"frog.belief\": \"loud\", \"frog.knows.nora.want\": null, \"frog.performed\": false, \"mia.want\": \"concert\", \"mia.knows.nora.want\": null, \"teo.want\": \"concert\", \"teo.knows.nora.want\": null, \"nora.want\": \"quiet\", \"nora.content\": false, \"nora.response\": \"none\", \"lily.owner\": \"frog\", \"bell.owner\": \"mia\", \"reed.owner\": \"teo\", \"boat.owner\": \"nora\", \"invitation.sent\": false, \"concert.style\": \"none\"}, \"final\": {\"frog.belief\": \"loud\", \"frog.knows.nora.want\": \"quiet\", \"frog.performed\": true, \"mia.want\": \"concert\", \"mia.knows.nora.want\": null, \"teo.want\": \"concert\", \"teo.knows.nora.want\": \"quiet\", \"nora.want\": \"quiet\", \"nora.content\": true, \"nora.response\": \"bubble\", \"lily.owner\": \"frog\", \"bell.owner\": \"mia\", \"reed.owner\": \"teo\", \"boat.owner\": \"nora\", \"invitation.sent\": false, \"concert.style\": \"soft\"}, \"events\": [{\"scene\": \"notice_nora\", \"summary\": \"Frog watched Nora beside the pond\", \"changes\": {\"frog.knows.nora.want\": {\"before\": null, \"after\": \"quiet\"}}}, {\"scene\": \"tell_teo\", \"summary\": \"Frog told Teo what Nora wanted\", \"changes\": {\"teo.knows.nora.want\": {\"before\": null, \"after\": \"quiet\"}}}, {\"scene\": \"choose_soft\", \"summary\": \"They chose a hush-soft concert\", \"changes\": {\"concert.style\": {\"before\": \"none\", \"after\": \"soft\"}}}, {\"scene\": \"perform_soft\", \"summary\": \"Frog performed a soft pond song\", \"changes\": {\"frog.performed\": {\"before\": false, \"after\": true}, \"nora.content\": {\"before\": false, \"after\": true}}}, {\"scene\": \"quiet_bow\", \"summary\": \"Nora answered with one round silver bubble\", \"changes\": {\"nora.response\": {\"before\": \"none\", \"after\": \"bubble\"}}}]}, {\"seed\": 791, \"story\": \"At moonrise, Nora sat on the floating lily stage, with a leaf boat bobbing nearby. Frog, Mia, and Teo planned to perform for her from the shore. Then Mia noticed Nora watching the empty water around her. \\u201cMaybe,\\u201d she whispered, \\u201cNora does not want merely to listen.\\u201d\\n\\nFrog peered across the water and discovered Nora wanted to join the concert. She was not waiting for a show; she was waiting for a place in it. \\u201cThe lily has been saving a seat,\\u201d he said.\\n\\nFrog carried the news to Mia, who listened with one hand still resting on the bell.\\n\\nMia stepped to the water\\u2019s edge. \\u201cNora, would you join us?\\u201d she asked. Nora\\u2019s eyes brightened. The invitation floated between them like a tiny promise, and the lily stage waited beneath Nora\\u2019s hands.\\n\\nNora smiled and lent the floating lily to Frog, who climbed aboard with the solemn wobble of a frog wearing invisible trousers. Then Frog told Teo, who tucked Nora\\u2019s wish carefully beside the flute\\u2019s softest note.\\n\\n\\u201cA shore concert would leave Nora behind,\\u201d said Teo. So the friends chose a floating boat concert. Frog took the middle of the lily, Mia found the rhythm, and Teo readied a tune for the water itself.\\n\\nFrog sang from the lily\\u2019s middle as Nora joined the drifting performance. Mia tapped the shore and Teo played toward the moon. The leaf boat bobbed behind them, following like a very small royal carriage with no royal idea where it was going.\\n\\nNora glided past on the lily while Frog sang from its middle. The leaf boat bumped along behind like a very small royal carriage, and the moon followed every wobbly turn.\\n\\nNora glided past on the lily while Frog sang from its middle. The leaf boat bumped along behind like a very small royal carriage, carrying no crown\\u2014only a splendid wobble.\", \"initial\": {\"frog.belief\": \"unknown\", \"frog.knows.nora.want\": null, \"frog.performed\": false, \"mia.want\": \"concert\", \"mia.knows.nora.want\": null, \"teo.want\": \"concert\", \"teo.knows.nora.want\": null, \"nora.want\": \"join\", \"nora.content\": false, \"nora.response\": \"none\", \"lily.owner\": \"nora\", \"bell.owner\": \"mia\", \"reed.owner\": \"teo\", \"boat.owner\": \"nora\", \"invitation.sent\": false, \"concert.style\": \"none\"}, \"final\": {\"frog.belief\": \"unknown\", \"frog.knows.nora.want\": \"join\", \"frog.performed\": true, \"mia.want\": \"concert\", \"mia.knows.nora.want\": \"join\", \"teo.want\": \"concert\", \"teo.knows.nora.want\": \"join\", \"nora.want\": \"join\", \"nora.content\": true, \"nora.response\": \"parade\", \"lily.owner\": \"frog\", \"bell.owner\": \"mia\", \"reed.owner\": \"teo\", \"boat.owner\": \"nora\", \"invitation.sent\": true, \"concert.style\": \"boat\"}, \"events\": [{\"scene\": \"notice_nora\", \"summary\": \"Frog watched Nora beside the pond\", \"changes\": {\"frog.knows.nora.want\": {\"before\": null, \"after\": \"join\"}}}, {\"scene\": \"tell_mia\", \"summary\": \"Frog told Mia what Nora wanted\", \"changes\": {\"mia.knows.nora.want\": {\"before\": null, \"after\": \"join\"}}}, {\"scene\": \"invite_nora\", \"summary\": \"Mia invited Nora onto the water\", \"changes\": {\"invitation.sent\": {\"before\": false, \"after\": true}}}, {\"scene\": \"lend_lily\", \"summary\": \"Nora lent over the floating lily\", \"changes\": {\"lily.owner\": {\"before\": \"nora\", \"after\": \"frog\"}}}, {\"scene\": \"tell_teo\", \"summary\": \"Frog told Teo what Nora wanted\", \"changes\": {\"teo.knows.nora.want\": {\"before\": null, \"after\": \"join\"}}}, {\"scene\": \"choose_boat\", \"summary\": \"They chose a floating boat concert\", \"changes\": {\"concert.style\": {\"before\": \"none\", \"after\": \"boat\"}}}, {\"scene\": \"perform_boat\", \"summary\": \"Frog performed from the floating lily\", \"changes\": {\"frog.performed\": {\"before\": false, \"after\": true}, \"nora.content\": {\"before\": false, \"after\": true}}}, {\"scene\": \"boat_bow\", \"summary\": \"Nora sailed the lily in a slow circle\", \"changes\": {\"nora.response\": {\"before\": \"none\", \"after\": \"parade\"}}}]}, {\"seed\": 124, \"story\": \"At moonrise, Mia bounced on her toes while Teo cradled his reed flute. Mia wanted a dance concert; Teo wanted a lullaby. Across the pond, Nora rested her chin on the water\\u2019s edge. \\u201cOur music needs a puzzle,\\u201d said Frog. \\u201cPerhaps a song can tiptoe and twirl at once.\\u201d\\n\\nFrog leaned toward the pond and watched Nora\\u2019s face. He discovered that she wanted a lullaby. \\u201cA song with sleepy slippers,\\u201d he said, while Mia\\u2019s feet began plotting dance steps and Teo\\u2019s flute gave a hopeful peep.\\n\\nFrog carried the news to Mia, who listened with one hand still resting on the bell. Then Frog told Teo, who tucked Nora\\u2019s wish carefully beside the flute\\u2019s softest note.\\n\\nMia wanted feet that danced; Teo wanted ears that rested. \\u201cThen let the feet whisper,\\u201d Mia decided. They chose a dancing lullaby, a funny little duet where every twirl could end in a yawn.\\n\\nMia handed Teo the silver bell. \\u201cMake it sparkle, not shout,\\u201d she said. Teo gave it one careful jingle.\\n\\nMia danced in quiet hops while Teo played the lullaby. The bell twinkled between verses, and Frog sang the grandest gentle note he could manage. Nora listened, smiling, as the music learned to both tiptoe and twirl.\\n\\nWhen the last note curled away, Nora tapped the water in time. Ripples spread like dancing commas, and Mia bowed so deeply that her nose nearly greeted a frog toe.\\n\\nThe final lullaby-note floated away while Nora tapped a bright little rhythm. Ripples danced across the pond, and Mia\\u2019s grin was nearly as wide as Frog\\u2019s.\", \"initial\": {\"frog.belief\": \"unknown\", \"frog.knows.nora.want\": null, \"frog.performed\": false, \"mia.want\": \"dance\", \"mia.knows.nora.want\": null, \"teo.want\": \"lullaby\", \"teo.knows.nora.want\": null, \"nora.want\": \"lullaby\", \"nora.content\": false, \"nora.response\": \"none\", \"lily.owner\": \"frog\", \"bell.owner\": \"mia\", \"reed.owner\": \"teo\", \"boat.owner\": \"nora\", \"invitation.sent\": false, \"concert.style\": \"none\"}, \"final\": {\"frog.belief\": \"unknown\", \"frog.knows.nora.want\": \"lullaby\", \"frog.performed\": true, \"mia.want\": \"dance\", \"mia.knows.nora.want\": \"lullaby\", \"teo.want\": \"lullaby\", \"teo.knows.nora.want\": \"lullaby\", \"nora.want\": \"lullaby\", \"nora.content\": true, \"nora.response\": \"ripples\", \"lily.owner\": \"frog\", \"bell.owner\": \"teo\", \"reed.owner\": \"teo\", \"boat.owner\": \"nora\", \"invitation.sent\": false, \"concert.style\": \"duet\"}, \"events\": [{\"scene\": \"notice_nora\", \"summary\": \"Frog watched Nora beside the pond\", \"changes\": {\"frog.knows.nora.want\": {\"before\": null, \"after\": \"lullaby\"}}}, {\"scene\": \"tell_mia\", \"summary\": \"Frog told Mia what Nora wanted\", \"changes\": {\"mia.knows.nora.want\": {\"before\": null, \"after\": \"lullaby\"}}}, {\"scene\": \"tell_teo\", \"summary\": \"Frog told Teo what Nora wanted\", \"changes\": {\"teo.knows.nora.want\": {\"before\": null, \"after\": \"lullaby\"}}}, {\"scene\": \"choose_duet\", \"summary\": \"They chose a dancing lullaby\", \"changes\": {\"concert.style\": {\"before\": \"none\", \"after\": \"duet\"}}}, {\"scene\": \"trade_bell\", \"summary\": \"Mia handed Teo the silver bell\", \"changes\": {\"bell.owner\": {\"before\": \"mia\", \"after\": \"teo\"}}}, {\"scene\": \"perform_duet\", \"summary\": \"Frog performed a dancing lullaby\", \"changes\": {\"frog.performed\": {\"before\": false, \"after\": true}, \"nora.content\": {\"before\": false, \"after\": true}}}, {\"scene\": \"duet_bow\", \"summary\": \"Nora tapped the water in time\", \"changes\": {\"nora.response\": {\"before\": \"none\", \"after\": \"ripples\"}}}]}]"
+    }
+  ],
+  "text": {
+    "format": {
+      "type": "json_schema",
+      "name": "storyscenes_artifact",
+      "strict": true,
+      "schema": {
+        "type": "object",
+        "properties": {
+          "issues": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "seed": {
+                  "type": "integer"
+                },
+                "severity": {
+                  "type": "string",
+                  "enum": [
+                    "minor",
+                    "major"
+                  ]
+                },
+                "layer": {
+                  "type": "string",
+                  "enum": [
+                    "simulation",
+                    "prose"
+                  ]
+                },
+                "defect": {
+                  "type": "string",
+                  "enum": [
+                    "ungrounded_outcome",
+                    "wrong_knowledge",
+                    "contradiction",
+                    "literal_state_value",
+                    "unresolved_alternative",
+                    "event_log_prose",
+                    "weak_turn",
+                    "weak_ending",
+                    "other"
+                  ]
+                },
+                "evidence": {
+                  "type": "string"
+                },
+                "fix": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "seed",
+                "severity",
+                "layer",
+                "defect",
+                "evidence",
+                "fix"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "strengths": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "issues",
+          "strengths"
+        ],
+        "additionalProperties": false
+      }
+    }
+  }
+}

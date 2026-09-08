@@ -1,0 +1,2229 @@
+[
+  {
+    "seed": 1000,
+    "prose_seed": 1000,
+    "title": "The Library Parade and the Cart with Three Jobs",
+    "story": "The parade lane glittered with paper stars, and Mayor Mallow stretched her arms toward the sky. “Biggest parade ever!” she announced. Nia hugged her library list, and Tuck patted the cart’s sturdy handle. Somewhere between a grand float, a book journey, and a cozy reading room waited the cart’s real job.\n\nNia waved her invitation like a tiny flag. “Mayor Mallow! Tuck! Meet me in the square—there are children waiting for a library surprise.” The mayor came jingling with plans, and Tuck rolled after her, eager to discover which job his wooden cart would choose.\n\nTuck tapped the cart’s side. “I know something you don’t,” he said. With a careful tug, he revealed hidden folding shelves. “This cart can open into a little room.” Mallow stared. The cart had been keeping a secret as neatly as a bookmark keeps a place.\n\nAt the neighborhood stop, Tuck placed the loaded cart’s handle into Nia’s hands. “Take it where the stories are,” he said. Nia nodded, suddenly keeper of wheels, books, and a wonderfully serious bell. The cart gave one proud wooden creak.\n\nTogether they leaned into the handles, and the cart rolled toward the parade lane with a friendly wooden rumble. Nia steered past the parade flags toward the neighborhood stop, where small faces were already peeking from doorways.\n\nAt the neighborhood stop, the loaded cart waited like a friendly little library on wheels. The bell hung ready beside the books, and a child peeped around the corner, already reaching for a story.",
+    "paragraphs": [
+      {
+        "text": "The parade lane glittered with paper stars, and Mayor Mallow stretched her arms toward the sky. “Biggest parade ever!” she announced. Nia hugged her library list, and Tuck patted the cart’s sturdy handle. Somewhere between a grand float, a book journey, and a cozy reading room waited the cart’s real job.",
+        "event_ids": [],
+        "kind": "beginning",
+        "facts": []
+      },
+      {
+        "text": "Nia waved her invitation like a tiny flag. “Mayor Mallow! Tuck! Meet me in the square—there are children waiting for a library surprise.” The mayor came jingling with plans, and Tuck rolled after her, eager to discover which job his wooden cart would choose.",
+        "event_ids": [
+          1
+        ],
+        "kind": "scene",
+        "facts": []
+      },
+      {
+        "text": "Tuck tapped the cart’s side. “I know something you don’t,” he said. With a careful tug, he revealed hidden folding shelves. “This cart can open into a little room.” Mallow stared. The cart had been keeping a secret as neatly as a bookmark keeps a place.",
+        "event_ids": [
+          2
+        ],
+        "kind": "scene",
+        "facts": [
+          {
+            "at": 2,
+            "key": "mayor.knows.cart.shelves",
+            "value": true
+          }
+        ]
+      },
+      {
+        "text": "At the neighborhood stop, Tuck placed the loaded cart’s handle into Nia’s hands. “Take it where the stories are,” he said. Nia nodded, suddenly keeper of wheels, books, and a wonderfully serious bell. The cart gave one proud wooden creak.",
+        "event_ids": [
+          3
+        ],
+        "kind": "scene",
+        "facts": [
+          {
+            "at": 3,
+            "key": "cart.owner",
+            "value": "nia"
+          }
+        ]
+      },
+      {
+        "text": "Together they leaned into the handles, and the cart rolled toward the parade lane with a friendly wooden rumble. Nia steered past the parade flags toward the neighborhood stop, where small faces were already peeking from doorways.",
+        "event_ids": [
+          4,
+          5
+        ],
+        "kind": "scene",
+        "facts": [
+          {
+            "at": 5,
+            "key": "cart.location",
+            "value": "neighborhood_stop"
+          }
+        ]
+      },
+      {
+        "text": "At the neighborhood stop, the loaded cart waited like a friendly little library on wheels. The bell hung ready beside the books, and a child peeped around the corner, already reaching for a story.",
+        "event_ids": [
+          5
+        ],
+        "kind": "ending",
+        "facts": [
+          {
+            "at": 5,
+            "key": "cart.mode",
+            "value": "bookmobile"
+          },
+          {
+            "at": 5,
+            "key": "cart.location",
+            "value": "neighborhood_stop"
+          }
+        ]
+      }
+    ],
+    "trace": {
+      "title": "The Library Parade and the Cart with Three Jobs",
+      "seed": 1000,
+      "entities": {
+        "mayor": {
+          "name": "Mayor Mallow",
+          "kind": "adult"
+        },
+        "nia": {
+          "name": "Nia",
+          "kind": "child"
+        },
+        "tuck": {
+          "name": "Tuck",
+          "kind": "adult"
+        },
+        "cart": {
+          "name": "wooden cart",
+          "kind": "prop"
+        },
+        "banner": {
+          "name": "parade banner",
+          "kind": "prop"
+        },
+        "books": {
+          "name": "library books",
+          "kind": "prop"
+        },
+        "bell": {
+          "name": "brass bell",
+          "kind": "prop"
+        }
+      },
+      "initial": {
+        "mayor.memes.Boast": 2,
+        "mayor.want": "bookmobile",
+        "mayor.knows.cart.loaded": null,
+        "mayor.knows.cart.location": null,
+        "mayor.knows.books.waiting": null,
+        "mayor.knows.cart.shelves": null,
+        "mayor.knows.cart.shelves_open": null,
+        "nia.memes.Care": 2,
+        "nia.want": "deliver",
+        "nia.invited_children": false,
+        "nia.knows.cart.loaded": null,
+        "nia.knows.cart.location": null,
+        "nia.knows.books.waiting": null,
+        "nia.knows.mayor.want": null,
+        "tuck.memes.Craft": 2,
+        "tuck.knows.cart.shelves": true,
+        "tuck.knows.cart.shelves_open": true,
+        "tuck.knows.mayor.want": null,
+        "tuck.knows.cart.loaded": null,
+        "cart.owner": "tuck",
+        "cart.location": "neighborhood_stop",
+        "cart.loaded": true,
+        "cart.decorated": false,
+        "cart.mode": "none",
+        "cart.performer": null,
+        "cart.shelves": true,
+        "banner.owner": "mayor",
+        "banner.attached": false,
+        "books.waiting": true,
+        "bell.owner": "tuck",
+        "bell.rung": false
+      },
+      "final": {
+        "mayor.memes.Boast": 2,
+        "mayor.want": "bookmobile",
+        "mayor.knows.cart.loaded": null,
+        "mayor.knows.cart.location": null,
+        "mayor.knows.books.waiting": null,
+        "mayor.knows.cart.shelves": true,
+        "mayor.knows.cart.shelves_open": null,
+        "nia.memes.Care": 2,
+        "nia.want": "deliver",
+        "nia.invited_children": true,
+        "nia.knows.cart.loaded": null,
+        "nia.knows.cart.location": null,
+        "nia.knows.books.waiting": null,
+        "nia.knows.mayor.want": null,
+        "tuck.memes.Craft": 2,
+        "tuck.knows.cart.shelves": true,
+        "tuck.knows.cart.shelves_open": true,
+        "tuck.knows.mayor.want": null,
+        "tuck.knows.cart.loaded": null,
+        "cart.owner": "nia",
+        "cart.location": "neighborhood_stop",
+        "cart.loaded": true,
+        "cart.decorated": false,
+        "cart.mode": "bookmobile",
+        "cart.performer": null,
+        "cart.shelves": true,
+        "banner.owner": "mayor",
+        "banner.attached": false,
+        "books.waiting": true,
+        "bell.owner": "tuck",
+        "bell.rung": false
+      },
+      "events": [
+        {
+          "id": 1,
+          "scene": "invite_square",
+          "kernel": "Invitation",
+          "actors": [
+            "nia",
+            "mayor",
+            "tuck"
+          ],
+          "summary": "Nia invited everyone to meet in the library square",
+          "causes": [],
+          "requires": [
+            {
+              "key": "nia.invited_children",
+              "op": "eq",
+              "value": false
+            }
+          ],
+          "changes": {
+            "nia.invited_children": {
+              "before": false,
+              "after": true
+            }
+          },
+          "before": {
+            "mayor.memes.Boast": 2,
+            "mayor.want": "bookmobile",
+            "mayor.knows.cart.loaded": null,
+            "mayor.knows.cart.location": null,
+            "mayor.knows.books.waiting": null,
+            "mayor.knows.cart.shelves": null,
+            "mayor.knows.cart.shelves_open": null,
+            "nia.memes.Care": 2,
+            "nia.want": "deliver",
+            "nia.invited_children": false,
+            "nia.knows.cart.loaded": null,
+            "nia.knows.cart.location": null,
+            "nia.knows.books.waiting": null,
+            "nia.knows.mayor.want": null,
+            "tuck.memes.Craft": 2,
+            "tuck.knows.cart.shelves": true,
+            "tuck.knows.cart.shelves_open": true,
+            "tuck.knows.mayor.want": null,
+            "tuck.knows.cart.loaded": null,
+            "cart.owner": "tuck",
+            "cart.location": "neighborhood_stop",
+            "cart.loaded": true,
+            "cart.decorated": false,
+            "cart.mode": "none",
+            "cart.performer": null,
+            "cart.shelves": true,
+            "banner.owner": "mayor",
+            "banner.attached": false,
+            "books.waiting": true,
+            "bell.owner": "tuck",
+            "bell.rung": false
+          },
+          "after": {
+            "mayor.memes.Boast": 2,
+            "mayor.want": "bookmobile",
+            "mayor.knows.cart.loaded": null,
+            "mayor.knows.cart.location": null,
+            "mayor.knows.books.waiting": null,
+            "mayor.knows.cart.shelves": null,
+            "mayor.knows.cart.shelves_open": null,
+            "nia.memes.Care": 2,
+            "nia.want": "deliver",
+            "nia.invited_children": true,
+            "nia.knows.cart.loaded": null,
+            "nia.knows.cart.location": null,
+            "nia.knows.books.waiting": null,
+            "nia.knows.mayor.want": null,
+            "tuck.memes.Craft": 2,
+            "tuck.knows.cart.shelves": true,
+            "tuck.knows.cart.shelves_open": true,
+            "tuck.knows.mayor.want": null,
+            "tuck.knows.cart.loaded": null,
+            "cart.owner": "tuck",
+            "cart.location": "neighborhood_stop",
+            "cart.loaded": true,
+            "cart.decorated": false,
+            "cart.mode": "none",
+            "cart.performer": null,
+            "cart.shelves": true,
+            "banner.owner": "mayor",
+            "banner.attached": false,
+            "books.waiting": true,
+            "bell.owner": "tuck",
+            "bell.rung": false
+          }
+        },
+        {
+          "id": 2,
+          "scene": "tell_folding_shelves",
+          "kernel": "Tell",
+          "actors": [
+            "tuck",
+            "mayor"
+          ],
+          "summary": "Tuck revealed the cart’s hidden folding shelves",
+          "causes": [],
+          "requires": [
+            {
+              "key": "tuck.knows.cart.shelves",
+              "op": "ne",
+              "value": null
+            },
+            {
+              "key": "tuck.knows.cart.shelves",
+              "op": "eq",
+              "value": true
+            },
+            {
+              "key": "mayor.knows.cart.shelves",
+              "op": "eq",
+              "value": null
+            }
+          ],
+          "changes": {
+            "mayor.knows.cart.shelves": {
+              "before": null,
+              "after": true
+            }
+          },
+          "before": {
+            "mayor.memes.Boast": 2,
+            "mayor.want": "bookmobile",
+            "mayor.knows.cart.loaded": null,
+            "mayor.knows.cart.location": null,
+            "mayor.knows.books.waiting": null,
+            "mayor.knows.cart.shelves": null,
+            "mayor.knows.cart.shelves_open": null,
+            "nia.memes.Care": 2,
+            "nia.want": "deliver",
+            "nia.invited_children": true,
+            "nia.knows.cart.loaded": null,
+            "nia.knows.cart.location": null,
+            "nia.knows.books.waiting": null,
+            "nia.knows.mayor.want": null,
+            "tuck.memes.Craft": 2,
+            "tuck.knows.cart.shelves": true,
+            "tuck.knows.cart.shelves_open": true,
+            "tuck.knows.mayor.want": null,
+            "tuck.knows.cart.loaded": null,
+            "cart.owner": "tuck",
+            "cart.location": "neighborhood_stop",
+            "cart.loaded": true,
+            "cart.decorated": false,
+            "cart.mode": "none",
+            "cart.performer": null,
+            "cart.shelves": true,
+            "banner.owner": "mayor",
+            "banner.attached": false,
+            "books.waiting": true,
+            "bell.owner": "tuck",
+            "bell.rung": false
+          },
+          "after": {
+            "mayor.memes.Boast": 2,
+            "mayor.want": "bookmobile",
+            "mayor.knows.cart.loaded": null,
+            "mayor.knows.cart.location": null,
+            "mayor.knows.books.waiting": null,
+            "mayor.knows.cart.shelves": true,
+            "mayor.knows.cart.shelves_open": null,
+            "nia.memes.Care": 2,
+            "nia.want": "deliver",
+            "nia.invited_children": true,
+            "nia.knows.cart.loaded": null,
+            "nia.knows.cart.location": null,
+            "nia.knows.books.waiting": null,
+            "nia.knows.mayor.want": null,
+            "tuck.memes.Craft": 2,
+            "tuck.knows.cart.shelves": true,
+            "tuck.knows.cart.shelves_open": true,
+            "tuck.knows.mayor.want": null,
+            "tuck.knows.cart.loaded": null,
+            "cart.owner": "tuck",
+            "cart.location": "neighborhood_stop",
+            "cart.loaded": true,
+            "cart.decorated": false,
+            "cart.mode": "none",
+            "cart.performer": null,
+            "cart.shelves": true,
+            "banner.owner": "mayor",
+            "banner.attached": false,
+            "books.waiting": true,
+            "bell.owner": "tuck",
+            "bell.rung": false
+          }
+        },
+        {
+          "id": 3,
+          "scene": "transfer_cart_to_nia",
+          "kernel": "Transfer",
+          "actors": [
+            "tuck",
+            "nia"
+          ],
+          "summary": "Tuck handed the loaded cart to Nia",
+          "causes": [],
+          "requires": [
+            {
+              "key": "cart.owner",
+              "op": "eq",
+              "value": "tuck"
+            },
+            {
+              "key": "cart.owner",
+              "op": "eq",
+              "value": "tuck"
+            },
+            {
+              "key": "cart.loaded",
+              "op": "eq",
+              "value": true
+            },
+            {
+              "key": "cart.location",
+              "op": "eq",
+              "value": "neighborhood_stop"
+            }
+          ],
+          "changes": {
+            "cart.owner": {
+              "before": "tuck",
+              "after": "nia"
+            }
+          },
+          "before": {
+            "mayor.memes.Boast": 2,
+            "mayor.want": "bookmobile",
+            "mayor.knows.cart.loaded": null,
+            "mayor.knows.cart.location": null,
+            "mayor.knows.books.waiting": null,
+            "mayor.knows.cart.shelves": true,
+            "mayor.knows.cart.shelves_open": null,
+            "nia.memes.Care": 2,
+            "nia.want": "deliver",
+            "nia.invited_children": true,
+            "nia.knows.cart.loaded": null,
+            "nia.knows.cart.location": null,
+            "nia.knows.books.waiting": null,
+            "nia.knows.mayor.want": null,
+            "tuck.memes.Craft": 2,
+            "tuck.knows.cart.shelves": true,
+            "tuck.knows.cart.shelves_open": true,
+            "tuck.knows.mayor.want": null,
+            "tuck.knows.cart.loaded": null,
+            "cart.owner": "tuck",
+            "cart.location": "neighborhood_stop",
+            "cart.loaded": true,
+            "cart.decorated": false,
+            "cart.mode": "none",
+            "cart.performer": null,
+            "cart.shelves": true,
+            "banner.owner": "mayor",
+            "banner.attached": false,
+            "books.waiting": true,
+            "bell.owner": "tuck",
+            "bell.rung": false
+          },
+          "after": {
+            "mayor.memes.Boast": 2,
+            "mayor.want": "bookmobile",
+            "mayor.knows.cart.loaded": null,
+            "mayor.knows.cart.location": null,
+            "mayor.knows.books.waiting": null,
+            "mayor.knows.cart.shelves": true,
+            "mayor.knows.cart.shelves_open": null,
+            "nia.memes.Care": 2,
+            "nia.want": "deliver",
+            "nia.invited_children": true,
+            "nia.knows.cart.loaded": null,
+            "nia.knows.cart.location": null,
+            "nia.knows.books.waiting": null,
+            "nia.knows.mayor.want": null,
+            "tuck.memes.Craft": 2,
+            "tuck.knows.cart.shelves": true,
+            "tuck.knows.cart.shelves_open": true,
+            "tuck.knows.mayor.want": null,
+            "tuck.knows.cart.loaded": null,
+            "cart.owner": "nia",
+            "cart.location": "neighborhood_stop",
+            "cart.loaded": true,
+            "cart.decorated": false,
+            "cart.mode": "none",
+            "cart.performer": null,
+            "cart.shelves": true,
+            "banner.owner": "mayor",
+            "banner.attached": false,
+            "books.waiting": true,
+            "bell.owner": "tuck",
+            "bell.rung": false
+          }
+        },
+        {
+          "id": 4,
+          "scene": "move_cart_to_square",
+          "kernel": "Moving",
+          "actors": [
+            "nia",
+            "tuck"
+          ],
+          "summary": "The friends rolled the cart to the parade lane",
+          "causes": [
+            1
+          ],
+          "requires": [
+            {
+              "key": "nia.invited_children",
+              "op": "eq",
+              "value": true
+            },
+            {
+              "key": "cart.location",
+              "op": "in",
+              "value": [
+                "library_door",
+                "neighborhood_stop"
+              ]
+            }
+          ],
+          "changes": {
+            "cart.location": {
+              "before": "neighborhood_stop",
+              "after": "parade_lane"
+            }
+          },
+          "before": {
+            "mayor.memes.Boast": 2,
+            "mayor.want": "bookmobile",
+            "mayor.knows.cart.loaded": null,
+            "mayor.knows.cart.location": null,
+            "mayor.knows.books.waiting": null,
+            "mayor.knows.cart.shelves": true,
+            "mayor.knows.cart.shelves_open": null,
+            "nia.memes.Care": 2,
+            "nia.want": "deliver",
+            "nia.invited_children": true,
+            "nia.knows.cart.loaded": null,
+            "nia.knows.cart.location": null,
+            "nia.knows.books.waiting": null,
+            "nia.knows.mayor.want": null,
+            "tuck.memes.Craft": 2,
+            "tuck.knows.cart.shelves": true,
+            "tuck.knows.cart.shelves_open": true,
+            "tuck.knows.mayor.want": null,
+            "tuck.knows.cart.loaded": null,
+            "cart.owner": "nia",
+            "cart.location": "neighborhood_stop",
+            "cart.loaded": true,
+            "cart.decorated": false,
+            "cart.mode": "none",
+            "cart.performer": null,
+            "cart.shelves": true,
+            "banner.owner": "mayor",
+            "banner.attached": false,
+            "books.waiting": true,
+            "bell.owner": "tuck",
+            "bell.rung": false
+          },
+          "after": {
+            "mayor.memes.Boast": 2,
+            "mayor.want": "bookmobile",
+            "mayor.knows.cart.loaded": null,
+            "mayor.knows.cart.location": null,
+            "mayor.knows.books.waiting": null,
+            "mayor.knows.cart.shelves": true,
+            "mayor.knows.cart.shelves_open": null,
+            "nia.memes.Care": 2,
+            "nia.want": "deliver",
+            "nia.invited_children": true,
+            "nia.knows.cart.loaded": null,
+            "nia.knows.cart.location": null,
+            "nia.knows.books.waiting": null,
+            "nia.knows.mayor.want": null,
+            "tuck.memes.Craft": 2,
+            "tuck.knows.cart.shelves": true,
+            "tuck.knows.cart.shelves_open": true,
+            "tuck.knows.mayor.want": null,
+            "tuck.knows.cart.loaded": null,
+            "cart.owner": "nia",
+            "cart.location": "parade_lane",
+            "cart.loaded": true,
+            "cart.decorated": false,
+            "cart.mode": "none",
+            "cart.performer": null,
+            "cart.shelves": true,
+            "banner.owner": "mayor",
+            "banner.attached": false,
+            "books.waiting": true,
+            "bell.owner": "tuck",
+            "bell.rung": false
+          }
+        },
+        {
+          "id": 5,
+          "scene": "move_cart_to_neighborhood",
+          "kernel": "Moving",
+          "actors": [
+            "nia"
+          ],
+          "summary": "Nia rolled the bookmobile to the neighborhood stop",
+          "causes": [
+            3,
+            4
+          ],
+          "requires": [
+            {
+              "key": "cart.owner",
+              "op": "eq",
+              "value": "nia"
+            },
+            {
+              "key": "cart.loaded",
+              "op": "eq",
+              "value": true
+            },
+            {
+              "key": "cart.location",
+              "op": "eq",
+              "value": "parade_lane"
+            }
+          ],
+          "changes": {
+            "cart.location": {
+              "before": "parade_lane",
+              "after": "neighborhood_stop"
+            },
+            "cart.mode": {
+              "before": "none",
+              "after": "bookmobile"
+            }
+          },
+          "before": {
+            "mayor.memes.Boast": 2,
+            "mayor.want": "bookmobile",
+            "mayor.knows.cart.loaded": null,
+            "mayor.knows.cart.location": null,
+            "mayor.knows.books.waiting": null,
+            "mayor.knows.cart.shelves": true,
+            "mayor.knows.cart.shelves_open": null,
+            "nia.memes.Care": 2,
+            "nia.want": "deliver",
+            "nia.invited_children": true,
+            "nia.knows.cart.loaded": null,
+            "nia.knows.cart.location": null,
+            "nia.knows.books.waiting": null,
+            "nia.knows.mayor.want": null,
+            "tuck.memes.Craft": 2,
+            "tuck.knows.cart.shelves": true,
+            "tuck.knows.cart.shelves_open": true,
+            "tuck.knows.mayor.want": null,
+            "tuck.knows.cart.loaded": null,
+            "cart.owner": "nia",
+            "cart.location": "parade_lane",
+            "cart.loaded": true,
+            "cart.decorated": false,
+            "cart.mode": "none",
+            "cart.performer": null,
+            "cart.shelves": true,
+            "banner.owner": "mayor",
+            "banner.attached": false,
+            "books.waiting": true,
+            "bell.owner": "tuck",
+            "bell.rung": false
+          },
+          "after": {
+            "mayor.memes.Boast": 2,
+            "mayor.want": "bookmobile",
+            "mayor.knows.cart.loaded": null,
+            "mayor.knows.cart.location": null,
+            "mayor.knows.books.waiting": null,
+            "mayor.knows.cart.shelves": true,
+            "mayor.knows.cart.shelves_open": null,
+            "nia.memes.Care": 2,
+            "nia.want": "deliver",
+            "nia.invited_children": true,
+            "nia.knows.cart.loaded": null,
+            "nia.knows.cart.location": null,
+            "nia.knows.books.waiting": null,
+            "nia.knows.mayor.want": null,
+            "tuck.memes.Craft": 2,
+            "tuck.knows.cart.shelves": true,
+            "tuck.knows.cart.shelves_open": true,
+            "tuck.knows.mayor.want": null,
+            "tuck.knows.cart.loaded": null,
+            "cart.owner": "nia",
+            "cart.location": "neighborhood_stop",
+            "cart.loaded": true,
+            "cart.decorated": false,
+            "cart.mode": "bookmobile",
+            "cart.performer": null,
+            "cart.shelves": true,
+            "banner.owner": "mayor",
+            "banner.attached": false,
+            "books.waiting": true,
+            "bell.owner": "tuck",
+            "bell.rung": false
+          }
+        }
+      ],
+      "labels": {
+        "cart.mode": "the cart’s job",
+        "cart.location": "the cart’s place",
+        "cart.owner": "the cart’s keeper",
+        "cart.performer": "the performer",
+        "cart.loaded": "the loaded books",
+        "banner.attached": "the high banner",
+        "bell.rung": "the ringing bell"
+      },
+      "search": {
+        "nodes": 9,
+        "backtracks": 0
+      },
+      "goal": [
+        {
+          "key": "cart.mode",
+          "op": "in",
+          "value": [
+            "float",
+            "bookmobile",
+            "reading_room"
+          ]
+        }
+      ],
+      "engine": "storyscenes_v2",
+      "pruned_scenes": [
+        "learn_mayor_plan",
+        "look_books",
+        "look_cart"
+      ],
+      "premise": {
+        "cart.owner": "tuck",
+        "cart.location": "neighborhood_stop",
+        "cart.loaded": true,
+        "mayor.want": "bookmobile"
+      },
+      "outcome": {
+        "cart.mode": "bookmobile",
+        "cart.location": "neighborhood_stop",
+        "cart.performer": null
+      }
+    },
+    "qa": [
+      {
+        "question": "What changed when Nia invited everyone to meet in the library square?",
+        "answer": "nia.invited_children changed from false to true.",
+        "event_ids": [
+          1
+        ],
+        "cause_ids": []
+      },
+      {
+        "question": "What changed when Tuck revealed the cart’s hidden folding shelves?",
+        "answer": "mayor.knows.cart.shelves changed from null to true.",
+        "event_ids": [
+          2
+        ],
+        "cause_ids": []
+      },
+      {
+        "question": "What changed when Tuck handed the loaded cart to Nia?",
+        "answer": "the cart’s keeper changed from \"tuck\" to \"nia\".",
+        "event_ids": [
+          3
+        ],
+        "cause_ids": []
+      },
+      {
+        "question": "What changed when The friends rolled the cart to the parade lane?",
+        "answer": "the cart’s place changed from \"neighborhood_stop\" to \"parade_lane\". This used state established when Nia invited everyone to meet in the library square.",
+        "event_ids": [
+          4
+        ],
+        "cause_ids": [
+          1
+        ]
+      },
+      {
+        "question": "What changed when Nia rolled the bookmobile to the neighborhood stop?",
+        "answer": "the cart’s place changed from \"parade_lane\" to \"neighborhood_stop\"; the cart’s job changed from \"none\" to \"bookmobile\". This used state established when Tuck handed the loaded cart to Nia; The friends rolled the cart to the parade lane.",
+        "event_ids": [
+          5
+        ],
+        "cause_ids": [
+          3,
+          4
+        ]
+      }
+    ],
+    "trace_sha256": "64f2bf5c7b98eedc6fb5bc7a189b31d016f0ae9a46b60b4212118f640ff630fc"
+  },
+  {
+    "seed": 1001,
+    "prose_seed": 1001,
+    "title": "The Library Parade and the Cart with Three Jobs",
+    "story": "Nia hurried into the library square with an invitation in one hand and a question in the other. Mayor Mallow wanted a parade people would remember, while Tuck loved making the wooden cart useful. But today the cart might be empty, crowded with books, or mistaken for a waiting audience. “Let’s see what it can do!” cried Nia.\n\nNia waved her invitation like a tiny flag. “Mayor Mallow! Tuck! Meet me in the square—there are children waiting for a library surprise.” The mayor came jingling with plans, and Tuck rolled after her, eager to discover which job his wooden cart would choose.\n\nTuck tapped the cart’s side. “I know something you don’t,” he said. With a careful tug, he revealed hidden folding shelves. “This cart can open into a little room.” Mallow stared. The cart had been keeping a secret as neatly as a bookmark keeps a place.\n\nMallow peered into the cart and found it empty—so empty that a lost button could have held a parade in it. “Excellent!” she cried. “It shall become my enormous float.” Nia blinked at the bare boards, while Tuck’s eyebrows lifted like two curious caterpillars.\n\nMallow tied her enormous banner to the empty cart. It climbed above her like a cheerful red sail. “Behold!” she cried. “A float so grand it needs its own introduction!” Tuck rang no bell yet, but he did give the cart an approving pat.\n\nThe cart stood in the parade lane as a towering float, its enormous banner lifting above the stones like a bright red sail. Mallow beamed at it, while Tuck gave the wooden handle an affectionate pat.",
+    "paragraphs": [
+      {
+        "text": "Nia hurried into the library square with an invitation in one hand and a question in the other. Mayor Mallow wanted a parade people would remember, while Tuck loved making the wooden cart useful. But today the cart might be empty, crowded with books, or mistaken for a waiting audience. “Let’s see what it can do!” cried Nia.",
+        "event_ids": [],
+        "kind": "beginning",
+        "facts": []
+      },
+      {
+        "text": "Nia waved her invitation like a tiny flag. “Mayor Mallow! Tuck! Meet me in the square—there are children waiting for a library surprise.” The mayor came jingling with plans, and Tuck rolled after her, eager to discover which job his wooden cart would choose.",
+        "event_ids": [
+          1
+        ],
+        "kind": "scene",
+        "facts": []
+      },
+      {
+        "text": "Tuck tapped the cart’s side. “I know something you don’t,” he said. With a careful tug, he revealed hidden folding shelves. “This cart can open into a little room.” Mallow stared. The cart had been keeping a secret as neatly as a bookmark keeps a place.",
+        "event_ids": [
+          2
+        ],
+        "kind": "scene",
+        "facts": [
+          {
+            "at": 2,
+            "key": "mayor.knows.cart.shelves",
+            "value": true
+          }
+        ]
+      },
+      {
+        "text": "Mallow peered into the cart and found it empty—so empty that a lost button could have held a parade in it. “Excellent!” she cried. “It shall become my enormous float.” Nia blinked at the bare boards, while Tuck’s eyebrows lifted like two curious caterpillars.",
+        "event_ids": [
+          3
+        ],
+        "kind": "scene",
+        "facts": [
+          {
+            "at": 3,
+            "key": "cart.loaded",
+            "value": false
+          }
+        ]
+      },
+      {
+        "text": "Mallow tied her enormous banner to the empty cart. It climbed above her like a cheerful red sail. “Behold!” she cried. “A float so grand it needs its own introduction!” Tuck rang no bell yet, but he did give the cart an approving pat.",
+        "event_ids": [
+          4
+        ],
+        "kind": "scene",
+        "facts": [
+          {
+            "at": 4,
+            "key": "cart.mode",
+            "value": "float"
+          }
+        ]
+      },
+      {
+        "text": "The cart stood in the parade lane as a towering float, its enormous banner lifting above the stones like a bright red sail. Mallow beamed at it, while Tuck gave the wooden handle an affectionate pat.",
+        "event_ids": [
+          4
+        ],
+        "kind": "ending",
+        "facts": [
+          {
+            "at": 4,
+            "key": "cart.mode",
+            "value": "float"
+          }
+        ]
+      }
+    ],
+    "trace": {
+      "title": "The Library Parade and the Cart with Three Jobs",
+      "seed": 1001,
+      "entities": {
+        "mayor": {
+          "name": "Mayor Mallow",
+          "kind": "adult"
+        },
+        "nia": {
+          "name": "Nia",
+          "kind": "child"
+        },
+        "tuck": {
+          "name": "Tuck",
+          "kind": "adult"
+        },
+        "cart": {
+          "name": "wooden cart",
+          "kind": "prop"
+        },
+        "banner": {
+          "name": "parade banner",
+          "kind": "prop"
+        },
+        "books": {
+          "name": "library books",
+          "kind": "prop"
+        },
+        "bell": {
+          "name": "brass bell",
+          "kind": "prop"
+        }
+      },
+      "initial": {
+        "mayor.memes.Boast": 2,
+        "mayor.want": "float",
+        "mayor.knows.cart.loaded": null,
+        "mayor.knows.cart.location": null,
+        "mayor.knows.books.waiting": null,
+        "mayor.knows.cart.shelves": null,
+        "mayor.knows.cart.shelves_open": null,
+        "nia.memes.Care": 2,
+        "nia.want": "deliver",
+        "nia.invited_children": false,
+        "nia.knows.cart.loaded": null,
+        "nia.knows.cart.location": null,
+        "nia.knows.books.waiting": null,
+        "nia.knows.mayor.want": null,
+        "tuck.memes.Craft": 2,
+        "tuck.knows.cart.shelves": true,
+        "tuck.knows.cart.shelves_open": true,
+        "tuck.knows.mayor.want": null,
+        "tuck.knows.cart.loaded": null,
+        "cart.owner": "mayor",
+        "cart.location": "parade_lane",
+        "cart.loaded": false,
+        "cart.decorated": false,
+        "cart.mode": "none",
+        "cart.performer": null,
+        "cart.shelves": true,
+        "banner.owner": "mayor",
+        "banner.attached": false,
+        "books.waiting": true,
+        "bell.owner": "tuck",
+        "bell.rung": false
+      },
+      "final": {
+        "mayor.memes.Boast": 2,
+        "mayor.want": "float",
+        "mayor.knows.cart.loaded": false,
+        "mayor.knows.cart.location": null,
+        "mayor.knows.books.waiting": null,
+        "mayor.knows.cart.shelves": true,
+        "mayor.knows.cart.shelves_open": null,
+        "nia.memes.Care": 2,
+        "nia.want": "deliver",
+        "nia.invited_children": true,
+        "nia.knows.cart.loaded": null,
+        "nia.knows.cart.location": null,
+        "nia.knows.books.waiting": null,
+        "nia.knows.mayor.want": null,
+        "tuck.memes.Craft": 2,
+        "tuck.knows.cart.shelves": true,
+        "tuck.knows.cart.shelves_open": true,
+        "tuck.knows.mayor.want": null,
+        "tuck.knows.cart.loaded": null,
+        "cart.owner": "mayor",
+        "cart.location": "parade_lane",
+        "cart.loaded": false,
+        "cart.decorated": true,
+        "cart.mode": "float",
+        "cart.performer": null,
+        "cart.shelves": true,
+        "banner.owner": "mayor",
+        "banner.attached": true,
+        "books.waiting": true,
+        "bell.owner": "tuck",
+        "bell.rung": false
+      },
+      "events": [
+        {
+          "id": 1,
+          "scene": "invite_square",
+          "kernel": "Invitation",
+          "actors": [
+            "nia",
+            "mayor",
+            "tuck"
+          ],
+          "summary": "Nia invited everyone to meet in the library square",
+          "causes": [],
+          "requires": [
+            {
+              "key": "nia.invited_children",
+              "op": "eq",
+              "value": false
+            }
+          ],
+          "changes": {
+            "nia.invited_children": {
+              "before": false,
+              "after": true
+            }
+          },
+          "before": {
+            "mayor.memes.Boast": 2,
+            "mayor.want": "float",
+            "mayor.knows.cart.loaded": null,
+            "mayor.knows.cart.location": null,
+            "mayor.knows.books.waiting": null,
+            "mayor.knows.cart.shelves": null,
+            "mayor.knows.cart.shelves_open": null,
+            "nia.memes.Care": 2,
+            "nia.want": "deliver",
+            "nia.invited_children": false,
+            "nia.knows.cart.loaded": null,
+            "nia.knows.cart.location": null,
+            "nia.knows.books.waiting": null,
+            "nia.knows.mayor.want": null,
+            "tuck.memes.Craft": 2,
+            "tuck.knows.cart.shelves": true,
+            "tuck.knows.cart.shelves_open": true,
+            "tuck.knows.mayor.want": null,
+            "tuck.knows.cart.loaded": null,
+            "cart.owner": "mayor",
+            "cart.location": "parade_lane",
+            "cart.loaded": false,
+            "cart.decorated": false,
+            "cart.mode": "none",
+            "cart.performer": null,
+            "cart.shelves": true,
+            "banner.owner": "mayor",
+            "banner.attached": false,
+            "books.waiting": true,
+            "bell.owner": "tuck",
+            "bell.rung": false
+          },
+          "after": {
+            "mayor.memes.Boast": 2,
+            "mayor.want": "float",
+            "mayor.knows.cart.loaded": null,
+            "mayor.knows.cart.location": null,
+            "mayor.knows.books.waiting": null,
+            "mayor.knows.cart.shelves": null,
+            "mayor.knows.cart.shelves_open": null,
+            "nia.memes.Care": 2,
+            "nia.want": "deliver",
+            "nia.invited_children": true,
+            "nia.knows.cart.loaded": null,
+            "nia.knows.cart.location": null,
+            "nia.knows.books.waiting": null,
+            "nia.knows.mayor.want": null,
+            "tuck.memes.Craft": 2,
+            "tuck.knows.cart.shelves": true,
+            "tuck.knows.cart.shelves_open": true,
+            "tuck.knows.mayor.want": null,
+            "tuck.knows.cart.loaded": null,
+            "cart.owner": "mayor",
+            "cart.location": "parade_lane",
+            "cart.loaded": false,
+            "cart.decorated": false,
+            "cart.mode": "none",
+            "cart.performer": null,
+            "cart.shelves": true,
+            "banner.owner": "mayor",
+            "banner.attached": false,
+            "books.waiting": true,
+            "bell.owner": "tuck",
+            "bell.rung": false
+          }
+        },
+        {
+          "id": 2,
+          "scene": "tell_folding_shelves",
+          "kernel": "Tell",
+          "actors": [
+            "tuck",
+            "mayor"
+          ],
+          "summary": "Tuck revealed the cart’s hidden folding shelves",
+          "causes": [],
+          "requires": [
+            {
+              "key": "tuck.knows.cart.shelves",
+              "op": "ne",
+              "value": null
+            },
+            {
+              "key": "tuck.knows.cart.shelves",
+              "op": "eq",
+              "value": true
+            },
+            {
+              "key": "mayor.knows.cart.shelves",
+              "op": "eq",
+              "value": null
+            }
+          ],
+          "changes": {
+            "mayor.knows.cart.shelves": {
+              "before": null,
+              "after": true
+            }
+          },
+          "before": {
+            "mayor.memes.Boast": 2,
+            "mayor.want": "float",
+            "mayor.knows.cart.loaded": null,
+            "mayor.knows.cart.location": null,
+            "mayor.knows.books.waiting": null,
+            "mayor.knows.cart.shelves": null,
+            "mayor.knows.cart.shelves_open": null,
+            "nia.memes.Care": 2,
+            "nia.want": "deliver",
+            "nia.invited_children": true,
+            "nia.knows.cart.loaded": null,
+            "nia.knows.cart.location": null,
+            "nia.knows.books.waiting": null,
+            "nia.knows.mayor.want": null,
+            "tuck.memes.Craft": 2,
+            "tuck.knows.cart.shelves": true,
+            "tuck.knows.cart.shelves_open": true,
+            "tuck.knows.mayor.want": null,
+            "tuck.knows.cart.loaded": null,
+            "cart.owner": "mayor",
+            "cart.location": "parade_lane",
+            "cart.loaded": false,
+            "cart.decorated": false,
+            "cart.mode": "none",
+            "cart.performer": null,
+            "cart.shelves": true,
+            "banner.owner": "mayor",
+            "banner.attached": false,
+            "books.waiting": true,
+            "bell.owner": "tuck",
+            "bell.rung": false
+          },
+          "after": {
+            "mayor.memes.Boast": 2,
+            "mayor.want": "float",
+            "mayor.knows.cart.loaded": null,
+            "mayor.knows.cart.location": null,
+            "mayor.knows.books.waiting": null,
+            "mayor.knows.cart.shelves": true,
+            "mayor.knows.cart.shelves_open": null,
+            "nia.memes.Care": 2,
+            "nia.want": "deliver",
+            "nia.invited_children": true,
+            "nia.knows.cart.loaded": null,
+            "nia.knows.cart.location": null,
+            "nia.knows.books.waiting": null,
+            "nia.knows.mayor.want": null,
+            "tuck.memes.Craft": 2,
+            "tuck.knows.cart.shelves": true,
+            "tuck.knows.cart.shelves_open": true,
+            "tuck.knows.mayor.want": null,
+            "tuck.knows.cart.loaded": null,
+            "cart.owner": "mayor",
+            "cart.location": "parade_lane",
+            "cart.loaded": false,
+            "cart.decorated": false,
+            "cart.mode": "none",
+            "cart.performer": null,
+            "cart.shelves": true,
+            "banner.owner": "mayor",
+            "banner.attached": false,
+            "books.waiting": true,
+            "bell.owner": "tuck",
+            "bell.rung": false
+          }
+        },
+        {
+          "id": 3,
+          "scene": "look_cart",
+          "kernel": "Observe",
+          "actors": [
+            "mayor"
+          ],
+          "summary": "Mallow looked into the cart",
+          "causes": [
+            1
+          ],
+          "requires": [
+            {
+              "key": "nia.invited_children",
+              "op": "eq",
+              "value": true
+            },
+            {
+              "key": "mayor.knows.cart.loaded",
+              "op": "eq",
+              "value": null
+            }
+          ],
+          "changes": {
+            "mayor.knows.cart.loaded": {
+              "before": null,
+              "after": false
+            }
+          },
+          "before": {
+            "mayor.memes.Boast": 2,
+            "mayor.want": "float",
+            "mayor.knows.cart.loaded": null,
+            "mayor.knows.cart.location": null,
+            "mayor.knows.books.waiting": null,
+            "mayor.knows.cart.shelves": true,
+            "mayor.knows.cart.shelves_open": null,
+            "nia.memes.Care": 2,
+            "nia.want": "deliver",
+            "nia.invited_children": true,
+            "nia.knows.cart.loaded": null,
+            "nia.knows.cart.location": null,
+            "nia.knows.books.waiting": null,
+            "nia.knows.mayor.want": null,
+            "tuck.memes.Craft": 2,
+            "tuck.knows.cart.shelves": true,
+            "tuck.knows.cart.shelves_open": true,
+            "tuck.knows.mayor.want": null,
+            "tuck.knows.cart.loaded": null,
+            "cart.owner": "mayor",
+            "cart.location": "parade_lane",
+            "cart.loaded": false,
+            "cart.decorated": false,
+            "cart.mode": "none",
+            "cart.performer": null,
+            "cart.shelves": true,
+            "banner.owner": "mayor",
+            "banner.attached": false,
+            "books.waiting": true,
+            "bell.owner": "tuck",
+            "bell.rung": false
+          },
+          "after": {
+            "mayor.memes.Boast": 2,
+            "mayor.want": "float",
+            "mayor.knows.cart.loaded": false,
+            "mayor.knows.cart.location": null,
+            "mayor.knows.books.waiting": null,
+            "mayor.knows.cart.shelves": true,
+            "mayor.knows.cart.shelves_open": null,
+            "nia.memes.Care": 2,
+            "nia.want": "deliver",
+            "nia.invited_children": true,
+            "nia.knows.cart.loaded": null,
+            "nia.knows.cart.location": null,
+            "nia.knows.books.waiting": null,
+            "nia.knows.mayor.want": null,
+            "tuck.memes.Craft": 2,
+            "tuck.knows.cart.shelves": true,
+            "tuck.knows.cart.shelves_open": true,
+            "tuck.knows.mayor.want": null,
+            "tuck.knows.cart.loaded": null,
+            "cart.owner": "mayor",
+            "cart.location": "parade_lane",
+            "cart.loaded": false,
+            "cart.decorated": false,
+            "cart.mode": "none",
+            "cart.performer": null,
+            "cart.shelves": true,
+            "banner.owner": "mayor",
+            "banner.attached": false,
+            "books.waiting": true,
+            "bell.owner": "tuck",
+            "bell.rung": false
+          }
+        },
+        {
+          "id": 4,
+          "scene": "attach_banner",
+          "kernel": "Decoration",
+          "actors": [
+            "mayor"
+          ],
+          "summary": "Mallow attached the banner to make a grand float",
+          "causes": [
+            3
+          ],
+          "requires": [
+            {
+              "key": "cart.owner",
+              "op": "eq",
+              "value": "mayor"
+            },
+            {
+              "key": "cart.loaded",
+              "op": "eq",
+              "value": false
+            },
+            {
+              "key": "mayor.knows.cart.loaded",
+              "op": "eq",
+              "value": false
+            },
+            {
+              "key": "mayor.want",
+              "op": "eq",
+              "value": "float"
+            },
+            {
+              "key": "banner.attached",
+              "op": "eq",
+              "value": false
+            }
+          ],
+          "changes": {
+            "cart.decorated": {
+              "before": false,
+              "after": true
+            },
+            "cart.mode": {
+              "before": "none",
+              "after": "float"
+            },
+            "banner.attached": {
+              "before": false,
+              "after": true
+            }
+          },
+          "before": {
+            "mayor.memes.Boast": 2,
+            "mayor.want": "float",
+            "mayor.knows.cart.loaded": false,
+            "mayor.knows.cart.location": null,
+            "mayor.knows.books.waiting": null,
+            "mayor.knows.cart.shelves": true,
+            "mayor.knows.cart.shelves_open": null,
+            "nia.memes.Care": 2,
+            "nia.want": "deliver",
+            "nia.invited_children": true,
+            "nia.knows.cart.loaded": null,
+            "nia.knows.cart.location": null,
+            "nia.knows.books.waiting": null,
+            "nia.knows.mayor.want": null,
+            "tuck.memes.Craft": 2,
+            "tuck.knows.cart.shelves": true,
+            "tuck.knows.cart.shelves_open": true,
+            "tuck.knows.mayor.want": null,
+            "tuck.knows.cart.loaded": null,
+            "cart.owner": "mayor",
+            "cart.location": "parade_lane",
+            "cart.loaded": false,
+            "cart.decorated": false,
+            "cart.mode": "none",
+            "cart.performer": null,
+            "cart.shelves": true,
+            "banner.owner": "mayor",
+            "banner.attached": false,
+            "books.waiting": true,
+            "bell.owner": "tuck",
+            "bell.rung": false
+          },
+          "after": {
+            "mayor.memes.Boast": 2,
+            "mayor.want": "float",
+            "mayor.knows.cart.loaded": false,
+            "mayor.knows.cart.location": null,
+            "mayor.knows.books.waiting": null,
+            "mayor.knows.cart.shelves": true,
+            "mayor.knows.cart.shelves_open": null,
+            "nia.memes.Care": 2,
+            "nia.want": "deliver",
+            "nia.invited_children": true,
+            "nia.knows.cart.loaded": null,
+            "nia.knows.cart.location": null,
+            "nia.knows.books.waiting": null,
+            "nia.knows.mayor.want": null,
+            "tuck.memes.Craft": 2,
+            "tuck.knows.cart.shelves": true,
+            "tuck.knows.cart.shelves_open": true,
+            "tuck.knows.mayor.want": null,
+            "tuck.knows.cart.loaded": null,
+            "cart.owner": "mayor",
+            "cart.location": "parade_lane",
+            "cart.loaded": false,
+            "cart.decorated": true,
+            "cart.mode": "float",
+            "cart.performer": null,
+            "cart.shelves": true,
+            "banner.owner": "mayor",
+            "banner.attached": true,
+            "books.waiting": true,
+            "bell.owner": "tuck",
+            "bell.rung": false
+          }
+        }
+      ],
+      "labels": {
+        "cart.mode": "the cart’s job",
+        "cart.location": "the cart’s place",
+        "cart.owner": "the cart’s keeper",
+        "cart.performer": "the performer",
+        "cart.loaded": "the loaded books",
+        "banner.attached": "the high banner",
+        "bell.rung": "the ringing bell"
+      },
+      "search": {
+        "nodes": 7,
+        "backtracks": 0
+      },
+      "goal": [
+        {
+          "key": "cart.mode",
+          "op": "in",
+          "value": [
+            "float",
+            "bookmobile",
+            "reading_room"
+          ]
+        }
+      ],
+      "engine": "storyscenes_v2",
+      "pruned_scenes": [
+        "look_books",
+        "learn_mayor_plan"
+      ],
+      "premise": {
+        "cart.owner": "mayor",
+        "cart.location": "parade_lane",
+        "cart.loaded": false,
+        "mayor.want": "float"
+      },
+      "outcome": {
+        "cart.mode": "float",
+        "cart.location": "parade_lane",
+        "cart.performer": null
+      }
+    },
+    "qa": [
+      {
+        "question": "What changed when Nia invited everyone to meet in the library square?",
+        "answer": "nia.invited_children changed from false to true.",
+        "event_ids": [
+          1
+        ],
+        "cause_ids": []
+      },
+      {
+        "question": "What changed when Tuck revealed the cart’s hidden folding shelves?",
+        "answer": "mayor.knows.cart.shelves changed from null to true.",
+        "event_ids": [
+          2
+        ],
+        "cause_ids": []
+      },
+      {
+        "question": "What changed when Mallow looked into the cart?",
+        "answer": "mayor.knows.cart.loaded changed from null to false. This used state established when Nia invited everyone to meet in the library square.",
+        "event_ids": [
+          3
+        ],
+        "cause_ids": [
+          1
+        ]
+      },
+      {
+        "question": "What changed when Mallow attached the banner to make a grand float?",
+        "answer": "cart.decorated changed from false to true; the cart’s job changed from \"none\" to \"float\"; the high banner changed from false to true. This used state established when Mallow looked into the cart.",
+        "event_ids": [
+          4
+        ],
+        "cause_ids": [
+          3
+        ]
+      }
+    ],
+    "trace_sha256": "ad71137e16fbcd4a4531beb383db5c4df3c36b91c9569935b0414810f1513c43"
+  },
+  {
+    "seed": 1002,
+    "prose_seed": 1002,
+    "title": "The Library Parade and the Cart with Three Jobs",
+    "story": "The parade lane glittered with paper stars, and Mayor Mallow stretched her arms toward the sky. “Biggest parade ever!” she announced. Nia hugged her library list, and Tuck patted the cart’s sturdy handle. Somewhere between a grand float, a book journey, and a cozy reading room waited the cart’s real job.\n\nNia waved her invitation like a tiny flag. “Mayor Mallow! Tuck! Meet me in the square—there are children waiting for a library surprise.” The mayor came jingling with plans, and Tuck rolled after her, eager to discover which job his wooden cart would choose.\n\nTuck tapped the cart’s side. “I know something you don’t,” he said. With a careful tug, he revealed hidden folding shelves. “This cart can open into a little room.” Mallow stared. The cart had been keeping a secret as neatly as a bookmark keeps a place.\n\nMallow noticed the library books waiting nearby, their pages puffed up like little wings. She had thought only of cheering crowds, but these books seemed to be waiting for children who had not arrived yet. “Well,” she murmured, “that changes the shape of a parade.”\n\nFor the cozy gathering, Nia lifted the books out and made a bright little nest of stories.\n\nTuck pulled, clicked, and unfolded. Shelves sprang out; a little reading nook appeared. Mallow’s mouth made a perfect O. “My cart is a room!” she whispered. Nia set down the books, and suddenly the parade had somewhere wonderful to stop.\n\nThe cart found its grandest job in the square: not merely rolling past the crowd, but gathering the crowd close. Its shelves stood open, its books shone, and every child leaned toward the next page.",
+    "paragraphs": [
+      {
+        "text": "The parade lane glittered with paper stars, and Mayor Mallow stretched her arms toward the sky. “Biggest parade ever!” she announced. Nia hugged her library list, and Tuck patted the cart’s sturdy handle. Somewhere between a grand float, a book journey, and a cozy reading room waited the cart’s real job.",
+        "event_ids": [],
+        "kind": "beginning",
+        "facts": []
+      },
+      {
+        "text": "Nia waved her invitation like a tiny flag. “Mayor Mallow! Tuck! Meet me in the square—there are children waiting for a library surprise.” The mayor came jingling with plans, and Tuck rolled after her, eager to discover which job his wooden cart would choose.",
+        "event_ids": [
+          1
+        ],
+        "kind": "scene",
+        "facts": []
+      },
+      {
+        "text": "Tuck tapped the cart’s side. “I know something you don’t,” he said. With a careful tug, he revealed hidden folding shelves. “This cart can open into a little room.” Mallow stared. The cart had been keeping a secret as neatly as a bookmark keeps a place.",
+        "event_ids": [
+          2
+        ],
+        "kind": "scene",
+        "facts": [
+          {
+            "at": 2,
+            "key": "mayor.knows.cart.shelves",
+            "value": true
+          }
+        ]
+      },
+      {
+        "text": "Mallow noticed the library books waiting nearby, their pages puffed up like little wings. She had thought only of cheering crowds, but these books seemed to be waiting for children who had not arrived yet. “Well,” she murmured, “that changes the shape of a parade.”",
+        "event_ids": [
+          3
+        ],
+        "kind": "scene",
+        "facts": [
+          {
+            "at": 3,
+            "key": "books.waiting",
+            "value": true
+          }
+        ]
+      },
+      {
+        "text": "For the cozy gathering, Nia lifted the books out and made a bright little nest of stories.",
+        "event_ids": [
+          4
+        ],
+        "kind": "scene",
+        "facts": []
+      },
+      {
+        "text": "Tuck pulled, clicked, and unfolded. Shelves sprang out; a little reading nook appeared. Mallow’s mouth made a perfect O. “My cart is a room!” she whispered. Nia set down the books, and suddenly the parade had somewhere wonderful to stop.",
+        "event_ids": [
+          5
+        ],
+        "kind": "scene",
+        "facts": [
+          {
+            "at": 5,
+            "key": "cart.mode",
+            "value": "reading_room"
+          }
+        ]
+      },
+      {
+        "text": "The cart found its grandest job in the square: not merely rolling past the crowd, but gathering the crowd close. Its shelves stood open, its books shone, and every child leaned toward the next page.",
+        "event_ids": [
+          5
+        ],
+        "kind": "ending",
+        "facts": [
+          {
+            "at": 5,
+            "key": "cart.mode",
+            "value": "reading_room"
+          }
+        ]
+      }
+    ],
+    "trace": {
+      "title": "The Library Parade and the Cart with Three Jobs",
+      "seed": 1002,
+      "entities": {
+        "mayor": {
+          "name": "Mayor Mallow",
+          "kind": "adult"
+        },
+        "nia": {
+          "name": "Nia",
+          "kind": "child"
+        },
+        "tuck": {
+          "name": "Tuck",
+          "kind": "adult"
+        },
+        "cart": {
+          "name": "wooden cart",
+          "kind": "prop"
+        },
+        "banner": {
+          "name": "parade banner",
+          "kind": "prop"
+        },
+        "books": {
+          "name": "library books",
+          "kind": "prop"
+        },
+        "bell": {
+          "name": "brass bell",
+          "kind": "prop"
+        }
+      },
+      "initial": {
+        "mayor.memes.Boast": 2,
+        "mayor.want": "reading_room",
+        "mayor.knows.cart.loaded": null,
+        "mayor.knows.cart.location": null,
+        "mayor.knows.books.waiting": null,
+        "mayor.knows.cart.shelves": null,
+        "mayor.knows.cart.shelves_open": null,
+        "nia.memes.Care": 2,
+        "nia.want": "deliver",
+        "nia.invited_children": false,
+        "nia.knows.cart.loaded": null,
+        "nia.knows.cart.location": null,
+        "nia.knows.books.waiting": null,
+        "nia.knows.mayor.want": null,
+        "tuck.memes.Craft": 2,
+        "tuck.knows.cart.shelves": true,
+        "tuck.knows.cart.shelves_open": true,
+        "tuck.knows.mayor.want": null,
+        "tuck.knows.cart.loaded": null,
+        "cart.owner": "nia",
+        "cart.location": "library_door",
+        "cart.loaded": true,
+        "cart.decorated": false,
+        "cart.mode": "none",
+        "cart.performer": null,
+        "cart.shelves": true,
+        "banner.owner": "mayor",
+        "banner.attached": false,
+        "books.waiting": true,
+        "bell.owner": "tuck",
+        "bell.rung": false
+      },
+      "final": {
+        "mayor.memes.Boast": 2,
+        "mayor.want": "reading_room",
+        "mayor.knows.cart.loaded": null,
+        "mayor.knows.cart.location": null,
+        "mayor.knows.books.waiting": true,
+        "mayor.knows.cart.shelves": true,
+        "mayor.knows.cart.shelves_open": null,
+        "nia.memes.Care": 2,
+        "nia.want": "deliver",
+        "nia.invited_children": true,
+        "nia.knows.cart.loaded": null,
+        "nia.knows.cart.location": null,
+        "nia.knows.books.waiting": null,
+        "nia.knows.mayor.want": null,
+        "tuck.memes.Craft": 2,
+        "tuck.knows.cart.shelves": true,
+        "tuck.knows.cart.shelves_open": true,
+        "tuck.knows.mayor.want": null,
+        "tuck.knows.cart.loaded": null,
+        "cart.owner": "nia",
+        "cart.location": "library_door",
+        "cart.loaded": false,
+        "cart.decorated": false,
+        "cart.mode": "reading_room",
+        "cart.performer": null,
+        "cart.shelves": true,
+        "banner.owner": "mayor",
+        "banner.attached": false,
+        "books.waiting": true,
+        "bell.owner": "tuck",
+        "bell.rung": false
+      },
+      "events": [
+        {
+          "id": 1,
+          "scene": "invite_square",
+          "kernel": "Invitation",
+          "actors": [
+            "nia",
+            "mayor",
+            "tuck"
+          ],
+          "summary": "Nia invited everyone to meet in the library square",
+          "causes": [],
+          "requires": [
+            {
+              "key": "nia.invited_children",
+              "op": "eq",
+              "value": false
+            }
+          ],
+          "changes": {
+            "nia.invited_children": {
+              "before": false,
+              "after": true
+            }
+          },
+          "before": {
+            "mayor.memes.Boast": 2,
+            "mayor.want": "reading_room",
+            "mayor.knows.cart.loaded": null,
+            "mayor.knows.cart.location": null,
+            "mayor.knows.books.waiting": null,
+            "mayor.knows.cart.shelves": null,
+            "mayor.knows.cart.shelves_open": null,
+            "nia.memes.Care": 2,
+            "nia.want": "deliver",
+            "nia.invited_children": false,
+            "nia.knows.cart.loaded": null,
+            "nia.knows.cart.location": null,
+            "nia.knows.books.waiting": null,
+            "nia.knows.mayor.want": null,
+            "tuck.memes.Craft": 2,
+            "tuck.knows.cart.shelves": true,
+            "tuck.knows.cart.shelves_open": true,
+            "tuck.knows.mayor.want": null,
+            "tuck.knows.cart.loaded": null,
+            "cart.owner": "nia",
+            "cart.location": "library_door",
+            "cart.loaded": true,
+            "cart.decorated": false,
+            "cart.mode": "none",
+            "cart.performer": null,
+            "cart.shelves": true,
+            "banner.owner": "mayor",
+            "banner.attached": false,
+            "books.waiting": true,
+            "bell.owner": "tuck",
+            "bell.rung": false
+          },
+          "after": {
+            "mayor.memes.Boast": 2,
+            "mayor.want": "reading_room",
+            "mayor.knows.cart.loaded": null,
+            "mayor.knows.cart.location": null,
+            "mayor.knows.books.waiting": null,
+            "mayor.knows.cart.shelves": null,
+            "mayor.knows.cart.shelves_open": null,
+            "nia.memes.Care": 2,
+            "nia.want": "deliver",
+            "nia.invited_children": true,
+            "nia.knows.cart.loaded": null,
+            "nia.knows.cart.location": null,
+            "nia.knows.books.waiting": null,
+            "nia.knows.mayor.want": null,
+            "tuck.memes.Craft": 2,
+            "tuck.knows.cart.shelves": true,
+            "tuck.knows.cart.shelves_open": true,
+            "tuck.knows.mayor.want": null,
+            "tuck.knows.cart.loaded": null,
+            "cart.owner": "nia",
+            "cart.location": "library_door",
+            "cart.loaded": true,
+            "cart.decorated": false,
+            "cart.mode": "none",
+            "cart.performer": null,
+            "cart.shelves": true,
+            "banner.owner": "mayor",
+            "banner.attached": false,
+            "books.waiting": true,
+            "bell.owner": "tuck",
+            "bell.rung": false
+          }
+        },
+        {
+          "id": 2,
+          "scene": "tell_folding_shelves",
+          "kernel": "Tell",
+          "actors": [
+            "tuck",
+            "mayor"
+          ],
+          "summary": "Tuck revealed the cart’s hidden folding shelves",
+          "causes": [],
+          "requires": [
+            {
+              "key": "tuck.knows.cart.shelves",
+              "op": "ne",
+              "value": null
+            },
+            {
+              "key": "tuck.knows.cart.shelves",
+              "op": "eq",
+              "value": true
+            },
+            {
+              "key": "mayor.knows.cart.shelves",
+              "op": "eq",
+              "value": null
+            }
+          ],
+          "changes": {
+            "mayor.knows.cart.shelves": {
+              "before": null,
+              "after": true
+            }
+          },
+          "before": {
+            "mayor.memes.Boast": 2,
+            "mayor.want": "reading_room",
+            "mayor.knows.cart.loaded": null,
+            "mayor.knows.cart.location": null,
+            "mayor.knows.books.waiting": null,
+            "mayor.knows.cart.shelves": null,
+            "mayor.knows.cart.shelves_open": null,
+            "nia.memes.Care": 2,
+            "nia.want": "deliver",
+            "nia.invited_children": true,
+            "nia.knows.cart.loaded": null,
+            "nia.knows.cart.location": null,
+            "nia.knows.books.waiting": null,
+            "nia.knows.mayor.want": null,
+            "tuck.memes.Craft": 2,
+            "tuck.knows.cart.shelves": true,
+            "tuck.knows.cart.shelves_open": true,
+            "tuck.knows.mayor.want": null,
+            "tuck.knows.cart.loaded": null,
+            "cart.owner": "nia",
+            "cart.location": "library_door",
+            "cart.loaded": true,
+            "cart.decorated": false,
+            "cart.mode": "none",
+            "cart.performer": null,
+            "cart.shelves": true,
+            "banner.owner": "mayor",
+            "banner.attached": false,
+            "books.waiting": true,
+            "bell.owner": "tuck",
+            "bell.rung": false
+          },
+          "after": {
+            "mayor.memes.Boast": 2,
+            "mayor.want": "reading_room",
+            "mayor.knows.cart.loaded": null,
+            "mayor.knows.cart.location": null,
+            "mayor.knows.books.waiting": null,
+            "mayor.knows.cart.shelves": true,
+            "mayor.knows.cart.shelves_open": null,
+            "nia.memes.Care": 2,
+            "nia.want": "deliver",
+            "nia.invited_children": true,
+            "nia.knows.cart.loaded": null,
+            "nia.knows.cart.location": null,
+            "nia.knows.books.waiting": null,
+            "nia.knows.mayor.want": null,
+            "tuck.memes.Craft": 2,
+            "tuck.knows.cart.shelves": true,
+            "tuck.knows.cart.shelves_open": true,
+            "tuck.knows.mayor.want": null,
+            "tuck.knows.cart.loaded": null,
+            "cart.owner": "nia",
+            "cart.location": "library_door",
+            "cart.loaded": true,
+            "cart.decorated": false,
+            "cart.mode": "none",
+            "cart.performer": null,
+            "cart.shelves": true,
+            "banner.owner": "mayor",
+            "banner.attached": false,
+            "books.waiting": true,
+            "bell.owner": "tuck",
+            "bell.rung": false
+          }
+        },
+        {
+          "id": 3,
+          "scene": "look_books",
+          "kernel": "Observe",
+          "actors": [
+            "mayor"
+          ],
+          "summary": "Mallow noticed the waiting books",
+          "causes": [
+            1
+          ],
+          "requires": [
+            {
+              "key": "nia.invited_children",
+              "op": "eq",
+              "value": true
+            },
+            {
+              "key": "mayor.knows.books.waiting",
+              "op": "eq",
+              "value": null
+            }
+          ],
+          "changes": {
+            "mayor.knows.books.waiting": {
+              "before": null,
+              "after": true
+            }
+          },
+          "before": {
+            "mayor.memes.Boast": 2,
+            "mayor.want": "reading_room",
+            "mayor.knows.cart.loaded": null,
+            "mayor.knows.cart.location": null,
+            "mayor.knows.books.waiting": null,
+            "mayor.knows.cart.shelves": true,
+            "mayor.knows.cart.shelves_open": null,
+            "nia.memes.Care": 2,
+            "nia.want": "deliver",
+            "nia.invited_children": true,
+            "nia.knows.cart.loaded": null,
+            "nia.knows.cart.location": null,
+            "nia.knows.books.waiting": null,
+            "nia.knows.mayor.want": null,
+            "tuck.memes.Craft": 2,
+            "tuck.knows.cart.shelves": true,
+            "tuck.knows.cart.shelves_open": true,
+            "tuck.knows.mayor.want": null,
+            "tuck.knows.cart.loaded": null,
+            "cart.owner": "nia",
+            "cart.location": "library_door",
+            "cart.loaded": true,
+            "cart.decorated": false,
+            "cart.mode": "none",
+            "cart.performer": null,
+            "cart.shelves": true,
+            "banner.owner": "mayor",
+            "banner.attached": false,
+            "books.waiting": true,
+            "bell.owner": "tuck",
+            "bell.rung": false
+          },
+          "after": {
+            "mayor.memes.Boast": 2,
+            "mayor.want": "reading_room",
+            "mayor.knows.cart.loaded": null,
+            "mayor.knows.cart.location": null,
+            "mayor.knows.books.waiting": true,
+            "mayor.knows.cart.shelves": true,
+            "mayor.knows.cart.shelves_open": null,
+            "nia.memes.Care": 2,
+            "nia.want": "deliver",
+            "nia.invited_children": true,
+            "nia.knows.cart.loaded": null,
+            "nia.knows.cart.location": null,
+            "nia.knows.books.waiting": null,
+            "nia.knows.mayor.want": null,
+            "tuck.memes.Craft": 2,
+            "tuck.knows.cart.shelves": true,
+            "tuck.knows.cart.shelves_open": true,
+            "tuck.knows.mayor.want": null,
+            "tuck.knows.cart.loaded": null,
+            "cart.owner": "nia",
+            "cart.location": "library_door",
+            "cart.loaded": true,
+            "cart.decorated": false,
+            "cart.mode": "none",
+            "cart.performer": null,
+            "cart.shelves": true,
+            "banner.owner": "mayor",
+            "banner.attached": false,
+            "books.waiting": true,
+            "bell.owner": "tuck",
+            "bell.rung": false
+          }
+        },
+        {
+          "id": 4,
+          "scene": "unload_books",
+          "kernel": "Unloading",
+          "actors": [
+            "nia"
+          ],
+          "summary": "Nia lifted the books out for a cozy gathering",
+          "causes": [
+            3
+          ],
+          "requires": [
+            {
+              "key": "cart.owner",
+              "op": "eq",
+              "value": "nia"
+            },
+            {
+              "key": "cart.loaded",
+              "op": "eq",
+              "value": true
+            },
+            {
+              "key": "mayor.knows.books.waiting",
+              "op": "eq",
+              "value": true
+            },
+            {
+              "key": "mayor.want",
+              "op": "eq",
+              "value": "reading_room"
+            }
+          ],
+          "changes": {
+            "cart.loaded": {
+              "before": true,
+              "after": false
+            }
+          },
+          "before": {
+            "mayor.memes.Boast": 2,
+            "mayor.want": "reading_room",
+            "mayor.knows.cart.loaded": null,
+            "mayor.knows.cart.location": null,
+            "mayor.knows.books.waiting": true,
+            "mayor.knows.cart.shelves": true,
+            "mayor.knows.cart.shelves_open": null,
+            "nia.memes.Care": 2,
+            "nia.want": "deliver",
+            "nia.invited_children": true,
+            "nia.knows.cart.loaded": null,
+            "nia.knows.cart.location": null,
+            "nia.knows.books.waiting": null,
+            "nia.knows.mayor.want": null,
+            "tuck.memes.Craft": 2,
+            "tuck.knows.cart.shelves": true,
+            "tuck.knows.cart.shelves_open": true,
+            "tuck.knows.mayor.want": null,
+            "tuck.knows.cart.loaded": null,
+            "cart.owner": "nia",
+            "cart.location": "library_door",
+            "cart.loaded": true,
+            "cart.decorated": false,
+            "cart.mode": "none",
+            "cart.performer": null,
+            "cart.shelves": true,
+            "banner.owner": "mayor",
+            "banner.attached": false,
+            "books.waiting": true,
+            "bell.owner": "tuck",
+            "bell.rung": false
+          },
+          "after": {
+            "mayor.memes.Boast": 2,
+            "mayor.want": "reading_room",
+            "mayor.knows.cart.loaded": null,
+            "mayor.knows.cart.location": null,
+            "mayor.knows.books.waiting": true,
+            "mayor.knows.cart.shelves": true,
+            "mayor.knows.cart.shelves_open": null,
+            "nia.memes.Care": 2,
+            "nia.want": "deliver",
+            "nia.invited_children": true,
+            "nia.knows.cart.loaded": null,
+            "nia.knows.cart.location": null,
+            "nia.knows.books.waiting": null,
+            "nia.knows.mayor.want": null,
+            "tuck.memes.Craft": 2,
+            "tuck.knows.cart.shelves": true,
+            "tuck.knows.cart.shelves_open": true,
+            "tuck.knows.mayor.want": null,
+            "tuck.knows.cart.loaded": null,
+            "cart.owner": "nia",
+            "cart.location": "library_door",
+            "cart.loaded": false,
+            "cart.decorated": false,
+            "cart.mode": "none",
+            "cart.performer": null,
+            "cart.shelves": true,
+            "banner.owner": "mayor",
+            "banner.attached": false,
+            "books.waiting": true,
+            "bell.owner": "tuck",
+            "bell.rung": false
+          }
+        },
+        {
+          "id": 5,
+          "scene": "fold_shelves",
+          "kernel": "Revelation",
+          "actors": [
+            "tuck",
+            "mayor"
+          ],
+          "summary": "The cart unfolded into a tiny reading room",
+          "causes": [
+            2,
+            3,
+            4
+          ],
+          "requires": [
+            {
+              "key": "cart.loaded",
+              "op": "eq",
+              "value": false
+            },
+            {
+              "key": "mayor.want",
+              "op": "eq",
+              "value": "reading_room"
+            },
+            {
+              "key": "mayor.knows.books.waiting",
+              "op": "eq",
+              "value": true
+            },
+            {
+              "key": "mayor.knows.cart.shelves",
+              "op": "eq",
+              "value": true
+            },
+            {
+              "key": "cart.mode",
+              "op": "eq",
+              "value": "none"
+            }
+          ],
+          "changes": {
+            "cart.mode": {
+              "before": "none",
+              "after": "reading_room"
+            }
+          },
+          "before": {
+            "mayor.memes.Boast": 2,
+            "mayor.want": "reading_room",
+            "mayor.knows.cart.loaded": null,
+            "mayor.knows.cart.location": null,
+            "mayor.knows.books.waiting": true,
+            "mayor.knows.cart.shelves": true,
+            "mayor.knows.cart.shelves_open": null,
+            "nia.memes.Care": 2,
+            "nia.want": "deliver",
+            "nia.invited_children": true,
+            "nia.knows.cart.loaded": null,
+            "nia.knows.cart.location": null,
+            "nia.knows.books.waiting": null,
+            "nia.knows.mayor.want": null,
+            "tuck.memes.Craft": 2,
+            "tuck.knows.cart.shelves": true,
+            "tuck.knows.cart.shelves_open": true,
+            "tuck.knows.mayor.want": null,
+            "tuck.knows.cart.loaded": null,
+            "cart.owner": "nia",
+            "cart.location": "library_door",
+            "cart.loaded": false,
+            "cart.decorated": false,
+            "cart.mode": "none",
+            "cart.performer": null,
+            "cart.shelves": true,
+            "banner.owner": "mayor",
+            "banner.attached": false,
+            "books.waiting": true,
+            "bell.owner": "tuck",
+            "bell.rung": false
+          },
+          "after": {
+            "mayor.memes.Boast": 2,
+            "mayor.want": "reading_room",
+            "mayor.knows.cart.loaded": null,
+            "mayor.knows.cart.location": null,
+            "mayor.knows.books.waiting": true,
+            "mayor.knows.cart.shelves": true,
+            "mayor.knows.cart.shelves_open": null,
+            "nia.memes.Care": 2,
+            "nia.want": "deliver",
+            "nia.invited_children": true,
+            "nia.knows.cart.loaded": null,
+            "nia.knows.cart.location": null,
+            "nia.knows.books.waiting": null,
+            "nia.knows.mayor.want": null,
+            "tuck.memes.Craft": 2,
+            "tuck.knows.cart.shelves": true,
+            "tuck.knows.cart.shelves_open": true,
+            "tuck.knows.mayor.want": null,
+            "tuck.knows.cart.loaded": null,
+            "cart.owner": "nia",
+            "cart.location": "library_door",
+            "cart.loaded": false,
+            "cart.decorated": false,
+            "cart.mode": "reading_room",
+            "cart.performer": null,
+            "cart.shelves": true,
+            "banner.owner": "mayor",
+            "banner.attached": false,
+            "books.waiting": true,
+            "bell.owner": "tuck",
+            "bell.rung": false
+          }
+        }
+      ],
+      "labels": {
+        "cart.mode": "the cart’s job",
+        "cart.location": "the cart’s place",
+        "cart.owner": "the cart’s keeper",
+        "cart.performer": "the performer",
+        "cart.loaded": "the loaded books",
+        "banner.attached": "the high banner",
+        "bell.rung": "the ringing bell"
+      },
+      "search": {
+        "nodes": 7,
+        "backtracks": 0
+      },
+      "goal": [
+        {
+          "key": "cart.mode",
+          "op": "in",
+          "value": [
+            "float",
+            "bookmobile",
+            "reading_room"
+          ]
+        }
+      ],
+      "engine": "storyscenes_v2",
+      "pruned_scenes": [
+        "look_cart"
+      ],
+      "premise": {
+        "cart.owner": "nia",
+        "cart.location": "library_door",
+        "cart.loaded": true,
+        "mayor.want": "reading_room"
+      },
+      "outcome": {
+        "cart.mode": "reading_room",
+        "cart.location": "library_door",
+        "cart.performer": null
+      }
+    },
+    "qa": [
+      {
+        "question": "What changed when Nia invited everyone to meet in the library square?",
+        "answer": "nia.invited_children changed from false to true.",
+        "event_ids": [
+          1
+        ],
+        "cause_ids": []
+      },
+      {
+        "question": "What changed when Tuck revealed the cart’s hidden folding shelves?",
+        "answer": "mayor.knows.cart.shelves changed from null to true.",
+        "event_ids": [
+          2
+        ],
+        "cause_ids": []
+      },
+      {
+        "question": "What changed when Mallow noticed the waiting books?",
+        "answer": "mayor.knows.books.waiting changed from null to true. This used state established when Nia invited everyone to meet in the library square.",
+        "event_ids": [
+          3
+        ],
+        "cause_ids": [
+          1
+        ]
+      },
+      {
+        "question": "What changed when Nia lifted the books out for a cozy gathering?",
+        "answer": "the loaded books changed from true to false. This used state established when Mallow noticed the waiting books.",
+        "event_ids": [
+          4
+        ],
+        "cause_ids": [
+          3
+        ]
+      },
+      {
+        "question": "What changed when The cart unfolded into a tiny reading room?",
+        "answer": "the cart’s job changed from \"none\" to \"reading_room\". This used state established when Tuck revealed the cart’s hidden folding shelves; Mallow noticed the waiting books; Nia lifted the books out for a cozy gathering.",
+        "event_ids": [
+          5
+        ],
+        "cause_ids": [
+          2,
+          3,
+          4
+        ]
+      }
+    ],
+    "trace_sha256": "e4213bba4f6ec45215bf4ee88ca1309adff762c10f94588234a3fbd0dfc5e2fa"
+  }
+]

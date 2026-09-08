@@ -1,0 +1,33 @@
+{
+  "edits": [
+    {
+      "section": "compose",
+      "id": "protect_fragile",
+      "value": {
+        "op": "Act",
+        "actors": [
+          "ada",
+          "dragon"
+        ],
+        "when": {
+          "invitations.fragile": true,
+          "invitations.owner": "ada",
+          "ribbon.owner": "dragon",
+          "invitations.location": "garden",
+          "ribbon.location": "garden"
+        },
+        "set": {
+          "invitations.secured": true,
+          "ribbon.tied": true,
+          "dragon.carry_method": "ribbon_guarded"
+        },
+        "inc": {
+          "dragon.confidence": 1
+        },
+        "label": "secure fragile invitations",
+        "summary": "Pip ties the fragile invitations safely",
+        "pivotal": true
+      }
+    }
+  ]
+}

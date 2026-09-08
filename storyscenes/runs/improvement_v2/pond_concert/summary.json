@@ -1,0 +1,61 @@
+{
+  "world": "pond_concert",
+  "title": "The Moonlit Pond Concert",
+  "ok": true,
+  "samples": 100,
+  "simulation_sha256": "e8a2f40837f0d89d5e6a90b1cd89e0e53ee5aa5ec64304d7f30e4821c13f1cc4",
+  "generator_sha256": "76e5c4e318a3fbe3fa04e818a9a7ec2d2a51d6aa8aff25aba12a5581845fcfb9",
+  "catalog_sha256": "b7d56c126a6c5795ad9abfae32f60e80e7f6a753aaf80a390b3b9de1d6787cbc",
+  "distinct_texts": 77,
+  "distinct_scene_paths": 63,
+  "word_range": [
+    221,
+    388
+  ],
+  "prose_control_variants": 2,
+  "mechanics_model": "gpt-5.6-terra",
+  "prose_model": "gpt-5.6-luna",
+  "stats": {
+    "samples": 100,
+    "ordered_paths": 63,
+    "scene_sets": 10,
+    "causal_graphs": 9,
+    "outcomes": 4,
+    "premises": 15,
+    "events_range": [
+      8,
+      14
+    ],
+    "pruned_events": 352
+  },
+  "critic_before_revision": {
+    "issues": [
+      {
+        "seed": 123,
+        "severity": "minor",
+        "layer": "prose",
+        "defect": "weak_turn",
+        "evidence": "Pip opens with “A quiet song for Nella,” but the trace and prose proceed directly to Tom’s loud finale; no discovery, choice, or response connects Pip’s stated wish to the concert’s outcome. The only relevant trace state, `pip.knows.nella.hearing`, remains null, while `concert.style` becomes `loud`.",
+        "fix": "Either frame Pip’s quiet-song wish as a passing hope rather than a setup, or add a grounded consequential beat that explains why the loud finale is chosen despite it."
+      },
+      {
+        "seed": 123,
+        "severity": "minor",
+        "layer": "prose",
+        "defect": "event_log_prose",
+        "evidence": "The closure is effectively narrated twice: “The drum’s last boom rolled away, and Tom tucked the wobbling spoon beside his heart,” followed by a separate ending, “Tom held up the Golden Tadpole Spoon while the frogs cheered.” Both are attached to close event 9, after the prize presentation has already been narrated.",
+        "fix": "Merge the close and ending into one final image, rather than reopening the already-finished prize moment."
+      },
+      {
+        "seed": 456,
+        "severity": "minor",
+        "layer": "prose",
+        "defect": "event_log_prose",
+        "evidence": "As in seed 123, the story closes twice: “The drum’s last boom rolled away, and Tom tucked the wobbling spoon beside his heart,” then “Tom held up the Golden Tadpole Spoon while the frogs cheered.” Both are mapped to the same closing event 8, following the existing award scene.",
+        "fix": "Use one decisive closing paragraph that incorporates either Tom tucking the spoon close or lifting it to the cheering frogs, but not both as separate endings."
+      }
+    ],
+    "strengths": "All three stories otherwise track their ordered world changes closely: stage and lantern preparation precede the concert, invitation/acceptance is correctly represented when Nella is present, and the spoon award follows the traced successful performance. Seed 789 is especially strong: Pip learns Nella’s keen hearing, tells Tom his moon-song wish, Tom changes from `clever` to `gentle`, and the resulting mixed performance gives that turn a clear, grounded payoff."
+  },
+  "final_catalog_attempt": 0
+}

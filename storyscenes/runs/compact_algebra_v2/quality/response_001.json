@@ -1,0 +1,362 @@
+{
+  "id": "resp_0ab5f39f5405ae05006a9fa25afe3c87d0b82262def145f391",
+  "created_at": 1788846683.0,
+  "error": null,
+  "incomplete_details": null,
+  "instructions": null,
+  "metadata": {},
+  "model": "gpt-5.6-terra",
+  "object": "response",
+  "output": [
+    {
+      "id": "msg_0ab5f39f5405ae05006a9fa25b89e087d094f027b5cfcc6b5f",
+      "content": [
+        {
+          "annotations": [],
+          "text": "{\"stories\":[{\"id\":\"s000029\",\"rating\":{\"coherence\":7,\"style\":7,\"grammar\":8,\"storytelling\":7,\"overall\":7},\"note\":\"A clear, gentle adaptation to Mira's wish for quiet, with a vivid final ripple image; repeated delivery-status lines make the middle feel procedural.\"},{\"id\":\"s000057\",\"rating\":{\"coherence\":7,\"style\":7,\"grammar\":8,\"storytelling\":7,\"overall\":7},\"note\":\"The lively concert follows Mira's desire to join and ends in a concrete, playful pond image, though the invitation is delivered after the music has already begun.\"},{\"id\":\"s000047\",\"rating\":{\"coherence\":7,\"style\":7,\"grammar\":8,\"storytelling\":7,\"overall\":7},\"note\":\"A coherent join-the-concert plot with buoyant child-friendly imagery; its event order is slightly awkward because the performance starts before Ada delivers the invitation.\"},{\"id\":\"s000073\",\"rating\":{\"coherence\":8,\"style\":7,\"grammar\":8,\"storytelling\":8,\"overall\":8},\"note\":\"The breeze creates a meaningful problem, Ben and Ada secure the lily pad, and Frog softens the music for Mira; the lantern-like notes provide a satisfying ending image.\"},{\"id\":\"s000034\",\"rating\":{\"coherence\":8,\"style\":7,\"grammar\":8,\"storytelling\":8,\"overall\":8},\"note\":\"Ada learns what Mira needs, Frog changes the concert accordingly, and the quiet pond ending is concrete and warm; the formal ownership recap is unnecessary.\"},{\"id\":\"s000043\",\"rating\":{\"coherence\":8,\"style\":7,\"grammar\":8,\"storytelling\":8,\"overall\":8},\"note\":\"Mira's wish to participate and the windy pond both drive the solution: Ada and Ben anchor the pad for a lively concert, ending with a clear sunlit image.\"},{\"id\":\"s000068\",\"rating\":{\"coherence\":7,\"style\":7,\"grammar\":8,\"storytelling\":7,\"overall\":7},\"note\":\"The anchored lily pad resolves the breeze and supports Mira's participation, but Ada places it on the pond before learning it may drift, weakening the cause-and-effect sequence.\"},{\"id\":\"s000096\",\"rating\":{\"coherence\":8,\"style\":7,\"grammar\":8,\"storytelling\":8,\"overall\":8},\"note\":\"A cohesive quiet-concert story: Mira's preference directly changes Frog's playing, and the silver-ear ripples make an especially complete final image.\"},{\"id\":\"s000005\",\"rating\":{\"coherence\":8,\"style\":7,\"grammar\":8,\"storytelling\":8,\"overall\":8},\"note\":\"The breeze threatens the concert platform, Ada and Ben anchor it, and Mira joins the rhythm; the ending clearly shows the successful, stable concert.\"},{\"id\":\"s000085\",\"rating\":{\"coherence\":7,\"style\":7,\"grammar\":8,\"storytelling\":8,\"overall\":7},\"note\":\"It combines the wind problem with Mira's need for quiet and resolves both through anchoring and gentle music, though the lily pad is placed before the wind concern is raised.\"}],\"diversity\":{\"premise\":3,\"causal_path\":4,\"ending\":3,\"language\":4,\"overall\":3},\"diversity_evidence\":\"All stories share Ada inviting Mira to Frog's pond concert. The set has two main meaningful branches—quiet music for Mira (s000029, s000034, s000096) and lively participation (s000047, s000057)—plus variants where anchoring a wind-blown lily pad is added (s000073, s000085; s000005, s000043, s000068). Reordered scenes and repeated phrasing create only limited additional variation; endings consistently show Mira listening or joining beside the pond.\",\"plot_groups\":[{\"story_ids\":[\"s000029\",\"s000034\",\"s000096\"],\"summary\":\"Ada discovers that Mira wants quiet, delivers the invitation, and Frog plays a gentle pond concert that Mira quietly enjoys.\"},{\"story_ids\":[\"s000073\",\"s000085\"],\"summary\":\"Mira wants quiet while wind threatens the lily pad; Ada and Ben anchor it, then Frog gives a gentle concert.\"},{\"story_ids\":[\"s000047\",\"s000057\"],\"summary\":\"Mira wants to join the concert, so Frog uses Ada's lily pad for a lively rhythm and Mira taps along.\"},{\"story_ids\":[\"s000005\",\"s000043\",\"s000068\"],\"summary\":\"Mira wants to join, but wind threatens the lily-pad performance space; Ada and Ben anchor it, enabling Frog's lively concert and Mira's participation.\"}]}",
+          "type": "output_text",
+          "logprobs": []
+        }
+      ],
+      "role": "assistant",
+      "status": "completed",
+      "type": "message",
+      "phase": "final_answer"
+    }
+  ],
+  "parallel_tool_calls": true,
+  "temperature": 1.0,
+  "tool_choice": "auto",
+  "tools": [],
+  "top_p": 0.98,
+  "background": false,
+  "completed_at": 1788846689.0,
+  "conversation": null,
+  "max_output_tokens": 4000,
+  "max_tool_calls": null,
+  "moderation": null,
+  "previous_response_id": null,
+  "prompt": null,
+  "prompt_cache_key": null,
+  "prompt_cache_retention": "24h",
+  "reasoning": {
+    "context": "all_turns",
+    "effort": "none",
+    "generate_summary": null,
+    "summary": null,
+    "mode": "standard"
+  },
+  "safety_identifier": null,
+  "service_tier": "flex",
+  "status": "completed",
+  "text": {
+    "format": {
+      "name": "story_set_quality_v1",
+      "schema_": {
+        "type": "object",
+        "properties": {
+          "stories": {
+            "type": "array",
+            "minItems": 10,
+            "maxItems": 10,
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "enum": [
+                    "s000029",
+                    "s000057",
+                    "s000047",
+                    "s000073",
+                    "s000034",
+                    "s000043",
+                    "s000068",
+                    "s000096",
+                    "s000005",
+                    "s000085"
+                  ]
+                },
+                "rating": {
+                  "type": "object",
+                  "properties": {
+                    "coherence": {
+                      "type": "integer",
+                      "enum": [
+                        0,
+                        1,
+                        2,
+                        3,
+                        4,
+                        5,
+                        6,
+                        7,
+                        8,
+                        9
+                      ]
+                    },
+                    "style": {
+                      "type": "integer",
+                      "enum": [
+                        0,
+                        1,
+                        2,
+                        3,
+                        4,
+                        5,
+                        6,
+                        7,
+                        8,
+                        9
+                      ]
+                    },
+                    "grammar": {
+                      "type": "integer",
+                      "enum": [
+                        0,
+                        1,
+                        2,
+                        3,
+                        4,
+                        5,
+                        6,
+                        7,
+                        8,
+                        9
+                      ]
+                    },
+                    "storytelling": {
+                      "type": "integer",
+                      "enum": [
+                        0,
+                        1,
+                        2,
+                        3,
+                        4,
+                        5,
+                        6,
+                        7,
+                        8,
+                        9
+                      ]
+                    },
+                    "overall": {
+                      "type": "integer",
+                      "enum": [
+                        0,
+                        1,
+                        2,
+                        3,
+                        4,
+                        5,
+                        6,
+                        7,
+                        8,
+                        9
+                      ]
+                    }
+                  },
+                  "required": [
+                    "coherence",
+                    "style",
+                    "grammar",
+                    "storytelling",
+                    "overall"
+                  ],
+                  "additionalProperties": false
+                },
+                "note": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "id",
+                "rating",
+                "note"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "diversity": {
+            "type": "object",
+            "properties": {
+              "premise": {
+                "type": "integer",
+                "enum": [
+                  0,
+                  1,
+                  2,
+                  3,
+                  4,
+                  5,
+                  6,
+                  7,
+                  8,
+                  9
+                ]
+              },
+              "causal_path": {
+                "type": "integer",
+                "enum": [
+                  0,
+                  1,
+                  2,
+                  3,
+                  4,
+                  5,
+                  6,
+                  7,
+                  8,
+                  9
+                ]
+              },
+              "ending": {
+                "type": "integer",
+                "enum": [
+                  0,
+                  1,
+                  2,
+                  3,
+                  4,
+                  5,
+                  6,
+                  7,
+                  8,
+                  9
+                ]
+              },
+              "language": {
+                "type": "integer",
+                "enum": [
+                  0,
+                  1,
+                  2,
+                  3,
+                  4,
+                  5,
+                  6,
+                  7,
+                  8,
+                  9
+                ]
+              },
+              "overall": {
+                "type": "integer",
+                "enum": [
+                  0,
+                  1,
+                  2,
+                  3,
+                  4,
+                  5,
+                  6,
+                  7,
+                  8,
+                  9
+                ]
+              }
+            },
+            "required": [
+              "premise",
+              "causal_path",
+              "ending",
+              "language",
+              "overall"
+            ],
+            "additionalProperties": false
+          },
+          "diversity_evidence": {
+            "type": "string"
+          },
+          "plot_groups": {
+            "type": "array",
+            "minItems": 1,
+            "maxItems": 10,
+            "items": {
+              "type": "object",
+              "properties": {
+                "story_ids": {
+                  "type": "array",
+                  "minItems": 1,
+                  "items": {
+                    "type": "string",
+                    "enum": [
+                      "s000029",
+                      "s000057",
+                      "s000047",
+                      "s000073",
+                      "s000034",
+                      "s000043",
+                      "s000068",
+                      "s000096",
+                      "s000005",
+                      "s000085"
+                    ]
+                  }
+                },
+                "summary": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "story_ids",
+                "summary"
+              ],
+              "additionalProperties": false
+            }
+          }
+        },
+        "required": [
+          "stories",
+          "diversity",
+          "diversity_evidence",
+          "plot_groups"
+        ],
+        "additionalProperties": false
+      },
+      "type": "json_schema",
+      "description": null,
+      "strict": true
+    },
+    "verbosity": "medium"
+  },
+  "top_logprobs": 0,
+  "truncation": "disabled",
+  "usage": {
+    "input_tokens": 5928,
+    "input_tokens_details": {
+      "cached_tokens": 0,
+      "cache_write_tokens": 5925
+    },
+    "output_tokens": 973,
+    "output_tokens_details": {
+      "reasoning_tokens": 0
+    },
+    "total_tokens": 6901
+  },
+  "user": null,
+  "billing": {
+    "payer": "openai"
+  },
+  "frequency_penalty": 0.0,
+  "presence_penalty": 0.0,
+  "store": true,
+  "tool_usage": {
+    "image_gen": {
+      "input_tokens": 0,
+      "input_tokens_details": {
+        "image_tokens": 0,
+        "text_tokens": 0
+      },
+      "output_tokens": 0,
+      "output_tokens_details": {
+        "image_tokens": 0,
+        "text_tokens": 0
+      },
+      "total_tokens": 0
+    },
+    "web_search": {
+      "num_requests": 0
+    }
+  }
+}

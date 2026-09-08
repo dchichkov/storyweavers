@@ -1,0 +1,66 @@
+{
+  "edits": [
+    {
+      "section": "vary",
+      "id": "reader_need",
+      "value": [
+        {
+          "readers.need": "books",
+          "books.contents": "books"
+        },
+        {
+          "readers.need": "maps",
+          "books.contents": "maps"
+        },
+        {
+          "readers.need": "stories",
+          "books.contents": "stories"
+        }
+      ]
+    },
+    {
+      "section": "compose",
+      "id": "choose_helpful_stories",
+      "value": {
+        "op": "Act",
+        "actors": [
+          "mayor"
+        ],
+        "when": {
+          "mayor.knows.readers.need": "stories"
+        },
+        "set": {
+          "mayor.plan": "helpful",
+          "mayor.boastful": false
+        },
+        "inc": {
+          "mayor.memes.Care": 1
+        },
+        "summary": "Mayor Bell chooses usefulness over boasting",
+        "pivotal": true
+      }
+    },
+    {
+      "section": "compose",
+      "id": "deliver_stories",
+      "value": {
+        "op": "Act",
+        "actors": [
+          "ada"
+        ],
+        "when": {
+          "books.location": "square",
+          "books.contents": "stories",
+          "readers.need": "stories",
+          "mayor.plan": "helpful"
+        },
+        "set": {
+          "books.delivered": true,
+          "mayor.parade.outcome": "useful_stories"
+        },
+        "summary": "Ada delivers the story collection",
+        "pivotal": true
+      }
+    }
+  ]
+}

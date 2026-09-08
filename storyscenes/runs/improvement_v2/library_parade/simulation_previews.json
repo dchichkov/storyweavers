@@ -1,0 +1,964 @@
+[
+  {
+    "seed": 0,
+    "title": "The Library Parade Cart",
+    "initial": {
+      "mina.location": "library",
+      "mina.memes.ReadersFirst": 2,
+      "mina.knows.audience_location": "square",
+      "mina.knows.books.waiting": null,
+      "mina.knows.bramble.motive": null,
+      "tuck.location": "library",
+      "tuck.memes.PrideInWheels": 2,
+      "tuck.belief.judge": "mayor",
+      "tuck.knows.bramble.motive": null,
+      "tuck.knows.books.waiting": null,
+      "bramble.location": "library",
+      "bramble.memes.Boastfulness": 2,
+      "bramble.motive": "biggest",
+      "bramble.invitation": false,
+      "bramble.knows.books.waiting": null,
+      "bramble.knows.steps.crowd": null,
+      "bramble.agreement": false,
+      "cart.owner": "tuck",
+      "cart.location": "library",
+      "cart.loaded": false,
+      "cart.load_style": "matched",
+      "cart.sash": false,
+      "cart.bell": true,
+      "cart.display_ready": false,
+      "books.owner": "mina",
+      "books.location": "library",
+      "books.bundle": "puzzle books",
+      "books.waiting": true,
+      "books.delivered": false,
+      "sash.owner": "bramble",
+      "sash.location": "library",
+      "bell.owner": "tuck",
+      "bell.location": "library",
+      "prize.owner": "bramble",
+      "prize.location": "library",
+      "steps.crowd": "small",
+      "homes.readers_waiting": true,
+      "parade.kind": "none"
+    },
+    "final": {
+      "mina.location": "homes",
+      "mina.memes.ReadersFirst": 2,
+      "mina.knows.audience_location": "square",
+      "mina.knows.books.waiting": true,
+      "mina.knows.bramble.motive": null,
+      "tuck.location": "homes",
+      "tuck.memes.PrideInWheels": 2,
+      "tuck.belief.judge": "mayor",
+      "tuck.knows.bramble.motive": null,
+      "tuck.knows.books.waiting": null,
+      "bramble.location": "library",
+      "bramble.memes.Boastfulness": 2,
+      "bramble.motive": "biggest",
+      "bramble.invitation": true,
+      "bramble.knows.books.waiting": null,
+      "bramble.knows.steps.crowd": null,
+      "bramble.agreement": false,
+      "cart.owner": "tuck",
+      "cart.location": "homes",
+      "cart.loaded": true,
+      "cart.load_style": "matched",
+      "cart.sash": true,
+      "cart.bell": true,
+      "cart.display_ready": false,
+      "books.owner": "mina",
+      "books.location": "library",
+      "books.bundle": "puzzle books",
+      "books.waiting": true,
+      "books.delivered": false,
+      "sash.owner": "cart",
+      "sash.location": "cart",
+      "bell.owner": "tuck",
+      "bell.location": "library",
+      "prize.owner": "bramble",
+      "prize.location": "library",
+      "steps.crowd": "small",
+      "homes.readers_waiting": true,
+      "parade.kind": "delivery"
+    },
+    "events": [
+      {
+        "id": 1,
+        "scene": "tie_sash",
+        "kernel": "Invitation",
+        "actors": [
+          "bramble"
+        ],
+        "summary": "Mayor Bramble tied the red sash to the cart and announced a golden-megaphone prize.",
+        "causes": [],
+        "requires": [
+          {
+            "key": "bramble.invitation",
+            "op": "eq",
+            "value": false
+          },
+          {
+            "key": "sash.owner",
+            "op": "eq",
+            "value": "bramble"
+          },
+          {
+            "key": "cart.location",
+            "op": "eq",
+            "value": "library"
+          }
+        ],
+        "changes": {
+          "bramble.invitation": {
+            "before": false,
+            "after": true
+          },
+          "cart.sash": {
+            "before": false,
+            "after": true
+          },
+          "sash.owner": {
+            "before": "bramble",
+            "after": "cart"
+          },
+          "sash.location": {
+            "before": "library",
+            "after": "cart"
+          }
+        }
+      },
+      {
+        "id": 2,
+        "scene": "inspect_waiting_books",
+        "kernel": "Observe",
+        "actors": [
+          "mina"
+        ],
+        "summary": "Mina found the books still waiting for their readers.",
+        "causes": [
+          1
+        ],
+        "requires": [
+          {
+            "key": "bramble.invitation",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "books.location",
+            "op": "eq",
+            "value": "library"
+          }
+        ],
+        "changes": {
+          "mina.knows.books.waiting": {
+            "before": null,
+            "after": true
+          }
+        }
+      },
+      {
+        "id": 3,
+        "scene": "load_matched_books",
+        "kernel": "Sharing",
+        "actors": [
+          "mina"
+        ],
+        "summary": "Mina loaded books chosen for particular waiting readers.",
+        "causes": [
+          1,
+          2
+        ],
+        "requires": [
+          {
+            "key": "bramble.invitation",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "mina.knows.books.waiting",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "books.owner",
+            "op": "eq",
+            "value": "mina"
+          },
+          {
+            "key": "cart.location",
+            "op": "eq",
+            "value": "library"
+          },
+          {
+            "key": "cart.loaded",
+            "op": "eq",
+            "value": false
+          },
+          {
+            "key": "cart.load_style",
+            "op": "eq",
+            "value": "matched"
+          }
+        ],
+        "changes": {
+          "cart.loaded": {
+            "before": false,
+            "after": true
+          }
+        }
+      },
+      {
+        "id": 4,
+        "scene": "turn_to_homes",
+        "kernel": "Choice",
+        "actors": [
+          "mina",
+          "tuck"
+        ],
+        "summary": "Mina turned the cart down the short lane toward the waiting readers.",
+        "causes": [
+          1,
+          2,
+          3
+        ],
+        "requires": [
+          {
+            "key": "bramble.invitation",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "mina.knows.books.waiting",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "cart.loaded",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "cart.load_style",
+            "op": "eq",
+            "value": "matched"
+          },
+          {
+            "key": "cart.location",
+            "op": "eq",
+            "value": "library"
+          }
+        ],
+        "changes": {
+          "mina.location": {
+            "before": "library",
+            "after": "homes"
+          },
+          "tuck.location": {
+            "before": "library",
+            "after": "homes"
+          },
+          "cart.location": {
+            "before": "library",
+            "after": "homes"
+          },
+          "parade.kind": {
+            "before": "none",
+            "after": "delivery"
+          }
+        }
+      }
+    ]
+  },
+  {
+    "seed": 1,
+    "title": "The Library Parade Cart",
+    "initial": {
+      "mina.location": "library",
+      "mina.memes.ReadersFirst": 2,
+      "mina.knows.audience_location": "homes",
+      "mina.knows.books.waiting": null,
+      "mina.knows.bramble.motive": null,
+      "tuck.location": "library",
+      "tuck.memes.PrideInWheels": 2,
+      "tuck.belief.judge": "mayor",
+      "tuck.knows.bramble.motive": null,
+      "tuck.knows.books.waiting": null,
+      "bramble.location": "library",
+      "bramble.memes.Boastfulness": 2,
+      "bramble.motive": "biggest",
+      "bramble.invitation": false,
+      "bramble.knows.books.waiting": null,
+      "bramble.knows.steps.crowd": null,
+      "bramble.agreement": false,
+      "cart.owner": "tuck",
+      "cart.location": "library",
+      "cart.loaded": false,
+      "cart.load_style": "matched",
+      "cart.sash": false,
+      "cart.bell": false,
+      "cart.display_ready": false,
+      "books.owner": "mina",
+      "books.location": "library",
+      "books.bundle": "puzzle books",
+      "books.waiting": true,
+      "books.delivered": false,
+      "sash.owner": "bramble",
+      "sash.location": "library",
+      "bell.owner": "tuck",
+      "bell.location": "library",
+      "prize.owner": "bramble",
+      "prize.location": "library",
+      "steps.crowd": "small",
+      "homes.readers_waiting": true,
+      "parade.kind": "none"
+    },
+    "final": {
+      "mina.location": "homes",
+      "mina.memes.ReadersFirst": 2,
+      "mina.knows.audience_location": "homes",
+      "mina.knows.books.waiting": true,
+      "mina.knows.bramble.motive": null,
+      "tuck.location": "homes",
+      "tuck.memes.PrideInWheels": 2,
+      "tuck.belief.judge": "mayor",
+      "tuck.knows.bramble.motive": null,
+      "tuck.knows.books.waiting": null,
+      "bramble.location": "steps",
+      "bramble.memes.Boastfulness": 2,
+      "bramble.motive": "biggest",
+      "bramble.invitation": true,
+      "bramble.knows.books.waiting": true,
+      "bramble.knows.steps.crowd": "small",
+      "bramble.agreement": true,
+      "cart.owner": "tuck",
+      "cart.location": "homes",
+      "cart.loaded": true,
+      "cart.load_style": "matched",
+      "cart.sash": true,
+      "cart.bell": false,
+      "cart.display_ready": false,
+      "books.owner": "mina",
+      "books.location": "library",
+      "books.bundle": "puzzle books",
+      "books.waiting": true,
+      "books.delivered": false,
+      "sash.owner": "cart",
+      "sash.location": "cart",
+      "bell.owner": "tuck",
+      "bell.location": "library",
+      "prize.owner": "bramble",
+      "prize.location": "library",
+      "steps.crowd": "small",
+      "homes.readers_waiting": true,
+      "parade.kind": "delivery"
+    },
+    "events": [
+      {
+        "id": 1,
+        "scene": "tie_sash",
+        "kernel": "Invitation",
+        "actors": [
+          "bramble"
+        ],
+        "summary": "Mayor Bramble tied the red sash to the cart and announced a golden-megaphone prize.",
+        "causes": [],
+        "requires": [
+          {
+            "key": "bramble.invitation",
+            "op": "eq",
+            "value": false
+          },
+          {
+            "key": "sash.owner",
+            "op": "eq",
+            "value": "bramble"
+          },
+          {
+            "key": "cart.location",
+            "op": "eq",
+            "value": "library"
+          }
+        ],
+        "changes": {
+          "bramble.invitation": {
+            "before": false,
+            "after": true
+          },
+          "cart.sash": {
+            "before": false,
+            "after": true
+          },
+          "sash.owner": {
+            "before": "bramble",
+            "after": "cart"
+          },
+          "sash.location": {
+            "before": "library",
+            "after": "cart"
+          }
+        }
+      },
+      {
+        "id": 2,
+        "scene": "mayor_checks_steps",
+        "kernel": "Discovery",
+        "actors": [
+          "bramble"
+        ],
+        "summary": "Mayor Bramble marched to the library steps and found far fewer onlookers than he expected.",
+        "causes": [
+          1
+        ],
+        "requires": [
+          {
+            "key": "bramble.invitation",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "bramble.location",
+            "op": "eq",
+            "value": "library"
+          },
+          {
+            "key": "cart.location",
+            "op": "eq",
+            "value": "library"
+          },
+          {
+            "key": "steps.crowd",
+            "op": "eq",
+            "value": "small"
+          }
+        ],
+        "changes": {
+          "bramble.location": {
+            "before": "library",
+            "after": "steps"
+          }
+        }
+      },
+      {
+        "id": 3,
+        "scene": "discover_small_crowd",
+        "kernel": "Observe",
+        "actors": [
+          "bramble"
+        ],
+        "summary": "Mayor Bramble noticed that the square had only a very small crowd.",
+        "causes": [
+          2
+        ],
+        "requires": [
+          {
+            "key": "bramble.location",
+            "op": "in",
+            "value": [
+              "homes",
+              "steps"
+            ]
+          },
+          {
+            "key": "steps.crowd",
+            "op": "eq",
+            "value": "small"
+          }
+        ],
+        "changes": {
+          "bramble.knows.steps.crowd": {
+            "before": null,
+            "after": "small"
+          }
+        }
+      },
+      {
+        "id": 4,
+        "scene": "inspect_waiting_books",
+        "kernel": "Observe",
+        "actors": [
+          "mina"
+        ],
+        "summary": "Mina found the books still waiting for their readers.",
+        "causes": [
+          1
+        ],
+        "requires": [
+          {
+            "key": "bramble.invitation",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "books.location",
+            "op": "eq",
+            "value": "library"
+          }
+        ],
+        "changes": {
+          "mina.knows.books.waiting": {
+            "before": null,
+            "after": true
+          }
+        }
+      },
+      {
+        "id": 5,
+        "scene": "tell_mayor_about_readers",
+        "kernel": "Tell",
+        "actors": [
+          "mina",
+          "bramble"
+        ],
+        "summary": "Mina told Mayor Bramble exactly who was waiting for books.",
+        "causes": [
+          3,
+          4
+        ],
+        "requires": [
+          {
+            "key": "mina.knows.books.waiting",
+            "op": "ne",
+            "value": null
+          },
+          {
+            "key": "mina.knows.books.waiting",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "bramble.knows.steps.crowd",
+            "op": "eq",
+            "value": "small"
+          }
+        ],
+        "changes": {
+          "bramble.knows.books.waiting": {
+            "before": null,
+            "after": true
+          }
+        }
+      },
+      {
+        "id": 6,
+        "scene": "load_matched_books",
+        "kernel": "Sharing",
+        "actors": [
+          "mina"
+        ],
+        "summary": "Mina loaded books chosen for particular waiting readers.",
+        "causes": [
+          1,
+          4
+        ],
+        "requires": [
+          {
+            "key": "bramble.invitation",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "mina.knows.books.waiting",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "books.owner",
+            "op": "eq",
+            "value": "mina"
+          },
+          {
+            "key": "cart.location",
+            "op": "eq",
+            "value": "library"
+          },
+          {
+            "key": "cart.loaded",
+            "op": "eq",
+            "value": false
+          },
+          {
+            "key": "cart.load_style",
+            "op": "eq",
+            "value": "matched"
+          }
+        ],
+        "changes": {
+          "cart.loaded": {
+            "before": false,
+            "after": true
+          }
+        }
+      },
+      {
+        "id": 7,
+        "scene": "agree_small_can_be_grand",
+        "kernel": "Understanding",
+        "actors": [
+          "bramble"
+        ],
+        "summary": "Mayor Bramble decided that a small parade could still arrive grandly.",
+        "causes": [
+          3,
+          5
+        ],
+        "requires": [
+          {
+            "key": "bramble.knows.books.waiting",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "bramble.knows.steps.crowd",
+            "op": "eq",
+            "value": "small"
+          },
+          {
+            "key": "bramble.agreement",
+            "op": "eq",
+            "value": false
+          }
+        ],
+        "changes": {
+          "bramble.agreement": {
+            "before": false,
+            "after": true
+          }
+        }
+      },
+      {
+        "id": 8,
+        "scene": "turn_to_homes",
+        "kernel": "Choice",
+        "actors": [
+          "mina",
+          "tuck"
+        ],
+        "summary": "Mina turned the cart down the short lane toward the waiting readers.",
+        "causes": [
+          1,
+          4,
+          6
+        ],
+        "requires": [
+          {
+            "key": "bramble.invitation",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "mina.knows.books.waiting",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "cart.loaded",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "cart.load_style",
+            "op": "eq",
+            "value": "matched"
+          },
+          {
+            "key": "cart.location",
+            "op": "eq",
+            "value": "library"
+          }
+        ],
+        "changes": {
+          "mina.location": {
+            "before": "library",
+            "after": "homes"
+          },
+          "tuck.location": {
+            "before": "library",
+            "after": "homes"
+          },
+          "cart.location": {
+            "before": "library",
+            "after": "homes"
+          },
+          "parade.kind": {
+            "before": "none",
+            "after": "delivery"
+          }
+        }
+      }
+    ]
+  },
+  {
+    "seed": 2,
+    "title": "The Library Parade Cart",
+    "initial": {
+      "mina.location": "library",
+      "mina.memes.ReadersFirst": 2,
+      "mina.knows.audience_location": null,
+      "mina.knows.books.waiting": null,
+      "mina.knows.bramble.motive": null,
+      "tuck.location": "library",
+      "tuck.memes.PrideInWheels": 2,
+      "tuck.belief.judge": "mayor",
+      "tuck.knows.bramble.motive": null,
+      "tuck.knows.books.waiting": null,
+      "bramble.location": "library",
+      "bramble.memes.Boastfulness": 2,
+      "bramble.motive": "biggest",
+      "bramble.invitation": false,
+      "bramble.knows.books.waiting": null,
+      "bramble.knows.steps.crowd": null,
+      "bramble.agreement": false,
+      "cart.owner": "tuck",
+      "cart.location": "library",
+      "cart.loaded": false,
+      "cart.load_style": "matched",
+      "cart.sash": false,
+      "cart.bell": false,
+      "cart.display_ready": false,
+      "books.owner": "mina",
+      "books.location": "library",
+      "books.bundle": "dragon dictionaries",
+      "books.waiting": true,
+      "books.delivered": false,
+      "sash.owner": "bramble",
+      "sash.location": "library",
+      "bell.owner": "tuck",
+      "bell.location": "library",
+      "prize.owner": "bramble",
+      "prize.location": "library",
+      "steps.crowd": "busy",
+      "homes.readers_waiting": true,
+      "parade.kind": "none"
+    },
+    "final": {
+      "mina.location": "homes",
+      "mina.memes.ReadersFirst": 2,
+      "mina.knows.audience_location": null,
+      "mina.knows.books.waiting": true,
+      "mina.knows.bramble.motive": null,
+      "tuck.location": "homes",
+      "tuck.memes.PrideInWheels": 2,
+      "tuck.belief.judge": "mayor",
+      "tuck.knows.bramble.motive": null,
+      "tuck.knows.books.waiting": null,
+      "bramble.location": "library",
+      "bramble.memes.Boastfulness": 2,
+      "bramble.motive": "biggest",
+      "bramble.invitation": true,
+      "bramble.knows.books.waiting": null,
+      "bramble.knows.steps.crowd": null,
+      "bramble.agreement": false,
+      "cart.owner": "tuck",
+      "cart.location": "homes",
+      "cart.loaded": true,
+      "cart.load_style": "matched",
+      "cart.sash": true,
+      "cart.bell": false,
+      "cart.display_ready": false,
+      "books.owner": "mina",
+      "books.location": "library",
+      "books.bundle": "dragon dictionaries",
+      "books.waiting": true,
+      "books.delivered": false,
+      "sash.owner": "cart",
+      "sash.location": "cart",
+      "bell.owner": "tuck",
+      "bell.location": "library",
+      "prize.owner": "bramble",
+      "prize.location": "library",
+      "steps.crowd": "busy",
+      "homes.readers_waiting": true,
+      "parade.kind": "delivery"
+    },
+    "events": [
+      {
+        "id": 1,
+        "scene": "tie_sash",
+        "kernel": "Invitation",
+        "actors": [
+          "bramble"
+        ],
+        "summary": "Mayor Bramble tied the red sash to the cart and announced a golden-megaphone prize.",
+        "causes": [],
+        "requires": [
+          {
+            "key": "bramble.invitation",
+            "op": "eq",
+            "value": false
+          },
+          {
+            "key": "sash.owner",
+            "op": "eq",
+            "value": "bramble"
+          },
+          {
+            "key": "cart.location",
+            "op": "eq",
+            "value": "library"
+          }
+        ],
+        "changes": {
+          "bramble.invitation": {
+            "before": false,
+            "after": true
+          },
+          "cart.sash": {
+            "before": false,
+            "after": true
+          },
+          "sash.owner": {
+            "before": "bramble",
+            "after": "cart"
+          },
+          "sash.location": {
+            "before": "library",
+            "after": "cart"
+          }
+        }
+      },
+      {
+        "id": 2,
+        "scene": "inspect_waiting_books",
+        "kernel": "Observe",
+        "actors": [
+          "mina"
+        ],
+        "summary": "Mina found the books still waiting for their readers.",
+        "causes": [
+          1
+        ],
+        "requires": [
+          {
+            "key": "bramble.invitation",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "books.location",
+            "op": "eq",
+            "value": "library"
+          }
+        ],
+        "changes": {
+          "mina.knows.books.waiting": {
+            "before": null,
+            "after": true
+          }
+        }
+      },
+      {
+        "id": 3,
+        "scene": "load_matched_books",
+        "kernel": "Sharing",
+        "actors": [
+          "mina"
+        ],
+        "summary": "Mina loaded books chosen for particular waiting readers.",
+        "causes": [
+          1,
+          2
+        ],
+        "requires": [
+          {
+            "key": "bramble.invitation",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "mina.knows.books.waiting",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "books.owner",
+            "op": "eq",
+            "value": "mina"
+          },
+          {
+            "key": "cart.location",
+            "op": "eq",
+            "value": "library"
+          },
+          {
+            "key": "cart.loaded",
+            "op": "eq",
+            "value": false
+          },
+          {
+            "key": "cart.load_style",
+            "op": "eq",
+            "value": "matched"
+          }
+        ],
+        "changes": {
+          "cart.loaded": {
+            "before": false,
+            "after": true
+          }
+        }
+      },
+      {
+        "id": 4,
+        "scene": "turn_to_homes",
+        "kernel": "Choice",
+        "actors": [
+          "mina",
+          "tuck"
+        ],
+        "summary": "Mina turned the cart down the short lane toward the waiting readers.",
+        "causes": [
+          1,
+          2,
+          3
+        ],
+        "requires": [
+          {
+            "key": "bramble.invitation",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "mina.knows.books.waiting",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "cart.loaded",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "cart.load_style",
+            "op": "eq",
+            "value": "matched"
+          },
+          {
+            "key": "cart.location",
+            "op": "eq",
+            "value": "library"
+          }
+        ],
+        "changes": {
+          "mina.location": {
+            "before": "library",
+            "after": "homes"
+          },
+          "tuck.location": {
+            "before": "library",
+            "after": "homes"
+          },
+          "cart.location": {
+            "before": "library",
+            "after": "homes"
+          },
+          "parade.kind": {
+            "before": "none",
+            "after": "delivery"
+          }
+        }
+      }
+    ]
+  }
+]

@@ -1,0 +1,97 @@
+{
+  "id": "resp_0304c286e462db87016a9f0ca9e87c87d0a5c7047c599bca40",
+  "created_at": 1788808361.0,
+  "error": null,
+  "incomplete_details": null,
+  "instructions": null,
+  "metadata": {},
+  "model": "gpt-5.6-luna",
+  "object": "response",
+  "output": [
+    {
+      "id": "msg_0304c286e462db87016a9f0caa695887d0b5bfa71b8aa5c95e",
+      "content": [
+        {
+          "annotations": [],
+          "text": "from runtime import WorldSpec, Scene, Condition as C, Effect as E, Rule\nfrom runtime import observe, tell, transfer\nimport random\n\n\ndef build(seed: int) -> WorldSpec:\n    rng = random.Random(seed)\n\n    swapped = rng.choice([False, True])\n    noor_plain = rng.choice([False, True])\n    has_scale = rng.choice([True, False])\n    has_plate = rng.choice([True, False])\n    generous = rng.choice([True, False])\n    pip_priority = rng.choice([\"taste\", \"ownership\", \"promise\"])\n\n    entities = {\n        \"ada\": {\"name\": \"Ada\", \"kind\": \"child\"},\n        \"pip\": {\"name\": \"Pip\", \"kind\": \"animal\"},\n        \"noor\": {\"name\": \"Noor\", \"kind\": \"person\"},\n        \"mara\": {\"name\": \"Mara\", \"kind\": \"person\"},\n        \"stall\": {\"name\": \"market stall\", \"kind\": \"place\"},\n        \"tray\": {\"name\": \"baking tray\", \"kind\": \"prop\"},\n        \"basket\": {\"name\": \"shared basket\", \"kind\": \"prop\"},\n        \"label\": {\"name\": \"paper label\", \"kind\": \"prop\"},\n        \"scale\": {\"name\": \"small scale\", \"kind\": \"prop\"},\n        \"plate\": {\"name\": \"tasting plate\", \"kind\": \"prop\"},\n        \"nut\": {\"name\": \"nut bun\", \"kind\": \"prop\"},\n        \"berry\": {\"name\": \"berry bun\", \"kind\": \"prop\"},\n        \"plain\": {\"name\": \"plain bun\", \"kind\": \"prop\"},\n    }\n\n    nut_label = \"berry\" if swapped else \"nut\"\n    berry_label = \"nut\" if swapped else \"berry\"\n    noor_need = \"plain\" if noor_plain else \"berry\"\n\n    initial = {\n        \"ada.location\": \"stall\",\n        \"pip.location\": \"stall\",\n        \"noor.location\": \"stall\",\n        \"mara.location\": \"stall\",\n        \"tray.location\": \"stall\",\n        \"basket.location\": \"stall\",\n        \"label.location\": \"tray\",\n        \"scale.location\": \"stall\",\n        \"plate.location\": \"stall\",\n        \"nut.location\": \"tray\",\n        \"berry.location\": \"tray\",\n        \"plain.location\": \"tray\",\n        \"nut.filling\": \"nut\",\n        \"berry.filling\": \"berry\",\n        \"plain.filling\": \"plain\",\n        \"nut.owner\": \"mara\",\n        \"berry.owner\": \"mara\",\n        \"plain.owner\": \"mara\",\n        \"nut.label\": nut_label,\n        \"berry.label\": berry_label,\n        \"plain.label\": \"plain\",\n        \"label.accurate\": not swapped,\n        \"scale.available\": has_scale,\n        \"plate.available\": has_plate,\n        \"mara.generous\": generous,\n        \"mara.permission\": False,\n        \"ada.memes.Curiosity\": 1,\n        \"ada.memes.Care\": 1,\n        \"ada.memes.Ambition\": 1,\n        \"pip.memes.Pride\": 2,\n        \"noor.hungry\": True,\n        \"noor.need\": noor_need,\n        \"pip.priority\": pip_priority,\n        \"pip.promise\": True,\n        \"pip.claimed\": False,\n        \"ada.knows.nut.filling\": None,\n        \"ada.knows.berry.filling\": None,\n        \"ada.knows.plain.filling\": None,\n        \"ada.knows.noor.need\": None,\n        \"ada.knows.label.accurate\": None,\n        \"mara.knows.label.accurate\": not swapped,\n        \"pip.knows.nut.filling\": None,\n        \"noor.knows.need\": noor_need,\n        \"nut.final\": False,\n        \"berry.final\": False,\n        \"plain.final\": False,\n        \"stall.sign\": \"mixed\",\n        \"exchange.success\": False,\n        \"exchange.fair\": False,\n    }\n\n    scenes = [\n        Scene(\n            \"inspect_label\", \"observation\", (\"ada\", \"label\", \"tray\"),\n            (C(\"ada.location\", \"eq\", \"stall\"), C(\"label.location\", \"eq\", \"tray\"),\n             C(\"ada.memes.Curiosity\", \"ge\", 1)),\n            (E(\"ada.knows.label.accurate\", True, \"copy\"),\n             E(\"ada.memes.Curiosity\", 1, \"inc\")),\n            \"Ada inspected the paper label beside the tray\",\n        ),\n        observe(\n            \"inspect_nut\", \"ada\", \"nut.filling\",\n            requires=(C(\"ada.location\", \"eq\", \"stall\"),\n                      C(\"nut.location\", \"eq\", \"tray\"),\n                      C(\"ada.memes.Curiosity\", \"ge\", 1)),\n            summary=\"Ada inspected the nut bun\"\n        ),\n        observe(\n            \"inspect_berry\", \"ada\", \"berry.filling\",\n            requires=(C(\"ada.location\", \"eq\", \"stall\"),\n                      C(\"berry.location\", \"eq\", \"tray\"),\n                      C(\"ada.memes.Curiosity\", \"ge\", 1)),\n            summary=\"Ada inspected the berry bun\"\n        ),\n        observe(\n            \"inspect_plain\", \"ada\", \"plain.filling\",\n            requires=(C(\"ada.location\", \"eq\", \"stall\"),\n                      C(\"plain.location\", \"eq\", \"tray\"),\n                      C(\"ada.memes.Curiosity\", \"ge\", 1)),\n            summary=\"Ada inspected the plain bun\"\n        ),\n        Scene(\n            \"taste_nut\", \"observation\", (\"ada\", \"nut\", \"plate\"),\n            (C(\"plate.available\", \"eq\", True), C(\"nut.location\", \"eq\", \"tray\"),\n             C(\"ada.memes.Curiosity\", \"ge\", 1)),\n            (E(\"ada.knows.nut.filling\", \"nut\", \"copy\"),\n             E(\"ada.memes.Curiosity\", 1, \"inc\")),\n            \"Ada tasted a permitted crumb from the nut bun\",\n        ),\n        Scene(\n            \"weigh_buns\", \"observation\", (\"ada\", \"scale\", \"tray\"),\n            (C(\"scale.available\", \"eq\", True), C(\"ada.location\", \"eq\", \"stall\"),\n             C(\"ada.memes.Curiosity\", \"ge\", 1)),\n            (E(\"ada.knows.label.accurate\", True, \"copy\"),\n             E(\"ada.memes.Ambition\", 1, \"inc\")),\n            \"Ada compared the buns on the small scale\",\n        ),\n        Scene(\n            \"claim_bun\", \"social\", (\"pip\", \"nut\", \"tray\"),\n            (C(\"pip.location\", \"eq\", \"stall\"), C(\"nut.location\", \"eq\", \"tray\"),\n             C(\"pip.memes.Pride\", \"ge\", 1)),\n            (E(\"pip.claimed\", True), E(\"pip.knows.nut.filling\", \"nut\")),\n            \"Pip proudly claimed the nut bun\",\n        ),\n        Scene(\n            \"ask_noor\", \"care\", (\"ada\", \"noor\", \"stall\"),\n            (C(\"ada.location\", \"eq\", \"stall\"), C(\"noor.location\", \"eq\", \"stall\"),\n             C(\"noor.hungry\", \"eq\", True)),\n            (E(\"ada.knows.noor.need\", noor_need, \"copy\"),\n             E(\"ada.memes.Care\", 1, \"inc\")),\n            \"Ada asked Noor which bun would be gentle and filling\",\n        ),\n        tell(\n            \"tell_mara_label\", \"ada\", \"mara\", \"ada.knows.label.accurate\",\n            requires=(C(\"ada.knows.label.accurate\", \"ne\", None),),\n            summary=\"Ada told Mara what she learned about the label\"\n        ),\n        Scene(\n            \"lend_scale\", \"cooperation\", (\"mara\", \"ada\", \"scale\"),\n            (C(\"mara.generous\", \"eq\", True), C(\"scale.available\", \"eq\", True),\n             C(\"mara.location\", \"eq\", \"stall\")),\n            (E(\"ada.memes.Ambition\", 1, \"inc\"), E(\"scale.available\", False)),\n            \"Mara lent Ada the scale for a careful comparison\",\n        ),\n        transfer(\n            \"lend_plate\", \"mara\", \"ada\", \"plate\",\n            requires=(C(\"mara.generous\", \"eq\", True), C(\"plate.available\", \"eq\", True)),\n            summary=\"Mara lent Ada the tasting plate\"\n        ),\n        Scene(\n            \"propose_trade\", \"fairness\", (\"ada\", \"pip\", \"noor\", \"nut\"),\n            (C(\"ada.knows.noor.need\", \"ne\", None), C(\"pip.claimed\", \"eq\", True),\n             C(\"noor.hungry\", \"eq\", True), C(\"ada.memes.Care\", \"ge\", 2)),\n            (E(\"pip.promise\", False), E(\"exchange.fair\", True),\n             E(\"ada.memes.Ambition\", 1, \"inc\")),\n            \"Ada proposed a trade that respected Pip's claim and Noor's need\",\n        ),\n        Scene(\n            \"accept_trade\", \"cooperation\", (\"pip\", \"ada\", \"noor\", \"nut\"),\n            (C(\"exchange.fair\", \"eq\", True), C(\"pip.claimed\", \"eq\", True),\n             C(\"nut.owner\", \"eq\", \"mara\")),\n            (E(\"nut.owner\", \"pip\"), E(\"berry.owner\", \"noor\"),\n             E(\"noor.hungry\", False), E(\"exchange.success\", True),\n             E(\"pip.claimed\", False)),\n            \"Pip accepted a fair exchange and Noor received a suitable bun\",\n        ),\n        Scene(\n            \"permission_arrange\", \"cooperation\", (\"mara\", \"ada\", \"tray\", \"basket\"),\n            (C(\"mara.generous\", \"eq\", True), C(\"ada.memes.Ambition\", \"ge\", 2),\n             C(\"basket.location\", \"eq\", \"stall\")),\n            (E(\"mara.permission\", True), E(\"ada.memes.Care\", 1, \"inc\")),\n            \"Mara gave Ada permission to arrange a shared basket\",\n        ),\n        Scene(\n            \"make_shared_basket\", \"care\", (\"ada\", \"noor\", \"basket\", \"plain\"),\n            (C(\"mara.permission\", \"eq\", True), C(\"ada.knows.noor.need\", \"ne\", None),\n             C(\"plain.owner\", \"eq\", \"mara\"), C(\"noor.need\", \"eq\", \"plain\")),\n            (E(\"plain.location\", \"basket\"), E(\"plain.owner\", \"noor\"),\n             E(\"noor.hungry\", False), E(\"exchange.success\", True),\n             E(\"exchange.fair\", True)),\n            \"Ada placed a suitable plain bun in the shared basket for Noor\",\n        ),\n        Scene(\n            \"correct_sign\", \"communication\", (\"mara\", \"ada\", \"label\", \"stall\"),\n            (C(\"ada.knows.label.accurate\", \"eq\", False),\n             C(\"mara.knows.label.accurate\", \"eq\", False),\n             C(\"label.location\", \"eq\", \"tray\")),\n            (E(\"stall.sign\", \"accurate\"), E(\"label.accurate\", True),\n             E(\"exchange.fair\", True)),\n            \"Mara corrected the public sign after checking Ada's evidence\",\n        ),\n        Scene(\n            \"mark_final_buns\", \"arrangement\", (\"ada\", \"mara\", \"label\", \"tray\"),\n            (C(\"stall.sign\", \"eq\", \"accurate\"), C(\"label.accurate\", \"eq\", True)),\n            (E(\"nut.final\", True), E(\"berry.final\", True), E(\"plain.final\", True),\n             E(\"exchange.success\", True)),\n            \"Ada and Mara marked the final buns with accurate labels\",\n        ),\n        Scene(\n            \"weigh_final\", \"arrangement\", (\"ada\", \"scale\", \"basket\"),\n            (C(\"exchange.success\", \"eq\", True), C(\"scale.available\", \"eq\", True)),\n            (E(\"exchange.fair\", True), E(\"ada.memes.Ambition\", 1, \"inc\")),\n            \"Ada weighed the final portions to display a balanced exchange\",\n        ),\n        Scene(\n            \"announce_stall\", \"communication\", (\"ada\", \"mara\", \"pip\", \"noor\"),\n            (C(\"exchange.success\", \"eq\", True), C(\"exchange.fair\", \"eq\", True)),\n            (E(\"stall.sign\", \"announced\")),\n            \"The group announced the stall's accurate new arrangement\",\n        ),\n    ]\n\n    rules = (\n        Rule(\n            \"owners_are_people\",\n            (C(\"nut.owner\", \"in\", (\"mara\", \"ada\", \"pip\", \"noor\")),\n             C(\"berry.owner\", \"in\", (\"mara\", \"ada\", \"pip\", \"noor\")),\n             C(\"plain.owner\", \"in\", (\"mara\", \"ada\", \"pip\", \"noor\")))\n        ),\n        Rule(\n            \"noor_gets_suitable_food\",\n            (C(\"noor.hungry\", \"eq\", True),)\n        ),\n        Rule(\n            \"final_labels_match\",\n            (C(\"label.accurate\", \"eq\", True),),\n            when=(C(\"stall.sign\", \"in\", (\"accurate\", \"announced\")),)\n        ),\n    )\n\n    goal = (\n        C(\"exchange.success\", \"eq\", True),\n        C(\"exchange.fair\", \"eq\", True),\n        C(\"stall.sign\", \"in\", (\"accurate\", \"announced\")),\n    )\n\n    labels = {\n        \"ada.memes.Curiosity\": \"Ada's curiosity\",\n        \"ada.memes.Care\": \"Ada's care\",\n        \"ada.memes.Ambition\": \"Ada's determination\",\n        \"noor.hungry\": \"Noor is hungry\",\n        \"exchange.success\": \"successful exchange\",\n        \"exchange.fair\": \"fair arrangement\",\n        \"stall.sign\": \"stall sign\",\n    }\n\n    return WorldSpec(\n        \"The Crumb-and-Label Exchange\",\n        entities,\n        initial,\n        tuple(scenes),\n        goal,\n        rules=rules,\n        labels=labels,\n    )",
+          "type": "output_text",
+          "logprobs": []
+        }
+      ],
+      "role": "assistant",
+      "status": "completed",
+      "type": "message",
+      "phase": "final_answer"
+    }
+  ],
+  "parallel_tool_calls": true,
+  "temperature": 1.0,
+  "tool_choice": "auto",
+  "tools": [],
+  "top_p": 0.98,
+  "background": false,
+  "completed_at": 1788808417.0,
+  "conversation": null,
+  "max_output_tokens": 16000,
+  "max_tool_calls": null,
+  "moderation": null,
+  "previous_response_id": null,
+  "prompt": null,
+  "prompt_cache_key": null,
+  "prompt_cache_retention": "24h",
+  "reasoning": {
+    "context": "all_turns",
+    "effort": "none",
+    "generate_summary": null,
+    "summary": null,
+    "mode": "standard"
+  },
+  "safety_identifier": null,
+  "service_tier": "flex",
+  "status": "completed",
+  "text": {
+    "format": {
+      "type": "text"
+    },
+    "verbosity": "medium"
+  },
+  "top_logprobs": 0,
+  "truncation": "disabled",
+  "usage": {
+    "input_tokens": 2742,
+    "input_tokens_details": {
+      "cached_tokens": 0,
+      "cache_write_tokens": 2739
+    },
+    "output_tokens": 3020,
+    "output_tokens_details": {
+      "reasoning_tokens": 0
+    },
+    "total_tokens": 5762
+  },
+  "user": null,
+  "billing": {
+    "payer": "developer"
+  },
+  "frequency_penalty": 0.0,
+  "presence_penalty": 0.0,
+  "store": false,
+  "tool_usage": {
+    "image_gen": {
+      "input_tokens": 0,
+      "input_tokens_details": {
+        "image_tokens": 0,
+        "text_tokens": 0
+      },
+      "output_tokens": 0,
+      "output_tokens_details": {
+        "image_tokens": 0,
+        "text_tokens": 0
+      },
+      "total_tokens": 0
+    },
+    "web_search": {
+      "num_requests": 0
+    }
+  }
+}

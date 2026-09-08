@@ -1,0 +1,362 @@
+{
+  "id": "resp_05a48b56e2df3f85006a9f8fbf22e087d094f17af8935a89d3",
+  "created_at": 1788841919.0,
+  "error": null,
+  "incomplete_details": null,
+  "instructions": null,
+  "metadata": {},
+  "model": "gpt-5.6-terra",
+  "object": "response",
+  "output": [
+    {
+      "id": "msg_05a48b56e2df3f85006a9f8fbfd85c87d0bde54d4ce59800d8",
+      "content": [
+        {
+          "annotations": [],
+          "text": "{\"stories\":[{\"id\":\"s000029\",\"rating\":{\"coherence\":6,\"style\":6,\"grammar\":8,\"storytelling\":7,\"overall\":7},\"note\":\"A clear pepper-and-berry tasting arc ends in a vivid pawprint image, though the repeated label discovery and flavor announcements make the middle redundant.\"},{\"id\":\"s000057\",\"rating\":{\"coherence\":6,\"style\":6,\"grammar\":8,\"storytelling\":6,\"overall\":6},\"note\":\"The shared-treat ending is warm and concrete, but Pip's cinnamon label is introduced without a clear correction and the flavor-label logic is muddled.\"},{\"id\":\"s000047\",\"rating\":{\"coherence\":7,\"style\":6,\"grammar\":8,\"storytelling\":6,\"overall\":7},\"note\":\"A simple decision to share leads smoothly to jam-topped bites and a pleasing crumb image, but there is little problem or consequential turn beyond sharing.\"},{\"id\":\"s000073\",\"rating\":{\"coherence\":7,\"style\":6,\"grammar\":8,\"storytelling\":6,\"overall\":7},\"note\":\"This is coherent, child-friendly prose with a concrete shared-snack conclusion, although it lacks a developed obstacle or surprise.\"},{\"id\":\"s000034\",\"rating\":{\"coherence\":7,\"style\":6,\"grammar\":8,\"storytelling\":7,\"overall\":7},\"note\":\"The confirmed cinnamon flavor supports a fair exchange and sweet tasting payoff; the ending image of Pip parading a paper sash completes the small story neatly.\"},{\"id\":\"s000043\",\"rating\":{\"coherence\":5,\"style\":6,\"grammar\":8,\"storytelling\":6,\"overall\":6},\"note\":\"The choice to share gives the scene a modest arc, but Pip calls his pepper label a 'cinnamon word,' creating an unexplained contradiction.\"},{\"id\":\"s000068\",\"rating\":{\"coherence\":7,\"style\":6,\"grammar\":8,\"storytelling\":7,\"overall\":7},\"note\":\"A mismatched pepper label is discovered before the cinnamon pastry is traded and enjoyed, producing a complete, concrete resolution despite some repeated exposition.\"},{\"id\":\"s000096\",\"rating\":{\"coherence\":5,\"style\":6,\"grammar\":8,\"storytelling\":7,\"overall\":6},\"note\":\"The daring pepper-and-berry tasting has a clear payoff and strong final image, but Pip first pins 'cinnamon' and then declares he has pinned a pepper label, confusing the central setup.\"},{\"id\":\"s000005\",\"rating\":{\"coherence\":7,\"style\":6,\"grammar\":8,\"storytelling\":7,\"overall\":7},\"note\":\"The incorrect pepper label is corrected by discovering cinnamon, and the trade ends with a clear happy bite and Pip's slipping paper sash.\"},{\"id\":\"s000085\",\"rating\":{\"coherence\":5,\"style\":6,\"grammar\":8,\"storytelling\":7,\"overall\":6},\"note\":\"The pepper-and-berry surprise and pawprint ending work well, but an extra, unexplained 'Berry jam!' decision and repeated discovery dialogue make the sequence cluttered.\"}],\"diversity\":{\"premise\":2,\"causal_path\":3,\"ending\":3,\"language\":3,\"overall\":3},\"diversity_evidence\":\"All stories use the same bakery trio, labeled button pastry, berry jam, and tasting setup. The main material branch is trade after a cinnamon/pepper-label mismatch (s000034, s000068, s000005) versus sharing the snack (s000047, s000073, s000057, s000043), while s000029, s000096, and s000085 resolve with a pepper-and-berry surprise. Most wording, scenes, and final crumb/pawprint or sash images are closely repeated; this sample does not establish diversity for the full generator.\",\"plot_groups\":[{\"story_ids\":[\"s000034\",\"s000068\",\"s000005\"],\"summary\":\"Pip's label conflicts with the cinnamon pastry; the flavor is checked, then Ada trades the button to Nia for jam, and Nia enjoys the sweet combination.\"},{\"story_ids\":[\"s000047\",\"s000073\",\"s000057\",\"s000043\"],\"summary\":\"Ada declines a trade and divides the button among the trio, who eat jam-topped pieces together.\"},{\"story_ids\":[\"s000029\",\"s000096\",\"s000085\"],\"summary\":\"A pepper button is paired with berry jam for a daring taste; Nia likes the surprising combination and the trio celebrates.\"}]}",
+          "type": "output_text",
+          "logprobs": []
+        }
+      ],
+      "role": "assistant",
+      "status": "completed",
+      "type": "message",
+      "phase": "final_answer"
+    }
+  ],
+  "parallel_tool_calls": true,
+  "temperature": 1.0,
+  "tool_choice": "auto",
+  "tools": [],
+  "top_p": 0.98,
+  "background": false,
+  "completed_at": 1788841928.0,
+  "conversation": null,
+  "max_output_tokens": 4000,
+  "max_tool_calls": null,
+  "moderation": null,
+  "previous_response_id": null,
+  "prompt": null,
+  "prompt_cache_key": null,
+  "prompt_cache_retention": "24h",
+  "reasoning": {
+    "context": "all_turns",
+    "effort": "none",
+    "generate_summary": null,
+    "summary": null,
+    "mode": "standard"
+  },
+  "safety_identifier": null,
+  "service_tier": "flex",
+  "status": "completed",
+  "text": {
+    "format": {
+      "name": "story_set_quality_v1",
+      "schema_": {
+        "type": "object",
+        "properties": {
+          "stories": {
+            "type": "array",
+            "minItems": 10,
+            "maxItems": 10,
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "enum": [
+                    "s000029",
+                    "s000057",
+                    "s000047",
+                    "s000073",
+                    "s000034",
+                    "s000043",
+                    "s000068",
+                    "s000096",
+                    "s000005",
+                    "s000085"
+                  ]
+                },
+                "rating": {
+                  "type": "object",
+                  "properties": {
+                    "coherence": {
+                      "type": "integer",
+                      "enum": [
+                        0,
+                        1,
+                        2,
+                        3,
+                        4,
+                        5,
+                        6,
+                        7,
+                        8,
+                        9
+                      ]
+                    },
+                    "style": {
+                      "type": "integer",
+                      "enum": [
+                        0,
+                        1,
+                        2,
+                        3,
+                        4,
+                        5,
+                        6,
+                        7,
+                        8,
+                        9
+                      ]
+                    },
+                    "grammar": {
+                      "type": "integer",
+                      "enum": [
+                        0,
+                        1,
+                        2,
+                        3,
+                        4,
+                        5,
+                        6,
+                        7,
+                        8,
+                        9
+                      ]
+                    },
+                    "storytelling": {
+                      "type": "integer",
+                      "enum": [
+                        0,
+                        1,
+                        2,
+                        3,
+                        4,
+                        5,
+                        6,
+                        7,
+                        8,
+                        9
+                      ]
+                    },
+                    "overall": {
+                      "type": "integer",
+                      "enum": [
+                        0,
+                        1,
+                        2,
+                        3,
+                        4,
+                        5,
+                        6,
+                        7,
+                        8,
+                        9
+                      ]
+                    }
+                  },
+                  "required": [
+                    "coherence",
+                    "style",
+                    "grammar",
+                    "storytelling",
+                    "overall"
+                  ],
+                  "additionalProperties": false
+                },
+                "note": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "id",
+                "rating",
+                "note"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "diversity": {
+            "type": "object",
+            "properties": {
+              "premise": {
+                "type": "integer",
+                "enum": [
+                  0,
+                  1,
+                  2,
+                  3,
+                  4,
+                  5,
+                  6,
+                  7,
+                  8,
+                  9
+                ]
+              },
+              "causal_path": {
+                "type": "integer",
+                "enum": [
+                  0,
+                  1,
+                  2,
+                  3,
+                  4,
+                  5,
+                  6,
+                  7,
+                  8,
+                  9
+                ]
+              },
+              "ending": {
+                "type": "integer",
+                "enum": [
+                  0,
+                  1,
+                  2,
+                  3,
+                  4,
+                  5,
+                  6,
+                  7,
+                  8,
+                  9
+                ]
+              },
+              "language": {
+                "type": "integer",
+                "enum": [
+                  0,
+                  1,
+                  2,
+                  3,
+                  4,
+                  5,
+                  6,
+                  7,
+                  8,
+                  9
+                ]
+              },
+              "overall": {
+                "type": "integer",
+                "enum": [
+                  0,
+                  1,
+                  2,
+                  3,
+                  4,
+                  5,
+                  6,
+                  7,
+                  8,
+                  9
+                ]
+              }
+            },
+            "required": [
+              "premise",
+              "causal_path",
+              "ending",
+              "language",
+              "overall"
+            ],
+            "additionalProperties": false
+          },
+          "diversity_evidence": {
+            "type": "string"
+          },
+          "plot_groups": {
+            "type": "array",
+            "minItems": 1,
+            "maxItems": 10,
+            "items": {
+              "type": "object",
+              "properties": {
+                "story_ids": {
+                  "type": "array",
+                  "minItems": 1,
+                  "items": {
+                    "type": "string",
+                    "enum": [
+                      "s000029",
+                      "s000057",
+                      "s000047",
+                      "s000073",
+                      "s000034",
+                      "s000043",
+                      "s000068",
+                      "s000096",
+                      "s000005",
+                      "s000085"
+                    ]
+                  }
+                },
+                "summary": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "story_ids",
+                "summary"
+              ],
+              "additionalProperties": false
+            }
+          }
+        },
+        "required": [
+          "stories",
+          "diversity",
+          "diversity_evidence",
+          "plot_groups"
+        ],
+        "additionalProperties": false
+      },
+      "type": "json_schema",
+      "description": null,
+      "strict": true
+    },
+    "verbosity": "medium"
+  },
+  "top_logprobs": 0,
+  "truncation": "disabled",
+  "usage": {
+    "input_tokens": 5237,
+    "input_tokens_details": {
+      "cached_tokens": 0,
+      "cache_write_tokens": 5234
+    },
+    "output_tokens": 937,
+    "output_tokens_details": {
+      "reasoning_tokens": 0
+    },
+    "total_tokens": 6174
+  },
+  "user": null,
+  "billing": {
+    "payer": "openai"
+  },
+  "frequency_penalty": 0.0,
+  "presence_penalty": 0.0,
+  "store": true,
+  "tool_usage": {
+    "image_gen": {
+      "input_tokens": 0,
+      "input_tokens_details": {
+        "image_tokens": 0,
+        "text_tokens": 0
+      },
+      "output_tokens": 0,
+      "output_tokens_details": {
+        "image_tokens": 0,
+        "text_tokens": 0
+      },
+      "total_tokens": 0
+    },
+    "web_search": {
+      "num_requests": 0
+    }
+  }
+}

@@ -1,0 +1,445 @@
+from runtime import WorldSpec, Scene, Condition as C, Effect as E, Rule
+from runtime import observe, transfer
+import random
+
+
+def build(seed: int) -> WorldSpec:
+    rng = random.Random(seed)
+
+    obstacle = rng.randrange(5)
+    narrow = obstacle == 0
+    weak_wheel = obstacle == 1 or rng.random() < 0.22
+    steep = obstacle == 2
+    overloaded = obstacle == 3 or rng.random() < 0.28
+    square_access = obstacle != 4
+    materials_available = 1 if weak_wheel else (1 if rng.random() < 0.55 else 0)
+    readers_need = 1 if rng.random() < 0.6 else 0
+
+    entities = {
+        "ada": {"name": "Ada", "kind": "child"},
+        "bramble": {"name": "Mayor Bramble", "kind": "person"},
+        "toma": {"name": "Toma", "kind": "person"},
+        "keeper": {"name": "Library Keeper", "kind": "person"},
+        "library": {"name": "library", "kind": "place"},
+        "square": {"name": "town square", "kind": "place"},
+        "garden": {"name": "reading garden", "kind": "place"},
+        "cart": {"name": "wooden cart", "kind": "prop"},
+        "books": {"name": "library books", "kind": "prop"},
+        "rope": {"name": "rope", "kind": "prop"},
+        "cushions": {"name": "cushions", "kind": "prop"},
+        "chock": {"name": "wheel chock", "kind": "prop"},
+        "sign": {"name": "signboard", "kind": "prop"},
+        "route": {"name": "library route", "kind": "place"},
+        "readers": {"name": "town readers", "kind": "group"},
+        "materials": {"name": "building materials", "kind": "prop"},
+        "parade": {"name": "reading parade", "kind": "group"},
+    }
+
+    initial = {
+        "ada.location": "library",
+        "bramble.location": "library",
+        "toma.location": "library",
+        "keeper.location": "library",
+        "readers.location": "library",
+        "cart.location": "library",
+        "books.location": "library",
+        "sign.location": "library",
+        "parade.location": "library",
+        "rope.owner": "keeper",
+        "cushions.owner": "keeper",
+        "chock.owner": "keeper",
+        "cart.capacity": 4,
+        "cart.load": 3 if overloaded else 2,
+        "cart.balance": "poor" if overloaded else "fair",
+        "cart.wheel": "weak" if weak_wheel else "sound",
+        "cart.safe": False,
+        "cart.tested": False,
+        "cart.reinforced": False,
+        "cart.books_safe": False,
+        "books.delivered": False,
+        "books.displayed": False,
+        "route.narrow": narrow,
+        "route.steep": steep,
+        "route.square_access": square_access,
+        "readers.need": readers_need,
+        "materials.available": materials_available,
+        "parade.ready": False,
+        "parade.kind": "none",
+        "sign.message": "biggest",
+        "ada.memes.Curiosity": 1 + rng.randrange(2),
+        "ada.memes.Care": 1,
+        "ada.memes.Cooperation": 1,
+        "bramble.memes.Ambition": 2 + rng.randrange(3),
+        "bramble.memes.Care": 0,
+        "bramble.memes.Cooperation": 0,
+        "toma.memes.Care": 2,
+        "toma.memes.Cooperation": 1,
+        "keeper.memes.Care": 2,
+        "ada.knows.cart.balance": None,
+        "ada.knows.route.square_access": None,
+        "ada.knows.readers.need": None,
+        "toma.knows.cart.wheel": None,
+    }
+
+    scenes = (
+        Scene(
+            "share_grand_sketch",
+            "ambition",
+            ("bramble", "ada", "cart"),
+            (
+                C("bramble.location", "eq", "library"),
+                C("ada.location", "eq", "library"),
+                C("cart.location", "eq", "library"),
+                C("bramble.memes.Ambition", "ge", 2),
+            ),
+            (
+                E("bramble.memes.Ambition", 1, "inc"),
+                E("ada.memes.Curiosity", 1, "inc"),
+            ),
+            "Mayor Bramble showed Ada his grand sketch for a very large cart parade",
+        ),
+        observe(
+            "inspect_balance",
+            "ada",
+            "cart.balance",
+            requires=(
+                C("ada.location", "eq", "library"),
+                C("cart.location", "eq", "library"),
+                C("ada.memes.Curiosity", "ge", 1),
+            ),
+            summary="Ada inspected how the books sat in the cart",
+        ),
+        observe(
+            "inspect_route",
+            "ada",
+            "route.square_access",
+            requires=(
+                C("ada.location", "eq", "library"),
+                C("ada.memes.Curiosity", "ge", 1),
+            ),
+            summary="Ada checked whether the route could reach the square",
+        ),
+        Scene(
+            "measure_wheel",
+            "observation",
+            ("toma", "cart"),
+            (
+                C("toma.location", "eq", "library"),
+                C("cart.location", "eq", "library"),
+                C("toma.memes.Care", "ge", 1),
+            ),
+            (
+                E("toma.knows.cart.wheel", "cart.wheel", "copy"),
+                E("toma.memes.Cooperation", 1, "inc"),
+            ),
+            "Toma measured the cart wheel and found its condition",
+        ),
+        Scene(
+            "consult_readers",
+            "care",
+            ("ada", "readers"),
+            (
+                C("ada.location", "eq", "library"),
+                C("readers.location", "eq", "library"),
+                C("ada.memes.Care", "ge", 1),
+            ),
+            (
+                E("ada.knows.readers.need", "readers.need", "copy"),
+                E("bramble.memes.Care", 1, "inc"),
+            ),
+            "Ada asked the visiting readers what would help them join",
+        ),
+        transfer(
+            "lend_cushions",
+            "keeper",
+            "toma",
+            "cushions",
+            requires=(
+                C("keeper.location", "eq", "library"),
+                C("toma.location", "eq", "library"),
+                C("keeper.memes.Care", "ge", 1),
+            ),
+            summary="The keeper lent Toma cushions for protecting the books",
+        ),
+        transfer(
+            "lend_chock",
+            "keeper",
+            "toma",
+            "chock",
+            requires=(
+                C("keeper.location", "eq", "library"),
+                C("toma.location", "eq", "library"),
+                C("keeper.memes.Care", "ge", 1),
+            ),
+            summary="The keeper lent Toma a wheel chock for the steep stretch",
+        ),
+        transfer(
+            "lend_rope",
+            "keeper",
+            "ada",
+            "rope",
+            requires=(
+                C("keeper.location", "eq", "library"),
+                C("ada.location", "eq", "library"),
+                C("keeper.memes.Care", "ge", 1),
+            ),
+            summary="The keeper lent Ada a rope for the narrow lane",
+        ),
+        Scene(
+            "repair_wheel",
+            "care",
+            ("toma", "cart", "materials"),
+            (
+                C("toma.location", "eq", "library"),
+                C("cart.location", "eq", "library"),
+                C("toma.knows.cart.wheel", "eq", "weak"),
+                C("materials.available", "eq", 1),
+                C("toma.memes.Care", "ge", 1),
+            ),
+            (
+                E("cart.wheel", "sound"),
+                E("cart.reinforced", True),
+                E("materials.available", 0),
+            ),
+            "Toma reinforced the weak wheel with the available materials",
+        ),
+        Scene(
+            "balance_books",
+            "cooperation",
+            ("ada", "toma", "cart"),
+            (
+                C("ada.location", "eq", "library"),
+                C("toma.location", "eq", "library"),
+                C("cart.location", "eq", "library"),
+                C("ada.knows.cart.balance", "ne", None),
+                C("cushions.owner", "eq", "toma"),
+                C("cart.wheel", "eq", "sound"),
+            ),
+            (
+                E("cart.balance", "good"),
+                E("cart.load", 2),
+                E("cart.books_safe", True),
+                E("cart.safe", True),
+            ),
+            "Ada and Toma cushioned and rearranged the books into a balanced load",
+        ),
+        Scene(
+            "test_level_route",
+            "observation",
+            ("ada", "toma", "cart"),
+            (
+                C("cart.location", "eq", "library"),
+                C("cart.safe", "eq", True),
+                C("cart.books_safe", "eq", True),
+                C("route.steep", "eq", False),
+            ),
+            (
+                E("cart.tested", True),
+                E("ada.memes.Curiosity", 1, "inc"),
+            ),
+            "Ada and Toma tested the cart on the level beginning of the route",
+        ),
+        Scene(
+            "test_steep_route",
+            "observation",
+            ("ada", "toma", "cart"),
+            (
+                C("cart.location", "eq", "library"),
+                C("cart.safe", "eq", True),
+                C("cart.books_safe", "eq", True),
+                C("route.steep", "eq", True),
+                C("chock.owner", "eq", "toma"),
+            ),
+            (
+                E("cart.tested", True),
+                E("ada.memes.Curiosity", 1, "inc"),
+            ),
+            "Ada and Toma tested the cart carefully with the wheel chock on the steep stretch",
+        ),
+        Scene(
+            "make_invitation_sign",
+            "cooperation",
+            ("ada", "bramble", "sign"),
+            (
+                C("ada.location", "eq", "library"),
+                C("bramble.location", "eq", "library"),
+                C("sign.location", "eq", "library"),
+                C("ada.knows.readers.need", "ne", None),
+                C("bramble.memes.Care", "ge", 1),
+            ),
+            (
+                E("sign.message", "books for everyone"),
+                E("bramble.memes.Cooperation", 1, "inc"),
+            ),
+            "Ada and the mayor changed the sign into an invitation for every reader",
+        ),
+        Scene(
+            "guide_open_square_route",
+            "cooperation",
+            ("ada", "toma", "bramble", "cart"),
+            (
+                C("ada.location", "eq", "library"),
+                C("toma.location", "eq", "library"),
+                C("bramble.location", "eq", "library"),
+                C("cart.location", "eq", "library"),
+                C("cart.safe", "eq", True),
+                C("cart.books_safe", "eq", True),
+                C("cart.tested", "eq", True),
+                C("ada.knows.route.square_access", "eq", True),
+                C("route.narrow", "eq", False),
+                C("sign.message", "eq", "books for everyone"),
+            ),
+            (
+                E("ada.location", "square"),
+                E("toma.location", "square"),
+                E("bramble.location", "square"),
+                E("cart.location", "square"),
+                E("books.location", "square"),
+                E("parade.location", "square"),
+                E("books.delivered", True),
+                E("books.displayed", True),
+                E("parade.kind", "square reading parade"),
+                E("parade.ready", True),
+            ),
+            "The group guided the cart along the open route to the town square",
+        ),
+        Scene(
+            "guide_narrow_square_route",
+            "cooperation",
+            ("ada", "toma", "bramble", "cart"),
+            (
+                C("ada.location", "eq", "library"),
+                C("toma.location", "eq", "library"),
+                C("bramble.location", "eq", "library"),
+                C("cart.location", "eq", "library"),
+                C("cart.safe", "eq", True),
+                C("cart.books_safe", "eq", True),
+                C("cart.tested", "eq", True),
+                C("ada.knows.route.square_access", "eq", True),
+                C("route.narrow", "eq", True),
+                C("rope.owner", "eq", "ada"),
+                C("sign.message", "eq", "books for everyone"),
+            ),
+            (
+                E("ada.location", "square"),
+                E("toma.location", "square"),
+                E("bramble.location", "square"),
+                E("cart.location", "square"),
+                E("books.location", "square"),
+                E("parade.location", "square"),
+                E("books.delivered", True),
+                E("books.displayed", True),
+                E("parade.kind", "square reading parade"),
+                E("parade.ready", True),
+            ),
+            "The group used the rope to guide the cart neatly through the narrow lane to the square",
+        ),
+        Scene(
+            "guide_garden_route",
+            "care",
+            ("ada", "toma", "bramble", "cart"),
+            (
+                C("ada.location", "eq", "library"),
+                C("toma.location", "eq", "library"),
+                C("bramble.location", "eq", "library"),
+                C("cart.location", "eq", "library"),
+                C("cart.safe", "eq", True),
+                C("cart.books_safe", "eq", True),
+                C("cart.tested", "eq", True),
+                C("ada.knows.route.square_access", "eq", False),
+                C("sign.message", "eq", "books for everyone"),
+            ),
+            (
+                E("ada.location", "garden"),
+                E("toma.location", "garden"),
+                E("bramble.location", "garden"),
+                E("cart.location", "garden"),
+                E("books.location", "garden"),
+                E("parade.location", "garden"),
+                E("books.delivered", True),
+                E("books.displayed", True),
+                E("parade.kind", "garden reading stops"),
+                E("parade.ready", True),
+            ),
+            "The group brought the cart to the reachable reading garden for a traveling library stop",
+        ),
+    )
+
+    rules = (
+        Rule(
+            "load_within_capacity",
+            (C("cart.load", "le", 4),),
+            (),
+        ),
+        Rule(
+            "safe_cart_is_balanced",
+            (
+                C("cart.balance", "eq", "good"),
+                C("cart.wheel", "eq", "sound"),
+                C("cart.books_safe", "eq", True),
+            ),
+            (C("cart.safe", "eq", True),),
+        ),
+        Rule(
+            "delivered_books_have_a_destination",
+            (
+                C("books.location", "in", ("square", "garden")),
+                C("books.displayed", "eq", True),
+            ),
+            (C("books.delivered", "eq", True),),
+        ),
+        Rule(
+            "borrowed_props_have_a_holder",
+            (C("rope.owner", "in", ("keeper", "ada", "toma")),),
+            (),
+        ),
+        Rule(
+            "cushions_have_a_holder",
+            (C("cushions.owner", "in", ("keeper", "ada", "toma")),),
+            (),
+        ),
+        Rule(
+            "chock_has_a_holder",
+            (C("chock.owner", "in", ("keeper", "ada", "toma")),),
+            (),
+        ),
+    )
+
+    goal = (
+        C("parade.ready", "eq", True),
+        C("books.delivered", "eq", True),
+        C("books.displayed", "eq", True),
+    )
+
+    labels = {
+        "cart.location": "cart location",
+        "cart.load": "books in the cart",
+        "cart.balance": "cart balance",
+        "cart.wheel": "wheel condition",
+        "cart.safe": "cart safety",
+        "cart.tested": "cart route test",
+        "cart.reinforced": "wheel reinforcement",
+        "cart.books_safe": "book safety",
+        "books.location": "book location",
+        "books.delivered": "books delivered",
+        "books.displayed": "books displayed",
+        "route.narrow": "narrow lane",
+        "route.steep": "steep route",
+        "route.square_access": "square route access",
+        "readers.need": "readers needing easier access",
+        "materials.available": "repair materials available",
+        "sign.message": "sign message",
+        "parade.location": "reading event location",
+        "parade.kind": "reading event kind",
+        "parade.ready": "reading event ready",
+    }
+
+    return WorldSpec(
+        "The Library Cart Parade",
+        entities,
+        initial,
+        scenes,
+        goal,
+        rules=rules,
+        labels=labels,
+    )

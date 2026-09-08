@@ -1,0 +1,21 @@
+{
+  "issues": [
+    {
+      "seed": 123,
+      "severity": "major",
+      "layer": "simulation",
+      "defect": "contradiction",
+      "evidence": "The trace leaves Pip at `pip.location: \"gate\"` throughout, but the story twice says Pip \"fluttered behind it\" and \"slipped behind the gate,\" treating a different location as accomplished.",
+      "fix": "Either add an event that moves Pip behind the gate and represent that location in state, or revise the prose so Pip remains at the gate."
+    },
+    {
+      "seed": 123,
+      "severity": "major",
+      "layer": "prose",
+      "defect": "event_log_prose",
+      "evidence": "The consequence is repeated almost verbatim in adjacent passages: \"Pip startled and fluttered behind it\" followed by \"Pip slipped behind the gate, startled by the bright dancing shapes.\"",
+      "fix": "Merge the duplicated reaction into one consequential beat, then use the final paragraph to advance the unfinished welcome rather than restate it."
+    }
+  ],
+  "strengths": "Seeds 457 and 791 closely follow their ordered state changes: the lamp inspection precedes softening, the ribbon and moon are placed before Pip reaches the ribbon, and seed 791 grounds Ada's change from moving show to tableau in her discovered knowledge of Pip's location."
+}

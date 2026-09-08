@@ -1,0 +1,62 @@
+{
+  "world": "library_parade",
+  "title": "The Library Parade and the Cart with Three Jobs",
+  "ok": true,
+  "samples": 100,
+  "simulation_sha256": "48ae63f1d98c8505ce2474bab09f274d316bdc69250737215e799e483fbdfbfb",
+  "generator_sha256": "73e522f736fc8abe392abe559c521137ce748b91ec9fc686684713626ea35534",
+  "catalog_sha256": "3c9d51f62d60d86d688d46e2837351fbd4784849f93c3e22ba7d4b866be06efa",
+  "distinct_texts": 59,
+  "distinct_scene_paths": 33,
+  "word_range": [
+    151,
+    283
+  ],
+  "prose_control_variants": 2,
+  "mechanics_model": "gpt-5.6-luna",
+  "mechanics_attempts": 1,
+  "prose_model": "gpt-5.6-luna",
+  "stats": {
+    "samples": 100,
+    "ordered_paths": 33,
+    "scene_sets": 10,
+    "causal_graphs": 10,
+    "outcomes": 3,
+    "premises": 3,
+    "events_range": [
+      4,
+      9
+    ],
+    "pruned_events": 216
+  },
+  "critic_before_revision": {
+    "issues": [
+      {
+        "seed": 123,
+        "severity": "major",
+        "layer": "simulation",
+        "defect": "ungrounded_outcome",
+        "evidence": "The story twice says “Tuck rang”/“Tuck rang the bell,” but the trace leaves `bell.rung` false and contains no bell-ringing event (the identical seed 457 has the same mismatch).",
+        "fix": "Add a bell-ringing state change/event, or remove the claims that Tuck rang the bell."
+      },
+      {
+        "seed": 791,
+        "severity": "major",
+        "layer": "simulation",
+        "defect": "ungrounded_outcome",
+        "evidence": "The route scenes say “Each child chose a book” and “children chose stories one by one,” although `books.waiting` remains true and the trace has no delivery/selection event to ground distribution.",
+        "fix": "Add an event and state changes representing the books being handed out, or describe the cart arriving ready for children to choose rather than completing choices."
+      },
+      {
+        "seed": 791,
+        "severity": "major",
+        "layer": "prose",
+        "defect": "event_log_prose",
+        "evidence": "The final paragraph largely repeats the immediately previous completed action: “Nia performed the book route...” followed by “At the neighborhood stop, Nia opened the bookmobile and children chose stories one by one.”",
+        "fix": "Replace the duplicate recap with a consequential closing beat after the route."
+      }
+    ],
+    "strengths": "The principal cart transformations, locations, performers, banner attachment, and Mallow’s shelf knowledge generally follow their ordered trace changes; no raw enum values appear in the prose."
+  },
+  "final_catalog_attempt": 1
+}

@@ -1,0 +1,97 @@
+{
+  "id": "resp_0d3fa607a1043fcb016a9f0c1623d087d0926950204bc999e5",
+  "created_at": 1788808214.0,
+  "error": null,
+  "incomplete_details": null,
+  "instructions": null,
+  "metadata": {},
+  "model": "gpt-5.6-luna",
+  "object": "response",
+  "output": [
+    {
+      "id": "msg_0d3fa607a1043fcb016a9f0c16ba0487d0a615a8a39d064dc8",
+      "content": [
+        {
+          "annotations": [],
+          "text": "from runtime import WorldSpec, Scene, Condition as C, Effect as E, Rule\nfrom runtime import observe, tell, transfer\nimport random\n\n\ndef build(seed: int) -> WorldSpec:\n    rng = random.Random(seed)\n\n    carrier = rng.choice((\"log\", \"pads\", \"sail\"))\n    listener_place = rng.choice((\"reedbank\", \"dock\", \"root\"))\n    style = rng.choice((\"croak\", \"tap\", \"call\"))\n    water = rng.choice((\"still\", \"rippling\"))\n    wrong_holder = rng.choice((\"ada\", \"milo\"))\n\n    entities = {\n        \"ada\": {\"name\": \"Ada\", \"kind\": \"child\"},\n        \"milo\": {\"name\": \"Milo\", \"kind\": \"child\"},\n        \"pip\": {\"name\": \"Pip\", \"kind\": \"frog\"},\n        \"tansy\": {\"name\": \"Tansy\", \"kind\": \"turtle\"},\n        \"lilypond\": {\"name\": \"Lilypond\", \"kind\": \"place\"},\n        \"reedbank\": {\"name\": \"reed bank\", \"kind\": \"place\"},\n        \"dock\": {\"name\": \"old dock\", \"kind\": \"place\"},\n        \"root\": {\"name\": \"long root\", \"kind\": \"place\"},\n        \"stage\": {\"name\": \"lily-pad stage\", \"kind\": \"prop\"},\n        \"pad1\": {\"name\": \"first floating pad\", \"kind\": \"prop\"},\n        \"pad2\": {\"name\": \"second floating pad\", \"kind\": \"prop\"},\n        \"log\": {\"name\": \"hollow log\", \"kind\": \"prop\"},\n        \"chimes\": {\"name\": \"pebble chimes\", \"kind\": \"prop\"},\n        \"sail\": {\"name\": \"leaf sail\", \"kind\": \"prop\"},\n        \"rope\": {\"name\": \"rope\", \"kind\": \"prop\"},\n        \"reeds\": {\"name\": \"soft reeds\", \"kind\": \"prop\"},\n    }\n\n    initial = {\n        \"ada.location\": \"reedbank\",\n        \"milo.location\": \"reedbank\",\n        \"pip.location\": \"stage\",\n        \"tansy.location\": listener_place,\n        \"stage.location\": \"lilypond\",\n        \"pad1.location\": \"lilypond\",\n        \"pad2.location\": \"lilypond\",\n        \"log.location\": \"lilypond\",\n        \"chimes.location\": \"reedbank\",\n        \"sail.location\": \"lilypond\",\n        \"rope.location\": \"lilypond\",\n        \"reeds.location\": \"reedbank\",\n        \"log.owner\": \"pip\",\n        \"rope.owner\": \"pip\",\n        \"reeds.owner\": \"lilypond\",\n        \"pads.linked\": False,\n        \"log.anchored\": False,\n        \"sail.display\": False,\n        \"reeds.dampen\": False,\n        \"water.condition\": water,\n        \"carrier.kind\": carrier,\n        \"style.kind\": style,\n        \"tansy.hears\": \"vibration\" if listener_place in (\"dock\", \"root\") else \"quiet\",\n        \"tansy.ready\": False,\n        \"concert.arranged\": False,\n        \"concert.performed\": False,\n        \"concert.success\": False,\n        \"tansy.response\": False,\n        \"pip.memes.Ambition\": 1,\n        \"ada.memes.Curiosity\": 1,\n        \"ada.memes.Care\": 1,\n        \"milo.memes.Curiosity\": 1,\n        \"milo.memes.Care\": 1,\n        \"pip.memes.Care\": 1,\n        \"ada.knows.tansy.hears\": None,\n        \"milo.knows.tansy.hears\": None,\n        \"ada.knows.water.condition\": None,\n        \"milo.knows.water.condition\": None,\n        \"ada.knows.carrier.kind\": None,\n        \"milo.knows.carrier.kind\": None,\n        \"ada.knows.style.kind\": None,\n        \"milo.knows.style.kind\": None,\n        \"pip.knows.tansy.hears\": None,\n        \"pip.knows.water.condition\": None,\n        \"pip.knows.arrangement\": None,\n        \"ada.knows.wrong_belief\": wrong_holder,\n        \"milo.knows.wrong_belief\": wrong_holder,\n    }\n\n    scenes = [\n        Scene(\n            \"encourage_pip\",\n            \"ambition\",\n            (\"ada\", \"pip\"),\n            (\n                C(\"pip.memes.Ambition\", \"ge\", 1),\n                C(\"ada.location\", \"eq\", \"reedbank\"),\n            ),\n            (E(\"pip.memes.Ambition\", 1, \"inc\"),),\n            \"Ada encouraged Pip to share his pond concert idea.\",\n        ),\n        observe(\n            \"inspect_tansy\",\n            \"ada\",\n            \"tansy.hears\",\n            requires=(\n                C(\"ada.location\", \"eq\", listener_place),\n                C(\"ada.memes.Curiosity\", \"ge\", 1),\n            ),\n            summary=\"Ada inspected how Tansy listens\",\n        ),\n        observe(\n            \"inspect_carrier\",\n            \"milo\",\n            \"carrier.kind\",\n            requires=(\n                C(\"milo.location\", \"eq\", \"reedbank\"),\n                C(\"milo.memes.Curiosity\", \"ge\", 1),\n            ),\n            summary=\"Milo inspected the available floating carrier\",\n        ),\n        observe(\n            \"inspect_water\",\n            \"ada\",\n            \"water.condition\",\n            requires=(C(\"ada.location\", \"eq\", \"reedbank\"),),\n            summary=\"Ada checked the pond water\",\n        ),\n        tell(\n            \"share_listener_clue\",\n            \"ada\",\n            \"pip\",\n            \"tansy.hears\",\n            requires=(),\n            summary=\"Ada told Pip what Tansy could hear\",\n        ),\n        tell(\n            \"share_carrier_clue\",\n            \"milo\",\n            \"ada\",\n            \"carrier.kind\",\n            requires=(),\n            summary=\"Milo told Ada which carrier was available\",\n        ),\n        transfer(\n            \"lend_rope\",\n            \"pip\",\n            \"milo\",\n            \"rope\",\n            requires=(\n                C(\"pip.memes.Care\", \"ge\", 1),\n                C(\"rope.owner\", \"eq\", \"pip\"),\n            ),\n            summary=\"Pip lent Milo the rope\",\n        ),\n        Scene(\n            \"move_stage\",\n            \"cooperation\",\n            (\"milo\", \"stage\"),\n            (\n                C(\"milo.knows.carrier.kind\", \"eq\", \"pads\"),\n                C(\"milo.location\", \"eq\", \"reedbank\"),\n            ),\n            (\n                E(\"stage.location\", \"reedbank\"),\n                E(\"milo.location\", \"eq\", \"reedbank\"),\n            ),\n            \"Milo carried the floating stage toward the reed bank.\",\n        ),\n        Scene(\n            \"link_pads\",\n            \"cooperation\",\n            (\"milo\", \"ada\", \"pad1\", \"pad2\"),\n            (\n                C(\"milo.knows.carrier.kind\", \"eq\", \"pads\"),\n                C(\"rope.owner\", \"eq\", \"milo\"),\n                C(\"stage.location\", \"eq\", \"reedbank\"),\n                C(\"ada.knows.tansy.hears\", \"eq\", \"vibration\"),\n            ),\n            (\n                E(\"pads.linked\", True),\n                E(\"concert.arranged\", True),\n            ),\n            \"Milo and Ada linked the floating pads into a vibration bridge.\",\n        ),\n        Scene(\n            \"anchor_log\",\n            \"care\",\n            (\"milo\", \"log\", \"tansy\"),\n            (\n                C(\"milo.knows.carrier.kind\", \"eq\", \"log\"),\n                C(\"rope.owner\", \"eq\", \"milo\"),\n                C(\"tansy.location\", \"in\", (\"dock\", \"root\")),\n            ),\n            (\n                E(\"log.anchored\", True),\n                E(\"concert.arranged\", True),\n            ),\n            \"Milo anchored the hollow log beside Tansy's listening place.\",\n        ),\n        Scene(\n            \"place_reeds\",\n            \"care\",\n            (\"ada\", \"reeds\"),\n            (\n                C(\"ada.knows.tansy.hears\", \"eq\", \"quiet\"),\n                C(\"ada.knows.water.condition\", \"eq\", \"rippling\"),\n                C(\"reeds.owner\", \"eq\", \"lilypond\"),\n            ),\n            (\n                E(\"reeds.dampen\", True),\n                E(\"concert.arranged\", True),\n            ),\n            \"Ada placed soft reeds to dampen the noisy side of the pond.\",\n        ),\n        Scene(\n            \"show_sail\",\n            \"observation\",\n            (\"milo\", \"sail\"),\n            (\n                C(\"milo.knows.carrier.kind\", \"eq\", \"sail\"),\n                C(\"milo.location\", \"eq\", \"reedbank\"),\n            ),\n            (\n                E(\"sail.display\", True),\n                E(\"concert.arranged\", True),\n            ),\n            \"Milo raised the leaf sail as a visible concert signal.\",\n        ),\n        Scene(\n            \"test_arrangement\",\n            \"observation\",\n            (\"tansy\",),\n            (\n                C(\"concert.arranged\", \"eq\", True),\n                C(\"tansy.ready\", \"eq\", False),\n            ),\n            (\n                E(\"tansy.ready\", True),\n                E(\"tansy.response\", True),\n            ),\n            \"Tansy tested the arrangement and answered with a steady rhythm.\",\n        ),\n        Scene(\n            \"quiet_tapping\",\n            \"adaptation\",\n            (\"pip\", \"tansy\"),\n            (\n                C(\"tansy.ready\", \"eq\", True),\n                C(\"ada.knows.tansy.hears\", \"in\", (\"quiet\", \"vibration\")),\n                C(\"pip.memes.Ambition\", \"ge\", 1),\n            ),\n            (\n                E(\"style.kind\", \"tap\"),\n                E(\"pip.knows.arrangement\", \"gentle\"),\n            ),\n            \"Pip changed his music to a gentle tapping rhythm.\",\n        ),\n        Scene(\n            \"perform_pads\",\n            \"accomplishment\",\n            (\"pip\", \"ada\", \"milo\", \"tansy\"),\n            (\n                C(\"pads.linked\", \"eq\", True),\n                C(\"tansy.ready\", \"eq\", True),\n                C(\"tansy.response\", \"eq\", True),\n                C(\"style.kind\", \"eq\", \"tap\"),\n            ),\n            (\n                E(\"concert.performed\", True),\n                E(\"concert.success\", True),\n            ),\n            \"Pip performed a tapping concert across the linked pads.\",\n        ),\n        Scene(\n            \"perform_log\",\n            \"accomplishment\",\n            (\"pip\", \"milo\", \"tansy\"),\n            (\n                C(\"log.anchored\", \"eq\", True),\n                C(\"tansy.ready\", \"eq\", True),\n                C(\"tansy.response\", \"eq\", True),\n            ),\n            (\n                E(\"concert.performed\", True),\n                E(\"concert.success\", True),\n            ),\n            \"Pip performed a rhythm that traveled through the anchored log.\",\n        ),\n        Scene(\n            \"perform_sail\",\n            \"accomplishment\",\n            (\"pip\", \"ada\", \"milo\", \"tansy\"),\n            (\n                C(\"sail.display\", \"eq\", True),\n                C(\"tansy.ready\", \"eq\", True),\n                C(\"tansy.response\", \"eq\", True),\n                C(\"water.condition\", \"eq\", \"rippling\"),\n            ),\n            (\n                E(\"concert.performed\", True),\n                E(\"concert.success\", True),\n            ),\n            \"Pip performed a visual-and-rhythm concert beside the leaf sail.\",\n        ),\n    ]\n\n    rules = (\n        Rule(\n            \"success_requires_test\",\n            (C(\"concert.success\", \"eq\", False),),\n            (C(\"tansy.ready\", \"eq\", False),),\n        ),\n        Rule(\n            \"pads_need_rope\",\n            (C(\"pads.linked\", \"eq\", False),),\n            (C(\"rope.owner\", \"ne\", \"milo\"),),\n        ),\n        Rule(\n            \"log_needs_rope\",\n            (C(\"log.anchored\", \"eq\", False),),\n            (C(\"rope.owner\", \"ne\", \"milo\"),),\n        ),\n    )\n\n    goal = (\n        C(\"concert.performed\", \"eq\", True),\n        C(\"concert.success\", \"eq\", True),\n        C(\"tansy.response\", \"eq\", True),\n    )\n\n    labels = {\n        \"pads.linked\": \"linked floating pads\",\n        \"log.anchored\": \"anchored hollow log\",\n        \"sail.display\": \"leaf sail displayed\",\n        \"concert.success\": \"successful concert\",\n        \"tansy.response\": \"Tansy's rhythmic response\",\n    }\n\n    return WorldSpec(\n        \"The Pond Concert: Many Ways to Listen\",\n        entities,\n        initial,\n        tuple(scenes),\n        goal,\n        rules=rules,\n        labels=labels,\n    )",
+          "type": "output_text",
+          "logprobs": []
+        }
+      ],
+      "role": "assistant",
+      "status": "completed",
+      "type": "message",
+      "phase": "final_answer"
+    }
+  ],
+  "parallel_tool_calls": true,
+  "temperature": 1.0,
+  "tool_choice": "auto",
+  "tools": [],
+  "top_p": 0.98,
+  "background": false,
+  "completed_at": 1788808254.0,
+  "conversation": null,
+  "max_output_tokens": 16000,
+  "max_tool_calls": null,
+  "moderation": null,
+  "previous_response_id": null,
+  "prompt": null,
+  "prompt_cache_key": null,
+  "prompt_cache_retention": "24h",
+  "reasoning": {
+    "context": "all_turns",
+    "effort": "none",
+    "generate_summary": null,
+    "summary": null,
+    "mode": "standard"
+  },
+  "safety_identifier": null,
+  "service_tier": "flex",
+  "status": "completed",
+  "text": {
+    "format": {
+      "type": "text"
+    },
+    "verbosity": "medium"
+  },
+  "top_logprobs": 0,
+  "truncation": "disabled",
+  "usage": {
+    "input_tokens": 5690,
+    "input_tokens_details": {
+      "cached_tokens": 0,
+      "cache_write_tokens": 5687
+    },
+    "output_tokens": 2752,
+    "output_tokens_details": {
+      "reasoning_tokens": 0
+    },
+    "total_tokens": 8442
+  },
+  "user": null,
+  "billing": {
+    "payer": "developer"
+  },
+  "frequency_penalty": 0.0,
+  "presence_penalty": 0.0,
+  "store": false,
+  "tool_usage": {
+    "image_gen": {
+      "input_tokens": 0,
+      "input_tokens_details": {
+        "image_tokens": 0,
+        "text_tokens": 0
+      },
+      "output_tokens": 0,
+      "output_tokens_details": {
+        "image_tokens": 0,
+        "text_tokens": 0
+      },
+      "total_tokens": 0
+    },
+    "web_search": {
+      "num_requests": 0
+    }
+  }
+}

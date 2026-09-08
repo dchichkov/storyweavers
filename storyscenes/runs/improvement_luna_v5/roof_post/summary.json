@@ -1,0 +1,62 @@
+{
+  "world": "roof_post",
+  "title": "The Roof-Post Invitation Flight",
+  "ok": true,
+  "samples": 100,
+  "simulation_sha256": "278b17a30ca0703678a360dabe62808b08310ba277b3fe1073be6b82c3c9401a",
+  "generator_sha256": "7ac683655a62fd306c25da58289213a42b9f07bd39e1a13da65b13c817f6d14a",
+  "catalog_sha256": "16905ff3bc7cf3ca6184a2d428640b0976bc04c6e13ccc3f653e87e5db2dfed0",
+  "distinct_texts": 50,
+  "distinct_scene_paths": 25,
+  "word_range": [
+    207,
+    296
+  ],
+  "prose_control_variants": 1,
+  "mechanics_model": "gpt-5.6-luna",
+  "mechanics_attempts": 1,
+  "prose_model": "gpt-5.6-luna",
+  "stats": {
+    "samples": 100,
+    "ordered_paths": 25,
+    "scene_sets": 6,
+    "causal_graphs": 6,
+    "outcomes": 8,
+    "premises": 25,
+    "events_range": [
+      5,
+      9
+    ],
+    "pruned_events": 254
+  },
+  "critic_before_revision": {
+    "issues": [
+      {
+        "seed": 123,
+        "severity": "major",
+        "layer": "simulation",
+        "defect": "literal_state_value",
+        "evidence": "The story calls it “one open hook” and “its little numbered perch,” but both the discovered and selected hook values are the raw enum “crowded.”",
+        "fix": "Use a concrete hook identity/state that supports the described open perch, or render the enum as grounded prose rather than treating “crowded” as the selected hook."
+      },
+      {
+        "seed": 457,
+        "severity": "major",
+        "layer": "simulation",
+        "defect": "literal_state_value",
+        "evidence": "The narrative says Mina finds “one open hook” and chooses it, while the trace records `roof_post.open_hook: \"crowded\"` and `roof_post.selected_hook: \"crowded\"`.",
+        "fix": "Replace the raw/contradictory hook value with a specific available-hook value, or revise the prose to match a crowded-hook selection."
+      },
+      {
+        "seed": 124,
+        "severity": "major",
+        "layer": "prose",
+        "defect": "weak_ending",
+        "evidence": "After the trace delivers the invitation to `high_hook`, the ending only says “Pip’s sail hung proudly from the high hook,” leaving Mina’s stated “Before the bell” promise and the party invitation’s outcome unacknowledged.",
+        "fix": "End by confirming the invitation is posted/delivered and advancing the promised bell or neighbor response, rather than ending on Pip’s bow practice."
+      }
+    ],
+    "strengths": "All three stories correctly sequence Mina’s promise, cargo inspection where present, ribbon tying, and the respective posting or sail-delivery actions; no unsupported ownership transfers or duplicated event-log sentences are evident."
+  },
+  "final_catalog_attempt": 1
+}

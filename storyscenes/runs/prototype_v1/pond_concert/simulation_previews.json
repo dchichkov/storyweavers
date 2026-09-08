@@ -1,0 +1,1400 @@
+[
+  {
+    "seed": 0,
+    "title": "The Pond Concert: Many Ways to Listen",
+    "initial": {
+      "ada.location": "reedbank",
+      "milo.location": "reedbank",
+      "pip.location": "stage",
+      "tansy.location": "dock",
+      "stage.location": "lilypond",
+      "pad1.location": "lilypond",
+      "pad2.location": "lilypond",
+      "log.location": "lilypond",
+      "sail.location": "lilypond",
+      "rope.location": "lilypond",
+      "reeds.location": "reedbank",
+      "pads.linked": false,
+      "log.anchored": false,
+      "sail.displayed": false,
+      "reeds.dampening": false,
+      "rope.owner": "pip",
+      "reeds.owner": "lilypond",
+      "water.condition": "still",
+      "carrier.kind": "log",
+      "music.style": "croak",
+      "tansy.hears": "vibration",
+      "tansy.tested": false,
+      "tansy.response": false,
+      "concert.arranged": false,
+      "concert.route": "none",
+      "concert.performed": false,
+      "concert.success": false,
+      "pip.memes.Ambition": 1,
+      "pip.memes.Care": 1,
+      "ada.memes.Curiosity": 1,
+      "ada.memes.Care": 1,
+      "milo.memes.Curiosity": 1,
+      "milo.memes.Care": 1,
+      "ada.knows.tansy.hears": null,
+      "ada.knows.water.condition": null,
+      "milo.knows.carrier.kind": null,
+      "pip.knows.water.condition": null
+    },
+    "final": {
+      "ada.location": "dock",
+      "milo.location": "reedbank",
+      "pip.location": "stage",
+      "tansy.location": "dock",
+      "stage.location": "dock",
+      "pad1.location": "lilypond",
+      "pad2.location": "lilypond",
+      "log.location": "dock",
+      "sail.location": "lilypond",
+      "rope.location": "lilypond",
+      "reeds.location": "reedbank",
+      "pads.linked": false,
+      "log.anchored": true,
+      "sail.displayed": false,
+      "reeds.dampening": false,
+      "rope.owner": "milo",
+      "reeds.owner": "lilypond",
+      "water.condition": "still",
+      "carrier.kind": "log",
+      "music.style": "call",
+      "tansy.hears": "vibration",
+      "tansy.tested": true,
+      "tansy.response": true,
+      "concert.arranged": true,
+      "concert.route": "stage",
+      "concert.performed": true,
+      "concert.success": true,
+      "pip.memes.Ambition": 1,
+      "pip.memes.Care": 1,
+      "ada.memes.Curiosity": 1,
+      "ada.memes.Care": 1,
+      "milo.memes.Curiosity": 1,
+      "milo.memes.Care": 1,
+      "ada.knows.tansy.hears": "vibration",
+      "ada.knows.water.condition": "still",
+      "milo.knows.carrier.kind": "log",
+      "pip.knows.water.condition": "still"
+    },
+    "events": [
+      {
+        "id": 1,
+        "scene": "inspect_water",
+        "kernel": "Observe",
+        "actors": [
+          "ada"
+        ],
+        "summary": "Ada checked whether the pond water was still or rippling.",
+        "causes": [],
+        "requires": [
+          {
+            "key": "ada.location",
+            "op": "eq",
+            "value": "reedbank"
+          },
+          {
+            "key": "ada.memes.Curiosity",
+            "op": "ge",
+            "value": 1
+          }
+        ],
+        "changes": {
+          "ada.knows.water.condition": {
+            "before": null,
+            "after": "still"
+          }
+        }
+      },
+      {
+        "id": 2,
+        "scene": "inspect_carrier",
+        "kernel": "Observe",
+        "actors": [
+          "milo"
+        ],
+        "summary": "Milo inspected the floating things available for the concert.",
+        "causes": [],
+        "requires": [
+          {
+            "key": "milo.location",
+            "op": "eq",
+            "value": "reedbank"
+          },
+          {
+            "key": "milo.memes.Curiosity",
+            "op": "ge",
+            "value": 1
+          }
+        ],
+        "changes": {
+          "milo.knows.carrier.kind": {
+            "before": null,
+            "after": "log"
+          }
+        }
+      },
+      {
+        "id": 3,
+        "scene": "walk_to_tansy",
+        "kernel": "observation",
+        "actors": [
+          "ada",
+          "lilypond"
+        ],
+        "summary": "Ada walked along the pond edge to Tansy's listening place.",
+        "causes": [],
+        "requires": [
+          {
+            "key": "ada.location",
+            "op": "eq",
+            "value": "reedbank"
+          },
+          {
+            "key": "tansy.location",
+            "op": "ne",
+            "value": "reedbank"
+          }
+        ],
+        "changes": {
+          "ada.location": {
+            "before": "reedbank",
+            "after": "dock"
+          }
+        }
+      },
+      {
+        "id": 4,
+        "scene": "tell_pip_about_water",
+        "kernel": "Tell",
+        "actors": [
+          "ada",
+          "pip"
+        ],
+        "summary": "Ada told Pip what the water would do to his music.",
+        "causes": [
+          1
+        ],
+        "requires": [
+          {
+            "key": "ada.knows.water.condition",
+            "op": "ne",
+            "value": null
+          }
+        ],
+        "changes": {
+          "pip.knows.water.condition": {
+            "before": null,
+            "after": "still"
+          }
+        }
+      },
+      {
+        "id": 5,
+        "scene": "lend_rope",
+        "kernel": "Transfer",
+        "actors": [
+          "pip",
+          "milo"
+        ],
+        "summary": "Pip lent Milo the rope for a careful pond arrangement.",
+        "causes": [],
+        "requires": [
+          {
+            "key": "rope.owner",
+            "op": "eq",
+            "value": "pip"
+          },
+          {
+            "key": "pip.memes.Care",
+            "op": "ge",
+            "value": 1
+          },
+          {
+            "key": "rope.owner",
+            "op": "eq",
+            "value": "pip"
+          }
+        ],
+        "changes": {
+          "rope.owner": {
+            "before": "pip",
+            "after": "milo"
+          }
+        }
+      },
+      {
+        "id": 6,
+        "scene": "inspect_tansy",
+        "kernel": "Observe",
+        "actors": [
+          "ada"
+        ],
+        "summary": "Ada watched how Tansy listened beside the pond.",
+        "causes": [
+          3
+        ],
+        "requires": [
+          {
+            "key": "ada.location",
+            "op": "eq",
+            "value": "dock"
+          },
+          {
+            "key": "ada.memes.Curiosity",
+            "op": "ge",
+            "value": 1
+          }
+        ],
+        "changes": {
+          "ada.knows.tansy.hears": {
+            "before": null,
+            "after": "vibration"
+          }
+        }
+      },
+      {
+        "id": 7,
+        "scene": "anchor_log",
+        "kernel": "cooperation",
+        "actors": [
+          "ada",
+          "milo",
+          "log",
+          "rope"
+        ],
+        "summary": "Ada and Milo anchored the hollow log beside Tansy's listening place.",
+        "causes": [
+          2,
+          5,
+          6
+        ],
+        "requires": [
+          {
+            "key": "milo.knows.carrier.kind",
+            "op": "eq",
+            "value": "log"
+          },
+          {
+            "key": "ada.knows.tansy.hears",
+            "op": "eq",
+            "value": "vibration"
+          },
+          {
+            "key": "rope.owner",
+            "op": "eq",
+            "value": "milo"
+          },
+          {
+            "key": "log.anchored",
+            "op": "eq",
+            "value": false
+          }
+        ],
+        "changes": {
+          "log.location": {
+            "before": "lilypond",
+            "after": "dock"
+          },
+          "log.anchored": {
+            "before": false,
+            "after": true
+          },
+          "concert.arranged": {
+            "before": false,
+            "after": true
+          },
+          "concert.route": {
+            "before": "none",
+            "after": "log"
+          }
+        }
+      },
+      {
+        "id": 8,
+        "scene": "float_stage_near_tansy",
+        "kernel": "cooperation",
+        "actors": [
+          "ada",
+          "milo",
+          "stage"
+        ],
+        "summary": "Ada and Milo floated Pip's stage closer to Tansy's steady listening place.",
+        "causes": [
+          1,
+          6
+        ],
+        "requires": [
+          {
+            "key": "ada.knows.tansy.hears",
+            "op": "eq",
+            "value": "vibration"
+          },
+          {
+            "key": "ada.knows.water.condition",
+            "op": "eq",
+            "value": "still"
+          },
+          {
+            "key": "stage.location",
+            "op": "eq",
+            "value": "lilypond"
+          }
+        ],
+        "changes": {
+          "stage.location": {
+            "before": "lilypond",
+            "after": "dock"
+          },
+          "concert.route": {
+            "before": "log",
+            "after": "stage"
+          }
+        }
+      },
+      {
+        "id": 9,
+        "scene": "tansy_tests_arrangement",
+        "kernel": "observation",
+        "actors": [
+          "tansy",
+          "concert"
+        ],
+        "summary": "Tansy tested the new arrangement with one patient rhythmic foot tap.",
+        "causes": [
+          7,
+          8
+        ],
+        "requires": [
+          {
+            "key": "concert.arranged",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "concert.route",
+            "op": "ne",
+            "value": "none"
+          },
+          {
+            "key": "tansy.tested",
+            "op": "eq",
+            "value": false
+          }
+        ],
+        "changes": {
+          "tansy.tested": {
+            "before": false,
+            "after": true
+          },
+          "tansy.response": {
+            "before": false,
+            "after": true
+          }
+        }
+      },
+      {
+        "id": 10,
+        "scene": "choose_call_and_response",
+        "kernel": "adaptation",
+        "actors": [
+          "pip",
+          "music",
+          "water"
+        ],
+        "summary": "Pip chose a patient call-and-response tune for the still pond.",
+        "causes": [
+          4,
+          9
+        ],
+        "requires": [
+          {
+            "key": "pip.knows.water.condition",
+            "op": "eq",
+            "value": "still"
+          },
+          {
+            "key": "tansy.tested",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "pip.memes.Ambition",
+            "op": "ge",
+            "value": 1
+          },
+          {
+            "key": "music.style",
+            "op": "ne",
+            "value": "call"
+          }
+        ],
+        "changes": {
+          "music.style": {
+            "before": "croak",
+            "after": "call"
+          }
+        }
+      },
+      {
+        "id": 11,
+        "scene": "perform_call_concert",
+        "kernel": "accomplishment",
+        "actors": [
+          "pip",
+          "tansy",
+          "concert",
+          "music"
+        ],
+        "summary": "Pip performed a call-and-response concert over the still pond.",
+        "causes": [
+          7,
+          9,
+          10
+        ],
+        "requires": [
+          {
+            "key": "concert.arranged",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "tansy.tested",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "tansy.response",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "water.condition",
+            "op": "eq",
+            "value": "still"
+          },
+          {
+            "key": "music.style",
+            "op": "eq",
+            "value": "call"
+          }
+        ],
+        "changes": {
+          "concert.performed": {
+            "before": false,
+            "after": true
+          },
+          "concert.success": {
+            "before": false,
+            "after": true
+          }
+        }
+      }
+    ]
+  },
+  {
+    "seed": 1,
+    "title": "The Pond Concert: Many Ways to Listen",
+    "initial": {
+      "ada.location": "reedbank",
+      "milo.location": "reedbank",
+      "pip.location": "stage",
+      "tansy.location": "root",
+      "stage.location": "lilypond",
+      "pad1.location": "lilypond",
+      "pad2.location": "lilypond",
+      "log.location": "lilypond",
+      "sail.location": "lilypond",
+      "rope.location": "lilypond",
+      "reeds.location": "reedbank",
+      "pads.linked": false,
+      "log.anchored": false,
+      "sail.displayed": false,
+      "reeds.dampening": false,
+      "rope.owner": "pip",
+      "reeds.owner": "lilypond",
+      "water.condition": "still",
+      "carrier.kind": "pads",
+      "music.style": "croak",
+      "tansy.hears": "vibration",
+      "tansy.tested": false,
+      "tansy.response": false,
+      "concert.arranged": false,
+      "concert.route": "none",
+      "concert.performed": false,
+      "concert.success": false,
+      "pip.memes.Ambition": 1,
+      "pip.memes.Care": 1,
+      "ada.memes.Curiosity": 1,
+      "ada.memes.Care": 1,
+      "milo.memes.Curiosity": 1,
+      "milo.memes.Care": 1,
+      "ada.knows.tansy.hears": null,
+      "ada.knows.water.condition": null,
+      "milo.knows.carrier.kind": null,
+      "pip.knows.water.condition": null
+    },
+    "final": {
+      "ada.location": "root",
+      "milo.location": "reedbank",
+      "pip.location": "stage",
+      "tansy.location": "root",
+      "stage.location": "root",
+      "pad1.location": "lilypond",
+      "pad2.location": "lilypond",
+      "log.location": "lilypond",
+      "sail.location": "lilypond",
+      "rope.location": "lilypond",
+      "reeds.location": "reedbank",
+      "pads.linked": true,
+      "log.anchored": false,
+      "sail.displayed": false,
+      "reeds.dampening": false,
+      "rope.owner": "milo",
+      "reeds.owner": "lilypond",
+      "water.condition": "still",
+      "carrier.kind": "pads",
+      "music.style": "call",
+      "tansy.hears": "vibration",
+      "tansy.tested": true,
+      "tansy.response": true,
+      "concert.arranged": true,
+      "concert.route": "stage",
+      "concert.performed": true,
+      "concert.success": true,
+      "pip.memes.Ambition": 1,
+      "pip.memes.Care": 1,
+      "ada.memes.Curiosity": 1,
+      "ada.memes.Care": 1,
+      "milo.memes.Curiosity": 1,
+      "milo.memes.Care": 1,
+      "ada.knows.tansy.hears": "vibration",
+      "ada.knows.water.condition": "still",
+      "milo.knows.carrier.kind": "pads",
+      "pip.knows.water.condition": "still"
+    },
+    "events": [
+      {
+        "id": 1,
+        "scene": "inspect_water",
+        "kernel": "Observe",
+        "actors": [
+          "ada"
+        ],
+        "summary": "Ada checked whether the pond water was still or rippling.",
+        "causes": [],
+        "requires": [
+          {
+            "key": "ada.location",
+            "op": "eq",
+            "value": "reedbank"
+          },
+          {
+            "key": "ada.memes.Curiosity",
+            "op": "ge",
+            "value": 1
+          }
+        ],
+        "changes": {
+          "ada.knows.water.condition": {
+            "before": null,
+            "after": "still"
+          }
+        }
+      },
+      {
+        "id": 2,
+        "scene": "tell_pip_about_water",
+        "kernel": "Tell",
+        "actors": [
+          "ada",
+          "pip"
+        ],
+        "summary": "Ada told Pip what the water would do to his music.",
+        "causes": [
+          1
+        ],
+        "requires": [
+          {
+            "key": "ada.knows.water.condition",
+            "op": "ne",
+            "value": null
+          }
+        ],
+        "changes": {
+          "pip.knows.water.condition": {
+            "before": null,
+            "after": "still"
+          }
+        }
+      },
+      {
+        "id": 3,
+        "scene": "lend_rope",
+        "kernel": "Transfer",
+        "actors": [
+          "pip",
+          "milo"
+        ],
+        "summary": "Pip lent Milo the rope for a careful pond arrangement.",
+        "causes": [],
+        "requires": [
+          {
+            "key": "rope.owner",
+            "op": "eq",
+            "value": "pip"
+          },
+          {
+            "key": "pip.memes.Care",
+            "op": "ge",
+            "value": 1
+          },
+          {
+            "key": "rope.owner",
+            "op": "eq",
+            "value": "pip"
+          }
+        ],
+        "changes": {
+          "rope.owner": {
+            "before": "pip",
+            "after": "milo"
+          }
+        }
+      },
+      {
+        "id": 4,
+        "scene": "inspect_carrier",
+        "kernel": "Observe",
+        "actors": [
+          "milo"
+        ],
+        "summary": "Milo inspected the floating things available for the concert.",
+        "causes": [],
+        "requires": [
+          {
+            "key": "milo.location",
+            "op": "eq",
+            "value": "reedbank"
+          },
+          {
+            "key": "milo.memes.Curiosity",
+            "op": "ge",
+            "value": 1
+          }
+        ],
+        "changes": {
+          "milo.knows.carrier.kind": {
+            "before": null,
+            "after": "pads"
+          }
+        }
+      },
+      {
+        "id": 5,
+        "scene": "walk_to_tansy",
+        "kernel": "observation",
+        "actors": [
+          "ada",
+          "lilypond"
+        ],
+        "summary": "Ada walked along the pond edge to Tansy's listening place.",
+        "causes": [],
+        "requires": [
+          {
+            "key": "ada.location",
+            "op": "eq",
+            "value": "reedbank"
+          },
+          {
+            "key": "tansy.location",
+            "op": "ne",
+            "value": "reedbank"
+          }
+        ],
+        "changes": {
+          "ada.location": {
+            "before": "reedbank",
+            "after": "root"
+          }
+        }
+      },
+      {
+        "id": 6,
+        "scene": "inspect_tansy",
+        "kernel": "Observe",
+        "actors": [
+          "ada"
+        ],
+        "summary": "Ada watched how Tansy listened beside the pond.",
+        "causes": [
+          5
+        ],
+        "requires": [
+          {
+            "key": "ada.location",
+            "op": "eq",
+            "value": "root"
+          },
+          {
+            "key": "ada.memes.Curiosity",
+            "op": "ge",
+            "value": 1
+          }
+        ],
+        "changes": {
+          "ada.knows.tansy.hears": {
+            "before": null,
+            "after": "vibration"
+          }
+        }
+      },
+      {
+        "id": 7,
+        "scene": "link_pads",
+        "kernel": "cooperation",
+        "actors": [
+          "ada",
+          "milo",
+          "pads",
+          "rope"
+        ],
+        "summary": "Ada and Milo tied the floating pads into a gentle vibration bridge.",
+        "causes": [
+          3,
+          4,
+          6
+        ],
+        "requires": [
+          {
+            "key": "milo.knows.carrier.kind",
+            "op": "eq",
+            "value": "pads"
+          },
+          {
+            "key": "ada.knows.tansy.hears",
+            "op": "eq",
+            "value": "vibration"
+          },
+          {
+            "key": "rope.owner",
+            "op": "eq",
+            "value": "milo"
+          },
+          {
+            "key": "pads.linked",
+            "op": "eq",
+            "value": false
+          }
+        ],
+        "changes": {
+          "pads.linked": {
+            "before": false,
+            "after": true
+          },
+          "concert.arranged": {
+            "before": false,
+            "after": true
+          },
+          "concert.route": {
+            "before": "none",
+            "after": "pads"
+          }
+        }
+      },
+      {
+        "id": 8,
+        "scene": "float_stage_near_tansy",
+        "kernel": "cooperation",
+        "actors": [
+          "ada",
+          "milo",
+          "stage"
+        ],
+        "summary": "Ada and Milo floated Pip's stage closer to Tansy's steady listening place.",
+        "causes": [
+          1,
+          6
+        ],
+        "requires": [
+          {
+            "key": "ada.knows.tansy.hears",
+            "op": "eq",
+            "value": "vibration"
+          },
+          {
+            "key": "ada.knows.water.condition",
+            "op": "eq",
+            "value": "still"
+          },
+          {
+            "key": "stage.location",
+            "op": "eq",
+            "value": "lilypond"
+          }
+        ],
+        "changes": {
+          "stage.location": {
+            "before": "lilypond",
+            "after": "root"
+          },
+          "concert.route": {
+            "before": "pads",
+            "after": "stage"
+          }
+        }
+      },
+      {
+        "id": 9,
+        "scene": "tansy_tests_arrangement",
+        "kernel": "observation",
+        "actors": [
+          "tansy",
+          "concert"
+        ],
+        "summary": "Tansy tested the new arrangement with one patient rhythmic foot tap.",
+        "causes": [
+          7,
+          8
+        ],
+        "requires": [
+          {
+            "key": "concert.arranged",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "concert.route",
+            "op": "ne",
+            "value": "none"
+          },
+          {
+            "key": "tansy.tested",
+            "op": "eq",
+            "value": false
+          }
+        ],
+        "changes": {
+          "tansy.tested": {
+            "before": false,
+            "after": true
+          },
+          "tansy.response": {
+            "before": false,
+            "after": true
+          }
+        }
+      },
+      {
+        "id": 10,
+        "scene": "choose_call_and_response",
+        "kernel": "adaptation",
+        "actors": [
+          "pip",
+          "music",
+          "water"
+        ],
+        "summary": "Pip chose a patient call-and-response tune for the still pond.",
+        "causes": [
+          2,
+          9
+        ],
+        "requires": [
+          {
+            "key": "pip.knows.water.condition",
+            "op": "eq",
+            "value": "still"
+          },
+          {
+            "key": "tansy.tested",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "pip.memes.Ambition",
+            "op": "ge",
+            "value": 1
+          },
+          {
+            "key": "music.style",
+            "op": "ne",
+            "value": "call"
+          }
+        ],
+        "changes": {
+          "music.style": {
+            "before": "croak",
+            "after": "call"
+          }
+        }
+      },
+      {
+        "id": 11,
+        "scene": "perform_call_concert",
+        "kernel": "accomplishment",
+        "actors": [
+          "pip",
+          "tansy",
+          "concert",
+          "music"
+        ],
+        "summary": "Pip performed a call-and-response concert over the still pond.",
+        "causes": [
+          7,
+          9,
+          10
+        ],
+        "requires": [
+          {
+            "key": "concert.arranged",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "tansy.tested",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "tansy.response",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "water.condition",
+            "op": "eq",
+            "value": "still"
+          },
+          {
+            "key": "music.style",
+            "op": "eq",
+            "value": "call"
+          }
+        ],
+        "changes": {
+          "concert.performed": {
+            "before": false,
+            "after": true
+          },
+          "concert.success": {
+            "before": false,
+            "after": true
+          }
+        }
+      }
+    ]
+  },
+  {
+    "seed": 2,
+    "title": "The Pond Concert: Many Ways to Listen",
+    "initial": {
+      "ada.location": "reedbank",
+      "milo.location": "reedbank",
+      "pip.location": "stage",
+      "tansy.location": "reedbank",
+      "stage.location": "lilypond",
+      "pad1.location": "lilypond",
+      "pad2.location": "lilypond",
+      "log.location": "lilypond",
+      "sail.location": "lilypond",
+      "rope.location": "lilypond",
+      "reeds.location": "reedbank",
+      "pads.linked": false,
+      "log.anchored": false,
+      "sail.displayed": false,
+      "reeds.dampening": false,
+      "rope.owner": "pip",
+      "reeds.owner": "lilypond",
+      "water.condition": "still",
+      "carrier.kind": "pads",
+      "music.style": "croak",
+      "tansy.hears": "quiet",
+      "tansy.tested": false,
+      "tansy.response": false,
+      "concert.arranged": false,
+      "concert.route": "none",
+      "concert.performed": false,
+      "concert.success": false,
+      "pip.memes.Ambition": 1,
+      "pip.memes.Care": 1,
+      "ada.memes.Curiosity": 1,
+      "ada.memes.Care": 1,
+      "milo.memes.Curiosity": 1,
+      "milo.memes.Care": 1,
+      "ada.knows.tansy.hears": null,
+      "ada.knows.water.condition": null,
+      "milo.knows.carrier.kind": null,
+      "pip.knows.water.condition": null
+    },
+    "final": {
+      "ada.location": "reedbank",
+      "milo.location": "reedbank",
+      "pip.location": "stage",
+      "tansy.location": "reedbank",
+      "stage.location": "lilypond",
+      "pad1.location": "lilypond",
+      "pad2.location": "lilypond",
+      "log.location": "lilypond",
+      "sail.location": "lilypond",
+      "rope.location": "lilypond",
+      "reeds.location": "reedbank",
+      "pads.linked": false,
+      "log.anchored": false,
+      "sail.displayed": false,
+      "reeds.dampening": true,
+      "rope.owner": "milo",
+      "reeds.owner": "lilypond",
+      "water.condition": "still",
+      "carrier.kind": "pads",
+      "music.style": "call",
+      "tansy.hears": "quiet",
+      "tansy.tested": true,
+      "tansy.response": true,
+      "concert.arranged": true,
+      "concert.route": "reeds",
+      "concert.performed": true,
+      "concert.success": true,
+      "pip.memes.Ambition": 1,
+      "pip.memes.Care": 1,
+      "ada.memes.Curiosity": 1,
+      "ada.memes.Care": 1,
+      "milo.memes.Curiosity": 1,
+      "milo.memes.Care": 1,
+      "ada.knows.tansy.hears": "quiet",
+      "ada.knows.water.condition": "still",
+      "milo.knows.carrier.kind": "pads",
+      "pip.knows.water.condition": "still"
+    },
+    "events": [
+      {
+        "id": 1,
+        "scene": "inspect_tansy",
+        "kernel": "Observe",
+        "actors": [
+          "ada"
+        ],
+        "summary": "Ada watched how Tansy listened beside the pond.",
+        "causes": [],
+        "requires": [
+          {
+            "key": "ada.location",
+            "op": "eq",
+            "value": "reedbank"
+          },
+          {
+            "key": "ada.memes.Curiosity",
+            "op": "ge",
+            "value": 1
+          }
+        ],
+        "changes": {
+          "ada.knows.tansy.hears": {
+            "before": null,
+            "after": "quiet"
+          }
+        }
+      },
+      {
+        "id": 2,
+        "scene": "inspect_water",
+        "kernel": "Observe",
+        "actors": [
+          "ada"
+        ],
+        "summary": "Ada checked whether the pond water was still or rippling.",
+        "causes": [],
+        "requires": [
+          {
+            "key": "ada.location",
+            "op": "eq",
+            "value": "reedbank"
+          },
+          {
+            "key": "ada.memes.Curiosity",
+            "op": "ge",
+            "value": 1
+          }
+        ],
+        "changes": {
+          "ada.knows.water.condition": {
+            "before": null,
+            "after": "still"
+          }
+        }
+      },
+      {
+        "id": 3,
+        "scene": "lend_rope",
+        "kernel": "Transfer",
+        "actors": [
+          "pip",
+          "milo"
+        ],
+        "summary": "Pip lent Milo the rope for a careful pond arrangement.",
+        "causes": [],
+        "requires": [
+          {
+            "key": "rope.owner",
+            "op": "eq",
+            "value": "pip"
+          },
+          {
+            "key": "pip.memes.Care",
+            "op": "ge",
+            "value": 1
+          },
+          {
+            "key": "rope.owner",
+            "op": "eq",
+            "value": "pip"
+          }
+        ],
+        "changes": {
+          "rope.owner": {
+            "before": "pip",
+            "after": "milo"
+          }
+        }
+      },
+      {
+        "id": 4,
+        "scene": "tell_pip_about_water",
+        "kernel": "Tell",
+        "actors": [
+          "ada",
+          "pip"
+        ],
+        "summary": "Ada told Pip what the water would do to his music.",
+        "causes": [
+          2
+        ],
+        "requires": [
+          {
+            "key": "ada.knows.water.condition",
+            "op": "ne",
+            "value": null
+          }
+        ],
+        "changes": {
+          "pip.knows.water.condition": {
+            "before": null,
+            "after": "still"
+          }
+        }
+      },
+      {
+        "id": 5,
+        "scene": "inspect_carrier",
+        "kernel": "Observe",
+        "actors": [
+          "milo"
+        ],
+        "summary": "Milo inspected the floating things available for the concert.",
+        "causes": [],
+        "requires": [
+          {
+            "key": "milo.location",
+            "op": "eq",
+            "value": "reedbank"
+          },
+          {
+            "key": "milo.memes.Curiosity",
+            "op": "ge",
+            "value": 1
+          }
+        ],
+        "changes": {
+          "milo.knows.carrier.kind": {
+            "before": null,
+            "after": "pads"
+          }
+        }
+      },
+      {
+        "id": 6,
+        "scene": "place_soft_reeds",
+        "kernel": "care",
+        "actors": [
+          "ada",
+          "reeds",
+          "lilypond"
+        ],
+        "summary": "Ada placed soft reeds to hush the splashy side of the pond.",
+        "causes": [
+          1
+        ],
+        "requires": [
+          {
+            "key": "ada.knows.tansy.hears",
+            "op": "eq",
+            "value": "quiet"
+          },
+          {
+            "key": "reeds.owner",
+            "op": "eq",
+            "value": "lilypond"
+          },
+          {
+            "key": "reeds.dampening",
+            "op": "eq",
+            "value": false
+          }
+        ],
+        "changes": {
+          "reeds.dampening": {
+            "before": false,
+            "after": true
+          },
+          "concert.arranged": {
+            "before": false,
+            "after": true
+          },
+          "concert.route": {
+            "before": "none",
+            "after": "reeds"
+          }
+        }
+      },
+      {
+        "id": 7,
+        "scene": "tansy_tests_arrangement",
+        "kernel": "observation",
+        "actors": [
+          "tansy",
+          "concert"
+        ],
+        "summary": "Tansy tested the new arrangement with one patient rhythmic foot tap.",
+        "causes": [
+          6
+        ],
+        "requires": [
+          {
+            "key": "concert.arranged",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "concert.route",
+            "op": "ne",
+            "value": "none"
+          },
+          {
+            "key": "tansy.tested",
+            "op": "eq",
+            "value": false
+          }
+        ],
+        "changes": {
+          "tansy.tested": {
+            "before": false,
+            "after": true
+          },
+          "tansy.response": {
+            "before": false,
+            "after": true
+          }
+        }
+      },
+      {
+        "id": 8,
+        "scene": "choose_call_and_response",
+        "kernel": "adaptation",
+        "actors": [
+          "pip",
+          "music",
+          "water"
+        ],
+        "summary": "Pip chose a patient call-and-response tune for the still pond.",
+        "causes": [
+          4,
+          7
+        ],
+        "requires": [
+          {
+            "key": "pip.knows.water.condition",
+            "op": "eq",
+            "value": "still"
+          },
+          {
+            "key": "tansy.tested",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "pip.memes.Ambition",
+            "op": "ge",
+            "value": 1
+          },
+          {
+            "key": "music.style",
+            "op": "ne",
+            "value": "call"
+          }
+        ],
+        "changes": {
+          "music.style": {
+            "before": "croak",
+            "after": "call"
+          }
+        }
+      },
+      {
+        "id": 9,
+        "scene": "perform_call_concert",
+        "kernel": "accomplishment",
+        "actors": [
+          "pip",
+          "tansy",
+          "concert",
+          "music"
+        ],
+        "summary": "Pip performed a call-and-response concert over the still pond.",
+        "causes": [
+          6,
+          7,
+          8
+        ],
+        "requires": [
+          {
+            "key": "concert.arranged",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "tansy.tested",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "tansy.response",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "water.condition",
+            "op": "eq",
+            "value": "still"
+          },
+          {
+            "key": "music.style",
+            "op": "eq",
+            "value": "call"
+          }
+        ],
+        "changes": {
+          "concert.performed": {
+            "before": false,
+            "after": true
+          },
+          "concert.success": {
+            "before": false,
+            "after": true
+          }
+        }
+      }
+    ]
+  }
+]

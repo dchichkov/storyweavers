@@ -1,0 +1,350 @@
+{
+  "title": "The Pond Concert That Listened",
+  "premise": "A frog and two children want a pond concert, but a quiet neighbor, a breezy pond, and a mistaken assumption shape what kind of music can be shared.",
+  "entities": {
+    "ada": {
+      "name": "Ada",
+      "kind": "child",
+      "state": {
+        "want": "deliver invitations",
+        "memes.Care": 2,
+        "delivered": false,
+        "location": "cove"
+      }
+    },
+    "ben": {
+      "name": "Ben",
+      "kind": "child",
+      "state": {
+        "want": "build floating stage",
+        "location": "pond"
+      }
+    },
+    "frog": {
+      "name": "Frog",
+      "kind": "frog",
+      "state": {
+        "want": "perform for listeners",
+        "performance_style": "lively",
+        "performed": false,
+        "location": "pond"
+      }
+    },
+    "neighbor": {
+      "name": "Mira",
+      "kind": "neighbor",
+      "state": {
+        "want": "quiet",
+        "location": "cove",
+        "received": false,
+        "heard_music": false,
+        "joined": false,
+        "response": "none"
+      }
+    },
+    "pond": {
+      "name": "Pond",
+      "kind": "place",
+      "state": {
+        "wind": "still"
+      }
+    },
+    "cove": {
+      "name": "Quiet Cove",
+      "kind": "place",
+      "state": {}
+    },
+    "bank": {
+      "name": "Pond Bank",
+      "kind": "place",
+      "state": {}
+    },
+    "invitation_card": {
+      "name": "invitation card",
+      "kind": "prop",
+      "state": {
+        "owner": "ada",
+        "location": "cove"
+      }
+    },
+    "stage": {
+      "name": "floating lily-pad stage",
+      "kind": "prop",
+      "state": {
+        "owner": "ben",
+        "location": "bank",
+        "stage_ready": false
+      }
+    },
+    "ribbon": {
+      "name": "stage ribbon",
+      "kind": "prop",
+      "state": {
+        "owner": "ada",
+        "location": "bank",
+        "secured": false
+      }
+    }
+  },
+  "vary": {
+    "weather": [
+      {
+        "pond.wind": "still"
+      },
+      {
+        "pond.wind": "breezy"
+      }
+    ],
+    "listener": [
+      {
+        "neighbor.want": "quiet"
+      },
+      {
+        "neighbor.want": "join"
+      },
+      {
+        "neighbor.want": "watch"
+      }
+    ]
+  },
+  "premises": [
+    "pond.wind",
+    "neighbor.want"
+  ],
+  "compose": {
+    "learn_listener_wish": {
+      "op": "DiscoverAndShare",
+      "args": [
+        "ada",
+        "frog",
+        "neighbor.want"
+      ]
+    },
+    "learn_pond_wind": {
+      "op": "DiscoverAndShare",
+      "args": [
+        "ben",
+        "frog",
+        "pond.wind"
+      ]
+    },
+    "respect_quiet": {
+      "op": "Act",
+      "actors": [
+        "ada"
+      ],
+      "when": {
+        "ada.knows.neighbor.want": "quiet"
+      },
+      "set": {
+        "ada.memes.Care": 3
+      },
+      "label": "Ada chooses to respect a quiet wish",
+      "summary": "Ada chooses care over her assumption",
+      "pivotal": true
+    },
+    "deliver_card": {
+      "op": "Transfer",
+      "args": [
+        "ada",
+        "neighbor",
+        "invitation_card"
+      ],
+      "when": {
+        "invitation_card.location": "cove"
+      },
+      "summary": "Ada gives Mira the invitation"
+    },
+    "mark_delivery": {
+      "op": "Act",
+      "actors": [
+        "ada"
+      ],
+      "when": {
+        "invitation_card.owner": "neighbor"
+      },
+      "set": {
+        "ada.delivered": true,
+        "neighbor.received": true
+      },
+      "summary": "Mira receives the invitation"
+    },
+    "ada_to_pond": {
+      "op": "Act",
+      "actors": [
+        "ada"
+      ],
+      "when": {
+        "ada.delivered": true
+      },
+      "set": {
+        "ada.location": "pond"
+      },
+      "summary": "Ada walks from the cove to the pond"
+    },
+    "lend_ribbon": {
+      "op": "Lend",
+      "args": [
+        "ada",
+        "ben",
+        "ribbon"
+      ],
+      "when": {
+        "ada.location": "pond"
+      },
+      "summary": "Ada lends Ben the ribbon"
+    },
+    "move_ribbon": {
+      "op": "Move",
+      "args": [
+        "ben",
+        "ribbon",
+        "pond"
+      ],
+      "when": {
+        "ribbon.owner": "ben"
+      },
+      "summary": "Ben carries the ribbon to the pond"
+    },
+    "secure_ribbon": {
+      "op": "Act",
+      "actors": [
+        "ben"
+      ],
+      "when": {
+        "ribbon.owner": "ben",
+        "ribbon.location": "pond",
+        "pond.wind": "breezy"
+      },
+      "set": {
+        "ribbon.secured": true
+      },
+      "summary": "Ben secures the stage against the breeze"
+    },
+    "build_stage_still": {
+      "op": "Act",
+      "actors": [
+        "ben"
+      ],
+      "when": {
+        "ben.knows.pond.wind": "still"
+      },
+      "set": {
+        "stage.stage_ready": true
+      },
+      "summary": "Ben prepares the stage in calm water",
+      "pivotal": true
+    },
+    "build_stage_breezy": {
+      "op": "Act",
+      "actors": [
+        "ben"
+      ],
+      "when": {
+        "ben.knows.pond.wind": "breezy",
+        "ribbon.secured": true
+      },
+      "set": {
+        "stage.stage_ready": true
+      },
+      "summary": "Ben prepares the tied-down stage",
+      "pivotal": true
+    },
+    "float_stage": {
+      "op": "Move",
+      "args": [
+        "ben",
+        "stage",
+        "pond"
+      ],
+      "when": {
+        "stage.stage_ready": true
+      },
+      "summary": "Ben floats the stage onto the pond"
+    },
+    "quiet_performance": {
+      "op": "Act",
+      "actors": [
+        "frog"
+      ],
+      "when": {
+        "frog.knows.neighbor.want": "quiet",
+        "ada.memes.Care": [
+          "ge",
+          3
+        ],
+        "stage.location": "pond",
+        "stage.stage_ready": true
+      },
+      "set": {
+        "frog.performance_style": "soft ripple-song",
+        "frog.performed": true,
+        "neighbor.heard_music": true,
+        "neighbor.response": "listened"
+      },
+      "summary": "Frog performs a soft ripple-song",
+      "pivotal": true
+    },
+    "welcoming_performance": {
+      "op": "Act",
+      "actors": [
+        "frog"
+      ],
+      "when": {
+        "frog.knows.neighbor.want": "join",
+        "stage.location": "pond",
+        "stage.stage_ready": true
+      },
+      "set": {
+        "frog.performance_style": "lively chorus",
+        "frog.performed": true,
+        "neighbor.heard_music": true,
+        "neighbor.joined": true,
+        "neighbor.response": "joined"
+      },
+      "summary": "Frog performs a lively chorus",
+      "pivotal": true
+    },
+    "watching_performance": {
+      "op": "Act",
+      "actors": [
+        "frog"
+      ],
+      "when": {
+        "frog.knows.neighbor.want": "watch",
+        "stage.location": "pond",
+        "stage.stage_ready": true
+      },
+      "set": {
+        "frog.performance_style": "gentle pond melody",
+        "frog.performed": true,
+        "neighbor.heard_music": true,
+        "neighbor.response": "watched"
+      },
+      "summary": "Frog performs a gentle pond melody",
+      "pivotal": true
+    }
+  },
+  "goal": {
+    "ada.delivered": true,
+    "neighbor.received": true,
+    "stage.location": "pond",
+    "frog.performed": true,
+    "neighbor.heard_music": true,
+    "neighbor.response": [
+      "ne",
+      "none"
+    ]
+  },
+  "outcomes": [
+    "ada.delivered",
+    "neighbor.received",
+    "stage.location",
+    "stage.stage_ready",
+    "frog.performance_style",
+    "frog.performed",
+    "neighbor.heard_music",
+    "neighbor.response"
+  ],
+  "prune": true
+}

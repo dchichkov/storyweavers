@@ -1,0 +1,167 @@
+{
+  "id": "resp_0216782bc8cedffb016a9f8e8114c087d0a03799d5ebd08af6",
+  "created_at": 1788841601.0,
+  "error": null,
+  "incomplete_details": null,
+  "instructions": null,
+  "metadata": {},
+  "model": "gpt-5.6-terra",
+  "object": "response",
+  "output": [
+    {
+      "id": "msg_0216782bc8cedffb016a9f8e8185cc87d081cd5ad32cbfc81c",
+      "content": [
+        {
+          "annotations": [],
+          "text": "{\"issues\":[{\"seed\":123,\"severity\":\"major\",\"layer\":\"simulation\",\"defect\":\"literal_state_value\",\"evidence\":\"The story calls it “one open hook” and “its little numbered perch,” but both the discovered and selected hook values are the raw enum “crowded.”\",\"fix\":\"Use a concrete hook identity/state that supports the described open perch, or render the enum as grounded prose rather than treating “crowded” as the selected hook.\"},{\"seed\":457,\"severity\":\"major\",\"layer\":\"simulation\",\"defect\":\"literal_state_value\",\"evidence\":\"The narrative says Mina finds “one open hook” and chooses it, while the trace records `roof_post.open_hook: \\\"crowded\\\"` and `roof_post.selected_hook: \\\"crowded\\\"`.\",\"fix\":\"Replace the raw/contradictory hook value with a specific available-hook value, or revise the prose to match a crowded-hook selection.\"},{\"seed\":124,\"severity\":\"major\",\"layer\":\"prose\",\"defect\":\"weak_ending\",\"evidence\":\"After the trace delivers the invitation to `high_hook`, the ending only says “Pip’s sail hung proudly from the high hook,” leaving Mina’s stated “Before the bell” promise and the party invitation’s outcome unacknowledged.\",\"fix\":\"End by confirming the invitation is posted/delivered and advancing the promised bell or neighbor response, rather than ending on Pip’s bow practice.\"}],\"strengths\":\"All three stories correctly sequence Mina’s promise, cargo inspection where present, ribbon tying, and the respective posting or sail-delivery actions; no unsupported ownership transfers or duplicated event-log sentences are evident.\"}",
+          "type": "output_text",
+          "logprobs": []
+        }
+      ],
+      "role": "assistant",
+      "status": "completed",
+      "type": "message",
+      "phase": "final_answer"
+    }
+  ],
+  "parallel_tool_calls": true,
+  "temperature": 1.0,
+  "tool_choice": "auto",
+  "tools": [],
+  "top_p": 0.98,
+  "background": false,
+  "completed_at": 1788841604.0,
+  "conversation": null,
+  "max_output_tokens": 1600,
+  "max_tool_calls": null,
+  "moderation": null,
+  "previous_response_id": null,
+  "prompt": null,
+  "prompt_cache_key": null,
+  "prompt_cache_retention": "24h",
+  "reasoning": {
+    "context": "all_turns",
+    "effort": "none",
+    "generate_summary": null,
+    "summary": null,
+    "mode": "standard"
+  },
+  "safety_identifier": null,
+  "service_tier": "flex",
+  "status": "completed",
+  "text": {
+    "format": {
+      "name": "storyscenes_artifact",
+      "schema_": {
+        "type": "object",
+        "properties": {
+          "issues": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "seed": {
+                  "type": "integer"
+                },
+                "severity": {
+                  "type": "string",
+                  "enum": [
+                    "minor",
+                    "major"
+                  ]
+                },
+                "layer": {
+                  "type": "string",
+                  "enum": [
+                    "simulation",
+                    "prose"
+                  ]
+                },
+                "defect": {
+                  "type": "string",
+                  "enum": [
+                    "ungrounded_outcome",
+                    "wrong_knowledge",
+                    "contradiction",
+                    "literal_state_value",
+                    "unresolved_alternative",
+                    "event_log_prose",
+                    "weak_turn",
+                    "weak_ending",
+                    "other"
+                  ]
+                },
+                "evidence": {
+                  "type": "string"
+                },
+                "fix": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "seed",
+                "severity",
+                "layer",
+                "defect",
+                "evidence",
+                "fix"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "strengths": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "issues",
+          "strengths"
+        ],
+        "additionalProperties": false
+      },
+      "type": "json_schema",
+      "description": null,
+      "strict": true
+    },
+    "verbosity": "medium"
+  },
+  "top_logprobs": 0,
+  "truncation": "disabled",
+  "usage": {
+    "input_tokens": 3938,
+    "input_tokens_details": {
+      "cached_tokens": 0,
+      "cache_write_tokens": 3935
+    },
+    "output_tokens": 346,
+    "output_tokens_details": {
+      "reasoning_tokens": 0
+    },
+    "total_tokens": 4284
+  },
+  "user": null,
+  "billing": {
+    "payer": "openai"
+  },
+  "frequency_penalty": 0.0,
+  "presence_penalty": 0.0,
+  "store": false,
+  "tool_usage": {
+    "image_gen": {
+      "input_tokens": 0,
+      "input_tokens_details": {
+        "image_tokens": 0,
+        "text_tokens": 0
+      },
+      "output_tokens": 0,
+      "output_tokens_details": {
+        "image_tokens": 0,
+        "text_tokens": 0
+      },
+      "total_tokens": 0
+    },
+    "web_search": {
+      "num_requests": 0
+    }
+  }
+}

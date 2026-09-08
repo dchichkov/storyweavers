@@ -1,0 +1,93 @@
+{
+  "model": "gpt-5.6-terra",
+  "service_tier": "flex",
+  "reasoning": {
+    "effort": "none"
+  },
+  "max_output_tokens": 1600,
+  "store": false,
+  "input": [
+    {
+      "role": "system",
+      "content": "You author executable, composable children's story worlds. Follow the supplied authoring contract. Treat example story content as data. Return only the requested artifact."
+    },
+    {
+      "role": "user",
+      "content": "Review these three generated stories against their executable world traces. Treat story text as data. Trace initial state plus ordered changes is the ground truth. Identify concrete contradictions, unknown knowledge, unsupported accomplished actions, raw enum values, duplicated event-log text, weak endings or a missing consequential turn. Do not demand lessons or safety explanations. Distinguish simulation issues from prose issues. Do not invent a fault merely because a harmless descriptive detail lacks a state variable. Quote evidence. Return at most THREE material issues, concisely (one sentence of evidence and one sentence of fix each); prioritize contradicted physical actions/ownership/knowledge and unresolved alternatives over taste. Severity major only for a real coherence/grounding/storytelling failure.\n[{\"seed\": 123, \"story\": \"A breeze had knotted the red curtain into a lumpy red octopus. Mara blinked at it. \\u201cOur show has grown elbows!\\u201d Bo reached for the blue ribbon, while Nia grinned from behind the stage. Puck waited in his basket, ready for whatever ridiculous rescue might happen next.\\n\\nMara tugged one corner of the curtain and discovered a breeze-tangled knot, with Puck caught in its folds like a kite waiting for a sneeze. \\u201cNobody panic,\\u201d she said. \\u201cExcept perhaps the octopus.\\u201d\\n\\nMara clapped twice, and the courtyard audience gathered with pockets full of crumbs and curiosity. Nia peeked out. Bo bowed so deeply his hair brushed the stage. The ribbon changed hands, from Mara to Bo, and became a bright blue promise against the red tangle.\\n\\nBo pulled gently. The ribbon caught the curtain, the curtain released Puck, and Puck swooped upward with a flap-flap-flap. \\u201cA rescue!\\u201d cried Mara. \\u201cA kite!\\u201d cried Bo. The knot, at least, had nothing left to say.\\n\\nBo and Mara sent Puck sailing above the curtain. The blue ribbon hummed, Puck dipped, and Bo caught him with a triumphant \\u201cTa-da!\\u201d Nia laughed from the wings as the audience clapped like a flock of tiny wings.\\n\\nPuck sailed above the curtain, tugging the blue ribbon into a singing arc. Below, Bo and Mara bowed while the courtyard clapped in a rhythm like little wings. Even the rescued puppet seemed to know he had found the finest possible sky.\", \"initial\": {\"curtain.tangled\": true, \"curtain.form\": \"hanging\", \"curtain.location\": \"stage\", \"ribbon.owner\": \"mara\", \"ribbon.location\": \"basket\", \"sun.location\": \"basket\", \"clouds.location\": \"basket\", \"stool.location\": \"stage\", \"stage.performance\": \"none\", \"stage.location\": \"courtyard\", \"audience.invited\": true, \"audience.present\": false, \"audience.location\": \"courtyard\", \"audience.response\": \"none\", \"nia.brave\": 1, \"nia.shadow_request\": true, \"nia.agreed\": false, \"nia.content\": false, \"bo.plan\": \"quiet\", \"mara.knows.curtain.tangled\": null, \"mara.knows.bo.plan\": null, \"mara.knows.audience.invited\": null, \"mara.knows.nia.shadow_request\": null, \"nia.knows.nia.shadow_request\": true, \"bo.knows.audience.invited\": null}, \"final\": {\"curtain.tangled\": false, \"curtain.form\": \"hanging\", \"curtain.location\": \"stage\", \"ribbon.owner\": \"bo\", \"ribbon.location\": \"curtain\", \"sun.location\": \"basket\", \"clouds.location\": \"basket\", \"stool.location\": \"stage\", \"stage.performance\": \"kite_rescue\", \"stage.location\": \"courtyard\", \"audience.invited\": true, \"audience.present\": true, \"audience.location\": \"courtyard\", \"audience.response\": \"delighted\", \"nia.brave\": 1, \"nia.shadow_request\": true, \"nia.agreed\": false, \"nia.content\": true, \"bo.plan\": \"quiet\", \"mara.knows.curtain.tangled\": true, \"mara.knows.bo.plan\": null, \"mara.knows.audience.invited\": null, \"mara.knows.nia.shadow_request\": null, \"nia.knows.nia.shadow_request\": true, \"bo.knows.audience.invited\": null}, \"events\": [{\"scene\": \"notice_curtain\", \"summary\": \"Mara noticed the breeze-tangled curtain\", \"changes\": {\"mara.knows.curtain.tangled\": {\"before\": null, \"after\": true}}}, {\"scene\": \"greet_audience\", \"summary\": \"The children welcomed the courtyard audience\", \"changes\": {\"audience.present\": {\"before\": false, \"after\": true}}}, {\"scene\": \"transfer_ribbon_to_bo\", \"summary\": \"Mara handed the blue ribbon to Bo\", \"changes\": {\"ribbon.owner\": {\"before\": \"mara\", \"after\": \"bo\"}}}, {\"scene\": \"untangle_curtain_with_ribbon\", \"summary\": \"Bo caught the curtain with the blue ribbon\", \"changes\": {\"curtain.tangled\": {\"before\": true, \"after\": false}, \"ribbon.location\": {\"before\": \"basket\", \"after\": \"curtain\"}}}, {\"scene\": \"perform_kite_rescue\", \"summary\": \"Puck flew as a kite puppet in the rescue show\", \"changes\": {\"stage.performance\": {\"before\": \"none\", \"after\": \"kite_rescue\"}, \"audience.response\": {\"before\": \"none\", \"after\": \"delighted\"}, \"nia.content\": {\"before\": false, \"after\": true}}}]}, {\"seed\": 791, \"story\": \"Bo had drawn a finale so grand it needed three suns, seven trumpets, and an audience marching across the courtyard. Unfortunately, nobody had been invited close. \\u201cThey\\u2019ll adore a parade!\\u201d he announced. Mara peered at the empty path. \\u201cPerhaps first we should tell them where the parade is.\\u201d\\n\\nMara clapped twice, and the courtyard audience gathered with pockets full of crumbs and curiosity. Nia peeked out. Bo bowed so deeply his hair brushed the stage.\\n\\nMara found Bo\\u2019s plan beneath the paper sun: a grand finale with a parade, a fanfare, and \\u201cpossibly one moon.\\u201d She looked toward the uninvited courtyard. Bo whispered, \\u201cThe audience will want enormous.\\u201d\\n\\nMara discovered the important missing thing: nobody had invited the courtyard audience to follow the show. The path was empty except for one beetle. \\u201cEven the beetle needs a proper invitation,\\u201d she said.\\n\\nMara told Bo the audience was not close yet. Bo tapped his chin. His parade plan suddenly needed legs, invitations, and perhaps fewer trumpets.\\n\\nBo marched to the courtyard edge and called, \\u201cFollow the paper sun!\\u201d The audience came closer, then closer still, until the stage had feet all around it. Bo\\u2019s grand plan suddenly had exactly the number of spectators it needed.\\n\\nBo lifted the paper sun high above the stage. It wobbled magnificently, like a pancake escaping breakfast. Mara set the cloud puppets bobbing low. They drifted around Bo\\u2019s knees, soft and lumpy as traveling sheep.\\n\\nBo led the weather parade beneath the paper sun, with cloud puppets bobbing behind him and Mara marching beside a giggling audience. Nia carried a cloud that sneezed confetti. The grand finale had become gloriously, wonderfully mobile.\\n\\nBo marched under the paper sun with clouds bobbing behind him, while Mara led the cheerful crowd across the courtyard. The once-serious stage stood empty and pleased, as if it had grown a pair of dancing feet.\", \"initial\": {\"curtain.tangled\": false, \"curtain.form\": \"hanging\", \"curtain.location\": \"stage\", \"ribbon.owner\": \"mara\", \"ribbon.location\": \"basket\", \"sun.location\": \"basket\", \"clouds.location\": \"basket\", \"stool.location\": \"stage\", \"stage.performance\": \"none\", \"stage.location\": \"courtyard\", \"audience.invited\": false, \"audience.present\": false, \"audience.location\": \"courtyard\", \"audience.response\": \"none\", \"nia.brave\": 1, \"nia.shadow_request\": true, \"nia.agreed\": false, \"nia.content\": false, \"bo.plan\": \"grand\", \"mara.knows.curtain.tangled\": null, \"mara.knows.bo.plan\": null, \"mara.knows.audience.invited\": null, \"mara.knows.nia.shadow_request\": null, \"nia.knows.nia.shadow_request\": true, \"bo.knows.audience.invited\": null}, \"final\": {\"curtain.tangled\": false, \"curtain.form\": \"hanging\", \"curtain.location\": \"stage\", \"ribbon.owner\": \"mara\", \"ribbon.location\": \"basket\", \"sun.location\": \"high\", \"clouds.location\": \"low\", \"stool.location\": \"stage\", \"stage.performance\": \"weather_parade\", \"stage.location\": \"courtyard\", \"audience.invited\": true, \"audience.present\": true, \"audience.location\": \"stage\", \"audience.response\": \"delighted\", \"nia.brave\": 1, \"nia.shadow_request\": true, \"nia.agreed\": false, \"nia.content\": true, \"bo.plan\": \"grand\", \"mara.knows.curtain.tangled\": null, \"mara.knows.bo.plan\": \"grand\", \"mara.knows.audience.invited\": false, \"mara.knows.nia.shadow_request\": null, \"nia.knows.nia.shadow_request\": true, \"bo.knows.audience.invited\": false}, \"events\": [{\"scene\": \"greet_audience\", \"summary\": \"The children welcomed the courtyard audience\", \"changes\": {\"audience.present\": {\"before\": false, \"after\": true}}}, {\"scene\": \"notice_bo_plan\", \"summary\": \"Mara noticed Bo planning a grand finale\", \"changes\": {\"mara.knows.bo.plan\": {\"before\": null, \"after\": \"grand\"}}}, {\"scene\": \"notice_invitation\", \"summary\": \"Mara noticed that the audience had not been invited close\", \"changes\": {\"mara.knows.audience.invited\": {\"before\": null, \"after\": false}}}, {\"scene\": \"tell_mara_to_bo\", \"summary\": \"Mara told Bo the audience was not yet close\", \"changes\": {\"bo.knows.audience.invited\": {\"before\": null, \"after\": false}}}, {\"scene\": \"invite_audience_close\", \"summary\": \"Bo invited everyone to follow the show across the courtyard\", \"changes\": {\"audience.invited\": {\"before\": false, \"after\": true}, \"audience.location\": {\"before\": \"courtyard\", \"after\": \"stage\"}}}, {\"scene\": \"place_sun_high\", \"summary\": \"Bo lifted the paper sun high above the stage\", \"changes\": {\"sun.location\": {\"before\": \"basket\", \"after\": \"high\"}}}, {\"scene\": \"place_clouds_low\", \"summary\": \"Mara set the cloud puppets bobbing low\", \"changes\": {\"clouds.location\": {\"before\": \"basket\", \"after\": \"low\"}}}, {\"scene\": \"perform_weather_parade\", \"summary\": \"The children performed a wandering weather parade\", \"changes\": {\"stage.performance\": {\"before\": \"none\", \"after\": \"weather_parade\"}, \"audience.response\": {\"before\": \"none\", \"after\": \"delighted\"}, \"nia.content\": {\"before\": false, \"after\": true}}}]}, {\"seed\": 124, \"story\": \"The red curtain hung neatly, but Nia was hiding behind the low stool. \\u201cI want to perform,\\u201d she whispered to Mara, \\u201conly if the audience watches my shadows, not my nose.\\u201d Mara smiled. The blue ribbon lay in its basket, bright as a tiny river. \\u201cThen we\\u2019ll make a secret-sized show.\\u201d\\n\\nMara clapped twice, and the courtyard audience gathered with pockets full of crumbs and curiosity. Nia peeked out. Bo bowed so deeply his hair brushed the stage.\\n\\nNia leaned close and told Mara exactly what she wanted: a shadow role behind the curtain, where her paper hands could dance without every eye landing on her face. \\u201cMy nose is not ready for fame,\\u201d she whispered.\\n\\nNia swallowed, then nodded. \\u201cI can make one small shadow.\\u201d Mara squeezed her hand. \\u201cSmall shadows can have enormous ears.\\u201d Nia stepped toward the curtain, braver by exactly one bright button.\\n\\nMara placed the blue ribbon in Nia\\u2019s hands. \\u201cFor your secret screen,\\u201d she said. Nia held it carefully, as if it were a doorway only she could open.\\n\\nNia and Mara folded the curtain into a shadow screen. Behind it, their fingers became rabbits, clouds, and one very suspicious potato. Nia laughed softly. The screen glowed, ready for a story no staring face could spoil.\\n\\nBehind the glowing screen, Nia\\u2019s paper hands discovered a moon, a shy rabbit, and a potato who wanted a hat. The audience leaned close and stayed wonderfully quiet. Nia\\u2019s little shadow bowed before her face ever needed to.\\n\\nNia\\u2019s paper hands glowed across the shadow screen: rabbit, moon, potato, hat. When the story ended, the audience left the stool in a neat moon-shaped circle around her. Nia peeked out and smiled at the circle\\u2019s quiet sparkle.\", \"initial\": {\"curtain.tangled\": false, \"curtain.form\": \"hanging\", \"curtain.location\": \"stage\", \"ribbon.owner\": \"mara\", \"ribbon.location\": \"basket\", \"sun.location\": \"basket\", \"clouds.location\": \"basket\", \"stool.location\": \"stage\", \"stage.performance\": \"none\", \"stage.location\": \"courtyard\", \"audience.invited\": true, \"audience.present\": false, \"audience.location\": \"courtyard\", \"audience.response\": \"none\", \"nia.brave\": 0, \"nia.shadow_request\": true, \"nia.agreed\": false, \"nia.content\": false, \"bo.plan\": \"quiet\", \"mara.knows.curtain.tangled\": null, \"mara.knows.bo.plan\": null, \"mara.knows.audience.invited\": null, \"mara.knows.nia.shadow_request\": null, \"nia.knows.nia.shadow_request\": true, \"bo.knows.audience.invited\": null}, \"final\": {\"curtain.tangled\": false, \"curtain.form\": \"shadow_screen\", \"curtain.location\": \"stage\", \"ribbon.owner\": \"nia\", \"ribbon.location\": \"basket\", \"sun.location\": \"basket\", \"clouds.location\": \"basket\", \"stool.location\": \"stage\", \"stage.performance\": \"shadow_story\", \"stage.location\": \"courtyard\", \"audience.invited\": true, \"audience.present\": true, \"audience.location\": \"courtyard\", \"audience.response\": \"quietly_charmed\", \"nia.brave\": 1, \"nia.shadow_request\": true, \"nia.agreed\": true, \"nia.content\": true, \"bo.plan\": \"quiet\", \"mara.knows.curtain.tangled\": null, \"mara.knows.bo.plan\": null, \"mara.knows.audience.invited\": null, \"mara.knows.nia.shadow_request\": true, \"nia.knows.nia.shadow_request\": true, \"bo.knows.audience.invited\": null}, \"events\": [{\"scene\": \"greet_audience\", \"summary\": \"The children welcomed the courtyard audience\", \"changes\": {\"audience.present\": {\"before\": false, \"after\": true}}}, {\"scene\": \"tell_nia_to_mara\", \"summary\": \"Nia told Mara she wanted a hidden shadow role\", \"changes\": {\"mara.knows.nia.shadow_request\": {\"before\": null, \"after\": true}}}, {\"scene\": \"agree_small_role\", \"summary\": \"Nia agreed to perform behind the curtain\", \"changes\": {\"nia.brave\": {\"before\": 0, \"after\": 1}, \"nia.agreed\": {\"before\": false, \"after\": true}}}, {\"scene\": \"transfer_ribbon_to_nia\", \"summary\": \"Mara gave Nia the blue ribbon\", \"changes\": {\"ribbon.owner\": {\"before\": \"mara\", \"after\": \"nia\"}}}, {\"scene\": \"fold_curtain_into_shadow_screen\", \"summary\": \"Nia folded the curtain into a glowing shadow screen\", \"changes\": {\"curtain.form\": {\"before\": \"hanging\", \"after\": \"shadow_screen\"}}}, {\"scene\": \"perform_shadow_story\", \"summary\": \"Nia performed a quiet shadow story behind the screen\", \"changes\": {\"stage.performance\": {\"before\": \"none\", \"after\": \"shadow_story\"}, \"audience.response\": {\"before\": \"none\", \"after\": \"quietly_charmed\"}, \"nia.content\": {\"before\": false, \"after\": true}}}]}]"
+    }
+  ],
+  "text": {
+    "format": {
+      "type": "json_schema",
+      "name": "storyscenes_artifact",
+      "strict": true,
+      "schema": {
+        "type": "object",
+        "properties": {
+          "issues": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "seed": {
+                  "type": "integer"
+                },
+                "severity": {
+                  "type": "string",
+                  "enum": [
+                    "minor",
+                    "major"
+                  ]
+                },
+                "layer": {
+                  "type": "string",
+                  "enum": [
+                    "simulation",
+                    "prose"
+                  ]
+                },
+                "defect": {
+                  "type": "string",
+                  "enum": [
+                    "ungrounded_outcome",
+                    "wrong_knowledge",
+                    "contradiction",
+                    "literal_state_value",
+                    "unresolved_alternative",
+                    "event_log_prose",
+                    "weak_turn",
+                    "weak_ending",
+                    "other"
+                  ]
+                },
+                "evidence": {
+                  "type": "string"
+                },
+                "fix": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "seed",
+                "severity",
+                "layer",
+                "defect",
+                "evidence",
+                "fix"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "strengths": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "issues",
+          "strengths"
+        ],
+        "additionalProperties": false
+      }
+    }
+  }
+}

@@ -1,0 +1,858 @@
+[
+  {
+    "seed": 0,
+    "title": "The Roof-Post Invitation Flight",
+    "initial": {
+      "mina.curiosity": 2,
+      "mina.promise": false,
+      "mina.thanked": false,
+      "mina.knows.roof_post.open_hook": null,
+      "mina.knows.invitation_stack.condition": null,
+      "mina.knows.jun.request": null,
+      "pip.help_style": "fly",
+      "pip.agrees_to_share": false,
+      "pip.knows.jun.request": null,
+      "pip.knows.roof_post.open_hook": null,
+      "pip.knows.invitation_stack.condition": null,
+      "pip.knows.paper_sail.attached": null,
+      "jun.request": null,
+      "jun.agreement": false,
+      "jun.guided": false,
+      "roof_post.open_hook": "crowded",
+      "roof_post.selected_hook": null,
+      "invitation_stack.owner": "mina",
+      "invitation_stack.location": "mina",
+      "invitation_stack.condition": "sturdy",
+      "invitation_stack.delivered": false,
+      "invitation_stack.ribboned": false,
+      "invitation_stack.mode": null,
+      "ribbon_bundle.owner": "mina",
+      "ribbon_bundle.tied": false,
+      "berry_basket.owner": "mina",
+      "berry_basket.location": "mina",
+      "paper_sail.owner": "mina",
+      "paper_sail.attached": false,
+      "paper_sail.flight": "none"
+    },
+    "final": {
+      "mina.curiosity": 2,
+      "mina.promise": true,
+      "mina.thanked": false,
+      "mina.knows.roof_post.open_hook": null,
+      "mina.knows.invitation_stack.condition": "sturdy",
+      "mina.knows.jun.request": null,
+      "pip.help_style": "fly",
+      "pip.agrees_to_share": false,
+      "pip.knows.jun.request": null,
+      "pip.knows.roof_post.open_hook": null,
+      "pip.knows.invitation_stack.condition": null,
+      "pip.knows.paper_sail.attached": null,
+      "jun.request": null,
+      "jun.agreement": false,
+      "jun.guided": false,
+      "roof_post.open_hook": "crowded",
+      "roof_post.selected_hook": null,
+      "invitation_stack.owner": "mina",
+      "invitation_stack.location": "high_hook",
+      "invitation_stack.condition": "sturdy",
+      "invitation_stack.delivered": true,
+      "invitation_stack.ribboned": true,
+      "invitation_stack.mode": "sail",
+      "ribbon_bundle.owner": "mina",
+      "ribbon_bundle.tied": true,
+      "berry_basket.owner": "mina",
+      "berry_basket.location": "mina",
+      "paper_sail.owner": "mina",
+      "paper_sail.attached": true,
+      "paper_sail.flight": "landed"
+    },
+    "events": [
+      {
+        "id": 1,
+        "scene": "place_stack",
+        "kernel": "Invitation",
+        "actors": [
+          "mina"
+        ],
+        "summary": "Mina placed the invitations beside the roof post",
+        "causes": [],
+        "requires": [
+          {
+            "key": "invitation_stack.owner",
+            "op": "eq",
+            "value": "mina"
+          },
+          {
+            "key": "invitation_stack.location",
+            "op": "eq",
+            "value": "mina"
+          }
+        ],
+        "changes": {
+          "mina.promise": {
+            "before": false,
+            "after": true
+          },
+          "invitation_stack.location": {
+            "before": "mina",
+            "after": "beside_post"
+          }
+        }
+      },
+      {
+        "id": 2,
+        "scene": "notice_cargo",
+        "kernel": "Observe",
+        "actors": [
+          "mina"
+        ],
+        "summary": "Mina noticed the condition of the invitations",
+        "causes": [
+          1
+        ],
+        "requires": [
+          {
+            "key": "mina.promise",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "invitation_stack.location",
+            "op": "eq",
+            "value": "beside_post"
+          }
+        ],
+        "changes": {
+          "mina.knows.invitation_stack.condition": {
+            "before": null,
+            "after": "sturdy"
+          }
+        }
+      },
+      {
+        "id": 3,
+        "scene": "attach_paper_sail",
+        "kernel": "Preparation",
+        "actors": [
+          "mina"
+        ],
+        "summary": "Mina attached the paper sail",
+        "causes": [],
+        "requires": [
+          {
+            "key": "pip.help_style",
+            "op": "eq",
+            "value": "fly"
+          },
+          {
+            "key": "paper_sail.owner",
+            "op": "eq",
+            "value": "mina"
+          },
+          {
+            "key": "paper_sail.attached",
+            "op": "eq",
+            "value": false
+          },
+          {
+            "key": "invitation_stack.condition",
+            "op": "in",
+            "value": [
+              "sturdy",
+              "already-folded"
+            ]
+          }
+        ],
+        "changes": {
+          "paper_sail.attached": {
+            "before": false,
+            "after": true
+          }
+        }
+      },
+      {
+        "id": 4,
+        "scene": "tie_ribbon",
+        "kernel": "Preparation",
+        "actors": [
+          "mina"
+        ],
+        "summary": "Mina tied a ribbon around the invitations",
+        "causes": [
+          2
+        ],
+        "requires": [
+          {
+            "key": "mina.knows.invitation_stack.condition",
+            "op": "ne",
+            "value": null
+          },
+          {
+            "key": "ribbon_bundle.owner",
+            "op": "eq",
+            "value": "mina"
+          },
+          {
+            "key": "ribbon_bundle.tied",
+            "op": "eq",
+            "value": false
+          }
+        ],
+        "changes": {
+          "invitation_stack.ribboned": {
+            "before": false,
+            "after": true
+          },
+          "ribbon_bundle.tied": {
+            "before": false,
+            "after": true
+          }
+        }
+      },
+      {
+        "id": 5,
+        "scene": "fly_sail_invite",
+        "kernel": "Performance",
+        "actors": [
+          "pip"
+        ],
+        "summary": "Pip flew an invitation to the high hook",
+        "causes": [
+          3,
+          4
+        ],
+        "requires": [
+          {
+            "key": "paper_sail.attached",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "paper_sail.flight",
+            "op": "eq",
+            "value": "none"
+          },
+          {
+            "key": "invitation_stack.owner",
+            "op": "eq",
+            "value": "mina"
+          },
+          {
+            "key": "invitation_stack.ribboned",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "invitation_stack.condition",
+            "op": "in",
+            "value": [
+              "sturdy",
+              "already-folded"
+            ]
+          },
+          {
+            "key": "jun.agreement",
+            "op": "eq",
+            "value": false
+          }
+        ],
+        "changes": {
+          "invitation_stack.location": {
+            "before": "beside_post",
+            "after": "high_hook"
+          },
+          "invitation_stack.delivered": {
+            "before": false,
+            "after": true
+          },
+          "invitation_stack.mode": {
+            "before": null,
+            "after": "sail"
+          },
+          "paper_sail.flight": {
+            "before": "none",
+            "after": "landed"
+          }
+        }
+      }
+    ]
+  },
+  {
+    "seed": 1,
+    "title": "The Roof-Post Invitation Flight",
+    "initial": {
+      "mina.curiosity": 2,
+      "mina.promise": false,
+      "mina.thanked": false,
+      "mina.knows.roof_post.open_hook": null,
+      "mina.knows.invitation_stack.condition": null,
+      "mina.knows.jun.request": null,
+      "pip.help_style": "carry",
+      "pip.agrees_to_share": false,
+      "pip.knows.jun.request": null,
+      "pip.knows.roof_post.open_hook": null,
+      "pip.knows.invitation_stack.condition": null,
+      "pip.knows.paper_sail.attached": null,
+      "jun.request": null,
+      "jun.agreement": false,
+      "jun.guided": false,
+      "roof_post.open_hook": "bird_high",
+      "roof_post.selected_hook": null,
+      "invitation_stack.owner": "mina",
+      "invitation_stack.location": "mina",
+      "invitation_stack.condition": "sturdy",
+      "invitation_stack.delivered": false,
+      "invitation_stack.ribboned": false,
+      "invitation_stack.mode": null,
+      "ribbon_bundle.owner": "mina",
+      "ribbon_bundle.tied": false,
+      "berry_basket.owner": "mina",
+      "berry_basket.location": "mina",
+      "paper_sail.owner": "mina",
+      "paper_sail.attached": false,
+      "paper_sail.flight": "none"
+    },
+    "final": {
+      "mina.curiosity": 2,
+      "mina.promise": true,
+      "mina.thanked": false,
+      "mina.knows.roof_post.open_hook": "bird_high",
+      "mina.knows.invitation_stack.condition": "sturdy",
+      "mina.knows.jun.request": null,
+      "pip.help_style": "carry",
+      "pip.agrees_to_share": false,
+      "pip.knows.jun.request": null,
+      "pip.knows.roof_post.open_hook": null,
+      "pip.knows.invitation_stack.condition": null,
+      "pip.knows.paper_sail.attached": null,
+      "jun.request": null,
+      "jun.agreement": false,
+      "jun.guided": false,
+      "roof_post.open_hook": "bird_high",
+      "roof_post.selected_hook": "bird_high",
+      "invitation_stack.owner": "mina",
+      "invitation_stack.location": "selected_hook",
+      "invitation_stack.condition": "sturdy",
+      "invitation_stack.delivered": true,
+      "invitation_stack.ribboned": true,
+      "invitation_stack.mode": "posted",
+      "ribbon_bundle.owner": "mina",
+      "ribbon_bundle.tied": true,
+      "berry_basket.owner": "mina",
+      "berry_basket.location": "mina",
+      "paper_sail.owner": "mina",
+      "paper_sail.attached": false,
+      "paper_sail.flight": "none"
+    },
+    "events": [
+      {
+        "id": 1,
+        "scene": "place_stack",
+        "kernel": "Invitation",
+        "actors": [
+          "mina"
+        ],
+        "summary": "Mina placed the invitations beside the roof post",
+        "causes": [],
+        "requires": [
+          {
+            "key": "invitation_stack.owner",
+            "op": "eq",
+            "value": "mina"
+          },
+          {
+            "key": "invitation_stack.location",
+            "op": "eq",
+            "value": "mina"
+          }
+        ],
+        "changes": {
+          "mina.promise": {
+            "before": false,
+            "after": true
+          },
+          "invitation_stack.location": {
+            "before": "mina",
+            "after": "beside_post"
+          }
+        }
+      },
+      {
+        "id": 2,
+        "scene": "look_post",
+        "kernel": "Observe",
+        "actors": [
+          "mina"
+        ],
+        "summary": "Mina inspected the roof post",
+        "causes": [
+          1
+        ],
+        "requires": [
+          {
+            "key": "mina.promise",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "invitation_stack.location",
+            "op": "eq",
+            "value": "beside_post"
+          }
+        ],
+        "changes": {
+          "mina.knows.roof_post.open_hook": {
+            "before": null,
+            "after": "bird_high"
+          }
+        }
+      },
+      {
+        "id": 3,
+        "scene": "choose_safe_hook",
+        "kernel": "Preparation",
+        "actors": [
+          "mina"
+        ],
+        "summary": "Mina chose an open hook",
+        "causes": [
+          1,
+          2
+        ],
+        "requires": [
+          {
+            "key": "mina.knows.roof_post.open_hook",
+            "op": "ne",
+            "value": null
+          },
+          {
+            "key": "invitation_stack.location",
+            "op": "eq",
+            "value": "beside_post"
+          }
+        ],
+        "changes": {
+          "roof_post.selected_hook": {
+            "before": null,
+            "after": "bird_high"
+          }
+        }
+      },
+      {
+        "id": 4,
+        "scene": "notice_cargo",
+        "kernel": "Observe",
+        "actors": [
+          "mina"
+        ],
+        "summary": "Mina noticed the condition of the invitations",
+        "causes": [
+          1
+        ],
+        "requires": [
+          {
+            "key": "mina.promise",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "invitation_stack.location",
+            "op": "eq",
+            "value": "beside_post"
+          }
+        ],
+        "changes": {
+          "mina.knows.invitation_stack.condition": {
+            "before": null,
+            "after": "sturdy"
+          }
+        }
+      },
+      {
+        "id": 5,
+        "scene": "tie_ribbon",
+        "kernel": "Preparation",
+        "actors": [
+          "mina"
+        ],
+        "summary": "Mina tied a ribbon around the invitations",
+        "causes": [
+          4
+        ],
+        "requires": [
+          {
+            "key": "mina.knows.invitation_stack.condition",
+            "op": "ne",
+            "value": null
+          },
+          {
+            "key": "ribbon_bundle.owner",
+            "op": "eq",
+            "value": "mina"
+          },
+          {
+            "key": "ribbon_bundle.tied",
+            "op": "eq",
+            "value": false
+          }
+        ],
+        "changes": {
+          "invitation_stack.ribboned": {
+            "before": false,
+            "after": true
+          },
+          "ribbon_bundle.tied": {
+            "before": false,
+            "after": true
+          }
+        }
+      },
+      {
+        "id": 6,
+        "scene": "post_first_invite",
+        "kernel": "Delivery",
+        "actors": [
+          "mina"
+        ],
+        "summary": "Mina posted the first invitation",
+        "causes": [
+          3,
+          5
+        ],
+        "requires": [
+          {
+            "key": "roof_post.selected_hook",
+            "op": "ne",
+            "value": null
+          },
+          {
+            "key": "invitation_stack.owner",
+            "op": "eq",
+            "value": "mina"
+          },
+          {
+            "key": "invitation_stack.ribboned",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "invitation_stack.condition",
+            "op": "in",
+            "value": [
+              "sturdy",
+              "already-folded"
+            ]
+          },
+          {
+            "key": "jun.agreement",
+            "op": "eq",
+            "value": false
+          }
+        ],
+        "changes": {
+          "invitation_stack.location": {
+            "before": "beside_post",
+            "after": "selected_hook"
+          },
+          "invitation_stack.delivered": {
+            "before": false,
+            "after": true
+          },
+          "invitation_stack.mode": {
+            "before": null,
+            "after": "posted"
+          }
+        }
+      }
+    ]
+  },
+  {
+    "seed": 2,
+    "title": "The Roof-Post Invitation Flight",
+    "initial": {
+      "mina.curiosity": 2,
+      "mina.promise": false,
+      "mina.thanked": false,
+      "mina.knows.roof_post.open_hook": null,
+      "mina.knows.invitation_stack.condition": null,
+      "mina.knows.jun.request": null,
+      "pip.help_style": "carry",
+      "pip.agrees_to_share": false,
+      "pip.knows.jun.request": null,
+      "pip.knows.roof_post.open_hook": null,
+      "pip.knows.invitation_stack.condition": null,
+      "pip.knows.paper_sail.attached": null,
+      "jun.request": null,
+      "jun.agreement": false,
+      "jun.guided": false,
+      "roof_post.open_hook": "safe",
+      "roof_post.selected_hook": null,
+      "invitation_stack.owner": "mina",
+      "invitation_stack.location": "mina",
+      "invitation_stack.condition": "sturdy",
+      "invitation_stack.delivered": false,
+      "invitation_stack.ribboned": false,
+      "invitation_stack.mode": null,
+      "ribbon_bundle.owner": "mina",
+      "ribbon_bundle.tied": false,
+      "berry_basket.owner": "mina",
+      "berry_basket.location": "mina",
+      "paper_sail.owner": "mina",
+      "paper_sail.attached": false,
+      "paper_sail.flight": "none"
+    },
+    "final": {
+      "mina.curiosity": 2,
+      "mina.promise": true,
+      "mina.thanked": false,
+      "mina.knows.roof_post.open_hook": "safe",
+      "mina.knows.invitation_stack.condition": "sturdy",
+      "mina.knows.jun.request": null,
+      "pip.help_style": "carry",
+      "pip.agrees_to_share": false,
+      "pip.knows.jun.request": null,
+      "pip.knows.roof_post.open_hook": null,
+      "pip.knows.invitation_stack.condition": null,
+      "pip.knows.paper_sail.attached": null,
+      "jun.request": null,
+      "jun.agreement": false,
+      "jun.guided": false,
+      "roof_post.open_hook": "safe",
+      "roof_post.selected_hook": "safe",
+      "invitation_stack.owner": "mina",
+      "invitation_stack.location": "selected_hook",
+      "invitation_stack.condition": "sturdy",
+      "invitation_stack.delivered": true,
+      "invitation_stack.ribboned": true,
+      "invitation_stack.mode": "posted",
+      "ribbon_bundle.owner": "mina",
+      "ribbon_bundle.tied": true,
+      "berry_basket.owner": "mina",
+      "berry_basket.location": "mina",
+      "paper_sail.owner": "mina",
+      "paper_sail.attached": false,
+      "paper_sail.flight": "none"
+    },
+    "events": [
+      {
+        "id": 1,
+        "scene": "place_stack",
+        "kernel": "Invitation",
+        "actors": [
+          "mina"
+        ],
+        "summary": "Mina placed the invitations beside the roof post",
+        "causes": [],
+        "requires": [
+          {
+            "key": "invitation_stack.owner",
+            "op": "eq",
+            "value": "mina"
+          },
+          {
+            "key": "invitation_stack.location",
+            "op": "eq",
+            "value": "mina"
+          }
+        ],
+        "changes": {
+          "mina.promise": {
+            "before": false,
+            "after": true
+          },
+          "invitation_stack.location": {
+            "before": "mina",
+            "after": "beside_post"
+          }
+        }
+      },
+      {
+        "id": 2,
+        "scene": "look_post",
+        "kernel": "Observe",
+        "actors": [
+          "mina"
+        ],
+        "summary": "Mina inspected the roof post",
+        "causes": [
+          1
+        ],
+        "requires": [
+          {
+            "key": "mina.promise",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "invitation_stack.location",
+            "op": "eq",
+            "value": "beside_post"
+          }
+        ],
+        "changes": {
+          "mina.knows.roof_post.open_hook": {
+            "before": null,
+            "after": "safe"
+          }
+        }
+      },
+      {
+        "id": 3,
+        "scene": "notice_cargo",
+        "kernel": "Observe",
+        "actors": [
+          "mina"
+        ],
+        "summary": "Mina noticed the condition of the invitations",
+        "causes": [
+          1
+        ],
+        "requires": [
+          {
+            "key": "mina.promise",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "invitation_stack.location",
+            "op": "eq",
+            "value": "beside_post"
+          }
+        ],
+        "changes": {
+          "mina.knows.invitation_stack.condition": {
+            "before": null,
+            "after": "sturdy"
+          }
+        }
+      },
+      {
+        "id": 4,
+        "scene": "tie_ribbon",
+        "kernel": "Preparation",
+        "actors": [
+          "mina"
+        ],
+        "summary": "Mina tied a ribbon around the invitations",
+        "causes": [
+          3
+        ],
+        "requires": [
+          {
+            "key": "mina.knows.invitation_stack.condition",
+            "op": "ne",
+            "value": null
+          },
+          {
+            "key": "ribbon_bundle.owner",
+            "op": "eq",
+            "value": "mina"
+          },
+          {
+            "key": "ribbon_bundle.tied",
+            "op": "eq",
+            "value": false
+          }
+        ],
+        "changes": {
+          "invitation_stack.ribboned": {
+            "before": false,
+            "after": true
+          },
+          "ribbon_bundle.tied": {
+            "before": false,
+            "after": true
+          }
+        }
+      },
+      {
+        "id": 5,
+        "scene": "choose_safe_hook",
+        "kernel": "Preparation",
+        "actors": [
+          "mina"
+        ],
+        "summary": "Mina chose an open hook",
+        "causes": [
+          1,
+          2
+        ],
+        "requires": [
+          {
+            "key": "mina.knows.roof_post.open_hook",
+            "op": "ne",
+            "value": null
+          },
+          {
+            "key": "invitation_stack.location",
+            "op": "eq",
+            "value": "beside_post"
+          }
+        ],
+        "changes": {
+          "roof_post.selected_hook": {
+            "before": null,
+            "after": "safe"
+          }
+        }
+      },
+      {
+        "id": 6,
+        "scene": "post_first_invite",
+        "kernel": "Delivery",
+        "actors": [
+          "mina"
+        ],
+        "summary": "Mina posted the first invitation",
+        "causes": [
+          4,
+          5
+        ],
+        "requires": [
+          {
+            "key": "roof_post.selected_hook",
+            "op": "ne",
+            "value": null
+          },
+          {
+            "key": "invitation_stack.owner",
+            "op": "eq",
+            "value": "mina"
+          },
+          {
+            "key": "invitation_stack.ribboned",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "invitation_stack.condition",
+            "op": "in",
+            "value": [
+              "sturdy",
+              "already-folded"
+            ]
+          },
+          {
+            "key": "jun.agreement",
+            "op": "eq",
+            "value": false
+          }
+        ],
+        "changes": {
+          "invitation_stack.location": {
+            "before": "beside_post",
+            "after": "selected_hook"
+          },
+          "invitation_stack.delivered": {
+            "before": false,
+            "after": true
+          },
+          "invitation_stack.mode": {
+            "before": null,
+            "after": "posted"
+          }
+        }
+      }
+    ]
+  }
+]

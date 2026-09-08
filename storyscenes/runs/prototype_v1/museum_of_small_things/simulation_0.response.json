@@ -1,0 +1,97 @@
+{
+  "id": "resp_04a566dc27a89a32016a9f0d2764a487d0941ec876cf302586",
+  "created_at": 1788808487.0,
+  "error": null,
+  "incomplete_details": null,
+  "instructions": null,
+  "metadata": {},
+  "model": "gpt-5.6-luna",
+  "object": "response",
+  "output": [
+    {
+      "id": "msg_04a566dc27a89a32016a9f0d2814e087d0859d726d0e58b6ee",
+      "content": [
+        {
+          "annotations": [],
+          "text": "from runtime import WorldSpec, Scene, Condition as C, Effect as E, Rule\nfrom runtime import observe, tell, transfer\nimport random\n\n\ndef build(seed: int) -> WorldSpec:\n    rng = random.Random(seed)\n\n    borrowed = rng.choice([\"borrowed_button\", \"tin_whistle\", \"cracked_marble\"])\n    owner = \"owner_elsie\"\n    request = rng.choice([\"display\", \"pad\", \"return\"])\n    fragile = borrowed != \"old_key\"\n    space = rng.choice([\"roomy\", \"crowded\"])\n    tool = rng.choice([\"velvet_pad\", \"lamp\", \"rope\"])\n    mark = rng.choice([\"maker_mark\", \"family_mark\"])\n\n    entities = {\n        \"ada\": {\"name\": \"Ada\", \"kind\": \"child\"},\n        \"bo\": {\"name\": \"Bo\", \"kind\": \"child\"},\n        \"pip\": {\"name\": \"Pip\", \"kind\": \"magpie\"},\n        \"mara\": {\"name\": \"Mara\", \"kind\": \"keeper\"},\n        owner: {\"name\": \"Elsie\", \"kind\": \"owner\"},\n        \"museum_gallery\": {\"name\": \"museum gallery\", \"kind\": \"place\"},\n        \"worktable\": {\"name\": \"worktable\", \"kind\": \"place\"},\n        \"display_case\": {\"name\": \"display case\", \"kind\": \"place\"},\n        \"courtyard\": {\"name\": \"courtyard\", \"kind\": \"place\"},\n        \"borrowed_button\": {\"name\": \"borrowed button\", \"kind\": \"prop\"},\n        \"old_key\": {\"name\": \"old key\", \"kind\": \"prop\"},\n        \"cracked_marble\": {\"name\": \"cracked marble\", \"kind\": \"prop\"},\n        \"tin_whistle\": {\"name\": \"tin whistle\", \"kind\": \"prop\"},\n        \"label_cards\": {\"name\": \"label cards\", \"kind\": \"prop\"},\n        \"magnifying_glass\": {\"name\": \"magnifying glass\", \"kind\": \"prop\"},\n        \"velvet_pad\": {\"name\": \"velvet pad\", \"kind\": \"prop\"},\n        \"rope\": {\"name\": \"rope\", \"kind\": \"prop\"},\n        \"lamp\": {\"name\": \"lamp\", \"kind\": \"prop\"},\n        \"owner_letter\": {\"name\": \"owner letter\", \"kind\": \"prop\"},\n        \"returning_box\": {\"name\": \"returning box\", \"kind\": \"prop\"},\n        \"signboard\": {\"name\": \"signboard\", \"kind\": \"prop\"},\n    }\n\n    initial = {\n        \"ada.location\": \"museum_gallery\",\n        \"bo.location\": \"museum_gallery\",\n        \"pip.location\": \"museum_gallery\",\n        \"mara.location\": \"museum_gallery\",\n        \"owner_elsie.location\": \"courtyard\",\n        \"ada.memes.Curiosity\": 2,\n        \"ada.memes.Care\": 1,\n        \"bo.memes.Craft\": 2,\n        \"bo.memes.Curiosity\": 1,\n        \"pip.memes.Curiosity\": 1,\n        \"mara.memes.Care\": rng.randint(1, 2),\n        \"ada.knows.object\": None,\n        \"ada.knows.mark\": None,\n        \"ada.knows.request\": None,\n        \"bo.knows.object\": None,\n        \"bo.knows.space\": None,\n        \"mara.knows.request\": None,\n        \"borrowed_button.location\": \"museum_gallery\",\n        \"old_key.location\": \"museum_gallery\",\n        \"cracked_marble.location\": \"museum_gallery\",\n        \"tin_whistle.location\": \"museum_gallery\",\n        \"borrowed_button.owner\": \"owner_elsie\",\n        \"old_key.owner\": \"museum\",\n        \"cracked_marble.owner\": \"museum\",\n        \"tin_whistle.owner\": \"owner_elsie\",\n        \"borrowed_button.fragile\": borrowed == \"borrowed_button\",\n        \"old_key.fragile\": False,\n        \"cracked_marble.fragile\": True,\n        \"tin_whistle.fragile\": False,\n        \"borrowed_button.condition\": \"sound\",\n        \"old_key.condition\": \"worn\",\n        \"cracked_marble.condition\": \"cracked\",\n        \"tin_whistle.condition\": \"sound\",\n        \"borrowed_button.mark\": mark,\n        \"tin_whistle.mark\": mark,\n        \"cracked_marble.mark\": \"quarry_mark\",\n        \"owner_elsie.request\": request,\n        \"owner_elsie.approved\": False,\n        \"owner_elsie.note_ready\": True,\n        \"display_case.space\": space,\n        \"display_case.stable\": False,\n        \"display_case.open\": False,\n        \"display_case.label_accurate\": False,\n        \"display_case.borrowed_displayed\": False,\n        \"display_case.rope_used\": False,\n        \"display_case.pad_used\": False,\n        \"display_case.lamp_used\": False,\n        \"display_case.substitute_ready\": False,\n        \"velvet_pad.owner\": \"mara\",\n        \"lamp.owner\": \"mara\",\n        \"rope.owner\": \"mara\",\n        \"returning_box.owner\": \"mara\",\n        \"velvet_pad.location\": \"worktable\",\n        \"lamp.location\": \"worktable\",\n        \"rope.location\": \"worktable\",\n        \"returning_box.location\": \"worktable\",\n        \"label_cards.location\": \"worktable\",\n        \"signboard.location\": \"worktable\",\n        \"owner_letter.location\": \"worktable\",\n        \"magnifying_glass.location\": \"worktable\",\n        \"borrowed_object\": borrowed,\n        \"needed_tool\": tool,\n        \"museum.open\": False,\n        \"exhibit.focus\": \"none\",\n    }\n\n    scenes = [\n        observe(\n            \"inspect_borrowed\", \"ada\", borrowed,\n            requires=(C(\"ada.location\", \"eq\", \"museum_gallery\"),\n                      C(\"ada.memes.Curiosity\", \"ge\", 1),\n                      C(borrowed + \".location\", \"eq\", \"museum_gallery\")),\n            summary=\"Ada inspected the borrowed object\"),\n        observe(\n            \"inspect_mark\", \"pip\", borrowed,\n            requires=(C(\"pip.location\", \"eq\", \"museum_gallery\"),\n                      C(borrowed + \".location\", \"eq\", \"museum_gallery\")),\n            summary=\"Pip noticed a mark on the borrowed object\"),\n        tell(\n            \"share_finding\", \"ada\", \"bo\", \"ada.knows.object\",\n            requires=(C(\"ada.knows.object\", \"ne\", None),),\n            summary=\"Ada told Bo what she learned about the object\"),\n        Scene(\n            \"read_owner_request\", \"care\", (\"mara\", \"ada\"),\n            (C(\"mara.location\", \"eq\", \"museum_gallery\"),\n             C(\"owner_elsie.note_ready\", \"eq\", True),\n             C(\"ada.location\", \"eq\", \"museum_gallery\")),\n            (E(\"mara.knows.request\", \"copy\", \"owner_elsie.request\"),\n             E(\"ada.knows.request\", \"copy\", \"owner_elsie.request\"),\n             E(\"owner_elsie.approved\", True)),\n            \"Mara read the owner's request with Ada\", 1.0, 1),\n        Scene(\n            \"test_case\", \"observation\", (\"bo\", \"mara\", \"display_case\"),\n            (C(\"bo.location\", \"eq\", \"museum_gallery\"),\n             C(\"mara.location\", \"eq\", \"museum_gallery\")),\n            (E(\"bo.knows.space\", \"copy\", \"display_case.space\"),\n             E(\"bo.memes.Craft\", 1)),\n            \"Bo tested the display case and judged its space\", 1.0, 1),\n        transfer(\n            \"lend_pad\", \"mara\", \"ada\", \"velvet_pad\",\n            requires=(C(\"mara.memes.Care\", \"ge\", 1),\n                      C(\"velvet_pad.owner\", \"eq\", \"mara\")),\n            summary=\"Mara lent Ada the velvet pad\"),\n        transfer(\n            \"lend_lamp\", \"mara\", \"bo\", \"lamp\",\n            requires=(C(\"mara.memes.Care\", \"ge\", 1),\n                      C(\"lamp.owner\", \"eq\", \"mara\")),\n            summary=\"Mara lent Bo the lamp\"),\n        transfer(\n            \"lend_rope\", \"mara\", \"ada\", \"rope\",\n            requires=(C(\"mara.memes.Care\", \"ge\", 1),\n                      C(\"rope.owner\", \"eq\", \"mara\")),\n            summary=\"Mara lent Ada the rope\"),\n        Scene(\n            \"make_space\", \"cooperation\", (\"ada\", \"bo\", \"pip\"),\n            (C(\"ada.location\", \"eq\", \"museum_gallery\"),\n             C(\"bo.location\", \"eq\", \"museum_gallery\"),\n             C(\"bo.knows.space\", \"eq\", \"crowded\"),\n             C(\"ada.knows.object\", \"ne\", None)),\n            (E(\"display_case.space\", \"roomy\"),\n             E(\"pip.location\", \"eq\", \"display_case\"),\n             E(\"bo.memes.Craft\", 1)),\n            \"The children cleared space in the case\", 1.0, 1),\n        Scene(\n            \"prepare_display\", \"care\", (\"ada\", \"bo\"),\n            (C(\"ada.knows.request\", \"in\", (\"display\", \"pad\")),\n             C(\"ada.knows.object\", \"ne\", None),\n             C(\"display_case.space\", \"eq\", \"roomy\"),\n             C(\"owner_elsie.approved\", \"eq\", True)),\n            (E(\"display_case.borrowed_displayed\", True),\n             E(\"display_case.pad_used\", \"eq\", \"pad\"),\n             E(\"display_case.lamp_used\", True),\n             E(\"display_case.focus\", \"copy\", \"borrowed_object\")),\n            \"The children arranged the borrowed treasure carefully\", 1.0, 1),\n        Scene(\n            \"prepare_return_exhibit\", \"cooperation\", (\"ada\", \"bo\", \"pip\"),\n            (C(\"ada.knows.request\", \"eq\", \"return\"),\n             C(\"ada.knows.object\", \"ne\", None)),\n            (E(\"display_case.substitute_ready\", True),\n             E(\"display_case.focus\", \"eq\", \"old_key\"),\n             E(\"returning_box.location\", \"eq\", \"worktable\")),\n            \"The team built the exhibit around an old key\", 1.0, 1),\n        Scene(\n            \"write_label\", \"craft\", (\"ada\", \"bo\"),\n            (C(\"ada.knows.mark\", \"ne\", None),\n             C(\"ada.knows.request\", \"ne\", None),\n             C(\"display_case.focus\", \"ne\", \"none\")),\n            (E(\"display_case.label_accurate\", True),\n             E(\"label_cards.location\", \"display_case\")),\n            \"Ada wrote an accurate label for the exhibit\", 1.0, 1),\n        Scene(\n            \"return_object\", \"care\", (\"ada\", \"mara\"),\n            (C(\"ada.knows.request\", \"eq\", \"return\"),\n             C(\"borrowed_object\", \"ne\", \"none\"),\n             C(\"returning_box.location\", \"eq\", \"worktable\"),\n             C(\"display_case.substitute_ready\", \"eq\", True)),\n            (E(\"borrowed_object.location\", \"courtyard\"),\n             E(\"returning_box.location\", \"courtyard\"),\n             E(\"borrowed_object.owner\", \"owner_elsie\")),\n            \"Mara returned the borrowed object in its box\", 1.0, 1),\n        Scene(\n            \"open_exhibit\", \"cooperation\", (\"mara\", \"ada\", \"bo\"),\n            (C(\"display_case.label_accurate\", \"eq\", True),\n             C(\"display_case.stable\", \"eq\", True),\n             C(\"display_case.focus\", \"ne\", \"none\")),\n            (E(\"display_case.open\", True),\n             E(\"museum.open\", True)),\n            \"Mara opened the stable small exhibit\", 1.0, 1),\n        Scene(\n            \"stabilize_display\", \"craft\", (\"bo\", \"ada\"),\n            (C(\"display_case.focus\", \"ne\", \"none\"),\n             C(\"display_case.label_accurate\", \"eq\", True),\n             C(\"display_case.space\", \"eq\", \"roomy\")),\n            (E(\"display_case.stable\", True)),\n            \"Bo checked that the arrangement was stable\", 1.0, 1),\n    ]\n\n    # Correct the borrowed-object indirection through explicit, seed-selected effects.\n    for scene in scenes:\n        if scene.id == \"prepare_display\":\n            scene.effects = tuple(\n                E(\"display_case.borrowed_displayed\", True)\n                if effect.key == \"display_case.borrowed_displayed\" else effect\n                for effect in scene.effects\n            )\n\n    rules = (\n        Rule(\n            \"no_unapproved_borrowed_display\",\n            (C(\"display_case.borrowed_displayed\", \"eq\", False),),\n            (C(\"owner_elsie.approved\", \"eq\", False),),\n        ),\n        Rule(\n            \"open_only_stable\",\n            (C(\"display_case.open\", \"eq\", False),),\n            (C(\"display_case.stable\", \"eq\", False),),\n        ),\n        Rule(\n            \"accurate_label_required\",\n            (C(\"display_case.open\", \"eq\", False),),\n            (C(\"display_case.label_accurate\", \"eq\", False),),\n        ),\n    )\n\n    goal = (\n        C(\"museum.open\", \"eq\", True),\n        C(\"display_case.label_accurate\", \"eq\", True),\n        C(\"display_case.stable\", \"eq\", True),\n    )\n\n    labels = {\n        \"display_case.focus\": \"exhibit focus\",\n        \"display_case.borrowed_displayed\": \"borrowed treasure displayed\",\n        \"display_case.label_accurate\": \"accurate label\",\n        \"display_case.stable\": \"stable arrangement\",\n        \"museum.open\": \"museum exhibit open\",\n    }\n\n    return WorldSpec(\n        \"The Museum of Small Things\",\n        entities,\n        initial,\n        scenes,\n        goal,\n        rules=rules,\n        labels=labels,\n    )",
+          "type": "output_text",
+          "logprobs": []
+        }
+      ],
+      "role": "assistant",
+      "status": "completed",
+      "type": "message",
+      "phase": "final_answer"
+    }
+  ],
+  "parallel_tool_calls": true,
+  "temperature": 1.0,
+  "tool_choice": "auto",
+  "tools": [],
+  "top_p": 0.98,
+  "background": false,
+  "completed_at": 1788808535.0,
+  "conversation": null,
+  "max_output_tokens": 16000,
+  "max_tool_calls": null,
+  "moderation": null,
+  "previous_response_id": null,
+  "prompt": null,
+  "prompt_cache_key": null,
+  "prompt_cache_retention": "24h",
+  "reasoning": {
+    "context": "all_turns",
+    "effort": "none",
+    "generate_summary": null,
+    "summary": null,
+    "mode": "standard"
+  },
+  "safety_identifier": null,
+  "service_tier": "flex",
+  "status": "completed",
+  "text": {
+    "format": {
+      "type": "text"
+    },
+    "verbosity": "medium"
+  },
+  "top_logprobs": 0,
+  "truncation": "disabled",
+  "usage": {
+    "input_tokens": 2871,
+    "input_tokens_details": {
+      "cached_tokens": 0,
+      "cache_write_tokens": 2868
+    },
+    "output_tokens": 2978,
+    "output_tokens_details": {
+      "reasoning_tokens": 0
+    },
+    "total_tokens": 5849
+  },
+  "user": null,
+  "billing": {
+    "payer": "developer"
+  },
+  "frequency_penalty": 0.0,
+  "presence_penalty": 0.0,
+  "store": false,
+  "tool_usage": {
+    "image_gen": {
+      "input_tokens": 0,
+      "input_tokens_details": {
+        "image_tokens": 0,
+        "text_tokens": 0
+      },
+      "output_tokens": 0,
+      "output_tokens_details": {
+        "image_tokens": 0,
+        "text_tokens": 0
+      },
+      "total_tokens": 0
+    },
+    "web_search": {
+      "num_requests": 0
+    }
+  }
+}

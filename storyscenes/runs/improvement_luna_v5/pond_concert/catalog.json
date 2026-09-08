@@ -1,0 +1,493 @@
+{
+  "openings": [
+    {
+      "text": "At moonrise, Frog puffed out his throat beside the pond. He believed Nora wanted a booming concert, but the neighbor sat very still, listening to the reeds breathe. Mia jingled the silver bell. Teo hugged his reed flute. “Tonight,” declared Frog, “we shall astonish every lily pad!”",
+      "when": [
+        {
+          "key": "nora.want",
+          "op": "eq",
+          "value": "quiet",
+          "at": "initial"
+        }
+      ]
+    },
+    {
+      "text": "At moonrise, Mia bounced on her toes while Teo cradled his reed flute. Mia wanted a dance concert; Teo wanted a lullaby. Across the pond, Nora rested her chin on the water’s edge. “Our music needs a puzzle,” said Frog. “Perhaps a song can tiptoe and twirl at once.”",
+      "when": [
+        {
+          "key": "nora.want",
+          "op": "eq",
+          "value": "lullaby",
+          "at": "initial"
+        }
+      ]
+    },
+    {
+      "text": "At moonrise, Nora sat on the floating lily stage, with a leaf boat bobbing nearby. Frog, Mia, and Teo planned to perform for her from the shore. Then Mia noticed Nora watching the empty water around her. “Maybe,” she whispered, “Nora does not want merely to listen.”",
+      "when": [
+        {
+          "key": "nora.want",
+          "op": "eq",
+          "value": "join",
+          "at": "initial"
+        }
+      ]
+    }
+  ],
+  "scenes": [
+    {
+      "scene": "notice_nora",
+      "role": "beat",
+      "variants": [
+        {
+          "text": "Frog stopped puffing and watched Nora closely. He discovered what she wanted: quiet, not a thunderous concert. His cheeks shrank to two thoughtful green buttons. “Oh,” he whispered. “The loudest thing tonight may be a blink.”",
+          "when": [
+            {
+              "key": "nora.want",
+              "op": "eq",
+              "value": "quiet",
+              "at": "after"
+            }
+          ]
+        },
+        {
+          "text": "Frog leaned toward the pond and watched Nora’s face. He discovered that she wanted a lullaby. “A song with sleepy slippers,” he said, while Mia’s feet began plotting dance steps and Teo’s flute gave a hopeful peep.",
+          "when": [
+            {
+              "key": "nora.want",
+              "op": "eq",
+              "value": "lullaby",
+              "at": "after"
+            }
+          ]
+        },
+        {
+          "text": "Frog peered across the water and discovered Nora wanted to join the concert. She was not waiting for a show; she was waiting for a place in it. “The lily has been saving a seat,” he said.",
+          "when": [
+            {
+              "key": "nora.want",
+              "op": "eq",
+              "value": "join",
+              "at": "after"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "scene": "tell_mia",
+      "role": "bridge",
+      "variants": [
+        {
+          "text": "Frog carried the news to Mia, who listened with one hand still resting on the bell.",
+          "when": [
+            {
+              "key": "mia.knows.nora.want",
+              "op": "ne",
+              "value": null,
+              "at": "after"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "scene": "tell_teo",
+      "role": "bridge",
+      "variants": [
+        {
+          "text": "Then Frog told Teo, who tucked Nora’s wish carefully beside the flute’s softest note.",
+          "when": [
+            {
+              "key": "teo.knows.nora.want",
+              "op": "ne",
+              "value": null,
+              "at": "after"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "scene": "choose_soft",
+      "role": "beat",
+      "variants": [
+        {
+          "text": "“No booming,” Frog announced. “A song small enough to fit inside a sleeping bubble.” Teo nodded and lowered his flute. Together they chose a hush-soft concert, while the pond leaned nearer without making a splash.",
+          "when": [
+            {
+              "key": "concert.style",
+              "op": "eq",
+              "value": "soft",
+              "at": "after"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "scene": "choose_duet",
+      "role": "beat",
+      "variants": [
+        {
+          "text": "Mia wanted feet that danced; Teo wanted ears that rested. “Then let the feet whisper,” Mia decided. They chose a dancing lullaby, a funny little duet where every twirl could end in a yawn.",
+          "when": [
+            {
+              "key": "concert.style",
+              "op": "eq",
+              "value": "duet",
+              "at": "after"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "scene": "invite_nora",
+      "role": "beat",
+      "variants": [
+        {
+          "text": "Mia stepped to the water’s edge. “Nora, would you join us?” she asked. Nora’s eyes brightened. The invitation floated between them like a tiny promise, and the lily stage waited beneath Nora’s hands.",
+          "when": [
+            {
+              "key": "invitation.sent",
+              "op": "eq",
+              "value": true,
+              "at": "after"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "scene": "lend_lily",
+      "role": "bridge",
+      "variants": [
+        {
+          "text": "Nora smiled and lent the floating lily to Frog, who climbed aboard with the solemn wobble of a frog wearing invisible trousers.",
+          "when": [
+            {
+              "key": "lily.owner",
+              "op": "eq",
+              "value": "frog",
+              "at": "after"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "scene": "choose_boat",
+      "role": "beat",
+      "variants": [
+        {
+          "text": "“A shore concert would leave Nora behind,” said Teo. So the friends chose a floating boat concert. Frog took the middle of the lily, Mia found the rhythm, and Teo readied a tune for the water itself.",
+          "when": [
+            {
+              "key": "concert.style",
+              "op": "eq",
+              "value": "boat",
+              "at": "after"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "scene": "trade_bell",
+      "role": "bridge",
+      "variants": [
+        {
+          "text": "Mia handed Teo the silver bell. “Make it sparkle, not shout,” she said. Teo gave it one careful jingle.",
+          "when": [
+            {
+              "key": "bell.owner",
+              "op": "eq",
+              "value": "teo",
+              "at": "after"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "scene": "perform_soft",
+      "role": "beat",
+      "variants": [
+        {
+          "text": "Frog sang so softly that the notes seemed to wear moss slippers. Teo’s flute breathed underneath. Nora did not cover her ears; she opened them wider. The tiny concert curled across the pond like a warm green ribbon.",
+          "when": [
+            {
+              "key": "concert.style",
+              "op": "eq",
+              "value": "soft",
+              "at": "before"
+            },
+            {
+              "key": "frog.performed",
+              "op": "eq",
+              "value": true,
+              "at": "after"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "scene": "perform_duet",
+      "role": "beat",
+      "variants": [
+        {
+          "text": "Mia danced in quiet hops while Teo played the lullaby. The bell twinkled between verses, and Frog sang the grandest gentle note he could manage. Nora listened, smiling, as the music learned to both tiptoe and twirl.",
+          "when": [
+            {
+              "key": "concert.style",
+              "op": "eq",
+              "value": "duet",
+              "at": "before"
+            },
+            {
+              "key": "frog.performed",
+              "op": "eq",
+              "value": true,
+              "at": "after"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "scene": "perform_boat",
+      "role": "beat",
+      "variants": [
+        {
+          "text": "Frog sang from the lily’s middle as Nora joined the drifting performance. Mia tapped the shore and Teo played toward the moon. The leaf boat bobbed behind them, following like a very small royal carriage with no royal idea where it was going.",
+          "when": [
+            {
+              "key": "concert.style",
+              "op": "eq",
+              "value": "boat",
+              "at": "before"
+            },
+            {
+              "key": "frog.performed",
+              "op": "eq",
+              "value": true,
+              "at": "after"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "scene": "quiet_bow",
+      "role": "beat",
+      "variants": [
+        {
+          "text": "When Frog finished, Nora answered with one round silver bubble. It rose beside the lily, shining in the moonlight, and Frog’s enormous smile became quiet enough to join the song.",
+          "when": [
+            {
+              "key": "concert.style",
+              "op": "eq",
+              "value": "soft",
+              "at": "after"
+            },
+            {
+              "key": "frog.performed",
+              "op": "eq",
+              "value": true,
+              "at": "after"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "scene": "duet_bow",
+      "role": "beat",
+      "variants": [
+        {
+          "text": "When the last note curled away, Nora tapped the water in time. Ripples spread like dancing commas, and Mia bowed so deeply that her nose nearly greeted a frog toe.",
+          "when": [
+            {
+              "key": "concert.style",
+              "op": "eq",
+              "value": "duet",
+              "at": "after"
+            },
+            {
+              "key": "frog.performed",
+              "op": "eq",
+              "value": true,
+              "at": "after"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "scene": "boat_bow",
+      "role": "beat",
+      "variants": [
+        {
+          "text": "Nora glided past on the lily while Frog sang from its middle. The leaf boat bumped along behind like a very small royal carriage, and the moon followed every wobbly turn.",
+          "when": [
+            {
+              "key": "concert.style",
+              "op": "eq",
+              "value": "boat",
+              "at": "after"
+            },
+            {
+              "key": "frog.performed",
+              "op": "eq",
+              "value": true,
+              "at": "after"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "endings": [
+    {
+      "text": "A single silver bubble rose beside the lily. Nora’s eyelids lifted, Frog’s toes curled with pride, and the pond held the little song as carefully as a pocket holds a button.",
+      "when": [
+        {
+          "key": "concert.style",
+          "op": "eq",
+          "value": "soft",
+          "at": "after"
+        },
+        {
+          "key": "frog.performed",
+          "op": "eq",
+          "value": true,
+          "at": "after"
+        },
+        {
+          "key": "nora.response",
+          "op": "eq",
+          "value": "bubble",
+          "at": "after"
+        }
+      ]
+    },
+    {
+      "text": "The soft song vanished into the reeds. Then one round bubble appeared beside Nora, shining like the pond had whispered back with a perfectly polished hello.",
+      "when": [
+        {
+          "key": "concert.style",
+          "op": "eq",
+          "value": "soft",
+          "at": "after"
+        },
+        {
+          "key": "frog.performed",
+          "op": "eq",
+          "value": true,
+          "at": "after"
+        },
+        {
+          "key": "nora.response",
+          "op": "eq",
+          "value": "bubble",
+          "at": "after"
+        }
+      ]
+    },
+    {
+      "text": "Mia’s feet pattered, Teo’s bell twinkled, and Nora tapped the water until the ripples looked like dancing commas. Frog bowed, accidentally wobbled, and made the commas wiggle harder.",
+      "when": [
+        {
+          "key": "concert.style",
+          "op": "eq",
+          "value": "duet",
+          "at": "after"
+        },
+        {
+          "key": "frog.performed",
+          "op": "eq",
+          "value": true,
+          "at": "after"
+        },
+        {
+          "key": "nora.response",
+          "op": "eq",
+          "value": "ripples",
+          "at": "after"
+        }
+      ]
+    },
+    {
+      "text": "The final lullaby-note floated away while Nora tapped a bright little rhythm. Ripples danced across the pond, and Mia’s grin was nearly as wide as Frog’s.",
+      "when": [
+        {
+          "key": "concert.style",
+          "op": "eq",
+          "value": "duet",
+          "at": "after"
+        },
+        {
+          "key": "frog.performed",
+          "op": "eq",
+          "value": true,
+          "at": "after"
+        },
+        {
+          "key": "nora.response",
+          "op": "eq",
+          "value": "ripples",
+          "at": "after"
+        }
+      ]
+    },
+    {
+      "text": "Nora glided past on the lily while Frog sang from its middle. The leaf boat bumped along behind like a very small royal carriage, carrying no crown—only a splendid wobble.",
+      "when": [
+        {
+          "key": "concert.style",
+          "op": "eq",
+          "value": "boat",
+          "at": "after"
+        },
+        {
+          "key": "frog.performed",
+          "op": "eq",
+          "value": true,
+          "at": "after"
+        },
+        {
+          "key": "nora.response",
+          "op": "eq",
+          "value": "parade",
+          "at": "after"
+        }
+      ]
+    },
+    {
+      "text": "The lily made a slow circle, with Nora smiling aboard and Frog singing in the middle. Behind them, the leaf boat bobbed after its queenly captain, one tiny bump at a time.",
+      "when": [
+        {
+          "key": "concert.style",
+          "op": "eq",
+          "value": "boat",
+          "at": "after"
+        },
+        {
+          "key": "frog.performed",
+          "op": "eq",
+          "value": true,
+          "at": "after"
+        },
+        {
+          "key": "nora.response",
+          "op": "eq",
+          "value": "parade",
+          "at": "after"
+        }
+      ]
+    }
+  ],
+  "lexicon": []
+}

@@ -1,0 +1,1867 @@
+[
+  {
+    "seed": 0,
+    "title": "The Museum of Small Things",
+    "initial": {
+      "ada.location": "museum_gallery",
+      "bo.location": "museum_gallery",
+      "pip.location": "museum_gallery",
+      "mara.location": "museum_gallery",
+      "owner_elsie.location": "courtyard",
+      "ada.memes.Curiosity": 2,
+      "ada.memes.Care": 1,
+      "bo.memes.Craft": 2,
+      "bo.memes.Curiosity": 1,
+      "pip.memes.Curiosity": 2,
+      "mara.memes.Care": 2,
+      "ada.knows.tin_whistle.condition": null,
+      "ada.knows.tin_whistle.mark": null,
+      "pip.knows.tin_whistle.mark": null,
+      "ada.knows.owner_elsie.request": null,
+      "bo.knows.display_case.space": null,
+      "mara.knows.owner_elsie.request": null,
+      "borrowed_button.location": "museum_gallery",
+      "old_key.location": "museum_gallery",
+      "cracked_marble.location": "museum_gallery",
+      "tin_whistle.location": "museum_gallery",
+      "borrowed_button.owner": "museum",
+      "old_key.owner": "museum",
+      "cracked_marble.owner": "museum",
+      "tin_whistle.owner": "owner_elsie",
+      "borrowed_button.condition": "sound",
+      "old_key.condition": "worn",
+      "cracked_marble.condition": "cracked",
+      "tin_whistle.condition": "sound",
+      "borrowed_button.mark": "thread_mark",
+      "old_key.mark": "locksmith_mark",
+      "cracked_marble.mark": "quarry_mark",
+      "tin_whistle.mark": "family_mark",
+      "owner_elsie.request": "pad",
+      "owner_elsie.approved": false,
+      "owner_letter.location": "worktable",
+      "velvet_pad.owner": "mara",
+      "lamp.owner": "mara",
+      "returning_box.owner": "mara",
+      "velvet_pad.location": "museum_gallery",
+      "lamp.location": "museum_gallery",
+      "returning_box.location": "museum_gallery",
+      "label_cards.location": "worktable",
+      "display_case.space": "roomy",
+      "display_case.focus": "none",
+      "display_case.stable": false,
+      "display_case.open": false,
+      "display_case.label_accurate": false,
+      "display_case.borrowed_displayed": false,
+      "display_case.pad_used": false,
+      "display_case.lamp_used": false,
+      "museum.borrowed_id": "tin_whistle",
+      "museum.needed_tool": "pad",
+      "museum.resolution": "none",
+      "museum.open": false
+    },
+    "final": {
+      "ada.location": "museum_gallery",
+      "bo.location": "museum_gallery",
+      "pip.location": "museum_gallery",
+      "mara.location": "museum_gallery",
+      "owner_elsie.location": "courtyard",
+      "ada.memes.Curiosity": 2,
+      "ada.memes.Care": 1,
+      "bo.memes.Craft": 3,
+      "bo.memes.Curiosity": 1,
+      "pip.memes.Curiosity": 2,
+      "mara.memes.Care": 2,
+      "ada.knows.tin_whistle.condition": "sound",
+      "ada.knows.tin_whistle.mark": "family_mark",
+      "pip.knows.tin_whistle.mark": "family_mark",
+      "ada.knows.owner_elsie.request": "pad",
+      "bo.knows.display_case.space": "roomy",
+      "mara.knows.owner_elsie.request": "pad",
+      "borrowed_button.location": "museum_gallery",
+      "old_key.location": "museum_gallery",
+      "cracked_marble.location": "museum_gallery",
+      "tin_whistle.location": "display_case",
+      "borrowed_button.owner": "museum",
+      "old_key.owner": "museum",
+      "cracked_marble.owner": "museum",
+      "tin_whistle.owner": "owner_elsie",
+      "borrowed_button.condition": "sound",
+      "old_key.condition": "worn",
+      "cracked_marble.condition": "cracked",
+      "tin_whistle.condition": "sound",
+      "borrowed_button.mark": "thread_mark",
+      "old_key.mark": "locksmith_mark",
+      "cracked_marble.mark": "quarry_mark",
+      "tin_whistle.mark": "family_mark",
+      "owner_elsie.request": "pad",
+      "owner_elsie.approved": true,
+      "owner_letter.location": "worktable",
+      "velvet_pad.owner": "ada",
+      "lamp.owner": "bo",
+      "returning_box.owner": "mara",
+      "velvet_pad.location": "museum_gallery",
+      "lamp.location": "museum_gallery",
+      "returning_box.location": "museum_gallery",
+      "label_cards.location": "display_case",
+      "display_case.space": "roomy",
+      "display_case.focus": "tin_whistle",
+      "display_case.stable": true,
+      "display_case.open": true,
+      "display_case.label_accurate": true,
+      "display_case.borrowed_displayed": true,
+      "display_case.pad_used": true,
+      "display_case.lamp_used": false,
+      "museum.borrowed_id": "tin_whistle",
+      "museum.needed_tool": "pad",
+      "museum.resolution": "displayed",
+      "museum.open": true
+    },
+    "events": [
+      {
+        "id": 1,
+        "scene": "inspect_borrowed_object",
+        "kernel": "Observe",
+        "actors": [
+          "ada"
+        ],
+        "summary": "Ada inspected the borrowed object's condition",
+        "causes": [],
+        "requires": [
+          {
+            "key": "ada.location",
+            "op": "eq",
+            "value": "museum_gallery"
+          },
+          {
+            "key": "tin_whistle.location",
+            "op": "eq",
+            "value": "museum_gallery"
+          },
+          {
+            "key": "ada.memes.Curiosity",
+            "op": "ge",
+            "value": 1
+          }
+        ],
+        "changes": {
+          "ada.knows.tin_whistle.condition": {
+            "before": null,
+            "after": "sound"
+          }
+        }
+      },
+      {
+        "id": 2,
+        "scene": "lend_lamp",
+        "kernel": "Transfer",
+        "actors": [
+          "mara",
+          "bo"
+        ],
+        "summary": "Mara lent Bo a small lamp for the display",
+        "causes": [],
+        "requires": [
+          {
+            "key": "lamp.owner",
+            "op": "eq",
+            "value": "mara"
+          },
+          {
+            "key": "mara.memes.Care",
+            "op": "ge",
+            "value": 1
+          },
+          {
+            "key": "lamp.location",
+            "op": "eq",
+            "value": "museum_gallery"
+          }
+        ],
+        "changes": {
+          "lamp.owner": {
+            "before": "mara",
+            "after": "bo"
+          }
+        }
+      },
+      {
+        "id": 3,
+        "scene": "test_display_case",
+        "kernel": "observation",
+        "actors": [
+          "bo",
+          "mara",
+          "display_case"
+        ],
+        "summary": "Bo tested how much room the display case had",
+        "causes": [],
+        "requires": [
+          {
+            "key": "bo.location",
+            "op": "eq",
+            "value": "museum_gallery"
+          },
+          {
+            "key": "mara.location",
+            "op": "eq",
+            "value": "museum_gallery"
+          }
+        ],
+        "changes": {
+          "bo.memes.Craft": {
+            "before": 2,
+            "after": 3
+          },
+          "bo.knows.display_case.space": {
+            "before": null,
+            "after": "roomy"
+          }
+        }
+      },
+      {
+        "id": 4,
+        "scene": "lend_velvet_pad",
+        "kernel": "Transfer",
+        "actors": [
+          "mara",
+          "ada"
+        ],
+        "summary": "Mara lent Ada a velvet pad for careful handling",
+        "causes": [],
+        "requires": [
+          {
+            "key": "velvet_pad.owner",
+            "op": "eq",
+            "value": "mara"
+          },
+          {
+            "key": "mara.memes.Care",
+            "op": "ge",
+            "value": 1
+          },
+          {
+            "key": "velvet_pad.location",
+            "op": "eq",
+            "value": "museum_gallery"
+          }
+        ],
+        "changes": {
+          "velvet_pad.owner": {
+            "before": "mara",
+            "after": "ada"
+          }
+        }
+      },
+      {
+        "id": 5,
+        "scene": "read_owner_letter",
+        "kernel": "care",
+        "actors": [
+          "mara",
+          "ada",
+          "owner_letter"
+        ],
+        "summary": "Mara read Elsie's request aloud with Ada",
+        "causes": [],
+        "requires": [
+          {
+            "key": "mara.location",
+            "op": "eq",
+            "value": "museum_gallery"
+          },
+          {
+            "key": "ada.location",
+            "op": "eq",
+            "value": "museum_gallery"
+          },
+          {
+            "key": "owner_letter.location",
+            "op": "eq",
+            "value": "worktable"
+          }
+        ],
+        "changes": {
+          "ada.knows.owner_elsie.request": {
+            "before": null,
+            "after": "pad"
+          },
+          "mara.knows.owner_elsie.request": {
+            "before": null,
+            "after": "pad"
+          },
+          "owner_elsie.approved": {
+            "before": false,
+            "after": true
+          }
+        }
+      },
+      {
+        "id": 6,
+        "scene": "pip_notices_mark",
+        "kernel": "Observe",
+        "actors": [
+          "pip"
+        ],
+        "summary": "Pip noticed the small mark on the borrowed object",
+        "causes": [],
+        "requires": [
+          {
+            "key": "pip.location",
+            "op": "eq",
+            "value": "museum_gallery"
+          },
+          {
+            "key": "tin_whistle.location",
+            "op": "eq",
+            "value": "museum_gallery"
+          },
+          {
+            "key": "pip.memes.Curiosity",
+            "op": "ge",
+            "value": 1
+          }
+        ],
+        "changes": {
+          "pip.knows.tin_whistle.mark": {
+            "before": null,
+            "after": "family_mark"
+          }
+        }
+      },
+      {
+        "id": 7,
+        "scene": "pip_shares_mark",
+        "kernel": "Tell",
+        "actors": [
+          "pip",
+          "ada"
+        ],
+        "summary": "Pip showed Ada the mark he had found",
+        "causes": [
+          6
+        ],
+        "requires": [
+          {
+            "key": "pip.knows.tin_whistle.mark",
+            "op": "ne",
+            "value": null
+          },
+          {
+            "key": "ada.location",
+            "op": "eq",
+            "value": "museum_gallery"
+          },
+          {
+            "key": "pip.location",
+            "op": "eq",
+            "value": "museum_gallery"
+          }
+        ],
+        "changes": {
+          "ada.knows.tin_whistle.mark": {
+            "before": null,
+            "after": "family_mark"
+          }
+        }
+      },
+      {
+        "id": 8,
+        "scene": "prepare_padded_display",
+        "kernel": "care",
+        "actors": [
+          "ada",
+          "bo",
+          "display_case",
+          "velvet_pad"
+        ],
+        "summary": "Ada and Bo set the borrowed treasure on its velvet pad",
+        "causes": [
+          1,
+          4,
+          5
+        ],
+        "requires": [
+          {
+            "key": "ada.knows.owner_elsie.request",
+            "op": "in",
+            "value": [
+              "display",
+              "pad"
+            ]
+          },
+          {
+            "key": "museum.needed_tool",
+            "op": "eq",
+            "value": "pad"
+          },
+          {
+            "key": "owner_elsie.approved",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "ada.knows.tin_whistle.condition",
+            "op": "ne",
+            "value": null
+          },
+          {
+            "key": "display_case.space",
+            "op": "eq",
+            "value": "roomy"
+          },
+          {
+            "key": "velvet_pad.owner",
+            "op": "eq",
+            "value": "ada"
+          }
+        ],
+        "changes": {
+          "tin_whistle.location": {
+            "before": "museum_gallery",
+            "after": "display_case"
+          },
+          "display_case.focus": {
+            "before": "none",
+            "after": "tin_whistle"
+          },
+          "display_case.borrowed_displayed": {
+            "before": false,
+            "after": true
+          },
+          "display_case.pad_used": {
+            "before": false,
+            "after": true
+          },
+          "museum.resolution": {
+            "before": "none",
+            "after": "displayed"
+          }
+        }
+      },
+      {
+        "id": 9,
+        "scene": "write_accurate_label",
+        "kernel": "craft",
+        "actors": [
+          "ada",
+          "bo",
+          "label_cards"
+        ],
+        "summary": "Ada and Bo wrote a label that named the mark and Elsie's wishes",
+        "causes": [
+          5,
+          7,
+          8
+        ],
+        "requires": [
+          {
+            "key": "ada.knows.tin_whistle.mark",
+            "op": "ne",
+            "value": null
+          },
+          {
+            "key": "ada.knows.owner_elsie.request",
+            "op": "ne",
+            "value": null
+          },
+          {
+            "key": "display_case.focus",
+            "op": "ne",
+            "value": "none"
+          }
+        ],
+        "changes": {
+          "label_cards.location": {
+            "before": "worktable",
+            "after": "display_case"
+          },
+          "display_case.label_accurate": {
+            "before": false,
+            "after": true
+          }
+        }
+      },
+      {
+        "id": 10,
+        "scene": "stabilize_arrangement",
+        "kernel": "craft",
+        "actors": [
+          "bo",
+          "ada",
+          "display_case"
+        ],
+        "summary": "Bo checked the arrangement while Ada held the case steady",
+        "causes": [
+          8,
+          9
+        ],
+        "requires": [
+          {
+            "key": "display_case.focus",
+            "op": "ne",
+            "value": "none"
+          },
+          {
+            "key": "display_case.label_accurate",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "display_case.space",
+            "op": "eq",
+            "value": "roomy"
+          },
+          {
+            "key": "museum.resolution",
+            "op": "in",
+            "value": [
+              "displayed",
+              "returned"
+            ]
+          }
+        ],
+        "changes": {
+          "display_case.stable": {
+            "before": false,
+            "after": true
+          }
+        }
+      },
+      {
+        "id": 11,
+        "scene": "open_small_things_exhibit",
+        "kernel": "cooperation",
+        "actors": [
+          "mara",
+          "ada",
+          "bo",
+          "display_case"
+        ],
+        "summary": "Mara opened the Museum of Small Things exhibit",
+        "causes": [
+          8,
+          9,
+          10
+        ],
+        "requires": [
+          {
+            "key": "display_case.label_accurate",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "display_case.stable",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "museum.resolution",
+            "op": "in",
+            "value": [
+              "displayed",
+              "returned"
+            ]
+          }
+        ],
+        "changes": {
+          "display_case.open": {
+            "before": false,
+            "after": true
+          },
+          "museum.open": {
+            "before": false,
+            "after": true
+          }
+        }
+      }
+    ]
+  },
+  {
+    "seed": 1,
+    "title": "The Museum of Small Things",
+    "initial": {
+      "ada.location": "museum_gallery",
+      "bo.location": "museum_gallery",
+      "pip.location": "museum_gallery",
+      "mara.location": "museum_gallery",
+      "owner_elsie.location": "courtyard",
+      "ada.memes.Curiosity": 2,
+      "ada.memes.Care": 1,
+      "bo.memes.Craft": 2,
+      "bo.memes.Curiosity": 1,
+      "pip.memes.Curiosity": 2,
+      "mara.memes.Care": 2,
+      "ada.knows.borrowed_button.condition": null,
+      "ada.knows.borrowed_button.mark": null,
+      "pip.knows.borrowed_button.mark": null,
+      "ada.knows.owner_elsie.request": null,
+      "bo.knows.display_case.space": null,
+      "mara.knows.owner_elsie.request": null,
+      "borrowed_button.location": "museum_gallery",
+      "old_key.location": "museum_gallery",
+      "cracked_marble.location": "museum_gallery",
+      "tin_whistle.location": "museum_gallery",
+      "borrowed_button.owner": "owner_elsie",
+      "old_key.owner": "museum",
+      "cracked_marble.owner": "museum",
+      "tin_whistle.owner": "museum",
+      "borrowed_button.condition": "sound",
+      "old_key.condition": "worn",
+      "cracked_marble.condition": "cracked",
+      "tin_whistle.condition": "sound",
+      "borrowed_button.mark": "maker_mark",
+      "old_key.mark": "locksmith_mark",
+      "cracked_marble.mark": "quarry_mark",
+      "tin_whistle.mark": "music_mark",
+      "owner_elsie.request": "return",
+      "owner_elsie.approved": false,
+      "owner_letter.location": "worktable",
+      "velvet_pad.owner": "mara",
+      "lamp.owner": "mara",
+      "returning_box.owner": "mara",
+      "velvet_pad.location": "museum_gallery",
+      "lamp.location": "museum_gallery",
+      "returning_box.location": "museum_gallery",
+      "label_cards.location": "worktable",
+      "display_case.space": "crowded",
+      "display_case.focus": "none",
+      "display_case.stable": false,
+      "display_case.open": false,
+      "display_case.label_accurate": false,
+      "display_case.borrowed_displayed": false,
+      "display_case.pad_used": false,
+      "display_case.lamp_used": false,
+      "museum.borrowed_id": "borrowed_button",
+      "museum.needed_tool": "lamp",
+      "museum.resolution": "none",
+      "museum.open": false
+    },
+    "final": {
+      "ada.location": "museum_gallery",
+      "bo.location": "museum_gallery",
+      "pip.location": "museum_gallery",
+      "mara.location": "museum_gallery",
+      "owner_elsie.location": "courtyard",
+      "ada.memes.Curiosity": 2,
+      "ada.memes.Care": 1,
+      "bo.memes.Craft": 4,
+      "bo.memes.Curiosity": 1,
+      "pip.memes.Curiosity": 2,
+      "mara.memes.Care": 2,
+      "ada.knows.borrowed_button.condition": "sound",
+      "ada.knows.borrowed_button.mark": "maker_mark",
+      "pip.knows.borrowed_button.mark": "maker_mark",
+      "ada.knows.owner_elsie.request": "return",
+      "bo.knows.display_case.space": "crowded",
+      "mara.knows.owner_elsie.request": "return",
+      "borrowed_button.location": "courtyard",
+      "old_key.location": "display_case",
+      "cracked_marble.location": "museum_gallery",
+      "tin_whistle.location": "museum_gallery",
+      "borrowed_button.owner": "owner_elsie",
+      "old_key.owner": "museum",
+      "cracked_marble.owner": "museum",
+      "tin_whistle.owner": "museum",
+      "borrowed_button.condition": "sound",
+      "old_key.condition": "worn",
+      "cracked_marble.condition": "cracked",
+      "tin_whistle.condition": "sound",
+      "borrowed_button.mark": "maker_mark",
+      "old_key.mark": "locksmith_mark",
+      "cracked_marble.mark": "quarry_mark",
+      "tin_whistle.mark": "music_mark",
+      "owner_elsie.request": "return",
+      "owner_elsie.approved": true,
+      "owner_letter.location": "worktable",
+      "velvet_pad.owner": "ada",
+      "lamp.owner": "bo",
+      "returning_box.owner": "mara",
+      "velvet_pad.location": "museum_gallery",
+      "lamp.location": "museum_gallery",
+      "returning_box.location": "courtyard",
+      "label_cards.location": "display_case",
+      "display_case.space": "roomy",
+      "display_case.focus": "old_key",
+      "display_case.stable": true,
+      "display_case.open": true,
+      "display_case.label_accurate": true,
+      "display_case.borrowed_displayed": false,
+      "display_case.pad_used": false,
+      "display_case.lamp_used": false,
+      "museum.borrowed_id": "borrowed_button",
+      "museum.needed_tool": "lamp",
+      "museum.resolution": "returned",
+      "museum.open": true
+    },
+    "events": [
+      {
+        "id": 1,
+        "scene": "pip_notices_mark",
+        "kernel": "Observe",
+        "actors": [
+          "pip"
+        ],
+        "summary": "Pip noticed the small mark on the borrowed object",
+        "causes": [],
+        "requires": [
+          {
+            "key": "pip.location",
+            "op": "eq",
+            "value": "museum_gallery"
+          },
+          {
+            "key": "borrowed_button.location",
+            "op": "eq",
+            "value": "museum_gallery"
+          },
+          {
+            "key": "pip.memes.Curiosity",
+            "op": "ge",
+            "value": 1
+          }
+        ],
+        "changes": {
+          "pip.knows.borrowed_button.mark": {
+            "before": null,
+            "after": "maker_mark"
+          }
+        }
+      },
+      {
+        "id": 2,
+        "scene": "lend_velvet_pad",
+        "kernel": "Transfer",
+        "actors": [
+          "mara",
+          "ada"
+        ],
+        "summary": "Mara lent Ada a velvet pad for careful handling",
+        "causes": [],
+        "requires": [
+          {
+            "key": "velvet_pad.owner",
+            "op": "eq",
+            "value": "mara"
+          },
+          {
+            "key": "mara.memes.Care",
+            "op": "ge",
+            "value": 1
+          },
+          {
+            "key": "velvet_pad.location",
+            "op": "eq",
+            "value": "museum_gallery"
+          }
+        ],
+        "changes": {
+          "velvet_pad.owner": {
+            "before": "mara",
+            "after": "ada"
+          }
+        }
+      },
+      {
+        "id": 3,
+        "scene": "inspect_borrowed_object",
+        "kernel": "Observe",
+        "actors": [
+          "ada"
+        ],
+        "summary": "Ada inspected the borrowed object's condition",
+        "causes": [],
+        "requires": [
+          {
+            "key": "ada.location",
+            "op": "eq",
+            "value": "museum_gallery"
+          },
+          {
+            "key": "borrowed_button.location",
+            "op": "eq",
+            "value": "museum_gallery"
+          },
+          {
+            "key": "ada.memes.Curiosity",
+            "op": "ge",
+            "value": 1
+          }
+        ],
+        "changes": {
+          "ada.knows.borrowed_button.condition": {
+            "before": null,
+            "after": "sound"
+          }
+        }
+      },
+      {
+        "id": 4,
+        "scene": "pip_shares_mark",
+        "kernel": "Tell",
+        "actors": [
+          "pip",
+          "ada"
+        ],
+        "summary": "Pip showed Ada the mark he had found",
+        "causes": [
+          1
+        ],
+        "requires": [
+          {
+            "key": "pip.knows.borrowed_button.mark",
+            "op": "ne",
+            "value": null
+          },
+          {
+            "key": "ada.location",
+            "op": "eq",
+            "value": "museum_gallery"
+          },
+          {
+            "key": "pip.location",
+            "op": "eq",
+            "value": "museum_gallery"
+          }
+        ],
+        "changes": {
+          "ada.knows.borrowed_button.mark": {
+            "before": null,
+            "after": "maker_mark"
+          }
+        }
+      },
+      {
+        "id": 5,
+        "scene": "test_display_case",
+        "kernel": "observation",
+        "actors": [
+          "bo",
+          "mara",
+          "display_case"
+        ],
+        "summary": "Bo tested how much room the display case had",
+        "causes": [],
+        "requires": [
+          {
+            "key": "bo.location",
+            "op": "eq",
+            "value": "museum_gallery"
+          },
+          {
+            "key": "mara.location",
+            "op": "eq",
+            "value": "museum_gallery"
+          }
+        ],
+        "changes": {
+          "bo.memes.Craft": {
+            "before": 2,
+            "after": 3
+          },
+          "bo.knows.display_case.space": {
+            "before": null,
+            "after": "crowded"
+          }
+        }
+      },
+      {
+        "id": 6,
+        "scene": "clear_case_space",
+        "kernel": "cooperation",
+        "actors": [
+          "ada",
+          "bo",
+          "pip",
+          "display_case"
+        ],
+        "summary": "The children removed extra objects to give the case breathing room",
+        "causes": [
+          3,
+          5
+        ],
+        "requires": [
+          {
+            "key": "ada.location",
+            "op": "eq",
+            "value": "museum_gallery"
+          },
+          {
+            "key": "bo.location",
+            "op": "eq",
+            "value": "museum_gallery"
+          },
+          {
+            "key": "pip.location",
+            "op": "eq",
+            "value": "museum_gallery"
+          },
+          {
+            "key": "bo.knows.display_case.space",
+            "op": "eq",
+            "value": "crowded"
+          },
+          {
+            "key": "ada.knows.borrowed_button.condition",
+            "op": "ne",
+            "value": null
+          }
+        ],
+        "changes": {
+          "bo.memes.Craft": {
+            "before": 3,
+            "after": 4
+          },
+          "display_case.space": {
+            "before": "crowded",
+            "after": "roomy"
+          }
+        }
+      },
+      {
+        "id": 7,
+        "scene": "lend_lamp",
+        "kernel": "Transfer",
+        "actors": [
+          "mara",
+          "bo"
+        ],
+        "summary": "Mara lent Bo a small lamp for the display",
+        "causes": [],
+        "requires": [
+          {
+            "key": "lamp.owner",
+            "op": "eq",
+            "value": "mara"
+          },
+          {
+            "key": "mara.memes.Care",
+            "op": "ge",
+            "value": 1
+          },
+          {
+            "key": "lamp.location",
+            "op": "eq",
+            "value": "museum_gallery"
+          }
+        ],
+        "changes": {
+          "lamp.owner": {
+            "before": "mara",
+            "after": "bo"
+          }
+        }
+      },
+      {
+        "id": 8,
+        "scene": "read_owner_letter",
+        "kernel": "care",
+        "actors": [
+          "mara",
+          "ada",
+          "owner_letter"
+        ],
+        "summary": "Mara read Elsie's request aloud with Ada",
+        "causes": [],
+        "requires": [
+          {
+            "key": "mara.location",
+            "op": "eq",
+            "value": "museum_gallery"
+          },
+          {
+            "key": "ada.location",
+            "op": "eq",
+            "value": "museum_gallery"
+          },
+          {
+            "key": "owner_letter.location",
+            "op": "eq",
+            "value": "worktable"
+          }
+        ],
+        "changes": {
+          "ada.knows.owner_elsie.request": {
+            "before": null,
+            "after": "return"
+          },
+          "mara.knows.owner_elsie.request": {
+            "before": null,
+            "after": "return"
+          },
+          "owner_elsie.approved": {
+            "before": false,
+            "after": true
+          }
+        }
+      },
+      {
+        "id": 9,
+        "scene": "prepare_key_exhibit",
+        "kernel": "cooperation",
+        "actors": [
+          "ada",
+          "bo",
+          "pip",
+          "old_key",
+          "display_case"
+        ],
+        "summary": "The team made the worn old key the exhibit's new centerpiece",
+        "causes": [
+          3,
+          6,
+          8
+        ],
+        "requires": [
+          {
+            "key": "ada.knows.owner_elsie.request",
+            "op": "eq",
+            "value": "return"
+          },
+          {
+            "key": "ada.knows.borrowed_button.condition",
+            "op": "ne",
+            "value": null
+          },
+          {
+            "key": "display_case.space",
+            "op": "eq",
+            "value": "roomy"
+          },
+          {
+            "key": "old_key.location",
+            "op": "eq",
+            "value": "museum_gallery"
+          }
+        ],
+        "changes": {
+          "old_key.location": {
+            "before": "museum_gallery",
+            "after": "display_case"
+          },
+          "display_case.focus": {
+            "before": "none",
+            "after": "old_key"
+          }
+        }
+      },
+      {
+        "id": 10,
+        "scene": "return_borrowed_object",
+        "kernel": "care",
+        "actors": [
+          "ada",
+          "mara",
+          "returning_box"
+        ],
+        "summary": "Mara and Ada packed the borrowed object safely to return to Elsie",
+        "causes": [
+          8,
+          9
+        ],
+        "requires": [
+          {
+            "key": "ada.knows.owner_elsie.request",
+            "op": "eq",
+            "value": "return"
+          },
+          {
+            "key": "display_case.focus",
+            "op": "eq",
+            "value": "old_key"
+          },
+          {
+            "key": "returning_box.location",
+            "op": "eq",
+            "value": "museum_gallery"
+          },
+          {
+            "key": "borrowed_button.location",
+            "op": "eq",
+            "value": "museum_gallery"
+          }
+        ],
+        "changes": {
+          "borrowed_button.location": {
+            "before": "museum_gallery",
+            "after": "courtyard"
+          },
+          "returning_box.location": {
+            "before": "museum_gallery",
+            "after": "courtyard"
+          },
+          "museum.resolution": {
+            "before": "none",
+            "after": "returned"
+          }
+        }
+      },
+      {
+        "id": 11,
+        "scene": "write_accurate_label",
+        "kernel": "craft",
+        "actors": [
+          "ada",
+          "bo",
+          "label_cards"
+        ],
+        "summary": "Ada and Bo wrote a label that named the mark and Elsie's wishes",
+        "causes": [
+          4,
+          8,
+          9
+        ],
+        "requires": [
+          {
+            "key": "ada.knows.borrowed_button.mark",
+            "op": "ne",
+            "value": null
+          },
+          {
+            "key": "ada.knows.owner_elsie.request",
+            "op": "ne",
+            "value": null
+          },
+          {
+            "key": "display_case.focus",
+            "op": "ne",
+            "value": "none"
+          }
+        ],
+        "changes": {
+          "label_cards.location": {
+            "before": "worktable",
+            "after": "display_case"
+          },
+          "display_case.label_accurate": {
+            "before": false,
+            "after": true
+          }
+        }
+      },
+      {
+        "id": 12,
+        "scene": "stabilize_arrangement",
+        "kernel": "craft",
+        "actors": [
+          "bo",
+          "ada",
+          "display_case"
+        ],
+        "summary": "Bo checked the arrangement while Ada held the case steady",
+        "causes": [
+          6,
+          9,
+          10,
+          11
+        ],
+        "requires": [
+          {
+            "key": "display_case.focus",
+            "op": "ne",
+            "value": "none"
+          },
+          {
+            "key": "display_case.label_accurate",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "display_case.space",
+            "op": "eq",
+            "value": "roomy"
+          },
+          {
+            "key": "museum.resolution",
+            "op": "in",
+            "value": [
+              "displayed",
+              "returned"
+            ]
+          }
+        ],
+        "changes": {
+          "display_case.stable": {
+            "before": false,
+            "after": true
+          }
+        }
+      },
+      {
+        "id": 13,
+        "scene": "open_small_things_exhibit",
+        "kernel": "cooperation",
+        "actors": [
+          "mara",
+          "ada",
+          "bo",
+          "display_case"
+        ],
+        "summary": "Mara opened the Museum of Small Things exhibit",
+        "causes": [
+          10,
+          11,
+          12
+        ],
+        "requires": [
+          {
+            "key": "display_case.label_accurate",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "display_case.stable",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "museum.resolution",
+            "op": "in",
+            "value": [
+              "displayed",
+              "returned"
+            ]
+          }
+        ],
+        "changes": {
+          "display_case.open": {
+            "before": false,
+            "after": true
+          },
+          "museum.open": {
+            "before": false,
+            "after": true
+          }
+        }
+      }
+    ]
+  },
+  {
+    "seed": 2,
+    "title": "The Museum of Small Things",
+    "initial": {
+      "ada.location": "museum_gallery",
+      "bo.location": "museum_gallery",
+      "pip.location": "museum_gallery",
+      "mara.location": "museum_gallery",
+      "owner_elsie.location": "courtyard",
+      "ada.memes.Curiosity": 2,
+      "ada.memes.Care": 1,
+      "bo.memes.Craft": 2,
+      "bo.memes.Curiosity": 1,
+      "pip.memes.Curiosity": 2,
+      "mara.memes.Care": 2,
+      "ada.knows.borrowed_button.condition": null,
+      "ada.knows.borrowed_button.mark": null,
+      "pip.knows.borrowed_button.mark": null,
+      "ada.knows.owner_elsie.request": null,
+      "bo.knows.display_case.space": null,
+      "mara.knows.owner_elsie.request": null,
+      "borrowed_button.location": "museum_gallery",
+      "old_key.location": "museum_gallery",
+      "cracked_marble.location": "museum_gallery",
+      "tin_whistle.location": "museum_gallery",
+      "borrowed_button.owner": "owner_elsie",
+      "old_key.owner": "museum",
+      "cracked_marble.owner": "museum",
+      "tin_whistle.owner": "museum",
+      "borrowed_button.condition": "sound",
+      "old_key.condition": "worn",
+      "cracked_marble.condition": "cracked",
+      "tin_whistle.condition": "sound",
+      "borrowed_button.mark": "maker_mark",
+      "old_key.mark": "locksmith_mark",
+      "cracked_marble.mark": "quarry_mark",
+      "tin_whistle.mark": "music_mark",
+      "owner_elsie.request": "display",
+      "owner_elsie.approved": false,
+      "owner_letter.location": "worktable",
+      "velvet_pad.owner": "mara",
+      "lamp.owner": "mara",
+      "returning_box.owner": "mara",
+      "velvet_pad.location": "museum_gallery",
+      "lamp.location": "museum_gallery",
+      "returning_box.location": "museum_gallery",
+      "label_cards.location": "worktable",
+      "display_case.space": "crowded",
+      "display_case.focus": "none",
+      "display_case.stable": false,
+      "display_case.open": false,
+      "display_case.label_accurate": false,
+      "display_case.borrowed_displayed": false,
+      "display_case.pad_used": false,
+      "display_case.lamp_used": false,
+      "museum.borrowed_id": "borrowed_button",
+      "museum.needed_tool": "lamp",
+      "museum.resolution": "none",
+      "museum.open": false
+    },
+    "final": {
+      "ada.location": "museum_gallery",
+      "bo.location": "museum_gallery",
+      "pip.location": "museum_gallery",
+      "mara.location": "museum_gallery",
+      "owner_elsie.location": "courtyard",
+      "ada.memes.Curiosity": 2,
+      "ada.memes.Care": 1,
+      "bo.memes.Craft": 4,
+      "bo.memes.Curiosity": 1,
+      "pip.memes.Curiosity": 2,
+      "mara.memes.Care": 2,
+      "ada.knows.borrowed_button.condition": "sound",
+      "ada.knows.borrowed_button.mark": "maker_mark",
+      "pip.knows.borrowed_button.mark": "maker_mark",
+      "ada.knows.owner_elsie.request": "display",
+      "bo.knows.display_case.space": "crowded",
+      "mara.knows.owner_elsie.request": "display",
+      "borrowed_button.location": "display_case",
+      "old_key.location": "museum_gallery",
+      "cracked_marble.location": "museum_gallery",
+      "tin_whistle.location": "museum_gallery",
+      "borrowed_button.owner": "owner_elsie",
+      "old_key.owner": "museum",
+      "cracked_marble.owner": "museum",
+      "tin_whistle.owner": "museum",
+      "borrowed_button.condition": "sound",
+      "old_key.condition": "worn",
+      "cracked_marble.condition": "cracked",
+      "tin_whistle.condition": "sound",
+      "borrowed_button.mark": "maker_mark",
+      "old_key.mark": "locksmith_mark",
+      "cracked_marble.mark": "quarry_mark",
+      "tin_whistle.mark": "music_mark",
+      "owner_elsie.request": "display",
+      "owner_elsie.approved": true,
+      "owner_letter.location": "worktable",
+      "velvet_pad.owner": "ada",
+      "lamp.owner": "bo",
+      "returning_box.owner": "mara",
+      "velvet_pad.location": "museum_gallery",
+      "lamp.location": "museum_gallery",
+      "returning_box.location": "museum_gallery",
+      "label_cards.location": "display_case",
+      "display_case.space": "roomy",
+      "display_case.focus": "borrowed_button",
+      "display_case.stable": true,
+      "display_case.open": true,
+      "display_case.label_accurate": true,
+      "display_case.borrowed_displayed": true,
+      "display_case.pad_used": false,
+      "display_case.lamp_used": true,
+      "museum.borrowed_id": "borrowed_button",
+      "museum.needed_tool": "lamp",
+      "museum.resolution": "displayed",
+      "museum.open": true
+    },
+    "events": [
+      {
+        "id": 1,
+        "scene": "inspect_borrowed_object",
+        "kernel": "Observe",
+        "actors": [
+          "ada"
+        ],
+        "summary": "Ada inspected the borrowed object's condition",
+        "causes": [],
+        "requires": [
+          {
+            "key": "ada.location",
+            "op": "eq",
+            "value": "museum_gallery"
+          },
+          {
+            "key": "borrowed_button.location",
+            "op": "eq",
+            "value": "museum_gallery"
+          },
+          {
+            "key": "ada.memes.Curiosity",
+            "op": "ge",
+            "value": 1
+          }
+        ],
+        "changes": {
+          "ada.knows.borrowed_button.condition": {
+            "before": null,
+            "after": "sound"
+          }
+        }
+      },
+      {
+        "id": 2,
+        "scene": "pip_notices_mark",
+        "kernel": "Observe",
+        "actors": [
+          "pip"
+        ],
+        "summary": "Pip noticed the small mark on the borrowed object",
+        "causes": [],
+        "requires": [
+          {
+            "key": "pip.location",
+            "op": "eq",
+            "value": "museum_gallery"
+          },
+          {
+            "key": "borrowed_button.location",
+            "op": "eq",
+            "value": "museum_gallery"
+          },
+          {
+            "key": "pip.memes.Curiosity",
+            "op": "ge",
+            "value": 1
+          }
+        ],
+        "changes": {
+          "pip.knows.borrowed_button.mark": {
+            "before": null,
+            "after": "maker_mark"
+          }
+        }
+      },
+      {
+        "id": 3,
+        "scene": "lend_lamp",
+        "kernel": "Transfer",
+        "actors": [
+          "mara",
+          "bo"
+        ],
+        "summary": "Mara lent Bo a small lamp for the display",
+        "causes": [],
+        "requires": [
+          {
+            "key": "lamp.owner",
+            "op": "eq",
+            "value": "mara"
+          },
+          {
+            "key": "mara.memes.Care",
+            "op": "ge",
+            "value": 1
+          },
+          {
+            "key": "lamp.location",
+            "op": "eq",
+            "value": "museum_gallery"
+          }
+        ],
+        "changes": {
+          "lamp.owner": {
+            "before": "mara",
+            "after": "bo"
+          }
+        }
+      },
+      {
+        "id": 4,
+        "scene": "pip_shares_mark",
+        "kernel": "Tell",
+        "actors": [
+          "pip",
+          "ada"
+        ],
+        "summary": "Pip showed Ada the mark he had found",
+        "causes": [
+          2
+        ],
+        "requires": [
+          {
+            "key": "pip.knows.borrowed_button.mark",
+            "op": "ne",
+            "value": null
+          },
+          {
+            "key": "ada.location",
+            "op": "eq",
+            "value": "museum_gallery"
+          },
+          {
+            "key": "pip.location",
+            "op": "eq",
+            "value": "museum_gallery"
+          }
+        ],
+        "changes": {
+          "ada.knows.borrowed_button.mark": {
+            "before": null,
+            "after": "maker_mark"
+          }
+        }
+      },
+      {
+        "id": 5,
+        "scene": "lend_velvet_pad",
+        "kernel": "Transfer",
+        "actors": [
+          "mara",
+          "ada"
+        ],
+        "summary": "Mara lent Ada a velvet pad for careful handling",
+        "causes": [],
+        "requires": [
+          {
+            "key": "velvet_pad.owner",
+            "op": "eq",
+            "value": "mara"
+          },
+          {
+            "key": "mara.memes.Care",
+            "op": "ge",
+            "value": 1
+          },
+          {
+            "key": "velvet_pad.location",
+            "op": "eq",
+            "value": "museum_gallery"
+          }
+        ],
+        "changes": {
+          "velvet_pad.owner": {
+            "before": "mara",
+            "after": "ada"
+          }
+        }
+      },
+      {
+        "id": 6,
+        "scene": "test_display_case",
+        "kernel": "observation",
+        "actors": [
+          "bo",
+          "mara",
+          "display_case"
+        ],
+        "summary": "Bo tested how much room the display case had",
+        "causes": [],
+        "requires": [
+          {
+            "key": "bo.location",
+            "op": "eq",
+            "value": "museum_gallery"
+          },
+          {
+            "key": "mara.location",
+            "op": "eq",
+            "value": "museum_gallery"
+          }
+        ],
+        "changes": {
+          "bo.memes.Craft": {
+            "before": 2,
+            "after": 3
+          },
+          "bo.knows.display_case.space": {
+            "before": null,
+            "after": "crowded"
+          }
+        }
+      },
+      {
+        "id": 7,
+        "scene": "read_owner_letter",
+        "kernel": "care",
+        "actors": [
+          "mara",
+          "ada",
+          "owner_letter"
+        ],
+        "summary": "Mara read Elsie's request aloud with Ada",
+        "causes": [],
+        "requires": [
+          {
+            "key": "mara.location",
+            "op": "eq",
+            "value": "museum_gallery"
+          },
+          {
+            "key": "ada.location",
+            "op": "eq",
+            "value": "museum_gallery"
+          },
+          {
+            "key": "owner_letter.location",
+            "op": "eq",
+            "value": "worktable"
+          }
+        ],
+        "changes": {
+          "ada.knows.owner_elsie.request": {
+            "before": null,
+            "after": "display"
+          },
+          "mara.knows.owner_elsie.request": {
+            "before": null,
+            "after": "display"
+          },
+          "owner_elsie.approved": {
+            "before": false,
+            "after": true
+          }
+        }
+      },
+      {
+        "id": 8,
+        "scene": "clear_case_space",
+        "kernel": "cooperation",
+        "actors": [
+          "ada",
+          "bo",
+          "pip",
+          "display_case"
+        ],
+        "summary": "The children removed extra objects to give the case breathing room",
+        "causes": [
+          1,
+          6
+        ],
+        "requires": [
+          {
+            "key": "ada.location",
+            "op": "eq",
+            "value": "museum_gallery"
+          },
+          {
+            "key": "bo.location",
+            "op": "eq",
+            "value": "museum_gallery"
+          },
+          {
+            "key": "pip.location",
+            "op": "eq",
+            "value": "museum_gallery"
+          },
+          {
+            "key": "bo.knows.display_case.space",
+            "op": "eq",
+            "value": "crowded"
+          },
+          {
+            "key": "ada.knows.borrowed_button.condition",
+            "op": "ne",
+            "value": null
+          }
+        ],
+        "changes": {
+          "bo.memes.Craft": {
+            "before": 3,
+            "after": 4
+          },
+          "display_case.space": {
+            "before": "crowded",
+            "after": "roomy"
+          }
+        }
+      },
+      {
+        "id": 9,
+        "scene": "prepare_lit_display",
+        "kernel": "care",
+        "actors": [
+          "ada",
+          "bo",
+          "display_case",
+          "lamp"
+        ],
+        "summary": "Bo aimed the lamp while Ada placed the borrowed treasure safely",
+        "causes": [
+          1,
+          3,
+          7,
+          8
+        ],
+        "requires": [
+          {
+            "key": "ada.knows.owner_elsie.request",
+            "op": "eq",
+            "value": "display"
+          },
+          {
+            "key": "museum.needed_tool",
+            "op": "eq",
+            "value": "lamp"
+          },
+          {
+            "key": "owner_elsie.approved",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "ada.knows.borrowed_button.condition",
+            "op": "ne",
+            "value": null
+          },
+          {
+            "key": "display_case.space",
+            "op": "eq",
+            "value": "roomy"
+          },
+          {
+            "key": "lamp.owner",
+            "op": "eq",
+            "value": "bo"
+          }
+        ],
+        "changes": {
+          "borrowed_button.location": {
+            "before": "museum_gallery",
+            "after": "display_case"
+          },
+          "display_case.focus": {
+            "before": "none",
+            "after": "borrowed_button"
+          },
+          "display_case.borrowed_displayed": {
+            "before": false,
+            "after": true
+          },
+          "display_case.lamp_used": {
+            "before": false,
+            "after": true
+          },
+          "museum.resolution": {
+            "before": "none",
+            "after": "displayed"
+          }
+        }
+      },
+      {
+        "id": 10,
+        "scene": "write_accurate_label",
+        "kernel": "craft",
+        "actors": [
+          "ada",
+          "bo",
+          "label_cards"
+        ],
+        "summary": "Ada and Bo wrote a label that named the mark and Elsie's wishes",
+        "causes": [
+          4,
+          7,
+          9
+        ],
+        "requires": [
+          {
+            "key": "ada.knows.borrowed_button.mark",
+            "op": "ne",
+            "value": null
+          },
+          {
+            "key": "ada.knows.owner_elsie.request",
+            "op": "ne",
+            "value": null
+          },
+          {
+            "key": "display_case.focus",
+            "op": "ne",
+            "value": "none"
+          }
+        ],
+        "changes": {
+          "label_cards.location": {
+            "before": "worktable",
+            "after": "display_case"
+          },
+          "display_case.label_accurate": {
+            "before": false,
+            "after": true
+          }
+        }
+      },
+      {
+        "id": 11,
+        "scene": "stabilize_arrangement",
+        "kernel": "craft",
+        "actors": [
+          "bo",
+          "ada",
+          "display_case"
+        ],
+        "summary": "Bo checked the arrangement while Ada held the case steady",
+        "causes": [
+          8,
+          9,
+          10
+        ],
+        "requires": [
+          {
+            "key": "display_case.focus",
+            "op": "ne",
+            "value": "none"
+          },
+          {
+            "key": "display_case.label_accurate",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "display_case.space",
+            "op": "eq",
+            "value": "roomy"
+          },
+          {
+            "key": "museum.resolution",
+            "op": "in",
+            "value": [
+              "displayed",
+              "returned"
+            ]
+          }
+        ],
+        "changes": {
+          "display_case.stable": {
+            "before": false,
+            "after": true
+          }
+        }
+      },
+      {
+        "id": 12,
+        "scene": "open_small_things_exhibit",
+        "kernel": "cooperation",
+        "actors": [
+          "mara",
+          "ada",
+          "bo",
+          "display_case"
+        ],
+        "summary": "Mara opened the Museum of Small Things exhibit",
+        "causes": [
+          9,
+          10,
+          11
+        ],
+        "requires": [
+          {
+            "key": "display_case.label_accurate",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "display_case.stable",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "museum.resolution",
+            "op": "in",
+            "value": [
+              "displayed",
+              "returned"
+            ]
+          }
+        ],
+        "changes": {
+          "display_case.open": {
+            "before": false,
+            "after": true
+          },
+          "museum.open": {
+            "before": false,
+            "after": true
+          }
+        }
+      }
+    ]
+  }
+]

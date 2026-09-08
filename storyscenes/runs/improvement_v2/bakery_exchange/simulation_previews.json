@@ -1,0 +1,853 @@
+[
+  {
+    "seed": 0,
+    "title": "The Crumb-and-Clover Exchange",
+    "initial": {
+      "mina.memes.welcome": 2,
+      "mina.wants": "shared_treat",
+      "mina.agrees.share": false,
+      "mina.beliefs.niko.role": "critic",
+      "mina.knows.flour.mark": null,
+      "mina.knows.tray.label": null,
+      "mina.knows.niko.arrival": null,
+      "mina.knows.niko.wants": null,
+      "bramble.memes.pride": 3,
+      "bramble.wants": "grand_trade",
+      "bramble.agrees.trade": false,
+      "bramble.beliefs.tray.claim": "star",
+      "bramble.knows.tray.label": null,
+      "bramble.knows.cup.owner": null,
+      "niko.memes.hunger": 2,
+      "niko.memes.pride": 2,
+      "niko.wants": "plain",
+      "niko.arrival": "carrying_prize",
+      "niko.offered": null,
+      "niko.content": null,
+      "stall.open": true,
+      "tray.owner": "mina",
+      "tray.label": "plain",
+      "tray.final_bun": null,
+      "bun_a.owner": "mina",
+      "bun_a.taste": "unbaked",
+      "bun_b.owner": "mina",
+      "bun_b.taste": "unbaked",
+      "bun_c.owner": "mina",
+      "bun_c.taste": "unbaked",
+      "flour.owner": "mina",
+      "flour.mark": "salty",
+      "cup.owner": "bramble",
+      "ribbon.owner": "bramble",
+      "ribbon.position": "cup",
+      "prize.owner": "niko",
+      "board.message": "closed"
+    },
+    "final": {
+      "mina.memes.welcome": 2,
+      "mina.wants": "shared_treat",
+      "mina.agrees.share": true,
+      "mina.beliefs.niko.role": "critic",
+      "mina.knows.flour.mark": "salty",
+      "mina.knows.tray.label": null,
+      "mina.knows.niko.arrival": "carrying_prize",
+      "mina.knows.niko.wants": "plain",
+      "bramble.memes.pride": 3,
+      "bramble.wants": "grand_trade",
+      "bramble.agrees.trade": false,
+      "bramble.beliefs.tray.claim": "star",
+      "bramble.knows.tray.label": null,
+      "bramble.knows.cup.owner": null,
+      "niko.memes.hunger": 2,
+      "niko.memes.pride": 2,
+      "niko.wants": "plain",
+      "niko.arrival": "carrying_prize",
+      "niko.offered": "fancy",
+      "niko.content": false,
+      "stall.open": true,
+      "tray.owner": "mina",
+      "tray.label": "plain",
+      "tray.final_bun": null,
+      "bun_a.owner": "niko",
+      "bun_a.taste": "fancy",
+      "bun_b.owner": "mina",
+      "bun_b.taste": "unbaked",
+      "bun_c.owner": "mina",
+      "bun_c.taste": "unbaked",
+      "flour.owner": "mina",
+      "flour.mark": "salty",
+      "cup.owner": "bramble",
+      "ribbon.owner": "bramble",
+      "ribbon.position": "cup",
+      "prize.owner": "niko",
+      "board.message": "plain_is_best"
+    },
+    "events": [
+      {
+        "id": 1,
+        "scene": "look_flour",
+        "kernel": "Observe",
+        "actors": [
+          "mina"
+        ],
+        "summary": "Mina read the flour-sack label",
+        "causes": [],
+        "requires": [
+          {
+            "key": "stall.open",
+            "op": "eq",
+            "value": true
+          }
+        ],
+        "changes": {
+          "mina.knows.flour.mark": {
+            "before": null,
+            "after": "salty"
+          }
+        }
+      },
+      {
+        "id": 2,
+        "scene": "notice_niko_card",
+        "kernel": "Observe",
+        "actors": [
+          "mina"
+        ],
+        "summary": "Mina noticed why Niko had come to the stall",
+        "causes": [],
+        "requires": [
+          {
+            "key": "stall.open",
+            "op": "eq",
+            "value": true
+          }
+        ],
+        "changes": {
+          "mina.knows.niko.arrival": {
+            "before": null,
+            "after": "carrying_prize"
+          }
+        }
+      },
+      {
+        "id": 3,
+        "scene": "bake_clover",
+        "kernel": "Making",
+        "actors": [
+          "mina"
+        ],
+        "summary": "Mina turned the salty flour into a daring clover-sour star bun",
+        "causes": [
+          1
+        ],
+        "requires": [
+          {
+            "key": "mina.knows.flour.mark",
+            "op": "eq",
+            "value": "salty"
+          },
+          {
+            "key": "bun_a.owner",
+            "op": "eq",
+            "value": "mina"
+          }
+        ],
+        "changes": {
+          "bun_a.taste": {
+            "before": "unbaked",
+            "after": "fancy"
+          }
+        }
+      },
+      {
+        "id": 4,
+        "scene": "ask_taste",
+        "kernel": "Invitation",
+        "actors": [
+          "mina",
+          "niko"
+        ],
+        "summary": "Mina asked Niko what sort of bun he truly wanted",
+        "causes": [
+          2
+        ],
+        "requires": [
+          {
+            "key": "mina.knows.niko.arrival",
+            "op": "in",
+            "value": [
+              "hungry",
+              "carrying_prize"
+            ]
+          },
+          {
+            "key": "niko.memes.pride",
+            "op": "ge",
+            "value": 1
+          }
+        ],
+        "changes": {
+          "mina.agrees.share": {
+            "before": false,
+            "after": true
+          },
+          "mina.knows.niko.wants": {
+            "before": null,
+            "after": "plain"
+          },
+          "board.message": {
+            "before": "closed",
+            "after": "what_would_you_like"
+          }
+        }
+      },
+      {
+        "id": 5,
+        "scene": "present_fancy",
+        "kernel": "Performance",
+        "actors": [
+          "mina",
+          "niko"
+        ],
+        "summary": "Mina gave Niko the fancy star bun as though he were a grand judge",
+        "causes": [
+          3
+        ],
+        "requires": [
+          {
+            "key": "mina.beliefs.niko.role",
+            "op": "eq",
+            "value": "critic"
+          },
+          {
+            "key": "bun_a.taste",
+            "op": "eq",
+            "value": "fancy"
+          },
+          {
+            "key": "bun_a.owner",
+            "op": "eq",
+            "value": "mina"
+          }
+        ],
+        "changes": {
+          "niko.offered": {
+            "before": null,
+            "after": "fancy"
+          },
+          "bun_a.owner": {
+            "before": "mina",
+            "after": "niko"
+          },
+          "board.message": {
+            "before": "what_would_you_like",
+            "after": "fancy_tasting"
+          }
+        }
+      },
+      {
+        "id": 6,
+        "scene": "reject_fancy",
+        "kernel": "Turning Point",
+        "actors": [
+          "niko",
+          "mina"
+        ],
+        "summary": "Niko politely refused the fancy bun and asked for something simple",
+        "causes": [
+          5
+        ],
+        "requires": [
+          {
+            "key": "niko.offered",
+            "op": "eq",
+            "value": "fancy"
+          },
+          {
+            "key": "niko.wants",
+            "op": "eq",
+            "value": "plain"
+          },
+          {
+            "key": "niko.memes.pride",
+            "op": "ge",
+            "value": 1
+          }
+        ],
+        "changes": {
+          "niko.content": {
+            "before": null,
+            "after": false
+          },
+          "board.message": {
+            "before": "fancy_tasting",
+            "after": "plain_is_best"
+          }
+        }
+      }
+    ]
+  },
+  {
+    "seed": 1,
+    "title": "The Crumb-and-Clover Exchange",
+    "initial": {
+      "mina.memes.welcome": 2,
+      "mina.wants": "shared_treat",
+      "mina.agrees.share": false,
+      "mina.beliefs.niko.role": "customer",
+      "mina.knows.flour.mark": null,
+      "mina.knows.tray.label": null,
+      "mina.knows.niko.arrival": null,
+      "mina.knows.niko.wants": null,
+      "bramble.memes.pride": 3,
+      "bramble.wants": "grand_trade",
+      "bramble.agrees.trade": false,
+      "bramble.beliefs.tray.claim": "star",
+      "bramble.knows.tray.label": null,
+      "bramble.knows.cup.owner": null,
+      "niko.memes.hunger": 2,
+      "niko.memes.pride": 2,
+      "niko.wants": "plain",
+      "niko.arrival": "hungry",
+      "niko.offered": null,
+      "niko.content": null,
+      "stall.open": true,
+      "tray.owner": "mina",
+      "tray.label": "star",
+      "tray.final_bun": null,
+      "bun_a.owner": "mina",
+      "bun_a.taste": "unbaked",
+      "bun_b.owner": "mina",
+      "bun_b.taste": "unbaked",
+      "bun_c.owner": "mina",
+      "bun_c.taste": "unbaked",
+      "flour.owner": "mina",
+      "flour.mark": "sweet",
+      "cup.owner": "mina",
+      "ribbon.owner": "bramble",
+      "ribbon.position": "cup",
+      "prize.owner": "stall",
+      "board.message": "closed"
+    },
+    "final": {
+      "mina.memes.welcome": 2,
+      "mina.wants": "shared_treat",
+      "mina.agrees.share": true,
+      "mina.beliefs.niko.role": "customer",
+      "mina.knows.flour.mark": "sweet",
+      "mina.knows.tray.label": null,
+      "mina.knows.niko.arrival": "hungry",
+      "mina.knows.niko.wants": "plain",
+      "bramble.memes.pride": 3,
+      "bramble.wants": "grand_trade",
+      "bramble.agrees.trade": false,
+      "bramble.beliefs.tray.claim": "star",
+      "bramble.knows.tray.label": null,
+      "bramble.knows.cup.owner": null,
+      "niko.memes.hunger": 2,
+      "niko.memes.pride": 2,
+      "niko.wants": "plain",
+      "niko.arrival": "hungry",
+      "niko.offered": "plain",
+      "niko.content": true,
+      "stall.open": true,
+      "tray.owner": "mina",
+      "tray.label": "star",
+      "tray.final_bun": null,
+      "bun_a.owner": "mina",
+      "bun_a.taste": "unbaked",
+      "bun_b.owner": "niko",
+      "bun_b.taste": "plain",
+      "bun_c.owner": "mina",
+      "bun_c.taste": "unbaked",
+      "flour.owner": "mina",
+      "flour.mark": "sweet",
+      "cup.owner": "mina",
+      "ribbon.owner": "bramble",
+      "ribbon.position": "cup",
+      "prize.owner": "stall",
+      "board.message": "welcome_shared"
+    },
+    "events": [
+      {
+        "id": 1,
+        "scene": "notice_niko_card",
+        "kernel": "Observe",
+        "actors": [
+          "mina"
+        ],
+        "summary": "Mina noticed why Niko had come to the stall",
+        "causes": [],
+        "requires": [
+          {
+            "key": "stall.open",
+            "op": "eq",
+            "value": true
+          }
+        ],
+        "changes": {
+          "mina.knows.niko.arrival": {
+            "before": null,
+            "after": "hungry"
+          }
+        }
+      },
+      {
+        "id": 2,
+        "scene": "look_flour",
+        "kernel": "Observe",
+        "actors": [
+          "mina"
+        ],
+        "summary": "Mina read the flour-sack label",
+        "causes": [],
+        "requires": [
+          {
+            "key": "stall.open",
+            "op": "eq",
+            "value": true
+          }
+        ],
+        "changes": {
+          "mina.knows.flour.mark": {
+            "before": null,
+            "after": "sweet"
+          }
+        }
+      },
+      {
+        "id": 3,
+        "scene": "ask_taste",
+        "kernel": "Invitation",
+        "actors": [
+          "mina",
+          "niko"
+        ],
+        "summary": "Mina asked Niko what sort of bun he truly wanted",
+        "causes": [
+          1
+        ],
+        "requires": [
+          {
+            "key": "mina.knows.niko.arrival",
+            "op": "in",
+            "value": [
+              "hungry",
+              "carrying_prize"
+            ]
+          },
+          {
+            "key": "niko.memes.pride",
+            "op": "ge",
+            "value": 1
+          }
+        ],
+        "changes": {
+          "mina.agrees.share": {
+            "before": false,
+            "after": true
+          },
+          "mina.knows.niko.wants": {
+            "before": null,
+            "after": "plain"
+          },
+          "board.message": {
+            "before": "closed",
+            "after": "what_would_you_like"
+          }
+        }
+      },
+      {
+        "id": 4,
+        "scene": "bake_plain",
+        "kernel": "Making",
+        "actors": [
+          "mina"
+        ],
+        "summary": "Mina baked a plain warm bun with a crackly little top",
+        "causes": [
+          2
+        ],
+        "requires": [
+          {
+            "key": "mina.knows.flour.mark",
+            "op": "in",
+            "value": [
+              "sweet",
+              "salty"
+            ]
+          },
+          {
+            "key": "bun_b.owner",
+            "op": "eq",
+            "value": "mina"
+          }
+        ],
+        "changes": {
+          "bun_b.taste": {
+            "before": "unbaked",
+            "after": "plain"
+          }
+        }
+      },
+      {
+        "id": 5,
+        "scene": "present_plain",
+        "kernel": "Performance",
+        "actors": [
+          "mina",
+          "niko"
+        ],
+        "summary": "Mina presented the plain warm bun without any trumpet flourishes",
+        "causes": [
+          3,
+          4
+        ],
+        "requires": [
+          {
+            "key": "mina.knows.niko.wants",
+            "op": "eq",
+            "value": "plain"
+          },
+          {
+            "key": "bun_b.taste",
+            "op": "eq",
+            "value": "plain"
+          },
+          {
+            "key": "bun_b.owner",
+            "op": "eq",
+            "value": "mina"
+          }
+        ],
+        "changes": {
+          "niko.offered": {
+            "before": null,
+            "after": "plain"
+          },
+          "bun_b.owner": {
+            "before": "mina",
+            "after": "niko"
+          },
+          "board.message": {
+            "before": "what_would_you_like",
+            "after": "plain_on_a_plate"
+          }
+        }
+      },
+      {
+        "id": 6,
+        "scene": "accept_snack",
+        "kernel": "Welcome",
+        "actors": [
+          "niko"
+        ],
+        "summary": "Niko accepted the warm plain bun with an honest, happy crunch",
+        "causes": [
+          3,
+          5
+        ],
+        "requires": [
+          {
+            "key": "niko.offered",
+            "op": "eq",
+            "value": "plain"
+          },
+          {
+            "key": "niko.wants",
+            "op": "eq",
+            "value": "plain"
+          },
+          {
+            "key": "mina.agrees.share",
+            "op": "eq",
+            "value": true
+          }
+        ],
+        "changes": {
+          "niko.content": {
+            "before": null,
+            "after": true
+          },
+          "board.message": {
+            "before": "plain_on_a_plate",
+            "after": "welcome_shared"
+          }
+        }
+      }
+    ]
+  },
+  {
+    "seed": 2,
+    "title": "The Crumb-and-Clover Exchange",
+    "initial": {
+      "mina.memes.welcome": 2,
+      "mina.wants": "shared_treat",
+      "mina.agrees.share": false,
+      "mina.beliefs.niko.role": "critic",
+      "mina.knows.flour.mark": null,
+      "mina.knows.tray.label": null,
+      "mina.knows.niko.arrival": null,
+      "mina.knows.niko.wants": null,
+      "bramble.memes.pride": 3,
+      "bramble.wants": "grand_trade",
+      "bramble.agrees.trade": false,
+      "bramble.beliefs.tray.claim": "star",
+      "bramble.knows.tray.label": null,
+      "bramble.knows.cup.owner": null,
+      "niko.memes.hunger": 2,
+      "niko.memes.pride": 2,
+      "niko.wants": "plain",
+      "niko.arrival": "carrying_prize",
+      "niko.offered": null,
+      "niko.content": null,
+      "stall.open": true,
+      "tray.owner": "mina",
+      "tray.label": "star",
+      "tray.final_bun": null,
+      "bun_a.owner": "mina",
+      "bun_a.taste": "unbaked",
+      "bun_b.owner": "mina",
+      "bun_b.taste": "unbaked",
+      "bun_c.owner": "mina",
+      "bun_c.taste": "unbaked",
+      "flour.owner": "mina",
+      "flour.mark": "sweet",
+      "cup.owner": "bramble",
+      "ribbon.owner": "bramble",
+      "ribbon.position": "cup",
+      "prize.owner": "niko",
+      "board.message": "closed"
+    },
+    "final": {
+      "mina.memes.welcome": 2,
+      "mina.wants": "shared_treat",
+      "mina.agrees.share": true,
+      "mina.beliefs.niko.role": "critic",
+      "mina.knows.flour.mark": null,
+      "mina.knows.tray.label": null,
+      "mina.knows.niko.arrival": "carrying_prize",
+      "mina.knows.niko.wants": "plain",
+      "bramble.memes.pride": 3,
+      "bramble.wants": "grand_trade",
+      "bramble.agrees.trade": true,
+      "bramble.beliefs.tray.claim": "star",
+      "bramble.knows.tray.label": null,
+      "bramble.knows.cup.owner": "bramble",
+      "niko.memes.hunger": 2,
+      "niko.memes.pride": 2,
+      "niko.wants": "plain",
+      "niko.arrival": "carrying_prize",
+      "niko.offered": null,
+      "niko.content": null,
+      "stall.open": true,
+      "tray.owner": "mina",
+      "tray.label": "star",
+      "tray.final_bun": null,
+      "bun_a.owner": "mina",
+      "bun_a.taste": "unbaked",
+      "bun_b.owner": "mina",
+      "bun_b.taste": "unbaked",
+      "bun_c.owner": "mina",
+      "bun_c.taste": "unbaked",
+      "flour.owner": "mina",
+      "flour.mark": "salty",
+      "cup.owner": "bramble",
+      "ribbon.owner": "bramble",
+      "ribbon.position": "flour_sack",
+      "prize.owner": "niko",
+      "board.message": "ribbon_invitation"
+    },
+    "events": [
+      {
+        "id": 1,
+        "scene": "look_cup",
+        "kernel": "Observe",
+        "actors": [
+          "bramble"
+        ],
+        "summary": "Bramble checked who was holding the acorn-cup",
+        "causes": [],
+        "requires": [
+          {
+            "key": "stall.open",
+            "op": "eq",
+            "value": true
+          }
+        ],
+        "changes": {
+          "bramble.knows.cup.owner": {
+            "before": null,
+            "after": "bramble"
+          }
+        }
+      },
+      {
+        "id": 2,
+        "scene": "offer_cup",
+        "kernel": "Bargain",
+        "actors": [
+          "bramble"
+        ],
+        "summary": "Bramble offered his acorn-cup for a truly grand bun",
+        "causes": [
+          1
+        ],
+        "requires": [
+          {
+            "key": "bramble.knows.cup.owner",
+            "op": "eq",
+            "value": "bramble"
+          },
+          {
+            "key": "bramble.memes.pride",
+            "op": "ge",
+            "value": 2
+          }
+        ],
+        "changes": {
+          "bramble.agrees.trade": {
+            "before": false,
+            "after": true
+          }
+        }
+      },
+      {
+        "id": 3,
+        "scene": "notice_niko_card",
+        "kernel": "Observe",
+        "actors": [
+          "mina"
+        ],
+        "summary": "Mina noticed why Niko had come to the stall",
+        "causes": [],
+        "requires": [
+          {
+            "key": "stall.open",
+            "op": "eq",
+            "value": true
+          }
+        ],
+        "changes": {
+          "mina.knows.niko.arrival": {
+            "before": null,
+            "after": "carrying_prize"
+          }
+        }
+      },
+      {
+        "id": 4,
+        "scene": "ask_taste",
+        "kernel": "Invitation",
+        "actors": [
+          "mina",
+          "niko"
+        ],
+        "summary": "Mina asked Niko what sort of bun he truly wanted",
+        "causes": [
+          3
+        ],
+        "requires": [
+          {
+            "key": "mina.knows.niko.arrival",
+            "op": "in",
+            "value": [
+              "hungry",
+              "carrying_prize"
+            ]
+          },
+          {
+            "key": "niko.memes.pride",
+            "op": "ge",
+            "value": 1
+          }
+        ],
+        "changes": {
+          "mina.agrees.share": {
+            "before": false,
+            "after": true
+          },
+          "mina.knows.niko.wants": {
+            "before": null,
+            "after": "plain"
+          },
+          "board.message": {
+            "before": "closed",
+            "after": "what_would_you_like"
+          }
+        }
+      },
+      {
+        "id": 5,
+        "scene": "swap_ribbon",
+        "kernel": "Mistake",
+        "actors": [
+          "bramble"
+        ],
+        "summary": "Bramble tied the red ribbon around the wrong flour sack",
+        "causes": [],
+        "requires": [
+          {
+            "key": "flour.mark",
+            "op": "eq",
+            "value": "sweet"
+          },
+          {
+            "key": "ribbon.position",
+            "op": "eq",
+            "value": "cup"
+          },
+          {
+            "key": "bramble.memes.pride",
+            "op": "ge",
+            "value": 2
+          }
+        ],
+        "changes": {
+          "flour.mark": {
+            "before": "sweet",
+            "after": "salty"
+          },
+          "ribbon.position": {
+            "before": "cup",
+            "after": "flour_sack"
+          },
+          "board.message": {
+            "before": "what_would_you_like",
+            "after": "ribbon_mischief"
+          }
+        }
+      },
+      {
+        "id": 6,
+        "scene": "admit_swap",
+        "kernel": "Confession",
+        "actors": [
+          "bramble",
+          "mina"
+        ],
+        "summary": "Bramble admitted that his fancy ribbon had changed the flour mark",
+        "causes": [
+          2,
+          5
+        ],
+        "requires": [
+          {
+            "key": "board.message",
+            "op": "eq",
+            "value": "ribbon_mischief"
+          },
+          {
+            "key": "bramble.agrees.trade",
+            "op": "eq",
+            "value": true
+          }
+        ],
+        "changes": {
+          "board.message": {
+            "before": "ribbon_mischief",
+            "after": "ribbon_invitation"
+          }
+        }
+      }
+    ]
+  }
+]

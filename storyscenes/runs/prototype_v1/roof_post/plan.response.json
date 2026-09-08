@@ -1,0 +1,140 @@
+{
+  "id": "resp_0fff2c7d450d1237016a9f0bcd0bc887d0af52bae7392140d0",
+  "created_at": 1788808141.0,
+  "error": null,
+  "incomplete_details": null,
+  "instructions": null,
+  "metadata": {},
+  "model": "gpt-5.6-luna",
+  "object": "response",
+  "output": [
+    {
+      "id": "msg_0fff2c7d450d1237016a9f0bce607487d0986f029bfdd37846",
+      "content": [
+        {
+          "annotations": [],
+          "text": "{\"title\":\"Invitations Above the Roofs\",\"premise\":\"Ada and a young dragon must deliver a bundle of garden-party invitations across a roof garden before sunset. Wind shifts the available routes, paper can tear or scatter, and the dragon’s eager help is useful only when paired with careful listening and testing. The child notices clues, learns what the dragon can safely carry, and changes the delivery arrangement rather than relying on a single daring flight.\",\"cast_and_props\":\"Characters: Ada, an observant child; Pip, a young dragon who can make small warm gusts but cannot yet fly reliably; and Mara, the roof-garden keeper, who knows the planters, lines, and safe paths. Places: the roof post, herb roof, glasshouse roof, and sheltered chimney nook. Props: invitations, a cloth pouch, twine, a light basket, a ribbon wind-marker, and a row of labeled pots. Use fixed entity IDs such as ada, pip, mara, roof_post, herb_roof, glasshouse, chimney_nook, invitations, pouch, basket, twine, ribbon, and pots.\",\"kernels_and_interactions\":\"Use ambition (Ada and Pip want every invitation delivered), observation (Ada or Pip inspects wind, fragile paper, and safe landing places), mistaken belief (Pip initially believes a stronger puff is always more helpful, while Ada may misread a fluttering ribbon), care (Mara protects the seedlings and teaches safer handling), and cooperation (the final method combines the child’s arrangement with the dragon’s controlled breath). Built-in observe, tell, and transfer should matter: Ada can inspect the ribbon or damaged invitation, explain the result to Mara, and receive the pouch or twine only after Mara trusts the plan.\",\"seed_parameters\":\"Seed knobs should alter causal conditions: wind direction and strength; number of invitations; whether the pouch is available, already tied, or needs repair; whether the glasshouse route is open; Pip’s initial breath control; and which roof section has the most delicate seedlings. A seed may make a direct handoff possible, require a twine-line delivery, or favor a basket stabilized by controlled warm puffs. Varying knowledge should not bypass observation: Ada and Pip must learn the actual wind or cargo condition through inspection or communication. Keep all state flat and declare location, ownership, meme, knowledge, route, damage, tie strength, delivery counts, and seed-selected conditions before use.\",\"candidate_scenes\":\"1. Ada notices invitations fluttering at the roof post and gains curiosity. 2. Ada inspects the ribbon wind-marker from the roof post. 3. Pip tests a tiny puff near a loose scrap, revealing his current control. 4. Ada inspects whether the invitations are dry and intact. 5. Mara explains the safe roof route or warns about fragile seedlings. 6. Ada tells Mara what the wind or paper inspection found. 7. Mara transfers the pouch, basket, or twine to Ada when ownership and care permit. 8. Ada and Pip tie invitations into the pouch or basket. 9. They test the arrangement with one invitation, changing its test status without pretending all deliveries are complete. 10. Pip makes a controlled warm puff to move a secured basket along a marked route. 11. Ada walks a sheltered route and places invitations in labeled pots or under door weights. 12. A gust forces Ada to retrieve or resecure a partly moved bundle. 13. Pip adjusts his breath after observing a wobble. 14. Ada and Mara distribute the remaining invitations by hand when the route is open. 15. Ada and Pip make the final delivery, updating delivered count and leaving a visible changed arrangement such as ribbons tied to full pots. Each scene needs a physical carrier and reusable conditions; max uses should prevent repeated unique tests while allowing distinct delivery steps.\",\"constraints\":\"Use 2–4 characters and 2–4 interacting kernels, with 8–16 total scene definitions and roughly 5–10 selected events. No impossible flight or magical teleportation: Pip’s breath moves only light, secured cargo over plausible short distances, and walking, twine, baskets, and shelter must solve the problem. Guard decisions with knowledge slots. Every scene must change state, involve an actor and prop/place, and obey ownership and location rules. Rules should prevent torn invitations from being delivered, prevent movement through closed routes, keep one owner for each portable prop, require invitations to be secured before a puff, and ensure delivery count never exceeds the initial number. The goal should require every invitation delivered and an observable final arrangement, with alternate valid endings: careful hand delivery, twine-line transport, or controlled basket movement.\",\"different_endings\":\"Ending A: If the wind is gentle and the glasshouse route is open, Ada and Mara hand-deliver the invitations along the sheltered path, leaving them beneath labeled pots. Ending B: If wind is strong but twine is available, Ada and Mara create a secured line between roof posts; Pip’s measured puffs guide the pouch while Ada controls its stopping points. Ending C: If the pouch is unavailable or damaged and Pip has learned good control, Ada uses the light basket, placing a cloth cover over the invitations while Pip nudges it in short bursts. Ending D: If Pip’s breath remains unreliable, the successful solution is cooperative hand delivery: Ada carries small batches, Mara opens safe gates, and Pip watches the ribbon and calls out gusts. All endings should show the actual final state, such as full labeled pots, a tied pouch at the last post, or the basket resting safely beneath the garden’s welcome sign.\"}",
+          "type": "output_text",
+          "logprobs": []
+        }
+      ],
+      "role": "assistant",
+      "status": "completed",
+      "type": "message",
+      "phase": "final_answer"
+    }
+  ],
+  "parallel_tool_calls": true,
+  "temperature": 1.0,
+  "tool_choice": "auto",
+  "tools": [],
+  "top_p": 0.98,
+  "background": false,
+  "completed_at": 1788808168.0,
+  "conversation": null,
+  "max_output_tokens": 6000,
+  "max_tool_calls": null,
+  "moderation": null,
+  "previous_response_id": null,
+  "prompt": null,
+  "prompt_cache_key": null,
+  "prompt_cache_retention": "24h",
+  "reasoning": {
+    "context": "all_turns",
+    "effort": "none",
+    "generate_summary": null,
+    "summary": null,
+    "mode": "standard"
+  },
+  "safety_identifier": null,
+  "service_tier": "flex",
+  "status": "completed",
+  "text": {
+    "format": {
+      "name": "theater_plan",
+      "schema_": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string"
+          },
+          "premise": {
+            "type": "string"
+          },
+          "cast_and_props": {
+            "type": "string"
+          },
+          "kernels_and_interactions": {
+            "type": "string"
+          },
+          "seed_parameters": {
+            "type": "string"
+          },
+          "candidate_scenes": {
+            "type": "string"
+          },
+          "constraints": {
+            "type": "string"
+          },
+          "different_endings": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "title",
+          "premise",
+          "cast_and_props",
+          "kernels_and_interactions",
+          "seed_parameters",
+          "candidate_scenes",
+          "constraints",
+          "different_endings"
+        ],
+        "additionalProperties": false
+      },
+      "type": "json_schema",
+      "description": null,
+      "strict": true
+    },
+    "verbosity": "medium"
+  },
+  "top_logprobs": 0,
+  "truncation": "disabled",
+  "usage": {
+    "input_tokens": 1691,
+    "input_tokens_details": {
+      "cached_tokens": 0,
+      "cache_write_tokens": 1688
+    },
+    "output_tokens": 1155,
+    "output_tokens_details": {
+      "reasoning_tokens": 0
+    },
+    "total_tokens": 2846
+  },
+  "user": null,
+  "billing": {
+    "payer": "developer"
+  },
+  "frequency_penalty": 0.0,
+  "presence_penalty": 0.0,
+  "store": false,
+  "tool_usage": {
+    "image_gen": {
+      "input_tokens": 0,
+      "input_tokens_details": {
+        "image_tokens": 0,
+        "text_tokens": 0
+      },
+      "output_tokens": 0,
+      "output_tokens_details": {
+        "image_tokens": 0,
+        "text_tokens": 0
+      },
+      "total_tokens": 0
+    },
+    "web_search": {
+      "num_requests": 0
+    }
+  }
+}

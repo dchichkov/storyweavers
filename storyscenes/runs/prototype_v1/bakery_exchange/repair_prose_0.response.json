@@ -1,0 +1,105 @@
+{
+  "id": "resp_09852f0bbd945c93016a9f32fa72f887d0bf98f17e918000d5",
+  "created_at": 1788818170.0,
+  "error": null,
+  "incomplete_details": null,
+  "instructions": null,
+  "metadata": {},
+  "model": "gpt-5.6-luna",
+  "object": "response",
+  "output": [
+    {
+      "id": "rs_09852f0bbd945c93016a9f32faf22c87d09efcc6c4c0e02a73",
+      "summary": [],
+      "type": "reasoning",
+      "content": [],
+      "encrypted_content": "gAAAAABqnzMNnSb9uMNBcT0hObdc5e3x8tWzjaw-COXmdDINWa4bRHIJmzkkYCnNfz7X8jk_1t7mChGjKjtKLAX5oOzSIYPs3_vuenwtjFFMHDekd13RyXeYOgHoK0rEBacMRW6KjrmMJUDCNlaPjCiUuXvEuUmudu01gc8KJAhFrMG2Xj2UyNoDttdBJMsu2xibNNKCgF9ZuBuvPpsgRmpUWn4_EuuQipYoeJupJjAjuiOPRklMciHW215PEDUc1BK7VgN_qvbQuxVLKc3LOW0AdYR7hJqzBLM4VfsVgMBEzTBOBXIy6Ad8ixO98sprTvX6af6fxdNOM60w05YhPt408Tki1kMgpYDPphvviyN2eU4qn2R94KVHBJEvpeYeZApQdE_yRhirWoFbmdvqo6ZdQYzpP5TMSrmSqrjYnf2ffs9uwYMmIsD6cyOCdCdvKT9YWfXgrpT_dFHseT4LIR-dg51082JXjrcY2ND2YFc1PPdY3xXxTNkCJ8aR7Cg4VUixomXute33Mle7HLKfQ5JWaXQXQUPR9Le4La7sUIdxREIMlLaZLKYfBDWHb8_m1EaG024aSEfbJccay6OWNfbh2TAFIdY-votOzwuRjtuwCeBXrMn4nhwFWFjPzJ1e78L3Ypn4ka_fNv8zeCQKmjW4NxOXHzUEMPZ0hwP3Lz1UAEMPZ1xdJ6eVqwdOelVidMSyGtPFg7jmhdctxKi--DS_eeQA80icZQkt4SUBKKH2iuYBKt6uKpYx5iN-KDkOLtY_bkkRZOMZhEJZPG7z5xABW83Q-envpygTDptLsT3V5BAeW3LLSxTBOEOTSGg4kjYqg6fOCrjNG7kfRAuZiZuMwDTf6_ocFAufJbfmkSjQwkeF28Dif3LJSd8sqW-aNZKaLBGuC3_LiDlLzw7Z10xgRv0139veryHLcXBReOv5eq3LeFWr2aE640hiNyzyR_76wZf57J46rGm2Yx79EZqWRJJgEHr_89c_O5BKm6KYaHWAbdyUpZpx_CgGxM000nPmJR_Y4iUViyVpjkPSnXodevt-pZ35xvadvxHY_OpnI65G6YAsZXAXwTA0UGrHe1c_42AMy_ghiBSqLB5jigwwCRAcMcVFNYMt-87yw6KlLiOis72nLp5Ncul7CCt3TGLRw0jFESL-yUq1GmDs8eWIWIAXUTVOazfYl8-rI3IckjSBjMD2mWVsZojB3rjpM4IrDEYF0Sf-ILtHDIDOpiyQZiiEvfJZxX9kyIliJ0jvGmkAsltnl1nUKCVfpmX0MLdHaKtWUgVjQAG4jpN69f191bn17b3LTHCFXEjmwqgvj-0Gazcwd6sP3bdwNyYjByqSdSmj7yM_W_Rcd0z8n4Ydbu93tuLrgpMcLIA5Cikpx9VjfTbDqbg2CPo3nb3J_ditjdermEmPBLe64z90uhW52lEsCl2euf6cnmu7nl3NSkGbnUGyx3E4d8u8rusdeSFMye5LLMv64frExjL5Hg-3mcDRgB7H_3w1HKECAmMX8pfoXGP8BxWetGAWopL5GQ490GXePvgYru_99MPc7gpqOCA6y4Yykv-q3iZoandBPNGCJcP8n0BKIEdpN4rDVGB4pPJQkmaY9c3aDLicfEYEI17QDGAUvaaCsJ5LslnYrw38fUFVbyRpz1NloWIE41bnz5A04bwiMRAsPgm0Hdqh2qYlcwApS8OBerKdqg5y7OA_Qu_UzXTrhKH1ElWN-iMQNOQzjaTqnZ2LHRzAXcgSZjyo-1VKL1ur1qQ6dyBlMK0PvOZGs3n2Q9UpZpa-a6vAlVLXauXj1zcGDmitOS2hr_BYSqTt4QSc5tQyZarzClzwA-zA4yg_WKNRKsQuRwhg3iV89uD8InYewHUIn-5SGN9Jm4GQmhCi5yyNBed3QanOzHmU2sEoN39O5C-e6Bjv-f1PfF6cdcOvNUd0GrakFBoMW4bW4zbibnvmOs6d6w7S2r7_RdI=",
+      "status": null
+    },
+    {
+      "id": "msg_09852f0bbd945c93016a9f32fd093887d0b66c960edcadbe66",
+      "content": [
+        {
+          "annotations": [],
+          "text": "from simulation import build\nfrom runtime import solve, realize\n\n\ndef render(run, rng):\n    events = run[\"events\"]\n    initial = run[\"initial\"]\n    final = run[\"final\"]\n\n    need = initial.get(\"noor.need\", \"plain\")\n    need_words = {\n        \"plain\": \"a plain bun\",\n        \"berry\": \"a berry bun\",\n    }\n    suitable = need_words.get(need, \"a suitable bun\")\n\n    beginning_texts = [\n        \"Sunlight spilled across Mara's market stall, where three buns waited on a tray and one paper label seemed determined to cause trouble. Ada stood ready to help Pip the squirrel and hungry Noor share the morning's baking.\",\n        \"At the sunny market stall, the buns looked delicious—but the label did not make everything clear. Ada glanced from proud Pip to hungry Noor and decided that careful checking would be better than guessing.\",\n    ]\n    paragraphs = [{\n        \"text\": rng.choice(beginning_texts),\n        \"event_ids\": [],\n        \"kind\": \"beginning\",\n    }]\n\n    fixed = {\n        \"inspect_label\": \"Ada leaned over the tray and examined the paper label. She frowned thoughtfully: a label could be neat and still be wrong.\",\n        \"taste_berry_crumb\": \"With Mara's tasting plate ready, Ada sampled one tiny berry crumb. “That tells us what this bun truly holds,” she said, wiping her fingers.\",\n        \"weigh_buns\": \"Ada placed the buns on the little scale and compared their shapes and weights. “Evidence first,” she announced, as the pointer bobbed and settled.\",\n        \"ask_noor\": \"Ada turned to Noor. “Which filling will be gentle and filling for you?” Noor answered clearly, and Ada listened instead of making a guess.\",\n        \"tell_mara_label\": \"Ada told Mara what the label seemed to say. Mara listened carefully, though she knew that Ada's first clue might not be the whole truth.\",\n        \"show_mara_evidence\": \"Ada showed Mara what she had checked and explained Noor's need. “Now we can make a fair choice,” she said.\",\n        \"pip_claims_saved_nut\": \"Pip puffed out his little chest. “That nut bun is the one I saved!” he declared, making sure everyone heard his promise.\",\n        \"pip_chooses_nut\": \"Pip pointed straight at the nut bun. “That is my favorite,” he said, and Mara let him choose it openly.\",\n        \"reserve_claimed_nut\": \"Since Pip had claimed the bun for a promise, Mara reserved it for him. Pip relaxed, pleased that his word had been remembered.\",\n        \"grant_generous_permission\": \"Mara smiled and welcomed Ada's careful idea. “You may arrange the basket,” she said, giving permission before anything was moved.\",\n        \"grant_cautious_permission\": \"Mara considered Ada's evidence, then nodded. “I wanted to be sure,” she explained. “Now I agree you may arrange the share.”\",\n        \"give_plain_bun\": \"Ada placed the plain bun in Noor's basket portion. Noor's shoulders loosened, and the hungry neighbor finally had food that suited them.\",\n        \"give_berry_bun\": \"Ada placed the berry bun in Noor's basket portion. Noor smiled at the safe, bright filling and thanked Ada for checking first.\",\n        \"display_checked_labels\": \"Ada and Mara set out the checked label beside the tray. The display was no longer confusing: its words matched the buns.\",\n        \"make_new_label_from_sample\": \"There was no useful label to trust, so Ada and Mara made a fresh one from the checked evidence. It stood plainly beside the tray.\",\n        \"lend_spare_label\": \"Mara handed Ada the spare paper label. “Use it carefully,” she said, and Ada accepted the useful bit of stall equipment.\",\n    }\n\n    for event in events:\n        sid = event[\"scene\"]\n        text = fixed.get(sid, event[\"summary\"] + \".\")\n        if sid == \"inspect_label\":\n            known = event[\"after\"].get(\"ada.knows.label.accurate\")\n            text += \" Ada discovered that it was \" + (\"accurate.\" if known else \"not accurate.\")\n        elif sid == \"tell_mara_label\":\n            text += \" Now Mara knew what Ada had observed, too.\"\n        elif sid == \"show_mara_evidence\":\n            text += \" Mara could see why the arrangement needed care.\"\n        elif sid in (\"give_plain_bun\", \"give_berry_bun\"):\n            text += \" Noor received \" + suitable + \", while the other buns stayed accounted for.\"\n        elif sid in (\"display_checked_labels\", \"make_new_label_from_sample\"):\n            text += \" Pip's choice and Noor's portion could now be seen without confusion.\"\n        elif sid == \"lend_spare_label\":\n            text += \" The label was borrowed, not mysteriously created.\"\n        elif sid == \"weigh_buns\":\n            text += \" Ada still waited for Mara's permission before rearranging anything.\"\n        elif sid == \"reserve_claimed_nut\":\n            text += \" Pip's promised nut bun remained his, while the sharing problem continued to be solved around it.\"\n\n        paragraphs.append({\n            \"text\": text,\n            \"event_ids\": [event[\"id\"]],\n            \"kind\": \"scene\",\n        })\n\n    last_id = events[-1][\"id\"] if events else 0\n    received = final.get(\"noor.received\")\n    received_name = {\"plain\": \"plain\", \"berry\": \"berry\"}.get(received, \"suitable\")\n    display = final.get(\"stall.display\")\n    ending = (\n        \"By the end, Noor held the \" + received_name + \" bun, Pip's saved nut bun was \"\n        + (\"still his\" if final.get(\"nut.owner\") == \"pip\" else \"settled fairly\")\n        + \", and the stall's display was \"\n        + (\"clear and accurate.\" if display == \"clear\" else \"carefully arranged.\")\n        + \" The fresh label and the basket made the change visible: no bun had vanished, and nobody had to rely on a proud guess.\"\n    )\n    paragraphs.append({\n        \"text\": ending,\n        \"event_ids\": [last_id],\n        \"kind\": \"ending\",\n    })\n    return paragraphs\n\n\ndef generate(seed, prose_seed=None):\n    return realize(\n        solve(build(seed), seed),\n        render,\n        seed if prose_seed is None else prose_seed,\n    )",
+          "type": "output_text",
+          "logprobs": []
+        }
+      ],
+      "role": "assistant",
+      "status": "completed",
+      "type": "message",
+      "phase": "final_answer"
+    }
+  ],
+  "parallel_tool_calls": true,
+  "temperature": 1.0,
+  "tool_choice": "auto",
+  "tools": [],
+  "top_p": 0.98,
+  "background": false,
+  "completed_at": 1788818189.0,
+  "conversation": null,
+  "max_output_tokens": 16000,
+  "max_tool_calls": null,
+  "moderation": null,
+  "previous_response_id": null,
+  "prompt": null,
+  "prompt_cache_key": null,
+  "prompt_cache_retention": "24h",
+  "reasoning": {
+    "context": "all_turns",
+    "effort": "low",
+    "generate_summary": null,
+    "summary": null,
+    "mode": "standard"
+  },
+  "safety_identifier": null,
+  "service_tier": "flex",
+  "status": "completed",
+  "text": {
+    "format": {
+      "type": "text"
+    },
+    "verbosity": "medium"
+  },
+  "top_logprobs": 0,
+  "truncation": "disabled",
+  "usage": {
+    "input_tokens": 14241,
+    "input_tokens_details": {
+      "cached_tokens": 0,
+      "cache_write_tokens": 14238
+    },
+    "output_tokens": 1470,
+    "output_tokens_details": {
+      "reasoning_tokens": 120
+    },
+    "total_tokens": 15711
+  },
+  "user": null,
+  "billing": {
+    "payer": "developer"
+  },
+  "frequency_penalty": 0.0,
+  "presence_penalty": 0.0,
+  "store": false,
+  "tool_usage": {
+    "image_gen": {
+      "input_tokens": 0,
+      "input_tokens_details": {
+        "image_tokens": 0,
+        "text_tokens": 0
+      },
+      "output_tokens": 0,
+      "output_tokens_details": {
+        "image_tokens": 0,
+        "text_tokens": 0
+      },
+      "total_tokens": 0
+    },
+    "web_search": {
+      "num_requests": 0
+    }
+  }
+}

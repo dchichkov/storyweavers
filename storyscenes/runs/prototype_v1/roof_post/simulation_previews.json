@@ -1,0 +1,1494 @@
+[
+  {
+    "seed": 0,
+    "title": "Invitations Above the Roofs",
+    "initial": {
+      "ada.location": "roof_post",
+      "pip.location": "roof_post",
+      "mara.location": "roof_post",
+      "invitations.location": "roof_post",
+      "invitations.owner": "ada",
+      "invitations.count": 4,
+      "invitations.delivered": 0,
+      "invitations.torn": false,
+      "invitations.secured": false,
+      "invitations.carrier": "none",
+      "invitations.arrangement": "loose",
+      "pouch.location": "roof_post",
+      "pouch.owner": "mara",
+      "pouch.condition": "ready",
+      "pouch.tied": false,
+      "basket.location": "roof_post",
+      "basket.owner": "mara",
+      "basket.loaded": false,
+      "basket.covered": false,
+      "twine.location": "roof_post",
+      "twine.owner": "mara",
+      "twine.tied": false,
+      "ribbon.location": "roof_post",
+      "ribbon.wind": 1,
+      "roof_post.route": "open",
+      "herb_roof.route": "open",
+      "glasshouse.route": "closed",
+      "chimney_nook.route": "open",
+      "pots.location": "glasshouse",
+      "pots.delicate_section": "herb_roof",
+      "pots.display": "empty",
+      "chimney_nook.display": "empty",
+      "ada.memes.Ambition": 2,
+      "ada.memes.Care": 1,
+      "ada.memes.Curiosity": 1,
+      "ada.knows.ribbon.wind": null,
+      "ada.knows.invitations.torn": null,
+      "ada.knows.glasshouse.route": null,
+      "pip.memes.Ambition": 1,
+      "pip.memes.Care": 1,
+      "pip.memes.Curiosity": 1,
+      "pip.breath_control": 2,
+      "pip.puff_tested": false,
+      "pip.puff_used": false,
+      "pip.knows.breath_control": null,
+      "mara.memes.Care": 2,
+      "mara.knows.ribbon.wind": null,
+      "mara.knows.glasshouse.route": "closed"
+    },
+    "final": {
+      "ada.location": "roof_post",
+      "pip.location": "roof_post",
+      "mara.location": "roof_post",
+      "invitations.location": "chimney_nook",
+      "invitations.owner": "ada",
+      "invitations.count": 4,
+      "invitations.delivered": 4,
+      "invitations.torn": false,
+      "invitations.secured": true,
+      "invitations.carrier": "basket",
+      "invitations.arrangement": "nook_full",
+      "pouch.location": "roof_post",
+      "pouch.owner": "mara",
+      "pouch.condition": "ready",
+      "pouch.tied": false,
+      "basket.location": "chimney_nook",
+      "basket.owner": "ada",
+      "basket.loaded": true,
+      "basket.covered": true,
+      "twine.location": "roof_post",
+      "twine.owner": "mara",
+      "twine.tied": false,
+      "ribbon.location": "roof_post",
+      "ribbon.wind": 1,
+      "roof_post.route": "open",
+      "herb_roof.route": "open",
+      "glasshouse.route": "closed",
+      "chimney_nook.route": "open",
+      "pots.location": "glasshouse",
+      "pots.delicate_section": "herb_roof",
+      "pots.display": "empty",
+      "chimney_nook.display": "full",
+      "ada.memes.Ambition": 2,
+      "ada.memes.Care": 1,
+      "ada.memes.Curiosity": 1,
+      "ada.knows.ribbon.wind": 1,
+      "ada.knows.invitations.torn": false,
+      "ada.knows.glasshouse.route": "closed",
+      "pip.memes.Ambition": 1,
+      "pip.memes.Care": 1,
+      "pip.memes.Curiosity": 2,
+      "pip.breath_control": 2,
+      "pip.puff_tested": true,
+      "pip.puff_used": true,
+      "pip.knows.breath_control": 2,
+      "mara.memes.Care": 2,
+      "mara.knows.ribbon.wind": 1,
+      "mara.knows.glasshouse.route": "closed"
+    },
+    "events": [
+      {
+        "id": 1,
+        "scene": "inspect_wind",
+        "kernel": "Observe",
+        "actors": [
+          "ada"
+        ],
+        "summary": "Ada inspected the ribbon wind-marker at the roof post",
+        "causes": [],
+        "requires": [
+          {
+            "key": "ada.location",
+            "op": "eq",
+            "value": "roof_post"
+          },
+          {
+            "key": "ribbon.location",
+            "op": "eq",
+            "value": "roof_post"
+          },
+          {
+            "key": "ada.memes.Curiosity",
+            "op": "ge",
+            "value": 1
+          }
+        ],
+        "changes": {
+          "ada.knows.ribbon.wind": {
+            "before": null,
+            "after": 1
+          }
+        }
+      },
+      {
+        "id": 2,
+        "scene": "test_pip_puff",
+        "kernel": "observation",
+        "actors": [
+          "pip",
+          "ribbon",
+          "roof_post"
+        ],
+        "summary": "Pip tested a tiny warm puff beside the ribbon",
+        "causes": [],
+        "requires": [
+          {
+            "key": "pip.location",
+            "op": "eq",
+            "value": "roof_post"
+          },
+          {
+            "key": "ribbon.location",
+            "op": "eq",
+            "value": "roof_post"
+          },
+          {
+            "key": "pip.puff_tested",
+            "op": "eq",
+            "value": false
+          },
+          {
+            "key": "pip.memes.Curiosity",
+            "op": "ge",
+            "value": 1
+          }
+        ],
+        "changes": {
+          "pip.memes.Curiosity": {
+            "before": 1,
+            "after": 2
+          },
+          "pip.puff_tested": {
+            "before": false,
+            "after": true
+          },
+          "pip.knows.breath_control": {
+            "before": null,
+            "after": 2
+          }
+        }
+      },
+      {
+        "id": 3,
+        "scene": "tell_mara_wind",
+        "kernel": "Tell",
+        "actors": [
+          "ada",
+          "mara"
+        ],
+        "summary": "Ada told Mara what the ribbon showed about the wind",
+        "causes": [
+          1
+        ],
+        "requires": [
+          {
+            "key": "ada.knows.ribbon.wind",
+            "op": "ne",
+            "value": null
+          },
+          {
+            "key": "ada.location",
+            "op": "eq",
+            "value": "roof_post"
+          },
+          {
+            "key": "mara.location",
+            "op": "eq",
+            "value": "roof_post"
+          }
+        ],
+        "changes": {
+          "mara.knows.ribbon.wind": {
+            "before": null,
+            "after": 1
+          }
+        }
+      },
+      {
+        "id": 4,
+        "scene": "inspect_paper",
+        "kernel": "Observe",
+        "actors": [
+          "ada"
+        ],
+        "summary": "Ada checked that the invitation papers were intact",
+        "causes": [],
+        "requires": [
+          {
+            "key": "ada.location",
+            "op": "eq",
+            "value": "roof_post"
+          },
+          {
+            "key": "invitations.location",
+            "op": "eq",
+            "value": "roof_post"
+          }
+        ],
+        "changes": {
+          "ada.knows.invitations.torn": {
+            "before": null,
+            "after": false
+          }
+        }
+      },
+      {
+        "id": 5,
+        "scene": "inspect_route",
+        "kernel": "Observe",
+        "actors": [
+          "ada"
+        ],
+        "summary": "Ada checked whether the glasshouse roof route was open",
+        "causes": [],
+        "requires": [
+          {
+            "key": "ada.location",
+            "op": "eq",
+            "value": "roof_post"
+          },
+          {
+            "key": "glasshouse.route",
+            "op": "in",
+            "value": [
+              "open",
+              "closed"
+            ]
+          }
+        ],
+        "changes": {
+          "ada.knows.glasshouse.route": {
+            "before": null,
+            "after": "closed"
+          }
+        }
+      },
+      {
+        "id": 6,
+        "scene": "lend_basket",
+        "kernel": "Transfer",
+        "actors": [
+          "mara",
+          "ada"
+        ],
+        "summary": "Mara lent Ada the light basket for the sheltered route",
+        "causes": [
+          5
+        ],
+        "requires": [
+          {
+            "key": "basket.owner",
+            "op": "eq",
+            "value": "mara"
+          },
+          {
+            "key": "mara.memes.Care",
+            "op": "ge",
+            "value": 1
+          },
+          {
+            "key": "ada.knows.glasshouse.route",
+            "op": "eq",
+            "value": "closed"
+          }
+        ],
+        "changes": {
+          "basket.owner": {
+            "before": "mara",
+            "after": "ada"
+          }
+        }
+      },
+      {
+        "id": 7,
+        "scene": "pack_basket",
+        "kernel": "cooperation",
+        "actors": [
+          "ada",
+          "pip",
+          "basket",
+          "invitations"
+        ],
+        "summary": "Ada and Pip covered the invitations in the light basket",
+        "causes": [
+          4,
+          6
+        ],
+        "requires": [
+          {
+            "key": "ada.location",
+            "op": "eq",
+            "value": "roof_post"
+          },
+          {
+            "key": "pip.location",
+            "op": "eq",
+            "value": "roof_post"
+          },
+          {
+            "key": "basket.owner",
+            "op": "eq",
+            "value": "ada"
+          },
+          {
+            "key": "ada.knows.invitations.torn",
+            "op": "eq",
+            "value": false
+          },
+          {
+            "key": "invitations.secured",
+            "op": "eq",
+            "value": false
+          }
+        ],
+        "changes": {
+          "invitations.secured": {
+            "before": false,
+            "after": true
+          },
+          "invitations.carrier": {
+            "before": "none",
+            "after": "basket"
+          },
+          "basket.loaded": {
+            "before": false,
+            "after": true
+          },
+          "basket.covered": {
+            "before": false,
+            "after": true
+          }
+        }
+      },
+      {
+        "id": 8,
+        "scene": "guide_basket",
+        "kernel": "cooperation",
+        "actors": [
+          "ada",
+          "pip",
+          "basket",
+          "chimney_nook"
+        ],
+        "summary": "Pip nudged the covered basket in short bursts into the chimney nook",
+        "causes": [
+          2,
+          5,
+          7
+        ],
+        "requires": [
+          {
+            "key": "ada.location",
+            "op": "eq",
+            "value": "roof_post"
+          },
+          {
+            "key": "pip.location",
+            "op": "eq",
+            "value": "roof_post"
+          },
+          {
+            "key": "ada.knows.glasshouse.route",
+            "op": "eq",
+            "value": "closed"
+          },
+          {
+            "key": "pip.puff_tested",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "pip.knows.breath_control",
+            "op": "ge",
+            "value": 2
+          },
+          {
+            "key": "basket.loaded",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "basket.covered",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "invitations.carrier",
+            "op": "eq",
+            "value": "basket"
+          },
+          {
+            "key": "invitations.delivered",
+            "op": "eq",
+            "value": 0
+          }
+        ],
+        "changes": {
+          "invitations.location": {
+            "before": "roof_post",
+            "after": "chimney_nook"
+          },
+          "invitations.delivered": {
+            "before": 0,
+            "after": 4
+          },
+          "invitations.arrangement": {
+            "before": "loose",
+            "after": "nook_full"
+          },
+          "basket.location": {
+            "before": "roof_post",
+            "after": "chimney_nook"
+          },
+          "chimney_nook.display": {
+            "before": "empty",
+            "after": "full"
+          },
+          "pip.puff_used": {
+            "before": false,
+            "after": true
+          }
+        }
+      }
+    ]
+  },
+  {
+    "seed": 1,
+    "title": "Invitations Above the Roofs",
+    "initial": {
+      "ada.location": "roof_post",
+      "pip.location": "roof_post",
+      "mara.location": "roof_post",
+      "invitations.location": "roof_post",
+      "invitations.owner": "ada",
+      "invitations.count": 3,
+      "invitations.delivered": 0,
+      "invitations.torn": false,
+      "invitations.secured": false,
+      "invitations.carrier": "none",
+      "invitations.arrangement": "loose",
+      "pouch.location": "roof_post",
+      "pouch.owner": "mara",
+      "pouch.condition": "repair",
+      "pouch.tied": false,
+      "basket.location": "roof_post",
+      "basket.owner": "mara",
+      "basket.loaded": false,
+      "basket.covered": false,
+      "twine.location": "roof_post",
+      "twine.owner": "mara",
+      "twine.tied": false,
+      "ribbon.location": "roof_post",
+      "ribbon.wind": 2,
+      "roof_post.route": "open",
+      "herb_roof.route": "open",
+      "glasshouse.route": "closed",
+      "chimney_nook.route": "open",
+      "pots.location": "glasshouse",
+      "pots.delicate_section": "herb_roof",
+      "pots.display": "empty",
+      "chimney_nook.display": "empty",
+      "ada.memes.Ambition": 2,
+      "ada.memes.Care": 1,
+      "ada.memes.Curiosity": 1,
+      "ada.knows.ribbon.wind": null,
+      "ada.knows.invitations.torn": null,
+      "ada.knows.glasshouse.route": null,
+      "pip.memes.Ambition": 1,
+      "pip.memes.Care": 1,
+      "pip.memes.Curiosity": 1,
+      "pip.breath_control": 2,
+      "pip.puff_tested": false,
+      "pip.puff_used": false,
+      "pip.knows.breath_control": null,
+      "mara.memes.Care": 2,
+      "mara.knows.ribbon.wind": null,
+      "mara.knows.glasshouse.route": "closed"
+    },
+    "final": {
+      "ada.location": "roof_post",
+      "pip.location": "roof_post",
+      "mara.location": "roof_post",
+      "invitations.location": "chimney_nook",
+      "invitations.owner": "ada",
+      "invitations.count": 3,
+      "invitations.delivered": 3,
+      "invitations.torn": false,
+      "invitations.secured": true,
+      "invitations.carrier": "basket",
+      "invitations.arrangement": "nook_full",
+      "pouch.location": "roof_post",
+      "pouch.owner": "mara",
+      "pouch.condition": "repair",
+      "pouch.tied": false,
+      "basket.location": "chimney_nook",
+      "basket.owner": "ada",
+      "basket.loaded": true,
+      "basket.covered": true,
+      "twine.location": "roof_post",
+      "twine.owner": "ada",
+      "twine.tied": true,
+      "ribbon.location": "roof_post",
+      "ribbon.wind": 2,
+      "roof_post.route": "open",
+      "herb_roof.route": "open",
+      "glasshouse.route": "closed",
+      "chimney_nook.route": "open",
+      "pots.location": "glasshouse",
+      "pots.delicate_section": "herb_roof",
+      "pots.display": "empty",
+      "chimney_nook.display": "full",
+      "ada.memes.Ambition": 2,
+      "ada.memes.Care": 1,
+      "ada.memes.Curiosity": 1,
+      "ada.knows.ribbon.wind": 2,
+      "ada.knows.invitations.torn": false,
+      "ada.knows.glasshouse.route": "closed",
+      "pip.memes.Ambition": 1,
+      "pip.memes.Care": 1,
+      "pip.memes.Curiosity": 2,
+      "pip.breath_control": 2,
+      "pip.puff_tested": true,
+      "pip.puff_used": true,
+      "pip.knows.breath_control": 2,
+      "mara.memes.Care": 2,
+      "mara.knows.ribbon.wind": 2,
+      "mara.knows.glasshouse.route": "closed"
+    },
+    "events": [
+      {
+        "id": 1,
+        "scene": "inspect_paper",
+        "kernel": "Observe",
+        "actors": [
+          "ada"
+        ],
+        "summary": "Ada checked that the invitation papers were intact",
+        "causes": [],
+        "requires": [
+          {
+            "key": "ada.location",
+            "op": "eq",
+            "value": "roof_post"
+          },
+          {
+            "key": "invitations.location",
+            "op": "eq",
+            "value": "roof_post"
+          }
+        ],
+        "changes": {
+          "ada.knows.invitations.torn": {
+            "before": null,
+            "after": false
+          }
+        }
+      },
+      {
+        "id": 2,
+        "scene": "test_pip_puff",
+        "kernel": "observation",
+        "actors": [
+          "pip",
+          "ribbon",
+          "roof_post"
+        ],
+        "summary": "Pip tested a tiny warm puff beside the ribbon",
+        "causes": [],
+        "requires": [
+          {
+            "key": "pip.location",
+            "op": "eq",
+            "value": "roof_post"
+          },
+          {
+            "key": "ribbon.location",
+            "op": "eq",
+            "value": "roof_post"
+          },
+          {
+            "key": "pip.puff_tested",
+            "op": "eq",
+            "value": false
+          },
+          {
+            "key": "pip.memes.Curiosity",
+            "op": "ge",
+            "value": 1
+          }
+        ],
+        "changes": {
+          "pip.memes.Curiosity": {
+            "before": 1,
+            "after": 2
+          },
+          "pip.puff_tested": {
+            "before": false,
+            "after": true
+          },
+          "pip.knows.breath_control": {
+            "before": null,
+            "after": 2
+          }
+        }
+      },
+      {
+        "id": 3,
+        "scene": "inspect_route",
+        "kernel": "Observe",
+        "actors": [
+          "ada"
+        ],
+        "summary": "Ada checked whether the glasshouse roof route was open",
+        "causes": [],
+        "requires": [
+          {
+            "key": "ada.location",
+            "op": "eq",
+            "value": "roof_post"
+          },
+          {
+            "key": "glasshouse.route",
+            "op": "in",
+            "value": [
+              "open",
+              "closed"
+            ]
+          }
+        ],
+        "changes": {
+          "ada.knows.glasshouse.route": {
+            "before": null,
+            "after": "closed"
+          }
+        }
+      },
+      {
+        "id": 4,
+        "scene": "inspect_wind",
+        "kernel": "Observe",
+        "actors": [
+          "ada"
+        ],
+        "summary": "Ada inspected the ribbon wind-marker at the roof post",
+        "causes": [],
+        "requires": [
+          {
+            "key": "ada.location",
+            "op": "eq",
+            "value": "roof_post"
+          },
+          {
+            "key": "ribbon.location",
+            "op": "eq",
+            "value": "roof_post"
+          },
+          {
+            "key": "ada.memes.Curiosity",
+            "op": "ge",
+            "value": 1
+          }
+        ],
+        "changes": {
+          "ada.knows.ribbon.wind": {
+            "before": null,
+            "after": 2
+          }
+        }
+      },
+      {
+        "id": 5,
+        "scene": "lend_basket",
+        "kernel": "Transfer",
+        "actors": [
+          "mara",
+          "ada"
+        ],
+        "summary": "Mara lent Ada the light basket for the sheltered route",
+        "causes": [
+          3
+        ],
+        "requires": [
+          {
+            "key": "basket.owner",
+            "op": "eq",
+            "value": "mara"
+          },
+          {
+            "key": "mara.memes.Care",
+            "op": "ge",
+            "value": 1
+          },
+          {
+            "key": "ada.knows.glasshouse.route",
+            "op": "eq",
+            "value": "closed"
+          }
+        ],
+        "changes": {
+          "basket.owner": {
+            "before": "mara",
+            "after": "ada"
+          }
+        }
+      },
+      {
+        "id": 6,
+        "scene": "tell_mara_wind",
+        "kernel": "Tell",
+        "actors": [
+          "ada",
+          "mara"
+        ],
+        "summary": "Ada told Mara what the ribbon showed about the wind",
+        "causes": [
+          4
+        ],
+        "requires": [
+          {
+            "key": "ada.knows.ribbon.wind",
+            "op": "ne",
+            "value": null
+          },
+          {
+            "key": "ada.location",
+            "op": "eq",
+            "value": "roof_post"
+          },
+          {
+            "key": "mara.location",
+            "op": "eq",
+            "value": "roof_post"
+          }
+        ],
+        "changes": {
+          "mara.knows.ribbon.wind": {
+            "before": null,
+            "after": 2
+          }
+        }
+      },
+      {
+        "id": 7,
+        "scene": "lend_twine",
+        "kernel": "Transfer",
+        "actors": [
+          "mara",
+          "ada"
+        ],
+        "summary": "Mara lent Ada twine for a guiding line",
+        "causes": [
+          6
+        ],
+        "requires": [
+          {
+            "key": "twine.owner",
+            "op": "eq",
+            "value": "mara"
+          },
+          {
+            "key": "mara.memes.Care",
+            "op": "ge",
+            "value": 1
+          },
+          {
+            "key": "mara.knows.ribbon.wind",
+            "op": "eq",
+            "value": 2
+          }
+        ],
+        "changes": {
+          "twine.owner": {
+            "before": "mara",
+            "after": "ada"
+          }
+        }
+      },
+      {
+        "id": 8,
+        "scene": "tie_wind_line",
+        "kernel": "cooperation",
+        "actors": [
+          "ada",
+          "mara",
+          "twine",
+          "roof_post"
+        ],
+        "summary": "Ada and Mara tied a guiding line between safe roof posts",
+        "causes": [
+          6,
+          7
+        ],
+        "requires": [
+          {
+            "key": "ada.location",
+            "op": "eq",
+            "value": "roof_post"
+          },
+          {
+            "key": "mara.location",
+            "op": "eq",
+            "value": "roof_post"
+          },
+          {
+            "key": "twine.owner",
+            "op": "eq",
+            "value": "ada"
+          },
+          {
+            "key": "mara.knows.ribbon.wind",
+            "op": "eq",
+            "value": 2
+          },
+          {
+            "key": "twine.tied",
+            "op": "eq",
+            "value": false
+          }
+        ],
+        "changes": {
+          "twine.tied": {
+            "before": false,
+            "after": true
+          }
+        }
+      },
+      {
+        "id": 9,
+        "scene": "pack_basket",
+        "kernel": "cooperation",
+        "actors": [
+          "ada",
+          "pip",
+          "basket",
+          "invitations"
+        ],
+        "summary": "Ada and Pip covered the invitations in the light basket",
+        "causes": [
+          1,
+          5
+        ],
+        "requires": [
+          {
+            "key": "ada.location",
+            "op": "eq",
+            "value": "roof_post"
+          },
+          {
+            "key": "pip.location",
+            "op": "eq",
+            "value": "roof_post"
+          },
+          {
+            "key": "basket.owner",
+            "op": "eq",
+            "value": "ada"
+          },
+          {
+            "key": "ada.knows.invitations.torn",
+            "op": "eq",
+            "value": false
+          },
+          {
+            "key": "invitations.secured",
+            "op": "eq",
+            "value": false
+          }
+        ],
+        "changes": {
+          "invitations.secured": {
+            "before": false,
+            "after": true
+          },
+          "invitations.carrier": {
+            "before": "none",
+            "after": "basket"
+          },
+          "basket.loaded": {
+            "before": false,
+            "after": true
+          },
+          "basket.covered": {
+            "before": false,
+            "after": true
+          }
+        }
+      },
+      {
+        "id": 10,
+        "scene": "guide_basket",
+        "kernel": "cooperation",
+        "actors": [
+          "ada",
+          "pip",
+          "basket",
+          "chimney_nook"
+        ],
+        "summary": "Pip nudged the covered basket in short bursts into the chimney nook",
+        "causes": [
+          2,
+          3,
+          9
+        ],
+        "requires": [
+          {
+            "key": "ada.location",
+            "op": "eq",
+            "value": "roof_post"
+          },
+          {
+            "key": "pip.location",
+            "op": "eq",
+            "value": "roof_post"
+          },
+          {
+            "key": "ada.knows.glasshouse.route",
+            "op": "eq",
+            "value": "closed"
+          },
+          {
+            "key": "pip.puff_tested",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "pip.knows.breath_control",
+            "op": "ge",
+            "value": 2
+          },
+          {
+            "key": "basket.loaded",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "basket.covered",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "invitations.carrier",
+            "op": "eq",
+            "value": "basket"
+          },
+          {
+            "key": "invitations.delivered",
+            "op": "eq",
+            "value": 0
+          }
+        ],
+        "changes": {
+          "invitations.location": {
+            "before": "roof_post",
+            "after": "chimney_nook"
+          },
+          "invitations.delivered": {
+            "before": 0,
+            "after": 3
+          },
+          "invitations.arrangement": {
+            "before": "loose",
+            "after": "nook_full"
+          },
+          "basket.location": {
+            "before": "roof_post",
+            "after": "chimney_nook"
+          },
+          "chimney_nook.display": {
+            "before": "empty",
+            "after": "full"
+          },
+          "pip.puff_used": {
+            "before": false,
+            "after": true
+          }
+        }
+      }
+    ]
+  },
+  {
+    "seed": 2,
+    "title": "Invitations Above the Roofs",
+    "initial": {
+      "ada.location": "roof_post",
+      "pip.location": "roof_post",
+      "mara.location": "roof_post",
+      "invitations.location": "roof_post",
+      "invitations.owner": "ada",
+      "invitations.count": 4,
+      "invitations.delivered": 0,
+      "invitations.torn": false,
+      "invitations.secured": false,
+      "invitations.carrier": "none",
+      "invitations.arrangement": "loose",
+      "pouch.location": "roof_post",
+      "pouch.owner": "mara",
+      "pouch.condition": "ready",
+      "pouch.tied": false,
+      "basket.location": "roof_post",
+      "basket.owner": "mara",
+      "basket.loaded": false,
+      "basket.covered": false,
+      "twine.location": "roof_post",
+      "twine.owner": "mara",
+      "twine.tied": false,
+      "ribbon.location": "roof_post",
+      "ribbon.wind": 1,
+      "roof_post.route": "open",
+      "herb_roof.route": "open",
+      "glasshouse.route": "closed",
+      "chimney_nook.route": "open",
+      "pots.location": "glasshouse",
+      "pots.delicate_section": "glasshouse",
+      "pots.display": "empty",
+      "chimney_nook.display": "empty",
+      "ada.memes.Ambition": 2,
+      "ada.memes.Care": 1,
+      "ada.memes.Curiosity": 1,
+      "ada.knows.ribbon.wind": null,
+      "ada.knows.invitations.torn": null,
+      "ada.knows.glasshouse.route": null,
+      "pip.memes.Ambition": 1,
+      "pip.memes.Care": 1,
+      "pip.memes.Curiosity": 1,
+      "pip.breath_control": 2,
+      "pip.puff_tested": false,
+      "pip.puff_used": false,
+      "pip.knows.breath_control": null,
+      "mara.memes.Care": 2,
+      "mara.knows.ribbon.wind": null,
+      "mara.knows.glasshouse.route": "closed"
+    },
+    "final": {
+      "ada.location": "roof_post",
+      "pip.location": "roof_post",
+      "mara.location": "roof_post",
+      "invitations.location": "chimney_nook",
+      "invitations.owner": "ada",
+      "invitations.count": 4,
+      "invitations.delivered": 4,
+      "invitations.torn": false,
+      "invitations.secured": true,
+      "invitations.carrier": "basket",
+      "invitations.arrangement": "nook_full",
+      "pouch.location": "roof_post",
+      "pouch.owner": "mara",
+      "pouch.condition": "ready",
+      "pouch.tied": false,
+      "basket.location": "chimney_nook",
+      "basket.owner": "ada",
+      "basket.loaded": true,
+      "basket.covered": true,
+      "twine.location": "roof_post",
+      "twine.owner": "mara",
+      "twine.tied": false,
+      "ribbon.location": "roof_post",
+      "ribbon.wind": 1,
+      "roof_post.route": "open",
+      "herb_roof.route": "open",
+      "glasshouse.route": "closed",
+      "chimney_nook.route": "open",
+      "pots.location": "glasshouse",
+      "pots.delicate_section": "glasshouse",
+      "pots.display": "empty",
+      "chimney_nook.display": "full",
+      "ada.memes.Ambition": 2,
+      "ada.memes.Care": 1,
+      "ada.memes.Curiosity": 1,
+      "ada.knows.ribbon.wind": 1,
+      "ada.knows.invitations.torn": false,
+      "ada.knows.glasshouse.route": "closed",
+      "pip.memes.Ambition": 1,
+      "pip.memes.Care": 1,
+      "pip.memes.Curiosity": 2,
+      "pip.breath_control": 2,
+      "pip.puff_tested": true,
+      "pip.puff_used": true,
+      "pip.knows.breath_control": 2,
+      "mara.memes.Care": 2,
+      "mara.knows.ribbon.wind": 1,
+      "mara.knows.glasshouse.route": "closed"
+    },
+    "events": [
+      {
+        "id": 1,
+        "scene": "inspect_wind",
+        "kernel": "Observe",
+        "actors": [
+          "ada"
+        ],
+        "summary": "Ada inspected the ribbon wind-marker at the roof post",
+        "causes": [],
+        "requires": [
+          {
+            "key": "ada.location",
+            "op": "eq",
+            "value": "roof_post"
+          },
+          {
+            "key": "ribbon.location",
+            "op": "eq",
+            "value": "roof_post"
+          },
+          {
+            "key": "ada.memes.Curiosity",
+            "op": "ge",
+            "value": 1
+          }
+        ],
+        "changes": {
+          "ada.knows.ribbon.wind": {
+            "before": null,
+            "after": 1
+          }
+        }
+      },
+      {
+        "id": 2,
+        "scene": "inspect_paper",
+        "kernel": "Observe",
+        "actors": [
+          "ada"
+        ],
+        "summary": "Ada checked that the invitation papers were intact",
+        "causes": [],
+        "requires": [
+          {
+            "key": "ada.location",
+            "op": "eq",
+            "value": "roof_post"
+          },
+          {
+            "key": "invitations.location",
+            "op": "eq",
+            "value": "roof_post"
+          }
+        ],
+        "changes": {
+          "ada.knows.invitations.torn": {
+            "before": null,
+            "after": false
+          }
+        }
+      },
+      {
+        "id": 3,
+        "scene": "test_pip_puff",
+        "kernel": "observation",
+        "actors": [
+          "pip",
+          "ribbon",
+          "roof_post"
+        ],
+        "summary": "Pip tested a tiny warm puff beside the ribbon",
+        "causes": [],
+        "requires": [
+          {
+            "key": "pip.location",
+            "op": "eq",
+            "value": "roof_post"
+          },
+          {
+            "key": "ribbon.location",
+            "op": "eq",
+            "value": "roof_post"
+          },
+          {
+            "key": "pip.puff_tested",
+            "op": "eq",
+            "value": false
+          },
+          {
+            "key": "pip.memes.Curiosity",
+            "op": "ge",
+            "value": 1
+          }
+        ],
+        "changes": {
+          "pip.memes.Curiosity": {
+            "before": 1,
+            "after": 2
+          },
+          "pip.puff_tested": {
+            "before": false,
+            "after": true
+          },
+          "pip.knows.breath_control": {
+            "before": null,
+            "after": 2
+          }
+        }
+      },
+      {
+        "id": 4,
+        "scene": "tell_mara_wind",
+        "kernel": "Tell",
+        "actors": [
+          "ada",
+          "mara"
+        ],
+        "summary": "Ada told Mara what the ribbon showed about the wind",
+        "causes": [
+          1
+        ],
+        "requires": [
+          {
+            "key": "ada.knows.ribbon.wind",
+            "op": "ne",
+            "value": null
+          },
+          {
+            "key": "ada.location",
+            "op": "eq",
+            "value": "roof_post"
+          },
+          {
+            "key": "mara.location",
+            "op": "eq",
+            "value": "roof_post"
+          }
+        ],
+        "changes": {
+          "mara.knows.ribbon.wind": {
+            "before": null,
+            "after": 1
+          }
+        }
+      },
+      {
+        "id": 5,
+        "scene": "inspect_route",
+        "kernel": "Observe",
+        "actors": [
+          "ada"
+        ],
+        "summary": "Ada checked whether the glasshouse roof route was open",
+        "causes": [],
+        "requires": [
+          {
+            "key": "ada.location",
+            "op": "eq",
+            "value": "roof_post"
+          },
+          {
+            "key": "glasshouse.route",
+            "op": "in",
+            "value": [
+              "open",
+              "closed"
+            ]
+          }
+        ],
+        "changes": {
+          "ada.knows.glasshouse.route": {
+            "before": null,
+            "after": "closed"
+          }
+        }
+      },
+      {
+        "id": 6,
+        "scene": "lend_basket",
+        "kernel": "Transfer",
+        "actors": [
+          "mara",
+          "ada"
+        ],
+        "summary": "Mara lent Ada the light basket for the sheltered route",
+        "causes": [
+          5
+        ],
+        "requires": [
+          {
+            "key": "basket.owner",
+            "op": "eq",
+            "value": "mara"
+          },
+          {
+            "key": "mara.memes.Care",
+            "op": "ge",
+            "value": 1
+          },
+          {
+            "key": "ada.knows.glasshouse.route",
+            "op": "eq",
+            "value": "closed"
+          }
+        ],
+        "changes": {
+          "basket.owner": {
+            "before": "mara",
+            "after": "ada"
+          }
+        }
+      },
+      {
+        "id": 7,
+        "scene": "pack_basket",
+        "kernel": "cooperation",
+        "actors": [
+          "ada",
+          "pip",
+          "basket",
+          "invitations"
+        ],
+        "summary": "Ada and Pip covered the invitations in the light basket",
+        "causes": [
+          2,
+          6
+        ],
+        "requires": [
+          {
+            "key": "ada.location",
+            "op": "eq",
+            "value": "roof_post"
+          },
+          {
+            "key": "pip.location",
+            "op": "eq",
+            "value": "roof_post"
+          },
+          {
+            "key": "basket.owner",
+            "op": "eq",
+            "value": "ada"
+          },
+          {
+            "key": "ada.knows.invitations.torn",
+            "op": "eq",
+            "value": false
+          },
+          {
+            "key": "invitations.secured",
+            "op": "eq",
+            "value": false
+          }
+        ],
+        "changes": {
+          "invitations.secured": {
+            "before": false,
+            "after": true
+          },
+          "invitations.carrier": {
+            "before": "none",
+            "after": "basket"
+          },
+          "basket.loaded": {
+            "before": false,
+            "after": true
+          },
+          "basket.covered": {
+            "before": false,
+            "after": true
+          }
+        }
+      },
+      {
+        "id": 8,
+        "scene": "guide_basket",
+        "kernel": "cooperation",
+        "actors": [
+          "ada",
+          "pip",
+          "basket",
+          "chimney_nook"
+        ],
+        "summary": "Pip nudged the covered basket in short bursts into the chimney nook",
+        "causes": [
+          3,
+          5,
+          7
+        ],
+        "requires": [
+          {
+            "key": "ada.location",
+            "op": "eq",
+            "value": "roof_post"
+          },
+          {
+            "key": "pip.location",
+            "op": "eq",
+            "value": "roof_post"
+          },
+          {
+            "key": "ada.knows.glasshouse.route",
+            "op": "eq",
+            "value": "closed"
+          },
+          {
+            "key": "pip.puff_tested",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "pip.knows.breath_control",
+            "op": "ge",
+            "value": 2
+          },
+          {
+            "key": "basket.loaded",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "basket.covered",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "invitations.carrier",
+            "op": "eq",
+            "value": "basket"
+          },
+          {
+            "key": "invitations.delivered",
+            "op": "eq",
+            "value": 0
+          }
+        ],
+        "changes": {
+          "invitations.location": {
+            "before": "roof_post",
+            "after": "chimney_nook"
+          },
+          "invitations.delivered": {
+            "before": 0,
+            "after": 4
+          },
+          "invitations.arrangement": {
+            "before": "loose",
+            "after": "nook_full"
+          },
+          "basket.location": {
+            "before": "roof_post",
+            "after": "chimney_nook"
+          },
+          "chimney_nook.display": {
+            "before": "empty",
+            "after": "full"
+          },
+          "pip.puff_used": {
+            "before": false,
+            "after": true
+          }
+        }
+      }
+    ]
+  }
+]

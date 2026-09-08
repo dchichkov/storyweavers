@@ -1,0 +1,9 @@
+{
+  "edits": [
+    {
+      "old": "        scene(\n            'spread_quilt',",
+      "new": "        scene(\n            'moss_agree_cart',\n            'Welcome',\n            ('moss', 'lila'),\n            when=(\n                C('moss.belief_role', 'eq', 'cart'),\n                C('moss.agreement', 'eq', False),\n            ),\n            set_values={'moss.agreement': True, 'moss.content': True},\n            summary='Moss agreed to pull one bundle proudly',\n        ),\n        scene(\n            'spread_quilt',"
+    }
+  ],
+  "renames": []
+}

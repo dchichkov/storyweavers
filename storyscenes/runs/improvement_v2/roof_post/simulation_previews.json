@@ -1,0 +1,964 @@
+[
+  {
+    "seed": 0,
+    "title": "The Roof-Post Invitation Flight",
+    "initial": {
+      "ada.memes.Curiosity": 2,
+      "ada.want": "neat",
+      "ada.knows.ada.want": "neat",
+      "ada.knows.post.invites_pinned": null,
+      "ada.knows.basket.contains_lantern": null,
+      "ada.knows.pip.believes_flight": null,
+      "pip.want": "help",
+      "pip.belief": "quiet",
+      "pip.believes_flight": false,
+      "pip.knows.ada.want": null,
+      "pip.performance_agreed": false,
+      "pip.performance": "none",
+      "post.invites_pinned": true,
+      "post.ribboned": false,
+      "basket.contains_lantern": true,
+      "basket.safe": true,
+      "basket.owner": "ada",
+      "invites.location": "post",
+      "invites.delivered": false,
+      "invites.route": "unknown",
+      "invites.owner": "ada",
+      "ribbon.owner": "ada",
+      "ribbon.used": false,
+      "lantern.lit": false,
+      "bell.rung": false,
+      "garden.party_ready": false,
+      "garden.decorated": false,
+      "jun.invited": false,
+      "jun.knows.invites.delivered": null
+    },
+    "final": {
+      "ada.memes.Curiosity": 2,
+      "ada.want": "neat",
+      "ada.knows.ada.want": "neat",
+      "ada.knows.post.invites_pinned": null,
+      "ada.knows.basket.contains_lantern": true,
+      "ada.knows.pip.believes_flight": null,
+      "pip.want": "help",
+      "pip.belief": "quiet",
+      "pip.believes_flight": false,
+      "pip.knows.ada.want": null,
+      "pip.performance_agreed": false,
+      "pip.performance": "none",
+      "post.invites_pinned": true,
+      "post.ribboned": false,
+      "basket.contains_lantern": true,
+      "basket.safe": true,
+      "basket.owner": "ada",
+      "invites.location": "trellis",
+      "invites.delivered": true,
+      "invites.route": "lantern",
+      "invites.owner": "ada",
+      "ribbon.owner": "ada",
+      "ribbon.used": false,
+      "lantern.lit": true,
+      "bell.rung": true,
+      "garden.party_ready": true,
+      "garden.decorated": true,
+      "jun.invited": true,
+      "jun.knows.invites.delivered": true
+    },
+    "events": [
+      {
+        "id": 1,
+        "scene": "observe_cargo",
+        "kernel": "Observe",
+        "actors": [
+          "ada"
+        ],
+        "summary": "Ada peeked into the basket and checked for the paper lantern.",
+        "causes": [],
+        "requires": [
+          {
+            "key": "basket.owner",
+            "op": "eq",
+            "value": "ada"
+          }
+        ],
+        "changes": {
+          "ada.knows.basket.contains_lantern": {
+            "before": null,
+            "after": true
+          }
+        }
+      },
+      {
+        "id": 2,
+        "scene": "carry_to_trellis",
+        "kernel": "Carry",
+        "actors": [
+          "ada"
+        ],
+        "summary": "Ada carried the invitations carefully beneath the moonmelon trellis.",
+        "causes": [
+          1
+        ],
+        "requires": [
+          {
+            "key": "ada.knows.basket.contains_lantern",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "basket.contains_lantern",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "basket.owner",
+            "op": "eq",
+            "value": "ada"
+          },
+          {
+            "key": "basket.safe",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "pip.believes_flight",
+            "op": "eq",
+            "value": false
+          }
+        ],
+        "changes": {
+          "invites.location": {
+            "before": "post",
+            "after": "trellis"
+          },
+          "invites.delivered": {
+            "before": false,
+            "after": true
+          },
+          "invites.route": {
+            "before": "unknown",
+            "after": "lantern"
+          }
+        }
+      },
+      {
+        "id": 3,
+        "scene": "light_lantern",
+        "kernel": "Light",
+        "actors": [
+          "ada"
+        ],
+        "summary": "Ada lit the paper lantern beside the delivered invitations.",
+        "causes": [
+          2
+        ],
+        "requires": [
+          {
+            "key": "invites.route",
+            "op": "eq",
+            "value": "lantern"
+          },
+          {
+            "key": "basket.contains_lantern",
+            "op": "eq",
+            "value": true
+          }
+        ],
+        "changes": {
+          "lantern.lit": {
+            "before": false,
+            "after": true
+          },
+          "garden.decorated": {
+            "before": false,
+            "after": true
+          }
+        }
+      },
+      {
+        "id": 4,
+        "scene": "jun_accepts",
+        "kernel": "Welcome",
+        "actors": [
+          "jun"
+        ],
+        "summary": "Jun accepted an invitation and climbed up to the roof garden.",
+        "causes": [
+          2
+        ],
+        "requires": [
+          {
+            "key": "invites.delivered",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "invites.location",
+            "op": "in",
+            "value": [
+              "post",
+              "trellis"
+            ]
+          }
+        ],
+        "changes": {
+          "jun.invited": {
+            "before": false,
+            "after": true
+          }
+        }
+      },
+      {
+        "id": 5,
+        "scene": "jun_sees_delivery",
+        "kernel": "Observe",
+        "actors": [
+          "jun"
+        ],
+        "summary": "Jun saw that the invitations had truly arrived.",
+        "causes": [
+          2,
+          4
+        ],
+        "requires": [
+          {
+            "key": "jun.invited",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "invites.delivered",
+            "op": "eq",
+            "value": true
+          }
+        ],
+        "changes": {
+          "jun.knows.invites.delivered": {
+            "before": null,
+            "after": true
+          }
+        }
+      },
+      {
+        "id": 6,
+        "scene": "ring_bell",
+        "kernel": "Finish",
+        "actors": [
+          "ada"
+        ],
+        "summary": "Ada rang the tiny brass bell for the moonmelon party.",
+        "causes": [
+          4,
+          5
+        ],
+        "requires": [
+          {
+            "key": "jun.invited",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "jun.knows.invites.delivered",
+            "op": "eq",
+            "value": true
+          }
+        ],
+        "changes": {
+          "bell.rung": {
+            "before": false,
+            "after": true
+          },
+          "garden.party_ready": {
+            "before": false,
+            "after": true
+          }
+        }
+      }
+    ]
+  },
+  {
+    "seed": 1,
+    "title": "The Roof-Post Invitation Flight",
+    "initial": {
+      "ada.memes.Curiosity": 2,
+      "ada.want": "neat",
+      "ada.knows.ada.want": "neat",
+      "ada.knows.post.invites_pinned": null,
+      "ada.knows.basket.contains_lantern": null,
+      "ada.knows.pip.believes_flight": null,
+      "pip.want": "help",
+      "pip.belief": "quiet",
+      "pip.believes_flight": true,
+      "pip.knows.ada.want": null,
+      "pip.performance_agreed": false,
+      "pip.performance": "none",
+      "post.invites_pinned": false,
+      "post.ribboned": false,
+      "basket.contains_lantern": false,
+      "basket.safe": true,
+      "basket.owner": "ada",
+      "invites.location": "table",
+      "invites.delivered": false,
+      "invites.route": "unknown",
+      "invites.owner": "ada",
+      "ribbon.owner": "ada",
+      "ribbon.used": false,
+      "lantern.lit": false,
+      "bell.rung": false,
+      "garden.party_ready": false,
+      "garden.decorated": false,
+      "jun.invited": false,
+      "jun.knows.invites.delivered": null
+    },
+    "final": {
+      "ada.memes.Curiosity": 2,
+      "ada.want": "neat",
+      "ada.knows.ada.want": "neat",
+      "ada.knows.post.invites_pinned": null,
+      "ada.knows.basket.contains_lantern": null,
+      "ada.knows.pip.believes_flight": true,
+      "pip.want": "help",
+      "pip.belief": "neat",
+      "pip.believes_flight": true,
+      "pip.knows.ada.want": "neat",
+      "pip.performance_agreed": true,
+      "pip.performance": "airmail",
+      "post.invites_pinned": false,
+      "post.ribboned": false,
+      "basket.contains_lantern": false,
+      "basket.safe": true,
+      "basket.owner": "ada",
+      "invites.location": "trellis",
+      "invites.delivered": true,
+      "invites.route": "flight",
+      "invites.owner": "ada",
+      "ribbon.owner": "pip",
+      "ribbon.used": true,
+      "lantern.lit": false,
+      "bell.rung": true,
+      "garden.party_ready": true,
+      "garden.decorated": true,
+      "jun.invited": true,
+      "jun.knows.invites.delivered": true
+    },
+    "events": [
+      {
+        "id": 1,
+        "scene": "tell_plan",
+        "kernel": "Tell",
+        "actors": [
+          "ada",
+          "pip"
+        ],
+        "summary": "Ada told Pip that she wanted the invitations delivered neatly.",
+        "causes": [],
+        "requires": [
+          {
+            "key": "ada.knows.ada.want",
+            "op": "ne",
+            "value": null
+          },
+          {
+            "key": "ada.want",
+            "op": "eq",
+            "value": "neat"
+          }
+        ],
+        "changes": {
+          "pip.knows.ada.want": {
+            "before": null,
+            "after": "neat"
+          }
+        }
+      },
+      {
+        "id": 2,
+        "scene": "observe_belief",
+        "kernel": "Observe",
+        "actors": [
+          "ada"
+        ],
+        "summary": "Ada noticed that Pip was expecting a grand flying delivery.",
+        "causes": [],
+        "requires": [
+          {
+            "key": "pip.want",
+            "op": "eq",
+            "value": "help"
+          }
+        ],
+        "changes": {
+          "ada.knows.pip.believes_flight": {
+            "before": null,
+            "after": true
+          }
+        }
+      },
+      {
+        "id": 3,
+        "scene": "transfer_ribbon",
+        "kernel": "Transfer",
+        "actors": [
+          "ada",
+          "pip"
+        ],
+        "summary": "Ada handed Pip the blue ribbon.",
+        "causes": [],
+        "requires": [
+          {
+            "key": "ribbon.owner",
+            "op": "eq",
+            "value": "ada"
+          },
+          {
+            "key": "ribbon.owner",
+            "op": "eq",
+            "value": "ada"
+          }
+        ],
+        "changes": {
+          "ribbon.owner": {
+            "before": "ada",
+            "after": "pip"
+          }
+        }
+      },
+      {
+        "id": 4,
+        "scene": "tell_pip_quiet",
+        "kernel": "Talk",
+        "actors": [
+          "ada",
+          "pip"
+        ],
+        "summary": "Ada explained that neat could still have one small flourish.",
+        "causes": [
+          1,
+          2
+        ],
+        "requires": [
+          {
+            "key": "ada.knows.pip.believes_flight",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "pip.believes_flight",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "pip.knows.ada.want",
+            "op": "eq",
+            "value": "neat"
+          }
+        ],
+        "changes": {
+          "pip.belief": {
+            "before": "quiet",
+            "after": "neat"
+          }
+        }
+      },
+      {
+        "id": 5,
+        "scene": "agree_flight",
+        "kernel": "Turn",
+        "actors": [
+          "ada",
+          "pip"
+        ],
+        "summary": "Ada and Pip agreed on a tiny, tidy air-mail performance.",
+        "causes": [
+          1,
+          2,
+          4
+        ],
+        "requires": [
+          {
+            "key": "ada.knows.pip.believes_flight",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "pip.believes_flight",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "pip.knows.ada.want",
+            "op": "eq",
+            "value": "neat"
+          },
+          {
+            "key": "pip.belief",
+            "op": "eq",
+            "value": "neat"
+          }
+        ],
+        "changes": {
+          "pip.performance_agreed": {
+            "before": false,
+            "after": true
+          },
+          "pip.performance": {
+            "before": "none",
+            "after": "airmail"
+          }
+        }
+      },
+      {
+        "id": 6,
+        "scene": "flap_delivery",
+        "kernel": "Fly",
+        "actors": [
+          "pip"
+        ],
+        "summary": "Pip floated the invitations down on a blue-ribbon air-mail loop.",
+        "causes": [
+          3,
+          5
+        ],
+        "requires": [
+          {
+            "key": "pip.performance_agreed",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "pip.performance",
+            "op": "eq",
+            "value": "airmail"
+          },
+          {
+            "key": "ribbon.owner",
+            "op": "eq",
+            "value": "pip"
+          },
+          {
+            "key": "invites.owner",
+            "op": "eq",
+            "value": "ada"
+          }
+        ],
+        "changes": {
+          "invites.location": {
+            "before": "table",
+            "after": "trellis"
+          },
+          "invites.delivered": {
+            "before": false,
+            "after": true
+          },
+          "invites.route": {
+            "before": "unknown",
+            "after": "flight"
+          },
+          "ribbon.used": {
+            "before": false,
+            "after": true
+          },
+          "garden.decorated": {
+            "before": false,
+            "after": true
+          }
+        }
+      },
+      {
+        "id": 7,
+        "scene": "jun_accepts",
+        "kernel": "Welcome",
+        "actors": [
+          "jun"
+        ],
+        "summary": "Jun accepted an invitation and climbed up to the roof garden.",
+        "causes": [
+          6
+        ],
+        "requires": [
+          {
+            "key": "invites.delivered",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "invites.location",
+            "op": "in",
+            "value": [
+              "post",
+              "trellis"
+            ]
+          }
+        ],
+        "changes": {
+          "jun.invited": {
+            "before": false,
+            "after": true
+          }
+        }
+      },
+      {
+        "id": 8,
+        "scene": "jun_sees_delivery",
+        "kernel": "Observe",
+        "actors": [
+          "jun"
+        ],
+        "summary": "Jun saw that the invitations had truly arrived.",
+        "causes": [
+          6,
+          7
+        ],
+        "requires": [
+          {
+            "key": "jun.invited",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "invites.delivered",
+            "op": "eq",
+            "value": true
+          }
+        ],
+        "changes": {
+          "jun.knows.invites.delivered": {
+            "before": null,
+            "after": true
+          }
+        }
+      },
+      {
+        "id": 9,
+        "scene": "ring_bell",
+        "kernel": "Finish",
+        "actors": [
+          "ada"
+        ],
+        "summary": "Ada rang the tiny brass bell for the moonmelon party.",
+        "causes": [
+          7,
+          8
+        ],
+        "requires": [
+          {
+            "key": "jun.invited",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "jun.knows.invites.delivered",
+            "op": "eq",
+            "value": true
+          }
+        ],
+        "changes": {
+          "bell.rung": {
+            "before": false,
+            "after": true
+          },
+          "garden.party_ready": {
+            "before": false,
+            "after": true
+          }
+        }
+      }
+    ]
+  },
+  {
+    "seed": 2,
+    "title": "The Roof-Post Invitation Flight",
+    "initial": {
+      "ada.memes.Curiosity": 2,
+      "ada.want": "neat",
+      "ada.knows.ada.want": "neat",
+      "ada.knows.post.invites_pinned": null,
+      "ada.knows.basket.contains_lantern": null,
+      "ada.knows.pip.believes_flight": null,
+      "pip.want": "help",
+      "pip.belief": "quiet",
+      "pip.believes_flight": false,
+      "pip.knows.ada.want": null,
+      "pip.performance_agreed": false,
+      "pip.performance": "none",
+      "post.invites_pinned": false,
+      "post.ribboned": false,
+      "basket.contains_lantern": false,
+      "basket.safe": true,
+      "basket.owner": "ada",
+      "invites.location": "table",
+      "invites.delivered": false,
+      "invites.route": "unknown",
+      "invites.owner": "ada",
+      "ribbon.owner": "ada",
+      "ribbon.used": false,
+      "lantern.lit": false,
+      "bell.rung": false,
+      "garden.party_ready": false,
+      "garden.decorated": false,
+      "jun.invited": false,
+      "jun.knows.invites.delivered": null
+    },
+    "final": {
+      "ada.memes.Curiosity": 2,
+      "ada.want": "neat",
+      "ada.knows.ada.want": "neat",
+      "ada.knows.post.invites_pinned": false,
+      "ada.knows.basket.contains_lantern": false,
+      "ada.knows.pip.believes_flight": false,
+      "pip.want": "help",
+      "pip.belief": "quiet",
+      "pip.believes_flight": false,
+      "pip.knows.ada.want": null,
+      "pip.performance_agreed": false,
+      "pip.performance": "none",
+      "post.invites_pinned": false,
+      "post.ribboned": false,
+      "basket.contains_lantern": false,
+      "basket.safe": true,
+      "basket.owner": "ada",
+      "invites.location": "trellis",
+      "invites.delivered": true,
+      "invites.route": "walk",
+      "invites.owner": "ada",
+      "ribbon.owner": "ada",
+      "ribbon.used": false,
+      "lantern.lit": false,
+      "bell.rung": true,
+      "garden.party_ready": true,
+      "garden.decorated": false,
+      "jun.invited": true,
+      "jun.knows.invites.delivered": true
+    },
+    "events": [
+      {
+        "id": 1,
+        "scene": "observe_pin",
+        "kernel": "Observe",
+        "actors": [
+          "ada"
+        ],
+        "summary": "Ada saw whether the wind had pinned the invitations to the roof post.",
+        "causes": [],
+        "requires": [
+          {
+            "key": "ada.memes.Curiosity",
+            "op": "ge",
+            "value": 1
+          }
+        ],
+        "changes": {
+          "ada.knows.post.invites_pinned": {
+            "before": null,
+            "after": false
+          }
+        }
+      },
+      {
+        "id": 2,
+        "scene": "observe_cargo",
+        "kernel": "Observe",
+        "actors": [
+          "ada"
+        ],
+        "summary": "Ada peeked into the basket and checked for the paper lantern.",
+        "causes": [],
+        "requires": [
+          {
+            "key": "basket.owner",
+            "op": "eq",
+            "value": "ada"
+          }
+        ],
+        "changes": {
+          "ada.knows.basket.contains_lantern": {
+            "before": null,
+            "after": false
+          }
+        }
+      },
+      {
+        "id": 3,
+        "scene": "observe_belief",
+        "kernel": "Observe",
+        "actors": [
+          "ada"
+        ],
+        "summary": "Ada noticed that Pip was expecting a grand flying delivery.",
+        "causes": [],
+        "requires": [
+          {
+            "key": "pip.want",
+            "op": "eq",
+            "value": "help"
+          }
+        ],
+        "changes": {
+          "ada.knows.pip.believes_flight": {
+            "before": null,
+            "after": false
+          }
+        }
+      },
+      {
+        "id": 4,
+        "scene": "carry_plain",
+        "kernel": "Carry",
+        "actors": [
+          "ada"
+        ],
+        "summary": "Ada carried the plain invitations along the quiet roof-garden path.",
+        "causes": [
+          1,
+          2,
+          3
+        ],
+        "requires": [
+          {
+            "key": "ada.knows.post.invites_pinned",
+            "op": "eq",
+            "value": false
+          },
+          {
+            "key": "ada.knows.basket.contains_lantern",
+            "op": "eq",
+            "value": false
+          },
+          {
+            "key": "ada.knows.pip.believes_flight",
+            "op": "eq",
+            "value": false
+          },
+          {
+            "key": "post.invites_pinned",
+            "op": "eq",
+            "value": false
+          },
+          {
+            "key": "basket.contains_lantern",
+            "op": "eq",
+            "value": false
+          },
+          {
+            "key": "pip.believes_flight",
+            "op": "eq",
+            "value": false
+          }
+        ],
+        "changes": {
+          "invites.location": {
+            "before": "table",
+            "after": "trellis"
+          },
+          "invites.delivered": {
+            "before": false,
+            "after": true
+          },
+          "invites.route": {
+            "before": "unknown",
+            "after": "walk"
+          }
+        }
+      },
+      {
+        "id": 5,
+        "scene": "jun_accepts",
+        "kernel": "Welcome",
+        "actors": [
+          "jun"
+        ],
+        "summary": "Jun accepted an invitation and climbed up to the roof garden.",
+        "causes": [
+          4
+        ],
+        "requires": [
+          {
+            "key": "invites.delivered",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "invites.location",
+            "op": "in",
+            "value": [
+              "post",
+              "trellis"
+            ]
+          }
+        ],
+        "changes": {
+          "jun.invited": {
+            "before": false,
+            "after": true
+          }
+        }
+      },
+      {
+        "id": 6,
+        "scene": "jun_sees_delivery",
+        "kernel": "Observe",
+        "actors": [
+          "jun"
+        ],
+        "summary": "Jun saw that the invitations had truly arrived.",
+        "causes": [
+          4,
+          5
+        ],
+        "requires": [
+          {
+            "key": "jun.invited",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "invites.delivered",
+            "op": "eq",
+            "value": true
+          }
+        ],
+        "changes": {
+          "jun.knows.invites.delivered": {
+            "before": null,
+            "after": true
+          }
+        }
+      },
+      {
+        "id": 7,
+        "scene": "ring_bell",
+        "kernel": "Finish",
+        "actors": [
+          "ada"
+        ],
+        "summary": "Ada rang the tiny brass bell for the moonmelon party.",
+        "causes": [
+          5,
+          6
+        ],
+        "requires": [
+          {
+            "key": "jun.invited",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "key": "jun.knows.invites.delivered",
+            "op": "eq",
+            "value": true
+          }
+        ],
+        "changes": {
+          "bell.rung": {
+            "before": false,
+            "after": true
+          },
+          "garden.party_ready": {
+            "before": false,
+            "after": true
+          }
+        }
+      }
+    ]
+  }
+]
