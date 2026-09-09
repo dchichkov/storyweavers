@@ -33,7 +33,7 @@ From the repository root:
   --out storypatches/runs/dry_run --seed 42 --count 2 --dry-run
 ```
 
-## Author and evaluate
+## Author with OpenAI and evaluate
 
 This makes at least 103 paid Luna calls per base story: outline, prose,
 conversations, and 100 patches. Known-invalid returned patches may use a bounded
@@ -51,6 +51,8 @@ Use `--api-key-file PATH` instead of the environment variable if needed.
 `--cache-mode legacy` is available for clients/models without explicit cache
 breakpoints. There is no automatic fallback after a dispatched request.
 
+## Debug with local Qwen
+
 For a local OpenAI-compatible Responses endpoint, the pipeline appends `/v1`
 when it is absent, does not require an API key, and omits OpenAI-only Flex,
 reasoning, and prompt-cache fields:
@@ -59,13 +61,19 @@ reasoning, and prompt-cache fields:
 ./.venv/bin/python -m storypatches.pipeline \
   --base-url http://127.0.0.1:8001/ \
   --model Qwen/Qwen3.8-27B-FP8 \
-  --out storypatches/runs/qwen_debug --count 1 --variants 100
+  --out storypatches/runs/qwen_debug \
+  --seed 42 --count 1 --variants 100
 ```
 
-Custom endpoints default to `--cache-mode off`; override it only if the server
-implements the corresponding cache fields. The server must implement the
-Responses API, strict JSON-schema output, and custom text tools. A
-Chat-Completions-only endpoint is not sufficient for this pipeline.
+The endpoint at `127.0.0.1:8001` advertises the required `/v1/responses` route
+and custom-tool schema. Custom endpoints default to `--cache-mode off`; override
+it only if the server implements the corresponding cache fields. The server
+must support strict JSON-schema output and custom text tool calls as well as the
+Responses route. A Chat-Completions-only endpoint is not sufficient.
+
+Use `--dry-run` with the same endpoint/model flags to inspect requests without
+performing inference. Local model usage is recorded in the artifact ledger, but
+its cost is reported as unpriced.
 
 An interrupted request leaves its request file without a response and is not
 silently retried. Put an empty `STOP` file in the run directory to block new
