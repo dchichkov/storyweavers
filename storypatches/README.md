@@ -48,11 +48,58 @@ without a plausible connection; QA adds Lily "standing over" the dog although
 that position was not established. This is a baseline, not a semantic quality pass
 or a Terra-graded result. A cached-response rerun and four unit tests pass.
 
-Next stage: a deliberate edit must update the kernel, prose, and any affected QA
-together. For Mom's resignation example, changing only dialogue would leave the
-kernel's `Angry`/`Anger` inconsistent. Choose or implement the appropriate gen6
-state representation first, then generate the diff against the exact saved
-bundle. No new patch batch or random patch composition is part of this first step.
+## Kernel-first patches
+
+`kernel_patches.py` implements two sequential calls using a standard OpenAI
+function tool named `apply_patch` with a single JSON `patch` string argument.
+This is a local synthetic tool, not OpenCode. No read/write tools or agent loop
+are exposed. The format is `*** Begin Patch`, `*** Update File: filename`,
+`@@` context hunks, and `*** End Patch` (not numbered unified-diff headers).
+
+1. Qwen receives the original kernel and an edit cue and patches `kernel.txt`.
+2. Locally apply the patch with exact, unique context matching. Reject invalid
+   syntax, AST-equivalent edits, unauthorized paths, and newly unregistered
+   explicit calls. No kernel code is executed.
+3. Only after this gate, Qwen receives the **original kernel, original story and
+   Q&A, and validated kernel patch**, and patches `story.json`. It does not
+   receive a regenerated kernel. The JSON contains prose and QA together so
+   related changes are returned in the same patch.
+4. Apply the text patch and validate JSON, nonempty story/QA, and unique questions.
+   Save the revised kernel, JSON, and readable Markdown. QA may be added or removed.
+
+```bash
+./.venv/bin/python -m storypatches.kernel_patches \
+  --base storypatches/runs/kernel_lily_20260911_thinking \
+  --out storypatches/runs/lily_pencil_patch \
+  --cue 'Replace the eraser with a pencil consistently.' --thinking
+```
+
+Alternatively use `--mode substitute --seed 17`, `--mode remove --seed 17`, or
+`--mode word --word rain`. The seed deterministically selects an existing symbol
+for removal/substitution; `--word` can specify the substitution. It does not make
+model output deterministic. `--cue` overrides these choices. Use
+`--kernel-patch path/to/edit.patch` to skip the first call and validate an existing
+kernel patch. `--dry-run` prepares only the next available request without inference.
+
+The original content, instructions, and tool definition form a stable prefix;
+only the cue or kernel patch changes at the end. Actual prefix-cache reuse depends
+on the inference server's configuration; no caching discount is assumed. Frozen
+requests and raw responses (including usage) are saved per stage. Completed stages
+are reused on an identical rerun; uncertain dispatched calls are not automatically
+retried. Use one output directory per independent edit; the base is never modified.
+The summary includes an AST digest for comparing results across independent runs;
+batch deduplication and multi-patch composition are not implemented here.
+
+These are structural gates, **not semantic quality approval**. Existing unknown
+calls are reported, while bare traits and argument compatibility are not verified
+against gen6 signatures. Read the revised kernel/story/QA together to check roles,
+causality, and cue adherence. For resignation, both `Angry` and `Anger` need
+consideration; merely changing Mom's dialogue would leave the kernel inconsistent.
+
+```bash
+./.venv/bin/python -m unittest storypatches.test_kernel_patches storypatches.test_kernel_author storypatches.test_storypatches
+```
+
 The previous pipeline and its runs remain below as historical experiments.
 
 

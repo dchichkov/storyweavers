@@ -97,7 +97,8 @@ def patch_slots() -> list[PatchSlot]:
     return slots
 
 
-def parse_patch(text: str) -> tuple[Update, ...]:
+def parse_patch(text: str, *, allowed_files=None) -> tuple[Update, ...]:
+    allowed_files = ALLOWED_FILES if allowed_files is None else allowed_files
     lines = text.strip().splitlines()
     if len(lines) < 5 or lines[0] != "*** Begin Patch" or lines[-1] != "*** End Patch":
         raise ValueError("patch needs exact Begin Patch and End Patch markers")
@@ -106,7 +107,7 @@ def parse_patch(text: str) -> tuple[Update, ...]:
         if not lines[index].startswith("*** Update File: "):
             raise ValueError(f"expected Update File header, got: {lines[index][:80]}")
         path = lines[index].removeprefix("*** Update File: ").strip()
-        if path not in ALLOWED_FILES:
+        if path not in allowed_files:
             raise ValueError(f"patch path is not allowed: {path}")
         index += 1
         hunks = []
@@ -144,16 +145,17 @@ def _positions(lines: list[str], needle: list[str]) -> list[int]:
             if normalized[index:index + len(needle)] == target]
 
 
-def apply_patch(bundle: dict[str, str], text: str) -> dict[str, str]:
+def apply_patch(bundle: dict[str, str], text: str, *, allowed_files=None, exact=False) -> dict[str, str]:
     updated = dict(bundle)
-    for update in parse_patch(text):
+    for update in parse_patch(text, allowed_files=allowed_files):
         if update.path not in updated:
             raise ValueError(f"bundle does not contain {update.path}")
         lines = updated[update.path].splitlines()
         for hunk in update.hunks:
             old = [line for kind, line in hunk.lines if kind in " -"]
             new = [line for kind, line in hunk.lines if kind in " +"]
-            positions = _positions(lines, old)
+            positions = ([i for i in range(len(lines) - len(old) + 1)
+                          if lines[i:i + len(old)] == old] if exact else _positions(lines, old))
             if len(positions) != 1:
                 missing = next((line for line in old if line not in lines), None)
                 detail = ""
