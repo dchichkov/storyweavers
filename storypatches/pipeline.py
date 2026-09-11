@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Luna/Flex seed -> story -> conversations -> 100 patches -> variants."""
+"""Historical catalog/patch experiment. Use storypatches.kernel_author for new work."""
 from __future__ import annotations
 
 import argparse

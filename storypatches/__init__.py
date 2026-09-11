@@ -1,1 +1,1 @@
-"""Seed-to-patch children's story authoring prototype."""
+"""Kernel-first story authoring; older catalog experiments retained for reference."""
