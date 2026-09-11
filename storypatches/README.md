@@ -48,6 +48,63 @@ without a plausible connection; QA adds Lily "standing over" the dog although
 that position was not established. This is a baseline, not a semantic quality pass
 or a Terra-graded result. A cached-response rerun and four unit tests pass.
 
+## Offline composition: paired exact-span patches
+
+Use `--span-edits` when authoring pairs for composition. Qwen still writes a
+kernel patch first. The second call now returns `{edits: [{target, old, new}]}`
+through the synthetic function tool, using literal spans inside individual text
+fields rather than entire JSON lines. Targets are `story`, `title`,
+`qa/q0001/question`, `qa/q0001/answer`, etc. Base question IDs are deterministic
+and do not shift when another question is removed. Whole `qa/ID` operations
+support additions/removals using serialized question/answer objects and an empty
+old/new string respectively. Additions must use an unused, distinctive ID.
+
+```bash
+./.venv/bin/python -m storypatches.kernel_patches \
+  --base storypatches/runs/kernel_lily_20260911_thinking \
+  --out storypatches/runs/lily_pairs/pencil \
+  --cue 'Replace the eraser with a pencil consistently.' --thinking --span-edits
+```
+
+This writes `pair.json` with paired kernel/text edits, a content-derived ID, and
+the original bundle's fingerprint. Kernel diffs are converted locally to unique
+exact spans and checked for an exact round-trip. Conversion falls back to a
+whole-kernel replacement when inferred spans conflict; this is safe but less
+composable. Existing line-patch runs are not silently converted or regenerated.
+Generate other pairs against the **same original base**, in separate directories.
+Authoring uses Qwen; the following composition command does not:
+
+```bash
+./.venv/bin/python -m storypatches.compose_patches \
+  --base storypatches/runs/kernel_lily_20260911_thinking \
+  --pairs storypatches/runs/lily_pairs \
+  --out storypatches/runs/lily_5000 --count 5000 --seed 42
+```
+
+The composer recursively loads `pair.json` files, validates each independently,
+and tries seeded combinations of 3–5 pairs. Use `--min-patches 2 --max-patches 2`
+to test pairs alone. It makes **zero model calls**: both kernel and matching
+text/QA edits are applied by Python, atomically, using exact unique matches.
+It rejects conflicts, invalid structures, wrong-base pairs, and duplicate story
+prose (different QA alone does not count as a new story). Combinations are applied
+in canonical pair-ID order; alternative orders are not searched.
+
+Each accepted candidate saves `kernel.txt`, `story.json`, `story.md`, and patch
+provenance. `summary.json` reports counts and rejected pairs. Outputs remain
+**potentially consistent, not quality-approved**; clean application cannot detect
+all semantic interactions. The original base is never modified. Use an empty
+output directory; composition currently restarts rather than resuming.
+
+The default attempt cap is 100,000 draws (`--max-attempts`). Small combination
+spaces are enumerated in seeded order; larger spaces are sampled with duplicate
+sets skipped. Insufficient compatible combinations yield partial output, a
+`complete: false` summary, and exit code 2—not a claim of 5,000 stories. A synthetic
+100-pair/5,000-output regression test exercises scale; it is not a Qwen quality test.
+
+```bash
+./.venv/bin/python -m unittest storypatches.test_span_patches
+```
+
 ## Kernel-first patches
 
 `kernel_patches.py` implements two sequential calls using a standard OpenAI
@@ -87,8 +144,9 @@ on the inference server's configuration; no caching discount is assumed. Frozen
 requests and raw responses (including usage) are saved per stage. Completed stages
 are reused on an identical rerun; uncertain dispatched calls are not automatically
 retried. Use one output directory per independent edit; the base is never modified.
-The summary includes an AST digest for comparing results across independent runs;
-batch deduplication and multi-patch composition are not implemented here.
+The summary includes an AST digest for comparing results across independent runs.
+Use the exact-span mode and offline composer above for multi-patch composition;
+the default legacy line-patch mode is retained for compatibility.
 
 These are structural gates, **not semantic quality approval**. Existing unknown
 calls are reported, while bare traits and argument compatibility are not verified
