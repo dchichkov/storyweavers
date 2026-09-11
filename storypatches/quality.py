@@ -1,7 +1,6 @@
 """Deterministic gates and adapters to the repository's existing quality tools."""
 from __future__ import annotations
 
-from dataclasses import asdict
 import json
 from pathlib import Path
 import re
@@ -26,6 +25,7 @@ def story_text(markdown: str) -> str:
 
 def has_dialogue(story: str) -> bool:
     quotes = re.findall(r'["“]([^"”]{2,})["”]', story)
+    quotes += re.findall(r"(?<!\w)'(.{2,}?)'(?!\w)", story)
     speakers = set(re.findall(r"\b([A-Z][a-z]+)\s+(?:said|asked|called|whispered|replied|answered)\b", story))
     return len(quotes) >= 2 and len(speakers) >= 2
 
@@ -70,7 +70,10 @@ def validate_bundle(bundle: dict[str, str], seed: dict) -> None:
     cast = {row.get("name") for row in outline.get("cast", []) if isinstance(row, dict)}
     if len(cast) < 2 or any(beat.get("actor") not in cast or beat.get("kernel") not in kernels
                           for beat in beats if isinstance(beat, dict)):
-        raise ValueError("outline beats must use declared actors and kernels")
+        invalid = [{"actor": beat.get("actor"), "kernel": beat.get("kernel")}
+                   for beat in beats if isinstance(beat, dict)
+                   and (beat.get("actor") not in cast or beat.get("kernel") not in kernels)]
+        raise ValueError(f"outline beats must use declared actors and kernels; cast={sorted(str(x) for x in cast)}; kernels={kernels}; invalid beats={invalid}")
     if any(not isinstance(beat, dict) for beat in beats) or not outline.get("objects"):
         raise ValueError("outline needs structured beats and physical objects")
     variations = outline.get("variations")
@@ -119,7 +122,7 @@ def record_from_bundle(bundle: dict[str, str], *, patch_ids: list[str], seed: in
 
 def qa_report(records: list[dict]) -> dict:
     from storyscripts.qa_quality import measure
-    report = asdict(measure(records))
+    report = vars(measure(records))
     return {key: dict(value) if hasattr(value, "items") else value for key, value in report.items()}
 
 

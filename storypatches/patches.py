@@ -6,6 +6,7 @@ import hashlib
 import itertools
 import json
 import random
+import difflib
 
 from .quality import record_from_bundle, validate_bundle
 
@@ -128,15 +129,19 @@ def parse_patch(text: str) -> tuple[Update, ...]:
         if not hunks:
             raise ValueError(f"update has no hunks: {path}")
         updates.append(Update(path, tuple(hunks)))
-    paths = [update.path for update in updates]
-    if len(paths) != len(set(paths)):
-        raise ValueError("each file may have only one Update File section")
     return tuple(updates)
 
 
 def _positions(lines: list[str], needle: list[str]) -> list[int]:
+    exact = [index for index in range(len(lines) - len(needle) + 1)
+             if lines[index:index + len(needle)] == needle]
+    if exact:
+        return exact
+    quotes = str.maketrans({"\u2018": "'", "\u2019": "'", "\u201c": '"', "\u201d": '"'})
+    normalized = [line.translate(quotes) for line in lines]
+    target = [line.translate(quotes) for line in needle]
     return [index for index in range(len(lines) - len(needle) + 1)
-            if lines[index:index + len(needle)] == needle]
+            if normalized[index:index + len(needle)] == target]
 
 
 def apply_patch(bundle: dict[str, str], text: str) -> dict[str, str]:
@@ -150,7 +155,12 @@ def apply_patch(bundle: dict[str, str], text: str) -> dict[str, str]:
             new = [line for kind, line in hunk.lines if kind in " +"]
             positions = _positions(lines, old)
             if len(positions) != 1:
-                raise ValueError(f"hunk context must match exactly once in {update.path}")
+                missing = next((line for line in old if line not in lines), None)
+                detail = ""
+                if missing is not None:
+                    nearest = difflib.get_close_matches(missing, lines, n=1, cutoff=0.4)
+                    detail = f"; mismatched source line: {missing!r}; exact base line: {nearest!r}"
+                raise ValueError(f"hunk context must match exactly once in {update.path}" + detail)
             start = positions[0]
             lines[start:start + len(old)] = new
         updated[update.path] = "\n".join(lines) + "\n"

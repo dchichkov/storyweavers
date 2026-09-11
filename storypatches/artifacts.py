@@ -172,6 +172,15 @@ def json_output(response: dict) -> dict:
 
 
 def patch_output(response: dict) -> str:
+    functions = [item for item in response.get("output", [])
+                 if item.get("type") == "function_call" and item.get("name") == "apply_patch"]
+    if functions:
+        if len(functions) != 1 or output_text(response):
+            raise ValueError("response must contain one patch function call and no prose")
+        arguments = json.loads(functions[0]["arguments"])
+        if set(arguments) != {"patch"} or not isinstance(arguments["patch"], str) or not arguments["patch"].strip():
+            raise ValueError("patch function needs one nonempty patch string")
+        return arguments["patch"]
     calls = [item for item in response.get("output", [])
              if item.get("type") == "custom_tool_call" and item.get("name") == "apply_patch"]
     if len(calls) != 1 or not isinstance(calls[0].get("input"), str) or not calls[0]["input"].strip():

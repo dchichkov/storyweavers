@@ -16,6 +16,13 @@ Patch calls have no read, write, shell, or search tools. Each call receives the
 complete base bundle in a stable cached prefix and must finish with one
 `apply_patch` tool call. The tool only returns text; `storypatches` parses,
 validates, and applies it locally. OpenCode is neither imported nor invoked.
+Source matching first uses exact text, then permits curly/straight quote
+equivalence only when it identifies one unique match. Other text differences
+remain errors; raw model patches are retained for inspection.
+Multiple update sections for a file are applied in order within the atomic patch.
+
+An initial local run with three stories, 100 patches per story, and 100 variants
+per story is available in [runs/qwen_three_20260909_v2/](runs/qwen_three_20260909_v2/README.md).
 
 ## Setup and tests
 
@@ -61,14 +68,22 @@ reasoning, and prompt-cache fields:
 ./.venv/bin/python -m storypatches.pipeline \
   --base-url http://127.0.0.1:8001/ \
   --model Qwen/Qwen3.8-27B-FP8 \
+  --fast-patches --patch-attempts 3 \
   --out storypatches/runs/qwen_debug \
   --seed 42 --count 1 --variants 100
 ```
 
-The endpoint at `127.0.0.1:8001` advertises the required `/v1/responses` route
-and custom-tool schema. Custom endpoints default to `--cache-mode off`; override
+Local Qwen uses a standard `apply_patch` function tool with a single `patch`
+string argument, because the tested server advertises custom text tools but
+returns those calls as prose. The patch syntax and local validation are the same.
+Qwen receives the JSON schema in the prompt as well as the response format.
+Thinking is disabled for base artifacts and enabled with a larger token allowance
+for patches by default. `--fast-patches` tries two non-thinking patch attempts
+first, then falls back to reasoning. These settings use vLLM's
+`chat_template_kwargs` extension.
+Custom endpoints default to `--cache-mode off`; override
 it only if the server implements the corresponding cache fields. The server
-must support strict JSON-schema output and custom text tool calls as well as the
+must support strict JSON-schema output and function tool calls as well as the
 Responses route. A Chat-Completions-only endpoint is not sufficient.
 
 Use `--dry-run` with the same endpoint/model flags to inspect requests without

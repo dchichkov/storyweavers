@@ -8,7 +8,7 @@ from storypatches.artifacts import APPLY_PATCH_TOOL, patch_output, request_body
 from storypatches.catalog import BASIC_PLOTS, sample_seed
 from storypatches.patches import PatchSlot, apply_patch, compose_variants, parse_patch, patch_slots, validate_patch
 from storypatches.pipeline import normalize_base_url, official_openai
-from storypatches.quality import qa_report
+from storypatches.quality import qa_report, has_dialogue
 
 
 def fixture_bundle() -> tuple[dict[str, str], dict]:
@@ -84,6 +84,19 @@ class CatalogTests(unittest.TestCase):
 
 
 class ToolTests(unittest.TestCase):
+    def test_function_patch_response(self):
+        patch = "*** Begin Patch\n*** End Patch"
+        response = {"output": [{"type": "function_call", "name": "apply_patch",
+                                "arguments": json.dumps({"patch": patch})}]}
+        self.assertEqual(patch_output(response), patch)
+        response["output"].append(response["output"][0])
+        with self.assertRaises(ValueError):
+            patch_output(response)
+
+    def test_single_quoted_dialogue(self):
+        self.assertTrue(has_dialogue("'I can't open it,' Elara said. 'Let me help,' Barnaby replied."))
+        self.assertFalse(has_dialogue("Elara's book was on Barnaby's shelf."))
+
     def test_custom_endpoint_request_omits_openai_only_fields(self):
         body = request_body("prefix", "suffix", model="Qwen/Qwen3.8-27B-FP8",
                             effort=None, service_tier=None, cache_mode="off", patch_tool=True)
@@ -137,6 +150,18 @@ class ToolTests(unittest.TestCase):
 
 
 class PatchTests(unittest.TestCase):
+    def test_repeated_file_sections_apply_in_order(self):
+        base = {"story.md": "red boat\nsmall sail\n"}
+        patch = "*** Begin Patch\n*** Update File: story.md\n@@\n-red boat\n+blue boat\n*** Update File: story.md\n@@\n-small sail\n+large sail\n*** End Patch"
+        self.assertEqual(apply_patch(base, patch)["story.md"], "blue boat\nlarge sail\n")
+
+    def test_quote_equivalence_still_rejects_word_changes(self):
+        base = {"story.md": "Leo\u2019s red boat.\n"}
+        patch = "*** Begin Patch\n*** Update File: story.md\n@@\n-Leo's red boat.\n+Leo's blue boat.\n*** End Patch"
+        self.assertEqual(apply_patch(base, patch)["story.md"], "Leo's blue boat.\n")
+        with self.assertRaises(ValueError):
+            apply_patch(base, patch.replace("-Leo's red", "-Leo's green"))
+
     def test_patch_applies_exact_context_atomically(self):
         bundle, _ = fixture_bundle()
         patch = small_patch(bundle, 1, "opening", 1)
@@ -173,7 +198,10 @@ class PatchTests(unittest.TestCase):
         records, conflicts = compose_variants(bundle, rows, seed, count=1)
         self.assertEqual(len(records[0]["patch_ids"]), 3)
         self.assertEqual(conflicts, {"x1": [], "x2": [], "x3": []})
-        self.assertEqual(qa_report(records)["records"], 1)
+        report = qa_report(records)
+        self.assertEqual(report["records"], 1)
+        self.assertEqual(sum(report["question_shapes"].values()), len(records[0]["questions"]))
+        json.dumps(report)
 
 
 if __name__ == "__main__":

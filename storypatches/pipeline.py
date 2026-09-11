@@ -40,8 +40,23 @@ def official_openai(value: str) -> bool:
 
 
 def make_request(args, prefix: str, suffix: str, **values) -> dict:
-    return request_body(prefix, suffix, model=args.model, effort=args.reasoning_effort,
+    local_qwen = not official_openai(args.base_url) and "qwen" in args.model.lower()
+    if local_qwen and values.get("schema"):
+        prefix += "\nReturn JSON matching this schema exactly:\n" + json.dumps(values["schema"])
+    body = request_body(prefix, suffix, model=args.model, effort=args.reasoning_effort,
                         cache_mode=args.cache_mode, service_tier=args.service_tier, **values)
+    if local_qwen:
+        body["extra_body"] = {"chat_template_kwargs": {"enable_thinking": False}}
+        if values.get("patch_tool"):
+            body["input"][-1]["content"] = [{"type": "input_text", "text": prefix}]
+            body["input"].append({"role": "user", "content": suffix + "\nMake a real change. Deleted and added lines must differ. Call apply_patch with the patch argument."})
+            body["extra_body"]["chat_template_kwargs"]["enable_thinking"] = True
+            body["max_output_tokens"] = 12000
+            body["tools"] = [{"type": "function", "name": "apply_patch",
+                "description": "Return the patch text in the patch argument. Copy exact source lines; update all relevant occurrences.",
+                "parameters": obj({"patch": STRING}), "strict": True}]
+            body["tool_choice"] = {"type": "function", "name": "apply_patch"}
+    return body
 
 
 STRING = {"type": "string"}
@@ -195,19 +210,40 @@ def patch_prefix(seed: dict, bundle: dict[str, str]) -> str:
 
 async def generate_patch(client, budget, story_dir: Path, prefix: str, bundle: dict[str, str],
                          seed: dict, slot, semaphore: asyncio.Semaphore, args) -> dict:
+    accepted = story_dir / "patches" / f"{slot.id}.json"
+    if accepted.exists():
+        row = json.loads(accepted.read_text())
+        row["patch"] = accepted.with_suffix(".patch").read_text()
+        validate_patch(bundle, row["patch"], slot, seed)
+        return row
     feedback = ""
     for attempt in range(args.patch_attempts):
         suffix = "\n\n" + slot.instruction()
         if feedback:
             suffix += "\nPrevious returned patch was rejected locally. Fix only this diagnostic:\n" + feedback
         body = make_request(args, prefix, suffix, tokens=2600, patch_tool=True)
-        stage = f"{slot.id}_{attempt}"
+        function_tool = body.get('tools', [{}])[0].get('type') == 'function'
+        if function_tool and getattr(args, "fast_patches", False) and attempt < 2:
+            body["extra_body"]["chat_template_kwargs"]["enable_thinking"] = False
+            body["max_output_tokens"] = 6000
+        mode = 'thinking' if body.get('extra_body', {}).get('chat_template_kwargs', {}).get('enable_thinking') else 'direct'
+        stage = f"{slot.id}_{'function_' + mode + '_' if function_tool else ''}{attempt}"
+        frozen = story_dir / f"{stage}.request.json"
+        if (story_dir / f"{stage}.response.json").exists():
+            body = json.loads(frozen.read_text())
+        elif frozen.exists() and not official_openai(args.base_url):
+            feedback = "Prior local inference has no saved response. Generate a fresh independent patch."
+            continue
         try:
             async with semaphore:
                 response = await artifact(client, budget, story_dir, stage, body)
         except Exception as exc:
             save_json(story_dir / "patch_attempts" / f"{stage}.failure.json", {"error": str(exc)[:2000]})
+            if (story_dir / f"{stage}.response.json").exists():
+                feedback = str(exc)[:2000]
+                continue
             raise
+        text = ""
         try:
             text = patch_output(response)
             save_text(story_dir / "patch_attempts" / f"{stage}.patch", text)
@@ -223,6 +259,8 @@ async def generate_patch(client, budget, story_dir: Path, prefix: str, bundle: d
         except Exception as exc:
             feedback = str(exc)[:2000]
             save_json(story_dir / "patch_attempts" / f"{stage}.failure.json", {"error": feedback})
+            if text:
+                feedback += "\nREJECTED PATCH TO CORRECT:\n" + text
     raise ValueError(f"{slot.id} failed after {args.patch_attempts} returned attempts: {feedback}")
 
 
@@ -232,6 +270,10 @@ async def author_story(client, budget, run: Path, seed: dict, args) -> dict:
     save_json(story_dir / "seed.json", seed)
     if (story_dir / "summary.json").exists():
         return json.loads((story_dir / "summary.json").read_text())
+    if all((story_dir / "base" / name).exists() for name in ("outline.json", "story.md", "conversations.json")):
+        bundle = {name: (story_dir / "base" / name).read_text() for name in ("outline.json", "story.md", "conversations.json")}
+        validate_bundle(bundle, seed)
+        return await finish_story(client, budget, story_dir, bundle, seed, args)
 
     outline_body = make_request(
         args,
@@ -240,7 +282,20 @@ async def author_story(client, budget, run: Path, seed: dict, args) -> dict:
         tokens=3500, schema=OUTLINE_SCHEMA,
     )
     outline = json_output(await artifact(client, budget, story_dir, "outline", outline_body))
-    validate_outline(outline, seed)
+    for repair in range(4):
+        try:
+            validate_outline(outline, seed)
+            break
+        except ValueError as exc:
+            if repair == 3:
+                raise
+            correction = make_request(args, OUTLINE_PREFIX,
+                "Correct this validation failure: " + str(exc)
+                + "\nEvery beat actor must exactly equal one cast name; use a single actor per beat."
+                + "\nBINDING SEED:\n" + json.dumps(seed)
+                + "\nPREVIOUS OUTLINE:\n" + json.dumps(outline),
+                tokens=5000, schema=OUTLINE_SCHEMA)
+            outline = json_output(await artifact(client, budget, story_dir, f"outline_correction_{repair}", correction))
     save_json(story_dir / "outline.json", outline)
 
     story_body = make_request(
@@ -263,10 +318,37 @@ async def author_story(client, budget, run: Path, seed: dict, args) -> dict:
         raise ValueError("conversation IDs must be q01 through q06")
 
     bundle = base_bundle(outline, story, conversations)
-    validate_bundle(bundle, seed)
+    for repair in range(4):
+        try:
+            validate_bundle(bundle, seed)
+            break
+        except ValueError as exc:
+            if repair == 3:
+                raise
+            repair_body = make_request(
+                args, STORY_PREFIX + "\nMANDATORY CORRECTION: " + str(exc)
+                + "\nUse each seed word as an EXACT standalone word, not an inflection. "
+                + "\nInclude these exact words in their uninflected form: " + ", ".join(seed["words"])
+                + ". Use them naturally in the opening section so they cannot be missed. "
+                "Include named speaker attributions.\n",
+                "SEED:\n" + json.dumps(seed) + "\nOUTLINE:\n" + json.dumps(outline)
+                + "\nPREVIOUS STORY:\n" + render_story(story)
+                + "\nCorrect this validation failure, preserving the plot: " + str(exc)
+                + "\nUse required words with their exact spelling. Match the outline title exactly. "
+                "Use explicit 'Name said' and 'Name asked' dialogue attributions for two speakers.",
+                tokens=5000, schema=STORY_SCHEMA)
+            story = json_output(await artifact(client, budget, story_dir, f"story_exact_words_{repair}", repair_body))
+            qa_body = make_request(args, CONVERSATION_PREFIX,
+                "OUTLINE:\n" + json.dumps(outline) + "\nSTORY:\n" + render_story(story),
+                tokens=5000, schema=CONVERSATIONS_SCHEMA)
+            conversations = json_output(await artifact(client, budget, story_dir, f"conversations_exact_words_{repair}", qa_body))
+            bundle = base_bundle(outline, story, conversations)
     for name, value in bundle.items():
         save_text(story_dir / "base" / name, value)
+    return await finish_story(client, budget, story_dir, bundle, seed, args)
 
+
+async def finish_story(client, budget, story_dir, bundle, seed, args):
     slots = patch_slots()
     prefix = patch_prefix(seed, bundle)
     save_text(story_dir / "patch_prefix.txt", prefix)
@@ -274,10 +356,14 @@ async def author_story(client, budget, run: Path, seed: dict, args) -> dict:
     semaphore = asyncio.Semaphore(args.concurrency)
     patches = [await generate_patch(client, budget, story_dir, prefix, bundle, seed,
                                     slots[0], semaphore, args)]
-    patches.extend(await asyncio.gather(*(
+    results = await asyncio.gather(*(
         generate_patch(client, budget, story_dir, prefix, bundle, seed, slot, semaphore, args)
         for slot in slots[1:]
-    )))
+    ), return_exceptions=True)
+    failures = [str(row) for row in results if isinstance(row, BaseException)]
+    if failures:
+        raise ValueError("patch slots failed: " + " | ".join(failures))
+    patches.extend(results)
     standalone = [row["standalone_sha256"] for row in patches]
     if len(set(standalone)) != len(standalone):
         raise ValueError("patch set contains duplicate standalone results")
@@ -299,6 +385,7 @@ async def author_story(client, budget, run: Path, seed: dict, args) -> dict:
         "unique_stories": len({record["story"] for record in records}),
     }
     save_json(story_dir / "summary.json", summary)
+    (story_dir / "failure.json").unlink(missing_ok=True)
     return summary
 
 
@@ -332,6 +419,7 @@ async def run(args) -> int:
         "cache_mode": args.cache_mode,
         "patches_per_story": 100,
         "patch_attempts": args.patch_attempts,
+        "fast_patches": args.fast_patches,
         "campaign": str(args.campaign.resolve()),
         "budget": args.budget,
     }
@@ -386,6 +474,8 @@ def parser() -> argparse.ArgumentParser:
     result.add_argument("--concurrency", type=int, default=12)
     result.add_argument("--evaluation-concurrency", type=int, default=5)
     result.add_argument("--patch-attempts", type=int, choices=range(1, 4), default=2)
+    result.add_argument("--fast-patches", action="store_true",
+                        help="local Qwen: try two non-thinking patch attempts before reasoning fallback")
     result.add_argument("--budget", type=float, default=15.0)
     result.add_argument("--cache-mode", choices=("explicit", "legacy", "off"),
                         help="default: explicit for api.openai.com, off for custom endpoints")
