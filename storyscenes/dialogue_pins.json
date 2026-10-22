@@ -1,0 +1,873 @@
+[
+  {
+    "source": "runs/compact_algebra_v2/library_parade/samples_with_trace.json",
+    "index": 0,
+    "story_sha256": "70dd82026a8a60e1232777fbfca0da61abea81983cf98e476614b5556399bd4e",
+    "questions": [
+      "What did Ada tell Mayor Bell?",
+      "Why did she say that?",
+      "Who were they talking to?",
+      "What happened next?"
+    ],
+    "expected": [
+      {
+        "question": "What did Ada tell Mayor Bell?",
+        "answer": "Ada said, “Nell wants quiet.” Ada was speaking to Mayor Bell.",
+        "kind": "dialogue",
+        "answerable": true,
+        "event_ids": [],
+        "entity_ids": [
+          "ada",
+          "mayor"
+        ],
+        "facts": [],
+        "focus": {
+          "at": 6,
+          "entity": "ada",
+          "key": null,
+          "event_id": 6,
+          "utterance_id": "u3:1"
+        },
+        "source": "story_dialogue",
+        "utterances": [
+          {
+            "id": "u3:1",
+            "paragraph": 3,
+            "speaker": "ada",
+            "listener": "mayor",
+            "quotes": [
+              {
+                "start": 164,
+                "end": 181,
+                "text": "Nell wants quiet."
+              }
+            ],
+            "event_ids": [
+              5,
+              6
+            ],
+            "event_id": 6,
+            "at": 6,
+            "reason_keys": [],
+            "claim": null,
+            "reply_to": null,
+            "attribution": "explicit_name"
+          }
+        ]
+      },
+      {
+        "question": "Why did she say that?",
+        "answer": "Ada believed that Nell wanted some quiet. Mayor Bell did not yet know what Nell wanted. The story does not state a more specific reason for those words.",
+        "kind": "dialogue_context",
+        "answerable": true,
+        "event_ids": [
+          5,
+          6
+        ],
+        "entity_ids": [
+          "ada",
+          "mayor"
+        ],
+        "facts": [
+          {
+            "at": 5,
+            "key": "ada.knows.recipient.want",
+            "value": "quiet"
+          },
+          {
+            "at": 5,
+            "key": "mayor.knows.recipient.want",
+            "value": null
+          }
+        ],
+        "focus": {
+          "at": 6,
+          "entity": "ada",
+          "key": null,
+          "event_id": 6,
+          "utterance_id": "u3:1"
+        },
+        "source": "story_dialogue",
+        "utterances": [
+          {
+            "id": "u3:1",
+            "paragraph": 3,
+            "speaker": "ada",
+            "listener": "mayor",
+            "quotes": [
+              {
+                "start": 164,
+                "end": 181,
+                "text": "Nell wants quiet."
+              }
+            ],
+            "event_ids": [
+              5,
+              6
+            ],
+            "event_id": 6,
+            "at": 6,
+            "reason_keys": [],
+            "claim": null,
+            "reply_to": null,
+            "attribution": "explicit_name"
+          }
+        ]
+      },
+      {
+        "question": "Who were they talking to?",
+        "answer": "Ada was speaking to Mayor Bell. Ada said, “Nell wants quiet.”",
+        "kind": "dialogue_listener",
+        "answerable": true,
+        "event_ids": [],
+        "entity_ids": [
+          "ada",
+          "mayor"
+        ],
+        "facts": [],
+        "focus": {
+          "at": 6,
+          "entity": "ada",
+          "key": null,
+          "event_id": 6,
+          "utterance_id": "u3:1"
+        },
+        "source": "story_dialogue",
+        "utterances": [
+          {
+            "id": "u3:1",
+            "paragraph": 3,
+            "speaker": "ada",
+            "listener": "mayor",
+            "quotes": [
+              {
+                "start": 164,
+                "end": 181,
+                "text": "Nell wants quiet."
+              }
+            ],
+            "event_ids": [
+              5,
+              6
+            ],
+            "event_id": 6,
+            "at": 6,
+            "reason_keys": [],
+            "claim": null,
+            "reply_to": null,
+            "attribution": "explicit_name"
+          }
+        ]
+      },
+      {
+        "question": "What happened next?",
+        "answer": "The shared cart's cover was tied down. At that point, Bram had the shared cart.",
+        "kind": "timeline",
+        "answerable": true,
+        "event_ids": [
+          7
+        ],
+        "entity_ids": [
+          "builder",
+          "cart"
+        ],
+        "facts": [
+          {
+            "at": 7,
+            "key": "cart.cover",
+            "value": "tied"
+          },
+          {
+            "at": 7,
+            "key": "cart.owner",
+            "value": "builder"
+          }
+        ],
+        "focus": {
+          "at": 7,
+          "entity": "cart",
+          "key": "cart.cover",
+          "event_id": 7
+        },
+        "source": "world_trace"
+      }
+    ]
+  },
+  {
+    "source": "runs/compact_algebra_v2/library_parade/samples_with_trace.json",
+    "index": 1,
+    "story_sha256": "be5812876132c5190467db2eac856847038f27782de34bb60a2614e14bac4591",
+    "questions": [
+      "What did Ada say in speech 1?",
+      "Why?",
+      "What was said next?",
+      "Was that true?"
+    ],
+    "expected": [
+      {
+        "question": "What did Ada say in speech 1?",
+        "answer": "“I hope Nell wants quiet,” said Ada.",
+        "kind": "dialogue",
+        "answerable": true,
+        "event_ids": [],
+        "entity_ids": [
+          "ada"
+        ],
+        "facts": [],
+        "focus": {
+          "at": 5,
+          "entity": "ada",
+          "key": null,
+          "event_id": null,
+          "utterance_id": "u1:0"
+        },
+        "source": "story_dialogue",
+        "utterances": [
+          {
+            "id": "u1:0",
+            "paragraph": 1,
+            "speaker": "ada",
+            "listener": null,
+            "quotes": [
+              {
+                "start": 201,
+                "end": 225,
+                "text": "I hope Nell wants quiet,"
+              }
+            ],
+            "event_ids": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "event_id": null,
+            "at": 5,
+            "reason_keys": [],
+            "claim": null,
+            "reply_to": null,
+            "attribution": "explicit_name"
+          }
+        ]
+      },
+      {
+        "question": "Why?",
+        "answer": "The story records those words, but it doesn't say why they were spoken.",
+        "kind": "dialogue_reason",
+        "answerable": false,
+        "event_ids": [],
+        "entity_ids": [],
+        "facts": [],
+        "focus": {
+          "at": 5,
+          "entity": "ada",
+          "key": null,
+          "event_id": null,
+          "utterance_id": "u1:0"
+        },
+        "source": "world_trace"
+      },
+      {
+        "question": "What was said next?",
+        "answer": "Ada said, “Nell wants quiet.” Ada was speaking to Mayor Bell.",
+        "kind": "dialogue_sequence",
+        "answerable": true,
+        "event_ids": [],
+        "entity_ids": [
+          "ada",
+          "mayor"
+        ],
+        "facts": [],
+        "focus": {
+          "at": 3,
+          "entity": "ada",
+          "key": null,
+          "event_id": 3,
+          "utterance_id": "u1:1"
+        },
+        "source": "story_dialogue",
+        "utterances": [
+          {
+            "id": "u1:1",
+            "paragraph": 1,
+            "speaker": "ada",
+            "listener": "mayor",
+            "quotes": [
+              {
+                "start": 314,
+                "end": 331,
+                "text": "Nell wants quiet."
+              }
+            ],
+            "event_ids": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "event_id": 3,
+            "at": 3,
+            "reason_keys": [],
+            "claim": null,
+            "reply_to": null,
+            "attribution": "explicit_name"
+          }
+        ]
+      },
+      {
+        "question": "Was that true?",
+        "answer": "Those are the character's words. The story has no linked factual claim that lets me check them as true or false.",
+        "kind": "dialogue_truth",
+        "answerable": false,
+        "event_ids": [],
+        "entity_ids": [],
+        "facts": [],
+        "focus": {
+          "at": 3,
+          "entity": "ada",
+          "key": null,
+          "event_id": 3,
+          "utterance_id": "u1:1"
+        },
+        "source": "world_trace"
+      }
+    ]
+  },
+  {
+    "source": "runs/compact_algebra_v2/pond_concert/samples_with_trace.json",
+    "index": 0,
+    "story_sha256": "ffb586f54ff06a498932f69a9974ed5f75a61a7d171954c1166bdbb4d4926994",
+    "questions": [
+      "What did Ada say in speech 1?",
+      "What was said next?",
+      "Why did Ada say that?",
+      "Who was Ada talking to?"
+    ],
+    "expected": [
+      {
+        "question": "What did Ada say in speech 1?",
+        "answer": "Ada said, “Quiet,” … “is Mira’s wish today.”",
+        "kind": "dialogue",
+        "answerable": true,
+        "event_ids": [],
+        "entity_ids": [
+          "ada"
+        ],
+        "facts": [],
+        "focus": {
+          "at": 1,
+          "entity": "ada",
+          "key": null,
+          "event_id": 1,
+          "utterance_id": "u1:0"
+        },
+        "source": "story_dialogue",
+        "utterances": [
+          {
+            "id": "u1:0",
+            "paragraph": 1,
+            "speaker": "ada",
+            "listener": null,
+            "quotes": [
+              {
+                "start": 86,
+                "end": 92,
+                "text": "Quiet,"
+              },
+              {
+                "start": 110,
+                "end": 131,
+                "text": "is Mira’s wish today."
+              }
+            ],
+            "event_ids": [
+              1
+            ],
+            "event_id": 1,
+            "at": 1,
+            "reason_keys": [],
+            "claim": null,
+            "reply_to": null,
+            "attribution": "explicit_name"
+          }
+        ]
+      },
+      {
+        "question": "What was said next?",
+        "answer": "Ada said, “Mira wants quiet today.” Ada was speaking to Frog.",
+        "kind": "dialogue_sequence",
+        "answerable": true,
+        "event_ids": [],
+        "entity_ids": [
+          "ada",
+          "frog"
+        ],
+        "facts": [],
+        "focus": {
+          "at": 3,
+          "entity": "ada",
+          "key": null,
+          "event_id": 3,
+          "utterance_id": "u3:0"
+        },
+        "source": "story_dialogue",
+        "utterances": [
+          {
+            "id": "u3:0",
+            "paragraph": 3,
+            "speaker": "ada",
+            "listener": "frog",
+            "quotes": [
+              {
+                "start": 16,
+                "end": 39,
+                "text": "Mira wants quiet today."
+              }
+            ],
+            "event_ids": [
+              3
+            ],
+            "event_id": 3,
+            "at": 3,
+            "reason_keys": [],
+            "claim": null,
+            "reply_to": null,
+            "attribution": "explicit_name"
+          }
+        ]
+      },
+      {
+        "question": "Why did Ada say that?",
+        "answer": "Ada believed that Mira wanted some quiet. Frog did not yet know what Mira wanted. The story does not state a more specific reason for those words.",
+        "kind": "dialogue_context",
+        "answerable": true,
+        "event_ids": [
+          2,
+          3
+        ],
+        "entity_ids": [
+          "ada",
+          "frog"
+        ],
+        "facts": [
+          {
+            "at": 2,
+            "key": "ada.knows.neighbor.want",
+            "value": "quiet"
+          },
+          {
+            "at": 2,
+            "key": "frog.knows.neighbor.want",
+            "value": null
+          }
+        ],
+        "focus": {
+          "at": 3,
+          "entity": "ada",
+          "key": null,
+          "event_id": 3,
+          "utterance_id": "u3:0"
+        },
+        "source": "story_dialogue",
+        "utterances": [
+          {
+            "id": "u3:0",
+            "paragraph": 3,
+            "speaker": "ada",
+            "listener": "frog",
+            "quotes": [
+              {
+                "start": 16,
+                "end": 39,
+                "text": "Mira wants quiet today."
+              }
+            ],
+            "event_ids": [
+              3
+            ],
+            "event_id": 3,
+            "at": 3,
+            "reason_keys": [],
+            "claim": null,
+            "reply_to": null,
+            "attribution": "explicit_name"
+          }
+        ]
+      },
+      {
+        "question": "Who was Ada talking to?",
+        "answer": "Ada was speaking to Frog. Ada said, “Mira wants quiet today.”",
+        "kind": "dialogue_listener",
+        "answerable": true,
+        "event_ids": [],
+        "entity_ids": [
+          "ada",
+          "frog"
+        ],
+        "facts": [],
+        "focus": {
+          "at": 3,
+          "entity": "ada",
+          "key": null,
+          "event_id": 3,
+          "utterance_id": "u3:0"
+        },
+        "source": "story_dialogue",
+        "utterances": [
+          {
+            "id": "u3:0",
+            "paragraph": 3,
+            "speaker": "ada",
+            "listener": "frog",
+            "quotes": [
+              {
+                "start": 16,
+                "end": 39,
+                "text": "Mira wants quiet today."
+              }
+            ],
+            "event_ids": [
+              3
+            ],
+            "event_id": 3,
+            "at": 3,
+            "reason_keys": [],
+            "claim": null,
+            "reply_to": null,
+            "attribution": "explicit_name"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "source": "runs/compact_algebra_v2/pond_concert/samples_with_trace.json",
+    "index": 1,
+    "story_sha256": "827e705bffbd79b2419a518da92ab2fdb3127d07b0a33f93532c6672ffb4dc45",
+    "questions": [
+      "Who said “Mira wants quiet today”?",
+      "What did they reply?",
+      "Who were they talking to?"
+    ],
+    "expected": [
+      {
+        "question": "Who said “Mira wants quiet today”?",
+        "answer": "Ada said, “Mira wants quiet today.”",
+        "kind": "dialogue_speaker",
+        "answerable": true,
+        "event_ids": [],
+        "entity_ids": [
+          "ada",
+          "frog"
+        ],
+        "facts": [],
+        "focus": {
+          "at": 4,
+          "entity": "ada",
+          "key": null,
+          "event_id": 4,
+          "utterance_id": "u3:1"
+        },
+        "source": "story_dialogue",
+        "utterances": [
+          {
+            "id": "u3:1",
+            "paragraph": 3,
+            "speaker": "ada",
+            "listener": "frog",
+            "quotes": [
+              {
+                "start": 149,
+                "end": 172,
+                "text": "Mira wants quiet today."
+              }
+            ],
+            "event_ids": [
+              3,
+              4
+            ],
+            "event_id": 4,
+            "at": 4,
+            "reason_keys": [],
+            "claim": null,
+            "reply_to": null,
+            "attribution": "explicit_name"
+          }
+        ]
+      },
+      {
+        "question": "What did they reply?",
+        "answer": "There is no clearly attributed speech recorded for that follow-up.",
+        "kind": "dialogue_boundary",
+        "answerable": false,
+        "event_ids": [],
+        "entity_ids": [],
+        "facts": [],
+        "focus": {
+          "at": 4,
+          "entity": "ada",
+          "key": null,
+          "event_id": 4,
+          "utterance_id": "u3:1"
+        },
+        "source": "world_trace"
+      },
+      {
+        "question": "Who were they talking to?",
+        "answer": "Ada was speaking to Frog. Ada said, “Mira wants quiet today.”",
+        "kind": "dialogue_listener",
+        "answerable": true,
+        "event_ids": [],
+        "entity_ids": [
+          "ada",
+          "frog"
+        ],
+        "facts": [],
+        "focus": {
+          "at": 4,
+          "entity": "ada",
+          "key": null,
+          "event_id": 4,
+          "utterance_id": "u3:1"
+        },
+        "source": "story_dialogue",
+        "utterances": [
+          {
+            "id": "u3:1",
+            "paragraph": 3,
+            "speaker": "ada",
+            "listener": "frog",
+            "quotes": [
+              {
+                "start": 149,
+                "end": 172,
+                "text": "Mira wants quiet today."
+              }
+            ],
+            "event_ids": [
+              3,
+              4
+            ],
+            "event_id": 4,
+            "at": 4,
+            "reason_keys": [],
+            "claim": null,
+            "reply_to": null,
+            "attribution": "explicit_name"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "source": "runs/improvement_luna_v6/hill_picnic/samples_with_trace.json",
+    "index": 0,
+    "story_sha256": "2bbc26b1caa9e259d2909c1b0aa59b88df93496699b97d460b88e05a49a11cfe",
+    "questions": [
+      "What did Lila say?",
+      "Why did she say that?",
+      "What was said next?"
+    ],
+    "expected": [
+      {
+        "question": "What did Lila say?",
+        "answer": "Lila said, “Not a machine,” … “A very important parade donkey.”",
+        "kind": "dialogue",
+        "answerable": true,
+        "event_ids": [],
+        "entity_ids": [
+          "lila"
+        ],
+        "facts": [],
+        "focus": {
+          "at": 2,
+          "entity": "lila",
+          "key": null,
+          "event_id": 2,
+          "utterance_id": "u2:0"
+        },
+        "source": "story_dialogue",
+        "utterances": [
+          {
+            "id": "u2:0",
+            "paragraph": 2,
+            "speaker": "lila",
+            "listener": null,
+            "quotes": [
+              {
+                "start": 99,
+                "end": 113,
+                "text": "Not a machine,"
+              },
+              {
+                "start": 127,
+                "end": 158,
+                "text": "A very important parade donkey."
+              }
+            ],
+            "event_ids": [
+              2
+            ],
+            "event_id": 2,
+            "at": 2,
+            "reason_keys": [],
+            "claim": null,
+            "reply_to": null,
+            "attribution": "explicit_name"
+          }
+        ]
+      },
+      {
+        "question": "Why did she say that?",
+        "answer": "The story records those words, but it doesn't say why they were spoken.",
+        "kind": "dialogue_reason",
+        "answerable": false,
+        "event_ids": [],
+        "entity_ids": [],
+        "facts": [],
+        "focus": {
+          "at": 2,
+          "entity": "lila",
+          "key": null,
+          "event_id": 2,
+          "utterance_id": "u2:0"
+        },
+        "source": "world_trace"
+      },
+      {
+        "question": "What was said next?",
+        "answer": "There is no clearly attributed speech recorded for that follow-up.",
+        "kind": "dialogue_boundary",
+        "answerable": false,
+        "event_ids": [],
+        "entity_ids": [],
+        "facts": [],
+        "focus": {
+          "at": 2,
+          "entity": "lila",
+          "key": null,
+          "event_id": 2,
+          "utterance_id": "u2:0"
+        },
+        "source": "world_trace"
+      }
+    ]
+  },
+  {
+    "source": "runs/improvement_luna_v6/library_parade/samples_with_trace.json",
+    "index": 0,
+    "story_sha256": "504acc5fd1df5ed6df34d7db27a15c14fab0cd96c9aa222fea76ca08de966edd",
+    "questions": [
+      "What did Tuck say?",
+      "Who said that?",
+      "Why?"
+    ],
+    "expected": [
+      {
+        "question": "What did Tuck say?",
+        "answer": "“There is a secret,” said Tuck.",
+        "kind": "dialogue",
+        "answerable": true,
+        "event_ids": [],
+        "entity_ids": [
+          "tuck"
+        ],
+        "facts": [],
+        "focus": {
+          "at": 2,
+          "entity": "tuck",
+          "key": null,
+          "event_id": 2,
+          "utterance_id": "u2:0"
+        },
+        "source": "story_dialogue",
+        "utterances": [
+          {
+            "id": "u2:0",
+            "paragraph": 2,
+            "speaker": "tuck",
+            "listener": null,
+            "quotes": [
+              {
+                "start": 1,
+                "end": 19,
+                "text": "There is a secret,"
+              }
+            ],
+            "event_ids": [
+              2
+            ],
+            "event_id": 2,
+            "at": 2,
+            "reason_keys": [],
+            "claim": null,
+            "reply_to": null,
+            "attribution": "explicit_name"
+          }
+        ]
+      },
+      {
+        "question": "Who said that?",
+        "answer": "“There is a secret,” said Tuck.",
+        "kind": "dialogue_speaker",
+        "answerable": true,
+        "event_ids": [],
+        "entity_ids": [
+          "tuck"
+        ],
+        "facts": [],
+        "focus": {
+          "at": 2,
+          "entity": "tuck",
+          "key": null,
+          "event_id": 2,
+          "utterance_id": "u2:0"
+        },
+        "source": "story_dialogue",
+        "utterances": [
+          {
+            "id": "u2:0",
+            "paragraph": 2,
+            "speaker": "tuck",
+            "listener": null,
+            "quotes": [
+              {
+                "start": 1,
+                "end": 19,
+                "text": "There is a secret,"
+              }
+            ],
+            "event_ids": [
+              2
+            ],
+            "event_id": 2,
+            "at": 2,
+            "reason_keys": [],
+            "claim": null,
+            "reply_to": null,
+            "attribution": "explicit_name"
+          }
+        ]
+      },
+      {
+        "question": "Why?",
+        "answer": "The story records those words, but it doesn't say why they were spoken.",
+        "kind": "dialogue_reason",
+        "answerable": false,
+        "event_ids": [],
+        "entity_ids": [],
+        "facts": [],
+        "focus": {
+          "at": 2,
+          "entity": "tuck",
+          "key": null,
+          "event_id": 2,
+          "utterance_id": "u2:0"
+        },
+        "source": "world_trace"
+      }
+    ]
+  }
+]

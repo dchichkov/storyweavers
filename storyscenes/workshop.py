@@ -25,7 +25,7 @@ from quality_checks import validate_outcomes
 ROOT = Path(__file__).resolve().parent
 POOL_SEEDS = list(range(1000,1100))
 CRITIC_SEEDS = [123,457,791,124,458,792]
-SNAPSHOT_FILES = ['runtime.py','planning.py','prose.py','worker.py','run.py']
+SNAPSHOT_FILES = ['runtime.py','planning.py','prose.py','worker.py','run.py','conversation.py','dialogue.py','qa.py']
 
 
 def obj(properties):

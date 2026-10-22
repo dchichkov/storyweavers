@@ -1,5 +1,47 @@
 # Compact authoring and scene algebra
 
+The CLI defaults to `--cost-profile cache-only`: it preserves the existing world
+and prose prompts, message roles, JSON schemas, model settings and output caps.
+Only cache transport policy changes. Requests use explicit-only caching without
+breakpoints to avoid a cache-write premium on material used once. A regression
+test compares complete authoring request bodies against `legacy`, excluding this
+single transport field. Existing generated stories and frozen runs are untouched.
+
+The user's quality target is the earlier **7.75/9** pilot. Prompt reductions did
+not clear it: the two frozen-mechanics factored comparisons scored 6.65 and 7.50;
+a full-context rerun scored 7.30. None replaces the original benchmark. These
+small, stochastic runs do not establish a guaranteed quality mean for new worlds.
+The current scaffold includes an ending-guard fix already present before this
+cache pass, so the full-context rerun also contains more conditions than the
+historical 7.75 request. Its prose instructions and model settings are retained.
+
+`--cost-profile cached` enables the experimental reusable world prefix and
+clarified world contract. Only reusable instructions are written, with a 30-minute
+lifetime and keys fingerprinted by instructions/model/settings. Changing seeds,
+definitions and errors follow the breakpoint at ordinary input rates. The
+experimental profile defaults to full prose context; `--prose-layout factored`
+opts into short card IDs, a fixed schema and factored evidence. Medium reasoning
+for this prose experiment is available with `--prose-reasoning medium`.
+
+The factored payload retains every evidence fact and shared opening/ending facts
+within their own boundaries. It now also retains per-card conditions and flags
+variable facts absent from a scene. This reduced contradictory wishes/weather
+but did not recover the quality target. Lossless data factoring does not imply
+equal literary output from Luna; the measured quality gate takes precedence.
+The evaluator preserves its rubric, calibration, message layout, schema and
+uniform sample selection while avoiding one-use cache writes.
+
+`api_requests.py` adapts the cache field for the installed SDK while keeping
+the saved request artifact identical to the HTTP JSON. Finished generators
+still execute offline. `cache_report.py` records writes, reads, reasoning,
+failed drafts, repairs, completed worlds, and separately priced evaluations.
+
+```bash
+python storyscenes/compact_workshop.py --out storyscenes/runs/my_cached_trial \
+  --cost-profile cache-only --count 10 --concurrency 2 --seed 20260907 \
+  --api-key-file .API_KEY --evaluate
+```
+
 `compact_workshop.py` is an opt-in authoring path. Luna writes one executable
 JSON world, the compiler builds and validates it, three previews run, then Luna
 fills named prose slots. Finished worlds run offline. Existing Python workshop
@@ -13,7 +55,8 @@ python storyscenes/compact_workshop.py --out storyscenes/runs/my_compact_trial \
 python storyscenes/verify.py --run storyscenes/runs/my_compact_trial
 ```
 
-Luna/Flex authoring uses one medium-effort world request (5,500 output cap), up
+Luna/Flex authoring uses one medium-effort world request (6,500 output cap in the cached profile;
+5,500 in cache-only/legacy), up
 to three low-effort world patches (2,500 each), one low-effort text request
 (9,000), and up to three low-effort text patches (3,000 each). Caps include
 reasoning. The existing $15 campaign ledger and $0.15 per-world dispatch guard
@@ -106,7 +149,9 @@ paid outcomes and retain their reservations in the campaign ledger. Their
 unknown usage is separate from measured successful-run tokens. See
 `improvements/compact_v1/interrupted_control.json` for provenance.
 
-Full contract: [AUTHORING_COMPACT.md](AUTHORING_COMPACT.md). Comparison artifacts:
+Default contract: [AUTHORING_COMPACT.md](AUTHORING_COMPACT.md). The experimental
+clarifications are in [AUTHORING_COMPACT_EXPERIMENTAL.md](AUTHORING_COMPACT_EXPERIMENTAL.md).
+Comparison artifacts:
 `improvements/compact_v1/`. The prior ten-world frozen run passed 1,000 fresh
 samples and 30 pinned replays; evidence is saved there without changing its
 original artifacts.
@@ -123,3 +168,10 @@ the normal mechanics checks and patch limits apply. It refuses unknown paid
 outcomes and preserves the original prefix. In this trial it completed the
 JSON in 575 tokens, but subsequent constraints still failed; the world remained
 quarantined. The recovered draft and all follow-up patches count in the totals.
+
+The cache pass retains the 7.75 benchmark and defaults to request-preserving
+cache-only transport. Its final fresh experiment completed 8/10 worlds, scoring
+7.95 on the two matching theaters and 7.1875 across all eight; seven passed fresh
+seed verification. Prompt changes remain experimental. See the
+[cache/quality report](improvements/cache_optimization_v1/REPORT.md) for all
+trials, failures, known costs and the unresolved request reservation.

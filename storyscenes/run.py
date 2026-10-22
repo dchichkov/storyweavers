@@ -15,9 +15,19 @@ def main():
     p.add_argument("--prose-seed", type=int)
     p.add_argument("-n", "--count", type=int, default=1)
     p.add_argument("--json", action="store_true", help="JSONL including state, evidence and QA")
+    p.add_argument("--qa", action="store_true", help="Add offline conversational QA using the current QA library")
+    p.add_argument("--qa-seed", type=int, default=777)
+    p.add_argument("--qa-limit", type=int, default=6)
     args = p.parse_args()
     if args.count < 1:
         p.error("count must be positive")
+    if args.qa:
+        command = [sys.executable, str(Path(__file__).with_name('qa.py')), str(args.world),
+                   '--seed', str(args.seed), '-n', str(args.count), '--qa-seed', str(args.qa_seed),
+                   '--limit', str(args.qa_limit)]
+        if args.prose_seed is not None: command += ['--prose-seed', str(args.prose_seed)]
+        if args.json: command.append('--json')
+        raise SystemExit(subprocess.call(command))
     frozen = args.world.resolve().parent / "_runtime" / "run.py"
     if frozen.exists() and frozen.resolve() != Path(__file__).resolve():
         raise SystemExit(subprocess.call([sys.executable, str(frozen), *sys.argv[1:]]))

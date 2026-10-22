@@ -1,0 +1,1890 @@
+[
+  {
+    "source": "runs/compact_algebra_v2/library_parade/samples_with_trace.json",
+    "index": 0,
+    "seed": 1000,
+    "limit": 3,
+    "expected": [
+      {
+        "id": "c000",
+        "protocol": "storyscenes_conversation_v1",
+        "trace_sha256": "ae2e635ac5d89fe9056b856d5b49891fcf8f8c32f155ed6c3713c44409d468fe",
+        "turns": [
+          {
+            "question": "Who did Mayor Bell find out had the library book?",
+            "answer": "Mayor Bell found out that Nell had the library book. Before that, Mayor Bell did not yet know who had the library book.",
+            "kind": "knowledge",
+            "answerable": true,
+            "event_ids": [
+              11,
+              12
+            ],
+            "entity_ids": [
+              "book",
+              "mayor",
+              "recipient"
+            ],
+            "facts": [
+              {
+                "at": 11,
+                "key": "book.owner",
+                "value": "recipient"
+              },
+              {
+                "at": 12,
+                "key": "mayor.knows.book.owner",
+                "value": "recipient"
+              },
+              {
+                "at": 11,
+                "key": "mayor.knows.book.owner",
+                "value": null
+              }
+            ],
+            "focus": {
+              "at": 12,
+              "entity": "book",
+              "key": "mayor.knows.book.owner",
+              "event_id": 12
+            },
+            "source": "world_trace"
+          },
+          {
+            "question": "How did they know?",
+            "answer": "Mayor Bell found out by checking the library book's holder. Mayor Bell found out that Nell had the library book.",
+            "kind": "knowledge_source",
+            "answerable": true,
+            "event_ids": [
+              11,
+              12
+            ],
+            "entity_ids": [
+              "book",
+              "mayor",
+              "recipient"
+            ],
+            "facts": [
+              {
+                "at": 11,
+                "key": "book.owner",
+                "value": "recipient"
+              },
+              {
+                "at": 12,
+                "key": "mayor.knows.book.owner",
+                "value": "recipient"
+              }
+            ],
+            "focus": {
+              "at": 12,
+              "entity": "book",
+              "key": "mayor.knows.book.owner",
+              "event_id": 12
+            },
+            "source": "world_trace"
+          },
+          {
+            "question": "Why?",
+            "answer": "That was possible because Nell had the library book. Earlier, Ada gave the library book to Nell.",
+            "kind": "causal",
+            "answerable": true,
+            "event_ids": [
+              10,
+              11,
+              12
+            ],
+            "entity_ids": [
+              "ada",
+              "book",
+              "recipient"
+            ],
+            "facts": [
+              {
+                "at": 11,
+                "key": "book.owner",
+                "value": "recipient"
+              },
+              {
+                "at": 10,
+                "key": "book.owner",
+                "value": "ada"
+              }
+            ],
+            "focus": {
+              "at": 12,
+              "entity": "book",
+              "key": "mayor.knows.book.owner",
+              "event_id": 12
+            },
+            "source": "world_trace"
+          }
+        ]
+      },
+      {
+        "id": "c001",
+        "protocol": "storyscenes_conversation_v1",
+        "trace_sha256": "ae2e635ac5d89fe9056b856d5b49891fcf8f8c32f155ed6c3713c44409d468fe",
+        "turns": [
+          {
+            "question": "How did Mayor Bell's response change?",
+            "answer": "Mayor Bell felt proud.",
+            "kind": "change",
+            "answerable": true,
+            "event_ids": [
+              13
+            ],
+            "entity_ids": [
+              "mayor"
+            ],
+            "facts": [
+              {
+                "at": 13,
+                "key": "mayor.response",
+                "value": "proud"
+              }
+            ],
+            "focus": {
+              "at": 13,
+              "entity": "mayor",
+              "key": "mayor.response",
+              "event_id": 13
+            },
+            "source": "world_trace"
+          },
+          {
+            "question": "Who helped?",
+            "answer": "Ada told Mayor Bell that Nell wanted some quiet. Afterward, Mayor Bell felt proud.",
+            "kind": "contributor",
+            "answerable": true,
+            "event_ids": [
+              5,
+              6,
+              13
+            ],
+            "entity_ids": [
+              "ada",
+              "mayor"
+            ],
+            "facts": [
+              {
+                "at": 5,
+                "key": "ada.knows.recipient.want",
+                "value": "quiet"
+              },
+              {
+                "at": 6,
+                "key": "mayor.knows.recipient.want",
+                "value": "quiet"
+              },
+              {
+                "at": 13,
+                "key": "mayor.response",
+                "value": "proud"
+              }
+            ],
+            "focus": {
+              "at": 13,
+              "entity": "mayor",
+              "key": "mayor.response",
+              "event_id": 13
+            },
+            "source": "world_trace"
+          },
+          {
+            "question": "Where were they?",
+            "answer": "Mayor Bell was at the town square.",
+            "kind": "location",
+            "answerable": true,
+            "event_ids": [
+              13
+            ],
+            "entity_ids": [
+              "mayor",
+              "square"
+            ],
+            "facts": [
+              {
+                "at": 13,
+                "key": "mayor.location",
+                "value": "square"
+              }
+            ],
+            "focus": {
+              "at": 13,
+              "entity": "mayor",
+              "key": "mayor.location",
+              "event_id": null
+            },
+            "source": "world_trace"
+          }
+        ]
+      },
+      {
+        "id": "c002",
+        "protocol": "storyscenes_conversation_v1",
+        "trace_sha256": "ae2e635ac5d89fe9056b856d5b49891fcf8f8c32f155ed6c3713c44409d468fe",
+        "turns": [
+          {
+            "question": "Who did Bram lend the shared cart to?",
+            "answer": "Bram lent the shared cart to Ada. At that point, the shared cart was ready.",
+            "kind": "ownership",
+            "answerable": true,
+            "event_ids": [
+              7,
+              8
+            ],
+            "entity_ids": [
+              "ada",
+              "builder",
+              "cart"
+            ],
+            "facts": [
+              {
+                "at": 7,
+                "key": "cart.owner",
+                "value": "builder"
+              },
+              {
+                "at": 8,
+                "key": "cart.owner",
+                "value": "ada"
+              },
+              {
+                "at": 7,
+                "key": "cart.loaned_by",
+                "value": null
+              },
+              {
+                "at": 8,
+                "key": "cart.loaned_by",
+                "value": "builder"
+              },
+              {
+                "at": 8,
+                "key": "cart.condition",
+                "value": "ready"
+              }
+            ],
+            "focus": {
+              "at": 8,
+              "entity": "cart",
+              "key": "cart.owner",
+              "event_id": 8
+            },
+            "source": "world_trace"
+          },
+          {
+            "question": "What happened before that?",
+            "answer": "The shared cart's cover was tied down. At that point, Bram had the shared cart.",
+            "kind": "timeline",
+            "answerable": true,
+            "event_ids": [
+              7
+            ],
+            "entity_ids": [
+              "builder",
+              "cart"
+            ],
+            "facts": [
+              {
+                "at": 7,
+                "key": "cart.cover",
+                "value": "tied"
+              },
+              {
+                "at": 7,
+                "key": "cart.owner",
+                "value": "builder"
+              }
+            ],
+            "focus": {
+              "at": 7,
+              "entity": "cart",
+              "key": "cart.cover",
+              "event_id": 7
+            },
+            "source": "world_trace"
+          },
+          {
+            "question": "Where was it?",
+            "answer": "The shared cart was at the workshop. At that point, Bram had the shared cart.",
+            "kind": "location",
+            "answerable": true,
+            "event_ids": [
+              7
+            ],
+            "entity_ids": [
+              "builder",
+              "cart",
+              "workshop"
+            ],
+            "facts": [
+              {
+                "at": 7,
+                "key": "cart.location",
+                "value": "workshop"
+              },
+              {
+                "at": 7,
+                "key": "cart.owner",
+                "value": "builder"
+              }
+            ],
+            "focus": {
+              "at": 7,
+              "entity": "cart",
+              "key": "cart.location",
+              "event_id": null
+            },
+            "source": "world_trace"
+          }
+        ]
+      }
+    ],
+    "story_sha256": "70dd82026a8a60e1232777fbfca0da61abea81983cf98e476614b5556399bd4e"
+  },
+  {
+    "source": "runs/compact_algebra_v2/pond_concert/samples_with_trace.json",
+    "index": 0,
+    "seed": 1000,
+    "limit": 3,
+    "expected": [
+      {
+        "id": "c000",
+        "protocol": "storyscenes_conversation_v1",
+        "trace_sha256": "d38d8fcc1b2990d5b978eafe97d35af3ab10dec5571ab2cc890a2d548ae22ed4",
+        "turns": [
+          {
+            "question": "Where was the acorn drum at the end?",
+            "answer": "The acorn drum was at the pond. At that point, Frog had the acorn drum.",
+            "kind": "location",
+            "answerable": true,
+            "event_ids": [
+              9
+            ],
+            "entity_ids": [
+              "drum",
+              "frog",
+              "pond"
+            ],
+            "facts": [
+              {
+                "at": 9,
+                "key": "drum.location",
+                "value": "pond"
+              },
+              {
+                "at": 9,
+                "key": "drum.owner",
+                "value": "frog"
+              }
+            ],
+            "focus": {
+              "at": 9,
+              "entity": "drum",
+              "key": "drum.location",
+              "event_id": 5
+            },
+            "source": "world_trace"
+          },
+          {
+            "question": "Who had it?",
+            "answer": "Frog had the acorn drum. At that point, the acorn drum was at the pond.",
+            "kind": "ownership",
+            "answerable": true,
+            "event_ids": [
+              9
+            ],
+            "entity_ids": [
+              "drum",
+              "frog",
+              "pond"
+            ],
+            "facts": [
+              {
+                "at": 9,
+                "key": "drum.owner",
+                "value": "frog"
+              },
+              {
+                "at": 9,
+                "key": "drum.location",
+                "value": "pond"
+              }
+            ],
+            "focus": {
+              "at": 9,
+              "entity": "drum",
+              "key": "drum.owner",
+              "event_id": null
+            },
+            "source": "world_trace"
+          },
+          {
+            "question": "What happened before that?",
+            "answer": "Ada gave the painted invitation to Mira. At that point, the painted invitation was at the porch.",
+            "kind": "timeline",
+            "answerable": true,
+            "event_ids": [
+              7,
+              8
+            ],
+            "entity_ids": [
+              "ada",
+              "invitation",
+              "neighbor",
+              "porch"
+            ],
+            "facts": [
+              {
+                "at": 7,
+                "key": "invitation.owner",
+                "value": "ada"
+              },
+              {
+                "at": 8,
+                "key": "invitation.owner",
+                "value": "neighbor"
+              },
+              {
+                "at": 8,
+                "key": "invitation.location",
+                "value": "porch"
+              }
+            ],
+            "focus": {
+              "at": 8,
+              "entity": "invitation",
+              "key": "invitation.owner",
+              "event_id": 8
+            },
+            "source": "world_trace"
+          }
+        ]
+      },
+      {
+        "id": "c001",
+        "protocol": "storyscenes_conversation_v1",
+        "trace_sha256": "d38d8fcc1b2990d5b978eafe97d35af3ab10dec5571ab2cc890a2d548ae22ed4",
+        "turns": [
+          {
+            "question": "What did Ben want at the start?",
+            "answer": "Ben wanted to help the concert. At that point, Ben was at the garden.",
+            "kind": "desire",
+            "answerable": true,
+            "event_ids": [],
+            "entity_ids": [
+              "ben",
+              "garden"
+            ],
+            "facts": [
+              {
+                "at": 0,
+                "key": "ben.want",
+                "value": "help the concert"
+              },
+              {
+                "at": 0,
+                "key": "ben.location",
+                "value": "garden"
+              }
+            ],
+            "focus": {
+              "at": 0,
+              "entity": "ben",
+              "key": "ben.want",
+              "event_id": null
+            },
+            "source": "world_trace"
+          },
+          {
+            "question": "What happened next?",
+            "answer": "Ada found out that Mira wanted some quiet. Before that, Ada did not yet know what Mira wanted.",
+            "kind": "timeline",
+            "answerable": true,
+            "event_ids": [
+              1
+            ],
+            "entity_ids": [
+              "ada",
+              "neighbor"
+            ],
+            "facts": [
+              {
+                "at": 0,
+                "key": "neighbor.want",
+                "value": "quiet"
+              },
+              {
+                "at": 1,
+                "key": "ada.knows.neighbor.want",
+                "value": "quiet"
+              },
+              {
+                "at": 0,
+                "key": "ada.knows.neighbor.want",
+                "value": null
+              }
+            ],
+            "focus": {
+              "at": 1,
+              "entity": "neighbor",
+              "key": "ada.knows.neighbor.want",
+              "event_id": 1
+            },
+            "source": "world_trace"
+          },
+          {
+            "question": "Where were they?",
+            "answer": "Ada was at the garden.",
+            "kind": "location",
+            "answerable": true,
+            "event_ids": [
+              1
+            ],
+            "entity_ids": [
+              "ada",
+              "garden"
+            ],
+            "facts": [
+              {
+                "at": 1,
+                "key": "ada.location",
+                "value": "garden"
+              }
+            ],
+            "focus": {
+              "at": 1,
+              "entity": "ada",
+              "key": "ada.location",
+              "event_id": null
+            },
+            "source": "world_trace"
+          }
+        ]
+      },
+      {
+        "id": "c002",
+        "protocol": "storyscenes_conversation_v1",
+        "trace_sha256": "d38d8fcc1b2990d5b978eafe97d35af3ab10dec5571ab2cc890a2d548ae22ed4",
+        "turns": [
+          {
+            "question": "Who did Ada give the painted invitation to?",
+            "answer": "Ada gave the painted invitation to Mira. At that point, the painted invitation was at the porch.",
+            "kind": "ownership",
+            "answerable": true,
+            "event_ids": [
+              7,
+              8
+            ],
+            "entity_ids": [
+              "ada",
+              "invitation",
+              "neighbor",
+              "porch"
+            ],
+            "facts": [
+              {
+                "at": 7,
+                "key": "invitation.owner",
+                "value": "ada"
+              },
+              {
+                "at": 8,
+                "key": "invitation.owner",
+                "value": "neighbor"
+              },
+              {
+                "at": 8,
+                "key": "invitation.location",
+                "value": "porch"
+              }
+            ],
+            "focus": {
+              "at": 8,
+              "entity": "invitation",
+              "key": "invitation.owner",
+              "event_id": 8
+            },
+            "source": "world_trace"
+          },
+          {
+            "question": "What happened before that?",
+            "answer": "Mira smiled and listened.",
+            "kind": "timeline",
+            "answerable": true,
+            "event_ids": [
+              7
+            ],
+            "entity_ids": [
+              "neighbor"
+            ],
+            "facts": [
+              {
+                "at": 7,
+                "key": "neighbor.response",
+                "value": "smiles and listens"
+              }
+            ],
+            "focus": {
+              "at": 7,
+              "entity": "neighbor",
+              "key": "neighbor.response",
+              "event_id": 7
+            },
+            "source": "world_trace"
+          },
+          {
+            "question": "Where were they?",
+            "answer": "Mira was at the porch.",
+            "kind": "location",
+            "answerable": true,
+            "event_ids": [
+              7
+            ],
+            "entity_ids": [
+              "neighbor",
+              "porch"
+            ],
+            "facts": [
+              {
+                "at": 7,
+                "key": "neighbor.location",
+                "value": "porch"
+              }
+            ],
+            "focus": {
+              "at": 7,
+              "entity": "neighbor",
+              "key": "neighbor.location",
+              "event_id": null
+            },
+            "source": "world_trace"
+          }
+        ]
+      }
+    ],
+    "story_sha256": "ffb586f54ff06a498932f69a9974ed5f75a61a7d171954c1166bdbb4d4926994"
+  },
+  {
+    "source": "runs/improvement_luna_v6/roof_post/samples_with_trace.json",
+    "index": 0,
+    "seed": 1000,
+    "limit": 3,
+    "expected": [
+      {
+        "id": "c000",
+        "protocol": "storyscenes_conversation_v1",
+        "trace_sha256": "a2a6aecd6ac3e06d1d7bc90d97d5d49f9f121f8026e9f47b13f372d9e7c0c6f9",
+        "turns": [
+          {
+            "question": "Who had the paper sail at the end?",
+            "answer": "Mina had the paper sail.",
+            "kind": "ownership",
+            "answerable": true,
+            "event_ids": [
+              6
+            ],
+            "entity_ids": [
+              "mina",
+              "paper_sail"
+            ],
+            "facts": [
+              {
+                "at": 6,
+                "key": "paper_sail.owner",
+                "value": "mina"
+              }
+            ],
+            "focus": {
+              "at": 6,
+              "entity": "paper_sail",
+              "key": "paper_sail.owner",
+              "event_id": null
+            },
+            "source": "world_trace"
+          },
+          {
+            "question": "What happened before that?",
+            "answer": "The invitation stack had been tied with ribbons. At that point, Mina had the invitation stack.",
+            "kind": "timeline",
+            "answerable": true,
+            "event_ids": [
+              5
+            ],
+            "entity_ids": [
+              "invitation_stack",
+              "mina"
+            ],
+            "facts": [
+              {
+                "at": 5,
+                "key": "invitation_stack.ribboned",
+                "value": true
+              },
+              {
+                "at": 5,
+                "key": "invitation_stack.owner",
+                "value": "mina"
+              }
+            ],
+            "focus": {
+              "at": 5,
+              "entity": "invitation_stack",
+              "key": "invitation_stack.ribboned",
+              "event_id": 5
+            },
+            "source": "world_trace"
+          },
+          {
+            "question": "Who had it?",
+            "answer": "Mina had the invitation stack. At that point, the invitation stack was sturdy.",
+            "kind": "ownership",
+            "answerable": true,
+            "event_ids": [
+              5
+            ],
+            "entity_ids": [
+              "invitation_stack",
+              "mina"
+            ],
+            "facts": [
+              {
+                "at": 5,
+                "key": "invitation_stack.owner",
+                "value": "mina"
+              },
+              {
+                "at": 5,
+                "key": "invitation_stack.condition",
+                "value": "sturdy"
+              }
+            ],
+            "focus": {
+              "at": 5,
+              "entity": "invitation_stack",
+              "key": "invitation_stack.owner",
+              "event_id": null
+            },
+            "source": "world_trace"
+          }
+        ]
+      },
+      {
+        "id": "c001",
+        "protocol": "storyscenes_conversation_v1",
+        "trace_sha256": "a2a6aecd6ac3e06d1d7bc90d97d5d49f9f121f8026e9f47b13f372d9e7c0c6f9",
+        "turns": [
+          {
+            "question": "How did the invitation stack's delivery change?",
+            "answer": "The invitation stack had been delivered. At that point, Mina had the invitation stack.",
+            "kind": "change",
+            "answerable": true,
+            "event_ids": [
+              6
+            ],
+            "entity_ids": [
+              "invitation_stack",
+              "mina"
+            ],
+            "facts": [
+              {
+                "at": 6,
+                "key": "invitation_stack.delivered",
+                "value": true
+              },
+              {
+                "at": 6,
+                "key": "invitation_stack.owner",
+                "value": "mina"
+              }
+            ],
+            "focus": {
+              "at": 6,
+              "entity": "invitation_stack",
+              "key": "invitation_stack.delivered",
+              "event_id": 6
+            },
+            "source": "world_trace"
+          },
+          {
+            "question": "Who had it?",
+            "answer": "Mina had the invitation stack. At that point, the invitation stack was sturdy.",
+            "kind": "ownership",
+            "answerable": true,
+            "event_ids": [
+              6
+            ],
+            "entity_ids": [
+              "invitation_stack",
+              "mina"
+            ],
+            "facts": [
+              {
+                "at": 6,
+                "key": "invitation_stack.owner",
+                "value": "mina"
+              },
+              {
+                "at": 6,
+                "key": "invitation_stack.condition",
+                "value": "sturdy"
+              }
+            ],
+            "focus": {
+              "at": 6,
+              "entity": "invitation_stack",
+              "key": "invitation_stack.owner",
+              "event_id": null
+            },
+            "source": "world_trace"
+          },
+          {
+            "question": "What happened before that?",
+            "answer": "The invitation stack had been tied with ribbons. At that point, Mina had the invitation stack.",
+            "kind": "timeline",
+            "answerable": true,
+            "event_ids": [
+              5
+            ],
+            "entity_ids": [
+              "invitation_stack",
+              "mina"
+            ],
+            "facts": [
+              {
+                "at": 5,
+                "key": "invitation_stack.ribboned",
+                "value": true
+              },
+              {
+                "at": 5,
+                "key": "invitation_stack.owner",
+                "value": "mina"
+              }
+            ],
+            "focus": {
+              "at": 5,
+              "entity": "invitation_stack",
+              "key": "invitation_stack.ribboned",
+              "event_id": 5
+            },
+            "source": "world_trace"
+          }
+        ]
+      },
+      {
+        "id": "c002",
+        "protocol": "storyscenes_conversation_v1",
+        "trace_sha256": "a2a6aecd6ac3e06d1d7bc90d97d5d49f9f121f8026e9f47b13f372d9e7c0c6f9",
+        "turns": [
+          {
+            "question": "What did Mina find out about the invitation stack's condition?",
+            "answer": "Mina found out that the invitation stack was sturdy. Before that, Mina did not yet know what condition the invitation stack was in.",
+            "kind": "knowledge",
+            "answerable": true,
+            "event_ids": [
+              2,
+              3
+            ],
+            "entity_ids": [
+              "invitation_stack",
+              "mina"
+            ],
+            "facts": [
+              {
+                "at": 2,
+                "key": "invitation_stack.condition",
+                "value": "sturdy"
+              },
+              {
+                "at": 3,
+                "key": "mina.knows.invitation_stack.condition",
+                "value": "sturdy"
+              },
+              {
+                "at": 2,
+                "key": "mina.knows.invitation_stack.condition",
+                "value": null
+              }
+            ],
+            "focus": {
+              "at": 3,
+              "entity": "invitation_stack",
+              "key": "mina.knows.invitation_stack.condition",
+              "event_id": 3
+            },
+            "source": "world_trace"
+          },
+          {
+            "question": "Was that true?",
+            "answer": "Yes. At that point, the invitation stack was sturdy. Mina found out by checking the invitation stack's condition.",
+            "kind": "belief_check",
+            "answerable": true,
+            "event_ids": [
+              2,
+              3
+            ],
+            "entity_ids": [
+              "invitation_stack",
+              "mina"
+            ],
+            "facts": [
+              {
+                "at": 3,
+                "key": "mina.knows.invitation_stack.condition",
+                "value": "sturdy"
+              },
+              {
+                "at": 3,
+                "key": "invitation_stack.condition",
+                "value": "sturdy"
+              },
+              {
+                "at": 2,
+                "key": "invitation_stack.condition",
+                "value": "sturdy"
+              }
+            ],
+            "focus": {
+              "at": 3,
+              "entity": "invitation_stack",
+              "key": "mina.knows.invitation_stack.condition",
+              "event_id": 3
+            },
+            "source": "world_trace"
+          },
+          {
+            "question": "How did they know?",
+            "answer": "Mina found out by checking the invitation stack's condition. Mina found out that the invitation stack was sturdy.",
+            "kind": "knowledge_source",
+            "answerable": true,
+            "event_ids": [
+              2,
+              3
+            ],
+            "entity_ids": [
+              "invitation_stack",
+              "mina"
+            ],
+            "facts": [
+              {
+                "at": 2,
+                "key": "invitation_stack.condition",
+                "value": "sturdy"
+              },
+              {
+                "at": 3,
+                "key": "mina.knows.invitation_stack.condition",
+                "value": "sturdy"
+              }
+            ],
+            "focus": {
+              "at": 3,
+              "entity": "invitation_stack",
+              "key": "mina.knows.invitation_stack.condition",
+              "event_id": 3
+            },
+            "source": "world_trace"
+          }
+        ]
+      }
+    ],
+    "story_sha256": "d8fc4e9947672fe49286ecd2481a4699134b41ea111180aa431acba9a6f79667"
+  },
+  {
+    "source": "runs/improvement_luna_v6/night_garden/samples_with_trace.json",
+    "index": 0,
+    "seed": 1000,
+    "limit": 3,
+    "expected": [
+      {
+        "id": "c000",
+        "protocol": "storyscenes_conversation_v1",
+        "trace_sha256": "5366bab63a0244c91b0a6532ade26e493abce27832243336754376870f6d5db1",
+        "turns": [
+          {
+            "question": "How did the paper moon's position change?",
+            "answer": "The paper moon was at the garden gate.",
+            "kind": "change",
+            "answerable": true,
+            "event_ids": [
+              2
+            ],
+            "entity_ids": [
+              "gate",
+              "moon"
+            ],
+            "facts": [
+              {
+                "at": 2,
+                "key": "moon.position",
+                "value": "gate"
+              }
+            ],
+            "focus": {
+              "at": 2,
+              "entity": "moon",
+              "key": "moon.position",
+              "event_id": 2
+            },
+            "source": "world_trace"
+          },
+          {
+            "question": "What happened next?",
+            "answer": "Ada had put on a still scene.",
+            "kind": "timeline",
+            "answerable": true,
+            "event_ids": [
+              3
+            ],
+            "entity_ids": [
+              "ada"
+            ],
+            "facts": [
+              {
+                "at": 3,
+                "key": "ada.performed.mode",
+                "value": "tableau"
+              }
+            ],
+            "focus": {
+              "at": 3,
+              "entity": "ada",
+              "key": "ada.performed.mode",
+              "event_id": 3
+            },
+            "source": "world_trace"
+          },
+          {
+            "question": "Why?",
+            "answer": "That was possible because the garden gate was open and the paper moon was at the garden gate. Before that change, the garden gate was not open.",
+            "kind": "causal",
+            "answerable": true,
+            "event_ids": [
+              1,
+              2,
+              3
+            ],
+            "entity_ids": [
+              "ada",
+              "gate",
+              "moon"
+            ],
+            "facts": [
+              {
+                "at": 2,
+                "key": "gate.open",
+                "value": true
+              },
+              {
+                "at": 2,
+                "key": "moon.position",
+                "value": "gate"
+              },
+              {
+                "at": 0,
+                "key": "gate.open",
+                "value": false
+              }
+            ],
+            "focus": {
+              "at": 3,
+              "entity": "ada",
+              "key": "ada.performed.mode",
+              "event_id": 3
+            },
+            "source": "world_trace"
+          }
+        ]
+      },
+      {
+        "id": "c001",
+        "protocol": "storyscenes_conversation_v1",
+        "trace_sha256": "5366bab63a0244c91b0a6532ade26e493abce27832243336754376870f6d5db1",
+        "turns": [
+          {
+            "question": "Who had the hand lamp at the end?",
+            "answer": "Ada had the hand lamp.",
+            "kind": "ownership",
+            "answerable": true,
+            "event_ids": [
+              5
+            ],
+            "entity_ids": [
+              "ada",
+              "lamp"
+            ],
+            "facts": [
+              {
+                "at": 5,
+                "key": "lamp.owner",
+                "value": "ada"
+              }
+            ],
+            "focus": {
+              "at": 5,
+              "entity": "lamp",
+              "key": "lamp.owner",
+              "event_id": null
+            },
+            "source": "world_trace"
+          },
+          {
+            "question": "What happened before that?",
+            "answer": "The welcome ribbon had been tied in place. Before that, the welcome ribbon had not been tied in place.",
+            "kind": "timeline",
+            "answerable": true,
+            "event_ids": [
+              3,
+              4
+            ],
+            "entity_ids": [
+              "ribbon"
+            ],
+            "facts": [
+              {
+                "at": 4,
+                "key": "ribbon.tied",
+                "value": true
+              },
+              {
+                "at": 3,
+                "key": "ribbon.tied",
+                "value": false
+              }
+            ],
+            "focus": {
+              "at": 4,
+              "entity": "ribbon",
+              "key": "ribbon.tied",
+              "event_id": 4
+            },
+            "source": "world_trace"
+          },
+          {
+            "question": "Why?",
+            "answer": "That was possible because the garden gate was open and the welcome ribbon had not been tied in place. Before that change, the garden gate was not open.",
+            "kind": "causal",
+            "answerable": true,
+            "event_ids": [
+              1,
+              3,
+              4
+            ],
+            "entity_ids": [
+              "gate",
+              "ribbon"
+            ],
+            "facts": [
+              {
+                "at": 3,
+                "key": "gate.open",
+                "value": true
+              },
+              {
+                "at": 3,
+                "key": "ribbon.tied",
+                "value": false
+              },
+              {
+                "at": 0,
+                "key": "gate.open",
+                "value": false
+              }
+            ],
+            "focus": {
+              "at": 4,
+              "entity": "ribbon",
+              "key": "ribbon.tied",
+              "event_id": 4
+            },
+            "source": "world_trace"
+          }
+        ]
+      },
+      {
+        "id": "c002",
+        "protocol": "storyscenes_conversation_v1",
+        "trace_sha256": "5366bab63a0244c91b0a6532ade26e493abce27832243336754376870f6d5db1",
+        "turns": [
+          {
+            "question": "Where was Pip at the end?",
+            "answer": "Pip was at the welcome ribbon.",
+            "kind": "location",
+            "answerable": true,
+            "event_ids": [
+              5
+            ],
+            "entity_ids": [
+              "pip",
+              "ribbon"
+            ],
+            "facts": [
+              {
+                "at": 5,
+                "key": "pip.location",
+                "value": "ribbon"
+              }
+            ],
+            "focus": {
+              "at": 5,
+              "entity": "pip",
+              "key": "pip.location",
+              "event_id": 5
+            },
+            "source": "world_trace"
+          },
+          {
+            "question": "Why?",
+            "answer": "That was possible because Pip had been invited and Ada had put on a still scene. Before that change, Pip had not been invited.",
+            "kind": "causal",
+            "answerable": true,
+            "event_ids": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "entity_ids": [
+              "ada",
+              "pip"
+            ],
+            "facts": [
+              {
+                "at": 4,
+                "key": "pip.invited",
+                "value": true
+              },
+              {
+                "at": 4,
+                "key": "ada.performed.mode",
+                "value": "tableau"
+              },
+              {
+                "at": 0,
+                "key": "pip.invited",
+                "value": false
+              }
+            ],
+            "focus": {
+              "at": 5,
+              "entity": "pip",
+              "key": "pip.location",
+              "event_id": 5
+            },
+            "source": "world_trace"
+          },
+          {
+            "question": "What happened before that?",
+            "answer": "The welcome ribbon had been tied in place. Before that, the welcome ribbon had not been tied in place.",
+            "kind": "timeline",
+            "answerable": true,
+            "event_ids": [
+              3,
+              4
+            ],
+            "entity_ids": [
+              "ribbon"
+            ],
+            "facts": [
+              {
+                "at": 4,
+                "key": "ribbon.tied",
+                "value": true
+              },
+              {
+                "at": 3,
+                "key": "ribbon.tied",
+                "value": false
+              }
+            ],
+            "focus": {
+              "at": 4,
+              "entity": "ribbon",
+              "key": "ribbon.tied",
+              "event_id": 4
+            },
+            "source": "world_trace"
+          }
+        ]
+      }
+    ],
+    "story_sha256": "71028ef40f96ec0669abf69893c0f48c0b4d8317eb763363129aa73a3b38d20c"
+  },
+  {
+    "source": "runs/improvement_luna_v6/museum_of_small_things/samples_with_trace.json",
+    "index": 0,
+    "seed": 1000,
+    "limit": 3,
+    "expected": [
+      {
+        "id": "c000",
+        "protocol": "storyscenes_conversation_v1",
+        "trace_sha256": "1d07c0a115dff6cfc8bc30b87a7b7f29d844ee620fc95c32f84d9c582e2ac55d",
+        "turns": [
+          {
+            "question": "Who had the wooden museum box at the end?",
+            "answer": "Ada had the wooden museum box.",
+            "kind": "ownership",
+            "answerable": true,
+            "event_ids": [
+              10
+            ],
+            "entity_ids": [
+              "ada",
+              "box"
+            ],
+            "facts": [
+              {
+                "at": 10,
+                "key": "box.owner",
+                "value": "ada"
+              }
+            ],
+            "focus": {
+              "at": 10,
+              "entity": "box",
+              "key": "box.owner",
+              "event_id": null
+            },
+            "source": "world_trace"
+          },
+          {
+            "question": "What happened next?",
+            "answer": "That's where this story ends. It doesn't say what happened afterward.",
+            "kind": "boundary",
+            "answerable": false,
+            "event_ids": [],
+            "entity_ids": [],
+            "facts": [],
+            "focus": {
+              "at": 10,
+              "entity": "box",
+              "key": "box.owner",
+              "event_id": null
+            },
+            "source": "world_trace"
+          }
+        ]
+      },
+      {
+        "id": "c001",
+        "protocol": "storyscenes_conversation_v1",
+        "trace_sha256": "1d07c0a115dff6cfc8bc30b87a7b7f29d844ee620fc95c32f84d9c582e2ac55d",
+        "turns": [
+          {
+            "question": "How did the brass key's holder change?",
+            "answer": "Pip had the brass key. Before that, Ada had the brass key.",
+            "kind": "change",
+            "answerable": true,
+            "event_ids": [
+              6,
+              7
+            ],
+            "entity_ids": [
+              "ada",
+              "key",
+              "pip"
+            ],
+            "facts": [
+              {
+                "at": 7,
+                "key": "key.owner",
+                "value": "pip"
+              },
+              {
+                "at": 6,
+                "key": "key.owner",
+                "value": "ada"
+              }
+            ],
+            "focus": {
+              "at": 7,
+              "entity": "key",
+              "key": "key.owner",
+              "event_id": 7
+            },
+            "source": "world_trace"
+          },
+          {
+            "question": "Who had it?",
+            "answer": "Pip had the brass key. At the start, Ada had the brass key.",
+            "kind": "ownership",
+            "answerable": true,
+            "event_ids": [
+              7
+            ],
+            "entity_ids": [
+              "ada",
+              "key",
+              "pip"
+            ],
+            "facts": [
+              {
+                "at": 7,
+                "key": "key.owner",
+                "value": "pip"
+              },
+              {
+                "at": 0,
+                "key": "key.owner",
+                "value": "ada"
+              }
+            ],
+            "focus": {
+              "at": 7,
+              "entity": "key",
+              "key": "key.owner",
+              "event_id": 7
+            },
+            "source": "world_trace"
+          },
+          {
+            "question": "Why?",
+            "answer": "That was possible because the wooden museum box was open and Pip believed that Pip had the blue button. Before that change, the wooden museum box was not open.",
+            "kind": "causal",
+            "answerable": true,
+            "event_ids": [
+              1,
+              5,
+              6,
+              7
+            ],
+            "entity_ids": [
+              "box",
+              "key",
+              "pip"
+            ],
+            "facts": [
+              {
+                "at": 6,
+                "key": "box.open",
+                "value": true
+              },
+              {
+                "at": 6,
+                "key": "pip.knows.button.owner",
+                "value": "pip"
+              },
+              {
+                "at": 5,
+                "key": "box.open",
+                "value": false
+              }
+            ],
+            "focus": {
+              "at": 7,
+              "entity": "key",
+              "key": "key.owner",
+              "event_id": 7
+            },
+            "source": "world_trace"
+          }
+        ]
+      },
+      {
+        "id": "c002",
+        "protocol": "storyscenes_conversation_v1",
+        "trace_sha256": "1d07c0a115dff6cfc8bc30b87a7b7f29d844ee620fc95c32f84d9c582e2ac55d",
+        "turns": [
+          {
+            "question": "Who had the visitor card at the end?",
+            "answer": "Ben had the visitor card. At the start, Ada had the visitor card.",
+            "kind": "ownership",
+            "answerable": true,
+            "event_ids": [
+              10
+            ],
+            "entity_ids": [
+              "ada",
+              "ben",
+              "card"
+            ],
+            "facts": [
+              {
+                "at": 10,
+                "key": "card.owner",
+                "value": "ben"
+              },
+              {
+                "at": 0,
+                "key": "card.owner",
+                "value": "ada"
+              }
+            ],
+            "focus": {
+              "at": 10,
+              "entity": "card",
+              "key": "card.owner",
+              "event_id": 2
+            },
+            "source": "world_trace"
+          },
+          {
+            "question": "Why?",
+            "answer": "That was possible because Ada had the visitor card.",
+            "kind": "causal",
+            "answerable": true,
+            "event_ids": [
+              1,
+              2
+            ],
+            "entity_ids": [
+              "ada",
+              "card"
+            ],
+            "facts": [
+              {
+                "at": 1,
+                "key": "card.owner",
+                "value": "ada"
+              }
+            ],
+            "focus": {
+              "at": 10,
+              "entity": "card",
+              "key": "card.owner",
+              "event_id": 2
+            },
+            "source": "world_trace"
+          },
+          {
+            "question": "What happened next?",
+            "answer": "That's where this story ends. It doesn't say what happened afterward.",
+            "kind": "boundary",
+            "answerable": false,
+            "event_ids": [],
+            "entity_ids": [],
+            "facts": [],
+            "focus": {
+              "at": 10,
+              "entity": "card",
+              "key": "card.owner",
+              "event_id": 2
+            },
+            "source": "world_trace"
+          }
+        ]
+      }
+    ],
+    "story_sha256": "ffc3207dbc96dda675cbe78d18a25851de0c9043b52f84e943d31e591bdb5aa7"
+  },
+  {
+    "source": "runs/improvement_luna_v6/hill_picnic/samples_with_trace.json",
+    "index": 0,
+    "seed": 1000,
+    "limit": 3,
+    "expected": [
+      {
+        "id": "c000",
+        "protocol": "storyscenes_conversation_v1",
+        "trace_sha256": "f4ed5954d46e968289f35812f01a5bef712082206e6ee2e747b77c7e646d69dc",
+        "turns": [
+          {
+            "question": "Who had the blue quilt at the end?",
+            "answer": "Lila had the blue quilt.",
+            "kind": "ownership",
+            "answerable": true,
+            "event_ids": [
+              6
+            ],
+            "entity_ids": [
+              "lila",
+              "quilt"
+            ],
+            "facts": [
+              {
+                "at": 6,
+                "key": "quilt.owner",
+                "value": "lila"
+              }
+            ],
+            "focus": {
+              "at": 6,
+              "entity": "quilt",
+              "key": "quilt.owner",
+              "event_id": null
+            },
+            "source": "world_trace"
+          },
+          {
+            "question": "What happened before that?",
+            "answer": "Lila gave the brass bell to Moss. Before that, Lila had the brass bell.",
+            "kind": "timeline",
+            "answerable": true,
+            "event_ids": [
+              4,
+              5
+            ],
+            "entity_ids": [
+              "bell",
+              "lila",
+              "moss"
+            ],
+            "facts": [
+              {
+                "at": 4,
+                "key": "bell.owner",
+                "value": "lila"
+              },
+              {
+                "at": 5,
+                "key": "bell.owner",
+                "value": "moss"
+              }
+            ],
+            "focus": {
+              "at": 5,
+              "entity": "bell",
+              "key": "bell.owner",
+              "event_id": 5
+            },
+            "source": "world_trace"
+          },
+          {
+            "question": "Who had it?",
+            "answer": "Moss had the brass bell. At the start, Lila had the brass bell.",
+            "kind": "ownership",
+            "answerable": true,
+            "event_ids": [
+              5
+            ],
+            "entity_ids": [
+              "bell",
+              "lila",
+              "moss"
+            ],
+            "facts": [
+              {
+                "at": 5,
+                "key": "bell.owner",
+                "value": "moss"
+              },
+              {
+                "at": 0,
+                "key": "bell.owner",
+                "value": "lila"
+              }
+            ],
+            "focus": {
+              "at": 5,
+              "entity": "bell",
+              "key": "bell.owner",
+              "event_id": 5
+            },
+            "source": "world_trace"
+          }
+        ]
+      },
+      {
+        "id": "c001",
+        "protocol": "storyscenes_conversation_v1",
+        "trace_sha256": "f4ed5954d46e968289f35812f01a5bef712082206e6ee2e747b77c7e646d69dc",
+        "turns": [
+          {
+            "question": "How did the brass bell's fastening change?",
+            "answer": "The brass bell had been tied in place. At that point, Moss had the brass bell.",
+            "kind": "change",
+            "answerable": true,
+            "event_ids": [
+              6
+            ],
+            "entity_ids": [
+              "bell",
+              "moss"
+            ],
+            "facts": [
+              {
+                "at": 6,
+                "key": "bell.tied",
+                "value": true
+              },
+              {
+                "at": 6,
+                "key": "bell.owner",
+                "value": "moss"
+              }
+            ],
+            "focus": {
+              "at": 6,
+              "entity": "bell",
+              "key": "bell.tied",
+              "event_id": 6
+            },
+            "source": "world_trace"
+          },
+          {
+            "question": "Who had it?",
+            "answer": "Moss had the brass bell. At the start, Lila had the brass bell.",
+            "kind": "ownership",
+            "answerable": true,
+            "event_ids": [
+              6
+            ],
+            "entity_ids": [
+              "bell",
+              "lila",
+              "moss"
+            ],
+            "facts": [
+              {
+                "at": 6,
+                "key": "bell.owner",
+                "value": "moss"
+              },
+              {
+                "at": 0,
+                "key": "bell.owner",
+                "value": "lila"
+              }
+            ],
+            "focus": {
+              "at": 6,
+              "entity": "bell",
+              "key": "bell.owner",
+              "event_id": 5
+            },
+            "source": "world_trace"
+          },
+          {
+            "question": "What happened before that?",
+            "answer": "Lila gave the brass bell to Moss. Before that, Lila had the brass bell.",
+            "kind": "timeline",
+            "answerable": true,
+            "event_ids": [
+              4,
+              5
+            ],
+            "entity_ids": [
+              "bell",
+              "lila",
+              "moss"
+            ],
+            "facts": [
+              {
+                "at": 4,
+                "key": "bell.owner",
+                "value": "lila"
+              },
+              {
+                "at": 5,
+                "key": "bell.owner",
+                "value": "moss"
+              }
+            ],
+            "focus": {
+              "at": 5,
+              "entity": "bell",
+              "key": "bell.owner",
+              "event_id": 5
+            },
+            "source": "world_trace"
+          }
+        ]
+      },
+      {
+        "id": "c002",
+        "protocol": "storyscenes_conversation_v1",
+        "trace_sha256": "f4ed5954d46e968289f35812f01a5bef712082206e6ee2e747b77c7e646d69dc",
+        "turns": [
+          {
+            "question": "Who had the paper crown at the end?",
+            "answer": "Lila had the paper crown.",
+            "kind": "ownership",
+            "answerable": true,
+            "event_ids": [
+              6
+            ],
+            "entity_ids": [
+              "crown",
+              "lila"
+            ],
+            "facts": [
+              {
+                "at": 6,
+                "key": "crown.owner",
+                "value": "lila"
+              }
+            ],
+            "focus": {
+              "at": 6,
+              "entity": "crown",
+              "key": "crown.owner",
+              "event_id": null
+            },
+            "source": "world_trace"
+          },
+          {
+            "question": "What happened before that?",
+            "answer": "Lila gave the brass bell to Moss. Before that, Lila had the brass bell.",
+            "kind": "timeline",
+            "answerable": true,
+            "event_ids": [
+              4,
+              5
+            ],
+            "entity_ids": [
+              "bell",
+              "lila",
+              "moss"
+            ],
+            "facts": [
+              {
+                "at": 4,
+                "key": "bell.owner",
+                "value": "lila"
+              },
+              {
+                "at": 5,
+                "key": "bell.owner",
+                "value": "moss"
+              }
+            ],
+            "focus": {
+              "at": 5,
+              "entity": "bell",
+              "key": "bell.owner",
+              "event_id": 5
+            },
+            "source": "world_trace"
+          },
+          {
+            "question": "What happened next?",
+            "answer": "The brass bell had been tied in place. At that point, Moss had the brass bell.",
+            "kind": "timeline",
+            "answerable": true,
+            "event_ids": [
+              6
+            ],
+            "entity_ids": [
+              "bell",
+              "moss"
+            ],
+            "facts": [
+              {
+                "at": 6,
+                "key": "bell.tied",
+                "value": true
+              },
+              {
+                "at": 6,
+                "key": "bell.owner",
+                "value": "moss"
+              }
+            ],
+            "focus": {
+              "at": 6,
+              "entity": "bell",
+              "key": "bell.tied",
+              "event_id": 6
+            },
+            "source": "world_trace"
+          }
+        ]
+      }
+    ],
+    "story_sha256": "2bbc26b1caa9e259d2909c1b0aa59b88df93496699b97d460b88e05a49a11cfe"
+  }
+]

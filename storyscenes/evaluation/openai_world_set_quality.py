@@ -13,6 +13,12 @@ import random
 import shutil
 import statistics
 import time
+import sys
+
+# The request helper is copied beside this evaluator in frozen quality runs.
+if not (Path(__file__).parent/'api_requests.py').exists():
+    sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+import api_requests
 
 import openai_story_quality as legacy
 import trial_cost
@@ -90,15 +96,20 @@ def response_schema(ids: list[str]) -> dict:
     ))
 
 
-def request_body(item: dict) -> dict:
+def request_body(item: dict, *, cache_prompts=False) -> dict:
     ids = [story["id"] for story in item["stories"]]
     calibration = dict(story=legacy.BASELINE_STORY, rating=legacy.BASELINE_RATING)
     content = dict(calibration=calibration,
                    stories=[dict(id=row["id"], story=row["story"]) for row in item["stories"]])
-    return dict(model=DEFAULT_MODEL, service_tier="flex", reasoning=dict(effort="none"),
+    body = dict(model=DEFAULT_MODEL, service_tier="flex", reasoning=dict(effort="none"),
                 max_output_tokens=MAX_OUTPUT_TOKENS,
                 input=[dict(role="system", content=SYSTEM), dict(role="user", content=json.dumps(content, ensure_ascii=False))],
                 text=dict(format=dict(type="json_schema", name=PROTOCOL, strict=True, schema=response_schema(ids))))
+    if cache_prompts:
+        # The rubric is below the cache minimum. Preserve even message layout
+        # exactly, while avoiding cache writes for one-use story sets.
+        body = api_requests.without_cache_writes(body)
+    return body
 
 
 def validate(value: dict, item: dict) -> dict:
@@ -191,17 +202,17 @@ def render_report(rows: list[dict]) -> str:
     return "\n".join(lines)
 
 
-async def run_sets(inputs: list[dict], output: Path, *, concurrency=5, dry_run=False) -> list[dict]:
+async def run_sets(inputs: list[dict], output: Path, *, concurrency=5, dry_run=False, cache_prompts=False) -> list[dict]:
     if concurrency < 1 or len({item["script"] for item in inputs}) != len(inputs):
         raise ValueError("positive concurrency and unique world IDs required")
     output.mkdir(parents=True, exist_ok=False)
     save(output / "inputs.json", inputs)
     save(output / "settings.json", dict(protocol=PROTOCOL, model=DEFAULT_MODEL, service_tier="flex",
         reasoning_effort="none", timeout=900, max_retries=0, concurrency=concurrency,
-        dry_run=dry_run, selection="uniform sample positions, without replacement, no dedup"))
-    for source in (Path(__file__), Path(legacy.__file__), Path(trial_cost.__file__)):
+        dry_run=dry_run, cache_prompts=cache_prompts, selection="uniform sample positions, without replacement, no dedup"))
+    for source in (Path(__file__), Path(legacy.__file__), Path(trial_cost.__file__), Path(api_requests.__file__)):
         shutil.copyfile(source, output / source.name)
-    requests = [request_body(item) for item in inputs]
+    requests = [request_body(item,cache_prompts=cache_prompts) for item in inputs]
     for item, body in zip(inputs, requests):
         append(output / "requests.jsonl", dict(script=item["script"], body=body))
     if dry_run:
@@ -221,7 +232,7 @@ async def run_sets(inputs: list[dict], output: Path, *, concurrency=5, dry_run=F
             append(output / "attempts.jsonl", dict(index=index, script=item["script"], started_at=legacy.now_stamp()))
             row = dict(script=item["script"], protocol=PROTOCOL, model=DEFAULT_MODEL, ok=False)
             try:
-                response = await client.responses.create(**request)
+                response = await client.responses.create(**api_requests.sdk_kwargs(request))
                 body = response.model_dump(mode="json")
                 save(output / f"response_{index:03d}.json", body)
                 row["response"] = {key: body.get(key) for key in ("id", "model", "status", "service_tier", "usage")}

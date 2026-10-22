@@ -3,7 +3,13 @@
 
 def unfinished_outcomes(rows):
     keys = {k for row in rows for k in row.get('diagnostics',{}).get('outcome_writes',[])}
-    return sorted(k for k in keys if all(row['trace']['initial'][k] == row['trace']['final'][k] for row in rows))
+    def occurred(row, key):
+        trace = row['trace']
+        # A completed loan returns to its initial owner/null loan slot. The
+        # executed history, not merely the endpoints, proves it took place.
+        return (trace['initial'][key] != trace['final'][key] or
+                any(key in event.get('changes', {}) for event in trace.get('events', [])))
+    return sorted(k for k in keys if not any(occurred(row, k) for row in rows))
 
 
 def validate_outcomes(rows):

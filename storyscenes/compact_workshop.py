@@ -15,8 +15,11 @@ import shutil
 
 import algebra as a
 import compact_prose as cp
+import authoring_cache as ac
+from api_requests import without_cache_writes
 import factory as f
 import workshop as w
+from seed_mixer import briefs_for as mixed_briefs, prose_directions
 from runtime import solve
 from planning import signatures
 from quality_checks import validate_outcomes
@@ -24,7 +27,8 @@ from quality_checks import validate_outcomes
 ROOT = Path(__file__).resolve().parent
 RUNTIME = w.SNAPSHOT_FILES + ['algebra.py']
 AUTHORING = ['compact_workshop.py','compact_prose.py','algebra.py','factory.py','workshop.py',
-             'quality_checks.py','AUTHORING_COMPACT.md']
+             'quality_checks.py','AUTHORING_COMPACT.md','AUTHORING_COMPACT_EXPERIMENTAL.md','AUTHORING_PROSE.md',
+             'authoring_cache.py','api_requests.py','seed_mixer.py','childes_eng_na_vocab.txt']
 
 
 class PaidStageStopped(RuntimeError):
@@ -51,6 +55,7 @@ def json_request(prompt, *, schema=None, tokens=5500, effort='medium'):
 
 
 def validate_mechanics(document):
+    ac.preflight(document)
     specs, traces = [], []
     # Test every finite initial configuration independently of random coverage.
     for choices in a.configurations(document):
@@ -78,7 +83,7 @@ def validate_mechanics(document):
     return stats, cp.scaffold(traces, specs), traces
 
 
-async def world_run(client, budget, world, brief, contract, prepared_world=None):
+async def world_run(client, budget, world, brief, contract, prepared_world=None, *, cost_profile='legacy', world_effort='medium', prose_effort='low', prose_layout='full'):
     world.mkdir(exist_ok=True)
     f.save(world/'seed.json',brief)
     if (world/'summary.json').exists():
@@ -88,6 +93,17 @@ async def world_run(client, budget, world, brief, contract, prepared_world=None)
                 raise ValueError('Completed artifact changed; choose a new run')
         return summary
     base = contract + '\n\nDESIGN SEED:\n' + json.dumps(brief)
+    efficient = cost_profile == 'cached'
+    factored_prose = efficient and prose_layout == 'factored'
+    async def request(stage, body):
+        if cost_profile == 'cache-only':
+            body = without_cache_writes(body)
+        return await ask(client,budget,world,stage,body)
+    def world_request(task, *, effort=world_effort, **kwargs):
+        if efficient:
+            return ac.cached_request(json_request('', effort=effort, **kwargs), contract,
+                                     dict(seed=brief, **task), 'world')
+        return json_request(task['legacy'], **kwargs)
     document, feedback = None, ''
     for attempt in range(4):
         try:
@@ -95,12 +111,18 @@ async def world_run(client, budget, world, brief, contract, prepared_world=None)
                 document = prepared_world
             elif attempt == 0:
                 prompt = base + '\n\nReturn the executable world JSON only. The same object is both the plan and the simulator definition. Do not include Python or a second prose plan.'
-                document = await ask(client,budget,world,'world_0',json_request(prompt))
+                body = world_request({'task':'Return the executable world JSON only.'},tokens=6500) if efficient else json_request(prompt)
+                document = await request('world_0',body)
             else:
                 prompt = base + '\n\nRepair only named components with JSON {edits:[{section,id,value}]}. '
                 prompt += 'Allowed sections: entities, kernels, compose, vary, rules (one named entry); goal, premises, outcomes (id equals section). '
                 prompt += 'Maximum eight edits. Preserve valid alternatives. Do not remove an intended outcome merely to pass the validator.\nWORLD:\n'+json.dumps(document)+'\nFAILURE:\n'+feedback
-                patch = await ask(client,budget,world,f'world_patch_{attempt}',json_request(prompt,tokens=2500,effort='low'))
+                if efficient:
+                    body = world_request(dict(task='Repair at most eight named components. Return {edits:[{section,id,value}]}. For entities/kernels/compose/vary/rules, id is ONE component name, never the section name; value is that component only, not the entire map. Example: {"section":"entities","id":"ada","value":{"name":"Ada","kind":"child","state":{...}}}. value:null removes an existing named entry. Only goal/premises/outcomes use their section as id. Preserve intended outcomes and valid alternatives.',
+                                              world=document, failure=feedback), tokens=2500,effort='low')
+                else:
+                    body = json_request(prompt,tokens=2500,effort='low')
+                patch = await request(f'world_patch_{attempt}',body)
                 f.save(world/f'world_patch_{attempt}.json',patch)
                 document = a.patch_world(document,patch)
             f.save(world/f'world_{attempt}.json',document)
@@ -138,16 +160,40 @@ async def world_run(client, budget, world, brief, contract, prepared_world=None)
                'A slot may be reused across multiple paths; assert only what its guards/evidence and fixed world facts support. '
                '\nWORLD:\n'+json.dumps(document)+'\nTHREE EXECUTED PREVIEWS:\n'+json.dumps(w.compact_rows(previews))+
                '\nNAMED TEXT SLOTS (library supplies the conditions):\n'+json.dumps(skeleton))
+    context += prose_directions(brief)
     texts, feedback = None, ''
+    if factored_prose:
+        prose_contract = (world.parent/'_authoring'/'AUTHORING_PROSE.md').read_text()
+        payload = ac.prose_payload(document,skeleton,previews)
+        if brief.get('seed_mix') or brief.get('words'):
+            payload['story_intent'] = prose_directions(brief)
+        f.save(world/'prose_payload.json',payload)
     for prose_attempt in range(4):
         try:
             if prose_attempt == 0:
-                texts = await ask(client,budget,world,'text_0',json_request(context,
-                    schema=cp.response_schema(skeleton),tokens=9000,effort='low'))
+                if factored_prose:
+                    body = ac.cached_request(json_request('',schema=ac.text_schema(),tokens=9000,effort=prose_effort),
+                                             prose_contract,payload,'prose')
+                    raw_texts = await request('text_0',body)
+                    # Keep known named cards for a small repair if prose lint fails.
+                    texts = ac.expand_texts(skeleton,raw_texts,validate=False)
+                else:
+                    body = json_request(context,schema=cp.response_schema(skeleton),tokens=9000,
+                                        effort=prose_effort if efficient else 'low')
+                    if efficient: body = without_cache_writes(body)
+                    texts = await request('text_0',body)
             else:
                 prompt = context+'\n\nFix only affected named cards. Return JSON {edits:[{id,old,new}]}; old and new are arrays of text variants. '
                 prompt += 'The old array must exactly match its current text. Maximum eight cards. Never use numeric array paths.\nTEXTS:\n'+json.dumps(texts)+'\nFAILURE:\n'+feedback
-                patch = await ask(client,budget,world,f'text_patch_{prose_attempt}',json_request(prompt,tokens=3000,effort='low'))
+                if factored_prose:
+                    body = ac.cached_request(json_request('',tokens=3000,effort='low'),prose_contract,
+                                             dict(task='Repair only affected cards with {edits:[{id,old,new}]}',
+                                                  context=payload,texts=ac.short_texts(skeleton,texts),failure=feedback),'prose_patch')
+                else:
+                    body = json_request(prompt,tokens=3000,effort='low')
+                    if efficient: body = without_cache_writes(body)
+                patch = await request(f'text_patch_{prose_attempt}',body)
+                if factored_prose: patch = ac.expand_patch(skeleton,patch)
                 f.save(world/f'text_patch_{prose_attempt}.json',patch)
                 texts = cp.patch_texts(skeleton,texts,patch)
             f.save(world/f'text_{prose_attempt}.json',texts)
@@ -193,10 +239,16 @@ async def main(args):
     out = args.out.resolve(); out.mkdir(parents=True,exist_ok=True)
     args.campaign.mkdir(parents=True,exist_ok=True)
     budget = f.Budget(args.campaign.resolve()/'budget.json',15.0)
-    settings = dict(protocol='storyscenes_compact_v2',seed=args.seed,count=args.count,
+    settings = dict(protocol={'cached':'storyscenes_compact_cached_v3','cache-only':'storyscenes_compact_cache_only_v1','legacy':'storyscenes_compact_v2'}[args.cost_profile],seed=args.seed,count=args.count,
                     service_tier='flex',model='gpt-5.6-luna',critic=False,
                     world_budget=args.world_budget,campaign=str(args.campaign.resolve()),
-                    prose_variants=1,ending_groups='declared_outcomes')
+                    prose_variants=1,ending_groups='declared_outcomes',cost_profile=args.cost_profile,
+                    world_reasoning=args.world_reasoning if args.cost_profile=='cached' else 'medium',
+                    prose_reasoning=args.prose_reasoning if args.cost_profile=='cached' else 'low',
+                    prose_layout=args.prose_layout if args.cost_profile=='cached' else 'full')
+    if args.seed_source == 'mix':
+        settings.update(seed_source='mix', seed_mixer_sha256=f.digest(ROOT/'seed_mixer.py'),
+                        vocabulary_sha256=f.digest(ROOT/'childes_eng_na_vocab.txt'))
     if (out/'settings.json').exists() and json.loads((out/'settings.json').read_text()) != settings:
         raise ValueError('Run settings changed; use a new directory')
     f.save(out/'settings.json',settings)
@@ -208,16 +260,19 @@ async def main(args):
                 raise ValueError(f'Frozen {folder}/{name} differs; use a new directory')
             if not path.exists(): shutil.copyfile(ROOT/name,path)
     f.save(out/'runtime_provenance.json',{p.name:f.digest(p) for p in (out/'_runtime').glob('*.py')})
-    contract = (out/'_authoring'/'AUTHORING_COMPACT.md').read_text()
+    contract_file = 'AUTHORING_COMPACT_EXPERIMENTAL.md' if args.cost_profile=='cached' else 'AUTHORING_COMPACT.md'
+    contract = (out/'_authoring'/contract_file).read_text()
     rng = random.Random(args.seed)
-    briefs = [dict(index=i,seed=rng.getrandbits(32),theater=name,premise=premise)
-              for i,(name,premise) in enumerate(f.THEATERS[:args.count])]
+    briefs = (mixed_briefs(args.seed, args.count) if args.seed_source == 'mix' else
+              [dict(index=i,seed=rng.getrandbits(32),theater=name,premise=premise)
+               for i,(name,premise) in enumerate(f.THEATERS[:args.count])])
+    f.save(out/'briefs.json', briefs)
     sem = asyncio.Semaphore(args.concurrency)
     async with AsyncOpenAI(base_url='https://api.openai.com/v1',timeout=900,max_retries=0) as client:
         async def one(brief):
             async with sem:
                 world=out/brief['theater']
-                try: return await world_run(client,w.WorldBudget(budget,world,args.world_budget),world,brief,contract)
+                try: return await world_run(client,w.WorldBudget(budget,world,args.world_budget),world,brief,contract,cost_profile=args.cost_profile,world_effort=args.world_reasoning,prose_effort=args.prose_reasoning,prose_layout=args.prose_layout)
                 except Exception as exc:
                     world.mkdir(exist_ok=True)
                     row=dict(world=world.name,ok=False,error=str(exc));f.save(world/'failure.json',row)
@@ -225,7 +280,7 @@ async def main(args):
         rows=await asyncio.gather(*(one(b) for b in briefs))
     f.save(out/'summary.json',rows)
     if args.evaluate and any(r['ok'] for r in rows) and not (out/'STOP').exists():
-        await f.evaluate(out,budget,args.concurrency)
+        await f.evaluate(out,budget,args.concurrency,cache_prompts=args.cost_profile!='legacy')
     return int(any(not r['ok'] for r in rows))
 
 
@@ -234,11 +289,20 @@ if __name__=='__main__':
     p.add_argument('--out',type=Path,required=True)
     p.add_argument('--campaign',type=Path,default=ROOT/'improvements/20260908')
     p.add_argument('--seed',type=int,default=20260907)
-    p.add_argument('--count',type=int,choices=range(1,11),default=3)
+    p.add_argument('--count',type=int,default=3)
+    p.add_argument('--seed-source',choices=['theaters','mix'],default='theaters',
+                   help='mix samples ten classic/kernel/style pools; theaters preserves the baseline')
     p.add_argument('--concurrency',type=int,default=3)
     p.add_argument('--world-budget',type=float,default=.15)
     p.add_argument('--api-key-file',type=Path)
     p.add_argument('--evaluate',action='store_true')
+    p.add_argument('--cost-profile',choices=['legacy','cache-only','cached'],default='cache-only',
+                   help='cache-only preserves prompts; cached is the experimental prefix/contract optimization')
+    p.add_argument('--world-reasoning',choices=['low','medium'],default='medium')
+    p.add_argument('--prose-reasoning',choices=['low','medium'],default='low')
+    p.add_argument('--prose-layout',choices=['full','factored'],default='full')
     args=p.parse_args()
+    if args.count<1 or (args.seed_source=='theaters' and args.count>len(f.THEATERS)):
+        p.error('Use a positive count; the theaters baseline has only ten entries')
     if args.concurrency<1 or not 0<args.world_budget<=15:p.error('Invalid concurrency/world budget')
     raise SystemExit(asyncio.run(main(args)))

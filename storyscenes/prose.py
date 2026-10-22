@@ -8,6 +8,7 @@ tested/bound facts are retained for auditing. Free words still need semantic QA.
 """
 import json
 import re
+from copy import deepcopy
 from runtime import Condition, holds, StoryError
 
 SLOT = re.compile(r"\{(name|phrase):([^{}]+)\}")
@@ -74,7 +75,29 @@ def render_book(run, rng, book):
         defects = lint(text)
         if defects:
             raise StoryError(f"Prose defects {defects}: {text[:200]}")
-        return dict(text=text, event_ids=[] if time == 0 else [time], kind=kind, facts=facts)
+        paragraph = dict(text=text, event_ids=[] if time == 0 else [time], kind=kind, facts=facts)
+        if 'dialogue' in option:
+            from dialogue import QUOTES, collect_dialogue
+            quotes = list(QUOTES.finditer(text)); annotations = []
+            for entry in option['dialogue']:
+                annotation = deepcopy(entry)
+                indices = annotation.pop('quote_indices')
+                if not indices or any(type(i) is not int or not 0 <= i < len(quotes) for i in indices):
+                    raise StoryError('Invalid dialogue quote index')
+                annotation['quotes'] = [dict(start=quotes[i].start()+1,end=quotes[i].end()-1) for i in indices]
+                if time: annotation['event_id'] = time
+                annotations.append(annotation)
+            paragraph['dialogue'] = annotations
+            collect_dialogue(run,[paragraph])
+        else:
+            # Index explicit attributions BEFORE bridge concatenation, while the
+            # originating event is still precise. This adds no model output.
+            from dialogue import collect_dialogue
+            records = collect_dialogue(run,[paragraph])
+            if records:
+                paragraph['dialogue'] = [dict(speaker=u['speaker'],listener=u['listener'],quotes=u['quotes'],
+                                             event_id=u['event_id'],attribution=u['attribution']) for u in records]
+        return paragraph
 
     paragraphs.append(card(book["openings"], None, "beginning"))
     for event in run["events"]:
@@ -86,6 +109,21 @@ def render_book(run, rng, book):
             if bridge is None:
                 bridge = paragraph
             else:
+                offset = len(bridge['text'])+1
+                # Preserve authored quote spans and replies when bridge cards join.
+                if 'dialogue' in bridge or 'dialogue' in paragraph:
+                    from dialogue import collect_dialogue
+                    for part in (bridge,paragraph):
+                        if 'dialogue' not in part:
+                            part['dialogue'] = [dict(speaker=u['speaker'],listener=u['listener'],quotes=u['quotes'],
+                                                     event_id=u['event_id'],attribution=u['attribution'])
+                                                for u in collect_dialogue(run,[part])]
+                    base = len(bridge['dialogue'])
+                    for entry in paragraph['dialogue']:
+                        entry = deepcopy(entry)
+                        for span in entry['quotes']: span['start'] += offset; span['end'] += offset
+                        if entry.get('reply_to') is not None: entry['reply_to'] += base
+                        bridge['dialogue'].append(entry)
                 bridge["text"] += " " + paragraph["text"]
                 bridge["event_ids"] += paragraph["event_ids"]
                 bridge["facts"] += paragraph["facts"]

@@ -7,22 +7,34 @@ The seed chooses initial conditions, not a completed story. Generate one JSON
 world: no Python and no duplicate explanatory plan. The compiler supplies RNG,
 knowledge slots, bookkeeping, constraints, search, traces and later prose guards.
 
+Use the supplied seed to choose the actual characters, wants, setting, props,
+conflict, kernels, style and possible endings. The examples below illustrate
+syntax only: their names, values, state fields and situations are not required
+story content or a default plot. Fill those details from the seed, inventing
+compatible details where the seed leaves room. Only the schema and execution
+rules are requirements. Any angle-bracket text in an example is a placeholder
+to replace, not literal story text.
+
 ## World format
 
-Required: title (text), entities (map), compose (map), goal (conditions),
+Required schema keys: title (text), entities (map), compose (map), goal (conditions),
 outcomes (state-key list). Optional: premise (one sentence), vary (map), kernels
 (map), rules (map), premises (key list), labels (key-to-text map), prune (boolean,
 default true).
 
-Each entity: {"name":"Ada","kind":"child","state":{"want":"deliver invitations",
-"memes.Care":2,"delivered":false}}. Every state field belongs to a physically
-present carrier. Use ada.performance_style, not an abstract concert entity
-disguised as a prop. State is scalar string/number/boolean/null. Declare all state
+Each entity has name, kind and state fields. Syntax example only:
+{"name":"<seed-specific name>","kind":"<physical kind>",
+"state":{"want":"<seed-specific want>","memes.Curiosity":2}}.
+Choose the state fields and meme magnitudes that matter to this seed; the
+example's want and Curiosity fields are not mandatory. Every state field belongs
+to a physically present carrier, such as a character or prop. State is scalar
+string/number/boolean/null. Declare all state
 keys before using them except knowledge and loan bookkeeping, which the library
 adds. Physical .owner/.location values must name entity IDs. Entities may include
 places. Ownership, knowledge, motives and physical state must stay distinct.
 
-vary maps dimension names to arrays of overrides, e.g.
+vary maps dimension names to arrays of overrides. Syntax example only, with
+illustrative entities and values to replace with this seed's meaningful variations:
 {"weather":[{"garden.wind":"still"},{"garden.wind":"breezy"}],
  "recipient":[{"neighbor.want":"quiet"},{"neighbor.want":"join"}]}.
 Dimensions are sampled independently; each override changes already declared
@@ -35,7 +47,7 @@ Operations: eq/ne/lt/le/gt/ge. A list of [key,op,value] triples also works.
 goal is a conjunction of conditions. rules maps names to {must:conditions,
 when:conditions}; when is optional. Outcome keys describe completed physical or
 social consequences, not just an intention or selected plan. The goal must require
-the actual delivery/performance/response. A goal may require outcome != "none"
+the seed-specific consequence to actually occur in world state. A goal may require outcome != "none"
 so several different accomplishments can satisfy it.
 
 ## Opportunities and reusable kernels
@@ -45,7 +57,10 @@ args, when, summary, pivotal, weight, max_uses, divide. Summary is one short
 factual clause for the trace, not finished prose. max_uses defaults to 1; weight
 defaults to 1. divide attenuates selection weight; it cannot override a guard.
 
-Built-ins (args are positional strings):
+Available low-level operations (args are positional strings). This is an API
+reference, not a checklist for the plot. Choose operations that realize the
+supplied seed's story patterns; no story is required to contain a delivery,
+exchange or loan. Use Act for seed-specific behavior not covered by a built-in.
 
 - Observe: [observer, physical_fact_key]. Copies the actual fact to
   observer.knows.physical_fact_key, automatically declared null. Add perceptual
@@ -80,7 +95,8 @@ other patterns between its steps, or use discovery without sharing if sufficient
 
 Local kernels have roles (ordered argument names) and body (a compose map).
 Role references use $name, also inside dotted keys. They can call other local
-kernels, but recursive expansion is forbidden. Example:
+kernels, but recursive expansion is forbidden. Syntax example only; choose
+bindings and facts from the supplied seed's world:
 
     "kernels": {
       "LearningPair": {
@@ -101,7 +117,7 @@ only op,args,divide; put guards/effects in its body, with roles for variable val
 All opportunities compose through shared state; the map order does not prescribe
 a plot. A named composite should be useful with different bindings, not contain
 an entire predetermined plot. Use a shared or local composite with two bindings,
-and shared Observe/Tell/Transfer actions that matter. Define local kernels only
+choosing its operations for the seed's causal pattern. Define local kernels only
 when they express useful behavior beyond what the shared library already does.
 
 Aim for 12–18 expanded candidates and 5–10 selected consequential events. Give

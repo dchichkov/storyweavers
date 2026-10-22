@@ -102,6 +102,20 @@ Final artifact checksums:
 - train SHA-256: `3bf0324ba049e1db5a81e7238b70ee8b44028d164c82729f486e8a3e3ee72b76`.
 - dev SHA-256: `16c086d208fe546f862d5c3553ce175162e7ea9deb41ec8772dface4063a1e02`.
 
+Retrospective audit (2026-09-08): scanning that exact final train file found
+**6,505 world paths and 531,026 exact-unique base-story/world pairs**. The earlier
+6,516-world/531,850-sample figures above describe export reporting, not the final
+retained-text census. A seeded 100-world sample is preserved for the newer
+ten-story quality/diversity protocol. After explicit authorization, Terra/Flex
+judged all 97 eligible worlds (951 stories) for approximately $0.93: mean
+quality **4.975/9**, diversity **1.031/9**; 27 worlds met quality >=6 and only two
+also met diversity >=3. Three single-story pools were ineligible. The recent
+top-20-reference Luna run scored 6.459/9 and 2.984/9 with the same judge, although
+sampling and task distributions differ. See [the audit report](../../storyworlds/batches/production_train_newcriteria_20260908.report.md)
+for results, caveats, and reproducible commands using `evaluate_export.py`.
+It reads the archived conversations rather than regenerating subsequently
+repaired scripts, and removes packing repetitions without treating QA as stories.
+
 The clean train artifact was assembled with:
 
 ```bash

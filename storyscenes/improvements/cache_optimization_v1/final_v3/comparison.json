@@ -1,0 +1,2259 @@
+{
+  "run": "storyscenes/runs/compact_cached_v3",
+  "baseline": "storyscenes/runs/compact_algebra_v2",
+  "recoveries": [
+    "storyscenes/runs/compact_suffix_v1",
+    "storyscenes/runs/compact_suffix_v2"
+  ],
+  "attempted": 10,
+  "successful": 8,
+  "baseline_attempted": 3,
+  "baseline_successful": 2,
+  "fresh_verification": [
+    {
+      "world": "bakery_exchange",
+      "ok": false,
+      "error": "Traceback (most recent call last):\n  File \"/Users/dmitry/storyweavers/storyscenes/runs/compact_cached_v3/_runtime/worker.py\", line 102, in <module>\n    main()\n  File \"/Users/dmitry/storyweavers/storyscenes/runs/compact_cached_v3/_runtime/worker.py\", line 97, in main\n    for row in sample(args.world, seeds, prose=args.prose, prose_seed=args.prose_seed):\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/dmitry/storyweavers/storyscenes/runs/compact_cached_v3/_runtime/worker.py\", line 63, in sample\n    row = generator.generate(seed, ps)\n          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/dmitry/storyweavers/storyscenes/runs/compact_cached_v3/bakery_exchange/generator.py\", line 11, in generate\n    return realize(solve(build(seed), seed), render, seed if prose_seed is None else prose_seed)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/dmitry/storyweavers/storyscenes/runs/compact_cached_v3/_runtime/runtime.py\", line 267, in realize\n    paragraphs = render(view, random.Random(prose_seed))\n                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/dmitry/storyweavers/storyscenes/runs/compact_cached_v3/bakery_exchange/generator.py\", line 8, in render\n    return render_book(run, rng, BOOK)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/dmitry/storyweavers/storyscenes/runs/compact_cached_v3/_runtime/prose.py\", line 99, in render_book\n    paragraphs.append(card(book[\"endings\"], run[\"events\"][-1], \"ending\"))\n                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/dmitry/storyweavers/storyscenes/runs/compact_cached_v3/_runtime/prose.py\", line 55, in card\n    raise StoryError(f\"No eligible prose card: {kind}/{event['scene'] if event else 'opening'}; tested state: {values}\")\nruntime.StoryError: No eligible prose card: ending/honest_relabel_exchange; tested state: {'initial': {'pip.knows.label.text': None, 'stall.noise': 'busy', 'label.location': 'stall', 'nia.want': 'sweet', 'pip.memes.Pride': 2, 'nia.response': 'none', 'pip.want': \"protect the bakery's reputation\", 'pip.helped': False, 'pip.memes.Care': 1, 'cake.flavor': 'sweet', 'spice.owner': 'pip', 'ada.knows.cake.flavor': None, 'pip.knows.nia.want': None, 'ada.ready': False, 'cake.location': 'stall', 'cake.owner': 'ada', 'label.owner': 'ada', 'nia.knows.cake.flavor': None, 'nia.received': False, 'ada.resolution': 'none', 'label.text': 'pepper', 'ada.knows.nia.want': None, 'ada.knows.label.text': None, 'ada.want': 'make a fair exchange', 'spice.location': 'stall', 'spice.loaned_by': None, 'ada.mistake_fixed': False, 'ada.memes.Care': 2}, 'before': {'pip.knows.label.text': None, 'stall.noise': 'busy', 'label.location': 'stall', 'nia.want': 'sweet', 'pip.memes.Pride': 2, 'nia.response': 'none', 'pip.want': \"protect the bakery's reputation\", 'pip.helped': False, 'pip.memes.Care': 1, 'cake.flavor': 'sweet', 'spice.owner': 'pip', 'ada.knows.cake.flavor': 'sweet', 'pip.knows.nia.want': 'sweet', 'ada.ready': True, 'cake.location': 'stall', 'cake.owner': 'nia', 'label.owner': 'ada', 'nia.knows.cake.flavor': 'sweet', 'nia.received': False, 'ada.resolution': 'none', 'label.text': 'sweet', 'ada.knows.nia.want': 'sweet', 'ada.knows.label.text': None, 'ada.want': 'make a fair exchange', 'spice.location': 'stall', 'spice.loaned_by': None, 'ada.mistake_fixed': True, 'ada.memes.Care': 2}, 'after': {'pip.knows.label.text': None, 'stall.noise': 'busy', 'label.location': 'stall', 'nia.want': 'sweet', 'pip.memes.Pride': 2, 'nia.response': 'relieved', 'pip.want': \"protect the bakery's reputation\", 'pip.helped': False, 'pip.memes.Care': 1, 'cake.flavor': 'sweet', 'spice.owner': 'pip', 'ada.knows.cake.flavor': 'sweet', 'pip.knows.nia.want': 'sweet', 'ada.ready': True, 'cake.location': 'stall', 'cake.owner': 'nia', 'label.owner': 'ada', 'nia.knows.cake.flavor': 'sweet', 'nia.received': True, 'ada.resolution': 'honest relabeling', 'label.text': 'sweet', 'ada.knows.nia.want': 'sweet', 'ada.knows.label.text': None, 'ada.want': 'make a fair exchange', 'spice.location': 'stall', 'spice.loaned_by': None, 'ada.mistake_fixed': True, 'ada.memes.Care': 2}}\n"
+    },
+    {
+      "world": "clocktower_club",
+      "ok": true,
+      "pinned_replays": 3,
+      "fresh_samples": 100,
+      "alternate_prose_seed": 8675309,
+      "prose_changed": false,
+      "seeds": [
+        9000,
+        9099
+      ],
+      "kernels": [
+        "Act",
+        "Observe",
+        "Tell",
+        "Transfer"
+      ],
+      "events_with_causal_parents": 812,
+      "distinct_ordered_paths": 65,
+      "event_count_range": [
+        9,
+        13
+      ]
+    },
+    {
+      "world": "hill_picnic",
+      "ok": true,
+      "pinned_replays": 3,
+      "fresh_samples": 100,
+      "alternate_prose_seed": 8675309,
+      "prose_changed": false,
+      "seeds": [
+        9000,
+        9099
+      ],
+      "kernels": [
+        "Move",
+        "Observe",
+        "Tell",
+        "Transfer",
+        "accept_help",
+        "make_a_place",
+        "pack_for_mira",
+        "quiet_welcome",
+        "shared_welcome",
+        "sheltered_welcome",
+        "steady_together"
+      ],
+      "events_with_causal_parents": 1000,
+      "distinct_ordered_paths": 99,
+      "event_count_range": [
+        13,
+        13
+      ]
+    },
+    {
+      "world": "library_parade",
+      "ok": true,
+      "pinned_replays": 3,
+      "fresh_samples": 100,
+      "alternate_prose_seed": 8675309,
+      "prose_changed": false,
+      "seeds": [
+        9000,
+        9099
+      ],
+      "kernels": [
+        "Act",
+        "Move",
+        "Observe",
+        "Tell",
+        "Transfer",
+        "build breezy-weather cart",
+        "build still-weather cart",
+        "choose useful quiet parade",
+        "choose welcoming grand parade",
+        "perform quiet reading parade",
+        "perform welcoming grand parade"
+      ],
+      "events_with_causal_parents": 1156,
+      "distinct_ordered_paths": 91,
+      "event_count_range": [
+        13,
+        15
+      ]
+    },
+    {
+      "world": "museum_of_small_things",
+      "ok": true,
+      "pinned_replays": 3,
+      "fresh_samples": 100,
+      "alternate_prose_seed": 8675309,
+      "prose_changed": false,
+      "seeds": [
+        9000,
+        9099
+      ],
+      "kernels": [
+        "Move",
+        "Observe",
+        "Transfer",
+        "ask_owners",
+        "open_joining",
+        "open_quiet_shiny",
+        "open_quiet_story",
+        "secure_breezy",
+        "secure_still"
+      ],
+      "events_with_causal_parents": 900,
+      "distinct_ordered_paths": 84,
+      "event_count_range": [
+        11,
+        12
+      ]
+    },
+    {
+      "world": "night_garden",
+      "ok": true,
+      "pinned_replays": 3,
+      "fresh_samples": 100,
+      "alternate_prose_seed": 8675309,
+      "prose_changed": false,
+      "seeds": [
+        9000,
+        9099
+      ],
+      "kernels": [
+        "Act",
+        "Move",
+        "Observe",
+        "Tell",
+        "Transfer"
+      ],
+      "events_with_causal_parents": 620,
+      "distinct_ordered_paths": 59,
+      "event_count_range": [
+        6,
+        11
+      ]
+    },
+    {
+      "world": "pond_concert",
+      "ok": true,
+      "pinned_replays": 3,
+      "fresh_samples": 100,
+      "alternate_prose_seed": 8675309,
+      "prose_changed": false,
+      "seeds": [
+        9000,
+        9099
+      ],
+      "kernels": [
+        "Act",
+        "Move",
+        "Observe",
+        "Tell",
+        "Transfer"
+      ],
+      "events_with_causal_parents": 541,
+      "distinct_ordered_paths": 98,
+      "event_count_range": [
+        6,
+        11
+      ]
+    },
+    {
+      "world": "roof_post",
+      "ok": true,
+      "pinned_replays": 3,
+      "fresh_samples": 100,
+      "alternate_prose_seed": 8675309,
+      "prose_changed": false,
+      "seeds": [
+        9000,
+        9099
+      ],
+      "kernels": [
+        "Move",
+        "Observe",
+        "Tell",
+        "Transfer",
+        "choose a gentle way",
+        "choose a steady way",
+        "respect a quiet welcome",
+        "secure the fragile invitations",
+        "welcome a new garden guest"
+      ],
+      "events_with_causal_parents": 927,
+      "distinct_ordered_paths": 29,
+      "event_count_range": [
+        11,
+        12
+      ]
+    }
+  ],
+  "fresh_verified": 7,
+  "new_usage": {
+    "authoring": {
+      "requests": 24,
+      "input_tokens": 196390,
+      "output_tokens": 57282,
+      "reasoning_tokens": 23620,
+      "cached_tokens": 21697,
+      "cache_write_tokens": 5007,
+      "cache_write_unknown": 0,
+      "cache_hit_requests": 13,
+      "cached_fraction": 0.11047914863282245,
+      "tiers": {
+        "flex": 24
+      },
+      "usd_low": 0.052180645,
+      "usd_high": 0.052180645,
+      "unpriced": 0
+    },
+    "evaluation": {
+      "requests": 8,
+      "input_tokens": 50121,
+      "output_tokens": 7839,
+      "reasoning_tokens": 0,
+      "cached_tokens": 0,
+      "cache_write_tokens": 0,
+      "cache_write_unknown": 0,
+      "cache_hit_requests": 0,
+      "cached_fraction": 0.0,
+      "tiers": {
+        "flex": 8
+      },
+      "usd_low": 0.097155,
+      "usd_high": 0.097155,
+      "unpriced": 0
+    },
+    "stages": {
+      "response_000": {
+        "requests": 1,
+        "input_tokens": 5583,
+        "output_tokens": 996,
+        "reasoning_tokens": 0,
+        "cached_tokens": 0,
+        "cache_write_tokens": 0,
+        "cache_write_unknown": 0,
+        "cache_hit_requests": 0,
+        "cached_fraction": 0.0,
+        "tiers": {
+          "flex": 1
+        },
+        "usd_low": 0.011559,
+        "usd_high": 0.011559,
+        "unpriced": 0
+      },
+      "response_001": {
+        "requests": 1,
+        "input_tokens": 6880,
+        "output_tokens": 1024,
+        "reasoning_tokens": 0,
+        "cached_tokens": 0,
+        "cache_write_tokens": 0,
+        "cache_write_unknown": 0,
+        "cache_hit_requests": 0,
+        "cached_fraction": 0.0,
+        "tiers": {
+          "flex": 1
+        },
+        "usd_low": 0.013024,
+        "usd_high": 0.013024,
+        "unpriced": 0
+      },
+      "response_002": {
+        "requests": 1,
+        "input_tokens": 6846,
+        "output_tokens": 1019,
+        "reasoning_tokens": 0,
+        "cached_tokens": 0,
+        "cache_write_tokens": 0,
+        "cache_write_unknown": 0,
+        "cache_hit_requests": 0,
+        "cached_fraction": 0.0,
+        "tiers": {
+          "flex": 1
+        },
+        "usd_low": 0.01296,
+        "usd_high": 0.01296,
+        "unpriced": 0
+      },
+      "response_003": {
+        "requests": 1,
+        "input_tokens": 5730,
+        "output_tokens": 1020,
+        "reasoning_tokens": 0,
+        "cached_tokens": 0,
+        "cache_write_tokens": 0,
+        "cache_write_unknown": 0,
+        "cache_hit_requests": 0,
+        "cached_fraction": 0.0,
+        "tiers": {
+          "flex": 1
+        },
+        "usd_low": 0.01185,
+        "usd_high": 0.01185,
+        "unpriced": 0
+      },
+      "response_004": {
+        "requests": 1,
+        "input_tokens": 6127,
+        "output_tokens": 928,
+        "reasoning_tokens": 0,
+        "cached_tokens": 0,
+        "cache_write_tokens": 0,
+        "cache_write_unknown": 0,
+        "cache_hit_requests": 0,
+        "cached_fraction": 0.0,
+        "tiers": {
+          "flex": 1
+        },
+        "usd_low": 0.011695,
+        "usd_high": 0.011695,
+        "unpriced": 0
+      },
+      "response_005": {
+        "requests": 1,
+        "input_tokens": 6576,
+        "output_tokens": 991,
+        "reasoning_tokens": 0,
+        "cached_tokens": 0,
+        "cache_write_tokens": 0,
+        "cache_write_unknown": 0,
+        "cache_hit_requests": 0,
+        "cached_fraction": 0.0,
+        "tiers": {
+          "flex": 1
+        },
+        "usd_low": 0.012522,
+        "usd_high": 0.012522,
+        "unpriced": 0
+      },
+      "response_006": {
+        "requests": 1,
+        "input_tokens": 6790,
+        "output_tokens": 900,
+        "reasoning_tokens": 0,
+        "cached_tokens": 0,
+        "cache_write_tokens": 0,
+        "cache_write_unknown": 0,
+        "cache_hit_requests": 0,
+        "cached_fraction": 0.0,
+        "tiers": {
+          "flex": 1
+        },
+        "usd_low": 0.01219,
+        "usd_high": 0.01219,
+        "unpriced": 0
+      },
+      "response_007": {
+        "requests": 1,
+        "input_tokens": 5589,
+        "output_tokens": 961,
+        "reasoning_tokens": 0,
+        "cached_tokens": 0,
+        "cache_write_tokens": 0,
+        "cache_write_unknown": 0,
+        "cache_hit_requests": 0,
+        "cached_fraction": 0.0,
+        "tiers": {
+          "flex": 1
+        },
+        "usd_low": 0.011355,
+        "usd_high": 0.011355,
+        "unpriced": 0
+      },
+      "text_0": {
+        "requests": 8,
+        "input_tokens": 158936,
+        "output_tokens": 13996,
+        "reasoning_tokens": 355,
+        "cached_tokens": 0,
+        "cache_write_tokens": 0,
+        "cache_write_unknown": 0,
+        "cache_hit_requests": 0,
+        "cached_fraction": 0.0,
+        "tiers": {
+          "flex": 8
+        },
+        "usd_low": 0.0242912,
+        "usd_high": 0.0242912,
+        "unpriced": 0
+      },
+      "world_0": {
+        "requests": 9,
+        "input_tokens": 15642,
+        "output_tokens": 39326,
+        "reasoning_tokens": 20661,
+        "cached_tokens": 11683,
+        "cache_write_tokens": 3338,
+        "cache_write_unknown": 0,
+        "cache_hit_requests": 7,
+        "cached_fraction": 0.7468993734816519,
+        "tiers": {
+          "flex": 9
+        },
+        "usd_low": 0.02419178,
+        "usd_high": 0.02419178,
+        "unpriced": 0
+      },
+      "world_patch_1": {
+        "requests": 4,
+        "input_tokens": 12341,
+        "output_tokens": 2620,
+        "reasoning_tokens": 1666,
+        "cached_tokens": 5007,
+        "cache_write_tokens": 1669,
+        "cache_write_unknown": 0,
+        "cache_hit_requests": 3,
+        "cached_fraction": 0.40572076817113684,
+        "tiers": {
+          "flex": 4
+        },
+        "usd_low": 0.002397195,
+        "usd_high": 0.002397195,
+        "unpriced": 0
+      },
+      "world_patch_2": {
+        "requests": 2,
+        "input_tokens": 6162,
+        "output_tokens": 1144,
+        "reasoning_tokens": 782,
+        "cached_tokens": 3338,
+        "cache_write_tokens": 0,
+        "cache_write_unknown": 0,
+        "cache_hit_requests": 2,
+        "cached_fraction": 0.5417072379097696,
+        "tiers": {
+          "flex": 2
+        },
+        "usd_low": 0.00100218,
+        "usd_high": 0.00100218,
+        "unpriced": 0
+      },
+      "world_patch_3": {
+        "requests": 1,
+        "input_tokens": 3309,
+        "output_tokens": 196,
+        "reasoning_tokens": 156,
+        "cached_tokens": 1669,
+        "cache_write_tokens": 0,
+        "cache_write_unknown": 0,
+        "cache_hit_requests": 1,
+        "cached_fraction": 0.504381988516168,
+        "tiers": {
+          "flex": 1
+        },
+        "usd_low": 0.00029828999999999994,
+        "usd_high": 0.00029828999999999994,
+        "unpriced": 0
+      }
+    },
+    "unanswered_requests": [
+      "storyscenes/runs/compact_cached_v3/kite_workshop/world_0.request.json"
+    ],
+    "records": [
+      {
+        "path": "storyscenes/runs/compact_cached_v3/bakery_exchange/text_0.response.json",
+        "world": "bakery_exchange",
+        "phase": "authoring",
+        "stage": "text_0",
+        "model": "gpt-5.6-luna",
+        "tier": "flex",
+        "status": "completed",
+        "input": 20207,
+        "output": 1855,
+        "cached": 0,
+        "writes": 0,
+        "reasoning": 32,
+        "cost": {
+          "known": true,
+          "input_tokens": 20207,
+          "cached_input_tokens": 0,
+          "cache_write_tokens": 0,
+          "output_tokens": 1855,
+          "usd_low": 0.0031336999999999997,
+          "usd_high": 0.0031336999999999997
+        }
+      },
+      {
+        "path": "storyscenes/runs/compact_cached_v3/bakery_exchange/world_0.response.json",
+        "world": "bakery_exchange",
+        "phase": "authoring",
+        "stage": "world_0",
+        "model": "gpt-5.6-luna",
+        "tier": "flex",
+        "status": "completed",
+        "input": 1736,
+        "output": 4241,
+        "cached": 1669,
+        "writes": 0,
+        "reasoning": 2051,
+        "cost": {
+          "known": true,
+          "input_tokens": 1736,
+          "cached_input_tokens": 1669,
+          "cache_write_tokens": 0,
+          "output_tokens": 4241,
+          "usd_low": 0.0025679899999999996,
+          "usd_high": 0.0025679899999999996
+        }
+      },
+      {
+        "path": "storyscenes/runs/compact_cached_v3/clocktower_club/text_0.response.json",
+        "world": "clocktower_club",
+        "phase": "authoring",
+        "stage": "text_0",
+        "model": "gpt-5.6-luna",
+        "tier": "flex",
+        "status": "completed",
+        "input": 17964,
+        "output": 1720,
+        "cached": 0,
+        "writes": 0,
+        "reasoning": 65,
+        "cost": {
+          "known": true,
+          "input_tokens": 17964,
+          "cached_input_tokens": 0,
+          "cache_write_tokens": 0,
+          "output_tokens": 1720,
+          "usd_low": 0.0028284,
+          "usd_high": 0.0028284
+        }
+      },
+      {
+        "path": "storyscenes/runs/compact_cached_v3/clocktower_club/world_0.response.json",
+        "world": "clocktower_club",
+        "phase": "authoring",
+        "stage": "world_0",
+        "model": "gpt-5.6-luna",
+        "tier": "flex",
+        "status": "completed",
+        "input": 1744,
+        "output": 3809,
+        "cached": 1669,
+        "writes": 0,
+        "reasoning": 2233,
+        "cost": {
+          "known": true,
+          "input_tokens": 1744,
+          "cached_input_tokens": 1669,
+          "cache_write_tokens": 0,
+          "output_tokens": 3809,
+          "usd_low": 0.0023095900000000003,
+          "usd_high": 0.0023095900000000003
+        }
+      },
+      {
+        "path": "storyscenes/runs/compact_cached_v3/clocktower_club/world_patch_1.response.json",
+        "world": "clocktower_club",
+        "phase": "authoring",
+        "stage": "world_patch_1",
+        "model": "gpt-5.6-luna",
+        "tier": "flex",
+        "status": "completed",
+        "input": 2785,
+        "output": 624,
+        "cached": 1669,
+        "writes": 0,
+        "reasoning": 453,
+        "cost": {
+          "known": true,
+          "input_tokens": 2785,
+          "cached_input_tokens": 1669,
+          "cache_write_tokens": 0,
+          "output_tokens": 624,
+          "usd_low": 0.00050269,
+          "usd_high": 0.00050269
+        }
+      },
+      {
+        "path": "storyscenes/runs/compact_cached_v3/clocktower_club/world_patch_2.response.json",
+        "world": "clocktower_club",
+        "phase": "authoring",
+        "stage": "world_patch_2",
+        "model": "gpt-5.6-luna",
+        "tier": "flex",
+        "status": "completed",
+        "input": 2840,
+        "output": 769,
+        "cached": 1669,
+        "writes": 0,
+        "reasoning": 516,
+        "cost": {
+          "known": true,
+          "input_tokens": 2840,
+          "cached_input_tokens": 1669,
+          "cache_write_tokens": 0,
+          "output_tokens": 769,
+          "usd_low": 0.0005951900000000001,
+          "usd_high": 0.0005951900000000001
+        }
+      },
+      {
+        "path": "storyscenes/runs/compact_cached_v3/hill_picnic/text_0.response.json",
+        "world": "hill_picnic",
+        "phase": "authoring",
+        "stage": "text_0",
+        "model": "gpt-5.6-luna",
+        "tier": "flex",
+        "status": "completed",
+        "input": 17528,
+        "output": 1402,
+        "cached": 0,
+        "writes": 0,
+        "reasoning": 57,
+        "cost": {
+          "known": true,
+          "input_tokens": 17528,
+          "cached_input_tokens": 0,
+          "cache_write_tokens": 0,
+          "output_tokens": 1402,
+          "usd_low": 0.002594,
+          "usd_high": 0.002594
+        }
+      },
+      {
+        "path": "storyscenes/runs/compact_cached_v3/hill_picnic/world_0.response.json",
+        "world": "hill_picnic",
+        "phase": "authoring",
+        "stage": "world_0",
+        "model": "gpt-5.6-luna",
+        "tier": "flex",
+        "status": "completed",
+        "input": 1738,
+        "output": 4527,
+        "cached": 1669,
+        "writes": 0,
+        "reasoning": 2588,
+        "cost": {
+          "known": true,
+          "input_tokens": 1738,
+          "cached_input_tokens": 1669,
+          "cache_write_tokens": 0,
+          "output_tokens": 4527,
+          "usd_low": 0.0027397899999999998,
+          "usd_high": 0.0027397899999999998
+        }
+      },
+      {
+        "path": "storyscenes/runs/compact_cached_v3/hill_picnic/world_patch_1.response.json",
+        "world": "hill_picnic",
+        "phase": "authoring",
+        "stage": "world_patch_1",
+        "model": "gpt-5.6-luna",
+        "tier": "flex",
+        "status": "completed",
+        "input": 3035,
+        "output": 247,
+        "cached": 1669,
+        "writes": 0,
+        "reasoning": 91,
+        "cost": {
+          "known": true,
+          "input_tokens": 3035,
+          "cached_input_tokens": 1669,
+          "cache_write_tokens": 0,
+          "output_tokens": 247,
+          "usd_low": 0.00030149,
+          "usd_high": 0.00030149
+        }
+      },
+      {
+        "path": "storyscenes/runs/compact_cached_v3/library_parade/text_0.response.json",
+        "world": "library_parade",
+        "phase": "authoring",
+        "stage": "text_0",
+        "model": "gpt-5.6-luna",
+        "tier": "flex",
+        "status": "completed",
+        "input": 23346,
+        "output": 1942,
+        "cached": 0,
+        "writes": 0,
+        "reasoning": 40,
+        "cost": {
+          "known": true,
+          "input_tokens": 23346,
+          "cached_input_tokens": 0,
+          "cache_write_tokens": 0,
+          "output_tokens": 1942,
+          "usd_low": 0.0034998000000000004,
+          "usd_high": 0.0034998000000000004
+        }
+      },
+      {
+        "path": "storyscenes/runs/compact_cached_v3/library_parade/world_0.response.json",
+        "world": "library_parade",
+        "phase": "authoring",
+        "stage": "world_0",
+        "model": "gpt-5.6-luna",
+        "tier": "flex",
+        "status": "completed",
+        "input": 1739,
+        "output": 4310,
+        "cached": 0,
+        "writes": 1669,
+        "reasoning": 2001,
+        "cost": {
+          "known": true,
+          "input_tokens": 1739,
+          "cached_input_tokens": 0,
+          "cache_write_tokens": 1669,
+          "output_tokens": 4310,
+          "usd_low": 0.002801625,
+          "usd_high": 0.002801625
+        }
+      },
+      {
+        "path": "storyscenes/runs/compact_cached_v3/museum_of_small_things/text_0.response.json",
+        "world": "museum_of_small_things",
+        "phase": "authoring",
+        "stage": "text_0",
+        "model": "gpt-5.6-luna",
+        "tier": "flex",
+        "status": "completed",
+        "input": 26610,
+        "output": 1998,
+        "cached": 0,
+        "writes": 0,
+        "reasoning": 33,
+        "cost": {
+          "known": true,
+          "input_tokens": 26610,
+          "cached_input_tokens": 0,
+          "cache_write_tokens": 0,
+          "output_tokens": 1998,
+          "usd_low": 0.0038598,
+          "usd_high": 0.0038598
+        }
+      },
+      {
+        "path": "storyscenes/runs/compact_cached_v3/museum_of_small_things/world_0.response.json",
+        "world": "museum_of_small_things",
+        "phase": "authoring",
+        "stage": "world_0",
+        "model": "gpt-5.6-luna",
+        "tier": "flex",
+        "status": "completed",
+        "input": 1737,
+        "output": 4653,
+        "cached": 1669,
+        "writes": 0,
+        "reasoning": 2354,
+        "cost": {
+          "known": true,
+          "input_tokens": 1737,
+          "cached_input_tokens": 1669,
+          "cache_write_tokens": 0,
+          "output_tokens": 4653,
+          "usd_low": 0.0028152899999999994,
+          "usd_high": 0.0028152899999999994
+        }
+      },
+      {
+        "path": "storyscenes/runs/compact_cached_v3/night_garden/text_0.response.json",
+        "world": "night_garden",
+        "phase": "authoring",
+        "stage": "text_0",
+        "model": "gpt-5.6-luna",
+        "tier": "flex",
+        "status": "completed",
+        "input": 17404,
+        "output": 1860,
+        "cached": 0,
+        "writes": 0,
+        "reasoning": 39,
+        "cost": {
+          "known": true,
+          "input_tokens": 17404,
+          "cached_input_tokens": 0,
+          "cache_write_tokens": 0,
+          "output_tokens": 1860,
+          "usd_low": 0.0028564000000000003,
+          "usd_high": 0.0028564000000000003
+        }
+      },
+      {
+        "path": "storyscenes/runs/compact_cached_v3/night_garden/world_0.response.json",
+        "world": "night_garden",
+        "phase": "authoring",
+        "stage": "world_0",
+        "model": "gpt-5.6-luna",
+        "tier": "flex",
+        "status": "completed",
+        "input": 1734,
+        "output": 4593,
+        "cached": 1669,
+        "writes": 0,
+        "reasoning": 2552,
+        "cost": {
+          "known": true,
+          "input_tokens": 1734,
+          "cached_input_tokens": 1669,
+          "cache_write_tokens": 0,
+          "output_tokens": 4593,
+          "usd_low": 0.00277899,
+          "usd_high": 0.00277899
+        }
+      },
+      {
+        "path": "storyscenes/runs/compact_cached_v3/night_garden/world_patch_1.response.json",
+        "world": "night_garden",
+        "phase": "authoring",
+        "stage": "world_patch_1",
+        "model": "gpt-5.6-luna",
+        "tier": "flex",
+        "status": "completed",
+        "input": 3113,
+        "output": 1097,
+        "cached": 0,
+        "writes": 1669,
+        "reasoning": 841,
+        "cost": {
+          "known": true,
+          "input_tokens": 3113,
+          "cached_input_tokens": 0,
+          "cache_write_tokens": 1669,
+          "output_tokens": 1097,
+          "usd_low": 0.001011225,
+          "usd_high": 0.001011225
+        }
+      },
+      {
+        "path": "storyscenes/runs/compact_cached_v3/pond_concert/text_0.response.json",
+        "world": "pond_concert",
+        "phase": "authoring",
+        "stage": "text_0",
+        "model": "gpt-5.6-luna",
+        "tier": "flex",
+        "status": "completed",
+        "input": 15712,
+        "output": 1485,
+        "cached": 0,
+        "writes": 0,
+        "reasoning": 39,
+        "cost": {
+          "known": true,
+          "input_tokens": 15712,
+          "cached_input_tokens": 0,
+          "cache_write_tokens": 0,
+          "output_tokens": 1485,
+          "usd_low": 0.0024622,
+          "usd_high": 0.0024622
+        }
+      },
+      {
+        "path": "storyscenes/runs/compact_cached_v3/pond_concert/world_0.response.json",
+        "world": "pond_concert",
+        "phase": "authoring",
+        "stage": "world_0",
+        "model": "gpt-5.6-luna",
+        "tier": "flex",
+        "status": "completed",
+        "input": 1737,
+        "output": 4668,
+        "cached": 1669,
+        "writes": 0,
+        "reasoning": 2742,
+        "cost": {
+          "known": true,
+          "input_tokens": 1737,
+          "cached_input_tokens": 1669,
+          "cache_write_tokens": 0,
+          "output_tokens": 4668,
+          "usd_low": 0.0028242899999999997,
+          "usd_high": 0.0028242899999999997
+        }
+      },
+      {
+        "path": "storyscenes/runs/compact_cached_v3/puppet_weather/world_0.response.json",
+        "world": "puppet_weather",
+        "phase": "authoring",
+        "stage": "world_0",
+        "model": "gpt-5.6-luna",
+        "tier": "flex",
+        "status": "completed",
+        "input": 1738,
+        "output": 4514,
+        "cached": 1669,
+        "writes": 0,
+        "reasoning": 2070,
+        "cost": {
+          "known": true,
+          "input_tokens": 1738,
+          "cached_input_tokens": 1669,
+          "cache_write_tokens": 0,
+          "output_tokens": 4514,
+          "usd_low": 0.00273199,
+          "usd_high": 0.00273199
+        }
+      },
+      {
+        "path": "storyscenes/runs/compact_cached_v3/puppet_weather/world_patch_1.response.json",
+        "world": "puppet_weather",
+        "phase": "authoring",
+        "stage": "world_patch_1",
+        "model": "gpt-5.6-luna",
+        "tier": "flex",
+        "status": "completed",
+        "input": 3408,
+        "output": 652,
+        "cached": 1669,
+        "writes": 0,
+        "reasoning": 281,
+        "cost": {
+          "known": true,
+          "input_tokens": 3408,
+          "cached_input_tokens": 1669,
+          "cache_write_tokens": 0,
+          "output_tokens": 652,
+          "usd_low": 0.00058179,
+          "usd_high": 0.00058179
+        }
+      },
+      {
+        "path": "storyscenes/runs/compact_cached_v3/puppet_weather/world_patch_2.response.json",
+        "world": "puppet_weather",
+        "phase": "authoring",
+        "stage": "world_patch_2",
+        "model": "gpt-5.6-luna",
+        "tier": "flex",
+        "status": "completed",
+        "input": 3322,
+        "output": 375,
+        "cached": 1669,
+        "writes": 0,
+        "reasoning": 266,
+        "cost": {
+          "known": true,
+          "input_tokens": 3322,
+          "cached_input_tokens": 1669,
+          "cache_write_tokens": 0,
+          "output_tokens": 375,
+          "usd_low": 0.00040699000000000003,
+          "usd_high": 0.00040699000000000003
+        }
+      },
+      {
+        "path": "storyscenes/runs/compact_cached_v3/puppet_weather/world_patch_3.response.json",
+        "world": "puppet_weather",
+        "phase": "authoring",
+        "stage": "world_patch_3",
+        "model": "gpt-5.6-luna",
+        "tier": "flex",
+        "status": "completed",
+        "input": 3309,
+        "output": 196,
+        "cached": 1669,
+        "writes": 0,
+        "reasoning": 156,
+        "cost": {
+          "known": true,
+          "input_tokens": 3309,
+          "cached_input_tokens": 1669,
+          "cache_write_tokens": 0,
+          "output_tokens": 196,
+          "usd_low": 0.00029828999999999994,
+          "usd_high": 0.00029828999999999994
+        }
+      },
+      {
+        "path": "storyscenes/runs/compact_cached_v3/quality/response_000.json",
+        "world": "roof_post",
+        "phase": "evaluation",
+        "stage": "response_000",
+        "model": "gpt-5.6-terra",
+        "tier": "flex",
+        "status": "completed",
+        "input": 5583,
+        "output": 996,
+        "cached": 0,
+        "writes": 0,
+        "reasoning": 0,
+        "cost": {
+          "known": true,
+          "input_tokens": 5583,
+          "cached_input_tokens": 0,
+          "cache_write_tokens": 0,
+          "output_tokens": 996,
+          "usd_low": 0.011559,
+          "usd_high": 0.011559
+        }
+      },
+      {
+        "path": "storyscenes/runs/compact_cached_v3/quality/response_001.json",
+        "world": "library_parade",
+        "phase": "evaluation",
+        "stage": "response_001",
+        "model": "gpt-5.6-terra",
+        "tier": "flex",
+        "status": "completed",
+        "input": 6880,
+        "output": 1024,
+        "cached": 0,
+        "writes": 0,
+        "reasoning": 0,
+        "cost": {
+          "known": true,
+          "input_tokens": 6880,
+          "cached_input_tokens": 0,
+          "cache_write_tokens": 0,
+          "output_tokens": 1024,
+          "usd_low": 0.013024,
+          "usd_high": 0.013024
+        }
+      },
+      {
+        "path": "storyscenes/runs/compact_cached_v3/quality/response_002.json",
+        "world": "pond_concert",
+        "phase": "evaluation",
+        "stage": "response_002",
+        "model": "gpt-5.6-terra",
+        "tier": "flex",
+        "status": "completed",
+        "input": 6846,
+        "output": 1019,
+        "cached": 0,
+        "writes": 0,
+        "reasoning": 0,
+        "cost": {
+          "known": true,
+          "input_tokens": 6846,
+          "cached_input_tokens": 0,
+          "cache_write_tokens": 0,
+          "output_tokens": 1019,
+          "usd_low": 0.01296,
+          "usd_high": 0.01296
+        }
+      },
+      {
+        "path": "storyscenes/runs/compact_cached_v3/quality/response_003.json",
+        "world": "night_garden",
+        "phase": "evaluation",
+        "stage": "response_003",
+        "model": "gpt-5.6-terra",
+        "tier": "flex",
+        "status": "completed",
+        "input": 5730,
+        "output": 1020,
+        "cached": 0,
+        "writes": 0,
+        "reasoning": 0,
+        "cost": {
+          "known": true,
+          "input_tokens": 5730,
+          "cached_input_tokens": 0,
+          "cache_write_tokens": 0,
+          "output_tokens": 1020,
+          "usd_low": 0.01185,
+          "usd_high": 0.01185
+        }
+      },
+      {
+        "path": "storyscenes/runs/compact_cached_v3/quality/response_004.json",
+        "world": "bakery_exchange",
+        "phase": "evaluation",
+        "stage": "response_004",
+        "model": "gpt-5.6-terra",
+        "tier": "flex",
+        "status": "completed",
+        "input": 6127,
+        "output": 928,
+        "cached": 0,
+        "writes": 0,
+        "reasoning": 0,
+        "cost": {
+          "known": true,
+          "input_tokens": 6127,
+          "cached_input_tokens": 0,
+          "cache_write_tokens": 0,
+          "output_tokens": 928,
+          "usd_low": 0.011695,
+          "usd_high": 0.011695
+        }
+      },
+      {
+        "path": "storyscenes/runs/compact_cached_v3/quality/response_005.json",
+        "world": "museum_of_small_things",
+        "phase": "evaluation",
+        "stage": "response_005",
+        "model": "gpt-5.6-terra",
+        "tier": "flex",
+        "status": "completed",
+        "input": 6576,
+        "output": 991,
+        "cached": 0,
+        "writes": 0,
+        "reasoning": 0,
+        "cost": {
+          "known": true,
+          "input_tokens": 6576,
+          "cached_input_tokens": 0,
+          "cache_write_tokens": 0,
+          "output_tokens": 991,
+          "usd_low": 0.012522,
+          "usd_high": 0.012522
+        }
+      },
+      {
+        "path": "storyscenes/runs/compact_cached_v3/quality/response_006.json",
+        "world": "hill_picnic",
+        "phase": "evaluation",
+        "stage": "response_006",
+        "model": "gpt-5.6-terra",
+        "tier": "flex",
+        "status": "completed",
+        "input": 6790,
+        "output": 900,
+        "cached": 0,
+        "writes": 0,
+        "reasoning": 0,
+        "cost": {
+          "known": true,
+          "input_tokens": 6790,
+          "cached_input_tokens": 0,
+          "cache_write_tokens": 0,
+          "output_tokens": 900,
+          "usd_low": 0.01219,
+          "usd_high": 0.01219
+        }
+      },
+      {
+        "path": "storyscenes/runs/compact_cached_v3/quality/response_007.json",
+        "world": "clocktower_club",
+        "phase": "evaluation",
+        "stage": "response_007",
+        "model": "gpt-5.6-terra",
+        "tier": "flex",
+        "status": "completed",
+        "input": 5589,
+        "output": 961,
+        "cached": 0,
+        "writes": 0,
+        "reasoning": 0,
+        "cost": {
+          "known": true,
+          "input_tokens": 5589,
+          "cached_input_tokens": 0,
+          "cache_write_tokens": 0,
+          "output_tokens": 961,
+          "usd_low": 0.011355,
+          "usd_high": 0.011355
+        }
+      },
+      {
+        "path": "storyscenes/runs/compact_cached_v3/roof_post/text_0.response.json",
+        "world": "roof_post",
+        "phase": "authoring",
+        "stage": "text_0",
+        "model": "gpt-5.6-luna",
+        "tier": "flex",
+        "status": "completed",
+        "input": 20165,
+        "output": 1734,
+        "cached": 0,
+        "writes": 0,
+        "reasoning": 50,
+        "cost": {
+          "known": true,
+          "input_tokens": 20165,
+          "cached_input_tokens": 0,
+          "cache_write_tokens": 0,
+          "output_tokens": 1734,
+          "usd_low": 0.0030568999999999995,
+          "usd_high": 0.0030568999999999995
+        }
+      },
+      {
+        "path": "storyscenes/runs/compact_cached_v3/roof_post/world_0.response.json",
+        "world": "roof_post",
+        "phase": "authoring",
+        "stage": "world_0",
+        "model": "gpt-5.6-luna",
+        "tier": "flex",
+        "status": "completed",
+        "input": 1739,
+        "output": 4011,
+        "cached": 0,
+        "writes": 1669,
+        "reasoning": 2070,
+        "cost": {
+          "known": true,
+          "input_tokens": 1739,
+          "cached_input_tokens": 0,
+          "cache_write_tokens": 1669,
+          "output_tokens": 4011,
+          "usd_low": 0.0026222249999999997,
+          "usd_high": 0.0026222249999999997
+        }
+      }
+    ]
+  },
+  "baseline_usage": {
+    "authoring": {
+      "requests": 13,
+      "input_tokens": 67561,
+      "output_tokens": 20773,
+      "reasoning_tokens": 9163,
+      "cached_tokens": 4708,
+      "cache_write_tokens": 62814,
+      "cache_write_unknown": 0,
+      "cache_hit_requests": 3,
+      "cached_fraction": 0.06968517339885437,
+      "tiers": {
+        "flex": 13
+      },
+      "usd_low": 0.02036653,
+      "usd_high": 0.02036653,
+      "unpriced": 0
+    },
+    "evaluation": {
+      "requests": 2,
+      "input_tokens": 12558,
+      "output_tokens": 1887,
+      "reasoning_tokens": 0,
+      "cached_tokens": 0,
+      "cache_write_tokens": 12552,
+      "cache_write_unknown": 0,
+      "cache_hit_requests": 0,
+      "cached_fraction": 0.0,
+      "tiers": {
+        "flex": 2
+      },
+      "usd_low": 0.027018,
+      "usd_high": 0.027018,
+      "unpriced": 0
+    },
+    "stages": {
+      "response_000": {
+        "requests": 1,
+        "input_tokens": 6630,
+        "output_tokens": 914,
+        "reasoning_tokens": 0,
+        "cached_tokens": 0,
+        "cache_write_tokens": 6627,
+        "cache_write_unknown": 0,
+        "cache_hit_requests": 0,
+        "cached_fraction": 0.0,
+        "tiers": {
+          "flex": 1
+        },
+        "usd_low": 0.01377075,
+        "usd_high": 0.01377075,
+        "unpriced": 0
+      },
+      "response_001": {
+        "requests": 1,
+        "input_tokens": 5928,
+        "output_tokens": 973,
+        "reasoning_tokens": 0,
+        "cached_tokens": 0,
+        "cache_write_tokens": 5925,
+        "cache_write_unknown": 0,
+        "cache_hit_requests": 0,
+        "cached_fraction": 0.0,
+        "tiers": {
+          "flex": 1
+        },
+        "usd_low": 0.01324725,
+        "usd_high": 0.01324725,
+        "unpriced": 0
+      },
+      "text_0": {
+        "requests": 2,
+        "input_tokens": 34697,
+        "output_tokens": 3337,
+        "reasoning_tokens": 95,
+        "cached_tokens": 0,
+        "cache_write_tokens": 34691,
+        "cache_write_unknown": 0,
+        "cache_hit_requests": 0,
+        "cached_fraction": 0.0,
+        "tiers": {
+          "flex": 2
+        },
+        "usd_low": 0.006339175000000001,
+        "usd_high": 0.006339175000000001,
+        "unpriced": 0
+      },
+      "world_0": {
+        "requests": 3,
+        "input_tokens": 4717,
+        "output_tokens": 14612,
+        "reasoning_tokens": 7959,
+        "cached_tokens": 4708,
+        "cache_write_tokens": 0,
+        "cache_write_unknown": 0,
+        "cache_hit_requests": 3,
+        "cached_fraction": 0.9980920076319695,
+        "tiers": {
+          "flex": 3
+        },
+        "usd_low": 0.008815179999999999,
+        "usd_high": 0.008815179999999999,
+        "unpriced": 0
+      },
+      "world_patch_1": {
+        "requests": 3,
+        "input_tokens": 10390,
+        "output_tokens": 955,
+        "reasoning_tokens": 203,
+        "cached_tokens": 0,
+        "cache_write_tokens": 10381,
+        "cache_write_unknown": 0,
+        "cache_hit_requests": 0,
+        "cached_fraction": 0.0,
+        "tiers": {
+          "flex": 3
+        },
+        "usd_low": 0.0018715249999999998,
+        "usd_high": 0.0018715249999999998,
+        "unpriced": 0
+      },
+      "world_patch_2": {
+        "requests": 2,
+        "input_tokens": 6996,
+        "output_tokens": 419,
+        "reasoning_tokens": 232,
+        "cached_tokens": 0,
+        "cache_write_tokens": 6990,
+        "cache_write_unknown": 0,
+        "cache_hit_requests": 0,
+        "cached_fraction": 0.0,
+        "tiers": {
+          "flex": 2
+        },
+        "usd_low": 0.00112575,
+        "usd_high": 0.00112575,
+        "unpriced": 0
+      },
+      "world_patch_3": {
+        "requests": 2,
+        "input_tokens": 7000,
+        "output_tokens": 875,
+        "reasoning_tokens": 627,
+        "cached_tokens": 0,
+        "cache_write_tokens": 6994,
+        "cache_write_unknown": 0,
+        "cache_hit_requests": 0,
+        "cached_fraction": 0.0,
+        "tiers": {
+          "flex": 2
+        },
+        "usd_low": 0.00139985,
+        "usd_high": 0.00139985,
+        "unpriced": 0
+      },
+      "world_suffix": {
+        "requests": 1,
+        "input_tokens": 3761,
+        "output_tokens": 575,
+        "reasoning_tokens": 47,
+        "cached_tokens": 0,
+        "cache_write_tokens": 3758,
+        "cache_write_unknown": 0,
+        "cache_hit_requests": 0,
+        "cached_fraction": 0.0,
+        "tiers": {
+          "flex": 1
+        },
+        "usd_low": 0.00081505,
+        "usd_high": 0.00081505,
+        "unpriced": 0
+      }
+    },
+    "unanswered_requests": [],
+    "records": [
+      {
+        "path": "storyscenes/runs/compact_algebra_v2/library_parade/text_0.response.json",
+        "world": "library_parade",
+        "phase": "authoring",
+        "stage": "text_0",
+        "model": "gpt-5.6-luna",
+        "tier": "flex",
+        "status": "completed",
+        "input": 17980,
+        "output": 1835,
+        "cached": 0,
+        "writes": 17977,
+        "reasoning": 37,
+        "cost": {
+          "known": true,
+          "input_tokens": 17980,
+          "cached_input_tokens": 0,
+          "cache_write_tokens": 17977,
+          "output_tokens": 1835,
+          "usd_low": 0.0033484250000000004,
+          "usd_high": 0.0033484250000000004
+        }
+      },
+      {
+        "path": "storyscenes/runs/compact_algebra_v2/library_parade/world_0.response.json",
+        "world": "library_parade",
+        "phase": "authoring",
+        "stage": "world_0",
+        "model": "gpt-5.6-luna",
+        "tier": "flex",
+        "status": "completed",
+        "input": 1573,
+        "output": 4475,
+        "cached": 1570,
+        "writes": 0,
+        "reasoning": 2180,
+        "cost": {
+          "known": true,
+          "input_tokens": 1573,
+          "cached_input_tokens": 1570,
+          "cache_write_tokens": 0,
+          "output_tokens": 4475,
+          "usd_low": 0.002701,
+          "usd_high": 0.002701
+        }
+      },
+      {
+        "path": "storyscenes/runs/compact_algebra_v2/pond_concert/text_0.response.json",
+        "world": "pond_concert",
+        "phase": "authoring",
+        "stage": "text_0",
+        "model": "gpt-5.6-luna",
+        "tier": "flex",
+        "status": "completed",
+        "input": 16717,
+        "output": 1502,
+        "cached": 0,
+        "writes": 16714,
+        "reasoning": 58,
+        "cost": {
+          "known": true,
+          "input_tokens": 16717,
+          "cached_input_tokens": 0,
+          "cache_write_tokens": 16714,
+          "output_tokens": 1502,
+          "usd_low": 0.00299075,
+          "usd_high": 0.00299075
+        }
+      },
+      {
+        "path": "storyscenes/runs/compact_algebra_v2/pond_concert/world_0.response.json",
+        "world": "pond_concert",
+        "phase": "authoring",
+        "stage": "world_0",
+        "model": "gpt-5.6-luna",
+        "tier": "flex",
+        "status": "completed",
+        "input": 1571,
+        "output": 4637,
+        "cached": 1568,
+        "writes": 0,
+        "reasoning": 2374,
+        "cost": {
+          "known": true,
+          "input_tokens": 1571,
+          "cached_input_tokens": 1568,
+          "cache_write_tokens": 0,
+          "output_tokens": 4637,
+          "usd_low": 0.00279818,
+          "usd_high": 0.00279818
+        }
+      },
+      {
+        "path": "storyscenes/runs/compact_algebra_v2/pond_concert/world_patch_1.response.json",
+        "world": "pond_concert",
+        "phase": "authoring",
+        "stage": "world_patch_1",
+        "model": "gpt-5.6-luna",
+        "tier": "flex",
+        "status": "completed",
+        "input": 3362,
+        "output": 114,
+        "cached": 0,
+        "writes": 3359,
+        "reasoning": 44,
+        "cost": {
+          "known": true,
+          "input_tokens": 3362,
+          "cached_input_tokens": 0,
+          "cache_write_tokens": 3359,
+          "output_tokens": 114,
+          "usd_low": 0.000488575,
+          "usd_high": 0.000488575
+        }
+      },
+      {
+        "path": "storyscenes/runs/compact_algebra_v2/quality/response_000.json",
+        "world": "library_parade",
+        "phase": "evaluation",
+        "stage": "response_000",
+        "model": "gpt-5.6-terra",
+        "tier": "flex",
+        "status": "completed",
+        "input": 6630,
+        "output": 914,
+        "cached": 0,
+        "writes": 6627,
+        "reasoning": 0,
+        "cost": {
+          "known": true,
+          "input_tokens": 6630,
+          "cached_input_tokens": 0,
+          "cache_write_tokens": 6627,
+          "output_tokens": 914,
+          "usd_low": 0.01377075,
+          "usd_high": 0.01377075
+        }
+      },
+      {
+        "path": "storyscenes/runs/compact_algebra_v2/quality/response_001.json",
+        "world": "pond_concert",
+        "phase": "evaluation",
+        "stage": "response_001",
+        "model": "gpt-5.6-terra",
+        "tier": "flex",
+        "status": "completed",
+        "input": 5928,
+        "output": 973,
+        "cached": 0,
+        "writes": 5925,
+        "reasoning": 0,
+        "cost": {
+          "known": true,
+          "input_tokens": 5928,
+          "cached_input_tokens": 0,
+          "cache_write_tokens": 5925,
+          "output_tokens": 973,
+          "usd_low": 0.01324725,
+          "usd_high": 0.01324725
+        }
+      },
+      {
+        "path": "storyscenes/runs/compact_algebra_v2/roof_post/world_0.response.json",
+        "world": "roof_post",
+        "phase": "authoring",
+        "stage": "world_0",
+        "model": "gpt-5.6-luna",
+        "tier": "flex",
+        "status": "incomplete",
+        "input": 1573,
+        "output": 5500,
+        "cached": 1570,
+        "writes": 0,
+        "reasoning": 3405,
+        "cost": {
+          "known": true,
+          "input_tokens": 1573,
+          "cached_input_tokens": 1570,
+          "cache_write_tokens": 0,
+          "output_tokens": 5500,
+          "usd_low": 0.003316,
+          "usd_high": 0.003316
+        }
+      },
+      {
+        "path": "storyscenes/runs/compact_suffix_v1/roof_post/world_patch_1.response.json",
+        "world": "roof_post",
+        "phase": "authoring",
+        "stage": "world_patch_1",
+        "model": "gpt-5.6-luna",
+        "tier": "flex",
+        "status": "completed",
+        "input": 3544,
+        "output": 216,
+        "cached": 0,
+        "writes": 3541,
+        "reasoning": 70,
+        "cost": {
+          "known": true,
+          "input_tokens": 3544,
+          "cached_input_tokens": 0,
+          "cache_write_tokens": 3541,
+          "output_tokens": 216,
+          "usd_low": 0.0005725249999999999,
+          "usd_high": 0.0005725249999999999
+        }
+      },
+      {
+        "path": "storyscenes/runs/compact_suffix_v1/roof_post/world_patch_2.response.json",
+        "world": "roof_post",
+        "phase": "authoring",
+        "stage": "world_patch_2",
+        "model": "gpt-5.6-luna",
+        "tier": "flex",
+        "status": "completed",
+        "input": 3530,
+        "output": 328,
+        "cached": 0,
+        "writes": 3527,
+        "reasoning": 190,
+        "cost": {
+          "known": true,
+          "input_tokens": 3530,
+          "cached_input_tokens": 0,
+          "cache_write_tokens": 3527,
+          "output_tokens": 328,
+          "usd_low": 0.000637975,
+          "usd_high": 0.000637975
+        }
+      },
+      {
+        "path": "storyscenes/runs/compact_suffix_v1/roof_post/world_patch_3.response.json",
+        "world": "roof_post",
+        "phase": "authoring",
+        "stage": "world_patch_3",
+        "model": "gpt-5.6-luna",
+        "tier": "flex",
+        "status": "completed",
+        "input": 3523,
+        "output": 159,
+        "cached": 0,
+        "writes": 3520,
+        "reasoning": 45,
+        "cost": {
+          "known": true,
+          "input_tokens": 3523,
+          "cached_input_tokens": 0,
+          "cache_write_tokens": 3520,
+          "output_tokens": 159,
+          "usd_low": 0.0005357000000000001,
+          "usd_high": 0.0005357000000000001
+        }
+      },
+      {
+        "path": "storyscenes/runs/compact_suffix_v1/roof_post/world_suffix.response.json",
+        "world": "roof_post",
+        "phase": "authoring",
+        "stage": "world_suffix",
+        "model": "gpt-5.6-luna",
+        "tier": "flex",
+        "status": "completed",
+        "input": 3761,
+        "output": 575,
+        "cached": 0,
+        "writes": 3758,
+        "reasoning": 47,
+        "cost": {
+          "known": true,
+          "input_tokens": 3761,
+          "cached_input_tokens": 0,
+          "cache_write_tokens": 3758,
+          "output_tokens": 575,
+          "usd_low": 0.00081505,
+          "usd_high": 0.00081505
+        }
+      },
+      {
+        "path": "storyscenes/runs/compact_suffix_v2/roof_post/world_patch_1.response.json",
+        "world": "roof_post",
+        "phase": "authoring",
+        "stage": "world_patch_1",
+        "model": "gpt-5.6-luna",
+        "tier": "flex",
+        "status": "completed",
+        "input": 3484,
+        "output": 625,
+        "cached": 0,
+        "writes": 3481,
+        "reasoning": 89,
+        "cost": {
+          "known": true,
+          "input_tokens": 3484,
+          "cached_input_tokens": 0,
+          "cache_write_tokens": 3481,
+          "output_tokens": 625,
+          "usd_low": 0.0008104249999999999,
+          "usd_high": 0.0008104249999999999
+        }
+      },
+      {
+        "path": "storyscenes/runs/compact_suffix_v2/roof_post/world_patch_2.response.json",
+        "world": "roof_post",
+        "phase": "authoring",
+        "stage": "world_patch_2",
+        "model": "gpt-5.6-luna",
+        "tier": "flex",
+        "status": "completed",
+        "input": 3466,
+        "output": 91,
+        "cached": 0,
+        "writes": 3463,
+        "reasoning": 42,
+        "cost": {
+          "known": true,
+          "input_tokens": 3466,
+          "cached_input_tokens": 0,
+          "cache_write_tokens": 3463,
+          "output_tokens": 91,
+          "usd_low": 0.000487775,
+          "usd_high": 0.000487775
+        }
+      },
+      {
+        "path": "storyscenes/runs/compact_suffix_v2/roof_post/world_patch_3.response.json",
+        "world": "roof_post",
+        "phase": "authoring",
+        "stage": "world_patch_3",
+        "model": "gpt-5.6-luna",
+        "tier": "flex",
+        "status": "completed",
+        "input": 3477,
+        "output": 716,
+        "cached": 0,
+        "writes": 3474,
+        "reasoning": 582,
+        "cost": {
+          "known": true,
+          "input_tokens": 3477,
+          "cached_input_tokens": 0,
+          "cache_write_tokens": 3474,
+          "output_tokens": 716,
+          "usd_low": 0.0008641499999999999,
+          "usd_high": 0.0008641499999999999
+        }
+      }
+    ]
+  },
+  "new_matched_usage": {
+    "authoring": {
+      "requests": 6,
+      "input_tokens": 64438,
+      "output_tokens": 18150,
+      "reasoning_tokens": 6942,
+      "cached_tokens": 1669,
+      "cache_write_tokens": 3338,
+      "cache_write_unknown": 0,
+      "cache_hit_requests": 1,
+      "cached_fraction": 0.025900865948663834,
+      "tiers": {
+        "flex": 6
+      },
+      "usd_low": 0.017267039999999997,
+      "usd_high": 0.017267039999999997,
+      "unpriced": 0
+    },
+    "evaluation": {
+      "requests": 3,
+      "input_tokens": 19309,
+      "output_tokens": 3039,
+      "reasoning_tokens": 0,
+      "cached_tokens": 0,
+      "cache_write_tokens": 0,
+      "cache_write_unknown": 0,
+      "cache_hit_requests": 0,
+      "cached_fraction": 0.0,
+      "tiers": {
+        "flex": 3
+      },
+      "usd_low": 0.037543,
+      "usd_high": 0.037543,
+      "unpriced": 0
+    },
+    "stages": {
+      "response_000": {
+        "requests": 1,
+        "input_tokens": 5583,
+        "output_tokens": 996,
+        "reasoning_tokens": 0,
+        "cached_tokens": 0,
+        "cache_write_tokens": 0,
+        "cache_write_unknown": 0,
+        "cache_hit_requests": 0,
+        "cached_fraction": 0.0,
+        "tiers": {
+          "flex": 1
+        },
+        "usd_low": 0.011559,
+        "usd_high": 0.011559,
+        "unpriced": 0
+      },
+      "response_001": {
+        "requests": 1,
+        "input_tokens": 6880,
+        "output_tokens": 1024,
+        "reasoning_tokens": 0,
+        "cached_tokens": 0,
+        "cache_write_tokens": 0,
+        "cache_write_unknown": 0,
+        "cache_hit_requests": 0,
+        "cached_fraction": 0.0,
+        "tiers": {
+          "flex": 1
+        },
+        "usd_low": 0.013024,
+        "usd_high": 0.013024,
+        "unpriced": 0
+      },
+      "response_002": {
+        "requests": 1,
+        "input_tokens": 6846,
+        "output_tokens": 1019,
+        "reasoning_tokens": 0,
+        "cached_tokens": 0,
+        "cache_write_tokens": 0,
+        "cache_write_unknown": 0,
+        "cache_hit_requests": 0,
+        "cached_fraction": 0.0,
+        "tiers": {
+          "flex": 1
+        },
+        "usd_low": 0.01296,
+        "usd_high": 0.01296,
+        "unpriced": 0
+      },
+      "text_0": {
+        "requests": 3,
+        "input_tokens": 59223,
+        "output_tokens": 5161,
+        "reasoning_tokens": 129,
+        "cached_tokens": 0,
+        "cache_write_tokens": 0,
+        "cache_write_unknown": 0,
+        "cache_hit_requests": 0,
+        "cached_fraction": 0.0,
+        "tiers": {
+          "flex": 3
+        },
+        "usd_low": 0.0090189,
+        "usd_high": 0.0090189,
+        "unpriced": 0
+      },
+      "world_0": {
+        "requests": 3,
+        "input_tokens": 5215,
+        "output_tokens": 12989,
+        "reasoning_tokens": 6813,
+        "cached_tokens": 1669,
+        "cache_write_tokens": 3338,
+        "cache_write_unknown": 0,
+        "cache_hit_requests": 1,
+        "cached_fraction": 0.32003835091083416,
+        "tiers": {
+          "flex": 3
+        },
+        "usd_low": 0.00824814,
+        "usd_high": 0.00824814,
+        "unpriced": 0
+      }
+    },
+    "unanswered_requests": [],
+    "records": [
+      {
+        "path": "storyscenes/runs/compact_cached_v3/library_parade/text_0.response.json",
+        "world": "library_parade",
+        "phase": "authoring",
+        "stage": "text_0",
+        "model": "gpt-5.6-luna",
+        "tier": "flex",
+        "status": "completed",
+        "input": 23346,
+        "output": 1942,
+        "cached": 0,
+        "writes": 0,
+        "reasoning": 40,
+        "cost": {
+          "known": true,
+          "input_tokens": 23346,
+          "cached_input_tokens": 0,
+          "cache_write_tokens": 0,
+          "output_tokens": 1942,
+          "usd_low": 0.0034998000000000004,
+          "usd_high": 0.0034998000000000004
+        }
+      },
+      {
+        "path": "storyscenes/runs/compact_cached_v3/library_parade/world_0.response.json",
+        "world": "library_parade",
+        "phase": "authoring",
+        "stage": "world_0",
+        "model": "gpt-5.6-luna",
+        "tier": "flex",
+        "status": "completed",
+        "input": 1739,
+        "output": 4310,
+        "cached": 0,
+        "writes": 1669,
+        "reasoning": 2001,
+        "cost": {
+          "known": true,
+          "input_tokens": 1739,
+          "cached_input_tokens": 0,
+          "cache_write_tokens": 1669,
+          "output_tokens": 4310,
+          "usd_low": 0.002801625,
+          "usd_high": 0.002801625
+        }
+      },
+      {
+        "path": "storyscenes/runs/compact_cached_v3/pond_concert/text_0.response.json",
+        "world": "pond_concert",
+        "phase": "authoring",
+        "stage": "text_0",
+        "model": "gpt-5.6-luna",
+        "tier": "flex",
+        "status": "completed",
+        "input": 15712,
+        "output": 1485,
+        "cached": 0,
+        "writes": 0,
+        "reasoning": 39,
+        "cost": {
+          "known": true,
+          "input_tokens": 15712,
+          "cached_input_tokens": 0,
+          "cache_write_tokens": 0,
+          "output_tokens": 1485,
+          "usd_low": 0.0024622,
+          "usd_high": 0.0024622
+        }
+      },
+      {
+        "path": "storyscenes/runs/compact_cached_v3/pond_concert/world_0.response.json",
+        "world": "pond_concert",
+        "phase": "authoring",
+        "stage": "world_0",
+        "model": "gpt-5.6-luna",
+        "tier": "flex",
+        "status": "completed",
+        "input": 1737,
+        "output": 4668,
+        "cached": 1669,
+        "writes": 0,
+        "reasoning": 2742,
+        "cost": {
+          "known": true,
+          "input_tokens": 1737,
+          "cached_input_tokens": 1669,
+          "cache_write_tokens": 0,
+          "output_tokens": 4668,
+          "usd_low": 0.0028242899999999997,
+          "usd_high": 0.0028242899999999997
+        }
+      },
+      {
+        "path": "storyscenes/runs/compact_cached_v3/quality/response_000.json",
+        "world": "roof_post",
+        "phase": "evaluation",
+        "stage": "response_000",
+        "model": "gpt-5.6-terra",
+        "tier": "flex",
+        "status": "completed",
+        "input": 5583,
+        "output": 996,
+        "cached": 0,
+        "writes": 0,
+        "reasoning": 0,
+        "cost": {
+          "known": true,
+          "input_tokens": 5583,
+          "cached_input_tokens": 0,
+          "cache_write_tokens": 0,
+          "output_tokens": 996,
+          "usd_low": 0.011559,
+          "usd_high": 0.011559
+        }
+      },
+      {
+        "path": "storyscenes/runs/compact_cached_v3/quality/response_001.json",
+        "world": "library_parade",
+        "phase": "evaluation",
+        "stage": "response_001",
+        "model": "gpt-5.6-terra",
+        "tier": "flex",
+        "status": "completed",
+        "input": 6880,
+        "output": 1024,
+        "cached": 0,
+        "writes": 0,
+        "reasoning": 0,
+        "cost": {
+          "known": true,
+          "input_tokens": 6880,
+          "cached_input_tokens": 0,
+          "cache_write_tokens": 0,
+          "output_tokens": 1024,
+          "usd_low": 0.013024,
+          "usd_high": 0.013024
+        }
+      },
+      {
+        "path": "storyscenes/runs/compact_cached_v3/quality/response_002.json",
+        "world": "pond_concert",
+        "phase": "evaluation",
+        "stage": "response_002",
+        "model": "gpt-5.6-terra",
+        "tier": "flex",
+        "status": "completed",
+        "input": 6846,
+        "output": 1019,
+        "cached": 0,
+        "writes": 0,
+        "reasoning": 0,
+        "cost": {
+          "known": true,
+          "input_tokens": 6846,
+          "cached_input_tokens": 0,
+          "cache_write_tokens": 0,
+          "output_tokens": 1019,
+          "usd_low": 0.01296,
+          "usd_high": 0.01296
+        }
+      },
+      {
+        "path": "storyscenes/runs/compact_cached_v3/roof_post/text_0.response.json",
+        "world": "roof_post",
+        "phase": "authoring",
+        "stage": "text_0",
+        "model": "gpt-5.6-luna",
+        "tier": "flex",
+        "status": "completed",
+        "input": 20165,
+        "output": 1734,
+        "cached": 0,
+        "writes": 0,
+        "reasoning": 50,
+        "cost": {
+          "known": true,
+          "input_tokens": 20165,
+          "cached_input_tokens": 0,
+          "cache_write_tokens": 0,
+          "output_tokens": 1734,
+          "usd_low": 0.0030568999999999995,
+          "usd_high": 0.0030568999999999995
+        }
+      },
+      {
+        "path": "storyscenes/runs/compact_cached_v3/roof_post/world_0.response.json",
+        "world": "roof_post",
+        "phase": "authoring",
+        "stage": "world_0",
+        "model": "gpt-5.6-luna",
+        "tier": "flex",
+        "status": "completed",
+        "input": 1739,
+        "output": 4011,
+        "cached": 0,
+        "writes": 1669,
+        "reasoning": 2070,
+        "cost": {
+          "known": true,
+          "input_tokens": 1739,
+          "cached_input_tokens": 0,
+          "cache_write_tokens": 1669,
+          "output_tokens": 4011,
+          "usd_low": 0.0026222249999999997,
+          "usd_high": 0.0026222249999999997
+        }
+      }
+    ]
+  },
+  "matched_attempted_worlds": [
+    "library_parade",
+    "pond_concert",
+    "roof_post"
+  ],
+  "new_quality": {
+    "worlds": 8,
+    "stories": 80,
+    "scores": {
+      "coherence": 7.1875,
+      "style": 6.6625,
+      "grammar": 8.2625,
+      "storytelling": 7.1625,
+      "overall": 7.1875
+    },
+    "diversity": 2.375,
+    "stories_below_six": 11
+  },
+  "matched_quality_worlds": [
+    "library_parade",
+    "pond_concert"
+  ],
+  "old_matched_quality": {
+    "worlds": 2,
+    "stories": 20,
+    "scores": {
+      "coherence": 7.75,
+      "style": 7,
+      "grammar": 8.5,
+      "storytelling": 7.8,
+      "overall": 7.75
+    },
+    "diversity": 3.5,
+    "stories_below_six": 0
+  },
+  "new_matched_quality": {
+    "worlds": 2,
+    "stories": 20,
+    "scores": {
+      "coherence": 7.95,
+      "style": 7,
+      "grammar": 8.5,
+      "storytelling": 8,
+      "overall": 7.95
+    },
+    "diversity": 3,
+    "stories_below_six": 0
+  },
+  "failures": [
+    {
+      "world": "kite_workshop",
+      "ok": false,
+      "error": "world_0: Connection error."
+    },
+    {
+      "world": "puppet_weather",
+      "ok": false,
+      "error": "Compact mechanics repair budget exhausted"
+    }
+  ],
+  "world_ratings": {
+    "roof_post": {
+      "rating": {
+        "coherence": 7,
+        "style": 7,
+        "grammar": 8,
+        "storytelling": 7,
+        "overall": 7
+      },
+      "diversity": {
+        "premise": 2,
+        "causal_path": 2,
+        "ending": 2,
+        "language": 3,
+        "overall": 2
+      }
+    },
+    "library_parade": {
+      "rating": {
+        "coherence": 8,
+        "style": 7,
+        "grammar": 9,
+        "storytelling": 8,
+        "overall": 8
+      },
+      "diversity": {
+        "premise": 3,
+        "causal_path": 3,
+        "ending": 3,
+        "language": 3,
+        "overall": 3
+      }
+    },
+    "pond_concert": {
+      "rating": {
+        "coherence": 7.9,
+        "style": 7,
+        "grammar": 8,
+        "storytelling": 8,
+        "overall": 7.9
+      },
+      "diversity": {
+        "premise": 3,
+        "causal_path": 4,
+        "ending": 3,
+        "language": 3,
+        "overall": 3
+      }
+    },
+    "night_garden": {
+      "rating": {
+        "coherence": 7.3,
+        "style": 7,
+        "grammar": 8,
+        "storytelling": 7.1,
+        "overall": 7.1
+      },
+      "diversity": {
+        "premise": 3,
+        "causal_path": 3,
+        "ending": 3,
+        "language": 4,
+        "overall": 3
+      }
+    },
+    "bakery_exchange": {
+      "rating": {
+        "coherence": 7,
+        "style": 6.8,
+        "grammar": 9,
+        "storytelling": 6.9,
+        "overall": 7.2
+      },
+      "diversity": {
+        "premise": 2,
+        "causal_path": 2,
+        "ending": 2,
+        "language": 3,
+        "overall": 2
+      }
+    },
+    "museum_of_small_things": {
+      "rating": {
+        "coherence": 8,
+        "style": 7,
+        "grammar": 9,
+        "storytelling": 8,
+        "overall": 8
+      },
+      "diversity": {
+        "premise": 2,
+        "causal_path": 2,
+        "ending": 2,
+        "language": 3,
+        "overall": 2
+      }
+    },
+    "hill_picnic": {
+      "rating": {
+        "coherence": 7.4,
+        "style": 6.4,
+        "grammar": 8,
+        "storytelling": 7.4,
+        "overall": 7.4
+      },
+      "diversity": {
+        "premise": 2,
+        "causal_path": 2,
+        "ending": 2,
+        "language": 3,
+        "overall": 2
+      }
+    },
+    "clocktower_club": {
+      "rating": {
+        "coherence": 4.9,
+        "style": 5.1,
+        "grammar": 7.1,
+        "storytelling": 4.9,
+        "overall": 4.9
+      },
+      "diversity": {
+        "premise": 2,
+        "causal_path": 3,
+        "ending": 2,
+        "language": 3,
+        "overall": 2
+      }
+    }
+  }
+}

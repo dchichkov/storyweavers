@@ -19,6 +19,7 @@ import shutil
 import sys
 import tempfile
 import time
+from api_requests import sdk_kwargs
 
 ROOT = Path(__file__).resolve().parent
 sys.path.insert(0, str(ROOT / "evaluation"))
@@ -131,7 +132,7 @@ async def api_artifact(client, budget, directory, stage, body):
         index = budget.reserve(f"{directory.name}/{stage}", body)
         save(req_path, body)
         started = time.monotonic()
-        result = await client.responses.create(**body)
+        result = await client.responses.create(**sdk_kwargs(body))
         response = result.model_dump(mode="json")
         save(response_path, response)
         budget.settle(index, response)
@@ -289,7 +290,7 @@ async def main_async(args):
     return int(any(not r["ok"] for r in results))
 
 
-async def evaluate(out, budget, concurrency):
+async def evaluate(out, budget, concurrency, *, cache_prompts=False):
     inputs = []
     for row in json.loads((out / "summary.json").read_text()):
         if row["ok"]:
@@ -309,8 +310,8 @@ async def evaluate(out, budget, concurrency):
         raise ValueError("Existing evaluation is incomplete; inspect paid outcomes before retrying")
     # Reserve every evaluation request before dispatch. Use exact copied
     # protocol, model, calibration, random sampling and strict response checks.
-    reservations = [budget.reserve("judge/" + i["script"], quality.request_body(i)) for i in inputs]
-    rows = await quality.run_sets(inputs, destination, concurrency=concurrency)
+    reservations = [budget.reserve("judge/" + i["script"], quality.request_body(i, cache_prompts=cache_prompts)) for i in inputs]
+    rows = await quality.run_sets(inputs, destination, concurrency=concurrency, cache_prompts=cache_prompts)
     for index, row in zip(reservations, rows):
         if row.get("response"):
             budget.settle(index, row["response"])

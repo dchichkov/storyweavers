@@ -11,6 +11,26 @@ selection weight, and the library derives knowledge/loan bookkeeping and named
 prose slots. It avoids asking Luna to write both a prose plan and Python mechanics.
 See [AUTHORING_COMPACT.md](AUTHORING_COMPACT.md) for the executable format.
 
+[Conversational QA](CONVERSATIONAL_QA.md) adds questions, remembered follow-ups,
+timed evidence and draft chat export over saved worlds. Use `run.py ... --qa`
+or `qa.py ... --interactive`. It runs offline and leaves story generation alone.
+
+[Training export](EXPORTING.md) converts frozen batches into the existing chat
+dataset format, preserving complete follow-up chains and checking exact context
+lengths and loss masks with the production tokenizer and training loader.
+Candidate and judge-screened exports remain separate; the report measures
+story repetition, answer supervision, and remaining semantic acceptance gaps.
+New exports include branch-specific starting conditions in the request; see
+[two complete prompt/response examples](examples/branch_prompts_v1/examples.md).
+The historical generic-prompt export remains unchanged.
+
+The [100-world trial](runs/worlds_100_v1/REPORT.md) produced 100 independent
+generators from 131 attempts and graded three stories per world. Story quality
+was **7.18/9**, below the earlier two-world 7.75 pilot; conversational QA was
+**6.43/9** across 1,800 conversations. Returned API cost was **$2.65**, with
+another **$0.17** conservatively reserved for missing usage. All returned calls
+used Flex. The report includes per-theme results, manual examples and costs.
+
 ## Run a saved world
 
 From the repository root (Python 3.10+):
@@ -27,6 +47,46 @@ freezes its shared modules in `_runtime/`; `run.py` automatically uses that copy
 The original prototype remains reproducible with the compatible default API.
 
 ## Author a batch
+
+For richer design seeds, [the classic/kernel mixer](SEED_MIXER.md) samples ten
+lists of references, motives, kernels, themes, cast, settings, props,
+complications, styles, and possible endings. Use `compact_workshop.py
+--seed-source mix` for a trial; the old theater baseline remains available.
+
+For 100 independent compact worlds with three uniformly selected stories graded
+per world, including a separate conversation/dialogue evaluation:
+
+```bash
+python storyscenes/world_batch.py --out storyscenes/runs/my_100_worlds \
+  --campaign storyscenes/improvements/20260908 --api-key-file .API_KEY
+python storyscenes/world_batch_analysis.py storyscenes/runs/my_100_worlds
+```
+
+After the original process exits, resume paused work with the quota scheduler:
+
+```bash
+python storyscenes/world_batch_continue.py --out storyscenes/runs/my_100_worlds \
+  --api-key-file .API_KEY
+```
+
+It reuses completed responses and quarantines uncertain/capped authoring drafts
+before trying the next predeclared seed. After all authoring exits, the separate
+`world_batch_retry_judges.py --out ... --api-key-file .API_KEY` command can recover
+explicitly rejected 429 judge requests; it never replaces valid grades. Finish
+with `world_batch_report.py storyscenes/runs/my_100_worlds`, which requires full
+world and evaluation coverage before writing the report.
+
+This targets ten mechanically accepted generators per each of the ten themes.
+Up to 40 predeclared seeds per theme allow bounded replacement of failed
+authoring attempts. All attempts and costs remain in the report; literary scores
+never select replacements. Each accepted generator produces a 100-story local
+pool, and exactly three uniform positions are graded without deduplication.
+The original `cache-only` authoring prompts and quality rubrics are preserved.
+Sampling and conversational QA generation make no API calls. The shared $15
+campaign limit still applies, including outstanding uncertain requests. A
+transport/paid-stage failure halts that theme for inspection rather than silently
+retrying; `STOP` prevents new dispatches. Resume requires identical frozen source
+and settings. Use one process per campaign ledger.
 
 Install `requirements-authoring.txt`, then:
 
@@ -141,9 +201,10 @@ python storyscenes/verify.py --run storyscenes/runs/my_trial
 ```
 
 The verifier replays pinned examples and samples 100 fresh seeds per world.
-Mechanical QA exposes state changes and causal dependencies; it is not polished
-conversational QA for children. The judge sees stories, not traces, so its scores
-also need manual scrutiny.
+The original mechanical QA still exposes state changes and causal dependencies.
+The optional conversational layer adds full answers and follow-ups; it uses a
+bounded interpreter with explicit abstention. The story judge sees stories, not
+traces, and conversational QA needs separate semantic alignment review.
 
 Historical files: `factory.py`, `recover.py`, and `finalize.py` preserve the old
 prototype tooling. `factory.py` no longer invokes Terra recovery implicitly.

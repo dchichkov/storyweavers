@@ -274,7 +274,8 @@ def realize(result, render, prose_seed=0):
     valid_ids = {e["id"] for e in result["events"]}
     covered = set()
     for p in paragraphs:
-        if set(p) not in ({"text", "event_ids", "kind"}, {"text", "event_ids", "kind", "facts"}) or not isinstance(p["text"], str) or not p["text"].strip():
+        if (not {"text", "event_ids", "kind"} <= set(p) or set(p) - {"text", "event_ids", "kind", "facts", "dialogue"}
+                or not isinstance(p["text"], str) or not p["text"].strip()):
             raise StoryError("Invalid paragraph")
         if p["kind"] not in ("beginning", "scene", "ending") or not isinstance(p["event_ids"], list):
             raise StoryError("Invalid paragraph kind or evidence")
@@ -294,6 +295,9 @@ def realize(result, render, prose_seed=0):
                 raise StoryError(f"Contradicted prose fact: {fact}")
     if covered != valid_ids or result["events"][-1]["id"] not in paragraphs[-1]["event_ids"]:
         raise StoryError("Unnarrated events or ungrounded ending")
+    if any('dialogue' in p for p in paragraphs):
+        from dialogue import collect_dialogue
+        collect_dialogue(result, paragraphs)
     story = "\n\n".join(p["text"].strip() for p in paragraphs)
     return dict(seed=result["seed"], prose_seed=prose_seed, title=result["title"], story=story,
                 paragraphs=paragraphs, trace=deepcopy(result), qa=qa_from_trace(result))

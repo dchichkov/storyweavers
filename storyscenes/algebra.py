@@ -323,7 +323,15 @@ def patch_world(document, patch):
         seen.add((section, key))
         if section in {'entities', 'kernels', 'compose', 'vary', 'rules'}:
             if not IDENT.fullmatch(key): raise StoryError("Invalid named patch target")
-            updated.setdefault(section, {})[key] = deepcopy(edit['value'])
+            if edit['value'] is None:
+                # None was never a valid named definition. Explicit deletion
+                # permits small repairs of erroneous duplicate kernels without
+                # requiring the model to rewrite an entire world.
+                if key not in updated.get(section, {}):
+                    raise StoryError(f'Cannot remove missing component {section}/{key}')
+                del updated[section][key]
+            else:
+                updated.setdefault(section, {})[key] = deepcopy(edit['value'])
         elif section in {'goal', 'premises', 'outcomes'} and key == section:
             updated[section] = deepcopy(edit['value'])
         else:
