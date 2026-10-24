@@ -1,5 +1,37 @@
 # StoryScenes Run Archives
 
+## October 24 Negative-Result Checkpoint
+
+`storyscenes_experiments_20261024.tar.gz` preserves the older capability and
+long-scene experiments discussed in [the retrospective](../EXPERIMENT_RETROSPECTIVE.md).
+It contains 89 run directories plus the capability implementation evidence:
+10,693 files, 440,309,057 original bytes, compressed to 64,882,041 bytes.
+Every archive member was read back and matched by SHA-256 and size to the
+snapshot manifest and unchanged local source. The adjacent verification JSON
+lists all roots, totals, and the archive checksum.
+
+Included evidence covers the capability conformance/prose passes, paired
+judging, harbor goal/composition/trade-off/question/favor experiments,
+greenhouse and theater replication, finite-space audits, and the literary
+calibration diagnostic. Failed, partial, and unjudged runs are preserved, along
+with requests, responses, budget records, and frozen sources where saved.
+Markdown reports remain directly tracked; raw files are archived once with
+Git LFS and ignored locally. Current source and tests remain ordinary Git files.
+
+Restore from the repository root without overwriting existing files:
+
+```bash
+git lfs pull --include='storyscenes/run_archives/storyscenes_experiments_20261024.tar.gz'
+shasum -a 256 -c storyscenes/run_archives/storyscenes_experiments_20261024.tar.gz.sha256
+tar -xkzf storyscenes/run_archives/storyscenes_experiments_20261024.tar.gz storyscenes/runs storyscenes/design/capabilities_20261021/implementation
+```
+
+`tar -k` may report existing tracked reports; it leaves them untouched. The
+archive's root `ARCHIVE_MANIFEST.json` supplies per-file checksums. Restoring
+does not launch API requests. No local run was removed by this checkpoint.
+
+## October 21 Snapshot
+
 `storyscenes_runs_20261021.tar.gz` preserves the nine previously uncommitted
 StoryScenes run directories below, including generated worlds, samples, saved
 API requests/responses, evaluation results, and frozen authoring/runtime code.

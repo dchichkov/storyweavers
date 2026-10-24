@@ -1,0 +1,386 @@
+{
+  "schema_version": 1,
+  "purpose": "Observed offline legacy replays protecting the opt-in capabilities boundary. Tests read these constants and never regenerate them.",
+  "serialization": "SHA-256 of UTF-8 json.dumps(value, sort_keys=True, ensure_ascii=False, separators=(comma, colon), allow_nan=False). Array order and all fields are preserved.",
+  "surfaces": {
+    "trace_sha256": "Entire trace including entities, initial/final state, every event and before/after/changes/guards/causes, search diagnostics, goals, labels, pruning, premises, outcomes and engine marker. Independently computed, not the runtime-supplied checksum.",
+    "prose_sha256": "Title, prose_seed, complete story string and all paragraph records including facts, time/event references and any dialogue annotations.",
+    "qa_sha256": "Complete legacy realization QA list including exact question/answer text, order, event_ids and cause_ids.",
+    "row_sha256": "Entire returned JSON row including all trace, prose, QA and metadata fields."
+  },
+  "profiles": {
+    "frozen": "Captured from each tracked run sibling _runtime/run.py in a fresh subprocess; public run.py must dispatch to this exact behavior.",
+    "current": "Captured independently from storyscenes/worker.py against the same unchanged legacy fixtures. Kept separate because current prose may add dialogue annotations absent in the frozen renderer."
+  },
+  "limits": [
+    "These are compatibility pins, not claims that legacy semantics satisfy new capability contracts or that old QA is literary/reader-grounded quality.",
+    "QA here is the complete runtime.realize qa_from_trace output; --qa conversational augmentation is a separate opt-in surface and is not claimed covered.",
+    "No fixture migration, runtime mutation, network service, paid evaluation or automatic baseline rewrite is involved."
+  ],
+  "capture_commands": [
+    "python3 -B storyscenes/runs/<run>/_runtime/run.py storyscenes/runs/<run>/<world> --seed <seed> --json [--prose-seed 777]",
+    "python3 -B storyscenes/worker.py storyscenes/runs/<run>/<world> --seeds <seed> --prose [--prose-seed 777]"
+  ],
+  "fixtures": [
+    {
+      "world": "runs/compact_algebra_v2/library_parade",
+      "semantic_surfaces": [
+        "DiscoverAndShare expands into namespaced Observe and Tell scenes; copied knowledge gates later action.",
+        "Lend changes legacy cart.owner and cart.loaned_by; Move changes only the prop location, not actor travel.",
+        "Weather, cart repair and recipient preference select quiet or welcoming delivery; pruning retains pivotal actions."
+      ],
+      "cases": [
+        {
+          "seed": 0,
+          "prose_seed": null,
+          "frozen": {
+            "trace_sha256": "f9cfb138e3a20b44dbbba6bbb183adbc31bd129596fd718da80b5ee4b8c21e04",
+            "prose_sha256": "0bc780b883762548c3d76986c26bb704b87863d70d1846bc146add388f563ec8",
+            "qa_sha256": "0975eeef9e526038211ab9e8991d4bf3bcbc9ff68db9428fe6206375448bdc3e",
+            "row_sha256": "d03f3a8b3e4da305956cfab70c87f9bc87416b5b344acf91ab570f876c9a7860"
+          },
+          "current": {
+            "trace_sha256": "f9cfb138e3a20b44dbbba6bbb183adbc31bd129596fd718da80b5ee4b8c21e04",
+            "prose_sha256": "45cfd0b8b6ef6cda8beb4c4218112ad10d61405eceb5af6c6f79d65eddf906aa",
+            "qa_sha256": "0975eeef9e526038211ab9e8991d4bf3bcbc9ff68db9428fe6206375448bdc3e",
+            "row_sha256": "ad43476131bd634d5a4b5edeaef3b7385361dd31506a49bbf17be57a316931c4"
+          }
+        },
+        {
+          "seed": 1,
+          "prose_seed": null,
+          "frozen": {
+            "trace_sha256": "02fc08e1ab33c3a3eaa4baa0fa00bcb2eabebf2c425ac5bda4b2b9dc0a9cb9c9",
+            "prose_sha256": "536a5b73664650ac819bbf6e9feea46b3726beb1f85d2b7ecd53e306eb5f846f",
+            "qa_sha256": "6ab5924b060f42901fc929ec3af53ee5f5246eb20d769679fdcc9de837e0896f",
+            "row_sha256": "ee654f9cbd3a22de6a5db02fc5e2e0175602dd60e5240a6002d119e31fed5848"
+          },
+          "current": {
+            "trace_sha256": "02fc08e1ab33c3a3eaa4baa0fa00bcb2eabebf2c425ac5bda4b2b9dc0a9cb9c9",
+            "prose_sha256": "ef4560431933237cc98e645b21fd2ec6b452b092e52bcdfaa3919e2e8f0af296",
+            "qa_sha256": "6ab5924b060f42901fc929ec3af53ee5f5246eb20d769679fdcc9de837e0896f",
+            "row_sha256": "42dcd5d554ecefd929773e37a680ab8137f9618a64effe2422d2b8927d7421fc"
+          }
+        },
+        {
+          "seed": 5,
+          "prose_seed": null,
+          "frozen": {
+            "trace_sha256": "47176034340f6f4937ac066ee8d520e3b97d84f96a44b12bdcfb61be732424cb",
+            "prose_sha256": "d921f0a15832cc0b07e56bcf0613ab9f71f0cb15b20b026d34a187c8c404067e",
+            "qa_sha256": "52668ff8d2f8f9083313bcc1c419f8b639907ccfffa3316ba6294002795cd5e3",
+            "row_sha256": "e5906fad6a6f7e8e1236cf0aa56273c82541614f0d0ce6c66d632efa729be900"
+          },
+          "current": {
+            "trace_sha256": "47176034340f6f4937ac066ee8d520e3b97d84f96a44b12bdcfb61be732424cb",
+            "prose_sha256": "06f0643b7be1299149ef6a82338180dd349fe138d425dbd06981e891b4b47473",
+            "qa_sha256": "52668ff8d2f8f9083313bcc1c419f8b639907ccfffa3316ba6294002795cd5e3",
+            "row_sha256": "6f5ee63c34016edb6323e8af9dc3096bc86f6670ff77b5a46b00490cec807a02"
+          }
+        },
+        {
+          "seed": 777,
+          "prose_seed": null,
+          "frozen": {
+            "trace_sha256": "45cb996cf48b6845c1658e3b2eb6f2b86dc7b09aab40757ed7c40d9748cd60df",
+            "prose_sha256": "993cfec01d9b7d4adf408dd8b530911763d563965766ceb78f323760f27f2faa",
+            "qa_sha256": "34958975f366564f80c8ef6ae2c15aded8ffc32f715bbd6a4eb947ee3084c7e0",
+            "row_sha256": "55a91e9a85117dd696bb16068fdbbba126cd8ed9d709498d9eecd97a1fedc1ac"
+          },
+          "current": {
+            "trace_sha256": "45cb996cf48b6845c1658e3b2eb6f2b86dc7b09aab40757ed7c40d9748cd60df",
+            "prose_sha256": "8bcb9fa88320b76fad977c1d04e939060c482beeea5af94b97461f3c3d310a25",
+            "qa_sha256": "34958975f366564f80c8ef6ae2c15aded8ffc32f715bbd6a4eb947ee3084c7e0",
+            "row_sha256": "f9a194d333e7b1a51ca26c6536c189796148ecb4e7148f797cdd6195dba031fb"
+          }
+        },
+        {
+          "seed": 0,
+          "prose_seed": 777,
+          "frozen": {
+            "trace_sha256": "f9cfb138e3a20b44dbbba6bbb183adbc31bd129596fd718da80b5ee4b8c21e04",
+            "prose_sha256": "10d9ae41a4c233d6a332844e0b375736bf95a6066b36fe75cf10a9043c610537",
+            "qa_sha256": "0975eeef9e526038211ab9e8991d4bf3bcbc9ff68db9428fe6206375448bdc3e",
+            "row_sha256": "0ef6586ea3db6d0b4f79368bc43d354d494e18f5bf06adb3ee4b6ba52c267151"
+          },
+          "current": {
+            "trace_sha256": "f9cfb138e3a20b44dbbba6bbb183adbc31bd129596fd718da80b5ee4b8c21e04",
+            "prose_sha256": "6f0364f57c88ba897e8799f0bbd4e48bdf4333afbec47d50c8ef2c96fd4d6fef",
+            "qa_sha256": "0975eeef9e526038211ab9e8991d4bf3bcbc9ff68db9428fe6206375448bdc3e",
+            "row_sha256": "e9c6f54be88bb44f8161df36f524b5090a5382005ea5837c6808e565591bc34d"
+          }
+        }
+      ]
+    },
+    {
+      "world": "runs/compact_algebra_v2/pond_concert",
+      "semantic_surfaces": [
+        "Observation and communication share weather and listener preference through scalar knowledge slots.",
+        "Invitation movement, separate actor walking and owner transfer precede delivery flags.",
+        "Still/breezy and quiet/join premises select distinct performances, anchoring and responses; unused scenes are pruned."
+      ],
+      "cases": [
+        {
+          "seed": 0,
+          "prose_seed": null,
+          "frozen": {
+            "trace_sha256": "9058c88ab619270b81aedb6d79c93c3035d5a3978ae107084ab1058deb5aa5b7",
+            "prose_sha256": "8329d8b25e9f9c6d4d3bac3df5cd41fe051255d2aa51f03a2479cea1b781a671",
+            "qa_sha256": "04879298620c3492f753cce5d2b6d5f1c17ef7a18eedda826d69cf664c511b3a",
+            "row_sha256": "30443f19f36fa9a82c51b504f4b26bb790c18744bed3e427a4c3e70ab5acdd5a"
+          },
+          "current": {
+            "trace_sha256": "9058c88ab619270b81aedb6d79c93c3035d5a3978ae107084ab1058deb5aa5b7",
+            "prose_sha256": "268b9a545e513d44e06ca40d4d52d48ff4e12525e06750f531d510ba59134568",
+            "qa_sha256": "04879298620c3492f753cce5d2b6d5f1c17ef7a18eedda826d69cf664c511b3a",
+            "row_sha256": "f09bd89ba8cf862ac2673ff9e02951aa74d220eccc9127cf5f48d4204c84d29d"
+          }
+        },
+        {
+          "seed": 1,
+          "prose_seed": null,
+          "frozen": {
+            "trace_sha256": "27016ab885cb97953f3fc311101db8d15dcea18862442ab9503985c76f925974",
+            "prose_sha256": "bbcde85250c55eebcbbf3a9e76395cfd4a890b0708e1111c2bc3cbb5338ab53e",
+            "qa_sha256": "b431c275ed5ec65ee23e0d8e9726e48e9969d15744d917a3331497a9d9dc0531",
+            "row_sha256": "a62ecc19c6d21df905f6e066bfacb43fce358d9dbf6ae579eae66b853afed9b9"
+          },
+          "current": {
+            "trace_sha256": "27016ab885cb97953f3fc311101db8d15dcea18862442ab9503985c76f925974",
+            "prose_sha256": "580292372ed15a22341dd5859cb68defc8c151391a6af48c0964effa80c25279",
+            "qa_sha256": "b431c275ed5ec65ee23e0d8e9726e48e9969d15744d917a3331497a9d9dc0531",
+            "row_sha256": "6e5d03060c63c10476c361187150b3d42f4c86093ab875631a6edbeef1e94092"
+          }
+        },
+        {
+          "seed": 5,
+          "prose_seed": null,
+          "frozen": {
+            "trace_sha256": "fb753005b31833dd5f46152f96b682e168aa8dcd2af646d1dd0c5f4955daee46",
+            "prose_sha256": "baf7f088597b7e75a5d8031ab946ffd8bc31dbfb4331e655708da5a7091d7b5d",
+            "qa_sha256": "a3efeeb5d3189a0b893ed2084a2164ce32525670d2cd11e9a783304c00159650",
+            "row_sha256": "e4d5ed3307701d2947d5157ee94bc0a180175661383ab41c583c03868baddc61"
+          },
+          "current": {
+            "trace_sha256": "fb753005b31833dd5f46152f96b682e168aa8dcd2af646d1dd0c5f4955daee46",
+            "prose_sha256": "1c0546f7b314635898ecde96394f4a868b0635a180f8173932c65261a31e9fff",
+            "qa_sha256": "a3efeeb5d3189a0b893ed2084a2164ce32525670d2cd11e9a783304c00159650",
+            "row_sha256": "fccb6cd93c0e57706380cad9a23fd181143991b708717d693a04a87ea6db74f3"
+          }
+        },
+        {
+          "seed": 777,
+          "prose_seed": null,
+          "frozen": {
+            "trace_sha256": "d86cacd70f6f3cee406de4a0876032f3ffabb44625bd46c07a0d5c9b83ddfbe4",
+            "prose_sha256": "2264fc4412553b88edccea7907f330b2fbda43da43353faf4066869cdcbeeca5",
+            "qa_sha256": "183ee9f0a97161cfc372846430d40de062a208e31281f213b679ee9db5e310d7",
+            "row_sha256": "41c7aae2c9499fef61816775c1f09cf2e4ad0a3754842bbf3a74a645eac9317f"
+          },
+          "current": {
+            "trace_sha256": "d86cacd70f6f3cee406de4a0876032f3ffabb44625bd46c07a0d5c9b83ddfbe4",
+            "prose_sha256": "18575ccaa5160df8b322647a4dd07994ededaa9e05de855f41b6b38c34fdaebb",
+            "qa_sha256": "183ee9f0a97161cfc372846430d40de062a208e31281f213b679ee9db5e310d7",
+            "row_sha256": "271d320d3425f27ff770f73585e2e5ce2d4b823e24a010bdf2b58f12c9e812d7"
+          }
+        },
+        {
+          "seed": 0,
+          "prose_seed": 777,
+          "frozen": {
+            "trace_sha256": "9058c88ab619270b81aedb6d79c93c3035d5a3978ae107084ab1058deb5aa5b7",
+            "prose_sha256": "029ea24f764a3e02ae27225a2aad3156eca7f20a9270197f59570802a4764ea7",
+            "qa_sha256": "04879298620c3492f753cce5d2b6d5f1c17ef7a18eedda826d69cf664c511b3a",
+            "row_sha256": "cbe4129a87bdb9bcd187c2c408e1e13bf45220fdf2446669687c2d43f739e5dd"
+          },
+          "current": {
+            "trace_sha256": "9058c88ab619270b81aedb6d79c93c3035d5a3978ae107084ab1058deb5aa5b7",
+            "prose_sha256": "639ef8b994d193a508a5f990bb3a04221d7deb1ad4e86b1197bbb532f403f84a",
+            "qa_sha256": "04879298620c3492f753cce5d2b6d5f1c17ef7a18eedda826d69cf664c511b3a",
+            "row_sha256": "a8b9328333c7c0c352015b5863046be5b6dfaa330cc2efaa7b8402cd5d670de9"
+          }
+        }
+      ]
+    },
+    {
+      "world": "runs/improvement_luna_v6/library_parade",
+      "semantic_surfaces": [
+        "Authored Python WorldSpec initialization and weighted search retain owner/location and knowledge-copy semantics.",
+        "The same cart supports float, bookmobile and reading-room outcomes with different performers and preparation chains.",
+        "Legacy Transfer, copy/set effects, causal dependencies, pivotal scenes and pruned path replay remain unchanged."
+      ],
+      "cases": [
+        {
+          "seed": 0,
+          "prose_seed": null,
+          "frozen": {
+            "trace_sha256": "814a607800d536883b6f8f98b29756ad51b8db9dc7ac1451c62b91b8cec1f8c9",
+            "prose_sha256": "84e16d7a0d4134ecb60d81c60b93d67fd2d08eebb4debf2d99d498725553d09f",
+            "qa_sha256": "097df07b6474bbd197bfa755c3aec8307e1b77a73467260c33d6e3cf3ed8a6de",
+            "row_sha256": "3d0a911fb7fcf88dc0073598b8ebb268c229607410f4c7bd8064f12455bf5ee4"
+          },
+          "current": {
+            "trace_sha256": "814a607800d536883b6f8f98b29756ad51b8db9dc7ac1451c62b91b8cec1f8c9",
+            "prose_sha256": "84e16d7a0d4134ecb60d81c60b93d67fd2d08eebb4debf2d99d498725553d09f",
+            "qa_sha256": "097df07b6474bbd197bfa755c3aec8307e1b77a73467260c33d6e3cf3ed8a6de",
+            "row_sha256": "3d0a911fb7fcf88dc0073598b8ebb268c229607410f4c7bd8064f12455bf5ee4"
+          }
+        },
+        {
+          "seed": 1,
+          "prose_seed": null,
+          "frozen": {
+            "trace_sha256": "8f4b32abee6d5fd19d90915d7223f9f578f6ee8f37325f99e4f9e407d6bdbba0",
+            "prose_sha256": "80cbe0ac29de43d8fd6c61da37db3ab74b2e85431ae3fa79541a61d23cd9d4ad",
+            "qa_sha256": "e3b0de409551df94db274cdbfd1bba6efc45b10ace4bb264f6b3669d51786a02",
+            "row_sha256": "65262badc7fb2b3c186ab66b12528e2d8883437dc97419d9027cad775d8b475d"
+          },
+          "current": {
+            "trace_sha256": "8f4b32abee6d5fd19d90915d7223f9f578f6ee8f37325f99e4f9e407d6bdbba0",
+            "prose_sha256": "b7ea66f04c6954b9ecff40df2d49cfba3dac309565d86f9be209a980025c8dc9",
+            "qa_sha256": "e3b0de409551df94db274cdbfd1bba6efc45b10ace4bb264f6b3669d51786a02",
+            "row_sha256": "9d9690e0b35b87a8e7e52e77b8d316f3de078c797055b3f3e1f3bd63d4c5cb7b"
+          }
+        },
+        {
+          "seed": 5,
+          "prose_seed": null,
+          "frozen": {
+            "trace_sha256": "4bb9544bc13dc1fc78e8d6f12782c904133d0839d4a86e95508a6a82423510d4",
+            "prose_sha256": "4b4eed619dcab964712045749ff54497ab58b65e97a1b36cfd0a2e9207e7601a",
+            "qa_sha256": "b1b44468fa179a3a786c2146032a3421a4c0c5acb00103e37b29901263eed3f2",
+            "row_sha256": "7ee960a74bd3064de88b14ffabf6db0cfbf0eb9d859db08a70e2e59e013ca711"
+          },
+          "current": {
+            "trace_sha256": "4bb9544bc13dc1fc78e8d6f12782c904133d0839d4a86e95508a6a82423510d4",
+            "prose_sha256": "56ff4bc50a70c511e8b64ac95853e8f5e5cecc5bcf28e8f86093c74c28d583e8",
+            "qa_sha256": "b1b44468fa179a3a786c2146032a3421a4c0c5acb00103e37b29901263eed3f2",
+            "row_sha256": "ac52cd1b16ddf3b5fccb3c513fc5ea6adb8f013936866c33c93635ed9b2fdf59"
+          }
+        },
+        {
+          "seed": 777,
+          "prose_seed": null,
+          "frozen": {
+            "trace_sha256": "0bd04c9722f0287c261906dfdab5dd7b2ed0249326e95d8a6a151bd52170ef7f",
+            "prose_sha256": "0dcbca09251f9ea949d77f8f61432790fa7342242d9465344162d56005e208cd",
+            "qa_sha256": "e3b0de409551df94db274cdbfd1bba6efc45b10ace4bb264f6b3669d51786a02",
+            "row_sha256": "d5bbf90b94d72357bfd19e0d8ac78d5d0a027e372372e15d6a78704f86d2313d"
+          },
+          "current": {
+            "trace_sha256": "0bd04c9722f0287c261906dfdab5dd7b2ed0249326e95d8a6a151bd52170ef7f",
+            "prose_sha256": "94dec04d1db3721d8d7c5c11dfb9bcae7b70a4884d39722031cc8778cc21a5a4",
+            "qa_sha256": "e3b0de409551df94db274cdbfd1bba6efc45b10ace4bb264f6b3669d51786a02",
+            "row_sha256": "1d9c56b8bbdc77936120e05334f18acba3ed125665e76b8a6a0f2633ea26757b"
+          }
+        },
+        {
+          "seed": 0,
+          "prose_seed": 777,
+          "frozen": {
+            "trace_sha256": "814a607800d536883b6f8f98b29756ad51b8db9dc7ac1451c62b91b8cec1f8c9",
+            "prose_sha256": "a15a95de3efa5c8145b50ba1c376fe4a9ba5d49089e921b09f51f490b6b78b07",
+            "qa_sha256": "097df07b6474bbd197bfa755c3aec8307e1b77a73467260c33d6e3cf3ed8a6de",
+            "row_sha256": "585ad77720934c3ae819c1899ed9717dffafedce4164d8277e64ac27ce22c71c"
+          },
+          "current": {
+            "trace_sha256": "814a607800d536883b6f8f98b29756ad51b8db9dc7ac1451c62b91b8cec1f8c9",
+            "prose_sha256": "71b3f7228c830a1fca4ad95df82495923f3b5942c454ad0c6355d14e71296a5e",
+            "qa_sha256": "097df07b6474bbd197bfa755c3aec8307e1b77a73467260c33d6e3cf3ed8a6de",
+            "row_sha256": "fd1daba6f8d3b8c15cda85fafad69059a8090dcb54882c15d2f6ed9d40ac919b"
+          }
+        }
+      ]
+    },
+    {
+      "world": "runs/improvement_luna_v6/roof_post",
+      "semantic_surfaces": [
+        "Observation copies cargo/hook facts into knowledge; Tell copies a stored request value between characters.",
+        "Delivery branches include posted, sail, shared-plan and damaged-cargo rescue; legacy owner transfers and condition changes persist.",
+        "mina.promise, jun.request and jun.agreement remain authored scalar flags, not typed commitments, requests or consent."
+      ],
+      "cases": [
+        {
+          "seed": 0,
+          "prose_seed": null,
+          "frozen": {
+            "trace_sha256": "edc0bbd2ae66085d96bc4015184e75153f3ef0ade594057948eb7e6ff993594a",
+            "prose_sha256": "99186281eb244b0bf1fa6b0619038751efb168d182355ba20ef2c2ca8a43ff1d",
+            "qa_sha256": "65a21dfd3c234430ceb0db6097c293c60977c11029f5fb44591c93765079e9db",
+            "row_sha256": "a3f82d19e9e0b7022944a0b9283959f9749a438e761da5ac1fb47e7e9cef9337"
+          },
+          "current": {
+            "trace_sha256": "edc0bbd2ae66085d96bc4015184e75153f3ef0ade594057948eb7e6ff993594a",
+            "prose_sha256": "99186281eb244b0bf1fa6b0619038751efb168d182355ba20ef2c2ca8a43ff1d",
+            "qa_sha256": "65a21dfd3c234430ceb0db6097c293c60977c11029f5fb44591c93765079e9db",
+            "row_sha256": "a3f82d19e9e0b7022944a0b9283959f9749a438e761da5ac1fb47e7e9cef9337"
+          }
+        },
+        {
+          "seed": 1,
+          "prose_seed": null,
+          "frozen": {
+            "trace_sha256": "82dde64161739be85ceae3c822704fc5ee4bb93db5bb78772603815fecce679e",
+            "prose_sha256": "0126ee9770ed081e058a9be8cbcee907eb39878467accb9ba079d6263d5212aa",
+            "qa_sha256": "88053e92fbb0a91d47e44df6849189047c01b329218795943a23fc2399dc0097",
+            "row_sha256": "3d997ea0d8b347e1f96ecbdc36b095ca515be4c87a5c864d25f8022ffda8f085"
+          },
+          "current": {
+            "trace_sha256": "82dde64161739be85ceae3c822704fc5ee4bb93db5bb78772603815fecce679e",
+            "prose_sha256": "0126ee9770ed081e058a9be8cbcee907eb39878467accb9ba079d6263d5212aa",
+            "qa_sha256": "88053e92fbb0a91d47e44df6849189047c01b329218795943a23fc2399dc0097",
+            "row_sha256": "3d997ea0d8b347e1f96ecbdc36b095ca515be4c87a5c864d25f8022ffda8f085"
+          }
+        },
+        {
+          "seed": 5,
+          "prose_seed": null,
+          "frozen": {
+            "trace_sha256": "c90b881e52364a2d33b2a595c108d0a01cae54714dcde2ed8ea9f136800b530f",
+            "prose_sha256": "bb9fa5e74ad595667c4c50205315781a6c936dfbaab30a61815b760063f17d24",
+            "qa_sha256": "defe4530bbec2932076fa71029c0b1b4bb0fdd6e14fb7c8a1089cb96b7eb152c",
+            "row_sha256": "e74b4b5a90b0d7f9624558763e797802f8860c806b2e4b2b25b88014c41b0b2a"
+          },
+          "current": {
+            "trace_sha256": "c90b881e52364a2d33b2a595c108d0a01cae54714dcde2ed8ea9f136800b530f",
+            "prose_sha256": "bb9fa5e74ad595667c4c50205315781a6c936dfbaab30a61815b760063f17d24",
+            "qa_sha256": "defe4530bbec2932076fa71029c0b1b4bb0fdd6e14fb7c8a1089cb96b7eb152c",
+            "row_sha256": "e74b4b5a90b0d7f9624558763e797802f8860c806b2e4b2b25b88014c41b0b2a"
+          }
+        },
+        {
+          "seed": 777,
+          "prose_seed": null,
+          "frozen": {
+            "trace_sha256": "909b382eb9bc02f4897c273b7ca3cc9dcac367105c358797ca6c13802c4fc395",
+            "prose_sha256": "367740f39b04f03ab8195e5cc4a04f7a86ddcb86e34ac2126d15697557f130ad",
+            "qa_sha256": "f79c9d031ec6ce609496dcab937940e2b00b568ade903f6e0151374bc7bd1cd5",
+            "row_sha256": "f494590d423a47e44351819cb26a2aa94ca576ccf4e17bb46b53395879638c69"
+          },
+          "current": {
+            "trace_sha256": "909b382eb9bc02f4897c273b7ca3cc9dcac367105c358797ca6c13802c4fc395",
+            "prose_sha256": "80b3aaeac31ce122d24a3c804ed61273e19458857851c860343a405a0ca02c18",
+            "qa_sha256": "f79c9d031ec6ce609496dcab937940e2b00b568ade903f6e0151374bc7bd1cd5",
+            "row_sha256": "cb2bb1e2b81cbe137bd8696876da493c91f83dea70db5f115f8f262da290dbe2"
+          }
+        },
+        {
+          "seed": 0,
+          "prose_seed": 777,
+          "frozen": {
+            "trace_sha256": "edc0bbd2ae66085d96bc4015184e75153f3ef0ade594057948eb7e6ff993594a",
+            "prose_sha256": "2867fb71bf7e894557ab452903ed0426a3635b06af2277b48dae68a5f93adf30",
+            "qa_sha256": "65a21dfd3c234430ceb0db6097c293c60977c11029f5fb44591c93765079e9db",
+            "row_sha256": "fb2510fb2ba57b395efd4ca4e263d2526d17f9ed50e26a48436c2326472400ba"
+          },
+          "current": {
+            "trace_sha256": "edc0bbd2ae66085d96bc4015184e75153f3ef0ade594057948eb7e6ff993594a",
+            "prose_sha256": "2867fb71bf7e894557ab452903ed0426a3635b06af2277b48dae68a5f93adf30",
+            "qa_sha256": "65a21dfd3c234430ceb0db6097c293c60977c11029f5fb44591c93765079e9db",
+            "row_sha256": "fb2510fb2ba57b395efd4ca4e263d2526d17f9ed50e26a48436c2326472400ba"
+          }
+        }
+      ]
+    }
+  ]
+}
