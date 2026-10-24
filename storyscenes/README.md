@@ -5,6 +5,15 @@ three validated previews → conditional prose**. All current authoring and repa
 uses **gpt-5.6-luna**. Finished generators use Python's standard library and make
 no API calls. Older engines and scripts are untouched.
 
+The [mini-adventure design write-up](MINI_ADVENTURES.md) explains the two-level
+approach and its current limits. The hand-authored
+[prototype](design/mini_adventure_20261023/README.md)
+tests a different scale: roughly fifty-word locally simulated scenes, selected
+into coherent seven- or eight-scene routes through a shared world. It includes
+five saved stories, optional vignettes, physical parameter variations, three
+compatible endings, and replay tests. It is isolated from the existing factory;
+no paid judging or training-data quality claim accompanies this prototype.
+
 The opt-in [compact authoring path](COMPACT.md) moves world definitions into a
 small data compiler: reusable role-bound patterns compose with `+`, `/` controls
 selection weight, and the library derives knowledge/loan bookkeeping and named
