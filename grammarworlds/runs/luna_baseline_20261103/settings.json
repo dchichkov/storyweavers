@@ -1,0 +1,58 @@
+{
+  "model": "gpt-6-luna",
+  "service_tier": "flex",
+  "reasoning_effort": "none",
+  "protocol": "story_set_quality_v1",
+  "output_format": "harbor_story_set_v2",
+  "pool_per_scenario": 100,
+  "judge_per_scenario": 20,
+  "seed": 777,
+  "scenarios": [
+    "rescue",
+    "kite",
+    "key"
+  ],
+  "selection": "uniform positions without replacement; duplicates retained; same seed schedule per scenario",
+  "generation": {
+    "tense": "past",
+    "attention": true,
+    "temperature": 1
+  },
+  "max_retries": 0,
+  "timeout_seconds": 900,
+  "manifest": {
+    "_source/grammarworlds/__init__.py": "3cd1d4748c5c3cfae58018da02cddeddc18a5be738907ae44d810b45201df22f",
+    "_source/grammarworlds/__main__.py": "d4d6296633dba3ba5c3ec73d9fe1243a6cdd89fd8617b412f4a350a231163830",
+    "_source/grammarworlds/audit.py": "1a9e9ef953562afee617f5f5f5a6acdd3bc372a3ade55ca292ab6bfb1790330c",
+    "_source/grammarworlds/engine.py": "b9c14b96413861ec17a6574f5af9f00eb827920ad88ae0c7c4d59acd11a2da4f",
+    "_source/grammarworlds/grammar.py": "b1b9a22f9de62c5c8834dbe5670e149ef8e40296bfa0e07350b522ceaf743860",
+    "_source/grammarworlds/judge.py": "6804f45bfc1fc5d0c9bcf182f5c3508c88c088ec30618cae2188e621408bbd16",
+    "_source/grammarworlds/test_grammarworlds.py": "28cff3a9caa6a957ea7bd5a82471765624173c8416aeefe1a2968f5bba563785",
+    "_source/grammarworlds/test_judge.py": "4e078b9ea9940d6b7ea6fc302ff3e111d72773b00b7b477050c3e533d4121111",
+    "_source/grammarworlds/world.py": "c1579ce69630d1f34c3b2b80f8c86cf4e20ce34469a4199520fe36ea4d618880",
+    "_source/storyscenes/api_requests.py": "8cd10d1bd43cba641ff746101d918cdc948fd347e71d961905a0ef42ccb0217d",
+    "_source/storyscenes/evaluation/openai_story_quality.py": "046e94115faa529d05afbeebd2a3eaac387b68e0bc85da623748ae8d01f8b520",
+    "_source/storyscenes/evaluation/openai_world_set_quality.py": "7f25422fdd72d77c5526826e7ddb2b233856e43c2e25621d0f1183a28b036dc9",
+    "_source/storyscenes/evaluation/trial_cost.py": "a3f58c3d0cd1cf50f09b3d1ef919bdda6f7b6c9aa34b25e1b6a3e4787ec85b4d",
+    "_source/storyscenes/harbor_judge_protocol.py": "0dab62fef1e1c8ef8df0bf8c5789dee1552014b5fe6a5aaa208760bdc35f1e49",
+    "key/input.json": "bd6da2e4965abbd8070b2ad26e5017dfa1cab11c2454396f9838f8789e12af33",
+    "key/pool.json": "65b35e33d9cc1f5b4d9fd5c2dba81ccaabd1ec40891f9e3bd32e80085f890574",
+    "key/request.json": "1ed9873e5fca9ba83a12c0a2599b19018a9be1c2cd5163a2733bab39d736a2de",
+    "key/stories.md": "cb915be0c875c5fba987919bcf1c93b6379e88940b2b6f78148b79cb32e52b0d",
+    "kite/input.json": "c80ee7bf1ddfa4db317e3583bbe07b94c0cf6405dc56c1422a6e0f5770ec6ed1",
+    "kite/pool.json": "f07212915f6ee27447b5acc0629e1c50ad8224a2ca0d9b27fbb644b2e514e410",
+    "kite/request.json": "978f443be838552a7444838867a86f2feb2289db78607c31aa6bba822f13542d",
+    "kite/stories.md": "a8d23ce5a0f47353534f54ad25d8ff98db5fe9392a21f2171ed94ccdac1c5fb7",
+    "mechanical.json": "c02104d0db4d4101ac6ad689731c6a7f988c5c011da788676130f71fb8dd0bab",
+    "rescue/input.json": "0dab7312ee5101e910714fad90fc1d75ecccc8a599cccc321b90c0d50a83f1cf",
+    "rescue/pool.json": "f34cb5ffd67be44cf9534a6672a3033cc5b57ecf01505b60dfd9246c10a185ed",
+    "rescue/request.json": "884f8d53c322ccf02f87b2ad6a1bd8f919cd8b96fa0b78afa03470b3eb1dfb20",
+    "rescue/stories.md": "07bcec43b3a29200775354e96c8afea9f26a37545c6cb2cccd87c9084b49e606"
+  },
+  "notes": [
+    "Judge sees prose only, with the existing calibration and unchanged rubric.",
+    "Quality averages pool the judged stories. Diversity is assessed within each scenario.",
+    "Event-kind paths include optional beats; they are not counts of distinct causal plots.",
+    "No comparative baseline, independent judge repeat, or population diversity claim."
+  ]
+}

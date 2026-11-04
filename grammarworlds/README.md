@@ -58,6 +58,114 @@ eight-word limit has been replaced by grammatical sentence completion.
 `--temperature` changes the **event-prior** temperature. It does not independently
 temper lexical/grammar choices; their weights remain authored.
 
+## Luna quality and diversity evaluation
+
+The [baseline report](runs/luna_baseline_20261103/report.md) evaluates unchanged
+generation using the repository's shared story-set rubric and calibration story
+(`storyscenes/evaluation/openai_world_set_quality.py`), with the validated
+`harbor_judge_protocol` output format. The judge is `gpt-6-luna`, Flex, reasoning
+`none`. Scores are **0–9**, not the older gen6 1–5 rubric.
+
+We generated 100 consecutive seeds (777–876) per scenario and selected 20
+positions uniformly without replacement per scenario, using selection seed 777.
+Duplicates were retained; no filtering, rewriting, or cherry-picking occurred.
+Luna sees only prose and the shared calibration, not world state or trace data.
+
+| Scenario | Mean quality / 9 | Set diversity / 9 | Judge plot groups |
+| --- | ---: | ---: | ---: |
+| Rescue | 6.00 | 1 | 2 |
+| Kite | 6.15 | 2 | 3 |
+| Key | 7.00 | 2 | 2 |
+
+Across 60 judged stories: overall **6.38**, coherence **7.67**, grammar **8.33**,
+style **6.05**, storytelling **6.05**. Mean within-scenario diversity: **1.67**.
+All 300 sampled texts were distinct, but these are largely surface variations:
+the judge identifies self-directed versus adult-assisted solutions, with an
+occasional failed attempt. Problems and successful endings barely vary. Event
+sequences had 11/16/15 distinct paths, which include optional goals/thanks and
+must not be interpreted as distinct plots. These are diagnostic samples, with
+one judge response per set; no cross-scenario diversity score is claimed.
+
+Prepare a fresh reproducible run locally, then explicitly call the judge:
+
+```sh
+.venv/bin/python -m grammarworlds.judge prepare --out grammarworlds/runs/my_run
+.venv/bin/python -m grammarworlds.judge run --out grammarworlds/runs/my_run
+.venv/bin/python -m grammarworlds.judge report --out grammarworlds/runs/my_run
+.venv/bin/python -m grammarworlds --verify
+```
+
+`prepare` accepts `--pool-size`, `--judge-count`, and `--seed`; it refuses to
+overwrite an existing run. `run` uses the existing `openai` SDK and reads
+`OPENAI_API_KEY`, repository `.API_KEY`, or `--api-key-file`. Credentials never
+enter saved artifacts. Ordinary story generation has no SDK or API dependency.
+Artifacts include all 300 stories and compact world traces, selected samples,
+frozen requests, source snapshots/hashes, raw responses, ratings, and token
+usage. Mechanical measures include exact duplicates, repeated sentences, event
+paths, and mean pairwise trigram overlap.
+
+Saved responses are reused. Uncertain calls are not automatically retried.
+`run --retry-unavailable` explicitly retries only a definite `429
+flex_unavailable` rejection and archives its evidence; the baseline needed one
+such retry for the key scenario. It never switches model or service tier.
+
+The next quality target is greater character development and more natural
+transitions. The next diversity target is materially different solutions and
+consequences, measured on the same seeds alongside fresh held-out samples.
+
+## Luna versus Terra authoring trial
+
+[Full comparison](runs/authoring_music_20261103/REPORT.md) and untouched packs:
+[Terra](runs/authoring_music_20261103/terra/round1/pack.py),
+[Luna recovery](runs/authoring_music_20261103/luna/round2/pack.py).
+Both received the current ruleset, `story.py`, the music-room story from
+`luna_high_direct_20/08_music`, and a list of missing capabilities. The task was
+to author executable event/grammar rules for competing wishes, consent,
+performing solo, a possible private duet, and borrowed-instrument returns.
+
+The latest available models were `gpt-6-luna` and `gpt-6.1-terra`, both Flex/high.
+Terra completed the matched first attempt in 10,080 output tokens. Luna exhausted
+the 32,000-token limit; one recovery using its partial output and error, with a
+64,000-token cap, completed in another 17,800 tokens. Output counts include
+reasoning. All original requests/responses and the failed attempt are retained.
+
+| Authored pack | Unfiltered stories | Original intervention cases | Quality: Luna judge | Quality: Terra judge |
+| --- | ---: | ---: | ---: | ---: |
+| Terra, first attempt | 60/60 | 20/20 | 8.40/9 | 7.65/9 |
+| Luna, recovery | 60/60 | 20/20 | 7.05/9 | 6.60/9 |
+
+Both judges saw the same 20 random positions per pack, without author identity.
+Both packs received diversity 3/9 from Luna and 2/9 from Terra. The source and
+contract intentionally restrict the premise, so this tests variation within a
+story family, not open-ended plot invention.
+
+Reading the prose exposed defects beyond the initial test contract. Additional
+probes applied equally to both packs found that Luna allows joining without
+Nia present or holding her drum, and 14/60 stories prematurely claim that both
+instruments have been returned. Its grammar also produces “hoped a duet” and
+“Mateo choice stayed his.” Terra passes these particular probes. Counts and
+witnesses are saved in each pack's `probe.json`; these targeted diagnostics do
+not prove absence of other defects. No author code was manually repaired.
+
+The new `pack_runtime.py` adapter retains the existing grammar/Forest and
+attention calculations, sampling every word before committing a semantic frame.
+This extends carrier-grounded state/consent/ownership testing toward the memeplex
+model, but the authored modules remain scenario-specific experimental packs.
+The original three-scenario generator is unchanged. Reproduce the isolated local
+checks without any model calls:
+
+```sh
+.venv/bin/python -m grammarworlds.authoring_trial check --arm terra
+.venv/bin/python -m grammarworlds.authoring_trial check --arm luna --round round2
+.venv/bin/python -m grammarworlds.authoring_trial probe --arm terra
+.venv/bin/python -m grammarworlds.authoring_trial probe --arm luna --round round2
+.venv/bin/python -m grammarworlds.authoring_trial report
+```
+
+This is one source story and one initial attempt per model, with an unequal
+recovery budget. It supports prioritizing Terra for the next authoring experiment;
+it does not establish broad authoring reliability or a general model ranking.
+
 ## How it works
 
 1. **Semantic support.** Kernels propose frames only when their prerequisites hold.

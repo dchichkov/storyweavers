@@ -1,0 +1,77 @@
+Create a reusable executable music-room event/grammar pack from the supplied story.
+Return one Python module as the code field of the requested JSON. No markdown fences.
+Do not write a standalone story generator or a list of complete prewritten stories.
+Do not modify the existing engine, sampler, Forest, grammar primitives, or tests.
+Only standard-library imports and imports from grammarworlds.world/grammar/engine
+are permitted. No I/O, network, subprocess, external packages, eval, or exec.
+
+The immutable harness loads your module as pack and calls these exact functions:
+  make_world(seed: int = 0, *, partner_willing: bool | None = None) -> World
+  candidates(world: World) -> list[tuple[Kernel, Frame]]
+  realize(world: World, frame: Frame, tense: str = "past") -> Node
+  commit(world: World, frame: Frame, sentence: str) -> dict
+You may subclass World and Grammar, define additional helpers and kernel tables.
+World must retain the existing to_dict(), snapshot(), clone(), finished interface.
+World.finished means the flag 'ended' is set. History is the existing list of
+records: {id, frame: dataclasses.asdict(frame), sentence, before, after}, one per
+committed event. Set focus=frame.actor. Preconditions must be rechecked by commit;
+an unavailable/forged frame must raise ValueError without mutating state.
+
+Harness builds event priors using existing engine.score_frame(world, kernel)
+and softmax. It calls expand(realize(...)) to build the existing Derivation/Forest.
+It uses Forest.predict to sample every word including <END>, then draws the
+semantic frame from event_posterior and calls your commit exactly once. It does
+not choose a sentence or event in advance. Prediction/realize/candidates must
+be pure. For each frame, expansion mass must sum to one. Each event should have
+at most 512 finite derivations and at most 120 tokens in each derivation. A frame
+may realize several grammatical sentences; target 180-350 words in a full story,
+8-24 committed events. Past-tense support is required; present is optional.
+Use reusable subject/predicate/complement grammar with genuine alternatives,
+not whole-story strings. Existing text() tokenization does not retain quotation
+marks, digits, colons, or dashes: prefer natural indirect speech or add suitable
+Node constructions without altering the tokenizer. Never concatenate raw prose
+as state or inspect generated English to decide semantics.
+
+Required entity IDs: hero (Nia), partner (Mateo), teacher (Dalia), drum (borrowed
+instrument), spare (second instrument), program (physical signup sheet). Use
+world.hero='hero', world.helper='partner', world.target='program', world.tool='drum'.
+Give animate people physical locations and embedded numeric concepts (Care,
+Fear, Trust, Desire, or your own), and let these plus current physical state
+affect candidate availability or attention scores. You can override
+facts_for_attention() to expose your grounded facts to existing score_frame;
+keep fact IDs/cause_ids inspectable. Initial wishes are allowed; don't initialize
+the resolution, consent, performance, or ending as already completed.
+
+Semantic contract, to allow external checks across different implementations:
+- Both instruments initially have location='shelf'. Borrowing moves drum to
+  hero; pickup moves spare to partner; return moves each back to 'shelf'.
+- The hero wants a duet, the partner initially declines public performance.
+  A choice about the program is consequential, not a cosmetic line.
+- The program acquires state 'solo' only when the hero chooses to list herself
+  alone. Never list the partner for public performance without consent.
+- partner_willing controls willingness to participate PRIVATELY later. False
+  means no private duet; True must allow a voluntary duet path. None draws a
+  seeded willingness. Do not confuse latent willingness with expressed consent.
+- Only a Frame(kind='consent', actor='partner') may add 'consented' to partner.state.
+  Only Frame(kind='join', actor='partner') may add 'joined'. Join requires prior
+  consent, partner presence, and the spare physically held by the partner.
+  No public duet is required. Never treat passive tapping as permission to enlist.
+- Before performing, hero must hold drum, and program must have 'solo'. Record
+  public performance via Frame(kind='perform', actor='hero').
+- Emit Frame(kind='ending') only after performance and both instruments are
+  physically back on the shelf. End with an image matching the actual outcome.
+- A less-ready partner may leave the ending as a respected solo/quiet invitation;
+  a willing partner can freely join a private duet. Preserve the source's respect
+  for choice; variants may differ from its exact outcome, not contradict it.
+- For every seed the finite world must finish; no random retry/filtering to hide
+  bad worlds. Include causally distinct outcomes/paths, not only swapped names.
+
+We will test 60 unfiltered seeds plus consent/location/ownership interventions,
+replay, nonmutation, probability normalization, and termination. Visible prose
+will be judged with the existing quality/diversity rubric, independent of hidden
+state. Your code will run in a separate local sandbox with no repository writes
+or credential/network access. Do not import tests, judge, or this harness.
+
+Give concise design_notes, mismatches (capability gaps you addressed or left), and
+the complete module code. Prioritize a small correct generalization over a large
+pile of sentences. This is one matched authoring task, not a model leaderboard.

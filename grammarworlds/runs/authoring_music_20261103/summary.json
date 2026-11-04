@@ -1,0 +1,2205 @@
+{
+  "settings": {
+    "models": {
+      "luna": "gpt-6-luna",
+      "terra": "gpt-6.1-terra"
+    },
+    "service_tier": "flex",
+    "reasoning": "high",
+    "max_output_tokens": 32000,
+    "source_story": "storyscenes/design/agents_api_trial_20261024/luna_high_direct_20/08_music/story.txt",
+    "source_story_sha256": "99ba7649fee7b513101486d86ddc36a3f9bc4375d649fc5ab4a7380461ccca29",
+    "sources": {
+      "story.py": "5e74f732c140f64a08ea95d57d429cf4039b907a9c520ba9e66998d7b98ebd99",
+      "grammarworlds/world.py": "c1579ce69630d1f34c3b2b80f8c86cf4e20ce34469a4199520fe36ea4d618880",
+      "grammarworlds/grammar.py": "b1b9a22f9de62c5c8834dbe5670e149ef8e40296bfa0e07350b522ceaf743860",
+      "grammarworlds/engine.py": "b9c14b96413861ec17a6574f5af9f00eb827920ad88ae0c7c4d59acd11a2da4f",
+      "grammarworlds/test_grammarworlds.py": "28cff3a9caa6a957ea7bd5a82471765624173c8416aeefe1a2968f5bba563785"
+    },
+    "gaps": [
+      "Existing 11 kernels handle physical problem -> tool -> repair/rescue -> success; music is unsupported.",
+      "No distinct personal goals, partner autonomy, public/private participation, or signed-up status.",
+      "No borrowing/return obligation or separate instrument ownership for two performers.",
+      "Current quality baseline: 6.38/9 overall, 8.33 grammar, 6.05 storytelling/style, 1.67 within-scenario diversity.",
+      "All 300 baseline texts differ, but only 2-3 causal groups per scenario; avoid cosmetic diversity.",
+      "The source's musical/social change must be represented by carriers, concepts, frames, and effects, not English postprocessing."
+    ],
+    "source_selection": "08_music chosen for autonomy, conflicting wishes, borrowing and return; no output-based selection",
+    "sample_seeds": [
+      1000,
+      1001,
+      1002,
+      1003,
+      1004,
+      1005,
+      1006,
+      1007,
+      1008,
+      1009,
+      1010,
+      1011,
+      1012,
+      1013,
+      1014,
+      1015,
+      1016,
+      1017,
+      1018,
+      1019,
+      1020,
+      1021,
+      1022,
+      1023,
+      1024,
+      1025,
+      1026,
+      1027,
+      1028,
+      1029,
+      1030,
+      1031,
+      1032,
+      1033,
+      1034,
+      1035,
+      1036,
+      1037,
+      1038,
+      1039,
+      1040,
+      1041,
+      1042,
+      1043,
+      1044,
+      1045,
+      1046,
+      1047,
+      1048,
+      1049,
+      1050,
+      1051,
+      1052,
+      1053,
+      1054,
+      1055,
+      1056,
+      1057,
+      1058,
+      1059
+    ],
+    "quality_selection_seed": 777,
+    "judge_count": 20,
+    "documentation": [
+      "https://developers.openai.com/api/docs/models/gpt-6-luna",
+      "https://developers.openai.com/api/docs/models/gpt-6.1-terra"
+    ],
+    "notes": [
+      "One source story, matched prompt and reasoning budget; not a model ranking.",
+      "At most one feedback repair per author; retain untouched first attempts.",
+      "Generated code remains isolated; no production integration in this trial."
+    ]
+  },
+  "records": [
+    {
+      "author": "luna",
+      "model": "gpt-6-luna",
+      "attempt": "round1",
+      "request_sha256": "7418e44563bcf31b45b3bbc976cc01d27a7a0b47de132bf07ce3fa85c154b99a",
+      "response": {
+        "model": "gpt-6-luna",
+        "status": "incomplete",
+        "service_tier": "flex",
+        "incomplete_details": {
+          "reason": "max_output_tokens"
+        },
+        "usage": {
+          "input_tokens": 22362,
+          "input_tokens_details": {
+            "cached_tokens": 0,
+            "cache_write_tokens": 0,
+            "cache_write_tokens_details": {
+              "ttl_12h_tokens": 0,
+              "ttl_30m_tokens": 0
+            }
+          },
+          "output_tokens": 32000,
+          "output_tokens_details": {
+            "reasoning_tokens": 25022
+          },
+          "total_tokens": 54362
+        }
+      },
+      "elapsed_seconds": 308.6338308751583,
+      "judges": {}
+    },
+    {
+      "author": "luna",
+      "model": "gpt-6-luna",
+      "attempt": "round2",
+      "request_sha256": "e7ce3ad139eaa5421b6cf29f1ce3b5f0460f4feee793217e78204034be3c5d4b",
+      "response": {
+        "model": "gpt-6-luna",
+        "status": "completed",
+        "service_tier": "flex",
+        "incomplete_details": null,
+        "usage": {
+          "input_tokens": 29437,
+          "input_tokens_details": {
+            "cached_tokens": 0,
+            "cache_write_tokens": 0,
+            "cache_write_tokens_details": {
+              "ttl_12h_tokens": 0,
+              "ttl_30m_tokens": 0
+            }
+          },
+          "output_tokens": 17800,
+          "output_tokens_details": {
+            "reasoning_tokens": 9961
+          },
+          "total_tokens": 47237
+        }
+      },
+      "elapsed_seconds": 220.20904162479565,
+      "checks": {
+        "import_ok": true,
+        "requested": 60,
+        "passed": 60,
+        "intervention_requested": 20,
+        "intervention_passed": 20,
+        "forced_willing_duets": 10,
+        "forced_unwilling_duets": 0,
+        "failures": {},
+        "corpus": {
+          "unique_texts": 60,
+          "unique_event_paths": 6,
+          "event_paths": {
+            "notice > want > borrow > ask > public_decline > practice > hear_tap > set_program > choose_solo > perform > private_invite > consent > pickup_spare > join > return_spare > return_drum > ending": 6,
+            "notice > want > borrow > ask > public_decline > practice > set_program > choose_solo > perform > private_invite > private_decline > return_drum > ending": 21,
+            "notice > want > borrow > ask > public_decline > practice > set_program > choose_solo > perform > private_invite > consent > pickup_spare > join > return_drum > return_spare > ending": 8,
+            "notice > want > borrow > ask > public_decline > practice > set_program > choose_solo > perform > private_invite > consent > pickup_spare > join > return_spare > return_drum > ending": 8,
+            "notice > want > borrow > ask > public_decline > practice > hear_tap > set_program > choose_solo > perform > private_invite > private_decline > return_drum > ending": 11,
+            "notice > want > borrow > ask > public_decline > practice > hear_tap > set_program > choose_solo > perform > private_invite > consent > pickup_spare > join > return_drum > return_spare > ending": 6
+          },
+          "outcomes": {
+            "private_duet": 28,
+            "solo": 32
+          },
+          "mean_words": 274.8666666666667,
+          "mean_events": 14.783333333333333,
+          "branching_word_steps": 2062,
+          "total_word_steps": 19241
+        }
+      },
+      "observed_event_types": {
+        "notice": 60,
+        "want": 60,
+        "borrow": 60,
+        "ask": 60,
+        "public_decline": 60,
+        "practice": 60,
+        "hear_tap": 23,
+        "set_program": 60,
+        "choose_solo": 60,
+        "perform": 60,
+        "private_invite": 60,
+        "consent": 28,
+        "pickup_spare": 28,
+        "join": 28,
+        "return_spare": 28,
+        "return_drum": 60,
+        "ending": 60,
+        "private_decline": 32
+      },
+      "judges": {
+        "luna": {
+          "story_ratings": [
+            {
+              "id": "s000014",
+              "rating": {
+                "coherence": 8,
+                "style": 7,
+                "grammar": 7,
+                "storytelling": 7,
+                "overall": 7
+              },
+              "note": "Nia respects Mateo’s reluctance and performs alone; the ending clearly leaves the second drum untouched, though “Mateo choice” is ungrammatical."
+            },
+            {
+              "id": "s000028",
+              "rating": {
+                "coherence": 8,
+                "style": 7,
+                "grammar": 7,
+                "storytelling": 8,
+                "overall": 7
+              },
+              "note": "Mateo chooses to try a private duet after Nia’s solo, giving the story a clear, gentle turn and a concrete paired-drum ending; a few phrases are awkward."
+            },
+            {
+              "id": "s000058",
+              "rating": {
+                "coherence": 8,
+                "style": 7,
+                "grammar": 7,
+                "storytelling": 8,
+                "overall": 7
+              },
+              "note": "Mateo moves from avoiding a public performance to trying a private duet; the instruments’ return to the shelf completes the arc, despite some repetitive transitions."
+            },
+            {
+              "id": "s000023",
+              "rating": {
+                "coherence": 8,
+                "style": 7,
+                "grammar": 7,
+                "storytelling": 8,
+                "overall": 7
+              },
+              "note": "Mateo agrees to play privately, and the paired drums provide a satisfying final image; the prose has some clunky phrasing and sequencing."
+            },
+            {
+              "id": "s000036",
+              "rating": {
+                "coherence": 8,
+                "style": 7,
+                "grammar": 8,
+                "storytelling": 8,
+                "overall": 8
+              },
+              "note": "Mateo’s knee-tapping hints at his interest without being treated as consent, and his later private duet is a clear, satisfying resolution."
+            },
+            {
+              "id": "s000017",
+              "rating": {
+                "coherence": 8,
+                "style": 7,
+                "grammar": 7,
+                "storytelling": 8,
+                "overall": 7
+              },
+              "note": "The contrast between Mateo’s reluctance to perform publicly and his private duet gives the story a meaningful turn; the ending is concrete, though slightly repetitive."
+            },
+            {
+              "id": "s000053",
+              "rating": {
+                "coherence": 8,
+                "style": 7,
+                "grammar": 7,
+                "storytelling": 8,
+                "overall": 7
+              },
+              "note": "Mateo’s knee-tapping leads to a private duet rather than public pressure, and the two returned drums close the story; some wording is awkward."
+            },
+            {
+              "id": "s000021",
+              "rating": {
+                "coherence": 8,
+                "style": 7,
+                "grammar": 7,
+                "storytelling": 7,
+                "overall": 7
+              },
+              "note": "Nia respects Mateo’s choice to listen, ending with her solo and the untouched second drum; the final “Mateo choice” needs an apostrophe."
+            },
+            {
+              "id": "s000034",
+              "rating": {
+                "coherence": 8,
+                "style": 7,
+                "grammar": 7,
+                "storytelling": 7,
+                "overall": 7
+              },
+              "note": "Mateo declines the private duet and Nia accepts this, with the untouched second drum making the outcome clear; phrasing is occasionally awkward."
+            },
+            {
+              "id": "s000048",
+              "rating": {
+                "coherence": 8,
+                "style": 7,
+                "grammar": 7,
+                "storytelling": 8,
+                "overall": 7
+              },
+              "note": "Mateo opts into a private duet, resolving his public-performance hesitation; the returned instruments form a clear closing image, though the narration is repetitive."
+            },
+            {
+              "id": "s000002",
+              "rating": {
+                "coherence": 8,
+                "style": 7,
+                "grammar": 7,
+                "storytelling": 8,
+                "overall": 7
+              },
+              "note": "Mateo chooses a private duet after Nia performs alone, and the paired drums complete the ending; repeated “Then” transitions make the prose mechanical."
+            },
+            {
+              "id": "s000057",
+              "rating": {
+                "coherence": 8,
+                "style": 7,
+                "grammar": 7,
+                "storytelling": 7,
+                "overall": 7
+              },
+              "note": "Mateo chooses not to play, and Nia respects that decision; the solitary program and untouched second drum make the ending concrete."
+            },
+            {
+              "id": "s000042",
+              "rating": {
+                "coherence": 8,
+                "style": 7,
+                "grammar": 7,
+                "storytelling": 7,
+                "overall": 7
+              },
+              "note": "Nia’s solo ends without pressuring Mateo, whose second drum remains untouched; a few phrases are awkward but the outcome is clear."
+            },
+            {
+              "id": "s000039",
+              "rating": {
+                "coherence": 8,
+                "style": 7,
+                "grammar": 7,
+                "storytelling": 7,
+                "overall": 7
+              },
+              "note": "Mateo declines the private invitation and Nia accepts his choice, closing on the unused drum; some wording is clumsy."
+            },
+            {
+              "id": "s000035",
+              "rating": {
+                "coherence": 8,
+                "style": 7,
+                "grammar": 7,
+                "storytelling": 8,
+                "overall": 7
+              },
+              "note": "Mateo agrees to play privately after avoiding the public stage, and the two drums’ return provides closure; the repeated actions slightly weigh down the prose."
+            },
+            {
+              "id": "s000024",
+              "rating": {
+                "coherence": 8,
+                "style": 7,
+                "grammar": 7,
+                "storytelling": 7,
+                "overall": 7
+              },
+              "note": "Mateo chooses to listen rather than join, and Nia leaves the second drum untouched; the story’s final image is clear despite awkward phrasing."
+            },
+            {
+              "id": "s000038",
+              "rating": {
+                "coherence": 8,
+                "style": 7,
+                "grammar": 7,
+                "storytelling": 7,
+                "overall": 7
+              },
+              "note": "Nia accepts Mateo’s decision to listen, with the program and untouched second drum showing the result; the prose is somewhat repetitive."
+            },
+            {
+              "id": "s000018",
+              "rating": {
+                "coherence": 8,
+                "style": 7,
+                "grammar": 7,
+                "storytelling": 8,
+                "overall": 7
+              },
+              "note": "Mateo shifts from public reluctance to a private duet, and the paired drums give the ending a concrete image; repeated transitions make the style mechanical."
+            },
+            {
+              "id": "s000007",
+              "rating": {
+                "coherence": 8,
+                "style": 7,
+                "grammar": 7,
+                "storytelling": 7,
+                "overall": 7
+              },
+              "note": "Mateo declines the private duet and Nia honors his choice; the solo and unused second drum clearly complete the story."
+            },
+            {
+              "id": "s000041",
+              "rating": {
+                "coherence": 8,
+                "style": 7,
+                "grammar": 7,
+                "storytelling": 8,
+                "overall": 7
+              },
+              "note": "Mateo chooses a private duet rather than a public performance, and the returned drums close the arc; some repetition and awkward wording remain."
+            }
+          ],
+          "rating": {
+            "coherence": 8,
+            "style": 7,
+            "grammar": 7.05,
+            "storytelling": 7.55,
+            "overall": 7.05
+          },
+          "diversity": {
+            "premise": 2,
+            "causal_path": 3,
+            "ending": 3,
+            "language": 3,
+            "overall": 3
+          },
+          "diversity_evidence": "All stories share the same music-room setup: Nia hopes for a duet, Mateo is hesitant about performing publicly, and she offers a solo instead. The meaningful branch is whether he later accepts a private duet (s000028, s000058, s000023, s000036, s000017, s000053, s000048, s000002, s000035, s000018, s000041) or chooses to listen while Nia respects his decision (s000014, s000021, s000034, s000057, s000042, s000039, s000024, s000038, s000007). The endings and language vary mostly in small details, not in plot structure.",
+          "plot_groups": [
+            {
+              "story_ids": [
+                "s000014",
+                "s000021",
+                "s000034",
+                "s000057",
+                "s000042",
+                "s000039",
+                "s000024",
+                "s000038",
+                "s000007"
+              ],
+              "summary": "Nia asks Mateo to join a drum duet; he declines public performance and later chooses not to play privately. Nia respects his choice, performs alone, and returns the drum."
+            },
+            {
+              "story_ids": [
+                "s000028",
+                "s000058",
+                "s000023",
+                "s000036",
+                "s000017",
+                "s000053",
+                "s000048",
+                "s000002",
+                "s000035",
+                "s000018",
+                "s000041"
+              ],
+              "summary": "Nia asks Mateo to join a drum duet; he hesitates to perform publicly, so she performs alone and offers a private chance to play. He accepts, they try a duet, and return the drums to the shelf."
+            }
+          ],
+          "judged_stories": 20,
+          "requested_stories": 20,
+          "complete_judge_sample": true,
+          "overall_min": 7,
+          "overall_stdev": 0.22360679774997896,
+          "stories_below_six": 0,
+          "response": {
+            "id": "resp_03fe82905057482f016aeab95d8b1487d1a36f5471e20ef549",
+            "model": "gpt-6-luna",
+            "service_tier": "flex",
+            "status": "completed",
+            "usage": {
+              "input_tokens": 7944,
+              "input_tokens_details": {
+                "cached_tokens": 0,
+                "cache_write_tokens": 0,
+                "cache_write_tokens_details": {
+                  "ttl_12h_tokens": 0,
+                  "ttl_30m_tokens": 0
+                }
+              },
+              "output_tokens": 1617,
+              "output_tokens_details": {
+                "reasoning_tokens": 0
+              },
+              "total_tokens": 9561
+            }
+          }
+        },
+        "terra": {
+          "story_ratings": [
+            {
+              "id": "s000014",
+              "rating": {
+                "coherence": 7,
+                "style": 6,
+                "grammar": 6,
+                "storytelling": 7,
+                "overall": 7
+              },
+              "note": "Nia respects Mateo’s refusal, and the untouched drum makes a clear ending; the solo’s performer is briefly ambiguous."
+            },
+            {
+              "id": "s000028",
+              "rating": {
+                "coherence": 8,
+                "style": 6,
+                "grammar": 4,
+                "storytelling": 7,
+                "overall": 6
+              },
+              "note": "The private answering beat completes the duet, but the opening punctuation and several missing words or possessives are distracting."
+            },
+            {
+              "id": "s000058",
+              "rating": {
+                "coherence": 7,
+                "style": 6,
+                "grammar": 5,
+                "storytelling": 7,
+                "overall": 7
+              },
+              "note": "Mateo’s private duet follows naturally from his reluctance, though the solo’s performer is ambiguous and the opening is punctuated awkwardly."
+            },
+            {
+              "id": "s000023",
+              "rating": {
+                "coherence": 7,
+                "style": 6,
+                "grammar": 4,
+                "storytelling": 7,
+                "overall": 6
+              },
+              "note": "The consent-driven choice leads to a gentle duet, but the opening punctuation, missing words and ambiguous performer interrupt the prose."
+            },
+            {
+              "id": "s000036",
+              "rating": {
+                "coherence": 7,
+                "style": 7,
+                "grammar": 5,
+                "storytelling": 7,
+                "overall": 7
+              },
+              "note": "Mateo’s knee-tapping hints at interest without implying consent; awkward punctuation and an ambiguous solo performer weaken the telling."
+            },
+            {
+              "id": "s000017",
+              "rating": {
+                "coherence": 7,
+                "style": 6,
+                "grammar": 4,
+                "storytelling": 7,
+                "overall": 6
+              },
+              "note": "The knee-tapping and private answer beat give the relationship a satisfying arc, despite missing words and possessives."
+            },
+            {
+              "id": "s000053",
+              "rating": {
+                "coherence": 7,
+                "style": 7,
+                "grammar": 6,
+                "storytelling": 7,
+                "overall": 7
+              },
+              "note": "The testing beat and quivering ribbon make a vivid ending, though repeated “Then” and an ambiguous performer make the prose less smooth."
+            },
+            {
+              "id": "s000021",
+              "rating": {
+                "coherence": 8,
+                "style": 6,
+                "grammar": 5,
+                "storytelling": 7,
+                "overall": 7
+              },
+              "note": "Mateo’s knee-tapping adds nuance to his later refusal; missing possessives and an awkward “Then” mar the prose."
+            },
+            {
+              "id": "s000034",
+              "rating": {
+                "coherence": 7,
+                "style": 6,
+                "grammar": 5,
+                "storytelling": 7,
+                "overall": 7
+              },
+              "note": "The untouched drum closes the story of a choice respected, but missing possessives and an ambiguous performer distract."
+            },
+            {
+              "id": "s000048",
+              "rating": {
+                "coherence": 7,
+                "style": 6,
+                "grammar": 4,
+                "storytelling": 7,
+                "overall": 6
+              },
+              "note": "The private duet supplies a concrete resolution, but the opening punctuation, missing words and ambiguous performer make it less polished."
+            },
+            {
+              "id": "s000002",
+              "rating": {
+                "coherence": 7,
+                "style": 6,
+                "grammar": 4,
+                "storytelling": 7,
+                "overall": 6
+              },
+              "note": "Nia’s solo leaves room for Mateo’s later choice, but missing words and an ambiguous performer interrupt the story."
+            },
+            {
+              "id": "s000057",
+              "rating": {
+                "coherence": 7,
+                "style": 7,
+                "grammar": 6,
+                "storytelling": 7,
+                "overall": 7
+              },
+              "note": "The solo and untouched second drum make a complete, understated ending; the performer is briefly ambiguous and a possessive is missing."
+            },
+            {
+              "id": "s000042",
+              "rating": {
+                "coherence": 7,
+                "style": 6,
+                "grammar": 5,
+                "storytelling": 7,
+                "overall": 7
+              },
+              "note": "Mateo’s tapping and eventual refusal are treated consistently, though the opening punctuation and solo’s pronoun are awkward."
+            },
+            {
+              "id": "s000039",
+              "rating": {
+                "coherence": 8,
+                "style": 7,
+                "grammar": 5,
+                "storytelling": 7,
+                "overall": 7
+              },
+              "note": "The knee-tapping gives texture to Mateo’s choice, and the drums offer a concrete ending; two possessives are missing."
+            },
+            {
+              "id": "s000035",
+              "rating": {
+                "coherence": 7,
+                "style": 6,
+                "grammar": 4,
+                "storytelling": 7,
+                "overall": 6
+              },
+              "note": "The solo leads to an independently chosen private duet, but missing words and an ambiguous performer hamper readability."
+            },
+            {
+              "id": "s000024",
+              "rating": {
+                "coherence": 7,
+                "style": 6,
+                "grammar": 5,
+                "storytelling": 7,
+                "overall": 6
+              },
+              "note": "Nia accepts Mateo’s refusal and returns the drum; repeated “Then,” missing possessives and an ambiguous performer weaken the telling."
+            },
+            {
+              "id": "s000038",
+              "rating": {
+                "coherence": 7,
+                "style": 6,
+                "grammar": 5,
+                "storytelling": 7,
+                "overall": 7
+              },
+              "note": "The untouched second drum shows Mateo’s decision, though the opening punctuation and solo’s pronoun are awkward."
+            },
+            {
+              "id": "s000018",
+              "rating": {
+                "coherence": 8,
+                "style": 6,
+                "grammar": 6,
+                "storytelling": 7,
+                "overall": 7
+              },
+              "note": "The solo and private answer beat form a clear arc; repeated “Then” and ribbon imagery make the prose mechanical."
+            },
+            {
+              "id": "s000007",
+              "rating": {
+                "coherence": 7,
+                "style": 5,
+                "grammar": 4,
+                "storytelling": 7,
+                "overall": 6
+              },
+              "note": "The returned drum gives the refusal a concrete ending, but missing words, repeated “Then” and an ambiguous performer impede the prose."
+            },
+            {
+              "id": "s000041",
+              "rating": {
+                "coherence": 7,
+                "style": 7,
+                "grammar": 6,
+                "storytelling": 7,
+                "overall": 7
+              },
+              "note": "The answering beats and side-by-side drums end the story gently; the opening punctuation and ambiguous solo performer are awkward."
+            }
+          ],
+          "rating": {
+            "coherence": 7.2,
+            "style": 6.2,
+            "grammar": 4.9,
+            "storytelling": 7,
+            "overall": 6.6
+          },
+          "diversity": {
+            "premise": 0,
+            "causal_path": 2,
+            "ending": 3,
+            "language": 1,
+            "overall": 2
+          },
+          "diversity_evidence": "All stories share Nia’s desired duet and solo signup. Mateo declines the private invitation in s000014 but accepts in s000028, producing a modest outcome branch; s000036 and s000017 add the same knee-tapping detail without changing the path. Wording and final drum images recur closely. This assesses only the supplied sample.",
+          "plot_groups": [
+            {
+              "story_ids": [
+                "s000014",
+                "s000021",
+                "s000034",
+                "s000057",
+                "s000042",
+                "s000039",
+                "s000024",
+                "s000038",
+                "s000007"
+              ],
+              "summary": "Mateo declines public performance; Nia signs up alone, plays her solo, and respects his refusal of a private duet."
+            },
+            {
+              "story_ids": [
+                "s000028",
+                "s000058",
+                "s000023",
+                "s000036",
+                "s000017",
+                "s000053",
+                "s000048",
+                "s000002",
+                "s000035",
+                "s000018",
+                "s000041"
+              ],
+              "summary": "Mateo declines public performance; Nia plays a solo, then he accepts a private duet and both drums are returned."
+            }
+          ],
+          "judged_stories": 20,
+          "requested_stories": 20,
+          "complete_judge_sample": true,
+          "overall_min": 6,
+          "overall_stdev": 0.5026246899500346,
+          "stories_below_six": 0,
+          "response": {
+            "id": "resp_0d8458a2b01dfc5f016aeab95d6ebc87d1bc9594781193f089",
+            "model": "gpt-6.1-terra",
+            "service_tier": "flex",
+            "status": "completed",
+            "usage": {
+              "input_tokens": 7944,
+              "input_tokens_details": {
+                "cached_tokens": 0,
+                "cache_write_tokens": 0,
+                "cache_write_tokens_details": {
+                  "ttl_12h_tokens": 0,
+                  "ttl_30m_tokens": 0
+                }
+              },
+              "output_tokens": 1405,
+              "output_tokens_details": {
+                "reasoning_tokens": 0
+              },
+              "total_tokens": 9349
+            }
+          }
+        }
+      },
+      "supplemental_diagnostics": {
+        "scope": "post-hoc diagnostics, same probes and same 60 seeds for both authors",
+        "checks": {
+          "join_with_absent_hero": 28,
+          "join_without_hero_drum": 28,
+          "both_instruments_returned_claim": 28
+        },
+        "failure_counts": {
+          "join_with_absent_hero": 28,
+          "join_without_hero_drum": 28,
+          "premature_both_returned_claim": 14
+        },
+        "failures": [
+          {
+            "kind": "join_with_absent_hero",
+            "seed": 1000,
+            "after_events": 13,
+            "candidate": {
+              "kind": "join",
+              "actor": "partner"
+            }
+          },
+          {
+            "kind": "join_without_hero_drum",
+            "seed": 1000,
+            "after_events": 13,
+            "candidate": {
+              "kind": "join",
+              "actor": "partner"
+            }
+          },
+          {
+            "kind": "premature_both_returned_claim",
+            "seed": 1000,
+            "after_events": 15,
+            "sentence": "Mateo returned the second drum to the shelf, both instruments back where they belonged.",
+            "locations": {
+              "drum": "hero",
+              "spare": "shelf"
+            }
+          },
+          {
+            "kind": "join_with_absent_hero",
+            "seed": 1002,
+            "after_events": 12,
+            "candidate": {
+              "kind": "join",
+              "actor": "partner"
+            }
+          },
+          {
+            "kind": "join_without_hero_drum",
+            "seed": 1002,
+            "after_events": 12,
+            "candidate": {
+              "kind": "join",
+              "actor": "partner"
+            }
+          },
+          {
+            "kind": "join_with_absent_hero",
+            "seed": 1003,
+            "after_events": 13,
+            "candidate": {
+              "kind": "join",
+              "actor": "partner"
+            }
+          },
+          {
+            "kind": "join_without_hero_drum",
+            "seed": 1003,
+            "after_events": 13,
+            "candidate": {
+              "kind": "join",
+              "actor": "partner"
+            }
+          },
+          {
+            "kind": "premature_both_returned_claim",
+            "seed": 1003,
+            "after_events": 15,
+            "sentence": "He returned the second drum to the shelf, both instruments back where they belonged.",
+            "locations": {
+              "drum": "hero",
+              "spare": "shelf"
+            }
+          },
+          {
+            "kind": "join_with_absent_hero",
+            "seed": 1004,
+            "after_events": 12,
+            "candidate": {
+              "kind": "join",
+              "actor": "partner"
+            }
+          },
+          {
+            "kind": "join_without_hero_drum",
+            "seed": 1004,
+            "after_events": 12,
+            "candidate": {
+              "kind": "join",
+              "actor": "partner"
+            }
+          },
+          {
+            "kind": "premature_both_returned_claim",
+            "seed": 1004,
+            "after_events": 14,
+            "sentence": "Mateo returned the second drum to the shelf, both instruments back where they belonged.",
+            "locations": {
+              "drum": "hero",
+              "spare": "shelf"
+            }
+          },
+          {
+            "kind": "join_with_absent_hero",
+            "seed": 1005,
+            "after_events": 12,
+            "candidate": {
+              "kind": "join",
+              "actor": "partner"
+            }
+          },
+          {
+            "kind": "join_without_hero_drum",
+            "seed": 1005,
+            "after_events": 12,
+            "candidate": {
+              "kind": "join",
+              "actor": "partner"
+            }
+          },
+          {
+            "kind": "join_with_absent_hero",
+            "seed": 1006,
+            "after_events": 12,
+            "candidate": {
+              "kind": "join",
+              "actor": "partner"
+            }
+          },
+          {
+            "kind": "join_without_hero_drum",
+            "seed": 1006,
+            "after_events": 12,
+            "candidate": {
+              "kind": "join",
+              "actor": "partner"
+            }
+          },
+          {
+            "kind": "premature_both_returned_claim",
+            "seed": 1006,
+            "after_events": 14,
+            "sentence": "He returned the second drum to the shelf, both instruments back where they belonged.",
+            "locations": {
+              "drum": "hero",
+              "spare": "shelf"
+            }
+          },
+          {
+            "kind": "join_with_absent_hero",
+            "seed": 1008,
+            "after_events": 12,
+            "candidate": {
+              "kind": "join",
+              "actor": "partner"
+            }
+          },
+          {
+            "kind": "join_without_hero_drum",
+            "seed": 1008,
+            "after_events": 12,
+            "candidate": {
+              "kind": "join",
+              "actor": "partner"
+            }
+          },
+          {
+            "kind": "premature_both_returned_claim",
+            "seed": 1008,
+            "after_events": 14,
+            "sentence": "He returned the second drum to the shelf, both instruments back where they belonged.",
+            "locations": {
+              "drum": "hero",
+              "spare": "shelf"
+            }
+          },
+          {
+            "kind": "join_with_absent_hero",
+            "seed": 1011,
+            "after_events": 13,
+            "candidate": {
+              "kind": "join",
+              "actor": "partner"
+            }
+          },
+          {
+            "kind": "join_without_hero_drum",
+            "seed": 1011,
+            "after_events": 13,
+            "candidate": {
+              "kind": "join",
+              "actor": "partner"
+            }
+          },
+          {
+            "kind": "join_with_absent_hero",
+            "seed": 1012,
+            "after_events": 12,
+            "candidate": {
+              "kind": "join",
+              "actor": "partner"
+            }
+          },
+          {
+            "kind": "join_without_hero_drum",
+            "seed": 1012,
+            "after_events": 12,
+            "candidate": {
+              "kind": "join",
+              "actor": "partner"
+            }
+          },
+          {
+            "kind": "premature_both_returned_claim",
+            "seed": 1012,
+            "after_events": 14,
+            "sentence": "He returned the second drum to the shelf, both instruments back where they belonged.",
+            "locations": {
+              "drum": "hero",
+              "spare": "shelf"
+            }
+          },
+          {
+            "kind": "join_with_absent_hero",
+            "seed": 1013,
+            "after_events": 13,
+            "candidate": {
+              "kind": "join",
+              "actor": "partner"
+            }
+          },
+          {
+            "kind": "join_without_hero_drum",
+            "seed": 1013,
+            "after_events": 13,
+            "candidate": {
+              "kind": "join",
+              "actor": "partner"
+            }
+          },
+          {
+            "kind": "premature_both_returned_claim",
+            "seed": 1013,
+            "after_events": 15,
+            "sentence": "Then he returned the second drum to the shelf, both instruments back where they belonged.",
+            "locations": {
+              "drum": "hero",
+              "spare": "shelf"
+            }
+          },
+          {
+            "kind": "join_with_absent_hero",
+            "seed": 1016,
+            "after_events": 13,
+            "candidate": {
+              "kind": "join",
+              "actor": "partner"
+            }
+          },
+          {
+            "kind": "join_without_hero_drum",
+            "seed": 1016,
+            "after_events": 13,
+            "candidate": {
+              "kind": "join",
+              "actor": "partner"
+            }
+          },
+          {
+            "kind": "premature_both_returned_claim",
+            "seed": 1016,
+            "after_events": 15,
+            "sentence": "He returned the second drum to the shelf, both instruments back where they belonged.",
+            "locations": {
+              "drum": "hero",
+              "spare": "shelf"
+            }
+          },
+          {
+            "kind": "join_with_absent_hero",
+            "seed": 1017,
+            "after_events": 13,
+            "candidate": {
+              "kind": "join",
+              "actor": "partner"
+            }
+          },
+          {
+            "kind": "join_without_hero_drum",
+            "seed": 1017,
+            "after_events": 13,
+            "candidate": {
+              "kind": "join",
+              "actor": "partner"
+            }
+          },
+          {
+            "kind": "premature_both_returned_claim",
+            "seed": 1017,
+            "after_events": 15,
+            "sentence": "He returned the second drum to the shelf, both instruments back where they belonged.",
+            "locations": {
+              "drum": "hero",
+              "spare": "shelf"
+            }
+          },
+          {
+            "kind": "join_with_absent_hero",
+            "seed": 1018,
+            "after_events": 12,
+            "candidate": {
+              "kind": "join",
+              "actor": "partner"
+            }
+          },
+          {
+            "kind": "join_without_hero_drum",
+            "seed": 1018,
+            "after_events": 12,
+            "candidate": {
+              "kind": "join",
+              "actor": "partner"
+            }
+          },
+          {
+            "kind": "premature_both_returned_claim",
+            "seed": 1018,
+            "after_events": 14,
+            "sentence": "He returned the second drum to the shelf, both instruments back where they belonged.",
+            "locations": {
+              "drum": "hero",
+              "spare": "shelf"
+            }
+          },
+          {
+            "kind": "join_with_absent_hero",
+            "seed": 1023,
+            "after_events": 12,
+            "candidate": {
+              "kind": "join",
+              "actor": "partner"
+            }
+          },
+          {
+            "kind": "join_without_hero_drum",
+            "seed": 1023,
+            "after_events": 12,
+            "candidate": {
+              "kind": "join",
+              "actor": "partner"
+            }
+          },
+          {
+            "kind": "premature_both_returned_claim",
+            "seed": 1023,
+            "after_events": 14,
+            "sentence": "He returned the second drum to the shelf, both instruments back where they belonged.",
+            "locations": {
+              "drum": "hero",
+              "spare": "shelf"
+            }
+          },
+          {
+            "kind": "join_with_absent_hero",
+            "seed": 1028,
+            "after_events": 12,
+            "candidate": {
+              "kind": "join",
+              "actor": "partner"
+            }
+          },
+          {
+            "kind": "join_without_hero_drum",
+            "seed": 1028,
+            "after_events": 12,
+            "candidate": {
+              "kind": "join",
+              "actor": "partner"
+            }
+          },
+          {
+            "kind": "join_with_absent_hero",
+            "seed": 1029,
+            "after_events": 12,
+            "candidate": {
+              "kind": "join",
+              "actor": "partner"
+            }
+          },
+          {
+            "kind": "join_without_hero_drum",
+            "seed": 1029,
+            "after_events": 12,
+            "candidate": {
+              "kind": "join",
+              "actor": "partner"
+            }
+          },
+          {
+            "kind": "premature_both_returned_claim",
+            "seed": 1029,
+            "after_events": 14,
+            "sentence": "Then he returned the second drum to the shelf, both instruments back where they belonged.",
+            "locations": {
+              "drum": "hero",
+              "spare": "shelf"
+            }
+          },
+          {
+            "kind": "join_with_absent_hero",
+            "seed": 1032,
+            "after_events": 13,
+            "candidate": {
+              "kind": "join",
+              "actor": "partner"
+            }
+          },
+          {
+            "kind": "join_without_hero_drum",
+            "seed": 1032,
+            "after_events": 13,
+            "candidate": {
+              "kind": "join",
+              "actor": "partner"
+            }
+          },
+          {
+            "kind": "join_with_absent_hero",
+            "seed": 1035,
+            "after_events": 12,
+            "candidate": {
+              "kind": "join",
+              "actor": "partner"
+            }
+          },
+          {
+            "kind": "join_without_hero_drum",
+            "seed": 1035,
+            "after_events": 12,
+            "candidate": {
+              "kind": "join",
+              "actor": "partner"
+            }
+          },
+          {
+            "kind": "premature_both_returned_claim",
+            "seed": 1035,
+            "after_events": 14,
+            "sentence": "He returned the second drum to the shelf, both instruments back where they belonged.",
+            "locations": {
+              "drum": "hero",
+              "spare": "shelf"
+            }
+          },
+          {
+            "kind": "join_with_absent_hero",
+            "seed": 1036,
+            "after_events": 13,
+            "candidate": {
+              "kind": "join",
+              "actor": "partner"
+            }
+          },
+          {
+            "kind": "join_without_hero_drum",
+            "seed": 1036,
+            "after_events": 13,
+            "candidate": {
+              "kind": "join",
+              "actor": "partner"
+            }
+          },
+          {
+            "kind": "join_with_absent_hero",
+            "seed": 1040,
+            "after_events": 13,
+            "candidate": {
+              "kind": "join",
+              "actor": "partner"
+            }
+          },
+          {
+            "kind": "join_without_hero_drum",
+            "seed": 1040,
+            "after_events": 13,
+            "candidate": {
+              "kind": "join",
+              "actor": "partner"
+            }
+          },
+          {
+            "kind": "premature_both_returned_claim",
+            "seed": 1040,
+            "after_events": 15,
+            "sentence": "He returned the second drum to the shelf, both instruments back where they belonged.",
+            "locations": {
+              "drum": "hero",
+              "spare": "shelf"
+            }
+          },
+          {
+            "kind": "join_with_absent_hero",
+            "seed": 1041,
+            "after_events": 12,
+            "candidate": {
+              "kind": "join",
+              "actor": "partner"
+            }
+          },
+          {
+            "kind": "join_without_hero_drum",
+            "seed": 1041,
+            "after_events": 12,
+            "candidate": {
+              "kind": "join",
+              "actor": "partner"
+            }
+          },
+          {
+            "kind": "join_with_absent_hero",
+            "seed": 1043,
+            "after_events": 13,
+            "candidate": {
+              "kind": "join",
+              "actor": "partner"
+            }
+          },
+          {
+            "kind": "join_without_hero_drum",
+            "seed": 1043,
+            "after_events": 13,
+            "candidate": {
+              "kind": "join",
+              "actor": "partner"
+            }
+          },
+          {
+            "kind": "join_with_absent_hero",
+            "seed": 1046,
+            "after_events": 12,
+            "candidate": {
+              "kind": "join",
+              "actor": "partner"
+            }
+          },
+          {
+            "kind": "join_without_hero_drum",
+            "seed": 1046,
+            "after_events": 12,
+            "candidate": {
+              "kind": "join",
+              "actor": "partner"
+            }
+          },
+          {
+            "kind": "join_with_absent_hero",
+            "seed": 1048,
+            "after_events": 12,
+            "candidate": {
+              "kind": "join",
+              "actor": "partner"
+            }
+          },
+          {
+            "kind": "join_without_hero_drum",
+            "seed": 1048,
+            "after_events": 12,
+            "candidate": {
+              "kind": "join",
+              "actor": "partner"
+            }
+          },
+          {
+            "kind": "join_with_absent_hero",
+            "seed": 1049,
+            "after_events": 13,
+            "candidate": {
+              "kind": "join",
+              "actor": "partner"
+            }
+          },
+          {
+            "kind": "join_without_hero_drum",
+            "seed": 1049,
+            "after_events": 13,
+            "candidate": {
+              "kind": "join",
+              "actor": "partner"
+            }
+          },
+          {
+            "kind": "join_with_absent_hero",
+            "seed": 1050,
+            "after_events": 12,
+            "candidate": {
+              "kind": "join",
+              "actor": "partner"
+            }
+          },
+          {
+            "kind": "join_without_hero_drum",
+            "seed": 1050,
+            "after_events": 12,
+            "candidate": {
+              "kind": "join",
+              "actor": "partner"
+            }
+          },
+          {
+            "kind": "join_with_absent_hero",
+            "seed": 1053,
+            "after_events": 13,
+            "candidate": {
+              "kind": "join",
+              "actor": "partner"
+            }
+          },
+          {
+            "kind": "join_without_hero_drum",
+            "seed": 1053,
+            "after_events": 13,
+            "candidate": {
+              "kind": "join",
+              "actor": "partner"
+            }
+          },
+          {
+            "kind": "join_with_absent_hero",
+            "seed": 1058,
+            "after_events": 12,
+            "candidate": {
+              "kind": "join",
+              "actor": "partner"
+            }
+          },
+          {
+            "kind": "join_without_hero_drum",
+            "seed": 1058,
+            "after_events": 12,
+            "candidate": {
+              "kind": "join",
+              "actor": "partner"
+            }
+          }
+        ],
+        "grammatical_error_story_counts": {
+          "the room quiet sounds": 13,
+          "hoped a duet": 26,
+          "Mateo choice stayed his": 32
+        }
+      }
+    },
+    {
+      "author": "terra",
+      "model": "gpt-6.1-terra",
+      "attempt": "round1",
+      "request_sha256": "0f70232231cd4760f04c8453724293a677944c21eaddfaf758922f2fe4565ff0",
+      "response": {
+        "model": "gpt-6.1-terra",
+        "status": "completed",
+        "service_tier": "flex",
+        "incomplete_details": null,
+        "usage": {
+          "input_tokens": 22362,
+          "input_tokens_details": {
+            "cached_tokens": 0,
+            "cache_write_tokens": 0,
+            "cache_write_tokens_details": {
+              "ttl_12h_tokens": 0,
+              "ttl_30m_tokens": 0
+            }
+          },
+          "output_tokens": 10080,
+          "output_tokens_details": {
+            "reasoning_tokens": 4607
+          },
+          "total_tokens": 32442
+        }
+      },
+      "elapsed_seconds": 79.493379291147,
+      "checks": {
+        "import_ok": true,
+        "requested": 60,
+        "passed": 60,
+        "intervention_requested": 20,
+        "intervention_passed": 20,
+        "forced_willing_duets": 7,
+        "forced_unwilling_duets": 0,
+        "failures": {},
+        "corpus": {
+          "unique_texts": 60,
+          "unique_event_paths": 22,
+          "event_paths": {
+            "opening > borrow > invite > decline > practice > signup > reshape > perform > wait > decline_private > return > ending": 6,
+            "opening > borrow > invite > decline > practice > signup > reshape > perform > invite_private > consent > pickup > join > return > return > ending": 2,
+            "opening > borrow > invite > decline > consider > signup > reshape > perform > wait > consent > pickup > join > return > return > ending": 2,
+            "opening > borrow > invite > decline > consider > signup > rehearse > perform > invite_private > consent > pickup > join > return > return > ending": 1,
+            "opening > borrow > invite > decline > practice > signup > rehearse > perform > invite_private > decline_private > return > ending": 2,
+            "opening > borrow > invite > decline > consider > signup > rehearse > perform > invite_private > decline_private > return > ending": 2,
+            "opening > borrow > invite > decline > practice > signup > reshape > perform > wait > consent > pickup > join > return > return > ending": 3,
+            "opening > borrow > invite > decline > consider > signup > reshape > perform > invite_private > decline_private > return > ending": 4,
+            "opening > borrow > invite > decline > practice > signup > rehearse > perform > wait > quiet > return > ending": 3,
+            "opening > borrow > invite > decline > practice > signup > rehearse > perform > wait > consent > pickup > join > return > return > ending": 3,
+            "opening > borrow > invite > decline > practice > signup > reshape > perform > wait > quiet > return > ending": 4,
+            "opening > borrow > invite > decline > consider > signup > reshape > perform > wait > decline_private > return > ending": 3,
+            "opening > borrow > invite > decline > practice > signup > rehearse > perform > wait > decline_private > return > ending": 4,
+            "opening > borrow > invite > decline > practice > signup > rehearse > perform > invite_private > consent > pickup > join > return > return > ending": 3,
+            "opening > borrow > invite > decline > practice > signup > reshape > perform > invite_private > decline_private > return > ending": 4,
+            "opening > borrow > invite > decline > consider > signup > rehearse > perform > invite_private > quiet > return > ending": 3,
+            "opening > borrow > invite > decline > consider > signup > reshape > perform > invite_private > quiet > return > ending": 2,
+            "opening > borrow > invite > decline > consider > signup > reshape > perform > wait > quiet > return > ending": 1,
+            "opening > borrow > invite > decline > consider > signup > reshape > perform > invite_private > consent > pickup > join > return > return > ending": 3,
+            "opening > borrow > invite > decline > practice > signup > reshape > perform > invite_private > quiet > return > ending": 3,
+            "opening > borrow > invite > decline > practice > signup > rehearse > perform > invite_private > quiet > return > ending": 1,
+            "opening > borrow > invite > decline > consider > signup > rehearse > perform > wait > decline_private > return > ending": 1
+          },
+          "outcomes": {
+            "solo": 43,
+            "private_duet": 17
+          },
+          "mean_words": 257.51666666666665,
+          "mean_events": 12.85,
+          "branching_word_steps": 2238,
+          "total_word_steps": 18050
+        }
+      },
+      "observed_event_types": {
+        "opening": 60,
+        "borrow": 60,
+        "invite": 60,
+        "decline": 60,
+        "practice": 38,
+        "signup": 60,
+        "reshape": 37,
+        "perform": 60,
+        "wait": 30,
+        "decline_private": 26,
+        "return": 77,
+        "ending": 60,
+        "invite_private": 30,
+        "consent": 17,
+        "pickup": 17,
+        "join": 17,
+        "consider": 22,
+        "rehearse": 23,
+        "quiet": 17
+      },
+      "judges": {
+        "luna": {
+          "story_ratings": [
+            {
+              "id": "s000014",
+              "rating": {
+                "coherence": 8,
+                "style": 8,
+                "grammar": 9,
+                "storytelling": 7,
+                "overall": 8
+              },
+              "note": "Nia turns the imagined duet into a solo and performs it; the ending leaves a gentle opening for another day, though the final image repeats that idea."
+            },
+            {
+              "id": "s000028",
+              "rating": {
+                "coherence": 8,
+                "style": 8,
+                "grammar": 9,
+                "storytelling": 7,
+                "overall": 8
+              },
+              "note": "Nia accepts Mateo’s reluctance, performs a solo, and gives him space when he declines again; the quiet drum-and-ribbon ending suits the resolution."
+            },
+            {
+              "id": "s000058",
+              "rating": {
+                "coherence": 8,
+                "style": 8,
+                "grammar": 9,
+                "storytelling": 8,
+                "overall": 8
+              },
+              "note": "Nia makes a solo from the empty spaces, then offers Mateo a private duet; her performance and his later choice give the story a satisfying turn and ending."
+            },
+            {
+              "id": "s000023",
+              "rating": {
+                "coherence": 9,
+                "style": 8,
+                "grammar": 9,
+                "storytelling": 9,
+                "overall": 9
+              },
+              "note": "After Nia’s solo, Mateo chooses a private duet, and their answering beats complete the original musical wish in a concrete final image."
+            },
+            {
+              "id": "s000036",
+              "rating": {
+                "coherence": 9,
+                "style": 8,
+                "grammar": 9,
+                "storytelling": 9,
+                "overall": 9
+              },
+              "note": "Mateo’s decision to play privately follows Nia’s respectful solo performance; the duet resolves the central wish with a clear, audible image."
+            },
+            {
+              "id": "s000017",
+              "rating": {
+                "coherence": 9,
+                "style": 8,
+                "grammar": 9,
+                "storytelling": 9,
+                "overall": 9
+              },
+              "note": "Mateo initiates the private duet after hearing Nia’s solo, making his choice consequential and the shared final quiver a fitting close."
+            },
+            {
+              "id": "s000053",
+              "rating": {
+                "coherence": 9,
+                "style": 8,
+                "grammar": 9,
+                "storytelling": 8,
+                "overall": 8
+              },
+              "note": "Nia reshapes her solo and performs it, then respects Mateo’s choice to listen; the ending is complete but deliberately leaves the duet unrealized."
+            },
+            {
+              "id": "s000021",
+              "rating": {
+                "coherence": 8,
+                "style": 8,
+                "grammar": 9,
+                "storytelling": 7,
+                "overall": 8
+              },
+              "note": "Nia performs her solo and accepts that Mateo is not ready even privately; the restrained close is coherent, though the post-performance beat is somewhat repetitive."
+            },
+            {
+              "id": "s000034",
+              "rating": {
+                "coherence": 9,
+                "style": 8,
+                "grammar": 9,
+                "storytelling": 7,
+                "overall": 8
+              },
+              "note": "The solo becomes a meaningful performance, and Mateo’s preference to listen is accepted; the final shelf image quietly completes this branch."
+            },
+            {
+              "id": "s000048",
+              "rating": {
+                "coherence": 9,
+                "style": 8,
+                "grammar": 9,
+                "storytelling": 9,
+                "overall": 9
+              },
+              "note": "Nia’s solo leads to an offered private duet that Mateo accepts; their exchange of beats gives a clear payoff and a vivid ending."
+            },
+            {
+              "id": "s000002",
+              "rating": {
+                "coherence": 9,
+                "style": 8,
+                "grammar": 9,
+                "storytelling": 9,
+                "overall": 9
+              },
+              "note": "Nia turns the gaps into a pattern, performs it, and then shares a private duet with Mateo; the final fading sound completes both musical threads."
+            },
+            {
+              "id": "s000057",
+              "rating": {
+                "coherence": 9,
+                "style": 8,
+                "grammar": 9,
+                "storytelling": 7,
+                "overall": 8
+              },
+              "note": "Nia performs alone and accepts Mateo’s continued reluctance; the ribbon and drums make a tender final image, though the ending reiterates the open possibility."
+            },
+            {
+              "id": "s000042",
+              "rating": {
+                "coherence": 8,
+                "style": 8,
+                "grammar": 9,
+                "storytelling": 7,
+                "overall": 8
+              },
+              "note": "Nia’s solo succeeds, but Mateo’s response to the private invitation is not shown; the story closes on her choice to leave the duet for later."
+            },
+            {
+              "id": "s000039",
+              "rating": {
+                "coherence": 9,
+                "style": 8,
+                "grammar": 9,
+                "storytelling": 7,
+                "overall": 8
+              },
+              "note": "Nia performs her solo and Mateo says he would rather listen; her acceptance resolves the social tension, with a quiet but somewhat repeated closing image."
+            },
+            {
+              "id": "s000035",
+              "rating": {
+                "coherence": 9,
+                "style": 8,
+                "grammar": 9,
+                "storytelling": 9,
+                "overall": 9
+              },
+              "note": "Mateo chooses a private duet on his own, and their answering rhythms fulfill the central musical wish in a concrete ending."
+            },
+            {
+              "id": "s000024",
+              "rating": {
+                "coherence": 9,
+                "style": 8,
+                "grammar": 9,
+                "storytelling": 7,
+                "overall": 8
+              },
+              "note": "Nia’s solo stands on its own, and Mateo’s refusal of even a private duet is respected; the ribbon image neatly closes the story."
+            },
+            {
+              "id": "s000038",
+              "rating": {
+                "coherence": 9,
+                "style": 8,
+                "grammar": 9,
+                "storytelling": 7,
+                "overall": 8
+              },
+              "note": "Nia performs her solo and Mateo declines a private duet; the story resolves through respect for his choice, though the final possibility is restated."
+            },
+            {
+              "id": "s000018",
+              "rating": {
+                "coherence": 9,
+                "style": 8,
+                "grammar": 9,
+                "storytelling": 9,
+                "overall": 9
+              },
+              "note": "Mateo asks to play privately after Nia’s solo, and their exchanged beats provide a complete, warm payoff to the original wish."
+            },
+            {
+              "id": "s000007",
+              "rating": {
+                "coherence": 9,
+                "style": 8,
+                "grammar": 9,
+                "storytelling": 7,
+                "overall": 8
+              },
+              "note": "Nia offers a private duet after performing, but Mateo prefers to listen; her acceptance and the quiet shelf image finish the story."
+            },
+            {
+              "id": "s000041",
+              "rating": {
+                "coherence": 9,
+                "style": 8,
+                "grammar": 9,
+                "storytelling": 9,
+                "overall": 9
+              },
+              "note": "Nia’s solo is followed by Mateo’s voluntary choice to join privately; their alternating beats create a satisfying resolution and final image."
+            }
+          ],
+          "rating": {
+            "coherence": 8.75,
+            "style": 8,
+            "grammar": 9,
+            "storytelling": 7.9,
+            "overall": 8.4
+          },
+          "diversity": {
+            "premise": 2,
+            "causal_path": 3,
+            "ending": 3,
+            "language": 3,
+            "overall": 3
+          },
+          "diversity_evidence": "All stories center on Nia hoping to perform a picnic duet with Mateo, who is uneasy about an audience; she performs a solo and the ending varies mainly by whether Mateo later joins privately, declines, or the possibility is left open. For example, s000023 and s000048 resolve with a private duet, s000024 and s000028 with Mateo declining, and s000042 leaves his response unstated. Wording and musical details vary modestly, but the set largely follows the same causal template; this small sample does not establish the generator’s overall diversity.",
+          "plot_groups": [
+            {
+              "story_ids": [
+                "s000014"
+              ],
+              "summary": "Nia performs a solo after Mateo declines an audience duet, and leaves the possibility of playing together open without a further response from him."
+            },
+            {
+              "story_ids": [
+                "s000028",
+                "s000021",
+                "s000057",
+                "s000024",
+                "s000038"
+              ],
+              "summary": "Nia performs a solo; Mateo remains unwilling to play even privately, and she accepts his choice."
+            },
+            {
+              "story_ids": [
+                "s000058"
+              ],
+              "summary": "After Nia’s solo, she offers Mateo a private duet, but leaves the possibility open without showing his answer."
+            },
+            {
+              "story_ids": [
+                "s000023",
+                "s000036",
+                "s000017",
+                "s000048",
+                "s000002",
+                "s000035",
+                "s000018",
+                "s000041"
+              ],
+              "summary": "Nia performs a solo, then Mateo chooses to join her in a private duet, resolving their musical wish."
+            },
+            {
+              "story_ids": [
+                "s000053",
+                "s000034",
+                "s000039",
+                "s000007"
+              ],
+              "summary": "Nia performs a solo and offers or considers a private duet, but Mateo prefers to listen rather than play."
+            },
+            {
+              "story_ids": [
+                "s000042"
+              ],
+              "summary": "Nia performs a solo and invites Mateo to play privately, but his response is omitted as she leaves the duet for another day."
+            }
+          ],
+          "judged_stories": 20,
+          "requested_stories": 20,
+          "complete_judge_sample": true,
+          "overall_min": 8,
+          "overall_stdev": 0.5026246899500346,
+          "stories_below_six": 0,
+          "response": {
+            "id": "resp_07e13b178111dbdb016aeab7aaed0487d1a726702800035d55",
+            "model": "gpt-6-luna",
+            "service_tier": "flex",
+            "status": "completed",
+            "usage": {
+              "input_tokens": 7554,
+              "input_tokens_details": {
+                "cached_tokens": 0,
+                "cache_write_tokens": 0,
+                "cache_write_tokens_details": {
+                  "ttl_12h_tokens": 0,
+                  "ttl_30m_tokens": 0
+                }
+              },
+              "output_tokens": 1670,
+              "output_tokens_details": {
+                "reasoning_tokens": 0
+              },
+              "total_tokens": 9224
+            }
+          }
+        },
+        "terra": {
+          "story_ratings": [
+            {
+              "id": "s000014",
+              "rating": {
+                "coherence": 8,
+                "style": 7,
+                "grammar": 8,
+                "storytelling": 8,
+                "overall": 8
+              },
+              "note": "Nia turns her disappointment into a solo; the ribbon on the shelf gives the open ending a gentle image."
+            },
+            {
+              "id": "s000028",
+              "rating": {
+                "coherence": 7,
+                "style": 7,
+                "grammar": 8,
+                "storytelling": 7,
+                "overall": 7
+              },
+              "note": "The solo grows from the pauses in the imagined duet, though Mateo's unprompted second refusal feels abrupt."
+            },
+            {
+              "id": "s000058",
+              "rating": {
+                "coherence": 7,
+                "style": 7,
+                "grammar": 8,
+                "storytelling": 7,
+                "overall": 7
+              },
+              "note": "Nia finds a satisfying solo, but her private invitation receives no clear answer before the story moves on."
+            },
+            {
+              "id": "s000023",
+              "rating": {
+                "coherence": 8,
+                "style": 7,
+                "grammar": 8,
+                "storytelling": 8,
+                "overall": 8
+              },
+              "note": "Mateo's audience worries lead naturally to Nia's solo and their later private duet; the shelf image closes the story."
+            },
+            {
+              "id": "s000036",
+              "rating": {
+                "coherence": 8,
+                "style": 7,
+                "grammar": 8,
+                "storytelling": 8,
+                "overall": 8
+              },
+              "note": "Nia makes a song she can carry alone, then offers Mateo a choice that leads to a quiet duet."
+            },
+            {
+              "id": "s000017",
+              "rating": {
+                "coherence": 8,
+                "style": 7,
+                "grammar": 8,
+                "storytelling": 8,
+                "overall": 8
+              },
+              "note": "After Nia's solo, Mateo initiates a private duet; the quivering ribbon gives it a concrete finish."
+            },
+            {
+              "id": "s000053",
+              "rating": {
+                "coherence": 8,
+                "style": 7,
+                "grammar": 8,
+                "storytelling": 8,
+                "overall": 8
+              },
+              "note": "Nia's self-answering drum makes the solo feel earned, and she respects Mateo's wish to listen."
+            },
+            {
+              "id": "s000021",
+              "rating": {
+                "coherence": 7,
+                "style": 7,
+                "grammar": 8,
+                "storytelling": 7,
+                "overall": 7
+              },
+              "note": "The changing volumes make Nia's practice vivid, though Mateo's unsolicited private-duet refusal comes suddenly."
+            },
+            {
+              "id": "s000034",
+              "rating": {
+                "coherence": 7,
+                "style": 7,
+                "grammar": 8,
+                "storytelling": 7,
+                "overall": 7
+              },
+              "note": "Nia discovers a solo of her own, but Mateo's statement that he prefers to listen lacks a clear prompt."
+            },
+            {
+              "id": "s000048",
+              "rating": {
+                "coherence": 8,
+                "style": 7,
+                "grammar": 8,
+                "storytelling": 8,
+                "overall": 8
+              },
+              "note": "The solo and the invitation to play privately follow clearly from Mateo's reluctance to face a crowd."
+            },
+            {
+              "id": "s000002",
+              "rating": {
+                "coherence": 8,
+                "style": 7,
+                "grammar": 8,
+                "storytelling": 8,
+                "overall": 8
+              },
+              "note": "The footstep rhythm gives Nia's solo character, and the private duet resolves her original wish gently."
+            },
+            {
+              "id": "s000057",
+              "rating": {
+                "coherence": 7,
+                "style": 7,
+                "grammar": 8,
+                "storytelling": 7,
+                "overall": 7
+              },
+              "note": "Nia's solo has a clear emotional arc, although Mateo's unprompted refusal of a private duet is abrupt."
+            },
+            {
+              "id": "s000042",
+              "rating": {
+                "coherence": 7,
+                "style": 7,
+                "grammar": 8,
+                "storytelling": 7,
+                "overall": 7
+              },
+              "note": "The drum answering itself makes a pleasing solo, but Mateo's response to the later invitation is left unclear."
+            },
+            {
+              "id": "s000039",
+              "rating": {
+                "coherence": 7,
+                "style": 7,
+                "grammar": 8,
+                "storytelling": 7,
+                "overall": 7
+              },
+              "note": "Nia makes an independent song and leaves Mateo space, though his wish to listen appears without a prompt."
+            },
+            {
+              "id": "s000035",
+              "rating": {
+                "coherence": 8,
+                "style": 7,
+                "grammar": 8,
+                "storytelling": 8,
+                "overall": 8
+              },
+              "note": "The footstep pattern enriches the solo, and Mateo's own request leads to a duet without an audience."
+            },
+            {
+              "id": "s000024",
+              "rating": {
+                "coherence": 8,
+                "style": 7,
+                "grammar": 8,
+                "storytelling": 8,
+                "overall": 8
+              },
+              "note": "Nia builds a solo from the empty spaces and accepts Mateo's clear refusal of a private duet."
+            },
+            {
+              "id": "s000038",
+              "rating": {
+                "coherence": 8,
+                "style": 7,
+                "grammar": 8,
+                "storytelling": 8,
+                "overall": 8
+              },
+              "note": "The practice and later refusal connect cleanly, with the quiet drums reflecting the duet left for another day."
+            },
+            {
+              "id": "s000018",
+              "rating": {
+                "coherence": 8,
+                "style": 7,
+                "grammar": 8,
+                "storytelling": 8,
+                "overall": 8
+              },
+              "note": "Mateo chooses a private duet after Nia's solo, and the faintly moving ribbon provides a visual ending."
+            },
+            {
+              "id": "s000007",
+              "rating": {
+                "coherence": 8,
+                "style": 7,
+                "grammar": 8,
+                "storytelling": 8,
+                "overall": 8
+              },
+              "note": "Nia's solo follows from Mateo's reluctance, and his choice to listen is accepted without pressure."
+            },
+            {
+              "id": "s000041",
+              "rating": {
+                "coherence": 8,
+                "style": 7,
+                "grammar": 8,
+                "storytelling": 8,
+                "overall": 8
+              },
+              "note": "The quiet practice leads to a successful solo, then an invitation gives Mateo room to play privately."
+            }
+          ],
+          "rating": {
+            "coherence": 7.65,
+            "style": 7,
+            "grammar": 8,
+            "storytelling": 7.65,
+            "overall": 7.65
+          },
+          "diversity": {
+            "premise": 0,
+            "causal_path": 2,
+            "ending": 3,
+            "language": 1,
+            "overall": 2
+          },
+          "diversity_evidence": "All sampled stories use Nia's picnic duet, Mateo's audience anxiety, and Nia's solo. A minor outcome branch separates the private duet in s000023 and s000017 from the deferred duet in s000024 and s000014. Even their closing ribbon images and much of their wording recur; this describes only the supplied sample.",
+          "plot_groups": [
+            {
+              "story_ids": [
+                "s000014",
+                "s000028",
+                "s000058",
+                "s000053",
+                "s000021",
+                "s000034",
+                "s000057",
+                "s000042",
+                "s000039",
+                "s000024",
+                "s000038",
+                "s000007"
+              ],
+              "summary": "Mateo declines the public duet, so Nia performs a solo; a later duet is declined or left open."
+            },
+            {
+              "story_ids": [
+                "s000023",
+                "s000036",
+                "s000017",
+                "s000048",
+                "s000002",
+                "s000035",
+                "s000018",
+                "s000041"
+              ],
+              "summary": "Mateo declines the public duet, so Nia performs a solo; afterward they play a duet privately."
+            }
+          ],
+          "judged_stories": 20,
+          "requested_stories": 20,
+          "complete_judge_sample": true,
+          "overall_min": 7,
+          "overall_stdev": 0.4893604849295929,
+          "stories_below_six": 0,
+          "response": {
+            "id": "resp_0ad0f23f62d2106d016aeab7aae79087d1a7c344affa2b4311",
+            "model": "gpt-6.1-terra",
+            "service_tier": "flex",
+            "status": "completed",
+            "usage": {
+              "input_tokens": 7554,
+              "input_tokens_details": {
+                "cached_tokens": 0,
+                "cache_write_tokens": 0,
+                "cache_write_tokens_details": {
+                  "ttl_12h_tokens": 0,
+                  "ttl_30m_tokens": 0
+                }
+              },
+              "output_tokens": 1906,
+              "output_tokens_details": {
+                "reasoning_tokens": 0
+              },
+              "total_tokens": 9460
+            }
+          }
+        }
+      },
+      "supplemental_diagnostics": {
+        "scope": "post-hoc diagnostics, same probes and same 60 seeds for both authors",
+        "checks": {
+          "join_with_absent_hero": 17,
+          "join_without_hero_drum": 17
+        },
+        "failure_counts": {},
+        "failures": [],
+        "grammatical_error_story_counts": {}
+      }
+    }
+  ]
+}

@@ -4,6 +4,29 @@ Engine improvements inspired by interactive fiction systems (Ink, ChoiceScript, 
 
 ## Word-distribution experiment
 
+- Matched music-story rule-authoring trial: `grammarworlds/authoring_trial.py`,
+  results in `grammarworlds/runs/authoring_music_20261103/REPORT.md`. Latest
+  Luna/Terra on Flex/high got the same ruleset, source story and capability gaps.
+  Terra completed first pass; Luna required a larger-cap recovery after a 32k
+  truncation. Both completed 60/60 local stories and the initial 20/20 intervention
+  cases. Both blinded judges preferred Terra's prose (8.40/7.65 vs 7.05/6.60).
+  Post-hoc probes: Luna misses co-performer presence/instrument guards and makes
+  14 premature return claims; its complement/possessive rules also break grammar.
+  Terra passed those probes. Keep first-pass/recovery evidence distinct. Next
+  measurable gate: guard the physical prerequisites of every performer and
+  verify intermediate prose claims against effects; improve diversity beyond
+  the current 2-3/9 within this constrained source-story family. No author pack
+  has been integrated into the production generator.
+- `grammarworlds/judge.py` now attaches the shared story-set rubric to
+  `gpt-6-luna` (Flex, reasoning none). The 2026-11-03 baseline generated 300
+  untouched stories and judged 60: quality 6.38/9, grammar 8.33/9, style and
+  storytelling 6.05/9, mean within-scenario diversity 1.67/9. All 300 strings
+  differed, but Luna found just 2–3 causal groups per scenario. Saved evidence:
+  `grammarworlds/runs/luna_baseline_20261103/report.md`. Defects: `repetition`,
+  `event_log_prose`, `too_shallow` (development), and narrow outcomes. Next
+  proposed gate: preserve mean quality >=6 while lifting within-scenario
+  diversity >=4 through distinct solutions/consequences; compare the fixed
+  seeds and fresh held-out samples. This gate is not yet achieved.
 - `grammarworlds/` now integrates a local weighted branching grammar, explicit
   next-word distributions, carrier-bound attention, and executable world effects.
   Three situations (rescue/kite/key) use 11 event kernels; meanings stay latent
