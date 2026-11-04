@@ -2,6 +2,34 @@
 
 Engine improvements inspired by interactive fiction systems (Ink, ChoiceScript, Inform 7, Twine, TADS).
 
+## Word-distribution experiment
+
+- `grammarworlds/` now integrates a local weighted branching grammar, explicit
+  next-word distributions, carrier-bound attention, and executable world effects.
+  Three situations (rescue/kite/key) use 11 event kernels; meanings stay latent
+  until a sentence completes. Run `.venv/bin/python -m grammarworlds --verify`.
+  Evidence and limits are in its README, samples, and support audit. Current
+  quality limits: repetitive names/transitions, sparse motivations, shared recovery
+  arc. Next measurable gate: new argument structures and competing goals while
+  keeping semantic completion, probability normalization, and latency checked.
+- `grammar_completion_experiment/probe.py` now records/replays a real GF
+  Phrasebook autocomplete experiment (14 prefixes; 362 abstract constructors,
+  not production rules). Agreement, branching, and stopping work in the sampled
+  cases; `eat beer` still parses. Next integration: grammar support + world scores,
+  measuring semantic validity separately from syntax. See its README for evidence.
+- `word_distribution_demo.py` is an isolated, standard-library prototype: eight
+  word positions, exactly four legal alternatives at each, explicit probabilities,
+  seeded sampling, and a physical event committed after the sentence completes.
+  Authored attention over world facts and prior words adds inspectable logit
+  contributions; `--attention off`, `--weather`, and `--prefix` allow interventions.
+  Run `python word_distribution_demo.py --verify` for 400-sample checks, grounding,
+  reproducibility, and context sensitivity. `--json` exposes the complete trace.
+- Limits: fixed grammar and vocabulary, authored weights rather than calibrated
+  probabilities, no learned representations, no sampled EOS, one sentence per
+  fresh world. All four animal descriptions are deliberately valid for all four
+  animals. Next gate: compare held-out next-word distributions against a teacher
+  or known probabilistic generator, including KL divergence and attention ablation.
+
 ---
 
 ## ⭐ North Star — The Memeplex Model (canonical design: [`story.py`](story.py))
