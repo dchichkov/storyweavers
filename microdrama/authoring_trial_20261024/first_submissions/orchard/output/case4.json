@@ -1,0 +1,696 @@
+{
+  "title": "The White Ribbons",
+  "config": {
+    "access": false,
+    "cooperate": true,
+    "distraction": true
+  },
+  "seed": 0,
+  "initial": {
+    "valley.location": "orchard",
+    "mara.location": "orchard",
+    "ivo.location": "orchard",
+    "notebook.location": "orchard",
+    "fork.location": "orchard",
+    "trial.location": "orchard",
+    "rows.location": "orchard",
+    "valley.ended": false,
+    "valley.outcome": "",
+    "valley.stage": 0,
+    "valley.frost": true,
+    "mara.distracted": true,
+    "mara.belief": "bees",
+    "mara.observed_cause": "unknown",
+    "ivo.willing": true,
+    "notebook.accessible": false,
+    "fork.owner": "ivo",
+    "fork.user": "ivo",
+    "fork.returned": false,
+    "trial.cause": "frost",
+    "trial.tested": false,
+    "trial.protected": 0,
+    "trial.air_gap": false,
+    "trial.anchored": false,
+    "trial.retains_warmth": false,
+    "rows.air_gap": false,
+    "rows.anchored": false,
+    "rows.protected": 0,
+    "rows.surviving": 0,
+    "rows.total": 6,
+    "notebook.meme.air_gap": 1.0,
+    "notebook.meme.anchor_edges": 1.0,
+    "mara.meme.air_gap": 0.0,
+    "mara.meme.anchor_edges": 0.0
+  },
+  "final": {
+    "valley.location": "orchard",
+    "mara.location": "orchard",
+    "ivo.location": "orchard",
+    "notebook.location": "orchard",
+    "fork.location": "orchard",
+    "trial.location": "orchard",
+    "rows.location": "orchard",
+    "valley.ended": true,
+    "valley.outcome": "lost blossoms",
+    "valley.stage": 8,
+    "valley.frost": true,
+    "mara.distracted": true,
+    "mara.belief": "frost",
+    "mara.observed_cause": "frost",
+    "ivo.willing": true,
+    "notebook.accessible": false,
+    "fork.owner": "ivo",
+    "fork.user": "ivo",
+    "fork.returned": true,
+    "trial.cause": "frost",
+    "trial.tested": true,
+    "trial.protected": 0,
+    "trial.air_gap": false,
+    "trial.anchored": false,
+    "trial.retains_warmth": false,
+    "rows.air_gap": false,
+    "rows.anchored": false,
+    "rows.protected": 0,
+    "rows.surviving": 0,
+    "rows.total": 6,
+    "notebook.meme.air_gap": 1.0,
+    "notebook.meme.anchor_edges": 1.0,
+    "mara.meme.air_gap": 0.0,
+    "mara.meme.anchor_edges": 0.0
+  },
+  "entities": {
+    "valley": {
+      "kind": "group"
+    },
+    "mara": {
+      "kind": "character"
+    },
+    "ivo": {
+      "kind": "character"
+    },
+    "notebook": {
+      "kind": "book"
+    },
+    "fork": {
+      "kind": "tool"
+    },
+    "trial": {
+      "kind": "plant"
+    },
+    "rows": {
+      "kind": "plants"
+    }
+  },
+  "events": [
+    {
+      "id": "e001",
+      "drama": "night0",
+      "action": "warning",
+      "actors": [
+        "mara",
+        "ivo"
+      ],
+      "before_hash": "aa383d94ef5772bce2a52ba423996ab5e5006869b240e4d2b4e276d457f82b17",
+      "after_hash": "c2c6698a220f8e11e216fd11b13e8e22f1f83a6402ab82611c512688f0828ed6",
+      "changes": {
+        "valley.stage": {
+          "before": 0,
+          "after": 1
+        }
+      },
+      "reads": {
+        "valley.stage": 0,
+        "valley.frost": true,
+        "mara.belief": "bees"
+      },
+      "causes": [],
+      "transfers": [],
+      "checks": [
+        "Encounters follow the night",
+        "Type of valley.stage is preserved"
+      ]
+    },
+    {
+      "id": "e002",
+      "drama": "night1",
+      "action": "inspection",
+      "actors": [
+        "mara"
+      ],
+      "before_hash": "c2c6698a220f8e11e216fd11b13e8e22f1f83a6402ab82611c512688f0828ed6",
+      "after_hash": "e20c410e4523ae8d36e649b56f5fe2d0fc840d265e022bbfe767e1f6b1bf19db",
+      "changes": {
+        "valley.stage": {
+          "before": 1,
+          "after": 2
+        },
+        "mara.belief": {
+          "before": "bees",
+          "after": "frost"
+        },
+        "mara.observed_cause": {
+          "before": "unknown",
+          "after": "frost"
+        }
+      },
+      "reads": {
+        "valley.stage": 1,
+        "mara.location": "orchard",
+        "trial.location": "orchard",
+        "trial.cause": "frost",
+        "mara.observed_cause": "unknown",
+        "mara.belief": "bees"
+      },
+      "causes": [
+        "e001"
+      ],
+      "transfers": [],
+      "checks": [
+        "Encounters follow the night",
+        "Observer is present with the observed subject",
+        "Observation preserves subject and observer roles",
+        "Type of mara.observed_cause is preserved",
+        "Type of mara.belief is preserved",
+        "Type of valley.stage is preserved"
+      ]
+    },
+    {
+      "id": "e003",
+      "drama": "night2",
+      "action": "reading",
+      "actors": [
+        "mara"
+      ],
+      "before_hash": "e20c410e4523ae8d36e649b56f5fe2d0fc840d265e022bbfe767e1f6b1bf19db",
+      "after_hash": "e43ab8518cf3b42174f61f7711245428effe6d4eaa7c7b3d8683535295a6c123",
+      "changes": {
+        "valley.stage": {
+          "before": 2,
+          "after": 3
+        }
+      },
+      "reads": {
+        "valley.stage": 2,
+        "notebook.accessible": false
+      },
+      "causes": [
+        "e002"
+      ],
+      "transfers": [],
+      "checks": [
+        "Encounters follow the night",
+        "Type of valley.stage is preserved"
+      ]
+    },
+    {
+      "id": "e004",
+      "drama": "night3",
+      "action": "small trial",
+      "actors": [
+        "mara"
+      ],
+      "before_hash": "e43ab8518cf3b42174f61f7711245428effe6d4eaa7c7b3d8683535295a6c123",
+      "after_hash": "045418cd98da9f1fc3f40688cbdcb8c452c2bf2f065ae47c79383d280ee05573",
+      "changes": {
+        "valley.stage": {
+          "before": 3,
+          "after": 4
+        },
+        "trial.tested": {
+          "before": false,
+          "after": true
+        }
+      },
+      "reads": {
+        "valley.stage": 3,
+        "mara.location": "orchard",
+        "trial.location": "orchard",
+        "mara.meme.air_gap": 0.0,
+        "trial.air_gap": false,
+        "mara.meme.anchor_edges": 0.0,
+        "trial.anchored": false,
+        "trial.protected": 0,
+        "trial.retains_warmth": false,
+        "trial.tested": false
+      },
+      "causes": [
+        "e003"
+      ],
+      "transfers": [],
+      "checks": [
+        "Encounters follow the night",
+        "Worker can reach the shelter",
+        "Type of trial.air_gap is preserved",
+        "Type of trial.anchored is preserved",
+        "Type of trial.protected is preserved",
+        "Type of trial.retains_warmth is preserved",
+        "Type of trial.tested is preserved",
+        "Type of valley.stage is preserved"
+      ]
+    },
+    {
+      "id": "e005",
+      "drama": "night4",
+      "action": "loan",
+      "actors": [
+        "mara",
+        "ivo"
+      ],
+      "before_hash": "045418cd98da9f1fc3f40688cbdcb8c452c2bf2f065ae47c79383d280ee05573",
+      "after_hash": "01dda263941c1d527babbfc2ac385fe6b017a48e35fa5d1a83a9ed5bd0f33be6",
+      "changes": {
+        "valley.stage": {
+          "before": 4,
+          "after": 5
+        },
+        "fork.user": {
+          "before": "ivo",
+          "after": "mara"
+        }
+      },
+      "reads": {
+        "valley.stage": 4,
+        "fork.user": "ivo",
+        "ivo.willing": true
+      },
+      "causes": [
+        "e004"
+      ],
+      "transfers": [],
+      "checks": [
+        "Encounters follow the night",
+        "Type of fork.user is preserved",
+        "Type of valley.stage is preserved"
+      ]
+    },
+    {
+      "id": "e006",
+      "drama": "night5",
+      "action": "sheltering",
+      "actors": [
+        "mara",
+        "ivo"
+      ],
+      "before_hash": "01dda263941c1d527babbfc2ac385fe6b017a48e35fa5d1a83a9ed5bd0f33be6",
+      "after_hash": "4eac30d9724b358c272fb6529b7a55c4976beeb9a56af9dfc27c133d575ffb98",
+      "changes": {
+        "valley.stage": {
+          "before": 5,
+          "after": 6
+        }
+      },
+      "reads": {
+        "valley.stage": 5,
+        "fork.user": "mara",
+        "trial.protected": 0
+      },
+      "causes": [
+        "e005"
+      ],
+      "transfers": [],
+      "checks": [
+        "Encounters follow the night",
+        "Mara has temporary use of the fork",
+        "Type of valley.stage is preserved"
+      ]
+    },
+    {
+      "id": "e007",
+      "drama": "night6",
+      "action": "dawn",
+      "actors": [
+        "mara"
+      ],
+      "before_hash": "4eac30d9724b358c272fb6529b7a55c4976beeb9a56af9dfc27c133d575ffb98",
+      "after_hash": "60d6df72eacef9cef89c567abc8c67bc01352707e80ccb52af0317711e32333c",
+      "changes": {
+        "valley.outcome": {
+          "before": "",
+          "after": "lost blossoms"
+        },
+        "valley.stage": {
+          "before": 6,
+          "after": 7
+        }
+      },
+      "reads": {
+        "valley.stage": 6,
+        "rows.protected": 0,
+        "rows.surviving": 0,
+        "valley.outcome": ""
+      },
+      "causes": [
+        "e006"
+      ],
+      "transfers": [],
+      "checks": [
+        "Encounters follow the night",
+        "Type of rows.surviving is preserved",
+        "Type of valley.outcome is preserved",
+        "Type of valley.stage is preserved"
+      ]
+    },
+    {
+      "id": "e008",
+      "drama": "night7",
+      "action": "return",
+      "actors": [
+        "mara",
+        "ivo"
+      ],
+      "before_hash": "60d6df72eacef9cef89c567abc8c67bc01352707e80ccb52af0317711e32333c",
+      "after_hash": "26036452a94e1b9e0fa3dcbf68e9d076935e87e525c7dcd9d79940684999084d",
+      "changes": {
+        "valley.ended": {
+          "before": false,
+          "after": true
+        },
+        "valley.stage": {
+          "before": 7,
+          "after": 8
+        },
+        "fork.user": {
+          "before": "mara",
+          "after": "ivo"
+        },
+        "fork.returned": {
+          "before": false,
+          "after": true
+        }
+      },
+      "reads": {
+        "valley.stage": 7,
+        "fork.user": "mara",
+        "fork.returned": false,
+        "valley.ended": false
+      },
+      "causes": [
+        "e005",
+        "e007"
+      ],
+      "transfers": [],
+      "checks": [
+        "Encounters follow the night",
+        "Type of fork.user is preserved",
+        "Type of fork.returned is preserved",
+        "Type of valley.ended is preserved",
+        "Type of valley.stage is preserved"
+      ]
+    }
+  ],
+  "choices": [
+    {
+      "selected": "night0",
+      "eligible": [
+        "night0"
+      ],
+      "priority": 10,
+      "state_hash": "aa383d94ef5772bce2a52ba423996ab5e5006869b240e4d2b4e276d457f82b17"
+    },
+    {
+      "selected": "night1",
+      "eligible": [
+        "night1"
+      ],
+      "priority": 10,
+      "state_hash": "c2c6698a220f8e11e216fd11b13e8e22f1f83a6402ab82611c512688f0828ed6"
+    },
+    {
+      "selected": "night2",
+      "eligible": [
+        "night2"
+      ],
+      "priority": 10,
+      "state_hash": "e20c410e4523ae8d36e649b56f5fe2d0fc840d265e022bbfe767e1f6b1bf19db"
+    },
+    {
+      "selected": "night3",
+      "eligible": [
+        "night3"
+      ],
+      "priority": 10,
+      "state_hash": "e43ab8518cf3b42174f61f7711245428effe6d4eaa7c7b3d8683535295a6c123"
+    },
+    {
+      "selected": "night4",
+      "eligible": [
+        "night4"
+      ],
+      "priority": 10,
+      "state_hash": "045418cd98da9f1fc3f40688cbdcb8c452c2bf2f065ae47c79383d280ee05573"
+    },
+    {
+      "selected": "night5",
+      "eligible": [
+        "night5"
+      ],
+      "priority": 10,
+      "state_hash": "01dda263941c1d527babbfc2ac385fe6b017a48e35fa5d1a83a9ed5bd0f33be6"
+    },
+    {
+      "selected": "night6",
+      "eligible": [
+        "night6"
+      ],
+      "priority": 10,
+      "state_hash": "4eac30d9724b358c272fb6529b7a55c4976beeb9a56af9dfc27c133d575ffb98"
+    },
+    {
+      "selected": "night7",
+      "eligible": [
+        "night7"
+      ],
+      "priority": 10,
+      "state_hash": "60d6df72eacef9cef89c567abc8c67bc01352707e80ccb52af0317711e32333c"
+    }
+  ],
+  "paragraphs": [
+    {
+      "text": "Mara had tied white ribbons to the six orchard rows that morning. Each ribbon marked fruit promised to a different kitchen, including the kitchen where Ivo cooked for the school. Now the weather bell was ringing for an overnight frost. There were blankets in the shed, but the branches were too low to drape carelessly. “The bees ruined the early blossoms,” Mara said, repeating the explanation she had heard all week. “Perhaps covering these will keep them out.” Ivo looked at the darkening sky. They had a few hours, and no spare spring.",
+      "evidence": [
+        "e001"
+      ],
+      "reveals": [
+        "valley.frost",
+        "mara.belief",
+        "rows.total"
+      ],
+      "id": "night0.1",
+      "drama": "night0"
+    },
+    {
+      "text": "At the end of the first row, Mara bent over the damaged branch they had kept for comparison. The unopened buds were black inside; even flowers under a fine mesh bag had the same injury. A dated frost marker beside the branch matched the night of the damage. Bees had never entered that bag. “Cold,” she said at last. “We have been blaming the thing that brings us fruit.” The discovery did not mend a single blossom. It did change what she meant to shut out tonight.",
+      "evidence": [
+        "e002"
+      ],
+      "reveals": [
+        "trial.cause",
+        "mara.observed_cause",
+        "mara.belief"
+      ],
+      "id": "night1.1",
+      "drama": "night1"
+    },
+    {
+      "text": "Ivo found his father's field notebook inside the jammed glass cabinet beside the orchard bench. Mara could see the leather cover but could not reach the pages. They tried lifting the warped door; the frame held. “There was a drawing about frost,” Ivo said, unable to remember its details. The notebook stayed behind the glass, carrying instructions neither of them could use. Outside, Mara spread a blanket on the bench and considered what she could test before risking the six rows.",
+      "evidence": [
+        "e003"
+      ],
+      "reveals": [
+        "notebook.accessible",
+        "mara.meme.air_gap",
+        "mara.meme.anchor_edges"
+      ],
+      "id": "night2.1",
+      "drama": "night2"
+    },
+    {
+      "text": "Mara tried the blanket on the comparison branch. It sagged against the flowers, and a loose edge lifted every time the wind crossed the bench. The little cup beneath it cooled as quickly as its uncovered twin. She took the blanket off before its damp weight bent the twig. “That isn't a shelter yet,” she admitted. The failed trial spared the orchard a false promise, but it had consumed the last margin of light. They still had cloth, and still lacked a working way to use it.",
+      "evidence": [
+        "e004"
+      ],
+      "reveals": [
+        "trial.tested",
+        "trial.protected",
+        "trial.air_gap",
+        "trial.anchored",
+        "trial.retains_warmth"
+      ],
+      "id": "night3.1",
+      "drama": "night3"
+    },
+    {
+      "text": "Ivo held out his long fork, the one with his initials burned into the handle. It could lift cloth above the branches without tearing it. “Borrow it until morning,” he said. Mara took it carefully; the tool was still his, even while her hands controlled it. Then he rolled up his sleeves. “You raise the roof; I'll carry stones and close the sides.” They would be able to move along the rows together, with neither leaving a half-finished shelter behind.",
+      "evidence": [
+        "e005"
+      ],
+      "reveals": [
+        "fork.owner",
+        "fork.user",
+        "ivo.willing"
+      ],
+      "id": "night4.1",
+      "drama": "night4"
+    },
+    {
+      "text": "Mara carried the fork between the rows, then stopped. The bench trial had given her no working shelter to repeat. Raising a sheet for a moment did not keep it raised through a windy night. She folded the blankets beside the gate instead of loading the blossoms with wet cloth. Ivo's tool lay across the folded heap, useful and insufficient. Six white ribbons moved freely above six exposed rows as the first frost silvered the latch.",
+      "evidence": [
+        "e006"
+      ],
+      "reveals": [
+        "rows.protected"
+      ],
+      "id": "night5.1",
+      "drama": "night5"
+    },
+    {
+      "text": "At sunrise Mara returned to the ribbons. Every exposed row held black-centered flowers. No living blossoms remained among the six marked rows. She counted carefully: no rows had surviving blossoms. There was no quarrel left to have with the bees. Cold had done this, and the night's work had determined how much of it the orchard could withstand.",
+      "evidence": [
+        "e007"
+      ],
+      "reveals": [
+        "rows.surviving",
+        "valley.outcome"
+      ],
+      "id": "night6.1",
+      "drama": "night6"
+    },
+    {
+      "text": "Mara wiped the fork's handle and returned it to Ivo. His initials emerged from beneath the soil. She gathered all six white ribbons and laid them beside the shut notebook. Beyond the bench, a bee landed on an unmarked weed in bloom. Mara left it undisturbed.",
+      "evidence": [
+        "e008"
+      ],
+      "reveals": [
+        "fork.user",
+        "fork.returned",
+        "fork.owner"
+      ],
+      "id": "night7.1",
+      "drama": "night7"
+    }
+  ],
+  "qa": [
+    {
+      "question": "What threatened the promised orchard fruit?",
+      "answer": "An overnight frost threatened the blossoms on six marked rows. Mara wanted to preserve the fruit already promised to the community kitchens.",
+      "facts": [
+        {
+          "event": "e001",
+          "key": "valley.frost",
+          "value": true
+        },
+        {
+          "event": "e001",
+          "key": "rows.total",
+          "value": 6
+        }
+      ]
+    },
+    {
+      "question": "Why did Mara stop blaming bees?",
+      "answer": "The comparison branch showed frost injury even inside its mesh bag. Mara changed her belief to cold damage after inspecting that evidence.",
+      "facts": [
+        {
+          "event": "e002",
+          "key": "trial.cause",
+          "value": "frost"
+        },
+        {
+          "event": "e002",
+          "key": "mara.belief",
+          "value": "frost"
+        }
+      ]
+    },
+    {
+      "question": "Could Mara learn the complete shelter method from the notebook?",
+      "answer": "Mara could not read the notebook because it was trapped inside the jammed cabinet. Seeing its cover conveyed none of the instructions on its pages.",
+      "facts": [
+        {
+          "event": "e003",
+          "key": "notebook.accessible",
+          "value": false
+        },
+        {
+          "event": "e003",
+          "key": "mara.meme.air_gap",
+          "value": 0.0
+        },
+        {
+          "event": "e003",
+          "key": "mara.meme.anchor_edges",
+          "value": 0.0
+        }
+      ]
+    },
+    {
+      "question": "What did the small shelter trial establish?",
+      "answer": "The trial failed because the cloth sagged and its loose edge admitted wind. Mara had no working shelter to repeat before the light was gone.",
+      "facts": [
+        {
+          "event": "e004",
+          "key": "trial.tested",
+          "value": true
+        },
+        {
+          "event": "e004",
+          "key": "trial.protected",
+          "value": 0
+        }
+      ]
+    },
+    {
+      "question": "Who owned the fork while Mara used it?",
+      "answer": "Ivo owned the fork throughout the loan, although Mara held temporary use of it. He asked for its return in the morning.",
+      "facts": [
+        {
+          "event": "e005",
+          "key": "fork.owner",
+          "value": "ivo"
+        },
+        {
+          "event": "e005",
+          "key": "fork.user",
+          "value": "mara"
+        }
+      ]
+    },
+    {
+      "question": "How much of the orchard survived the frost?",
+      "answer": "0 of the six marked rows retained living blossoms after the frost. The failed trial left all six rows exposed to the overnight cold.",
+      "facts": [
+        {
+          "event": "e007",
+          "key": "rows.surviving",
+          "value": 0
+        },
+        {
+          "event": "e007",
+          "key": "valley.outcome",
+          "value": "lost blossoms"
+        }
+      ]
+    },
+    {
+      "question": "What became of the borrowed tool?",
+      "answer": "Mara cleaned the handle and returned the fork to Ivo in the morning. His initials were visible again beneath the removed soil.",
+      "facts": [
+        {
+          "event": "e008",
+          "key": "fork.user",
+          "value": "ivo"
+        },
+        {
+          "event": "e008",
+          "key": "fork.returned",
+          "value": true
+        },
+        {
+          "event": "e008",
+          "key": "fork.owner",
+          "value": "ivo"
+        }
+      ]
+    }
+  ]
+}

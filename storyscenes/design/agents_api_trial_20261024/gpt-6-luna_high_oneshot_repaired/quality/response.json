@@ -1,0 +1,380 @@
+{
+  "id": "resp_05fac6614eb3bb0e016add8ecde9d887d0b95e09e123ac10df",
+  "object": "response",
+  "created_at": 1792904909,
+  "status": "completed",
+  "access_programs": null,
+  "background": false,
+  "billing": {
+    "payer": "openai"
+  },
+  "completed_at": 1792904915,
+  "error": null,
+  "frequency_penalty": 0.0,
+  "incomplete_details": null,
+  "instructions": null,
+  "max_output_tokens": 4000,
+  "max_tool_calls": null,
+  "model": "gpt-5.6-terra",
+  "moderation": null,
+  "output": [
+    {
+      "id": "msg_05fac6614eb3bb0e016add8eceaa9887d0896f021900b80ba6",
+      "type": "message",
+      "status": "completed",
+      "content": [
+        {
+          "type": "output_text",
+          "annotations": [],
+          "logprobs": [],
+          "text": "{\"stories\":[{\"id\":\"s000029\",\"rating\":{\"coherence\":8,\"style\":8,\"grammar\":9,\"storytelling\":8,\"overall\":8},\"note\":\"A warm, coherent shared-task story with a clear turn when Pavel chooses to guide the tail; the blue kite rising provides a concrete, satisfying payoff.\" ,\"group_id\":0},{\"id\":\"s000057\",\"rating\":{\"coherence\":8,\"style\":8,\"grammar\":9,\"storytelling\":8,\"overall\":8},\"note\":\"Pavel's practice with the string leads naturally to his taking the reel, and the flying kite gives the pair's growing confidence a clear ending image.\",\"group_id\":0},{\"id\":\"s000047\",\"rating\":{\"coherence\":8,\"style\":8,\"grammar\":9,\"storytelling\":8,\"overall\":8},\"note\":\"A gentle, well-paced invitation story in which Pavel's chosen tail-guiding role helps launch the kite and a new friendship.\",\"group_id\":0},{\"id\":\"s000073\",\"rating\":{\"coherence\":8,\"style\":8,\"grammar\":9,\"storytelling\":8,\"overall\":8},\"note\":\"The trial pull meaningfully prepares Pavel to hold the reel; the final flight and careful return of the reel resolve both the social and practical goals.\",\"group_id\":0},{\"id\":\"s000034\",\"rating\":{\"coherence\":8,\"style\":8,\"grammar\":9,\"storytelling\":8,\"overall\":8},\"note\":\"The small practice step and Pavel's tail-guiding role make the successful launch feel earned, though the two roles are slightly redundant.\",\"group_id\":0},{\"id\":\"s000043\",\"rating\":{\"coherence\":8,\"style\":8,\"grammar\":9,\"storytelling\":8,\"overall\":8},\"note\":\"Clear prose and kind dialogue show Pavel moving from hesitation to responsibility, culminating in the kite steadying above the roofs.\",\"group_id\":0},{\"id\":\"s000068\",\"rating\":{\"coherence\":8,\"style\":8,\"grammar\":9,\"storytelling\":8,\"overall\":8},\"note\":\"The bowed willow adds a small tactile detail, while Pavel's chosen help and the kite's successful ascent deliver a complete, child-friendly arc.\",\"group_id\":0},{\"id\":\"s000096\",\"rating\":{\"coherence\":8,\"style\":8,\"grammar\":9,\"storytelling\":8,\"overall\":8},\"note\":\"Practice, ribbon-making, and tail-guiding build toward the launch; the ending concretely shows both children enjoying their shared success.\",\"group_id\":0},{\"id\":\"s000005\",\"rating\":{\"coherence\":8,\"style\":8,\"grammar\":9,\"storytelling\":8,\"overall\":8},\"note\":\"A polished and gentle story of inclusion, with Pavel's tail-guiding decision contributing directly to the kite catching the wind.\",\"group_id\":0},{\"id\":\"s000085\",\"rating\":{\"coherence\":8,\"style\":8,\"grammar\":9,\"storytelling\":8,\"overall\":8},\"note\":\"Pavel's brief rehearsal makes his later control of the reel credible, and the airborne blue kite neatly completes the friendship goal.\",\"group_id\":0}],\"diversity\":{\"premise\":1,\"causal_path\":1,\"ending\":1,\"language\":2,\"overall\":1},\"diversity_evidence\":\"This sample does not establish the generator's overall diversity, but within it every story repeats the same kite-making premise, invitation to Pavel, small shared preparation, successful flight, and return of the reel. Variants such as Pavel guiding the tail or holding the reel are minor role substitutions rather than distinct causal plots (s000029, s000057, s000034, s000085); several entries are exact duplicates (s000029/s000047 and s000068/s000005).\",\"plot_groups\":[{\"group_id\":0,\"summary\":\"Nia includes new neighbor Pavel in making and flying a kite; he gains confidence through a chosen helping role, the kite flies successfully, and they return the borrowed reel together.\"}]}"
+        }
+      ],
+      "phase": "final_answer",
+      "role": "assistant"
+    }
+  ],
+  "parallel_tool_calls": true,
+  "presence_penalty": 0.0,
+  "previous_response_id": null,
+  "prompt_cache_key": null,
+  "prompt_cache_options": {
+    "mode": "explicit",
+    "ttl": "30m"
+  },
+  "prompt_cache_retention": "24h",
+  "reasoning": {
+    "context": "all_turns",
+    "effort": "none",
+    "mode": "standard",
+    "summary": null
+  },
+  "safety_identifier": null,
+  "service_tier": "flex",
+  "store": false,
+  "temperature": 1.0,
+  "text": {
+    "format": {
+      "type": "json_schema",
+      "description": null,
+      "name": "harbor_story_set_v2",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "stories": {
+            "type": "array",
+            "minItems": 10,
+            "maxItems": 10,
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "enum": [
+                    "s000029",
+                    "s000057",
+                    "s000047",
+                    "s000073",
+                    "s000034",
+                    "s000043",
+                    "s000068",
+                    "s000096",
+                    "s000005",
+                    "s000085"
+                  ]
+                },
+                "rating": {
+                  "type": "object",
+                  "properties": {
+                    "coherence": {
+                      "type": "integer",
+                      "enum": [
+                        0,
+                        1,
+                        2,
+                        3,
+                        4,
+                        5,
+                        6,
+                        7,
+                        8,
+                        9
+                      ]
+                    },
+                    "style": {
+                      "type": "integer",
+                      "enum": [
+                        0,
+                        1,
+                        2,
+                        3,
+                        4,
+                        5,
+                        6,
+                        7,
+                        8,
+                        9
+                      ]
+                    },
+                    "grammar": {
+                      "type": "integer",
+                      "enum": [
+                        0,
+                        1,
+                        2,
+                        3,
+                        4,
+                        5,
+                        6,
+                        7,
+                        8,
+                        9
+                      ]
+                    },
+                    "storytelling": {
+                      "type": "integer",
+                      "enum": [
+                        0,
+                        1,
+                        2,
+                        3,
+                        4,
+                        5,
+                        6,
+                        7,
+                        8,
+                        9
+                      ]
+                    },
+                    "overall": {
+                      "type": "integer",
+                      "enum": [
+                        0,
+                        1,
+                        2,
+                        3,
+                        4,
+                        5,
+                        6,
+                        7,
+                        8,
+                        9
+                      ]
+                    }
+                  },
+                  "required": [
+                    "coherence",
+                    "style",
+                    "grammar",
+                    "storytelling",
+                    "overall"
+                  ],
+                  "additionalProperties": false
+                },
+                "note": {
+                  "type": "string"
+                },
+                "group_id": {
+                  "type": "integer",
+                  "enum": [
+                    0,
+                    1,
+                    2,
+                    3,
+                    4,
+                    5,
+                    6,
+                    7,
+                    8,
+                    9
+                  ]
+                }
+              },
+              "required": [
+                "id",
+                "rating",
+                "note",
+                "group_id"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "diversity": {
+            "type": "object",
+            "properties": {
+              "premise": {
+                "type": "integer",
+                "enum": [
+                  0,
+                  1,
+                  2,
+                  3,
+                  4,
+                  5,
+                  6,
+                  7,
+                  8,
+                  9
+                ]
+              },
+              "causal_path": {
+                "type": "integer",
+                "enum": [
+                  0,
+                  1,
+                  2,
+                  3,
+                  4,
+                  5,
+                  6,
+                  7,
+                  8,
+                  9
+                ]
+              },
+              "ending": {
+                "type": "integer",
+                "enum": [
+                  0,
+                  1,
+                  2,
+                  3,
+                  4,
+                  5,
+                  6,
+                  7,
+                  8,
+                  9
+                ]
+              },
+              "language": {
+                "type": "integer",
+                "enum": [
+                  0,
+                  1,
+                  2,
+                  3,
+                  4,
+                  5,
+                  6,
+                  7,
+                  8,
+                  9
+                ]
+              },
+              "overall": {
+                "type": "integer",
+                "enum": [
+                  0,
+                  1,
+                  2,
+                  3,
+                  4,
+                  5,
+                  6,
+                  7,
+                  8,
+                  9
+                ]
+              }
+            },
+            "required": [
+              "premise",
+              "causal_path",
+              "ending",
+              "language",
+              "overall"
+            ],
+            "additionalProperties": false
+          },
+          "diversity_evidence": {
+            "type": "string"
+          },
+          "plot_groups": {
+            "type": "array",
+            "minItems": 1,
+            "maxItems": 10,
+            "items": {
+              "type": "object",
+              "properties": {
+                "group_id": {
+                  "type": "integer",
+                  "enum": [
+                    0,
+                    1,
+                    2,
+                    3,
+                    4,
+                    5,
+                    6,
+                    7,
+                    8,
+                    9
+                  ]
+                },
+                "summary": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "group_id",
+                "summary"
+              ],
+              "additionalProperties": false
+            }
+          }
+        },
+        "required": [
+          "stories",
+          "diversity",
+          "diversity_evidence",
+          "plot_groups"
+        ],
+        "additionalProperties": false
+      },
+      "strict": true
+    },
+    "verbosity": "medium"
+  },
+  "tool_choice": "auto",
+  "tool_usage": {
+    "image_gen": {
+      "input_tokens": 0,
+      "input_tokens_details": {
+        "image_tokens": 0,
+        "text_tokens": 0
+      },
+      "output_tokens": 0,
+      "output_tokens_details": {
+        "image_tokens": 0,
+        "text_tokens": 0
+      },
+      "total_tokens": 0
+    },
+    "web_search": {
+      "num_requests": 0
+    }
+  },
+  "tools": [],
+  "top_logprobs": 0,
+  "top_p": 0.98,
+  "truncation": "disabled",
+  "usage": {
+    "input_tokens": 6669,
+    "input_tokens_details": {
+      "cache_write_tokens": 0,
+      "cache_write_tokens_details": {
+        "ttl_12h_tokens": 0,
+        "ttl_30m_tokens": 0
+      },
+      "cached_tokens": 0
+    },
+    "output_tokens": 834,
+    "output_tokens_details": {
+      "reasoning_tokens": 0
+    },
+    "total_tokens": 7503
+  },
+  "user": null,
+  "metadata": {}
+}

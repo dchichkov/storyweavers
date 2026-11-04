@@ -1,5 +1,71 @@
 # Storyworlds TODO
 
+## Luna 6 xhigh / 128k extension — 2026-10-24
+
+- Completed 20 additional matched attempts at xhigh/Flex with a 128,000-token
+  response ceiling, including reasoning. Previous arms retain their 32,000
+  ceiling. Same frozen tasks/reference payloads, deterministic repair, local
+  checks and medium/Flex judge; no retries or manual/model repair. Evidence:
+  `batches/luna6_reasoning_20261024/xhigh128k/FINDINGS.md`.
+- Full mechanical gate: **16/20**, versus high's **11/20**. Full gate plus
+  Q>=6 and D>=3: **8/20**, versus **3/20**. All-runnable quality **6.71/9**
+  (18 rated worlds), diversity **2.44/9**. Against high's 15 common rated worlds,
+  mean quality difference +0.18, with 6 wins / 4 ties / 5 losses. The strongest
+  gain is combined gate yield; this is one implementation per setting/task,
+  with a larger response budget, not a repeated causal reasoning-level test.
+- Authoring estimate **$0.1442**; grading **$0.0127**; extension **$0.1569**.
+  Combined campaign **$0.3646**, conservative ledger **$0.4324/$3**; all 150
+  calls have returned usage. One author response exceeded 32k (34,881 tokens);
+  none exceeded the previous 900-second request timeout. Mean output 26,471,
+  including 19,135 reasoning tokens. No incomplete API responses.
+- Read all six predeclared stories and 18 QA pairs, matched against final pools;
+  no missing positions. Names and physical resolutions are clearer, but paired
+  samples still repeat most of their plot. Defects: `template_repetition`,
+  `dialogue_punctuation`, `raw_fact_fragment` in QA speech splicing,
+  `ungrounded_answer`/story-answer mismatch, `too_shallow`, and `feature_fidelity`:
+  the mechanically green Bad Ending world ends happily and merely mentions
+  avoiding a bad ending. Automated gate yield is not human acceptance.
+- Preserve four failures: missing purpose field (011), capacity of only 768
+  distinct stories with no completed 1k pool (049), ASP/Python mismatch (012),
+  and brittle inner-thought punctuation check (052). See `failures.json` and
+  `READING_NOTES.md`; supplementary prose grades do not waive failed gates.
+- Next measurable gate: independently check requested ending/features, rendered
+  object state and QA grounding across the preserved candidates. Measure
+  genuinely different causal plots alongside delivery; do not scale name and
+  wording substitutions as if they were new story structures. Any bounded
+  repair experiment should preserve these original measurements and regrade
+  changed prose.
+
+## Luna 6 reasoning comparison — 2026-10-24
+
+- Completed 20 matched authoring attempts each at low/medium/high reasoning on
+  `gpt-6-luna` / Flex, reusing the 20-reference manifest and existing prompt,
+  deterministic repairs, 1,000-draw checks and story-set rubric. Fixed Luna 6
+  medium grading is separate from historical Terra scores. Evidence:
+  `batches/luna6_reasoning_20261024/FINDINGS.md` and `analysis.json`.
+- Full mechanical delivery was **9/20, 4/20, 11/20**. Including separately
+  labeled judgments of runnable worlds rejected by their authored validators,
+  prose quality was **5.64, 6.22, 6.63 /9** and diversity **2.53, 2.44, 2.18 /9**.
+  Only **1, 2, 3** worlds respectively also passed Q>=6 and D>=3 alongside the
+  full mechanical gate. High improved quality, not semantic breadth.
+- API token estimate: **$0.208 total**, 60 authoring calls plus 52 story-set
+  judgments; conservative ledger $0.258/$3, no unknown usage or paid retries.
+  Orchestration/review labor is unpriced. No parent/model repairs or promotion
+  of rejected candidates was performed.
+- Fourteen predeclared narratives and 42 QA pairs were read and matched against
+  final pools; four planned positions were missing. Defects include wrong-name
+  binding, `raw_fact_fragment`, missing enacted causality, `ungrounded_answer`,
+  `wrong_focus`, and `too_shallow`. Some finite generators return fewer than
+  1,000 stories or refuse the request. Exact uniqueness is not plot diversity.
+- Next measurable gate: a bounded repair trial that independently checks name
+  binding and physical outcome/prose agreement, fixes brittle authored
+  validators (literal capitalization/title/punctuation checks), and measures
+  full-count/replay/verify/CLI delivery on all 60 preserved attempts. Keep
+  validator repairs separate from actual story and QA repairs; preserve old
+  failures and score any changed texts anew. Add grounded QA checks rather than
+  assuming story-only scores establish answer correctness. Do not broaden
+  sampling of unchanged templates as a substitute for distinct causal branches.
+
 ## Cleanup findings from Spark batch review
 
 - Add a normal-generation smoke pass after `--verify`: `--verify` proves the

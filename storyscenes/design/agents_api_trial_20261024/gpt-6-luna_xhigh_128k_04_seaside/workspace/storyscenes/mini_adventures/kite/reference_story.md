@@ -1,0 +1,25 @@
+# The Gull Was Not the Cove
+
+Mara had packed apple rolls, two bruised pears, and a blue blanket. She wanted a quiet place where the wind could not scatter the napkins. Her younger brother Niko wanted to choose the place himself. On the walk to Aunt June’s harbor kiosk, Mara said, “I know a cove from the map. We’ll be there before lunch.” Niko asked whether he could hold the map. “At the fork,” she said, already checking the basket.
+
+Aunt June lent them her hand-drawn coast map. Its half-moon marked Crescent Cove; a white gull marked the ferry landing. “The gull is for boats,” June said. “The cove is the little bite in the headland. And check the tide before taking the low path.” The map had been folded in a hurry. Its north arrow faced the wrong way, and salt had faded part of the legend. Mara thanked June, tucked the map under her arm, and promised to return it.
+
+At the path fork, a white gull painted on a post flashed between two grass-covered slopes. Mara glanced at the map without opening it. “There,” she said. Niko pointed to the small print. “It says landing. Maybe that’s for the ferry.” Mara had already started down the track. “It’s white, and we’re looking for the white mark.” Niko followed, but he did not stop looking back at the fork.
+
+The track ended on an open shelf of rock. Wind shoved at their clothes, and salt spray freckled the map. The water below reached almost to the stones. There was no cove, no sheltered grass, and nowhere to lay a blanket. Mara turned in a slow circle, then looked at Niko. “I thought the mark meant the picnic place.” “It means the landing,” he said. The mistake had cost them time, and the tide was already rising.
+
+A shallow pool beside the post held a shell striped orange and cream. Niko crouched to pick it up. Mara began to say they should hurry, then saw how carefully he lifted it clear of the water. “Can we take it?” he asked. “We can carry it back out, too.” She tucked it into the basket’s side pocket. For a moment, neither of them was leading; they were just two children on a shore.
+
+An old net-mender nearby was struggling with a float caught beneath the path. Niko held the net while Mara worked the line free. “Thank you,” the fisher said. “That gull is the ferry landing. The crescent is farther along.” He glanced at the map. “Your paper’s turned around, too.” Mara felt her ears heat. She had heard Niko’s warning and treated it as an interruption. Niko only said, “Let’s turn it the right way.”
+
+They spread the map on a flat stone. Niko rotated it until the north arrow pointed along the water. The faded words were still hard to read, but the shore made a curve around the little half-moon. Mara followed the line with her finger. The gull stood beside the ferry landing; Crescent Cove lay beyond the headland. “I hurried,” she said. “You saw it first.” Niko gave her the map instead of taking it away. “Then let’s choose what to do now.”
+
+From the path they could see water washing across the low stones that led toward the cove. The upper bluff wound back toward the harbor, where an old net shed had a deep awning. Mara wanted the cove she had promised. Niko wanted a picnic, not a race with the sea. “We could still try the low way,” Mara said. “And have to run back?” he asked. Her promise suddenly sounded less important than his question.
+
+Mara looked again at the tide, then at the map. “The bluff,” she decided. “We’ll eat somewhere dry and come back for the cove another day.” Niko nodded, but made her say the route aloud so they both knew it. She did. This time he held the map and chose where the path turned uphill. Mara carried the basket. Their jobs were small, but neither one was merely following.
+
+The bluff path climbed above the wet stones and curved into the harbor. Beneath the net shed’s awning, the stone wall blocked the gusts. It was not the secret hollow they had imagined, but the boards were dry and the tide could not reach them. Niko chose a corner where they could still see the water. Mara spread the blanket; when a gust lifted it, they pinned its corners beneath a bench slat.
+
+They opened the basket. Niko took the smaller roll, and Mara broke the other in half without being asked. The striped shell sat beside June’s map. “I wanted to be the one who knew where we were going,” Mara admitted. “I wanted you to ask me,” Niko said. “I did ask.” She laughed, because he was right. They split the pears and ate without rushing. The harbor was noisy, but their place was sheltered, and the lunch was theirs together.
+
+On the way back, Niko carried the shell and Mara folded the blanket. At the kiosk they returned the map. Mara drew a neat line from the white gull to the ferry landing and darkened the half-moon at the cove. Beside it she wrote that the bluff led to the harbor shelter when the tide rose. “Useful,” June said, turning the map to check. Niko kept one hand on its edge as they said goodbye. They had missed their first place, but found a safe one, and the next travelers would have a clearer map.

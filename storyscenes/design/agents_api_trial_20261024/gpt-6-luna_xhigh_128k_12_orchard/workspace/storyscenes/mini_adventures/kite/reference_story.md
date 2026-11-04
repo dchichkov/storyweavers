@@ -1,0 +1,21 @@
+# The Pears We Could Reach
+
+On Tuesday morning, Mira packed two slices of bread in a cloth and found Theo waiting beside the lane. He had brought no food, but he had brought a careful list: basket, pears, home before the sun got hot. “You make a picnic sound like a delivery route,” Mira said. “I’m hungry in an organized way,” Theo replied. They were both hungry, and the little orchard at the end of the lane had the first ripe pears of the season.
+
+The orchard belonged to Ms. Vale, who was sorting labels beside her shed. Mira asked if they could borrow the picking basket. Ms. Vale inspected its handles, then handed it over. “The basket is for carrying fruit, not for climbing. Bring it back clean, please.” Theo nodded before Mira could answer. They wanted a snack, not a scolding, and Mira liked that Ms. Vale trusted them with something useful.
+
+At the orchard edge, Theo noticed a wooden crate. He pressed its corners against the ground. It sat level, so they spread their lunch cloth across it and made a little sorting table. “It would make a terrible ladder,” he said. Mira looked up at the pears. “I wasn’t going to climb it.” “I know,” he said, and moved it nearer the path. The crate could hold the bread while the basket stayed empty for fruit.
+
+As they walked, Mira remembered the pear they had shared the previous summer. She had insisted Theo take the larger half because he was younger and still growing. “You said you were already tall enough,” Theo reminded her. “I was talking about my ideas,” she said. They laughed. This time she wanted the snack to feel like something they had made together, not a favor she had handed down.
+
+The tree was older than both of them, with a thick trunk and branches that reached over the grass. Some pears were high, shining green-gold in the leaves. Others hung lower, but only a few. Theo studied the branches from the ground. Mira stretched one arm toward a low pear and could just touch it with her fingertips. A breeze moved the higher limbs. The fruit there looked plentiful, and farther away than it had from the lane.
+
+Mira fetched the crate with her foot, then stopped before dragging it under the tree. One corner wobbled on the uneven grass. “If I stand on it, I can reach the big cluster,” she said. Theo looked at the rocking crate, then at the branch. “And if it tips, you fall. If you pull, the branch takes the strain.” He did not sound bossy. He sounded worried about the tree and about her. Mira let go of the crate.
+
+They could have tried anyway. The biggest pears were just beyond a stretch, and the basket was waiting. Instead, Mira chose the lower fruit and the pear already resting on the grass. She checked the fallen one gently for bruises. Theo held the basket by its rim as Mira turned one reachable pear upward, the way Ms. Vale had shown them. The stem came away easily. No leaves tore, and no branch bent under their hands.
+
+One pear was all they could gather without reaching or tugging. It looked small in the basket, but Mira put the bread beside it in the cloth. At the crate-table they cut the pear into two equal pieces with the little picnic knife Ms. Vale had loaned them with the basket. Theo offered Mira the larger piece. “We’ve already had this argument,” she said, and traded him half. They ate slowly, with the orchard moving softly around them.
+
+When they were done, Theo folded the cloth and Mira checked that no crumbs had been left under the tree. She brushed a leaf from the basket and carried it back between them. At the shed, Ms. Vale ran her thumb over the clean weave. “Did it do its job?” she asked. “It carried our snack all the way here,” Mira said. Theo added, “And we left your tree whole.” Ms. Vale smiled as she took it.
+
+On the walk home, Mira admitted she had wanted enough pears to make a grand picnic. Theo said he had wanted proof she would listen when he was worried. “I listened because you were right,” she said. “Not because you were in charge.” He considered this, then grinned. Their small snack was gone, but neither felt short-changed. They had chosen what the tree could spare, shared it fairly, and returned the basket ready for its next useful day.

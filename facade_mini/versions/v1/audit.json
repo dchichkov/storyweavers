@@ -1,0 +1,113 @@
+{
+  "inventory": {
+    "sequenced_beats": 8,
+    "within_beat_goals": 23,
+    "terminal_outcomes": 5,
+    "terminal_performances": 8,
+    "global_mixin_topics": 3,
+    "global_mixin_tiers": 6,
+    "social_exchange_bindings": 11,
+    "performance_slots": 66,
+    "authored_line_slots": 137,
+    "unique_authored_lines": 130,
+    "authored_word_slots": 1674,
+    "engine_source_lines": 330,
+    "content_source_lines": 325,
+    "note": "Slots include alternatives and shared lines. Runtime refusal/resume/input text is not counted. These are not human-equivalent effort estimates."
+  },
+  "random_traversal": {
+    "sessions": 500,
+    "seeds": "0..499",
+    "policy": "uniform supported actions plus eight extra listen entries",
+    "outcomes": {
+      "left": 204,
+      "ejected": 45,
+      "unresolved": 113,
+      "space": 138
+    },
+    "unique_selected_beat_paths": 83,
+    "beats_reached": [
+      "arrival",
+      "decision",
+      "letter",
+      "photograph",
+      "place_setting",
+      "receipt",
+      "reckoning",
+      "record"
+    ],
+    "goal_variants_reached": 32,
+    "failures": []
+  },
+  "scripted_witnesses": {
+    "repair": {
+      "outcome": "repair",
+      "turns": 11,
+      "completed_beats": [
+        "arrival",
+        "letter",
+        "decision"
+      ],
+      "aborted_beats": []
+    },
+    "distrust": {
+      "outcome": "unresolved",
+      "turns": 17,
+      "completed_beats": [
+        "arrival",
+        "letter",
+        "receipt",
+        "reckoning",
+        "decision"
+      ],
+      "aborted_beats": []
+    },
+    "space": {
+      "outcome": "space",
+      "turns": 10,
+      "completed_beats": [
+        "arrival",
+        "decision"
+      ],
+      "aborted_beats": [
+        "receipt"
+      ]
+    },
+    "silent": {
+      "outcome": "unresolved",
+      "turns": 13,
+      "completed_beats": [
+        "arrival",
+        "place_setting",
+        "photograph",
+        "reckoning",
+        "decision"
+      ],
+      "aborted_beats": []
+    },
+    "ejected": {
+      "outcome": "ejected",
+      "turns": 3,
+      "completed_beats": [
+        "arrival"
+      ],
+      "aborted_beats": []
+    },
+    "leave": {
+      "outcome": "left",
+      "turns": 2,
+      "completed_beats": [
+        "arrival"
+      ],
+      "aborted_beats": []
+    }
+  },
+  "counterfactual": {
+    "changed_inputs": "Only the two early empathize actions become blame actions.",
+    "warm_outcome": "repair",
+    "cold_outcome": "unresolved",
+    "same_remaining_script": true,
+    "different_completed_beat_paths": true
+  },
+  "limits": "Traversal checks termination, replay, state chains, and knowledge invariants; it does not grade dialogue quality. Path counts are not counts of distinct stories. No human baseline, timed extension trial, or cost reduction has been measured."
+}

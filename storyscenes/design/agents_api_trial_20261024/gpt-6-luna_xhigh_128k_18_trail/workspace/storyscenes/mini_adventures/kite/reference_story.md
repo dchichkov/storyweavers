@@ -1,0 +1,27 @@
+# The Compass at Fernwater Fork
+
+<!-- Prose word count, heading excluded: about 1,000 words; manual estimate. -->
+
+On Thursday afternoon, Nia hurried along the woodland discovery trail with a blank card for the library’s nature table. She wanted to bring back a drawing nobody else had made before the park gate closed. Rowan walked beside her, slower than usual in a new pair of boots. He wanted to find the small spring frogs he had heard calling last week. Nia kept looking past him toward the trees. Rowan kept looking down, where the trail’s smallest things lived.
+
+At the trailhead, ranger Inez held out a brass compass. The upper path to Fernwater Pool had a quiet-hour limit, she explained, and the main gate would close later. The compass belonged to the ranger station; she needed it back that evening. Nia accepted it carefully. “We’ll be back before then.” Rowan folded the trail card into his jacket. Inez pointed to the north arrow painted on the sign. “Check the needle against something you know. It’s been wandering.”
+
+Nia compared the needle with the arrow. It swung east, then trembled. She frowned. “It’s broken.” Rowan leaned closer. “Or it’s trying to tell you not to trust it yet.” Nia wanted to start at once, but she remembered Inez’s warning and let Rowan study the trail map. The printed ridge was broad and marked with white blazes. A shorter line, the stone-step shortcut, led toward the pool but twisted beside a brook.
+
+A few minutes later Rowan stopped at a fern uncurling beside the brook. Its fronds pointed across the water, and the stream made a steady bend around a dark stone. “I can remember this,” he said. He and Nia compared the bend with the compass. Once they had a landmark to check, the needle settled into a useful bearing. Rowan added the fern to his card. Nia watched him draw, then admitted it was a better marker than the crooked arrow she had been following.
+
+When Rowan stood, he winced. The seam of his new boot had rubbed his heel raw. He tried to hide it by taking a longer step. Nia noticed. From the little trail pouch she carried came a strip of first-aid tape. Rowan sat on a stump while she smoothed it over the sore place. “I can walk,” he said. “I know,” Nia answered. “I just don’t want you to have to prove it every ten steps.”
+
+At Fernwater Fork, the shortcut gate stood open. Nia could picture reaching the pool sooner, filling every box on her card, and getting home with time to spare. She could also see Rowan testing his foot against the ground. “The steps are steep,” he said. “With the tape, I can do them if we don’t race.” Nia had started to say she could go ahead and meet him there. The words sounded wrong before she finished them.
+
+She looked at the compass, then the open shortcut. “If we take it, we take it together.” Rowan smiled. They checked their bearing against the brook bend and chose the stone steps. It was still a quicker route, but it was no longer a plan that treated Rowan as a delay. Nia slowed on the first turn, and Rowan called out each white blaze he spotted. They traded the trail card and the compass without arguing over who led.
+
+Below the steps, a puddle spread across the path. Leaves floated over its deepest part. Rowan found three stones rising above the water and tested the first one with his boot. Nia crossed ahead, then waited with her hand out. Rowan used the stones at his own pace. The compass stayed dry, and neither friend had to jump farther than was comfortable. On the other bank, Nia gave him the card to mark the puddle as a place to watch after rain.
+
+The path climbed through firs. Nia walked ahead twice, then came back when she noticed Rowan had fallen behind. She didn’t pretend she had stopped for a view; she told him she was trying to learn his pace. “It’s not the same as mine,” Rowan said. “No,” Nia replied. “That’s why I need to pay attention.” They followed the white blazes and checked the compass at the turns. Rowan pointed out a woodpecker’s fresh chips. Nia stopped and looked properly this time.
+
+Clouds gathered above the ridge, but the rain stayed away. At the pool spur, they reached the quiet-hour marker with enough time left. Fernwater opened between the trees, smooth as a piece of dark glass. A glasswing butterfly rested on a leaf near the edge. Its transparent wings caught one thin strip of sunlight. Nia held the card still while Rowan sketched. “You found it,” she whispered. “We found it,” he said, and the butterfly lifted over the water.
+
+They sat only long enough for Rowan to finish the wings. Nia drew the pool and the fern bend that had helped them read the compass. They had not filled the card as quickly as she wanted, but the picture was better because Rowan had made it. On the way back, they stayed on the marked trail. When the compass needle wandered again, they checked it against the blazes and their brook landmark instead of pretending it was certain.
+
+At the trailhead, Inez was waiting by the gate. Nia returned the compass and showed her the drawing. Rowan explained where the needle had drifted and how the brook bend helped them correct it. Inez thanked them for the useful report; she would check the compass before lending it again. Nia wrote both their names beneath the sketch. Rowan added a tiny frog in the corner, a promise of another walk rather than a consolation prize. They had reached Fernwater together, and neither had to disappear from the story for the other to arrive.

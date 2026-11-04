@@ -1,0 +1,5934 @@
+{
+  "schema": 1,
+  "seed": 0,
+  "commands": [
+    "empathize mara",
+    "ask letter",
+    "ask letter",
+    "empathize eli",
+    "ask receipt",
+    "ask receipt",
+    "reflect mara",
+    "reflect eli",
+    "mediate",
+    "listen",
+    "listen"
+  ],
+  "outcome": "repair",
+  "state": {
+    "turn": 11,
+    "people": {
+      "mara": {
+        "location": "dining_room",
+        "memes": {
+          "anger": 0,
+          "fear": 1
+        },
+        "trust_player": 4,
+        "trust_partner": 5,
+        "accountable": true,
+        "disclosed": true,
+        "knows": {
+          "letter": true,
+          "receipt": true
+        }
+      },
+      "eli": {
+        "location": "dining_room",
+        "memes": {
+          "anger": 0,
+          "fear": 1
+        },
+        "trust_player": 4,
+        "trust_partner": 5,
+        "accountable": true,
+        "disclosed": true,
+        "knows": {
+          "letter": true,
+          "receipt": true
+        }
+      },
+      "player": {
+        "location": "hallway",
+        "insults": 0,
+        "caused_harm": false,
+        "knows": {
+          "letter": true,
+          "receipt": true
+        },
+        "requested_space": false,
+        "requested_talk": true
+      }
+    },
+    "props": {
+      "letter": {
+        "owner": "mara",
+        "location": "table",
+        "state": "face_up"
+      },
+      "receipt": {
+        "owner": "eli",
+        "location": "table",
+        "state": "face_up"
+      },
+      "photo": {
+        "owner": "couple",
+        "location": "sideboard",
+        "state": "upright"
+      },
+      "plates": {
+        "owner": "couple",
+        "location": "table",
+        "state": "two_chairs_together"
+      },
+      "music": {
+        "owner": "eli",
+        "location": "shelf",
+        "state": "playing"
+      },
+      "coat": {
+        "owner": "player",
+        "location": "player",
+        "state": "worn"
+      },
+      "key": {
+        "owner": "mara",
+        "location": "mara_pocket",
+        "state": "carried"
+      },
+      "bag": {
+        "owner": "mara",
+        "location": "bedroom",
+        "state": "empty"
+      }
+    }
+  },
+  "completed_beats": [
+    "arrival",
+    "letter",
+    "decision"
+  ],
+  "active_beat": null,
+  "aborted_beats": [],
+  "events": [
+    {
+      "id": 0,
+      "turn": 0,
+      "kind": "goal",
+      "source": "arrival.threshold",
+      "variant": "welcome",
+      "before": {
+        "turn": 0,
+        "people": {
+          "mara": {
+            "location": "dining_room",
+            "memes": {
+              "anger": 1,
+              "fear": 3
+            },
+            "trust_player": 2,
+            "trust_partner": 3,
+            "accountable": false,
+            "disclosed": false,
+            "knows": {
+              "letter": true,
+              "receipt": false
+            }
+          },
+          "eli": {
+            "location": "dining_room",
+            "memes": {
+              "anger": 1,
+              "fear": 3
+            },
+            "trust_player": 2,
+            "trust_partner": 3,
+            "accountable": false,
+            "disclosed": false,
+            "knows": {
+              "letter": false,
+              "receipt": true
+            }
+          },
+          "player": {
+            "location": "dining_room",
+            "insults": 0,
+            "caused_harm": false,
+            "knows": {
+              "letter": false,
+              "receipt": false
+            },
+            "requested_space": false,
+            "requested_talk": false
+          }
+        },
+        "props": {
+          "letter": {
+            "owner": "mara",
+            "location": "sideboard",
+            "state": "folded"
+          },
+          "receipt": {
+            "owner": "eli",
+            "location": "sideboard",
+            "state": "face_down"
+          },
+          "photo": {
+            "owner": "couple",
+            "location": "sideboard",
+            "state": "upright"
+          },
+          "plates": {
+            "owner": "couple",
+            "location": "table",
+            "state": "three_places"
+          },
+          "music": {
+            "owner": "eli",
+            "location": "shelf",
+            "state": "playing"
+          },
+          "coat": {
+            "owner": "player",
+            "location": "hall_hook",
+            "state": "hanging"
+          },
+          "key": {
+            "owner": "mara",
+            "location": "mara_pocket",
+            "state": "carried"
+          },
+          "bag": {
+            "owner": "mara",
+            "location": "bedroom",
+            "state": "empty"
+          }
+        }
+      },
+      "after": {
+        "turn": 0,
+        "people": {
+          "mara": {
+            "location": "dining_room",
+            "memes": {
+              "anger": 1,
+              "fear": 3
+            },
+            "trust_player": 2,
+            "trust_partner": 3,
+            "accountable": false,
+            "disclosed": false,
+            "knows": {
+              "letter": true,
+              "receipt": false
+            }
+          },
+          "eli": {
+            "location": "dining_room",
+            "memes": {
+              "anger": 1,
+              "fear": 3
+            },
+            "trust_player": 2,
+            "trust_partner": 3,
+            "accountable": false,
+            "disclosed": false,
+            "knows": {
+              "letter": false,
+              "receipt": true
+            }
+          },
+          "player": {
+            "location": "dining_room",
+            "insults": 0,
+            "caused_harm": false,
+            "knows": {
+              "letter": false,
+              "receipt": false
+            },
+            "requested_space": false,
+            "requested_talk": false
+          }
+        },
+        "props": {
+          "letter": {
+            "owner": "mara",
+            "location": "sideboard",
+            "state": "folded"
+          },
+          "receipt": {
+            "owner": "eli",
+            "location": "sideboard",
+            "state": "face_down"
+          },
+          "photo": {
+            "owner": "couple",
+            "location": "sideboard",
+            "state": "upright"
+          },
+          "plates": {
+            "owner": "couple",
+            "location": "table",
+            "state": "three_places"
+          },
+          "music": {
+            "owner": "eli",
+            "location": "shelf",
+            "state": "playing"
+          },
+          "coat": {
+            "owner": "player",
+            "location": "hall_hook",
+            "state": "hanging"
+          },
+          "key": {
+            "owner": "mara",
+            "location": "mara_pocket",
+            "state": "carried"
+          },
+          "bag": {
+            "owner": "mara",
+            "location": "bedroom",
+            "state": "empty"
+          }
+        }
+      },
+      "lines": [
+        "THE LAST PLACE SETTING",
+        "You arrive at Mara and Eli's flat for their anniversary dinner. They asked you, an old friend, to be their only guest.",
+        "Three plates wait under a low lamp. On the sideboard are a folded letter, a face-down receipt, and a photograph of the two of them outside an empty shop.",
+        "Eli takes your coat. \"Perfect timing. We were just deciding what to celebrate.\"",
+        "Mara: \"Our anniversary, Eli. That was the invitation.\""
+      ]
+    },
+    {
+      "id": 1,
+      "turn": 1,
+      "kind": "input",
+      "source": "player",
+      "variant": "empathize mara",
+      "before": {
+        "turn": 0,
+        "people": {
+          "mara": {
+            "location": "dining_room",
+            "memes": {
+              "anger": 1,
+              "fear": 3
+            },
+            "trust_player": 2,
+            "trust_partner": 3,
+            "accountable": false,
+            "disclosed": false,
+            "knows": {
+              "letter": true,
+              "receipt": false
+            }
+          },
+          "eli": {
+            "location": "dining_room",
+            "memes": {
+              "anger": 1,
+              "fear": 3
+            },
+            "trust_player": 2,
+            "trust_partner": 3,
+            "accountable": false,
+            "disclosed": false,
+            "knows": {
+              "letter": false,
+              "receipt": true
+            }
+          },
+          "player": {
+            "location": "dining_room",
+            "insults": 0,
+            "caused_harm": false,
+            "knows": {
+              "letter": false,
+              "receipt": false
+            },
+            "requested_space": false,
+            "requested_talk": false
+          }
+        },
+        "props": {
+          "letter": {
+            "owner": "mara",
+            "location": "sideboard",
+            "state": "folded"
+          },
+          "receipt": {
+            "owner": "eli",
+            "location": "sideboard",
+            "state": "face_down"
+          },
+          "photo": {
+            "owner": "couple",
+            "location": "sideboard",
+            "state": "upright"
+          },
+          "plates": {
+            "owner": "couple",
+            "location": "table",
+            "state": "three_places"
+          },
+          "music": {
+            "owner": "eli",
+            "location": "shelf",
+            "state": "playing"
+          },
+          "coat": {
+            "owner": "player",
+            "location": "hall_hook",
+            "state": "hanging"
+          },
+          "key": {
+            "owner": "mara",
+            "location": "mara_pocket",
+            "state": "carried"
+          },
+          "bag": {
+            "owner": "mara",
+            "location": "bedroom",
+            "state": "empty"
+          }
+        }
+      },
+      "after": {
+        "turn": 1,
+        "people": {
+          "mara": {
+            "location": "dining_room",
+            "memes": {
+              "anger": 1,
+              "fear": 3
+            },
+            "trust_player": 2,
+            "trust_partner": 3,
+            "accountable": false,
+            "disclosed": false,
+            "knows": {
+              "letter": true,
+              "receipt": false
+            }
+          },
+          "eli": {
+            "location": "dining_room",
+            "memes": {
+              "anger": 1,
+              "fear": 3
+            },
+            "trust_player": 2,
+            "trust_partner": 3,
+            "accountable": false,
+            "disclosed": false,
+            "knows": {
+              "letter": false,
+              "receipt": true
+            }
+          },
+          "player": {
+            "location": "dining_room",
+            "insults": 0,
+            "caused_harm": false,
+            "knows": {
+              "letter": false,
+              "receipt": false
+            },
+            "requested_space": false,
+            "requested_talk": false
+          }
+        },
+        "props": {
+          "letter": {
+            "owner": "mara",
+            "location": "sideboard",
+            "state": "folded"
+          },
+          "receipt": {
+            "owner": "eli",
+            "location": "sideboard",
+            "state": "face_down"
+          },
+          "photo": {
+            "owner": "couple",
+            "location": "sideboard",
+            "state": "upright"
+          },
+          "plates": {
+            "owner": "couple",
+            "location": "table",
+            "state": "three_places"
+          },
+          "music": {
+            "owner": "eli",
+            "location": "shelf",
+            "state": "playing"
+          },
+          "coat": {
+            "owner": "player",
+            "location": "hall_hook",
+            "state": "hanging"
+          },
+          "key": {
+            "owner": "mara",
+            "location": "mara_pocket",
+            "state": "carried"
+          },
+          "bag": {
+            "owner": "mara",
+            "location": "bedroom",
+            "state": "empty"
+          }
+        }
+      },
+      "lines": [
+        "> empathize mara",
+        "Mara: \"Thank you. Let me find a way to say this without making it another accusation.\"",
+        "Eli: \"I can wait for that.\""
+      ]
+    },
+    {
+      "id": 2,
+      "turn": 1,
+      "kind": "exchange",
+      "source": "empathize mara",
+      "variant": "heard",
+      "before": {
+        "turn": 1,
+        "people": {
+          "mara": {
+            "location": "dining_room",
+            "memes": {
+              "anger": 1,
+              "fear": 3
+            },
+            "trust_player": 2,
+            "trust_partner": 3,
+            "accountable": false,
+            "disclosed": false,
+            "knows": {
+              "letter": true,
+              "receipt": false
+            }
+          },
+          "eli": {
+            "location": "dining_room",
+            "memes": {
+              "anger": 1,
+              "fear": 3
+            },
+            "trust_player": 2,
+            "trust_partner": 3,
+            "accountable": false,
+            "disclosed": false,
+            "knows": {
+              "letter": false,
+              "receipt": true
+            }
+          },
+          "player": {
+            "location": "dining_room",
+            "insults": 0,
+            "caused_harm": false,
+            "knows": {
+              "letter": false,
+              "receipt": false
+            },
+            "requested_space": false,
+            "requested_talk": false
+          }
+        },
+        "props": {
+          "letter": {
+            "owner": "mara",
+            "location": "sideboard",
+            "state": "folded"
+          },
+          "receipt": {
+            "owner": "eli",
+            "location": "sideboard",
+            "state": "face_down"
+          },
+          "photo": {
+            "owner": "couple",
+            "location": "sideboard",
+            "state": "upright"
+          },
+          "plates": {
+            "owner": "couple",
+            "location": "table",
+            "state": "three_places"
+          },
+          "music": {
+            "owner": "eli",
+            "location": "shelf",
+            "state": "playing"
+          },
+          "coat": {
+            "owner": "player",
+            "location": "hall_hook",
+            "state": "hanging"
+          },
+          "key": {
+            "owner": "mara",
+            "location": "mara_pocket",
+            "state": "carried"
+          },
+          "bag": {
+            "owner": "mara",
+            "location": "bedroom",
+            "state": "empty"
+          }
+        }
+      },
+      "after": {
+        "turn": 1,
+        "people": {
+          "mara": {
+            "location": "dining_room",
+            "memes": {
+              "anger": 0,
+              "fear": 2
+            },
+            "trust_player": 4,
+            "trust_partner": 3,
+            "accountable": false,
+            "disclosed": false,
+            "knows": {
+              "letter": true,
+              "receipt": false
+            }
+          },
+          "eli": {
+            "location": "dining_room",
+            "memes": {
+              "anger": 1,
+              "fear": 3
+            },
+            "trust_player": 2,
+            "trust_partner": 3,
+            "accountable": false,
+            "disclosed": false,
+            "knows": {
+              "letter": false,
+              "receipt": true
+            }
+          },
+          "player": {
+            "location": "dining_room",
+            "insults": 0,
+            "caused_harm": false,
+            "knows": {
+              "letter": false,
+              "receipt": false
+            },
+            "requested_space": false,
+            "requested_talk": false
+          }
+        },
+        "props": {
+          "letter": {
+            "owner": "mara",
+            "location": "sideboard",
+            "state": "folded"
+          },
+          "receipt": {
+            "owner": "eli",
+            "location": "sideboard",
+            "state": "face_down"
+          },
+          "photo": {
+            "owner": "couple",
+            "location": "sideboard",
+            "state": "upright"
+          },
+          "plates": {
+            "owner": "couple",
+            "location": "table",
+            "state": "three_places"
+          },
+          "music": {
+            "owner": "eli",
+            "location": "shelf",
+            "state": "playing"
+          },
+          "coat": {
+            "owner": "player",
+            "location": "hall_hook",
+            "state": "hanging"
+          },
+          "key": {
+            "owner": "mara",
+            "location": "mara_pocket",
+            "state": "carried"
+          },
+          "bag": {
+            "owner": "mara",
+            "location": "bedroom",
+            "state": "empty"
+          }
+        }
+      },
+      "lines": [
+        "Mara: \"Thank you. Let me find a way to say this without making it another accusation.\"",
+        "Eli: \"I can wait for that.\""
+      ]
+    },
+    {
+      "id": 3,
+      "turn": 1,
+      "kind": "goal",
+      "source": "arrival.invitation",
+      "variant": "sit",
+      "before": {
+        "turn": 1,
+        "people": {
+          "mara": {
+            "location": "dining_room",
+            "memes": {
+              "anger": 0,
+              "fear": 2
+            },
+            "trust_player": 4,
+            "trust_partner": 3,
+            "accountable": false,
+            "disclosed": false,
+            "knows": {
+              "letter": true,
+              "receipt": false
+            }
+          },
+          "eli": {
+            "location": "dining_room",
+            "memes": {
+              "anger": 1,
+              "fear": 3
+            },
+            "trust_player": 2,
+            "trust_partner": 3,
+            "accountable": false,
+            "disclosed": false,
+            "knows": {
+              "letter": false,
+              "receipt": true
+            }
+          },
+          "player": {
+            "location": "dining_room",
+            "insults": 0,
+            "caused_harm": false,
+            "knows": {
+              "letter": false,
+              "receipt": false
+            },
+            "requested_space": false,
+            "requested_talk": false
+          }
+        },
+        "props": {
+          "letter": {
+            "owner": "mara",
+            "location": "sideboard",
+            "state": "folded"
+          },
+          "receipt": {
+            "owner": "eli",
+            "location": "sideboard",
+            "state": "face_down"
+          },
+          "photo": {
+            "owner": "couple",
+            "location": "sideboard",
+            "state": "upright"
+          },
+          "plates": {
+            "owner": "couple",
+            "location": "table",
+            "state": "three_places"
+          },
+          "music": {
+            "owner": "eli",
+            "location": "shelf",
+            "state": "playing"
+          },
+          "coat": {
+            "owner": "player",
+            "location": "hall_hook",
+            "state": "hanging"
+          },
+          "key": {
+            "owner": "mara",
+            "location": "mara_pocket",
+            "state": "carried"
+          },
+          "bag": {
+            "owner": "mara",
+            "location": "bedroom",
+            "state": "empty"
+          }
+        }
+      },
+      "after": {
+        "turn": 1,
+        "people": {
+          "mara": {
+            "location": "dining_room",
+            "memes": {
+              "anger": 0,
+              "fear": 2
+            },
+            "trust_player": 4,
+            "trust_partner": 3,
+            "accountable": false,
+            "disclosed": false,
+            "knows": {
+              "letter": true,
+              "receipt": false
+            }
+          },
+          "eli": {
+            "location": "dining_room",
+            "memes": {
+              "anger": 1,
+              "fear": 3
+            },
+            "trust_player": 2,
+            "trust_partner": 3,
+            "accountable": false,
+            "disclosed": false,
+            "knows": {
+              "letter": false,
+              "receipt": true
+            }
+          },
+          "player": {
+            "location": "dining_room",
+            "insults": 0,
+            "caused_harm": false,
+            "knows": {
+              "letter": false,
+              "receipt": false
+            },
+            "requested_space": false,
+            "requested_talk": false
+          }
+        },
+        "props": {
+          "letter": {
+            "owner": "mara",
+            "location": "sideboard",
+            "state": "folded"
+          },
+          "receipt": {
+            "owner": "eli",
+            "location": "sideboard",
+            "state": "face_down"
+          },
+          "photo": {
+            "owner": "couple",
+            "location": "sideboard",
+            "state": "upright"
+          },
+          "plates": {
+            "owner": "couple",
+            "location": "table",
+            "state": "three_places"
+          },
+          "music": {
+            "owner": "eli",
+            "location": "shelf",
+            "state": "playing"
+          },
+          "coat": {
+            "owner": "player",
+            "location": "hall_hook",
+            "state": "hanging"
+          },
+          "key": {
+            "owner": "mara",
+            "location": "mara_pocket",
+            "state": "carried"
+          },
+          "bag": {
+            "owner": "mara",
+            "location": "bedroom",
+            "state": "empty"
+          }
+        }
+      },
+      "lines": [
+        "Mara pulls out the third chair. \"Sit beside whoever you like. Apparently that matters tonight.\"",
+        "Eli: \"It doesn't.\" He straightens the fork beside your plate without looking at her."
+      ]
+    },
+    {
+      "id": 4,
+      "turn": 2,
+      "kind": "input",
+      "source": "player",
+      "variant": "ask letter",
+      "before": {
+        "turn": 1,
+        "people": {
+          "mara": {
+            "location": "dining_room",
+            "memes": {
+              "anger": 0,
+              "fear": 2
+            },
+            "trust_player": 4,
+            "trust_partner": 3,
+            "accountable": false,
+            "disclosed": false,
+            "knows": {
+              "letter": true,
+              "receipt": false
+            }
+          },
+          "eli": {
+            "location": "dining_room",
+            "memes": {
+              "anger": 1,
+              "fear": 3
+            },
+            "trust_player": 2,
+            "trust_partner": 3,
+            "accountable": false,
+            "disclosed": false,
+            "knows": {
+              "letter": false,
+              "receipt": true
+            }
+          },
+          "player": {
+            "location": "dining_room",
+            "insults": 0,
+            "caused_harm": false,
+            "knows": {
+              "letter": false,
+              "receipt": false
+            },
+            "requested_space": false,
+            "requested_talk": false
+          }
+        },
+        "props": {
+          "letter": {
+            "owner": "mara",
+            "location": "sideboard",
+            "state": "folded"
+          },
+          "receipt": {
+            "owner": "eli",
+            "location": "sideboard",
+            "state": "face_down"
+          },
+          "photo": {
+            "owner": "couple",
+            "location": "sideboard",
+            "state": "upright"
+          },
+          "plates": {
+            "owner": "couple",
+            "location": "table",
+            "state": "three_places"
+          },
+          "music": {
+            "owner": "eli",
+            "location": "shelf",
+            "state": "playing"
+          },
+          "coat": {
+            "owner": "player",
+            "location": "hall_hook",
+            "state": "hanging"
+          },
+          "key": {
+            "owner": "mara",
+            "location": "mara_pocket",
+            "state": "carried"
+          },
+          "bag": {
+            "owner": "mara",
+            "location": "bedroom",
+            "state": "empty"
+          }
+        }
+      },
+      "after": {
+        "turn": 2,
+        "people": {
+          "mara": {
+            "location": "dining_room",
+            "memes": {
+              "anger": 0,
+              "fear": 2
+            },
+            "trust_player": 4,
+            "trust_partner": 3,
+            "accountable": false,
+            "disclosed": false,
+            "knows": {
+              "letter": true,
+              "receipt": false
+            }
+          },
+          "eli": {
+            "location": "dining_room",
+            "memes": {
+              "anger": 1,
+              "fear": 3
+            },
+            "trust_player": 2,
+            "trust_partner": 3,
+            "accountable": false,
+            "disclosed": false,
+            "knows": {
+              "letter": false,
+              "receipt": true
+            }
+          },
+          "player": {
+            "location": "dining_room",
+            "insults": 0,
+            "caused_harm": false,
+            "knows": {
+              "letter": false,
+              "receipt": false
+            },
+            "requested_space": false,
+            "requested_talk": false
+          }
+        },
+        "props": {
+          "letter": {
+            "owner": "mara",
+            "location": "sideboard",
+            "state": "folded"
+          },
+          "receipt": {
+            "owner": "eli",
+            "location": "sideboard",
+            "state": "face_down"
+          },
+          "photo": {
+            "owner": "couple",
+            "location": "sideboard",
+            "state": "upright"
+          },
+          "plates": {
+            "owner": "couple",
+            "location": "table",
+            "state": "three_places"
+          },
+          "music": {
+            "owner": "eli",
+            "location": "shelf",
+            "state": "playing"
+          },
+          "coat": {
+            "owner": "player",
+            "location": "hall_hook",
+            "state": "hanging"
+          },
+          "key": {
+            "owner": "mara",
+            "location": "mara_pocket",
+            "state": "carried"
+          },
+          "bag": {
+            "owner": "mara",
+            "location": "bedroom",
+            "state": "empty"
+          }
+        }
+      },
+      "lines": [
+        "> ask letter",
+        "Mara: \"The conservation institute wrote to me. It isn't a bill.\"",
+        "Eli: \"You applied?\"",
+        "Mara: \"Yes.\""
+      ]
+    },
+    {
+      "id": 5,
+      "turn": 2,
+      "kind": "mixin",
+      "source": "letter.0",
+      "variant": "hint",
+      "before": {
+        "turn": 2,
+        "people": {
+          "mara": {
+            "location": "dining_room",
+            "memes": {
+              "anger": 0,
+              "fear": 2
+            },
+            "trust_player": 4,
+            "trust_partner": 3,
+            "accountable": false,
+            "disclosed": false,
+            "knows": {
+              "letter": true,
+              "receipt": false
+            }
+          },
+          "eli": {
+            "location": "dining_room",
+            "memes": {
+              "anger": 1,
+              "fear": 3
+            },
+            "trust_player": 2,
+            "trust_partner": 3,
+            "accountable": false,
+            "disclosed": false,
+            "knows": {
+              "letter": false,
+              "receipt": true
+            }
+          },
+          "player": {
+            "location": "dining_room",
+            "insults": 0,
+            "caused_harm": false,
+            "knows": {
+              "letter": false,
+              "receipt": false
+            },
+            "requested_space": false,
+            "requested_talk": false
+          }
+        },
+        "props": {
+          "letter": {
+            "owner": "mara",
+            "location": "sideboard",
+            "state": "folded"
+          },
+          "receipt": {
+            "owner": "eli",
+            "location": "sideboard",
+            "state": "face_down"
+          },
+          "photo": {
+            "owner": "couple",
+            "location": "sideboard",
+            "state": "upright"
+          },
+          "plates": {
+            "owner": "couple",
+            "location": "table",
+            "state": "three_places"
+          },
+          "music": {
+            "owner": "eli",
+            "location": "shelf",
+            "state": "playing"
+          },
+          "coat": {
+            "owner": "player",
+            "location": "hall_hook",
+            "state": "hanging"
+          },
+          "key": {
+            "owner": "mara",
+            "location": "mara_pocket",
+            "state": "carried"
+          },
+          "bag": {
+            "owner": "mara",
+            "location": "bedroom",
+            "state": "empty"
+          }
+        }
+      },
+      "after": {
+        "turn": 2,
+        "people": {
+          "mara": {
+            "location": "dining_room",
+            "memes": {
+              "anger": 0,
+              "fear": 2
+            },
+            "trust_player": 4,
+            "trust_partner": 3,
+            "accountable": false,
+            "disclosed": false,
+            "knows": {
+              "letter": true,
+              "receipt": false
+            }
+          },
+          "eli": {
+            "location": "dining_room",
+            "memes": {
+              "anger": 1,
+              "fear": 3
+            },
+            "trust_player": 2,
+            "trust_partner": 3,
+            "accountable": false,
+            "disclosed": false,
+            "knows": {
+              "letter": false,
+              "receipt": true
+            }
+          },
+          "player": {
+            "location": "dining_room",
+            "insults": 0,
+            "caused_harm": false,
+            "knows": {
+              "letter": false,
+              "receipt": false
+            },
+            "requested_space": false,
+            "requested_talk": false
+          }
+        },
+        "props": {
+          "letter": {
+            "owner": "mara",
+            "location": "sideboard",
+            "state": "folded"
+          },
+          "receipt": {
+            "owner": "eli",
+            "location": "sideboard",
+            "state": "face_down"
+          },
+          "photo": {
+            "owner": "couple",
+            "location": "sideboard",
+            "state": "upright"
+          },
+          "plates": {
+            "owner": "couple",
+            "location": "table",
+            "state": "three_places"
+          },
+          "music": {
+            "owner": "eli",
+            "location": "shelf",
+            "state": "playing"
+          },
+          "coat": {
+            "owner": "player",
+            "location": "hall_hook",
+            "state": "hanging"
+          },
+          "key": {
+            "owner": "mara",
+            "location": "mara_pocket",
+            "state": "carried"
+          },
+          "bag": {
+            "owner": "mara",
+            "location": "bedroom",
+            "state": "empty"
+          }
+        }
+      },
+      "lines": [
+        "Mara: \"The conservation institute wrote to me. It isn't a bill.\"",
+        "Eli: \"You applied?\"",
+        "Mara: \"Yes.\""
+      ]
+    },
+    {
+      "id": 6,
+      "turn": 3,
+      "kind": "input",
+      "source": "player",
+      "variant": "ask letter",
+      "before": {
+        "turn": 2,
+        "people": {
+          "mara": {
+            "location": "dining_room",
+            "memes": {
+              "anger": 0,
+              "fear": 2
+            },
+            "trust_player": 4,
+            "trust_partner": 3,
+            "accountable": false,
+            "disclosed": false,
+            "knows": {
+              "letter": true,
+              "receipt": false
+            }
+          },
+          "eli": {
+            "location": "dining_room",
+            "memes": {
+              "anger": 1,
+              "fear": 3
+            },
+            "trust_player": 2,
+            "trust_partner": 3,
+            "accountable": false,
+            "disclosed": false,
+            "knows": {
+              "letter": false,
+              "receipt": true
+            }
+          },
+          "player": {
+            "location": "dining_room",
+            "insults": 0,
+            "caused_harm": false,
+            "knows": {
+              "letter": false,
+              "receipt": false
+            },
+            "requested_space": false,
+            "requested_talk": false
+          }
+        },
+        "props": {
+          "letter": {
+            "owner": "mara",
+            "location": "sideboard",
+            "state": "folded"
+          },
+          "receipt": {
+            "owner": "eli",
+            "location": "sideboard",
+            "state": "face_down"
+          },
+          "photo": {
+            "owner": "couple",
+            "location": "sideboard",
+            "state": "upright"
+          },
+          "plates": {
+            "owner": "couple",
+            "location": "table",
+            "state": "three_places"
+          },
+          "music": {
+            "owner": "eli",
+            "location": "shelf",
+            "state": "playing"
+          },
+          "coat": {
+            "owner": "player",
+            "location": "hall_hook",
+            "state": "hanging"
+          },
+          "key": {
+            "owner": "mara",
+            "location": "mara_pocket",
+            "state": "carried"
+          },
+          "bag": {
+            "owner": "mara",
+            "location": "bedroom",
+            "state": "empty"
+          }
+        }
+      },
+      "after": {
+        "turn": 3,
+        "people": {
+          "mara": {
+            "location": "dining_room",
+            "memes": {
+              "anger": 0,
+              "fear": 2
+            },
+            "trust_player": 4,
+            "trust_partner": 3,
+            "accountable": false,
+            "disclosed": false,
+            "knows": {
+              "letter": true,
+              "receipt": false
+            }
+          },
+          "eli": {
+            "location": "dining_room",
+            "memes": {
+              "anger": 1,
+              "fear": 3
+            },
+            "trust_player": 2,
+            "trust_partner": 3,
+            "accountable": false,
+            "disclosed": false,
+            "knows": {
+              "letter": false,
+              "receipt": true
+            }
+          },
+          "player": {
+            "location": "dining_room",
+            "insults": 0,
+            "caused_harm": false,
+            "knows": {
+              "letter": false,
+              "receipt": false
+            },
+            "requested_space": false,
+            "requested_talk": false
+          }
+        },
+        "props": {
+          "letter": {
+            "owner": "mara",
+            "location": "sideboard",
+            "state": "folded"
+          },
+          "receipt": {
+            "owner": "eli",
+            "location": "sideboard",
+            "state": "face_down"
+          },
+          "photo": {
+            "owner": "couple",
+            "location": "sideboard",
+            "state": "upright"
+          },
+          "plates": {
+            "owner": "couple",
+            "location": "table",
+            "state": "three_places"
+          },
+          "music": {
+            "owner": "eli",
+            "location": "shelf",
+            "state": "playing"
+          },
+          "coat": {
+            "owner": "player",
+            "location": "hall_hook",
+            "state": "hanging"
+          },
+          "key": {
+            "owner": "mara",
+            "location": "mara_pocket",
+            "state": "carried"
+          },
+          "bag": {
+            "owner": "mara",
+            "location": "bedroom",
+            "state": "empty"
+          }
+        }
+      },
+      "lines": [
+        "> ask letter",
+        "Mara unfolds the letter. \"I accepted a six-month restoration residency in another city. I leave on Monday.\"",
+        "Eli: \"Accepted. Not applied.\"",
+        "Mara: \"Yes. I told myself I would tell you when the right evening came.\""
+      ]
+    },
+    {
+      "id": 7,
+      "turn": 3,
+      "kind": "mixin",
+      "source": "letter.1",
+      "variant": "mara_truth",
+      "before": {
+        "turn": 3,
+        "people": {
+          "mara": {
+            "location": "dining_room",
+            "memes": {
+              "anger": 0,
+              "fear": 2
+            },
+            "trust_player": 4,
+            "trust_partner": 3,
+            "accountable": false,
+            "disclosed": false,
+            "knows": {
+              "letter": true,
+              "receipt": false
+            }
+          },
+          "eli": {
+            "location": "dining_room",
+            "memes": {
+              "anger": 1,
+              "fear": 3
+            },
+            "trust_player": 2,
+            "trust_partner": 3,
+            "accountable": false,
+            "disclosed": false,
+            "knows": {
+              "letter": false,
+              "receipt": true
+            }
+          },
+          "player": {
+            "location": "dining_room",
+            "insults": 0,
+            "caused_harm": false,
+            "knows": {
+              "letter": false,
+              "receipt": false
+            },
+            "requested_space": false,
+            "requested_talk": false
+          }
+        },
+        "props": {
+          "letter": {
+            "owner": "mara",
+            "location": "sideboard",
+            "state": "folded"
+          },
+          "receipt": {
+            "owner": "eli",
+            "location": "sideboard",
+            "state": "face_down"
+          },
+          "photo": {
+            "owner": "couple",
+            "location": "sideboard",
+            "state": "upright"
+          },
+          "plates": {
+            "owner": "couple",
+            "location": "table",
+            "state": "three_places"
+          },
+          "music": {
+            "owner": "eli",
+            "location": "shelf",
+            "state": "playing"
+          },
+          "coat": {
+            "owner": "player",
+            "location": "hall_hook",
+            "state": "hanging"
+          },
+          "key": {
+            "owner": "mara",
+            "location": "mara_pocket",
+            "state": "carried"
+          },
+          "bag": {
+            "owner": "mara",
+            "location": "bedroom",
+            "state": "empty"
+          }
+        }
+      },
+      "after": {
+        "turn": 3,
+        "people": {
+          "mara": {
+            "location": "dining_room",
+            "memes": {
+              "anger": 0,
+              "fear": 2
+            },
+            "trust_player": 4,
+            "trust_partner": 3,
+            "accountable": false,
+            "disclosed": true,
+            "knows": {
+              "letter": true,
+              "receipt": false
+            }
+          },
+          "eli": {
+            "location": "dining_room",
+            "memes": {
+              "anger": 2,
+              "fear": 3
+            },
+            "trust_player": 2,
+            "trust_partner": 3,
+            "accountable": false,
+            "disclosed": false,
+            "knows": {
+              "letter": true,
+              "receipt": true
+            }
+          },
+          "player": {
+            "location": "dining_room",
+            "insults": 0,
+            "caused_harm": false,
+            "knows": {
+              "letter": true,
+              "receipt": false
+            },
+            "requested_space": false,
+            "requested_talk": false
+          }
+        },
+        "props": {
+          "letter": {
+            "owner": "mara",
+            "location": "sideboard",
+            "state": "face_up"
+          },
+          "receipt": {
+            "owner": "eli",
+            "location": "sideboard",
+            "state": "face_down"
+          },
+          "photo": {
+            "owner": "couple",
+            "location": "sideboard",
+            "state": "upright"
+          },
+          "plates": {
+            "owner": "couple",
+            "location": "table",
+            "state": "three_places"
+          },
+          "music": {
+            "owner": "eli",
+            "location": "shelf",
+            "state": "playing"
+          },
+          "coat": {
+            "owner": "player",
+            "location": "hall_hook",
+            "state": "hanging"
+          },
+          "key": {
+            "owner": "mara",
+            "location": "mara_pocket",
+            "state": "carried"
+          },
+          "bag": {
+            "owner": "mara",
+            "location": "bedroom",
+            "state": "empty"
+          }
+        }
+      },
+      "lines": [
+        "Mara unfolds the letter. \"I accepted a six-month restoration residency in another city. I leave on Monday.\"",
+        "Eli: \"Accepted. Not applied.\"",
+        "Mara: \"Yes. I told myself I would tell you when the right evening came.\""
+      ]
+    },
+    {
+      "id": 8,
+      "turn": 4,
+      "kind": "input",
+      "source": "player",
+      "variant": "empathize eli",
+      "before": {
+        "turn": 3,
+        "people": {
+          "mara": {
+            "location": "dining_room",
+            "memes": {
+              "anger": 0,
+              "fear": 2
+            },
+            "trust_player": 4,
+            "trust_partner": 3,
+            "accountable": false,
+            "disclosed": true,
+            "knows": {
+              "letter": true,
+              "receipt": false
+            }
+          },
+          "eli": {
+            "location": "dining_room",
+            "memes": {
+              "anger": 2,
+              "fear": 3
+            },
+            "trust_player": 2,
+            "trust_partner": 3,
+            "accountable": false,
+            "disclosed": false,
+            "knows": {
+              "letter": true,
+              "receipt": true
+            }
+          },
+          "player": {
+            "location": "dining_room",
+            "insults": 0,
+            "caused_harm": false,
+            "knows": {
+              "letter": true,
+              "receipt": false
+            },
+            "requested_space": false,
+            "requested_talk": false
+          }
+        },
+        "props": {
+          "letter": {
+            "owner": "mara",
+            "location": "sideboard",
+            "state": "face_up"
+          },
+          "receipt": {
+            "owner": "eli",
+            "location": "sideboard",
+            "state": "face_down"
+          },
+          "photo": {
+            "owner": "couple",
+            "location": "sideboard",
+            "state": "upright"
+          },
+          "plates": {
+            "owner": "couple",
+            "location": "table",
+            "state": "three_places"
+          },
+          "music": {
+            "owner": "eli",
+            "location": "shelf",
+            "state": "playing"
+          },
+          "coat": {
+            "owner": "player",
+            "location": "hall_hook",
+            "state": "hanging"
+          },
+          "key": {
+            "owner": "mara",
+            "location": "mara_pocket",
+            "state": "carried"
+          },
+          "bag": {
+            "owner": "mara",
+            "location": "bedroom",
+            "state": "empty"
+          }
+        }
+      },
+      "after": {
+        "turn": 4,
+        "people": {
+          "mara": {
+            "location": "dining_room",
+            "memes": {
+              "anger": 0,
+              "fear": 2
+            },
+            "trust_player": 4,
+            "trust_partner": 3,
+            "accountable": false,
+            "disclosed": true,
+            "knows": {
+              "letter": true,
+              "receipt": false
+            }
+          },
+          "eli": {
+            "location": "dining_room",
+            "memes": {
+              "anger": 2,
+              "fear": 3
+            },
+            "trust_player": 2,
+            "trust_partner": 3,
+            "accountable": false,
+            "disclosed": false,
+            "knows": {
+              "letter": true,
+              "receipt": true
+            }
+          },
+          "player": {
+            "location": "dining_room",
+            "insults": 0,
+            "caused_harm": false,
+            "knows": {
+              "letter": true,
+              "receipt": false
+            },
+            "requested_space": false,
+            "requested_talk": false
+          }
+        },
+        "props": {
+          "letter": {
+            "owner": "mara",
+            "location": "sideboard",
+            "state": "face_up"
+          },
+          "receipt": {
+            "owner": "eli",
+            "location": "sideboard",
+            "state": "face_down"
+          },
+          "photo": {
+            "owner": "couple",
+            "location": "sideboard",
+            "state": "upright"
+          },
+          "plates": {
+            "owner": "couple",
+            "location": "table",
+            "state": "three_places"
+          },
+          "music": {
+            "owner": "eli",
+            "location": "shelf",
+            "state": "playing"
+          },
+          "coat": {
+            "owner": "player",
+            "location": "hall_hook",
+            "state": "hanging"
+          },
+          "key": {
+            "owner": "mara",
+            "location": "mara_pocket",
+            "state": "carried"
+          },
+          "bag": {
+            "owner": "mara",
+            "location": "bedroom",
+            "state": "empty"
+          }
+        }
+      },
+      "lines": [
+        "> empathize eli",
+        "Eli: \"Thank you. Let me find a way to say this without making it another accusation.\"",
+        "Mara: \"I can wait for that.\""
+      ]
+    },
+    {
+      "id": 9,
+      "turn": 4,
+      "kind": "exchange",
+      "source": "empathize eli",
+      "variant": "heard",
+      "before": {
+        "turn": 4,
+        "people": {
+          "mara": {
+            "location": "dining_room",
+            "memes": {
+              "anger": 0,
+              "fear": 2
+            },
+            "trust_player": 4,
+            "trust_partner": 3,
+            "accountable": false,
+            "disclosed": true,
+            "knows": {
+              "letter": true,
+              "receipt": false
+            }
+          },
+          "eli": {
+            "location": "dining_room",
+            "memes": {
+              "anger": 2,
+              "fear": 3
+            },
+            "trust_player": 2,
+            "trust_partner": 3,
+            "accountable": false,
+            "disclosed": false,
+            "knows": {
+              "letter": true,
+              "receipt": true
+            }
+          },
+          "player": {
+            "location": "dining_room",
+            "insults": 0,
+            "caused_harm": false,
+            "knows": {
+              "letter": true,
+              "receipt": false
+            },
+            "requested_space": false,
+            "requested_talk": false
+          }
+        },
+        "props": {
+          "letter": {
+            "owner": "mara",
+            "location": "sideboard",
+            "state": "face_up"
+          },
+          "receipt": {
+            "owner": "eli",
+            "location": "sideboard",
+            "state": "face_down"
+          },
+          "photo": {
+            "owner": "couple",
+            "location": "sideboard",
+            "state": "upright"
+          },
+          "plates": {
+            "owner": "couple",
+            "location": "table",
+            "state": "three_places"
+          },
+          "music": {
+            "owner": "eli",
+            "location": "shelf",
+            "state": "playing"
+          },
+          "coat": {
+            "owner": "player",
+            "location": "hall_hook",
+            "state": "hanging"
+          },
+          "key": {
+            "owner": "mara",
+            "location": "mara_pocket",
+            "state": "carried"
+          },
+          "bag": {
+            "owner": "mara",
+            "location": "bedroom",
+            "state": "empty"
+          }
+        }
+      },
+      "after": {
+        "turn": 4,
+        "people": {
+          "mara": {
+            "location": "dining_room",
+            "memes": {
+              "anger": 0,
+              "fear": 2
+            },
+            "trust_player": 4,
+            "trust_partner": 3,
+            "accountable": false,
+            "disclosed": true,
+            "knows": {
+              "letter": true,
+              "receipt": false
+            }
+          },
+          "eli": {
+            "location": "dining_room",
+            "memes": {
+              "anger": 1,
+              "fear": 2
+            },
+            "trust_player": 4,
+            "trust_partner": 3,
+            "accountable": false,
+            "disclosed": false,
+            "knows": {
+              "letter": true,
+              "receipt": true
+            }
+          },
+          "player": {
+            "location": "dining_room",
+            "insults": 0,
+            "caused_harm": false,
+            "knows": {
+              "letter": true,
+              "receipt": false
+            },
+            "requested_space": false,
+            "requested_talk": false
+          }
+        },
+        "props": {
+          "letter": {
+            "owner": "mara",
+            "location": "sideboard",
+            "state": "face_up"
+          },
+          "receipt": {
+            "owner": "eli",
+            "location": "sideboard",
+            "state": "face_down"
+          },
+          "photo": {
+            "owner": "couple",
+            "location": "sideboard",
+            "state": "upright"
+          },
+          "plates": {
+            "owner": "couple",
+            "location": "table",
+            "state": "three_places"
+          },
+          "music": {
+            "owner": "eli",
+            "location": "shelf",
+            "state": "playing"
+          },
+          "coat": {
+            "owner": "player",
+            "location": "hall_hook",
+            "state": "hanging"
+          },
+          "key": {
+            "owner": "mara",
+            "location": "mara_pocket",
+            "state": "carried"
+          },
+          "bag": {
+            "owner": "mara",
+            "location": "bedroom",
+            "state": "empty"
+          }
+        }
+      },
+      "lines": [
+        "Eli: \"Thank you. Let me find a way to say this without making it another accusation.\"",
+        "Mara: \"I can wait for that.\""
+      ]
+    },
+    {
+      "id": 10,
+      "turn": 4,
+      "kind": "goal",
+      "source": "letter.entry",
+      "variant": "already_open",
+      "before": {
+        "turn": 4,
+        "people": {
+          "mara": {
+            "location": "dining_room",
+            "memes": {
+              "anger": 0,
+              "fear": 2
+            },
+            "trust_player": 4,
+            "trust_partner": 3,
+            "accountable": false,
+            "disclosed": true,
+            "knows": {
+              "letter": true,
+              "receipt": false
+            }
+          },
+          "eli": {
+            "location": "dining_room",
+            "memes": {
+              "anger": 1,
+              "fear": 2
+            },
+            "trust_player": 4,
+            "trust_partner": 3,
+            "accountable": false,
+            "disclosed": false,
+            "knows": {
+              "letter": true,
+              "receipt": true
+            }
+          },
+          "player": {
+            "location": "dining_room",
+            "insults": 0,
+            "caused_harm": false,
+            "knows": {
+              "letter": true,
+              "receipt": false
+            },
+            "requested_space": false,
+            "requested_talk": false
+          }
+        },
+        "props": {
+          "letter": {
+            "owner": "mara",
+            "location": "sideboard",
+            "state": "face_up"
+          },
+          "receipt": {
+            "owner": "eli",
+            "location": "sideboard",
+            "state": "face_down"
+          },
+          "photo": {
+            "owner": "couple",
+            "location": "sideboard",
+            "state": "upright"
+          },
+          "plates": {
+            "owner": "couple",
+            "location": "table",
+            "state": "three_places"
+          },
+          "music": {
+            "owner": "eli",
+            "location": "shelf",
+            "state": "playing"
+          },
+          "coat": {
+            "owner": "player",
+            "location": "hall_hook",
+            "state": "hanging"
+          },
+          "key": {
+            "owner": "mara",
+            "location": "mara_pocket",
+            "state": "carried"
+          },
+          "bag": {
+            "owner": "mara",
+            "location": "bedroom",
+            "state": "empty"
+          }
+        }
+      },
+      "after": {
+        "turn": 4,
+        "people": {
+          "mara": {
+            "location": "dining_room",
+            "memes": {
+              "anger": 0,
+              "fear": 2
+            },
+            "trust_player": 4,
+            "trust_partner": 3,
+            "accountable": false,
+            "disclosed": true,
+            "knows": {
+              "letter": true,
+              "receipt": false
+            }
+          },
+          "eli": {
+            "location": "dining_room",
+            "memes": {
+              "anger": 1,
+              "fear": 2
+            },
+            "trust_player": 4,
+            "trust_partner": 3,
+            "accountable": false,
+            "disclosed": false,
+            "knows": {
+              "letter": true,
+              "receipt": true
+            }
+          },
+          "player": {
+            "location": "dining_room",
+            "insults": 0,
+            "caused_harm": false,
+            "knows": {
+              "letter": true,
+              "receipt": false
+            },
+            "requested_space": false,
+            "requested_talk": false
+          }
+        },
+        "props": {
+          "letter": {
+            "owner": "mara",
+            "location": "sideboard",
+            "state": "face_up"
+          },
+          "receipt": {
+            "owner": "eli",
+            "location": "sideboard",
+            "state": "face_down"
+          },
+          "photo": {
+            "owner": "couple",
+            "location": "sideboard",
+            "state": "upright"
+          },
+          "plates": {
+            "owner": "couple",
+            "location": "table",
+            "state": "three_places"
+          },
+          "music": {
+            "owner": "eli",
+            "location": "shelf",
+            "state": "playing"
+          },
+          "coat": {
+            "owner": "player",
+            "location": "hall_hook",
+            "state": "hanging"
+          },
+          "key": {
+            "owner": "mara",
+            "location": "mara_pocket",
+            "state": "carried"
+          },
+          "bag": {
+            "owner": "mara",
+            "location": "bedroom",
+            "state": "empty"
+          }
+        }
+      },
+      "lines": [
+        "Eli looks at the open letter. \"Monday. You had a date all this time.\""
+      ]
+    },
+    {
+      "id": 11,
+      "turn": 5,
+      "kind": "input",
+      "source": "player",
+      "variant": "ask receipt",
+      "before": {
+        "turn": 4,
+        "people": {
+          "mara": {
+            "location": "dining_room",
+            "memes": {
+              "anger": 0,
+              "fear": 2
+            },
+            "trust_player": 4,
+            "trust_partner": 3,
+            "accountable": false,
+            "disclosed": true,
+            "knows": {
+              "letter": true,
+              "receipt": false
+            }
+          },
+          "eli": {
+            "location": "dining_room",
+            "memes": {
+              "anger": 1,
+              "fear": 2
+            },
+            "trust_player": 4,
+            "trust_partner": 3,
+            "accountable": false,
+            "disclosed": false,
+            "knows": {
+              "letter": true,
+              "receipt": true
+            }
+          },
+          "player": {
+            "location": "dining_room",
+            "insults": 0,
+            "caused_harm": false,
+            "knows": {
+              "letter": true,
+              "receipt": false
+            },
+            "requested_space": false,
+            "requested_talk": false
+          }
+        },
+        "props": {
+          "letter": {
+            "owner": "mara",
+            "location": "sideboard",
+            "state": "face_up"
+          },
+          "receipt": {
+            "owner": "eli",
+            "location": "sideboard",
+            "state": "face_down"
+          },
+          "photo": {
+            "owner": "couple",
+            "location": "sideboard",
+            "state": "upright"
+          },
+          "plates": {
+            "owner": "couple",
+            "location": "table",
+            "state": "three_places"
+          },
+          "music": {
+            "owner": "eli",
+            "location": "shelf",
+            "state": "playing"
+          },
+          "coat": {
+            "owner": "player",
+            "location": "hall_hook",
+            "state": "hanging"
+          },
+          "key": {
+            "owner": "mara",
+            "location": "mara_pocket",
+            "state": "carried"
+          },
+          "bag": {
+            "owner": "mara",
+            "location": "bedroom",
+            "state": "empty"
+          }
+        }
+      },
+      "after": {
+        "turn": 5,
+        "people": {
+          "mara": {
+            "location": "dining_room",
+            "memes": {
+              "anger": 0,
+              "fear": 2
+            },
+            "trust_player": 4,
+            "trust_partner": 3,
+            "accountable": false,
+            "disclosed": true,
+            "knows": {
+              "letter": true,
+              "receipt": false
+            }
+          },
+          "eli": {
+            "location": "dining_room",
+            "memes": {
+              "anger": 1,
+              "fear": 2
+            },
+            "trust_player": 4,
+            "trust_partner": 3,
+            "accountable": false,
+            "disclosed": false,
+            "knows": {
+              "letter": true,
+              "receipt": true
+            }
+          },
+          "player": {
+            "location": "dining_room",
+            "insults": 0,
+            "caused_harm": false,
+            "knows": {
+              "letter": true,
+              "receipt": false
+            },
+            "requested_space": false,
+            "requested_talk": false
+          }
+        },
+        "props": {
+          "letter": {
+            "owner": "mara",
+            "location": "sideboard",
+            "state": "face_up"
+          },
+          "receipt": {
+            "owner": "eli",
+            "location": "sideboard",
+            "state": "face_down"
+          },
+          "photo": {
+            "owner": "couple",
+            "location": "sideboard",
+            "state": "upright"
+          },
+          "plates": {
+            "owner": "couple",
+            "location": "table",
+            "state": "three_places"
+          },
+          "music": {
+            "owner": "eli",
+            "location": "shelf",
+            "state": "playing"
+          },
+          "coat": {
+            "owner": "player",
+            "location": "hall_hook",
+            "state": "hanging"
+          },
+          "key": {
+            "owner": "mara",
+            "location": "mara_pocket",
+            "state": "carried"
+          },
+          "bag": {
+            "owner": "mara",
+            "location": "bedroom",
+            "state": "empty"
+          }
+        }
+      },
+      "lines": [
+        "> ask receipt",
+        "Eli: \"It's a deposit. For the empty shop in the photograph.\"",
+        "Mara: \"A deposit? Eli, how much planning have you done?\""
+      ]
+    },
+    {
+      "id": 12,
+      "turn": 5,
+      "kind": "mixin",
+      "source": "receipt.0",
+      "variant": "hint",
+      "before": {
+        "turn": 5,
+        "people": {
+          "mara": {
+            "location": "dining_room",
+            "memes": {
+              "anger": 0,
+              "fear": 2
+            },
+            "trust_player": 4,
+            "trust_partner": 3,
+            "accountable": false,
+            "disclosed": true,
+            "knows": {
+              "letter": true,
+              "receipt": false
+            }
+          },
+          "eli": {
+            "location": "dining_room",
+            "memes": {
+              "anger": 1,
+              "fear": 2
+            },
+            "trust_player": 4,
+            "trust_partner": 3,
+            "accountable": false,
+            "disclosed": false,
+            "knows": {
+              "letter": true,
+              "receipt": true
+            }
+          },
+          "player": {
+            "location": "dining_room",
+            "insults": 0,
+            "caused_harm": false,
+            "knows": {
+              "letter": true,
+              "receipt": false
+            },
+            "requested_space": false,
+            "requested_talk": false
+          }
+        },
+        "props": {
+          "letter": {
+            "owner": "mara",
+            "location": "sideboard",
+            "state": "face_up"
+          },
+          "receipt": {
+            "owner": "eli",
+            "location": "sideboard",
+            "state": "face_down"
+          },
+          "photo": {
+            "owner": "couple",
+            "location": "sideboard",
+            "state": "upright"
+          },
+          "plates": {
+            "owner": "couple",
+            "location": "table",
+            "state": "three_places"
+          },
+          "music": {
+            "owner": "eli",
+            "location": "shelf",
+            "state": "playing"
+          },
+          "coat": {
+            "owner": "player",
+            "location": "hall_hook",
+            "state": "hanging"
+          },
+          "key": {
+            "owner": "mara",
+            "location": "mara_pocket",
+            "state": "carried"
+          },
+          "bag": {
+            "owner": "mara",
+            "location": "bedroom",
+            "state": "empty"
+          }
+        }
+      },
+      "after": {
+        "turn": 5,
+        "people": {
+          "mara": {
+            "location": "dining_room",
+            "memes": {
+              "anger": 0,
+              "fear": 2
+            },
+            "trust_player": 4,
+            "trust_partner": 3,
+            "accountable": false,
+            "disclosed": true,
+            "knows": {
+              "letter": true,
+              "receipt": false
+            }
+          },
+          "eli": {
+            "location": "dining_room",
+            "memes": {
+              "anger": 1,
+              "fear": 2
+            },
+            "trust_player": 4,
+            "trust_partner": 3,
+            "accountable": false,
+            "disclosed": false,
+            "knows": {
+              "letter": true,
+              "receipt": true
+            }
+          },
+          "player": {
+            "location": "dining_room",
+            "insults": 0,
+            "caused_harm": false,
+            "knows": {
+              "letter": true,
+              "receipt": false
+            },
+            "requested_space": false,
+            "requested_talk": false
+          }
+        },
+        "props": {
+          "letter": {
+            "owner": "mara",
+            "location": "sideboard",
+            "state": "face_up"
+          },
+          "receipt": {
+            "owner": "eli",
+            "location": "sideboard",
+            "state": "face_down"
+          },
+          "photo": {
+            "owner": "couple",
+            "location": "sideboard",
+            "state": "upright"
+          },
+          "plates": {
+            "owner": "couple",
+            "location": "table",
+            "state": "three_places"
+          },
+          "music": {
+            "owner": "eli",
+            "location": "shelf",
+            "state": "playing"
+          },
+          "coat": {
+            "owner": "player",
+            "location": "hall_hook",
+            "state": "hanging"
+          },
+          "key": {
+            "owner": "mara",
+            "location": "mara_pocket",
+            "state": "carried"
+          },
+          "bag": {
+            "owner": "mara",
+            "location": "bedroom",
+            "state": "empty"
+          }
+        }
+      },
+      "lines": [
+        "Eli: \"It's a deposit. For the empty shop in the photograph.\"",
+        "Mara: \"A deposit? Eli, how much planning have you done?\""
+      ]
+    },
+    {
+      "id": 13,
+      "turn": 6,
+      "kind": "input",
+      "source": "player",
+      "variant": "ask receipt",
+      "before": {
+        "turn": 5,
+        "people": {
+          "mara": {
+            "location": "dining_room",
+            "memes": {
+              "anger": 0,
+              "fear": 2
+            },
+            "trust_player": 4,
+            "trust_partner": 3,
+            "accountable": false,
+            "disclosed": true,
+            "knows": {
+              "letter": true,
+              "receipt": false
+            }
+          },
+          "eli": {
+            "location": "dining_room",
+            "memes": {
+              "anger": 1,
+              "fear": 2
+            },
+            "trust_player": 4,
+            "trust_partner": 3,
+            "accountable": false,
+            "disclosed": false,
+            "knows": {
+              "letter": true,
+              "receipt": true
+            }
+          },
+          "player": {
+            "location": "dining_room",
+            "insults": 0,
+            "caused_harm": false,
+            "knows": {
+              "letter": true,
+              "receipt": false
+            },
+            "requested_space": false,
+            "requested_talk": false
+          }
+        },
+        "props": {
+          "letter": {
+            "owner": "mara",
+            "location": "sideboard",
+            "state": "face_up"
+          },
+          "receipt": {
+            "owner": "eli",
+            "location": "sideboard",
+            "state": "face_down"
+          },
+          "photo": {
+            "owner": "couple",
+            "location": "sideboard",
+            "state": "upright"
+          },
+          "plates": {
+            "owner": "couple",
+            "location": "table",
+            "state": "three_places"
+          },
+          "music": {
+            "owner": "eli",
+            "location": "shelf",
+            "state": "playing"
+          },
+          "coat": {
+            "owner": "player",
+            "location": "hall_hook",
+            "state": "hanging"
+          },
+          "key": {
+            "owner": "mara",
+            "location": "mara_pocket",
+            "state": "carried"
+          },
+          "bag": {
+            "owner": "mara",
+            "location": "bedroom",
+            "state": "empty"
+          }
+        }
+      },
+      "after": {
+        "turn": 6,
+        "people": {
+          "mara": {
+            "location": "dining_room",
+            "memes": {
+              "anger": 0,
+              "fear": 2
+            },
+            "trust_player": 4,
+            "trust_partner": 3,
+            "accountable": false,
+            "disclosed": true,
+            "knows": {
+              "letter": true,
+              "receipt": false
+            }
+          },
+          "eli": {
+            "location": "dining_room",
+            "memes": {
+              "anger": 1,
+              "fear": 2
+            },
+            "trust_player": 4,
+            "trust_partner": 3,
+            "accountable": false,
+            "disclosed": false,
+            "knows": {
+              "letter": true,
+              "receipt": true
+            }
+          },
+          "player": {
+            "location": "dining_room",
+            "insults": 0,
+            "caused_harm": false,
+            "knows": {
+              "letter": true,
+              "receipt": false
+            },
+            "requested_space": false,
+            "requested_talk": false
+          }
+        },
+        "props": {
+          "letter": {
+            "owner": "mara",
+            "location": "sideboard",
+            "state": "face_up"
+          },
+          "receipt": {
+            "owner": "eli",
+            "location": "sideboard",
+            "state": "face_down"
+          },
+          "photo": {
+            "owner": "couple",
+            "location": "sideboard",
+            "state": "upright"
+          },
+          "plates": {
+            "owner": "couple",
+            "location": "table",
+            "state": "three_places"
+          },
+          "music": {
+            "owner": "eli",
+            "location": "shelf",
+            "state": "playing"
+          },
+          "coat": {
+            "owner": "player",
+            "location": "hall_hook",
+            "state": "hanging"
+          },
+          "key": {
+            "owner": "mara",
+            "location": "mara_pocket",
+            "state": "carried"
+          },
+          "bag": {
+            "owner": "mara",
+            "location": "bedroom",
+            "state": "empty"
+          }
+        }
+      },
+      "lines": [
+        "> ask receipt",
+        "Eli turns over the receipt. \"I paid the deposit on the shop downstairs. From our joint savings.\"",
+        "Mara: \"You spent the money I thought we were keeping for choices.\"",
+        "Eli: \"I thought a workshop of our own would make you want to stay.\""
+      ]
+    },
+    {
+      "id": 14,
+      "turn": 6,
+      "kind": "mixin",
+      "source": "receipt.1",
+      "variant": "eli_truth",
+      "before": {
+        "turn": 6,
+        "people": {
+          "mara": {
+            "location": "dining_room",
+            "memes": {
+              "anger": 0,
+              "fear": 2
+            },
+            "trust_player": 4,
+            "trust_partner": 3,
+            "accountable": false,
+            "disclosed": true,
+            "knows": {
+              "letter": true,
+              "receipt": false
+            }
+          },
+          "eli": {
+            "location": "dining_room",
+            "memes": {
+              "anger": 1,
+              "fear": 2
+            },
+            "trust_player": 4,
+            "trust_partner": 3,
+            "accountable": false,
+            "disclosed": false,
+            "knows": {
+              "letter": true,
+              "receipt": true
+            }
+          },
+          "player": {
+            "location": "dining_room",
+            "insults": 0,
+            "caused_harm": false,
+            "knows": {
+              "letter": true,
+              "receipt": false
+            },
+            "requested_space": false,
+            "requested_talk": false
+          }
+        },
+        "props": {
+          "letter": {
+            "owner": "mara",
+            "location": "sideboard",
+            "state": "face_up"
+          },
+          "receipt": {
+            "owner": "eli",
+            "location": "sideboard",
+            "state": "face_down"
+          },
+          "photo": {
+            "owner": "couple",
+            "location": "sideboard",
+            "state": "upright"
+          },
+          "plates": {
+            "owner": "couple",
+            "location": "table",
+            "state": "three_places"
+          },
+          "music": {
+            "owner": "eli",
+            "location": "shelf",
+            "state": "playing"
+          },
+          "coat": {
+            "owner": "player",
+            "location": "hall_hook",
+            "state": "hanging"
+          },
+          "key": {
+            "owner": "mara",
+            "location": "mara_pocket",
+            "state": "carried"
+          },
+          "bag": {
+            "owner": "mara",
+            "location": "bedroom",
+            "state": "empty"
+          }
+        }
+      },
+      "after": {
+        "turn": 6,
+        "people": {
+          "mara": {
+            "location": "dining_room",
+            "memes": {
+              "anger": 1,
+              "fear": 2
+            },
+            "trust_player": 4,
+            "trust_partner": 3,
+            "accountable": false,
+            "disclosed": true,
+            "knows": {
+              "letter": true,
+              "receipt": true
+            }
+          },
+          "eli": {
+            "location": "dining_room",
+            "memes": {
+              "anger": 1,
+              "fear": 2
+            },
+            "trust_player": 4,
+            "trust_partner": 3,
+            "accountable": false,
+            "disclosed": true,
+            "knows": {
+              "letter": true,
+              "receipt": true
+            }
+          },
+          "player": {
+            "location": "dining_room",
+            "insults": 0,
+            "caused_harm": false,
+            "knows": {
+              "letter": true,
+              "receipt": true
+            },
+            "requested_space": false,
+            "requested_talk": false
+          }
+        },
+        "props": {
+          "letter": {
+            "owner": "mara",
+            "location": "sideboard",
+            "state": "face_up"
+          },
+          "receipt": {
+            "owner": "eli",
+            "location": "sideboard",
+            "state": "face_up"
+          },
+          "photo": {
+            "owner": "couple",
+            "location": "sideboard",
+            "state": "upright"
+          },
+          "plates": {
+            "owner": "couple",
+            "location": "table",
+            "state": "three_places"
+          },
+          "music": {
+            "owner": "eli",
+            "location": "shelf",
+            "state": "playing"
+          },
+          "coat": {
+            "owner": "player",
+            "location": "hall_hook",
+            "state": "hanging"
+          },
+          "key": {
+            "owner": "mara",
+            "location": "mara_pocket",
+            "state": "carried"
+          },
+          "bag": {
+            "owner": "mara",
+            "location": "bedroom",
+            "state": "empty"
+          }
+        }
+      },
+      "lines": [
+        "Eli turns over the receipt. \"I paid the deposit on the shop downstairs. From our joint savings.\"",
+        "Mara: \"You spent the money I thought we were keeping for choices.\"",
+        "Eli: \"I thought a workshop of our own would make you want to stay.\""
+      ]
+    },
+    {
+      "id": 15,
+      "turn": 7,
+      "kind": "input",
+      "source": "player",
+      "variant": "reflect mara",
+      "before": {
+        "turn": 6,
+        "people": {
+          "mara": {
+            "location": "dining_room",
+            "memes": {
+              "anger": 1,
+              "fear": 2
+            },
+            "trust_player": 4,
+            "trust_partner": 3,
+            "accountable": false,
+            "disclosed": true,
+            "knows": {
+              "letter": true,
+              "receipt": true
+            }
+          },
+          "eli": {
+            "location": "dining_room",
+            "memes": {
+              "anger": 1,
+              "fear": 2
+            },
+            "trust_player": 4,
+            "trust_partner": 3,
+            "accountable": false,
+            "disclosed": true,
+            "knows": {
+              "letter": true,
+              "receipt": true
+            }
+          },
+          "player": {
+            "location": "dining_room",
+            "insults": 0,
+            "caused_harm": false,
+            "knows": {
+              "letter": true,
+              "receipt": true
+            },
+            "requested_space": false,
+            "requested_talk": false
+          }
+        },
+        "props": {
+          "letter": {
+            "owner": "mara",
+            "location": "sideboard",
+            "state": "face_up"
+          },
+          "receipt": {
+            "owner": "eli",
+            "location": "sideboard",
+            "state": "face_up"
+          },
+          "photo": {
+            "owner": "couple",
+            "location": "sideboard",
+            "state": "upright"
+          },
+          "plates": {
+            "owner": "couple",
+            "location": "table",
+            "state": "three_places"
+          },
+          "music": {
+            "owner": "eli",
+            "location": "shelf",
+            "state": "playing"
+          },
+          "coat": {
+            "owner": "player",
+            "location": "hall_hook",
+            "state": "hanging"
+          },
+          "key": {
+            "owner": "mara",
+            "location": "mara_pocket",
+            "state": "carried"
+          },
+          "bag": {
+            "owner": "mara",
+            "location": "bedroom",
+            "state": "empty"
+          }
+        }
+      },
+      "after": {
+        "turn": 7,
+        "people": {
+          "mara": {
+            "location": "dining_room",
+            "memes": {
+              "anger": 1,
+              "fear": 2
+            },
+            "trust_player": 4,
+            "trust_partner": 3,
+            "accountable": false,
+            "disclosed": true,
+            "knows": {
+              "letter": true,
+              "receipt": true
+            }
+          },
+          "eli": {
+            "location": "dining_room",
+            "memes": {
+              "anger": 1,
+              "fear": 2
+            },
+            "trust_player": 4,
+            "trust_partner": 3,
+            "accountable": false,
+            "disclosed": true,
+            "knows": {
+              "letter": true,
+              "receipt": true
+            }
+          },
+          "player": {
+            "location": "dining_room",
+            "insults": 0,
+            "caused_harm": false,
+            "knows": {
+              "letter": true,
+              "receipt": true
+            },
+            "requested_space": false,
+            "requested_talk": false
+          }
+        },
+        "props": {
+          "letter": {
+            "owner": "mara",
+            "location": "sideboard",
+            "state": "face_up"
+          },
+          "receipt": {
+            "owner": "eli",
+            "location": "sideboard",
+            "state": "face_up"
+          },
+          "photo": {
+            "owner": "couple",
+            "location": "sideboard",
+            "state": "upright"
+          },
+          "plates": {
+            "owner": "couple",
+            "location": "table",
+            "state": "three_places"
+          },
+          "music": {
+            "owner": "eli",
+            "location": "shelf",
+            "state": "playing"
+          },
+          "coat": {
+            "owner": "player",
+            "location": "hall_hook",
+            "state": "hanging"
+          },
+          "key": {
+            "owner": "mara",
+            "location": "mara_pocket",
+            "state": "carried"
+          },
+          "bag": {
+            "owner": "mara",
+            "location": "bedroom",
+            "state": "empty"
+          }
+        }
+      },
+      "lines": [
+        "> reflect mara",
+        "Mara: \"I chose not to tell you about the residency. Being afraid of the argument doesn't excuse that.\"",
+        "Eli: \"That is the first time I've heard you say it without a but.\""
+      ]
+    },
+    {
+      "id": 16,
+      "turn": 7,
+      "kind": "exchange",
+      "source": "reflect mara",
+      "variant": "accountability",
+      "before": {
+        "turn": 7,
+        "people": {
+          "mara": {
+            "location": "dining_room",
+            "memes": {
+              "anger": 1,
+              "fear": 2
+            },
+            "trust_player": 4,
+            "trust_partner": 3,
+            "accountable": false,
+            "disclosed": true,
+            "knows": {
+              "letter": true,
+              "receipt": true
+            }
+          },
+          "eli": {
+            "location": "dining_room",
+            "memes": {
+              "anger": 1,
+              "fear": 2
+            },
+            "trust_player": 4,
+            "trust_partner": 3,
+            "accountable": false,
+            "disclosed": true,
+            "knows": {
+              "letter": true,
+              "receipt": true
+            }
+          },
+          "player": {
+            "location": "dining_room",
+            "insults": 0,
+            "caused_harm": false,
+            "knows": {
+              "letter": true,
+              "receipt": true
+            },
+            "requested_space": false,
+            "requested_talk": false
+          }
+        },
+        "props": {
+          "letter": {
+            "owner": "mara",
+            "location": "sideboard",
+            "state": "face_up"
+          },
+          "receipt": {
+            "owner": "eli",
+            "location": "sideboard",
+            "state": "face_up"
+          },
+          "photo": {
+            "owner": "couple",
+            "location": "sideboard",
+            "state": "upright"
+          },
+          "plates": {
+            "owner": "couple",
+            "location": "table",
+            "state": "three_places"
+          },
+          "music": {
+            "owner": "eli",
+            "location": "shelf",
+            "state": "playing"
+          },
+          "coat": {
+            "owner": "player",
+            "location": "hall_hook",
+            "state": "hanging"
+          },
+          "key": {
+            "owner": "mara",
+            "location": "mara_pocket",
+            "state": "carried"
+          },
+          "bag": {
+            "owner": "mara",
+            "location": "bedroom",
+            "state": "empty"
+          }
+        }
+      },
+      "after": {
+        "turn": 7,
+        "people": {
+          "mara": {
+            "location": "dining_room",
+            "memes": {
+              "anger": 0,
+              "fear": 1
+            },
+            "trust_player": 4,
+            "trust_partner": 3,
+            "accountable": true,
+            "disclosed": true,
+            "knows": {
+              "letter": true,
+              "receipt": true
+            }
+          },
+          "eli": {
+            "location": "dining_room",
+            "memes": {
+              "anger": 1,
+              "fear": 2
+            },
+            "trust_player": 4,
+            "trust_partner": 4,
+            "accountable": false,
+            "disclosed": true,
+            "knows": {
+              "letter": true,
+              "receipt": true
+            }
+          },
+          "player": {
+            "location": "dining_room",
+            "insults": 0,
+            "caused_harm": false,
+            "knows": {
+              "letter": true,
+              "receipt": true
+            },
+            "requested_space": false,
+            "requested_talk": false
+          }
+        },
+        "props": {
+          "letter": {
+            "owner": "mara",
+            "location": "sideboard",
+            "state": "face_up"
+          },
+          "receipt": {
+            "owner": "eli",
+            "location": "sideboard",
+            "state": "face_up"
+          },
+          "photo": {
+            "owner": "couple",
+            "location": "sideboard",
+            "state": "upright"
+          },
+          "plates": {
+            "owner": "couple",
+            "location": "table",
+            "state": "three_places"
+          },
+          "music": {
+            "owner": "eli",
+            "location": "shelf",
+            "state": "playing"
+          },
+          "coat": {
+            "owner": "player",
+            "location": "hall_hook",
+            "state": "hanging"
+          },
+          "key": {
+            "owner": "mara",
+            "location": "mara_pocket",
+            "state": "carried"
+          },
+          "bag": {
+            "owner": "mara",
+            "location": "bedroom",
+            "state": "empty"
+          }
+        }
+      },
+      "lines": [
+        "Mara: \"I chose not to tell you about the residency. Being afraid of the argument doesn't excuse that.\"",
+        "Eli: \"That is the first time I've heard you say it without a but.\""
+      ]
+    },
+    {
+      "id": 17,
+      "turn": 7,
+      "kind": "resume",
+      "source": "letter",
+      "variant": "resume",
+      "before": {
+        "turn": 7,
+        "people": {
+          "mara": {
+            "location": "dining_room",
+            "memes": {
+              "anger": 0,
+              "fear": 1
+            },
+            "trust_player": 4,
+            "trust_partner": 3,
+            "accountable": true,
+            "disclosed": true,
+            "knows": {
+              "letter": true,
+              "receipt": true
+            }
+          },
+          "eli": {
+            "location": "dining_room",
+            "memes": {
+              "anger": 1,
+              "fear": 2
+            },
+            "trust_player": 4,
+            "trust_partner": 4,
+            "accountable": false,
+            "disclosed": true,
+            "knows": {
+              "letter": true,
+              "receipt": true
+            }
+          },
+          "player": {
+            "location": "dining_room",
+            "insults": 0,
+            "caused_harm": false,
+            "knows": {
+              "letter": true,
+              "receipt": true
+            },
+            "requested_space": false,
+            "requested_talk": false
+          }
+        },
+        "props": {
+          "letter": {
+            "owner": "mara",
+            "location": "sideboard",
+            "state": "face_up"
+          },
+          "receipt": {
+            "owner": "eli",
+            "location": "sideboard",
+            "state": "face_up"
+          },
+          "photo": {
+            "owner": "couple",
+            "location": "sideboard",
+            "state": "upright"
+          },
+          "plates": {
+            "owner": "couple",
+            "location": "table",
+            "state": "three_places"
+          },
+          "music": {
+            "owner": "eli",
+            "location": "shelf",
+            "state": "playing"
+          },
+          "coat": {
+            "owner": "player",
+            "location": "hall_hook",
+            "state": "hanging"
+          },
+          "key": {
+            "owner": "mara",
+            "location": "mara_pocket",
+            "state": "carried"
+          },
+          "bag": {
+            "owner": "mara",
+            "location": "bedroom",
+            "state": "empty"
+          }
+        }
+      },
+      "after": {
+        "turn": 7,
+        "people": {
+          "mara": {
+            "location": "dining_room",
+            "memes": {
+              "anger": 0,
+              "fear": 1
+            },
+            "trust_player": 4,
+            "trust_partner": 3,
+            "accountable": true,
+            "disclosed": true,
+            "knows": {
+              "letter": true,
+              "receipt": true
+            }
+          },
+          "eli": {
+            "location": "dining_room",
+            "memes": {
+              "anger": 1,
+              "fear": 2
+            },
+            "trust_player": 4,
+            "trust_partner": 4,
+            "accountable": false,
+            "disclosed": true,
+            "knows": {
+              "letter": true,
+              "receipt": true
+            }
+          },
+          "player": {
+            "location": "dining_room",
+            "insults": 0,
+            "caused_harm": false,
+            "knows": {
+              "letter": true,
+              "receipt": true
+            },
+            "requested_space": false,
+            "requested_talk": false
+          }
+        },
+        "props": {
+          "letter": {
+            "owner": "mara",
+            "location": "sideboard",
+            "state": "face_up"
+          },
+          "receipt": {
+            "owner": "eli",
+            "location": "sideboard",
+            "state": "face_up"
+          },
+          "photo": {
+            "owner": "couple",
+            "location": "sideboard",
+            "state": "upright"
+          },
+          "plates": {
+            "owner": "couple",
+            "location": "table",
+            "state": "three_places"
+          },
+          "music": {
+            "owner": "eli",
+            "location": "shelf",
+            "state": "playing"
+          },
+          "coat": {
+            "owner": "player",
+            "location": "hall_hook",
+            "state": "hanging"
+          },
+          "key": {
+            "owner": "mara",
+            "location": "mara_pocket",
+            "state": "carried"
+          },
+          "bag": {
+            "owner": "mara",
+            "location": "bedroom",
+            "state": "empty"
+          }
+        }
+      },
+      "lines": [
+        "Mara looks back at the letter. \"We were talking about my work.\""
+      ]
+    },
+    {
+      "id": 18,
+      "turn": 7,
+      "kind": "goal",
+      "source": "letter.dispute",
+      "variant": "owned",
+      "before": {
+        "turn": 7,
+        "people": {
+          "mara": {
+            "location": "dining_room",
+            "memes": {
+              "anger": 0,
+              "fear": 1
+            },
+            "trust_player": 4,
+            "trust_partner": 3,
+            "accountable": true,
+            "disclosed": true,
+            "knows": {
+              "letter": true,
+              "receipt": true
+            }
+          },
+          "eli": {
+            "location": "dining_room",
+            "memes": {
+              "anger": 1,
+              "fear": 2
+            },
+            "trust_player": 4,
+            "trust_partner": 4,
+            "accountable": false,
+            "disclosed": true,
+            "knows": {
+              "letter": true,
+              "receipt": true
+            }
+          },
+          "player": {
+            "location": "dining_room",
+            "insults": 0,
+            "caused_harm": false,
+            "knows": {
+              "letter": true,
+              "receipt": true
+            },
+            "requested_space": false,
+            "requested_talk": false
+          }
+        },
+        "props": {
+          "letter": {
+            "owner": "mara",
+            "location": "sideboard",
+            "state": "face_up"
+          },
+          "receipt": {
+            "owner": "eli",
+            "location": "sideboard",
+            "state": "face_up"
+          },
+          "photo": {
+            "owner": "couple",
+            "location": "sideboard",
+            "state": "upright"
+          },
+          "plates": {
+            "owner": "couple",
+            "location": "table",
+            "state": "three_places"
+          },
+          "music": {
+            "owner": "eli",
+            "location": "shelf",
+            "state": "playing"
+          },
+          "coat": {
+            "owner": "player",
+            "location": "hall_hook",
+            "state": "hanging"
+          },
+          "key": {
+            "owner": "mara",
+            "location": "mara_pocket",
+            "state": "carried"
+          },
+          "bag": {
+            "owner": "mara",
+            "location": "bedroom",
+            "state": "empty"
+          }
+        }
+      },
+      "after": {
+        "turn": 7,
+        "people": {
+          "mara": {
+            "location": "dining_room",
+            "memes": {
+              "anger": 0,
+              "fear": 1
+            },
+            "trust_player": 4,
+            "trust_partner": 3,
+            "accountable": true,
+            "disclosed": true,
+            "knows": {
+              "letter": true,
+              "receipt": true
+            }
+          },
+          "eli": {
+            "location": "dining_room",
+            "memes": {
+              "anger": 1,
+              "fear": 2
+            },
+            "trust_player": 4,
+            "trust_partner": 4,
+            "accountable": false,
+            "disclosed": true,
+            "knows": {
+              "letter": true,
+              "receipt": true
+            }
+          },
+          "player": {
+            "location": "dining_room",
+            "insults": 0,
+            "caused_harm": false,
+            "knows": {
+              "letter": true,
+              "receipt": true
+            },
+            "requested_space": false,
+            "requested_talk": false
+          }
+        },
+        "props": {
+          "letter": {
+            "owner": "mara",
+            "location": "sideboard",
+            "state": "face_up"
+          },
+          "receipt": {
+            "owner": "eli",
+            "location": "sideboard",
+            "state": "face_up"
+          },
+          "photo": {
+            "owner": "couple",
+            "location": "sideboard",
+            "state": "upright"
+          },
+          "plates": {
+            "owner": "couple",
+            "location": "table",
+            "state": "three_places"
+          },
+          "music": {
+            "owner": "eli",
+            "location": "shelf",
+            "state": "playing"
+          },
+          "coat": {
+            "owner": "player",
+            "location": "hall_hook",
+            "state": "hanging"
+          },
+          "key": {
+            "owner": "mara",
+            "location": "mara_pocket",
+            "state": "carried"
+          },
+          "bag": {
+            "owner": "mara",
+            "location": "bedroom",
+            "state": "empty"
+          }
+        }
+      },
+      "lines": [
+        "Mara: \"I still want to go. I want to be able to say that to you honestly.\"",
+        "Eli: \"I am trying to hear the difference.\""
+      ]
+    },
+    {
+      "id": 19,
+      "turn": 8,
+      "kind": "input",
+      "source": "player",
+      "variant": "reflect eli",
+      "before": {
+        "turn": 7,
+        "people": {
+          "mara": {
+            "location": "dining_room",
+            "memes": {
+              "anger": 0,
+              "fear": 1
+            },
+            "trust_player": 4,
+            "trust_partner": 3,
+            "accountable": true,
+            "disclosed": true,
+            "knows": {
+              "letter": true,
+              "receipt": true
+            }
+          },
+          "eli": {
+            "location": "dining_room",
+            "memes": {
+              "anger": 1,
+              "fear": 2
+            },
+            "trust_player": 4,
+            "trust_partner": 4,
+            "accountable": false,
+            "disclosed": true,
+            "knows": {
+              "letter": true,
+              "receipt": true
+            }
+          },
+          "player": {
+            "location": "dining_room",
+            "insults": 0,
+            "caused_harm": false,
+            "knows": {
+              "letter": true,
+              "receipt": true
+            },
+            "requested_space": false,
+            "requested_talk": false
+          }
+        },
+        "props": {
+          "letter": {
+            "owner": "mara",
+            "location": "sideboard",
+            "state": "face_up"
+          },
+          "receipt": {
+            "owner": "eli",
+            "location": "sideboard",
+            "state": "face_up"
+          },
+          "photo": {
+            "owner": "couple",
+            "location": "sideboard",
+            "state": "upright"
+          },
+          "plates": {
+            "owner": "couple",
+            "location": "table",
+            "state": "three_places"
+          },
+          "music": {
+            "owner": "eli",
+            "location": "shelf",
+            "state": "playing"
+          },
+          "coat": {
+            "owner": "player",
+            "location": "hall_hook",
+            "state": "hanging"
+          },
+          "key": {
+            "owner": "mara",
+            "location": "mara_pocket",
+            "state": "carried"
+          },
+          "bag": {
+            "owner": "mara",
+            "location": "bedroom",
+            "state": "empty"
+          }
+        }
+      },
+      "after": {
+        "turn": 8,
+        "people": {
+          "mara": {
+            "location": "dining_room",
+            "memes": {
+              "anger": 0,
+              "fear": 1
+            },
+            "trust_player": 4,
+            "trust_partner": 3,
+            "accountable": true,
+            "disclosed": true,
+            "knows": {
+              "letter": true,
+              "receipt": true
+            }
+          },
+          "eli": {
+            "location": "dining_room",
+            "memes": {
+              "anger": 1,
+              "fear": 2
+            },
+            "trust_player": 4,
+            "trust_partner": 4,
+            "accountable": false,
+            "disclosed": true,
+            "knows": {
+              "letter": true,
+              "receipt": true
+            }
+          },
+          "player": {
+            "location": "dining_room",
+            "insults": 0,
+            "caused_harm": false,
+            "knows": {
+              "letter": true,
+              "receipt": true
+            },
+            "requested_space": false,
+            "requested_talk": false
+          }
+        },
+        "props": {
+          "letter": {
+            "owner": "mara",
+            "location": "sideboard",
+            "state": "face_up"
+          },
+          "receipt": {
+            "owner": "eli",
+            "location": "sideboard",
+            "state": "face_up"
+          },
+          "photo": {
+            "owner": "couple",
+            "location": "sideboard",
+            "state": "upright"
+          },
+          "plates": {
+            "owner": "couple",
+            "location": "table",
+            "state": "three_places"
+          },
+          "music": {
+            "owner": "eli",
+            "location": "shelf",
+            "state": "playing"
+          },
+          "coat": {
+            "owner": "player",
+            "location": "hall_hook",
+            "state": "hanging"
+          },
+          "key": {
+            "owner": "mara",
+            "location": "mara_pocket",
+            "state": "carried"
+          },
+          "bag": {
+            "owner": "mara",
+            "location": "bedroom",
+            "state": "empty"
+          }
+        }
+      },
+      "lines": [
+        "> reflect eli",
+        "Eli: \"I used our money without asking. Calling it a gift doesn't make that fair.\"",
+        "Mara: \"That is the first time I've heard you say it without a but.\""
+      ]
+    },
+    {
+      "id": 20,
+      "turn": 8,
+      "kind": "exchange",
+      "source": "reflect eli",
+      "variant": "accountability",
+      "before": {
+        "turn": 8,
+        "people": {
+          "mara": {
+            "location": "dining_room",
+            "memes": {
+              "anger": 0,
+              "fear": 1
+            },
+            "trust_player": 4,
+            "trust_partner": 3,
+            "accountable": true,
+            "disclosed": true,
+            "knows": {
+              "letter": true,
+              "receipt": true
+            }
+          },
+          "eli": {
+            "location": "dining_room",
+            "memes": {
+              "anger": 1,
+              "fear": 2
+            },
+            "trust_player": 4,
+            "trust_partner": 4,
+            "accountable": false,
+            "disclosed": true,
+            "knows": {
+              "letter": true,
+              "receipt": true
+            }
+          },
+          "player": {
+            "location": "dining_room",
+            "insults": 0,
+            "caused_harm": false,
+            "knows": {
+              "letter": true,
+              "receipt": true
+            },
+            "requested_space": false,
+            "requested_talk": false
+          }
+        },
+        "props": {
+          "letter": {
+            "owner": "mara",
+            "location": "sideboard",
+            "state": "face_up"
+          },
+          "receipt": {
+            "owner": "eli",
+            "location": "sideboard",
+            "state": "face_up"
+          },
+          "photo": {
+            "owner": "couple",
+            "location": "sideboard",
+            "state": "upright"
+          },
+          "plates": {
+            "owner": "couple",
+            "location": "table",
+            "state": "three_places"
+          },
+          "music": {
+            "owner": "eli",
+            "location": "shelf",
+            "state": "playing"
+          },
+          "coat": {
+            "owner": "player",
+            "location": "hall_hook",
+            "state": "hanging"
+          },
+          "key": {
+            "owner": "mara",
+            "location": "mara_pocket",
+            "state": "carried"
+          },
+          "bag": {
+            "owner": "mara",
+            "location": "bedroom",
+            "state": "empty"
+          }
+        }
+      },
+      "after": {
+        "turn": 8,
+        "people": {
+          "mara": {
+            "location": "dining_room",
+            "memes": {
+              "anger": 0,
+              "fear": 1
+            },
+            "trust_player": 4,
+            "trust_partner": 4,
+            "accountable": true,
+            "disclosed": true,
+            "knows": {
+              "letter": true,
+              "receipt": true
+            }
+          },
+          "eli": {
+            "location": "dining_room",
+            "memes": {
+              "anger": 0,
+              "fear": 1
+            },
+            "trust_player": 4,
+            "trust_partner": 4,
+            "accountable": true,
+            "disclosed": true,
+            "knows": {
+              "letter": true,
+              "receipt": true
+            }
+          },
+          "player": {
+            "location": "dining_room",
+            "insults": 0,
+            "caused_harm": false,
+            "knows": {
+              "letter": true,
+              "receipt": true
+            },
+            "requested_space": false,
+            "requested_talk": false
+          }
+        },
+        "props": {
+          "letter": {
+            "owner": "mara",
+            "location": "sideboard",
+            "state": "face_up"
+          },
+          "receipt": {
+            "owner": "eli",
+            "location": "sideboard",
+            "state": "face_up"
+          },
+          "photo": {
+            "owner": "couple",
+            "location": "sideboard",
+            "state": "upright"
+          },
+          "plates": {
+            "owner": "couple",
+            "location": "table",
+            "state": "three_places"
+          },
+          "music": {
+            "owner": "eli",
+            "location": "shelf",
+            "state": "playing"
+          },
+          "coat": {
+            "owner": "player",
+            "location": "hall_hook",
+            "state": "hanging"
+          },
+          "key": {
+            "owner": "mara",
+            "location": "mara_pocket",
+            "state": "carried"
+          },
+          "bag": {
+            "owner": "mara",
+            "location": "bedroom",
+            "state": "empty"
+          }
+        }
+      },
+      "lines": [
+        "Eli: \"I used our money without asking. Calling it a gift doesn't make that fair.\"",
+        "Mara: \"That is the first time I've heard you say it without a but.\""
+      ]
+    },
+    {
+      "id": 21,
+      "turn": 8,
+      "kind": "goal",
+      "source": "letter.exit",
+      "variant": "disclosed",
+      "before": {
+        "turn": 8,
+        "people": {
+          "mara": {
+            "location": "dining_room",
+            "memes": {
+              "anger": 0,
+              "fear": 1
+            },
+            "trust_player": 4,
+            "trust_partner": 4,
+            "accountable": true,
+            "disclosed": true,
+            "knows": {
+              "letter": true,
+              "receipt": true
+            }
+          },
+          "eli": {
+            "location": "dining_room",
+            "memes": {
+              "anger": 0,
+              "fear": 1
+            },
+            "trust_player": 4,
+            "trust_partner": 4,
+            "accountable": true,
+            "disclosed": true,
+            "knows": {
+              "letter": true,
+              "receipt": true
+            }
+          },
+          "player": {
+            "location": "dining_room",
+            "insults": 0,
+            "caused_harm": false,
+            "knows": {
+              "letter": true,
+              "receipt": true
+            },
+            "requested_space": false,
+            "requested_talk": false
+          }
+        },
+        "props": {
+          "letter": {
+            "owner": "mara",
+            "location": "sideboard",
+            "state": "face_up"
+          },
+          "receipt": {
+            "owner": "eli",
+            "location": "sideboard",
+            "state": "face_up"
+          },
+          "photo": {
+            "owner": "couple",
+            "location": "sideboard",
+            "state": "upright"
+          },
+          "plates": {
+            "owner": "couple",
+            "location": "table",
+            "state": "three_places"
+          },
+          "music": {
+            "owner": "eli",
+            "location": "shelf",
+            "state": "playing"
+          },
+          "coat": {
+            "owner": "player",
+            "location": "hall_hook",
+            "state": "hanging"
+          },
+          "key": {
+            "owner": "mara",
+            "location": "mara_pocket",
+            "state": "carried"
+          },
+          "bag": {
+            "owner": "mara",
+            "location": "bedroom",
+            "state": "empty"
+          }
+        }
+      },
+      "after": {
+        "turn": 8,
+        "people": {
+          "mara": {
+            "location": "dining_room",
+            "memes": {
+              "anger": 0,
+              "fear": 1
+            },
+            "trust_player": 4,
+            "trust_partner": 4,
+            "accountable": true,
+            "disclosed": true,
+            "knows": {
+              "letter": true,
+              "receipt": true
+            }
+          },
+          "eli": {
+            "location": "dining_room",
+            "memes": {
+              "anger": 0,
+              "fear": 1
+            },
+            "trust_player": 4,
+            "trust_partner": 4,
+            "accountable": true,
+            "disclosed": true,
+            "knows": {
+              "letter": true,
+              "receipt": true
+            }
+          },
+          "player": {
+            "location": "dining_room",
+            "insults": 0,
+            "caused_harm": false,
+            "knows": {
+              "letter": true,
+              "receipt": true
+            },
+            "requested_space": false,
+            "requested_talk": false
+          }
+        },
+        "props": {
+          "letter": {
+            "owner": "mara",
+            "location": "sideboard",
+            "state": "face_up"
+          },
+          "receipt": {
+            "owner": "eli",
+            "location": "sideboard",
+            "state": "face_up"
+          },
+          "photo": {
+            "owner": "couple",
+            "location": "sideboard",
+            "state": "upright"
+          },
+          "plates": {
+            "owner": "couple",
+            "location": "table",
+            "state": "three_places"
+          },
+          "music": {
+            "owner": "eli",
+            "location": "shelf",
+            "state": "playing"
+          },
+          "coat": {
+            "owner": "player",
+            "location": "hall_hook",
+            "state": "hanging"
+          },
+          "key": {
+            "owner": "mara",
+            "location": "mara_pocket",
+            "state": "carried"
+          },
+          "bag": {
+            "owner": "mara",
+            "location": "bedroom",
+            "state": "empty"
+          }
+        }
+      },
+      "lines": [
+        "Mara leaves the letter where Eli can read it. \"At least it isn't hidden now.\""
+      ]
+    },
+    {
+      "id": 22,
+      "turn": 9,
+      "kind": "input",
+      "source": "player",
+      "variant": "mediate",
+      "before": {
+        "turn": 8,
+        "people": {
+          "mara": {
+            "location": "dining_room",
+            "memes": {
+              "anger": 0,
+              "fear": 1
+            },
+            "trust_player": 4,
+            "trust_partner": 4,
+            "accountable": true,
+            "disclosed": true,
+            "knows": {
+              "letter": true,
+              "receipt": true
+            }
+          },
+          "eli": {
+            "location": "dining_room",
+            "memes": {
+              "anger": 0,
+              "fear": 1
+            },
+            "trust_player": 4,
+            "trust_partner": 4,
+            "accountable": true,
+            "disclosed": true,
+            "knows": {
+              "letter": true,
+              "receipt": true
+            }
+          },
+          "player": {
+            "location": "dining_room",
+            "insults": 0,
+            "caused_harm": false,
+            "knows": {
+              "letter": true,
+              "receipt": true
+            },
+            "requested_space": false,
+            "requested_talk": false
+          }
+        },
+        "props": {
+          "letter": {
+            "owner": "mara",
+            "location": "sideboard",
+            "state": "face_up"
+          },
+          "receipt": {
+            "owner": "eli",
+            "location": "sideboard",
+            "state": "face_up"
+          },
+          "photo": {
+            "owner": "couple",
+            "location": "sideboard",
+            "state": "upright"
+          },
+          "plates": {
+            "owner": "couple",
+            "location": "table",
+            "state": "three_places"
+          },
+          "music": {
+            "owner": "eli",
+            "location": "shelf",
+            "state": "playing"
+          },
+          "coat": {
+            "owner": "player",
+            "location": "hall_hook",
+            "state": "hanging"
+          },
+          "key": {
+            "owner": "mara",
+            "location": "mara_pocket",
+            "state": "carried"
+          },
+          "bag": {
+            "owner": "mara",
+            "location": "bedroom",
+            "state": "empty"
+          }
+        }
+      },
+      "after": {
+        "turn": 9,
+        "people": {
+          "mara": {
+            "location": "dining_room",
+            "memes": {
+              "anger": 0,
+              "fear": 1
+            },
+            "trust_player": 4,
+            "trust_partner": 4,
+            "accountable": true,
+            "disclosed": true,
+            "knows": {
+              "letter": true,
+              "receipt": true
+            }
+          },
+          "eli": {
+            "location": "dining_room",
+            "memes": {
+              "anger": 0,
+              "fear": 1
+            },
+            "trust_player": 4,
+            "trust_partner": 4,
+            "accountable": true,
+            "disclosed": true,
+            "knows": {
+              "letter": true,
+              "receipt": true
+            }
+          },
+          "player": {
+            "location": "dining_room",
+            "insults": 0,
+            "caused_harm": false,
+            "knows": {
+              "letter": true,
+              "receipt": true
+            },
+            "requested_space": false,
+            "requested_talk": false
+          }
+        },
+        "props": {
+          "letter": {
+            "owner": "mara",
+            "location": "sideboard",
+            "state": "face_up"
+          },
+          "receipt": {
+            "owner": "eli",
+            "location": "sideboard",
+            "state": "face_up"
+          },
+          "photo": {
+            "owner": "couple",
+            "location": "sideboard",
+            "state": "upright"
+          },
+          "plates": {
+            "owner": "couple",
+            "location": "table",
+            "state": "three_places"
+          },
+          "music": {
+            "owner": "eli",
+            "location": "shelf",
+            "state": "playing"
+          },
+          "coat": {
+            "owner": "player",
+            "location": "hall_hook",
+            "state": "hanging"
+          },
+          "key": {
+            "owner": "mara",
+            "location": "mara_pocket",
+            "state": "carried"
+          },
+          "bag": {
+            "owner": "mara",
+            "location": "bedroom",
+            "state": "empty"
+          }
+        }
+      },
+      "lines": [
+        "> mediate",
+        "You: \"Tomorrow, could you talk about both decisions before making another one?\"",
+        "Mara: \"A conversation. Not a promise that I stay.\"",
+        "Eli: \"Yes. I can agree to that.\""
+      ]
+    },
+    {
+      "id": 23,
+      "turn": 9,
+      "kind": "exchange",
+      "source": "mediate",
+      "variant": "agreement",
+      "before": {
+        "turn": 9,
+        "people": {
+          "mara": {
+            "location": "dining_room",
+            "memes": {
+              "anger": 0,
+              "fear": 1
+            },
+            "trust_player": 4,
+            "trust_partner": 4,
+            "accountable": true,
+            "disclosed": true,
+            "knows": {
+              "letter": true,
+              "receipt": true
+            }
+          },
+          "eli": {
+            "location": "dining_room",
+            "memes": {
+              "anger": 0,
+              "fear": 1
+            },
+            "trust_player": 4,
+            "trust_partner": 4,
+            "accountable": true,
+            "disclosed": true,
+            "knows": {
+              "letter": true,
+              "receipt": true
+            }
+          },
+          "player": {
+            "location": "dining_room",
+            "insults": 0,
+            "caused_harm": false,
+            "knows": {
+              "letter": true,
+              "receipt": true
+            },
+            "requested_space": false,
+            "requested_talk": false
+          }
+        },
+        "props": {
+          "letter": {
+            "owner": "mara",
+            "location": "sideboard",
+            "state": "face_up"
+          },
+          "receipt": {
+            "owner": "eli",
+            "location": "sideboard",
+            "state": "face_up"
+          },
+          "photo": {
+            "owner": "couple",
+            "location": "sideboard",
+            "state": "upright"
+          },
+          "plates": {
+            "owner": "couple",
+            "location": "table",
+            "state": "three_places"
+          },
+          "music": {
+            "owner": "eli",
+            "location": "shelf",
+            "state": "playing"
+          },
+          "coat": {
+            "owner": "player",
+            "location": "hall_hook",
+            "state": "hanging"
+          },
+          "key": {
+            "owner": "mara",
+            "location": "mara_pocket",
+            "state": "carried"
+          },
+          "bag": {
+            "owner": "mara",
+            "location": "bedroom",
+            "state": "empty"
+          }
+        }
+      },
+      "after": {
+        "turn": 9,
+        "people": {
+          "mara": {
+            "location": "dining_room",
+            "memes": {
+              "anger": 0,
+              "fear": 1
+            },
+            "trust_player": 4,
+            "trust_partner": 5,
+            "accountable": true,
+            "disclosed": true,
+            "knows": {
+              "letter": true,
+              "receipt": true
+            }
+          },
+          "eli": {
+            "location": "dining_room",
+            "memes": {
+              "anger": 0,
+              "fear": 1
+            },
+            "trust_player": 4,
+            "trust_partner": 5,
+            "accountable": true,
+            "disclosed": true,
+            "knows": {
+              "letter": true,
+              "receipt": true
+            }
+          },
+          "player": {
+            "location": "dining_room",
+            "insults": 0,
+            "caused_harm": false,
+            "knows": {
+              "letter": true,
+              "receipt": true
+            },
+            "requested_space": false,
+            "requested_talk": true
+          }
+        },
+        "props": {
+          "letter": {
+            "owner": "mara",
+            "location": "sideboard",
+            "state": "face_up"
+          },
+          "receipt": {
+            "owner": "eli",
+            "location": "sideboard",
+            "state": "face_up"
+          },
+          "photo": {
+            "owner": "couple",
+            "location": "sideboard",
+            "state": "upright"
+          },
+          "plates": {
+            "owner": "couple",
+            "location": "table",
+            "state": "three_places"
+          },
+          "music": {
+            "owner": "eli",
+            "location": "shelf",
+            "state": "playing"
+          },
+          "coat": {
+            "owner": "player",
+            "location": "hall_hook",
+            "state": "hanging"
+          },
+          "key": {
+            "owner": "mara",
+            "location": "mara_pocket",
+            "state": "carried"
+          },
+          "bag": {
+            "owner": "mara",
+            "location": "bedroom",
+            "state": "empty"
+          }
+        }
+      },
+      "lines": [
+        "You: \"Tomorrow, could you talk about both decisions before making another one?\"",
+        "Mara: \"A conversation. Not a promise that I stay.\"",
+        "Eli: \"Yes. I can agree to that.\""
+      ]
+    },
+    {
+      "id": 24,
+      "turn": 9,
+      "kind": "goal",
+      "source": "decision.opening",
+      "variant": "choice",
+      "before": {
+        "turn": 9,
+        "people": {
+          "mara": {
+            "location": "dining_room",
+            "memes": {
+              "anger": 0,
+              "fear": 1
+            },
+            "trust_player": 4,
+            "trust_partner": 5,
+            "accountable": true,
+            "disclosed": true,
+            "knows": {
+              "letter": true,
+              "receipt": true
+            }
+          },
+          "eli": {
+            "location": "dining_room",
+            "memes": {
+              "anger": 0,
+              "fear": 1
+            },
+            "trust_player": 4,
+            "trust_partner": 5,
+            "accountable": true,
+            "disclosed": true,
+            "knows": {
+              "letter": true,
+              "receipt": true
+            }
+          },
+          "player": {
+            "location": "dining_room",
+            "insults": 0,
+            "caused_harm": false,
+            "knows": {
+              "letter": true,
+              "receipt": true
+            },
+            "requested_space": false,
+            "requested_talk": true
+          }
+        },
+        "props": {
+          "letter": {
+            "owner": "mara",
+            "location": "sideboard",
+            "state": "face_up"
+          },
+          "receipt": {
+            "owner": "eli",
+            "location": "sideboard",
+            "state": "face_up"
+          },
+          "photo": {
+            "owner": "couple",
+            "location": "sideboard",
+            "state": "upright"
+          },
+          "plates": {
+            "owner": "couple",
+            "location": "table",
+            "state": "three_places"
+          },
+          "music": {
+            "owner": "eli",
+            "location": "shelf",
+            "state": "playing"
+          },
+          "coat": {
+            "owner": "player",
+            "location": "hall_hook",
+            "state": "hanging"
+          },
+          "key": {
+            "owner": "mara",
+            "location": "mara_pocket",
+            "state": "carried"
+          },
+          "bag": {
+            "owner": "mara",
+            "location": "bedroom",
+            "state": "empty"
+          }
+        }
+      },
+      "after": {
+        "turn": 9,
+        "people": {
+          "mara": {
+            "location": "dining_room",
+            "memes": {
+              "anger": 0,
+              "fear": 1
+            },
+            "trust_player": 4,
+            "trust_partner": 5,
+            "accountable": true,
+            "disclosed": true,
+            "knows": {
+              "letter": true,
+              "receipt": true
+            }
+          },
+          "eli": {
+            "location": "dining_room",
+            "memes": {
+              "anger": 0,
+              "fear": 1
+            },
+            "trust_player": 4,
+            "trust_partner": 5,
+            "accountable": true,
+            "disclosed": true,
+            "knows": {
+              "letter": true,
+              "receipt": true
+            }
+          },
+          "player": {
+            "location": "dining_room",
+            "insults": 0,
+            "caused_harm": false,
+            "knows": {
+              "letter": true,
+              "receipt": true
+            },
+            "requested_space": false,
+            "requested_talk": true
+          }
+        },
+        "props": {
+          "letter": {
+            "owner": "mara",
+            "location": "sideboard",
+            "state": "face_up"
+          },
+          "receipt": {
+            "owner": "eli",
+            "location": "sideboard",
+            "state": "face_up"
+          },
+          "photo": {
+            "owner": "couple",
+            "location": "sideboard",
+            "state": "upright"
+          },
+          "plates": {
+            "owner": "couple",
+            "location": "table",
+            "state": "three_places"
+          },
+          "music": {
+            "owner": "eli",
+            "location": "shelf",
+            "state": "playing"
+          },
+          "coat": {
+            "owner": "player",
+            "location": "hall_hook",
+            "state": "hanging"
+          },
+          "key": {
+            "owner": "mara",
+            "location": "mara_pocket",
+            "state": "carried"
+          },
+          "bag": {
+            "owner": "mara",
+            "location": "bedroom",
+            "state": "empty"
+          }
+        }
+      },
+      "lines": [
+        "Eli: \"We can't leave tonight exactly where we started.\"",
+        "Mara: \"Then let's choose one thing we can actually do. Not a whole life.\""
+      ]
+    },
+    {
+      "id": 25,
+      "turn": 10,
+      "kind": "input",
+      "source": "player",
+      "variant": "listen",
+      "before": {
+        "turn": 9,
+        "people": {
+          "mara": {
+            "location": "dining_room",
+            "memes": {
+              "anger": 0,
+              "fear": 1
+            },
+            "trust_player": 4,
+            "trust_partner": 5,
+            "accountable": true,
+            "disclosed": true,
+            "knows": {
+              "letter": true,
+              "receipt": true
+            }
+          },
+          "eli": {
+            "location": "dining_room",
+            "memes": {
+              "anger": 0,
+              "fear": 1
+            },
+            "trust_player": 4,
+            "trust_partner": 5,
+            "accountable": true,
+            "disclosed": true,
+            "knows": {
+              "letter": true,
+              "receipt": true
+            }
+          },
+          "player": {
+            "location": "dining_room",
+            "insults": 0,
+            "caused_harm": false,
+            "knows": {
+              "letter": true,
+              "receipt": true
+            },
+            "requested_space": false,
+            "requested_talk": true
+          }
+        },
+        "props": {
+          "letter": {
+            "owner": "mara",
+            "location": "sideboard",
+            "state": "face_up"
+          },
+          "receipt": {
+            "owner": "eli",
+            "location": "sideboard",
+            "state": "face_up"
+          },
+          "photo": {
+            "owner": "couple",
+            "location": "sideboard",
+            "state": "upright"
+          },
+          "plates": {
+            "owner": "couple",
+            "location": "table",
+            "state": "three_places"
+          },
+          "music": {
+            "owner": "eli",
+            "location": "shelf",
+            "state": "playing"
+          },
+          "coat": {
+            "owner": "player",
+            "location": "hall_hook",
+            "state": "hanging"
+          },
+          "key": {
+            "owner": "mara",
+            "location": "mara_pocket",
+            "state": "carried"
+          },
+          "bag": {
+            "owner": "mara",
+            "location": "bedroom",
+            "state": "empty"
+          }
+        }
+      },
+      "after": {
+        "turn": 10,
+        "people": {
+          "mara": {
+            "location": "dining_room",
+            "memes": {
+              "anger": 0,
+              "fear": 1
+            },
+            "trust_player": 4,
+            "trust_partner": 5,
+            "accountable": true,
+            "disclosed": true,
+            "knows": {
+              "letter": true,
+              "receipt": true
+            }
+          },
+          "eli": {
+            "location": "dining_room",
+            "memes": {
+              "anger": 0,
+              "fear": 1
+            },
+            "trust_player": 4,
+            "trust_partner": 5,
+            "accountable": true,
+            "disclosed": true,
+            "knows": {
+              "letter": true,
+              "receipt": true
+            }
+          },
+          "player": {
+            "location": "dining_room",
+            "insults": 0,
+            "caused_harm": false,
+            "knows": {
+              "letter": true,
+              "receipt": true
+            },
+            "requested_space": false,
+            "requested_talk": true
+          }
+        },
+        "props": {
+          "letter": {
+            "owner": "mara",
+            "location": "sideboard",
+            "state": "face_up"
+          },
+          "receipt": {
+            "owner": "eli",
+            "location": "sideboard",
+            "state": "face_up"
+          },
+          "photo": {
+            "owner": "couple",
+            "location": "sideboard",
+            "state": "upright"
+          },
+          "plates": {
+            "owner": "couple",
+            "location": "table",
+            "state": "three_places"
+          },
+          "music": {
+            "owner": "eli",
+            "location": "shelf",
+            "state": "playing"
+          },
+          "coat": {
+            "owner": "player",
+            "location": "hall_hook",
+            "state": "hanging"
+          },
+          "key": {
+            "owner": "mara",
+            "location": "mara_pocket",
+            "state": "carried"
+          },
+          "bag": {
+            "owner": "mara",
+            "location": "bedroom",
+            "state": "empty"
+          }
+        }
+      },
+      "lines": [
+        "> listen"
+      ]
+    },
+    {
+      "id": 26,
+      "turn": 10,
+      "kind": "goal",
+      "source": "decision.pause",
+      "variant": "pause",
+      "before": {
+        "turn": 10,
+        "people": {
+          "mara": {
+            "location": "dining_room",
+            "memes": {
+              "anger": 0,
+              "fear": 1
+            },
+            "trust_player": 4,
+            "trust_partner": 5,
+            "accountable": true,
+            "disclosed": true,
+            "knows": {
+              "letter": true,
+              "receipt": true
+            }
+          },
+          "eli": {
+            "location": "dining_room",
+            "memes": {
+              "anger": 0,
+              "fear": 1
+            },
+            "trust_player": 4,
+            "trust_partner": 5,
+            "accountable": true,
+            "disclosed": true,
+            "knows": {
+              "letter": true,
+              "receipt": true
+            }
+          },
+          "player": {
+            "location": "dining_room",
+            "insults": 0,
+            "caused_harm": false,
+            "knows": {
+              "letter": true,
+              "receipt": true
+            },
+            "requested_space": false,
+            "requested_talk": true
+          }
+        },
+        "props": {
+          "letter": {
+            "owner": "mara",
+            "location": "sideboard",
+            "state": "face_up"
+          },
+          "receipt": {
+            "owner": "eli",
+            "location": "sideboard",
+            "state": "face_up"
+          },
+          "photo": {
+            "owner": "couple",
+            "location": "sideboard",
+            "state": "upright"
+          },
+          "plates": {
+            "owner": "couple",
+            "location": "table",
+            "state": "three_places"
+          },
+          "music": {
+            "owner": "eli",
+            "location": "shelf",
+            "state": "playing"
+          },
+          "coat": {
+            "owner": "player",
+            "location": "hall_hook",
+            "state": "hanging"
+          },
+          "key": {
+            "owner": "mara",
+            "location": "mara_pocket",
+            "state": "carried"
+          },
+          "bag": {
+            "owner": "mara",
+            "location": "bedroom",
+            "state": "empty"
+          }
+        }
+      },
+      "after": {
+        "turn": 10,
+        "people": {
+          "mara": {
+            "location": "dining_room",
+            "memes": {
+              "anger": 0,
+              "fear": 1
+            },
+            "trust_player": 4,
+            "trust_partner": 5,
+            "accountable": true,
+            "disclosed": true,
+            "knows": {
+              "letter": true,
+              "receipt": true
+            }
+          },
+          "eli": {
+            "location": "dining_room",
+            "memes": {
+              "anger": 0,
+              "fear": 1
+            },
+            "trust_player": 4,
+            "trust_partner": 5,
+            "accountable": true,
+            "disclosed": true,
+            "knows": {
+              "letter": true,
+              "receipt": true
+            }
+          },
+          "player": {
+            "location": "dining_room",
+            "insults": 0,
+            "caused_harm": false,
+            "knows": {
+              "letter": true,
+              "receipt": true
+            },
+            "requested_space": false,
+            "requested_talk": true
+          }
+        },
+        "props": {
+          "letter": {
+            "owner": "mara",
+            "location": "sideboard",
+            "state": "face_up"
+          },
+          "receipt": {
+            "owner": "eli",
+            "location": "sideboard",
+            "state": "face_up"
+          },
+          "photo": {
+            "owner": "couple",
+            "location": "sideboard",
+            "state": "upright"
+          },
+          "plates": {
+            "owner": "couple",
+            "location": "table",
+            "state": "three_places"
+          },
+          "music": {
+            "owner": "eli",
+            "location": "shelf",
+            "state": "playing"
+          },
+          "coat": {
+            "owner": "player",
+            "location": "hall_hook",
+            "state": "hanging"
+          },
+          "key": {
+            "owner": "mara",
+            "location": "mara_pocket",
+            "state": "carried"
+          },
+          "bag": {
+            "owner": "mara",
+            "location": "bedroom",
+            "state": "empty"
+          }
+        }
+      },
+      "lines": [
+        "Mara and Eli wait. For once, neither fills the silence for the other."
+      ]
+    },
+    {
+      "id": 27,
+      "turn": 11,
+      "kind": "input",
+      "source": "player",
+      "variant": "listen",
+      "before": {
+        "turn": 10,
+        "people": {
+          "mara": {
+            "location": "dining_room",
+            "memes": {
+              "anger": 0,
+              "fear": 1
+            },
+            "trust_player": 4,
+            "trust_partner": 5,
+            "accountable": true,
+            "disclosed": true,
+            "knows": {
+              "letter": true,
+              "receipt": true
+            }
+          },
+          "eli": {
+            "location": "dining_room",
+            "memes": {
+              "anger": 0,
+              "fear": 1
+            },
+            "trust_player": 4,
+            "trust_partner": 5,
+            "accountable": true,
+            "disclosed": true,
+            "knows": {
+              "letter": true,
+              "receipt": true
+            }
+          },
+          "player": {
+            "location": "dining_room",
+            "insults": 0,
+            "caused_harm": false,
+            "knows": {
+              "letter": true,
+              "receipt": true
+            },
+            "requested_space": false,
+            "requested_talk": true
+          }
+        },
+        "props": {
+          "letter": {
+            "owner": "mara",
+            "location": "sideboard",
+            "state": "face_up"
+          },
+          "receipt": {
+            "owner": "eli",
+            "location": "sideboard",
+            "state": "face_up"
+          },
+          "photo": {
+            "owner": "couple",
+            "location": "sideboard",
+            "state": "upright"
+          },
+          "plates": {
+            "owner": "couple",
+            "location": "table",
+            "state": "three_places"
+          },
+          "music": {
+            "owner": "eli",
+            "location": "shelf",
+            "state": "playing"
+          },
+          "coat": {
+            "owner": "player",
+            "location": "hall_hook",
+            "state": "hanging"
+          },
+          "key": {
+            "owner": "mara",
+            "location": "mara_pocket",
+            "state": "carried"
+          },
+          "bag": {
+            "owner": "mara",
+            "location": "bedroom",
+            "state": "empty"
+          }
+        }
+      },
+      "after": {
+        "turn": 11,
+        "people": {
+          "mara": {
+            "location": "dining_room",
+            "memes": {
+              "anger": 0,
+              "fear": 1
+            },
+            "trust_player": 4,
+            "trust_partner": 5,
+            "accountable": true,
+            "disclosed": true,
+            "knows": {
+              "letter": true,
+              "receipt": true
+            }
+          },
+          "eli": {
+            "location": "dining_room",
+            "memes": {
+              "anger": 0,
+              "fear": 1
+            },
+            "trust_player": 4,
+            "trust_partner": 5,
+            "accountable": true,
+            "disclosed": true,
+            "knows": {
+              "letter": true,
+              "receipt": true
+            }
+          },
+          "player": {
+            "location": "dining_room",
+            "insults": 0,
+            "caused_harm": false,
+            "knows": {
+              "letter": true,
+              "receipt": true
+            },
+            "requested_space": false,
+            "requested_talk": true
+          }
+        },
+        "props": {
+          "letter": {
+            "owner": "mara",
+            "location": "sideboard",
+            "state": "face_up"
+          },
+          "receipt": {
+            "owner": "eli",
+            "location": "sideboard",
+            "state": "face_up"
+          },
+          "photo": {
+            "owner": "couple",
+            "location": "sideboard",
+            "state": "upright"
+          },
+          "plates": {
+            "owner": "couple",
+            "location": "table",
+            "state": "three_places"
+          },
+          "music": {
+            "owner": "eli",
+            "location": "shelf",
+            "state": "playing"
+          },
+          "coat": {
+            "owner": "player",
+            "location": "hall_hook",
+            "state": "hanging"
+          },
+          "key": {
+            "owner": "mara",
+            "location": "mara_pocket",
+            "state": "carried"
+          },
+          "bag": {
+            "owner": "mara",
+            "location": "bedroom",
+            "state": "empty"
+          }
+        }
+      },
+      "lines": [
+        "> listen"
+      ]
+    },
+    {
+      "id": 28,
+      "turn": 11,
+      "kind": "goal",
+      "source": "decision.last_chance",
+      "variant": "ready",
+      "before": {
+        "turn": 11,
+        "people": {
+          "mara": {
+            "location": "dining_room",
+            "memes": {
+              "anger": 0,
+              "fear": 1
+            },
+            "trust_player": 4,
+            "trust_partner": 5,
+            "accountable": true,
+            "disclosed": true,
+            "knows": {
+              "letter": true,
+              "receipt": true
+            }
+          },
+          "eli": {
+            "location": "dining_room",
+            "memes": {
+              "anger": 0,
+              "fear": 1
+            },
+            "trust_player": 4,
+            "trust_partner": 5,
+            "accountable": true,
+            "disclosed": true,
+            "knows": {
+              "letter": true,
+              "receipt": true
+            }
+          },
+          "player": {
+            "location": "dining_room",
+            "insults": 0,
+            "caused_harm": false,
+            "knows": {
+              "letter": true,
+              "receipt": true
+            },
+            "requested_space": false,
+            "requested_talk": true
+          }
+        },
+        "props": {
+          "letter": {
+            "owner": "mara",
+            "location": "sideboard",
+            "state": "face_up"
+          },
+          "receipt": {
+            "owner": "eli",
+            "location": "sideboard",
+            "state": "face_up"
+          },
+          "photo": {
+            "owner": "couple",
+            "location": "sideboard",
+            "state": "upright"
+          },
+          "plates": {
+            "owner": "couple",
+            "location": "table",
+            "state": "three_places"
+          },
+          "music": {
+            "owner": "eli",
+            "location": "shelf",
+            "state": "playing"
+          },
+          "coat": {
+            "owner": "player",
+            "location": "hall_hook",
+            "state": "hanging"
+          },
+          "key": {
+            "owner": "mara",
+            "location": "mara_pocket",
+            "state": "carried"
+          },
+          "bag": {
+            "owner": "mara",
+            "location": "bedroom",
+            "state": "empty"
+          }
+        }
+      },
+      "after": {
+        "turn": 11,
+        "people": {
+          "mara": {
+            "location": "dining_room",
+            "memes": {
+              "anger": 0,
+              "fear": 1
+            },
+            "trust_player": 4,
+            "trust_partner": 5,
+            "accountable": true,
+            "disclosed": true,
+            "knows": {
+              "letter": true,
+              "receipt": true
+            }
+          },
+          "eli": {
+            "location": "dining_room",
+            "memes": {
+              "anger": 0,
+              "fear": 1
+            },
+            "trust_player": 4,
+            "trust_partner": 5,
+            "accountable": true,
+            "disclosed": true,
+            "knows": {
+              "letter": true,
+              "receipt": true
+            }
+          },
+          "player": {
+            "location": "dining_room",
+            "insults": 0,
+            "caused_harm": false,
+            "knows": {
+              "letter": true,
+              "receipt": true
+            },
+            "requested_space": false,
+            "requested_talk": true
+          }
+        },
+        "props": {
+          "letter": {
+            "owner": "mara",
+            "location": "sideboard",
+            "state": "face_up"
+          },
+          "receipt": {
+            "owner": "eli",
+            "location": "sideboard",
+            "state": "face_up"
+          },
+          "photo": {
+            "owner": "couple",
+            "location": "sideboard",
+            "state": "upright"
+          },
+          "plates": {
+            "owner": "couple",
+            "location": "table",
+            "state": "three_places"
+          },
+          "music": {
+            "owner": "eli",
+            "location": "shelf",
+            "state": "playing"
+          },
+          "coat": {
+            "owner": "player",
+            "location": "hall_hook",
+            "state": "hanging"
+          },
+          "key": {
+            "owner": "mara",
+            "location": "mara_pocket",
+            "state": "carried"
+          },
+          "bag": {
+            "owner": "mara",
+            "location": "bedroom",
+            "state": "empty"
+          }
+        }
+      },
+      "lines": [
+        "Eli lowers the hall light. The evening has come to its last decision."
+      ]
+    },
+    {
+      "id": 29,
+      "turn": 11,
+      "kind": "ending",
+      "source": "repair",
+      "variant": "tomorrow",
+      "before": {
+        "turn": 11,
+        "people": {
+          "mara": {
+            "location": "dining_room",
+            "memes": {
+              "anger": 0,
+              "fear": 1
+            },
+            "trust_player": 4,
+            "trust_partner": 5,
+            "accountable": true,
+            "disclosed": true,
+            "knows": {
+              "letter": true,
+              "receipt": true
+            }
+          },
+          "eli": {
+            "location": "dining_room",
+            "memes": {
+              "anger": 0,
+              "fear": 1
+            },
+            "trust_player": 4,
+            "trust_partner": 5,
+            "accountable": true,
+            "disclosed": true,
+            "knows": {
+              "letter": true,
+              "receipt": true
+            }
+          },
+          "player": {
+            "location": "dining_room",
+            "insults": 0,
+            "caused_harm": false,
+            "knows": {
+              "letter": true,
+              "receipt": true
+            },
+            "requested_space": false,
+            "requested_talk": true
+          }
+        },
+        "props": {
+          "letter": {
+            "owner": "mara",
+            "location": "sideboard",
+            "state": "face_up"
+          },
+          "receipt": {
+            "owner": "eli",
+            "location": "sideboard",
+            "state": "face_up"
+          },
+          "photo": {
+            "owner": "couple",
+            "location": "sideboard",
+            "state": "upright"
+          },
+          "plates": {
+            "owner": "couple",
+            "location": "table",
+            "state": "three_places"
+          },
+          "music": {
+            "owner": "eli",
+            "location": "shelf",
+            "state": "playing"
+          },
+          "coat": {
+            "owner": "player",
+            "location": "hall_hook",
+            "state": "hanging"
+          },
+          "key": {
+            "owner": "mara",
+            "location": "mara_pocket",
+            "state": "carried"
+          },
+          "bag": {
+            "owner": "mara",
+            "location": "bedroom",
+            "state": "empty"
+          }
+        }
+      },
+      "after": {
+        "turn": 11,
+        "people": {
+          "mara": {
+            "location": "dining_room",
+            "memes": {
+              "anger": 0,
+              "fear": 1
+            },
+            "trust_player": 4,
+            "trust_partner": 5,
+            "accountable": true,
+            "disclosed": true,
+            "knows": {
+              "letter": true,
+              "receipt": true
+            }
+          },
+          "eli": {
+            "location": "dining_room",
+            "memes": {
+              "anger": 0,
+              "fear": 1
+            },
+            "trust_player": 4,
+            "trust_partner": 5,
+            "accountable": true,
+            "disclosed": true,
+            "knows": {
+              "letter": true,
+              "receipt": true
+            }
+          },
+          "player": {
+            "location": "hallway",
+            "insults": 0,
+            "caused_harm": false,
+            "knows": {
+              "letter": true,
+              "receipt": true
+            },
+            "requested_space": false,
+            "requested_talk": true
+          }
+        },
+        "props": {
+          "letter": {
+            "owner": "mara",
+            "location": "table",
+            "state": "face_up"
+          },
+          "receipt": {
+            "owner": "eli",
+            "location": "table",
+            "state": "face_up"
+          },
+          "photo": {
+            "owner": "couple",
+            "location": "sideboard",
+            "state": "upright"
+          },
+          "plates": {
+            "owner": "couple",
+            "location": "table",
+            "state": "two_chairs_together"
+          },
+          "music": {
+            "owner": "eli",
+            "location": "shelf",
+            "state": "playing"
+          },
+          "coat": {
+            "owner": "player",
+            "location": "player",
+            "state": "worn"
+          },
+          "key": {
+            "owner": "mara",
+            "location": "mara_pocket",
+            "state": "carried"
+          },
+          "bag": {
+            "owner": "mara",
+            "location": "bedroom",
+            "state": "empty"
+          }
+        }
+      },
+      "lines": [
+        "Eli places the receipt beside the open letter, where neither can cover the other.",
+        "Eli: \"I'll call the agent tomorrow. Then we talk about Monday.\"",
+        "Mara: \"And I'll tell you what I want from those six months. The actual answer.\"",
+        "You collect your coat. As the door closes, Mara moves her chair beside Eli's. The two papers stay between their plates."
+      ]
+    }
+  ],
+  "decisions": [
+    {
+      "turn": 0,
+      "phase": "arrival",
+      "target_tension": 2,
+      "current_tension": 2.0,
+      "focus": "",
+      "candidates": [
+        {
+          "beat": "arrival",
+          "score": 1.0
+        }
+      ],
+      "chosen": "arrival"
+    },
+    {
+      "turn": 1,
+      "exchange": "empathize mara",
+      "score": 0,
+      "threshold": 0,
+      "willing": true,
+      "rules": []
+    },
+    {
+      "turn": 4,
+      "exchange": "empathize eli",
+      "score": 0,
+      "threshold": 0,
+      "willing": true,
+      "rules": []
+    },
+    {
+      "turn": 4,
+      "phase": "topics",
+      "target_tension": 4,
+      "current_tension": 1.25,
+      "focus": "letter",
+      "candidates": [
+        {
+          "beat": "photograph",
+          "score": 0.312
+        },
+        {
+          "beat": "letter",
+          "score": 4.312
+        },
+        {
+          "beat": "receipt",
+          "score": 0.312
+        },
+        {
+          "beat": "place_setting",
+          "score": 0.312
+        },
+        {
+          "beat": "record",
+          "score": 0.312
+        }
+      ],
+      "chosen": "letter"
+    },
+    {
+      "turn": 7,
+      "exchange": "reflect mara",
+      "score": 6,
+      "threshold": 6,
+      "willing": true,
+      "rules": [
+        {
+          "rule": "The decision is public",
+          "weight": 2
+        },
+        {
+          "rule": "The speaker trusts the guest",
+          "weight": 2
+        },
+        {
+          "rule": "Anger leaves room to listen",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "turn": 8,
+      "exchange": "reflect eli",
+      "score": 6,
+      "threshold": 6,
+      "willing": true,
+      "rules": [
+        {
+          "rule": "The decision is public",
+          "weight": 2
+        },
+        {
+          "rule": "The speaker trusts the guest",
+          "weight": 2
+        },
+        {
+          "rule": "Anger leaves room to listen",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "turn": 9,
+      "exchange": "mediate",
+      "score": 6,
+      "threshold": 6,
+      "willing": true,
+      "rules": [
+        {
+          "rule": "Mara owns her decision",
+          "weight": 2
+        },
+        {
+          "rule": "Eli owns his decision",
+          "weight": 2
+        },
+        {
+          "rule": "Both can listen",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "turn": 9,
+      "phase": "decision",
+      "target_tension": 3,
+      "current_tension": 0.5,
+      "focus": "receipt",
+      "candidates": [
+        {
+          "beat": "decision",
+          "score": 0.375
+        }
+      ],
+      "chosen": "decision"
+    }
+  ],
+  "transcript": [
+    "THE LAST PLACE SETTING",
+    "You arrive at Mara and Eli's flat for their anniversary dinner. They asked you, an old friend, to be their only guest.",
+    "Three plates wait under a low lamp. On the sideboard are a folded letter, a face-down receipt, and a photograph of the two of them outside an empty shop.",
+    "Eli takes your coat. \"Perfect timing. We were just deciding what to celebrate.\"",
+    "Mara: \"Our anniversary, Eli. That was the invitation.\"",
+    "> empathize mara",
+    "Mara: \"Thank you. Let me find a way to say this without making it another accusation.\"",
+    "Eli: \"I can wait for that.\"",
+    "Mara pulls out the third chair. \"Sit beside whoever you like. Apparently that matters tonight.\"",
+    "Eli: \"It doesn't.\" He straightens the fork beside your plate without looking at her.",
+    "> ask letter",
+    "Mara: \"The conservation institute wrote to me. It isn't a bill.\"",
+    "Eli: \"You applied?\"",
+    "Mara: \"Yes.\"",
+    "> ask letter",
+    "Mara unfolds the letter. \"I accepted a six-month restoration residency in another city. I leave on Monday.\"",
+    "Eli: \"Accepted. Not applied.\"",
+    "Mara: \"Yes. I told myself I would tell you when the right evening came.\"",
+    "> empathize eli",
+    "Eli: \"Thank you. Let me find a way to say this without making it another accusation.\"",
+    "Mara: \"I can wait for that.\"",
+    "Eli looks at the open letter. \"Monday. You had a date all this time.\"",
+    "> ask receipt",
+    "Eli: \"It's a deposit. For the empty shop in the photograph.\"",
+    "Mara: \"A deposit? Eli, how much planning have you done?\"",
+    "> ask receipt",
+    "Eli turns over the receipt. \"I paid the deposit on the shop downstairs. From our joint savings.\"",
+    "Mara: \"You spent the money I thought we were keeping for choices.\"",
+    "Eli: \"I thought a workshop of our own would make you want to stay.\"",
+    "> reflect mara",
+    "Mara: \"I chose not to tell you about the residency. Being afraid of the argument doesn't excuse that.\"",
+    "Eli: \"That is the first time I've heard you say it without a but.\"",
+    "Mara looks back at the letter. \"We were talking about my work.\"",
+    "Mara: \"I still want to go. I want to be able to say that to you honestly.\"",
+    "Eli: \"I am trying to hear the difference.\"",
+    "> reflect eli",
+    "Eli: \"I used our money without asking. Calling it a gift doesn't make that fair.\"",
+    "Mara: \"That is the first time I've heard you say it without a but.\"",
+    "Mara leaves the letter where Eli can read it. \"At least it isn't hidden now.\"",
+    "> mediate",
+    "You: \"Tomorrow, could you talk about both decisions before making another one?\"",
+    "Mara: \"A conversation. Not a promise that I stay.\"",
+    "Eli: \"Yes. I can agree to that.\"",
+    "Eli: \"We can't leave tonight exactly where we started.\"",
+    "Mara: \"Then let's choose one thing we can actually do. Not a whole life.\"",
+    "> listen",
+    "Mara and Eli wait. For once, neither fills the silence for the other.",
+    "> listen",
+    "Eli lowers the hall light. The evening has come to its last decision.",
+    "Eli places the receipt beside the open letter, where neither can cover the other.",
+    "Eli: \"I'll call the agent tomorrow. Then we talk about Monday.\"",
+    "Mara: \"And I'll tell you what I want from those six months. The actual answer.\"",
+    "You collect your coat. As the door closes, Mara moves her chair beside Eli's. The two papers stay between their plates."
+  ]
+}

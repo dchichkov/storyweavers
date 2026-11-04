@@ -1,0 +1,62 @@
+{
+  "fixed_inputs_unchanged": true,
+  "physical_counterfactuals": [
+    {
+      "candidate": "floodgate",
+      "intervention": {
+        "gate.load": 20
+      },
+      "inputs": {
+        "access": true,
+        "cooperate": true,
+        "distraction": false
+      },
+      "baseline_outcome": "grain_saved",
+      "outcome": "grain_lost"
+    },
+    {
+      "candidate": "floodgate",
+      "intervention": {
+        "sluice.load": 20
+      },
+      "inputs": {
+        "access": true,
+        "cooperate": true,
+        "distraction": false
+      },
+      "baseline_outcome": "grain_saved",
+      "outcome": "grain_saved"
+    },
+    {
+      "candidate": "orchard",
+      "intervention": {
+        "valley.trial_cold": 3
+      },
+      "inputs": {
+        "access": true,
+        "cooperate": true,
+        "distraction": false
+      },
+      "baseline_outcome": "whole orchard",
+      "outcome": "lost blossoms"
+    },
+    {
+      "candidate": "orchard",
+      "intervention": {
+        "valley.night_cold": 3
+      },
+      "inputs": {
+        "access": true,
+        "cooperate": true,
+        "distraction": false
+      },
+      "baseline_outcome": "whole orchard",
+      "outcome": "lost blossoms"
+    }
+  ],
+  "bound_actor_preserved": true,
+  "original_role_defect_reproduced": true,
+  "unborrowed_tool_rejected_atomically": true,
+  "parent_edited_candidate_code": false,
+  "limits": "Finite-world review; not proof of arbitrary module composition or English entailment."
+}

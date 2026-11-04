@@ -1,0 +1,383 @@
+{
+  "id": "resp_0aa35c9d91148558016add40f4b03087d08cc0bacf835ef64b",
+  "created_at": 1792884980.0,
+  "error": null,
+  "incomplete_details": null,
+  "instructions": null,
+  "metadata": {},
+  "model": "gpt-5.6-terra",
+  "object": "response",
+  "output": [
+    {
+      "id": "msg_0aa35c9d91148558016add40f5aebc87d09bea8f8b810f1a9e",
+      "content": [
+        {
+          "annotations": [],
+          "text": "{\"stories\":[{\"id\":\"s000029\",\"rating\":{\"coherence\":8,\"style\":7,\"grammar\":9,\"storytelling\":7,\"overall\":8},\"note\":\"A clear ethical choice—returning the needed lantern—halts the loaf; the unfinished bread and two empty places give a concrete, bittersweet ending.\" ,\"group_id\":0},{\"id\":\"s000057\",\"rating\":{\"coherence\":7,\"style\":7,\"grammar\":9,\"storytelling\":6,\"overall\":7},\"note\":\"The children preserve the oil and return the lantern, but the delayed-loan exchange adds little and the planned meal remains unresolved.\" ,\"group_id\":1},{\"id\":\"s000047\",\"rating\":{\"coherence\":8,\"style\":7,\"grammar\":9,\"storytelling\":7,\"overall\":8},\"note\":\"The lantern is returned for Vale's urgent move, so the unbaked loaf becomes a believable sacrifice; the final cups and crown are vivid.\" ,\"group_id\":1},{\"id\":\"s000073\",\"rating\":{\"coherence\":8,\"style\":7,\"grammar\":9,\"storytelling\":7,\"overall\":8},\"note\":\"A small glove aside is harmless but dispensable; the central choice to return the lantern cleanly causes the loaf's unfinished ending.\" ,\"group_id\":0},{\"id\":\"s000034\",\"rating\":{\"coherence\":7,\"style\":7,\"grammar\":9,\"storytelling\":6,\"overall\":7},\"note\":\"Revealing the surprise is a meaningful turn, but Vale's offered ten minutes cannot help because the lantern stays unlit, leaving the scene slightly underused.\" ,\"group_id\":2},{\"id\":\"s000043\",\"rating\":{\"coherence\":8,\"style\":7,\"grammar\":9,\"storytelling\":7,\"overall\":8},\"note\":\"The stuck wheel and early van provide practical pressure, and Nell's decision protects Vale's oil at the cost of the supper loaf.\" ,\"group_id\":0},{\"id\":\"s000068\",\"rating\":{\"coherence\":8,\"style\":7,\"grammar\":9,\"storytelling\":7,\"overall\":8},\"note\":\"The mended cloth adds gentle character detail; returning the lantern stops the baking and leads to an evocative unfinished-table image.\" ,\"group_id\":0},{\"id\":\"s000096\",\"rating\":{\"coherence\":8,\"style\":7,\"grammar\":9,\"storytelling\":7,\"overall\":8},\"note\":\"The secret is openly revealed, yet Vale still must leave; returning the lantern forces the same tender, incomplete breakfast plan.\" ,\"group_id\":2},{\"id\":\"s000005\",\"rating\":{\"coherence\":8,\"style\":7,\"grammar\":9,\"storytelling\":7,\"overall\":8},\"note\":\"A polished, coherent dilemma: respect Vale's practical need or finish the loaf; Nell chooses fairness, ending on the waiting cups and unfinished bread.\" ,\"group_id\":0},{\"id\":\"s000085\",\"rating\":{\"coherence\":8,\"style\":7,\"grammar\":9,\"storytelling\":7,\"overall\":8},\"note\":\"The crown revision and revealed surprise add warmth, but Vale still leaves and the loaf remains unfinished in the same restrained closing image.\" ,\"group_id\":2}],\"diversity\":{\"premise\":1,\"causal_path\":2,\"ending\":1,\"language\":3,\"overall\":2},\"diversity_evidence\":\"All ten stories share the same bakery-retirement premise, borrowed-lantern constraint, oil dilemma, unfinished loaf, and breakfast-question ending. Small variations—whether Nell reveals the surprise (s000034, s000096, s000085), waits without lighting the lantern (s000057, s000047), or returns it after baking begins (s000029, s000073, s000043, s000068, s000005)—do not create materially distinct resolutions. Decorative inserts such as the glove in s000073 and cloth in s000068 vary language and detail only.\",\"plot_groups\":[{\"group_id\":0,\"summary\":\"Nell begins baking with Vale's lantern, then returns it when he urgently needs it, switching off the oven and leaving the loaf unfinished.\"},{\"group_id\":1,\"summary\":\"Nell decides not to light the lantern because its oil is needed for Vale's cellar; the loaf never enters the oven and the lantern is returned.\"},{\"group_id\":2,\"summary\":\"The children reveal the intended supper to Vale, but he cannot stay; they return the lantern, stop baking, and leave the loaf unfinished.\"}]}",
+          "type": "output_text",
+          "logprobs": []
+        }
+      ],
+      "role": "assistant",
+      "status": "completed",
+      "type": "message",
+      "phase": "final_answer"
+    }
+  ],
+  "parallel_tool_calls": true,
+  "temperature": 1.0,
+  "tool_choice": "auto",
+  "tools": [],
+  "top_p": 0.98,
+  "background": false,
+  "completed_at": 1792884988.0,
+  "conversation": null,
+  "max_output_tokens": 4000,
+  "max_tool_calls": null,
+  "moderation": null,
+  "previous_response_id": null,
+  "prompt": null,
+  "prompt_cache_key": null,
+  "prompt_cache_retention": "24h",
+  "reasoning": {
+    "context": "all_turns",
+    "effort": "none",
+    "generate_summary": null,
+    "summary": null,
+    "mode": "standard"
+  },
+  "safety_identifier": null,
+  "service_tier": "flex",
+  "status": "completed",
+  "text": {
+    "format": {
+      "name": "harbor_story_set_v2",
+      "schema_": {
+        "type": "object",
+        "properties": {
+          "stories": {
+            "type": "array",
+            "minItems": 10,
+            "maxItems": 10,
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "enum": [
+                    "s000029",
+                    "s000057",
+                    "s000047",
+                    "s000073",
+                    "s000034",
+                    "s000043",
+                    "s000068",
+                    "s000096",
+                    "s000005",
+                    "s000085"
+                  ]
+                },
+                "rating": {
+                  "type": "object",
+                  "properties": {
+                    "coherence": {
+                      "type": "integer",
+                      "enum": [
+                        0,
+                        1,
+                        2,
+                        3,
+                        4,
+                        5,
+                        6,
+                        7,
+                        8,
+                        9
+                      ]
+                    },
+                    "style": {
+                      "type": "integer",
+                      "enum": [
+                        0,
+                        1,
+                        2,
+                        3,
+                        4,
+                        5,
+                        6,
+                        7,
+                        8,
+                        9
+                      ]
+                    },
+                    "grammar": {
+                      "type": "integer",
+                      "enum": [
+                        0,
+                        1,
+                        2,
+                        3,
+                        4,
+                        5,
+                        6,
+                        7,
+                        8,
+                        9
+                      ]
+                    },
+                    "storytelling": {
+                      "type": "integer",
+                      "enum": [
+                        0,
+                        1,
+                        2,
+                        3,
+                        4,
+                        5,
+                        6,
+                        7,
+                        8,
+                        9
+                      ]
+                    },
+                    "overall": {
+                      "type": "integer",
+                      "enum": [
+                        0,
+                        1,
+                        2,
+                        3,
+                        4,
+                        5,
+                        6,
+                        7,
+                        8,
+                        9
+                      ]
+                    }
+                  },
+                  "required": [
+                    "coherence",
+                    "style",
+                    "grammar",
+                    "storytelling",
+                    "overall"
+                  ],
+                  "additionalProperties": false
+                },
+                "note": {
+                  "type": "string"
+                },
+                "group_id": {
+                  "type": "integer",
+                  "enum": [
+                    0,
+                    1,
+                    2,
+                    3,
+                    4,
+                    5,
+                    6,
+                    7,
+                    8,
+                    9
+                  ]
+                }
+              },
+              "required": [
+                "id",
+                "rating",
+                "note",
+                "group_id"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "diversity": {
+            "type": "object",
+            "properties": {
+              "premise": {
+                "type": "integer",
+                "enum": [
+                  0,
+                  1,
+                  2,
+                  3,
+                  4,
+                  5,
+                  6,
+                  7,
+                  8,
+                  9
+                ]
+              },
+              "causal_path": {
+                "type": "integer",
+                "enum": [
+                  0,
+                  1,
+                  2,
+                  3,
+                  4,
+                  5,
+                  6,
+                  7,
+                  8,
+                  9
+                ]
+              },
+              "ending": {
+                "type": "integer",
+                "enum": [
+                  0,
+                  1,
+                  2,
+                  3,
+                  4,
+                  5,
+                  6,
+                  7,
+                  8,
+                  9
+                ]
+              },
+              "language": {
+                "type": "integer",
+                "enum": [
+                  0,
+                  1,
+                  2,
+                  3,
+                  4,
+                  5,
+                  6,
+                  7,
+                  8,
+                  9
+                ]
+              },
+              "overall": {
+                "type": "integer",
+                "enum": [
+                  0,
+                  1,
+                  2,
+                  3,
+                  4,
+                  5,
+                  6,
+                  7,
+                  8,
+                  9
+                ]
+              }
+            },
+            "required": [
+              "premise",
+              "causal_path",
+              "ending",
+              "language",
+              "overall"
+            ],
+            "additionalProperties": false
+          },
+          "diversity_evidence": {
+            "type": "string"
+          },
+          "plot_groups": {
+            "type": "array",
+            "minItems": 1,
+            "maxItems": 10,
+            "items": {
+              "type": "object",
+              "properties": {
+                "group_id": {
+                  "type": "integer",
+                  "enum": [
+                    0,
+                    1,
+                    2,
+                    3,
+                    4,
+                    5,
+                    6,
+                    7,
+                    8,
+                    9
+                  ]
+                },
+                "summary": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "group_id",
+                "summary"
+              ],
+              "additionalProperties": false
+            }
+          }
+        },
+        "required": [
+          "stories",
+          "diversity",
+          "diversity_evidence",
+          "plot_groups"
+        ],
+        "additionalProperties": false
+      },
+      "type": "json_schema",
+      "description": null,
+      "strict": true
+    },
+    "verbosity": "medium"
+  },
+  "top_logprobs": 0,
+  "truncation": "disabled",
+  "usage": {
+    "input_tokens": 6748,
+    "input_tokens_details": {
+      "cached_tokens": 0,
+      "cache_write_tokens": 0,
+      "cache_write_tokens_details": {
+        "ttl_12h_tokens": 0,
+        "ttl_30m_tokens": 0
+      }
+    },
+    "output_tokens": 935,
+    "output_tokens_details": {
+      "reasoning_tokens": 0
+    },
+    "total_tokens": 7683
+  },
+  "user": null,
+  "access_programs": null,
+  "billing": {
+    "payer": "openai"
+  },
+  "frequency_penalty": 0.0,
+  "presence_penalty": 0.0,
+  "prompt_cache_options": {
+    "mode": "explicit",
+    "ttl": "30m"
+  },
+  "store": false,
+  "tool_usage": {
+    "image_gen": {
+      "input_tokens": 0,
+      "input_tokens_details": {
+        "image_tokens": 0,
+        "text_tokens": 0
+      },
+      "output_tokens": 0,
+      "output_tokens_details": {
+        "image_tokens": 0,
+        "text_tokens": 0
+      },
+      "total_tokens": 0
+    },
+    "web_search": {
+      "num_requests": 0
+    }
+  }
+}

@@ -1,0 +1,380 @@
+{
+  "id": "resp_0936346b7ca27e9f016add9ed27a3087d097810bd58a9da2e6",
+  "object": "response",
+  "created_at": 1792909010,
+  "status": "completed",
+  "access_programs": null,
+  "background": false,
+  "billing": {
+    "payer": "openai"
+  },
+  "completed_at": 1792909017,
+  "error": null,
+  "frequency_penalty": 0.0,
+  "incomplete_details": null,
+  "instructions": null,
+  "max_output_tokens": 4000,
+  "max_tool_calls": null,
+  "model": "gpt-5.6-terra",
+  "moderation": null,
+  "output": [
+    {
+      "id": "msg_0936346b7ca27e9f016add9ed343c087d0989e0f9389823607",
+      "type": "message",
+      "status": "completed",
+      "content": [
+        {
+          "type": "output_text",
+          "annotations": [],
+          "logprobs": [],
+          "text": "{\"stories\":[{\"id\":\"s000029\",\"rating\":{\"coherence\":8,\"style\":7,\"grammar\":9,\"storytelling\":8,\"overall\":8},\"note\":\"A clear mistake-to-diagnosis repair arc ends with the quiet wheel delivering the seedlings; the practical details are unusually coherent, though somewhat adult-technical for young children.\" ,\"group_id\":0},{\"id\":\"s000057\",\"rating\":{\"coherence\":8,\"style\":7,\"grammar\":9,\"storytelling\":8,\"overall\":8},\"note\":\"Jo's mistaken tightening, Len's example, and the washer repair create a complete causal arc with a concrete successful trip, despite some repeated explanatory beats.\" ,\"group_id\":0},{\"id\":\"s000047\",\"rating\":{\"coherence\":8,\"style\":7,\"grammar\":9,\"storytelling\":8,\"overall\":8},\"note\":\"The missing spacer is discovered after Jo's wrong guess, then correctly fitted before the cart rolls safely to the exchange table; polished but mechanically detailed prose.\" ,\"group_id\":0},{\"id\":\"s000073\",\"rating\":{\"coherence\":8,\"style\":7,\"grammar\":9,\"storytelling\":8,\"overall\":8},\"note\":\"When no safe washer is available, Jo abandons the risky fix, carries the plants by hand, and leaves a visible warning sign; this is a complete safety-first ending.\" ,\"group_id\":1},{\"id\":\"s000034\",\"rating\":{\"coherence\":8,\"style\":7,\"grammar\":9,\"storytelling\":8,\"overall\":8},\"note\":\"The story clearly moves from a bad assumption to a responsible non-repair: the chocked cart and its warning sign provide a concrete, consequential ending.\" ,\"group_id\":1},{\"id\":\"s000043\",\"rating\":{\"coherence\":8,\"style\":7,\"grammar\":9,\"storytelling\":8,\"overall\":8},\"note\":\"Early admission of the mistake gives the characters a meaningful emotional turn, and the decision not to improvise an unsafe spacer resolves the problem responsibly.\" ,\"group_id\":1},{\"id\":\"s000068\",\"rating\":{\"coherence\":8,\"style\":7,\"grammar\":9,\"storytelling\":8,\"overall\":8},\"note\":\"Jo admits the guess, learns to check first, installs the proper washer, and shares the handle on the successful delivery; strong causal and relational closure.\" ,\"group_id\":0},{\"id\":\"s000096\",\"rating\":{\"coherence\":8,\"style\":7,\"grammar\":9,\"storytelling\":8,\"overall\":8},\"note\":\"The repaired wheel's smooth trip to the exchange concretely confirms the diagnosis, while Len's brief lesson reinforces the change in Jo's approach.\" ,\"group_id\":0},{\"id\":\"s000005\",\"rating\":{\"coherence\":8,\"style\":7,\"grammar\":9,\"storytelling\":8,\"overall\":8},\"note\":\"A wrong repair is corrected by finding the missing washer, and the cart's quiet roll with the seedling provides a satisfying image-led resolution.\" ,\"group_id\":0},{\"id\":\"s000085\",\"rating\":{\"coherence\":8,\"style\":7,\"grammar\":9,\"storytelling\":8,\"overall\":8},\"note\":\"The story combines Jo's admission, Len's cautionary example, and a proper repair before a shared successful delivery; it is coherent but closely patterned with the others.\" ,\"group_id\":0}],\"diversity\":{\"premise\":1,\"causal_path\":2,\"ending\":3,\"language\":2,\"overall\":2},\"diversity_evidence\":\"All ten stories begin with the same rattling cart, Jo's mistaken tightening, and discovery of a missing spacer. Stories s000029, s000057, s000047, s000068, s000096, s000005, and s000085 resolve this by fitting a washer and delivering seedlings; s000073, s000034, and s000043 instead lack a washer and safely take the plants by hand. Added dialogue, loads, bench details, and lessons are minor variations rather than distinct plots.\",\"plot_groups\":[{\"group_id\":0,\"summary\":\"Jo mistakenly tightens the rattling wheel, identifies the missing spacer, fits a proper washer, and safely delivers the seedlings with the repaired cart.\"},{\"group_id\":1,\"summary\":\"Jo mistakenly tightens the wheel but no safe spacer is available, so the cart is chocked and labeled while the seedlings are carried by hand.\"}]}"
+        }
+      ],
+      "phase": "final_answer",
+      "role": "assistant"
+    }
+  ],
+  "parallel_tool_calls": true,
+  "presence_penalty": 0.0,
+  "previous_response_id": null,
+  "prompt_cache_key": null,
+  "prompt_cache_options": {
+    "mode": "explicit",
+    "ttl": "30m"
+  },
+  "prompt_cache_retention": "24h",
+  "reasoning": {
+    "context": "all_turns",
+    "effort": "none",
+    "mode": "standard",
+    "summary": null
+  },
+  "safety_identifier": null,
+  "service_tier": "flex",
+  "store": false,
+  "temperature": 1.0,
+  "text": {
+    "format": {
+      "type": "json_schema",
+      "description": null,
+      "name": "harbor_story_set_v2",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "stories": {
+            "type": "array",
+            "minItems": 10,
+            "maxItems": 10,
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "enum": [
+                    "s000029",
+                    "s000057",
+                    "s000047",
+                    "s000073",
+                    "s000034",
+                    "s000043",
+                    "s000068",
+                    "s000096",
+                    "s000005",
+                    "s000085"
+                  ]
+                },
+                "rating": {
+                  "type": "object",
+                  "properties": {
+                    "coherence": {
+                      "type": "integer",
+                      "enum": [
+                        0,
+                        1,
+                        2,
+                        3,
+                        4,
+                        5,
+                        6,
+                        7,
+                        8,
+                        9
+                      ]
+                    },
+                    "style": {
+                      "type": "integer",
+                      "enum": [
+                        0,
+                        1,
+                        2,
+                        3,
+                        4,
+                        5,
+                        6,
+                        7,
+                        8,
+                        9
+                      ]
+                    },
+                    "grammar": {
+                      "type": "integer",
+                      "enum": [
+                        0,
+                        1,
+                        2,
+                        3,
+                        4,
+                        5,
+                        6,
+                        7,
+                        8,
+                        9
+                      ]
+                    },
+                    "storytelling": {
+                      "type": "integer",
+                      "enum": [
+                        0,
+                        1,
+                        2,
+                        3,
+                        4,
+                        5,
+                        6,
+                        7,
+                        8,
+                        9
+                      ]
+                    },
+                    "overall": {
+                      "type": "integer",
+                      "enum": [
+                        0,
+                        1,
+                        2,
+                        3,
+                        4,
+                        5,
+                        6,
+                        7,
+                        8,
+                        9
+                      ]
+                    }
+                  },
+                  "required": [
+                    "coherence",
+                    "style",
+                    "grammar",
+                    "storytelling",
+                    "overall"
+                  ],
+                  "additionalProperties": false
+                },
+                "note": {
+                  "type": "string"
+                },
+                "group_id": {
+                  "type": "integer",
+                  "enum": [
+                    0,
+                    1,
+                    2,
+                    3,
+                    4,
+                    5,
+                    6,
+                    7,
+                    8,
+                    9
+                  ]
+                }
+              },
+              "required": [
+                "id",
+                "rating",
+                "note",
+                "group_id"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "diversity": {
+            "type": "object",
+            "properties": {
+              "premise": {
+                "type": "integer",
+                "enum": [
+                  0,
+                  1,
+                  2,
+                  3,
+                  4,
+                  5,
+                  6,
+                  7,
+                  8,
+                  9
+                ]
+              },
+              "causal_path": {
+                "type": "integer",
+                "enum": [
+                  0,
+                  1,
+                  2,
+                  3,
+                  4,
+                  5,
+                  6,
+                  7,
+                  8,
+                  9
+                ]
+              },
+              "ending": {
+                "type": "integer",
+                "enum": [
+                  0,
+                  1,
+                  2,
+                  3,
+                  4,
+                  5,
+                  6,
+                  7,
+                  8,
+                  9
+                ]
+              },
+              "language": {
+                "type": "integer",
+                "enum": [
+                  0,
+                  1,
+                  2,
+                  3,
+                  4,
+                  5,
+                  6,
+                  7,
+                  8,
+                  9
+                ]
+              },
+              "overall": {
+                "type": "integer",
+                "enum": [
+                  0,
+                  1,
+                  2,
+                  3,
+                  4,
+                  5,
+                  6,
+                  7,
+                  8,
+                  9
+                ]
+              }
+            },
+            "required": [
+              "premise",
+              "causal_path",
+              "ending",
+              "language",
+              "overall"
+            ],
+            "additionalProperties": false
+          },
+          "diversity_evidence": {
+            "type": "string"
+          },
+          "plot_groups": {
+            "type": "array",
+            "minItems": 1,
+            "maxItems": 10,
+            "items": {
+              "type": "object",
+              "properties": {
+                "group_id": {
+                  "type": "integer",
+                  "enum": [
+                    0,
+                    1,
+                    2,
+                    3,
+                    4,
+                    5,
+                    6,
+                    7,
+                    8,
+                    9
+                  ]
+                },
+                "summary": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "group_id",
+                "summary"
+              ],
+              "additionalProperties": false
+            }
+          }
+        },
+        "required": [
+          "stories",
+          "diversity",
+          "diversity_evidence",
+          "plot_groups"
+        ],
+        "additionalProperties": false
+      },
+      "strict": true
+    },
+    "verbosity": "medium"
+  },
+  "tool_choice": "auto",
+  "tool_usage": {
+    "image_gen": {
+      "input_tokens": 0,
+      "input_tokens_details": {
+        "image_tokens": 0,
+        "text_tokens": 0
+      },
+      "output_tokens": 0,
+      "output_tokens_details": {
+        "image_tokens": 0,
+        "text_tokens": 0
+      },
+      "total_tokens": 0
+    },
+    "web_search": {
+      "num_requests": 0
+    }
+  },
+  "tools": [],
+  "top_logprobs": 0,
+  "top_p": 0.98,
+  "truncation": "disabled",
+  "usage": {
+    "input_tokens": 6816,
+    "input_tokens_details": {
+      "cache_write_tokens": 0,
+      "cache_write_tokens_details": {
+        "ttl_12h_tokens": 0,
+        "ttl_30m_tokens": 0
+      },
+      "cached_tokens": 0
+    },
+    "output_tokens": 919,
+    "output_tokens_details": {
+      "reasoning_tokens": 0
+    },
+    "total_tokens": 7735
+  },
+  "user": null,
+  "metadata": {}
+}

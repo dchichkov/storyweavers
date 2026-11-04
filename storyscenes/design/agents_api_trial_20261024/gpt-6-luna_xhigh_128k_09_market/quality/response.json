@@ -1,0 +1,380 @@
+{
+  "id": "resp_0fbe7469b407b4ba016add9e9a0ec487d0acb2dfb1702d6198",
+  "object": "response",
+  "created_at": 1792908954,
+  "status": "completed",
+  "access_programs": null,
+  "background": false,
+  "billing": {
+    "payer": "openai"
+  },
+  "completed_at": 1792908961,
+  "error": null,
+  "frequency_penalty": 0.0,
+  "incomplete_details": null,
+  "instructions": null,
+  "max_output_tokens": 4000,
+  "max_tool_calls": null,
+  "model": "gpt-5.6-terra",
+  "moderation": null,
+  "output": [
+    {
+      "id": "msg_0fbe7469b407b4ba016add9e9abe9887d09c8076d235744072",
+      "type": "message",
+      "status": "completed",
+      "content": [
+        {
+          "type": "output_text",
+          "annotations": [],
+          "logprobs": [],
+          "text": "{\"stories\":[{\"id\":\"s000029\",\"rating\":{\"coherence\":8,\"style\":7,\"grammar\":9,\"storytelling\":8,\"overall\":8},\"note\":\"A clear faulty-scale problem leads to Nella’s honest disclosure and a practical pear-and-apple solution; the repaired needle provides a concrete close.\" ,\"group_id\":0},{\"id\":\"s000057\",\"rating\":{\"coherence\":8,\"style\":7,\"grammar\":9,\"storytelling\":8,\"overall\":8},\"note\":\"Nella discovers the small error, tells Mrs. Vale before delivery, and corrects the basket; the final checked dial neatly shows growth.\" ,\"group_id\":1},{\"id\":\"s000047\",\"rating\":{\"coherence\":8,\"style\":7,\"grammar\":9,\"storytelling\":8,\"overall\":8},\"note\":\"The scale’s larger error is clearly tested and honestly fixed with more apples, ending on Nella carefully checking the dial for the next customer.\" ,\"group_id\":1},{\"id\":\"s000073\",\"rating\":{\"coherence\":8,\"style\":7,\"grammar\":9,\"storytelling\":8,\"overall\":8},\"note\":\"Giving Sam an apple contributes to the shortage, and Nella’s prompt honesty leads to a believable fruit-blend compromise and repaired scale.\" ,\"group_id\":0},{\"id\":\"s000034\",\"rating\":{\"coherence\":8,\"style\":7,\"grammar\":9,\"storytelling\":8,\"overall\":8},\"note\":\"A straightforward discovery-and-correction plot: Nella reports the faulty reading, adds apples, and earns continued trust through careful action.\" ,\"group_id\":1},{\"id\":\"s000043\",\"rating\":{\"coherence\":8,\"style\":7,\"grammar\":9,\"storytelling\":8,\"overall\":8},\"note\":\"Nella knowingly sends a light basket, so Mrs. Vale’s return creates a meaningful consequence; the quiet loss of trust gives the repair emotional weight.\" ,\"group_id\":2},{\"id\":\"s000068\",\"rating\":{\"coherence\":8,\"style\":7,\"grammar\":9,\"storytelling\":8,\"overall\":8},\"note\":\"Nella hides the error until Mrs. Vale returns, then admits it and helps make a pear blend; the apology and true scale form a complete moral resolution.\" ,\"group_id\":3},{\"id\":\"s000096\",\"rating\":{\"coherence\":8,\"style\":7,\"grammar\":9,\"storytelling\":8,\"overall\":8},\"note\":\"The deliberate lie, customer’s discovery, correction, and subdued trust loss make a coherent consequence-driven story with a concrete final image.\" ,\"group_id\":2},{\"id\":\"s000005\",\"rating\":{\"coherence\":8,\"style\":7,\"grammar\":9,\"storytelling\":8,\"overall\":8},\"note\":\"A shortage and faulty scale tempt Nella to conceal the problem; after being caught, she admits it and completes the order with pears.\" ,\"group_id\":3},{\"id\":\"s000085\",\"rating\":{\"coherence\":8,\"style\":7,\"grammar\":9,\"storytelling\":8,\"overall\":8},\"note\":\"Nella identifies both the shortage and the scale error before Mrs. Vale leaves, then they choose pears together; the ending reinforces honest repair.\" ,\"group_id\":0}],\"diversity\":{\"premise\":2,\"causal_path\":4,\"ending\":3,\"language\":2,\"overall\":3},\"diversity_evidence\":\"All ten stories share Nella, Mrs. Vale, the clinic-tart apple order, and a faulty dial scale. They branch mainly between prompt honesty and correction (s000029, s000057, s000047, s000073, s000034, s000085) and concealment followed by a customer return (s000043, s000068, s000096, s000005). The shortage/pear substitution and degree of trust loss create some material variants, but the prose and recurring repaired-scale ending are highly templated. This sample does not establish diversity for the entire generator.\",\"plot_groups\":[{\"group_id\":0,\"summary\":\"Nella notices the faulty scale and an apple shortage before delivery, tells Mrs. Vale, and they complete the order with apples and pears.\"},{\"group_id\":1,\"summary\":\"Nella notices the faulty scale before delivery, tells Mrs. Vale, and corrects the order by adding enough apples.\"},{\"group_id\":2,\"summary\":\"Nella knowingly delivers a light apple order; Mrs. Vale returns, Nella adds apples, and trust is damaged.\"},{\"group_id\":3,\"summary\":\"Nella knowingly delivers a light order; after Mrs. Vale returns, insufficient apples require a pear-and-apple blend and an apology.\"}]}"
+        }
+      ],
+      "phase": "final_answer",
+      "role": "assistant"
+    }
+  ],
+  "parallel_tool_calls": true,
+  "presence_penalty": 0.0,
+  "previous_response_id": null,
+  "prompt_cache_key": null,
+  "prompt_cache_options": {
+    "mode": "explicit",
+    "ttl": "30m"
+  },
+  "prompt_cache_retention": "24h",
+  "reasoning": {
+    "context": "all_turns",
+    "effort": "none",
+    "mode": "standard",
+    "summary": null
+  },
+  "safety_identifier": null,
+  "service_tier": "flex",
+  "store": false,
+  "temperature": 1.0,
+  "text": {
+    "format": {
+      "type": "json_schema",
+      "description": null,
+      "name": "harbor_story_set_v2",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "stories": {
+            "type": "array",
+            "minItems": 10,
+            "maxItems": 10,
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "enum": [
+                    "s000029",
+                    "s000057",
+                    "s000047",
+                    "s000073",
+                    "s000034",
+                    "s000043",
+                    "s000068",
+                    "s000096",
+                    "s000005",
+                    "s000085"
+                  ]
+                },
+                "rating": {
+                  "type": "object",
+                  "properties": {
+                    "coherence": {
+                      "type": "integer",
+                      "enum": [
+                        0,
+                        1,
+                        2,
+                        3,
+                        4,
+                        5,
+                        6,
+                        7,
+                        8,
+                        9
+                      ]
+                    },
+                    "style": {
+                      "type": "integer",
+                      "enum": [
+                        0,
+                        1,
+                        2,
+                        3,
+                        4,
+                        5,
+                        6,
+                        7,
+                        8,
+                        9
+                      ]
+                    },
+                    "grammar": {
+                      "type": "integer",
+                      "enum": [
+                        0,
+                        1,
+                        2,
+                        3,
+                        4,
+                        5,
+                        6,
+                        7,
+                        8,
+                        9
+                      ]
+                    },
+                    "storytelling": {
+                      "type": "integer",
+                      "enum": [
+                        0,
+                        1,
+                        2,
+                        3,
+                        4,
+                        5,
+                        6,
+                        7,
+                        8,
+                        9
+                      ]
+                    },
+                    "overall": {
+                      "type": "integer",
+                      "enum": [
+                        0,
+                        1,
+                        2,
+                        3,
+                        4,
+                        5,
+                        6,
+                        7,
+                        8,
+                        9
+                      ]
+                    }
+                  },
+                  "required": [
+                    "coherence",
+                    "style",
+                    "grammar",
+                    "storytelling",
+                    "overall"
+                  ],
+                  "additionalProperties": false
+                },
+                "note": {
+                  "type": "string"
+                },
+                "group_id": {
+                  "type": "integer",
+                  "enum": [
+                    0,
+                    1,
+                    2,
+                    3,
+                    4,
+                    5,
+                    6,
+                    7,
+                    8,
+                    9
+                  ]
+                }
+              },
+              "required": [
+                "id",
+                "rating",
+                "note",
+                "group_id"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "diversity": {
+            "type": "object",
+            "properties": {
+              "premise": {
+                "type": "integer",
+                "enum": [
+                  0,
+                  1,
+                  2,
+                  3,
+                  4,
+                  5,
+                  6,
+                  7,
+                  8,
+                  9
+                ]
+              },
+              "causal_path": {
+                "type": "integer",
+                "enum": [
+                  0,
+                  1,
+                  2,
+                  3,
+                  4,
+                  5,
+                  6,
+                  7,
+                  8,
+                  9
+                ]
+              },
+              "ending": {
+                "type": "integer",
+                "enum": [
+                  0,
+                  1,
+                  2,
+                  3,
+                  4,
+                  5,
+                  6,
+                  7,
+                  8,
+                  9
+                ]
+              },
+              "language": {
+                "type": "integer",
+                "enum": [
+                  0,
+                  1,
+                  2,
+                  3,
+                  4,
+                  5,
+                  6,
+                  7,
+                  8,
+                  9
+                ]
+              },
+              "overall": {
+                "type": "integer",
+                "enum": [
+                  0,
+                  1,
+                  2,
+                  3,
+                  4,
+                  5,
+                  6,
+                  7,
+                  8,
+                  9
+                ]
+              }
+            },
+            "required": [
+              "premise",
+              "causal_path",
+              "ending",
+              "language",
+              "overall"
+            ],
+            "additionalProperties": false
+          },
+          "diversity_evidence": {
+            "type": "string"
+          },
+          "plot_groups": {
+            "type": "array",
+            "minItems": 1,
+            "maxItems": 10,
+            "items": {
+              "type": "object",
+              "properties": {
+                "group_id": {
+                  "type": "integer",
+                  "enum": [
+                    0,
+                    1,
+                    2,
+                    3,
+                    4,
+                    5,
+                    6,
+                    7,
+                    8,
+                    9
+                  ]
+                },
+                "summary": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "group_id",
+                "summary"
+              ],
+              "additionalProperties": false
+            }
+          }
+        },
+        "required": [
+          "stories",
+          "diversity",
+          "diversity_evidence",
+          "plot_groups"
+        ],
+        "additionalProperties": false
+      },
+      "strict": true
+    },
+    "verbosity": "medium"
+  },
+  "tool_choice": "auto",
+  "tool_usage": {
+    "image_gen": {
+      "input_tokens": 0,
+      "input_tokens_details": {
+        "image_tokens": 0,
+        "text_tokens": 0
+      },
+      "output_tokens": 0,
+      "output_tokens_details": {
+        "image_tokens": 0,
+        "text_tokens": 0
+      },
+      "total_tokens": 0
+    },
+    "web_search": {
+      "num_requests": 0
+    }
+  },
+  "tools": [],
+  "top_logprobs": 0,
+  "top_p": 0.98,
+  "truncation": "disabled",
+  "usage": {
+    "input_tokens": 6421,
+    "input_tokens_details": {
+      "cache_write_tokens": 0,
+      "cache_write_tokens_details": {
+        "ttl_12h_tokens": 0,
+        "ttl_30m_tokens": 0
+      },
+      "cached_tokens": 0
+    },
+    "output_tokens": 972,
+    "output_tokens_details": {
+      "reasoning_tokens": 0
+    },
+    "total_tokens": 7393
+  },
+  "user": null,
+  "metadata": {}
+}

@@ -1,0 +1,1662 @@
+{
+  "totals": {
+    "requested": 20,
+    "dispatched": 20,
+    "generation_failures": 1,
+    "returned": 19,
+    "checked": 19,
+    "fully_runnable": 5,
+    "accepted": 1,
+    "judged": 5,
+    "successful_positions": 601,
+    "attempted_positions": 1800,
+    "check_preflight_failures": 1,
+    "outputs_above_64k": 1,
+    "outputs_at_128k": 0,
+    "max_output_tokens": 69349,
+    "quality_mean": 7.8,
+    "diversity_mean": 2.4,
+    "output_tokens": 920445,
+    "reasoning_tokens": 611987,
+    "estimated_generation_cost_range_usd": [
+      0.2724421625,
+      0.314770225
+    ],
+    "costed_responses": 19,
+    "warning": "Quality is conditional on 100/100 runnable packs; no repairs. One prompt per distinct scenario; no matched 64k control batch."
+  },
+  "packs": [
+    {
+      "index": 0,
+      "arm": "gpt-6-luna_xhigh_128k_01_bakery",
+      "task_seed": 2026102402,
+      "words": [
+        "basket",
+        "icing",
+        "uneven"
+      ],
+      "setting": "a village bakery",
+      "premise": "a child borrows a delivery basket and wants a birthday cake to reach a lonely neighbour intact",
+      "generation_reservation_usd": 0.15,
+      "conservative_ceiling_usd": 0.1021385,
+      "dispatched": true,
+      "returned": false,
+      "error": {
+        "error": "RuntimeError: HTTP 500: {\n  \"error\": {\n    \"message\": \"An error occurred while processing your request. You can retry your request, or contact us through our help center at help.openai.com if the error persists. Please include the request ID req_817595f112b7462e8df97f154b5e90a9 in your message.\",\n    \"type\": \"server_error\",\n    \"param\": null,\n    \"code\": \"server_error\"\n  }\n}",
+        "session_id": null
+      },
+      "generation_status": null,
+      "runnable": null,
+      "accepted": null,
+      "judged": false
+    },
+    {
+      "index": 1,
+      "arm": "gpt-6-luna_xhigh_128k_02_puppets",
+      "task_seed": 2026102403,
+      "words": [
+        "curtain",
+        "button",
+        "whisper"
+      ],
+      "setting": "a school puppet theatre",
+      "premise": "two friends borrow a sewing kit to rescue a rehearsal when the shy puppeteer loses a prop",
+      "generation_reservation_usd": 0.15,
+      "conservative_ceiling_usd": 0.102141,
+      "dispatched": true,
+      "returned": true,
+      "error": null,
+      "generation_status": "completed",
+      "runnable": 0,
+      "accepted": false,
+      "judged": false,
+      "usage": {
+        "input_tokens": 35644,
+        "input_tokens_details": {
+          "cache_write_tokens": 35641,
+          "cached_tokens": 0
+        },
+        "output_tokens": 46794,
+        "output_tokens_details": {
+          "reasoning_tokens": 29829
+        },
+        "total_tokens": 82438
+      },
+      "generation_cost_range_usd": [
+        0.0139262125,
+        0.016153775
+      ],
+      "elapsed_seconds": 918.5491357911378,
+      "attempted": 100,
+      "reference_words": 863,
+      "check_preflight_error": null,
+      "tests": {
+        "run": 9,
+        "passed": false,
+        "failures": 0,
+        "errors": 205
+      },
+      "corpus": {
+        "successful": 0,
+        "exact_texts": 0,
+        "distinct_paths": 0,
+        "outcomes": {},
+        "scene_frequency": {},
+        "story_words": null,
+        "scene_words": null,
+        "approx_quoted_word_fraction": 0,
+        "lzma": {
+          "format": "Python lzma default XZ; stories joined by two newlines in requested order",
+          "raw_bytes": 0,
+          "compressed_bytes": 0,
+          "ratio": null
+        },
+        "warning": "Exact text counts, quote counts, and compression are diagnostics, not literary or semantic-diversity scores."
+      },
+      "failures": {
+        "StoryError: Untried repair contains effects from a repair attempt": 100
+      }
+    },
+    {
+      "index": 2,
+      "arm": "gpt-6-luna_xhigh_128k_03_greenhouse",
+      "task_seed": 2026102404,
+      "words": [
+        "seedling",
+        "shade",
+        "thirsty"
+      ],
+      "setting": "a community greenhouse",
+      "premise": "a child borrows a watering can and wants to protect another gardener's seedlings during a hot afternoon",
+      "generation_reservation_usd": 0.15,
+      "conservative_ceiling_usd": 0.1021475,
+      "dispatched": true,
+      "returned": true,
+      "error": null,
+      "generation_status": "completed",
+      "runnable": 100,
+      "accepted": false,
+      "judged": true,
+      "usage": {
+        "input_tokens": 35646,
+        "input_tokens_details": {
+          "cache_write_tokens": 35643,
+          "cached_tokens": 0
+        },
+        "output_tokens": 39299,
+        "output_tokens_details": {
+          "reasoning_tokens": 24794
+        },
+        "total_tokens": 74945
+      },
+      "generation_cost_range_usd": [
+        0.0120525875,
+        0.014280275
+      ],
+      "elapsed_seconds": 798.4448642919306,
+      "attempted": 100,
+      "reference_words": 809,
+      "check_preflight_error": null,
+      "tests": {
+        "run": 9,
+        "passed": true,
+        "failures": 0,
+        "errors": 0
+      },
+      "corpus": {
+        "successful": 100,
+        "exact_texts": 30,
+        "distinct_paths": 6,
+        "outcomes": {
+          "cuttings_rooted": 76,
+          "seedlings_stable": 24
+        },
+        "scene_frequency": {
+          "notice": 100,
+          "borrow_can": 100,
+          "read_labels": 91,
+          "fill_and_water": 100,
+          "make_shade": 100,
+          "return_can": 100,
+          "ending_cuttings": 76,
+          "talk_to_rosa": 59,
+          "ending_stable": 24
+        },
+        "story_words": {
+          "min": 348,
+          "mean": 387.44,
+          "max": 422
+        },
+        "scene_words": {
+          "min": 43,
+          "mean": 51.65866666666667,
+          "max": 59
+        },
+        "approx_quoted_word_fraction": 0.09764092504645881,
+        "lzma": {
+          "format": "Python lzma default XZ; stories joined by two newlines in requested order",
+          "raw_bytes": 219158,
+          "compressed_bytes": 2792,
+          "ratio": 0.012739667272013798
+        },
+        "warning": "Exact text counts, quote counts, and compression are diagnostics, not literary or semantic-diversity scores."
+      },
+      "failures": {},
+      "quality": {
+        "coherence": 8.4,
+        "style": 7,
+        "grammar": 9,
+        "storytelling": 8,
+        "overall": 8
+      },
+      "diversity": {
+        "premise": 1,
+        "causal_path": 2,
+        "ending": 2,
+        "language": 2,
+        "overall": 2
+      },
+      "plot_groups": [
+        {
+          "story_ids": [
+            "s000029",
+            "s000047",
+            "s000034",
+            "s000043",
+            "s000068",
+            "s000085"
+          ],
+          "summary": "Mina waters the distressed tray but cannot use a working screen, moves it to partial shade, and saves surviving growth by rooting cuttings after the tray remains too weak."
+        },
+        {
+          "story_ids": [
+            "s000057",
+            "s000073",
+            "s000096",
+            "s000005"
+          ],
+          "summary": "After Rosa authorizes and explains the screen, Mina waters the tray and shades it properly, leaving the seedlings stabilized for the afternoon."
+        }
+      ],
+      "judged_stories": 10
+    },
+    {
+      "index": 3,
+      "arm": "gpt-6-luna_xhigh_128k_04_seaside",
+      "task_seed": 2026102405,
+      "words": [
+        "map",
+        "tide",
+        "mistake"
+      ],
+      "setting": "a seaside path",
+      "premise": "siblings borrow a map to find a sheltered picnic place and discover they have followed the wrong landmark",
+      "generation_reservation_usd": 0.15,
+      "conservative_ceiling_usd": 0.1021415,
+      "dispatched": true,
+      "returned": true,
+      "error": null,
+      "generation_status": "completed",
+      "runnable": 0,
+      "accepted": false,
+      "judged": false,
+      "usage": {
+        "input_tokens": 35642,
+        "input_tokens_details": {
+          "cache_write_tokens": 35639,
+          "cached_tokens": 0
+        },
+        "output_tokens": 51642,
+        "output_tokens_details": {
+          "reasoning_tokens": 35126
+        },
+        "total_tokens": 87284
+      },
+      "generation_cost_range_usd": [
+        0.0151380875,
+        0.017365525000000003
+      ],
+      "elapsed_seconds": 1030.4068430420011,
+      "attempted": 100,
+      "reference_words": 925,
+      "check_preflight_error": null,
+      "tests": {
+        "run": 10,
+        "passed": false,
+        "failures": 0,
+        "errors": 208
+      },
+      "corpus": {
+        "successful": 0,
+        "exact_texts": 0,
+        "distinct_paths": 0,
+        "outcomes": {},
+        "scene_frequency": {},
+        "story_words": null,
+        "scene_words": null,
+        "approx_quoted_word_fraction": 0,
+        "lzma": {
+          "format": "Python lzma default XZ; stories joined by two newlines in requested order",
+          "raw_bytes": 0,
+          "compressed_bytes": 0,
+          "ratio": null
+        },
+        "warning": "Exact text counts, quote counts, and compression are diagnostics, not literary or semantic-diversity scores."
+      },
+      "failures": {
+        "KeyError: 'party.shared_pause'": 100
+      }
+    },
+    {
+      "index": 4,
+      "arm": "gpt-6-luna_xhigh_128k_05_library",
+      "task_seed": 2026102406,
+      "words": [
+        "bookmark",
+        "ladder",
+        "promise"
+      ],
+      "setting": "a neighbourhood library",
+      "premise": "a child borrows a book trolley and promises to find a younger friend's missing picture book before closing",
+      "generation_reservation_usd": 0.15,
+      "conservative_ceiling_usd": 0.10215,
+      "dispatched": true,
+      "returned": true,
+      "error": null,
+      "generation_status": "completed",
+      "runnable": 100,
+      "accepted": true,
+      "judged": true,
+      "usage": {
+        "input_tokens": 35644,
+        "input_tokens_details": {
+          "cache_write_tokens": 35641,
+          "cached_tokens": 0
+        },
+        "output_tokens": 69349,
+        "output_tokens_details": {
+          "reasoning_tokens": 52379
+        },
+        "total_tokens": 104993
+      },
+      "generation_cost_range_usd": [
+        0.0195649625,
+        0.021792525
+      ],
+      "elapsed_seconds": 1359.0854554998223,
+      "attempted": 100,
+      "reference_words": 992,
+      "check_preflight_error": null,
+      "tests": {
+        "run": 10,
+        "passed": true,
+        "failures": 0,
+        "errors": 0
+      },
+      "corpus": {
+        "successful": 100,
+        "exact_texts": 99,
+        "distinct_paths": 98,
+        "outcomes": {
+          "promise_not_kept_honestly": 20,
+          "promise_kept": 80
+        },
+        "scene_frequency": {
+          "promise": 100,
+          "catalog": 100,
+          "friend_vignette": 73,
+          "returns_search": 57,
+          "low_search": 51,
+          "window_vignette": 61,
+          "ending_miss": 20,
+          "librarian": 74,
+          "ending_found": 80,
+          "shelf_vignette": 64,
+          "bookmark_vignette": 62,
+          "ladder_search": 8
+        },
+        "story_words": {
+          "min": 367,
+          "mean": 415.14,
+          "max": 459
+        },
+        "scene_words": {
+          "min": 46,
+          "mean": 55.352,
+          "max": 68
+        },
+        "approx_quoted_word_fraction": 0.05807679337091102,
+        "lzma": {
+          "format": "Python lzma default XZ; stories joined by two newlines in requested order",
+          "raw_bytes": 229959,
+          "compressed_bytes": 4524,
+          "ratio": 0.019673072156340912
+        },
+        "warning": "Exact text counts, quote counts, and compression are diagnostics, not literary or semantic-diversity scores."
+      },
+      "failures": {},
+      "quality": {
+        "coherence": 8,
+        "style": 7,
+        "grammar": 9,
+        "storytelling": 7.6,
+        "overall": 8
+      },
+      "diversity": {
+        "premise": 1,
+        "causal_path": 4,
+        "ending": 4,
+        "language": 3,
+        "overall": 3
+      },
+      "plot_groups": [
+        {
+          "story_ids": [
+            "s000029",
+            "s000043"
+          ],
+          "summary": "Nia gains agency and remembers the window-seat hiding place, where the missing book is recovered."
+        },
+        {
+          "story_ids": [
+            "s000057",
+            "s000047",
+            "s000073",
+            "s000085"
+          ],
+          "summary": "The children pursue and exhaust plausible clues without finding the book, then leave with a substitute while acknowledging disappointment."
+        },
+        {
+          "story_ids": [
+            "s000034"
+          ],
+          "summary": "Careful sorting of returned books reveals the missing book on the trolley."
+        },
+        {
+          "story_ids": [
+            "s000068",
+            "s000096",
+            "s000005"
+          ],
+          "summary": "A current catalogue location and Nia's picture-label knowledge guide the children to the book on the animal shelf."
+        }
+      ],
+      "judged_stories": 10
+    },
+    {
+      "index": 5,
+      "arm": "gpt-6-luna_xhigh_128k_06_snow",
+      "task_seed": 2026102407,
+      "words": [
+        "sled",
+        "mittens",
+        "patient"
+      ],
+      "setting": "a snowy village square",
+      "premise": "a child borrows a sled to bring supplies to an older neighbour but a friend wants to race",
+      "generation_reservation_usd": 0.15,
+      "conservative_ceiling_usd": 0.1021395,
+      "dispatched": true,
+      "returned": true,
+      "error": null,
+      "generation_status": "completed",
+      "runnable": 0,
+      "accepted": false,
+      "judged": false,
+      "usage": {
+        "input_tokens": 35648,
+        "input_tokens_details": {
+          "cache_write_tokens": 35645,
+          "cached_tokens": 0
+        },
+        "output_tokens": 60204,
+        "output_tokens_details": {
+          "reasoning_tokens": 41186
+        },
+        "total_tokens": 95852
+      },
+      "generation_cost_range_usd": [
+        0.0172789625,
+        0.019506775
+      ],
+      "elapsed_seconds": 1359.9725198750384,
+      "attempted": 0,
+      "reference_words": null,
+      "check_preflight_error": "JSONDecodeError: Expecting property name enclosed in double quotes: line 2 column 3 (char 4)",
+      "tests": null,
+      "corpus": null,
+      "failures": {}
+    },
+    {
+      "index": 6,
+      "arm": "gpt-6-luna_xhigh_128k_07_picnic",
+      "task_seed": 2026102408,
+      "words": [
+        "blanket",
+        "crumbs",
+        "gust"
+      ],
+      "setting": "a riverside picnic meadow",
+      "premise": "two cousins borrow a picnic blanket and try to make a welcoming lunch for a cousin who arrives late",
+      "generation_reservation_usd": 0.15,
+      "conservative_ceiling_usd": 0.1021455,
+      "dispatched": true,
+      "returned": true,
+      "error": null,
+      "generation_status": "completed",
+      "runnable": 0,
+      "accepted": false,
+      "judged": false,
+      "usage": {
+        "input_tokens": 35648,
+        "input_tokens_details": {
+          "cache_write_tokens": 35645,
+          "cached_tokens": 0
+        },
+        "output_tokens": 46427,
+        "output_tokens_details": {
+          "reasoning_tokens": 31201
+        },
+        "total_tokens": 82075
+      },
+      "generation_cost_range_usd": [
+        0.0138347125,
+        0.016062525
+      ],
+      "elapsed_seconds": 911.7324646250345,
+      "attempted": 100,
+      "reference_words": 926,
+      "check_preflight_error": null,
+      "tests": {
+        "run": 9,
+        "passed": false,
+        "failures": 0,
+        "errors": 208
+      },
+      "corpus": {
+        "successful": 0,
+        "exact_texts": 0,
+        "distinct_paths": 0,
+        "outcomes": {},
+        "scene_frequency": {},
+        "story_words": null,
+        "scene_words": null,
+        "approx_quoted_word_fraction": 0,
+        "lzma": {
+          "format": "Python lzma default XZ; stories joined by two newlines in requested order",
+          "raw_bytes": 0,
+          "compressed_bytes": 0,
+          "ratio": null
+        },
+        "warning": "Exact text counts, quote counts, and compression are diagnostics, not literary or semantic-diversity scores."
+      },
+      "failures": {
+        "StoryError: The picnic party cannot move before spreading the blanket": 100
+      }
+    },
+    {
+      "index": 7,
+      "arm": "gpt-6-luna_xhigh_128k_08_music",
+      "task_seed": 2026102409,
+      "words": [
+        "drum",
+        "ribbon",
+        "hesitate"
+      ],
+      "setting": "a community music room",
+      "premise": "a child borrows a small drum and wants a nervous newcomer to join a duet without being pressured",
+      "generation_reservation_usd": 0.15,
+      "conservative_ceiling_usd": 0.102143,
+      "dispatched": true,
+      "returned": true,
+      "error": null,
+      "generation_status": "completed",
+      "runnable": 100,
+      "accepted": false,
+      "judged": true,
+      "usage": {
+        "input_tokens": 35646,
+        "input_tokens_details": {
+          "cache_write_tokens": 35643,
+          "cached_tokens": 0
+        },
+        "output_tokens": 38857,
+        "output_tokens_details": {
+          "reasoning_tokens": 24378
+        },
+        "total_tokens": 74503
+      },
+      "generation_cost_range_usd": [
+        0.0119420875,
+        0.014169774999999999
+      ],
+      "elapsed_seconds": 560.4727151661646,
+      "attempted": 100,
+      "reference_words": 1208,
+      "check_preflight_error": null,
+      "tests": {
+        "run": 8,
+        "passed": false,
+        "failures": 1,
+        "errors": 0
+      },
+      "corpus": {
+        "successful": 100,
+        "exact_texts": 15,
+        "distinct_paths": 6,
+        "outcomes": {
+          "a welcome without a duet": 72,
+          "a freely chosen duet": 28
+        },
+        "scene_frequency": {
+          "borrow_drum": 100,
+          "newcomer_arrives": 100,
+          "make_space": 100,
+          "open_invitation": 100,
+          "pass_for_now": 72,
+          "listening_pattern": 72,
+          "ending_listening": 72,
+          "accept_beat": 28,
+          "duet": 28,
+          "ending_duet": 28,
+          "quiet_demo": 30,
+          "ribbon_cue": 20
+        },
+        "story_words": {
+          "min": 325,
+          "mean": 355.88,
+          "max": 393
+        },
+        "scene_words": {
+          "min": 41,
+          "mean": 47.45066666666666,
+          "max": 56
+        },
+        "approx_quoted_word_fraction": 0.18388220748566933,
+        "lzma": {
+          "format": "Python lzma default XZ; stories joined by two newlines in requested order",
+          "raw_bytes": 203664,
+          "compressed_bytes": 2336,
+          "ratio": 0.011469871945950193
+        },
+        "warning": "Exact text counts, quote counts, and compression are diagnostics, not literary or semantic-diversity scores."
+      },
+      "failures": {},
+      "quality": {
+        "coherence": 7.2,
+        "style": 7,
+        "grammar": 6,
+        "storytelling": 7.2,
+        "overall": 7
+      },
+      "diversity": {
+        "premise": 1,
+        "causal_path": 2,
+        "ending": 2,
+        "language": 2,
+        "overall": 2
+      },
+      "plot_groups": [
+        {
+          "story_ids": [
+            "s000029",
+            "s000047",
+            "s000034",
+            "s000043",
+            "s000068",
+            "s000096",
+            "s000005",
+            "s000085"
+          ],
+          "summary": "Mara offers choices without pressure; June chooses to listen rather than play, and her listening becomes the shared musical connection."
+        },
+        {
+          "story_ids": [
+            "s000057",
+            "s000073"
+          ],
+          "summary": "Mara offers choices without pressure; June elects to answer one drum call with a single beat, gaining ownership of a brief duet."
+        }
+      ],
+      "judged_stories": 10
+    },
+    {
+      "index": 8,
+      "arm": "gpt-6-luna_xhigh_128k_09_market",
+      "task_seed": 2026102410,
+      "words": [
+        "scale",
+        "apples",
+        "honest"
+      ],
+      "setting": "a fruit market",
+      "premise": "a young helper borrows a weighing scale and discovers a mistake while filling a neighbour's order",
+      "generation_reservation_usd": 0.15,
+      "conservative_ceiling_usd": 0.102139,
+      "dispatched": true,
+      "returned": true,
+      "error": null,
+      "generation_status": "completed",
+      "runnable": 100,
+      "accepted": false,
+      "judged": true,
+      "usage": {
+        "input_tokens": 35642,
+        "input_tokens_details": {
+          "cache_write_tokens": 35639,
+          "cached_tokens": 0
+        },
+        "output_tokens": 53583,
+        "output_tokens_details": {
+          "reasoning_tokens": 35843
+        },
+        "total_tokens": 89225
+      },
+      "generation_cost_range_usd": [
+        0.015623337499999999,
+        0.017850775000000003
+      ],
+      "elapsed_seconds": 1019.368832499953,
+      "attempted": 100,
+      "reference_words": 873,
+      "check_preflight_error": null,
+      "tests": {
+        "run": 10,
+        "passed": false,
+        "failures": 1,
+        "errors": 0
+      },
+      "corpus": {
+        "successful": 100,
+        "exact_texts": 88,
+        "distinct_paths": 6,
+        "outcomes": {
+          "honest_full": 31,
+          "repaired_after_concealment_full": 26,
+          "honest_mixed": 18,
+          "repaired_after_concealment_mixed": 12,
+          "honest_refunded": 5,
+          "repaired_after_concealment_refunded": 8
+        },
+        "scene_frequency": {
+          "market_order": 100,
+          "fill_order": 100,
+          "inspect_scale": 100,
+          "tell_neighbor": 54,
+          "settle_order": 100,
+          "return_scale": 100,
+          "ending": 100,
+          "conceal_error": 46,
+          "vignette_pear_sample": 30,
+          "vignette_bruised_apple": 20
+        },
+        "story_words": {
+          "min": 346,
+          "mean": 384.07,
+          "max": 417
+        },
+        "scene_words": {
+          "min": 43,
+          "mean": 51.20933333333333,
+          "max": 60
+        },
+        "approx_quoted_word_fraction": 0.09675319603197334,
+        "lzma": {
+          "format": "Python lzma default XZ; stories joined by two newlines in requested order",
+          "raw_bytes": 216930,
+          "compressed_bytes": 3992,
+          "ratio": 0.01840224957359517
+        },
+        "warning": "Exact text counts, quote counts, and compression are diagnostics, not literary or semantic-diversity scores."
+      },
+      "failures": {},
+      "quality": {
+        "coherence": 8,
+        "style": 7,
+        "grammar": 9,
+        "storytelling": 8,
+        "overall": 8
+      },
+      "diversity": {
+        "premise": 2,
+        "causal_path": 4,
+        "ending": 3,
+        "language": 2,
+        "overall": 3
+      },
+      "plot_groups": [
+        {
+          "story_ids": [
+            "s000029",
+            "s000073",
+            "s000085"
+          ],
+          "summary": "Nella notices the faulty scale and an apple shortage before delivery, tells Mrs. Vale, and they complete the order with apples and pears."
+        },
+        {
+          "story_ids": [
+            "s000057",
+            "s000047",
+            "s000034"
+          ],
+          "summary": "Nella notices the faulty scale before delivery, tells Mrs. Vale, and corrects the order by adding enough apples."
+        },
+        {
+          "story_ids": [
+            "s000043",
+            "s000096"
+          ],
+          "summary": "Nella knowingly delivers a light apple order; Mrs. Vale returns, Nella adds apples, and trust is damaged."
+        },
+        {
+          "story_ids": [
+            "s000068",
+            "s000005"
+          ],
+          "summary": "Nella knowingly delivers a light order; after Mrs. Vale returns, insufficient apples require a pear-and-apple blend and an apology."
+        }
+      ],
+      "judged_stories": 10
+    },
+    {
+      "index": 9,
+      "arm": "gpt-6-luna_xhigh_128k_10_camp",
+      "task_seed": 2026102411,
+      "words": [
+        "lantern",
+        "shadow",
+        "brave"
+      ],
+      "setting": "a family campsite",
+      "premise": "a child borrows a lantern to help a frightened sibling find a missing toy before dark",
+      "generation_reservation_usd": 0.15,
+      "conservative_ceiling_usd": 0.102135,
+      "dispatched": true,
+      "returned": true,
+      "error": null,
+      "generation_status": "completed",
+      "runnable": 0,
+      "accepted": false,
+      "judged": false,
+      "usage": {
+        "input_tokens": 35640,
+        "input_tokens_details": {
+          "cache_write_tokens": 35637,
+          "cached_tokens": 0
+        },
+        "output_tokens": 59219,
+        "output_tokens_details": {
+          "reasoning_tokens": 41432
+        },
+        "total_tokens": 94859
+      },
+      "generation_cost_range_usd": [
+        0.0170322125,
+        0.019259525000000003
+      ],
+      "elapsed_seconds": 1175.621410791995,
+      "attempted": 100,
+      "reference_words": 1139,
+      "check_preflight_error": null,
+      "tests": {
+        "run": 9,
+        "passed": false,
+        "failures": 1,
+        "errors": 206
+      },
+      "corpus": {
+        "successful": 0,
+        "exact_texts": 0,
+        "distinct_paths": 0,
+        "outcomes": {},
+        "scene_frequency": {},
+        "story_words": null,
+        "scene_words": null,
+        "approx_quoted_word_fraction": 0,
+        "lzma": {
+          "format": "Python lzma default XZ; stories joined by two newlines in requested order",
+          "raw_bytes": 0,
+          "compressed_bytes": 0,
+          "ratio": null
+        },
+        "warning": "Exact text counts, quote counts, and compression are diagnostics, not literary or semantic-diversity scores."
+      },
+      "failures": {
+        "StoryError: The borrowing promise must be enacted": 100
+      }
+    },
+    {
+      "index": 10,
+      "arm": "gpt-6-luna_xhigh_128k_11_pottery",
+      "task_seed": 2026102412,
+      "words": [
+        "clay",
+        "sponge",
+        "crooked"
+      ],
+      "setting": "a pottery workshop",
+      "premise": "a child borrows a shaping tool to make a useful cup as a gift and must decide what to do with a flaw",
+      "generation_reservation_usd": 0.15,
+      "conservative_ceiling_usd": 0.1021425,
+      "dispatched": true,
+      "returned": true,
+      "error": null,
+      "generation_status": "completed",
+      "runnable": 0,
+      "accepted": false,
+      "judged": false,
+      "usage": {
+        "input_tokens": 35654,
+        "input_tokens_details": {
+          "cache_write_tokens": 35651,
+          "cached_tokens": 0
+        },
+        "output_tokens": 41846,
+        "output_tokens_details": {
+          "reasoning_tokens": 27344
+        },
+        "total_tokens": 77500
+      },
+      "generation_cost_range_usd": [
+        0.0126898375,
+        0.014918025
+      ],
+      "elapsed_seconds": 640.1951231251005,
+      "attempted": 100,
+      "reference_words": 890,
+      "check_preflight_error": null,
+      "tests": {
+        "run": 9,
+        "passed": false,
+        "failures": 1,
+        "errors": 208
+      },
+      "corpus": {
+        "successful": 0,
+        "exact_texts": 0,
+        "distinct_paths": 0,
+        "outcomes": {},
+        "scene_frequency": {},
+        "story_words": null,
+        "scene_words": null,
+        "approx_quoted_word_fraction": 0,
+        "lzma": {
+          "format": "Python lzma default XZ; stories joined by two newlines in requested order",
+          "raw_bytes": 0,
+          "compressed_bytes": 0,
+          "ratio": null
+        },
+        "warning": "Exact text counts, quote counts, and compression are diagnostics, not literary or semantic-diversity scores."
+      },
+      "failures": {
+        "StoryError: An unended story has already delivered its gift": 100
+      }
+    },
+    {
+      "index": 11,
+      "arm": "gpt-6-luna_xhigh_128k_12_orchard",
+      "task_seed": 2026102413,
+      "words": [
+        "pear",
+        "crate",
+        "reach"
+      ],
+      "setting": "a small orchard",
+      "premise": "two friends borrow a picking basket to gather fruit for a shared snack without damaging the tree",
+      "generation_reservation_usd": 0.15,
+      "conservative_ceiling_usd": 0.1021375,
+      "dispatched": true,
+      "returned": true,
+      "error": null,
+      "generation_status": "completed",
+      "runnable": 0,
+      "accepted": false,
+      "judged": false,
+      "usage": {
+        "input_tokens": 35640,
+        "input_tokens_details": {
+          "cache_write_tokens": 35637,
+          "cached_tokens": 0
+        },
+        "output_tokens": 41846,
+        "output_tokens_details": {
+          "reasoning_tokens": 27638
+        },
+        "total_tokens": 77486
+      },
+      "generation_cost_range_usd": [
+        0.0126889625,
+        0.014916275
+      ],
+      "elapsed_seconds": 743.3890001249965,
+      "attempted": 100,
+      "reference_words": 760,
+      "check_preflight_error": null,
+      "tests": {
+        "run": 8,
+        "passed": false,
+        "failures": 0,
+        "errors": 204
+      },
+      "corpus": {
+        "successful": 0,
+        "exact_texts": 0,
+        "distinct_paths": 0,
+        "outcomes": {},
+        "scene_frequency": {},
+        "story_words": null,
+        "scene_words": null,
+        "approx_quoted_word_fraction": 0,
+        "lzma": {
+          "format": "Python lzma default XZ; stories joined by two newlines in requested order",
+          "raw_bytes": 0,
+          "compressed_bytes": 0,
+          "ratio": null
+        },
+        "warning": "Exact text counts, quote counts, and compression are diagnostics, not literary or semantic-diversity scores."
+      },
+      "failures": {
+        "StoryError: Borrowed basket must travel with the friends": 100
+      }
+    },
+    {
+      "index": 12,
+      "arm": "gpt-6-luna_xhigh_128k_13_costume",
+      "task_seed": 2026102414,
+      "words": [
+        "cape",
+        "mirror",
+        "borrow"
+      ],
+      "setting": "a costume cupboard before a school play",
+      "premise": "a child borrows a cape and tries to help a friend whose costume does not fit the role they were promised",
+      "generation_reservation_usd": 0.15,
+      "conservative_ceiling_usd": 0.1021545,
+      "dispatched": true,
+      "returned": true,
+      "error": null,
+      "generation_status": "completed",
+      "runnable": 0,
+      "accepted": false,
+      "judged": false,
+      "usage": {
+        "input_tokens": 35658,
+        "input_tokens_details": {
+          "cache_write_tokens": 35655,
+          "cached_tokens": 0
+        },
+        "output_tokens": 42243,
+        "output_tokens_details": {
+          "reasoning_tokens": 26354
+        },
+        "total_tokens": 77901
+      },
+      "generation_cost_range_usd": [
+        0.0127893375,
+        0.015017774999999999
+      ],
+      "elapsed_seconds": 685.0405274590012,
+      "attempted": 100,
+      "reference_words": 968,
+      "check_preflight_error": null,
+      "tests": {
+        "run": 9,
+        "passed": false,
+        "failures": 0,
+        "errors": 205
+      },
+      "corpus": {
+        "successful": 0,
+        "exact_texts": 0,
+        "distinct_paths": 0,
+        "outcomes": {},
+        "scene_frequency": {},
+        "story_words": null,
+        "scene_words": null,
+        "approx_quoted_word_fraction": 0,
+        "lzma": {
+          "format": "Python lzma default XZ; stories joined by two newlines in requested order",
+          "raw_bytes": 0,
+          "compressed_bytes": 0,
+          "ratio": null
+        },
+        "warning": "Exact text counts, quote counts, and compression are diagnostics, not literary or semantic-diversity scores."
+      },
+      "failures": {
+        "StoryError: No compatible complete route at the requested length": 90,
+        "StoryError: Illegal or ineffective local action: agree_to_the_fit": 10
+      }
+    },
+    {
+      "index": 13,
+      "arm": "gpt-6-luna_xhigh_128k_14_pond",
+      "task_seed": 2026102415,
+      "words": [
+        "boat",
+        "net",
+        "stuck"
+      ],
+      "setting": "a shallow park pond",
+      "premise": "a child borrows a long-handled net to retrieve a friend's toy boat while keeping both children safely on the bank",
+      "generation_reservation_usd": 0.15,
+      "conservative_ceiling_usd": 0.102147,
+      "dispatched": true,
+      "returned": true,
+      "error": null,
+      "generation_status": "completed",
+      "runnable": 0,
+      "accepted": false,
+      "judged": false,
+      "usage": {
+        "input_tokens": 35654,
+        "input_tokens_details": {
+          "cache_write_tokens": 35651,
+          "cached_tokens": 0
+        },
+        "output_tokens": 44112,
+        "output_tokens_details": {
+          "reasoning_tokens": 28835
+        },
+        "total_tokens": 79766
+      },
+      "generation_cost_range_usd": [
+        0.0132563375,
+        0.015484524999999999
+      ],
+      "elapsed_seconds": 873.3780941658188,
+      "attempted": 100,
+      "reference_words": 1114,
+      "check_preflight_error": null,
+      "tests": {
+        "run": 8,
+        "passed": false,
+        "failures": 1,
+        "errors": 205
+      },
+      "corpus": {
+        "successful": 0,
+        "exact_texts": 0,
+        "distinct_paths": 0,
+        "outcomes": {},
+        "scene_frequency": {},
+        "story_words": null,
+        "scene_words": null,
+        "approx_quoted_word_fraction": 0,
+        "lzma": {
+          "format": "Python lzma default XZ; stories joined by two newlines in requested order",
+          "raw_bytes": 0,
+          "compressed_bytes": 0,
+          "ratio": null
+        },
+        "warning": "Exact text counts, quote counts, and compression are diagnostics, not literary or semantic-diversity scores."
+      },
+      "failures": {
+        "StoryError: The safety agreement and setup disagree": 100
+      }
+    },
+    {
+      "index": 14,
+      "arm": "gpt-6-luna_xhigh_128k_15_repair",
+      "task_seed": 2026102416,
+      "words": [
+        "wheel",
+        "spanner",
+        "rattle"
+      ],
+      "setting": "a courtyard repair bench",
+      "premise": "a child borrows a spanner to fix a shared toy cart and discovers that the first diagnosis was wrong",
+      "generation_reservation_usd": 0.15,
+      "conservative_ceiling_usd": 0.1021455,
+      "dispatched": true,
+      "returned": true,
+      "error": null,
+      "generation_status": "completed",
+      "runnable": 100,
+      "accepted": false,
+      "judged": true,
+      "usage": {
+        "input_tokens": 35654,
+        "input_tokens_details": {
+          "cache_write_tokens": 35651,
+          "cached_tokens": 0
+        },
+        "output_tokens": 53913,
+        "output_tokens_details": {
+          "reasoning_tokens": 36246
+        },
+        "total_tokens": 89567
+      },
+      "generation_cost_range_usd": [
+        0.0157065875,
+        0.017934775
+      ],
+      "elapsed_seconds": 1075.783398124855,
+      "attempted": 100,
+      "reference_words": 793,
+      "check_preflight_error": null,
+      "tests": {
+        "run": 9,
+        "passed": false,
+        "failures": 1,
+        "errors": 0
+      },
+      "corpus": {
+        "successful": 100,
+        "exact_texts": 52,
+        "distinct_paths": 10,
+        "outcomes": {
+          "cart_repaired_and_seedlings_delivered": 40,
+          "cart_parked_safely_and_seedlings_delivered_by_hand": 40,
+          "cart_repaired_after_a_late_apology": 20
+        },
+        "scene_frequency": {
+          "borrow": 100,
+          "first_attempt": 100,
+          "reinspect": 100,
+          "admit_error": 58,
+          "repair": 60,
+          "test_roll": 60,
+          "ending_repaired": 40,
+          "park_it": 40,
+          "mark_out": 40,
+          "ending_stopped": 40,
+          "keep_face": 42,
+          "ending_rebuilt": 20,
+          "measure_story": 30,
+          "chalk_names": 20
+        },
+        "story_words": {
+          "min": 392,
+          "mean": 438.7,
+          "max": 483
+        },
+        "scene_words": {
+          "min": 48,
+          "mean": 58.49333333333333,
+          "max": 74
+        },
+        "approx_quoted_word_fraction": 0.17232733074994303,
+        "lzma": {
+          "format": "Python lzma default XZ; stories joined by two newlines in requested order",
+          "raw_bytes": 247660,
+          "compressed_bytes": 3236,
+          "ratio": 0.013066300573366713
+        },
+        "warning": "Exact text counts, quote counts, and compression are diagnostics, not literary or semantic-diversity scores."
+      },
+      "failures": {},
+      "quality": {
+        "coherence": 8,
+        "style": 7,
+        "grammar": 9,
+        "storytelling": 8,
+        "overall": 8
+      },
+      "diversity": {
+        "premise": 1,
+        "causal_path": 2,
+        "ending": 3,
+        "language": 2,
+        "overall": 2
+      },
+      "plot_groups": [
+        {
+          "story_ids": [
+            "s000029",
+            "s000057",
+            "s000047",
+            "s000068",
+            "s000096",
+            "s000005",
+            "s000085"
+          ],
+          "summary": "Jo mistakenly tightens the rattling wheel, identifies the missing spacer, fits a proper washer, and safely delivers the seedlings with the repaired cart."
+        },
+        {
+          "story_ids": [
+            "s000073",
+            "s000034",
+            "s000043"
+          ],
+          "summary": "Jo mistakenly tightens the wheel but no safe spacer is available, so the cart is chocked and labeled while the seedlings are carried by hand."
+        }
+      ],
+      "judged_stories": 10
+    },
+    {
+      "index": 15,
+      "arm": "gpt-6-luna_xhigh_128k_16_museum",
+      "task_seed": 2026102417,
+      "words": [
+        "torch",
+        "label",
+        "puzzled"
+      ],
+      "setting": "a local museum activity room",
+      "premise": "two children borrow a torch for a shadow exhibit and try to understand why their demonstration differs from the label",
+      "generation_reservation_usd": 0.15,
+      "conservative_ceiling_usd": 0.102156,
+      "dispatched": true,
+      "returned": true,
+      "error": null,
+      "generation_status": "completed",
+      "runnable": 0,
+      "accepted": false,
+      "judged": false,
+      "usage": {
+        "input_tokens": 35650,
+        "input_tokens_details": {
+          "cache_write_tokens": 35647,
+          "cached_tokens": 0
+        },
+        "output_tokens": 51646,
+        "output_tokens_details": {
+          "reasoning_tokens": 35643
+        },
+        "total_tokens": 87296
+      },
+      "generation_cost_range_usd": [
+        0.0151395875,
+        0.017367525
+      ],
+      "elapsed_seconds": 905.51239287504,
+      "attempted": 100,
+      "reference_words": 845,
+      "check_preflight_error": null,
+      "tests": {
+        "run": 9,
+        "passed": false,
+        "failures": 1,
+        "errors": 205
+      },
+      "corpus": {
+        "successful": 0,
+        "exact_texts": 0,
+        "distinct_paths": 0,
+        "outcomes": {},
+        "scene_frequency": {},
+        "story_words": null,
+        "scene_words": null,
+        "approx_quoted_word_fraction": 0,
+        "lzma": {
+          "format": "Python lzma default XZ; stories joined by two newlines in requested order",
+          "raw_bytes": 0,
+          "compressed_bytes": 0,
+          "ratio": null
+        },
+        "warning": "Exact text counts, quote counts, and compression are diagnostics, not literary or semantic-diversity scores."
+      },
+      "failures": {
+        "StoryError: No compatible complete route at the requested length": 100
+      }
+    },
+    {
+      "index": 16,
+      "arm": "gpt-6-luna_xhigh_128k_17_laundry",
+      "task_seed": 2026102418,
+      "words": [
+        "peg",
+        "sheet",
+        "shelter"
+      ],
+      "setting": "a shared garden washing line",
+      "premise": "a child borrows a peg bag and wants to finish hanging a neighbour's washing before an approaching shower",
+      "generation_reservation_usd": 0.15,
+      "conservative_ceiling_usd": 0.1021485,
+      "dispatched": true,
+      "returned": true,
+      "error": null,
+      "generation_status": "completed",
+      "runnable": 0,
+      "accepted": false,
+      "judged": false,
+      "usage": {
+        "input_tokens": 35650,
+        "input_tokens_details": {
+          "cache_write_tokens": 35647,
+          "cached_tokens": 0
+        },
+        "output_tokens": 52494,
+        "output_tokens_details": {
+          "reasoning_tokens": 34754
+        },
+        "total_tokens": 88144
+      },
+      "generation_cost_range_usd": [
+        0.0153515875,
+        0.017579525000000002
+      ],
+      "elapsed_seconds": 858.5410014160443,
+      "attempted": 100,
+      "reference_words": 1103,
+      "check_preflight_error": null,
+      "tests": {
+        "run": 9,
+        "passed": false,
+        "failures": 0,
+        "errors": 204
+      },
+      "corpus": {
+        "successful": 0,
+        "exact_texts": 0,
+        "distinct_paths": 0,
+        "outcomes": {},
+        "scene_frequency": {},
+        "story_words": null,
+        "scene_words": null,
+        "approx_quoted_word_fraction": 0,
+        "lzma": {
+          "format": "Python lzma default XZ; stories joined by two newlines in requested order",
+          "raw_bytes": 0,
+          "compressed_bytes": 0,
+          "ratio": null
+        },
+        "warning": "Exact text counts, quote counts, and compression are diagnostics, not literary or semantic-diversity scores."
+      },
+      "failures": {
+        "StoryError: Pending washing cannot pass the resolution scene": 100
+      }
+    },
+    {
+      "index": 17,
+      "arm": "gpt-6-luna_xhigh_128k_18_trail",
+      "task_seed": 2026102419,
+      "words": [
+        "compass",
+        "puddle",
+        "shortcut"
+      ],
+      "setting": "a woodland discovery trail",
+      "premise": "two friends borrow a compass and must choose a route that includes a slower companion rather than abandoning them",
+      "generation_reservation_usd": 0.15,
+      "conservative_ceiling_usd": 0.102155,
+      "dispatched": true,
+      "returned": true,
+      "error": null,
+      "generation_status": "completed",
+      "runnable": 98,
+      "accepted": false,
+      "judged": false,
+      "usage": {
+        "input_tokens": 35648,
+        "input_tokens_details": {
+          "cache_write_tokens": 35645,
+          "cached_tokens": 0
+        },
+        "output_tokens": 41555,
+        "output_tokens_details": {
+          "reasoning_tokens": 27002
+        },
+        "total_tokens": 77203
+      },
+      "generation_cost_range_usd": [
+        0.0126167125,
+        0.014844524999999999
+      ],
+      "elapsed_seconds": 633.5576201251242,
+      "attempted": 100,
+      "reference_words": 977,
+      "check_preflight_error": null,
+      "tests": {
+        "run": 8,
+        "passed": false,
+        "failures": 1,
+        "errors": 8
+      },
+      "corpus": {
+        "successful": 98,
+        "exact_texts": 28,
+        "distinct_paths": 8,
+        "outcomes": {
+          "found_pool_together": 65,
+          "missed_pool_found_frogs_together": 33
+        },
+        "scene_frequency": {
+          "borrow_compass": 98,
+          "lace_vignette": 79,
+          "route_choice": 98,
+          "puddle_cross": 98,
+          "ridge_walk": 98,
+          "discovery": 98,
+          "ending_pool": 65,
+          "fern_vignette": 68,
+          "ending_shelter": 33
+        },
+        "story_words": {
+          "min": 429,
+          "mean": 465.2857142857143,
+          "max": 506
+        },
+        "scene_words": {
+          "min": 55,
+          "mean": 62.03809523809524,
+          "max": 70
+        },
+        "approx_quoted_word_fraction": 0.09502609763586123,
+        "lzma": {
+          "format": "Python lzma default XZ; stories joined by two newlines in requested order",
+          "raw_bytes": 268150,
+          "compressed_bytes": 2988,
+          "ratio": 0.011143016968114861
+        },
+        "warning": "Exact text counts, quote counts, and compression are diagnostics, not literary or semantic-diversity scores."
+      },
+      "failures": {
+        "StoryError: ending_shelter prose has 72 words; expected 40-70": 2
+      }
+    },
+    {
+      "index": 18,
+      "arm": "gpt-6-luna_xhigh_128k_19_festival",
+      "task_seed": 2026102420,
+      "words": [
+        "bunting",
+        "string",
+        "welcome"
+      ],
+      "setting": "a village welcome festival",
+      "premise": "a child borrows a spool of string and wants to hang decorations where a new neighbour can help without climbing",
+      "generation_reservation_usd": 0.15,
+      "conservative_ceiling_usd": 0.1021535,
+      "dispatched": true,
+      "returned": true,
+      "error": null,
+      "generation_status": "completed",
+      "runnable": 3,
+      "accepted": false,
+      "judged": false,
+      "usage": {
+        "input_tokens": 35652,
+        "input_tokens_details": {
+          "cache_write_tokens": 35649,
+          "cached_tokens": 0
+        },
+        "output_tokens": 38598,
+        "output_tokens_details": {
+          "reasoning_tokens": 22656
+        },
+        "total_tokens": 74250
+      },
+      "generation_cost_range_usd": [
+        0.0118777125,
+        0.014105775
+      ],
+      "elapsed_seconds": 580.9020970829297,
+      "attempted": 100,
+      "reference_words": 1049,
+      "check_preflight_error": null,
+      "tests": {
+        "run": 8,
+        "passed": false,
+        "failures": 0,
+        "errors": 200
+      },
+      "corpus": {
+        "successful": 3,
+        "exact_texts": 2,
+        "distinct_paths": 2,
+        "outcomes": {
+          "shared_square": 3
+        },
+        "scene_frequency": {
+          "borrow_spool": 3,
+          "meet_neighbor": 3,
+          "choose_layout": 3,
+          "hang_bunting": 3,
+          "welcome": 3,
+          "return_spool": 3,
+          "ending_square": 3,
+          "color_vignette": 1
+        },
+        "story_words": {
+          "min": 405,
+          "mean": 423.6666666666667,
+          "max": 461
+        },
+        "scene_words": {
+          "min": 51,
+          "mean": 57.77272727272727,
+          "max": 62
+        },
+        "approx_quoted_word_fraction": 0.18253343823760818,
+        "lzma": {
+          "format": "Python lzma default XZ; stories joined by two newlines in requested order",
+          "raw_bytes": 7227,
+          "compressed_bytes": 1368,
+          "ratio": 0.18929016189290163
+        },
+        "warning": "Exact text counts, quote counts, and compression are diagnostics, not literary or semantic-diversity scores."
+      },
+      "failures": {
+        "StoryError: Unchosen layout has moved or placed the display": 97
+      }
+    },
+    {
+      "index": 19,
+      "arm": "gpt-6-luna_xhigh_128k_20_biscuit",
+      "task_seed": 2026102421,
+      "words": [
+        "cutter",
+        "flour",
+        "share"
+      ],
+      "setting": "a busy family kitchen",
+      "premise": "siblings borrow biscuit cutters to make a thank-you gift and disagree about how to divide the last dough",
+      "generation_reservation_usd": 0.15,
+      "conservative_ceiling_usd": 0.1021455,
+      "dispatched": true,
+      "returned": true,
+      "error": null,
+      "generation_status": "completed",
+      "runnable": 0,
+      "accepted": false,
+      "judged": false,
+      "usage": {
+        "input_tokens": 35646,
+        "input_tokens_details": {
+          "cache_write_tokens": 35643,
+          "cached_tokens": 0
+        },
+        "output_tokens": 46818,
+        "output_tokens_details": {
+          "reasoning_tokens": 29347
+        },
+        "total_tokens": 82464
+      },
+      "generation_cost_range_usd": [
+        0.0139323375,
+        0.016160024999999998
+      ],
+      "elapsed_seconds": 935.8182147501502,
+      "attempted": 100,
+      "reference_words": 1139,
+      "check_preflight_error": null,
+      "tests": {
+        "run": 8,
+        "passed": false,
+        "failures": 0,
+        "errors": 205
+      },
+      "corpus": {
+        "successful": 0,
+        "exact_texts": 0,
+        "distinct_paths": 0,
+        "outcomes": {},
+        "scene_frequency": {},
+        "story_words": null,
+        "scene_words": null,
+        "approx_quoted_word_fraction": 0,
+        "lzma": {
+          "format": "Python lzma default XZ; stories joined by two newlines in requested order",
+          "raw_bytes": 0,
+          "compressed_bytes": 0,
+          "ratio": null
+        },
+        "warning": "Exact text counts, quote counts, and compression are diagnostics, not literary or semantic-diversity scores."
+      },
+      "failures": {
+        "StoryError: wrapping requires a finished bake and a note": 100
+      }
+    }
+  ]
+}

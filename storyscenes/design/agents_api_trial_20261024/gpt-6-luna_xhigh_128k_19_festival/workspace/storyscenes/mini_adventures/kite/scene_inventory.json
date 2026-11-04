@@ -1,0 +1,224 @@
+{
+  "scenes": [
+    {
+      "id": "bare_square",
+      "role": "Establish Leni’s ordinary goal and the gap between the festival notice and a lived welcome.",
+      "location": "village square",
+      "prerequisites": [],
+      "actions": ["Leni notices the empty posts and wants visible bunting."],
+      "consequences": ["Gives the borrowing a purpose; no separate state-changing scene is needed."],
+      "prose_obligations": ["Make the festival imminent and the welcome personal, not abstract."],
+      "implemented_ids": [],
+      "implementation_note": "Opening motivation is folded into borrow_spool prose; the empty square itself is not an executable encounter."
+    },
+    {
+      "id": "borrow_string",
+      "role": "Borrow the spool for a specific use.",
+      "location": "village hall doorway",
+      "prerequisites": ["Mrs Bell has the spool", "Leni intends to hang bunting"],
+      "actions": ["Ask Mrs Bell", "Take the spool into Leni’s care"],
+      "consequences": ["Leni can use the string; Mrs Bell remains its owner and it must be returned."],
+      "prose_obligations": ["Distinguish borrowing from ownership and make the string useful."],
+      "implemented_ids": ["borrow_spool"],
+      "implementation_note": "The promise and physical handoff are one atomic local action."
+    },
+    {
+      "id": "spool_pledge",
+      "role": "Clarify the borrowed object’s return and intended use.",
+      "location": "village hall doorway",
+      "prerequisites": ["Leni has asked to borrow the spool"],
+      "actions": ["Mrs Bell says the used string may stay on the display; the spool should come back."],
+      "consequences": ["Sets up the later return with unused string still available."],
+      "prose_obligations": ["Do not treat returned custody as if the string had not been used."],
+      "implemented_ids": ["borrow_spool"],
+      "implementation_note": "Consolidated with the handoff rather than represented as a second executable scene."
+    },
+    {
+      "id": "jo_arrives",
+      "role": "Introduce the new neighbor and their distinct voice.",
+      "location": "square bench",
+      "prerequisites": ["Jo has arrived in the village"],
+      "actions": ["Leni greets Jo and explains the festival."],
+      "consequences": ["Opens the possibility of collaboration."],
+      "prose_obligations": ["Jo must be a person with a point of view, not a prop for Leni’s virtue."],
+      "implemented_ids": ["meet_neighbor"],
+      "implementation_note": "Arrival, introduction, and invitation share one short encounter."
+    },
+    {
+      "id": "jo_names_limit",
+      "role": "Make the no-climbing constraint understandable and specific.",
+      "location": "square bench",
+      "prerequisites": ["Jo and Leni have spoken"],
+      "actions": ["Jo explains that a healing ankle makes climbing unsafe and says they want to help."],
+      "consequences": ["Rules out the arch-as-usual plan without removing Jo’s agency."],
+      "prose_obligations": ["Give the physical restriction an ordinary reason and avoid a rescue trope."],
+      "implemented_ids": ["meet_neighbor"],
+      "implementation_note": "The motivation is prose grounded in the invitation state; it is not a separate hidden action."
+    },
+    {
+      "id": "real_invitation",
+      "role": "Turn Leni’s task into a shared one.",
+      "location": "square bench",
+      "prerequisites": ["Leni has met Jo", "The spool is borrowed"],
+      "actions": ["Leni asks Jo to help choose a display location."],
+      "consequences": ["Jo is invited and can participate in the later layout and tie."],
+      "prose_obligations": ["Show Leni listening rather than deciding everything on Jo’s behalf."],
+      "implemented_ids": ["meet_neighbor"],
+      "implementation_note": "Meeting and invitation consolidate three reference beats into one enacted local play."
+    },
+    {
+      "id": "arch_idea",
+      "role": "Set up the tempting but unsuitable high display.",
+      "location": "square arch",
+      "prerequisites": ["Leni wants a prominent display", "Jo has explained the climbing limit"],
+      "actions": ["Leni considers climbing to reach the arch."],
+      "consequences": ["Creates a choice between height and safe participation."],
+      "prose_obligations": ["Do not enact or imply that anyone climbs."],
+      "implemented_ids": ["choose_layout"],
+      "implementation_note": "The rejected arch is discussed inside the layout choice; there is no climb action."
+    },
+    {
+      "id": "reach_and_posts",
+      "role": "Test whether the outdoor low line is actually safe and reachable.",
+      "location": "square garden wall",
+      "prerequisites": ["Leni and Jo have met"],
+      "actions": ["Check weather, post stability, string length, knot security, and Jo’s reach."],
+      "consequences": ["Determines whether the square line or sheltered hall rail is chosen."],
+      "prose_obligations": ["Use understandable physical constraints; do not let a weak post support the line."],
+      "implemented_ids": ["choose_layout"],
+      "implementation_note": "The physical feasibility check and resulting choice form one scene."
+    },
+    {
+      "id": "choose_colors",
+      "role": "Optional characterization vignette in which Jo contributes a memory and design choice.",
+      "location": "square beside the bunting basket",
+      "prerequisites": ["Jo has been invited", "The layout has not yet been selected"],
+      "actions": ["Jo selects blue and gold from the paper triangles."],
+      "consequences": ["The chosen colors persist into the hung display and welcome."],
+      "prose_obligations": ["Let Jo’s history add texture without becoming a prerequisite for helping."],
+      "implemented_ids": ["color_vignette"],
+      "implementation_note": "Optional; omitting it leaves the default red-and-white pattern intact."
+    },
+    {
+      "id": "test_knot",
+      "role": "Optional practical vignette that may make a slippery knot reliable.",
+      "location": "square beside the bunting basket",
+      "prerequisites": ["The spool is borrowed", "The layout has not yet been selected"],
+      "actions": ["Practice a double loop on a short piece of string."],
+      "consequences": ["Consumes ten centimetres and makes the knot secure; remaining length may affect layout."],
+      "prose_obligations": ["Make the practice enacted, useful, and physically accounted for."],
+      "implemented_ids": ["knot_vignette"],
+      "implementation_note": "Optional; if omitted, an insecure knot steers the plan away from the exposed square line."
+    },
+    {
+      "id": "weather_turn",
+      "role": "Bring the weather and physical feasibility into the decision.",
+      "location": "village square",
+      "prerequisites": ["Leni and Jo are preparing the display"],
+      "actions": ["Account for rain, gusts, and exposed or unstable posts."],
+      "consequences": ["Unsafe outdoor conditions select the sheltered rail instead."],
+      "prose_obligations": ["Do not invent rain or wind contrary to the validated parameters."],
+      "implemented_ids": ["choose_layout"],
+      "implementation_note": "Weather is an input to the layout scene, not an unselected scene that fires in the background."
+    },
+    {
+      "id": "choose_shelter",
+      "role": "Make the consequential choice to give up the arch or exposed square line.",
+      "location": "square or village hall",
+      "prerequisites": ["The display has not been laid out", "Square-line feasibility is known"],
+      "actions": ["Choose the low square posts when safe; otherwise carry the basket to the hall rail."],
+      "consequences": ["Sets the actual display location and height."],
+      "prose_obligations": ["Show what is given up and why the alternative is better for both children."],
+      "implemented_ids": ["choose_layout"],
+      "implementation_note": "Outdoor and sheltered results are two local outcomes of one executable scene, not whole-story variants."
+    },
+    {
+      "id": "carry_to_hall",
+      "role": "Move people and the un-hung bunting when shelter is chosen.",
+      "location": "square to village hall",
+      "prerequisites": ["The hall is selected", "The display is still in its basket"],
+      "actions": ["Carry the basket and move Leni and Jo into the hall."],
+      "consequences": ["Keeps character and prop locations continuous."],
+      "prose_obligations": ["Do not teleport the people or bunting between scenes."],
+      "implemented_ids": ["choose_layout"],
+      "implementation_note": "Movement is enacted within the layout scene and changes all affected locations."
+    },
+    {
+      "id": "fasten_bunting",
+      "role": "Use the borrowed string to put the decorations to work.",
+      "location": "low square line or hall rail",
+      "prerequisites": ["A safe, reachable layout is selected", "The spool is still with Leni"],
+      "actions": ["Tie the bunting using the measured length of string."],
+      "consequences": ["Bunting remains in place and the spool’s remaining length decreases."],
+      "prose_obligations": ["Record the display location, height, and real string use."],
+      "implemented_ids": ["hang_bunting"],
+      "implementation_note": "The optional rail hitch, if needed, occurs as a guarded local action in this scene."
+    },
+    {
+      "id": "jo_ties",
+      "role": "Give Jo an active, physically reachable part in the display.",
+      "location": "low square line or hall rail",
+      "prerequisites": ["The display is low enough for Jo to reach"],
+      "actions": ["Jo ties the final knot from the bench or seated position."],
+      "consequences": ["Jo’s help and increased trust persist into the welcome."],
+      "prose_obligations": ["No climbing, unreachable high line, or merely ceremonial assistance."],
+      "implemented_ids": ["hang_bunting"],
+      "implementation_note": "Tying the bunting and Jo’s reachable contribution are committed together so no invalid half-hung state leaks."
+    },
+    {
+      "id": "first_guest",
+      "role": "Let the display be seen by the arriving village.",
+      "location": "square or village hall",
+      "prerequisites": ["Bunting is hung", "The display location is known"],
+      "actions": ["Open the festival welcome and greet the first neighbors."],
+      "consequences": ["Jo is welcomed and the shared goal is completed."],
+      "prose_obligations": ["Make the welcome an event, not a promise to welcome people later."],
+      "implemented_ids": ["welcome"],
+      "implementation_note": "Arrival and opening are consolidated into one short local play."
+    },
+    {
+      "id": "open_festival",
+      "role": "Turn preparation into an actual festival welcome.",
+      "location": "square or village hall",
+      "prerequisites": ["Bunting is hung", "Jo has helped"],
+      "actions": ["Open the gathering and greet Jo and the arriving neighbors."],
+      "consequences": ["Festival state, Jo’s welcome, and Leni’s goal change together."],
+      "prose_obligations": ["Keep the welcome in the selected physical location."],
+      "implemented_ids": ["welcome"],
+      "implementation_note": "One guarded action records the consequential social outcome."
+    },
+    {
+      "id": "jo_greets_neighbors",
+      "role": "Show that Jo is joining the community rather than receiving a one-sided gesture.",
+      "location": "square or village hall",
+      "prerequisites": ["The festival is open", "Jo helped tie the display"],
+      "actions": ["Jo speaks with neighbors about the display or colors."],
+      "consequences": ["Completes the shared welcome in the reference story."],
+      "prose_obligations": ["Give Jo a voice and a place in the gathering."],
+      "implemented_ids": ["welcome"],
+      "implementation_note": "Consolidated as prose in the welcome scene; no separate social action is hidden."
+    },
+    {
+      "id": "return_spool",
+      "role": "Return the borrowed spool after its useful string remains on the display.",
+      "location": "village hall cupboard",
+      "prerequisites": ["Festival is open", "Bunting is hung", "Spool is still with Leni"],
+      "actions": ["Return the spool with its unused string wound around it."],
+      "consequences": ["Mrs Bell regains custody; display string remains in use."],
+      "prose_obligations": ["Close the borrowing relationship without claiming the used line was unused."],
+      "implemented_ids": ["return_spool"],
+      "implementation_note": "Custody, location, and returned status change atomically."
+    },
+    {
+      "id": "meaning_of_welcome",
+      "role": "Finish with an earned outcome appropriate to the selected display.",
+      "location": "square or village hall",
+      "prerequisites": ["Festival is open", "Spool is returned", "Jo has been welcomed"],
+      "actions": ["Complete the shared-square or sheltered-hall ending."],
+      "consequences": ["The adventure ends with a concrete, completed welcome."],
+      "prose_obligations": ["Make both outcomes emotionally complete; do not leave the welcome as a future plan."],
+      "implemented_ids": ["ending_square", "ending_hall"],
+      "implementation_note": "Two executable outcomes share this reference encounter; the chosen location determines the compatible ending."
+    }
+  ]
+}

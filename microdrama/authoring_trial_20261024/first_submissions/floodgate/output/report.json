@@ -1,0 +1,573 @@
+{
+  "candidate": "floodgate",
+  "passed": true,
+  "runs": 40,
+  "outcomes": [
+    "grain_lost",
+    "grain_saved"
+  ],
+  "errors": [],
+  "counterfactuals": [
+    {
+      "input": "distraction",
+      "a": {
+        "access": true,
+        "cooperate": true,
+        "distraction": true
+      },
+      "b": {
+        "access": true,
+        "cooperate": true,
+        "distraction": false
+      },
+      "changed_state": [
+        "valley.water",
+        "gate.jammed",
+        "gate.tested",
+        "gate.open",
+        "sluice.jammed",
+        "sluice.tested",
+        "sluice.open",
+        "grain.dry",
+        "grain.sacks",
+        "ida.applied",
+        "osk.helped",
+        "ida.meme.lift",
+        "ida.meme.brace"
+      ]
+    },
+    {
+      "input": "cooperate",
+      "a": {
+        "access": true,
+        "cooperate": true,
+        "distraction": false
+      },
+      "b": {
+        "access": true,
+        "cooperate": false,
+        "distraction": false
+      },
+      "changed_state": [
+        "valley.water",
+        "gate.jammed",
+        "gate.open",
+        "grain.dry",
+        "grain.sacks",
+        "osk.helped"
+      ]
+    },
+    {
+      "input": "access",
+      "a": {
+        "access": true,
+        "cooperate": true,
+        "distraction": false
+      },
+      "b": {
+        "access": false,
+        "cooperate": true,
+        "distraction": false
+      },
+      "changed_state": [
+        "valley.water",
+        "gate.jammed",
+        "gate.tested",
+        "gate.open",
+        "sluice.jammed",
+        "sluice.tested",
+        "sluice.open",
+        "grain.dry",
+        "grain.sacks",
+        "ida.applied",
+        "osk.helped",
+        "ida.meme.lift",
+        "ida.meme.brace"
+      ]
+    }
+  ],
+  "cases": [
+    {
+      "case": 0,
+      "config": {
+        "access": true,
+        "cooperate": true,
+        "distraction": true
+      },
+      "seed": 0,
+      "outcome": "grain_lost",
+      "words": 512,
+      "state_hash": "250fced2434e7bb21acae1ba0efa46fb387ff65edf065dd9243f7f8f0b210648"
+    },
+    {
+      "case": 0,
+      "config": {
+        "access": true,
+        "cooperate": true,
+        "distraction": true
+      },
+      "seed": 1,
+      "outcome": "grain_lost",
+      "words": 512,
+      "state_hash": "250fced2434e7bb21acae1ba0efa46fb387ff65edf065dd9243f7f8f0b210648"
+    },
+    {
+      "case": 0,
+      "config": {
+        "access": true,
+        "cooperate": true,
+        "distraction": true
+      },
+      "seed": 2,
+      "outcome": "grain_lost",
+      "words": 512,
+      "state_hash": "250fced2434e7bb21acae1ba0efa46fb387ff65edf065dd9243f7f8f0b210648"
+    },
+    {
+      "case": 0,
+      "config": {
+        "access": true,
+        "cooperate": true,
+        "distraction": true
+      },
+      "seed": 3,
+      "outcome": "grain_lost",
+      "words": 512,
+      "state_hash": "250fced2434e7bb21acae1ba0efa46fb387ff65edf065dd9243f7f8f0b210648"
+    },
+    {
+      "case": 0,
+      "config": {
+        "access": true,
+        "cooperate": true,
+        "distraction": true
+      },
+      "seed": 4,
+      "outcome": "grain_lost",
+      "words": 512,
+      "state_hash": "250fced2434e7bb21acae1ba0efa46fb387ff65edf065dd9243f7f8f0b210648"
+    },
+    {
+      "case": 1,
+      "config": {
+        "access": true,
+        "cooperate": true,
+        "distraction": false
+      },
+      "seed": 0,
+      "outcome": "grain_saved",
+      "words": 496,
+      "state_hash": "93a33b73a9f2ea6576ff54d1154cd821060cd871a9cecd0b5f92000219f091d1"
+    },
+    {
+      "case": 1,
+      "config": {
+        "access": true,
+        "cooperate": true,
+        "distraction": false
+      },
+      "seed": 1,
+      "outcome": "grain_saved",
+      "words": 496,
+      "state_hash": "93a33b73a9f2ea6576ff54d1154cd821060cd871a9cecd0b5f92000219f091d1"
+    },
+    {
+      "case": 1,
+      "config": {
+        "access": true,
+        "cooperate": true,
+        "distraction": false
+      },
+      "seed": 2,
+      "outcome": "grain_saved",
+      "words": 496,
+      "state_hash": "93a33b73a9f2ea6576ff54d1154cd821060cd871a9cecd0b5f92000219f091d1"
+    },
+    {
+      "case": 1,
+      "config": {
+        "access": true,
+        "cooperate": true,
+        "distraction": false
+      },
+      "seed": 3,
+      "outcome": "grain_saved",
+      "words": 496,
+      "state_hash": "93a33b73a9f2ea6576ff54d1154cd821060cd871a9cecd0b5f92000219f091d1"
+    },
+    {
+      "case": 1,
+      "config": {
+        "access": true,
+        "cooperate": true,
+        "distraction": false
+      },
+      "seed": 4,
+      "outcome": "grain_saved",
+      "words": 496,
+      "state_hash": "93a33b73a9f2ea6576ff54d1154cd821060cd871a9cecd0b5f92000219f091d1"
+    },
+    {
+      "case": 2,
+      "config": {
+        "access": true,
+        "cooperate": false,
+        "distraction": true
+      },
+      "seed": 0,
+      "outcome": "grain_lost",
+      "words": 512,
+      "state_hash": "ae03a7663d0aa069682c2201f4f54ffc84356dc5c9582cf042261e3f63cc0ab4"
+    },
+    {
+      "case": 2,
+      "config": {
+        "access": true,
+        "cooperate": false,
+        "distraction": true
+      },
+      "seed": 1,
+      "outcome": "grain_lost",
+      "words": 512,
+      "state_hash": "ae03a7663d0aa069682c2201f4f54ffc84356dc5c9582cf042261e3f63cc0ab4"
+    },
+    {
+      "case": 2,
+      "config": {
+        "access": true,
+        "cooperate": false,
+        "distraction": true
+      },
+      "seed": 2,
+      "outcome": "grain_lost",
+      "words": 512,
+      "state_hash": "ae03a7663d0aa069682c2201f4f54ffc84356dc5c9582cf042261e3f63cc0ab4"
+    },
+    {
+      "case": 2,
+      "config": {
+        "access": true,
+        "cooperate": false,
+        "distraction": true
+      },
+      "seed": 3,
+      "outcome": "grain_lost",
+      "words": 512,
+      "state_hash": "ae03a7663d0aa069682c2201f4f54ffc84356dc5c9582cf042261e3f63cc0ab4"
+    },
+    {
+      "case": 2,
+      "config": {
+        "access": true,
+        "cooperate": false,
+        "distraction": true
+      },
+      "seed": 4,
+      "outcome": "grain_lost",
+      "words": 512,
+      "state_hash": "ae03a7663d0aa069682c2201f4f54ffc84356dc5c9582cf042261e3f63cc0ab4"
+    },
+    {
+      "case": 3,
+      "config": {
+        "access": true,
+        "cooperate": false,
+        "distraction": false
+      },
+      "seed": 0,
+      "outcome": "grain_lost",
+      "words": 501,
+      "state_hash": "26761df6685a142b18898c023a46c5d62151f1283e66bee8547e655dae2760fd"
+    },
+    {
+      "case": 3,
+      "config": {
+        "access": true,
+        "cooperate": false,
+        "distraction": false
+      },
+      "seed": 1,
+      "outcome": "grain_lost",
+      "words": 501,
+      "state_hash": "26761df6685a142b18898c023a46c5d62151f1283e66bee8547e655dae2760fd"
+    },
+    {
+      "case": 3,
+      "config": {
+        "access": true,
+        "cooperate": false,
+        "distraction": false
+      },
+      "seed": 2,
+      "outcome": "grain_lost",
+      "words": 501,
+      "state_hash": "26761df6685a142b18898c023a46c5d62151f1283e66bee8547e655dae2760fd"
+    },
+    {
+      "case": 3,
+      "config": {
+        "access": true,
+        "cooperate": false,
+        "distraction": false
+      },
+      "seed": 3,
+      "outcome": "grain_lost",
+      "words": 501,
+      "state_hash": "26761df6685a142b18898c023a46c5d62151f1283e66bee8547e655dae2760fd"
+    },
+    {
+      "case": 3,
+      "config": {
+        "access": true,
+        "cooperate": false,
+        "distraction": false
+      },
+      "seed": 4,
+      "outcome": "grain_lost",
+      "words": 501,
+      "state_hash": "26761df6685a142b18898c023a46c5d62151f1283e66bee8547e655dae2760fd"
+    },
+    {
+      "case": 4,
+      "config": {
+        "access": false,
+        "cooperate": true,
+        "distraction": true
+      },
+      "seed": 0,
+      "outcome": "grain_lost",
+      "words": 529,
+      "state_hash": "8b4b62c41269bdb05629177f8130afd8095a0ecac26fb72cf6bf1c2ca4c4fd61"
+    },
+    {
+      "case": 4,
+      "config": {
+        "access": false,
+        "cooperate": true,
+        "distraction": true
+      },
+      "seed": 1,
+      "outcome": "grain_lost",
+      "words": 529,
+      "state_hash": "8b4b62c41269bdb05629177f8130afd8095a0ecac26fb72cf6bf1c2ca4c4fd61"
+    },
+    {
+      "case": 4,
+      "config": {
+        "access": false,
+        "cooperate": true,
+        "distraction": true
+      },
+      "seed": 2,
+      "outcome": "grain_lost",
+      "words": 529,
+      "state_hash": "8b4b62c41269bdb05629177f8130afd8095a0ecac26fb72cf6bf1c2ca4c4fd61"
+    },
+    {
+      "case": 4,
+      "config": {
+        "access": false,
+        "cooperate": true,
+        "distraction": true
+      },
+      "seed": 3,
+      "outcome": "grain_lost",
+      "words": 529,
+      "state_hash": "8b4b62c41269bdb05629177f8130afd8095a0ecac26fb72cf6bf1c2ca4c4fd61"
+    },
+    {
+      "case": 4,
+      "config": {
+        "access": false,
+        "cooperate": true,
+        "distraction": true
+      },
+      "seed": 4,
+      "outcome": "grain_lost",
+      "words": 529,
+      "state_hash": "8b4b62c41269bdb05629177f8130afd8095a0ecac26fb72cf6bf1c2ca4c4fd61"
+    },
+    {
+      "case": 5,
+      "config": {
+        "access": false,
+        "cooperate": true,
+        "distraction": false
+      },
+      "seed": 0,
+      "outcome": "grain_lost",
+      "words": 529,
+      "state_hash": "ea9c8dcc84626dc5a8960f6dc2b31fa44ba80922ff82de894ba1ecf6d898e90c"
+    },
+    {
+      "case": 5,
+      "config": {
+        "access": false,
+        "cooperate": true,
+        "distraction": false
+      },
+      "seed": 1,
+      "outcome": "grain_lost",
+      "words": 529,
+      "state_hash": "ea9c8dcc84626dc5a8960f6dc2b31fa44ba80922ff82de894ba1ecf6d898e90c"
+    },
+    {
+      "case": 5,
+      "config": {
+        "access": false,
+        "cooperate": true,
+        "distraction": false
+      },
+      "seed": 2,
+      "outcome": "grain_lost",
+      "words": 529,
+      "state_hash": "ea9c8dcc84626dc5a8960f6dc2b31fa44ba80922ff82de894ba1ecf6d898e90c"
+    },
+    {
+      "case": 5,
+      "config": {
+        "access": false,
+        "cooperate": true,
+        "distraction": false
+      },
+      "seed": 3,
+      "outcome": "grain_lost",
+      "words": 529,
+      "state_hash": "ea9c8dcc84626dc5a8960f6dc2b31fa44ba80922ff82de894ba1ecf6d898e90c"
+    },
+    {
+      "case": 5,
+      "config": {
+        "access": false,
+        "cooperate": true,
+        "distraction": false
+      },
+      "seed": 4,
+      "outcome": "grain_lost",
+      "words": 529,
+      "state_hash": "ea9c8dcc84626dc5a8960f6dc2b31fa44ba80922ff82de894ba1ecf6d898e90c"
+    },
+    {
+      "case": 6,
+      "config": {
+        "access": false,
+        "cooperate": false,
+        "distraction": true
+      },
+      "seed": 0,
+      "outcome": "grain_lost",
+      "words": 529,
+      "state_hash": "2e659c08b149a3134b34c02badaf4959932658c43d0e007a26380a6e935cceb5"
+    },
+    {
+      "case": 6,
+      "config": {
+        "access": false,
+        "cooperate": false,
+        "distraction": true
+      },
+      "seed": 1,
+      "outcome": "grain_lost",
+      "words": 529,
+      "state_hash": "2e659c08b149a3134b34c02badaf4959932658c43d0e007a26380a6e935cceb5"
+    },
+    {
+      "case": 6,
+      "config": {
+        "access": false,
+        "cooperate": false,
+        "distraction": true
+      },
+      "seed": 2,
+      "outcome": "grain_lost",
+      "words": 529,
+      "state_hash": "2e659c08b149a3134b34c02badaf4959932658c43d0e007a26380a6e935cceb5"
+    },
+    {
+      "case": 6,
+      "config": {
+        "access": false,
+        "cooperate": false,
+        "distraction": true
+      },
+      "seed": 3,
+      "outcome": "grain_lost",
+      "words": 529,
+      "state_hash": "2e659c08b149a3134b34c02badaf4959932658c43d0e007a26380a6e935cceb5"
+    },
+    {
+      "case": 6,
+      "config": {
+        "access": false,
+        "cooperate": false,
+        "distraction": true
+      },
+      "seed": 4,
+      "outcome": "grain_lost",
+      "words": 529,
+      "state_hash": "2e659c08b149a3134b34c02badaf4959932658c43d0e007a26380a6e935cceb5"
+    },
+    {
+      "case": 7,
+      "config": {
+        "access": false,
+        "cooperate": false,
+        "distraction": false
+      },
+      "seed": 0,
+      "outcome": "grain_lost",
+      "words": 529,
+      "state_hash": "49d79ccc5e34dd36d3360f553550e4226f1b36b825f7ae9685c49c0fa3d05c7a"
+    },
+    {
+      "case": 7,
+      "config": {
+        "access": false,
+        "cooperate": false,
+        "distraction": false
+      },
+      "seed": 1,
+      "outcome": "grain_lost",
+      "words": 529,
+      "state_hash": "49d79ccc5e34dd36d3360f553550e4226f1b36b825f7ae9685c49c0fa3d05c7a"
+    },
+    {
+      "case": 7,
+      "config": {
+        "access": false,
+        "cooperate": false,
+        "distraction": false
+      },
+      "seed": 2,
+      "outcome": "grain_lost",
+      "words": 529,
+      "state_hash": "49d79ccc5e34dd36d3360f553550e4226f1b36b825f7ae9685c49c0fa3d05c7a"
+    },
+    {
+      "case": 7,
+      "config": {
+        "access": false,
+        "cooperate": false,
+        "distraction": false
+      },
+      "seed": 3,
+      "outcome": "grain_lost",
+      "words": 529,
+      "state_hash": "49d79ccc5e34dd36d3360f553550e4226f1b36b825f7ae9685c49c0fa3d05c7a"
+    },
+    {
+      "case": 7,
+      "config": {
+        "access": false,
+        "cooperate": false,
+        "distraction": false
+      },
+      "seed": 4,
+      "outcome": "grain_lost",
+      "words": 529,
+      "state_hash": "49d79ccc5e34dd36d3360f553550e4226f1b36b825f7ae9685c49c0fa3d05c7a"
+    }
+  ],
+  "mechanical_only": true,
+  "pack_hash": "777e7b1a876f3c82d60bc15ff1e7fedf25385c960b1d752c8e4ef07658dc2ac8"
+}

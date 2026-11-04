@@ -1,0 +1,1 @@
+'''A small, offline washing-line adventure.'''

@@ -1,0 +1,532 @@
+{
+  "id": "lantern",
+  "title": "A Light at the Landing",
+  "entities": [
+    {
+      "id": "mara",
+      "noun": "girl",
+      "name": "Mara",
+      "pronoun": "she",
+      "state": {
+        "location": "cottage"
+      },
+      "memes": {
+        "Fear": 0.1
+      },
+      "short_noun": "",
+      "number": "singular",
+      "mass": false,
+      "definite": false
+    },
+    {
+      "id": "oren",
+      "noun": "ferryman",
+      "name": "Oren",
+      "pronoun": "he",
+      "state": {
+        "location": "landing"
+      },
+      "memes": {},
+      "short_noun": "",
+      "number": "singular",
+      "mass": false,
+      "definite": false
+    },
+    {
+      "id": "cottage",
+      "noun": "cottage",
+      "name": "",
+      "pronoun": "it",
+      "state": {},
+      "memes": {},
+      "short_noun": "",
+      "number": "singular",
+      "mass": false,
+      "definite": false
+    },
+    {
+      "id": "landing",
+      "noun": "river landing",
+      "name": "",
+      "pronoun": "it",
+      "state": {},
+      "memes": {},
+      "short_noun": "",
+      "number": "singular",
+      "mass": false,
+      "definite": false
+    },
+    {
+      "id": "lantern",
+      "noun": "brass lantern",
+      "name": "",
+      "pronoun": "it",
+      "state": {
+        "lit": false,
+        "owner": "mara"
+      },
+      "memes": {},
+      "short_noun": "",
+      "number": "singular",
+      "mass": false,
+      "definite": false
+    },
+    {
+      "id": "hook",
+      "noun": "iron hook",
+      "name": "",
+      "pronoun": "it",
+      "state": {},
+      "memes": {},
+      "short_noun": "",
+      "number": "singular",
+      "mass": false,
+      "definite": false
+    },
+    {
+      "id": "wind",
+      "noun": "wind",
+      "name": "",
+      "pronoun": "it",
+      "state": {},
+      "memes": {},
+      "short_noun": "",
+      "number": "singular",
+      "mass": false,
+      "definite": false
+    }
+  ],
+  "facts": [
+    {
+      "id": "l01",
+      "scene": "home",
+      "predicate": "live",
+      "subject": "mara",
+      "object": "",
+      "target": "cottage",
+      "value": "",
+      "cause": "",
+      "cue": "Once upon a time",
+      "requires": [],
+      "effects": [],
+      "meme_deltas": [],
+      "goal": null,
+      "speech": null,
+      "listener": "",
+      "tense": "past",
+      "negative": false,
+      "contrast": "",
+      "topic": "",
+      "paragraph_break": false,
+      "companion": ""
+    },
+    {
+      "id": "l02",
+      "scene": "home",
+      "predicate": "have",
+      "subject": "mara",
+      "object": "lantern",
+      "target": "",
+      "value": "",
+      "cause": "",
+      "cue": "",
+      "requires": [],
+      "effects": [],
+      "meme_deltas": [],
+      "goal": null,
+      "speech": null,
+      "listener": "",
+      "tense": "past",
+      "negative": false,
+      "contrast": "",
+      "topic": "",
+      "paragraph_break": false,
+      "companion": ""
+    },
+    {
+      "id": "l03",
+      "scene": "home",
+      "predicate": "need",
+      "subject": "oren",
+      "object": "lantern",
+      "target": "landing",
+      "value": "",
+      "cause": "",
+      "cue": "",
+      "requires": [],
+      "effects": [],
+      "meme_deltas": [],
+      "goal": null,
+      "speech": null,
+      "listener": "",
+      "tense": "past",
+      "negative": false,
+      "contrast": "",
+      "topic": "",
+      "paragraph_break": false,
+      "companion": ""
+    },
+    {
+      "id": "l04",
+      "scene": "home",
+      "predicate": "light",
+      "subject": "mara",
+      "object": "lantern",
+      "target": "",
+      "value": "",
+      "cause": "",
+      "cue": "",
+      "requires": [
+        [
+          "lantern",
+          "lit",
+          false
+        ]
+      ],
+      "effects": [
+        [
+          "lantern",
+          "lit",
+          true
+        ]
+      ],
+      "meme_deltas": [],
+      "goal": null,
+      "speech": null,
+      "listener": "",
+      "tense": "past",
+      "negative": false,
+      "contrast": "",
+      "topic": "",
+      "paragraph_break": false,
+      "companion": ""
+    },
+    {
+      "id": "l05",
+      "scene": "home",
+      "predicate": "carry",
+      "subject": "mara",
+      "object": "lantern",
+      "target": "landing",
+      "value": "",
+      "cause": "",
+      "cue": "",
+      "requires": [
+        [
+          "lantern",
+          "lit",
+          true
+        ],
+        [
+          "lantern",
+          "owner",
+          "mara"
+        ]
+      ],
+      "effects": [
+        [
+          "mara",
+          "location",
+          "landing"
+        ],
+        [
+          "lantern",
+          "location",
+          "landing"
+        ]
+      ],
+      "meme_deltas": [],
+      "goal": null,
+      "speech": null,
+      "listener": "",
+      "tense": "past",
+      "negative": false,
+      "contrast": "",
+      "topic": "",
+      "paragraph_break": false,
+      "companion": ""
+    },
+    {
+      "id": "l06",
+      "scene": "wind",
+      "predicate": "extinguish",
+      "subject": "wind",
+      "object": "lantern",
+      "target": "",
+      "value": "",
+      "cause": "",
+      "cue": "On the riverbank",
+      "requires": [
+        [
+          "lantern",
+          "lit",
+          true
+        ]
+      ],
+      "effects": [
+        [
+          "lantern",
+          "lit",
+          false
+        ]
+      ],
+      "meme_deltas": [
+        [
+          "mara",
+          "Fear",
+          0.6
+        ]
+      ],
+      "goal": null,
+      "speech": null,
+      "listener": "",
+      "tense": "past",
+      "negative": false,
+      "contrast": "",
+      "topic": "",
+      "paragraph_break": false,
+      "companion": ""
+    },
+    {
+      "id": "l07",
+      "scene": "wind",
+      "predicate": "feel",
+      "subject": "mara",
+      "object": "",
+      "target": "",
+      "value": "Fear",
+      "cause": "l06",
+      "cue": "",
+      "requires": [],
+      "effects": [],
+      "meme_deltas": [],
+      "goal": null,
+      "speech": null,
+      "listener": "",
+      "tense": "past",
+      "negative": false,
+      "contrast": "",
+      "topic": "",
+      "paragraph_break": false,
+      "companion": ""
+    },
+    {
+      "id": "l08",
+      "scene": "wind",
+      "predicate": "say",
+      "subject": "oren",
+      "object": "",
+      "target": "",
+      "value": "Cup your hands around the flame.",
+      "cause": "",
+      "cue": "",
+      "requires": [],
+      "effects": [],
+      "meme_deltas": [],
+      "goal": null,
+      "speech": null,
+      "listener": "",
+      "tense": "past",
+      "negative": false,
+      "contrast": "",
+      "topic": "",
+      "paragraph_break": false,
+      "companion": ""
+    },
+    {
+      "id": "l09",
+      "scene": "wind",
+      "predicate": "shield",
+      "subject": "mara",
+      "object": "lantern",
+      "target": "",
+      "value": "",
+      "cause": "",
+      "cue": "",
+      "requires": [],
+      "effects": [
+        [
+          "lantern",
+          "shielded",
+          true
+        ]
+      ],
+      "meme_deltas": [],
+      "goal": null,
+      "speech": null,
+      "listener": "",
+      "tense": "past",
+      "negative": false,
+      "contrast": "",
+      "topic": "",
+      "paragraph_break": false,
+      "companion": ""
+    },
+    {
+      "id": "l10",
+      "scene": "wind",
+      "predicate": "light",
+      "subject": "mara",
+      "object": "lantern",
+      "target": "",
+      "value": "",
+      "cause": "",
+      "cue": "",
+      "requires": [
+        [
+          "lantern",
+          "lit",
+          false
+        ],
+        [
+          "lantern",
+          "shielded",
+          true
+        ]
+      ],
+      "effects": [
+        [
+          "lantern",
+          "lit",
+          true
+        ]
+      ],
+      "meme_deltas": [
+        [
+          "mara",
+          "Fear",
+          -0.6
+        ]
+      ],
+      "goal": null,
+      "speech": null,
+      "listener": "",
+      "tense": "past",
+      "negative": false,
+      "contrast": "",
+      "topic": "",
+      "paragraph_break": false,
+      "companion": ""
+    },
+    {
+      "id": "l11",
+      "scene": "landing",
+      "predicate": "hang",
+      "subject": "mara",
+      "object": "lantern",
+      "target": "hook",
+      "value": "",
+      "cause": "",
+      "cue": "At the landing",
+      "requires": [
+        [
+          "lantern",
+          "lit",
+          true
+        ],
+        [
+          "mara",
+          "location",
+          "landing"
+        ]
+      ],
+      "effects": [
+        [
+          "lantern",
+          "location",
+          "hook"
+        ]
+      ],
+      "meme_deltas": [],
+      "goal": null,
+      "speech": null,
+      "listener": "",
+      "tense": "past",
+      "negative": false,
+      "contrast": "",
+      "topic": "",
+      "paragraph_break": false,
+      "companion": ""
+    },
+    {
+      "id": "l12",
+      "scene": "landing",
+      "predicate": "thank",
+      "subject": "oren",
+      "object": "mara",
+      "target": "",
+      "value": "",
+      "cause": "l11",
+      "cue": "",
+      "requires": [],
+      "effects": [],
+      "meme_deltas": [],
+      "goal": null,
+      "speech": null,
+      "listener": "",
+      "tense": "past",
+      "negative": false,
+      "contrast": "",
+      "topic": "",
+      "paragraph_break": false,
+      "companion": ""
+    },
+    {
+      "id": "l13",
+      "scene": "landing",
+      "predicate": "feel",
+      "subject": "mara",
+      "object": "",
+      "target": "",
+      "value": "Fear",
+      "cause": "l10",
+      "cue": "",
+      "requires": [],
+      "effects": [],
+      "meme_deltas": [],
+      "goal": null,
+      "speech": null,
+      "listener": "",
+      "tense": "past",
+      "negative": false,
+      "contrast": "",
+      "topic": "",
+      "paragraph_break": false,
+      "companion": ""
+    },
+    {
+      "id": "l14",
+      "scene": "landing",
+      "predicate": "shine",
+      "subject": "lantern",
+      "object": "",
+      "target": "landing",
+      "value": "",
+      "cause": "",
+      "cue": "As night fell",
+      "requires": [
+        [
+          "lantern",
+          "lit",
+          true
+        ],
+        [
+          "lantern",
+          "location",
+          "hook"
+        ]
+      ],
+      "effects": [],
+      "meme_deltas": [],
+      "goal": null,
+      "speech": null,
+      "listener": "",
+      "tense": "past",
+      "negative": false,
+      "contrast": "",
+      "topic": "",
+      "paragraph_break": false,
+      "companion": ""
+    }
+  ]
+}

@@ -1,0 +1,224 @@
+{
+  "scenes": [
+    {
+      "id": "ask_for_the_bag",
+      "role": "Essential opening: Nia asks rather than taking the neighbour’s peg bag.",
+      "location": "Shared garden, beside Mae’s shed",
+      "prerequisites": ["The washing is waiting and Mae is present."],
+      "actions": ["Ask Mae to borrow the peg bag."],
+      "consequences": ["The bag changes custody and can be used for the laundry."],
+      "prose_obligations": ["Make Nia’s wish to help and Mae’s boundary about returning the bag legible."],
+      "implemented_ids": ["borrow_bag"]
+    },
+    {
+      "id": "read_the_sky",
+      "role": "Essential weather observation that starts the limited work window.",
+      "location": "Shared garden, by the washing line",
+      "prerequisites": ["Nia has borrowed the bag."],
+      "actions": ["Notice the cloud bank and advancing shower."],
+      "consequences": ["Weather knowledge and elapsed time persist into the work scenes."],
+      "prose_obligations": ["Keep the shower approaching rather than pretending it has already rained."],
+      "implemented_ids": ["sky_signs"]
+    },
+    {
+      "id": "move_the_snail",
+      "role": "Optional vignette showing care when a small delay is tempting.",
+      "location": "Garden path",
+      "prerequisites": ["The bag is borrowed; washing preparation has not begun."],
+      "actions": ["Move a snail away from a puddle to the marigolds."],
+      "consequences": ["The snail’s safe location persists and may be recalled at the ending."],
+      "prose_obligations": ["Do not imply the vignette occurred if it was omitted."],
+      "implemented_ids": ["save_snail"]
+    },
+    {
+      "id": "peg_rhyme",
+      "role": "Optional neighbour-and-child characterization.",
+      "location": "Beside the washing line",
+      "prerequisites": ["The bag is borrowed; preparation has not begun."],
+      "actions": ["Mae shares a short rhyme about checking sheet corners."],
+      "consequences": ["Nia remembers the rhyme and Mae’s trust increases."],
+      "prose_obligations": ["The rhyme must be spoken here before any later callback."],
+      "implemented_ids": ["peg_rhyme_vignette"]
+    },
+    {
+      "id": "test_the_line",
+      "role": "Preparation encounter; consolidated with sorting and the priority choice.",
+      "location": "Shared garden, washing line",
+      "prerequisites": ["Weather has been noticed."],
+      "actions": ["Check the line and arrange the washing for the available pegs."],
+      "consequences": ["The line is prepared and the priority choice becomes persistent state."],
+      "prose_obligations": ["Explain the ordinary reason a heavy sheet may be unsuitable for a weak line."],
+      "implemented_ids": ["prepare_wash"]
+    },
+    {
+      "id": "sort_the_load",
+      "role": "Reference beat consolidated into preparation rather than a separate executable scene.",
+      "location": "Laundry basket beside the line",
+      "prerequisites": ["The weather window is known."],
+      "actions": ["Identify the sheet, shirt, towel, and socks."],
+      "consequences": ["No separate event is executed; preparation prose and state carry the useful setup."],
+      "prose_obligations": ["Do not claim a garment moved before the hanging actions."],
+      "implemented_ids": ["prepare_wash"]
+    },
+    {
+      "id": "choose_what_to_prioritize",
+      "role": "Consequential choice consolidated into the preparation and hanging scenes.",
+      "location": "Washing line",
+      "prerequisites": ["The peg count and sheet requirements are known."],
+      "actions": ["Choose sheet-first or smaller-items-first when pegs are scarce."],
+      "consequences": ["With limited pegs, the choice changes which garments reach the line."],
+      "prose_obligations": ["Do not describe the unchosen allocation as completed."],
+      "implemented_ids": ["prepare_wash", "hang_wash"]
+    },
+    {
+      "id": "clip_sheet_corners",
+      "role": "Part of the essential hanging pass; the sheet needs more clips in wind or when heavy.",
+      "location": "Washing line",
+      "prerequisites": ["Preparation is complete and enough pegs remain."],
+      "actions": ["Clip the sheet if the line can bear it and the required pegs are available."],
+      "consequences": ["The sheet’s location and peg use are recorded."],
+      "prose_obligations": ["Only say the sheet is on the line if the action succeeded."],
+      "implemented_ids": ["hang_wash"]
+    },
+    {
+      "id": "hang_the_shirt",
+      "role": "Part of the same short hanging pass, not a separately selectable scene.",
+      "location": "Washing line",
+      "prerequisites": ["Enough pegs remain for the shirt."],
+      "actions": ["Hang the shirt."],
+      "consequences": ["The shirt’s location and peg use persist."],
+      "prose_obligations": ["Render only garments actually placed on the line."],
+      "implemented_ids": ["hang_wash"]
+    },
+    {
+      "id": "hang_towel_and_socks",
+      "role": "Consolidated small-garment actions in the hanging pass.",
+      "location": "Washing line",
+      "prerequisites": ["Pegs remain for each item."],
+      "actions": ["Clip the towel and pair of socks where resources allow."],
+      "consequences": ["Each garment’s location is independent, allowing partial progress."],
+      "prose_obligations": ["Leave unpegged items in the basket until a later enacted action moves them."],
+      "implemented_ids": ["hang_wash"]
+    },
+    {
+      "id": "wind_on_the_sheet",
+      "role": "Complication resolved in the weather-turn scene.",
+      "location": "Washing line",
+      "prerequisites": ["The hanging pass has finished."],
+      "actions": ["Notice the wind and advancing shower."],
+      "consequences": ["Weather advances; the safe-line check determines the next choice."],
+      "prose_obligations": ["A gust cannot remove a garment unless a local action changes its location."],
+      "implemented_ids": ["weather_turn"]
+    },
+    {
+      "id": "decide_to_leave_or_rescue",
+      "role": "The consequential response is selected from the enacted line, rain, and shelter conditions.",
+      "location": "Garden line and covered shed",
+      "prerequisites": ["The weather turn has been observed."],
+      "actions": ["Leave a secure full line, use the covered rack, or gather the load as rain arrives."],
+      "consequences": ["The selected plan determines the protection scene and eligible ending."],
+      "prose_obligations": ["Do not narrate a rescue plan that the parameterized world disallows."],
+      "implemented_ids": ["weather_turn"]
+    },
+    {
+      "id": "move_to_covered_rack",
+      "role": "Alternative protection encounter when the shed is available.",
+      "location": "Covered shed rack",
+      "prerequisites": ["The weather turn selects shelter and the shelter is open."],
+      "actions": ["Move all garments to the sheltered rack, keeping any clips already in use."],
+      "consequences": ["All washing is under cover; this supports the shelter ending."],
+      "prose_obligations": ["Distinguish a sheltered rack from a completed sunny-line deadline."],
+      "implemented_ids": ["protect_wash"]
+    },
+    {
+      "id": "gather_as_rain_arrives",
+      "role": "Alternative protection encounter when no shed is available.",
+      "location": "Garden and laundry basket",
+      "prerequisites": ["The weather turn selects gathering; rain may arrive during the action."],
+      "actions": ["Gather every garment, recover the borrowed pegs, and put the washing in the basket."],
+      "consequences": ["The shower is recorded and the later ending must enact an indoor rehang."],
+      "prose_obligations": ["Acknowledge the missed deadline without leaving the story emotionally unfinished."],
+      "implemented_ids": ["protect_wash"]
+    },
+    {
+      "id": "check_a_secure_line",
+      "role": "Successful alternative consolidated into protection when everything is secure and rain has not begun.",
+      "location": "Washing line",
+      "prerequisites": ["All garments are on a strong, secure line and the shower has not arrived."],
+      "actions": ["Check the line rather than moving it unnecessarily."],
+      "consequences": ["The wash is marked ready for the dry-line ending."],
+      "prose_obligations": ["Do not call an unstable or partial line secure."],
+      "implemented_ids": ["protect_wash"]
+    },
+    {
+      "id": "return_the_bag_after_use",
+      "role": "Essential closing action consolidated into each ending.",
+      "location": "Mae’s side of the garden",
+      "prerequisites": ["Protection or successful hanging has been resolved."],
+      "actions": ["Return the peg bag after using its pegs for the neighbour’s washing."],
+      "consequences": ["Custody returns to Mae; the bag’s useful work is explicit."],
+      "prose_obligations": ["Do not equate returning custody with having used the object helpfully."],
+      "implemented_ids": ["ending_line", "ending_shelter", "ending_rain"]
+    },
+    {
+      "id": "finish_before_the_shower",
+      "role": "Earned successful ending for a complete secure line.",
+      "location": "Shared garden washing line",
+      "prerequisites": ["All garments are securely on the line and rain has not begun."],
+      "actions": ["Return the bag and acknowledge the completed deadline."],
+      "consequences": ["The story ends with the wash hung before the shower."],
+      "prose_obligations": ["The ending must be grounded in the safe-line and weather state."],
+      "implemented_ids": ["ending_line"]
+    },
+    {
+      "id": "save_the_wash_under_cover",
+      "role": "Alternate complete ending when the covered rack is available.",
+      "location": "Covered shed rack",
+      "prerequisites": ["The washing has been moved to the open covered rack."],
+      "actions": ["Finish securing the sheltered washing and return the bag."],
+      "consequences": ["The original sunny-line deadline is missed, but the clothes are safe."],
+      "prose_obligations": ["Give the outcome closure rather than leaving only a future intention."],
+      "implemented_ids": ["ending_shelter"]
+    },
+    {
+      "id": "own_the_delay_and_rehang",
+      "role": "Emotionally complete recovery ending when no shelter is available.",
+      "location": "Neighbour’s indoor drying rack",
+      "prerequisites": ["Rain has caught the gathered laundry and the basket is ready."],
+      "actions": ["Tell Mae the truth, rehang the wash indoors with her, and return the peg bag."],
+      "consequences": ["The deadline is missed but recovery is completed and the neighbour’s trust is maintained."],
+      "prose_obligations": ["Do not end with an unanswered promise to fix the laundry later."],
+      "implemented_ids": ["ending_rain"]
+    },
+    {
+      "id": "ask_for_help_instead_of_bluffing",
+      "role": "Reference-story character beat represented by the child’s enacted rescue choice and ending prose.",
+      "location": "Garden shed",
+      "prerequisites": ["The child recognizes the line or weather problem."],
+      "actions": ["Ask Mae for the help her uninjured hand can provide."],
+      "consequences": ["The authored reference resolves this beat in prose; executable variants keep the choice within the protect action."],
+      "prose_obligations": ["Do not claim an extra handoff or physical assistance in a route that has not narrated it."],
+      "implemented_ids": []
+    },
+    {
+      "id": "return_to_home_chores",
+      "role": "Reference-story closing beat not represented as a separate executable scene.",
+      "location": "Garden gate and Nia’s home",
+      "prerequisites": ["The neighbour’s washing has reached a completed ending."],
+      "actions": ["Answer Mum’s call and return to the cups."],
+      "consequences": ["Not required for the seven/eight-scene objective; no hidden home action runs when omitted."],
+      "prose_obligations": ["Do not imply the child finished home chores in generated episodes."],
+      "implemented_ids": []
+    },
+    {
+      "id": "remember_the_first_plan",
+      "role": "Reference-story reflection consolidated into the ending outcome.",
+      "location": "Shared garden",
+      "prerequisites": ["The child has experienced the actual result of the weather choice."],
+      "actions": ["Distinguish the hoped-for deadline from the repair that was actually completed."],
+      "consequences": ["Dry-line, shelter, and rain-recovery outcomes remain distinct."],
+      "prose_obligations": ["Never claim a future sunny-day chore has already occurred."],
+      "implemented_ids": ["ending_line", "ending_shelter", "ending_rain"]
+    }
+  ]
+}

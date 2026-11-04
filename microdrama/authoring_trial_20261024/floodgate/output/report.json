@@ -1,0 +1,581 @@
+{
+  "candidate": "floodgate",
+  "passed": true,
+  "runs": 40,
+  "outcomes": [
+    "grain_lost",
+    "grain_saved"
+  ],
+  "errors": [],
+  "counterfactuals": [
+    {
+      "input": "distraction",
+      "a": {
+        "access": true,
+        "cooperate": true,
+        "distraction": true
+      },
+      "b": {
+        "access": true,
+        "cooperate": true,
+        "distraction": false
+      },
+      "changed_state": [
+        "valley.water",
+        "gate.jammed",
+        "gate.tested",
+        "gate.open",
+        "sluice.jammed",
+        "sluice.tested",
+        "sluice.open",
+        "grain.dry",
+        "grain.sacks",
+        "ida.applied",
+        "ida.observed_success",
+        "gate.effort",
+        "sluice.effort",
+        "osk.helped",
+        "ida.meme.lift",
+        "ida.meme.brace"
+      ]
+    },
+    {
+      "input": "cooperate",
+      "a": {
+        "access": true,
+        "cooperate": true,
+        "distraction": false
+      },
+      "b": {
+        "access": true,
+        "cooperate": false,
+        "distraction": false
+      },
+      "changed_state": [
+        "valley.water",
+        "gate.jammed",
+        "gate.open",
+        "grain.dry",
+        "grain.sacks",
+        "ida.observed_success",
+        "gate.effort",
+        "osk.helped"
+      ]
+    },
+    {
+      "input": "access",
+      "a": {
+        "access": true,
+        "cooperate": true,
+        "distraction": false
+      },
+      "b": {
+        "access": false,
+        "cooperate": true,
+        "distraction": false
+      },
+      "changed_state": [
+        "valley.water",
+        "gate.jammed",
+        "gate.tested",
+        "gate.open",
+        "sluice.jammed",
+        "sluice.tested",
+        "sluice.open",
+        "grain.dry",
+        "grain.sacks",
+        "ida.applied",
+        "ida.observed_success",
+        "gate.effort",
+        "sluice.effort",
+        "osk.helped",
+        "ida.meme.lift",
+        "ida.meme.brace"
+      ]
+    }
+  ],
+  "cases": [
+    {
+      "case": 0,
+      "config": {
+        "access": true,
+        "cooperate": true,
+        "distraction": true
+      },
+      "seed": 0,
+      "outcome": "grain_lost",
+      "words": 512,
+      "state_hash": "80ba4981fe752aa4b878fc4813e9892ff76db75ff03ec7decc1d9733115f95cc"
+    },
+    {
+      "case": 0,
+      "config": {
+        "access": true,
+        "cooperate": true,
+        "distraction": true
+      },
+      "seed": 1,
+      "outcome": "grain_lost",
+      "words": 512,
+      "state_hash": "80ba4981fe752aa4b878fc4813e9892ff76db75ff03ec7decc1d9733115f95cc"
+    },
+    {
+      "case": 0,
+      "config": {
+        "access": true,
+        "cooperate": true,
+        "distraction": true
+      },
+      "seed": 2,
+      "outcome": "grain_lost",
+      "words": 512,
+      "state_hash": "80ba4981fe752aa4b878fc4813e9892ff76db75ff03ec7decc1d9733115f95cc"
+    },
+    {
+      "case": 0,
+      "config": {
+        "access": true,
+        "cooperate": true,
+        "distraction": true
+      },
+      "seed": 3,
+      "outcome": "grain_lost",
+      "words": 512,
+      "state_hash": "80ba4981fe752aa4b878fc4813e9892ff76db75ff03ec7decc1d9733115f95cc"
+    },
+    {
+      "case": 0,
+      "config": {
+        "access": true,
+        "cooperate": true,
+        "distraction": true
+      },
+      "seed": 4,
+      "outcome": "grain_lost",
+      "words": 512,
+      "state_hash": "80ba4981fe752aa4b878fc4813e9892ff76db75ff03ec7decc1d9733115f95cc"
+    },
+    {
+      "case": 1,
+      "config": {
+        "access": true,
+        "cooperate": true,
+        "distraction": false
+      },
+      "seed": 0,
+      "outcome": "grain_saved",
+      "words": 497,
+      "state_hash": "d5236af90b52a5b8e89d470892316b75a58c450cb917de8836c1f9d9916bb3c8"
+    },
+    {
+      "case": 1,
+      "config": {
+        "access": true,
+        "cooperate": true,
+        "distraction": false
+      },
+      "seed": 1,
+      "outcome": "grain_saved",
+      "words": 497,
+      "state_hash": "d5236af90b52a5b8e89d470892316b75a58c450cb917de8836c1f9d9916bb3c8"
+    },
+    {
+      "case": 1,
+      "config": {
+        "access": true,
+        "cooperate": true,
+        "distraction": false
+      },
+      "seed": 2,
+      "outcome": "grain_saved",
+      "words": 497,
+      "state_hash": "d5236af90b52a5b8e89d470892316b75a58c450cb917de8836c1f9d9916bb3c8"
+    },
+    {
+      "case": 1,
+      "config": {
+        "access": true,
+        "cooperate": true,
+        "distraction": false
+      },
+      "seed": 3,
+      "outcome": "grain_saved",
+      "words": 497,
+      "state_hash": "d5236af90b52a5b8e89d470892316b75a58c450cb917de8836c1f9d9916bb3c8"
+    },
+    {
+      "case": 1,
+      "config": {
+        "access": true,
+        "cooperate": true,
+        "distraction": false
+      },
+      "seed": 4,
+      "outcome": "grain_saved",
+      "words": 497,
+      "state_hash": "d5236af90b52a5b8e89d470892316b75a58c450cb917de8836c1f9d9916bb3c8"
+    },
+    {
+      "case": 2,
+      "config": {
+        "access": true,
+        "cooperate": false,
+        "distraction": true
+      },
+      "seed": 0,
+      "outcome": "grain_lost",
+      "words": 512,
+      "state_hash": "47239a6f75910b2fd7d8fa9241a0e5ba765730c5bca783cea8120f0f914b6df0"
+    },
+    {
+      "case": 2,
+      "config": {
+        "access": true,
+        "cooperate": false,
+        "distraction": true
+      },
+      "seed": 1,
+      "outcome": "grain_lost",
+      "words": 512,
+      "state_hash": "47239a6f75910b2fd7d8fa9241a0e5ba765730c5bca783cea8120f0f914b6df0"
+    },
+    {
+      "case": 2,
+      "config": {
+        "access": true,
+        "cooperate": false,
+        "distraction": true
+      },
+      "seed": 2,
+      "outcome": "grain_lost",
+      "words": 512,
+      "state_hash": "47239a6f75910b2fd7d8fa9241a0e5ba765730c5bca783cea8120f0f914b6df0"
+    },
+    {
+      "case": 2,
+      "config": {
+        "access": true,
+        "cooperate": false,
+        "distraction": true
+      },
+      "seed": 3,
+      "outcome": "grain_lost",
+      "words": 512,
+      "state_hash": "47239a6f75910b2fd7d8fa9241a0e5ba765730c5bca783cea8120f0f914b6df0"
+    },
+    {
+      "case": 2,
+      "config": {
+        "access": true,
+        "cooperate": false,
+        "distraction": true
+      },
+      "seed": 4,
+      "outcome": "grain_lost",
+      "words": 512,
+      "state_hash": "47239a6f75910b2fd7d8fa9241a0e5ba765730c5bca783cea8120f0f914b6df0"
+    },
+    {
+      "case": 3,
+      "config": {
+        "access": true,
+        "cooperate": false,
+        "distraction": false
+      },
+      "seed": 0,
+      "outcome": "grain_lost",
+      "words": 503,
+      "state_hash": "c2c0e1bdeaf2b347d3c11ff137da5f1bde6285a1472154ad82a5ad55d4c985d5"
+    },
+    {
+      "case": 3,
+      "config": {
+        "access": true,
+        "cooperate": false,
+        "distraction": false
+      },
+      "seed": 1,
+      "outcome": "grain_lost",
+      "words": 503,
+      "state_hash": "c2c0e1bdeaf2b347d3c11ff137da5f1bde6285a1472154ad82a5ad55d4c985d5"
+    },
+    {
+      "case": 3,
+      "config": {
+        "access": true,
+        "cooperate": false,
+        "distraction": false
+      },
+      "seed": 2,
+      "outcome": "grain_lost",
+      "words": 503,
+      "state_hash": "c2c0e1bdeaf2b347d3c11ff137da5f1bde6285a1472154ad82a5ad55d4c985d5"
+    },
+    {
+      "case": 3,
+      "config": {
+        "access": true,
+        "cooperate": false,
+        "distraction": false
+      },
+      "seed": 3,
+      "outcome": "grain_lost",
+      "words": 503,
+      "state_hash": "c2c0e1bdeaf2b347d3c11ff137da5f1bde6285a1472154ad82a5ad55d4c985d5"
+    },
+    {
+      "case": 3,
+      "config": {
+        "access": true,
+        "cooperate": false,
+        "distraction": false
+      },
+      "seed": 4,
+      "outcome": "grain_lost",
+      "words": 503,
+      "state_hash": "c2c0e1bdeaf2b347d3c11ff137da5f1bde6285a1472154ad82a5ad55d4c985d5"
+    },
+    {
+      "case": 4,
+      "config": {
+        "access": false,
+        "cooperate": true,
+        "distraction": true
+      },
+      "seed": 0,
+      "outcome": "grain_lost",
+      "words": 529,
+      "state_hash": "ca8148fc7f98c63ec5e34cdb04e6b56a437930f75415026e6344dddc25da4267"
+    },
+    {
+      "case": 4,
+      "config": {
+        "access": false,
+        "cooperate": true,
+        "distraction": true
+      },
+      "seed": 1,
+      "outcome": "grain_lost",
+      "words": 529,
+      "state_hash": "ca8148fc7f98c63ec5e34cdb04e6b56a437930f75415026e6344dddc25da4267"
+    },
+    {
+      "case": 4,
+      "config": {
+        "access": false,
+        "cooperate": true,
+        "distraction": true
+      },
+      "seed": 2,
+      "outcome": "grain_lost",
+      "words": 529,
+      "state_hash": "ca8148fc7f98c63ec5e34cdb04e6b56a437930f75415026e6344dddc25da4267"
+    },
+    {
+      "case": 4,
+      "config": {
+        "access": false,
+        "cooperate": true,
+        "distraction": true
+      },
+      "seed": 3,
+      "outcome": "grain_lost",
+      "words": 529,
+      "state_hash": "ca8148fc7f98c63ec5e34cdb04e6b56a437930f75415026e6344dddc25da4267"
+    },
+    {
+      "case": 4,
+      "config": {
+        "access": false,
+        "cooperate": true,
+        "distraction": true
+      },
+      "seed": 4,
+      "outcome": "grain_lost",
+      "words": 529,
+      "state_hash": "ca8148fc7f98c63ec5e34cdb04e6b56a437930f75415026e6344dddc25da4267"
+    },
+    {
+      "case": 5,
+      "config": {
+        "access": false,
+        "cooperate": true,
+        "distraction": false
+      },
+      "seed": 0,
+      "outcome": "grain_lost",
+      "words": 529,
+      "state_hash": "2f8b2192bd2565aaaf2ac5d7cb8bfe2f3fb93bba4eb63de41c78a44316dd7005"
+    },
+    {
+      "case": 5,
+      "config": {
+        "access": false,
+        "cooperate": true,
+        "distraction": false
+      },
+      "seed": 1,
+      "outcome": "grain_lost",
+      "words": 529,
+      "state_hash": "2f8b2192bd2565aaaf2ac5d7cb8bfe2f3fb93bba4eb63de41c78a44316dd7005"
+    },
+    {
+      "case": 5,
+      "config": {
+        "access": false,
+        "cooperate": true,
+        "distraction": false
+      },
+      "seed": 2,
+      "outcome": "grain_lost",
+      "words": 529,
+      "state_hash": "2f8b2192bd2565aaaf2ac5d7cb8bfe2f3fb93bba4eb63de41c78a44316dd7005"
+    },
+    {
+      "case": 5,
+      "config": {
+        "access": false,
+        "cooperate": true,
+        "distraction": false
+      },
+      "seed": 3,
+      "outcome": "grain_lost",
+      "words": 529,
+      "state_hash": "2f8b2192bd2565aaaf2ac5d7cb8bfe2f3fb93bba4eb63de41c78a44316dd7005"
+    },
+    {
+      "case": 5,
+      "config": {
+        "access": false,
+        "cooperate": true,
+        "distraction": false
+      },
+      "seed": 4,
+      "outcome": "grain_lost",
+      "words": 529,
+      "state_hash": "2f8b2192bd2565aaaf2ac5d7cb8bfe2f3fb93bba4eb63de41c78a44316dd7005"
+    },
+    {
+      "case": 6,
+      "config": {
+        "access": false,
+        "cooperate": false,
+        "distraction": true
+      },
+      "seed": 0,
+      "outcome": "grain_lost",
+      "words": 529,
+      "state_hash": "8172d9b14a169518eb3ee14a37c18e653856ebdd3c072798b1173398bb6269ee"
+    },
+    {
+      "case": 6,
+      "config": {
+        "access": false,
+        "cooperate": false,
+        "distraction": true
+      },
+      "seed": 1,
+      "outcome": "grain_lost",
+      "words": 529,
+      "state_hash": "8172d9b14a169518eb3ee14a37c18e653856ebdd3c072798b1173398bb6269ee"
+    },
+    {
+      "case": 6,
+      "config": {
+        "access": false,
+        "cooperate": false,
+        "distraction": true
+      },
+      "seed": 2,
+      "outcome": "grain_lost",
+      "words": 529,
+      "state_hash": "8172d9b14a169518eb3ee14a37c18e653856ebdd3c072798b1173398bb6269ee"
+    },
+    {
+      "case": 6,
+      "config": {
+        "access": false,
+        "cooperate": false,
+        "distraction": true
+      },
+      "seed": 3,
+      "outcome": "grain_lost",
+      "words": 529,
+      "state_hash": "8172d9b14a169518eb3ee14a37c18e653856ebdd3c072798b1173398bb6269ee"
+    },
+    {
+      "case": 6,
+      "config": {
+        "access": false,
+        "cooperate": false,
+        "distraction": true
+      },
+      "seed": 4,
+      "outcome": "grain_lost",
+      "words": 529,
+      "state_hash": "8172d9b14a169518eb3ee14a37c18e653856ebdd3c072798b1173398bb6269ee"
+    },
+    {
+      "case": 7,
+      "config": {
+        "access": false,
+        "cooperate": false,
+        "distraction": false
+      },
+      "seed": 0,
+      "outcome": "grain_lost",
+      "words": 529,
+      "state_hash": "645f4d5bea95dfca12198978a53e78d5a6c1e5873f15b3b32da02dcf60e1bf0c"
+    },
+    {
+      "case": 7,
+      "config": {
+        "access": false,
+        "cooperate": false,
+        "distraction": false
+      },
+      "seed": 1,
+      "outcome": "grain_lost",
+      "words": 529,
+      "state_hash": "645f4d5bea95dfca12198978a53e78d5a6c1e5873f15b3b32da02dcf60e1bf0c"
+    },
+    {
+      "case": 7,
+      "config": {
+        "access": false,
+        "cooperate": false,
+        "distraction": false
+      },
+      "seed": 2,
+      "outcome": "grain_lost",
+      "words": 529,
+      "state_hash": "645f4d5bea95dfca12198978a53e78d5a6c1e5873f15b3b32da02dcf60e1bf0c"
+    },
+    {
+      "case": 7,
+      "config": {
+        "access": false,
+        "cooperate": false,
+        "distraction": false
+      },
+      "seed": 3,
+      "outcome": "grain_lost",
+      "words": 529,
+      "state_hash": "645f4d5bea95dfca12198978a53e78d5a6c1e5873f15b3b32da02dcf60e1bf0c"
+    },
+    {
+      "case": 7,
+      "config": {
+        "access": false,
+        "cooperate": false,
+        "distraction": false
+      },
+      "seed": 4,
+      "outcome": "grain_lost",
+      "words": 529,
+      "state_hash": "645f4d5bea95dfca12198978a53e78d5a6c1e5873f15b3b32da02dcf60e1bf0c"
+    }
+  ],
+  "mechanical_only": true,
+  "pack_hash": "e4669f5dfcfc0dfcbb338f98b0fd74ba5a23e9989514c4094db7a05a5bc6af55"
+}

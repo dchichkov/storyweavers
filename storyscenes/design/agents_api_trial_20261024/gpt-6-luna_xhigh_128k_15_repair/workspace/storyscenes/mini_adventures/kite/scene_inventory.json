@@ -1,0 +1,232 @@
+{
+  "scenes": [
+    {
+      "id": "cart_arrives",
+      "role": "Establish the shared cart, its rattle, and the children's ordinary aims.",
+      "location": "courtyard repair bench",
+      "prerequisites": ["The adventure has not started."],
+      "actions": ["Notice the wheel rattle; ask for help with a practical task."],
+      "consequences": ["Jo wants to be trusted; Mina needs her seedlings delivered."],
+      "prose_obligations": ["Make the cart shared property, not Jo's reward."],
+      "implemented_ids": ["borrow"],
+      "mapping_note": "Combined with asking Len for the tool and hearing his caution."
+    },
+    {
+      "id": "ask_len_for_spanner",
+      "role": "Borrow the tool under ordinary caretaker supervision.",
+      "location": "courtyard repair bench",
+      "prerequisites": ["Len owns and has stored the spanner."],
+      "actions": ["Borrow the spanner."],
+      "consequences": ["Jo has custody; Len no longer has the tool ready in his toolbox."],
+      "prose_obligations": ["Make the loan and its intended use clear."],
+      "implemented_ids": ["borrow"],
+      "mapping_note": "Consolidated into the cart-arrival opening encounter."
+    },
+    {
+      "id": "len_warns_about_noise",
+      "role": "Give Jo a caution that will matter after the wrong first attempt.",
+      "location": "courtyard repair bench",
+      "prerequisites": ["Jo asks Len for a tool."],
+      "actions": ["Len distinguishes a sound from a diagnosis."],
+      "consequences": ["The story can recall the advice without making Jo omniscient."],
+      "prose_obligations": ["Keep Len practical rather than instructional."],
+      "implemented_ids": ["borrow"],
+      "mapping_note": "Spoken in the same implemented scene as the loan."
+    },
+    {
+      "id": "chalk_claims_shared_cart",
+      "role": "Optional ownership-and-character vignette.",
+      "location": "courtyard repair bench",
+      "prerequisites": ["The cart is still untouched."],
+      "actions": ["Mina writes both children's names on the cart."],
+      "consequences": ["A persistent mark can be recalled at an ending."],
+      "prose_obligations": ["The names must not imply exclusive ownership."],
+      "implemented_ids": ["chalk_names"],
+      "mapping_note": "Optional; omitted routes do not write names offstage."
+    },
+    {
+      "id": "jo_guesses_loose_nut",
+      "role": "Make the first diagnosis confidently and wrongly.",
+      "location": "courtyard repair bench",
+      "prerequisites": ["Jo has borrowed a fitting spanner or obtained an adjustable one."],
+      "actions": ["Steady the cart; try the spanner; tighten the wheel nut."],
+      "consequences": ["The hub is pinched, the wheel stops, and the rattle remains."],
+      "prose_obligations": ["Show the action and its contradictory result."],
+      "implemented_ids": ["first_attempt"],
+      "mapping_note": "The implementation combines the diagnosis, tool-fit check, and tightening."
+    },
+    {
+      "id": "spanner_fit_check",
+      "role": "Respect tool fit instead of narrating an impossible turn.",
+      "location": "courtyard repair bench",
+      "prerequisites": ["Jo holds the borrowed spanner."],
+      "actions": ["Check the jaws; ask Len for an adjustable spanner if they slip."],
+      "consequences": ["Only a fitting tool turns the nut."],
+      "prose_obligations": ["If the first tool does not fit, enact the exchange."],
+      "implemented_ids": ["first_attempt"],
+      "mapping_note": "Local alternatives inside first_attempt, not separate global scenes."
+    },
+    {
+      "id": "steady_cart_at_bench",
+      "role": "Keep the cart from creeping while Jo works.",
+      "location": "courtyard repair bench",
+      "prerequisites": ["The cart is at the bench."],
+      "actions": ["Use the level surface or wedge the frame on a sloping bench."],
+      "consequences": ["The work is physically supported."],
+      "prose_obligations": ["Do not require a wedge on a level bench."],
+      "implemented_ids": ["first_attempt"],
+      "mapping_note": "Consolidated with the tool-fit and wrong-diagnosis play."
+    },
+    {
+      "id": "tighten_and_hear_rattle",
+      "role": "Let the first attempt produce evidence against itself.",
+      "location": "courtyard repair bench",
+      "prerequisites": ["The spanner fits and the wheel nut is snug."],
+      "actions": ["Turn the nut once; try the wheel."],
+      "consequences": ["The wheel binds while the side-to-side rattle persists."],
+      "prose_obligations": ["Do not claim the cart was repaired here."],
+      "implemented_ids": ["first_attempt"],
+      "mapping_note": "The enacted result is one atomic scene outcome."
+    },
+    {
+      "id": "mina_waits_for_an_answer",
+      "role": "Give the child space to reconsider instead of forcing a lecture.",
+      "location": "courtyard repair bench",
+      "prerequisites": ["The first attempt has jammed the wheel."],
+      "actions": ["Mina notices; Jo must choose how to respond."],
+      "consequences": ["The response affects trust and the ending's emotional tone."],
+      "prose_obligations": ["Keep Mina observant, not punitive."],
+      "implemented_ids": ["admit_error", "keep_face"],
+      "mapping_note": "The choice is represented by two mutually exclusive executable scenes."
+    },
+    {
+      "id": "feel_hub_side_play",
+      "role": "Reinspect the physical fault after the failed guess.",
+      "location": "courtyard repair bench",
+      "prerequisites": ["The wheel is jammed and the rattle persists."],
+      "actions": ["Feel the hub shift sideways."],
+      "consequences": ["Jo identifies the missing spacer."],
+      "prose_obligations": ["Tie the revised diagnosis to an observable gap."],
+      "implemented_ids": ["reinspect"],
+      "mapping_note": "Combines touching the wheel and recognizing the missing part."
+    },
+    {
+      "id": "find_empty_spacer_gap",
+      "role": "Name the actual cause rather than simply undoing the first attempt.",
+      "location": "courtyard repair bench",
+      "prerequisites": ["The first attempt has been enacted."],
+      "actions": ["Compare hub and fork; see where the washer should sit."],
+      "consequences": ["The first diagnosis is explicitly wrong."],
+      "prose_obligations": ["Make the missing spacer explain both symptoms."],
+      "implemented_ids": ["reinspect"],
+      "mapping_note": "Same local play as feeling the side play."
+    },
+    {
+      "id": "len_tells_old_repair_story",
+      "role": "Optional vignette that gives the children an embodied reminder.",
+      "location": "courtyard repair bench",
+      "prerequisites": ["Jo has found the missing spacer."],
+      "actions": ["Len shares a brief mistake from his own repairs."],
+      "consequences": ["Jo remembers advice to listen before tightening."],
+      "prose_obligations": ["Advice reinforces an observation; it does not reveal the washer."],
+      "implemented_ids": ["measure_story"],
+      "mapping_note": "Optional; the diagnostic discovery is already complete without it."
+    },
+    {
+      "id": "admit_first_guess",
+      "role": "Choose to own the mistake promptly.",
+      "location": "courtyard repair bench",
+      "prerequisites": ["The diagnosis is corrected; admission style is early."],
+      "actions": ["Jo tells Mina the first guess was wrong."],
+      "consequences": ["Trust rises before the repair."],
+      "prose_obligations": ["Make honesty cost Jo pride but earn Mina's cooperation."],
+      "implemented_ids": ["admit_error"],
+      "mapping_note": "Exclusive alternative to keeping face until the ending."
+    },
+    {
+      "id": "delay_admission",
+      "role": "Choose to postpone an uncomfortable truth.",
+      "location": "courtyard repair bench",
+      "prerequisites": ["The diagnosis is corrected; admission style is late."],
+      "actions": ["Jo avoids explaining the first mistake yet."],
+      "consequences": ["The later apology is less easy and trust starts lower."],
+      "prose_obligations": ["Do not make the child cruel or Mina unreasonable."],
+      "implemented_ids": ["keep_face"],
+      "mapping_note": "Exclusive alternative to admitting the error at once."
+    },
+    {
+      "id": "unload_and_fit_washer",
+      "role": "Make the correct repair with a real spacer and safe clearance.",
+      "location": "courtyard repair bench",
+      "prerequisites": ["A washer is in the parts tin; the correct diagnosis is known."],
+      "actions": ["Set excess load aside; take and fit the washer; adjust the nut."],
+      "consequences": ["The wheel turns freely without side play or rattle."],
+      "prose_obligations": ["Show the borrowed spanner's useful work and the tested clearance."],
+      "implemented_ids": ["repair"],
+      "mapping_note": "Load handling and washer installation are one repair scene with guarded local actions."
+    },
+    {
+      "id": "refuse_unsafe_shim",
+      "role": "Choose safety when the proper part is absent.",
+      "location": "courtyard repair bench and exchange table",
+      "prerequisites": ["No washer is available; the cart still has side play."],
+      "actions": ["Do not substitute cardboard; secure the cart and carry the pots by hand."],
+      "consequences": ["Repair fails, but the delivery is completed and the cart is clearly parked."],
+      "prose_obligations": ["Give the failure an emotionally complete outcome, not a false repair."],
+      "implemented_ids": ["park_it"],
+      "mapping_note": "A distinct safe-stop scene replaces the repair scene when no washer exists."
+    },
+    {
+      "id": "roll_repaired_cart",
+      "role": "Test the corrected wheel under a safe load and complete the delivery.",
+      "location": "courtyard path to exchange table",
+      "prerequisites": ["The washer is fitted and load does not exceed capacity."],
+      "actions": ["Roll the pots over the courtyard paving."],
+      "consequences": ["Successful movement confirms the wheel is usable."],
+      "prose_obligations": ["Let parameters change the load and who accompanies the test."],
+      "implemented_ids": ["test_roll"],
+      "mapping_note": "The capacity adjustment happens during the repair, before this test."
+    },
+    {
+      "id": "tag_unrepaired_cart",
+      "role": "Check and mark the unrepaired wheel without risking a roll.",
+      "location": "courtyard repair bench",
+      "prerequisites": ["The cart has been parked out of service."],
+      "actions": ["Rock the axle by hand and mark the warning."],
+      "consequences": ["The failed test is recorded; the cart is not used as a cart."],
+      "prose_obligations": ["Make the safety choice explicit."],
+      "implemented_ids": ["mark_out"],
+      "mapping_note": "A separate local proof scene for the safe-stop branch."
+    },
+    {
+      "id": "return_tool_after_shared_repair",
+      "role": "Return the tool and acknowledge its usefulness.",
+      "location": "courtyard repair bench",
+      "prerequisites": ["The cart passed its test."],
+      "actions": ["Return the spanner; Len uses it to secure his vise."],
+      "consequences": ["The loan has helped the cart and remains useful at the bench."],
+      "prose_obligations": ["Track custody and use, not just a verbal thank-you."],
+      "implemented_ids": ["ending_repaired", "ending_rebuilt"],
+      "mapping_note": "Early and delayed admissions have distinct earned endings."
+    },
+    {
+      "id": "finish_safe_stop",
+      "role": "Close the failure route with a completed delivery and honest boundary.",
+      "location": "courtyard repair bench and exchange table",
+      "prerequisites": ["The cart remains parked; seedlings reached the table by hand."],
+      "actions": ["Return the spanner; Len uses it on the vise; finish with the cart secured."],
+      "consequences": ["The cart is not repaired, but the children complete today's work safely."],
+      "prose_obligations": ["Do not leave every ending as a conditional future plan."],
+      "implemented_ids": ["ending_stopped"],
+      "mapping_note": "This ending shares the tool-return action but has a different outcome."
+    }
+  ],
+  "consolidation_notes": {
+    "borrow": "Combines cart arrival, asking Len, and his warning into one executable opening.",
+    "first_attempt": "Combines support, size check, wrong diagnosis, and the jammed-wheel result; fit and bench conditions select local actions.",
+    "reinspect": "Combines the tactile side-play check and discovery of the empty spacer gap.",
+    "repair": "Combines unloading when necessary, retrieving the washer, and installing it.",
+    "ending_repaired and ending_rebuilt": "Share physical return actions but are distinct scenes because the admission timing changes trust and prose.",
+    "not_executable": "No inventory encounter silently fires. Each reference beat is either mapped to an implemented local scene, explicitly optional, or consolidated as noted above."
+  }
+}

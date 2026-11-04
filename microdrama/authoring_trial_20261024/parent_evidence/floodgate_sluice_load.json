@@ -1,0 +1,797 @@
+{
+  "title": "The Weight Beneath the Water",
+  "config": {
+    "access": true,
+    "cooperate": true,
+    "distraction": false
+  },
+  "seed": 0,
+  "initial": {
+    "valley.location": "mill",
+    "ida.location": "mill",
+    "ren.location": "mill",
+    "osk.location": "mill",
+    "diagram.location": "mill",
+    "gate.location": "mill",
+    "sluice.location": "mill",
+    "grain.location": "mill",
+    "lever.location": "mill",
+    "valley.ended": false,
+    "valley.outcome": "",
+    "valley.stage": 0,
+    "valley.blamed_ren": true,
+    "valley.water": 3,
+    "diagram.accessible": true,
+    "ida.distracted": false,
+    "osk.willing": true,
+    "gate.jammed": true,
+    "gate.pin_bent": true,
+    "gate.tested": false,
+    "gate.open": false,
+    "sluice.jammed": true,
+    "sluice.tested": false,
+    "sluice.open": false,
+    "grain.dry": true,
+    "grain.sacks": 40,
+    "lever.owner": "osk",
+    "lever.user": "osk",
+    "ren.can_lift": false,
+    "ida.saw_pin": false,
+    "ida.applied": false,
+    "ren.applied": false,
+    "ida.observed_success": false,
+    "ren.observed_success": false,
+    "ida.force": 2,
+    "ren.force": 1,
+    "osk.force": 3,
+    "lever.advantage": 2,
+    "gate.load": 8,
+    "sluice.load": 20,
+    "gate.effort": 0,
+    "sluice.effort": 0,
+    "gate.operator": "ida",
+    "sluice.operator": "ida",
+    "osk.helped": false,
+    "diagram.meme.lift": 1.0,
+    "diagram.meme.brace": 1.0,
+    "ida.meme.lift": 0.0,
+    "ida.meme.brace": 0.0,
+    "ren.meme.lift": 0.0,
+    "ren.meme.brace": 0.0
+  },
+  "final": {
+    "valley.location": "mill",
+    "ida.location": "mill",
+    "ren.location": "mill",
+    "osk.location": "mill",
+    "diagram.location": "mill",
+    "gate.location": "mill",
+    "sluice.location": "mill",
+    "grain.location": "mill",
+    "lever.location": "mill",
+    "valley.ended": true,
+    "valley.outcome": "grain_saved",
+    "valley.stage": 7,
+    "valley.blamed_ren": false,
+    "valley.water": 0,
+    "diagram.accessible": true,
+    "ida.distracted": false,
+    "osk.willing": true,
+    "gate.jammed": false,
+    "gate.pin_bent": true,
+    "gate.tested": true,
+    "gate.open": true,
+    "sluice.jammed": true,
+    "sluice.tested": true,
+    "sluice.open": false,
+    "grain.dry": true,
+    "grain.sacks": 40,
+    "lever.owner": "osk",
+    "lever.user": "osk",
+    "ren.can_lift": false,
+    "ida.saw_pin": true,
+    "ida.applied": true,
+    "ren.applied": false,
+    "ida.observed_success": true,
+    "ren.observed_success": false,
+    "ida.force": 2,
+    "ren.force": 1,
+    "osk.force": 3,
+    "lever.advantage": 2,
+    "gate.load": 8,
+    "sluice.load": 20,
+    "gate.effort": 10,
+    "sluice.effort": 4,
+    "gate.operator": "ida",
+    "sluice.operator": "ida",
+    "osk.helped": true,
+    "diagram.meme.lift": 1.0,
+    "diagram.meme.brace": 1.0,
+    "ida.meme.lift": 1.0,
+    "ida.meme.brace": 1.0,
+    "ren.meme.lift": 0.0,
+    "ren.meme.brace": 0.0
+  },
+  "entities": {
+    "valley": {
+      "kind": "group"
+    },
+    "ida": {
+      "kind": "character"
+    },
+    "ren": {
+      "kind": "character"
+    },
+    "osk": {
+      "kind": "character"
+    },
+    "diagram": {
+      "kind": "book"
+    },
+    "gate": {
+      "kind": "object"
+    },
+    "sluice": {
+      "kind": "object"
+    },
+    "grain": {
+      "kind": "object"
+    },
+    "lever": {
+      "kind": "object"
+    }
+  },
+  "events": [
+    {
+      "id": "e001",
+      "drama": "arrival",
+      "action": "encounter",
+      "actors": [
+        "ida",
+        "ren",
+        "osk"
+      ],
+      "before_hash": "90cc74ec41c4ccc4910fbf182137812a851fee0379cff7288fd7fc6eef7eeaf3",
+      "after_hash": "4e1aae0a048537ae51ab6580eeec83357ce784c6db10f4e99bce7318c71a6d06",
+      "changes": {
+        "valley.stage": {
+          "before": 0,
+          "after": 1
+        }
+      },
+      "reads": {
+        "valley.stage": 0
+      },
+      "causes": [],
+      "transfers": [],
+      "checks": [
+        "Type of valley.stage is preserved"
+      ]
+    },
+    {
+      "id": "e002",
+      "drama": "accusation",
+      "action": "encounter",
+      "actors": [
+        "ida",
+        "ren",
+        "osk"
+      ],
+      "before_hash": "4e1aae0a048537ae51ab6580eeec83357ce784c6db10f4e99bce7318c71a6d06",
+      "after_hash": "22213d0dc282fdc2b7bd7453c5cf80c34f82b1f078cd5794c3707c97042c48a1",
+      "changes": {
+        "valley.stage": {
+          "before": 1,
+          "after": 2
+        },
+        "lever.user": {
+          "before": "osk",
+          "after": "ida"
+        }
+      },
+      "reads": {
+        "lever.user": "osk",
+        "valley.stage": 1
+      },
+      "causes": [
+        "e001"
+      ],
+      "transfers": [],
+      "checks": [
+        "Type of lever.user is preserved",
+        "Type of valley.stage is preserved"
+      ]
+    },
+    {
+      "id": "e003",
+      "drama": "diagram",
+      "action": "encounter",
+      "actors": [
+        "ida",
+        "ren",
+        "osk"
+      ],
+      "before_hash": "22213d0dc282fdc2b7bd7453c5cf80c34f82b1f078cd5794c3707c97042c48a1",
+      "after_hash": "88a5ee2052b1f44826e652a9b10d8c4b2bb71ea332be2d3fe5b68efe95dc0e48",
+      "changes": {
+        "valley.stage": {
+          "before": 2,
+          "after": 3
+        },
+        "ida.meme.lift": {
+          "before": 0.0,
+          "after": 1.0
+        },
+        "ida.meme.brace": {
+          "before": 0.0,
+          "after": 1.0
+        }
+      },
+      "reads": {
+        "diagram.accessible": true,
+        "ida.distracted": false,
+        "diagram.location": "mill",
+        "ida.location": "mill",
+        "diagram.meme.lift": 1.0,
+        "diagram.meme.brace": 1.0,
+        "ida.meme.lift": 0.0,
+        "ida.meme.brace": 0.0,
+        "valley.stage": 2
+      },
+      "causes": [
+        "e002"
+      ],
+      "transfers": [
+        {
+          "source": "diagram",
+          "target": "ida",
+          "divisor": 1,
+          "content": {
+            "lift": 1.0,
+            "brace": 1.0
+          }
+        }
+      ],
+      "checks": [
+        "Both transmission endpoints exist",
+        "Transmission endpoints share a location",
+        "The source book is physically accessible",
+        "The source actually carries the content",
+        "Content has a physical carrier",
+        "Type of ida.meme.lift is preserved",
+        "Type of ida.meme.brace is preserved",
+        "Type of valley.stage is preserved"
+      ]
+    },
+    {
+      "id": "e004",
+      "drama": "small_trial",
+      "action": "supported lift trial",
+      "actors": [
+        "ida"
+      ],
+      "before_hash": "88a5ee2052b1f44826e652a9b10d8c4b2bb71ea332be2d3fe5b68efe95dc0e48",
+      "after_hash": "b8941508706d021157c502ffc5c09f82fe6e27f9522bbe363db8639998cdc265",
+      "changes": {
+        "sluice.tested": {
+          "before": false,
+          "after": true
+        },
+        "ida.applied": {
+          "before": false,
+          "after": true
+        },
+        "sluice.effort": {
+          "before": 0,
+          "after": 4
+        }
+      },
+      "reads": {
+        "ida.location": "mill",
+        "sluice.location": "mill",
+        "ida.meme.lift": 1.0,
+        "ida.meme.brace": 1.0,
+        "sluice.tested": false,
+        "lever.user": "ida",
+        "lever.location": "mill",
+        "ida.force": 2,
+        "lever.advantage": 2,
+        "ida.applied": false,
+        "sluice.operator": "ida",
+        "sluice.effort": 0,
+        "sluice.load": 20,
+        "ida.observed_success": false
+      },
+      "causes": [
+        "e002",
+        "e003"
+      ],
+      "transfers": [],
+      "checks": [
+        "Supported mechanism exists",
+        "Learner reaches the mechanism",
+        "Learner knows the complete instruction",
+        "This mechanism has not been tested",
+        "Bound learner has temporary use of the lever",
+        "Lever is physically present with the learner",
+        "Type of ida.applied is preserved",
+        "Type of sluice.operator is preserved",
+        "Type of sluice.tested is preserved",
+        "Type of sluice.effort is preserved",
+        "Type of ida.observed_success is preserved"
+      ]
+    },
+    {
+      "id": "e005",
+      "drama": "small_trial",
+      "action": "encounter",
+      "actors": [
+        "ida",
+        "ren",
+        "osk"
+      ],
+      "before_hash": "b8941508706d021157c502ffc5c09f82fe6e27f9522bbe363db8639998cdc265",
+      "after_hash": "d46f69383ff89583b10da780e5bb2cb947a85564c04ff249aeef126e95e3fd78",
+      "changes": {
+        "valley.stage": {
+          "before": 3,
+          "after": 4
+        }
+      },
+      "reads": {
+        "valley.stage": 3
+      },
+      "causes": [
+        "e003"
+      ],
+      "transfers": [],
+      "checks": [
+        "Type of valley.stage is preserved"
+      ]
+    },
+    {
+      "id": "e006",
+      "drama": "inspection",
+      "action": "encounter",
+      "actors": [
+        "ida",
+        "ren",
+        "osk"
+      ],
+      "before_hash": "d46f69383ff89583b10da780e5bb2cb947a85564c04ff249aeef126e95e3fd78",
+      "after_hash": "1be834faf08276d495ce957f3306b026a374e3aa2f4d5145b644686479629dec",
+      "changes": {
+        "valley.stage": {
+          "before": 4,
+          "after": 5
+        },
+        "valley.blamed_ren": {
+          "before": true,
+          "after": false
+        },
+        "ida.saw_pin": {
+          "before": false,
+          "after": true
+        }
+      },
+      "reads": {
+        "ida.location": "mill",
+        "gate.location": "mill",
+        "gate.pin_bent": true,
+        "ida.saw_pin": false,
+        "valley.blamed_ren": true,
+        "valley.stage": 4
+      },
+      "causes": [
+        "e005"
+      ],
+      "transfers": [],
+      "checks": [
+        "Observer is present with the observed subject",
+        "Observation preserves subject and observer roles",
+        "Type of ida.saw_pin is preserved",
+        "Type of valley.blamed_ren is preserved",
+        "Type of valley.stage is preserved"
+      ]
+    },
+    {
+      "id": "e007",
+      "drama": "repair",
+      "action": "supported lift trial",
+      "actors": [
+        "ida",
+        "osk"
+      ],
+      "before_hash": "1be834faf08276d495ce957f3306b026a374e3aa2f4d5145b644686479629dec",
+      "after_hash": "534ae7a296559b77b6a9b0dd485b701606b4dbc11fae3665363267517d28f776",
+      "changes": {
+        "valley.water": {
+          "before": 3,
+          "after": 0
+        },
+        "gate.jammed": {
+          "before": true,
+          "after": false
+        },
+        "gate.tested": {
+          "before": false,
+          "after": true
+        },
+        "gate.open": {
+          "before": false,
+          "after": true
+        },
+        "ida.observed_success": {
+          "before": false,
+          "after": true
+        },
+        "gate.effort": {
+          "before": 0,
+          "after": 10
+        },
+        "osk.helped": {
+          "before": false,
+          "after": true
+        }
+      },
+      "reads": {
+        "ida.location": "mill",
+        "gate.location": "mill",
+        "ida.meme.lift": 1.0,
+        "ida.meme.brace": 1.0,
+        "gate.tested": false,
+        "lever.user": "ida",
+        "lever.location": "mill",
+        "ida.force": 2,
+        "lever.advantage": 2,
+        "osk.willing": true,
+        "osk.location": "mill",
+        "osk.force": 3,
+        "osk.helped": false,
+        "ida.applied": true,
+        "gate.operator": "ida",
+        "gate.effort": 0,
+        "gate.load": 8,
+        "ida.observed_success": false,
+        "gate.jammed": true,
+        "gate.open": false,
+        "valley.water": 3
+      },
+      "causes": [
+        "e002",
+        "e003",
+        "e004"
+      ],
+      "transfers": [],
+      "checks": [
+        "Supported mechanism exists",
+        "Learner reaches the mechanism",
+        "Learner knows the complete instruction",
+        "This mechanism has not been tested",
+        "Bound learner has temporary use of the lever",
+        "Lever is physically present with the learner",
+        "Helper reaches the load",
+        "Type of osk.helped is preserved",
+        "Type of ida.applied is preserved",
+        "Type of gate.operator is preserved",
+        "Type of gate.tested is preserved",
+        "Type of gate.effort is preserved",
+        "Type of ida.observed_success is preserved",
+        "Type of gate.jammed is preserved",
+        "Type of gate.open is preserved",
+        "Type of valley.water is preserved"
+      ]
+    },
+    {
+      "id": "e008",
+      "drama": "repair",
+      "action": "encounter",
+      "actors": [
+        "ida",
+        "ren",
+        "osk"
+      ],
+      "before_hash": "534ae7a296559b77b6a9b0dd485b701606b4dbc11fae3665363267517d28f776",
+      "after_hash": "7118a4d6fa70709d721fa6bb6afeff5fc773ae9f39baacd7c78f5fcebe810fda",
+      "changes": {
+        "valley.stage": {
+          "before": 5,
+          "after": 6
+        }
+      },
+      "reads": {
+        "valley.stage": 5
+      },
+      "causes": [
+        "e006"
+      ],
+      "transfers": [],
+      "checks": [
+        "Type of valley.stage is preserved"
+      ]
+    },
+    {
+      "id": "e009",
+      "drama": "ending",
+      "action": "encounter",
+      "actors": [
+        "ida",
+        "ren",
+        "osk"
+      ],
+      "before_hash": "7118a4d6fa70709d721fa6bb6afeff5fc773ae9f39baacd7c78f5fcebe810fda",
+      "after_hash": "af3e0dfeb109692ee871cffe1c54c68268c42057caac3147ad8ff88417a1230e",
+      "changes": {
+        "valley.ended": {
+          "before": false,
+          "after": true
+        },
+        "valley.outcome": {
+          "before": "",
+          "after": "grain_saved"
+        },
+        "valley.stage": {
+          "before": 6,
+          "after": 7
+        },
+        "lever.user": {
+          "before": "ida",
+          "after": "osk"
+        }
+      },
+      "reads": {
+        "gate.open": true,
+        "valley.outcome": "",
+        "lever.user": "ida",
+        "valley.ended": false,
+        "valley.stage": 6
+      },
+      "causes": [
+        "e002",
+        "e007",
+        "e008"
+      ],
+      "transfers": [],
+      "checks": [
+        "Type of valley.outcome is preserved",
+        "Type of lever.user is preserved",
+        "Type of valley.ended is preserved",
+        "Type of valley.stage is preserved"
+      ]
+    }
+  ],
+  "choices": [
+    {
+      "selected": "arrival",
+      "eligible": [
+        "arrival"
+      ],
+      "priority": 10,
+      "state_hash": "90cc74ec41c4ccc4910fbf182137812a851fee0379cff7288fd7fc6eef7eeaf3"
+    },
+    {
+      "selected": "accusation",
+      "eligible": [
+        "accusation"
+      ],
+      "priority": 10,
+      "state_hash": "4e1aae0a048537ae51ab6580eeec83357ce784c6db10f4e99bce7318c71a6d06"
+    },
+    {
+      "selected": "diagram",
+      "eligible": [
+        "diagram"
+      ],
+      "priority": 10,
+      "state_hash": "22213d0dc282fdc2b7bd7453c5cf80c34f82b1f078cd5794c3707c97042c48a1"
+    },
+    {
+      "selected": "small_trial",
+      "eligible": [
+        "small_trial"
+      ],
+      "priority": 10,
+      "state_hash": "88a5ee2052b1f44826e652a9b10d8c4b2bb71ea332be2d3fe5b68efe95dc0e48"
+    },
+    {
+      "selected": "inspection",
+      "eligible": [
+        "inspection"
+      ],
+      "priority": 10,
+      "state_hash": "d46f69383ff89583b10da780e5bb2cb947a85564c04ff249aeef126e95e3fd78"
+    },
+    {
+      "selected": "repair",
+      "eligible": [
+        "repair"
+      ],
+      "priority": 10,
+      "state_hash": "1be834faf08276d495ce957f3306b026a374e3aa2f4d5145b644686479629dec"
+    },
+    {
+      "selected": "ending",
+      "eligible": [
+        "ending"
+      ],
+      "priority": 10,
+      "state_hash": "7118a4d6fa70709d721fa6bb6afeff5fc773ae9f39baacd7c78f5fcebe810fda"
+    }
+  ],
+  "paragraphs": [
+    {
+      "text": "By breakfast the mill pond had swallowed the bottom step of the grain store. Ida counted forty sacks through the open door; each represented a family's winter bread. The gate should have released the pond into the empty meadow, but its wheel would not turn. Ren, who had arrived in the valley only last week, stood beside it with wet boots. His bandaged wrist could not lift a heavy load, but he wanted to drag the sacks upstairs before the water reached them.",
+      "evidence": [
+        "e001"
+      ],
+      "reveals": [
+        "grain.sacks",
+        "gate.jammed",
+        "ren.can_lift"
+      ],
+      "id": "arrival.1",
+      "drama": "arrival"
+    },
+    {
+      "text": "Osk planted his long iron lever against the wall. 'We never had this trouble before you came,' he told Ren. Ida disliked how easily the words crossed the yard. She asked to borrow the lever and Osk handed it over, though it remained his tool. Ren took his hands from the wheel. With no one touching it, water continued to press against the gate; the accusation had changed the company in the yard, but had changed nothing beneath the pond.",
+      "evidence": [
+        "e002"
+      ],
+      "reveals": [
+        "lever.owner",
+        "lever.user",
+        "valley.blamed_ren"
+      ],
+      "id": "accusation.1",
+      "drama": "accusation"
+    },
+    {
+      "text": "Ida opened the maintenance diagram beside the wheel. Its two drawings showed a small upward lift before a brace could slide beneath the gate's weight. She followed both lines with her finger, shutting out the calls from the store. By the time she closed the cover, she could repeat both steps without looking.",
+      "evidence": [
+        "e003"
+      ],
+      "reveals": [
+        "diagram.accessible",
+        "ida.distracted",
+        "ida.meme.lift",
+        "ida.meme.brace"
+      ],
+      "id": "diagram.1",
+      "drama": "diagram"
+    },
+    {
+      "text": "Ida followed the diagram at the washing sluice, placing the lever under the plate and preparing a stone brace. She pressed until the shaft trembled, but the plate never lifted enough to take the stone. The resistance exceeded what her hands and the lever could supply. She released the handle carefully. Ren looked into the dry trough; the instructions had reached Ida, but no water had reached the trough.",
+      "evidence": [
+        "e004",
+        "e005"
+      ],
+      "reveals": [
+        "sluice.open",
+        "sluice.tested"
+      ],
+      "id": "small_trial.1",
+      "drama": "small_trial"
+    },
+    {
+      "text": "Ren lay flat on the walkway and held Ida's sleeve while she reached beneath the gate housing. She brought up a bent retaining pin, still fixed at one end, with a bright scrape where it caught the runner. Osk bent down to look. 'That was worn before he arrived,' Ida said. Osk withdrew his accusation aloud. Ren was cleared, but the bent pin still caught the runner. Their new agreement had not repaired the iron.",
+      "evidence": [
+        "e006"
+      ],
+      "reveals": [
+        "gate.pin_bent",
+        "ida.saw_pin",
+        "valley.blamed_ren"
+      ],
+      "id": "inspection.1",
+      "drama": "inspection"
+    },
+    {
+      "text": "Ida placed Osk's lever beneath the runner and applied the lifting sequence she had read. This time Osk took the weight while she pushed a block into the gap. Together they eased the runner past the bent pin. The gate rose, and water rushed toward the meadow. Ren stood back from the torrent, grinning; the pin remained crooked, but it could no longer hold the gate shut.",
+      "evidence": [
+        "e007",
+        "e008"
+      ],
+      "reveals": [
+        "gate.open",
+        "gate.jammed",
+        "osk.helped",
+        "ida.applied"
+      ],
+      "id": "repair.1",
+      "drama": "repair"
+    },
+    {
+      "text": "By evening all forty sacks stood dry in the store. Ida returned the lever to Osk, and Ren chalked a warning beside the bent pin so tomorrow's repairer would find it. No one called him the cause of the flood again. Across the meadow the released water shone between the grass stems. In the quiet store, Ren sat on the bottom step tying a broken sack cord; this time the step was above water.",
+      "evidence": [
+        "e009"
+      ],
+      "reveals": [
+        "grain.sacks",
+        "grain.dry",
+        "lever.user",
+        "gate.pin_bent"
+      ],
+      "id": "ending.1",
+      "drama": "ending"
+    }
+  ],
+  "qa": [
+    {
+      "question": "What was Ida trying to protect?",
+      "answer": "Ida wanted to protect forty sacks of grain in the store. Those sacks represented the families’ winter bread.",
+      "facts": [
+        {
+          "event": "e001",
+          "key": "grain.sacks",
+          "value": 40
+        }
+      ]
+    },
+    {
+      "question": "Whose lever did Ida borrow?",
+      "answer": "The long iron lever belonged to Osk, who handed it to Ida. Borrowing the tool left its ownership with him.",
+      "facts": [
+        {
+          "event": "e002",
+          "key": "lever.owner",
+          "value": "osk"
+        }
+      ]
+    },
+    {
+      "question": "What physically stopped the gate?",
+      "answer": "A bent retaining pin caught the runner beneath the gate housing. Clearing Ren’s name did not straighten that piece of iron.",
+      "facts": [
+        {
+          "event": "e006",
+          "key": "gate.pin_bent",
+          "value": true
+        }
+      ]
+    },
+    {
+      "question": "How did the accusation change?",
+      "answer": "Osk withdrew his accusation after Ida showed him the bent pin. Ren was cleared while the mechanical obstruction still remained.",
+      "facts": [
+        {
+          "event": "e006",
+          "key": "valley.blamed_ren",
+          "value": false
+        }
+      ]
+    },
+    {
+      "question": "What happened at the small sluice?",
+      "answer": "Ida applied the instructions but could not overcome the small plate’s resistance. The washing trough stayed dry after the failed physical trial.",
+      "facts": [
+        {
+          "event": "e005",
+          "key": "sluice.open",
+          "value": false
+        }
+      ]
+    },
+    {
+      "question": "How much grain remained dry at the end?",
+      "answer": "All forty sacks remained dry after the gate released the pond. Ren could sit on the bottom step above the water.",
+      "facts": [
+        {
+          "event": "e009",
+          "key": "grain.sacks",
+          "value": 40
+        }
+      ]
+    },
+    {
+      "question": "Why did the heavy-gate attempt end that way?",
+      "answer": "The gate opened because Ida applied the sequence with Osk supplying enough additional force. Their combined effort let them brace the runner past the pin.",
+      "facts": [
+        {
+          "event": "e008",
+          "key": "gate.open",
+          "value": true
+        }
+      ]
+    }
+  ]
+}

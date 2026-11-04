@@ -1,0 +1,95 @@
+# Story-First Mini-Adventure Authoring Brief, v1
+
+You are an author/programmer in a two-agent experiment. Create a new playable
+scenario, not another version of The Smallest Sea. Another agent works in
+parallel in a different pack. Edit your assigned files directly; do not commit,
+revert another worker's changes, launch agents, or make paid API calls.
+
+Assignment fields: {{PACK}}, {{SEED}}, {{SETTING}}, {{PROP}}, {{WANT}}.
+Write ownership: `storyscenes/mini_adventures/{{PACK}}/` only. Parent owns the
+shared runner, global inventory, evaluation harness, and top-level docs.
+You may read the entire repository and reuse its engines/libraries. Implement
+new scenario rules/helpers in your pack. Propose reusable library/engine changes
+in `LIBRARY_PROPOSALS.md` with a concrete consumer and regression test; the
+parent integrates shared changes so parallel workers cannot overwrite them.
+
+## Read First
+
+- Root `AGENTS.md`, `story.py` (design principles), and
+  `storyscenes/MINI_ADVENTURES.md`.
+- `storyscenes/smallest_sea.py`, `smallest_sea_prose.py`, and
+  `test_smallest_sea.py` for the working two-level prototype.
+- `storyscenes/runtime.py` for atomic local transitions. Reuse it; do not build
+  an unrelated engine or import the failed long-plot engine by default.
+- `storyscenes/EXPERIMENT_RETROSPECTIVE.md` for why passing tests and judge scores
+  did not prove good prose or diversity.
+
+## Workflow
+
+1. Save `reference_story.md`: 900-1,100 words of coherent prose from your seed
+   ingredients. Write it FIRST, with ordinary wants, dialogue, a complication,
+   a consequential choice, and an earned ending image. No inventory-style prose.
+   Hidden scene markers are allowed. Do not pad it to satisfy the count.
+2. Save `scene_inventory.json`: roughly 20 encounters. Each entry must have an
+   ID, role (opening/core/optional/branch/ending), location, state prerequisites,
+   local actions, persistent consequences, prose obligations, and implementation
+   status. It may map combined reference beats to one implemented scene; explain
+   that mapping. Do not mark unimplemented encounters executable.
+3. Implement a pack that selects 7- or 8-scene COMPLETE stories from compatible
+   scenes, with approximately 40-70 words per scene. Write shorter routes to read
+   well, rather than selecting arbitrary paragraphs from the reference.
+4. Each scene is a little play: guarded actions change persistent physical or
+   character state, then prose reflects what actually happened. Actions such as
+   entering/exiting, opening, carrying, lending, observing, and fixing must be
+   possible in the current state. Omitted scenes cannot secretly execute effects.
+5. Include at least two optional vignettes and two meaningfully different
+   outcomes (not simply different final adjectives). Endings must follow the
+   selected middle. Use 4-8 consequential parameter dimensions, with validated
+   inputs and at least two cross-scene consequences. Do not maximize text counts
+   through names/synonyms or a menu of prewritten whole stories.
+6. Keep the simulator bounded and deterministic. Use seeded selection, explicit
+   state and atomic transitions; no LLM at generation time. Preserve failed
+   attempts in local traces when they matter. Reject illegal requested scenes
+   without mutating the caller's state.
+7. Add focused tests, generate first-draw examples, read them, and record honest
+   limitations. Do not silently filter poor samples or transfer a grade from a
+   different batch. Parent will review and return concrete revision requests.
+
+## Integration Contract
+
+Create `__init__.py`, `world.py`, and `test_world.py` inside your pack, with prose
+in a separate module if useful. `world.py` must expose:
+
+- `Parameters`: keyword-only dataclass; `parameters(seed)` samples it.
+- `initial(params)`, `validate(state)`, `SCENES` (unique scene IDs),
+  `guard(scene_id, state)`, `play_scene(params, state, scene_id)`.
+- `generate(seed=0, *, count=8, params=None)` returns a JSON-serializable dict
+  with `seed`, `parameters`, `scene_count`, `path`, `story`, `episodes`,
+  `final_state`, and `search_attempts`.
+- Each episode has `id`, `before`, `after`, `events`, `text`. Each event has
+  `action`, `requires`, and `changes` mapping keys to `{before, after}`.
+- `replay(params, path)` returns episodes with exactly the saved states, events,
+  and prose (dataclasses or dicts). `generate` must use the same scene execution.
+- Keep trace values JSON-native (including nested collections). No discarded
+  speculative branch may leak into the saved result. Final state must explicitly
+  record the outcome in `story.outcome` and completion in `story.ended`.
+- `python -m storyscenes.mini_adventures.{{PACK}}.world --seed 0 --scenes 8`
+  prints a story. The parent supplies cross-pack export and snapshotting.
+
+Tests should cover both lengths over 100 seeds, exact replay, rejection without
+mutation, optional-scene omission, spatial/prop continuity, outcome compatibility,
+parameter validation, and counterfactuals for cross-scene consequences. Specific
+branch tests are more informative than only counting successful samples.
+
+## Parallel Communication And Reporting
+
+Write `PROGRESS.md` in your pack at milestones: reference complete, simulator
+complete, tests complete. This is your messageboard lane. Read the experiment's
+`BOARD.md` for shared notices. Use `LIBRARY_PROPOSALS.md` for integration requests;
+do not edit another agent's files or wait for their scenario to exist.
+
+Finish each round with commands/results, changed paths, known defects, evidence
+of meaningful outcomes, and any shared-library proposal. Reports are evidence,
+not substitutes for working files. Preserve the reference and do not overwrite
+previous parent-frozen round outputs. No claims of human approval or calibrated
+literary quality. Expect three review/revision rounds, possibly up to five.

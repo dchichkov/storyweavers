@@ -1,0 +1,204 @@
+{
+  "scenes": [
+    {
+      "id": "arrive_at_theatre",
+      "role": "Establish Leni's wish for an orderly rehearsal and Jo's wish to include Ivo.",
+      "location": "School puppet theatre",
+      "prerequisites": [],
+      "actions": ["Set up after the bell", "Notice that rehearsal cannot proceed as planned"],
+      "consequences": ["The friends have a shared reason to help, with different priorities."],
+      "prose_obligations": ["Distinguish Leni's practical voice from Jo's playful, considerate one."],
+      "implemented_ids": []
+    },
+    {
+      "id": "ask_for_the_kit",
+      "role": "Borrow the sewing kit with permission and a promise to return it.",
+      "location": "Stage and costume workroom",
+      "prerequisites": ["The friends are at the theatre; the kit belongs to Mrs. Bell."],
+      "actions": ["Ask Mrs. Bell", "Carry the kit to the stage"],
+      "consequences": ["Kit custody changes to the friends; its return remains owed."],
+      "prose_obligations": ["Show the borrowing as a useful, ordinary act, not a transfer of ownership."],
+      "implemented_ids": ["borrow_kit"]
+    },
+    {
+      "id": "discover_the_missing_moon",
+      "role": "Make the lost prop a concrete obstacle to the boat story.",
+      "location": "Puppet stage",
+      "prerequisites": ["The rehearsal is waiting; the moon is caught at the curtain."],
+      "actions": ["Search the table and floor", "Notice felt under the curtain"],
+      "consequences": ["The crescent is found, but its cloth loop is torn."],
+      "prose_obligations": ["Keep the felt whole and the attachment damaged; do not invent a second prop."],
+      "implemented_ids": ["find_moon"]
+    },
+    {
+      "id": "free_the_crescent",
+      "role": "Consolidated physical recovery encounter; curtain weight changes how the friends free the prop.",
+      "location": "Curtain and stage wing",
+      "prerequisites": ["The friends have borrowed the kit and can reach the curtain."],
+      "actions": ["Part a light curtain, or hold a heavy one gathered", "Lift the moon from the fold"],
+      "consequences": ["The prop moves from the curtain to the friends; the curtain remains in a plausible position."],
+      "prose_obligations": ["Narrate only the handling that explains the recovery."],
+      "implemented_ids": ["find_moon"]
+    },
+    {
+      "id": "inspect_the_torn_loop",
+      "role": "Establish what needs repair before selecting a method.",
+      "location": "Stage table",
+      "prerequisites": ["The moon has been recovered; the borrowed kit is present."],
+      "actions": ["Turn the felt over", "Inspect the torn cloth loop"],
+      "consequences": ["The repair is explicitly marked as attempted only in the repair encounter."],
+      "prose_obligations": ["Do not claim a secure attachment before the test."],
+      "implemented_ids": ["repair_moon"]
+    },
+    {
+      "id": "look_for_a_spare_button",
+      "role": "Optional vignette: Jo checks the kit lining for an anchor that could replace a cracked button.",
+      "location": "Stage table",
+      "prerequisites": ["The moon is found and has not yet been repaired."],
+      "actions": ["Check the sewing kit's lining", "Find a spare button or confirm there is none"],
+      "consequences": ["Only this enacted vignette makes the spare button available to the repair."],
+      "prose_obligations": ["If omitted, the button remains in the kit and must not appear in use."],
+      "implemented_ids": ["button_vignette"]
+    },
+    {
+      "id": "compare_needle_and_thread",
+      "role": "Consolidated with loop inspection and repair choice; parameter values constrain the stitch that can be made.",
+      "location": "Stage table",
+      "prerequisites": ["The kit is borrowed and the torn loop is visible."],
+      "actions": ["Check needle and thread", "Choose a secure stitch, temporary knot, or shadow fallback"],
+      "consequences": ["Sharpness, thread length, button condition, spare-button discovery, and time determine repair quality."],
+      "prose_obligations": ["Give the material limits an ordinary reason; never describe a failed stitch as secure."],
+      "implemented_ids": ["repair_moon"]
+    },
+    {
+      "id": "hear_ivo_whisper",
+      "role": "Optional vignette: Jo listens to Ivo's worry about being watched and invites him to choose his role.",
+      "location": "Behind the stage curtain",
+      "prerequisites": ["The moon is recovered and repair has not begun."],
+      "actions": ["Hear the whisper", "Respond without grabbing the rod"],
+      "consequences": ["Ivo's confidence persists into stage setup and can enable the rod performance."],
+      "prose_obligations": ["Do not grant confidence if this optional encounter was omitted."],
+      "implemented_ids": ["whisper_vignette"]
+    },
+    {
+      "id": "choose_the_repair",
+      "role": "Give Leni a consequential choice between a lasting stitch, a temporary tie, and an alternate use of the kit.",
+      "location": "Stage table",
+      "prerequisites": ["The loop has been inspected; the kit remains with the friends."],
+      "actions": ["Use a sound or spare button, reinforce with a cloth loop if time permits, tie a temporary attachment, or cut a shadow scrap"],
+      "consequences": ["The state records the actual repair quality and the kit's usefulness."],
+      "prose_obligations": ["The shadow fallback must follow an enacted tool use, not an invisible repair."],
+      "implemented_ids": ["repair_moon"]
+    },
+    {
+      "id": "stitch_or_tie",
+      "role": "Consolidated repair play: local actions enact the selected stitch and retain physical attachment state.",
+      "location": "Stage table",
+      "prerequisites": ["The moon is found; repair has not already been attempted."],
+      "actions": ["Sew a secure loop", "Make a temporary tie", "Or prepare a cloth scrap when no reliable fastener is available"],
+      "consequences": ["The later test, not intention alone, determines whether the prop holds."],
+      "prose_obligations": ["Do not imply that every kit or parameter combination makes a durable repair."],
+      "implemented_ids": ["repair_moon"]
+    },
+    {
+      "id": "test_the_moon",
+      "role": "Test the repaired prop before choosing the rehearsal form.",
+      "location": "Puppet stage",
+      "prerequisites": ["A repair attempt has been recorded."],
+      "actions": ["Lift and gently move the rod", "Observe whether the loop holds or gives way"],
+      "consequences": ["A secure stitch remains on the rod; a weak or absent repair leaves the moon in hand."],
+      "prose_obligations": ["Report only the test outcome recorded in state."],
+      "implemented_ids": ["test_moon"]
+    },
+    {
+      "id": "respond_to_a_snapped_tack",
+      "role": "Consolidated into the test encounter; failure changes the prop's location and the available stage plan.",
+      "location": "Puppet stage",
+      "prerequisites": ["The repair was temporary or absent."],
+      "actions": ["Catch the loose moon", "Stop treating the rod attachment as reliable"],
+      "consequences": ["The moon is safely on the table for an improvised shadow scene."],
+      "prose_obligations": ["Let failure be disappointing without turning it into a dead end."],
+      "implemented_ids": ["test_moon"]
+    },
+    {
+      "id": "let_ivo_choose",
+      "role": "Carry Ivo's earlier confidence, or lack of it, into the stage arrangement.",
+      "location": "Puppet stage",
+      "prerequisites": ["The prop has been tested."],
+      "actions": ["Offer the rod when the repair holds and Ivo feels ready", "Otherwise arrange a shadow performance"],
+      "consequences": ["The chosen mode reflects both physical repair and Ivo's established motive."],
+      "prose_obligations": ["Do not treat shyness as a defect that must be cured before the story can end."],
+      "implemented_ids": ["set_stage"]
+    },
+    {
+      "id": "arrange_the_curtain",
+      "role": "Use the stage's actual curtain position to prepare the selected performance.",
+      "location": "Puppet stage",
+      "prerequisites": ["The test is complete; stage mode is not yet set."],
+      "actions": ["Open the curtain for the rod cue", "Or leave a half-screen for the shadow scene"],
+      "consequences": ["The curtain and moon occupy locations consistent with the selected mode."],
+      "prose_obligations": ["Do not claim an audience sees a performance before the ending scene."],
+      "implemented_ids": ["set_stage"]
+    },
+    {
+      "id": "prepare_the_shadow_scrap",
+      "role": "A fallback prepared with the kit or stage curtain, not a hidden repair.",
+      "location": "Puppet stage",
+      "prerequisites": ["The repair failed, or Ivo has not chosen to operate the rod."],
+      "actions": ["Move the loose moon into Ivo's hand", "Set a half-screen"],
+      "consequences": ["The prop can still contribute to a complete shadow rehearsal."],
+      "prose_obligations": ["Keep the fallback concrete and emotionally complete."],
+      "implemented_ids": ["set_stage"]
+    },
+    {
+      "id": "perform_the_moon_cue",
+      "role": "Ending: Ivo operates a tested, secure moon puppet with his friends supporting the scene.",
+      "location": "Puppet stage",
+      "prerequisites": ["Secure repair holds; Ivo has been heard; rod mode is prepared."],
+      "actions": ["Perform the moon cue", "Return the sewing kit", "Close the rehearsal outcome"],
+      "consequences": ["The rehearsal is completed with the puppet; the borrowed kit is useful and returned."],
+      "prose_obligations": ["Credit Ivo's choice and the friends' collaboration, not a magically invisible repair."],
+      "implemented_ids": ["ending_rod"]
+    },
+    {
+      "id": "perform_the_shadow_scene",
+      "role": "Ending: complete the rehearsal as a shadow story when the prop will not hold or Ivo prefers not to work the rod.",
+      "location": "Puppet stage",
+      "prerequisites": ["Shadow mode is prepared and the moon is in Ivo's hand."],
+      "actions": ["Perform a complete shadow scene", "Return the sewing kit", "Close the rehearsal outcome"],
+      "consequences": ["The planned rod performance is replaced by an enacted, finished alternative."],
+      "prose_obligations": ["If the repair failed, acknowledge it; end with the characters' completed work, not a conditional future plan."],
+      "implemented_ids": ["ending_shadow"]
+    },
+    {
+      "id": "return_the_borrowed_kit",
+      "role": "Honor the loan after using the kit to repair the moon or prepare the fallback.",
+      "location": "Costume workroom",
+      "prerequisites": ["A performance has been completed; the friends still have the kit."],
+      "actions": ["Carry the kit back to Mrs. Bell", "Restore its ownership and location"],
+      "consequences": ["Custody ends and the kit's usefulness is acknowledged."],
+      "prose_obligations": ["Acknowledge use as well as return."],
+      "implemented_ids": ["ending_rod", "ending_shadow"]
+    },
+    {
+      "id": "thank_the_helpers",
+      "role": "Consolidated into the ending prose; make the emotional payoff arise from the chosen rehearsal, not a new unrecorded event.",
+      "location": "Puppet stage and workroom",
+      "prerequisites": ["Either performance has ended."],
+      "actions": ["Recognize the friends' help through the completed scene and dialogue"],
+      "consequences": ["The outcome records which form of rehearsal actually happened."],
+      "prose_obligations": ["Do not invent a later promise as if it were a completed outcome."],
+      "implemented_ids": ["ending_rod", "ending_shadow"]
+    },
+    {
+      "id": "close_the_rehearsal",
+      "role": "Mark the story finished only after performance and kit return.",
+      "location": "School puppet theatre",
+      "prerequisites": ["A performance is complete and the borrowed kit is back in the workroom."],
+      "actions": ["Record the completed outcome"],
+      "consequences": ["The final state is ended and carries a nonempty outcome."],
+      "prose_obligations": ["Both endings resolve the immediate rehearsal problem."],
+      "implemented_ids": ["ending_rod", "ending_shadow"]
+    }
+  ]
+}

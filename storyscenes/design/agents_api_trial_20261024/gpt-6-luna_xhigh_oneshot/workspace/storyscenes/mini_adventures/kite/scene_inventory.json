@@ -1,0 +1,209 @@
+{
+  "scenes": [
+    {
+      "id": "notice_june",
+      "role": "reference encounter; first sight of the new neighbour",
+      "location": "Willow Lane",
+      "prerequisites": ["Nia has a kite and wants company"],
+      "actions": ["Nia notices June at her gate"],
+      "consequences": ["Introduces the wish to include June"],
+      "prose_obligations": ["Make June a person, not a puzzle to solve"],
+      "implemented_ids": ["invite"]
+    },
+    {
+      "id": "choose_company",
+      "role": "motivation",
+      "location": "Willow Lane",
+      "prerequisites": ["Nia has decided to fly that afternoon"],
+      "actions": ["Nia chooses to ask June rather than fly alone"],
+      "consequences": ["Frames the central want"],
+      "prose_obligations": ["Show an ordinary, specific desire"],
+      "implemented_ids": ["invite"]
+    },
+    {
+      "id": "ask_tomas",
+      "role": "loan negotiation",
+      "location": "village kite workshop",
+      "prerequisites": ["The reel is at the workshop"],
+      "actions": ["Nia asks Tomas for the reel"],
+      "consequences": ["Makes the borrowing explicit"],
+      "prose_obligations": ["Tomas has a distinct, practical voice"],
+      "implemented_ids": ["workshop"]
+    },
+    {
+      "id": "borrow_reel",
+      "role": "essential object transfer",
+      "location": "village kite workshop",
+      "prerequisites": ["Tomas owns the reel"],
+      "actions": ["Tomas lends the reel for the afternoon"],
+      "consequences": ["The string is available for repair and flight; it must be returned"],
+      "prose_obligations": ["Establish care and actual usefulness, not just custody"],
+      "implemented_ids": ["workshop"]
+    },
+    {
+      "id": "leave_workshop",
+      "role": "consolidated transition",
+      "location": "workshop to lane",
+      "prerequisites": ["The reel has been borrowed"],
+      "actions": ["Nia carries the reel out"],
+      "consequences": ["The party reaches June without an extra episode"],
+      "prose_obligations": ["Do not imply travel if the scene is omitted"],
+      "implemented_ids": ["workshop"],
+      "consolidation": "Borrowing and leaving are atomic actions inside one executable scene."
+    },
+    {
+      "id": "approach_gate",
+      "role": "invitation setup",
+      "location": "Willow Lane",
+      "prerequisites": ["Nia has left the workshop"],
+      "actions": ["Nia approaches June's gate"],
+      "consequences": ["June gets to answer for herself"],
+      "prose_obligations": ["Avoid making shyness a defect"],
+      "implemented_ids": ["invite"]
+    },
+    {
+      "id": "quiet_invitation",
+      "role": "relationship turn",
+      "location": "Willow Lane",
+      "prerequisites": ["Nia has asked June to join"],
+      "actions": ["Nia offers a small, low-pressure outing"],
+      "consequences": ["June accepts and joins the afternoon"],
+      "prose_obligations": ["Dialogue changes how the invitation feels"],
+      "implemented_ids": ["invite"]
+    },
+    {
+      "id": "return_to_bench",
+      "role": "consolidated transition",
+      "location": "lane and workshop",
+      "prerequisites": ["June has accepted"],
+      "actions": ["They return to the workbench together"],
+      "consequences": ["June participates in preparation"],
+      "prose_obligations": ["Preserve who is physically with whom"],
+      "implemented_ids": ["prepare_kite"],
+      "consolidation": "Entering the workshop, checking the frame, and carrying the kite back out share one playable preparation encounter."
+    },
+    {
+      "id": "inspect_spar",
+      "role": "complication setup",
+      "location": "workshop bench",
+      "prerequisites": ["The kite is on the bench"],
+      "actions": ["The children check the bamboo frame"],
+      "consequences": ["A sound frame can be flown; a split one needs a repair"],
+      "prose_obligations": ["Let the physical condition matter"],
+      "implemented_ids": ["prepare_kite"]
+    },
+    {
+      "id": "lash_spar",
+      "role": "conditional repair",
+      "location": "workshop bench",
+      "prerequisites": ["A spar is split and the reel has enough spare line"],
+      "actions": ["Nia uses three metres of borrowed string to lash the spar"],
+      "consequences": ["The frame is repaired; usable flight line is shorter"],
+      "prose_obligations": ["Keep string conservation consistent"],
+      "implemented_ids": ["prepare_kite"]
+    },
+    {
+      "id": "balance_tail",
+      "role": "kite preparation",
+      "location": "workshop bench",
+      "prerequisites": ["The frame has been inspected"],
+      "actions": ["June and Nia fit a tail"],
+      "consequences": ["Tail weight changes the kite's chance of holding air"],
+      "prose_obligations": ["Make the preparation feel collaborative"],
+      "implemented_ids": ["prepare_kite"]
+    },
+    {
+      "id": "draw_blue_star",
+      "role": "optional vignette",
+      "location": "lane beside the workshop",
+      "prerequisites": ["June has accepted; the kite is not yet prepared"],
+      "actions": ["June adds a blue star and shares a small choice"],
+      "consequences": ["The mark persists; trust can change who handles the reel"],
+      "prose_obligations": ["Only mention the star when this encounter is enacted"],
+      "implemented_ids": ["vignette_mark"]
+    },
+    {
+      "id": "read_ribbon_wind",
+      "role": "optional vignette",
+      "location": "workshop weather pole",
+      "prerequisites": ["The kite is prepared; they have not gone to the common"],
+      "actions": ["June tests the wind with a ribbon"],
+      "consequences": ["A recorded observation can make June comfortable handling the reel"],
+      "prose_obligations": ["Do not grant this knowledge when the vignette is omitted"],
+      "implemented_ids": ["vignette_ribbon"]
+    },
+    {
+      "id": "walk_to_common",
+      "role": "essential transition",
+      "location": "village common",
+      "prerequisites": ["The kite is prepared"],
+      "actions": ["They carry kite and reel to an open field"],
+      "consequences": ["All three arrive together"],
+      "prose_obligations": ["Track the kite and borrowed reel"],
+      "implemented_ids": ["walk_to_commons"]
+    },
+    {
+      "id": "first_lift",
+      "role": "first attempt",
+      "location": "village common",
+      "prerequisites": ["The kite is rigged and June has joined"],
+      "actions": ["Nia pays out line while June holds the tail"],
+      "consequences": ["Wind, frame, tail, and available line determine the first lift"],
+      "prose_obligations": ["The reel must visibly do useful work"],
+      "implemented_ids": ["first_flight"]
+    },
+    {
+      "id": "gust_snag",
+      "role": "conditional complication",
+      "location": "hawthorn edge of the common",
+      "prerequisites": ["The kite has lifted and a strong gust catches the line"],
+      "actions": ["The children let out slack instead of yanking"],
+      "consequences": ["A controlled response can free the line without breaking it"],
+      "prose_obligations": ["Do not invent a snag in calm conditions"],
+      "implemented_ids": ["first_flight", "response"],
+      "consolidation": "The snag is staged in the first-lift scene and resolved in the response scene; it is conditional, not a separate executable scene."
+    },
+    {
+      "id": "ease_line",
+      "role": "local response",
+      "location": "village common",
+      "prerequisites": ["The first line check is complete"],
+      "actions": ["They free a snag or verify a clear line"],
+      "consequences": ["The children can make a safer second decision"],
+      "prose_obligations": ["Dialogue should show listening rather than command"],
+      "implemented_ids": ["response"]
+    },
+    {
+      "id": "offer_reel",
+      "role": "consequential choice",
+      "location": "village common",
+      "prerequisites": ["June has participated; the line is checked"],
+      "actions": ["Nia offers June the reel or the kite tail"],
+      "consequences": ["Shyness, trust, and wind observation shape the choice and safe flight"],
+      "prose_obligations": ["Both roles must give June real agency"],
+      "implemented_ids": ["response"]
+    },
+    {
+      "id": "second_run_or_grounding",
+      "role": "branching resolution",
+      "location": "village common",
+      "prerequisites": ["The children have made a safe decision"],
+      "actions": ["They fly together when conditions allow, otherwise finish the outing with the grounded kite"],
+      "consequences": ["Two complete outcomes; neither ending is an unfulfilled promise"],
+      "prose_obligations": ["A grounded kite can still be a shared success"],
+      "implemented_ids": ["ending_flight", "ending_grounded"],
+      "consolidation": "The selected ending performs the resolution and return actions locally."
+    },
+    {
+      "id": "rewind_and_return",
+      "role": "borrowed-object payoff",
+      "location": "common to village workshop",
+      "prerequisites": ["The outing has reached either ending"],
+      "actions": ["They rewind the loose line and return Tomas's reel"],
+      "consequences": ["Line is conserved, the loan ends, and its usefulness is acknowledged"],
+      "prose_obligations": ["Do not end with custody alone"],
+      "implemented_ids": ["ending_flight", "ending_grounded"],
+      "consolidation": "Landing or folding, walking back, returning the reel, and signing or displaying the kite are actions inside one ending episode."
+    }
+  ]
+}

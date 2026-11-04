@@ -1,0 +1,154 @@
+{
+  "metadata": {
+    "arm": "gpt-6.1-sol_agent",
+    "experiment": "storyscenes_authoring_20261024",
+    "request_id": "7104f14f-c3d3-4f4b-840d-8eebb2defb77"
+  },
+  "id": "sess_05b0eda741246bfb006add6d5760648194b24b888d79f2febe",
+  "object": "agent.session",
+  "created_at": 1792896343,
+  "last_active_at": 1792896343,
+  "status": "in_progress",
+  "required_actions": [],
+  "error": null,
+  "agent": {
+    "id": "agent_ab4c0d738a7d4228877e36604c0c04359a1e60e412694f4daf",
+    "name": null,
+    "model": "gpt-6.1-sol",
+    "reasoning": {
+      "effort": "low",
+      "summary": null
+    },
+    "text": {
+      "format": {
+        "type": "text"
+      },
+      "verbosity": "medium"
+    },
+    "service_tier": "flex",
+    "instructions": "Complete TASK.md. Work only in the supplied workspace. No network or paid calls. Save /workspace/outputs/bundle.json before finishing. Aim to finish in 12 minutes.",
+    "tools": [],
+    "multi_agent": {
+      "enabled": false,
+      "max_concurrent_subagents": null
+    }
+  },
+  "environment": {
+    "type": "openai_hosted",
+    "id": "ccarenv_b64_Y2NhcmVudl82YWRkNmQ1NzYzYzg4MTkxYjIzMDk5N2ZiNTE4M2Y0YQ",
+    "container_size": "small",
+    "packages": {
+      "python": [],
+      "system": [],
+      "npm": []
+    },
+    "network": {
+      "access": "disabled",
+      "allowed_domains": []
+    },
+    "desktop": {
+      "enabled": false
+    },
+    "capability_directories": [
+      "/opt/artifact-sdk/skills/documents",
+      "/opt/artifact-sdk/skills/presentations",
+      "/opt/artifact-sdk/skills/spreadsheets"
+    ],
+    "skills": [],
+    "plugins": [],
+    "files": [
+      {
+        "type": "inline",
+        "id": "cfile_21d94edc0dc749f3a88847382fc9254622705d0ec0344373ba",
+        "path": "/workspace/story.py",
+        "size_bytes": 21830
+      },
+      {
+        "type": "inline",
+        "id": "cfile_dc8047a50b2d4a0a87d444cba3a2ed463dce1213e86f4d0288",
+        "path": "/workspace/storyscenes/__init__.py",
+        "size_bytes": 74
+      },
+      {
+        "type": "inline",
+        "id": "cfile_dbfb02b85a5244e085a85635cdaa9f288ca1b6b8b6074d6db1",
+        "path": "/workspace/storyscenes/runtime.py",
+        "size_bytes": 14365
+      },
+      {
+        "type": "inline",
+        "id": "cfile_0fdb5f0b42ba42d5950b3ad3bfb6019107d0a52efa6d41d0aa",
+        "path": "/workspace/storyscenes/smallest_sea.py",
+        "size_bytes": 23918
+      },
+      {
+        "type": "inline",
+        "id": "cfile_6ccf69c41c9f49e2bc112d22b985ee5d0e7f1c9aa19f4b05b8",
+        "path": "/workspace/storyscenes/smallest_sea_prose.py",
+        "size_bytes": 10185
+      },
+      {
+        "type": "inline",
+        "id": "cfile_77b9afd3709e49b68f8c35dc4693f140d4fb0111d11b40fcae",
+        "path": "/workspace/storyscenes/test_smallest_sea.py",
+        "size_bytes": 11279
+      },
+      {
+        "type": "inline",
+        "id": "cfile_537c691ed57b4ccea28b7698ee2237eaea6b66cd193742c592",
+        "path": "/workspace/storyscenes/MINI_ADVENTURES.md",
+        "size_bytes": 10577
+      },
+      {
+        "type": "inline",
+        "id": "cfile_b7d87e689c944ebba99d61ec127a024d5ca0251dfd144b0f8e",
+        "path": "/workspace/storyscenes/EXPERIMENT_RETROSPECTIVE.md",
+        "size_bytes": 6129
+      },
+      {
+        "type": "inline",
+        "id": "cfile_11e98d4dc26f42b8aba1bc0a4d9c2ffe1fc30af208d346b29a",
+        "path": "/workspace/storyscenes/mini_adventures/__init__.py",
+        "size_bytes": 83
+      },
+      {
+        "type": "inline",
+        "id": "cfile_c476a49e607c494482cbbd1493d67ae89018219aaf174953a9",
+        "path": "/workspace/storyscenes/mini_adventures/local_play.py",
+        "size_bytes": 1832
+      },
+      {
+        "type": "inline",
+        "id": "cfile_0663d57fcd364e588aeac949c45b26d89d94fa59cb774708a6",
+        "path": "/workspace/storyscenes/mini_adventures/test_local_play.py",
+        "size_bytes": 5768
+      },
+      {
+        "type": "inline",
+        "id": "cfile_c4d9b6378ed0494a91f0c670ac1258f7158f43c76d0f44e8a9",
+        "path": "/workspace/storyscenes/mini_adventures/review.py",
+        "size_bytes": 10168
+      },
+      {
+        "type": "inline",
+        "id": "cfile_a616a2c30dd7490fa54fbab25723db798fc0f8782ab14c9b84",
+        "path": "/workspace/storyscenes/mini_adventures/inventory.py",
+        "size_bytes": 1796
+      },
+      {
+        "type": "inline",
+        "id": "cfile_5b58ad9a677047f8ba4e319d8408ce78c32d338a1d3f44dcbf",
+        "path": "/workspace/check_pack.py",
+        "size_bytes": 2700
+      },
+      {
+        "type": "inline",
+        "id": "cfile_7b53d310259d4735a24aa8cb0766ce020c505f015d314c28ac",
+        "path": "/workspace/TASK.md",
+        "size_bytes": 5107
+      }
+    ]
+  },
+  "vault_ids": [],
+  "usage": null
+}

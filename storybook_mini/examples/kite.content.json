@@ -1,0 +1,563 @@
+{
+  "id": "kite",
+  "title": "The Kite with a Blue Patch",
+  "entities": [
+    {
+      "id": "tomas",
+      "noun": "boy",
+      "name": "Tomas",
+      "pronoun": "he",
+      "state": {
+        "location": "hill"
+      },
+      "memes": {
+        "Sadness": 0.0
+      },
+      "short_noun": "",
+      "number": "singular",
+      "mass": false,
+      "definite": false
+    },
+    {
+      "id": "ada",
+      "noun": "girl",
+      "name": "Ada",
+      "pronoun": "she",
+      "state": {
+        "location": "hill"
+      },
+      "memes": {},
+      "short_noun": "",
+      "number": "singular",
+      "mass": false,
+      "definite": false
+    },
+    {
+      "id": "hill",
+      "noun": "grassy hill",
+      "name": "",
+      "pronoun": "it",
+      "state": {},
+      "memes": {},
+      "short_noun": "",
+      "number": "singular",
+      "mass": false,
+      "definite": false
+    },
+    {
+      "id": "kite",
+      "noun": "red kite",
+      "name": "",
+      "pronoun": "it",
+      "state": {
+        "condition": "whole",
+        "owner": "tomas"
+      },
+      "memes": {},
+      "short_noun": "",
+      "number": "singular",
+      "mass": false,
+      "definite": false
+    },
+    {
+      "id": "branch",
+      "noun": "low branch",
+      "name": "",
+      "pronoun": "it",
+      "state": {},
+      "memes": {},
+      "short_noun": "",
+      "number": "singular",
+      "mass": false,
+      "definite": false
+    },
+    {
+      "id": "patch",
+      "noun": "blue patch",
+      "name": "",
+      "pronoun": "it",
+      "state": {
+        "owner": "ada"
+      },
+      "memes": {},
+      "short_noun": "",
+      "number": "singular",
+      "mass": false,
+      "definite": false
+    },
+    {
+      "id": "sky",
+      "noun": "evening sky",
+      "name": "",
+      "pronoun": "it",
+      "state": {},
+      "memes": {},
+      "short_noun": "",
+      "number": "singular",
+      "mass": false,
+      "definite": false
+    }
+  ],
+  "facts": [
+    {
+      "id": "k01",
+      "scene": "hill",
+      "predicate": "have",
+      "subject": "tomas",
+      "object": "kite",
+      "target": "",
+      "value": "",
+      "cause": "",
+      "cue": "One windy afternoon",
+      "requires": [],
+      "effects": [],
+      "meme_deltas": [],
+      "goal": null,
+      "speech": null,
+      "listener": "",
+      "tense": "past",
+      "negative": false,
+      "contrast": "",
+      "topic": "",
+      "paragraph_break": false,
+      "companion": ""
+    },
+    {
+      "id": "k02",
+      "scene": "hill",
+      "predicate": "go",
+      "subject": "tomas",
+      "object": "",
+      "target": "hill",
+      "value": "",
+      "cause": "",
+      "cue": "",
+      "requires": [],
+      "effects": [
+        [
+          "tomas",
+          "location",
+          "hill"
+        ]
+      ],
+      "meme_deltas": [],
+      "goal": null,
+      "speech": null,
+      "listener": "",
+      "tense": "past",
+      "negative": false,
+      "contrast": "",
+      "topic": "",
+      "paragraph_break": false,
+      "companion": ""
+    },
+    {
+      "id": "k03",
+      "scene": "hill",
+      "predicate": "meet",
+      "subject": "tomas",
+      "object": "ada",
+      "target": "",
+      "value": "",
+      "cause": "",
+      "cue": "",
+      "requires": [],
+      "effects": [],
+      "meme_deltas": [],
+      "goal": null,
+      "speech": null,
+      "listener": "",
+      "tense": "past",
+      "negative": false,
+      "contrast": "",
+      "topic": "",
+      "paragraph_break": false,
+      "companion": ""
+    },
+    {
+      "id": "k04",
+      "scene": "hill",
+      "predicate": "launch",
+      "subject": "tomas",
+      "object": "kite",
+      "target": "",
+      "value": "",
+      "cause": "",
+      "cue": "",
+      "requires": [
+        [
+          "kite",
+          "condition",
+          "whole"
+        ]
+      ],
+      "effects": [
+        [
+          "kite",
+          "airborne",
+          true
+        ]
+      ],
+      "meme_deltas": [],
+      "goal": null,
+      "speech": null,
+      "listener": "",
+      "tense": "past",
+      "negative": false,
+      "contrast": "",
+      "topic": "",
+      "paragraph_break": false,
+      "companion": ""
+    },
+    {
+      "id": "k05",
+      "scene": "snag",
+      "predicate": "snag",
+      "subject": "kite",
+      "object": "",
+      "target": "branch",
+      "value": "",
+      "cause": "",
+      "cue": "A moment later",
+      "requires": [
+        [
+          "kite",
+          "airborne",
+          true
+        ]
+      ],
+      "effects": [
+        [
+          "kite",
+          "condition",
+          "torn"
+        ],
+        [
+          "kite",
+          "airborne",
+          false
+        ]
+      ],
+      "meme_deltas": [
+        [
+          "tomas",
+          "Sadness",
+          0.8
+        ]
+      ],
+      "goal": null,
+      "speech": null,
+      "listener": "",
+      "tense": "past",
+      "negative": false,
+      "contrast": "",
+      "topic": "",
+      "paragraph_break": false,
+      "companion": ""
+    },
+    {
+      "id": "k06",
+      "scene": "snag",
+      "predicate": "retrieve",
+      "subject": "tomas",
+      "object": "kite",
+      "target": "branch",
+      "value": "",
+      "cause": "",
+      "cue": "",
+      "requires": [],
+      "effects": [
+        [
+          "kite",
+          "location",
+          "tomas"
+        ]
+      ],
+      "meme_deltas": [],
+      "goal": null,
+      "speech": null,
+      "listener": "",
+      "tense": "past",
+      "negative": false,
+      "contrast": "",
+      "topic": "",
+      "paragraph_break": false,
+      "companion": ""
+    },
+    {
+      "id": "k07",
+      "scene": "snag",
+      "predicate": "be",
+      "subject": "kite",
+      "object": "",
+      "target": "",
+      "value": "torn",
+      "cause": "",
+      "cue": "",
+      "requires": [],
+      "effects": [],
+      "meme_deltas": [],
+      "goal": null,
+      "speech": null,
+      "listener": "",
+      "tense": "past",
+      "negative": false,
+      "contrast": "",
+      "topic": "",
+      "paragraph_break": false,
+      "companion": ""
+    },
+    {
+      "id": "k08",
+      "scene": "snag",
+      "predicate": "feel",
+      "subject": "tomas",
+      "object": "",
+      "target": "",
+      "value": "Sadness",
+      "cause": "k07",
+      "cue": "",
+      "requires": [],
+      "effects": [],
+      "meme_deltas": [],
+      "goal": null,
+      "speech": null,
+      "listener": "",
+      "tense": "past",
+      "negative": false,
+      "contrast": "",
+      "topic": "",
+      "paragraph_break": false,
+      "companion": ""
+    },
+    {
+      "id": "k09",
+      "scene": "snag",
+      "predicate": "say",
+      "subject": "ada",
+      "object": "",
+      "target": "",
+      "value": "We can mend it together.",
+      "cause": "",
+      "cue": "",
+      "requires": [],
+      "effects": [],
+      "meme_deltas": [],
+      "goal": null,
+      "speech": null,
+      "listener": "",
+      "tense": "past",
+      "negative": false,
+      "contrast": "",
+      "topic": "",
+      "paragraph_break": false,
+      "companion": ""
+    },
+    {
+      "id": "k10",
+      "scene": "repair",
+      "predicate": "give",
+      "subject": "ada",
+      "object": "patch",
+      "target": "tomas",
+      "value": "",
+      "cause": "",
+      "cue": "",
+      "requires": [
+        [
+          "patch",
+          "owner",
+          "ada"
+        ]
+      ],
+      "effects": [
+        [
+          "patch",
+          "owner",
+          "tomas"
+        ]
+      ],
+      "meme_deltas": [],
+      "goal": null,
+      "speech": null,
+      "listener": "",
+      "tense": "past",
+      "negative": false,
+      "contrast": "",
+      "topic": "",
+      "paragraph_break": false,
+      "companion": ""
+    },
+    {
+      "id": "k11",
+      "scene": "repair",
+      "predicate": "mend",
+      "subject": "tomas",
+      "object": "kite",
+      "target": "patch",
+      "value": "",
+      "cause": "",
+      "cue": "",
+      "requires": [
+        [
+          "kite",
+          "condition",
+          "torn"
+        ],
+        [
+          "patch",
+          "owner",
+          "tomas"
+        ]
+      ],
+      "effects": [
+        [
+          "kite",
+          "condition",
+          "mended"
+        ],
+        [
+          "patch",
+          "location",
+          "kite"
+        ]
+      ],
+      "meme_deltas": [
+        [
+          "tomas",
+          "Sadness",
+          -0.7
+        ]
+      ],
+      "goal": null,
+      "speech": null,
+      "listener": "",
+      "tense": "past",
+      "negative": false,
+      "contrast": "",
+      "topic": "",
+      "paragraph_break": false,
+      "companion": ""
+    },
+    {
+      "id": "k12",
+      "scene": "repair",
+      "predicate": "thank",
+      "subject": "tomas",
+      "object": "ada",
+      "target": "",
+      "value": "",
+      "cause": "k10",
+      "cue": "",
+      "requires": [],
+      "effects": [],
+      "meme_deltas": [],
+      "goal": null,
+      "speech": null,
+      "listener": "",
+      "tense": "past",
+      "negative": false,
+      "contrast": "",
+      "topic": "",
+      "paragraph_break": false,
+      "companion": ""
+    },
+    {
+      "id": "k13",
+      "scene": "flight",
+      "predicate": "launch",
+      "subject": "tomas",
+      "object": "kite",
+      "target": "",
+      "value": "",
+      "cause": "",
+      "cue": "Before sunset",
+      "requires": [
+        [
+          "kite",
+          "condition",
+          "mended"
+        ]
+      ],
+      "effects": [
+        [
+          "kite",
+          "airborne",
+          true
+        ]
+      ],
+      "meme_deltas": [],
+      "goal": null,
+      "speech": null,
+      "listener": "",
+      "tense": "past",
+      "negative": false,
+      "contrast": "",
+      "topic": "",
+      "paragraph_break": false,
+      "companion": ""
+    },
+    {
+      "id": "k14",
+      "scene": "flight",
+      "predicate": "feel",
+      "subject": "tomas",
+      "object": "",
+      "target": "",
+      "value": "Sadness",
+      "cause": "k11",
+      "cue": "",
+      "requires": [],
+      "effects": [],
+      "meme_deltas": [],
+      "goal": null,
+      "speech": null,
+      "listener": "",
+      "tense": "past",
+      "negative": false,
+      "contrast": "",
+      "topic": "",
+      "paragraph_break": false,
+      "companion": ""
+    },
+    {
+      "id": "k15",
+      "scene": "flight",
+      "predicate": "glow",
+      "subject": "patch",
+      "object": "",
+      "target": "sky",
+      "value": "",
+      "cause": "",
+      "cue": "",
+      "requires": [
+        [
+          "kite",
+          "airborne",
+          true
+        ],
+        [
+          "kite",
+          "condition",
+          "mended"
+        ],
+        [
+          "patch",
+          "location",
+          "kite"
+        ]
+      ],
+      "effects": [],
+      "meme_deltas": [],
+      "goal": null,
+      "speech": null,
+      "listener": "",
+      "tense": "past",
+      "negative": false,
+      "contrast": "",
+      "topic": "",
+      "paragraph_break": false,
+      "companion": ""
+    }
+  ]
+}

@@ -1,0 +1,29 @@
+# The Reel That Came Back
+
+Nia had spent three afternoons making a kite that would not behave. Its blue paper was smooth, its willow frame straight, and its tail long enough to brush the grass. Still, each time she ran with it, the kite nosed into the ground. Across the lane, Pavel watched from the step of the small house where his family had moved in last week. He never called out, but he always looked up when the paper rustled.
+
+At Tamsin’s village workshop, Nia set the kite on the counter. Tamsin tested one crosspiece with her thumb. “A kite needs wind, balance, and somebody who notices what it’s doing,” she said. “You’ve got two of those.” Nia asked what the third was. Tamsin only smiled and reached for a wooden string reel. Its edge was worn smooth, though a small knot hid under the last loop.
+
+“Can I borrow this for the afternoon?” Nia asked. “I want Pavel to fly with me. He’s new, and I don’t think he knows anyone yet.” Tamsin looked over the kite. “Borrow it, yes. Bring back the reel with the string wound neatly. It has helped more than one nervous flyer.” Nia promised. She meant to make the afternoon special, though she had not decided whether that meant a perfect flight or a new friend.
+
+She found Pavel at his gate, pulling a loose thread from his cuff. Nia almost called, “Come flying!” across the lane. Then she remembered the way he ducked when the older children shouted over the fence. She walked closer. “Would you like to help me with my kite? You could choose what the tail needs.” Pavel looked at the kite, then at the ground. “I could look,” he said. “That’s a real job,” Nia replied, and waited until he had fetched his jacket.
+
+At the field behind the bakery, Pavel chose a strip of red ribbon from the basket Nia had brought. He tied it near the end of the tail, making a double knot. “It needs to show where the wind is going,” he said. Nia had wanted to choose the colors herself, but the red looked bright against the blue paper. Pavel touched the ribbon once, then stepped back to see it flicker. “That helps,” Nia said. He nodded, not quite smiling yet.
+
+Nia took the borrowed reel and ran. The kite dragged for a few yards before a soft breeze lifted one wing. Pavel saw the line begin to jerk. “Not so fast,” he called. Nia heard him, eased the reel, and felt the pull turn steady. The kite rose to the height of the orchard fence. For one breath, it seemed the whole afternoon might be easy. Then a stronger gust rolled over the roofs and snapped the line taut.
+
+The kite climbed sharply. Nia’s first instinct was to pull hard; she thought she could force it back into place. Pavel saw the small knot jump against the reel. “Wait! The string is catching.” Nia could keep the reel and try to control the kite herself, or let Pavel take the spool while she watched the tail. Handing it over meant trusting him with the one thing Tamsin had asked her to return safely.
+
+Nia passed him the reel. “Tell me when you need me to move.” Pavel held it with both hands. He did not yank. “A little out,” he said, then, “Hold it.” Nia shifted to the kite’s side and watched the red ribbon. The frame trembled, the line scraped at the knot, and Pavel turned the reel just enough to keep it moving. He had been quiet all afternoon, but now his voice gave them a rhythm to follow.
+
+The kite dipped toward the orchard. Nia could have grabbed the line and taken charge; instead she asked, “Do you want me to catch the tail?” Pavel glanced up and nodded. She ran beneath the kite and lifted its lower corner as the gust softened. Together they let out a little string. The kite steadied. It did not soar above the clouds, but it rose higher than the bakery roof and stayed there, blue paper bright in the late sun.
+
+A knot slipped with a small, dry click. The line did not break, but it stopped moving freely. Pavel began to lower the kite. Nia watched the distance to the orchard and could see a clear patch of grass on their side. “Bring it down here,” she called, not “Give me the reel.” Pavel guided it toward the field. Nia caught the tail, and they laid the kite safely in the grass before the snag could tear the paper.
+
+For a moment neither spoke. Nia had imagined the ending as a kite floating until sunset, with everyone looking up. The actual kite lay on its side, its ribbon still fluttering. Pavel was holding the reel, and he had made the important call when the line caught. “I thought it would break,” he said. “So did I,” Nia admitted. “You noticed first.” He looked surprised by the praise, then studied the knot as if it might explain something.
+
+They worked the snag loose together. The string was still useful, though a short section had to be wound carefully around the worn place. Nia carried the kite; Pavel carried the reel. On the walk back, he asked whether the bakery field was always that windy. “Not always,” Nia said. “Sometimes the wind behaves.” Pavel laughed. It was a small laugh, but she did not have to ask him to stay beside her.
+
+At Tamsin’s counter, they returned the reel with the remaining string neatly wound. Nia explained the snag and showed the worn spot instead of hiding it. Tamsin inspected the spool. “Still plenty for another kite,” she said. “And now I know where it needs mending.” Pavel held the kite while Nia folded its tail. Tamsin asked him what he thought had helped. “Listening before pulling,” he said. Nia felt the answer belonged to both of them.
+
+The next afternoon, Pavel came to the workshop before Nia had gone to fetch him. He did not ask to be captain or promise that the next kite would fly higher. He asked whether they could repair the knot together and try the red ribbon again. Nia handed him the willow frame. “You choose where the crosspiece goes,” she said. They had not conquered the wind, and the kite was not perfect. But Pavel had a place beside her now, and the reel had come home ready to help someone else.

@@ -1,0 +1,3966 @@
+[
+  {
+    "story": {
+      "id": "lantern",
+      "title": "A Light at the Landing",
+      "entities": [
+        {
+          "id": "mara",
+          "noun": "girl",
+          "name": "Mara",
+          "pronoun": "she",
+          "state": {
+            "location": "cottage"
+          },
+          "memes": {
+            "Fear": 0.1
+          }
+        },
+        {
+          "id": "oren",
+          "noun": "ferryman",
+          "name": "Oren",
+          "pronoun": "he",
+          "state": {
+            "location": "landing"
+          },
+          "memes": {}
+        },
+        {
+          "id": "cottage",
+          "noun": "cottage",
+          "name": "",
+          "pronoun": "it",
+          "state": {},
+          "memes": {}
+        },
+        {
+          "id": "landing",
+          "noun": "river landing",
+          "name": "",
+          "pronoun": "it",
+          "state": {},
+          "memes": {}
+        },
+        {
+          "id": "lantern",
+          "noun": "brass lantern",
+          "name": "",
+          "pronoun": "it",
+          "state": {
+            "lit": false,
+            "owner": "mara"
+          },
+          "memes": {}
+        },
+        {
+          "id": "hook",
+          "noun": "iron hook",
+          "name": "",
+          "pronoun": "it",
+          "state": {},
+          "memes": {}
+        },
+        {
+          "id": "wind",
+          "noun": "wind",
+          "name": "",
+          "pronoun": "it",
+          "state": {},
+          "memes": {}
+        }
+      ],
+      "facts": [
+        {
+          "id": "l01",
+          "scene": "home",
+          "predicate": "live",
+          "subject": "mara",
+          "object": "",
+          "target": "cottage",
+          "value": "",
+          "cause": "",
+          "cue": "Once upon a time",
+          "requires": [],
+          "effects": [],
+          "meme_deltas": []
+        },
+        {
+          "id": "l02",
+          "scene": "home",
+          "predicate": "have",
+          "subject": "mara",
+          "object": "lantern",
+          "target": "",
+          "value": "",
+          "cause": "",
+          "cue": "",
+          "requires": [],
+          "effects": [],
+          "meme_deltas": []
+        },
+        {
+          "id": "l03",
+          "scene": "home",
+          "predicate": "need",
+          "subject": "oren",
+          "object": "lantern",
+          "target": "landing",
+          "value": "",
+          "cause": "",
+          "cue": "",
+          "requires": [],
+          "effects": [],
+          "meme_deltas": []
+        },
+        {
+          "id": "l04",
+          "scene": "home",
+          "predicate": "light",
+          "subject": "mara",
+          "object": "lantern",
+          "target": "",
+          "value": "",
+          "cause": "",
+          "cue": "",
+          "requires": [
+            [
+              "lantern",
+              "lit",
+              false
+            ]
+          ],
+          "effects": [
+            [
+              "lantern",
+              "lit",
+              true
+            ]
+          ],
+          "meme_deltas": []
+        },
+        {
+          "id": "l05",
+          "scene": "home",
+          "predicate": "carry",
+          "subject": "mara",
+          "object": "lantern",
+          "target": "landing",
+          "value": "",
+          "cause": "",
+          "cue": "",
+          "requires": [
+            [
+              "lantern",
+              "lit",
+              true
+            ],
+            [
+              "lantern",
+              "owner",
+              "mara"
+            ]
+          ],
+          "effects": [
+            [
+              "mara",
+              "location",
+              "landing"
+            ],
+            [
+              "lantern",
+              "location",
+              "landing"
+            ]
+          ],
+          "meme_deltas": []
+        },
+        {
+          "id": "l06",
+          "scene": "wind",
+          "predicate": "extinguish",
+          "subject": "wind",
+          "object": "lantern",
+          "target": "",
+          "value": "",
+          "cause": "",
+          "cue": "On the riverbank",
+          "requires": [
+            [
+              "lantern",
+              "lit",
+              true
+            ]
+          ],
+          "effects": [
+            [
+              "lantern",
+              "lit",
+              false
+            ]
+          ],
+          "meme_deltas": [
+            [
+              "mara",
+              "Fear",
+              0.6
+            ]
+          ]
+        },
+        {
+          "id": "l07",
+          "scene": "wind",
+          "predicate": "feel",
+          "subject": "mara",
+          "object": "",
+          "target": "",
+          "value": "Fear",
+          "cause": "l06",
+          "cue": "",
+          "requires": [],
+          "effects": [],
+          "meme_deltas": []
+        },
+        {
+          "id": "l08",
+          "scene": "wind",
+          "predicate": "say",
+          "subject": "oren",
+          "object": "",
+          "target": "",
+          "value": "Cup your hands around the flame.",
+          "cause": "",
+          "cue": "",
+          "requires": [],
+          "effects": [],
+          "meme_deltas": []
+        },
+        {
+          "id": "l09",
+          "scene": "wind",
+          "predicate": "shield",
+          "subject": "mara",
+          "object": "lantern",
+          "target": "",
+          "value": "",
+          "cause": "",
+          "cue": "",
+          "requires": [],
+          "effects": [
+            [
+              "lantern",
+              "shielded",
+              true
+            ]
+          ],
+          "meme_deltas": []
+        },
+        {
+          "id": "l10",
+          "scene": "wind",
+          "predicate": "light",
+          "subject": "mara",
+          "object": "lantern",
+          "target": "",
+          "value": "",
+          "cause": "",
+          "cue": "",
+          "requires": [
+            [
+              "lantern",
+              "lit",
+              false
+            ],
+            [
+              "lantern",
+              "shielded",
+              true
+            ]
+          ],
+          "effects": [
+            [
+              "lantern",
+              "lit",
+              true
+            ]
+          ],
+          "meme_deltas": [
+            [
+              "mara",
+              "Fear",
+              -0.6
+            ]
+          ]
+        },
+        {
+          "id": "l11",
+          "scene": "landing",
+          "predicate": "hang",
+          "subject": "mara",
+          "object": "lantern",
+          "target": "hook",
+          "value": "",
+          "cause": "",
+          "cue": "At the landing",
+          "requires": [
+            [
+              "lantern",
+              "lit",
+              true
+            ],
+            [
+              "mara",
+              "location",
+              "landing"
+            ]
+          ],
+          "effects": [
+            [
+              "lantern",
+              "location",
+              "hook"
+            ]
+          ],
+          "meme_deltas": []
+        },
+        {
+          "id": "l12",
+          "scene": "landing",
+          "predicate": "thank",
+          "subject": "oren",
+          "object": "mara",
+          "target": "",
+          "value": "",
+          "cause": "l11",
+          "cue": "",
+          "requires": [],
+          "effects": [],
+          "meme_deltas": []
+        },
+        {
+          "id": "l13",
+          "scene": "landing",
+          "predicate": "feel",
+          "subject": "mara",
+          "object": "",
+          "target": "",
+          "value": "Fear",
+          "cause": "l10",
+          "cue": "",
+          "requires": [],
+          "effects": [],
+          "meme_deltas": []
+        },
+        {
+          "id": "l14",
+          "scene": "landing",
+          "predicate": "shine",
+          "subject": "lantern",
+          "object": "",
+          "target": "landing",
+          "value": "",
+          "cause": "",
+          "cue": "As night fell",
+          "requires": [
+            [
+              "lantern",
+              "lit",
+              true
+            ],
+            [
+              "lantern",
+              "location",
+              "hook"
+            ]
+          ],
+          "effects": [],
+          "meme_deltas": []
+        }
+      ]
+    },
+    "history": [
+      {
+        "fact": {
+          "id": "l01",
+          "scene": "home",
+          "predicate": "live",
+          "subject": "mara",
+          "object": "",
+          "target": "cottage",
+          "value": "",
+          "cause": "",
+          "cue": "Once upon a time",
+          "requires": [],
+          "effects": [],
+          "meme_deltas": []
+        },
+        "before": {
+          "mara": {
+            "physical": {
+              "location": "cottage"
+            },
+            "memes": {
+              "Fear": 0.1
+            }
+          },
+          "oren": {
+            "physical": {
+              "location": "landing"
+            },
+            "memes": {}
+          },
+          "cottage": {
+            "physical": {},
+            "memes": {}
+          },
+          "landing": {
+            "physical": {},
+            "memes": {}
+          },
+          "lantern": {
+            "physical": {
+              "lit": false,
+              "owner": "mara"
+            },
+            "memes": {}
+          },
+          "hook": {
+            "physical": {},
+            "memes": {}
+          },
+          "wind": {
+            "physical": {},
+            "memes": {}
+          }
+        },
+        "after": {
+          "mara": {
+            "physical": {
+              "location": "cottage"
+            },
+            "memes": {
+              "Fear": 0.1
+            }
+          },
+          "oren": {
+            "physical": {
+              "location": "landing"
+            },
+            "memes": {}
+          },
+          "cottage": {
+            "physical": {},
+            "memes": {}
+          },
+          "landing": {
+            "physical": {},
+            "memes": {}
+          },
+          "lantern": {
+            "physical": {
+              "lit": false,
+              "owner": "mara"
+            },
+            "memes": {}
+          },
+          "hook": {
+            "physical": {},
+            "memes": {}
+          },
+          "wind": {
+            "physical": {},
+            "memes": {}
+          }
+        }
+      },
+      {
+        "fact": {
+          "id": "l02",
+          "scene": "home",
+          "predicate": "have",
+          "subject": "mara",
+          "object": "lantern",
+          "target": "",
+          "value": "",
+          "cause": "",
+          "cue": "",
+          "requires": [],
+          "effects": [],
+          "meme_deltas": []
+        },
+        "before": {
+          "mara": {
+            "physical": {
+              "location": "cottage"
+            },
+            "memes": {
+              "Fear": 0.1
+            }
+          },
+          "oren": {
+            "physical": {
+              "location": "landing"
+            },
+            "memes": {}
+          },
+          "cottage": {
+            "physical": {},
+            "memes": {}
+          },
+          "landing": {
+            "physical": {},
+            "memes": {}
+          },
+          "lantern": {
+            "physical": {
+              "lit": false,
+              "owner": "mara"
+            },
+            "memes": {}
+          },
+          "hook": {
+            "physical": {},
+            "memes": {}
+          },
+          "wind": {
+            "physical": {},
+            "memes": {}
+          }
+        },
+        "after": {
+          "mara": {
+            "physical": {
+              "location": "cottage"
+            },
+            "memes": {
+              "Fear": 0.1
+            }
+          },
+          "oren": {
+            "physical": {
+              "location": "landing"
+            },
+            "memes": {}
+          },
+          "cottage": {
+            "physical": {},
+            "memes": {}
+          },
+          "landing": {
+            "physical": {},
+            "memes": {}
+          },
+          "lantern": {
+            "physical": {
+              "lit": false,
+              "owner": "mara"
+            },
+            "memes": {}
+          },
+          "hook": {
+            "physical": {},
+            "memes": {}
+          },
+          "wind": {
+            "physical": {},
+            "memes": {}
+          }
+        }
+      },
+      {
+        "fact": {
+          "id": "l03",
+          "scene": "home",
+          "predicate": "need",
+          "subject": "oren",
+          "object": "lantern",
+          "target": "landing",
+          "value": "",
+          "cause": "",
+          "cue": "",
+          "requires": [],
+          "effects": [],
+          "meme_deltas": []
+        },
+        "before": {
+          "mara": {
+            "physical": {
+              "location": "cottage"
+            },
+            "memes": {
+              "Fear": 0.1
+            }
+          },
+          "oren": {
+            "physical": {
+              "location": "landing"
+            },
+            "memes": {}
+          },
+          "cottage": {
+            "physical": {},
+            "memes": {}
+          },
+          "landing": {
+            "physical": {},
+            "memes": {}
+          },
+          "lantern": {
+            "physical": {
+              "lit": false,
+              "owner": "mara"
+            },
+            "memes": {}
+          },
+          "hook": {
+            "physical": {},
+            "memes": {}
+          },
+          "wind": {
+            "physical": {},
+            "memes": {}
+          }
+        },
+        "after": {
+          "mara": {
+            "physical": {
+              "location": "cottage"
+            },
+            "memes": {
+              "Fear": 0.1
+            }
+          },
+          "oren": {
+            "physical": {
+              "location": "landing"
+            },
+            "memes": {}
+          },
+          "cottage": {
+            "physical": {},
+            "memes": {}
+          },
+          "landing": {
+            "physical": {},
+            "memes": {}
+          },
+          "lantern": {
+            "physical": {
+              "lit": false,
+              "owner": "mara"
+            },
+            "memes": {}
+          },
+          "hook": {
+            "physical": {},
+            "memes": {}
+          },
+          "wind": {
+            "physical": {},
+            "memes": {}
+          }
+        }
+      },
+      {
+        "fact": {
+          "id": "l04",
+          "scene": "home",
+          "predicate": "light",
+          "subject": "mara",
+          "object": "lantern",
+          "target": "",
+          "value": "",
+          "cause": "",
+          "cue": "",
+          "requires": [
+            [
+              "lantern",
+              "lit",
+              false
+            ]
+          ],
+          "effects": [
+            [
+              "lantern",
+              "lit",
+              true
+            ]
+          ],
+          "meme_deltas": []
+        },
+        "before": {
+          "mara": {
+            "physical": {
+              "location": "cottage"
+            },
+            "memes": {
+              "Fear": 0.1
+            }
+          },
+          "oren": {
+            "physical": {
+              "location": "landing"
+            },
+            "memes": {}
+          },
+          "cottage": {
+            "physical": {},
+            "memes": {}
+          },
+          "landing": {
+            "physical": {},
+            "memes": {}
+          },
+          "lantern": {
+            "physical": {
+              "lit": false,
+              "owner": "mara"
+            },
+            "memes": {}
+          },
+          "hook": {
+            "physical": {},
+            "memes": {}
+          },
+          "wind": {
+            "physical": {},
+            "memes": {}
+          }
+        },
+        "after": {
+          "mara": {
+            "physical": {
+              "location": "cottage"
+            },
+            "memes": {
+              "Fear": 0.1
+            }
+          },
+          "oren": {
+            "physical": {
+              "location": "landing"
+            },
+            "memes": {}
+          },
+          "cottage": {
+            "physical": {},
+            "memes": {}
+          },
+          "landing": {
+            "physical": {},
+            "memes": {}
+          },
+          "lantern": {
+            "physical": {
+              "lit": true,
+              "owner": "mara"
+            },
+            "memes": {}
+          },
+          "hook": {
+            "physical": {},
+            "memes": {}
+          },
+          "wind": {
+            "physical": {},
+            "memes": {}
+          }
+        }
+      },
+      {
+        "fact": {
+          "id": "l05",
+          "scene": "home",
+          "predicate": "carry",
+          "subject": "mara",
+          "object": "lantern",
+          "target": "landing",
+          "value": "",
+          "cause": "",
+          "cue": "",
+          "requires": [
+            [
+              "lantern",
+              "lit",
+              true
+            ],
+            [
+              "lantern",
+              "owner",
+              "mara"
+            ]
+          ],
+          "effects": [
+            [
+              "mara",
+              "location",
+              "landing"
+            ],
+            [
+              "lantern",
+              "location",
+              "landing"
+            ]
+          ],
+          "meme_deltas": []
+        },
+        "before": {
+          "mara": {
+            "physical": {
+              "location": "cottage"
+            },
+            "memes": {
+              "Fear": 0.1
+            }
+          },
+          "oren": {
+            "physical": {
+              "location": "landing"
+            },
+            "memes": {}
+          },
+          "cottage": {
+            "physical": {},
+            "memes": {}
+          },
+          "landing": {
+            "physical": {},
+            "memes": {}
+          },
+          "lantern": {
+            "physical": {
+              "lit": true,
+              "owner": "mara"
+            },
+            "memes": {}
+          },
+          "hook": {
+            "physical": {},
+            "memes": {}
+          },
+          "wind": {
+            "physical": {},
+            "memes": {}
+          }
+        },
+        "after": {
+          "mara": {
+            "physical": {
+              "location": "landing"
+            },
+            "memes": {
+              "Fear": 0.1
+            }
+          },
+          "oren": {
+            "physical": {
+              "location": "landing"
+            },
+            "memes": {}
+          },
+          "cottage": {
+            "physical": {},
+            "memes": {}
+          },
+          "landing": {
+            "physical": {},
+            "memes": {}
+          },
+          "lantern": {
+            "physical": {
+              "lit": true,
+              "owner": "mara",
+              "location": "landing"
+            },
+            "memes": {}
+          },
+          "hook": {
+            "physical": {},
+            "memes": {}
+          },
+          "wind": {
+            "physical": {},
+            "memes": {}
+          }
+        }
+      },
+      {
+        "fact": {
+          "id": "l06",
+          "scene": "wind",
+          "predicate": "extinguish",
+          "subject": "wind",
+          "object": "lantern",
+          "target": "",
+          "value": "",
+          "cause": "",
+          "cue": "On the riverbank",
+          "requires": [
+            [
+              "lantern",
+              "lit",
+              true
+            ]
+          ],
+          "effects": [
+            [
+              "lantern",
+              "lit",
+              false
+            ]
+          ],
+          "meme_deltas": [
+            [
+              "mara",
+              "Fear",
+              0.6
+            ]
+          ]
+        },
+        "before": {
+          "mara": {
+            "physical": {
+              "location": "landing"
+            },
+            "memes": {
+              "Fear": 0.1
+            }
+          },
+          "oren": {
+            "physical": {
+              "location": "landing"
+            },
+            "memes": {}
+          },
+          "cottage": {
+            "physical": {},
+            "memes": {}
+          },
+          "landing": {
+            "physical": {},
+            "memes": {}
+          },
+          "lantern": {
+            "physical": {
+              "lit": true,
+              "owner": "mara",
+              "location": "landing"
+            },
+            "memes": {}
+          },
+          "hook": {
+            "physical": {},
+            "memes": {}
+          },
+          "wind": {
+            "physical": {},
+            "memes": {}
+          }
+        },
+        "after": {
+          "mara": {
+            "physical": {
+              "location": "landing"
+            },
+            "memes": {
+              "Fear": 0.7
+            }
+          },
+          "oren": {
+            "physical": {
+              "location": "landing"
+            },
+            "memes": {}
+          },
+          "cottage": {
+            "physical": {},
+            "memes": {}
+          },
+          "landing": {
+            "physical": {},
+            "memes": {}
+          },
+          "lantern": {
+            "physical": {
+              "lit": false,
+              "owner": "mara",
+              "location": "landing"
+            },
+            "memes": {}
+          },
+          "hook": {
+            "physical": {},
+            "memes": {}
+          },
+          "wind": {
+            "physical": {},
+            "memes": {}
+          }
+        }
+      },
+      {
+        "fact": {
+          "id": "l07",
+          "scene": "wind",
+          "predicate": "feel",
+          "subject": "mara",
+          "object": "",
+          "target": "",
+          "value": "Fear",
+          "cause": "l06",
+          "cue": "",
+          "requires": [],
+          "effects": [],
+          "meme_deltas": []
+        },
+        "before": {
+          "mara": {
+            "physical": {
+              "location": "landing"
+            },
+            "memes": {
+              "Fear": 0.7
+            }
+          },
+          "oren": {
+            "physical": {
+              "location": "landing"
+            },
+            "memes": {}
+          },
+          "cottage": {
+            "physical": {},
+            "memes": {}
+          },
+          "landing": {
+            "physical": {},
+            "memes": {}
+          },
+          "lantern": {
+            "physical": {
+              "lit": false,
+              "owner": "mara",
+              "location": "landing"
+            },
+            "memes": {}
+          },
+          "hook": {
+            "physical": {},
+            "memes": {}
+          },
+          "wind": {
+            "physical": {},
+            "memes": {}
+          }
+        },
+        "after": {
+          "mara": {
+            "physical": {
+              "location": "landing"
+            },
+            "memes": {
+              "Fear": 0.7
+            }
+          },
+          "oren": {
+            "physical": {
+              "location": "landing"
+            },
+            "memes": {}
+          },
+          "cottage": {
+            "physical": {},
+            "memes": {}
+          },
+          "landing": {
+            "physical": {},
+            "memes": {}
+          },
+          "lantern": {
+            "physical": {
+              "lit": false,
+              "owner": "mara",
+              "location": "landing"
+            },
+            "memes": {}
+          },
+          "hook": {
+            "physical": {},
+            "memes": {}
+          },
+          "wind": {
+            "physical": {},
+            "memes": {}
+          }
+        }
+      },
+      {
+        "fact": {
+          "id": "l08",
+          "scene": "wind",
+          "predicate": "say",
+          "subject": "oren",
+          "object": "",
+          "target": "",
+          "value": "Cup your hands around the flame.",
+          "cause": "",
+          "cue": "",
+          "requires": [],
+          "effects": [],
+          "meme_deltas": []
+        },
+        "before": {
+          "mara": {
+            "physical": {
+              "location": "landing"
+            },
+            "memes": {
+              "Fear": 0.7
+            }
+          },
+          "oren": {
+            "physical": {
+              "location": "landing"
+            },
+            "memes": {}
+          },
+          "cottage": {
+            "physical": {},
+            "memes": {}
+          },
+          "landing": {
+            "physical": {},
+            "memes": {}
+          },
+          "lantern": {
+            "physical": {
+              "lit": false,
+              "owner": "mara",
+              "location": "landing"
+            },
+            "memes": {}
+          },
+          "hook": {
+            "physical": {},
+            "memes": {}
+          },
+          "wind": {
+            "physical": {},
+            "memes": {}
+          }
+        },
+        "after": {
+          "mara": {
+            "physical": {
+              "location": "landing"
+            },
+            "memes": {
+              "Fear": 0.7
+            }
+          },
+          "oren": {
+            "physical": {
+              "location": "landing"
+            },
+            "memes": {}
+          },
+          "cottage": {
+            "physical": {},
+            "memes": {}
+          },
+          "landing": {
+            "physical": {},
+            "memes": {}
+          },
+          "lantern": {
+            "physical": {
+              "lit": false,
+              "owner": "mara",
+              "location": "landing"
+            },
+            "memes": {}
+          },
+          "hook": {
+            "physical": {},
+            "memes": {}
+          },
+          "wind": {
+            "physical": {},
+            "memes": {}
+          }
+        }
+      },
+      {
+        "fact": {
+          "id": "l09",
+          "scene": "wind",
+          "predicate": "shield",
+          "subject": "mara",
+          "object": "lantern",
+          "target": "",
+          "value": "",
+          "cause": "",
+          "cue": "",
+          "requires": [],
+          "effects": [
+            [
+              "lantern",
+              "shielded",
+              true
+            ]
+          ],
+          "meme_deltas": []
+        },
+        "before": {
+          "mara": {
+            "physical": {
+              "location": "landing"
+            },
+            "memes": {
+              "Fear": 0.7
+            }
+          },
+          "oren": {
+            "physical": {
+              "location": "landing"
+            },
+            "memes": {}
+          },
+          "cottage": {
+            "physical": {},
+            "memes": {}
+          },
+          "landing": {
+            "physical": {},
+            "memes": {}
+          },
+          "lantern": {
+            "physical": {
+              "lit": false,
+              "owner": "mara",
+              "location": "landing"
+            },
+            "memes": {}
+          },
+          "hook": {
+            "physical": {},
+            "memes": {}
+          },
+          "wind": {
+            "physical": {},
+            "memes": {}
+          }
+        },
+        "after": {
+          "mara": {
+            "physical": {
+              "location": "landing"
+            },
+            "memes": {
+              "Fear": 0.7
+            }
+          },
+          "oren": {
+            "physical": {
+              "location": "landing"
+            },
+            "memes": {}
+          },
+          "cottage": {
+            "physical": {},
+            "memes": {}
+          },
+          "landing": {
+            "physical": {},
+            "memes": {}
+          },
+          "lantern": {
+            "physical": {
+              "lit": false,
+              "owner": "mara",
+              "location": "landing",
+              "shielded": true
+            },
+            "memes": {}
+          },
+          "hook": {
+            "physical": {},
+            "memes": {}
+          },
+          "wind": {
+            "physical": {},
+            "memes": {}
+          }
+        }
+      },
+      {
+        "fact": {
+          "id": "l10",
+          "scene": "wind",
+          "predicate": "light",
+          "subject": "mara",
+          "object": "lantern",
+          "target": "",
+          "value": "",
+          "cause": "",
+          "cue": "",
+          "requires": [
+            [
+              "lantern",
+              "lit",
+              false
+            ],
+            [
+              "lantern",
+              "shielded",
+              true
+            ]
+          ],
+          "effects": [
+            [
+              "lantern",
+              "lit",
+              true
+            ]
+          ],
+          "meme_deltas": [
+            [
+              "mara",
+              "Fear",
+              -0.6
+            ]
+          ]
+        },
+        "before": {
+          "mara": {
+            "physical": {
+              "location": "landing"
+            },
+            "memes": {
+              "Fear": 0.7
+            }
+          },
+          "oren": {
+            "physical": {
+              "location": "landing"
+            },
+            "memes": {}
+          },
+          "cottage": {
+            "physical": {},
+            "memes": {}
+          },
+          "landing": {
+            "physical": {},
+            "memes": {}
+          },
+          "lantern": {
+            "physical": {
+              "lit": false,
+              "owner": "mara",
+              "location": "landing",
+              "shielded": true
+            },
+            "memes": {}
+          },
+          "hook": {
+            "physical": {},
+            "memes": {}
+          },
+          "wind": {
+            "physical": {},
+            "memes": {}
+          }
+        },
+        "after": {
+          "mara": {
+            "physical": {
+              "location": "landing"
+            },
+            "memes": {
+              "Fear": 0.1
+            }
+          },
+          "oren": {
+            "physical": {
+              "location": "landing"
+            },
+            "memes": {}
+          },
+          "cottage": {
+            "physical": {},
+            "memes": {}
+          },
+          "landing": {
+            "physical": {},
+            "memes": {}
+          },
+          "lantern": {
+            "physical": {
+              "lit": true,
+              "owner": "mara",
+              "location": "landing",
+              "shielded": true
+            },
+            "memes": {}
+          },
+          "hook": {
+            "physical": {},
+            "memes": {}
+          },
+          "wind": {
+            "physical": {},
+            "memes": {}
+          }
+        }
+      },
+      {
+        "fact": {
+          "id": "l11",
+          "scene": "landing",
+          "predicate": "hang",
+          "subject": "mara",
+          "object": "lantern",
+          "target": "hook",
+          "value": "",
+          "cause": "",
+          "cue": "At the landing",
+          "requires": [
+            [
+              "lantern",
+              "lit",
+              true
+            ],
+            [
+              "mara",
+              "location",
+              "landing"
+            ]
+          ],
+          "effects": [
+            [
+              "lantern",
+              "location",
+              "hook"
+            ]
+          ],
+          "meme_deltas": []
+        },
+        "before": {
+          "mara": {
+            "physical": {
+              "location": "landing"
+            },
+            "memes": {
+              "Fear": 0.1
+            }
+          },
+          "oren": {
+            "physical": {
+              "location": "landing"
+            },
+            "memes": {}
+          },
+          "cottage": {
+            "physical": {},
+            "memes": {}
+          },
+          "landing": {
+            "physical": {},
+            "memes": {}
+          },
+          "lantern": {
+            "physical": {
+              "lit": true,
+              "owner": "mara",
+              "location": "landing",
+              "shielded": true
+            },
+            "memes": {}
+          },
+          "hook": {
+            "physical": {},
+            "memes": {}
+          },
+          "wind": {
+            "physical": {},
+            "memes": {}
+          }
+        },
+        "after": {
+          "mara": {
+            "physical": {
+              "location": "landing"
+            },
+            "memes": {
+              "Fear": 0.1
+            }
+          },
+          "oren": {
+            "physical": {
+              "location": "landing"
+            },
+            "memes": {}
+          },
+          "cottage": {
+            "physical": {},
+            "memes": {}
+          },
+          "landing": {
+            "physical": {},
+            "memes": {}
+          },
+          "lantern": {
+            "physical": {
+              "lit": true,
+              "owner": "mara",
+              "location": "hook",
+              "shielded": true
+            },
+            "memes": {}
+          },
+          "hook": {
+            "physical": {},
+            "memes": {}
+          },
+          "wind": {
+            "physical": {},
+            "memes": {}
+          }
+        }
+      },
+      {
+        "fact": {
+          "id": "l12",
+          "scene": "landing",
+          "predicate": "thank",
+          "subject": "oren",
+          "object": "mara",
+          "target": "",
+          "value": "",
+          "cause": "l11",
+          "cue": "",
+          "requires": [],
+          "effects": [],
+          "meme_deltas": []
+        },
+        "before": {
+          "mara": {
+            "physical": {
+              "location": "landing"
+            },
+            "memes": {
+              "Fear": 0.1
+            }
+          },
+          "oren": {
+            "physical": {
+              "location": "landing"
+            },
+            "memes": {}
+          },
+          "cottage": {
+            "physical": {},
+            "memes": {}
+          },
+          "landing": {
+            "physical": {},
+            "memes": {}
+          },
+          "lantern": {
+            "physical": {
+              "lit": true,
+              "owner": "mara",
+              "location": "hook",
+              "shielded": true
+            },
+            "memes": {}
+          },
+          "hook": {
+            "physical": {},
+            "memes": {}
+          },
+          "wind": {
+            "physical": {},
+            "memes": {}
+          }
+        },
+        "after": {
+          "mara": {
+            "physical": {
+              "location": "landing"
+            },
+            "memes": {
+              "Fear": 0.1
+            }
+          },
+          "oren": {
+            "physical": {
+              "location": "landing"
+            },
+            "memes": {}
+          },
+          "cottage": {
+            "physical": {},
+            "memes": {}
+          },
+          "landing": {
+            "physical": {},
+            "memes": {}
+          },
+          "lantern": {
+            "physical": {
+              "lit": true,
+              "owner": "mara",
+              "location": "hook",
+              "shielded": true
+            },
+            "memes": {}
+          },
+          "hook": {
+            "physical": {},
+            "memes": {}
+          },
+          "wind": {
+            "physical": {},
+            "memes": {}
+          }
+        }
+      },
+      {
+        "fact": {
+          "id": "l13",
+          "scene": "landing",
+          "predicate": "feel",
+          "subject": "mara",
+          "object": "",
+          "target": "",
+          "value": "Fear",
+          "cause": "l10",
+          "cue": "",
+          "requires": [],
+          "effects": [],
+          "meme_deltas": []
+        },
+        "before": {
+          "mara": {
+            "physical": {
+              "location": "landing"
+            },
+            "memes": {
+              "Fear": 0.1
+            }
+          },
+          "oren": {
+            "physical": {
+              "location": "landing"
+            },
+            "memes": {}
+          },
+          "cottage": {
+            "physical": {},
+            "memes": {}
+          },
+          "landing": {
+            "physical": {},
+            "memes": {}
+          },
+          "lantern": {
+            "physical": {
+              "lit": true,
+              "owner": "mara",
+              "location": "hook",
+              "shielded": true
+            },
+            "memes": {}
+          },
+          "hook": {
+            "physical": {},
+            "memes": {}
+          },
+          "wind": {
+            "physical": {},
+            "memes": {}
+          }
+        },
+        "after": {
+          "mara": {
+            "physical": {
+              "location": "landing"
+            },
+            "memes": {
+              "Fear": 0.1
+            }
+          },
+          "oren": {
+            "physical": {
+              "location": "landing"
+            },
+            "memes": {}
+          },
+          "cottage": {
+            "physical": {},
+            "memes": {}
+          },
+          "landing": {
+            "physical": {},
+            "memes": {}
+          },
+          "lantern": {
+            "physical": {
+              "lit": true,
+              "owner": "mara",
+              "location": "hook",
+              "shielded": true
+            },
+            "memes": {}
+          },
+          "hook": {
+            "physical": {},
+            "memes": {}
+          },
+          "wind": {
+            "physical": {},
+            "memes": {}
+          }
+        }
+      },
+      {
+        "fact": {
+          "id": "l14",
+          "scene": "landing",
+          "predicate": "shine",
+          "subject": "lantern",
+          "object": "",
+          "target": "landing",
+          "value": "",
+          "cause": "",
+          "cue": "As night fell",
+          "requires": [
+            [
+              "lantern",
+              "lit",
+              true
+            ],
+            [
+              "lantern",
+              "location",
+              "hook"
+            ]
+          ],
+          "effects": [],
+          "meme_deltas": []
+        },
+        "before": {
+          "mara": {
+            "physical": {
+              "location": "landing"
+            },
+            "memes": {
+              "Fear": 0.1
+            }
+          },
+          "oren": {
+            "physical": {
+              "location": "landing"
+            },
+            "memes": {}
+          },
+          "cottage": {
+            "physical": {},
+            "memes": {}
+          },
+          "landing": {
+            "physical": {},
+            "memes": {}
+          },
+          "lantern": {
+            "physical": {
+              "lit": true,
+              "owner": "mara",
+              "location": "hook",
+              "shielded": true
+            },
+            "memes": {}
+          },
+          "hook": {
+            "physical": {},
+            "memes": {}
+          },
+          "wind": {
+            "physical": {},
+            "memes": {}
+          }
+        },
+        "after": {
+          "mara": {
+            "physical": {
+              "location": "landing"
+            },
+            "memes": {
+              "Fear": 0.1
+            }
+          },
+          "oren": {
+            "physical": {
+              "location": "landing"
+            },
+            "memes": {}
+          },
+          "cottage": {
+            "physical": {},
+            "memes": {}
+          },
+          "landing": {
+            "physical": {},
+            "memes": {}
+          },
+          "lantern": {
+            "physical": {
+              "lit": true,
+              "owner": "mara",
+              "location": "hook",
+              "shielded": true
+            },
+            "memes": {}
+          },
+          "hook": {
+            "physical": {},
+            "memes": {}
+          },
+          "wind": {
+            "physical": {},
+            "memes": {}
+          }
+        }
+      }
+    ],
+    "final_state": {
+      "mara": {
+        "physical": {
+          "location": "landing"
+        },
+        "memes": {
+          "Fear": 0.1
+        }
+      },
+      "oren": {
+        "physical": {
+          "location": "landing"
+        },
+        "memes": {}
+      },
+      "cottage": {
+        "physical": {},
+        "memes": {}
+      },
+      "landing": {
+        "physical": {},
+        "memes": {}
+      },
+      "lantern": {
+        "physical": {
+          "lit": true,
+          "owner": "mara",
+          "location": "hook",
+          "shielded": true
+        },
+        "memes": {}
+      },
+      "hook": {
+        "physical": {},
+        "memes": {}
+      },
+      "wind": {
+        "physical": {},
+        "memes": {}
+      }
+    },
+    "fingerprint": "c913522a463cabfc94246e23584a4b21160376c097fd2524364ff09e29b57d79"
+  },
+  {
+    "story": {
+      "id": "kite",
+      "title": "The Kite with a Blue Patch",
+      "entities": [
+        {
+          "id": "tomas",
+          "noun": "boy",
+          "name": "Tomas",
+          "pronoun": "he",
+          "state": {
+            "location": "hill"
+          },
+          "memes": {
+            "Sadness": 0.0
+          }
+        },
+        {
+          "id": "ada",
+          "noun": "girl",
+          "name": "Ada",
+          "pronoun": "she",
+          "state": {
+            "location": "hill"
+          },
+          "memes": {}
+        },
+        {
+          "id": "hill",
+          "noun": "grassy hill",
+          "name": "",
+          "pronoun": "it",
+          "state": {},
+          "memes": {}
+        },
+        {
+          "id": "kite",
+          "noun": "red kite",
+          "name": "",
+          "pronoun": "it",
+          "state": {
+            "condition": "whole",
+            "owner": "tomas"
+          },
+          "memes": {}
+        },
+        {
+          "id": "branch",
+          "noun": "low branch",
+          "name": "",
+          "pronoun": "it",
+          "state": {},
+          "memes": {}
+        },
+        {
+          "id": "patch",
+          "noun": "blue patch",
+          "name": "",
+          "pronoun": "it",
+          "state": {
+            "owner": "ada"
+          },
+          "memes": {}
+        },
+        {
+          "id": "sky",
+          "noun": "evening sky",
+          "name": "",
+          "pronoun": "it",
+          "state": {},
+          "memes": {}
+        }
+      ],
+      "facts": [
+        {
+          "id": "k01",
+          "scene": "hill",
+          "predicate": "have",
+          "subject": "tomas",
+          "object": "kite",
+          "target": "",
+          "value": "",
+          "cause": "",
+          "cue": "One windy afternoon",
+          "requires": [],
+          "effects": [],
+          "meme_deltas": []
+        },
+        {
+          "id": "k02",
+          "scene": "hill",
+          "predicate": "go",
+          "subject": "tomas",
+          "object": "",
+          "target": "hill",
+          "value": "",
+          "cause": "",
+          "cue": "",
+          "requires": [],
+          "effects": [
+            [
+              "tomas",
+              "location",
+              "hill"
+            ]
+          ],
+          "meme_deltas": []
+        },
+        {
+          "id": "k03",
+          "scene": "hill",
+          "predicate": "meet",
+          "subject": "tomas",
+          "object": "ada",
+          "target": "",
+          "value": "",
+          "cause": "",
+          "cue": "",
+          "requires": [],
+          "effects": [],
+          "meme_deltas": []
+        },
+        {
+          "id": "k04",
+          "scene": "hill",
+          "predicate": "launch",
+          "subject": "tomas",
+          "object": "kite",
+          "target": "",
+          "value": "",
+          "cause": "",
+          "cue": "",
+          "requires": [
+            [
+              "kite",
+              "condition",
+              "whole"
+            ]
+          ],
+          "effects": [
+            [
+              "kite",
+              "airborne",
+              true
+            ]
+          ],
+          "meme_deltas": []
+        },
+        {
+          "id": "k05",
+          "scene": "snag",
+          "predicate": "snag",
+          "subject": "kite",
+          "object": "",
+          "target": "branch",
+          "value": "",
+          "cause": "",
+          "cue": "A moment later",
+          "requires": [
+            [
+              "kite",
+              "airborne",
+              true
+            ]
+          ],
+          "effects": [
+            [
+              "kite",
+              "condition",
+              "torn"
+            ],
+            [
+              "kite",
+              "airborne",
+              false
+            ]
+          ],
+          "meme_deltas": [
+            [
+              "tomas",
+              "Sadness",
+              0.8
+            ]
+          ]
+        },
+        {
+          "id": "k06",
+          "scene": "snag",
+          "predicate": "retrieve",
+          "subject": "tomas",
+          "object": "kite",
+          "target": "branch",
+          "value": "",
+          "cause": "",
+          "cue": "",
+          "requires": [],
+          "effects": [
+            [
+              "kite",
+              "location",
+              "tomas"
+            ]
+          ],
+          "meme_deltas": []
+        },
+        {
+          "id": "k07",
+          "scene": "snag",
+          "predicate": "be",
+          "subject": "kite",
+          "object": "",
+          "target": "",
+          "value": "torn",
+          "cause": "",
+          "cue": "",
+          "requires": [],
+          "effects": [],
+          "meme_deltas": []
+        },
+        {
+          "id": "k08",
+          "scene": "snag",
+          "predicate": "feel",
+          "subject": "tomas",
+          "object": "",
+          "target": "",
+          "value": "Sadness",
+          "cause": "k07",
+          "cue": "",
+          "requires": [],
+          "effects": [],
+          "meme_deltas": []
+        },
+        {
+          "id": "k09",
+          "scene": "snag",
+          "predicate": "say",
+          "subject": "ada",
+          "object": "",
+          "target": "",
+          "value": "We can mend it together.",
+          "cause": "",
+          "cue": "",
+          "requires": [],
+          "effects": [],
+          "meme_deltas": []
+        },
+        {
+          "id": "k10",
+          "scene": "repair",
+          "predicate": "give",
+          "subject": "ada",
+          "object": "patch",
+          "target": "tomas",
+          "value": "",
+          "cause": "",
+          "cue": "",
+          "requires": [
+            [
+              "patch",
+              "owner",
+              "ada"
+            ]
+          ],
+          "effects": [
+            [
+              "patch",
+              "owner",
+              "tomas"
+            ]
+          ],
+          "meme_deltas": []
+        },
+        {
+          "id": "k11",
+          "scene": "repair",
+          "predicate": "mend",
+          "subject": "tomas",
+          "object": "kite",
+          "target": "patch",
+          "value": "",
+          "cause": "",
+          "cue": "",
+          "requires": [
+            [
+              "kite",
+              "condition",
+              "torn"
+            ],
+            [
+              "patch",
+              "owner",
+              "tomas"
+            ]
+          ],
+          "effects": [
+            [
+              "kite",
+              "condition",
+              "mended"
+            ],
+            [
+              "patch",
+              "location",
+              "kite"
+            ]
+          ],
+          "meme_deltas": [
+            [
+              "tomas",
+              "Sadness",
+              -0.7
+            ]
+          ]
+        },
+        {
+          "id": "k12",
+          "scene": "repair",
+          "predicate": "thank",
+          "subject": "tomas",
+          "object": "ada",
+          "target": "",
+          "value": "",
+          "cause": "k10",
+          "cue": "",
+          "requires": [],
+          "effects": [],
+          "meme_deltas": []
+        },
+        {
+          "id": "k13",
+          "scene": "flight",
+          "predicate": "launch",
+          "subject": "tomas",
+          "object": "kite",
+          "target": "",
+          "value": "",
+          "cause": "",
+          "cue": "Before sunset",
+          "requires": [
+            [
+              "kite",
+              "condition",
+              "mended"
+            ]
+          ],
+          "effects": [
+            [
+              "kite",
+              "airborne",
+              true
+            ]
+          ],
+          "meme_deltas": []
+        },
+        {
+          "id": "k14",
+          "scene": "flight",
+          "predicate": "feel",
+          "subject": "tomas",
+          "object": "",
+          "target": "",
+          "value": "Sadness",
+          "cause": "k11",
+          "cue": "",
+          "requires": [],
+          "effects": [],
+          "meme_deltas": []
+        },
+        {
+          "id": "k15",
+          "scene": "flight",
+          "predicate": "glow",
+          "subject": "patch",
+          "object": "",
+          "target": "sky",
+          "value": "",
+          "cause": "",
+          "cue": "",
+          "requires": [
+            [
+              "kite",
+              "airborne",
+              true
+            ],
+            [
+              "kite",
+              "condition",
+              "mended"
+            ],
+            [
+              "patch",
+              "location",
+              "kite"
+            ]
+          ],
+          "effects": [],
+          "meme_deltas": []
+        }
+      ]
+    },
+    "history": [
+      {
+        "fact": {
+          "id": "k01",
+          "scene": "hill",
+          "predicate": "have",
+          "subject": "tomas",
+          "object": "kite",
+          "target": "",
+          "value": "",
+          "cause": "",
+          "cue": "One windy afternoon",
+          "requires": [],
+          "effects": [],
+          "meme_deltas": []
+        },
+        "before": {
+          "tomas": {
+            "physical": {
+              "location": "hill"
+            },
+            "memes": {
+              "Sadness": 0.0
+            }
+          },
+          "ada": {
+            "physical": {
+              "location": "hill"
+            },
+            "memes": {}
+          },
+          "hill": {
+            "physical": {},
+            "memes": {}
+          },
+          "kite": {
+            "physical": {
+              "condition": "whole",
+              "owner": "tomas"
+            },
+            "memes": {}
+          },
+          "branch": {
+            "physical": {},
+            "memes": {}
+          },
+          "patch": {
+            "physical": {
+              "owner": "ada"
+            },
+            "memes": {}
+          },
+          "sky": {
+            "physical": {},
+            "memes": {}
+          }
+        },
+        "after": {
+          "tomas": {
+            "physical": {
+              "location": "hill"
+            },
+            "memes": {
+              "Sadness": 0.0
+            }
+          },
+          "ada": {
+            "physical": {
+              "location": "hill"
+            },
+            "memes": {}
+          },
+          "hill": {
+            "physical": {},
+            "memes": {}
+          },
+          "kite": {
+            "physical": {
+              "condition": "whole",
+              "owner": "tomas"
+            },
+            "memes": {}
+          },
+          "branch": {
+            "physical": {},
+            "memes": {}
+          },
+          "patch": {
+            "physical": {
+              "owner": "ada"
+            },
+            "memes": {}
+          },
+          "sky": {
+            "physical": {},
+            "memes": {}
+          }
+        }
+      },
+      {
+        "fact": {
+          "id": "k02",
+          "scene": "hill",
+          "predicate": "go",
+          "subject": "tomas",
+          "object": "",
+          "target": "hill",
+          "value": "",
+          "cause": "",
+          "cue": "",
+          "requires": [],
+          "effects": [
+            [
+              "tomas",
+              "location",
+              "hill"
+            ]
+          ],
+          "meme_deltas": []
+        },
+        "before": {
+          "tomas": {
+            "physical": {
+              "location": "hill"
+            },
+            "memes": {
+              "Sadness": 0.0
+            }
+          },
+          "ada": {
+            "physical": {
+              "location": "hill"
+            },
+            "memes": {}
+          },
+          "hill": {
+            "physical": {},
+            "memes": {}
+          },
+          "kite": {
+            "physical": {
+              "condition": "whole",
+              "owner": "tomas"
+            },
+            "memes": {}
+          },
+          "branch": {
+            "physical": {},
+            "memes": {}
+          },
+          "patch": {
+            "physical": {
+              "owner": "ada"
+            },
+            "memes": {}
+          },
+          "sky": {
+            "physical": {},
+            "memes": {}
+          }
+        },
+        "after": {
+          "tomas": {
+            "physical": {
+              "location": "hill"
+            },
+            "memes": {
+              "Sadness": 0.0
+            }
+          },
+          "ada": {
+            "physical": {
+              "location": "hill"
+            },
+            "memes": {}
+          },
+          "hill": {
+            "physical": {},
+            "memes": {}
+          },
+          "kite": {
+            "physical": {
+              "condition": "whole",
+              "owner": "tomas"
+            },
+            "memes": {}
+          },
+          "branch": {
+            "physical": {},
+            "memes": {}
+          },
+          "patch": {
+            "physical": {
+              "owner": "ada"
+            },
+            "memes": {}
+          },
+          "sky": {
+            "physical": {},
+            "memes": {}
+          }
+        }
+      },
+      {
+        "fact": {
+          "id": "k03",
+          "scene": "hill",
+          "predicate": "meet",
+          "subject": "tomas",
+          "object": "ada",
+          "target": "",
+          "value": "",
+          "cause": "",
+          "cue": "",
+          "requires": [],
+          "effects": [],
+          "meme_deltas": []
+        },
+        "before": {
+          "tomas": {
+            "physical": {
+              "location": "hill"
+            },
+            "memes": {
+              "Sadness": 0.0
+            }
+          },
+          "ada": {
+            "physical": {
+              "location": "hill"
+            },
+            "memes": {}
+          },
+          "hill": {
+            "physical": {},
+            "memes": {}
+          },
+          "kite": {
+            "physical": {
+              "condition": "whole",
+              "owner": "tomas"
+            },
+            "memes": {}
+          },
+          "branch": {
+            "physical": {},
+            "memes": {}
+          },
+          "patch": {
+            "physical": {
+              "owner": "ada"
+            },
+            "memes": {}
+          },
+          "sky": {
+            "physical": {},
+            "memes": {}
+          }
+        },
+        "after": {
+          "tomas": {
+            "physical": {
+              "location": "hill"
+            },
+            "memes": {
+              "Sadness": 0.0
+            }
+          },
+          "ada": {
+            "physical": {
+              "location": "hill"
+            },
+            "memes": {}
+          },
+          "hill": {
+            "physical": {},
+            "memes": {}
+          },
+          "kite": {
+            "physical": {
+              "condition": "whole",
+              "owner": "tomas"
+            },
+            "memes": {}
+          },
+          "branch": {
+            "physical": {},
+            "memes": {}
+          },
+          "patch": {
+            "physical": {
+              "owner": "ada"
+            },
+            "memes": {}
+          },
+          "sky": {
+            "physical": {},
+            "memes": {}
+          }
+        }
+      },
+      {
+        "fact": {
+          "id": "k04",
+          "scene": "hill",
+          "predicate": "launch",
+          "subject": "tomas",
+          "object": "kite",
+          "target": "",
+          "value": "",
+          "cause": "",
+          "cue": "",
+          "requires": [
+            [
+              "kite",
+              "condition",
+              "whole"
+            ]
+          ],
+          "effects": [
+            [
+              "kite",
+              "airborne",
+              true
+            ]
+          ],
+          "meme_deltas": []
+        },
+        "before": {
+          "tomas": {
+            "physical": {
+              "location": "hill"
+            },
+            "memes": {
+              "Sadness": 0.0
+            }
+          },
+          "ada": {
+            "physical": {
+              "location": "hill"
+            },
+            "memes": {}
+          },
+          "hill": {
+            "physical": {},
+            "memes": {}
+          },
+          "kite": {
+            "physical": {
+              "condition": "whole",
+              "owner": "tomas"
+            },
+            "memes": {}
+          },
+          "branch": {
+            "physical": {},
+            "memes": {}
+          },
+          "patch": {
+            "physical": {
+              "owner": "ada"
+            },
+            "memes": {}
+          },
+          "sky": {
+            "physical": {},
+            "memes": {}
+          }
+        },
+        "after": {
+          "tomas": {
+            "physical": {
+              "location": "hill"
+            },
+            "memes": {
+              "Sadness": 0.0
+            }
+          },
+          "ada": {
+            "physical": {
+              "location": "hill"
+            },
+            "memes": {}
+          },
+          "hill": {
+            "physical": {},
+            "memes": {}
+          },
+          "kite": {
+            "physical": {
+              "condition": "whole",
+              "owner": "tomas",
+              "airborne": true
+            },
+            "memes": {}
+          },
+          "branch": {
+            "physical": {},
+            "memes": {}
+          },
+          "patch": {
+            "physical": {
+              "owner": "ada"
+            },
+            "memes": {}
+          },
+          "sky": {
+            "physical": {},
+            "memes": {}
+          }
+        }
+      },
+      {
+        "fact": {
+          "id": "k05",
+          "scene": "snag",
+          "predicate": "snag",
+          "subject": "kite",
+          "object": "",
+          "target": "branch",
+          "value": "",
+          "cause": "",
+          "cue": "A moment later",
+          "requires": [
+            [
+              "kite",
+              "airborne",
+              true
+            ]
+          ],
+          "effects": [
+            [
+              "kite",
+              "condition",
+              "torn"
+            ],
+            [
+              "kite",
+              "airborne",
+              false
+            ]
+          ],
+          "meme_deltas": [
+            [
+              "tomas",
+              "Sadness",
+              0.8
+            ]
+          ]
+        },
+        "before": {
+          "tomas": {
+            "physical": {
+              "location": "hill"
+            },
+            "memes": {
+              "Sadness": 0.0
+            }
+          },
+          "ada": {
+            "physical": {
+              "location": "hill"
+            },
+            "memes": {}
+          },
+          "hill": {
+            "physical": {},
+            "memes": {}
+          },
+          "kite": {
+            "physical": {
+              "condition": "whole",
+              "owner": "tomas",
+              "airborne": true
+            },
+            "memes": {}
+          },
+          "branch": {
+            "physical": {},
+            "memes": {}
+          },
+          "patch": {
+            "physical": {
+              "owner": "ada"
+            },
+            "memes": {}
+          },
+          "sky": {
+            "physical": {},
+            "memes": {}
+          }
+        },
+        "after": {
+          "tomas": {
+            "physical": {
+              "location": "hill"
+            },
+            "memes": {
+              "Sadness": 0.8
+            }
+          },
+          "ada": {
+            "physical": {
+              "location": "hill"
+            },
+            "memes": {}
+          },
+          "hill": {
+            "physical": {},
+            "memes": {}
+          },
+          "kite": {
+            "physical": {
+              "condition": "torn",
+              "owner": "tomas",
+              "airborne": false
+            },
+            "memes": {}
+          },
+          "branch": {
+            "physical": {},
+            "memes": {}
+          },
+          "patch": {
+            "physical": {
+              "owner": "ada"
+            },
+            "memes": {}
+          },
+          "sky": {
+            "physical": {},
+            "memes": {}
+          }
+        }
+      },
+      {
+        "fact": {
+          "id": "k06",
+          "scene": "snag",
+          "predicate": "retrieve",
+          "subject": "tomas",
+          "object": "kite",
+          "target": "branch",
+          "value": "",
+          "cause": "",
+          "cue": "",
+          "requires": [],
+          "effects": [
+            [
+              "kite",
+              "location",
+              "tomas"
+            ]
+          ],
+          "meme_deltas": []
+        },
+        "before": {
+          "tomas": {
+            "physical": {
+              "location": "hill"
+            },
+            "memes": {
+              "Sadness": 0.8
+            }
+          },
+          "ada": {
+            "physical": {
+              "location": "hill"
+            },
+            "memes": {}
+          },
+          "hill": {
+            "physical": {},
+            "memes": {}
+          },
+          "kite": {
+            "physical": {
+              "condition": "torn",
+              "owner": "tomas",
+              "airborne": false
+            },
+            "memes": {}
+          },
+          "branch": {
+            "physical": {},
+            "memes": {}
+          },
+          "patch": {
+            "physical": {
+              "owner": "ada"
+            },
+            "memes": {}
+          },
+          "sky": {
+            "physical": {},
+            "memes": {}
+          }
+        },
+        "after": {
+          "tomas": {
+            "physical": {
+              "location": "hill"
+            },
+            "memes": {
+              "Sadness": 0.8
+            }
+          },
+          "ada": {
+            "physical": {
+              "location": "hill"
+            },
+            "memes": {}
+          },
+          "hill": {
+            "physical": {},
+            "memes": {}
+          },
+          "kite": {
+            "physical": {
+              "condition": "torn",
+              "owner": "tomas",
+              "airborne": false,
+              "location": "tomas"
+            },
+            "memes": {}
+          },
+          "branch": {
+            "physical": {},
+            "memes": {}
+          },
+          "patch": {
+            "physical": {
+              "owner": "ada"
+            },
+            "memes": {}
+          },
+          "sky": {
+            "physical": {},
+            "memes": {}
+          }
+        }
+      },
+      {
+        "fact": {
+          "id": "k07",
+          "scene": "snag",
+          "predicate": "be",
+          "subject": "kite",
+          "object": "",
+          "target": "",
+          "value": "torn",
+          "cause": "",
+          "cue": "",
+          "requires": [],
+          "effects": [],
+          "meme_deltas": []
+        },
+        "before": {
+          "tomas": {
+            "physical": {
+              "location": "hill"
+            },
+            "memes": {
+              "Sadness": 0.8
+            }
+          },
+          "ada": {
+            "physical": {
+              "location": "hill"
+            },
+            "memes": {}
+          },
+          "hill": {
+            "physical": {},
+            "memes": {}
+          },
+          "kite": {
+            "physical": {
+              "condition": "torn",
+              "owner": "tomas",
+              "airborne": false,
+              "location": "tomas"
+            },
+            "memes": {}
+          },
+          "branch": {
+            "physical": {},
+            "memes": {}
+          },
+          "patch": {
+            "physical": {
+              "owner": "ada"
+            },
+            "memes": {}
+          },
+          "sky": {
+            "physical": {},
+            "memes": {}
+          }
+        },
+        "after": {
+          "tomas": {
+            "physical": {
+              "location": "hill"
+            },
+            "memes": {
+              "Sadness": 0.8
+            }
+          },
+          "ada": {
+            "physical": {
+              "location": "hill"
+            },
+            "memes": {}
+          },
+          "hill": {
+            "physical": {},
+            "memes": {}
+          },
+          "kite": {
+            "physical": {
+              "condition": "torn",
+              "owner": "tomas",
+              "airborne": false,
+              "location": "tomas"
+            },
+            "memes": {}
+          },
+          "branch": {
+            "physical": {},
+            "memes": {}
+          },
+          "patch": {
+            "physical": {
+              "owner": "ada"
+            },
+            "memes": {}
+          },
+          "sky": {
+            "physical": {},
+            "memes": {}
+          }
+        }
+      },
+      {
+        "fact": {
+          "id": "k08",
+          "scene": "snag",
+          "predicate": "feel",
+          "subject": "tomas",
+          "object": "",
+          "target": "",
+          "value": "Sadness",
+          "cause": "k07",
+          "cue": "",
+          "requires": [],
+          "effects": [],
+          "meme_deltas": []
+        },
+        "before": {
+          "tomas": {
+            "physical": {
+              "location": "hill"
+            },
+            "memes": {
+              "Sadness": 0.8
+            }
+          },
+          "ada": {
+            "physical": {
+              "location": "hill"
+            },
+            "memes": {}
+          },
+          "hill": {
+            "physical": {},
+            "memes": {}
+          },
+          "kite": {
+            "physical": {
+              "condition": "torn",
+              "owner": "tomas",
+              "airborne": false,
+              "location": "tomas"
+            },
+            "memes": {}
+          },
+          "branch": {
+            "physical": {},
+            "memes": {}
+          },
+          "patch": {
+            "physical": {
+              "owner": "ada"
+            },
+            "memes": {}
+          },
+          "sky": {
+            "physical": {},
+            "memes": {}
+          }
+        },
+        "after": {
+          "tomas": {
+            "physical": {
+              "location": "hill"
+            },
+            "memes": {
+              "Sadness": 0.8
+            }
+          },
+          "ada": {
+            "physical": {
+              "location": "hill"
+            },
+            "memes": {}
+          },
+          "hill": {
+            "physical": {},
+            "memes": {}
+          },
+          "kite": {
+            "physical": {
+              "condition": "torn",
+              "owner": "tomas",
+              "airborne": false,
+              "location": "tomas"
+            },
+            "memes": {}
+          },
+          "branch": {
+            "physical": {},
+            "memes": {}
+          },
+          "patch": {
+            "physical": {
+              "owner": "ada"
+            },
+            "memes": {}
+          },
+          "sky": {
+            "physical": {},
+            "memes": {}
+          }
+        }
+      },
+      {
+        "fact": {
+          "id": "k09",
+          "scene": "snag",
+          "predicate": "say",
+          "subject": "ada",
+          "object": "",
+          "target": "",
+          "value": "We can mend it together.",
+          "cause": "",
+          "cue": "",
+          "requires": [],
+          "effects": [],
+          "meme_deltas": []
+        },
+        "before": {
+          "tomas": {
+            "physical": {
+              "location": "hill"
+            },
+            "memes": {
+              "Sadness": 0.8
+            }
+          },
+          "ada": {
+            "physical": {
+              "location": "hill"
+            },
+            "memes": {}
+          },
+          "hill": {
+            "physical": {},
+            "memes": {}
+          },
+          "kite": {
+            "physical": {
+              "condition": "torn",
+              "owner": "tomas",
+              "airborne": false,
+              "location": "tomas"
+            },
+            "memes": {}
+          },
+          "branch": {
+            "physical": {},
+            "memes": {}
+          },
+          "patch": {
+            "physical": {
+              "owner": "ada"
+            },
+            "memes": {}
+          },
+          "sky": {
+            "physical": {},
+            "memes": {}
+          }
+        },
+        "after": {
+          "tomas": {
+            "physical": {
+              "location": "hill"
+            },
+            "memes": {
+              "Sadness": 0.8
+            }
+          },
+          "ada": {
+            "physical": {
+              "location": "hill"
+            },
+            "memes": {}
+          },
+          "hill": {
+            "physical": {},
+            "memes": {}
+          },
+          "kite": {
+            "physical": {
+              "condition": "torn",
+              "owner": "tomas",
+              "airborne": false,
+              "location": "tomas"
+            },
+            "memes": {}
+          },
+          "branch": {
+            "physical": {},
+            "memes": {}
+          },
+          "patch": {
+            "physical": {
+              "owner": "ada"
+            },
+            "memes": {}
+          },
+          "sky": {
+            "physical": {},
+            "memes": {}
+          }
+        }
+      },
+      {
+        "fact": {
+          "id": "k10",
+          "scene": "repair",
+          "predicate": "give",
+          "subject": "ada",
+          "object": "patch",
+          "target": "tomas",
+          "value": "",
+          "cause": "",
+          "cue": "",
+          "requires": [
+            [
+              "patch",
+              "owner",
+              "ada"
+            ]
+          ],
+          "effects": [
+            [
+              "patch",
+              "owner",
+              "tomas"
+            ]
+          ],
+          "meme_deltas": []
+        },
+        "before": {
+          "tomas": {
+            "physical": {
+              "location": "hill"
+            },
+            "memes": {
+              "Sadness": 0.8
+            }
+          },
+          "ada": {
+            "physical": {
+              "location": "hill"
+            },
+            "memes": {}
+          },
+          "hill": {
+            "physical": {},
+            "memes": {}
+          },
+          "kite": {
+            "physical": {
+              "condition": "torn",
+              "owner": "tomas",
+              "airborne": false,
+              "location": "tomas"
+            },
+            "memes": {}
+          },
+          "branch": {
+            "physical": {},
+            "memes": {}
+          },
+          "patch": {
+            "physical": {
+              "owner": "ada"
+            },
+            "memes": {}
+          },
+          "sky": {
+            "physical": {},
+            "memes": {}
+          }
+        },
+        "after": {
+          "tomas": {
+            "physical": {
+              "location": "hill"
+            },
+            "memes": {
+              "Sadness": 0.8
+            }
+          },
+          "ada": {
+            "physical": {
+              "location": "hill"
+            },
+            "memes": {}
+          },
+          "hill": {
+            "physical": {},
+            "memes": {}
+          },
+          "kite": {
+            "physical": {
+              "condition": "torn",
+              "owner": "tomas",
+              "airborne": false,
+              "location": "tomas"
+            },
+            "memes": {}
+          },
+          "branch": {
+            "physical": {},
+            "memes": {}
+          },
+          "patch": {
+            "physical": {
+              "owner": "tomas"
+            },
+            "memes": {}
+          },
+          "sky": {
+            "physical": {},
+            "memes": {}
+          }
+        }
+      },
+      {
+        "fact": {
+          "id": "k11",
+          "scene": "repair",
+          "predicate": "mend",
+          "subject": "tomas",
+          "object": "kite",
+          "target": "patch",
+          "value": "",
+          "cause": "",
+          "cue": "",
+          "requires": [
+            [
+              "kite",
+              "condition",
+              "torn"
+            ],
+            [
+              "patch",
+              "owner",
+              "tomas"
+            ]
+          ],
+          "effects": [
+            [
+              "kite",
+              "condition",
+              "mended"
+            ],
+            [
+              "patch",
+              "location",
+              "kite"
+            ]
+          ],
+          "meme_deltas": [
+            [
+              "tomas",
+              "Sadness",
+              -0.7
+            ]
+          ]
+        },
+        "before": {
+          "tomas": {
+            "physical": {
+              "location": "hill"
+            },
+            "memes": {
+              "Sadness": 0.8
+            }
+          },
+          "ada": {
+            "physical": {
+              "location": "hill"
+            },
+            "memes": {}
+          },
+          "hill": {
+            "physical": {},
+            "memes": {}
+          },
+          "kite": {
+            "physical": {
+              "condition": "torn",
+              "owner": "tomas",
+              "airborne": false,
+              "location": "tomas"
+            },
+            "memes": {}
+          },
+          "branch": {
+            "physical": {},
+            "memes": {}
+          },
+          "patch": {
+            "physical": {
+              "owner": "tomas"
+            },
+            "memes": {}
+          },
+          "sky": {
+            "physical": {},
+            "memes": {}
+          }
+        },
+        "after": {
+          "tomas": {
+            "physical": {
+              "location": "hill"
+            },
+            "memes": {
+              "Sadness": 0.1
+            }
+          },
+          "ada": {
+            "physical": {
+              "location": "hill"
+            },
+            "memes": {}
+          },
+          "hill": {
+            "physical": {},
+            "memes": {}
+          },
+          "kite": {
+            "physical": {
+              "condition": "mended",
+              "owner": "tomas",
+              "airborne": false,
+              "location": "tomas"
+            },
+            "memes": {}
+          },
+          "branch": {
+            "physical": {},
+            "memes": {}
+          },
+          "patch": {
+            "physical": {
+              "owner": "tomas",
+              "location": "kite"
+            },
+            "memes": {}
+          },
+          "sky": {
+            "physical": {},
+            "memes": {}
+          }
+        }
+      },
+      {
+        "fact": {
+          "id": "k12",
+          "scene": "repair",
+          "predicate": "thank",
+          "subject": "tomas",
+          "object": "ada",
+          "target": "",
+          "value": "",
+          "cause": "k10",
+          "cue": "",
+          "requires": [],
+          "effects": [],
+          "meme_deltas": []
+        },
+        "before": {
+          "tomas": {
+            "physical": {
+              "location": "hill"
+            },
+            "memes": {
+              "Sadness": 0.1
+            }
+          },
+          "ada": {
+            "physical": {
+              "location": "hill"
+            },
+            "memes": {}
+          },
+          "hill": {
+            "physical": {},
+            "memes": {}
+          },
+          "kite": {
+            "physical": {
+              "condition": "mended",
+              "owner": "tomas",
+              "airborne": false,
+              "location": "tomas"
+            },
+            "memes": {}
+          },
+          "branch": {
+            "physical": {},
+            "memes": {}
+          },
+          "patch": {
+            "physical": {
+              "owner": "tomas",
+              "location": "kite"
+            },
+            "memes": {}
+          },
+          "sky": {
+            "physical": {},
+            "memes": {}
+          }
+        },
+        "after": {
+          "tomas": {
+            "physical": {
+              "location": "hill"
+            },
+            "memes": {
+              "Sadness": 0.1
+            }
+          },
+          "ada": {
+            "physical": {
+              "location": "hill"
+            },
+            "memes": {}
+          },
+          "hill": {
+            "physical": {},
+            "memes": {}
+          },
+          "kite": {
+            "physical": {
+              "condition": "mended",
+              "owner": "tomas",
+              "airborne": false,
+              "location": "tomas"
+            },
+            "memes": {}
+          },
+          "branch": {
+            "physical": {},
+            "memes": {}
+          },
+          "patch": {
+            "physical": {
+              "owner": "tomas",
+              "location": "kite"
+            },
+            "memes": {}
+          },
+          "sky": {
+            "physical": {},
+            "memes": {}
+          }
+        }
+      },
+      {
+        "fact": {
+          "id": "k13",
+          "scene": "flight",
+          "predicate": "launch",
+          "subject": "tomas",
+          "object": "kite",
+          "target": "",
+          "value": "",
+          "cause": "",
+          "cue": "Before sunset",
+          "requires": [
+            [
+              "kite",
+              "condition",
+              "mended"
+            ]
+          ],
+          "effects": [
+            [
+              "kite",
+              "airborne",
+              true
+            ]
+          ],
+          "meme_deltas": []
+        },
+        "before": {
+          "tomas": {
+            "physical": {
+              "location": "hill"
+            },
+            "memes": {
+              "Sadness": 0.1
+            }
+          },
+          "ada": {
+            "physical": {
+              "location": "hill"
+            },
+            "memes": {}
+          },
+          "hill": {
+            "physical": {},
+            "memes": {}
+          },
+          "kite": {
+            "physical": {
+              "condition": "mended",
+              "owner": "tomas",
+              "airborne": false,
+              "location": "tomas"
+            },
+            "memes": {}
+          },
+          "branch": {
+            "physical": {},
+            "memes": {}
+          },
+          "patch": {
+            "physical": {
+              "owner": "tomas",
+              "location": "kite"
+            },
+            "memes": {}
+          },
+          "sky": {
+            "physical": {},
+            "memes": {}
+          }
+        },
+        "after": {
+          "tomas": {
+            "physical": {
+              "location": "hill"
+            },
+            "memes": {
+              "Sadness": 0.1
+            }
+          },
+          "ada": {
+            "physical": {
+              "location": "hill"
+            },
+            "memes": {}
+          },
+          "hill": {
+            "physical": {},
+            "memes": {}
+          },
+          "kite": {
+            "physical": {
+              "condition": "mended",
+              "owner": "tomas",
+              "airborne": true,
+              "location": "tomas"
+            },
+            "memes": {}
+          },
+          "branch": {
+            "physical": {},
+            "memes": {}
+          },
+          "patch": {
+            "physical": {
+              "owner": "tomas",
+              "location": "kite"
+            },
+            "memes": {}
+          },
+          "sky": {
+            "physical": {},
+            "memes": {}
+          }
+        }
+      },
+      {
+        "fact": {
+          "id": "k14",
+          "scene": "flight",
+          "predicate": "feel",
+          "subject": "tomas",
+          "object": "",
+          "target": "",
+          "value": "Sadness",
+          "cause": "k11",
+          "cue": "",
+          "requires": [],
+          "effects": [],
+          "meme_deltas": []
+        },
+        "before": {
+          "tomas": {
+            "physical": {
+              "location": "hill"
+            },
+            "memes": {
+              "Sadness": 0.1
+            }
+          },
+          "ada": {
+            "physical": {
+              "location": "hill"
+            },
+            "memes": {}
+          },
+          "hill": {
+            "physical": {},
+            "memes": {}
+          },
+          "kite": {
+            "physical": {
+              "condition": "mended",
+              "owner": "tomas",
+              "airborne": true,
+              "location": "tomas"
+            },
+            "memes": {}
+          },
+          "branch": {
+            "physical": {},
+            "memes": {}
+          },
+          "patch": {
+            "physical": {
+              "owner": "tomas",
+              "location": "kite"
+            },
+            "memes": {}
+          },
+          "sky": {
+            "physical": {},
+            "memes": {}
+          }
+        },
+        "after": {
+          "tomas": {
+            "physical": {
+              "location": "hill"
+            },
+            "memes": {
+              "Sadness": 0.1
+            }
+          },
+          "ada": {
+            "physical": {
+              "location": "hill"
+            },
+            "memes": {}
+          },
+          "hill": {
+            "physical": {},
+            "memes": {}
+          },
+          "kite": {
+            "physical": {
+              "condition": "mended",
+              "owner": "tomas",
+              "airborne": true,
+              "location": "tomas"
+            },
+            "memes": {}
+          },
+          "branch": {
+            "physical": {},
+            "memes": {}
+          },
+          "patch": {
+            "physical": {
+              "owner": "tomas",
+              "location": "kite"
+            },
+            "memes": {}
+          },
+          "sky": {
+            "physical": {},
+            "memes": {}
+          }
+        }
+      },
+      {
+        "fact": {
+          "id": "k15",
+          "scene": "flight",
+          "predicate": "glow",
+          "subject": "patch",
+          "object": "",
+          "target": "sky",
+          "value": "",
+          "cause": "",
+          "cue": "",
+          "requires": [
+            [
+              "kite",
+              "airborne",
+              true
+            ],
+            [
+              "kite",
+              "condition",
+              "mended"
+            ],
+            [
+              "patch",
+              "location",
+              "kite"
+            ]
+          ],
+          "effects": [],
+          "meme_deltas": []
+        },
+        "before": {
+          "tomas": {
+            "physical": {
+              "location": "hill"
+            },
+            "memes": {
+              "Sadness": 0.1
+            }
+          },
+          "ada": {
+            "physical": {
+              "location": "hill"
+            },
+            "memes": {}
+          },
+          "hill": {
+            "physical": {},
+            "memes": {}
+          },
+          "kite": {
+            "physical": {
+              "condition": "mended",
+              "owner": "tomas",
+              "airborne": true,
+              "location": "tomas"
+            },
+            "memes": {}
+          },
+          "branch": {
+            "physical": {},
+            "memes": {}
+          },
+          "patch": {
+            "physical": {
+              "owner": "tomas",
+              "location": "kite"
+            },
+            "memes": {}
+          },
+          "sky": {
+            "physical": {},
+            "memes": {}
+          }
+        },
+        "after": {
+          "tomas": {
+            "physical": {
+              "location": "hill"
+            },
+            "memes": {
+              "Sadness": 0.1
+            }
+          },
+          "ada": {
+            "physical": {
+              "location": "hill"
+            },
+            "memes": {}
+          },
+          "hill": {
+            "physical": {},
+            "memes": {}
+          },
+          "kite": {
+            "physical": {
+              "condition": "mended",
+              "owner": "tomas",
+              "airborne": true,
+              "location": "tomas"
+            },
+            "memes": {}
+          },
+          "branch": {
+            "physical": {},
+            "memes": {}
+          },
+          "patch": {
+            "physical": {
+              "owner": "tomas",
+              "location": "kite"
+            },
+            "memes": {}
+          },
+          "sky": {
+            "physical": {},
+            "memes": {}
+          }
+        }
+      }
+    ],
+    "final_state": {
+      "tomas": {
+        "physical": {
+          "location": "hill"
+        },
+        "memes": {
+          "Sadness": 0.1
+        }
+      },
+      "ada": {
+        "physical": {
+          "location": "hill"
+        },
+        "memes": {}
+      },
+      "hill": {
+        "physical": {},
+        "memes": {}
+      },
+      "kite": {
+        "physical": {
+          "condition": "mended",
+          "owner": "tomas",
+          "airborne": true,
+          "location": "tomas"
+        },
+        "memes": {}
+      },
+      "branch": {
+        "physical": {},
+        "memes": {}
+      },
+      "patch": {
+        "physical": {
+          "owner": "tomas",
+          "location": "kite"
+        },
+        "memes": {}
+      },
+      "sky": {
+        "physical": {},
+        "memes": {}
+      }
+    },
+    "fingerprint": "8efb795cda5e2f4bfea047af184a483347c220c569c3cbc5240207cff2af588b"
+  }
+]

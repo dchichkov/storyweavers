@@ -1,0 +1,224 @@
+{
+  "scenes": [
+    {
+      "id": "arrive_at_camp",
+      "role": "reference opening and ordinary wants",
+      "location": "family campsite",
+      "prerequisites": [],
+      "actions": ["Mira hopes to earn trust; Kit settles Pip beside the bedrolls."],
+      "consequences": ["Establishes the siblings' different wants and shared campsite."],
+      "prose_obligations": ["Show ordinary family life and distinct sibling motives."],
+      "implemented_ids": []
+    },
+    {
+      "id": "play_with_pip",
+      "role": "reference setup for the missing toy",
+      "location": "tent and picnic table",
+      "prerequisites": ["The siblings are together before supper."],
+      "actions": ["Kit carries Pip while helping Mira with camp chores."],
+      "consequences": ["Pip can slip from Kit's jacket pocket without either child seeing."],
+      "prose_obligations": ["Make the later loss an ordinary accident, not carelessness as a moral flaw."],
+      "implemented_ids": []
+    },
+    {
+      "id": "discover_missing_fox",
+      "role": "essential inciting encounter",
+      "location": "bedrolls",
+      "prerequisites": ["Pip is missing."],
+      "actions": ["Kit checks the sleeping bags and admits he is frightened."],
+      "consequences": ["The siblings share the goal of finding Pip before supper."],
+      "prose_obligations": ["Make Kit's fear concrete and let Mira respond with care."],
+      "implemented_ids": ["tell_about_fox"]
+    },
+    {
+      "id": "offer_help",
+      "role": "reference vow consolidated into the reveal and borrowing plays",
+      "location": "picnic table",
+      "prerequisites": ["Kit has admitted the loss."],
+      "actions": ["Mira promises to help rather than dismiss the toy."],
+      "consequences": ["Her promise becomes a motive for the search."],
+      "prose_obligations": ["Avoid treating a child's comfort object as trivial."],
+      "implemented_ids": ["tell_about_fox"]
+    },
+    {
+      "id": "ask_for_lantern",
+      "role": "essential borrowed-object encounter",
+      "location": "picnic table by the fire",
+      "prerequisites": ["The lantern is with Dad; the children are at camp."],
+      "actions": ["Mira asks Dad to borrow the battery lantern."],
+      "consequences": ["Custody changes while ownership remains Dad's."],
+      "prose_obligations": ["Show permission and a clear expectation that the lantern comes back."],
+      "implemented_ids": ["borrow_lantern"]
+    },
+    {
+      "id": "promise_to_return_lantern",
+      "role": "borrowed-object responsibility consolidated into the borrowing play",
+      "location": "picnic table",
+      "prerequisites": ["Dad agrees to lend the lantern."],
+      "actions": ["Mira promises to bring it back before supper."],
+      "consequences": ["The ending must return the useful object, not merely mention it."],
+      "prose_obligations": ["Preserve the distinction between borrowing and owning."],
+      "implemented_ids": ["borrow_lantern", "ending_found", "ending_lost"]
+    },
+    {
+      "id": "switch_on_lantern",
+      "role": "local physical action consolidated into borrowing",
+      "location": "camp",
+      "prerequisites": ["The lantern has charge."],
+      "actions": ["Mira switches on the lantern."],
+      "consequences": ["The light is available for the search."],
+      "prose_obligations": ["A functioning lantern must have a plausible power source."],
+      "implemented_ids": ["borrow_lantern"]
+    },
+    {
+      "id": "see_scary_shadows",
+      "role": "reference fear beat and optional vignette setup",
+      "location": "tent wall",
+      "prerequisites": ["The lantern is lit; Kit has disclosed his fear."],
+      "actions": ["The children see their shadows stretch on the canvas."],
+      "consequences": ["Creates an opportunity for a brave, affectionate response."],
+      "prose_obligations": ["Keep the fear rooted in ordinary evening shadows."],
+      "implemented_ids": ["shadow_vignette"]
+    },
+    {
+      "id": "make_fox_shadow",
+      "role": "optional character vignette",
+      "location": "tent wall",
+      "prerequisites": ["The lantern has been borrowed and the fox has been discussed."],
+      "actions": ["Mira makes a fox shape; Kit joins in and accepts the lantern."],
+      "consequences": ["Kit's courage persists into the search; he can carry the lantern."],
+      "prose_obligations": ["Show a small earned change, not a sudden cure for fear."],
+      "implemented_ids": ["shadow_vignette"]
+    },
+    {
+      "id": "remember_first_spot",
+      "role": "reference clue, consolidated into the reveal",
+      "location": "camp",
+      "prerequisites": ["Kit reflects on when he last had Pip."],
+      "actions": ["Kit recalls the tent edge, while remaining uncertain."],
+      "consequences": ["The remembered spot can differ from Pip's actual location."],
+      "prose_obligations": ["Make mistaken memory understandable rather than arbitrary."],
+      "implemented_ids": ["tell_about_fox"]
+    },
+    {
+      "id": "recall_jacket_and_ferns",
+      "role": "reference clue represented by validated parameters and search play",
+      "location": "fern hollow",
+      "prerequisites": ["Kit remembers walking near the ferns in his jacket."],
+      "actions": ["The children consider another possible place Pip fell."],
+      "consequences": ["A second search can resolve a mistaken first memory."],
+      "prose_obligations": ["Connect the alternate site to a plausible prior action."],
+      "implemented_ids": ["choose_search", "search_fox"]
+    },
+    {
+      "id": "dad_marks_return_route",
+      "role": "optional route vignette",
+      "location": "tent guyline and trail edge",
+      "prerequisites": ["The children are still at camp; Dad can see the path."],
+      "actions": ["Dad clips reflective tabs along the return route."],
+      "consequences": ["The siblings can use the markers if the lantern runs out."],
+      "prose_obligations": ["Make the path aid visible before it is used."],
+      "implemented_ids": ["trail_vignette", "return_to_camp"]
+    },
+    {
+      "id": "decide_search_strategy",
+      "role": "consequential choice encounter",
+      "location": "camp boundary",
+      "prerequisites": ["Kit has shared a remembered site; the lantern is in hand."],
+      "actions": ["Mira chooses a careful single search or a second sweep if resources allow."],
+      "consequences": ["The policy trades search chances against keeping light and time for the way back."],
+      "prose_obligations": ["Let the choice affect actions and outcomes, not just dialogue."],
+      "implemented_ids": ["choose_search", "search_fox"]
+    },
+    {
+      "id": "walk_to_memory",
+      "role": "search transition consolidated into the search-plan scene",
+      "location": "tent edge or fern hollow",
+      "prerequisites": ["The siblings have agreed where to start."],
+      "actions": ["They follow Kit's remembered route together."],
+      "consequences": ["Sibling and lantern locations remain continuous."],
+      "prose_obligations": ["No teleporting between campsite locations."],
+      "implemented_ids": ["choose_search"]
+    },
+    {
+      "id": "sweep_remembered_site",
+      "role": "essential local search action",
+      "location": "the remembered site",
+      "prerequisites": ["The lantern is lit and has charge."],
+      "actions": ["The siblings inspect the first place Kit recalls."],
+      "consequences": ["Consumes lantern charge and some remaining daylight."],
+      "prose_obligations": ["Record whether the toy is there; do not imply an unplayed search."],
+      "implemented_ids": ["search_fox"]
+    },
+    {
+      "id": "find_empty_first_site",
+      "role": "complication consolidated into the search outcome",
+      "location": "tent edge or fern hollow",
+      "prerequisites": ["The remembered site is not Pip's actual location."],
+      "actions": ["The first sweep finds ordinary camp debris, not the fox."],
+      "consequences": ["Mira must decide whether resources justify looking farther."],
+      "prose_obligations": ["Let disappointment deepen the stakes without blaming Kit."],
+      "implemented_ids": ["search_fox"]
+    },
+    {
+      "id": "commit_last_beam",
+      "role": "consequential local choice",
+      "location": "the path between search sites",
+      "prerequisites": ["The first sweep missed; another sweep is allowed by the chosen policy and resources."],
+      "actions": ["Mira spends remaining light to inspect the other site, or stops."],
+      "consequences": ["The choice can find Pip or end the search with a safe return."],
+      "prose_obligations": ["Explain the ordinary cost of going farther after dusk."],
+      "implemented_ids": ["search_fox"]
+    },
+    {
+      "id": "lift_cover_and_recover_toy",
+      "role": "essential payoff when the toy is present",
+      "location": "actual toy site",
+      "prerequisites": ["The siblings inspect the actual site."],
+      "actions": ["They lift a rainfly or leaf and recover Pip."],
+      "consequences": ["The fox moves from its physical hiding place into Kit's hands."],
+      "prose_obligations": ["Make the recovery earned by the enacted search."],
+      "implemented_ids": ["search_fox", "ending_found"]
+    },
+    {
+      "id": "turn_back_together",
+      "role": "essential return encounter",
+      "location": "trail to campsite",
+      "prerequisites": ["The search has ended, whether successful or not."],
+      "actions": ["The siblings follow the lantern, reflectors, daylight, or campfire glow."],
+      "consequences": ["They return safely; Kit is no longer left alone in the dark."],
+      "prose_obligations": ["Use only a route aid that was actually available."],
+      "implemented_ids": ["return_to_camp"]
+    },
+    {
+      "id": "hand_lantern_back",
+      "role": "borrowed-object payoff consolidated into both endings",
+      "location": "family campsite",
+      "prerequisites": ["The siblings are back at camp with the borrowed lantern."],
+      "actions": ["Mira returns the lantern to Dad."],
+      "consequences": ["Custody returns to its owner after the lantern has helped."],
+      "prose_obligations": ["Show both the object’s usefulness and its return."],
+      "implemented_ids": ["ending_found", "ending_lost"]
+    },
+    {
+      "id": "found_ending",
+      "role": "earned success ending",
+      "location": "bedrolls at camp",
+      "prerequisites": ["Pip was physically recovered and the siblings returned safely."],
+      "actions": ["Kit settles Pip beside his bedroll; the lantern goes back to Dad."],
+      "consequences": ["The missing toy is home and Kit's fear has eased."],
+      "prose_obligations": ["Close both the search and Mira's care for Kit."],
+      "implemented_ids": ["ending_found"]
+    },
+    {
+      "id": "comfort_without_toy_ending",
+      "role": "emotionally complete failure ending",
+      "location": "bedrolls at camp",
+      "prerequisites": ["The search ended without Pip and the siblings returned safely."],
+      "actions": ["Kit accepts a camp blanket and names his sadness without being alone."],
+      "consequences": ["The loss remains real, but the immediate fear is resolved."],
+      "prose_obligations": ["Do not promise that a future search will fix this ending."],
+      "implemented_ids": ["ending_lost"]
+    }
+  ]
+}

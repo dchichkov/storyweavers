@@ -1,0 +1,18 @@
+{
+  "source_bundle_sha256": "6ca541ed9690b715372f64c89a705dbe3b4bf1a316e14125a9bff926f054c4c5",
+  "changed_file": "storyscenes/mini_adventures/kite/world.py",
+  "original_sha256": "f6d1e05270c938d52524f500863767596fc0c3434f787f22c1122d37ac08cae5",
+  "repaired_sha256": "e0d71ac84053622a94b9164cb8fe83aa1bddb668e70b2a990b244509e5fd6efd",
+  "replacements": [
+    {
+      "before": "{\"story.stage\": \"invited\", \"pavel.comfort\": 2,",
+      "after": "{\"story.stage\": \"invited\", \"pavel.comfort\": x.state[\"pavel.comfort\"],"
+    },
+    {
+      "before": "        _act(x, \"gather_the_spool\", {\"reel.location\": holder}, {\"reel.location\": \"Nia\"})",
+      "after": "        if holder != \"Nia\":\n            _act(x, \"gather_the_spool\", {\"reel.location\": holder}, {\"reel.location\": \"Nia\"})"
+    }
+  ],
+  "prose_and_tests_unchanged": true,
+  "note": "Two manual code fixes; not a one-shot success. Scene guard still requires comfort >= 2; skip an already-satisfied transfer."
+}

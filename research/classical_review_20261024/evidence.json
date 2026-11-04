@@ -1,0 +1,91 @@
+{
+  "review_date": "2026-10-24",
+  "scope": "Focused implementation and output review of five symbolic narrative systems. No claim of a systematic review or exhaustive game testing.",
+  "systems": [
+    {
+      "name": "Curveship",
+      "design_date": 2011,
+      "evidence": "Executed five cases locally and read world, action, reply-planner, microplanner, example fiction, and spin code.",
+      "version_caveat": "The executed official Python 3 archive is version 0.6.01, with 2019/2020 port copyright dates; it is not the untouched 2011 Python 2 release.",
+      "sources": ["https://nickm.com/curveship/", "https://nickm.com/curveship/curveship-py-0601.zip", "https://nickm.com/articles/Montfort__Curveship_Automatic_Narrative_Style.pdf"],
+      "observations": [
+        "Four robbery runs change tense, narrative order, narrator/narratee, and focalization using the same fiction file.",
+        "Robbery has an explicitly authored list of twenty initial actions; these runs demonstrate retelling, not autonomous plot invention.",
+        "Default output uses vague references for unknown objects/participants, repeats the shooting event, and contains room/inventory-style exposition.",
+        "Guard telling correctly uses first person for the guard and second person for the bank teller. It still narrates brandishing before the guard wakes; no blanket claim of perfect epistemic correctness is warranted.",
+        "Artmaking executes a tiny authored puzzle: opening the box exposes the sculpture; kicking it triggers the final state.",
+        "Noninteractive execution initially failed on terminal-size detection. A runtime terminal-dimension override fixed capture without changing narrative code."
+      ],
+      "local_outputs": "curveship/",
+      "reproduction": "python3 replay_curveship.py --source /path/to/unpacked/curveship --out /path/to/output"
+    },
+    {
+      "name": "Alabaster",
+      "design_date": 2009,
+      "evidence": "Played a short opening conversation in the browser (Release 3, serial 090609); inspected the archived source (associated with Release 1). Did not complete the game or rebuild it.",
+      "sources": ["https://iplayif.com/?story=https%3A%2F%2Fifarchive.org%2Fif-archive%2Fgames%2Fglulx%2FAlabaster.gblorb", "https://ifarchive.org/if-archive/games/source/inform/Alabaster.zip", "https://emshort.blog/2008/10/30/alabaster-release-4/", "https://emshort.blog/2009/12/10/moods-in-conversation/"],
+      "commands_after_intro": ["ask snow white about the queen", "ask what the queen thinks of me", "explain that I must stop here to collect the hart's heart", "ask if she is a witch", "ask why"],
+      "observations": [
+        "A broad Queen query offered specific subtopics. The chosen question produced a coherent response followed by Snow White pressing the existing pact.",
+        "The explanation for stopping connected the hart, the Queen's demand, and the mirror's limited information.",
+        "The witch question offered a follow-up; the short command ask why resolved to why people misunderstand witches.",
+        "The source separates dialogue prerequisites, direct and indirect follow-ups, repeatability, and disqualifying facts.",
+        "Two signed numerical mood dimensions map to eight named moods. The author's account says mood mainly controls expression, while knowledge primarily controls plot access.",
+        "Archived contributor tools include generating new dialogue source, fact prerequisites, and graph diagnostics; many are commented out in the release source. This is not a claim that the public release exposes an active authoring UI.",
+        "Contributor-attributed sections and editorial comments show that shared authorship still required consistency repair."
+      ],
+      "source_landmarks": ["source.txt lines 335-486: archived quip-building workflow", "source.txt lines 682-776: archived graph generation", "source.txt lines 1170-1266: known facts", "source.txt lines 1290-1380: mood and expression", "source.txt lines 5070-5120: contributed dialogue, fact gating, and editorial repairs"],
+      "license_note": "Source is available for inspection, but the game declares CC BY-NC-ND 3.0 US. This evidence packet does not reproduce or adapt its source or full prose."
+    },
+    {
+      "name": "Counterfeit Monkey",
+      "design_date": 2012,
+      "evidence": "Played the opening and one transformation puzzle in browser Release 11, serial 260422; read selected current repository source modules. Did not complete or rebuild the game.",
+      "sources": ["https://i7-examples.github.io/counterfeit-monkey/play.html", "https://github.com/i7/counterfeit-monkey", "https://emshort.blog/2013/01/24/making-of-counterfeit-monkey-puzzles-and-toys/"],
+      "commands": ["yes", "Alexandra", "Andra", "SPACE", "look", "tutorial off", "north", "inventory", "examine myself", "examine window", "east", "wave x-remover at codex", "wave z-remover at code", "set barrier to 305"],
+      "observations": [
+        "Removing x transformed the displayed codex into a code, whose paper showed 305; setting the nearby barrier to 305 unlocked it.",
+        "Attempting to remove z from code correctly failed because the letter was absent.",
+        "The code searches an authored repository of possible objects, updates physical placement and transformation relationships, resets pronouns, and reports the new object.",
+        "Generic transformations coexist with curated objects, authored descriptions, puzzle structure, and exception rules. This is not arbitrary object creation from dictionary words.",
+        "Source comments document generation-chain collisions and fixes; this is direct evidence of interaction costs as the content library grows."
+      ],
+      "source_files": [
+        {"path": "Counterfeit Monkey.materials/Extensions/Counterfeit Monkey/Tools.i7x", "blob_sha": "171a4ba6891cb9901cc2dd2a8792a87d26a5471e", "lines": "266-295, 379-462"},
+        {"path": "Counterfeit Monkey.materials/Extensions/Counterfeit Monkey/Repository Major Contents.i7x", "blob_sha": "8d04cbb18eb92dc86bcc4860302a2636ab80cbbe", "lines": "110-145, 263 onward"},
+        {"path": "Counterfeit Monkey.materials/Extensions/Counterfeit Monkey/Features of Created Objects.i7x", "blob_sha": "350777985d52cbe1fe9a34c6cce813cc4ed27c4d", "lines": "211-248"},
+        {"path": "Counterfeit Monkey.materials/Extensions/Counterfeit Monkey/Tests.i7x", "blob_sha": "cef79e717179347d1e6e27e7bfc60a596e3b7e01", "lines": "185-225"}
+      ],
+      "version_caveat": "The maintained code and played release include later changes. The 2013 author account independently establishes the historical design."
+    },
+    {
+      "name": "STORYBOOK / AUTHOR",
+      "design_date": 2001,
+      "evidence": "Read published output, input representation, architecture, and evaluation. Not executed; no runnable full-system distribution verified.",
+      "sources": ["https://intellimedia.ncsu.edu/wp-content/uploads/sites/42/npg-ijcai01.pdf"],
+      "observations": [
+        "Figure 6 reads as connected fairy-tale prose, including dialogue, scene changes, and subordinate clauses.",
+        "The evaluated planner supplied two fixed story paths; the result demonstrates prose realization rather than broad plot generation.",
+        "Paragraph-scale revision and discourse history are especially relevant to Storyweavers' event-log prose. A twenty-person ablation evaluation favored configurations retaining them."
+      ]
+    },
+    {
+      "name": "Versu / Prompter",
+      "design_date": "2013-2014",
+      "evidence": "Read the published dinner interaction and edited Blood & Laurels scene source, plus reported limitations. Not executed; the author reported the games unavailable in 2017.",
+      "sources": ["https://cs.uky.edu/~sgware/reading/papers/evans2014versu.pdf", "https://emshort.blog/2017/05/18/mailbag-writing-for-versu/"],
+      "observations": [
+        "The dinner example connects flirtation, departure, disappointment, altered eating behavior, and jealousy through social state.",
+        "Social practices offer possible actions; individual character preferences choose among them.",
+        "Prompter source packages dialogue in scenes with beliefs, topics, restrictions, and exit conditions.",
+        "The paper reports substantially faster authoring with Prompter, but also difficult utility tuning and conflicting concurrent practices. These are author-reported results, not reproduced measurements."
+      ]
+    }
+  ],
+  "interpretation": {
+    "hypothesis": "Parallel coding agents may make rich, modular symbolic content affordable to author and test while runtime remains classical.",
+    "supported_by": "Actual authored knowledge libraries, explicit authoring bottlenecks, contributor workflows, and reusable rule mechanisms.",
+    "not_established": "That 10,000 independently authored modules will compose, remain readable, or produce useful training diversity. No cost or scaling experiment was conducted here.",
+    "suggested_test": "Extend one existing Storyweavers mini-adventure with reusable conversation and object modules; compare original and expanded systems on matched state cases, blind prose reading, meaningful outcome diversity, and measured integration effort."
+  }
+}

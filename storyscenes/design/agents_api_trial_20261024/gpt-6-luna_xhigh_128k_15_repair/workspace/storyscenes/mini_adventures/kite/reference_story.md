@@ -1,0 +1,21 @@
+# The Cart That Rattled
+
+By ten on Saturday, Mina had lined three seedling pots beside the courtyard gate. The neighbors' plant exchange began at noon, and she wanted the cart to carry the pots to the long table without spilling their damp soil. Jo wanted something too: after last week's wobbly birdhouse, Jo wanted Mina to trust that a repair could be finished properly. The shared toy cart stood at the repair bench, its front wheel rattling every time anyone touched the handle.
+
+Len, who looked after the courtyard tools, was tightening a clamp on the bench. Jo asked to borrow his spanner. “For the cart,” Jo said. “The wheel's nut must be loose.” Len held the tool out by its handle. “Borrow it. Bring it back when you're done. But a noise tells you something is moving; it doesn't tell you which part.” Mina gave Jo a look that meant she had heard the warning too. Jo nodded as if the warning had confirmed the diagnosis.
+
+Mina found a piece of chalk and wrote both their names on the cart's wooden side. “It belongs to both of us,” she said. Jo almost rubbed out the lopsided letters. They were messy, but Mina was right. The cart was not a prize for whoever fixed it. It was how they moved things together. Jo left the names there and set the cart against the level bench.
+
+Jo fitted the spanner to the front nut and gave it a careful turn. The nut tightened against the hub. The wheel stopped turning. Yet a smaller clack still came from somewhere near the fork. Mina pushed the handle gently; the cart would not roll. “You said the nut was loose,” she said. Jo tried the wheel once more, as if another test might change what had happened. It did not. The spanner was still warm in Jo's hand.
+
+For a moment Jo considered saying the spanner had been the wrong size. It had fit perfectly. Mina wasn't cross, exactly; she was waiting. Jo put the tool down. “I guessed before I checked. I pinched the wheel, and the rattle wasn't the nut.” Mina's shoulders relaxed. “Thanks for telling me. Now we know what to look at.” The admission cost Jo the feeling of being right, but it gave Mina a reason to stay beside the bench.
+
+Together they lifted the wheel just enough to feel it shift sideways. Between the hub and the fork was an empty strip of axle where a thin spacer washer should sit. Without it, the wheel could wobble; tightening the nut simply squeezed the hub until it could not turn. “The rattle was a clue, not an answer,” Mina said. Len came over, saw the gap, and showed them a pale groove on his old spanner. “I once tightened a wheel until it wouldn't roll. The noise was somewhere else.”
+
+Len checked his parts tin. A spare washer sat under a magnet. Mina moved the three pots off the cart, and Jo set one on the bench shelf so they could work without the extra weight. Jo slipped the washer between hub and fork, then used the spanner to ease the nut into place. The wheel turned with a small, clean sweep. Mina spun it again. No knock answered. Jo did not say “fixed” until Mina had tried it too.
+
+They loaded two pots back into the cart. Mina carried the third beside them, and Jo pushed slowly across the courtyard stones. The wheel kept turning; the pots stayed upright. At the exchange table Mina arranged the seedlings by the labels she'd written at home. “You can take the first one,” she told Jo. “You found the missing piece.” Jo chose a small thyme plant, not because it was the largest, but because it smelled like the courtyard after rain.
+
+Jo returned the spanner to Len. Len took it straight from Jo's hand and used it to snug the loose screw on his bench vise. “Useful twice,” he said. The cart was empty now, so Jo wheeled it back to its place by the bench. Mina tapped their chalk names. “Still ours.” Jo saw that returning the tool wasn't the end of its usefulness, or of the work the two children had done together.
+
+Mina put the thyme pot beside the chalked cart while she carried the rest to the exchange table. Jo wiped the last streak of soil from the wheel and left the names untouched. The cart rolled when they needed it, the spanner was back in Len's toolbox, and neither child had to pretend that Jo's first idea had been right. They had delivered the seedlings on time, and the next rattle would get a closer listen before anyone reached for a wrench.

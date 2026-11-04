@@ -1,0 +1,23 @@
+# The Borrowed Blue Can
+
+The community greenhouse held the afternoon like a jar. Heat blurred the far panes, and every metal bench seemed to breathe it back. Mina had come to return a stack of seed trays to Ivo, the volunteer who kept the key and knew which tap stuck. She was meant to be home before her little brother finished his snack. Instead, she stopped beside Rosa’s seedlings. Their pale leaves sagged over the labels, and the soil had cracked into small dark islands.
+
+Mina wanted the seedlings to make it to the neighborhood planting day. Rosa had been growing them since March, and Mina had promised to help carry the trays there. She could almost hear Rosa saying, “These are the brave ones. They came up after the cold week.” Mina touched the edge of a leaf without pulling it. It was warm and limp. She wanted to fix everything quickly, but she did not know how much water was enough.
+
+Ivo was checking the greenhouse door at the far end. A note beside his blue watering can read, “If Rosa’s starts look thirsty, use this. Bring it back rinsed, please.” Mina lifted the can. Its handle was awkward for her small hands, and she held it close to keep it from bumping the bench. “I’ll bring you back useful,” she whispered, then felt silly. A can could not hear promises, but its owner could.
+
+At Rosa’s tray, Mina read the pencil marker: “Keep evenly moist; new roots don’t need a flood.” A spare rubber band held the tag to its stake. Mina slipped the band free and set it beside the writing. The instruction made the job clearer. She did not need to pour over every leaf or soak the whole bench. She needed to wet the little cells where the roots were trying to hold on.
+
+Rosa came through the side door carrying a sack of compost. “You found them,” she said. “I was afraid the afternoon would get ahead of me.” Mina showed her the can and asked if she should water first or find shade first. Rosa looked up at the bright roof. “Both, if we can. The screen is on the north rack. Pull it down, but leave air around the tray. Plants need shade, not a tent.”
+
+At the tap, Mina filled the can. A thin thread of water slipped from a split seam near its spout and ran over her wrist. She almost put it back. Rosa’s marker band was narrow, but it stretched around the crack and held. Mina tested the seam over the drain. The leak stopped. She grinned at the small repair, then turned the spout toward the seedling cells.
+
+She poured slowly, counting each cell rather than guessing at the whole tray. The greenhouse tank was shared; she could see the water line still low beneath its lid. When the soil darkened, Mina stopped. Rosa watched without correcting her. “That’s enough for the roots,” she said. “More isn’t always kinder.” Mina had expected the job to be about carrying a full can. It was really about noticing when to stop.
+
+They rolled the screen down together. Mina left a hand’s breadth above the leaves, just as Rosa had shown her. The glare softened, and a cooler stripe crossed the tray. The leaves did not spring upright like magic. Still, the little stems stopped sagging farther, and the soil held its dampness. Rosa pressed one cell gently. “They’ve got a chance to settle now.” Mina felt the knot in her chest loosen.
+
+Before she left, Mina rinsed the can, unwound the rubber band, and clipped it back to the marker. She hung the can on Ivo’s rack with the handle facing out. It had done what she had borrowed it for: water reached the roots, and the tool was clean for the next person. “I said I’d bring it back useful,” she told Rosa. Rosa smiled. “You did. And you asked before making the whole tray a pond.”
+
+Ivo returned from the door check and saw the screen, the damp cells, and the can in its place. “How are they?” he asked. Rosa looked over the tray before answering. “Steady enough for this afternoon.” Mina told him about the seam and the band. He examined the can, then nodded. “Good catch. I’ll mend that properly later.” The leak had not been ignored, and the borrowed can was home.
+
+Rosa gave Mina the small marker she had read. “You can carry this to planting day,” she said. “It’ll remind us what these need.” Mina tucked it carefully into her pocket, not as a trophy but as a job she understood. The seedlings were not grown yet, and nobody pretended they were. They were watered, out of the worst sun, and still alive. Mina walked home knowing she had helped without taking over.

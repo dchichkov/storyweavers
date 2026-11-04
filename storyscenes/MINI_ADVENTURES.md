@@ -178,3 +178,14 @@ The next useful gates are bounded:
 These are proposed next experiments, not implemented features or commitments to
 scale. The immediate deliverable is a reproducible, readable prototype at the
 smaller scene boundary.
+
+## Subsequent Authoring Trial
+
+The [two-agent trial](design/authoring_trial_20261024/README.md) follows this
+workflow with two fresh `gpt-6.1-sol` low-reasoning workers. Bakery and greenhouse
+packs contribute new reference stories, inventories and executable mini-plays.
+The [shared runner](mini_adventures/README.md) discovers both; a small shared
+action helper keeps state validation and trace recording out of scenario prose.
+The trial retains all supervised review rounds and source snapshots. See its
+report for actual verification and limits; this does not establish one-shot
+authoring success or a large dataset multiplier.

@@ -1,0 +1,3 @@
+# Concrete library proposal
+
+Add a read-only helper such as `LocalPlay.snapshot()` that returns a detached copy of the current state and events, and a `validate_trace(initial, events, final, validator)` helper that replays equality preconditions and recorded changes without executing scenario prose. This would reduce duplicated audit code while preserving the current atomic transition semantics. Proposal only; no shared library files were changed.

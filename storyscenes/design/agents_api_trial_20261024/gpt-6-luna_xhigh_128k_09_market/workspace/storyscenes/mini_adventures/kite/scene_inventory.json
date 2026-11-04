@@ -1,0 +1,224 @@
+{
+  "scenes": [
+    {
+      "id": "morning_counter",
+      "role": "Establish Nella’s ordinary want and the fruit-market setting.",
+      "location": "Red Awning fruit stall",
+      "prerequisites": ["Opening of the market day"],
+      "actions": ["Nella seeks a chance to serve customers"],
+      "consequences": ["Her wish to earn Rafi’s trust is established"],
+      "prose_obligations": ["Keep Nella eager but not magically experienced"],
+      "implemented_ids": ["market_order"]
+    },
+    {
+      "id": "neighbor_arrives",
+      "role": "Give the neighbor a concrete order and deadline.",
+      "location": "Red Awning fruit stall",
+      "prerequisites": ["Market counter is open"],
+      "actions": ["Mrs. Vale requests apples for a clinic tart and pays"],
+      "consequences": ["Order size and payment are tracked"],
+      "prose_obligations": ["State why the fruit matters to the neighbor"],
+      "implemented_ids": ["market_order"]
+    },
+    {
+      "id": "borrow_scale",
+      "role": "Enact the borrowed object and its owner’s expectation.",
+      "location": "Red Awning fruit stall",
+      "prerequisites": ["Rafi owns the scale; order has been accepted"],
+      "actions": ["Nella borrows the scale"],
+      "consequences": ["Custody changes; returning a useful scale remains required"],
+      "prose_obligations": ["Mention clean return and accurate weighing"],
+      "implemented_ids": ["market_order"]
+    },
+    {
+      "id": "sam_bruised_apple",
+      "role": "Optional kindness vignette that consumes one apple from stock.",
+      "location": "Apple crate at the stall",
+      "prerequisites": ["Order accepted; at least one apple remains"],
+      "actions": ["Nella gives Sam a bruised apple for stew"],
+      "consequences": ["Apple inventory falls by one; Sam receives the fruit"],
+      "prose_obligations": ["Make the apple useful rather than wasteful"],
+      "implemented_ids": ["vignette_bruised_apple"]
+    },
+    {
+      "id": "pear_sample",
+      "role": "Optional tasting vignette that can change the neighbor’s willingness to blend fruit.",
+      "location": "Adjoining pear crate",
+      "prerequisites": ["Order accepted; pear sample available"],
+      "actions": ["Nella offers a pear sample; Mrs. Vale tastes it"],
+      "consequences": ["One pear is consumed; neighbor becomes willing to mix fruit"],
+      "prose_obligations": ["A sample changes a preference through a real taste"],
+      "implemented_ids": ["vignette_pear_sample"]
+    },
+    {
+      "id": "paper_and_pan",
+      "role": "Prepare the basket and scale before filling.",
+      "location": "Red Awning fruit stall",
+      "prerequisites": ["Scale borrowed; order open"],
+      "actions": ["Nella steadies the scale if it wobbles and lines the basket"],
+      "consequences": ["A local preparation may be recorded; no stock changes until weighing"],
+      "prose_obligations": ["Do not narrate a precise weight before the scale reading"],
+      "implemented_ids": ["fill_order"]
+    },
+    {
+      "id": "fill_to_mark",
+      "role": "Fill the neighbor’s order using the borrowed scale.",
+      "location": "Red Awning fruit stall",
+      "prerequisites": ["Order open; scale in Nella’s custody"],
+      "actions": ["Add apples until the biased dial or available stock stops the fill"],
+      "consequences": ["Apple stock and basket weight change; displayed reading is saved"],
+      "prose_obligations": ["Distinguish a full-looking basket from a verified weight"],
+      "implemented_ids": ["fill_order"]
+    },
+    {
+      "id": "needle_jitters",
+      "role": "Consolidated into filling or the reference-weight test when the scale wobbles.",
+      "location": "Scale pan",
+      "prerequisites": ["Scale parameter says it wobbles"],
+      "actions": ["Nella taps the dial to settle it before a reading"],
+      "consequences": ["Only the enacted steadying action changes the settled flag"],
+      "prose_obligations": ["Do not imply the scale is stable before the tap"],
+      "implemented_ids": ["fill_order", "inspect_scale"]
+    },
+    {
+      "id": "iron_weight_test",
+      "role": "Use a known 500-gram weight to test the scale.",
+      "location": "Red Awning fruit stall",
+      "prerequisites": ["Basket filled; scale borrowed"],
+      "actions": ["Nella places the reference weight on the pan"],
+      "consequences": ["Recorded reading reveals the exact positive bias"],
+      "prose_obligations": ["Show the expected and actual readings"],
+      "implemented_ids": ["inspect_scale"]
+    },
+    {
+      "id": "discover_short_measure",
+      "role": "Consolidated with the reference-weight test; not a separate executable scene.",
+      "location": "Red Awning fruit stall",
+      "prerequisites": ["Reference weight has been read"],
+      "actions": ["Nella recognizes the basket is short"],
+      "consequences": ["Knowledge enables an honest correction or concealment choice"],
+      "prose_obligations": ["Avoid an error magically known before the test"],
+      "implemented_ids": ["inspect_scale"]
+    },
+    {
+      "id": "temptation_to_hide",
+      "role": "Make the dishonest alternative a playable consequential choice.",
+      "location": "Red Awning fruit stall",
+      "prerequisites": ["Nella knows the scale error"],
+      "actions": ["Nella hands over the basket without disclosure"],
+      "consequences": ["Neighbor leaves with the basket; later weighing exposes the shortage"],
+      "prose_obligations": ["Let the choice be understandable without excusing it"],
+      "implemented_ids": ["conceal_error"]
+    },
+    {
+      "id": "tell_the_neighbor",
+      "role": "Make the honest alternative a playable consequential choice.",
+      "location": "Red Awning fruit stall",
+      "prerequisites": ["Nella knows the scale error; neighbor is present"],
+      "actions": ["Nella explains the short measure and apologizes"],
+      "consequences": ["Neighbor can make an informed decision; trust rises"],
+      "prose_obligations": ["Use ordinary direct dialogue rather than rule recitation"],
+      "implemented_ids": ["tell_neighbor"]
+    },
+    {
+      "id": "neighbor_reweighs",
+      "role": "Consolidated into settlement after concealment; no effect runs if concealment was omitted.",
+      "location": "Neighbor’s kitchen and the market stall",
+      "prerequisites": ["Nella concealed the error and neighbor took the basket"],
+      "actions": ["Mrs. Vale checks the basket on her kitchen weight and returns"],
+      "consequences": ["The shortage is exposed and trust falls"],
+      "prose_obligations": ["Make the physical discovery and emotional cost visible"],
+      "implemented_ids": ["settle_order"]
+    },
+    {
+      "id": "replace_with_apples",
+      "role": "Correct the order when remaining apple stock is sufficient.",
+      "location": "Red Awning fruit stall",
+      "prerequisites": ["Error disclosed or exposed; enough apples remain"],
+      "actions": ["Weigh the missing apples into the basket"],
+      "consequences": ["Neighbor receives the requested weight of apples"],
+      "prose_obligations": ["Do not call a pre-correction basket complete"],
+      "implemented_ids": ["settle_order"]
+    },
+    {
+      "id": "blend_with_pears",
+      "role": "Complete a short apple order with an agreed pear blend.",
+      "location": "Red Awning fruit stall",
+      "prerequisites": ["Apples are short; neighbor agrees to a blend; enough pears remain"],
+      "actions": ["Weigh remaining apples and pears to the requested total"],
+      "consequences": ["The order is fulfilled with a disclosed fruit change"],
+      "prose_obligations": ["Make clear that the neighbor chooses the substitution"],
+      "implemented_ids": ["settle_order"]
+    },
+    {
+      "id": "refund_or_cancel",
+      "role": "Resolve an order when there are too few apples and the neighbor declines pears.",
+      "location": "Red Awning fruit stall",
+      "prerequisites": ["Apple shortage; neighbor will not accept a pear blend"],
+      "actions": ["Return the payment and restore fruit to the stall"],
+      "consequences": ["The sale ends without a false measure"],
+      "prose_obligations": ["Give the unsuccessful outcome an emotional close"],
+      "implemented_ids": ["settle_order"]
+    },
+    {
+      "id": "zero_the_scale",
+      "role": "Restore the borrowed object’s practical usefulness.",
+      "location": "Red Awning fruit stall",
+      "prerequisites": ["Order settlement is complete; scale remains borrowed"],
+      "actions": ["Nella resets zero and retests the reference weight"],
+      "consequences": ["Scale bias is corrected and verified"],
+      "prose_obligations": ["Show a functional test, not just a custody handoff"],
+      "implemented_ids": ["return_scale"]
+    },
+    {
+      "id": "return_scale",
+      "role": "Return the verified scale to Mr. Rafi.",
+      "location": "Red Awning fruit stall",
+      "prerequisites": ["Scale is reset and reference-tested"],
+      "actions": ["Nella wipes the pan and hands it back"],
+      "consequences": ["Owner and location agree; the object is usable for another customer"],
+      "prose_obligations": ["The object must remain useful after the adventure"],
+      "implemented_ids": ["return_scale"]
+    },
+    {
+      "id": "full_order_ending",
+      "role": "Close a correctly completed all-apple order.",
+      "location": "Red Awning fruit stall",
+      "prerequisites": ["Scale returned; order result is full"],
+      "actions": ["Close the market episode with a checked order"],
+      "consequences": ["Outcome distinguishes honesty from repair after concealment"],
+      "prose_obligations": ["Earn the ending through enacted weighing and repair"],
+      "implemented_ids": ["ending"]
+    },
+    {
+      "id": "mixed_order_ending",
+      "role": "Close a completed apples-and-pears order.",
+      "location": "Red Awning fruit stall",
+      "prerequisites": ["Scale returned; neighbor chose a complete blend"],
+      "actions": ["Close the order at its requested total weight"],
+      "consequences": ["A changed recipe is accepted or repaired after a breach"],
+      "prose_obligations": ["Treat the neighbor’s choice as a real payoff"],
+      "implemented_ids": ["ending"]
+    },
+    {
+      "id": "refund_ending",
+      "role": "Close a canceled order without pretending the sale succeeded.",
+      "location": "Red Awning fruit stall",
+      "prerequisites": ["Scale returned; neighbor declined a pear blend"],
+      "actions": ["End with returned payment and restored apples"],
+      "consequences": ["The sale is lost, but the false measure is not passed on"],
+      "prose_obligations": ["Let failure have an emotionally complete ending"],
+      "implemented_ids": ["ending"]
+    },
+    {
+      "id": "next_customer",
+      "role": "Consolidated into the final image after the returned scale is used again.",
+      "location": "Red Awning fruit stall",
+      "prerequisites": ["Scale has been returned and verified"],
+      "actions": ["Rafi weighs another customer’s oranges"],
+      "consequences": ["The borrowed object’s usefulness is demonstrated"],
+      "prose_obligations": ["Do not leave the scale merely owned but broken"],
+      "implemented_ids": ["ending", "return_scale"]
+    }
+  ]
+}

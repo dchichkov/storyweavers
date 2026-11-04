@@ -1,0 +1,1755 @@
+{
+  "selection_seed": 777,
+  "rows": [
+    {
+      "seed": 5029,
+      "parameters": {
+        "wind": 0,
+        "gentle": false,
+        "frayed": false,
+        "mend": false
+      },
+      "scene_count": 7,
+      "path": [
+        "welcome",
+        "borrow",
+        "invite",
+        "window",
+        "field",
+        "return",
+        "ending_table"
+      ],
+      "episodes": [
+        {
+          "id": "welcome",
+          "before": {
+            "story.stage": 0,
+            "story.ended": false,
+            "story.outcome": "",
+            "party.location": "workshop",
+            "reel.owner": "nan",
+            "reel.holder": "nan",
+            "reel.sound": true,
+            "reel.wound": true,
+            "reel.checked": false,
+            "kite.location": "mara",
+            "kite.flew": false,
+            "kite.decorated": false,
+            "mara.want": "include_ivo",
+            "ivo.trust": false,
+            "ivo.role": "undecided",
+            "ivo.bird_seen": false,
+            "ivo.drawing": false,
+            "weather.wind": 0,
+            "mara.gentle": false,
+            "mara.will_mend": false
+          },
+          "after": {
+            "story.stage": 1,
+            "story.ended": false,
+            "story.outcome": "",
+            "party.location": "workshop",
+            "reel.owner": "nan",
+            "reel.holder": "nan",
+            "reel.sound": true,
+            "reel.wound": true,
+            "reel.checked": false,
+            "kite.location": "mara",
+            "kite.flew": false,
+            "kite.decorated": false,
+            "mara.want": "include_ivo",
+            "ivo.trust": false,
+            "ivo.role": "undecided",
+            "ivo.bird_seen": false,
+            "ivo.drawing": false,
+            "weather.wind": 0,
+            "mara.gentle": false,
+            "mara.will_mend": false
+          },
+          "events": [
+            {
+              "action": "choose_company",
+              "requires": {
+                "mara.want": "include_ivo"
+              },
+              "changes": {
+                "story.stage": {
+                  "before": 0,
+                  "after": 1
+                }
+              }
+            }
+          ],
+          "text": "Mara held her yellow kite up in the village workshop. Through the window she could see Ivo, the new neighbour, sitting alone on his step. Yesterday her enormous hello had sent him indoors. “Try something smaller,” Nan Bell said. Mara lowered the kite. This afternoon she wanted company more than applause."
+        },
+        {
+          "id": "borrow",
+          "before": {
+            "story.stage": 1,
+            "story.ended": false,
+            "story.outcome": "",
+            "party.location": "workshop",
+            "reel.owner": "nan",
+            "reel.holder": "nan",
+            "reel.sound": true,
+            "reel.wound": true,
+            "reel.checked": false,
+            "kite.location": "mara",
+            "kite.flew": false,
+            "kite.decorated": false,
+            "mara.want": "include_ivo",
+            "ivo.trust": false,
+            "ivo.role": "undecided",
+            "ivo.bird_seen": false,
+            "ivo.drawing": false,
+            "weather.wind": 0,
+            "mara.gentle": false,
+            "mara.will_mend": false
+          },
+          "after": {
+            "story.stage": 2,
+            "story.ended": false,
+            "story.outcome": "",
+            "party.location": "step",
+            "reel.owner": "nan",
+            "reel.holder": "mara",
+            "reel.sound": true,
+            "reel.wound": true,
+            "reel.checked": true,
+            "kite.location": "mara",
+            "kite.flew": false,
+            "kite.decorated": false,
+            "mara.want": "include_ivo",
+            "ivo.trust": false,
+            "ivo.role": "undecided",
+            "ivo.bird_seen": false,
+            "ivo.drawing": false,
+            "weather.wind": 0,
+            "mara.gentle": false,
+            "mara.will_mend": false
+          },
+          "events": [
+            {
+              "action": "borrow_and_inspect",
+              "requires": {
+                "reel.holder": "nan",
+                "party.location": "workshop"
+              },
+              "changes": {
+                "reel.holder": {
+                  "before": "nan",
+                  "after": "mara"
+                },
+                "reel.checked": {
+                  "before": false,
+                  "after": true
+                }
+              }
+            },
+            {
+              "action": "visit_step",
+              "requires": {},
+              "changes": {
+                "story.stage": {
+                  "before": 1,
+                  "after": 2
+                },
+                "party.location": {
+                  "before": "workshop",
+                  "after": "step"
+                }
+              }
+            }
+          ],
+          "text": "Her own string was at home. Nan lent her red reel. Mara checked the line between her fingers. It was smooth, and the loop held under a tug. Carrying kite and reel, Mara crossed to Ivo’s step."
+        },
+        {
+          "id": "invite",
+          "before": {
+            "story.stage": 2,
+            "story.ended": false,
+            "story.outcome": "",
+            "party.location": "step",
+            "reel.owner": "nan",
+            "reel.holder": "mara",
+            "reel.sound": true,
+            "reel.wound": true,
+            "reel.checked": true,
+            "kite.location": "mara",
+            "kite.flew": false,
+            "kite.decorated": false,
+            "mara.want": "include_ivo",
+            "ivo.trust": false,
+            "ivo.role": "undecided",
+            "ivo.bird_seen": false,
+            "ivo.drawing": false,
+            "weather.wind": 0,
+            "mara.gentle": false,
+            "mara.will_mend": false
+          },
+          "after": {
+            "story.stage": 3,
+            "story.ended": false,
+            "story.outcome": "",
+            "party.location": "step",
+            "reel.owner": "nan",
+            "reel.holder": "mara",
+            "reel.sound": true,
+            "reel.wound": true,
+            "reel.checked": true,
+            "kite.location": "mara",
+            "kite.flew": false,
+            "kite.decorated": false,
+            "mara.want": "include_ivo",
+            "ivo.trust": false,
+            "ivo.role": "watcher",
+            "ivo.bird_seen": false,
+            "ivo.drawing": false,
+            "weather.wind": 0,
+            "mara.gentle": false,
+            "mara.will_mend": false
+          },
+          "events": [
+            {
+              "action": "call_for_a_launch",
+              "requires": {
+                "party.location": "step"
+              },
+              "changes": {
+                "story.stage": {
+                  "before": 2,
+                  "after": 3
+                },
+                "ivo.role": {
+                  "before": "undecided",
+                  "after": "watcher"
+                }
+              }
+            }
+          ],
+          "text": "“Come and launch my kite!” Mara called across the step. Ivo tucked his hands behind his back. “I’ll watch.” For a moment she wanted to insist; she had brought everything especially. Instead she nodded. He came to the gate beside her, but left the reel firmly in her hands."
+        },
+        {
+          "id": "window",
+          "before": {
+            "story.stage": 3,
+            "story.ended": false,
+            "story.outcome": "",
+            "party.location": "step",
+            "reel.owner": "nan",
+            "reel.holder": "mara",
+            "reel.sound": true,
+            "reel.wound": true,
+            "reel.checked": true,
+            "kite.location": "mara",
+            "kite.flew": false,
+            "kite.decorated": false,
+            "mara.want": "include_ivo",
+            "ivo.trust": false,
+            "ivo.role": "watcher",
+            "ivo.bird_seen": false,
+            "ivo.drawing": false,
+            "weather.wind": 0,
+            "mara.gentle": false,
+            "mara.will_mend": false
+          },
+          "after": {
+            "story.stage": 3,
+            "story.ended": false,
+            "story.outcome": "",
+            "party.location": "step",
+            "reel.owner": "nan",
+            "reel.holder": "mara",
+            "reel.sound": true,
+            "reel.wound": true,
+            "reel.checked": true,
+            "kite.location": "mara",
+            "kite.flew": false,
+            "kite.decorated": true,
+            "mara.want": "include_ivo",
+            "ivo.trust": false,
+            "ivo.role": "watcher",
+            "ivo.bird_seen": false,
+            "ivo.drawing": false,
+            "weather.wind": 0,
+            "mara.gentle": false,
+            "mara.will_mend": false
+          },
+          "events": [
+            {
+              "action": "add_blue_window",
+              "requires": {
+                "party.location": "step"
+              },
+              "changes": {
+                "kite.decorated": {
+                  "before": false,
+                  "after": true
+                }
+              }
+            }
+          ],
+          "text": "Mara found a blue paper square in her pocket. She pressed it onto the yellow kite with the sticky paste still on its edge. “A window,” she said. Ivo inspected the back. “Nobody inside.” “Only glue.” His mouth twitched. She smoothed the patch once more before picking up the frame."
+        },
+        {
+          "id": "field",
+          "before": {
+            "story.stage": 3,
+            "story.ended": false,
+            "story.outcome": "",
+            "party.location": "step",
+            "reel.owner": "nan",
+            "reel.holder": "mara",
+            "reel.sound": true,
+            "reel.wound": true,
+            "reel.checked": true,
+            "kite.location": "mara",
+            "kite.flew": false,
+            "kite.decorated": true,
+            "mara.want": "include_ivo",
+            "ivo.trust": false,
+            "ivo.role": "watcher",
+            "ivo.bird_seen": false,
+            "ivo.drawing": false,
+            "weather.wind": 0,
+            "mara.gentle": false,
+            "mara.will_mend": false
+          },
+          "after": {
+            "story.stage": 4,
+            "story.ended": false,
+            "story.outcome": "",
+            "party.location": "field",
+            "reel.owner": "nan",
+            "reel.holder": "mara",
+            "reel.sound": true,
+            "reel.wound": true,
+            "reel.checked": true,
+            "kite.location": "mara",
+            "kite.flew": false,
+            "kite.decorated": true,
+            "mara.want": "include_ivo",
+            "ivo.trust": false,
+            "ivo.role": "observer",
+            "ivo.bird_seen": false,
+            "ivo.drawing": false,
+            "weather.wind": 0,
+            "mara.gentle": false,
+            "mara.will_mend": false
+          },
+          "events": [
+            {
+              "action": "walk_to_lower_field",
+              "requires": {
+                "party.location": "step"
+              },
+              "changes": {
+                "party.location": {
+                  "before": "step",
+                  "after": "field"
+                }
+              }
+            },
+            {
+              "action": "keep_kite_grounded",
+              "requires": {},
+              "changes": {
+                "ivo.role": {
+                  "before": "watcher",
+                  "after": "observer"
+                }
+              }
+            },
+            {
+              "action": "finish_field_visit",
+              "requires": {},
+              "changes": {
+                "story.stage": {
+                  "before": 3,
+                  "after": 4
+                }
+              }
+            }
+          ],
+          "text": "At the lower field, they stopped. The grass lay still; the kite would not lift. She felt the afternoon shrink. Ivo crouched beside the frame. “It’s still a good shape,” he said. They watched the other kites before turning back."
+        },
+        {
+          "id": "return",
+          "before": {
+            "story.stage": 4,
+            "story.ended": false,
+            "story.outcome": "",
+            "party.location": "field",
+            "reel.owner": "nan",
+            "reel.holder": "mara",
+            "reel.sound": true,
+            "reel.wound": true,
+            "reel.checked": true,
+            "kite.location": "mara",
+            "kite.flew": false,
+            "kite.decorated": true,
+            "mara.want": "include_ivo",
+            "ivo.trust": false,
+            "ivo.role": "observer",
+            "ivo.bird_seen": false,
+            "ivo.drawing": false,
+            "weather.wind": 0,
+            "mara.gentle": false,
+            "mara.will_mend": false
+          },
+          "after": {
+            "story.stage": 5,
+            "story.ended": false,
+            "story.outcome": "",
+            "party.location": "workshop",
+            "reel.owner": "nan",
+            "reel.holder": "nan",
+            "reel.sound": true,
+            "reel.wound": true,
+            "reel.checked": true,
+            "kite.location": "mara",
+            "kite.flew": false,
+            "kite.decorated": true,
+            "mara.want": "include_ivo",
+            "ivo.trust": false,
+            "ivo.role": "observer",
+            "ivo.bird_seen": false,
+            "ivo.drawing": false,
+            "weather.wind": 0,
+            "mara.gentle": false,
+            "mara.will_mend": false
+          },
+          "events": [
+            {
+              "action": "walk_back",
+              "requires": {},
+              "changes": {
+                "party.location": {
+                  "before": "field",
+                  "after": "workshop"
+                }
+              }
+            },
+            {
+              "action": "return_useful_reel",
+              "requires": {
+                "reel.sound": true,
+                "reel.wound": true
+              },
+              "changes": {
+                "story.stage": {
+                  "before": 4,
+                  "after": 5
+                },
+                "reel.holder": {
+                  "before": "mara",
+                  "after": "nan"
+                }
+              }
+            }
+          ],
+          "text": "They carried the unused kite back to the workshop. Mara checked the loop once more. The red reel went into Nan’s hands. She spun it freely between her palms and put it ready for the morning class. “That’ll do nicely.”"
+        },
+        {
+          "id": "ending_table",
+          "before": {
+            "story.stage": 5,
+            "story.ended": false,
+            "story.outcome": "",
+            "party.location": "workshop",
+            "reel.owner": "nan",
+            "reel.holder": "nan",
+            "reel.sound": true,
+            "reel.wound": true,
+            "reel.checked": true,
+            "kite.location": "mara",
+            "kite.flew": false,
+            "kite.decorated": true,
+            "mara.want": "include_ivo",
+            "ivo.trust": false,
+            "ivo.role": "observer",
+            "ivo.bird_seen": false,
+            "ivo.drawing": false,
+            "weather.wind": 0,
+            "mara.gentle": false,
+            "mara.will_mend": false
+          },
+          "after": {
+            "story.stage": 6,
+            "story.ended": true,
+            "story.outcome": "shared_table",
+            "party.location": "workshop",
+            "reel.owner": "nan",
+            "reel.holder": "nan",
+            "reel.sound": true,
+            "reel.wound": true,
+            "reel.checked": true,
+            "kite.location": "mara",
+            "kite.flew": false,
+            "kite.decorated": true,
+            "mara.want": "satisfied",
+            "ivo.trust": false,
+            "ivo.role": "observer",
+            "ivo.bird_seen": false,
+            "ivo.drawing": true,
+            "weather.wind": 0,
+            "mara.gentle": false,
+            "mara.will_mend": false
+          },
+          "events": [
+            {
+              "action": "make_room_for_ivo_drawing",
+              "requires": {
+                "party.location": "workshop"
+              },
+              "changes": {
+                "ivo.drawing": {
+                  "before": false,
+                  "after": true
+                }
+              }
+            },
+            {
+              "action": "close_afternoon",
+              "requires": {
+                "reel.holder": "nan"
+              },
+              "changes": {
+                "story.stage": {
+                  "before": 5,
+                  "after": 6
+                },
+                "story.ended": {
+                  "before": false,
+                  "after": true
+                },
+                "story.outcome": {
+                  "before": "",
+                  "after": "shared_table"
+                },
+                "mara.want": {
+                  "before": "include_ivo",
+                  "after": "satisfied"
+                }
+              }
+            }
+          ],
+          "text": "Mara put scrap paper between two stools. “What shape would you make?” Ivo sat down and drew a broad kite with a tiny door. She drew someone looking out. Their afternoon had not become the flight she wanted. But he pulled the second stool closer, and they filled the paper together before Nan closed up."
+        }
+      ],
+      "story": "Mara held her yellow kite up in the village workshop. Through the window she could see Ivo, the new neighbour, sitting alone on his step. Yesterday her enormous hello had sent him indoors. “Try something smaller,” Nan Bell said. Mara lowered the kite. This afternoon she wanted company more than applause.\n\nHer own string was at home. Nan lent her red reel. Mara checked the line between her fingers. It was smooth, and the loop held under a tug. Carrying kite and reel, Mara crossed to Ivo’s step.\n\n“Come and launch my kite!” Mara called across the step. Ivo tucked his hands behind his back. “I’ll watch.” For a moment she wanted to insist; she had brought everything especially. Instead she nodded. He came to the gate beside her, but left the reel firmly in her hands.\n\nMara found a blue paper square in her pocket. She pressed it onto the yellow kite with the sticky paste still on its edge. “A window,” she said. Ivo inspected the back. “Nobody inside.” “Only glue.” His mouth twitched. She smoothed the patch once more before picking up the frame.\n\nAt the lower field, they stopped. The grass lay still; the kite would not lift. She felt the afternoon shrink. Ivo crouched beside the frame. “It’s still a good shape,” he said. They watched the other kites before turning back.\n\nThey carried the unused kite back to the workshop. Mara checked the loop once more. The red reel went into Nan’s hands. She spun it freely between her palms and put it ready for the morning class. “That’ll do nicely.”\n\nMara put scrap paper between two stools. “What shape would you make?” Ivo sat down and drew a broad kite with a tiny door. She drew someone looking out. Their afternoon had not become the flight she wanted. But he pulled the second stool closer, and they filled the paper together before Nan closed up.",
+      "final_state": {
+        "story.stage": 6,
+        "story.ended": true,
+        "story.outcome": "shared_table",
+        "party.location": "workshop",
+        "reel.owner": "nan",
+        "reel.holder": "nan",
+        "reel.sound": true,
+        "reel.wound": true,
+        "reel.checked": true,
+        "kite.location": "mara",
+        "kite.flew": false,
+        "kite.decorated": true,
+        "mara.want": "satisfied",
+        "ivo.trust": false,
+        "ivo.role": "observer",
+        "ivo.bird_seen": false,
+        "ivo.drawing": true,
+        "weather.wind": 0,
+        "mara.gentle": false,
+        "mara.will_mend": false
+      },
+      "search_attempts": 13
+    },
+    {
+      "seed": 5007,
+      "parameters": {
+        "wind": 0,
+        "gentle": false,
+        "frayed": false,
+        "mend": false
+      },
+      "scene_count": 8,
+      "path": [
+        "welcome",
+        "borrow",
+        "invite",
+        "window",
+        "bird",
+        "field",
+        "return",
+        "ending_table"
+      ],
+      "episodes": [
+        {
+          "id": "welcome",
+          "before": {
+            "story.stage": 0,
+            "story.ended": false,
+            "story.outcome": "",
+            "party.location": "workshop",
+            "reel.owner": "nan",
+            "reel.holder": "nan",
+            "reel.sound": true,
+            "reel.wound": true,
+            "reel.checked": false,
+            "kite.location": "mara",
+            "kite.flew": false,
+            "kite.decorated": false,
+            "mara.want": "include_ivo",
+            "ivo.trust": false,
+            "ivo.role": "undecided",
+            "ivo.bird_seen": false,
+            "ivo.drawing": false,
+            "weather.wind": 0,
+            "mara.gentle": false,
+            "mara.will_mend": false
+          },
+          "after": {
+            "story.stage": 1,
+            "story.ended": false,
+            "story.outcome": "",
+            "party.location": "workshop",
+            "reel.owner": "nan",
+            "reel.holder": "nan",
+            "reel.sound": true,
+            "reel.wound": true,
+            "reel.checked": false,
+            "kite.location": "mara",
+            "kite.flew": false,
+            "kite.decorated": false,
+            "mara.want": "include_ivo",
+            "ivo.trust": false,
+            "ivo.role": "undecided",
+            "ivo.bird_seen": false,
+            "ivo.drawing": false,
+            "weather.wind": 0,
+            "mara.gentle": false,
+            "mara.will_mend": false
+          },
+          "events": [
+            {
+              "action": "choose_company",
+              "requires": {
+                "mara.want": "include_ivo"
+              },
+              "changes": {
+                "story.stage": {
+                  "before": 0,
+                  "after": 1
+                }
+              }
+            }
+          ],
+          "text": "Mara held her yellow kite up in the village workshop. Through the window she could see Ivo, the new neighbour, sitting alone on his step. Yesterday her enormous hello had sent him indoors. “Try something smaller,” Nan Bell said. Mara lowered the kite. This afternoon she wanted company more than applause."
+        },
+        {
+          "id": "borrow",
+          "before": {
+            "story.stage": 1,
+            "story.ended": false,
+            "story.outcome": "",
+            "party.location": "workshop",
+            "reel.owner": "nan",
+            "reel.holder": "nan",
+            "reel.sound": true,
+            "reel.wound": true,
+            "reel.checked": false,
+            "kite.location": "mara",
+            "kite.flew": false,
+            "kite.decorated": false,
+            "mara.want": "include_ivo",
+            "ivo.trust": false,
+            "ivo.role": "undecided",
+            "ivo.bird_seen": false,
+            "ivo.drawing": false,
+            "weather.wind": 0,
+            "mara.gentle": false,
+            "mara.will_mend": false
+          },
+          "after": {
+            "story.stage": 2,
+            "story.ended": false,
+            "story.outcome": "",
+            "party.location": "step",
+            "reel.owner": "nan",
+            "reel.holder": "mara",
+            "reel.sound": true,
+            "reel.wound": true,
+            "reel.checked": true,
+            "kite.location": "mara",
+            "kite.flew": false,
+            "kite.decorated": false,
+            "mara.want": "include_ivo",
+            "ivo.trust": false,
+            "ivo.role": "undecided",
+            "ivo.bird_seen": false,
+            "ivo.drawing": false,
+            "weather.wind": 0,
+            "mara.gentle": false,
+            "mara.will_mend": false
+          },
+          "events": [
+            {
+              "action": "borrow_and_inspect",
+              "requires": {
+                "reel.holder": "nan",
+                "party.location": "workshop"
+              },
+              "changes": {
+                "reel.holder": {
+                  "before": "nan",
+                  "after": "mara"
+                },
+                "reel.checked": {
+                  "before": false,
+                  "after": true
+                }
+              }
+            },
+            {
+              "action": "visit_step",
+              "requires": {},
+              "changes": {
+                "story.stage": {
+                  "before": 1,
+                  "after": 2
+                },
+                "party.location": {
+                  "before": "workshop",
+                  "after": "step"
+                }
+              }
+            }
+          ],
+          "text": "Her own string was at home. Nan lent her red reel. Mara checked the line between her fingers. It was smooth, and the loop held under a tug. Carrying kite and reel, Mara crossed to Ivo’s step."
+        },
+        {
+          "id": "invite",
+          "before": {
+            "story.stage": 2,
+            "story.ended": false,
+            "story.outcome": "",
+            "party.location": "step",
+            "reel.owner": "nan",
+            "reel.holder": "mara",
+            "reel.sound": true,
+            "reel.wound": true,
+            "reel.checked": true,
+            "kite.location": "mara",
+            "kite.flew": false,
+            "kite.decorated": false,
+            "mara.want": "include_ivo",
+            "ivo.trust": false,
+            "ivo.role": "undecided",
+            "ivo.bird_seen": false,
+            "ivo.drawing": false,
+            "weather.wind": 0,
+            "mara.gentle": false,
+            "mara.will_mend": false
+          },
+          "after": {
+            "story.stage": 3,
+            "story.ended": false,
+            "story.outcome": "",
+            "party.location": "step",
+            "reel.owner": "nan",
+            "reel.holder": "mara",
+            "reel.sound": true,
+            "reel.wound": true,
+            "reel.checked": true,
+            "kite.location": "mara",
+            "kite.flew": false,
+            "kite.decorated": false,
+            "mara.want": "include_ivo",
+            "ivo.trust": false,
+            "ivo.role": "watcher",
+            "ivo.bird_seen": false,
+            "ivo.drawing": false,
+            "weather.wind": 0,
+            "mara.gentle": false,
+            "mara.will_mend": false
+          },
+          "events": [
+            {
+              "action": "call_for_a_launch",
+              "requires": {
+                "party.location": "step"
+              },
+              "changes": {
+                "story.stage": {
+                  "before": 2,
+                  "after": 3
+                },
+                "ivo.role": {
+                  "before": "undecided",
+                  "after": "watcher"
+                }
+              }
+            }
+          ],
+          "text": "“Come and launch my kite!” Mara called across the step. Ivo tucked his hands behind his back. “I’ll watch.” For a moment she wanted to insist; she had brought everything especially. Instead she nodded. He came to the gate beside her, but left the reel firmly in her hands."
+        },
+        {
+          "id": "window",
+          "before": {
+            "story.stage": 3,
+            "story.ended": false,
+            "story.outcome": "",
+            "party.location": "step",
+            "reel.owner": "nan",
+            "reel.holder": "mara",
+            "reel.sound": true,
+            "reel.wound": true,
+            "reel.checked": true,
+            "kite.location": "mara",
+            "kite.flew": false,
+            "kite.decorated": false,
+            "mara.want": "include_ivo",
+            "ivo.trust": false,
+            "ivo.role": "watcher",
+            "ivo.bird_seen": false,
+            "ivo.drawing": false,
+            "weather.wind": 0,
+            "mara.gentle": false,
+            "mara.will_mend": false
+          },
+          "after": {
+            "story.stage": 3,
+            "story.ended": false,
+            "story.outcome": "",
+            "party.location": "step",
+            "reel.owner": "nan",
+            "reel.holder": "mara",
+            "reel.sound": true,
+            "reel.wound": true,
+            "reel.checked": true,
+            "kite.location": "mara",
+            "kite.flew": false,
+            "kite.decorated": true,
+            "mara.want": "include_ivo",
+            "ivo.trust": false,
+            "ivo.role": "watcher",
+            "ivo.bird_seen": false,
+            "ivo.drawing": false,
+            "weather.wind": 0,
+            "mara.gentle": false,
+            "mara.will_mend": false
+          },
+          "events": [
+            {
+              "action": "add_blue_window",
+              "requires": {
+                "party.location": "step"
+              },
+              "changes": {
+                "kite.decorated": {
+                  "before": false,
+                  "after": true
+                }
+              }
+            }
+          ],
+          "text": "Mara found a blue paper square in her pocket. She pressed it onto the yellow kite with the sticky paste still on its edge. “A window,” she said. Ivo inspected the back. “Nobody inside.” “Only glue.” His mouth twitched. She smoothed the patch once more before picking up the frame."
+        },
+        {
+          "id": "bird",
+          "before": {
+            "story.stage": 3,
+            "story.ended": false,
+            "story.outcome": "",
+            "party.location": "step",
+            "reel.owner": "nan",
+            "reel.holder": "mara",
+            "reel.sound": true,
+            "reel.wound": true,
+            "reel.checked": true,
+            "kite.location": "mara",
+            "kite.flew": false,
+            "kite.decorated": true,
+            "mara.want": "include_ivo",
+            "ivo.trust": false,
+            "ivo.role": "watcher",
+            "ivo.bird_seen": false,
+            "ivo.drawing": false,
+            "weather.wind": 0,
+            "mara.gentle": false,
+            "mara.will_mend": false
+          },
+          "after": {
+            "story.stage": 3,
+            "story.ended": false,
+            "story.outcome": "",
+            "party.location": "step",
+            "reel.owner": "nan",
+            "reel.holder": "mara",
+            "reel.sound": true,
+            "reel.wound": true,
+            "reel.checked": true,
+            "kite.location": "mara",
+            "kite.flew": false,
+            "kite.decorated": true,
+            "mara.want": "include_ivo",
+            "ivo.trust": false,
+            "ivo.role": "watcher",
+            "ivo.bird_seen": true,
+            "ivo.drawing": false,
+            "weather.wind": 0,
+            "mara.gentle": false,
+            "mara.will_mend": false
+          },
+          "events": [
+            {
+              "action": "watch_sparrow",
+              "requires": {
+                "party.location": "step"
+              },
+              "changes": {
+                "ivo.bird_seen": {
+                  "before": false,
+                  "after": true
+                }
+              }
+            }
+          ],
+          "text": "A sparrow hopped out of the workshop doorway with a shaving stuck to one foot. Mara stopped. Ivo pointed, holding his breath. The bird shook itself free and flew to the gutter. “It brought its own tail,” he said. Mara laughed softly. Neither child moved until the shaving stopped turning on the stones."
+        },
+        {
+          "id": "field",
+          "before": {
+            "story.stage": 3,
+            "story.ended": false,
+            "story.outcome": "",
+            "party.location": "step",
+            "reel.owner": "nan",
+            "reel.holder": "mara",
+            "reel.sound": true,
+            "reel.wound": true,
+            "reel.checked": true,
+            "kite.location": "mara",
+            "kite.flew": false,
+            "kite.decorated": true,
+            "mara.want": "include_ivo",
+            "ivo.trust": false,
+            "ivo.role": "watcher",
+            "ivo.bird_seen": true,
+            "ivo.drawing": false,
+            "weather.wind": 0,
+            "mara.gentle": false,
+            "mara.will_mend": false
+          },
+          "after": {
+            "story.stage": 4,
+            "story.ended": false,
+            "story.outcome": "",
+            "party.location": "field",
+            "reel.owner": "nan",
+            "reel.holder": "mara",
+            "reel.sound": true,
+            "reel.wound": true,
+            "reel.checked": true,
+            "kite.location": "mara",
+            "kite.flew": false,
+            "kite.decorated": true,
+            "mara.want": "include_ivo",
+            "ivo.trust": false,
+            "ivo.role": "observer",
+            "ivo.bird_seen": true,
+            "ivo.drawing": false,
+            "weather.wind": 0,
+            "mara.gentle": false,
+            "mara.will_mend": false
+          },
+          "events": [
+            {
+              "action": "walk_to_lower_field",
+              "requires": {
+                "party.location": "step"
+              },
+              "changes": {
+                "party.location": {
+                  "before": "step",
+                  "after": "field"
+                }
+              }
+            },
+            {
+              "action": "keep_kite_grounded",
+              "requires": {},
+              "changes": {
+                "ivo.role": {
+                  "before": "watcher",
+                  "after": "observer"
+                }
+              }
+            },
+            {
+              "action": "finish_field_visit",
+              "requires": {},
+              "changes": {
+                "story.stage": {
+                  "before": 3,
+                  "after": 4
+                }
+              }
+            }
+          ],
+          "text": "At the lower field, they stopped. The grass lay still; the kite would not lift. She felt the afternoon shrink. Ivo crouched beside the frame. “It’s still a good shape,” he said. They watched the other kites before turning back."
+        },
+        {
+          "id": "return",
+          "before": {
+            "story.stage": 4,
+            "story.ended": false,
+            "story.outcome": "",
+            "party.location": "field",
+            "reel.owner": "nan",
+            "reel.holder": "mara",
+            "reel.sound": true,
+            "reel.wound": true,
+            "reel.checked": true,
+            "kite.location": "mara",
+            "kite.flew": false,
+            "kite.decorated": true,
+            "mara.want": "include_ivo",
+            "ivo.trust": false,
+            "ivo.role": "observer",
+            "ivo.bird_seen": true,
+            "ivo.drawing": false,
+            "weather.wind": 0,
+            "mara.gentle": false,
+            "mara.will_mend": false
+          },
+          "after": {
+            "story.stage": 5,
+            "story.ended": false,
+            "story.outcome": "",
+            "party.location": "workshop",
+            "reel.owner": "nan",
+            "reel.holder": "nan",
+            "reel.sound": true,
+            "reel.wound": true,
+            "reel.checked": true,
+            "kite.location": "mara",
+            "kite.flew": false,
+            "kite.decorated": true,
+            "mara.want": "include_ivo",
+            "ivo.trust": false,
+            "ivo.role": "observer",
+            "ivo.bird_seen": true,
+            "ivo.drawing": false,
+            "weather.wind": 0,
+            "mara.gentle": false,
+            "mara.will_mend": false
+          },
+          "events": [
+            {
+              "action": "walk_back",
+              "requires": {},
+              "changes": {
+                "party.location": {
+                  "before": "field",
+                  "after": "workshop"
+                }
+              }
+            },
+            {
+              "action": "return_useful_reel",
+              "requires": {
+                "reel.sound": true,
+                "reel.wound": true
+              },
+              "changes": {
+                "story.stage": {
+                  "before": 4,
+                  "after": 5
+                },
+                "reel.holder": {
+                  "before": "mara",
+                  "after": "nan"
+                }
+              }
+            }
+          ],
+          "text": "They carried the unused kite back to the workshop. Mara checked the loop once more. The red reel went into Nan’s hands. She spun it freely between her palms and put it ready for the morning class. “That’ll do nicely.”"
+        },
+        {
+          "id": "ending_table",
+          "before": {
+            "story.stage": 5,
+            "story.ended": false,
+            "story.outcome": "",
+            "party.location": "workshop",
+            "reel.owner": "nan",
+            "reel.holder": "nan",
+            "reel.sound": true,
+            "reel.wound": true,
+            "reel.checked": true,
+            "kite.location": "mara",
+            "kite.flew": false,
+            "kite.decorated": true,
+            "mara.want": "include_ivo",
+            "ivo.trust": false,
+            "ivo.role": "observer",
+            "ivo.bird_seen": true,
+            "ivo.drawing": false,
+            "weather.wind": 0,
+            "mara.gentle": false,
+            "mara.will_mend": false
+          },
+          "after": {
+            "story.stage": 6,
+            "story.ended": true,
+            "story.outcome": "shared_table",
+            "party.location": "workshop",
+            "reel.owner": "nan",
+            "reel.holder": "nan",
+            "reel.sound": true,
+            "reel.wound": true,
+            "reel.checked": true,
+            "kite.location": "mara",
+            "kite.flew": false,
+            "kite.decorated": true,
+            "mara.want": "satisfied",
+            "ivo.trust": false,
+            "ivo.role": "observer",
+            "ivo.bird_seen": true,
+            "ivo.drawing": true,
+            "weather.wind": 0,
+            "mara.gentle": false,
+            "mara.will_mend": false
+          },
+          "events": [
+            {
+              "action": "make_room_for_ivo_drawing",
+              "requires": {
+                "party.location": "workshop"
+              },
+              "changes": {
+                "ivo.drawing": {
+                  "before": false,
+                  "after": true
+                }
+              }
+            },
+            {
+              "action": "close_afternoon",
+              "requires": {
+                "reel.holder": "nan"
+              },
+              "changes": {
+                "story.stage": {
+                  "before": 5,
+                  "after": 6
+                },
+                "story.ended": {
+                  "before": false,
+                  "after": true
+                },
+                "story.outcome": {
+                  "before": "",
+                  "after": "shared_table"
+                },
+                "mara.want": {
+                  "before": "include_ivo",
+                  "after": "satisfied"
+                }
+              }
+            }
+          ],
+          "text": "Mara put scrap paper between two stools. “What shape would you make?” Ivo sat down and drew a broad kite with a tiny door. She drew someone looking out. Their afternoon had not become the flight she wanted. But he pulled the second stool closer, and they filled the paper together before Nan closed up."
+        }
+      ],
+      "story": "Mara held her yellow kite up in the village workshop. Through the window she could see Ivo, the new neighbour, sitting alone on his step. Yesterday her enormous hello had sent him indoors. “Try something smaller,” Nan Bell said. Mara lowered the kite. This afternoon she wanted company more than applause.\n\nHer own string was at home. Nan lent her red reel. Mara checked the line between her fingers. It was smooth, and the loop held under a tug. Carrying kite and reel, Mara crossed to Ivo’s step.\n\n“Come and launch my kite!” Mara called across the step. Ivo tucked his hands behind his back. “I’ll watch.” For a moment she wanted to insist; she had brought everything especially. Instead she nodded. He came to the gate beside her, but left the reel firmly in her hands.\n\nMara found a blue paper square in her pocket. She pressed it onto the yellow kite with the sticky paste still on its edge. “A window,” she said. Ivo inspected the back. “Nobody inside.” “Only glue.” His mouth twitched. She smoothed the patch once more before picking up the frame.\n\nA sparrow hopped out of the workshop doorway with a shaving stuck to one foot. Mara stopped. Ivo pointed, holding his breath. The bird shook itself free and flew to the gutter. “It brought its own tail,” he said. Mara laughed softly. Neither child moved until the shaving stopped turning on the stones.\n\nAt the lower field, they stopped. The grass lay still; the kite would not lift. She felt the afternoon shrink. Ivo crouched beside the frame. “It’s still a good shape,” he said. They watched the other kites before turning back.\n\nThey carried the unused kite back to the workshop. Mara checked the loop once more. The red reel went into Nan’s hands. She spun it freely between her palms and put it ready for the morning class. “That’ll do nicely.”\n\nMara put scrap paper between two stools. “What shape would you make?” Ivo sat down and drew a broad kite with a tiny door. She drew someone looking out. Their afternoon had not become the flight she wanted. But he pulled the second stool closer, and they filled the paper together before Nan closed up.",
+      "final_state": {
+        "story.stage": 6,
+        "story.ended": true,
+        "story.outcome": "shared_table",
+        "party.location": "workshop",
+        "reel.owner": "nan",
+        "reel.holder": "nan",
+        "reel.sound": true,
+        "reel.wound": true,
+        "reel.checked": true,
+        "kite.location": "mara",
+        "kite.flew": false,
+        "kite.decorated": true,
+        "mara.want": "satisfied",
+        "ivo.trust": false,
+        "ivo.role": "observer",
+        "ivo.bird_seen": true,
+        "ivo.drawing": true,
+        "weather.wind": 0,
+        "mara.gentle": false,
+        "mara.will_mend": false
+      },
+      "search_attempts": 11
+    },
+    {
+      "seed": 5047,
+      "parameters": {
+        "wind": 2,
+        "gentle": true,
+        "frayed": false,
+        "mend": false
+      },
+      "scene_count": 7,
+      "path": [
+        "welcome",
+        "borrow",
+        "invite",
+        "window",
+        "field",
+        "return",
+        "ending_table"
+      ],
+      "episodes": [
+        {
+          "id": "welcome",
+          "before": {
+            "story.stage": 0,
+            "story.ended": false,
+            "story.outcome": "",
+            "party.location": "workshop",
+            "reel.owner": "nan",
+            "reel.holder": "nan",
+            "reel.sound": true,
+            "reel.wound": true,
+            "reel.checked": false,
+            "kite.location": "mara",
+            "kite.flew": false,
+            "kite.decorated": false,
+            "mara.want": "include_ivo",
+            "ivo.trust": false,
+            "ivo.role": "undecided",
+            "ivo.bird_seen": false,
+            "ivo.drawing": false,
+            "weather.wind": 2,
+            "mara.gentle": true,
+            "mara.will_mend": false
+          },
+          "after": {
+            "story.stage": 1,
+            "story.ended": false,
+            "story.outcome": "",
+            "party.location": "workshop",
+            "reel.owner": "nan",
+            "reel.holder": "nan",
+            "reel.sound": true,
+            "reel.wound": true,
+            "reel.checked": false,
+            "kite.location": "mara",
+            "kite.flew": false,
+            "kite.decorated": false,
+            "mara.want": "include_ivo",
+            "ivo.trust": false,
+            "ivo.role": "undecided",
+            "ivo.bird_seen": false,
+            "ivo.drawing": false,
+            "weather.wind": 2,
+            "mara.gentle": true,
+            "mara.will_mend": false
+          },
+          "events": [
+            {
+              "action": "choose_company",
+              "requires": {
+                "mara.want": "include_ivo"
+              },
+              "changes": {
+                "story.stage": {
+                  "before": 0,
+                  "after": 1
+                }
+              }
+            }
+          ],
+          "text": "Mara held her yellow kite up in the village workshop. Through the window she could see Ivo, the new neighbour, sitting alone on his step. Yesterday her enormous hello had sent him indoors. “Try something smaller,” Nan Bell said. Mara lowered the kite. This afternoon she wanted company more than applause."
+        },
+        {
+          "id": "borrow",
+          "before": {
+            "story.stage": 1,
+            "story.ended": false,
+            "story.outcome": "",
+            "party.location": "workshop",
+            "reel.owner": "nan",
+            "reel.holder": "nan",
+            "reel.sound": true,
+            "reel.wound": true,
+            "reel.checked": false,
+            "kite.location": "mara",
+            "kite.flew": false,
+            "kite.decorated": false,
+            "mara.want": "include_ivo",
+            "ivo.trust": false,
+            "ivo.role": "undecided",
+            "ivo.bird_seen": false,
+            "ivo.drawing": false,
+            "weather.wind": 2,
+            "mara.gentle": true,
+            "mara.will_mend": false
+          },
+          "after": {
+            "story.stage": 2,
+            "story.ended": false,
+            "story.outcome": "",
+            "party.location": "step",
+            "reel.owner": "nan",
+            "reel.holder": "mara",
+            "reel.sound": true,
+            "reel.wound": true,
+            "reel.checked": true,
+            "kite.location": "mara",
+            "kite.flew": false,
+            "kite.decorated": false,
+            "mara.want": "include_ivo",
+            "ivo.trust": false,
+            "ivo.role": "undecided",
+            "ivo.bird_seen": false,
+            "ivo.drawing": false,
+            "weather.wind": 2,
+            "mara.gentle": true,
+            "mara.will_mend": false
+          },
+          "events": [
+            {
+              "action": "borrow_and_inspect",
+              "requires": {
+                "reel.holder": "nan",
+                "party.location": "workshop"
+              },
+              "changes": {
+                "reel.holder": {
+                  "before": "nan",
+                  "after": "mara"
+                },
+                "reel.checked": {
+                  "before": false,
+                  "after": true
+                }
+              }
+            },
+            {
+              "action": "visit_step",
+              "requires": {},
+              "changes": {
+                "story.stage": {
+                  "before": 1,
+                  "after": 2
+                },
+                "party.location": {
+                  "before": "workshop",
+                  "after": "step"
+                }
+              }
+            }
+          ],
+          "text": "Her own string was at home. Nan lent her red reel. Mara checked the line between her fingers. It was smooth, and the loop held under a tug. Carrying kite and reel, Mara crossed to Ivo’s step."
+        },
+        {
+          "id": "invite",
+          "before": {
+            "story.stage": 2,
+            "story.ended": false,
+            "story.outcome": "",
+            "party.location": "step",
+            "reel.owner": "nan",
+            "reel.holder": "mara",
+            "reel.sound": true,
+            "reel.wound": true,
+            "reel.checked": true,
+            "kite.location": "mara",
+            "kite.flew": false,
+            "kite.decorated": false,
+            "mara.want": "include_ivo",
+            "ivo.trust": false,
+            "ivo.role": "undecided",
+            "ivo.bird_seen": false,
+            "ivo.drawing": false,
+            "weather.wind": 2,
+            "mara.gentle": true,
+            "mara.will_mend": false
+          },
+          "after": {
+            "story.stage": 3,
+            "story.ended": false,
+            "story.outcome": "",
+            "party.location": "step",
+            "reel.owner": "nan",
+            "reel.holder": "mara",
+            "reel.sound": true,
+            "reel.wound": true,
+            "reel.checked": true,
+            "kite.location": "mara",
+            "kite.flew": false,
+            "kite.decorated": false,
+            "mara.want": "include_ivo",
+            "ivo.trust": true,
+            "ivo.role": "reel",
+            "ivo.bird_seen": false,
+            "ivo.drawing": false,
+            "weather.wind": 2,
+            "mara.gentle": true,
+            "mara.will_mend": false
+          },
+          "events": [
+            {
+              "action": "offer_quiet_role",
+              "requires": {
+                "party.location": "step"
+              },
+              "changes": {
+                "story.stage": {
+                  "before": 2,
+                  "after": 3
+                },
+                "ivo.trust": {
+                  "before": false,
+                  "after": true
+                },
+                "ivo.role": {
+                  "before": "undecided",
+                  "after": "reel"
+                }
+              }
+            }
+          ],
+          "text": "Mara sat on the wall, leaving a space. “Would you like to hold the reel? You needn’t shout.” Ivo turned its wooden cheek with one finger. “Not in the middle of everyone.” Mara had wanted the middle. “The lower field, then.” He stood up, still looking at the little wheel."
+        },
+        {
+          "id": "window",
+          "before": {
+            "story.stage": 3,
+            "story.ended": false,
+            "story.outcome": "",
+            "party.location": "step",
+            "reel.owner": "nan",
+            "reel.holder": "mara",
+            "reel.sound": true,
+            "reel.wound": true,
+            "reel.checked": true,
+            "kite.location": "mara",
+            "kite.flew": false,
+            "kite.decorated": false,
+            "mara.want": "include_ivo",
+            "ivo.trust": true,
+            "ivo.role": "reel",
+            "ivo.bird_seen": false,
+            "ivo.drawing": false,
+            "weather.wind": 2,
+            "mara.gentle": true,
+            "mara.will_mend": false
+          },
+          "after": {
+            "story.stage": 3,
+            "story.ended": false,
+            "story.outcome": "",
+            "party.location": "step",
+            "reel.owner": "nan",
+            "reel.holder": "mara",
+            "reel.sound": true,
+            "reel.wound": true,
+            "reel.checked": true,
+            "kite.location": "mara",
+            "kite.flew": false,
+            "kite.decorated": true,
+            "mara.want": "include_ivo",
+            "ivo.trust": true,
+            "ivo.role": "reel",
+            "ivo.bird_seen": false,
+            "ivo.drawing": false,
+            "weather.wind": 2,
+            "mara.gentle": true,
+            "mara.will_mend": false
+          },
+          "events": [
+            {
+              "action": "add_blue_window",
+              "requires": {
+                "party.location": "step"
+              },
+              "changes": {
+                "kite.decorated": {
+                  "before": false,
+                  "after": true
+                }
+              }
+            }
+          ],
+          "text": "Mara found a blue paper square in her pocket. She pressed it onto the yellow kite with the sticky paste still on its edge. “A window,” she said. Ivo inspected the back. “Nobody inside.” “Only glue.” His mouth twitched. She smoothed the patch once more before picking up the frame."
+        },
+        {
+          "id": "field",
+          "before": {
+            "story.stage": 3,
+            "story.ended": false,
+            "story.outcome": "",
+            "party.location": "step",
+            "reel.owner": "nan",
+            "reel.holder": "mara",
+            "reel.sound": true,
+            "reel.wound": true,
+            "reel.checked": true,
+            "kite.location": "mara",
+            "kite.flew": false,
+            "kite.decorated": true,
+            "mara.want": "include_ivo",
+            "ivo.trust": true,
+            "ivo.role": "reel",
+            "ivo.bird_seen": false,
+            "ivo.drawing": false,
+            "weather.wind": 2,
+            "mara.gentle": true,
+            "mara.will_mend": false
+          },
+          "after": {
+            "story.stage": 4,
+            "story.ended": false,
+            "story.outcome": "",
+            "party.location": "field",
+            "reel.owner": "nan",
+            "reel.holder": "mara",
+            "reel.sound": true,
+            "reel.wound": true,
+            "reel.checked": true,
+            "kite.location": "mara",
+            "kite.flew": false,
+            "kite.decorated": true,
+            "mara.want": "include_ivo",
+            "ivo.trust": true,
+            "ivo.role": "observer",
+            "ivo.bird_seen": false,
+            "ivo.drawing": false,
+            "weather.wind": 2,
+            "mara.gentle": true,
+            "mara.will_mend": false
+          },
+          "events": [
+            {
+              "action": "walk_to_lower_field",
+              "requires": {
+                "party.location": "step"
+              },
+              "changes": {
+                "party.location": {
+                  "before": "step",
+                  "after": "field"
+                }
+              }
+            },
+            {
+              "action": "keep_kite_grounded",
+              "requires": {},
+              "changes": {
+                "ivo.role": {
+                  "before": "reel",
+                  "after": "observer"
+                }
+              }
+            },
+            {
+              "action": "finish_field_visit",
+              "requires": {},
+              "changes": {
+                "story.stage": {
+                  "before": 3,
+                  "after": 4
+                }
+              }
+            }
+          ],
+          "text": "At the lower field, they stopped. Hard gusts flattened the grass. Mara kept the kite down. She felt the afternoon shrink. Ivo crouched beside the frame. “It’s still a good shape,” he said. They watched the other kites before turning back."
+        },
+        {
+          "id": "return",
+          "before": {
+            "story.stage": 4,
+            "story.ended": false,
+            "story.outcome": "",
+            "party.location": "field",
+            "reel.owner": "nan",
+            "reel.holder": "mara",
+            "reel.sound": true,
+            "reel.wound": true,
+            "reel.checked": true,
+            "kite.location": "mara",
+            "kite.flew": false,
+            "kite.decorated": true,
+            "mara.want": "include_ivo",
+            "ivo.trust": true,
+            "ivo.role": "observer",
+            "ivo.bird_seen": false,
+            "ivo.drawing": false,
+            "weather.wind": 2,
+            "mara.gentle": true,
+            "mara.will_mend": false
+          },
+          "after": {
+            "story.stage": 5,
+            "story.ended": false,
+            "story.outcome": "",
+            "party.location": "workshop",
+            "reel.owner": "nan",
+            "reel.holder": "nan",
+            "reel.sound": true,
+            "reel.wound": true,
+            "reel.checked": true,
+            "kite.location": "mara",
+            "kite.flew": false,
+            "kite.decorated": true,
+            "mara.want": "include_ivo",
+            "ivo.trust": true,
+            "ivo.role": "observer",
+            "ivo.bird_seen": false,
+            "ivo.drawing": false,
+            "weather.wind": 2,
+            "mara.gentle": true,
+            "mara.will_mend": false
+          },
+          "events": [
+            {
+              "action": "walk_back",
+              "requires": {},
+              "changes": {
+                "party.location": {
+                  "before": "field",
+                  "after": "workshop"
+                }
+              }
+            },
+            {
+              "action": "return_useful_reel",
+              "requires": {
+                "reel.sound": true,
+                "reel.wound": true
+              },
+              "changes": {
+                "story.stage": {
+                  "before": 4,
+                  "after": 5
+                },
+                "reel.holder": {
+                  "before": "mara",
+                  "after": "nan"
+                }
+              }
+            }
+          ],
+          "text": "They carried the unused kite back to the workshop. Mara checked the loop once more. The red reel went into Nan’s hands. She spun it freely between her palms and put it ready for the morning class. “That’ll do nicely.”"
+        },
+        {
+          "id": "ending_table",
+          "before": {
+            "story.stage": 5,
+            "story.ended": false,
+            "story.outcome": "",
+            "party.location": "workshop",
+            "reel.owner": "nan",
+            "reel.holder": "nan",
+            "reel.sound": true,
+            "reel.wound": true,
+            "reel.checked": true,
+            "kite.location": "mara",
+            "kite.flew": false,
+            "kite.decorated": true,
+            "mara.want": "include_ivo",
+            "ivo.trust": true,
+            "ivo.role": "observer",
+            "ivo.bird_seen": false,
+            "ivo.drawing": false,
+            "weather.wind": 2,
+            "mara.gentle": true,
+            "mara.will_mend": false
+          },
+          "after": {
+            "story.stage": 6,
+            "story.ended": true,
+            "story.outcome": "shared_table",
+            "party.location": "workshop",
+            "reel.owner": "nan",
+            "reel.holder": "nan",
+            "reel.sound": true,
+            "reel.wound": true,
+            "reel.checked": true,
+            "kite.location": "mara",
+            "kite.flew": false,
+            "kite.decorated": true,
+            "mara.want": "satisfied",
+            "ivo.trust": true,
+            "ivo.role": "observer",
+            "ivo.bird_seen": false,
+            "ivo.drawing": true,
+            "weather.wind": 2,
+            "mara.gentle": true,
+            "mara.will_mend": false
+          },
+          "events": [
+            {
+              "action": "make_room_for_ivo_drawing",
+              "requires": {
+                "party.location": "workshop"
+              },
+              "changes": {
+                "ivo.drawing": {
+                  "before": false,
+                  "after": true
+                }
+              }
+            },
+            {
+              "action": "close_afternoon",
+              "requires": {
+                "reel.holder": "nan"
+              },
+              "changes": {
+                "story.stage": {
+                  "before": 5,
+                  "after": 6
+                },
+                "story.ended": {
+                  "before": false,
+                  "after": true
+                },
+                "story.outcome": {
+                  "before": "",
+                  "after": "shared_table"
+                },
+                "mara.want": {
+                  "before": "include_ivo",
+                  "after": "satisfied"
+                }
+              }
+            }
+          ],
+          "text": "Mara put scrap paper between two stools. “What shape would you make?” Ivo sat down and drew a broad kite with a tiny door. She drew someone looking out. Their afternoon had not become the flight she wanted. But he pulled the second stool closer, and they filled the paper together before Nan closed up."
+        }
+      ],
+      "story": "Mara held her yellow kite up in the village workshop. Through the window she could see Ivo, the new neighbour, sitting alone on his step. Yesterday her enormous hello had sent him indoors. “Try something smaller,” Nan Bell said. Mara lowered the kite. This afternoon she wanted company more than applause.\n\nHer own string was at home. Nan lent her red reel. Mara checked the line between her fingers. It was smooth, and the loop held under a tug. Carrying kite and reel, Mara crossed to Ivo’s step.\n\nMara sat on the wall, leaving a space. “Would you like to hold the reel? You needn’t shout.” Ivo turned its wooden cheek with one finger. “Not in the middle of everyone.” Mara had wanted the middle. “The lower field, then.” He stood up, still looking at the little wheel.\n\nMara found a blue paper square in her pocket. She pressed it onto the yellow kite with the sticky paste still on its edge. “A window,” she said. Ivo inspected the back. “Nobody inside.” “Only glue.” His mouth twitched. She smoothed the patch once more before picking up the frame.\n\nAt the lower field, they stopped. Hard gusts flattened the grass. Mara kept the kite down. She felt the afternoon shrink. Ivo crouched beside the frame. “It’s still a good shape,” he said. They watched the other kites before turning back.\n\nThey carried the unused kite back to the workshop. Mara checked the loop once more. The red reel went into Nan’s hands. She spun it freely between her palms and put it ready for the morning class. “That’ll do nicely.”\n\nMara put scrap paper between two stools. “What shape would you make?” Ivo sat down and drew a broad kite with a tiny door. She drew someone looking out. Their afternoon had not become the flight she wanted. But he pulled the second stool closer, and they filled the paper together before Nan closed up.",
+      "final_state": {
+        "story.stage": 6,
+        "story.ended": true,
+        "story.outcome": "shared_table",
+        "party.location": "workshop",
+        "reel.owner": "nan",
+        "reel.holder": "nan",
+        "reel.sound": true,
+        "reel.wound": true,
+        "reel.checked": true,
+        "kite.location": "mara",
+        "kite.flew": false,
+        "kite.decorated": true,
+        "mara.want": "satisfied",
+        "ivo.trust": true,
+        "ivo.role": "observer",
+        "ivo.bird_seen": false,
+        "ivo.drawing": true,
+        "weather.wind": 2,
+        "mara.gentle": true,
+        "mara.will_mend": false
+      },
+      "search_attempts": 10
+    }
+  ]
+}

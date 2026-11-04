@@ -1,0 +1,204 @@
+{
+  "scenes": [
+    {
+      "id": "pack_lunch_and_make_a_plan",
+      "role": "Establish the ordinary picnic want and the siblings’ differing expectations.",
+      "location": "home path to harbor kiosk",
+      "prerequisites": ["Lunch and blanket are packed."],
+      "actions": ["Older sibling packs food and proposes a sheltered picnic."],
+      "consequences": ["The picnic is the shared practical goal; the younger sibling wants a voice in choosing."],
+      "prose_obligations": ["Show an ordinary want and a difference in how the siblings approach it."],
+      "implemented_ids": ["borrow_map"]
+    },
+    {
+      "id": "borrow_aunts_map",
+      "role": "Give the siblings a borrowed tool and a promise to return it useful.",
+      "location": "Aunt June’s harbor kiosk",
+      "prerequisites": ["Aunt June is at her kiosk."],
+      "actions": ["Ask for and borrow the hand-drawn map."],
+      "consequences": ["The younger sibling carries the map; it must return to June."],
+      "prose_obligations": ["State the half-moon cove and white-gull ferry symbols."],
+      "implemented_ids": ["borrow_map"]
+    },
+    {
+      "id": "aunt_explains_the_symbols",
+      "role": "Seed the distinction needed to recognize the later mistake.",
+      "location": "Harbor kiosk",
+      "prerequisites": ["The map is being borrowed."],
+      "actions": ["Aunt points out the gull and the half-moon and mentions the tide."],
+      "consequences": ["The borrowed map contains usable information, not a magic answer."],
+      "prose_obligations": ["Keep the advice brief and ordinary."],
+      "implemented_ids": ["borrow_map", "compare_landmarks"]
+    },
+    {
+      "id": "leave_for_the_seaside_path",
+      "role": "Begin the outing and move the party toward the fork.",
+      "location": "Kiosk and path fork",
+      "prerequisites": ["The map has been borrowed."],
+      "actions": ["Walk to the fork."],
+      "consequences": ["The map travels with the siblings."],
+      "prose_obligations": ["Keep travel concise; do not narrate irrelevant custody checks."],
+      "implemented_ids": ["follow_white_gull"]
+    },
+    {
+      "id": "spot_the_white_gull_post",
+      "role": "Present an attractive but incorrect landmark.",
+      "location": "Seaside path fork",
+      "prerequisites": ["The siblings are on the path with the borrowed map."],
+      "actions": ["Older sibling mistakes the white gull for the picnic marker despite a warning."],
+      "consequences": ["They follow the wrong landmark."],
+      "prose_obligations": ["Make the mistake understandable rather than arbitrary."],
+      "implemented_ids": ["follow_white_gull"]
+    },
+    {
+      "id": "arrive_at_the_exposed_shelf",
+      "role": "Make the mistake consequential by failing to find shelter and losing time.",
+      "location": "Rock shelf by the ferry landing",
+      "prerequisites": ["The siblings followed the white gull."],
+      "actions": ["Discover the exposed shelf and check the rising water."],
+      "consequences": ["The map must be read again; the tide limits the route choice."],
+      "prose_obligations": ["Show glare, spray, and the absence of picnic shelter without overexplaining physics."],
+      "implemented_ids": ["follow_white_gull"]
+    },
+    {
+      "id": "pause_at_the_tidepool",
+      "role": "Optional quiet vignette that gives the younger sibling a small treasured object.",
+      "location": "Tidepool below the gull post",
+      "prerequisites": ["A shallow pool remains at low tide; the mistake has not yet been corrected."],
+      "actions": ["Find and carry a striped shell."],
+      "consequences": ["The shell can appear at the picnic and is carried away afterward."],
+      "prose_obligations": ["Let the siblings share attention instead of adding plot machinery."],
+      "implemented_ids": ["tidepool_pause"]
+    },
+    {
+      "id": "help_the_net_mender",
+      "role": "Optional kindness vignette that can provide a local landmark clue.",
+      "location": "Gull post",
+      "prerequisites": ["A fisher’s float is snagged and the mistake has not yet been corrected."],
+      "actions": ["Hold the net and free the float; listen to the fisher’s distinction between landing and cove."],
+      "consequences": ["The fisher is helped and the comparison scene can use this clue."],
+      "prose_obligations": ["The clue supplements, but does not replace, the map and visible coast."],
+      "implemented_ids": ["fisher_pause"]
+    },
+    {
+      "id": "turn_the_map_to_north",
+      "role": "Correct the map orientation when needed.",
+      "location": "Flat rock by the post",
+      "prerequisites": ["The map has been borrowed and is being examined."],
+      "actions": ["Turn a rotated map until its north arrow follows the shoreline."],
+      "consequences": ["Orientation becomes consistent with the coast."],
+      "prose_obligations": ["Only narrate a turn when the parameter makes it necessary."],
+      "implemented_ids": ["compare_landmarks"]
+    },
+    {
+      "id": "read_or_trace_the_map",
+      "role": "Use readable legend text or visible geography to understand a faded map.",
+      "location": "Flat rock by the post",
+      "prerequisites": ["The map is upright."],
+      "actions": ["Read the clear legend, trace the faded coastline, or use the optional fisher clue."],
+      "consequences": ["The party has evidence for correcting the mistaken landmark."],
+      "prose_obligations": ["Show how knowledge changes; do not silently grant it."],
+      "implemented_ids": ["compare_landmarks"]
+    },
+    {
+      "id": "recognize_the_wrong_landmark",
+      "role": "Acknowledge the error and restore the younger sibling’s credibility.",
+      "location": "Gull post and exposed shelf",
+      "prerequisites": ["The siblings followed the gull; the map is now being compared with evidence."],
+      "actions": ["Identify the gull as the ferry landing and the half-moon as the cove."],
+      "consequences": ["The older sibling admits rushing; a safe route can now be chosen together."],
+      "prose_obligations": ["Give the admission emotional weight without legalistic dialogue."],
+      "implemented_ids": ["compare_landmarks"]
+    },
+    {
+      "id": "choose_the_route_for_the_tide",
+      "role": "Make the consequential decision between the low strand and the high bluff.",
+      "location": "Gull post overlooking the shore",
+      "prerequisites": ["The wrong landmark is understood."],
+      "actions": ["At low tide choose the strand to Crescent Cove; at rising tide choose the bluff to the harbor awning."],
+      "consequences": ["Tide state controls which route and ending are possible."],
+      "prose_obligations": ["Frame the choice as a shared safety decision, not a mechanical recital."],
+      "implemented_ids": ["choose_safe_route"]
+    },
+    {
+      "id": "walk_the_selected_route",
+      "role": "Carry the route choice into the party’s physical location.",
+      "location": "Low strand or upper bluff",
+      "prerequisites": ["A compatible route was selected."],
+      "actions": ["Follow the selected route."],
+      "consequences": ["The party reaches only the shelter served by that route."],
+      "prose_obligations": ["Do not teleport or suggest the unsafe lower path is open at rising tide."],
+      "implemented_ids": ["choose_safe_route", "reach_shelter"]
+    },
+    {
+      "id": "find_crescent_cove",
+      "role": "Reach the mapped cove on the low-strand route.",
+      "location": "Crescent Cove",
+      "prerequisites": ["Tide is low and the strand route was selected."],
+      "actions": ["Match the headland notch to the map and choose dry ground."],
+      "consequences": ["The cove ending becomes possible."],
+      "prose_obligations": ["Make the map’s usefulness visible in the match between drawing and shore."],
+      "implemented_ids": ["reach_shelter"]
+    },
+    {
+      "id": "find_the_harbor_awning",
+      "role": "Reach a safe alternative shelter when the tide is rising.",
+      "location": "Harbor net shed",
+      "prerequisites": ["Tide is rising and the bluff route was selected."],
+      "actions": ["Climb above the wet stones to the awning."],
+      "consequences": ["The harbor ending becomes possible without pretending the cove was reached."],
+      "prose_obligations": ["Let the alternate shelter feel like a real outcome, not a consolation conditional."],
+      "implemented_ids": ["reach_shelter"]
+    },
+    {
+      "id": "choose_a_seat_together",
+      "role": "Optional relationship vignette at the shelter.",
+      "location": "Cove or harbor awning",
+      "prerequisites": ["The shelter has been reached; picnic setup has not begun."],
+      "actions": ["The younger sibling chooses a seat with a view; the older sibling yields the decision."],
+      "consequences": ["The younger sibling’s preference persists into the picnic."],
+      "prose_obligations": ["Keep this an optional character moment, not a task gate."],
+      "implemented_ids": ["windbreak_pause"]
+    },
+    {
+      "id": "secure_the_blanket",
+      "role": "Set up a picnic that fits the actual wind and shelter.",
+      "location": "Chosen shelter",
+      "prerequisites": ["The party reached shelter and carries the blanket."],
+      "actions": ["In gusts use stones or a bench slat; in calm air spread the blanket."],
+      "consequences": ["The blanket is stable before food is opened."],
+      "prose_obligations": ["Do not make calm air require an arbitrary anchor."],
+      "implemented_ids": ["picnic"]
+    },
+    {
+      "id": "share_lunch",
+      "role": "Complete the ordinary goal and show cooperation in action.",
+      "location": "Chosen shelter",
+      "prerequisites": ["The blanket is secure and the basket is packed."],
+      "actions": ["Open the basket and share the rolls and fruit."],
+      "consequences": ["The sheltered picnic is actually completed before the ending."],
+      "prose_obligations": ["Avoid turning every portion into bookkeeping; show the siblings sharing."],
+      "implemented_ids": ["picnic"]
+    },
+    {
+      "id": "mark_the_map_for_the_next_person",
+      "role": "Return the borrowed object with useful corrected information.",
+      "location": "Aunt June’s kiosk after the picnic",
+      "prerequisites": ["A sheltered picnic is complete and the party has walked back."],
+      "actions": ["Mark the gull as the ferry landing and record the route to the suitable shelter."],
+      "consequences": ["The map is more useful than when it was borrowed."],
+      "prose_obligations": ["Complete the return and communicate the specific correction."],
+      "implemented_ids": ["ending_cove", "ending_harbor"]
+    },
+    {
+      "id": "finish_at_the_kiosk",
+      "role": "Close the outing with a completed picnic and an earned sibling change.",
+      "location": "Harbor kiosk",
+      "prerequisites": ["The picnic is eaten; the map is returned to Aunt June."],
+      "actions": ["Finish the story at the kiosk, carrying any shell home."],
+      "consequences": ["Cove and harbor endings reflect genuinely different destinations."],
+      "prose_obligations": ["Give emotional closure; do not leave the meal or return as a future plan."],
+      "implemented_ids": ["ending_cove", "ending_harbor"]
+    }
+  ]
+}

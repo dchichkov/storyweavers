@@ -1,0 +1,56 @@
+{
+  "source_hash": "a7154c5b770a3835821240b361e508fb1b62fcb3cc856931ffc55c1a29760e32",
+  "unit_command": "python3 -m unittest microdrama.test_microdrama -v",
+  "unit_exit_code": 0,
+  "unit_tests": 27,
+  "unit_output": "test_action_rolls_back_effects_and_history (microdrama.test_microdrama.AlgebraAndTransactions) ... ok\ntest_content_composes_and_dilutes_without_effect_until_embedded (microdrama.test_microdrama.AlgebraAndTransactions) ... ok\ntest_duplicate_drama_ids_rejected (microdrama.test_microdrama.AlgebraAndTransactions) ... ok\ntest_encounter_rejects_unrecorded_effect (microdrama.test_microdrama.AlgebraAndTransactions) ... ok\ntest_entire_encounter_rolls_back_after_second_action_fails (microdrama.test_microdrama.AlgebraAndTransactions) ... ok\ntest_invalid_algebra (microdrama.test_microdrama.AlgebraAndTransactions) ... ok\ntest_locked_book_rejects_even_when_colocated (microdrama.test_microdrama.AlgebraAndTransactions) ... ok\ntest_remote_knowledge_does_not_teleport (microdrama.test_microdrama.AlgebraAndTransactions) ... ok\ntest_unknown_carrier_rejected (microdrama.test_microdrama.AlgebraAndTransactions) ... ok\ntest_unobserved_fact_is_not_a_memory (microdrama.test_microdrama.AlgebraAndTransactions) ... ok\ntest_entire_finite_grid_and_unfiltered_seeds (microdrama.test_microdrama.Questions) ... ok\ntest_followup_focus_and_fail_closed (microdrama.test_microdrama.Questions) ... ok\ntest_full_answers_have_real_historical_evidence (microdrama.test_microdrama.Questions) ... ok\ntest_next_does_not_leak_beyond_reading_position (microdrama.test_microdrama.Questions) ... ok\ntest_reader_cannot_see_a_future_theft (microdrama.test_microdrama.Questions) ... ok\ntest_access_counterfactual (microdrama.test_microdrama.StoryBehavior) ... ok\ntest_attention_and_mentoring_counterfactual (microdrama.test_microdrama.StoryBehavior) ... ok\ntest_determinism (microdrama.test_microdrama.StoryBehavior) ... ok\ntest_false_beliefs_do_not_change_material_truth (microdrama.test_microdrama.StoryBehavior) ... ok\ntest_narration_is_pure_and_historical (microdrama.test_microdrama.StoryBehavior) ... ok\ntest_optional_encounters_and_order_change (microdrama.test_microdrama.StoryBehavior) ... ok\ntest_private_skill_is_not_automatically_collective_power (microdrama.test_microdrama.StoryBehavior) ... ok\ntest_replay_rejects_stale_base_and_changed_trace (microdrama.test_microdrama.StoryBehavior) ... ok\ntest_restoration_requires_explicit_restitution (microdrama.test_microdrama.StoryBehavior) ... ok\ntest_same_reading_practice_binds_another_book (microdrama.test_microdrama.StoryBehavior) ... ok\ntest_skill_needs_a_physical_trial (microdrama.test_microdrama.StoryBehavior) ... ok\ntest_witness_changes_local_belief_without_persuading_everyone (microdrama.test_microdrama.StoryBehavior) ... ok\n\n----------------------------------------------------------------------\nRan 27 tests in 26.437s\n\nOK\n",
+  "finite_grid": {
+    "all_passed": true,
+    "configurations": 48,
+    "runs": 240,
+    "qa_answers_checked": 2880,
+    "outcomes": {
+      "library": 30,
+      "night_school": 30,
+      "closed_palace": 180
+    }
+  },
+  "portable_run": {
+    "standalone_copy_passed": true,
+    "site_packages_disabled": true,
+    "cli_passed": true,
+    "chat_passed": true,
+    "python": "3.9.6",
+    "absolute_import_roots": [
+      "__future__",
+      "argparse",
+      "collections",
+      "copy",
+      "dataclasses",
+      "hashlib",
+      "itertools",
+      "json",
+      "math",
+      "pathlib",
+      "random",
+      "typing",
+      "unittest"
+    ]
+  },
+  "saved_artifacts_match_current_generation": [
+    "microdrama/examples/interrupted",
+    "microdrama/examples/library",
+    "microdrama/examples/locked",
+    "microdrama/examples/night_school",
+    "microdrama/examples/with_mentor",
+    "microdrama/examples/without_mentor",
+    "microdrama/examples/witness",
+    "microdrama/samples/seed0",
+    "microdrama/samples/seed1",
+    "microdrama/samples/seed2",
+    "microdrama/samples/seed3",
+    "microdrama/samples/seed4"
+  ],
+  "acceptance_review": "REVIEW.md",
+  "scope": "One isolated fable proof of concept; no cross-fable or parallel-authoring claim."
+}
