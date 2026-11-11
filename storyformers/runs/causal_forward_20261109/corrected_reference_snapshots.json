@@ -1,0 +1,774 @@
+{
+  "19": {
+    "_references": {
+      "entities": {
+        "e18": {
+          "name": "Ivo",
+          "type": "person"
+        },
+        "e5": {
+          "name": "entrance",
+          "type": "place"
+        }
+      },
+      "events": {
+        "ev20": {
+          "actor_id": "e18",
+          "event": "move",
+          "event_type": "move",
+          "factuality": "asserted",
+          "patients": [],
+          "scope_id": "s0"
+        }
+      }
+    }
+  },
+  "35": {
+    "_references": {
+      "events": {
+        "ev36": {
+          "event": "obtain object",
+          "event_type": "obtain",
+          "factuality": "desired",
+          "instruments": [],
+          "patients": [],
+          "scope_id": "q35"
+        }
+      },
+      "scopes": {
+        "q35": {
+          "kind": "quotation",
+          "parent": "s0"
+        }
+      }
+    }
+  },
+  "108": {
+    "_evidence": [
+      {
+        "indices": [
+          29,
+          108
+        ],
+        "note": "Nia’s is the first supported mention; the current proper name refers to that person. The name alone does not establish gender or age."
+      }
+    ],
+    "_references": {
+      "entities": {
+        "e30": {
+          "name": "Nia",
+          "type": "person"
+        }
+      }
+    }
+  },
+  "129": {
+    "_references": {
+      "entities": {
+        "e30": {
+          "name": "Nia",
+          "type": "person"
+        }
+      },
+      "events": {
+        "ev130": {
+          "actor_id": "e30",
+          "event": "want",
+          "event_type": "feel",
+          "factuality": "asserted",
+          "scope_id": "s0"
+        }
+      }
+    }
+  },
+  "151": {
+    "_references": {
+      "entities": {
+        "e30": {
+          "name": "Nia",
+          "type": "person"
+        },
+        "e152": {
+          "name": "help",
+          "type": "assistance"
+        }
+      },
+      "events": {
+        "ev130": {
+          "event": "want",
+          "event_type": "feel",
+          "factuality": "asserted",
+          "actor_id": "e30",
+          "scope_id": "s0"
+        },
+        "ev148": {
+          "event": "ask for help",
+          "event_type": "speak",
+          "factuality": "negated",
+          "actor_id": "e30",
+          "scope_id": "s146",
+          "patients": [
+            "e152"
+          ]
+        }
+      },
+      "scopes": {
+        "s130": {
+          "kind": "desired",
+          "parent": "s0",
+          "holder_id": "e30"
+        },
+        "s146": {
+          "kind": "negation",
+          "parent": "s130"
+        }
+      },
+      "propositions": {
+        "p134": {
+          "content": "Nia proves she can lead a hike without asking for help",
+          "polarity": "positive",
+          "scope_id": "s130"
+        },
+        "p148_negative": {
+          "content": "Nia does not ask for help",
+          "polarity": "negative",
+          "scope_id": "s130"
+        }
+      }
+    },
+    "_evidence": [
+      {
+        "indices": [
+          129,
+          133,
+          139,
+          143,
+          145,
+          147,
+          151
+        ],
+        "note": "Keep the asking event locally negated inside desire, with its patient; distinguish the complete negative proposition from a positive asking target."
+      }
+    ]
+  },
+  "205": {
+    "_evidence": [
+      {
+        "indices": [
+          192,
+          203,
+          205
+        ],
+        "note": "Leni is the antecedent of “she,” and “hoped” introduces her hope; its content has not appeared yet."
+      }
+    ],
+    "_references": {
+      "entities": {
+        "e193": {
+          "name": "Leni",
+          "type": "person"
+        }
+      },
+      "events": {
+        "ev206": {
+          "actor_id": "e193",
+          "event": "hope",
+          "event_type": "feel",
+          "factuality": "asserted",
+          "scope_id": "s0"
+        }
+      }
+    }
+  },
+  "221": {
+    "_evidence": [
+      {
+        "indices": [
+          205,
+          209,
+          215,
+          217,
+          221
+        ],
+        "note": "Leni's hope is to sketch a spotted salamander near the stream; the stream completes the visible desired content, not an asserted event."
+      }
+    ],
+    "_references": {
+      "entities": {
+        "e193": {
+          "name": "Leni",
+          "type": "person"
+        },
+        "e216": {
+          "name": "spotted salamander",
+          "type": "salamander"
+        },
+        "e222": {
+          "name": "stream",
+          "type": "stream"
+        }
+      },
+      "events": {
+        "ev206": {
+          "actor_id": "e193",
+          "event": "hope",
+          "event_type": "feel",
+          "factuality": "asserted",
+          "scope_id": "s0"
+        },
+        "ev210": {
+          "actor_id": "e193",
+          "event": "sketch salamander",
+          "event_type": "other",
+          "factuality": "desired",
+          "patients": [
+            "e216"
+          ],
+          "scope_id": "s206"
+        }
+      },
+      "propositions": {
+        "p210": {
+          "content": "Leni sketches a spotted salamander near the stream",
+          "polarity": "positive",
+          "scope_id": "s206"
+        }
+      },
+      "scopes": {
+        "s206": {
+          "holder_id": "e193",
+          "kind": "desired",
+          "parent": "s0"
+        }
+      }
+    }
+  },
+  "278": {
+    "_references": {
+      "entities": {
+        "e30": {
+          "name": "Nia",
+          "type": "person"
+        },
+        "e155": {
+          "name": "Felix",
+          "type": "person"
+        },
+        "e193": {
+          "name": "Leni",
+          "type": "person"
+        },
+        "e265": {
+          "name": "Nia and Felix",
+          "type": "group",
+          "members": [
+            "e30",
+            "e155"
+          ]
+        }
+      },
+      "events": {
+        "ev271": {
+          "event": "promise",
+          "event_type": "speak",
+          "scope_id": "s0",
+          "factuality": "asserted",
+          "actor_id": "e265"
+        },
+        "ev275": {
+          "event": "keep beside person",
+          "event_type": "state",
+          "scope_id": "s271",
+          "factuality": "desired",
+          "actor_id": "e265",
+          "companion_id": "e193"
+        }
+      },
+      "scopes": {
+        "s271": {
+          "kind": "promised",
+          "parent": "s0",
+          "holder_id": "e265"
+        }
+      },
+      "propositions": {
+        "p275": {
+          "content": "Nia and Felix keep beside Leni",
+          "polarity": "positive",
+          "scope_id": "s271"
+        }
+      }
+    },
+    "_evidence": [
+      {
+        "indices": [
+          192,
+          264,
+          268,
+          270,
+          274,
+          275,
+          278
+        ],
+        "note": "Her is Leni, not Nia. The jointly named promisers are Nia and Felix; preserve their group and the promised content, without claiming compliance."
+      }
+    ]
+  },
+  "522": {
+    "_references": {
+      "entities": {
+        "e155": {
+          "name": "Felix",
+          "type": "person"
+        },
+        "e523": {
+          "name": "minutes",
+          "type": "time_unit"
+        }
+      },
+      "propositions": {
+        "p519": {
+          "content": "We have forty minutes",
+          "polarity": "positive",
+          "scope_id": "q503"
+        }
+      },
+      "scopes": {
+        "q503": {
+          "kind": "quotation",
+          "parent": "s0",
+          "speaker_id": "e155"
+        }
+      }
+    },
+    "_evidence": [
+      {
+        "indices": [
+          154,
+          493,
+          502,
+          520,
+          522
+        ],
+        "note": "Felix's first named anchor is e155, not the recent watch-checking mention. Available forty minutes is correctly temporal_remaining."
+      }
+    ]
+  },
+  "641": {
+    "_evidence": [
+      {
+        "indices": [
+          192,
+          447,
+          449,
+          626,
+          631,
+          633,
+          641
+        ],
+        "note": "Keep negated ability under q627; correct Leni and Loop head anchors. Cannot is inability, not merely non-occurrence. Put the complete negative claim in its quotation."
+      }
+    ],
+    "_references": {
+      "entities": {
+        "e193": {
+          "name": "Leni",
+          "type": "person"
+        },
+        "e450": {
+          "name": "Fern Loop",
+          "type": "trail"
+        },
+        "e642": {
+          "name": "sprint",
+          "type": "sprint"
+        }
+      },
+      "propositions": {
+        "p634": {
+          "content": "Leni does the Fern Loop at a sprint",
+          "polarity": "positive",
+          "scope_id": "s632"
+        },
+        "p634_negative": {
+          "content": "Leni cannot do the Fern Loop at a sprint",
+          "polarity": "negative",
+          "scope_id": "q627"
+        }
+      },
+      "scopes": {
+        "q627": {
+          "kind": "quotation",
+          "parent": "s0",
+          "speaker_id": "e193"
+        },
+        "s632": {
+          "holder_id": "e193",
+          "kind": "negated_ability",
+          "parent": "q627"
+        }
+      }
+    }
+  },
+  "773": {
+    "_evidence": [
+      {
+        "indices": [
+          270,
+          763,
+          765,
+          767,
+          771,
+          773
+        ],
+        "note": "Turning onto the selected loop is a supported choice after the accessibility discussion; it does not establish arrival or success. Correct the route's noun-head anchor."
+      }
+    ],
+    "_references": {
+      "entities": {
+        "e30": {
+          "name": "Nia",
+          "type": "person"
+        },
+        "e155": {
+          "name": "Felix",
+          "type": "person"
+        },
+        "e193": {
+          "name": "Leni",
+          "type": "person"
+        },
+        "e450": {
+          "name": "Fern Loop",
+          "type": "trail"
+        },
+        "e764": {
+          "members": [
+            "e30",
+            "e155",
+            "e193"
+          ],
+          "name": "they",
+          "type": "group"
+        }
+      },
+      "events": {
+        "ev766": {
+          "actor_id": "e764",
+          "event": "move",
+          "event_type": "move",
+          "factuality": "asserted",
+          "scope_id": "s0"
+        },
+        "ev271": {
+          "event": "promise to keep beside Leni",
+          "event_type": "speak",
+          "scope_id": "s0",
+          "factuality": "asserted"
+        }
+      }
+    }
+  },
+  "876": {
+    "_evidence": [
+      {
+        "indices": [
+          870,
+          872,
+          876
+        ],
+        "note": "The birch obstructs the route the group is following; add the locally evidenced setback, without predicting defeat or the future detour."
+      }
+    ],
+    "_references": {
+      "entities": {
+        "e450": {
+          "name": "Fern Loop",
+          "type": "trail"
+        },
+        "e871": {
+          "name": "birch",
+          "type": "tree"
+        }
+      },
+      "events": {
+        "ev873": {
+          "actor_id": "e871",
+          "event": "block trail",
+          "event_type": "other",
+          "factuality": "asserted",
+          "patients": [
+            "e450"
+          ],
+          "scope_id": "s0"
+        },
+        "ev766": {
+          "event": "turn onto Fern Loop",
+          "event_type": "move",
+          "scope_id": "s0",
+          "factuality": "asserted"
+        }
+      }
+    }
+  },
+  "961": {
+    "_references": {
+      "scopes": {
+        "q959": {
+          "kind": "quotation",
+          "parent": "s0"
+        },
+        "s960": {
+          "kind": "negation",
+          "parent": "q959"
+        }
+      },
+      "propositions": {
+        "p962_negative": {
+          "content": "Climbing over the fallen birch is not safe",
+          "polarity": "negative",
+          "scope_id": "q959"
+        }
+      }
+    },
+    "_evidence": [
+      {
+        "indices": [
+          961
+        ],
+        "note": "Resolve the negative elliptical safety objection against the proposed climb. Keep speaker unresolved; q959 is the current opening quote, not q958."
+      }
+    ]
+  },
+  "1112": {
+    "_evidence": [
+      {
+        "indices": [
+          29,
+          986,
+          1077,
+          1079,
+          1082,
+          1083,
+          1085,
+          1106,
+          1112
+        ],
+        "note": "The earlier quotation has closed. This conditional belongs to q1083; Nia is supported by the preceding she-said attribution and continuing subject. No detour search has happened yet."
+      }
+    ],
+    "_references": {
+      "entities": {
+        "e987": {
+          "name": "detour",
+          "type": "route"
+        },
+        "e30": {
+          "name": "Nia",
+          "type": "person"
+        }
+      },
+      "events": {
+        "ev1107": {
+          "event": "look for object",
+          "event_type": "perceive",
+          "factuality": "hypothetical",
+          "patients": [
+            "e987"
+          ],
+          "scope_id": "s1084"
+        }
+      },
+      "propositions": {
+        "p1107": {
+          "content": "The group can look for the detour if they go back to the last blue marker",
+          "polarity": "positive",
+          "scope_id": "q1083"
+        }
+      },
+      "scopes": {
+        "q1083": {
+          "kind": "quotation",
+          "parent": "s0",
+          "speaker_id": "e30"
+        },
+        "s1084": {
+          "kind": "conditional",
+          "parent": "q1083"
+        }
+      }
+    }
+  },
+  "1518": {
+    "_evidence": [
+      {
+        "indices": [
+          156,
+          166,
+          1506,
+          1508,
+          1518
+        ],
+        "note": "The payoff is supported, but its goal content is obtaining the stamp, not the fact that Felix wants it. Retain desired-content identity and cite the actual stamping as fulfillment."
+      }
+    ],
+    "_references": {
+      "entities": {
+        "e155": {
+          "name": "Felix",
+          "type": "person"
+        },
+        "e167": {
+          "name": "stamp",
+          "type": "stamp"
+        },
+        "e1519": {
+          "name": "square",
+          "type": "card_square"
+        }
+      },
+      "events": {
+        "ev1509": {
+          "event": "move object",
+          "event_type": "move",
+          "factuality": "asserted",
+          "patients": [
+            "e167"
+          ],
+          "scope_id": "s0"
+        },
+        "ev157": {
+          "actor_id": "e155",
+          "event": "want",
+          "event_type": "feel",
+          "factuality": "asserted",
+          "scope_id": "s0"
+        }
+      },
+      "propositions": {
+        "p157": {
+          "content": "Felix obtains the last copper-acorn stamp on his discovery card",
+          "polarity": "positive",
+          "scope_id": "s157"
+        }
+      },
+      "scopes": {
+        "s157": {
+          "kind": "desired",
+          "parent": "s0",
+          "holder_id": "e155"
+        }
+      }
+    }
+  },
+  "1659": {
+    "_evidence": [
+      {
+        "indices": [
+          205,
+          209,
+          215,
+          1410,
+          1659
+        ],
+        "note": "The new output correctly separates desired-kind, physical salamander and drawing. Preserve the original goal's desired scope and bind the actual drawing as fulfillment evidence."
+      }
+    ],
+    "_references": {
+      "entities": {
+        "e193": {
+          "name": "Leni",
+          "type": "person"
+        },
+        "e1343": {
+          "name": "spotted salamander",
+          "type": "salamander"
+        },
+        "e1407": {
+          "name": "sketchbook",
+          "type": "sketchbook"
+        },
+        "e1660": {
+          "name": "drawn salamander",
+          "type": "depicted_salamander"
+        }
+      },
+      "events": {
+        "ev1411": {
+          "actor_id": "e193",
+          "event": "draw object",
+          "event_type": "other",
+          "factuality": "asserted",
+          "patients": [
+            "e1660"
+          ],
+          "scope_id": "s0"
+        }
+      },
+      "propositions": {
+        "p210": {
+          "content": "Leni sketches a spotted salamander",
+          "polarity": "positive",
+          "scope_id": "s206"
+        }
+      },
+      "scopes": {
+        "s1660": {
+          "kind": "depiction",
+          "parent": "s0"
+        },
+        "s206": {
+          "kind": "desired",
+          "parent": "s0",
+          "holder_id": "e193"
+        }
+      }
+    }
+  },
+  "1671": {
+    "_references": {
+      "entities": {
+        "e1407": {
+          "name": "sketchbook",
+          "type": "sketchbook"
+        },
+        "e1672": {
+          "name": "depicted blue triangle",
+          "type": "depicted_triangle"
+        },
+        "e30": {
+          "name": "Nia",
+          "type": "person"
+        },
+        "e155": {
+          "name": "Felix",
+          "type": "person"
+        },
+        "e193": {
+          "name": "Leni",
+          "type": "person"
+        }
+      },
+      "scopes": {
+        "s1672": {
+          "kind": "depiction",
+          "parent": "s0"
+        }
+      }
+    },
+    "_evidence": [
+      {
+        "indices": [
+          1518,
+          1523,
+          1557,
+          1631,
+          1646,
+          1659,
+          1671
+        ],
+        "note": "The visible image gathers the group's changed objects after the stamp and drawing outcomes. Add only a candidate ending-image reading; no future text or end-of-file fact is used."
+      }
+    ]
+  }
+}

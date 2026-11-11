@@ -1,0 +1,938 @@
+{
+  "note": "Excerpts from reviewed retrospective pilots. Structural positions are omitted here; complete source/output records remain in inputs/ and annotations/. IDs are local to each example story.",
+  "examples": [
+    {
+      "title": "One repair, two mentions",
+      "lesson": "A recalled repair keeps one underlying event ID across different quoted descriptions.",
+      "story_id": "01_bakery",
+      "word_indices": [
+        52,
+        62
+      ],
+      "local_contexts": [
+        "at the end of Mill Lane He mended my kite last spring said Tessa While",
+        "last spring said Tessa While he was fixing it he told me his birthday was"
+      ],
+      "records": [
+        {
+          "token": "mended",
+          "word_index": 52,
+          "scope_id": "s4",
+          "pos": "v",
+          "lemma": "mend",
+          "quotation_scope_id": "s4",
+          "speaker_id": "e1",
+          "role": "action",
+          "event_id": "ev6",
+          "event": "repair Tessa's kite",
+          "event_type": "repair",
+          "patients": [
+            "e10"
+          ],
+          "instruments": [],
+          "factuality": "reported",
+          "actor_id": "e3",
+          "actor": "Mr. Hobb",
+          "event_bindings": [
+            {
+              "event_id": "ev6",
+              "role": "action",
+              "scope_id": "s4"
+            }
+          ],
+          "tense": "past",
+          "verb_form": "finite",
+          "assertion_status": "attributed_claim",
+          "supporting_mention_indices": [
+            52
+          ],
+          "grammatical_subject_id": "e3"
+        },
+        {
+          "token": "fixing",
+          "word_index": 62,
+          "scope_id": "s5",
+          "pos": "v",
+          "lemma": "fix",
+          "quotation_scope_id": "s5",
+          "speaker_id": "e1",
+          "event_bindings": [
+            {
+              "event_id": "ev6",
+              "role": "action",
+              "scope_id": "s5"
+            }
+          ],
+          "event_id": "ev6",
+          "event": "repair Tessa's kite",
+          "role": "action",
+          "event_type": "repair",
+          "patients": [
+            "e10"
+          ],
+          "instruments": [],
+          "factuality": "reported",
+          "actor_id": "e3",
+          "actor": "Mr. Hobb",
+          "verb_form": "gerund_participle",
+          "aspect": "progressive",
+          "progressive_auxiliary_id": "t83",
+          "participial_function": "progressive_lexical_predicate",
+          "grammatical_subject_id": "e3"
+        }
+      ],
+      "referenced_tables": {
+        "entities": {
+          "e3": {
+            "name": "Mr. Hobb",
+            "type": "person"
+          },
+          "e10": {
+            "name": "Tessa's kite",
+            "type": "kite"
+          },
+          "e1": {
+            "name": "Tessa",
+            "type": "person"
+          },
+          "e2": {
+            "name": "Mrs. Pike",
+            "type": "person"
+          }
+        },
+        "events": {
+          "ev6": {
+            "event_id": "ev6",
+            "trigger": 52,
+            "event": "repair Tessa's kite",
+            "event_type": "repair",
+            "actor_id": "e3",
+            "patients": [
+              "e10"
+            ],
+            "instruments": [],
+            "recipient_id": null,
+            "factuality": "reported",
+            "scope_id": "s4",
+            "support_words": [
+              52
+            ],
+            "mentions": [
+              {
+                "word": 62,
+                "scope_id": "s5",
+                "role": "action",
+                "note": "Retrospective coreference to the same underlying event/state."
+              },
+              {
+                "word": 60,
+                "scope_id": "s5",
+                "role": "actor",
+                "note": ""
+              },
+              {
+                "word": 63,
+                "scope_id": "s5",
+                "role": "patient",
+                "note": ""
+              },
+              {
+                "word": 504,
+                "scope_id": "s18",
+                "role": "action",
+                "note": "Retrospective coreference to the same underlying event/state."
+              },
+              {
+                "word": 503,
+                "scope_id": "s18",
+                "role": "actor",
+                "note": ""
+              },
+              {
+                "word": 506,
+                "scope_id": "s18",
+                "role": "patient",
+                "note": ""
+              }
+            ]
+          },
+          "ev151": {
+            "event_id": "ev151",
+            "trigger": 500,
+            "event": "answer_and_reminder",
+            "event_type": "speak",
+            "actor_id": "e1",
+            "patients": [],
+            "instruments": [],
+            "recipient_id": "e3",
+            "factuality": "asserted",
+            "scope_id": "s0",
+            "support_words": [
+              500,
+              501,
+              502,
+              503,
+              504,
+              505,
+              506,
+              507,
+              508,
+              509,
+              510,
+              511,
+              512,
+              513,
+              514,
+              515,
+              516
+            ]
+          },
+          "ev7": {
+            "event_id": "ev7",
+            "trigger": 57,
+            "event": "explain Hobb's earlier help",
+            "event_type": "speak",
+            "actor_id": "e1",
+            "patients": [],
+            "instruments": [],
+            "recipient_id": "e2",
+            "factuality": "asserted",
+            "scope_id": "s0",
+            "support_words": [
+              57
+            ]
+          }
+        },
+        "propositions": {},
+        "scopes": {
+          "s18": {
+            "kind": "quotation",
+            "parent": "s0",
+            "holder_id": "e1",
+            "description": "Direct speech; speaker assertions remain distinct from narrator evidence.",
+            "utterance_event_id": "ev151",
+            "addressee_ids": [
+              "e3"
+            ]
+          },
+          "s4": {
+            "kind": "quotation",
+            "parent": "s0",
+            "holder_id": "e1",
+            "description": "Direct speech; speaker assertions remain distinct from narrator evidence.",
+            "utterance_event_id": "ev7",
+            "addressee_ids": [
+              "e2"
+            ]
+          },
+          "s5": {
+            "kind": "quotation",
+            "parent": "s0",
+            "holder_id": "e1",
+            "description": "Direct speech; speaker assertions remain distinct from narrator evidence.",
+            "utterance_event_id": "ev7",
+            "addressee_ids": [
+              "e2"
+            ]
+          },
+          "s0": {
+            "kind": "narration",
+            "parent": null,
+            "description": "Narrator's story world; events still retain local time and factuality."
+          }
+        }
+      },
+      "annotations_sha256": "4e83ca2d2a49acad0cefc89f1c333988081eca02d34e17ff5014309e6b61bed1"
+    },
+    {
+      "title": "Negated desire and desire content",
+      "lesson": "Not wanting cake does not entail an avoidance goal. Content propositions describe having cake; the want event carries the attitude.",
+      "story_id": "01_bakery",
+      "word_indices": [
+        457,
+        471
+      ],
+      "local_contexts": [
+        "She knocked a third time I don’t want a cake called a voice from inside",
+        "inside I know Tessa called back I want you to have one The door opened"
+      ],
+      "records": [
+        {
+          "token": "want",
+          "word_index": 457,
+          "scope_id": "s14",
+          "pos": "v",
+          "lemma": "want",
+          "quotation_scope_id": "s14",
+          "speaker_id": "e3",
+          "role": "action",
+          "event_id": "ev76",
+          "event": "Hobb does not want cake",
+          "event_type": "state",
+          "patients": [
+            "e7"
+          ],
+          "instruments": [],
+          "factuality": "negated",
+          "actor_id": "e3",
+          "actor": "Mr. Hobb",
+          "event_bindings": [
+            {
+              "event_id": "ev76",
+              "role": "action",
+              "scope_id": "s14"
+            }
+          ],
+          "tense": "present",
+          "verb_form": "finite",
+          "negation_scope_id": "p17",
+          "proposition_polarity": "negative",
+          "goal_owner_id": "e3",
+          "goal_content_id": "p18",
+          "goal_status": "explicitly_not_desired",
+          "assertion_status": "attributed_claim",
+          "supporting_mention_indices": [
+            457
+          ],
+          "grammatical_subject_id": "e3"
+        },
+        {
+          "token": "want",
+          "word_index": 471,
+          "scope_id": "s16",
+          "pos": "v",
+          "lemma": "want",
+          "quotation_scope_id": "s16",
+          "speaker_id": "e1",
+          "role": "action",
+          "event_id": "ev80",
+          "event": "want Hobb to have cake",
+          "event_type": "state",
+          "patients": [],
+          "instruments": [],
+          "factuality": "reported",
+          "actor_id": "e1",
+          "actor": "Tessa",
+          "event_bindings": [
+            {
+              "event_id": "ev80",
+              "role": "action",
+              "scope_id": "s16"
+            }
+          ],
+          "tense": "present",
+          "verb_form": "finite",
+          "goal_owner_id": "e1",
+          "goal_content_id": "p18",
+          "goal_beneficiary_ids": [
+            "e3"
+          ],
+          "goal_polarity": "achieve",
+          "intention_publicity": "communicated",
+          "assertion_status": "attributed_claim",
+          "supporting_mention_indices": [
+            471
+          ],
+          "grammatical_subject_id": "e1"
+        }
+      ],
+      "referenced_tables": {
+        "entities": {
+          "e7": {
+            "name": "birthday cake",
+            "type": "cake"
+          },
+          "e3": {
+            "name": "Mr. Hobb",
+            "type": "person"
+          },
+          "e1": {
+            "name": "Tessa",
+            "type": "person"
+          }
+        },
+        "events": {
+          "ev80": {
+            "event_id": "ev80",
+            "trigger": 471,
+            "event": "want Hobb to have cake",
+            "event_type": "state",
+            "actor_id": "e1",
+            "patients": [],
+            "instruments": [],
+            "recipient_id": null,
+            "factuality": "reported",
+            "scope_id": "s16",
+            "support_words": [
+              471
+            ]
+          },
+          "ev76": {
+            "event_id": "ev76",
+            "trigger": 457,
+            "event": "Hobb does not want cake",
+            "event_type": "state",
+            "actor_id": "e3",
+            "patients": [
+              "e7"
+            ],
+            "instruments": [],
+            "recipient_id": null,
+            "factuality": "negated",
+            "scope_id": "s14",
+            "support_words": [
+              457
+            ]
+          },
+          "ev77": {
+            "event_id": "ev77",
+            "trigger": 460,
+            "event": "call refusal from inside",
+            "event_type": "speak",
+            "actor_id": "e3",
+            "patients": [],
+            "instruments": [],
+            "recipient_id": "e1",
+            "factuality": "asserted",
+            "scope_id": "s0",
+            "support_words": [
+              460
+            ]
+          },
+          "ev79": {
+            "event_id": "ev79",
+            "trigger": 468,
+            "event": "call back to Hobb",
+            "event_type": "speak",
+            "actor_id": "e1",
+            "patients": [],
+            "instruments": [],
+            "recipient_id": "e3",
+            "factuality": "asserted",
+            "scope_id": "s0",
+            "support_words": [
+              468
+            ]
+          }
+        },
+        "propositions": {
+          "p18": {
+            "text": "Hobb has a birthday cake.",
+            "support_words": [
+              470,
+              471,
+              472,
+              474,
+              475
+            ],
+            "scope_id": "s16"
+          },
+          "p17": {
+            "text": "Hobb does not want a cake.",
+            "support_words": [
+              455,
+              456,
+              457,
+              459
+            ],
+            "scope_id": "s14"
+          }
+        },
+        "scopes": {
+          "s14": {
+            "kind": "quotation",
+            "parent": "s0",
+            "holder_id": "e3",
+            "description": "Direct speech; speaker assertions remain distinct from narrator evidence.",
+            "utterance_event_id": "ev77",
+            "addressee_ids": [
+              "e1"
+            ]
+          },
+          "s16": {
+            "kind": "quotation",
+            "parent": "s0",
+            "holder_id": "e1",
+            "description": "Direct speech; speaker assertions remain distinct from narrator evidence.",
+            "utterance_event_id": "ev79",
+            "addressee_ids": [
+              "e3"
+            ]
+          },
+          "s0": {
+            "kind": "narration",
+            "parent": null,
+            "description": "Narrator's story world; events still retain local time and factuality."
+          }
+        }
+      },
+      "annotations_sha256": "4e83ca2d2a49acad0cefc89f1c333988081eca02d34e17ff5014309e6b61bed1"
+    },
+    {
+      "title": "Restricted emptiness and future promise",
+      "lesson": "The basket still contains its towel. Promising a return does not establish that the return happened.",
+      "story_id": "01_bakery",
+      "word_indices": [
+        784,
+        804
+      ],
+      "local_contexts": [
+        "The wicker basket sat beside Tessa’s chair empty now with the tea towel folded neatly",
+        "Hobb walked her to the gate I’ll bring the basket back to the bakery tomorrow"
+      ],
+      "records": [
+        {
+          "token": "empty",
+          "word_index": 784,
+          "scope_id": "s0",
+          "pos": "adj",
+          "lemma": "empty",
+          "role": "action",
+          "event_id": "ev132",
+          "event": "basket is empty of cake",
+          "event_type": "state",
+          "patients": [
+            "e21"
+          ],
+          "instruments": [],
+          "factuality": "asserted",
+          "event_bindings": [
+            {
+              "event_id": "ev132",
+              "role": "action",
+              "scope_id": "s0"
+            }
+          ],
+          "containment_contents": {
+            "entity_id": "e21",
+            "scope_id": "s0",
+            "assertion_status": "asserted",
+            "value": {
+              "contents": [
+                "e22"
+              ],
+              "excluded_contents": [
+                "e7",
+                "e37"
+              ]
+            }
+          },
+          "assertion_status": "asserted",
+          "supporting_mention_indices": [
+            784
+          ]
+        },
+        {
+          "token": "bring",
+          "word_index": 804,
+          "scope_id": "s32",
+          "pos": "v",
+          "lemma": "bring",
+          "quotation_scope_id": "s32",
+          "speaker_id": "e3",
+          "role": "action",
+          "event_id": "ev136",
+          "event": "Hobb promises basket return",
+          "event_type": "transfer",
+          "patients": [
+            "e21"
+          ],
+          "instruments": [],
+          "factuality": "desired",
+          "actor_id": "e3",
+          "actor": "Mr. Hobb",
+          "recipient_id": "e2",
+          "event_bindings": [
+            {
+              "event_id": "ev136",
+              "role": "action",
+              "scope_id": "s32"
+            }
+          ],
+          "verb_form": "base",
+          "possession_return_target": {
+            "entity_id": "e21",
+            "scope_id": "s32",
+            "assertion_status": "attributed_claim",
+            "value": {
+              "return_to": "e2"
+            }
+          },
+          "promise_content_id": "p26",
+          "addressee_ids": [
+            "e1"
+          ],
+          "plan_commitment_status": "promised",
+          "intention_publicity": "communicated",
+          "assertion_status": "attributed_claim",
+          "supporting_mention_indices": [
+            804
+          ],
+          "grammatical_subject_id": "e3"
+        }
+      ],
+      "referenced_tables": {
+        "entities": {
+          "e22": {
+            "name": "folded tea towel",
+            "type": "tea_towel"
+          },
+          "e3": {
+            "name": "Mr. Hobb",
+            "type": "person"
+          },
+          "e21": {
+            "name": "borrowed wicker delivery basket",
+            "type": "basket"
+          },
+          "e2": {
+            "name": "Mrs. Pike",
+            "type": "person"
+          },
+          "e1": {
+            "name": "Tessa",
+            "type": "person"
+          },
+          "e37": {
+            "name": "cake box",
+            "type": "box"
+          },
+          "e7": {
+            "name": "birthday cake",
+            "type": "cake"
+          }
+        },
+        "events": {
+          "ev132": {
+            "event_id": "ev132",
+            "trigger": 784,
+            "event": "basket is empty of cake",
+            "event_type": "state",
+            "actor_id": null,
+            "patients": [
+              "e21"
+            ],
+            "instruments": [],
+            "recipient_id": null,
+            "factuality": "asserted",
+            "scope_id": "s0",
+            "support_words": [
+              784
+            ]
+          },
+          "ev136": {
+            "event_id": "ev136",
+            "trigger": 804,
+            "event": "Hobb promises basket return",
+            "event_type": "transfer",
+            "actor_id": "e3",
+            "patients": [
+              "e21"
+            ],
+            "instruments": [],
+            "recipient_id": "e2",
+            "factuality": "desired",
+            "scope_id": "s32",
+            "support_words": [
+              804
+            ]
+          },
+          "ev137": {
+            "event_id": "ev137",
+            "trigger": 813,
+            "event": "Hobb offers return task",
+            "event_type": "speak",
+            "actor_id": "e3",
+            "patients": [],
+            "instruments": [],
+            "recipient_id": "e1",
+            "factuality": "asserted",
+            "scope_id": "s0",
+            "support_words": [
+              813
+            ]
+          }
+        },
+        "propositions": {
+          "p26": {
+            "text": "Hobb returns the basket tomorrow.",
+            "support_words": [
+              803,
+              804,
+              806,
+              810,
+              811
+            ],
+            "scope_id": "s32"
+          }
+        },
+        "scopes": {
+          "s0": {
+            "kind": "narration",
+            "parent": null,
+            "description": "Narrator's story world; events still retain local time and factuality."
+          },
+          "s32": {
+            "kind": "quotation",
+            "parent": "s0",
+            "holder_id": "e3",
+            "description": "Direct speech; speaker assertions remain distinct from narrator evidence.",
+            "utterance_event_id": "ev137",
+            "addressee_ids": [
+              "e1"
+            ]
+          }
+        }
+      },
+      "annotations_sha256": "4e83ca2d2a49acad0cefc89f1c333988081eca02d34e17ff5014309e6b61bed1"
+    },
+    {
+      "title": "Color negation and represented action",
+      "lesson": "Not silver is a scoped negative color claim. Physical performer/prop and fictional character/event remain explicitly related but distinct.",
+      "story_id": "02_puppets",
+      "word_indices": [
+        370,
+        747
+      ],
+      "local_contexts": [
+        "in the middle she said It’s not silver Ben pointed out The Moon can have",
+        "small voice The class leaned forward Mouse offered the star The Moon held out both"
+      ],
+      "records": [
+        {
+          "token": "silver",
+          "word_index": 370,
+          "scope_id": "q17",
+          "pos": "adj",
+          "lemma": "silver",
+          "quotation_scope_id": "q17",
+          "speaker_id": "e2",
+          "quote_mode": "direct",
+          "event_bindings": [
+            {
+              "event_id": "ev69",
+              "role": "modifier",
+              "scope_id": "q17"
+            }
+          ],
+          "event_id": "ev69",
+          "event": "button is not silver-colored",
+          "role": "modifier",
+          "appearance_color": {
+            "entity_id": "e46",
+            "scope_id": "q17",
+            "value": "silver",
+            "assertion_status": "attributed_claim",
+            "factuality": "negated"
+          }
+        },
+        {
+          "token": "offered",
+          "word_index": 747,
+          "scope_id": "s0",
+          "pos": "v",
+          "lemma": "offer",
+          "role": "action",
+          "event_id": "ev153",
+          "event": "Mouse offers new star",
+          "event_type": "transfer",
+          "patients": [
+            "e17"
+          ],
+          "instruments": [],
+          "factuality": "asserted",
+          "actor_id": "e14",
+          "actor": "Mouse puppet",
+          "event_bindings": [
+            {
+              "event_id": "ev153",
+              "role": "action",
+              "scope_id": "s0"
+            },
+            {
+              "event_id": "ev167",
+              "role": "action",
+              "scope_id": "play_action"
+            }
+          ],
+          "recipient_id": "e12",
+          "tense": "past",
+          "verb_form": "finite",
+          "grammatical_subject_id": "e14",
+          "grammatical_object_id": "e17",
+          "enactment": {
+            "performer_id": "e3",
+            "prop_id": "e14",
+            "character_id": "e15",
+            "world_id": "w_play",
+            "represented_event_id": "ev167",
+            "physical_event_id": "ev153"
+          },
+          "event_control": {
+            "entity_id": "e14",
+            "scope_id": "s0",
+            "assertion_status": "asserted",
+            "value": {
+              "controller": "e3",
+              "mode": "direct",
+              "event_id": "ev153"
+            }
+          },
+          "assertion_status": "asserted"
+        }
+      ],
+      "referenced_tables": {
+        "entities": {
+          "e15": {
+            "name": "Mouse character",
+            "type": "fictional_character"
+          },
+          "e3": {
+            "name": "Lila",
+            "type": "person"
+          },
+          "e14": {
+            "name": "Mouse puppet",
+            "type": "hand_puppet",
+            "represents": "e15",
+            "performer": "e3"
+          },
+          "e2": {
+            "name": "Ben",
+            "type": "person"
+          },
+          "e46": {
+            "name": "brass flower button",
+            "type": "button"
+          },
+          "e12": {
+            "name": "Moon puppet",
+            "type": "puppet_prop",
+            "represents": "e13",
+            "physical_manipulator": "unknown",
+            "voice_performer": "e1"
+          },
+          "e17": {
+            "name": "replacement gray star",
+            "type": "star_prop",
+            "replaces": "e16",
+            "material_source": "e44",
+            "incorporates": [
+              "e46",
+              "e49"
+            ]
+          },
+          "e44": {
+            "name": "gray felt material",
+            "type": "fabric"
+          },
+          "e13": {
+            "name": "Moon character",
+            "type": "fictional_character"
+          },
+          "e49": {
+            "name": "new lifting loop",
+            "type": "thread_loop"
+          },
+          "e1": {
+            "name": "Nia",
+            "type": "person"
+          },
+          "e18": {
+            "name": "gift star in the play",
+            "type": "fictional_object",
+            "realizations": [
+              "e16",
+              "e17"
+            ],
+            "semantic_world": "w_play"
+          },
+          "e16": {
+            "name": "original silver felt star",
+            "type": "star_prop"
+          }
+        },
+        "events": {
+          "ev69": {
+            "event_id": "ev69",
+            "trigger": 368,
+            "event": "button is not silver-colored",
+            "event_type": "state",
+            "actor_id": null,
+            "patients": [
+              "e46"
+            ],
+            "instruments": [],
+            "recipient_id": null,
+            "factuality": "negated",
+            "scope_id": "q17",
+            "support_words": [
+              368,
+              370
+            ]
+          },
+          "ev167": {
+            "event_id": "ev167",
+            "trigger": 747,
+            "event": "Mouse offers gift inside the play",
+            "event_type": "transfer",
+            "actor_id": "e15",
+            "patients": [
+              "e18"
+            ],
+            "instruments": [],
+            "recipient_id": "e13",
+            "factuality": "asserted",
+            "scope_id": "play_action",
+            "support_words": [
+              746,
+              747,
+              749,
+              751
+            ]
+          },
+          "ev153": {
+            "event_id": "ev153",
+            "trigger": 747,
+            "event": "Mouse offers new star",
+            "event_type": "transfer",
+            "actor_id": "e14",
+            "patients": [
+              "e17"
+            ],
+            "instruments": [],
+            "recipient_id": "e12",
+            "factuality": "asserted",
+            "scope_id": "s0",
+            "support_words": [
+              746,
+              747,
+              749
+            ]
+          }
+        },
+        "propositions": {},
+        "scopes": {
+          "s0": {
+            "kind": "narration",
+            "parent": null,
+            "description": "Narrator's story world; events still retain local time and factuality."
+          },
+          "play_action": {
+            "kind": "fictional_performance",
+            "parent": "s0",
+            "holder_id": null,
+            "description": "Represented events enacted during the physical rehearsal, distinct from prop manipulation."
+          },
+          "q17": {
+            "kind": "quotation",
+            "parent": "s0",
+            "holder_id": "e2",
+            "description": "Ben contrasts the brass button with the old silver star."
+          }
+        }
+      },
+      "annotations_sha256": "e5f66779c8af892187c66f715317b45f4f53c9fd5045de9828cd684991aea413"
+    }
+  ]
+}

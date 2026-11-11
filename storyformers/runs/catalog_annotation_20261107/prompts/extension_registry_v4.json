@@ -1,0 +1,99 @@
+[
+  {
+    "key": "event_bindings",
+    "type": "array",
+    "scope": "current word occurrence",
+    "description": "All event-role memberships of this word occurrence, retaining correlated event_id, role and scope_id when one mention participates in several predicates.",
+    "reason": "The catalog's singular event_id/role cannot retain multiple event memberships. This differs from event_role_conflict, which diagnoses incompatible roles.",
+    "example_value": [
+      {
+        "event_id": "ev1",
+        "role": "actor",
+        "scope_id": "s0"
+      }
+    ]
+  },
+  {
+    "key": "figurative_mapping",
+    "type": "object",
+    "description": "A text-supported metaphor or simile linking a target referent to a source image without asserting source-domain events or identity.",
+    "scope": "current figurative expression",
+    "reason": "irony_interpretation requires communicative irony; lexical_idiom_reading requires a conventional idiom; neither covers the novel cake-decoration metaphors or candle/twig simile.",
+    "example_value": {
+      "target_id": "e20",
+      "source_image": "swimming",
+      "kind": "metaphor",
+      "literal_event": false
+    }
+  },
+  {
+    "key": "enactment",
+    "type": "object",
+    "description": "Correlated performer, physical prop and represented character/object identities within a named performance world. Unknown performer may be omitted.",
+    "scope": "staged mention or event",
+    "reason": "Existing identity, event_control and semantic_world_id do not express the representation relation among three distinct participants.",
+    "example_value": {
+      "performer_id": "e3",
+      "prop_id": "e14",
+      "character_id": "e15",
+      "world_id": "w_play"
+    }
+  },
+  {
+    "key": "appearance_color",
+    "type": "object",
+    "description": "Entity-bound perceived surface color, explicitly distinguished from material composition; assertion_status records evidence attribution, while factuality preserves negated or proposed color.",
+    "scope": "color-bearing mention",
+    "reason": "The catalog has material_composition but no typed color dimension; legacy attributes can store color only as an unbound string.",
+    "example_value": {
+      "entity_id": "e46",
+      "scope_id": "s0",
+      "value": "gold",
+      "assertion_status": "asserted",
+      "factuality": "asserted"
+    }
+  },
+  {
+    "key": "part_whole_relation",
+    "type": "object",
+    "description": "Bound part entity, whole entity and physical or represented-world scope.",
+    "scope": "part mention",
+    "reason": "Lexical part types do not establish token-level actual part ownership; bridging_relation is reference licensing rather than the actual relation.",
+    "example_value": {
+      "part_id": "e25",
+      "whole_id": "e14",
+      "scope_id": "s0"
+    }
+  },
+  {
+    "key": "affordance_supporting",
+    "type": "object",
+    "description": "Bound support surface and object that the text explicitly presents it as capable of supporting, without asserting actual placement.",
+    "scope": "focused carrier and proposed supported object",
+    "reason": "spatial_support describes actual support; affordance_sitting concerns a body sitting, and affordance_containing concerns containment. A wall being a suitable resting place for a basket is neither actual placement nor containment.",
+    "example_value": {
+      "entity_id": "e44",
+      "scope_id": "s0",
+      "assertion_status": "asserted",
+      "value": {
+        "object_id": "e14",
+        "can_support": true
+      }
+    }
+  },
+  {
+    "key": "symbolic_reference",
+    "type": "object",
+    "description": "An explicitly stated symbolic link from an artifact or decoration to the person, object or event it represents, without literal identity or performance enactment. carrier_id is the artifact or decoration eN; referent_id is the represented eN entity or evN event; holder_id is the person attributing the link.",
+    "scope": "Local attributed representation statement.",
+    "reason": "Object shape names a physical outline; figurative_mapping covers metaphors, and enactment binds performance roles. None separately encodes an explicitly explained gift-decoration symbol.",
+    "example_value": {
+      "carrier_id": "e68",
+      "referent_id": "e37",
+      "relation": "represents",
+      "holder_id": "e1",
+      "scope_id": "q25",
+      "assertion_status": "attributed_claim"
+    }
+  }
+]

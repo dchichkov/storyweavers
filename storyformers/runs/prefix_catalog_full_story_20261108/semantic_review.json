@@ -1,0 +1,48 @@
+{
+  "method": "Manual inspection of selected accepted records against their exact visible prefixes. Not an exhaustive accuracy evaluation; no annotations edited.",
+  "findings": [
+    {
+      "defect": "entity_id_drift",
+      "indices": [15, 17, 19, 31],
+      "observation": "Ranger Ivo is e16 in placed's snapshot but e18 in palm's snapshot. The two IDs refer to the same person and are not linked as aliases."
+    },
+    {
+      "defect": "entity_id_drift",
+      "indices": [29, 108, 118, 124, 127, 129],
+      "observation": "Nia is introduced at Nia's as e30 and correctly reused in Nia and her, then maps, She and wanted switch her to e109. This violates the earliest-mention convention despite passing local reference closure."
+    },
+    {
+      "defect": "speaker_actor_confusion",
+      "indices": [35],
+      "observation": "Borrow assigns Ivo as the borrowing actor. At this prefix the imperative does not support making its likely speaker the borrower; its actor should be the supported addressee or unresolved."
+    },
+    {
+      "defect": "attribute_convention_drift",
+      "indices": [137, 631, 674, 689],
+      "observation": "could and can't emit modal_auxiliary_class=ability_family, although the prompt calls for the normalized lexical auxiliary can. Two miss records use possibility_family and possibility. The catalog's string type does not reject this convention drift."
+    },
+    {
+      "defect": "lost_scope_ancestry",
+      "indices": [133, 147],
+      "observation": "prove correctly remains desired inside Nia's wanting scope, but asking under without opens a negation scope directly under s0. Its enclosing desired/proving context is not retained."
+    },
+    {
+      "defect": "wrong_quote_scope",
+      "indices": [527, 959, 961],
+      "observation": "The quoted If opens a conditional directly under s0, dropping its visible quotation. Later, Not in Not safely uses the earlier, already closed q908 quotation as parent instead of q958; safely then switches to q958 and omits the negation ancestry."
+    },
+    {
+      "defect": "representation_identity_confusion",
+      "indices": [1659, 1671],
+      "observation": "The final sketchbook description introduces a salamander as an unqualified animal and resolves its painted triangle directly to the earlier physical trail marker. It does not preserve the depicted-versus-physical distinction available in the prefix."
+    }
+  ],
+  "positive_observations": [
+    "placed leaves patients empty before compass appears; compass adds itself in its own later snapshot.",
+    "palm is identified as a body part and location rather than the placement patient.",
+    "prove is desired rather than a completed act, and its unseen content is left unspecified.",
+    "She'd keeps the auxiliary expansion unresolved before the next word.",
+    "Later compass records at indices 848 and 1024 correctly reuse the original e26 despite many intervening sentences.",
+    "north at index 1042 records the compass needle's direction without claiming travel or arrival."
+  ]
+}

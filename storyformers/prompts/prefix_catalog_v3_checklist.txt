@@ -1,0 +1,39 @@
+FINAL COVERAGE CHECK — THE CURRENT WORD'S RESIDUAL SNAPSHOT
+The record represents this word IN its currently known clause and story, not
+just a dictionary entry for the surface word. A noun, pronoun, adjective, or
+adverb can expose the content and function of its enclosing clause. Sparse
+means omit unsupported meanings, not omit supported higher-level meanings.
+
+Before emitting the JSON, resolve these questions silently:
+1. Who/what is this occurrence, and what is its first supported anchor? Search
+   possessive names as well as bare names. A desired unspecified object is not
+   the later discovered physical object, and neither is its depicted image.
+2. Which still-active quotation, desire, belief, promise, negation or conditional
+   contains this word? Build the complete ancestor chain. In "wants to work
+   without help", help belongs to without inside desire. In "can't walk at a
+   jog", jog is under negated ability inside any enclosing quote. Do not drop
+   these operators just because the target is a noun or adverb. Quote IDs use
+   opening-quote index PLUS ONE; no speaker can be read from a future attribution.
+3. Does this word reveal a goal, belief or promise complement? If so, REQUIRED
+   supported fields are the existing goal_owner_id/goal_content_id/goal_status,
+   belief_holder_id/belief_content_id, or promise_content_id/plan_commitment_status
+   respectively, with grounded proposition tables. This includes final modifiers
+   and prepositional objects, not only the main verb or its direct object. The
+   content describes exactly what is visible so far, not an imagined ending.
+   "hoped to paint a flower beside the lake" carries the painting goal on lake.
+   "promised to stay beside him" carries the promise on him. A preposition's
+   personal-pronoun complement is not a possessive determiner by default.
+4. Does this word make a narrative change visible? A selected alternative is a
+   plot choice/revision; a newly blocked route is a setback; evidence fulfilling
+   an earlier explicit goal is a payoff. Emit plot with evidence when supported,
+   including on completing nouns. For a payoff, also bind goal owner/content,
+   achieved status and narrative_resolution_evidence. Do not stop at a local
+   motion/entity label when the same clause visibly answers an earlier goal.
+5. Is an image a literal depiction? Bind carrier/image/optional real referent
+   separately. An image showing previously established changes can additionally
+   receive plot.role=final_image as a candidate reading, with prefix evidence;
+   it must not assert that there will be no more story.
+
+Keep both supported local fields and supported enclosing meanings in the ONE
+last-word object. Never invent a field merely to satisfy this checklist. Return
+only JSON; the following span blocks are the sole evidence for the story.

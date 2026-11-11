@@ -1,0 +1,18 @@
+[
+  {
+    "key": "plot",
+    "type": "object",
+    "scope": "Interpretation of the current mention/event within the observed prefix",
+    "description": "Namespace for plot_id (plotN at the earliest visible issue/goal anchor), narrative role, stage, optional archetypes/local_pattern/goal/cast roles/unbound_roles/stakes/incoming_links. Reconciles Grammarworlds plot annotations with causal text evidence. Required basis=prefix_interpretation or neutral_default, scope=observed_prefix, status=candidate, nonempty evidence_indices. role uses desire/lack/promise/setback/failed_attempt/threat/conflict/clue/discovery/choice/revision/help/attempt/decisive_action/payoff/final_image/supporting_action; stage uses setup/complication/development/resolution/aftermath/support. Cast roles map to eN arrays. Archetypes have name, fit=partial and basis=prefix_interpretation. Links have an earlier source_event evN, relation, basis=prefix_interpretation and mechanically_verified=false. Stakes has description and basis strings. Do not supply engine-only source_scenario, native dependencies, observed effects, executable stage checks, or a future complete arc.",
+    "reason": "Existing narrative_thread/goal/tension/closure fields do not encode plot archetypes, narrative event function, cast role bindings, stakes and typed links as a correlated interpretation. The outer role remains an event participant role.",
+    "example_value": {"plot_id":"plot3","role":"desire","stage":"setup","basis":"prefix_interpretation","scope":"observed_prefix","status":"candidate","evidence_indices":[2],"archetypes":[],"roles":{"protagonist":["e1"]}}
+  },
+  {
+    "key": "depiction",
+    "type": "object",
+    "scope": "A drawn/reflected/photographed/sculpted entity in the current prefix",
+    "description": "Correlated carrier_id (physical artifact or reflecting surface), image_entity_id (the current distinct depicted entity), medium (drawing/reflection/photograph/sculpture/other), scope_id, and optional already identified physical referent_id. Image identity must differ from both carrier and physical referent. Do not infer a referent merely from matching appearance.",
+    "reason": "symbolic_reference requires an explained symbolic meaning, enactment describes performance, and figurative_mapping describes metaphor. Literal depicted entities require their own physical carrier and identity without relocating the depicted real object.",
+    "example_value": {"carrier_id":"e3","image_entity_id":"e9","medium":"drawing","scope_id":"s7"}
+  }
+]

@@ -1,0 +1,4028 @@
+{
+  "status": "frozen_after_batch3_review",
+  "note": "Corrected records from all six reviewed stories. IDs are story-local; references include transitive table links. The full 1,024-field catalog remains available.",
+  "examples": [
+    {
+      "title": "Diagnosis, operability and controlled movement",
+      "lesson": "A quoted diagnosis, actual jamming, deliberate holding still and later explanation are distinct; a jam does not assert an engaged lock.",
+      "story_id": "15_repair",
+      "word_indices": [
+        114,
+        255,
+        354,
+        394,
+        465,
+        550
+      ],
+      "local_contexts": [
+        "asked Mr Rafi The cart’s left wheel is loose Mr Rafi handed her the spanner Is it",
+        "stopped with a scrape The left wheel had locked We can drag it Niko said The plants",
+        "the spanner back to Mr Rafi The nut wasn’t loose she said I tightened it and now",
+        "carefully onto its side She held the wheel still and rocked the cart No rattle She spun",
+        "each time it turned The nut had been snug all along the string had made the wheel",
+        "wheel room to spin This time the wheel turned smoothly Ada pushed the empty cart across the"
+      ],
+      "records": [
+        {
+          "token": "loose",
+          "word_index": 114,
+          "scope_id": "q2",
+          "pos": "adj",
+          "lemma": "loose",
+          "quotation_scope_id": "q2",
+          "speaker_id": "e1",
+          "quote_mode": "direct",
+          "assertion_status": "attributed_claim",
+          "role": "action",
+          "event_id": "ev115",
+          "event": "left wheel is loose",
+          "event_type": "state",
+          "patients": [
+            "e11"
+          ],
+          "instruments": [],
+          "factuality": "reported",
+          "event_bindings": [
+            {
+              "event_id": "ev115",
+              "role": "action",
+              "scope_id": "q2"
+            },
+            {
+              "event_id": "ev1115",
+              "role": "action",
+              "scope_id": "s0"
+            }
+          ],
+          "speech_act_kind": "diagnosis_claim",
+          "utterance_id": "ev1115",
+          "utterance_content_id": "p4",
+          "addressee_ids": [
+            "e3"
+          ],
+          "communication_channel": "speech",
+          "communication_scope_bundle": {
+            "speaker_id": "e1",
+            "utterance_event_id": "ev1115",
+            "scope_id": "s0",
+            "assertion_status": "asserted"
+          },
+          "grammatical_subject_id": "e11",
+          "object_attachment": {
+            "entity_id": "e11",
+            "scope_id": "q2",
+            "assertion_status": "attributed_claim",
+            "value": "loose",
+            "factuality": "reported"
+          },
+          "belief_holder_id": "e1",
+          "belief_content_id": "p4",
+          "belief_polarity": "accept",
+          "evidence_source_kind": "speaker_diagnosis",
+          "evidence_quote_source_id": "e1"
+        },
+        {
+          "token": "locked",
+          "word_index": 255,
+          "scope_id": "s0",
+          "pos": "v",
+          "lemma": "lock",
+          "role": "action",
+          "event_id": "ev256",
+          "event": "left wheel has jammed",
+          "event_type": "state",
+          "patients": [
+            "e11"
+          ],
+          "instruments": [],
+          "factuality": "asserted",
+          "event_bindings": [
+            {
+              "event_id": "ev256",
+              "role": "action",
+              "scope_id": "s0"
+            }
+          ],
+          "assertion_status": "asserted",
+          "verb_form": "past_participle",
+          "clause_finiteness": "nonfinite",
+          "aspect": "perfect",
+          "grammatical_subject_id": "e11",
+          "object_operability": {
+            "entity_id": "e11",
+            "scope_id": "s0",
+            "assertion_status": "asserted",
+            "value": "jammed_cannot_rotate"
+          },
+          "lexical_sense_id": "lock_up_become_mechanically_jammed"
+        },
+        {
+          "token": "wasn’t",
+          "word_index": 354,
+          "scope_id": "q13",
+          "pos": "v",
+          "lemma": "be",
+          "quotation_scope_id": "q13",
+          "speaker_id": "e1",
+          "quote_mode": "direct",
+          "assertion_status": "attributed_claim",
+          "contraction_expansion": [
+            "was",
+            "not"
+          ],
+          "negation_marker_form": "contracted_not",
+          "tense": "past",
+          "clause_finiteness": "finite",
+          "verb_form": "finite",
+          "grammatical_subject_id": "e13",
+          "polarity": "negative",
+          "negation_scope_id": "p20",
+          "negation_attachment_kind": "clausal_auxiliary"
+        },
+        {
+          "token": "still",
+          "word_index": 394,
+          "scope_id": "s0",
+          "pos": "adj",
+          "lemma": "still",
+          "motion_control": {
+            "entity_id": "e11",
+            "scope_id": "s0",
+            "assertion_status": "asserted",
+            "value": {
+              "state": "held_stationary",
+              "controller_id": "e1",
+              "cause_event_id": "ev392"
+            }
+          }
+        },
+        {
+          "token": "snug",
+          "word_index": 465,
+          "scope_id": "s0",
+          "pos": "adj",
+          "lemma": "snug",
+          "role": "action",
+          "event_id": "ev466",
+          "event": "nut was snug before initial intervention",
+          "event_type": "state",
+          "patients": [
+            "e13"
+          ],
+          "instruments": [],
+          "factuality": "asserted",
+          "event_bindings": [
+            {
+              "event_id": "ev466",
+              "role": "action",
+              "scope_id": "s0"
+            }
+          ],
+          "assertion_status": "asserted",
+          "aspect": "perfect",
+          "grammatical_subject_id": "e13",
+          "object_attachment": {
+            "entity_id": "e13",
+            "scope_id": "s0",
+            "assertion_status": "asserted",
+            "value": {
+              "fit": "snug",
+              "time": "before_initial_nut_turn"
+            }
+          }
+        },
+        {
+          "token": "turned",
+          "word_index": 550,
+          "scope_id": "s0",
+          "pos": "v",
+          "lemma": "turn",
+          "role": "action",
+          "event_id": "ev551",
+          "event": "reassembled wheel turns smoothly",
+          "event_type": "move",
+          "patients": [
+            "e11"
+          ],
+          "instruments": [],
+          "factuality": "asserted",
+          "event_bindings": [
+            {
+              "event_id": "ev551",
+              "role": "action",
+              "scope_id": "s0"
+            }
+          ],
+          "assertion_status": "asserted",
+          "tense": "past",
+          "clause_finiteness": "finite",
+          "verb_form": "finite",
+          "grammatical_subject_id": "e11",
+          "object_operability": {
+            "entity_id": "e11",
+            "scope_id": "s0",
+            "assertion_status": "asserted",
+            "value": "turns_smoothly"
+          },
+          "narrative_resolution_evidence": {
+            "problem_content_id": "p34",
+            "outcome_content_id": "p33",
+            "event_ids": [
+              "ev506",
+              "ev525",
+              "ev534",
+              "ev551",
+              "ev554"
+            ],
+            "scope_id": "s0",
+            "assertion_status": "asserted"
+          }
+        }
+      ],
+      "references": {
+        "entities": {
+          "e1": {
+            "name": "Ada",
+            "type": "person",
+            "mentions": [
+              53,
+              66,
+              72,
+              100,
+              105,
+              118,
+              128,
+              172,
+              191,
+              207,
+              209,
+              217,
+              240,
+              271,
+              294,
+              302,
+              308,
+              312,
+              322,
+              332,
+              344,
+              356,
+              358,
+              373,
+              379,
+              382,
+              390,
+              401,
+              415,
+              423,
+              427,
+              480,
+              498,
+              504,
+              516,
+              532,
+              552,
+              583,
+              627,
+              651
+            ]
+          },
+          "e3": {
+            "name": "Mr. Rafi",
+            "type": "person",
+            "mentions": [
+              68,
+              69,
+              102,
+              107,
+              108,
+              115,
+              116,
+              138,
+              350,
+              351,
+              369,
+              417,
+              418,
+              632,
+              633
+            ]
+          },
+          "e11": {
+            "name": "cart left front wheel",
+            "type": "wheel",
+            "mentions": [
+              43,
+              112,
+              122,
+              126,
+              132,
+              133,
+              184,
+              185,
+              193,
+              203,
+              211,
+              214,
+              227,
+              253,
+              280,
+              291,
+              364,
+              393,
+              404,
+              431,
+              456,
+              459,
+              473,
+              497,
+              502,
+              528,
+              542,
+              549,
+              674
+            ]
+          },
+          "e13": {
+            "name": "left-wheel nut",
+            "type": "nut",
+            "mentions": [
+              194,
+              222,
+              353,
+              360,
+              426,
+              462,
+              535,
+              537
+            ]
+          },
+          "e30": {
+            "name": "green loop of kite string",
+            "type": "string",
+            "mentions": [
+              413,
+              437,
+              440,
+              469,
+              482,
+              507,
+              508,
+              515,
+              638
+            ],
+            "identity_note": "Something inside is retrospectively resolved to the discovered string; origin in Niko kite is separately attributed."
+          },
+          "e32": {
+            "name": "left wheel washer",
+            "type": "washer",
+            "mentions": [
+              447,
+              526
+            ]
+          },
+          "e10": {
+            "name": "shared blue toy cart",
+            "type": "cart",
+            "mentions": [
+              24,
+              40,
+              52,
+              58,
+              110,
+              143,
+              175,
+              238,
+              243,
+              259,
+              284,
+              286,
+              305,
+              310,
+              385,
+              388,
+              398,
+              421,
+              556,
+              570,
+              594,
+              654,
+              666,
+              677
+            ]
+          }
+        },
+        "events": {
+          "ev115": {
+            "event_id": "ev115",
+            "trigger": 114,
+            "event": "left wheel is loose",
+            "event_type": "state",
+            "actor_id": null,
+            "patients": [
+              "e11"
+            ],
+            "instruments": [],
+            "recipient_id": null,
+            "factuality": "reported",
+            "scope_id": "q2",
+            "support_words": [
+              114
+            ]
+          },
+          "ev1115": {
+            "event_id": "ev1115",
+            "trigger": 114,
+            "event": "diagnosis_claim: p4",
+            "event_type": "speak",
+            "actor_id": "e1",
+            "patients": [],
+            "instruments": [],
+            "recipient_id": "e3",
+            "factuality": "asserted",
+            "scope_id": "s0",
+            "support_words": [
+              114
+            ]
+          },
+          "ev256": {
+            "event_id": "ev256",
+            "trigger": 255,
+            "event": "left wheel has jammed",
+            "event_type": "state",
+            "actor_id": null,
+            "patients": [
+              "e11"
+            ],
+            "instruments": [],
+            "recipient_id": null,
+            "factuality": "asserted",
+            "scope_id": "s0",
+            "support_words": [
+              255
+            ]
+          },
+          "ev392": {
+            "event_id": "ev392",
+            "trigger": 391,
+            "event": "Ada holds wheel still",
+            "event_type": "other",
+            "actor_id": "e1",
+            "patients": [
+              "e11"
+            ],
+            "instruments": [],
+            "recipient_id": null,
+            "factuality": "asserted",
+            "scope_id": "s0",
+            "support_words": [
+              391
+            ]
+          },
+          "ev466": {
+            "event_id": "ev466",
+            "trigger": 465,
+            "event": "nut was snug before initial intervention",
+            "event_type": "state",
+            "actor_id": null,
+            "patients": [
+              "e13"
+            ],
+            "instruments": [],
+            "recipient_id": null,
+            "factuality": "asserted",
+            "scope_id": "s0",
+            "support_words": [
+              465
+            ]
+          },
+          "ev551": {
+            "event_id": "ev551",
+            "trigger": 550,
+            "event": "reassembled wheel turns smoothly",
+            "event_type": "move",
+            "actor_id": null,
+            "patients": [
+              "e11"
+            ],
+            "instruments": [],
+            "recipient_id": null,
+            "factuality": "asserted",
+            "scope_id": "s0",
+            "support_words": [
+              550
+            ]
+          },
+          "ev506": {
+            "event_id": "ev506",
+            "trigger": 505,
+            "event": "Ada unwinds trapped string",
+            "event_type": "repair",
+            "actor_id": "e1",
+            "patients": [
+              "e30"
+            ],
+            "instruments": [],
+            "recipient_id": null,
+            "factuality": "asserted",
+            "scope_id": "s0",
+            "support_words": [
+              505
+            ]
+          },
+          "ev525": {
+            "event_id": "ev525",
+            "trigger": 524,
+            "event": "Ada slides washer and wheel back into place",
+            "event_type": "repair",
+            "actor_id": "e1",
+            "patients": [
+              "e32",
+              "e11"
+            ],
+            "instruments": [],
+            "recipient_id": null,
+            "factuality": "asserted",
+            "scope_id": "s0",
+            "support_words": [
+              524
+            ]
+          },
+          "ev534": {
+            "event_id": "ev534",
+            "trigger": 533,
+            "event": "Ada turns nut to snug fit",
+            "event_type": "other",
+            "actor_id": "e1",
+            "patients": [
+              "e13"
+            ],
+            "instruments": [],
+            "recipient_id": null,
+            "factuality": "asserted",
+            "scope_id": "s0",
+            "support_words": [
+              533
+            ]
+          },
+          "ev554": {
+            "event_id": "ev554",
+            "trigger": 553,
+            "event": "Ada pushes empty repaired cart across paving",
+            "event_type": "move",
+            "actor_id": "e1",
+            "patients": [
+              "e10"
+            ],
+            "instruments": [],
+            "recipient_id": null,
+            "factuality": "asserted",
+            "scope_id": "s0",
+            "support_words": [
+              553
+            ]
+          }
+        },
+        "scopes": {
+          "q2": {
+            "kind": "quotation",
+            "parent": "s0",
+            "holder_id": "e1",
+            "words": [
+              109,
+              110,
+              111,
+              112,
+              113,
+              114
+            ],
+            "description": "Direct speech; claims remain locally attributed.",
+            "addressee_ids": [
+              "e3"
+            ]
+          },
+          "s0": {
+            "kind": "narration",
+            "parent": null,
+            "description": "Narrator's story world; events still retain local time and factuality."
+          },
+          "q13": {
+            "kind": "quotation",
+            "parent": "s0",
+            "holder_id": "e1",
+            "words": [
+              352,
+              353,
+              354,
+              355
+            ],
+            "description": "Direct speech; claims remain locally attributed.",
+            "addressee_ids": [
+              "e3"
+            ]
+          }
+        },
+        "propositions": {
+          "p4": {
+            "text": "The cart left wheel is loose.",
+            "support_words": [
+              110,
+              112,
+              113,
+              114
+            ],
+            "scope_id": "q2"
+          },
+          "p20": {
+            "text": "The nut was loose before Ada tightened it.",
+            "support_words": [
+              353,
+              354,
+              355
+            ],
+            "scope_id": "q13"
+          },
+          "p34": {
+            "text": "The string caused the earlier wheel clatter and drag.",
+            "support_words": [
+              469,
+              471,
+              473,
+              474,
+              476
+            ],
+            "scope_id": "s0"
+          },
+          "p33": {
+            "text": "The repaired wheel turns smoothly and the empty cart moves without rattle or scrape.",
+            "support_words": [
+              550,
+              551,
+              553,
+              561,
+              562,
+              563,
+              564
+            ],
+            "scope_id": "s0"
+          }
+        }
+      },
+      "annotation_sha256": "639e13b676c671a6130ee184c0327a84d52d504a025e3caf93d59c1f33d512f2"
+    },
+    {
+      "title": "Borrowing and lending are inverse perspectives",
+      "lesson": "Keep the canonical loan participants and express the converse perspective with retrieval_inverse_relation.",
+      "story_id": "16_museum",
+      "word_indices": [
+        111
+      ],
+      "local_contexts": [
+        "on the label It’s an improved moth They borrowed a torch from Mr Bell at the front"
+      ],
+      "records": [
+        {
+          "token": "borrowed",
+          "word_index": 111,
+          "scope_id": "s0",
+          "pos": "v",
+          "lemma": "borrow",
+          "role": "action",
+          "event_id": "ev22",
+          "event": "Bell lends torch to Miri for Miri and Kit",
+          "event_type": "transfer",
+          "patients": [
+            "e22"
+          ],
+          "instruments": [],
+          "factuality": "asserted",
+          "actor_id": "e4",
+          "actor": "Mr. Bell",
+          "recipient_id": "e1",
+          "event_bindings": [
+            {
+              "event_id": "ev22",
+              "role": "action",
+              "scope_id": "s0"
+            }
+          ],
+          "assertion_status": "asserted",
+          "verb_form": "finite",
+          "tense": "past",
+          "grammatical_subject_id": "e5",
+          "grammatical_object_id": "e22",
+          "possession_borrower": {
+            "entity_id": "e22",
+            "value": {
+              "borrower_group": "e5",
+              "receiving_holder": "e1"
+            },
+            "scope_id": "s0",
+            "assertion_status": "asserted"
+          },
+          "possession_lender": {
+            "entity_id": "e22",
+            "value": {
+              "lender": "e4"
+            },
+            "scope_id": "s0",
+            "assertion_status": "asserted"
+          },
+          "transfer_kind": {
+            "entity_id": "e22",
+            "value": "temporary_loan",
+            "scope_id": "s0",
+            "assertion_status": "asserted"
+          },
+          "transfer_completion": {
+            "entity_id": "e22",
+            "value": {
+              "completed": true
+            },
+            "scope_id": "s0",
+            "assertion_status": "asserted"
+          },
+          "event_collective_participants": {
+            "entity_id": "e5",
+            "value": {
+              "event_id": "ev22",
+              "borrowers": [
+                "e1",
+                "e2"
+              ]
+            },
+            "scope_id": "s0",
+            "assertion_status": "asserted"
+          },
+          "retrieval_inverse_relation": {
+            "borrower_group": "e5",
+            "event_id": "ev22",
+            "canonical_relation": "lend_to",
+            "source_id": "e4",
+            "recipient_id": "e1",
+            "theme_id": "e22",
+            "surface_perspective": "borrow_from",
+            "scope_id": "s0",
+            "assertion_status": "asserted"
+          }
+        }
+      ],
+      "references": {
+        "entities": {
+          "e4": {
+            "name": "Mr. Bell",
+            "type": "person",
+            "mentions": [
+              35,
+              36,
+              115,
+              116,
+              121,
+              364,
+              365,
+              381
+            ]
+          },
+          "e22": {
+            "name": "borrowed torch",
+            "type": "torch",
+            "mentions": [
+              113,
+              123,
+              130,
+              184,
+              286,
+              401,
+              438,
+              469,
+              475,
+              503,
+              537,
+              541,
+              543,
+              572,
+              583,
+              617,
+              668
+            ]
+          },
+          "e1": {
+            "name": "Miri",
+            "type": "person",
+            "mentions": [
+              20,
+              33,
+              39,
+              63,
+              125,
+              126,
+              181,
+              199,
+              228,
+              263,
+              266,
+              277,
+              283,
+              300,
+              302,
+              303,
+              305,
+              307,
+              339,
+              361,
+              372,
+              385,
+              417,
+              429,
+              448,
+              455,
+              458,
+              466,
+              491,
+              526,
+              545,
+              575,
+              656
+            ]
+          },
+          "e5": {
+            "name": "Miri and Kit",
+            "type": "person_group",
+            "mentions": [
+              69,
+              90,
+              110,
+              138,
+              225,
+              434,
+              493,
+              500,
+              508
+            ],
+            "member_ids": [
+              "e1",
+              "e2"
+            ]
+          },
+          "e2": {
+            "name": "Kit",
+            "type": "person",
+            "mentions": [
+              18,
+              46,
+              48,
+              84,
+              87,
+              185,
+              201,
+              210,
+              211,
+              239,
+              255,
+              278,
+              313,
+              346,
+              354,
+              389,
+              441,
+              534,
+              601,
+              603,
+              618,
+              653
+            ]
+          }
+        },
+        "events": {
+          "ev22": {
+            "event_id": "ev22",
+            "trigger": 111,
+            "event": "Bell lends torch to Miri for Miri and Kit",
+            "event_type": "transfer",
+            "actor_id": "e4",
+            "patients": [
+              "e22"
+            ],
+            "instruments": [],
+            "recipient_id": "e1",
+            "factuality": "asserted",
+            "scope_id": "s0",
+            "support_words": [
+              110,
+              111,
+              113,
+              115,
+              116,
+              121,
+              122,
+              123,
+              125
+            ],
+            "mentions": [
+              {
+                "word": 122,
+                "scope_id": "s0",
+                "role": "action",
+                "note": "Handed describes the same loan from giver perspective, not a second loan."
+              },
+              {
+                "word": 121,
+                "scope_id": "s0",
+                "role": "giver",
+                "note": ""
+              },
+              {
+                "word": 123,
+                "scope_id": "s0",
+                "role": "patient",
+                "note": ""
+              },
+              {
+                "word": 125,
+                "scope_id": "s0",
+                "role": "recipient",
+                "note": ""
+              }
+            ]
+          }
+        },
+        "scopes": {
+          "s0": {
+            "kind": "narration",
+            "parent": null,
+            "description": "Narrator's story world; events still retain local time and factuality."
+          }
+        },
+        "propositions": {}
+      },
+      "annotation_sha256": "d7038114c0a34860eb1278ee17c8805bab3cc33612a08271d2713c563b1e0997"
+    },
+    {
+      "title": "Desired absence preserves local negation",
+      "lesson": "Hoping nobody asks embeds a negative asking proposition; retain the positive proposition as the negation target.",
+      "story_id": "16_museum",
+      "word_indices": [
+        462,
+        463,
+        464
+      ],
+      "local_contexts": [
+        "outside She could start her speech now and hope nobody asked Instead she put the torch down",
+        "She could start her speech now and hope nobody asked Instead she put the torch down on",
+        "could start her speech now and hope nobody asked Instead she put the torch down on two"
+      ],
+      "records": [
+        {
+          "token": "hope",
+          "word_index": 462,
+          "scope_id": "s17",
+          "pos": "v",
+          "lemma": "hope",
+          "role": "action",
+          "event_id": "ev92",
+          "event": "Miri hopes nobody asks about trial",
+          "event_type": "feel",
+          "patients": [],
+          "instruments": [],
+          "factuality": "hypothetical",
+          "actor_id": "e1",
+          "actor": "Miri",
+          "event_bindings": [
+            {
+              "event_id": "ev92",
+              "role": "action",
+              "scope_id": "s17"
+            }
+          ],
+          "assertion_status": "asserted",
+          "verb_form": "bare",
+          "grammatical_subject_id": "e1",
+          "goal_owner_id": "e1",
+          "goal_content_id": "p33",
+          "goal_status": "hypothetical_within_unchosen_option",
+          "goal_polarity": "achieve"
+        },
+        {
+          "token": "nobody",
+          "word_index": 463,
+          "scope_id": "s18",
+          "pos": "pron",
+          "lemma": "nobody",
+          "quantifier_domain_restriction": {
+            "group": "e6"
+          },
+          "proposition_polarity": "negative",
+          "negation_scope_id": "p32"
+        },
+        {
+          "token": "asked",
+          "word_index": 464,
+          "scope_id": "s18",
+          "pos": "v",
+          "lemma": "ask",
+          "role": "action",
+          "event_id": "ev93",
+          "event": "visitors ask about trial",
+          "event_type": "speak",
+          "patients": [],
+          "instruments": [],
+          "factuality": "negated",
+          "actor_id": "e6",
+          "actor": "arriving visitors",
+          "event_bindings": [
+            {
+              "event_id": "ev93",
+              "role": "action",
+              "scope_id": "s18"
+            }
+          ],
+          "assertion_status": "asserted",
+          "verb_form": "finite",
+          "proposition_polarity": "negative",
+          "grammatical_subject_id": "e6",
+          "tense": "past"
+        }
+      ],
+      "references": {
+        "entities": {
+          "e1": {
+            "name": "Miri",
+            "type": "person",
+            "mentions": [
+              20,
+              33,
+              39,
+              63,
+              125,
+              126,
+              181,
+              199,
+              228,
+              263,
+              266,
+              277,
+              283,
+              300,
+              302,
+              303,
+              305,
+              307,
+              339,
+              361,
+              372,
+              385,
+              417,
+              429,
+              448,
+              455,
+              458,
+              466,
+              491,
+              526,
+              545,
+              575,
+              656
+            ]
+          },
+          "e6": {
+            "name": "arriving visitors",
+            "type": "person_group",
+            "mentions": [
+              344,
+              353,
+              370,
+              452,
+              506
+            ],
+            "known_member_ids": [
+              "e3",
+              "e7"
+            ]
+          },
+          "e3": {
+            "name": "Dot",
+            "type": "person",
+            "mentions": [
+              50,
+              51,
+              334,
+              351,
+              356,
+              521,
+              570,
+              643,
+              661,
+              662,
+              672,
+              687
+            ]
+          },
+          "e7": {
+            "name": "boy in red scarf",
+            "type": "person",
+            "mentions": [
+              512,
+              524
+            ]
+          }
+        },
+        "events": {
+          "ev92": {
+            "event_id": "ev92",
+            "trigger": 462,
+            "event": "Miri hopes nobody asks about trial",
+            "event_type": "feel",
+            "actor_id": "e1",
+            "patients": [],
+            "instruments": [],
+            "recipient_id": null,
+            "factuality": "hypothetical",
+            "scope_id": "s17",
+            "support_words": [
+              462
+            ]
+          },
+          "ev93": {
+            "event_id": "ev93",
+            "trigger": 464,
+            "event": "visitors ask about trial",
+            "event_type": "speak",
+            "actor_id": "e6",
+            "patients": [],
+            "instruments": [],
+            "recipient_id": null,
+            "factuality": "negated",
+            "scope_id": "s18",
+            "support_words": [
+              464
+            ]
+          }
+        },
+        "scopes": {
+          "s17": {
+            "kind": "unchosen_early_speech",
+            "parent": "s0",
+            "holder_id": "e1",
+            "words": [
+              455,
+              456,
+              457,
+              458,
+              459,
+              460,
+              461,
+              462,
+              463,
+              464
+            ],
+            "description": "Start now and hope nobody asks, not the eventual honest speech."
+          },
+          "s0": {
+            "kind": "narration",
+            "parent": null,
+            "description": "Narrator's story world; events still retain local time and factuality."
+          },
+          "s18": {
+            "kind": "desired_absence_of_question",
+            "parent": "s17",
+            "holder_id": "e1",
+            "words": [
+              463,
+              464
+            ],
+            "description": "Nobody asks is a hoped-for state within unchosen alternative."
+          }
+        },
+        "propositions": {
+          "p33": {
+            "text": "No visitor asks a question about the trial.",
+            "support_words": [
+              462,
+              463,
+              464
+            ],
+            "scope_id": "s18"
+          },
+          "p32": {
+            "text": "Any visitor asks a question about the trial.",
+            "support_words": [
+              463,
+              464
+            ],
+            "scope_id": "s18"
+          }
+        }
+      },
+      "annotation_sha256": "d7038114c0a34860eb1278ee17c8805bab3cc33612a08271d2713c563b1e0997"
+    },
+    {
+      "title": "Addressee, direction and the returned container",
+      "lesson": "Resolve quoted you to the addressee; motion toward an entrance does not establish arrival, and bag return does not return every peg.",
+      "story_id": "17_laundry",
+      "word_indices": [
+        358,
+        551,
+        663
+      ],
+      "local_contexts": [
+        "hand What’s the matter The prop’s sliding Could you hold the sheet while I move the clothes",
+        "a gust shoved it from her hand It sailed toward the shelter entrance Mr Osei caught it",
+        "her shoulder So we moved it Mrs Bell took the bag and squeezed Tessa’s shoulder with her"
+      ],
+      "records": [
+        {
+          "token": "you",
+          "word_index": 358,
+          "scope_id": "s12",
+          "pos": "pron",
+          "lemma": "you",
+          "entity_id": "e3",
+          "entity_name": "Mr. Osei",
+          "entity": "person",
+          "quotation_scope_id": "q8",
+          "speaker_id": "e1",
+          "event_bindings": [
+            {
+              "event_id": "ev360",
+              "role": "actor",
+              "scope_id": "s12"
+            }
+          ],
+          "event_id": "ev360",
+          "event": "Osei holds sheet",
+          "role": "actor",
+          "mention_form": "pronoun",
+          "antecedent_id": "e3",
+          "grammatical_person": 2
+        },
+        {
+          "token": "sailed",
+          "word_index": 551,
+          "scope_id": "s0",
+          "pos": "v",
+          "lemma": "sail",
+          "role": "action",
+          "event_id": "ev552",
+          "event": "sock sails toward shelter entrance",
+          "event_type": "move",
+          "patients": [
+            "e51"
+          ],
+          "instruments": [],
+          "factuality": "asserted",
+          "event_bindings": [
+            {
+              "event_id": "ev552",
+              "role": "action",
+              "scope_id": "s0"
+            }
+          ],
+          "assertion_status": "asserted",
+          "verb_form": "finite",
+          "tense": "past",
+          "grammatical_subject_id": "e51",
+          "spatial_configuration": {
+            "entity_id": "e51",
+            "scope_id": "s0",
+            "assertion_status": "asserted",
+            "value": {
+              "landmark": "e54",
+              "relation": "toward"
+            },
+            "factuality": "asserted"
+          },
+          "motion_trajectory_phase": {
+            "entity_id": "e51",
+            "scope_id": "s0",
+            "assertion_status": "asserted",
+            "value": {
+              "landmark_id": "e54",
+              "event_id": "ev552",
+              "phase": "approaching",
+              "arrival_unestablished": true
+            }
+          }
+        },
+        {
+          "token": "took",
+          "word_index": 663,
+          "scope_id": "s0",
+          "pos": "v",
+          "lemma": "take",
+          "role": "action",
+          "event_id": "ev664",
+          "event": "Bell takes peg bag back",
+          "event_type": "obtain",
+          "patients": [
+            "e21"
+          ],
+          "instruments": [],
+          "factuality": "asserted",
+          "actor_id": "e2",
+          "actor": "Mrs. Bell",
+          "event_bindings": [
+            {
+              "event_id": "ev664",
+              "role": "action",
+              "scope_id": "s0"
+            }
+          ],
+          "assertion_status": "asserted",
+          "verb_form": "finite",
+          "tense": "past",
+          "grammatical_subject_id": "e2",
+          "grammatical_object_id": "e21",
+          "transfer_kind": {
+            "entity_id": "e21",
+            "scope_id": "s0",
+            "assertion_status": "asserted",
+            "value": {
+              "kind": "return"
+            }
+          },
+          "transfer_source": {
+            "entity_id": "e21",
+            "scope_id": "s0",
+            "assertion_status": "asserted",
+            "value": {
+              "source": "e1"
+            }
+          },
+          "transfer_recipient": {
+            "entity_id": "e21",
+            "scope_id": "s0",
+            "assertion_status": "asserted",
+            "value": {
+              "recipient": "e2"
+            }
+          },
+          "transfer_completion": {
+            "entity_id": "e21",
+            "scope_id": "s0",
+            "assertion_status": "asserted",
+            "value": {
+              "completed": true,
+              "event_id": "ev664"
+            }
+          },
+          "possession_holder": {
+            "entity_id": "e21",
+            "scope_id": "s0",
+            "assertion_status": "asserted",
+            "value": {
+              "holder": "e2"
+            }
+          },
+          "narrative_resolution_evidence": {
+            "loan_event_id": "ev114",
+            "returned_entity_id": "e21",
+            "status": "bag_returned",
+            "excludes_claim": "all_pegs_returned_to_bag"
+          }
+        }
+      ],
+      "references": {
+        "entities": {
+          "e1": {
+            "name": "Tessa",
+            "type": "person",
+            "mentions": [
+              3,
+              62,
+              66,
+              67,
+              73,
+              83,
+              91,
+              101,
+              114,
+              134,
+              139,
+              156,
+              166,
+              177,
+              210,
+              220,
+              225,
+              232,
+              235,
+              261,
+              268,
+              270,
+              294,
+              307,
+              312,
+              325,
+              337,
+              363,
+              377,
+              383,
+              386,
+              399,
+              414,
+              426,
+              428,
+              438,
+              439,
+              459,
+              479,
+              481,
+              495,
+              497,
+              509,
+              517,
+              530,
+              535,
+              548,
+              569,
+              634,
+              646,
+              648,
+              655,
+              668,
+              682
+            ]
+          },
+          "e3": {
+            "name": "Mr. Osei",
+            "type": "person",
+            "mentions": [
+              148,
+              149,
+              286,
+              287,
+              335,
+              336,
+              339,
+              349,
+              358,
+              367,
+              370,
+              405,
+              406,
+              453,
+              454,
+              506,
+              507,
+              556,
+              557,
+              561,
+              564
+            ]
+          },
+          "e14": {
+            "name": "white sheet with blue border",
+            "type": "sheet",
+            "mentions": [
+              57,
+              64,
+              133,
+              199,
+              212,
+              214,
+              230,
+              234,
+              274,
+              297,
+              299,
+              361,
+              457,
+              461,
+              465,
+              472,
+              504,
+              627,
+              687
+            ]
+          },
+          "e51": {
+            "name": "last little sock caught by Osei",
+            "type": "sock",
+            "mentions": [
+              541,
+              546,
+              550,
+              559,
+              567,
+              572,
+              574
+            ],
+            "subset_of": "e16"
+          },
+          "e16": {
+            "name": "socks in the washing",
+            "type": "sock_group",
+            "mentions": [
+              165,
+              168,
+              174,
+              382,
+              512
+            ]
+          },
+          "e54": {
+            "name": "shelter entrance",
+            "type": "entrance",
+            "mentions": [
+              555
+            ]
+          },
+          "e2": {
+            "name": "Mrs. Bell",
+            "type": "person",
+            "mentions": [
+              21,
+              22,
+              24,
+              25,
+              39,
+              48,
+              53,
+              69,
+              70,
+              78,
+              79,
+              102,
+              111,
+              112,
+              179,
+              180,
+              318,
+              319,
+              491,
+              492,
+              603,
+              604,
+              617,
+              632,
+              641,
+              661,
+              662,
+              671
+            ]
+          },
+          "e21": {
+            "name": "borrowed yellow peg bag",
+            "type": "bag",
+            "mentions": [
+              118,
+              120,
+              137,
+              269,
+              653,
+              665
+            ]
+          }
+        },
+        "events": {
+          "ev1354": {
+            "event_id": "ev1354",
+            "trigger": 354,
+            "event": "explain and request help",
+            "event_type": "speak",
+            "actor_id": "e1",
+            "patients": [],
+            "instruments": [],
+            "recipient_id": "e3",
+            "factuality": "asserted",
+            "scope_id": "s0",
+            "support_words": [
+              354,
+              355,
+              356,
+              357,
+              358,
+              359,
+              360,
+              361,
+              362,
+              363,
+              364,
+              365,
+              366
+            ]
+          },
+          "ev360": {
+            "event_id": "ev360",
+            "trigger": 359,
+            "event": "Osei holds sheet",
+            "event_type": "other",
+            "actor_id": "e3",
+            "patients": [
+              "e14"
+            ],
+            "instruments": [],
+            "recipient_id": null,
+            "factuality": "desired",
+            "scope_id": "s12",
+            "support_words": [
+              359
+            ],
+            "mentions": [
+              {
+                "word": 358,
+                "scope_id": "s12",
+                "role": "actor",
+                "note": "Explicit role at the local predicate, separate from grammatical subject where needed."
+              },
+              {
+                "word": 361,
+                "scope_id": "s12",
+                "role": "patient",
+                "note": "Explicit role at the local predicate, separate from grammatical subject where needed."
+              }
+            ]
+          },
+          "ev552": {
+            "event_id": "ev552",
+            "trigger": 551,
+            "event": "sock sails toward shelter entrance",
+            "event_type": "move",
+            "actor_id": null,
+            "patients": [
+              "e51"
+            ],
+            "instruments": [],
+            "recipient_id": null,
+            "factuality": "asserted",
+            "scope_id": "s0",
+            "support_words": [
+              551
+            ],
+            "mentions": [
+              {
+                "word": 550,
+                "scope_id": "s0",
+                "role": "patient",
+                "note": "Explicit role at the local predicate, separate from grammatical subject where needed."
+              },
+              {
+                "word": 555,
+                "scope_id": "s0",
+                "role": "direction_target",
+                "note": "Explicit role at the local predicate, separate from grammatical subject where needed."
+              }
+            ]
+          },
+          "ev664": {
+            "event_id": "ev664",
+            "trigger": 663,
+            "event": "Bell takes peg bag back",
+            "event_type": "obtain",
+            "actor_id": "e2",
+            "patients": [
+              "e21"
+            ],
+            "instruments": [],
+            "recipient_id": null,
+            "factuality": "asserted",
+            "scope_id": "s0",
+            "support_words": [
+              663
+            ],
+            "mentions": [
+              {
+                "word": 661,
+                "scope_id": "s0",
+                "role": "actor",
+                "note": "Explicit role at the local predicate, separate from grammatical subject where needed."
+              },
+              {
+                "word": 662,
+                "scope_id": "s0",
+                "role": "actor",
+                "note": "Explicit role at the local predicate, separate from grammatical subject where needed."
+              },
+              {
+                "word": 665,
+                "scope_id": "s0",
+                "role": "patient",
+                "note": "Explicit role at the local predicate, separate from grammatical subject where needed."
+              }
+            ]
+          },
+          "ev114": {
+            "event_id": "ev114",
+            "trigger": 113,
+            "event": "Bell hands peg bag to Tessa",
+            "event_type": "transfer",
+            "actor_id": "e2",
+            "patients": [
+              "e21"
+            ],
+            "instruments": [],
+            "recipient_id": "e1",
+            "factuality": "asserted",
+            "scope_id": "s0",
+            "support_words": [
+              113
+            ],
+            "mentions": [
+              {
+                "word": 111,
+                "scope_id": "s0",
+                "role": "actor",
+                "note": "Explicit role at the local predicate, separate from grammatical subject where needed."
+              },
+              {
+                "word": 112,
+                "scope_id": "s0",
+                "role": "actor",
+                "note": "Explicit role at the local predicate, separate from grammatical subject where needed."
+              },
+              {
+                "word": 118,
+                "scope_id": "s0",
+                "role": "patient",
+                "note": "Explicit role at the local predicate, separate from grammatical subject where needed."
+              },
+              {
+                "word": 114,
+                "scope_id": "s0",
+                "role": "recipient",
+                "note": "Explicit role at the local predicate, separate from grammatical subject where needed."
+              }
+            ]
+          }
+        },
+        "scopes": {
+          "s12": {
+            "kind": "requested_cooperation",
+            "parent": "q8",
+            "holder_id": "e1",
+            "words": [
+              357,
+              358,
+              359,
+              360,
+              361,
+              362,
+              363,
+              364,
+              365,
+              366
+            ],
+            "description": "Request that Osei hold sheet while Tessa moves clothes."
+          },
+          "q8": {
+            "kind": "quotation",
+            "parent": "s0",
+            "holder_id": "e1",
+            "words": [
+              354,
+              355,
+              356,
+              357,
+              358,
+              359,
+              360,
+              361,
+              362,
+              363,
+              364,
+              365,
+              366
+            ],
+            "description": "explain and request help",
+            "utterance_event_id": "ev1354",
+            "addressee_ids": [
+              "e3"
+            ]
+          },
+          "s0": {
+            "kind": "narration",
+            "parent": null,
+            "description": "Narrator's story world; events still retain local time and factuality."
+          }
+        },
+        "propositions": {}
+      },
+      "annotation_sha256": "a381c80ddf90ec1fd2f0f209624e9d48cb0f8c611cf19da559bcabae1b66faeb"
+    },
+    {
+      "title": "Modal content and outer speech events",
+      "lesson": "Expected and prohibited spatial relations retain their operators; praise is an actual secondary speech event while its quoted noun keeps quote scope.",
+      "story_id": "18_trail",
+      "word_indices": [
+        480,
+        481,
+        564,
+        621,
+        624
+      ],
+      "local_contexts": [
+        "she rotated the map to match The stream should be on our left she said If we",
+        "rotated the map to match The stream should be on our left she said If we go",
+        "curved around the fallen birch Felix grinned Good eyes Good map Nia said and gave Leni the",
+        "back Leni stopped Felix stopped Nia stopped too Don’t get too close Leni whispered She opened her",
+        "Felix stopped Nia stopped too Don’t get too close Leni whispered She opened her sketchbook and drew"
+      ],
+      "records": [
+        {
+          "token": "should",
+          "word_index": 480,
+          "scope_id": "q10",
+          "pos": "v",
+          "lemma": "shall",
+          "quotation_scope_id": "q10",
+          "speaker_id": "e1",
+          "quote_mode": "direct",
+          "modal_auxiliary_class": "shall",
+          "modal_base": {
+            "kind": "epistemic_expectation",
+            "holder": "e1"
+          },
+          "modal_scope_id": "p20"
+        },
+        {
+          "token": "be",
+          "word_index": 481,
+          "scope_id": "q10",
+          "pos": "v",
+          "lemma": "be",
+          "quotation_scope_id": "q10",
+          "speaker_id": "e1",
+          "quote_mode": "direct",
+          "role": "action",
+          "event_id": "ev482",
+          "event": "stream lies on friends left",
+          "event_type": "state",
+          "patients": [
+            "e22"
+          ],
+          "instruments": [],
+          "factuality": "hypothetical",
+          "event_bindings": [
+            {
+              "event_id": "ev482",
+              "role": "action",
+              "scope_id": "q10"
+            }
+          ],
+          "assertion_status": "attributed_claim",
+          "grammatical_subject_id": "e22",
+          "verb_form": "base",
+          "utterance_id": "q10",
+          "addressee_ids": [
+            "e2",
+            "e3"
+          ],
+          "speech_act_kind": "navigation_assessment",
+          "communication_channel": "spoken",
+          "utterance_content_id": "p35",
+          "spatial_configuration": {
+            "entity_id": "e22",
+            "landmark_id": "e5",
+            "relation": "left_of",
+            "scope_id": "q10",
+            "assertion_status": "attributed_claim",
+            "factuality": "hypothetical",
+            "operator": "expectation",
+            "content_id": "p20",
+            "utterance_content_id": "p35"
+          }
+        },
+        {
+          "token": "eyes",
+          "word_index": 564,
+          "scope_id": "q12",
+          "pos": "n",
+          "lemma": "eye",
+          "entity_id": "e70",
+          "entity_name": "Leni eyes",
+          "entity": "body_part_group",
+          "quotation_scope_id": "q12",
+          "speaker_id": "e2",
+          "quote_mode": "direct",
+          "event_bindings": [
+            {
+              "event_id": "ev565",
+              "role": "action",
+              "scope_id": "s0"
+            }
+          ],
+          "assertion_status": "attributed_claim",
+          "grammatical_number": "plural",
+          "reference_metonymic_link": {
+            "source_id": "e70",
+            "target_id": "e3",
+            "relation": "eyes_for_observational_skill"
+          },
+          "utterance_id": "ev565",
+          "addressee_ids": [
+            "e3"
+          ],
+          "speech_act_kind": "praise",
+          "communication_channel": "spoken",
+          "part_whole_relation": {
+            "part_id": "e70",
+            "whole_id": "e3",
+            "relation": "part_of"
+          },
+          "communication_scope_bundle": {
+            "speaker_id": "e2",
+            "utterance_event_id": "ev565",
+            "scope_id": "s0",
+            "assertion_status": "asserted"
+          }
+        },
+        {
+          "token": "Don’t",
+          "word_index": 621,
+          "scope_id": "q14",
+          "pos": "v",
+          "lemma": "do",
+          "quotation_scope_id": "q14",
+          "speaker_id": "e3",
+          "quote_mode": "direct",
+          "mood": "imperative",
+          "imperative_subject_status": "understood_addressee",
+          "contraction_expansion": [
+            "do",
+            "not"
+          ],
+          "negation_scope_id": "p23",
+          "negation_marker_form": "Don’t",
+          "polarity": "negative",
+          "proposition_polarity": "negative",
+          "obligation_debtor_id": "e6",
+          "obligation_content_id": "p23",
+          "obligation_status": "prohibited",
+          "request_action_id": "p24"
+        },
+        {
+          "token": "close",
+          "word_index": 624,
+          "scope_id": "q14",
+          "pos": "adj",
+          "lemma": "close",
+          "quotation_scope_id": "q14",
+          "speaker_id": "e3",
+          "quote_mode": "direct",
+          "lexical_scale_direction": "excess",
+          "spatial_distance_band": {
+            "entity_id": "e6",
+            "value": "too_close",
+            "scope_id": "q14",
+            "assertion_status": "attributed_claim",
+            "landmark_id": "e74",
+            "factuality": "hypothetical",
+            "operator": "prohibited",
+            "content_id": "p23",
+            "prohibition_content_id": "p24"
+          }
+        }
+      ],
+      "references": {
+        "entities": {
+          "e1": {
+            "name": "Nia",
+            "type": "person",
+            "mentions": [
+              14,
+              39,
+              48,
+              53,
+              57,
+              61,
+              121,
+              144,
+              248,
+              251,
+              313,
+              371,
+              376,
+              433,
+              457,
+              459,
+              472,
+              485,
+              519,
+              567,
+              577,
+              618,
+              682,
+              726
+            ]
+          },
+          "e22": {
+            "name": "stream",
+            "type": "stream",
+            "mentions": [
+              102,
+              225,
+              479,
+              588
+            ]
+          },
+          "e2": {
+            "name": "Felix",
+            "type": "person",
+            "mentions": [
+              70,
+              78,
+              82,
+              123,
+              140,
+              226,
+              228,
+              292,
+              294,
+              298,
+              379,
+              413,
+              514,
+              561,
+              616,
+              666,
+              669,
+              692,
+              730,
+              732
+            ]
+          },
+          "e3": {
+            "name": "Leni",
+            "type": "person",
+            "mentions": [
+              88,
+              93,
+              103,
+              108,
+              112,
+              115,
+              128,
+              149,
+              258,
+              268,
+              276,
+              282,
+              284,
+              318,
+              322,
+              325,
+              419,
+              509,
+              512,
+              527,
+              529,
+              532,
+              571,
+              614,
+              625,
+              627,
+              629,
+              694,
+              698,
+              736,
+              739,
+              87
+            ]
+          },
+          "e5": {
+            "name": "three friends",
+            "type": "person_group",
+            "mentions": [
+              130,
+              152,
+              180,
+              236,
+              241,
+              245,
+              303,
+              309,
+              342,
+              409,
+              483,
+              488,
+              496,
+              502,
+              504,
+              585,
+              650
+            ],
+            "members": [
+              "e1",
+              "e2",
+              "e3"
+            ]
+          },
+          "e70": {
+            "name": "Leni eyes",
+            "type": "body_part_group",
+            "mentions": [
+              564
+            ]
+          },
+          "e6": {
+            "name": "Nia and Felix",
+            "type": "person_pair",
+            "mentions": [
+              86,
+              114,
+              315
+            ],
+            "members": [
+              "e1",
+              "e2"
+            ]
+          },
+          "e74": {
+            "name": "observed spotted salamander",
+            "type": "salamander",
+            "mentions": [
+              602,
+              605,
+              611,
+              636
+            ]
+          }
+        },
+        "events": {
+          "ev482": {
+            "event_id": "ev482",
+            "trigger": 481,
+            "event": "stream lies on friends left",
+            "event_type": "state",
+            "actor_id": null,
+            "patients": [
+              "e22"
+            ],
+            "instruments": [],
+            "recipient_id": null,
+            "factuality": "hypothetical",
+            "scope_id": "q10",
+            "support_words": [
+              481
+            ],
+            "mentions": [
+              {
+                "word": 479,
+                "scope_id": "q10",
+                "role": "patient",
+                "note": "Explicit local participant words; syntax stored separately."
+              }
+            ]
+          },
+          "ev565": {
+            "event_id": "ev565",
+            "trigger": 564,
+            "event": "Felix praises Leni observation",
+            "event_type": "speak",
+            "actor_id": "e2",
+            "patients": [
+              "e3"
+            ],
+            "instruments": [],
+            "recipient_id": null,
+            "factuality": "asserted",
+            "scope_id": "s0",
+            "support_words": [
+              564
+            ]
+          }
+        },
+        "scopes": {
+          "q10": {
+            "kind": "quotation",
+            "parent": "s0",
+            "holder_id": "e1",
+            "words": [
+              478,
+              479,
+              480,
+              481,
+              482,
+              483,
+              484,
+              487,
+              488,
+              489,
+              490,
+              491,
+              492,
+              493,
+              494,
+              495,
+              496,
+              497,
+              498,
+              499,
+              500,
+              501
+            ],
+            "description": ""
+          },
+          "s0": {
+            "kind": "narration",
+            "parent": null,
+            "description": "Narrator's story world; events still retain local time and factuality."
+          },
+          "q12": {
+            "kind": "quotation",
+            "parent": "s0",
+            "holder_id": "e2",
+            "words": [
+              563,
+              564
+            ],
+            "description": ""
+          },
+          "q14": {
+            "kind": "quotation",
+            "parent": "s0",
+            "holder_id": "e3",
+            "words": [
+              621,
+              622,
+              623,
+              624
+            ],
+            "description": ""
+          }
+        },
+        "propositions": {
+          "p20": {
+            "text": "The stream is on the friends’ left.",
+            "support_words": [
+              479,
+              481,
+              483,
+              484
+            ],
+            "scope_id": "q10"
+          },
+          "p35": {
+            "text": "The stream should be on the friends’ left.",
+            "support_words": [
+              479,
+              480,
+              481,
+              483,
+              484
+            ],
+            "scope_id": "q10"
+          },
+          "p23": {
+            "text": "Nia and Felix get too close to the salamander.",
+            "support_words": [
+              621,
+              622,
+              624,
+              636
+            ],
+            "scope_id": "q14"
+          },
+          "p24": {
+            "text": "Nia and Felix do not get too close to the salamander.",
+            "support_words": [
+              621,
+              622,
+              624,
+              636
+            ],
+            "scope_id": "q14"
+          }
+        }
+      },
+      "annotation_sha256": "c9b634febb39aad5a3e2c1403a34716a392f3827720a8561d8cd3ca58e9575b0"
+    },
+    {
+      "title": "Distributed actions and changing group membership",
+      "lesson": "Permission, choosing and attachment can involve different actors. The rejected purpose has negative conclusion but positive negation target; later flags do not enter the earlier display membership.",
+      "story_id": "19_festival",
+      "word_indices": [
+        161,
+        162,
+        306,
+        517,
+        553,
+        565,
+        569,
+        585,
+        653,
+        708
+      ],
+      "local_contexts": [
+        "I choose where it goes Of course And tie it That’s the important part At the square",
+        "choose where it goes Of course And tie it That’s the important part At the square the",
+        "someone else climbed up to tie it That wasn’t what she had asked him to come for",
+        "over She laughed and eased it back Rafi tied a neat knot around the rail then showed",
+        "Somewhere it can see the whole festival Rafi chose the middle of the line beside a yellow",
+        "the line beside a yellow paper sun Bea tied it there They added flags all along the",
+        "yellow paper sun Bea tied it there They added flags all along the rail leaving space between",
+        "between them for the breeze to turn each one When they finished the rainbow curved around the",
+        "Rafi can reach this Rafi turned his moon so its silver side caught the sun It looks",
+        "the table Would you like to tie one on Soon people were stopping to add flags A"
+      ],
+      "records": [
+        {
+          "token": "tie",
+          "word_index": 161,
+          "scope_id": "q9",
+          "pos": "v",
+          "lemma": "tie",
+          "quotation_scope_id": "q9",
+          "speaker_id": "e3",
+          "assertion_status": "attributed_claim",
+          "quote_mode": "direct",
+          "role": "action",
+          "event_id": "ev34",
+          "event": "Rafi ties moon flag on",
+          "event_type": "other",
+          "patients": [
+            "e17"
+          ],
+          "instruments": [],
+          "factuality": "desired",
+          "actor_id": "e3",
+          "actor": "Rafi",
+          "event_bindings": [
+            {
+              "event_id": "ev34",
+              "role": "action",
+              "scope_id": "q9"
+            },
+            {
+              "event_id": "ev35",
+              "role": "action",
+              "scope_id": "s0"
+            }
+          ],
+          "utterance_id": "ev35",
+          "addressee_ids": [
+            "e1"
+          ],
+          "utterance_content_id": "p12",
+          "speech_act_kind": "permission_request",
+          "communication_channel": "speech",
+          "communication_scope_bundle": {
+            "speaker_id": "e3",
+            "utterance_event_id": "ev35",
+            "scope_id": "s0",
+            "assertion_status": "asserted"
+          },
+          "verb_form": "bare",
+          "sentence_fragment_type": "contextual_dialogue_fragment",
+          "grammatical_subject_id": "e3",
+          "grammatical_object_id": "e17",
+          "request_action_id": "p12"
+        },
+        {
+          "token": "it",
+          "word_index": 162,
+          "scope_id": "q9",
+          "pos": "pron",
+          "lemma": "it",
+          "entity_id": "e17",
+          "entity_name": "Rafi silver paper moon flag",
+          "entity": "paper_flag",
+          "quotation_scope_id": "q9",
+          "speaker_id": "e3",
+          "assertion_status": "attributed_claim",
+          "quote_mode": "direct",
+          "event_bindings": [
+            {
+              "event_id": "ev34",
+              "role": "patient",
+              "scope_id": "q9"
+            }
+          ],
+          "event_id": "ev34",
+          "event": "Rafi ties moon flag on",
+          "role": "patient",
+          "mention_form": "personal_pronoun",
+          "grammatical_case": "objective",
+          "grammatical_number": "singular"
+        },
+        {
+          "token": "wasn’t",
+          "word_index": 306,
+          "scope_id": "s0",
+          "pos": "v",
+          "lemma": "be",
+          "role": "action",
+          "event_id": "ev62",
+          "event": "imagined holding-only role is Bea invitation purpose",
+          "event_type": "state",
+          "patients": [],
+          "instruments": [],
+          "factuality": "negated",
+          "event_bindings": [
+            {
+              "event_id": "ev62",
+              "role": "action",
+              "scope_id": "s0"
+            }
+          ],
+          "assertion_status": "asserted",
+          "contraction_expansion": [
+            "was",
+            "not"
+          ],
+          "verb_form": "finite",
+          "tense": "past",
+          "proposition_polarity": "negative",
+          "negation_scope_id": "p20",
+          "reasoner_id": "e1",
+          "reasoning_mode": "compare_with_invitation_goal",
+          "reasoning_content_id": "p19",
+          "reasoning_conclusion_id": "p46"
+        },
+        {
+          "token": "tied",
+          "word_index": 517,
+          "scope_id": "s0",
+          "pos": "v",
+          "lemma": "tie",
+          "role": "action",
+          "event_id": "ev99",
+          "event": "Rafi ties neat knot around fence rail",
+          "event_type": "other",
+          "patients": [
+            "e9",
+            "e42"
+          ],
+          "instruments": [],
+          "factuality": "asserted",
+          "actor_id": "e3",
+          "actor": "Rafi",
+          "event_bindings": [
+            {
+              "event_id": "ev99",
+              "role": "action",
+              "scope_id": "s0"
+            }
+          ],
+          "assertion_status": "asserted",
+          "verb_form": "finite",
+          "tense": "past",
+          "grammatical_subject_id": "e3",
+          "grammatical_object_id": "e42",
+          "spatial_configuration": {
+            "entity_id": "e42",
+            "value": {
+              "landmark": "e40",
+              "relation": "around"
+            },
+            "scope_id": "s0",
+            "assertion_status": "asserted"
+          },
+          "event_result_entity": {
+            "entity_id": "e42",
+            "value": {
+              "formed_in": "e9",
+              "event_id": "ev99"
+            },
+            "scope_id": "s0",
+            "assertion_status": "asserted"
+          }
+        },
+        {
+          "token": "chose",
+          "word_index": 553,
+          "scope_id": "s0",
+          "pos": "v",
+          "lemma": "choose",
+          "role": "action",
+          "event_id": "ev107",
+          "event": "Rafi chooses line middle beside sun for moon",
+          "event_type": "other",
+          "patients": [
+            "e43"
+          ],
+          "instruments": [],
+          "factuality": "asserted",
+          "actor_id": "e3",
+          "actor": "Rafi",
+          "event_bindings": [
+            {
+              "event_id": "ev107",
+              "role": "action",
+              "scope_id": "s0"
+            }
+          ],
+          "assertion_status": "asserted",
+          "verb_form": "finite",
+          "tense": "past",
+          "grammatical_subject_id": "e3",
+          "grammatical_object_id": "e43",
+          "intention_vs_action_alignment": {
+            "intention": "p11",
+            "outcome_event_id": "ev107",
+            "alignment": "choice_exercised",
+            "scope_id": "s0",
+            "assertion_status": "asserted"
+          }
+        },
+        {
+          "token": "tied",
+          "word_index": 565,
+          "scope_id": "s0",
+          "pos": "v",
+          "lemma": "tie",
+          "role": "action",
+          "event_id": "ev108",
+          "event": "Bea ties Rafi moon at chosen location",
+          "event_type": "other",
+          "patients": [
+            "e17"
+          ],
+          "instruments": [],
+          "factuality": "asserted",
+          "actor_id": "e1",
+          "actor": "Bea",
+          "event_bindings": [
+            {
+              "event_id": "ev108",
+              "role": "action",
+              "scope_id": "s0"
+            }
+          ],
+          "assertion_status": "asserted",
+          "verb_form": "finite",
+          "tense": "past",
+          "grammatical_subject_id": "e1",
+          "grammatical_object_id": "e17",
+          "spatial_configuration": {
+            "entity_id": "e17",
+            "value": {
+              "landmark": "e43",
+              "relation": "at",
+              "beside": "e44"
+            },
+            "scope_id": "s0",
+            "assertion_status": "asserted"
+          },
+          "intention_vs_action_alignment": {
+            "earlier_permission": "p12",
+            "actual_event_id": "ev108",
+            "actual_actor_id": "e1",
+            "permission_recipient_id": "e3",
+            "alignment": "Bea_attaches_Rafi_chosen_flag",
+            "scope_id": "s0",
+            "assertion_status": "asserted"
+          }
+        },
+        {
+          "token": "added",
+          "word_index": 569,
+          "scope_id": "s0",
+          "pos": "v",
+          "lemma": "add",
+          "role": "action",
+          "event_id": "ev109",
+          "event": "Bea and Rafi add flags along rail",
+          "event_type": "other",
+          "patients": [
+            "e72"
+          ],
+          "instruments": [],
+          "factuality": "asserted",
+          "actor_id": "e26",
+          "actor": "Bea and Rafi",
+          "event_bindings": [
+            {
+              "event_id": "ev109",
+              "role": "action",
+              "scope_id": "s0"
+            }
+          ],
+          "assertion_status": "asserted",
+          "verb_form": "finite",
+          "tense": "past",
+          "grammatical_subject_id": "e26",
+          "grammatical_object_id": "e72",
+          "group_members": [
+            "e17",
+            "e44"
+          ]
+        },
+        {
+          "token": "one",
+          "word_index": 585,
+          "scope_id": "s15",
+          "pos": "pron",
+          "lemma": "one",
+          "entity_id": "e73",
+          "entity_name": "each spaced flag as bound variable",
+          "entity": "quantified_flag",
+          "event_bindings": [
+            {
+              "event_id": "ev111",
+              "role": "patient",
+              "scope_id": "s15"
+            }
+          ],
+          "event_id": "ev111",
+          "event": "breeze turns each spaced flag",
+          "role": "patient",
+          "referent_kind": "bound_variable",
+          "quantifier_domain_restriction": {
+            "domain_id": "e72",
+            "operator": "each"
+          }
+        },
+        {
+          "token": "so",
+          "word_index": 653,
+          "scope_id": "s0",
+          "pos": "conj",
+          "lemma": "so",
+          "subordinator_type": "result",
+          "discourse_relation_kind": "result"
+        },
+        {
+          "token": "on",
+          "word_index": 708,
+          "scope_id": "s19",
+          "pos": "adv",
+          "lemma": "on",
+          "quotation_scope_id": "q29",
+          "speaker_id": "e5",
+          "assertion_status": "attributed_claim",
+          "quote_mode": "direct"
+        }
+      ],
+      "references": {
+        "entities": {
+          "e3": {
+            "name": "Rafi",
+            "type": "person",
+            "mentions": [
+              51,
+              54,
+              79,
+              85,
+              91,
+              103,
+              105,
+              118,
+              122,
+              144,
+              150,
+              153,
+              183,
+              198,
+              205,
+              255,
+              293,
+              311,
+              315,
+              317,
+              332,
+              477,
+              483,
+              496,
+              516,
+              528,
+              540,
+              543,
+              552,
+              645,
+              649,
+              651,
+              665,
+              737,
+              770
+            ]
+          },
+          "e1": {
+            "name": "Bea",
+            "type": "person",
+            "mentions": [
+              0,
+              31,
+              33,
+              83,
+              92,
+              132,
+              136,
+              140,
+              181,
+              200,
+              248,
+              282,
+              291,
+              308,
+              370,
+              374,
+              391,
+              407,
+              469,
+              498,
+              510,
+              526,
+              564,
+              629,
+              631,
+              633
+            ]
+          },
+          "e17": {
+            "name": "Rafi silver paper moon flag",
+            "type": "paper_flag",
+            "mentions": [
+              113,
+              117,
+              121,
+              124,
+              147,
+              148,
+              156,
+              162,
+              541,
+              546,
+              566,
+              652,
+              654,
+              760,
+              761,
+              775,
+              803
+            ]
+          },
+          "e9": {
+            "name": "green string wound on spool then fence",
+            "type": "string",
+            "mentions": [
+              6,
+              20,
+              143,
+              190,
+              217,
+              252,
+              257,
+              272,
+              373,
+              387,
+              472,
+              490,
+              500,
+              503,
+              514,
+              532,
+              536,
+              558,
+              752
+            ]
+          },
+          "e42": {
+            "name": "Rafi rail knot",
+            "type": "knot",
+            "mentions": [
+              520
+            ]
+          },
+          "e40": {
+            "name": "inside fence rail used for string",
+            "type": "rail",
+            "mentions": [
+              476,
+              523,
+              574
+            ]
+          },
+          "e43": {
+            "name": "middle of string line",
+            "type": "string_region",
+            "mentions": [
+              555,
+              567
+            ]
+          },
+          "e44": {
+            "name": "yellow paper sun flag",
+            "type": "paper_flag",
+            "mentions": [
+              563,
+              765
+            ]
+          },
+          "e26": {
+            "name": "Bea and Rafi",
+            "type": "person_group",
+            "mentions": [
+              209,
+              323,
+              568,
+              587
+            ],
+            "member_ids": [
+              "e1",
+              "e3"
+            ]
+          },
+          "e72": {
+            "name": "flags in the developing display",
+            "type": "paper_flag_group",
+            "mentions": [
+              337,
+              570,
+              578,
+              671,
+              715
+            ],
+            "membership_by_phase": [
+              {
+                "phase": "initial_fence_display",
+                "from_word": 565,
+                "until_word": 717,
+                "known_member_ids": [
+                  "e17",
+                  "e44"
+                ],
+                "exhaustive": false,
+                "support_words": [
+                  563,
+                  565,
+                  569
+                ]
+              },
+              {
+                "phase": "after_baker_addition",
+                "from_word": 718,
+                "until_word": 731,
+                "known_member_ids": [
+                  "e17",
+                  "e44",
+                  "e51"
+                ],
+                "exhaustive": false,
+                "support_words": [
+                  718,
+                  722
+                ]
+              },
+              {
+                "phase": "after_Bell_addition",
+                "from_word": 732,
+                "until_word": 795,
+                "known_member_ids": [
+                  "e17",
+                  "e44",
+                  "e51",
+                  "e53"
+                ],
+                "exhaustive": false,
+                "support_words": [
+                  732,
+                  735
+                ]
+              },
+              {
+                "phase": "evening_star_observed",
+                "from_word": 796,
+                "known_member_ids": [
+                  "e17",
+                  "e44",
+                  "e51",
+                  "e52",
+                  "e53"
+                ],
+                "exhaustive": false,
+                "support_words": [
+                  761,
+                  765,
+                  769,
+                  796,
+                  797
+                ]
+              }
+            ],
+            "identity_note": "Display is an evolving group. Membership is local to each phase; before565 its members are not enumerated. Blue star attachment time/actor are unknown, and its membership is only confirmed by the ending.",
+            "source_group_ids": [
+              "e10"
+            ]
+          },
+          "e51": {
+            "name": "loaf shaped paper flag",
+            "type": "paper_flag",
+            "mentions": [
+              722,
+              769
+            ]
+          },
+          "e53": {
+            "name": "Bell red square flag",
+            "type": "paper_flag",
+            "mentions": [
+              735
+            ]
+          },
+          "e52": {
+            "name": "girl blue star flag",
+            "type": "paper_flag",
+            "mentions": [
+              729,
+              796
+            ]
+          },
+          "e10": {
+            "name": "Bea stack of paper flags",
+            "type": "paper_flag_group",
+            "mentions": [
+              98,
+              101,
+              214,
+              690
+            ]
+          },
+          "e73": {
+            "name": "each spaced flag as bound variable",
+            "type": "quantified_flag",
+            "mentions": [
+              585
+            ],
+            "quantifier_domain": "e72",
+            "not_an_additional_physical_object": true
+          },
+          "e45": {
+            "name": "ambient breeze",
+            "type": "wind",
+            "mentions": [
+              581,
+              800
+            ]
+          },
+          "e5": {
+            "name": "Mr. Bell",
+            "type": "person",
+            "mentions": [
+              611,
+              612,
+              613,
+              627,
+              672,
+              673,
+              682,
+              730,
+              731,
+              739
+            ]
+          },
+          "e6": {
+            "name": "little girl at table",
+            "type": "person",
+            "mentions": [
+              697,
+              703,
+              725,
+              794
+            ]
+          }
+        },
+        "events": {
+          "ev34": {
+            "event_id": "ev34",
+            "trigger": 161,
+            "event": "Rafi ties moon flag on",
+            "event_type": "other",
+            "actor_id": "e3",
+            "patients": [
+              "e17"
+            ],
+            "instruments": [],
+            "recipient_id": null,
+            "factuality": "desired",
+            "scope_id": "q9",
+            "support_words": [
+              161
+            ]
+          },
+          "ev35": {
+            "event_id": "ev35",
+            "trigger": 161,
+            "event": "communicate p12",
+            "event_type": "speak",
+            "actor_id": "e3",
+            "patients": [],
+            "instruments": [],
+            "recipient_id": "e1",
+            "factuality": "asserted",
+            "scope_id": "s0",
+            "support_words": [
+              161
+            ]
+          },
+          "ev62": {
+            "event_id": "ev62",
+            "trigger": 306,
+            "event": "imagined holding-only role is Bea invitation purpose",
+            "event_type": "state",
+            "actor_id": null,
+            "patients": [],
+            "instruments": [],
+            "recipient_id": null,
+            "factuality": "negated",
+            "scope_id": "s0",
+            "support_words": [
+              306
+            ]
+          },
+          "ev99": {
+            "event_id": "ev99",
+            "trigger": 517,
+            "event": "Rafi ties neat knot around fence rail",
+            "event_type": "other",
+            "actor_id": "e3",
+            "patients": [
+              "e9",
+              "e42"
+            ],
+            "instruments": [],
+            "recipient_id": null,
+            "factuality": "asserted",
+            "scope_id": "s0",
+            "support_words": [
+              517
+            ]
+          },
+          "ev107": {
+            "event_id": "ev107",
+            "trigger": 553,
+            "event": "Rafi chooses line middle beside sun for moon",
+            "event_type": "other",
+            "actor_id": "e3",
+            "patients": [
+              "e43"
+            ],
+            "instruments": [],
+            "recipient_id": null,
+            "factuality": "asserted",
+            "scope_id": "s0",
+            "support_words": [
+              553
+            ]
+          },
+          "ev108": {
+            "event_id": "ev108",
+            "trigger": 565,
+            "event": "Bea ties Rafi moon at chosen location",
+            "event_type": "other",
+            "actor_id": "e1",
+            "patients": [
+              "e17"
+            ],
+            "instruments": [],
+            "recipient_id": null,
+            "factuality": "asserted",
+            "scope_id": "s0",
+            "support_words": [
+              565
+            ]
+          },
+          "ev109": {
+            "event_id": "ev109",
+            "trigger": 569,
+            "event": "Bea and Rafi add flags along rail",
+            "event_type": "other",
+            "actor_id": "e26",
+            "patients": [
+              "e72"
+            ],
+            "instruments": [],
+            "recipient_id": null,
+            "factuality": "asserted",
+            "scope_id": "s0",
+            "support_words": [
+              569
+            ]
+          },
+          "ev111": {
+            "event_id": "ev111",
+            "trigger": 583,
+            "event": "breeze turns each spaced flag",
+            "event_type": "move",
+            "actor_id": "e45",
+            "patients": [
+              "e73"
+            ],
+            "instruments": [],
+            "recipient_id": null,
+            "factuality": "desired",
+            "scope_id": "s15",
+            "support_words": [
+              583
+            ]
+          }
+        },
+        "scopes": {
+          "q9": {
+            "kind": "quotation",
+            "parent": "s0",
+            "holder_id": "e3",
+            "words": [
+              160,
+              161,
+              162
+            ],
+            "description": "Ask to tie flag",
+            "addressee_ids": [
+              "e1"
+            ]
+          },
+          "s0": {
+            "kind": "narration",
+            "parent": null,
+            "description": "Narrator's story world; events still retain local time and factuality."
+          },
+          "s7": {
+            "kind": "imagined_exclusion",
+            "parent": "s0",
+            "holder_id": "e1",
+            "words": [
+              293,
+              294,
+              295,
+              296,
+              297,
+              298,
+              299,
+              300,
+              301,
+              302,
+              303,
+              304
+            ],
+            "description": "Rafi holds flag while someone else ties; not enacted."
+          },
+          "q7": {
+            "kind": "quotation",
+            "parent": "s0",
+            "holder_id": "e3",
+            "words": [
+              152,
+              153,
+              154,
+              155,
+              156,
+              157
+            ],
+            "description": "Ask to choose flag position",
+            "addressee_ids": [
+              "e1"
+            ]
+          },
+          "s15": {
+            "kind": "spacing_purpose",
+            "parent": "s0",
+            "holder_id": "e26",
+            "words": [
+              579,
+              580,
+              581,
+              582,
+              583,
+              584,
+              585
+            ],
+            "description": "Space allows breeze to turn flags, not all turns already observed."
+          },
+          "s19": {
+            "kind": "invited_tying",
+            "parent": "q29",
+            "holder_id": "e5",
+            "words": [
+              705,
+              706,
+              707,
+              708
+            ],
+            "description": "Girl tying a flag is invited; not explicitly completed."
+          },
+          "q29": {
+            "kind": "quotation",
+            "parent": "s0",
+            "holder_id": "e5",
+            "words": [
+              702,
+              703,
+              704,
+              705,
+              706,
+              707,
+              708
+            ],
+            "description": "Invite girl to tie a flag",
+            "addressee_ids": [
+              "e6"
+            ]
+          }
+        },
+        "propositions": {
+          "p12": {
+            "text": "Rafi ties his moon flag on.",
+            "support_words": [
+              160,
+              161,
+              162
+            ],
+            "scope_id": "q9"
+          },
+          "p20": {
+            "text": "Bea invited Rafi in order only to hold a flag while someone else tied it.",
+            "support_words": [
+              305,
+              306,
+              307,
+              308,
+              310,
+              311,
+              313
+            ],
+            "scope_id": "s0"
+          },
+          "p19": {
+            "text": "Rafi holds a flag while someone else climbs and ties it.",
+            "support_words": [
+              293,
+              294,
+              296,
+              298,
+              300,
+              303,
+              304
+            ],
+            "scope_id": "s7"
+          },
+          "p46": {
+            "text": "Bea did not invite Rafi merely to hold a flag while someone else tied it.",
+            "support_words": [
+              305,
+              306,
+              307,
+              308,
+              310,
+              311,
+              313
+            ],
+            "scope_id": "s0"
+          },
+          "p11": {
+            "text": "Rafi chooses where his moon flag goes.",
+            "support_words": [
+              152,
+              153,
+              154,
+              155,
+              156,
+              157
+            ],
+            "scope_id": "q7"
+          }
+        }
+      },
+      "annotation_sha256": "bd05858891d649c8594f08ec3717c734c04d03807358d1ab599960df6040a703"
+    },
+    {
+      "title": "Negating a reason preserves the recalled event",
+      "lesson": "A rejected causal explanation does not negate the actual rescue; repeated mentions reuse that finding event.",
+      "story_id": "20_biscuit",
+      "word_indices": [
+        121,
+        335,
+        336,
+        338
+      ],
+      "local_contexts": [
+        "The dog one’s for Pepper Mr Alvarez had found their terrier Pepper two nights earlier She’d wriggled",
+        "four dogs But not one like Pepper He didn’t find her because she was shaped like a",
+        "dogs But not one like Pepper He didn’t find her because she was shaped like a dog",
+        "not one like Pepper He didn’t find her because she was shaped like a dog Mara said"
+      ],
+      "records": [
+        {
+          "token": "found",
+          "word_index": 121,
+          "scope_id": "s2",
+          "pos": "v",
+          "lemma": "find",
+          "role": "action",
+          "event_id": "ev122",
+          "event": "Alvarez finds Pepper",
+          "event_type": "perceive",
+          "patients": [
+            "e7"
+          ],
+          "instruments": [],
+          "factuality": "asserted",
+          "actor_id": "e6",
+          "actor": "Mr. Alvarez",
+          "event_bindings": [
+            {
+              "event_id": "ev122",
+              "role": "action",
+              "scope_id": "s2"
+            }
+          ],
+          "assertion_status": "asserted",
+          "verb_form": "past_participle",
+          "aspect": "perfect",
+          "perfect_auxiliary_id": "t161",
+          "grammatical_subject_id": "e6",
+          "grammatical_object_id": "e7"
+        },
+        {
+          "token": "didn’t",
+          "word_index": 335,
+          "scope_id": "q13",
+          "pos": "v",
+          "lemma": "do",
+          "quotation_scope_id": "q13",
+          "speaker_id": "e1",
+          "contraction_expansion": [
+            "did",
+            "not"
+          ],
+          "clitic_type": "contracted_auxiliary",
+          "verb_form": "finite",
+          "tense": "past",
+          "negation_scope_id": "p20",
+          "proposition_polarity": "negative",
+          "negation_attachment_kind": "causal_explanation"
+        },
+        {
+          "token": "find",
+          "word_index": 336,
+          "scope_id": "q13",
+          "pos": "v",
+          "lemma": "find",
+          "quotation_scope_id": "q13",
+          "speaker_id": "e1",
+          "event_bindings": [
+            {
+              "event_id": "ev122",
+              "role": "action",
+              "scope_id": "q13"
+            }
+          ],
+          "event_id": "ev122",
+          "event": "Alvarez finds Pepper",
+          "role": "action",
+          "event_type": "perceive",
+          "patients": [
+            "e7"
+          ],
+          "instruments": [],
+          "factuality": "asserted",
+          "actor_id": "e6",
+          "actor": "Mr. Alvarez",
+          "assertion_status": "attributed_claim",
+          "verb_form": "base",
+          "grammatical_subject_id": "e6",
+          "grammatical_object_id": "e7"
+        },
+        {
+          "token": "because",
+          "word_index": 338,
+          "scope_id": "q13",
+          "pos": "conj",
+          "lemma": "because",
+          "quotation_scope_id": "q13",
+          "speaker_id": "e1",
+          "causal_scope": {
+            "entity_id": "e7",
+            "scope_id": "q13",
+            "assertion_status": "attributed_claim",
+            "value": {
+              "holder_id": "e1",
+              "content_id": "p20",
+              "factuality": "negated"
+            }
+          },
+          "reasoner_id": "e1",
+          "reasoning_conclusion_id": "p21",
+          "reasoning_rule_kind": "reject_causal_explanation"
+        }
+      ],
+      "references": {
+        "entities": {
+          "e6": {
+            "name": "Mr. Alvarez",
+            "type": "person",
+            "mentions": [
+              99,
+              100,
+              104,
+              108,
+              118,
+              119,
+              147,
+              148,
+              160,
+              167,
+              173,
+              320,
+              321,
+              324,
+              334,
+              620,
+              621,
+              626,
+              631,
+              636,
+              648,
+              649,
+              673,
+              675,
+              676,
+              679,
+              683,
+              690,
+              695
+            ]
+          },
+          "e7": {
+            "name": "Pepper the terrier",
+            "type": "dog",
+            "mentions": [
+              110,
+              117,
+              123,
+              124,
+              128,
+              132,
+              169,
+              323,
+              333,
+              337,
+              339,
+              633,
+              642,
+              656
+            ]
+          },
+          "e2": {
+            "name": "Toby",
+            "type": "person",
+            "mentions": [
+              44,
+              45,
+              91,
+              103,
+              112,
+              140,
+              187,
+              215,
+              287,
+              309,
+              311,
+              347,
+              387,
+              391,
+              400,
+              446,
+              462,
+              469,
+              472,
+              475,
+              486,
+              503,
+              505,
+              565,
+              657
+            ]
+          },
+          "e1": {
+            "name": "Mara",
+            "type": "person",
+            "mentions": [
+              40,
+              42,
+              87,
+              101,
+              138,
+              185,
+              210,
+              272,
+              296,
+              301,
+              345,
+              355,
+              385,
+              402,
+              433,
+              439,
+              466,
+              481,
+              501,
+              516,
+              560,
+              659
+            ]
+          }
+        },
+        "events": {
+          "ev122": {
+            "event_id": "ev122",
+            "trigger": 121,
+            "event": "Alvarez finds Pepper",
+            "event_type": "perceive",
+            "actor_id": "e6",
+            "patients": [
+              "e7"
+            ],
+            "instruments": [],
+            "recipient_id": null,
+            "factuality": "asserted",
+            "scope_id": "s2",
+            "support_words": [
+              121
+            ],
+            "mentions": [
+              {
+                "word": 322,
+                "scope_id": "q10",
+                "role": "action",
+                "note": "Same earlier event or resulting impression, recalled locally rather than repeated."
+              },
+              {
+                "word": 336,
+                "scope_id": "q13",
+                "role": "action",
+                "note": "Same earlier event or resulting impression, recalled locally rather than repeated."
+              },
+              {
+                "word": 118,
+                "scope_id": "s2",
+                "role": "actor",
+                "note": ""
+              },
+              {
+                "word": 119,
+                "scope_id": "s2",
+                "role": "actor",
+                "note": ""
+              },
+              {
+                "word": 123,
+                "scope_id": "s2",
+                "role": "patient",
+                "note": ""
+              },
+              {
+                "word": 124,
+                "scope_id": "s2",
+                "role": "patient",
+                "note": ""
+              },
+              {
+                "word": 320,
+                "scope_id": "q10",
+                "role": "actor",
+                "note": ""
+              },
+              {
+                "word": 321,
+                "scope_id": "q10",
+                "role": "actor",
+                "note": ""
+              },
+              {
+                "word": 323,
+                "scope_id": "q10",
+                "role": "patient",
+                "note": ""
+              },
+              {
+                "word": 334,
+                "scope_id": "q13",
+                "role": "actor",
+                "note": ""
+              },
+              {
+                "word": 337,
+                "scope_id": "q13",
+                "role": "patient",
+                "note": ""
+              }
+            ]
+          },
+          "ev1316": {
+            "event_id": "ev1316",
+            "trigger": 316,
+            "event": "spoken turn",
+            "event_type": "speak",
+            "actor_id": "e2",
+            "patients": [],
+            "instruments": [],
+            "recipient_id": "e1",
+            "factuality": "asserted",
+            "scope_id": "s0",
+            "support_words": [
+              316,
+              317,
+              318,
+              319,
+              320,
+              321,
+              322,
+              323
+            ]
+          },
+          "ev347": {
+            "event_id": "ev347",
+            "trigger": 346,
+            "event": "Mara rejects shape as rescue reason",
+            "event_type": "speak",
+            "actor_id": "e1",
+            "patients": [],
+            "instruments": [],
+            "recipient_id": "e2",
+            "factuality": "asserted",
+            "scope_id": "s0",
+            "support_words": [
+              346
+            ],
+            "mentions": [
+              {
+                "word": 345,
+                "scope_id": "s0",
+                "role": "actor",
+                "note": ""
+              }
+            ]
+          }
+        },
+        "scopes": {
+          "s2": {
+            "kind": "earlier_rescue",
+            "parent": "s0",
+            "holder_id": null,
+            "words": [
+              118,
+              119,
+              120,
+              121,
+              122,
+              123,
+              124,
+              125,
+              126,
+              127,
+              128,
+              129,
+              130,
+              131,
+              132,
+              133,
+              134,
+              135,
+              136,
+              137,
+              138,
+              139,
+              140,
+              141,
+              142,
+              143,
+              144,
+              145,
+              146,
+              147,
+              148,
+              149,
+              150,
+              151,
+              152,
+              153,
+              154,
+              155,
+              156,
+              157,
+              158,
+              159,
+              160,
+              161,
+              162,
+              163,
+              164,
+              165,
+              166,
+              167,
+              168,
+              169,
+              170,
+              171,
+              172,
+              173,
+              174
+            ],
+            "description": "Two nights earlier, including an earlier escape nested in the rescue sequence."
+          },
+          "s0": {
+            "kind": "narration",
+            "parent": null,
+            "description": "Narrator's story world; events still retain local time and factuality."
+          },
+          "q10": {
+            "kind": "quotation",
+            "parent": "s0",
+            "holder_id": "e2",
+            "words": [
+              316,
+              317,
+              318,
+              319,
+              320,
+              321,
+              322,
+              323
+            ],
+            "description": "Direct speech, local truth and operators retained.",
+            "utterance_event_id": "ev1316",
+            "addressee_ids": [
+              "e1"
+            ]
+          },
+          "q13": {
+            "kind": "quotation",
+            "parent": "s0",
+            "holder_id": "e1",
+            "words": [
+              334,
+              335,
+              336,
+              337,
+              338,
+              339,
+              340,
+              341,
+              342,
+              343,
+              344
+            ],
+            "description": "Direct speech, local truth and operators retained.",
+            "utterance_event_id": "ev347",
+            "addressee_ids": [
+              "e2"
+            ]
+          }
+        },
+        "propositions": {
+          "p20": {
+            "text": "Pepper’s being dog-shaped caused Mr. Alvarez to find her.",
+            "support_words": [
+              334,
+              335,
+              336,
+              337,
+              338,
+              339,
+              340,
+              341,
+              342,
+              343,
+              344
+            ],
+            "scope_id": "q13"
+          },
+          "p21": {
+            "text": "Mr. Alvarez did not find Pepper because of her dog shape.",
+            "support_words": [
+              334,
+              335,
+              336,
+              337,
+              338,
+              339,
+              340,
+              341,
+              342,
+              343,
+              344
+            ],
+            "scope_id": "q13"
+          }
+        }
+      },
+      "annotation_sha256": "e33a908d0c24a5b3273c649aedd82660ac271531dd12bbec52991878fcddabad"
+    },
+    {
+      "title": "Explicit artifact symbolism",
+      "lesson": "The sugar star represents a flashlight in an attributed explanation; it is not a flashlight, a performance role or an inferred act of commemoration.",
+      "story_id": "20_biscuit",
+      "word_indices": [
+        671
+      ],
+      "local_contexts": [
+        "top biscuit That’s a dog and the star is for your flashlight Mr Alvarez laughed softly I"
+      ],
+      "records": [
+        {
+          "token": "is",
+          "word_index": 671,
+          "scope_id": "q25",
+          "pos": "v",
+          "lemma": "be",
+          "quotation_scope_id": "q25",
+          "speaker_id": "e1",
+          "role": "action",
+          "event_id": "ev672",
+          "event": "star decoration symbolizes Alvarez flashlight",
+          "event_type": "state",
+          "patients": [
+            "e68"
+          ],
+          "instruments": [],
+          "factuality": "reported",
+          "event_bindings": [
+            {
+              "event_id": "ev672",
+              "role": "action",
+              "scope_id": "q25"
+            }
+          ],
+          "assertion_status": "attributed_claim",
+          "verb_form": "finite",
+          "tense": "present",
+          "grammatical_subject_id": "e68",
+          "symbolic_reference": {
+            "carrier_id": "e68",
+            "referent_id": "e37",
+            "relation": "represents",
+            "holder_id": "e1",
+            "scope_id": "q25",
+            "assertion_status": "attributed_claim"
+          }
+        }
+      ],
+      "references": {
+        "entities": {
+          "e1": {
+            "name": "Mara",
+            "type": "person",
+            "mentions": [
+              40,
+              42,
+              87,
+              101,
+              138,
+              185,
+              210,
+              272,
+              296,
+              301,
+              345,
+              355,
+              385,
+              402,
+              433,
+              439,
+              466,
+              481,
+              501,
+              516,
+              560,
+              659
+            ]
+          },
+          "e6": {
+            "name": "Mr. Alvarez",
+            "type": "person",
+            "mentions": [
+              99,
+              100,
+              104,
+              108,
+              118,
+              119,
+              147,
+              148,
+              160,
+              167,
+              173,
+              320,
+              321,
+              324,
+              334,
+              620,
+              621,
+              626,
+              631,
+              636,
+              648,
+              649,
+              673,
+              675,
+              676,
+              679,
+              683,
+              690,
+              695
+            ]
+          },
+          "e68": {
+            "name": "star impression with sugar",
+            "type": "biscuit_decoration",
+            "mentions": [
+              512,
+              611,
+              670,
+              715
+            ]
+          },
+          "e37": {
+            "name": "Alvarez yellow flashlight",
+            "type": "flashlight",
+            "mentions": [
+              162,
+              628,
+              674,
+              693
+            ]
+          }
+        },
+        "events": {
+          "ev1665": {
+            "event_id": "ev1665",
+            "trigger": 665,
+            "event": "spoken turn",
+            "event_type": "speak",
+            "actor_id": "e1",
+            "patients": [],
+            "instruments": [],
+            "recipient_id": "e6",
+            "factuality": "asserted",
+            "scope_id": "s0",
+            "support_words": [
+              665,
+              666,
+              667,
+              668,
+              669,
+              670,
+              671,
+              672,
+              673,
+              674
+            ]
+          },
+          "ev672": {
+            "event_id": "ev672",
+            "trigger": 671,
+            "event": "star decoration symbolizes Alvarez flashlight",
+            "event_type": "state",
+            "actor_id": null,
+            "patients": [
+              "e68"
+            ],
+            "instruments": [],
+            "recipient_id": null,
+            "factuality": "reported",
+            "scope_id": "q25",
+            "support_words": [
+              671
+            ],
+            "mentions": [
+              {
+                "word": 670,
+                "scope_id": "q25",
+                "role": "patient",
+                "note": ""
+              },
+              {
+                "word": 674,
+                "scope_id": "q25",
+                "role": "represented_referent",
+                "note": ""
+              }
+            ]
+          }
+        },
+        "scopes": {
+          "q25": {
+            "kind": "quotation",
+            "parent": "s0",
+            "holder_id": "e1",
+            "words": [
+              665,
+              666,
+              667,
+              668,
+              669,
+              670,
+              671,
+              672,
+              673,
+              674
+            ],
+            "description": "Direct speech, local truth and operators retained.",
+            "utterance_event_id": "ev1665",
+            "addressee_ids": [
+              "e6"
+            ]
+          },
+          "s0": {
+            "kind": "narration",
+            "parent": null,
+            "description": "Narrator's story world; events still retain local time and factuality."
+          }
+        },
+        "propositions": {}
+      },
+      "annotation_sha256": "e33a908d0c24a5b3273c649aedd82660ac271531dd12bbec52991878fcddabad"
+    }
+  ]
+}

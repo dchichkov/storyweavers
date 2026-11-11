@@ -1,0 +1,929 @@
+{
+  "note": "Selected regression cases, not a held-out accuracy estimate. Expectations were authored from each prefix; retrospective differences are not automatically errors.",
+  "baseline": {
+    "cases_passed": 3,
+    "cases_total": 17,
+    "checks_passed": 9,
+    "checks_total": 44,
+    "cases": [
+      {
+        "index": 19,
+        "token": "placed",
+        "reason": "Correct causal abstention: placed cannot know the future compass or recipient.",
+        "checks": [
+          {
+            "kind": "empty",
+            "path": "patients",
+            "value": null,
+            "passed": true
+          },
+          {
+            "kind": "absent",
+            "path": "recipient_id",
+            "value": null,
+            "passed": true
+          }
+        ],
+        "passed": true,
+        "record_available": true
+      },
+      {
+        "index": 35,
+        "token": "Borrow",
+        "reason": "An imperative actor must not be filled with its speaker; its unseen object stays open.",
+        "checks": [
+          {
+            "kind": "not_equals",
+            "path": "actor_id",
+            "value": "e18",
+            "passed": false
+          },
+          {
+            "kind": "not_equals",
+            "path": "actor_id",
+            "value": "e16",
+            "passed": true
+          },
+          {
+            "kind": "empty",
+            "path": "patients",
+            "value": null,
+            "passed": true
+          }
+        ],
+        "passed": false,
+        "record_available": true
+      },
+      {
+        "index": 108,
+        "token": "Nia",
+        "reason": "The earlier possessive Nia’s is the first supported named-person anchor.",
+        "checks": [
+          {
+            "kind": "equals",
+            "path": "entity_id",
+            "value": "e30",
+            "passed": true
+          }
+        ],
+        "passed": true,
+        "record_available": true
+      },
+      {
+        "index": 129,
+        "token": "wanted",
+        "reason": "Goal cue has a holder but its content has not appeared.",
+        "checks": [
+          {
+            "kind": "equals",
+            "path": "goal_owner_id",
+            "value": "e30",
+            "passed": false
+          },
+          {
+            "kind": "equals",
+            "path": "goal_status",
+            "value": "proposed",
+            "passed": false
+          },
+          {
+            "kind": "absent",
+            "path": "goal_content_id",
+            "value": null,
+            "passed": true
+          }
+        ],
+        "passed": false,
+        "record_available": true
+      },
+      {
+        "index": 151,
+        "token": "help",
+        "reason": "The completed desired goal contains asking negation; no actual non-asking event is established.",
+        "checks": [
+          {
+            "kind": "equals",
+            "path": "goal_owner_id",
+            "value": "e30",
+            "passed": false
+          },
+          {
+            "kind": "present",
+            "path": "goal_content_id",
+            "value": null,
+            "passed": false
+          },
+          {
+            "kind": "scope_kind",
+            "path": "",
+            "value": [
+              "desired",
+              "desire",
+              "goal",
+              "want"
+            ],
+            "passed": false
+          },
+          {
+            "kind": "scope_kind",
+            "path": "",
+            "value": [
+              "negation",
+              "without"
+            ],
+            "passed": false
+          }
+        ],
+        "passed": false,
+        "record_available": true
+      },
+      {
+        "index": 205,
+        "token": "hoped",
+        "reason": "Hope cue should expose the holder, leaving its unseen content open.",
+        "checks": [
+          {
+            "kind": "equals",
+            "path": "goal_owner_id",
+            "value": "e193",
+            "passed": false
+          },
+          {
+            "kind": "equals",
+            "path": "goal_status",
+            "value": "proposed",
+            "passed": false
+          },
+          {
+            "kind": "absent",
+            "path": "goal_content_id",
+            "value": null,
+            "passed": true
+          }
+        ],
+        "passed": false,
+        "record_available": true
+      },
+      {
+        "index": 221,
+        "token": "stream",
+        "reason": "The now-visible sketching goal can be bound on its completing complement.",
+        "checks": [
+          {
+            "kind": "equals",
+            "path": "goal_owner_id",
+            "value": "e193",
+            "passed": false
+          },
+          {
+            "kind": "present",
+            "path": "goal_content_id",
+            "value": null,
+            "passed": false
+          },
+          {
+            "kind": "one_of",
+            "path": "plot.role",
+            "value": [
+              "desire"
+            ],
+            "passed": false
+          }
+        ],
+        "passed": false,
+        "record_available": true
+      },
+      {
+        "index": 278,
+        "token": "her",
+        "reason": "The promise content is now visible; retain it and its intended rather than performed scope.",
+        "checks": [
+          {
+            "kind": "present",
+            "path": "promise_content_id",
+            "value": null,
+            "passed": false
+          },
+          {
+            "kind": "equals",
+            "path": "plan_commitment_status",
+            "value": "promised",
+            "passed": false
+          },
+          {
+            "kind": "scope_kind",
+            "path": "",
+            "value": [
+              "promised",
+              "promise",
+              "desired",
+              "intention"
+            ],
+            "passed": false
+          }
+        ],
+        "passed": false,
+        "record_available": true
+      },
+      {
+        "index": 522,
+        "token": "minutes",
+        "reason": "Forty minutes is available time, not the elapsed duration of a hike.",
+        "checks": [
+          {
+            "kind": "present",
+            "path": "temporal_remaining",
+            "value": null,
+            "passed": false
+          },
+          {
+            "kind": "absent",
+            "path": "temporal_duration",
+            "value": null,
+            "passed": false
+          }
+        ],
+        "passed": false,
+        "record_available": true
+      },
+      {
+        "index": 641,
+        "token": "sprint",
+        "reason": "Cannot do it at a sprint is locally negated, within the current quotation.",
+        "checks": [
+          {
+            "kind": "scope_kind",
+            "path": "",
+            "value": [
+              "negation",
+              "negative_ability",
+              "inability"
+            ],
+            "passed": false
+          },
+          {
+            "kind": "quote",
+            "path": "",
+            "value": "q627",
+            "passed": true
+          }
+        ],
+        "passed": false,
+        "record_available": true
+      },
+      {
+        "index": 773,
+        "token": "Loop",
+        "reason": "Actually selecting the loop is a choice/revision; no later successful arrival is yet known.",
+        "checks": [
+          {
+            "kind": "one_of",
+            "path": "plot.role",
+            "value": [
+              "choice",
+              "revision"
+            ],
+            "passed": false
+          },
+          {
+            "kind": "equals",
+            "path": "plot.stage",
+            "value": "development",
+            "passed": false
+          }
+        ],
+        "passed": false,
+        "record_available": true
+      },
+      {
+        "index": 876,
+        "token": "trail",
+        "reason": "A fallen birch blocking the trail is a new obstacle, not proof the hike fails.",
+        "checks": [
+          {
+            "kind": "one_of",
+            "path": "plot.role",
+            "value": [
+              "setback",
+              "threat"
+            ],
+            "passed": false
+          },
+          {
+            "kind": "equals",
+            "path": "plot.stage",
+            "value": "complication",
+            "passed": false
+          }
+        ],
+        "passed": false,
+        "record_available": true
+      },
+      {
+        "index": 961,
+        "token": "safely",
+        "reason": "Not safely keeps its current quote and negative elliptical content.",
+        "checks": [
+          {
+            "kind": "quote",
+            "path": "",
+            "value": "q959",
+            "passed": false
+          },
+          {
+            "kind": "scope_kind",
+            "path": "",
+            "value": [
+              "negation",
+              "negative_ability",
+              "inability"
+            ],
+            "passed": false
+          },
+          {
+            "kind": "present",
+            "path": "utterance_content_id",
+            "value": null,
+            "passed": false
+          }
+        ],
+        "passed": false,
+        "record_available": true
+      },
+      {
+        "index": 1112,
+        "token": "detour",
+        "reason": "Looking for the detour is conditional, not already performed.",
+        "checks": [
+          {
+            "kind": "scope_kind",
+            "path": "",
+            "value": [
+              "conditional",
+              "conditional_consequence",
+              "conditional_antecedent"
+            ],
+            "passed": true
+          }
+        ],
+        "passed": true,
+        "record_available": true
+      },
+      {
+        "index": 1518,
+        "token": "square",
+        "reason": "The last stamp filling the final square evidences Felix’s stated goal; it does not prove every other goal.",
+        "checks": [
+          {
+            "kind": "equals",
+            "path": "goal_owner_id",
+            "value": "e155",
+            "passed": false
+          },
+          {
+            "kind": "equals",
+            "path": "goal_status",
+            "value": "achieved",
+            "passed": false
+          },
+          {
+            "kind": "one_of",
+            "path": "plot.role",
+            "value": [
+              "payoff"
+            ],
+            "passed": false
+          },
+          {
+            "kind": "present",
+            "path": "narrative_resolution_evidence",
+            "value": null,
+            "passed": false
+          }
+        ],
+        "passed": false,
+        "record_available": true
+      },
+      {
+        "index": 1659,
+        "token": "salamander",
+        "reason": "The sketchbook animal is depicted, not another unscoped physical animal.",
+        "checks": [
+          {
+            "kind": "equals",
+            "path": "depiction.medium",
+            "value": "drawing",
+            "passed": false
+          },
+          {
+            "kind": "scope_kind",
+            "path": "",
+            "value": [
+              "depiction",
+              "representation"
+            ],
+            "passed": false
+          }
+        ],
+        "passed": false,
+        "record_available": true
+      },
+      {
+        "index": 1671,
+        "token": "triangle",
+        "reason": "The drawn triangle has distinct identity from the physical route marker; the ending-image reading is only a candidate.",
+        "checks": [
+          {
+            "kind": "equals",
+            "path": "depiction.medium",
+            "value": "drawing",
+            "passed": false
+          },
+          {
+            "kind": "not_equals",
+            "path": "entity_id",
+            "value": "e1194",
+            "passed": false
+          },
+          {
+            "kind": "equals",
+            "path": "plot.role",
+            "value": "final_image",
+            "passed": false
+          },
+          {
+            "kind": "equals",
+            "path": "plot.status",
+            "value": "candidate",
+            "passed": false
+          }
+        ],
+        "passed": false,
+        "record_available": true
+      }
+    ]
+  },
+  "revised": {
+    "cases_passed": 12,
+    "cases_total": 17,
+    "checks_passed": 36,
+    "checks_total": 44,
+    "cases": [
+      {
+        "index": 19,
+        "token": "placed",
+        "reason": "Correct causal abstention: placed cannot know the future compass or recipient.",
+        "checks": [
+          {
+            "kind": "empty",
+            "path": "patients",
+            "value": null,
+            "passed": true
+          },
+          {
+            "kind": "absent",
+            "path": "recipient_id",
+            "value": null,
+            "passed": true
+          }
+        ],
+        "passed": true,
+        "record_available": true
+      },
+      {
+        "index": 35,
+        "token": "Borrow",
+        "reason": "An imperative actor must not be filled with its speaker; its unseen object stays open.",
+        "checks": [
+          {
+            "kind": "not_equals",
+            "path": "actor_id",
+            "value": "e18",
+            "passed": true
+          },
+          {
+            "kind": "not_equals",
+            "path": "actor_id",
+            "value": "e16",
+            "passed": true
+          },
+          {
+            "kind": "empty",
+            "path": "patients",
+            "value": null,
+            "passed": true
+          }
+        ],
+        "passed": true,
+        "record_available": true
+      },
+      {
+        "index": 108,
+        "token": "Nia",
+        "reason": "The earlier possessive Nia’s is the first supported named-person anchor.",
+        "checks": [
+          {
+            "kind": "equals",
+            "path": "entity_id",
+            "value": "e30",
+            "passed": true
+          }
+        ],
+        "passed": true,
+        "record_available": true
+      },
+      {
+        "index": 129,
+        "token": "wanted",
+        "reason": "Goal cue has a holder but its content has not appeared.",
+        "checks": [
+          {
+            "kind": "equals",
+            "path": "goal_owner_id",
+            "value": "e30",
+            "passed": true
+          },
+          {
+            "kind": "equals",
+            "path": "goal_status",
+            "value": "proposed",
+            "passed": true
+          },
+          {
+            "kind": "absent",
+            "path": "goal_content_id",
+            "value": null,
+            "passed": true
+          }
+        ],
+        "passed": true,
+        "record_available": true
+      },
+      {
+        "index": 151,
+        "token": "help",
+        "reason": "The completed desired goal contains asking negation; no actual non-asking event is established.",
+        "checks": [
+          {
+            "kind": "equals",
+            "path": "goal_owner_id",
+            "value": "e30",
+            "passed": true
+          },
+          {
+            "kind": "present",
+            "path": "goal_content_id",
+            "value": null,
+            "passed": true
+          },
+          {
+            "kind": "scope_kind",
+            "path": "",
+            "value": [
+              "desired",
+              "desire",
+              "goal",
+              "want"
+            ],
+            "passed": true
+          },
+          {
+            "kind": "scope_kind",
+            "path": "",
+            "value": [
+              "negation",
+              "without"
+            ],
+            "passed": true
+          }
+        ],
+        "passed": true,
+        "record_available": true
+      },
+      {
+        "index": 205,
+        "token": "hoped",
+        "reason": "Hope cue should expose the holder, leaving its unseen content open.",
+        "checks": [
+          {
+            "kind": "equals",
+            "path": "goal_owner_id",
+            "value": "e193",
+            "passed": true
+          },
+          {
+            "kind": "equals",
+            "path": "goal_status",
+            "value": "proposed",
+            "passed": true
+          },
+          {
+            "kind": "absent",
+            "path": "goal_content_id",
+            "value": null,
+            "passed": true
+          }
+        ],
+        "passed": true,
+        "record_available": true
+      },
+      {
+        "index": 221,
+        "token": "stream",
+        "reason": "The now-visible sketching goal can be bound on its completing complement.",
+        "checks": [
+          {
+            "kind": "equals",
+            "path": "goal_owner_id",
+            "value": "e193",
+            "passed": true
+          },
+          {
+            "kind": "present",
+            "path": "goal_content_id",
+            "value": null,
+            "passed": true
+          },
+          {
+            "kind": "one_of",
+            "path": "plot.role",
+            "value": [
+              "desire"
+            ],
+            "passed": true
+          }
+        ],
+        "passed": true,
+        "record_available": true
+      },
+      {
+        "index": 278,
+        "token": "her",
+        "reason": "The promise content is now visible; retain it and its intended rather than performed scope.",
+        "checks": [
+          {
+            "kind": "present",
+            "path": "promise_content_id",
+            "value": null,
+            "passed": true
+          },
+          {
+            "kind": "equals",
+            "path": "plan_commitment_status",
+            "value": "promised",
+            "passed": true
+          },
+          {
+            "kind": "scope_kind",
+            "path": "",
+            "value": [
+              "promised",
+              "promise",
+              "desired",
+              "intention"
+            ],
+            "passed": true
+          }
+        ],
+        "passed": true,
+        "record_available": true
+      },
+      {
+        "index": 522,
+        "token": "minutes",
+        "reason": "Forty minutes is available time, not the elapsed duration of a hike.",
+        "checks": [
+          {
+            "kind": "present",
+            "path": "temporal_remaining",
+            "value": null,
+            "passed": true
+          },
+          {
+            "kind": "absent",
+            "path": "temporal_duration",
+            "value": null,
+            "passed": true
+          }
+        ],
+        "passed": true,
+        "record_available": true
+      },
+      {
+        "index": 641,
+        "token": "sprint",
+        "reason": "Cannot do it at a sprint is locally negated, within the current quotation.",
+        "checks": [
+          {
+            "kind": "scope_kind",
+            "path": "",
+            "value": [
+              "negation",
+              "negative_ability",
+              "inability"
+            ],
+            "passed": false
+          },
+          {
+            "kind": "quote",
+            "path": "",
+            "value": "q627",
+            "passed": true
+          }
+        ],
+        "passed": false,
+        "record_available": true
+      },
+      {
+        "index": 773,
+        "token": "Loop",
+        "reason": "Actually selecting the loop is a choice/revision; no later successful arrival is yet known.",
+        "checks": [
+          {
+            "kind": "one_of",
+            "path": "plot.role",
+            "value": [
+              "choice",
+              "revision"
+            ],
+            "passed": false
+          },
+          {
+            "kind": "equals",
+            "path": "plot.stage",
+            "value": "development",
+            "passed": false
+          }
+        ],
+        "passed": false,
+        "record_available": true
+      },
+      {
+        "index": 876,
+        "token": "trail",
+        "reason": "A fallen birch blocking the trail is a new obstacle, not proof the hike fails.",
+        "checks": [
+          {
+            "kind": "one_of",
+            "path": "plot.role",
+            "value": [
+              "setback",
+              "threat"
+            ],
+            "passed": false
+          },
+          {
+            "kind": "equals",
+            "path": "plot.stage",
+            "value": "complication",
+            "passed": false
+          }
+        ],
+        "passed": false,
+        "record_available": true
+      },
+      {
+        "index": 961,
+        "token": "safely",
+        "reason": "Not safely keeps its current quote and negative elliptical content.",
+        "checks": [
+          {
+            "kind": "quote",
+            "path": "",
+            "value": "q959",
+            "passed": true
+          },
+          {
+            "kind": "scope_kind",
+            "path": "",
+            "value": [
+              "negation",
+              "negative_ability",
+              "inability"
+            ],
+            "passed": true
+          },
+          {
+            "kind": "present",
+            "path": "utterance_content_id",
+            "value": null,
+            "passed": false
+          }
+        ],
+        "passed": false,
+        "record_available": true
+      },
+      {
+        "index": 1112,
+        "token": "detour",
+        "reason": "Looking for the detour is conditional, not already performed.",
+        "checks": [
+          {
+            "kind": "scope_kind",
+            "path": "",
+            "value": [
+              "conditional",
+              "conditional_consequence",
+              "conditional_antecedent"
+            ],
+            "passed": true
+          }
+        ],
+        "passed": true,
+        "record_available": true
+      },
+      {
+        "index": 1518,
+        "token": "square",
+        "reason": "The last stamp filling the final square evidences Felix’s stated goal; it does not prove every other goal.",
+        "checks": [
+          {
+            "kind": "equals",
+            "path": "goal_owner_id",
+            "value": "e155",
+            "passed": true
+          },
+          {
+            "kind": "equals",
+            "path": "goal_status",
+            "value": "achieved",
+            "passed": true
+          },
+          {
+            "kind": "one_of",
+            "path": "plot.role",
+            "value": [
+              "payoff"
+            ],
+            "passed": true
+          },
+          {
+            "kind": "present",
+            "path": "narrative_resolution_evidence",
+            "value": null,
+            "passed": true
+          }
+        ],
+        "passed": true,
+        "record_available": true
+      },
+      {
+        "index": 1659,
+        "token": "salamander",
+        "reason": "The sketchbook animal is depicted, not another unscoped physical animal.",
+        "checks": [
+          {
+            "kind": "equals",
+            "path": "depiction.medium",
+            "value": "drawing",
+            "passed": true
+          },
+          {
+            "kind": "scope_kind",
+            "path": "",
+            "value": [
+              "depiction",
+              "representation"
+            ],
+            "passed": true
+          }
+        ],
+        "passed": true,
+        "record_available": true
+      },
+      {
+        "index": 1671,
+        "token": "triangle",
+        "reason": "The drawn triangle has distinct identity from the physical route marker; the ending-image reading is only a candidate.",
+        "checks": [
+          {
+            "kind": "equals",
+            "path": "depiction.medium",
+            "value": "drawing",
+            "passed": true
+          },
+          {
+            "kind": "not_equals",
+            "path": "entity_id",
+            "value": "e1194",
+            "passed": true
+          },
+          {
+            "kind": "equals",
+            "path": "plot.role",
+            "value": "final_image",
+            "passed": false
+          },
+          {
+            "kind": "equals",
+            "path": "plot.status",
+            "value": "candidate",
+            "passed": false
+          }
+        ],
+        "passed": false,
+        "record_available": true
+      }
+    ]
+  }
+}

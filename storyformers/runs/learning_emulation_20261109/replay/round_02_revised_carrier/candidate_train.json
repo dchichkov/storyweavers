@@ -1,0 +1,1209 @@
+{
+  "model_sha256": "d67f2489157e91159238273c13e2fa430cb2379067f45caebc4c1c8e47fd6d0c",
+  "targets": 1311,
+  "unique_prefixes": 519,
+  "coverage": 1.0,
+  "joint_nll": 1.012281937322387,
+  "joint_accuracy": 0.5598779557589626,
+  "head_activations": {
+    "L0.H0:carry_preceding_verb": 420
+  },
+  "per_pos": {
+    "pn": {
+      "targets": 192,
+      "coverage": 1.0,
+      "joint_nll": 1.3575086585145897
+    },
+    "v": {
+      "targets": 192,
+      "coverage": 1.0,
+      "joint_nll": 1.6933310202150718
+    },
+    "adv": {
+      "targets": 123,
+      "coverage": 1.0,
+      "joint_nll": 1.1435671717164955
+    },
+    "adj": {
+      "targets": 132,
+      "coverage": 1.0,
+      "joint_nll": 1.409550433645261
+    },
+    "n": {
+      "targets": 192,
+      "coverage": 1.0,
+      "joint_nll": 1.8038137396009832
+    },
+    "det": {
+      "targets": 96,
+      "coverage": 1.0,
+      "joint_nll": 0.6933556903225474
+    },
+    "punct": {
+      "targets": 192,
+      "coverage": 1.0,
+      "joint_nll": 0.004496348637734627
+    },
+    "special": {
+      "targets": 192,
+      "coverage": 1.0,
+      "joint_nll": 0.004496348637734627
+    }
+  },
+  "high_loss_examples": [
+    {
+      "context": [
+        {
+          "pos": "pn",
+          "entity": null,
+          "role": null,
+          "location": null,
+          "event": null,
+          "token": "Tom",
+          "position": {
+            "token": 0,
+            "sentence": 0,
+            "in_sentence": 0
+          }
+        },
+        {
+          "pos": "v",
+          "entity": null,
+          "role": null,
+          "location": null,
+          "event": null,
+          "token": "found",
+          "position": {
+            "token": 1,
+            "sentence": 0,
+            "in_sentence": 1
+          }
+        }
+      ],
+      "neuron_input": [
+        {
+          "pos": "pn",
+          "entity": null,
+          "role": null,
+          "location": null,
+          "event": null,
+          "token": "Tom",
+          "position": {
+            "token": 0,
+            "sentence": 0,
+            "in_sentence": 0
+          }
+        },
+        {
+          "pos": "v",
+          "entity": null,
+          "role": null,
+          "location": null,
+          "event": null,
+          "token": "found",
+          "position": {
+            "token": 1,
+            "sentence": 0,
+            "in_sentence": 1
+          },
+          "preceding_verb_surface": "found"
+        }
+      ],
+      "target": {
+        "entity": null,
+        "event": null,
+        "location": null,
+        "pos": "n",
+        "role": null,
+        "token": "needles"
+      },
+      "count": 1,
+      "probability": 0.031727768269718626,
+      "top_tokens": {
+        "the": 0.49229418290227916,
+        "small": 0.19379205865727503,
+        "red": 0.16779798945839478,
+        "pears": 0.0401806197326298,
+        "apples": 0.036225016526209915,
+        "scissors": 0.03447914930541836,
+        "needles": 0.03189529412757799,
+        ".": 0.0012712097930824352,
+        "<END>": 0.0012712097930824352,
+        "found": 0.000793269704050104
+      }
+    },
+    {
+      "context": [
+        {
+          "pos": "pn",
+          "entity": null,
+          "role": null,
+          "location": null,
+          "event": null,
+          "token": "Tom",
+          "position": {
+            "token": 0,
+            "sentence": 0,
+            "in_sentence": 0
+          }
+        },
+        {
+          "pos": "adv",
+          "entity": null,
+          "role": null,
+          "location": null,
+          "event": null,
+          "token": "quickly",
+          "position": {
+            "token": 1,
+            "sentence": 0,
+            "in_sentence": 1
+          }
+        },
+        {
+          "pos": "v",
+          "entity": null,
+          "role": null,
+          "location": null,
+          "event": null,
+          "token": "found",
+          "position": {
+            "token": 2,
+            "sentence": 0,
+            "in_sentence": 2
+          }
+        }
+      ],
+      "neuron_input": [
+        {
+          "pos": "pn",
+          "entity": null,
+          "role": null,
+          "location": null,
+          "event": null,
+          "token": "Tom",
+          "position": {
+            "token": 0,
+            "sentence": 0,
+            "in_sentence": 0
+          }
+        },
+        {
+          "pos": "adv",
+          "entity": null,
+          "role": null,
+          "location": null,
+          "event": null,
+          "token": "quickly",
+          "position": {
+            "token": 1,
+            "sentence": 0,
+            "in_sentence": 1
+          }
+        },
+        {
+          "pos": "v",
+          "entity": null,
+          "role": null,
+          "location": null,
+          "event": null,
+          "token": "found",
+          "position": {
+            "token": 2,
+            "sentence": 0,
+            "in_sentence": 2
+          },
+          "preceding_verb_surface": "found"
+        }
+      ],
+      "target": {
+        "entity": null,
+        "event": null,
+        "location": null,
+        "pos": "n",
+        "role": null,
+        "token": "needles"
+      },
+      "count": 1,
+      "probability": 0.031727768269718626,
+      "top_tokens": {
+        "the": 0.49229418290227916,
+        "small": 0.19379205865727503,
+        "red": 0.16779798945839478,
+        "pears": 0.0401806197326298,
+        "apples": 0.036225016526209915,
+        "scissors": 0.03447914930541836,
+        "needles": 0.03189529412757799,
+        ".": 0.0012712097930824352,
+        "<END>": 0.0012712097930824352,
+        "found": 0.000793269704050104
+      }
+    },
+    {
+      "context": [
+        {
+          "pos": "pn",
+          "entity": null,
+          "role": null,
+          "location": null,
+          "event": null,
+          "token": "Ben",
+          "position": {
+            "token": 0,
+            "sentence": 0,
+            "in_sentence": 0
+          }
+        },
+        {
+          "pos": "v",
+          "entity": null,
+          "role": null,
+          "location": null,
+          "event": null,
+          "token": "took",
+          "position": {
+            "token": 1,
+            "sentence": 0,
+            "in_sentence": 1
+          }
+        }
+      ],
+      "neuron_input": [
+        {
+          "pos": "pn",
+          "entity": null,
+          "role": null,
+          "location": null,
+          "event": null,
+          "token": "Ben",
+          "position": {
+            "token": 0,
+            "sentence": 0,
+            "in_sentence": 0
+          }
+        },
+        {
+          "pos": "v",
+          "entity": null,
+          "role": null,
+          "location": null,
+          "event": null,
+          "token": "took",
+          "position": {
+            "token": 1,
+            "sentence": 0,
+            "in_sentence": 1
+          },
+          "preceding_verb_surface": "took"
+        }
+      ],
+      "target": {
+        "entity": null,
+        "event": null,
+        "location": null,
+        "pos": "n",
+        "role": null,
+        "token": "apples"
+      },
+      "count": 1,
+      "probability": 0.03424699046229586,
+      "top_tokens": {
+        "the": 0.4962898513234525,
+        "small": 0.2103163935947476,
+        "red": 0.1386216461040553,
+        "pears": 0.04320326814237311,
+        "needles": 0.03804154799281465,
+        "scissors": 0.035732709998626294,
+        "apples": 0.03442941604547008,
+        ".": 0.001282443482403339,
+        "<END>": 0.001282443482403339,
+        "found": 0.0008002798336537913
+      }
+    },
+    {
+      "context": [
+        {
+          "pos": "pn",
+          "entity": null,
+          "role": null,
+          "location": null,
+          "event": null,
+          "token": "Ben",
+          "position": {
+            "token": 0,
+            "sentence": 0,
+            "in_sentence": 0
+          }
+        },
+        {
+          "pos": "adv",
+          "entity": null,
+          "role": null,
+          "location": null,
+          "event": null,
+          "token": "slowly",
+          "position": {
+            "token": 1,
+            "sentence": 0,
+            "in_sentence": 1
+          }
+        },
+        {
+          "pos": "v",
+          "entity": null,
+          "role": null,
+          "location": null,
+          "event": null,
+          "token": "took",
+          "position": {
+            "token": 2,
+            "sentence": 0,
+            "in_sentence": 2
+          }
+        }
+      ],
+      "neuron_input": [
+        {
+          "pos": "pn",
+          "entity": null,
+          "role": null,
+          "location": null,
+          "event": null,
+          "token": "Ben",
+          "position": {
+            "token": 0,
+            "sentence": 0,
+            "in_sentence": 0
+          }
+        },
+        {
+          "pos": "adv",
+          "entity": null,
+          "role": null,
+          "location": null,
+          "event": null,
+          "token": "slowly",
+          "position": {
+            "token": 1,
+            "sentence": 0,
+            "in_sentence": 1
+          }
+        },
+        {
+          "pos": "v",
+          "entity": null,
+          "role": null,
+          "location": null,
+          "event": null,
+          "token": "took",
+          "position": {
+            "token": 2,
+            "sentence": 0,
+            "in_sentence": 2
+          },
+          "preceding_verb_surface": "took"
+        }
+      ],
+      "target": {
+        "entity": null,
+        "event": null,
+        "location": null,
+        "pos": "n",
+        "role": null,
+        "token": "apples"
+      },
+      "count": 1,
+      "probability": 0.03424699046229586,
+      "top_tokens": {
+        "the": 0.4962898513234525,
+        "small": 0.2103163935947476,
+        "red": 0.1386216461040553,
+        "pears": 0.04320326814237311,
+        "needles": 0.03804154799281465,
+        "scissors": 0.035732709998626294,
+        "apples": 0.03442941604547008,
+        ".": 0.001282443482403339,
+        "<END>": 0.001282443482403339,
+        "found": 0.0008002798336537913
+      }
+    },
+    {
+      "context": [
+        {
+          "pos": "pn",
+          "entity": null,
+          "role": null,
+          "location": null,
+          "event": null,
+          "token": "Lily",
+          "position": {
+            "token": 0,
+            "sentence": 0,
+            "in_sentence": 0
+          }
+        },
+        {
+          "pos": "adv",
+          "entity": null,
+          "role": null,
+          "location": null,
+          "event": null,
+          "token": "quickly",
+          "position": {
+            "token": 1,
+            "sentence": 0,
+            "in_sentence": 1
+          }
+        },
+        {
+          "pos": "v",
+          "entity": null,
+          "role": null,
+          "location": null,
+          "event": null,
+          "token": "took",
+          "position": {
+            "token": 2,
+            "sentence": 0,
+            "in_sentence": 2
+          }
+        }
+      ],
+      "neuron_input": [
+        {
+          "pos": "pn",
+          "entity": null,
+          "role": null,
+          "location": null,
+          "event": null,
+          "token": "Lily",
+          "position": {
+            "token": 0,
+            "sentence": 0,
+            "in_sentence": 0
+          }
+        },
+        {
+          "pos": "adv",
+          "entity": null,
+          "role": null,
+          "location": null,
+          "event": null,
+          "token": "quickly",
+          "position": {
+            "token": 1,
+            "sentence": 0,
+            "in_sentence": 1
+          }
+        },
+        {
+          "pos": "v",
+          "entity": null,
+          "role": null,
+          "location": null,
+          "event": null,
+          "token": "took",
+          "position": {
+            "token": 2,
+            "sentence": 0,
+            "in_sentence": 2
+          },
+          "preceding_verb_surface": "took"
+        }
+      ],
+      "target": {
+        "entity": null,
+        "event": null,
+        "location": null,
+        "pos": "n",
+        "role": null,
+        "token": "apples"
+      },
+      "count": 1,
+      "probability": 0.03424699046229586,
+      "top_tokens": {
+        "the": 0.4962898513234525,
+        "small": 0.2103163935947476,
+        "red": 0.1386216461040553,
+        "pears": 0.04320326814237311,
+        "needles": 0.03804154799281465,
+        "scissors": 0.035732709998626294,
+        "apples": 0.03442941604547008,
+        ".": 0.001282443482403339,
+        "<END>": 0.001282443482403339,
+        "found": 0.0008002798336537913
+      }
+    },
+    {
+      "context": [
+        {
+          "pos": "pn",
+          "entity": null,
+          "role": null,
+          "location": null,
+          "event": null,
+          "token": "Lily",
+          "position": {
+            "token": 0,
+            "sentence": 0,
+            "in_sentence": 0
+          }
+        },
+        {
+          "pos": "v",
+          "entity": null,
+          "role": null,
+          "location": null,
+          "event": null,
+          "token": "found",
+          "position": {
+            "token": 1,
+            "sentence": 0,
+            "in_sentence": 1
+          }
+        }
+      ],
+      "neuron_input": [
+        {
+          "pos": "pn",
+          "entity": null,
+          "role": null,
+          "location": null,
+          "event": null,
+          "token": "Lily",
+          "position": {
+            "token": 0,
+            "sentence": 0,
+            "in_sentence": 0
+          }
+        },
+        {
+          "pos": "v",
+          "entity": null,
+          "role": null,
+          "location": null,
+          "event": null,
+          "token": "found",
+          "position": {
+            "token": 1,
+            "sentence": 0,
+            "in_sentence": 1
+          },
+          "preceding_verb_surface": "found"
+        }
+      ],
+      "target": {
+        "entity": null,
+        "event": null,
+        "location": null,
+        "pos": "n",
+        "role": null,
+        "token": "scissors"
+      },
+      "count": 1,
+      "probability": 0.03429805208641962,
+      "top_tokens": {
+        "the": 0.49229418290227916,
+        "small": 0.19379205865727503,
+        "red": 0.16779798945839478,
+        "pears": 0.0401806197326298,
+        "apples": 0.036225016526209915,
+        "scissors": 0.03447914930541836,
+        "needles": 0.03189529412757799,
+        ".": 0.0012712097930824352,
+        "<END>": 0.0012712097930824352,
+        "found": 0.000793269704050104
+      }
+    },
+    {
+      "context": [
+        {
+          "pos": "pn",
+          "entity": null,
+          "role": null,
+          "location": null,
+          "event": null,
+          "token": "Lily",
+          "position": {
+            "token": 0,
+            "sentence": 0,
+            "in_sentence": 0
+          }
+        },
+        {
+          "pos": "adv",
+          "entity": null,
+          "role": null,
+          "location": null,
+          "event": null,
+          "token": "quickly",
+          "position": {
+            "token": 1,
+            "sentence": 0,
+            "in_sentence": 1
+          }
+        },
+        {
+          "pos": "v",
+          "entity": null,
+          "role": null,
+          "location": null,
+          "event": null,
+          "token": "found",
+          "position": {
+            "token": 2,
+            "sentence": 0,
+            "in_sentence": 2
+          }
+        }
+      ],
+      "neuron_input": [
+        {
+          "pos": "pn",
+          "entity": null,
+          "role": null,
+          "location": null,
+          "event": null,
+          "token": "Lily",
+          "position": {
+            "token": 0,
+            "sentence": 0,
+            "in_sentence": 0
+          }
+        },
+        {
+          "pos": "adv",
+          "entity": null,
+          "role": null,
+          "location": null,
+          "event": null,
+          "token": "quickly",
+          "position": {
+            "token": 1,
+            "sentence": 0,
+            "in_sentence": 1
+          }
+        },
+        {
+          "pos": "v",
+          "entity": null,
+          "role": null,
+          "location": null,
+          "event": null,
+          "token": "found",
+          "position": {
+            "token": 2,
+            "sentence": 0,
+            "in_sentence": 2
+          },
+          "preceding_verb_surface": "found"
+        }
+      ],
+      "target": {
+        "entity": null,
+        "event": null,
+        "location": null,
+        "pos": "n",
+        "role": null,
+        "token": "scissors"
+      },
+      "count": 1,
+      "probability": 0.03429805208641962,
+      "top_tokens": {
+        "the": 0.49229418290227916,
+        "small": 0.19379205865727503,
+        "red": 0.16779798945839478,
+        "pears": 0.0401806197326298,
+        "apples": 0.036225016526209915,
+        "scissors": 0.03447914930541836,
+        "needles": 0.03189529412757799,
+        ".": 0.0012712097930824352,
+        "<END>": 0.0012712097930824352,
+        "found": 0.000793269704050104
+      }
+    },
+    {
+      "context": [
+        {
+          "pos": "pn",
+          "entity": null,
+          "role": null,
+          "location": null,
+          "event": null,
+          "token": "Tom",
+          "position": {
+            "token": 0,
+            "sentence": 0,
+            "in_sentence": 0
+          }
+        },
+        {
+          "pos": "v",
+          "entity": null,
+          "role": null,
+          "location": null,
+          "event": null,
+          "token": "found",
+          "position": {
+            "token": 1,
+            "sentence": 0,
+            "in_sentence": 1
+          }
+        }
+      ],
+      "neuron_input": [
+        {
+          "pos": "pn",
+          "entity": null,
+          "role": null,
+          "location": null,
+          "event": null,
+          "token": "Tom",
+          "position": {
+            "token": 0,
+            "sentence": 0,
+            "in_sentence": 0
+          }
+        },
+        {
+          "pos": "v",
+          "entity": null,
+          "role": null,
+          "location": null,
+          "event": null,
+          "token": "found",
+          "position": {
+            "token": 1,
+            "sentence": 0,
+            "in_sentence": 1
+          },
+          "preceding_verb_surface": "found"
+        }
+      ],
+      "target": {
+        "entity": null,
+        "event": null,
+        "location": null,
+        "pos": "n",
+        "role": null,
+        "token": "scissors"
+      },
+      "count": 1,
+      "probability": 0.03429805208641962,
+      "top_tokens": {
+        "the": 0.49229418290227916,
+        "small": 0.19379205865727503,
+        "red": 0.16779798945839478,
+        "pears": 0.0401806197326298,
+        "apples": 0.036225016526209915,
+        "scissors": 0.03447914930541836,
+        "needles": 0.03189529412757799,
+        ".": 0.0012712097930824352,
+        "<END>": 0.0012712097930824352,
+        "found": 0.000793269704050104
+      }
+    },
+    {
+      "context": [
+        {
+          "pos": "pn",
+          "entity": null,
+          "role": null,
+          "location": null,
+          "event": null,
+          "token": "Ben",
+          "position": {
+            "token": 0,
+            "sentence": 0,
+            "in_sentence": 0
+          }
+        },
+        {
+          "pos": "adv",
+          "entity": null,
+          "role": null,
+          "location": null,
+          "event": null,
+          "token": "slowly",
+          "position": {
+            "token": 1,
+            "sentence": 0,
+            "in_sentence": 1
+          }
+        },
+        {
+          "pos": "v",
+          "entity": null,
+          "role": null,
+          "location": null,
+          "event": null,
+          "token": "took",
+          "position": {
+            "token": 2,
+            "sentence": 0,
+            "in_sentence": 2
+          }
+        }
+      ],
+      "neuron_input": [
+        {
+          "pos": "pn",
+          "entity": null,
+          "role": null,
+          "location": null,
+          "event": null,
+          "token": "Ben",
+          "position": {
+            "token": 0,
+            "sentence": 0,
+            "in_sentence": 0
+          }
+        },
+        {
+          "pos": "adv",
+          "entity": null,
+          "role": null,
+          "location": null,
+          "event": null,
+          "token": "slowly",
+          "position": {
+            "token": 1,
+            "sentence": 0,
+            "in_sentence": 1
+          }
+        },
+        {
+          "pos": "v",
+          "entity": null,
+          "role": null,
+          "location": null,
+          "event": null,
+          "token": "took",
+          "position": {
+            "token": 2,
+            "sentence": 0,
+            "in_sentence": 2
+          },
+          "preceding_verb_surface": "took"
+        }
+      ],
+      "target": {
+        "entity": null,
+        "event": null,
+        "location": null,
+        "pos": "n",
+        "role": null,
+        "token": "scissors"
+      },
+      "count": 1,
+      "probability": 0.03554337886238844,
+      "top_tokens": {
+        "the": 0.4962898513234525,
+        "small": 0.2103163935947476,
+        "red": 0.1386216461040553,
+        "pears": 0.04320326814237311,
+        "needles": 0.03804154799281465,
+        "scissors": 0.035732709998626294,
+        "apples": 0.03442941604547008,
+        ".": 0.001282443482403339,
+        "<END>": 0.001282443482403339,
+        "found": 0.0008002798336537913
+      }
+    },
+    {
+      "context": [
+        {
+          "pos": "pn",
+          "entity": null,
+          "role": null,
+          "location": null,
+          "event": null,
+          "token": "Ben",
+          "position": {
+            "token": 0,
+            "sentence": 0,
+            "in_sentence": 0
+          }
+        },
+        {
+          "pos": "adv",
+          "entity": null,
+          "role": null,
+          "location": null,
+          "event": null,
+          "token": "quickly",
+          "position": {
+            "token": 1,
+            "sentence": 0,
+            "in_sentence": 1
+          }
+        },
+        {
+          "pos": "v",
+          "entity": null,
+          "role": null,
+          "location": null,
+          "event": null,
+          "token": "took",
+          "position": {
+            "token": 2,
+            "sentence": 0,
+            "in_sentence": 2
+          }
+        }
+      ],
+      "neuron_input": [
+        {
+          "pos": "pn",
+          "entity": null,
+          "role": null,
+          "location": null,
+          "event": null,
+          "token": "Ben",
+          "position": {
+            "token": 0,
+            "sentence": 0,
+            "in_sentence": 0
+          }
+        },
+        {
+          "pos": "adv",
+          "entity": null,
+          "role": null,
+          "location": null,
+          "event": null,
+          "token": "quickly",
+          "position": {
+            "token": 1,
+            "sentence": 0,
+            "in_sentence": 1
+          }
+        },
+        {
+          "pos": "v",
+          "entity": null,
+          "role": null,
+          "location": null,
+          "event": null,
+          "token": "took",
+          "position": {
+            "token": 2,
+            "sentence": 0,
+            "in_sentence": 2
+          },
+          "preceding_verb_surface": "took"
+        }
+      ],
+      "target": {
+        "entity": null,
+        "event": null,
+        "location": null,
+        "pos": "n",
+        "role": null,
+        "token": "scissors"
+      },
+      "count": 1,
+      "probability": 0.03554337886238844,
+      "top_tokens": {
+        "the": 0.4962898513234525,
+        "small": 0.2103163935947476,
+        "red": 0.1386216461040553,
+        "pears": 0.04320326814237311,
+        "needles": 0.03804154799281465,
+        "scissors": 0.035732709998626294,
+        "apples": 0.03442941604547008,
+        ".": 0.001282443482403339,
+        "<END>": 0.001282443482403339,
+        "found": 0.0008002798336537913
+      }
+    },
+    {
+      "context": [
+        {
+          "pos": "pn",
+          "entity": null,
+          "role": null,
+          "location": null,
+          "event": null,
+          "token": "Tom",
+          "position": {
+            "token": 0,
+            "sentence": 0,
+            "in_sentence": 0
+          }
+        },
+        {
+          "pos": "v",
+          "entity": null,
+          "role": null,
+          "location": null,
+          "event": null,
+          "token": "found",
+          "position": {
+            "token": 1,
+            "sentence": 0,
+            "in_sentence": 1
+          }
+        }
+      ],
+      "neuron_input": [
+        {
+          "pos": "pn",
+          "entity": null,
+          "role": null,
+          "location": null,
+          "event": null,
+          "token": "Tom",
+          "position": {
+            "token": 0,
+            "sentence": 0,
+            "in_sentence": 0
+          }
+        },
+        {
+          "pos": "v",
+          "entity": null,
+          "role": null,
+          "location": null,
+          "event": null,
+          "token": "found",
+          "position": {
+            "token": 1,
+            "sentence": 0,
+            "in_sentence": 1
+          },
+          "preceding_verb_surface": "found"
+        }
+      ],
+      "target": {
+        "entity": null,
+        "event": null,
+        "location": null,
+        "pos": "n",
+        "role": null,
+        "token": "apples"
+      },
+      "count": 1,
+      "probability": 0.036034749368137976,
+      "top_tokens": {
+        "the": 0.49229418290227916,
+        "small": 0.19379205865727503,
+        "red": 0.16779798945839478,
+        "pears": 0.0401806197326298,
+        "apples": 0.036225016526209915,
+        "scissors": 0.03447914930541836,
+        "needles": 0.03189529412757799,
+        ".": 0.0012712097930824352,
+        "<END>": 0.0012712097930824352,
+        "found": 0.000793269704050104
+      }
+    },
+    {
+      "context": [
+        {
+          "pos": "pn",
+          "entity": null,
+          "role": null,
+          "location": null,
+          "event": null,
+          "token": "Lily",
+          "position": {
+            "token": 0,
+            "sentence": 0,
+            "in_sentence": 0
+          }
+        },
+        {
+          "pos": "adv",
+          "entity": null,
+          "role": null,
+          "location": null,
+          "event": null,
+          "token": "slowly",
+          "position": {
+            "token": 1,
+            "sentence": 0,
+            "in_sentence": 1
+          }
+        },
+        {
+          "pos": "v",
+          "entity": null,
+          "role": null,
+          "location": null,
+          "event": null,
+          "token": "found",
+          "position": {
+            "token": 2,
+            "sentence": 0,
+            "in_sentence": 2
+          }
+        }
+      ],
+      "neuron_input": [
+        {
+          "pos": "pn",
+          "entity": null,
+          "role": null,
+          "location": null,
+          "event": null,
+          "token": "Lily",
+          "position": {
+            "token": 0,
+            "sentence": 0,
+            "in_sentence": 0
+          }
+        },
+        {
+          "pos": "adv",
+          "entity": null,
+          "role": null,
+          "location": null,
+          "event": null,
+          "token": "slowly",
+          "position": {
+            "token": 1,
+            "sentence": 0,
+            "in_sentence": 1
+          }
+        },
+        {
+          "pos": "v",
+          "entity": null,
+          "role": null,
+          "location": null,
+          "event": null,
+          "token": "found",
+          "position": {
+            "token": 2,
+            "sentence": 0,
+            "in_sentence": 2
+          },
+          "preceding_verb_surface": "found"
+        }
+      ],
+      "target": {
+        "entity": null,
+        "event": null,
+        "location": null,
+        "pos": "n",
+        "role": null,
+        "token": "apples"
+      },
+      "count": 1,
+      "probability": 0.036034749368137976,
+      "top_tokens": {
+        "the": 0.49229418290227916,
+        "small": 0.19379205865727503,
+        "red": 0.16779798945839478,
+        "pears": 0.0401806197326298,
+        "apples": 0.036225016526209915,
+        "scissors": 0.03447914930541836,
+        "needles": 0.03189529412757799,
+        ".": 0.0012712097930824352,
+        "<END>": 0.0012712097930824352,
+        "found": 0.000793269704050104
+      }
+    }
+  ]
+}

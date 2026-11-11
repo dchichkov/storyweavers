@@ -1,0 +1,1 @@
+"""Curated catalog source shards."""

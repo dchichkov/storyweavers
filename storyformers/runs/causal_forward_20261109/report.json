@@ -1,0 +1,474 @@
+{
+  "source_sha256": {
+    "/Users/dmitry/storyweavers/storyformers/runs/prefix_catalog_full_story_20261108/000000_744d68e4483a/annotations.json": "4a8fe03d501ef4205b58b2acdbf9cdbb17754723035a5b2bce80efd0602a77cf",
+    "/Users/dmitry/storyweavers/storyformers/runs/prefix_reconciliation_20261109/reconciled_records.json": "3ac65d6158bd5913da592f8f711e206dab27d62a5817e1496f892db948b2de7c",
+    "/Users/dmitry/storyweavers/storyformers/runs/induction_baseline/model.json": "35d0de75c3ee3614b29244f2c3075ad6bd1e2cdac81990e30e097d94d4453b2c"
+  },
+  "corrected_indices": [
+    19,
+    35,
+    108,
+    129,
+    151,
+    205,
+    221,
+    278,
+    522,
+    641,
+    773,
+    876,
+    961,
+    1112,
+    1518,
+    1659,
+    1671
+  ],
+  "input": {
+    "records": 923,
+    "kinds": {
+      "word": 753,
+      "punct": 170
+    },
+    "top_level_fields": 11796,
+    "plot_records": 9,
+    "depiction_records": 2
+  },
+  "architecture": {
+    "context_size": 256,
+    "saved_context_size": 16,
+    "wildcard_bounds_widened": true,
+    "head_slots": [
+      16,
+      16
+    ],
+    "populated_heads": [
+      3,
+      7
+    ],
+    "head_rules": 10,
+    "catalog_heads": [
+      "H0385",
+      "H0386",
+      "H0097"
+    ],
+    "vocabulary": 19,
+    "projection_rules": 171
+  },
+  "checkpoint_architecture": {
+    "context_size": 16,
+    "saved_context_size": 16,
+    "wildcard_bounds_widened": false,
+    "head_slots": [
+      16,
+      16
+    ],
+    "populated_heads": [
+      3,
+      7
+    ],
+    "head_rules": 10,
+    "catalog_heads": [
+      "H0385",
+      "H0386",
+      "H0097"
+    ],
+    "vocabulary": 19,
+    "projection_rules": 171
+  },
+  "environment": {
+    "platform": "macOS-15.6.1-arm64-arm-64bit",
+    "machine": "arm64",
+    "processor": "arm",
+    "python": "3.12.13"
+  },
+  "setup_seconds": 0.16915383329614997,
+  "timings": {
+    "forward_5": {
+      "samples_seconds": [
+        0.01851466717198491,
+        0.019434833899140358,
+        0.01867041690275073
+      ],
+      "median_seconds": 0.01867041690275073,
+      "min_seconds": 0.01851466717198491,
+      "max_seconds": 0.019434833899140358
+    },
+    "predict_5": {
+      "samples_seconds": [
+        0.007751416880637407,
+        0.007559624966233969,
+        0.007860790938138962
+      ],
+      "median_seconds": 0.007751416880637407,
+      "min_seconds": 0.007559624966233969,
+      "max_seconds": 0.007860790938138962
+    },
+    "forward_16": {
+      "samples_seconds": [
+        0.1348906671628356,
+        0.13530575018376112,
+        0.13209366612136364
+      ],
+      "median_seconds": 0.1348906671628356,
+      "min_seconds": 0.13209366612136364,
+      "max_seconds": 0.13530575018376112
+    },
+    "predict_16": {
+      "samples_seconds": [
+        0.034406665712594986,
+        0.04432912543416023,
+        0.035032541025429964
+      ],
+      "median_seconds": 0.035032541025429964,
+      "min_seconds": 0.034406665712594986,
+      "max_seconds": 0.04432912543416023
+    },
+    "forward_64": {
+      "samples_seconds": [
+        1.7185402917675674,
+        1.6568017499521375,
+        1.662799458950758
+      ],
+      "median_seconds": 1.662799458950758,
+      "min_seconds": 1.6568017499521375,
+      "max_seconds": 1.7185402917675674
+    },
+    "predict_64": {
+      "samples_seconds": [
+        0.31463462486863136,
+        0.3106027920730412,
+        0.3138830419629812
+      ],
+      "median_seconds": 0.3138830419629812,
+      "min_seconds": 0.3106027920730412,
+      "max_seconds": 0.31463462486863136
+    },
+    "predict_256": {
+      "samples_seconds": [
+        4.69177941698581,
+        4.602228667121381,
+        4.714593042153865
+      ],
+      "median_seconds": 4.69177941698581,
+      "min_seconds": 4.602228667121381,
+      "max_seconds": 4.714593042153865
+    },
+    "forward_256": {
+      "samples_seconds": [
+        31.123597708065063,
+        30.176473666913807,
+        30.927188041154295
+      ],
+      "median_seconds": 30.927188041154295,
+      "min_seconds": 30.176473666913807,
+      "max_seconds": 31.123597708065063,
+      "sampling": "different story segments, same context size; not repeated identical input"
+    }
+  },
+  "checks": {
+    "widening_preserves_short_context_outputs": true,
+    "rich_bundles_preserved": 11,
+    "all_positions_predicted_and_normalized": 923,
+    "diagnostic_grammar_copies": [
+      {
+        "source_index": 129,
+        "field": "plot"
+      },
+      {
+        "source_index": 205,
+        "field": "plot"
+      },
+      {
+        "source_index": 221,
+        "field": "plot"
+      },
+      {
+        "source_index": 278,
+        "field": "plot"
+      },
+      {
+        "source_index": 773,
+        "field": "plot"
+      },
+      {
+        "source_index": 876,
+        "field": "plot"
+      },
+      {
+        "source_index": 1518,
+        "field": "plot"
+      },
+      {
+        "source_index": 1659,
+        "field": "plot"
+      },
+      {
+        "source_index": 1671,
+        "field": "plot"
+      },
+      {
+        "source_index": 1659,
+        "field": "depiction"
+      },
+      {
+        "source_index": 1671,
+        "field": "depiction"
+      }
+    ],
+    "sampled_block_prefix_invariance": true,
+    "inputs_and_checkpoint_unchanged": true
+  },
+  "notes": [
+    "Original causal v2 records with exactly 17 reviewed v3 replacements at their real source positions; not a uniformly reannotated v3 corpus.",
+    "Spaces omitted; original lossless indices and positions remain unchanged. Punctuation consumes context slots.",
+    "Three authored catalog seeds plus seven synthetic-data-learned heads; remaining slots are NOOP. No new training.",
+    "The 256-context copy widens wildcard matching bounds only; it was not trained on long contexts.",
+    "Full forward timings use independent segments, resetting context between them. They are not a rolling 256-context decode benchmark.",
+    "Exact rolling decode timing uses the saved 16-context checkpoint and recomputes each window; there is no KV cache.",
+    "The readout has 19 toy tokens and token/POS supervision, not the story vocabulary or full rich-latent prediction ability.",
+    "Reference tables remain companion evidence; the loaded heads do not query those tables or interpret plot/depiction.",
+    "Wall times include residual and trace creation but exclude JSON artifact writes and input/model loading. CPU Python, no LLM/GPU calls."
+  ],
+  "last_distribution": {
+    "probabilities": {
+      "<END>": 0.9934158791294488,
+      ".": 0.001320407523416571,
+      "the": 0.0008454006551199219,
+      "small": 0.0006966357785668465,
+      "found": 0.000685031265377631,
+      "Lily": 0.0006197219050914609,
+      "took": 0.0006128969334132463,
+      "slowly": 0.0006050871849654878,
+      "red": 0.0006016615516459303,
+      "quickly": 0.0005972780729540381
+    },
+    "candidates": [
+      {
+        "latent": {
+          "pos": "adj",
+          "entity": null,
+          "role": null,
+          "location": null,
+          "event": null,
+          "token": "red",
+          "position": {
+            "token": 1673,
+            "sentence": 75,
+            "in_sentence": 0
+          }
+        },
+        "probability": 0.0006016615516459303
+      },
+      {
+        "latent": {
+          "pos": "adj",
+          "entity": null,
+          "role": null,
+          "location": null,
+          "event": null,
+          "token": "small",
+          "position": {
+            "token": 1673,
+            "sentence": 75,
+            "in_sentence": 0
+          }
+        },
+        "probability": 0.0006966357785668465
+      },
+      {
+        "latent": {
+          "pos": "adv",
+          "entity": null,
+          "role": null,
+          "location": null,
+          "event": null,
+          "token": "quickly",
+          "position": {
+            "token": 1673,
+            "sentence": 75,
+            "in_sentence": 0
+          }
+        },
+        "probability": 0.0005972780729540381
+      },
+      {
+        "latent": {
+          "pos": "adv",
+          "entity": null,
+          "role": null,
+          "location": null,
+          "event": null,
+          "token": "slowly",
+          "position": {
+            "token": 1673,
+            "sentence": 75,
+            "in_sentence": 0
+          }
+        },
+        "probability": 0.0006050871849654878
+      },
+      {
+        "latent": {
+          "pos": "det",
+          "entity": null,
+          "role": null,
+          "location": null,
+          "event": null,
+          "token": "the",
+          "position": {
+            "token": 1673,
+            "sentence": 75,
+            "in_sentence": 0
+          }
+        },
+        "probability": 0.0008454006551199219
+      },
+      {
+        "latent": {
+          "pos": "pn",
+          "entity": null,
+          "role": null,
+          "location": null,
+          "event": null,
+          "token": "Lily",
+          "position": {
+            "token": 1673,
+            "sentence": 75,
+            "in_sentence": 0
+          }
+        },
+        "probability": 0.0006197219050914609
+      },
+      {
+        "latent": {
+          "pos": "punct",
+          "entity": null,
+          "role": null,
+          "location": null,
+          "event": null,
+          "token": ".",
+          "position": {
+            "token": 1673,
+            "sentence": 74,
+            "in_sentence": 78
+          }
+        },
+        "probability": 0.001320407523416571
+      },
+      {
+        "latent": {
+          "pos": "special",
+          "entity": null,
+          "role": null,
+          "location": null,
+          "event": null,
+          "token": "<END>",
+          "position": {
+            "token": 1673,
+            "sentence": 75,
+            "in_sentence": 0
+          }
+        },
+        "probability": 0.9934158791294488
+      },
+      {
+        "latent": {
+          "pos": "v",
+          "entity": null,
+          "role": null,
+          "location": null,
+          "event": null,
+          "token": "found",
+          "position": {
+            "token": 1673,
+            "sentence": 75,
+            "in_sentence": 0
+          }
+        },
+        "probability": 0.000685031265377631
+      },
+      {
+        "latent": {
+          "pos": "v",
+          "entity": null,
+          "role": null,
+          "location": null,
+          "event": null,
+          "token": "took",
+          "position": {
+            "token": 1673,
+            "sentence": 75,
+            "in_sentence": 0
+          }
+        },
+        "probability": 0.0006128969334132463
+      }
+    ],
+    "retained_mass": 0.995970658647806
+  },
+  "segments": [
+    {
+      "start_record": 0,
+      "records": 256,
+      "words": 216,
+      "seconds": 31.123597708065063,
+      "activations": 270
+    },
+    {
+      "start_record": 256,
+      "records": 256,
+      "words": 201,
+      "seconds": 30.176473666913807,
+      "activations": 262
+    },
+    {
+      "start_record": 512,
+      "records": 256,
+      "words": 206,
+      "seconds": 30.927188041154295,
+      "activations": 256
+    },
+    {
+      "start_record": 768,
+      "records": 155,
+      "words": 130,
+      "seconds": 10.771498166956007,
+      "activations": 157
+    }
+  ],
+  "segmented_forward": {
+    "seconds": 102.99875758308917,
+    "records_per_second": 8.961273142109654,
+    "words_per_second": 7.310767796325644,
+    "head_activations": {
+      "derive_determiner_kind": 92,
+      "derive_definiteness": 91,
+      "Project cardinal value": 5,
+      "learned_7": 130,
+      "learned_1": 223,
+      "learned_2": 170,
+      "learned_4": 153,
+      "learned_5": 53,
+      "learned_6": 28
+    },
+    "added_fields": {
+      "__grammar_7": 130,
+      "__grammar_1": 223,
+      "__grammar_2": 170,
+      "__grammar_4": 153,
+      "__grammar_5": 53,
+      "__grammar_6": 28,
+      "definiteness": 23,
+      "determiner_kind": 8
+    },
+    "changed_positions": 757
+  },
+  "rolling_checkpoint": {
+    "context_size": 16,
+    "positions": 923,
+    "seconds": 28.77879933314398,
+    "records_per_second": 32.07222057165529,
+    "milliseconds_per_step": 31.1796309134821
+  },
+  "peak_process_rss_mib": 98.53125
+}

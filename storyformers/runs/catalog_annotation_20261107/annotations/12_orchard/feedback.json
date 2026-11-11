@@ -1,0 +1,87 @@
+{
+  "summary": "Whole-story annotation preserves distinct fruit identities, scoped rules/temptation, local gathering counts, repair and allocation, and the final intact branch.",
+  "ambiguities": [
+    {
+      "words": [
+        463,
+        642,
+        711,
+        764,
+        799
+      ],
+      "issue": "gift_pear_identity",
+      "decision": "e55 is an unresolved role identity for e32 or e33. It is neither the third bruised pear e47 nor the high pear e37."
+    },
+    {
+      "words": [
+        676,
+        680,
+        682,
+        685
+      ],
+      "issue": "honey_pronoun",
+      "decision": "them can denote the topped oatcakes or their pear pieces; antecedent candidates retained."
+    },
+    {
+      "words": [
+        706,
+        745,
+        748,
+        750,
+        752,
+        757
+      ],
+      "issue": "post_meal_bruised_pear_reference",
+      "decision": "Bell refers to the trimmed pear after the cousins ate, but the text gives neither complete consumption nor exact remaining portions. No extra pear is invented."
+    },
+    {
+      "words": [
+        560,
+        570,
+        579,
+        583
+      ],
+      "issue": "bruise_origin",
+      "decision": "The bruise is noticed after carrying; dropping or carrying is not asserted to have caused it."
+    },
+    {
+      "words": [
+        737,
+        740,
+        821
+      ],
+      "issue": "damage_scope",
+      "decision": "No torn leaves on checked branches; unbent high branch. This is not a universal claim about the whole orchard."
+    },
+    {
+      "words": [
+        595,
+        760
+      ],
+      "issue": "affect_specificity",
+      "decision": "Frown and smile are explicit. Fine-grained emotion is only a candidate, with no stable personality claim."
+    }
+  ],
+  "feature_gaps": [
+    {
+      "words": [
+        674,
+        677,
+        679,
+        680
+      ],
+      "meaning": "uneven_portions_and_distributed_count",
+      "decision": "Existing quantity distribution plus a legacy piece-size relation suffice. Two per each of two oatcakes does not fix total pieces produced or equal portions."
+    }
+  ],
+  "prompt_feedback": [
+    "Keep a role-based recipient object distinct from its unresolved first/second token identity; candidate IDs do not create an extra physical item.",
+    "Modal ellipsis may keep the positive predicate while changing polarity: She might does not repeat the negative wont want.",
+    "A negative conditional antecedent is distinct from the positive proposition targeted by its negation operator.",
+    "Do not upgrade a post-gathering defect into a causal claim about the immediately preceding drop or carry.",
+    "A count announcement can close gathering while allocation/delivery remain pending.",
+    "Do not interpret metaphorical tool fingers as a person, or a puppet picnic mention as an enacted fictional world."
+  ],
+  "coverage_notes": "All 41 paragraphs have explicit contextual POS/lemmas. Physical parts, distinct fruit/group/role referents, predicate roles, tense/aspect, direct/reported/conditional/capacity scopes, utterance/content links, instructions, promises, counts, possession, state changes and selected narrative evidence are sparse over the full1024 catalog. Spaces and punctuation remain deterministic and lossless.",
+  "reviewed_all_words": true
+}

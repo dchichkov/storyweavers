@@ -1,0 +1,457 @@
+[
+  {
+    "prefix": "Lily",
+    "response": {
+      "index": 0,
+      "token": "Lily",
+      "scope_id": "s0",
+      "pos": "n",
+      "lemma": "Lily",
+      "entity_id": "e1",
+      "entity": "person",
+      "entity_name": "Lily",
+      "reference_introduction": true,
+      "assertion_status": "asserted",
+      "_references": {
+        "entities": {
+          "e1": {
+            "name": "Lily",
+            "type": "person"
+          }
+        }
+      },
+      "_feedback": [
+        "A name alone does not establish age, gender, or a future event."
+      ]
+    }
+  },
+  {
+    "prefix": "Lily took",
+    "response": {
+      "index": 2,
+      "token": "took",
+      "scope_id": "s0",
+      "pos": "v",
+      "lemma": "take",
+      "event_id": "ev3",
+      "event": "obtain object",
+      "event_type": "obtain",
+      "role": "action",
+      "actor_id": "e1",
+      "actor": "Lily",
+      "patients": [],
+      "instruments": [],
+      "factuality": "asserted",
+      "assertion_status": "asserted",
+      "tense": "past",
+      "verb_form": "finite",
+      "event_bindings": [
+        {
+          "event_id": "ev3",
+          "role": "action",
+          "scope_id": "s0"
+        }
+      ],
+      "_references": {
+        "entities": {
+          "e1": {
+            "name": "Lily",
+            "type": "person"
+          }
+        },
+        "events": {
+          "ev3": {
+            "event": "obtain object",
+            "scope_id": "s0",
+            "event_type": "obtain",
+            "factuality": "asserted",
+            "actor_id": "e1",
+            "patients": [],
+            "instruments": []
+          }
+        }
+      }
+    }
+  },
+  {
+    "prefix": "Lily took scissors",
+    "response": {
+      "index": 4,
+      "token": "scissors",
+      "scope_id": "s0",
+      "pos": "n",
+      "lemma": "scissors",
+      "entity_id": "e5",
+      "entity": "scissors",
+      "entity_name": "scissors",
+      "event_id": "ev3",
+      "event": "obtain object",
+      "role": "patient",
+      "location": "Lily",
+      "assertion_status": "asserted",
+      "grammatical_number": "plural",
+      "event_bindings": [
+        {
+          "event_id": "ev3",
+          "role": "patient",
+          "scope_id": "s0"
+        }
+      ],
+      "_references": {
+        "entities": {
+          "e1": {
+            "name": "Lily",
+            "type": "person"
+          },
+          "e5": {
+            "name": "scissors",
+            "type": "scissors"
+          }
+        },
+        "events": {
+          "ev3": {
+            "event": "obtain object",
+            "scope_id": "s0",
+            "event_type": "obtain",
+            "factuality": "asserted",
+            "actor_id": "e1",
+            "patients": [
+              "e5"
+            ],
+            "instruments": []
+          }
+        }
+      },
+      "_evidence": [
+        {
+          "indices": [
+            0,
+            2,
+            4
+          ],
+          "note": "Acquisition by Lily is now supported; repair purpose is unknown. Earlier trigger output remains unchanged."
+        }
+      ]
+    }
+  },
+  {
+    "prefix": "Lily did not take scissors",
+    "response": {
+      "index": 8,
+      "token": "scissors",
+      "scope_id": "s5",
+      "pos": "n",
+      "lemma": "scissors",
+      "entity_id": "e9",
+      "entity": "scissors",
+      "entity_name": "scissors",
+      "event_id": "ev7",
+      "event": "obtain object",
+      "role": "patient",
+      "factuality": "negated",
+      "assertion_status": "asserted",
+      "event_bindings": [
+        {
+          "event_id": "ev7",
+          "role": "patient",
+          "scope_id": "s5"
+        }
+      ],
+      "_references": {
+        "entities": {
+          "e1": {
+            "name": "Lily",
+            "type": "person"
+          },
+          "e9": {
+            "name": "scissors",
+            "type": "scissors"
+          }
+        },
+        "events": {
+          "ev7": {
+            "event": "obtain object",
+            "scope_id": "s5",
+            "event_type": "obtain",
+            "factuality": "negated",
+            "actor_id": "e1",
+            "patients": [
+              "e9"
+            ]
+          }
+        },
+        "scopes": {
+          "s5": {
+            "kind": "negation",
+            "parent": "s0"
+          }
+        }
+      },
+      "_evidence": [
+        {
+          "indices": [
+            4,
+            6,
+            8
+          ],
+          "note": "Negated acquisition supplies no new holder or location."
+        }
+      ]
+    }
+  },
+  {
+    "prefix": "She",
+    "response": {
+      "index": 0,
+      "token": "She",
+      "scope_id": "s0",
+      "pos": "pron",
+      "lemma": "she",
+      "grammatical_person": 3,
+      "grammatical_number": "singular",
+      "_feedback": [
+        "No antecedent is supplied; entity identity is unresolved."
+      ]
+    }
+  },
+  {
+    "prefix": "Miri hoped nobody asked",
+    "response": {
+      "index": 6,
+      "token": "asked",
+      "scope_id": "s3",
+      "pos": "v",
+      "lemma": "ask",
+      "event_id": "ev7",
+      "event": "ask question",
+      "role": "action",
+      "event_type": "speak",
+      "factuality": "negated",
+      "tense": "past",
+      "verb_form": "finite",
+      "event_bindings": [
+        {
+          "event_id": "ev7",
+          "role": "action",
+          "scope_id": "s3"
+        }
+      ],
+      "_references": {
+        "entities": {
+          "e1": {
+            "name": "Miri",
+            "type": "person"
+          }
+        },
+        "events": {
+          "ev7": {
+            "event": "ask question",
+            "scope_id": "s3",
+            "event_type": "speak",
+            "factuality": "negated"
+          }
+        },
+        "scopes": {
+          "s3": {
+            "kind": "desired",
+            "parent": "s0",
+            "holder_id": "e1"
+          }
+        },
+        "propositions": {
+          "p7": {
+            "content": "Someone asks a question",
+            "polarity": "positive",
+            "scope_id": "s3"
+          },
+          "p7_negative": {
+            "content": "Nobody asks a question",
+            "polarity": "negative",
+            "scope_id": "s3"
+          }
+        }
+      },
+      "_evidence": [
+        {
+          "indices": [
+            2,
+            4,
+            6
+          ],
+          "note": "Negative asking content lies within a hope; no actual asking or actual absence of questions is established."
+        }
+      ]
+    }
+  },
+  {
+    "prefix": "Ben said, “Do not move",
+    "response": {
+      "index": 10,
+      "token": "move",
+      "scope_id": "q6",
+      "pos": "v",
+      "lemma": "move",
+      "event_id": "ev11",
+      "event": "move",
+      "event_type": "move",
+      "role": "action",
+      "mood": "imperative",
+      "verb_form": "base",
+      "factuality": "negated",
+      "assertion_status": "attributed_claim",
+      "negation_scope_id": "p11",
+      "utterance_content_id": "p11_complete",
+      "event_bindings": [
+        {
+          "event_id": "ev11",
+          "role": "action",
+          "scope_id": "q6"
+        }
+      ],
+      "_references": {
+        "entities": {
+          "e1": {
+            "name": "Ben",
+            "type": "person"
+          }
+        },
+        "events": {
+          "ev11": {
+            "event": "move",
+            "scope_id": "q6",
+            "event_type": "move",
+            "factuality": "negated"
+          }
+        },
+        "scopes": {
+          "q6": {
+            "kind": "quotation",
+            "parent": "s0",
+            "speaker_id": "e1"
+          }
+        },
+        "propositions": {
+          "p11": {
+            "content": "The addressee moves",
+            "polarity": "positive",
+            "scope_id": "q6"
+          },
+          "p11_negative": {
+            "content": "The addressee does not move",
+            "polarity": "negative",
+            "scope_id": "q6"
+          },
+          "p11_complete": {
+            "content": "Ben prohibits the addressee from moving",
+            "polarity": "positive",
+            "scope_id": "q6"
+          }
+        }
+      },
+      "_feedback": [
+        "The addressee is unnamed; do not make Ben the movement actor."
+      ]
+    }
+  },
+  {
+    "prefix": "Three flags, each one",
+    "response": {
+      "index": 7,
+      "token": "one",
+      "scope_id": "s0",
+      "pos": "pron",
+      "lemma": "one",
+      "entity_id": "e8",
+      "entity_name": "one",
+      "entity": "bound_variable",
+      "grammatical_number": "singular",
+      "generic_reference": false,
+      "quantifier_binding": {
+        "quantifier": "each",
+        "restriction": "e3",
+        "variable": "e8"
+      },
+      "_references": {
+        "entities": {
+          "e3": {
+            "name": "flags",
+            "type": "flag_group",
+            "count": 3
+          },
+          "e8": {
+            "name": "one",
+            "type": "bound_variable",
+            "domain_id": "e3"
+          }
+        }
+      },
+      "_feedback": [
+        "The nuclear predicate has not appeared; bounded each does not imply a generic kind."
+      ]
+    }
+  },
+  {
+    "prefix": "Nia took a needle. She did not mend",
+    "response": {
+      "index": 15,
+      "token": "mend",
+      "pos": "v",
+      "lemma": "mend",
+      "scope_id": "s14",
+      "event_id": "ev16",
+      "event": "repair object",
+      "event_type": "repair",
+      "role": "action",
+      "factuality": "negated",
+      "actor_id": "e1",
+      "actor": "Nia",
+      "patients": [],
+      "instruments": [],
+      "assertion_status": "asserted",
+      "verb_form": "base",
+      "event_bindings": [
+        {
+          "event_id": "ev16",
+          "role": "action",
+          "scope_id": "s14"
+        }
+      ],
+      "_references": {
+        "entities": {
+          "e1": {
+            "name": "Nia",
+            "type": "person"
+          }
+        },
+        "events": {
+          "ev16": {
+            "event": "repair object",
+            "event_type": "repair",
+            "factuality": "negated",
+            "scope_id": "s14",
+            "actor_id": "e1",
+            "patients": [],
+            "instruments": []
+          }
+        },
+        "scopes": {
+          "s14": {
+            "kind": "negation",
+            "parent": "s0"
+          }
+        }
+      },
+      "_evidence": [
+        {
+          "indices": [
+            9,
+            11,
+            13,
+            15
+          ],
+          "note": "The subject is Nia and mending is negated. No patient or actual instrument has appeared for this new event; the earlier needle is not automatically either one."
+        }
+      ]
+    }
+  }
+]

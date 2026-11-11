@@ -1,0 +1,186 @@
+# Whole-story annotation trial — pilot prompt v0
+
+You are annotating one complete story into symbolic per-word latents. Read the
+whole story and interpret every occurrence in context. This trial deliberately
+permits later text to resolve earlier references, intentions, quotation speakers
+and narrative functions. There is NO causal-prefix filter. Still preserve what
+is true at each narrated time: a later repair does not make the earlier object
+already repaired, and a character's false belief is not narrator truth.
+
+## Inputs
+
+Read the assigned `inputs/STORY_ID/story.txt` and `indexed_words.txt`. The latter
+gives paragraph numbers and zero-based word ordinals `w`; exact lossless token
+indices and positions are in `tokens.json`. Do not change source text or split
+contractions. Words, punctuation and whitespace must reconstruct the story.
+
+Read ALL FOUR feature-description files in this directory:
+`features_core.txt`, `features_linguistic.txt`, `features_world.txt`,
+`features_mind.txt`. Together they define the 1,024 available attributes per
+word. `feature_index.tsv` is a compact navigation aid. Consult the original
+`storyformers/catalog/attributes.jsonl` for more metadata when necessary.
+Catalog availability/prefix restrictions describe the future causal model;
+they do not restrict this explicitly retrospective annotation experiment.
+Read `catalog_overrides.json` too: `patients` and `instruments` contain eN IDs,
+as required by the existing annotation pipeline. The original catalog's claim
+that these arrays contain display names is a documented erratum. Other meanings
+and types remain those of the supplied catalog.
+
+## What to annotate
+
+Use sparse dictionaries over all 1,024 available fields. Omitted means unknown,
+not applicable or not annotated, never false. Do not emit 1,024 nulls per word,
+force a feature quota, or invent unsupported facts to use more fields. Keep
+boolean false when the text actually supports a negative proposition.
+
+1. Give EVERY word an explicitly chosen POS and lemma, including function words,
+   dialogue, contractions and numbers. POS is `n v adj adv pron det adp conj num
+   part intj unknown`. Proper names use `n`. Use contextual POS; do not use a
+   global surface-word POS dictionary, suffix guesser, or default-all-nouns.
+2. Resolve important named people, places, objects, groups and their anaphoric
+   mentions to stable eN identities. Distinguish old/replacement objects, picture
+   objects and actual objects, a puppet character and the puppeteer, owner and
+   current holder. Unknown unnamed referents can remain unresolved with feedback.
+3. Annotate predicates, including physical action, state, perception, speech,
+   desire, thought, negation, plans and conditions. Events use evN IDs. Assign
+   actor/patient/instrument/recipient roles from syntax and meaning, not proximity.
+   `event_type` uses obtain/transfer/repair/move/perceive/speak/feel/state/other.
+   `factuality` uses asserted/negated/desired/hypothetical/reported.
+4. Annotate supported grammatical and semantic features on the words that
+   express them: tense/aspect, determiners, number, modality, negation, quantities,
+   time, spatial relations, object changes, possession, goals, affect, beliefs,
+   dialogue acts, discourse links and narrative changes. Function words are
+   meaningful too: their grammatical/semantic feature can be the main label.
+5. Maintain quotation, imagined, conditional, remembered and belief scopes.
+   Register the speaker/holder. An actual act of saying or believing is distinct
+   from the truth of its content. Repeated sentences or reports need distinct
+   utterance instances, while a recalled or repeatedly mentioned underlying
+   repair keeps its original event identity. Use `a.mention_event` for a new
+   mention of an existing event. Separate actual repetitions (three knocks,
+   rehearsal versus performance) into new events. Auxiliaries, negation and
+   condition markers are usually operators, not extra events. Retain ambiguity
+   rather than silently picking an unsupported
+   identity, motivation or outcome.
+6. Preserve correlated object-valued features using the catalog's bundle shape
+   where shown: entity/holder + scope + status + value. Participant IDs must refer
+   to registered entities. Add evidence word anchors and a note for substantial
+   inferred, retrospective, ambiguous, mental or narrative interpretations.
+
+Teacher-label status: explicit narrator facts use `assertion_status="asserted"`;
+character assertions/beliefs use `"attributed_claim"` in their scope; uncertain
+annotator interpretations use `"candidate"` with an evidence note. The catalog's
+candidate-status examples describe proposed model outputs; do not mechanically
+mark every teacher fact candidate. An explicitly narrated fictional fact can be
+asserted within a fictional scope while remaining separate from physical reality.
+Keep uncertainty, event factuality and holder belief truth distinct.
+Use only these three `assertion_status` values, including inside object bundles.
+Keep desired/hypothetical/negated/reported in `factuality`; keep promises in
+`plan_commitment_status` and their quotation/scope. A quoted promise can have
+`assertion_status="attributed_claim"`, `factuality="desired"` and
+`plan_commitment_status="promised"`; it does not assert completed action.
+
+Contraction policy: keep the token, POS of its leading syntactic component, and
+lemma of that component. `I'd` has pos=pron, lemma=`I`, expansion `["I","would"]`
+or `["I","had"]` as context decides; `couldn't` has pos=v, lemma=`can`, expansion
+`["could","not"]`; `won't` has lemma=`will`. A possessive `Nia's` has pos=n,
+lemma=`Nia` and possessive morphology, not an invented auxiliary expansion.
+Preserve proper-name capitalization in lemmas. Explicitly correct inflected verb
+and plural noun lemmas; lowercased spelling alone is only sufficient for an
+already uninflected common word. Do not invent dollar/cents units for copper
+coins, or turn an added half-hour detour into a total journey duration.
+
+Shared lemma convention: normalize modal forms `could→can`, `would→will`,
+`should→shall`, `might→may`; preserve their contextual force/tense separately.
+Normalize objective personal pronouns `me→I`, `him→he`, `her→she`, `us→we`,
+`them→they`. The subject pronoun `I` stays capitalized. Possessive determiners
+`my/her/his/our/their` keep their own forms; do not treat determiner `her` as the
+object pronoun. Reflexives and independent possessives keep their own forms.
+
+Do not blanket-copy an event, physical location, emotion or goal onto an entire
+sentence or every occurrence of a word. Annotate the appropriate lexical head,
+operator or explicitly linked mention. An adjective can refer to its modified
+entity when that binding is clear. Multiword proper names may share an entity ID.
+
+The trial provisionally adds `event_bindings: array` to preserve every
+`{event_id, role, scope_id}` membership when one mention serves several predicates.
+The singular `event_id`/`role` prioritizes the word's first trigger event, otherwise
+its first participant association; the array is
+authoritative for multiple associations. This is different from the catalog's
+`event_role_conflict` diagnostic. Further new attributes are welcome when a real
+meaning is missing: register type, definition, scope, example and why existing
+fields do not express it. Do not rename a known meaning just for convenience.
+
+## Small consistency examples
+
+In `Nia borrowed a can. She returned it to Bell.`, the same can ID appears at
+`can` and `it`; Nia is the borrower and Bell can be the return recipient if the
+story establishes that. Borrowing does not establish ownership. The borrow and
+return predicates receive different event IDs and state-appropriate holders.
+
+In `Ben believed the star was lost. Later Nia found it.`, belief holder is Ben;
+the belief-content proposition and the actual finding are separate records.
+Full-story context may resolve `it` to the star, but it does not erase Ben's
+earlier belief or imply that he knew the later result.
+
+For `couldn't`, preserve the exact token, annotate its contextual verb POS and
+`contraction_expansion=["could","not"]`; attach the negation to its actual
+predicate/scope. Do not turn every negative word into a globally false event.
+For `I'd`, inspect context before choosing `I would` versus `I had`.
+
+## Authoring and deliverables
+
+Work only in `annotations/STORY_ID/`. Keep a reproducible `author.py` and use
+the provided `authoring.py` helper, which assembles positions/gaps and validates
+types/links; it does not infer POS, entities or events. You may write direct JSON
+instead if it obeys the same schema and verification. Do not call any paid API.
+
+Example setup (author.py is two directories below this run directory):
+
+```python
+from pathlib import Path
+import sys
+sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
+from authoring import Annotation
+a = Annotation("STORY_ID", prompt_version="v0")
+# Each paragraph receives one manually chosen POS tag per word.
+a.tag(0, "n v det n", {"borrowed": "borrow", "Nia": "Nia"})
+a.entity("e1", "Nia", "person", [0])
+a.entity("e2", "watering can", "watering_can", [3])
+a.event("ev1", 1, "borrow watering can", type="obtain", actor="e1",
+        patients=["e2"], roles={"actor": [0], "patient": [3]})
+a.feature(2, determiner_kind="indefinite_article", definiteness="indefinite")
+# Define scopes before the events contained in them. scope(words=range(...))
+# uses explicit word ordinals, end exclusive. Explicit feature writes can
+# include evidence=[word_ids] and note="why this interpretation".
+a.save({"summary": "...", "ambiguities": [], "feature_gaps": [],
+        "prompt_feedback": [], "coverage_notes": "...", "reviewed_all_words": True})
+```
+
+Read the helper for signatures. `a.tag` requires exact per-paragraph tag counts;
+lemma overrides can use a word ordinal or exact surface token. Its unoverridden
+lemma is just lowercased spelling, so explicitly fix inflections, plurals,
+possessives, proper names and contractions. `a.entity` mention lists are explicit
+word ordinals, not string searches. `a.feature` can attach additional typed
+attributes. `a.proposition` registers pN content; `a.extension` registers a new
+field. Its generated spaces/punctuation have no invented semantic labels.
+
+Run your authoring script, inspect annotations against the whole text, repair
+failures and save these outputs: annotations.jsonl, entities.json, events.json,
+scopes.json, propositions.json, evidence.json, new_attributes.json, feedback.json,
+metadata.json and validation.json. Every word must be represented; substantial
+content words must have contextual semantic annotation, not just POS. Review
+all paragraphs for missed references, predicates, operators and state changes.
+If a hard case remains, mark it in feedback with concrete word IDs and options.
+
+Your final message should report counts, meaningful feature/naming gaps,
+uncertainties, prompt improvements and verification. Do not claim machine
+validation proves semantic correctness. Preserve uncertainty and give actionable
+feedback for the next batch.
+
+Anchor units: helper word arguments, evidence and support use zero-based word
+ordinals `w`. `index` and `position.token` count all lossless tokens including
+spaces. Catalog `tN` anchors are one-based nonspace tokens including punctuation;
+use `a.anchor(w)` when writing these. Do not subtract or compare unlike units.
+Multiple real/fictional events at one trigger may use `primary=False`; the
+secondary event stays correlated in the event table and `event_bindings`.
+Its scalar participant fields must not overwrite the primary event's fields.

@@ -1,0 +1,184 @@
+{
+  "source": "Agent revision after two pooled-continuation trials and third-batch evidence.",
+  "head": {
+    "name": "carry_preceding_verb",
+    "rules": [
+      {
+        "pattern": {
+          "kind": "seq",
+          "children": [
+            {
+              "kind": "repeat",
+              "children": [
+                {
+                  "kind": "token",
+                  "tests": {}
+                }
+              ],
+              "minimum": 0,
+              "maximum": 16
+            },
+            {
+              "kind": "token",
+              "tests": {
+                "pos": "v"
+              },
+              "bind": "verb"
+            },
+            {
+              "kind": "repeat",
+              "children": [
+                {
+                  "kind": "token",
+                  "tests": {
+                    "pos": {
+                      "$one_of": [
+                        "det",
+                        "adj"
+                      ]
+                    }
+                  }
+                }
+              ],
+              "minimum": 0,
+              "maximum": 16
+            }
+          ]
+        },
+        "emit": {
+          "preceding_verb_surface": {
+            "$ref": "verb.token"
+          }
+        },
+        "weight": 1.0
+      }
+    ],
+    "tables": {},
+    "max_states": 20000
+  },
+  "feature": {
+    "preceding_verb_surface": {
+      "type": "string",
+      "origin": "learned",
+      "description": "Surface token of the preceding verb when only determiners/adjectives follow it within this prefix; otherwise absent."
+    }
+  },
+  "consumer_counts": [],
+  "rationale": "Separate noun occurrence from noun identity; pool lexical evidence across modifiers.",
+  "counts": {
+    "found": {
+      "scissors": 18,
+      "apples": 17,
+      "needles": 19,
+      "pears": 16
+    },
+    "ate": {
+      "pears": 13,
+      "apples": 14
+    },
+    "used": {
+      "scissors": 15,
+      "needles": 19
+    },
+    "took": {
+      "pears": 16,
+      "scissors": 16,
+      "needles": 14,
+      "apples": 15
+    }
+  },
+  "probabilities": {
+    "ate": {
+      "scissors": 0.009114583333333332,
+      "pears": 0.47265625,
+      "apples": 0.5085565476190477,
+      "needles": 0.009672619047619046
+    },
+    "found": {
+      "scissors": 0.2571156103286385,
+      "pears": 0.2286531690140845,
+      "apples": 0.24281103286384975,
+      "needles": 0.2714201877934272
+    },
+    "took": {
+      "scissors": 0.26218077956989244,
+      "pears": 0.2618447580645161,
+      "apples": 0.24579973118279572,
+      "needles": 0.23017473118279572
+    },
+    "used": {
+      "scissors": 0.43586309523809524,
+      "pears": 0.006696428571428571,
+      "apples": 0.006845238095238095,
+      "needles": 0.550595238095238
+    }
+  },
+  "preserved_noun_mass": {
+    "v": 6.226180387686863,
+    "adj": 49.354481473471594,
+    "det": 12.71886363461402
+  },
+  "replaced_rules": [
+    {
+      "word": "scissors",
+      "rule": 5,
+      "current_pos": "v"
+    },
+    {
+      "word": "scissors",
+      "rule": 6,
+      "current_pos": "adj"
+    },
+    {
+      "word": "scissors",
+      "rule": 8,
+      "current_pos": "det"
+    },
+    {
+      "word": "pears",
+      "rule": 5,
+      "current_pos": "v"
+    },
+    {
+      "word": "pears",
+      "rule": 6,
+      "current_pos": "adj"
+    },
+    {
+      "word": "pears",
+      "rule": 8,
+      "current_pos": "det"
+    },
+    {
+      "word": "apples",
+      "rule": 5,
+      "current_pos": "v"
+    },
+    {
+      "word": "apples",
+      "rule": 6,
+      "current_pos": "adj"
+    },
+    {
+      "word": "apples",
+      "rule": 8,
+      "current_pos": "det"
+    },
+    {
+      "word": "needles",
+      "rule": 5,
+      "current_pos": "v"
+    },
+    {
+      "word": "needles",
+      "rule": 6,
+      "current_pos": "adj"
+    },
+    {
+      "word": "needles",
+      "rule": 8,
+      "current_pos": "det"
+    }
+  ],
+  "support_documents": 192
+}

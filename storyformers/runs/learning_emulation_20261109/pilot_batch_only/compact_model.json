@@ -1,0 +1,3461 @@
+{
+  "format": "storyformer-grammar-v1",
+  "context_size": 16,
+  "top_k": 10,
+  "definition": {
+    "$map": {
+      "projection": {
+        "$type": "GrammarProjection",
+        "$id": 0,
+        "neurons": {
+          "$map": {
+            ".": {
+              "$type": "GrammarNeuron",
+              "$id": 1,
+              "name": ".",
+              "rules": [
+                {
+                  "$type": "Rule",
+                  "$id": 2,
+                  "pattern": {
+                    "$type": "Pattern",
+                    "$id": 3,
+                    "kind": "repeat",
+                    "children": [
+                      {
+                        "$type": "Pattern",
+                        "$id": 4,
+                        "kind": "token",
+                        "children": [],
+                        "tests": {
+                          "$map": {}
+                        },
+                        "bind": null,
+                        "weights": [],
+                        "minimum": 0,
+                        "maximum": 256
+                      }
+                    ],
+                    "tests": {
+                      "$map": {}
+                    },
+                    "bind": null,
+                    "weights": [],
+                    "minimum": 0,
+                    "maximum": 16
+                  },
+                  "emit": {
+                    "$map": {
+                      "pos": "punct"
+                    }
+                  },
+                  "weight": 0.07138412199507733
+                },
+                {
+                  "$type": "Rule",
+                  "$id": 5,
+                  "pattern": {
+                    "$type": "Pattern",
+                    "$id": 6,
+                    "kind": "seq",
+                    "children": [],
+                    "tests": {
+                      "$map": {}
+                    },
+                    "bind": null,
+                    "weights": [],
+                    "minimum": 0,
+                    "maximum": 256
+                  },
+                  "emit": {
+                    "$map": {
+                      "pos": "punct"
+                    }
+                  },
+                  "weight": 0.02355771725201453
+                },
+                {
+                  "$type": "Rule",
+                  "$id": 7,
+                  "pattern": {
+                    "$type": "Pattern",
+                    "$id": 8,
+                    "kind": "seq",
+                    "children": [
+                      {
+                        "$type": "Pattern",
+                        "$id": 9,
+                        "kind": "repeat",
+                        "children": [
+                          {
+                            "$type": "Pattern",
+                            "$id": 10,
+                            "kind": "token",
+                            "children": [],
+                            "tests": {
+                              "$map": {}
+                            },
+                            "bind": null,
+                            "weights": [],
+                            "minimum": 0,
+                            "maximum": 256
+                          }
+                        ],
+                        "tests": {
+                          "$map": {}
+                        },
+                        "bind": null,
+                        "weights": [],
+                        "minimum": 0,
+                        "maximum": 16
+                      },
+                      {
+                        "$type": "Pattern",
+                        "$id": 11,
+                        "kind": "token",
+                        "children": [],
+                        "tests": {
+                          "$map": {
+                            "__grammar_1": true
+                          }
+                        },
+                        "bind": null,
+                        "weights": [],
+                        "minimum": 0,
+                        "maximum": 256
+                      }
+                    ],
+                    "tests": {
+                      "$map": {}
+                    },
+                    "bind": null,
+                    "weights": [],
+                    "minimum": 0,
+                    "maximum": 256
+                  },
+                  "emit": {
+                    "$map": {
+                      "pos": "punct"
+                    }
+                  },
+                  "weight": 71.49353389052841
+                },
+                {
+                  "$type": "Rule",
+                  "$id": 12,
+                  "pattern": {
+                    "$type": "Pattern",
+                    "$id": 13,
+                    "kind": "seq",
+                    "children": [
+                      {
+                        "$type": "Pattern",
+                        "$id": 14,
+                        "kind": "repeat",
+                        "children": [
+                          {
+                            "$type": "Pattern",
+                            "$id": 15,
+                            "kind": "token",
+                            "children": [],
+                            "tests": {
+                              "$map": {}
+                            },
+                            "bind": null,
+                            "weights": [],
+                            "minimum": 0,
+                            "maximum": 256
+                          }
+                        ],
+                        "tests": {
+                          "$map": {}
+                        },
+                        "bind": null,
+                        "weights": [],
+                        "minimum": 0,
+                        "maximum": 16
+                      },
+                      {
+                        "$type": "Pattern",
+                        "$id": 16,
+                        "kind": "token",
+                        "children": [],
+                        "tests": {
+                          "$map": {
+                            "__grammar_2": true
+                          }
+                        },
+                        "bind": null,
+                        "weights": [],
+                        "minimum": 0,
+                        "maximum": 256
+                      }
+                    ],
+                    "tests": {
+                      "$map": {}
+                    },
+                    "bind": null,
+                    "weights": [],
+                    "minimum": 0,
+                    "maximum": 256
+                  },
+                  "emit": {
+                    "$map": {
+                      "pos": "punct"
+                    }
+                  },
+                  "weight": 0.02373702327917971
+                },
+                {
+                  "$type": "Rule",
+                  "$id": 17,
+                  "pattern": {
+                    "$type": "Pattern",
+                    "$id": 18,
+                    "kind": "seq",
+                    "children": [
+                      {
+                        "$type": "Pattern",
+                        "$id": 19,
+                        "kind": "repeat",
+                        "children": [
+                          {
+                            "$type": "Pattern",
+                            "$id": 20,
+                            "kind": "token",
+                            "children": [],
+                            "tests": {
+                              "$map": {}
+                            },
+                            "bind": null,
+                            "weights": [],
+                            "minimum": 0,
+                            "maximum": 256
+                          }
+                        ],
+                        "tests": {
+                          "$map": {}
+                        },
+                        "bind": null,
+                        "weights": [],
+                        "minimum": 0,
+                        "maximum": 16
+                      },
+                      {
+                        "$type": "Pattern",
+                        "$id": 21,
+                        "kind": "token",
+                        "children": [],
+                        "tests": {
+                          "$map": {
+                            "__grammar_3": true
+                          }
+                        },
+                        "bind": null,
+                        "weights": [],
+                        "minimum": 0,
+                        "maximum": 256
+                      }
+                    ],
+                    "tests": {
+                      "$map": {}
+                    },
+                    "bind": null,
+                    "weights": [],
+                    "minimum": 0,
+                    "maximum": 256
+                  },
+                  "emit": {
+                    "$map": {
+                      "pos": "punct"
+                    }
+                  },
+                  "weight": 0.023529487267904232
+                },
+                {
+                  "$type": "Rule",
+                  "$id": 22,
+                  "pattern": {
+                    "$type": "Pattern",
+                    "$id": 23,
+                    "kind": "seq",
+                    "children": [
+                      {
+                        "$type": "Pattern",
+                        "$id": 24,
+                        "kind": "repeat",
+                        "children": [
+                          {
+                            "$type": "Pattern",
+                            "$id": 25,
+                            "kind": "token",
+                            "children": [],
+                            "tests": {
+                              "$map": {}
+                            },
+                            "bind": null,
+                            "weights": [],
+                            "minimum": 0,
+                            "maximum": 256
+                          }
+                        ],
+                        "tests": {
+                          "$map": {}
+                        },
+                        "bind": null,
+                        "weights": [],
+                        "minimum": 0,
+                        "maximum": 16
+                      },
+                      {
+                        "$type": "Pattern",
+                        "$id": 26,
+                        "kind": "token",
+                        "children": [],
+                        "tests": {
+                          "$map": {
+                            "__grammar_4": true
+                          }
+                        },
+                        "bind": null,
+                        "weights": [],
+                        "minimum": 0,
+                        "maximum": 256
+                      }
+                    ],
+                    "tests": {
+                      "$map": {}
+                    },
+                    "bind": null,
+                    "weights": [],
+                    "minimum": 0,
+                    "maximum": 256
+                  },
+                  "emit": {
+                    "$map": {
+                      "pos": "punct"
+                    }
+                  },
+                  "weight": 0.02352576713666563
+                },
+                {
+                  "$type": "Rule",
+                  "$id": 27,
+                  "pattern": {
+                    "$type": "Pattern",
+                    "$id": 28,
+                    "kind": "seq",
+                    "children": [
+                      {
+                        "$type": "Pattern",
+                        "$id": 29,
+                        "kind": "repeat",
+                        "children": [
+                          {
+                            "$type": "Pattern",
+                            "$id": 30,
+                            "kind": "token",
+                            "children": [],
+                            "tests": {
+                              "$map": {}
+                            },
+                            "bind": null,
+                            "weights": [],
+                            "minimum": 0,
+                            "maximum": 256
+                          }
+                        ],
+                        "tests": {
+                          "$map": {}
+                        },
+                        "bind": null,
+                        "weights": [],
+                        "minimum": 0,
+                        "maximum": 16
+                      },
+                      {
+                        "$type": "Pattern",
+                        "$id": 31,
+                        "kind": "token",
+                        "children": [],
+                        "tests": {
+                          "$map": {
+                            "__grammar_5": true
+                          }
+                        },
+                        "bind": null,
+                        "weights": [],
+                        "minimum": 0,
+                        "maximum": 256
+                      }
+                    ],
+                    "tests": {
+                      "$map": {}
+                    },
+                    "bind": null,
+                    "weights": [],
+                    "minimum": 0,
+                    "maximum": 256
+                  },
+                  "emit": {
+                    "$map": {
+                      "pos": "punct"
+                    }
+                  },
+                  "weight": 0.03415230567979096
+                },
+                {
+                  "$type": "Rule",
+                  "$id": 32,
+                  "pattern": {
+                    "$type": "Pattern",
+                    "$id": 33,
+                    "kind": "seq",
+                    "children": [
+                      {
+                        "$type": "Pattern",
+                        "$id": 34,
+                        "kind": "repeat",
+                        "children": [
+                          {
+                            "$type": "Pattern",
+                            "$id": 35,
+                            "kind": "token",
+                            "children": [],
+                            "tests": {
+                              "$map": {}
+                            },
+                            "bind": null,
+                            "weights": [],
+                            "minimum": 0,
+                            "maximum": 256
+                          }
+                        ],
+                        "tests": {
+                          "$map": {}
+                        },
+                        "bind": null,
+                        "weights": [],
+                        "minimum": 0,
+                        "maximum": 16
+                      },
+                      {
+                        "$type": "Pattern",
+                        "$id": 36,
+                        "kind": "token",
+                        "children": [],
+                        "tests": {
+                          "$map": {
+                            "__grammar_6": true
+                          }
+                        },
+                        "bind": null,
+                        "weights": [],
+                        "minimum": 0,
+                        "maximum": 256
+                      }
+                    ],
+                    "tests": {
+                      "$map": {}
+                    },
+                    "bind": null,
+                    "weights": [],
+                    "minimum": 0,
+                    "maximum": 256
+                  },
+                  "emit": {
+                    "$map": {
+                      "pos": "punct"
+                    }
+                  },
+                  "weight": 0.03662845133774204
+                },
+                {
+                  "$type": "Rule",
+                  "$id": 37,
+                  "pattern": {
+                    "$type": "Pattern",
+                    "$id": 38,
+                    "kind": "seq",
+                    "children": [
+                      {
+                        "$type": "Pattern",
+                        "$id": 39,
+                        "kind": "repeat",
+                        "children": [
+                          {
+                            "$type": "Pattern",
+                            "$id": 40,
+                            "kind": "token",
+                            "children": [],
+                            "tests": {
+                              "$map": {}
+                            },
+                            "bind": null,
+                            "weights": [],
+                            "minimum": 0,
+                            "maximum": 256
+                          }
+                        ],
+                        "tests": {
+                          "$map": {}
+                        },
+                        "bind": null,
+                        "weights": [],
+                        "minimum": 0,
+                        "maximum": 16
+                      },
+                      {
+                        "$type": "Pattern",
+                        "$id": 41,
+                        "kind": "token",
+                        "children": [],
+                        "tests": {
+                          "$map": {
+                            "__grammar_7": true
+                          }
+                        },
+                        "bind": null,
+                        "weights": [],
+                        "minimum": 0,
+                        "maximum": 256
+                      }
+                    ],
+                    "tests": {
+                      "$map": {}
+                    },
+                    "bind": null,
+                    "weights": [],
+                    "minimum": 0,
+                    "maximum": 256
+                  },
+                  "emit": {
+                    "$map": {
+                      "pos": "punct"
+                    }
+                  },
+                  "weight": 0.04677299152076844
+                }
+              ],
+              "tables": {
+                "$map": {}
+              },
+              "max_states": 20000
+            },
+            "<END>": {
+              "$type": "GrammarNeuron",
+              "$id": 42,
+              "name": "<END>",
+              "rules": [
+                {
+                  "$type": "Rule",
+                  "$id": 43,
+                  "pattern": {
+                    "$ref": 3
+                  },
+                  "emit": {
+                    "$map": {
+                      "pos": "special"
+                    }
+                  },
+                  "weight": 0.07138412199507733
+                },
+                {
+                  "$type": "Rule",
+                  "$id": 44,
+                  "pattern": {
+                    "$ref": 6
+                  },
+                  "emit": {
+                    "$map": {
+                      "pos": "special"
+                    }
+                  },
+                  "weight": 0.02355771725201453
+                },
+                {
+                  "$type": "Rule",
+                  "$id": 45,
+                  "pattern": {
+                    "$ref": 8
+                  },
+                  "emit": {
+                    "$map": {
+                      "pos": "special"
+                    }
+                  },
+                  "weight": 0.02373702327917971
+                },
+                {
+                  "$type": "Rule",
+                  "$id": 46,
+                  "pattern": {
+                    "$ref": 13
+                  },
+                  "emit": {
+                    "$map": {
+                      "pos": "special"
+                    }
+                  },
+                  "weight": 71.49353389052841
+                },
+                {
+                  "$type": "Rule",
+                  "$id": 47,
+                  "pattern": {
+                    "$ref": 18
+                  },
+                  "emit": {
+                    "$map": {
+                      "pos": "special"
+                    }
+                  },
+                  "weight": 0.023529487267904232
+                },
+                {
+                  "$type": "Rule",
+                  "$id": 48,
+                  "pattern": {
+                    "$ref": 23
+                  },
+                  "emit": {
+                    "$map": {
+                      "pos": "special"
+                    }
+                  },
+                  "weight": 0.02352576713666563
+                },
+                {
+                  "$type": "Rule",
+                  "$id": 49,
+                  "pattern": {
+                    "$ref": 28
+                  },
+                  "emit": {
+                    "$map": {
+                      "pos": "special"
+                    }
+                  },
+                  "weight": 0.03415230567979096
+                },
+                {
+                  "$type": "Rule",
+                  "$id": 50,
+                  "pattern": {
+                    "$ref": 33
+                  },
+                  "emit": {
+                    "$map": {
+                      "pos": "special"
+                    }
+                  },
+                  "weight": 0.03662845133774204
+                },
+                {
+                  "$type": "Rule",
+                  "$id": 51,
+                  "pattern": {
+                    "$ref": 38
+                  },
+                  "emit": {
+                    "$map": {
+                      "pos": "special"
+                    }
+                  },
+                  "weight": 0.04677299152076844
+                }
+              ],
+              "tables": {
+                "$map": {}
+              },
+              "max_states": 20000
+            },
+            "Ben": {
+              "$type": "GrammarNeuron",
+              "$id": 52,
+              "name": "Ben",
+              "rules": [
+                {
+                  "$type": "Rule",
+                  "$id": 53,
+                  "pattern": {
+                    "$ref": 3
+                  },
+                  "emit": {
+                    "$map": {
+                      "pos": "pn"
+                    }
+                  },
+                  "weight": 0.029788814811076748
+                },
+                {
+                  "$type": "Rule",
+                  "$id": 54,
+                  "pattern": {
+                    "$ref": 6
+                  },
+                  "emit": {
+                    "$map": {
+                      "pos": "pn"
+                    }
+                  },
+                  "weight": 10.560473335812192
+                },
+                {
+                  "$type": "Rule",
+                  "$id": 55,
+                  "pattern": {
+                    "$ref": 8
+                  },
+                  "emit": {
+                    "$map": {
+                      "pos": "pn"
+                    }
+                  },
+                  "weight": 0.006163614735963632
+                },
+                {
+                  "$type": "Rule",
+                  "$id": 56,
+                  "pattern": {
+                    "$ref": 13
+                  },
+                  "emit": {
+                    "$map": {
+                      "pos": "pn"
+                    }
+                  },
+                  "weight": 0.006163614735963632
+                },
+                {
+                  "$type": "Rule",
+                  "$id": 57,
+                  "pattern": {
+                    "$ref": 18
+                  },
+                  "emit": {
+                    "$map": {
+                      "pos": "pn"
+                    }
+                  },
+                  "weight": 0.006149533795999812
+                },
+                {
+                  "$type": "Rule",
+                  "$id": 58,
+                  "pattern": {
+                    "$ref": 23
+                  },
+                  "emit": {
+                    "$map": {
+                      "pos": "pn"
+                    }
+                  },
+                  "weight": 0.006149279726579215
+                },
+                {
+                  "$type": "Rule",
+                  "$id": 59,
+                  "pattern": {
+                    "$ref": 28
+                  },
+                  "emit": {
+                    "$map": {
+                      "pos": "pn"
+                    }
+                  },
+                  "weight": 0.008924306603525447
+                },
+                {
+                  "$type": "Rule",
+                  "$id": 60,
+                  "pattern": {
+                    "$ref": 33
+                  },
+                  "emit": {
+                    "$map": {
+                      "pos": "pn"
+                    }
+                  },
+                  "weight": 0.009571857575567637
+                },
+                {
+                  "$type": "Rule",
+                  "$id": 61,
+                  "pattern": {
+                    "$ref": 38
+                  },
+                  "emit": {
+                    "$map": {
+                      "pos": "pn"
+                    }
+                  },
+                  "weight": 0.01223270390646799
+                }
+              ],
+              "tables": {
+                "$map": {}
+              },
+              "max_states": 20000
+            },
+            "Lily": {
+              "$type": "GrammarNeuron",
+              "$id": 62,
+              "name": "Lily",
+              "rules": [
+                {
+                  "$type": "Rule",
+                  "$id": 63,
+                  "pattern": {
+                    "$ref": 3
+                  },
+                  "emit": {
+                    "$map": {
+                      "pos": "pn"
+                    }
+                  },
+                  "weight": 0.03660990192031711
+                },
+                {
+                  "$type": "Rule",
+                  "$id": 64,
+                  "pattern": {
+                    "$ref": 6
+                  },
+                  "emit": {
+                    "$map": {
+                      "pos": "pn"
+                    }
+                  },
+                  "weight": 13.85192947146821
+                },
+                {
+                  "$type": "Rule",
+                  "$id": 65,
+                  "pattern": {
+                    "$ref": 8
+                  },
+                  "emit": {
+                    "$map": {
+                      "pos": "pn"
+                    }
+                  },
+                  "weight": 0.008034388814496194
+                },
+                {
+                  "$type": "Rule",
+                  "$id": 66,
+                  "pattern": {
+                    "$ref": 13
+                  },
+                  "emit": {
+                    "$map": {
+                      "pos": "pn"
+                    }
+                  },
+                  "weight": 0.008034388814496194
+                },
+                {
+                  "$type": "Rule",
+                  "$id": 67,
+                  "pattern": {
+                    "$ref": 18
+                  },
+                  "emit": {
+                    "$map": {
+                      "pos": "pn"
+                    }
+                  },
+                  "weight": 0.008010479010162698
+                },
+                {
+                  "$type": "Rule",
+                  "$id": 68,
+                  "pattern": {
+                    "$ref": 23
+                  },
+                  "emit": {
+                    "$map": {
+                      "pos": "pn"
+                    }
+                  },
+                  "weight": 0.008010047896316938
+                },
+                {
+                  "$type": "Rule",
+                  "$id": 69,
+                  "pattern": {
+                    "$ref": 28
+                  },
+                  "emit": {
+                    "$map": {
+                      "pos": "pn"
+                    }
+                  },
+                  "weight": 0.011625157196408064
+                },
+                {
+                  "$type": "Rule",
+                  "$id": 70,
+                  "pattern": {
+                    "$ref": 33
+                  },
+                  "emit": {
+                    "$map": {
+                      "pos": "pn"
+                    }
+                  },
+                  "weight": 0.012468611535035782
+                },
+                {
+                  "$type": "Rule",
+                  "$id": 71,
+                  "pattern": {
+                    "$ref": 38
+                  },
+                  "emit": {
+                    "$map": {
+                      "pos": "pn"
+                    }
+                  },
+                  "weight": 0.015933342519579237
+                }
+              ],
+              "tables": {
+                "$map": {}
+              },
+              "max_states": 20000
+            },
+            "Mia": {
+              "$type": "GrammarNeuron",
+              "$id": 72,
+              "name": "Mia",
+              "rules": [
+                {
+                  "$type": "Rule",
+                  "$id": 73,
+                  "pattern": {
+                    "$ref": 3
+                  },
+                  "emit": {
+                    "$map": {
+                      "pos": "pn"
+                    }
+                  },
+                  "weight": 0.018667446649906497
+                },
+                {
+                  "$type": "Rule",
+                  "$id": 74,
+                  "pattern": {
+                    "$ref": 6
+                  },
+                  "emit": {
+                    "$map": {
+                      "pos": "pn"
+                    }
+                  },
+                  "weight": 5.950772669824768
+                },
+                {
+                  "$type": "Rule",
+                  "$id": 75,
+                  "pattern": {
+                    "$ref": 8
+                  },
+                  "emit": {
+                    "$map": {
+                      "pos": "pn"
+                    }
+                  },
+                  "weight": 0.003533533422489835
+                },
+                {
+                  "$type": "Rule",
+                  "$id": 76,
+                  "pattern": {
+                    "$ref": 13
+                  },
+                  "emit": {
+                    "$map": {
+                      "pos": "pn"
+                    }
+                  },
+                  "weight": 0.003533533422489835
+                },
+                {
+                  "$type": "Rule",
+                  "$id": 77,
+                  "pattern": {
+                    "$ref": 18
+                  },
+                  "emit": {
+                    "$map": {
+                      "pos": "pn"
+                    }
+                  },
+                  "weight": 0.0035289012192566316
+                },
+                {
+                  "$type": "Rule",
+                  "$id": 78,
+                  "pattern": {
+                    "$ref": 23
+                  },
+                  "emit": {
+                    "$map": {
+                      "pos": "pn"
+                    }
+                  },
+                  "weight": 0.0035288175555345394
+                },
+                {
+                  "$type": "Rule",
+                  "$id": 79,
+                  "pattern": {
+                    "$ref": 28
+                  },
+                  "emit": {
+                    "$map": {
+                      "pos": "pn"
+                    }
+                  },
+                  "weight": 0.00512106685949768
+                },
+                {
+                  "$type": "Rule",
+                  "$id": 80,
+                  "pattern": {
+                    "$ref": 33
+                  },
+                  "emit": {
+                    "$map": {
+                      "pos": "pn"
+                    }
+                  },
+                  "weight": 0.005492697610960374
+                },
+                {
+                  "$type": "Rule",
+                  "$id": 81,
+                  "pattern": {
+                    "$ref": 38
+                  },
+                  "emit": {
+                    "$map": {
+                      "pos": "pn"
+                    }
+                  },
+                  "weight": 0.007020445102153955
+                }
+              ],
+              "tables": {
+                "$map": {}
+              },
+              "max_states": 20000
+            },
+            "Tom": {
+              "$type": "GrammarNeuron",
+              "$id": 82,
+              "name": "Tom",
+              "rules": [
+                {
+                  "$type": "Rule",
+                  "$id": 83,
+                  "pattern": {
+                    "$ref": 3
+                  },
+                  "emit": {
+                    "$map": {
+                      "pos": "pn"
+                    }
+                  },
+                  "weight": 0.030747239690908142
+                },
+                {
+                  "$type": "Rule",
+                  "$id": 84,
+                  "pattern": {
+                    "$ref": 6
+                  },
+                  "emit": {
+                    "$map": {
+                      "pos": "pn"
+                    }
+                  },
+                  "weight": 10.999341753335576
+                },
+                {
+                  "$type": "Rule",
+                  "$id": 85,
+                  "pattern": {
+                    "$ref": 8
+                  },
+                  "emit": {
+                    "$map": {
+                      "pos": "pn"
+                    }
+                  },
+                  "weight": 0.006413428498941445
+                },
+                {
+                  "$type": "Rule",
+                  "$id": 86,
+                  "pattern": {
+                    "$ref": 13
+                  },
+                  "emit": {
+                    "$map": {
+                      "pos": "pn"
+                    }
+                  },
+                  "weight": 0.006413428498941445
+                },
+                {
+                  "$type": "Rule",
+                  "$id": 87,
+                  "pattern": {
+                    "$ref": 18
+                  },
+                  "emit": {
+                    "$map": {
+                      "pos": "pn"
+                    }
+                  },
+                  "weight": 0.006398184377171408
+                },
+                {
+                  "$type": "Rule",
+                  "$id": 88,
+                  "pattern": {
+                    "$ref": 23
+                  },
+                  "emit": {
+                    "$map": {
+                      "pos": "pn"
+                    }
+                  },
+                  "weight": 0.006397909345665189
+                },
+                {
+                  "$type": "Rule",
+                  "$id": 89,
+                  "pattern": {
+                    "$ref": 28
+                  },
+                  "emit": {
+                    "$map": {
+                      "pos": "pn"
+                    }
+                  },
+                  "weight": 0.009285175514983882
+                },
+                {
+                  "$type": "Rule",
+                  "$id": 90,
+                  "pattern": {
+                    "$ref": 33
+                  },
+                  "emit": {
+                    "$map": {
+                      "pos": "pn"
+                    }
+                  },
+                  "weight": 0.009958903654215149
+                },
+                {
+                  "$type": "Rule",
+                  "$id": 91,
+                  "pattern": {
+                    "$ref": 38
+                  },
+                  "emit": {
+                    "$map": {
+                      "pos": "pn"
+                    }
+                  },
+                  "weight": 0.01272719693989713
+                }
+              ],
+              "tables": {
+                "$map": {}
+              },
+              "max_states": 20000
+            },
+            "apples": {
+              "$type": "GrammarNeuron",
+              "$id": 92,
+              "name": "apples",
+              "rules": [
+                {
+                  "$type": "Rule",
+                  "$id": 93,
+                  "pattern": {
+                    "$ref": 3
+                  },
+                  "emit": {
+                    "$map": {
+                      "pos": "n"
+                    }
+                  },
+                  "weight": 0.029765977528654345
+                },
+                {
+                  "$type": "Rule",
+                  "$id": 94,
+                  "pattern": {
+                    "$ref": 6
+                  },
+                  "emit": {
+                    "$map": {
+                      "pos": "n"
+                    }
+                  },
+                  "weight": 0.005777953700639255
+                },
+                {
+                  "$type": "Rule",
+                  "$id": 95,
+                  "pattern": {
+                    "$ref": 8
+                  },
+                  "emit": {
+                    "$map": {
+                      "pos": "n"
+                    }
+                  },
+                  "weight": 0.005788676012100766
+                },
+                {
+                  "$type": "Rule",
+                  "$id": 96,
+                  "pattern": {
+                    "$ref": 13
+                  },
+                  "emit": {
+                    "$map": {
+                      "pos": "n"
+                    }
+                  },
+                  "weight": 0.005788676012100766
+                },
+                {
+                  "$type": "Rule",
+                  "$id": 97,
+                  "pattern": {
+                    "$ref": 18
+                  },
+                  "emit": {
+                    "$map": {
+                      "pos": "n"
+                    }
+                  },
+                  "weight": 0.005776254416743758
+                },
+                {
+                  "$type": "Rule",
+                  "$id": 98,
+                  "pattern": {
+                    "$ref": 23
+                  },
+                  "emit": {
+                    "$map": {
+                      "pos": "n"
+                    }
+                  },
+                  "weight": 1.2721900812659304
+                },
+                {
+                  "$type": "Rule",
+                  "$id": 99,
+                  "pattern": {
+                    "$ref": 28
+                  },
+                  "emit": {
+                    "$map": {
+                      "pos": "n"
+                    }
+                  },
+                  "weight": 8.783667693321467
+                },
+                {
+                  "$type": "Rule",
+                  "$id": 100,
+                  "pattern": {
+                    "$ref": 33
+                  },
+                  "emit": {
+                    "$map": {
+                      "pos": "n"
+                    }
+                  },
+                  "weight": 0.008990818513719323
+                },
+                {
+                  "$type": "Rule",
+                  "$id": 101,
+                  "pattern": {
+                    "$ref": 38
+                  },
+                  "emit": {
+                    "$map": {
+                      "pos": "n"
+                    }
+                  },
+                  "weight": 3.2516019585418463
+                }
+              ],
+              "tables": {
+                "$map": {}
+              },
+              "max_states": 20000
+            },
+            "ate": {
+              "$type": "GrammarNeuron",
+              "$id": 102,
+              "name": "ate",
+              "rules": [
+                {
+                  "$type": "Rule",
+                  "$id": 103,
+                  "pattern": {
+                    "$ref": 3
+                  },
+                  "emit": {
+                    "$map": {
+                      "pos": "v"
+                    }
+                  },
+                  "weight": 0.01839934443582952
+                },
+                {
+                  "$type": "Rule",
+                  "$id": 104,
+                  "pattern": {
+                    "$ref": 6
+                  },
+                  "emit": {
+                    "$map": {
+                      "pos": "v"
+                    }
+                  },
+                  "weight": 0.003404250935678582
+                },
+                {
+                  "$type": "Rule",
+                  "$id": 105,
+                  "pattern": {
+                    "$ref": 8
+                  },
+                  "emit": {
+                    "$map": {
+                      "pos": "v"
+                    }
+                  },
+                  "weight": 0.0034079700469051965
+                },
+                {
+                  "$type": "Rule",
+                  "$id": 106,
+                  "pattern": {
+                    "$ref": 13
+                  },
+                  "emit": {
+                    "$map": {
+                      "pos": "v"
+                    }
+                  },
+                  "weight": 0.0034079700469051965
+                },
+                {
+                  "$type": "Rule",
+                  "$id": 107,
+                  "pattern": {
+                    "$ref": 18
+                  },
+                  "emit": {
+                    "$map": {
+                      "pos": "v"
+                    }
+                  },
+                  "weight": 1.4898871069941726
+                },
+                {
+                  "$type": "Rule",
+                  "$id": 108,
+                  "pattern": {
+                    "$ref": 23
+                  },
+                  "emit": {
+                    "$map": {
+                      "pos": "v"
+                    }
+                  },
+                  "weight": 0.0034035831790579845
+                },
+                {
+                  "$type": "Rule",
+                  "$id": 109,
+                  "pattern": {
+                    "$ref": 28
+                  },
+                  "emit": {
+                    "$map": {
+                      "pos": "v"
+                    }
+                  },
+                  "weight": 0.004939314748127562
+                },
+                {
+                  "$type": "Rule",
+                  "$id": 110,
+                  "pattern": {
+                    "$ref": 33
+                  },
+                  "emit": {
+                    "$map": {
+                      "pos": "v"
+                    }
+                  },
+                  "weight": 5.857811348092134
+                },
+                {
+                  "$type": "Rule",
+                  "$id": 111,
+                  "pattern": {
+                    "$ref": 38
+                  },
+                  "emit": {
+                    "$map": {
+                      "pos": "v"
+                    }
+                  },
+                  "weight": 0.0067713239269131306
+                }
+              ],
+              "tables": {
+                "$map": {}
+              },
+              "max_states": 20000
+            },
+            "found": {
+              "$type": "GrammarNeuron",
+              "$id": 112,
+              "name": "found",
+              "rules": [
+                {
+                  "$type": "Rule",
+                  "$id": 113,
+                  "pattern": {
+                    "$ref": 3
+                  },
+                  "emit": {
+                    "$map": {
+                      "pos": "v"
+                    }
+                  },
+                  "weight": 0.04056825257068901
+                },
+                {
+                  "$type": "Rule",
+                  "$id": 114,
+                  "pattern": {
+                    "$ref": 6
+                  },
+                  "emit": {
+                    "$map": {
+                      "pos": "v"
+                    }
+                  },
+                  "weight": 0.008756224980541192
+                },
+                {
+                  "$type": "Rule",
+                  "$id": 115,
+                  "pattern": {
+                    "$ref": 8
+                  },
+                  "emit": {
+                    "$map": {
+                      "pos": "v"
+                    }
+                  },
+                  "weight": 0.00878087438883406
+                },
+                {
+                  "$type": "Rule",
+                  "$id": 116,
+                  "pattern": {
+                    "$ref": 13
+                  },
+                  "emit": {
+                    "$map": {
+                      "pos": "v"
+                    }
+                  },
+                  "weight": 0.00878087438883406
+                },
+                {
+                  "$type": "Rule",
+                  "$id": 117,
+                  "pattern": {
+                    "$ref": 18
+                  },
+                  "emit": {
+                    "$map": {
+                      "pos": "v"
+                    }
+                  },
+                  "weight": 5.30841944613761
+                },
+                {
+                  "$type": "Rule",
+                  "$id": 118,
+                  "pattern": {
+                    "$ref": 23
+                  },
+                  "emit": {
+                    "$map": {
+                      "pos": "v"
+                    }
+                  },
+                  "weight": 0.008751808149706441
+                },
+                {
+                  "$type": "Rule",
+                  "$id": 119,
+                  "pattern": {
+                    "$ref": 28
+                  },
+                  "emit": {
+                    "$map": {
+                      "pos": "v"
+                    }
+                  },
+                  "weight": 0.012701847290851512
+                },
+                {
+                  "$type": "Rule",
+                  "$id": 120,
+                  "pattern": {
+                    "$ref": 33
+                  },
+                  "emit": {
+                    "$map": {
+                      "pos": "v"
+                    }
+                  },
+                  "weight": 13.524279826449252
+                },
+                {
+                  "$type": "Rule",
+                  "$id": 121,
+                  "pattern": {
+                    "$ref": 38
+                  },
+                  "emit": {
+                    "$map": {
+                      "pos": "v"
+                    }
+                  },
+                  "weight": 0.017408406941223937
+                }
+              ],
+              "tables": {
+                "$map": {}
+              },
+              "max_states": 20000
+            },
+            "needles": {
+              "$type": "GrammarNeuron",
+              "$id": 122,
+              "name": "needles",
+              "rules": [
+                {
+                  "$type": "Rule",
+                  "$id": 123,
+                  "pattern": {
+                    "$ref": 3
+                  },
+                  "emit": {
+                    "$map": {
+                      "pos": "n"
+                    }
+                  },
+                  "weight": 0.03298450394808934
+                },
+                {
+                  "$type": "Rule",
+                  "$id": 124,
+                  "pattern": {
+                    "$ref": 6
+                  },
+                  "emit": {
+                    "$map": {
+                      "pos": "n"
+                    }
+                  },
+                  "weight": 0.006524615812020854
+                },
+                {
+                  "$type": "Rule",
+                  "$id": 125,
+                  "pattern": {
+                    "$ref": 8
+                  },
+                  "emit": {
+                    "$map": {
+                      "pos": "n"
+                    }
+                  },
+                  "weight": 0.006538291794789531
+                },
+                {
+                  "$type": "Rule",
+                  "$id": 126,
+                  "pattern": {
+                    "$ref": 13
+                  },
+                  "emit": {
+                    "$map": {
+                      "pos": "n"
+                    }
+                  },
+                  "weight": 0.006538291794789531
+                },
+                {
+                  "$type": "Rule",
+                  "$id": 127,
+                  "pattern": {
+                    "$ref": 18
+                  },
+                  "emit": {
+                    "$map": {
+                      "pos": "n"
+                    }
+                  },
+                  "weight": 0.0065224490251035985
+                },
+                {
+                  "$type": "Rule",
+                  "$id": 128,
+                  "pattern": {
+                    "$ref": 23
+                  },
+                  "emit": {
+                    "$map": {
+                      "pos": "n"
+                    }
+                  },
+                  "weight": 1.2692052444874726
+                },
+                {
+                  "$type": "Rule",
+                  "$id": 129,
+                  "pattern": {
+                    "$ref": 28
+                  },
+                  "emit": {
+                    "$map": {
+                      "pos": "n"
+                    }
+                  },
+                  "weight": 11.185102611848672
+                },
+                {
+                  "$type": "Rule",
+                  "$id": 130,
+                  "pattern": {
+                    "$ref": 33
+                  },
+                  "emit": {
+                    "$map": {
+                      "pos": "n"
+                    }
+                  },
+                  "weight": 0.010152332795398981
+                },
+                {
+                  "$type": "Rule",
+                  "$id": 131,
+                  "pattern": {
+                    "$ref": 38
+                  },
+                  "emit": {
+                    "$map": {
+                      "pos": "n"
+                    }
+                  },
+                  "weight": 2.4959994505672403
+                }
+              ],
+              "tables": {
+                "$map": {}
+              },
+              "max_states": 20000
+            },
+            "pears": {
+              "$type": "GrammarNeuron",
+              "$id": 132,
+              "name": "pears",
+              "rules": [
+                {
+                  "$type": "Rule",
+                  "$id": 133,
+                  "pattern": {
+                    "$ref": 3
+                  },
+                  "emit": {
+                    "$map": {
+                      "pos": "n"
+                    }
+                  },
+                  "weight": 0.029216472425609916
+                },
+                {
+                  "$type": "Rule",
+                  "$id": 134,
+                  "pattern": {
+                    "$ref": 6
+                  },
+                  "emit": {
+                    "$map": {
+                      "pos": "n"
+                    }
+                  },
+                  "weight": 0.005653373746776275
+                },
+                {
+                  "$type": "Rule",
+                  "$id": 135,
+                  "pattern": {
+                    "$ref": 8
+                  },
+                  "emit": {
+                    "$map": {
+                      "pos": "n"
+                    }
+                  },
+                  "weight": 0.005663638242623734
+                },
+                {
+                  "$type": "Rule",
+                  "$id": 136,
+                  "pattern": {
+                    "$ref": 13
+                  },
+                  "emit": {
+                    "$map": {
+                      "pos": "n"
+                    }
+                  },
+                  "weight": 0.005663638242623734
+                },
+                {
+                  "$type": "Rule",
+                  "$id": 137,
+                  "pattern": {
+                    "$ref": 18
+                  },
+                  "emit": {
+                    "$map": {
+                      "pos": "n"
+                    }
+                  },
+                  "weight": 0.005651746943108714
+                },
+                {
+                  "$type": "Rule",
+                  "$id": 138,
+                  "pattern": {
+                    "$ref": 23
+                  },
+                  "emit": {
+                    "$map": {
+                      "pos": "n"
+                    }
+                  },
+                  "weight": 1.467833189406269
+                },
+                {
+                  "$type": "Rule",
+                  "$id": 139,
+                  "pattern": {
+                    "$ref": 28
+                  },
+                  "emit": {
+                    "$map": {
+                      "pos": "n"
+                    }
+                  },
+                  "weight": 8.483543281379319
+                },
+                {
+                  "$type": "Rule",
+                  "$id": 140,
+                  "pattern": {
+                    "$ref": 33
+                  },
+                  "emit": {
+                    "$map": {
+                      "pos": "n"
+                    }
+                  },
+                  "weight": 0.00879701338708622
+                },
+                {
+                  "$type": "Rule",
+                  "$id": 141,
+                  "pattern": {
+                    "$ref": 38
+                  },
+                  "emit": {
+                    "$map": {
+                      "pos": "n"
+                    }
+                  },
+                  "weight": 2.8748572885027737
+                }
+              ],
+              "tables": {
+                "$map": {}
+              },
+              "max_states": 20000
+            },
+            "quickly": {
+              "$type": "GrammarNeuron",
+              "$id": 142,
+              "name": "quickly",
+              "rules": [
+                {
+                  "$type": "Rule",
+                  "$id": 143,
+                  "pattern": {
+                    "$ref": 3
+                  },
+                  "emit": {
+                    "$map": {
+                      "pos": "adv"
+                    }
+                  },
+                  "weight": 0.03536669858200432
+                },
+                {
+                  "$type": "Rule",
+                  "$id": 144,
+                  "pattern": {
+                    "$ref": 6
+                  },
+                  "emit": {
+                    "$map": {
+                      "pos": "adv"
+                    }
+                  },
+                  "weight": 0.007641987461377631
+                },
+                {
+                  "$type": "Rule",
+                  "$id": 145,
+                  "pattern": {
+                    "$ref": 8
+                  },
+                  "emit": {
+                    "$map": {
+                      "pos": "adv"
+                    }
+                  },
+                  "weight": 0.007660755699370119
+                },
+                {
+                  "$type": "Rule",
+                  "$id": 146,
+                  "pattern": {
+                    "$ref": 13
+                  },
+                  "emit": {
+                    "$map": {
+                      "pos": "adv"
+                    }
+                  },
+                  "weight": 0.007660755699370119
+                },
+                {
+                  "$type": "Rule",
+                  "$id": 147,
+                  "pattern": {
+                    "$ref": 18
+                  },
+                  "emit": {
+                    "$map": {
+                      "pos": "adv"
+                    }
+                  },
+                  "weight": 12.188946222647504
+                },
+                {
+                  "$type": "Rule",
+                  "$id": 148,
+                  "pattern": {
+                    "$ref": 23
+                  },
+                  "emit": {
+                    "$map": {
+                      "pos": "adv"
+                    }
+                  },
+                  "weight": 0.0076386230429228204
+                },
+                {
+                  "$type": "Rule",
+                  "$id": 149,
+                  "pattern": {
+                    "$ref": 28
+                  },
+                  "emit": {
+                    "$map": {
+                      "pos": "adv"
+                    }
+                  },
+                  "weight": 0.011086031478583547
+                },
+                {
+                  "$type": "Rule",
+                  "$id": 150,
+                  "pattern": {
+                    "$ref": 33
+                  },
+                  "emit": {
+                    "$map": {
+                      "pos": "adv"
+                    }
+                  },
+                  "weight": 0.011890383546939155
+                },
+                {
+                  "$type": "Rule",
+                  "$id": 151,
+                  "pattern": {
+                    "$ref": 38
+                  },
+                  "emit": {
+                    "$map": {
+                      "pos": "adv"
+                    }
+                  },
+                  "weight": 0.015194700165017384
+                }
+              ],
+              "tables": {
+                "$map": {}
+              },
+              "max_states": 20000
+            },
+            "red": {
+              "$type": "GrammarNeuron",
+              "$id": 152,
+              "name": "red",
+              "rules": [
+                {
+                  "$type": "Rule",
+                  "$id": 153,
+                  "pattern": {
+                    "$ref": 3
+                  },
+                  "emit": {
+                    "$map": {
+                      "pos": "adj"
+                    }
+                  },
+                  "weight": 0.035807083289802144
+                },
+                {
+                  "$type": "Rule",
+                  "$id": 154,
+                  "pattern": {
+                    "$ref": 6
+                  },
+                  "emit": {
+                    "$map": {
+                      "pos": "adj"
+                    }
+                  },
+                  "weight": 0.007517990067791058
+                },
+                {
+                  "$type": "Rule",
+                  "$id": 155,
+                  "pattern": {
+                    "$ref": 8
+                  },
+                  "emit": {
+                    "$map": {
+                      "pos": "adj"
+                    }
+                  },
+                  "weight": 0.00753615343454051
+                },
+                {
+                  "$type": "Rule",
+                  "$id": 156,
+                  "pattern": {
+                    "$ref": 13
+                  },
+                  "emit": {
+                    "$map": {
+                      "pos": "adj"
+                    }
+                  },
+                  "weight": 0.00753615343454051
+                },
+                {
+                  "$type": "Rule",
+                  "$id": 157,
+                  "pattern": {
+                    "$ref": 18
+                  },
+                  "emit": {
+                    "$map": {
+                      "pos": "adj"
+                    }
+                  },
+                  "weight": 0.007515113368273456
+                },
+                {
+                  "$type": "Rule",
+                  "$id": 158,
+                  "pattern": {
+                    "$ref": 23
+                  },
+                  "emit": {
+                    "$map": {
+                      "pos": "adj"
+                    }
+                  },
+                  "weight": 5.628523540830531
+                },
+                {
+                  "$type": "Rule",
+                  "$id": 159,
+                  "pattern": {
+                    "$ref": 28
+                  },
+                  "emit": {
+                    "$map": {
+                      "pos": "adj"
+                    }
+                  },
+                  "weight": 0.010906207065861895
+                },
+                {
+                  "$type": "Rule",
+                  "$id": 160,
+                  "pattern": {
+                    "$ref": 33
+                  },
+                  "emit": {
+                    "$map": {
+                      "pos": "adj"
+                    }
+                  },
+                  "weight": 0.011697516348542715
+                },
+                {
+                  "$type": "Rule",
+                  "$id": 161,
+                  "pattern": {
+                    "$ref": 38
+                  },
+                  "emit": {
+                    "$map": {
+                      "pos": "adj"
+                    }
+                  },
+                  "weight": 11.601714829762031
+                }
+              ],
+              "tables": {
+                "$map": {}
+              },
+              "max_states": 20000
+            },
+            "scissors": {
+              "$type": "GrammarNeuron",
+              "$id": 162,
+              "name": "scissors",
+              "rules": [
+                {
+                  "$type": "Rule",
+                  "$id": 163,
+                  "pattern": {
+                    "$ref": 3
+                  },
+                  "emit": {
+                    "$map": {
+                      "pos": "n"
+                    }
+                  },
+                  "weight": 0.03139189221858431
+                },
+                {
+                  "$type": "Rule",
+                  "$id": 164,
+                  "pattern": {
+                    "$ref": 6
+                  },
+                  "emit": {
+                    "$map": {
+                      "pos": "n"
+                    }
+                  },
+                  "weight": 0.006151459849985854
+                },
+                {
+                  "$type": "Rule",
+                  "$id": 165,
+                  "pattern": {
+                    "$ref": 8
+                  },
+                  "emit": {
+                    "$map": {
+                      "pos": "n"
+                    }
+                  },
+                  "weight": 0.006163614735963632
+                },
+                {
+                  "$type": "Rule",
+                  "$id": 166,
+                  "pattern": {
+                    "$ref": 13
+                  },
+                  "emit": {
+                    "$map": {
+                      "pos": "n"
+                    }
+                  },
+                  "weight": 0.006163614735963632
+                },
+                {
+                  "$type": "Rule",
+                  "$id": 167,
+                  "pattern": {
+                    "$ref": 18
+                  },
+                  "emit": {
+                    "$map": {
+                      "pos": "n"
+                    }
+                  },
+                  "weight": 0.006149533795999812
+                },
+                {
+                  "$type": "Rule",
+                  "$id": 168,
+                  "pattern": {
+                    "$ref": 23
+                  },
+                  "emit": {
+                    "$map": {
+                      "pos": "n"
+                    }
+                  },
+                  "weight": 1.270685892259563
+                },
+                {
+                  "$type": "Rule",
+                  "$id": 169,
+                  "pattern": {
+                    "$ref": 28
+                  },
+                  "emit": {
+                    "$map": {
+                      "pos": "n"
+                    }
+                  },
+                  "weight": 10.285127707387812
+                },
+                {
+                  "$type": "Rule",
+                  "$id": 170,
+                  "pattern": {
+                    "$ref": 33
+                  },
+                  "emit": {
+                    "$map": {
+                      "pos": "n"
+                    }
+                  },
+                  "weight": 0.009571857575567637
+                },
+                {
+                  "$type": "Rule",
+                  "$id": 171,
+                  "pattern": {
+                    "$ref": 38
+                  },
+                  "emit": {
+                    "$map": {
+                      "pos": "n"
+                    }
+                  },
+                  "weight": 2.4973956883973045
+                }
+              ],
+              "tables": {
+                "$map": {}
+              },
+              "max_states": 20000
+            },
+            "slowly": {
+              "$type": "GrammarNeuron",
+              "$id": 172,
+              "name": "slowly",
+              "rules": [
+                {
+                  "$type": "Rule",
+                  "$id": 173,
+                  "pattern": {
+                    "$ref": 3
+                  },
+                  "emit": {
+                    "$map": {
+                      "pos": "adv"
+                    }
+                  },
+                  "weight": 0.03580468771036889
+                },
+                {
+                  "$type": "Rule",
+                  "$id": 174,
+                  "pattern": {
+                    "$ref": 6
+                  },
+                  "emit": {
+                    "$map": {
+                      "pos": "adv"
+                    }
+                  },
+                  "weight": 0.007765946162072981
+                },
+                {
+                  "$type": "Rule",
+                  "$id": 175,
+                  "pattern": {
+                    "$ref": 8
+                  },
+                  "emit": {
+                    "$map": {
+                      "pos": "adv"
+                    }
+                  },
+                  "weight": 0.007785329010957433
+                },
+                {
+                  "$type": "Rule",
+                  "$id": 176,
+                  "pattern": {
+                    "$ref": 13
+                  },
+                  "emit": {
+                    "$map": {
+                      "pos": "adv"
+                    }
+                  },
+                  "weight": 0.007785329010957433
+                },
+                {
+                  "$type": "Rule",
+                  "$id": 177,
+                  "pattern": {
+                    "$ref": 18
+                  },
+                  "emit": {
+                    "$map": {
+                      "pos": "adv"
+                    }
+                  },
+                  "weight": 12.39058120446694
+                },
+                {
+                  "$type": "Rule",
+                  "$id": 178,
+                  "pattern": {
+                    "$ref": 23
+                  },
+                  "emit": {
+                    "$map": {
+                      "pos": "adv"
+                    }
+                  },
+                  "weight": 0.0077624717298537095
+                },
+                {
+                  "$type": "Rule",
+                  "$id": 179,
+                  "pattern": {
+                    "$ref": 28
+                  },
+                  "emit": {
+                    "$map": {
+                      "pos": "adv"
+                    }
+                  },
+                  "weight": 0.011265797952703898
+                },
+                {
+                  "$type": "Rule",
+                  "$id": 180,
+                  "pattern": {
+                    "$ref": 33
+                  },
+                  "emit": {
+                    "$map": {
+                      "pos": "adv"
+                    }
+                  },
+                  "weight": 0.012083188457502985
+                },
+                {
+                  "$type": "Rule",
+                  "$id": 181,
+                  "pattern": {
+                    "$ref": 38
+                  },
+                  "emit": {
+                    "$map": {
+                      "pos": "adv"
+                    }
+                  },
+                  "weight": 0.015440996625391912
+                }
+              ],
+              "tables": {
+                "$map": {}
+              },
+              "max_states": 20000
+            },
+            "small": {
+              "$type": "GrammarNeuron",
+              "$id": 182,
+              "name": "small",
+              "rules": [
+                {
+                  "$type": "Rule",
+                  "$id": 183,
+                  "pattern": {
+                    "$ref": 3
+                  },
+                  "emit": {
+                    "$map": {
+                      "pos": "adj"
+                    }
+                  },
+                  "weight": 0.04115563528788096
+                },
+                {
+                  "$type": "Rule",
+                  "$id": 184,
+                  "pattern": {
+                    "$ref": 6
+                  },
+                  "emit": {
+                    "$map": {
+                      "pos": "adj"
+                    }
+                  },
+                  "weight": 0.009003409013268163
+                },
+                {
+                  "$type": "Rule",
+                  "$id": 185,
+                  "pattern": {
+                    "$ref": 8
+                  },
+                  "emit": {
+                    "$map": {
+                      "pos": "adj"
+                    }
+                  },
+                  "weight": 0.009029471901482216
+                },
+                {
+                  "$type": "Rule",
+                  "$id": 186,
+                  "pattern": {
+                    "$ref": 13
+                  },
+                  "emit": {
+                    "$map": {
+                      "pos": "adj"
+                    }
+                  },
+                  "weight": 0.009029471901482216
+                },
+                {
+                  "$type": "Rule",
+                  "$id": 187,
+                  "pattern": {
+                    "$ref": 18
+                  },
+                  "emit": {
+                    "$map": {
+                      "pos": "adj"
+                    }
+                  },
+                  "weight": 0.00899928346116435
+                },
+                {
+                  "$type": "Rule",
+                  "$id": 188,
+                  "pattern": {
+                    "$ref": 23
+                  },
+                  "emit": {
+                    "$map": {
+                      "pos": "adj"
+                    }
+                  },
+                  "weight": 7.406747477616751
+                },
+                {
+                  "$type": "Rule",
+                  "$id": 189,
+                  "pattern": {
+                    "$ref": 28
+                  },
+                  "emit": {
+                    "$map": {
+                      "pos": "adj"
+                    }
+                  },
+                  "weight": 0.013060282182745664
+                },
+                {
+                  "$type": "Rule",
+                  "$id": 190,
+                  "pattern": {
+                    "$ref": 33
+                  },
+                  "emit": {
+                    "$map": {
+                      "pos": "adj"
+                    }
+                  },
+                  "weight": 0.014007818318579857
+                },
+                {
+                  "$type": "Rule",
+                  "$id": 191,
+                  "pattern": {
+                    "$ref": 38
+                  },
+                  "emit": {
+                    "$map": {
+                      "pos": "adj"
+                    }
+                  },
+                  "weight": 12.734262653518156
+                }
+              ],
+              "tables": {
+                "$map": {}
+              },
+              "max_states": 20000
+            },
+            "the": {
+              "$type": "GrammarNeuron",
+              "$id": 192,
+              "name": "the",
+              "rules": [
+                {
+                  "$type": "Rule",
+                  "$id": 193,
+                  "pattern": {
+                    "$ref": 3
+                  },
+                  "emit": {
+                    "$map": {
+                      "pos": "det"
+                    }
+                  },
+                  "weight": 0.04889834907240919
+                },
+                {
+                  "$type": "Rule",
+                  "$id": 194,
+                  "pattern": {
+                    "$ref": 6
+                  },
+                  "emit": {
+                    "$map": {
+                      "pos": "det"
+                    }
+                  },
+                  "weight": 0.011957647543062902
+                },
+                {
+                  "$type": "Rule",
+                  "$id": 195,
+                  "pattern": {
+                    "$ref": 8
+                  },
+                  "emit": {
+                    "$map": {
+                      "pos": "det"
+                    }
+                  },
+                  "weight": 0.01200366572567233
+                },
+                {
+                  "$type": "Rule",
+                  "$id": 196,
+                  "pattern": {
+                    "$ref": 13
+                  },
+                  "emit": {
+                    "$map": {
+                      "pos": "det"
+                    }
+                  },
+                  "weight": 0.01200366572567233
+                },
+                {
+                  "$type": "Rule",
+                  "$id": 197,
+                  "pattern": {
+                    "$ref": 18
+                  },
+                  "emit": {
+                    "$map": {
+                      "pos": "det"
+                    }
+                  },
+                  "weight": 0.011950371184168357
+                },
+                {
+                  "$type": "Rule",
+                  "$id": 198,
+                  "pattern": {
+                    "$ref": 23
+                  },
+                  "emit": {
+                    "$map": {
+                      "pos": "det"
+                    }
+                  },
+                  "weight": 18.883501487644004
+                },
+                {
+                  "$type": "Rule",
+                  "$id": 199,
+                  "pattern": {
+                    "$ref": 28
+                  },
+                  "emit": {
+                    "$map": {
+                      "pos": "det"
+                    }
+                  },
+                  "weight": 0.017343582208593573
+                },
+                {
+                  "$type": "Rule",
+                  "$id": 200,
+                  "pattern": {
+                    "$ref": 33
+                  },
+                  "emit": {
+                    "$map": {
+                      "pos": "det"
+                    }
+                  },
+                  "weight": 0.018601707093095474
+                },
+                {
+                  "$type": "Rule",
+                  "$id": 201,
+                  "pattern": {
+                    "$ref": 38
+                  },
+                  "emit": {
+                    "$map": {
+                      "pos": "det"
+                    }
+                  },
+                  "weight": 0.02376634173842247
+                }
+              ],
+              "tables": {
+                "$map": {}
+              },
+              "max_states": 20000
+            },
+            "took": {
+              "$type": "GrammarNeuron",
+              "$id": 202,
+              "name": "took",
+              "rules": [
+                {
+                  "$type": "Rule",
+                  "$id": 203,
+                  "pattern": {
+                    "$ref": 3
+                  },
+                  "emit": {
+                    "$map": {
+                      "pos": "v"
+                    }
+                  },
+                  "weight": 0.03649186931029166
+                },
+                {
+                  "$type": "Rule",
+                  "$id": 204,
+                  "pattern": {
+                    "$ref": 6
+                  },
+                  "emit": {
+                    "$map": {
+                      "pos": "v"
+                    }
+                  },
+                  "weight": 0.007641987461377631
+                },
+                {
+                  "$type": "Rule",
+                  "$id": 205,
+                  "pattern": {
+                    "$ref": 8
+                  },
+                  "emit": {
+                    "$map": {
+                      "pos": "v"
+                    }
+                  },
+                  "weight": 0.007660755699370119
+                },
+                {
+                  "$type": "Rule",
+                  "$id": 206,
+                  "pattern": {
+                    "$ref": 13
+                  },
+                  "emit": {
+                    "$map": {
+                      "pos": "v"
+                    }
+                  },
+                  "weight": 0.007660755699370119
+                },
+                {
+                  "$type": "Rule",
+                  "$id": 207,
+                  "pattern": {
+                    "$ref": 18
+                  },
+                  "emit": {
+                    "$map": {
+                      "pos": "v"
+                    }
+                  },
+                  "weight": 4.705371801469431
+                },
+                {
+                  "$type": "Rule",
+                  "$id": 208,
+                  "pattern": {
+                    "$ref": 23
+                  },
+                  "emit": {
+                    "$map": {
+                      "pos": "v"
+                    }
+                  },
+                  "weight": 0.0076386230429228204
+                },
+                {
+                  "$type": "Rule",
+                  "$id": 209,
+                  "pattern": {
+                    "$ref": 28
+                  },
+                  "emit": {
+                    "$map": {
+                      "pos": "v"
+                    }
+                  },
+                  "weight": 0.011086031478583547
+                },
+                {
+                  "$type": "Rule",
+                  "$id": 210,
+                  "pattern": {
+                    "$ref": 33
+                  },
+                  "emit": {
+                    "$map": {
+                      "pos": "v"
+                    }
+                  },
+                  "weight": 11.607226613796515
+                },
+                {
+                  "$type": "Rule",
+                  "$id": 211,
+                  "pattern": {
+                    "$ref": 38
+                  },
+                  "emit": {
+                    "$map": {
+                      "pos": "v"
+                    }
+                  },
+                  "weight": 0.015194700165017384
+                }
+              ],
+              "tables": {
+                "$map": {}
+              },
+              "max_states": 20000
+            },
+            "used": {
+              "$type": "GrammarNeuron",
+              "$id": 212,
+              "name": "used",
+              "rules": [
+                {
+                  "$type": "Rule",
+                  "$id": 213,
+                  "pattern": {
+                    "$ref": 3
+                  },
+                  "emit": {
+                    "$map": {
+                      "pos": "v"
+                    }
+                  },
+                  "weight": 0.02252423377596887
+                },
+                {
+                  "$type": "Rule",
+                  "$id": 214,
+                  "pattern": {
+                    "$ref": 6
+                  },
+                  "emit": {
+                    "$map": {
+                      "pos": "v"
+                    }
+                  },
+                  "weight": 0.004280417414924044
+                },
+                {
+                  "$type": "Rule",
+                  "$id": 215,
+                  "pattern": {
+                    "$ref": 8
+                  },
+                  "emit": {
+                    "$map": {
+                      "pos": "v"
+                    }
+                  },
+                  "weight": 0.004286299012682518
+                },
+                {
+                  "$type": "Rule",
+                  "$id": 216,
+                  "pattern": {
+                    "$ref": 13
+                  },
+                  "emit": {
+                    "$map": {
+                      "pos": "v"
+                    }
+                  },
+                  "weight": 0.004286299012682518
+                },
+                {
+                  "$type": "Rule",
+                  "$id": 217,
+                  "pattern": {
+                    "$ref": 18
+                  },
+                  "emit": {
+                    "$map": {
+                      "pos": "v"
+                    }
+                  },
+                  "weight": 1.8860094765185091
+                },
+                {
+                  "$type": "Rule",
+                  "$id": 218,
+                  "pattern": {
+                    "$ref": 23
+                  },
+                  "emit": {
+                    "$map": {
+                      "pos": "v"
+                    }
+                  },
+                  "weight": 0.004279361737472218
+                },
+                {
+                  "$type": "Rule",
+                  "$id": 219,
+                  "pattern": {
+                    "$ref": 28
+                  },
+                  "emit": {
+                    "$map": {
+                      "pos": "v"
+                    }
+                  },
+                  "weight": 0.006210344319679924
+                },
+                {
+                  "$type": "Rule",
+                  "$id": 220,
+                  "pattern": {
+                    "$ref": 33
+                  },
+                  "emit": {
+                    "$map": {
+                      "pos": "v"
+                    }
+                  },
+                  "weight": 7.456880022887185
+                },
+                {
+                  "$type": "Rule",
+                  "$id": 221,
+                  "pattern": {
+                    "$ref": 38
+                  },
+                  "emit": {
+                    "$map": {
+                      "pos": "v"
+                    }
+                  },
+                  "weight": 0.008513414501893173
+                }
+              ],
+              "tables": {
+                "$map": {}
+              },
+              "max_states": 20000
+            }
+          }
+        }
+      },
+      "layers": [
+        {
+          "$type": "StoryformerBlock",
+          "$id": 222,
+          "heads": [
+            {
+              "$type": "GrammarHead",
+              "$id": 223,
+              "neuron": {
+                "$type": "GrammarNeuron",
+                "$id": 224,
+                "name": "learned_1",
+                "rules": [
+                  {
+                    "$type": "Rule",
+                    "$id": 225,
+                    "pattern": {
+                      "$type": "Pattern",
+                      "$id": 226,
+                      "kind": "seq",
+                      "children": [
+                        {
+                          "$type": "Pattern",
+                          "$id": 227,
+                          "kind": "repeat",
+                          "children": [
+                            {
+                              "$type": "Pattern",
+                              "$id": 228,
+                              "kind": "token",
+                              "children": [],
+                              "tests": {
+                                "$map": {}
+                              },
+                              "bind": null,
+                              "weights": [],
+                              "minimum": 0,
+                              "maximum": 256
+                            }
+                          ],
+                          "tests": {
+                            "$map": {}
+                          },
+                          "bind": null,
+                          "weights": [],
+                          "minimum": 0,
+                          "maximum": 16
+                        },
+                        {
+                          "$type": "Pattern",
+                          "$id": 229,
+                          "kind": "token",
+                          "children": [],
+                          "tests": {
+                            "$map": {
+                              "pos": "n"
+                            }
+                          },
+                          "bind": null,
+                          "weights": [],
+                          "minimum": 0,
+                          "maximum": 256
+                        }
+                      ],
+                      "tests": {
+                        "$map": {}
+                      },
+                      "bind": null,
+                      "weights": [],
+                      "minimum": 0,
+                      "maximum": 256
+                    },
+                    "emit": {
+                      "$map": {
+                        "__grammar_1": true
+                      }
+                    },
+                    "weight": 1.0
+                  }
+                ],
+                "tables": {
+                  "$map": {}
+                },
+                "max_states": 20000
+              },
+              "operation": "add",
+              "strength": 1.0,
+              "null_mass": 1.0
+            },
+            {
+              "$type": "GrammarHead",
+              "$id": 230,
+              "neuron": {
+                "$type": "GrammarNeuron",
+                "$id": 231,
+                "name": "learned_2",
+                "rules": [
+                  {
+                    "$type": "Rule",
+                    "$id": 232,
+                    "pattern": {
+                      "$type": "Pattern",
+                      "$id": 233,
+                      "kind": "seq",
+                      "children": [
+                        {
+                          "$type": "Pattern",
+                          "$id": 234,
+                          "kind": "repeat",
+                          "children": [
+                            {
+                              "$type": "Pattern",
+                              "$id": 235,
+                              "kind": "token",
+                              "children": [],
+                              "tests": {
+                                "$map": {}
+                              },
+                              "bind": null,
+                              "weights": [],
+                              "minimum": 0,
+                              "maximum": 256
+                            }
+                          ],
+                          "tests": {
+                            "$map": {}
+                          },
+                          "bind": null,
+                          "weights": [],
+                          "minimum": 0,
+                          "maximum": 16
+                        },
+                        {
+                          "$type": "Pattern",
+                          "$id": 236,
+                          "kind": "token",
+                          "children": [],
+                          "tests": {
+                            "$map": {
+                              "pos": "punct"
+                            }
+                          },
+                          "bind": null,
+                          "weights": [],
+                          "minimum": 0,
+                          "maximum": 256
+                        }
+                      ],
+                      "tests": {
+                        "$map": {}
+                      },
+                      "bind": null,
+                      "weights": [],
+                      "minimum": 0,
+                      "maximum": 256
+                    },
+                    "emit": {
+                      "$map": {
+                        "__grammar_2": true
+                      }
+                    },
+                    "weight": 1.0
+                  }
+                ],
+                "tables": {
+                  "$map": {}
+                },
+                "max_states": 20000
+              },
+              "operation": "add",
+              "strength": 1.0,
+              "null_mass": 1.0
+            },
+            {
+              "$type": "GrammarHead",
+              "$id": 237,
+              "neuron": {
+                "$type": "GrammarNeuron",
+                "$id": 238,
+                "name": "learned_3",
+                "rules": [
+                  {
+                    "$type": "Rule",
+                    "$id": 239,
+                    "pattern": {
+                      "$type": "Pattern",
+                      "$id": 240,
+                      "kind": "seq",
+                      "children": [
+                        {
+                          "$type": "Pattern",
+                          "$id": 241,
+                          "kind": "repeat",
+                          "children": [
+                            {
+                              "$type": "Pattern",
+                              "$id": 242,
+                              "kind": "token",
+                              "children": [],
+                              "tests": {
+                                "$map": {}
+                              },
+                              "bind": null,
+                              "weights": [],
+                              "minimum": 0,
+                              "maximum": 256
+                            }
+                          ],
+                          "tests": {
+                            "$map": {}
+                          },
+                          "bind": null,
+                          "weights": [],
+                          "minimum": 0,
+                          "maximum": 16
+                        },
+                        {
+                          "$type": "Pattern",
+                          "$id": 243,
+                          "kind": "token",
+                          "children": [],
+                          "tests": {
+                            "$map": {
+                              "pos": "pn"
+                            }
+                          },
+                          "bind": null,
+                          "weights": [],
+                          "minimum": 0,
+                          "maximum": 256
+                        }
+                      ],
+                      "tests": {
+                        "$map": {}
+                      },
+                      "bind": null,
+                      "weights": [],
+                      "minimum": 0,
+                      "maximum": 256
+                    },
+                    "emit": {
+                      "$map": {
+                        "__grammar_3": true
+                      }
+                    },
+                    "weight": 1.0
+                  }
+                ],
+                "tables": {
+                  "$map": {}
+                },
+                "max_states": 20000
+              },
+              "operation": "add",
+              "strength": 1.0,
+              "null_mass": 1.0
+            },
+            {
+              "$type": "GrammarHead",
+              "$id": 244,
+              "neuron": {
+                "$type": "GrammarNeuron",
+                "$id": 245,
+                "name": "learned_4",
+                "rules": [
+                  {
+                    "$type": "Rule",
+                    "$id": 246,
+                    "pattern": {
+                      "$type": "Pattern",
+                      "$id": 247,
+                      "kind": "seq",
+                      "children": [
+                        {
+                          "$type": "Pattern",
+                          "$id": 248,
+                          "kind": "repeat",
+                          "children": [
+                            {
+                              "$type": "Pattern",
+                              "$id": 249,
+                              "kind": "token",
+                              "children": [],
+                              "tests": {
+                                "$map": {}
+                              },
+                              "bind": null,
+                              "weights": [],
+                              "minimum": 0,
+                              "maximum": 256
+                            }
+                          ],
+                          "tests": {
+                            "$map": {}
+                          },
+                          "bind": null,
+                          "weights": [],
+                          "minimum": 0,
+                          "maximum": 16
+                        },
+                        {
+                          "$type": "Pattern",
+                          "$id": 250,
+                          "kind": "token",
+                          "children": [],
+                          "tests": {
+                            "$map": {
+                              "pos": "v"
+                            }
+                          },
+                          "bind": null,
+                          "weights": [],
+                          "minimum": 0,
+                          "maximum": 256
+                        }
+                      ],
+                      "tests": {
+                        "$map": {}
+                      },
+                      "bind": null,
+                      "weights": [],
+                      "minimum": 0,
+                      "maximum": 256
+                    },
+                    "emit": {
+                      "$map": {
+                        "__grammar_4": true
+                      }
+                    },
+                    "weight": 1.0
+                  }
+                ],
+                "tables": {
+                  "$map": {}
+                },
+                "max_states": 20000
+              },
+              "operation": "add",
+              "strength": 1.0,
+              "null_mass": 1.0
+            },
+            {
+              "$type": "GrammarHead",
+              "$id": 251,
+              "neuron": {
+                "$type": "GrammarNeuron",
+                "$id": 252,
+                "name": "learned_5",
+                "rules": [
+                  {
+                    "$type": "Rule",
+                    "$id": 253,
+                    "pattern": {
+                      "$type": "Pattern",
+                      "$id": 254,
+                      "kind": "seq",
+                      "children": [
+                        {
+                          "$type": "Pattern",
+                          "$id": 255,
+                          "kind": "repeat",
+                          "children": [
+                            {
+                              "$type": "Pattern",
+                              "$id": 256,
+                              "kind": "token",
+                              "children": [],
+                              "tests": {
+                                "$map": {}
+                              },
+                              "bind": null,
+                              "weights": [],
+                              "minimum": 0,
+                              "maximum": 256
+                            }
+                          ],
+                          "tests": {
+                            "$map": {}
+                          },
+                          "bind": null,
+                          "weights": [],
+                          "minimum": 0,
+                          "maximum": 16
+                        },
+                        {
+                          "$type": "Pattern",
+                          "$id": 257,
+                          "kind": "token",
+                          "children": [],
+                          "tests": {
+                            "$map": {
+                              "pos": "adj"
+                            }
+                          },
+                          "bind": null,
+                          "weights": [],
+                          "minimum": 0,
+                          "maximum": 256
+                        }
+                      ],
+                      "tests": {
+                        "$map": {}
+                      },
+                      "bind": null,
+                      "weights": [],
+                      "minimum": 0,
+                      "maximum": 256
+                    },
+                    "emit": {
+                      "$map": {
+                        "__grammar_5": true
+                      }
+                    },
+                    "weight": 1.0
+                  }
+                ],
+                "tables": {
+                  "$map": {}
+                },
+                "max_states": 20000
+              },
+              "operation": "add",
+              "strength": 1.0,
+              "null_mass": 1.0
+            },
+            {
+              "$type": "GrammarHead",
+              "$id": 258,
+              "neuron": {
+                "$type": "GrammarNeuron",
+                "$id": 259,
+                "name": "learned_6",
+                "rules": [
+                  {
+                    "$type": "Rule",
+                    "$id": 260,
+                    "pattern": {
+                      "$type": "Pattern",
+                      "$id": 261,
+                      "kind": "seq",
+                      "children": [
+                        {
+                          "$type": "Pattern",
+                          "$id": 262,
+                          "kind": "repeat",
+                          "children": [
+                            {
+                              "$type": "Pattern",
+                              "$id": 263,
+                              "kind": "token",
+                              "children": [],
+                              "tests": {
+                                "$map": {}
+                              },
+                              "bind": null,
+                              "weights": [],
+                              "minimum": 0,
+                              "maximum": 256
+                            }
+                          ],
+                          "tests": {
+                            "$map": {}
+                          },
+                          "bind": null,
+                          "weights": [],
+                          "minimum": 0,
+                          "maximum": 16
+                        },
+                        {
+                          "$type": "Pattern",
+                          "$id": 264,
+                          "kind": "token",
+                          "children": [],
+                          "tests": {
+                            "$map": {
+                              "pos": "adv"
+                            }
+                          },
+                          "bind": null,
+                          "weights": [],
+                          "minimum": 0,
+                          "maximum": 256
+                        }
+                      ],
+                      "tests": {
+                        "$map": {}
+                      },
+                      "bind": null,
+                      "weights": [],
+                      "minimum": 0,
+                      "maximum": 256
+                    },
+                    "emit": {
+                      "$map": {
+                        "__grammar_6": true
+                      }
+                    },
+                    "weight": 1.0
+                  }
+                ],
+                "tables": {
+                  "$map": {}
+                },
+                "max_states": 20000
+              },
+              "operation": "add",
+              "strength": 1.0,
+              "null_mass": 1.0
+            },
+            {
+              "$type": "GrammarHead",
+              "$id": 265,
+              "neuron": {
+                "$type": "GrammarNeuron",
+                "$id": 266,
+                "name": "learned_7",
+                "rules": [
+                  {
+                    "$type": "Rule",
+                    "$id": 267,
+                    "pattern": {
+                      "$type": "Pattern",
+                      "$id": 268,
+                      "kind": "seq",
+                      "children": [
+                        {
+                          "$type": "Pattern",
+                          "$id": 269,
+                          "kind": "repeat",
+                          "children": [
+                            {
+                              "$type": "Pattern",
+                              "$id": 270,
+                              "kind": "token",
+                              "children": [],
+                              "tests": {
+                                "$map": {}
+                              },
+                              "bind": null,
+                              "weights": [],
+                              "minimum": 0,
+                              "maximum": 256
+                            }
+                          ],
+                          "tests": {
+                            "$map": {}
+                          },
+                          "bind": null,
+                          "weights": [],
+                          "minimum": 0,
+                          "maximum": 16
+                        },
+                        {
+                          "$type": "Pattern",
+                          "$id": 271,
+                          "kind": "token",
+                          "children": [],
+                          "tests": {
+                            "$map": {
+                              "pos": "det"
+                            }
+                          },
+                          "bind": null,
+                          "weights": [],
+                          "minimum": 0,
+                          "maximum": 256
+                        }
+                      ],
+                      "tests": {
+                        "$map": {}
+                      },
+                      "bind": null,
+                      "weights": [],
+                      "minimum": 0,
+                      "maximum": 256
+                    },
+                    "emit": {
+                      "$map": {
+                        "__grammar_7": true
+                      }
+                    },
+                    "weight": 1.0
+                  }
+                ],
+                "tables": {
+                  "$map": {}
+                },
+                "max_states": 20000
+              },
+              "operation": "add",
+              "strength": 1.0,
+              "null_mass": 1.0
+            },
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ],
+          "num_heads": 16
+        }
+      ]
+    }
+  },
+  "features": {}
+}

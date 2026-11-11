@@ -1,0 +1,2133 @@
+{
+  "format": "storyformers-neuron-review-v1",
+  "base_model_sha256": "1107641e710b7e51a3a5925a0814e32e7fee0c14e3566ab4011b8af9a6b93c70",
+  "address": {
+    "kind": "head",
+    "layer": 0,
+    "head": 0
+  },
+  "training_data_sha256": "d2be65fb5c801355e68973761cbd73336bee002462bd2378b0f20f4e29429c87",
+  "context_size": 16,
+  "neuron": {
+    "name": "carry_preceding_verb",
+    "rules": [
+      {
+        "pattern": {
+          "kind": "seq",
+          "children": [
+            {
+              "kind": "repeat",
+              "children": [
+                {
+                  "kind": "token",
+                  "tests": {}
+                }
+              ],
+              "minimum": 0,
+              "maximum": 16
+            },
+            {
+              "kind": "token",
+              "tests": {
+                "pos": "v"
+              },
+              "bind": "verb"
+            },
+            {
+              "kind": "repeat",
+              "children": [
+                {
+                  "kind": "token",
+                  "tests": {
+                    "pos": {
+                      "$one_of": [
+                        "det",
+                        "adj"
+                      ]
+                    }
+                  }
+                }
+              ],
+              "minimum": 0,
+              "maximum": 16
+            }
+          ]
+        },
+        "emit": {
+          "preceding_verb_surface": {
+            "$ref": "verb.token"
+          }
+        },
+        "weight": 1.0
+      }
+    ],
+    "tables": {},
+    "max_states": 20000
+  },
+  "registry": {
+    "token": {
+      "type": "string",
+      "description": "token",
+      "origin": "schema"
+    },
+    "pos": {
+      "type": "string",
+      "description": "pos",
+      "origin": "schema"
+    },
+    "entity": {
+      "type": "string",
+      "description": "entity",
+      "origin": "schema"
+    },
+    "role": {
+      "type": "string",
+      "description": "role",
+      "origin": "schema"
+    },
+    "location": {
+      "type": "string",
+      "description": "location",
+      "origin": "schema"
+    },
+    "event": {
+      "type": "string",
+      "description": "event",
+      "origin": "schema"
+    },
+    "lemma": {
+      "type": "string",
+      "description": "lemma",
+      "origin": "schema"
+    },
+    "entity_name": {
+      "type": "string",
+      "description": "entity name",
+      "origin": "schema"
+    },
+    "event_id": {
+      "type": "string",
+      "description": "event id",
+      "origin": "schema"
+    },
+    "event_type": {
+      "type": "string",
+      "description": "event type",
+      "origin": "schema"
+    },
+    "actor": {
+      "type": "string",
+      "description": "actor",
+      "origin": "schema"
+    },
+    "factuality": {
+      "type": "string",
+      "description": "factuality",
+      "origin": "schema"
+    },
+    "surface": {
+      "type": "string",
+      "description": "surface",
+      "origin": "schema"
+    },
+    "kind": {
+      "type": "string",
+      "description": "kind",
+      "origin": "schema"
+    },
+    "entity_id": {
+      "type": "entity_ref",
+      "description": "entity id",
+      "origin": "schema"
+    },
+    "actor_id": {
+      "type": "entity_ref",
+      "description": "actor id",
+      "origin": "schema"
+    },
+    "recipient_id": {
+      "type": "entity_ref",
+      "description": "recipient id",
+      "origin": "schema"
+    },
+    "patients": {
+      "type": "array",
+      "description": "patients",
+      "origin": "schema"
+    },
+    "instruments": {
+      "type": "array",
+      "description": "instruments",
+      "origin": "schema"
+    },
+    "attributes": {
+      "type": "array",
+      "description": "attributes",
+      "origin": "schema"
+    },
+    "position": {
+      "type": "object",
+      "description": "position",
+      "origin": "schema"
+    },
+    "index": {
+      "type": "number",
+      "description": "index",
+      "origin": "schema"
+    },
+    "start": {
+      "type": "number",
+      "description": "start",
+      "origin": "schema"
+    },
+    "end": {
+      "type": "number",
+      "description": "end",
+      "origin": "schema"
+    },
+    "__grammar_1": {
+      "type": "boolean",
+      "description": "Projected by learned_1",
+      "origin": "learned",
+      "binding": {
+        "feature": "pos",
+        "value": "n"
+      }
+    },
+    "__grammar_2": {
+      "type": "boolean",
+      "description": "Projected by learned_2",
+      "origin": "learned",
+      "binding": {
+        "feature": "pos",
+        "value": "punct"
+      }
+    },
+    "__grammar_3": {
+      "type": "boolean",
+      "description": "Projected by learned_3",
+      "origin": "learned",
+      "binding": {
+        "feature": "pos",
+        "value": "pn"
+      }
+    },
+    "__grammar_4": {
+      "type": "boolean",
+      "description": "Projected by learned_4",
+      "origin": "learned",
+      "binding": {
+        "feature": "pos",
+        "value": "v"
+      }
+    },
+    "__grammar_5": {
+      "type": "boolean",
+      "description": "Projected by learned_5",
+      "origin": "learned",
+      "binding": {
+        "feature": "pos",
+        "value": "adj"
+      }
+    },
+    "__grammar_6": {
+      "type": "boolean",
+      "description": "Projected by learned_6",
+      "origin": "learned",
+      "binding": {
+        "feature": "pos",
+        "value": "adv"
+      }
+    },
+    "__grammar_7": {
+      "type": "boolean",
+      "description": "Projected by learned_7",
+      "origin": "learned",
+      "binding": {
+        "feature": "pos",
+        "value": "det"
+      }
+    },
+    "preceding_verb_surface": {
+      "type": "string",
+      "origin": "learned",
+      "description": "Surface token of the preceding verb when only determiners/adjectives follow it within this prefix; otherwise absent."
+    }
+  },
+  "stats": {
+    "targets": 431,
+    "matched_targets": 132,
+    "derivations": 132,
+    "unique_prefixes": 209,
+    "rule_support": {
+      "0": 132
+    },
+    "outcomes": [
+      {
+        "target": {
+          "entity": null,
+          "event": null,
+          "location": null,
+          "pos": "adj",
+          "role": null,
+          "token": "small"
+        },
+        "count": 29
+      },
+      {
+        "target": {
+          "entity": null,
+          "event": null,
+          "location": null,
+          "pos": "det",
+          "role": null,
+          "token": "the"
+        },
+        "count": 26
+      },
+      {
+        "target": {
+          "entity": null,
+          "event": null,
+          "location": null,
+          "pos": "n",
+          "role": null,
+          "token": "pears"
+        },
+        "count": 17
+      },
+      {
+        "target": {
+          "entity": null,
+          "event": null,
+          "location": null,
+          "pos": "n",
+          "role": null,
+          "token": "apples"
+        },
+        "count": 17
+      },
+      {
+        "target": {
+          "entity": null,
+          "event": null,
+          "location": null,
+          "pos": "n",
+          "role": null,
+          "token": "scissors"
+        },
+        "count": 15
+      },
+      {
+        "target": {
+          "entity": null,
+          "event": null,
+          "location": null,
+          "pos": "n",
+          "role": null,
+          "token": "needles"
+        },
+        "count": 15
+      },
+      {
+        "target": {
+          "entity": null,
+          "event": null,
+          "location": null,
+          "pos": "adj",
+          "role": null,
+          "token": "red"
+        },
+        "count": 13
+      }
+    ],
+    "projections": [
+      {
+        "emit": {
+          "preceding_verb_surface": "took"
+        },
+        "count": 49
+      },
+      {
+        "emit": {
+          "preceding_verb_surface": "found"
+        },
+        "count": 46
+      },
+      {
+        "emit": {
+          "preceding_verb_surface": "ate"
+        },
+        "count": 20
+      },
+      {
+        "emit": {
+          "preceding_verb_surface": "used"
+        },
+        "count": 17
+      }
+    ]
+  },
+  "examples": {
+    "matched_examples": [
+      {
+        "context_tail": [
+          {
+            "pos": "pn",
+            "entity": null,
+            "role": null,
+            "location": null,
+            "event": null,
+            "token": "Tom",
+            "position": {
+              "token": 0,
+              "sentence": 0,
+              "in_sentence": 0
+            }
+          },
+          {
+            "pos": "v",
+            "entity": null,
+            "role": null,
+            "location": null,
+            "event": null,
+            "token": "found",
+            "position": {
+              "token": 1,
+              "sentence": 0,
+              "in_sentence": 1
+            }
+          }
+        ],
+        "neuron_input_tail": [
+          {
+            "pos": "pn",
+            "entity": null,
+            "role": null,
+            "location": null,
+            "event": null,
+            "token": "Tom",
+            "position": {
+              "token": 0,
+              "sentence": 0,
+              "in_sentence": 0
+            }
+          },
+          {
+            "pos": "v",
+            "entity": null,
+            "role": null,
+            "location": null,
+            "event": null,
+            "token": "found",
+            "position": {
+              "token": 1,
+              "sentence": 0,
+              "in_sentence": 1
+            }
+          }
+        ],
+        "omitted_context": 0,
+        "target": {
+          "entity": null,
+          "event": null,
+          "location": null,
+          "pos": "det",
+          "role": null,
+          "token": "the"
+        },
+        "count": 4,
+        "probability": 0.4989013001057142,
+        "ablated_probability": 0.5828697416806695,
+        "delta_log_probability": -0.15555545292977685,
+        "activations": [
+          {
+            "rule": 0,
+            "mass": 1.0,
+            "emit": {
+              "preceding_verb_surface": "found"
+            },
+            "sources": {
+              "verb": {
+                "token": 1,
+                "sentence": 0,
+                "in_sentence": 1
+              }
+            }
+          }
+        ]
+      },
+      {
+        "context_tail": [
+          {
+            "pos": "pn",
+            "entity": null,
+            "role": null,
+            "location": null,
+            "event": null,
+            "token": "Lily",
+            "position": {
+              "token": 0,
+              "sentence": 0,
+              "in_sentence": 0
+            }
+          },
+          {
+            "pos": "adv",
+            "entity": null,
+            "role": null,
+            "location": null,
+            "event": null,
+            "token": "quickly",
+            "position": {
+              "token": 1,
+              "sentence": 0,
+              "in_sentence": 1
+            }
+          },
+          {
+            "pos": "v",
+            "entity": null,
+            "role": null,
+            "location": null,
+            "event": null,
+            "token": "took",
+            "position": {
+              "token": 2,
+              "sentence": 0,
+              "in_sentence": 2
+            }
+          }
+        ],
+        "neuron_input_tail": [
+          {
+            "pos": "pn",
+            "entity": null,
+            "role": null,
+            "location": null,
+            "event": null,
+            "token": "Lily",
+            "position": {
+              "token": 0,
+              "sentence": 0,
+              "in_sentence": 0
+            }
+          },
+          {
+            "pos": "adv",
+            "entity": null,
+            "role": null,
+            "location": null,
+            "event": null,
+            "token": "quickly",
+            "position": {
+              "token": 1,
+              "sentence": 0,
+              "in_sentence": 1
+            }
+          },
+          {
+            "pos": "v",
+            "entity": null,
+            "role": null,
+            "location": null,
+            "event": null,
+            "token": "took",
+            "position": {
+              "token": 2,
+              "sentence": 0,
+              "in_sentence": 2
+            }
+          }
+        ],
+        "omitted_context": 0,
+        "target": {
+          "entity": null,
+          "event": null,
+          "location": null,
+          "pos": "adj",
+          "role": null,
+          "token": "red"
+        },
+        "count": 3,
+        "probability": 0.14969959457362803,
+        "ablated_probability": 0.1751154286516219,
+        "delta_log_probability": -0.15681476562018834,
+        "activations": [
+          {
+            "rule": 0,
+            "mass": 1.0,
+            "emit": {
+              "preceding_verb_surface": "took"
+            },
+            "sources": {
+              "verb": {
+                "token": 2,
+                "sentence": 0,
+                "in_sentence": 2
+              }
+            }
+          }
+        ]
+      },
+      {
+        "context_tail": [
+          {
+            "pos": "pn",
+            "entity": null,
+            "role": null,
+            "location": null,
+            "event": null,
+            "token": "Lily",
+            "position": {
+              "token": 0,
+              "sentence": 0,
+              "in_sentence": 0
+            }
+          },
+          {
+            "pos": "adv",
+            "entity": null,
+            "role": null,
+            "location": null,
+            "event": null,
+            "token": "slowly",
+            "position": {
+              "token": 1,
+              "sentence": 0,
+              "in_sentence": 1
+            }
+          },
+          {
+            "pos": "v",
+            "entity": null,
+            "role": null,
+            "location": null,
+            "event": null,
+            "token": "took",
+            "position": {
+              "token": 2,
+              "sentence": 0,
+              "in_sentence": 2
+            }
+          }
+        ],
+        "neuron_input_tail": [
+          {
+            "pos": "pn",
+            "entity": null,
+            "role": null,
+            "location": null,
+            "event": null,
+            "token": "Lily",
+            "position": {
+              "token": 0,
+              "sentence": 0,
+              "in_sentence": 0
+            }
+          },
+          {
+            "pos": "adv",
+            "entity": null,
+            "role": null,
+            "location": null,
+            "event": null,
+            "token": "slowly",
+            "position": {
+              "token": 1,
+              "sentence": 0,
+              "in_sentence": 1
+            }
+          },
+          {
+            "pos": "v",
+            "entity": null,
+            "role": null,
+            "location": null,
+            "event": null,
+            "token": "took",
+            "position": {
+              "token": 2,
+              "sentence": 0,
+              "in_sentence": 2
+            }
+          }
+        ],
+        "omitted_context": 0,
+        "target": {
+          "entity": null,
+          "event": null,
+          "location": null,
+          "pos": "det",
+          "role": null,
+          "token": "the"
+        },
+        "count": 3,
+        "probability": 0.49827342279713727,
+        "ablated_probability": 0.5828697416806695,
+        "delta_log_probability": -0.15681476562018823,
+        "activations": [
+          {
+            "rule": 0,
+            "mass": 1.0,
+            "emit": {
+              "preceding_verb_surface": "took"
+            },
+            "sources": {
+              "verb": {
+                "token": 2,
+                "sentence": 0,
+                "in_sentence": 2
+              }
+            }
+          }
+        ]
+      },
+      {
+        "context_tail": [
+          {
+            "pos": "pn",
+            "entity": null,
+            "role": null,
+            "location": null,
+            "event": null,
+            "token": "Tom",
+            "position": {
+              "token": 0,
+              "sentence": 0,
+              "in_sentence": 0
+            }
+          },
+          {
+            "pos": "adv",
+            "entity": null,
+            "role": null,
+            "location": null,
+            "event": null,
+            "token": "slowly",
+            "position": {
+              "token": 1,
+              "sentence": 0,
+              "in_sentence": 1
+            }
+          },
+          {
+            "pos": "v",
+            "entity": null,
+            "role": null,
+            "location": null,
+            "event": null,
+            "token": "found",
+            "position": {
+              "token": 2,
+              "sentence": 0,
+              "in_sentence": 2
+            }
+          }
+        ],
+        "neuron_input_tail": [
+          {
+            "pos": "pn",
+            "entity": null,
+            "role": null,
+            "location": null,
+            "event": null,
+            "token": "Tom",
+            "position": {
+              "token": 0,
+              "sentence": 0,
+              "in_sentence": 0
+            }
+          },
+          {
+            "pos": "adv",
+            "entity": null,
+            "role": null,
+            "location": null,
+            "event": null,
+            "token": "slowly",
+            "position": {
+              "token": 1,
+              "sentence": 0,
+              "in_sentence": 1
+            }
+          },
+          {
+            "pos": "v",
+            "entity": null,
+            "role": null,
+            "location": null,
+            "event": null,
+            "token": "found",
+            "position": {
+              "token": 2,
+              "sentence": 0,
+              "in_sentence": 2
+            }
+          }
+        ],
+        "omitted_context": 0,
+        "target": {
+          "entity": null,
+          "event": null,
+          "location": null,
+          "pos": "det",
+          "role": null,
+          "token": "the"
+        },
+        "count": 3,
+        "probability": 0.4989013001057142,
+        "ablated_probability": 0.5828697416806695,
+        "delta_log_probability": -0.15555545292977685,
+        "activations": [
+          {
+            "rule": 0,
+            "mass": 1.0,
+            "emit": {
+              "preceding_verb_surface": "found"
+            },
+            "sources": {
+              "verb": {
+                "token": 2,
+                "sentence": 0,
+                "in_sentence": 2
+              }
+            }
+          }
+        ]
+      }
+    ],
+    "helpful_matches": [
+      {
+        "context_tail": [
+          {
+            "pos": "pn",
+            "entity": null,
+            "role": null,
+            "location": null,
+            "event": null,
+            "token": "Ben",
+            "position": {
+              "token": 0,
+              "sentence": 0,
+              "in_sentence": 0
+            }
+          },
+          {
+            "pos": "adv",
+            "entity": null,
+            "role": null,
+            "location": null,
+            "event": null,
+            "token": "slowly",
+            "position": {
+              "token": 1,
+              "sentence": 0,
+              "in_sentence": 1
+            }
+          },
+          {
+            "pos": "v",
+            "entity": null,
+            "role": null,
+            "location": null,
+            "event": null,
+            "token": "ate",
+            "position": {
+              "token": 2,
+              "sentence": 0,
+              "in_sentence": 2
+            }
+          },
+          {
+            "pos": "det",
+            "entity": null,
+            "role": null,
+            "location": null,
+            "event": null,
+            "token": "the",
+            "position": {
+              "token": 3,
+              "sentence": 0,
+              "in_sentence": 3
+            }
+          }
+        ],
+        "neuron_input_tail": [
+          {
+            "pos": "pn",
+            "entity": null,
+            "role": null,
+            "location": null,
+            "event": null,
+            "token": "Ben",
+            "position": {
+              "token": 0,
+              "sentence": 0,
+              "in_sentence": 0
+            }
+          },
+          {
+            "pos": "adv",
+            "entity": null,
+            "role": null,
+            "location": null,
+            "event": null,
+            "token": "slowly",
+            "position": {
+              "token": 1,
+              "sentence": 0,
+              "in_sentence": 1
+            }
+          },
+          {
+            "pos": "v",
+            "entity": null,
+            "role": null,
+            "location": null,
+            "event": null,
+            "token": "ate",
+            "position": {
+              "token": 2,
+              "sentence": 0,
+              "in_sentence": 2
+            }
+          },
+          {
+            "pos": "det",
+            "entity": null,
+            "role": null,
+            "location": null,
+            "event": null,
+            "token": "the",
+            "position": {
+              "token": 3,
+              "sentence": 0,
+              "in_sentence": 3
+            }
+          }
+        ],
+        "omitted_context": 0,
+        "target": {
+          "entity": null,
+          "event": null,
+          "location": null,
+          "pos": "n",
+          "role": null,
+          "token": "apples"
+        },
+        "count": 1,
+        "probability": 0.182086681670777,
+        "ablated_probability": 0.0007679636886142202,
+        "delta_log_probability": 5.468495674013661,
+        "activations": [
+          {
+            "rule": 0,
+            "mass": 1.0,
+            "emit": {
+              "preceding_verb_surface": "ate"
+            },
+            "sources": {
+              "verb": {
+                "token": 2,
+                "sentence": 0,
+                "in_sentence": 2
+              }
+            }
+          }
+        ]
+      },
+      {
+        "context_tail": [
+          {
+            "pos": "pn",
+            "entity": null,
+            "role": null,
+            "location": null,
+            "event": null,
+            "token": "Mia",
+            "position": {
+              "token": 0,
+              "sentence": 0,
+              "in_sentence": 0
+            }
+          },
+          {
+            "pos": "adv",
+            "entity": null,
+            "role": null,
+            "location": null,
+            "event": null,
+            "token": "quickly",
+            "position": {
+              "token": 1,
+              "sentence": 0,
+              "in_sentence": 1
+            }
+          },
+          {
+            "pos": "v",
+            "entity": null,
+            "role": null,
+            "location": null,
+            "event": null,
+            "token": "ate",
+            "position": {
+              "token": 2,
+              "sentence": 0,
+              "in_sentence": 2
+            }
+          },
+          {
+            "pos": "det",
+            "entity": null,
+            "role": null,
+            "location": null,
+            "event": null,
+            "token": "the",
+            "position": {
+              "token": 3,
+              "sentence": 0,
+              "in_sentence": 3
+            }
+          }
+        ],
+        "neuron_input_tail": [
+          {
+            "pos": "pn",
+            "entity": null,
+            "role": null,
+            "location": null,
+            "event": null,
+            "token": "Mia",
+            "position": {
+              "token": 0,
+              "sentence": 0,
+              "in_sentence": 0
+            }
+          },
+          {
+            "pos": "adv",
+            "entity": null,
+            "role": null,
+            "location": null,
+            "event": null,
+            "token": "quickly",
+            "position": {
+              "token": 1,
+              "sentence": 0,
+              "in_sentence": 1
+            }
+          },
+          {
+            "pos": "v",
+            "entity": null,
+            "role": null,
+            "location": null,
+            "event": null,
+            "token": "ate",
+            "position": {
+              "token": 2,
+              "sentence": 0,
+              "in_sentence": 2
+            }
+          },
+          {
+            "pos": "det",
+            "entity": null,
+            "role": null,
+            "location": null,
+            "event": null,
+            "token": "the",
+            "position": {
+              "token": 3,
+              "sentence": 0,
+              "in_sentence": 3
+            }
+          }
+        ],
+        "omitted_context": 0,
+        "target": {
+          "entity": null,
+          "event": null,
+          "location": null,
+          "pos": "n",
+          "role": null,
+          "token": "apples"
+        },
+        "count": 1,
+        "probability": 0.182086681670777,
+        "ablated_probability": 0.0007679636886142202,
+        "delta_log_probability": 5.468495674013661,
+        "activations": [
+          {
+            "rule": 0,
+            "mass": 1.0,
+            "emit": {
+              "preceding_verb_surface": "ate"
+            },
+            "sources": {
+              "verb": {
+                "token": 2,
+                "sentence": 0,
+                "in_sentence": 2
+              }
+            }
+          }
+        ]
+      },
+      {
+        "context_tail": [
+          {
+            "pos": "pn",
+            "entity": null,
+            "role": null,
+            "location": null,
+            "event": null,
+            "token": "Mia",
+            "position": {
+              "token": 0,
+              "sentence": 0,
+              "in_sentence": 0
+            }
+          },
+          {
+            "pos": "adv",
+            "entity": null,
+            "role": null,
+            "location": null,
+            "event": null,
+            "token": "slowly",
+            "position": {
+              "token": 1,
+              "sentence": 0,
+              "in_sentence": 1
+            }
+          },
+          {
+            "pos": "v",
+            "entity": null,
+            "role": null,
+            "location": null,
+            "event": null,
+            "token": "ate",
+            "position": {
+              "token": 2,
+              "sentence": 0,
+              "in_sentence": 2
+            }
+          },
+          {
+            "pos": "det",
+            "entity": null,
+            "role": null,
+            "location": null,
+            "event": null,
+            "token": "the",
+            "position": {
+              "token": 3,
+              "sentence": 0,
+              "in_sentence": 3
+            }
+          }
+        ],
+        "neuron_input_tail": [
+          {
+            "pos": "pn",
+            "entity": null,
+            "role": null,
+            "location": null,
+            "event": null,
+            "token": "Mia",
+            "position": {
+              "token": 0,
+              "sentence": 0,
+              "in_sentence": 0
+            }
+          },
+          {
+            "pos": "adv",
+            "entity": null,
+            "role": null,
+            "location": null,
+            "event": null,
+            "token": "slowly",
+            "position": {
+              "token": 1,
+              "sentence": 0,
+              "in_sentence": 1
+            }
+          },
+          {
+            "pos": "v",
+            "entity": null,
+            "role": null,
+            "location": null,
+            "event": null,
+            "token": "ate",
+            "position": {
+              "token": 2,
+              "sentence": 0,
+              "in_sentence": 2
+            }
+          },
+          {
+            "pos": "det",
+            "entity": null,
+            "role": null,
+            "location": null,
+            "event": null,
+            "token": "the",
+            "position": {
+              "token": 3,
+              "sentence": 0,
+              "in_sentence": 3
+            }
+          }
+        ],
+        "omitted_context": 0,
+        "target": {
+          "entity": null,
+          "event": null,
+          "location": null,
+          "pos": "n",
+          "role": null,
+          "token": "pears"
+        },
+        "count": 1,
+        "probability": 0.15503360086745335,
+        "ablated_probability": 0.0007584946540372019,
+        "delta_log_probability": 5.320061401506558,
+        "activations": [
+          {
+            "rule": 0,
+            "mass": 1.0,
+            "emit": {
+              "preceding_verb_surface": "ate"
+            },
+            "sources": {
+              "verb": {
+                "token": 2,
+                "sentence": 0,
+                "in_sentence": 2
+              }
+            }
+          }
+        ]
+      },
+      {
+        "context_tail": [
+          {
+            "pos": "pn",
+            "entity": null,
+            "role": null,
+            "location": null,
+            "event": null,
+            "token": "Mia",
+            "position": {
+              "token": 0,
+              "sentence": 0,
+              "in_sentence": 0
+            }
+          },
+          {
+            "pos": "adv",
+            "entity": null,
+            "role": null,
+            "location": null,
+            "event": null,
+            "token": "quickly",
+            "position": {
+              "token": 1,
+              "sentence": 0,
+              "in_sentence": 1
+            }
+          },
+          {
+            "pos": "v",
+            "entity": null,
+            "role": null,
+            "location": null,
+            "event": null,
+            "token": "ate",
+            "position": {
+              "token": 2,
+              "sentence": 0,
+              "in_sentence": 2
+            }
+          }
+        ],
+        "neuron_input_tail": [
+          {
+            "pos": "pn",
+            "entity": null,
+            "role": null,
+            "location": null,
+            "event": null,
+            "token": "Mia",
+            "position": {
+              "token": 0,
+              "sentence": 0,
+              "in_sentence": 0
+            }
+          },
+          {
+            "pos": "adv",
+            "entity": null,
+            "role": null,
+            "location": null,
+            "event": null,
+            "token": "quickly",
+            "position": {
+              "token": 1,
+              "sentence": 0,
+              "in_sentence": 1
+            }
+          },
+          {
+            "pos": "v",
+            "entity": null,
+            "role": null,
+            "location": null,
+            "event": null,
+            "token": "ate",
+            "position": {
+              "token": 2,
+              "sentence": 0,
+              "in_sentence": 2
+            }
+          }
+        ],
+        "omitted_context": 0,
+        "target": {
+          "entity": null,
+          "event": null,
+          "location": null,
+          "pos": "n",
+          "role": null,
+          "token": "apples"
+        },
+        "count": 1,
+        "probability": 0.07360785737434739,
+        "ablated_probability": 0.000576652618077304,
+        "delta_log_probability": 4.849267020011086,
+        "activations": [
+          {
+            "rule": 0,
+            "mass": 1.0,
+            "emit": {
+              "preceding_verb_surface": "ate"
+            },
+            "sources": {
+              "verb": {
+                "token": 2,
+                "sentence": 0,
+                "in_sentence": 2
+              }
+            }
+          }
+        ]
+      }
+    ],
+    "harmful_matches": [
+      {
+        "context_tail": [
+          {
+            "pos": "pn",
+            "entity": null,
+            "role": null,
+            "location": null,
+            "event": null,
+            "token": "Mia",
+            "position": {
+              "token": 0,
+              "sentence": 0,
+              "in_sentence": 0
+            }
+          },
+          {
+            "pos": "adv",
+            "entity": null,
+            "role": null,
+            "location": null,
+            "event": null,
+            "token": "slowly",
+            "position": {
+              "token": 1,
+              "sentence": 0,
+              "in_sentence": 1
+            }
+          },
+          {
+            "pos": "v",
+            "entity": null,
+            "role": null,
+            "location": null,
+            "event": null,
+            "token": "ate",
+            "position": {
+              "token": 2,
+              "sentence": 0,
+              "in_sentence": 2
+            }
+          },
+          {
+            "pos": "det",
+            "entity": null,
+            "role": null,
+            "location": null,
+            "event": null,
+            "token": "the",
+            "position": {
+              "token": 3,
+              "sentence": 0,
+              "in_sentence": 3
+            }
+          }
+        ],
+        "neuron_input_tail": [
+          {
+            "pos": "pn",
+            "entity": null,
+            "role": null,
+            "location": null,
+            "event": null,
+            "token": "Mia",
+            "position": {
+              "token": 0,
+              "sentence": 0,
+              "in_sentence": 0
+            }
+          },
+          {
+            "pos": "adv",
+            "entity": null,
+            "role": null,
+            "location": null,
+            "event": null,
+            "token": "slowly",
+            "position": {
+              "token": 1,
+              "sentence": 0,
+              "in_sentence": 1
+            }
+          },
+          {
+            "pos": "v",
+            "entity": null,
+            "role": null,
+            "location": null,
+            "event": null,
+            "token": "ate",
+            "position": {
+              "token": 2,
+              "sentence": 0,
+              "in_sentence": 2
+            }
+          },
+          {
+            "pos": "det",
+            "entity": null,
+            "role": null,
+            "location": null,
+            "event": null,
+            "token": "the",
+            "position": {
+              "token": 3,
+              "sentence": 0,
+              "in_sentence": 3
+            }
+          }
+        ],
+        "omitted_context": 0,
+        "target": {
+          "entity": null,
+          "event": null,
+          "location": null,
+          "pos": "adj",
+          "role": null,
+          "token": "small"
+        },
+        "count": 1,
+        "probability": 0.3374057115445607,
+        "ablated_probability": 0.5120227561459398,
+        "delta_log_probability": -0.41708297157004987,
+        "activations": [
+          {
+            "rule": 0,
+            "mass": 1.0,
+            "emit": {
+              "preceding_verb_surface": "ate"
+            },
+            "sources": {
+              "verb": {
+                "token": 2,
+                "sentence": 0,
+                "in_sentence": 2
+              }
+            }
+          }
+        ]
+      },
+      {
+        "context_tail": [
+          {
+            "pos": "pn",
+            "entity": null,
+            "role": null,
+            "location": null,
+            "event": null,
+            "token": "Ben",
+            "position": {
+              "token": 0,
+              "sentence": 0,
+              "in_sentence": 0
+            }
+          },
+          {
+            "pos": "v",
+            "entity": null,
+            "role": null,
+            "location": null,
+            "event": null,
+            "token": "took",
+            "position": {
+              "token": 1,
+              "sentence": 0,
+              "in_sentence": 1
+            }
+          },
+          {
+            "pos": "det",
+            "entity": null,
+            "role": null,
+            "location": null,
+            "event": null,
+            "token": "the",
+            "position": {
+              "token": 2,
+              "sentence": 0,
+              "in_sentence": 2
+            }
+          }
+        ],
+        "neuron_input_tail": [
+          {
+            "pos": "pn",
+            "entity": null,
+            "role": null,
+            "location": null,
+            "event": null,
+            "token": "Ben",
+            "position": {
+              "token": 0,
+              "sentence": 0,
+              "in_sentence": 0
+            }
+          },
+          {
+            "pos": "v",
+            "entity": null,
+            "role": null,
+            "location": null,
+            "event": null,
+            "token": "took",
+            "position": {
+              "token": 1,
+              "sentence": 0,
+              "in_sentence": 1
+            }
+          },
+          {
+            "pos": "det",
+            "entity": null,
+            "role": null,
+            "location": null,
+            "event": null,
+            "token": "the",
+            "position": {
+              "token": 2,
+              "sentence": 0,
+              "in_sentence": 2
+            }
+          }
+        ],
+        "omitted_context": 0,
+        "target": {
+          "entity": null,
+          "event": null,
+          "location": null,
+          "pos": "adj",
+          "role": null,
+          "token": "red"
+        },
+        "count": 1,
+        "probability": 0.31973020043935274,
+        "ablated_probability": 0.4665663426941689,
+        "delta_log_probability": -0.3779227073445561,
+        "activations": [
+          {
+            "rule": 0,
+            "mass": 1.0,
+            "emit": {
+              "preceding_verb_surface": "took"
+            },
+            "sources": {
+              "verb": {
+                "token": 1,
+                "sentence": 0,
+                "in_sentence": 1
+              }
+            }
+          }
+        ]
+      },
+      {
+        "context_tail": [
+          {
+            "pos": "pn",
+            "entity": null,
+            "role": null,
+            "location": null,
+            "event": null,
+            "token": "Lily",
+            "position": {
+              "token": 0,
+              "sentence": 0,
+              "in_sentence": 0
+            }
+          },
+          {
+            "pos": "adv",
+            "entity": null,
+            "role": null,
+            "location": null,
+            "event": null,
+            "token": "quickly",
+            "position": {
+              "token": 1,
+              "sentence": 0,
+              "in_sentence": 1
+            }
+          },
+          {
+            "pos": "v",
+            "entity": null,
+            "role": null,
+            "location": null,
+            "event": null,
+            "token": "took",
+            "position": {
+              "token": 2,
+              "sentence": 0,
+              "in_sentence": 2
+            }
+          },
+          {
+            "pos": "det",
+            "entity": null,
+            "role": null,
+            "location": null,
+            "event": null,
+            "token": "the",
+            "position": {
+              "token": 3,
+              "sentence": 0,
+              "in_sentence": 3
+            }
+          }
+        ],
+        "neuron_input_tail": [
+          {
+            "pos": "pn",
+            "entity": null,
+            "role": null,
+            "location": null,
+            "event": null,
+            "token": "Lily",
+            "position": {
+              "token": 0,
+              "sentence": 0,
+              "in_sentence": 0
+            }
+          },
+          {
+            "pos": "adv",
+            "entity": null,
+            "role": null,
+            "location": null,
+            "event": null,
+            "token": "quickly",
+            "position": {
+              "token": 1,
+              "sentence": 0,
+              "in_sentence": 1
+            }
+          },
+          {
+            "pos": "v",
+            "entity": null,
+            "role": null,
+            "location": null,
+            "event": null,
+            "token": "took",
+            "position": {
+              "token": 2,
+              "sentence": 0,
+              "in_sentence": 2
+            }
+          },
+          {
+            "pos": "det",
+            "entity": null,
+            "role": null,
+            "location": null,
+            "event": null,
+            "token": "the",
+            "position": {
+              "token": 3,
+              "sentence": 0,
+              "in_sentence": 3
+            }
+          }
+        ],
+        "omitted_context": 0,
+        "target": {
+          "entity": null,
+          "event": null,
+          "location": null,
+          "pos": "adj",
+          "role": null,
+          "token": "red"
+        },
+        "count": 1,
+        "probability": 0.31973020043935274,
+        "ablated_probability": 0.4665663426941689,
+        "delta_log_probability": -0.3779227073445561,
+        "activations": [
+          {
+            "rule": 0,
+            "mass": 1.0,
+            "emit": {
+              "preceding_verb_surface": "took"
+            },
+            "sources": {
+              "verb": {
+                "token": 2,
+                "sentence": 0,
+                "in_sentence": 2
+              }
+            }
+          }
+        ]
+      },
+      {
+        "context_tail": [
+          {
+            "pos": "pn",
+            "entity": null,
+            "role": null,
+            "location": null,
+            "event": null,
+            "token": "Lily",
+            "position": {
+              "token": 0,
+              "sentence": 0,
+              "in_sentence": 0
+            }
+          },
+          {
+            "pos": "adv",
+            "entity": null,
+            "role": null,
+            "location": null,
+            "event": null,
+            "token": "slowly",
+            "position": {
+              "token": 1,
+              "sentence": 0,
+              "in_sentence": 1
+            }
+          },
+          {
+            "pos": "v",
+            "entity": null,
+            "role": null,
+            "location": null,
+            "event": null,
+            "token": "took",
+            "position": {
+              "token": 2,
+              "sentence": 0,
+              "in_sentence": 2
+            }
+          },
+          {
+            "pos": "det",
+            "entity": null,
+            "role": null,
+            "location": null,
+            "event": null,
+            "token": "the",
+            "position": {
+              "token": 3,
+              "sentence": 0,
+              "in_sentence": 3
+            }
+          }
+        ],
+        "neuron_input_tail": [
+          {
+            "pos": "pn",
+            "entity": null,
+            "role": null,
+            "location": null,
+            "event": null,
+            "token": "Lily",
+            "position": {
+              "token": 0,
+              "sentence": 0,
+              "in_sentence": 0
+            }
+          },
+          {
+            "pos": "adv",
+            "entity": null,
+            "role": null,
+            "location": null,
+            "event": null,
+            "token": "slowly",
+            "position": {
+              "token": 1,
+              "sentence": 0,
+              "in_sentence": 1
+            }
+          },
+          {
+            "pos": "v",
+            "entity": null,
+            "role": null,
+            "location": null,
+            "event": null,
+            "token": "took",
+            "position": {
+              "token": 2,
+              "sentence": 0,
+              "in_sentence": 2
+            }
+          },
+          {
+            "pos": "det",
+            "entity": null,
+            "role": null,
+            "location": null,
+            "event": null,
+            "token": "the",
+            "position": {
+              "token": 3,
+              "sentence": 0,
+              "in_sentence": 3
+            }
+          }
+        ],
+        "omitted_context": 0,
+        "target": {
+          "entity": null,
+          "event": null,
+          "location": null,
+          "pos": "adj",
+          "role": null,
+          "token": "red"
+        },
+        "count": 1,
+        "probability": 0.31973020043935274,
+        "ablated_probability": 0.4665663426941689,
+        "delta_log_probability": -0.3779227073445561,
+        "activations": [
+          {
+            "rule": 0,
+            "mass": 1.0,
+            "emit": {
+              "preceding_verb_surface": "took"
+            },
+            "sources": {
+              "verb": {
+                "token": 2,
+                "sentence": 0,
+                "in_sentence": 2
+              }
+            }
+          }
+        ]
+      }
+    ],
+    "unmatched_high_loss": [
+      {
+        "context_tail": [
+          {
+            "pos": "pn",
+            "entity": null,
+            "role": null,
+            "location": null,
+            "event": null,
+            "token": "Ben",
+            "position": {
+              "token": 0,
+              "sentence": 0,
+              "in_sentence": 0
+            }
+          }
+        ],
+        "neuron_input_tail": [
+          {
+            "pos": "pn",
+            "entity": null,
+            "role": null,
+            "location": null,
+            "event": null,
+            "token": "Ben",
+            "position": {
+              "token": 0,
+              "sentence": 0,
+              "in_sentence": 0
+            }
+          }
+        ],
+        "omitted_context": 0,
+        "target": {
+          "entity": null,
+          "event": null,
+          "location": null,
+          "pos": "v",
+          "role": null,
+          "token": "ate"
+        },
+        "count": 2,
+        "probability": 0.040115621906933144,
+        "ablated_probability": 0.040115621906933144,
+        "delta_log_probability": 0.0,
+        "activations": []
+      },
+      {
+        "context_tail": [
+          {
+            "pos": "pn",
+            "entity": null,
+            "role": null,
+            "location": null,
+            "event": null,
+            "token": "Mia",
+            "position": {
+              "token": 0,
+              "sentence": 0,
+              "in_sentence": 0
+            }
+          }
+        ],
+        "neuron_input_tail": [
+          {
+            "pos": "pn",
+            "entity": null,
+            "role": null,
+            "location": null,
+            "event": null,
+            "token": "Mia",
+            "position": {
+              "token": 0,
+              "sentence": 0,
+              "in_sentence": 0
+            }
+          }
+        ],
+        "omitted_context": 0,
+        "target": {
+          "entity": null,
+          "event": null,
+          "location": null,
+          "pos": "v",
+          "role": null,
+          "token": "ate"
+        },
+        "count": 1,
+        "probability": 0.040115621906933144,
+        "ablated_probability": 0.040115621906933144,
+        "delta_log_probability": 0.0,
+        "activations": []
+      },
+      {
+        "context_tail": [
+          {
+            "pos": "pn",
+            "entity": null,
+            "role": null,
+            "location": null,
+            "event": null,
+            "token": "Mia",
+            "position": {
+              "token": 0,
+              "sentence": 0,
+              "in_sentence": 0
+            }
+          }
+        ],
+        "neuron_input_tail": [
+          {
+            "pos": "pn",
+            "entity": null,
+            "role": null,
+            "location": null,
+            "event": null,
+            "token": "Mia",
+            "position": {
+              "token": 0,
+              "sentence": 0,
+              "in_sentence": 0
+            }
+          }
+        ],
+        "omitted_context": 0,
+        "target": {
+          "entity": null,
+          "event": null,
+          "location": null,
+          "pos": "v",
+          "role": null,
+          "token": "used"
+        },
+        "count": 1,
+        "probability": 0.0505641599560184,
+        "ablated_probability": 0.0505641599560184,
+        "delta_log_probability": 0.0,
+        "activations": []
+      },
+      {
+        "context_tail": [
+          {
+            "pos": "pn",
+            "entity": null,
+            "role": null,
+            "location": null,
+            "event": null,
+            "token": "Tom",
+            "position": {
+              "token": 0,
+              "sentence": 0,
+              "in_sentence": 0
+            }
+          }
+        ],
+        "neuron_input_tail": [
+          {
+            "pos": "pn",
+            "entity": null,
+            "role": null,
+            "location": null,
+            "event": null,
+            "token": "Tom",
+            "position": {
+              "token": 0,
+              "sentence": 0,
+              "in_sentence": 0
+            }
+          }
+        ],
+        "omitted_context": 0,
+        "target": {
+          "entity": null,
+          "event": null,
+          "location": null,
+          "pos": "v",
+          "role": null,
+          "token": "used"
+        },
+        "count": 1,
+        "probability": 0.0505641599560184,
+        "ablated_probability": 0.0505641599560184,
+        "delta_log_probability": 0.0,
+        "activations": []
+      }
+    ]
+  },
+  "evidence_scope": "Training prefixes and next targets only. No validation or test examples.",
+  "head_controls": {
+    "operation": "add",
+    "strength": 1.0,
+    "null_mass": 1.0
+  },
+  "sharing": {
+    "instances": [
+      {
+        "kind": "head",
+        "layer": 0,
+        "head": 0
+      }
+    ],
+    "rules": [
+      {
+        "rule": 0,
+        "other_neurons": []
+      }
+    ]
+  },
+  "feature_consumers": {
+    "preceding_verb_surface": {
+      "readers": [
+        {
+          "neuron": "apples",
+          "rule": 5
+        },
+        {
+          "neuron": "apples",
+          "rule": 6
+        },
+        {
+          "neuron": "apples",
+          "rule": 8
+        },
+        {
+          "neuron": "needles",
+          "rule": 5
+        },
+        {
+          "neuron": "needles",
+          "rule": 6
+        },
+        {
+          "neuron": "needles",
+          "rule": 8
+        },
+        {
+          "neuron": "pears",
+          "rule": 5
+        },
+        {
+          "neuron": "pears",
+          "rule": 6
+        },
+        {
+          "neuron": "pears",
+          "rule": 8
+        },
+        {
+          "neuron": "scissors",
+          "rule": 5
+        },
+        {
+          "neuron": "scissors",
+          "rule": 6
+        },
+        {
+          "neuron": "scissors",
+          "rule": 8
+        }
+      ],
+      "writers": [
+        {
+          "neuron": "carry_preceding_verb",
+          "rule": 0
+        }
+      ]
+    }
+  },
+  "packet_sha256": "470430c155e095c668637c36146a19ed4aff88d468f4f770f322c6923225b4c9"
+}

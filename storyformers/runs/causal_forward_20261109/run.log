@@ -1,0 +1,70 @@
+5 records: forward 0.019s, last readout 0.008s
+16 records: forward 0.135s, last readout 0.035s
+64 records: forward 1.663s, last readout 0.314s
+256-context last readout: 4.692s
+Segment 1: 256 records, 31.124s, 270 head matches
+Segment 2: 256 records, 30.176s, 262 head matches
+Segment 3: 256 records, 30.927s, 256 head matches
+Segment 4: 155 records, 10.771s, 157 head matches
+Rolling 16: 200/923 positions
+Rolling 16: 400/923 positions
+Rolling 16: 600/923 positions
+Rolling 16: 800/923 positions
+{
+  "architecture": {
+    "context_size": 256,
+    "saved_context_size": 16,
+    "wildcard_bounds_widened": true,
+    "head_slots": [
+      16,
+      16
+    ],
+    "populated_heads": [
+      3,
+      7
+    ],
+    "head_rules": 10,
+    "catalog_heads": [
+      "H0385",
+      "H0386",
+      "H0097"
+    ],
+    "vocabulary": 19,
+    "projection_rules": 171
+  },
+  "segmented_forward": {
+    "seconds": 102.99875758308917,
+    "records_per_second": 8.961273142109654,
+    "words_per_second": 7.310767796325644,
+    "head_activations": {
+      "derive_determiner_kind": 92,
+      "derive_definiteness": 91,
+      "Project cardinal value": 5,
+      "learned_7": 130,
+      "learned_1": 223,
+      "learned_2": 170,
+      "learned_4": 153,
+      "learned_5": 53,
+      "learned_6": 28
+    },
+    "added_fields": {
+      "__grammar_7": 130,
+      "__grammar_1": 223,
+      "__grammar_2": 170,
+      "__grammar_4": 153,
+      "__grammar_5": 53,
+      "__grammar_6": 28,
+      "definiteness": 23,
+      "determiner_kind": 8
+    },
+    "changed_positions": 757
+  },
+  "rolling_checkpoint": {
+    "context_size": 16,
+    "positions": 923,
+    "seconds": 28.77879933314398,
+    "records_per_second": 32.07222057165529,
+    "milliseconds_per_step": 31.1796309134821
+  },
+  "peak_process_rss_mib": 98.53125
+}

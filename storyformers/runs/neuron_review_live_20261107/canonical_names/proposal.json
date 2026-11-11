@@ -1,0 +1,47 @@
+{
+  "format": "storyformers-neuron-review-v1",
+  "base_model_sha256": "83a332763178489bc2f0198767adfb8b06cedeafe4067407fdf3c8184845c51d",
+  "address": {
+    "kind": "head",
+    "layer": 0,
+    "head": 3
+  },
+  "neuron": {
+    "name": "suffix_verb_context",
+    "rules": [
+      {
+        "pattern": {
+          "kind": "seq",
+          "children": [
+            {
+              "kind": "repeat",
+              "children": [
+                {
+                  "kind": "token",
+                  "tests": {}
+                }
+              ],
+              "minimum": 0,
+              "maximum": 16
+            },
+            {
+              "kind": "token",
+              "tests": {
+                "pos": "v"
+              }
+            }
+          ]
+        },
+        "emit": {
+          "__grammar_4": true
+        },
+        "weight": 1.0
+      }
+    ],
+    "tables": {},
+    "max_states": 20000
+  },
+  "feature_definitions": {},
+  "bindings": [],
+  "rationale": "Retain the suffix-verb condition and its output: the examples show helpful and harmful effects for the same verb-final contexts, so removing the write or changing its meaning is not supported. The output boolean represents a whole-context condition, not the current token's pos value, so rebinding it to pos would change semantics. Rename the neuron descriptively without changing behavior."
+}

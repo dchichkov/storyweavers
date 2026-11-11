@@ -1,0 +1,671 @@
+{
+  "audit_version": 1,
+  "audited_at_utc": "2026-11-08T07:04:15.049643+00:00",
+  "scope": "Direct source prose bytes, full canonical feature definitions, participant erratum and current frozen-version provenance; not a semantic quality verdict.",
+  "reproduction": ".venv/bin/python storyformers/runs/catalog_annotation_20261107/reviews/source_catalog_audit.py",
+  "method": {
+    "source_extraction": "Match ^## (\\d{2}_\\w+) \\|[^\\n]+\\n headers; slice each body through the next heading; strip only surrounding LF separators; compare remaining UTF-8 bytes directly with input/story.txt. No punctuation, spaces, spelling, Unicode or internal newlines are normalized.",
+    "catalog_comparison": "Parse every feature line; compare ID/key/type multiset, exact description/scope text and parsed JSON example against canonical rows.",
+    "provenance": "Audit folders with all twelve required deliverables at snapshot time. Compare expected phase/version, current prompt/override/source hashes, lossless text and saved validation; independently resolve patients/instruments in records and event registry."
+  },
+  "source": {
+    "path": "/Users/dmitry/storyweavers/storyscenes/design/agents_api_trial_20261024/luna_high_direct_20/STORIES.md",
+    "sha256": "9fafd28dbac970d51c098d376d49a07feacfac79e91a9735ac0f5a4f40814738",
+    "section_count": 20,
+    "stories": [
+      {
+        "story_id": "01_bakery",
+        "heading_line": 3,
+        "prose_bytes": 4767,
+        "source_prose_sha256": "8399743eed773be78f4696ff660cf59c0556b7aadbac8edd8a05ef026ce21a79",
+        "input_sha256": "8399743eed773be78f4696ff660cf59c0556b7aadbac8edd8a05ef026ce21a79",
+        "exact_prose_byte_match": true,
+        "manifest_hash_match": true
+      },
+      {
+        "story_id": "02_puppets",
+        "heading_line": 99,
+        "prose_bytes": 4797,
+        "source_prose_sha256": "e0ae5ef2b0e018e26ad823a5da559a77d85a10ba59f367107a81a819d2f33735",
+        "input_sha256": "e0ae5ef2b0e018e26ad823a5da559a77d85a10ba59f367107a81a819d2f33735",
+        "exact_prose_byte_match": true,
+        "manifest_hash_match": true
+      },
+      {
+        "story_id": "03_greenhouse",
+        "heading_line": 189,
+        "prose_bytes": 4180,
+        "source_prose_sha256": "b9fcc753ff87880372aa6f2052a74e0b77868a92fa2e42510ef0fe770da3c78d",
+        "input_sha256": "b9fcc753ff87880372aa6f2052a74e0b77868a92fa2e42510ef0fe770da3c78d",
+        "exact_prose_byte_match": true,
+        "manifest_hash_match": true
+      },
+      {
+        "story_id": "04_seaside",
+        "heading_line": 253,
+        "prose_bytes": 4591,
+        "source_prose_sha256": "2ff3e962ee018d3be523842c9cfbe6aa497f9a08a0e889847d1190ce99117837",
+        "input_sha256": "2ff3e962ee018d3be523842c9cfbe6aa497f9a08a0e889847d1190ce99117837",
+        "exact_prose_byte_match": true,
+        "manifest_hash_match": true
+      },
+      {
+        "story_id": "05_library",
+        "heading_line": 319,
+        "prose_bytes": 4340,
+        "source_prose_sha256": "df8a40ce5de909a2a312e4f7b3239ae3c4ced15cd45102b026536ec7a73b17cd",
+        "input_sha256": "df8a40ce5de909a2a312e4f7b3239ae3c4ced15cd45102b026536ec7a73b17cd",
+        "exact_prose_byte_match": true,
+        "manifest_hash_match": true
+      },
+      {
+        "story_id": "06_snow",
+        "heading_line": 385,
+        "prose_bytes": 4749,
+        "source_prose_sha256": "11337e615428bf7f7b7db53ca7ae491ae767ce5bb345abc6b9ca38ef097bb3e5",
+        "input_sha256": "11337e615428bf7f7b7db53ca7ae491ae767ce5bb345abc6b9ca38ef097bb3e5",
+        "exact_prose_byte_match": true,
+        "manifest_hash_match": true
+      },
+      {
+        "story_id": "07_picnic",
+        "heading_line": 459,
+        "prose_bytes": 4202,
+        "source_prose_sha256": "6870ed3ead1dbc777705d823b7cdf1f52623fbe42f822e7e5a8a105d3284ced9",
+        "input_sha256": "6870ed3ead1dbc777705d823b7cdf1f52623fbe42f822e7e5a8a105d3284ced9",
+        "exact_prose_byte_match": true,
+        "manifest_hash_match": true
+      },
+      {
+        "story_id": "08_music",
+        "heading_line": 541,
+        "prose_bytes": 4182,
+        "source_prose_sha256": "5f3d26e32d5f2a2356f0e40c9b83be445280ab8f3403deea8911c4bbbd305116",
+        "input_sha256": "5f3d26e32d5f2a2356f0e40c9b83be445280ab8f3403deea8911c4bbbd305116",
+        "exact_prose_byte_match": true,
+        "manifest_hash_match": true
+      },
+      {
+        "story_id": "09_market",
+        "heading_line": 621,
+        "prose_bytes": 4043,
+        "source_prose_sha256": "766e7de1a07e82d644d599f9d34c69ae59f99bc73dc043f6be87e23819d7b391",
+        "input_sha256": "766e7de1a07e82d644d599f9d34c69ae59f99bc73dc043f6be87e23819d7b391",
+        "exact_prose_byte_match": true,
+        "manifest_hash_match": true
+      },
+      {
+        "story_id": "10_camp",
+        "heading_line": 687,
+        "prose_bytes": 4528,
+        "source_prose_sha256": "54a5f0eb046a2dd37f9a0247a54e5c55268281bf26ed047051a57a6a525e5917",
+        "input_sha256": "54a5f0eb046a2dd37f9a0247a54e5c55268281bf26ed047051a57a6a525e5917",
+        "exact_prose_byte_match": true,
+        "manifest_hash_match": true
+      },
+      {
+        "story_id": "11_pottery",
+        "heading_line": 769,
+        "prose_bytes": 3881,
+        "source_prose_sha256": "5c50d28bcea71b78e567ee0283fb34a6b8a36533de45ab3c07fdd3600f793e25",
+        "input_sha256": "5c50d28bcea71b78e567ee0283fb34a6b8a36533de45ab3c07fdd3600f793e25",
+        "exact_prose_byte_match": true,
+        "manifest_hash_match": true
+      },
+      {
+        "story_id": "12_orchard",
+        "heading_line": 829,
+        "prose_bytes": 4692,
+        "source_prose_sha256": "c6e405f3aec5bb52569241bc356d5f2de50592ebd2185eee7130ca3c78eaf127",
+        "input_sha256": "c6e405f3aec5bb52569241bc356d5f2de50592ebd2185eee7130ca3c78eaf127",
+        "exact_prose_byte_match": true,
+        "manifest_hash_match": true
+      },
+      {
+        "story_id": "13_costume",
+        "heading_line": 913,
+        "prose_bytes": 4433,
+        "source_prose_sha256": "7d04b2d45121c8cc2ad5f1bfc780d5610363ddded85b0bc63977e37d6a31c356",
+        "input_sha256": "7d04b2d45121c8cc2ad5f1bfc780d5610363ddded85b0bc63977e37d6a31c356",
+        "exact_prose_byte_match": true,
+        "manifest_hash_match": true
+      },
+      {
+        "story_id": "14_pond",
+        "heading_line": 991,
+        "prose_bytes": 4605,
+        "source_prose_sha256": "ba3b92a853ae719d1a097d8a9d3dcda960fc33eb3cba9e2445d8b239d0637950",
+        "input_sha256": "ba3b92a853ae719d1a097d8a9d3dcda960fc33eb3cba9e2445d8b239d0637950",
+        "exact_prose_byte_match": true,
+        "manifest_hash_match": true
+      },
+      {
+        "story_id": "15_repair",
+        "heading_line": 1073,
+        "prose_bytes": 3837,
+        "source_prose_sha256": "da8861adc16e507f24cea3529796a1ae9912c25bf7c451a2e7b8c4453fb607e4",
+        "input_sha256": "da8861adc16e507f24cea3529796a1ae9912c25bf7c451a2e7b8c4453fb607e4",
+        "exact_prose_byte_match": true,
+        "manifest_hash_match": true
+      },
+      {
+        "story_id": "16_museum",
+        "heading_line": 1129,
+        "prose_bytes": 4091,
+        "source_prose_sha256": "7692333b42e82364dabe8f71d85b1207708e0f263e92e729603a930bde37f389",
+        "input_sha256": "7692333b42e82364dabe8f71d85b1207708e0f263e92e729603a930bde37f389",
+        "exact_prose_byte_match": true,
+        "manifest_hash_match": true
+      },
+      {
+        "story_id": "17_laundry",
+        "heading_line": 1199,
+        "prose_bytes": 4117,
+        "source_prose_sha256": "1f1d9ed132d8fe3e8348cf7bdfcda9d5707bc5d483940c58cfa593ee8c252cd6",
+        "input_sha256": "1f1d9ed132d8fe3e8348cf7bdfcda9d5707bc5d483940c58cfa593ee8c252cd6",
+        "exact_prose_byte_match": true,
+        "manifest_hash_match": true
+      },
+      {
+        "story_id": "18_trail",
+        "heading_line": 1265,
+        "prose_bytes": 4364,
+        "source_prose_sha256": "dca6755992bb4f7d19d013c250bf73b787fc1e87d775c370fe9a6d9ca033d1f1",
+        "input_sha256": "dca6755992bb4f7d19d013c250bf73b787fc1e87d775c370fe9a6d9ca033d1f1",
+        "exact_prose_byte_match": true,
+        "manifest_hash_match": true
+      },
+      {
+        "story_id": "19_festival",
+        "heading_line": 1325,
+        "prose_bytes": 4568,
+        "source_prose_sha256": "4e45d2b790e464a735693deda9f734c8c91725acee78c942b7f83679a805e7c1",
+        "input_sha256": "4e45d2b790e464a735693deda9f734c8c91725acee78c942b7f83679a805e7c1",
+        "exact_prose_byte_match": true,
+        "manifest_hash_match": true
+      },
+      {
+        "story_id": "20_biscuit",
+        "heading_line": 1399,
+        "prose_bytes": 4192,
+        "source_prose_sha256": "9ad76757fde97a2e797c9d2793ec494d3e4cffea264ecef38a85a744bcda6d14",
+        "input_sha256": "9ad76757fde97a2e797c9d2793ec494d3e4cffea264ecef38a85a744bcda6d14",
+        "exact_prose_byte_match": true,
+        "manifest_hash_match": true
+      }
+    ]
+  },
+  "catalog": {
+    "path": "/Users/dmitry/storyweavers/storyformers/catalog/attributes.jsonl",
+    "sha256": "f1d12435ae4beb2b4da28c8f61fcde06d4025ccfb90562af945be75bb81fcb05",
+    "canonical_count": 1024,
+    "exact_1024_inventory": true,
+    "feature_files": [
+      {
+        "file": "features_core.txt",
+        "sha256": "cf92edbee1eac4fdfbfafab9addb9f3f7a152761af1194023affd3e58db9f402",
+        "described_attributes": 256,
+        "mismatches": []
+      },
+      {
+        "file": "features_linguistic.txt",
+        "sha256": "1259415aaaca4b2dd7e534ad47f9ebc51daf196fb2761941da585dca82cffbe4",
+        "described_attributes": 256,
+        "mismatches": []
+      },
+      {
+        "file": "features_mind.txt",
+        "sha256": "dc0b394c8ba09fc997af8cc81378cfe75bc60f867622f9e8763ad1c8e32d74fb",
+        "described_attributes": 256,
+        "mismatches": []
+      },
+      {
+        "file": "features_world.txt",
+        "sha256": "b9a0f269b1c90c4a376f44086af7db81b7fb4b9bb85ed57e11fd25934f986b2a",
+        "described_attributes": 256,
+        "mismatches": []
+      }
+    ]
+  },
+  "participant_override": {
+    "path": "/Users/dmitry/storyweavers/storyformers/runs/catalog_annotation_20261107/prompts/catalog_overrides.json",
+    "sha256": "62a93ca9541cf4e229131086cbc3c3d81fe6e48ec0f33a0b43746902c7bea825",
+    "entries": [
+      {
+        "key": "patients",
+        "canonical_id": "A0015",
+        "original_description": "Canonical names of already introduced patient participants of this event; future participants remain absent until mentioned.",
+        "override_description": "Stable eN entity IDs of patient participants in this event, matching the existing annotation pipeline's wire convention.",
+        "type_preserved": true,
+        "reason": "Catalog A0015 incorrectly describes names; storyformers/annotation.py validates entity IDs. This trial explicitly corrects the description without changing the archived catalog."
+      },
+      {
+        "key": "instruments",
+        "canonical_id": "A0016",
+        "original_description": "Canonical names of already introduced instrument participants of this event; future participants remain absent until mentioned.",
+        "override_description": "Stable eN entity IDs of instruments used in this event, matching the existing annotation pipeline's wire convention.",
+        "type_preserved": true,
+        "reason": "Catalog A0016 incorrectly describes names; storyformers/annotation.py validates entity IDs. This trial explicitly corrects the description without changing the archived catalog."
+      }
+    ],
+    "implementation_evidence": "storyformers/annotation.py:111-113 requires unique entity IDs; lines147-149 resolve patients/instruments against registered entities. The trial corrects description/example semantics, retains array types, and leaves archived catalog unchanged."
+  },
+  "provenance": {
+    "prompt_hashes": {
+      "v0": "dee30942d0ee15c9d1cd5df589b206a57d6968cab978d96f2fe288e4851c8a10",
+      "v1": "677e52a11178d863bee097ad2933f21a4da75c0e57d25a7d8120e9d8790fed45",
+      "v2": "72d9b55e83930d5c50c7ac9432433cb36ee722a6a555d8f9c3f51c1f64b3add3",
+      "v3": "62a7242b1793b00937a6b45163df386ef7b4d5ce7ec575654829a7691db93c50",
+      "v4": "4b97768956e6dc3a99bebc1d2960397d9c13621cf009887c22379f01e3a606f0"
+    },
+    "companion_file_hashes": {
+      "batch1_examples_v2.json": "16465c718837bd6a835bffcddbc21d2c0021d4770e6fe695a974b59b0de138ba",
+      "batch2_examples_v3.json": "35cfdd2c571b60b26cbd61ccd75c313d9220b7fef9336daa142a47ed833650f5",
+      "batch3_examples_v4.json": "a76207303c6a8239d11cc764fa2d5e05ae1019d5dfa93b0c0c676ca42e712de5",
+      "catalog_overrides.json": "62a93ca9541cf4e229131086cbc3c3d81fe6e48ec0f33a0b43746902c7bea825",
+      "extension_registry_v1.json": "047edf86a5ab2e6d6d7e353ca424ac8960572813707349d3eaf5b113b0a7a906",
+      "extension_registry_v2.json": "45b2119087d51eaf52f50a50ee01b96b068d8725615b15d4e4ed9bb8a5a8e092",
+      "extension_registry_v3.json": "45b2119087d51eaf52f50a50ee01b96b068d8725615b15d4e4ed9bb8a5a8e092",
+      "extension_registry_v4.json": "60b82273621b1e61fefb8780d37e8edde2964c3e253694b4677ca8c69d261a3a",
+      "pilot_examples_v1.json": "bf6cf7f20accafcc639ff28fe02843c20de928f466057a0f186a4205e41c19fd"
+    },
+    "logged_release_hash_checks": [
+      {
+        "event": "pilot_review_completed_and_v1_prepared",
+        "prompt": "prompts/annotate_v1.md",
+        "matches_current_file": true
+      }
+    ],
+    "completed_artifact_folders": [
+      {
+        "story_id": "01_bakery",
+        "manifest_status": "reviewed",
+        "prompt_version": "v0",
+        "prompt_sha256": "dee30942d0ee15c9d1cd5df589b206a57d6968cab978d96f2fe288e4851c8a10",
+        "metadata_sha256": "b932b6a5e29de29d443a6afedf072cc1491a82c8d896dc8f51dfa339d8ea62ae",
+        "participant_reference_count": 229,
+        "checks": {
+          "expected_phase_prompt": true,
+          "current_prompt_hash": true,
+          "override_hash": true,
+          "source_hash": true,
+          "lossless_reconstruction": true,
+          "retrospective_mode": true,
+          "catalog_count": true,
+          "saved_validation_clean": true,
+          "participant_arrays_use_registered_entity_ids": true
+        }
+      },
+      {
+        "story_id": "02_puppets",
+        "manifest_status": "reviewed",
+        "prompt_version": "v0",
+        "prompt_sha256": "dee30942d0ee15c9d1cd5df589b206a57d6968cab978d96f2fe288e4851c8a10",
+        "metadata_sha256": "240c01fe0dec1f6e44ce4e6c98343fc85d9c3e2a38ed21ce751f7507a3880535",
+        "participant_reference_count": 261,
+        "checks": {
+          "expected_phase_prompt": true,
+          "current_prompt_hash": true,
+          "override_hash": true,
+          "source_hash": true,
+          "lossless_reconstruction": true,
+          "retrospective_mode": true,
+          "catalog_count": true,
+          "saved_validation_clean": true,
+          "participant_arrays_use_registered_entity_ids": true
+        }
+      },
+      {
+        "story_id": "03_greenhouse",
+        "manifest_status": "reviewed",
+        "prompt_version": "v1",
+        "prompt_sha256": "677e52a11178d863bee097ad2933f21a4da75c0e57d25a7d8120e9d8790fed45",
+        "metadata_sha256": "7aca581ec1ea300f559cd2dc1d0ef458de5d73a20630a425f462306e84f17d33",
+        "participant_reference_count": 218,
+        "checks": {
+          "expected_phase_prompt": true,
+          "current_prompt_hash": true,
+          "override_hash": true,
+          "source_hash": true,
+          "lossless_reconstruction": true,
+          "retrospective_mode": true,
+          "catalog_count": true,
+          "saved_validation_clean": true,
+          "participant_arrays_use_registered_entity_ids": true
+        }
+      },
+      {
+        "story_id": "04_seaside",
+        "manifest_status": "reviewed",
+        "prompt_version": "v1",
+        "prompt_sha256": "677e52a11178d863bee097ad2933f21a4da75c0e57d25a7d8120e9d8790fed45",
+        "metadata_sha256": "be7023e5bb995b18c73bc5f9649a9a7047f6f83989a2dceb3c642964fecf1dd3",
+        "participant_reference_count": 212,
+        "checks": {
+          "expected_phase_prompt": true,
+          "current_prompt_hash": true,
+          "override_hash": true,
+          "source_hash": true,
+          "lossless_reconstruction": true,
+          "retrospective_mode": true,
+          "catalog_count": true,
+          "saved_validation_clean": true,
+          "participant_arrays_use_registered_entity_ids": true
+        }
+      },
+      {
+        "story_id": "05_library",
+        "manifest_status": "reviewed",
+        "prompt_version": "v1",
+        "prompt_sha256": "677e52a11178d863bee097ad2933f21a4da75c0e57d25a7d8120e9d8790fed45",
+        "metadata_sha256": "07f28d17a166f37299351f041176ebd1236b17cb4ef5fcb171b4c433de4818f4",
+        "participant_reference_count": 202,
+        "checks": {
+          "expected_phase_prompt": true,
+          "current_prompt_hash": true,
+          "override_hash": true,
+          "source_hash": true,
+          "lossless_reconstruction": true,
+          "retrospective_mode": true,
+          "catalog_count": true,
+          "saved_validation_clean": true,
+          "participant_arrays_use_registered_entity_ids": true
+        }
+      },
+      {
+        "story_id": "06_snow",
+        "manifest_status": "reviewed",
+        "prompt_version": "v1",
+        "prompt_sha256": "677e52a11178d863bee097ad2933f21a4da75c0e57d25a7d8120e9d8790fed45",
+        "metadata_sha256": "1d1a9c840dbd677f3b31ba0e4a03bda7f69062a19747d8b21ed26abfde774206",
+        "participant_reference_count": 237,
+        "checks": {
+          "expected_phase_prompt": true,
+          "current_prompt_hash": true,
+          "override_hash": true,
+          "source_hash": true,
+          "lossless_reconstruction": true,
+          "retrospective_mode": true,
+          "catalog_count": true,
+          "saved_validation_clean": true,
+          "participant_arrays_use_registered_entity_ids": true
+        }
+      },
+      {
+        "story_id": "07_picnic",
+        "manifest_status": "reviewed",
+        "prompt_version": "v1",
+        "prompt_sha256": "677e52a11178d863bee097ad2933f21a4da75c0e57d25a7d8120e9d8790fed45",
+        "metadata_sha256": "32b56bd66b43ce8dae6f0d562fa4cc33b2b4bd56d255ebc29114756a5122f295",
+        "participant_reference_count": 189,
+        "checks": {
+          "expected_phase_prompt": true,
+          "current_prompt_hash": true,
+          "override_hash": true,
+          "source_hash": true,
+          "lossless_reconstruction": true,
+          "retrospective_mode": true,
+          "catalog_count": true,
+          "saved_validation_clean": true,
+          "participant_arrays_use_registered_entity_ids": true
+        }
+      },
+      {
+        "story_id": "08_music",
+        "manifest_status": "reviewed",
+        "prompt_version": "v1",
+        "prompt_sha256": "677e52a11178d863bee097ad2933f21a4da75c0e57d25a7d8120e9d8790fed45",
+        "metadata_sha256": "4258460691b97963efdc3f44ac56a103327891959fd2336caded74d1b0cb4d85",
+        "participant_reference_count": 240,
+        "checks": {
+          "expected_phase_prompt": true,
+          "current_prompt_hash": true,
+          "override_hash": true,
+          "source_hash": true,
+          "lossless_reconstruction": true,
+          "retrospective_mode": true,
+          "catalog_count": true,
+          "saved_validation_clean": true,
+          "participant_arrays_use_registered_entity_ids": true
+        }
+      },
+      {
+        "story_id": "09_market",
+        "manifest_status": "reviewed",
+        "prompt_version": "v2",
+        "prompt_sha256": "72d9b55e83930d5c50c7ac9432433cb36ee722a6a555d8f9c3f51c1f64b3add3",
+        "metadata_sha256": "a87d0b1bfe49d641632503e25b17ad818e5204c593da4076dbc2d400f70de07a",
+        "participant_reference_count": 195,
+        "checks": {
+          "expected_phase_prompt": true,
+          "current_prompt_hash": true,
+          "override_hash": true,
+          "source_hash": true,
+          "lossless_reconstruction": true,
+          "retrospective_mode": true,
+          "catalog_count": true,
+          "saved_validation_clean": true,
+          "participant_arrays_use_registered_entity_ids": true
+        }
+      },
+      {
+        "story_id": "10_camp",
+        "manifest_status": "reviewed",
+        "prompt_version": "v2",
+        "prompt_sha256": "72d9b55e83930d5c50c7ac9432433cb36ee722a6a555d8f9c3f51c1f64b3add3",
+        "metadata_sha256": "c788649326f5e42bb2eddf5096b7defcd77710d76091965841484f4a9025e895",
+        "participant_reference_count": 191,
+        "checks": {
+          "expected_phase_prompt": true,
+          "current_prompt_hash": true,
+          "override_hash": true,
+          "source_hash": true,
+          "lossless_reconstruction": true,
+          "retrospective_mode": true,
+          "catalog_count": true,
+          "saved_validation_clean": true,
+          "participant_arrays_use_registered_entity_ids": true
+        }
+      },
+      {
+        "story_id": "11_pottery",
+        "manifest_status": "reviewed",
+        "prompt_version": "v2",
+        "prompt_sha256": "72d9b55e83930d5c50c7ac9432433cb36ee722a6a555d8f9c3f51c1f64b3add3",
+        "metadata_sha256": "ffeda55fcf74f20eddff724cc9ff847bf078d59a874ba8dcdc3036caea87794f",
+        "participant_reference_count": 197,
+        "checks": {
+          "expected_phase_prompt": true,
+          "current_prompt_hash": true,
+          "override_hash": true,
+          "source_hash": true,
+          "lossless_reconstruction": true,
+          "retrospective_mode": true,
+          "catalog_count": true,
+          "saved_validation_clean": true,
+          "participant_arrays_use_registered_entity_ids": true
+        }
+      },
+      {
+        "story_id": "12_orchard",
+        "manifest_status": "reviewed",
+        "prompt_version": "v2",
+        "prompt_sha256": "72d9b55e83930d5c50c7ac9432433cb36ee722a6a555d8f9c3f51c1f64b3add3",
+        "metadata_sha256": "013020a2173ec9cdd25a86841885194c99d3c24766bca30161b0adcfcd69ec70",
+        "participant_reference_count": 252,
+        "checks": {
+          "expected_phase_prompt": true,
+          "current_prompt_hash": true,
+          "override_hash": true,
+          "source_hash": true,
+          "lossless_reconstruction": true,
+          "retrospective_mode": true,
+          "catalog_count": true,
+          "saved_validation_clean": true,
+          "participant_arrays_use_registered_entity_ids": true
+        }
+      },
+      {
+        "story_id": "13_costume",
+        "manifest_status": "reviewed",
+        "prompt_version": "v2",
+        "prompt_sha256": "72d9b55e83930d5c50c7ac9432433cb36ee722a6a555d8f9c3f51c1f64b3add3",
+        "metadata_sha256": "4168218d28ebf3d9c1e968679cb86b1a23b9b8b462569714ebe9a2b21af3b3bf",
+        "participant_reference_count": 202,
+        "checks": {
+          "expected_phase_prompt": true,
+          "current_prompt_hash": true,
+          "override_hash": true,
+          "source_hash": true,
+          "lossless_reconstruction": true,
+          "retrospective_mode": true,
+          "catalog_count": true,
+          "saved_validation_clean": true,
+          "participant_arrays_use_registered_entity_ids": true
+        }
+      },
+      {
+        "story_id": "14_pond",
+        "manifest_status": "reviewed",
+        "prompt_version": "v2",
+        "prompt_sha256": "72d9b55e83930d5c50c7ac9432433cb36ee722a6a555d8f9c3f51c1f64b3add3",
+        "metadata_sha256": "25c2434c37fa96e7268abf0c4b441362a3f8cf6086410e6a16862dd95802a329",
+        "participant_reference_count": 226,
+        "checks": {
+          "expected_phase_prompt": true,
+          "current_prompt_hash": true,
+          "override_hash": true,
+          "source_hash": true,
+          "lossless_reconstruction": true,
+          "retrospective_mode": true,
+          "catalog_count": true,
+          "saved_validation_clean": true,
+          "participant_arrays_use_registered_entity_ids": true
+        }
+      },
+      {
+        "story_id": "15_repair",
+        "manifest_status": "reviewed",
+        "prompt_version": "v3",
+        "prompt_sha256": "62a7242b1793b00937a6b45163df386ef7b4d5ce7ec575654829a7691db93c50",
+        "metadata_sha256": "c5c72d3a379a7e971b8f434228cdd4ef0a1b2645b5e5a118d6d55db10d798c41",
+        "participant_reference_count": 229,
+        "checks": {
+          "expected_phase_prompt": true,
+          "current_prompt_hash": true,
+          "override_hash": true,
+          "source_hash": true,
+          "lossless_reconstruction": true,
+          "retrospective_mode": true,
+          "catalog_count": true,
+          "saved_validation_clean": true,
+          "participant_arrays_use_registered_entity_ids": true
+        }
+      },
+      {
+        "story_id": "16_museum",
+        "manifest_status": "reviewed",
+        "prompt_version": "v3",
+        "prompt_sha256": "62a7242b1793b00937a6b45163df386ef7b4d5ce7ec575654829a7691db93c50",
+        "metadata_sha256": "47466d4658f60711929ec66c60ce2d9769bcb7e261c1bd91c58c22eaa6314bfe",
+        "participant_reference_count": 168,
+        "checks": {
+          "expected_phase_prompt": true,
+          "current_prompt_hash": true,
+          "override_hash": true,
+          "source_hash": true,
+          "lossless_reconstruction": true,
+          "retrospective_mode": true,
+          "catalog_count": true,
+          "saved_validation_clean": true,
+          "participant_arrays_use_registered_entity_ids": true
+        }
+      },
+      {
+        "story_id": "17_laundry",
+        "manifest_status": "reviewed",
+        "prompt_version": "v3",
+        "prompt_sha256": "62a7242b1793b00937a6b45163df386ef7b4d5ce7ec575654829a7691db93c50",
+        "metadata_sha256": "649b66788d3330475f6d9271a313b8da0322ed95463db34f6b26cd13e633fa8c",
+        "participant_reference_count": 200,
+        "checks": {
+          "expected_phase_prompt": true,
+          "current_prompt_hash": true,
+          "override_hash": true,
+          "source_hash": true,
+          "lossless_reconstruction": true,
+          "retrospective_mode": true,
+          "catalog_count": true,
+          "saved_validation_clean": true,
+          "participant_arrays_use_registered_entity_ids": true
+        }
+      },
+      {
+        "story_id": "18_trail",
+        "manifest_status": "reviewed",
+        "prompt_version": "v3",
+        "prompt_sha256": "62a7242b1793b00937a6b45163df386ef7b4d5ce7ec575654829a7691db93c50",
+        "metadata_sha256": "fc2a09acf467ec5e22658e90abe1536714c8403a7051690250f56f85eab24b8a",
+        "participant_reference_count": 207,
+        "checks": {
+          "expected_phase_prompt": true,
+          "current_prompt_hash": true,
+          "override_hash": true,
+          "source_hash": true,
+          "lossless_reconstruction": true,
+          "retrospective_mode": true,
+          "catalog_count": true,
+          "saved_validation_clean": true,
+          "participant_arrays_use_registered_entity_ids": true
+        }
+      },
+      {
+        "story_id": "19_festival",
+        "manifest_status": "reviewed",
+        "prompt_version": "v3",
+        "prompt_sha256": "62a7242b1793b00937a6b45163df386ef7b4d5ce7ec575654829a7691db93c50",
+        "metadata_sha256": "467ed55bea50944ef49b11915b9d66c4ef7bd9bd6b5f883d9bf74e698204e1a9",
+        "participant_reference_count": 214,
+        "checks": {
+          "expected_phase_prompt": true,
+          "current_prompt_hash": true,
+          "override_hash": true,
+          "source_hash": true,
+          "lossless_reconstruction": true,
+          "retrospective_mode": true,
+          "catalog_count": true,
+          "saved_validation_clean": true,
+          "participant_arrays_use_registered_entity_ids": true
+        }
+      },
+      {
+        "story_id": "20_biscuit",
+        "manifest_status": "reviewed",
+        "prompt_version": "v3",
+        "prompt_sha256": "62a7242b1793b00937a6b45163df386ef7b4d5ce7ec575654829a7691db93c50",
+        "metadata_sha256": "3b9b657e1c8a8242cb1481be9ec689e46fb815e8721c1b93166005d07ff106e9",
+        "participant_reference_count": 208,
+        "checks": {
+          "expected_phase_prompt": true,
+          "current_prompt_hash": true,
+          "override_hash": true,
+          "source_hash": true,
+          "lossless_reconstruction": true,
+          "retrospective_mode": true,
+          "catalog_count": true,
+          "saved_validation_clean": true,
+          "participant_arrays_use_registered_entity_ids": true
+        }
+      }
+    ],
+    "excluded_incomplete_folders": [],
+    "limits": [
+      "Matching stored/current hashes proves snapshot consistency, not that no intermediate edit occurred before regeneration.",
+      "Per-annotation metadata stores prompt/source/override hashes and catalog count, but not catalog/example/extension-registry hashes. Catalog provenance is the run manifest; companion current hashes are recorded here.",
+      "Separately logged release hashes are checked when present. Other versions rely on matching per-annotation prompt hashes, phase assignments and release/review records.",
+      "Saved validation reports were inspected rather than reexecuting authors or mutating outputs. In-progress stories are not represented as reviewed."
+    ]
+  },
+  "mismatches": [],
+  "result": "pass"
+}

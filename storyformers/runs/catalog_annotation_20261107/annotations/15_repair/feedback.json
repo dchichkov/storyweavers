@@ -1,0 +1,127 @@
+{
+  "summary": "Complete manual retrospective v3 annotation of the repair story, preserving diagnosis versus observation, scoped alternatives, tool custody, cooperative repair and the final image.",
+  "ambiguities": [
+    {
+      "words": [
+        374,
+        376,
+        377,
+        378
+      ],
+      "issue": "Rafi asks what to check before turning it again; it can refer to the nut or the wheel.",
+      "decision": "Leave the object unresolved, retain e13/e11 alternatives, and do not fabricate an actual turn."
+    },
+    {
+      "words": [
+        253,
+        255,
+        365,
+        366,
+        402,
+        404,
+        424
+      ],
+      "issue": "The wheel is jammed and reported unable to turn, but Ada next spins it for the clicking test before the source narrates loosening the nut.",
+      "decision": "Preserve both narrated states/actions; do not invent an intermediate loosening or force. The movement limit might permit a forced test, but that is not stated."
+    },
+    {
+      "words": [
+        315,
+        317,
+        318,
+        320,
+        333,
+        335,
+        336,
+        553,
+        555,
+        556
+      ],
+      "issue": "Under-bench placement is proposed; the actual next action only lowers the tray, and the later trial cart is empty.",
+      "decision": "Record proposed under-bench location, actual lowering out of cart, and empty trial; leave the tray interim location unspecified."
+    },
+    {
+      "words": [
+        483,
+        484,
+        485,
+        487,
+        489,
+        491,
+        492
+      ],
+      "issue": "Niko reports that the string is from his kite and that he had thought its tail came loose.",
+      "decision": "Keep origin as attributed report and the tail detachment as a nested prior belief; do not invent entry of string into wheel or equate string with the entire kite tail."
+    },
+    {
+      "words": [
+        623,
+        626,
+        652,
+        654,
+        675,
+        677,
+        678,
+        680
+      ],
+      "issue": "The cart reaches the sheltered corner and then returns to the bench; final leaves remain inside. No unloading at the corner is narrated.",
+      "decision": "Preserve explicit states, no unload/reload invention. Six final leaves do not establish one leaf per plant or a total plant leaf count."
+    },
+    {
+      "words": [
+        428,
+        431,
+        524,
+        526,
+        528
+      ],
+      "issue": "Wheel removal is explicit; washer is later refitted but no separate washer-removal action is narrated.",
+      "decision": "Keep removal of wheel and later refitting of washer+wheel; omit a fabricated washer-removal event."
+    },
+    {
+      "words": [
+        206,
+        207,
+        208
+      ],
+      "issue": "The addressee of Ada brief There is not explicitly named.",
+      "decision": "Rafi is the contextual audience at the bench, retained as an inference; no plot outcome depends on it."
+    },
+    {
+      "words": [
+        114,
+        355,
+        465
+      ],
+      "issue": "Initial claim says wheel loose; correction denies nut looseness.",
+      "decision": "Treat this as a narrowed mechanical diagnosis, not a literal contradiction between identical predicates; do not infer the wheel can never have been crooked."
+    }
+  ],
+  "feature_gaps": [
+    {
+      "words": [
+        82,
+        103,
+        275,
+        599,
+        641
+      ],
+      "meaning": "Qualitative life stage, relative size/weight and sunlight exposure lack dedicated typed carrier fields in this inventory.",
+      "decision": "Use existing entity-bound legacy attributes name/string-value pairs. Future reusable typed fields could cover these dimensions; no new extension is introduced in this story."
+    }
+  ],
+  "prompt_feedback": [
+    "The v3 positive predicate/negative content rule cleanly distinguishes nut-was-loose p20 from the quoted nut-was-not-loose p21 and avoids double negation.",
+    "Keep current source-gap guidance: a repaired final state must not license invented missing mechanical or transport transitions.",
+    "Add a mechanical-jam example if revising: wheel locked is operability failure, not object_lock_state, which describes engagement of a lock.",
+    "Add a controlled-test example if useful: wheel held still is a test condition, distinct from a wheel unable to move on its own.",
+    "Preserve quoted actual events through mention_event; the repeated tightening report and repeated rattle explanation reuse earlier event identities.",
+    "No new attribute names were required; agreed appearance_color, part_whole_relation and figurative_mapping were reused alongside event_bindings."
+  ],
+  "coverage_notes": "All 27 paragraphs and 685 words manually tagged. Actions, states, utterances, conditional risks, goals, beliefs, references, counts, parts, tool custody, location changes and physical mechanisms are annotated sparsely. Whitespace/punctuation are synthetic. Narrator-supported repair does not become proof of achieved trust or a deadline met before rain.",
+  "reviewed_all_words": true,
+  "self_review": {
+    "paragraphs": 27,
+    "mode": "Read every assembled word and all event/entity/scope/proposition registries against the complete source; repair material semantic discrepancies separately from shape validation."
+  }
+}

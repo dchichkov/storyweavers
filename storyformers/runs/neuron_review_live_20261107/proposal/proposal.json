@@ -1,0 +1,47 @@
+{
+  "format": "storyformers-neuron-review-v1",
+  "base_model_sha256": "83a332763178489bc2f0198767adfb8b06cedeafe4067407fdf3c8184845c51d",
+  "address": {
+    "kind": "head",
+    "layer": 0,
+    "head": 3
+  },
+  "neuron": {
+    "name": "learned_4",
+    "rules": [
+      {
+        "pattern": {
+          "kind": "seq",
+          "children": [
+            {
+              "kind": "repeat",
+              "children": [
+                {
+                  "kind": "token",
+                  "tests": {}
+                }
+              ],
+              "minimum": 0,
+              "maximum": 16
+            },
+            {
+              "kind": "token",
+              "tests": {
+                "pos": "v"
+              }
+            }
+          ]
+        },
+        "emit": {
+          "__grammar_4": true
+        },
+        "weight": 1.0
+      }
+    ],
+    "tables": {},
+    "max_states": 20000
+  },
+  "feature_definitions": {},
+  "bindings": [],
+  "rationale": "No revision is supported by the examples: helpful and harmful cases include identical prefixes such as Ben quickly took, so the visible features do not distinguish their targets. Narrowing the verb-ending condition based on these examples would discard supported matches without reliably avoiding harmful ones. Preserve the current behavior pending more discriminating evidence."
+}

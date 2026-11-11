@@ -1,0 +1,131 @@
+{
+  "summary": "Complete manually selected lexical and contextual annotation of the bakery story. Retrospective interpretation is intentional; physical states retain narrated time, quoted content stays attributed, and proposed plans are not promoted to actions.",
+  "ambiguities": [
+    {
+      "words": [
+        65,
+        68,
+        69,
+        70,
+        508,
+        512,
+        514,
+        515
+      ],
+      "issue": "Birthday time is reported retrospectively with today and a seasonal swallow cue.",
+      "decision": "today anchors to the current Thursday in Tessa's paraphrase; no absolute date, annual migration schedule, or date-consistency repair is invented."
+    },
+    {
+      "words": [
+        155,
+        172,
+        196,
+        277,
+        611
+      ],
+      "issue": "Repeated it shifts between cake and basket.",
+      "decision": "Resolve 155 to cake (purpose of asking for basket), 172/196 to basket, 277 to cake and 611 to cake; 611 could narrowly mean the flower but reported bump targets the transported cake."
+    },
+    {
+      "words": [
+        52,
+        62,
+        504,
+        65,
+        508,
+        750
+      ],
+      "issue": "Repeated mentions of historical repair, telling and purchase are not repeated physical events.",
+      "decision": "Reuse event IDs through mention_event; distinct outer communication turns keep their own IDs."
+    },
+    {
+      "words": [
+        546,
+        553,
+        610,
+        623,
+        637
+      ],
+      "issue": "Colorful socks and playful decoration descriptions may carry tact or humor.",
+      "decision": "Annotate explicit evaluations and clear visual metaphor; do not infer sarcasm, insult or hidden disappointment."
+    },
+    {
+      "words": [
+        625,
+        632,
+        693
+      ],
+      "issue": "A real smile and blowing out the candle do not explicitly report a wish or a named inner emotion.",
+      "decision": "Keep genuine outward display and candle event; omit an invented wish-making event or measured happiness."
+    },
+    {
+      "words": [
+        779,
+        784,
+        789,
+        792
+      ],
+      "issue": "Empty basket still contains tea towel.",
+      "decision": "Record contents towel, excluding cake/box, rather than absolute emptiness."
+    },
+    {
+      "words": [
+        804,
+        811,
+        814,
+        818,
+        820,
+        822
+      ],
+      "issue": "Final joint return is a proposal; story ends before tomorrow.",
+      "decision": "Keep obligation and future commitment, do not assert completed return or Tessa's unstated acceptance."
+    }
+  ],
+  "feature_gaps": [
+    {
+      "field": "figurative_mapping",
+      "reason": "Needed for novel swimming/wandering metaphors and candle/twig simile; neither irony nor conventional lexical idiom fits.",
+      "words": [
+        610,
+        623,
+        849
+      ]
+    },
+    {
+      "field": "attributes",
+      "reason": "The catalog has many specialized material/state fields but no ordinary typed color/size/flavor field; retained legacy name/string values for blue, small and lemon. A future common property schema would improve consistency.",
+      "words": [
+        8,
+        23,
+        112,
+        116,
+        162,
+        837
+      ]
+    },
+    {
+      "field": "event_bindings",
+      "reason": "Multiple event memberships and speaker/content overlap need the provisional array; singular fields cannot represent all roles.",
+      "words": [
+        190,
+        192,
+        195,
+        662,
+        669,
+        803,
+        820
+      ]
+    }
+  ],
+  "prompt_feedback": [
+    "Specify event identity versus event mention identity, including repeated descriptions across quotation scopes; reuse underlying physical events and allocate distinct actual speech acts.",
+    "Keep the newly clarified patients/instruments ID override visible alongside the original feature descriptions, which otherwise prescribe names.",
+    "Distinguish actual utterance event scope from its quoted content scope; secondary speech events can share a word anchor without replacing content participants.",
+    "Give a scoped-emptiness example such as empty basket with towel still inside, so annotations do not infer universal absence.",
+    "Keep the shared leading-component contraction policy visible: this pilot uses pron/I for I'd and I'm, pron/you for You're, pron/it for It's, with full auxiliary expansions; won't and don't remain verbal contractions.",
+    "Time expressions need a policy for reported deictic reformulation: today in a present retelling of last spring's conversation need not mean that historical conversation day.",
+    "Narrative closure and character change should cite physical evidence and remain interpretations, without turning smile/light imagery into unsupported psychiatric or personality claims."
+  ],
+  "coverage_notes": "All 854 word occurrences have explicit contextual POS; every inflected/proper-name/contraction lemma was reviewed. Events, pronouns, quotations, conditions, object parts, route choice, decorations, cake integrity, arithmetic and loan commitments were reviewed paragraph by paragraph. Function words receive grammar/operator labels where appropriate; omissions remain unknown, not false. Full dependency trees and all 1,024 dimensions are deliberately not fabricated.",
+  "reviewed_all_words": true
+}

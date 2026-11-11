@@ -1,0 +1,509 @@
+{
+  "source": "Agent revision after round_01 and batch_02 evidence: pool two batches; omit redundant default nulls.",
+  "head": {
+    "name": "carry_preceding_verb",
+    "rules": [
+      {
+        "pattern": {
+          "kind": "seq",
+          "children": [
+            {
+              "kind": "repeat",
+              "children": [
+                {
+                  "kind": "token",
+                  "tests": {}
+                }
+              ],
+              "minimum": 0,
+              "maximum": 16
+            },
+            {
+              "kind": "token",
+              "tests": {
+                "pos": "v"
+              },
+              "bind": "verb"
+            },
+            {
+              "kind": "repeat",
+              "children": [
+                {
+                  "kind": "token",
+                  "tests": {
+                    "pos": {
+                      "$one_of": [
+                        "det",
+                        "adj"
+                      ]
+                    }
+                  }
+                }
+              ],
+              "minimum": 0,
+              "maximum": 16
+            }
+          ]
+        },
+        "emit": {
+          "preceding_verb_surface": {
+            "$ref": "verb.token"
+          }
+        },
+        "weight": 1.0
+      }
+    ],
+    "tables": {},
+    "max_states": 20000
+  },
+  "feature": {
+    "preceding_verb_surface": {
+      "type": "string",
+      "origin": "learned",
+      "description": "Surface token of the preceding verb when only determiners/adjectives follow it within this prefix; otherwise absent."
+    }
+  },
+  "consumer_counts": [
+    {
+      "word": "apples",
+      "verb": "ate",
+      "current_pos": "adj",
+      "count": 6,
+      "support": 12,
+      "rule": 9
+    },
+    {
+      "word": "pears",
+      "verb": "ate",
+      "current_pos": "adj",
+      "count": 6,
+      "support": 12,
+      "rule": 9
+    },
+    {
+      "word": "red",
+      "verb": "ate",
+      "current_pos": "det",
+      "count": 5,
+      "support": 11,
+      "rule": 9
+    },
+    {
+      "word": "small",
+      "verb": "ate",
+      "current_pos": "det",
+      "count": 3,
+      "support": 11,
+      "rule": 9
+    },
+    {
+      "word": "apples",
+      "verb": "ate",
+      "current_pos": "det",
+      "count": 1,
+      "support": 11,
+      "rule": 10
+    },
+    {
+      "word": "pears",
+      "verb": "ate",
+      "current_pos": "det",
+      "count": 2,
+      "support": 11,
+      "rule": 10
+    },
+    {
+      "word": "red",
+      "verb": "ate",
+      "current_pos": "v",
+      "count": 2,
+      "support": 17,
+      "rule": 10
+    },
+    {
+      "word": "small",
+      "verb": "ate",
+      "current_pos": "v",
+      "count": 2,
+      "support": 17,
+      "rule": 10
+    },
+    {
+      "word": "the",
+      "verb": "ate",
+      "current_pos": "v",
+      "count": 11,
+      "support": 17,
+      "rule": 9
+    },
+    {
+      "word": "apples",
+      "verb": "ate",
+      "current_pos": "v",
+      "count": 1,
+      "support": 17,
+      "rule": 11
+    },
+    {
+      "word": "pears",
+      "verb": "ate",
+      "current_pos": "v",
+      "count": 1,
+      "support": 17,
+      "rule": 11
+    },
+    {
+      "word": "apples",
+      "verb": "found",
+      "current_pos": "adj",
+      "count": 8,
+      "support": 35,
+      "rule": 12
+    },
+    {
+      "word": "needles",
+      "verb": "found",
+      "current_pos": "adj",
+      "count": 11,
+      "support": 35,
+      "rule": 9
+    },
+    {
+      "word": "pears",
+      "verb": "found",
+      "current_pos": "adj",
+      "count": 7,
+      "support": 35,
+      "rule": 12
+    },
+    {
+      "word": "scissors",
+      "verb": "found",
+      "current_pos": "adj",
+      "count": 9,
+      "support": 35,
+      "rule": 9
+    },
+    {
+      "word": "red",
+      "verb": "found",
+      "current_pos": "det",
+      "count": 11,
+      "support": 24,
+      "rule": 11
+    },
+    {
+      "word": "small",
+      "verb": "found",
+      "current_pos": "det",
+      "count": 6,
+      "support": 24,
+      "rule": 11
+    },
+    {
+      "word": "apples",
+      "verb": "found",
+      "current_pos": "det",
+      "count": 2,
+      "support": 24,
+      "rule": 13
+    },
+    {
+      "word": "needles",
+      "verb": "found",
+      "current_pos": "det",
+      "count": 2,
+      "support": 24,
+      "rule": 10
+    },
+    {
+      "word": "pears",
+      "verb": "found",
+      "current_pos": "det",
+      "count": 1,
+      "support": 24,
+      "rule": 13
+    },
+    {
+      "word": "scissors",
+      "verb": "found",
+      "current_pos": "det",
+      "count": 2,
+      "support": 24,
+      "rule": 10
+    },
+    {
+      "word": "red",
+      "verb": "found",
+      "current_pos": "v",
+      "count": 12,
+      "support": 48,
+      "rule": 12
+    },
+    {
+      "word": "small",
+      "verb": "found",
+      "current_pos": "v",
+      "count": 6,
+      "support": 48,
+      "rule": 12
+    },
+    {
+      "word": "the",
+      "verb": "found",
+      "current_pos": "v",
+      "count": 24,
+      "support": 48,
+      "rule": 10
+    },
+    {
+      "word": "apples",
+      "verb": "found",
+      "current_pos": "v",
+      "count": 2,
+      "support": 48,
+      "rule": 14
+    },
+    {
+      "word": "needles",
+      "verb": "found",
+      "current_pos": "v",
+      "count": 1,
+      "support": 48,
+      "rule": 11
+    },
+    {
+      "word": "pears",
+      "verb": "found",
+      "current_pos": "v",
+      "count": 2,
+      "support": 48,
+      "rule": 14
+    },
+    {
+      "word": "scissors",
+      "verb": "found",
+      "current_pos": "v",
+      "count": 1,
+      "support": 48,
+      "rule": 11
+    },
+    {
+      "word": "apples",
+      "verb": "took",
+      "current_pos": "adj",
+      "count": 5,
+      "support": 24,
+      "rule": 15
+    },
+    {
+      "word": "needles",
+      "verb": "took",
+      "current_pos": "adj",
+      "count": 7,
+      "support": 24,
+      "rule": 12
+    },
+    {
+      "word": "pears",
+      "verb": "took",
+      "current_pos": "adj",
+      "count": 5,
+      "support": 24,
+      "rule": 15
+    },
+    {
+      "word": "scissors",
+      "verb": "took",
+      "current_pos": "adj",
+      "count": 7,
+      "support": 24,
+      "rule": 12
+    },
+    {
+      "word": "red",
+      "verb": "took",
+      "current_pos": "det",
+      "count": 4,
+      "support": 19,
+      "rule": 13
+    },
+    {
+      "word": "small",
+      "verb": "took",
+      "current_pos": "det",
+      "count": 8,
+      "support": 19,
+      "rule": 13
+    },
+    {
+      "word": "apples",
+      "verb": "took",
+      "current_pos": "det",
+      "count": 3,
+      "support": 19,
+      "rule": 16
+    },
+    {
+      "word": "pears",
+      "verb": "took",
+      "current_pos": "det",
+      "count": 2,
+      "support": 19,
+      "rule": 16
+    },
+    {
+      "word": "scissors",
+      "verb": "took",
+      "current_pos": "det",
+      "count": 2,
+      "support": 19,
+      "rule": 13
+    },
+    {
+      "word": "red",
+      "verb": "took",
+      "current_pos": "v",
+      "count": 4,
+      "support": 37,
+      "rule": 14
+    },
+    {
+      "word": "small",
+      "verb": "took",
+      "current_pos": "v",
+      "count": 8,
+      "support": 37,
+      "rule": 14
+    },
+    {
+      "word": "the",
+      "verb": "took",
+      "current_pos": "v",
+      "count": 19,
+      "support": 37,
+      "rule": 11
+    },
+    {
+      "word": "apples",
+      "verb": "took",
+      "current_pos": "v",
+      "count": 1,
+      "support": 37,
+      "rule": 17
+    },
+    {
+      "word": "needles",
+      "verb": "took",
+      "current_pos": "v",
+      "count": 2,
+      "support": 37,
+      "rule": 13
+    },
+    {
+      "word": "pears",
+      "verb": "took",
+      "current_pos": "v",
+      "count": 2,
+      "support": 37,
+      "rule": 17
+    },
+    {
+      "word": "scissors",
+      "verb": "took",
+      "current_pos": "v",
+      "count": 1,
+      "support": 37,
+      "rule": 14
+    },
+    {
+      "word": "needles",
+      "verb": "used",
+      "current_pos": "adj",
+      "count": 9,
+      "support": 19,
+      "rule": 14
+    },
+    {
+      "word": "scissors",
+      "verb": "used",
+      "current_pos": "adj",
+      "count": 10,
+      "support": 19,
+      "rule": 15
+    },
+    {
+      "word": "red",
+      "verb": "used",
+      "current_pos": "det",
+      "count": 5,
+      "support": 16,
+      "rule": 15
+    },
+    {
+      "word": "small",
+      "verb": "used",
+      "current_pos": "det",
+      "count": 7,
+      "support": 16,
+      "rule": 15
+    },
+    {
+      "word": "needles",
+      "verb": "used",
+      "current_pos": "det",
+      "count": 3,
+      "support": 16,
+      "rule": 15
+    },
+    {
+      "word": "scissors",
+      "verb": "used",
+      "current_pos": "det",
+      "count": 1,
+      "support": 16,
+      "rule": 16
+    },
+    {
+      "word": "red",
+      "verb": "used",
+      "current_pos": "v",
+      "count": 4,
+      "support": 26,
+      "rule": 16
+    },
+    {
+      "word": "small",
+      "verb": "used",
+      "current_pos": "v",
+      "count": 3,
+      "support": 26,
+      "rule": 16
+    },
+    {
+      "word": "the",
+      "verb": "used",
+      "current_pos": "v",
+      "count": 16,
+      "support": 26,
+      "rule": 12
+    },
+    {
+      "word": "needles",
+      "verb": "used",
+      "current_pos": "v",
+      "count": 2,
+      "support": 26,
+      "rule": 16
+    },
+    {
+      "word": "scissors",
+      "verb": "used",
+      "current_pos": "v",
+      "count": 1,
+      "support": 26,
+      "rule": 17
+    }
+  ],
+  "rationale": "Carry lexical verb identity through modifiers; learn probabilistic continuations from data."
+}

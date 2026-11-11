@@ -1,0 +1,256 @@
+A0257 constituent_category [string] Syntactic category of a constituent whose head is the current token. Scope: current construction. Example: "NP"
+A0258 constituent_head_id [entity_ref] Entity-denoting head of the current simple phrase, when an entity ID is already grounded. Scope: current linguistic unit. Example: "e1"
+A0259 constituent_start_id [string] Token anchor at which the current constituent begins. Scope: current construction. Example: "t1"
+A0260 constituent_end_id [string] Visible token anchor closing the selected constituent. Scope: current construction. Example: "t3"
+A0261 constituent_parent_id [string] Parse-node identifier of the immediate syntactic parent of the selected unit. Scope: current construction. Example: "np1"
+A0262 constituent_depth [number] Nesting depth of the selected constituent in its current parse candidate. Scope: current construction. Example: 2
+A0263 constituent_status [string] Completion state of the current constituent: open, complete, interrupted, or repaired. Scope: current construction. Example: "open"
+A0264 expected_category [string] Syntactic category expected at the current prefix boundary. Scope: current construction. Example: "CN"
+A0265 left_attachment_site_id [string] Previously visible phrase node that a new modifier may attach to. Scope: current construction. Example: "np1"
+A0266 right_attachment_expectation [string] Type of following constituent still required by a modifier already read. Scope: current construction. Example: "adjective_phrase"
+A0267 phrase_modifier_head_id [string] Token anchor of a modifier attached to the selected phrase. Scope: current construction. Example: "t2"
+A0268 phrase_modifier_kind [string] Syntactic form of a phrase modifier, independent of its semantic relation. Scope: current construction. Example: "prepositional_phrase"
+A0269 phrase_complement_head_id [string] Head-token anchor of a syntactically selected phrase complement. Scope: current construction. Example: "t3"
+A0270 phrase_specifier_head_id [string] Head-token anchor of a phrase's determiner or other specifier. Scope: current construction. Example: "t1"
+A0271 phrase_coordinator_id [string] Token anchor of the overt coordinator linking the selected conjunct. Scope: current construction. Example: "t2"
+A0272 phrase_has_elision [boolean] Whether a recoverable syntactic head is omitted in the current phrase. Scope: current construction. Example: true
+A0273 phrase_discontinuity [object] Observed split-yield relation with host and displaced component anchors. Scope: current construction. Example: {"displaced":"pp1","host":"np1"}
+A0274 phrase_fronted [boolean] Whether the selected phrase occupies a licensed noncanonical left position. Scope: current construction. Example: true
+A0275 phrase_extraposed [boolean] Whether a phrase is realized to the right of its canonical syntactic host. Scope: current construction. Example: true
+A0276 phrase_apposition_id [string] Node identifier of an appositive paired with the current nominal. Scope: current construction. Example: "np2"
+A0277 phrase_repair_source_id [string] Anchor of the overt phrase being corrected by a visible repair. Scope: current construction. Example: "np1"
+A0278 phrase_selection_status [string] Whether an observed phrase satisfies its governor's category requirement. Scope: current construction. Example: "compatible"
+A0279 phrase_boundary_kind [string] Syntactic interpretation of a boundary at the current token. Scope: current construction. Example: "parenthetical_close"
+A0280 phrase_separator_id [string] Anchor of punctuation separating the current phrase from a sibling phrase. Scope: current construction. Example: "t2"
+A0281 phrase_content_head_ids [array] Ordered head-token anchors of the content-bearing members of a phrase. Scope: current construction. Example: ["t1","t3"]
+A0282 phrase_attachment_candidates [array] Alternative syntactic attachment nodes still compatible with the prefix. Scope: current construction. Example: ["vp1","np1"]
+A0283 phrase_embedding_path [array] Ordered syntactic node path locating the current constituent within enclosing phrases. Scope: current construction. Example: ["cl1","vp1","np1"]
+A0284 constituent_category_alternatives [array] Unresolved category interpretations for a completed visible token span. Scope: current construction. Example: ["NP","VP"]
+A0285 phrase_yield_shape [string] Observed ordering pattern of the selected phrase's constituents. Scope: current construction. Example: "determiner_adjective_noun"
+A0286 phrase_attachment_status [string] Whether a phrase's syntactic parent is resolved, ambiguous, or pending. Scope: current construction. Example: "ambiguous"
+A0287 phrase_obligation_ids [array] Identifiers of still-open syntactic requirements owned by the current phrase. Scope: current construction. Example: ["slot_object_1"]
+A0288 sentence_fragment_type [string] Licensed fragment construction at a visible utterance boundary. Scope: current construction. Example: "nominal_answer"
+A0289 grammatical_subject_id [entity_ref] Entity denoted by an overt grammatical subject; this is not necessarily an actor. Scope: finite predicate. Example: "e1"
+A0290 grammatical_object_id [entity_ref] Entity denoted by a direct object in the selected construction. Scope: current construction. Example: "e2"
+A0291 indirect_object_id [entity_ref] Entity denoted by the indirect object of a double-object construction. Scope: current construction. Example: "e2"
+A0292 oblique_complement_id [string] Phrase-node identifier of a selected oblique complement. Scope: current construction. Example: "pp1"
+A0293 predicative_complement_id [string] Head anchor of a complement predicated of a subject or object. Scope: current construction. Example: "ap1"
+A0294 copular_link_id [string] Anchor of the copular verb relating a subject to a nonverbal predicate. Scope: current construction. Example: "t2"
+A0295 agentive_by_phrase_id [string] Node of an overt by-phrase licensed as a passive agent phrase. Scope: current construction. Example: "pp1"
+A0296 prepositional_object_id [entity_ref] Entity denoted by the NP complement of a preposition. Scope: current construction. Example: "e2"
+A0297 genitive_dependent_id [string] Node identifier of a genitive dependent attached to a nominal head. Scope: current construction. Example: "np1"
+A0298 possessive_determiner_id [string] Token anchor of an overt possessive determiner. Scope: current construction. Example: "t1"
+A0299 appositive_dependent_id [string] Node of a dependent nominal in an apposition construction. Scope: current construction. Example: "np2"
+A0300 vocative_id [string] Token or phrase anchor of an overt addressee expression used vocatively. Scope: current construction. Example: "np1"
+A0301 expletive_subject_id [string] Anchor of a syntactic subject without an ordinary referential entity. Scope: current construction. Example: "t1"
+A0302 clausal_subject_id [string] Node identifier of a clause functioning as the subject. Scope: current construction. Example: "cl2"
+A0303 clausal_object_id [string] Node identifier of a clause selected as a verb's content complement. Scope: current construction. Example: "cl2"
+A0304 adjunct_head_id [string] Head anchor of an optional syntactic modifier of the current predicate. Scope: current construction. Example: "adv1"
+A0305 adnominal_clause_id [string] Node of a clause attached to a nominal as a modifier. Scope: current construction. Example: "rel1"
+A0306 sentential_adverb_id [string] Anchor of an adverbial modifying a clause-level proposition. Scope: current construction. Example: "t1"
+A0307 particle_head_id [string] Anchor of the particle in a phrasal-verb construction. Scope: current construction. Example: "t3"
+A0308 auxiliary_head_id [string] Anchor of an auxiliary attached to the current lexical predicate. Scope: current construction. Example: "t2"
+A0309 marker_head_id [string] Anchor of a subordinator or complementizer introducing the current clause. Scope: current construction. Example: "t3"
+A0310 relative_gap_governor_id [string] Predicate anchor whose argument position is associated with a relative gap. Scope: current construction. Example: "t4"
+A0311 subject_controller_id [entity_ref] Entity controlling the understood subject of a subject-control infinitive. Scope: current construction. Example: "e1"
+A0312 object_controller_id [entity_ref] Entity controlling the understood subject of an object-control infinitive. Scope: current construction. Example: "e2"
+A0313 raising_source_id [string] Clause node from which a raised syntactic subject receives its lower relation. Scope: current construction. Example: "cl2"
+A0314 shared_subject_id [entity_ref] Entity denoted by an overt subject shared across coordinated predicates. Scope: current construction. Example: "e1"
+A0315 shared_object_id [entity_ref] Entity denoted by a visibly shared object of coordinated predicates. Scope: current construction. Example: "e2"
+A0316 syntactic_governor_id [string] Token anchor of the current token's immediate syntactic governor. Scope: current construction. Example: "t2"
+A0317 dependency_relation [string] Syntactic relation label between the current unit and its governor. Scope: current construction. Example: "adjectival_modifier"
+A0318 dependency_distance [number] Visible token distance along a selected dependency edge. Scope: current construction. Example: 2
+A0319 dependency_direction [string] Whether a selected dependent lies before or after its governor. Scope: current construction. Example: "dependent_before_governor"
+A0320 dependency_status [string] Resolution state of the current dependency: pending, resolved, or ambiguous. Scope: current construction. Example: "pending"
+A0321 verb_valency_frame [string] Lexical verb's candidate argument-category frame. Scope: current token. Example: "subject_only"
+A0322 nominal_valency_frame [string] Candidate complement frame of a relational noun. Scope: current token. Example: "related_entity"
+A0323 adjective_valency_frame [string] Candidate selected-complement frame of an adjective. Scope: current token. Example: "of_or_content"
+A0324 preposition_valency_frame [string] Candidate syntactic complement frame of a preposition. Scope: current token. Example: "plural_np_or_coordination"
+A0325 expected_complement_preposition [string] Lexically selected preposition expected by a pending complement slot. Scope: current token. Example: "on"
+A0326 selected_complement_case [string] Case requirement on a lexical item's pronominal complement. Scope: current token. Example: "objective"
+A0327 complement_control_type [string] Candidate source of an infinitival complement's understood subject. Scope: current token. Example: "object_control"
+A0328 particle_separability [string] Lexical permission for a particle to separate from its verb around an object. Scope: current construction. Example: "separable"
+A0329 expected_direct_object [string] Category requirement for a still-open direct-object slot. Scope: current construction. Example: "NP"
+A0330 expected_indirect_object [string] Category requirement for an indirect-object slot in a selected double-object frame. Scope: current construction. Example: "NP"
+A0331 expected_predicative [string] Category required for a pending subject- or object-predicative complement. Scope: current construction. Example: "AP_or_NP"
+A0332 expected_clausal_complement [string] Type of finite clause accepted by a pending content slot. Scope: current construction. Example: "declarative"
+A0333 expected_infinitive_complement [boolean] Whether the chosen frame currently requires or allows a to-infinitive complement. Scope: current construction. Example: true
+A0334 expected_gerund_complement [boolean] Whether an unsaturated frame licenses a gerund-participial complement. Scope: current construction. Example: true
+A0335 expected_bare_infinitive [boolean] Whether a selected auxiliary or complement frame requires an unmarked verb form. Scope: current construction. Example: true
+A0336 expected_pp_complement [boolean] Whether a selected frame contains an open prepositional complement slot. Scope: current construction. Example: true
+A0337 complement_slot_count [number] Number of syntactically selected complement slots in the active lexical frame. Scope: current construction. Example: 2
+A0338 satisfied_complement_slots [array] Slot identifiers already filled in the current valency frame. Scope: current construction. Example: ["direct_object"]
+A0339 open_complement_slots [array] Slot identifiers remaining unfilled in the current valency frame. Scope: current construction. Example: ["location_complement"]
+A0340 optional_complement_slots [array] Selected argument slots that the active lexical sense allows to be omitted. Scope: current construction. Example: ["recipient"]
+A0341 omitted_complement_reason [string] Constructional license for a missing complement at a completed boundary. Scope: current construction. Example: "understood_generic_object"
+A0342 selected_complement_mood [string] Mood required or preferred by a visible complement-selecting construction. Scope: current construction. Example: "mandative_subjunctive"
+A0343 selected_complement_finiteness [string] Finiteness constraint on a selected complement clause. Scope: current construction. Example: "nonfinite"
+A0344 selected_complement_subject [string] Constructional requirement for an overt or controlled embedded subject. Scope: current construction. Example: "overt_accusative"
+A0345 copular_complement_type [string] Syntactic type of a visibly selected copular complement. Scope: current construction. Example: "adjective_phrase"
+A0346 argument_alternation [string] Observed syntactic realization variant of one lexical frame. Scope: current construction. Example: "prepositional_dative"
+A0347 valency_saturation [string] Whether every obligatory complement slot has a visible or licensed filler. Scope: current construction. Example: "saturated"
+A0348 expletive_license [boolean] Whether the selected construction licenses a nonreferential syntactic subject. Scope: current construction. Example: true
+A0349 extraction_license [string] Kind of argument gap licensed by the visible extraction construction. Scope: current construction. Example: "object_gap"
+A0350 passive_license [boolean] Whether a chosen lexical argument frame admits a passive realization. Scope: current construction. Example: true
+A0351 object_predicate_requirement [string] Predicative complement type selected in an object-complement construction. Scope: current construction. Example: "AP"
+A0352 preposition_stranding_license [boolean] Whether a selected gap construction permits the preposition to remain behind its complement. Scope: current construction. Example: true
+A0353 grammatical_number [string] Morphosyntactic number of the current nominal form. Scope: current token. Example: "plural"
+A0354 grammatical_person [number] Grammatical person expressed by a personal pronoun. Scope: current token. Example: 1
+A0355 grammatical_gender [string] Gender specification of a grammatical form, without inferring a person's gender from a name. Scope: current token. Example: "feminine"
+A0356 grammatical_case [string] Case expressed by an overt pronoun form. Scope: current token. Example: "objective"
+A0357 grammatical_animacy [string] Grammatical human/nonhuman selection associated with an interrogative or relative form. Scope: current token. Example: "human"
+A0358 adjective_degree [string] Morphologically expressed comparison degree of an adjective. Scope: current token. Example: "comparative"
+A0359 adverb_degree [string] Morphologically expressed comparison degree of an adverb. Scope: current token. Example: "comparative"
+A0360 verb_form [string] Inflectional form class of a verbal token, leaving ambiguous forms unresolved. Scope: current token. Example: "gerund_participle"
+A0361 noun_countability [string] Lexical countability candidate of a noun in its ordinary reading. Scope: current token. Example: "mass"
+A0362 inflection_class [string] Lexical inflection paradigm class relevant to selecting a surface form. Scope: current token. Example: "child_irregular_plural"
+A0363 inflection_is_irregular [boolean] Whether the observed form belongs to a listed irregular paradigm. Scope: current token. Example: true
+A0364 inflection_alternation [string] Morphological alternation producing a recognized inflected nominal form. Scope: current token. Example: "internal_vowel_change"
+A0365 inflection_suffix [string] Recognized inflectional suffix of the current word form. Scope: current token. Example: "ed"
+A0366 inflection_prefix [string] Recognized bound inflectional prefix in an explicitly marked archaic English form. Scope: current token. Example: "y"
+A0367 derivational_base [string] Base lexeme of an overt derived word, distinct from ordinary inflectional lemmatization. Scope: current token. Example: "kind"
+A0368 derivational_process [string] Morphological derivation evidenced by the current lexical form. Scope: current token. Example: "adjective_to_abstract_noun"
+A0369 contraction_expansion [array] Lexical expansion of an unambiguous written contraction. Scope: current token. Example: ["can","not"]
+A0370 clitic_type [string] Grammatical class of an overt clitic token supplied by tokenization. Scope: current token. Example: "negative"
+A0371 genitive_realization [string] Overt form used for a genitive-dependent construction. Scope: current token. Example: "singular_s_clitic"
+A0372 plural_allomorph [string] Written morphological realization of a recognized noun plural. Scope: current token. Example: "es_suffix"
+A0373 participial_allomorph [string] Recognized written realization of a past participle. Scope: current token. Example: "en_suffix"
+A0374 reflexive_form [string] Morphological reflexive-series form of the current pronoun; singular-they-compatible forms retain number uncertainty. Scope: current token. Example: "third_singular_feminine"
+A0375 personal_pronoun_series [string] Inflectional series to which an overt personal-pronoun form belongs. Scope: current token. Example: "independent_possessive"
+A0376 adjective_inflection_pattern [string] Lexical comparison paradigm associated with the adjective. Scope: current token. Example: "good_suppletive"
+A0377 suppletion_type [string] Kind of nonconcatenative stem replacement in an overt suppletive paradigm. Scope: current token. Example: "full_stem_replacement"
+A0378 agreement_controller_id [string] Syntactic node identifier of the constituent whose features control an agreement relation. Scope: current construction. Example: "np1"
+A0379 agreement_domain_id [string] Syntactic domain identifier within which the selected agreement relation applies. Scope: current construction. Example: "cl1"
+A0380 agreement_requirements [object] Typed bundle of feature values required on an agreement target. Scope: current construction. Example: {"number":"plural","person":3}
+A0381 agreement_satisfied [boolean] Whether a selected overt agreement pair has compatible known feature values. Scope: current construction. Example: true
+A0382 agreement_conflict [object] Observed conflicting values in a selected agreement relation. Scope: current construction. Example: {"controller":"plural","feature":"number","target":"singular"}
+A0383 case_assignment_source_id [string] Anchor of the governor that licenses the current constituent's case. Scope: current construction. Example: "t1"
+A0384 case_syncretism [array] Case analyses that remain indistinguishable in the observed surface form. Scope: current construction. Example: ["nominative","objective"]
+A0385 determiner_kind [string] Grammatical subclass of an overt determiner. Scope: current token. Example: "definite_article"
+A0386 definiteness [string] Definiteness encoded by the selected nominal determiner. Scope: current token. Example: "definite"
+A0387 predeterminer_kind [string] Grammatical subclass of an overt modifier preceding an ordinary determiner. Scope: current construction. Example: "universal"
+A0388 nominal_head_kind [string] Type of syntactic head in a nominal construction. Scope: current construction. Example: "nominalized_adjective"
+A0389 possessive_construction [string] Observed syntactic construction expressing a genitive relation. Scope: current construction. Example: "prenominal_s_genitive"
+A0390 partitive_construction [boolean] Evidence for a partitive selecting members from an explicit nominal domain. Scope: current construction. Example: true
+A0391 pseudopartitive_construction [boolean] Evidence for a measure/container nominal followed by an of-complement. Scope: current construction. Example: true
+A0392 bare_nominal_use [string] Constructional use of a noun without an overt determiner. Scope: current construction. Example: "institutional_bare_singular"
+A0393 postpositive_adjective [boolean] Evidence for an adjective following an indefinite-pronoun nominal head. Scope: current construction. Example: true
+A0394 nominalization_kind [string] Overt construction converting a predicate into a nominal expression. Scope: current construction. Example: "gerund_nominal_candidate"
+A0395 specificity [string] Whether visible grammar explicitly supports a particular versus nonspecific nominal reading. Scope: current construction. Example: "specific_marked"
+A0396 referential_use [string] Syntactic use of a nominal as referential, predicative, attributive, or expletive. Scope: current construction. Example: "predicative"
+A0397 proper_name_structure [string] Internal grammatical construction of an overt proper-name phrase. Scope: current construction. Example: "title_plus_name"
+A0398 nominal_modification_order [array] Observed ordered modifier classes before a nominal head. Scope: current construction. Example: ["size","color"]
+A0399 adjective_position [string] Syntactic position of an adjective relative to its nominal or clause host. Scope: current construction. Example: "attributive_prenominal"
+A0400 adjective_interpretation [string] Candidate semantic composition class of an adjective–noun combination. Scope: current construction. Example: "privative"
+A0401 relational_noun_kind [string] Kind of argument relation lexically selected by a nominal head. Scope: current construction. Example: "kinship_relation"
+A0402 nominal_complement_type [string] Category of a visibly selected complement of a noun. Scope: current construction. Example: "finite_content_clause"
+A0403 genitive_attachment [string] Nominal node to which a visible genitive construction attaches. Scope: current construction. Example: "np_book"
+A0404 apposition_kind [string] Constructional subtype of an appositive nominal relation. Scope: current construction. Example: "supplementary"
+A0405 measure_noun_role [string] Syntactic role of a measure noun in a nominal measure expression. Scope: current construction. Example: "measure_head"
+A0406 classifier_type [string] Constructional subtype of a classifier-like noun in English measure/group phrases. Scope: current construction. Example: "group_classifier"
+A0407 distributive_nominal_form [string] Overt nominal form that supplies distributive syntax. Scope: current construction. Example: "each_determiner"
+A0408 nominalization_argument_mapping [object] Candidate mapping from nominal dependents to the source predicate's argument slots. Scope: current construction. Example: {"by_complement":"agent","of_complement":"theme"}
+A0409 noun_compound_relation [string] Candidate semantic relation inside a noun–noun compound. Scope: current construction. Example: "material"
+A0410 noun_compound_head_id [string] Head-token anchor of a syntactically analyzed noun compound. Scope: current construction. Example: "t2"
+A0411 nominal_clause_attachment [string] Attachment relation between a nominal and a following clause. Scope: current construction. Example: "relative_modifier"
+A0412 reduced_relative_kind [string] Nonfinite reduced-relative construction modifying a noun. Scope: current construction. Example: "passive_participial"
+A0413 restrictive_modifier [boolean] Whether the selected nominal modifier has an integrated restrictive construction. Scope: current construction. Example: true
+A0414 determiner_stack_status [string] Compatibility state of multiple overt determiners within one nominal phrase. Scope: current construction. Example: "compatible_predeterminer_article"
+A0415 numeral_syntactic_role [string] Grammatical role of a numeral in its local phrase, distinct from its magnitude. Scope: current construction. Example: "nominal_determiner"
+A0416 nominal_ellipsis_license [string] Constructional reason an omitted nominal head is recoverable. Scope: current construction. Example: "parallel_color_modifier"
+A0417 tense [string] Morphosyntactic tense expressed by a finite verbal form. Scope: current token. Example: "past"
+A0418 modal_auxiliary_class [string] Lexical class of a modal auxiliary without forcing one contextual modal sense. Scope: current token. Example: "necessity_family"
+A0419 negation_marker_form [string] Surface form of an overt grammatical negation marker at the current query. Scope: current token. Example: "not"
+A0420 mood [string] Morphosyntactic mood evidenced by the current verbal construction, distinct from modal meaning. Scope: current linguistic unit. Example: "subjunctive"
+A0421 aspect [string] Aspectual construction visibly realized by an auxiliary and lexical predicate. Scope: current construction. Example: "perfect"
+A0422 voice [string] Voice realized by a visible auxiliary and participial construction. Scope: current construction. Example: "passive_candidate"
+A0423 polarity [string] Overt grammatical negation of the current auxiliary construction. Scope: current construction. Example: "negative"
+A0424 auxiliary_selection [string] Form class selected by the observed auxiliary construction. Scope: current construction. Example: "past_participle"
+A0425 participial_function [string] Syntactic function supported for the visible participle. Scope: current construction. Example: "progressive_lexical_predicate"
+A0426 gerund_function [string] Syntactic function supported for a gerund-participial form. Scope: current construction. Example: "selected_complement"
+A0427 do_support_status [string] Evidence that do functions as a supporting auxiliary rather than a lexical verb. Scope: current construction. Example: "negative_support"
+A0428 verb_particle_construction [string] Lexically supported verb–particle construction candidate. Scope: current construction. Example: "pick_up"
+A0429 light_verb_construction [string] Candidate light-verb construction pairing a general verb with an event nominal. Scope: current construction. Example: "take_care"
+A0430 causative_syntax [string] Observed syntactic shape supporting a causative complement analysis. Scope: current linguistic unit. Example: "make_np_bare_infinitive"
+A0431 perception_complement_syntax [string] Candidate category of a perception verb's visible complement, preserving nominal versus gerund-participial ambiguity. Scope: current construction. Example: "gerund_or_event_nominal_candidate"
+A0432 dative_alternation_form [string] Visible dative realization pattern at the selected prefix boundary. Scope: current construction. Example: "double_object_candidate"
+A0433 subject_auxiliary_inversion [boolean] Evidence of a finite auxiliary before its overt pronominal subject. Scope: current construction. Example: true
+A0434 verb_phrase_ellipsis [boolean] Evidence of an auxiliary standing for an omitted parallel verb phrase. Scope: current linguistic unit. Example: true
+A0435 verb_phrase_anaphor [string] Overt proform used as a verbal predicate. Scope: current construction. Example: "do_so"
+A0436 auxiliary_chain [array] Ordered auxiliary functions realized before the current lexical verb. Scope: current construction. Example: ["modal","perfect","progressive"]
+A0437 auxiliary_scope [object] Syntactic scope relation between a visible auxiliary and its complement predicate. Scope: current construction. Example: {"inner":"perfect","outer":"modal"}
+A0438 infinitive_marker_id [string] Token anchor of to when it introduces an infinitive. Scope: current construction. Example: "t3"
+A0439 imperative_subject_status [string] Overt or constructionally understood subject status of an imperative. Scope: current construction. Example: "understood_addressee"
+A0440 perfect_auxiliary_id [string] Anchor of the have auxiliary in a perfect construction. Scope: current construction. Example: "t2"
+A0441 progressive_auxiliary_id [string] Anchor of the be auxiliary in a progressive construction. Scope: current construction. Example: "t2"
+A0442 passive_auxiliary_id [string] Anchor of an auxiliary licensing a passive participial predicate. Scope: current construction. Example: "t3"
+A0443 serial_verb_construction [string] Candidate serial or pseudo-serial construction containing adjacent lexical verbs. Scope: current construction. Example: "go_and_v_pseudocoordination"
+A0444 resultative_predicate_id [string] Node of an object-oriented predicate in a resultative construction. Scope: current construction. Example: "ap1"
+A0445 depictive_predicate_id [string] Node of a secondary predicate describing a participant during an event. Scope: current construction. Example: "ap1"
+A0446 middle_construction [boolean] Whether a nonagentive-subject clause has a generic middle construction. Scope: current construction. Example: true
+A0447 anticausative_construction [boolean] Whether an intransitive change predicate realizes the noncausative alternant of a transitive frame. Scope: current construction. Example: true
+A0448 locative_alternation_form [string] Observed syntactic arrangement of moved material and affected location. Scope: current construction. Example: "location_object_with_material"
+A0449 complementizer_type [string] Lexical class of an explicitly annotated clause introducer. Scope: current token. Example: "declarative"
+A0450 subordinator_type [string] Lexical relation family signaled by an explicitly annotated subordinator. Scope: current token. Example: "reason"
+A0451 clause_speech_form [string] Grammatical sentence-form evidence supplied by a final boundary mark. Scope: current token. Example: "interrogative_punctuation"
+A0452 clause_id [string] Stable identifier for the current causal clause hypothesis. Scope: current construction. Example: "cl1"
+A0453 clause_type [string] Syntactic clause category in the current analysis. Scope: current construction. Example: "declarative"
+A0454 clause_finiteness [string] Whether the selected clause has finite or nonfinite verbal syntax. Scope: current construction. Example: "nonfinite"
+A0455 clause_status [string] Incremental syntactic completion status of the selected clause. Scope: current construction. Example: "open"
+A0456 matrix_clause_id [string] Identifier of the clause immediately embedding the selected clause. Scope: current construction. Example: "cl1"
+A0457 subordinate_clause_id [string] Identifier of a subordinate clause attached to the current matrix construction. Scope: current construction. Example: "cl2"
+A0458 embedding_depth [number] Number of enclosing clause boundaries around the selected clause. Scope: current construction. Example: 1
+A0459 complementizer_id [string] Token anchor of the complementizer introducing the selected embedded clause. Scope: current construction. Example: "t3"
+A0460 subordinator_id [string] Token anchor of the connective subordinating the selected clause. Scope: current construction. Example: "t3"
+A0461 clause_subject_requirement [string] Constructional requirement for the subject of the selected clause. Scope: current construction. Example: "controlled_or_understood"
+A0462 assertion_scope_id [string] Clause-level syntactic container for a candidate assertion, not proof that it is asserted. Scope: current construction. Example: "cl2"
+A0463 negation_attachment_kind [string] Syntactic category and attachment level of an overt negator; semantic target identity is stored separately. Scope: current construction. Example: "VP"
+A0464 modal_scope_id [string] Node identifier for the predicate under a modal operator. Scope: current construction. Example: "vp1"
+A0465 quotation_scope_id [string] Identifier of an open or closed syntactic quotation region. Scope: current construction. Example: "quote1"
+A0466 quantifier_scope_id [string] Syntactic scope node associated with a quantified nominal candidate. Scope: current construction. Example: "cl1"
+A0467 scope_openers [array] Visible operator anchors opening syntactic interpretation scopes. Scope: current construction. Example: ["t1"]
+A0468 scope_closers [array] Visible boundary anchors closing scopes under the selected construction. Scope: current construction. Example: ["t4"]
+A0469 scope_visibility_state [object] Syntactic accessibility constraints for referents introduced inside the current scope. Scope: current construction. Example: {"exports_ordinary_referents":false,"scope":"negated_clause"}
+A0470 scope_island_type [string] Construction type forming a syntactic extraction island candidate. Scope: current construction. Example: "relative_clause"
+A0471 clause_attachment_site [string] Node identifier chosen as the syntactic host of the selected clause. Scope: current construction. Example: "np1"
+A0472 clause_attachment_ambiguity [array] Alternative host nodes for a subordinate clause still compatible with the prefix. Scope: current construction. Example: ["vp1","vp2"]
+A0473 parenthetical_clause_status [string] Whether a visible clause is structurally supplementary to its host. Scope: current construction. Example: "supplementary"
+A0474 small_clause_kind [string] Constructional type of a subject–predicate unit without a finite verb. Scope: current construction. Example: "np_ap"
+A0475 verbless_clause_kind [string] Type of licensed clause-like unit lacking an overt verbal predicate. Scope: current construction. Example: "absolute_np_ap"
+A0476 clause_reduction_kind [string] Observed reduction of a subordinate clause's overt syntactic material. Scope: current construction. Example: "subject_and_copula_omission"
+A0477 extraposition_status [string] Whether a clause occurs after a dummy subject rather than in its canonical subject position. Scope: current construction. Example: "clausal_subject_extraposed"
+A0478 topicalization_status [string] Whether a clause contains a visible fronted noninterrogative topic. Scope: current construction. Example: "object_topic"
+A0479 cleft_construction [string] Type of cleft syntax introducing an overt focused constituent. Scope: current construction. Example: "it_cleft"
+A0480 clause_parallelism [object] Aligned grammatical slots shared by visibly parallel clauses. Scope: current construction. Example: {"first":["subject","verb","object"],"second":["subject","verb","object"]}
+A0481 relative_marker_form [string] Overt form class of a token already identified as a relative marker. Scope: current token. Example: "human_pronoun"
+A0482 coordinator_type [string] Grammatical coordination operator supplied by an overt conjunction. Scope: current token. Example: "conjunctive"
+A0483 interrogative_complementizer [string] Overt marker introducing a selected embedded interrogative clause. Scope: current token. Example: "whether"
+A0484 interrogative_form [string] Visible wh-clause form, retaining uncertainty between an independent question and an embedded interrogative. Scope: current construction. Example: "subject_wh_clause_candidate"
+A0485 whether_if_embedding [string] Evidence of an embedded polar-question complement. Scope: current construction. Example: "whether_clause"
+A0486 polar_question_marker [string] Overt auxiliary form opening a polar question with an overt subject. Scope: current construction. Example: "do_inversion"
+A0487 pied_piping_status [boolean] Evidence that a preposition is fronted together with a wh-complement. Scope: current construction. Example: true
+A0488 correlative_coordination [string] Overt correlative construction prefix awaiting coordinated material. Scope: current construction. Example: "not_only_but_also_pending"
+A0489 question_gap_role [string] Grammatical argument role requested by an overt question dependency. Scope: current construction. Example: "object"
+A0490 question_fronted_phrase_id [string] Node identifier of the overt fronted interrogative phrase. Scope: current construction. Example: "np1"
+A0491 alternative_question_set [array] Visible syntactic alternatives presented by a question construction. Scope: current construction. Example: ["np1","np2"]
+A0492 echo_question_status [boolean] Whether a wh-expression remains in a position licensed as an echo-question construction. Scope: current construction. Example: true
+A0493 tag_question_anchor [string] Clause identifier targeted by a following tag-question construction. Scope: current construction. Example: "cl1"
+A0494 relative_pronoun_id [string] Token anchor of an overt relative pronoun in a relative construction. Scope: current construction. Example: "t3"
+A0495 relative_head_id [string] Head-nominal node modified by an overt or zero relative clause. Scope: current construction. Example: "np1"
+A0496 relative_gap_role [string] Argument role left open inside the selected relative clause. Scope: current construction. Example: "subject"
+A0497 relative_restrictiveness [string] Integrated versus supplementary syntactic status of the selected relative clause. Scope: current construction. Example: "supplementary"
+A0498 relative_finiteness [string] Finiteness of a clause used as a nominal relative modifier. Scope: current construction. Example: "nonfinite_participial"
+A0499 free_relative_category [string] Syntactic category of a headless relative used as an argument or adjunct. Scope: current construction. Example: "NP"
+A0500 fused_relative_status [boolean] Whether one overt relative expression supplies both the nominal head and relative link. Scope: current construction. Example: true
+A0501 extraction_chain_id [string] Identifier linking a visible filler with its licensed syntactic gap. Scope: current construction. Example: "chain1"
+A0502 resumptive_pronoun_id [string] Anchor of an overt pronoun occupying a position associated with an earlier relative or topic. Scope: current construction. Example: "t8"
+A0503 relative_attachment_options [array] Nominal hosts still compatible with a visible relative attachment. Scope: current construction. Example: ["np_sister","np_girl"]
+A0504 coordination_category [string] Shared syntactic category of coordinated constituents. Scope: current construction. Example: "VP"
+A0505 conjunct_head_ids [array] Ordered head anchors of the visible conjuncts in one coordination. Scope: current construction. Example: ["t1","t3"]
+A0506 coordination_shared_category [string] Syntactic category required by an incomplete later conjunct. Scope: current construction. Example: "NP"
+A0507 coordination_scope [string] Node identifier whose constituents are joined by the coordinator. Scope: current construction. Example: "np1"
+A0508 gapping_alignment [object] Alignment between remnants and omitted grammatical slots in a gapping construction. Scope: current construction. Example: {"object":"pears","omitted_predicate":"ate","subject":"Ben"}
+A0509 right_node_raising [object] Shared rightmost constituent linked to earlier coordinated incomplete constituents. Scope: current construction. Example: {"shared":"np_book","slots":["vp1.object","vp2.object"]}
+A0510 coordination_agreement_resolution [object] Grammatical agreement bundle supported by a coordinated subject construction. Scope: current construction. Example: {"number":"plural","person":3}
+A0511 discontinuous_coordination_state [string] Incremental status of a paired coordinator construction. Scope: current construction. Example: "awaiting_or_counterpart"
+A0512 coordination_ellipsis_source_id [string] Anchor of prior coordinated material that licenses omission in the current conjunct. Scope: current construction. Example: "vp1"

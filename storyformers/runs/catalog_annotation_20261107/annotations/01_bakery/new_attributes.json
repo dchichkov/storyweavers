@@ -1,0 +1,29 @@
+[
+  {
+    "key": "event_bindings",
+    "type": "array",
+    "scope": "current word occurrence",
+    "description": "All event-role memberships of this word occurrence, retaining correlated event_id, role and scope_id when one mention participates in several predicates.",
+    "reason": "The catalog's singular event_id/role cannot retain multiple event memberships. This differs from event_role_conflict, which diagnoses incompatible roles.",
+    "example_value": [
+      {
+        "event_id": "ev1",
+        "role": "actor",
+        "scope_id": "s0"
+      }
+    ]
+  },
+  {
+    "key": "figurative_mapping",
+    "type": "object",
+    "description": "A text-supported metaphor or simile linking a target referent to a source image without asserting source-domain events or identity.",
+    "scope": "current figurative expression",
+    "reason": "irony_interpretation requires communicative irony; lexical_idiom_reading requires a conventional idiom; neither covers the novel cake-decoration metaphors or candle/twig simile.",
+    "example_value": {
+      "target_id": "e20",
+      "source_image": "swimming",
+      "kind": "metaphor",
+      "literal_event": false
+    }
+  }
+]

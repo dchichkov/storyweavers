@@ -1,0 +1,196 @@
+{
+  "0": {
+    "_references": {
+      "entities": {
+        "e1": {
+          "name": "Mara",
+          "type": "person"
+        }
+      }
+    }
+  },
+  "2": {
+    "_references": {
+      "entities": {
+        "e1": {
+          "name": "Mara",
+          "type": "person"
+        }
+      },
+      "events": {
+        "ev3": {
+          "actor_id": "e1",
+          "event": "obtain object",
+          "event_type": "obtain",
+          "factuality": "asserted",
+          "instruments": [],
+          "patients": [],
+          "scope_id": "s0"
+        }
+      }
+    }
+  },
+  "4": {
+    "_evidence": [
+      {
+        "indices": [
+          0,
+          2,
+          4
+        ],
+        "note": "Mara's obtain event now has scissors as its patient; no purpose or instrument use is established."
+      }
+    ],
+    "_references": {
+      "entities": {
+        "e1": {
+          "name": "Mara",
+          "type": "person"
+        },
+        "e5": {
+          "name": "scissors",
+          "type": "scissors"
+        }
+      },
+      "events": {
+        "ev3": {
+          "actor_id": "e1",
+          "event": "obtain object",
+          "event_type": "obtain",
+          "factuality": "asserted",
+          "instruments": [],
+          "patients": [
+            "e5"
+          ],
+          "scope_id": "s0"
+        }
+      }
+    }
+  },
+  "7": {
+    "_references": {
+      "entities": {
+        "e1": {
+          "name": "Mara",
+          "type": "person"
+        }
+      }
+    }
+  },
+  "9": {
+    "_feedback": [
+      "At this prefix boundary, “did” could be auxiliary awaiting a predicate or a lexical use of do; no event interpretation is resolved."
+    ],
+    "_references": {
+      "entities": {
+        "e1": {
+          "name": "Mara",
+          "type": "person"
+        }
+      }
+    }
+  },
+  "11": {
+    "_references": {
+      "scopes": {
+        "s12": {
+          "kind": "negation",
+          "parent": "s0"
+        }
+      }
+    }
+  },
+  "13": {
+    "_evidence": [
+      {
+        "indices": [
+          7,
+          9,
+          11,
+          13
+        ],
+        "note": "She resolves to Mara. Cutting is negated; the earlier scissors are not established as this event's patient or instrument."
+      }
+    ],
+    "_references": {
+      "entities": {
+        "e1": {
+          "name": "Mara",
+          "type": "person"
+        }
+      },
+      "events": {
+        "ev14": {
+          "actor_id": "e1",
+          "event": "cut object",
+          "event_type": "other",
+          "factuality": "negated",
+          "instruments": [],
+          "patients": [],
+          "scope_id": "s12"
+        }
+      },
+      "scopes": {
+        "s12": {
+          "kind": "negation",
+          "parent": "s0"
+        }
+      }
+    }
+  },
+  "15": {
+    "_references": {
+      "scopes": {
+        "s12": {
+          "kind": "negation",
+          "parent": "s0"
+        }
+      }
+    }
+  },
+  "17": {
+    "_evidence": [
+      {
+        "indices": [
+          7,
+          9,
+          11,
+          13,
+          17
+        ],
+        "note": "She resolves to Mara, and cutting is negated. The scissors from the earlier obtain event are not automatically an instrument of cutting."
+      }
+    ],
+    "_references": {
+      "entities": {
+        "e1": {
+          "name": "Mara",
+          "type": "person"
+        },
+        "e18": {
+          "name": "ribbon",
+          "type": "ribbon"
+        }
+      },
+      "events": {
+        "ev14": {
+          "actor_id": "e1",
+          "event": "cut object",
+          "event_type": "other",
+          "factuality": "negated",
+          "instruments": [],
+          "patients": [
+            "e18"
+          ],
+          "scope_id": "s12"
+        }
+      },
+      "scopes": {
+        "s12": {
+          "kind": "negation",
+          "parent": "s0"
+        }
+      }
+    }
+  }
+}
