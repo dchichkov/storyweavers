@@ -1,0 +1,315 @@
+{
+  "format": "storyformers-online-v1",
+  "base_model_sha256": "f51ae00f324475644b56ad3c2e5fe5f079b66a50314103f62bdb5e1da0ad4ee3",
+  "rationale": "The batch contains the continuation “A day with Ben,” but the period rule for any context ending in a noun has very large weight, overwhelming the observed preposition with after “A day.” Reduce that broad punctuation preference and add moderate support for a preposition after a determiner–noun ending. Add support for the observed opening determiner and following noun, and for paragraph boundaries after the opening companion phrase and after the sentence in that opener; the latter is deliberately conditioned on the wider visible structure so it does not make every noun-final period a paragraph break, which would conflict with replay examples. The phrase “Long ago,” also gives a reusable local cue for ago and the following comma. These are provisional generalizations from one document: other continuations after a noun or after “Long” remain possible, and other paragraph-boundary contexts may differ. The replay gate has not been evaluated.",
+  "feature_definitions": {},
+  "heads": [],
+  "outputs": [
+    {
+      "token": ".",
+      "append": [],
+      "scale": [
+        {
+          "rule": 2,
+          "factor": 0.05
+        }
+      ]
+    },
+    {
+      "token": "A",
+      "append": [
+        {
+          "pattern": {
+            "kind": "seq",
+            "children": []
+          },
+          "emit": {
+            "pos": "det"
+          },
+          "weight": 10.0
+        }
+      ],
+      "scale": []
+    },
+    {
+      "token": "day",
+      "append": [
+        {
+          "pattern": {
+            "kind": "seq",
+            "children": [
+              {
+                "kind": "repeat",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {}
+                  }
+                ],
+                "minimum": 0,
+                "maximum": 32
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "pos": "det"
+                }
+              }
+            ]
+          },
+          "emit": {
+            "pos": "n"
+          },
+          "weight": 10.0
+        }
+      ],
+      "scale": []
+    },
+    {
+      "token": "with",
+      "append": [
+        {
+          "pattern": {
+            "kind": "seq",
+            "children": [
+              {
+                "kind": "repeat",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {}
+                  }
+                ],
+                "minimum": 0,
+                "maximum": 32
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "pos": "det"
+                }
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "pos": "n"
+                }
+              }
+            ]
+          },
+          "emit": {
+            "pos": "prep"
+          },
+          "weight": 10.0
+        }
+      ],
+      "scale": []
+    },
+    {
+      "token": "\n\n",
+      "append": [
+        {
+          "pattern": {
+            "kind": "seq",
+            "children": [
+              {
+                "kind": "repeat",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {}
+                  }
+                ],
+                "minimum": 0,
+                "maximum": 32
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "pos": "prep"
+                }
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "pos": "pn"
+                }
+              }
+            ]
+          },
+          "emit": {
+            "pos": "space"
+          },
+          "weight": 15.0
+        },
+        {
+          "pattern": {
+            "kind": "seq",
+            "children": [
+              {
+                "kind": "token",
+                "tests": {
+                  "pos": "det"
+                }
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "pos": "n"
+                }
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "pos": "prep"
+                }
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "pos": "pn"
+                }
+              },
+              {
+                "kind": "repeat",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {}
+                  }
+                ],
+                "minimum": 0,
+                "maximum": 32
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "pos": "n"
+                }
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "pos": "punct"
+                }
+              }
+            ]
+          },
+          "emit": {
+            "pos": "space"
+          },
+          "weight": 100.0
+        }
+      ],
+      "scale": []
+    },
+    {
+      "token": "Long",
+      "append": [
+        {
+          "pattern": {
+            "kind": "seq",
+            "children": [
+              {
+                "kind": "repeat",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {}
+                  }
+                ],
+                "minimum": 0,
+                "maximum": 32
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "pos": "pn"
+                }
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "pos": "space"
+                }
+              }
+            ]
+          },
+          "emit": {
+            "pos": "adv"
+          },
+          "weight": 10.0
+        }
+      ],
+      "scale": []
+    },
+    {
+      "token": "ago",
+      "append": [
+        {
+          "pattern": {
+            "kind": "seq",
+            "children": [
+              {
+                "kind": "repeat",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {}
+                  }
+                ],
+                "minimum": 0,
+                "maximum": 32
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "token": "Long"
+                }
+              }
+            ]
+          },
+          "emit": {
+            "pos": "adv"
+          },
+          "weight": 10.0
+        }
+      ],
+      "scale": []
+    },
+    {
+      "token": ",",
+      "append": [
+        {
+          "pattern": {
+            "kind": "seq",
+            "children": [
+              {
+                "kind": "repeat",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {}
+                  }
+                ],
+                "minimum": 0,
+                "maximum": 32
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "token": "ago"
+                }
+              }
+            ]
+          },
+          "emit": {
+            "pos": "punct"
+          },
+          "weight": 10.0
+        }
+      ],
+      "scale": []
+    }
+  ]
+}

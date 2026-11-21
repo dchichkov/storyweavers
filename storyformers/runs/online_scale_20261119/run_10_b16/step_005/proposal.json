@@ -1,0 +1,77 @@
+{
+  "format": "storyformers-online-v1",
+  "base_model_sha256": "875dadec1ddb6c4f0cef0bad244f98769a908f12a1641994aa50f4346d9f6e39",
+  "rationale": "The observed prefix ends in “all” in the recurring closing phrase “That is all for now,” but “for” has only a weak context-independent output rule and receives very low probability. Across the batch, “so” repeatedly follows “And” in a closing construction, while its root is similarly weak. Add modest context-specific mass for these reusable continuations rather than making either continuation mandatory. These patterns could overgeneralize in contexts where “all” or “And” has a different continuation, so preserve the existing alternatives and treat this as a provisional repair subject to replay gating.",
+  "feature_definitions": {},
+  "heads": [],
+  "outputs": [
+    {
+      "token": "for",
+      "append": [
+        {
+          "pattern": {
+            "kind": "seq",
+            "children": [
+              {
+                "kind": "repeat",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {}
+                  }
+                ],
+                "minimum": 0,
+                "maximum": 32
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "token": "all"
+                }
+              }
+            ]
+          },
+          "emit": {
+            "pos": "prep"
+          },
+          "weight": 20.0
+        }
+      ],
+      "scale": []
+    },
+    {
+      "token": "so",
+      "append": [
+        {
+          "pattern": {
+            "kind": "seq",
+            "children": [
+              {
+                "kind": "repeat",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {}
+                  }
+                ],
+                "minimum": 0,
+                "maximum": 32
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "token": "And"
+                }
+              }
+            ]
+          },
+          "emit": {
+            "pos": "adv"
+          },
+          "weight": 20.0
+        }
+      ],
+      "scale": []
+    }
+  ]
+}

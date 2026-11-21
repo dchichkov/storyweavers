@@ -1,0 +1,157 @@
+{
+  "format": "storyformers-online-v1",
+  "base_model_sha256": "d0fbf70b21fdc31eb86fb820edbb14368c977eef2f17e023b0993c8a95120e37",
+  "feature_definitions": {},
+  "heads": [],
+  "outputs": [
+    {
+      "token": "ago",
+      "append": [
+        {
+          "pattern": {
+            "kind": "seq",
+            "children": [
+              {
+                "kind": "repeat",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {}
+                  }
+                ],
+                "minimum": 0,
+                "maximum": 32
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "token": "Long"
+                }
+              }
+            ]
+          },
+          "emit": {
+            "pos": "adv"
+          },
+          "weight": 100.0
+        }
+      ],
+      "scale": []
+    },
+    {
+      "token": ",",
+      "append": [
+        {
+          "pattern": {
+            "kind": "seq",
+            "children": [
+              {
+                "kind": "repeat",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {}
+                  }
+                ],
+                "minimum": 0,
+                "maximum": 32
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "token": "ago"
+                }
+              }
+            ]
+          },
+          "emit": {
+            "pos": "punct"
+          },
+          "weight": 100.0
+        }
+      ],
+      "scale": []
+    },
+    {
+      "token": "end",
+      "append": [
+        {
+          "pattern": {
+            "kind": "seq",
+            "children": [
+              {
+                "kind": "repeat",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {}
+                  }
+                ],
+                "minimum": 0,
+                "maximum": 32
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "token": "was"
+                }
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "token": "the"
+                }
+              }
+            ]
+          },
+          "emit": {
+            "pos": "n"
+          },
+          "weight": 100.0
+        }
+      ],
+      "scale": []
+    },
+    {
+      "token": "Long",
+      "append": [
+        {
+          "pattern": {
+            "kind": "seq",
+            "children": [
+              {
+                "kind": "repeat",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {}
+                  }
+                ],
+                "minimum": 0,
+                "maximum": 32
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "pos": "n"
+                }
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "pos": "space"
+                }
+              }
+            ]
+          },
+          "emit": {
+            "pos": "adv"
+          },
+          "weight": 20.0
+        }
+      ],
+      "scale": []
+    }
+  ],
+  "rationale": "The batch contains a recurring opening idiom, “Long ago,” but the target ago has extremely low probability; the existing generic ago rule contributes little in that context. Add a reusable Long-to-ago continuation and raise comma after ago, both supported by the observed sequence. The concluding phrase “was the end” also has a very low-probability end target, so add a context-specific noun continuation. Long following a noun and paragraph space generalizes the observed temporal-opening pattern without depending on the particular noun. These rules are limited to observed grammatical contexts; other continuations remain possible, and the batch is too small to establish that every Long or every paragraph break requires these words. Replay behavior has not been verified."
+}

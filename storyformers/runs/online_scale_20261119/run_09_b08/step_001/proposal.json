@@ -1,0 +1,179 @@
+{
+  "format": "storyformers-online-v1",
+  "base_model_sha256": "cb3d8d23d064f76849222d313e7ed6e911e45876a6b2a8df743a9e491d039f02",
+  "rationale": "The batch repeatedly uses fruit nouns after an initial “The” and includes “Lily and the pears,” but the current pears/apples roots contribute almost no mass in those contexts; the target pears probability for the representative prefix is only 0.00017. Add moderate noun evidence for those narrowly defined prefixes instead of making a broad rule for any determiner, which could conflict with replay continuations such as an adjective after “the.” “The” is also compatible with “The End,” so the new evidence preserves that alternative rather than treating fruit as certain. The batch also has a sentence-ending period after “now,” while the existing period rule after an adverb is very weak; add modest punctuation evidence there. These are provisional repairs, and replay and complexity still need gate evaluation.",
+  "feature_definitions": {},
+  "heads": [],
+  "outputs": [
+    {
+      "token": "pears",
+      "append": [
+        {
+          "pattern": {
+            "kind": "alt",
+            "children": [
+              {
+                "kind": "seq",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {
+                      "token": "The"
+                    }
+                  }
+                ]
+              },
+              {
+                "kind": "seq",
+                "children": [
+                  {
+                    "kind": "repeat",
+                    "children": [
+                      {
+                        "kind": "token",
+                        "tests": {}
+                      }
+                    ],
+                    "minimum": 0,
+                    "maximum": 32
+                  },
+                  {
+                    "kind": "token",
+                    "tests": {
+                      "pos": "pn"
+                    }
+                  },
+                  {
+                    "kind": "token",
+                    "tests": {
+                      "pos": "conj",
+                      "token": "and"
+                    }
+                  },
+                  {
+                    "kind": "token",
+                    "tests": {
+                      "pos": "det",
+                      "token": "the"
+                    }
+                  }
+                ]
+              }
+            ],
+            "weights": [
+              1.0,
+              1.0
+            ]
+          },
+          "emit": {
+            "pos": "n"
+          },
+          "weight": 18.0
+        }
+      ],
+      "scale": []
+    },
+    {
+      "token": "apples",
+      "append": [
+        {
+          "pattern": {
+            "kind": "alt",
+            "children": [
+              {
+                "kind": "seq",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {
+                      "token": "The"
+                    }
+                  }
+                ]
+              },
+              {
+                "kind": "seq",
+                "children": [
+                  {
+                    "kind": "repeat",
+                    "children": [
+                      {
+                        "kind": "token",
+                        "tests": {}
+                      }
+                    ],
+                    "minimum": 0,
+                    "maximum": 32
+                  },
+                  {
+                    "kind": "token",
+                    "tests": {
+                      "pos": "pn"
+                    }
+                  },
+                  {
+                    "kind": "token",
+                    "tests": {
+                      "pos": "conj",
+                      "token": "and"
+                    }
+                  },
+                  {
+                    "kind": "token",
+                    "tests": {
+                      "pos": "det",
+                      "token": "the"
+                    }
+                  }
+                ]
+              }
+            ],
+            "weights": [
+              1.0,
+              1.0
+            ]
+          },
+          "emit": {
+            "pos": "n"
+          },
+          "weight": 18.0
+        }
+      ],
+      "scale": []
+    },
+    {
+      "token": ".",
+      "append": [
+        {
+          "pattern": {
+            "kind": "seq",
+            "children": [
+              {
+                "kind": "repeat",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {}
+                  }
+                ],
+                "minimum": 0,
+                "maximum": 32
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "pos": "adv"
+                }
+              }
+            ]
+          },
+          "emit": {
+            "pos": "punct"
+          },
+          "weight": 5.0
+        }
+      ],
+      "scale": []
+    }
+  ]
+}

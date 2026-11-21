@@ -1,0 +1,77 @@
+{
+  "format": "storyformers-online-v1",
+  "base_model_sha256": "27250a8cd0ff9274ce877c1aaddeab2bea6c233c7760a52aeeb797bd855549a6",
+  "rationale": "The batch repeatedly uses “One morning,” but the morning output root has only a weak context-independent rule, leaving morning with extremely low probability after One. The batch also uses “for now” twice while now has only a weak context-independent rule. Add suffix-conditioned lexical evidence for these reusable visible-context patterns. Other continuations, such as “One day,” remain possible; the added mass does not make them impossible. These patterns may also occur in contexts where another continuation is appropriate, so the rules add evidence rather than asserting exclusivity.",
+  "feature_definitions": {},
+  "heads": [],
+  "outputs": [
+    {
+      "token": "morning",
+      "append": [
+        {
+          "pattern": {
+            "kind": "seq",
+            "children": [
+              {
+                "kind": "repeat",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {}
+                  }
+                ],
+                "minimum": 0,
+                "maximum": 32
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "token": "One"
+                }
+              }
+            ]
+          },
+          "emit": {
+            "pos": "n"
+          },
+          "weight": 20.0
+        }
+      ],
+      "scale": []
+    },
+    {
+      "token": "now",
+      "append": [
+        {
+          "pattern": {
+            "kind": "seq",
+            "children": [
+              {
+                "kind": "repeat",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {}
+                  }
+                ],
+                "minimum": 0,
+                "maximum": 32
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "token": "for"
+                }
+              }
+            ]
+          },
+          "emit": {
+            "pos": "adv"
+          },
+          "weight": 20.0
+        }
+      ],
+      "scale": []
+    }
+  ]
+}

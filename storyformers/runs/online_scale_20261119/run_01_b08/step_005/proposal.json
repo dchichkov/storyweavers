@@ -1,0 +1,155 @@
+{
+  "format": "storyformers-online-v1",
+  "base_model_sha256": "d10800c635b8c0aeca40985c4a547b9d04444d6284a0ae7d82d627d8b9c7252d",
+  "rationale": "At a comma after an introductory phrase, the model assigns most probability to <END> (0.88) instead of the proper-noun subject observed across the batch. The existing high-weight <END> rule for any final punctuation is too broad: reduce it while retaining the separate strong rule for explicit story-ending forms. Add moderate evidence for each available proper-name token after a terminal comma, capturing the reusable subject-after-introductory-comma pattern rather than one name. Commas can also occur in lists or other constructions where a name is not next, so alternatives remain possible. The free-generation sample is diagnostic, not training evidence. These changes are provisional and have not passed replay or acceptance gates.",
+  "feature_definitions": {},
+  "heads": [],
+  "outputs": [
+    {
+      "token": "<END>",
+      "append": [],
+      "scale": [
+        {
+          "rule": 3,
+          "factor": 0.05
+        }
+      ]
+    },
+    {
+      "token": "Ben",
+      "append": [
+        {
+          "pattern": {
+            "kind": "seq",
+            "children": [
+              {
+                "kind": "repeat",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {}
+                  }
+                ],
+                "minimum": 0,
+                "maximum": 31
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "token": ","
+                }
+              }
+            ]
+          },
+          "emit": {
+            "pos": "pn"
+          },
+          "weight": 8.0
+        }
+      ],
+      "scale": []
+    },
+    {
+      "token": "Lily",
+      "append": [
+        {
+          "pattern": {
+            "kind": "seq",
+            "children": [
+              {
+                "kind": "repeat",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {}
+                  }
+                ],
+                "minimum": 0,
+                "maximum": 31
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "token": ","
+                }
+              }
+            ]
+          },
+          "emit": {
+            "pos": "pn"
+          },
+          "weight": 8.0
+        }
+      ],
+      "scale": []
+    },
+    {
+      "token": "Mia",
+      "append": [
+        {
+          "pattern": {
+            "kind": "seq",
+            "children": [
+              {
+                "kind": "repeat",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {}
+                  }
+                ],
+                "minimum": 0,
+                "maximum": 31
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "token": ","
+                }
+              }
+            ]
+          },
+          "emit": {
+            "pos": "pn"
+          },
+          "weight": 8.0
+        }
+      ],
+      "scale": []
+    },
+    {
+      "token": "Tom",
+      "append": [
+        {
+          "pattern": {
+            "kind": "seq",
+            "children": [
+              {
+                "kind": "repeat",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {}
+                  }
+                ],
+                "minimum": 0,
+                "maximum": 31
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "token": ","
+                }
+              }
+            ]
+          },
+          "emit": {
+            "pos": "pn"
+          },
+          "weight": 8.0
+        }
+      ],
+      "scale": []
+    }
+  ]
+}

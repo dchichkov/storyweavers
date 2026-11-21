@@ -1,0 +1,110 @@
+{
+  "reason": "The 16-condition candidate used its full budget on mostly POS patterns and scored below the lexical bigram on validation. Try 64 learned conditions on the identical corpus.",
+  "selection_policy": "Choose lower validation full joint NLL with complete coverage. Test metrics and generated samples are not selection criteria.",
+  "validation": {
+    "16_slots": {
+      "targets": 1420,
+      "coverage": 1.0,
+      "joint_accuracy": 0.3105633802816901,
+      "joint_nll": 1.7897800045362018,
+      "by_section": {
+        "title": {
+          "targets": 240,
+          "coverage": 1.0,
+          "joint_accuracy": 0.2375,
+          "joint_nll": 2.0516484531832586
+        },
+        "title_break": {
+          "targets": 64,
+          "coverage": 1.0,
+          "joint_accuracy": 0.0,
+          "joint_nll": 1.60616041139193
+        },
+        "opening": {
+          "targets": 248,
+          "coverage": 1.0,
+          "joint_accuracy": 0.22580645161290322,
+          "joint_nll": 1.919388593453132
+        },
+        "body": {
+          "targets": 379,
+          "coverage": 1.0,
+          "joint_accuracy": 0.43535620052770446,
+          "joint_nll": 1.7987189453763837
+        },
+        "closing_break": {
+          "targets": 64,
+          "coverage": 1.0,
+          "joint_accuracy": 0.0,
+          "joint_nll": 0.8241070111933361
+        },
+        "closing": {
+          "targets": 361,
+          "coverage": 1.0,
+          "joint_accuracy": 0.2742382271468144,
+          "joint_nll": 1.8922256161179887
+        },
+        "end": {
+          "targets": 64,
+          "coverage": 1.0,
+          "joint_accuracy": 1.0,
+          "joint_nll": 0.8240400584274065
+        }
+      }
+    },
+    "64_slots": {
+      "targets": 1420,
+      "coverage": 1.0,
+      "joint_accuracy": 0.5816901408450704,
+      "joint_nll": 1.0690350299884501,
+      "by_section": {
+        "title": {
+          "targets": 240,
+          "coverage": 1.0,
+          "joint_accuracy": 0.4375,
+          "joint_nll": 1.4191083311056656
+        },
+        "title_break": {
+          "targets": 64,
+          "coverage": 1.0,
+          "joint_accuracy": 0.84375,
+          "joint_nll": 0.5863904802643031
+        },
+        "opening": {
+          "targets": 248,
+          "coverage": 1.0,
+          "joint_accuracy": 0.6209677419354839,
+          "joint_nll": 0.989287920049221
+        },
+        "body": {
+          "targets": 379,
+          "coverage": 1.0,
+          "joint_accuracy": 0.40897097625329815,
+          "joint_nll": 1.4242228120415124
+        },
+        "closing_break": {
+          "targets": 64,
+          "coverage": 1.0,
+          "joint_accuracy": 0.625,
+          "joint_nll": 0.4946648105543457
+        },
+        "closing": {
+          "targets": 361,
+          "coverage": 1.0,
+          "joint_accuracy": 0.703601108033241,
+          "joint_nll": 0.8021156528881275
+        },
+        "end": {
+          "targets": 64,
+          "coverage": 1.0,
+          "joint_accuracy": 1.0,
+          "joint_nll": 0.524509435582684
+        }
+      }
+    }
+  },
+  "selected_run": "presentation_20261110_capacity64",
+  "selected_model_sha256": "b1fa5a9d91b08b176fb9fc2ff142d9f515e1e8610664e48fd68242f8d947e052",
+  "sentence_model_policy": "Both presentation checkpoints are new models; neither sentence checkpoint is modified.",
+  "scope": "One layer; capacity experiment changes the number of head slots, not experts per head. No authored runtime grammar."
+}

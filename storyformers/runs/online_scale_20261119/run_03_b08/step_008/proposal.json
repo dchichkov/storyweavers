@@ -1,0 +1,235 @@
+{
+  "format": "storyformers-online-v1",
+  "base_model_sha256": "483ac5f1ffcf1607365745cc338992dc160ae3cb9230be63c13f97cc0cceac73",
+  "rationale": "The batch shows repeated low-probability continuations where a proper-noun subject follows an introductory comma, and where a noun completes a possessive phrase or follows an adjective. The representative comma context strongly favors <END> even though the observed continuation is Lily. Add modest, context-specific evidence for the observed proper-noun alternatives and for needles/scissors after possessives or adjectives, rather than asserting a single obligatory next token. Commas can occur in other constructions, and adjectives can modify many nouns, so these rules preserve alternatives and should not be treated as universal constraints. The preceding candidate comparison showed only a modest batch improvement from the more complex teacher proposal and essentially unchanged replay loss; this compact proposal remains provisional and must pass the replay gate.",
+  "feature_definitions": {},
+  "heads": [],
+  "outputs": [
+    {
+      "token": "Lily",
+      "append": [
+        {
+          "pattern": {
+            "kind": "seq",
+            "children": [
+              {
+                "kind": "repeat",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {}
+                  }
+                ],
+                "minimum": 0,
+                "maximum": 32
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "token": ","
+                }
+              }
+            ]
+          },
+          "emit": {
+            "pos": "pn"
+          },
+          "weight": 2.0
+        }
+      ],
+      "scale": []
+    },
+    {
+      "token": "Tom",
+      "append": [
+        {
+          "pattern": {
+            "kind": "seq",
+            "children": [
+              {
+                "kind": "repeat",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {}
+                  }
+                ],
+                "minimum": 0,
+                "maximum": 32
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "token": ","
+                }
+              }
+            ]
+          },
+          "emit": {
+            "pos": "pn"
+          },
+          "weight": 2.0
+        }
+      ],
+      "scale": []
+    },
+    {
+      "token": "Ben",
+      "append": [
+        {
+          "pattern": {
+            "kind": "seq",
+            "children": [
+              {
+                "kind": "repeat",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {}
+                  }
+                ],
+                "minimum": 0,
+                "maximum": 32
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "token": ","
+                }
+              }
+            ]
+          },
+          "emit": {
+            "pos": "pn"
+          },
+          "weight": 2.0
+        }
+      ],
+      "scale": []
+    },
+    {
+      "token": "needles",
+      "append": [
+        {
+          "pattern": {
+            "kind": "seq",
+            "children": [
+              {
+                "kind": "repeat",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {}
+                  }
+                ],
+                "minimum": 0,
+                "maximum": 32
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "pos": "poss"
+                }
+              }
+            ]
+          },
+          "emit": {
+            "pos": "n"
+          },
+          "weight": 3.0
+        },
+        {
+          "pattern": {
+            "kind": "seq",
+            "children": [
+              {
+                "kind": "repeat",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {}
+                  }
+                ],
+                "minimum": 0,
+                "maximum": 32
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "pos": "adj"
+                }
+              }
+            ]
+          },
+          "emit": {
+            "pos": "n"
+          },
+          "weight": 3.0
+        }
+      ],
+      "scale": []
+    },
+    {
+      "token": "scissors",
+      "append": [
+        {
+          "pattern": {
+            "kind": "seq",
+            "children": [
+              {
+                "kind": "repeat",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {}
+                  }
+                ],
+                "minimum": 0,
+                "maximum": 32
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "pos": "poss"
+                }
+              }
+            ]
+          },
+          "emit": {
+            "pos": "n"
+          },
+          "weight": 3.0
+        },
+        {
+          "pattern": {
+            "kind": "seq",
+            "children": [
+              {
+                "kind": "repeat",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {}
+                  }
+                ],
+                "minimum": 0,
+                "maximum": 32
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "pos": "adj"
+                }
+              }
+            ]
+          },
+          "emit": {
+            "pos": "n"
+          },
+          "weight": 3.0
+        }
+      ],
+      "scale": []
+    }
+  ]
+}

@@ -1,0 +1,111 @@
+{
+  "format": "storyformers-online-v1",
+  "base_model_sha256": "6e96dcf211543ec8403234d6c654484bbbe29efd2f0077e0d5f563d4c514db42",
+  "rationale": "The batch contains several article-to-noun-phrase continuations, including The needles, The pears, and The small needles; the representative prefix ending in The assigns very little probability to either observed noun. Add modest determiner-suffix evidence for these recurring noun-phrase words, and for the adjective small, without making any one continuation obligatory. This generalizes across determiners and contexts rather than encoding a whole sentence. A counterexample is a determiner followed by a different adjective or noun, so the added evidence is deliberately moderate; replay behavior should be checked by the gate and is not assumed to pass.",
+  "feature_definitions": {},
+  "heads": [],
+  "outputs": [
+    {
+      "token": "needles",
+      "append": [
+        {
+          "pattern": {
+            "kind": "seq",
+            "children": [
+              {
+                "kind": "repeat",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {}
+                  }
+                ],
+                "minimum": 0,
+                "maximum": 32
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "pos": "det"
+                }
+              }
+            ]
+          },
+          "emit": {
+            "pos": "n"
+          },
+          "weight": 6.0
+        }
+      ],
+      "scale": []
+    },
+    {
+      "token": "pears",
+      "append": [
+        {
+          "pattern": {
+            "kind": "seq",
+            "children": [
+              {
+                "kind": "repeat",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {}
+                  }
+                ],
+                "minimum": 0,
+                "maximum": 32
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "pos": "det"
+                }
+              }
+            ]
+          },
+          "emit": {
+            "pos": "n"
+          },
+          "weight": 6.0
+        }
+      ],
+      "scale": []
+    },
+    {
+      "token": "small",
+      "append": [
+        {
+          "pattern": {
+            "kind": "seq",
+            "children": [
+              {
+                "kind": "repeat",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {}
+                  }
+                ],
+                "minimum": 0,
+                "maximum": 32
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "pos": "det"
+                }
+              }
+            ]
+          },
+          "emit": {
+            "pos": "adj"
+          },
+          "weight": 5.0
+        }
+      ],
+      "scale": []
+    }
+  ]
+}

@@ -1,0 +1,43 @@
+{
+  "format": "storyformers-online-v1",
+  "base_model_sha256": "34495f30359bca697a86c0bcac8ac7fef8b01d969f897b66444ae76157c115cf",
+  "rationale": "The model assigns excessive probability to lowercase “that” after “And” (about 0.54), while the batch contains four “And so” continuations and only three “And that” continuations. The revealed example is therefore not just an uncertain lexical choice: the existing highly weighted “that” rule overwhelms a recurring valid alternative. Add moderate evidence for “so” after “And” without suppressing “that,” since both continuations occur in the batch and the visible prefix alone does not reliably distinguish them. This broad phrase rule could favor “so” in contexts where another continuation is intended; replay evaluation should check whether the added mass is appropriately calibrated. The free-generation sample is diagnostic, not a training label.",
+  "feature_definitions": {},
+  "heads": [],
+  "outputs": [
+    {
+      "token": "so",
+      "append": [
+        {
+          "pattern": {
+            "kind": "seq",
+            "children": [
+              {
+                "kind": "repeat",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {}
+                  }
+                ],
+                "minimum": 0,
+                "maximum": 32
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "token": "And"
+                }
+              }
+            ]
+          },
+          "emit": {
+            "pos": "adv"
+          },
+          "weight": 0.8
+        }
+      ],
+      "scale": []
+    }
+  ]
+}

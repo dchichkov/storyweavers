@@ -1,0 +1,97 @@
+{
+  "format": "storyformers-online-v1",
+  "base_model_sha256": "34cec1f6e711ca4d7cbce491d72b2c7a94f3517326a017c62333b38cf379d95a",
+  "rationale": "The batch repeatedly uses the visible phrase “day with” followed by a person, but after that prefix the model assigns most probability to the determiner “a”; the revealed target “Mia” has especially low probability. Existing Ben and Lily rules already provide some evidence for a person after “with,” but it is weak relative to competing output mass, and Mia and Tom lack that rule. Strengthen the existing with-context rules and add the same bounded suffix condition to Mia and Tom. This is a focused repair for a recurring construction, not a claim that every continuation of “with” must be a person. Counterexamples such as “with a …” remain valid and should retain probability.",
+  "feature_definitions": {},
+  "heads": [],
+  "outputs": [
+    {
+      "token": "Ben",
+      "append": [],
+      "scale": [
+        {
+          "rule": 10,
+          "factor": 4.0
+        }
+      ]
+    },
+    {
+      "token": "Lily",
+      "append": [],
+      "scale": [
+        {
+          "rule": 10,
+          "factor": 4.0
+        }
+      ]
+    },
+    {
+      "token": "Mia",
+      "append": [
+        {
+          "pattern": {
+            "kind": "seq",
+            "children": [
+              {
+                "kind": "repeat",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {}
+                  }
+                ],
+                "minimum": 0,
+                "maximum": 32
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "token": "with"
+                }
+              }
+            ]
+          },
+          "emit": {
+            "pos": "pn"
+          },
+          "weight": 16.0
+        }
+      ],
+      "scale": []
+    },
+    {
+      "token": "Tom",
+      "append": [
+        {
+          "pattern": {
+            "kind": "seq",
+            "children": [
+              {
+                "kind": "repeat",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {}
+                  }
+                ],
+                "minimum": 0,
+                "maximum": 32
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "token": "with"
+                }
+              }
+            ]
+          },
+          "emit": {
+            "pos": "pn"
+          },
+          "weight": 16.0
+        }
+      ],
+      "scale": []
+    }
+  ]
+}

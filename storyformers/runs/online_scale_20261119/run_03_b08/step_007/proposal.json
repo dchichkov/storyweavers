@@ -1,0 +1,50 @@
+{
+  "format": "storyformers-online-v1",
+  "base_model_sha256": "dfe4f85cf09c4e728f25fa7e15d4ee537a969c2ac568091dbe061b0c94163474",
+  "rationale": "The representative prefix “Lily and the pears” strongly favors a period before the observed paragraph break: the existing high-weight opening-frame rule handles a coordinated proper-noun phrase followed by a determiner, adjective, and noun, but not the same frame without an adjective. The batch documents support treating this bare coordinated noun phrase as a possible opening frame. Add a moderate-weight space rule for that complete prefix shape so punctuation and other continuations remain possible. This is a narrow structural generalization, not a claim that every coordinated noun phrase must end a paragraph; the replay gate must still check for regressions.",
+  "feature_definitions": {},
+  "heads": [],
+  "outputs": [
+    {
+      "token": "\n\n",
+      "append": [
+        {
+          "pattern": {
+            "kind": "seq",
+            "children": [
+              {
+                "kind": "token",
+                "tests": {
+                  "pos": "pn"
+                }
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "pos": "conj"
+                }
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "pos": "det"
+                }
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "pos": "n"
+                }
+              }
+            ]
+          },
+          "emit": {
+            "pos": "space"
+          },
+          "weight": 30.0
+        }
+      ],
+      "scale": []
+    }
+  ]
+}

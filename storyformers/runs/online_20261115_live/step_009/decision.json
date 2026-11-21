@@ -1,0 +1,466 @@
+{
+  "adopted": "teacher",
+  "provisional": true,
+  "scores": {
+    "unchanged": {
+      "current": {
+        "targets": 1,
+        "coverage": 1.0,
+        "joint_nll": 2.1249711354899095,
+        "accuracy": 0.0,
+        "conflicts": 0
+      },
+      "replay": {
+        "targets": 21,
+        "coverage": 1.0,
+        "joint_nll": 2.157545125168285,
+        "accuracy": 0.42857142857142855,
+        "conflicts": 0
+      },
+      "complexity": 1437
+    },
+    "weights_only": {
+      "current": {
+        "targets": 1,
+        "coverage": 1.0,
+        "joint_nll": 1.9121209757334452,
+        "accuracy": 0.0,
+        "conflicts": 0
+      },
+      "replay": {
+        "targets": 21,
+        "coverage": 1.0,
+        "joint_nll": 2.14266706784311,
+        "accuracy": 0.42857142857142855,
+        "conflicts": 0
+      },
+      "complexity": 1437
+    },
+    "teacher": {
+      "current": {
+        "targets": 1,
+        "coverage": 1.0,
+        "joint_nll": 1.7650095237802548,
+        "accuracy": 0.0,
+        "conflicts": 0
+      },
+      "replay": {
+        "targets": 21,
+        "coverage": 1.0,
+        "joint_nll": 2.14266706784311,
+        "accuracy": 0.42857142857142855,
+        "conflicts": 0
+      },
+      "complexity": 1497
+    }
+  },
+  "error": null,
+  "replay_tolerance": 0.02,
+  "selected_model_sha256": "4e2811bd69c8141f99806273532340825be5cf8da540489eb15f124ac0313680",
+  "before_model_sha256": "e10875628f17b7b2316c44eb83f250f9767f4a6b5a53af3e3a262586385f814e",
+  "example": [
+    [
+      {
+        "token": "The",
+        "pos": "det"
+      },
+      {
+        "token": "apples",
+        "pos": "n"
+      },
+      {
+        "token": "\n\n",
+        "pos": "space"
+      },
+      {
+        "token": "Once",
+        "pos": "adv"
+      },
+      {
+        "token": "upon",
+        "pos": "prep"
+      },
+      {
+        "token": "a",
+        "pos": "det"
+      },
+      {
+        "token": "time",
+        "pos": "n"
+      },
+      {
+        "token": ",",
+        "pos": "punct"
+      }
+    ],
+    {
+      "token": "Ben",
+      "pos": "pn"
+    }
+  ],
+  "prediction_before_update": {
+    "probability": 0.11943641569059117,
+    "nll": 2.1249711354899095,
+    "correct": false,
+    "conflicts": 0,
+    "top_joint": [
+      {
+        "latent": {
+          "pos": "special",
+          "entity": null,
+          "role": null,
+          "location": null,
+          "event": null,
+          "token": "<END>",
+          "position": {
+            "token": 8,
+            "sentence": 0,
+            "in_sentence": 8
+          }
+        },
+        "probability": 0.5181233378343412
+      },
+      {
+        "latent": {
+          "pos": "pn",
+          "entity": null,
+          "role": null,
+          "location": null,
+          "event": null,
+          "token": "Lily",
+          "position": {
+            "token": 8,
+            "sentence": 0,
+            "in_sentence": 8
+          }
+        },
+        "probability": 0.11944200018556844
+      },
+      {
+        "latent": {
+          "pos": "pn",
+          "entity": null,
+          "role": null,
+          "location": null,
+          "event": null,
+          "token": "Ben",
+          "position": {
+            "token": 8,
+            "sentence": 0,
+            "in_sentence": 8
+          }
+        },
+        "probability": 0.11943641569059117
+      },
+      {
+        "latent": {
+          "pos": "pn",
+          "entity": null,
+          "role": null,
+          "location": null,
+          "event": null,
+          "token": "Tom",
+          "position": {
+            "token": 8,
+            "sentence": 0,
+            "in_sentence": 8
+          }
+        },
+        "probability": 0.11942192913737269
+      },
+      {
+        "latent": {
+          "pos": "pn",
+          "entity": null,
+          "role": null,
+          "location": null,
+          "event": null,
+          "token": "Mia",
+          "position": {
+            "token": 8,
+            "sentence": 0,
+            "in_sentence": 8
+          }
+        },
+        "probability": 0.11937729662154506
+      },
+      {
+        "latent": {
+          "pos": "punct",
+          "entity": null,
+          "role": null,
+          "location": null,
+          "event": null,
+          "token": ".",
+          "position": {
+            "token": 8,
+            "sentence": 0,
+            "in_sentence": 8
+          }
+        },
+        "probability": 0.00026772432392764046
+      },
+      {
+        "latent": {
+          "pos": "det",
+          "entity": null,
+          "role": null,
+          "location": null,
+          "event": null,
+          "token": "the",
+          "position": {
+            "token": 8,
+            "sentence": 0,
+            "in_sentence": 8
+          }
+        },
+        "probability": 0.0001944089698999367
+      },
+      {
+        "latent": {
+          "pos": "adj",
+          "entity": null,
+          "role": null,
+          "location": null,
+          "event": null,
+          "token": "small",
+          "position": {
+            "token": 8,
+            "sentence": 0,
+            "in_sentence": 8
+          }
+        },
+        "probability": 0.0001728796821483357
+      },
+      {
+        "latent": {
+          "pos": "v",
+          "entity": null,
+          "role": null,
+          "location": null,
+          "event": null,
+          "token": "found",
+          "position": {
+            "token": 8,
+            "sentence": 0,
+            "in_sentence": 8
+          }
+        },
+        "probability": 0.00017054040371912473
+      },
+      {
+        "latent": {
+          "pos": "v",
+          "entity": null,
+          "role": null,
+          "location": null,
+          "event": null,
+          "token": "took",
+          "position": {
+            "token": 8,
+            "sentence": 0,
+            "in_sentence": 8
+          }
+        },
+        "probability": 0.00015638400847433424
+      }
+    ],
+    "residual": [
+      {
+        "pos": "det",
+        "entity": null,
+        "role": null,
+        "location": null,
+        "event": null,
+        "token": "The",
+        "position": {
+          "token": 0,
+          "sentence": 0,
+          "in_sentence": 0
+        }
+      },
+      {
+        "pos": "n",
+        "entity": null,
+        "role": null,
+        "location": null,
+        "event": null,
+        "token": "apples",
+        "position": {
+          "token": 1,
+          "sentence": 0,
+          "in_sentence": 1
+        }
+      },
+      {
+        "pos": "space",
+        "entity": null,
+        "role": null,
+        "location": null,
+        "event": null,
+        "token": "\n\n",
+        "position": {
+          "token": 2,
+          "sentence": 0,
+          "in_sentence": 2
+        }
+      },
+      {
+        "pos": "adv",
+        "entity": null,
+        "role": null,
+        "location": null,
+        "event": null,
+        "token": "Once",
+        "position": {
+          "token": 3,
+          "sentence": 0,
+          "in_sentence": 3
+        }
+      },
+      {
+        "pos": "prep",
+        "entity": null,
+        "role": null,
+        "location": null,
+        "event": null,
+        "token": "upon",
+        "position": {
+          "token": 4,
+          "sentence": 0,
+          "in_sentence": 4
+        }
+      },
+      {
+        "pos": "det",
+        "entity": null,
+        "role": null,
+        "location": null,
+        "event": null,
+        "token": "a",
+        "position": {
+          "token": 5,
+          "sentence": 0,
+          "in_sentence": 5
+        }
+      },
+      {
+        "pos": "n",
+        "entity": null,
+        "role": null,
+        "location": null,
+        "event": null,
+        "token": "time",
+        "position": {
+          "token": 6,
+          "sentence": 0,
+          "in_sentence": 6
+        }
+      },
+      {
+        "pos": "punct",
+        "entity": null,
+        "role": null,
+        "location": null,
+        "event": null,
+        "token": ",",
+        "position": {
+          "token": 7,
+          "sentence": 0,
+          "in_sentence": 7
+        }
+      }
+    ],
+    "last_head_trace": []
+  },
+  "backward": {
+    "steps": 1,
+    "learning_rate": 0.2,
+    "training_nll_before_steps": [
+      2.1249711354899095
+    ],
+    "largest_weight_changes": [
+      {
+        "token": "Ben",
+        "rule": 9,
+        "log_weight_delta": 0.17589776397808024
+      },
+      {
+        "token": "<END>",
+        "rule": 3,
+        "log_weight_delta": -0.10359312252380268
+      },
+      {
+        "token": "Lily",
+        "rule": 9,
+        "log_weight_delta": -0.023858127717157125
+      },
+      {
+        "token": "Mia",
+        "rule": 9,
+        "log_weight_delta": -0.023858127717157125
+      },
+      {
+        "token": "Tom",
+        "rule": 9,
+        "log_weight_delta": -0.023858127717157125
+      },
+      {
+        "token": "Ben",
+        "rule": 0,
+        "log_weight_delta": 0.0001699082465212109
+      },
+      {
+        "token": "Ben",
+        "rule": 3,
+        "log_weight_delta": 4.5044637280612996e-05
+      },
+      {
+        "token": "<END>",
+        "rule": 0,
+        "log_weight_delta": -3.1545043065869125e-05
+      },
+      {
+        "token": ".",
+        "rule": 0,
+        "log_weight_delta": -3.1543119089153516e-05
+      },
+      {
+        "token": "the",
+        "rule": 0,
+        "log_weight_delta": -2.7595290016136973e-05
+      },
+      {
+        "token": "small",
+        "rule": 0,
+        "log_weight_delta": -2.60548029453155e-05
+      },
+      {
+        "token": "found",
+        "rule": 0,
+        "log_weight_delta": -2.5819008957845426e-05
+      },
+      {
+        "token": "took",
+        "rule": 0,
+        "log_weight_delta": -2.403510965219229e-05
+      },
+      {
+        "token": "red",
+        "rule": 0,
+        "log_weight_delta": -2.371190959936087e-05
+      },
+      {
+        "token": "needles",
+        "rule": 0,
+        "log_weight_delta": -2.3430715515006224e-05
+      },
+      {
+        "token": "Lily",
+        "rule": 0,
+        "log_weight_delta": -2.2680936099484298e-05
+      }
+    ]
+  },
+  "weight_control": "weights_only"
+}

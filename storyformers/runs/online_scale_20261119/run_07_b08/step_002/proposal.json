@@ -1,0 +1,111 @@
+{
+  "format": "storyformers-online-v1",
+  "base_model_sha256": "9ea5047a7fb7a2fe36f0223418221be52ccbf60d19a109d1f1b6694dde132da9",
+  "rationale": "Across the batch, a sentence-initial And at the start of the closing paragraph is followed by either so or that; both are observed, so preserve both alternatives rather than force one. The following that-to-was transition is also repeated. These suffix-conditioned lexical rules address the weak probabilities for those observed continuations without asserting a phase from future text or copying a whole document. Other continuations after And or that remain possible, and the rules could overfavor these phrases in contexts where a different continuation is appropriate; replay evaluation should test that risk.",
+  "feature_definitions": {},
+  "heads": [],
+  "outputs": [
+    {
+      "token": "so",
+      "append": [
+        {
+          "pattern": {
+            "kind": "seq",
+            "children": [
+              {
+                "kind": "repeat",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {}
+                  }
+                ],
+                "minimum": 0,
+                "maximum": 32
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "token": "And"
+                }
+              }
+            ]
+          },
+          "emit": {
+            "pos": "adv"
+          },
+          "weight": 4.0
+        }
+      ],
+      "scale": []
+    },
+    {
+      "token": "that",
+      "append": [
+        {
+          "pattern": {
+            "kind": "seq",
+            "children": [
+              {
+                "kind": "repeat",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {}
+                  }
+                ],
+                "minimum": 0,
+                "maximum": 32
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "token": "And"
+                }
+              }
+            ]
+          },
+          "emit": {
+            "pos": "pron"
+          },
+          "weight": 4.0
+        }
+      ],
+      "scale": []
+    },
+    {
+      "token": "was",
+      "append": [
+        {
+          "pattern": {
+            "kind": "seq",
+            "children": [
+              {
+                "kind": "repeat",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {}
+                  }
+                ],
+                "minimum": 0,
+                "maximum": 32
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "token": "that"
+                }
+              }
+            ]
+          },
+          "emit": {
+            "pos": "v"
+          },
+          "weight": 4.0
+        }
+      ],
+      "scale": []
+    }
+  ]
+}

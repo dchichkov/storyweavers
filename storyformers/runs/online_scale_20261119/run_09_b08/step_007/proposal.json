@@ -1,0 +1,44 @@
+{
+  "format": "storyformers-online-v1",
+  "base_model_sha256": "8aa54ef97828ccdcc98b40420b4a1e343c22624a34fa920b183b4f2dda01696a",
+  "rationale": "The observed continuation is a plausible noun-object after “took the,” but pears receives little probability despite the existing preceding_verb_surface feature. Batch documents also include pears as an object after different verbs and in other contexts, so this is not evidence for a general rule that every “took the” must be followed by pears. Add modest, narrowly matched evidence for pears when the visible prefix records a preceding verb of “took.” No new head is needed because the current head already exposes that feature. This may disadvantage other valid objects after “took,” including scissors; the small added weight preserves that uncertainty. The unprompted sample is diagnostic rather than a training target, and this provisional patch has not passed replay gating.",
+  "feature_definitions": {},
+  "heads": [],
+  "outputs": [
+    {
+      "token": "pears",
+      "append": [
+        {
+          "pattern": {
+            "kind": "seq",
+            "children": [
+              {
+                "kind": "repeat",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {}
+                  }
+                ],
+                "minimum": 0,
+                "maximum": 32
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "pos": "det",
+                  "preceding_verb_surface": "took"
+                }
+              }
+            ]
+          },
+          "emit": {
+            "pos": "n"
+          },
+          "weight": 10.0
+        }
+      ],
+      "scale": []
+    }
+  ]
+}

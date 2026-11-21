@@ -1,0 +1,98 @@
+{
+  "format": "storyformers-online-v1",
+  "base_model_sha256": "6d64c644d03043f9e4c8fe1ebab29a3f13195d6b9710cd513d8a2313777cbd9d",
+  "rationale": "The batch exposes a structural gap in the opening-title grammar: the existing newline rule handles a proper noun followed by a conjunction, determiner, adjective, and noun, but misses the same title pattern when the adjective is absent. In the representative prefix, this leaves punctuation overwhelmingly favored despite the observed paragraph break. Add the adjective as optional in a separate title-pattern rule, without changing the existing rule. The batch also contains two continuations of “And so”; the “so” root currently has only a very weak general rule, so add moderate evidence for that continuation while preserving alternatives after “And.” These are provisional generalizations from the revealed batch, not claims that all noun phrases require paragraph breaks or all instances of “And” require “so.” Replay behavior and gate acceptance remain to be checked.",
+  "feature_definitions": {},
+  "heads": [],
+  "outputs": [
+    {
+      "token": "\n\n",
+      "append": [
+        {
+          "pattern": {
+            "kind": "seq",
+            "children": [
+              {
+                "kind": "token",
+                "tests": {
+                  "pos": "pn"
+                }
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "pos": "conj"
+                }
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "pos": "det"
+                }
+              },
+              {
+                "kind": "repeat",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {
+                      "pos": "adj"
+                    }
+                  }
+                ],
+                "minimum": 0,
+                "maximum": 8
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "pos": "n"
+                }
+              }
+            ]
+          },
+          "emit": {
+            "pos": "space"
+          },
+          "weight": 204.0
+        }
+      ],
+      "scale": []
+    },
+    {
+      "token": "so",
+      "append": [
+        {
+          "pattern": {
+            "kind": "seq",
+            "children": [
+              {
+                "kind": "repeat",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {}
+                  }
+                ],
+                "minimum": 0,
+                "maximum": 32
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "token": "And",
+                  "pos": "conj"
+                }
+              }
+            ]
+          },
+          "emit": {
+            "pos": "adv"
+          },
+          "weight": 10.0
+        }
+      ],
+      "scale": []
+    }
+  ]
+}

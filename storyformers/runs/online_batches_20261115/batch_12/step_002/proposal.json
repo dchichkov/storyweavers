@@ -1,0 +1,182 @@
+{
+  "format": "storyformers-online-v1",
+  "base_model_sha256": "78ef5f8095a644e634b32473aa1d62b16582ee74c973ea301c277cc8fd40d71d",
+  "rationale": "The batch repeatedly ends the introductory phrase “A day” with the preposition “with,” including the representative prefix and an earlier replay example. The current “with” root has only a weak context-free rule, while the period rule strongly favors punctuation after any noun. Add a context-specific rule for the literal phrase “A day” rather than promoting “with” after all nouns; that avoids competing with the observed comma after “One day.” The batch also repeatedly uses commas after introductory time or setting phrases, but the current comma root is weak and is overwhelmed by the strong noun-to-period rule. Add rules for the observed introductory patterns “One day,” “Once upon a time,” and a preposition followed by a determiner, adjective, and noun. These compact rules may raise comma probability in other contexts sharing those endings, including cases where a different continuation is appropriate; the replay gate should assess that risk. This proposal has not been replay-gated.",
+  "feature_definitions": {},
+  "heads": [],
+  "outputs": [
+    {
+      "token": "with",
+      "append": [
+        {
+          "pattern": {
+            "kind": "seq",
+            "children": [
+              {
+                "kind": "repeat",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {}
+                  }
+                ],
+                "minimum": 0,
+                "maximum": 32
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "token": "A"
+                }
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "token": "day"
+                }
+              }
+            ]
+          },
+          "emit": {
+            "pos": "prep"
+          },
+          "weight": 250.0
+        }
+      ],
+      "scale": []
+    },
+    {
+      "token": ",",
+      "append": [
+        {
+          "pattern": {
+            "kind": "seq",
+            "children": [
+              {
+                "kind": "repeat",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {}
+                  }
+                ],
+                "minimum": 0,
+                "maximum": 32
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "token": "One"
+                }
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "token": "day"
+                }
+              }
+            ]
+          },
+          "emit": {
+            "pos": "punct"
+          },
+          "weight": 250.0
+        },
+        {
+          "pattern": {
+            "kind": "seq",
+            "children": [
+              {
+                "kind": "repeat",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {}
+                  }
+                ],
+                "minimum": 0,
+                "maximum": 32
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "token": "Once"
+                }
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "token": "upon"
+                }
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "token": "a"
+                }
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "token": "time"
+                }
+              }
+            ]
+          },
+          "emit": {
+            "pos": "punct"
+          },
+          "weight": 250.0
+        },
+        {
+          "pattern": {
+            "kind": "seq",
+            "children": [
+              {
+                "kind": "repeat",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {}
+                  }
+                ],
+                "minimum": 0,
+                "maximum": 32
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "pos": "prep"
+                }
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "pos": "det",
+                  "token": "a"
+                }
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "pos": "adj"
+                }
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "pos": "n"
+                }
+              }
+            ]
+          },
+          "emit": {
+            "pos": "punct"
+          },
+          "weight": 250.0
+        }
+      ],
+      "scale": []
+    }
+  ]
+}

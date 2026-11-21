@@ -1,0 +1,247 @@
+{
+  "format": "storyformers-online-v1",
+  "base_model_sha256": "cd7113a22db491c9a1264a4675bb0245e9078bcecd528abc836e585e76175fbe",
+  "rationale": "The batch exposes a severe mismatch after the prefix ending in “with”: the model strongly favors a determiner, while the observed continuation is a person name. A suffix rule for the lexical preposition “with” raises the available name continuations without tying the repair to Ben alone. Several revealed closing clauses also repeatedly begin “And so”, while another has “And that was”; contextual rules give those observed alternatives support without making them compulsory. These patterns are grounded in the batch, but other continuations after “with” or “And” can be valid, and replay behavior still needs to be checked by the gate.",
+  "feature_definitions": {},
+  "heads": [],
+  "outputs": [
+    {
+      "token": "Ben",
+      "append": [
+        {
+          "pattern": {
+            "kind": "seq",
+            "children": [
+              {
+                "kind": "repeat",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {}
+                  }
+                ],
+                "minimum": 0,
+                "maximum": 32
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "token": "with"
+                }
+              }
+            ]
+          },
+          "emit": {
+            "pos": "pn"
+          },
+          "weight": 5.0
+        }
+      ],
+      "scale": []
+    },
+    {
+      "token": "Lily",
+      "append": [
+        {
+          "pattern": {
+            "kind": "seq",
+            "children": [
+              {
+                "kind": "repeat",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {}
+                  }
+                ],
+                "minimum": 0,
+                "maximum": 32
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "token": "with"
+                }
+              }
+            ]
+          },
+          "emit": {
+            "pos": "pn"
+          },
+          "weight": 5.0
+        }
+      ],
+      "scale": []
+    },
+    {
+      "token": "Mia",
+      "append": [
+        {
+          "pattern": {
+            "kind": "seq",
+            "children": [
+              {
+                "kind": "repeat",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {}
+                  }
+                ],
+                "minimum": 0,
+                "maximum": 32
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "token": "with"
+                }
+              }
+            ]
+          },
+          "emit": {
+            "pos": "pn"
+          },
+          "weight": 5.0
+        }
+      ],
+      "scale": []
+    },
+    {
+      "token": "Tom",
+      "append": [
+        {
+          "pattern": {
+            "kind": "seq",
+            "children": [
+              {
+                "kind": "repeat",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {}
+                  }
+                ],
+                "minimum": 0,
+                "maximum": 32
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "token": "with"
+                }
+              }
+            ]
+          },
+          "emit": {
+            "pos": "pn"
+          },
+          "weight": 5.0
+        }
+      ],
+      "scale": []
+    },
+    {
+      "token": "so",
+      "append": [
+        {
+          "pattern": {
+            "kind": "seq",
+            "children": [
+              {
+                "kind": "repeat",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {}
+                  }
+                ],
+                "minimum": 0,
+                "maximum": 32
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "token": "And"
+                }
+              }
+            ]
+          },
+          "emit": {
+            "pos": "adv"
+          },
+          "weight": 5.0
+        }
+      ],
+      "scale": []
+    },
+    {
+      "token": "that",
+      "append": [
+        {
+          "pattern": {
+            "kind": "seq",
+            "children": [
+              {
+                "kind": "repeat",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {}
+                  }
+                ],
+                "minimum": 0,
+                "maximum": 32
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "token": "And"
+                }
+              }
+            ]
+          },
+          "emit": {
+            "pos": "pron"
+          },
+          "weight": 5.0
+        }
+      ],
+      "scale": []
+    },
+    {
+      "token": "was",
+      "append": [
+        {
+          "pattern": {
+            "kind": "seq",
+            "children": [
+              {
+                "kind": "repeat",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {}
+                  }
+                ],
+                "minimum": 0,
+                "maximum": 32
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "token": "that"
+                }
+              }
+            ]
+          },
+          "emit": {
+            "pos": "v"
+          },
+          "weight": 5.0
+        }
+      ],
+      "scale": []
+    }
+  ]
+}

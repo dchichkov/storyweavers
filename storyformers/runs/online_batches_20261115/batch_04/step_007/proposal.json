@@ -1,0 +1,181 @@
+{
+  "format": "storyformers-online-v1",
+  "base_model_sha256": "9a8523a2253018a3b09ab053c8d17dd47afb47d44cbd1195c9fecf7880ff3587",
+  "rationale": "The batch reveals several recurring structural continuations that receive very little mass from the current output roots: a paragraph break after a possessive noun phrase, a new paragraph beginning with The or One after a break, and sunny in the visible On a context. Add bounded suffix rules for those patterns rather than copying whole sentences or changing semantic attributes. The examples support these as useful hypotheses, not exclusive continuations: a break can also precede And or a pronoun in replay, and other words may follow On a or a possessive noun phrase. Moderate rule weights preserve alternatives. The replay gate must still determine whether these additions retain earlier behavior.",
+  "feature_definitions": {},
+  "heads": [],
+  "outputs": [
+    {
+      "token": "sunny",
+      "append": [
+        {
+          "pattern": {
+            "kind": "seq",
+            "children": [
+              {
+                "kind": "repeat",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {}
+                  }
+                ],
+                "minimum": 0,
+                "maximum": 32
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "token": "On",
+                  "pos": "prep"
+                }
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "token": "a",
+                  "pos": "det"
+                }
+              }
+            ]
+          },
+          "emit": {
+            "pos": "adj"
+          },
+          "weight": 80.0
+        }
+      ],
+      "scale": []
+    },
+    {
+      "token": "The",
+      "append": [
+        {
+          "pattern": {
+            "kind": "seq",
+            "children": [
+              {
+                "kind": "repeat",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {}
+                  }
+                ],
+                "minimum": 0,
+                "maximum": 32
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "token": "\n\n",
+                  "pos": "space"
+                }
+              }
+            ]
+          },
+          "emit": {
+            "pos": "det"
+          },
+          "weight": 20.0
+        }
+      ],
+      "scale": []
+    },
+    {
+      "token": "One",
+      "append": [
+        {
+          "pattern": {
+            "kind": "seq",
+            "children": [
+              {
+                "kind": "repeat",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {}
+                  }
+                ],
+                "minimum": 0,
+                "maximum": 32
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "token": "\n\n",
+                  "pos": "space"
+                }
+              }
+            ]
+          },
+          "emit": {
+            "pos": "det"
+          },
+          "weight": 20.0
+        }
+      ],
+      "scale": []
+    },
+    {
+      "token": "\n\n",
+      "append": [
+        {
+          "pattern": {
+            "kind": "seq",
+            "children": [
+              {
+                "kind": "repeat",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {}
+                  }
+                ],
+                "minimum": 0,
+                "maximum": 32
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "pos": "pn"
+                }
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "pos": "poss",
+                  "token": "'s"
+                }
+              },
+              {
+                "kind": "repeat",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {
+                      "pos": "adj"
+                    }
+                  }
+                ],
+                "minimum": 0,
+                "maximum": 3
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "pos": "n"
+                }
+              }
+            ]
+          },
+          "emit": {
+            "pos": "space"
+          },
+          "weight": 100.0
+        }
+      ],
+      "scale": []
+    }
+  ]
+}

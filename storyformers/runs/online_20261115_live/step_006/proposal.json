@@ -1,0 +1,44 @@
+{
+  "format": "storyformers-online-v1",
+  "base_model_sha256": "f7462d753456801ec793506acd7d082bb84f81d2686349dc8a9a06be54c806df",
+  "rationale": "The target “ago” follows “Long”, forming the familiar phrase “Long ago”, but its probability remains very low after the gradient update. The competing verb rules assign substantial mass when the prefix ends in an adverb. Add a context-specific rule for the observed collocation rather than treating every adverb as a cue for “ago” or suppressing otherwise plausible continuations. Other uses of “Long” may not be followed by “ago”, so this is a provisional lexical generalization for replay testing, not a claim that the continuation is mandatory.",
+  "feature_definitions": {},
+  "heads": [],
+  "outputs": [
+    {
+      "token": "ago",
+      "append": [
+        {
+          "pattern": {
+            "kind": "seq",
+            "children": [
+              {
+                "kind": "repeat",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {}
+                  }
+                ],
+                "minimum": 0,
+                "maximum": 32
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "token": "Long",
+                  "pos": "adv"
+                }
+              }
+            ]
+          },
+          "emit": {
+            "pos": "adv"
+          },
+          "weight": 20.0
+        }
+      ],
+      "scale": []
+    }
+  ]
+}

@@ -1,0 +1,331 @@
+{
+  "format": "storyformers-online-v1",
+  "base_model_sha256": "dd83d402ab1a6f92c8e61e5dfc20a0ebf774cc67f043246a97dbdd4ecf4bccb0",
+  "rationale": "The batch exposes an overly broad high-weight <END> rule: it treats any final punctuation, including an introductory comma, as a strong story ending. Narrow that evidence by reducing the generic punctuation rule and restoring strong support for endings after end/End/ends followed by a period and after an exclamation mark. The latter also covers the replayed 'story ends.' ending. Names following an introductory comma often repeat a person already named in the prefix; project that captured name and use it to support the matching proper-name output, without requiring a particular name. The batch also repeatedly has a possessive marker after a proper noun, so add a POS-based rule for that continuation. These patterns may still favor an ending after a genuine non-final exclamation mark, or a repeated name after a comma in a context where another continuation is intended; other continuations remain possible, and the replay gate has not been evaluated.",
+  "feature_definitions": {
+    "preceding_person_token": {
+      "type": "string",
+      "description": "A proper-noun token captured somewhere before a terminal comma in the visible prefix; derived only from that prefix."
+    }
+  },
+  "heads": [
+    {
+      "layer": 0,
+      "slot": 1,
+      "operation": "add",
+      "neuron": {
+        "name": "capture_person_before_comma",
+        "rules": [
+          {
+            "pattern": {
+              "kind": "seq",
+              "children": [
+                {
+                  "kind": "repeat",
+                  "children": [
+                    {
+                      "kind": "token",
+                      "tests": {}
+                    }
+                  ],
+                  "minimum": 0,
+                  "maximum": 32
+                },
+                {
+                  "kind": "token",
+                  "tests": {
+                    "pos": "pn"
+                  },
+                  "bind": "person"
+                },
+                {
+                  "kind": "repeat",
+                  "children": [
+                    {
+                      "kind": "token",
+                      "tests": {}
+                    }
+                  ],
+                  "minimum": 0,
+                  "maximum": 32
+                },
+                {
+                  "kind": "token",
+                  "tests": {
+                    "token": ","
+                  }
+                }
+              ]
+            },
+            "emit": {
+              "preceding_person_token": {
+                "$ref": "person.token"
+              }
+            },
+            "weight": 1.0
+          }
+        ],
+        "tables": {},
+        "max_states": 20000
+      }
+    }
+  ],
+  "outputs": [
+    {
+      "token": "<END>",
+      "append": [
+        {
+          "pattern": {
+            "kind": "alt",
+            "children": [
+              {
+                "kind": "seq",
+                "children": [
+                  {
+                    "kind": "repeat",
+                    "children": [
+                      {
+                        "kind": "token",
+                        "tests": {}
+                      }
+                    ],
+                    "minimum": 0,
+                    "maximum": 32
+                  },
+                  {
+                    "kind": "token",
+                    "tests": {
+                      "token": {
+                        "$one_of": [
+                          "end",
+                          "End",
+                          "ends"
+                        ]
+                      }
+                    }
+                  },
+                  {
+                    "kind": "token",
+                    "tests": {
+                      "token": "."
+                    }
+                  }
+                ]
+              },
+              {
+                "kind": "seq",
+                "children": [
+                  {
+                    "kind": "repeat",
+                    "children": [
+                      {
+                        "kind": "token",
+                        "tests": {}
+                      }
+                    ],
+                    "minimum": 0,
+                    "maximum": 32
+                  },
+                  {
+                    "kind": "token",
+                    "tests": {
+                      "token": "!"
+                    }
+                  }
+                ]
+              }
+            ],
+            "weights": [
+              1.0,
+              1.0
+            ]
+          },
+          "emit": {
+            "pos": "special"
+          },
+          "weight": 40.0
+        }
+      ],
+      "scale": [
+        {
+          "rule": 3,
+          "factor": 0.05
+        }
+      ]
+    },
+    {
+      "token": "Mia",
+      "append": [
+        {
+          "pattern": {
+            "kind": "seq",
+            "children": [
+              {
+                "kind": "repeat",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {}
+                  }
+                ],
+                "minimum": 0,
+                "maximum": 32
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "token": ",",
+                  "preceding_person_token": "Mia"
+                }
+              }
+            ]
+          },
+          "emit": {
+            "pos": "pn"
+          },
+          "weight": 20.0
+        }
+      ],
+      "scale": []
+    },
+    {
+      "token": "Lily",
+      "append": [
+        {
+          "pattern": {
+            "kind": "seq",
+            "children": [
+              {
+                "kind": "repeat",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {}
+                  }
+                ],
+                "minimum": 0,
+                "maximum": 32
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "token": ",",
+                  "preceding_person_token": "Lily"
+                }
+              }
+            ]
+          },
+          "emit": {
+            "pos": "pn"
+          },
+          "weight": 20.0
+        }
+      ],
+      "scale": []
+    },
+    {
+      "token": "Ben",
+      "append": [
+        {
+          "pattern": {
+            "kind": "seq",
+            "children": [
+              {
+                "kind": "repeat",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {}
+                  }
+                ],
+                "minimum": 0,
+                "maximum": 32
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "token": ",",
+                  "preceding_person_token": "Ben"
+                }
+              }
+            ]
+          },
+          "emit": {
+            "pos": "pn"
+          },
+          "weight": 20.0
+        }
+      ],
+      "scale": []
+    },
+    {
+      "token": "Tom",
+      "append": [
+        {
+          "pattern": {
+            "kind": "seq",
+            "children": [
+              {
+                "kind": "repeat",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {}
+                  }
+                ],
+                "minimum": 0,
+                "maximum": 32
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "token": ",",
+                  "preceding_person_token": "Tom"
+                }
+              }
+            ]
+          },
+          "emit": {
+            "pos": "pn"
+          },
+          "weight": 20.0
+        }
+      ],
+      "scale": []
+    },
+    {
+      "token": "'s",
+      "append": [
+        {
+          "pattern": {
+            "kind": "seq",
+            "children": [
+              {
+                "kind": "repeat",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {}
+                  }
+                ],
+                "minimum": 0,
+                "maximum": 32
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "pos": "pn"
+                }
+              }
+            ]
+          },
+          "emit": {
+            "pos": "poss"
+          },
+          "weight": 10.0
+        }
+      ],
+      "scale": []
+    }
+  ]
+}

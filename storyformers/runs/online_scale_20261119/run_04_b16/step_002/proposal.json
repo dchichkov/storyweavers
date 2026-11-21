@@ -1,0 +1,61 @@
+{
+  "format": "storyformers-online-v1",
+  "base_model_sha256": "896a740e6e1c31d9350332b82bb4962c858e6e85b38f93f4279f9d20076467b5",
+  "rationale": "The representative continuation is a paragraph break after a coordinated noun phrase (a proper noun followed by a conjunction, determiner, and noun). The existing newline rules cover a similar coordinated phrase when an adjective is present, but not this bare-noun form; consequently punctuation candidates dominate despite repeated examples of coordinated noun-phrase openings ending a paragraph in the batch. Add a suffix rule for that reusable structure rather than conditioning on the observed name or copying the sentence. This is positive evidence for a paragraph break, not a claim that other continuations are impossible; coordination can also occur within sentences, so the replay gate should check for regressions.",
+  "feature_definitions": {},
+  "heads": [],
+  "outputs": [
+    {
+      "token": "\n\n",
+      "append": [
+        {
+          "pattern": {
+            "kind": "seq",
+            "children": [
+              {
+                "kind": "repeat",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {}
+                  }
+                ],
+                "minimum": 0,
+                "maximum": 32
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "pos": "pn"
+                }
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "pos": "conj"
+                }
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "pos": "det"
+                }
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "pos": "n"
+                }
+              }
+            ]
+          },
+          "emit": {
+            "pos": "space"
+          },
+          "weight": 30.0
+        }
+      ],
+      "scale": []
+    }
+  ]
+}

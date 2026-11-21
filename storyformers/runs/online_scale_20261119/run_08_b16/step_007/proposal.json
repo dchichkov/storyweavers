@@ -1,0 +1,213 @@
+{
+  "format": "storyformers-online-v1",
+  "base_model_sha256": "e68ecddeedd76a24fd59a580771a1782aea2e03a5c0e35289fdfa7556175de36",
+  "rationale": "Across the batch, noun targets often follow an adjective directly, including possessive-adjective-noun phrases and adjective-noun phrases after determiners. Existing strong noun rules are largely conditioned on a preceding determiner or on a preceding verb feature, leaving these adjective-final prefixes with weak noun support; the representative target pears is one such case. Add a modest direct adjective-suffix rule to the noun roots for the repeatedly observed foods, objects, and settings. This adds evidence rather than making other continuations impossible. Adjectives can also occur in predicate or other positions, so the added mass may be less useful in those contexts; replay behavior and the batch gate still need to assess the proposal.",
+  "feature_definitions": {},
+  "heads": [],
+  "outputs": [
+    {
+      "token": "apples",
+      "append": [
+        {
+          "pattern": {
+            "kind": "seq",
+            "children": [
+              {
+                "kind": "repeat",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {}
+                  }
+                ],
+                "minimum": 0,
+                "maximum": 32
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "pos": "adj"
+                }
+              }
+            ]
+          },
+          "emit": {
+            "pos": "n"
+          },
+          "weight": 20.0
+        }
+      ],
+      "scale": []
+    },
+    {
+      "token": "scissors",
+      "append": [
+        {
+          "pattern": {
+            "kind": "seq",
+            "children": [
+              {
+                "kind": "repeat",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {}
+                  }
+                ],
+                "minimum": 0,
+                "maximum": 32
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "pos": "adj"
+                }
+              }
+            ]
+          },
+          "emit": {
+            "pos": "n"
+          },
+          "weight": 20.0
+        }
+      ],
+      "scale": []
+    },
+    {
+      "token": "needles",
+      "append": [
+        {
+          "pattern": {
+            "kind": "seq",
+            "children": [
+              {
+                "kind": "repeat",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {}
+                  }
+                ],
+                "minimum": 0,
+                "maximum": 32
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "pos": "adj"
+                }
+              }
+            ]
+          },
+          "emit": {
+            "pos": "n"
+          },
+          "weight": 20.0
+        }
+      ],
+      "scale": []
+    },
+    {
+      "token": "pears",
+      "append": [
+        {
+          "pattern": {
+            "kind": "seq",
+            "children": [
+              {
+                "kind": "repeat",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {}
+                  }
+                ],
+                "minimum": 0,
+                "maximum": 32
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "pos": "adj"
+                }
+              }
+            ]
+          },
+          "emit": {
+            "pos": "n"
+          },
+          "weight": 20.0
+        }
+      ],
+      "scale": []
+    },
+    {
+      "token": "day",
+      "append": [
+        {
+          "pattern": {
+            "kind": "seq",
+            "children": [
+              {
+                "kind": "repeat",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {}
+                  }
+                ],
+                "minimum": 0,
+                "maximum": 32
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "pos": "adj"
+                }
+              }
+            ]
+          },
+          "emit": {
+            "pos": "n"
+          },
+          "weight": 20.0
+        }
+      ],
+      "scale": []
+    },
+    {
+      "token": "village",
+      "append": [
+        {
+          "pattern": {
+            "kind": "seq",
+            "children": [
+              {
+                "kind": "repeat",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {}
+                  }
+                ],
+                "minimum": 0,
+                "maximum": 32
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "pos": "adj"
+                }
+              }
+            ]
+          },
+          "emit": {
+            "pos": "n"
+          },
+          "weight": 20.0
+        }
+      ],
+      "scale": []
+    }
+  ]
+}

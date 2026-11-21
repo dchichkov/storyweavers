@@ -1,0 +1,77 @@
+{
+  "format": "storyformers-online-v1",
+  "base_model_sha256": "6abec8f5dba9302efedd4418b9a228545b3ccb305fe09e277a0028ce61fb398c",
+  "rationale": "The batch repeatedly has sunny immediately before day, but day receives very little probability in that context; it also repeatedly ends the phrase “all for now” with a period, while period is poorly weighted after now. Add modest, lexical-context rules for these recurring patterns rather than changing broad noun or punctuation preferences. These are hypotheses from the revealed batch, not evidence that other continuations are impossible. Other adjectives need not be followed by day, and adverbs other than now often occur mid-sentence, so the rules stay specific. The free generation's malformed determiner sequence is not itself a training label and does not justify a broader repair. The preceding candidate scores show replay regression can outweigh batch gains, so this compact proposal should remain subject to the replay gate.",
+  "feature_definitions": {},
+  "heads": [],
+  "outputs": [
+    {
+      "token": "day",
+      "append": [
+        {
+          "pattern": {
+            "kind": "seq",
+            "children": [
+              {
+                "kind": "repeat",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {}
+                  }
+                ],
+                "minimum": 0,
+                "maximum": 32
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "token": "sunny"
+                }
+              }
+            ]
+          },
+          "emit": {
+            "pos": "n"
+          },
+          "weight": 20.0
+        }
+      ],
+      "scale": []
+    },
+    {
+      "token": ".",
+      "append": [
+        {
+          "pattern": {
+            "kind": "seq",
+            "children": [
+              {
+                "kind": "repeat",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {}
+                  }
+                ],
+                "minimum": 0,
+                "maximum": 32
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "token": "now"
+                }
+              }
+            ]
+          },
+          "emit": {
+            "pos": "punct"
+          },
+          "weight": 8.0
+        }
+      ],
+      "scale": []
+    }
+  ]
+}

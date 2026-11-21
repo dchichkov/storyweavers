@@ -1,0 +1,55 @@
+{
+  "format": "storyformers-online-v1",
+  "base_model_sha256": "3c148ee654699150b6b3cf38d4b9f2d2766a8e84cd06c05f92677fe3bd33faff",
+  "feature_definitions": {},
+  "heads": [],
+  "outputs": [
+    {
+      "token": "!",
+      "append": [
+        {
+          "pattern": {
+            "kind": "seq",
+            "children": [
+              {
+                "kind": "repeat",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {}
+                  }
+                ],
+                "minimum": 0,
+                "maximum": 32
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "token": "Until"
+                }
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "token": "next"
+                }
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "token": "time"
+                }
+              }
+            ]
+          },
+          "emit": {
+            "pos": "punct"
+          },
+          "weight": 88.9
+        }
+      ],
+      "scale": []
+    }
+  ],
+  "rationale": "The gradient slightly raised the general exclamation rule and lowered the period-after-noun rule, but the prediction remains overwhelmingly a period because the final token is a noun. A contextual rule for the conventional sign-off phrase “Until next time” gives exclamation punctuation substantial evidence without changing punctuation after ordinary noun-final clauses; this is a lexicalized phrase-level hypothesis, not a rule for all noun endings. A period remains a valid alternative, and similar phrases or different punctuation conventions could be counterexamples. Replay should check that earlier noun-final periods and other continuations remain supported."
+}

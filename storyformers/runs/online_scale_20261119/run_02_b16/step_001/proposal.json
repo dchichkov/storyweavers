@@ -1,0 +1,197 @@
+{
+  "format": "storyformers-online-v1",
+  "base_model_sha256": "f0ae49132a5c93300c10a9baabf42874c5845465a6dc109e0294a9cbc04f35a3",
+  "rationale": "The batch exposes a weakly supported noun continuation after a determiner: examples include “The apples,” “the needles,” and similar noun phrases. Existing noun rules favor other contexts, so add a determiner-ending rule to the affected noun roots without choosing among nouns by name-specific context. The batch also repeatedly ends an introductory “PN and the NOUN” phrase at a paragraph boundary, but the space root’s comparable existing rule requires an adjective; add the missing no-adjective variant. These patterns may also occur inside sentences, so they should add evidence rather than make other continuations impossible. This is a provisional repair; replay behavior and batch loss still require gate evaluation.",
+  "feature_definitions": {},
+  "heads": [],
+  "outputs": [
+    {
+      "token": "apples",
+      "append": [
+        {
+          "pattern": {
+            "kind": "seq",
+            "children": [
+              {
+                "kind": "repeat",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {}
+                  }
+                ],
+                "minimum": 0,
+                "maximum": 32
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "pos": "det"
+                }
+              }
+            ]
+          },
+          "emit": {
+            "pos": "n"
+          },
+          "weight": 15.0
+        }
+      ],
+      "scale": []
+    },
+    {
+      "token": "pears",
+      "append": [
+        {
+          "pattern": {
+            "kind": "seq",
+            "children": [
+              {
+                "kind": "repeat",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {}
+                  }
+                ],
+                "minimum": 0,
+                "maximum": 32
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "pos": "det"
+                }
+              }
+            ]
+          },
+          "emit": {
+            "pos": "n"
+          },
+          "weight": 15.0
+        }
+      ],
+      "scale": []
+    },
+    {
+      "token": "needles",
+      "append": [
+        {
+          "pattern": {
+            "kind": "seq",
+            "children": [
+              {
+                "kind": "repeat",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {}
+                  }
+                ],
+                "minimum": 0,
+                "maximum": 32
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "pos": "det"
+                }
+              }
+            ]
+          },
+          "emit": {
+            "pos": "n"
+          },
+          "weight": 15.0
+        }
+      ],
+      "scale": []
+    },
+    {
+      "token": "scissors",
+      "append": [
+        {
+          "pattern": {
+            "kind": "seq",
+            "children": [
+              {
+                "kind": "repeat",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {}
+                  }
+                ],
+                "minimum": 0,
+                "maximum": 32
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "pos": "det"
+                }
+              }
+            ]
+          },
+          "emit": {
+            "pos": "n"
+          },
+          "weight": 15.0
+        }
+      ],
+      "scale": []
+    },
+    {
+      "token": "\n\n",
+      "append": [
+        {
+          "pattern": {
+            "kind": "seq",
+            "children": [
+              {
+                "kind": "repeat",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {}
+                  }
+                ],
+                "minimum": 0,
+                "maximum": 32
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "pos": "pn"
+                }
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "pos": "conj"
+                }
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "pos": "det"
+                }
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "pos": "n"
+                }
+              }
+            ]
+          },
+          "emit": {
+            "pos": "space"
+          },
+          "weight": 100.0
+        }
+      ],
+      "scale": []
+    }
+  ]
+}

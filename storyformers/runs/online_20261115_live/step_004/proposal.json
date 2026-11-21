@@ -1,0 +1,60 @@
+{
+  "format": "storyformers-online-v1",
+  "base_model_sha256": "c9e21bed01ceb8033f8c0a79bc47e906aa3be52f284af72feef0629894dd2ac2",
+  "feature_definitions": {},
+  "heads": [],
+  "outputs": [
+    {
+      "token": "\n\n",
+      "append": [
+        {
+          "pattern": {
+            "kind": "seq",
+            "children": [
+              {
+                "kind": "repeat",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {}
+                  }
+                ],
+                "minimum": 0,
+                "maximum": 32
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "pos": "space"
+                }
+              },
+              {
+                "kind": "repeat",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {}
+                  }
+                ],
+                "minimum": 0,
+                "maximum": 32
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "pos": "punct"
+                }
+              }
+            ]
+          },
+          "emit": {
+            "pos": "space"
+          },
+          "weight": 108.4
+        }
+      ],
+      "scale": []
+    }
+  ],
+  "rationale": "The model strongly favors <END> after the final period, despite the observed continuation being a paragraph separator. The existing END-after-punctuation rule is plausible for genuinely finished stories, so this repair preserves it and adds comparable space evidence when a prior paragraph separator is visible and the current context ends in punctuation. This generalizes beyond the observed name and sentence. A prior separator may occur in contexts where a new paragraph is not appropriate, so the rule is provisional and should be checked against replay examples."
+}

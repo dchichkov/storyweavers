@@ -1,0 +1,202 @@
+{
+  "format": "storyformers-online-v1",
+  "base_model_sha256": "2b3576d70afeffeb7a53543e53b2120970888dd16f50ae4c7f52e14dcb17be8e",
+  "rationale": "The representative error is a noun after a coordinated determiner phrase: the observed continuations include both apples and pears after a proper noun, and, the, with pears also following an adjective. The existing noun roots give these contexts little specific support. Add modest lexical evidence for those noun choices after this reusable POS pattern, without conditioning on a particular name or making other continuations impossible. The batch also repeatedly supports is after That/This and for after all, while those output roots have only tiny fallback weights; add narrowly contextualized evidence for these observed constructions. These patterns may also match contexts where other continuations are valid, so retain the existing alternatives. The unprompted sample suggests broader structural weaknesses, but it is not training evidence and does not justify a general story-phase rule. This is a provisional repair; replay and complexity gates have not been evaluated.",
+  "feature_definitions": {},
+  "heads": [],
+  "outputs": [
+    {
+      "token": "apples",
+      "append": [
+        {
+          "pattern": {
+            "kind": "seq",
+            "children": [
+              {
+                "kind": "repeat",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {}
+                  }
+                ],
+                "minimum": 0,
+                "maximum": 32
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "pos": "pn"
+                }
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "pos": "conj"
+                }
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "pos": "det"
+                }
+              },
+              {
+                "kind": "repeat",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {
+                      "pos": "adj"
+                    }
+                  }
+                ],
+                "minimum": 0,
+                "maximum": 1
+              }
+            ]
+          },
+          "emit": {
+            "pos": "n"
+          },
+          "weight": 8.0
+        }
+      ],
+      "scale": []
+    },
+    {
+      "token": "pears",
+      "append": [
+        {
+          "pattern": {
+            "kind": "seq",
+            "children": [
+              {
+                "kind": "repeat",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {}
+                  }
+                ],
+                "minimum": 0,
+                "maximum": 32
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "pos": "pn"
+                }
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "pos": "conj"
+                }
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "pos": "det"
+                }
+              },
+              {
+                "kind": "repeat",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {
+                      "pos": "adj"
+                    }
+                  }
+                ],
+                "minimum": 0,
+                "maximum": 1
+              }
+            ]
+          },
+          "emit": {
+            "pos": "n"
+          },
+          "weight": 8.0
+        }
+      ],
+      "scale": []
+    },
+    {
+      "token": "is",
+      "append": [
+        {
+          "pattern": {
+            "kind": "seq",
+            "children": [
+              {
+                "kind": "repeat",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {}
+                  }
+                ],
+                "minimum": 0,
+                "maximum": 32
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "pos": "pron",
+                  "token": {
+                    "$one_of": [
+                      "That",
+                      "This"
+                    ]
+                  }
+                }
+              }
+            ]
+          },
+          "emit": {
+            "pos": "v"
+          },
+          "weight": 8.0
+        }
+      ],
+      "scale": []
+    },
+    {
+      "token": "for",
+      "append": [
+        {
+          "pattern": {
+            "kind": "seq",
+            "children": [
+              {
+                "kind": "repeat",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {}
+                  }
+                ],
+                "minimum": 0,
+                "maximum": 32
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "pos": "pron",
+                  "token": "all"
+                }
+              }
+            ]
+          },
+          "emit": {
+            "pos": "prep"
+          },
+          "weight": 8.0
+        }
+      ],
+      "scale": []
+    }
+  ]
+}

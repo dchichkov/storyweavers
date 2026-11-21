@@ -1,0 +1,74 @@
+{
+  "format": "storyformers-online-v1",
+  "base_model_sha256": "3d2d4efb0bccb43eb687db9e543e4b274702cdd07c35bfa04fd620c4fb5bc19b",
+  "rationale": "The representative boundary error strongly favors punctuation after a coordinated subject noun phrase, although the batch documents show paragraph breaks after forms such as “Lily and the scissors” and “Tom and the small scissors/needles.” Add a compact suffix rule for a proper noun, conjunction, determiner, optional adjective, and noun to support a paragraph break without encoding any particular name or story. The prior structural candidate was rejected in favor of the weight-only update because its complexity increased and its current-batch loss was worse; this narrower rule addresses a concrete repeated boundary pattern. It could also raise paragraph-break probability after similar coordinated noun phrases in contexts where another continuation is valid, so the replay gate should decide whether the generalization is acceptable. The free-generation sample is diagnostic only and is not treated as training evidence.",
+  "feature_definitions": {},
+  "heads": [],
+  "outputs": [
+    {
+      "token": "\n\n",
+      "append": [
+        {
+          "pattern": {
+            "kind": "seq",
+            "children": [
+              {
+                "kind": "repeat",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {}
+                  }
+                ],
+                "minimum": 0,
+                "maximum": 32
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "pos": "pn"
+                }
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "pos": "conj"
+                }
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "pos": "det"
+                }
+              },
+              {
+                "kind": "repeat",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {
+                      "pos": "adj"
+                    }
+                  }
+                ],
+                "minimum": 0,
+                "maximum": 1
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "pos": "n"
+                }
+              }
+            ]
+          },
+          "emit": {
+            "pos": "space"
+          },
+          "weight": 100.0
+        }
+      ],
+      "scale": []
+    }
+  ]
+}

@@ -1,0 +1,43 @@
+{
+  "format": "storyformers-online-v1",
+  "base_model_sha256": "e18c4f5fb5a0b4c681b2fa0780ed72aa65f5bb54e978fdca4a0d7584b99fb364",
+  "rationale": "The representative prefix ends in a possessive marker, but the target noun has very little probability; the same possessive-to-needles continuation occurs for two different names in the batch. Add modest noun evidence when the visible prefix ends in a possessive, without conditioning on a particular name or making adjectives and other continuations impossible. This is a narrow lexical repair supported by the observed repetition; other possessive phrases may continue with an adjective or a different noun, so the rule should not be generalized into an exclusive constraint. The batch's other structural targets are already covered by existing rules, and the free generation is diagnostic rather than supervision.",
+  "feature_definitions": {},
+  "heads": [],
+  "outputs": [
+    {
+      "token": "needles",
+      "append": [
+        {
+          "pattern": {
+            "kind": "seq",
+            "children": [
+              {
+                "kind": "repeat",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {}
+                  }
+                ],
+                "minimum": 0,
+                "maximum": 32
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "pos": "poss"
+                }
+              }
+            ]
+          },
+          "emit": {
+            "pos": "n"
+          },
+          "weight": 5.0
+        }
+      ],
+      "scale": []
+    }
+  ]
+}

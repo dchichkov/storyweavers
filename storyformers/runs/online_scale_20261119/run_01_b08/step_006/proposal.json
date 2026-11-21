@@ -1,0 +1,218 @@
+{
+  "format": "storyformers-online-v1",
+  "base_model_sha256": "ee83f1900fd0e6489fac90b1d9cb1f8084cc424f931a3a82babb3d77251f5c7e",
+  "rationale": "The batch exposes sharply underweighted function-word rules: “is” follows “That” and “This,” and “for” follows “all,” but their existing output-root weights are only about 0.01. Contextual rules should recover these repeated continuations without making them generally likely. The representative “A day with” prefix also favors “a” excessively over a proper noun, despite the batch’s “with Tom” and “with Mia” examples; modest suffix-conditioned support for names preserves “with a…” as a valid alternative. Exact subjects and the word “all” are useful lexical conditions here, but other continuations remain possible. The unprompted sample is diagnostic rather than supervision, so this patch does not try to encode its particular words or force one story framing.",
+  "feature_definitions": {},
+  "heads": [],
+  "outputs": [
+    {
+      "token": "is",
+      "append": [
+        {
+          "pattern": {
+            "kind": "seq",
+            "children": [
+              {
+                "kind": "repeat",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {}
+                  }
+                ],
+                "minimum": 0,
+                "maximum": 32
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "token": {
+                    "$one_of": [
+                      "That",
+                      "This"
+                    ]
+                  }
+                }
+              }
+            ]
+          },
+          "emit": {
+            "pos": "v"
+          },
+          "weight": 8.0
+        }
+      ],
+      "scale": []
+    },
+    {
+      "token": "for",
+      "append": [
+        {
+          "pattern": {
+            "kind": "seq",
+            "children": [
+              {
+                "kind": "repeat",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {}
+                  }
+                ],
+                "minimum": 0,
+                "maximum": 32
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "token": "all"
+                }
+              }
+            ]
+          },
+          "emit": {
+            "pos": "prep"
+          },
+          "weight": 8.0
+        }
+      ],
+      "scale": []
+    },
+    {
+      "token": "Ben",
+      "append": [
+        {
+          "pattern": {
+            "kind": "seq",
+            "children": [
+              {
+                "kind": "repeat",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {}
+                  }
+                ],
+                "minimum": 0,
+                "maximum": 32
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "token": "with"
+                }
+              }
+            ]
+          },
+          "emit": {
+            "pos": "pn"
+          },
+          "weight": 5.0
+        }
+      ],
+      "scale": []
+    },
+    {
+      "token": "Mia",
+      "append": [
+        {
+          "pattern": {
+            "kind": "seq",
+            "children": [
+              {
+                "kind": "repeat",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {}
+                  }
+                ],
+                "minimum": 0,
+                "maximum": 32
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "token": "with"
+                }
+              }
+            ]
+          },
+          "emit": {
+            "pos": "pn"
+          },
+          "weight": 5.0
+        }
+      ],
+      "scale": []
+    },
+    {
+      "token": "Lily",
+      "append": [
+        {
+          "pattern": {
+            "kind": "seq",
+            "children": [
+              {
+                "kind": "repeat",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {}
+                  }
+                ],
+                "minimum": 0,
+                "maximum": 32
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "token": "with"
+                }
+              }
+            ]
+          },
+          "emit": {
+            "pos": "pn"
+          },
+          "weight": 5.0
+        }
+      ],
+      "scale": []
+    },
+    {
+      "token": "Tom",
+      "append": [
+        {
+          "pattern": {
+            "kind": "seq",
+            "children": [
+              {
+                "kind": "repeat",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {}
+                  }
+                ],
+                "minimum": 0,
+                "maximum": 32
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "token": "with"
+                }
+              }
+            ]
+          },
+          "emit": {
+            "pos": "pn"
+          },
+          "weight": 5.0
+        }
+      ],
+      "scale": []
+    }
+  ]
+}

@@ -1,0 +1,77 @@
+{
+  "format": "storyformers-online-v1",
+  "base_model_sha256": "071317ccf7d5d6e1b7ae74a4d1137cfb51535b469812db708db168779987a599",
+  "rationale": "The batch repeatedly contains the phrase “for now,” but the now root has only a weak context-independent rule, leaving both observed targets poorly supported. It also contains two “One morning” targets, while the broad determiner-conditioned day rule favors competing nouns; a targeted One-to-morning rule supplies evidence for that attested continuation without removing day as a valid alternative. These are narrow lexical-context repairs rather than claims that either phrase is obligatory. Other contexts, including “One day,” remain possible, and the replay examples do not establish that morning should be preferred there.",
+  "feature_definitions": {},
+  "heads": [],
+  "outputs": [
+    {
+      "token": "now",
+      "append": [
+        {
+          "pattern": {
+            "kind": "seq",
+            "children": [
+              {
+                "kind": "repeat",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {}
+                  }
+                ],
+                "minimum": 0,
+                "maximum": 32
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "token": "for"
+                }
+              }
+            ]
+          },
+          "emit": {
+            "pos": "adv"
+          },
+          "weight": 20.0
+        }
+      ],
+      "scale": []
+    },
+    {
+      "token": "morning",
+      "append": [
+        {
+          "pattern": {
+            "kind": "seq",
+            "children": [
+              {
+                "kind": "repeat",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {}
+                  }
+                ],
+                "minimum": 0,
+                "maximum": 32
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "token": "One"
+                }
+              }
+            ]
+          },
+          "emit": {
+            "pos": "n"
+          },
+          "weight": 20.0
+        }
+      ],
+      "scale": []
+    }
+  ]
+}

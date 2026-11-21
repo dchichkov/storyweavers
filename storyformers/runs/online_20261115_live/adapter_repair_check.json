@@ -1,0 +1,66 @@
+{
+  "status": "counterfactual_only",
+  "description": "Recheck the exact saved step 004 proposal and post-gradient snapshot after fixing whitespace output-root parsing. No API call; no live checkpoints or decisions changed.",
+  "original_decision": "weights_only",
+  "original_error": "ValueError: invalid neuron name",
+  "rechecked_decision": {
+    "adopted": "teacher",
+    "provisional": true,
+    "scores": {
+      "unchanged": {
+        "current": {
+          "targets": 1,
+          "coverage": 1.0,
+          "joint_nll": 9.296779483864057,
+          "accuracy": 0.0,
+          "conflicts": 0
+        },
+        "replay": {
+          "targets": 16,
+          "coverage": 1.0,
+          "joint_nll": 2.123359392845446,
+          "accuracy": 0.375,
+          "conflicts": 0
+        },
+        "complexity": 1411
+      },
+      "weights_only": {
+        "current": {
+          "targets": 1,
+          "coverage": 1.0,
+          "joint_nll": 8.900009002026582,
+          "accuracy": 0.0,
+          "conflicts": 0
+        },
+        "replay": {
+          "targets": 16,
+          "coverage": 1.0,
+          "joint_nll": 2.104375081200341,
+          "accuracy": 0.375,
+          "conflicts": 0
+        },
+        "complexity": 1411
+      },
+      "teacher": {
+        "current": {
+          "targets": 1,
+          "coverage": 1.0,
+          "joint_nll": 0.6974729909423734,
+          "accuracy": 1.0,
+          "conflicts": 0
+        },
+        "replay": {
+          "targets": 16,
+          "coverage": 1.0,
+          "joint_nll": 2.130451650341786,
+          "accuracy": 0.375,
+          "conflicts": 0
+        },
+        "complexity": 1422
+      }
+    },
+    "error": null,
+    "replay_tolerance": 0.02,
+    "selected_model_sha256": "d96dbd3abb8dc818c5b91b58ecb58777f63575d5798bcf4dead0186f24bf50af"
+  }
+}

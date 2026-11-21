@@ -1,0 +1,8 @@
+{
+  "format": "storyformers-online-v1",
+  "base_model_sha256": "cc29d7b80484e88de25cdc3ffade0843f3f200769361091a07085462c3569e9c",
+  "rationale": "The representative target, “apples” after “The,” has very low probability, but the batch documents show different valid continuations after the same determiner, including an adjective, a noun, and the title noun “End.” The other low-probability noun choices likewise vary by context, so this observation does not support a reusable lexical or structural condition that would safely favor one noun. Existing batch changes produced only modest likelihood movement, and the previous candidate comparison showed replay tradeoffs; a narrow rule risks overfitting while a broad noun rule would also boost continuations where the sentence proceeds differently. The unprompted exclamation-mark sample is diagnostic rather than a training target, so it does not justify a punctuation rule. Leave the grammar unchanged pending stronger evidence.",
+  "feature_definitions": {},
+  "heads": [],
+  "outputs": []
+}

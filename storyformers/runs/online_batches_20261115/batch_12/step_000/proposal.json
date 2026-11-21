@@ -1,0 +1,302 @@
+{
+  "format": "storyformers-online-v1",
+  "base_model_sha256": "ed84fdfa6cc3b9537c6b1b22e70a8f6e6c37061c3a1b69b3cc3aac76303b5764",
+  "feature_definitions": {},
+  "heads": [],
+  "outputs": [
+    {
+      "token": "\n\n",
+      "append": [
+        {
+          "pattern": {
+            "kind": "alt",
+            "children": [
+              {
+                "kind": "seq",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {
+                      "pos": "det"
+                    }
+                  },
+                  {
+                    "kind": "repeat",
+                    "children": [
+                      {
+                        "kind": "token",
+                        "tests": {
+                          "pos": "adj"
+                        }
+                      }
+                    ],
+                    "minimum": 0,
+                    "maximum": 16
+                  },
+                  {
+                    "kind": "token",
+                    "tests": {
+                      "pos": "n"
+                    }
+                  }
+                ]
+              },
+              {
+                "kind": "seq",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {
+                      "pos": "pn"
+                    }
+                  },
+                  {
+                    "kind": "token",
+                    "tests": {
+                      "pos": "conj"
+                    }
+                  },
+                  {
+                    "kind": "token",
+                    "tests": {
+                      "pos": "det"
+                    }
+                  },
+                  {
+                    "kind": "repeat",
+                    "children": [
+                      {
+                        "kind": "token",
+                        "tests": {
+                          "pos": "adj"
+                        }
+                      }
+                    ],
+                    "minimum": 0,
+                    "maximum": 16
+                  },
+                  {
+                    "kind": "token",
+                    "tests": {
+                      "pos": "n"
+                    }
+                  }
+                ]
+              },
+              {
+                "kind": "seq",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {
+                      "pos": "pn"
+                    }
+                  },
+                  {
+                    "kind": "token",
+                    "tests": {
+                      "pos": "poss"
+                    }
+                  },
+                  {
+                    "kind": "repeat",
+                    "children": [
+                      {
+                        "kind": "token",
+                        "tests": {
+                          "pos": "adj"
+                        }
+                      }
+                    ],
+                    "minimum": 0,
+                    "maximum": 16
+                  },
+                  {
+                    "kind": "token",
+                    "tests": {
+                      "pos": "n"
+                    }
+                  }
+                ]
+              }
+            ],
+            "weights": [
+              1.0,
+              1.0,
+              1.0
+            ]
+          },
+          "emit": {
+            "pos": "space"
+          },
+          "weight": 50.0
+        },
+        {
+          "pattern": {
+            "kind": "seq",
+            "children": [
+              {
+                "kind": "repeat",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {}
+                  }
+                ],
+                "minimum": 0,
+                "maximum": 32
+              },
+              {
+                "kind": "repeat",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {
+                      "pos": "adv"
+                    }
+                  }
+                ],
+                "minimum": 0,
+                "maximum": 2
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "pos": "v"
+                }
+              },
+              {
+                "kind": "repeat",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {
+                      "pos": "det"
+                    }
+                  }
+                ],
+                "minimum": 0,
+                "maximum": 1
+              },
+              {
+                "kind": "repeat",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {
+                      "pos": "adj"
+                    }
+                  }
+                ],
+                "minimum": 0,
+                "maximum": 16
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "pos": "n"
+                }
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "pos": "punct"
+                }
+              }
+            ]
+          },
+          "emit": {
+            "pos": "space"
+          },
+          "weight": 60.0
+        }
+      ],
+      "scale": []
+    },
+    {
+      "token": ".",
+      "append": [
+        {
+          "pattern": {
+            "kind": "seq",
+            "children": [
+              {
+                "kind": "repeat",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {}
+                  }
+                ],
+                "minimum": 0,
+                "maximum": 32
+              },
+              {
+                "kind": "repeat",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {
+                      "pos": "adv"
+                    }
+                  }
+                ],
+                "minimum": 0,
+                "maximum": 2
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "pos": "v"
+                }
+              },
+              {
+                "kind": "repeat",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {
+                      "pos": "det"
+                    }
+                  }
+                ],
+                "minimum": 0,
+                "maximum": 1
+              },
+              {
+                "kind": "repeat",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {
+                      "pos": "adj"
+                    }
+                  }
+                ],
+                "minimum": 0,
+                "maximum": 16
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "pos": "n"
+                }
+              }
+            ]
+          },
+          "emit": {
+            "pos": "punct"
+          },
+          "weight": 40.0
+        }
+      ],
+      "scale": [
+        {
+          "rule": 2,
+          "factor": 0.1
+        }
+      ]
+    }
+  ],
+  "rationale": "The batch shows a recurring structural gap: the model assigns almost no mass to paragraph breaks after an opening noun phrase or after an action sentence, while the very large generic period-after-noun rule can overwhelm other continuations. Add reusable noun-phrase patterns for opening descriptions and an action-clause-plus-punctuation pattern for paragraph breaks; add a corresponding action-clause period rule and reduce, rather than remove, the broad period-after-noun evidence. A period after an action clause can also be terminal, so the paragraph-break rule is deliberately moderate and preserves the existing end-token alternative. These patterns may still overgeneralize to unusual noun phrases or action clauses; the replay gate should check both that risk and the impact of the weight reduction."
+}

@@ -1,0 +1,179 @@
+{
+  "format": "storyformers-online-v1",
+  "base_model_sha256": "39bcbfc01384f0a969265747112c029bd2694dc881510b230e63288223b2e035",
+  "rationale": "The batch exposes several underweighted function-word continuations: the model assigns very little mass to a period after “now,” “for” after “all,” and clause verbs such as “is” or “was” after a pronoun. These short suffix rules capture recurring phrase patterns without asserting story phase or copying whole documents. A modest rule for “that” after “And” covers the observed alternative to “so.” These contexts can support other continuations, so the rules add evidence rather than declaring alternatives impossible. No head changes are needed. The prior candidate comparison also cautions against adding complexity that risks replay regression; this compact proposal remains provisional pending the replay gate.",
+  "feature_definitions": {},
+  "heads": [],
+  "outputs": [
+    {
+      "token": ".",
+      "append": [
+        {
+          "pattern": {
+            "kind": "seq",
+            "children": [
+              {
+                "kind": "repeat",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {}
+                  }
+                ],
+                "minimum": 0,
+                "maximum": 32
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "token": "now"
+                }
+              }
+            ]
+          },
+          "emit": {
+            "pos": "punct"
+          },
+          "weight": 1.5
+        }
+      ],
+      "scale": []
+    },
+    {
+      "token": "for",
+      "append": [
+        {
+          "pattern": {
+            "kind": "seq",
+            "children": [
+              {
+                "kind": "repeat",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {}
+                  }
+                ],
+                "minimum": 0,
+                "maximum": 32
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "token": "all"
+                }
+              }
+            ]
+          },
+          "emit": {
+            "pos": "prep"
+          },
+          "weight": 1.5
+        }
+      ],
+      "scale": []
+    },
+    {
+      "token": "is",
+      "append": [
+        {
+          "pattern": {
+            "kind": "seq",
+            "children": [
+              {
+                "kind": "repeat",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {}
+                  }
+                ],
+                "minimum": 0,
+                "maximum": 32
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "pos": "pron"
+                }
+              }
+            ]
+          },
+          "emit": {
+            "pos": "v"
+          },
+          "weight": 1.5
+        }
+      ],
+      "scale": []
+    },
+    {
+      "token": "was",
+      "append": [
+        {
+          "pattern": {
+            "kind": "seq",
+            "children": [
+              {
+                "kind": "repeat",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {}
+                  }
+                ],
+                "minimum": 0,
+                "maximum": 32
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "pos": "pron"
+                }
+              }
+            ]
+          },
+          "emit": {
+            "pos": "v"
+          },
+          "weight": 1.5
+        }
+      ],
+      "scale": []
+    },
+    {
+      "token": "that",
+      "append": [
+        {
+          "pattern": {
+            "kind": "seq",
+            "children": [
+              {
+                "kind": "repeat",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {}
+                  }
+                ],
+                "minimum": 0,
+                "maximum": 32
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "token": "And"
+                }
+              }
+            ]
+          },
+          "emit": {
+            "pos": "pron"
+          },
+          "weight": 1.0
+        }
+      ],
+      "scale": []
+    }
+  ]
+}

@@ -1,0 +1,401 @@
+{
+  "format": "storyformers-online-v1",
+  "base_model_sha256": "e53f34c6a6622959c3cd4c1a8232882500e49a9e9e0cd17adb5152288ec81b08",
+  "rationale": "The observed prefix ends in an adjective, where the target is a noun, but the current prediction distributes mass among punctuation, determiners, adjectives, and verbs. The batch repeatedly supports nouns after adjectives and possessive markers, including red apples, small needles, red scissors, and nouns following a possessive suffix. Add a shared syntactic cue to several frequent noun roots rather than encoding the observed sentence or a particular name. This remains a soft preference: the cue can also precede other continuations, and these lexical noun choices are not guaranteed by the prefix. The replay gate has not been evaluated for this proposal.",
+  "feature_definitions": {},
+  "heads": [],
+  "outputs": [
+    {
+      "token": "apples",
+      "append": [
+        {
+          "pattern": {
+            "kind": "seq",
+            "children": [
+              {
+                "kind": "repeat",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {}
+                  }
+                ],
+                "minimum": 0,
+                "maximum": 32
+              },
+              {
+                "kind": "alt",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {
+                      "pos": "adj"
+                    }
+                  },
+                  {
+                    "kind": "token",
+                    "tests": {
+                      "pos": "poss"
+                    }
+                  }
+                ],
+                "weights": [
+                  1.0,
+                  1.0
+                ]
+              }
+            ]
+          },
+          "emit": {
+            "pos": "n"
+          },
+          "weight": 5.0
+        }
+      ],
+      "scale": []
+    },
+    {
+      "token": "needles",
+      "append": [
+        {
+          "pattern": {
+            "kind": "seq",
+            "children": [
+              {
+                "kind": "repeat",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {}
+                  }
+                ],
+                "minimum": 0,
+                "maximum": 32
+              },
+              {
+                "kind": "alt",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {
+                      "pos": "adj"
+                    }
+                  },
+                  {
+                    "kind": "token",
+                    "tests": {
+                      "pos": "poss"
+                    }
+                  }
+                ],
+                "weights": [
+                  1.0,
+                  1.0
+                ]
+              }
+            ]
+          },
+          "emit": {
+            "pos": "n"
+          },
+          "weight": 5.0
+        }
+      ],
+      "scale": []
+    },
+    {
+      "token": "scissors",
+      "append": [
+        {
+          "pattern": {
+            "kind": "seq",
+            "children": [
+              {
+                "kind": "repeat",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {}
+                  }
+                ],
+                "minimum": 0,
+                "maximum": 32
+              },
+              {
+                "kind": "alt",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {
+                      "pos": "adj"
+                    }
+                  },
+                  {
+                    "kind": "token",
+                    "tests": {
+                      "pos": "poss"
+                    }
+                  }
+                ],
+                "weights": [
+                  1.0,
+                  1.0
+                ]
+              }
+            ]
+          },
+          "emit": {
+            "pos": "n"
+          },
+          "weight": 5.0
+        }
+      ],
+      "scale": []
+    },
+    {
+      "token": "pears",
+      "append": [
+        {
+          "pattern": {
+            "kind": "seq",
+            "children": [
+              {
+                "kind": "repeat",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {}
+                  }
+                ],
+                "minimum": 0,
+                "maximum": 32
+              },
+              {
+                "kind": "alt",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {
+                      "pos": "adj"
+                    }
+                  },
+                  {
+                    "kind": "token",
+                    "tests": {
+                      "pos": "poss"
+                    }
+                  }
+                ],
+                "weights": [
+                  1.0,
+                  1.0
+                ]
+              }
+            ]
+          },
+          "emit": {
+            "pos": "n"
+          },
+          "weight": 5.0
+        }
+      ],
+      "scale": []
+    },
+    {
+      "token": "time",
+      "append": [
+        {
+          "pattern": {
+            "kind": "seq",
+            "children": [
+              {
+                "kind": "repeat",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {}
+                  }
+                ],
+                "minimum": 0,
+                "maximum": 32
+              },
+              {
+                "kind": "alt",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {
+                      "pos": "adj"
+                    }
+                  },
+                  {
+                    "kind": "token",
+                    "tests": {
+                      "pos": "poss"
+                    }
+                  }
+                ],
+                "weights": [
+                  1.0,
+                  1.0
+                ]
+              }
+            ]
+          },
+          "emit": {
+            "pos": "n"
+          },
+          "weight": 5.0
+        }
+      ],
+      "scale": []
+    },
+    {
+      "token": "village",
+      "append": [
+        {
+          "pattern": {
+            "kind": "seq",
+            "children": [
+              {
+                "kind": "repeat",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {}
+                  }
+                ],
+                "minimum": 0,
+                "maximum": 32
+              },
+              {
+                "kind": "alt",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {
+                      "pos": "adj"
+                    }
+                  },
+                  {
+                    "kind": "token",
+                    "tests": {
+                      "pos": "poss"
+                    }
+                  }
+                ],
+                "weights": [
+                  1.0,
+                  1.0
+                ]
+              }
+            ]
+          },
+          "emit": {
+            "pos": "n"
+          },
+          "weight": 5.0
+        }
+      ],
+      "scale": []
+    },
+    {
+      "token": "day",
+      "append": [
+        {
+          "pattern": {
+            "kind": "seq",
+            "children": [
+              {
+                "kind": "repeat",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {}
+                  }
+                ],
+                "minimum": 0,
+                "maximum": 32
+              },
+              {
+                "kind": "alt",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {
+                      "pos": "adj"
+                    }
+                  },
+                  {
+                    "kind": "token",
+                    "tests": {
+                      "pos": "poss"
+                    }
+                  }
+                ],
+                "weights": [
+                  1.0,
+                  1.0
+                ]
+              }
+            ]
+          },
+          "emit": {
+            "pos": "n"
+          },
+          "weight": 5.0
+        }
+      ],
+      "scale": []
+    },
+    {
+      "token": "morning",
+      "append": [
+        {
+          "pattern": {
+            "kind": "seq",
+            "children": [
+              {
+                "kind": "repeat",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {}
+                  }
+                ],
+                "minimum": 0,
+                "maximum": 32
+              },
+              {
+                "kind": "alt",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {
+                      "pos": "adj"
+                    }
+                  },
+                  {
+                    "kind": "token",
+                    "tests": {
+                      "pos": "poss"
+                    }
+                  }
+                ],
+                "weights": [
+                  1.0,
+                  1.0
+                ]
+              }
+            ]
+          },
+          "emit": {
+            "pos": "n"
+          },
+          "weight": 5.0
+        }
+      ],
+      "scale": []
+    }
+  ]
+}

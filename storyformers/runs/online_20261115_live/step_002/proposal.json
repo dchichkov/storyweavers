@@ -1,0 +1,61 @@
+{
+  "format": "storyformers-online-v1",
+  "base_model_sha256": "85a020bb627ed2ec6d1b81bab4ff045c3b4ce07c9ee8947cdc2a557d3773f4a2",
+  "feature_definitions": {},
+  "heads": [],
+  "outputs": [
+    {
+      "token": ",",
+      "append": [
+        {
+          "pattern": {
+            "kind": "seq",
+            "children": [
+              {
+                "kind": "repeat",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {}
+                  }
+                ],
+                "minimum": 0,
+                "maximum": 32
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "token": "Once"
+                }
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "token": "upon"
+                }
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "token": "a"
+                }
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "token": "time"
+                }
+              }
+            ]
+          },
+          "emit": {
+            "pos": "punct"
+          },
+          "weight": 200.0
+        }
+      ],
+      "scale": []
+    }
+  ],
+  "rationale": "The model strongly favored a period because its high-weight noun-ending rule applies to the final token “time”; the observed comma is plausible after the conventional introductory phrase “Once upon a time.” Add a contextual comma rule for that phrase rather than weakening the broad noun-ending period rule, which is supported by replay examples. This intentionally narrow construction does not imply that all noun-final contexts take commas; other introductory phrases, punctuation conventions, and contexts ending in “time” may differ. This is a provisional hypothesis, not a claim that it passed replay."
+}

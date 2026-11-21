@@ -1,0 +1,181 @@
+{
+  "format": "storyformers-online-v1",
+  "base_model_sha256": "d2ed3ca35d689175ea059dff7823e9456968a6240b2402065340245ffa571500",
+  "rationale": "The batch repeatedly has an action verb immediately after a comma and a proper-noun subject, but this continuation is underweighted against adverbs and other candidates; the representative target used has probability only 0.0357. Add modest, shared evidence for the observed action verbs when the visible prefix contains a comma marked with the existing captured-person feature and ends in a proper noun. This transfers across names and does not make the verb continuation mandatory. Adverbs frequently occur between subject and verb, so contexts ending in an adverb remain distinct; other direct continuations after a subject are also possible. These additions are provisional and must be replay-gated.",
+  "feature_definitions": {},
+  "heads": [],
+  "outputs": [
+    {
+      "token": "used",
+      "append": [
+        {
+          "pattern": {
+            "kind": "seq",
+            "children": [
+              {
+                "kind": "repeat",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {}
+                  }
+                ],
+                "minimum": 0,
+                "maximum": 30
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "token": ",",
+                  "preceding_person_token": {
+                    "$present": true
+                  }
+                }
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "pos": "pn"
+                }
+              }
+            ]
+          },
+          "emit": {
+            "pos": "v"
+          },
+          "weight": 2.5
+        }
+      ],
+      "scale": []
+    },
+    {
+      "token": "ate",
+      "append": [
+        {
+          "pattern": {
+            "kind": "seq",
+            "children": [
+              {
+                "kind": "repeat",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {}
+                  }
+                ],
+                "minimum": 0,
+                "maximum": 30
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "token": ",",
+                  "preceding_person_token": {
+                    "$present": true
+                  }
+                }
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "pos": "pn"
+                }
+              }
+            ]
+          },
+          "emit": {
+            "pos": "v"
+          },
+          "weight": 2.5
+        }
+      ],
+      "scale": []
+    },
+    {
+      "token": "found",
+      "append": [
+        {
+          "pattern": {
+            "kind": "seq",
+            "children": [
+              {
+                "kind": "repeat",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {}
+                  }
+                ],
+                "minimum": 0,
+                "maximum": 30
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "token": ",",
+                  "preceding_person_token": {
+                    "$present": true
+                  }
+                }
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "pos": "pn"
+                }
+              }
+            ]
+          },
+          "emit": {
+            "pos": "v"
+          },
+          "weight": 2.5
+        }
+      ],
+      "scale": []
+    },
+    {
+      "token": "took",
+      "append": [
+        {
+          "pattern": {
+            "kind": "seq",
+            "children": [
+              {
+                "kind": "repeat",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {}
+                  }
+                ],
+                "minimum": 0,
+                "maximum": 30
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "token": ",",
+                  "preceding_person_token": {
+                    "$present": true
+                  }
+                }
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "pos": "pn"
+                }
+              }
+            ]
+          },
+          "emit": {
+            "pos": "v"
+          },
+          "weight": 2.5
+        }
+      ],
+      "scale": []
+    }
+  ]
+}

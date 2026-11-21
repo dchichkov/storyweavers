@@ -1,0 +1,210 @@
+{
+  "format": "storyformers-online-v1",
+  "base_model_sha256": "6badbb1eaef223a3f1c9f56e5929605012d1dc423f25186cec2fd9387401348b",
+  "rationale": "The batch shows a structural gap at the end of an introductory prepositional time phrase: the model strongly favors a period after a noun, while the observed phrase ending in “On a sunny day” takes a comma. Add a rule for that reusable phrase shape rather than copying the particular adjective or noun. The title-shaped opening “det + adjective(s) + noun” is followed by a paragraph break in the batch, so add a narrowly scoped rule for that opening pattern. Initial A and The both occur as valid determiner starts (including A in replay), so give each modest initial-context support rather than asserting one required opening. Add modest support for a connective after a paragraph break and for an adjective after a determiner. These rules may overpredict commas after other On-phrases, paragraph breaks after noun phrases, or particular lexical choices; they add evidence without making alternatives impossible.",
+  "feature_definitions": {},
+  "heads": [],
+  "outputs": [
+    {
+      "token": ",",
+      "append": [
+        {
+          "pattern": {
+            "kind": "seq",
+            "children": [
+              {
+                "kind": "repeat",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {}
+                  }
+                ],
+                "minimum": 0,
+                "maximum": 32
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "token": "On"
+                }
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "pos": "det"
+                }
+              },
+              {
+                "kind": "repeat",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {
+                      "pos": "adj"
+                    }
+                  }
+                ],
+                "minimum": 0,
+                "maximum": 16
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "pos": "n"
+                }
+              }
+            ]
+          },
+          "emit": {
+            "pos": "punct"
+          },
+          "weight": 300.0
+        }
+      ],
+      "scale": []
+    },
+    {
+      "token": "\n\n",
+      "append": [
+        {
+          "pattern": {
+            "kind": "seq",
+            "children": [
+              {
+                "kind": "token",
+                "tests": {
+                  "pos": "det"
+                }
+              },
+              {
+                "kind": "repeat",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {
+                      "pos": "adj"
+                    }
+                  }
+                ],
+                "minimum": 0,
+                "maximum": 16
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "pos": "n"
+                }
+              }
+            ]
+          },
+          "emit": {
+            "pos": "space"
+          },
+          "weight": 300.0
+        }
+      ],
+      "scale": []
+    },
+    {
+      "token": "The",
+      "append": [
+        {
+          "pattern": {
+            "kind": "seq",
+            "children": []
+          },
+          "emit": {
+            "pos": "det"
+          },
+          "weight": 10.0
+        }
+      ],
+      "scale": []
+    },
+    {
+      "token": "A",
+      "append": [
+        {
+          "pattern": {
+            "kind": "seq",
+            "children": []
+          },
+          "emit": {
+            "pos": "det"
+          },
+          "weight": 10.0
+        }
+      ],
+      "scale": []
+    },
+    {
+      "token": "And",
+      "append": [
+        {
+          "pattern": {
+            "kind": "seq",
+            "children": [
+              {
+                "kind": "repeat",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {}
+                  }
+                ],
+                "minimum": 0,
+                "maximum": 32
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "token": "\n\n"
+                }
+              }
+            ]
+          },
+          "emit": {
+            "pos": "conj"
+          },
+          "weight": 10.0
+        }
+      ],
+      "scale": []
+    },
+    {
+      "token": "sunny",
+      "append": [
+        {
+          "pattern": {
+            "kind": "seq",
+            "children": [
+              {
+                "kind": "repeat",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {}
+                  }
+                ],
+                "minimum": 0,
+                "maximum": 32
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "pos": "det"
+                }
+              }
+            ]
+          },
+          "emit": {
+            "pos": "adj"
+          },
+          "weight": 2.0
+        }
+      ],
+      "scale": []
+    }
+  ]
+}

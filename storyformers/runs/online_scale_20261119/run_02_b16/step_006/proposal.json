@@ -1,0 +1,145 @@
+{
+  "format": "storyformers-online-v1",
+  "base_model_sha256": "528e8acfec846f8e9338bbce8e2c01f5355fb23e9d3135c5b11e8185ef3dcee9",
+  "rationale": "The batch includes a very low-probability noun continuation after an initial determiner (The → needles), while the documents repeatedly use determiner-led noun phrases. The relevant POS is already visible, so a head or new feature is unnecessary. Add moderate evidence for several corpus nouns when the visible prefix ends in a determiner, preserving other lexical and grammatical continuations rather than asserting one noun is required. Nouns can also follow adjectives or appear in other constructions, and not every determiner must be followed immediately by a noun; these alternatives remain available. The free-generation sample is diagnostic only and is not treated as training evidence.",
+  "feature_definitions": {},
+  "heads": [],
+  "outputs": [
+    {
+      "token": "needles",
+      "append": [
+        {
+          "pattern": {
+            "kind": "seq",
+            "children": [
+              {
+                "kind": "repeat",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {}
+                  }
+                ],
+                "minimum": 0,
+                "maximum": 32
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "pos": "det"
+                }
+              }
+            ]
+          },
+          "emit": {
+            "pos": "n"
+          },
+          "weight": 4.0
+        }
+      ],
+      "scale": []
+    },
+    {
+      "token": "scissors",
+      "append": [
+        {
+          "pattern": {
+            "kind": "seq",
+            "children": [
+              {
+                "kind": "repeat",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {}
+                  }
+                ],
+                "minimum": 0,
+                "maximum": 32
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "pos": "det"
+                }
+              }
+            ]
+          },
+          "emit": {
+            "pos": "n"
+          },
+          "weight": 4.0
+        }
+      ],
+      "scale": []
+    },
+    {
+      "token": "apples",
+      "append": [
+        {
+          "pattern": {
+            "kind": "seq",
+            "children": [
+              {
+                "kind": "repeat",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {}
+                  }
+                ],
+                "minimum": 0,
+                "maximum": 32
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "pos": "det"
+                }
+              }
+            ]
+          },
+          "emit": {
+            "pos": "n"
+          },
+          "weight": 4.0
+        }
+      ],
+      "scale": []
+    },
+    {
+      "token": "pears",
+      "append": [
+        {
+          "pattern": {
+            "kind": "seq",
+            "children": [
+              {
+                "kind": "repeat",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {}
+                  }
+                ],
+                "minimum": 0,
+                "maximum": 32
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "pos": "det"
+                }
+              }
+            ]
+          },
+          "emit": {
+            "pos": "n"
+          },
+          "weight": 4.0
+        }
+      ],
+      "scale": []
+    }
+  ]
+}

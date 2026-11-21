@@ -1,0 +1,266 @@
+{
+  "format": "storyformers-online-v1",
+  "base_model_sha256": "c719c44c2602be722f458b362e343c98e392faef544d428d36ba6c413af23cd3",
+  "rationale": "The batch shows several low-probability continuations after a person name followed by the possessive marker: the next word may be an adjective or a noun. The existing prediction spreads probability over unrelated continuations, and the observed examples include both adjective+noun and bare-noun continuations. Add a reusable prefix feature for this visible possessive context, then modestly increase mass for the adjective and noun choices observed after it. This does not identify which possession or description is intended, and other adjectives and nouns can also be valid; the selected lexical boosts are deliberately limited to batch-supported choices. The malformed free-generation noun phrase is diagnostic only and is not treated as a training label.",
+  "feature_definitions": {
+    "person_possessive_suffix": {
+      "type": "boolean",
+      "description": "True on the final visible record when that record is the possessive marker 's and the immediately preceding record has POS pn."
+    }
+  },
+  "heads": [
+    {
+      "layer": 0,
+      "slot": 2,
+      "operation": "add",
+      "neuron": {
+        "name": "mark_person_possessive_suffix",
+        "rules": [
+          {
+            "pattern": {
+              "kind": "seq",
+              "children": [
+                {
+                  "kind": "repeat",
+                  "children": [
+                    {
+                      "kind": "token",
+                      "tests": {}
+                    }
+                  ],
+                  "minimum": 0,
+                  "maximum": 32
+                },
+                {
+                  "kind": "token",
+                  "tests": {
+                    "pos": "pn"
+                  }
+                },
+                {
+                  "kind": "token",
+                  "tests": {
+                    "pos": "poss",
+                    "token": "'s"
+                  }
+                }
+              ]
+            },
+            "emit": {
+              "person_possessive_suffix": true
+            },
+            "weight": 1.0
+          }
+        ],
+        "tables": {},
+        "max_states": 20000
+      }
+    }
+  ],
+  "outputs": [
+    {
+      "token": "red",
+      "append": [
+        {
+          "pattern": {
+            "kind": "seq",
+            "children": [
+              {
+                "kind": "repeat",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {}
+                  }
+                ],
+                "minimum": 0,
+                "maximum": 32
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "person_possessive_suffix": true
+                }
+              }
+            ]
+          },
+          "emit": {
+            "pos": "adj"
+          },
+          "weight": 8.0
+        }
+      ],
+      "scale": []
+    },
+    {
+      "token": "small",
+      "append": [
+        {
+          "pattern": {
+            "kind": "seq",
+            "children": [
+              {
+                "kind": "repeat",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {}
+                  }
+                ],
+                "minimum": 0,
+                "maximum": 32
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "person_possessive_suffix": true
+                }
+              }
+            ]
+          },
+          "emit": {
+            "pos": "adj"
+          },
+          "weight": 8.0
+        }
+      ],
+      "scale": []
+    },
+    {
+      "token": "apples",
+      "append": [
+        {
+          "pattern": {
+            "kind": "seq",
+            "children": [
+              {
+                "kind": "repeat",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {}
+                  }
+                ],
+                "minimum": 0,
+                "maximum": 32
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "person_possessive_suffix": true
+                }
+              }
+            ]
+          },
+          "emit": {
+            "pos": "n"
+          },
+          "weight": 8.0
+        }
+      ],
+      "scale": []
+    },
+    {
+      "token": "needles",
+      "append": [
+        {
+          "pattern": {
+            "kind": "seq",
+            "children": [
+              {
+                "kind": "repeat",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {}
+                  }
+                ],
+                "minimum": 0,
+                "maximum": 32
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "person_possessive_suffix": true
+                }
+              }
+            ]
+          },
+          "emit": {
+            "pos": "n"
+          },
+          "weight": 8.0
+        }
+      ],
+      "scale": []
+    },
+    {
+      "token": "scissors",
+      "append": [
+        {
+          "pattern": {
+            "kind": "seq",
+            "children": [
+              {
+                "kind": "repeat",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {}
+                  }
+                ],
+                "minimum": 0,
+                "maximum": 32
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "person_possessive_suffix": true
+                }
+              }
+            ]
+          },
+          "emit": {
+            "pos": "n"
+          },
+          "weight": 8.0
+        }
+      ],
+      "scale": []
+    },
+    {
+      "token": "pears",
+      "append": [
+        {
+          "pattern": {
+            "kind": "seq",
+            "children": [
+              {
+                "kind": "repeat",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {}
+                  }
+                ],
+                "minimum": 0,
+                "maximum": 32
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "person_possessive_suffix": true
+                }
+              }
+            ]
+          },
+          "emit": {
+            "pos": "n"
+          },
+          "weight": 8.0
+        }
+      ],
+      "scale": []
+    }
+  ]
+}

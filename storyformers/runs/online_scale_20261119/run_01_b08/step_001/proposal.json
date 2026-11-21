@@ -1,0 +1,116 @@
+{
+  "format": "storyformers-online-v1",
+  "base_model_sha256": "867d8ef6e277a8b7691a549d2da814603ea788c181b8be3a473cfd5e129682cf",
+  "rationale": "The batch shows weak support for several recurring lexical continuations: morning after One, apples after The/the, and now after for. The weight-only update barely changed the representative prediction, and morning has only a generic low-weight rule, unlike day after a determiner. Add bounded suffix rules to increase these plausible continuations without making them exclusive; other nouns, adjectives, and valid alternatives should remain possible. The determiner-to-apples rule may overfavor apples in contexts where an adjective or another noun follows, and the One-to-morning pattern should not rule out One day.",
+  "feature_definitions": {},
+  "heads": [],
+  "outputs": [
+    {
+      "token": "morning",
+      "append": [
+        {
+          "pattern": {
+            "kind": "seq",
+            "children": [
+              {
+                "kind": "repeat",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {}
+                  }
+                ],
+                "minimum": 0,
+                "maximum": 32
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "token": "One"
+                }
+              }
+            ]
+          },
+          "emit": {
+            "pos": "n"
+          },
+          "weight": 20.0
+        }
+      ],
+      "scale": []
+    },
+    {
+      "token": "apples",
+      "append": [
+        {
+          "pattern": {
+            "kind": "seq",
+            "children": [
+              {
+                "kind": "repeat",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {}
+                  }
+                ],
+                "minimum": 0,
+                "maximum": 32
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "token": {
+                    "$one_of": [
+                      "The",
+                      "the"
+                    ]
+                  }
+                }
+              }
+            ]
+          },
+          "emit": {
+            "pos": "n"
+          },
+          "weight": 8.0
+        }
+      ],
+      "scale": []
+    },
+    {
+      "token": "now",
+      "append": [
+        {
+          "pattern": {
+            "kind": "seq",
+            "children": [
+              {
+                "kind": "repeat",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {}
+                  }
+                ],
+                "minimum": 0,
+                "maximum": 32
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "token": "for"
+                }
+              }
+            ]
+          },
+          "emit": {
+            "pos": "adv"
+          },
+          "weight": 10.0
+        }
+      ],
+      "scale": []
+    }
+  ]
+}

@@ -1,0 +1,235 @@
+{
+  "format": "storyformers-online-v1",
+  "base_model_sha256": "f65425247d60c993ab4454e7d8ad3447b6de5872a9b2ac7b6afbcbe5abd6eac6",
+  "rationale": "In the representative context, the target is the previously introduced item noun “needles,” but competing determiner and adjective candidates dominate. Across the batch documents, item nouns commonly recur after an action verb or a modifying adjective; a causal feature capturing the noun immediately before the opening paragraph break can provide modest, reusable support for that repetition without conditioning on a proper name. This is not a hard constraint: some openings introduce a different subject or object, and a modifier or determiner may still be the correct next token. The added support is limited to item nouns represented in the batch and to verb/adjective contexts; the replay gate has not been run.",
+  "feature_definitions": {
+    "introductory_item_token": {
+      "type": "string",
+      "description": "Surface token of a noun in the visible prefix that is immediately followed by the opening paragraph-break token; absent when no such noun occurs."
+    }
+  },
+  "heads": [
+    {
+      "layer": 0,
+      "slot": 2,
+      "operation": "add",
+      "neuron": {
+        "name": "capture_introductory_item",
+        "rules": [
+          {
+            "pattern": {
+              "kind": "seq",
+              "children": [
+                {
+                  "kind": "repeat",
+                  "children": [
+                    {
+                      "kind": "token",
+                      "tests": {}
+                    }
+                  ],
+                  "minimum": 0,
+                  "maximum": 32
+                },
+                {
+                  "kind": "token",
+                  "tests": {
+                    "pos": "n"
+                  },
+                  "bind": "item"
+                },
+                {
+                  "kind": "token",
+                  "tests": {
+                    "token": "\n\n"
+                  }
+                },
+                {
+                  "kind": "repeat",
+                  "children": [
+                    {
+                      "kind": "token",
+                      "tests": {}
+                    }
+                  ],
+                  "minimum": 0,
+                  "maximum": 32
+                }
+              ]
+            },
+            "emit": {
+              "introductory_item_token": {
+                "$ref": "item.token"
+              }
+            },
+            "weight": 1.0
+          }
+        ],
+        "tables": {},
+        "max_states": 20000
+      }
+    }
+  ],
+  "outputs": [
+    {
+      "token": "apples",
+      "append": [
+        {
+          "pattern": {
+            "kind": "seq",
+            "children": [
+              {
+                "kind": "repeat",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {}
+                  }
+                ],
+                "minimum": 0,
+                "maximum": 31
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "pos": {
+                    "$one_of": [
+                      "v",
+                      "adj"
+                    ]
+                  },
+                  "introductory_item_token": "apples"
+                }
+              }
+            ]
+          },
+          "emit": {
+            "pos": "n"
+          },
+          "weight": 3.0
+        }
+      ],
+      "scale": []
+    },
+    {
+      "token": "needles",
+      "append": [
+        {
+          "pattern": {
+            "kind": "seq",
+            "children": [
+              {
+                "kind": "repeat",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {}
+                  }
+                ],
+                "minimum": 0,
+                "maximum": 31
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "pos": {
+                    "$one_of": [
+                      "v",
+                      "adj"
+                    ]
+                  },
+                  "introductory_item_token": "needles"
+                }
+              }
+            ]
+          },
+          "emit": {
+            "pos": "n"
+          },
+          "weight": 3.0
+        }
+      ],
+      "scale": []
+    },
+    {
+      "token": "pears",
+      "append": [
+        {
+          "pattern": {
+            "kind": "seq",
+            "children": [
+              {
+                "kind": "repeat",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {}
+                  }
+                ],
+                "minimum": 0,
+                "maximum": 31
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "pos": {
+                    "$one_of": [
+                      "v",
+                      "adj"
+                    ]
+                  },
+                  "introductory_item_token": "pears"
+                }
+              }
+            ]
+          },
+          "emit": {
+            "pos": "n"
+          },
+          "weight": 3.0
+        }
+      ],
+      "scale": []
+    },
+    {
+      "token": "scissors",
+      "append": [
+        {
+          "pattern": {
+            "kind": "seq",
+            "children": [
+              {
+                "kind": "repeat",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {}
+                  }
+                ],
+                "minimum": 0,
+                "maximum": 31
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "pos": {
+                    "$one_of": [
+                      "v",
+                      "adj"
+                    ]
+                  },
+                  "introductory_item_token": "scissors"
+                }
+              }
+            ]
+          },
+          "emit": {
+            "pos": "n"
+          },
+          "weight": 3.0
+        }
+      ],
+      "scale": []
+    }
+  ]
+}

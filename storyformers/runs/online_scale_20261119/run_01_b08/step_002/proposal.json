@@ -1,0 +1,103 @@
+{
+  "format": "storyformers-online-v1",
+  "base_model_sha256": "115dbf6b4d28a6089cc666af9b60097232cd09dd22bd06cee919c66705506c18",
+  "rationale": "The representative prefix “Ben and the” strongly favors unrelated nouns instead of the observed continuation “needles.” The batch also contains “Lily and the scissors,” supporting a reusable coordinated-person-plus-determiner context for increasing plausible noun continuations. Add the same bounded structural cue to both observed noun roots rather than conditioning on names or copying a sentence. These two examples do not establish that either noun is the only valid continuation; other nouns and alternatives should remain possible. The proposal is provisional and has not passed replay gating.",
+  "feature_definitions": {},
+  "heads": [],
+  "outputs": [
+    {
+      "token": "needles",
+      "append": [
+        {
+          "pattern": {
+            "kind": "seq",
+            "children": [
+              {
+                "kind": "repeat",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {}
+                  }
+                ],
+                "minimum": 0,
+                "maximum": 32
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "pos": "pn"
+                }
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "pos": "conj"
+                }
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "pos": "det",
+                  "token": "the"
+                }
+              }
+            ]
+          },
+          "emit": {
+            "pos": "n"
+          },
+          "weight": 10.0
+        }
+      ],
+      "scale": []
+    },
+    {
+      "token": "scissors",
+      "append": [
+        {
+          "pattern": {
+            "kind": "seq",
+            "children": [
+              {
+                "kind": "repeat",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {}
+                  }
+                ],
+                "minimum": 0,
+                "maximum": 32
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "pos": "pn"
+                }
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "pos": "conj"
+                }
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "pos": "det",
+                  "token": "the"
+                }
+              }
+            ]
+          },
+          "emit": {
+            "pos": "n"
+          },
+          "weight": 10.0
+        }
+      ],
+      "scale": []
+    }
+  ]
+}

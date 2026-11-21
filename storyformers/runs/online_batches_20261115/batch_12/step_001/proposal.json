@@ -1,0 +1,77 @@
+{
+  "format": "storyformers-online-v1",
+  "base_model_sha256": "4decae776873e8a2f3b7197b1364faf4f1ebd9e612018ce6b1a5ccc8622ff634",
+  "rationale": "The batch shows a specific underweighted continuation: after a prefix ending in “story,” the observed predicate is “ends” or “ended,” but the period rule for any prefix ending in a noun has overwhelming mass. Add a reusable, lexically anchored story-predicate rule to both observed verb roots, rather than weakening noun-final punctuation globally. This should also support other story-final prefixes; it may overfavor these verbs if a story noun is followed by a different continuation, so the rule is limited to that suffix. No new head or feature is needed. This is a provisional repair and has not passed replay gating.",
+  "feature_definitions": {},
+  "heads": [],
+  "outputs": [
+    {
+      "token": "ends",
+      "append": [
+        {
+          "pattern": {
+            "kind": "seq",
+            "children": [
+              {
+                "kind": "repeat",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {}
+                  }
+                ],
+                "minimum": 0,
+                "maximum": 32
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "token": "story"
+                }
+              }
+            ]
+          },
+          "emit": {
+            "pos": "v"
+          },
+          "weight": 250.0
+        }
+      ],
+      "scale": []
+    },
+    {
+      "token": "ended",
+      "append": [
+        {
+          "pattern": {
+            "kind": "seq",
+            "children": [
+              {
+                "kind": "repeat",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {}
+                  }
+                ],
+                "minimum": 0,
+                "maximum": 32
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "token": "story"
+                }
+              }
+            ]
+          },
+          "emit": {
+            "pos": "v"
+          },
+          "weight": 250.0
+        }
+      ],
+      "scale": []
+    }
+  ]
+}

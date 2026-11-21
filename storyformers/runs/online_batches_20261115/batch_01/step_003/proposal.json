@@ -1,0 +1,74 @@
+{
+  "format": "storyformers-online-v1",
+  "base_model_sha256": "ade4d063a776193c654c9d1e5c9177edb81b9db80eeefb366ded611e888f775e",
+  "feature_definitions": {},
+  "heads": [],
+  "outputs": [
+    {
+      "token": ",",
+      "append": [
+        {
+          "pattern": {
+            "kind": "seq",
+            "children": [
+              {
+                "kind": "repeat",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {}
+                  }
+                ],
+                "minimum": 0,
+                "maximum": 32
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "pos": "space"
+                }
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "pos": "prep"
+                }
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "pos": "det"
+                }
+              },
+              {
+                "kind": "repeat",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {
+                      "pos": "adj"
+                    }
+                  }
+                ],
+                "minimum": 0,
+                "maximum": 16
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "pos": "n"
+                }
+              }
+            ]
+          },
+          "emit": {
+            "pos": "punct"
+          },
+          "weight": 150.0
+        }
+      ],
+      "scale": []
+    }
+  ],
+  "rationale": "The observed prefix ends a sentence-initial prepositional phrase (“In a little village,”), but the model strongly favors a period because its noun-final period rule has very high weight; the comma root has little applicable mass. Add a comma rule for the reusable pattern of a space followed by a preposition, determiner, optional adjectives, and a noun. This also expresses the introductory-phrase structure in examples such as “On a sunny day,” without conditioning on a particular place or name. A noun-final period remains valid in other contexts, and prepositional phrases need not always be introductory or comma-terminated, so the rule is limited to the sentence-boundary-like space plus phrase pattern. This is a provisional repair; replay behavior still needs the gate’s evaluation."
+}

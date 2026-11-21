@@ -26,6 +26,24 @@ adjust grammar, projections, typed feature names/bindings and neuron names.
 This is a training-time tool; the proposed interleaved batch loop is described in
 the [catalog learning notes](catalog/README.md#use-in-the-batch-learning-loop).
 
+The [online teacher prototype](ONLINE.md) performs one output-weight backward
+step per revealed next-token example, then requests a Luna grammar revision and
+checks it against an earlier-example replay buffer. Head and output edits stage
+atomically; the API adapter uses a reusable cached prefix, Flex-only dispatch,
+and a persistent $10 spending ceiling. The driver is serial and resumable.
+The [ten-iteration live run](runs/online_20261115_live/REPORT.md) accepted six
+Luna grammar repairs for about $0.0068, improving held-out loss over weights alone;
+unprompted generation still produces short sentences without story framing.
+The [larger batch comparison](runs/online_batches_20261115/REPORT.md) runs ten
+iterations each with 1, 4, and 12 complete stories per backward pass, with
+independent controls and a shared Luna/Flex budget.
+The [ten larger continuation runs](runs/online_scale_20261119/REPORT.md) completed
+100 updates across five seeds at each of 8 and 16 stories per batch. Mean test
+accuracy reached 53.2% and 53.0%, respectively, from 46.7%; weight-only controls
+reached about 47.4–47.5%. All 50 trained-model samples still failed complete
+framing. The [results and gate diagnosis](ONLINE.md#completed-larger-run-results)
+explain why three useful head proposals were rejected by the complexity penalty.
+
 The [grammar-induction baseline](INDUCTION.md) learns head conditions and output
 weights from synthetic token/POS sequences, using one layer and a 19-token
 vocabulary. Run it locally with `.venv/bin/python -m storyformers.synthetic`.
@@ -50,6 +68,16 @@ decoding settings and the checkpoint fingerprint are retained. Reproduce with
 Shared annotation prompts, parsed corpora and training/evaluation artifacts are
 versioned; repeated provider requests/responses and per-prefix dispatch caches
 remain local and are excluded from Git.
+
+The separate [story-presentation experiment](PRESENTATION.md) wraps copies of
+the sentence corpus with four title styles, six openings, and six closings.
+It learns paragraph breaks as tokens and holds out opening/closing combinations.
+Run `.venv/bin/python -m storyformers.presentation --out /tmp/storyformer-presentation`
+to train a fresh checkpoint while preserving the sentence corpus and models.
+The [run report](runs/presentation_20261110/REPORT.md) compares 16- and
+64-condition banks and retains the new data, section scores, and unfiltered
+generations. The larger bank learns better local phrases, but complete story
+framing remains unreliable.
 
 The [candidate catalog](catalog/README.md) provides 1,024 typed attributes,
 1,024 proposed head functions and 1,024 linked grammar records, with examples,

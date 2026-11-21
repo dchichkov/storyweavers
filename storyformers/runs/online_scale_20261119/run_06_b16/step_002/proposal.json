@@ -1,0 +1,103 @@
+{
+  "format": "storyformers-online-v1",
+  "base_model_sha256": "c03a26c709abddcfae979dd5ae41026f32cb46bc0bbe1deb77b6a32b4947b760",
+  "rationale": "The batch exposes a structural gap in noun completion: after prefixes such as “a sunny” and “The red” or “The small,” the observed noun may have little or no matching output evidence. The existing day root handles a preceding determiner but not an adjective sequence; the scissors root likewise lacks the adjective-completion rule present for several other nouns. Add a reusable determiner-plus-one-or-more-adjectives suffix pattern to these two observed noun roots, with moderate mass. This should improve those batch continuations without copying full sentences or asserting that an adjective uniquely determines the next noun. Other nouns and non-noun continuations remain possible, and adjective-ending contexts outside these examples may favor different words.",
+  "feature_definitions": {},
+  "heads": [],
+  "outputs": [
+    {
+      "token": "day",
+      "append": [
+        {
+          "pattern": {
+            "kind": "seq",
+            "children": [
+              {
+                "kind": "repeat",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {}
+                  }
+                ],
+                "minimum": 0,
+                "maximum": 32
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "pos": "det"
+                }
+              },
+              {
+                "kind": "repeat",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {
+                      "pos": "adj"
+                    }
+                  }
+                ],
+                "minimum": 1,
+                "maximum": 4
+              }
+            ]
+          },
+          "emit": {
+            "pos": "n"
+          },
+          "weight": 50.0
+        }
+      ],
+      "scale": []
+    },
+    {
+      "token": "scissors",
+      "append": [
+        {
+          "pattern": {
+            "kind": "seq",
+            "children": [
+              {
+                "kind": "repeat",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {}
+                  }
+                ],
+                "minimum": 0,
+                "maximum": 32
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "pos": "det"
+                }
+              },
+              {
+                "kind": "repeat",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {
+                      "pos": "adj"
+                    }
+                  }
+                ],
+                "minimum": 1,
+                "maximum": 4
+              }
+            ]
+          },
+          "emit": {
+            "pos": "n"
+          },
+          "weight": 50.0
+        }
+      ],
+      "scale": []
+    }
+  ]
+}

@@ -1,0 +1,43 @@
+{
+  "format": "storyformers-online-v1",
+  "base_model_sha256": "2f0f0beebf993fef4ffa9b33a60ed2905ee066a40a2955d2f3f61fc7c24a8059",
+  "feature_definitions": {},
+  "heads": [],
+  "outputs": [
+    {
+      "token": "ended",
+      "append": [
+        {
+          "pattern": {
+            "kind": "seq",
+            "children": [
+              {
+                "kind": "repeat",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {}
+                  }
+                ],
+                "minimum": 0,
+                "maximum": 32
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "token": "story"
+                }
+              }
+            ]
+          },
+          "emit": {
+            "pos": "v"
+          },
+          "weight": 25.0
+        }
+      ],
+      "scale": []
+    }
+  ],
+  "rationale": "The prediction overwhelmingly favored a period because an existing high-weight period rule matches after any noun; the gradient nudged ended upward but left it very unlikely. Add a targeted continuation for a prefix ending in “story,” supporting the common narrative construction “the story ended” without suppressing other valid noun-final continuations globally. This may overfavor ended when story is followed by a different predicate or punctuation, so the replay gate should assess the tradeoff; this proposal has not passed that gate."
+}

@@ -1,0 +1,19 @@
+{
+  "format": "storyformers-online-v1",
+  "base_model_sha256": "96d7d9b98ce4bea28bf87ce405cc26c0c5d08c3158732bc206a1756bc14ef026",
+  "rationale": "The representative error is a noun-object choice: after “took the”, pears has low probability and unrelated nouns dominate. The batch repeatedly supplies pears as an object after a verb, including after a determiner, so modestly increasing the existing verb-conditioned determiner rule for pears is a compact lexical calibration. This does not imply that every verb or determiner should be followed by pears; alternatives such as apples and needles remain valid, and the immediate-after-verb examples are not covered by this rule. The free generation is diagnostic, not supervision. This provisional change has not passed replay or acceptance gates.",
+  "feature_definitions": {},
+  "heads": [],
+  "outputs": [
+    {
+      "token": "pears",
+      "append": [],
+      "scale": [
+        {
+          "rule": 8,
+          "factor": 2.0
+        }
+      ]
+    }
+  ]
+}

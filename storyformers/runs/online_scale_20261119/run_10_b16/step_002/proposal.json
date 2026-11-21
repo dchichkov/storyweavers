@@ -1,0 +1,74 @@
+{
+  "format": "storyformers-online-v1",
+  "base_model_sha256": "e2a4ea428118a7aae4e05282fd31b15880b5942de3517c19aac279eaa7677ed3",
+  "rationale": "The representative continuation after “Ben and the apples” is a paragraph break, but the existing coordinated-noun break rule requires an adjective; the same bare-noun pattern occurs in the batch example “Lily and the scissors.” Add a suffix rule covering a coordinated determiner phrase with zero or more adjectives before its noun. This generalizes across names and nouns rather than copying either phrase. It may also match coordinated noun phrases used inside sentences, so it preserves the other continuation options and should be checked by the replay gate.",
+  "feature_definitions": {},
+  "heads": [],
+  "outputs": [
+    {
+      "token": "\n\n",
+      "append": [
+        {
+          "pattern": {
+            "kind": "seq",
+            "children": [
+              {
+                "kind": "repeat",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {}
+                  }
+                ],
+                "minimum": 0,
+                "maximum": 32
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "pos": "pn"
+                }
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "pos": "conj"
+                }
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "pos": "det"
+                }
+              },
+              {
+                "kind": "repeat",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {
+                      "pos": "adj"
+                    }
+                  }
+                ],
+                "minimum": 0,
+                "maximum": 4
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "pos": "n"
+                }
+              }
+            ]
+          },
+          "emit": {
+            "pos": "space"
+          },
+          "weight": 203.5
+        }
+      ],
+      "scale": []
+    }
+  ]
+}

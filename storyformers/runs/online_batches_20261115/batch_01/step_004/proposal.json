@@ -1,0 +1,83 @@
+{
+  "format": "storyformers-online-v1",
+  "base_model_sha256": "a34e397047554796fa820d2467779fc1ab32d76387dc331e1db07bc6d021bccd",
+  "rationale": "The batch’s “our story” prefix strongly favored a period, although the observed continuation is “ends”; the existing noun-to-period rule is heavily weighted and the ends root has only a weak general rule. Add a focused rule for the visible phrase “our story,” and a focused period rule after “ends” to support the demonstrated closing sequence. These are narrow lexical cues rather than a claim that every noun or verb ends a sentence. Other continuations remain possible, and phrases such as “our story” may continue differently in other contexts; the replay gate must check that these targeted increases do not harm earlier examples.",
+  "feature_definitions": {},
+  "heads": [],
+  "outputs": [
+    {
+      "token": "ends",
+      "append": [
+        {
+          "pattern": {
+            "kind": "seq",
+            "children": [
+              {
+                "kind": "repeat",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {}
+                  }
+                ],
+                "minimum": 0,
+                "maximum": 32
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "token": "our"
+                }
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "token": "story"
+                }
+              }
+            ]
+          },
+          "emit": {
+            "pos": "v"
+          },
+          "weight": 500.0
+        }
+      ],
+      "scale": []
+    },
+    {
+      "token": ".",
+      "append": [
+        {
+          "pattern": {
+            "kind": "seq",
+            "children": [
+              {
+                "kind": "repeat",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {}
+                  }
+                ],
+                "minimum": 0,
+                "maximum": 32
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "token": "ends"
+                }
+              }
+            ]
+          },
+          "emit": {
+            "pos": "punct"
+          },
+          "weight": 5.0
+        }
+      ],
+      "scale": []
+    }
+  ]
+}

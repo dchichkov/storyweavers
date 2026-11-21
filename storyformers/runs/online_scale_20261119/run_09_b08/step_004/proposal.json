@@ -1,0 +1,43 @@
+{
+  "format": "storyformers-online-v1",
+  "base_model_sha256": "d586208e444a3a2b1ca7be82286ba9b2efd6c5fb275040041bd1012c51d8d459",
+  "rationale": "The batch includes a person name after an introductory phrase and comma; in the representative case, Ben has very low probability because its output root lacks the generic comma-context rule present for other person-name roots. Add the comparable rule for Ben so a name following a comma is supported without hard-coding the observed name choice or asserting that it is the only valid continuation. A comma can occur in other contexts, so this may also increase Ben's probability at some non-introductory commas; the existing alternatives should remain available, and the replay gate must assess that tradeoff.",
+  "feature_definitions": {},
+  "heads": [],
+  "outputs": [
+    {
+      "token": "Ben",
+      "append": [
+        {
+          "pattern": {
+            "kind": "seq",
+            "children": [
+              {
+                "kind": "repeat",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {}
+                  }
+                ],
+                "minimum": 0,
+                "maximum": 32
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "token": ","
+                }
+              }
+            ]
+          },
+          "emit": {
+            "pos": "pn"
+          },
+          "weight": 20.0
+        }
+      ],
+      "scale": []
+    }
+  ]
+}

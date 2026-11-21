@@ -1,0 +1,213 @@
+{
+  "format": "storyformers-online-v1",
+  "base_model_sha256": "6bca9091bd37979461d78145b169246d2101ebbbb5492b280e8aa234c205218e",
+  "rationale": "The batch contains repeated high-loss choices where the target has only a weak generic output rule: “little” after “a”, “story” after “the”, and “In” after a paragraph break. Add modest context-sensitive evidence for those continuations rather than treating the observed document as a fixed template. Also support an article after a preposition, a noun after an adjective, and sentence-final punctuation after a verb, all patterns represented in the batch. These are lexical or syntactic tendencies, not certainties: other adjectives can follow “a”, other nouns can follow “the” or an adjective, and a verb need not end a sentence. Replay examples include adjectives after “The” and varied paragraph openings, so the additions are restricted to their stated contexts and do not rule out alternatives.",
+  "feature_definitions": {},
+  "heads": [],
+  "outputs": [
+    {
+      "token": "little",
+      "append": [
+        {
+          "pattern": {
+            "kind": "seq",
+            "children": [
+              {
+                "kind": "repeat",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {}
+                  }
+                ],
+                "minimum": 0,
+                "maximum": 32
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "token": "a"
+                }
+              }
+            ]
+          },
+          "emit": {
+            "pos": "adj"
+          },
+          "weight": 8.0
+        }
+      ],
+      "scale": []
+    },
+    {
+      "token": "story",
+      "append": [
+        {
+          "pattern": {
+            "kind": "seq",
+            "children": [
+              {
+                "kind": "repeat",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {}
+                  }
+                ],
+                "minimum": 0,
+                "maximum": 32
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "token": "the"
+                }
+              }
+            ]
+          },
+          "emit": {
+            "pos": "n"
+          },
+          "weight": 20.0
+        }
+      ],
+      "scale": []
+    },
+    {
+      "token": "In",
+      "append": [
+        {
+          "pattern": {
+            "kind": "seq",
+            "children": [
+              {
+                "kind": "repeat",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {}
+                  }
+                ],
+                "minimum": 0,
+                "maximum": 32
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "token": "\n\n"
+                }
+              }
+            ]
+          },
+          "emit": {
+            "pos": "prep"
+          },
+          "weight": 5.0
+        }
+      ],
+      "scale": []
+    },
+    {
+      "token": "a",
+      "append": [
+        {
+          "pattern": {
+            "kind": "seq",
+            "children": [
+              {
+                "kind": "repeat",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {}
+                  }
+                ],
+                "minimum": 0,
+                "maximum": 32
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "pos": "prep"
+                }
+              }
+            ]
+          },
+          "emit": {
+            "pos": "det"
+          },
+          "weight": 0.1
+        }
+      ],
+      "scale": []
+    },
+    {
+      "token": "village",
+      "append": [
+        {
+          "pattern": {
+            "kind": "seq",
+            "children": [
+              {
+                "kind": "repeat",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {}
+                  }
+                ],
+                "minimum": 0,
+                "maximum": 32
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "pos": "adj"
+                }
+              }
+            ]
+          },
+          "emit": {
+            "pos": "n"
+          },
+          "weight": 2.0
+        }
+      ],
+      "scale": []
+    },
+    {
+      "token": ".",
+      "append": [
+        {
+          "pattern": {
+            "kind": "seq",
+            "children": [
+              {
+                "kind": "repeat",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {}
+                  }
+                ],
+                "minimum": 0,
+                "maximum": 32
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "pos": "v"
+                }
+              }
+            ]
+          },
+          "emit": {
+            "pos": "punct"
+          },
+          "weight": 1.0
+        }
+      ],
+      "scale": []
+    }
+  ]
+}

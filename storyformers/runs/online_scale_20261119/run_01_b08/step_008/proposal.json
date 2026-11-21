@@ -1,0 +1,50 @@
+{
+  "format": "storyformers-online-v1",
+  "base_model_sha256": "b34389a786a08cb4b520a79e5f77b76b2adaf8ce1fca43cbe06f407a4c978355",
+  "rationale": "The representative prefix is the complete opening phrase “Ben and the pears”; the model strongly favors sentence punctuation, while the batch documents show this PN–conjunction–determiner–noun opening followed by a paragraph separator. Existing high-mass separator rules do not cover this exact structure. Add a direct separator rule for that whole-prefix pattern rather than a name-specific rule or a broader continuation rule. This should transfer across proper nouns and noun choices, but the same phrase used as a non-opening fragment could be a counterexample. The batch and replay gate still need to evaluate this provisional repair; the free-generation sample is diagnostic, not supervision.",
+  "feature_definitions": {},
+  "heads": [],
+  "outputs": [
+    {
+      "token": "\n\n",
+      "append": [
+        {
+          "pattern": {
+            "kind": "seq",
+            "children": [
+              {
+                "kind": "token",
+                "tests": {
+                  "pos": "pn"
+                }
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "pos": "conj"
+                }
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "pos": "det"
+                }
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "pos": "n"
+                }
+              }
+            ]
+          },
+          "emit": {
+            "pos": "space"
+          },
+          "weight": 120.0
+        }
+      ],
+      "scale": []
+    }
+  ]
+}

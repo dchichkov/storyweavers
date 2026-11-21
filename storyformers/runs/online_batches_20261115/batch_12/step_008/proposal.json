@@ -1,0 +1,45 @@
+{
+  "format": "storyformers-online-v1",
+  "base_model_sha256": "a6f682fb523dcece5b6b7b317969aa1573a768f71017682f602c51853d2748f0",
+  "feature_definitions": {},
+  "heads": [],
+  "outputs": [
+    {
+      "token": "and",
+      "append": [
+        {
+          "pattern": {
+            "kind": "token",
+            "tests": {
+              "pos": "pn"
+            }
+          },
+          "emit": {
+            "pos": "conj"
+          },
+          "weight": 5.0
+        }
+      ],
+      "scale": []
+    },
+    {
+      "token": "'s",
+      "append": [
+        {
+          "pattern": {
+            "kind": "token",
+            "tests": {
+              "pos": "pn"
+            }
+          },
+          "emit": {
+            "pos": "poss"
+          },
+          "weight": 5.0
+        }
+      ],
+      "scale": []
+    }
+  ],
+  "rationale": "In the batch, an initial proper noun is followed by either “and” or the possessive suffix, but both targets have extremely low probability under the current roots. Add modest, prefix-local support for both continuations after a one-token proper-noun context; the observations do not justify choosing one continuation deterministically, nor conditioning on a particular name. This will not help other initial-noun constructions, and some names may validly continue with a verb or another phrase, so the added mass is limited. Replay examples do not show this exact context. The replay gate still needs to assess whether this provisional repair improves batch loss without materially harming earlier behavior."
+}

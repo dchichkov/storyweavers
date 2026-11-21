@@ -1,0 +1,43 @@
+{
+  "format": "storyformers-online-v1",
+  "base_model_sha256": "821785a810e11b548a17f01fb7eeb4a7217f4c2b6dea945c16444cf0bd89e8a4",
+  "rationale": "The batch repeatedly has “One morning,” but the current morning root assigns only tiny mass to morning after One, producing an extremely low target probability in the representative error. Add a suffix-conditioned noun rule for morning after One, using a moderate weight so other valid continuations remain possible. This does not resolve every noun prediction in the batch; in particular, “One day” is also valid, so the added evidence could slightly hurt those contexts. It is a compact lexical-context repair grounded in the repeated batch pattern, not a claim that One must always be followed by morning. No new feature or head is needed.",
+  "feature_definitions": {},
+  "heads": [],
+  "outputs": [
+    {
+      "token": "morning",
+      "append": [
+        {
+          "pattern": {
+            "kind": "seq",
+            "children": [
+              {
+                "kind": "repeat",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {}
+                  }
+                ],
+                "minimum": 0,
+                "maximum": 32
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "token": "One"
+                }
+              }
+            ]
+          },
+          "emit": {
+            "pos": "n"
+          },
+          "weight": 20.0
+        }
+      ],
+      "scale": []
+    }
+  ]
+}

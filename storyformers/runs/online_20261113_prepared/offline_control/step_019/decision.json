@@ -1,0 +1,655 @@
+{
+  "adopted": "weights_only",
+  "provisional": true,
+  "scores": {
+    "unchanged": {
+      "current": {
+        "targets": 1,
+        "coverage": 1.0,
+        "joint_nll": 4.488798219736706,
+        "accuracy": 0.0,
+        "conflicts": 0
+      },
+      "replay": {
+        "targets": 28,
+        "coverage": 1.0,
+        "joint_nll": 3.0994705497370205,
+        "accuracy": 0.32142857142857145,
+        "conflicts": 0
+      },
+      "complexity": 1370
+    },
+    "weights_only": {
+      "current": {
+        "targets": 1,
+        "coverage": 1.0,
+        "joint_nll": 4.289459106903058,
+        "accuracy": 0.0,
+        "conflicts": 0
+      },
+      "replay": {
+        "targets": 28,
+        "coverage": 1.0,
+        "joint_nll": 3.1004533003675876,
+        "accuracy": 0.32142857142857145,
+        "conflicts": 0
+      },
+      "complexity": 1370
+    },
+    "teacher": {
+      "current": {
+        "targets": 1,
+        "coverage": 1.0,
+        "joint_nll": 4.289459106903058,
+        "accuracy": 0.0,
+        "conflicts": 0
+      },
+      "replay": {
+        "targets": 28,
+        "coverage": 1.0,
+        "joint_nll": 3.1004533003675876,
+        "accuracy": 0.32142857142857145,
+        "conflicts": 0
+      },
+      "complexity": 1370
+    }
+  },
+  "error": null,
+  "replay_tolerance": 0.02,
+  "selected_model_sha256": "eca58a134bcd1a99c7f3f009fac2aa4e42cc98b9abeaa35ab1c9a5aa751f342d",
+  "before_model_sha256": "25bfb3650bcf1a5dddcab9951665918b6cb9211653d4ba19f32915c4de0ebec8",
+  "example": [
+    [
+      {
+        "token": "Lily",
+        "pos": "pn"
+      },
+      {
+        "token": "and",
+        "pos": "conj"
+      },
+      {
+        "token": "the",
+        "pos": "det"
+      },
+      {
+        "token": "red",
+        "pos": "adj"
+      },
+      {
+        "token": "scissors",
+        "pos": "n"
+      },
+      {
+        "token": "\n\n",
+        "pos": "space"
+      },
+      {
+        "token": "On",
+        "pos": "prep"
+      },
+      {
+        "token": "a",
+        "pos": "det"
+      },
+      {
+        "token": "sunny",
+        "pos": "adj"
+      },
+      {
+        "token": "day",
+        "pos": "n"
+      },
+      {
+        "token": ",",
+        "pos": "punct"
+      },
+      {
+        "token": "Lily",
+        "pos": "pn"
+      },
+      {
+        "token": "found",
+        "pos": "v"
+      },
+      {
+        "token": "red",
+        "pos": "adj"
+      },
+      {
+        "token": "scissors",
+        "pos": "n"
+      },
+      {
+        "token": ".",
+        "pos": "punct"
+      },
+      {
+        "token": "\n\n",
+        "pos": "space"
+      },
+      {
+        "token": "And",
+        "pos": "conj"
+      },
+      {
+        "token": "that",
+        "pos": "pron"
+      }
+    ],
+    {
+      "token": "was",
+      "pos": "v"
+    }
+  ],
+  "prediction_before_update": {
+    "probability": 0.011234136663959988,
+    "nll": 4.488798219736706,
+    "correct": false,
+    "conflicts": 0,
+    "top_joint": [
+      {
+        "latent": {
+          "pos": "det",
+          "entity": null,
+          "role": null,
+          "location": null,
+          "event": null,
+          "token": "the",
+          "position": {
+            "token": 19,
+            "sentence": 1,
+            "in_sentence": 2
+          }
+        },
+        "probability": 0.03825944557794686
+      },
+      {
+        "latent": {
+          "pos": "punct",
+          "entity": null,
+          "role": null,
+          "location": null,
+          "event": null,
+          "token": ".",
+          "position": {
+            "token": 19,
+            "sentence": 1,
+            "in_sentence": 2
+          }
+        },
+        "probability": 0.035879219043259115
+      },
+      {
+        "latent": {
+          "pos": "special",
+          "entity": null,
+          "role": null,
+          "location": null,
+          "event": null,
+          "token": "<END>",
+          "position": {
+            "token": 19,
+            "sentence": 1,
+            "in_sentence": 2
+          }
+        },
+        "probability": 0.03587713728983962
+      },
+      {
+        "latent": {
+          "pos": "n",
+          "entity": null,
+          "role": null,
+          "location": null,
+          "event": null,
+          "token": "scissors",
+          "position": {
+            "token": 19,
+            "sentence": 1,
+            "in_sentence": 2
+          }
+        },
+        "probability": 0.03166070014727282
+      },
+      {
+        "latent": {
+          "pos": "pn",
+          "entity": null,
+          "role": null,
+          "location": null,
+          "event": null,
+          "token": "Lily",
+          "position": {
+            "token": 19,
+            "sentence": 1,
+            "in_sentence": 2
+          }
+        },
+        "probability": 0.030309220466372768
+      },
+      {
+        "latent": {
+          "pos": "adj",
+          "entity": null,
+          "role": null,
+          "location": null,
+          "event": null,
+          "token": "small",
+          "position": {
+            "token": 19,
+            "sentence": 1,
+            "in_sentence": 2
+          }
+        },
+        "probability": 0.02988850613991971
+      },
+      {
+        "latent": {
+          "pos": "v",
+          "entity": null,
+          "role": null,
+          "location": null,
+          "event": null,
+          "token": "found",
+          "position": {
+            "token": 19,
+            "sentence": 1,
+            "in_sentence": 2
+          }
+        },
+        "probability": 0.029651645851775935
+      },
+      {
+        "latent": {
+          "pos": "v",
+          "entity": null,
+          "role": null,
+          "location": null,
+          "event": null,
+          "token": "took",
+          "position": {
+            "token": 19,
+            "sentence": 1,
+            "in_sentence": 2
+          }
+        },
+        "probability": 0.0276587281716566
+      },
+      {
+        "latent": {
+          "pos": "adj",
+          "entity": null,
+          "role": null,
+          "location": null,
+          "event": null,
+          "token": "red",
+          "position": {
+            "token": 19,
+            "sentence": 1,
+            "in_sentence": 2
+          }
+        },
+        "probability": 0.02732901641072812
+      },
+      {
+        "latent": {
+          "pos": "n",
+          "entity": null,
+          "role": null,
+          "location": null,
+          "event": null,
+          "token": "needles",
+          "position": {
+            "token": 19,
+            "sentence": 1,
+            "in_sentence": 2
+          }
+        },
+        "probability": 0.026988717809325487
+      }
+    ],
+    "residual": [
+      {
+        "pos": "pn",
+        "entity": null,
+        "role": null,
+        "location": null,
+        "event": null,
+        "token": "Lily",
+        "position": {
+          "token": 0,
+          "sentence": 0,
+          "in_sentence": 0
+        }
+      },
+      {
+        "pos": "conj",
+        "entity": null,
+        "role": null,
+        "location": null,
+        "event": null,
+        "token": "and",
+        "position": {
+          "token": 1,
+          "sentence": 0,
+          "in_sentence": 1
+        }
+      },
+      {
+        "pos": "det",
+        "entity": null,
+        "role": null,
+        "location": null,
+        "event": null,
+        "token": "the",
+        "position": {
+          "token": 2,
+          "sentence": 0,
+          "in_sentence": 2
+        }
+      },
+      {
+        "pos": "adj",
+        "entity": null,
+        "role": null,
+        "location": null,
+        "event": null,
+        "token": "red",
+        "position": {
+          "token": 3,
+          "sentence": 0,
+          "in_sentence": 3
+        }
+      },
+      {
+        "pos": "n",
+        "entity": null,
+        "role": null,
+        "location": null,
+        "event": null,
+        "token": "scissors",
+        "position": {
+          "token": 4,
+          "sentence": 0,
+          "in_sentence": 4
+        }
+      },
+      {
+        "pos": "space",
+        "entity": null,
+        "role": null,
+        "location": null,
+        "event": null,
+        "token": "\n\n",
+        "position": {
+          "token": 5,
+          "sentence": 0,
+          "in_sentence": 5
+        }
+      },
+      {
+        "pos": "prep",
+        "entity": null,
+        "role": null,
+        "location": null,
+        "event": null,
+        "token": "On",
+        "position": {
+          "token": 6,
+          "sentence": 0,
+          "in_sentence": 6
+        }
+      },
+      {
+        "pos": "det",
+        "entity": null,
+        "role": null,
+        "location": null,
+        "event": null,
+        "token": "a",
+        "position": {
+          "token": 7,
+          "sentence": 0,
+          "in_sentence": 7
+        }
+      },
+      {
+        "pos": "adj",
+        "entity": null,
+        "role": null,
+        "location": null,
+        "event": null,
+        "token": "sunny",
+        "position": {
+          "token": 8,
+          "sentence": 0,
+          "in_sentence": 8
+        }
+      },
+      {
+        "pos": "n",
+        "entity": null,
+        "role": null,
+        "location": null,
+        "event": null,
+        "token": "day",
+        "position": {
+          "token": 9,
+          "sentence": 0,
+          "in_sentence": 9
+        }
+      },
+      {
+        "pos": "punct",
+        "entity": null,
+        "role": null,
+        "location": null,
+        "event": null,
+        "token": ",",
+        "position": {
+          "token": 10,
+          "sentence": 0,
+          "in_sentence": 10
+        }
+      },
+      {
+        "pos": "pn",
+        "entity": null,
+        "role": null,
+        "location": null,
+        "event": null,
+        "token": "Lily",
+        "position": {
+          "token": 11,
+          "sentence": 0,
+          "in_sentence": 11
+        }
+      },
+      {
+        "pos": "v",
+        "entity": null,
+        "role": null,
+        "location": null,
+        "event": null,
+        "token": "found",
+        "position": {
+          "token": 12,
+          "sentence": 0,
+          "in_sentence": 12
+        },
+        "preceding_verb_surface": "found"
+      },
+      {
+        "pos": "adj",
+        "entity": null,
+        "role": null,
+        "location": null,
+        "event": null,
+        "token": "red",
+        "position": {
+          "token": 13,
+          "sentence": 0,
+          "in_sentence": 13
+        },
+        "preceding_verb_surface": "found"
+      },
+      {
+        "pos": "n",
+        "entity": null,
+        "role": null,
+        "location": null,
+        "event": null,
+        "token": "scissors",
+        "position": {
+          "token": 14,
+          "sentence": 0,
+          "in_sentence": 14
+        }
+      },
+      {
+        "pos": "punct",
+        "entity": null,
+        "role": null,
+        "location": null,
+        "event": null,
+        "token": ".",
+        "position": {
+          "token": 15,
+          "sentence": 0,
+          "in_sentence": 15
+        }
+      },
+      {
+        "pos": "space",
+        "entity": null,
+        "role": null,
+        "location": null,
+        "event": null,
+        "token": "\n\n",
+        "position": {
+          "token": 16,
+          "sentence": 0,
+          "in_sentence": 16
+        }
+      },
+      {
+        "pos": "conj",
+        "entity": null,
+        "role": null,
+        "location": null,
+        "event": null,
+        "token": "And",
+        "position": {
+          "token": 17,
+          "sentence": 1,
+          "in_sentence": 0
+        }
+      },
+      {
+        "pos": "pron",
+        "entity": null,
+        "role": null,
+        "location": null,
+        "event": null,
+        "token": "that",
+        "position": {
+          "token": 18,
+          "sentence": 1,
+          "in_sentence": 1
+        }
+      }
+    ],
+    "last_head_trace": []
+  },
+  "backward": {
+    "steps": 1,
+    "learning_rate": 0.2,
+    "training_nll_before_steps": [
+      4.488798219736706
+    ],
+    "largest_weight_changes": [
+      {
+        "token": "was",
+        "rule": 0,
+        "log_weight_delta": 0.19775317266720832
+      },
+      {
+        "token": "the",
+        "rule": 0,
+        "log_weight_delta": -0.007651889115589434
+      },
+      {
+        "token": ".",
+        "rule": 0,
+        "log_weight_delta": -0.007175843808651938
+      },
+      {
+        "token": "<END>",
+        "rule": 0,
+        "log_weight_delta": -0.007175427457967911
+      },
+      {
+        "token": "scissors",
+        "rule": 0,
+        "log_weight_delta": -0.006332140029454728
+      },
+      {
+        "token": "Lily",
+        "rule": 0,
+        "log_weight_delta": -0.006061844093274731
+      },
+      {
+        "token": "small",
+        "rule": 0,
+        "log_weight_delta": -0.0059777012279838854
+      },
+      {
+        "token": "found",
+        "rule": 0,
+        "log_weight_delta": -0.005930329170355161
+      },
+      {
+        "token": "took",
+        "rule": 0,
+        "log_weight_delta": -0.005531745634330996
+      },
+      {
+        "token": "red",
+        "rule": 0,
+        "log_weight_delta": -0.005465803282145779
+      },
+      {
+        "token": "needles",
+        "rule": 0,
+        "log_weight_delta": -0.005397743561865207
+      },
+      {
+        "token": "slowly",
+        "rule": 0,
+        "log_weight_delta": -0.005213016658134227
+      },
+      {
+        "token": "quickly",
+        "rule": 0,
+        "log_weight_delta": -0.005172203471192758
+      },
+      {
+        "token": "apples",
+        "rule": 0,
+        "log_weight_delta": -0.005007819144089396
+      },
+      {
+        "token": "pears",
+        "rule": 0,
+        "log_weight_delta": -0.004948172586862273
+      },
+      {
+        "token": "Tom",
+        "rule": 0,
+        "log_weight_delta": -0.004674018157733556
+      }
+    ]
+  },
+  "weight_control": "weights_only"
+}

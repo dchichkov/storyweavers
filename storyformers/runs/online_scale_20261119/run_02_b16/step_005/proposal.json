@@ -1,0 +1,321 @@
+{
+  "format": "storyformers-online-v1",
+  "base_model_sha256": "47493c93d28cd19806677674029ea8bc39ed575432444e72a08ece4a1a6f5dbe",
+  "rationale": "The batch repeatedly continues noun phrases with a noun after a determiner or adjective. The representative prefix ends in “the” and its gold noun receives almost no probability, while several competing nouns are strongly weighted by unrelated contextual rules. Add a moderate noun-production rule to frequent batch noun roots when the visible prefix ends in a determiner or adjective. This transfers across names and noun choices without asserting which noun must follow. It can over-weight nouns after adjectives in contexts where an adjective is not a modifier, and lexical choice remains uncertain; replay should check those tradeoffs.",
+  "feature_definitions": {},
+  "heads": [],
+  "outputs": [
+    {
+      "token": "scissors",
+      "append": [
+        {
+          "pattern": {
+            "kind": "seq",
+            "children": [
+              {
+                "kind": "repeat",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {}
+                  }
+                ],
+                "minimum": 0,
+                "maximum": 32
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "pos": {
+                    "$one_of": [
+                      "det",
+                      "adj"
+                    ]
+                  }
+                }
+              }
+            ]
+          },
+          "emit": {
+            "pos": "n"
+          },
+          "weight": 15.0
+        }
+      ],
+      "scale": []
+    },
+    {
+      "token": "needles",
+      "append": [
+        {
+          "pattern": {
+            "kind": "seq",
+            "children": [
+              {
+                "kind": "repeat",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {}
+                  }
+                ],
+                "minimum": 0,
+                "maximum": 32
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "pos": {
+                    "$one_of": [
+                      "det",
+                      "adj"
+                    ]
+                  }
+                }
+              }
+            ]
+          },
+          "emit": {
+            "pos": "n"
+          },
+          "weight": 15.0
+        }
+      ],
+      "scale": []
+    },
+    {
+      "token": "day",
+      "append": [
+        {
+          "pattern": {
+            "kind": "seq",
+            "children": [
+              {
+                "kind": "repeat",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {}
+                  }
+                ],
+                "minimum": 0,
+                "maximum": 32
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "pos": {
+                    "$one_of": [
+                      "det",
+                      "adj"
+                    ]
+                  }
+                }
+              }
+            ]
+          },
+          "emit": {
+            "pos": "n"
+          },
+          "weight": 15.0
+        }
+      ],
+      "scale": []
+    },
+    {
+      "token": "story",
+      "append": [
+        {
+          "pattern": {
+            "kind": "seq",
+            "children": [
+              {
+                "kind": "repeat",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {}
+                  }
+                ],
+                "minimum": 0,
+                "maximum": 32
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "pos": {
+                    "$one_of": [
+                      "det",
+                      "adj"
+                    ]
+                  }
+                }
+              }
+            ]
+          },
+          "emit": {
+            "pos": "n"
+          },
+          "weight": 15.0
+        }
+      ],
+      "scale": []
+    },
+    {
+      "token": "apples",
+      "append": [
+        {
+          "pattern": {
+            "kind": "seq",
+            "children": [
+              {
+                "kind": "repeat",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {}
+                  }
+                ],
+                "minimum": 0,
+                "maximum": 32
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "pos": {
+                    "$one_of": [
+                      "det",
+                      "adj"
+                    ]
+                  }
+                }
+              }
+            ]
+          },
+          "emit": {
+            "pos": "n"
+          },
+          "weight": 15.0
+        }
+      ],
+      "scale": []
+    },
+    {
+      "token": "time",
+      "append": [
+        {
+          "pattern": {
+            "kind": "seq",
+            "children": [
+              {
+                "kind": "repeat",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {}
+                  }
+                ],
+                "minimum": 0,
+                "maximum": 32
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "pos": {
+                    "$one_of": [
+                      "det",
+                      "adj"
+                    ]
+                  }
+                }
+              }
+            ]
+          },
+          "emit": {
+            "pos": "n"
+          },
+          "weight": 15.0
+        }
+      ],
+      "scale": []
+    },
+    {
+      "token": "End",
+      "append": [
+        {
+          "pattern": {
+            "kind": "seq",
+            "children": [
+              {
+                "kind": "repeat",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {}
+                  }
+                ],
+                "minimum": 0,
+                "maximum": 32
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "pos": {
+                    "$one_of": [
+                      "det",
+                      "adj"
+                    ]
+                  }
+                }
+              }
+            ]
+          },
+          "emit": {
+            "pos": "n"
+          },
+          "weight": 15.0
+        }
+      ],
+      "scale": []
+    },
+    {
+      "token": "pears",
+      "append": [
+        {
+          "pattern": {
+            "kind": "seq",
+            "children": [
+              {
+                "kind": "repeat",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {}
+                  }
+                ],
+                "minimum": 0,
+                "maximum": 32
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "pos": {
+                    "$one_of": [
+                      "det",
+                      "adj"
+                    ]
+                  }
+                }
+              }
+            ]
+          },
+          "emit": {
+            "pos": "n"
+          },
+          "weight": 15.0
+        }
+      ],
+      "scale": []
+    }
+  ]
+}

@@ -15,7 +15,14 @@ from .transformer import JointDistribution, semantic
 
 
 class LearningBatch:
-    def __init__(self, model, documents):
+    def __init__(self, model, documents=(), *, pairs=None):
+        """Use full documents, or explicit causal (prefix, target) observations.
+
+        Explicit pairs let online learning reveal one target at a time without
+        treating every token in its prefix as another training observation.
+        """
+        if pairs is not None and documents:
+            raise ValueError("supply documents or explicit pairs, not both")
         self.model = model
         self.base_model_sha256 = model_fingerprint(model)
         self.rules, self.rows, self.head_activations = [], [], Counter()
@@ -29,7 +36,9 @@ class LearningBatch:
                 if id(rule) not in rule_ids:
                     rule_ids[id(rule)] = len(self.rules)
                     self.rules.append(rule)
-        for context, target in model.examples(documents):
+        observations = (model.examples(documents) if pairs is None else
+                        ((model._prepare(context)[-model.context_size:], target) for context, target in pairs))
+        for context, target in observations:
             key = canonical(context)
             contexts[key] = context
             grouped[key][canonical(semantic(target))] += 1

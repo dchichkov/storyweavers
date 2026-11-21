@@ -1,0 +1,77 @@
+{
+  "format": "storyformers-online-v1",
+  "base_model_sha256": "12b170e66a4d03a317618a8cba7f88b3a66c8dd633854011bdf3b4ed02a5fc9b",
+  "rationale": "The representative prediction gives the gold noun pears only 0.00019 probability: the strongest candidates are generic nouns with existing determiner-context rules, while apples and pears lack comparable direct support after a determiner. The batch repeatedly uses determiner-plus-noun phrases, including the observed 'and the pears' and 'and the apples'. Add moderate direct determiner-context evidence for these frequent noun continuations. This is a lexical-root repair for a reusable noun phrase pattern, not a claim that every determiner predicts either fruit; other noun candidates and continuations remain available. Other determiner contexts and replay behavior may be counterexamples, so this remains provisional for the replay gate.",
+  "feature_definitions": {},
+  "heads": [],
+  "outputs": [
+    {
+      "token": "apples",
+      "append": [
+        {
+          "pattern": {
+            "kind": "seq",
+            "children": [
+              {
+                "kind": "repeat",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {}
+                  }
+                ],
+                "minimum": 0,
+                "maximum": 32
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "pos": "det"
+                }
+              }
+            ]
+          },
+          "emit": {
+            "pos": "n"
+          },
+          "weight": 20.0
+        }
+      ],
+      "scale": []
+    },
+    {
+      "token": "pears",
+      "append": [
+        {
+          "pattern": {
+            "kind": "seq",
+            "children": [
+              {
+                "kind": "repeat",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {}
+                  }
+                ],
+                "minimum": 0,
+                "maximum": 32
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "pos": "det"
+                }
+              }
+            ]
+          },
+          "emit": {
+            "pos": "n"
+          },
+          "weight": 20.0
+        }
+      ],
+      "scale": []
+    }
+  ]
+}

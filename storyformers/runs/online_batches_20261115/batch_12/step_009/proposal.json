@@ -1,0 +1,243 @@
+{
+  "format": "storyformers-online-v1",
+  "base_model_sha256": "4546f879997f51b3558bc25b5cf73fc0b686df95402f922e3b4a6a827058f70a",
+  "rationale": "The batch exposes several recurring phrase continuations whose output roots have only weak context-independent support. In particular, “This is where,” “In a little,” “And so the story,” and “that was the end” recur, while the representative prefix ending in “This is” assigns almost all probability to articles and adjectives. Add moderate lexical-suffix evidence for these phrases, plus “One morning” and “One day.” These suffixes generalize across the visible contexts without asserting anything from later words or copying whole stories. They are not universal rules: “is” can continue differently, “In a” need not always be followed by “little,” and “One” can precede other nouns, so the added evidence should not eliminate alternatives. The replay gate has not yet tested this provisional repair.",
+  "feature_definitions": {},
+  "heads": [],
+  "outputs": [
+    {
+      "token": "where",
+      "append": [
+        {
+          "pattern": {
+            "kind": "seq",
+            "children": [
+              {
+                "kind": "repeat",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {}
+                  }
+                ],
+                "minimum": 0,
+                "maximum": 32
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "token": "is"
+                }
+              }
+            ]
+          },
+          "emit": {
+            "pos": "adv"
+          },
+          "weight": 4.0
+        }
+      ],
+      "scale": []
+    },
+    {
+      "token": "little",
+      "append": [
+        {
+          "pattern": {
+            "kind": "seq",
+            "children": [
+              {
+                "kind": "repeat",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {}
+                  }
+                ],
+                "minimum": 0,
+                "maximum": 32
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "token": "In"
+                }
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "token": "a"
+                }
+              }
+            ]
+          },
+          "emit": {
+            "pos": "adj"
+          },
+          "weight": 4.0
+        }
+      ],
+      "scale": []
+    },
+    {
+      "token": "story",
+      "append": [
+        {
+          "pattern": {
+            "kind": "seq",
+            "children": [
+              {
+                "kind": "repeat",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {}
+                  }
+                ],
+                "minimum": 0,
+                "maximum": 32
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "token": "And"
+                }
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "token": "so"
+                }
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "token": "the"
+                }
+              }
+            ]
+          },
+          "emit": {
+            "pos": "n"
+          },
+          "weight": 4.0
+        }
+      ],
+      "scale": []
+    },
+    {
+      "token": "end",
+      "append": [
+        {
+          "pattern": {
+            "kind": "seq",
+            "children": [
+              {
+                "kind": "repeat",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {}
+                  }
+                ],
+                "minimum": 0,
+                "maximum": 32
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "token": "that"
+                }
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "token": "was"
+                }
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "token": "the"
+                }
+              }
+            ]
+          },
+          "emit": {
+            "pos": "n"
+          },
+          "weight": 4.0
+        }
+      ],
+      "scale": []
+    },
+    {
+      "token": "morning",
+      "append": [
+        {
+          "pattern": {
+            "kind": "seq",
+            "children": [
+              {
+                "kind": "repeat",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {}
+                  }
+                ],
+                "minimum": 0,
+                "maximum": 32
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "token": "One"
+                }
+              }
+            ]
+          },
+          "emit": {
+            "pos": "n"
+          },
+          "weight": 4.0
+        }
+      ],
+      "scale": []
+    },
+    {
+      "token": "day",
+      "append": [
+        {
+          "pattern": {
+            "kind": "seq",
+            "children": [
+              {
+                "kind": "repeat",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {}
+                  }
+                ],
+                "minimum": 0,
+                "maximum": 32
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "token": "One"
+                }
+              }
+            ]
+          },
+          "emit": {
+            "pos": "n"
+          },
+          "weight": 4.0
+        }
+      ],
+      "scale": []
+    }
+  ]
+}

@@ -1,0 +1,43 @@
+{
+  "format": "storyformers-online-v1",
+  "base_model_sha256": "119f59558f6348cf2d04754a19e943184b44e964a6a40b08664c385c9e6d2490",
+  "rationale": "The representative prediction assigns nearly all mass to object nouns after “a sunny,” while the observed continuation is the plausible noun “day.” The existing day grammar strongly supports a noun after a determiner but provides little support when an adjective intervenes. Add a general adjective-final-context rule for day, rather than encoding the specific phrase. This may also raise day in contexts where another noun is intended; the batch contains many valid adjective–noun combinations, so the rule should remain moderate and does not make competing nouns impossible. The batch’s broader noun and punctuation errors are not enough to justify a larger structural change here. The replay gate has not been evaluated.",
+  "feature_definitions": {},
+  "heads": [],
+  "outputs": [
+    {
+      "token": "day",
+      "append": [
+        {
+          "pattern": {
+            "kind": "seq",
+            "children": [
+              {
+                "kind": "repeat",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {}
+                  }
+                ],
+                "minimum": 0,
+                "maximum": 32
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "pos": "adj"
+                }
+              }
+            ]
+          },
+          "emit": {
+            "pos": "n"
+          },
+          "weight": 20.0
+        }
+      ],
+      "scale": []
+    }
+  ]
+}

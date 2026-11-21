@@ -1,0 +1,210 @@
+{
+  "format": "storyformers-online-v1",
+  "base_model_sha256": "ab6b484d677d41a28315a9007a434d84a18ce05db2e0e300012afd398f51ef49",
+  "rationale": "The representative prefix ends in a noun in an opening title-like phrase, but the model assigns nearly all its mass to punctuation rather than the paragraph break that follows these opening nominal phrases throughout the batch documents. Add a compositional rule for the observed opening shapes, without conditioning on a particular name or noun. The batch also includes “for” after “all” and “is” after “That”; the existing “is” rule covers “This” but not “That.” These targeted lexical-context rules address those observations while leaving other continuations available. A nominal phrase may sometimes continue as a sentence rather than a heading, and other words after “all” or “That” can be valid, so the rules add evidence rather than assert exclusivity. The replay gate has not been evaluated for this patch.",
+  "feature_definitions": {},
+  "heads": [],
+  "outputs": [
+    {
+      "token": "\n\n",
+      "append": [
+        {
+          "pattern": {
+            "kind": "alt",
+            "children": [
+              {
+                "kind": "seq",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {
+                      "pos": "pn"
+                    }
+                  },
+                  {
+                    "kind": "token",
+                    "tests": {
+                      "pos": "conj"
+                    }
+                  },
+                  {
+                    "kind": "token",
+                    "tests": {
+                      "pos": "det"
+                    }
+                  },
+                  {
+                    "kind": "repeat",
+                    "children": [
+                      {
+                        "kind": "token",
+                        "tests": {
+                          "pos": "adj"
+                        }
+                      }
+                    ],
+                    "minimum": 0,
+                    "maximum": 1
+                  },
+                  {
+                    "kind": "token",
+                    "tests": {
+                      "pos": "n"
+                    }
+                  }
+                ]
+              },
+              {
+                "kind": "seq",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {
+                      "pos": "det"
+                    }
+                  },
+                  {
+                    "kind": "repeat",
+                    "children": [
+                      {
+                        "kind": "token",
+                        "tests": {
+                          "pos": "adj"
+                        }
+                      }
+                    ],
+                    "minimum": 0,
+                    "maximum": 1
+                  },
+                  {
+                    "kind": "token",
+                    "tests": {
+                      "pos": "n"
+                    }
+                  }
+                ]
+              },
+              {
+                "kind": "seq",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {
+                      "pos": "pn"
+                    }
+                  },
+                  {
+                    "kind": "token",
+                    "tests": {
+                      "pos": "poss",
+                      "token": "'s"
+                    }
+                  },
+                  {
+                    "kind": "repeat",
+                    "children": [
+                      {
+                        "kind": "token",
+                        "tests": {
+                          "pos": "adj"
+                        }
+                      }
+                    ],
+                    "minimum": 0,
+                    "maximum": 1
+                  },
+                  {
+                    "kind": "token",
+                    "tests": {
+                      "pos": "n"
+                    }
+                  }
+                ]
+              }
+            ],
+            "weights": [
+              1.0,
+              1.0,
+              1.0
+            ]
+          },
+          "emit": {
+            "pos": "space"
+          },
+          "weight": 80.0
+        }
+      ],
+      "scale": []
+    },
+    {
+      "token": "for",
+      "append": [
+        {
+          "pattern": {
+            "kind": "seq",
+            "children": [
+              {
+                "kind": "repeat",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {}
+                  }
+                ],
+                "minimum": 0,
+                "maximum": 32
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "pos": "pron",
+                  "token": "all"
+                }
+              }
+            ]
+          },
+          "emit": {
+            "pos": "prep"
+          },
+          "weight": 12.0
+        }
+      ],
+      "scale": []
+    },
+    {
+      "token": "is",
+      "append": [
+        {
+          "pattern": {
+            "kind": "seq",
+            "children": [
+              {
+                "kind": "repeat",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {}
+                  }
+                ],
+                "minimum": 0,
+                "maximum": 32
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "pos": "pron",
+                  "token": "That"
+                }
+              }
+            ]
+          },
+          "emit": {
+            "pos": "v"
+          },
+          "weight": 8.0
+        }
+      ],
+      "scale": []
+    }
+  ]
+}

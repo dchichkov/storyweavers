@@ -1,0 +1,58 @@
+{
+  "format": "storyformers-online-v1",
+  "base_model_sha256": "23167c2e0d880138a5d20c4e1436058c7b20998b1155907bfb2b9e042339cecf",
+  "feature_definitions": {},
+  "heads": [],
+  "outputs": [
+    {
+      "token": "our",
+      "append": [
+        {
+          "pattern": {
+            "kind": "seq",
+            "children": [
+              {
+                "kind": "repeat",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {}
+                  }
+                ],
+                "minimum": 0,
+                "maximum": 32
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "token": "This",
+                  "pos": "pron"
+                }
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "token": "is",
+                  "pos": "v"
+                }
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "token": "where",
+                  "pos": "adv"
+                }
+              }
+            ]
+          },
+          "emit": {
+            "pos": "det"
+          },
+          "weight": 100.0
+        }
+      ],
+      "scale": []
+    }
+  ],
+  "rationale": "The batch repeatedly observes “This is where our” across different stories, while the current output root for “our” has only a weak context-free rule and competing verb candidates receive strong mass after an adverb. Add evidence for “our” after the visible phrase “This is where,” generalizing across the preceding story rather than copying a full document or relying on names. This should improve the seven repeated clause continuations without changing other contexts. It does not make “our” mandatory after “where”; other uses of “where” and alternative continuations remain possible, and replay evaluation is still needed."
+}

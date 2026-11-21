@@ -1,0 +1,8 @@
+{
+  "format": "storyformers-online-v1",
+  "base_model_sha256": "6db6c4ef87e99672a951734f08422d0e8bc1c63c6b455ac6bc1f6d343b8b0906",
+  "rationale": "No additional grammar repair is proposed. The representative error is an uncertain lexical choice after an initial determiner: the batch supports both adjective and noun continuations there, and the replay set also supports an adjective. Other high-loss cases involve lexical choices after conjunctions or commas, but do not establish a reusable constraint on which noun or name must follow. The batch already shows a slight NLL improvement from the gradient update. Adding a specific noun-to-context association would risk replay regression and copy observed lexical pairings rather than generalize. The free-generation sample is diagnostic, not a training label; it does not by itself justify forbidding any of its continuations. Counterexamples to a stronger determiner rule include adjective continuations and varied noun phrases, so uncertainty should be retained pending more evidence.",
+  "feature_definitions": {},
+  "heads": [],
+  "outputs": []
+}

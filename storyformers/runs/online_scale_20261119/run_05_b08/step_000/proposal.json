@@ -1,0 +1,160 @@
+{
+  "format": "storyformers-online-v1",
+  "base_model_sha256": "9a5c132a728b79dac695580e5bb99c2d4e3c2513599cb728b4f8b6e7d56542f9",
+  "rationale": "The batch repeatedly ends the phrase “That is all for now,” but the roots for “is,” “for,” and “now” have almost no contextual support, leaving these observed continuations at very low probability. Add reusable local phrase rules for “That/This is,” “all for,” and “for now.” “One morning” is also observed twice and currently poorly supported, so add a modest-weight rule after “One”; the batch also contains “One day,” so this deliberately preserves that alternative rather than treating morning as certain. The unprompted “One day” generation is diagnostic, not a training label. These are provisional repairs and still require replay gating; the phrase rules may overfavor their continuations in other contexts.",
+  "feature_definitions": {},
+  "heads": [],
+  "outputs": [
+    {
+      "token": "is",
+      "append": [
+        {
+          "pattern": {
+            "kind": "seq",
+            "children": [
+              {
+                "kind": "repeat",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {}
+                  }
+                ],
+                "minimum": 0,
+                "maximum": 32
+              },
+              {
+                "kind": "alt",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {
+                      "token": "That"
+                    }
+                  },
+                  {
+                    "kind": "token",
+                    "tests": {
+                      "token": "This"
+                    }
+                  }
+                ],
+                "weights": [
+                  1.0,
+                  1.0
+                ]
+              }
+            ]
+          },
+          "emit": {
+            "pos": "v"
+          },
+          "weight": 20.0
+        }
+      ],
+      "scale": []
+    },
+    {
+      "token": "for",
+      "append": [
+        {
+          "pattern": {
+            "kind": "seq",
+            "children": [
+              {
+                "kind": "repeat",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {}
+                  }
+                ],
+                "minimum": 0,
+                "maximum": 32
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "token": "all"
+                }
+              }
+            ]
+          },
+          "emit": {
+            "pos": "prep"
+          },
+          "weight": 20.0
+        }
+      ],
+      "scale": []
+    },
+    {
+      "token": "now",
+      "append": [
+        {
+          "pattern": {
+            "kind": "seq",
+            "children": [
+              {
+                "kind": "repeat",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {}
+                  }
+                ],
+                "minimum": 0,
+                "maximum": 32
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "token": "for"
+                }
+              }
+            ]
+          },
+          "emit": {
+            "pos": "adv"
+          },
+          "weight": 20.0
+        }
+      ],
+      "scale": []
+    },
+    {
+      "token": "morning",
+      "append": [
+        {
+          "pattern": {
+            "kind": "seq",
+            "children": [
+              {
+                "kind": "repeat",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {}
+                  }
+                ],
+                "minimum": 0,
+                "maximum": 32
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "token": "One"
+                }
+              }
+            ]
+          },
+          "emit": {
+            "pos": "n"
+          },
+          "weight": 4.0
+        }
+      ],
+      "scale": []
+    }
+  ]
+}

@@ -1,0 +1,95 @@
+{
+  "format": "storyformers-online-v1",
+  "base_model_sha256": "2950c9ab944f0ecc0ce6e713a6dfe02bcc80c2ad7898ab0372a5a13f73d9321a",
+  "rationale": "The representative failure is the period after “That is all for now”: the model assigns most probability to verbs despite the visible closing phrase. The batch contains this same period target twice, so add modest phrase-conditioned punctuation evidence rather than asserting a general sentence-ending rule. The batch also supports a small amount of exclamation evidence after “Until next time.” These phrases can take other punctuation in other contexts, so the additions should not eliminate alternatives. The unprompted sample is diagnostic, not a training label.",
+  "feature_definitions": {},
+  "heads": [],
+  "outputs": [
+    {
+      "token": ".",
+      "append": [
+        {
+          "pattern": {
+            "kind": "seq",
+            "children": [
+              {
+                "kind": "repeat",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {}
+                  }
+                ],
+                "minimum": 0,
+                "maximum": 32
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "token": "for"
+                }
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "token": "now"
+                }
+              }
+            ]
+          },
+          "emit": {
+            "pos": "punct"
+          },
+          "weight": 4.0
+        }
+      ],
+      "scale": []
+    },
+    {
+      "token": "!",
+      "append": [
+        {
+          "pattern": {
+            "kind": "seq",
+            "children": [
+              {
+                "kind": "repeat",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {}
+                  }
+                ],
+                "minimum": 0,
+                "maximum": 32
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "token": "Until"
+                }
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "token": "next"
+                }
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "token": "time"
+                }
+              }
+            ]
+          },
+          "emit": {
+            "pos": "punct"
+          },
+          "weight": 2.0
+        }
+      ],
+      "scale": []
+    }
+  ]
+}

@@ -1,0 +1,348 @@
+{
+  "format": "storyformers-online-v1",
+  "base_model_sha256": "d3ab6f4e224e1acaf09a582e03765439c00ff30de0a40cbdee6065873bdc5f57",
+  "feature_definitions": {},
+  "heads": [],
+  "outputs": [
+    {
+      "token": "!",
+      "append": [
+        {
+          "pattern": {
+            "kind": "seq",
+            "children": [
+              {
+                "kind": "repeat",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {}
+                  }
+                ],
+                "minimum": 0,
+                "maximum": 32
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "pos": "prep",
+                  "token": "Until"
+                }
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "pos": "adj",
+                  "token": "next"
+                }
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "pos": "n",
+                  "token": "time"
+                }
+              }
+            ]
+          },
+          "emit": {
+            "pos": "punct"
+          },
+          "weight": 600.0
+        }
+      ],
+      "scale": []
+    },
+    {
+      "token": "\n\n",
+      "append": [
+        {
+          "pattern": {
+            "kind": "alt",
+            "children": [
+              {
+                "kind": "seq",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {
+                      "pos": "pn"
+                    }
+                  },
+                  {
+                    "kind": "token",
+                    "tests": {
+                      "pos": "poss"
+                    }
+                  },
+                  {
+                    "kind": "repeat",
+                    "children": [
+                      {
+                        "kind": "token",
+                        "tests": {
+                          "pos": "adj"
+                        }
+                      }
+                    ],
+                    "minimum": 0,
+                    "maximum": 8
+                  },
+                  {
+                    "kind": "token",
+                    "tests": {
+                      "pos": "n"
+                    }
+                  }
+                ]
+              },
+              {
+                "kind": "seq",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {
+                      "pos": "det"
+                    }
+                  },
+                  {
+                    "kind": "repeat",
+                    "children": [
+                      {
+                        "kind": "token",
+                        "tests": {
+                          "pos": "adj"
+                        }
+                      }
+                    ],
+                    "minimum": 0,
+                    "maximum": 8
+                  },
+                  {
+                    "kind": "token",
+                    "tests": {
+                      "pos": "n"
+                    }
+                  }
+                ]
+              },
+              {
+                "kind": "seq",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {
+                      "pos": "pn"
+                    }
+                  },
+                  {
+                    "kind": "token",
+                    "tests": {
+                      "pos": "conj"
+                    }
+                  },
+                  {
+                    "kind": "token",
+                    "tests": {
+                      "pos": "det"
+                    }
+                  },
+                  {
+                    "kind": "repeat",
+                    "children": [
+                      {
+                        "kind": "token",
+                        "tests": {
+                          "pos": "adj"
+                        }
+                      }
+                    ],
+                    "minimum": 0,
+                    "maximum": 8
+                  },
+                  {
+                    "kind": "token",
+                    "tests": {
+                      "pos": "n"
+                    }
+                  }
+                ]
+              },
+              {
+                "kind": "seq",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {
+                      "pos": "det"
+                    }
+                  },
+                  {
+                    "kind": "token",
+                    "tests": {
+                      "pos": "n"
+                    }
+                  },
+                  {
+                    "kind": "token",
+                    "tests": {
+                      "pos": "prep"
+                    }
+                  },
+                  {
+                    "kind": "token",
+                    "tests": {
+                      "pos": "pn"
+                    }
+                  }
+                ]
+              }
+            ],
+            "weights": [
+              1.0,
+              1.0,
+              1.0,
+              1.0
+            ]
+          },
+          "emit": {
+            "pos": "space"
+          },
+          "weight": 300.0
+        },
+        {
+          "pattern": {
+            "kind": "seq",
+            "children": [
+              {
+                "kind": "repeat",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {}
+                  }
+                ],
+                "minimum": 0,
+                "maximum": 32
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "pos": "pn"
+                }
+              },
+              {
+                "kind": "repeat",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {
+                      "pos": "adv"
+                    }
+                  }
+                ],
+                "minimum": 0,
+                "maximum": 1
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "pos": "v"
+                }
+              },
+              {
+                "kind": "repeat",
+                "children": [
+                  {
+                    "kind": "alt",
+                    "children": [
+                      {
+                        "kind": "token",
+                        "tests": {
+                          "pos": "det"
+                        }
+                      },
+                      {
+                        "kind": "token",
+                        "tests": {
+                          "pos": "adj"
+                        }
+                      }
+                    ],
+                    "weights": [
+                      1.0,
+                      1.0
+                    ]
+                  }
+                ],
+                "minimum": 0,
+                "maximum": 3
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "pos": "n"
+                }
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "pos": "punct",
+                  "token": "."
+                }
+              }
+            ]
+          },
+          "emit": {
+            "pos": "space"
+          },
+          "weight": 300.0
+        }
+      ],
+      "scale": []
+    },
+    {
+      "token": ",",
+      "append": [
+        {
+          "pattern": {
+            "kind": "seq",
+            "children": [
+              {
+                "kind": "repeat",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {}
+                  }
+                ],
+                "minimum": 0,
+                "maximum": 32
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "pos": "det",
+                  "token": "One"
+                }
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "pos": "n",
+                  "token": "morning"
+                }
+              }
+            ]
+          },
+          "emit": {
+            "pos": "punct"
+          },
+          "weight": 250.0
+        }
+      ],
+      "scale": []
+    }
+  ],
+  "rationale": "The batch repeatedly ends the phrase “Until next time” with an exclamation mark, but the existing noun-ending period rule overwhelms the weak generic exclamation output. A suffix rule for that reusable phrase raises the appropriate punctuation without removing alternatives. Newline targets occur after several kinds of opening noun phrases and after action sentences ending in a period; the added rules cover those POS-level patterns rather than memorizing complete documents. The period rule could also match a sentence that is final, so the competing end-token option is deliberately retained. The remaining “One morning,” example supports a narrow temporal-introductory comma rule. These are provisional batch-driven repairs; replay behavior and mean loss still require the replay gate."
+}

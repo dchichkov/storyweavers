@@ -1,0 +1,89 @@
+{
+  "format": "storyformers-online-v1",
+  "base_model_sha256": "cb39d4b30eec45ef12dd34c8b030f6e86497de107074f5db73164732c6fc6f6d",
+  "rationale": "The batch underpredicts several nouns after determiners or adjectives. In particular, the opening prefix The supports apples in multiple documents, while sunny day and red apples show recurring adjective–noun continuations. Add modest lexical evidence for apples after an initial The and after an adjective, and for day after an adjective. These rules generalize over contexts rather than names and leave competing noun continuations available. The initial-The rule may also favor apples in contexts whose noun is needles, and adjective–noun sequences permit many lexical choices; the added mass is therefore restrained. The earlier teacher candidate improved batch loss but had higher replay loss than unchanged, so this patch remains provisional and should be judged by the replay gate.",
+  "feature_definitions": {},
+  "heads": [],
+  "outputs": [
+    {
+      "token": "apples",
+      "append": [
+        {
+          "pattern": {
+            "kind": "token",
+            "tests": {
+              "token": "The"
+            }
+          },
+          "emit": {
+            "pos": "n"
+          },
+          "weight": 8.0
+        },
+        {
+          "pattern": {
+            "kind": "seq",
+            "children": [
+              {
+                "kind": "repeat",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {}
+                  }
+                ],
+                "minimum": 0,
+                "maximum": 32
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "pos": "adj"
+                }
+              }
+            ]
+          },
+          "emit": {
+            "pos": "n"
+          },
+          "weight": 6.0
+        }
+      ],
+      "scale": []
+    },
+    {
+      "token": "day",
+      "append": [
+        {
+          "pattern": {
+            "kind": "seq",
+            "children": [
+              {
+                "kind": "repeat",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {}
+                  }
+                ],
+                "minimum": 0,
+                "maximum": 32
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "pos": "adj"
+                }
+              }
+            ]
+          },
+          "emit": {
+            "pos": "n"
+          },
+          "weight": 8.0
+        }
+      ],
+      "scale": []
+    }
+  ]
+}

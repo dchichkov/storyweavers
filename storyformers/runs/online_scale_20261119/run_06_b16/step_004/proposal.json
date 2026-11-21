@@ -1,0 +1,49 @@
+{
+  "format": "storyformers-online-v1",
+  "base_model_sha256": "7f50260f9b1205617dc7094efd409f599ee875940859cf2e09d1095f0281f78b",
+  "rationale": "The representative prefix ends in an adjective after a determiner, and the target is the noun “day.” Existing noun roots provide strong mass for this determiner-plus-adjective shape, while the day root has a strong rule for a determiner alone but no corresponding adjective-following rule; this leaves day nearly unpredicted. Add modest, additive evidence for day after any determiner-adjective suffix. This generalizes beyond the observed words and does not force day, since other nouns remain valid continuations. It may add some probability to day in adjective-modified object phrases, so the evidence is deliberately limited. The batch also contains many valid adjective-modified object nouns, which argues against asserting that all such phrases end in day. This is a provisional repair, not a claim that replay or the acceptance gate has passed.",
+  "feature_definitions": {},
+  "heads": [],
+  "outputs": [
+    {
+      "token": "day",
+      "append": [
+        {
+          "pattern": {
+            "kind": "seq",
+            "children": [
+              {
+                "kind": "repeat",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {}
+                  }
+                ],
+                "minimum": 0,
+                "maximum": 32
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "pos": "det"
+                }
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "pos": "adj"
+                }
+              }
+            ]
+          },
+          "emit": {
+            "pos": "n"
+          },
+          "weight": 20.0
+        }
+      ],
+      "scale": []
+    }
+  ]
+}

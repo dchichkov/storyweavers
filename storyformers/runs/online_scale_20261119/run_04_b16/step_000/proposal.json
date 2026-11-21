@@ -1,0 +1,43 @@
+{
+  "format": "storyformers-online-v1",
+  "base_model_sha256": "5f69732774c066ee1ea8cbba6d63bf5f3a8e2cb3c3ce38b8b061e92316a3eca1",
+  "rationale": "The observed continuation is “One morning,” but morning has only a weak general noun rule and receives negligible probability where the batch shows it following One. Add a focused rule for that visible lexical context rather than asserting a broader story phase or changing other noun continuations. This may be less useful for contexts where One is not a time expression, and “One morning” remains only one valid continuation; other nouns such as day and time should retain their existing alternatives. This is a provisional repair and has not passed the replay gate.",
+  "feature_definitions": {},
+  "heads": [],
+  "outputs": [
+    {
+      "token": "morning",
+      "append": [
+        {
+          "pattern": {
+            "kind": "seq",
+            "children": [
+              {
+                "kind": "repeat",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {}
+                  }
+                ],
+                "minimum": 0,
+                "maximum": 32
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "token": "One"
+                }
+              }
+            ]
+          },
+          "emit": {
+            "pos": "n"
+          },
+          "weight": 12.0
+        }
+      ],
+      "scale": []
+    }
+  ]
+}

@@ -1,0 +1,246 @@
+{
+  "description": "Inference-only ablation of the learned retrieval head; all output consumers and weights remain fixed. No training or teacher calls.",
+  "probes": [
+    {
+      "prefix": [
+        {
+          "token": "Ben",
+          "pos": "pn"
+        },
+        {
+          "token": "and",
+          "pos": "conj"
+        },
+        {
+          "token": "the",
+          "pos": "det"
+        },
+        {
+          "token": "pears",
+          "pos": "n"
+        },
+        {
+          "token": "\n\n",
+          "pos": "space"
+        },
+        {
+          "token": "One",
+          "pos": "det"
+        },
+        {
+          "token": "day",
+          "pos": "n"
+        },
+        {
+          "token": ",",
+          "pos": "punct"
+        }
+      ],
+      "last_residual": {
+        "pos": "punct",
+        "entity": null,
+        "role": null,
+        "location": null,
+        "event": null,
+        "token": ",",
+        "position": {
+          "token": 7,
+          "sentence": 0,
+          "in_sentence": 7
+        },
+        "preceding_person_token": "Ben"
+      },
+      "name_probabilities": {
+        "Ben": 0.7085119065277347,
+        "Lily": 0.0011284028164038364,
+        "Mia": 0.000640558955898937,
+        "Tom": 0.0009727049708597187
+      }
+    },
+    {
+      "prefix": [
+        {
+          "token": "Lily",
+          "pos": "pn"
+        },
+        {
+          "token": "and",
+          "pos": "conj"
+        },
+        {
+          "token": "the",
+          "pos": "det"
+        },
+        {
+          "token": "pears",
+          "pos": "n"
+        },
+        {
+          "token": "\n\n",
+          "pos": "space"
+        },
+        {
+          "token": "One",
+          "pos": "det"
+        },
+        {
+          "token": "day",
+          "pos": "n"
+        },
+        {
+          "token": ",",
+          "pos": "punct"
+        }
+      ],
+      "last_residual": {
+        "pos": "punct",
+        "entity": null,
+        "role": null,
+        "location": null,
+        "event": null,
+        "token": ",",
+        "position": {
+          "token": 7,
+          "sentence": 0,
+          "in_sentence": 7
+        },
+        "preceding_person_token": "Lily"
+      },
+      "name_probabilities": {
+        "Ben": 0.0009503988139451602,
+        "Lily": 0.7079070239466485,
+        "Mia": 0.0006422860723985104,
+        "Tom": 0.0009753276409339062
+      }
+    },
+    {
+      "prefix": [
+        {
+          "token": "Mia",
+          "pos": "pn"
+        },
+        {
+          "token": "and",
+          "pos": "conj"
+        },
+        {
+          "token": "the",
+          "pos": "det"
+        },
+        {
+          "token": "pears",
+          "pos": "n"
+        },
+        {
+          "token": "\n\n",
+          "pos": "space"
+        },
+        {
+          "token": "One",
+          "pos": "det"
+        },
+        {
+          "token": "day",
+          "pos": "n"
+        },
+        {
+          "token": ",",
+          "pos": "punct"
+        }
+      ],
+      "last_residual": {
+        "pos": "punct",
+        "entity": null,
+        "role": null,
+        "location": null,
+        "event": null,
+        "token": ",",
+        "position": {
+          "token": 7,
+          "sentence": 0,
+          "in_sentence": 7
+        },
+        "preceding_person_token": "Mia"
+      },
+      "name_probabilities": {
+        "Ben": 0.0009507566321194344,
+        "Lily": 0.0011318712699251328,
+        "Mia": 0.7073077097045884,
+        "Tom": 0.0009756948446284789
+      }
+    },
+    {
+      "prefix": [
+        {
+          "token": "Tom",
+          "pos": "pn"
+        },
+        {
+          "token": "and",
+          "pos": "conj"
+        },
+        {
+          "token": "the",
+          "pos": "det"
+        },
+        {
+          "token": "pears",
+          "pos": "n"
+        },
+        {
+          "token": "\n\n",
+          "pos": "space"
+        },
+        {
+          "token": "One",
+          "pos": "det"
+        },
+        {
+          "token": "day",
+          "pos": "n"
+        },
+        {
+          "token": ",",
+          "pos": "punct"
+        }
+      ],
+      "last_residual": {
+        "pos": "punct",
+        "entity": null,
+        "role": null,
+        "location": null,
+        "event": null,
+        "token": ",",
+        "position": {
+          "token": 7,
+          "sentence": 0,
+          "in_sentence": 7
+        },
+        "preceding_person_token": "Tom"
+      },
+      "name_probabilities": {
+        "Ben": 0.0009502936910445682,
+        "Lily": 0.0011313201407669368,
+        "Mia": 0.0006422150296173646,
+        "Tom": 0.707783231751746
+      }
+    }
+  ],
+  "test_with_head": {
+    "targets": 347,
+    "coverage": 1.0,
+    "joint_nll": 1.8931240414885728,
+    "accuracy": 0.4553314121037464,
+    "conflicts": 0
+  },
+  "test_without_head": {
+    "targets": 347,
+    "coverage": 1.0,
+    "joint_nll": 2.0820978597143407,
+    "accuracy": 0.4207492795389049,
+    "conflicts": 0
+  },
+  "removed_heads": [
+    "capture_person_before_comma"
+  ]
+}

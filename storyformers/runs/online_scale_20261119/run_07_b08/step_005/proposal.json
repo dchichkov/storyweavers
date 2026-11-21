@@ -1,0 +1,8 @@
+{
+  "format": "storyformers-online-v1",
+  "base_model_sha256": "33bdf3a55ca599738a7bf75269c3b5eb4112561f746c1375897c768f54a4136d",
+  "rationale": "No additional grammar repair is justified. The representative target “needles” has very low probability after “The,” but the visible prefix supports a noun continuation rather than identifying that particular noun. The batch documents show multiple valid noun choices in comparable openings, so adding a lexical rule for this one continuation would overfit. The batch already includes distinct paragraph-boundary and closing patterns, and the available evidence does not establish a reusable head feature or output change that improves those patterns without risking valid alternatives and replay behavior.",
+  "feature_definitions": {},
+  "heads": [],
+  "outputs": []
+}

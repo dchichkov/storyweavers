@@ -1,0 +1,116 @@
+{
+  "format": "storyformers-online-v1",
+  "base_model_sha256": "6f6ce028c9ff6e468451b9f5015c55c503954e69a939a787087e6657a8e84802",
+  "rationale": "Several batch targets occur in recurring short constructions that currently have almost no output mass: “That/This is”, “for now”, and “One morning”. Add moderate context-specific evidence for those observed continuations rather than changing the broad grammar. The now and is patterns recur across documents; “One morning” is supported by one example and is therefore kept narrowly conditioned. These cues can have counterexamples in other contexts, so they add probability rather than making alternatives impossible. This is a provisional repair; replay behavior and batch loss still require the gate’s evaluation.",
+  "feature_definitions": {},
+  "heads": [],
+  "outputs": [
+    {
+      "token": "is",
+      "append": [
+        {
+          "pattern": {
+            "kind": "seq",
+            "children": [
+              {
+                "kind": "repeat",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {}
+                  }
+                ],
+                "minimum": 0,
+                "maximum": 32
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "token": {
+                    "$one_of": [
+                      "That",
+                      "This"
+                    ]
+                  }
+                }
+              }
+            ]
+          },
+          "emit": {
+            "pos": "v"
+          },
+          "weight": 20.0
+        }
+      ],
+      "scale": []
+    },
+    {
+      "token": "now",
+      "append": [
+        {
+          "pattern": {
+            "kind": "seq",
+            "children": [
+              {
+                "kind": "repeat",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {}
+                  }
+                ],
+                "minimum": 0,
+                "maximum": 32
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "token": "for"
+                }
+              }
+            ]
+          },
+          "emit": {
+            "pos": "adv"
+          },
+          "weight": 20.0
+        }
+      ],
+      "scale": []
+    },
+    {
+      "token": "morning",
+      "append": [
+        {
+          "pattern": {
+            "kind": "seq",
+            "children": [
+              {
+                "kind": "repeat",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {}
+                  }
+                ],
+                "minimum": 0,
+                "maximum": 32
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "token": "One"
+                }
+              }
+            ]
+          },
+          "emit": {
+            "pos": "n"
+          },
+          "weight": 20.0
+        }
+      ],
+      "scale": []
+    }
+  ]
+}

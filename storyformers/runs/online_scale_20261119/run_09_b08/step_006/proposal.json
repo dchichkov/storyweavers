@@ -1,0 +1,43 @@
+{
+  "format": "storyformers-online-v1",
+  "base_model_sha256": "dd4060cc4bbd24ae9a0d930b080af030882be347dc86c5efd281c9e19860a808",
+  "rationale": "The batch example ending in “A day with” gives Ben only about 0.00026 probability, despite the prefix supporting a person name; the Ben output root lacks the suffix rule for “with” present in the other person-name roots. Add that narrow contextual rule for Ben, matching the existing treatment of Lily, Mia, and Tom. This should also support the corresponding pattern beyond the representative example without asserting that every “with” phrase must be followed by a person. Other continuations remain possible, and this name-specific repair may not help different names or other low-probability batch targets. Replay behavior should be affected only when the prefix ends in “with”; the replay example with Tom remains governed by its existing rule. This is a provisional patch, not a claim that it passed the replay gate.",
+  "feature_definitions": {},
+  "heads": [],
+  "outputs": [
+    {
+      "token": "Ben",
+      "append": [
+        {
+          "pattern": {
+            "kind": "seq",
+            "children": [
+              {
+                "kind": "repeat",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {}
+                  }
+                ],
+                "minimum": 0,
+                "maximum": 32
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "token": "with"
+                }
+              }
+            ]
+          },
+          "emit": {
+            "pos": "pn"
+          },
+          "weight": 20.0
+        }
+      ],
+      "scale": []
+    }
+  ]
+}

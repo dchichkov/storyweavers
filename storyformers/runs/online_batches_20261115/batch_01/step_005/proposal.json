@@ -1,0 +1,141 @@
+{
+  "format": "storyformers-online-v1",
+  "base_model_sha256": "156e69e49787a81f73d040d1b294a49ae4ee814704239283f9d58a3c4ea9fd68",
+  "rationale": "The batch exposes an overly broad period rule: a prefix ending in any noun receives very large period mass, even when the observed continuation is a comma, a paragraph break, or a verb such as “ended.” Reduce that rule and add compact suffix patterns for the observed noun-phrase boundaries and for “the story ended.” The latter is deliberately distinguished from the replayed “our story ends.” These patterns may still overfavor the observed constructions in contexts where another continuation is valid; the replay gate should test that risk.",
+  "feature_definitions": {},
+  "heads": [],
+  "outputs": [
+    {
+      "token": ".",
+      "append": [],
+      "scale": [
+        {
+          "rule": 2,
+          "factor": 0.05
+        }
+      ]
+    },
+    {
+      "token": "\n\n",
+      "append": [
+        {
+          "pattern": {
+            "kind": "seq",
+            "children": [
+              {
+                "kind": "repeat",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {}
+                  }
+                ],
+                "minimum": 0,
+                "maximum": 32
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "pos": "adj"
+                }
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "pos": "n"
+                }
+              }
+            ]
+          },
+          "emit": {
+            "pos": "space"
+          },
+          "weight": 50.0
+        }
+      ],
+      "scale": []
+    },
+    {
+      "token": ",",
+      "append": [
+        {
+          "pattern": {
+            "kind": "seq",
+            "children": [
+              {
+                "kind": "repeat",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {}
+                  }
+                ],
+                "minimum": 0,
+                "maximum": 32
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "pos": "det"
+                }
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "pos": "n"
+                }
+              }
+            ]
+          },
+          "emit": {
+            "pos": "punct"
+          },
+          "weight": 30.0
+        }
+      ],
+      "scale": []
+    },
+    {
+      "token": "ended",
+      "append": [
+        {
+          "pattern": {
+            "kind": "seq",
+            "children": [
+              {
+                "kind": "repeat",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {}
+                  }
+                ],
+                "minimum": 0,
+                "maximum": 32
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "token": "the",
+                  "pos": "det"
+                }
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "token": "story",
+                  "pos": "n"
+                }
+              }
+            ]
+          },
+          "emit": {
+            "pos": "v"
+          },
+          "weight": 30.0
+        }
+      ],
+      "scale": []
+    }
+  ]
+}

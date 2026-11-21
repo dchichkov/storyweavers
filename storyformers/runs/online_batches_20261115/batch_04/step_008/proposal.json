@@ -1,0 +1,309 @@
+{
+  "format": "storyformers-online-v1",
+  "base_model_sha256": "8b1cbbff251487a6435d53c8a3e40aa5a9acdf08f3c6ae5236e187629c6eafec",
+  "feature_definitions": {},
+  "heads": [],
+  "outputs": [
+    {
+      "token": "On",
+      "append": [
+        {
+          "pattern": {
+            "kind": "seq",
+            "children": [
+              {
+                "kind": "repeat",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {}
+                  }
+                ],
+                "minimum": 0,
+                "maximum": 30
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "pos": {
+                    "$one_of": [
+                      "n",
+                      "pn"
+                    ]
+                  }
+                }
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "token": "\n\n"
+                }
+              }
+            ]
+          },
+          "emit": {
+            "pos": "prep"
+          },
+          "weight": 5.0
+        }
+      ],
+      "scale": []
+    },
+    {
+      "token": "little",
+      "append": [
+        {
+          "pattern": {
+            "kind": "seq",
+            "children": [
+              {
+                "kind": "repeat",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {}
+                  }
+                ],
+                "minimum": 0,
+                "maximum": 30
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "token": "In"
+                }
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "token": "a"
+                }
+              }
+            ]
+          },
+          "emit": {
+            "pos": "adj"
+          },
+          "weight": 8.0
+        }
+      ],
+      "scale": []
+    },
+    {
+      "token": "sunny",
+      "append": [
+        {
+          "pattern": {
+            "kind": "seq",
+            "children": [
+              {
+                "kind": "repeat",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {}
+                  }
+                ],
+                "minimum": 0,
+                "maximum": 30
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "token": "On"
+                }
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "token": "a"
+                }
+              }
+            ]
+          },
+          "emit": {
+            "pos": "adj"
+          },
+          "weight": 6.0
+        }
+      ],
+      "scale": []
+    },
+    {
+      "token": ",",
+      "append": [
+        {
+          "pattern": {
+            "kind": "seq",
+            "children": [
+              {
+                "kind": "repeat",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {}
+                  }
+                ],
+                "minimum": 0,
+                "maximum": 31
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "pos": "n"
+                }
+              }
+            ]
+          },
+          "emit": {
+            "pos": "punct"
+          },
+          "weight": 4.0
+        }
+      ],
+      "scale": []
+    },
+    {
+      "token": "quickly",
+      "append": [
+        {
+          "pattern": {
+            "kind": "seq",
+            "children": [
+              {
+                "kind": "repeat",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {}
+                  }
+                ],
+                "minimum": 0,
+                "maximum": 31
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "pos": "pn"
+                }
+              }
+            ]
+          },
+          "emit": {
+            "pos": "adv"
+          },
+          "weight": 3.0
+        }
+      ],
+      "scale": []
+    },
+    {
+      "token": "slowly",
+      "append": [
+        {
+          "pattern": {
+            "kind": "seq",
+            "children": [
+              {
+                "kind": "repeat",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {}
+                  }
+                ],
+                "minimum": 0,
+                "maximum": 31
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "pos": "pn"
+                }
+              }
+            ]
+          },
+          "emit": {
+            "pos": "adv"
+          },
+          "weight": 3.0
+        }
+      ],
+      "scale": []
+    },
+    {
+      "token": "the",
+      "append": [
+        {
+          "pattern": {
+            "kind": "seq",
+            "children": [
+              {
+                "kind": "repeat",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {}
+                  }
+                ],
+                "minimum": 0,
+                "maximum": 31
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "token": "so"
+                }
+              }
+            ]
+          },
+          "emit": {
+            "pos": "det"
+          },
+          "weight": 5.0
+        }
+      ],
+      "scale": []
+    },
+    {
+      "token": ".",
+      "append": [
+        {
+          "pattern": {
+            "kind": "seq",
+            "children": [
+              {
+                "kind": "repeat",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {}
+                  }
+                ],
+                "minimum": 0,
+                "maximum": 31
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "pos": {
+                    "$one_of": [
+                      "n",
+                      "v"
+                    ]
+                  }
+                }
+              }
+            ]
+          },
+          "emit": {
+            "pos": "punct"
+          },
+          "weight": 4.0
+        }
+      ],
+      "scale": []
+    }
+  ],
+  "rationale": "The batch contains repeated causal patterns that the current roots do not adequately support: an introductory preposition after a noun/name and paragraph break, adjectives after “In a” and “On a,” commas after introductory noun phrases, adverbs after a proper noun, “the” after “so,” and sentence-final periods after nouns or verbs. The proposed modest, context-conditioned output masses generalize these observed forms without using target-only information or asserting future story structure. Noun-final contexts are ambiguous and can also continue a sentence, and multiple adverbs or introductory prepositions may be valid; the punctuation and lexical boosts therefore remain limited rather than making alternatives impossible. No replay-gate result is assumed."
+}

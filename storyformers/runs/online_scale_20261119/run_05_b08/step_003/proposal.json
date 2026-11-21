@@ -1,0 +1,77 @@
+{
+  "format": "storyformers-online-v1",
+  "base_model_sha256": "9504653394bfe73ac47e50d53cb2cbc7e70543f381d1d29925c6b5d113a7e7d5",
+  "rationale": "The representative error is a noun following “and the”: pears has no visible output rule for a preceding determiner, leaving it with very little probability despite the grammatical noun-phrase context. The batch also contains repeated “that was” endings, while the was root has only a very low-weight general rule. Add modest contextual support for pears after a determiner and for was after the pronoun that. These are local, reusable cues rather than claims that other continuations are impossible. A determiner can precede many nouns, and that can have other continuations, so the additions preserve alternatives. Replay examples do not show either new suffix.",
+  "feature_definitions": {},
+  "heads": [],
+  "outputs": [
+    {
+      "token": "pears",
+      "append": [
+        {
+          "pattern": {
+            "kind": "seq",
+            "children": [
+              {
+                "kind": "repeat",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {}
+                  }
+                ],
+                "minimum": 0,
+                "maximum": 32
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "pos": "det"
+                }
+              }
+            ]
+          },
+          "emit": {
+            "pos": "n"
+          },
+          "weight": 1.0
+        }
+      ],
+      "scale": []
+    },
+    {
+      "token": "was",
+      "append": [
+        {
+          "pattern": {
+            "kind": "seq",
+            "children": [
+              {
+                "kind": "repeat",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {}
+                  }
+                ],
+                "minimum": 0,
+                "maximum": 32
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "token": "that"
+                }
+              }
+            ]
+          },
+          "emit": {
+            "pos": "v"
+          },
+          "weight": 1.0
+        }
+      ],
+      "scale": []
+    }
+  ]
+}

@@ -1,0 +1,213 @@
+{
+  "format": "storyformers-online-v1",
+  "base_model_sha256": "a392338647a88d767ae381c09c6f972cd0376f300115f200d2eb5e6da2e51daa",
+  "feature_definitions": {},
+  "heads": [],
+  "outputs": [
+    {
+      "token": "with",
+      "append": [
+        {
+          "pattern": {
+            "kind": "seq",
+            "children": [
+              {
+                "kind": "token",
+                "tests": {
+                  "token": "A",
+                  "pos": "det"
+                }
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "token": "day",
+                  "pos": "n"
+                }
+              }
+            ]
+          },
+          "emit": {
+            "pos": "prep"
+          },
+          "weight": 200.0
+        }
+      ],
+      "scale": []
+    },
+    {
+      "token": "\n\n",
+      "append": [
+        {
+          "pattern": {
+            "kind": "alt",
+            "children": [
+              {
+                "kind": "seq",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {
+                      "pos": "det"
+                    }
+                  },
+                  {
+                    "kind": "token",
+                    "tests": {
+                      "pos": "adj"
+                    }
+                  },
+                  {
+                    "kind": "token",
+                    "tests": {
+                      "pos": "n"
+                    }
+                  }
+                ]
+              },
+              {
+                "kind": "seq",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {
+                      "pos": "pn"
+                    }
+                  },
+                  {
+                    "kind": "token",
+                    "tests": {
+                      "pos": "conj"
+                    }
+                  },
+                  {
+                    "kind": "token",
+                    "tests": {
+                      "pos": "det"
+                    }
+                  },
+                  {
+                    "kind": "token",
+                    "tests": {
+                      "pos": "adj"
+                    }
+                  },
+                  {
+                    "kind": "token",
+                    "tests": {
+                      "pos": "n"
+                    }
+                  }
+                ]
+              },
+              {
+                "kind": "seq",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {
+                      "pos": "det"
+                    }
+                  },
+                  {
+                    "kind": "token",
+                    "tests": {
+                      "pos": "n"
+                    }
+                  },
+                  {
+                    "kind": "token",
+                    "tests": {
+                      "pos": "prep"
+                    }
+                  },
+                  {
+                    "kind": "token",
+                    "tests": {
+                      "pos": "pn"
+                    }
+                  }
+                ]
+              }
+            ],
+            "weights": [
+              1.0,
+              1.0,
+              1.0
+            ]
+          },
+          "emit": {
+            "pos": "space"
+          },
+          "weight": 200.0
+        },
+        {
+          "pattern": {
+            "kind": "seq",
+            "children": [
+              {
+                "kind": "repeat",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {}
+                  }
+                ],
+                "minimum": 0,
+                "maximum": 32
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "pos": "v"
+                }
+              },
+              {
+                "kind": "repeat",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {
+                      "pos": {
+                        "$one_of": [
+                          "det",
+                          "adv"
+                        ]
+                      }
+                    }
+                  }
+                ],
+                "minimum": 0,
+                "maximum": 4
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "pos": "adj"
+                }
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "pos": "n"
+                }
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "pos": "punct"
+                }
+              }
+            ]
+          },
+          "emit": {
+            "pos": "space"
+          },
+          "weight": 8.0
+        }
+      ],
+      "scale": []
+    }
+  ],
+  "rationale": "The batch shows a strong punctuation bias after noun-ending prefixes, including opening title-like noun phrases, while the observed A day prefix should continue with “with”; the existing update barely changed these errors. Add a targeted opening-phrase continuation and paragraph breaks for the recurring initial noun-phrase structures. A lower-mass rule supports paragraph breaks after adjective-modified noun phrases in completed clauses, without overwhelming the existing end-of-story prediction after periods. These are hypotheses from the revealed batch, not universal constraints: other continuations after similar phrases remain possible, and the replay gate must check the added mass."
+}

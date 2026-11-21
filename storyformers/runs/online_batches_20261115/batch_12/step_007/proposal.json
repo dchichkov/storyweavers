@@ -1,0 +1,121 @@
+{
+  "format": "storyformers-online-v1",
+  "base_model_sha256": "d8c72eede3d2eac5107ef71e0659200643c6b952a907bf69bbdf2ab6d3f9c6b1",
+  "rationale": "The batch repeatedly uses the opening phrase “Long ago,” and the alternative opening “Once upon a time,” but the generic low-weight roots for ago and upon leave these continuations far below unrelated verbs. The batch also confirms a comma immediately after “Long ago.” Add narrowly suffix-conditioned lexical rules for these observed phrase continuations rather than changing general adverb or punctuation behavior. This should transfer across story subjects while preserving other valid continuations; the rules could overfavor these phrases in other contexts ending in the same words, and the replay gate must check that risk.",
+  "feature_definitions": {},
+  "heads": [],
+  "outputs": [
+    {
+      "token": "ago",
+      "append": [
+        {
+          "pattern": {
+            "kind": "seq",
+            "children": [
+              {
+                "kind": "repeat",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {}
+                  }
+                ],
+                "minimum": 0,
+                "maximum": 32
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "token": "Long",
+                  "pos": "adv"
+                }
+              }
+            ]
+          },
+          "emit": {
+            "pos": "adv"
+          },
+          "weight": 251.0
+        }
+      ],
+      "scale": []
+    },
+    {
+      "token": "upon",
+      "append": [
+        {
+          "pattern": {
+            "kind": "seq",
+            "children": [
+              {
+                "kind": "repeat",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {}
+                  }
+                ],
+                "minimum": 0,
+                "maximum": 32
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "token": "Once",
+                  "pos": "adv"
+                }
+              }
+            ]
+          },
+          "emit": {
+            "pos": "prep"
+          },
+          "weight": 251.0
+        }
+      ],
+      "scale": []
+    },
+    {
+      "token": ",",
+      "append": [
+        {
+          "pattern": {
+            "kind": "seq",
+            "children": [
+              {
+                "kind": "repeat",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {}
+                  }
+                ],
+                "minimum": 0,
+                "maximum": 32
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "token": "Long",
+                  "pos": "adv"
+                }
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "token": "ago",
+                  "pos": "adv"
+                }
+              }
+            ]
+          },
+          "emit": {
+            "pos": "punct"
+          },
+          "weight": 251.0
+        }
+      ],
+      "scale": []
+    }
+  ]
+}

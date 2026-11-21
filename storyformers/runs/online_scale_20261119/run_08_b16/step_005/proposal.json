@@ -1,0 +1,58 @@
+{
+  "format": "storyformers-online-v1",
+  "base_model_sha256": "e8b4490ad3b185aef4b34bf776aba20d16cac74d771a9a7f0e30e656accee290",
+  "rationale": "The batch repeatedly has a low-probability noun target “day” immediately after the phrase “On a sunny”; the representative error shows the model favoring punctuation and other continuations instead. Add a rule to the existing day root for this visible suffix, rather than changing general noun or story-framing behavior. This should also help other occurrences of the same phrase in the batch. The rule is intentionally narrow: it will not help other adjective–noun sequences, and it could overfavor “day” if the phrase occurs in a context where another continuation is intended. The batch includes many other valid noun continuations, so no broader claim that other candidates are impossible is warranted. This is a provisional repair; replay behavior and the gate still need to be checked.",
+  "feature_definitions": {},
+  "heads": [],
+  "outputs": [
+    {
+      "token": "day",
+      "append": [
+        {
+          "pattern": {
+            "kind": "seq",
+            "children": [
+              {
+                "kind": "repeat",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {}
+                  }
+                ],
+                "minimum": 0,
+                "maximum": 28
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "pos": "prep",
+                  "token": "On"
+                }
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "pos": "det",
+                  "token": "a"
+                }
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "pos": "adj",
+                  "token": "sunny"
+                }
+              }
+            ]
+          },
+          "emit": {
+            "pos": "n"
+          },
+          "weight": 20.0
+        }
+      ],
+      "scale": []
+    }
+  ]
+}

@@ -1,0 +1,195 @@
+{
+  "format": "storyformers-online-v1",
+  "base_model_sha256": "6386e2a992f62db0c89736bd1b7d3017057db2a6a2b6730b553ef1c3c6961009",
+  "rationale": "The batch repeatedly exposes a severe start-of-story imbalance: A is nearly absent at the empty prefix despite two observed A targets, while other start tokens have strong empty-prefix rules. Add a strong A rule only for the empty context; this may reduce probability for other valid starts, including replayed Lily, so the replay gate must assess the tradeoff. The batch also repeatedly uses end/End as a noun after the corresponding definite article, and has the phrase Once upon. Add narrowly contextual output evidence for those continuations rather than making the words generally likely. In is observed after a paragraph boundary; a modest boundary-conditioned rule captures that possibility but could compete with other valid paragraph starters. These are provisional repairs and have not passed replay.",
+  "feature_definitions": {},
+  "heads": [],
+  "outputs": [
+    {
+      "token": "A",
+      "append": [
+        {
+          "pattern": {
+            "kind": "seq",
+            "children": []
+          },
+          "emit": {
+            "pos": "det"
+          },
+          "weight": 20.5
+        }
+      ],
+      "scale": []
+    },
+    {
+      "token": "end",
+      "append": [
+        {
+          "pattern": {
+            "kind": "seq",
+            "children": [
+              {
+                "kind": "repeat",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {}
+                  }
+                ],
+                "minimum": 0,
+                "maximum": 32
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "token": "the"
+                }
+              }
+            ]
+          },
+          "emit": {
+            "pos": "n"
+          },
+          "weight": 12.0
+        }
+      ],
+      "scale": []
+    },
+    {
+      "token": "End",
+      "append": [
+        {
+          "pattern": {
+            "kind": "seq",
+            "children": [
+              {
+                "kind": "repeat",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {}
+                  }
+                ],
+                "minimum": 0,
+                "maximum": 32
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "token": "The"
+                }
+              }
+            ]
+          },
+          "emit": {
+            "pos": "n"
+          },
+          "weight": 12.0
+        }
+      ],
+      "scale": []
+    },
+    {
+      "token": "upon",
+      "append": [
+        {
+          "pattern": {
+            "kind": "seq",
+            "children": [
+              {
+                "kind": "repeat",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {}
+                  }
+                ],
+                "minimum": 0,
+                "maximum": 32
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "token": "Once"
+                }
+              }
+            ]
+          },
+          "emit": {
+            "pos": "prep"
+          },
+          "weight": 10.0
+        }
+      ],
+      "scale": []
+    },
+    {
+      "token": "Once",
+      "append": [
+        {
+          "pattern": {
+            "kind": "seq",
+            "children": [
+              {
+                "kind": "repeat",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {}
+                  }
+                ],
+                "minimum": 0,
+                "maximum": 32
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "token": "\n\n"
+                }
+              }
+            ]
+          },
+          "emit": {
+            "pos": "adv"
+          },
+          "weight": 6.0
+        }
+      ],
+      "scale": []
+    },
+    {
+      "token": "In",
+      "append": [
+        {
+          "pattern": {
+            "kind": "seq",
+            "children": [
+              {
+                "kind": "repeat",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {}
+                  }
+                ],
+                "minimum": 0,
+                "maximum": 32
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "token": "\n\n"
+                }
+              }
+            ]
+          },
+          "emit": {
+            "pos": "prep"
+          },
+          "weight": 5.0
+        }
+      ],
+      "scale": []
+    }
+  ]
+}

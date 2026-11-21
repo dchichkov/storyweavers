@@ -1,0 +1,27 @@
+{
+  "seed": 19,
+  "source_sha256": {
+    "/Users/dmitry/storyweavers/storyformers/runs/induction_baseline/train.jsonl": "6c185f9ade2a2b368e74312098528fa9bce067570f71e66e701374e756d3616f",
+    "/Users/dmitry/storyweavers/storyformers/runs/induction_baseline/validation.jsonl": "50ca57f494e3e8869a875d55ce2ee63a5bba2e273517977816409c1e3343682a",
+    "/Users/dmitry/storyweavers/storyformers/runs/induction_baseline/test.jsonl": "cacead4c0e9bdff0644f6310a4a2d337630013309a3f395caf46a6dade42e5bc",
+    "/Users/dmitry/storyweavers/storyformers/runs/induction_baseline/model.json": "35d0de75c3ee3614b29244f2c3075ad6bd1e2cdac81990e30e097d94d4453b2c"
+  },
+  "settings": {
+    "context_size": 32,
+    "lookback": 3,
+    "max_literals": 2,
+    "max_rules": 16,
+    "num_heads": 16,
+    "weight_steps": 80
+  },
+  "splits": {
+    "train": 192,
+    "validation": 64,
+    "test": 64
+  },
+  "split_policy": "Source subject/verb pairs and opening/closing pairs are disjoint across splits.",
+  "inputs": "Only token/POS records; paragraph breaks are predicted tokens. No section metadata is input.",
+  "training": "Fresh data-derived grammar proposals and output log-weight fitting on training only. Validation vetoes rules; final checkpoint is frozen before test evaluation.",
+  "decoding": "Top-ten joint token/bundle sampling; fixed seeds, no filtering or repairs.",
+  "limitations": "One-sentence bodies; no learned plot or semantic annotation. Framing checks do not judge story quality."
+}

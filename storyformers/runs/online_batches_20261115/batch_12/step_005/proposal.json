@@ -1,0 +1,41 @@
+{
+  "format": "storyformers-online-v1",
+  "base_model_sha256": "649491a75d35e5c83ca07707d81fc2e7360ca91bf53bf8fd44226c4a0f1af77b",
+  "rationale": "At the empty prefix, the model strongly favors proper names because their roots have high-weight empty-context rules, while the observed batch also begins with A three times and The twice. Add moderate empty-context evidence for those two attested determiner starts, weighted roughly in proportion to their batch counts. The rule applies only at the start, preserving named starts and leaving other contexts unchanged. This may overfavor A or The in stories whose initial determiner differs, and the batch does not establish that either is required at every story start; the existing name alternatives remain available.",
+  "feature_definitions": {},
+  "heads": [],
+  "outputs": [
+    {
+      "token": "A",
+      "append": [
+        {
+          "pattern": {
+            "kind": "seq",
+            "children": []
+          },
+          "emit": {
+            "pos": "det"
+          },
+          "weight": 30.0
+        }
+      ],
+      "scale": []
+    },
+    {
+      "token": "The",
+      "append": [
+        {
+          "pattern": {
+            "kind": "seq",
+            "children": []
+          },
+          "emit": {
+            "pos": "det"
+          },
+          "weight": 20.0
+        }
+      ],
+      "scale": []
+    }
+  ]
+}

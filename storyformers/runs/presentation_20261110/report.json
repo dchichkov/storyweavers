@@ -1,0 +1,725 @@
+{
+  "protocol": {
+    "seed": 19,
+    "source_sha256": {
+      "/Users/dmitry/storyweavers/storyformers/runs/induction_baseline/train.jsonl": "6c185f9ade2a2b368e74312098528fa9bce067570f71e66e701374e756d3616f",
+      "/Users/dmitry/storyweavers/storyformers/runs/induction_baseline/validation.jsonl": "50ca57f494e3e8869a875d55ce2ee63a5bba2e273517977816409c1e3343682a",
+      "/Users/dmitry/storyweavers/storyformers/runs/induction_baseline/test.jsonl": "cacead4c0e9bdff0644f6310a4a2d337630013309a3f395caf46a6dade42e5bc",
+      "/Users/dmitry/storyweavers/storyformers/runs/induction_baseline/model.json": "35d0de75c3ee3614b29244f2c3075ad6bd1e2cdac81990e30e097d94d4453b2c"
+    },
+    "settings": {
+      "context_size": 32,
+      "lookback": 3,
+      "max_literals": 2,
+      "max_rules": 16,
+      "num_heads": 16,
+      "weight_steps": 80
+    },
+    "splits": {
+      "train": 192,
+      "validation": 64,
+      "test": 64
+    },
+    "split_policy": "Source subject/verb pairs and opening/closing pairs are disjoint across splits.",
+    "inputs": "Only token/POS records; paragraph breaks are predicted tokens. No section metadata is input.",
+    "training": "Fresh data-derived grammar proposals and output log-weight fitting on training only. Validation vetoes rules; final checkpoint is frozen before test evaluation.",
+    "decoding": "Top-ten joint token/bundle sampling; fixed seeds, no filtering or repairs.",
+    "limitations": "One-sentence bodies; no learned plot or semantic annotation. Framing checks do not judge story quality."
+  },
+  "model_sha256": "1d424ea6823a2b7ea96bb299890f780b745d13e3fe4af358356850089b8dff5a",
+  "vocabulary": [
+    {
+      "token": "\n\n",
+      "pos": "space"
+    },
+    {
+      "token": "!",
+      "pos": "punct"
+    },
+    {
+      "token": "'s",
+      "pos": "poss"
+    },
+    {
+      "token": ",",
+      "pos": "punct"
+    },
+    {
+      "token": ".",
+      "pos": "punct"
+    },
+    {
+      "token": "<END>",
+      "pos": "special"
+    },
+    {
+      "token": "A",
+      "pos": "det"
+    },
+    {
+      "token": "And",
+      "pos": "conj"
+    },
+    {
+      "token": "Ben",
+      "pos": "pn"
+    },
+    {
+      "token": "End",
+      "pos": "n"
+    },
+    {
+      "token": "In",
+      "pos": "prep"
+    },
+    {
+      "token": "Lily",
+      "pos": "pn"
+    },
+    {
+      "token": "Long",
+      "pos": "adv"
+    },
+    {
+      "token": "Mia",
+      "pos": "pn"
+    },
+    {
+      "token": "On",
+      "pos": "prep"
+    },
+    {
+      "token": "Once",
+      "pos": "adv"
+    },
+    {
+      "token": "One",
+      "pos": "det"
+    },
+    {
+      "token": "That",
+      "pos": "pron"
+    },
+    {
+      "token": "The",
+      "pos": "det"
+    },
+    {
+      "token": "This",
+      "pos": "pron"
+    },
+    {
+      "token": "Tom",
+      "pos": "pn"
+    },
+    {
+      "token": "Until",
+      "pos": "prep"
+    },
+    {
+      "token": "a",
+      "pos": "det"
+    },
+    {
+      "token": "ago",
+      "pos": "adv"
+    },
+    {
+      "token": "all",
+      "pos": "pron"
+    },
+    {
+      "token": "and",
+      "pos": "conj"
+    },
+    {
+      "token": "apples",
+      "pos": "n"
+    },
+    {
+      "token": "ate",
+      "pos": "v"
+    },
+    {
+      "token": "day",
+      "pos": "n"
+    },
+    {
+      "token": "end",
+      "pos": "n"
+    },
+    {
+      "token": "ended",
+      "pos": "v"
+    },
+    {
+      "token": "ends",
+      "pos": "v"
+    },
+    {
+      "token": "for",
+      "pos": "prep"
+    },
+    {
+      "token": "found",
+      "pos": "v"
+    },
+    {
+      "token": "is",
+      "pos": "v"
+    },
+    {
+      "token": "little",
+      "pos": "adj"
+    },
+    {
+      "token": "morning",
+      "pos": "n"
+    },
+    {
+      "token": "needles",
+      "pos": "n"
+    },
+    {
+      "token": "next",
+      "pos": "adj"
+    },
+    {
+      "token": "now",
+      "pos": "adv"
+    },
+    {
+      "token": "our",
+      "pos": "det"
+    },
+    {
+      "token": "pears",
+      "pos": "n"
+    },
+    {
+      "token": "quickly",
+      "pos": "adv"
+    },
+    {
+      "token": "red",
+      "pos": "adj"
+    },
+    {
+      "token": "scissors",
+      "pos": "n"
+    },
+    {
+      "token": "slowly",
+      "pos": "adv"
+    },
+    {
+      "token": "small",
+      "pos": "adj"
+    },
+    {
+      "token": "so",
+      "pos": "adv"
+    },
+    {
+      "token": "story",
+      "pos": "n"
+    },
+    {
+      "token": "sunny",
+      "pos": "adj"
+    },
+    {
+      "token": "that",
+      "pos": "pron"
+    },
+    {
+      "token": "the",
+      "pos": "det"
+    },
+    {
+      "token": "time",
+      "pos": "n"
+    },
+    {
+      "token": "took",
+      "pos": "v"
+    },
+    {
+      "token": "upon",
+      "pos": "prep"
+    },
+    {
+      "token": "used",
+      "pos": "v"
+    },
+    {
+      "token": "village",
+      "pos": "n"
+    },
+    {
+      "token": "was",
+      "pos": "v"
+    },
+    {
+      "token": "where",
+      "pos": "adv"
+    },
+    {
+      "token": "with",
+      "pos": "prep"
+    }
+  ],
+  "training_targets": 4219,
+  "proposals": 599,
+  "learned_conditions": 16,
+  "learned_heads": 15,
+  "selection_train_nll": [
+    3.766211181540411,
+    3.5275815486564057,
+    3.3161356833843367,
+    3.108207480445288,
+    2.9030434196914485,
+    2.7415804317400707,
+    2.5825193436256018,
+    2.424524131037698,
+    2.301303932858175,
+    2.1974474333601575,
+    2.1027155152223296,
+    2.033792820008129,
+    1.9780341808858242,
+    1.9421440169213031,
+    1.910276989166169,
+    1.8803713140749607,
+    1.851744465313314
+  ],
+  "selection_validation_nll": [
+    3.8235780982887904,
+    3.5930750166963676,
+    3.383916464051255,
+    3.1744922490844103,
+    2.9757328645326506,
+    2.826141665783608,
+    2.6633853179148472,
+    2.514449147917567,
+    2.3682806679163475,
+    2.265124092075561,
+    2.1610000143472554,
+    2.093396229131267,
+    2.003862865107839,
+    1.9697397515217654,
+    1.9381808973573365,
+    1.9144095077829812,
+    1.8888933112065625
+  ],
+  "training_seconds": 8.970839707646519,
+  "total_seconds": 218.96369550004601,
+  "metrics": {
+    "validation": {
+      "unigram": {
+        "targets": 1420,
+        "coverage": 1.0,
+        "joint_accuracy": 0.09014084507042254,
+        "joint_nll": 3.823578098288811,
+        "by_section": {
+          "title": {
+            "targets": 240,
+            "coverage": 1.0,
+            "joint_accuracy": 0.0,
+            "joint_nll": 3.971131269638049
+          },
+          "title_break": {
+            "targets": 64,
+            "coverage": 1.0,
+            "joint_accuracy": 1.0,
+            "joint_nll": 2.396904452606426
+          },
+          "opening": {
+            "targets": 248,
+            "coverage": 1.0,
+            "joint_accuracy": 0.0,
+            "joint_nll": 4.105073599609093
+          },
+          "body": {
+            "targets": 379,
+            "coverage": 1.0,
+            "joint_accuracy": 0.0,
+            "joint_nll": 3.6948696055489134
+          },
+          "closing_break": {
+            "targets": 64,
+            "coverage": 1.0,
+            "joint_accuracy": 1.0,
+            "joint_nll": 2.396904452606426
+          },
+          "closing": {
+            "targets": 361,
+            "coverage": 1.0,
+            "joint_accuracy": 0.0,
+            "joint_nll": 4.303133697483462
+          },
+          "end": {
+            "targets": 64,
+            "coverage": 1.0,
+            "joint_accuracy": 0.0,
+            "joint_nll": 3.0900082332141015
+          }
+        }
+      },
+      "lexical_bigram": {
+        "targets": 1420,
+        "coverage": 1.0,
+        "joint_accuracy": 0.4964788732394366,
+        "joint_nll": 1.1428103400381062,
+        "by_section": {
+          "title": {
+            "targets": 240,
+            "coverage": 1.0,
+            "joint_accuracy": 0.3,
+            "joint_nll": 1.482217222785552
+          },
+          "title_break": {
+            "targets": 64,
+            "coverage": 1.0,
+            "joint_accuracy": 0.046875,
+            "joint_nll": 1.1267033224132854
+          },
+          "opening": {
+            "targets": 248,
+            "coverage": 1.0,
+            "joint_accuracy": 0.6008064516129032,
+            "joint_nll": 0.868822196802012
+          },
+          "body": {
+            "targets": 379,
+            "coverage": 1.0,
+            "joint_accuracy": 0.42744063324538256,
+            "joint_nll": 1.6817742049045639
+          },
+          "closing_break": {
+            "targets": 64,
+            "coverage": 1.0,
+            "joint_accuracy": 1.0,
+            "joint_nll": 0.6141484837894737
+          },
+          "closing": {
+            "targets": 361,
+            "coverage": 1.0,
+            "joint_accuracy": 0.6842105263157895,
+            "joint_nll": 0.7163879245959963
+          },
+          "end": {
+            "targets": 64,
+            "coverage": 1.0,
+            "joint_accuracy": 0.125,
+            "joint_nll": 0.6901197584956237
+          }
+        }
+      },
+      "induced": {
+        "targets": 1420,
+        "coverage": 1.0,
+        "joint_accuracy": 0.3105633802816901,
+        "joint_nll": 1.7897800045362018,
+        "by_section": {
+          "title": {
+            "targets": 240,
+            "coverage": 1.0,
+            "joint_accuracy": 0.2375,
+            "joint_nll": 2.0516484531832586
+          },
+          "title_break": {
+            "targets": 64,
+            "coverage": 1.0,
+            "joint_accuracy": 0.0,
+            "joint_nll": 1.60616041139193
+          },
+          "opening": {
+            "targets": 248,
+            "coverage": 1.0,
+            "joint_accuracy": 0.22580645161290322,
+            "joint_nll": 1.919388593453132
+          },
+          "body": {
+            "targets": 379,
+            "coverage": 1.0,
+            "joint_accuracy": 0.43535620052770446,
+            "joint_nll": 1.7987189453763837
+          },
+          "closing_break": {
+            "targets": 64,
+            "coverage": 1.0,
+            "joint_accuracy": 0.0,
+            "joint_nll": 0.8241070111933361
+          },
+          "closing": {
+            "targets": 361,
+            "coverage": 1.0,
+            "joint_accuracy": 0.2742382271468144,
+            "joint_nll": 1.8922256161179887
+          },
+          "end": {
+            "targets": 64,
+            "coverage": 1.0,
+            "joint_accuracy": 1.0,
+            "joint_nll": 0.8240400584274065
+          }
+        }
+      },
+      "heads_removed": {
+        "targets": 1420,
+        "coverage": 1.0,
+        "joint_accuracy": 0.03591549295774648,
+        "joint_nll": 3.782516381794503,
+        "by_section": {
+          "title": {
+            "targets": 240,
+            "coverage": 1.0,
+            "joint_accuracy": 0.13333333333333333,
+            "joint_nll": 3.2262147818003757
+          },
+          "title_break": {
+            "targets": 64,
+            "coverage": 1.0,
+            "joint_accuracy": 0.0,
+            "joint_nll": 2.8869012927705167
+          },
+          "opening": {
+            "targets": 248,
+            "coverage": 1.0,
+            "joint_accuracy": 0.0,
+            "joint_nll": 4.181238633185326
+          },
+          "body": {
+            "targets": 379,
+            "coverage": 1.0,
+            "joint_accuracy": 0.05013192612137203,
+            "joint_nll": 3.681969225266095
+          },
+          "closing_break": {
+            "targets": 64,
+            "coverage": 1.0,
+            "joint_accuracy": 0.0,
+            "joint_nll": 2.8869012927705167
+          },
+          "closing": {
+            "targets": 361,
+            "coverage": 1.0,
+            "joint_accuracy": 0.0,
+            "joint_nll": 4.374351742700672
+          },
+          "end": {
+            "targets": 64,
+            "coverage": 1.0,
+            "joint_accuracy": 0.0,
+            "joint_nll": 3.371935195636835
+          }
+        }
+      }
+    },
+    "test": {
+      "unigram": {
+        "targets": 1374,
+        "coverage": 1.0,
+        "joint_accuracy": 0.09315866084425037,
+        "joint_nll": 3.829278974783948,
+        "by_section": {
+          "title": {
+            "targets": 237,
+            "coverage": 1.0,
+            "joint_accuracy": 0.0,
+            "joint_nll": 3.9701762686657553
+          },
+          "title_break": {
+            "targets": 64,
+            "coverage": 1.0,
+            "joint_accuracy": 1.0,
+            "joint_nll": 2.396904452606426
+          },
+          "opening": {
+            "targets": 240,
+            "coverage": 1.0,
+            "joint_accuracy": 0.0,
+            "joint_nll": 4.130828206984358
+          },
+          "body": {
+            "targets": 369,
+            "coverage": 1.0,
+            "joint_accuracy": 0.0,
+            "joint_nll": 3.685024792162201
+          },
+          "closing_break": {
+            "targets": 64,
+            "coverage": 1.0,
+            "joint_accuracy": 1.0,
+            "joint_nll": 2.396904452606426
+          },
+          "closing": {
+            "targets": 336,
+            "coverage": 1.0,
+            "joint_accuracy": 0.0,
+            "joint_nll": 4.359405716773541
+          },
+          "end": {
+            "targets": 64,
+            "coverage": 1.0,
+            "joint_accuracy": 0.0,
+            "joint_nll": 3.0900082332141015
+          }
+        }
+      },
+      "lexical_bigram": {
+        "targets": 1374,
+        "coverage": 1.0,
+        "joint_accuracy": 0.4985443959243086,
+        "joint_nll": 1.1983515986380573,
+        "by_section": {
+          "title": {
+            "targets": 237,
+            "coverage": 1.0,
+            "joint_accuracy": 0.31223628691983124,
+            "joint_nll": 1.5061321810887802
+          },
+          "title_break": {
+            "targets": 64,
+            "coverage": 1.0,
+            "joint_accuracy": 0.0625,
+            "joint_nll": 1.1562395353903627
+          },
+          "opening": {
+            "targets": 240,
+            "coverage": 1.0,
+            "joint_accuracy": 0.6,
+            "joint_nll": 0.8654676960358464
+          },
+          "body": {
+            "targets": 369,
+            "coverage": 1.0,
+            "joint_accuracy": 0.43089430894308944,
+            "joint_nll": 1.8434896519338733
+          },
+          "closing_break": {
+            "targets": 64,
+            "coverage": 1.0,
+            "joint_accuracy": 1.0,
+            "joint_nll": 0.6141484837894737
+          },
+          "closing": {
+            "targets": 336,
+            "coverage": 1.0,
+            "joint_accuracy": 0.6666666666666666,
+            "joint_nll": 0.7445627251399037
+          },
+          "end": {
+            "targets": 64,
+            "coverage": 1.0,
+            "joint_accuracy": 0.25,
+            "joint_nll": 0.5959989394364199
+          }
+        }
+      },
+      "induced": {
+        "targets": 1374,
+        "coverage": 1.0,
+        "joint_accuracy": 0.3071324599708879,
+        "joint_nll": 1.8270827901806284,
+        "by_section": {
+          "title": {
+            "targets": 237,
+            "coverage": 1.0,
+            "joint_accuracy": 0.2489451476793249,
+            "joint_nll": 2.083984987159253
+          },
+          "title_break": {
+            "targets": 64,
+            "coverage": 1.0,
+            "joint_accuracy": 0.0,
+            "joint_nll": 1.60616041139193
+          },
+          "opening": {
+            "targets": 240,
+            "coverage": 1.0,
+            "joint_accuracy": 0.2,
+            "joint_nll": 1.9698866757948024
+          },
+          "body": {
+            "targets": 369,
+            "coverage": 1.0,
+            "joint_accuracy": 0.44173441734417346,
+            "joint_nll": 1.8123984709224539
+          },
+          "closing_break": {
+            "targets": 64,
+            "coverage": 1.0,
+            "joint_accuracy": 0.0,
+            "joint_nll": 0.8241070111933361
+          },
+          "closing": {
+            "targets": 336,
+            "coverage": 1.0,
+            "joint_accuracy": 0.2619047619047619,
+            "joint_nll": 1.9841779613258907
+          },
+          "end": {
+            "targets": 64,
+            "coverage": 1.0,
+            "joint_accuracy": 1.0,
+            "joint_nll": 0.8240400584274065
+          }
+        }
+      },
+      "heads_removed": {
+        "targets": 1374,
+        "coverage": 1.0,
+        "joint_accuracy": 0.036390101892285295,
+        "joint_nll": 3.7819228580815545,
+        "by_section": {
+          "title": {
+            "targets": 237,
+            "coverage": 1.0,
+            "joint_accuracy": 0.1350210970464135,
+            "joint_nll": 3.2283722825393646
+          },
+          "title_break": {
+            "targets": 64,
+            "coverage": 1.0,
+            "joint_accuracy": 0.0,
+            "joint_nll": 2.8869012927705167
+          },
+          "opening": {
+            "targets": 240,
+            "coverage": 1.0,
+            "joint_accuracy": 0.0,
+            "joint_nll": 4.204100005932326
+          },
+          "body": {
+            "targets": 369,
+            "coverage": 1.0,
+            "joint_accuracy": 0.04878048780487805,
+            "joint_nll": 3.6626775287405184
+          },
+          "closing_break": {
+            "targets": 64,
+            "coverage": 1.0,
+            "joint_accuracy": 0.0,
+            "joint_nll": 2.8869012927705167
+          },
+          "closing": {
+            "targets": 336,
+            "coverage": 1.0,
+            "joint_accuracy": 0.0,
+            "joint_nll": 4.420829013446022
+          },
+          "end": {
+            "targets": 64,
+            "coverage": 1.0,
+            "joint_accuracy": 0.0,
+            "joint_nll": 3.371935195636835
+          }
+        }
+      }
+    }
+  },
+  "unprompted_framing_passes": 0,
+  "unprompted_samples": 6,
+  "source_unchanged": true
+}

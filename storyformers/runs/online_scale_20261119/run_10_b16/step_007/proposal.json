@@ -1,0 +1,165 @@
+{
+  "format": "storyformers-online-v1",
+  "base_model_sha256": "873c3d1762e1116a628d4bcaabe7b591e8bb95c189df6a71ceb68e3cac1014e9",
+  "rationale": "The batch repeatedly continues a determiner or adjective with a noun, but several common object nouns have little output mass in those contexts. This is especially evident for the representative prefix “The,” where the observed noun needles has probability 0.000155, and the unprompted sample “The small.” stops before a noun. Add modest, reusable determiner/adjective-to-noun rules for apples, needles, pears, and scissors rather than encoding particular stories or asserting a noun from unavailable context. Other continuations remain valid: the batch contains varied nouns after similar prefixes, and existing rules already favor alternatives such as End, day, and story in some contexts. These broad rules may therefore boost an inappropriate noun in some determiner/adjective contexts; the replay gate must assess that risk, and this patch is not claimed to have passed it.",
+  "feature_definitions": {},
+  "heads": [],
+  "outputs": [
+    {
+      "token": "apples",
+      "append": [
+        {
+          "pattern": {
+            "kind": "seq",
+            "children": [
+              {
+                "kind": "repeat",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {}
+                  }
+                ],
+                "minimum": 0,
+                "maximum": 32
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "pos": {
+                    "$one_of": [
+                      "det",
+                      "adj"
+                    ]
+                  }
+                }
+              }
+            ]
+          },
+          "emit": {
+            "pos": "n"
+          },
+          "weight": 8.0
+        }
+      ],
+      "scale": []
+    },
+    {
+      "token": "needles",
+      "append": [
+        {
+          "pattern": {
+            "kind": "seq",
+            "children": [
+              {
+                "kind": "repeat",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {}
+                  }
+                ],
+                "minimum": 0,
+                "maximum": 32
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "pos": {
+                    "$one_of": [
+                      "det",
+                      "adj"
+                    ]
+                  }
+                }
+              }
+            ]
+          },
+          "emit": {
+            "pos": "n"
+          },
+          "weight": 8.0
+        }
+      ],
+      "scale": []
+    },
+    {
+      "token": "pears",
+      "append": [
+        {
+          "pattern": {
+            "kind": "seq",
+            "children": [
+              {
+                "kind": "repeat",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {}
+                  }
+                ],
+                "minimum": 0,
+                "maximum": 32
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "pos": {
+                    "$one_of": [
+                      "det",
+                      "adj"
+                    ]
+                  }
+                }
+              }
+            ]
+          },
+          "emit": {
+            "pos": "n"
+          },
+          "weight": 8.0
+        }
+      ],
+      "scale": []
+    },
+    {
+      "token": "scissors",
+      "append": [
+        {
+          "pattern": {
+            "kind": "seq",
+            "children": [
+              {
+                "kind": "repeat",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {}
+                  }
+                ],
+                "minimum": 0,
+                "maximum": 32
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "pos": {
+                    "$one_of": [
+                      "det",
+                      "adj"
+                    ]
+                  }
+                }
+              }
+            ]
+          },
+          "emit": {
+            "pos": "n"
+          },
+          "weight": 8.0
+        }
+      ],
+      "scale": []
+    }
+  ]
+}

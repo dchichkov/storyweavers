@@ -1,0 +1,117 @@
+{
+  "format": "storyformers-online-v1",
+  "base_model_sha256": "b2daa8ebba576377c6bb4ee2b9ffe731bc45940e41fd0bd784daa1b7330fdac2",
+  "rationale": "The batch shows a repeated possessive noun-phrase pattern: after a proper noun and 's, an adjective can follow. The representative prefix Mia + 's gives the target small only 0.0031 probability, while red and apples dominate; the existing small root lacks a possessive-context rule, although red has one. Add a modest rule for small after any visible possessive marker, without conditioning on the name. The stories also repeatedly place ate after a comma and a proper-noun subject, and place the after lowercase and in an introductory noun phrase; modest suffix rules support those observed contexts. These are contextual biases, not hard constraints: possessives can be followed directly by nouns or other modifiers, comma-final proper nouns can precede verbs other than ate, and conjunctions can introduce other phrases. The batch contains varied openings and endings, so no single framing or continuation is asserted.",
+  "feature_definitions": {},
+  "heads": [],
+  "outputs": [
+    {
+      "token": "small",
+      "append": [
+        {
+          "pattern": {
+            "kind": "seq",
+            "children": [
+              {
+                "kind": "repeat",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {}
+                  }
+                ],
+                "minimum": 0,
+                "maximum": 32
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "pos": "poss"
+                }
+              }
+            ]
+          },
+          "emit": {
+            "pos": "adj"
+          },
+          "weight": 4.0
+        }
+      ],
+      "scale": []
+    },
+    {
+      "token": "ate",
+      "append": [
+        {
+          "pattern": {
+            "kind": "seq",
+            "children": [
+              {
+                "kind": "repeat",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {}
+                  }
+                ],
+                "minimum": 0,
+                "maximum": 32
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "token": ","
+                }
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "pos": "pn"
+                }
+              }
+            ]
+          },
+          "emit": {
+            "pos": "v"
+          },
+          "weight": 5.0
+        }
+      ],
+      "scale": []
+    },
+    {
+      "token": "the",
+      "append": [
+        {
+          "pattern": {
+            "kind": "seq",
+            "children": [
+              {
+                "kind": "repeat",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {}
+                  }
+                ],
+                "minimum": 0,
+                "maximum": 32
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "token": "and"
+                }
+              }
+            ]
+          },
+          "emit": {
+            "pos": "det"
+          },
+          "weight": 4.0
+        }
+      ],
+      "scale": []
+    }
+  ]
+}

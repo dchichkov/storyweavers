@@ -1,0 +1,352 @@
+{
+  "format": "storyformers-online-v1",
+  "base_model_sha256": "ffd1ccd7fca8ae9e40e6756371eb17aac74aced16c549bc651ce2ea9c25cea50",
+  "rationale": "The batch strongly underpredicts nouns after a coordinated determiner phrase: the representative prefix “Mia and the” targets “pears” at very low probability, and the documents and replay also show noun phrases such as “Tom and the small scissors” and “Ben and the needles.” Add a causal feature for a visible prefix ending in a personal noun, “and,” a determiner, and optionally adjectives, then give several noun outputs modest additional mass when that feature is present. This generalizes over names and noun choices rather than copying a sentence. The phrase does not uniquely determine its noun, and other continuations remain valid; the added mass is limited and may still favor a semantically unsuitable noun in some contexts. The previous batch decision preferred the weight-only candidate over structural alternatives, so this compact proposal should be judged by the replay gate rather than assumed to pass.",
+  "feature_definitions": {
+    "conjoined_determiner_nominal": {
+      "type": "boolean",
+      "description": "True on the current final record when the visible prefix ends with a personal noun, a conjunction, a determiner, and zero or more adjectives; derived only from that prefix."
+    }
+  },
+  "heads": [
+    {
+      "layer": 0,
+      "slot": 2,
+      "operation": "add",
+      "neuron": {
+        "name": "detect_conjoined_determiner_phrase",
+        "rules": [
+          {
+            "pattern": {
+              "kind": "seq",
+              "children": [
+                {
+                  "kind": "repeat",
+                  "children": [
+                    {
+                      "kind": "token",
+                      "tests": {}
+                    }
+                  ],
+                  "minimum": 0,
+                  "maximum": 32
+                },
+                {
+                  "kind": "token",
+                  "tests": {
+                    "pos": "pn"
+                  }
+                },
+                {
+                  "kind": "token",
+                  "tests": {
+                    "pos": "conj"
+                  }
+                },
+                {
+                  "kind": "token",
+                  "tests": {
+                    "pos": "det"
+                  }
+                },
+                {
+                  "kind": "repeat",
+                  "children": [
+                    {
+                      "kind": "token",
+                      "tests": {
+                        "pos": "adj"
+                      }
+                    }
+                  ],
+                  "minimum": 0,
+                  "maximum": 8
+                }
+              ]
+            },
+            "emit": {
+              "conjoined_determiner_nominal": true
+            },
+            "weight": 1.0
+          }
+        ],
+        "tables": {},
+        "max_states": 20000
+      }
+    }
+  ],
+  "outputs": [
+    {
+      "token": "apples",
+      "append": [
+        {
+          "pattern": {
+            "kind": "seq",
+            "children": [
+              {
+                "kind": "repeat",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {}
+                  }
+                ],
+                "minimum": 0,
+                "maximum": 32
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "conjoined_determiner_nominal": true
+                }
+              }
+            ]
+          },
+          "emit": {
+            "pos": "n"
+          },
+          "weight": 20.0
+        }
+      ],
+      "scale": []
+    },
+    {
+      "token": "day",
+      "append": [
+        {
+          "pattern": {
+            "kind": "seq",
+            "children": [
+              {
+                "kind": "repeat",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {}
+                  }
+                ],
+                "minimum": 0,
+                "maximum": 32
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "conjoined_determiner_nominal": true
+                }
+              }
+            ]
+          },
+          "emit": {
+            "pos": "n"
+          },
+          "weight": 20.0
+        }
+      ],
+      "scale": []
+    },
+    {
+      "token": "needles",
+      "append": [
+        {
+          "pattern": {
+            "kind": "seq",
+            "children": [
+              {
+                "kind": "repeat",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {}
+                  }
+                ],
+                "minimum": 0,
+                "maximum": 32
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "conjoined_determiner_nominal": true
+                }
+              }
+            ]
+          },
+          "emit": {
+            "pos": "n"
+          },
+          "weight": 20.0
+        }
+      ],
+      "scale": []
+    },
+    {
+      "token": "pears",
+      "append": [
+        {
+          "pattern": {
+            "kind": "seq",
+            "children": [
+              {
+                "kind": "repeat",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {}
+                  }
+                ],
+                "minimum": 0,
+                "maximum": 32
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "conjoined_determiner_nominal": true
+                }
+              }
+            ]
+          },
+          "emit": {
+            "pos": "n"
+          },
+          "weight": 20.0
+        }
+      ],
+      "scale": []
+    },
+    {
+      "token": "scissors",
+      "append": [
+        {
+          "pattern": {
+            "kind": "seq",
+            "children": [
+              {
+                "kind": "repeat",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {}
+                  }
+                ],
+                "minimum": 0,
+                "maximum": 32
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "conjoined_determiner_nominal": true
+                }
+              }
+            ]
+          },
+          "emit": {
+            "pos": "n"
+          },
+          "weight": 20.0
+        }
+      ],
+      "scale": []
+    },
+    {
+      "token": "story",
+      "append": [
+        {
+          "pattern": {
+            "kind": "seq",
+            "children": [
+              {
+                "kind": "repeat",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {}
+                  }
+                ],
+                "minimum": 0,
+                "maximum": 32
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "conjoined_determiner_nominal": true
+                }
+              }
+            ]
+          },
+          "emit": {
+            "pos": "n"
+          },
+          "weight": 20.0
+        }
+      ],
+      "scale": []
+    },
+    {
+      "token": "time",
+      "append": [
+        {
+          "pattern": {
+            "kind": "seq",
+            "children": [
+              {
+                "kind": "repeat",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {}
+                  }
+                ],
+                "minimum": 0,
+                "maximum": 32
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "conjoined_determiner_nominal": true
+                }
+              }
+            ]
+          },
+          "emit": {
+            "pos": "n"
+          },
+          "weight": 20.0
+        }
+      ],
+      "scale": []
+    },
+    {
+      "token": "village",
+      "append": [
+        {
+          "pattern": {
+            "kind": "seq",
+            "children": [
+              {
+                "kind": "repeat",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {}
+                  }
+                ],
+                "minimum": 0,
+                "maximum": 32
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "conjoined_determiner_nominal": true
+                }
+              }
+            ]
+          },
+          "emit": {
+            "pos": "n"
+          },
+          "weight": 20.0
+        }
+      ],
+      "scale": []
+    }
+  ]
+}

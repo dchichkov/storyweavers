@@ -1,0 +1,8 @@
+{
+  "format": "storyformers-online-v1",
+  "base_model_sha256": "e10875628f17b7b2316c44eb83f250f9767f4a6b5a53af3e3a262586385f814e",
+  "feature_definitions": {},
+  "heads": [],
+  "outputs": [],
+  "rationale": "No structural revision is warranted. The model already assigns the revealed <END> target probability 0.991 after the explicit closing phrase “This is where our story ends.” The target is sensible and strongly predicted; the small weight-only update does not indicate a useful grammar failure. Adding a rule from this single example could overgeneralize terminal punctuation or story-ending language, while the existing prediction and replay evidence support preserving the grammar."
+}

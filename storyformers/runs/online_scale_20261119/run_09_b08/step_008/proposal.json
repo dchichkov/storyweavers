@@ -1,0 +1,181 @@
+{
+  "format": "storyformers-online-v1",
+  "base_model_sha256": "3e85d2e715ae3a6a651340ed6fef5c6544801b321c3e53bfecaa4c71bd3d1332",
+  "rationale": "The batch repeatedly places an object noun after an action verb, sometimes with a determiner or adjective intervening. The existing preceding_verb_surface head detects these contexts, but the representative target pears remains low-probability while competing object nouns dominate. Add a modest shared cue to the repeatedly observed object nouns when the final prefix record carries that existing feature. This does not force a particular object, and the observed nouns are not an exhaustive list of valid objects; other nouns and non-object continuations should remain possible. The prior candidate comparison favored the weight-only update over a more complex revision, so this small addition is provisional and still needs the replay gate.",
+  "feature_definitions": {},
+  "heads": [],
+  "outputs": [
+    {
+      "token": "apples",
+      "append": [
+        {
+          "pattern": {
+            "kind": "seq",
+            "children": [
+              {
+                "kind": "repeat",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {}
+                  }
+                ],
+                "minimum": 0,
+                "maximum": 32
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "pos": {
+                    "$one_of": [
+                      "v",
+                      "det",
+                      "adj"
+                    ]
+                  },
+                  "preceding_verb_surface": {
+                    "$present": true
+                  }
+                }
+              }
+            ]
+          },
+          "emit": {
+            "pos": "n"
+          },
+          "weight": 1.0
+        }
+      ],
+      "scale": []
+    },
+    {
+      "token": "pears",
+      "append": [
+        {
+          "pattern": {
+            "kind": "seq",
+            "children": [
+              {
+                "kind": "repeat",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {}
+                  }
+                ],
+                "minimum": 0,
+                "maximum": 32
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "pos": {
+                    "$one_of": [
+                      "v",
+                      "det",
+                      "adj"
+                    ]
+                  },
+                  "preceding_verb_surface": {
+                    "$present": true
+                  }
+                }
+              }
+            ]
+          },
+          "emit": {
+            "pos": "n"
+          },
+          "weight": 1.0
+        }
+      ],
+      "scale": []
+    },
+    {
+      "token": "needles",
+      "append": [
+        {
+          "pattern": {
+            "kind": "seq",
+            "children": [
+              {
+                "kind": "repeat",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {}
+                  }
+                ],
+                "minimum": 0,
+                "maximum": 32
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "pos": {
+                    "$one_of": [
+                      "v",
+                      "det",
+                      "adj"
+                    ]
+                  },
+                  "preceding_verb_surface": {
+                    "$present": true
+                  }
+                }
+              }
+            ]
+          },
+          "emit": {
+            "pos": "n"
+          },
+          "weight": 1.0
+        }
+      ],
+      "scale": []
+    },
+    {
+      "token": "scissors",
+      "append": [
+        {
+          "pattern": {
+            "kind": "seq",
+            "children": [
+              {
+                "kind": "repeat",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {}
+                  }
+                ],
+                "minimum": 0,
+                "maximum": 32
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "pos": {
+                    "$one_of": [
+                      "v",
+                      "det",
+                      "adj"
+                    ]
+                  },
+                  "preceding_verb_surface": {
+                    "$present": true
+                  }
+                }
+              }
+            ]
+          },
+          "emit": {
+            "pos": "n"
+          },
+          "weight": 1.0
+        }
+      ],
+      "scale": []
+    }
+  ]
+}

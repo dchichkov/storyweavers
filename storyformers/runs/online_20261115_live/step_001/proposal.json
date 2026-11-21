@@ -1,0 +1,8 @@
+{
+  "format": "storyformers-online-v1",
+  "base_model_sha256": "c528e4b99c4bc167fea83dbd385e6c00ba1c79a1fc8c33dd621d1c55e94d8811",
+  "feature_definitions": {},
+  "heads": [],
+  "outputs": [],
+  "rationale": "The model strongly preferred a period after the noun, while the observed continuation is a paragraph break. But this two-token prefix does not reveal whether it is a heading, a fragment, or a complete sentence; adding a rule for paragraph breaks after determiner–noun sequences would overgeneralize and could harm ordinary sentence continuations. The weight update already increases the observed output, and the observation alone does not justify a structural repair."
+}

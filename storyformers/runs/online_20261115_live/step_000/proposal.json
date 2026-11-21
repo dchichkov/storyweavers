@@ -1,0 +1,8 @@
+{
+  "format": "storyformers-online-v1",
+  "base_model_sha256": "f181dab4813e6db601523da2b0dbd7d34a797286868294cc146c727b38c3ea3c",
+  "feature_definitions": {},
+  "heads": [],
+  "outputs": [],
+  "rationale": "The target “and” is a plausible continuation after a name, but one observation does not establish a reusable context rule: it could begin a coordinated subject, while the replay example after another name continues with an adverb. A broad rule favoring conjunctions after names risks worsening that supported continuation, and a Lily-specific rule would overfit. The exact gradient update already raised the existing “and” rule’s weight and modestly improved the target probability. Preserve uncertainty among valid continuations and make no additional grammar change."
+}

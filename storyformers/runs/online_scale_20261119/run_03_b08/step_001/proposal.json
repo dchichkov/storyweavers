@@ -1,0 +1,8 @@
+{
+  "format": "storyformers-online-v1",
+  "base_model_sha256": "0b6914d28f4603375abd46c2fc17b09984b4a0c0046614a652ab1accf2290fc8",
+  "rationale": "The representative target “morning” is severely underweighted after “One,” but the batch and replay both support different nouns after that same prefix: the replay target is “day.” Raising a rule for “morning” in this context would therefore encode an uncertain lexical choice and risk replay regression. The batch’s other examples do not establish a compact, reusable correction that justifies additional grammar complexity; retain the existing alternatives and the weight-only update. The free-generation sample is diagnostic, not supervision, so its malformed continuation does not ground a repair.",
+  "feature_definitions": {},
+  "heads": [],
+  "outputs": []
+}

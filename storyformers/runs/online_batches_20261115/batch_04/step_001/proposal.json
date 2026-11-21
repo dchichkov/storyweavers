@@ -1,0 +1,99 @@
+{
+  "format": "storyformers-online-v1",
+  "base_model_sha256": "4a1ae0d9a6976d2f33e2032bcdcccf1bb1eda2148f8299bb41cd86aa99f49a48",
+  "rationale": "The gradient update barely changed the representative error: a broad period rule for any context ending in a noun still dominates, even where the batch shows a continuation is needed. Reduce that rule's weight without ruling out periods after nouns. The batch also supports a narrower story-ending pattern: after “the story,” ended is observed; after “our story,” ends is observed. These suffix rules give those verbal continuations useful mass while preserving alternatives. Counterexamples are possible in other uses of those phrases, and periods remain valid after many noun-final contexts; the replay gate should test both effects.",
+  "feature_definitions": {},
+  "heads": [],
+  "outputs": [
+    {
+      "token": ".",
+      "append": [],
+      "scale": [
+        {
+          "rule": 2,
+          "factor": 0.05
+        }
+      ]
+    },
+    {
+      "token": "ended",
+      "append": [
+        {
+          "pattern": {
+            "kind": "seq",
+            "children": [
+              {
+                "kind": "repeat",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {}
+                  }
+                ],
+                "minimum": 0,
+                "maximum": 32
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "token": "the"
+                }
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "token": "story"
+                }
+              }
+            ]
+          },
+          "emit": {
+            "pos": "v"
+          },
+          "weight": 100.0
+        }
+      ],
+      "scale": []
+    },
+    {
+      "token": "ends",
+      "append": [
+        {
+          "pattern": {
+            "kind": "seq",
+            "children": [
+              {
+                "kind": "repeat",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {}
+                  }
+                ],
+                "minimum": 0,
+                "maximum": 32
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "token": "our"
+                }
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "token": "story"
+                }
+              }
+            ]
+          },
+          "emit": {
+            "pos": "v"
+          },
+          "weight": 100.0
+        }
+      ],
+      "scale": []
+    }
+  ]
+}

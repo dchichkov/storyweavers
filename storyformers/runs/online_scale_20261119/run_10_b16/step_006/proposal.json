@@ -1,0 +1,111 @@
+{
+  "format": "storyformers-online-v1",
+  "base_model_sha256": "90caff1de272af8d3e3beb68f30bccafe6b972bbd70338554dfc6a0a17f23549",
+  "rationale": "The representative error is a very low probability for a noun after an initial determiner, but the batch contains several competing nouns in that position; choosing a particular noun would overfit a lexical choice. Across the revealed documents, however, clause continuations repeatedly use a pronoun followed by a copular verb, including both is and was, and And is followed by lowercase that in multiple endings. Add modest, context-specific evidence for those reusable patterns. This may not help every valid continuation, and other pronoun-verb choices or continuations after And remain possible. The free-generation sample is diagnostic rather than supervision; this patch does not treat its word order as a training label.",
+  "feature_definitions": {},
+  "heads": [],
+  "outputs": [
+    {
+      "token": "that",
+      "append": [
+        {
+          "pattern": {
+            "kind": "seq",
+            "children": [
+              {
+                "kind": "repeat",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {}
+                  }
+                ],
+                "minimum": 0,
+                "maximum": 32
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "token": "And"
+                }
+              }
+            ]
+          },
+          "emit": {
+            "pos": "pron"
+          },
+          "weight": 3.0
+        }
+      ],
+      "scale": []
+    },
+    {
+      "token": "is",
+      "append": [
+        {
+          "pattern": {
+            "kind": "seq",
+            "children": [
+              {
+                "kind": "repeat",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {}
+                  }
+                ],
+                "minimum": 0,
+                "maximum": 32
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "pos": "pron"
+                }
+              }
+            ]
+          },
+          "emit": {
+            "pos": "v"
+          },
+          "weight": 3.0
+        }
+      ],
+      "scale": []
+    },
+    {
+      "token": "was",
+      "append": [
+        {
+          "pattern": {
+            "kind": "seq",
+            "children": [
+              {
+                "kind": "repeat",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {}
+                  }
+                ],
+                "minimum": 0,
+                "maximum": 32
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "pos": "pron"
+                }
+              }
+            ]
+          },
+          "emit": {
+            "pos": "v"
+          },
+          "weight": 3.0
+        }
+      ],
+      "scale": []
+    }
+  ]
+}

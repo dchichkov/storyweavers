@@ -1,0 +1,241 @@
+{
+  "format": "storyformers-online-v1",
+  "base_model_sha256": "8fb9b64b6a8c64f79bb4026a3ab595ac0c751b7d58ee9ae239328b5861b6aec4",
+  "feature_definitions": {},
+  "heads": [],
+  "outputs": [
+    {
+      "token": "Ben",
+      "append": [
+        {
+          "pattern": {
+            "kind": "seq",
+            "children": [
+              {
+                "kind": "repeat",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {}
+                  }
+                ],
+                "minimum": 0,
+                "maximum": 32
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "token": "Once"
+                }
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "token": "upon"
+                }
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "token": "a"
+                }
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "token": "time"
+                }
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "token": ","
+                }
+              }
+            ]
+          },
+          "emit": {
+            "pos": "pn"
+          },
+          "weight": 15.0
+        }
+      ],
+      "scale": []
+    },
+    {
+      "token": "Lily",
+      "append": [
+        {
+          "pattern": {
+            "kind": "seq",
+            "children": [
+              {
+                "kind": "repeat",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {}
+                  }
+                ],
+                "minimum": 0,
+                "maximum": 32
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "token": "Once"
+                }
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "token": "upon"
+                }
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "token": "a"
+                }
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "token": "time"
+                }
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "token": ","
+                }
+              }
+            ]
+          },
+          "emit": {
+            "pos": "pn"
+          },
+          "weight": 15.0
+        }
+      ],
+      "scale": []
+    },
+    {
+      "token": "Mia",
+      "append": [
+        {
+          "pattern": {
+            "kind": "seq",
+            "children": [
+              {
+                "kind": "repeat",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {}
+                  }
+                ],
+                "minimum": 0,
+                "maximum": 32
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "token": "Once"
+                }
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "token": "upon"
+                }
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "token": "a"
+                }
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "token": "time"
+                }
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "token": ","
+                }
+              }
+            ]
+          },
+          "emit": {
+            "pos": "pn"
+          },
+          "weight": 15.0
+        }
+      ],
+      "scale": []
+    },
+    {
+      "token": "Tom",
+      "append": [
+        {
+          "pattern": {
+            "kind": "seq",
+            "children": [
+              {
+                "kind": "repeat",
+                "children": [
+                  {
+                    "kind": "token",
+                    "tests": {}
+                  }
+                ],
+                "minimum": 0,
+                "maximum": 32
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "token": "Once"
+                }
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "token": "upon"
+                }
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "token": "a"
+                }
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "token": "time"
+                }
+              },
+              {
+                "kind": "token",
+                "tests": {
+                  "token": ","
+                }
+              }
+            ]
+          },
+          "emit": {
+            "pos": "pn"
+          },
+          "weight": 15.0
+        }
+      ],
+      "scale": []
+    }
+  ],
+  "rationale": "After the canonical “Once upon a time,” opening, the target is a person name, but the model still assigns the largest probability to <END>. The gradient already raises Ben's comma-conditioned weight, yet the broad punctuation-conditioned <END> rule remains dominant. Add moderate, equal mass for every available proper-name candidate only after this recognizable opening, rather than globally weakening <END> after punctuation, where it may be appropriate after terminal punctuation. This proposes a class-level continuation and does not treat Ben as uniquely determined. A continuation other than a name after this opener remains possible, and the limited vocabulary and single observation do not establish that every such context must introduce a person."
+}
