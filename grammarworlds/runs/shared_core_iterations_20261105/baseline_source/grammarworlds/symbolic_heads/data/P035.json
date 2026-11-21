@@ -1,0 +1,81 @@
+{
+  "id": "P035",
+  "name": "Plan frontier",
+  "description": "Current plan → first eligible unfinished step. Favor an executable next step.",
+  "proposed_payload": "{eligible_steps, prerequisites}",
+  "provenance": "Authored illustrative seeds; not learned or extracted.",
+  "status": "program_required",
+  "examples": [
+    {
+      "id": "P035.01",
+      "description": "Find wood, patch boat, launch; wood found.",
+      "intended_feature": "eligible:patch_boat",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P035.02",
+      "description": "Fetch flour, mix, bake; flour fetched.",
+      "intended_feature": "eligible:mix",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P035.03",
+      "description": "Two independent preparation steps are unfinished.",
+      "intended_feature": "eligible:both",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P035.04",
+      "description": "A later step is complete but its prerequisite is invalidated.",
+      "intended_feature": "inconsistent_plan_state",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P035.05",
+      "description": "Launch requires repair and weather check; repair done only.",
+      "intended_feature": "eligible:weather_check",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P035.06",
+      "description": "The first step failed and a fallback is registered.",
+      "intended_feature": "eligible:fallback",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P035.07",
+      "description": "All steps are complete.",
+      "intended_feature": "plan_complete",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P035.08",
+      "description": "Dependency graph contains a cycle.",
+      "intended_feature": "plan_cycle_error",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P035.09",
+      "description": "One completed task produces a resource needed by another.",
+      "intended_feature": "resource_dependency_frontier",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P035.10",
+      "description": "Actor abandons the plan.",
+      "intended_feature": "no_active_frontier",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    }
+  ],
+  "required_program": "Maintain a dependency graph of plan steps with completion/failure states; return the eligible frontier without leaking future execution."
+}

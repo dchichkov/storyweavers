@@ -1,0 +1,2425 @@
+[
+  {
+    "experiment": "plain",
+    "seed": 0,
+    "story": "Ada said, \u201cI want to repair the book.\u201d She handed Omar the book. Omar gave Ada the book. He fetched the tape from the bench. Ada put the book on the bench. Ada fetched the book from the bench. Omar handed the tape to Ada. Ada gave the book to Omar. Ada gave Omar the tape. Omar placed the book on the bench. He fetched the book from the bench. He handed Ada the book. Omar handed Ada the tape.",
+    "status": "limit",
+    "goals_satisfied": [
+      false
+    ],
+    "events": [
+      {
+        "actor": "ada",
+        "item": "book",
+        "recipient": "omar",
+        "op": "transfer"
+      },
+      {
+        "actor": "omar",
+        "item": "book",
+        "recipient": "ada",
+        "op": "transfer"
+      },
+      {
+        "actor": "omar",
+        "item": "tape",
+        "source": "bench",
+        "op": "fetch"
+      },
+      {
+        "actor": "ada",
+        "item": "book",
+        "destination": "bench",
+        "op": "put_item"
+      },
+      {
+        "actor": "ada",
+        "item": "book",
+        "source": "bench",
+        "op": "fetch"
+      },
+      {
+        "actor": "omar",
+        "item": "tape",
+        "recipient": "ada",
+        "op": "transfer"
+      },
+      {
+        "actor": "ada",
+        "item": "book",
+        "recipient": "omar",
+        "op": "transfer"
+      },
+      {
+        "actor": "ada",
+        "item": "tape",
+        "recipient": "omar",
+        "op": "transfer"
+      },
+      {
+        "actor": "omar",
+        "item": "book",
+        "destination": "bench",
+        "op": "put_item"
+      },
+      {
+        "actor": "omar",
+        "item": "book",
+        "source": "bench",
+        "op": "fetch"
+      },
+      {
+        "actor": "omar",
+        "item": "book",
+        "recipient": "ada",
+        "op": "transfer"
+      },
+      {
+        "actor": "omar",
+        "item": "tape",
+        "recipient": "ada",
+        "op": "transfer"
+      }
+    ]
+  },
+  {
+    "experiment": "plain",
+    "seed": 1,
+    "story": "Ada said, \u201cI want to fix the book.\u201d She fetched the tape from the bench. Ada gave the book to Omar. Omar handed Ada the book. Using the tape, Ada repaired the book. She gave Omar the tape. Omar gave Ada the tape. Ada handed the book to Omar. Omar handed the book to Ada. Ada placed the book on the bench. She gave Omar the tape. Omar fetched the book from the bench. He gave Ada the tape.",
+    "status": "limit",
+    "goals_satisfied": [
+      true
+    ],
+    "events": [
+      {
+        "actor": "ada",
+        "item": "tape",
+        "source": "bench",
+        "op": "fetch"
+      },
+      {
+        "actor": "ada",
+        "item": "book",
+        "recipient": "omar",
+        "op": "transfer"
+      },
+      {
+        "actor": "omar",
+        "item": "book",
+        "recipient": "ada",
+        "op": "transfer"
+      },
+      {
+        "actor": "ada",
+        "item": "book",
+        "tool": "tape",
+        "op": "patch_paper"
+      },
+      {
+        "actor": "ada",
+        "item": "tape",
+        "recipient": "omar",
+        "op": "transfer"
+      },
+      {
+        "actor": "omar",
+        "item": "tape",
+        "recipient": "ada",
+        "op": "transfer"
+      },
+      {
+        "actor": "ada",
+        "item": "book",
+        "recipient": "omar",
+        "op": "transfer"
+      },
+      {
+        "actor": "omar",
+        "item": "book",
+        "recipient": "ada",
+        "op": "transfer"
+      },
+      {
+        "actor": "ada",
+        "item": "book",
+        "destination": "bench",
+        "op": "put_item"
+      },
+      {
+        "actor": "ada",
+        "item": "tape",
+        "recipient": "omar",
+        "op": "transfer"
+      },
+      {
+        "actor": "omar",
+        "item": "book",
+        "source": "bench",
+        "op": "fetch"
+      },
+      {
+        "actor": "omar",
+        "item": "tape",
+        "recipient": "ada",
+        "op": "transfer"
+      }
+    ]
+  },
+  {
+    "experiment": "plain",
+    "seed": 2,
+    "story": "Ada said, \u201cI want to fix the book.\u201d",
+    "status": "sampled_stop",
+    "goals_satisfied": [
+      false
+    ],
+    "events": []
+  },
+  {
+    "experiment": "plain",
+    "seed": 3,
+    "story": "Ada said, \u201cI would like to repair the book.\u201d Omar fetched the tape from the bench. He gave Ada the tape. Ada put the book on the bench. Omar fetched the book from the bench. He handed Ada the book. With the tape, Ada fixed the book. She placed the book on the bench. Omar fetched the book from the bench. Omar put the book on the bench. Ada gave Omar the tape.",
+    "status": "sampled_stop",
+    "goals_satisfied": [
+      true
+    ],
+    "events": [
+      {
+        "actor": "omar",
+        "item": "tape",
+        "source": "bench",
+        "op": "fetch"
+      },
+      {
+        "actor": "omar",
+        "item": "tape",
+        "recipient": "ada",
+        "op": "transfer"
+      },
+      {
+        "actor": "ada",
+        "item": "book",
+        "destination": "bench",
+        "op": "put_item"
+      },
+      {
+        "actor": "omar",
+        "item": "book",
+        "source": "bench",
+        "op": "fetch"
+      },
+      {
+        "actor": "omar",
+        "item": "book",
+        "recipient": "ada",
+        "op": "transfer"
+      },
+      {
+        "actor": "ada",
+        "item": "book",
+        "tool": "tape",
+        "op": "patch_paper"
+      },
+      {
+        "actor": "ada",
+        "item": "book",
+        "destination": "bench",
+        "op": "put_item"
+      },
+      {
+        "actor": "omar",
+        "item": "book",
+        "source": "bench",
+        "op": "fetch"
+      },
+      {
+        "actor": "omar",
+        "item": "book",
+        "destination": "bench",
+        "op": "put_item"
+      },
+      {
+        "actor": "ada",
+        "item": "tape",
+        "recipient": "omar",
+        "op": "transfer"
+      }
+    ]
+  },
+  {
+    "experiment": "plain",
+    "seed": 4,
+    "story": "Ada said, \u201cI want to fix the book.\u201d Omar fetched the tape from the bench. Ada put the book on the bench. She fetched the book from the bench. She placed the book on the bench. Omar gave the tape to Ada. Ada fetched the book from the bench.",
+    "status": "sampled_stop",
+    "goals_satisfied": [
+      false
+    ],
+    "events": [
+      {
+        "actor": "omar",
+        "item": "tape",
+        "source": "bench",
+        "op": "fetch"
+      },
+      {
+        "actor": "ada",
+        "item": "book",
+        "destination": "bench",
+        "op": "put_item"
+      },
+      {
+        "actor": "ada",
+        "item": "book",
+        "source": "bench",
+        "op": "fetch"
+      },
+      {
+        "actor": "ada",
+        "item": "book",
+        "destination": "bench",
+        "op": "put_item"
+      },
+      {
+        "actor": "omar",
+        "item": "tape",
+        "recipient": "ada",
+        "op": "transfer"
+      },
+      {
+        "actor": "ada",
+        "item": "book",
+        "source": "bench",
+        "op": "fetch"
+      }
+    ]
+  },
+  {
+    "experiment": "plain",
+    "seed": 5,
+    "story": "Ada said, \u201cI would like to repair the book.\u201d She put the book on the bench. Omar fetched the book from the bench. He handed the book to Ada.",
+    "status": "sampled_stop",
+    "goals_satisfied": [
+      false
+    ],
+    "events": [
+      {
+        "actor": "ada",
+        "item": "book",
+        "destination": "bench",
+        "op": "put_item"
+      },
+      {
+        "actor": "omar",
+        "item": "book",
+        "source": "bench",
+        "op": "fetch"
+      },
+      {
+        "actor": "omar",
+        "item": "book",
+        "recipient": "ada",
+        "op": "transfer"
+      }
+    ]
+  },
+  {
+    "experiment": "plain",
+    "seed": 6,
+    "story": "Ada said, \u201cI want to repair the book.\u201d She gave Omar the book. Omar handed the book to Ada. Ada placed the book on the bench. Omar fetched the tape from the bench. He handed the tape to Ada. He fetched the book from the bench. Ada handed Omar the tape. Omar handed Ada the book. Omar handed the tape to Ada. Ada handed Omar the book. Omar placed the book on the bench. Omar fetched the book from the bench.",
+    "status": "limit",
+    "goals_satisfied": [
+      false
+    ],
+    "events": [
+      {
+        "actor": "ada",
+        "item": "book",
+        "recipient": "omar",
+        "op": "transfer"
+      },
+      {
+        "actor": "omar",
+        "item": "book",
+        "recipient": "ada",
+        "op": "transfer"
+      },
+      {
+        "actor": "ada",
+        "item": "book",
+        "destination": "bench",
+        "op": "put_item"
+      },
+      {
+        "actor": "omar",
+        "item": "tape",
+        "source": "bench",
+        "op": "fetch"
+      },
+      {
+        "actor": "omar",
+        "item": "tape",
+        "recipient": "ada",
+        "op": "transfer"
+      },
+      {
+        "actor": "omar",
+        "item": "book",
+        "source": "bench",
+        "op": "fetch"
+      },
+      {
+        "actor": "ada",
+        "item": "tape",
+        "recipient": "omar",
+        "op": "transfer"
+      },
+      {
+        "actor": "omar",
+        "item": "book",
+        "recipient": "ada",
+        "op": "transfer"
+      },
+      {
+        "actor": "omar",
+        "item": "tape",
+        "recipient": "ada",
+        "op": "transfer"
+      },
+      {
+        "actor": "ada",
+        "item": "book",
+        "recipient": "omar",
+        "op": "transfer"
+      },
+      {
+        "actor": "omar",
+        "item": "book",
+        "destination": "bench",
+        "op": "put_item"
+      },
+      {
+        "actor": "omar",
+        "item": "book",
+        "source": "bench",
+        "op": "fetch"
+      }
+    ]
+  },
+  {
+    "experiment": "plain",
+    "seed": 7,
+    "story": "Ada said, \u201cI would like to repair the book.\u201d Omar fetched the tape from the bench. Ada put the book on the bench. Omar fetched the book from the bench. Using the tape, Omar repaired the book. He handed Ada the tape. Ada gave Omar the tape. Omar placed the book on the bench. Ada fetched the book from the bench. She placed the book on the bench. She fetched the book from the bench. Ada put the book on the bench. Omar gave Ada the tape.",
+    "status": "limit",
+    "goals_satisfied": [
+      true
+    ],
+    "events": [
+      {
+        "actor": "omar",
+        "item": "tape",
+        "source": "bench",
+        "op": "fetch"
+      },
+      {
+        "actor": "ada",
+        "item": "book",
+        "destination": "bench",
+        "op": "put_item"
+      },
+      {
+        "actor": "omar",
+        "item": "book",
+        "source": "bench",
+        "op": "fetch"
+      },
+      {
+        "actor": "omar",
+        "item": "book",
+        "tool": "tape",
+        "op": "patch_paper"
+      },
+      {
+        "actor": "omar",
+        "item": "tape",
+        "recipient": "ada",
+        "op": "transfer"
+      },
+      {
+        "actor": "ada",
+        "item": "tape",
+        "recipient": "omar",
+        "op": "transfer"
+      },
+      {
+        "actor": "omar",
+        "item": "book",
+        "destination": "bench",
+        "op": "put_item"
+      },
+      {
+        "actor": "ada",
+        "item": "book",
+        "source": "bench",
+        "op": "fetch"
+      },
+      {
+        "actor": "ada",
+        "item": "book",
+        "destination": "bench",
+        "op": "put_item"
+      },
+      {
+        "actor": "ada",
+        "item": "book",
+        "source": "bench",
+        "op": "fetch"
+      },
+      {
+        "actor": "ada",
+        "item": "book",
+        "destination": "bench",
+        "op": "put_item"
+      },
+      {
+        "actor": "omar",
+        "item": "tape",
+        "recipient": "ada",
+        "op": "transfer"
+      }
+    ]
+  },
+  {
+    "experiment": "plain",
+    "seed": 8,
+    "story": "Ada said, \u201cI want to repair the book.\u201d Omar fetched the tape from the bench.",
+    "status": "sampled_stop",
+    "goals_satisfied": [
+      false
+    ],
+    "events": [
+      {
+        "actor": "omar",
+        "item": "tape",
+        "source": "bench",
+        "op": "fetch"
+      }
+    ]
+  },
+  {
+    "experiment": "plain",
+    "seed": 9,
+    "story": "Ada said, \u201cI would like to repair the book.\u201d She placed the book on the bench. Omar fetched the tape from the bench. He gave Ada the tape.",
+    "status": "sampled_stop",
+    "goals_satisfied": [
+      false
+    ],
+    "events": [
+      {
+        "actor": "ada",
+        "item": "book",
+        "destination": "bench",
+        "op": "put_item"
+      },
+      {
+        "actor": "omar",
+        "item": "tape",
+        "source": "bench",
+        "op": "fetch"
+      },
+      {
+        "actor": "omar",
+        "item": "tape",
+        "recipient": "ada",
+        "op": "transfer"
+      }
+    ]
+  },
+  {
+    "experiment": "plain",
+    "seed": 10,
+    "story": "Ada said, \u201cI would like to fix the book.\u201d She placed the book on the bench. Omar fetched the tape from the bench. He fetched the book from the bench. With the tape, he fixed the book. He handed Ada the book. Ada handed the book to Omar. Omar gave the book to Ada. Ada put the book on the bench. She fetched the book from the bench. Omar handed the tape to Ada. Ada placed the book on the bench.",
+    "status": "sampled_stop",
+    "goals_satisfied": [
+      true
+    ],
+    "events": [
+      {
+        "actor": "ada",
+        "item": "book",
+        "destination": "bench",
+        "op": "put_item"
+      },
+      {
+        "actor": "omar",
+        "item": "tape",
+        "source": "bench",
+        "op": "fetch"
+      },
+      {
+        "actor": "omar",
+        "item": "book",
+        "source": "bench",
+        "op": "fetch"
+      },
+      {
+        "actor": "omar",
+        "item": "book",
+        "tool": "tape",
+        "op": "patch_paper"
+      },
+      {
+        "actor": "omar",
+        "item": "book",
+        "recipient": "ada",
+        "op": "transfer"
+      },
+      {
+        "actor": "ada",
+        "item": "book",
+        "recipient": "omar",
+        "op": "transfer"
+      },
+      {
+        "actor": "omar",
+        "item": "book",
+        "recipient": "ada",
+        "op": "transfer"
+      },
+      {
+        "actor": "ada",
+        "item": "book",
+        "destination": "bench",
+        "op": "put_item"
+      },
+      {
+        "actor": "ada",
+        "item": "book",
+        "source": "bench",
+        "op": "fetch"
+      },
+      {
+        "actor": "omar",
+        "item": "tape",
+        "recipient": "ada",
+        "op": "transfer"
+      },
+      {
+        "actor": "ada",
+        "item": "book",
+        "destination": "bench",
+        "op": "put_item"
+      }
+    ]
+  },
+  {
+    "experiment": "plain",
+    "seed": 11,
+    "story": "Ada said, \u201cI would like to fix the book.\u201d Ada placed the book on the bench. She fetched the book from the bench.",
+    "status": "sampled_stop",
+    "goals_satisfied": [
+      false
+    ],
+    "events": [
+      {
+        "actor": "ada",
+        "item": "book",
+        "destination": "bench",
+        "op": "put_item"
+      },
+      {
+        "actor": "ada",
+        "item": "book",
+        "source": "bench",
+        "op": "fetch"
+      }
+    ]
+  },
+  {
+    "experiment": "plain",
+    "seed": 12,
+    "story": "Ada said, \u201cI would like to repair the book.\u201d She put the book on the bench. Ada fetched the book from the bench. She put the book on the bench. She fetched the tape from the bench. She gave the tape to Omar. She fetched the book from the bench. She placed the book on the bench. Omar fetched the book from the bench. He gave the tape to Ada. He handed Ada the book. Ada handed Omar the tape. Ada gave the book to Omar.",
+    "status": "limit",
+    "goals_satisfied": [
+      false
+    ],
+    "events": [
+      {
+        "actor": "ada",
+        "item": "book",
+        "destination": "bench",
+        "op": "put_item"
+      },
+      {
+        "actor": "ada",
+        "item": "book",
+        "source": "bench",
+        "op": "fetch"
+      },
+      {
+        "actor": "ada",
+        "item": "book",
+        "destination": "bench",
+        "op": "put_item"
+      },
+      {
+        "actor": "ada",
+        "item": "tape",
+        "source": "bench",
+        "op": "fetch"
+      },
+      {
+        "actor": "ada",
+        "item": "tape",
+        "recipient": "omar",
+        "op": "transfer"
+      },
+      {
+        "actor": "ada",
+        "item": "book",
+        "source": "bench",
+        "op": "fetch"
+      },
+      {
+        "actor": "ada",
+        "item": "book",
+        "destination": "bench",
+        "op": "put_item"
+      },
+      {
+        "actor": "omar",
+        "item": "book",
+        "source": "bench",
+        "op": "fetch"
+      },
+      {
+        "actor": "omar",
+        "item": "tape",
+        "recipient": "ada",
+        "op": "transfer"
+      },
+      {
+        "actor": "omar",
+        "item": "book",
+        "recipient": "ada",
+        "op": "transfer"
+      },
+      {
+        "actor": "ada",
+        "item": "tape",
+        "recipient": "omar",
+        "op": "transfer"
+      },
+      {
+        "actor": "ada",
+        "item": "book",
+        "recipient": "omar",
+        "op": "transfer"
+      }
+    ]
+  },
+  {
+    "experiment": "plain",
+    "seed": 13,
+    "story": "Ada said, \u201cI want to repair the book.\u201d Omar fetched the tape from the bench. Ada gave Omar the book. Omar gave Ada the tape. Omar gave the book to Ada. With the tape, Ada fixed the book. She put the book on the bench. She gave Omar the tape. Omar gave the tape to Ada. He fetched the book from the bench. He placed the book on the bench. Ada fetched the book from the bench. She put the book on the bench.",
+    "status": "limit",
+    "goals_satisfied": [
+      true
+    ],
+    "events": [
+      {
+        "actor": "omar",
+        "item": "tape",
+        "source": "bench",
+        "op": "fetch"
+      },
+      {
+        "actor": "ada",
+        "item": "book",
+        "recipient": "omar",
+        "op": "transfer"
+      },
+      {
+        "actor": "omar",
+        "item": "tape",
+        "recipient": "ada",
+        "op": "transfer"
+      },
+      {
+        "actor": "omar",
+        "item": "book",
+        "recipient": "ada",
+        "op": "transfer"
+      },
+      {
+        "actor": "ada",
+        "item": "book",
+        "tool": "tape",
+        "op": "patch_paper"
+      },
+      {
+        "actor": "ada",
+        "item": "book",
+        "destination": "bench",
+        "op": "put_item"
+      },
+      {
+        "actor": "ada",
+        "item": "tape",
+        "recipient": "omar",
+        "op": "transfer"
+      },
+      {
+        "actor": "omar",
+        "item": "tape",
+        "recipient": "ada",
+        "op": "transfer"
+      },
+      {
+        "actor": "omar",
+        "item": "book",
+        "source": "bench",
+        "op": "fetch"
+      },
+      {
+        "actor": "omar",
+        "item": "book",
+        "destination": "bench",
+        "op": "put_item"
+      },
+      {
+        "actor": "ada",
+        "item": "book",
+        "source": "bench",
+        "op": "fetch"
+      },
+      {
+        "actor": "ada",
+        "item": "book",
+        "destination": "bench",
+        "op": "put_item"
+      }
+    ]
+  },
+  {
+    "experiment": "plain",
+    "seed": 14,
+    "story": "Ada said, \u201cI want to fix the book.\u201d She fetched the tape from the bench. She handed Omar the tape. She handed the book to Omar.",
+    "status": "sampled_stop",
+    "goals_satisfied": [
+      false
+    ],
+    "events": [
+      {
+        "actor": "ada",
+        "item": "tape",
+        "source": "bench",
+        "op": "fetch"
+      },
+      {
+        "actor": "ada",
+        "item": "tape",
+        "recipient": "omar",
+        "op": "transfer"
+      },
+      {
+        "actor": "ada",
+        "item": "book",
+        "recipient": "omar",
+        "op": "transfer"
+      }
+    ]
+  },
+  {
+    "experiment": "plain",
+    "seed": 15,
+    "story": "Ada said, \u201cI would like to fix the book.\u201d",
+    "status": "sampled_stop",
+    "goals_satisfied": [
+      false
+    ],
+    "events": []
+  },
+  {
+    "experiment": "plain",
+    "seed": 16,
+    "story": "Ada said, \u201cI would like to fix the book.\u201d Omar fetched the tape from the bench. He handed the tape to Ada. Ada placed the book on the bench. She fetched the book from the bench. She put the book on the bench. Omar fetched the book from the bench. He placed the book on the bench. He fetched the book from the bench. He put the book on the bench. Ada fetched the book from the bench. She used the tape to repair the book. She placed the book on the bench.",
+    "status": "limit",
+    "goals_satisfied": [
+      true
+    ],
+    "events": [
+      {
+        "actor": "omar",
+        "item": "tape",
+        "source": "bench",
+        "op": "fetch"
+      },
+      {
+        "actor": "omar",
+        "item": "tape",
+        "recipient": "ada",
+        "op": "transfer"
+      },
+      {
+        "actor": "ada",
+        "item": "book",
+        "destination": "bench",
+        "op": "put_item"
+      },
+      {
+        "actor": "ada",
+        "item": "book",
+        "source": "bench",
+        "op": "fetch"
+      },
+      {
+        "actor": "ada",
+        "item": "book",
+        "destination": "bench",
+        "op": "put_item"
+      },
+      {
+        "actor": "omar",
+        "item": "book",
+        "source": "bench",
+        "op": "fetch"
+      },
+      {
+        "actor": "omar",
+        "item": "book",
+        "destination": "bench",
+        "op": "put_item"
+      },
+      {
+        "actor": "omar",
+        "item": "book",
+        "source": "bench",
+        "op": "fetch"
+      },
+      {
+        "actor": "omar",
+        "item": "book",
+        "destination": "bench",
+        "op": "put_item"
+      },
+      {
+        "actor": "ada",
+        "item": "book",
+        "source": "bench",
+        "op": "fetch"
+      },
+      {
+        "actor": "ada",
+        "item": "book",
+        "tool": "tape",
+        "op": "patch_paper"
+      },
+      {
+        "actor": "ada",
+        "item": "book",
+        "destination": "bench",
+        "op": "put_item"
+      }
+    ]
+  },
+  {
+    "experiment": "plain",
+    "seed": 17,
+    "story": "Ada said, \u201cI would like to fix the book.\u201d Ada put the book on the bench. Omar fetched the book from the bench.",
+    "status": "sampled_stop",
+    "goals_satisfied": [
+      false
+    ],
+    "events": [
+      {
+        "actor": "ada",
+        "item": "book",
+        "destination": "bench",
+        "op": "put_item"
+      },
+      {
+        "actor": "omar",
+        "item": "book",
+        "source": "bench",
+        "op": "fetch"
+      }
+    ]
+  },
+  {
+    "experiment": "plain",
+    "seed": 18,
+    "story": "Ada said, \u201cI want to repair the book.\u201d She fetched the tape from the bench. She gave the tape to Omar. Omar handed the tape to Ada. Using the tape, Ada fixed the book. She gave the tape to Omar. Omar gave the tape to Ada. Ada gave Omar the tape. Omar gave Ada the tape. Ada placed the book on the bench. She handed Omar the tape. Omar fetched the book from the bench. He gave Ada the tape.",
+    "status": "limit",
+    "goals_satisfied": [
+      true
+    ],
+    "events": [
+      {
+        "actor": "ada",
+        "item": "tape",
+        "source": "bench",
+        "op": "fetch"
+      },
+      {
+        "actor": "ada",
+        "item": "tape",
+        "recipient": "omar",
+        "op": "transfer"
+      },
+      {
+        "actor": "omar",
+        "item": "tape",
+        "recipient": "ada",
+        "op": "transfer"
+      },
+      {
+        "actor": "ada",
+        "item": "book",
+        "tool": "tape",
+        "op": "patch_paper"
+      },
+      {
+        "actor": "ada",
+        "item": "tape",
+        "recipient": "omar",
+        "op": "transfer"
+      },
+      {
+        "actor": "omar",
+        "item": "tape",
+        "recipient": "ada",
+        "op": "transfer"
+      },
+      {
+        "actor": "ada",
+        "item": "tape",
+        "recipient": "omar",
+        "op": "transfer"
+      },
+      {
+        "actor": "omar",
+        "item": "tape",
+        "recipient": "ada",
+        "op": "transfer"
+      },
+      {
+        "actor": "ada",
+        "item": "book",
+        "destination": "bench",
+        "op": "put_item"
+      },
+      {
+        "actor": "ada",
+        "item": "tape",
+        "recipient": "omar",
+        "op": "transfer"
+      },
+      {
+        "actor": "omar",
+        "item": "book",
+        "source": "bench",
+        "op": "fetch"
+      },
+      {
+        "actor": "omar",
+        "item": "tape",
+        "recipient": "ada",
+        "op": "transfer"
+      }
+    ]
+  },
+  {
+    "experiment": "plain",
+    "seed": 19,
+    "story": "Ada said, \u201cI want to repair the book.\u201d She handed Omar the book. Omar handed Ada the book. Ada put the book on the bench. Ada fetched the book from the bench. Omar fetched the tape from the bench.",
+    "status": "sampled_stop",
+    "goals_satisfied": [
+      false
+    ],
+    "events": [
+      {
+        "actor": "ada",
+        "item": "book",
+        "recipient": "omar",
+        "op": "transfer"
+      },
+      {
+        "actor": "omar",
+        "item": "book",
+        "recipient": "ada",
+        "op": "transfer"
+      },
+      {
+        "actor": "ada",
+        "item": "book",
+        "destination": "bench",
+        "op": "put_item"
+      },
+      {
+        "actor": "ada",
+        "item": "book",
+        "source": "bench",
+        "op": "fetch"
+      },
+      {
+        "actor": "omar",
+        "item": "tape",
+        "source": "bench",
+        "op": "fetch"
+      }
+    ]
+  },
+  {
+    "experiment": "contextual",
+    "seed": 0,
+    "story": "Ada said, \u201cI want to repair the book.\u201d She put the book on the bench. Omar fetched the book from the bench. He fetched the tape from the bench. Using the tape, Omar fixed the book.",
+    "status": "sampled_stop",
+    "goals_satisfied": [
+      true
+    ],
+    "events": [
+      {
+        "actor": "ada",
+        "item": "book",
+        "destination": "bench",
+        "op": "put_item"
+      },
+      {
+        "actor": "omar",
+        "item": "book",
+        "source": "bench",
+        "op": "fetch"
+      },
+      {
+        "actor": "omar",
+        "item": "tape",
+        "source": "bench",
+        "op": "fetch"
+      },
+      {
+        "actor": "omar",
+        "item": "book",
+        "tool": "tape",
+        "op": "patch_paper"
+      }
+    ]
+  },
+  {
+    "experiment": "contextual",
+    "seed": 1,
+    "story": "Ada said, \u201cI want to fix the book.\u201d She fetched the tape from the bench. Ada used the tape to repair the book.",
+    "status": "sampled_stop",
+    "goals_satisfied": [
+      true
+    ],
+    "events": [
+      {
+        "actor": "ada",
+        "item": "tape",
+        "source": "bench",
+        "op": "fetch"
+      },
+      {
+        "actor": "ada",
+        "item": "book",
+        "tool": "tape",
+        "op": "patch_paper"
+      }
+    ]
+  },
+  {
+    "experiment": "contextual",
+    "seed": 2,
+    "story": "Ada said, \u201cI want to fix the book.\u201d She handed Omar the book. Omar put the book on the bench. Ada fetched the tape from the bench. Ada gave Omar the tape. Omar fetched the book from the bench. He fixed the book with the tape.",
+    "status": "sampled_stop",
+    "goals_satisfied": [
+      true
+    ],
+    "events": [
+      {
+        "actor": "ada",
+        "item": "book",
+        "recipient": "omar",
+        "op": "transfer"
+      },
+      {
+        "actor": "omar",
+        "item": "book",
+        "destination": "bench",
+        "op": "put_item"
+      },
+      {
+        "actor": "ada",
+        "item": "tape",
+        "source": "bench",
+        "op": "fetch"
+      },
+      {
+        "actor": "ada",
+        "item": "tape",
+        "recipient": "omar",
+        "op": "transfer"
+      },
+      {
+        "actor": "omar",
+        "item": "book",
+        "source": "bench",
+        "op": "fetch"
+      },
+      {
+        "actor": "omar",
+        "item": "book",
+        "tool": "tape",
+        "op": "patch_paper"
+      }
+    ]
+  },
+  {
+    "experiment": "contextual",
+    "seed": 3,
+    "story": "Ada said, \u201cI would like to repair the book.\u201d She fetched the tape from the bench. She used the tape to repair the book.",
+    "status": "sampled_stop",
+    "goals_satisfied": [
+      true
+    ],
+    "events": [
+      {
+        "actor": "ada",
+        "item": "tape",
+        "source": "bench",
+        "op": "fetch"
+      },
+      {
+        "actor": "ada",
+        "item": "book",
+        "tool": "tape",
+        "op": "patch_paper"
+      }
+    ]
+  },
+  {
+    "experiment": "contextual",
+    "seed": 4,
+    "story": "Ada said, \u201cI want to fix the book.\u201d She fetched the tape from the bench. Using the tape, she repaired the book.",
+    "status": "sampled_stop",
+    "goals_satisfied": [
+      true
+    ],
+    "events": [
+      {
+        "actor": "ada",
+        "item": "tape",
+        "source": "bench",
+        "op": "fetch"
+      },
+      {
+        "actor": "ada",
+        "item": "book",
+        "tool": "tape",
+        "op": "patch_paper"
+      }
+    ]
+  },
+  {
+    "experiment": "contextual",
+    "seed": 5,
+    "story": "Ada said, \u201cI would like to repair the book.\u201d She fetched the tape from the bench. She fixed the book with the tape.",
+    "status": "sampled_stop",
+    "goals_satisfied": [
+      true
+    ],
+    "events": [
+      {
+        "actor": "ada",
+        "item": "tape",
+        "source": "bench",
+        "op": "fetch"
+      },
+      {
+        "actor": "ada",
+        "item": "book",
+        "tool": "tape",
+        "op": "patch_paper"
+      }
+    ]
+  },
+  {
+    "experiment": "contextual",
+    "seed": 6,
+    "story": "Ada said, \u201cI want to repair the book.\u201d Omar fetched the tape from the bench. Ada handed the book to Omar. Omar used the tape to repair the book.",
+    "status": "sampled_stop",
+    "goals_satisfied": [
+      true
+    ],
+    "events": [
+      {
+        "actor": "omar",
+        "item": "tape",
+        "source": "bench",
+        "op": "fetch"
+      },
+      {
+        "actor": "ada",
+        "item": "book",
+        "recipient": "omar",
+        "op": "transfer"
+      },
+      {
+        "actor": "omar",
+        "item": "book",
+        "tool": "tape",
+        "op": "patch_paper"
+      }
+    ]
+  },
+  {
+    "experiment": "contextual",
+    "seed": 7,
+    "story": "Ada said, \u201cI would like to repair the book.\u201d Ada fetched the tape from the bench. Using the tape, she fixed the book.",
+    "status": "sampled_stop",
+    "goals_satisfied": [
+      true
+    ],
+    "events": [
+      {
+        "actor": "ada",
+        "item": "tape",
+        "source": "bench",
+        "op": "fetch"
+      },
+      {
+        "actor": "ada",
+        "item": "book",
+        "tool": "tape",
+        "op": "patch_paper"
+      }
+    ]
+  },
+  {
+    "experiment": "contextual",
+    "seed": 8,
+    "story": "Ada said, \u201cI want to repair the book.\u201d She fetched the tape from the bench. She used the tape to repair the book.",
+    "status": "sampled_stop",
+    "goals_satisfied": [
+      true
+    ],
+    "events": [
+      {
+        "actor": "ada",
+        "item": "tape",
+        "source": "bench",
+        "op": "fetch"
+      },
+      {
+        "actor": "ada",
+        "item": "book",
+        "tool": "tape",
+        "op": "patch_paper"
+      }
+    ]
+  },
+  {
+    "experiment": "contextual",
+    "seed": 9,
+    "story": "Ada said, \u201cI would like to repair the book.\u201d She fetched the tape from the bench. With the tape, Ada fixed the book.",
+    "status": "sampled_stop",
+    "goals_satisfied": [
+      true
+    ],
+    "events": [
+      {
+        "actor": "ada",
+        "item": "tape",
+        "source": "bench",
+        "op": "fetch"
+      },
+      {
+        "actor": "ada",
+        "item": "book",
+        "tool": "tape",
+        "op": "patch_paper"
+      }
+    ]
+  },
+  {
+    "experiment": "contextual",
+    "seed": 10,
+    "story": "Ada said, \u201cI would like to fix the book.\u201d She fetched the tape from the bench. She used the tape to repair the book.",
+    "status": "sampled_stop",
+    "goals_satisfied": [
+      true
+    ],
+    "events": [
+      {
+        "actor": "ada",
+        "item": "tape",
+        "source": "bench",
+        "op": "fetch"
+      },
+      {
+        "actor": "ada",
+        "item": "book",
+        "tool": "tape",
+        "op": "patch_paper"
+      }
+    ]
+  },
+  {
+    "experiment": "contextual",
+    "seed": 11,
+    "story": "Ada said, \u201cI would like to fix the book.\u201d Ada fetched the tape from the bench. Using the tape, Ada fixed the book.",
+    "status": "sampled_stop",
+    "goals_satisfied": [
+      true
+    ],
+    "events": [
+      {
+        "actor": "ada",
+        "item": "tape",
+        "source": "bench",
+        "op": "fetch"
+      },
+      {
+        "actor": "ada",
+        "item": "book",
+        "tool": "tape",
+        "op": "patch_paper"
+      }
+    ]
+  },
+  {
+    "experiment": "contextual",
+    "seed": 12,
+    "story": "Ada said, \u201cI would like to repair the book.\u201d She fetched the tape from the bench. With the tape, Ada fixed the book.",
+    "status": "sampled_stop",
+    "goals_satisfied": [
+      true
+    ],
+    "events": [
+      {
+        "actor": "ada",
+        "item": "tape",
+        "source": "bench",
+        "op": "fetch"
+      },
+      {
+        "actor": "ada",
+        "item": "book",
+        "tool": "tape",
+        "op": "patch_paper"
+      }
+    ]
+  },
+  {
+    "experiment": "contextual",
+    "seed": 13,
+    "story": "Ada said, \u201cI want to repair the book.\u201d She fetched the tape from the bench. Using the tape, she repaired the book.",
+    "status": "sampled_stop",
+    "goals_satisfied": [
+      true
+    ],
+    "events": [
+      {
+        "actor": "ada",
+        "item": "tape",
+        "source": "bench",
+        "op": "fetch"
+      },
+      {
+        "actor": "ada",
+        "item": "book",
+        "tool": "tape",
+        "op": "patch_paper"
+      }
+    ]
+  },
+  {
+    "experiment": "contextual",
+    "seed": 14,
+    "story": "Ada said, \u201cI want to fix the book.\u201d She fetched the tape from the bench. She repaired the book with the tape.",
+    "status": "sampled_stop",
+    "goals_satisfied": [
+      true
+    ],
+    "events": [
+      {
+        "actor": "ada",
+        "item": "tape",
+        "source": "bench",
+        "op": "fetch"
+      },
+      {
+        "actor": "ada",
+        "item": "book",
+        "tool": "tape",
+        "op": "patch_paper"
+      }
+    ]
+  },
+  {
+    "experiment": "contextual",
+    "seed": 15,
+    "story": "Ada said, \u201cI would like to fix the book.\u201d She gave Omar the book. Ada fetched the tape from the bench. Omar gave Ada the book. Using the tape, Ada fixed the book.",
+    "status": "sampled_stop",
+    "goals_satisfied": [
+      true
+    ],
+    "events": [
+      {
+        "actor": "ada",
+        "item": "book",
+        "recipient": "omar",
+        "op": "transfer"
+      },
+      {
+        "actor": "ada",
+        "item": "tape",
+        "source": "bench",
+        "op": "fetch"
+      },
+      {
+        "actor": "omar",
+        "item": "book",
+        "recipient": "ada",
+        "op": "transfer"
+      },
+      {
+        "actor": "ada",
+        "item": "book",
+        "tool": "tape",
+        "op": "patch_paper"
+      }
+    ]
+  },
+  {
+    "experiment": "contextual",
+    "seed": 16,
+    "story": "Ada said, \u201cI would like to fix the book.\u201d She fetched the tape from the bench. Using the tape, she fixed the book.",
+    "status": "sampled_stop",
+    "goals_satisfied": [
+      true
+    ],
+    "events": [
+      {
+        "actor": "ada",
+        "item": "tape",
+        "source": "bench",
+        "op": "fetch"
+      },
+      {
+        "actor": "ada",
+        "item": "book",
+        "tool": "tape",
+        "op": "patch_paper"
+      }
+    ]
+  },
+  {
+    "experiment": "contextual",
+    "seed": 17,
+    "story": "Ada said, \u201cI would like to fix the book.\u201d Ada fetched the tape from the bench. She fixed the book with the tape.",
+    "status": "sampled_stop",
+    "goals_satisfied": [
+      true
+    ],
+    "events": [
+      {
+        "actor": "ada",
+        "item": "tape",
+        "source": "bench",
+        "op": "fetch"
+      },
+      {
+        "actor": "ada",
+        "item": "book",
+        "tool": "tape",
+        "op": "patch_paper"
+      }
+    ]
+  },
+  {
+    "experiment": "contextual",
+    "seed": 18,
+    "story": "Ada said, \u201cI want to repair the book.\u201d She fetched the tape from the bench. With the tape, she repaired the book.",
+    "status": "sampled_stop",
+    "goals_satisfied": [
+      true
+    ],
+    "events": [
+      {
+        "actor": "ada",
+        "item": "tape",
+        "source": "bench",
+        "op": "fetch"
+      },
+      {
+        "actor": "ada",
+        "item": "book",
+        "tool": "tape",
+        "op": "patch_paper"
+      }
+    ]
+  },
+  {
+    "experiment": "contextual",
+    "seed": 19,
+    "story": "Ada said, \u201cI want to repair the book.\u201d She fetched the tape from the bench. She fixed the book with the tape.",
+    "status": "sampled_stop",
+    "goals_satisfied": [
+      true
+    ],
+    "events": [
+      {
+        "actor": "ada",
+        "item": "tape",
+        "source": "bench",
+        "op": "fetch"
+      },
+      {
+        "actor": "ada",
+        "item": "book",
+        "tool": "tape",
+        "op": "patch_paper"
+      }
+    ]
+  },
+  {
+    "experiment": "dialogue_prefix",
+    "seed": 0,
+    "story": "Ada said, \u201cI want to repair the book.\u201d Omar said, \u201cI could help you.\u201d Ada placed the book on the bench. Omar fetched the book from the bench. He fetched the tape from the bench. Omar fixed the book with the tape.",
+    "status": "sampled_stop",
+    "goals_satisfied": [
+      true
+    ],
+    "events": [
+      {
+        "actor": "ada",
+        "item": "book",
+        "destination": "bench",
+        "op": "put_item"
+      },
+      {
+        "actor": "omar",
+        "item": "book",
+        "source": "bench",
+        "op": "fetch"
+      },
+      {
+        "actor": "omar",
+        "item": "tape",
+        "source": "bench",
+        "op": "fetch"
+      },
+      {
+        "actor": "omar",
+        "item": "book",
+        "tool": "tape",
+        "op": "patch_paper"
+      }
+    ]
+  },
+  {
+    "experiment": "dialogue_prefix",
+    "seed": 1,
+    "story": "Ada said, \u201cI want to fix the book.\u201d Omar said, \u201cI can help you.\u201d Ada fetched the tape from the bench. Using the tape, she repaired the book.",
+    "status": "sampled_stop",
+    "goals_satisfied": [
+      true
+    ],
+    "events": [
+      {
+        "actor": "ada",
+        "item": "tape",
+        "source": "bench",
+        "op": "fetch"
+      },
+      {
+        "actor": "ada",
+        "item": "book",
+        "tool": "tape",
+        "op": "patch_paper"
+      }
+    ]
+  },
+  {
+    "experiment": "dialogue_prefix",
+    "seed": 2,
+    "story": "Ada said, \u201cI want to fix the book.\u201d Omar said, \u201cI could help you.\u201d Ada handed the book to Omar. Omar placed the book on the bench. Ada fetched the tape from the bench. She handed Omar the tape. Omar fetched the book from the bench. With the tape, Omar repaired the book.",
+    "status": "sampled_stop",
+    "goals_satisfied": [
+      true
+    ],
+    "events": [
+      {
+        "actor": "ada",
+        "item": "book",
+        "recipient": "omar",
+        "op": "transfer"
+      },
+      {
+        "actor": "omar",
+        "item": "book",
+        "destination": "bench",
+        "op": "put_item"
+      },
+      {
+        "actor": "ada",
+        "item": "tape",
+        "source": "bench",
+        "op": "fetch"
+      },
+      {
+        "actor": "ada",
+        "item": "tape",
+        "recipient": "omar",
+        "op": "transfer"
+      },
+      {
+        "actor": "omar",
+        "item": "book",
+        "source": "bench",
+        "op": "fetch"
+      },
+      {
+        "actor": "omar",
+        "item": "book",
+        "tool": "tape",
+        "op": "patch_paper"
+      }
+    ]
+  },
+  {
+    "experiment": "dialogue_prefix",
+    "seed": 3,
+    "story": "Ada said, \u201cI would like to repair the book.\u201d Omar told Ada, \u201cI can help you.\u201d Ada fetched the tape from the bench. She repaired the book with the tape.",
+    "status": "sampled_stop",
+    "goals_satisfied": [
+      true
+    ],
+    "events": [
+      {
+        "actor": "ada",
+        "item": "tape",
+        "source": "bench",
+        "op": "fetch"
+      },
+      {
+        "actor": "ada",
+        "item": "book",
+        "tool": "tape",
+        "op": "patch_paper"
+      }
+    ]
+  },
+  {
+    "experiment": "dialogue_prefix",
+    "seed": 4,
+    "story": "Ada said, \u201cI want to fix the book.\u201d Omar said, \u201cLet me help you.\u201d Ada fetched the tape from the bench. She used the tape to repair the book.",
+    "status": "sampled_stop",
+    "goals_satisfied": [
+      true
+    ],
+    "events": [
+      {
+        "actor": "ada",
+        "item": "tape",
+        "source": "bench",
+        "op": "fetch"
+      },
+      {
+        "actor": "ada",
+        "item": "book",
+        "tool": "tape",
+        "op": "patch_paper"
+      }
+    ]
+  },
+  {
+    "experiment": "ending_predicate",
+    "seed": 0,
+    "story": "Ada said, \u201cI want to repair the book.\u201d She put the book on the bench. Omar fetched the tape from the bench. He gave Ada the tape. Ada fetched the book from the bench. Ada fixed the book with the tape. She put the book on the bench.",
+    "status": "sampled_stop",
+    "goals_satisfied": [
+      true,
+      true
+    ],
+    "events": [
+      {
+        "actor": "ada",
+        "item": "book",
+        "destination": "bench",
+        "op": "put_item"
+      },
+      {
+        "actor": "omar",
+        "item": "tape",
+        "source": "bench",
+        "op": "fetch"
+      },
+      {
+        "actor": "omar",
+        "item": "tape",
+        "recipient": "ada",
+        "op": "transfer"
+      },
+      {
+        "actor": "ada",
+        "item": "book",
+        "source": "bench",
+        "op": "fetch"
+      },
+      {
+        "actor": "ada",
+        "item": "book",
+        "tool": "tape",
+        "op": "patch_paper"
+      },
+      {
+        "actor": "ada",
+        "item": "book",
+        "destination": "bench",
+        "op": "put_item"
+      }
+    ]
+  },
+  {
+    "experiment": "ending_predicate",
+    "seed": 1,
+    "story": "Ada said, \u201cI want to fix the book.\u201d She placed the book on the bench. Omar fetched the tape from the bench. He handed Ada the tape. Ada fetched the book from the bench. Using the tape, Ada fixed the book. She placed the book on the bench.",
+    "status": "sampled_stop",
+    "goals_satisfied": [
+      true,
+      true
+    ],
+    "events": [
+      {
+        "actor": "ada",
+        "item": "book",
+        "destination": "bench",
+        "op": "put_item"
+      },
+      {
+        "actor": "omar",
+        "item": "tape",
+        "source": "bench",
+        "op": "fetch"
+      },
+      {
+        "actor": "omar",
+        "item": "tape",
+        "recipient": "ada",
+        "op": "transfer"
+      },
+      {
+        "actor": "ada",
+        "item": "book",
+        "source": "bench",
+        "op": "fetch"
+      },
+      {
+        "actor": "ada",
+        "item": "book",
+        "tool": "tape",
+        "op": "patch_paper"
+      },
+      {
+        "actor": "ada",
+        "item": "book",
+        "destination": "bench",
+        "op": "put_item"
+      }
+    ]
+  },
+  {
+    "experiment": "ending_predicate",
+    "seed": 2,
+    "story": "Ada said, \u201cI want to fix the book.\u201d She handed Omar the book. Omar put the book on the bench. Ada fetched the tape from the bench. Ada gave Omar the tape. Omar fetched the book from the bench. He fixed the book with the tape. Omar gave the tape to Ada. Omar put the book on the bench.",
+    "status": "sampled_stop",
+    "goals_satisfied": [
+      true,
+      true
+    ],
+    "events": [
+      {
+        "actor": "ada",
+        "item": "book",
+        "recipient": "omar",
+        "op": "transfer"
+      },
+      {
+        "actor": "omar",
+        "item": "book",
+        "destination": "bench",
+        "op": "put_item"
+      },
+      {
+        "actor": "ada",
+        "item": "tape",
+        "source": "bench",
+        "op": "fetch"
+      },
+      {
+        "actor": "ada",
+        "item": "tape",
+        "recipient": "omar",
+        "op": "transfer"
+      },
+      {
+        "actor": "omar",
+        "item": "book",
+        "source": "bench",
+        "op": "fetch"
+      },
+      {
+        "actor": "omar",
+        "item": "book",
+        "tool": "tape",
+        "op": "patch_paper"
+      },
+      {
+        "actor": "omar",
+        "item": "tape",
+        "recipient": "ada",
+        "op": "transfer"
+      },
+      {
+        "actor": "omar",
+        "item": "book",
+        "destination": "bench",
+        "op": "put_item"
+      }
+    ]
+  },
+  {
+    "experiment": "ending_predicate",
+    "seed": 3,
+    "story": "Ada said, \u201cI would like to repair the book.\u201d She put the book on the bench. She fetched the tape from the bench. She handed the tape to Omar. Omar fetched the book from the bench. Using the tape, he repaired the book. He put the book on the bench. He gave Ada the tape.",
+    "status": "sampled_stop",
+    "goals_satisfied": [
+      true,
+      true
+    ],
+    "events": [
+      {
+        "actor": "ada",
+        "item": "book",
+        "destination": "bench",
+        "op": "put_item"
+      },
+      {
+        "actor": "ada",
+        "item": "tape",
+        "source": "bench",
+        "op": "fetch"
+      },
+      {
+        "actor": "ada",
+        "item": "tape",
+        "recipient": "omar",
+        "op": "transfer"
+      },
+      {
+        "actor": "omar",
+        "item": "book",
+        "source": "bench",
+        "op": "fetch"
+      },
+      {
+        "actor": "omar",
+        "item": "book",
+        "tool": "tape",
+        "op": "patch_paper"
+      },
+      {
+        "actor": "omar",
+        "item": "book",
+        "destination": "bench",
+        "op": "put_item"
+      },
+      {
+        "actor": "omar",
+        "item": "tape",
+        "recipient": "ada",
+        "op": "transfer"
+      }
+    ]
+  },
+  {
+    "experiment": "ending_predicate",
+    "seed": 4,
+    "story": "Ada said, \u201cI want to fix the book.\u201d She placed the book on the bench. She fetched the tape from the bench. She gave the tape to Omar. Omar gave the tape to Ada. Ada fetched the book from the bench. Ada used the tape to repair the book. She gave the book to Omar. Omar placed the book on the bench.",
+    "status": "sampled_stop",
+    "goals_satisfied": [
+      true,
+      true
+    ],
+    "events": [
+      {
+        "actor": "ada",
+        "item": "book",
+        "destination": "bench",
+        "op": "put_item"
+      },
+      {
+        "actor": "ada",
+        "item": "tape",
+        "source": "bench",
+        "op": "fetch"
+      },
+      {
+        "actor": "ada",
+        "item": "tape",
+        "recipient": "omar",
+        "op": "transfer"
+      },
+      {
+        "actor": "omar",
+        "item": "tape",
+        "recipient": "ada",
+        "op": "transfer"
+      },
+      {
+        "actor": "ada",
+        "item": "book",
+        "source": "bench",
+        "op": "fetch"
+      },
+      {
+        "actor": "ada",
+        "item": "book",
+        "tool": "tape",
+        "op": "patch_paper"
+      },
+      {
+        "actor": "ada",
+        "item": "book",
+        "recipient": "omar",
+        "op": "transfer"
+      },
+      {
+        "actor": "omar",
+        "item": "book",
+        "destination": "bench",
+        "op": "put_item"
+      }
+    ]
+  },
+  {
+    "experiment": "no_prefix",
+    "seed": 0,
+    "story": "Ada gave the book to Omar. Omar put the book on the bench. Omar fetched the tape from the bench. He gave Ada the tape. He fetched the book from the bench. Omar gave Ada the book. Ada repaired the book with the tape. Ada placed the book on the bench. Ada gave Omar the tape. She fetched the book from the bench.",
+    "status": "sampled_stop",
+    "goals_satisfied": [],
+    "events": [
+      {
+        "actor": "ada",
+        "item": "book",
+        "recipient": "omar",
+        "op": "transfer"
+      },
+      {
+        "actor": "omar",
+        "item": "book",
+        "destination": "bench",
+        "op": "put_item"
+      },
+      {
+        "actor": "omar",
+        "item": "tape",
+        "source": "bench",
+        "op": "fetch"
+      },
+      {
+        "actor": "omar",
+        "item": "tape",
+        "recipient": "ada",
+        "op": "transfer"
+      },
+      {
+        "actor": "omar",
+        "item": "book",
+        "source": "bench",
+        "op": "fetch"
+      },
+      {
+        "actor": "omar",
+        "item": "book",
+        "recipient": "ada",
+        "op": "transfer"
+      },
+      {
+        "actor": "ada",
+        "item": "book",
+        "tool": "tape",
+        "op": "patch_paper"
+      },
+      {
+        "actor": "ada",
+        "item": "book",
+        "destination": "bench",
+        "op": "put_item"
+      },
+      {
+        "actor": "ada",
+        "item": "tape",
+        "recipient": "omar",
+        "op": "transfer"
+      },
+      {
+        "actor": "ada",
+        "item": "book",
+        "source": "bench",
+        "op": "fetch"
+      }
+    ]
+  },
+  {
+    "experiment": "no_prefix",
+    "seed": 1,
+    "story": "Ada fetched the tape from the bench. She placed the book on the bench. Omar fetched the book from the bench. Ada handed Omar the tape. Using the tape, Omar repaired the book. He gave Ada the book. Ada gave Omar the book.",
+    "status": "sampled_stop",
+    "goals_satisfied": [],
+    "events": [
+      {
+        "actor": "ada",
+        "item": "tape",
+        "source": "bench",
+        "op": "fetch"
+      },
+      {
+        "actor": "ada",
+        "item": "book",
+        "destination": "bench",
+        "op": "put_item"
+      },
+      {
+        "actor": "omar",
+        "item": "book",
+        "source": "bench",
+        "op": "fetch"
+      },
+      {
+        "actor": "ada",
+        "item": "tape",
+        "recipient": "omar",
+        "op": "transfer"
+      },
+      {
+        "actor": "omar",
+        "item": "book",
+        "tool": "tape",
+        "op": "patch_paper"
+      },
+      {
+        "actor": "omar",
+        "item": "book",
+        "recipient": "ada",
+        "op": "transfer"
+      },
+      {
+        "actor": "ada",
+        "item": "book",
+        "recipient": "omar",
+        "op": "transfer"
+      }
+    ]
+  },
+  {
+    "experiment": "no_prefix",
+    "seed": 2,
+    "story": "Ada gave the book to Omar. Omar put the book on the bench. Ada fetched the tape from the bench. She gave Omar the tape. Omar fetched the book from the bench. He fixed the book with the tape.",
+    "status": "sampled_stop",
+    "goals_satisfied": [],
+    "events": [
+      {
+        "actor": "ada",
+        "item": "book",
+        "recipient": "omar",
+        "op": "transfer"
+      },
+      {
+        "actor": "omar",
+        "item": "book",
+        "destination": "bench",
+        "op": "put_item"
+      },
+      {
+        "actor": "ada",
+        "item": "tape",
+        "source": "bench",
+        "op": "fetch"
+      },
+      {
+        "actor": "ada",
+        "item": "tape",
+        "recipient": "omar",
+        "op": "transfer"
+      },
+      {
+        "actor": "omar",
+        "item": "book",
+        "source": "bench",
+        "op": "fetch"
+      },
+      {
+        "actor": "omar",
+        "item": "book",
+        "tool": "tape",
+        "op": "patch_paper"
+      }
+    ]
+  },
+  {
+    "experiment": "no_prefix",
+    "seed": 3,
+    "story": "Ada fetched the tape from the bench. She repaired the book with the tape. She gave Omar the tape. She handed the book to Omar. Omar gave Ada the tape. He put the book on the bench. Ada handed Omar the tape.",
+    "status": "sampled_stop",
+    "goals_satisfied": [],
+    "events": [
+      {
+        "actor": "ada",
+        "item": "tape",
+        "source": "bench",
+        "op": "fetch"
+      },
+      {
+        "actor": "ada",
+        "item": "book",
+        "tool": "tape",
+        "op": "patch_paper"
+      },
+      {
+        "actor": "ada",
+        "item": "tape",
+        "recipient": "omar",
+        "op": "transfer"
+      },
+      {
+        "actor": "ada",
+        "item": "book",
+        "recipient": "omar",
+        "op": "transfer"
+      },
+      {
+        "actor": "omar",
+        "item": "tape",
+        "recipient": "ada",
+        "op": "transfer"
+      },
+      {
+        "actor": "omar",
+        "item": "book",
+        "destination": "bench",
+        "op": "put_item"
+      },
+      {
+        "actor": "ada",
+        "item": "tape",
+        "recipient": "omar",
+        "op": "transfer"
+      }
+    ]
+  },
+  {
+    "experiment": "no_prefix",
+    "seed": 4,
+    "story": "Ada fetched the tape from the bench. With the tape, Ada repaired the book. She handed Omar the tape. She placed the book on the bench. Omar gave the tape to Ada. He fetched the book from the bench.",
+    "status": "sampled_stop",
+    "goals_satisfied": [],
+    "events": [
+      {
+        "actor": "ada",
+        "item": "tape",
+        "source": "bench",
+        "op": "fetch"
+      },
+      {
+        "actor": "ada",
+        "item": "book",
+        "tool": "tape",
+        "op": "patch_paper"
+      },
+      {
+        "actor": "ada",
+        "item": "tape",
+        "recipient": "omar",
+        "op": "transfer"
+      },
+      {
+        "actor": "ada",
+        "item": "book",
+        "destination": "bench",
+        "op": "put_item"
+      },
+      {
+        "actor": "omar",
+        "item": "tape",
+        "recipient": "ada",
+        "op": "transfer"
+      },
+      {
+        "actor": "omar",
+        "item": "book",
+        "source": "bench",
+        "op": "fetch"
+      }
+    ]
+  },
+  {
+    "experiment": "craft_no_plan",
+    "seed": 0,
+    "story": "With the shaping rib, Ada shaped the cup.",
+    "status": "sampled_stop",
+    "goals_satisfied": [],
+    "events": [
+      {
+        "actor": "ada",
+        "item": "clay",
+        "tool": "rib",
+        "op": "shape_clay"
+      }
+    ]
+  },
+  {
+    "experiment": "craft_no_plan",
+    "seed": 1,
+    "story": "Ada fetched the ladder from the bench. Ada steadied the ladder.",
+    "status": "sampled_stop",
+    "goals_satisfied": [],
+    "events": [
+      {
+        "actor": "ada",
+        "item": "ladder",
+        "source": "bench",
+        "op": "prepare_support"
+      }
+    ]
+  },
+  {
+    "experiment": "craft_no_plan",
+    "seed": 2,
+    "story": "Ada gave the book to Omar. Using the shaping rib, Ada shaped the cup. Ada fetched the ladder from the bench. She steadied the ladder. She played the drum.",
+    "status": "sampled_stop",
+    "goals_satisfied": [],
+    "events": [
+      {
+        "actor": "ada",
+        "item": "book",
+        "recipient": "omar",
+        "op": "transfer"
+      },
+      {
+        "actor": "ada",
+        "item": "clay",
+        "tool": "rib",
+        "op": "shape_clay"
+      },
+      {
+        "actor": "ada",
+        "item": "ladder",
+        "source": "bench",
+        "op": "prepare_support"
+      },
+      {
+        "actor": "ada",
+        "item": "drum",
+        "op": "perform_solo"
+      }
+    ]
+  },
+  {
+    "experiment": "craft_no_plan",
+    "seed": 3,
+    "story": "Omar fetched the ladder from the bench. He handed the ladder to Ada. Ada fixed the tap. She shaped the cup with the shaping rib. She held the atlas. She drew the moon on the paper with the pencil. Omar fetched the tape from the bench. Ada put the book on the bench.",
+    "status": "sampled_stop",
+    "goals_satisfied": [],
+    "events": [
+      {
+        "actor": "omar",
+        "item": "ladder",
+        "source": "bench",
+        "op": "fetch"
+      },
+      {
+        "actor": "omar",
+        "item": "ladder",
+        "recipient": "ada",
+        "op": "transfer"
+      },
+      {
+        "actor": "ada",
+        "item": "tap",
+        "op": "repair_fixture"
+      },
+      {
+        "actor": "ada",
+        "item": "clay",
+        "tool": "rib",
+        "op": "shape_clay"
+      },
+      {
+        "actor": "ada",
+        "item": "sheet",
+        "tool": "pencil",
+        "reference": "atlas",
+        "op": "sketch_moon"
+      },
+      {
+        "actor": "omar",
+        "item": "tape",
+        "source": "bench",
+        "op": "fetch"
+      },
+      {
+        "actor": "ada",
+        "item": "book",
+        "destination": "bench",
+        "op": "put_item"
+      }
+    ]
+  },
+  {
+    "experiment": "craft_no_plan",
+    "seed": 4,
+    "story": "Omar fetched the ladder from the bench. Ada placed the book on the bench. She repaired the tap. She played the drum. She placed the drum on the bench. She held the atlas. She drew the moon on the paper with the pencil.",
+    "status": "sampled_stop",
+    "goals_satisfied": [],
+    "events": [
+      {
+        "actor": "omar",
+        "item": "ladder",
+        "source": "bench",
+        "op": "fetch"
+      },
+      {
+        "actor": "ada",
+        "item": "book",
+        "destination": "bench",
+        "op": "put_item"
+      },
+      {
+        "actor": "ada",
+        "item": "tap",
+        "op": "repair_fixture"
+      },
+      {
+        "actor": "ada",
+        "item": "drum",
+        "op": "perform_solo"
+      },
+      {
+        "actor": "ada",
+        "item": "drum",
+        "destination": "bench",
+        "op": "put_item"
+      },
+      {
+        "actor": "ada",
+        "item": "sheet",
+        "tool": "pencil",
+        "reference": "atlas",
+        "op": "sketch_moon"
+      }
+    ]
+  }
+]

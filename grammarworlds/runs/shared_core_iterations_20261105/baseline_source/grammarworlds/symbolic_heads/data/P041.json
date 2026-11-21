@@ -1,0 +1,81 @@
+{
+  "id": "P041",
+  "name": "Speaker continuity",
+  "description": "Quote continuation → current turn's speaker. Resolve first-person references consistently.",
+  "proposed_payload": "{speaker, turn_id}",
+  "provenance": "Authored illustrative seeds; not learned or extracted.",
+  "status": "program_required",
+  "examples": [
+    {
+      "id": "P041.01",
+      "description": "Mira says I will return.",
+      "intended_feature": "I:Mira",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P041.02",
+      "description": "Theo whispers my key is missing.",
+      "intended_feature": "my:Theo",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P041.03",
+      "description": "Nia quotes Omar saying I won.",
+      "intended_feature": "inner_I:Omar",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P041.04",
+      "description": "Mira narrates that Theo said I am ready.",
+      "intended_feature": "quoted_I:Theo",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P041.05",
+      "description": "An unattributed quotation has two possible speakers.",
+      "intended_feature": "speaker_ambiguous",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P041.06",
+      "description": "A dialogue turn explicitly switches from Mira to Nia.",
+      "intended_feature": "active_speaker:Nia",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P041.07",
+      "description": "A single quote spans two sentences.",
+      "intended_feature": "speaker_persists",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P041.08",
+      "description": "A character reads another person's diary aloud.",
+      "intended_feature": "distinguish_reader_from_quoted_author",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P041.09",
+      "description": "A closing quotation returns to narration.",
+      "intended_feature": "pop_speaker_scope",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P041.10",
+      "description": "An unclosed quotation reaches end of input.",
+      "intended_feature": "preserve_open_turn_without_guessing_end",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    }
+  ],
+  "required_program": "Maintain a quotation/turn stack and speaker bindings, including nested quotations and reported speech; bind first person to the active speaker."
+}

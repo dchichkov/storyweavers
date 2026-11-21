@@ -1,0 +1,81 @@
+{
+  "id": "P014",
+  "name": "Whole-name completion",
+  "description": "Partial established name → remaining name tokens. Favor the remaining name component.",
+  "proposed_payload": "{name_id, next_component}",
+  "provenance": "Authored illustrative seeds; not learned or extracted.",
+  "status": "program_required",
+  "examples": [
+    {
+      "id": "P014.01",
+      "description": "Known name Silver Cove; prefix Silver.",
+      "intended_feature": "Cove",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P014.02",
+      "description": "Known name Old Mill; prefix Old.",
+      "intended_feature": "Mill",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P014.03",
+      "description": "Known names Red Hill and Red Harbor; prefix Red.",
+      "intended_feature": "Hill_or_Harbor",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P014.04",
+      "description": "Known name The Three Pines; prefix The Three.",
+      "intended_feature": "Pines",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P014.05",
+      "description": "Known name North by West; prefix North by.",
+      "intended_feature": "West",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P014.06",
+      "description": "Known name Blue; prefix Blue.",
+      "intended_feature": "name_already_complete",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P014.07",
+      "description": "Unknown prefix Golden has no registry match.",
+      "intended_feature": "no_match",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P014.08",
+      "description": "Known name New Stone Bridge; prefix New.",
+      "intended_feature": "Stone",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P014.09",
+      "description": "Known name Lake Mira; prefix Lake in another entity scope.",
+      "intended_feature": "reject_wrong_scope",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P014.10",
+      "description": "A newly registered name Zeli Tor; prefix Zeli.",
+      "intended_feature": "Tor_without_static_table_edit",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    }
+  ],
+  "required_program": "Match partial tokenized names against the active entity registry, preserving shared prefixes, capitalization, and dynamic names."
+}

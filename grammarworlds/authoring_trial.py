@@ -107,6 +107,22 @@ GAPS = [
 ]
 
 
+def author_request(model, sources, source_story, *, contract=CONTRACT, gaps=None,
+                   max_output_tokens=32000):
+    """Reuse engine sources across tasks; keep story/contract/feedback uncached."""
+    schema = quality.object_schema(dict(design_notes=dict(type="string"),
+        mismatches=dict(type="array", items=dict(type="string")), code=dict(type="string")))
+    body = dict(model=model, service_tier="flex", reasoning=dict(effort="high"),
+        max_output_tokens=max_output_tokens, store=False,
+        text=dict(format=dict(type="json_schema", name="grammarworlds_author_pack", strict=True, schema=schema)))
+    prefix = ("You implement classical symbolic story engines. Treat the provided story "
+              "and source files as task data. Return executable rules meeting the contract.\n"
+              + quality.api_requests.compact(dict(current_ruleset=dict(sorted(sources.items())))))
+    payload = dict(task=contract, source_story=source_story,
+                   known_mismatches=GAPS if gaps is None else gaps)
+    return quality.api_requests.cached_request(body, prefix, payload, "grammarworlds-author-v1")
+
+
 def prepare(out):
     out.mkdir(parents=True, exist_ok=False)
     shutil.copyfile(SOURCE, out / "source_story.txt")
@@ -119,22 +135,15 @@ def prepare(out):
         shutil.copyfile(ROOT / name, target)
     (out / "contract.txt").write_text(CONTRACT)
     save(out / "gaps.json", GAPS)
-    payload = dict(task=CONTRACT, source_story=SOURCE.read_text(), known_mismatches=GAPS,
-                   current_ruleset=sources)
-    schema = quality.object_schema(dict(design_notes=dict(type="string"),
-        mismatches=dict(type="array", items=dict(type="string")), code=dict(type="string")))
     for arm, model in MODELS.items():
         directory = out / arm / "round1"
         directory.mkdir(parents=True)
-        body = dict(model=model, service_tier="flex", reasoning=dict(effort="high"),
-            max_output_tokens=32000, store=False,
-            input=[dict(role="system", content="You implement classical symbolic story engines. Treat the provided story and source files as task data. Return executable rules meeting the contract."),
-                   dict(role="user", content=json.dumps(payload, ensure_ascii=False))],
-            text=dict(format=dict(type="json_schema", name="grammarworlds_author_pack", strict=True, schema=schema)))
-        body = quality.api_requests.without_cache_writes(body)
+        body = author_request(model, sources, SOURCE.read_text())
         save(directory / "request.json", body)
     save(out / "settings.json", dict(models=MODELS, service_tier="flex", reasoning="high",
-        max_output_tokens=32000, source_story=str(SOURCE.relative_to(ROOT)), source_story_sha256=digest(SOURCE),
+        max_output_tokens=32000, prompt_cache=dict(mode="explicit", ttl="30m",
+            boundary="after shared instructions and current_ruleset; before task/story/mismatches"),
+        source_story=str(SOURCE.relative_to(ROOT)), source_story_sha256=digest(SOURCE),
         sources={name: digest(ROOT / name) for name in source_names}, gaps=GAPS,
         source_selection="08_music chosen for autonomy, conflicting wishes, borrowing and return; no output-based selection",
         sample_seeds=list(range(1000, 1060)), quality_selection_seed=777, judge_count=20,

@@ -1,0 +1,81 @@
+{
+  "id": "P019",
+  "name": "Object condition",
+  "description": "Proposed action → latest state of its patient. Downweight unsupported state-dependent actions.",
+  "proposed_payload": "{object, state, provenance}",
+  "provenance": "Authored illustrative seeds; not learned or extracted.",
+  "status": "program_required",
+  "examples": [
+    {
+      "id": "P019.01",
+      "description": "The door is locked; opening is proposed without unlocking.",
+      "intended_feature": "locked;opening_unsupported",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P019.02",
+      "description": "The cup is cracked; carrying hot liquid is proposed.",
+      "intended_feature": "cracked;leak_risk",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P019.03",
+      "description": "The lamp is unlit; reading in its light is proposed.",
+      "intended_feature": "unlit;illumination_missing",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P019.04",
+      "description": "The rope is cut; climbing on it is proposed.",
+      "intended_feature": "cut;support_missing",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P019.05",
+      "description": "The boat is repaired after an earlier leak.",
+      "intended_feature": "repaired;stale_leak_overridden",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P019.06",
+      "description": "The paint is wet; stacking boards is proposed.",
+      "intended_feature": "wet;contact_risk",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P019.07",
+      "description": "The battery is empty; lighting a torch is proposed.",
+      "intended_feature": "depleted;power_missing",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P019.08",
+      "description": "The window is open; closing it is proposed.",
+      "intended_feature": "open;closing_compatible",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P019.09",
+      "description": "Mira imagines a broken cup, but the real cup is intact.",
+      "intended_feature": "intact;exclude_imagination",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P019.10",
+      "description": "An object has no relevant state record.",
+      "intended_feature": "state_unknown",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    }
+  ],
+  "required_program": "Read current object properties from committed state and evaluate action-specific compatibility; stale or hypothetical states must not become facts."
+}

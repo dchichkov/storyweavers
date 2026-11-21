@@ -1,0 +1,31 @@
+from .schema import *
+SPEC=story(19,'festival',dict(
+ hero=person('Bea','she'),helper=person('Rafi','he',state=('uses_wheelchair',)),baker=person('Mr Duran','he'),
+ work=place('festival square'),bench=place('string shelf'),gate=place('entrance'),fence=place('welcome fence'),
+ string=tool('green string',location='bench'),flags=obj('paper flags',location='hero',number='plural',pronoun='they'),
+ chair=obj('wheelchair',location='helper'),moon=obj('silver moon flag',location='helper'),cart=obj('bread cart',location='baker')),
+ chain(
+  event('reachable_bunting',S('helper',B(PP('in',R('chair')))),Say('hero',V('want',V('hang',R('flags')))),Say('helper',V('want',V('tie',R('moon'))),listener='hero'),
+   qa=[Q('goal','who','Who wanted to tie the moon flag?','Rafi wanted to tie the moon flag. Bea wanted to hang the paper flags with him.','hero','helper','moon','flags')]),
+  event('borrow_string',S('hero',V('borrow',R('string'))),patient='string',destination='hero',guards=[at('string','bench')],effects=[change('string',location='hero')],portable='fetch'),
+  event('blocked_gate',S('hero',A(V('tie',R('string')),PP('across',R('gate')))),S(R('cart'),B('blocked')),patient='string',destination='gate',
+   guards=[at('string','hero')],effects=[change('string',location='gate'),change('gate',add=('blocked',))],
+   qa=[Q('obstacle','what','Why could the bread cart not pass?','Bea tied the green string across the entrance. The bread cart was blocked.','hero','string','gate','cart')]),
+  event('rethink_access',Say('helper',V('need',N('space',det='bare')),listener='hero'),S('hero',V('untie',R('string'))),patient='string',destination='hero',
+   guards=[at('string','gate'),has('gate','blocked')],effects=[change('string',location='hero'),change('gate',add=('clear',),remove=('blocked',))],
+   qa=[Q('choice','how','How did Bea reopen the entrance?','Rafi said they needed space. Bea untied the string across the entrance.','hero','helper','string','gate',supports=('obstacle',))]),
+  event('move_to_fence',S('hero',A(V('carry',R('string')),PP('to',R('fence')))),patient='string',destination='fence',
+   guards=[at('string','hero'),has('gate','clear')],effects=[change('string',location='fence',add=('reachable',))],
+   qa=[Q('place','where','Where did they move the bunting?','Bea carried the string to the welcome fence. That left the entrance clear.','hero','string','fence','gate',supports=('choice',))]),
+  fork('secure_line',
+   event('double_wrap',S('helper',A(V('tie',R('string')),'twice')),actor='helper',patient='string',guards=[has('string','reachable'),at('string','fence')],effects=[change('string',add=('secure','double_wrap'))]),
+   event('adjust_tension',S('hero',V('steady',R('string'))),S('helper',V('tie',R('string'))),actor='helper',patient='string',guards=[has('string','reachable'),at('string','fence')],effects=[change('string',add=('secure','adjusted_tension'))])),
+  event('tie_moon',S('helper',A(V('tie',R('moon')),PP('on',R('string')))),actor='helper',patient='moon',destination='string',
+   guards=[at('moon','helper'),has('string','secure'),has('string','reachable')],effects=[change('moon',location='string')],
+   qa=[Q('agency','who','Who attached the silver moon flag?','Rafi tied the moon flag onto the string himself. The string was at the welcome fence.','helper','moon','string','fence',supports=('place',))]),
+  event('hang_flags',S('hero',A(V('hang',R('flags')),PP('beside',R('moon')))),patient='flags',destination='fence',guards=[at('moon','string'),at('flags','hero')],effects=[change('flags',location='fence')]),
+  event('clear_passage',S('baker',A(V('push',R('cart')),PP('through',R('gate')))),S(R('moon'),V('shine')),actor='baker',patient='cart',
+   guards=[has('gate','clear'),has('string','secure'),at('moon','string')],effects=[change('cart',add=('passed_gate',))],
+   qa=[Q('outcome','what_next','What proved the new arrangement worked?','Mr Duran pushed the bread cart through the entrance. Rafi’s moon flag shone beside the other flags.','baker','cart','gate','helper','moon',supports=('agency',))])
+ ),target='moon',tool_id='string',premise='Low bunting lets Rafi participate but blocks the gate; the layout must work for everyone.',
+ fidelity='Clear the entrance, relocate to a reachable fence, let Rafi tie his own flag, and prove access with the bread cart.',variants=['Double wrap or adjust tension together.'])

@@ -1,0 +1,392 @@
+{
+  "id": "resp_06b124218545f297016aeb14ef2eb087d1ac5b3609ea28c9ee",
+  "created_at": 1793791215.0,
+  "error": null,
+  "incomplete_details": null,
+  "instructions": null,
+  "metadata": {},
+  "model": "gpt-6-luna",
+  "object": "response",
+  "output": [
+    {
+      "id": "msg_06b124218545f297016aeb14f7535087d1a906bc11be24d9ca",
+      "content": [
+        {
+          "annotations": [],
+          "text": "{\"stories\":[{\"id\":\"s000014\",\"rating\":{\"coherence\":6,\"style\":4,\"grammar\":8,\"storytelling\":4,\"overall\":5},\"note\":\"The promise to help is fulfilled when Ms Alvarez retrieves Jun’s book, but Mina’s sketching goal proceeds without a clear transition or emotional payoff.\",\"group_id\":0},{\"id\":\"s000028\",\"rating\":{\"coherence\":7,\"style\":4,\"grammar\":8,\"storytelling\":5,\"overall\":5},\"note\":\"Mina gives up her atlas to help Jun and ends by drawing from his book, though the resolution is mostly a sequence of actions with little elaboration.\",\"group_id\":1},{\"id\":\"s000058\",\"rating\":{\"coherence\":7,\"style\":4,\"grammar\":8,\"storytelling\":5,\"overall\":5},\"note\":\"Mina’s choice to help Jun leads to his book being retrieved and to her whale drawing, but the brief event-log style limits the payoff.\",\"group_id\":1},{\"id\":\"s000023\",\"rating\":{\"coherence\":6,\"style\":4,\"grammar\":8,\"storytelling\":4,\"overall\":5},\"note\":\"Jun gets his missing book and Mina draws from her atlas, but the story does not explain how she balances her own goal with her promise to help.\",\"group_id\":0},{\"id\":\"s000036\",\"rating\":{\"coherence\":7,\"style\":4,\"grammar\":8,\"storytelling\":5,\"overall\":5},\"note\":\"The choice to help Jun redirects Mina’s sketch to his whale book, giving the sequence a simple resolution, though it lacks a vivid ending.\",\"group_id\":1},{\"id\":\"s000017\",\"rating\":{\"coherence\":6,\"style\":4,\"grammar\":8,\"storytelling\":4,\"overall\":5},\"note\":\"Ms Alvarez retrieves Jun’s book while Mina keeps her atlas and sketches the moon; the relationship between the promise and her independent goal remains underdeveloped.\",\"group_id\":0},{\"id\":\"s000053\",\"rating\":{\"coherence\":7,\"style\":4,\"grammar\":8,\"storytelling\":5,\"overall\":5},\"note\":\"Mina chooses to help and ultimately draws a whale, but the repeated action statements make the ending feel more reported than dramatized.\",\"group_id\":1},{\"id\":\"s000021\",\"rating\":{\"coherence\":6,\"style\":4,\"grammar\":8,\"storytelling\":4,\"overall\":5},\"note\":\"The missing book is recovered and both original aims are possible, but the sketching sequence does not clearly connect to Mina’s promise to help.\",\"group_id\":0},{\"id\":\"s000034\",\"rating\":{\"coherence\":6,\"style\":4,\"grammar\":8,\"storytelling\":4,\"overall\":5},\"note\":\"Jun’s book is retrieved and Mina draws the moon, but there is little development beyond the basic problem-and-retrieval sequence.\",\"group_id\":0},{\"id\":\"s000048\",\"rating\":{\"coherence\":7,\"style\":4,\"grammar\":8,\"storytelling\":5,\"overall\":5},\"note\":\"Mina’s deliberate choice to help Jun changes what she sketches, though the resolution is concise and lacks a concrete emotional beat.\",\"group_id\":1},{\"id\":\"s000002\",\"rating\":{\"coherence\":7,\"style\":4,\"grammar\":8,\"storytelling\":5,\"overall\":5},\"note\":\"Mina gives up her atlas to help Jun and draws a whale afterward, but the narrative remains a plain sequence rather than a fully developed scene.\",\"group_id\":1},{\"id\":\"s000057\",\"rating\":{\"coherence\":7,\"style\":4,\"grammar\":8,\"storytelling\":5,\"overall\":5},\"note\":\"Mina’s choice leads from Jun’s missing book to a whale drawing, with a clear outcome but little detail or emotional closure.\",\"group_id\":1}],\"diversity\":{\"premise\":1,\"causal_path\":2,\"ending\":2,\"language\":2,\"overall\":2},\"diversity_evidence\":\"All twelve stories share the same library problem: Jun’s whale book is missing, and Ms Alvarez retrieves it from a high shelf with a ladder. The only material branch is whether Mina keeps her moon-sketch plan (s000014, s000023, s000017, s000021, s000034) or returns the atlas and draws a whale after helping Jun (s000028, s000058, s000036, s000053, s000048, s000002, s000057). Most differences are small wording or action-order changes, so this sample shows little plot or language variety; it does not establish diversity across the whole generator.\",\"plot_groups\":[{\"group_id\":0,\"summary\":\"Mina wants to sketch the moon and promises to help Jun find his missing whale book; Ms Alvarez retrieves the book, while Mina keeps her atlas and draws the moon.\"},{\"group_id\":1,\"summary\":\"Mina puts aside her moon-sketch plan to help Jun recover his missing whale book, then uses his book to draw a whale.\"}]}",
+          "type": "output_text",
+          "logprobs": []
+        }
+      ],
+      "role": "assistant",
+      "status": "completed",
+      "type": "message",
+      "phase": "final_answer"
+    }
+  ],
+  "parallel_tool_calls": true,
+  "temperature": 1.0,
+  "tool_choice": "auto",
+  "tools": [],
+  "top_p": 0.98,
+  "background": false,
+  "completed_at": 1793791232.0,
+  "conversation": null,
+  "max_output_tokens": 4000,
+  "max_tool_calls": null,
+  "moderation": null,
+  "previous_response_id": null,
+  "prompt": null,
+  "prompt_cache_key": null,
+  "prompt_cache_retention": "24h",
+  "reasoning": {
+    "context": "all_turns",
+    "effort": "none",
+    "generate_summary": null,
+    "summary": null,
+    "mode": "standard"
+  },
+  "safety_identifier": null,
+  "service_tier": "flex",
+  "status": "completed",
+  "text": {
+    "format": {
+      "name": "harbor_story_set_v2",
+      "schema_": {
+        "type": "object",
+        "properties": {
+          "stories": {
+            "type": "array",
+            "minItems": 12,
+            "maxItems": 12,
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "enum": [
+                    "s000014",
+                    "s000028",
+                    "s000058",
+                    "s000023",
+                    "s000036",
+                    "s000017",
+                    "s000053",
+                    "s000021",
+                    "s000034",
+                    "s000048",
+                    "s000002",
+                    "s000057"
+                  ]
+                },
+                "rating": {
+                  "type": "object",
+                  "properties": {
+                    "coherence": {
+                      "type": "integer",
+                      "enum": [
+                        0,
+                        1,
+                        2,
+                        3,
+                        4,
+                        5,
+                        6,
+                        7,
+                        8,
+                        9
+                      ]
+                    },
+                    "style": {
+                      "type": "integer",
+                      "enum": [
+                        0,
+                        1,
+                        2,
+                        3,
+                        4,
+                        5,
+                        6,
+                        7,
+                        8,
+                        9
+                      ]
+                    },
+                    "grammar": {
+                      "type": "integer",
+                      "enum": [
+                        0,
+                        1,
+                        2,
+                        3,
+                        4,
+                        5,
+                        6,
+                        7,
+                        8,
+                        9
+                      ]
+                    },
+                    "storytelling": {
+                      "type": "integer",
+                      "enum": [
+                        0,
+                        1,
+                        2,
+                        3,
+                        4,
+                        5,
+                        6,
+                        7,
+                        8,
+                        9
+                      ]
+                    },
+                    "overall": {
+                      "type": "integer",
+                      "enum": [
+                        0,
+                        1,
+                        2,
+                        3,
+                        4,
+                        5,
+                        6,
+                        7,
+                        8,
+                        9
+                      ]
+                    }
+                  },
+                  "required": [
+                    "coherence",
+                    "style",
+                    "grammar",
+                    "storytelling",
+                    "overall"
+                  ],
+                  "additionalProperties": false
+                },
+                "note": {
+                  "type": "string"
+                },
+                "group_id": {
+                  "type": "integer",
+                  "enum": [
+                    0,
+                    1,
+                    2,
+                    3,
+                    4,
+                    5,
+                    6,
+                    7,
+                    8,
+                    9,
+                    10,
+                    11
+                  ]
+                }
+              },
+              "required": [
+                "id",
+                "rating",
+                "note",
+                "group_id"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "diversity": {
+            "type": "object",
+            "properties": {
+              "premise": {
+                "type": "integer",
+                "enum": [
+                  0,
+                  1,
+                  2,
+                  3,
+                  4,
+                  5,
+                  6,
+                  7,
+                  8,
+                  9
+                ]
+              },
+              "causal_path": {
+                "type": "integer",
+                "enum": [
+                  0,
+                  1,
+                  2,
+                  3,
+                  4,
+                  5,
+                  6,
+                  7,
+                  8,
+                  9
+                ]
+              },
+              "ending": {
+                "type": "integer",
+                "enum": [
+                  0,
+                  1,
+                  2,
+                  3,
+                  4,
+                  5,
+                  6,
+                  7,
+                  8,
+                  9
+                ]
+              },
+              "language": {
+                "type": "integer",
+                "enum": [
+                  0,
+                  1,
+                  2,
+                  3,
+                  4,
+                  5,
+                  6,
+                  7,
+                  8,
+                  9
+                ]
+              },
+              "overall": {
+                "type": "integer",
+                "enum": [
+                  0,
+                  1,
+                  2,
+                  3,
+                  4,
+                  5,
+                  6,
+                  7,
+                  8,
+                  9
+                ]
+              }
+            },
+            "required": [
+              "premise",
+              "causal_path",
+              "ending",
+              "language",
+              "overall"
+            ],
+            "additionalProperties": false
+          },
+          "diversity_evidence": {
+            "type": "string"
+          },
+          "plot_groups": {
+            "type": "array",
+            "minItems": 1,
+            "maxItems": 12,
+            "items": {
+              "type": "object",
+              "properties": {
+                "group_id": {
+                  "type": "integer",
+                  "enum": [
+                    0,
+                    1,
+                    2,
+                    3,
+                    4,
+                    5,
+                    6,
+                    7,
+                    8,
+                    9,
+                    10,
+                    11
+                  ]
+                },
+                "summary": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "group_id",
+                "summary"
+              ],
+              "additionalProperties": false
+            }
+          }
+        },
+        "required": [
+          "stories",
+          "diversity",
+          "diversity_evidence",
+          "plot_groups"
+        ],
+        "additionalProperties": false
+      },
+      "type": "json_schema",
+      "description": null,
+      "strict": true
+    },
+    "verbosity": "medium"
+  },
+  "top_logprobs": 0,
+  "truncation": "disabled",
+  "usage": {
+    "input_tokens": 2707,
+    "input_tokens_details": {
+      "cached_tokens": 0,
+      "cache_write_tokens": 0,
+      "cache_write_tokens_details": {
+        "ttl_12h_tokens": 0,
+        "ttl_30m_tokens": 0
+      }
+    },
+    "output_tokens": 1046,
+    "output_tokens_details": {
+      "reasoning_tokens": 0
+    },
+    "total_tokens": 3753
+  },
+  "user": null,
+  "access_programs": null,
+  "billing": {
+    "payer": "openai"
+  },
+  "frequency_penalty": 0.0,
+  "image": {
+    "context_compression": "disabled"
+  },
+  "presence_penalty": 0.0,
+  "prompt_cache_options": {
+    "mode": "explicit",
+    "ttl": "30m"
+  },
+  "store": false,
+  "tool_usage": {
+    "image_gen": {
+      "input_tokens": 0,
+      "input_tokens_details": {
+        "image_tokens": 0,
+        "text_tokens": 0
+      },
+      "output_tokens": 0,
+      "output_tokens_details": {
+        "image_tokens": 0,
+        "text_tokens": 0
+      },
+      "total_tokens": 0
+    },
+    "web_search": {
+      "num_requests": 0
+    }
+  }
+}

@@ -1,0 +1,81 @@
+{
+  "id": "P029",
+  "name": "Temporal precedence",
+  "description": "Two-event query → before/after relations. Favor consistent ordering words.",
+  "proposed_payload": "{earlier, later, relation_confidence}",
+  "provenance": "Authored illustrative seeds; not learned or extracted.",
+  "status": "program_required",
+  "examples": [
+    {
+      "id": "P029.01",
+      "description": "Lamp lit before Mira enters.",
+      "intended_feature": "lighting_before_entry",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P029.02",
+      "description": "Cup washed after drinking.",
+      "intended_feature": "drinking_before_washing",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P029.03",
+      "description": "A before B and B before C.",
+      "intended_feature": "A_before_C",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P029.04",
+      "description": "A and B happen simultaneously.",
+      "intended_feature": "overlap_not_precedence",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P029.05",
+      "description": "A before B and B before A.",
+      "intended_feature": "temporal_cycle",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P029.06",
+      "description": "One event is yesterday, one tomorrow.",
+      "intended_feature": "yesterday_before_tomorrow",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P029.07",
+      "description": "Two events have no connecting temporal evidence.",
+      "intended_feature": "order_unknown",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P029.08",
+      "description": "Mira arrived during Theo's watch.",
+      "intended_feature": "contained_interval",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P029.09",
+      "description": "An event occurs before midnight and another after.",
+      "intended_feature": "handle_day_boundary",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P029.10",
+      "description": "A flashback is narrated later but occurred earlier.",
+      "intended_feature": "event_time_not_text_order",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    }
+  ],
+  "required_program": "Resolve partial temporal orders and interval relations; compute transitive precedence while detecting contradictions and incomparability."
+}

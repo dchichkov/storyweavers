@@ -1,0 +1,171 @@
+{
+  "scenario": "pottery",
+  "seed": 1,
+  "story": "Bea said, \u201cI want to give Grandpa Len a cup.\u201d The cup's handle was wide because Grandpa Len's hand was stiff. The shaping rib slipped, and the cup was dented. Mr Ivo said, \u201cThe cup's wall is thick.\u201d Grandpa Len said, \u201cI can hold a bowl with two hands.\u201d Bea said, \u201cI want a bowl.\u201d Bea used the shaping rib to reshape the cup into a bowl. Mr Ivo fired the bowl twice. The bowl was cool. Bea gave Grandpa Len the bowl. Grandpa Len poured tea into the bowl. Grandpa Len held the bowl with two hands.",
+  "qa": [
+    {
+      "id": "pottery:8:design",
+      "kind": "how",
+      "question": "How did Bea change her gift design?",
+      "answer": "Bea reshaped the cup into a bowl with the shaping rib. Grandpa Len had said he could hold a bowl with two hands.",
+      "entity_ids": [
+        "cup",
+        "grandpa",
+        "helper",
+        "hero",
+        "tool"
+      ],
+      "event_ids": [
+        5,
+        6,
+        8
+      ],
+      "evidence": [
+        {
+          "start": 159,
+          "end": 198,
+          "text": "Mr Ivo said, \u201cThe cup's wall is thick.\u201d"
+        },
+        {
+          "start": 199,
+          "end": 252,
+          "text": "Grandpa Len said, \u201cI can hold a bowl with two hands.\u201d"
+        },
+        {
+          "start": 253,
+          "end": 336,
+          "text": "Bea said, \u201cI want a bowl.\u201d Bea used the shaping rib to reshape the cup into a bowl."
+        }
+      ],
+      "text_sha256": "483b55268903ec628c9e23ef94d7e48388c82472ab6d5609f81ce33572aae66e"
+    },
+    {
+      "id": "pottery:24:outcome",
+      "kind": "what_next",
+      "question": "What did Grandpa Len do with the bowl at the end?",
+      "answer": "Grandpa Len held the bowl with two hands. Bea had reshaped her cup into the bowl.",
+      "entity_ids": [
+        "cup",
+        "grandpa",
+        "helper",
+        "hero",
+        "tool"
+      ],
+      "event_ids": [
+        5,
+        6,
+        8,
+        24
+      ],
+      "evidence": [
+        {
+          "start": 159,
+          "end": 198,
+          "text": "Mr Ivo said, \u201cThe cup's wall is thick.\u201d"
+        },
+        {
+          "start": 199,
+          "end": 252,
+          "text": "Grandpa Len said, \u201cI can hold a bowl with two hands.\u201d"
+        },
+        {
+          "start": 253,
+          "end": 336,
+          "text": "Bea said, \u201cI want a bowl.\u201d Bea used the shaping rib to reshape the cup into a bowl."
+        },
+        {
+          "start": 454,
+          "end": 495,
+          "text": "Grandpa Len held the bowl with two hands."
+        }
+      ],
+      "text_sha256": "483b55268903ec628c9e23ef94d7e48388c82472ab6d5609f81ce33572aae66e"
+    },
+    {
+      "id": "pottery:2:gift",
+      "kind": "who",
+      "question": "Who was Bea making the cup for?",
+      "answer": "Bea was making the cup for Grandpa Len.",
+      "entity_ids": [
+        "cup",
+        "grandpa",
+        "hero"
+      ],
+      "event_ids": [
+        2
+      ],
+      "evidence": [
+        {
+          "start": 0,
+          "end": 109,
+          "text": "Bea said, \u201cI want to give Grandpa Len a cup.\u201d The cup's handle was wide because Grandpa Len's hand was stiff."
+        }
+      ],
+      "text_sha256": "483b55268903ec628c9e23ef94d7e48388c82472ab6d5609f81ce33572aae66e"
+    },
+    {
+      "id": "pottery:2:grip_reason",
+      "kind": "why",
+      "question": "Why did the cup have a wide handle?",
+      "answer": "Grandpa Len's hand was stiff. The cup had a wide handle for him.",
+      "entity_ids": [
+        "cup",
+        "grandpa"
+      ],
+      "event_ids": [
+        2
+      ],
+      "evidence": [
+        {
+          "start": 0,
+          "end": 109,
+          "text": "Bea said, \u201cI want to give Grandpa Len a cup.\u201d The cup's handle was wide because Grandpa Len's hand was stiff."
+        }
+      ],
+      "text_sha256": "483b55268903ec628c9e23ef94d7e48388c82472ab6d5609f81ce33572aae66e"
+    },
+    {
+      "id": "pottery:4:accident",
+      "kind": "what",
+      "question": "What happened when the shaping rib slipped?",
+      "answer": "The cup was dented when the shaping rib slipped.",
+      "entity_ids": [
+        "cup",
+        "tool"
+      ],
+      "event_ids": [
+        4
+      ],
+      "evidence": [
+        {
+          "start": 110,
+          "end": 158,
+          "text": "The shaping rib slipped, and the cup was dented."
+        }
+      ],
+      "text_sha256": "483b55268903ec628c9e23ef94d7e48388c82472ab6d5609f81ce33572aae66e"
+    },
+    {
+      "id": "pottery:5:inspection",
+      "kind": "what",
+      "question": "What did Mr Ivo say about the cup's wall?",
+      "answer": "Mr Ivo said the cup's wall was thick.",
+      "entity_ids": [
+        "cup",
+        "helper",
+        "hero"
+      ],
+      "event_ids": [
+        5
+      ],
+      "evidence": [
+        {
+          "start": 159,
+          "end": 198,
+          "text": "Mr Ivo said, \u201cThe cup's wall is thick.\u201d"
+        }
+      ],
+      "text_sha256": "483b55268903ec628c9e23ef94d7e48388c82472ab6d5609f81ce33572aae66e"
+    }
+  ]
+}

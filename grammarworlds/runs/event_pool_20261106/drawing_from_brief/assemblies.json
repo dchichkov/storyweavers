@@ -1,0 +1,277 @@
+{
+  "library.moon_picture": {
+    "world": {
+      "scenario": "catalog_attachment",
+      "entities": {
+        "garden": {
+          "id": "garden",
+          "noun": "garden",
+          "kind": "place",
+          "location": "",
+          "number": "singular",
+          "pronoun": "it",
+          "properties": [],
+          "state": [],
+          "memes": {}
+        },
+        "pool_actor": {
+          "id": "pool_actor",
+          "noun": "Mina",
+          "kind": "person",
+          "location": "garden",
+          "number": "singular",
+          "pronoun": "she",
+          "properties": [
+            "animate",
+            "can_hold",
+            "can_sketch_moon"
+          ],
+          "state": [],
+          "memes": {
+            "Care": 0.2806185464674407,
+            "Fear": 0.7084602421623396,
+            "Trust": 0.6582647713859684
+          }
+        },
+        "pool_item": {
+          "id": "pool_item",
+          "noun": "paper",
+          "kind": "object",
+          "location": "pool_actor",
+          "number": "singular",
+          "pronoun": "it",
+          "properties": [
+            "drawable",
+            "portable"
+          ],
+          "state": [
+            "blank"
+          ],
+          "memes": {}
+        },
+        "pool_tool": {
+          "id": "pool_tool",
+          "noun": "pencil",
+          "kind": "tool",
+          "location": "pool_actor",
+          "number": "singular",
+          "pronoun": "it",
+          "properties": [
+            "draw",
+            "portable"
+          ],
+          "state": [],
+          "memes": {}
+        },
+        "pool_reference": {
+          "id": "pool_reference",
+          "noun": "moon atlas",
+          "kind": "object",
+          "location": "pool_actor",
+          "number": "singular",
+          "pronoun": "it",
+          "properties": [
+            "moon_reference"
+          ],
+          "state": [
+            "moon_picture"
+          ],
+          "memes": {}
+        }
+      },
+      "hero": "pool_actor",
+      "helper": "",
+      "target": "pool_item",
+      "tool": "",
+      "setting": "garden",
+      "facts": {},
+      "flags": [],
+      "history": [],
+      "focus": ""
+    },
+    "template": {
+      "schema": "attached-event-lines-v1",
+      "roles": {
+        "actor": "person",
+        "item": "object",
+        "tool": "tool",
+        "reference": "object"
+      },
+      "events": {
+        "e000": {
+          "op": "sketch_moon",
+          "actor": "actor",
+          "item": "item",
+          "tool": "tool",
+          "reference": "reference"
+        }
+      },
+      "lines": [
+        {
+          "entity": "actor",
+          "steps": [
+            "e000"
+          ]
+        },
+        {
+          "entity": "item",
+          "steps": [
+            "e000"
+          ]
+        },
+        {
+          "entity": "tool",
+          "steps": [
+            "e000"
+          ]
+        },
+        {
+          "entity": "reference",
+          "steps": [
+            "e000"
+          ]
+        }
+      ],
+      "source": {
+        "kind": "event-pool",
+        "fragment": "library.moon_picture",
+        "authored_source": "library:sketch_moon portable export",
+        "assembly": [
+          {
+            "action": "construct",
+            "entity": "garden",
+            "reason": "brief setting",
+            "properties": []
+          },
+          {
+            "action": "import",
+            "role": "actor",
+            "entity": "pool_actor",
+            "prototype": "library:hero",
+            "source": {
+              "world": "library",
+              "entity": "hero",
+              "seed": 1
+            },
+            "reason": "fragment dependency",
+            "inherited_properties": [
+              "animate",
+              "can_hold",
+              "can_sketch_moon"
+            ],
+            "inherited_state": []
+          },
+          {
+            "action": "import",
+            "role": "item",
+            "entity": "pool_item",
+            "prototype": "library:paper",
+            "source": {
+              "world": "library",
+              "entity": "paper",
+              "seed": 1
+            },
+            "reason": "explicit anchor",
+            "inherited_properties": [
+              "drawable",
+              "portable"
+            ],
+            "inherited_state": [
+              "blank"
+            ]
+          },
+          {
+            "action": "import",
+            "role": "tool",
+            "entity": "pool_tool",
+            "prototype": "library:pencil",
+            "source": {
+              "world": "library",
+              "entity": "pencil",
+              "seed": 1
+            },
+            "reason": "fragment dependency",
+            "inherited_properties": [
+              "draw",
+              "portable"
+            ],
+            "inherited_state": []
+          },
+          {
+            "action": "import",
+            "role": "reference",
+            "entity": "pool_reference",
+            "prototype": "library:atlas",
+            "source": {
+              "world": "library",
+              "entity": "atlas",
+              "seed": 1
+            },
+            "reason": "fragment dependency",
+            "inherited_properties": [
+              "moon_reference"
+            ],
+            "inherited_state": [
+              "moon_picture"
+            ]
+          },
+          {
+            "action": "place",
+            "entity": "pool_actor",
+            "destination": "garden",
+            "reason": "authored bundle placement"
+          },
+          {
+            "action": "place",
+            "entity": "pool_item",
+            "destination": "pool_actor",
+            "reason": "authored bundle placement"
+          },
+          {
+            "action": "place",
+            "entity": "pool_tool",
+            "destination": "pool_actor",
+            "reason": "authored bundle placement"
+          },
+          {
+            "action": "place",
+            "entity": "pool_reference",
+            "destination": "pool_actor",
+            "reason": "authored bundle placement"
+          }
+        ],
+        "expansion": {
+          "e000": [
+            "0"
+          ]
+        },
+        "retrieval": {
+          "candidates": [
+            {
+              "fragment": "library.moon_picture",
+              "score": 1,
+              "probability": 1.0
+            }
+          ],
+          "rejected": [],
+          "selection_seed": 0,
+          "forced_fragment": null
+        },
+        "brief": {
+          "schema": "event-pool-v1",
+          "intent": "draw",
+          "setting": "garden",
+          "roles": {
+            "item": {}
+          }
+        }
+      }
+    },
+    "bindings": {
+      "actor": "pool_actor",
+      "item": "pool_item",
+      "tool": "pool_tool",
+      "reference": "pool_reference"
+    }
+  }
+}

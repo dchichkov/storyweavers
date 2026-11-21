@@ -1,0 +1,36 @@
+from .schema import *
+
+SPEC=story(6,'snow',dict(
+    hero=person('Nia','she'),helper=person('Tomas','he',memes={'Desire':.8}),recipient=person('Mrs Wren','she'),
+    work=place('village'),bench=place('shop'),table=place('kitchen table'),
+    sled=tool('red sled',location='bench',state=('free',)),basket=obj('grocery basket',location='sled'),
+    gate=obj('gate',state=('blocked',)),stove=obj('stove',state=('cold',))),
+    chain(
+        event('delivery_promise',Say('hero',V('want',V('help',R('recipient')))),Say('helper',V('want',V('race')),listener='hero'),
+            qa=[Q('goal','who','Who did Nia want to help?','Nia wanted to help Mrs Wren. Tomas wanted to race.','hero','helper','recipient')]),
+        event('borrow_sled',S('hero',A(V('fetch',R('sled')),PP('from',R('bench')))),patient='sled',destination='hero',
+            guards=[at('sled','bench')],effects=[change('sled',location='hero')],portable='fetch'),
+        event('ice_ridge',S(R('sled'),B('stuck')),Say('hero',V('need',N('help',det='bare'))),patient='sled',
+            guards=[at('sled','hero')],effects=[change('sled',add=('stuck',),remove=('free',))],
+            qa=[Q('obstacle','what','Why did Nia ask for help?','The red sled was stuck. Nia said she needed help.','hero','sled')]),
+        event('leave_race',S('helper',V('leave',N('race'))),Say('helper',Can(V('help',P('you'))),listener='hero'),actor='helper',
+            guards=[has('sled','stuck')],effects=[change('helper',add=('left_race',),memes={'Care':.9})],
+            qa=[Q('choice','who','Who offered to help with the stuck sled?','Tomas offered to help Nia. Her red sled was stuck.','helper','hero','sled',supports=('obstacle',))]),
+        fork('free_sled',
+            event('lift_runner',S('helper',V('lift',R('sled'))),actor='helper',patient='sled',
+                guards=[has('helper','left_race'),has('sled','stuck')],effects=[change('sled',add=('free','lifted'),remove=('stuck',))]),
+            event('rock_runner',S(Both(R('hero'),R('helper')),V('free',R('sled'))),patient='sled',
+                guards=[has('helper','left_race'),has('sled','stuck')],effects=[change('sled',add=('free','rocked'),remove=('stuck',))])),
+        event('clear_gate',S(Both(R('hero'),R('helper')),V('clear',R('gate'))),patient='gate',
+            guards=[has('sled','free'),has('gate','blocked')],effects=[change('gate',add=('clear',),remove=('blocked',))],
+            qa=[Q('gate','how','How did they get through the gate?','Nia and Tomas cleared the gate together. Tomas had stopped to help Nia.','hero','helper','gate',supports=('choice',))]),
+        event('deliver_food',S('hero',A(V('put',R('basket')),PP('on',R('table')))),patient='basket',destination='table',
+            guards=[has('gate','clear'),has('sled','free'),at('basket','sled')],effects=[change('basket',location='table')],
+            qa=[Q('food','where','Where did Nia put the groceries?','Nia put the grocery basket on the kitchen table. She and Tomas had cleared the gate.','hero','basket','table',supports=('gate',))]),
+        event('return_sled',S('hero',A(V('return',R('sled')),PP('to',R('bench')))),patient='sled',destination='bench',
+            guards=[at('sled','hero'),at('basket','table')],effects=[change('sled',location='bench')],portable='put_item'),
+        event('warm_stove',S('recipient',V('light',R('stove'))),S(R('stove'),V('glow')),actor='recipient',patient='stove',
+            guards=[at('basket','table')],effects=[change('stove',add=('warm',),remove=('cold',))],
+            qa=[Q('outcome','what_next','What happened after the delivery?','Mrs Wren lit the stove, and it glowed. The grocery basket was on her table.','recipient','stove','basket',supports=('food',))])
+    ),target='basket',tool_id='sled',premise='A delivery sled is stuck; helping costs Tomas his race.',
+    fidelity='Tomas gives up racing to free Nia’s sled and deliver Mrs Wren’s groceries; her cold home becomes warm.',variants=['Lift or rock the stuck sled free.'])

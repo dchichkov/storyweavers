@@ -1,0 +1,81 @@
+{
+  "id": "P058",
+  "name": "Abstract-role transfer",
+  "description": "Current relation pattern → analogous earlier role mapping. Favor the same role rather than the same surface token.",
+  "proposed_payload": "{role_mapping, candidate_bindings}",
+  "provenance": "Authored illustrative seeds; not learned or extracted.",
+  "status": "program_required",
+  "examples": [
+    {
+      "id": "P058.01",
+      "description": "Mira gives Nia cup; Theo gives Omar map; ask recipient.",
+      "intended_feature": "Omar",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P058.02",
+      "description": "Bird carries twig; child carries rope; ask carrier.",
+      "intended_feature": "child",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P058.03",
+      "description": "Nia lends Theo key; Omar lends Mira book; ask lender.",
+      "intended_feature": "Omar",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P058.04",
+      "description": "Door opened with key; crate opened with crowbar; ask instrument.",
+      "intended_feature": "crowbar",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P058.05",
+      "description": "Mira follows Nia; Theo follows Omar; ask leader.",
+      "intended_feature": "Omar",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P058.06",
+      "description": "Same names occur with reversed giver/recipient roles.",
+      "intended_feature": "respect_role_not_name_order",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P058.07",
+      "description": "Passive sentence reverses surface order but preserves agent.",
+      "intended_feature": "agent_binding",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P058.08",
+      "description": "One frame lacks a required role.",
+      "intended_feature": "incomplete_alignment",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P058.09",
+      "description": "Two roles can align equally well.",
+      "intended_feature": "ambiguous_mapping",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P058.10",
+      "description": "Analogy proposes an entity absent from the second frame.",
+      "intended_feature": "reject_unbound_value",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    }
+  ],
+  "required_program": "Align relational frame roles across examples using variable bindings and type constraints, distinguishing role transfer from surface-token copying."
+}

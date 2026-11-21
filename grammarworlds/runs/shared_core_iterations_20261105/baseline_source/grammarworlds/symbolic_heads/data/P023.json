@@ -1,0 +1,581 @@
+{
+  "id": "P023",
+  "name": "Instrument suitability",
+  "description": "Action query → available tools and typed affordances. Favor an applicable instrument.",
+  "proposed_payload": "{tool_candidates, suitability}",
+  "provenance": "Authored illustrative seeds; not learned or extracted.",
+  "status": "table",
+  "examples": [
+    {
+      "id": "P023.01",
+      "description": "Hammer is available and suitable for driving a nail.",
+      "query": "drive_nail",
+      "scope": "example",
+      "sources": [
+        {
+          "id": "source:1",
+          "channel": "available_tool",
+          "scope": "example",
+          "key": "hammer",
+          "confidence": 1.0
+        }
+      ],
+      "expected_features": {
+        "striking": 1.0
+      },
+      "grammar_weights": {
+        "hammer": 1.0,
+        "brush": 1.0,
+        "waits": 1.0,
+        "rests": 1.0
+      },
+      "favored": "hammer",
+      "disfavored": "brush"
+    },
+    {
+      "id": "P023.02",
+      "description": "Brush is available and suitable for painting.",
+      "query": "paint",
+      "scope": "example",
+      "sources": [
+        {
+          "id": "source:2",
+          "channel": "available_tool",
+          "scope": "example",
+          "key": "brush",
+          "confidence": 1.0
+        }
+      ],
+      "expected_features": {
+        "painting": 1.0
+      },
+      "grammar_weights": {
+        "brush": 1.0,
+        "hammer": 1.0,
+        "waits": 1.0,
+        "rests": 1.0
+      },
+      "favored": "brush",
+      "disfavored": "hammer"
+    },
+    {
+      "id": "P023.03",
+      "description": "Needle supports sewing cloth.",
+      "query": "sew",
+      "scope": "example",
+      "sources": [
+        {
+          "id": "source:3",
+          "channel": "available_tool",
+          "scope": "example",
+          "key": "needle",
+          "confidence": 1.0
+        }
+      ],
+      "expected_features": {
+        "stitching": 1.0
+      },
+      "grammar_weights": {
+        "needle": 1.0,
+        "spoon": 1.0,
+        "waits": 1.0,
+        "rests": 1.0
+      },
+      "favored": "needle",
+      "disfavored": "spoon"
+    },
+    {
+      "id": "P023.04",
+      "description": "Spoon supports stirring soup.",
+      "query": "stir",
+      "scope": "example",
+      "sources": [
+        {
+          "id": "source:4",
+          "channel": "available_tool",
+          "scope": "example",
+          "key": "spoon",
+          "confidence": 1.0
+        }
+      ],
+      "expected_features": {
+        "stirring": 1.0
+      },
+      "grammar_weights": {
+        "spoon": 1.0,
+        "needle": 1.0,
+        "waits": 1.0,
+        "rests": 1.0
+      },
+      "favored": "spoon",
+      "disfavored": "needle"
+    },
+    {
+      "id": "P023.05",
+      "description": "Scissors cut paper.",
+      "query": "cut_paper",
+      "scope": "example",
+      "sources": [
+        {
+          "id": "source:5",
+          "channel": "available_tool",
+          "scope": "example",
+          "key": "scissors",
+          "confidence": 1.0
+        }
+      ],
+      "expected_features": {
+        "cutting": 1.0
+      },
+      "grammar_weights": {
+        "scissors": 1.0,
+        "ladder": 1.0,
+        "waits": 1.0,
+        "rests": 1.0
+      },
+      "favored": "scissors",
+      "disfavored": "ladder"
+    },
+    {
+      "id": "P023.06",
+      "description": "Ladder provides height.",
+      "query": "reach_shelf",
+      "scope": "example",
+      "sources": [
+        {
+          "id": "source:6",
+          "channel": "available_tool",
+          "scope": "example",
+          "key": "ladder",
+          "confidence": 1.0
+        }
+      ],
+      "expected_features": {
+        "reaching": 1.0
+      },
+      "grammar_weights": {
+        "ladder": 1.0,
+        "scissors": 1.0,
+        "waits": 1.0,
+        "rests": 1.0
+      },
+      "favored": "ladder",
+      "disfavored": "scissors"
+    },
+    {
+      "id": "P023.07",
+      "description": "Lantern illuminates a dark space.",
+      "query": "illuminate",
+      "scope": "example",
+      "sources": [
+        {
+          "id": "source:7",
+          "channel": "available_tool",
+          "scope": "example",
+          "key": "lantern",
+          "confidence": 1.0
+        }
+      ],
+      "expected_features": {
+        "lighting": 1.0
+      },
+      "grammar_weights": {
+        "lantern": 1.0,
+        "bucket": 1.0,
+        "waits": 1.0,
+        "rests": 1.0
+      },
+      "favored": "lantern",
+      "disfavored": "bucket"
+    },
+    {
+      "id": "P023.08",
+      "description": "Bucket carries water.",
+      "query": "carry_water",
+      "scope": "example",
+      "sources": [
+        {
+          "id": "source:8",
+          "channel": "available_tool",
+          "scope": "example",
+          "key": "bucket",
+          "confidence": 1.0
+        }
+      ],
+      "expected_features": {
+        "containing": 1.0
+      },
+      "grammar_weights": {
+        "bucket": 1.0,
+        "lantern": 1.0,
+        "waits": 1.0,
+        "rests": 1.0
+      },
+      "favored": "bucket",
+      "disfavored": "lantern"
+    },
+    {
+      "id": "P023.09",
+      "description": "Screwdriver turns a screw.",
+      "query": "tighten_screw",
+      "scope": "example",
+      "sources": [
+        {
+          "id": "source:9",
+          "channel": "available_tool",
+          "scope": "example",
+          "key": "screwdriver",
+          "confidence": 1.0
+        }
+      ],
+      "expected_features": {
+        "turning": 1.0
+      },
+      "grammar_weights": {
+        "screwdriver": 1.0,
+        "tape": 1.0,
+        "waits": 1.0,
+        "rests": 1.0
+      },
+      "favored": "screwdriver",
+      "disfavored": "tape"
+    },
+    {
+      "id": "P023.10",
+      "description": "Tape patches a paper tear.",
+      "query": "patch_paper",
+      "scope": "example",
+      "sources": [
+        {
+          "id": "source:10",
+          "channel": "available_tool",
+          "scope": "example",
+          "key": "tape",
+          "confidence": 1.0
+        }
+      ],
+      "expected_features": {
+        "adhesion": 1.0
+      },
+      "grammar_weights": {
+        "tape": 1.0,
+        "screwdriver": 1.0,
+        "waits": 1.0,
+        "rests": 1.0
+      },
+      "favored": "tape",
+      "disfavored": "screwdriver"
+    }
+  ],
+  "input_channel": "available_tool",
+  "receiver_mode": "multipliers",
+  "smoothing": 1.0,
+  "input_contract": "Supply current, scoped records in channel available_tool. Scope selection and structural parsing belong to the caller; no free-text parser is implied.",
+  "table_semantics": "Positive relative word-weight multipliers.",
+  "selection": [
+    {
+      "tokens": [
+        "drive_nail",
+        "hammer"
+      ],
+      "weight": 1.0
+    },
+    {
+      "tokens": [
+        "paint",
+        "brush"
+      ],
+      "weight": 1.0
+    },
+    {
+      "tokens": [
+        "sew",
+        "needle"
+      ],
+      "weight": 1.0
+    },
+    {
+      "tokens": [
+        "stir",
+        "spoon"
+      ],
+      "weight": 1.0
+    },
+    {
+      "tokens": [
+        "cut_paper",
+        "scissors"
+      ],
+      "weight": 1.0
+    },
+    {
+      "tokens": [
+        "reach_shelf",
+        "ladder"
+      ],
+      "weight": 1.0
+    },
+    {
+      "tokens": [
+        "illuminate",
+        "lantern"
+      ],
+      "weight": 1.0
+    },
+    {
+      "tokens": [
+        "carry_water",
+        "bucket"
+      ],
+      "weight": 1.0
+    },
+    {
+      "tokens": [
+        "tighten_screw",
+        "screwdriver"
+      ],
+      "weight": 1.0
+    },
+    {
+      "tokens": [
+        "patch_paper",
+        "tape"
+      ],
+      "weight": 1.0
+    }
+  ],
+  "projection": [
+    {
+      "tokens": [
+        "hammer",
+        "striking"
+      ],
+      "weight": 1.0
+    },
+    {
+      "tokens": [
+        "brush",
+        "painting"
+      ],
+      "weight": 1.0
+    },
+    {
+      "tokens": [
+        "needle",
+        "stitching"
+      ],
+      "weight": 1.0
+    },
+    {
+      "tokens": [
+        "spoon",
+        "stirring"
+      ],
+      "weight": 1.0
+    },
+    {
+      "tokens": [
+        "scissors",
+        "cutting"
+      ],
+      "weight": 1.0
+    },
+    {
+      "tokens": [
+        "ladder",
+        "reaching"
+      ],
+      "weight": 1.0
+    },
+    {
+      "tokens": [
+        "lantern",
+        "lighting"
+      ],
+      "weight": 1.0
+    },
+    {
+      "tokens": [
+        "bucket",
+        "containing"
+      ],
+      "weight": 1.0
+    },
+    {
+      "tokens": [
+        "screwdriver",
+        "turning"
+      ],
+      "weight": 1.0
+    },
+    {
+      "tokens": [
+        "tape",
+        "adhesion"
+      ],
+      "weight": 1.0
+    }
+  ],
+  "receiver": [
+    {
+      "tokens": [
+        "drive_nail",
+        "striking",
+        "hammer"
+      ],
+      "weight": 4.0
+    },
+    {
+      "tokens": [
+        "drive_nail",
+        "striking",
+        "brush"
+      ],
+      "weight": 0.25
+    },
+    {
+      "tokens": [
+        "paint",
+        "painting",
+        "brush"
+      ],
+      "weight": 4.0
+    },
+    {
+      "tokens": [
+        "paint",
+        "painting",
+        "hammer"
+      ],
+      "weight": 0.25
+    },
+    {
+      "tokens": [
+        "sew",
+        "stitching",
+        "needle"
+      ],
+      "weight": 4.0
+    },
+    {
+      "tokens": [
+        "sew",
+        "stitching",
+        "spoon"
+      ],
+      "weight": 0.25
+    },
+    {
+      "tokens": [
+        "stir",
+        "stirring",
+        "spoon"
+      ],
+      "weight": 4.0
+    },
+    {
+      "tokens": [
+        "stir",
+        "stirring",
+        "needle"
+      ],
+      "weight": 0.25
+    },
+    {
+      "tokens": [
+        "cut_paper",
+        "cutting",
+        "scissors"
+      ],
+      "weight": 4.0
+    },
+    {
+      "tokens": [
+        "cut_paper",
+        "cutting",
+        "ladder"
+      ],
+      "weight": 0.25
+    },
+    {
+      "tokens": [
+        "reach_shelf",
+        "reaching",
+        "ladder"
+      ],
+      "weight": 4.0
+    },
+    {
+      "tokens": [
+        "reach_shelf",
+        "reaching",
+        "scissors"
+      ],
+      "weight": 0.25
+    },
+    {
+      "tokens": [
+        "illuminate",
+        "lighting",
+        "lantern"
+      ],
+      "weight": 4.0
+    },
+    {
+      "tokens": [
+        "illuminate",
+        "lighting",
+        "bucket"
+      ],
+      "weight": 0.25
+    },
+    {
+      "tokens": [
+        "carry_water",
+        "containing",
+        "bucket"
+      ],
+      "weight": 4.0
+    },
+    {
+      "tokens": [
+        "carry_water",
+        "containing",
+        "lantern"
+      ],
+      "weight": 0.25
+    },
+    {
+      "tokens": [
+        "tighten_screw",
+        "turning",
+        "screwdriver"
+      ],
+      "weight": 4.0
+    },
+    {
+      "tokens": [
+        "tighten_screw",
+        "turning",
+        "tape"
+      ],
+      "weight": 0.25
+    },
+    {
+      "tokens": [
+        "patch_paper",
+        "adhesion",
+        "tape"
+      ],
+      "weight": 4.0
+    },
+    {
+      "tokens": [
+        "patch_paper",
+        "adhesion",
+        "screwdriver"
+      ],
+      "weight": 0.25
+    }
+  ]
+}

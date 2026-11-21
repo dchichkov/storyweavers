@@ -1,0 +1,228 @@
+"""Guarded authored story arcs using World, Frame and the existing word forest.
+
+This is an opt-in content pack adapter, not a new sampler. Decisions mutate
+physical carriers; narrative contracts record why an option is offered and
+which cost/result was actually executed. No English parsing or runtime model.
+"""
+from copy import deepcopy
+import math
+from random import Random
+import re
+
+from ...world import World,Entity,Fact,Frame,kernel
+from ..operations import committed
+from ..surface import Scene,claim
+from .language import render,sequence
+
+
+def entity(noun,kind='object',location='work',*,state=(),memes=None,pronoun='it'):
+    return dict(noun=noun,kind=kind,location=location,state=list(state),memes=memes or {},pronoun=pronoun)
+
+
+def event(name,*surface,after=(),requires=(),excludes=(),group=None,actor='hero',patient='',
+          instrument='',destination='',effects=None,guards=None,base=0.,preferences=(),
+          function='action',motivation=None,cost=None,opens=(),closes=(),qa=(),ending=False):
+    return dict(name=name,surface=sequence(*surface),after=list(after),requires=list(requires),
+        excludes=list(excludes),group=group,actor=actor,patient=patient,instrument=instrument,
+        destination=destination,effects=effects or {},guards=guards or {},base=base,
+        preferences=list(preferences),function=function,motivation=motivation,cost=cost,
+        opens=list(opens),closes=list(closes),qa=list(qa),ending=ending)
+
+
+class CraftedWorld(World):
+    def facts_for_attention(self):
+        facts=list(self.facts.values())
+        for i,e in self.entities.items():
+            facts.extend(Fact(i+'.'+name,e.noun+' carries '+name,('actor',name.lower(),i),value)
+                         for name,value in e.memes.items())
+            facts.extend(Fact('state:'+i+':'+s,e.noun+' is '+s,('state',i,s)) for s in e.state)
+        return facts
+
+
+class CraftedPack:
+    event_limit=24
+    LEXICON={}
+
+    def __init__(self,spec):
+        self.spec=deepcopy(spec);self.events={e['name']:e for e in spec['events']}
+        self.decision_policy=bool(spec.get('decision_policy'))
+        if len(self.events)!=len(spec['events']):raise ValueError('duplicate crafted event')
+        self._validate()
+        if self.decision_policy:
+            from .decision_policy import validate
+            validate(self.spec)
+        self.KERNELS={}
+        for name,e in self.events.items():
+            requires=['done:'+x for x in e['after']]+e['requires']
+            excludes=['done:'+name]+e['excludes']+(['chosen:'+e['group']] if e['group'] else [])
+            adds=['done:'+name]+(['chosen:'+e['group']] if e['group'] else [])+(['ended'] if e['ending'] else [])
+            self.KERNELS[name]=kernel('crafted_'+name,requires,excludes,adds,base=e['base'],
+                                     query=('care','fear','pride','trust','state'),preferences=e['preferences'])
+        self.commit=committed(self.candidates)(self._effects)
+
+    def _validate(self):
+        """Reject broken authoring before a frame can change the world."""
+        entities=self.spec['entities']
+        def bound(i):
+            if i not in entities:raise ValueError('unbound crafted entity: '+str(i))
+        for key in ('helper','target','tool'):bound(self.spec[key])
+        bound('hero');bound('work')
+        for ent in entities.values():bound(ent['location'])
+        def surface(node):
+            kind=node['kind']
+            if kind in {'motif','utterance'}:
+                surface(node['node'])
+            elif kind in {'sequence','alternatives'}:
+                if kind=='alternatives':
+                    weights=node['weights']
+                    if len(weights)!=len(node['nodes']) or not weights or any(not math.isfinite(x) or x<=0 for x in weights):
+                        raise ValueError('invalid crafted alternative weights')
+                for child in node['nodes']:surface(child)
+            elif kind=='speech':
+                for key in ('speaker','listener'):
+                    bound(node[key])
+                    if entities[node[key]]['kind']!='person':raise ValueError('speech requires people')
+                surface(node['content'])
+            elif kind=='clause':
+                bound(node['actor'])
+                if not node['forms']:raise ValueError('empty authored clause')
+                for form in node['forms']:
+                    for reference in re.findall(r'\{([^{}]+)\}',form):bound(reference.split(':')[0])
+                def arguments(value):
+                    if isinstance(value,dict):
+                        if value.get('type')=='entity':bound(value['entity'])
+                        for v in value.values():arguments(v)
+                    elif isinstance(value,list):
+                        for v in value:arguments(v)
+                arguments(node['arguments'])
+            else:raise ValueError('unknown authored constructor '+kind)
+        for e in self.events.values():
+            if len(set(e['opens']))!=len(e['opens']) or len(set(e['closes']))!=len(e['closes']) or set(e['opens'])&set(e['closes']):
+                raise ValueError('ambiguous narrative obligation update')
+            for dependency in e['after']:
+                if dependency not in self.events:raise ValueError('unknown event prerequisite '+dependency)
+            for role in ('actor','patient','instrument','destination'):
+                if e[role]:bound(e[role])
+            for i in e['guards']:bound(i)
+            for i,change in e['effects'].items():
+                bound(i)
+                if set(change)-{'add','remove','location','memes_delta','noun'}:raise ValueError('unknown crafted effect')
+                if 'location' in change:bound(change['location'])
+                if any(not math.isfinite(x) for x in change.get('memes_delta',{}).values()):raise ValueError('invalid concept delta')
+            surface(e['surface'])
+
+    def _ready(self,w,e):
+        memory=w.narrative['storycraft'];obligations=memory['obligations']
+        if self.decision_policy:
+            from .decision_policy import ready
+            if not ready(w,e):return False
+        if memory['completed']:return False
+        if any(x in obligations for x in e['opens']):return False
+        if any(obligations.get(x,{}).get('status')!='open' for x in e['closes']):return False
+        if e['ending'] and (set(e['opens']) or {k for k,v in obligations.items() if v['status']=='open'}-set(e['closes'])):return False
+        if any(i not in w.entities or not set(states)<=w.entities[i].state for i,states in e['guards'].items()):return False
+        if any(i not in w.entities or ('location' in changes and changes['location'] not in w.entities)
+               for i,changes in e['effects'].items()):return False
+        def present(node):
+            if node['kind'] in {'motif','utterance'}:return present(node['node'])
+            if node['kind'] in {'sequence','alternatives'}:return all(present(n) for n in node['nodes'])
+            if node['kind']=='speech':
+                a=w.entities.get(node['speaker']);b=w.entities.get(node['listener'])
+                return a is not None and b is not None and a.location==b.location and present(node['content'])
+            return node['actor'] in w.entities
+        return present(e['surface'])
+
+    def make_world(self,seed=0,*,choice=None,care=None,pride=None,appraisal=None,compression=True):
+        rng=Random(seed)
+        if choice is not None and (choice not in self.events or not self.events[choice]['group']):
+            raise ValueError('choice must name a crafted branch decision')
+        entities={i:Entity(id=i,properties={'animate','can_hold'} if e['kind']=='person' else {'physical'},
+                          **{**deepcopy(e),'state':set(e['state'])}) for i,e in self.spec['entities'].items()}
+        for name,value in (('Care',care),('Pride',pride)):
+            if value is not None and (not isinstance(value,(float,int)) or not math.isfinite(value) or not 0<=value<=1):
+                raise ValueError('trait override must be finite and in [0,1]')
+            entities['hero'].memes[name]=rng.uniform(.2,.9) if value is None else value
+        w=CraftedWorld(self.spec['name'],entities,'hero',self.spec['helper'],self.spec['target'],
+            self.spec['tool'],'work',{'premise':Fact('premise',self.spec['premise'],('goal','care'))},
+            narrative={'storycraft':dict(schema='crafted-story-v1',title=self.spec['title'],
+                desired_outcome=self.spec['desire'],choice_constraint=choice,history=[],obligations={},
+                completed=False)})
+        if self.decision_policy:
+            from .decision_policy import initialize
+            if appraisal is not None and (appraisal not in self.events or not self.events[appraisal].get('appraisal')):
+                raise ValueError('unknown appraisal')
+            if type(compression) is not bool:raise ValueError('compression must be boolean')
+            initialize(w,appraisal=appraisal,compression=compression)
+        elif appraisal is not None or compression is not True:raise ValueError('appraisal/compression controls require decision beats')
+        return w
+
+    def candidates(self,w):
+        result=[]
+        forced=w.narrative['storycraft']['choice_constraint']
+        for name,e in self.events.items():
+            k=self.KERNELS[name]
+            if not k.requires<=w.flags or k.excludes&w.flags:continue
+            if e['group'] and forced and self.events[forced]['group']==e['group'] and name!=forced:continue
+            if not self._ready(w,e):continue
+            if any(i not in w.entities for i in (e['actor'],e['patient'],e['instrument'],e['destination']) if i):continue
+            result.append((k,Frame(k.name,e['actor'],e['patient'],e['instrument'],e['destination'])))
+        return result
+
+    def _effects(self,w,f):
+        e=self.events[f.kind.removeprefix('crafted_')]
+        if self.decision_policy:
+            from .decision_policy import commit_event
+            commit_event(w,e)
+        for i,changes in e['effects'].items():
+            carrier=w.entities[i]
+            carrier.state.difference_update(changes.get('remove',()))
+            carrier.state.update(changes.get('add',()))
+            if 'noun' in changes:carrier.noun=changes['noun']
+            if 'location' in changes:
+                if changes['location'] not in w.entities:raise ValueError('unbound effect location')
+                carrier.location=changes['location']
+            for concept,delta in changes.get('memes_delta',{}).items():
+                carrier.memes[concept]=max(0.,min(1.,carrier.memes.get(concept,0.)+delta))
+        memory=w.narrative['storycraft'];eid=len(w.history)+1
+        for obligation in e['opens']:
+            if obligation in memory['obligations']:raise ValueError('duplicate narrative obligation')
+            memory['obligations'][obligation]=dict(carrier=e['actor'],setup_event=eid,status='open')
+        for obligation in e['closes']:
+            if obligation not in memory['obligations']:raise ValueError('closing an unplanted obligation')
+            memory['obligations'][obligation].update(status='resolved',result_event=eid)
+        memory['history'].append(dict(event=eid,name=e['name'],function=e['function'],
+                                      motivation=e['motivation'],cost=e['cost']))
+        if e['ending']:
+            if any(o['status']=='open' for o in memory['obligations'].values()):raise ValueError('unpaid story obligation')
+            memory['completed']=True
+
+    def render_scene(self,w,f,tense='past',**options):
+        if tense!='past':raise ValueError('crafted prototypes currently author past-tense narration only')
+        e=self.events[f.kind.removeprefix('crafted_')]
+        return Scene(render(e['surface'],w),deepcopy(e['qa']))
+
+    def narrative_context(self,w,f):
+        e=self.events[f.kind.removeprefix('crafted_')]
+        context=dict(scope='candidate_event',function=e['function'],desired_outcome=self.spec['desire'],
+                    motivation=e['motivation'],proposed_cost=e['cost'],
+                    causal_predecessors=[h['event'] for h in w.narrative['storycraft']['history'] if h['name'] in e['after']],
+                    earlier_events=[h['event'] for h in w.narrative['storycraft']['history']],
+                    open_obligations=[k for k,v in w.narrative['storycraft']['obligations'].items() if v['status']=='open'])
+        if self.decision_policy:
+            m=w.narrative['storycraft']['decisions']
+            context['decisions']=dict(appraisal=deepcopy(e.get('appraisal')),forecast_stakes=deepcopy(e.get('stakes',{})),
+                prior_appraisals=deepcopy(m['appraisals']),required_utterances=list(e.get('requires_utterances',[])),
+                observed_costs=deepcopy(m['observed_costs']))
+        return context
+
+    def decision_score(self,w,f):
+        from .decision_policy import score
+        return score(w,self.events[f.kind.removeprefix('crafted_')])
+
+    def select_narration(self,w,f,labels):
+        from .decision_policy import select
+        return select(w,self.events[f.kind.removeprefix('crafted_')],labels)
+
+    def commit_narration(self,w,record,decision):
+        from .decision_policy import commit_narration
+        commit_narration(w,record,decision)

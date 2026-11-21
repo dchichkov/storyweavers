@@ -1,0 +1,36 @@
+from .schema import *
+
+SPEC=story(2,'puppets',dict(
+    hero=person('Lila','she',memes={'Fear':.6}),helper=person('Nia','she'),friend=person('Ben','he'),
+    work=place('theatre'),bench=place('costume shelf'),stage=place('stage'),
+    needle=tool('needle',location='bench'),old_star=obj('silver star',state=('missing',)),star=obj('felt star',location='hero',state=('unfinished',)),
+    button=obj('brass button',location='hero'),moon=obj('Moon puppet',location='stage'),
+    curtain=obj('red curtain',location='stage',state=('open',))),
+    chain(
+        event('missing_prop',S(R('old_star'),B('missing')),Say('hero',V('need',N('star',det='a'))),
+            qa=[Q('goal','what','What did Lila need for the play?','Lila needed a star for the play. The original silver star was missing.','hero','star','old_star')]),
+        event('make_replacement',Say('helper',Can(V('help',P('you'))),listener='hero'),actor='helper',
+            qa=[Q('help','who','Who offered to help Lila?','Nia offered to help Lila. Lila needed a star for the play.','helper','hero','star',supports=('goal',))]),
+        event('fetch_needle',S('hero',A(V('fetch',R('needle')),PP('from',R('bench')))),patient='needle',destination='hero',
+            guards=[at('needle','bench')],effects=[change('needle',location='hero')],portable='fetch'),
+        event('sew_button',S(R('button'),B('heavy')),Using('hero',A(V('stitch',R('button')),PP('on',R('star'))),'needle'),patient='star',instrument='needle',
+            guards=[at('needle','hero'),at('star','hero'),at('button','hero')],effects=[change('button',location='star'),change('star',add=('heavy',))],
+            qa=[Q('button','how','How did Lila decorate the new star?','Lila stitched a brass button onto the felt star with a needle. Nia had offered to help her.','hero','star','button','needle',supports=('help',))]),
+        fork('secure_star',
+            event('shorten_loop',S('hero',V('shorten',Poss('star','loop'))),patient='star',instrument='needle',
+                guards=[at('needle','hero'),has('star','heavy')],effects=[change('star',add=('secure','short_loop'),remove=('unfinished',))],
+                qa=[Q('adjustment','why','How did Lila make the star easier to hold?','Lila shortened its loop. The star carried a heavy brass button.','hero','star','button',supports=('button',))]),
+            event('double_loop',S('hero',A(V('tie',Poss('star','loop')),'twice')),patient='star',
+                guards=[at('star','hero'),has('star','heavy')],effects=[change('star',add=('secure','double_knot'),remove=('unfinished',))],
+                qa=[Q('adjustment','why','How did Lila secure the new star?','Lila tied its loop twice. The star carried a heavy brass button.','hero','star','button',supports=('button',))])),
+        event('speak_up',Say('hero',V('have',N('light',det='a')),listener='helper'),effects=[change('hero',memes={'Confidence':.8,'Fear':.2})]),
+        event('offer_star',S('hero',A(V('put',R('star')),PP('beside',R('moon')))),patient='star',destination='moon',
+            guards=[at('star','hero'),has('star','secure')],effects=[change('star',location='moon')],
+            qa=[Q('performance','where','Where did Lila put the new star?','Lila put the new star beside the Moon puppet. She had secured its loop.','hero','star','moon',supports=('adjustment',))]),
+        event('return_needle',S('hero',A(V('return',R('needle')),PP('to',R('bench')))),patient='needle',destination='bench',
+            guards=[at('needle','hero')],effects=[change('needle',location='bench')],portable='put_item'),
+        event('last_light',S(R('button'),A(V('shine'),PP('beside',R('curtain')))),patient='button',
+            guards=[at('star','moon'),at('needle','bench')],effects=[change('curtain',add=('closed',),remove=('open',))],
+            qa=[Q('outcome','what_next','What caught the light at the end?','The brass button caught the light beside the red curtain. It decorated the star Lila had made.','button','curtain','star',supports=('button',))])
+    ),target='star',tool_id='needle',premise='Lila needs a replacement star and the confidence to speak during the puppet play.',
+    fidelity='Replace a lost prop with felt and a brass button, secure its loop, perform, return the needle.',variants=['Short loop or double knot.'])

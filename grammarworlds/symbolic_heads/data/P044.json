@@ -1,0 +1,581 @@
+{
+  "id": "P044",
+  "name": "Adjacency-pair expectation",
+  "description": "Reply → previous speech act. Favor acceptance/refusal or acknowledgment.",
+  "proposed_payload": "{speech_act, response_types}",
+  "provenance": "Authored illustrative seeds; not learned or extracted.",
+  "status": "table",
+  "examples": [
+    {
+      "id": "P044.01",
+      "description": "A help request invites acceptance or refusal; this row favors acceptance.",
+      "query": "reply",
+      "scope": "example",
+      "sources": [
+        {
+          "id": "source:1",
+          "channel": "previous_speech_act",
+          "scope": "example",
+          "key": "request_help",
+          "confidence": 1.0
+        }
+      ],
+      "expected_features": {
+        "accept_or_refuse": 1.0
+      },
+      "grammar_weights": {
+        "Yes": 1.0,
+        "Goodbye": 1.0,
+        "waits": 1.0,
+        "rests": 1.0
+      },
+      "favored": "Yes",
+      "disfavored": "Goodbye"
+    },
+    {
+      "id": "P044.02",
+      "description": "Thanks invites acknowledgment.",
+      "query": "reply",
+      "scope": "example",
+      "sources": [
+        {
+          "id": "source:2",
+          "channel": "previous_speech_act",
+          "scope": "example",
+          "key": "thanks",
+          "confidence": 1.0
+        }
+      ],
+      "expected_features": {
+        "acknowledge": 1.0
+      },
+      "grammar_weights": {
+        "Welcome": 1.0,
+        "Why": 1.0,
+        "waits": 1.0,
+        "rests": 1.0
+      },
+      "favored": "Welcome",
+      "disfavored": "Why"
+    },
+    {
+      "id": "P044.03",
+      "description": "A greeting invites a reciprocal greeting.",
+      "query": "reply",
+      "scope": "example",
+      "sources": [
+        {
+          "id": "source:3",
+          "channel": "previous_speech_act",
+          "scope": "example",
+          "key": "greeting",
+          "confidence": 1.0
+        }
+      ],
+      "expected_features": {
+        "greet_back": 1.0
+      },
+      "grammar_weights": {
+        "Hello": 1.0,
+        "Because": 1.0,
+        "waits": 1.0,
+        "rests": 1.0
+      },
+      "favored": "Hello",
+      "disfavored": "Because"
+    },
+    {
+      "id": "P044.04",
+      "description": "An apology can receive acceptance.",
+      "query": "reply",
+      "scope": "example",
+      "sources": [
+        {
+          "id": "source:4",
+          "channel": "previous_speech_act",
+          "scope": "example",
+          "key": "apology",
+          "confidence": 1.0
+        }
+      ],
+      "expected_features": {
+        "accept_apology": 1.0
+      },
+      "grammar_weights": {
+        "Okay": 1.0,
+        "Hello": 1.0,
+        "waits": 1.0,
+        "rests": 1.0
+      },
+      "favored": "Okay",
+      "disfavored": "Hello"
+    },
+    {
+      "id": "P044.05",
+      "description": "An invitation can receive willing acceptance.",
+      "query": "reply",
+      "scope": "example",
+      "sources": [
+        {
+          "id": "source:5",
+          "channel": "previous_speech_act",
+          "scope": "example",
+          "key": "invitation",
+          "confidence": 1.0
+        }
+      ],
+      "expected_features": {
+        "accept_invitation": 1.0
+      },
+      "grammar_weights": {
+        "Gladly": 1.0,
+        "Because": 1.0,
+        "waits": 1.0,
+        "rests": 1.0
+      },
+      "favored": "Gladly",
+      "disfavored": "Because"
+    },
+    {
+      "id": "P044.06",
+      "description": "A farewell can receive a farewell.",
+      "query": "reply",
+      "scope": "example",
+      "sources": [
+        {
+          "id": "source:6",
+          "channel": "previous_speech_act",
+          "scope": "example",
+          "key": "farewell",
+          "confidence": 1.0
+        }
+      ],
+      "expected_features": {
+        "farewell_back": 1.0
+      },
+      "grammar_weights": {
+        "Goodbye": 1.0,
+        "Why": 1.0,
+        "waits": 1.0,
+        "rests": 1.0
+      },
+      "favored": "Goodbye",
+      "disfavored": "Why"
+    },
+    {
+      "id": "P044.07",
+      "description": "A polar question can receive no.",
+      "query": "reply",
+      "scope": "example",
+      "sources": [
+        {
+          "id": "source:7",
+          "channel": "previous_speech_act",
+          "scope": "example",
+          "key": "yes_no_question",
+          "confidence": 1.0
+        }
+      ],
+      "expected_features": {
+        "answer_polarity": 1.0
+      },
+      "grammar_weights": {
+        "No": 1.0,
+        "Welcome": 1.0,
+        "waits": 1.0,
+        "rests": 1.0
+      },
+      "favored": "No",
+      "disfavored": "Welcome"
+    },
+    {
+      "id": "P044.08",
+      "description": "A why question invites explanation.",
+      "query": "reply",
+      "scope": "example",
+      "sources": [
+        {
+          "id": "source:8",
+          "channel": "previous_speech_act",
+          "scope": "example",
+          "key": "why_question",
+          "confidence": 1.0
+        }
+      ],
+      "expected_features": {
+        "explain": 1.0
+      },
+      "grammar_weights": {
+        "Because": 1.0,
+        "Goodbye": 1.0,
+        "waits": 1.0,
+        "rests": 1.0
+      },
+      "favored": "Because",
+      "disfavored": "Goodbye"
+    },
+    {
+      "id": "P044.09",
+      "description": "An offer can receive gratitude.",
+      "query": "reply",
+      "scope": "example",
+      "sources": [
+        {
+          "id": "source:9",
+          "channel": "previous_speech_act",
+          "scope": "example",
+          "key": "offer",
+          "confidence": 1.0
+        }
+      ],
+      "expected_features": {
+        "accept_offer": 1.0
+      },
+      "grammar_weights": {
+        "Thanks": 1.0,
+        "Where": 1.0,
+        "waits": 1.0,
+        "rests": 1.0
+      },
+      "favored": "Thanks",
+      "disfavored": "Where"
+    },
+    {
+      "id": "P044.10",
+      "description": "A warning invites acknowledgment.",
+      "query": "reply",
+      "scope": "example",
+      "sources": [
+        {
+          "id": "source:10",
+          "channel": "previous_speech_act",
+          "scope": "example",
+          "key": "warning",
+          "confidence": 1.0
+        }
+      ],
+      "expected_features": {
+        "acknowledge_warning": 1.0
+      },
+      "grammar_weights": {
+        "Understood": 1.0,
+        "Welcome": 1.0,
+        "waits": 1.0,
+        "rests": 1.0
+      },
+      "favored": "Understood",
+      "disfavored": "Welcome"
+    }
+  ],
+  "input_channel": "previous_speech_act",
+  "receiver_mode": "multipliers",
+  "smoothing": 1.0,
+  "input_contract": "Supply current, scoped records in channel previous_speech_act. Scope selection and structural parsing belong to the caller; no free-text parser is implied.",
+  "table_semantics": "Positive relative word-weight multipliers.",
+  "selection": [
+    {
+      "tokens": [
+        "reply",
+        "request_help"
+      ],
+      "weight": 1.0
+    },
+    {
+      "tokens": [
+        "reply",
+        "thanks"
+      ],
+      "weight": 1.0
+    },
+    {
+      "tokens": [
+        "reply",
+        "greeting"
+      ],
+      "weight": 1.0
+    },
+    {
+      "tokens": [
+        "reply",
+        "apology"
+      ],
+      "weight": 1.0
+    },
+    {
+      "tokens": [
+        "reply",
+        "invitation"
+      ],
+      "weight": 1.0
+    },
+    {
+      "tokens": [
+        "reply",
+        "farewell"
+      ],
+      "weight": 1.0
+    },
+    {
+      "tokens": [
+        "reply",
+        "yes_no_question"
+      ],
+      "weight": 1.0
+    },
+    {
+      "tokens": [
+        "reply",
+        "why_question"
+      ],
+      "weight": 1.0
+    },
+    {
+      "tokens": [
+        "reply",
+        "offer"
+      ],
+      "weight": 1.0
+    },
+    {
+      "tokens": [
+        "reply",
+        "warning"
+      ],
+      "weight": 1.0
+    }
+  ],
+  "projection": [
+    {
+      "tokens": [
+        "request_help",
+        "accept_or_refuse"
+      ],
+      "weight": 1.0
+    },
+    {
+      "tokens": [
+        "thanks",
+        "acknowledge"
+      ],
+      "weight": 1.0
+    },
+    {
+      "tokens": [
+        "greeting",
+        "greet_back"
+      ],
+      "weight": 1.0
+    },
+    {
+      "tokens": [
+        "apology",
+        "accept_apology"
+      ],
+      "weight": 1.0
+    },
+    {
+      "tokens": [
+        "invitation",
+        "accept_invitation"
+      ],
+      "weight": 1.0
+    },
+    {
+      "tokens": [
+        "farewell",
+        "farewell_back"
+      ],
+      "weight": 1.0
+    },
+    {
+      "tokens": [
+        "yes_no_question",
+        "answer_polarity"
+      ],
+      "weight": 1.0
+    },
+    {
+      "tokens": [
+        "why_question",
+        "explain"
+      ],
+      "weight": 1.0
+    },
+    {
+      "tokens": [
+        "offer",
+        "accept_offer"
+      ],
+      "weight": 1.0
+    },
+    {
+      "tokens": [
+        "warning",
+        "acknowledge_warning"
+      ],
+      "weight": 1.0
+    }
+  ],
+  "receiver": [
+    {
+      "tokens": [
+        "reply",
+        "accept_or_refuse",
+        "Yes"
+      ],
+      "weight": 4.0
+    },
+    {
+      "tokens": [
+        "reply",
+        "accept_or_refuse",
+        "Goodbye"
+      ],
+      "weight": 0.25
+    },
+    {
+      "tokens": [
+        "reply",
+        "acknowledge",
+        "Welcome"
+      ],
+      "weight": 4.0
+    },
+    {
+      "tokens": [
+        "reply",
+        "acknowledge",
+        "Why"
+      ],
+      "weight": 0.25
+    },
+    {
+      "tokens": [
+        "reply",
+        "greet_back",
+        "Hello"
+      ],
+      "weight": 4.0
+    },
+    {
+      "tokens": [
+        "reply",
+        "greet_back",
+        "Because"
+      ],
+      "weight": 0.25
+    },
+    {
+      "tokens": [
+        "reply",
+        "accept_apology",
+        "Okay"
+      ],
+      "weight": 4.0
+    },
+    {
+      "tokens": [
+        "reply",
+        "accept_apology",
+        "Hello"
+      ],
+      "weight": 0.25
+    },
+    {
+      "tokens": [
+        "reply",
+        "accept_invitation",
+        "Gladly"
+      ],
+      "weight": 4.0
+    },
+    {
+      "tokens": [
+        "reply",
+        "accept_invitation",
+        "Because"
+      ],
+      "weight": 0.25
+    },
+    {
+      "tokens": [
+        "reply",
+        "farewell_back",
+        "Goodbye"
+      ],
+      "weight": 4.0
+    },
+    {
+      "tokens": [
+        "reply",
+        "farewell_back",
+        "Why"
+      ],
+      "weight": 0.25
+    },
+    {
+      "tokens": [
+        "reply",
+        "answer_polarity",
+        "No"
+      ],
+      "weight": 4.0
+    },
+    {
+      "tokens": [
+        "reply",
+        "answer_polarity",
+        "Welcome"
+      ],
+      "weight": 0.25
+    },
+    {
+      "tokens": [
+        "reply",
+        "explain",
+        "Because"
+      ],
+      "weight": 4.0
+    },
+    {
+      "tokens": [
+        "reply",
+        "explain",
+        "Goodbye"
+      ],
+      "weight": 0.25
+    },
+    {
+      "tokens": [
+        "reply",
+        "accept_offer",
+        "Thanks"
+      ],
+      "weight": 4.0
+    },
+    {
+      "tokens": [
+        "reply",
+        "accept_offer",
+        "Where"
+      ],
+      "weight": 0.25
+    },
+    {
+      "tokens": [
+        "reply",
+        "acknowledge_warning",
+        "Understood"
+      ],
+      "weight": 4.0
+    },
+    {
+      "tokens": [
+        "reply",
+        "acknowledge_warning",
+        "Welcome"
+      ],
+      "weight": 0.25
+    }
+  ]
+}

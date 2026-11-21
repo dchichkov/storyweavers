@@ -1,0 +1,81 @@
+{
+  "id": "P018",
+  "name": "Current ownership",
+  "description": "Object-focused query → latest valid transfer. Favor the current owner.",
+  "proposed_payload": "{object, owner, transfer_id}",
+  "provenance": "Authored illustrative seeds; not learned or extracted.",
+  "status": "program_required",
+  "examples": [
+    {
+      "id": "P018.01",
+      "description": "Mira gives her cup to Nia.",
+      "intended_feature": "owner:Nia",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P018.02",
+      "description": "Theo returns a borrowed map to Omar.",
+      "intended_feature": "owner:Omar",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P018.03",
+      "description": "Nia lends her rope to Mira.",
+      "intended_feature": "owner:Nia;holder:Mira",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P018.04",
+      "description": "Omar finds a lost ring whose owner is known as Theo.",
+      "intended_feature": "owner:Theo;holder:Omar",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P018.05",
+      "description": "Mira offers a key but Nia declines.",
+      "intended_feature": "owner_unchanged",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P018.06",
+      "description": "A cup passes Mira to Theo to Nia as gifts.",
+      "intended_feature": "owner:Nia",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P018.07",
+      "description": "Two blue cups have distinct object IDs and owners.",
+      "intended_feature": "preserve_object_identity",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P018.08",
+      "description": "The group jointly owns the boat.",
+      "intended_feature": "joint_owners",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P018.09",
+      "description": "A thief takes a cup without a transfer of title.",
+      "intended_feature": "distinguish_holder_from_owner",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P018.10",
+      "description": "No ownership was established for the stone.",
+      "intended_feature": "owner_unknown",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    }
+  ],
+  "required_program": "Replay valid ownership transfers by object ID, distinguishing possession, loans, gifts, return, and failed transfers."
+}

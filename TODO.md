@@ -4,6 +4,90 @@ Engine improvements inspired by interactive fiction systems (Ink, ChoiceScript, 
 
 ## Word-distribution experiment
 
+- **Ten-round improvement campaign** (2026-11-03–04): complete; all ten rounds measured. `grammarworlds/runs/ten_rounds_20261103/REPORT.md`
+  records each frozen implementation and its Luna results. All seven worlds now have
+  consequential physical alternatives, with weighted typed Forest sampling,
+  guarded execution, visible QA dependencies, and carrier-grounded attention.
+  Final mechanical gate: 63 tests; 840 fresh stories in both tenses; 5,040 QA;
+  44,908 rejected invalid physical interventions; all 824 audited branching
+  states change event mass with attention off while retaining legal frames.
+  Original source reproduced all 420 old pool stories and QA exactly before
+  generating its matched fresh comparison. No generation changes after the
+  final freeze. Fresh matched Luna results: quality 5.56→6.60/9, diversity 1.00→1.86/9,
+  QA 7.22→7.88/9, grounded 90.1%→98.2%. See `FINAL_COMPARISON.md`.
+  Known defects: `event_log_prose`, `weak_turn`, `repetition`, `too_shallow`,
+  `ungrounded_answer` (15 fresh kite answers assume paper without visible
+  evidence). Next fix: render or omit that material claim, then evaluate on
+  newly reserved seeds; do not relabel the already-seen final sample as held out.
+  Next gate: new premises and goal conflicts, not merely more paraphrases;
+  independent blinded judge repeats and human review. Keep fresh seeds held
+  out until future changes are frozen; retain raw grounding disagreements.
+- Luna evaluation of seven short-dialogue worlds (2026-11-03): 140 randomly
+  selected past-tense stories and 815 QA pairs; Flex/reasoning none, 14 completed
+  responses. Story quality 5.57/9, grammar 8.57, coherence 7.43; within-world
+  diversity 0.86/9. Separate QA quality 7.30/9; raw grounded/usable 668/815.
+  Evidence: `grammarworlds/runs/luna_short_dialogue_qa_20261103/REPORT.md`;
+  `REVIEW.md` distinguishes likely judge false positives from actionable gaps.
+  Defects: `too_shallow` (249 QA tags), `ungrounded_answer` (148 raw tags,
+  including overly literal paraphrase judgments), `bad_evidence` (68),
+  `not_answerable` (9 pottery dent-to-thumb-rest questions). Next gate: explicit
+  transformation wording, multi-scene evidence for contextual answers, meaningful
+  second sentences, and QA-judge calibration with valid inference examples before
+  treating its raw pass rate as accuracy. Preserve matched seeds for a rerun;
+  expand causal branches to address low diversity. All 45 local tests pass.
+- Short narration, dialogue and grounded QA across all seven worlds (2026-11-03):
+  rescue, kite, key, music, greenhouse, library and pottery now share the default
+  portable CLI's short style. Physical guards/effects remain intact; routine
+  steps execute silently, and QA uses only semantic claims expressed in visible
+  text, with exact evidence spans. Typed speech checks speaker/listener presence.
+  Unfiltered audit: 840/840 stories replay, 4,884 full-sentence QA pairs and
+  10,472 physical guard checks pass; 43 tests and 10 story/QA pins pass.
+  Recent four worlds average 58–89 words, down from 136–229. Evidence:
+  `grammarworlds/runs/short_dialogue_qa_20261103_v2/REPORT.md`.
+  This is authored world-to-text alignment, not arbitrary-English parsing.
+  Remaining defects: `repetition`, `too_shallow`, residual `event_log_prose`;
+  plot diversity remains narrow. Next measurable gate: independently judge
+  narrative quality and QA answerability on unfiltered samples, then extend
+  causal QA beyond the small template inventory while preserving evidence checks.
+  Multi-turn QA is not implemented in this prototype. Subsequent Luna results
+  are recorded above; mechanical grounding checks alone did not establish QA quality.
+- Two Terra-authored portable packs (2026-11-03): library (17 event kernels,
+  28 new lexical entries) and pottery (24/39), one Terra revision each, no manual
+  code repair. Final 240/240 unfiltered stories/replays, 9,666 guard checks and
+  120 pottery Care-attention interventions pass. Shared grammar unchanged;
+  20 retrieved contracts in 15,552 characters of shared authoring context.
+  Cache: first write 4,750 tokens, then three authoring hits of 4,750 each.
+  Evidence: `grammarworlds/runs/terra_portable_worlds_20261103/REPORT.md`.
+  Luna (20 random past-tense stories/world): quality library 6.0, pottery 5.4;
+  diversity 1/9 both. Defects: `event_log_prose`, `repetition`, `too_shallow`,
+  awkward prepositions/possessives. Library first pass passed guards but weak
+  prose; pottery first pass failed wall-state contract and used wrong IDs.
+  Both first passes had mismatched attention fact IDs/preferences; revisions
+  repair them. Next gate: richer discourse/causal alternatives with unchanged
+  physical checks and the same blinded judge selection. Keep packs experimental.
+- Terra authoring cache verified (2026-11-03): old music trial had zero cache
+  reads/writes; new requests cache shared engine sources before story/task data.
+  Explicit 30m prefix, versioned key; live Flex/high probe wrote 19,950 tokens
+  then read all 19,950 (94.53% of second input), with zero second-call writes.
+  Evidence: `grammarworlds/runs/terra_cache_probe_20261103/summary.json`.
+  Full local suite: 36 tests. Next: track hit ratios on multi-story authoring;
+  reuse this boundary when adding the portable catalog authoring runner.
+- GF/Codeco **Python rule-port trial**: `grammarworlds/portable/`, with 21 GF
+  adaptations, three Codeco-style reference mechanisms, and five local
+  composition/binding contracts. No GF/PGF or model runs during generation.
+  Four development worlds share these rules; the greenhouse transfer added 32
+  lexical entries and 13 semantic kernels with zero changes to frozen shared
+  grammar. 1,000/1,000 stories completed/replayed; 2,340 guard interventions and
+  51 normalized GF reference cases passed. Full suite: 33 tests. Evidence:
+  `grammarworlds/runs/portable_transfer_20261103/REPORT.md`. Rule-context retrieval
+  selects bounded contracts/dependencies rather than whole libraries (8 contracts,
+  1,867 characters for the complement query). This does not validate a 100k-rule
+  runtime or Terra authoring at that scale. Defects: `event_log_prose`,
+  `repetition`, `too_shallow`; sparse scene detail and narrow plot families remain.
+  Next gate: judge this port separately, test more held-out stories, and port
+  relative/question/aspect constructions only from demonstrated gaps. Preserve
+  physical/discourse guards and use a packed/lazy forest before claiming large
+  recursive-grammar scalability. Full Codeco ACE inventory is not imported.
 - Matched music-story rule-authoring trial: `grammarworlds/authoring_trial.py`,
   results in `grammarworlds/runs/authoring_music_20261103/REPORT.md`. Latest
   Luna/Terra on Flex/high got the same ruleset, source story and capability gaps.
@@ -3238,3 +3322,822 @@ The more sophisticated the match/case patterns, the more coherent the output. Th
 - Test and iterate
 
 **The kernels ARE the language model, just compiled into match/case patterns.**
+
+## Symbolic head library — 2026-11-05
+
+- Added `grammarworlds/symbolic_heads/`: all P001–P064 registered with descriptions
+  and ten authored examples each. Fifteen table-compatible heads execute; 49 are
+  deliberately deferred via `ProgramRequired(NotImplementedError)`, following
+  the request to flag behaviors better served by programs. Each deferred
+  specification records its required algorithm; its examples are design fixtures.
+- Selection bigrams, value bigrams/trigrams, and receiving bigrams/trigrams feed
+  the weighted grammar. P059 supports smoothed illustrative counts, including
+  river/water/flows and river/water/sings. Tables are editable JSON; no runtime LLM.
+- North-star alignment: predictions read scoped evidence without changing world
+  state; the existing grammar retains its hard support. Structural parsing,
+  current-state resolution, and physical carrier binding remain explicit input
+  responsibilities. P024's concept-carrier algorithm is flagged, not simulated
+  by bare concept words. Existing story generators retain their current behavior.
+- Verification gate: `python -m unittest grammarworlds.test_symbolic_heads
+  grammarworlds.test_grammarworlds` covers 150 executed lookup examples, all 49
+  exception contracts, independent probability calculations, weighted-Forest
+  reception, source/feature mixtures, scope isolation, and state immutability.
+- Future work (outside the requested table/exception implementation): populate
+  corpus tables with provenance, build adapters from parsed grammar/world state,
+  implement selected deferred algorithms when requested, and evaluate held-out
+  word loss, calibration, grounded story quality, and diversity. No quality gain
+  is claimed from illustrative seed tables alone.
+
+### Live symbolic heads in storytelling — 2026-11-05
+
+- Added opt-in `--heads` to the seven-world storytelling sampler. Scoped
+  prefix/world adapters cover six table heads; four activate in current
+  samples and two change distributions. Nine table heads await adapters;
+  49 algorithmic heads still raise `ProgramRequired`.
+- Separate editable `storytelling/head_weights.json` supplies manual tool and
+  carrier-bound state preferences. Original seed specifications, frozen
+  portable grammar, and default sampling are preserved. Word traces record
+  attention, features, grammar/adjusted probabilities, and actual distribution
+  changes. This moves toward carrier-driven text without runtime LLMs.
+- Completed 700 development + 1,400 fixed-weight evaluation generations across
+  five ablations; all replay/QA checks passed. Manual changed 32/280 evaluation
+  texts; distinct texts went 140 → 136. Agreement heads were redundant; tool
+  preference accounted for sampled differences. State preference changed 136
+  distributions but no evaluation texts. No literary quality improvement is
+  established. See `grammarworlds/runs/symbolic_heads_attached_20261105/report.md`.
+- Verification: 83 tests pass including causal carrier/tool interventions,
+  zero-strength identity, QA evidence, consent, seed preservation, and frozen
+  grammar. Remaining defects: repetitive names and formulaic clauses unchanged;
+  receiver coverage sparse; most token positions have only one legal choice.
+- Next measurable gate: a predeclared quality defect with competing legal
+  continuations, held-out quality or next-word-loss improvement, and no grounded
+  QA regression. Measure activation separately from effective reranking. Make
+  later plot comparisons insensitive to variable sentence-length RNG draws;
+  current paired-seed path differences cannot isolate a plot preference.
+
+### Expanded continuation grammar — 2026-11-05
+
+- Added opt-in `--continuations expanded` for all seven storytelling worlds.
+  Typed lexical variants, dative alternation, four tool constructions, direct/
+  polite wishes, tentative offers, and clause splitting preserve physical
+  frames and QA. Same-state tests preserve all original supported texts and
+  event prior masses. The frozen portable grammar stays unchanged.
+- Agreement-head receivers no longer favor copulas over other grammatical
+  constructions merely because an agreement feature activates. Fronted tool
+  phrases still resolve their physical actor. Manual weights are unchanged.
+- 280 development + 1,120 final comparison generations passed replay and QA.
+  On final seeds 2000–2019, choice steps increased 2.81% → 7.36%; distinct texts
+  144 → 267/280; average length stayed ~91 words. Heads changed 464 distributions
+  instead of 260, but only 33/280 texts versus 30/280 with the original grammar.
+  See `grammarworlds/runs/expanded_continuations_20261105/report.md`.
+- Verification: 88 tests green, including grammar-support/claim preservation,
+  typed polarity/agreement, recipient roles, grounding, consent and replay.
+  Remaining quality defects: repetitive names and formulaic clauses; no new
+  plot families or demonstrated literary quality gain. Development review
+  removed stilted “I decide…” and repetitive “However” variants.
+- Next gate: receiving tables covering the added constructions, measured on
+  held-out prediction or quality targets without sacrificing grounded QA.
+  New semantic continuation families need guarded events, not more paraphrases.
+
+### Shared storytelling core — 2026-11-05
+
+- Three iterations merged commit bookkeeping, transition prerequisites,
+  73 declarative physical-effect entries, co-located transfer guards, identical
+  lexical entries and intention/ability/offer/transfer/fetch scene families.
+  Custom world/plan tokens: 26,371 → 24,744 (−6.2%); AST statements −17.7%.
+  Overall storytelling source/data bytes grow 4.9%, so this is shared authoring
+  infrastructure rather than net model compression. Specialized consequences,
+  entity inventories and most full scene plans remain custom.
+- First two refactoring stages each preserve all 280 development records.
+  Subsequent shared dialogue alternatives increase fresh expanded/manual
+  choice-step frequency 7.36% → 10.82% and distinct texts 272 → 280/280.
+  Mean length 91 → 93 words; four-way steps 198 → 182; event-path count unchanged.
+  No new plot families or measured literary improvement is claimed.
+- Fresh comparison: 2,520 generations / 15,120 QA pairs pass replay and evidence
+  checks; 560 original-mode records exactly match the archived baseline.
+  95 tests, 383 physical guard interventions and all nine frozen portable hashes
+  pass. See `grammarworlds/runs/shared_core_iterations_20261105/report.md`.
+- Optional tuned tool/state weights broaden affordances and reduce synonymous
+  action bias, but change fewer distributions/texts without demonstrated quality
+  benefit. Keep manual as default. Heads still have sparse effective coverage.
+- Remaining defects: repetitive names, event-log-like stretches, formal lexical
+  choices and shallow QA answers. The limited manual sample review found no
+  loss of causal turns or ending images; independent judge evaluation remains
+  future work.
+- Next measurable merge gate: implement a complete borrow/use/return family
+  with permission and outstanding-obligation state; exercise it in two existing
+  worlds plus unfamiliar entity bindings, preserve grounded QA/physical guards,
+  and measure custom-code reduction and semantic branch coverage separately
+  from lexical choice frequency. Keep carrier-bound state driving behavior.
+
+### Underdefined shared-core probe — 2026-11-06
+
+- A bare world with entities, a goal and no event pack produces no tokens in
+  the current runtime (`no available event`); grammar and attention require
+  event proposals and scene bindings before sampling can start.
+- Added an isolated unordered probe adapter for existing intent/offer/fetch/
+  transfer families, with physical role binding and equal priors per binding.
+  No plot, ending, repair operator, event-query weights or source-story retrieval
+  added; production generator and weights are unchanged.
+- 20 seeds × heads off/on × 8 events: 40 replayable fragments. Choice steps
+  35.88%; heads change 82 distributions but only 1/20 paired texts. All goals
+  remain unresolved because repair has no executable shared operator. This
+  is a semantic coverage limit, not a measured failure of a repair planner.
+- Observed defects: repeated offers, goal restatement, object handoff loops,
+  missing_beginning, weak_turn, event_log_prose, missing_ending, no_final_image.
+  More token choices alone do not produce a causal story. 960 physical guard
+  interventions pass. See `grammarworlds/runs/underdefined_core_20261106/report.md`.
+- Next gate: add a reusable physical action family and compare unstructured
+  sampling versus retrieved event-chain guidance on the same action support;
+  measure goal progress, looping and narrative quality separately from wording
+  diversity. Avoid making a missing operator look like an attention failure.
+
+### Entity-specific event lines — 2026-11-06
+
+- Added `storytelling.event_lines.factorize(row)` and `local_slice(...)` for
+  replay-validated per-entity projections, shared-event joins, full physical/
+  concept changes, and declared incoming/outgoing dependency boundaries.
+  Stable carrier IDs survive changes such as cup → bowl. Actual physical
+  holders are distinguished from legal ownership; contextual mention alone
+  is distinguished from participation.
+- Added zero-text grammatical-subject and paired-listener tags to the shared
+  grammar. These recover compound coactors/listeners omitted by coarse frames
+  without changing words, sampling probabilities, or physical effects.
+- Audited 140 stories / 1,808 events / all 119 pack-qualified event kinds.
+  There are 1,181 participating entity-line instances and 1,771 shared events.
+  104 tests pass; seven pre-task archived stories preserve every sampled word
+  distribution and final world. Both annotation passes preserve all 140 texts
+  and physical effects. See `grammarworlds/runs/entity_event_lines_20261106/report.md`.
+- Three Mateo branch projections demonstrate alternative local lines; they
+  retain consent/state and counterpart dependencies and are not freely
+  interchangeable scripts. Global flags and Python guards still couple plans.
+- Next gate: bind a proposed local line to existing entities and validate its
+  shared joins through actual candidate guards; prove a compatible replacement
+  leaves unrelated entity lines unchanged and rejects consent/resource or
+  outstanding-obligation violations. Then compare local-line attention against
+  unguided generation over the same executable actions. No automatic swapping,
+  role remapping or inferred event-line receiver is implemented yet.
+
+### Attached local-line replay in the underdefined adapter — 2026-11-06
+
+- Added opt-in `underdefined_probe --line` with role-bound local event sequences,
+  shared-event synchronization, guarded partial-order scheduling, and existing
+  grammar/word-head sampling. Shared transfers advance all attached participant
+  cursors once. Original unordered mode remains unchanged.
+- Five supported operations: intent, offer, fetch, transfer, and new patch_paper.
+  Two reviewed source ports use annotated kite fetch/mend effects. Source flags,
+  guard context and unrelated semantics are recorded but not copied. General
+  119-kind replay or automatic prerequisite inference is not implemented.
+- Explicit paper/capability fixture: solo and cooperative replay each complete
+  40/40 runs; cooperative book returns to Ada. Missing handoff and original
+  undeclared-capability cases each block 40/40. Total 160 runs / 400 events,
+  1,600 guard interventions, 116 passing tests. See
+  `grammarworlds/runs/event_line_replay_20261106/report.md`.
+- Successful replay is not evidence that heads alone improve goal completion:
+  operation support and fixture facts changed too. Cooperative prefixes have
+  two legal event orders; heads still only reweight words over allowed events.
+  Output is a task fragment, with no inferred ending or new QA/quality judge.
+- Next gate: compare supplied/retrieved local-line guidance against an unguided
+  controller with identical physical operators and world facts. Add reviewed
+  ports for permission/borrow/use/return before broader story transfer; reject
+  unsupported effects instead of copying arbitrary annotation diffs. Track
+  unchanged unrelated entities, shared obligations, goal completion and looping.
+
+### Grammarworlds catalog attachment — 2026-11-06
+
+- Added isolated three-source entity retrieval and dependency assembly before
+  local-line replay. Blank world + Mino/Sammy/Niah/kite line imports ten library,
+  kite and music entities plus two constructed places. Provenance distinguishes
+  copied data, reviewed capability exports, placement assumptions and new roles.
+- Forty samples complete; one of twenty head-on/off paired texts differs.
+  All 100 missing-condition runs block; full grammarworlds suite: 140 tests.
+  See `grammarworlds/runs/catalog_attachment_20261106/report.md`.
+- Remaining: `weak_turn`/side-activity integration (moon drawing does not affect
+  flight), object placement currently assembly rather than inferred fetch/travel,
+  reviewed exports rather than automatic source-rule extraction, no ambiguous
+  bundle sampling, no generic event-attention fact interface for bare worlds.
+- Next measurable gate: multiple held-out lines with competing compatible
+  prototypes, explicit unresolved rates, and executable alternative physical
+  explanations. Preserve source relations when deliberately importing identities;
+  current imports are new local instances, not continued source loans/goals.
+
+### Grammarworlds reusable event pool — 2026-11-06
+
+- Added a symbolic pool of five root recipes and six role-parameterized
+  subfragments. A concise rabbit/hat reveal goal imports an authored 13-event
+  obstacle/recovery program; open magical and ordinary stage hats select
+  compatible alternatives. Existing kite and drawing ports use the same pool.
+- Supports existing target carriers, inherited source flavor, logged default
+  placements, nested expansion, physical-plan dry-runs, weighted recipe
+  alternatives, shared local-line replay and trace-grounded mechanism QA.
+- Read and refined samples: shortened repeated hat references, improved eye
+  possessives, synchronized spectator readiness with the reveal, aligned feeding
+  state with the narrated nibbling event. Full suite: 154 tests. Batch: 280/280
+  complete; 80/80 physical ablations blocked. Direct authored vs retrieved
+  control: 40/40 same text/state (not an independent quality score).
+- Remaining: `event_log_prose` tendency; weaker stage-version turn; drawing is a
+  scene rather than full story. No new Luna quality evaluation. Next gate: held-out
+  multi-beat briefs composing two independently retrieved fragments over shared
+  carriers, with explicit conflict/bridge handling and graded story quality.
+  Current source exports are reviewed, not automatically mined from arbitrary
+  grammarworld code; current word heads do not affect rabbit-story distributions.
+
+### Symbolic rotary token positions — 2026-11-06
+
+- Added opt-in integer cyclic rotations for global token, sentence and local
+  token positions; relative phases are invariant under shared shifts. Coprime
+  rings provide bounded exact relative decoding with explicit alias checks.
+- Repeated semantic event names remain usable. Demo adapts positioned annotations
+  into existing lookup attention and reweights a four-word grammar distribution;
+  future acquisitions are masked. Percentages are completed-text display metadata.
+- This is a discrete rotary analogue plus an authored distance gate, not learned
+  neural RoPE. Main generators are unchanged. Next: attach real token-level
+  semantic annotations to generated traces, pool descriptions sharing one event
+  anchor, and evaluate position-sensitive retrieval against direct-distance and
+  position-free baselines. Rotation alone has no demonstrated quality advantage.
+
+### Generated token annotations — 2026-11-06
+
+- Connected symbolic rotary coordinates to all seven storytelling worlds via
+  opt-in `token_annotations=True` / `--token-annotations --json`. Preserve actual
+  sampled units, intersect token-local grammar labels across ambiguous parses,
+  and attach physical entity observations with explicit scene-boundary scope.
+- Semantic source names may repeat; story namespace + first-token anchor locates
+  each scene occurrence. Silent operations retain trace references without fake
+  words. Frame roles remain scene context, not guessed word-level semantics.
+- Paired checks across seven worlds, past/original and present/expanded with
+  heads: annotation on/off preserves full existing output, probabilities and
+  replayed state. Added ambiguity, repeated-name, quote, multiword, state-copy
+  and mismatched-surface checks. Seven seed-7 exports inspected; kite artifact
+  retained alongside count/story summary.
+- Next: author lexical action tags for scenes with multiple actions; consume
+  committed annotations through positional memory with occurrence deduplication.
+  Do not expose post-scene snapshots to pre-commit generation. No story-quality
+  gain or learned retrieval claimed by this metadata-only integration.
+
+### Joint annotated-token generation — 2026-11-06
+
+- Moved semantic attributes into candidate generation for all seven storytelling
+  worlds. Shared typed construction metadata covers noun descriptions, physical
+  references, predicates/arguments, tense/polarity, dialogue and modality; the
+  portable grammar stays unchanged. Scene frame roles remain separate from
+  clause roles. No imagined action or post-scene state becomes an observed fact.
+- Added a correlated incremental derivation posterior: joint word/bundle
+  distributions, word marginals, conditioning without premature semantic
+  collapse, and final frame selection from the retained posterior. Added a
+  bundle-reweighting interface and explicit binding option for interventions.
+- Existing word heads lift their scores into the joint. Subject-dependent heads
+  now read the previous annotated token's probabilistic entity bindings; other
+  head inputs retain their previous paths. General semantic bundle scoring is
+  available, but shipped heads still apply word-level receiver factors.
+- Default generation exports compact joint traces and positioned token posterior
+  records. `predict_attributes=False` / `--surface-only` preserves the old
+  sampler for comparisons. The archive listener-only test explicitly uses this
+  ablation; joint normalization/preservation is tested separately.
+- Experiment: 140 matched runs preserve text, state, QA and word probabilities;
+  140 head-enabled runs replay successfully, with 150 head-changed distributions.
+  All 119 kernels were observed among candidates across both grammar modes.
+  Saved readable annotated versions of all seven seed-7 stories, full compressed
+  traces, source hashes and a report. This is not a new Luna quality evaluation.
+- Next: richer nested scope and lexical categories; long-range retrieval of
+  committed annotated history; semantic bundle receivers beyond word-only scores;
+  attribute-quality evaluation on held-out annotated stories. Existing prose
+  limitations (including event_log_prose and some repeated references) remain.
+- Final verification: all 179 grammarworlds tests pass; the seven-world
+  comparison was rerun after the sampler changes. CLI JSON includes the joint
+  trace and positioned attribute stream; whitespace checks pass.
+
+### Imported event attribute adaptation — 2026-11-06
+
+- Attached lines, catalog attachments and event-pool replay now generate joint
+  token attributes. Reviewed operation ports bind all semantic slots, including
+  slots absent from coarse frames; target typed grammar supplies agreement and
+  target state supplies current ownership, location, capabilities and memes.
+- Source entity snapshots and event origins remain provenance. Per-scene audits
+  expose field substitutions, source-only properties, unknown fields and missing
+  profiles. Fresh target positions replace source positions. Declared expected
+  effects are proposed/partial; guarded commits remain authoritative.
+- Added explicit weighted role alternatives to pool briefs. Filter complete
+  bindings through physical feasibility and normalize surviving recipe/binding
+  pairs. Select one attachment before local annotated generation. Do not merge
+  carriers or grant missing source capabilities to existing entities.
+- Validation: 190 grammarworlds tests pass, including 11 new transfer tests.
+  Twenty matched runs preserve prose/state/word distributions with heads off;
+  twenty head-enabled runs finish and replay. Saved examples and audits in
+  `grammarworlds/runs/attribute_transfer_20261106/`. No new Luna quality claim.
+- North star: imported meanings remain bound to physical target carriers; live
+  state and compatible operations govern both attributes and execution.
+- Next: infer alternative bindings from compatible local entities; retain
+  attachment uncertainty during generation; broaden reviewed semantic ports.
+  Many-to-many event factoring/group roles remain explicit authoring work.
+  New catalog entities may still inherit reviewed prototype flavor; existing
+  entities keep their own state. Specialized effects need fuller declarations
+  before expected-effect annotations can claim completeness.
+
+### Declarative event mapping bank — 2026-11-06
+
+- Replaced procedural fetch/mend source projection with a data bank and a
+  generic matcher/composer. Three starting rules cover portable-tool fetching,
+  paper repair and kite repair. Rules specify source evidence paths, complete
+  effect patterns, role correspondences, target requirements and prior weights.
+- Added target-grounded binding inference, explicit rejected mappings, complete
+  program dry-runs and normalized distributions over rule/binding derivations.
+  Positive context factors reweight rules without overriding physical guards.
+  One full mapping is selected before existing annotated-token generation.
+- Existing paper-profile projection remains available. Generated lines now
+  include every participating role, including the supply. A regression fixture
+  that slices a template now removes the corresponding obsolete supply line.
+- Tests: 201 grammarworlds tests pass, including 11 mapping tests. Sixty runs
+  complete and replay across book-only/mixed-target/context-reweighted worlds;
+  ten comparisons with archived procedural projection preserve prose, entity
+  state, flags and word distributions. Samples and hashes are saved under
+  `grammarworlds/runs/event_mapping_20261106/`. No new Luna quality evaluation.
+- North star: reusable event meaning obtains weight through compatible physical
+  carrier bindings; source effects never execute as arbitrary target changes.
+- Next: broaden bank coverage from real annotated examples; add reviewed
+  multi-event productions and source/target relation features; connect contextual
+  receivers to richer attributes. No new learned attention, no arbitrary group
+  splitting, no entity creation inside the mapper, no uncertainty carried across
+  whole-story attachment selection. The separate storyformer effort is untouched.
+
+### Underdefined latent inspection — 2026-11-06
+
+- Fresh seed-7 mapped run generates fetch tape → repair book and reaches the
+  repair goal. The only feasible complete mapping has mass 1; each scene has one
+  ready event. Of 19 sampler steps, only two have word alternatives; heads change
+  one distribution. Source segment selection remains supplied, not retrieved.
+- Re-ran the original unordered annotated controller: intent → offer → fetch →
+  offer → transfer → transfer → offer → intent, eight-event limit, book still
+  torn. The unchanged initial world has no feasible repair mapping until paper
+  material and repair capability are explicitly declared (existing paper fixture).
+- Attribute defect observed: book is correctly bound as the embedded repair
+  object's entity, but its shallow syntax_role inherits predicate. Bench is a
+  nominal description without a token-local referent despite correct event-level
+  source binding. Next annotation gate: embedded object syntax roles and explicit
+  place referents, without confusing noun descriptions with physical references.
+- Narrative limitations remain missing_beginning, weak_turn, missing_ending and
+  no_final_image for the two-event imported segment. No engine changes or quality
+  improvement claimed in this inspection. Reproducible report and full traces:
+  `grammarworlds/runs/underdefined_latents_20261106/`.
+
+### Intact-story annotated memory — 2026-11-07
+
+- Added `story_memory.py`: preserve full text, sampled tokens, coordinates and
+  correlated token posteriors; add historical entity/event attributes on tokens
+  and a shared semantic index. Retrieval returns document/event/token references,
+  not detached prose fragments. Candidate-time attributes and source historical
+  before/after observations remain separate. Silent operations are explicit
+  boundary annotations, never fabricated words or text-supported assertions.
+- Expanded the mapping bank from 3 to 17 rules, supporting 19 pack-qualified
+  event kinds across all seven worlds. Added reviewed source kind/absence checks,
+  canonical component-level meme differences and full source-effect provenance.
+  Added guarded target placing, support preparation, clay shaping, practiced solo
+  performance and fixture repair; reused the existing moon-drawing operation.
+- Target retrieval infers compatible carriers and rechecks physical feasibility
+  against current state. Re-query after fetching exposes repair. Repeated source
+  samples accumulate references without multiplying a rule/binding's weight.
+  Operation filters and limited role hints remain supplied in the demonstration;
+  an autonomous continuation/goal policy is not implemented.
+- Exported 140 samples (seven existing families × 20 seeds), 1,808 events and all
+  119 registered event kinds without changing source prose. There are 309
+  structurally supported event occurrences: 122 visibly narrated, 187 silent.
+  The second pass added visible library drawing and greenhouse fixture repair;
+  every world now contributes at least one visibly narrated supported event.
+- Eight target events generate and replay in underdefined repair/craft fixtures,
+  including fetch → repair → put with successive memory queries. Existing
+  source skills/emotions/names are not imposed on target carriers. All 214
+  grammarworlds tests pass; source hashes and whitespace checks pass. Final
+  report: `grammarworlds/runs/story_memory_20261107_v2/report.md`.
+- North star: meaning becomes executable only after binding to physical carriers
+  whose capabilities, location and state support the reviewed operation. Original
+  seven-world text quality is preserved, not claimed improved; no new Luna eval.
+- Next: visible-event coverage for resource allocation, consent/reservations,
+  compound transformations and endings; attribute-aware continuation scoring.
+  Target demo still has missing_beginning/weak_turn/no_final_image limitations.
+  Embedded-object syntax labels and nominal-only place references remain known
+  annotation gaps. The separate storyformer implementation is unchanged.
+
+### Sampled memory continuation — 2026-11-07
+
+- Added `memory_continuation.continue_story`: optional guarded target-event prefix,
+  repeated retrieval against committed receiving state, sampled bound event and
+  STOP distributions, conditional annotated-word generation, and per-segment
+  physical replay verification. All source texts remain intact. Combined tokens
+  have global positions and scene references into the combined attribute tables.
+- Equivalent target actions share one vote across matching source rules/examples;
+  base weight is their maximum rule weight. Full source references and rule IDs
+  are retained. No per-step operation whitelist or authored suffix is supplied.
+- Added plain and contextual policies. The latter uses explicit factors for
+  state/goal progress, one-step goal enabling, actor continuity, repeated actions
+  and revisited physical states. Prefix repair intent implies a repaired-state
+  predicate by an explicit rule. Optional final-state predicates are supported;
+  a sampled STOP never asserts success or changes the world's solved status.
+- Compared 20 seeds per policy using one intact source example from each of the
+  seven worlds: plain repaired 7/20 with 39 repeated actions, contextual repaired
+  20/20 with zero repeats. Mean sampled length 7.10 -> 2.45 events; distinct event
+  chains 19 -> 5, so the success gain also narrows sequence diversity. These are
+  mechanical state measures, not Luna quality ratings.
+- Another 20 runs exercise two-event dialogue prefixes, optional ending-location
+  predicates, no prefix and a richer explicitly declared craft fixture. Craft
+  selected events whose matching source references collectively cover all seven
+  worlds. This is not automatic entity/capability import into an empty world.
+- Iteration: an ending-location predicate initially rewarded putting the still
+  torn book down. Defer placement rewards/protection until the same object's
+  requested state transformation completes. Five paired seeds still meet both
+  predicates; mean continuation falls 7.0 -> 4.4, repeated actions 3 -> 1.
+- Final 60-sample report, source hashes, complete distributions and target traces:
+  `grammarworlds/runs/memory_continuation_20261107_v2/`. First iteration retained
+  in `grammarworlds/runs/memory_continuation_20261107/` for comparison.
+- All 223 grammarworlds tests pass, including nine continuation tests for
+  guarded prefixes, re-querying, probability normalization, reproducibility,
+  annotation alignment, duplicate-source invariance and unsatisfied goals.
+- North star: only physical carriers with currently valid capabilities and state
+  obtain executable event weight; dry-run lookahead never changes the real world.
+  No runtime LLM, new grammarworld or separate storyformer changes.
+- Remaining defects: weak_turn/missing_ending/no_final_image in short repairs;
+  disjoint activities in unconstrained craft samples; early stops and capped runs
+  remain possible. Next gates: causal continuity and a physical ending image
+  without supplying placement predicates, plus learned/contextual source-order
+  preferences. Existing token-label gaps remain. No new Luna evaluation.
+
+### Complete twenty-seed grammarworld collection — 2026-11-07
+
+- Verified the source inventory before authoring: only music, greenhouse, library
+  and pottery represented the 20 Luna seeds. User clarified to implement all 16
+  missing worlds, rather than the initially estimated 14. Added bakery, puppets,
+  seaside, snow, picnic, market, camp, orchard, costume, pond, repair, museum,
+  laundry, trail, festival and biscuit. Rescue/kite/key remain separate earlier
+  prototypes: 20 seed adaptations, 23 runtime worlds.
+- Added shared declarative seed-world authoring and execution. World definitions
+  contain physical entities, named dependency graphs, guards, effects, typed
+  phrase expressions, dialogue, QA claims and mutually exclusive local branches.
+  All 16 have a premise, physical turn and final image, and add 169 event kinds.
+  They are compact adaptations, not verbatim reproductions of the original prose.
+- Wired the new worlds into both storytelling and short-style portable CLIs,
+  annotated-token generation, source replay and intact story memory. Source
+  provenance retains the exact original story path and SHA256. The frozen
+  portable grammar and the separate storyformer implementation are unchanged.
+- Added six reviewed typed movement mappings (23 bank rules total). Every new
+  family supplies a legal event into the underdefined receiver. Compound wheel
+  diagnosis, cooking, access decisions and controlled experiments remain fully
+  annotated but cannot be transplanted as arbitrary state differences. Target
+  types, abilities and live guards continue to control execution.
+- Read originals and generated narrative/QA together. Fixed plural inflection,
+  awkward offers, invisible narrative turns, missing causal QA references,
+  the cart repair's otherwise irrelevant delivery, and overlong repair wording.
+  Protected accessible participation in trail/festival and kept the picnic sign
+  unrecovered rather than copying the original's unexplained final recovery.
+- Audit export: `grammarworlds/runs/seed_worlds_20261107_v4/` includes all 20 seed
+  families plus the three prototypes, 20 seeds each (460 total), full word and
+  attribute traces, intact memory, a source coverage manifest, QA examples,
+  source hashes, physical rejection checks and independent receiving samples.
+  All 288 registered event kinds were exercised; each new family has two local
+  event paths. Earlier exports are retained as development evidence.
+- The continuation experiment now accepts variable-sized memory directories and
+  defaults to the expanded 23-world pool. Historical seven-document inputs still
+  work. It prefers the full branch archive: a single kite preview lacked mending
+  and prevented a repair continuation despite that event existing in the pool.
+  A regression test preserves both branches when previews omit one.
+  Final artifact audit reads compressed rows and original hashes directly,
+  reconstructs every story from its sampled tokens, and exercises a repair-intent
+  continuation over the enlarged pool (`completion_audit.json`).
+- North star: meanings and effects remain attached to physical carriers; no
+  unembedded actors, future-effect copying or runtime model calls. New world
+  predictions are pure and failed physical commitments leave state unchanged.
+- Limitations: local two-way branches, repeated names, compressed descriptions,
+  simplified travel/quantities/timing/loan obligations. Some existing word-head
+  receivers are inactive for the new vocabulary. No new Luna rating is claimed.
+  Next: quality/diversity judging on these new families and reviewed portable
+  causal contracts for their compound mechanics, rather than more transfer aliases.
+
+- Final verification for the twenty-seed expansion: 232 regression tests passed;
+  460 exported stories reconstruct from 53,407 annotated tokens; 2,700 QA pairs
+  and 964 rejected physical interventions checked. All 288 event kinds covered.
+  The full-archive repair-intent continuation sampled fetch → repair → STOP and
+  met its repaired-state goal. This single integration example is not a quality
+  score or a measured continuation success rate.
+
+### Joined twenty-world native transfer — 2026-11-07
+
+- Added `grammarworlds/memory_transfer.py`: retrieve intact annotated source
+  events by name/cue, sample distinct source programs and feasible role bindings,
+  import missing companions and initial character attributes, then execute the
+  original guarded mechanics through a live view of receiving carriers. This is
+  an additional mode beside the strict 23-rule operation bank.
+- Existing objects retain identity and live state; explicit analogy maps the
+  cart mechanism onto a garden trolley. All imports/character leakage are logged.
+  Failed source guards leave input state untouched; future source effects are
+  never applied as initial receiver facts. Bare and live-history receivers work.
+- Shared runtime now accepts replayable joined programs and a pack realization
+  hook; source frames, node references, candidate attributes, flag/state/meme/event
+  causes and persistent effects rebind consistently. Restored the twenty-seed
+  registration/provenance route missing from the current runtime on inspection.
+  Existing history is preserved when generating/replaying only a new suffix.
+- Initial audit: all 249 event kinds across 58 observed paths in 400 source
+  documents executed, versus 49 kinds exposed by strict mappings in that corpus.
+  Added twelve mixed/cue samples. Fixed donor plural-lexicon overwrite, overly
+  generic one-word query matches, namespace reuse and unresolved source cause IDs.
+- Source QA is not blindly renamed. Joined results expose separate world-state
+  QA over executed receiving diffs, with event/entity evidence; this is not prose
+  reading comprehension. No Luna quality or diversity score is claimed.
+- North star: concepts and imported mechanics remain embedded in explicit
+  physical carriers; native guards consult persistent receiver state. The
+  transfer deliberately admits source motives/props rather than hiding leakage.
+- Limits: full prerequisite prefixes and full donor casts, manually weighted
+  lexical retrieval, observed local event order, linked mini-stories rather than
+  an integrated plot. Coarse donor roles and simplified travel remain approximate.
+  Next: minimal sufficient causal closures, reuse of completed prefixes and a
+  policy for switching between mechanisms, without bypassing physical guards.
+
+- Final transfer audit: `grammarworlds/runs/joined_transfer_20261107_v3/`.
+  245 tests passed; 70 outputs/9,108 annotated tokens verified; all 249 event
+  kinds across 58 observed source paths and 759 rejected actor-removal checks.
+  Added unique problem-state target inference with a fourfold reuse preference;
+  a receiving garden trolley can attract cart mechanics without a supplied
+  binding. The analogy is logged and native guards still execute.
+
+### Multi-scale events and timed goal-conditioned transfer — 2026-11-08
+
+- Added an opt-in event-scale bank across all 20 seed worlds: 60 named episodes
+  covering all 249 fine-event kinds, plus story goals and derived entity-specific
+  chains. Annotated source text remains intact; candidate token attributes
+  include memberships, current commitments and duration distributions before
+  sampling, including END/silent-event candidates.
+- Added a persistent world clock with estimated second/minute/hour/day bands.
+  Fine events advance it once; parent durations are descriptive. Native replay
+  includes timing and commitment updates. Existing untimed output is preserved.
+- Completion follows physical state/native events on actual carriers. Missing
+  carriers, deadlines and explicit abandonment are represented. Added a
+  receiving-goal graph with named needs and prerequisite relations; capabilities
+  require completed episodes on the carrier after prerequisites were met.
+- Added classical coarse lookahead and normalized sampling over observed
+  episode-ending prefixes from the whole pool. Weights use actual receiving-goal
+  progress, source closure, deadline probability and event/import cost. Compatible
+  source prefixes can resume on the same entities without replay/reset.
+- North-star alignment: goals have physical carriers; imported metadata never
+  substitutes for native effects/guards. No runtime model calls or changes to
+  the separate storyformer effort.
+- All 254 grammarworlds tests pass. New checks cover all-world replay, precommit
+  attributes, nonempty silent-event timing, physical completion, deadlines,
+  missing carriers, abandonment, pure ranking, distributions, and prefix resume.
+  Forty exported source samples all achieve their native story goal; they observe
+  231 fine-event kinds (the static bank covers all 249).
+- Experiment and implementation notes: `grammarworlds/EVENT_SCALES.md` and
+  `grammarworlds/runs/event_scales_20261108/`. This is a small designed goal
+  fixture, not a new Luna/literary-quality evaluation.
+- Remaining defects: `missing_beginning` for a receiving-wide purpose in prose,
+  `weak_turn` between donor episodes, and `no_final_image` proving the combined
+  goal. Partial source obligations can remain open at receiving-goal completion.
+  Next measurable gate: a shared opening and final image grounded in receiving
+  goal state, with no unexplained goal switches across mixed sources. Chains
+  still inherit episode completion; concurrent scheduling and richer independent
+  causal subplans remain future work.
+- Matched four-seed receiver comparison: contextual selection completed all
+  three needs on time in 4/4 runs versus 0/4 for uniform feasible-episode
+  sampling. Mean needs met: 3.0 versus 0.5; zero-immediate-progress episodes:
+  1 versus 11. Both averaged 3.25 selected episodes. Contextual source orders
+  differed across all four seeds; one baseline exceeded the one-hour deadline.
+
+### Coarse-outline input probe — 2026-11-08
+
+- Added `grammarworlds/coarse_outline.py`: an ordered list of coarse capability
+  events compiles to the existing physical-carrier goal graph. No fine-event
+  identifiers, source scenarios, initial props or bindings are supplied. This
+  is a typed input adapter, not a new English parser or runtime engine.
+- Tried transport/delivery/performance, safe-route/drawing, and adaptation/gift
+  with two seeds each against 86 prefixes from 20 worlds. All six met the
+  existing capability contracts in order; all 12 generated segments replayed
+  and candidate distributions normalized. One cart program resumed for delivery
+  with the same entities and zero new imports.
+- Raw text and latent selections: `grammarworlds/runs/coarse_outlines_20261108/`.
+  Read all six examples. Coherent single-source expansions coexist with an
+  unfinished laundry detour, trail-to-library scene switch, and a costume
+  adaptation followed by an unrelated biscuit gift. `performance` also currently
+  includes contributing a puppet prop rather than necessarily performing.
+- Next gate: shared patient/recipient bindings across coarse events, e.g.
+  `adapt(object=X) → give(object=X)`, plus an explicit distinction between
+  contributing to and completing an action. Existing completion counts are
+  semantic-contract checks, not a new literary-quality score. No Luna run.
+
+### Plot-role annotations and attribute inventory — 2026-11-08
+
+- Added `plot_bank.py` and `plot_annotations.py`: authored local narrative
+  patterns, partial archetype associations, physical cast/object roles, stakes,
+  event functions/stages, and links between actual earlier events. Explicit
+  narrative readings cover 191 fine-event kinds; 58 logistics kinds remain
+  neutral supporting actions. All 249 kinds across 20 worlds are annotated.
+- The nine-category inventory is available, but these sources support only
+  partial quest/mystery/comedy associations. Five worlds remain unassigned at
+  the archetype level while retaining their local patterns. No source is forced
+  into tragedy, rebirth, rags-to-riches, rebellion, overcoming-the-monster or
+  voyage-and-return. Narrative links are authored interpretations, explicitly
+  separate from native causal dependencies and replayed entity changes.
+- Source annotation attaches these fields to intact events/tokens. Optional
+  `--plot-annotations` exposes prefix-only context on candidate bundles and END
+  tokens. Transferred source arcs rebind roles to receiving entities without
+  asserting that their combination is one unified receiving plot. This supports
+  the physical-carrier north star; no new runtime physics or plot weights.
+- Export: `grammarworlds/runs/plot_annotations_20261108/`: 400 original source
+  samples, 46,964 annotated tokens, all 249 observed event kinds; preserved text,
+  hashes, original candidate attribute tables and conditional probabilities.
+  Twenty fresh live examples preserve baseline prose and final world state.
+- All 261 grammarworlds tests pass, including seven new plot tests. Checks cover
+  current-prefix evidence, missing/future references, partial programs without
+  fictional payoffs, transfer binding, annotation idempotence and replay.
+- `grammarworlds/ATTRIBUTE_INVENTORY.md` lists recent actual fields, new plot
+  fields, evidence scopes, consumer status, and proposed future fields. Next:
+  shared patient/recipient bindings; executable receiving plot stages; setup/
+  payoff obligations; character/reader knowledge; narration of causal links and
+  ending evidence. Plot annotation alone does not improve story selection or
+  prove literary quality; no Luna evaluation was run in this pass.
+
+### Executable receiving plot contracts — 2026-11-09
+
+- Added `plot_execution.py` and `plot_continuation.py`: two reusable receiving
+  trajectories, adaptation/giving and learning from a failed approach. Stages
+  keep shared physical object/recipient IDs, require executed native effects
+  and authored dependency evidence, and open/resolve a setup obligation.
+- The sampler previews compatible native suffixes, deduplicates current
+  prefixes, and samples normalized weights at each next stage boundary. It
+  resumes existing object histories without replaying earlier actions. No
+  runtime LLM, new physics, learned weights or appended connective prose.
+- Added native-state-backed character knowledge, separate reader exposure,
+  and narration requirements for every advancing milestone. A final image can
+  show the physical effect on a recipient without naming the object again.
+  Current-prefix plot state is available on annotated token candidates;
+  lookahead outcomes stay separately scoped as predictions.
+- `grammarworlds/runs/plot_execution_20261109_v2/` tests 400 source documents,
+  20 worlds and 58 native branches. Eight samples complete their stages with
+  shared identities, zero open obligations and zero missing narration. This is
+  structural validation, not a literary-quality score. No Luna run.
+- All 270 grammarworlds tests pass, including nine new plot regressions. All
+  40 sampled stage distributions normalize; source hashes match the final
+  experiment manifest. Generated stages replay and re-annotate successfully.
+- Read all eight samples: coherent authored reuse dominates (pottery, repair,
+  museum); novel cross-source plot composition is not demonstrated. Gift runs
+  all use pottery. Remaining prose defects: `missing_character_introduction`
+  (repair helper), `implicit_causal_explanation` (museum discovery), repetitive
+  sentence forms. The initial audit's one narration false negative is retained
+  in `plot_execution_20261109/`; the revised check requires actual recipient
+  state change, and a regression rejects protagonist-only ending references.
+- Next measurable gates: explicit causal explanation tied to discovery evidence;
+  introduction coverage for imported people; partial-program lookahead that
+  can close the same object's obligations using multiple source worlds. Expand
+  beyond these two contracts only with grounded examples and completion tests.
+  General belief/false-belief models and the full archetype inventory remain
+  future work. See `PLOT_EXECUTION.md` and the updated attribute inventory.
+
+### Sampled story presentation — 2026-11-10
+
+- Added `story_presentation.py` and enabled it once per assembled plot result:
+  weighted titles, traditional/everyday/storyteller/immediate openings, explicit
+  closing markers and final-image endings. Incomplete plots get continuation
+  wording. Native body prose remains in `raw_story`, and rows/replay/QA are intact.
+- Uses the existing annotated-word sampler, with framing roles/styles, grounded
+  entity references, initial/final evidence scope and probabilities at every
+  token. Separate random streams preserve native story selection. Titles may
+  use the final object name; opening location comes from the initial world.
+  Presentation stays attached to physical carriers and adds no runtime LLM.
+- Read all eight fixed-body samples in
+  `grammarworlds/runs/story_presentation_20261110/report.md`. They show five
+  distinct sampled titles, traditional/everyday/direct openings, and explicit
+  or final-image endings. Five new tests plus the nine existing plot tests pass
+  (14 total), including normalized distributions, native replay, unfinished
+  and empty plots, boundary non-duplication and initial/final evidence separation.
+- This is presentation, not a new storytelling quality result. Framing lexical
+  POS is currently `X` except punctuation/END; semantic roles are populated.
+  Future additions can include grounded reflective closings and more lexical
+  annotation. Do not fabricate permanent lessons, weather or future happiness.
+
+### Reusable beats and ten refinement rounds — 2026-11-13
+
+- Added six beat readings to the full 400-story, twenty-world archive (46,964
+  tokens, 4,359 events). Original words, positions, attribute tables and token
+  posteriors are preserved. Archived frames and effects replay before export;
+  freshly sampling an old seed can choose another branch and is not a valid
+  substitute for preserving the original text.
+- Optional `beat_budget=2`/`6` adds weighted reactions, inspection, requests,
+  commitments/suggestions and detail reminders inside native scenes. Existing
+  annotated-word sampling carries both native and added beat semantics. One
+  cap persists across joined stages; immediate action remains an alternative.
+- Physical actors carry attention/caution changes and dialogue records. Native
+  guards remain authoritative. Inspection does not imply discovery; requests
+  are uttered, not assumed answered. Six explicit motifs cover pottery, repair
+  and museum, requiring visibly narrated setups and current physical evidence.
+- Ten real code-and-sample refinements follow the initial implementation in
+  `grammarworlds/runs/beats_20261113/REPORT.md`. They fixed wrong object focus,
+  repeated intentions, silent setup evidence, tense, live attribute propagation,
+  joined rendering, access checks, speech-act interpretation and QA grounding.
+  The final audit also exposes native beat readings in live token candidates.
+- All 285 grammarworlds tests pass, including ten beat regressions. The final
+  broad check covers 40 generations over all twenty worlds, 5,444 normalized
+  word/joint distributions, 279 QA pairs and three successful resumed plots.
+  The original archive export is `annotated_pool_v2`; the first attempt remains
+  as failed-run evidence. Final source manifests were verified.
+- Final held-out comparison: 18 samples, mean 1.5 inserted beats, range 0–3.
+  Fifteen nearest-baseline pairs are within 10% of word count; three are longer.
+  No calibrated quality improvement or Luna score is claimed. Known defects:
+  `adjacent_same_speaker`, `overexplicit_callback`, `generic_reaction`. Next
+  measurable gates: less redundant dialogue at equal length, broader concrete
+  motif annotations, and fuller lexical attributes for added constructions.
+
+### Further beat refinement and visible story framing — 2026-11-15
+
+- Completed a presentation preflight plus ten additional code-and-sample rounds
+  in `grammarworlds/runs/beats_20261115/REPORT.md`. Source CLI/reports now show
+  titles/openings/closings; raw body text and exact QA/token offsets remain intact.
+  Joined plots still receive framing only once. This corrects the missing display
+  path rather than claiming a new plot model.
+- Beat readings distinguish physical actor from human experiencer and require
+  actual authored speaker evidence. Schema v2 preserves each posterior's own
+  event interpretation, original attributes and exact probabilities. The full
+  400-document pool retains 46,964 tokens and 4,359 native events unchanged.
+- Added 10 grounded motifs:16 details across13 worlds. Setups preserve receiving
+  carriers across resumed segments; absent earlier text cannot answer local QA.
+  Optional reminders are limited to one per source arc. Hidden frame metadata
+  cannot introduce an unseen decoy as the object of an inspection.
+- Optional beat grammar now supplies POS, clause/action arguments, hypothetical
+  scope and evidence metadata. Concrete tool/transfer proposals may depend on an
+  earlier authored discovery across logistical events. Within-scene subject
+  switches keep names; quoted speech keeps its own action scope.
+- Beat QA validates selected decisions, cites the exact added utterance/action
+  and earlier evidence, includes spoken tool references, and explicitly maps raw
+  evidence into framed text. Requests remain utterances, not assumed answers.
+- Archive export replays recorded choices and historical detail ledgers rather
+  than resampling today's policy. It verifies full narrative snapshots when
+  available; the old unexpanded 400-document pool supports physical replay only.
+- Final broad audit: 80 samples across 20 worlds, past/present, budgets 2/6; three
+  joined plots (16 resumed rows); 11,307 body distributions,1,410 framing steps,
+  and 616 grounded QA pairs checked. Full test result is in the campaign's
+  `tests.log`. A second 40-sample review and 20-case reading notes retain defects.
+- Mean selected beats in the 80 samples: 1.075, range 0–3. Higher caps do not force
+  insertions. No Luna run or calibrated quality improvement is claimed. The
+  joined plots still reuse one source arc each; general cross-source storytelling
+  is not demonstrated.
+- Remaining controlled defects: `generic_reaction`, `overexplicit_callback`,
+  `cross_scene_pronoun`, `weak_title_relevance`, `implicit_causal_explanation`,
+  `weak_response_focus`, `unanswered_request`. A grounded callback can still be
+  redundant; an inspection of the unripe pear may be a weak response to a bending
+  branch. These are qualitative findings, not structural validation failures.
+- Next measurable gates: narrator-state tracking across event boundaries;
+  semantic repetition penalties on candidate probabilities; request/response
+  and promise/fulfillment links; decision alternatives with grounded cost and
+  consequence. Compare information gained at matched length, allowing zero
+  added beats. Keep native physical guards and carrier state authoritative.
+
+### Authored storytelling prototypes — 2026-11-16
+
+- Added opt-in `edition='crafted'` content for pottery/music/greenhouse, three
+  meaningful branches each. Physical state, concept magnitudes, requests,
+  conditions, costs and final images run through the existing classical sampler.
+  Default twenty-world content is preserved. See `grammarworlds/STORYCRAFT.md`
+  and `grammarworlds/runs/storycraft_20261116/REPORT.md`.
+- Added prefix-only candidate narrative/speech-act attributes and guarded
+  obligation closure. Fragment metadata is explicitly coarse; unknown POS is X.
+  No runtime model, general English parser or learned plot generator was added.
+- Reviewed actual prose and QA across all branches, corrected unearned helper
+  availability, unsupported remedies, instant damage and citations of promises
+  instead of fulfilled actions. Evidence-only claims now support fuller answers
+  without forcing near-duplicate questions into the visible QA set.
+- Development review: 16 revised preferences / 2 ties in 18 related pairs, with
+  +124% total words and known conditions. Not a matched-length or Luna result.
+  A separate sixty-story sample reached all nine branches; only 2–4% of token
+  steps had multiple word options. Stronger content currently costs authoring
+  and length; it has not solved autonomous story composition.
+- Validation: broad 364-test pass, then ten prototype checks and final targeted
+  suites (logs in campaign). Physical counterfactuals, distribution normalization,
+  replay, prefix-only annotations and actual-action QA evidence are covered.
+- Remaining controlled defects: `event_log_prose`, `repeated_subject`,
+  `coarse_fragment_annotation`, `low_choice_density`, `fixed_branch_order`.
+  Next gate: reusable decision structures in a less authored receiving world;
+  matched-length prose review; more grounded candidate realizations without
+  weakening cost, permission, resource or payoff constraints. Do not claim
+  generalized cross-world transfer from these three content prototypes.
+
+### Executable decision beats — 2026-11-19
+
+- Added a shared opt-in policy to all three crafted worlds, with three appraisal
+  alternatives each. Appraisals follow visible evidence, update carrier-bound
+  priorities and change later event probabilities without eliminating valid
+  alternatives. Hard physical guards stay authoritative.
+- Requests/refusals/promises now have selected utterance records; subsequent
+  actions can require those records. Answers and fulfilled promises link to
+  earlier utterances. Observed costs are verified against executed carrier state.
+- Payoffs require earlier visible detail setups and a changed meaning supported
+  by physical state. Reader-known reminders are probabilistically compressed;
+  new explanations remain mandatory. Sample review removed an overcommitted
+  deadline appraisal and repeated waiting/risk explanations in greenhouse.
+- Full broad pass: 374 tests at the first integration checkpoint; subsequent
+  targeted suites cover the final implementation, export and semantic changes.
+  Exact logs and probability/compression samples live in
+  `grammarworlds/runs/decision_beats_20261119/`.
+- Candidate annotations and observed event exports retain distinct scopes.
+  Source-memory export replays narration policy, and includes actual appraisal,
+  dialogue and payoff dependencies on intact story text.
+- Remaining limits: `authored_appraisal`, `coarse_fragment_annotation`,
+  `fixed_branch_order`, `repeated_subject`, `event_log_prose`. The shared mechanism
+  is reusable but only three worlds currently have bindings; no general belief
+  inference or twenty-world transfer has been demonstrated. Compression saves
+  a few words; appraisals can still increase total length. Next measurable gate:
+  apply the shared contracts to a fourth world and review equally concise prose
+  without introducing new policy code.

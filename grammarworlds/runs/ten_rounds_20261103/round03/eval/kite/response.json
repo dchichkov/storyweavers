@@ -1,0 +1,392 @@
+{
+  "id": "resp_0c2909d16044efbf016aeb0f80161487d184de81659acb6278",
+  "created_at": 1793789824.0,
+  "error": null,
+  "incomplete_details": null,
+  "instructions": null,
+  "metadata": {},
+  "model": "gpt-6-luna",
+  "object": "response",
+  "output": [
+    {
+      "id": "msg_0c2909d16044efbf016aeb0f8d905c87d1ba093a004bce29d9",
+      "content": [
+        {
+          "annotations": [],
+          "text": "{\"stories\":[{\"id\":\"s000014\",\"rating\":{\"coherence\":8,\"style\":7,\"grammar\":9,\"storytelling\":6,\"overall\":7},\"note\":\"The repair succeeds and the kite flies, ending on a clear image, though the boat-sail remark is unexplained.\",\"group_id\":0},{\"id\":\"s000028\",\"rating\":{\"coherence\":8,\"style\":7,\"grammar\":9,\"storytelling\":6,\"overall\":7},\"note\":\"The repair succeeds and the kite flies, ending on a clear image, though the boat-sail remark is unexplained.\",\"group_id\":0},{\"id\":\"s000058\",\"rating\":{\"coherence\":8,\"style\":6,\"grammar\":9,\"storytelling\":6,\"overall\":7},\"note\":\"The torn kite is repurposed into a working boat sail, with a concrete outcome; the initial wish to repair it is left behind.\",\"group_id\":1},{\"id\":\"s000023\",\"rating\":{\"coherence\":8,\"style\":6,\"grammar\":9,\"storytelling\":6,\"overall\":7},\"note\":\"The torn kite is repurposed into a working boat sail, with a concrete outcome; the initial wish to repair it is left behind.\",\"group_id\":1},{\"id\":\"s000036\",\"rating\":{\"coherence\":8,\"style\":6,\"grammar\":9,\"storytelling\":7,\"overall\":7},\"note\":\"The failed tape repair gives the child a reason to turn the kite into a sail, and the boat's voyage provides a satisfying ending.\",\"group_id\":2},{\"id\":\"s000017\",\"rating\":{\"coherence\":8,\"style\":7,\"grammar\":9,\"storytelling\":6,\"overall\":7},\"note\":\"The repaired kite flies successfully, but the boat-sail suggestion remains a distracting loose thread.\",\"group_id\":0},{\"id\":\"s000053\",\"rating\":{\"coherence\":8,\"style\":6,\"grammar\":9,\"storytelling\":6,\"overall\":7},\"note\":\"The torn kite is repurposed into a working boat sail, with a concrete outcome; the initial wish to repair it is left behind.\",\"group_id\":1},{\"id\":\"s000021\",\"rating\":{\"coherence\":8,\"style\":6,\"grammar\":9,\"storytelling\":7,\"overall\":7},\"note\":\"When the tape repair fails, the child redirects the torn kite into a sail, and the boat's voyage completes the turn.\",\"group_id\":2},{\"id\":\"s000034\",\"rating\":{\"coherence\":8,\"style\":6,\"grammar\":9,\"storytelling\":6,\"overall\":7},\"note\":\"The child redirects the torn kite into a boat sail, and the sailing boat supplies a clear ending, though the original goal is dropped.\",\"group_id\":1},{\"id\":\"s000048\",\"rating\":{\"coherence\":8,\"style\":6,\"grammar\":9,\"storytelling\":6,\"overall\":7},\"note\":\"The child makes a boat sail from the torn kite and succeeds, though the opening wish to repair the kite is not resolved.\",\"group_id\":1},{\"id\":\"s000002\",\"rating\":{\"coherence\":8,\"style\":6,\"grammar\":9,\"storytelling\":6,\"overall\":7},\"note\":\"The torn kite becomes a sail that carries the boat across the pond, a clear outcome despite the abandoned kite-flying goal.\",\"group_id\":1},{\"id\":\"s000057\",\"rating\":{\"coherence\":8,\"style\":6,\"grammar\":9,\"storytelling\":6,\"overall\":7},\"note\":\"The torn kite becomes a sail that carries the boat across the pond, a clear outcome despite the abandoned kite-flying goal.\",\"group_id\":1}],\"diversity\":{\"premise\":2,\"causal_path\":3,\"ending\":3,\"language\":2,\"overall\":3},\"diversity_evidence\":\"All stories center on a torn kite and the choice between repairing it or using it as a boat sail. The repaired-and-flown versions (s000014, s000017, s000028) share one outcome; direct repurposing stories (s000002, s000023, s000034, s000048, s000053, s000057, s000058) share another; s000021 and s000036 add the same failed-repair detour before repurposing. Names and small dialogue variations do not create distinct plots.\",\"plot_groups\":[{\"group_id\":0,\"summary\":\"The child tapes the torn kite and successfully flies it, while the boat-sail suggestion is not pursued.\"},{\"group_id\":1,\"summary\":\"The child abandons kite repair and repurposes the torn kite as a boat sail, which carries the boat across the pond.\"},{\"group_id\":2,\"summary\":\"The child tries to tape the kite, it tears again, and the child repurposes it as a boat sail that carries the boat across the pond.\"}] }",
+          "type": "output_text",
+          "logprobs": []
+        }
+      ],
+      "role": "assistant",
+      "status": "completed",
+      "type": "message",
+      "phase": "final_answer"
+    }
+  ],
+  "parallel_tool_calls": true,
+  "temperature": 1.0,
+  "tool_choice": "auto",
+  "tools": [],
+  "top_p": 0.98,
+  "background": false,
+  "completed_at": 1793789855.0,
+  "conversation": null,
+  "max_output_tokens": 4000,
+  "max_tool_calls": null,
+  "moderation": null,
+  "previous_response_id": null,
+  "prompt": null,
+  "prompt_cache_key": null,
+  "prompt_cache_retention": "24h",
+  "reasoning": {
+    "context": "all_turns",
+    "effort": "none",
+    "generate_summary": null,
+    "summary": null,
+    "mode": "standard"
+  },
+  "safety_identifier": null,
+  "service_tier": "flex",
+  "status": "completed",
+  "text": {
+    "format": {
+      "name": "harbor_story_set_v2",
+      "schema_": {
+        "type": "object",
+        "properties": {
+          "stories": {
+            "type": "array",
+            "minItems": 12,
+            "maxItems": 12,
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "enum": [
+                    "s000014",
+                    "s000028",
+                    "s000058",
+                    "s000023",
+                    "s000036",
+                    "s000017",
+                    "s000053",
+                    "s000021",
+                    "s000034",
+                    "s000048",
+                    "s000002",
+                    "s000057"
+                  ]
+                },
+                "rating": {
+                  "type": "object",
+                  "properties": {
+                    "coherence": {
+                      "type": "integer",
+                      "enum": [
+                        0,
+                        1,
+                        2,
+                        3,
+                        4,
+                        5,
+                        6,
+                        7,
+                        8,
+                        9
+                      ]
+                    },
+                    "style": {
+                      "type": "integer",
+                      "enum": [
+                        0,
+                        1,
+                        2,
+                        3,
+                        4,
+                        5,
+                        6,
+                        7,
+                        8,
+                        9
+                      ]
+                    },
+                    "grammar": {
+                      "type": "integer",
+                      "enum": [
+                        0,
+                        1,
+                        2,
+                        3,
+                        4,
+                        5,
+                        6,
+                        7,
+                        8,
+                        9
+                      ]
+                    },
+                    "storytelling": {
+                      "type": "integer",
+                      "enum": [
+                        0,
+                        1,
+                        2,
+                        3,
+                        4,
+                        5,
+                        6,
+                        7,
+                        8,
+                        9
+                      ]
+                    },
+                    "overall": {
+                      "type": "integer",
+                      "enum": [
+                        0,
+                        1,
+                        2,
+                        3,
+                        4,
+                        5,
+                        6,
+                        7,
+                        8,
+                        9
+                      ]
+                    }
+                  },
+                  "required": [
+                    "coherence",
+                    "style",
+                    "grammar",
+                    "storytelling",
+                    "overall"
+                  ],
+                  "additionalProperties": false
+                },
+                "note": {
+                  "type": "string"
+                },
+                "group_id": {
+                  "type": "integer",
+                  "enum": [
+                    0,
+                    1,
+                    2,
+                    3,
+                    4,
+                    5,
+                    6,
+                    7,
+                    8,
+                    9,
+                    10,
+                    11
+                  ]
+                }
+              },
+              "required": [
+                "id",
+                "rating",
+                "note",
+                "group_id"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "diversity": {
+            "type": "object",
+            "properties": {
+              "premise": {
+                "type": "integer",
+                "enum": [
+                  0,
+                  1,
+                  2,
+                  3,
+                  4,
+                  5,
+                  6,
+                  7,
+                  8,
+                  9
+                ]
+              },
+              "causal_path": {
+                "type": "integer",
+                "enum": [
+                  0,
+                  1,
+                  2,
+                  3,
+                  4,
+                  5,
+                  6,
+                  7,
+                  8,
+                  9
+                ]
+              },
+              "ending": {
+                "type": "integer",
+                "enum": [
+                  0,
+                  1,
+                  2,
+                  3,
+                  4,
+                  5,
+                  6,
+                  7,
+                  8,
+                  9
+                ]
+              },
+              "language": {
+                "type": "integer",
+                "enum": [
+                  0,
+                  1,
+                  2,
+                  3,
+                  4,
+                  5,
+                  6,
+                  7,
+                  8,
+                  9
+                ]
+              },
+              "overall": {
+                "type": "integer",
+                "enum": [
+                  0,
+                  1,
+                  2,
+                  3,
+                  4,
+                  5,
+                  6,
+                  7,
+                  8,
+                  9
+                ]
+              }
+            },
+            "required": [
+              "premise",
+              "causal_path",
+              "ending",
+              "language",
+              "overall"
+            ],
+            "additionalProperties": false
+          },
+          "diversity_evidence": {
+            "type": "string"
+          },
+          "plot_groups": {
+            "type": "array",
+            "minItems": 1,
+            "maxItems": 12,
+            "items": {
+              "type": "object",
+              "properties": {
+                "group_id": {
+                  "type": "integer",
+                  "enum": [
+                    0,
+                    1,
+                    2,
+                    3,
+                    4,
+                    5,
+                    6,
+                    7,
+                    8,
+                    9,
+                    10,
+                    11
+                  ]
+                },
+                "summary": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "group_id",
+                "summary"
+              ],
+              "additionalProperties": false
+            }
+          }
+        },
+        "required": [
+          "stories",
+          "diversity",
+          "diversity_evidence",
+          "plot_groups"
+        ],
+        "additionalProperties": false
+      },
+      "type": "json_schema",
+      "description": null,
+      "strict": true
+    },
+    "verbosity": "medium"
+  },
+  "top_logprobs": 0,
+  "truncation": "disabled",
+  "usage": {
+    "input_tokens": 2360,
+    "input_tokens_details": {
+      "cached_tokens": 0,
+      "cache_write_tokens": 0,
+      "cache_write_tokens_details": {
+        "ttl_12h_tokens": 0,
+        "ttl_30m_tokens": 0
+      }
+    },
+    "output_tokens": 1017,
+    "output_tokens_details": {
+      "reasoning_tokens": 0
+    },
+    "total_tokens": 3377
+  },
+  "user": null,
+  "access_programs": null,
+  "billing": {
+    "payer": "openai"
+  },
+  "frequency_penalty": 0.0,
+  "image": {
+    "context_compression": "disabled"
+  },
+  "presence_penalty": 0.0,
+  "prompt_cache_options": {
+    "mode": "explicit",
+    "ttl": "30m"
+  },
+  "store": false,
+  "tool_usage": {
+    "image_gen": {
+      "input_tokens": 0,
+      "input_tokens_details": {
+        "image_tokens": 0,
+        "text_tokens": 0
+      },
+      "output_tokens": 0,
+      "output_tokens_details": {
+        "image_tokens": 0,
+        "text_tokens": 0
+      },
+      "total_tokens": 0
+    },
+    "web_search": {
+      "num_requests": 0
+    }
+  }
+}

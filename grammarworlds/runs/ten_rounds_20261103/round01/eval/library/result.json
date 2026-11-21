@@ -1,0 +1,135 @@
+{
+  "scenario": "library",
+  "ok": true,
+  "assessment": {
+    "story_ratings": [
+      {
+        "id": "s000014",
+        "rating": {
+          "coherence": 7,
+          "style": 5,
+          "grammar": 8,
+          "storytelling": 5,
+          "overall": 6
+        },
+        "note": "The missing-book problem is resolved and the pair read together, though the atlas sentence is unclear and the search contributes little."
+      },
+      {
+        "id": "s000028",
+        "rating": {
+          "coherence": 7,
+          "style": 5,
+          "grammar": 8,
+          "storytelling": 5,
+          "overall": 6
+        },
+        "note": "The book is retrieved and the friends read together; the atlas sentence is unclear and the search has little effect on the resolution."
+      },
+      {
+        "id": "s000058",
+        "rating": {
+          "coherence": 8,
+          "style": 5,
+          "grammar": 8,
+          "storytelling": 6,
+          "overall": 6
+        },
+        "note": "Mina explicitly sets aside her own activity to help Jun, and the book is retrieved, though the ending is brief and the search is fruitless."
+      },
+      {
+        "id": "s000023",
+        "rating": {
+          "coherence": 8,
+          "style": 5,
+          "grammar": 8,
+          "storytelling": 6,
+          "overall": 6
+        },
+        "note": "Mina chooses to help Jun and the book is retrieved; the resolution is clear but the ending is brief and the search does not advance it."
+      },
+      {
+        "id": "s000036",
+        "rating": {
+          "coherence": 7,
+          "style": 5,
+          "grammar": 8,
+          "storytelling": 5,
+          "overall": 6
+        },
+        "note": "The missing book is found and shared, but the atlas sentence is unclear and the search does not lead to the discovery."
+      },
+      {
+        "id": "s000017",
+        "rating": {
+          "coherence": 8,
+          "style": 5,
+          "grammar": 8,
+          "storytelling": 6,
+          "overall": 6
+        },
+        "note": "Mina chooses to help Jun, who gets the book and reads with her; the ending is clear but quite compressed."
+      }
+    ],
+    "rating": {
+      "coherence": 7.5,
+      "style": 5,
+      "grammar": 8,
+      "storytelling": 5.5,
+      "overall": 6
+    },
+    "diversity": {
+      "premise": 1,
+      "causal_path": 1,
+      "ending": 1,
+      "language": 1,
+      "overall": 1
+    },
+    "diversity_evidence": "All six stories share the same missing-book problem, fruitless search, adult retrieving the book from a high shelf, and shared reading ending. The only meaningful branch is whether Mina explicitly returns the atlas and chooses to help (s000058, s000023, s000017) or the text says Ms Alvarez saved it for her (s000014, s000028, s000036); wording changes such as “saw” versus “spotted” do not create new plots.",
+    "plot_groups": [
+      {
+        "story_ids": [
+          "s000014",
+          "s000028",
+          "s000036"
+        ],
+        "summary": "Jun cannot find his whale book; Mina promises to help, an adult retrieves it from a high shelf, and the friends read together, with the atlas said to be saved for Mina."
+      },
+      {
+        "story_ids": [
+          "s000058",
+          "s000023",
+          "s000017"
+        ],
+        "summary": "Jun cannot find his whale book; Mina sets aside the moon atlas to help, an adult retrieves the book from a high shelf, and the friends read together."
+      }
+    ],
+    "judged_stories": 6,
+    "requested_stories": 6,
+    "complete_judge_sample": true,
+    "overall_min": 6,
+    "overall_stdev": 0.0,
+    "stories_below_six": 0
+  },
+  "response": {
+    "id": "resp_000d7e0aa1c25a1b016aeae3b9df6c87d08abdd34ab2c4d238",
+    "model": "gpt-6-luna",
+    "status": "completed",
+    "service_tier": "flex",
+    "usage": {
+      "input_tokens": 1777,
+      "input_tokens_details": {
+        "cached_tokens": 0,
+        "cache_write_tokens": 0,
+        "cache_write_tokens_details": {
+          "ttl_12h_tokens": 0,
+          "ttl_30m_tokens": 0
+        }
+      },
+      "output_tokens": 616,
+      "output_tokens_details": {
+        "reasoning_tokens": 0
+      },
+      "total_tokens": 2393
+    }
+  }
+}

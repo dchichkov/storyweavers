@@ -1,0 +1,81 @@
+{
+  "id": "P051",
+  "name": "Emotional cause continuity",
+  "description": "Actor description → emotion-changing events. Favor a state-consistent reaction.",
+  "proposed_payload": "{carrier, emotion, magnitude, cause}",
+  "provenance": "Authored illustrative seeds; not learned or extracted.",
+  "status": "program_required",
+  "examples": [
+    {
+      "id": "P051.01",
+      "description": "Growl raises Mira's fear.",
+      "intended_feature": "Mira:fear;cause:growl",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P051.02",
+      "description": "Recovering keepsake relieves Theo.",
+      "intended_feature": "Theo:relief;cause:recovery",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P051.03",
+      "description": "Nia feels joy and grief at a farewell.",
+      "intended_feature": "mixed_emotions",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P051.04",
+      "description": "Fear fades after danger is removed.",
+      "intended_feature": "current_reduced_fear",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P051.05",
+      "description": "Another character's sadness is described nearby.",
+      "intended_feature": "do_not_transfer_carrier",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P051.06",
+      "description": "Emotion is quoted from a diary about yesterday.",
+      "intended_feature": "historical_emotion_scope",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P051.07",
+      "description": "No cause is recorded for an emotion.",
+      "intended_feature": "emotion_known_cause_unknown",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P051.08",
+      "description": "Repeated help gradually raises trust.",
+      "intended_feature": "accumulated_carrier_state",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P051.09",
+      "description": "An abstract fear concept has no physical carrier.",
+      "intended_feature": "zero_influence",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P051.10",
+      "description": "A later betrayal reverses earlier relief.",
+      "intended_feature": "latest_emotional_update",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    }
+  ],
+  "required_program": "Read carrier-bound emotion updates and their causal provenance, with decay, intervening events, and mixed emotions."
+}

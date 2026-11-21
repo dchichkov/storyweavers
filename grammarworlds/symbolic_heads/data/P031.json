@@ -1,0 +1,81 @@
+{
+  "id": "P031",
+  "name": "Simultaneous-event consistency",
+  "description": "Action query → actor's overlapping commitments. Downweight incompatible simultaneous actions.",
+  "proposed_payload": "{busy_resources, interval_overlap}",
+  "provenance": "Authored illustrative seeds; not learned or extracted.",
+  "status": "program_required",
+  "examples": [
+    {
+      "id": "P031.01",
+      "description": "Mira carries a chest with both hands and tries to thread a needle.",
+      "intended_feature": "hand_conflict",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P031.02",
+      "description": "Theo holds a ladder while someone climbs.",
+      "intended_feature": "commitment_active",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P031.03",
+      "description": "Nia walks while speaking.",
+      "intended_feature": "compatible_concurrency",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P031.04",
+      "description": "Omar sleeps while supposedly steering a boat.",
+      "intended_feature": "incompatible_activity",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P031.05",
+      "description": "One hammer is assigned to two simultaneous repairs.",
+      "intended_feature": "instrument_conflict",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P031.06",
+      "description": "Two repairs use different hammers.",
+      "intended_feature": "no_instrument_conflict",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P031.07",
+      "description": "Mira finishes carrying before opening a jar.",
+      "intended_feature": "sequential_no_conflict",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P031.08",
+      "description": "A character with one free hand carries a cup.",
+      "intended_feature": "capacity_sufficient",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P031.09",
+      "description": "Two events overlap only in uncertain time ranges.",
+      "intended_feature": "uncertain_conflict",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P031.10",
+      "description": "An interrupted task releases its reserved tool.",
+      "intended_feature": "reservation_released",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    }
+  ],
+  "required_program": "Perform interval/resource conflict checks for each actor and instrument, allowing compatible concurrent actions and distinguishing sequential events."
+}

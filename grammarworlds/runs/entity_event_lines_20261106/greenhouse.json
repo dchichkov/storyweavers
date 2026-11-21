@@ -1,0 +1,5433 @@
+{
+  "schema": "entity-event-lines-v1",
+  "scenario": "greenhouse",
+  "seed": 3000,
+  "story": "Nia wanted to water the sunflower, but the tomato seedlings were thirsty. Mr Bell said, \u201cThe tap is broken.\u201d The rain barrel held one can of water. Nia told Mr Bell, \u201cI want to water the sunflower first.\u201d Using the watering can, she watered the sunflower. The shade cloth fell. The tomato seedlings had a brown leaf. Nia secured the umbrella above the tomato seedlings with the garden tie. Mr Bell fixed the tap. Nia watered the tomato seedlings with water from the tap. Mrs Okafor fixed the shade cloth with the clip. Nia said, \u201cI promise I'll water the tomato seedlings first tomorrow.\u201d The brown leaf remained under the repaired shade cloth.",
+  "text_sha256": "6e352a215d0fb7f5db5b94b20fc01f854bea4d92e8e2bd48316fc691470e3510",
+  "events": [
+    {
+      "id": 1,
+      "kind": "notice",
+      "frame": {
+        "kind": "notice",
+        "actor": "hero",
+        "patient": "",
+        "instrument": "",
+        "destination": "",
+        "cause_ids": [
+          "water",
+          "plants",
+          "shade"
+        ]
+      },
+      "narrated": true,
+      "text": "Nia wanted to water the sunflower, but the tomato seedlings were thirsty. Mr Bell said, \u201cThe tap is broken.\u201d",
+      "entity_tags": {
+        "caretaker": [
+          "mentioned",
+          "qa_context",
+          "speaker"
+        ],
+        "hero": [
+          "frame.actor",
+          "listener",
+          "mentioned",
+          "qa_context"
+        ],
+        "sunflower": [
+          "mentioned",
+          "qa_context"
+        ],
+        "tap": [
+          "mentioned",
+          "qa_context"
+        ],
+        "tomatoes": [
+          "mentioned",
+          "qa_context"
+        ]
+      },
+      "tag_evidence": {
+        "hero": {
+          "frame.actor": [
+            "frame.actor"
+          ],
+          "mentioned": [
+            "trace.referents"
+          ],
+          "listener": [
+            "dialogue.listener:caretaker:hero"
+          ],
+          "qa_context": [
+            "claim:goal"
+          ]
+        },
+        "caretaker": {
+          "speaker": [
+            "trace.speakers",
+            "dialogue.listener:caretaker:hero"
+          ],
+          "mentioned": [
+            "trace.referents"
+          ],
+          "qa_context": [
+            "claim:problem"
+          ]
+        },
+        "sunflower": {
+          "mentioned": [
+            "trace.referents"
+          ],
+          "qa_context": [
+            "claim:goal"
+          ]
+        },
+        "tap": {
+          "mentioned": [
+            "trace.referents"
+          ],
+          "qa_context": [
+            "claim:problem"
+          ]
+        },
+        "tomatoes": {
+          "mentioned": [
+            "trace.referents"
+          ],
+          "qa_context": [
+            "claim:goal"
+          ]
+        }
+      },
+      "participants": [
+        "caretaker",
+        "hero"
+      ],
+      "dialogue": [
+        {
+          "speaker": "caretaker",
+          "listener": "hero"
+        }
+      ],
+      "movements": [],
+      "effects": {},
+      "dependencies": [
+        {
+          "kind": "world_fact",
+          "key": "water",
+          "source_event": null
+        },
+        {
+          "kind": "world_fact",
+          "key": "plants",
+          "source_event": null
+        },
+        {
+          "kind": "world_fact",
+          "key": "shade",
+          "source_event": null
+        }
+      ],
+      "global_contract": {
+        "requires": [],
+        "excludes": [
+          "ended",
+          "noticed"
+        ],
+        "flags_added": [
+          "noticed"
+        ],
+        "flags_removed": []
+      },
+      "guard_reads_complete": false
+    },
+    {
+      "id": 2,
+      "kind": "borrow",
+      "frame": {
+        "kind": "borrow",
+        "actor": "hero",
+        "patient": "can",
+        "instrument": "",
+        "destination": "hero",
+        "cause_ids": [
+          "water",
+          "plants",
+          "shade"
+        ]
+      },
+      "narrated": false,
+      "text": "",
+      "entity_tags": {
+        "can": [
+          "changed",
+          "frame.patient",
+          "moved"
+        ],
+        "caretaker": [
+          "source_holder"
+        ],
+        "hero": [
+          "destination_holder",
+          "frame.actor",
+          "frame.destination"
+        ]
+      },
+      "tag_evidence": {
+        "hero": {
+          "frame.actor": [
+            "frame.actor"
+          ],
+          "frame.destination": [
+            "frame.destination"
+          ],
+          "destination_holder": [
+            "diff.location:can"
+          ]
+        },
+        "can": {
+          "frame.patient": [
+            "frame.patient"
+          ],
+          "changed": [
+            "replayed_entity_diff"
+          ],
+          "moved": [
+            "diff.location"
+          ]
+        },
+        "caretaker": {
+          "source_holder": [
+            "diff.location:can"
+          ]
+        }
+      },
+      "participants": [
+        "can",
+        "caretaker",
+        "hero"
+      ],
+      "dialogue": [],
+      "movements": [
+        {
+          "item": "can",
+          "source": "caretaker",
+          "destination": "hero",
+          "source_holder": "caretaker",
+          "destination_holder": "hero"
+        }
+      ],
+      "effects": {
+        "can": {
+          "location": {
+            "before": "caretaker",
+            "after": "hero"
+          }
+        }
+      },
+      "dependencies": [
+        {
+          "kind": "required_flag",
+          "key": "noticed",
+          "source_event": 1
+        },
+        {
+          "kind": "world_fact",
+          "key": "water",
+          "source_event": null
+        },
+        {
+          "kind": "world_fact",
+          "key": "plants",
+          "source_event": null
+        },
+        {
+          "kind": "world_fact",
+          "key": "shade",
+          "source_event": null
+        }
+      ],
+      "global_contract": {
+        "requires": [
+          "noticed"
+        ],
+        "excludes": [
+          "borrowed",
+          "ended"
+        ],
+        "flags_added": [
+          "borrowed"
+        ],
+        "flags_removed": []
+      },
+      "guard_reads_complete": false
+    },
+    {
+      "id": 3,
+      "kind": "fill",
+      "frame": {
+        "kind": "fill",
+        "actor": "hero",
+        "patient": "barrel",
+        "instrument": "can",
+        "destination": "",
+        "cause_ids": [
+          "water",
+          "plants",
+          "shade"
+        ]
+      },
+      "narrated": true,
+      "text": "The rain barrel held one can of water.",
+      "entity_tags": {
+        "barrel": [
+          "changed",
+          "concept.changed:Water",
+          "frame.patient",
+          "mentioned",
+          "qa_context",
+          "state.add:empty",
+          "state.remove:one_can_of_water"
+        ],
+        "can": [
+          "changed",
+          "concept.changed:Water",
+          "frame.instrument",
+          "qa_context",
+          "state.add:full",
+          "state.remove:empty"
+        ],
+        "hero": [
+          "frame.actor",
+          "qa_context"
+        ]
+      },
+      "tag_evidence": {
+        "hero": {
+          "frame.actor": [
+            "frame.actor"
+          ],
+          "qa_context": [
+            "claim:water"
+          ]
+        },
+        "barrel": {
+          "frame.patient": [
+            "frame.patient"
+          ],
+          "mentioned": [
+            "trace.referents"
+          ],
+          "qa_context": [
+            "claim:water"
+          ],
+          "changed": [
+            "replayed_entity_diff"
+          ],
+          "state.add:empty": [
+            "diff.state"
+          ],
+          "state.remove:one_can_of_water": [
+            "diff.state"
+          ],
+          "concept.changed:Water": [
+            "diff.memes"
+          ]
+        },
+        "can": {
+          "frame.instrument": [
+            "frame.instrument"
+          ],
+          "qa_context": [
+            "claim:water"
+          ],
+          "changed": [
+            "replayed_entity_diff"
+          ],
+          "state.add:full": [
+            "diff.state"
+          ],
+          "state.remove:empty": [
+            "diff.state"
+          ],
+          "concept.changed:Water": [
+            "diff.memes"
+          ]
+        }
+      },
+      "participants": [
+        "barrel",
+        "can",
+        "hero"
+      ],
+      "dialogue": [],
+      "movements": [],
+      "effects": {
+        "barrel": {
+          "memes": {
+            "before": {
+              "Water": 2
+            },
+            "after": {
+              "Water": 0
+            }
+          },
+          "state": {
+            "before": [
+              "one_can_of_water"
+            ],
+            "after": [
+              "empty"
+            ]
+          }
+        },
+        "can": {
+          "memes": {
+            "before": {
+              "Water": 0
+            },
+            "after": {
+              "Water": 2
+            }
+          },
+          "state": {
+            "before": [
+              "empty"
+            ],
+            "after": [
+              "full"
+            ]
+          }
+        }
+      },
+      "dependencies": [
+        {
+          "kind": "required_flag",
+          "key": "borrowed",
+          "source_event": 2
+        },
+        {
+          "kind": "world_fact",
+          "key": "water",
+          "source_event": null
+        },
+        {
+          "kind": "world_fact",
+          "key": "plants",
+          "source_event": null
+        },
+        {
+          "kind": "world_fact",
+          "key": "shade",
+          "source_event": null
+        }
+      ],
+      "global_contract": {
+        "requires": [
+          "borrowed"
+        ],
+        "excludes": [
+          "ended",
+          "filled"
+        ],
+        "flags_added": [
+          "filled"
+        ],
+        "flags_removed": []
+      },
+      "guard_reads_complete": false
+    },
+    {
+      "id": 4,
+      "kind": "choose_flower",
+      "frame": {
+        "kind": "choose_flower",
+        "actor": "hero",
+        "patient": "",
+        "instrument": "",
+        "destination": "",
+        "cause_ids": [
+          "water",
+          "plants",
+          "shade"
+        ]
+      },
+      "narrated": true,
+      "text": "Nia told Mr Bell, \u201cI want to water the sunflower first.\u201d",
+      "entity_tags": {
+        "caretaker": [
+          "listener",
+          "mentioned"
+        ],
+        "hero": [
+          "frame.actor",
+          "mentioned",
+          "qa_context",
+          "speaker"
+        ],
+        "sunflower": [
+          "mentioned",
+          "qa_context"
+        ],
+        "tomatoes": [
+          "qa_context"
+        ]
+      },
+      "tag_evidence": {
+        "hero": {
+          "frame.actor": [
+            "frame.actor"
+          ],
+          "speaker": [
+            "trace.speakers",
+            "dialogue.listener:hero:caretaker"
+          ],
+          "mentioned": [
+            "trace.referents"
+          ],
+          "qa_context": [
+            "claim:choice"
+          ]
+        },
+        "caretaker": {
+          "mentioned": [
+            "trace.referents"
+          ],
+          "listener": [
+            "dialogue.listener:hero:caretaker"
+          ]
+        },
+        "sunflower": {
+          "mentioned": [
+            "trace.referents"
+          ],
+          "qa_context": [
+            "claim:choice"
+          ]
+        },
+        "tomatoes": {
+          "qa_context": [
+            "claim:choice"
+          ]
+        }
+      },
+      "participants": [
+        "caretaker",
+        "hero"
+      ],
+      "dialogue": [
+        {
+          "speaker": "hero",
+          "listener": "caretaker"
+        }
+      ],
+      "movements": [],
+      "effects": {},
+      "dependencies": [
+        {
+          "kind": "required_flag",
+          "key": "filled",
+          "source_event": 3
+        },
+        {
+          "kind": "world_fact",
+          "key": "water",
+          "source_event": null
+        },
+        {
+          "kind": "world_fact",
+          "key": "plants",
+          "source_event": null
+        },
+        {
+          "kind": "world_fact",
+          "key": "shade",
+          "source_event": null
+        }
+      ],
+      "global_contract": {
+        "requires": [
+          "filled"
+        ],
+        "excludes": [
+          "chosen",
+          "ended"
+        ],
+        "flags_added": [
+          "chosen",
+          "flower_first"
+        ],
+        "flags_removed": []
+      },
+      "guard_reads_complete": false
+    },
+    {
+      "id": 5,
+      "kind": "water_first",
+      "frame": {
+        "kind": "water_first",
+        "actor": "hero",
+        "patient": "sunflower",
+        "instrument": "can",
+        "destination": "",
+        "cause_ids": [
+          "water",
+          "plants",
+          "shade"
+        ]
+      },
+      "narrated": true,
+      "text": "Using the watering can, she watered the sunflower.",
+      "entity_tags": {
+        "can": [
+          "changed",
+          "concept.changed:Water",
+          "frame.instrument",
+          "mentioned",
+          "qa_context",
+          "state.add:empty",
+          "state.remove:full"
+        ],
+        "hero": [
+          "frame.actor",
+          "mentioned",
+          "qa_context"
+        ],
+        "sunflower": [
+          "changed",
+          "concept.changed:Water",
+          "frame.patient",
+          "mentioned",
+          "qa_context",
+          "state.add:watered",
+          "state.remove:dry"
+        ]
+      },
+      "tag_evidence": {
+        "hero": {
+          "frame.actor": [
+            "frame.actor"
+          ],
+          "mentioned": [
+            "trace.referents"
+          ],
+          "qa_context": [
+            "claim:first_water"
+          ]
+        },
+        "sunflower": {
+          "frame.patient": [
+            "frame.patient"
+          ],
+          "mentioned": [
+            "trace.referents"
+          ],
+          "qa_context": [
+            "claim:first_water"
+          ],
+          "changed": [
+            "replayed_entity_diff"
+          ],
+          "state.add:watered": [
+            "diff.state"
+          ],
+          "state.remove:dry": [
+            "diff.state"
+          ],
+          "concept.changed:Water": [
+            "diff.memes"
+          ]
+        },
+        "can": {
+          "frame.instrument": [
+            "frame.instrument"
+          ],
+          "mentioned": [
+            "trace.referents"
+          ],
+          "qa_context": [
+            "claim:first_water"
+          ],
+          "changed": [
+            "replayed_entity_diff"
+          ],
+          "state.add:empty": [
+            "diff.state"
+          ],
+          "state.remove:full": [
+            "diff.state"
+          ],
+          "concept.changed:Water": [
+            "diff.memes"
+          ]
+        }
+      },
+      "participants": [
+        "can",
+        "hero",
+        "sunflower"
+      ],
+      "dialogue": [],
+      "movements": [],
+      "effects": {
+        "can": {
+          "memes": {
+            "before": {
+              "Water": 2
+            },
+            "after": {
+              "Water": 0
+            }
+          },
+          "state": {
+            "before": [
+              "full"
+            ],
+            "after": [
+              "empty"
+            ]
+          }
+        },
+        "sunflower": {
+          "memes": {
+            "before": {
+              "Water": 0
+            },
+            "after": {
+              "Water": 2
+            }
+          },
+          "state": {
+            "before": [
+              "dry"
+            ],
+            "after": [
+              "watered"
+            ]
+          }
+        }
+      },
+      "dependencies": [
+        {
+          "kind": "required_flag",
+          "key": "chosen",
+          "source_event": 4
+        },
+        {
+          "kind": "world_fact",
+          "key": "water",
+          "source_event": null
+        },
+        {
+          "kind": "world_fact",
+          "key": "plants",
+          "source_event": null
+        },
+        {
+          "kind": "world_fact",
+          "key": "shade",
+          "source_event": null
+        }
+      ],
+      "global_contract": {
+        "requires": [
+          "chosen"
+        ],
+        "excludes": [
+          "ended",
+          "first_water"
+        ],
+        "flags_added": [
+          "first_water"
+        ],
+        "flags_removed": []
+      },
+      "guard_reads_complete": false
+    },
+    {
+      "id": 6,
+      "kind": "shade_break",
+      "frame": {
+        "kind": "shade_break",
+        "actor": "cloth",
+        "patient": "cloth",
+        "instrument": "",
+        "destination": "",
+        "cause_ids": [
+          "water",
+          "plants",
+          "shade"
+        ]
+      },
+      "narrated": true,
+      "text": "The shade cloth fell. The tomato seedlings had a brown leaf.",
+      "entity_tags": {
+        "cloth": [
+          "changed",
+          "frame.actor",
+          "frame.patient",
+          "mentioned",
+          "qa_context",
+          "state.add:broken",
+          "state.remove:intact"
+        ],
+        "leaf": [
+          "changed",
+          "state.add:brown",
+          "state.remove:green"
+        ],
+        "sunflower": [
+          "qa_context"
+        ],
+        "tomatoes": [
+          "changed",
+          "mentioned",
+          "qa_context",
+          "state.add:brown_leaf",
+          "state.add:exposed"
+        ]
+      },
+      "tag_evidence": {
+        "cloth": {
+          "frame.actor": [
+            "frame.actor"
+          ],
+          "frame.patient": [
+            "frame.patient"
+          ],
+          "mentioned": [
+            "trace.referents"
+          ],
+          "qa_context": [
+            "claim:damage"
+          ],
+          "changed": [
+            "replayed_entity_diff"
+          ],
+          "state.add:broken": [
+            "diff.state"
+          ],
+          "state.remove:intact": [
+            "diff.state"
+          ]
+        },
+        "tomatoes": {
+          "mentioned": [
+            "trace.referents"
+          ],
+          "qa_context": [
+            "claim:damage"
+          ],
+          "changed": [
+            "replayed_entity_diff"
+          ],
+          "state.add:brown_leaf": [
+            "diff.state"
+          ],
+          "state.add:exposed": [
+            "diff.state"
+          ]
+        },
+        "sunflower": {
+          "qa_context": [
+            "claim:damage"
+          ]
+        },
+        "leaf": {
+          "changed": [
+            "replayed_entity_diff"
+          ],
+          "state.add:brown": [
+            "diff.state"
+          ],
+          "state.remove:green": [
+            "diff.state"
+          ]
+        }
+      },
+      "participants": [
+        "cloth",
+        "leaf",
+        "tomatoes"
+      ],
+      "dialogue": [],
+      "movements": [],
+      "effects": {
+        "cloth": {
+          "state": {
+            "before": [
+              "intact"
+            ],
+            "after": [
+              "broken"
+            ]
+          }
+        },
+        "leaf": {
+          "state": {
+            "before": [
+              "green"
+            ],
+            "after": [
+              "brown"
+            ]
+          }
+        },
+        "tomatoes": {
+          "state": {
+            "before": [
+              "drooping",
+              "dry"
+            ],
+            "after": [
+              "brown_leaf",
+              "drooping",
+              "dry",
+              "exposed"
+            ]
+          }
+        }
+      },
+      "dependencies": [
+        {
+          "kind": "required_flag",
+          "key": "first_water",
+          "source_event": 5
+        },
+        {
+          "kind": "world_fact",
+          "key": "water",
+          "source_event": null
+        },
+        {
+          "kind": "world_fact",
+          "key": "plants",
+          "source_event": null
+        },
+        {
+          "kind": "world_fact",
+          "key": "shade",
+          "source_event": null
+        }
+      ],
+      "global_contract": {
+        "requires": [
+          "first_water"
+        ],
+        "excludes": [
+          "ended",
+          "shade_broken"
+        ],
+        "flags_added": [
+          "shade_broken"
+        ],
+        "flags_removed": []
+      },
+      "guard_reads_complete": false
+    },
+    {
+      "id": 7,
+      "kind": "secure",
+      "frame": {
+        "kind": "secure",
+        "actor": "hero",
+        "patient": "umbrella",
+        "instrument": "tie",
+        "destination": "pot",
+        "cause_ids": [
+          "water",
+          "plants",
+          "shade"
+        ]
+      },
+      "narrated": true,
+      "text": "Nia secured the umbrella above the tomato seedlings with the garden tie.",
+      "entity_tags": {
+        "cloth": [
+          "qa_context"
+        ],
+        "hero": [
+          "frame.actor",
+          "mentioned",
+          "qa_context",
+          "source_holder"
+        ],
+        "pot": [
+          "frame.destination"
+        ],
+        "tie": [
+          "changed",
+          "frame.instrument",
+          "mentioned",
+          "moved",
+          "qa_context"
+        ],
+        "tomatoes": [
+          "changed",
+          "mentioned",
+          "qa_context",
+          "state.add:shaded",
+          "state.remove:exposed"
+        ],
+        "umbrella": [
+          "changed",
+          "frame.patient",
+          "mentioned",
+          "moved",
+          "qa_context",
+          "state.add:open",
+          "state.remove:closed"
+        ]
+      },
+      "tag_evidence": {
+        "hero": {
+          "frame.actor": [
+            "frame.actor"
+          ],
+          "mentioned": [
+            "trace.referents"
+          ],
+          "qa_context": [
+            "claim:shade"
+          ],
+          "source_holder": [
+            "diff.location:umbrella"
+          ]
+        },
+        "umbrella": {
+          "frame.patient": [
+            "frame.patient"
+          ],
+          "mentioned": [
+            "trace.referents"
+          ],
+          "qa_context": [
+            "claim:shade"
+          ],
+          "changed": [
+            "replayed_entity_diff"
+          ],
+          "moved": [
+            "diff.location"
+          ],
+          "state.add:open": [
+            "diff.state"
+          ],
+          "state.remove:closed": [
+            "diff.state"
+          ]
+        },
+        "tie": {
+          "frame.instrument": [
+            "frame.instrument"
+          ],
+          "mentioned": [
+            "trace.referents"
+          ],
+          "qa_context": [
+            "claim:shade"
+          ],
+          "changed": [
+            "replayed_entity_diff"
+          ],
+          "moved": [
+            "diff.location"
+          ]
+        },
+        "pot": {
+          "frame.destination": [
+            "frame.destination"
+          ]
+        },
+        "tomatoes": {
+          "mentioned": [
+            "trace.referents"
+          ],
+          "qa_context": [
+            "claim:shade"
+          ],
+          "changed": [
+            "replayed_entity_diff"
+          ],
+          "state.add:shaded": [
+            "diff.state"
+          ],
+          "state.remove:exposed": [
+            "diff.state"
+          ]
+        },
+        "cloth": {
+          "qa_context": [
+            "claim:shade"
+          ]
+        }
+      },
+      "participants": [
+        "hero",
+        "pot",
+        "tie",
+        "tomatoes",
+        "umbrella"
+      ],
+      "dialogue": [],
+      "movements": [
+        {
+          "item": "tie",
+          "source": "drawer",
+          "destination": "umbrella"
+        },
+        {
+          "item": "umbrella",
+          "source": "hero",
+          "destination": "pot",
+          "source_holder": "hero"
+        }
+      ],
+      "effects": {
+        "tie": {
+          "location": {
+            "before": "drawer",
+            "after": "umbrella"
+          }
+        },
+        "tomatoes": {
+          "state": {
+            "before": [
+              "brown_leaf",
+              "drooping",
+              "dry",
+              "exposed"
+            ],
+            "after": [
+              "brown_leaf",
+              "drooping",
+              "dry",
+              "shaded"
+            ]
+          }
+        },
+        "umbrella": {
+          "location": {
+            "before": "hero",
+            "after": "pot"
+          },
+          "state": {
+            "before": [
+              "closed"
+            ],
+            "after": [
+              "open"
+            ]
+          }
+        }
+      },
+      "dependencies": [
+        {
+          "kind": "required_flag",
+          "key": "shade_broken",
+          "source_event": 6
+        },
+        {
+          "kind": "world_fact",
+          "key": "water",
+          "source_event": null
+        },
+        {
+          "kind": "world_fact",
+          "key": "plants",
+          "source_event": null
+        },
+        {
+          "kind": "world_fact",
+          "key": "shade",
+          "source_event": null
+        }
+      ],
+      "global_contract": {
+        "requires": [
+          "shade_broken"
+        ],
+        "excludes": [
+          "ended",
+          "protected"
+        ],
+        "flags_added": [
+          "protected"
+        ],
+        "flags_removed": []
+      },
+      "guard_reads_complete": false
+    },
+    {
+      "id": 8,
+      "kind": "repair_tap",
+      "frame": {
+        "kind": "repair_tap",
+        "actor": "caretaker",
+        "patient": "tap",
+        "instrument": "",
+        "destination": "",
+        "cause_ids": [
+          "water",
+          "plants",
+          "shade"
+        ]
+      },
+      "narrated": true,
+      "text": "Mr Bell fixed the tap.",
+      "entity_tags": {
+        "caretaker": [
+          "frame.actor",
+          "mentioned",
+          "qa_context"
+        ],
+        "tap": [
+          "changed",
+          "frame.patient",
+          "mentioned",
+          "qa_context",
+          "state.add:repaired",
+          "state.remove:broken"
+        ]
+      },
+      "tag_evidence": {
+        "caretaker": {
+          "frame.actor": [
+            "frame.actor"
+          ],
+          "mentioned": [
+            "trace.referents"
+          ],
+          "qa_context": [
+            "claim:repair"
+          ]
+        },
+        "tap": {
+          "frame.patient": [
+            "frame.patient"
+          ],
+          "mentioned": [
+            "trace.referents"
+          ],
+          "qa_context": [
+            "claim:repair"
+          ],
+          "changed": [
+            "replayed_entity_diff"
+          ],
+          "state.add:repaired": [
+            "diff.state"
+          ],
+          "state.remove:broken": [
+            "diff.state"
+          ]
+        }
+      },
+      "participants": [
+        "caretaker",
+        "tap"
+      ],
+      "dialogue": [],
+      "movements": [],
+      "effects": {
+        "tap": {
+          "state": {
+            "before": [
+              "broken"
+            ],
+            "after": [
+              "repaired"
+            ]
+          }
+        }
+      },
+      "dependencies": [
+        {
+          "kind": "required_flag",
+          "key": "protected",
+          "source_event": 7
+        },
+        {
+          "kind": "world_fact",
+          "key": "water",
+          "source_event": null
+        },
+        {
+          "kind": "world_fact",
+          "key": "plants",
+          "source_event": null
+        },
+        {
+          "kind": "world_fact",
+          "key": "shade",
+          "source_event": null
+        }
+      ],
+      "global_contract": {
+        "requires": [
+          "protected"
+        ],
+        "excludes": [
+          "ended",
+          "tap_repaired"
+        ],
+        "flags_added": [
+          "tap_repaired"
+        ],
+        "flags_removed": []
+      },
+      "guard_reads_complete": false
+    },
+    {
+      "id": 9,
+      "kind": "refill",
+      "frame": {
+        "kind": "refill",
+        "actor": "hero",
+        "patient": "tap",
+        "instrument": "can",
+        "destination": "",
+        "cause_ids": [
+          "water",
+          "plants",
+          "shade"
+        ]
+      },
+      "narrated": false,
+      "text": "",
+      "entity_tags": {
+        "can": [
+          "changed",
+          "concept.changed:Water",
+          "frame.instrument",
+          "state.add:full",
+          "state.remove:empty"
+        ],
+        "hero": [
+          "frame.actor"
+        ],
+        "tap": [
+          "frame.patient"
+        ]
+      },
+      "tag_evidence": {
+        "hero": {
+          "frame.actor": [
+            "frame.actor"
+          ]
+        },
+        "tap": {
+          "frame.patient": [
+            "frame.patient"
+          ]
+        },
+        "can": {
+          "frame.instrument": [
+            "frame.instrument"
+          ],
+          "changed": [
+            "replayed_entity_diff"
+          ],
+          "state.add:full": [
+            "diff.state"
+          ],
+          "state.remove:empty": [
+            "diff.state"
+          ],
+          "concept.changed:Water": [
+            "diff.memes"
+          ]
+        }
+      },
+      "participants": [
+        "can",
+        "hero",
+        "tap"
+      ],
+      "dialogue": [],
+      "movements": [],
+      "effects": {
+        "can": {
+          "memes": {
+            "before": {
+              "Water": 0
+            },
+            "after": {
+              "Water": 2
+            }
+          },
+          "state": {
+            "before": [
+              "empty"
+            ],
+            "after": [
+              "full"
+            ]
+          }
+        }
+      },
+      "dependencies": [
+        {
+          "kind": "required_flag",
+          "key": "tap_repaired",
+          "source_event": 8
+        },
+        {
+          "kind": "world_fact",
+          "key": "water",
+          "source_event": null
+        },
+        {
+          "kind": "world_fact",
+          "key": "plants",
+          "source_event": null
+        },
+        {
+          "kind": "world_fact",
+          "key": "shade",
+          "source_event": null
+        }
+      ],
+      "global_contract": {
+        "requires": [
+          "tap_repaired"
+        ],
+        "excludes": [
+          "ended",
+          "refilled"
+        ],
+        "flags_added": [
+          "refilled"
+        ],
+        "flags_removed": []
+      },
+      "guard_reads_complete": false
+    },
+    {
+      "id": 10,
+      "kind": "water_second",
+      "frame": {
+        "kind": "water_second",
+        "actor": "hero",
+        "patient": "tomatoes",
+        "instrument": "can",
+        "destination": "",
+        "cause_ids": [
+          "water",
+          "plants",
+          "shade"
+        ]
+      },
+      "narrated": true,
+      "text": "Nia watered the tomato seedlings with water from the tap.",
+      "entity_tags": {
+        "can": [
+          "changed",
+          "concept.changed:Water",
+          "frame.instrument",
+          "state.add:empty",
+          "state.remove:full"
+        ],
+        "caretaker": [
+          "qa_context"
+        ],
+        "hero": [
+          "frame.actor",
+          "mentioned",
+          "qa_context"
+        ],
+        "tap": [
+          "mentioned",
+          "qa_context"
+        ],
+        "tomatoes": [
+          "changed",
+          "concept.changed:Water",
+          "frame.patient",
+          "mentioned",
+          "qa_context",
+          "state.add:watered",
+          "state.remove:dry"
+        ]
+      },
+      "tag_evidence": {
+        "hero": {
+          "frame.actor": [
+            "frame.actor"
+          ],
+          "mentioned": [
+            "trace.referents"
+          ],
+          "qa_context": [
+            "claim:second_water"
+          ]
+        },
+        "tomatoes": {
+          "frame.patient": [
+            "frame.patient"
+          ],
+          "mentioned": [
+            "trace.referents"
+          ],
+          "qa_context": [
+            "claim:second_water"
+          ],
+          "changed": [
+            "replayed_entity_diff"
+          ],
+          "state.add:watered": [
+            "diff.state"
+          ],
+          "state.remove:dry": [
+            "diff.state"
+          ],
+          "concept.changed:Water": [
+            "diff.memes"
+          ]
+        },
+        "can": {
+          "frame.instrument": [
+            "frame.instrument"
+          ],
+          "changed": [
+            "replayed_entity_diff"
+          ],
+          "state.add:empty": [
+            "diff.state"
+          ],
+          "state.remove:full": [
+            "diff.state"
+          ],
+          "concept.changed:Water": [
+            "diff.memes"
+          ]
+        },
+        "tap": {
+          "mentioned": [
+            "trace.referents"
+          ],
+          "qa_context": [
+            "claim:second_water"
+          ]
+        },
+        "caretaker": {
+          "qa_context": [
+            "claim:second_water"
+          ]
+        }
+      },
+      "participants": [
+        "can",
+        "hero",
+        "tomatoes"
+      ],
+      "dialogue": [],
+      "movements": [],
+      "effects": {
+        "can": {
+          "memes": {
+            "before": {
+              "Water": 2
+            },
+            "after": {
+              "Water": 0
+            }
+          },
+          "state": {
+            "before": [
+              "full"
+            ],
+            "after": [
+              "empty"
+            ]
+          }
+        },
+        "tomatoes": {
+          "memes": {
+            "before": {
+              "Water": 0
+            },
+            "after": {
+              "Water": 2
+            }
+          },
+          "state": {
+            "before": [
+              "brown_leaf",
+              "drooping",
+              "dry",
+              "shaded"
+            ],
+            "after": [
+              "brown_leaf",
+              "drooping",
+              "shaded",
+              "watered"
+            ]
+          }
+        }
+      },
+      "dependencies": [
+        {
+          "kind": "required_flag",
+          "key": "refilled",
+          "source_event": 9
+        },
+        {
+          "kind": "world_fact",
+          "key": "water",
+          "source_event": null
+        },
+        {
+          "kind": "world_fact",
+          "key": "plants",
+          "source_event": null
+        },
+        {
+          "kind": "world_fact",
+          "key": "shade",
+          "source_event": null
+        }
+      ],
+      "global_contract": {
+        "requires": [
+          "refilled"
+        ],
+        "excludes": [
+          "ended",
+          "second_water"
+        ],
+        "flags_added": [
+          "second_water"
+        ],
+        "flags_removed": []
+      },
+      "guard_reads_complete": false
+    },
+    {
+      "id": 11,
+      "kind": "repair_shade",
+      "frame": {
+        "kind": "repair_shade",
+        "actor": "owner",
+        "patient": "cloth",
+        "instrument": "clip",
+        "destination": "",
+        "cause_ids": [
+          "water",
+          "plants",
+          "shade"
+        ]
+      },
+      "narrated": true,
+      "text": "Mrs Okafor fixed the shade cloth with the clip.",
+      "entity_tags": {
+        "clip": [
+          "changed",
+          "frame.instrument",
+          "mentioned",
+          "moved"
+        ],
+        "cloth": [
+          "changed",
+          "frame.patient",
+          "mentioned",
+          "state.add:repaired",
+          "state.remove:broken"
+        ],
+        "hero": [
+          "destination_holder"
+        ],
+        "owner": [
+          "changed",
+          "frame.actor",
+          "mentioned",
+          "moved",
+          "source_holder"
+        ],
+        "tie": [
+          "changed",
+          "moved"
+        ],
+        "umbrella": [
+          "changed",
+          "moved",
+          "state.add:closed",
+          "state.remove:open"
+        ]
+      },
+      "tag_evidence": {
+        "owner": {
+          "frame.actor": [
+            "frame.actor"
+          ],
+          "mentioned": [
+            "trace.referents"
+          ],
+          "source_holder": [
+            "diff.location:clip"
+          ],
+          "changed": [
+            "replayed_entity_diff"
+          ],
+          "moved": [
+            "diff.location"
+          ]
+        },
+        "cloth": {
+          "frame.patient": [
+            "frame.patient"
+          ],
+          "mentioned": [
+            "trace.referents"
+          ],
+          "changed": [
+            "replayed_entity_diff"
+          ],
+          "state.add:repaired": [
+            "diff.state"
+          ],
+          "state.remove:broken": [
+            "diff.state"
+          ]
+        },
+        "clip": {
+          "frame.instrument": [
+            "frame.instrument"
+          ],
+          "mentioned": [
+            "trace.referents"
+          ],
+          "changed": [
+            "replayed_entity_diff"
+          ],
+          "moved": [
+            "diff.location"
+          ]
+        },
+        "tie": {
+          "changed": [
+            "replayed_entity_diff"
+          ],
+          "moved": [
+            "diff.location"
+          ]
+        },
+        "umbrella": {
+          "changed": [
+            "replayed_entity_diff"
+          ],
+          "moved": [
+            "diff.location"
+          ],
+          "state.add:closed": [
+            "diff.state"
+          ],
+          "state.remove:open": [
+            "diff.state"
+          ]
+        },
+        "hero": {
+          "destination_holder": [
+            "diff.location:umbrella"
+          ]
+        }
+      },
+      "participants": [
+        "clip",
+        "cloth",
+        "hero",
+        "owner",
+        "tie",
+        "umbrella"
+      ],
+      "dialogue": [],
+      "movements": [
+        {
+          "item": "clip",
+          "source": "owner",
+          "destination": "cloth",
+          "source_holder": "owner"
+        },
+        {
+          "item": "owner",
+          "source": "outside",
+          "destination": "greenhouse"
+        },
+        {
+          "item": "tie",
+          "source": "umbrella",
+          "destination": "drawer"
+        },
+        {
+          "item": "umbrella",
+          "source": "pot",
+          "destination": "hero",
+          "destination_holder": "hero"
+        }
+      ],
+      "effects": {
+        "clip": {
+          "location": {
+            "before": "owner",
+            "after": "cloth"
+          }
+        },
+        "cloth": {
+          "state": {
+            "before": [
+              "broken"
+            ],
+            "after": [
+              "repaired"
+            ]
+          }
+        },
+        "owner": {
+          "location": {
+            "before": "outside",
+            "after": "greenhouse"
+          }
+        },
+        "tie": {
+          "location": {
+            "before": "umbrella",
+            "after": "drawer"
+          }
+        },
+        "umbrella": {
+          "location": {
+            "before": "pot",
+            "after": "hero"
+          },
+          "state": {
+            "before": [
+              "open"
+            ],
+            "after": [
+              "closed"
+            ]
+          }
+        }
+      },
+      "dependencies": [
+        {
+          "kind": "required_flag",
+          "key": "second_water",
+          "source_event": 10
+        },
+        {
+          "kind": "world_fact",
+          "key": "water",
+          "source_event": null
+        },
+        {
+          "kind": "world_fact",
+          "key": "plants",
+          "source_event": null
+        },
+        {
+          "kind": "world_fact",
+          "key": "shade",
+          "source_event": null
+        }
+      ],
+      "global_contract": {
+        "requires": [
+          "second_water"
+        ],
+        "excludes": [
+          "ended",
+          "shade_repaired"
+        ],
+        "flags_added": [
+          "shade_repaired"
+        ],
+        "flags_removed": []
+      },
+      "guard_reads_complete": false
+    },
+    {
+      "id": 12,
+      "kind": "return",
+      "frame": {
+        "kind": "return",
+        "actor": "hero",
+        "patient": "can",
+        "instrument": "",
+        "destination": "caretaker",
+        "cause_ids": [
+          "water",
+          "plants",
+          "shade"
+        ]
+      },
+      "narrated": false,
+      "text": "",
+      "entity_tags": {
+        "can": [
+          "changed",
+          "frame.patient",
+          "moved"
+        ],
+        "caretaker": [
+          "destination_holder",
+          "frame.destination"
+        ],
+        "hero": [
+          "frame.actor",
+          "source_holder"
+        ]
+      },
+      "tag_evidence": {
+        "hero": {
+          "frame.actor": [
+            "frame.actor"
+          ],
+          "source_holder": [
+            "diff.location:can"
+          ]
+        },
+        "can": {
+          "frame.patient": [
+            "frame.patient"
+          ],
+          "changed": [
+            "replayed_entity_diff"
+          ],
+          "moved": [
+            "diff.location"
+          ]
+        },
+        "caretaker": {
+          "frame.destination": [
+            "frame.destination"
+          ],
+          "destination_holder": [
+            "diff.location:can"
+          ]
+        }
+      },
+      "participants": [
+        "can",
+        "caretaker",
+        "hero"
+      ],
+      "dialogue": [],
+      "movements": [
+        {
+          "item": "can",
+          "source": "hero",
+          "destination": "caretaker",
+          "source_holder": "hero",
+          "destination_holder": "caretaker"
+        }
+      ],
+      "effects": {
+        "can": {
+          "location": {
+            "before": "hero",
+            "after": "caretaker"
+          }
+        }
+      },
+      "dependencies": [
+        {
+          "kind": "world_fact",
+          "key": "water",
+          "source_event": null
+        },
+        {
+          "kind": "world_fact",
+          "key": "plants",
+          "source_event": null
+        },
+        {
+          "kind": "world_fact",
+          "key": "shade",
+          "source_event": null
+        }
+      ],
+      "global_contract": {
+        "requires": [],
+        "excludes": [
+          "ended",
+          "returned"
+        ],
+        "flags_added": [
+          "returned"
+        ],
+        "flags_removed": []
+      },
+      "guard_reads_complete": false
+    },
+    {
+      "id": 13,
+      "kind": "ending",
+      "frame": {
+        "kind": "ending",
+        "actor": "hero",
+        "patient": "",
+        "instrument": "",
+        "destination": "",
+        "cause_ids": [
+          "water",
+          "plants",
+          "shade"
+        ]
+      },
+      "narrated": true,
+      "text": "Nia said, \u201cI promise I'll water the tomato seedlings first tomorrow.\u201d The brown leaf remained under the repaired shade cloth.",
+      "entity_tags": {
+        "caretaker": [
+          "listener"
+        ],
+        "cloth": [
+          "mentioned",
+          "qa_context"
+        ],
+        "hero": [
+          "changed",
+          "concept.changed:Care",
+          "frame.actor",
+          "mentioned",
+          "qa_context",
+          "speaker",
+          "state.add:promised_seedlings_first"
+        ],
+        "leaf": [
+          "mentioned"
+        ],
+        "sunflower": [
+          "changed",
+          "qa_context",
+          "state.add:upright"
+        ],
+        "tomatoes": [
+          "changed",
+          "mentioned",
+          "qa_context",
+          "state.add:upright",
+          "state.remove:drooping"
+        ]
+      },
+      "tag_evidence": {
+        "hero": {
+          "frame.actor": [
+            "frame.actor"
+          ],
+          "speaker": [
+            "trace.speakers",
+            "dialogue.listener:hero:caretaker"
+          ],
+          "mentioned": [
+            "trace.referents"
+          ],
+          "qa_context": [
+            "claim:outcome"
+          ],
+          "changed": [
+            "replayed_entity_diff"
+          ],
+          "state.add:promised_seedlings_first": [
+            "diff.state"
+          ],
+          "concept.changed:Care": [
+            "diff.memes"
+          ]
+        },
+        "cloth": {
+          "mentioned": [
+            "trace.referents"
+          ],
+          "qa_context": [
+            "claim:outcome"
+          ]
+        },
+        "leaf": {
+          "mentioned": [
+            "trace.referents"
+          ]
+        },
+        "tomatoes": {
+          "mentioned": [
+            "trace.referents"
+          ],
+          "qa_context": [
+            "claim:outcome"
+          ],
+          "changed": [
+            "replayed_entity_diff"
+          ],
+          "state.add:upright": [
+            "diff.state"
+          ],
+          "state.remove:drooping": [
+            "diff.state"
+          ]
+        },
+        "caretaker": {
+          "listener": [
+            "dialogue.listener:hero:caretaker"
+          ]
+        },
+        "sunflower": {
+          "qa_context": [
+            "claim:outcome"
+          ],
+          "changed": [
+            "replayed_entity_diff"
+          ],
+          "state.add:upright": [
+            "diff.state"
+          ]
+        }
+      },
+      "participants": [
+        "caretaker",
+        "hero",
+        "sunflower",
+        "tomatoes"
+      ],
+      "dialogue": [
+        {
+          "speaker": "hero",
+          "listener": "caretaker"
+        }
+      ],
+      "movements": [],
+      "effects": {
+        "hero": {
+          "memes": {
+            "before": {
+              "Care": 0.9,
+              "Desire": 0.7
+            },
+            "after": {
+              "Care": 1,
+              "Desire": 0.7
+            }
+          },
+          "state": {
+            "before": [],
+            "after": [
+              "promised_seedlings_first"
+            ]
+          }
+        },
+        "sunflower": {
+          "state": {
+            "before": [
+              "watered"
+            ],
+            "after": [
+              "upright",
+              "watered"
+            ]
+          }
+        },
+        "tomatoes": {
+          "state": {
+            "before": [
+              "brown_leaf",
+              "drooping",
+              "shaded",
+              "watered"
+            ],
+            "after": [
+              "brown_leaf",
+              "shaded",
+              "upright",
+              "watered"
+            ]
+          }
+        }
+      },
+      "dependencies": [
+        {
+          "kind": "required_flag",
+          "key": "returned",
+          "source_event": 12
+        },
+        {
+          "kind": "world_fact",
+          "key": "water",
+          "source_event": null
+        },
+        {
+          "kind": "world_fact",
+          "key": "plants",
+          "source_event": null
+        },
+        {
+          "kind": "world_fact",
+          "key": "shade",
+          "source_event": null
+        }
+      ],
+      "global_contract": {
+        "requires": [
+          "returned"
+        ],
+        "excludes": [
+          "ended"
+        ],
+        "flags_added": [
+          "ended"
+        ],
+        "flags_removed": []
+      },
+      "guard_reads_complete": false
+    }
+  ],
+  "entities": {
+    "barrel": {
+      "initial": {
+        "id": "barrel",
+        "noun": "rain barrel",
+        "kind": "object",
+        "location": "greenhouse",
+        "number": "singular",
+        "pronoun": "it",
+        "properties": [],
+        "state": [
+          "one_can_of_water"
+        ],
+        "memes": {
+          "Water": 2
+        }
+      },
+      "final": {
+        "id": "barrel",
+        "noun": "rain barrel",
+        "kind": "object",
+        "location": "greenhouse",
+        "number": "singular",
+        "pronoun": "it",
+        "properties": [],
+        "state": [
+          "empty"
+        ],
+        "memes": {
+          "Water": 0
+        }
+      },
+      "line": [
+        {
+          "event_id": 3,
+          "kind": "fill",
+          "tags": [
+            "changed",
+            "concept.changed:Water",
+            "frame.patient",
+            "mentioned",
+            "qa_context",
+            "state.add:empty",
+            "state.remove:one_can_of_water"
+          ],
+          "participation": "participant",
+          "own_effects": {
+            "memes": {
+              "before": {
+                "Water": 2
+              },
+              "after": {
+                "Water": 0
+              }
+            },
+            "state": {
+              "before": [
+                "one_can_of_water"
+              ],
+              "after": [
+                "empty"
+              ]
+            }
+          },
+          "peers": [
+            "can",
+            "hero"
+          ],
+          "shared_event": true,
+          "before": {
+            "id": "barrel",
+            "noun": "rain barrel",
+            "kind": "object",
+            "location": "greenhouse",
+            "number": "singular",
+            "pronoun": "it",
+            "properties": [],
+            "state": [
+              "one_can_of_water"
+            ],
+            "memes": {
+              "Water": 2
+            }
+          },
+          "after": {
+            "id": "barrel",
+            "noun": "rain barrel",
+            "kind": "object",
+            "location": "greenhouse",
+            "number": "singular",
+            "pronoun": "it",
+            "properties": [],
+            "state": [
+              "empty"
+            ],
+            "memes": {
+              "Water": 0
+            }
+          }
+        }
+      ]
+    },
+    "can": {
+      "initial": {
+        "id": "can",
+        "noun": "watering can",
+        "kind": "tool",
+        "location": "caretaker",
+        "number": "singular",
+        "pronoun": "it",
+        "properties": [
+          "borrowed",
+          "portable"
+        ],
+        "state": [
+          "empty"
+        ],
+        "memes": {
+          "Water": 0
+        }
+      },
+      "final": {
+        "id": "can",
+        "noun": "watering can",
+        "kind": "tool",
+        "location": "caretaker",
+        "number": "singular",
+        "pronoun": "it",
+        "properties": [
+          "borrowed",
+          "portable"
+        ],
+        "state": [
+          "empty"
+        ],
+        "memes": {
+          "Water": 0
+        }
+      },
+      "line": [
+        {
+          "event_id": 2,
+          "kind": "borrow",
+          "tags": [
+            "changed",
+            "frame.patient",
+            "moved"
+          ],
+          "participation": "participant",
+          "own_effects": {
+            "location": {
+              "before": "caretaker",
+              "after": "hero"
+            }
+          },
+          "peers": [
+            "caretaker",
+            "hero"
+          ],
+          "shared_event": true,
+          "before": {
+            "id": "can",
+            "noun": "watering can",
+            "kind": "tool",
+            "location": "caretaker",
+            "number": "singular",
+            "pronoun": "it",
+            "properties": [
+              "borrowed",
+              "portable"
+            ],
+            "state": [
+              "empty"
+            ],
+            "memes": {
+              "Water": 0
+            }
+          },
+          "after": {
+            "id": "can",
+            "noun": "watering can",
+            "kind": "tool",
+            "location": "hero",
+            "number": "singular",
+            "pronoun": "it",
+            "properties": [
+              "borrowed",
+              "portable"
+            ],
+            "state": [
+              "empty"
+            ],
+            "memes": {
+              "Water": 0
+            }
+          }
+        },
+        {
+          "event_id": 3,
+          "kind": "fill",
+          "tags": [
+            "changed",
+            "concept.changed:Water",
+            "frame.instrument",
+            "qa_context",
+            "state.add:full",
+            "state.remove:empty"
+          ],
+          "participation": "participant",
+          "own_effects": {
+            "memes": {
+              "before": {
+                "Water": 0
+              },
+              "after": {
+                "Water": 2
+              }
+            },
+            "state": {
+              "before": [
+                "empty"
+              ],
+              "after": [
+                "full"
+              ]
+            }
+          },
+          "peers": [
+            "barrel",
+            "hero"
+          ],
+          "shared_event": true,
+          "before": {
+            "id": "can",
+            "noun": "watering can",
+            "kind": "tool",
+            "location": "hero",
+            "number": "singular",
+            "pronoun": "it",
+            "properties": [
+              "borrowed",
+              "portable"
+            ],
+            "state": [
+              "empty"
+            ],
+            "memes": {
+              "Water": 0
+            }
+          },
+          "after": {
+            "id": "can",
+            "noun": "watering can",
+            "kind": "tool",
+            "location": "hero",
+            "number": "singular",
+            "pronoun": "it",
+            "properties": [
+              "borrowed",
+              "portable"
+            ],
+            "state": [
+              "full"
+            ],
+            "memes": {
+              "Water": 2
+            }
+          }
+        },
+        {
+          "event_id": 5,
+          "kind": "water_first",
+          "tags": [
+            "changed",
+            "concept.changed:Water",
+            "frame.instrument",
+            "mentioned",
+            "qa_context",
+            "state.add:empty",
+            "state.remove:full"
+          ],
+          "participation": "participant",
+          "own_effects": {
+            "memes": {
+              "before": {
+                "Water": 2
+              },
+              "after": {
+                "Water": 0
+              }
+            },
+            "state": {
+              "before": [
+                "full"
+              ],
+              "after": [
+                "empty"
+              ]
+            }
+          },
+          "peers": [
+            "hero",
+            "sunflower"
+          ],
+          "shared_event": true,
+          "before": {
+            "id": "can",
+            "noun": "watering can",
+            "kind": "tool",
+            "location": "hero",
+            "number": "singular",
+            "pronoun": "it",
+            "properties": [
+              "borrowed",
+              "portable"
+            ],
+            "state": [
+              "full"
+            ],
+            "memes": {
+              "Water": 2
+            }
+          },
+          "after": {
+            "id": "can",
+            "noun": "watering can",
+            "kind": "tool",
+            "location": "hero",
+            "number": "singular",
+            "pronoun": "it",
+            "properties": [
+              "borrowed",
+              "portable"
+            ],
+            "state": [
+              "empty"
+            ],
+            "memes": {
+              "Water": 0
+            }
+          }
+        },
+        {
+          "event_id": 9,
+          "kind": "refill",
+          "tags": [
+            "changed",
+            "concept.changed:Water",
+            "frame.instrument",
+            "state.add:full",
+            "state.remove:empty"
+          ],
+          "participation": "participant",
+          "own_effects": {
+            "memes": {
+              "before": {
+                "Water": 0
+              },
+              "after": {
+                "Water": 2
+              }
+            },
+            "state": {
+              "before": [
+                "empty"
+              ],
+              "after": [
+                "full"
+              ]
+            }
+          },
+          "peers": [
+            "hero",
+            "tap"
+          ],
+          "shared_event": true,
+          "before": {
+            "id": "can",
+            "noun": "watering can",
+            "kind": "tool",
+            "location": "hero",
+            "number": "singular",
+            "pronoun": "it",
+            "properties": [
+              "borrowed",
+              "portable"
+            ],
+            "state": [
+              "empty"
+            ],
+            "memes": {
+              "Water": 0
+            }
+          },
+          "after": {
+            "id": "can",
+            "noun": "watering can",
+            "kind": "tool",
+            "location": "hero",
+            "number": "singular",
+            "pronoun": "it",
+            "properties": [
+              "borrowed",
+              "portable"
+            ],
+            "state": [
+              "full"
+            ],
+            "memes": {
+              "Water": 2
+            }
+          }
+        },
+        {
+          "event_id": 10,
+          "kind": "water_second",
+          "tags": [
+            "changed",
+            "concept.changed:Water",
+            "frame.instrument",
+            "state.add:empty",
+            "state.remove:full"
+          ],
+          "participation": "participant",
+          "own_effects": {
+            "memes": {
+              "before": {
+                "Water": 2
+              },
+              "after": {
+                "Water": 0
+              }
+            },
+            "state": {
+              "before": [
+                "full"
+              ],
+              "after": [
+                "empty"
+              ]
+            }
+          },
+          "peers": [
+            "hero",
+            "tomatoes"
+          ],
+          "shared_event": true,
+          "before": {
+            "id": "can",
+            "noun": "watering can",
+            "kind": "tool",
+            "location": "hero",
+            "number": "singular",
+            "pronoun": "it",
+            "properties": [
+              "borrowed",
+              "portable"
+            ],
+            "state": [
+              "full"
+            ],
+            "memes": {
+              "Water": 2
+            }
+          },
+          "after": {
+            "id": "can",
+            "noun": "watering can",
+            "kind": "tool",
+            "location": "hero",
+            "number": "singular",
+            "pronoun": "it",
+            "properties": [
+              "borrowed",
+              "portable"
+            ],
+            "state": [
+              "empty"
+            ],
+            "memes": {
+              "Water": 0
+            }
+          }
+        },
+        {
+          "event_id": 12,
+          "kind": "return",
+          "tags": [
+            "changed",
+            "frame.patient",
+            "moved"
+          ],
+          "participation": "participant",
+          "own_effects": {
+            "location": {
+              "before": "hero",
+              "after": "caretaker"
+            }
+          },
+          "peers": [
+            "caretaker",
+            "hero"
+          ],
+          "shared_event": true,
+          "before": {
+            "id": "can",
+            "noun": "watering can",
+            "kind": "tool",
+            "location": "hero",
+            "number": "singular",
+            "pronoun": "it",
+            "properties": [
+              "borrowed",
+              "portable"
+            ],
+            "state": [
+              "empty"
+            ],
+            "memes": {
+              "Water": 0
+            }
+          },
+          "after": {
+            "id": "can",
+            "noun": "watering can",
+            "kind": "tool",
+            "location": "caretaker",
+            "number": "singular",
+            "pronoun": "it",
+            "properties": [
+              "borrowed",
+              "portable"
+            ],
+            "state": [
+              "empty"
+            ],
+            "memes": {
+              "Water": 0
+            }
+          }
+        }
+      ]
+    },
+    "caretaker": {
+      "initial": {
+        "id": "caretaker",
+        "noun": "Mr Bell",
+        "kind": "person",
+        "location": "greenhouse",
+        "number": "singular",
+        "pronoun": "he",
+        "properties": [
+          "animate",
+          "can_hold"
+        ],
+        "state": [],
+        "memes": {}
+      },
+      "final": {
+        "id": "caretaker",
+        "noun": "Mr Bell",
+        "kind": "person",
+        "location": "greenhouse",
+        "number": "singular",
+        "pronoun": "he",
+        "properties": [
+          "animate",
+          "can_hold"
+        ],
+        "state": [],
+        "memes": {}
+      },
+      "line": [
+        {
+          "event_id": 1,
+          "kind": "notice",
+          "tags": [
+            "mentioned",
+            "qa_context",
+            "speaker"
+          ],
+          "participation": "participant",
+          "own_effects": {},
+          "peers": [
+            "hero"
+          ],
+          "shared_event": true,
+          "before": {
+            "id": "caretaker",
+            "noun": "Mr Bell",
+            "kind": "person",
+            "location": "greenhouse",
+            "number": "singular",
+            "pronoun": "he",
+            "properties": [
+              "animate",
+              "can_hold"
+            ],
+            "state": [],
+            "memes": {}
+          },
+          "after": {
+            "id": "caretaker",
+            "noun": "Mr Bell",
+            "kind": "person",
+            "location": "greenhouse",
+            "number": "singular",
+            "pronoun": "he",
+            "properties": [
+              "animate",
+              "can_hold"
+            ],
+            "state": [],
+            "memes": {}
+          }
+        },
+        {
+          "event_id": 2,
+          "kind": "borrow",
+          "tags": [
+            "source_holder"
+          ],
+          "participation": "participant",
+          "own_effects": {},
+          "peers": [
+            "can",
+            "hero"
+          ],
+          "shared_event": true,
+          "before": {
+            "id": "caretaker",
+            "noun": "Mr Bell",
+            "kind": "person",
+            "location": "greenhouse",
+            "number": "singular",
+            "pronoun": "he",
+            "properties": [
+              "animate",
+              "can_hold"
+            ],
+            "state": [],
+            "memes": {}
+          },
+          "after": {
+            "id": "caretaker",
+            "noun": "Mr Bell",
+            "kind": "person",
+            "location": "greenhouse",
+            "number": "singular",
+            "pronoun": "he",
+            "properties": [
+              "animate",
+              "can_hold"
+            ],
+            "state": [],
+            "memes": {}
+          }
+        },
+        {
+          "event_id": 4,
+          "kind": "choose_flower",
+          "tags": [
+            "listener",
+            "mentioned"
+          ],
+          "participation": "participant",
+          "own_effects": {},
+          "peers": [
+            "hero"
+          ],
+          "shared_event": true,
+          "before": {
+            "id": "caretaker",
+            "noun": "Mr Bell",
+            "kind": "person",
+            "location": "greenhouse",
+            "number": "singular",
+            "pronoun": "he",
+            "properties": [
+              "animate",
+              "can_hold"
+            ],
+            "state": [],
+            "memes": {}
+          },
+          "after": {
+            "id": "caretaker",
+            "noun": "Mr Bell",
+            "kind": "person",
+            "location": "greenhouse",
+            "number": "singular",
+            "pronoun": "he",
+            "properties": [
+              "animate",
+              "can_hold"
+            ],
+            "state": [],
+            "memes": {}
+          }
+        },
+        {
+          "event_id": 8,
+          "kind": "repair_tap",
+          "tags": [
+            "frame.actor",
+            "mentioned",
+            "qa_context"
+          ],
+          "participation": "participant",
+          "own_effects": {},
+          "peers": [
+            "tap"
+          ],
+          "shared_event": true,
+          "before": {
+            "id": "caretaker",
+            "noun": "Mr Bell",
+            "kind": "person",
+            "location": "greenhouse",
+            "number": "singular",
+            "pronoun": "he",
+            "properties": [
+              "animate",
+              "can_hold"
+            ],
+            "state": [],
+            "memes": {}
+          },
+          "after": {
+            "id": "caretaker",
+            "noun": "Mr Bell",
+            "kind": "person",
+            "location": "greenhouse",
+            "number": "singular",
+            "pronoun": "he",
+            "properties": [
+              "animate",
+              "can_hold"
+            ],
+            "state": [],
+            "memes": {}
+          }
+        },
+        {
+          "event_id": 10,
+          "kind": "water_second",
+          "tags": [
+            "qa_context"
+          ],
+          "participation": "context",
+          "own_effects": {},
+          "peers": [],
+          "shared_event": false,
+          "before": {
+            "id": "caretaker",
+            "noun": "Mr Bell",
+            "kind": "person",
+            "location": "greenhouse",
+            "number": "singular",
+            "pronoun": "he",
+            "properties": [
+              "animate",
+              "can_hold"
+            ],
+            "state": [],
+            "memes": {}
+          },
+          "after": {
+            "id": "caretaker",
+            "noun": "Mr Bell",
+            "kind": "person",
+            "location": "greenhouse",
+            "number": "singular",
+            "pronoun": "he",
+            "properties": [
+              "animate",
+              "can_hold"
+            ],
+            "state": [],
+            "memes": {}
+          }
+        },
+        {
+          "event_id": 12,
+          "kind": "return",
+          "tags": [
+            "destination_holder",
+            "frame.destination"
+          ],
+          "participation": "participant",
+          "own_effects": {},
+          "peers": [
+            "can",
+            "hero"
+          ],
+          "shared_event": true,
+          "before": {
+            "id": "caretaker",
+            "noun": "Mr Bell",
+            "kind": "person",
+            "location": "greenhouse",
+            "number": "singular",
+            "pronoun": "he",
+            "properties": [
+              "animate",
+              "can_hold"
+            ],
+            "state": [],
+            "memes": {}
+          },
+          "after": {
+            "id": "caretaker",
+            "noun": "Mr Bell",
+            "kind": "person",
+            "location": "greenhouse",
+            "number": "singular",
+            "pronoun": "he",
+            "properties": [
+              "animate",
+              "can_hold"
+            ],
+            "state": [],
+            "memes": {}
+          }
+        },
+        {
+          "event_id": 13,
+          "kind": "ending",
+          "tags": [
+            "listener"
+          ],
+          "participation": "participant",
+          "own_effects": {},
+          "peers": [
+            "hero",
+            "sunflower",
+            "tomatoes"
+          ],
+          "shared_event": true,
+          "before": {
+            "id": "caretaker",
+            "noun": "Mr Bell",
+            "kind": "person",
+            "location": "greenhouse",
+            "number": "singular",
+            "pronoun": "he",
+            "properties": [
+              "animate",
+              "can_hold"
+            ],
+            "state": [],
+            "memes": {}
+          },
+          "after": {
+            "id": "caretaker",
+            "noun": "Mr Bell",
+            "kind": "person",
+            "location": "greenhouse",
+            "number": "singular",
+            "pronoun": "he",
+            "properties": [
+              "animate",
+              "can_hold"
+            ],
+            "state": [],
+            "memes": {}
+          }
+        }
+      ]
+    },
+    "clip": {
+      "initial": {
+        "id": "clip",
+        "noun": "clip",
+        "kind": "object",
+        "location": "owner",
+        "number": "singular",
+        "pronoun": "it",
+        "properties": [
+          "portable"
+        ],
+        "state": [],
+        "memes": {}
+      },
+      "final": {
+        "id": "clip",
+        "noun": "clip",
+        "kind": "object",
+        "location": "cloth",
+        "number": "singular",
+        "pronoun": "it",
+        "properties": [
+          "portable"
+        ],
+        "state": [],
+        "memes": {}
+      },
+      "line": [
+        {
+          "event_id": 11,
+          "kind": "repair_shade",
+          "tags": [
+            "changed",
+            "frame.instrument",
+            "mentioned",
+            "moved"
+          ],
+          "participation": "participant",
+          "own_effects": {
+            "location": {
+              "before": "owner",
+              "after": "cloth"
+            }
+          },
+          "peers": [
+            "cloth",
+            "hero",
+            "owner",
+            "tie",
+            "umbrella"
+          ],
+          "shared_event": true,
+          "before": {
+            "id": "clip",
+            "noun": "clip",
+            "kind": "object",
+            "location": "owner",
+            "number": "singular",
+            "pronoun": "it",
+            "properties": [
+              "portable"
+            ],
+            "state": [],
+            "memes": {}
+          },
+          "after": {
+            "id": "clip",
+            "noun": "clip",
+            "kind": "object",
+            "location": "cloth",
+            "number": "singular",
+            "pronoun": "it",
+            "properties": [
+              "portable"
+            ],
+            "state": [],
+            "memes": {}
+          }
+        }
+      ]
+    },
+    "cloth": {
+      "initial": {
+        "id": "cloth",
+        "noun": "shade cloth",
+        "kind": "object",
+        "location": "bench",
+        "number": "singular",
+        "pronoun": "it",
+        "properties": [],
+        "state": [
+          "intact"
+        ],
+        "memes": {}
+      },
+      "final": {
+        "id": "cloth",
+        "noun": "shade cloth",
+        "kind": "object",
+        "location": "bench",
+        "number": "singular",
+        "pronoun": "it",
+        "properties": [],
+        "state": [
+          "repaired"
+        ],
+        "memes": {}
+      },
+      "line": [
+        {
+          "event_id": 6,
+          "kind": "shade_break",
+          "tags": [
+            "changed",
+            "frame.actor",
+            "frame.patient",
+            "mentioned",
+            "qa_context",
+            "state.add:broken",
+            "state.remove:intact"
+          ],
+          "participation": "participant",
+          "own_effects": {
+            "state": {
+              "before": [
+                "intact"
+              ],
+              "after": [
+                "broken"
+              ]
+            }
+          },
+          "peers": [
+            "leaf",
+            "tomatoes"
+          ],
+          "shared_event": true,
+          "before": {
+            "id": "cloth",
+            "noun": "shade cloth",
+            "kind": "object",
+            "location": "bench",
+            "number": "singular",
+            "pronoun": "it",
+            "properties": [],
+            "state": [
+              "intact"
+            ],
+            "memes": {}
+          },
+          "after": {
+            "id": "cloth",
+            "noun": "shade cloth",
+            "kind": "object",
+            "location": "bench",
+            "number": "singular",
+            "pronoun": "it",
+            "properties": [],
+            "state": [
+              "broken"
+            ],
+            "memes": {}
+          }
+        },
+        {
+          "event_id": 7,
+          "kind": "secure",
+          "tags": [
+            "qa_context"
+          ],
+          "participation": "context",
+          "own_effects": {},
+          "peers": [],
+          "shared_event": false,
+          "before": {
+            "id": "cloth",
+            "noun": "shade cloth",
+            "kind": "object",
+            "location": "bench",
+            "number": "singular",
+            "pronoun": "it",
+            "properties": [],
+            "state": [
+              "broken"
+            ],
+            "memes": {}
+          },
+          "after": {
+            "id": "cloth",
+            "noun": "shade cloth",
+            "kind": "object",
+            "location": "bench",
+            "number": "singular",
+            "pronoun": "it",
+            "properties": [],
+            "state": [
+              "broken"
+            ],
+            "memes": {}
+          }
+        },
+        {
+          "event_id": 11,
+          "kind": "repair_shade",
+          "tags": [
+            "changed",
+            "frame.patient",
+            "mentioned",
+            "state.add:repaired",
+            "state.remove:broken"
+          ],
+          "participation": "participant",
+          "own_effects": {
+            "state": {
+              "before": [
+                "broken"
+              ],
+              "after": [
+                "repaired"
+              ]
+            }
+          },
+          "peers": [
+            "clip",
+            "hero",
+            "owner",
+            "tie",
+            "umbrella"
+          ],
+          "shared_event": true,
+          "before": {
+            "id": "cloth",
+            "noun": "shade cloth",
+            "kind": "object",
+            "location": "bench",
+            "number": "singular",
+            "pronoun": "it",
+            "properties": [],
+            "state": [
+              "broken"
+            ],
+            "memes": {}
+          },
+          "after": {
+            "id": "cloth",
+            "noun": "shade cloth",
+            "kind": "object",
+            "location": "bench",
+            "number": "singular",
+            "pronoun": "it",
+            "properties": [],
+            "state": [
+              "repaired"
+            ],
+            "memes": {}
+          }
+        },
+        {
+          "event_id": 13,
+          "kind": "ending",
+          "tags": [
+            "mentioned",
+            "qa_context"
+          ],
+          "participation": "context",
+          "own_effects": {},
+          "peers": [],
+          "shared_event": false,
+          "before": {
+            "id": "cloth",
+            "noun": "shade cloth",
+            "kind": "object",
+            "location": "bench",
+            "number": "singular",
+            "pronoun": "it",
+            "properties": [],
+            "state": [
+              "repaired"
+            ],
+            "memes": {}
+          },
+          "after": {
+            "id": "cloth",
+            "noun": "shade cloth",
+            "kind": "object",
+            "location": "bench",
+            "number": "singular",
+            "pronoun": "it",
+            "properties": [],
+            "state": [
+              "repaired"
+            ],
+            "memes": {}
+          }
+        }
+      ]
+    },
+    "hero": {
+      "initial": {
+        "id": "hero",
+        "noun": "Nia",
+        "kind": "person",
+        "location": "greenhouse",
+        "number": "singular",
+        "pronoun": "she",
+        "properties": [
+          "animate",
+          "can_hold"
+        ],
+        "state": [],
+        "memes": {
+          "Care": 0.9,
+          "Desire": 0.7
+        }
+      },
+      "final": {
+        "id": "hero",
+        "noun": "Nia",
+        "kind": "person",
+        "location": "greenhouse",
+        "number": "singular",
+        "pronoun": "she",
+        "properties": [
+          "animate",
+          "can_hold"
+        ],
+        "state": [
+          "promised_seedlings_first"
+        ],
+        "memes": {
+          "Care": 1,
+          "Desire": 0.7
+        }
+      },
+      "line": [
+        {
+          "event_id": 1,
+          "kind": "notice",
+          "tags": [
+            "frame.actor",
+            "listener",
+            "mentioned",
+            "qa_context"
+          ],
+          "participation": "participant",
+          "own_effects": {},
+          "peers": [
+            "caretaker"
+          ],
+          "shared_event": true,
+          "before": {
+            "id": "hero",
+            "noun": "Nia",
+            "kind": "person",
+            "location": "greenhouse",
+            "number": "singular",
+            "pronoun": "she",
+            "properties": [
+              "animate",
+              "can_hold"
+            ],
+            "state": [],
+            "memes": {
+              "Care": 0.9,
+              "Desire": 0.7
+            }
+          },
+          "after": {
+            "id": "hero",
+            "noun": "Nia",
+            "kind": "person",
+            "location": "greenhouse",
+            "number": "singular",
+            "pronoun": "she",
+            "properties": [
+              "animate",
+              "can_hold"
+            ],
+            "state": [],
+            "memes": {
+              "Care": 0.9,
+              "Desire": 0.7
+            }
+          }
+        },
+        {
+          "event_id": 2,
+          "kind": "borrow",
+          "tags": [
+            "destination_holder",
+            "frame.actor",
+            "frame.destination"
+          ],
+          "participation": "participant",
+          "own_effects": {},
+          "peers": [
+            "can",
+            "caretaker"
+          ],
+          "shared_event": true,
+          "before": {
+            "id": "hero",
+            "noun": "Nia",
+            "kind": "person",
+            "location": "greenhouse",
+            "number": "singular",
+            "pronoun": "she",
+            "properties": [
+              "animate",
+              "can_hold"
+            ],
+            "state": [],
+            "memes": {
+              "Care": 0.9,
+              "Desire": 0.7
+            }
+          },
+          "after": {
+            "id": "hero",
+            "noun": "Nia",
+            "kind": "person",
+            "location": "greenhouse",
+            "number": "singular",
+            "pronoun": "she",
+            "properties": [
+              "animate",
+              "can_hold"
+            ],
+            "state": [],
+            "memes": {
+              "Care": 0.9,
+              "Desire": 0.7
+            }
+          }
+        },
+        {
+          "event_id": 3,
+          "kind": "fill",
+          "tags": [
+            "frame.actor",
+            "qa_context"
+          ],
+          "participation": "participant",
+          "own_effects": {},
+          "peers": [
+            "barrel",
+            "can"
+          ],
+          "shared_event": true,
+          "before": {
+            "id": "hero",
+            "noun": "Nia",
+            "kind": "person",
+            "location": "greenhouse",
+            "number": "singular",
+            "pronoun": "she",
+            "properties": [
+              "animate",
+              "can_hold"
+            ],
+            "state": [],
+            "memes": {
+              "Care": 0.9,
+              "Desire": 0.7
+            }
+          },
+          "after": {
+            "id": "hero",
+            "noun": "Nia",
+            "kind": "person",
+            "location": "greenhouse",
+            "number": "singular",
+            "pronoun": "she",
+            "properties": [
+              "animate",
+              "can_hold"
+            ],
+            "state": [],
+            "memes": {
+              "Care": 0.9,
+              "Desire": 0.7
+            }
+          }
+        },
+        {
+          "event_id": 4,
+          "kind": "choose_flower",
+          "tags": [
+            "frame.actor",
+            "mentioned",
+            "qa_context",
+            "speaker"
+          ],
+          "participation": "participant",
+          "own_effects": {},
+          "peers": [
+            "caretaker"
+          ],
+          "shared_event": true,
+          "before": {
+            "id": "hero",
+            "noun": "Nia",
+            "kind": "person",
+            "location": "greenhouse",
+            "number": "singular",
+            "pronoun": "she",
+            "properties": [
+              "animate",
+              "can_hold"
+            ],
+            "state": [],
+            "memes": {
+              "Care": 0.9,
+              "Desire": 0.7
+            }
+          },
+          "after": {
+            "id": "hero",
+            "noun": "Nia",
+            "kind": "person",
+            "location": "greenhouse",
+            "number": "singular",
+            "pronoun": "she",
+            "properties": [
+              "animate",
+              "can_hold"
+            ],
+            "state": [],
+            "memes": {
+              "Care": 0.9,
+              "Desire": 0.7
+            }
+          }
+        },
+        {
+          "event_id": 5,
+          "kind": "water_first",
+          "tags": [
+            "frame.actor",
+            "mentioned",
+            "qa_context"
+          ],
+          "participation": "participant",
+          "own_effects": {},
+          "peers": [
+            "can",
+            "sunflower"
+          ],
+          "shared_event": true,
+          "before": {
+            "id": "hero",
+            "noun": "Nia",
+            "kind": "person",
+            "location": "greenhouse",
+            "number": "singular",
+            "pronoun": "she",
+            "properties": [
+              "animate",
+              "can_hold"
+            ],
+            "state": [],
+            "memes": {
+              "Care": 0.9,
+              "Desire": 0.7
+            }
+          },
+          "after": {
+            "id": "hero",
+            "noun": "Nia",
+            "kind": "person",
+            "location": "greenhouse",
+            "number": "singular",
+            "pronoun": "she",
+            "properties": [
+              "animate",
+              "can_hold"
+            ],
+            "state": [],
+            "memes": {
+              "Care": 0.9,
+              "Desire": 0.7
+            }
+          }
+        },
+        {
+          "event_id": 7,
+          "kind": "secure",
+          "tags": [
+            "frame.actor",
+            "mentioned",
+            "qa_context",
+            "source_holder"
+          ],
+          "participation": "participant",
+          "own_effects": {},
+          "peers": [
+            "pot",
+            "tie",
+            "tomatoes",
+            "umbrella"
+          ],
+          "shared_event": true,
+          "before": {
+            "id": "hero",
+            "noun": "Nia",
+            "kind": "person",
+            "location": "greenhouse",
+            "number": "singular",
+            "pronoun": "she",
+            "properties": [
+              "animate",
+              "can_hold"
+            ],
+            "state": [],
+            "memes": {
+              "Care": 0.9,
+              "Desire": 0.7
+            }
+          },
+          "after": {
+            "id": "hero",
+            "noun": "Nia",
+            "kind": "person",
+            "location": "greenhouse",
+            "number": "singular",
+            "pronoun": "she",
+            "properties": [
+              "animate",
+              "can_hold"
+            ],
+            "state": [],
+            "memes": {
+              "Care": 0.9,
+              "Desire": 0.7
+            }
+          }
+        },
+        {
+          "event_id": 9,
+          "kind": "refill",
+          "tags": [
+            "frame.actor"
+          ],
+          "participation": "participant",
+          "own_effects": {},
+          "peers": [
+            "can",
+            "tap"
+          ],
+          "shared_event": true,
+          "before": {
+            "id": "hero",
+            "noun": "Nia",
+            "kind": "person",
+            "location": "greenhouse",
+            "number": "singular",
+            "pronoun": "she",
+            "properties": [
+              "animate",
+              "can_hold"
+            ],
+            "state": [],
+            "memes": {
+              "Care": 0.9,
+              "Desire": 0.7
+            }
+          },
+          "after": {
+            "id": "hero",
+            "noun": "Nia",
+            "kind": "person",
+            "location": "greenhouse",
+            "number": "singular",
+            "pronoun": "she",
+            "properties": [
+              "animate",
+              "can_hold"
+            ],
+            "state": [],
+            "memes": {
+              "Care": 0.9,
+              "Desire": 0.7
+            }
+          }
+        },
+        {
+          "event_id": 10,
+          "kind": "water_second",
+          "tags": [
+            "frame.actor",
+            "mentioned",
+            "qa_context"
+          ],
+          "participation": "participant",
+          "own_effects": {},
+          "peers": [
+            "can",
+            "tomatoes"
+          ],
+          "shared_event": true,
+          "before": {
+            "id": "hero",
+            "noun": "Nia",
+            "kind": "person",
+            "location": "greenhouse",
+            "number": "singular",
+            "pronoun": "she",
+            "properties": [
+              "animate",
+              "can_hold"
+            ],
+            "state": [],
+            "memes": {
+              "Care": 0.9,
+              "Desire": 0.7
+            }
+          },
+          "after": {
+            "id": "hero",
+            "noun": "Nia",
+            "kind": "person",
+            "location": "greenhouse",
+            "number": "singular",
+            "pronoun": "she",
+            "properties": [
+              "animate",
+              "can_hold"
+            ],
+            "state": [],
+            "memes": {
+              "Care": 0.9,
+              "Desire": 0.7
+            }
+          }
+        },
+        {
+          "event_id": 11,
+          "kind": "repair_shade",
+          "tags": [
+            "destination_holder"
+          ],
+          "participation": "participant",
+          "own_effects": {},
+          "peers": [
+            "clip",
+            "cloth",
+            "owner",
+            "tie",
+            "umbrella"
+          ],
+          "shared_event": true,
+          "before": {
+            "id": "hero",
+            "noun": "Nia",
+            "kind": "person",
+            "location": "greenhouse",
+            "number": "singular",
+            "pronoun": "she",
+            "properties": [
+              "animate",
+              "can_hold"
+            ],
+            "state": [],
+            "memes": {
+              "Care": 0.9,
+              "Desire": 0.7
+            }
+          },
+          "after": {
+            "id": "hero",
+            "noun": "Nia",
+            "kind": "person",
+            "location": "greenhouse",
+            "number": "singular",
+            "pronoun": "she",
+            "properties": [
+              "animate",
+              "can_hold"
+            ],
+            "state": [],
+            "memes": {
+              "Care": 0.9,
+              "Desire": 0.7
+            }
+          }
+        },
+        {
+          "event_id": 12,
+          "kind": "return",
+          "tags": [
+            "frame.actor",
+            "source_holder"
+          ],
+          "participation": "participant",
+          "own_effects": {},
+          "peers": [
+            "can",
+            "caretaker"
+          ],
+          "shared_event": true,
+          "before": {
+            "id": "hero",
+            "noun": "Nia",
+            "kind": "person",
+            "location": "greenhouse",
+            "number": "singular",
+            "pronoun": "she",
+            "properties": [
+              "animate",
+              "can_hold"
+            ],
+            "state": [],
+            "memes": {
+              "Care": 0.9,
+              "Desire": 0.7
+            }
+          },
+          "after": {
+            "id": "hero",
+            "noun": "Nia",
+            "kind": "person",
+            "location": "greenhouse",
+            "number": "singular",
+            "pronoun": "she",
+            "properties": [
+              "animate",
+              "can_hold"
+            ],
+            "state": [],
+            "memes": {
+              "Care": 0.9,
+              "Desire": 0.7
+            }
+          }
+        },
+        {
+          "event_id": 13,
+          "kind": "ending",
+          "tags": [
+            "changed",
+            "concept.changed:Care",
+            "frame.actor",
+            "mentioned",
+            "qa_context",
+            "speaker",
+            "state.add:promised_seedlings_first"
+          ],
+          "participation": "participant",
+          "own_effects": {
+            "memes": {
+              "before": {
+                "Care": 0.9,
+                "Desire": 0.7
+              },
+              "after": {
+                "Care": 1,
+                "Desire": 0.7
+              }
+            },
+            "state": {
+              "before": [],
+              "after": [
+                "promised_seedlings_first"
+              ]
+            }
+          },
+          "peers": [
+            "caretaker",
+            "sunflower",
+            "tomatoes"
+          ],
+          "shared_event": true,
+          "before": {
+            "id": "hero",
+            "noun": "Nia",
+            "kind": "person",
+            "location": "greenhouse",
+            "number": "singular",
+            "pronoun": "she",
+            "properties": [
+              "animate",
+              "can_hold"
+            ],
+            "state": [],
+            "memes": {
+              "Care": 0.9,
+              "Desire": 0.7
+            }
+          },
+          "after": {
+            "id": "hero",
+            "noun": "Nia",
+            "kind": "person",
+            "location": "greenhouse",
+            "number": "singular",
+            "pronoun": "she",
+            "properties": [
+              "animate",
+              "can_hold"
+            ],
+            "state": [
+              "promised_seedlings_first"
+            ],
+            "memes": {
+              "Care": 1,
+              "Desire": 0.7
+            }
+          }
+        }
+      ]
+    },
+    "leaf": {
+      "initial": {
+        "id": "leaf",
+        "noun": "leaf",
+        "kind": "plant_part",
+        "location": "tomatoes",
+        "number": "singular",
+        "pronoun": "it",
+        "properties": [],
+        "state": [
+          "green"
+        ],
+        "memes": {}
+      },
+      "final": {
+        "id": "leaf",
+        "noun": "leaf",
+        "kind": "plant_part",
+        "location": "tomatoes",
+        "number": "singular",
+        "pronoun": "it",
+        "properties": [],
+        "state": [
+          "brown"
+        ],
+        "memes": {}
+      },
+      "line": [
+        {
+          "event_id": 6,
+          "kind": "shade_break",
+          "tags": [
+            "changed",
+            "state.add:brown",
+            "state.remove:green"
+          ],
+          "participation": "participant",
+          "own_effects": {
+            "state": {
+              "before": [
+                "green"
+              ],
+              "after": [
+                "brown"
+              ]
+            }
+          },
+          "peers": [
+            "cloth",
+            "tomatoes"
+          ],
+          "shared_event": true,
+          "before": {
+            "id": "leaf",
+            "noun": "leaf",
+            "kind": "plant_part",
+            "location": "tomatoes",
+            "number": "singular",
+            "pronoun": "it",
+            "properties": [],
+            "state": [
+              "green"
+            ],
+            "memes": {}
+          },
+          "after": {
+            "id": "leaf",
+            "noun": "leaf",
+            "kind": "plant_part",
+            "location": "tomatoes",
+            "number": "singular",
+            "pronoun": "it",
+            "properties": [],
+            "state": [
+              "brown"
+            ],
+            "memes": {}
+          }
+        },
+        {
+          "event_id": 13,
+          "kind": "ending",
+          "tags": [
+            "mentioned"
+          ],
+          "participation": "context",
+          "own_effects": {},
+          "peers": [],
+          "shared_event": false,
+          "before": {
+            "id": "leaf",
+            "noun": "leaf",
+            "kind": "plant_part",
+            "location": "tomatoes",
+            "number": "singular",
+            "pronoun": "it",
+            "properties": [],
+            "state": [
+              "brown"
+            ],
+            "memes": {}
+          },
+          "after": {
+            "id": "leaf",
+            "noun": "leaf",
+            "kind": "plant_part",
+            "location": "tomatoes",
+            "number": "singular",
+            "pronoun": "it",
+            "properties": [],
+            "state": [
+              "brown"
+            ],
+            "memes": {}
+          }
+        }
+      ]
+    },
+    "owner": {
+      "initial": {
+        "id": "owner",
+        "noun": "Mrs Okafor",
+        "kind": "person",
+        "location": "outside",
+        "number": "singular",
+        "pronoun": "she",
+        "properties": [
+          "animate",
+          "can_hold"
+        ],
+        "state": [],
+        "memes": {}
+      },
+      "final": {
+        "id": "owner",
+        "noun": "Mrs Okafor",
+        "kind": "person",
+        "location": "greenhouse",
+        "number": "singular",
+        "pronoun": "she",
+        "properties": [
+          "animate",
+          "can_hold"
+        ],
+        "state": [],
+        "memes": {}
+      },
+      "line": [
+        {
+          "event_id": 11,
+          "kind": "repair_shade",
+          "tags": [
+            "changed",
+            "frame.actor",
+            "mentioned",
+            "moved",
+            "source_holder"
+          ],
+          "participation": "participant",
+          "own_effects": {
+            "location": {
+              "before": "outside",
+              "after": "greenhouse"
+            }
+          },
+          "peers": [
+            "clip",
+            "cloth",
+            "hero",
+            "tie",
+            "umbrella"
+          ],
+          "shared_event": true,
+          "before": {
+            "id": "owner",
+            "noun": "Mrs Okafor",
+            "kind": "person",
+            "location": "outside",
+            "number": "singular",
+            "pronoun": "she",
+            "properties": [
+              "animate",
+              "can_hold"
+            ],
+            "state": [],
+            "memes": {}
+          },
+          "after": {
+            "id": "owner",
+            "noun": "Mrs Okafor",
+            "kind": "person",
+            "location": "greenhouse",
+            "number": "singular",
+            "pronoun": "she",
+            "properties": [
+              "animate",
+              "can_hold"
+            ],
+            "state": [],
+            "memes": {}
+          }
+        }
+      ]
+    },
+    "pot": {
+      "initial": {
+        "id": "pot",
+        "noun": "pot",
+        "kind": "object",
+        "location": "bench",
+        "number": "singular",
+        "pronoun": "it",
+        "properties": [],
+        "state": [
+          "weighted_with_pebbles"
+        ],
+        "memes": {}
+      },
+      "final": {
+        "id": "pot",
+        "noun": "pot",
+        "kind": "object",
+        "location": "bench",
+        "number": "singular",
+        "pronoun": "it",
+        "properties": [],
+        "state": [
+          "weighted_with_pebbles"
+        ],
+        "memes": {}
+      },
+      "line": [
+        {
+          "event_id": 7,
+          "kind": "secure",
+          "tags": [
+            "frame.destination"
+          ],
+          "participation": "participant",
+          "own_effects": {},
+          "peers": [
+            "hero",
+            "tie",
+            "tomatoes",
+            "umbrella"
+          ],
+          "shared_event": true,
+          "before": {
+            "id": "pot",
+            "noun": "pot",
+            "kind": "object",
+            "location": "bench",
+            "number": "singular",
+            "pronoun": "it",
+            "properties": [],
+            "state": [
+              "weighted_with_pebbles"
+            ],
+            "memes": {}
+          },
+          "after": {
+            "id": "pot",
+            "noun": "pot",
+            "kind": "object",
+            "location": "bench",
+            "number": "singular",
+            "pronoun": "it",
+            "properties": [],
+            "state": [
+              "weighted_with_pebbles"
+            ],
+            "memes": {}
+          }
+        }
+      ]
+    },
+    "sunflower": {
+      "initial": {
+        "id": "sunflower",
+        "noun": "sunflower",
+        "kind": "plant",
+        "location": "greenhouse",
+        "number": "singular",
+        "pronoun": "it",
+        "properties": [],
+        "state": [
+          "dry"
+        ],
+        "memes": {
+          "Water": 0
+        }
+      },
+      "final": {
+        "id": "sunflower",
+        "noun": "sunflower",
+        "kind": "plant",
+        "location": "greenhouse",
+        "number": "singular",
+        "pronoun": "it",
+        "properties": [],
+        "state": [
+          "upright",
+          "watered"
+        ],
+        "memes": {
+          "Water": 2
+        }
+      },
+      "line": [
+        {
+          "event_id": 1,
+          "kind": "notice",
+          "tags": [
+            "mentioned",
+            "qa_context"
+          ],
+          "participation": "context",
+          "own_effects": {},
+          "peers": [],
+          "shared_event": false,
+          "before": {
+            "id": "sunflower",
+            "noun": "sunflower",
+            "kind": "plant",
+            "location": "greenhouse",
+            "number": "singular",
+            "pronoun": "it",
+            "properties": [],
+            "state": [
+              "dry"
+            ],
+            "memes": {
+              "Water": 0
+            }
+          },
+          "after": {
+            "id": "sunflower",
+            "noun": "sunflower",
+            "kind": "plant",
+            "location": "greenhouse",
+            "number": "singular",
+            "pronoun": "it",
+            "properties": [],
+            "state": [
+              "dry"
+            ],
+            "memes": {
+              "Water": 0
+            }
+          }
+        },
+        {
+          "event_id": 4,
+          "kind": "choose_flower",
+          "tags": [
+            "mentioned",
+            "qa_context"
+          ],
+          "participation": "context",
+          "own_effects": {},
+          "peers": [],
+          "shared_event": false,
+          "before": {
+            "id": "sunflower",
+            "noun": "sunflower",
+            "kind": "plant",
+            "location": "greenhouse",
+            "number": "singular",
+            "pronoun": "it",
+            "properties": [],
+            "state": [
+              "dry"
+            ],
+            "memes": {
+              "Water": 0
+            }
+          },
+          "after": {
+            "id": "sunflower",
+            "noun": "sunflower",
+            "kind": "plant",
+            "location": "greenhouse",
+            "number": "singular",
+            "pronoun": "it",
+            "properties": [],
+            "state": [
+              "dry"
+            ],
+            "memes": {
+              "Water": 0
+            }
+          }
+        },
+        {
+          "event_id": 5,
+          "kind": "water_first",
+          "tags": [
+            "changed",
+            "concept.changed:Water",
+            "frame.patient",
+            "mentioned",
+            "qa_context",
+            "state.add:watered",
+            "state.remove:dry"
+          ],
+          "participation": "participant",
+          "own_effects": {
+            "memes": {
+              "before": {
+                "Water": 0
+              },
+              "after": {
+                "Water": 2
+              }
+            },
+            "state": {
+              "before": [
+                "dry"
+              ],
+              "after": [
+                "watered"
+              ]
+            }
+          },
+          "peers": [
+            "can",
+            "hero"
+          ],
+          "shared_event": true,
+          "before": {
+            "id": "sunflower",
+            "noun": "sunflower",
+            "kind": "plant",
+            "location": "greenhouse",
+            "number": "singular",
+            "pronoun": "it",
+            "properties": [],
+            "state": [
+              "dry"
+            ],
+            "memes": {
+              "Water": 0
+            }
+          },
+          "after": {
+            "id": "sunflower",
+            "noun": "sunflower",
+            "kind": "plant",
+            "location": "greenhouse",
+            "number": "singular",
+            "pronoun": "it",
+            "properties": [],
+            "state": [
+              "watered"
+            ],
+            "memes": {
+              "Water": 2
+            }
+          }
+        },
+        {
+          "event_id": 6,
+          "kind": "shade_break",
+          "tags": [
+            "qa_context"
+          ],
+          "participation": "context",
+          "own_effects": {},
+          "peers": [],
+          "shared_event": false,
+          "before": {
+            "id": "sunflower",
+            "noun": "sunflower",
+            "kind": "plant",
+            "location": "greenhouse",
+            "number": "singular",
+            "pronoun": "it",
+            "properties": [],
+            "state": [
+              "watered"
+            ],
+            "memes": {
+              "Water": 2
+            }
+          },
+          "after": {
+            "id": "sunflower",
+            "noun": "sunflower",
+            "kind": "plant",
+            "location": "greenhouse",
+            "number": "singular",
+            "pronoun": "it",
+            "properties": [],
+            "state": [
+              "watered"
+            ],
+            "memes": {
+              "Water": 2
+            }
+          }
+        },
+        {
+          "event_id": 13,
+          "kind": "ending",
+          "tags": [
+            "changed",
+            "qa_context",
+            "state.add:upright"
+          ],
+          "participation": "participant",
+          "own_effects": {
+            "state": {
+              "before": [
+                "watered"
+              ],
+              "after": [
+                "upright",
+                "watered"
+              ]
+            }
+          },
+          "peers": [
+            "caretaker",
+            "hero",
+            "tomatoes"
+          ],
+          "shared_event": true,
+          "before": {
+            "id": "sunflower",
+            "noun": "sunflower",
+            "kind": "plant",
+            "location": "greenhouse",
+            "number": "singular",
+            "pronoun": "it",
+            "properties": [],
+            "state": [
+              "watered"
+            ],
+            "memes": {
+              "Water": 2
+            }
+          },
+          "after": {
+            "id": "sunflower",
+            "noun": "sunflower",
+            "kind": "plant",
+            "location": "greenhouse",
+            "number": "singular",
+            "pronoun": "it",
+            "properties": [],
+            "state": [
+              "upright",
+              "watered"
+            ],
+            "memes": {
+              "Water": 2
+            }
+          }
+        }
+      ]
+    },
+    "tap": {
+      "initial": {
+        "id": "tap",
+        "noun": "tap",
+        "kind": "object",
+        "location": "greenhouse",
+        "number": "singular",
+        "pronoun": "it",
+        "properties": [],
+        "state": [
+          "broken"
+        ],
+        "memes": {}
+      },
+      "final": {
+        "id": "tap",
+        "noun": "tap",
+        "kind": "object",
+        "location": "greenhouse",
+        "number": "singular",
+        "pronoun": "it",
+        "properties": [],
+        "state": [
+          "repaired"
+        ],
+        "memes": {}
+      },
+      "line": [
+        {
+          "event_id": 1,
+          "kind": "notice",
+          "tags": [
+            "mentioned",
+            "qa_context"
+          ],
+          "participation": "context",
+          "own_effects": {},
+          "peers": [],
+          "shared_event": false,
+          "before": {
+            "id": "tap",
+            "noun": "tap",
+            "kind": "object",
+            "location": "greenhouse",
+            "number": "singular",
+            "pronoun": "it",
+            "properties": [],
+            "state": [
+              "broken"
+            ],
+            "memes": {}
+          },
+          "after": {
+            "id": "tap",
+            "noun": "tap",
+            "kind": "object",
+            "location": "greenhouse",
+            "number": "singular",
+            "pronoun": "it",
+            "properties": [],
+            "state": [
+              "broken"
+            ],
+            "memes": {}
+          }
+        },
+        {
+          "event_id": 8,
+          "kind": "repair_tap",
+          "tags": [
+            "changed",
+            "frame.patient",
+            "mentioned",
+            "qa_context",
+            "state.add:repaired",
+            "state.remove:broken"
+          ],
+          "participation": "participant",
+          "own_effects": {
+            "state": {
+              "before": [
+                "broken"
+              ],
+              "after": [
+                "repaired"
+              ]
+            }
+          },
+          "peers": [
+            "caretaker"
+          ],
+          "shared_event": true,
+          "before": {
+            "id": "tap",
+            "noun": "tap",
+            "kind": "object",
+            "location": "greenhouse",
+            "number": "singular",
+            "pronoun": "it",
+            "properties": [],
+            "state": [
+              "broken"
+            ],
+            "memes": {}
+          },
+          "after": {
+            "id": "tap",
+            "noun": "tap",
+            "kind": "object",
+            "location": "greenhouse",
+            "number": "singular",
+            "pronoun": "it",
+            "properties": [],
+            "state": [
+              "repaired"
+            ],
+            "memes": {}
+          }
+        },
+        {
+          "event_id": 9,
+          "kind": "refill",
+          "tags": [
+            "frame.patient"
+          ],
+          "participation": "participant",
+          "own_effects": {},
+          "peers": [
+            "can",
+            "hero"
+          ],
+          "shared_event": true,
+          "before": {
+            "id": "tap",
+            "noun": "tap",
+            "kind": "object",
+            "location": "greenhouse",
+            "number": "singular",
+            "pronoun": "it",
+            "properties": [],
+            "state": [
+              "repaired"
+            ],
+            "memes": {}
+          },
+          "after": {
+            "id": "tap",
+            "noun": "tap",
+            "kind": "object",
+            "location": "greenhouse",
+            "number": "singular",
+            "pronoun": "it",
+            "properties": [],
+            "state": [
+              "repaired"
+            ],
+            "memes": {}
+          }
+        },
+        {
+          "event_id": 10,
+          "kind": "water_second",
+          "tags": [
+            "mentioned",
+            "qa_context"
+          ],
+          "participation": "context",
+          "own_effects": {},
+          "peers": [],
+          "shared_event": false,
+          "before": {
+            "id": "tap",
+            "noun": "tap",
+            "kind": "object",
+            "location": "greenhouse",
+            "number": "singular",
+            "pronoun": "it",
+            "properties": [],
+            "state": [
+              "repaired"
+            ],
+            "memes": {}
+          },
+          "after": {
+            "id": "tap",
+            "noun": "tap",
+            "kind": "object",
+            "location": "greenhouse",
+            "number": "singular",
+            "pronoun": "it",
+            "properties": [],
+            "state": [
+              "repaired"
+            ],
+            "memes": {}
+          }
+        }
+      ]
+    },
+    "tie": {
+      "initial": {
+        "id": "tie",
+        "noun": "garden tie",
+        "kind": "object",
+        "location": "drawer",
+        "number": "singular",
+        "pronoun": "it",
+        "properties": [
+          "portable"
+        ],
+        "state": [],
+        "memes": {}
+      },
+      "final": {
+        "id": "tie",
+        "noun": "garden tie",
+        "kind": "object",
+        "location": "drawer",
+        "number": "singular",
+        "pronoun": "it",
+        "properties": [
+          "portable"
+        ],
+        "state": [],
+        "memes": {}
+      },
+      "line": [
+        {
+          "event_id": 7,
+          "kind": "secure",
+          "tags": [
+            "changed",
+            "frame.instrument",
+            "mentioned",
+            "moved",
+            "qa_context"
+          ],
+          "participation": "participant",
+          "own_effects": {
+            "location": {
+              "before": "drawer",
+              "after": "umbrella"
+            }
+          },
+          "peers": [
+            "hero",
+            "pot",
+            "tomatoes",
+            "umbrella"
+          ],
+          "shared_event": true,
+          "before": {
+            "id": "tie",
+            "noun": "garden tie",
+            "kind": "object",
+            "location": "drawer",
+            "number": "singular",
+            "pronoun": "it",
+            "properties": [
+              "portable"
+            ],
+            "state": [],
+            "memes": {}
+          },
+          "after": {
+            "id": "tie",
+            "noun": "garden tie",
+            "kind": "object",
+            "location": "umbrella",
+            "number": "singular",
+            "pronoun": "it",
+            "properties": [
+              "portable"
+            ],
+            "state": [],
+            "memes": {}
+          }
+        },
+        {
+          "event_id": 11,
+          "kind": "repair_shade",
+          "tags": [
+            "changed",
+            "moved"
+          ],
+          "participation": "participant",
+          "own_effects": {
+            "location": {
+              "before": "umbrella",
+              "after": "drawer"
+            }
+          },
+          "peers": [
+            "clip",
+            "cloth",
+            "hero",
+            "owner",
+            "umbrella"
+          ],
+          "shared_event": true,
+          "before": {
+            "id": "tie",
+            "noun": "garden tie",
+            "kind": "object",
+            "location": "umbrella",
+            "number": "singular",
+            "pronoun": "it",
+            "properties": [
+              "portable"
+            ],
+            "state": [],
+            "memes": {}
+          },
+          "after": {
+            "id": "tie",
+            "noun": "garden tie",
+            "kind": "object",
+            "location": "drawer",
+            "number": "singular",
+            "pronoun": "it",
+            "properties": [
+              "portable"
+            ],
+            "state": [],
+            "memes": {}
+          }
+        }
+      ]
+    },
+    "tomatoes": {
+      "initial": {
+        "id": "tomatoes",
+        "noun": "tomato seedling",
+        "kind": "plant",
+        "location": "bench",
+        "number": "plural",
+        "pronoun": "it",
+        "properties": [],
+        "state": [
+          "drooping",
+          "dry"
+        ],
+        "memes": {
+          "Water": 0
+        }
+      },
+      "final": {
+        "id": "tomatoes",
+        "noun": "tomato seedling",
+        "kind": "plant",
+        "location": "bench",
+        "number": "plural",
+        "pronoun": "it",
+        "properties": [],
+        "state": [
+          "brown_leaf",
+          "shaded",
+          "upright",
+          "watered"
+        ],
+        "memes": {
+          "Water": 2
+        }
+      },
+      "line": [
+        {
+          "event_id": 1,
+          "kind": "notice",
+          "tags": [
+            "mentioned",
+            "qa_context"
+          ],
+          "participation": "context",
+          "own_effects": {},
+          "peers": [],
+          "shared_event": false,
+          "before": {
+            "id": "tomatoes",
+            "noun": "tomato seedling",
+            "kind": "plant",
+            "location": "bench",
+            "number": "plural",
+            "pronoun": "it",
+            "properties": [],
+            "state": [
+              "drooping",
+              "dry"
+            ],
+            "memes": {
+              "Water": 0
+            }
+          },
+          "after": {
+            "id": "tomatoes",
+            "noun": "tomato seedling",
+            "kind": "plant",
+            "location": "bench",
+            "number": "plural",
+            "pronoun": "it",
+            "properties": [],
+            "state": [
+              "drooping",
+              "dry"
+            ],
+            "memes": {
+              "Water": 0
+            }
+          }
+        },
+        {
+          "event_id": 4,
+          "kind": "choose_flower",
+          "tags": [
+            "qa_context"
+          ],
+          "participation": "context",
+          "own_effects": {},
+          "peers": [],
+          "shared_event": false,
+          "before": {
+            "id": "tomatoes",
+            "noun": "tomato seedling",
+            "kind": "plant",
+            "location": "bench",
+            "number": "plural",
+            "pronoun": "it",
+            "properties": [],
+            "state": [
+              "drooping",
+              "dry"
+            ],
+            "memes": {
+              "Water": 0
+            }
+          },
+          "after": {
+            "id": "tomatoes",
+            "noun": "tomato seedling",
+            "kind": "plant",
+            "location": "bench",
+            "number": "plural",
+            "pronoun": "it",
+            "properties": [],
+            "state": [
+              "drooping",
+              "dry"
+            ],
+            "memes": {
+              "Water": 0
+            }
+          }
+        },
+        {
+          "event_id": 6,
+          "kind": "shade_break",
+          "tags": [
+            "changed",
+            "mentioned",
+            "qa_context",
+            "state.add:brown_leaf",
+            "state.add:exposed"
+          ],
+          "participation": "participant",
+          "own_effects": {
+            "state": {
+              "before": [
+                "drooping",
+                "dry"
+              ],
+              "after": [
+                "brown_leaf",
+                "drooping",
+                "dry",
+                "exposed"
+              ]
+            }
+          },
+          "peers": [
+            "cloth",
+            "leaf"
+          ],
+          "shared_event": true,
+          "before": {
+            "id": "tomatoes",
+            "noun": "tomato seedling",
+            "kind": "plant",
+            "location": "bench",
+            "number": "plural",
+            "pronoun": "it",
+            "properties": [],
+            "state": [
+              "drooping",
+              "dry"
+            ],
+            "memes": {
+              "Water": 0
+            }
+          },
+          "after": {
+            "id": "tomatoes",
+            "noun": "tomato seedling",
+            "kind": "plant",
+            "location": "bench",
+            "number": "plural",
+            "pronoun": "it",
+            "properties": [],
+            "state": [
+              "brown_leaf",
+              "drooping",
+              "dry",
+              "exposed"
+            ],
+            "memes": {
+              "Water": 0
+            }
+          }
+        },
+        {
+          "event_id": 7,
+          "kind": "secure",
+          "tags": [
+            "changed",
+            "mentioned",
+            "qa_context",
+            "state.add:shaded",
+            "state.remove:exposed"
+          ],
+          "participation": "participant",
+          "own_effects": {
+            "state": {
+              "before": [
+                "brown_leaf",
+                "drooping",
+                "dry",
+                "exposed"
+              ],
+              "after": [
+                "brown_leaf",
+                "drooping",
+                "dry",
+                "shaded"
+              ]
+            }
+          },
+          "peers": [
+            "hero",
+            "pot",
+            "tie",
+            "umbrella"
+          ],
+          "shared_event": true,
+          "before": {
+            "id": "tomatoes",
+            "noun": "tomato seedling",
+            "kind": "plant",
+            "location": "bench",
+            "number": "plural",
+            "pronoun": "it",
+            "properties": [],
+            "state": [
+              "brown_leaf",
+              "drooping",
+              "dry",
+              "exposed"
+            ],
+            "memes": {
+              "Water": 0
+            }
+          },
+          "after": {
+            "id": "tomatoes",
+            "noun": "tomato seedling",
+            "kind": "plant",
+            "location": "bench",
+            "number": "plural",
+            "pronoun": "it",
+            "properties": [],
+            "state": [
+              "brown_leaf",
+              "drooping",
+              "dry",
+              "shaded"
+            ],
+            "memes": {
+              "Water": 0
+            }
+          }
+        },
+        {
+          "event_id": 10,
+          "kind": "water_second",
+          "tags": [
+            "changed",
+            "concept.changed:Water",
+            "frame.patient",
+            "mentioned",
+            "qa_context",
+            "state.add:watered",
+            "state.remove:dry"
+          ],
+          "participation": "participant",
+          "own_effects": {
+            "memes": {
+              "before": {
+                "Water": 0
+              },
+              "after": {
+                "Water": 2
+              }
+            },
+            "state": {
+              "before": [
+                "brown_leaf",
+                "drooping",
+                "dry",
+                "shaded"
+              ],
+              "after": [
+                "brown_leaf",
+                "drooping",
+                "shaded",
+                "watered"
+              ]
+            }
+          },
+          "peers": [
+            "can",
+            "hero"
+          ],
+          "shared_event": true,
+          "before": {
+            "id": "tomatoes",
+            "noun": "tomato seedling",
+            "kind": "plant",
+            "location": "bench",
+            "number": "plural",
+            "pronoun": "it",
+            "properties": [],
+            "state": [
+              "brown_leaf",
+              "drooping",
+              "dry",
+              "shaded"
+            ],
+            "memes": {
+              "Water": 0
+            }
+          },
+          "after": {
+            "id": "tomatoes",
+            "noun": "tomato seedling",
+            "kind": "plant",
+            "location": "bench",
+            "number": "plural",
+            "pronoun": "it",
+            "properties": [],
+            "state": [
+              "brown_leaf",
+              "drooping",
+              "shaded",
+              "watered"
+            ],
+            "memes": {
+              "Water": 2
+            }
+          }
+        },
+        {
+          "event_id": 13,
+          "kind": "ending",
+          "tags": [
+            "changed",
+            "mentioned",
+            "qa_context",
+            "state.add:upright",
+            "state.remove:drooping"
+          ],
+          "participation": "participant",
+          "own_effects": {
+            "state": {
+              "before": [
+                "brown_leaf",
+                "drooping",
+                "shaded",
+                "watered"
+              ],
+              "after": [
+                "brown_leaf",
+                "shaded",
+                "upright",
+                "watered"
+              ]
+            }
+          },
+          "peers": [
+            "caretaker",
+            "hero",
+            "sunflower"
+          ],
+          "shared_event": true,
+          "before": {
+            "id": "tomatoes",
+            "noun": "tomato seedling",
+            "kind": "plant",
+            "location": "bench",
+            "number": "plural",
+            "pronoun": "it",
+            "properties": [],
+            "state": [
+              "brown_leaf",
+              "drooping",
+              "shaded",
+              "watered"
+            ],
+            "memes": {
+              "Water": 2
+            }
+          },
+          "after": {
+            "id": "tomatoes",
+            "noun": "tomato seedling",
+            "kind": "plant",
+            "location": "bench",
+            "number": "plural",
+            "pronoun": "it",
+            "properties": [],
+            "state": [
+              "brown_leaf",
+              "shaded",
+              "upright",
+              "watered"
+            ],
+            "memes": {
+              "Water": 2
+            }
+          }
+        }
+      ]
+    },
+    "umbrella": {
+      "initial": {
+        "id": "umbrella",
+        "noun": "umbrella",
+        "kind": "tool",
+        "location": "hero",
+        "number": "singular",
+        "pronoun": "it",
+        "properties": [
+          "portable"
+        ],
+        "state": [
+          "closed"
+        ],
+        "memes": {}
+      },
+      "final": {
+        "id": "umbrella",
+        "noun": "umbrella",
+        "kind": "tool",
+        "location": "hero",
+        "number": "singular",
+        "pronoun": "it",
+        "properties": [
+          "portable"
+        ],
+        "state": [
+          "closed"
+        ],
+        "memes": {}
+      },
+      "line": [
+        {
+          "event_id": 7,
+          "kind": "secure",
+          "tags": [
+            "changed",
+            "frame.patient",
+            "mentioned",
+            "moved",
+            "qa_context",
+            "state.add:open",
+            "state.remove:closed"
+          ],
+          "participation": "participant",
+          "own_effects": {
+            "location": {
+              "before": "hero",
+              "after": "pot"
+            },
+            "state": {
+              "before": [
+                "closed"
+              ],
+              "after": [
+                "open"
+              ]
+            }
+          },
+          "peers": [
+            "hero",
+            "pot",
+            "tie",
+            "tomatoes"
+          ],
+          "shared_event": true,
+          "before": {
+            "id": "umbrella",
+            "noun": "umbrella",
+            "kind": "tool",
+            "location": "hero",
+            "number": "singular",
+            "pronoun": "it",
+            "properties": [
+              "portable"
+            ],
+            "state": [
+              "closed"
+            ],
+            "memes": {}
+          },
+          "after": {
+            "id": "umbrella",
+            "noun": "umbrella",
+            "kind": "tool",
+            "location": "pot",
+            "number": "singular",
+            "pronoun": "it",
+            "properties": [
+              "portable"
+            ],
+            "state": [
+              "open"
+            ],
+            "memes": {}
+          }
+        },
+        {
+          "event_id": 11,
+          "kind": "repair_shade",
+          "tags": [
+            "changed",
+            "moved",
+            "state.add:closed",
+            "state.remove:open"
+          ],
+          "participation": "participant",
+          "own_effects": {
+            "location": {
+              "before": "pot",
+              "after": "hero"
+            },
+            "state": {
+              "before": [
+                "open"
+              ],
+              "after": [
+                "closed"
+              ]
+            }
+          },
+          "peers": [
+            "clip",
+            "cloth",
+            "hero",
+            "owner",
+            "tie"
+          ],
+          "shared_event": true,
+          "before": {
+            "id": "umbrella",
+            "noun": "umbrella",
+            "kind": "tool",
+            "location": "pot",
+            "number": "singular",
+            "pronoun": "it",
+            "properties": [
+              "portable"
+            ],
+            "state": [
+              "open"
+            ],
+            "memes": {}
+          },
+          "after": {
+            "id": "umbrella",
+            "noun": "umbrella",
+            "kind": "tool",
+            "location": "hero",
+            "number": "singular",
+            "pronoun": "it",
+            "properties": [
+              "portable"
+            ],
+            "state": [
+              "closed"
+            ],
+            "memes": {}
+          }
+        }
+      ]
+    }
+  },
+  "limitations": [
+    "Declared dependencies are not a complete Python guard read set.",
+    "Frame actor/patient are coarse roles; compound scenes can involve additional people.",
+    "Holder tags describe physical possession, not legal ownership or intent.",
+    "Local lines project shared events; they are not independently executable."
+  ]
+}

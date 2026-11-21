@@ -1,0 +1,726 @@
+{
+  "recipes": {
+    "hat.portal_bound": {
+      "intent": "reveal",
+      "anchors": [
+        "rabbit",
+        "hat"
+      ],
+      "roles": {
+        "actor": {
+          "kind": "person",
+          "prototype": "magic:performer",
+          "properties": [
+            "can_hold",
+            "can_portal"
+          ],
+          "location": "@setting"
+        },
+        "audience": {
+          "kind": "person",
+          "prototype": "magic:audience",
+          "properties": [],
+          "location": "@setting"
+        },
+        "rabbit": {
+          "kind": "animal",
+          "prototype": "magic:rabbit",
+          "properties": [
+            "rabbit",
+            "calm"
+          ],
+          "location": "source"
+        },
+        "hat": {
+          "kind": "object",
+          "prototype": "magic:hat",
+          "properties": [
+            "hat",
+            "rabbit_capacity",
+            "portal_hat"
+          ],
+          "location": "stage",
+          "state": [
+            "bound"
+          ]
+        },
+        "stage": {
+          "kind": "place",
+          "prototype": "magic:stage",
+          "properties": [
+            "reachable"
+          ],
+          "location": "@setting",
+          "from_location": "hat"
+        },
+        "source": {
+          "kind": "place",
+          "prototype": "magic:source",
+          "properties": [
+            "reachable"
+          ],
+          "location": "@setting",
+          "from_location": "rabbit"
+        },
+        "food": {
+          "kind": "food",
+          "prototype": "magic:food",
+          "properties": [
+            "rabbit_food"
+          ],
+          "location": "stage"
+        },
+        "wand": {
+          "kind": "tool",
+          "prototype": "magic:wand",
+          "properties": [
+            "portal_focus"
+          ],
+          "location": "actor"
+        },
+        "ribbon": {
+          "kind": "object",
+          "prototype": "magic:ribbon",
+          "properties": [
+            "tie"
+          ],
+          "location": "hat",
+          "state": [
+            "tied"
+          ]
+        }
+      },
+      "tags": [
+        "magic",
+        "obstacle",
+        "recovery",
+        "gentle"
+      ],
+      "weight": 3,
+      "source": "authored_hat:Merlin_bound_hat",
+      "steps": [
+        {
+          "fragment": "show.setup",
+          "bind": {
+            "actor": "actor",
+            "audience": "audience",
+            "rabbit": "rabbit",
+            "hat": "hat",
+            "source": "source",
+            "stage": "stage"
+          }
+        },
+        {
+          "fragment": "hat.unbind",
+          "bind": {
+            "actor": "actor",
+            "audience": "audience",
+            "rabbit": "rabbit",
+            "hat": "hat",
+            "wand": "wand",
+            "ribbon": "ribbon",
+            "source": "source"
+          }
+        },
+        {
+          "fragment": "rabbit.arrive_magic",
+          "bind": {
+            "actor": "actor",
+            "rabbit": "rabbit",
+            "hat": "hat",
+            "wand": "wand",
+            "source": "source"
+          }
+        },
+        {
+          "fragment": "rabbit.reveal",
+          "bind": {
+            "actor": "actor",
+            "audience": "audience",
+            "rabbit": "rabbit",
+            "hat": "hat"
+          }
+        },
+        {
+          "fragment": "rabbit.care_ending",
+          "bind": {
+            "actor": "actor",
+            "rabbit": "rabbit",
+            "hat": "hat",
+            "food": "food",
+            "stage": "stage"
+          }
+        }
+      ]
+    },
+    "hat.portal_open": {
+      "intent": "reveal",
+      "anchors": [
+        "rabbit",
+        "hat"
+      ],
+      "roles": {
+        "actor": {
+          "kind": "person",
+          "prototype": "magic:performer",
+          "properties": [
+            "can_hold",
+            "can_portal"
+          ],
+          "location": "@setting"
+        },
+        "audience": {
+          "kind": "person",
+          "prototype": "magic:audience",
+          "properties": [],
+          "location": "@setting"
+        },
+        "rabbit": {
+          "kind": "animal",
+          "prototype": "magic:rabbit",
+          "properties": [
+            "rabbit",
+            "calm"
+          ],
+          "location": "source"
+        },
+        "hat": {
+          "kind": "object",
+          "prototype": "magic:hat",
+          "properties": [
+            "hat",
+            "rabbit_capacity",
+            "portal_hat"
+          ],
+          "location": "stage",
+          "state": [
+            "open"
+          ],
+          "exclude_state": [
+            "bound"
+          ]
+        },
+        "stage": {
+          "kind": "place",
+          "prototype": "magic:stage",
+          "properties": [
+            "reachable"
+          ],
+          "location": "@setting",
+          "from_location": "hat"
+        },
+        "source": {
+          "kind": "place",
+          "prototype": "magic:source",
+          "properties": [
+            "reachable"
+          ],
+          "location": "@setting",
+          "from_location": "rabbit"
+        },
+        "food": {
+          "kind": "food",
+          "prototype": "magic:food",
+          "properties": [
+            "rabbit_food"
+          ],
+          "location": "stage"
+        },
+        "wand": {
+          "kind": "tool",
+          "prototype": "magic:wand",
+          "properties": [
+            "portal_focus"
+          ],
+          "location": "actor"
+        }
+      },
+      "tags": [
+        "magic",
+        "gentle"
+      ],
+      "weight": 1,
+      "source": "authored_hat:open_hat_variant",
+      "steps": [
+        {
+          "fragment": "show.setup",
+          "bind": {
+            "actor": "actor",
+            "audience": "audience",
+            "rabbit": "rabbit",
+            "hat": "hat",
+            "source": "source",
+            "stage": "stage"
+          }
+        },
+        {
+          "fragment": "rabbit.arrive_magic",
+          "bind": {
+            "actor": "actor",
+            "rabbit": "rabbit",
+            "hat": "hat",
+            "wand": "wand",
+            "source": "source"
+          }
+        },
+        {
+          "fragment": "rabbit.reveal",
+          "bind": {
+            "actor": "actor",
+            "audience": "audience",
+            "rabbit": "rabbit",
+            "hat": "hat"
+          }
+        },
+        {
+          "fragment": "rabbit.care_ending",
+          "bind": {
+            "actor": "actor",
+            "rabbit": "rabbit",
+            "hat": "hat",
+            "food": "food",
+            "stage": "stage"
+          }
+        }
+      ]
+    },
+    "hat.stage": {
+      "intent": "reveal",
+      "anchors": [
+        "rabbit",
+        "hat"
+      ],
+      "roles": {
+        "actor": {
+          "kind": "person",
+          "prototype": "magic:performer",
+          "properties": [
+            "can_hold"
+          ],
+          "location": "@setting"
+        },
+        "audience": {
+          "kind": "person",
+          "prototype": "magic:audience",
+          "properties": [],
+          "location": "@setting"
+        },
+        "rabbit": {
+          "kind": "animal",
+          "prototype": "magic:rabbit",
+          "properties": [
+            "rabbit",
+            "calm"
+          ],
+          "location": "source"
+        },
+        "hat": {
+          "kind": "object",
+          "prototype": "magic:stage_hat",
+          "properties": [
+            "hat",
+            "rabbit_capacity"
+          ],
+          "location": "stage",
+          "state": [
+            "open"
+          ],
+          "exclude_state": [
+            "bound"
+          ]
+        },
+        "stage": {
+          "kind": "place",
+          "prototype": "magic:stage",
+          "properties": [
+            "reachable"
+          ],
+          "location": "@setting",
+          "from_location": "hat"
+        },
+        "source": {
+          "kind": "place",
+          "prototype": "magic:source",
+          "properties": [
+            "reachable"
+          ],
+          "location": "@setting",
+          "from_location": "rabbit"
+        },
+        "food": {
+          "kind": "food",
+          "prototype": "magic:food",
+          "properties": [
+            "rabbit_food"
+          ],
+          "location": "stage"
+        }
+      },
+      "tags": [
+        "stage",
+        "gentle"
+      ],
+      "weight": 2,
+      "source": "authored_hat:stage_variant",
+      "steps": [
+        {
+          "fragment": "show.setup",
+          "bind": {
+            "actor": "actor",
+            "audience": "audience",
+            "rabbit": "rabbit",
+            "hat": "hat",
+            "source": "source",
+            "stage": "stage"
+          }
+        },
+        {
+          "fragment": "rabbit.arrive_stage",
+          "bind": {
+            "actor": "actor",
+            "audience": "audience",
+            "rabbit": "rabbit",
+            "hat": "hat",
+            "source": "source"
+          }
+        },
+        {
+          "fragment": "rabbit.reveal",
+          "bind": {
+            "actor": "actor",
+            "audience": "audience",
+            "rabbit": "rabbit",
+            "hat": "hat"
+          }
+        },
+        {
+          "fragment": "rabbit.care_ending",
+          "bind": {
+            "actor": "actor",
+            "rabbit": "rabbit",
+            "hat": "hat",
+            "food": "food",
+            "stage": "stage"
+          }
+        }
+      ]
+    },
+    "kite.recover_flight": {
+      "intent": "fly",
+      "anchors": [
+        "item"
+      ],
+      "tags": [
+        "repair",
+        "outdoors"
+      ],
+      "weight": 1,
+      "source": "kite:mend+test_flight portable export",
+      "roles": {
+        "actor": {
+          "kind": "person",
+          "prototype": "kite:hero",
+          "properties": [
+            "can_repair",
+            "can_hold"
+          ],
+          "location": "@setting"
+        },
+        "item": {
+          "kind": "object",
+          "prototype": "kite:target",
+          "properties": [
+            "physics:kite"
+          ],
+          "location": "@setting",
+          "state": [
+            "torn"
+          ]
+        },
+        "tool": {
+          "kind": "tool",
+          "prototype": "kite:tool",
+          "properties": [
+            "repair"
+          ],
+          "location": "@setting"
+        },
+        "tether": {
+          "kind": "object",
+          "prototype": "kite:string",
+          "properties": [
+            "tie"
+          ],
+          "location": "actor"
+        },
+        "sky": {
+          "kind": "place",
+          "prototype": "magic:stage",
+          "properties": [
+            "airspace"
+          ],
+          "location": "@setting",
+          "construct": "sky"
+        }
+      },
+      "steps": [
+        {
+          "op": "premise",
+          "actor": "actor",
+          "item": "item"
+        },
+        {
+          "op": "wish_flight",
+          "actor": "actor",
+          "item": "item"
+        },
+        {
+          "op": "mend_kite",
+          "actor": "actor",
+          "item": "item",
+          "tool": "tool"
+        },
+        {
+          "op": "fly_kite",
+          "actor": "actor",
+          "item": "item",
+          "tool": "tether",
+          "destination": "sky"
+        }
+      ]
+    },
+    "library.moon_picture": {
+      "intent": "draw",
+      "anchors": [
+        "item"
+      ],
+      "tags": [
+        "picture",
+        "quiet"
+      ],
+      "weight": 1,
+      "source": "library:sketch_moon portable export",
+      "roles": {
+        "actor": {
+          "kind": "person",
+          "prototype": "library:hero",
+          "properties": [
+            "can_sketch_moon"
+          ],
+          "location": "@setting"
+        },
+        "item": {
+          "kind": "object",
+          "prototype": "library:paper",
+          "properties": [
+            "drawable"
+          ],
+          "location": "actor",
+          "state": [
+            "blank"
+          ]
+        },
+        "tool": {
+          "kind": "tool",
+          "prototype": "library:pencil",
+          "properties": [
+            "draw"
+          ],
+          "location": "actor"
+        },
+        "reference": {
+          "kind": "object",
+          "prototype": "library:atlas",
+          "properties": [
+            "moon_reference"
+          ],
+          "location": "actor"
+        }
+      },
+      "steps": [
+        {
+          "op": "sketch_moon",
+          "actor": "actor",
+          "item": "item",
+          "tool": "tool",
+          "reference": "reference"
+        }
+      ]
+    }
+  },
+  "fragments": {
+    "show.setup": {
+      "params": [
+        "actor",
+        "audience",
+        "rabbit",
+        "hat",
+        "source",
+        "stage"
+      ],
+      "steps": [
+        {
+          "op": "show_premise",
+          "actor": "actor",
+          "audience": "audience",
+          "rabbit": "rabbit",
+          "source": "source"
+        },
+        {
+          "op": "take_hat",
+          "actor": "actor",
+          "hat": "hat",
+          "stage": "stage"
+        },
+        {
+          "op": "promise_show",
+          "actor": "actor",
+          "audience": "audience",
+          "hat": "hat"
+        }
+      ]
+    },
+    "hat.unbind": {
+      "params": [
+        "actor",
+        "audience",
+        "rabbit",
+        "hat",
+        "wand",
+        "ribbon",
+        "source"
+      ],
+      "steps": [
+        {
+          "op": "failed_portal",
+          "actor": "actor",
+          "rabbit": "rabbit",
+          "hat": "hat",
+          "wand": "wand",
+          "source": "source"
+        },
+        {
+          "op": "notice_binding",
+          "actor": "audience",
+          "hat": "hat",
+          "ribbon": "ribbon"
+        },
+        {
+          "op": "untie_hat",
+          "actor": "actor",
+          "hat": "hat",
+          "ribbon": "ribbon"
+        }
+      ]
+    },
+    "rabbit.arrive_magic": {
+      "params": [
+        "actor",
+        "rabbit",
+        "hat",
+        "wand",
+        "source"
+      ],
+      "steps": [
+        {
+          "op": "portal_rabbit",
+          "actor": "actor",
+          "rabbit": "rabbit",
+          "hat": "hat",
+          "wand": "wand",
+          "source": "source"
+        }
+      ]
+    },
+    "rabbit.arrive_stage": {
+      "params": [
+        "actor",
+        "audience",
+        "rabbit",
+        "hat",
+        "source"
+      ],
+      "steps": [
+        {
+          "op": "close_eyes",
+          "actor": "audience"
+        },
+        {
+          "op": "hide_rabbit",
+          "actor": "actor",
+          "audience": "audience",
+          "rabbit": "rabbit",
+          "hat": "hat",
+          "source": "source"
+        },
+        {
+          "op": "open_eyes",
+          "actor": "audience"
+        }
+      ]
+    },
+    "rabbit.reveal": {
+      "params": [
+        "actor",
+        "audience",
+        "rabbit",
+        "hat"
+      ],
+      "steps": [
+        {
+          "op": "peek_rabbit",
+          "actor": "actor",
+          "audience": "audience",
+          "rabbit": "rabbit",
+          "hat": "hat"
+        },
+        {
+          "op": "lift_rabbit",
+          "actor": "actor",
+          "audience": "audience",
+          "rabbit": "rabbit",
+          "hat": "hat"
+        },
+        {
+          "op": "applaud_reveal",
+          "actor": "audience",
+          "rabbit": "rabbit",
+          "holder": "actor"
+        }
+      ]
+    },
+    "rabbit.care_ending": {
+      "params": [
+        "actor",
+        "rabbit",
+        "hat",
+        "food",
+        "stage"
+      ],
+      "steps": [
+        {
+          "op": "settle_rabbit",
+          "actor": "actor",
+          "rabbit": "rabbit",
+          "hat": "hat",
+          "stage": "stage"
+        },
+        {
+          "op": "feed_rabbit",
+          "actor": "actor",
+          "rabbit": "rabbit",
+          "food": "food",
+          "stage": "stage"
+        },
+        {
+          "op": "rabbit_final_image",
+          "actor": "actor",
+          "rabbit": "rabbit",
+          "hat": "hat",
+          "food": "food",
+          "stage": "stage"
+        }
+      ]
+    }
+  }
+}

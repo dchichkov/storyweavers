@@ -1,0 +1,81 @@
+{
+  "id": "P048",
+  "name": "Turn-taking",
+  "description": "Next utterance → previous turn and response obligation. Favor a relevant respondent.",
+  "proposed_payload": "{next_speaker_candidates, obligation}",
+  "provenance": "Authored illustrative seeds; not learned or extracted.",
+  "status": "program_required",
+  "examples": [
+    {
+      "id": "P048.01",
+      "description": "Mira asks Theo a question.",
+      "intended_feature": "next_candidate:Theo",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P048.02",
+      "description": "Nia invites Omar to explain.",
+      "intended_feature": "next_candidate:Omar",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P048.03",
+      "description": "A greeting addresses a whole group.",
+      "intended_feature": "multiple_respondents_possible",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P048.04",
+      "description": "Theo is interrupted by Mira before answering.",
+      "intended_feature": "interruption_then_pending_answer",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P048.05",
+      "description": "No one is asked a question after a statement.",
+      "intended_feature": "open_floor",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P048.06",
+      "description": "A speaker explicitly continues her own story.",
+      "intended_feature": "same_speaker_allowed",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P048.07",
+      "description": "Omar leaves before his response turn.",
+      "intended_feature": "unavailable_respondent",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P048.08",
+      "description": "Two speakers volunteer simultaneously.",
+      "intended_feature": "competing_turn_claims",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P048.09",
+      "description": "A rhetorical question needs no answer.",
+      "intended_feature": "no_response_obligation",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P048.10",
+      "description": "An earlier unanswered request remains pending.",
+      "intended_feature": "preserve_pending_obligation",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    }
+  ],
+  "required_program": "Maintain turn order, explicit floor allocation, pending response obligations, interruptions, and multi-party ambiguity."
+}

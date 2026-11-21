@@ -1,0 +1,3822 @@
+{
+  "schema": "entity-event-lines-v1",
+  "scenario": "kite",
+  "seed": 3000,
+  "story": "Sam wanted to fly a kite, but the kite was torn. Sam said, \u201cI would like to fix the kite.\u201d Mum said, \u201cThe paper is thin.\u201d Sam told Mum, \u201cLet me cover the tear.\u201d Using the tape, he covered the tear. He launched the kite in the wind, but the paper tore again. Sam said, \u201cI want to make a sail.\u201d Mum cut a small sail from the kite with the scissors. Sam tied the sail to the boat with the string. He placed the boat on the pond. Sam and Mum watched the boat. The boat sailed across the pond.",
+  "text_sha256": "eadddad27be9dafe15834622469f7fbe6a9ed4c49dd0e0af4c582d3d0acae899",
+  "events": [
+    {
+      "id": 1,
+      "kind": "notice",
+      "frame": {
+        "kind": "notice",
+        "actor": "hero",
+        "patient": "target",
+        "instrument": "",
+        "destination": "",
+        "cause_ids": [
+          "problem"
+        ]
+      },
+      "narrated": true,
+      "text": "Sam wanted to fly a kite, but the kite was torn. Sam said, \u201cI would like to fix the kite.\u201d",
+      "entity_tags": {
+        "helper": [
+          "listener"
+        ],
+        "hero": [
+          "frame.actor",
+          "grammatical_subject",
+          "mentioned",
+          "qa_context",
+          "speaker"
+        ],
+        "target": [
+          "frame.patient",
+          "grammatical_subject",
+          "mentioned",
+          "qa_context"
+        ]
+      },
+      "tag_evidence": {
+        "hero": {
+          "frame.actor": [
+            "frame.actor"
+          ],
+          "speaker": [
+            "trace.speakers",
+            "dialogue.listener:hero:helper"
+          ],
+          "mentioned": [
+            "trace.referents"
+          ],
+          "grammatical_subject": [
+            "clause.subject:hero"
+          ],
+          "qa_context": [
+            "claim:goal"
+          ]
+        },
+        "target": {
+          "frame.patient": [
+            "frame.patient"
+          ],
+          "mentioned": [
+            "trace.referents"
+          ],
+          "grammatical_subject": [
+            "clause.subject:target"
+          ],
+          "qa_context": [
+            "claim:goal",
+            "claim:problem"
+          ]
+        },
+        "helper": {
+          "listener": [
+            "dialogue.listener:hero:helper"
+          ]
+        }
+      },
+      "participants": [
+        "helper",
+        "hero",
+        "target"
+      ],
+      "dialogue": [
+        {
+          "speaker": "hero",
+          "listener": "helper"
+        }
+      ],
+      "movements": [],
+      "effects": {},
+      "dependencies": [
+        {
+          "kind": "world_fact",
+          "key": "problem",
+          "source_event": null
+        }
+      ],
+      "global_contract": {
+        "requires": [],
+        "excludes": [
+          "ended",
+          "noticed"
+        ],
+        "flags_added": [
+          "noticed"
+        ],
+        "flags_removed": []
+      },
+      "guard_reads_complete": false
+    },
+    {
+      "id": 2,
+      "kind": "inspect",
+      "frame": {
+        "kind": "inspect",
+        "actor": "hero",
+        "patient": "target",
+        "instrument": "",
+        "destination": "",
+        "cause_ids": [
+          "problem"
+        ]
+      },
+      "narrated": true,
+      "text": "Mum said, \u201cThe paper is thin.\u201d",
+      "entity_tags": {
+        "helper": [
+          "mentioned",
+          "qa_context",
+          "speaker"
+        ],
+        "hero": [
+          "frame.actor",
+          "listener"
+        ],
+        "target": [
+          "frame.patient",
+          "qa_context"
+        ]
+      },
+      "tag_evidence": {
+        "hero": {
+          "frame.actor": [
+            "frame.actor"
+          ],
+          "listener": [
+            "dialogue.listener:helper:hero"
+          ]
+        },
+        "target": {
+          "frame.patient": [
+            "frame.patient"
+          ],
+          "qa_context": [
+            "claim:material"
+          ]
+        },
+        "helper": {
+          "speaker": [
+            "trace.speakers",
+            "dialogue.listener:helper:hero"
+          ],
+          "mentioned": [
+            "trace.referents"
+          ],
+          "qa_context": [
+            "claim:material"
+          ]
+        }
+      },
+      "participants": [
+        "helper",
+        "hero",
+        "target"
+      ],
+      "dialogue": [
+        {
+          "speaker": "helper",
+          "listener": "hero"
+        }
+      ],
+      "movements": [],
+      "effects": {},
+      "dependencies": [
+        {
+          "kind": "required_flag",
+          "key": "noticed",
+          "source_event": 1
+        },
+        {
+          "kind": "world_fact",
+          "key": "problem",
+          "source_event": null
+        }
+      ],
+      "global_contract": {
+        "requires": [
+          "noticed"
+        ],
+        "excludes": [
+          "ended",
+          "inspected"
+        ],
+        "flags_added": [
+          "inspected"
+        ],
+        "flags_removed": []
+      },
+      "guard_reads_complete": false
+    },
+    {
+      "id": 3,
+      "kind": "choose_patch",
+      "frame": {
+        "kind": "choose_patch",
+        "actor": "hero",
+        "patient": "target",
+        "instrument": "",
+        "destination": "",
+        "cause_ids": [
+          "problem"
+        ]
+      },
+      "narrated": true,
+      "text": "Sam told Mum, \u201cLet me cover the tear.\u201d",
+      "entity_tags": {
+        "helper": [
+          "listener",
+          "mentioned"
+        ],
+        "hero": [
+          "frame.actor",
+          "mentioned",
+          "speaker"
+        ],
+        "target": [
+          "frame.patient"
+        ]
+      },
+      "tag_evidence": {
+        "hero": {
+          "frame.actor": [
+            "frame.actor"
+          ],
+          "speaker": [
+            "trace.speakers",
+            "dialogue.listener:hero:helper"
+          ],
+          "mentioned": [
+            "trace.referents"
+          ]
+        },
+        "target": {
+          "frame.patient": [
+            "frame.patient"
+          ]
+        },
+        "helper": {
+          "mentioned": [
+            "trace.referents"
+          ],
+          "listener": [
+            "dialogue.listener:hero:helper"
+          ]
+        }
+      },
+      "participants": [
+        "helper",
+        "hero",
+        "target"
+      ],
+      "dialogue": [
+        {
+          "speaker": "hero",
+          "listener": "helper"
+        }
+      ],
+      "movements": [],
+      "effects": {},
+      "dependencies": [
+        {
+          "kind": "required_flag",
+          "key": "inspected",
+          "source_event": 2
+        },
+        {
+          "kind": "world_fact",
+          "key": "problem",
+          "source_event": null
+        }
+      ],
+      "global_contract": {
+        "requires": [
+          "inspected"
+        ],
+        "excludes": [
+          "chosen",
+          "ended"
+        ],
+        "flags_added": [
+          "chosen",
+          "patch"
+        ],
+        "flags_removed": []
+      },
+      "guard_reads_complete": false
+    },
+    {
+      "id": 4,
+      "kind": "fetch_tape",
+      "frame": {
+        "kind": "fetch_tape",
+        "actor": "hero",
+        "patient": "target",
+        "instrument": "",
+        "destination": "",
+        "cause_ids": [
+          "problem"
+        ]
+      },
+      "narrated": false,
+      "text": "",
+      "entity_tags": {
+        "hero": [
+          "destination_holder",
+          "frame.actor"
+        ],
+        "target": [
+          "frame.patient"
+        ],
+        "tool": [
+          "changed",
+          "moved"
+        ]
+      },
+      "tag_evidence": {
+        "hero": {
+          "frame.actor": [
+            "frame.actor"
+          ],
+          "destination_holder": [
+            "diff.location:tool"
+          ]
+        },
+        "target": {
+          "frame.patient": [
+            "frame.patient"
+          ]
+        },
+        "tool": {
+          "changed": [
+            "replayed_entity_diff"
+          ],
+          "moved": [
+            "diff.location"
+          ]
+        }
+      },
+      "participants": [
+        "hero",
+        "target",
+        "tool"
+      ],
+      "dialogue": [],
+      "movements": [
+        {
+          "item": "tool",
+          "source": "basket",
+          "destination": "hero",
+          "destination_holder": "hero"
+        }
+      ],
+      "effects": {
+        "tool": {
+          "location": {
+            "before": "basket",
+            "after": "hero"
+          }
+        }
+      },
+      "dependencies": [
+        {
+          "kind": "required_flag",
+          "key": "patch",
+          "source_event": 3
+        },
+        {
+          "kind": "world_fact",
+          "key": "problem",
+          "source_event": null
+        }
+      ],
+      "global_contract": {
+        "requires": [
+          "patch"
+        ],
+        "excludes": [
+          "ended",
+          "prepared"
+        ],
+        "flags_added": [
+          "prepared"
+        ],
+        "flags_removed": []
+      },
+      "guard_reads_complete": false
+    },
+    {
+      "id": 5,
+      "kind": "mend",
+      "frame": {
+        "kind": "mend",
+        "actor": "hero",
+        "patient": "target",
+        "instrument": "tool",
+        "destination": "",
+        "cause_ids": [
+          "problem"
+        ]
+      },
+      "narrated": true,
+      "text": "Using the tape, he covered the tear.",
+      "entity_tags": {
+        "hero": [
+          "frame.actor",
+          "grammatical_subject",
+          "mentioned",
+          "qa_context"
+        ],
+        "target": [
+          "changed",
+          "frame.patient",
+          "qa_context",
+          "state.add:repaired",
+          "state.remove:torn"
+        ],
+        "tool": [
+          "frame.instrument",
+          "mentioned",
+          "qa_context"
+        ]
+      },
+      "tag_evidence": {
+        "hero": {
+          "frame.actor": [
+            "frame.actor"
+          ],
+          "mentioned": [
+            "trace.referents"
+          ],
+          "grammatical_subject": [
+            "clause.subject:hero"
+          ],
+          "qa_context": [
+            "claim:patch"
+          ]
+        },
+        "target": {
+          "frame.patient": [
+            "frame.patient"
+          ],
+          "qa_context": [
+            "claim:patch"
+          ],
+          "changed": [
+            "replayed_entity_diff"
+          ],
+          "state.add:repaired": [
+            "diff.state"
+          ],
+          "state.remove:torn": [
+            "diff.state"
+          ]
+        },
+        "tool": {
+          "frame.instrument": [
+            "frame.instrument"
+          ],
+          "mentioned": [
+            "trace.referents"
+          ],
+          "qa_context": [
+            "claim:patch"
+          ]
+        }
+      },
+      "participants": [
+        "hero",
+        "target",
+        "tool"
+      ],
+      "dialogue": [],
+      "movements": [],
+      "effects": {
+        "target": {
+          "state": {
+            "before": [
+              "fragile",
+              "grounded",
+              "torn"
+            ],
+            "after": [
+              "fragile",
+              "grounded",
+              "repaired"
+            ]
+          }
+        }
+      },
+      "dependencies": [
+        {
+          "kind": "required_flag",
+          "key": "prepared",
+          "source_event": 4
+        },
+        {
+          "kind": "world_fact",
+          "key": "problem",
+          "source_event": null
+        }
+      ],
+      "global_contract": {
+        "requires": [
+          "prepared"
+        ],
+        "excludes": [
+          "ended",
+          "mended"
+        ],
+        "flags_added": [
+          "mended"
+        ],
+        "flags_removed": []
+      },
+      "guard_reads_complete": false
+    },
+    {
+      "id": 6,
+      "kind": "test_flight",
+      "frame": {
+        "kind": "test_flight",
+        "actor": "hero",
+        "patient": "target",
+        "instrument": "",
+        "destination": "",
+        "cause_ids": [
+          "problem"
+        ]
+      },
+      "narrated": true,
+      "text": "He launched the kite in the wind, but the paper tore again.",
+      "entity_tags": {
+        "hero": [
+          "changed",
+          "concept.changed:Curiosity",
+          "frame.actor",
+          "grammatical_subject",
+          "mentioned",
+          "qa_context"
+        ],
+        "target": [
+          "changed",
+          "frame.patient",
+          "mentioned",
+          "qa_context",
+          "state.add:torn",
+          "state.remove:repaired"
+        ]
+      },
+      "tag_evidence": {
+        "hero": {
+          "frame.actor": [
+            "frame.actor"
+          ],
+          "mentioned": [
+            "trace.referents"
+          ],
+          "grammatical_subject": [
+            "clause.subject:hero"
+          ],
+          "qa_context": [
+            "claim:test"
+          ],
+          "changed": [
+            "replayed_entity_diff"
+          ],
+          "concept.changed:Curiosity": [
+            "diff.memes"
+          ]
+        },
+        "target": {
+          "frame.patient": [
+            "frame.patient"
+          ],
+          "mentioned": [
+            "trace.referents"
+          ],
+          "qa_context": [
+            "claim:test"
+          ],
+          "changed": [
+            "replayed_entity_diff"
+          ],
+          "state.add:torn": [
+            "diff.state"
+          ],
+          "state.remove:repaired": [
+            "diff.state"
+          ]
+        }
+      },
+      "participants": [
+        "hero",
+        "target"
+      ],
+      "dialogue": [],
+      "movements": [],
+      "effects": {
+        "hero": {
+          "memes": {
+            "before": {
+              "Care": 0.8,
+              "Fear": 0.35613833845891507,
+              "Curiosity": 0.65,
+              "Trust": 0.35,
+              "Joy": 0.1
+            },
+            "after": {
+              "Care": 0.8,
+              "Fear": 0.35613833845891507,
+              "Curiosity": 0.8,
+              "Trust": 0.35,
+              "Joy": 0.1
+            }
+          }
+        },
+        "target": {
+          "state": {
+            "before": [
+              "fragile",
+              "grounded",
+              "repaired"
+            ],
+            "after": [
+              "fragile",
+              "grounded",
+              "torn"
+            ]
+          }
+        }
+      },
+      "dependencies": [
+        {
+          "kind": "required_flag",
+          "key": "mended",
+          "source_event": 5
+        },
+        {
+          "kind": "world_fact",
+          "key": "problem",
+          "source_event": null
+        }
+      ],
+      "global_contract": {
+        "requires": [
+          "mended"
+        ],
+        "excludes": [
+          "ended",
+          "tested"
+        ],
+        "flags_added": [
+          "failed",
+          "tested"
+        ],
+        "flags_removed": []
+      },
+      "guard_reads_complete": false
+    },
+    {
+      "id": 7,
+      "kind": "reconsider",
+      "frame": {
+        "kind": "reconsider",
+        "actor": "hero",
+        "patient": "target",
+        "instrument": "",
+        "destination": "",
+        "cause_ids": [
+          "problem"
+        ]
+      },
+      "narrated": true,
+      "text": "Sam said, \u201cI want to make a sail.\u201d",
+      "entity_tags": {
+        "helper": [
+          "listener"
+        ],
+        "hero": [
+          "frame.actor",
+          "mentioned",
+          "qa_context",
+          "speaker"
+        ],
+        "target": [
+          "frame.patient",
+          "qa_context"
+        ]
+      },
+      "tag_evidence": {
+        "hero": {
+          "frame.actor": [
+            "frame.actor"
+          ],
+          "speaker": [
+            "trace.speakers",
+            "dialogue.listener:hero:helper"
+          ],
+          "mentioned": [
+            "trace.referents"
+          ],
+          "qa_context": [
+            "claim:decision"
+          ]
+        },
+        "target": {
+          "frame.patient": [
+            "frame.patient"
+          ],
+          "qa_context": [
+            "claim:decision"
+          ]
+        },
+        "helper": {
+          "listener": [
+            "dialogue.listener:hero:helper"
+          ]
+        }
+      },
+      "participants": [
+        "helper",
+        "hero",
+        "target"
+      ],
+      "dialogue": [
+        {
+          "speaker": "hero",
+          "listener": "helper"
+        }
+      ],
+      "movements": [],
+      "effects": {},
+      "dependencies": [
+        {
+          "kind": "required_flag",
+          "key": "tested",
+          "source_event": 6
+        },
+        {
+          "kind": "world_fact",
+          "key": "problem",
+          "source_event": null
+        }
+      ],
+      "global_contract": {
+        "requires": [
+          "tested"
+        ],
+        "excludes": [
+          "ended",
+          "reconsidered"
+        ],
+        "flags_added": [
+          "reconsidered",
+          "sail_plan"
+        ],
+        "flags_removed": []
+      },
+      "guard_reads_complete": false
+    },
+    {
+      "id": 8,
+      "kind": "fetch_scissors",
+      "frame": {
+        "kind": "fetch_scissors",
+        "actor": "helper",
+        "patient": "scissors",
+        "instrument": "",
+        "destination": "",
+        "cause_ids": [
+          "problem"
+        ]
+      },
+      "narrated": false,
+      "text": "",
+      "entity_tags": {
+        "helper": [
+          "destination_holder",
+          "frame.actor"
+        ],
+        "scissors": [
+          "changed",
+          "frame.patient",
+          "moved"
+        ]
+      },
+      "tag_evidence": {
+        "helper": {
+          "frame.actor": [
+            "frame.actor"
+          ],
+          "destination_holder": [
+            "diff.location:scissors"
+          ]
+        },
+        "scissors": {
+          "frame.patient": [
+            "frame.patient"
+          ],
+          "changed": [
+            "replayed_entity_diff"
+          ],
+          "moved": [
+            "diff.location"
+          ]
+        }
+      },
+      "participants": [
+        "helper",
+        "scissors"
+      ],
+      "dialogue": [],
+      "movements": [
+        {
+          "item": "scissors",
+          "source": "basket",
+          "destination": "helper",
+          "destination_holder": "helper"
+        }
+      ],
+      "effects": {
+        "scissors": {
+          "location": {
+            "before": "basket",
+            "after": "helper"
+          }
+        }
+      },
+      "dependencies": [
+        {
+          "kind": "required_flag",
+          "key": "sail_plan",
+          "source_event": 7
+        },
+        {
+          "kind": "world_fact",
+          "key": "problem",
+          "source_event": null
+        }
+      ],
+      "global_contract": {
+        "requires": [
+          "sail_plan"
+        ],
+        "excludes": [
+          "ended",
+          "scissors_ready"
+        ],
+        "flags_added": [
+          "scissors_ready"
+        ],
+        "flags_removed": []
+      },
+      "guard_reads_complete": false
+    },
+    {
+      "id": 9,
+      "kind": "cut_sail",
+      "frame": {
+        "kind": "cut_sail",
+        "actor": "helper",
+        "patient": "target",
+        "instrument": "scissors",
+        "destination": "",
+        "cause_ids": [
+          "problem"
+        ]
+      },
+      "narrated": true,
+      "text": "Mum cut a small sail from the kite with the scissors.",
+      "entity_tags": {
+        "helper": [
+          "frame.actor",
+          "grammatical_subject",
+          "mentioned",
+          "qa_context"
+        ],
+        "scissors": [
+          "frame.instrument",
+          "mentioned",
+          "qa_context"
+        ],
+        "target": [
+          "changed",
+          "frame.patient",
+          "mentioned",
+          "qa_context",
+          "renamed",
+          "state.add:sail",
+          "state.remove:grounded",
+          "state.remove:torn"
+        ]
+      },
+      "tag_evidence": {
+        "helper": {
+          "frame.actor": [
+            "frame.actor"
+          ],
+          "mentioned": [
+            "trace.referents"
+          ],
+          "grammatical_subject": [
+            "clause.subject:helper"
+          ],
+          "qa_context": [
+            "claim:conversion"
+          ]
+        },
+        "target": {
+          "frame.patient": [
+            "frame.patient"
+          ],
+          "mentioned": [
+            "trace.referents"
+          ],
+          "qa_context": [
+            "claim:conversion"
+          ],
+          "changed": [
+            "replayed_entity_diff"
+          ],
+          "renamed": [
+            "diff.noun"
+          ],
+          "state.add:sail": [
+            "diff.state"
+          ],
+          "state.remove:grounded": [
+            "diff.state"
+          ],
+          "state.remove:torn": [
+            "diff.state"
+          ]
+        },
+        "scissors": {
+          "frame.instrument": [
+            "frame.instrument"
+          ],
+          "mentioned": [
+            "trace.referents"
+          ],
+          "qa_context": [
+            "claim:conversion"
+          ]
+        }
+      },
+      "participants": [
+        "helper",
+        "scissors",
+        "target"
+      ],
+      "dialogue": [],
+      "movements": [],
+      "effects": {
+        "target": {
+          "noun": {
+            "before": "kite",
+            "after": "sail"
+          },
+          "properties": {
+            "before": [
+              "flyable",
+              "portable"
+            ],
+            "after": [
+              "portable"
+            ]
+          },
+          "state": {
+            "before": [
+              "fragile",
+              "grounded",
+              "torn"
+            ],
+            "after": [
+              "fragile",
+              "sail"
+            ]
+          }
+        }
+      },
+      "dependencies": [
+        {
+          "kind": "required_flag",
+          "key": "scissors_ready",
+          "source_event": 8
+        },
+        {
+          "kind": "world_fact",
+          "key": "problem",
+          "source_event": null
+        }
+      ],
+      "global_contract": {
+        "requires": [
+          "scissors_ready"
+        ],
+        "excludes": [
+          "converted",
+          "ended"
+        ],
+        "flags_added": [
+          "converted"
+        ],
+        "flags_removed": []
+      },
+      "guard_reads_complete": false
+    },
+    {
+      "id": 10,
+      "kind": "attach_sail",
+      "frame": {
+        "kind": "attach_sail",
+        "actor": "hero",
+        "patient": "target",
+        "instrument": "string",
+        "destination": "boat",
+        "cause_ids": [
+          "problem"
+        ]
+      },
+      "narrated": true,
+      "text": "Sam tied the sail to the boat with the string.",
+      "entity_tags": {
+        "boat": [
+          "changed",
+          "frame.destination",
+          "mentioned",
+          "qa_context",
+          "state.remove:needs_sail"
+        ],
+        "hero": [
+          "frame.actor",
+          "grammatical_subject",
+          "mentioned",
+          "qa_context",
+          "source_holder"
+        ],
+        "string": [
+          "changed",
+          "frame.instrument",
+          "mentioned",
+          "moved",
+          "qa_context"
+        ],
+        "target": [
+          "changed",
+          "frame.patient",
+          "mentioned",
+          "moved",
+          "qa_context",
+          "state.add:attached"
+        ]
+      },
+      "tag_evidence": {
+        "hero": {
+          "frame.actor": [
+            "frame.actor"
+          ],
+          "mentioned": [
+            "trace.referents"
+          ],
+          "grammatical_subject": [
+            "clause.subject:hero"
+          ],
+          "qa_context": [
+            "claim:attach"
+          ],
+          "source_holder": [
+            "diff.location:string"
+          ]
+        },
+        "target": {
+          "frame.patient": [
+            "frame.patient"
+          ],
+          "mentioned": [
+            "trace.referents"
+          ],
+          "qa_context": [
+            "claim:attach"
+          ],
+          "changed": [
+            "replayed_entity_diff"
+          ],
+          "moved": [
+            "diff.location"
+          ],
+          "state.add:attached": [
+            "diff.state"
+          ]
+        },
+        "string": {
+          "frame.instrument": [
+            "frame.instrument"
+          ],
+          "mentioned": [
+            "trace.referents"
+          ],
+          "qa_context": [
+            "claim:attach"
+          ],
+          "changed": [
+            "replayed_entity_diff"
+          ],
+          "moved": [
+            "diff.location"
+          ]
+        },
+        "boat": {
+          "frame.destination": [
+            "frame.destination"
+          ],
+          "mentioned": [
+            "trace.referents"
+          ],
+          "qa_context": [
+            "claim:attach"
+          ],
+          "changed": [
+            "replayed_entity_diff"
+          ],
+          "state.remove:needs_sail": [
+            "diff.state"
+          ]
+        }
+      },
+      "participants": [
+        "boat",
+        "hero",
+        "string",
+        "target"
+      ],
+      "dialogue": [],
+      "movements": [
+        {
+          "item": "string",
+          "source": "hero",
+          "destination": "boat",
+          "source_holder": "hero"
+        },
+        {
+          "item": "target",
+          "source": "meadow",
+          "destination": "boat"
+        }
+      ],
+      "effects": {
+        "boat": {
+          "state": {
+            "before": [
+              "needs_sail"
+            ],
+            "after": []
+          }
+        },
+        "string": {
+          "location": {
+            "before": "hero",
+            "after": "boat"
+          }
+        },
+        "target": {
+          "location": {
+            "before": "meadow",
+            "after": "boat"
+          },
+          "state": {
+            "before": [
+              "fragile",
+              "sail"
+            ],
+            "after": [
+              "attached",
+              "fragile",
+              "sail"
+            ]
+          }
+        }
+      },
+      "dependencies": [
+        {
+          "kind": "required_flag",
+          "key": "converted",
+          "source_event": 9
+        },
+        {
+          "kind": "world_fact",
+          "key": "problem",
+          "source_event": null
+        }
+      ],
+      "global_contract": {
+        "requires": [
+          "converted"
+        ],
+        "excludes": [
+          "attached",
+          "ended"
+        ],
+        "flags_added": [
+          "attached"
+        ],
+        "flags_removed": []
+      },
+      "guard_reads_complete": false
+    },
+    {
+      "id": 11,
+      "kind": "launch_boat",
+      "frame": {
+        "kind": "launch_boat",
+        "actor": "hero",
+        "patient": "boat",
+        "instrument": "",
+        "destination": "pond",
+        "cause_ids": [
+          "problem"
+        ]
+      },
+      "narrated": true,
+      "text": "He placed the boat on the pond.",
+      "entity_tags": {
+        "boat": [
+          "changed",
+          "frame.patient",
+          "mentioned",
+          "moved",
+          "qa_context",
+          "state.add:sailing"
+        ],
+        "hero": [
+          "changed",
+          "concept.changed:Joy",
+          "frame.actor",
+          "grammatical_subject",
+          "mentioned",
+          "qa_context"
+        ]
+      },
+      "tag_evidence": {
+        "hero": {
+          "frame.actor": [
+            "frame.actor"
+          ],
+          "mentioned": [
+            "trace.referents"
+          ],
+          "grammatical_subject": [
+            "clause.subject:hero"
+          ],
+          "qa_context": [
+            "claim:launch"
+          ],
+          "changed": [
+            "replayed_entity_diff"
+          ],
+          "concept.changed:Joy": [
+            "diff.memes"
+          ]
+        },
+        "boat": {
+          "frame.patient": [
+            "frame.patient"
+          ],
+          "mentioned": [
+            "trace.referents"
+          ],
+          "qa_context": [
+            "claim:launch"
+          ],
+          "changed": [
+            "replayed_entity_diff"
+          ],
+          "moved": [
+            "diff.location"
+          ],
+          "state.add:sailing": [
+            "diff.state"
+          ]
+        }
+      },
+      "participants": [
+        "boat",
+        "hero"
+      ],
+      "dialogue": [],
+      "movements": [
+        {
+          "item": "boat",
+          "source": "meadow",
+          "destination": "pond"
+        }
+      ],
+      "effects": {
+        "boat": {
+          "location": {
+            "before": "meadow",
+            "after": "pond"
+          },
+          "state": {
+            "before": [],
+            "after": [
+              "sailing"
+            ]
+          }
+        },
+        "hero": {
+          "memes": {
+            "before": {
+              "Care": 0.8,
+              "Fear": 0.35613833845891507,
+              "Curiosity": 0.8,
+              "Trust": 0.35,
+              "Joy": 0.1
+            },
+            "after": {
+              "Care": 0.8,
+              "Fear": 0.35613833845891507,
+              "Curiosity": 0.8,
+              "Trust": 0.35,
+              "Joy": 0.5
+            }
+          }
+        }
+      },
+      "dependencies": [
+        {
+          "kind": "required_flag",
+          "key": "attached",
+          "source_event": 10
+        },
+        {
+          "kind": "world_fact",
+          "key": "problem",
+          "source_event": null
+        }
+      ],
+      "global_contract": {
+        "requires": [
+          "attached"
+        ],
+        "excludes": [
+          "ended",
+          "launched"
+        ],
+        "flags_added": [
+          "launched",
+          "solved"
+        ],
+        "flags_removed": []
+      },
+      "guard_reads_complete": false
+    },
+    {
+      "id": 12,
+      "kind": "ending",
+      "frame": {
+        "kind": "ending",
+        "actor": "hero",
+        "patient": "target",
+        "instrument": "",
+        "destination": "",
+        "cause_ids": [
+          "outcome"
+        ]
+      },
+      "narrated": true,
+      "text": "Sam and Mum watched the boat. The boat sailed across the pond.",
+      "entity_tags": {
+        "boat": [
+          "grammatical_subject",
+          "mentioned",
+          "qa_context"
+        ],
+        "helper": [
+          "grammatical_subject",
+          "mentioned",
+          "qa_context"
+        ],
+        "hero": [
+          "frame.actor",
+          "grammatical_subject",
+          "mentioned",
+          "qa_context"
+        ],
+        "target": [
+          "frame.patient",
+          "qa_context"
+        ]
+      },
+      "tag_evidence": {
+        "hero": {
+          "frame.actor": [
+            "frame.actor"
+          ],
+          "mentioned": [
+            "trace.referents"
+          ],
+          "grammatical_subject": [
+            "clause.subject:hero"
+          ],
+          "qa_context": [
+            "claim:outcome"
+          ]
+        },
+        "target": {
+          "frame.patient": [
+            "frame.patient"
+          ],
+          "qa_context": [
+            "claim:outcome",
+            "claim:place"
+          ]
+        },
+        "boat": {
+          "mentioned": [
+            "trace.referents"
+          ],
+          "grammatical_subject": [
+            "clause.subject:boat"
+          ],
+          "qa_context": [
+            "claim:outcome",
+            "claim:place"
+          ]
+        },
+        "helper": {
+          "mentioned": [
+            "trace.referents"
+          ],
+          "grammatical_subject": [
+            "clause.subject:helper"
+          ],
+          "qa_context": [
+            "claim:outcome"
+          ]
+        }
+      },
+      "participants": [
+        "boat",
+        "helper",
+        "hero",
+        "target"
+      ],
+      "dialogue": [],
+      "movements": [],
+      "effects": {},
+      "dependencies": [
+        {
+          "kind": "world_fact",
+          "key": "outcome",
+          "source_event": null
+        }
+      ],
+      "global_contract": {
+        "requires": [],
+        "excludes": [
+          "ended"
+        ],
+        "flags_added": [
+          "ended"
+        ],
+        "flags_removed": []
+      },
+      "guard_reads_complete": false
+    }
+  ],
+  "entities": {
+    "boat": {
+      "initial": {
+        "id": "boat",
+        "noun": "boat",
+        "kind": "object",
+        "location": "meadow",
+        "number": "singular",
+        "pronoun": "it",
+        "properties": [
+          "float",
+          "portable"
+        ],
+        "state": [
+          "needs_sail"
+        ],
+        "memes": {}
+      },
+      "final": {
+        "id": "boat",
+        "noun": "boat",
+        "kind": "object",
+        "location": "pond",
+        "number": "singular",
+        "pronoun": "it",
+        "properties": [
+          "float",
+          "portable"
+        ],
+        "state": [
+          "sailing"
+        ],
+        "memes": {}
+      },
+      "line": [
+        {
+          "event_id": 10,
+          "kind": "attach_sail",
+          "tags": [
+            "changed",
+            "frame.destination",
+            "mentioned",
+            "qa_context",
+            "state.remove:needs_sail"
+          ],
+          "participation": "participant",
+          "own_effects": {
+            "state": {
+              "before": [
+                "needs_sail"
+              ],
+              "after": []
+            }
+          },
+          "peers": [
+            "hero",
+            "string",
+            "target"
+          ],
+          "shared_event": true,
+          "before": {
+            "id": "boat",
+            "noun": "boat",
+            "kind": "object",
+            "location": "meadow",
+            "number": "singular",
+            "pronoun": "it",
+            "properties": [
+              "float",
+              "portable"
+            ],
+            "state": [
+              "needs_sail"
+            ],
+            "memes": {}
+          },
+          "after": {
+            "id": "boat",
+            "noun": "boat",
+            "kind": "object",
+            "location": "meadow",
+            "number": "singular",
+            "pronoun": "it",
+            "properties": [
+              "float",
+              "portable"
+            ],
+            "state": [],
+            "memes": {}
+          }
+        },
+        {
+          "event_id": 11,
+          "kind": "launch_boat",
+          "tags": [
+            "changed",
+            "frame.patient",
+            "mentioned",
+            "moved",
+            "qa_context",
+            "state.add:sailing"
+          ],
+          "participation": "participant",
+          "own_effects": {
+            "location": {
+              "before": "meadow",
+              "after": "pond"
+            },
+            "state": {
+              "before": [],
+              "after": [
+                "sailing"
+              ]
+            }
+          },
+          "peers": [
+            "hero"
+          ],
+          "shared_event": true,
+          "before": {
+            "id": "boat",
+            "noun": "boat",
+            "kind": "object",
+            "location": "meadow",
+            "number": "singular",
+            "pronoun": "it",
+            "properties": [
+              "float",
+              "portable"
+            ],
+            "state": [],
+            "memes": {}
+          },
+          "after": {
+            "id": "boat",
+            "noun": "boat",
+            "kind": "object",
+            "location": "pond",
+            "number": "singular",
+            "pronoun": "it",
+            "properties": [
+              "float",
+              "portable"
+            ],
+            "state": [
+              "sailing"
+            ],
+            "memes": {}
+          }
+        },
+        {
+          "event_id": 12,
+          "kind": "ending",
+          "tags": [
+            "grammatical_subject",
+            "mentioned",
+            "qa_context"
+          ],
+          "participation": "participant",
+          "own_effects": {},
+          "peers": [
+            "helper",
+            "hero",
+            "target"
+          ],
+          "shared_event": true,
+          "before": {
+            "id": "boat",
+            "noun": "boat",
+            "kind": "object",
+            "location": "pond",
+            "number": "singular",
+            "pronoun": "it",
+            "properties": [
+              "float",
+              "portable"
+            ],
+            "state": [
+              "sailing"
+            ],
+            "memes": {}
+          },
+          "after": {
+            "id": "boat",
+            "noun": "boat",
+            "kind": "object",
+            "location": "pond",
+            "number": "singular",
+            "pronoun": "it",
+            "properties": [
+              "float",
+              "portable"
+            ],
+            "state": [
+              "sailing"
+            ],
+            "memes": {}
+          }
+        }
+      ]
+    },
+    "bread": {
+      "initial": {
+        "id": "bread",
+        "noun": "bread",
+        "kind": "food",
+        "location": "kitchen",
+        "number": "singular",
+        "pronoun": "it",
+        "properties": [
+          "edible"
+        ],
+        "state": [],
+        "memes": {}
+      },
+      "final": {
+        "id": "bread",
+        "noun": "bread",
+        "kind": "food",
+        "location": "kitchen",
+        "number": "singular",
+        "pronoun": "it",
+        "properties": [
+          "edible"
+        ],
+        "state": [],
+        "memes": {}
+      },
+      "line": []
+    },
+    "helper": {
+      "initial": {
+        "id": "helper",
+        "noun": "Mum",
+        "kind": "person",
+        "location": "meadow",
+        "number": "singular",
+        "pronoun": "she",
+        "properties": [
+          "animate",
+          "can_hold",
+          "can_repair"
+        ],
+        "state": [],
+        "memes": {
+          "Care": 0.9
+        }
+      },
+      "final": {
+        "id": "helper",
+        "noun": "Mum",
+        "kind": "person",
+        "location": "meadow",
+        "number": "singular",
+        "pronoun": "she",
+        "properties": [
+          "animate",
+          "can_hold",
+          "can_repair"
+        ],
+        "state": [],
+        "memes": {
+          "Care": 0.9
+        }
+      },
+      "line": [
+        {
+          "event_id": 1,
+          "kind": "notice",
+          "tags": [
+            "listener"
+          ],
+          "participation": "participant",
+          "own_effects": {},
+          "peers": [
+            "hero",
+            "target"
+          ],
+          "shared_event": true,
+          "before": {
+            "id": "helper",
+            "noun": "Mum",
+            "kind": "person",
+            "location": "meadow",
+            "number": "singular",
+            "pronoun": "she",
+            "properties": [
+              "animate",
+              "can_hold",
+              "can_repair"
+            ],
+            "state": [],
+            "memes": {
+              "Care": 0.9
+            }
+          },
+          "after": {
+            "id": "helper",
+            "noun": "Mum",
+            "kind": "person",
+            "location": "meadow",
+            "number": "singular",
+            "pronoun": "she",
+            "properties": [
+              "animate",
+              "can_hold",
+              "can_repair"
+            ],
+            "state": [],
+            "memes": {
+              "Care": 0.9
+            }
+          }
+        },
+        {
+          "event_id": 2,
+          "kind": "inspect",
+          "tags": [
+            "mentioned",
+            "qa_context",
+            "speaker"
+          ],
+          "participation": "participant",
+          "own_effects": {},
+          "peers": [
+            "hero",
+            "target"
+          ],
+          "shared_event": true,
+          "before": {
+            "id": "helper",
+            "noun": "Mum",
+            "kind": "person",
+            "location": "meadow",
+            "number": "singular",
+            "pronoun": "she",
+            "properties": [
+              "animate",
+              "can_hold",
+              "can_repair"
+            ],
+            "state": [],
+            "memes": {
+              "Care": 0.9
+            }
+          },
+          "after": {
+            "id": "helper",
+            "noun": "Mum",
+            "kind": "person",
+            "location": "meadow",
+            "number": "singular",
+            "pronoun": "she",
+            "properties": [
+              "animate",
+              "can_hold",
+              "can_repair"
+            ],
+            "state": [],
+            "memes": {
+              "Care": 0.9
+            }
+          }
+        },
+        {
+          "event_id": 3,
+          "kind": "choose_patch",
+          "tags": [
+            "listener",
+            "mentioned"
+          ],
+          "participation": "participant",
+          "own_effects": {},
+          "peers": [
+            "hero",
+            "target"
+          ],
+          "shared_event": true,
+          "before": {
+            "id": "helper",
+            "noun": "Mum",
+            "kind": "person",
+            "location": "meadow",
+            "number": "singular",
+            "pronoun": "she",
+            "properties": [
+              "animate",
+              "can_hold",
+              "can_repair"
+            ],
+            "state": [],
+            "memes": {
+              "Care": 0.9
+            }
+          },
+          "after": {
+            "id": "helper",
+            "noun": "Mum",
+            "kind": "person",
+            "location": "meadow",
+            "number": "singular",
+            "pronoun": "she",
+            "properties": [
+              "animate",
+              "can_hold",
+              "can_repair"
+            ],
+            "state": [],
+            "memes": {
+              "Care": 0.9
+            }
+          }
+        },
+        {
+          "event_id": 7,
+          "kind": "reconsider",
+          "tags": [
+            "listener"
+          ],
+          "participation": "participant",
+          "own_effects": {},
+          "peers": [
+            "hero",
+            "target"
+          ],
+          "shared_event": true,
+          "before": {
+            "id": "helper",
+            "noun": "Mum",
+            "kind": "person",
+            "location": "meadow",
+            "number": "singular",
+            "pronoun": "she",
+            "properties": [
+              "animate",
+              "can_hold",
+              "can_repair"
+            ],
+            "state": [],
+            "memes": {
+              "Care": 0.9
+            }
+          },
+          "after": {
+            "id": "helper",
+            "noun": "Mum",
+            "kind": "person",
+            "location": "meadow",
+            "number": "singular",
+            "pronoun": "she",
+            "properties": [
+              "animate",
+              "can_hold",
+              "can_repair"
+            ],
+            "state": [],
+            "memes": {
+              "Care": 0.9
+            }
+          }
+        },
+        {
+          "event_id": 8,
+          "kind": "fetch_scissors",
+          "tags": [
+            "destination_holder",
+            "frame.actor"
+          ],
+          "participation": "participant",
+          "own_effects": {},
+          "peers": [
+            "scissors"
+          ],
+          "shared_event": true,
+          "before": {
+            "id": "helper",
+            "noun": "Mum",
+            "kind": "person",
+            "location": "meadow",
+            "number": "singular",
+            "pronoun": "she",
+            "properties": [
+              "animate",
+              "can_hold",
+              "can_repair"
+            ],
+            "state": [],
+            "memes": {
+              "Care": 0.9
+            }
+          },
+          "after": {
+            "id": "helper",
+            "noun": "Mum",
+            "kind": "person",
+            "location": "meadow",
+            "number": "singular",
+            "pronoun": "she",
+            "properties": [
+              "animate",
+              "can_hold",
+              "can_repair"
+            ],
+            "state": [],
+            "memes": {
+              "Care": 0.9
+            }
+          }
+        },
+        {
+          "event_id": 9,
+          "kind": "cut_sail",
+          "tags": [
+            "frame.actor",
+            "grammatical_subject",
+            "mentioned",
+            "qa_context"
+          ],
+          "participation": "participant",
+          "own_effects": {},
+          "peers": [
+            "scissors",
+            "target"
+          ],
+          "shared_event": true,
+          "before": {
+            "id": "helper",
+            "noun": "Mum",
+            "kind": "person",
+            "location": "meadow",
+            "number": "singular",
+            "pronoun": "she",
+            "properties": [
+              "animate",
+              "can_hold",
+              "can_repair"
+            ],
+            "state": [],
+            "memes": {
+              "Care": 0.9
+            }
+          },
+          "after": {
+            "id": "helper",
+            "noun": "Mum",
+            "kind": "person",
+            "location": "meadow",
+            "number": "singular",
+            "pronoun": "she",
+            "properties": [
+              "animate",
+              "can_hold",
+              "can_repair"
+            ],
+            "state": [],
+            "memes": {
+              "Care": 0.9
+            }
+          }
+        },
+        {
+          "event_id": 12,
+          "kind": "ending",
+          "tags": [
+            "grammatical_subject",
+            "mentioned",
+            "qa_context"
+          ],
+          "participation": "participant",
+          "own_effects": {},
+          "peers": [
+            "boat",
+            "hero",
+            "target"
+          ],
+          "shared_event": true,
+          "before": {
+            "id": "helper",
+            "noun": "Mum",
+            "kind": "person",
+            "location": "meadow",
+            "number": "singular",
+            "pronoun": "she",
+            "properties": [
+              "animate",
+              "can_hold",
+              "can_repair"
+            ],
+            "state": [],
+            "memes": {
+              "Care": 0.9
+            }
+          },
+          "after": {
+            "id": "helper",
+            "noun": "Mum",
+            "kind": "person",
+            "location": "meadow",
+            "number": "singular",
+            "pronoun": "she",
+            "properties": [
+              "animate",
+              "can_hold",
+              "can_repair"
+            ],
+            "state": [],
+            "memes": {
+              "Care": 0.9
+            }
+          }
+        }
+      ]
+    },
+    "hero": {
+      "initial": {
+        "id": "hero",
+        "noun": "Sam",
+        "kind": "person",
+        "location": "meadow",
+        "number": "singular",
+        "pronoun": "he",
+        "properties": [
+          "animate",
+          "can_climb",
+          "can_hold",
+          "can_repair"
+        ],
+        "state": [],
+        "memes": {
+          "Care": 0.8,
+          "Fear": 0.35613833845891507,
+          "Curiosity": 0.65,
+          "Trust": 0.35,
+          "Joy": 0.1
+        }
+      },
+      "final": {
+        "id": "hero",
+        "noun": "Sam",
+        "kind": "person",
+        "location": "meadow",
+        "number": "singular",
+        "pronoun": "he",
+        "properties": [
+          "animate",
+          "can_climb",
+          "can_hold",
+          "can_repair"
+        ],
+        "state": [],
+        "memes": {
+          "Care": 0.8,
+          "Fear": 0.35613833845891507,
+          "Curiosity": 0.8,
+          "Trust": 0.35,
+          "Joy": 0.5
+        }
+      },
+      "line": [
+        {
+          "event_id": 1,
+          "kind": "notice",
+          "tags": [
+            "frame.actor",
+            "grammatical_subject",
+            "mentioned",
+            "qa_context",
+            "speaker"
+          ],
+          "participation": "participant",
+          "own_effects": {},
+          "peers": [
+            "helper",
+            "target"
+          ],
+          "shared_event": true,
+          "before": {
+            "id": "hero",
+            "noun": "Sam",
+            "kind": "person",
+            "location": "meadow",
+            "number": "singular",
+            "pronoun": "he",
+            "properties": [
+              "animate",
+              "can_climb",
+              "can_hold",
+              "can_repair"
+            ],
+            "state": [],
+            "memes": {
+              "Care": 0.8,
+              "Fear": 0.35613833845891507,
+              "Curiosity": 0.65,
+              "Trust": 0.35,
+              "Joy": 0.1
+            }
+          },
+          "after": {
+            "id": "hero",
+            "noun": "Sam",
+            "kind": "person",
+            "location": "meadow",
+            "number": "singular",
+            "pronoun": "he",
+            "properties": [
+              "animate",
+              "can_climb",
+              "can_hold",
+              "can_repair"
+            ],
+            "state": [],
+            "memes": {
+              "Care": 0.8,
+              "Fear": 0.35613833845891507,
+              "Curiosity": 0.65,
+              "Trust": 0.35,
+              "Joy": 0.1
+            }
+          }
+        },
+        {
+          "event_id": 2,
+          "kind": "inspect",
+          "tags": [
+            "frame.actor",
+            "listener"
+          ],
+          "participation": "participant",
+          "own_effects": {},
+          "peers": [
+            "helper",
+            "target"
+          ],
+          "shared_event": true,
+          "before": {
+            "id": "hero",
+            "noun": "Sam",
+            "kind": "person",
+            "location": "meadow",
+            "number": "singular",
+            "pronoun": "he",
+            "properties": [
+              "animate",
+              "can_climb",
+              "can_hold",
+              "can_repair"
+            ],
+            "state": [],
+            "memes": {
+              "Care": 0.8,
+              "Fear": 0.35613833845891507,
+              "Curiosity": 0.65,
+              "Trust": 0.35,
+              "Joy": 0.1
+            }
+          },
+          "after": {
+            "id": "hero",
+            "noun": "Sam",
+            "kind": "person",
+            "location": "meadow",
+            "number": "singular",
+            "pronoun": "he",
+            "properties": [
+              "animate",
+              "can_climb",
+              "can_hold",
+              "can_repair"
+            ],
+            "state": [],
+            "memes": {
+              "Care": 0.8,
+              "Fear": 0.35613833845891507,
+              "Curiosity": 0.65,
+              "Trust": 0.35,
+              "Joy": 0.1
+            }
+          }
+        },
+        {
+          "event_id": 3,
+          "kind": "choose_patch",
+          "tags": [
+            "frame.actor",
+            "mentioned",
+            "speaker"
+          ],
+          "participation": "participant",
+          "own_effects": {},
+          "peers": [
+            "helper",
+            "target"
+          ],
+          "shared_event": true,
+          "before": {
+            "id": "hero",
+            "noun": "Sam",
+            "kind": "person",
+            "location": "meadow",
+            "number": "singular",
+            "pronoun": "he",
+            "properties": [
+              "animate",
+              "can_climb",
+              "can_hold",
+              "can_repair"
+            ],
+            "state": [],
+            "memes": {
+              "Care": 0.8,
+              "Fear": 0.35613833845891507,
+              "Curiosity": 0.65,
+              "Trust": 0.35,
+              "Joy": 0.1
+            }
+          },
+          "after": {
+            "id": "hero",
+            "noun": "Sam",
+            "kind": "person",
+            "location": "meadow",
+            "number": "singular",
+            "pronoun": "he",
+            "properties": [
+              "animate",
+              "can_climb",
+              "can_hold",
+              "can_repair"
+            ],
+            "state": [],
+            "memes": {
+              "Care": 0.8,
+              "Fear": 0.35613833845891507,
+              "Curiosity": 0.65,
+              "Trust": 0.35,
+              "Joy": 0.1
+            }
+          }
+        },
+        {
+          "event_id": 4,
+          "kind": "fetch_tape",
+          "tags": [
+            "destination_holder",
+            "frame.actor"
+          ],
+          "participation": "participant",
+          "own_effects": {},
+          "peers": [
+            "target",
+            "tool"
+          ],
+          "shared_event": true,
+          "before": {
+            "id": "hero",
+            "noun": "Sam",
+            "kind": "person",
+            "location": "meadow",
+            "number": "singular",
+            "pronoun": "he",
+            "properties": [
+              "animate",
+              "can_climb",
+              "can_hold",
+              "can_repair"
+            ],
+            "state": [],
+            "memes": {
+              "Care": 0.8,
+              "Fear": 0.35613833845891507,
+              "Curiosity": 0.65,
+              "Trust": 0.35,
+              "Joy": 0.1
+            }
+          },
+          "after": {
+            "id": "hero",
+            "noun": "Sam",
+            "kind": "person",
+            "location": "meadow",
+            "number": "singular",
+            "pronoun": "he",
+            "properties": [
+              "animate",
+              "can_climb",
+              "can_hold",
+              "can_repair"
+            ],
+            "state": [],
+            "memes": {
+              "Care": 0.8,
+              "Fear": 0.35613833845891507,
+              "Curiosity": 0.65,
+              "Trust": 0.35,
+              "Joy": 0.1
+            }
+          }
+        },
+        {
+          "event_id": 5,
+          "kind": "mend",
+          "tags": [
+            "frame.actor",
+            "grammatical_subject",
+            "mentioned",
+            "qa_context"
+          ],
+          "participation": "participant",
+          "own_effects": {},
+          "peers": [
+            "target",
+            "tool"
+          ],
+          "shared_event": true,
+          "before": {
+            "id": "hero",
+            "noun": "Sam",
+            "kind": "person",
+            "location": "meadow",
+            "number": "singular",
+            "pronoun": "he",
+            "properties": [
+              "animate",
+              "can_climb",
+              "can_hold",
+              "can_repair"
+            ],
+            "state": [],
+            "memes": {
+              "Care": 0.8,
+              "Fear": 0.35613833845891507,
+              "Curiosity": 0.65,
+              "Trust": 0.35,
+              "Joy": 0.1
+            }
+          },
+          "after": {
+            "id": "hero",
+            "noun": "Sam",
+            "kind": "person",
+            "location": "meadow",
+            "number": "singular",
+            "pronoun": "he",
+            "properties": [
+              "animate",
+              "can_climb",
+              "can_hold",
+              "can_repair"
+            ],
+            "state": [],
+            "memes": {
+              "Care": 0.8,
+              "Fear": 0.35613833845891507,
+              "Curiosity": 0.65,
+              "Trust": 0.35,
+              "Joy": 0.1
+            }
+          }
+        },
+        {
+          "event_id": 6,
+          "kind": "test_flight",
+          "tags": [
+            "changed",
+            "concept.changed:Curiosity",
+            "frame.actor",
+            "grammatical_subject",
+            "mentioned",
+            "qa_context"
+          ],
+          "participation": "participant",
+          "own_effects": {
+            "memes": {
+              "before": {
+                "Care": 0.8,
+                "Fear": 0.35613833845891507,
+                "Curiosity": 0.65,
+                "Trust": 0.35,
+                "Joy": 0.1
+              },
+              "after": {
+                "Care": 0.8,
+                "Fear": 0.35613833845891507,
+                "Curiosity": 0.8,
+                "Trust": 0.35,
+                "Joy": 0.1
+              }
+            }
+          },
+          "peers": [
+            "target"
+          ],
+          "shared_event": true,
+          "before": {
+            "id": "hero",
+            "noun": "Sam",
+            "kind": "person",
+            "location": "meadow",
+            "number": "singular",
+            "pronoun": "he",
+            "properties": [
+              "animate",
+              "can_climb",
+              "can_hold",
+              "can_repair"
+            ],
+            "state": [],
+            "memes": {
+              "Care": 0.8,
+              "Fear": 0.35613833845891507,
+              "Curiosity": 0.65,
+              "Trust": 0.35,
+              "Joy": 0.1
+            }
+          },
+          "after": {
+            "id": "hero",
+            "noun": "Sam",
+            "kind": "person",
+            "location": "meadow",
+            "number": "singular",
+            "pronoun": "he",
+            "properties": [
+              "animate",
+              "can_climb",
+              "can_hold",
+              "can_repair"
+            ],
+            "state": [],
+            "memes": {
+              "Care": 0.8,
+              "Fear": 0.35613833845891507,
+              "Curiosity": 0.8,
+              "Trust": 0.35,
+              "Joy": 0.1
+            }
+          }
+        },
+        {
+          "event_id": 7,
+          "kind": "reconsider",
+          "tags": [
+            "frame.actor",
+            "mentioned",
+            "qa_context",
+            "speaker"
+          ],
+          "participation": "participant",
+          "own_effects": {},
+          "peers": [
+            "helper",
+            "target"
+          ],
+          "shared_event": true,
+          "before": {
+            "id": "hero",
+            "noun": "Sam",
+            "kind": "person",
+            "location": "meadow",
+            "number": "singular",
+            "pronoun": "he",
+            "properties": [
+              "animate",
+              "can_climb",
+              "can_hold",
+              "can_repair"
+            ],
+            "state": [],
+            "memes": {
+              "Care": 0.8,
+              "Fear": 0.35613833845891507,
+              "Curiosity": 0.8,
+              "Trust": 0.35,
+              "Joy": 0.1
+            }
+          },
+          "after": {
+            "id": "hero",
+            "noun": "Sam",
+            "kind": "person",
+            "location": "meadow",
+            "number": "singular",
+            "pronoun": "he",
+            "properties": [
+              "animate",
+              "can_climb",
+              "can_hold",
+              "can_repair"
+            ],
+            "state": [],
+            "memes": {
+              "Care": 0.8,
+              "Fear": 0.35613833845891507,
+              "Curiosity": 0.8,
+              "Trust": 0.35,
+              "Joy": 0.1
+            }
+          }
+        },
+        {
+          "event_id": 10,
+          "kind": "attach_sail",
+          "tags": [
+            "frame.actor",
+            "grammatical_subject",
+            "mentioned",
+            "qa_context",
+            "source_holder"
+          ],
+          "participation": "participant",
+          "own_effects": {},
+          "peers": [
+            "boat",
+            "string",
+            "target"
+          ],
+          "shared_event": true,
+          "before": {
+            "id": "hero",
+            "noun": "Sam",
+            "kind": "person",
+            "location": "meadow",
+            "number": "singular",
+            "pronoun": "he",
+            "properties": [
+              "animate",
+              "can_climb",
+              "can_hold",
+              "can_repair"
+            ],
+            "state": [],
+            "memes": {
+              "Care": 0.8,
+              "Fear": 0.35613833845891507,
+              "Curiosity": 0.8,
+              "Trust": 0.35,
+              "Joy": 0.1
+            }
+          },
+          "after": {
+            "id": "hero",
+            "noun": "Sam",
+            "kind": "person",
+            "location": "meadow",
+            "number": "singular",
+            "pronoun": "he",
+            "properties": [
+              "animate",
+              "can_climb",
+              "can_hold",
+              "can_repair"
+            ],
+            "state": [],
+            "memes": {
+              "Care": 0.8,
+              "Fear": 0.35613833845891507,
+              "Curiosity": 0.8,
+              "Trust": 0.35,
+              "Joy": 0.1
+            }
+          }
+        },
+        {
+          "event_id": 11,
+          "kind": "launch_boat",
+          "tags": [
+            "changed",
+            "concept.changed:Joy",
+            "frame.actor",
+            "grammatical_subject",
+            "mentioned",
+            "qa_context"
+          ],
+          "participation": "participant",
+          "own_effects": {
+            "memes": {
+              "before": {
+                "Care": 0.8,
+                "Fear": 0.35613833845891507,
+                "Curiosity": 0.8,
+                "Trust": 0.35,
+                "Joy": 0.1
+              },
+              "after": {
+                "Care": 0.8,
+                "Fear": 0.35613833845891507,
+                "Curiosity": 0.8,
+                "Trust": 0.35,
+                "Joy": 0.5
+              }
+            }
+          },
+          "peers": [
+            "boat"
+          ],
+          "shared_event": true,
+          "before": {
+            "id": "hero",
+            "noun": "Sam",
+            "kind": "person",
+            "location": "meadow",
+            "number": "singular",
+            "pronoun": "he",
+            "properties": [
+              "animate",
+              "can_climb",
+              "can_hold",
+              "can_repair"
+            ],
+            "state": [],
+            "memes": {
+              "Care": 0.8,
+              "Fear": 0.35613833845891507,
+              "Curiosity": 0.8,
+              "Trust": 0.35,
+              "Joy": 0.1
+            }
+          },
+          "after": {
+            "id": "hero",
+            "noun": "Sam",
+            "kind": "person",
+            "location": "meadow",
+            "number": "singular",
+            "pronoun": "he",
+            "properties": [
+              "animate",
+              "can_climb",
+              "can_hold",
+              "can_repair"
+            ],
+            "state": [],
+            "memes": {
+              "Care": 0.8,
+              "Fear": 0.35613833845891507,
+              "Curiosity": 0.8,
+              "Trust": 0.35,
+              "Joy": 0.5
+            }
+          }
+        },
+        {
+          "event_id": 12,
+          "kind": "ending",
+          "tags": [
+            "frame.actor",
+            "grammatical_subject",
+            "mentioned",
+            "qa_context"
+          ],
+          "participation": "participant",
+          "own_effects": {},
+          "peers": [
+            "boat",
+            "helper",
+            "target"
+          ],
+          "shared_event": true,
+          "before": {
+            "id": "hero",
+            "noun": "Sam",
+            "kind": "person",
+            "location": "meadow",
+            "number": "singular",
+            "pronoun": "he",
+            "properties": [
+              "animate",
+              "can_climb",
+              "can_hold",
+              "can_repair"
+            ],
+            "state": [],
+            "memes": {
+              "Care": 0.8,
+              "Fear": 0.35613833845891507,
+              "Curiosity": 0.8,
+              "Trust": 0.35,
+              "Joy": 0.5
+            }
+          },
+          "after": {
+            "id": "hero",
+            "noun": "Sam",
+            "kind": "person",
+            "location": "meadow",
+            "number": "singular",
+            "pronoun": "he",
+            "properties": [
+              "animate",
+              "can_climb",
+              "can_hold",
+              "can_repair"
+            ],
+            "state": [],
+            "memes": {
+              "Care": 0.8,
+              "Fear": 0.35613833845891507,
+              "Curiosity": 0.8,
+              "Trust": 0.35,
+              "Joy": 0.5
+            }
+          }
+        }
+      ]
+    },
+    "scissors": {
+      "initial": {
+        "id": "scissors",
+        "noun": "scissors",
+        "kind": "tool",
+        "location": "basket",
+        "number": "plural",
+        "pronoun": "they",
+        "properties": [
+          "cut",
+          "portable"
+        ],
+        "state": [],
+        "memes": {}
+      },
+      "final": {
+        "id": "scissors",
+        "noun": "scissors",
+        "kind": "tool",
+        "location": "helper",
+        "number": "plural",
+        "pronoun": "they",
+        "properties": [
+          "cut",
+          "portable"
+        ],
+        "state": [],
+        "memes": {}
+      },
+      "line": [
+        {
+          "event_id": 8,
+          "kind": "fetch_scissors",
+          "tags": [
+            "changed",
+            "frame.patient",
+            "moved"
+          ],
+          "participation": "participant",
+          "own_effects": {
+            "location": {
+              "before": "basket",
+              "after": "helper"
+            }
+          },
+          "peers": [
+            "helper"
+          ],
+          "shared_event": true,
+          "before": {
+            "id": "scissors",
+            "noun": "scissors",
+            "kind": "tool",
+            "location": "basket",
+            "number": "plural",
+            "pronoun": "they",
+            "properties": [
+              "cut",
+              "portable"
+            ],
+            "state": [],
+            "memes": {}
+          },
+          "after": {
+            "id": "scissors",
+            "noun": "scissors",
+            "kind": "tool",
+            "location": "helper",
+            "number": "plural",
+            "pronoun": "they",
+            "properties": [
+              "cut",
+              "portable"
+            ],
+            "state": [],
+            "memes": {}
+          }
+        },
+        {
+          "event_id": 9,
+          "kind": "cut_sail",
+          "tags": [
+            "frame.instrument",
+            "mentioned",
+            "qa_context"
+          ],
+          "participation": "participant",
+          "own_effects": {},
+          "peers": [
+            "helper",
+            "target"
+          ],
+          "shared_event": true,
+          "before": {
+            "id": "scissors",
+            "noun": "scissors",
+            "kind": "tool",
+            "location": "helper",
+            "number": "plural",
+            "pronoun": "they",
+            "properties": [
+              "cut",
+              "portable"
+            ],
+            "state": [],
+            "memes": {}
+          },
+          "after": {
+            "id": "scissors",
+            "noun": "scissors",
+            "kind": "tool",
+            "location": "helper",
+            "number": "plural",
+            "pronoun": "they",
+            "properties": [
+              "cut",
+              "portable"
+            ],
+            "state": [],
+            "memes": {}
+          }
+        }
+      ]
+    },
+    "stone": {
+      "initial": {
+        "id": "stone",
+        "noun": "stone",
+        "kind": "object",
+        "location": "meadow",
+        "number": "singular",
+        "pronoun": "it",
+        "properties": [
+          "portable"
+        ],
+        "state": [],
+        "memes": {}
+      },
+      "final": {
+        "id": "stone",
+        "noun": "stone",
+        "kind": "object",
+        "location": "meadow",
+        "number": "singular",
+        "pronoun": "it",
+        "properties": [
+          "portable"
+        ],
+        "state": [],
+        "memes": {}
+      },
+      "line": []
+    },
+    "string": {
+      "initial": {
+        "id": "string",
+        "noun": "string",
+        "kind": "object",
+        "location": "hero",
+        "number": "singular",
+        "pronoun": "it",
+        "properties": [
+          "portable",
+          "tie"
+        ],
+        "state": [],
+        "memes": {}
+      },
+      "final": {
+        "id": "string",
+        "noun": "string",
+        "kind": "object",
+        "location": "boat",
+        "number": "singular",
+        "pronoun": "it",
+        "properties": [
+          "portable",
+          "tie"
+        ],
+        "state": [],
+        "memes": {}
+      },
+      "line": [
+        {
+          "event_id": 10,
+          "kind": "attach_sail",
+          "tags": [
+            "changed",
+            "frame.instrument",
+            "mentioned",
+            "moved",
+            "qa_context"
+          ],
+          "participation": "participant",
+          "own_effects": {
+            "location": {
+              "before": "hero",
+              "after": "boat"
+            }
+          },
+          "peers": [
+            "boat",
+            "hero",
+            "target"
+          ],
+          "shared_event": true,
+          "before": {
+            "id": "string",
+            "noun": "string",
+            "kind": "object",
+            "location": "hero",
+            "number": "singular",
+            "pronoun": "it",
+            "properties": [
+              "portable",
+              "tie"
+            ],
+            "state": [],
+            "memes": {}
+          },
+          "after": {
+            "id": "string",
+            "noun": "string",
+            "kind": "object",
+            "location": "boat",
+            "number": "singular",
+            "pronoun": "it",
+            "properties": [
+              "portable",
+              "tie"
+            ],
+            "state": [],
+            "memes": {}
+          }
+        }
+      ]
+    },
+    "target": {
+      "initial": {
+        "id": "target",
+        "noun": "kite",
+        "kind": "object",
+        "location": "meadow",
+        "number": "singular",
+        "pronoun": "it",
+        "properties": [
+          "flyable",
+          "portable"
+        ],
+        "state": [
+          "fragile",
+          "grounded",
+          "torn"
+        ],
+        "memes": {}
+      },
+      "final": {
+        "id": "target",
+        "noun": "sail",
+        "kind": "object",
+        "location": "boat",
+        "number": "singular",
+        "pronoun": "it",
+        "properties": [
+          "portable"
+        ],
+        "state": [
+          "attached",
+          "fragile",
+          "sail"
+        ],
+        "memes": {}
+      },
+      "line": [
+        {
+          "event_id": 1,
+          "kind": "notice",
+          "tags": [
+            "frame.patient",
+            "grammatical_subject",
+            "mentioned",
+            "qa_context"
+          ],
+          "participation": "participant",
+          "own_effects": {},
+          "peers": [
+            "helper",
+            "hero"
+          ],
+          "shared_event": true,
+          "before": {
+            "id": "target",
+            "noun": "kite",
+            "kind": "object",
+            "location": "meadow",
+            "number": "singular",
+            "pronoun": "it",
+            "properties": [
+              "flyable",
+              "portable"
+            ],
+            "state": [
+              "fragile",
+              "grounded",
+              "torn"
+            ],
+            "memes": {}
+          },
+          "after": {
+            "id": "target",
+            "noun": "kite",
+            "kind": "object",
+            "location": "meadow",
+            "number": "singular",
+            "pronoun": "it",
+            "properties": [
+              "flyable",
+              "portable"
+            ],
+            "state": [
+              "fragile",
+              "grounded",
+              "torn"
+            ],
+            "memes": {}
+          }
+        },
+        {
+          "event_id": 2,
+          "kind": "inspect",
+          "tags": [
+            "frame.patient",
+            "qa_context"
+          ],
+          "participation": "participant",
+          "own_effects": {},
+          "peers": [
+            "helper",
+            "hero"
+          ],
+          "shared_event": true,
+          "before": {
+            "id": "target",
+            "noun": "kite",
+            "kind": "object",
+            "location": "meadow",
+            "number": "singular",
+            "pronoun": "it",
+            "properties": [
+              "flyable",
+              "portable"
+            ],
+            "state": [
+              "fragile",
+              "grounded",
+              "torn"
+            ],
+            "memes": {}
+          },
+          "after": {
+            "id": "target",
+            "noun": "kite",
+            "kind": "object",
+            "location": "meadow",
+            "number": "singular",
+            "pronoun": "it",
+            "properties": [
+              "flyable",
+              "portable"
+            ],
+            "state": [
+              "fragile",
+              "grounded",
+              "torn"
+            ],
+            "memes": {}
+          }
+        },
+        {
+          "event_id": 3,
+          "kind": "choose_patch",
+          "tags": [
+            "frame.patient"
+          ],
+          "participation": "participant",
+          "own_effects": {},
+          "peers": [
+            "helper",
+            "hero"
+          ],
+          "shared_event": true,
+          "before": {
+            "id": "target",
+            "noun": "kite",
+            "kind": "object",
+            "location": "meadow",
+            "number": "singular",
+            "pronoun": "it",
+            "properties": [
+              "flyable",
+              "portable"
+            ],
+            "state": [
+              "fragile",
+              "grounded",
+              "torn"
+            ],
+            "memes": {}
+          },
+          "after": {
+            "id": "target",
+            "noun": "kite",
+            "kind": "object",
+            "location": "meadow",
+            "number": "singular",
+            "pronoun": "it",
+            "properties": [
+              "flyable",
+              "portable"
+            ],
+            "state": [
+              "fragile",
+              "grounded",
+              "torn"
+            ],
+            "memes": {}
+          }
+        },
+        {
+          "event_id": 4,
+          "kind": "fetch_tape",
+          "tags": [
+            "frame.patient"
+          ],
+          "participation": "participant",
+          "own_effects": {},
+          "peers": [
+            "hero",
+            "tool"
+          ],
+          "shared_event": true,
+          "before": {
+            "id": "target",
+            "noun": "kite",
+            "kind": "object",
+            "location": "meadow",
+            "number": "singular",
+            "pronoun": "it",
+            "properties": [
+              "flyable",
+              "portable"
+            ],
+            "state": [
+              "fragile",
+              "grounded",
+              "torn"
+            ],
+            "memes": {}
+          },
+          "after": {
+            "id": "target",
+            "noun": "kite",
+            "kind": "object",
+            "location": "meadow",
+            "number": "singular",
+            "pronoun": "it",
+            "properties": [
+              "flyable",
+              "portable"
+            ],
+            "state": [
+              "fragile",
+              "grounded",
+              "torn"
+            ],
+            "memes": {}
+          }
+        },
+        {
+          "event_id": 5,
+          "kind": "mend",
+          "tags": [
+            "changed",
+            "frame.patient",
+            "qa_context",
+            "state.add:repaired",
+            "state.remove:torn"
+          ],
+          "participation": "participant",
+          "own_effects": {
+            "state": {
+              "before": [
+                "fragile",
+                "grounded",
+                "torn"
+              ],
+              "after": [
+                "fragile",
+                "grounded",
+                "repaired"
+              ]
+            }
+          },
+          "peers": [
+            "hero",
+            "tool"
+          ],
+          "shared_event": true,
+          "before": {
+            "id": "target",
+            "noun": "kite",
+            "kind": "object",
+            "location": "meadow",
+            "number": "singular",
+            "pronoun": "it",
+            "properties": [
+              "flyable",
+              "portable"
+            ],
+            "state": [
+              "fragile",
+              "grounded",
+              "torn"
+            ],
+            "memes": {}
+          },
+          "after": {
+            "id": "target",
+            "noun": "kite",
+            "kind": "object",
+            "location": "meadow",
+            "number": "singular",
+            "pronoun": "it",
+            "properties": [
+              "flyable",
+              "portable"
+            ],
+            "state": [
+              "fragile",
+              "grounded",
+              "repaired"
+            ],
+            "memes": {}
+          }
+        },
+        {
+          "event_id": 6,
+          "kind": "test_flight",
+          "tags": [
+            "changed",
+            "frame.patient",
+            "mentioned",
+            "qa_context",
+            "state.add:torn",
+            "state.remove:repaired"
+          ],
+          "participation": "participant",
+          "own_effects": {
+            "state": {
+              "before": [
+                "fragile",
+                "grounded",
+                "repaired"
+              ],
+              "after": [
+                "fragile",
+                "grounded",
+                "torn"
+              ]
+            }
+          },
+          "peers": [
+            "hero"
+          ],
+          "shared_event": true,
+          "before": {
+            "id": "target",
+            "noun": "kite",
+            "kind": "object",
+            "location": "meadow",
+            "number": "singular",
+            "pronoun": "it",
+            "properties": [
+              "flyable",
+              "portable"
+            ],
+            "state": [
+              "fragile",
+              "grounded",
+              "repaired"
+            ],
+            "memes": {}
+          },
+          "after": {
+            "id": "target",
+            "noun": "kite",
+            "kind": "object",
+            "location": "meadow",
+            "number": "singular",
+            "pronoun": "it",
+            "properties": [
+              "flyable",
+              "portable"
+            ],
+            "state": [
+              "fragile",
+              "grounded",
+              "torn"
+            ],
+            "memes": {}
+          }
+        },
+        {
+          "event_id": 7,
+          "kind": "reconsider",
+          "tags": [
+            "frame.patient",
+            "qa_context"
+          ],
+          "participation": "participant",
+          "own_effects": {},
+          "peers": [
+            "helper",
+            "hero"
+          ],
+          "shared_event": true,
+          "before": {
+            "id": "target",
+            "noun": "kite",
+            "kind": "object",
+            "location": "meadow",
+            "number": "singular",
+            "pronoun": "it",
+            "properties": [
+              "flyable",
+              "portable"
+            ],
+            "state": [
+              "fragile",
+              "grounded",
+              "torn"
+            ],
+            "memes": {}
+          },
+          "after": {
+            "id": "target",
+            "noun": "kite",
+            "kind": "object",
+            "location": "meadow",
+            "number": "singular",
+            "pronoun": "it",
+            "properties": [
+              "flyable",
+              "portable"
+            ],
+            "state": [
+              "fragile",
+              "grounded",
+              "torn"
+            ],
+            "memes": {}
+          }
+        },
+        {
+          "event_id": 9,
+          "kind": "cut_sail",
+          "tags": [
+            "changed",
+            "frame.patient",
+            "mentioned",
+            "qa_context",
+            "renamed",
+            "state.add:sail",
+            "state.remove:grounded",
+            "state.remove:torn"
+          ],
+          "participation": "participant",
+          "own_effects": {
+            "noun": {
+              "before": "kite",
+              "after": "sail"
+            },
+            "properties": {
+              "before": [
+                "flyable",
+                "portable"
+              ],
+              "after": [
+                "portable"
+              ]
+            },
+            "state": {
+              "before": [
+                "fragile",
+                "grounded",
+                "torn"
+              ],
+              "after": [
+                "fragile",
+                "sail"
+              ]
+            }
+          },
+          "peers": [
+            "helper",
+            "scissors"
+          ],
+          "shared_event": true,
+          "before": {
+            "id": "target",
+            "noun": "kite",
+            "kind": "object",
+            "location": "meadow",
+            "number": "singular",
+            "pronoun": "it",
+            "properties": [
+              "flyable",
+              "portable"
+            ],
+            "state": [
+              "fragile",
+              "grounded",
+              "torn"
+            ],
+            "memes": {}
+          },
+          "after": {
+            "id": "target",
+            "noun": "sail",
+            "kind": "object",
+            "location": "meadow",
+            "number": "singular",
+            "pronoun": "it",
+            "properties": [
+              "portable"
+            ],
+            "state": [
+              "fragile",
+              "sail"
+            ],
+            "memes": {}
+          }
+        },
+        {
+          "event_id": 10,
+          "kind": "attach_sail",
+          "tags": [
+            "changed",
+            "frame.patient",
+            "mentioned",
+            "moved",
+            "qa_context",
+            "state.add:attached"
+          ],
+          "participation": "participant",
+          "own_effects": {
+            "location": {
+              "before": "meadow",
+              "after": "boat"
+            },
+            "state": {
+              "before": [
+                "fragile",
+                "sail"
+              ],
+              "after": [
+                "attached",
+                "fragile",
+                "sail"
+              ]
+            }
+          },
+          "peers": [
+            "boat",
+            "hero",
+            "string"
+          ],
+          "shared_event": true,
+          "before": {
+            "id": "target",
+            "noun": "sail",
+            "kind": "object",
+            "location": "meadow",
+            "number": "singular",
+            "pronoun": "it",
+            "properties": [
+              "portable"
+            ],
+            "state": [
+              "fragile",
+              "sail"
+            ],
+            "memes": {}
+          },
+          "after": {
+            "id": "target",
+            "noun": "sail",
+            "kind": "object",
+            "location": "boat",
+            "number": "singular",
+            "pronoun": "it",
+            "properties": [
+              "portable"
+            ],
+            "state": [
+              "attached",
+              "fragile",
+              "sail"
+            ],
+            "memes": {}
+          }
+        },
+        {
+          "event_id": 12,
+          "kind": "ending",
+          "tags": [
+            "frame.patient",
+            "qa_context"
+          ],
+          "participation": "participant",
+          "own_effects": {},
+          "peers": [
+            "boat",
+            "helper",
+            "hero"
+          ],
+          "shared_event": true,
+          "before": {
+            "id": "target",
+            "noun": "sail",
+            "kind": "object",
+            "location": "boat",
+            "number": "singular",
+            "pronoun": "it",
+            "properties": [
+              "portable"
+            ],
+            "state": [
+              "attached",
+              "fragile",
+              "sail"
+            ],
+            "memes": {}
+          },
+          "after": {
+            "id": "target",
+            "noun": "sail",
+            "kind": "object",
+            "location": "boat",
+            "number": "singular",
+            "pronoun": "it",
+            "properties": [
+              "portable"
+            ],
+            "state": [
+              "attached",
+              "fragile",
+              "sail"
+            ],
+            "memes": {}
+          }
+        }
+      ]
+    },
+    "tool": {
+      "initial": {
+        "id": "tool",
+        "noun": "tape",
+        "kind": "tool",
+        "location": "basket",
+        "number": "singular",
+        "pronoun": "it",
+        "properties": [
+          "portable",
+          "repair"
+        ],
+        "state": [],
+        "memes": {}
+      },
+      "final": {
+        "id": "tool",
+        "noun": "tape",
+        "kind": "tool",
+        "location": "hero",
+        "number": "singular",
+        "pronoun": "it",
+        "properties": [
+          "portable",
+          "repair"
+        ],
+        "state": [],
+        "memes": {}
+      },
+      "line": [
+        {
+          "event_id": 4,
+          "kind": "fetch_tape",
+          "tags": [
+            "changed",
+            "moved"
+          ],
+          "participation": "participant",
+          "own_effects": {
+            "location": {
+              "before": "basket",
+              "after": "hero"
+            }
+          },
+          "peers": [
+            "hero",
+            "target"
+          ],
+          "shared_event": true,
+          "before": {
+            "id": "tool",
+            "noun": "tape",
+            "kind": "tool",
+            "location": "basket",
+            "number": "singular",
+            "pronoun": "it",
+            "properties": [
+              "portable",
+              "repair"
+            ],
+            "state": [],
+            "memes": {}
+          },
+          "after": {
+            "id": "tool",
+            "noun": "tape",
+            "kind": "tool",
+            "location": "hero",
+            "number": "singular",
+            "pronoun": "it",
+            "properties": [
+              "portable",
+              "repair"
+            ],
+            "state": [],
+            "memes": {}
+          }
+        },
+        {
+          "event_id": 5,
+          "kind": "mend",
+          "tags": [
+            "frame.instrument",
+            "mentioned",
+            "qa_context"
+          ],
+          "participation": "participant",
+          "own_effects": {},
+          "peers": [
+            "hero",
+            "target"
+          ],
+          "shared_event": true,
+          "before": {
+            "id": "tool",
+            "noun": "tape",
+            "kind": "tool",
+            "location": "hero",
+            "number": "singular",
+            "pronoun": "it",
+            "properties": [
+              "portable",
+              "repair"
+            ],
+            "state": [],
+            "memes": {}
+          },
+          "after": {
+            "id": "tool",
+            "noun": "tape",
+            "kind": "tool",
+            "location": "hero",
+            "number": "singular",
+            "pronoun": "it",
+            "properties": [
+              "portable",
+              "repair"
+            ],
+            "state": [],
+            "memes": {}
+          }
+        }
+      ]
+    },
+    "water": {
+      "initial": {
+        "id": "water",
+        "noun": "water",
+        "kind": "drink",
+        "location": "kitchen",
+        "number": "singular",
+        "pronoun": "it",
+        "properties": [
+          "drinkable"
+        ],
+        "state": [],
+        "memes": {}
+      },
+      "final": {
+        "id": "water",
+        "noun": "water",
+        "kind": "drink",
+        "location": "kitchen",
+        "number": "singular",
+        "pronoun": "it",
+        "properties": [
+          "drinkable"
+        ],
+        "state": [],
+        "memes": {}
+      },
+      "line": []
+    }
+  },
+  "limitations": [
+    "Declared dependencies are not a complete Python guard read set.",
+    "Frame actor/patient are coarse roles; compound scenes can involve additional people.",
+    "Holder tags describe physical possession, not legal ownership or intent.",
+    "Local lines project shared events; they are not independently executable."
+  ]
+}

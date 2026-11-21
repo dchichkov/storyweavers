@@ -1,0 +1,81 @@
+{
+  "id": "P043",
+  "name": "Question-answer focus",
+  "description": "Reply → unresolved question slot. Favor an answer to the actual question.",
+  "proposed_payload": "{requested_role, focus_entity}",
+  "provenance": "Authored illustrative seeds; not learned or extracted.",
+  "status": "program_required",
+  "examples": [
+    {
+      "id": "P043.01",
+      "description": "Where is the lantern? Its current location is porch.",
+      "intended_feature": "requested:location;answer:porch",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P043.02",
+      "description": "Who moved the crate? Theo moved it.",
+      "intended_feature": "requested:actor;answer:Theo",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P043.03",
+      "description": "Why did the cup fall? Rope break is recorded as cause.",
+      "intended_feature": "requested:cause;answer:rope_break",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P043.04",
+      "description": "Which key opens the chest? Only brass key matches.",
+      "intended_feature": "requested:instrument;answer:brass_key",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P043.05",
+      "description": "How many boards remain? Inventory contains two.",
+      "intended_feature": "requested:quantity;answer:2",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P043.06",
+      "description": "When did Mira leave? No time is recorded.",
+      "intended_feature": "unanswerable_time",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P043.07",
+      "description": "What happened next? follows a referenced rescue event.",
+      "intended_feature": "next_event_after_rescue",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P043.08",
+      "description": "Where? follows discussion of the key, not the lamp.",
+      "intended_feature": "preserve_question_focus:key",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P043.09",
+      "description": "Did Nia see the move? Witness record says no.",
+      "intended_feature": "requested:access;answer:no",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P043.10",
+      "description": "Who and where? asks two slots at once.",
+      "intended_feature": "multi_slot_question",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    }
+  ],
+  "required_program": "Parse question focus into entity/event and requested role, maintain unresolved slots, and retrieve only answerable world/trace facts."
+}

@@ -1,0 +1,81 @@
+{
+  "id": "P027",
+  "name": "Causal-parent retrieval",
+  "description": "Why-query or explanation → recorded cause edge. Favor an evidenced explanation.",
+  "proposed_payload": "{event, cause_ids}",
+  "provenance": "Authored illustrative seeds; not learned or extracted.",
+  "status": "program_required",
+  "examples": [
+    {
+      "id": "P027.01",
+      "description": "Gust pushes shutter; shutter slams.",
+      "intended_feature": "cause:gust_event",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P027.02",
+      "description": "Rope snaps; bucket falls.",
+      "intended_feature": "cause:rope_break_event",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P027.03",
+      "description": "Rain occurs before a letter arrives without a cause edge.",
+      "intended_feature": "no_causal_link",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P027.04",
+      "description": "Flood requires heavy rain plus blocked drain.",
+      "intended_feature": "causes:{rain,blocked_drain}",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P027.05",
+      "description": "Mira's warning causes Nia to stop.",
+      "intended_feature": "cause:warning_event",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P027.06",
+      "description": "Cup breaks accidentally but no cause is recorded.",
+      "intended_feature": "cause_unknown",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P027.07",
+      "description": "Theo blames Omar without supporting evidence.",
+      "intended_feature": "attribution_not_world_cause",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P027.08",
+      "description": "Fire causes smoke, which triggers alarm. Query alarm.",
+      "intended_feature": "immediate:smoke;ancestor:fire",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P027.09",
+      "description": "An imagined accident has hypothetical causes only.",
+      "intended_feature": "branch_scoped_causes",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P027.10",
+      "description": "Cause record points to a missing event.",
+      "intended_feature": "invalid_provenance",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    }
+  ],
+  "required_program": "Follow recorded cause edges in the event graph, distinguish temporal neighbors from causes, and preserve multiple or unknown causes."
+}

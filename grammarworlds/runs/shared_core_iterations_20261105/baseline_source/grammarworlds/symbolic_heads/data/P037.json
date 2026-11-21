@@ -1,0 +1,81 @@
+{
+  "id": "P037",
+  "name": "Witness access",
+  "description": "Knowledge query → visibility and presence at an event. Downweight unexplained knowledge.",
+  "proposed_payload": "{agent, event_access, modality}",
+  "provenance": "Authored illustrative seeds; not learned or extracted.",
+  "status": "program_required",
+  "examples": [
+    {
+      "id": "P037.01",
+      "description": "Nia watches Mira hide the map.",
+      "intended_feature": "visual_access",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P037.02",
+      "description": "Omar sleeps when Theo leaves.",
+      "intended_feature": "no_access",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P037.03",
+      "description": "Mira stands behind an opaque wall during the transfer.",
+      "intended_feature": "no_visual_access",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P037.04",
+      "description": "Theo hears a bell from another room.",
+      "intended_feature": "auditory_access",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P037.05",
+      "description": "Nia receives a letter reporting the arrival.",
+      "intended_feature": "report_access",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P037.06",
+      "description": "Omar arrives after the object was hidden.",
+      "intended_feature": "no_direct_access_to_hiding",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P037.07",
+      "description": "A character sees a box but not its concealed contents.",
+      "intended_feature": "partial_access",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P037.08",
+      "description": "A distant observer sees movement but cannot identify the person.",
+      "intended_feature": "uncertain_identity",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P037.09",
+      "description": "An event happens while a character looks away.",
+      "intended_feature": "attention_blocks_observation",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P037.10",
+      "description": "Visibility metadata is absent.",
+      "intended_feature": "access_unknown",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    }
+  ],
+  "required_program": "Evaluate perceptual/report access using event time, location, visibility, hearing, attention, and recorded communication paths."
+}

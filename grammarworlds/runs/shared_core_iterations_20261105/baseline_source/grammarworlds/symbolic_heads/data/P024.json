@@ -1,0 +1,81 @@
+{
+  "id": "P024",
+  "name": "Physical concept carrier",
+  "description": "Concept-conditioned query → entities carrying that concept. Favor the carrier's manifestation; emit nothing from an unembedded concept.",
+  "proposed_payload": "{carrier_id, concept, magnitude}",
+  "provenance": "Authored illustrative seeds; not learned or extracted.",
+  "status": "program_required",
+  "examples": [
+    {
+      "id": "P024.01",
+      "description": "Mira carries Fear=.8 after a growl.",
+      "intended_feature": "carrier:Mira;fear:.8",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P024.02",
+      "description": "Theo carries Envy=.6 after Nia wins.",
+      "intended_feature": "carrier:Theo;envy:.6",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P024.03",
+      "description": "An unattached Love label exists without a person or book.",
+      "intended_feature": "zero_influence",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P024.04",
+      "description": "Book contains a warning; nobody has read it.",
+      "intended_feature": "book_carrier_only",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P024.05",
+      "description": "Mira reads the warning and acquires caution.",
+      "intended_feature": "distinct_reader_update_after_event",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P024.06",
+      "description": "Two characters carry opposite amounts of Trust.",
+      "intended_feature": "entity_specific_magnitudes",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P024.07",
+      "description": "A carrier has been removed from the world.",
+      "intended_feature": "invalid_carrier",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P024.08",
+      "description": "Mira's Fear decreases after rescue.",
+      "intended_feature": "current_lower_magnitude",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P024.09",
+      "description": "One object physically embodies a community promise.",
+      "intended_feature": "object_bound_concept",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P024.10",
+      "description": "The requested concept is absent from every carrier.",
+      "intended_feature": "abstain",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    }
+  ],
+  "required_program": "Bind concept magnitudes to real carrier entities and select manifestations using their state; reject bare/unembedded concepts."
+}

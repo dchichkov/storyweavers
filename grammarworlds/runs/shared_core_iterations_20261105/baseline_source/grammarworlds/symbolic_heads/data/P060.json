@@ -1,0 +1,81 @@
+{
+  "id": "P060",
+  "name": "Counterevidence retrieval",
+  "description": "Candidate claim → facts inconsistent with it. Reduce unsupported candidates without automatically forbidding them.",
+  "proposed_payload": "{candidate, contradicting_evidence, strength}",
+  "provenance": "Authored illustrative seeds; not learned or extracted.",
+  "status": "program_required",
+  "examples": [
+    {
+      "id": "P060.01",
+      "description": "Candidate entered easily; door locked with no key.",
+      "intended_feature": "physical_counterevidence",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P060.02",
+      "description": "Candidate thanked warmly; trust collapsed after betrayal.",
+      "intended_feature": "behavioral_counterevidence_not_absolute_ban",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P060.03",
+      "description": "Candidate cup is full; cup was just emptied.",
+      "intended_feature": "state_contradiction",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P060.04",
+      "description": "Candidate Mira knows secret; she had no access.",
+      "intended_feature": "knowledge_counterevidence",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P060.05",
+      "description": "Candidate maybe the cup is full; contents unknown.",
+      "intended_feature": "uncertainty_not_contradiction",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P060.06",
+      "description": "Candidate quotes a false claim rather than asserting it.",
+      "intended_feature": "quotation_scope",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P060.07",
+      "description": "Candidate gate is not open; gate is closed.",
+      "intended_feature": "compatible_negation",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P060.08",
+      "description": "Evidence concerns a different cup.",
+      "intended_feature": "reject_wrong_entity_counterevidence",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P060.09",
+      "description": "An older fact contradicts a newer valid state.",
+      "intended_feature": "stale_fact_not_counterevidence",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P060.10",
+      "description": "Two valid facts conflict.",
+      "intended_feature": "unresolved_world_conflict",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    }
+  ],
+  "required_program": "Evaluate candidate claims against typed world constraints and scoped evidence, with contradiction strength and modal/negation handling."
+}

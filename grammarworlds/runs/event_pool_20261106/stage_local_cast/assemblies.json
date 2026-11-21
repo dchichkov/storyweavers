@@ -1,0 +1,485 @@
+{
+  "hat.stage": {
+    "world": {
+      "scenario": "catalog_attachment",
+      "entities": {
+        "ada": {
+          "id": "ada",
+          "noun": "Ada",
+          "kind": "person",
+          "location": "garden",
+          "number": "singular",
+          "pronoun": "she",
+          "properties": [
+            "can_hold"
+          ],
+          "state": [],
+          "memes": {}
+        },
+        "teo": {
+          "id": "teo",
+          "noun": "Teo",
+          "kind": "person",
+          "location": "garden",
+          "number": "singular",
+          "pronoun": "he",
+          "properties": [
+            "can_hold"
+          ],
+          "state": [],
+          "memes": {}
+        },
+        "pet": {
+          "id": "pet",
+          "noun": "brown rabbit",
+          "kind": "animal",
+          "location": "pen",
+          "number": "singular",
+          "pronoun": "it",
+          "properties": [
+            "calm",
+            "rabbit"
+          ],
+          "state": [
+            "hungry"
+          ],
+          "memes": {}
+        },
+        "prop": {
+          "id": "prop",
+          "noun": "velvet hat",
+          "kind": "object",
+          "location": "desk",
+          "number": "singular",
+          "pronoun": "it",
+          "properties": [
+            "hat",
+            "rabbit_capacity"
+          ],
+          "state": [
+            "open"
+          ],
+          "memes": {}
+        },
+        "pen": {
+          "id": "pen",
+          "noun": "pen",
+          "kind": "place",
+          "location": "garden",
+          "number": "singular",
+          "pronoun": "it",
+          "properties": [
+            "reachable"
+          ],
+          "state": [],
+          "memes": {}
+        },
+        "desk": {
+          "id": "desk",
+          "noun": "desk",
+          "kind": "place",
+          "location": "garden",
+          "number": "singular",
+          "pronoun": "it",
+          "properties": [
+            "reachable"
+          ],
+          "state": [],
+          "memes": {}
+        },
+        "bell": {
+          "id": "bell",
+          "noun": "bell",
+          "kind": "object",
+          "location": "garden",
+          "number": "singular",
+          "pronoun": "it",
+          "properties": [
+            "rings"
+          ],
+          "state": [
+            "silent"
+          ],
+          "memes": {}
+        },
+        "garden": {
+          "id": "garden",
+          "noun": "garden",
+          "kind": "place",
+          "location": "",
+          "number": "singular",
+          "pronoun": "it",
+          "properties": [],
+          "state": [],
+          "memes": {}
+        },
+        "pool_food": {
+          "id": "pool_food",
+          "noun": "carrot",
+          "kind": "food",
+          "location": "desk",
+          "number": "singular",
+          "pronoun": "it",
+          "properties": [
+            "edible",
+            "portable",
+            "rabbit_food"
+          ],
+          "state": [],
+          "memes": {}
+        }
+      },
+      "hero": "ada",
+      "helper": "teo",
+      "target": "pet",
+      "tool": "prop",
+      "setting": "garden",
+      "facts": {},
+      "flags": [],
+      "history": [],
+      "focus": ""
+    },
+    "template": {
+      "schema": "attached-event-lines-v1",
+      "roles": {
+        "actor": "person",
+        "audience": "person",
+        "rabbit": "animal",
+        "hat": "object",
+        "stage": "place",
+        "source": "place",
+        "food": "food"
+      },
+      "events": {
+        "e000": {
+          "op": "show_premise",
+          "actor": "actor",
+          "audience": "audience",
+          "rabbit": "rabbit",
+          "source": "source"
+        },
+        "e001": {
+          "op": "take_hat",
+          "actor": "actor",
+          "hat": "hat",
+          "stage": "stage"
+        },
+        "e002": {
+          "op": "promise_show",
+          "actor": "actor",
+          "audience": "audience",
+          "hat": "hat"
+        },
+        "e003": {
+          "op": "close_eyes",
+          "actor": "audience"
+        },
+        "e004": {
+          "op": "hide_rabbit",
+          "actor": "actor",
+          "audience": "audience",
+          "rabbit": "rabbit",
+          "hat": "hat",
+          "source": "source"
+        },
+        "e005": {
+          "op": "open_eyes",
+          "actor": "audience"
+        },
+        "e006": {
+          "op": "peek_rabbit",
+          "actor": "actor",
+          "audience": "audience",
+          "rabbit": "rabbit",
+          "hat": "hat"
+        },
+        "e007": {
+          "op": "lift_rabbit",
+          "actor": "actor",
+          "audience": "audience",
+          "rabbit": "rabbit",
+          "hat": "hat"
+        },
+        "e008": {
+          "op": "applaud_reveal",
+          "actor": "audience",
+          "rabbit": "rabbit",
+          "holder": "actor"
+        },
+        "e009": {
+          "op": "settle_rabbit",
+          "actor": "actor",
+          "rabbit": "rabbit",
+          "hat": "hat",
+          "stage": "stage"
+        },
+        "e010": {
+          "op": "feed_rabbit",
+          "actor": "actor",
+          "rabbit": "rabbit",
+          "food": "food",
+          "stage": "stage"
+        },
+        "e011": {
+          "op": "rabbit_final_image",
+          "actor": "actor",
+          "rabbit": "rabbit",
+          "hat": "hat",
+          "food": "food",
+          "stage": "stage"
+        }
+      },
+      "lines": [
+        {
+          "entity": "actor",
+          "steps": [
+            "e000",
+            "e001",
+            "e002",
+            "e004",
+            "e006",
+            "e007",
+            "e008",
+            "e009",
+            "e010",
+            "e011"
+          ]
+        },
+        {
+          "entity": "audience",
+          "steps": [
+            "e000",
+            "e002",
+            "e003",
+            "e004",
+            "e005",
+            "e006",
+            "e007",
+            "e008"
+          ]
+        },
+        {
+          "entity": "rabbit",
+          "steps": [
+            "e000",
+            "e004",
+            "e006",
+            "e007",
+            "e008",
+            "e009",
+            "e010",
+            "e011"
+          ]
+        },
+        {
+          "entity": "hat",
+          "steps": [
+            "e001",
+            "e002",
+            "e004",
+            "e006",
+            "e007",
+            "e009",
+            "e011"
+          ]
+        },
+        {
+          "entity": "stage",
+          "steps": [
+            "e001",
+            "e009",
+            "e010",
+            "e011"
+          ]
+        },
+        {
+          "entity": "source",
+          "steps": [
+            "e000",
+            "e004"
+          ]
+        },
+        {
+          "entity": "food",
+          "steps": [
+            "e010",
+            "e011"
+          ]
+        }
+      ],
+      "source": {
+        "kind": "event-pool",
+        "fragment": "hat.stage",
+        "authored_source": "authored_hat:stage_variant",
+        "assembly": [
+          {
+            "action": "construct",
+            "entity": "garden",
+            "reason": "brief setting",
+            "properties": []
+          },
+          {
+            "action": "reuse",
+            "role": "actor",
+            "entity": "ada",
+            "reason": "compatible local carrier (world role resolves ties)"
+          },
+          {
+            "action": "reuse",
+            "role": "audience",
+            "entity": "teo",
+            "reason": "compatible local carrier (world role resolves ties)"
+          },
+          {
+            "action": "reuse",
+            "role": "rabbit",
+            "entity": "pet",
+            "reason": "explicit/inferred physical binding"
+          },
+          {
+            "action": "reuse",
+            "role": "hat",
+            "entity": "prop",
+            "reason": "explicit/inferred physical binding"
+          },
+          {
+            "action": "reuse",
+            "role": "stage",
+            "entity": "desk",
+            "reason": "explicit/inferred physical binding"
+          },
+          {
+            "action": "reuse",
+            "role": "source",
+            "entity": "pen",
+            "reason": "explicit/inferred physical binding"
+          },
+          {
+            "action": "import",
+            "role": "food",
+            "entity": "pool_food",
+            "prototype": "magic:food",
+            "source": {
+              "world": "authored_hat",
+              "entity": "food"
+            },
+            "reason": "fragment dependency",
+            "inherited_properties": [
+              "edible",
+              "portable",
+              "rabbit_food"
+            ],
+            "inherited_state": []
+          },
+          {
+            "action": "place",
+            "entity": "pool_food",
+            "destination": "desk",
+            "reason": "authored bundle placement"
+          }
+        ],
+        "expansion": {
+          "e000": [
+            "0",
+            "show.setup",
+            "0"
+          ],
+          "e001": [
+            "0",
+            "show.setup",
+            "1"
+          ],
+          "e002": [
+            "0",
+            "show.setup",
+            "2"
+          ],
+          "e003": [
+            "1",
+            "rabbit.arrive_stage",
+            "0"
+          ],
+          "e004": [
+            "1",
+            "rabbit.arrive_stage",
+            "1"
+          ],
+          "e005": [
+            "1",
+            "rabbit.arrive_stage",
+            "2"
+          ],
+          "e006": [
+            "2",
+            "rabbit.reveal",
+            "0"
+          ],
+          "e007": [
+            "2",
+            "rabbit.reveal",
+            "1"
+          ],
+          "e008": [
+            "2",
+            "rabbit.reveal",
+            "2"
+          ],
+          "e009": [
+            "3",
+            "rabbit.care_ending",
+            "0"
+          ],
+          "e010": [
+            "3",
+            "rabbit.care_ending",
+            "1"
+          ],
+          "e011": [
+            "3",
+            "rabbit.care_ending",
+            "2"
+          ]
+        },
+        "retrieval": {
+          "candidates": [
+            {
+              "fragment": "hat.stage",
+              "score": 2,
+              "probability": 1.0
+            }
+          ],
+          "rejected": [
+            {
+              "fragment": "hat.portal_bound",
+              "reason": "incompatible existing hat"
+            },
+            {
+              "fragment": "hat.portal_open",
+              "reason": "incompatible existing hat"
+            }
+          ],
+          "selection_seed": 0,
+          "forced_fragment": null
+        },
+        "brief": {
+          "schema": "event-pool-v1",
+          "intent": "reveal",
+          "setting": "garden",
+          "roles": {
+            "rabbit": "pet",
+            "hat": "prop"
+          }
+        }
+      }
+    },
+    "bindings": {
+      "actor": "ada",
+      "audience": "teo",
+      "rabbit": "pet",
+      "hat": "prop",
+      "stage": "desk",
+      "source": "pen",
+      "food": "pool_food"
+    }
+  }
+}

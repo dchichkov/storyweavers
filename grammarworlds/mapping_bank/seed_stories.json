@@ -1,0 +1,465 @@
+{
+  "schema": "event-mapping-bank-v1",
+  "rules": [
+    {
+      "id": "seed.fetch.object",
+      "weight": 1,
+      "profiles": [
+        "catalog"
+      ],
+      "source": {
+        "scenarios": [
+          "bakery",
+          "costume",
+          "picnic"
+        ],
+        "kinds": [
+          "borrow_basket",
+          "borrow_blanket",
+          "borrow_cape",
+          "fetch_sun"
+        ],
+        "bind": {
+          "worker": "frame.actor",
+          "item": "movements.0.item",
+          "supply": "movements.0.source"
+        },
+        "role_kinds": {
+          "worker": "person",
+          "item": "object",
+          "supply": "place"
+        },
+        "equals": {
+          "movements_count": 1,
+          "changes": [
+            {
+              "entity": "$item",
+              "field": "location",
+              "before": "$supply",
+              "after": "$worker"
+            }
+          ]
+        },
+        "absent": [
+          "movements.0.source_holder"
+        ]
+      },
+      "target": {
+        "id": "seed_fetch",
+        "event": {
+          "op": "fetch",
+          "actor": "worker",
+          "item": "item",
+          "source": "supply"
+        },
+        "roles": {
+          "worker": {
+            "kind": "person",
+            "properties": [
+              "can_hold"
+            ]
+          },
+          "item": {
+            "kind": "object",
+            "properties": [
+              "portable"
+            ]
+          },
+          "supply": {
+            "kind": "place",
+            "properties": [
+              "reachable"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "seed.fetch.tool",
+      "weight": 1,
+      "profiles": [
+        "catalog"
+      ],
+      "source": {
+        "scenarios": [
+          "biscuit",
+          "camp",
+          "festival",
+          "laundry",
+          "market",
+          "museum",
+          "orchard",
+          "picnic",
+          "pond",
+          "puppets",
+          "repair",
+          "seaside",
+          "snow",
+          "trail"
+        ],
+        "kinds": [
+          "borrow_compass",
+          "borrow_cutter",
+          "borrow_lantern",
+          "borrow_net",
+          "borrow_pegs",
+          "borrow_picker",
+          "borrow_scale",
+          "borrow_sled",
+          "borrow_spanner",
+          "borrow_string",
+          "borrow_torch",
+          "fetch_map",
+          "fetch_needle",
+          "fetch_weight"
+        ],
+        "bind": {
+          "worker": "frame.actor",
+          "item": "movements.0.item",
+          "supply": "movements.0.source"
+        },
+        "role_kinds": {
+          "worker": "person",
+          "item": "tool",
+          "supply": "place"
+        },
+        "equals": {
+          "movements_count": 1,
+          "changes": [
+            {
+              "entity": "$item",
+              "field": "location",
+              "before": "$supply",
+              "after": "$worker"
+            }
+          ]
+        },
+        "absent": [
+          "movements.0.source_holder"
+        ]
+      },
+      "target": {
+        "id": "seed_fetch",
+        "event": {
+          "op": "fetch",
+          "actor": "worker",
+          "item": "item",
+          "source": "supply"
+        },
+        "roles": {
+          "worker": {
+            "kind": "person",
+            "properties": [
+              "can_hold"
+            ]
+          },
+          "item": {
+            "kind": "tool",
+            "properties": [
+              "portable"
+            ]
+          },
+          "supply": {
+            "kind": "place",
+            "properties": [
+              "reachable"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "seed.put_item.object",
+      "weight": 1,
+      "profiles": [
+        "catalog"
+      ],
+      "source": {
+        "scenarios": [
+          "costume"
+        ],
+        "kinds": [
+          "return_costume"
+        ],
+        "bind": {
+          "worker": "frame.actor",
+          "item": "movements.0.item",
+          "destination": "movements.0.destination"
+        },
+        "role_kinds": {
+          "worker": "person",
+          "item": "object",
+          "destination": "place"
+        },
+        "equals": {
+          "movements_count": 1,
+          "changes": [
+            {
+              "entity": "$item",
+              "field": "location",
+              "before": "$worker",
+              "after": "$destination"
+            }
+          ]
+        },
+        "absent": [
+          "movements.0.destination_holder"
+        ]
+      },
+      "target": {
+        "id": "seed_put_item",
+        "event": {
+          "op": "put_item",
+          "actor": "worker",
+          "item": "item",
+          "destination": "destination"
+        },
+        "roles": {
+          "worker": {
+            "kind": "person",
+            "properties": [
+              "can_hold"
+            ]
+          },
+          "item": {
+            "kind": "object",
+            "properties": [
+              "portable"
+            ]
+          },
+          "destination": {
+            "kind": "place",
+            "properties": [
+              "reachable"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "seed.put_item.tool",
+      "weight": 1,
+      "profiles": [
+        "catalog"
+      ],
+      "source": {
+        "scenarios": [
+          "biscuit",
+          "market",
+          "orchard",
+          "pond",
+          "puppets",
+          "repair",
+          "snow"
+        ],
+        "kinds": [
+          "return_cutter",
+          "return_needle",
+          "return_net",
+          "return_picker",
+          "return_scale",
+          "return_sled",
+          "return_spanner"
+        ],
+        "bind": {
+          "worker": "frame.actor",
+          "item": "movements.0.item",
+          "destination": "movements.0.destination"
+        },
+        "role_kinds": {
+          "worker": "person",
+          "item": "tool",
+          "destination": "place"
+        },
+        "equals": {
+          "movements_count": 1,
+          "changes": [
+            {
+              "entity": "$item",
+              "field": "location",
+              "before": "$worker",
+              "after": "$destination"
+            }
+          ]
+        },
+        "absent": [
+          "movements.0.destination_holder"
+        ]
+      },
+      "target": {
+        "id": "seed_put_item",
+        "event": {
+          "op": "put_item",
+          "actor": "worker",
+          "item": "item",
+          "destination": "destination"
+        },
+        "roles": {
+          "worker": {
+            "kind": "person",
+            "properties": [
+              "can_hold"
+            ]
+          },
+          "item": {
+            "kind": "tool",
+            "properties": [
+              "portable"
+            ]
+          },
+          "destination": {
+            "kind": "place",
+            "properties": [
+              "reachable"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "seed.transfer.object",
+      "weight": 1,
+      "profiles": [
+        "catalog"
+      ],
+      "source": {
+        "scenarios": [
+          "bakery",
+          "camp",
+          "costume",
+          "laundry",
+          "market"
+        ],
+        "kinds": [
+          "deliver_order",
+          "give_sun",
+          "return_basket",
+          "return_rabbit",
+          "share_cape"
+        ],
+        "bind": {
+          "worker": "frame.actor",
+          "item": "movements.0.item",
+          "recipient": "movements.0.destination"
+        },
+        "role_kinds": {
+          "worker": "person",
+          "item": "object",
+          "recipient": "person"
+        },
+        "equals": {
+          "movements_count": 1,
+          "changes": [
+            {
+              "entity": "$item",
+              "field": "location",
+              "before": "$worker",
+              "after": "$recipient"
+            }
+          ]
+        }
+      },
+      "target": {
+        "id": "seed_transfer",
+        "event": {
+          "op": "transfer",
+          "actor": "worker",
+          "item": "item",
+          "recipient": "recipient"
+        },
+        "roles": {
+          "worker": {
+            "kind": "person",
+            "properties": [
+              "can_hold"
+            ]
+          },
+          "item": {
+            "kind": "object",
+            "properties": [
+              "portable"
+            ]
+          },
+          "recipient": {
+            "kind": "person",
+            "properties": [
+              "can_hold"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "seed.transfer.tool",
+      "weight": 1,
+      "profiles": [
+        "catalog"
+      ],
+      "source": {
+        "scenarios": [
+          "camp",
+          "laundry",
+          "seaside",
+          "trail"
+        ],
+        "kinds": [
+          "milo_reads_map",
+          "return_bag",
+          "return_compass",
+          "return_light",
+          "share_light"
+        ],
+        "bind": {
+          "worker": "frame.actor",
+          "item": "movements.0.item",
+          "recipient": "movements.0.destination"
+        },
+        "role_kinds": {
+          "worker": "person",
+          "item": "tool",
+          "recipient": "person"
+        },
+        "equals": {
+          "movements_count": 1,
+          "changes": [
+            {
+              "entity": "$item",
+              "field": "location",
+              "before": "$worker",
+              "after": "$recipient"
+            }
+          ]
+        }
+      },
+      "target": {
+        "id": "seed_transfer",
+        "event": {
+          "op": "transfer",
+          "actor": "worker",
+          "item": "item",
+          "recipient": "recipient"
+        },
+        "roles": {
+          "worker": {
+            "kind": "person",
+            "properties": [
+              "can_hold"
+            ]
+          },
+          "item": {
+            "kind": "tool",
+            "properties": [
+              "portable"
+            ]
+          },
+          "recipient": {
+            "kind": "person",
+            "properties": [
+              "can_hold"
+            ]
+          }
+        }
+      }
+    }
+  ]
+}

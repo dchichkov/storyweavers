@@ -1,0 +1,81 @@
+{
+  "id": "P052",
+  "name": "Emotion regulation",
+  "description": "Actor action → current emotion and learned coping behavior. Favor grounded changes in emotional state.",
+  "proposed_payload": "{carrier, emotion, available_coping_actions}",
+  "provenance": "Authored illustrative seeds; not learned or extracted.",
+  "status": "program_required",
+  "examples": [
+    {
+      "id": "P052.01",
+      "description": "Mira is afraid and remembers slow breathing.",
+      "intended_feature": "available_coping:breathing",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P052.02",
+      "description": "Theo is angry and can step outside.",
+      "intended_feature": "available_coping:distance",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P052.03",
+      "description": "Nia seeks a trusted friend after grief.",
+      "intended_feature": "available_coping:social_support",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P052.04",
+      "description": "Omar has no learned calming strategy.",
+      "intended_feature": "no_invented_strategy",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P052.05",
+      "description": "A suggested coping action is physically unavailable.",
+      "intended_feature": "exclude_infeasible_coping",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P052.06",
+      "description": "Breathing is considered but not yet performed.",
+      "intended_feature": "fear_not_yet_reduced",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P052.07",
+      "description": "A prior coping attempt failed.",
+      "intended_feature": "revise_expected_effect",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P052.08",
+      "description": "A strategy learned by Mira is unknown to Theo.",
+      "intended_feature": "carrier_specific_knowledge",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P052.09",
+      "description": "Joy needs no forced calming response.",
+      "intended_feature": "no_problem_assumed",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P052.10",
+      "description": "Two coping strategies have uncertain benefit.",
+      "intended_feature": "distribution_over_actions",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    }
+  ],
+  "required_program": "Match available coping actions to a carrier emotion and learned history, checking prerequisites and updating emotions only on committed events."
+}

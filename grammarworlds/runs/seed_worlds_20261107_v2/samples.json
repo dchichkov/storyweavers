@@ -1,0 +1,4029 @@
+[
+  {
+    "scenario": "bakery",
+    "seed": 3007,
+    "story": "Mr Hobb was lonely. Tessa said, \u201cI want to give the birthday cake to Mr Hobb.\u201d Mrs Pike said, \u201cI need the wicker basket.\u201d Tessa borrowed the wicker basket. The birthday cake was in the wicker basket. Tessa waited beside the paved path. The birthday cake's icing was smudged. Tessa put the birthday cake on the kitchen table. Mr Hobb said, \u201cI am pleased.\u201d He lit the candle. Tessa returned the wicker basket to Mrs Pike. Mr Hobb opened the window. The candle glowed.",
+    "qa": [
+      {
+        "id": "bakery:10:outcome",
+        "kind": "what_next",
+        "question": "What changed at Mr Hobb\u2019s window?",
+        "answer": "Mr Hobb opened his window. The birthday candle glowed beside him.",
+        "entity_ids": [
+          "candle",
+          "recipient",
+          "window"
+        ],
+        "event_ids": [
+          10
+        ],
+        "evidence": [
+          {
+            "start": 420,
+            "end": 465,
+            "text": "Mr Hobb opened the window. The candle glowed."
+          }
+        ],
+        "text_sha256": "e98de22e6f509ffb954b3e6a0b18614efaa4cfea065393a64a1c7edc39d7a478"
+      },
+      {
+        "id": "bakery:1:goal",
+        "kind": "who",
+        "question": "Who was the birthday cake for?",
+        "answer": "The birthday cake was for Mr Hobb. Tessa wanted to give it to him.",
+        "entity_ids": [
+          "cake",
+          "hero",
+          "recipient"
+        ],
+        "event_ids": [
+          1
+        ],
+        "evidence": [
+          {
+            "start": 0,
+            "end": 78,
+            "text": "Mr Hobb was lonely. Tessa said, \u201cI want to give the birthday cake to Mr Hobb.\u201d"
+          }
+        ],
+        "text_sha256": "e98de22e6f509ffb954b3e6a0b18614efaa4cfea065393a64a1c7edc39d7a478"
+      },
+      {
+        "id": "bakery:2:loan",
+        "kind": "what",
+        "question": "What did Mrs Pike need back?",
+        "answer": "Mrs Pike needed her wicker basket back. Tessa was borrowing it to carry the cake.",
+        "entity_ids": [
+          "basket",
+          "cake",
+          "helper",
+          "hero"
+        ],
+        "event_ids": [
+          2,
+          3
+        ],
+        "evidence": [
+          {
+            "start": 79,
+            "end": 121,
+            "text": "Mrs Pike said, \u201cI need the wicker basket.\u201d"
+          },
+          {
+            "start": 122,
+            "end": 199,
+            "text": "Tessa borrowed the wicker basket. The birthday cake was in the wicker basket."
+          }
+        ],
+        "text_sha256": "e98de22e6f509ffb954b3e6a0b18614efaa4cfea065393a64a1c7edc39d7a478"
+      },
+      {
+        "id": "bakery:3:carry",
+        "kind": "how",
+        "question": "How did Tessa carry the cake?",
+        "answer": "Tessa borrowed a wicker basket. The cake traveled in it.",
+        "entity_ids": [
+          "basket",
+          "cake",
+          "hero"
+        ],
+        "event_ids": [
+          3
+        ],
+        "evidence": [
+          {
+            "start": 122,
+            "end": 199,
+            "text": "Tessa borrowed the wicker basket. The birthday cake was in the wicker basket."
+          }
+        ],
+        "text_sha256": "e98de22e6f509ffb954b3e6a0b18614efaa4cfea065393a64a1c7edc39d7a478"
+      },
+      {
+        "id": "bakery:6:arrival",
+        "kind": "where",
+        "question": "Where did Tessa put the cake?",
+        "answer": "Tessa put the cake on Mr Hobb\u2019s kitchen table. She had carried it in the basket.",
+        "entity_ids": [
+          "basket",
+          "cake",
+          "hero",
+          "table"
+        ],
+        "event_ids": [
+          3,
+          6
+        ],
+        "evidence": [
+          {
+            "start": 122,
+            "end": 199,
+            "text": "Tessa borrowed the wicker basket. The birthday cake was in the wicker basket."
+          },
+          {
+            "start": 275,
+            "end": 324,
+            "text": "Tessa put the birthday cake on the kitchen table."
+          }
+        ],
+        "text_sha256": "e98de22e6f509ffb954b3e6a0b18614efaa4cfea065393a64a1c7edc39d7a478"
+      },
+      {
+        "id": "bakery:7:welcome",
+        "kind": "why",
+        "question": "Did the imperfect cake spoil the visit?",
+        "answer": "Mr Hobb was pleased with the cake. Tessa had put it on his table.",
+        "entity_ids": [
+          "basket",
+          "cake",
+          "hero",
+          "recipient",
+          "table"
+        ],
+        "event_ids": [
+          3,
+          6,
+          7
+        ],
+        "evidence": [
+          {
+            "start": 122,
+            "end": 199,
+            "text": "Tessa borrowed the wicker basket. The birthday cake was in the wicker basket."
+          },
+          {
+            "start": 275,
+            "end": 324,
+            "text": "Tessa put the birthday cake on the kitchen table."
+          },
+          {
+            "start": 325,
+            "end": 354,
+            "text": "Mr Hobb said, \u201cI am pleased.\u201d"
+          }
+        ],
+        "text_sha256": "e98de22e6f509ffb954b3e6a0b18614efaa4cfea065393a64a1c7edc39d7a478"
+      }
+    ],
+    "source": {
+      "number": 1,
+      "scenario": "bakery",
+      "path": "/Users/dmitry/storyweavers/storyscenes/design/agents_api_trial_20261024/luna_high_direct_20/01_bakery/story.txt",
+      "sha256": "2719478fe0eb127d2e3eab3c5fb8f70f18277569b93dbf78a6bba22f4214268d"
+    },
+    "events": [
+      "birthday_request",
+      "basket_permission",
+      "borrow_basket",
+      "wait_for_cart",
+      "bumped_icing",
+      "cake_arrives",
+      "imperfect_gift",
+      "birthday_light",
+      "return_basket",
+      "bright_window"
+    ]
+  },
+  {
+    "scenario": "puppets",
+    "seed": 3007,
+    "story": "The silver star was missing. Lila said, \u201cI need a star.\u201d Nia told Lila, \u201cI can help you.\u201d Lila fetched the needle from the costume shelf. The brass button was heavy. Lila used the needle to stitch the brass button on the felt star. Lila shortened the felt star's loop. Lila said, \u201cI have a light.\u201d Lila put the felt star beside the Moon puppet. Lila returned the needle to the costume shelf. The brass button shone beside the red curtain.",
+    "qa": [
+      {
+        "id": "puppets:9:outcome",
+        "kind": "what_next",
+        "question": "What caught the light at the end?",
+        "answer": "The brass button caught the light beside the red curtain. It decorated the star Lila had made.",
+        "entity_ids": [
+          "button",
+          "curtain",
+          "helper",
+          "hero",
+          "needle",
+          "star"
+        ],
+        "event_ids": [
+          1,
+          2,
+          4,
+          9
+        ],
+        "evidence": [
+          {
+            "start": 0,
+            "end": 56,
+            "text": "The silver star was missing. Lila said, \u201cI need a star.\u201d"
+          },
+          {
+            "start": 57,
+            "end": 89,
+            "text": "Nia told Lila, \u201cI can help you.\u201d"
+          },
+          {
+            "start": 138,
+            "end": 231,
+            "text": "The brass button was heavy. Lila used the needle to stitch the brass button on the felt star."
+          },
+          {
+            "start": 392,
+            "end": 438,
+            "text": "The brass button shone beside the red curtain."
+          }
+        ],
+        "text_sha256": "998a43e1e1e4ea5bac3c891b6a02dfc5ffd166459502bbd30a4e2c23b15120b8"
+      },
+      {
+        "id": "puppets:1:goal",
+        "kind": "what",
+        "question": "What did Lila need for the play?",
+        "answer": "Lila needed a star for the play. The original silver star was missing.",
+        "entity_ids": [
+          "hero",
+          "star"
+        ],
+        "event_ids": [
+          1
+        ],
+        "evidence": [
+          {
+            "start": 0,
+            "end": 56,
+            "text": "The silver star was missing. Lila said, \u201cI need a star.\u201d"
+          }
+        ],
+        "text_sha256": "998a43e1e1e4ea5bac3c891b6a02dfc5ffd166459502bbd30a4e2c23b15120b8"
+      },
+      {
+        "id": "puppets:2:help",
+        "kind": "who",
+        "question": "Who offered to help Lila?",
+        "answer": "Nia offered to help Lila. Lila needed a star for the play.",
+        "entity_ids": [
+          "helper",
+          "hero",
+          "star"
+        ],
+        "event_ids": [
+          1,
+          2
+        ],
+        "evidence": [
+          {
+            "start": 0,
+            "end": 56,
+            "text": "The silver star was missing. Lila said, \u201cI need a star.\u201d"
+          },
+          {
+            "start": 57,
+            "end": 89,
+            "text": "Nia told Lila, \u201cI can help you.\u201d"
+          }
+        ],
+        "text_sha256": "998a43e1e1e4ea5bac3c891b6a02dfc5ffd166459502bbd30a4e2c23b15120b8"
+      },
+      {
+        "id": "puppets:4:button",
+        "kind": "how",
+        "question": "How did Lila decorate the new star?",
+        "answer": "Lila stitched a brass button onto the felt star with a needle. Nia had offered to help her.",
+        "entity_ids": [
+          "button",
+          "helper",
+          "hero",
+          "needle",
+          "star"
+        ],
+        "event_ids": [
+          1,
+          2,
+          4
+        ],
+        "evidence": [
+          {
+            "start": 0,
+            "end": 56,
+            "text": "The silver star was missing. Lila said, \u201cI need a star.\u201d"
+          },
+          {
+            "start": 57,
+            "end": 89,
+            "text": "Nia told Lila, \u201cI can help you.\u201d"
+          },
+          {
+            "start": 138,
+            "end": 231,
+            "text": "The brass button was heavy. Lila used the needle to stitch the brass button on the felt star."
+          }
+        ],
+        "text_sha256": "998a43e1e1e4ea5bac3c891b6a02dfc5ffd166459502bbd30a4e2c23b15120b8"
+      },
+      {
+        "id": "puppets:5:adjustment",
+        "kind": "why",
+        "question": "How did Lila make the star easier to hold?",
+        "answer": "Lila shortened its loop. The star carried a heavy brass button.",
+        "entity_ids": [
+          "button",
+          "helper",
+          "hero",
+          "needle",
+          "star"
+        ],
+        "event_ids": [
+          1,
+          2,
+          4,
+          5
+        ],
+        "evidence": [
+          {
+            "start": 0,
+            "end": 56,
+            "text": "The silver star was missing. Lila said, \u201cI need a star.\u201d"
+          },
+          {
+            "start": 57,
+            "end": 89,
+            "text": "Nia told Lila, \u201cI can help you.\u201d"
+          },
+          {
+            "start": 138,
+            "end": 231,
+            "text": "The brass button was heavy. Lila used the needle to stitch the brass button on the felt star."
+          },
+          {
+            "start": 232,
+            "end": 268,
+            "text": "Lila shortened the felt star's loop."
+          }
+        ],
+        "text_sha256": "998a43e1e1e4ea5bac3c891b6a02dfc5ffd166459502bbd30a4e2c23b15120b8"
+      },
+      {
+        "id": "puppets:7:performance",
+        "kind": "where",
+        "question": "Where did Lila put the new star?",
+        "answer": "Lila put the new star beside the Moon puppet. She had secured its loop.",
+        "entity_ids": [
+          "button",
+          "helper",
+          "hero",
+          "moon",
+          "needle",
+          "star"
+        ],
+        "event_ids": [
+          1,
+          2,
+          4,
+          5,
+          7
+        ],
+        "evidence": [
+          {
+            "start": 0,
+            "end": 56,
+            "text": "The silver star was missing. Lila said, \u201cI need a star.\u201d"
+          },
+          {
+            "start": 57,
+            "end": 89,
+            "text": "Nia told Lila, \u201cI can help you.\u201d"
+          },
+          {
+            "start": 138,
+            "end": 231,
+            "text": "The brass button was heavy. Lila used the needle to stitch the brass button on the felt star."
+          },
+          {
+            "start": 232,
+            "end": 268,
+            "text": "Lila shortened the felt star's loop."
+          },
+          {
+            "start": 298,
+            "end": 344,
+            "text": "Lila put the felt star beside the Moon puppet."
+          }
+        ],
+        "text_sha256": "998a43e1e1e4ea5bac3c891b6a02dfc5ffd166459502bbd30a4e2c23b15120b8"
+      }
+    ],
+    "source": {
+      "number": 2,
+      "scenario": "puppets",
+      "path": "/Users/dmitry/storyweavers/storyscenes/design/agents_api_trial_20261024/luna_high_direct_20/02_puppets/story.txt",
+      "sha256": "20943c973e75388ff6a2a791978424e65d6baff76f76ac6446c24d4ab59a28c2"
+    },
+    "events": [
+      "missing_prop",
+      "make_replacement",
+      "fetch_needle",
+      "sew_button",
+      "shorten_loop",
+      "speak_up",
+      "offer_star",
+      "return_needle",
+      "last_light"
+    ]
+  },
+  {
+    "scenario": "greenhouse",
+    "seed": 3007,
+    "story": "Nia wanted to water the sunflower, but the tomato seedlings were thirsty. Mr Bell said, \u201cThe tap is broken.\u201d The rain barrel held one can of water. Nia said, \u201cI would like to water the sunflower first.\u201d With the watering can, she watered the sunflower. The shade cloth fell. The tomato seedlings had a brown leaf. Nia secured the umbrella above the tomato seedlings with the garden tie. Mr Bell fixed the tap. Nia watered the tomato seedlings with water from the tap. Mrs Okafor fixed the shade cloth with the clip. Nia said, \u201cI promise I'll water the tomato seedlings first tomorrow.\u201d The brown leaf remained under the repaired shade cloth.",
+    "qa": [
+      {
+        "id": "greenhouse:13:outcome",
+        "kind": "what_next",
+        "question": "What did Nia promise after seeing the brown leaf?",
+        "answer": "Nia promised to water the tomato seedlings first tomorrow. The brown leaf remained under the repaired shade cloth.",
+        "entity_ids": [
+          "cloth",
+          "hero",
+          "sunflower",
+          "tomatoes"
+        ],
+        "event_ids": [
+          1,
+          4,
+          6,
+          13
+        ],
+        "evidence": [
+          {
+            "start": 0,
+            "end": 108,
+            "text": "Nia wanted to water the sunflower, but the tomato seedlings were thirsty. Mr Bell said, \u201cThe tap is broken.\u201d"
+          },
+          {
+            "start": 148,
+            "end": 202,
+            "text": "Nia said, \u201cI would like to water the sunflower first.\u201d"
+          },
+          {
+            "start": 253,
+            "end": 313,
+            "text": "The shade cloth fell. The tomato seedlings had a brown leaf."
+          },
+          {
+            "start": 516,
+            "end": 641,
+            "text": "Nia said, \u201cI promise I'll water the tomato seedlings first tomorrow.\u201d The brown leaf remained under the repaired shade cloth."
+          }
+        ],
+        "text_sha256": "5db235a663044e54a5c1e59da606370479ddc9b2b0659fd6596598474ff99406"
+      },
+      {
+        "id": "greenhouse:1:goal",
+        "kind": "who",
+        "question": "Who wanted to water the sunflower?",
+        "answer": "Nia wanted to water the sunflower. The tomato seedlings were thirsty too.",
+        "entity_ids": [
+          "hero",
+          "sunflower",
+          "tomatoes"
+        ],
+        "event_ids": [
+          1
+        ],
+        "evidence": [
+          {
+            "start": 0,
+            "end": 108,
+            "text": "Nia wanted to water the sunflower, but the tomato seedlings were thirsty. Mr Bell said, \u201cThe tap is broken.\u201d"
+          }
+        ],
+        "text_sha256": "5db235a663044e54a5c1e59da606370479ddc9b2b0659fd6596598474ff99406"
+      },
+      {
+        "id": "greenhouse:1:problem",
+        "kind": "what",
+        "question": "What was wrong with the water supply?",
+        "answer": "Mr Bell said the tap was broken.",
+        "entity_ids": [
+          "caretaker",
+          "tap"
+        ],
+        "event_ids": [
+          1
+        ],
+        "evidence": [
+          {
+            "start": 0,
+            "end": 108,
+            "text": "Nia wanted to water the sunflower, but the tomato seedlings were thirsty. Mr Bell said, \u201cThe tap is broken.\u201d"
+          }
+        ],
+        "text_sha256": "5db235a663044e54a5c1e59da606370479ddc9b2b0659fd6596598474ff99406"
+      },
+      {
+        "id": "greenhouse:3:water",
+        "kind": "where",
+        "question": "Where was the first water, and how much was there?",
+        "answer": "The rain barrel held one can of water.",
+        "entity_ids": [
+          "barrel",
+          "can",
+          "hero"
+        ],
+        "event_ids": [
+          3
+        ],
+        "evidence": [
+          {
+            "start": 109,
+            "end": 147,
+            "text": "The rain barrel held one can of water."
+          }
+        ],
+        "text_sha256": "5db235a663044e54a5c1e59da606370479ddc9b2b0659fd6596598474ff99406"
+      },
+      {
+        "id": "greenhouse:5:first_water",
+        "kind": "how",
+        "question": "What did Nia use to water the plants?",
+        "answer": "Nia used the watering can to water the sunflower.",
+        "entity_ids": [
+          "can",
+          "hero",
+          "sunflower"
+        ],
+        "event_ids": [
+          5
+        ],
+        "evidence": [
+          {
+            "start": 203,
+            "end": 252,
+            "text": "With the watering can, she watered the sunflower."
+          }
+        ],
+        "text_sha256": "5db235a663044e54a5c1e59da606370479ddc9b2b0659fd6596598474ff99406"
+      },
+      {
+        "id": "greenhouse:7:shade",
+        "kind": "why",
+        "question": "Why did Nia secure an umbrella above the seedlings?",
+        "answer": "The shade cloth had fallen. Nia secured an umbrella above the seedlings with a garden tie.",
+        "entity_ids": [
+          "cloth",
+          "hero",
+          "sunflower",
+          "tie",
+          "tomatoes",
+          "umbrella"
+        ],
+        "event_ids": [
+          1,
+          4,
+          6,
+          7
+        ],
+        "evidence": [
+          {
+            "start": 0,
+            "end": 108,
+            "text": "Nia wanted to water the sunflower, but the tomato seedlings were thirsty. Mr Bell said, \u201cThe tap is broken.\u201d"
+          },
+          {
+            "start": 148,
+            "end": 202,
+            "text": "Nia said, \u201cI would like to water the sunflower first.\u201d"
+          },
+          {
+            "start": 253,
+            "end": 313,
+            "text": "The shade cloth fell. The tomato seedlings had a brown leaf."
+          },
+          {
+            "start": 314,
+            "end": 386,
+            "text": "Nia secured the umbrella above the tomato seedlings with the garden tie."
+          }
+        ],
+        "text_sha256": "5db235a663044e54a5c1e59da606370479ddc9b2b0659fd6596598474ff99406"
+      }
+    ],
+    "source": {
+      "number": 3,
+      "scenario": "greenhouse",
+      "path": "/Users/dmitry/storyweavers/storyscenes/design/agents_api_trial_20261024/luna_high_direct_20/03_greenhouse/story.txt",
+      "sha256": "06b4f7f123ef8f570fdfbb512ee3e023d0963a39e46414c8e9c113783ad78d25"
+    },
+    "events": [
+      "notice",
+      "borrow",
+      "fill",
+      "choose_flower",
+      "water_first",
+      "shade_break",
+      "secure",
+      "repair_tap",
+      "refill",
+      "water_second",
+      "repair_shade",
+      "return",
+      "ending"
+    ]
+  },
+  {
+    "scenario": "seaside",
+    "seed": 3007,
+    "story": "The sketchbook was windblown. Tessa said, \u201cI want to draw the sea.\u201d Tessa fetched the map from the garden wall. Tessa followed the bathhouse path. Milo said, \u201cI am worried.\u201d The tide was high. Tessa said, \u201cI need to turn.\u201d She checked the map. Tessa and Milo followed the upper path. She drew the sea in the sketchbook. Milo watched the green anemone. The green anemone opened slowly. The sketchbook was still.",
+    "qa": [
+      {
+        "id": "seaside:8:outcome",
+        "kind": "what_next",
+        "question": "What changed at the sheltered pool?",
+        "answer": "The green anemone opened slowly. Tessa\u2019s sketchbook stayed still.",
+        "entity_ids": [
+          "anemone",
+          "book"
+        ],
+        "event_ids": [
+          8
+        ],
+        "evidence": [
+          {
+            "start": 352,
+            "end": 410,
+            "text": "The green anemone opened slowly. The sketchbook was still."
+          }
+        ],
+        "text_sha256": "495264d53b58399b4386dba5343a4c1d4bb77d362b065e46a9b1e03815ef9be7"
+      },
+      {
+        "id": "seaside:1:goal",
+        "kind": "what",
+        "question": "What did Tessa want to do?",
+        "answer": "Tessa wanted to draw the sea. Her sketchbook was windblown.",
+        "entity_ids": [
+          "book",
+          "hero"
+        ],
+        "event_ids": [
+          1
+        ],
+        "evidence": [
+          {
+            "start": 0,
+            "end": 67,
+            "text": "The sketchbook was windblown. Tessa said, \u201cI want to draw the sea.\u201d"
+          }
+        ],
+        "text_sha256": "495264d53b58399b4386dba5343a4c1d4bb77d362b065e46a9b1e03815ef9be7"
+      },
+      {
+        "id": "seaside:3:mistake",
+        "kind": "where",
+        "question": "Which wrong path did Tessa follow?",
+        "answer": "Tessa followed the bathhouse path. Milo was worried.",
+        "entity_ids": [
+          "helper",
+          "hero"
+        ],
+        "event_ids": [
+          3
+        ],
+        "evidence": [
+          {
+            "start": 112,
+            "end": 173,
+            "text": "Tessa followed the bathhouse path. Milo said, \u201cI am worried.\u201d"
+          }
+        ],
+        "text_sha256": "495264d53b58399b4386dba5343a4c1d4bb77d362b065e46a9b1e03815ef9be7"
+      },
+      {
+        "id": "seaside:4:danger",
+        "kind": "why",
+        "question": "Why did Tessa decide to turn back?",
+        "answer": "The tide was high. Tessa said she needed to turn back.",
+        "entity_ids": [
+          "hero",
+          "tide"
+        ],
+        "event_ids": [
+          4
+        ],
+        "evidence": [
+          {
+            "start": 174,
+            "end": 222,
+            "text": "The tide was high. Tessa said, \u201cI need to turn.\u201d"
+          }
+        ],
+        "text_sha256": "495264d53b58399b4386dba5343a4c1d4bb77d362b065e46a9b1e03815ef9be7"
+      },
+      {
+        "id": "seaside:6:route",
+        "kind": "how",
+        "question": "How did the children leave the unsafe path?",
+        "answer": "Tessa and Milo followed the upper path. The tide below was high.",
+        "entity_ids": [
+          "helper",
+          "hero",
+          "tide"
+        ],
+        "event_ids": [
+          4,
+          6
+        ],
+        "evidence": [
+          {
+            "start": 174,
+            "end": 222,
+            "text": "The tide was high. Tessa said, \u201cI need to turn.\u201d"
+          },
+          {
+            "start": 244,
+            "end": 283,
+            "text": "Tessa and Milo followed the upper path."
+          }
+        ],
+        "text_sha256": "495264d53b58399b4386dba5343a4c1d4bb77d362b065e46a9b1e03815ef9be7"
+      },
+      {
+        "id": "seaside:7:drawing",
+        "kind": "who",
+        "question": "Who drew while Milo watched the anemone?",
+        "answer": "Tessa drew the sea in her sketchbook. Milo watched the green anemone.",
+        "entity_ids": [
+          "anemone",
+          "book",
+          "helper",
+          "hero"
+        ],
+        "event_ids": [
+          7
+        ],
+        "evidence": [
+          {
+            "start": 284,
+            "end": 351,
+            "text": "She drew the sea in the sketchbook. Milo watched the green anemone."
+          }
+        ],
+        "text_sha256": "495264d53b58399b4386dba5343a4c1d4bb77d362b065e46a9b1e03815ef9be7"
+      }
+    ],
+    "source": {
+      "number": 4,
+      "scenario": "seaside",
+      "path": "/Users/dmitry/storyweavers/storyscenes/design/agents_api_trial_20261024/luna_high_direct_20/04_seaside/story.txt",
+      "sha256": "b623286bfe7143ad57d83a7fa409c0d2d7ad028601957cb094ff31342e815ea3"
+    },
+    "events": [
+      "windy_pages",
+      "fetch_map",
+      "wrong_landmark",
+      "rising_water",
+      "tessa_checks_map",
+      "safe_steps",
+      "sheltered_sketch",
+      "pool_flower"
+    ]
+  },
+  {
+    "scenario": "library",
+    "seed": 3007,
+    "story": "Mina held a moon atlas, and she wanted to sketch the moon. Jun said, \u201cMy whale book is missing.\u201d Mina said, \u201cI promise to help you.\u201d Mina and Jun searched the window nook, but Mina did not locate the whale book. Jun saw the star bookmark on the high shelf. Ms Alvarez reserved the moon atlas for Mina. Using the ladder, Ms Alvarez lifted the whale book down. Ms Alvarez handed the whale book to Jun. Jun told Mina, \u201cI could help you.\u201d Jun opened the moon atlas for Mina. Mina drew the moon from the moon atlas on the paper. Mina showed Jun the moon drawing.",
+    "qa": [
+      {
+        "id": "library:8:atlas",
+        "kind": "who",
+        "question": "Who reserved the atlas for Mina?",
+        "answer": "Ms Alvarez reserved the moon atlas for Mina.",
+        "entity_ids": [
+          "atlas",
+          "helper",
+          "hero"
+        ],
+        "event_ids": [
+          8
+        ],
+        "evidence": [
+          {
+            "start": 257,
+            "end": 301,
+            "text": "Ms Alvarez reserved the moon atlas for Mina."
+          }
+        ],
+        "text_sha256": "cdf5d48cfa9aebf906e3c550b3e559610a564eafa80de6cf652d19028439692c"
+      },
+      {
+        "id": "library:18:outcome",
+        "kind": "what_next",
+        "question": "How did Mina's drawing plan turn out?",
+        "answer": "Mina showed Jun her moon drawing. Ms Alvarez had reserved the atlas for her.",
+        "entity_ids": [
+          "atlas",
+          "book",
+          "bookmark",
+          "friend",
+          "helper",
+          "hero",
+          "ladder",
+          "paper"
+        ],
+        "event_ids": [
+          2,
+          6,
+          8,
+          10,
+          16,
+          17,
+          18
+        ],
+        "evidence": [
+          {
+            "start": 59,
+            "end": 132,
+            "text": "Jun said, \u201cMy whale book is missing.\u201d Mina said, \u201cI promise to help you.\u201d"
+          },
+          {
+            "start": 212,
+            "end": 256,
+            "text": "Jun saw the star bookmark on the high shelf."
+          },
+          {
+            "start": 257,
+            "end": 301,
+            "text": "Ms Alvarez reserved the moon atlas for Mina."
+          },
+          {
+            "start": 302,
+            "end": 358,
+            "text": "Using the ladder, Ms Alvarez lifted the whale book down."
+          },
+          {
+            "start": 400,
+            "end": 470,
+            "text": "Jun told Mina, \u201cI could help you.\u201d Jun opened the moon atlas for Mina."
+          },
+          {
+            "start": 471,
+            "end": 523,
+            "text": "Mina drew the moon from the moon atlas on the paper."
+          },
+          {
+            "start": 524,
+            "end": 557,
+            "text": "Mina showed Jun the moon drawing."
+          }
+        ],
+        "text_sha256": "cdf5d48cfa9aebf906e3c550b3e559610a564eafa80de6cf652d19028439692c"
+      },
+      {
+        "id": "library:1:goal",
+        "kind": "what",
+        "question": "What did Mina want to do?",
+        "answer": "Mina wanted to sketch the moon. She held a moon atlas.",
+        "entity_ids": [
+          "atlas",
+          "hero"
+        ],
+        "event_ids": [
+          1
+        ],
+        "evidence": [
+          {
+            "start": 0,
+            "end": 58,
+            "text": "Mina held a moon atlas, and she wanted to sketch the moon."
+          }
+        ],
+        "text_sha256": "cdf5d48cfa9aebf906e3c550b3e559610a564eafa80de6cf652d19028439692c"
+      },
+      {
+        "id": "library:5:failed_search",
+        "kind": "where",
+        "question": "Where did the children search without finding the book?",
+        "answer": "They did not find the book in the window nook. Mina and Jun searched there together.",
+        "entity_ids": [
+          "book",
+          "friend",
+          "hero"
+        ],
+        "event_ids": [
+          5
+        ],
+        "evidence": [
+          {
+            "start": 133,
+            "end": 211,
+            "text": "Mina and Jun searched the window nook, but Mina did not locate the whale book."
+          }
+        ],
+        "text_sha256": "cdf5d48cfa9aebf906e3c550b3e559610a564eafa80de6cf652d19028439692c"
+      },
+      {
+        "id": "library:10:retrieve",
+        "kind": "how",
+        "question": "How did they get the whale book down?",
+        "answer": "Ms Alvarez lifted the whale book down with a ladder. Jun had spotted a star bookmark on the high shelf.",
+        "entity_ids": [
+          "book",
+          "bookmark",
+          "friend",
+          "helper",
+          "ladder"
+        ],
+        "event_ids": [
+          6,
+          10
+        ],
+        "evidence": [
+          {
+            "start": 212,
+            "end": 256,
+            "text": "Jun saw the star bookmark on the high shelf."
+          },
+          {
+            "start": 302,
+            "end": 358,
+            "text": "Using the ladder, Ms Alvarez lifted the whale book down."
+          }
+        ],
+        "text_sha256": "cdf5d48cfa9aebf906e3c550b3e559610a564eafa80de6cf652d19028439692c"
+      },
+      {
+        "id": "library:2:promise",
+        "kind": "who",
+        "question": "Who promised to help Jun?",
+        "answer": "Mina promised to help Jun. Jun had said his whale book was missing.",
+        "entity_ids": [
+          "book",
+          "friend",
+          "hero"
+        ],
+        "event_ids": [
+          2
+        ],
+        "evidence": [
+          {
+            "start": 59,
+            "end": 132,
+            "text": "Jun said, \u201cMy whale book is missing.\u201d Mina said, \u201cI promise to help you.\u201d"
+          }
+        ],
+        "text_sha256": "cdf5d48cfa9aebf906e3c550b3e559610a564eafa80de6cf652d19028439692c"
+      }
+    ],
+    "source": {
+      "number": 5,
+      "scenario": "library",
+      "path": "/Users/dmitry/storyweavers/storyscenes/design/agents_api_trial_20261024/luna_high_direct_20/05_library/story.txt",
+      "sha256": "b47347b96d59620ede4f0b17351b6ff8f0184a11d019a4d202adbc50a9c07d63"
+    },
+    "events": [
+      "wish",
+      "missing",
+      "borrow",
+      "place_atlas",
+      "failed_search",
+      "clue",
+      "request_help",
+      "reserve_atlas",
+      "fetch_ladder",
+      "retrieve",
+      "recognize",
+      "checkout",
+      "checkout_atlas",
+      "return_trolley",
+      "return_ladder",
+      "share_atlas",
+      "sketch_moon",
+      "ending"
+    ]
+  },
+  {
+    "scenario": "snow",
+    "seed": 3007,
+    "story": "Nia said, \u201cI want to help Mrs Wren.\u201d Tomas told Nia, \u201cI would like to race.\u201d Nia fetched the red sled from the shop. The red sled was stuck. Nia told Tomas, \u201cI need help.\u201d Tomas left the race. Tomas said, \u201cI can help you.\u201d Nia and Tomas freed the red sled. Nia and Tomas cleared the gate. Nia placed the grocery basket on the kitchen table. Nia returned the red sled to the shop. Mrs Wren lit the stove. The stove glowed.",
+    "qa": [
+      {
+        "id": "snow:9:outcome",
+        "kind": "what_next",
+        "question": "What happened after the delivery?",
+        "answer": "Mrs Wren lit the stove, and it glowed. The grocery basket was on her table.",
+        "entity_ids": [
+          "basket",
+          "gate",
+          "helper",
+          "hero",
+          "recipient",
+          "sled",
+          "stove",
+          "table"
+        ],
+        "event_ids": [
+          3,
+          4,
+          6,
+          7,
+          9
+        ],
+        "evidence": [
+          {
+            "start": 117,
+            "end": 171,
+            "text": "The red sled was stuck. Nia told Tomas, \u201cI need help.\u201d"
+          },
+          {
+            "start": 172,
+            "end": 222,
+            "text": "Tomas left the race. Tomas said, \u201cI can help you.\u201d"
+          },
+          {
+            "start": 257,
+            "end": 288,
+            "text": "Nia and Tomas cleared the gate."
+          },
+          {
+            "start": 289,
+            "end": 340,
+            "text": "Nia placed the grocery basket on the kitchen table."
+          },
+          {
+            "start": 380,
+            "end": 421,
+            "text": "Mrs Wren lit the stove. The stove glowed."
+          }
+        ],
+        "text_sha256": "c5b2e3e3a49070e27a23bdc39e0c4d540b9903c6b2bde1aef70070156c88378a"
+      },
+      {
+        "id": "snow:1:goal",
+        "kind": "who",
+        "question": "Who did Nia want to help?",
+        "answer": "Nia wanted to help Mrs Wren. Tomas wanted to race.",
+        "entity_ids": [
+          "helper",
+          "hero",
+          "recipient"
+        ],
+        "event_ids": [
+          1
+        ],
+        "evidence": [
+          {
+            "start": 0,
+            "end": 76,
+            "text": "Nia said, \u201cI want to help Mrs Wren.\u201d Tomas told Nia, \u201cI would like to race.\u201d"
+          }
+        ],
+        "text_sha256": "c5b2e3e3a49070e27a23bdc39e0c4d540b9903c6b2bde1aef70070156c88378a"
+      },
+      {
+        "id": "snow:3:obstacle",
+        "kind": "what",
+        "question": "Why did Nia ask for help?",
+        "answer": "The red sled was stuck. Nia said she needed help.",
+        "entity_ids": [
+          "hero",
+          "sled"
+        ],
+        "event_ids": [
+          3
+        ],
+        "evidence": [
+          {
+            "start": 117,
+            "end": 171,
+            "text": "The red sled was stuck. Nia told Tomas, \u201cI need help.\u201d"
+          }
+        ],
+        "text_sha256": "c5b2e3e3a49070e27a23bdc39e0c4d540b9903c6b2bde1aef70070156c88378a"
+      },
+      {
+        "id": "snow:6:gate",
+        "kind": "how",
+        "question": "How did they get through the gate?",
+        "answer": "Nia and Tomas cleared the gate together. Tomas had stopped to help Nia.",
+        "entity_ids": [
+          "gate",
+          "helper",
+          "hero",
+          "sled"
+        ],
+        "event_ids": [
+          3,
+          4,
+          6
+        ],
+        "evidence": [
+          {
+            "start": 117,
+            "end": 171,
+            "text": "The red sled was stuck. Nia told Tomas, \u201cI need help.\u201d"
+          },
+          {
+            "start": 172,
+            "end": 222,
+            "text": "Tomas left the race. Tomas said, \u201cI can help you.\u201d"
+          },
+          {
+            "start": 257,
+            "end": 288,
+            "text": "Nia and Tomas cleared the gate."
+          }
+        ],
+        "text_sha256": "c5b2e3e3a49070e27a23bdc39e0c4d540b9903c6b2bde1aef70070156c88378a"
+      },
+      {
+        "id": "snow:7:food",
+        "kind": "where",
+        "question": "Where did Nia put the groceries?",
+        "answer": "Nia put the grocery basket on the kitchen table. She and Tomas had cleared the gate.",
+        "entity_ids": [
+          "basket",
+          "gate",
+          "helper",
+          "hero",
+          "sled",
+          "table"
+        ],
+        "event_ids": [
+          3,
+          4,
+          6,
+          7
+        ],
+        "evidence": [
+          {
+            "start": 117,
+            "end": 171,
+            "text": "The red sled was stuck. Nia told Tomas, \u201cI need help.\u201d"
+          },
+          {
+            "start": 172,
+            "end": 222,
+            "text": "Tomas left the race. Tomas said, \u201cI can help you.\u201d"
+          },
+          {
+            "start": 257,
+            "end": 288,
+            "text": "Nia and Tomas cleared the gate."
+          },
+          {
+            "start": 289,
+            "end": 340,
+            "text": "Nia placed the grocery basket on the kitchen table."
+          }
+        ],
+        "text_sha256": "c5b2e3e3a49070e27a23bdc39e0c4d540b9903c6b2bde1aef70070156c88378a"
+      },
+      {
+        "id": "snow:4:choice",
+        "kind": "who",
+        "question": "Who offered to help with the stuck sled?",
+        "answer": "Tomas offered to help Nia. Her red sled was stuck.",
+        "entity_ids": [
+          "helper",
+          "hero",
+          "sled"
+        ],
+        "event_ids": [
+          3,
+          4
+        ],
+        "evidence": [
+          {
+            "start": 117,
+            "end": 171,
+            "text": "The red sled was stuck. Nia told Tomas, \u201cI need help.\u201d"
+          },
+          {
+            "start": 172,
+            "end": 222,
+            "text": "Tomas left the race. Tomas said, \u201cI can help you.\u201d"
+          }
+        ],
+        "text_sha256": "c5b2e3e3a49070e27a23bdc39e0c4d540b9903c6b2bde1aef70070156c88378a"
+      }
+    ],
+    "source": {
+      "number": 6,
+      "scenario": "snow",
+      "path": "/Users/dmitry/storyweavers/storyscenes/design/agents_api_trial_20261024/luna_high_direct_20/06_snow/story.txt",
+      "sha256": "ecec01b873291e772cef4325a055d8017dc3737c47363059cdcc9ca0a31c13ad"
+    },
+    "events": [
+      "delivery_promise",
+      "borrow_sled",
+      "ice_ridge",
+      "leave_race",
+      "rock_runner",
+      "clear_gate",
+      "deliver_food",
+      "return_sled",
+      "warm_stove"
+    ]
+  },
+  {
+    "scenario": "picnic",
+    "seed": 3007,
+    "story": "Bea said, \u201cI want to welcome Theo.\u201d Sam said, \u201cI am hungry.\u201d Bea borrowed the blue blanket. The welcome sign drifted toward the river. The picnic basket was unsteady. Sam caught the picnic basket. Bea held the blue blanket. Bea fetched the smooth stone. She placed the smooth stone on the blue blanket. She saved the sandwich for Theo. Theo said, \u201cI am sorry.\u201d Sam shared the cookie. Bea and Theo folded the blue blanket.",
+    "qa": [
+      {
+        "id": "picnic:10:outcome",
+        "kind": "what_next",
+        "question": "How did the picnic end?",
+        "answer": "Bea and Theo folded the blue blanket together. Bea had saved a sandwich for him.",
+        "entity_ids": [
+          "blanket",
+          "guest",
+          "helper",
+          "hero",
+          "sandwich"
+        ],
+        "event_ids": [
+          1,
+          7,
+          10
+        ],
+        "evidence": [
+          {
+            "start": 0,
+            "end": 60,
+            "text": "Bea said, \u201cI want to welcome Theo.\u201d Sam said, \u201cI am hungry.\u201d"
+          },
+          {
+            "start": 303,
+            "end": 335,
+            "text": "She saved the sandwich for Theo."
+          },
+          {
+            "start": 384,
+            "end": 421,
+            "text": "Bea and Theo folded the blue blanket."
+          }
+        ],
+        "text_sha256": "a8ab9bd04f812accf28cdb9325062578bd4cf882f65316cc9ccbf9b70a9b0efb"
+      },
+      {
+        "id": "picnic:1:goal",
+        "kind": "who",
+        "question": "Who was the picnic for?",
+        "answer": "Bea wanted to welcome Theo. Sam was already hungry.",
+        "entity_ids": [
+          "guest",
+          "helper",
+          "hero"
+        ],
+        "event_ids": [
+          1
+        ],
+        "evidence": [
+          {
+            "start": 0,
+            "end": 60,
+            "text": "Bea said, \u201cI want to welcome Theo.\u201d Sam said, \u201cI am hungry.\u201d"
+          }
+        ],
+        "text_sha256": "a8ab9bd04f812accf28cdb9325062578bd4cf882f65316cc9ccbf9b70a9b0efb"
+      },
+      {
+        "id": "picnic:3:gust",
+        "kind": "what",
+        "question": "What did the gust disturb?",
+        "answer": "The welcome sign drifted toward the river. The picnic basket became unsteady.",
+        "entity_ids": [
+          "basket",
+          "sign"
+        ],
+        "event_ids": [
+          3
+        ],
+        "evidence": [
+          {
+            "start": 92,
+            "end": 166,
+            "text": "The welcome sign drifted toward the river. The picnic basket was unsteady."
+          }
+        ],
+        "text_sha256": "a8ab9bd04f812accf28cdb9325062578bd4cf882f65316cc9ccbf9b70a9b0efb"
+      },
+      {
+        "id": "picnic:4:choice",
+        "kind": "how",
+        "question": "How did they save the picnic?",
+        "answer": "Sam caught the basket while Bea held the blanket. The gust had made the basket unsteady.",
+        "entity_ids": [
+          "basket",
+          "blanket",
+          "helper",
+          "hero",
+          "sign"
+        ],
+        "event_ids": [
+          3,
+          4
+        ],
+        "evidence": [
+          {
+            "start": 92,
+            "end": 166,
+            "text": "The welcome sign drifted toward the river. The picnic basket was unsteady."
+          },
+          {
+            "start": 167,
+            "end": 223,
+            "text": "Sam caught the picnic basket. Bea held the blue blanket."
+          }
+        ],
+        "text_sha256": "a8ab9bd04f812accf28cdb9325062578bd4cf882f65316cc9ccbf9b70a9b0efb"
+      },
+      {
+        "id": "picnic:7:waiting",
+        "kind": "why",
+        "question": "Why did Bea save a sandwich?",
+        "answer": "Bea saved a sandwich for Theo. She still wanted to welcome him.",
+        "entity_ids": [
+          "guest",
+          "helper",
+          "hero",
+          "sandwich"
+        ],
+        "event_ids": [
+          1,
+          7
+        ],
+        "evidence": [
+          {
+            "start": 0,
+            "end": 60,
+            "text": "Bea said, \u201cI want to welcome Theo.\u201d Sam said, \u201cI am hungry.\u201d"
+          },
+          {
+            "start": 303,
+            "end": 335,
+            "text": "She saved the sandwich for Theo."
+          }
+        ],
+        "text_sha256": "a8ab9bd04f812accf28cdb9325062578bd4cf882f65316cc9ccbf9b70a9b0efb"
+      }
+    ],
+    "source": {
+      "number": 7,
+      "scenario": "picnic",
+      "path": "/Users/dmitry/storyweavers/storyscenes/design/agents_api_trial_20261024/luna_high_direct_20/07_picnic/story.txt",
+      "sha256": "1eb97c5b2cda1331fb5bc708027dc808f772b862de3a0ca9c1fa158eb8f5191e"
+    },
+    "events": [
+      "welcome_plan",
+      "borrow_blanket",
+      "gust",
+      "save_lunch",
+      "fetch_weight",
+      "secure_blanket",
+      "save_portion",
+      "late_guest",
+      "share_cookie",
+      "fold_together"
+    ]
+  },
+  {
+    "scenario": "music",
+    "seed": 3007,
+    "story": "Nia borrowed the little drum from Dalia, and she hoped to play a duet with Mateo. Nia said, \u201cI need an answering beat.\u201d Mateo said, \u201cI am not ready for the audience.\u201d Mateo said, \u201cI can write a rhythm.\u201d He wrote a rhythm on the paper with the pencil. Nia practiced Mateo's rhythm on the little drum. Nia played Mateo's rhythm on the little drum before Dalia. Mateo clapped, and Nia bowed. Nia said, \u201cI want to play your rhythm again.\u201d Nia put the paper between the little drum and the second drum.",
+    "qa": [
+      {
+        "id": "music:9:outcome",
+        "kind": "what_next",
+        "question": "How did Mateo respond after Nia played?",
+        "answer": "Mateo clapped, and Nia bowed. Nia had performed before Dalia.",
+        "entity_ids": [
+          "drum",
+          "hero",
+          "paper",
+          "partner",
+          "pencil",
+          "teacher"
+        ],
+        "event_ids": [
+          6,
+          8,
+          9
+        ],
+        "evidence": [
+          {
+            "start": 203,
+            "end": 250,
+            "text": "He wrote a rhythm on the paper with the pencil."
+          },
+          {
+            "start": 300,
+            "end": 358,
+            "text": "Nia played Mateo's rhythm on the little drum before Dalia."
+          },
+          {
+            "start": 359,
+            "end": 388,
+            "text": "Mateo clapped, and Nia bowed."
+          }
+        ],
+        "text_sha256": "b74671ba9f5752750df073b169c3971135b5839d72596a48790c38c222016c0d"
+      },
+      {
+        "id": "music:2:goal",
+        "kind": "what",
+        "question": "What did Nia hope to do?",
+        "answer": "Nia hoped to play a duet with Mateo. She borrowed the little drum from Dalia.",
+        "entity_ids": [
+          "drum",
+          "hero",
+          "partner",
+          "teacher"
+        ],
+        "event_ids": [
+          2
+        ],
+        "evidence": [
+          {
+            "start": 0,
+            "end": 81,
+            "text": "Nia borrowed the little drum from Dalia, and she hoped to play a duet with Mateo."
+          }
+        ],
+        "text_sha256": "b74671ba9f5752750df073b169c3971135b5839d72596a48790c38c222016c0d"
+      },
+      {
+        "id": "music:2:instrument",
+        "kind": "who",
+        "question": "Who lent Nia the drum?",
+        "answer": "Nia borrowed the little drum from Dalia.",
+        "entity_ids": [
+          "drum",
+          "hero",
+          "teacher"
+        ],
+        "event_ids": [
+          2
+        ],
+        "evidence": [
+          {
+            "start": 0,
+            "end": 81,
+            "text": "Nia borrowed the little drum from Dalia, and she hoped to play a duet with Mateo."
+          }
+        ],
+        "text_sha256": "b74671ba9f5752750df073b169c3971135b5839d72596a48790c38c222016c0d"
+      },
+      {
+        "id": "music:5:choice",
+        "kind": "how",
+        "question": "How did Mateo offer to help without performing?",
+        "answer": "Mateo offered to write a rhythm. He had said he was not ready for the audience.",
+        "entity_ids": [
+          "drum",
+          "hero",
+          "paper",
+          "partner",
+          "teacher"
+        ],
+        "event_ids": [
+          2,
+          4,
+          5
+        ],
+        "evidence": [
+          {
+            "start": 0,
+            "end": 81,
+            "text": "Nia borrowed the little drum from Dalia, and she hoped to play a duet with Mateo."
+          },
+          {
+            "start": 120,
+            "end": 166,
+            "text": "Mateo said, \u201cI am not ready for the audience.\u201d"
+          },
+          {
+            "start": 167,
+            "end": 202,
+            "text": "Mateo said, \u201cI can write a rhythm.\u201d"
+          }
+        ],
+        "text_sha256": "b74671ba9f5752750df073b169c3971135b5839d72596a48790c38c222016c0d"
+      },
+      {
+        "id": "music:6:pattern",
+        "kind": "where",
+        "question": "Where did Mateo write the rhythm?",
+        "answer": "Mateo wrote the rhythm on paper with a pencil.",
+        "entity_ids": [
+          "paper",
+          "partner",
+          "pencil"
+        ],
+        "event_ids": [
+          6
+        ],
+        "evidence": [
+          {
+            "start": 203,
+            "end": 250,
+            "text": "He wrote a rhythm on the paper with the pencil."
+          }
+        ],
+        "text_sha256": "b74671ba9f5752750df073b169c3971135b5839d72596a48790c38c222016c0d"
+      },
+      {
+        "id": "music:4:boundary",
+        "kind": "what",
+        "question": "What did Mateo say about playing for an audience?",
+        "answer": "Mateo said he was not ready for the audience. Nia had hoped to play a duet with him.",
+        "entity_ids": [
+          "drum",
+          "hero",
+          "partner",
+          "teacher"
+        ],
+        "event_ids": [
+          2,
+          4
+        ],
+        "evidence": [
+          {
+            "start": 0,
+            "end": 81,
+            "text": "Nia borrowed the little drum from Dalia, and she hoped to play a duet with Mateo."
+          },
+          {
+            "start": 120,
+            "end": 166,
+            "text": "Mateo said, \u201cI am not ready for the audience.\u201d"
+          }
+        ],
+        "text_sha256": "b74671ba9f5752750df073b169c3971135b5839d72596a48790c38c222016c0d"
+      }
+    ],
+    "source": {
+      "number": 8,
+      "scenario": "music",
+      "path": "/Users/dmitry/storyweavers/storyscenes/design/agents_api_trial_20261024/luna_high_direct_20/08_music/story.txt",
+      "sha256": "99ba7649fee7b513101486d86ddc36a3f9bc4375d649fc5ab4a7380461ccca29"
+    },
+    "events": [
+      "opening",
+      "borrow",
+      "invite",
+      "decline",
+      "offer_pattern",
+      "write_pattern",
+      "prepare_pattern",
+      "perform",
+      "response",
+      "return",
+      "ending"
+    ]
+  },
+  {
+    "scenario": "market",
+    "seed": 3007,
+    "story": "Mina said, \u201cI can fill the apple bag.\u201d Mrs Dutta said, \u201cI need to catch the bus.\u201d Mina borrowed the brass scale. Mina weighed the apple bag. Mina located the leaf under the brass scale's pan. The apple bag was underweight. Mina said, \u201cI am wrong.\u201d Mrs Dutta said, \u201cI could wait.\u201d Mina removed the leaf. Mina weighed the apple bag again. The apple bag was full. Mina handed Mrs Dutta the apple bag. Mina returned the brass scale to the olive stall. The brass scale's dial rested at zero.",
+    "qa": [
+      {
+        "id": "market:10:outcome",
+        "kind": "what_next",
+        "question": "What did the final scale reading show?",
+        "answer": "The scale\u2019s dial rested at zero. Mina had corrected Mrs Dutta\u2019s order.",
+        "entity_ids": [
+          "bag",
+          "customer",
+          "hero",
+          "leaf",
+          "scale"
+        ],
+        "event_ids": [
+          4,
+          5,
+          7,
+          8,
+          10
+        ],
+        "evidence": [
+          {
+            "start": 141,
+            "end": 222,
+            "text": "Mina located the leaf under the brass scale's pan. The apple bag was underweight."
+          },
+          {
+            "start": 223,
+            "end": 279,
+            "text": "Mina said, \u201cI am wrong.\u201d Mrs Dutta said, \u201cI could wait.\u201d"
+          },
+          {
+            "start": 303,
+            "end": 360,
+            "text": "Mina weighed the apple bag again. The apple bag was full."
+          },
+          {
+            "start": 361,
+            "end": 397,
+            "text": "Mina handed Mrs Dutta the apple bag."
+          },
+          {
+            "start": 448,
+            "end": 486,
+            "text": "The brass scale's dial rested at zero."
+          }
+        ],
+        "text_sha256": "5338cf618528e88404d4891e1d3b7b629d16e98e9c421cdd4f2a9352ab3ac7c1"
+      },
+      {
+        "id": "market:1:goal",
+        "kind": "who",
+        "question": "Who needed to catch a bus?",
+        "answer": "Mrs Dutta needed to catch a bus. Mina offered to fill her apple bag.",
+        "entity_ids": [
+          "bag",
+          "customer",
+          "hero"
+        ],
+        "event_ids": [
+          1
+        ],
+        "evidence": [
+          {
+            "start": 0,
+            "end": 81,
+            "text": "Mina said, \u201cI can fill the apple bag.\u201d Mrs Dutta said, \u201cI need to catch the bus.\u201d"
+          }
+        ],
+        "text_sha256": "5338cf618528e88404d4891e1d3b7b629d16e98e9c421cdd4f2a9352ab3ac7c1"
+      },
+      {
+        "id": "market:4:cause",
+        "kind": "what",
+        "question": "What had affected the scale?",
+        "answer": "Mina found a leaf under the scale\u2019s pan. She had already weighed the apple bag.",
+        "entity_ids": [
+          "bag",
+          "hero",
+          "leaf",
+          "scale"
+        ],
+        "event_ids": [
+          4
+        ],
+        "evidence": [
+          {
+            "start": 141,
+            "end": 222,
+            "text": "Mina located the leaf under the brass scale's pan. The apple bag was underweight."
+          }
+        ],
+        "text_sha256": "5338cf618528e88404d4891e1d3b7b629d16e98e9c421cdd4f2a9352ab3ac7c1"
+      },
+      {
+        "id": "market:5:honesty",
+        "kind": "how",
+        "question": "How did Mina respond to the mistake?",
+        "answer": "Mina admitted she was wrong. Mrs Dutta said she could wait.",
+        "entity_ids": [
+          "customer",
+          "hero"
+        ],
+        "event_ids": [
+          5
+        ],
+        "evidence": [
+          {
+            "start": 223,
+            "end": 279,
+            "text": "Mina said, \u201cI am wrong.\u201d Mrs Dutta said, \u201cI could wait.\u201d"
+          }
+        ],
+        "text_sha256": "5338cf618528e88404d4891e1d3b7b629d16e98e9c421cdd4f2a9352ab3ac7c1"
+      },
+      {
+        "id": "market:7:correction",
+        "kind": "why",
+        "question": "Why did Mina weigh the apples again?",
+        "answer": "Mina weighed the bag again after the leaf was removed. This time the bag was full.",
+        "entity_ids": [
+          "bag",
+          "customer",
+          "hero",
+          "leaf",
+          "scale"
+        ],
+        "event_ids": [
+          4,
+          5,
+          7
+        ],
+        "evidence": [
+          {
+            "start": 141,
+            "end": 222,
+            "text": "Mina located the leaf under the brass scale's pan. The apple bag was underweight."
+          },
+          {
+            "start": 223,
+            "end": 279,
+            "text": "Mina said, \u201cI am wrong.\u201d Mrs Dutta said, \u201cI could wait.\u201d"
+          },
+          {
+            "start": 303,
+            "end": 360,
+            "text": "Mina weighed the apple bag again. The apple bag was full."
+          }
+        ],
+        "text_sha256": "5338cf618528e88404d4891e1d3b7b629d16e98e9c421cdd4f2a9352ab3ac7c1"
+      },
+      {
+        "id": "market:8:delivery",
+        "kind": "who",
+        "question": "Who received the corrected order?",
+        "answer": "Mina gave Mrs Dutta the apple bag. She had checked the weight again.",
+        "entity_ids": [
+          "bag",
+          "customer",
+          "hero",
+          "leaf",
+          "scale"
+        ],
+        "event_ids": [
+          4,
+          5,
+          7,
+          8
+        ],
+        "evidence": [
+          {
+            "start": 141,
+            "end": 222,
+            "text": "Mina located the leaf under the brass scale's pan. The apple bag was underweight."
+          },
+          {
+            "start": 223,
+            "end": 279,
+            "text": "Mina said, \u201cI am wrong.\u201d Mrs Dutta said, \u201cI could wait.\u201d"
+          },
+          {
+            "start": 303,
+            "end": 360,
+            "text": "Mina weighed the apple bag again. The apple bag was full."
+          },
+          {
+            "start": 361,
+            "end": 397,
+            "text": "Mina handed Mrs Dutta the apple bag."
+          }
+        ],
+        "text_sha256": "5338cf618528e88404d4891e1d3b7b629d16e98e9c421cdd4f2a9352ab3ac7c1"
+      }
+    ],
+    "source": {
+      "number": 9,
+      "scenario": "market",
+      "path": "/Users/dmitry/storyweavers/storyscenes/design/agents_api_trial_20261024/luna_high_direct_20/09_market/story.txt",
+      "sha256": "9fe695d960f45aa10896123c02da8a8a12a5111cba3f58c2732e8f1bf51d1a9a"
+    },
+    "events": [
+      "order_goal",
+      "borrow_scale",
+      "weigh_order",
+      "discover_leaf",
+      "admit_error",
+      "mina_clears_leaf",
+      "correct_weight",
+      "deliver_order",
+      "return_scale",
+      "steady_dial"
+    ]
+  },
+  {
+    "scenario": "camp",
+    "seed": 3007,
+    "story": "The toy rabbit was missing. Theo said, \u201cI need the toy rabbit.\u201d Nora told Theo, \u201cI can help you.\u201d Nora borrowed the lantern. Theo said, \u201cI am afraid.\u201d She stayed beside Theo. He heard the brass bell. Nora handed Theo the lantern. She freed the toy rabbit from the pine branch. She handed the toy rabbit to Theo. Theo returned the lantern to Dad. Theo held the toy rabbit beside the tent. Theo smiled.",
+    "qa": [
+      {
+        "id": "camp:9:outcome",
+        "kind": "what_next",
+        "question": "How did Theo finish the search?",
+        "answer": "Theo held the toy rabbit beside the tent and smiled. Nora had freed it from the pine branch.",
+        "entity_ids": [
+          "branch",
+          "helper",
+          "hero",
+          "lantern",
+          "rabbit",
+          "tent"
+        ],
+        "event_ids": [
+          3,
+          5,
+          6,
+          9
+        ],
+        "evidence": [
+          {
+            "start": 125,
+            "end": 174,
+            "text": "Theo said, \u201cI am afraid.\u201d She stayed beside Theo."
+          },
+          {
+            "start": 200,
+            "end": 229,
+            "text": "Nora handed Theo the lantern."
+          },
+          {
+            "start": 230,
+            "end": 276,
+            "text": "She freed the toy rabbit from the pine branch."
+          },
+          {
+            "start": 346,
+            "end": 400,
+            "text": "Theo held the toy rabbit beside the tent. Theo smiled."
+          }
+        ],
+        "text_sha256": "8dd5abb27d25a67fefdf6a3854bebdb5bfad779192e46f189d0fe0da8971c14c"
+      },
+      {
+        "id": "camp:1:goal",
+        "kind": "who",
+        "question": "Who needed the lost toy rabbit?",
+        "answer": "Theo needed his toy rabbit. Nora offered to help him.",
+        "entity_ids": [
+          "helper",
+          "hero",
+          "rabbit"
+        ],
+        "event_ids": [
+          1
+        ],
+        "evidence": [
+          {
+            "start": 0,
+            "end": 97,
+            "text": "The toy rabbit was missing. Theo said, \u201cI need the toy rabbit.\u201d Nora told Theo, \u201cI can help you.\u201d"
+          }
+        ],
+        "text_sha256": "8dd5abb27d25a67fefdf6a3854bebdb5bfad779192e46f189d0fe0da8971c14c"
+      },
+      {
+        "id": "camp:3:choice",
+        "kind": "why",
+        "question": "Why did Nora stay beside Theo?",
+        "answer": "Theo said he was afraid. Nora stayed beside him.",
+        "entity_ids": [
+          "helper",
+          "hero"
+        ],
+        "event_ids": [
+          3
+        ],
+        "evidence": [
+          {
+            "start": 125,
+            "end": 174,
+            "text": "Theo said, \u201cI am afraid.\u201d She stayed beside Theo."
+          }
+        ],
+        "text_sha256": "8dd5abb27d25a67fefdf6a3854bebdb5bfad779192e46f189d0fe0da8971c14c"
+      },
+      {
+        "id": "camp:6:rescue",
+        "kind": "how",
+        "question": "How did they recover the rabbit?",
+        "answer": "Nora freed the toy rabbit from the pine branch. Theo held the lantern for her.",
+        "entity_ids": [
+          "branch",
+          "helper",
+          "hero",
+          "lantern",
+          "rabbit"
+        ],
+        "event_ids": [
+          3,
+          5,
+          6
+        ],
+        "evidence": [
+          {
+            "start": 125,
+            "end": 174,
+            "text": "Theo said, \u201cI am afraid.\u201d She stayed beside Theo."
+          },
+          {
+            "start": 200,
+            "end": 229,
+            "text": "Nora handed Theo the lantern."
+          },
+          {
+            "start": 230,
+            "end": 276,
+            "text": "She freed the toy rabbit from the pine branch."
+          }
+        ],
+        "text_sha256": "8dd5abb27d25a67fefdf6a3854bebdb5bfad779192e46f189d0fe0da8971c14c"
+      },
+      {
+        "id": "camp:5:light",
+        "kind": "who",
+        "question": "Who held the lantern for the rescue?",
+        "answer": "Nora gave the lantern to Theo. They stayed together.",
+        "entity_ids": [
+          "helper",
+          "hero",
+          "lantern"
+        ],
+        "event_ids": [
+          3,
+          5
+        ],
+        "evidence": [
+          {
+            "start": 125,
+            "end": 174,
+            "text": "Theo said, \u201cI am afraid.\u201d She stayed beside Theo."
+          },
+          {
+            "start": 200,
+            "end": 229,
+            "text": "Nora handed Theo the lantern."
+          }
+        ],
+        "text_sha256": "8dd5abb27d25a67fefdf6a3854bebdb5bfad779192e46f189d0fe0da8971c14c"
+      }
+    ],
+    "source": {
+      "number": 10,
+      "scenario": "camp",
+      "path": "/Users/dmitry/storyweavers/storyscenes/design/agents_api_trial_20261024/luna_high_direct_20/10_camp/story.txt",
+      "sha256": "81a338dcbd2b0ad33ffa7a94d7396dcd893a042813dd4e8350ab9264e5117698"
+    },
+    "events": [
+      "missing_rabbit",
+      "borrow_lantern",
+      "dark_fork",
+      "bell_clue",
+      "share_light",
+      "reach_from_path",
+      "return_rabbit",
+      "return_light",
+      "friendly_shadows"
+    ]
+  },
+  {
+    "scenario": "pottery",
+    "seed": 3007,
+    "story": "Bea said, \u201cI want to give Grandpa Len a cup.\u201d The cup's handle was wide because Grandpa Len's hand was stiff. The shaping rib slipped, and the cup was dented. Mr Ivo said, \u201cThe cup's wall is thick.\u201d Grandpa Len said, \u201cI can hold a bowl with two hands.\u201d Bea said, \u201cI would like a bowl.\u201d Bea reshaped the cup into a bowl with the shaping rib. Mr Ivo fired the bowl twice. The bowl was cool. Bea handed the bowl to Grandpa Len. Grandpa Len poured tea into the bowl. Grandpa Len held the bowl with two hands.",
+    "qa": [
+      {
+        "id": "pottery:8:design",
+        "kind": "how",
+        "question": "How did Bea change her gift design?",
+        "answer": "Bea reshaped the cup into a bowl with the shaping rib. Grandpa Len had said he could hold a bowl with two hands.",
+        "entity_ids": [
+          "cup",
+          "grandpa",
+          "helper",
+          "hero",
+          "tool"
+        ],
+        "event_ids": [
+          5,
+          6,
+          8
+        ],
+        "evidence": [
+          {
+            "start": 159,
+            "end": 198,
+            "text": "Mr Ivo said, \u201cThe cup's wall is thick.\u201d"
+          },
+          {
+            "start": 199,
+            "end": 252,
+            "text": "Grandpa Len said, \u201cI can hold a bowl with two hands.\u201d"
+          },
+          {
+            "start": 253,
+            "end": 340,
+            "text": "Bea said, \u201cI would like a bowl.\u201d Bea reshaped the cup into a bowl with the shaping rib."
+          }
+        ],
+        "text_sha256": "7df52de7df4ad1c58b29ddc6f395de6a6d979f3fee6978afa90de8e96a7ca641"
+      },
+      {
+        "id": "pottery:24:outcome",
+        "kind": "what_next",
+        "question": "What did Grandpa Len do with the bowl at the end?",
+        "answer": "Grandpa Len held the bowl with two hands. Bea had reshaped her cup into the bowl.",
+        "entity_ids": [
+          "cup",
+          "grandpa",
+          "helper",
+          "hero",
+          "tool"
+        ],
+        "event_ids": [
+          5,
+          6,
+          8,
+          24
+        ],
+        "evidence": [
+          {
+            "start": 159,
+            "end": 198,
+            "text": "Mr Ivo said, \u201cThe cup's wall is thick.\u201d"
+          },
+          {
+            "start": 199,
+            "end": 252,
+            "text": "Grandpa Len said, \u201cI can hold a bowl with two hands.\u201d"
+          },
+          {
+            "start": 253,
+            "end": 340,
+            "text": "Bea said, \u201cI would like a bowl.\u201d Bea reshaped the cup into a bowl with the shaping rib."
+          },
+          {
+            "start": 463,
+            "end": 504,
+            "text": "Grandpa Len held the bowl with two hands."
+          }
+        ],
+        "text_sha256": "7df52de7df4ad1c58b29ddc6f395de6a6d979f3fee6978afa90de8e96a7ca641"
+      },
+      {
+        "id": "pottery:2:gift",
+        "kind": "who",
+        "question": "Who was Bea making the cup for?",
+        "answer": "Bea was making the cup for Grandpa Len.",
+        "entity_ids": [
+          "cup",
+          "grandpa",
+          "hero"
+        ],
+        "event_ids": [
+          2
+        ],
+        "evidence": [
+          {
+            "start": 0,
+            "end": 109,
+            "text": "Bea said, \u201cI want to give Grandpa Len a cup.\u201d The cup's handle was wide because Grandpa Len's hand was stiff."
+          }
+        ],
+        "text_sha256": "7df52de7df4ad1c58b29ddc6f395de6a6d979f3fee6978afa90de8e96a7ca641"
+      },
+      {
+        "id": "pottery:2:grip_reason",
+        "kind": "why",
+        "question": "Why did the cup have a wide handle?",
+        "answer": "Grandpa Len's hand was stiff. The cup had a wide handle for him.",
+        "entity_ids": [
+          "cup",
+          "grandpa"
+        ],
+        "event_ids": [
+          2
+        ],
+        "evidence": [
+          {
+            "start": 0,
+            "end": 109,
+            "text": "Bea said, \u201cI want to give Grandpa Len a cup.\u201d The cup's handle was wide because Grandpa Len's hand was stiff."
+          }
+        ],
+        "text_sha256": "7df52de7df4ad1c58b29ddc6f395de6a6d979f3fee6978afa90de8e96a7ca641"
+      },
+      {
+        "id": "pottery:4:accident",
+        "kind": "what",
+        "question": "What happened when the shaping rib slipped?",
+        "answer": "The cup was dented when the shaping rib slipped.",
+        "entity_ids": [
+          "cup",
+          "tool"
+        ],
+        "event_ids": [
+          4
+        ],
+        "evidence": [
+          {
+            "start": 110,
+            "end": 158,
+            "text": "The shaping rib slipped, and the cup was dented."
+          }
+        ],
+        "text_sha256": "7df52de7df4ad1c58b29ddc6f395de6a6d979f3fee6978afa90de8e96a7ca641"
+      },
+      {
+        "id": "pottery:5:inspection",
+        "kind": "what",
+        "question": "What did Mr Ivo say about the cup's wall?",
+        "answer": "Mr Ivo said the cup's wall was thick.",
+        "entity_ids": [
+          "cup",
+          "helper",
+          "hero"
+        ],
+        "event_ids": [
+          5
+        ],
+        "evidence": [
+          {
+            "start": 159,
+            "end": 198,
+            "text": "Mr Ivo said, \u201cThe cup's wall is thick.\u201d"
+          }
+        ],
+        "text_sha256": "7df52de7df4ad1c58b29ddc6f395de6a6d979f3fee6978afa90de8e96a7ca641"
+      }
+    ],
+    "source": {
+      "number": 11,
+      "scenario": "pottery",
+      "path": "/Users/dmitry/storyweavers/storyscenes/design/agents_api_trial_20261024/luna_high_direct_20/11_pottery/story.txt",
+      "sha256": "25750f4bb90dd3cff4654a505b22c8ab1c1e42b9186574ff00a242109115a1a2"
+    },
+    "events": [
+      "need",
+      "goal",
+      "shape",
+      "slip",
+      "inspect",
+      "consult",
+      "fetch_sponge",
+      "remake",
+      "return_sponge",
+      "return_rib",
+      "shelve",
+      "dry",
+      "load_bisque",
+      "bisque",
+      "cool_bisque",
+      "unload_bisque",
+      "glaze",
+      "load_final",
+      "fire",
+      "cool_final",
+      "deliver",
+      "give",
+      "use",
+      "ending"
+    ]
+  },
+  {
+    "scenario": "orchard",
+    "seed": 3007,
+    "story": "Jun said, \u201cI want to give Willa the gift pear.\u201d Tessa told Jun, \u201cI would like to pick a pear.\u201d Tessa borrowed the picking basket. The golden pear was unripe. Jun pulled the picking basket. The high branch was bending. Tessa said, \u201cI need to stop.\u201d He lowered the picking basket. Tessa picked the ripe pear from the low branch. The ripe pear was bruised. Using the picnic knife, Tessa trimmed the ripe pear. Tessa returned the picking basket to the shed. Tessa put the gift pear on the puppet table. The high branch was unbent. The golden pear shone on the high branch.",
+    "qa": [
+      {
+        "id": "orchard:9:outcome",
+        "kind": "what_next",
+        "question": "What remained in the orchard?",
+        "answer": "The golden pear shone on its unbent branch. The children had lowered the picking basket instead of forcing it.",
+        "entity_ids": [
+          "branch",
+          "helper",
+          "hero",
+          "high",
+          "picker"
+        ],
+        "event_ids": [
+          3,
+          4,
+          9
+        ],
+        "evidence": [
+          {
+            "start": 130,
+            "end": 217,
+            "text": "The golden pear was unripe. Jun pulled the picking basket. The high branch was bending."
+          },
+          {
+            "start": 218,
+            "end": 278,
+            "text": "Tessa said, \u201cI need to stop.\u201d He lowered the picking basket."
+          },
+          {
+            "start": 499,
+            "end": 568,
+            "text": "The high branch was unbent. The golden pear shone on the high branch."
+          }
+        ],
+        "text_sha256": "dd100b3a29183560d70ae19b24e8c09a42cb2dd62d952babadf71b6781acd0c5"
+      },
+      {
+        "id": "orchard:1:goal",
+        "kind": "who",
+        "question": "Who was Jun saving a pear for?",
+        "answer": "Jun wanted to give Willa a pear. Tessa wanted to pick a pear herself.",
+        "entity_ids": [
+          "gift",
+          "helper",
+          "hero",
+          "recipient"
+        ],
+        "event_ids": [
+          1
+        ],
+        "evidence": [
+          {
+            "start": 0,
+            "end": 94,
+            "text": "Jun said, \u201cI want to give Willa the gift pear.\u201d Tessa told Jun, \u201cI would like to pick a pear.\u201d"
+          }
+        ],
+        "text_sha256": "dd100b3a29183560d70ae19b24e8c09a42cb2dd62d952babadf71b6781acd0c5"
+      },
+      {
+        "id": "orchard:3:obstacle",
+        "kind": "what",
+        "question": "What was wrong with the high pear?",
+        "answer": "The high pear was unripe. Pulling the picking basket bent its branch.",
+        "entity_ids": [
+          "branch",
+          "helper",
+          "high",
+          "picker"
+        ],
+        "event_ids": [
+          3
+        ],
+        "evidence": [
+          {
+            "start": 130,
+            "end": 217,
+            "text": "The golden pear was unripe. Jun pulled the picking basket. The high branch was bending."
+          }
+        ],
+        "text_sha256": "dd100b3a29183560d70ae19b24e8c09a42cb2dd62d952babadf71b6781acd0c5"
+      },
+      {
+        "id": "orchard:4:choice",
+        "kind": "why",
+        "question": "Why did they lower the picking basket?",
+        "answer": "Tessa said they needed to stop. The high pear was unripe and its branch was bending.",
+        "entity_ids": [
+          "branch",
+          "helper",
+          "hero",
+          "high",
+          "picker"
+        ],
+        "event_ids": [
+          3,
+          4
+        ],
+        "evidence": [
+          {
+            "start": 130,
+            "end": 217,
+            "text": "The golden pear was unripe. Jun pulled the picking basket. The high branch was bending."
+          },
+          {
+            "start": 218,
+            "end": 278,
+            "text": "Tessa said, \u201cI need to stop.\u201d He lowered the picking basket."
+          }
+        ],
+        "text_sha256": "dd100b3a29183560d70ae19b24e8c09a42cb2dd62d952babadf71b6781acd0c5"
+      },
+      {
+        "id": "orchard:6:food",
+        "kind": "how",
+        "question": "How did Tessa deal with the bruise?",
+        "answer": "Tessa trimmed the ripe pear with her picnic knife. They left the high pear on its branch.",
+        "entity_ids": [
+          "branch",
+          "helper",
+          "hero",
+          "high",
+          "knife",
+          "pear",
+          "picker"
+        ],
+        "event_ids": [
+          3,
+          4,
+          6
+        ],
+        "evidence": [
+          {
+            "start": 130,
+            "end": 217,
+            "text": "The golden pear was unripe. Jun pulled the picking basket. The high branch was bending."
+          },
+          {
+            "start": 218,
+            "end": 278,
+            "text": "Tessa said, \u201cI need to stop.\u201d He lowered the picking basket."
+          },
+          {
+            "start": 327,
+            "end": 406,
+            "text": "The ripe pear was bruised. Using the picnic knife, Tessa trimmed the ripe pear."
+          }
+        ],
+        "text_sha256": "dd100b3a29183560d70ae19b24e8c09a42cb2dd62d952babadf71b6781acd0c5"
+      },
+      {
+        "id": "orchard:8:gift",
+        "kind": "where",
+        "question": "Where did the gift pear go?",
+        "answer": "Tessa put the gift pear on the puppet table. Jun had wanted to save it for Willa.",
+        "entity_ids": [
+          "gift",
+          "helper",
+          "hero",
+          "recipient",
+          "table"
+        ],
+        "event_ids": [
+          1,
+          8
+        ],
+        "evidence": [
+          {
+            "start": 0,
+            "end": 94,
+            "text": "Jun said, \u201cI want to give Willa the gift pear.\u201d Tessa told Jun, \u201cI would like to pick a pear.\u201d"
+          },
+          {
+            "start": 454,
+            "end": 498,
+            "text": "Tessa put the gift pear on the puppet table."
+          }
+        ],
+        "text_sha256": "dd100b3a29183560d70ae19b24e8c09a42cb2dd62d952babadf71b6781acd0c5"
+      }
+    ],
+    "source": {
+      "number": 12,
+      "scenario": "orchard",
+      "path": "/Users/dmitry/storyweavers/storyscenes/design/agents_api_trial_20261024/luna_high_direct_20/12_orchard/story.txt",
+      "sha256": "62705fce9fa77a40cb24dea71f25355e529f847c4ebbcd0c835696e0000a910e"
+    },
+    "events": [
+      "pear_promise",
+      "borrow_picker",
+      "resisting_fruit",
+      "protect_branch",
+      "tessa_picks_low",
+      "trim_bruise",
+      "return_picker",
+      "deliver_gift",
+      "unbent_branch"
+    ]
+  },
+  {
+    "scenario": "costume",
+    "seed": 3007,
+    "story": "Nia said, \u201cI want the golden cape.\u201d Rafi held the Moon robe. Nia borrowed the golden cape. Rafi said, \u201cI need a Sun costume.\u201d Nia handed Rafi the golden cape. The golden cape's hem was long. Nia said, \u201cI can help you.\u201d Rafi gathered the golden cape's front. Nia fetched the Sun disk from the prop box. She handed the Sun disk to Rafi. Rafi raised the Sun disk. She swirled with the blue ribbons. Rafi hung the golden cape in the costume cupboard. The golden cape shone.",
+    "qa": [
+      {
+        "id": "costume:1:goal",
+        "kind": "what",
+        "question": "What did Nia want to wear?",
+        "answer": "Nia wanted the golden cape. Rafi held a Moon robe.",
+        "entity_ids": [
+          "cape",
+          "helper",
+          "hero",
+          "robe"
+        ],
+        "event_ids": [
+          1
+        ],
+        "evidence": [
+          {
+            "start": 0,
+            "end": 60,
+            "text": "Nia said, \u201cI want the golden cape.\u201d Rafi held the Moon robe."
+          }
+        ],
+        "text_sha256": "4cd861544feb330e92d9f2cfabcb1d7cc41e3cec3e51234b71d0abedab8591c4"
+      },
+      {
+        "id": "costume:3:problem",
+        "kind": "why",
+        "question": "Why was Rafi unhappy with his costume?",
+        "answer": "Rafi needed a Sun costume. He was holding a Moon robe.",
+        "entity_ids": [
+          "cape",
+          "helper",
+          "hero",
+          "robe"
+        ],
+        "event_ids": [
+          1,
+          3
+        ],
+        "evidence": [
+          {
+            "start": 0,
+            "end": 60,
+            "text": "Nia said, \u201cI want the golden cape.\u201d Rafi held the Moon robe."
+          },
+          {
+            "start": 91,
+            "end": 125,
+            "text": "Rafi said, \u201cI need a Sun costume.\u201d"
+          }
+        ],
+        "text_sha256": "4cd861544feb330e92d9f2cfabcb1d7cc41e3cec3e51234b71d0abedab8591c4"
+      },
+      {
+        "id": "costume:4:choice",
+        "kind": "who",
+        "question": "Who gave up the golden cape?",
+        "answer": "Nia gave the cape to Rafi. He needed a Sun costume.",
+        "entity_ids": [
+          "cape",
+          "helper",
+          "hero",
+          "robe"
+        ],
+        "event_ids": [
+          1,
+          3,
+          4
+        ],
+        "evidence": [
+          {
+            "start": 0,
+            "end": 60,
+            "text": "Nia said, \u201cI want the golden cape.\u201d Rafi held the Moon robe."
+          },
+          {
+            "start": 91,
+            "end": 125,
+            "text": "Rafi said, \u201cI need a Sun costume.\u201d"
+          },
+          {
+            "start": 126,
+            "end": 158,
+            "text": "Nia handed Rafi the golden cape."
+          }
+        ],
+        "text_sha256": "4cd861544feb330e92d9f2cfabcb1d7cc41e3cec3e51234b71d0abedab8591c4"
+      },
+      {
+        "id": "costume:8:sun",
+        "kind": "how",
+        "question": "What helped Rafi look like the Sun?",
+        "answer": "Nia gave Rafi the Sun disk. He also had her golden cape.",
+        "entity_ids": [
+          "cape",
+          "disk",
+          "helper",
+          "hero",
+          "robe"
+        ],
+        "event_ids": [
+          1,
+          3,
+          4,
+          8
+        ],
+        "evidence": [
+          {
+            "start": 0,
+            "end": 60,
+            "text": "Nia said, \u201cI want the golden cape.\u201d Rafi held the Moon robe."
+          },
+          {
+            "start": 91,
+            "end": 125,
+            "text": "Rafi said, \u201cI need a Sun costume.\u201d"
+          },
+          {
+            "start": 126,
+            "end": 158,
+            "text": "Nia handed Rafi the golden cape."
+          },
+          {
+            "start": 302,
+            "end": 334,
+            "text": "She handed the Sun disk to Rafi."
+          }
+        ],
+        "text_sha256": "4cd861544feb330e92d9f2cfabcb1d7cc41e3cec3e51234b71d0abedab8591c4"
+      },
+      {
+        "id": "costume:9:performance",
+        "kind": "what_next",
+        "question": "How did both children take part?",
+        "answer": "Rafi raised the Sun disk. Nia swirled with her blue ribbons.",
+        "entity_ids": [
+          "disk",
+          "helper",
+          "hero",
+          "ribbons"
+        ],
+        "event_ids": [
+          9
+        ],
+        "evidence": [
+          {
+            "start": 335,
+            "end": 395,
+            "text": "Rafi raised the Sun disk. She swirled with the blue ribbons."
+          }
+        ],
+        "text_sha256": "4cd861544feb330e92d9f2cfabcb1d7cc41e3cec3e51234b71d0abedab8591c4"
+      },
+      {
+        "id": "costume:10:return",
+        "kind": "where",
+        "question": "Where did the cape end up?",
+        "answer": "Rafi hung the cape in the costume cupboard. Its gold still shone.",
+        "entity_ids": [
+          "bench",
+          "cape",
+          "helper"
+        ],
+        "event_ids": [
+          10
+        ],
+        "evidence": [
+          {
+            "start": 396,
+            "end": 469,
+            "text": "Rafi hung the golden cape in the costume cupboard. The golden cape shone."
+          }
+        ],
+        "text_sha256": "4cd861544feb330e92d9f2cfabcb1d7cc41e3cec3e51234b71d0abedab8591c4"
+      }
+    ],
+    "source": {
+      "number": 13,
+      "scenario": "costume",
+      "path": "/Users/dmitry/storyweavers/storyscenes/design/agents_api_trial_20261024/luna_high_direct_20/13_costume/story.txt",
+      "sha256": "66010bfd30cc20fd46fa79100c771f5e39ff26f9dce23b734b92f951a0fcbf06"
+    },
+    "events": [
+      "wind_wish",
+      "borrow_cape",
+      "wrong_costume",
+      "share_cape",
+      "dragging_hem",
+      "gather_front",
+      "fetch_sun",
+      "give_sun",
+      "perform_together",
+      "return_costume"
+    ]
+  },
+  {
+    "scenario": "pond",
+    "seed": 3007,
+    "story": "The wooden boat drifted toward reeds. Theo said, \u201cI want the wooden boat.\u201d Mina borrowed the long net. The long net snagged on the willow branch. Mina said, \u201cI need to free the long net.\u201d Theo said, \u201cI can wait.\u201d Mina pushed the long net gently. Mina and Theo walked to the stone outlet. Using the long net, she lifted the wooden boat. She returned the long net to the tool shed. Theo tied the blue cord to the wooden boat. The wooden boat floated on the pond. He held the blue cord.",
+    "qa": [
+      {
+        "id": "pond:10:outcome",
+        "kind": "what_next",
+        "question": "What was different when the boat floated again?",
+        "answer": "The boat floated while Theo held its blue cord. He had tied the cord to the recovered boat.",
+        "entity_ids": [
+          "boat",
+          "cord",
+          "helper",
+          "hero",
+          "net",
+          "outlet"
+        ],
+        "event_ids": [
+          6,
+          7,
+          10
+        ],
+        "evidence": [
+          {
+            "start": 246,
+            "end": 287,
+            "text": "Mina and Theo walked to the stone outlet."
+          },
+          {
+            "start": 288,
+            "end": 335,
+            "text": "Using the long net, she lifted the wooden boat."
+          },
+          {
+            "start": 424,
+            "end": 483,
+            "text": "The wooden boat floated on the pond. He held the blue cord."
+          }
+        ],
+        "text_sha256": "49d4fbaa03090dd9000a655635463a00a1b36417c68092c937a2d2a3698dca18"
+      },
+      {
+        "id": "pond:1:goal",
+        "kind": "what",
+        "question": "What did Theo want back?",
+        "answer": "Theo wanted his wooden boat. It was drifting toward the reeds.",
+        "entity_ids": [
+          "boat",
+          "helper"
+        ],
+        "event_ids": [
+          1
+        ],
+        "evidence": [
+          {
+            "start": 0,
+            "end": 74,
+            "text": "The wooden boat drifted toward reeds. Theo said, \u201cI want the wooden boat.\u201d"
+          }
+        ],
+        "text_sha256": "49d4fbaa03090dd9000a655635463a00a1b36417c68092c937a2d2a3698dca18"
+      },
+      {
+        "id": "pond:3:snag",
+        "kind": "why",
+        "question": "Why did the first attempt stop?",
+        "answer": "The net snagged on a willow branch. Mina was using it to reach the boat.",
+        "entity_ids": [
+          "boat",
+          "branch",
+          "helper",
+          "hero",
+          "net"
+        ],
+        "event_ids": [
+          1,
+          3
+        ],
+        "evidence": [
+          {
+            "start": 0,
+            "end": 74,
+            "text": "The wooden boat drifted toward reeds. Theo said, \u201cI want the wooden boat.\u201d"
+          },
+          {
+            "start": 103,
+            "end": 145,
+            "text": "The long net snagged on the willow branch."
+          }
+        ],
+        "text_sha256": "49d4fbaa03090dd9000a655635463a00a1b36417c68092c937a2d2a3698dca18"
+      },
+      {
+        "id": "pond:4:choice",
+        "kind": "how",
+        "question": "What did Mina decide to do first?",
+        "answer": "Mina decided to free the net. Theo agreed to wait.",
+        "entity_ids": [
+          "helper",
+          "hero",
+          "net"
+        ],
+        "event_ids": [
+          4
+        ],
+        "evidence": [
+          {
+            "start": 146,
+            "end": 212,
+            "text": "Mina said, \u201cI need to free the long net.\u201d Theo said, \u201cI can wait.\u201d"
+          }
+        ],
+        "text_sha256": "49d4fbaa03090dd9000a655635463a00a1b36417c68092c937a2d2a3698dca18"
+      },
+      {
+        "id": "pond:6:route",
+        "kind": "where",
+        "question": "Where did they follow the boat?",
+        "answer": "Mina and Theo walked to the stone outlet. They had freed the snagged net first.",
+        "entity_ids": [
+          "boat",
+          "helper",
+          "hero",
+          "outlet"
+        ],
+        "event_ids": [
+          6
+        ],
+        "evidence": [
+          {
+            "start": 246,
+            "end": 287,
+            "text": "Mina and Theo walked to the stone outlet."
+          }
+        ],
+        "text_sha256": "49d4fbaa03090dd9000a655635463a00a1b36417c68092c937a2d2a3698dca18"
+      },
+      {
+        "id": "pond:7:rescue",
+        "kind": "how",
+        "question": "How did Mina recover the boat?",
+        "answer": "Mina lifted the boat with the net. They had followed it to the stone outlet.",
+        "entity_ids": [
+          "boat",
+          "helper",
+          "hero",
+          "net",
+          "outlet"
+        ],
+        "event_ids": [
+          6,
+          7
+        ],
+        "evidence": [
+          {
+            "start": 246,
+            "end": 287,
+            "text": "Mina and Theo walked to the stone outlet."
+          },
+          {
+            "start": 288,
+            "end": 335,
+            "text": "Using the long net, she lifted the wooden boat."
+          }
+        ],
+        "text_sha256": "49d4fbaa03090dd9000a655635463a00a1b36417c68092c937a2d2a3698dca18"
+      }
+    ],
+    "source": {
+      "number": 14,
+      "scenario": "pond",
+      "path": "/Users/dmitry/storyweavers/storyscenes/design/agents_api_trial_20261024/luna_high_direct_20/14_pond/story.txt",
+      "sha256": "1713af605fa7c846e132c16f0125a31ed5b78b75117a5036b9e1aefd5b11cd55"
+    },
+    "events": [
+      "drifting_boat",
+      "borrow_net",
+      "net_snag",
+      "refuse_yank",
+      "ease_hoop",
+      "follow_path",
+      "net_boat",
+      "return_net",
+      "tether_boat",
+      "safe_circle"
+    ]
+  },
+  {
+    "scenario": "repair",
+    "seed": 3007,
+    "story": "Ada said, \u201cI want to repair the blue cart.\u201d Niko said, \u201cI need to move the tomato tray.\u201d Ada borrowed the spanner. She tightened the wheel nut with the spanner. The wheel was locked. Ada said, \u201cI am wrong.\u201d Niko placed the tomato tray under the repair bench. She loosened the wheel nut. She discovered the kite string inside the wheel. Mr Rafi held the wheel. Ada unwound the kite string. She fitted the wheel. The wheel spun smoothly. Ada and Niko placed the tomato tray in the blue cart. She pushed the blue cart to the sheltered corner. She returned the spanner to the repair bench. The tomato tray was sheltered. The wheel was quiet.",
+    "qa": [
+      {
+        "id": "repair:10:outcome",
+        "kind": "what_next",
+        "question": "How did the courtyard look at the end?",
+        "answer": "The tomato tray was sheltered, and the cart\u2019s wheel was quiet. Ada had tested the repaired wheel.",
+        "entity_ids": [
+          "cart",
+          "hero",
+          "plants",
+          "spanner",
+          "string",
+          "wheel"
+        ],
+        "event_ids": [
+          3,
+          5,
+          7,
+          10
+        ],
+        "evidence": [
+          {
+            "start": 115,
+            "end": 182,
+            "text": "She tightened the wheel nut with the spanner. The wheel was locked."
+          },
+          {
+            "start": 259,
+            "end": 335,
+            "text": "She loosened the wheel nut. She discovered the kite string inside the wheel."
+          },
+          {
+            "start": 389,
+            "end": 435,
+            "text": "She fitted the wheel. The wheel spun smoothly."
+          },
+          {
+            "start": 586,
+            "end": 637,
+            "text": "The tomato tray was sheltered. The wheel was quiet."
+          }
+        ],
+        "text_sha256": "0922e18b06cbb9c2efed6a1349f3f53a0b4efc635e50c2ff7f34bc560d97fbe7"
+      },
+      {
+        "id": "repair:1:goal",
+        "kind": "why",
+        "question": "Why did Ada want to fix the cart?",
+        "answer": "Ada wanted to repair the cart. Niko needed to move his tomato tray.",
+        "entity_ids": [
+          "cart",
+          "helper",
+          "hero",
+          "plants"
+        ],
+        "event_ids": [
+          1
+        ],
+        "evidence": [
+          {
+            "start": 0,
+            "end": 88,
+            "text": "Ada said, \u201cI want to repair the blue cart.\u201d Niko said, \u201cI need to move the tomato tray.\u201d"
+          }
+        ],
+        "text_sha256": "0922e18b06cbb9c2efed6a1349f3f53a0b4efc635e50c2ff7f34bc560d97fbe7"
+      },
+      {
+        "id": "repair:3:mistake",
+        "kind": "what",
+        "question": "What happened when Ada tightened the nut?",
+        "answer": "The wheel locked after Ada tightened its nut. She had used the spanner.",
+        "entity_ids": [
+          "hero",
+          "spanner",
+          "wheel"
+        ],
+        "event_ids": [
+          3
+        ],
+        "evidence": [
+          {
+            "start": 115,
+            "end": 182,
+            "text": "She tightened the wheel nut with the spanner. The wheel was locked."
+          }
+        ],
+        "text_sha256": "0922e18b06cbb9c2efed6a1349f3f53a0b4efc635e50c2ff7f34bc560d97fbe7"
+      },
+      {
+        "id": "repair:4:choice",
+        "kind": "how",
+        "question": "What did they do instead of dragging the cart?",
+        "answer": "Ada admitted she was wrong. Niko put the tomato tray under the repair bench.",
+        "entity_ids": [
+          "bench",
+          "helper",
+          "hero",
+          "plants"
+        ],
+        "event_ids": [
+          4
+        ],
+        "evidence": [
+          {
+            "start": 183,
+            "end": 258,
+            "text": "Ada said, \u201cI am wrong.\u201d Niko placed the tomato tray under the repair bench."
+          }
+        ],
+        "text_sha256": "0922e18b06cbb9c2efed6a1349f3f53a0b4efc635e50c2ff7f34bc560d97fbe7"
+      },
+      {
+        "id": "repair:5:cause",
+        "kind": "why",
+        "question": "What had caused the rattle?",
+        "answer": "Ada found kite string inside the wheel. Tightening the nut had locked the wheel instead of fixing the problem.",
+        "entity_ids": [
+          "hero",
+          "spanner",
+          "string",
+          "wheel"
+        ],
+        "event_ids": [
+          3,
+          5
+        ],
+        "evidence": [
+          {
+            "start": 115,
+            "end": 182,
+            "text": "She tightened the wheel nut with the spanner. The wheel was locked."
+          },
+          {
+            "start": 259,
+            "end": 335,
+            "text": "She loosened the wheel nut. She discovered the kite string inside the wheel."
+          }
+        ],
+        "text_sha256": "0922e18b06cbb9c2efed6a1349f3f53a0b4efc635e50c2ff7f34bc560d97fbe7"
+      },
+      {
+        "id": "repair:7:test",
+        "kind": "how",
+        "question": "How could Ada tell the repair worked?",
+        "answer": "The wheel spun smoothly after Ada fitted it. The kite string had been removed.",
+        "entity_ids": [
+          "hero",
+          "spanner",
+          "string",
+          "wheel"
+        ],
+        "event_ids": [
+          3,
+          5,
+          7
+        ],
+        "evidence": [
+          {
+            "start": 115,
+            "end": 182,
+            "text": "She tightened the wheel nut with the spanner. The wheel was locked."
+          },
+          {
+            "start": 259,
+            "end": 335,
+            "text": "She loosened the wheel nut. She discovered the kite string inside the wheel."
+          },
+          {
+            "start": 389,
+            "end": 435,
+            "text": "She fitted the wheel. The wheel spun smoothly."
+          }
+        ],
+        "text_sha256": "0922e18b06cbb9c2efed6a1349f3f53a0b4efc635e50c2ff7f34bc560d97fbe7"
+      }
+    ],
+    "source": {
+      "number": 15,
+      "scenario": "repair",
+      "path": "/Users/dmitry/storyweavers/storyscenes/design/agents_api_trial_20261024/luna_high_direct_20/15_repair/story.txt",
+      "sha256": "2e468f354cf6ff8f3250567e0ae317a21efd6ec5398bd30eb191df8189de7796"
+    },
+    "events": [
+      "cart_goal",
+      "borrow_spanner",
+      "tighten_wrongly",
+      "admit_and_shelter",
+      "diagnose_string",
+      "rafi_holds_wheel",
+      "refit_and_test",
+      "move_plants",
+      "return_spanner",
+      "quiet_wheel"
+    ]
+  },
+  {
+    "scenario": "museum",
+    "seed": 3007,
+    "story": "Miri said, \u201cI want to show Dot a small shadow.\u201d Kit told Miri, \u201cI would like a dragon.\u201d Miri borrowed the torch. Miri moved the torch. The shadow grew. Kit read the instruction label. Miri said, \u201cI need to steady the torch.\u201d Miri steadied the torch with the clay wedge. Miri moved the paper moth toward the screen. The shadow shrank. Dot said, \u201cI can try.\u201d Dot held the paper moth beside the screen. The shadow was small.",
+    "qa": [
+      {
+        "id": "museum:8:outcome",
+        "kind": "what_next",
+        "question": "How did Dot take part?",
+        "answer": "Dot held the moth beside the screen. Its shadow was small.",
+        "entity_ids": [
+          "moth",
+          "screen",
+          "shadow",
+          "visitor"
+        ],
+        "event_ids": [
+          8
+        ],
+        "evidence": [
+          {
+            "start": 357,
+            "end": 421,
+            "text": "Dot held the paper moth beside the screen. The shadow was small."
+          }
+        ],
+        "text_sha256": "3428d26e34b1dee2d6c8d36af26bf216fafdd702d13697f83aa3a1d47ce804b5"
+      },
+      {
+        "id": "museum:1:goal",
+        "kind": "who",
+        "question": "Who was Miri preparing the exhibit for?",
+        "answer": "Miri wanted to show Dot a small shadow. Kit wanted a dragon.",
+        "entity_ids": [
+          "helper",
+          "hero",
+          "moth",
+          "visitor"
+        ],
+        "event_ids": [
+          1
+        ],
+        "evidence": [
+          {
+            "start": 0,
+            "end": 87,
+            "text": "Miri said, \u201cI want to show Dot a small shadow.\u201d Kit told Miri, \u201cI would like a dragon.\u201d"
+          }
+        ],
+        "text_sha256": "3428d26e34b1dee2d6c8d36af26bf216fafdd702d13697f83aa3a1d47ce804b5"
+      },
+      {
+        "id": "museum:3:error",
+        "kind": "what",
+        "question": "What went wrong with the first demonstration?",
+        "answer": "The shadow grew while Miri moved the torch. She needed to keep the light still.",
+        "entity_ids": [
+          "helper",
+          "hero",
+          "label",
+          "shadow",
+          "torch"
+        ],
+        "event_ids": [
+          3,
+          4
+        ],
+        "evidence": [
+          {
+            "start": 113,
+            "end": 151,
+            "text": "Miri moved the torch. The shadow grew."
+          },
+          {
+            "start": 152,
+            "end": 224,
+            "text": "Kit read the instruction label. Miri said, \u201cI need to steady the torch.\u201d"
+          }
+        ],
+        "text_sha256": "3428d26e34b1dee2d6c8d36af26bf216fafdd702d13697f83aa3a1d47ce804b5"
+      },
+      {
+        "id": "museum:4:cause",
+        "kind": "why",
+        "question": "What did Miri need to keep still?",
+        "answer": "Miri needed to stop moving the torch. Kit read the instruction label.",
+        "entity_ids": [
+          "helper",
+          "hero",
+          "label",
+          "torch"
+        ],
+        "event_ids": [
+          4
+        ],
+        "evidence": [
+          {
+            "start": 152,
+            "end": 224,
+            "text": "Kit read the instruction label. Miri said, \u201cI need to steady the torch.\u201d"
+          }
+        ],
+        "text_sha256": "3428d26e34b1dee2d6c8d36af26bf216fafdd702d13697f83aa3a1d47ce804b5"
+      },
+      {
+        "id": "museum:6:test",
+        "kind": "how",
+        "question": "What happened with the torch fixed?",
+        "answer": "The shadow shrank when Miri moved the moth toward the screen. The torch stayed fixed.",
+        "entity_ids": [
+          "helper",
+          "hero",
+          "label",
+          "moth",
+          "screen",
+          "shadow",
+          "torch"
+        ],
+        "event_ids": [
+          4,
+          6
+        ],
+        "evidence": [
+          {
+            "start": 152,
+            "end": 224,
+            "text": "Kit read the instruction label. Miri said, \u201cI need to steady the torch.\u201d"
+          },
+          {
+            "start": 270,
+            "end": 333,
+            "text": "Miri moved the paper moth toward the screen. The shadow shrank."
+          }
+        ],
+        "text_sha256": "3428d26e34b1dee2d6c8d36af26bf216fafdd702d13697f83aa3a1d47ce804b5"
+      }
+    ],
+    "source": {
+      "number": 16,
+      "scenario": "museum",
+      "path": "/Users/dmitry/storyweavers/storyscenes/design/agents_api_trial_20261024/luna_high_direct_20/16_museum/story.txt",
+      "sha256": "ed192fed972fc01c3d23ac866bf4009a098eda81d6c9cd320bccfe300a4a0e09"
+    },
+    "events": [
+      "exhibit_goal",
+      "borrow_torch",
+      "moving_light",
+      "read_small_print",
+      "clay_support",
+      "controlled_trial",
+      "visitor_turn",
+      "little_wings"
+    ]
+  },
+  {
+    "scenario": "laundry",
+    "seed": 3007,
+    "story": "Tessa said, \u201cI can hang the white sheet.\u201d Mrs Bell said, \u201cI need the peg bag.\u201d Tessa borrowed the peg bag. The wooden prop was slippery. The washing line was low. Tessa said, \u201cI need help.\u201d Mr Osei said, \u201cI can hold the white sheet.\u201d Tessa and Mr Osei carried the white sheet into the rain shelter. Tessa folded the white sheet. Tessa pegged the white sheet. The little sock slipped. Mr Osei caught the little sock. He hung the little sock beside the white sheet. Tessa gave the peg bag to Mrs Bell. The little sock swung gently. The white sheet was clean.",
+    "qa": [
+      {
+        "id": "laundry:10:outcome",
+        "kind": "what_next",
+        "question": "What did the sheltered washing look like?",
+        "answer": "The little sock swung gently, and the white sheet stayed clean. Both were protected inside the rain shelter.",
+        "entity_ids": [
+          "helper",
+          "hero",
+          "sheet",
+          "shelter",
+          "sock"
+        ],
+        "event_ids": [
+          4,
+          5,
+          10
+        ],
+        "evidence": [
+          {
+            "start": 163,
+            "end": 233,
+            "text": "Tessa said, \u201cI need help.\u201d Mr Osei said, \u201cI can hold the white sheet.\u201d"
+          },
+          {
+            "start": 234,
+            "end": 298,
+            "text": "Tessa and Mr Osei carried the white sheet into the rain shelter."
+          },
+          {
+            "start": 500,
+            "end": 556,
+            "text": "The little sock swung gently. The white sheet was clean."
+          }
+        ],
+        "text_sha256": "b045ee963782df0cfed084499996a9ae314e5f4148bdc7153773520cacb1e4bd"
+      },
+      {
+        "id": "laundry:1:goal",
+        "kind": "who",
+        "question": "Who offered to hang Mrs Bell\u2019s sheet?",
+        "answer": "Tessa offered to hang the sheet. Mrs Bell needed her peg bag back.",
+        "entity_ids": [
+          "bag",
+          "hero",
+          "owner",
+          "sheet"
+        ],
+        "event_ids": [
+          1
+        ],
+        "evidence": [
+          {
+            "start": 0,
+            "end": 78,
+            "text": "Tessa said, \u201cI can hang the white sheet.\u201d Mrs Bell said, \u201cI need the peg bag.\u201d"
+          }
+        ],
+        "text_sha256": "b045ee963782df0cfed084499996a9ae314e5f4148bdc7153773520cacb1e4bd"
+      },
+      {
+        "id": "laundry:3:problem",
+        "kind": "what",
+        "question": "What was wrong with the washing line?",
+        "answer": "Its wooden prop was slippery and the line was low. The sheet still needed to be hung.",
+        "entity_ids": [
+          "bag",
+          "hero",
+          "line",
+          "owner",
+          "propstick",
+          "sheet"
+        ],
+        "event_ids": [
+          1,
+          3
+        ],
+        "evidence": [
+          {
+            "start": 0,
+            "end": 78,
+            "text": "Tessa said, \u201cI can hang the white sheet.\u201d Mrs Bell said, \u201cI need the peg bag.\u201d"
+          },
+          {
+            "start": 107,
+            "end": 162,
+            "text": "The wooden prop was slippery. The washing line was low."
+          }
+        ],
+        "text_sha256": "b045ee963782df0cfed084499996a9ae314e5f4148bdc7153773520cacb1e4bd"
+      },
+      {
+        "id": "laundry:4:choice",
+        "kind": "how",
+        "question": "How did Tessa respond to the slipping prop?",
+        "answer": "Tessa asked for help. Mr Osei offered to hold the sheet.",
+        "entity_ids": [
+          "helper",
+          "hero",
+          "sheet"
+        ],
+        "event_ids": [
+          4
+        ],
+        "evidence": [
+          {
+            "start": 163,
+            "end": 233,
+            "text": "Tessa said, \u201cI need help.\u201d Mr Osei said, \u201cI can hold the white sheet.\u201d"
+          }
+        ],
+        "text_sha256": "b045ee963782df0cfed084499996a9ae314e5f4148bdc7153773520cacb1e4bd"
+      },
+      {
+        "id": "laundry:5:shelter",
+        "kind": "where",
+        "question": "Where did they take the sheet?",
+        "answer": "Tessa and Mr Osei carried it into the rain shelter. They had asked for help instead of using the low line.",
+        "entity_ids": [
+          "helper",
+          "hero",
+          "sheet",
+          "shelter"
+        ],
+        "event_ids": [
+          4,
+          5
+        ],
+        "evidence": [
+          {
+            "start": 163,
+            "end": 233,
+            "text": "Tessa said, \u201cI need help.\u201d Mr Osei said, \u201cI can hold the white sheet.\u201d"
+          },
+          {
+            "start": 234,
+            "end": 298,
+            "text": "Tessa and Mr Osei carried the white sheet into the rain shelter."
+          }
+        ],
+        "text_sha256": "b045ee963782df0cfed084499996a9ae314e5f4148bdc7153773520cacb1e4bd"
+      },
+      {
+        "id": "laundry:9:loan",
+        "kind": "who",
+        "question": "Who got the peg bag back?",
+        "answer": "Tessa gave the peg bag to Mrs Bell. The sheet was now in the shelter.",
+        "entity_ids": [
+          "bag",
+          "helper",
+          "hero",
+          "owner",
+          "sheet",
+          "shelter"
+        ],
+        "event_ids": [
+          4,
+          5,
+          9
+        ],
+        "evidence": [
+          {
+            "start": 163,
+            "end": 233,
+            "text": "Tessa said, \u201cI need help.\u201d Mr Osei said, \u201cI can hold the white sheet.\u201d"
+          },
+          {
+            "start": 234,
+            "end": 298,
+            "text": "Tessa and Mr Osei carried the white sheet into the rain shelter."
+          },
+          {
+            "start": 464,
+            "end": 499,
+            "text": "Tessa gave the peg bag to Mrs Bell."
+          }
+        ],
+        "text_sha256": "b045ee963782df0cfed084499996a9ae314e5f4148bdc7153773520cacb1e4bd"
+      }
+    ],
+    "source": {
+      "number": 17,
+      "scenario": "laundry",
+      "path": "/Users/dmitry/storyweavers/storyscenes/design/agents_api_trial_20261024/luna_high_direct_20/17_laundry/story.txt",
+      "sha256": "37eda5fdc548df7965124385f5b7cea2cf053ddb9b55cb69dd6bb96c263978f9"
+    },
+    "events": [
+      "help_washing",
+      "borrow_pegs",
+      "slipping_prop",
+      "ask_help",
+      "move_inside",
+      "fold_sheet",
+      "catch_sock",
+      "hang_sock",
+      "return_bag",
+      "sheltered_sock"
+    ]
+  },
+  {
+    "scenario": "trail",
+    "seed": 3007,
+    "story": "Leni used the crutches. Felix said, \u201cI want a stamp.\u201d Leni said, \u201cI need a level path.\u201d Nia borrowed the brass compass. Nia chose the Fern Loop. Nia said, \u201cI can wait.\u201d The fallen birch blocked the path. Using the brass compass, Nia oriented the trail map. Felix lifted ivy. Leni noticed the blue marker. Nia and Felix and Leni followed the level detour. Leni drew the spotted salamander in the sketchbook. Ranger Ivo stamped the discovery card. Nia gave Ranger Ivo the brass compass. Leni showed Ranger Ivo the sketchbook. Felix held the discovery card.",
+    "qa": [
+      {
+        "id": "trail:11:outcome",
+        "kind": "what_next",
+        "question": "What did the friends bring back?",
+        "answer": "Leni showed her drawing to Ranger Ivo. Felix held his completed discovery card.",
+        "entity_ids": [
+          "animal",
+          "book",
+          "card",
+          "compass",
+          "helper",
+          "hero",
+          "leni",
+          "map",
+          "ranger",
+          "tree"
+        ],
+        "event_ids": [
+          1,
+          3,
+          4,
+          5,
+          8,
+          11
+        ],
+        "evidence": [
+          {
+            "start": 0,
+            "end": 87,
+            "text": "Leni used the crutches. Felix said, \u201cI want a stamp.\u201d Leni said, \u201cI need a level path.\u201d"
+          },
+          {
+            "start": 120,
+            "end": 168,
+            "text": "Nia chose the Fern Loop. Nia said, \u201cI can wait.\u201d"
+          },
+          {
+            "start": 169,
+            "end": 203,
+            "text": "The fallen birch blocked the path."
+          },
+          {
+            "start": 204,
+            "end": 256,
+            "text": "Using the brass compass, Nia oriented the trail map."
+          },
+          {
+            "start": 355,
+            "end": 406,
+            "text": "Leni drew the spotted salamander in the sketchbook."
+          },
+          {
+            "start": 485,
+            "end": 554,
+            "text": "Leni showed Ranger Ivo the sketchbook. Felix held the discovery card."
+          }
+        ],
+        "text_sha256": "0d7a7d0f19679be3865646e2e6d5b8cd6d54b9359d036ae5843db9ae2f9f1f0c"
+      },
+      {
+        "id": "trail:1:goal",
+        "kind": "what",
+        "question": "What did Felix and Leni need?",
+        "answer": "Felix wanted a stamp. Leni needed a level path.",
+        "entity_ids": [
+          "helper",
+          "leni"
+        ],
+        "event_ids": [
+          1
+        ],
+        "evidence": [
+          {
+            "start": 0,
+            "end": 87,
+            "text": "Leni used the crutches. Felix said, \u201cI want a stamp.\u201d Leni said, \u201cI need a level path.\u201d"
+          }
+        ],
+        "text_sha256": "0d7a7d0f19679be3865646e2e6d5b8cd6d54b9359d036ae5843db9ae2f9f1f0c"
+      },
+      {
+        "id": "trail:3:choice",
+        "kind": "why",
+        "question": "Why did Nia choose the Fern Loop?",
+        "answer": "Leni needed a level path. Nia chose the Fern Loop and said she could wait.",
+        "entity_ids": [
+          "helper",
+          "hero",
+          "leni"
+        ],
+        "event_ids": [
+          1,
+          3
+        ],
+        "evidence": [
+          {
+            "start": 0,
+            "end": 87,
+            "text": "Leni used the crutches. Felix said, \u201cI want a stamp.\u201d Leni said, \u201cI need a level path.\u201d"
+          },
+          {
+            "start": 120,
+            "end": 168,
+            "text": "Nia chose the Fern Loop. Nia said, \u201cI can wait.\u201d"
+          }
+        ],
+        "text_sha256": "0d7a7d0f19679be3865646e2e6d5b8cd6d54b9359d036ae5843db9ae2f9f1f0c"
+      },
+      {
+        "id": "trail:5:navigation",
+        "kind": "how",
+        "question": "How did Nia check the direction?",
+        "answer": "Nia used the brass compass to orient the trail map. A fallen birch had blocked the path.",
+        "entity_ids": [
+          "compass",
+          "helper",
+          "hero",
+          "leni",
+          "map",
+          "tree"
+        ],
+        "event_ids": [
+          1,
+          3,
+          4,
+          5
+        ],
+        "evidence": [
+          {
+            "start": 0,
+            "end": 87,
+            "text": "Leni used the crutches. Felix said, \u201cI want a stamp.\u201d Leni said, \u201cI need a level path.\u201d"
+          },
+          {
+            "start": 120,
+            "end": 168,
+            "text": "Nia chose the Fern Loop. Nia said, \u201cI can wait.\u201d"
+          },
+          {
+            "start": 169,
+            "end": 203,
+            "text": "The fallen birch blocked the path."
+          },
+          {
+            "start": 204,
+            "end": 256,
+            "text": "Using the brass compass, Nia oriented the trail map."
+          }
+        ],
+        "text_sha256": "0d7a7d0f19679be3865646e2e6d5b8cd6d54b9359d036ae5843db9ae2f9f1f0c"
+      },
+      {
+        "id": "trail:8:drawing",
+        "kind": "who",
+        "question": "Who drew the salamander?",
+        "answer": "Leni drew the spotted salamander in her sketchbook. They had found a level detour.",
+        "entity_ids": [
+          "animal",
+          "book",
+          "compass",
+          "helper",
+          "hero",
+          "leni",
+          "map",
+          "tree"
+        ],
+        "event_ids": [
+          1,
+          3,
+          4,
+          5,
+          8
+        ],
+        "evidence": [
+          {
+            "start": 0,
+            "end": 87,
+            "text": "Leni used the crutches. Felix said, \u201cI want a stamp.\u201d Leni said, \u201cI need a level path.\u201d"
+          },
+          {
+            "start": 120,
+            "end": 168,
+            "text": "Nia chose the Fern Loop. Nia said, \u201cI can wait.\u201d"
+          },
+          {
+            "start": 169,
+            "end": 203,
+            "text": "The fallen birch blocked the path."
+          },
+          {
+            "start": 204,
+            "end": 256,
+            "text": "Using the brass compass, Nia oriented the trail map."
+          },
+          {
+            "start": 355,
+            "end": 406,
+            "text": "Leni drew the spotted salamander in the sketchbook."
+          }
+        ],
+        "text_sha256": "0d7a7d0f19679be3865646e2e6d5b8cd6d54b9359d036ae5843db9ae2f9f1f0c"
+      },
+      {
+        "id": "trail:4:obstacle",
+        "kind": "what",
+        "question": "What blocked their path?",
+        "answer": "A fallen birch blocked the path. They were following the Fern Loop.",
+        "entity_ids": [
+          "helper",
+          "hero",
+          "leni",
+          "tree"
+        ],
+        "event_ids": [
+          1,
+          3,
+          4
+        ],
+        "evidence": [
+          {
+            "start": 0,
+            "end": 87,
+            "text": "Leni used the crutches. Felix said, \u201cI want a stamp.\u201d Leni said, \u201cI need a level path.\u201d"
+          },
+          {
+            "start": 120,
+            "end": 168,
+            "text": "Nia chose the Fern Loop. Nia said, \u201cI can wait.\u201d"
+          },
+          {
+            "start": 169,
+            "end": 203,
+            "text": "The fallen birch blocked the path."
+          }
+        ],
+        "text_sha256": "0d7a7d0f19679be3865646e2e6d5b8cd6d54b9359d036ae5843db9ae2f9f1f0c"
+      }
+    ],
+    "source": {
+      "number": 18,
+      "scenario": "trail",
+      "path": "/Users/dmitry/storyweavers/storyscenes/design/agents_api_trial_20261024/luna_high_direct_20/18_trail/story.txt",
+      "sha256": "7612156e86e8fc2e5a9a3d8fdabe87318a81bcfb56f4ec0ae49f0746aabed408"
+    },
+    "events": [
+      "three_wishes",
+      "borrow_compass",
+      "choose_loop",
+      "blocked_trail",
+      "align_map",
+      "felix_clears_ivy",
+      "level_detour",
+      "salamander_sketch",
+      "stamp_card",
+      "return_compass",
+      "show_drawing"
+    ]
+  },
+  {
+    "scenario": "festival",
+    "seed": 3007,
+    "story": "Rafi was in the wheelchair. Bea said, \u201cI want to hang the paper flags.\u201d Rafi told Bea, \u201cI want to tie the silver moon flag.\u201d Bea borrowed the green string. Bea tied the green string across the entrance. The bread cart was blocked. Rafi said, \u201cI need space.\u201d She untied the green string. Bea carried the green string to the welcome fence. She steadied the green string. Rafi tied the green string. He tied the silver moon flag on the green string. Bea hung the paper flags beside the silver moon flag. Mr Duran pushed the bread cart through the entrance. The silver moon flag shone.",
+    "qa": [
+      {
+        "id": "festival:9:outcome",
+        "kind": "what_next",
+        "question": "What proved the new arrangement worked?",
+        "answer": "Mr Duran pushed the bread cart through the entrance. Rafi\u2019s moon flag shone beside the other flags.",
+        "entity_ids": [
+          "baker",
+          "cart",
+          "fence",
+          "gate",
+          "helper",
+          "hero",
+          "moon",
+          "string"
+        ],
+        "event_ids": [
+          3,
+          4,
+          5,
+          7,
+          9
+        ],
+        "evidence": [
+          {
+            "start": 156,
+            "end": 230,
+            "text": "Bea tied the green string across the entrance. The bread cart was blocked."
+          },
+          {
+            "start": 231,
+            "end": 286,
+            "text": "Rafi said, \u201cI need space.\u201d She untied the green string."
+          },
+          {
+            "start": 287,
+            "end": 337,
+            "text": "Bea carried the green string to the welcome fence."
+          },
+          {
+            "start": 397,
+            "end": 446,
+            "text": "He tied the silver moon flag on the green string."
+          },
+          {
+            "start": 501,
+            "end": 581,
+            "text": "Mr Duran pushed the bread cart through the entrance. The silver moon flag shone."
+          }
+        ],
+        "text_sha256": "263a3fb43cd38877bc5ecad15e53d494b557398fed2ca79e7136405a11de9db1"
+      },
+      {
+        "id": "festival:1:goal",
+        "kind": "who",
+        "question": "Who wanted to tie the moon flag?",
+        "answer": "Rafi wanted to tie the moon flag. Bea wanted to hang the paper flags with him.",
+        "entity_ids": [
+          "flags",
+          "helper",
+          "hero",
+          "moon"
+        ],
+        "event_ids": [
+          1
+        ],
+        "evidence": [
+          {
+            "start": 0,
+            "end": 124,
+            "text": "Rafi was in the wheelchair. Bea said, \u201cI want to hang the paper flags.\u201d Rafi told Bea, \u201cI want to tie the silver moon flag.\u201d"
+          }
+        ],
+        "text_sha256": "263a3fb43cd38877bc5ecad15e53d494b557398fed2ca79e7136405a11de9db1"
+      },
+      {
+        "id": "festival:3:obstacle",
+        "kind": "what",
+        "question": "Why could the bread cart not pass?",
+        "answer": "Bea tied the green string across the entrance. The bread cart was blocked.",
+        "entity_ids": [
+          "cart",
+          "gate",
+          "hero",
+          "string"
+        ],
+        "event_ids": [
+          3
+        ],
+        "evidence": [
+          {
+            "start": 156,
+            "end": 230,
+            "text": "Bea tied the green string across the entrance. The bread cart was blocked."
+          }
+        ],
+        "text_sha256": "263a3fb43cd38877bc5ecad15e53d494b557398fed2ca79e7136405a11de9db1"
+      },
+      {
+        "id": "festival:4:choice",
+        "kind": "how",
+        "question": "How did Bea reopen the entrance?",
+        "answer": "Rafi said they needed space. Bea untied the string across the entrance.",
+        "entity_ids": [
+          "cart",
+          "gate",
+          "helper",
+          "hero",
+          "string"
+        ],
+        "event_ids": [
+          3,
+          4
+        ],
+        "evidence": [
+          {
+            "start": 156,
+            "end": 230,
+            "text": "Bea tied the green string across the entrance. The bread cart was blocked."
+          },
+          {
+            "start": 231,
+            "end": 286,
+            "text": "Rafi said, \u201cI need space.\u201d She untied the green string."
+          }
+        ],
+        "text_sha256": "263a3fb43cd38877bc5ecad15e53d494b557398fed2ca79e7136405a11de9db1"
+      },
+      {
+        "id": "festival:5:place",
+        "kind": "where",
+        "question": "Where did they move the bunting?",
+        "answer": "Bea carried the string to the welcome fence. That left the entrance clear.",
+        "entity_ids": [
+          "cart",
+          "fence",
+          "gate",
+          "helper",
+          "hero",
+          "string"
+        ],
+        "event_ids": [
+          3,
+          4,
+          5
+        ],
+        "evidence": [
+          {
+            "start": 156,
+            "end": 230,
+            "text": "Bea tied the green string across the entrance. The bread cart was blocked."
+          },
+          {
+            "start": 231,
+            "end": 286,
+            "text": "Rafi said, \u201cI need space.\u201d She untied the green string."
+          },
+          {
+            "start": 287,
+            "end": 337,
+            "text": "Bea carried the green string to the welcome fence."
+          }
+        ],
+        "text_sha256": "263a3fb43cd38877bc5ecad15e53d494b557398fed2ca79e7136405a11de9db1"
+      },
+      {
+        "id": "festival:7:agency",
+        "kind": "who",
+        "question": "Who attached the silver moon flag?",
+        "answer": "Rafi tied the moon flag onto the string himself. The string was at the welcome fence.",
+        "entity_ids": [
+          "cart",
+          "fence",
+          "gate",
+          "helper",
+          "hero",
+          "moon",
+          "string"
+        ],
+        "event_ids": [
+          3,
+          4,
+          5,
+          7
+        ],
+        "evidence": [
+          {
+            "start": 156,
+            "end": 230,
+            "text": "Bea tied the green string across the entrance. The bread cart was blocked."
+          },
+          {
+            "start": 231,
+            "end": 286,
+            "text": "Rafi said, \u201cI need space.\u201d She untied the green string."
+          },
+          {
+            "start": 287,
+            "end": 337,
+            "text": "Bea carried the green string to the welcome fence."
+          },
+          {
+            "start": 397,
+            "end": 446,
+            "text": "He tied the silver moon flag on the green string."
+          }
+        ],
+        "text_sha256": "263a3fb43cd38877bc5ecad15e53d494b557398fed2ca79e7136405a11de9db1"
+      }
+    ],
+    "source": {
+      "number": 19,
+      "scenario": "festival",
+      "path": "/Users/dmitry/storyweavers/storyscenes/design/agents_api_trial_20261024/luna_high_direct_20/19_festival/story.txt",
+      "sha256": "c184b9cbf891fe21ab163838eb077406b8eee5aec7561a7f7267c5a159e5cc08"
+    },
+    "events": [
+      "reachable_bunting",
+      "borrow_string",
+      "blocked_gate",
+      "rethink_access",
+      "move_to_fence",
+      "adjust_tension",
+      "tie_moon",
+      "hang_flags",
+      "clear_passage"
+    ]
+  },
+  {
+    "scenario": "biscuit",
+    "seed": 3007,
+    "story": "Mr Alvarez located the terrier. Mara said, \u201cI want to thank Mr Alvarez.\u201d Toby told Mara, \u201cI want a dog biscuit.\u201d Toby borrowed the dog cutter. Mara and Toby pulled the last dough lump. The last dough lump was torn. Mara said, \u201cI can share the last dough lump.\u201d She rejoined the last dough lump. Toby guided the dog cutter. She pressed the dog cutter. She handed Toby the star cutter. Toby pressed the star cutter on the dog biscuit. Grandma baked the dog biscuit. The dog biscuit cooled. Toby returned the dog cutter to the cutter tin. Mara put the dog biscuit in the blue tin. Mr Alvarez lifted the dog biscuit. The dog biscuit's star shone.",
+    "qa": [
+      {
+        "id": "biscuit:11:outcome",
+        "kind": "what_next",
+        "question": "What did Mr Alvarez see on the gift?",
+        "answer": "Mr Alvarez lifted the dog biscuit, and its star shone. Mara and Toby had shaped the gift together.",
+        "entity_ids": [
+          "biscuit",
+          "cutter",
+          "dough",
+          "grandma",
+          "helper",
+          "hero",
+          "recipient",
+          "star"
+        ],
+        "event_ids": [
+          3,
+          4,
+          5,
+          8,
+          11
+        ],
+        "evidence": [
+          {
+            "start": 143,
+            "end": 214,
+            "text": "Mara and Toby pulled the last dough lump. The last dough lump was torn."
+          },
+          {
+            "start": 215,
+            "end": 294,
+            "text": "Mara said, \u201cI can share the last dough lump.\u201d She rejoined the last dough lump."
+          },
+          {
+            "start": 295,
+            "end": 350,
+            "text": "Toby guided the dog cutter. She pressed the dog cutter."
+          },
+          {
+            "start": 464,
+            "end": 487,
+            "text": "The dog biscuit cooled."
+          },
+          {
+            "start": 578,
+            "end": 642,
+            "text": "Mr Alvarez lifted the dog biscuit. The dog biscuit's star shone."
+          }
+        ],
+        "text_sha256": "bd74fbe637c9694f4e3d9dea877dd7dfe1cb821a9a256669c384255310e3c39f"
+      },
+      {
+        "id": "biscuit:1:goal",
+        "kind": "who",
+        "question": "Who were the biscuits for?",
+        "answer": "Mara wanted to thank Mr Alvarez. Toby wanted to make a dog biscuit.",
+        "entity_ids": [
+          "biscuit",
+          "helper",
+          "hero",
+          "recipient"
+        ],
+        "event_ids": [
+          1
+        ],
+        "evidence": [
+          {
+            "start": 0,
+            "end": 112,
+            "text": "Mr Alvarez located the terrier. Mara said, \u201cI want to thank Mr Alvarez.\u201d Toby told Mara, \u201cI want a dog biscuit.\u201d"
+          }
+        ],
+        "text_sha256": "bd74fbe637c9694f4e3d9dea877dd7dfe1cb821a9a256669c384255310e3c39f"
+      },
+      {
+        "id": "biscuit:3:conflict",
+        "kind": "what",
+        "question": "What happened when they pulled the dough?",
+        "answer": "The last lump tore. Mara and Toby had pulled it in different directions.",
+        "entity_ids": [
+          "dough",
+          "helper",
+          "hero"
+        ],
+        "event_ids": [
+          3
+        ],
+        "evidence": [
+          {
+            "start": 143,
+            "end": 214,
+            "text": "Mara and Toby pulled the last dough lump. The last dough lump was torn."
+          }
+        ],
+        "text_sha256": "bd74fbe637c9694f4e3d9dea877dd7dfe1cb821a9a256669c384255310e3c39f"
+      },
+      {
+        "id": "biscuit:4:choice",
+        "kind": "how",
+        "question": "How did Mara respond to the torn dough?",
+        "answer": "Mara offered to share it and rejoined the pieces. The last lump had torn during their argument.",
+        "entity_ids": [
+          "dough",
+          "helper",
+          "hero"
+        ],
+        "event_ids": [
+          3,
+          4
+        ],
+        "evidence": [
+          {
+            "start": 143,
+            "end": 214,
+            "text": "Mara and Toby pulled the last dough lump. The last dough lump was torn."
+          },
+          {
+            "start": 215,
+            "end": 294,
+            "text": "Mara said, \u201cI can share the last dough lump.\u201d She rejoined the last dough lump."
+          }
+        ],
+        "text_sha256": "bd74fbe637c9694f4e3d9dea877dd7dfe1cb821a9a256669c384255310e3c39f"
+      },
+      {
+        "id": "biscuit:5:cooperate",
+        "kind": "who",
+        "question": "How did both children shape the biscuit?",
+        "answer": "Toby guided the dog cutter while Mara pressed it. They had agreed to share the dough.",
+        "entity_ids": [
+          "biscuit",
+          "cutter",
+          "dough",
+          "helper",
+          "hero"
+        ],
+        "event_ids": [
+          3,
+          4,
+          5
+        ],
+        "evidence": [
+          {
+            "start": 143,
+            "end": 214,
+            "text": "Mara and Toby pulled the last dough lump. The last dough lump was torn."
+          },
+          {
+            "start": 215,
+            "end": 294,
+            "text": "Mara said, \u201cI can share the last dough lump.\u201d She rejoined the last dough lump."
+          },
+          {
+            "start": 295,
+            "end": 350,
+            "text": "Toby guided the dog cutter. She pressed the dog cutter."
+          }
+        ],
+        "text_sha256": "bd74fbe637c9694f4e3d9dea877dd7dfe1cb821a9a256669c384255310e3c39f"
+      },
+      {
+        "id": "biscuit:8:baking",
+        "kind": "how",
+        "question": "What had to happen before they packed the biscuit?",
+        "answer": "Grandma baked it, and it cooled. The children had pressed a star into the dog shape.",
+        "entity_ids": [
+          "biscuit",
+          "grandma",
+          "helper",
+          "hero",
+          "star"
+        ],
+        "event_ids": [
+          8
+        ],
+        "evidence": [
+          {
+            "start": 464,
+            "end": 487,
+            "text": "The dog biscuit cooled."
+          }
+        ],
+        "text_sha256": "bd74fbe637c9694f4e3d9dea877dd7dfe1cb821a9a256669c384255310e3c39f"
+      }
+    ],
+    "source": {
+      "number": 20,
+      "scenario": "biscuit",
+      "path": "/Users/dmitry/storyweavers/storyscenes/design/agents_api_trial_20261024/luna_high_direct_20/20_biscuit/story.txt",
+      "sha256": "cbbea092d39701acc52766b9d3c5588523bd929ecc9d0a5910fad93b575672db"
+    },
+    "events": [
+      "thank_you_gift",
+      "borrow_cutter",
+      "torn_dough",
+      "repair_dough",
+      "cut_together",
+      "toby_marks_star",
+      "bake_biscuit",
+      "cool_biscuit",
+      "return_cutter",
+      "pack_gift",
+      "sugar_star"
+    ]
+  }
+]

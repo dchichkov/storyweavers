@@ -1,0 +1,81 @@
+{
+  "id": "P025",
+  "name": "Latest state override",
+  "description": "Property query → ordered updates to that property. Favor current rather than stale state.",
+  "proposed_payload": "{latest_value, superseded_events}",
+  "provenance": "Authored illustrative seeds; not learned or extracted.",
+  "status": "program_required",
+  "examples": [
+    {
+      "id": "P025.01",
+      "description": "Gate open, then Mira closes it.",
+      "intended_feature": "closed",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P025.02",
+      "description": "Cup empty, then Theo fills it.",
+      "intended_feature": "full",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P025.03",
+      "description": "Lamp lit, then wind extinguishes it.",
+      "intended_feature": "unlit",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P025.04",
+      "description": "Rope tied, then Nia unties it.",
+      "intended_feature": "untied",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P025.05",
+      "description": "Door locked, then an attempted unlock fails.",
+      "intended_feature": "locked",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P025.06",
+      "description": "Boat damaged, then repaired, then damaged again.",
+      "intended_feature": "damaged_latest_event",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P025.07",
+      "description": "A later report repeats an outdated open-gate claim.",
+      "intended_feature": "world_state_not_overwritten_by_report",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P025.08",
+      "description": "Two equal-time incompatible updates arrive.",
+      "intended_feature": "conflict_requires_resolution",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P025.09",
+      "description": "A hypothetical future repair has not happened.",
+      "intended_feature": "retain_current_damage",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P025.10",
+      "description": "An erroneous state event is explicitly retracted.",
+      "intended_feature": "restore_last_valid_value",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    }
+  ],
+  "required_program": "Resolve competing property updates by event time and validity; preserve negation, retractions, and actual-versus-hypothetical branches."
+}

@@ -1,0 +1,81 @@
+{
+  "id": "P064",
+  "name": "Null-evidence abstention",
+  "description": "Query → whether any supported source exists. Apply no factual boost; favor supported uncertainty where appropriate.",
+  "proposed_payload": "{no_match, uncertainty}",
+  "provenance": "Authored illustrative seeds; not learned or extracted.",
+  "status": "program_required",
+  "examples": [
+    {
+      "id": "P064.01",
+      "description": "No key location has been established.",
+      "intended_feature": "location_unknown",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P064.02",
+      "description": "No cause recorded for a noise.",
+      "intended_feature": "cause_unknown",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P064.03",
+      "description": "A head has no lexical table entry for a known fact.",
+      "intended_feature": "coverage_gap_not_world_unknown",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P064.04",
+      "description": "Two reports conflict about ownership.",
+      "intended_feature": "conflict_not_absence",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P064.05",
+      "description": "Knowledge exists but is hidden from the viewpoint.",
+      "intended_feature": "viewpoint_unknown",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P064.06",
+      "description": "All source confidences are zero.",
+      "intended_feature": "no_usable_evidence",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P064.07",
+      "description": "A source is excluded by the wrong scope.",
+      "intended_feature": "scope_mismatch",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P064.08",
+      "description": "The grammar has no legal candidates.",
+      "intended_feature": "grammar_failure_not_factual_uncertainty",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P064.09",
+      "description": "An unknown amount is explicitly recorded.",
+      "intended_feature": "known_unknown_quantity",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P064.10",
+      "description": "New evidence resolves an earlier unknown.",
+      "intended_feature": "stop_abstaining",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    }
+  ],
+  "required_program": "Determine whether required evidence is genuinely absent, contradicted, unavailable, or unparsed; decide when to communicate uncertainty rather than merely emitting no score."
+}

@@ -1,0 +1,4857 @@
+{
+  "scenario": "kite",
+  "seed": 0,
+  "tense": "past",
+  "grammar": "ported-python",
+  "initial_world": {
+    "scenario": "kite",
+    "entities": {
+      "hero": {
+        "id": "hero",
+        "noun": "Ben",
+        "kind": "person",
+        "location": "meadow",
+        "number": "singular",
+        "pronoun": "he",
+        "properties": [
+          "animate",
+          "can_climb",
+          "can_hold",
+          "can_repair"
+        ],
+        "state": [],
+        "memes": {
+          "Care": 0.8,
+          "Fear": 0.5789772014701512,
+          "Curiosity": 0.65,
+          "Trust": 0.35,
+          "Joy": 0.1
+        }
+      },
+      "helper": {
+        "id": "helper",
+        "noun": "Mum",
+        "kind": "person",
+        "location": "meadow",
+        "number": "singular",
+        "pronoun": "she",
+        "properties": [
+          "animate",
+          "can_hold",
+          "can_repair"
+        ],
+        "state": [],
+        "memes": {
+          "Care": 0.9
+        }
+      },
+      "bread": {
+        "id": "bread",
+        "noun": "bread",
+        "kind": "food",
+        "location": "kitchen",
+        "number": "singular",
+        "pronoun": "it",
+        "properties": [
+          "edible"
+        ],
+        "state": [],
+        "memes": {}
+      },
+      "water": {
+        "id": "water",
+        "noun": "water",
+        "kind": "drink",
+        "location": "kitchen",
+        "number": "singular",
+        "pronoun": "it",
+        "properties": [
+          "drinkable"
+        ],
+        "state": [],
+        "memes": {}
+      },
+      "stone": {
+        "id": "stone",
+        "noun": "stone",
+        "kind": "object",
+        "location": "meadow",
+        "number": "singular",
+        "pronoun": "it",
+        "properties": [
+          "portable"
+        ],
+        "state": [],
+        "memes": {}
+      },
+      "target": {
+        "id": "target",
+        "noun": "kite",
+        "kind": "object",
+        "location": "meadow",
+        "number": "singular",
+        "pronoun": "it",
+        "properties": [
+          "flyable",
+          "portable"
+        ],
+        "state": [
+          "grounded",
+          "torn"
+        ],
+        "memes": {}
+      },
+      "tool": {
+        "id": "tool",
+        "noun": "tape",
+        "kind": "tool",
+        "location": "basket",
+        "number": "singular",
+        "pronoun": "it",
+        "properties": [
+          "portable",
+          "repair"
+        ],
+        "state": [],
+        "memes": {}
+      }
+    },
+    "hero": "hero",
+    "helper": "helper",
+    "target": "target",
+    "tool": "tool",
+    "setting": "meadow",
+    "facts": {
+      "problem": {
+        "id": "problem",
+        "text": "The kite is torn, although there is enough wind to fly it.",
+        "tags": [
+          "problem",
+          "goal",
+          "care"
+        ],
+        "value": 1.0
+      },
+      "obstacle": {
+        "id": "obstacle",
+        "text": "A tear in the kite prevents it from flying.",
+        "tags": [
+          "obstacle",
+          "fear",
+          "planning"
+        ],
+        "value": 1.0
+      },
+      "helper_available": {
+        "id": "helper_available",
+        "text": "Mum is nearby and willing to help.",
+        "tags": [
+          "helper",
+          "trust",
+          "planning"
+        ],
+        "value": 1.0
+      },
+      "tool_available": {
+        "id": "tool_available",
+        "text": "The tape is in the basket.",
+        "tags": [
+          "tool",
+          "planning"
+        ],
+        "value": 1.0
+      }
+    },
+    "flags": [],
+    "history": [],
+    "focus": ""
+  },
+  "final_world": {
+    "scenario": "kite",
+    "entities": {
+      "hero": {
+        "id": "hero",
+        "noun": "Ben",
+        "kind": "person",
+        "location": "meadow",
+        "number": "singular",
+        "pronoun": "he",
+        "properties": [
+          "animate",
+          "can_climb",
+          "can_hold",
+          "can_repair"
+        ],
+        "state": [],
+        "memes": {
+          "Care": 0.8,
+          "Fear": 0.5789772014701512,
+          "Curiosity": 0.65,
+          "Trust": 0.6499999999999999,
+          "Joy": 0.8
+        }
+      },
+      "helper": {
+        "id": "helper",
+        "noun": "Mum",
+        "kind": "person",
+        "location": "meadow",
+        "number": "singular",
+        "pronoun": "she",
+        "properties": [
+          "animate",
+          "can_hold",
+          "can_repair"
+        ],
+        "state": [],
+        "memes": {
+          "Care": 0.9
+        }
+      },
+      "bread": {
+        "id": "bread",
+        "noun": "bread",
+        "kind": "food",
+        "location": "kitchen",
+        "number": "singular",
+        "pronoun": "it",
+        "properties": [
+          "edible"
+        ],
+        "state": [],
+        "memes": {}
+      },
+      "water": {
+        "id": "water",
+        "noun": "water",
+        "kind": "drink",
+        "location": "kitchen",
+        "number": "singular",
+        "pronoun": "it",
+        "properties": [
+          "drinkable"
+        ],
+        "state": [],
+        "memes": {}
+      },
+      "stone": {
+        "id": "stone",
+        "noun": "stone",
+        "kind": "object",
+        "location": "meadow",
+        "number": "singular",
+        "pronoun": "it",
+        "properties": [
+          "portable"
+        ],
+        "state": [],
+        "memes": {}
+      },
+      "target": {
+        "id": "target",
+        "noun": "kite",
+        "kind": "object",
+        "location": "sky",
+        "number": "singular",
+        "pronoun": "it",
+        "properties": [
+          "flyable",
+          "portable"
+        ],
+        "state": [
+          "flying",
+          "repaired"
+        ],
+        "memes": {}
+      },
+      "tool": {
+        "id": "tool",
+        "noun": "tape",
+        "kind": "tool",
+        "location": "hero",
+        "number": "singular",
+        "pronoun": "it",
+        "properties": [
+          "portable",
+          "repair"
+        ],
+        "state": [],
+        "memes": {}
+      }
+    },
+    "hero": "hero",
+    "helper": "helper",
+    "target": "target",
+    "tool": "tool",
+    "setting": "meadow",
+    "facts": {
+      "problem": {
+        "id": "problem",
+        "text": "The kite is torn, although there is enough wind to fly it.",
+        "tags": [
+          "problem",
+          "goal",
+          "care"
+        ],
+        "value": 1.0
+      },
+      "obstacle": {
+        "id": "obstacle",
+        "text": "A tear in the kite prevents it from flying.",
+        "tags": [
+          "obstacle",
+          "fear",
+          "planning"
+        ],
+        "value": 1.0
+      },
+      "helper_available": {
+        "id": "helper_available",
+        "text": "Mum is nearby and willing to help.",
+        "tags": [
+          "helper",
+          "trust",
+          "planning"
+        ],
+        "value": 1.0
+      },
+      "tool_available": {
+        "id": "tool_available",
+        "text": "The tape is in the basket.",
+        "tags": [
+          "tool",
+          "planning"
+        ],
+        "value": 1.0
+      }
+    },
+    "flags": [
+      "asked",
+      "ended",
+      "noticed",
+      "planned",
+      "prepared",
+      "resolved",
+      "solved",
+      "thanked"
+    ],
+    "history": [
+      {
+        "id": 1,
+        "frame": {
+          "kind": "notice",
+          "actor": "hero",
+          "patient": "target",
+          "instrument": "tool",
+          "destination": "meadow",
+          "cause_ids": [
+            "problem"
+          ]
+        },
+        "sentence": "Ben noticed a torn kite on the grass.",
+        "before": {
+          "flags": [],
+          "entities": {
+            "hero": {
+              "location": "meadow",
+              "state": [],
+              "memes": {
+                "Care": 0.8,
+                "Fear": 0.5789772014701512,
+                "Curiosity": 0.65,
+                "Trust": 0.35,
+                "Joy": 0.1
+              }
+            },
+            "helper": {
+              "location": "meadow",
+              "state": [],
+              "memes": {
+                "Care": 0.9
+              }
+            },
+            "bread": {
+              "location": "kitchen",
+              "state": [],
+              "memes": {}
+            },
+            "water": {
+              "location": "kitchen",
+              "state": [],
+              "memes": {}
+            },
+            "stone": {
+              "location": "meadow",
+              "state": [],
+              "memes": {}
+            },
+            "target": {
+              "location": "meadow",
+              "state": [
+                "grounded",
+                "torn"
+              ],
+              "memes": {}
+            },
+            "tool": {
+              "location": "basket",
+              "state": [],
+              "memes": {}
+            }
+          }
+        },
+        "after": {
+          "flags": [
+            "noticed"
+          ],
+          "entities": {
+            "hero": {
+              "location": "meadow",
+              "state": [],
+              "memes": {
+                "Care": 0.8,
+                "Fear": 0.5789772014701512,
+                "Curiosity": 0.65,
+                "Trust": 0.35,
+                "Joy": 0.1
+              }
+            },
+            "helper": {
+              "location": "meadow",
+              "state": [],
+              "memes": {
+                "Care": 0.9
+              }
+            },
+            "bread": {
+              "location": "kitchen",
+              "state": [],
+              "memes": {}
+            },
+            "water": {
+              "location": "kitchen",
+              "state": [],
+              "memes": {}
+            },
+            "stone": {
+              "location": "meadow",
+              "state": [],
+              "memes": {}
+            },
+            "target": {
+              "location": "meadow",
+              "state": [
+                "grounded",
+                "torn"
+              ],
+              "memes": {}
+            },
+            "tool": {
+              "location": "basket",
+              "state": [],
+              "memes": {}
+            }
+          }
+        },
+        "referents": [
+          "hero",
+          "target"
+        ]
+      },
+      {
+        "id": 2,
+        "frame": {
+          "kind": "ask",
+          "actor": "hero",
+          "patient": "target",
+          "instrument": "tool",
+          "destination": "meadow",
+          "cause_ids": [
+            "problem",
+            "obstacle",
+            "helper_available"
+          ]
+        },
+        "sentence": "He asked Mum for help.",
+        "before": {
+          "flags": [
+            "noticed"
+          ],
+          "entities": {
+            "hero": {
+              "location": "meadow",
+              "state": [],
+              "memes": {
+                "Care": 0.8,
+                "Fear": 0.5789772014701512,
+                "Curiosity": 0.65,
+                "Trust": 0.35,
+                "Joy": 0.1
+              }
+            },
+            "helper": {
+              "location": "meadow",
+              "state": [],
+              "memes": {
+                "Care": 0.9
+              }
+            },
+            "bread": {
+              "location": "kitchen",
+              "state": [],
+              "memes": {}
+            },
+            "water": {
+              "location": "kitchen",
+              "state": [],
+              "memes": {}
+            },
+            "stone": {
+              "location": "meadow",
+              "state": [],
+              "memes": {}
+            },
+            "target": {
+              "location": "meadow",
+              "state": [
+                "grounded",
+                "torn"
+              ],
+              "memes": {}
+            },
+            "tool": {
+              "location": "basket",
+              "state": [],
+              "memes": {}
+            }
+          }
+        },
+        "after": {
+          "flags": [
+            "asked",
+            "noticed",
+            "planned"
+          ],
+          "entities": {
+            "hero": {
+              "location": "meadow",
+              "state": [],
+              "memes": {
+                "Care": 0.8,
+                "Fear": 0.5789772014701512,
+                "Curiosity": 0.65,
+                "Trust": 0.6499999999999999,
+                "Joy": 0.1
+              }
+            },
+            "helper": {
+              "location": "meadow",
+              "state": [],
+              "memes": {
+                "Care": 0.9
+              }
+            },
+            "bread": {
+              "location": "kitchen",
+              "state": [],
+              "memes": {}
+            },
+            "water": {
+              "location": "kitchen",
+              "state": [],
+              "memes": {}
+            },
+            "stone": {
+              "location": "meadow",
+              "state": [],
+              "memes": {}
+            },
+            "target": {
+              "location": "meadow",
+              "state": [
+                "grounded",
+                "torn"
+              ],
+              "memes": {}
+            },
+            "tool": {
+              "location": "basket",
+              "state": [],
+              "memes": {}
+            }
+          }
+        },
+        "referents": [
+          "helper",
+          "hero"
+        ]
+      },
+      {
+        "id": 3,
+        "frame": {
+          "kind": "fetch",
+          "actor": "hero",
+          "patient": "target",
+          "instrument": "tool",
+          "destination": "meadow",
+          "cause_ids": [
+            "problem",
+            "obstacle",
+            "tool_available"
+          ]
+        },
+        "sentence": "He fetched tape from the basket.",
+        "before": {
+          "flags": [
+            "asked",
+            "noticed",
+            "planned"
+          ],
+          "entities": {
+            "hero": {
+              "location": "meadow",
+              "state": [],
+              "memes": {
+                "Care": 0.8,
+                "Fear": 0.5789772014701512,
+                "Curiosity": 0.65,
+                "Trust": 0.6499999999999999,
+                "Joy": 0.1
+              }
+            },
+            "helper": {
+              "location": "meadow",
+              "state": [],
+              "memes": {
+                "Care": 0.9
+              }
+            },
+            "bread": {
+              "location": "kitchen",
+              "state": [],
+              "memes": {}
+            },
+            "water": {
+              "location": "kitchen",
+              "state": [],
+              "memes": {}
+            },
+            "stone": {
+              "location": "meadow",
+              "state": [],
+              "memes": {}
+            },
+            "target": {
+              "location": "meadow",
+              "state": [
+                "grounded",
+                "torn"
+              ],
+              "memes": {}
+            },
+            "tool": {
+              "location": "basket",
+              "state": [],
+              "memes": {}
+            }
+          }
+        },
+        "after": {
+          "flags": [
+            "asked",
+            "noticed",
+            "planned",
+            "prepared"
+          ],
+          "entities": {
+            "hero": {
+              "location": "meadow",
+              "state": [],
+              "memes": {
+                "Care": 0.8,
+                "Fear": 0.5789772014701512,
+                "Curiosity": 0.65,
+                "Trust": 0.6499999999999999,
+                "Joy": 0.1
+              }
+            },
+            "helper": {
+              "location": "meadow",
+              "state": [],
+              "memes": {
+                "Care": 0.9
+              }
+            },
+            "bread": {
+              "location": "kitchen",
+              "state": [],
+              "memes": {}
+            },
+            "water": {
+              "location": "kitchen",
+              "state": [],
+              "memes": {}
+            },
+            "stone": {
+              "location": "meadow",
+              "state": [],
+              "memes": {}
+            },
+            "target": {
+              "location": "meadow",
+              "state": [
+                "grounded",
+                "torn"
+              ],
+              "memes": {}
+            },
+            "tool": {
+              "location": "hero",
+              "state": [],
+              "memes": {}
+            }
+          }
+        },
+        "referents": [
+          "hero",
+          "tool"
+        ]
+      },
+      {
+        "id": 4,
+        "frame": {
+          "kind": "solve",
+          "actor": "hero",
+          "patient": "target",
+          "instrument": "tool",
+          "destination": "meadow",
+          "cause_ids": [
+            "problem",
+            "obstacle",
+            "tool_available"
+          ]
+        },
+        "sentence": "Ben used the tape to mend the kite.",
+        "before": {
+          "flags": [
+            "asked",
+            "noticed",
+            "planned",
+            "prepared"
+          ],
+          "entities": {
+            "hero": {
+              "location": "meadow",
+              "state": [],
+              "memes": {
+                "Care": 0.8,
+                "Fear": 0.5789772014701512,
+                "Curiosity": 0.65,
+                "Trust": 0.6499999999999999,
+                "Joy": 0.1
+              }
+            },
+            "helper": {
+              "location": "meadow",
+              "state": [],
+              "memes": {
+                "Care": 0.9
+              }
+            },
+            "bread": {
+              "location": "kitchen",
+              "state": [],
+              "memes": {}
+            },
+            "water": {
+              "location": "kitchen",
+              "state": [],
+              "memes": {}
+            },
+            "stone": {
+              "location": "meadow",
+              "state": [],
+              "memes": {}
+            },
+            "target": {
+              "location": "meadow",
+              "state": [
+                "grounded",
+                "torn"
+              ],
+              "memes": {}
+            },
+            "tool": {
+              "location": "hero",
+              "state": [],
+              "memes": {}
+            }
+          }
+        },
+        "after": {
+          "flags": [
+            "asked",
+            "noticed",
+            "planned",
+            "prepared",
+            "solved"
+          ],
+          "entities": {
+            "hero": {
+              "location": "meadow",
+              "state": [],
+              "memes": {
+                "Care": 0.8,
+                "Fear": 0.5789772014701512,
+                "Curiosity": 0.65,
+                "Trust": 0.6499999999999999,
+                "Joy": 0.5
+              }
+            },
+            "helper": {
+              "location": "meadow",
+              "state": [],
+              "memes": {
+                "Care": 0.9
+              }
+            },
+            "bread": {
+              "location": "kitchen",
+              "state": [],
+              "memes": {}
+            },
+            "water": {
+              "location": "kitchen",
+              "state": [],
+              "memes": {}
+            },
+            "stone": {
+              "location": "meadow",
+              "state": [],
+              "memes": {}
+            },
+            "target": {
+              "location": "meadow",
+              "state": [
+                "grounded",
+                "repaired"
+              ],
+              "memes": {}
+            },
+            "tool": {
+              "location": "hero",
+              "state": [],
+              "memes": {}
+            }
+          }
+        },
+        "referents": [
+          "hero",
+          "target",
+          "tool"
+        ]
+      },
+      {
+        "id": 5,
+        "frame": {
+          "kind": "finish",
+          "actor": "hero",
+          "patient": "target",
+          "instrument": "tool",
+          "destination": "meadow",
+          "cause_ids": [
+            "problem"
+          ]
+        },
+        "sentence": "He launched the repaired kite in the wind.",
+        "before": {
+          "flags": [
+            "asked",
+            "noticed",
+            "planned",
+            "prepared",
+            "solved"
+          ],
+          "entities": {
+            "hero": {
+              "location": "meadow",
+              "state": [],
+              "memes": {
+                "Care": 0.8,
+                "Fear": 0.5789772014701512,
+                "Curiosity": 0.65,
+                "Trust": 0.6499999999999999,
+                "Joy": 0.5
+              }
+            },
+            "helper": {
+              "location": "meadow",
+              "state": [],
+              "memes": {
+                "Care": 0.9
+              }
+            },
+            "bread": {
+              "location": "kitchen",
+              "state": [],
+              "memes": {}
+            },
+            "water": {
+              "location": "kitchen",
+              "state": [],
+              "memes": {}
+            },
+            "stone": {
+              "location": "meadow",
+              "state": [],
+              "memes": {}
+            },
+            "target": {
+              "location": "meadow",
+              "state": [
+                "grounded",
+                "repaired"
+              ],
+              "memes": {}
+            },
+            "tool": {
+              "location": "hero",
+              "state": [],
+              "memes": {}
+            }
+          }
+        },
+        "after": {
+          "flags": [
+            "asked",
+            "noticed",
+            "planned",
+            "prepared",
+            "resolved",
+            "solved"
+          ],
+          "entities": {
+            "hero": {
+              "location": "meadow",
+              "state": [],
+              "memes": {
+                "Care": 0.8,
+                "Fear": 0.5789772014701512,
+                "Curiosity": 0.65,
+                "Trust": 0.6499999999999999,
+                "Joy": 0.8
+              }
+            },
+            "helper": {
+              "location": "meadow",
+              "state": [],
+              "memes": {
+                "Care": 0.9
+              }
+            },
+            "bread": {
+              "location": "kitchen",
+              "state": [],
+              "memes": {}
+            },
+            "water": {
+              "location": "kitchen",
+              "state": [],
+              "memes": {}
+            },
+            "stone": {
+              "location": "meadow",
+              "state": [],
+              "memes": {}
+            },
+            "target": {
+              "location": "sky",
+              "state": [
+                "flying",
+                "repaired"
+              ],
+              "memes": {}
+            },
+            "tool": {
+              "location": "hero",
+              "state": [],
+              "memes": {}
+            }
+          }
+        },
+        "referents": [
+          "hero",
+          "target"
+        ]
+      },
+      {
+        "id": 6,
+        "frame": {
+          "kind": "thank",
+          "actor": "hero",
+          "patient": "target",
+          "instrument": "tool",
+          "destination": "meadow",
+          "cause_ids": [
+            "problem",
+            "helper_available"
+          ]
+        },
+        "sentence": "He thanked Mum for help.",
+        "before": {
+          "flags": [
+            "asked",
+            "noticed",
+            "planned",
+            "prepared",
+            "resolved",
+            "solved"
+          ],
+          "entities": {
+            "hero": {
+              "location": "meadow",
+              "state": [],
+              "memes": {
+                "Care": 0.8,
+                "Fear": 0.5789772014701512,
+                "Curiosity": 0.65,
+                "Trust": 0.6499999999999999,
+                "Joy": 0.8
+              }
+            },
+            "helper": {
+              "location": "meadow",
+              "state": [],
+              "memes": {
+                "Care": 0.9
+              }
+            },
+            "bread": {
+              "location": "kitchen",
+              "state": [],
+              "memes": {}
+            },
+            "water": {
+              "location": "kitchen",
+              "state": [],
+              "memes": {}
+            },
+            "stone": {
+              "location": "meadow",
+              "state": [],
+              "memes": {}
+            },
+            "target": {
+              "location": "sky",
+              "state": [
+                "flying",
+                "repaired"
+              ],
+              "memes": {}
+            },
+            "tool": {
+              "location": "hero",
+              "state": [],
+              "memes": {}
+            }
+          }
+        },
+        "after": {
+          "flags": [
+            "asked",
+            "noticed",
+            "planned",
+            "prepared",
+            "resolved",
+            "solved",
+            "thanked"
+          ],
+          "entities": {
+            "hero": {
+              "location": "meadow",
+              "state": [],
+              "memes": {
+                "Care": 0.8,
+                "Fear": 0.5789772014701512,
+                "Curiosity": 0.65,
+                "Trust": 0.6499999999999999,
+                "Joy": 0.8
+              }
+            },
+            "helper": {
+              "location": "meadow",
+              "state": [],
+              "memes": {
+                "Care": 0.9
+              }
+            },
+            "bread": {
+              "location": "kitchen",
+              "state": [],
+              "memes": {}
+            },
+            "water": {
+              "location": "kitchen",
+              "state": [],
+              "memes": {}
+            },
+            "stone": {
+              "location": "meadow",
+              "state": [],
+              "memes": {}
+            },
+            "target": {
+              "location": "sky",
+              "state": [
+                "flying",
+                "repaired"
+              ],
+              "memes": {}
+            },
+            "tool": {
+              "location": "hero",
+              "state": [],
+              "memes": {}
+            }
+          }
+        },
+        "referents": [
+          "helper",
+          "hero"
+        ]
+      },
+      {
+        "id": 7,
+        "frame": {
+          "kind": "ending",
+          "actor": "target",
+          "patient": "target",
+          "instrument": "tool",
+          "destination": "meadow",
+          "cause_ids": [
+            "problem"
+          ]
+        },
+        "sentence": "The kite floated above the meadow.",
+        "before": {
+          "flags": [
+            "asked",
+            "noticed",
+            "planned",
+            "prepared",
+            "resolved",
+            "solved",
+            "thanked"
+          ],
+          "entities": {
+            "hero": {
+              "location": "meadow",
+              "state": [],
+              "memes": {
+                "Care": 0.8,
+                "Fear": 0.5789772014701512,
+                "Curiosity": 0.65,
+                "Trust": 0.6499999999999999,
+                "Joy": 0.8
+              }
+            },
+            "helper": {
+              "location": "meadow",
+              "state": [],
+              "memes": {
+                "Care": 0.9
+              }
+            },
+            "bread": {
+              "location": "kitchen",
+              "state": [],
+              "memes": {}
+            },
+            "water": {
+              "location": "kitchen",
+              "state": [],
+              "memes": {}
+            },
+            "stone": {
+              "location": "meadow",
+              "state": [],
+              "memes": {}
+            },
+            "target": {
+              "location": "sky",
+              "state": [
+                "flying",
+                "repaired"
+              ],
+              "memes": {}
+            },
+            "tool": {
+              "location": "hero",
+              "state": [],
+              "memes": {}
+            }
+          }
+        },
+        "after": {
+          "flags": [
+            "asked",
+            "ended",
+            "noticed",
+            "planned",
+            "prepared",
+            "resolved",
+            "solved",
+            "thanked"
+          ],
+          "entities": {
+            "hero": {
+              "location": "meadow",
+              "state": [],
+              "memes": {
+                "Care": 0.8,
+                "Fear": 0.5789772014701512,
+                "Curiosity": 0.65,
+                "Trust": 0.6499999999999999,
+                "Joy": 0.8
+              }
+            },
+            "helper": {
+              "location": "meadow",
+              "state": [],
+              "memes": {
+                "Care": 0.9
+              }
+            },
+            "bread": {
+              "location": "kitchen",
+              "state": [],
+              "memes": {}
+            },
+            "water": {
+              "location": "kitchen",
+              "state": [],
+              "memes": {}
+            },
+            "stone": {
+              "location": "meadow",
+              "state": [],
+              "memes": {}
+            },
+            "target": {
+              "location": "sky",
+              "state": [
+                "flying",
+                "repaired"
+              ],
+              "memes": {}
+            },
+            "tool": {
+              "location": "hero",
+              "state": [],
+              "memes": {}
+            }
+          }
+        },
+        "referents": [
+          "target"
+        ]
+      }
+    ],
+    "focus": "target"
+  },
+  "story": "Ben noticed a torn kite on the grass. He asked Mum for help. He fetched tape from the basket. Ben used the tape to mend the kite. He launched the repaired kite in the wind. He thanked Mum for help. The kite floated above the meadow.",
+  "sentences": [
+    {
+      "text": "Ben noticed a torn kite on the grass.",
+      "frame": {
+        "kind": "notice",
+        "actor": "hero",
+        "patient": "target",
+        "instrument": "tool",
+        "destination": "meadow",
+        "cause_ids": [
+          "problem"
+        ]
+      },
+      "probability": 0.5,
+      "rules": [
+        "gf.AdjCN",
+        "gf.AdvVP",
+        "gf.ComplV2",
+        "gf.DetCN",
+        "gf.IndefArt",
+        "gf.PredVP",
+        "gf.UseCl",
+        "gf.UseN",
+        "gf.UsePN",
+        "gf.finite",
+        "lexical.adjective",
+        "local.PrepNP",
+        "local.paraphrase",
+        "local.utterance",
+        "noun.surface",
+        "referent:hero",
+        "referent:target"
+      ],
+      "referents": [
+        "hero",
+        "target"
+      ],
+      "derivation_count": 2,
+      "event_evidence": {
+        "0": {
+          "kernel": "notice",
+          "base": 0.0,
+          "query": [
+            "problem"
+          ],
+          "attention": [
+            {
+              "fact": "problem",
+              "text": "The kite is torn, although there is enough wind to fly it.",
+              "key_tags": [
+                "problem",
+                "goal",
+                "care"
+              ],
+              "query_overlap": 1,
+              "attention_weight": 1.0,
+              "value": 1.0,
+              "coefficient": 0,
+              "contribution": 0.0
+            }
+          ],
+          "narrative": [],
+          "logit": 0.0,
+          "prior_probability": 1.0,
+          "frame": {
+            "kind": "notice",
+            "actor": "hero",
+            "patient": "target",
+            "instrument": "tool",
+            "destination": "meadow",
+            "cause_ids": [
+              "problem"
+            ]
+          }
+        }
+      },
+      "word_trace": [
+        {
+          "prefix": [],
+          "choices": [
+            {
+              "word": "Ben",
+              "probability": 1.0,
+              "events": {
+                "notice": 1.0
+              },
+              "grammar_rules": [
+                "gf.AdjCN",
+                "gf.AdvVP",
+                "gf.ComplV2",
+                "gf.ComplVS",
+                "gf.DetCN",
+                "gf.IndefArt",
+                "gf.PredVP",
+                "gf.UseCl",
+                "gf.UseComp",
+                "gf.UseN",
+                "gf.UsePN",
+                "gf.finite",
+                "lexical.adjective",
+                "local.PrepNP",
+                "local.paraphrase",
+                "local.utterance",
+                "noun.surface",
+                "referent:hero",
+                "referent:target"
+              ]
+            }
+          ],
+          "prefix_probability": 1.0,
+          "complete": false,
+          "surviving_derivations": 2,
+          "selected": "Ben",
+          "selected_probability": 1.0
+        },
+        {
+          "prefix": [
+            "Ben"
+          ],
+          "choices": [
+            {
+              "word": "noticed",
+              "probability": 1.0,
+              "events": {
+                "notice": 1.0
+              },
+              "grammar_rules": [
+                "gf.AdjCN",
+                "gf.AdvVP",
+                "gf.ComplV2",
+                "gf.ComplVS",
+                "gf.DetCN",
+                "gf.IndefArt",
+                "gf.PredVP",
+                "gf.UseCl",
+                "gf.UseComp",
+                "gf.UseN",
+                "gf.UsePN",
+                "gf.finite",
+                "lexical.adjective",
+                "local.PrepNP",
+                "local.paraphrase",
+                "local.utterance",
+                "noun.surface",
+                "referent:hero",
+                "referent:target"
+              ]
+            }
+          ],
+          "prefix_probability": 1.0,
+          "complete": false,
+          "surviving_derivations": 2,
+          "selected": "noticed",
+          "selected_probability": 1.0
+        },
+        {
+          "prefix": [
+            "Ben",
+            "noticed"
+          ],
+          "choices": [
+            {
+              "word": "a",
+              "probability": 0.5,
+              "events": {
+                "notice": 1.0
+              },
+              "grammar_rules": [
+                "gf.AdjCN",
+                "gf.AdvVP",
+                "gf.ComplV2",
+                "gf.DetCN",
+                "gf.IndefArt",
+                "gf.PredVP",
+                "gf.UseCl",
+                "gf.UseN",
+                "gf.UsePN",
+                "gf.finite",
+                "lexical.adjective",
+                "local.PrepNP",
+                "local.paraphrase",
+                "local.utterance",
+                "noun.surface",
+                "referent:hero",
+                "referent:target"
+              ]
+            },
+            {
+              "word": "that",
+              "probability": 0.5,
+              "events": {
+                "notice": 1.0
+              },
+              "grammar_rules": [
+                "gf.ComplVS",
+                "gf.DetCN",
+                "gf.IndefArt",
+                "gf.PredVP",
+                "gf.UseCl",
+                "gf.UseComp",
+                "gf.UseN",
+                "gf.UsePN",
+                "gf.finite",
+                "lexical.adjective",
+                "local.paraphrase",
+                "local.utterance",
+                "noun.surface",
+                "referent:hero",
+                "referent:target"
+              ]
+            }
+          ],
+          "prefix_probability": 1.0,
+          "complete": false,
+          "surviving_derivations": 2,
+          "selected": "a",
+          "selected_probability": 0.5
+        },
+        {
+          "prefix": [
+            "Ben",
+            "noticed",
+            "a"
+          ],
+          "choices": [
+            {
+              "word": "torn",
+              "probability": 1.0,
+              "events": {
+                "notice": 1.0
+              },
+              "grammar_rules": [
+                "gf.AdjCN",
+                "gf.AdvVP",
+                "gf.ComplV2",
+                "gf.DetCN",
+                "gf.IndefArt",
+                "gf.PredVP",
+                "gf.UseCl",
+                "gf.UseN",
+                "gf.UsePN",
+                "gf.finite",
+                "lexical.adjective",
+                "local.PrepNP",
+                "local.paraphrase",
+                "local.utterance",
+                "noun.surface",
+                "referent:hero",
+                "referent:target"
+              ]
+            }
+          ],
+          "prefix_probability": 0.5,
+          "complete": false,
+          "surviving_derivations": 1,
+          "selected": "torn",
+          "selected_probability": 1.0
+        },
+        {
+          "prefix": [
+            "Ben",
+            "noticed",
+            "a",
+            "torn"
+          ],
+          "choices": [
+            {
+              "word": "kite",
+              "probability": 1.0,
+              "events": {
+                "notice": 1.0
+              },
+              "grammar_rules": [
+                "gf.AdjCN",
+                "gf.AdvVP",
+                "gf.ComplV2",
+                "gf.DetCN",
+                "gf.IndefArt",
+                "gf.PredVP",
+                "gf.UseCl",
+                "gf.UseN",
+                "gf.UsePN",
+                "gf.finite",
+                "lexical.adjective",
+                "local.PrepNP",
+                "local.paraphrase",
+                "local.utterance",
+                "noun.surface",
+                "referent:hero",
+                "referent:target"
+              ]
+            }
+          ],
+          "prefix_probability": 0.5,
+          "complete": false,
+          "surviving_derivations": 1,
+          "selected": "kite",
+          "selected_probability": 1.0
+        },
+        {
+          "prefix": [
+            "Ben",
+            "noticed",
+            "a",
+            "torn",
+            "kite"
+          ],
+          "choices": [
+            {
+              "word": "on",
+              "probability": 1.0,
+              "events": {
+                "notice": 1.0
+              },
+              "grammar_rules": [
+                "gf.AdjCN",
+                "gf.AdvVP",
+                "gf.ComplV2",
+                "gf.DetCN",
+                "gf.IndefArt",
+                "gf.PredVP",
+                "gf.UseCl",
+                "gf.UseN",
+                "gf.UsePN",
+                "gf.finite",
+                "lexical.adjective",
+                "local.PrepNP",
+                "local.paraphrase",
+                "local.utterance",
+                "noun.surface",
+                "referent:hero",
+                "referent:target"
+              ]
+            }
+          ],
+          "prefix_probability": 0.5,
+          "complete": false,
+          "surviving_derivations": 1,
+          "selected": "on",
+          "selected_probability": 1.0
+        },
+        {
+          "prefix": [
+            "Ben",
+            "noticed",
+            "a",
+            "torn",
+            "kite",
+            "on"
+          ],
+          "choices": [
+            {
+              "word": "the",
+              "probability": 1.0,
+              "events": {
+                "notice": 1.0
+              },
+              "grammar_rules": [
+                "gf.AdjCN",
+                "gf.AdvVP",
+                "gf.ComplV2",
+                "gf.DetCN",
+                "gf.IndefArt",
+                "gf.PredVP",
+                "gf.UseCl",
+                "gf.UseN",
+                "gf.UsePN",
+                "gf.finite",
+                "lexical.adjective",
+                "local.PrepNP",
+                "local.paraphrase",
+                "local.utterance",
+                "noun.surface",
+                "referent:hero",
+                "referent:target"
+              ]
+            }
+          ],
+          "prefix_probability": 0.5,
+          "complete": false,
+          "surviving_derivations": 1,
+          "selected": "the",
+          "selected_probability": 1.0
+        },
+        {
+          "prefix": [
+            "Ben",
+            "noticed",
+            "a",
+            "torn",
+            "kite",
+            "on",
+            "the"
+          ],
+          "choices": [
+            {
+              "word": "grass",
+              "probability": 1.0,
+              "events": {
+                "notice": 1.0
+              },
+              "grammar_rules": [
+                "gf.AdjCN",
+                "gf.AdvVP",
+                "gf.ComplV2",
+                "gf.DetCN",
+                "gf.IndefArt",
+                "gf.PredVP",
+                "gf.UseCl",
+                "gf.UseN",
+                "gf.UsePN",
+                "gf.finite",
+                "lexical.adjective",
+                "local.PrepNP",
+                "local.paraphrase",
+                "local.utterance",
+                "noun.surface",
+                "referent:hero",
+                "referent:target"
+              ]
+            }
+          ],
+          "prefix_probability": 0.5,
+          "complete": false,
+          "surviving_derivations": 1,
+          "selected": "grass",
+          "selected_probability": 1.0
+        },
+        {
+          "prefix": [
+            "Ben",
+            "noticed",
+            "a",
+            "torn",
+            "kite",
+            "on",
+            "the",
+            "grass"
+          ],
+          "choices": [
+            {
+              "word": ".",
+              "probability": 1.0,
+              "events": {
+                "notice": 1.0
+              },
+              "grammar_rules": [
+                "gf.AdjCN",
+                "gf.AdvVP",
+                "gf.ComplV2",
+                "gf.DetCN",
+                "gf.IndefArt",
+                "gf.PredVP",
+                "gf.UseCl",
+                "gf.UseN",
+                "gf.UsePN",
+                "gf.finite",
+                "lexical.adjective",
+                "local.PrepNP",
+                "local.paraphrase",
+                "local.utterance",
+                "noun.surface",
+                "referent:hero",
+                "referent:target"
+              ]
+            }
+          ],
+          "prefix_probability": 0.5,
+          "complete": false,
+          "surviving_derivations": 1,
+          "selected": ".",
+          "selected_probability": 1.0
+        },
+        {
+          "prefix": [
+            "Ben",
+            "noticed",
+            "a",
+            "torn",
+            "kite",
+            "on",
+            "the",
+            "grass",
+            "."
+          ],
+          "choices": [
+            {
+              "word": "<END>",
+              "probability": 1.0,
+              "events": {
+                "notice": 1.0
+              },
+              "grammar_rules": [
+                "gf.AdjCN",
+                "gf.AdvVP",
+                "gf.ComplV2",
+                "gf.DetCN",
+                "gf.IndefArt",
+                "gf.PredVP",
+                "gf.UseCl",
+                "gf.UseN",
+                "gf.UsePN",
+                "gf.finite",
+                "lexical.adjective",
+                "local.PrepNP",
+                "local.paraphrase",
+                "local.utterance",
+                "noun.surface",
+                "referent:hero",
+                "referent:target"
+              ]
+            }
+          ],
+          "prefix_probability": 0.5,
+          "complete": true,
+          "surviving_derivations": 1,
+          "selected": "<END>",
+          "selected_probability": 1.0
+        }
+      ]
+    },
+    {
+      "text": "He asked Mum for help.",
+      "frame": {
+        "kind": "ask",
+        "actor": "hero",
+        "patient": "target",
+        "instrument": "tool",
+        "destination": "meadow",
+        "cause_ids": [
+          "problem",
+          "obstacle",
+          "helper_available"
+        ]
+      },
+      "probability": 0.40125712538485386,
+      "rules": [
+        "gf.AdvVP",
+        "gf.ComplV2",
+        "gf.DetCN",
+        "gf.PredVP",
+        "gf.UseCl",
+        "gf.UseN",
+        "gf.UsePN",
+        "gf.UsePron",
+        "gf.finite",
+        "local.PrepNP",
+        "local.reference.choice",
+        "local.utterance",
+        "referent:helper",
+        "referent:hero"
+      ],
+      "referents": [
+        "helper",
+        "hero"
+      ],
+      "derivation_count": 10,
+      "event_evidence": {
+        "0": {
+          "kernel": "want",
+          "base": -1.5,
+          "query": [
+            "goal",
+            "care"
+          ],
+          "attention": [
+            {
+              "fact": "problem",
+              "text": "The kite is torn, although there is enough wind to fly it.",
+              "key_tags": [
+                "problem",
+                "goal",
+                "care"
+              ],
+              "query_overlap": 2,
+              "attention_weight": 0.7310585786300049,
+              "value": 1.0,
+              "coefficient": 0,
+              "contribution": 0.0
+            },
+            {
+              "fact": "hero.Care",
+              "text": "Ben's care is 0.80",
+              "key_tags": [
+                "actor",
+                "care",
+                "hero"
+              ],
+              "query_overlap": 1,
+              "attention_weight": 0.2689414213699951,
+              "value": 0.8,
+              "coefficient": 1.0,
+              "contribution": 0.8606125483839844
+            }
+          ],
+          "narrative": [],
+          "logit": -0.6393874516160156,
+          "prior_probability": 0.07920678375950188,
+          "frame": {
+            "kind": "want",
+            "actor": "hero",
+            "patient": "target",
+            "instrument": "tool",
+            "destination": "meadow",
+            "cause_ids": [
+              "problem"
+            ]
+          }
+        },
+        "1": {
+          "kernel": "attempt",
+          "base": 0.2,
+          "query": [
+            "curiosity",
+            "obstacle",
+            "fear"
+          ],
+          "attention": [
+            {
+              "fact": "obstacle",
+              "text": "A tear in the kite prevents it from flying.",
+              "key_tags": [
+                "obstacle",
+                "fear",
+                "planning"
+              ],
+              "query_overlap": 2,
+              "attention_weight": 0.5761168847658291,
+              "value": 1.0,
+              "coefficient": 0,
+              "contribution": 0.0
+            },
+            {
+              "fact": "hero.Curiosity",
+              "text": "Ben's curiosity is 0.65",
+              "key_tags": [
+                "actor",
+                "curiosity",
+                "hero"
+              ],
+              "query_overlap": 1,
+              "attention_weight": 0.21194155761708544,
+              "value": 0.65,
+              "coefficient": 1.2,
+              "contribution": 0.6612576597653066
+            },
+            {
+              "fact": "hero.Fear",
+              "text": "Ben's fear is 0.58",
+              "key_tags": [
+                "actor",
+                "fear",
+                "hero"
+              ],
+              "query_overlap": 1,
+              "attention_weight": 0.21194155761708544,
+              "value": 0.5789772014701512,
+              "coefficient": -2.0,
+              "contribution": -0.9816746392349195
+            }
+          ],
+          "narrative": [],
+          "logit": -0.12041697946961288,
+          "prior_probability": 0.1330909089717803,
+          "frame": {
+            "kind": "attempt",
+            "actor": "hero",
+            "patient": "target",
+            "instrument": "tool",
+            "destination": "meadow",
+            "cause_ids": [
+              "problem",
+              "obstacle"
+            ]
+          }
+        },
+        "2": {
+          "kernel": "ask",
+          "base": -0.1,
+          "query": [
+            "helper",
+            "fear",
+            "trust"
+          ],
+          "attention": [
+            {
+              "fact": "obstacle",
+              "text": "A tear in the kite prevents it from flying.",
+              "key_tags": [
+                "obstacle",
+                "fear",
+                "planning"
+              ],
+              "query_overlap": 1,
+              "attention_weight": 0.17487770452710943,
+              "value": 1.0,
+              "coefficient": 0,
+              "contribution": 0.0
+            },
+            {
+              "fact": "helper_available",
+              "text": "Mum is nearby and willing to help.",
+              "key_tags": [
+                "helper",
+                "trust",
+                "planning"
+              ],
+              "query_overlap": 2,
+              "attention_weight": 0.4753668864186717,
+              "value": 1.0,
+              "coefficient": 0,
+              "contribution": 0.0
+            },
+            {
+              "fact": "hero.Fear",
+              "text": "Ben's fear is 0.58",
+              "key_tags": [
+                "actor",
+                "fear",
+                "hero"
+              ],
+              "query_overlap": 1,
+              "attention_weight": 0.17487770452710943,
+              "value": 0.5789772014701512,
+              "coefficient": 2.5,
+              "contribution": 1.0125020396662983
+            },
+            {
+              "fact": "hero.Trust",
+              "text": "Ben's trust is 0.35",
+              "key_tags": [
+                "actor",
+                "trust",
+                "hero"
+              ],
+              "query_overlap": 1,
+              "attention_weight": 0.17487770452710943,
+              "value": 0.35,
+              "coefficient": 1.2,
+              "contribution": 0.2937945436055438
+            }
+          ],
+          "narrative": [],
+          "logit": 1.206296583271842,
+          "prior_probability": 0.5015714067310674,
+          "frame": {
+            "kind": "ask",
+            "actor": "hero",
+            "patient": "target",
+            "instrument": "tool",
+            "destination": "meadow",
+            "cause_ids": [
+              "problem",
+              "obstacle",
+              "helper_available"
+            ]
+          }
+        },
+        "3": {
+          "kernel": "think",
+          "base": -0.2,
+          "query": [
+            "planning",
+            "curiosity"
+          ],
+          "attention": [
+            {
+              "fact": "obstacle",
+              "text": "A tear in the kite prevents it from flying.",
+              "key_tags": [
+                "obstacle",
+                "fear",
+                "planning"
+              ],
+              "query_overlap": 1,
+              "attention_weight": 0.25,
+              "value": 1.0,
+              "coefficient": 0,
+              "contribution": 0.0
+            },
+            {
+              "fact": "helper_available",
+              "text": "Mum is nearby and willing to help.",
+              "key_tags": [
+                "helper",
+                "trust",
+                "planning"
+              ],
+              "query_overlap": 1,
+              "attention_weight": 0.25,
+              "value": 1.0,
+              "coefficient": 0,
+              "contribution": 0.0
+            },
+            {
+              "fact": "tool_available",
+              "text": "The tape is in the basket.",
+              "key_tags": [
+                "tool",
+                "planning"
+              ],
+              "query_overlap": 1,
+              "attention_weight": 0.25,
+              "value": 1.0,
+              "coefficient": 0,
+              "contribution": 0.0
+            },
+            {
+              "fact": "hero.Curiosity",
+              "text": "Ben's curiosity is 0.65",
+              "key_tags": [
+                "actor",
+                "curiosity",
+                "hero"
+              ],
+              "query_overlap": 1,
+              "attention_weight": 0.25,
+              "value": 0.65,
+              "coefficient": 1.3,
+              "contribution": 0.8450000000000001
+            }
+          ],
+          "narrative": [],
+          "logit": 0.645,
+          "prior_probability": 0.28613090053765045,
+          "frame": {
+            "kind": "think",
+            "actor": "hero",
+            "patient": "target",
+            "instrument": "tool",
+            "destination": "meadow",
+            "cause_ids": [
+              "problem",
+              "obstacle"
+            ]
+          }
+        }
+      },
+      "word_trace": [
+        {
+          "prefix": [],
+          "choices": [
+            {
+              "word": "he",
+              "probability": 0.7999999999999999,
+              "events": {
+                "ask": 0.5015714067310675,
+                "attempt": 0.13309090897178033,
+                "think": 0.2861309005376505,
+                "want": 0.07920678375950188
+              },
+              "grammar_rules": [
+                "gf.AdvVP",
+                "gf.ComplV2",
+                "gf.ComplVS",
+                "gf.ComplVV",
+                "gf.DetCN",
+                "gf.ModalVV",
+                "gf.PredVP",
+                "gf.UseCl",
+                "gf.UseN",
+                "gf.UsePN",
+                "gf.UsePron",
+                "gf.UseV",
+                "gf.finite",
+                "gf.infVP",
+                "local.ConjS",
+                "local.PrepNP",
+                "local.paraphrase",
+                "local.reference.choice",
+                "local.utterance",
+                "referent:helper",
+                "referent:hero",
+                "referent:target",
+                "referent:tool"
+              ]
+            },
+            {
+              "word": "Ben",
+              "probability": 0.19999999999999998,
+              "events": {
+                "ask": 0.5015714067310675,
+                "attempt": 0.13309090897178033,
+                "think": 0.2861309005376505,
+                "want": 0.07920678375950188
+              },
+              "grammar_rules": [
+                "gf.AdvVP",
+                "gf.ComplV2",
+                "gf.ComplVS",
+                "gf.ComplVV",
+                "gf.DetCN",
+                "gf.ModalVV",
+                "gf.PredVP",
+                "gf.UseCl",
+                "gf.UseN",
+                "gf.UsePN",
+                "gf.UseV",
+                "gf.finite",
+                "gf.infVP",
+                "local.ConjS",
+                "local.PrepNP",
+                "local.paraphrase",
+                "local.reference.choice",
+                "local.utterance",
+                "referent:helper",
+                "referent:hero",
+                "referent:target",
+                "referent:tool"
+              ]
+            }
+          ],
+          "prefix_probability": 1.0,
+          "complete": false,
+          "surviving_derivations": 10,
+          "selected": "he",
+          "selected_probability": 0.7999999999999999
+        },
+        {
+          "prefix": [
+            "he"
+          ],
+          "choices": [
+            {
+              "word": "asked",
+              "probability": 0.5015714067310674,
+              "events": {
+                "ask": 1.0
+              },
+              "grammar_rules": [
+                "gf.AdvVP",
+                "gf.ComplV2",
+                "gf.DetCN",
+                "gf.PredVP",
+                "gf.UseCl",
+                "gf.UseN",
+                "gf.UsePN",
+                "gf.UsePron",
+                "gf.finite",
+                "local.PrepNP",
+                "local.reference.choice",
+                "local.utterance",
+                "referent:helper",
+                "referent:hero"
+              ]
+            },
+            {
+              "word": "realized",
+              "probability": 0.28613090053765045,
+              "events": {
+                "think": 1.0
+              },
+              "grammar_rules": [
+                "gf.ComplVS",
+                "gf.DetCN",
+                "gf.ModalVV",
+                "gf.PredVP",
+                "gf.UseCl",
+                "gf.UseN",
+                "gf.UsePron",
+                "gf.finite",
+                "gf.infVP",
+                "local.reference.choice",
+                "local.utterance",
+                "referent:hero",
+                "referent:tool"
+              ]
+            },
+            {
+              "word": "tossed",
+              "probability": 0.1330909089717803,
+              "events": {
+                "attempt": 1.0
+              },
+              "grammar_rules": [
+                "gf.AdvVP",
+                "gf.ComplV2",
+                "gf.DetCN",
+                "gf.PredVP",
+                "gf.UseCl",
+                "gf.UseN",
+                "gf.UsePron",
+                "gf.UseV",
+                "gf.finite",
+                "local.ConjS",
+                "local.PrepNP",
+                "local.reference.choice",
+                "local.utterance",
+                "referent:hero",
+                "referent:target"
+              ]
+            },
+            {
+              "word": "hoped",
+              "probability": 0.03960339187975094,
+              "events": {
+                "want": 1.0
+              },
+              "grammar_rules": [
+                "gf.ComplVV",
+                "gf.DetCN",
+                "gf.PredVP",
+                "gf.UseCl",
+                "gf.UseN",
+                "gf.UsePron",
+                "gf.finite",
+                "gf.infVP",
+                "local.paraphrase",
+                "local.reference.choice",
+                "local.utterance",
+                "referent:hero",
+                "referent:target"
+              ]
+            },
+            {
+              "word": "wanted",
+              "probability": 0.03960339187975094,
+              "events": {
+                "want": 1.0
+              },
+              "grammar_rules": [
+                "gf.ComplVV",
+                "gf.DetCN",
+                "gf.PredVP",
+                "gf.UseCl",
+                "gf.UseN",
+                "gf.UsePron",
+                "gf.finite",
+                "gf.infVP",
+                "local.paraphrase",
+                "local.reference.choice",
+                "local.utterance",
+                "referent:hero",
+                "referent:target"
+              ]
+            }
+          ],
+          "prefix_probability": 0.8,
+          "complete": false,
+          "surviving_derivations": 5,
+          "selected": "asked",
+          "selected_probability": 0.5015714067310674
+        },
+        {
+          "prefix": [
+            "he",
+            "asked"
+          ],
+          "choices": [
+            {
+              "word": "Mum",
+              "probability": 1.0,
+              "events": {
+                "ask": 1.0
+              },
+              "grammar_rules": [
+                "gf.AdvVP",
+                "gf.ComplV2",
+                "gf.DetCN",
+                "gf.PredVP",
+                "gf.UseCl",
+                "gf.UseN",
+                "gf.UsePN",
+                "gf.UsePron",
+                "gf.finite",
+                "local.PrepNP",
+                "local.reference.choice",
+                "local.utterance",
+                "referent:helper",
+                "referent:hero"
+              ]
+            }
+          ],
+          "prefix_probability": 0.4012571253848539,
+          "complete": false,
+          "surviving_derivations": 1,
+          "selected": "Mum",
+          "selected_probability": 1.0
+        },
+        {
+          "prefix": [
+            "he",
+            "asked",
+            "Mum"
+          ],
+          "choices": [
+            {
+              "word": "for",
+              "probability": 1.0,
+              "events": {
+                "ask": 1.0
+              },
+              "grammar_rules": [
+                "gf.AdvVP",
+                "gf.ComplV2",
+                "gf.DetCN",
+                "gf.PredVP",
+                "gf.UseCl",
+                "gf.UseN",
+                "gf.UsePN",
+                "gf.UsePron",
+                "gf.finite",
+                "local.PrepNP",
+                "local.reference.choice",
+                "local.utterance",
+                "referent:helper",
+                "referent:hero"
+              ]
+            }
+          ],
+          "prefix_probability": 0.4012571253848539,
+          "complete": false,
+          "surviving_derivations": 1,
+          "selected": "for",
+          "selected_probability": 1.0
+        },
+        {
+          "prefix": [
+            "he",
+            "asked",
+            "Mum",
+            "for"
+          ],
+          "choices": [
+            {
+              "word": "help",
+              "probability": 1.0,
+              "events": {
+                "ask": 1.0
+              },
+              "grammar_rules": [
+                "gf.AdvVP",
+                "gf.ComplV2",
+                "gf.DetCN",
+                "gf.PredVP",
+                "gf.UseCl",
+                "gf.UseN",
+                "gf.UsePN",
+                "gf.UsePron",
+                "gf.finite",
+                "local.PrepNP",
+                "local.reference.choice",
+                "local.utterance",
+                "referent:helper",
+                "referent:hero"
+              ]
+            }
+          ],
+          "prefix_probability": 0.4012571253848539,
+          "complete": false,
+          "surviving_derivations": 1,
+          "selected": "help",
+          "selected_probability": 1.0
+        },
+        {
+          "prefix": [
+            "he",
+            "asked",
+            "Mum",
+            "for",
+            "help"
+          ],
+          "choices": [
+            {
+              "word": ".",
+              "probability": 1.0,
+              "events": {
+                "ask": 1.0
+              },
+              "grammar_rules": [
+                "gf.AdvVP",
+                "gf.ComplV2",
+                "gf.DetCN",
+                "gf.PredVP",
+                "gf.UseCl",
+                "gf.UseN",
+                "gf.UsePN",
+                "gf.UsePron",
+                "gf.finite",
+                "local.PrepNP",
+                "local.reference.choice",
+                "local.utterance",
+                "referent:helper",
+                "referent:hero"
+              ]
+            }
+          ],
+          "prefix_probability": 0.4012571253848539,
+          "complete": false,
+          "surviving_derivations": 1,
+          "selected": ".",
+          "selected_probability": 1.0
+        },
+        {
+          "prefix": [
+            "he",
+            "asked",
+            "Mum",
+            "for",
+            "help",
+            "."
+          ],
+          "choices": [
+            {
+              "word": "<END>",
+              "probability": 1.0,
+              "events": {
+                "ask": 1.0
+              },
+              "grammar_rules": [
+                "gf.AdvVP",
+                "gf.ComplV2",
+                "gf.DetCN",
+                "gf.PredVP",
+                "gf.UseCl",
+                "gf.UseN",
+                "gf.UsePN",
+                "gf.UsePron",
+                "gf.finite",
+                "local.PrepNP",
+                "local.reference.choice",
+                "local.utterance",
+                "referent:helper",
+                "referent:hero"
+              ]
+            }
+          ],
+          "prefix_probability": 0.4012571253848539,
+          "complete": true,
+          "surviving_derivations": 1,
+          "selected": "<END>",
+          "selected_probability": 1.0
+        }
+      ]
+    },
+    {
+      "text": "He fetched tape from the basket.",
+      "frame": {
+        "kind": "fetch",
+        "actor": "hero",
+        "patient": "target",
+        "instrument": "tool",
+        "destination": "meadow",
+        "cause_ids": [
+          "problem",
+          "obstacle",
+          "tool_available"
+        ]
+      },
+      "probability": 0.3550677434030583,
+      "rules": [
+        "gf.AdvVP",
+        "gf.ComplV2",
+        "gf.DetCN",
+        "gf.PredVP",
+        "gf.UseCl",
+        "gf.UseN",
+        "gf.UsePron",
+        "gf.finite",
+        "local.PrepNP",
+        "local.reference.choice",
+        "local.utterance",
+        "referent:hero",
+        "referent:tool"
+      ],
+      "referents": [
+        "hero",
+        "tool"
+      ],
+      "derivation_count": 3,
+      "event_evidence": {
+        "0": {
+          "kernel": "fetch",
+          "base": 0.4,
+          "query": [
+            "tool",
+            "care"
+          ],
+          "attention": [
+            {
+              "fact": "problem",
+              "text": "The kite is torn, although there is enough wind to fly it.",
+              "key_tags": [
+                "problem",
+                "goal",
+                "care"
+              ],
+              "query_overlap": 1,
+              "attention_weight": 0.3333333333333333,
+              "value": 1.0,
+              "coefficient": 0,
+              "contribution": 0.0
+            },
+            {
+              "fact": "tool_available",
+              "text": "The tape is in the basket.",
+              "key_tags": [
+                "tool",
+                "planning"
+              ],
+              "query_overlap": 1,
+              "attention_weight": 0.3333333333333333,
+              "value": 1.0,
+              "coefficient": 0,
+              "contribution": 0.0
+            },
+            {
+              "fact": "hero.Care",
+              "text": "Ben's care is 0.80",
+              "key_tags": [
+                "actor",
+                "care",
+                "hero"
+              ],
+              "query_overlap": 1,
+              "attention_weight": 0.3333333333333333,
+              "value": 0.8,
+              "coefficient": 0.8,
+              "contribution": 0.8533333333333334
+            }
+          ],
+          "narrative": [],
+          "logit": 1.2533333333333334,
+          "prior_probability": 0.44383467925382286,
+          "frame": {
+            "kind": "fetch",
+            "actor": "hero",
+            "patient": "target",
+            "instrument": "tool",
+            "destination": "meadow",
+            "cause_ids": [
+              "problem",
+              "obstacle",
+              "tool_available"
+            ]
+          }
+        },
+        "1": {
+          "kernel": "receive",
+          "base": 0.1,
+          "query": [
+            "helper",
+            "trust"
+          ],
+          "attention": [
+            {
+              "fact": "helper_available",
+              "text": "Mum is nearby and willing to help.",
+              "key_tags": [
+                "helper",
+                "trust",
+                "planning"
+              ],
+              "query_overlap": 2,
+              "attention_weight": 0.7310585786300049,
+              "value": 1.0,
+              "coefficient": 0,
+              "contribution": 0.0
+            },
+            {
+              "fact": "hero.Trust",
+              "text": "Ben's trust is 0.65",
+              "key_tags": [
+                "actor",
+                "trust",
+                "hero"
+              ],
+              "query_overlap": 1,
+              "attention_weight": 0.2689414213699951,
+              "value": 0.6499999999999999,
+              "coefficient": 1.4,
+              "contribution": 0.978946773786782
+            }
+          ],
+          "narrative": [
+            {
+              "rule": "answer_request_with_help",
+              "source": 2,
+              "score": 0.4
+            }
+          ],
+          "logit": 1.4789467737867819,
+          "prior_probability": 0.5561653207461771,
+          "frame": {
+            "kind": "receive",
+            "actor": "helper",
+            "patient": "target",
+            "instrument": "tool",
+            "destination": "meadow",
+            "cause_ids": [
+              "problem",
+              "obstacle",
+              "tool_available",
+              "helper_available"
+            ]
+          }
+        }
+      },
+      "word_trace": [
+        {
+          "prefix": [],
+          "choices": [
+            {
+              "word": "Mum",
+              "probability": 0.5561653207461771,
+              "events": {
+                "receive": 1.0
+              },
+              "grammar_rules": [
+                "gf.ComplV3",
+                "gf.DetCN",
+                "gf.PredVP",
+                "gf.UseCl",
+                "gf.UseN",
+                "gf.UsePN",
+                "gf.finite",
+                "local.utterance",
+                "referent:helper",
+                "referent:hero",
+                "referent:tool"
+              ]
+            },
+            {
+              "word": "he",
+              "probability": 0.3550677434030583,
+              "events": {
+                "fetch": 1.0
+              },
+              "grammar_rules": [
+                "gf.AdvVP",
+                "gf.ComplV2",
+                "gf.DetCN",
+                "gf.PredVP",
+                "gf.UseCl",
+                "gf.UseN",
+                "gf.UsePron",
+                "gf.finite",
+                "local.PrepNP",
+                "local.reference.choice",
+                "local.utterance",
+                "referent:hero",
+                "referent:tool"
+              ]
+            },
+            {
+              "word": "Ben",
+              "probability": 0.08876693585076458,
+              "events": {
+                "fetch": 1.0
+              },
+              "grammar_rules": [
+                "gf.AdvVP",
+                "gf.ComplV2",
+                "gf.DetCN",
+                "gf.PredVP",
+                "gf.UseCl",
+                "gf.UseN",
+                "gf.UsePN",
+                "gf.finite",
+                "local.PrepNP",
+                "local.reference.choice",
+                "local.utterance",
+                "referent:hero",
+                "referent:tool"
+              ]
+            }
+          ],
+          "prefix_probability": 1.0,
+          "complete": false,
+          "surviving_derivations": 3,
+          "selected": "he",
+          "selected_probability": 0.3550677434030583
+        },
+        {
+          "prefix": [
+            "he"
+          ],
+          "choices": [
+            {
+              "word": "fetched",
+              "probability": 1.0,
+              "events": {
+                "fetch": 1.0
+              },
+              "grammar_rules": [
+                "gf.AdvVP",
+                "gf.ComplV2",
+                "gf.DetCN",
+                "gf.PredVP",
+                "gf.UseCl",
+                "gf.UseN",
+                "gf.UsePron",
+                "gf.finite",
+                "local.PrepNP",
+                "local.reference.choice",
+                "local.utterance",
+                "referent:hero",
+                "referent:tool"
+              ]
+            }
+          ],
+          "prefix_probability": 0.3550677434030583,
+          "complete": false,
+          "surviving_derivations": 1,
+          "selected": "fetched",
+          "selected_probability": 1.0
+        },
+        {
+          "prefix": [
+            "he",
+            "fetched"
+          ],
+          "choices": [
+            {
+              "word": "tape",
+              "probability": 1.0,
+              "events": {
+                "fetch": 1.0
+              },
+              "grammar_rules": [
+                "gf.AdvVP",
+                "gf.ComplV2",
+                "gf.DetCN",
+                "gf.PredVP",
+                "gf.UseCl",
+                "gf.UseN",
+                "gf.UsePron",
+                "gf.finite",
+                "local.PrepNP",
+                "local.reference.choice",
+                "local.utterance",
+                "referent:hero",
+                "referent:tool"
+              ]
+            }
+          ],
+          "prefix_probability": 0.3550677434030583,
+          "complete": false,
+          "surviving_derivations": 1,
+          "selected": "tape",
+          "selected_probability": 1.0
+        },
+        {
+          "prefix": [
+            "he",
+            "fetched",
+            "tape"
+          ],
+          "choices": [
+            {
+              "word": "from",
+              "probability": 1.0,
+              "events": {
+                "fetch": 1.0
+              },
+              "grammar_rules": [
+                "gf.AdvVP",
+                "gf.ComplV2",
+                "gf.DetCN",
+                "gf.PredVP",
+                "gf.UseCl",
+                "gf.UseN",
+                "gf.UsePron",
+                "gf.finite",
+                "local.PrepNP",
+                "local.reference.choice",
+                "local.utterance",
+                "referent:hero",
+                "referent:tool"
+              ]
+            }
+          ],
+          "prefix_probability": 0.3550677434030583,
+          "complete": false,
+          "surviving_derivations": 1,
+          "selected": "from",
+          "selected_probability": 1.0
+        },
+        {
+          "prefix": [
+            "he",
+            "fetched",
+            "tape",
+            "from"
+          ],
+          "choices": [
+            {
+              "word": "the",
+              "probability": 1.0,
+              "events": {
+                "fetch": 1.0
+              },
+              "grammar_rules": [
+                "gf.AdvVP",
+                "gf.ComplV2",
+                "gf.DetCN",
+                "gf.PredVP",
+                "gf.UseCl",
+                "gf.UseN",
+                "gf.UsePron",
+                "gf.finite",
+                "local.PrepNP",
+                "local.reference.choice",
+                "local.utterance",
+                "referent:hero",
+                "referent:tool"
+              ]
+            }
+          ],
+          "prefix_probability": 0.3550677434030583,
+          "complete": false,
+          "surviving_derivations": 1,
+          "selected": "the",
+          "selected_probability": 1.0
+        },
+        {
+          "prefix": [
+            "he",
+            "fetched",
+            "tape",
+            "from",
+            "the"
+          ],
+          "choices": [
+            {
+              "word": "basket",
+              "probability": 1.0,
+              "events": {
+                "fetch": 1.0
+              },
+              "grammar_rules": [
+                "gf.AdvVP",
+                "gf.ComplV2",
+                "gf.DetCN",
+                "gf.PredVP",
+                "gf.UseCl",
+                "gf.UseN",
+                "gf.UsePron",
+                "gf.finite",
+                "local.PrepNP",
+                "local.reference.choice",
+                "local.utterance",
+                "referent:hero",
+                "referent:tool"
+              ]
+            }
+          ],
+          "prefix_probability": 0.3550677434030583,
+          "complete": false,
+          "surviving_derivations": 1,
+          "selected": "basket",
+          "selected_probability": 1.0
+        },
+        {
+          "prefix": [
+            "he",
+            "fetched",
+            "tape",
+            "from",
+            "the",
+            "basket"
+          ],
+          "choices": [
+            {
+              "word": ".",
+              "probability": 1.0,
+              "events": {
+                "fetch": 1.0
+              },
+              "grammar_rules": [
+                "gf.AdvVP",
+                "gf.ComplV2",
+                "gf.DetCN",
+                "gf.PredVP",
+                "gf.UseCl",
+                "gf.UseN",
+                "gf.UsePron",
+                "gf.finite",
+                "local.PrepNP",
+                "local.reference.choice",
+                "local.utterance",
+                "referent:hero",
+                "referent:tool"
+              ]
+            }
+          ],
+          "prefix_probability": 0.3550677434030583,
+          "complete": false,
+          "surviving_derivations": 1,
+          "selected": ".",
+          "selected_probability": 1.0
+        },
+        {
+          "prefix": [
+            "he",
+            "fetched",
+            "tape",
+            "from",
+            "the",
+            "basket",
+            "."
+          ],
+          "choices": [
+            {
+              "word": "<END>",
+              "probability": 1.0,
+              "events": {
+                "fetch": 1.0
+              },
+              "grammar_rules": [
+                "gf.AdvVP",
+                "gf.ComplV2",
+                "gf.DetCN",
+                "gf.PredVP",
+                "gf.UseCl",
+                "gf.UseN",
+                "gf.UsePron",
+                "gf.finite",
+                "local.PrepNP",
+                "local.reference.choice",
+                "local.utterance",
+                "referent:hero",
+                "referent:tool"
+              ]
+            }
+          ],
+          "prefix_probability": 0.3550677434030583,
+          "complete": true,
+          "surviving_derivations": 1,
+          "selected": "<END>",
+          "selected_probability": 1.0
+        }
+      ]
+    },
+    {
+      "text": "Ben used the tape to mend the kite.",
+      "frame": {
+        "kind": "solve",
+        "actor": "hero",
+        "patient": "target",
+        "instrument": "tool",
+        "destination": "meadow",
+        "cause_ids": [
+          "problem",
+          "obstacle",
+          "tool_available"
+        ]
+      },
+      "probability": 0.1,
+      "rules": [
+        "gf.ComplV2V",
+        "gf.DetCN",
+        "gf.PredVP",
+        "gf.UseCl",
+        "gf.UseN",
+        "gf.UsePN",
+        "gf.finite",
+        "gf.infVP",
+        "local.paraphrase",
+        "local.reference.choice",
+        "local.utterance",
+        "referent:hero",
+        "referent:target",
+        "referent:tool"
+      ],
+      "referents": [
+        "hero",
+        "target",
+        "tool"
+      ],
+      "derivation_count": 4,
+      "event_evidence": {
+        "0": {
+          "kernel": "solve",
+          "base": 0.0,
+          "query": [
+            "tool",
+            "goal",
+            "care"
+          ],
+          "attention": [
+            {
+              "fact": "problem",
+              "text": "The kite is torn, although there is enough wind to fly it.",
+              "key_tags": [
+                "problem",
+                "goal",
+                "care"
+              ],
+              "query_overlap": 2,
+              "attention_weight": 0.5761168847658291,
+              "value": 1.0,
+              "coefficient": 0,
+              "contribution": 0.0
+            },
+            {
+              "fact": "tool_available",
+              "text": "Ben is holding the tape.",
+              "key_tags": [
+                "tool",
+                "planning"
+              ],
+              "query_overlap": 1,
+              "attention_weight": 0.21194155761708544,
+              "value": 1.0,
+              "coefficient": 0,
+              "contribution": 0.0
+            },
+            {
+              "fact": "hero.Care",
+              "text": "Ben's care is 0.80",
+              "key_tags": [
+                "actor",
+                "care",
+                "hero"
+              ],
+              "query_overlap": 1,
+              "attention_weight": 0.21194155761708544,
+              "value": 0.8,
+              "coefficient": 0,
+              "contribution": 0.0
+            }
+          ],
+          "narrative": [],
+          "logit": 0.0,
+          "prior_probability": 1.0,
+          "frame": {
+            "kind": "solve",
+            "actor": "hero",
+            "patient": "target",
+            "instrument": "tool",
+            "destination": "meadow",
+            "cause_ids": [
+              "problem",
+              "obstacle",
+              "tool_available"
+            ]
+          }
+        }
+      },
+      "word_trace": [
+        {
+          "prefix": [],
+          "choices": [
+            {
+              "word": "he",
+              "probability": 0.8,
+              "events": {
+                "solve": 1.0
+              },
+              "grammar_rules": [
+                "gf.AdvVP",
+                "gf.ComplV2",
+                "gf.ComplV2V",
+                "gf.DetCN",
+                "gf.PredVP",
+                "gf.UseCl",
+                "gf.UseN",
+                "gf.UsePron",
+                "gf.finite",
+                "gf.infVP",
+                "local.PrepNP",
+                "local.paraphrase",
+                "local.reference.choice",
+                "local.utterance",
+                "referent:hero",
+                "referent:target",
+                "referent:tool"
+              ]
+            },
+            {
+              "word": "Ben",
+              "probability": 0.2,
+              "events": {
+                "solve": 1.0
+              },
+              "grammar_rules": [
+                "gf.AdvVP",
+                "gf.ComplV2",
+                "gf.ComplV2V",
+                "gf.DetCN",
+                "gf.PredVP",
+                "gf.UseCl",
+                "gf.UseN",
+                "gf.UsePN",
+                "gf.finite",
+                "gf.infVP",
+                "local.PrepNP",
+                "local.paraphrase",
+                "local.reference.choice",
+                "local.utterance",
+                "referent:hero",
+                "referent:target",
+                "referent:tool"
+              ]
+            }
+          ],
+          "prefix_probability": 1.0,
+          "complete": false,
+          "surviving_derivations": 4,
+          "selected": "Ben",
+          "selected_probability": 0.2
+        },
+        {
+          "prefix": [
+            "Ben"
+          ],
+          "choices": [
+            {
+              "word": "mended",
+              "probability": 0.5,
+              "events": {
+                "solve": 1.0
+              },
+              "grammar_rules": [
+                "gf.AdvVP",
+                "gf.ComplV2",
+                "gf.DetCN",
+                "gf.PredVP",
+                "gf.UseCl",
+                "gf.UseN",
+                "gf.UsePN",
+                "gf.finite",
+                "local.PrepNP",
+                "local.paraphrase",
+                "local.reference.choice",
+                "local.utterance",
+                "referent:hero",
+                "referent:target",
+                "referent:tool"
+              ]
+            },
+            {
+              "word": "used",
+              "probability": 0.5,
+              "events": {
+                "solve": 1.0
+              },
+              "grammar_rules": [
+                "gf.ComplV2V",
+                "gf.DetCN",
+                "gf.PredVP",
+                "gf.UseCl",
+                "gf.UseN",
+                "gf.UsePN",
+                "gf.finite",
+                "gf.infVP",
+                "local.paraphrase",
+                "local.reference.choice",
+                "local.utterance",
+                "referent:hero",
+                "referent:target",
+                "referent:tool"
+              ]
+            }
+          ],
+          "prefix_probability": 0.2,
+          "complete": false,
+          "surviving_derivations": 2,
+          "selected": "used",
+          "selected_probability": 0.5
+        },
+        {
+          "prefix": [
+            "Ben",
+            "used"
+          ],
+          "choices": [
+            {
+              "word": "the",
+              "probability": 1.0,
+              "events": {
+                "solve": 1.0
+              },
+              "grammar_rules": [
+                "gf.ComplV2V",
+                "gf.DetCN",
+                "gf.PredVP",
+                "gf.UseCl",
+                "gf.UseN",
+                "gf.UsePN",
+                "gf.finite",
+                "gf.infVP",
+                "local.paraphrase",
+                "local.reference.choice",
+                "local.utterance",
+                "referent:hero",
+                "referent:target",
+                "referent:tool"
+              ]
+            }
+          ],
+          "prefix_probability": 0.1,
+          "complete": false,
+          "surviving_derivations": 1,
+          "selected": "the",
+          "selected_probability": 1.0
+        },
+        {
+          "prefix": [
+            "Ben",
+            "used",
+            "the"
+          ],
+          "choices": [
+            {
+              "word": "tape",
+              "probability": 1.0,
+              "events": {
+                "solve": 1.0
+              },
+              "grammar_rules": [
+                "gf.ComplV2V",
+                "gf.DetCN",
+                "gf.PredVP",
+                "gf.UseCl",
+                "gf.UseN",
+                "gf.UsePN",
+                "gf.finite",
+                "gf.infVP",
+                "local.paraphrase",
+                "local.reference.choice",
+                "local.utterance",
+                "referent:hero",
+                "referent:target",
+                "referent:tool"
+              ]
+            }
+          ],
+          "prefix_probability": 0.1,
+          "complete": false,
+          "surviving_derivations": 1,
+          "selected": "tape",
+          "selected_probability": 1.0
+        },
+        {
+          "prefix": [
+            "Ben",
+            "used",
+            "the",
+            "tape"
+          ],
+          "choices": [
+            {
+              "word": "to",
+              "probability": 1.0,
+              "events": {
+                "solve": 1.0
+              },
+              "grammar_rules": [
+                "gf.ComplV2V",
+                "gf.DetCN",
+                "gf.PredVP",
+                "gf.UseCl",
+                "gf.UseN",
+                "gf.UsePN",
+                "gf.finite",
+                "gf.infVP",
+                "local.paraphrase",
+                "local.reference.choice",
+                "local.utterance",
+                "referent:hero",
+                "referent:target",
+                "referent:tool"
+              ]
+            }
+          ],
+          "prefix_probability": 0.1,
+          "complete": false,
+          "surviving_derivations": 1,
+          "selected": "to",
+          "selected_probability": 1.0
+        },
+        {
+          "prefix": [
+            "Ben",
+            "used",
+            "the",
+            "tape",
+            "to"
+          ],
+          "choices": [
+            {
+              "word": "mend",
+              "probability": 1.0,
+              "events": {
+                "solve": 1.0
+              },
+              "grammar_rules": [
+                "gf.ComplV2V",
+                "gf.DetCN",
+                "gf.PredVP",
+                "gf.UseCl",
+                "gf.UseN",
+                "gf.UsePN",
+                "gf.finite",
+                "gf.infVP",
+                "local.paraphrase",
+                "local.reference.choice",
+                "local.utterance",
+                "referent:hero",
+                "referent:target",
+                "referent:tool"
+              ]
+            }
+          ],
+          "prefix_probability": 0.1,
+          "complete": false,
+          "surviving_derivations": 1,
+          "selected": "mend",
+          "selected_probability": 1.0
+        },
+        {
+          "prefix": [
+            "Ben",
+            "used",
+            "the",
+            "tape",
+            "to",
+            "mend"
+          ],
+          "choices": [
+            {
+              "word": "the",
+              "probability": 1.0,
+              "events": {
+                "solve": 1.0
+              },
+              "grammar_rules": [
+                "gf.ComplV2V",
+                "gf.DetCN",
+                "gf.PredVP",
+                "gf.UseCl",
+                "gf.UseN",
+                "gf.UsePN",
+                "gf.finite",
+                "gf.infVP",
+                "local.paraphrase",
+                "local.reference.choice",
+                "local.utterance",
+                "referent:hero",
+                "referent:target",
+                "referent:tool"
+              ]
+            }
+          ],
+          "prefix_probability": 0.1,
+          "complete": false,
+          "surviving_derivations": 1,
+          "selected": "the",
+          "selected_probability": 1.0
+        },
+        {
+          "prefix": [
+            "Ben",
+            "used",
+            "the",
+            "tape",
+            "to",
+            "mend",
+            "the"
+          ],
+          "choices": [
+            {
+              "word": "kite",
+              "probability": 1.0,
+              "events": {
+                "solve": 1.0
+              },
+              "grammar_rules": [
+                "gf.ComplV2V",
+                "gf.DetCN",
+                "gf.PredVP",
+                "gf.UseCl",
+                "gf.UseN",
+                "gf.UsePN",
+                "gf.finite",
+                "gf.infVP",
+                "local.paraphrase",
+                "local.reference.choice",
+                "local.utterance",
+                "referent:hero",
+                "referent:target",
+                "referent:tool"
+              ]
+            }
+          ],
+          "prefix_probability": 0.1,
+          "complete": false,
+          "surviving_derivations": 1,
+          "selected": "kite",
+          "selected_probability": 1.0
+        },
+        {
+          "prefix": [
+            "Ben",
+            "used",
+            "the",
+            "tape",
+            "to",
+            "mend",
+            "the",
+            "kite"
+          ],
+          "choices": [
+            {
+              "word": ".",
+              "probability": 1.0,
+              "events": {
+                "solve": 1.0
+              },
+              "grammar_rules": [
+                "gf.ComplV2V",
+                "gf.DetCN",
+                "gf.PredVP",
+                "gf.UseCl",
+                "gf.UseN",
+                "gf.UsePN",
+                "gf.finite",
+                "gf.infVP",
+                "local.paraphrase",
+                "local.reference.choice",
+                "local.utterance",
+                "referent:hero",
+                "referent:target",
+                "referent:tool"
+              ]
+            }
+          ],
+          "prefix_probability": 0.1,
+          "complete": false,
+          "surviving_derivations": 1,
+          "selected": ".",
+          "selected_probability": 1.0
+        },
+        {
+          "prefix": [
+            "Ben",
+            "used",
+            "the",
+            "tape",
+            "to",
+            "mend",
+            "the",
+            "kite",
+            "."
+          ],
+          "choices": [
+            {
+              "word": "<END>",
+              "probability": 1.0,
+              "events": {
+                "solve": 1.0
+              },
+              "grammar_rules": [
+                "gf.ComplV2V",
+                "gf.DetCN",
+                "gf.PredVP",
+                "gf.UseCl",
+                "gf.UseN",
+                "gf.UsePN",
+                "gf.finite",
+                "gf.infVP",
+                "local.paraphrase",
+                "local.reference.choice",
+                "local.utterance",
+                "referent:hero",
+                "referent:target",
+                "referent:tool"
+              ]
+            }
+          ],
+          "prefix_probability": 0.1,
+          "complete": true,
+          "surviving_derivations": 1,
+          "selected": "<END>",
+          "selected_probability": 1.0
+        }
+      ]
+    },
+    {
+      "text": "He launched the repaired kite in the wind.",
+      "frame": {
+        "kind": "finish",
+        "actor": "hero",
+        "patient": "target",
+        "instrument": "tool",
+        "destination": "meadow",
+        "cause_ids": [
+          "problem"
+        ]
+      },
+      "probability": 0.8,
+      "rules": [
+        "gf.AdjCN",
+        "gf.AdvVP",
+        "gf.ComplV2",
+        "gf.DetCN",
+        "gf.PredVP",
+        "gf.UseCl",
+        "gf.UseN",
+        "gf.UsePron",
+        "gf.finite",
+        "lexical.adjective",
+        "local.PrepNP",
+        "local.reference.choice",
+        "local.utterance",
+        "referent:hero",
+        "referent:target"
+      ],
+      "referents": [
+        "hero",
+        "target"
+      ],
+      "derivation_count": 2,
+      "event_evidence": {
+        "0": {
+          "kernel": "finish",
+          "base": 0.0,
+          "query": [
+            "goal"
+          ],
+          "attention": [
+            {
+              "fact": "outcome",
+              "text": "The kite is now grounded, repaired.",
+              "key_tags": [
+                "goal",
+                "outcome"
+              ],
+              "query_overlap": 1,
+              "attention_weight": 1.0,
+              "value": 1.0,
+              "coefficient": 0,
+              "contribution": 0.0
+            }
+          ],
+          "narrative": [],
+          "logit": 0.0,
+          "prior_probability": 1.0,
+          "frame": {
+            "kind": "finish",
+            "actor": "hero",
+            "patient": "target",
+            "instrument": "tool",
+            "destination": "meadow",
+            "cause_ids": [
+              "problem"
+            ]
+          }
+        }
+      },
+      "word_trace": [
+        {
+          "prefix": [],
+          "choices": [
+            {
+              "word": "he",
+              "probability": 0.8,
+              "events": {
+                "finish": 1.0
+              },
+              "grammar_rules": [
+                "gf.AdjCN",
+                "gf.AdvVP",
+                "gf.ComplV2",
+                "gf.DetCN",
+                "gf.PredVP",
+                "gf.UseCl",
+                "gf.UseN",
+                "gf.UsePron",
+                "gf.finite",
+                "lexical.adjective",
+                "local.PrepNP",
+                "local.reference.choice",
+                "local.utterance",
+                "referent:hero",
+                "referent:target"
+              ]
+            },
+            {
+              "word": "Ben",
+              "probability": 0.2,
+              "events": {
+                "finish": 1.0
+              },
+              "grammar_rules": [
+                "gf.AdjCN",
+                "gf.AdvVP",
+                "gf.ComplV2",
+                "gf.DetCN",
+                "gf.PredVP",
+                "gf.UseCl",
+                "gf.UseN",
+                "gf.UsePN",
+                "gf.finite",
+                "lexical.adjective",
+                "local.PrepNP",
+                "local.reference.choice",
+                "local.utterance",
+                "referent:hero",
+                "referent:target"
+              ]
+            }
+          ],
+          "prefix_probability": 1.0,
+          "complete": false,
+          "surviving_derivations": 2,
+          "selected": "he",
+          "selected_probability": 0.8
+        },
+        {
+          "prefix": [
+            "he"
+          ],
+          "choices": [
+            {
+              "word": "launched",
+              "probability": 1.0,
+              "events": {
+                "finish": 1.0
+              },
+              "grammar_rules": [
+                "gf.AdjCN",
+                "gf.AdvVP",
+                "gf.ComplV2",
+                "gf.DetCN",
+                "gf.PredVP",
+                "gf.UseCl",
+                "gf.UseN",
+                "gf.UsePron",
+                "gf.finite",
+                "lexical.adjective",
+                "local.PrepNP",
+                "local.reference.choice",
+                "local.utterance",
+                "referent:hero",
+                "referent:target"
+              ]
+            }
+          ],
+          "prefix_probability": 0.8,
+          "complete": false,
+          "surviving_derivations": 1,
+          "selected": "launched",
+          "selected_probability": 1.0
+        },
+        {
+          "prefix": [
+            "he",
+            "launched"
+          ],
+          "choices": [
+            {
+              "word": "the",
+              "probability": 1.0,
+              "events": {
+                "finish": 1.0
+              },
+              "grammar_rules": [
+                "gf.AdjCN",
+                "gf.AdvVP",
+                "gf.ComplV2",
+                "gf.DetCN",
+                "gf.PredVP",
+                "gf.UseCl",
+                "gf.UseN",
+                "gf.UsePron",
+                "gf.finite",
+                "lexical.adjective",
+                "local.PrepNP",
+                "local.reference.choice",
+                "local.utterance",
+                "referent:hero",
+                "referent:target"
+              ]
+            }
+          ],
+          "prefix_probability": 0.8,
+          "complete": false,
+          "surviving_derivations": 1,
+          "selected": "the",
+          "selected_probability": 1.0
+        },
+        {
+          "prefix": [
+            "he",
+            "launched",
+            "the"
+          ],
+          "choices": [
+            {
+              "word": "repaired",
+              "probability": 1.0,
+              "events": {
+                "finish": 1.0
+              },
+              "grammar_rules": [
+                "gf.AdjCN",
+                "gf.AdvVP",
+                "gf.ComplV2",
+                "gf.DetCN",
+                "gf.PredVP",
+                "gf.UseCl",
+                "gf.UseN",
+                "gf.UsePron",
+                "gf.finite",
+                "lexical.adjective",
+                "local.PrepNP",
+                "local.reference.choice",
+                "local.utterance",
+                "referent:hero",
+                "referent:target"
+              ]
+            }
+          ],
+          "prefix_probability": 0.8,
+          "complete": false,
+          "surviving_derivations": 1,
+          "selected": "repaired",
+          "selected_probability": 1.0
+        },
+        {
+          "prefix": [
+            "he",
+            "launched",
+            "the",
+            "repaired"
+          ],
+          "choices": [
+            {
+              "word": "kite",
+              "probability": 1.0,
+              "events": {
+                "finish": 1.0
+              },
+              "grammar_rules": [
+                "gf.AdjCN",
+                "gf.AdvVP",
+                "gf.ComplV2",
+                "gf.DetCN",
+                "gf.PredVP",
+                "gf.UseCl",
+                "gf.UseN",
+                "gf.UsePron",
+                "gf.finite",
+                "lexical.adjective",
+                "local.PrepNP",
+                "local.reference.choice",
+                "local.utterance",
+                "referent:hero",
+                "referent:target"
+              ]
+            }
+          ],
+          "prefix_probability": 0.8,
+          "complete": false,
+          "surviving_derivations": 1,
+          "selected": "kite",
+          "selected_probability": 1.0
+        },
+        {
+          "prefix": [
+            "he",
+            "launched",
+            "the",
+            "repaired",
+            "kite"
+          ],
+          "choices": [
+            {
+              "word": "in",
+              "probability": 1.0,
+              "events": {
+                "finish": 1.0
+              },
+              "grammar_rules": [
+                "gf.AdjCN",
+                "gf.AdvVP",
+                "gf.ComplV2",
+                "gf.DetCN",
+                "gf.PredVP",
+                "gf.UseCl",
+                "gf.UseN",
+                "gf.UsePron",
+                "gf.finite",
+                "lexical.adjective",
+                "local.PrepNP",
+                "local.reference.choice",
+                "local.utterance",
+                "referent:hero",
+                "referent:target"
+              ]
+            }
+          ],
+          "prefix_probability": 0.8,
+          "complete": false,
+          "surviving_derivations": 1,
+          "selected": "in",
+          "selected_probability": 1.0
+        },
+        {
+          "prefix": [
+            "he",
+            "launched",
+            "the",
+            "repaired",
+            "kite",
+            "in"
+          ],
+          "choices": [
+            {
+              "word": "the",
+              "probability": 1.0,
+              "events": {
+                "finish": 1.0
+              },
+              "grammar_rules": [
+                "gf.AdjCN",
+                "gf.AdvVP",
+                "gf.ComplV2",
+                "gf.DetCN",
+                "gf.PredVP",
+                "gf.UseCl",
+                "gf.UseN",
+                "gf.UsePron",
+                "gf.finite",
+                "lexical.adjective",
+                "local.PrepNP",
+                "local.reference.choice",
+                "local.utterance",
+                "referent:hero",
+                "referent:target"
+              ]
+            }
+          ],
+          "prefix_probability": 0.8,
+          "complete": false,
+          "surviving_derivations": 1,
+          "selected": "the",
+          "selected_probability": 1.0
+        },
+        {
+          "prefix": [
+            "he",
+            "launched",
+            "the",
+            "repaired",
+            "kite",
+            "in",
+            "the"
+          ],
+          "choices": [
+            {
+              "word": "wind",
+              "probability": 1.0,
+              "events": {
+                "finish": 1.0
+              },
+              "grammar_rules": [
+                "gf.AdjCN",
+                "gf.AdvVP",
+                "gf.ComplV2",
+                "gf.DetCN",
+                "gf.PredVP",
+                "gf.UseCl",
+                "gf.UseN",
+                "gf.UsePron",
+                "gf.finite",
+                "lexical.adjective",
+                "local.PrepNP",
+                "local.reference.choice",
+                "local.utterance",
+                "referent:hero",
+                "referent:target"
+              ]
+            }
+          ],
+          "prefix_probability": 0.8,
+          "complete": false,
+          "surviving_derivations": 1,
+          "selected": "wind",
+          "selected_probability": 1.0
+        },
+        {
+          "prefix": [
+            "he",
+            "launched",
+            "the",
+            "repaired",
+            "kite",
+            "in",
+            "the",
+            "wind"
+          ],
+          "choices": [
+            {
+              "word": ".",
+              "probability": 1.0,
+              "events": {
+                "finish": 1.0
+              },
+              "grammar_rules": [
+                "gf.AdjCN",
+                "gf.AdvVP",
+                "gf.ComplV2",
+                "gf.DetCN",
+                "gf.PredVP",
+                "gf.UseCl",
+                "gf.UseN",
+                "gf.UsePron",
+                "gf.finite",
+                "lexical.adjective",
+                "local.PrepNP",
+                "local.reference.choice",
+                "local.utterance",
+                "referent:hero",
+                "referent:target"
+              ]
+            }
+          ],
+          "prefix_probability": 0.8,
+          "complete": false,
+          "surviving_derivations": 1,
+          "selected": ".",
+          "selected_probability": 1.0
+        },
+        {
+          "prefix": [
+            "he",
+            "launched",
+            "the",
+            "repaired",
+            "kite",
+            "in",
+            "the",
+            "wind",
+            "."
+          ],
+          "choices": [
+            {
+              "word": "<END>",
+              "probability": 1.0,
+              "events": {
+                "finish": 1.0
+              },
+              "grammar_rules": [
+                "gf.AdjCN",
+                "gf.AdvVP",
+                "gf.ComplV2",
+                "gf.DetCN",
+                "gf.PredVP",
+                "gf.UseCl",
+                "gf.UseN",
+                "gf.UsePron",
+                "gf.finite",
+                "lexical.adjective",
+                "local.PrepNP",
+                "local.reference.choice",
+                "local.utterance",
+                "referent:hero",
+                "referent:target"
+              ]
+            }
+          ],
+          "prefix_probability": 0.8,
+          "complete": true,
+          "surviving_derivations": 1,
+          "selected": "<END>",
+          "selected_probability": 1.0
+        }
+      ]
+    },
+    {
+      "text": "He thanked Mum for help.",
+      "frame": {
+        "kind": "thank",
+        "actor": "hero",
+        "patient": "target",
+        "instrument": "tool",
+        "destination": "meadow",
+        "cause_ids": [
+          "problem",
+          "helper_available"
+        ]
+      },
+      "probability": 0.30189111260545715,
+      "rules": [
+        "gf.AdvVP",
+        "gf.ComplV2",
+        "gf.DetCN",
+        "gf.PredVP",
+        "gf.UseCl",
+        "gf.UseN",
+        "gf.UsePN",
+        "gf.UsePron",
+        "gf.finite",
+        "local.PrepNP",
+        "local.reference.choice",
+        "local.utterance",
+        "referent:helper",
+        "referent:hero"
+      ],
+      "referents": [
+        "helper",
+        "hero"
+      ],
+      "derivation_count": 4,
+      "event_evidence": {
+        "0": {
+          "kernel": "thank",
+          "base": -0.8,
+          "query": [
+            "helper",
+            "trust"
+          ],
+          "attention": [
+            {
+              "fact": "helper_available",
+              "text": "Mum is nearby and willing to help.",
+              "key_tags": [
+                "helper",
+                "trust",
+                "planning"
+              ],
+              "query_overlap": 2,
+              "attention_weight": 0.7310585786300049,
+              "value": 1.0,
+              "coefficient": 0,
+              "contribution": 0.0
+            },
+            {
+              "fact": "hero.Trust",
+              "text": "Ben's trust is 0.65",
+              "key_tags": [
+                "actor",
+                "trust",
+                "hero"
+              ],
+              "query_overlap": 1,
+              "attention_weight": 0.2689414213699951,
+              "value": 0.6499999999999999,
+              "coefficient": 1.0,
+              "contribution": 0.6992476955619872
+            }
+          ],
+          "narrative": [],
+          "logit": -0.10075230443801286,
+          "prior_probability": 0.3773638907568214,
+          "frame": {
+            "kind": "thank",
+            "actor": "hero",
+            "patient": "target",
+            "instrument": "tool",
+            "destination": "meadow",
+            "cause_ids": [
+              "problem",
+              "helper_available"
+            ]
+          }
+        },
+        "1": {
+          "kernel": "ending",
+          "base": 0.4,
+          "query": [
+            "goal",
+            "recent"
+          ],
+          "attention": [
+            {
+              "fact": "outcome",
+              "text": "The kite is now flying, repaired.",
+              "key_tags": [
+                "goal",
+                "outcome"
+              ],
+              "query_overlap": 1,
+              "attention_weight": 0.5,
+              "value": 1.0,
+              "coefficient": 0,
+              "contribution": 0.0
+            },
+            {
+              "fact": "event:5",
+              "text": "Previously: finish",
+              "key_tags": [
+                "recent",
+                "finish"
+              ],
+              "query_overlap": 1,
+              "attention_weight": 0.5,
+              "value": 1,
+              "coefficient": 0,
+              "contribution": 0.0
+            }
+          ],
+          "narrative": [],
+          "logit": 0.4,
+          "prior_probability": 0.6226361092431786,
+          "frame": {
+            "kind": "ending",
+            "actor": "target",
+            "patient": "target",
+            "instrument": "tool",
+            "destination": "meadow",
+            "cause_ids": [
+              "problem"
+            ]
+          }
+        }
+      },
+      "word_trace": [
+        {
+          "prefix": [],
+          "choices": [
+            {
+              "word": "the",
+              "probability": 0.6226361092431786,
+              "events": {
+                "ending": 1.0
+              },
+              "grammar_rules": [
+                "gf.AdvVP",
+                "gf.DetCN",
+                "gf.PredVP",
+                "gf.UseCl",
+                "gf.UseN",
+                "gf.UseV",
+                "gf.finite",
+                "local.PrepNP",
+                "local.paraphrase",
+                "local.utterance",
+                "referent:target"
+              ]
+            },
+            {
+              "word": "he",
+              "probability": 0.30189111260545715,
+              "events": {
+                "thank": 1.0
+              },
+              "grammar_rules": [
+                "gf.AdvVP",
+                "gf.ComplV2",
+                "gf.DetCN",
+                "gf.PredVP",
+                "gf.UseCl",
+                "gf.UseN",
+                "gf.UsePN",
+                "gf.UsePron",
+                "gf.finite",
+                "local.PrepNP",
+                "local.reference.choice",
+                "local.utterance",
+                "referent:helper",
+                "referent:hero"
+              ]
+            },
+            {
+              "word": "Ben",
+              "probability": 0.07547277815136429,
+              "events": {
+                "thank": 1.0
+              },
+              "grammar_rules": [
+                "gf.AdvVP",
+                "gf.ComplV2",
+                "gf.DetCN",
+                "gf.PredVP",
+                "gf.UseCl",
+                "gf.UseN",
+                "gf.UsePN",
+                "gf.finite",
+                "local.PrepNP",
+                "local.reference.choice",
+                "local.utterance",
+                "referent:helper",
+                "referent:hero"
+              ]
+            }
+          ],
+          "prefix_probability": 1.0,
+          "complete": false,
+          "surviving_derivations": 4,
+          "selected": "he",
+          "selected_probability": 0.30189111260545715
+        },
+        {
+          "prefix": [
+            "he"
+          ],
+          "choices": [
+            {
+              "word": "thanked",
+              "probability": 1.0,
+              "events": {
+                "thank": 1.0
+              },
+              "grammar_rules": [
+                "gf.AdvVP",
+                "gf.ComplV2",
+                "gf.DetCN",
+                "gf.PredVP",
+                "gf.UseCl",
+                "gf.UseN",
+                "gf.UsePN",
+                "gf.UsePron",
+                "gf.finite",
+                "local.PrepNP",
+                "local.reference.choice",
+                "local.utterance",
+                "referent:helper",
+                "referent:hero"
+              ]
+            }
+          ],
+          "prefix_probability": 0.30189111260545715,
+          "complete": false,
+          "surviving_derivations": 1,
+          "selected": "thanked",
+          "selected_probability": 1.0
+        },
+        {
+          "prefix": [
+            "he",
+            "thanked"
+          ],
+          "choices": [
+            {
+              "word": "Mum",
+              "probability": 1.0,
+              "events": {
+                "thank": 1.0
+              },
+              "grammar_rules": [
+                "gf.AdvVP",
+                "gf.ComplV2",
+                "gf.DetCN",
+                "gf.PredVP",
+                "gf.UseCl",
+                "gf.UseN",
+                "gf.UsePN",
+                "gf.UsePron",
+                "gf.finite",
+                "local.PrepNP",
+                "local.reference.choice",
+                "local.utterance",
+                "referent:helper",
+                "referent:hero"
+              ]
+            }
+          ],
+          "prefix_probability": 0.30189111260545715,
+          "complete": false,
+          "surviving_derivations": 1,
+          "selected": "Mum",
+          "selected_probability": 1.0
+        },
+        {
+          "prefix": [
+            "he",
+            "thanked",
+            "Mum"
+          ],
+          "choices": [
+            {
+              "word": "for",
+              "probability": 1.0,
+              "events": {
+                "thank": 1.0
+              },
+              "grammar_rules": [
+                "gf.AdvVP",
+                "gf.ComplV2",
+                "gf.DetCN",
+                "gf.PredVP",
+                "gf.UseCl",
+                "gf.UseN",
+                "gf.UsePN",
+                "gf.UsePron",
+                "gf.finite",
+                "local.PrepNP",
+                "local.reference.choice",
+                "local.utterance",
+                "referent:helper",
+                "referent:hero"
+              ]
+            }
+          ],
+          "prefix_probability": 0.30189111260545715,
+          "complete": false,
+          "surviving_derivations": 1,
+          "selected": "for",
+          "selected_probability": 1.0
+        },
+        {
+          "prefix": [
+            "he",
+            "thanked",
+            "Mum",
+            "for"
+          ],
+          "choices": [
+            {
+              "word": "help",
+              "probability": 1.0,
+              "events": {
+                "thank": 1.0
+              },
+              "grammar_rules": [
+                "gf.AdvVP",
+                "gf.ComplV2",
+                "gf.DetCN",
+                "gf.PredVP",
+                "gf.UseCl",
+                "gf.UseN",
+                "gf.UsePN",
+                "gf.UsePron",
+                "gf.finite",
+                "local.PrepNP",
+                "local.reference.choice",
+                "local.utterance",
+                "referent:helper",
+                "referent:hero"
+              ]
+            }
+          ],
+          "prefix_probability": 0.30189111260545715,
+          "complete": false,
+          "surviving_derivations": 1,
+          "selected": "help",
+          "selected_probability": 1.0
+        },
+        {
+          "prefix": [
+            "he",
+            "thanked",
+            "Mum",
+            "for",
+            "help"
+          ],
+          "choices": [
+            {
+              "word": ".",
+              "probability": 1.0,
+              "events": {
+                "thank": 1.0
+              },
+              "grammar_rules": [
+                "gf.AdvVP",
+                "gf.ComplV2",
+                "gf.DetCN",
+                "gf.PredVP",
+                "gf.UseCl",
+                "gf.UseN",
+                "gf.UsePN",
+                "gf.UsePron",
+                "gf.finite",
+                "local.PrepNP",
+                "local.reference.choice",
+                "local.utterance",
+                "referent:helper",
+                "referent:hero"
+              ]
+            }
+          ],
+          "prefix_probability": 0.30189111260545715,
+          "complete": false,
+          "surviving_derivations": 1,
+          "selected": ".",
+          "selected_probability": 1.0
+        },
+        {
+          "prefix": [
+            "he",
+            "thanked",
+            "Mum",
+            "for",
+            "help",
+            "."
+          ],
+          "choices": [
+            {
+              "word": "<END>",
+              "probability": 1.0,
+              "events": {
+                "thank": 1.0
+              },
+              "grammar_rules": [
+                "gf.AdvVP",
+                "gf.ComplV2",
+                "gf.DetCN",
+                "gf.PredVP",
+                "gf.UseCl",
+                "gf.UseN",
+                "gf.UsePN",
+                "gf.UsePron",
+                "gf.finite",
+                "local.PrepNP",
+                "local.reference.choice",
+                "local.utterance",
+                "referent:helper",
+                "referent:hero"
+              ]
+            }
+          ],
+          "prefix_probability": 0.30189111260545715,
+          "complete": true,
+          "surviving_derivations": 1,
+          "selected": "<END>",
+          "selected_probability": 1.0
+        }
+      ]
+    },
+    {
+      "text": "The kite floated above the meadow.",
+      "frame": {
+        "kind": "ending",
+        "actor": "target",
+        "patient": "target",
+        "instrument": "tool",
+        "destination": "meadow",
+        "cause_ids": [
+          "problem"
+        ]
+      },
+      "probability": 0.5,
+      "rules": [
+        "gf.AdvVP",
+        "gf.DetCN",
+        "gf.PredVP",
+        "gf.UseCl",
+        "gf.UseN",
+        "gf.UseV",
+        "gf.finite",
+        "local.PrepNP",
+        "local.paraphrase",
+        "local.utterance",
+        "referent:target"
+      ],
+      "referents": [
+        "target"
+      ],
+      "derivation_count": 2,
+      "event_evidence": {
+        "0": {
+          "kernel": "ending",
+          "base": 0.4,
+          "query": [
+            "goal",
+            "recent"
+          ],
+          "attention": [
+            {
+              "fact": "outcome",
+              "text": "The kite is now flying, repaired.",
+              "key_tags": [
+                "goal",
+                "outcome"
+              ],
+              "query_overlap": 1,
+              "attention_weight": 0.5,
+              "value": 1.0,
+              "coefficient": 0,
+              "contribution": 0.0
+            },
+            {
+              "fact": "event:6",
+              "text": "Previously: thank",
+              "key_tags": [
+                "recent",
+                "thank"
+              ],
+              "query_overlap": 1,
+              "attention_weight": 0.5,
+              "value": 1,
+              "coefficient": 0,
+              "contribution": 0.0
+            }
+          ],
+          "narrative": [],
+          "logit": 0.4,
+          "prior_probability": 1.0,
+          "frame": {
+            "kind": "ending",
+            "actor": "target",
+            "patient": "target",
+            "instrument": "tool",
+            "destination": "meadow",
+            "cause_ids": [
+              "problem"
+            ]
+          }
+        }
+      },
+      "word_trace": [
+        {
+          "prefix": [],
+          "choices": [
+            {
+              "word": "the",
+              "probability": 1.0,
+              "events": {
+                "ending": 1.0
+              },
+              "grammar_rules": [
+                "gf.AdvVP",
+                "gf.DetCN",
+                "gf.PredVP",
+                "gf.UseCl",
+                "gf.UseN",
+                "gf.UseV",
+                "gf.finite",
+                "local.PrepNP",
+                "local.paraphrase",
+                "local.utterance",
+                "referent:target"
+              ]
+            }
+          ],
+          "prefix_probability": 1.0,
+          "complete": false,
+          "surviving_derivations": 2,
+          "selected": "the",
+          "selected_probability": 1.0
+        },
+        {
+          "prefix": [
+            "the"
+          ],
+          "choices": [
+            {
+              "word": "kite",
+              "probability": 1.0,
+              "events": {
+                "ending": 1.0
+              },
+              "grammar_rules": [
+                "gf.AdvVP",
+                "gf.DetCN",
+                "gf.PredVP",
+                "gf.UseCl",
+                "gf.UseN",
+                "gf.UseV",
+                "gf.finite",
+                "local.PrepNP",
+                "local.paraphrase",
+                "local.utterance",
+                "referent:target"
+              ]
+            }
+          ],
+          "prefix_probability": 1.0,
+          "complete": false,
+          "surviving_derivations": 2,
+          "selected": "kite",
+          "selected_probability": 1.0
+        },
+        {
+          "prefix": [
+            "the",
+            "kite"
+          ],
+          "choices": [
+            {
+              "word": "danced",
+              "probability": 0.5,
+              "events": {
+                "ending": 1.0
+              },
+              "grammar_rules": [
+                "gf.AdvVP",
+                "gf.DetCN",
+                "gf.PredVP",
+                "gf.UseCl",
+                "gf.UseN",
+                "gf.UseV",
+                "gf.finite",
+                "local.PrepNP",
+                "local.paraphrase",
+                "local.utterance",
+                "referent:target"
+              ]
+            },
+            {
+              "word": "floated",
+              "probability": 0.5,
+              "events": {
+                "ending": 1.0
+              },
+              "grammar_rules": [
+                "gf.AdvVP",
+                "gf.DetCN",
+                "gf.PredVP",
+                "gf.UseCl",
+                "gf.UseN",
+                "gf.UseV",
+                "gf.finite",
+                "local.PrepNP",
+                "local.paraphrase",
+                "local.utterance",
+                "referent:target"
+              ]
+            }
+          ],
+          "prefix_probability": 1.0,
+          "complete": false,
+          "surviving_derivations": 2,
+          "selected": "floated",
+          "selected_probability": 0.5
+        },
+        {
+          "prefix": [
+            "the",
+            "kite",
+            "floated"
+          ],
+          "choices": [
+            {
+              "word": "above",
+              "probability": 1.0,
+              "events": {
+                "ending": 1.0
+              },
+              "grammar_rules": [
+                "gf.AdvVP",
+                "gf.DetCN",
+                "gf.PredVP",
+                "gf.UseCl",
+                "gf.UseN",
+                "gf.UseV",
+                "gf.finite",
+                "local.PrepNP",
+                "local.paraphrase",
+                "local.utterance",
+                "referent:target"
+              ]
+            }
+          ],
+          "prefix_probability": 0.5,
+          "complete": false,
+          "surviving_derivations": 1,
+          "selected": "above",
+          "selected_probability": 1.0
+        },
+        {
+          "prefix": [
+            "the",
+            "kite",
+            "floated",
+            "above"
+          ],
+          "choices": [
+            {
+              "word": "the",
+              "probability": 1.0,
+              "events": {
+                "ending": 1.0
+              },
+              "grammar_rules": [
+                "gf.AdvVP",
+                "gf.DetCN",
+                "gf.PredVP",
+                "gf.UseCl",
+                "gf.UseN",
+                "gf.UseV",
+                "gf.finite",
+                "local.PrepNP",
+                "local.paraphrase",
+                "local.utterance",
+                "referent:target"
+              ]
+            }
+          ],
+          "prefix_probability": 0.5,
+          "complete": false,
+          "surviving_derivations": 1,
+          "selected": "the",
+          "selected_probability": 1.0
+        },
+        {
+          "prefix": [
+            "the",
+            "kite",
+            "floated",
+            "above",
+            "the"
+          ],
+          "choices": [
+            {
+              "word": "meadow",
+              "probability": 1.0,
+              "events": {
+                "ending": 1.0
+              },
+              "grammar_rules": [
+                "gf.AdvVP",
+                "gf.DetCN",
+                "gf.PredVP",
+                "gf.UseCl",
+                "gf.UseN",
+                "gf.UseV",
+                "gf.finite",
+                "local.PrepNP",
+                "local.paraphrase",
+                "local.utterance",
+                "referent:target"
+              ]
+            }
+          ],
+          "prefix_probability": 0.5,
+          "complete": false,
+          "surviving_derivations": 1,
+          "selected": "meadow",
+          "selected_probability": 1.0
+        },
+        {
+          "prefix": [
+            "the",
+            "kite",
+            "floated",
+            "above",
+            "the",
+            "meadow"
+          ],
+          "choices": [
+            {
+              "word": ".",
+              "probability": 1.0,
+              "events": {
+                "ending": 1.0
+              },
+              "grammar_rules": [
+                "gf.AdvVP",
+                "gf.DetCN",
+                "gf.PredVP",
+                "gf.UseCl",
+                "gf.UseN",
+                "gf.UseV",
+                "gf.finite",
+                "local.PrepNP",
+                "local.paraphrase",
+                "local.utterance",
+                "referent:target"
+              ]
+            }
+          ],
+          "prefix_probability": 0.5,
+          "complete": false,
+          "surviving_derivations": 1,
+          "selected": ".",
+          "selected_probability": 1.0
+        },
+        {
+          "prefix": [
+            "the",
+            "kite",
+            "floated",
+            "above",
+            "the",
+            "meadow",
+            "."
+          ],
+          "choices": [
+            {
+              "word": "<END>",
+              "probability": 1.0,
+              "events": {
+                "ending": 1.0
+              },
+              "grammar_rules": [
+                "gf.AdvVP",
+                "gf.DetCN",
+                "gf.PredVP",
+                "gf.UseCl",
+                "gf.UseN",
+                "gf.UseV",
+                "gf.finite",
+                "local.PrepNP",
+                "local.paraphrase",
+                "local.utterance",
+                "referent:target"
+              ]
+            }
+          ],
+          "prefix_probability": 0.5,
+          "complete": true,
+          "surviving_derivations": 1,
+          "selected": "<END>",
+          "selected_probability": 1.0
+        }
+      ]
+    }
+  ]
+}

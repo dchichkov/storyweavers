@@ -1,0 +1,581 @@
+{
+  "id": "P016",
+  "name": "Register continuity",
+  "description": "Current passage → recent register-bearing choices. Favor locally compatible diction.",
+  "proposed_payload": "{register_distribution, scope}",
+  "provenance": "Authored illustrative seeds; not learned or extracted.",
+  "status": "table",
+  "examples": [
+    {
+      "id": "P016.01",
+      "description": "Honored guest suggests a formal greeting.",
+      "query": "greeting",
+      "scope": "example",
+      "sources": [
+        {
+          "id": "source:1",
+          "channel": "register_cue",
+          "scope": "example",
+          "key": "honored",
+          "confidence": 1.0
+        }
+      ],
+      "expected_features": {
+        "formal": 1.0
+      },
+      "grammar_weights": {
+        "Greetings": 1.0,
+        "Hey": 1.0,
+        "waits": 1.0,
+        "rests": 1.0
+      },
+      "favored": "Greetings",
+      "disfavored": "Hey"
+    },
+    {
+      "id": "P016.02",
+      "description": "Pal suggests a casual greeting.",
+      "query": "greeting",
+      "scope": "example",
+      "sources": [
+        {
+          "id": "source:2",
+          "channel": "register_cue",
+          "scope": "example",
+          "key": "pal",
+          "confidence": 1.0
+        }
+      ],
+      "expected_features": {
+        "casual": 1.0
+      },
+      "grammar_weights": {
+        "Hey": 1.0,
+        "Greetings": 1.0,
+        "waits": 1.0,
+        "rests": 1.0
+      },
+      "favored": "Hey",
+      "disfavored": "Greetings"
+    },
+    {
+      "id": "P016.03",
+      "description": "Kindly favors polite request wording.",
+      "query": "request",
+      "scope": "example",
+      "sources": [
+        {
+          "id": "source:3",
+          "channel": "register_cue",
+          "scope": "example",
+          "key": "kindly",
+          "confidence": 1.0
+        }
+      ],
+      "expected_features": {
+        "formal": 1.0
+      },
+      "grammar_weights": {
+        "please": 1.0,
+        "gimme": 1.0,
+        "waits": 1.0,
+        "rests": 1.0
+      },
+      "favored": "please",
+      "disfavored": "gimme"
+    },
+    {
+      "id": "P016.04",
+      "description": "Buddy permits casual wording in this illustrative seed.",
+      "query": "request",
+      "scope": "example",
+      "sources": [
+        {
+          "id": "source:4",
+          "channel": "register_cue",
+          "scope": "example",
+          "key": "buddy",
+          "confidence": 1.0
+        }
+      ],
+      "expected_features": {
+        "casual": 1.0
+      },
+      "grammar_weights": {
+        "gimme": 1.0,
+        "kindly": 1.0,
+        "waits": 1.0,
+        "rests": 1.0
+      },
+      "favored": "gimme",
+      "disfavored": "kindly"
+    },
+    {
+      "id": "P016.05",
+      "description": "Farewell suggests formal departure diction.",
+      "query": "departure",
+      "scope": "example",
+      "sources": [
+        {
+          "id": "source:5",
+          "channel": "register_cue",
+          "scope": "example",
+          "key": "farewell",
+          "confidence": 1.0
+        }
+      ],
+      "expected_features": {
+        "formal": 1.0
+      },
+      "grammar_weights": {
+        "departed": 1.0,
+        "split": 1.0,
+        "waits": 1.0,
+        "rests": 1.0
+      },
+      "favored": "departed",
+      "disfavored": "split"
+    },
+    {
+      "id": "P016.06",
+      "description": "See ya suggests informal departure diction.",
+      "query": "departure",
+      "scope": "example",
+      "sources": [
+        {
+          "id": "source:6",
+          "channel": "register_cue",
+          "scope": "example",
+          "key": "see_ya",
+          "confidence": 1.0
+        }
+      ],
+      "expected_features": {
+        "casual": 1.0
+      },
+      "grammar_weights": {
+        "split": 1.0,
+        "departed": 1.0,
+        "waits": 1.0,
+        "rests": 1.0
+      },
+      "favored": "split",
+      "disfavored": "departed"
+    },
+    {
+      "id": "P016.07",
+      "description": "Thou cues archaic second-person wording.",
+      "query": "description",
+      "scope": "example",
+      "sources": [
+        {
+          "id": "source:7",
+          "channel": "register_cue",
+          "scope": "example",
+          "key": "thou",
+          "confidence": 1.0
+        }
+      ],
+      "expected_features": {
+        "archaic": 1.0
+      },
+      "grammar_weights": {
+        "art": 1.0,
+        "are": 1.0,
+        "waits": 1.0,
+        "rests": 1.0
+      },
+      "favored": "art",
+      "disfavored": "are"
+    },
+    {
+      "id": "P016.08",
+      "description": "You cues modern wording.",
+      "query": "description",
+      "scope": "example",
+      "sources": [
+        {
+          "id": "source:8",
+          "channel": "register_cue",
+          "scope": "example",
+          "key": "you",
+          "confidence": 1.0
+        }
+      ],
+      "expected_features": {
+        "modern": 1.0
+      },
+      "grammar_weights": {
+        "are": 1.0,
+        "art": 1.0,
+        "waits": 1.0,
+        "rests": 1.0
+      },
+      "favored": "are",
+      "disfavored": "art"
+    },
+    {
+      "id": "P016.09",
+      "description": "Indeed suggests formal assent.",
+      "query": "agreement",
+      "scope": "example",
+      "sources": [
+        {
+          "id": "source:9",
+          "channel": "register_cue",
+          "scope": "example",
+          "key": "indeed",
+          "confidence": 1.0
+        }
+      ],
+      "expected_features": {
+        "formal": 1.0
+      },
+      "grammar_weights": {
+        "Certainly": 1.0,
+        "Yep": 1.0,
+        "waits": 1.0,
+        "rests": 1.0
+      },
+      "favored": "Certainly",
+      "disfavored": "Yep"
+    },
+    {
+      "id": "P016.10",
+      "description": "Yeah suggests casual assent.",
+      "query": "agreement",
+      "scope": "example",
+      "sources": [
+        {
+          "id": "source:10",
+          "channel": "register_cue",
+          "scope": "example",
+          "key": "yeah",
+          "confidence": 1.0
+        }
+      ],
+      "expected_features": {
+        "casual": 1.0
+      },
+      "grammar_weights": {
+        "Yep": 1.0,
+        "Certainly": 1.0,
+        "waits": 1.0,
+        "rests": 1.0
+      },
+      "favored": "Yep",
+      "disfavored": "Certainly"
+    }
+  ],
+  "input_channel": "register_cue",
+  "receiver_mode": "multipliers",
+  "smoothing": 1.0,
+  "input_contract": "Supply current, scoped records in channel register_cue. Scope selection and structural parsing belong to the caller; no free-text parser is implied.",
+  "table_semantics": "Positive relative word-weight multipliers.",
+  "selection": [
+    {
+      "tokens": [
+        "greeting",
+        "honored"
+      ],
+      "weight": 1.0
+    },
+    {
+      "tokens": [
+        "greeting",
+        "pal"
+      ],
+      "weight": 1.0
+    },
+    {
+      "tokens": [
+        "request",
+        "kindly"
+      ],
+      "weight": 1.0
+    },
+    {
+      "tokens": [
+        "request",
+        "buddy"
+      ],
+      "weight": 1.0
+    },
+    {
+      "tokens": [
+        "departure",
+        "farewell"
+      ],
+      "weight": 1.0
+    },
+    {
+      "tokens": [
+        "departure",
+        "see_ya"
+      ],
+      "weight": 1.0
+    },
+    {
+      "tokens": [
+        "description",
+        "thou"
+      ],
+      "weight": 1.0
+    },
+    {
+      "tokens": [
+        "description",
+        "you"
+      ],
+      "weight": 1.0
+    },
+    {
+      "tokens": [
+        "agreement",
+        "indeed"
+      ],
+      "weight": 1.0
+    },
+    {
+      "tokens": [
+        "agreement",
+        "yeah"
+      ],
+      "weight": 1.0
+    }
+  ],
+  "projection": [
+    {
+      "tokens": [
+        "honored",
+        "formal"
+      ],
+      "weight": 1.0
+    },
+    {
+      "tokens": [
+        "pal",
+        "casual"
+      ],
+      "weight": 1.0
+    },
+    {
+      "tokens": [
+        "kindly",
+        "formal"
+      ],
+      "weight": 1.0
+    },
+    {
+      "tokens": [
+        "buddy",
+        "casual"
+      ],
+      "weight": 1.0
+    },
+    {
+      "tokens": [
+        "farewell",
+        "formal"
+      ],
+      "weight": 1.0
+    },
+    {
+      "tokens": [
+        "see_ya",
+        "casual"
+      ],
+      "weight": 1.0
+    },
+    {
+      "tokens": [
+        "thou",
+        "archaic"
+      ],
+      "weight": 1.0
+    },
+    {
+      "tokens": [
+        "you",
+        "modern"
+      ],
+      "weight": 1.0
+    },
+    {
+      "tokens": [
+        "indeed",
+        "formal"
+      ],
+      "weight": 1.0
+    },
+    {
+      "tokens": [
+        "yeah",
+        "casual"
+      ],
+      "weight": 1.0
+    }
+  ],
+  "receiver": [
+    {
+      "tokens": [
+        "greeting",
+        "formal",
+        "Greetings"
+      ],
+      "weight": 4.0
+    },
+    {
+      "tokens": [
+        "greeting",
+        "formal",
+        "Hey"
+      ],
+      "weight": 0.25
+    },
+    {
+      "tokens": [
+        "greeting",
+        "casual",
+        "Hey"
+      ],
+      "weight": 4.0
+    },
+    {
+      "tokens": [
+        "greeting",
+        "casual",
+        "Greetings"
+      ],
+      "weight": 0.25
+    },
+    {
+      "tokens": [
+        "request",
+        "formal",
+        "please"
+      ],
+      "weight": 4.0
+    },
+    {
+      "tokens": [
+        "request",
+        "formal",
+        "gimme"
+      ],
+      "weight": 0.25
+    },
+    {
+      "tokens": [
+        "request",
+        "casual",
+        "gimme"
+      ],
+      "weight": 4.0
+    },
+    {
+      "tokens": [
+        "request",
+        "casual",
+        "kindly"
+      ],
+      "weight": 0.25
+    },
+    {
+      "tokens": [
+        "departure",
+        "formal",
+        "departed"
+      ],
+      "weight": 4.0
+    },
+    {
+      "tokens": [
+        "departure",
+        "formal",
+        "split"
+      ],
+      "weight": 0.25
+    },
+    {
+      "tokens": [
+        "departure",
+        "casual",
+        "split"
+      ],
+      "weight": 4.0
+    },
+    {
+      "tokens": [
+        "departure",
+        "casual",
+        "departed"
+      ],
+      "weight": 0.25
+    },
+    {
+      "tokens": [
+        "description",
+        "archaic",
+        "art"
+      ],
+      "weight": 4.0
+    },
+    {
+      "tokens": [
+        "description",
+        "archaic",
+        "are"
+      ],
+      "weight": 0.25
+    },
+    {
+      "tokens": [
+        "description",
+        "modern",
+        "are"
+      ],
+      "weight": 4.0
+    },
+    {
+      "tokens": [
+        "description",
+        "modern",
+        "art"
+      ],
+      "weight": 0.25
+    },
+    {
+      "tokens": [
+        "agreement",
+        "formal",
+        "Certainly"
+      ],
+      "weight": 4.0
+    },
+    {
+      "tokens": [
+        "agreement",
+        "formal",
+        "Yep"
+      ],
+      "weight": 0.25
+    },
+    {
+      "tokens": [
+        "agreement",
+        "casual",
+        "Yep"
+      ],
+      "weight": 4.0
+    },
+    {
+      "tokens": [
+        "agreement",
+        "casual",
+        "Certainly"
+      ],
+      "weight": 0.25
+    }
+  ]
+}

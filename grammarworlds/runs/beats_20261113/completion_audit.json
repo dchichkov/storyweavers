@@ -1,0 +1,63 @@
+{
+  "requirements": {
+    "existing_text_annotations": {
+      "status": "verified",
+      "evidence": "annotated_pool_v2/summary.json",
+      "scope": "400 original stories, 20 worlds; all six beat kinds; original text and posteriors intact"
+    },
+    "optional_distribution_and_budget": {
+      "status": "verified",
+      "evidence": [
+        "final_audit.json",
+        "tests.log"
+      ],
+      "scope": "reaction, inspection, asking and immediate-action support; caps 2/6; 40 source runs and three resumed plots"
+    },
+    "early_details_later_results": {
+      "status": "verified",
+      "evidence": [
+        "round10_final/traces.jsonl.gz",
+        "tests.log"
+      ],
+      "scope": "six explicit detail mappings in pottery, repair and museum; visible earlier evidence and state-gated revisits"
+    },
+    "functional_dialogue": {
+      "status": "verified",
+      "evidence": [
+        "concrete_proposal.json.gz",
+        "round10_final/traces.jsonl.gz",
+        "tests.log"
+      ],
+      "scope": "asking/suggesting/committing expansions; existing disagreement/admission annotations; grounded reading QA"
+    },
+    "ten_refinement_iterations": {
+      "status": "verified",
+      "evidence": "refinement_notes.json",
+      "scope": "10 successive code-and-sample rounds after round00; final audit retained separately"
+    }
+  },
+  "tests_passed": 285,
+  "broad_audit": {
+    "worlds": 20,
+    "runs": 40,
+    "token_distributions": 5444,
+    "qa": 279,
+    "joined": 3
+  },
+  "source_pool": {
+    "documents": 400,
+    "worlds": 20,
+    "tokens": 46964,
+    "events": 4359,
+    "beat_counts": {
+      "expectation": 443,
+      "choice": 963,
+      "interruption": 420,
+      "payoff": 877,
+      "discovery": 200,
+      "reaction": 80
+    },
+    "text_positions_original_attributes_and_probabilities_preserved": true
+  },
+  "quality_score_claimed": false
+}

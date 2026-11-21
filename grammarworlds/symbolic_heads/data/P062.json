@@ -1,0 +1,81 @@
+{
+  "id": "P062",
+  "name": "Correlated-evidence discount",
+  "description": "Active features → shared supporting event IDs. Avoid counting the same evidence three times.",
+  "proposed_payload": "{shared_provenance, dependence_groups}",
+  "provenance": "Authored illustrative seeds; not learned or extracted.",
+  "status": "program_required",
+  "examples": [
+    {
+      "id": "P062.01",
+      "description": "One gift activates kindness, gratitude, friendship.",
+      "intended_feature": "one_shared_event_group",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P062.02",
+      "description": "One warning activates danger, fear, caution.",
+      "intended_feature": "one_shared_event_group",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P062.03",
+      "description": "Two independent witnesses observe the same event.",
+      "intended_feature": "distinguish_observation_independence_from_event_identity",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P062.04",
+      "description": "Three reports repeat one rumor.",
+      "intended_feature": "correlated_report_group",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P062.05",
+      "description": "Two unrelated gifts occur on separate days.",
+      "intended_feature": "separate_evidence_groups",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P062.06",
+      "description": "Two heads read the same token and produce equivalent features.",
+      "intended_feature": "redundant_activation_group",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P062.07",
+      "description": "One head reads event cause and another its effect.",
+      "intended_feature": "causal_dependence",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P062.08",
+      "description": "Provenance IDs are missing.",
+      "intended_feature": "dependence_unknown",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P062.09",
+      "description": "Different source IDs are aliases of one record.",
+      "intended_feature": "canonicalize_provenance",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P062.10",
+      "description": "One source supports both compatible and opposing hypotheses.",
+      "intended_feature": "preserve_signed_contributions",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    }
+  ],
+  "required_program": "Group activations by shared provenance and estimate dependence before combining scores; do not treat different feature names as independent evidence."
+}

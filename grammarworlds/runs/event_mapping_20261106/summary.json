@@ -1,0 +1,177 @@
+{
+  "book_only": {
+    "completed": 20,
+    "selections": {
+      "repair.paper": 20
+    },
+    "candidates": [
+      {
+        "bindings": {
+          "worker": "ada",
+          "tool": "tape",
+          "supply": "bench",
+          "item": "book"
+        },
+        "rules": [
+          "fetch.portable_tool",
+          "repair.paper"
+        ],
+        "score": 2.0,
+        "probability": 1.0
+      }
+    ],
+    "rejected": [
+      {
+        "rules": [
+          "fetch.portable_tool",
+          "repair.paper"
+        ],
+        "bindings": {
+          "worker": "omar",
+          "tool": "tape",
+          "supply": "bench",
+          "item": "book"
+        },
+        "reason": "target guards block program",
+        "blocking": {
+          "patch": [
+            "actor is not holding the item"
+          ]
+        }
+      },
+      {
+        "rules": [
+          "fetch.portable_tool",
+          "repair.kite"
+        ],
+        "reason": "no compatible carrier",
+        "roles": [
+          "worker",
+          "item"
+        ]
+      }
+    ]
+  },
+  "book_or_kite": {
+    "completed": 20,
+    "selections": {
+      "repair.kite": 6,
+      "repair.paper": 14
+    },
+    "candidates": [
+      {
+        "bindings": {
+          "worker": "ada",
+          "tool": "tape",
+          "supply": "bench",
+          "item": "book"
+        },
+        "rules": [
+          "fetch.portable_tool",
+          "repair.paper"
+        ],
+        "score": 2.0,
+        "probability": 0.6666666666666666
+      },
+      {
+        "bindings": {
+          "worker": "ada",
+          "tool": "tape",
+          "supply": "bench",
+          "item": "kite"
+        },
+        "rules": [
+          "fetch.portable_tool",
+          "repair.kite"
+        ],
+        "score": 1.0,
+        "probability": 0.3333333333333333
+      }
+    ],
+    "rejected": [
+      {
+        "rules": [
+          "fetch.portable_tool",
+          "repair.paper"
+        ],
+        "bindings": {
+          "worker": "omar",
+          "tool": "tape",
+          "supply": "bench",
+          "item": "book"
+        },
+        "reason": "target guards block program",
+        "blocking": {
+          "patch": [
+            "actor is not holding the item"
+          ]
+        }
+      }
+    ]
+  },
+  "favor_kite": {
+    "completed": 20,
+    "selections": {
+      "repair.kite": 10,
+      "repair.paper": 10
+    },
+    "candidates": [
+      {
+        "bindings": {
+          "worker": "ada",
+          "tool": "tape",
+          "supply": "bench",
+          "item": "book"
+        },
+        "rules": [
+          "fetch.portable_tool",
+          "repair.paper"
+        ],
+        "score": 2.0,
+        "probability": 0.3333333333333333
+      },
+      {
+        "bindings": {
+          "worker": "ada",
+          "tool": "tape",
+          "supply": "bench",
+          "item": "kite"
+        },
+        "rules": [
+          "fetch.portable_tool",
+          "repair.kite"
+        ],
+        "score": 4.0,
+        "probability": 0.6666666666666666
+      }
+    ],
+    "rejected": [
+      {
+        "rules": [
+          "fetch.portable_tool",
+          "repair.paper"
+        ],
+        "bindings": {
+          "worker": "omar",
+          "tool": "tape",
+          "supply": "bench",
+          "item": "book"
+        },
+        "reason": "target guards block program",
+        "blocking": {
+          "patch": [
+            "actor is not holding the item"
+          ]
+        }
+      }
+    ]
+  },
+  "legacy_projection": {
+    "matched_runs": 10,
+    "prose": true,
+    "entities": true,
+    "flags": true,
+    "word_probabilities": true,
+    "metadata_change": "All participating roles now have local lines, including the supply; provenance records rule IDs."
+  }
+}

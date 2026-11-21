@@ -1,0 +1,196 @@
+{
+  "distributions": [
+    {
+      "scenario": "pottery",
+      "appraisal": "appraise_usefulness",
+      "probabilities": {
+        "keep_dent": 0.4847150520522527,
+        "remake": 0.12605957817024105,
+        "make_bowl": 0.38922536977750627
+      },
+      "chosen": "keep_dent"
+    },
+    {
+      "scenario": "pottery",
+      "appraisal": "appraise_design",
+      "probabilities": {
+        "keep_dent": 0.10974108136249536,
+        "remake": 0.8340699122819715,
+        "make_bowl": 0.05618900635553316
+      },
+      "chosen": "remake"
+    },
+    {
+      "scenario": "pottery",
+      "appraisal": "appraise_deadline",
+      "probabilities": {
+        "keep_dent": 0.5798590887996872,
+        "remake": 0.031217491563502602,
+        "make_bowl": 0.3889234196368103
+      },
+      "chosen": "keep_dent"
+    },
+    {
+      "scenario": "music",
+      "appraisal": "appraise_together",
+      "probabilities": {
+        "choose_private": 0.6606011574392513,
+        "choose_solo": 0.0471463749923691,
+        "choose_written": 0.2922524675683797
+      },
+      "chosen": "choose_private"
+    },
+    {
+      "scenario": "music",
+      "appraisal": "appraise_public_turn",
+      "probabilities": {
+        "choose_private": 0.03580434851325223,
+        "choose_solo": 0.5657635368511166,
+        "choose_written": 0.39843211463563116
+      },
+      "chosen": "choose_written"
+    },
+    {
+      "scenario": "music",
+      "appraisal": "appraise_contribution",
+      "probabilities": {
+        "choose_private": 0.052948986160686655,
+        "choose_solo": 0.18668744164039655,
+        "choose_written": 0.7603635721989168
+      },
+      "chosen": "choose_written"
+    },
+    {
+      "scenario": "greenhouse",
+      "appraisal": "appraise_both",
+      "probabilities": {
+        "choose_share": 0.8647383760296384,
+        "choose_flower": 0.009081380458250013,
+        "choose_seedlings": 0.12618024351211163
+      },
+      "chosen": "choose_share"
+    },
+    {
+      "scenario": "greenhouse",
+      "appraisal": "appraise_show",
+      "probabilities": {
+        "choose_share": 0.1413098016044431,
+        "choose_flower": 0.796123132377779,
+        "choose_seedlings": 0.06256706601777795
+      },
+      "chosen": "choose_flower"
+    },
+    {
+      "scenario": "greenhouse",
+      "appraisal": "appraise_risk",
+      "probabilities": {
+        "choose_share": 0.2203256322540125,
+        "choose_flower": 0.04060559263707001,
+        "choose_seedlings": 0.7390687751089176
+      },
+      "chosen": "choose_seedlings"
+    }
+  ],
+  "random_samples": {
+    "pottery": {
+      "count": 20,
+      "branches": {
+        "keep_dent": 8,
+        "remake": 7,
+        "make_bowl": 5
+      },
+      "mean_words": 215.85
+    },
+    "music": {
+      "count": 20,
+      "branches": {
+        "choose_solo": 7,
+        "choose_private": 4,
+        "choose_written": 9
+      },
+      "mean_words": 220.95
+    },
+    "greenhouse": {
+      "count": 20,
+      "branches": {
+        "choose_share": 8,
+        "choose_seedlings": 5,
+        "choose_flower": 7
+      },
+      "mean_words": 270.65
+    }
+  },
+  "compression": {
+    "pottery:remake": {
+      "False": {
+        "samples": 40,
+        "reminders": 40,
+        "spoken": 19,
+        "mean_words": 229.55
+      },
+      "True": {
+        "samples": 40,
+        "reminders": 40,
+        "spoken": 6,
+        "mean_words": 227.875
+      }
+    },
+    "music:choose_private": {
+      "False": {
+        "samples": 40,
+        "reminders": 40,
+        "spoken": 16,
+        "mean_words": 197.1
+      },
+      "True": {
+        "samples": 40,
+        "reminders": 40,
+        "spoken": 7,
+        "mean_words": 194.625
+      }
+    },
+    "greenhouse:choose_share": {
+      "False": {
+        "samples": 40,
+        "reminders": 40,
+        "spoken": 20,
+        "mean_words": 262.35
+      },
+      "True": {
+        "samples": 40,
+        "reminders": 40,
+        "spoken": 6,
+        "mean_words": 260.6
+      }
+    },
+    "greenhouse:choose_flower": {
+      "False": {
+        "samples": 40,
+        "reminders": 80,
+        "spoken": 37,
+        "mean_words": 285.95
+      },
+      "True": {
+        "samples": 40,
+        "reminders": 80,
+        "spoken": 10,
+        "mean_words": 282.1
+      }
+    },
+    "greenhouse:choose_seedlings": {
+      "False": {
+        "samples": 40,
+        "reminders": 80,
+        "spoken": 36,
+        "mean_words": 273.675
+      },
+      "True": {
+        "samples": 40,
+        "reminders": 80,
+        "spoken": 10,
+        "mean_words": 268.9
+      }
+    }
+  },
+  "checked_joint_steps": 18170
+}

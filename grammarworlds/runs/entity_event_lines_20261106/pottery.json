@@ -1,0 +1,7678 @@
+{
+  "schema": "entity-event-lines-v1",
+  "scenario": "pottery",
+  "seed": 3000,
+  "story": "Bea said, \u201cI want to give Grandpa Len a cup.\u201d The cup's handle was wide because Grandpa Len's hand was stiff. The shaping rib slipped. The cup was dented. Mr Ivo said, \u201cThe cup's wall is thick.\u201d Grandpa Len said, \u201cI could hold a bowl with two hands.\u201d Bea said, \u201cI would like a thumb rest.\u201d Using the sponge, Bea shaped the dent into a thumb rest. Mr Ivo fired the cup twice. The cup was cool. Bea handed the cup to Grandpa Len. Grandpa Len poured tea into the cup. Grandpa Len's thumb rested in the thumb rest.",
+  "text_sha256": "4767c4b990f1c5d724f4ac67374bf55ec0f6e6e5c68961718c854ba6b7cd9765",
+  "events": [
+    {
+      "id": 1,
+      "kind": "need",
+      "frame": {
+        "kind": "need",
+        "actor": "grandpa",
+        "patient": "old_mug",
+        "instrument": "",
+        "destination": "",
+        "cause_ids": [
+          "state:grandpa:stiff_hand",
+          "state:old_mug:thin_handle",
+          "loc:old_mug"
+        ]
+      },
+      "narrated": false,
+      "text": "",
+      "entity_tags": {
+        "grandpa": [
+          "causal_context",
+          "frame.actor"
+        ],
+        "old_mug": [
+          "causal_context",
+          "frame.patient"
+        ]
+      },
+      "tag_evidence": {
+        "grandpa": {
+          "frame.actor": [
+            "frame.actor"
+          ],
+          "causal_context": [
+            "cause:state:grandpa:stiff_hand"
+          ]
+        },
+        "old_mug": {
+          "frame.patient": [
+            "frame.patient"
+          ],
+          "causal_context": [
+            "cause:state:old_mug:thin_handle",
+            "cause:loc:old_mug"
+          ]
+        }
+      },
+      "participants": [
+        "grandpa",
+        "old_mug"
+      ],
+      "dialogue": [],
+      "movements": [],
+      "effects": {},
+      "dependencies": [
+        {
+          "kind": "declared_entity_cause",
+          "key": "state:grandpa:stiff_hand",
+          "entity": "grandpa",
+          "field": "state",
+          "source_event": null
+        },
+        {
+          "kind": "declared_entity_cause",
+          "key": "state:old_mug:thin_handle",
+          "entity": "old_mug",
+          "field": "state",
+          "source_event": null
+        },
+        {
+          "kind": "declared_entity_cause",
+          "key": "loc:old_mug",
+          "entity": "old_mug",
+          "field": "location",
+          "source_event": null
+        }
+      ],
+      "global_contract": {
+        "requires": [],
+        "excludes": [
+          "ended"
+        ],
+        "flags_added": [
+          "need_seen"
+        ],
+        "flags_removed": []
+      },
+      "guard_reads_complete": false
+    },
+    {
+      "id": 2,
+      "kind": "goal",
+      "frame": {
+        "kind": "goal",
+        "actor": "hero",
+        "patient": "cup",
+        "instrument": "",
+        "destination": "grandpa",
+        "cause_ids": [
+          "flag:need_seen",
+          "loc:cup",
+          "state:cup:wide_handle"
+        ]
+      },
+      "narrated": true,
+      "text": "Bea said, \u201cI want to give Grandpa Len a cup.\u201d The cup's handle was wide because Grandpa Len's hand was stiff.",
+      "entity_tags": {
+        "cup": [
+          "causal_context",
+          "frame.patient",
+          "mentioned",
+          "qa_context"
+        ],
+        "grandpa": [
+          "frame.destination",
+          "mentioned",
+          "qa_context"
+        ],
+        "helper": [
+          "listener"
+        ],
+        "hero": [
+          "frame.actor",
+          "mentioned",
+          "qa_context",
+          "speaker"
+        ]
+      },
+      "tag_evidence": {
+        "hero": {
+          "frame.actor": [
+            "frame.actor"
+          ],
+          "speaker": [
+            "trace.speakers",
+            "dialogue.listener:hero:helper"
+          ],
+          "mentioned": [
+            "trace.referents"
+          ],
+          "qa_context": [
+            "claim:gift"
+          ]
+        },
+        "cup": {
+          "frame.patient": [
+            "frame.patient"
+          ],
+          "mentioned": [
+            "trace.referents"
+          ],
+          "qa_context": [
+            "claim:gift",
+            "claim:grip_reason"
+          ],
+          "causal_context": [
+            "cause:loc:cup",
+            "cause:state:cup:wide_handle"
+          ]
+        },
+        "grandpa": {
+          "frame.destination": [
+            "frame.destination"
+          ],
+          "mentioned": [
+            "trace.referents"
+          ],
+          "qa_context": [
+            "claim:gift",
+            "claim:grip_reason"
+          ]
+        },
+        "helper": {
+          "listener": [
+            "dialogue.listener:hero:helper"
+          ]
+        }
+      },
+      "participants": [
+        "cup",
+        "grandpa",
+        "helper",
+        "hero"
+      ],
+      "dialogue": [
+        {
+          "speaker": "hero",
+          "listener": "helper"
+        }
+      ],
+      "movements": [],
+      "effects": {},
+      "dependencies": [
+        {
+          "kind": "required_flag",
+          "key": "need_seen",
+          "source_event": 1
+        },
+        {
+          "kind": "declared_flag_cause",
+          "key": "flag:need_seen",
+          "source_event": 1
+        },
+        {
+          "kind": "declared_entity_cause",
+          "key": "loc:cup",
+          "entity": "cup",
+          "field": "location",
+          "source_event": null
+        },
+        {
+          "kind": "declared_entity_cause",
+          "key": "state:cup:wide_handle",
+          "entity": "cup",
+          "field": "state",
+          "source_event": null
+        }
+      ],
+      "global_contract": {
+        "requires": [
+          "need_seen"
+        ],
+        "excludes": [
+          "ended"
+        ],
+        "flags_added": [
+          "goal_said"
+        ],
+        "flags_removed": []
+      },
+      "guard_reads_complete": false
+    },
+    {
+      "id": 3,
+      "kind": "shape",
+      "frame": {
+        "kind": "shape",
+        "actor": "hero",
+        "patient": "cup",
+        "instrument": "tool",
+        "destination": "",
+        "cause_ids": [
+          "flag:goal_said",
+          "loc:tool",
+          "state:cup:wet"
+        ]
+      },
+      "narrated": false,
+      "text": "",
+      "entity_tags": {
+        "cup": [
+          "causal_context",
+          "changed",
+          "frame.patient",
+          "state.add:shaped"
+        ],
+        "hero": [
+          "frame.actor"
+        ],
+        "tool": [
+          "causal_context",
+          "frame.instrument"
+        ]
+      },
+      "tag_evidence": {
+        "hero": {
+          "frame.actor": [
+            "frame.actor"
+          ]
+        },
+        "cup": {
+          "frame.patient": [
+            "frame.patient"
+          ],
+          "causal_context": [
+            "cause:state:cup:wet"
+          ],
+          "changed": [
+            "replayed_entity_diff"
+          ],
+          "state.add:shaped": [
+            "diff.state"
+          ]
+        },
+        "tool": {
+          "frame.instrument": [
+            "frame.instrument"
+          ],
+          "causal_context": [
+            "cause:loc:tool"
+          ]
+        }
+      },
+      "participants": [
+        "cup",
+        "hero",
+        "tool"
+      ],
+      "dialogue": [],
+      "movements": [],
+      "effects": {
+        "cup": {
+          "state": {
+            "before": [
+              "stable",
+              "thick",
+              "wet",
+              "wide_handle"
+            ],
+            "after": [
+              "shaped",
+              "stable",
+              "thick",
+              "wet",
+              "wide_handle"
+            ]
+          }
+        }
+      },
+      "dependencies": [
+        {
+          "kind": "required_flag",
+          "key": "goal_said",
+          "source_event": 2
+        },
+        {
+          "kind": "declared_flag_cause",
+          "key": "flag:goal_said",
+          "source_event": 2
+        },
+        {
+          "kind": "declared_entity_cause",
+          "key": "loc:tool",
+          "entity": "tool",
+          "field": "location",
+          "source_event": null
+        },
+        {
+          "kind": "declared_entity_cause",
+          "key": "state:cup:wet",
+          "entity": "cup",
+          "field": "state",
+          "source_event": null
+        }
+      ],
+      "global_contract": {
+        "requires": [
+          "goal_said"
+        ],
+        "excludes": [
+          "ended"
+        ],
+        "flags_added": [
+          "shaped"
+        ],
+        "flags_removed": []
+      },
+      "guard_reads_complete": false
+    },
+    {
+      "id": 4,
+      "kind": "slip",
+      "frame": {
+        "kind": "slip",
+        "actor": "hero",
+        "patient": "cup",
+        "instrument": "tool",
+        "destination": "",
+        "cause_ids": [
+          "flag:shaped",
+          "loc:tool",
+          "state:cup:wet"
+        ]
+      },
+      "narrated": true,
+      "text": "The shaping rib slipped. The cup was dented.",
+      "entity_tags": {
+        "cup": [
+          "causal_context",
+          "changed",
+          "frame.patient",
+          "mentioned",
+          "qa_context",
+          "state.add:dented"
+        ],
+        "hero": [
+          "frame.actor"
+        ],
+        "tool": [
+          "causal_context",
+          "frame.instrument",
+          "mentioned",
+          "qa_context"
+        ]
+      },
+      "tag_evidence": {
+        "hero": {
+          "frame.actor": [
+            "frame.actor"
+          ]
+        },
+        "cup": {
+          "frame.patient": [
+            "frame.patient"
+          ],
+          "mentioned": [
+            "trace.referents"
+          ],
+          "qa_context": [
+            "claim:accident"
+          ],
+          "causal_context": [
+            "cause:state:cup:wet"
+          ],
+          "changed": [
+            "replayed_entity_diff"
+          ],
+          "state.add:dented": [
+            "diff.state"
+          ]
+        },
+        "tool": {
+          "frame.instrument": [
+            "frame.instrument"
+          ],
+          "mentioned": [
+            "trace.referents"
+          ],
+          "qa_context": [
+            "claim:accident"
+          ],
+          "causal_context": [
+            "cause:loc:tool"
+          ]
+        }
+      },
+      "participants": [
+        "cup",
+        "hero",
+        "tool"
+      ],
+      "dialogue": [],
+      "movements": [],
+      "effects": {
+        "cup": {
+          "state": {
+            "before": [
+              "shaped",
+              "stable",
+              "thick",
+              "wet",
+              "wide_handle"
+            ],
+            "after": [
+              "dented",
+              "shaped",
+              "stable",
+              "thick",
+              "wet",
+              "wide_handle"
+            ]
+          }
+        }
+      },
+      "dependencies": [
+        {
+          "kind": "required_flag",
+          "key": "shaped",
+          "source_event": 3
+        },
+        {
+          "kind": "declared_flag_cause",
+          "key": "flag:shaped",
+          "source_event": 3
+        },
+        {
+          "kind": "declared_entity_cause",
+          "key": "loc:tool",
+          "entity": "tool",
+          "field": "location",
+          "source_event": null
+        },
+        {
+          "kind": "declared_entity_cause",
+          "key": "state:cup:wet",
+          "entity": "cup",
+          "field": "state",
+          "source_event": 3
+        }
+      ],
+      "global_contract": {
+        "requires": [
+          "shaped"
+        ],
+        "excludes": [
+          "ended"
+        ],
+        "flags_added": [
+          "slipped"
+        ],
+        "flags_removed": []
+      },
+      "guard_reads_complete": false
+    },
+    {
+      "id": 5,
+      "kind": "inspect",
+      "frame": {
+        "kind": "inspect",
+        "actor": "helper",
+        "patient": "cup",
+        "instrument": "",
+        "destination": "",
+        "cause_ids": [
+          "state:cup:dented",
+          "state:cup:thick",
+          "loc:helper"
+        ]
+      },
+      "narrated": true,
+      "text": "Mr Ivo said, \u201cThe cup's wall is thick.\u201d",
+      "entity_tags": {
+        "cup": [
+          "causal_context",
+          "frame.patient",
+          "mentioned",
+          "qa_context"
+        ],
+        "helper": [
+          "causal_context",
+          "frame.actor",
+          "mentioned",
+          "qa_context",
+          "speaker"
+        ],
+        "hero": [
+          "listener",
+          "qa_context"
+        ]
+      },
+      "tag_evidence": {
+        "helper": {
+          "frame.actor": [
+            "frame.actor"
+          ],
+          "speaker": [
+            "trace.speakers",
+            "dialogue.listener:helper:hero"
+          ],
+          "mentioned": [
+            "trace.referents"
+          ],
+          "qa_context": [
+            "claim:inspection"
+          ],
+          "causal_context": [
+            "cause:loc:helper"
+          ]
+        },
+        "cup": {
+          "frame.patient": [
+            "frame.patient"
+          ],
+          "mentioned": [
+            "trace.referents"
+          ],
+          "qa_context": [
+            "claim:inspection"
+          ],
+          "causal_context": [
+            "cause:state:cup:dented",
+            "cause:state:cup:thick"
+          ]
+        },
+        "hero": {
+          "listener": [
+            "dialogue.listener:helper:hero"
+          ],
+          "qa_context": [
+            "claim:inspection"
+          ]
+        }
+      },
+      "participants": [
+        "cup",
+        "helper",
+        "hero"
+      ],
+      "dialogue": [
+        {
+          "speaker": "helper",
+          "listener": "hero"
+        }
+      ],
+      "movements": [],
+      "effects": {},
+      "dependencies": [
+        {
+          "kind": "required_flag",
+          "key": "slipped",
+          "source_event": 4
+        },
+        {
+          "kind": "declared_entity_cause",
+          "key": "state:cup:dented",
+          "entity": "cup",
+          "field": "state",
+          "source_event": 4
+        },
+        {
+          "kind": "declared_entity_cause",
+          "key": "state:cup:thick",
+          "entity": "cup",
+          "field": "state",
+          "source_event": 4
+        },
+        {
+          "kind": "declared_entity_cause",
+          "key": "loc:helper",
+          "entity": "helper",
+          "field": "location",
+          "source_event": null
+        }
+      ],
+      "global_contract": {
+        "requires": [
+          "slipped"
+        ],
+        "excludes": [
+          "ended"
+        ],
+        "flags_added": [
+          "inspected"
+        ],
+        "flags_removed": []
+      },
+      "guard_reads_complete": false
+    },
+    {
+      "id": 6,
+      "kind": "consult",
+      "frame": {
+        "kind": "consult",
+        "actor": "grandpa",
+        "patient": "cup",
+        "instrument": "",
+        "destination": "",
+        "cause_ids": [
+          "flag:inspected",
+          "loc:grandpa"
+        ]
+      },
+      "narrated": true,
+      "text": "Grandpa Len said, \u201cI could hold a bowl with two hands.\u201d",
+      "entity_tags": {
+        "cup": [
+          "frame.patient",
+          "qa_context"
+        ],
+        "grandpa": [
+          "causal_context",
+          "frame.actor",
+          "mentioned",
+          "qa_context",
+          "speaker"
+        ],
+        "hero": [
+          "listener"
+        ]
+      },
+      "tag_evidence": {
+        "grandpa": {
+          "frame.actor": [
+            "frame.actor"
+          ],
+          "speaker": [
+            "trace.speakers",
+            "dialogue.listener:grandpa:hero"
+          ],
+          "mentioned": [
+            "trace.referents"
+          ],
+          "qa_context": [
+            "claim:consultation"
+          ],
+          "causal_context": [
+            "cause:loc:grandpa"
+          ]
+        },
+        "cup": {
+          "frame.patient": [
+            "frame.patient"
+          ],
+          "qa_context": [
+            "claim:consultation"
+          ]
+        },
+        "hero": {
+          "listener": [
+            "dialogue.listener:grandpa:hero"
+          ]
+        }
+      },
+      "participants": [
+        "cup",
+        "grandpa",
+        "hero"
+      ],
+      "dialogue": [
+        {
+          "speaker": "grandpa",
+          "listener": "hero"
+        }
+      ],
+      "movements": [],
+      "effects": {},
+      "dependencies": [
+        {
+          "kind": "required_flag",
+          "key": "inspected",
+          "source_event": 5
+        },
+        {
+          "kind": "declared_flag_cause",
+          "key": "flag:inspected",
+          "source_event": 5
+        },
+        {
+          "kind": "declared_entity_cause",
+          "key": "loc:grandpa",
+          "entity": "grandpa",
+          "field": "location",
+          "source_event": null
+        }
+      ],
+      "global_contract": {
+        "requires": [
+          "inspected"
+        ],
+        "excludes": [
+          "ended"
+        ],
+        "flags_added": [
+          "consulted"
+        ],
+        "flags_removed": []
+      },
+      "guard_reads_complete": false
+    },
+    {
+      "id": 7,
+      "kind": "fetch_sponge",
+      "frame": {
+        "kind": "fetch_sponge",
+        "actor": "hero",
+        "patient": "sponge",
+        "instrument": "",
+        "destination": "hero",
+        "cause_ids": [
+          "flag:inspected",
+          "loc:sponge",
+          "state:cup:dented"
+        ]
+      },
+      "narrated": false,
+      "text": "",
+      "entity_tags": {
+        "cup": [
+          "causal_context"
+        ],
+        "hero": [
+          "changed",
+          "destination_holder",
+          "frame.actor",
+          "frame.destination",
+          "state.add:hoped_to_smooth"
+        ],
+        "sponge": [
+          "causal_context",
+          "changed",
+          "frame.patient",
+          "moved"
+        ]
+      },
+      "tag_evidence": {
+        "hero": {
+          "frame.actor": [
+            "frame.actor"
+          ],
+          "frame.destination": [
+            "frame.destination"
+          ],
+          "changed": [
+            "replayed_entity_diff"
+          ],
+          "state.add:hoped_to_smooth": [
+            "diff.state"
+          ],
+          "destination_holder": [
+            "diff.location:sponge"
+          ]
+        },
+        "sponge": {
+          "frame.patient": [
+            "frame.patient"
+          ],
+          "causal_context": [
+            "cause:loc:sponge"
+          ],
+          "changed": [
+            "replayed_entity_diff"
+          ],
+          "moved": [
+            "diff.location"
+          ]
+        },
+        "cup": {
+          "causal_context": [
+            "cause:state:cup:dented"
+          ]
+        }
+      },
+      "participants": [
+        "hero",
+        "sponge"
+      ],
+      "dialogue": [],
+      "movements": [
+        {
+          "item": "sponge",
+          "source": "bench",
+          "destination": "hero",
+          "destination_holder": "hero"
+        }
+      ],
+      "effects": {
+        "hero": {
+          "state": {
+            "before": [],
+            "after": [
+              "hoped_to_smooth"
+            ]
+          }
+        },
+        "sponge": {
+          "location": {
+            "before": "bench",
+            "after": "hero"
+          }
+        }
+      },
+      "dependencies": [
+        {
+          "kind": "required_flag",
+          "key": "consulted",
+          "source_event": 6
+        },
+        {
+          "kind": "declared_flag_cause",
+          "key": "flag:inspected",
+          "source_event": 5
+        },
+        {
+          "kind": "declared_entity_cause",
+          "key": "loc:sponge",
+          "entity": "sponge",
+          "field": "location",
+          "source_event": null
+        },
+        {
+          "kind": "declared_entity_cause",
+          "key": "state:cup:dented",
+          "entity": "cup",
+          "field": "state",
+          "source_event": 4
+        }
+      ],
+      "global_contract": {
+        "requires": [
+          "consulted"
+        ],
+        "excludes": [
+          "ended"
+        ],
+        "flags_added": [
+          "sponge_fetched"
+        ],
+        "flags_removed": []
+      },
+      "guard_reads_complete": false
+    },
+    {
+      "id": 8,
+      "kind": "thumb",
+      "frame": {
+        "kind": "thumb",
+        "actor": "hero",
+        "patient": "cup",
+        "instrument": "sponge",
+        "destination": "",
+        "cause_ids": [
+          "flag:inspected",
+          "state:cup:dented",
+          "state:cup:thick",
+          "loc:sponge",
+          "hero.Care"
+        ]
+      },
+      "narrated": true,
+      "text": "Bea said, \u201cI would like a thumb rest.\u201d Using the sponge, Bea shaped the dent into a thumb rest.",
+      "entity_tags": {
+        "cup": [
+          "causal_context",
+          "changed",
+          "frame.patient",
+          "qa_context",
+          "state.add:safe_edges",
+          "state.add:thumb_rest",
+          "state.add:wall_checked"
+        ],
+        "helper": [
+          "listener"
+        ],
+        "hero": [
+          "causal_context",
+          "frame.actor",
+          "mentioned",
+          "qa_context",
+          "speaker"
+        ],
+        "sponge": [
+          "causal_context",
+          "frame.instrument",
+          "mentioned",
+          "qa_context"
+        ]
+      },
+      "tag_evidence": {
+        "hero": {
+          "frame.actor": [
+            "frame.actor"
+          ],
+          "speaker": [
+            "trace.speakers",
+            "dialogue.listener:hero:helper"
+          ],
+          "mentioned": [
+            "trace.referents"
+          ],
+          "qa_context": [
+            "claim:design"
+          ],
+          "causal_context": [
+            "cause:hero.Care"
+          ]
+        },
+        "cup": {
+          "frame.patient": [
+            "frame.patient"
+          ],
+          "qa_context": [
+            "claim:design"
+          ],
+          "causal_context": [
+            "cause:state:cup:dented",
+            "cause:state:cup:thick"
+          ],
+          "changed": [
+            "replayed_entity_diff"
+          ],
+          "state.add:safe_edges": [
+            "diff.state"
+          ],
+          "state.add:thumb_rest": [
+            "diff.state"
+          ],
+          "state.add:wall_checked": [
+            "diff.state"
+          ]
+        },
+        "sponge": {
+          "frame.instrument": [
+            "frame.instrument"
+          ],
+          "mentioned": [
+            "trace.referents"
+          ],
+          "qa_context": [
+            "claim:design"
+          ],
+          "causal_context": [
+            "cause:loc:sponge"
+          ]
+        },
+        "helper": {
+          "listener": [
+            "dialogue.listener:hero:helper"
+          ]
+        }
+      },
+      "participants": [
+        "cup",
+        "helper",
+        "hero",
+        "sponge"
+      ],
+      "dialogue": [
+        {
+          "speaker": "hero",
+          "listener": "helper"
+        }
+      ],
+      "movements": [],
+      "effects": {
+        "cup": {
+          "state": {
+            "before": [
+              "dented",
+              "shaped",
+              "stable",
+              "thick",
+              "wet",
+              "wide_handle"
+            ],
+            "after": [
+              "dented",
+              "safe_edges",
+              "shaped",
+              "stable",
+              "thick",
+              "thumb_rest",
+              "wall_checked",
+              "wet",
+              "wide_handle"
+            ]
+          }
+        }
+      },
+      "dependencies": [
+        {
+          "kind": "required_flag",
+          "key": "inspected",
+          "source_event": 5
+        },
+        {
+          "kind": "required_flag",
+          "key": "sponge_fetched",
+          "source_event": 7
+        },
+        {
+          "kind": "declared_flag_cause",
+          "key": "flag:inspected",
+          "source_event": 5
+        },
+        {
+          "kind": "declared_entity_cause",
+          "key": "state:cup:dented",
+          "entity": "cup",
+          "field": "state",
+          "source_event": 4
+        },
+        {
+          "kind": "declared_entity_cause",
+          "key": "state:cup:thick",
+          "entity": "cup",
+          "field": "state",
+          "source_event": 4
+        },
+        {
+          "kind": "declared_entity_cause",
+          "key": "loc:sponge",
+          "entity": "sponge",
+          "field": "location",
+          "source_event": 7
+        },
+        {
+          "kind": "declared_entity_cause",
+          "key": "hero.Care",
+          "entity": "hero",
+          "field": "memes",
+          "source_event": null
+        }
+      ],
+      "global_contract": {
+        "requires": [
+          "inspected",
+          "sponge_fetched"
+        ],
+        "excludes": [
+          "design_chosen",
+          "ended",
+          "smooth_design"
+        ],
+        "flags_added": [
+          "design_chosen",
+          "thumb_design",
+          "wall_checked"
+        ],
+        "flags_removed": []
+      },
+      "guard_reads_complete": false
+    },
+    {
+      "id": 9,
+      "kind": "return_rib",
+      "frame": {
+        "kind": "return_rib",
+        "actor": "hero",
+        "patient": "tool",
+        "instrument": "",
+        "destination": "helper",
+        "cause_ids": [
+          "flag:design_chosen",
+          "loc:tool",
+          "loc:helper"
+        ]
+      },
+      "narrated": false,
+      "text": "",
+      "entity_tags": {
+        "helper": [
+          "causal_context",
+          "destination_holder",
+          "frame.destination"
+        ],
+        "hero": [
+          "frame.actor",
+          "source_holder"
+        ],
+        "tool": [
+          "causal_context",
+          "changed",
+          "frame.patient",
+          "moved"
+        ]
+      },
+      "tag_evidence": {
+        "hero": {
+          "frame.actor": [
+            "frame.actor"
+          ],
+          "source_holder": [
+            "diff.location:tool"
+          ]
+        },
+        "tool": {
+          "frame.patient": [
+            "frame.patient"
+          ],
+          "causal_context": [
+            "cause:loc:tool"
+          ],
+          "changed": [
+            "replayed_entity_diff"
+          ],
+          "moved": [
+            "diff.location"
+          ]
+        },
+        "helper": {
+          "frame.destination": [
+            "frame.destination"
+          ],
+          "causal_context": [
+            "cause:loc:helper"
+          ],
+          "destination_holder": [
+            "diff.location:tool"
+          ]
+        }
+      },
+      "participants": [
+        "helper",
+        "hero",
+        "tool"
+      ],
+      "dialogue": [],
+      "movements": [
+        {
+          "item": "tool",
+          "source": "hero",
+          "destination": "helper",
+          "source_holder": "hero",
+          "destination_holder": "helper"
+        }
+      ],
+      "effects": {
+        "tool": {
+          "location": {
+            "before": "hero",
+            "after": "helper"
+          }
+        }
+      },
+      "dependencies": [
+        {
+          "kind": "required_flag",
+          "key": "design_chosen",
+          "source_event": 8
+        },
+        {
+          "kind": "declared_flag_cause",
+          "key": "flag:design_chosen",
+          "source_event": 8
+        },
+        {
+          "kind": "declared_entity_cause",
+          "key": "loc:tool",
+          "entity": "tool",
+          "field": "location",
+          "source_event": null
+        },
+        {
+          "kind": "declared_entity_cause",
+          "key": "loc:helper",
+          "entity": "helper",
+          "field": "location",
+          "source_event": null
+        }
+      ],
+      "global_contract": {
+        "requires": [
+          "design_chosen"
+        ],
+        "excludes": [
+          "ended"
+        ],
+        "flags_added": [
+          "rib_returned"
+        ],
+        "flags_removed": []
+      },
+      "guard_reads_complete": false
+    },
+    {
+      "id": 10,
+      "kind": "return_sponge",
+      "frame": {
+        "kind": "return_sponge",
+        "actor": "hero",
+        "patient": "sponge",
+        "instrument": "",
+        "destination": "bench",
+        "cause_ids": [
+          "flag:design_chosen",
+          "loc:sponge",
+          "loc:bench"
+        ]
+      },
+      "narrated": false,
+      "text": "",
+      "entity_tags": {
+        "bench": [
+          "causal_context",
+          "frame.destination"
+        ],
+        "hero": [
+          "frame.actor",
+          "source_holder"
+        ],
+        "sponge": [
+          "causal_context",
+          "changed",
+          "frame.patient",
+          "moved"
+        ]
+      },
+      "tag_evidence": {
+        "hero": {
+          "frame.actor": [
+            "frame.actor"
+          ],
+          "source_holder": [
+            "diff.location:sponge"
+          ]
+        },
+        "sponge": {
+          "frame.patient": [
+            "frame.patient"
+          ],
+          "causal_context": [
+            "cause:loc:sponge"
+          ],
+          "changed": [
+            "replayed_entity_diff"
+          ],
+          "moved": [
+            "diff.location"
+          ]
+        },
+        "bench": {
+          "frame.destination": [
+            "frame.destination"
+          ],
+          "causal_context": [
+            "cause:loc:bench"
+          ]
+        }
+      },
+      "participants": [
+        "bench",
+        "hero",
+        "sponge"
+      ],
+      "dialogue": [],
+      "movements": [
+        {
+          "item": "sponge",
+          "source": "hero",
+          "destination": "bench",
+          "source_holder": "hero"
+        }
+      ],
+      "effects": {
+        "sponge": {
+          "location": {
+            "before": "hero",
+            "after": "bench"
+          }
+        }
+      },
+      "dependencies": [
+        {
+          "kind": "required_flag",
+          "key": "design_chosen",
+          "source_event": 8
+        },
+        {
+          "kind": "declared_flag_cause",
+          "key": "flag:design_chosen",
+          "source_event": 8
+        },
+        {
+          "kind": "declared_entity_cause",
+          "key": "loc:sponge",
+          "entity": "sponge",
+          "field": "location",
+          "source_event": 7
+        },
+        {
+          "kind": "declared_entity_cause",
+          "key": "loc:bench",
+          "entity": "bench",
+          "field": "location",
+          "source_event": null
+        }
+      ],
+      "global_contract": {
+        "requires": [
+          "design_chosen"
+        ],
+        "excludes": [
+          "ended"
+        ],
+        "flags_added": [
+          "sponge_returned"
+        ],
+        "flags_removed": []
+      },
+      "guard_reads_complete": false
+    },
+    {
+      "id": 11,
+      "kind": "shelve",
+      "frame": {
+        "kind": "shelve",
+        "actor": "hero",
+        "patient": "cup",
+        "instrument": "",
+        "destination": "shelf",
+        "cause_ids": [
+          "flag:rib_returned",
+          "flag:sponge_returned",
+          "loc:cup"
+        ]
+      },
+      "narrated": false,
+      "text": "",
+      "entity_tags": {
+        "cup": [
+          "causal_context",
+          "changed",
+          "frame.patient",
+          "moved"
+        ],
+        "hero": [
+          "frame.actor"
+        ],
+        "shelf": [
+          "frame.destination"
+        ]
+      },
+      "tag_evidence": {
+        "hero": {
+          "frame.actor": [
+            "frame.actor"
+          ]
+        },
+        "cup": {
+          "frame.patient": [
+            "frame.patient"
+          ],
+          "causal_context": [
+            "cause:loc:cup"
+          ],
+          "changed": [
+            "replayed_entity_diff"
+          ],
+          "moved": [
+            "diff.location"
+          ]
+        },
+        "shelf": {
+          "frame.destination": [
+            "frame.destination"
+          ]
+        }
+      },
+      "participants": [
+        "cup",
+        "hero",
+        "shelf"
+      ],
+      "dialogue": [],
+      "movements": [
+        {
+          "item": "cup",
+          "source": "bench",
+          "destination": "shelf"
+        }
+      ],
+      "effects": {
+        "cup": {
+          "location": {
+            "before": "bench",
+            "after": "shelf"
+          }
+        }
+      },
+      "dependencies": [
+        {
+          "kind": "required_flag",
+          "key": "rib_returned",
+          "source_event": 9
+        },
+        {
+          "kind": "required_flag",
+          "key": "sponge_returned",
+          "source_event": 10
+        },
+        {
+          "kind": "declared_flag_cause",
+          "key": "flag:rib_returned",
+          "source_event": 9
+        },
+        {
+          "kind": "declared_flag_cause",
+          "key": "flag:sponge_returned",
+          "source_event": 10
+        },
+        {
+          "kind": "declared_entity_cause",
+          "key": "loc:cup",
+          "entity": "cup",
+          "field": "location",
+          "source_event": null
+        }
+      ],
+      "global_contract": {
+        "requires": [
+          "rib_returned",
+          "sponge_returned"
+        ],
+        "excludes": [
+          "ended"
+        ],
+        "flags_added": [
+          "shelved"
+        ],
+        "flags_removed": []
+      },
+      "guard_reads_complete": false
+    },
+    {
+      "id": 12,
+      "kind": "dry",
+      "frame": {
+        "kind": "dry",
+        "actor": "cup",
+        "patient": "cup",
+        "instrument": "",
+        "destination": "shelf",
+        "cause_ids": [
+          "flag:wall_checked",
+          "state:cup:wall_checked",
+          "state:cup:wet",
+          "loc:cup"
+        ]
+      },
+      "narrated": false,
+      "text": "",
+      "entity_tags": {
+        "cup": [
+          "causal_context",
+          "changed",
+          "frame.actor",
+          "frame.patient",
+          "state.add:dry",
+          "state.remove:wet"
+        ],
+        "shelf": [
+          "frame.destination"
+        ]
+      },
+      "tag_evidence": {
+        "cup": {
+          "frame.actor": [
+            "frame.actor"
+          ],
+          "frame.patient": [
+            "frame.patient"
+          ],
+          "causal_context": [
+            "cause:state:cup:wall_checked",
+            "cause:state:cup:wet",
+            "cause:loc:cup"
+          ],
+          "changed": [
+            "replayed_entity_diff"
+          ],
+          "state.add:dry": [
+            "diff.state"
+          ],
+          "state.remove:wet": [
+            "diff.state"
+          ]
+        },
+        "shelf": {
+          "frame.destination": [
+            "frame.destination"
+          ]
+        }
+      },
+      "participants": [
+        "cup",
+        "shelf"
+      ],
+      "dialogue": [],
+      "movements": [],
+      "effects": {
+        "cup": {
+          "state": {
+            "before": [
+              "dented",
+              "safe_edges",
+              "shaped",
+              "stable",
+              "thick",
+              "thumb_rest",
+              "wall_checked",
+              "wet",
+              "wide_handle"
+            ],
+            "after": [
+              "dented",
+              "dry",
+              "safe_edges",
+              "shaped",
+              "stable",
+              "thick",
+              "thumb_rest",
+              "wall_checked",
+              "wide_handle"
+            ]
+          }
+        }
+      },
+      "dependencies": [
+        {
+          "kind": "required_flag",
+          "key": "design_chosen",
+          "source_event": 8
+        },
+        {
+          "kind": "required_flag",
+          "key": "shelved",
+          "source_event": 11
+        },
+        {
+          "kind": "required_flag",
+          "key": "wall_checked",
+          "source_event": 8
+        },
+        {
+          "kind": "declared_flag_cause",
+          "key": "flag:wall_checked",
+          "source_event": 8
+        },
+        {
+          "kind": "declared_entity_cause",
+          "key": "state:cup:wall_checked",
+          "entity": "cup",
+          "field": "state",
+          "source_event": 8
+        },
+        {
+          "kind": "declared_entity_cause",
+          "key": "state:cup:wet",
+          "entity": "cup",
+          "field": "state",
+          "source_event": 8
+        },
+        {
+          "kind": "declared_entity_cause",
+          "key": "loc:cup",
+          "entity": "cup",
+          "field": "location",
+          "source_event": 11
+        }
+      ],
+      "global_contract": {
+        "requires": [
+          "design_chosen",
+          "shelved",
+          "wall_checked"
+        ],
+        "excludes": [
+          "ended"
+        ],
+        "flags_added": [
+          "dried"
+        ],
+        "flags_removed": []
+      },
+      "guard_reads_complete": false
+    },
+    {
+      "id": 13,
+      "kind": "load_bisque",
+      "frame": {
+        "kind": "load_bisque",
+        "actor": "helper",
+        "patient": "cup",
+        "instrument": "",
+        "destination": "kiln",
+        "cause_ids": [
+          "state:cup:dry",
+          "loc:cup",
+          "loc:kiln"
+        ]
+      },
+      "narrated": false,
+      "text": "",
+      "entity_tags": {
+        "cup": [
+          "causal_context",
+          "changed",
+          "frame.patient",
+          "moved"
+        ],
+        "helper": [
+          "frame.actor"
+        ],
+        "kiln": [
+          "causal_context",
+          "frame.destination"
+        ]
+      },
+      "tag_evidence": {
+        "helper": {
+          "frame.actor": [
+            "frame.actor"
+          ]
+        },
+        "cup": {
+          "frame.patient": [
+            "frame.patient"
+          ],
+          "causal_context": [
+            "cause:state:cup:dry",
+            "cause:loc:cup"
+          ],
+          "changed": [
+            "replayed_entity_diff"
+          ],
+          "moved": [
+            "diff.location"
+          ]
+        },
+        "kiln": {
+          "frame.destination": [
+            "frame.destination"
+          ],
+          "causal_context": [
+            "cause:loc:kiln"
+          ]
+        }
+      },
+      "participants": [
+        "cup",
+        "helper",
+        "kiln"
+      ],
+      "dialogue": [],
+      "movements": [
+        {
+          "item": "cup",
+          "source": "shelf",
+          "destination": "kiln"
+        }
+      ],
+      "effects": {
+        "cup": {
+          "location": {
+            "before": "shelf",
+            "after": "kiln"
+          }
+        }
+      },
+      "dependencies": [
+        {
+          "kind": "required_flag",
+          "key": "dried",
+          "source_event": 12
+        },
+        {
+          "kind": "declared_entity_cause",
+          "key": "state:cup:dry",
+          "entity": "cup",
+          "field": "state",
+          "source_event": 12
+        },
+        {
+          "kind": "declared_entity_cause",
+          "key": "loc:cup",
+          "entity": "cup",
+          "field": "location",
+          "source_event": 11
+        },
+        {
+          "kind": "declared_entity_cause",
+          "key": "loc:kiln",
+          "entity": "kiln",
+          "field": "location",
+          "source_event": null
+        }
+      ],
+      "global_contract": {
+        "requires": [
+          "dried"
+        ],
+        "excludes": [
+          "ended"
+        ],
+        "flags_added": [
+          "bisque_loaded"
+        ],
+        "flags_removed": []
+      },
+      "guard_reads_complete": false
+    },
+    {
+      "id": 14,
+      "kind": "bisque",
+      "frame": {
+        "kind": "bisque",
+        "actor": "helper",
+        "patient": "cup",
+        "instrument": "kiln",
+        "destination": "",
+        "cause_ids": [
+          "state:cup:dry",
+          "loc:cup",
+          "loc:helper"
+        ]
+      },
+      "narrated": false,
+      "text": "",
+      "entity_tags": {
+        "cup": [
+          "causal_context",
+          "changed",
+          "frame.patient",
+          "state.add:bisque",
+          "state.add:hot"
+        ],
+        "helper": [
+          "causal_context",
+          "frame.actor"
+        ],
+        "kiln": [
+          "frame.instrument"
+        ]
+      },
+      "tag_evidence": {
+        "helper": {
+          "frame.actor": [
+            "frame.actor"
+          ],
+          "causal_context": [
+            "cause:loc:helper"
+          ]
+        },
+        "cup": {
+          "frame.patient": [
+            "frame.patient"
+          ],
+          "causal_context": [
+            "cause:state:cup:dry",
+            "cause:loc:cup"
+          ],
+          "changed": [
+            "replayed_entity_diff"
+          ],
+          "state.add:bisque": [
+            "diff.state"
+          ],
+          "state.add:hot": [
+            "diff.state"
+          ]
+        },
+        "kiln": {
+          "frame.instrument": [
+            "frame.instrument"
+          ]
+        }
+      },
+      "participants": [
+        "cup",
+        "helper",
+        "kiln"
+      ],
+      "dialogue": [],
+      "movements": [],
+      "effects": {
+        "cup": {
+          "state": {
+            "before": [
+              "dented",
+              "dry",
+              "safe_edges",
+              "shaped",
+              "stable",
+              "thick",
+              "thumb_rest",
+              "wall_checked",
+              "wide_handle"
+            ],
+            "after": [
+              "bisque",
+              "dented",
+              "dry",
+              "hot",
+              "safe_edges",
+              "shaped",
+              "stable",
+              "thick",
+              "thumb_rest",
+              "wall_checked",
+              "wide_handle"
+            ]
+          }
+        }
+      },
+      "dependencies": [
+        {
+          "kind": "required_flag",
+          "key": "bisque_loaded",
+          "source_event": 13
+        },
+        {
+          "kind": "declared_entity_cause",
+          "key": "state:cup:dry",
+          "entity": "cup",
+          "field": "state",
+          "source_event": 12
+        },
+        {
+          "kind": "declared_entity_cause",
+          "key": "loc:cup",
+          "entity": "cup",
+          "field": "location",
+          "source_event": 13
+        },
+        {
+          "kind": "declared_entity_cause",
+          "key": "loc:helper",
+          "entity": "helper",
+          "field": "location",
+          "source_event": null
+        }
+      ],
+      "global_contract": {
+        "requires": [
+          "bisque_loaded"
+        ],
+        "excludes": [
+          "ended"
+        ],
+        "flags_added": [
+          "bisqued"
+        ],
+        "flags_removed": []
+      },
+      "guard_reads_complete": false
+    },
+    {
+      "id": 15,
+      "kind": "cool_bisque",
+      "frame": {
+        "kind": "cool_bisque",
+        "actor": "cup",
+        "patient": "cup",
+        "instrument": "kiln",
+        "destination": "",
+        "cause_ids": [
+          "flag:bisqued",
+          "state:cup:hot",
+          "loc:cup"
+        ]
+      },
+      "narrated": false,
+      "text": "",
+      "entity_tags": {
+        "cup": [
+          "causal_context",
+          "changed",
+          "frame.actor",
+          "frame.patient",
+          "state.add:cool",
+          "state.remove:hot"
+        ],
+        "kiln": [
+          "frame.instrument"
+        ]
+      },
+      "tag_evidence": {
+        "cup": {
+          "frame.actor": [
+            "frame.actor"
+          ],
+          "frame.patient": [
+            "frame.patient"
+          ],
+          "causal_context": [
+            "cause:state:cup:hot",
+            "cause:loc:cup"
+          ],
+          "changed": [
+            "replayed_entity_diff"
+          ],
+          "state.add:cool": [
+            "diff.state"
+          ],
+          "state.remove:hot": [
+            "diff.state"
+          ]
+        },
+        "kiln": {
+          "frame.instrument": [
+            "frame.instrument"
+          ]
+        }
+      },
+      "participants": [
+        "cup",
+        "kiln"
+      ],
+      "dialogue": [],
+      "movements": [],
+      "effects": {
+        "cup": {
+          "state": {
+            "before": [
+              "bisque",
+              "dented",
+              "dry",
+              "hot",
+              "safe_edges",
+              "shaped",
+              "stable",
+              "thick",
+              "thumb_rest",
+              "wall_checked",
+              "wide_handle"
+            ],
+            "after": [
+              "bisque",
+              "cool",
+              "dented",
+              "dry",
+              "safe_edges",
+              "shaped",
+              "stable",
+              "thick",
+              "thumb_rest",
+              "wall_checked",
+              "wide_handle"
+            ]
+          }
+        }
+      },
+      "dependencies": [
+        {
+          "kind": "required_flag",
+          "key": "bisqued",
+          "source_event": 14
+        },
+        {
+          "kind": "declared_flag_cause",
+          "key": "flag:bisqued",
+          "source_event": 14
+        },
+        {
+          "kind": "declared_entity_cause",
+          "key": "state:cup:hot",
+          "entity": "cup",
+          "field": "state",
+          "source_event": 14
+        },
+        {
+          "kind": "declared_entity_cause",
+          "key": "loc:cup",
+          "entity": "cup",
+          "field": "location",
+          "source_event": 13
+        }
+      ],
+      "global_contract": {
+        "requires": [
+          "bisqued"
+        ],
+        "excludes": [
+          "ended"
+        ],
+        "flags_added": [
+          "bisque_cooled"
+        ],
+        "flags_removed": []
+      },
+      "guard_reads_complete": false
+    },
+    {
+      "id": 16,
+      "kind": "unload_bisque",
+      "frame": {
+        "kind": "unload_bisque",
+        "actor": "helper",
+        "patient": "cup",
+        "instrument": "",
+        "destination": "bench",
+        "cause_ids": [
+          "flag:bisque_cooled",
+          "state:cup:cool",
+          "loc:cup"
+        ]
+      },
+      "narrated": false,
+      "text": "",
+      "entity_tags": {
+        "bench": [
+          "frame.destination"
+        ],
+        "cup": [
+          "causal_context",
+          "changed",
+          "frame.patient",
+          "moved"
+        ],
+        "helper": [
+          "frame.actor"
+        ]
+      },
+      "tag_evidence": {
+        "helper": {
+          "frame.actor": [
+            "frame.actor"
+          ]
+        },
+        "cup": {
+          "frame.patient": [
+            "frame.patient"
+          ],
+          "causal_context": [
+            "cause:state:cup:cool",
+            "cause:loc:cup"
+          ],
+          "changed": [
+            "replayed_entity_diff"
+          ],
+          "moved": [
+            "diff.location"
+          ]
+        },
+        "bench": {
+          "frame.destination": [
+            "frame.destination"
+          ]
+        }
+      },
+      "participants": [
+        "bench",
+        "cup",
+        "helper"
+      ],
+      "dialogue": [],
+      "movements": [
+        {
+          "item": "cup",
+          "source": "kiln",
+          "destination": "bench"
+        }
+      ],
+      "effects": {
+        "cup": {
+          "location": {
+            "before": "kiln",
+            "after": "bench"
+          }
+        }
+      },
+      "dependencies": [
+        {
+          "kind": "required_flag",
+          "key": "bisque_cooled",
+          "source_event": 15
+        },
+        {
+          "kind": "declared_flag_cause",
+          "key": "flag:bisque_cooled",
+          "source_event": 15
+        },
+        {
+          "kind": "declared_entity_cause",
+          "key": "state:cup:cool",
+          "entity": "cup",
+          "field": "state",
+          "source_event": 15
+        },
+        {
+          "kind": "declared_entity_cause",
+          "key": "loc:cup",
+          "entity": "cup",
+          "field": "location",
+          "source_event": 13
+        }
+      ],
+      "global_contract": {
+        "requires": [
+          "bisque_cooled"
+        ],
+        "excludes": [
+          "ended"
+        ],
+        "flags_added": [
+          "bisque_unloaded"
+        ],
+        "flags_removed": []
+      },
+      "guard_reads_complete": false
+    },
+    {
+      "id": 17,
+      "kind": "glaze",
+      "frame": {
+        "kind": "glaze",
+        "actor": "hero",
+        "patient": "cup",
+        "instrument": "blue_glaze",
+        "destination": "",
+        "cause_ids": [
+          "state:cup:bisque",
+          "loc:cup",
+          "loc:blue_glaze"
+        ]
+      },
+      "narrated": false,
+      "text": "",
+      "entity_tags": {
+        "blue_glaze": [
+          "causal_context",
+          "frame.instrument"
+        ],
+        "cup": [
+          "causal_context",
+          "changed",
+          "frame.patient",
+          "state.add:blue",
+          "state.add:glazed"
+        ],
+        "hero": [
+          "frame.actor"
+        ]
+      },
+      "tag_evidence": {
+        "hero": {
+          "frame.actor": [
+            "frame.actor"
+          ]
+        },
+        "cup": {
+          "frame.patient": [
+            "frame.patient"
+          ],
+          "causal_context": [
+            "cause:state:cup:bisque",
+            "cause:loc:cup"
+          ],
+          "changed": [
+            "replayed_entity_diff"
+          ],
+          "state.add:blue": [
+            "diff.state"
+          ],
+          "state.add:glazed": [
+            "diff.state"
+          ]
+        },
+        "blue_glaze": {
+          "frame.instrument": [
+            "frame.instrument"
+          ],
+          "causal_context": [
+            "cause:loc:blue_glaze"
+          ]
+        }
+      },
+      "participants": [
+        "blue_glaze",
+        "cup",
+        "hero"
+      ],
+      "dialogue": [],
+      "movements": [],
+      "effects": {
+        "cup": {
+          "state": {
+            "before": [
+              "bisque",
+              "cool",
+              "dented",
+              "dry",
+              "safe_edges",
+              "shaped",
+              "stable",
+              "thick",
+              "thumb_rest",
+              "wall_checked",
+              "wide_handle"
+            ],
+            "after": [
+              "bisque",
+              "blue",
+              "cool",
+              "dented",
+              "dry",
+              "glazed",
+              "safe_edges",
+              "shaped",
+              "stable",
+              "thick",
+              "thumb_rest",
+              "wall_checked",
+              "wide_handle"
+            ]
+          }
+        }
+      },
+      "dependencies": [
+        {
+          "kind": "required_flag",
+          "key": "bisque_unloaded",
+          "source_event": 16
+        },
+        {
+          "kind": "declared_entity_cause",
+          "key": "state:cup:bisque",
+          "entity": "cup",
+          "field": "state",
+          "source_event": 15
+        },
+        {
+          "kind": "declared_entity_cause",
+          "key": "loc:cup",
+          "entity": "cup",
+          "field": "location",
+          "source_event": 16
+        },
+        {
+          "kind": "declared_entity_cause",
+          "key": "loc:blue_glaze",
+          "entity": "blue_glaze",
+          "field": "location",
+          "source_event": null
+        }
+      ],
+      "global_contract": {
+        "requires": [
+          "bisque_unloaded"
+        ],
+        "excludes": [
+          "ended"
+        ],
+        "flags_added": [
+          "glaze_done"
+        ],
+        "flags_removed": []
+      },
+      "guard_reads_complete": false
+    },
+    {
+      "id": 18,
+      "kind": "load_final",
+      "frame": {
+        "kind": "load_final",
+        "actor": "helper",
+        "patient": "cup",
+        "instrument": "",
+        "destination": "kiln",
+        "cause_ids": [
+          "state:cup:glazed",
+          "loc:cup",
+          "loc:kiln"
+        ]
+      },
+      "narrated": false,
+      "text": "",
+      "entity_tags": {
+        "cup": [
+          "causal_context",
+          "changed",
+          "frame.patient",
+          "moved"
+        ],
+        "helper": [
+          "frame.actor"
+        ],
+        "kiln": [
+          "causal_context",
+          "frame.destination"
+        ]
+      },
+      "tag_evidence": {
+        "helper": {
+          "frame.actor": [
+            "frame.actor"
+          ]
+        },
+        "cup": {
+          "frame.patient": [
+            "frame.patient"
+          ],
+          "causal_context": [
+            "cause:state:cup:glazed",
+            "cause:loc:cup"
+          ],
+          "changed": [
+            "replayed_entity_diff"
+          ],
+          "moved": [
+            "diff.location"
+          ]
+        },
+        "kiln": {
+          "frame.destination": [
+            "frame.destination"
+          ],
+          "causal_context": [
+            "cause:loc:kiln"
+          ]
+        }
+      },
+      "participants": [
+        "cup",
+        "helper",
+        "kiln"
+      ],
+      "dialogue": [],
+      "movements": [
+        {
+          "item": "cup",
+          "source": "bench",
+          "destination": "kiln"
+        }
+      ],
+      "effects": {
+        "cup": {
+          "location": {
+            "before": "bench",
+            "after": "kiln"
+          }
+        }
+      },
+      "dependencies": [
+        {
+          "kind": "required_flag",
+          "key": "glaze_done",
+          "source_event": 17
+        },
+        {
+          "kind": "declared_entity_cause",
+          "key": "state:cup:glazed",
+          "entity": "cup",
+          "field": "state",
+          "source_event": 17
+        },
+        {
+          "kind": "declared_entity_cause",
+          "key": "loc:cup",
+          "entity": "cup",
+          "field": "location",
+          "source_event": 16
+        },
+        {
+          "kind": "declared_entity_cause",
+          "key": "loc:kiln",
+          "entity": "kiln",
+          "field": "location",
+          "source_event": null
+        }
+      ],
+      "global_contract": {
+        "requires": [
+          "glaze_done"
+        ],
+        "excludes": [
+          "ended"
+        ],
+        "flags_added": [
+          "final_loaded"
+        ],
+        "flags_removed": []
+      },
+      "guard_reads_complete": false
+    },
+    {
+      "id": 19,
+      "kind": "fire",
+      "frame": {
+        "kind": "fire",
+        "actor": "helper",
+        "patient": "cup",
+        "instrument": "kiln",
+        "destination": "",
+        "cause_ids": [
+          "state:cup:glazed",
+          "loc:cup",
+          "loc:helper"
+        ]
+      },
+      "narrated": false,
+      "text": "",
+      "entity_tags": {
+        "cup": [
+          "causal_context",
+          "changed",
+          "frame.patient",
+          "state.add:fired",
+          "state.add:hot",
+          "state.remove:cool"
+        ],
+        "helper": [
+          "causal_context",
+          "frame.actor"
+        ],
+        "kiln": [
+          "frame.instrument"
+        ]
+      },
+      "tag_evidence": {
+        "helper": {
+          "frame.actor": [
+            "frame.actor"
+          ],
+          "causal_context": [
+            "cause:loc:helper"
+          ]
+        },
+        "cup": {
+          "frame.patient": [
+            "frame.patient"
+          ],
+          "causal_context": [
+            "cause:state:cup:glazed",
+            "cause:loc:cup"
+          ],
+          "changed": [
+            "replayed_entity_diff"
+          ],
+          "state.add:fired": [
+            "diff.state"
+          ],
+          "state.add:hot": [
+            "diff.state"
+          ],
+          "state.remove:cool": [
+            "diff.state"
+          ]
+        },
+        "kiln": {
+          "frame.instrument": [
+            "frame.instrument"
+          ]
+        }
+      },
+      "participants": [
+        "cup",
+        "helper",
+        "kiln"
+      ],
+      "dialogue": [],
+      "movements": [],
+      "effects": {
+        "cup": {
+          "state": {
+            "before": [
+              "bisque",
+              "blue",
+              "cool",
+              "dented",
+              "dry",
+              "glazed",
+              "safe_edges",
+              "shaped",
+              "stable",
+              "thick",
+              "thumb_rest",
+              "wall_checked",
+              "wide_handle"
+            ],
+            "after": [
+              "bisque",
+              "blue",
+              "dented",
+              "dry",
+              "fired",
+              "glazed",
+              "hot",
+              "safe_edges",
+              "shaped",
+              "stable",
+              "thick",
+              "thumb_rest",
+              "wall_checked",
+              "wide_handle"
+            ]
+          }
+        }
+      },
+      "dependencies": [
+        {
+          "kind": "required_flag",
+          "key": "final_loaded",
+          "source_event": 18
+        },
+        {
+          "kind": "declared_entity_cause",
+          "key": "state:cup:glazed",
+          "entity": "cup",
+          "field": "state",
+          "source_event": 17
+        },
+        {
+          "kind": "declared_entity_cause",
+          "key": "loc:cup",
+          "entity": "cup",
+          "field": "location",
+          "source_event": 18
+        },
+        {
+          "kind": "declared_entity_cause",
+          "key": "loc:helper",
+          "entity": "helper",
+          "field": "location",
+          "source_event": null
+        }
+      ],
+      "global_contract": {
+        "requires": [
+          "final_loaded"
+        ],
+        "excludes": [
+          "ended"
+        ],
+        "flags_added": [
+          "fire_done"
+        ],
+        "flags_removed": []
+      },
+      "guard_reads_complete": false
+    },
+    {
+      "id": 20,
+      "kind": "cool_final",
+      "frame": {
+        "kind": "cool_final",
+        "actor": "cup",
+        "patient": "cup",
+        "instrument": "kiln",
+        "destination": "",
+        "cause_ids": [
+          "state:cup:fired",
+          "state:cup:hot",
+          "loc:cup"
+        ]
+      },
+      "narrated": false,
+      "text": "",
+      "entity_tags": {
+        "cup": [
+          "causal_context",
+          "changed",
+          "frame.actor",
+          "frame.patient",
+          "state.add:cool",
+          "state.remove:hot"
+        ],
+        "kiln": [
+          "frame.instrument"
+        ]
+      },
+      "tag_evidence": {
+        "cup": {
+          "frame.actor": [
+            "frame.actor"
+          ],
+          "frame.patient": [
+            "frame.patient"
+          ],
+          "causal_context": [
+            "cause:state:cup:fired",
+            "cause:state:cup:hot",
+            "cause:loc:cup"
+          ],
+          "changed": [
+            "replayed_entity_diff"
+          ],
+          "state.add:cool": [
+            "diff.state"
+          ],
+          "state.remove:hot": [
+            "diff.state"
+          ]
+        },
+        "kiln": {
+          "frame.instrument": [
+            "frame.instrument"
+          ]
+        }
+      },
+      "participants": [
+        "cup",
+        "kiln"
+      ],
+      "dialogue": [],
+      "movements": [],
+      "effects": {
+        "cup": {
+          "state": {
+            "before": [
+              "bisque",
+              "blue",
+              "dented",
+              "dry",
+              "fired",
+              "glazed",
+              "hot",
+              "safe_edges",
+              "shaped",
+              "stable",
+              "thick",
+              "thumb_rest",
+              "wall_checked",
+              "wide_handle"
+            ],
+            "after": [
+              "bisque",
+              "blue",
+              "cool",
+              "dented",
+              "dry",
+              "fired",
+              "glazed",
+              "safe_edges",
+              "shaped",
+              "stable",
+              "thick",
+              "thumb_rest",
+              "wall_checked",
+              "wide_handle"
+            ]
+          }
+        }
+      },
+      "dependencies": [
+        {
+          "kind": "required_flag",
+          "key": "fire_done",
+          "source_event": 19
+        },
+        {
+          "kind": "declared_entity_cause",
+          "key": "state:cup:fired",
+          "entity": "cup",
+          "field": "state",
+          "source_event": 19
+        },
+        {
+          "kind": "declared_entity_cause",
+          "key": "state:cup:hot",
+          "entity": "cup",
+          "field": "state",
+          "source_event": 19
+        },
+        {
+          "kind": "declared_entity_cause",
+          "key": "loc:cup",
+          "entity": "cup",
+          "field": "location",
+          "source_event": 18
+        }
+      ],
+      "global_contract": {
+        "requires": [
+          "fire_done"
+        ],
+        "excludes": [
+          "ended"
+        ],
+        "flags_added": [
+          "final_cooled"
+        ],
+        "flags_removed": []
+      },
+      "guard_reads_complete": false
+    },
+    {
+      "id": 21,
+      "kind": "deliver",
+      "frame": {
+        "kind": "deliver",
+        "actor": "helper",
+        "patient": "cup",
+        "instrument": "",
+        "destination": "hero",
+        "cause_ids": [
+          "flag:final_cooled",
+          "state:cup:cool",
+          "loc:cup",
+          "loc:hero"
+        ]
+      },
+      "narrated": true,
+      "text": "Mr Ivo fired the cup twice. The cup was cool.",
+      "entity_tags": {
+        "cup": [
+          "causal_context",
+          "changed",
+          "frame.patient",
+          "mentioned",
+          "moved",
+          "qa_context"
+        ],
+        "helper": [
+          "frame.actor",
+          "mentioned",
+          "qa_context"
+        ],
+        "hero": [
+          "causal_context",
+          "destination_holder",
+          "frame.destination"
+        ]
+      },
+      "tag_evidence": {
+        "helper": {
+          "frame.actor": [
+            "frame.actor"
+          ],
+          "mentioned": [
+            "trace.referents"
+          ],
+          "qa_context": [
+            "claim:firing"
+          ]
+        },
+        "cup": {
+          "frame.patient": [
+            "frame.patient"
+          ],
+          "mentioned": [
+            "trace.referents"
+          ],
+          "qa_context": [
+            "claim:firing"
+          ],
+          "causal_context": [
+            "cause:state:cup:cool",
+            "cause:loc:cup"
+          ],
+          "changed": [
+            "replayed_entity_diff"
+          ],
+          "moved": [
+            "diff.location"
+          ]
+        },
+        "hero": {
+          "frame.destination": [
+            "frame.destination"
+          ],
+          "causal_context": [
+            "cause:loc:hero"
+          ],
+          "destination_holder": [
+            "diff.location:cup"
+          ]
+        }
+      },
+      "participants": [
+        "cup",
+        "helper",
+        "hero"
+      ],
+      "dialogue": [],
+      "movements": [
+        {
+          "item": "cup",
+          "source": "kiln",
+          "destination": "hero",
+          "destination_holder": "hero"
+        }
+      ],
+      "effects": {
+        "cup": {
+          "location": {
+            "before": "kiln",
+            "after": "hero"
+          }
+        }
+      },
+      "dependencies": [
+        {
+          "kind": "required_flag",
+          "key": "final_cooled",
+          "source_event": 20
+        },
+        {
+          "kind": "declared_flag_cause",
+          "key": "flag:final_cooled",
+          "source_event": 20
+        },
+        {
+          "kind": "declared_entity_cause",
+          "key": "state:cup:cool",
+          "entity": "cup",
+          "field": "state",
+          "source_event": 20
+        },
+        {
+          "kind": "declared_entity_cause",
+          "key": "loc:cup",
+          "entity": "cup",
+          "field": "location",
+          "source_event": 18
+        },
+        {
+          "kind": "declared_entity_cause",
+          "key": "loc:hero",
+          "entity": "hero",
+          "field": "location",
+          "source_event": null
+        }
+      ],
+      "global_contract": {
+        "requires": [
+          "final_cooled"
+        ],
+        "excludes": [
+          "ended"
+        ],
+        "flags_added": [
+          "collected"
+        ],
+        "flags_removed": []
+      },
+      "guard_reads_complete": false
+    },
+    {
+      "id": 22,
+      "kind": "give",
+      "frame": {
+        "kind": "give",
+        "actor": "hero",
+        "patient": "cup",
+        "instrument": "",
+        "destination": "grandpa",
+        "cause_ids": [
+          "state:cup:fired",
+          "state:cup:safe_edges",
+          "loc:cup",
+          "loc:grandpa"
+        ]
+      },
+      "narrated": true,
+      "text": "Bea handed the cup to Grandpa Len.",
+      "entity_tags": {
+        "cup": [
+          "causal_context",
+          "changed",
+          "frame.patient",
+          "mentioned",
+          "moved"
+        ],
+        "grandpa": [
+          "causal_context",
+          "destination_holder",
+          "frame.destination",
+          "mentioned"
+        ],
+        "hero": [
+          "frame.actor",
+          "mentioned",
+          "source_holder"
+        ]
+      },
+      "tag_evidence": {
+        "hero": {
+          "frame.actor": [
+            "frame.actor"
+          ],
+          "mentioned": [
+            "trace.referents"
+          ],
+          "source_holder": [
+            "diff.location:cup"
+          ]
+        },
+        "cup": {
+          "frame.patient": [
+            "frame.patient"
+          ],
+          "mentioned": [
+            "trace.referents"
+          ],
+          "causal_context": [
+            "cause:state:cup:fired",
+            "cause:state:cup:safe_edges",
+            "cause:loc:cup"
+          ],
+          "changed": [
+            "replayed_entity_diff"
+          ],
+          "moved": [
+            "diff.location"
+          ]
+        },
+        "grandpa": {
+          "frame.destination": [
+            "frame.destination"
+          ],
+          "mentioned": [
+            "trace.referents"
+          ],
+          "causal_context": [
+            "cause:loc:grandpa"
+          ],
+          "destination_holder": [
+            "diff.location:cup"
+          ]
+        }
+      },
+      "participants": [
+        "cup",
+        "grandpa",
+        "hero"
+      ],
+      "dialogue": [],
+      "movements": [
+        {
+          "item": "cup",
+          "source": "hero",
+          "destination": "grandpa",
+          "source_holder": "hero",
+          "destination_holder": "grandpa"
+        }
+      ],
+      "effects": {
+        "cup": {
+          "location": {
+            "before": "hero",
+            "after": "grandpa"
+          }
+        }
+      },
+      "dependencies": [
+        {
+          "kind": "required_flag",
+          "key": "collected",
+          "source_event": 21
+        },
+        {
+          "kind": "declared_entity_cause",
+          "key": "state:cup:fired",
+          "entity": "cup",
+          "field": "state",
+          "source_event": 20
+        },
+        {
+          "kind": "declared_entity_cause",
+          "key": "state:cup:safe_edges",
+          "entity": "cup",
+          "field": "state",
+          "source_event": 20
+        },
+        {
+          "kind": "declared_entity_cause",
+          "key": "loc:cup",
+          "entity": "cup",
+          "field": "location",
+          "source_event": 21
+        },
+        {
+          "kind": "declared_entity_cause",
+          "key": "loc:grandpa",
+          "entity": "grandpa",
+          "field": "location",
+          "source_event": null
+        }
+      ],
+      "global_contract": {
+        "requires": [
+          "collected"
+        ],
+        "excludes": [
+          "ended"
+        ],
+        "flags_added": [
+          "gifted"
+        ],
+        "flags_removed": []
+      },
+      "guard_reads_complete": false
+    },
+    {
+      "id": 23,
+      "kind": "use",
+      "frame": {
+        "kind": "use",
+        "actor": "grandpa",
+        "patient": "cup",
+        "instrument": "teapot",
+        "destination": "",
+        "cause_ids": [
+          "flag:gifted",
+          "state:cup:fired",
+          "loc:cup",
+          "state:teapot:tea"
+        ]
+      },
+      "narrated": true,
+      "text": "Grandpa Len poured tea into the cup.",
+      "entity_tags": {
+        "cup": [
+          "causal_context",
+          "changed",
+          "frame.patient",
+          "mentioned",
+          "qa_context",
+          "state.add:tea"
+        ],
+        "grandpa": [
+          "frame.actor",
+          "mentioned",
+          "qa_context"
+        ],
+        "teapot": [
+          "causal_context",
+          "changed",
+          "frame.instrument",
+          "state.remove:tea"
+        ]
+      },
+      "tag_evidence": {
+        "grandpa": {
+          "frame.actor": [
+            "frame.actor"
+          ],
+          "mentioned": [
+            "trace.referents"
+          ],
+          "qa_context": [
+            "claim:tea"
+          ]
+        },
+        "cup": {
+          "frame.patient": [
+            "frame.patient"
+          ],
+          "mentioned": [
+            "trace.referents"
+          ],
+          "qa_context": [
+            "claim:tea"
+          ],
+          "causal_context": [
+            "cause:state:cup:fired",
+            "cause:loc:cup"
+          ],
+          "changed": [
+            "replayed_entity_diff"
+          ],
+          "state.add:tea": [
+            "diff.state"
+          ]
+        },
+        "teapot": {
+          "frame.instrument": [
+            "frame.instrument"
+          ],
+          "causal_context": [
+            "cause:state:teapot:tea"
+          ],
+          "changed": [
+            "replayed_entity_diff"
+          ],
+          "state.remove:tea": [
+            "diff.state"
+          ]
+        }
+      },
+      "participants": [
+        "cup",
+        "grandpa",
+        "teapot"
+      ],
+      "dialogue": [],
+      "movements": [],
+      "effects": {
+        "cup": {
+          "state": {
+            "before": [
+              "bisque",
+              "blue",
+              "cool",
+              "dented",
+              "dry",
+              "fired",
+              "glazed",
+              "safe_edges",
+              "shaped",
+              "stable",
+              "thick",
+              "thumb_rest",
+              "wall_checked",
+              "wide_handle"
+            ],
+            "after": [
+              "bisque",
+              "blue",
+              "cool",
+              "dented",
+              "dry",
+              "fired",
+              "glazed",
+              "safe_edges",
+              "shaped",
+              "stable",
+              "tea",
+              "thick",
+              "thumb_rest",
+              "wall_checked",
+              "wide_handle"
+            ]
+          }
+        },
+        "teapot": {
+          "state": {
+            "before": [
+              "tea"
+            ],
+            "after": []
+          }
+        }
+      },
+      "dependencies": [
+        {
+          "kind": "required_flag",
+          "key": "gifted",
+          "source_event": 22
+        },
+        {
+          "kind": "declared_flag_cause",
+          "key": "flag:gifted",
+          "source_event": 22
+        },
+        {
+          "kind": "declared_entity_cause",
+          "key": "state:cup:fired",
+          "entity": "cup",
+          "field": "state",
+          "source_event": 20
+        },
+        {
+          "kind": "declared_entity_cause",
+          "key": "loc:cup",
+          "entity": "cup",
+          "field": "location",
+          "source_event": 22
+        },
+        {
+          "kind": "declared_entity_cause",
+          "key": "state:teapot:tea",
+          "entity": "teapot",
+          "field": "state",
+          "source_event": null
+        }
+      ],
+      "global_contract": {
+        "requires": [
+          "gifted"
+        ],
+        "excludes": [
+          "ended"
+        ],
+        "flags_added": [
+          "tea_served"
+        ],
+        "flags_removed": []
+      },
+      "guard_reads_complete": false
+    },
+    {
+      "id": 24,
+      "kind": "ending",
+      "frame": {
+        "kind": "ending",
+        "actor": "grandpa",
+        "patient": "cup",
+        "instrument": "",
+        "destination": "",
+        "cause_ids": [
+          "state:cup:tea",
+          "state:cup:fired",
+          "loc:cup",
+          "loc:tool",
+          "loc:sponge"
+        ]
+      },
+      "narrated": true,
+      "text": "Grandpa Len's thumb rested in the thumb rest.",
+      "entity_tags": {
+        "cup": [
+          "causal_context",
+          "frame.patient",
+          "qa_context"
+        ],
+        "grandpa": [
+          "changed",
+          "frame.actor",
+          "mentioned",
+          "qa_context",
+          "state.add:thumb_in_rest"
+        ],
+        "sponge": [
+          "causal_context"
+        ],
+        "tool": [
+          "causal_context"
+        ]
+      },
+      "tag_evidence": {
+        "grandpa": {
+          "frame.actor": [
+            "frame.actor"
+          ],
+          "mentioned": [
+            "trace.referents"
+          ],
+          "qa_context": [
+            "claim:outcome"
+          ],
+          "changed": [
+            "replayed_entity_diff"
+          ],
+          "state.add:thumb_in_rest": [
+            "diff.state"
+          ]
+        },
+        "cup": {
+          "frame.patient": [
+            "frame.patient"
+          ],
+          "qa_context": [
+            "claim:outcome"
+          ],
+          "causal_context": [
+            "cause:state:cup:tea",
+            "cause:state:cup:fired",
+            "cause:loc:cup"
+          ]
+        },
+        "tool": {
+          "causal_context": [
+            "cause:loc:tool"
+          ]
+        },
+        "sponge": {
+          "causal_context": [
+            "cause:loc:sponge"
+          ]
+        }
+      },
+      "participants": [
+        "cup",
+        "grandpa"
+      ],
+      "dialogue": [],
+      "movements": [],
+      "effects": {
+        "grandpa": {
+          "state": {
+            "before": [
+              "stiff_hand"
+            ],
+            "after": [
+              "stiff_hand",
+              "thumb_in_rest"
+            ]
+          }
+        }
+      },
+      "dependencies": [
+        {
+          "kind": "required_flag",
+          "key": "rib_returned",
+          "source_event": 9
+        },
+        {
+          "kind": "required_flag",
+          "key": "sponge_returned",
+          "source_event": 10
+        },
+        {
+          "kind": "required_flag",
+          "key": "tea_served",
+          "source_event": 23
+        },
+        {
+          "kind": "declared_entity_cause",
+          "key": "state:cup:tea",
+          "entity": "cup",
+          "field": "state",
+          "source_event": 23
+        },
+        {
+          "kind": "declared_entity_cause",
+          "key": "state:cup:fired",
+          "entity": "cup",
+          "field": "state",
+          "source_event": 23
+        },
+        {
+          "kind": "declared_entity_cause",
+          "key": "loc:cup",
+          "entity": "cup",
+          "field": "location",
+          "source_event": 22
+        },
+        {
+          "kind": "declared_entity_cause",
+          "key": "loc:tool",
+          "entity": "tool",
+          "field": "location",
+          "source_event": 9
+        },
+        {
+          "kind": "declared_entity_cause",
+          "key": "loc:sponge",
+          "entity": "sponge",
+          "field": "location",
+          "source_event": 10
+        }
+      ],
+      "global_contract": {
+        "requires": [
+          "rib_returned",
+          "sponge_returned",
+          "tea_served"
+        ],
+        "excludes": [
+          "ended"
+        ],
+        "flags_added": [
+          "ended"
+        ],
+        "flags_removed": []
+      },
+      "guard_reads_complete": false
+    }
+  ],
+  "entities": {
+    "bench": {
+      "initial": {
+        "id": "bench",
+        "noun": "bench",
+        "kind": "object",
+        "location": "workshop",
+        "number": "singular",
+        "pronoun": "it",
+        "properties": [],
+        "state": [],
+        "memes": {}
+      },
+      "final": {
+        "id": "bench",
+        "noun": "bench",
+        "kind": "object",
+        "location": "workshop",
+        "number": "singular",
+        "pronoun": "it",
+        "properties": [],
+        "state": [],
+        "memes": {}
+      },
+      "line": [
+        {
+          "event_id": 10,
+          "kind": "return_sponge",
+          "tags": [
+            "causal_context",
+            "frame.destination"
+          ],
+          "participation": "participant",
+          "own_effects": {},
+          "peers": [
+            "hero",
+            "sponge"
+          ],
+          "shared_event": true,
+          "before": {
+            "id": "bench",
+            "noun": "bench",
+            "kind": "object",
+            "location": "workshop",
+            "number": "singular",
+            "pronoun": "it",
+            "properties": [],
+            "state": [],
+            "memes": {}
+          },
+          "after": {
+            "id": "bench",
+            "noun": "bench",
+            "kind": "object",
+            "location": "workshop",
+            "number": "singular",
+            "pronoun": "it",
+            "properties": [],
+            "state": [],
+            "memes": {}
+          }
+        },
+        {
+          "event_id": 16,
+          "kind": "unload_bisque",
+          "tags": [
+            "frame.destination"
+          ],
+          "participation": "participant",
+          "own_effects": {},
+          "peers": [
+            "cup",
+            "helper"
+          ],
+          "shared_event": true,
+          "before": {
+            "id": "bench",
+            "noun": "bench",
+            "kind": "object",
+            "location": "workshop",
+            "number": "singular",
+            "pronoun": "it",
+            "properties": [],
+            "state": [],
+            "memes": {}
+          },
+          "after": {
+            "id": "bench",
+            "noun": "bench",
+            "kind": "object",
+            "location": "workshop",
+            "number": "singular",
+            "pronoun": "it",
+            "properties": [],
+            "state": [],
+            "memes": {}
+          }
+        }
+      ]
+    },
+    "blue_glaze": {
+      "initial": {
+        "id": "blue_glaze",
+        "noun": "glaze",
+        "kind": "material",
+        "location": "bench",
+        "number": "singular",
+        "pronoun": "it",
+        "properties": [],
+        "state": [
+          "blue"
+        ],
+        "memes": {}
+      },
+      "final": {
+        "id": "blue_glaze",
+        "noun": "glaze",
+        "kind": "material",
+        "location": "bench",
+        "number": "singular",
+        "pronoun": "it",
+        "properties": [],
+        "state": [
+          "blue"
+        ],
+        "memes": {}
+      },
+      "line": [
+        {
+          "event_id": 17,
+          "kind": "glaze",
+          "tags": [
+            "causal_context",
+            "frame.instrument"
+          ],
+          "participation": "participant",
+          "own_effects": {},
+          "peers": [
+            "cup",
+            "hero"
+          ],
+          "shared_event": true,
+          "before": {
+            "id": "blue_glaze",
+            "noun": "glaze",
+            "kind": "material",
+            "location": "bench",
+            "number": "singular",
+            "pronoun": "it",
+            "properties": [],
+            "state": [
+              "blue"
+            ],
+            "memes": {}
+          },
+          "after": {
+            "id": "blue_glaze",
+            "noun": "glaze",
+            "kind": "material",
+            "location": "bench",
+            "number": "singular",
+            "pronoun": "it",
+            "properties": [],
+            "state": [
+              "blue"
+            ],
+            "memes": {}
+          }
+        }
+      ]
+    },
+    "cup": {
+      "initial": {
+        "id": "cup",
+        "noun": "cup",
+        "kind": "object",
+        "location": "bench",
+        "number": "singular",
+        "pronoun": "it",
+        "properties": [],
+        "state": [
+          "stable",
+          "thick",
+          "wet",
+          "wide_handle"
+        ],
+        "memes": {}
+      },
+      "final": {
+        "id": "cup",
+        "noun": "cup",
+        "kind": "object",
+        "location": "grandpa",
+        "number": "singular",
+        "pronoun": "it",
+        "properties": [],
+        "state": [
+          "bisque",
+          "blue",
+          "cool",
+          "dented",
+          "dry",
+          "fired",
+          "glazed",
+          "safe_edges",
+          "shaped",
+          "stable",
+          "tea",
+          "thick",
+          "thumb_rest",
+          "wall_checked",
+          "wide_handle"
+        ],
+        "memes": {}
+      },
+      "line": [
+        {
+          "event_id": 2,
+          "kind": "goal",
+          "tags": [
+            "causal_context",
+            "frame.patient",
+            "mentioned",
+            "qa_context"
+          ],
+          "participation": "participant",
+          "own_effects": {},
+          "peers": [
+            "grandpa",
+            "helper",
+            "hero"
+          ],
+          "shared_event": true,
+          "before": {
+            "id": "cup",
+            "noun": "cup",
+            "kind": "object",
+            "location": "bench",
+            "number": "singular",
+            "pronoun": "it",
+            "properties": [],
+            "state": [
+              "stable",
+              "thick",
+              "wet",
+              "wide_handle"
+            ],
+            "memes": {}
+          },
+          "after": {
+            "id": "cup",
+            "noun": "cup",
+            "kind": "object",
+            "location": "bench",
+            "number": "singular",
+            "pronoun": "it",
+            "properties": [],
+            "state": [
+              "stable",
+              "thick",
+              "wet",
+              "wide_handle"
+            ],
+            "memes": {}
+          }
+        },
+        {
+          "event_id": 3,
+          "kind": "shape",
+          "tags": [
+            "causal_context",
+            "changed",
+            "frame.patient",
+            "state.add:shaped"
+          ],
+          "participation": "participant",
+          "own_effects": {
+            "state": {
+              "before": [
+                "stable",
+                "thick",
+                "wet",
+                "wide_handle"
+              ],
+              "after": [
+                "shaped",
+                "stable",
+                "thick",
+                "wet",
+                "wide_handle"
+              ]
+            }
+          },
+          "peers": [
+            "hero",
+            "tool"
+          ],
+          "shared_event": true,
+          "before": {
+            "id": "cup",
+            "noun": "cup",
+            "kind": "object",
+            "location": "bench",
+            "number": "singular",
+            "pronoun": "it",
+            "properties": [],
+            "state": [
+              "stable",
+              "thick",
+              "wet",
+              "wide_handle"
+            ],
+            "memes": {}
+          },
+          "after": {
+            "id": "cup",
+            "noun": "cup",
+            "kind": "object",
+            "location": "bench",
+            "number": "singular",
+            "pronoun": "it",
+            "properties": [],
+            "state": [
+              "shaped",
+              "stable",
+              "thick",
+              "wet",
+              "wide_handle"
+            ],
+            "memes": {}
+          }
+        },
+        {
+          "event_id": 4,
+          "kind": "slip",
+          "tags": [
+            "causal_context",
+            "changed",
+            "frame.patient",
+            "mentioned",
+            "qa_context",
+            "state.add:dented"
+          ],
+          "participation": "participant",
+          "own_effects": {
+            "state": {
+              "before": [
+                "shaped",
+                "stable",
+                "thick",
+                "wet",
+                "wide_handle"
+              ],
+              "after": [
+                "dented",
+                "shaped",
+                "stable",
+                "thick",
+                "wet",
+                "wide_handle"
+              ]
+            }
+          },
+          "peers": [
+            "hero",
+            "tool"
+          ],
+          "shared_event": true,
+          "before": {
+            "id": "cup",
+            "noun": "cup",
+            "kind": "object",
+            "location": "bench",
+            "number": "singular",
+            "pronoun": "it",
+            "properties": [],
+            "state": [
+              "shaped",
+              "stable",
+              "thick",
+              "wet",
+              "wide_handle"
+            ],
+            "memes": {}
+          },
+          "after": {
+            "id": "cup",
+            "noun": "cup",
+            "kind": "object",
+            "location": "bench",
+            "number": "singular",
+            "pronoun": "it",
+            "properties": [],
+            "state": [
+              "dented",
+              "shaped",
+              "stable",
+              "thick",
+              "wet",
+              "wide_handle"
+            ],
+            "memes": {}
+          }
+        },
+        {
+          "event_id": 5,
+          "kind": "inspect",
+          "tags": [
+            "causal_context",
+            "frame.patient",
+            "mentioned",
+            "qa_context"
+          ],
+          "participation": "participant",
+          "own_effects": {},
+          "peers": [
+            "helper",
+            "hero"
+          ],
+          "shared_event": true,
+          "before": {
+            "id": "cup",
+            "noun": "cup",
+            "kind": "object",
+            "location": "bench",
+            "number": "singular",
+            "pronoun": "it",
+            "properties": [],
+            "state": [
+              "dented",
+              "shaped",
+              "stable",
+              "thick",
+              "wet",
+              "wide_handle"
+            ],
+            "memes": {}
+          },
+          "after": {
+            "id": "cup",
+            "noun": "cup",
+            "kind": "object",
+            "location": "bench",
+            "number": "singular",
+            "pronoun": "it",
+            "properties": [],
+            "state": [
+              "dented",
+              "shaped",
+              "stable",
+              "thick",
+              "wet",
+              "wide_handle"
+            ],
+            "memes": {}
+          }
+        },
+        {
+          "event_id": 6,
+          "kind": "consult",
+          "tags": [
+            "frame.patient",
+            "qa_context"
+          ],
+          "participation": "participant",
+          "own_effects": {},
+          "peers": [
+            "grandpa",
+            "hero"
+          ],
+          "shared_event": true,
+          "before": {
+            "id": "cup",
+            "noun": "cup",
+            "kind": "object",
+            "location": "bench",
+            "number": "singular",
+            "pronoun": "it",
+            "properties": [],
+            "state": [
+              "dented",
+              "shaped",
+              "stable",
+              "thick",
+              "wet",
+              "wide_handle"
+            ],
+            "memes": {}
+          },
+          "after": {
+            "id": "cup",
+            "noun": "cup",
+            "kind": "object",
+            "location": "bench",
+            "number": "singular",
+            "pronoun": "it",
+            "properties": [],
+            "state": [
+              "dented",
+              "shaped",
+              "stable",
+              "thick",
+              "wet",
+              "wide_handle"
+            ],
+            "memes": {}
+          }
+        },
+        {
+          "event_id": 7,
+          "kind": "fetch_sponge",
+          "tags": [
+            "causal_context"
+          ],
+          "participation": "context",
+          "own_effects": {},
+          "peers": [],
+          "shared_event": false,
+          "before": {
+            "id": "cup",
+            "noun": "cup",
+            "kind": "object",
+            "location": "bench",
+            "number": "singular",
+            "pronoun": "it",
+            "properties": [],
+            "state": [
+              "dented",
+              "shaped",
+              "stable",
+              "thick",
+              "wet",
+              "wide_handle"
+            ],
+            "memes": {}
+          },
+          "after": {
+            "id": "cup",
+            "noun": "cup",
+            "kind": "object",
+            "location": "bench",
+            "number": "singular",
+            "pronoun": "it",
+            "properties": [],
+            "state": [
+              "dented",
+              "shaped",
+              "stable",
+              "thick",
+              "wet",
+              "wide_handle"
+            ],
+            "memes": {}
+          }
+        },
+        {
+          "event_id": 8,
+          "kind": "thumb",
+          "tags": [
+            "causal_context",
+            "changed",
+            "frame.patient",
+            "qa_context",
+            "state.add:safe_edges",
+            "state.add:thumb_rest",
+            "state.add:wall_checked"
+          ],
+          "participation": "participant",
+          "own_effects": {
+            "state": {
+              "before": [
+                "dented",
+                "shaped",
+                "stable",
+                "thick",
+                "wet",
+                "wide_handle"
+              ],
+              "after": [
+                "dented",
+                "safe_edges",
+                "shaped",
+                "stable",
+                "thick",
+                "thumb_rest",
+                "wall_checked",
+                "wet",
+                "wide_handle"
+              ]
+            }
+          },
+          "peers": [
+            "helper",
+            "hero",
+            "sponge"
+          ],
+          "shared_event": true,
+          "before": {
+            "id": "cup",
+            "noun": "cup",
+            "kind": "object",
+            "location": "bench",
+            "number": "singular",
+            "pronoun": "it",
+            "properties": [],
+            "state": [
+              "dented",
+              "shaped",
+              "stable",
+              "thick",
+              "wet",
+              "wide_handle"
+            ],
+            "memes": {}
+          },
+          "after": {
+            "id": "cup",
+            "noun": "cup",
+            "kind": "object",
+            "location": "bench",
+            "number": "singular",
+            "pronoun": "it",
+            "properties": [],
+            "state": [
+              "dented",
+              "safe_edges",
+              "shaped",
+              "stable",
+              "thick",
+              "thumb_rest",
+              "wall_checked",
+              "wet",
+              "wide_handle"
+            ],
+            "memes": {}
+          }
+        },
+        {
+          "event_id": 11,
+          "kind": "shelve",
+          "tags": [
+            "causal_context",
+            "changed",
+            "frame.patient",
+            "moved"
+          ],
+          "participation": "participant",
+          "own_effects": {
+            "location": {
+              "before": "bench",
+              "after": "shelf"
+            }
+          },
+          "peers": [
+            "hero",
+            "shelf"
+          ],
+          "shared_event": true,
+          "before": {
+            "id": "cup",
+            "noun": "cup",
+            "kind": "object",
+            "location": "bench",
+            "number": "singular",
+            "pronoun": "it",
+            "properties": [],
+            "state": [
+              "dented",
+              "safe_edges",
+              "shaped",
+              "stable",
+              "thick",
+              "thumb_rest",
+              "wall_checked",
+              "wet",
+              "wide_handle"
+            ],
+            "memes": {}
+          },
+          "after": {
+            "id": "cup",
+            "noun": "cup",
+            "kind": "object",
+            "location": "shelf",
+            "number": "singular",
+            "pronoun": "it",
+            "properties": [],
+            "state": [
+              "dented",
+              "safe_edges",
+              "shaped",
+              "stable",
+              "thick",
+              "thumb_rest",
+              "wall_checked",
+              "wet",
+              "wide_handle"
+            ],
+            "memes": {}
+          }
+        },
+        {
+          "event_id": 12,
+          "kind": "dry",
+          "tags": [
+            "causal_context",
+            "changed",
+            "frame.actor",
+            "frame.patient",
+            "state.add:dry",
+            "state.remove:wet"
+          ],
+          "participation": "participant",
+          "own_effects": {
+            "state": {
+              "before": [
+                "dented",
+                "safe_edges",
+                "shaped",
+                "stable",
+                "thick",
+                "thumb_rest",
+                "wall_checked",
+                "wet",
+                "wide_handle"
+              ],
+              "after": [
+                "dented",
+                "dry",
+                "safe_edges",
+                "shaped",
+                "stable",
+                "thick",
+                "thumb_rest",
+                "wall_checked",
+                "wide_handle"
+              ]
+            }
+          },
+          "peers": [
+            "shelf"
+          ],
+          "shared_event": true,
+          "before": {
+            "id": "cup",
+            "noun": "cup",
+            "kind": "object",
+            "location": "shelf",
+            "number": "singular",
+            "pronoun": "it",
+            "properties": [],
+            "state": [
+              "dented",
+              "safe_edges",
+              "shaped",
+              "stable",
+              "thick",
+              "thumb_rest",
+              "wall_checked",
+              "wet",
+              "wide_handle"
+            ],
+            "memes": {}
+          },
+          "after": {
+            "id": "cup",
+            "noun": "cup",
+            "kind": "object",
+            "location": "shelf",
+            "number": "singular",
+            "pronoun": "it",
+            "properties": [],
+            "state": [
+              "dented",
+              "dry",
+              "safe_edges",
+              "shaped",
+              "stable",
+              "thick",
+              "thumb_rest",
+              "wall_checked",
+              "wide_handle"
+            ],
+            "memes": {}
+          }
+        },
+        {
+          "event_id": 13,
+          "kind": "load_bisque",
+          "tags": [
+            "causal_context",
+            "changed",
+            "frame.patient",
+            "moved"
+          ],
+          "participation": "participant",
+          "own_effects": {
+            "location": {
+              "before": "shelf",
+              "after": "kiln"
+            }
+          },
+          "peers": [
+            "helper",
+            "kiln"
+          ],
+          "shared_event": true,
+          "before": {
+            "id": "cup",
+            "noun": "cup",
+            "kind": "object",
+            "location": "shelf",
+            "number": "singular",
+            "pronoun": "it",
+            "properties": [],
+            "state": [
+              "dented",
+              "dry",
+              "safe_edges",
+              "shaped",
+              "stable",
+              "thick",
+              "thumb_rest",
+              "wall_checked",
+              "wide_handle"
+            ],
+            "memes": {}
+          },
+          "after": {
+            "id": "cup",
+            "noun": "cup",
+            "kind": "object",
+            "location": "kiln",
+            "number": "singular",
+            "pronoun": "it",
+            "properties": [],
+            "state": [
+              "dented",
+              "dry",
+              "safe_edges",
+              "shaped",
+              "stable",
+              "thick",
+              "thumb_rest",
+              "wall_checked",
+              "wide_handle"
+            ],
+            "memes": {}
+          }
+        },
+        {
+          "event_id": 14,
+          "kind": "bisque",
+          "tags": [
+            "causal_context",
+            "changed",
+            "frame.patient",
+            "state.add:bisque",
+            "state.add:hot"
+          ],
+          "participation": "participant",
+          "own_effects": {
+            "state": {
+              "before": [
+                "dented",
+                "dry",
+                "safe_edges",
+                "shaped",
+                "stable",
+                "thick",
+                "thumb_rest",
+                "wall_checked",
+                "wide_handle"
+              ],
+              "after": [
+                "bisque",
+                "dented",
+                "dry",
+                "hot",
+                "safe_edges",
+                "shaped",
+                "stable",
+                "thick",
+                "thumb_rest",
+                "wall_checked",
+                "wide_handle"
+              ]
+            }
+          },
+          "peers": [
+            "helper",
+            "kiln"
+          ],
+          "shared_event": true,
+          "before": {
+            "id": "cup",
+            "noun": "cup",
+            "kind": "object",
+            "location": "kiln",
+            "number": "singular",
+            "pronoun": "it",
+            "properties": [],
+            "state": [
+              "dented",
+              "dry",
+              "safe_edges",
+              "shaped",
+              "stable",
+              "thick",
+              "thumb_rest",
+              "wall_checked",
+              "wide_handle"
+            ],
+            "memes": {}
+          },
+          "after": {
+            "id": "cup",
+            "noun": "cup",
+            "kind": "object",
+            "location": "kiln",
+            "number": "singular",
+            "pronoun": "it",
+            "properties": [],
+            "state": [
+              "bisque",
+              "dented",
+              "dry",
+              "hot",
+              "safe_edges",
+              "shaped",
+              "stable",
+              "thick",
+              "thumb_rest",
+              "wall_checked",
+              "wide_handle"
+            ],
+            "memes": {}
+          }
+        },
+        {
+          "event_id": 15,
+          "kind": "cool_bisque",
+          "tags": [
+            "causal_context",
+            "changed",
+            "frame.actor",
+            "frame.patient",
+            "state.add:cool",
+            "state.remove:hot"
+          ],
+          "participation": "participant",
+          "own_effects": {
+            "state": {
+              "before": [
+                "bisque",
+                "dented",
+                "dry",
+                "hot",
+                "safe_edges",
+                "shaped",
+                "stable",
+                "thick",
+                "thumb_rest",
+                "wall_checked",
+                "wide_handle"
+              ],
+              "after": [
+                "bisque",
+                "cool",
+                "dented",
+                "dry",
+                "safe_edges",
+                "shaped",
+                "stable",
+                "thick",
+                "thumb_rest",
+                "wall_checked",
+                "wide_handle"
+              ]
+            }
+          },
+          "peers": [
+            "kiln"
+          ],
+          "shared_event": true,
+          "before": {
+            "id": "cup",
+            "noun": "cup",
+            "kind": "object",
+            "location": "kiln",
+            "number": "singular",
+            "pronoun": "it",
+            "properties": [],
+            "state": [
+              "bisque",
+              "dented",
+              "dry",
+              "hot",
+              "safe_edges",
+              "shaped",
+              "stable",
+              "thick",
+              "thumb_rest",
+              "wall_checked",
+              "wide_handle"
+            ],
+            "memes": {}
+          },
+          "after": {
+            "id": "cup",
+            "noun": "cup",
+            "kind": "object",
+            "location": "kiln",
+            "number": "singular",
+            "pronoun": "it",
+            "properties": [],
+            "state": [
+              "bisque",
+              "cool",
+              "dented",
+              "dry",
+              "safe_edges",
+              "shaped",
+              "stable",
+              "thick",
+              "thumb_rest",
+              "wall_checked",
+              "wide_handle"
+            ],
+            "memes": {}
+          }
+        },
+        {
+          "event_id": 16,
+          "kind": "unload_bisque",
+          "tags": [
+            "causal_context",
+            "changed",
+            "frame.patient",
+            "moved"
+          ],
+          "participation": "participant",
+          "own_effects": {
+            "location": {
+              "before": "kiln",
+              "after": "bench"
+            }
+          },
+          "peers": [
+            "bench",
+            "helper"
+          ],
+          "shared_event": true,
+          "before": {
+            "id": "cup",
+            "noun": "cup",
+            "kind": "object",
+            "location": "kiln",
+            "number": "singular",
+            "pronoun": "it",
+            "properties": [],
+            "state": [
+              "bisque",
+              "cool",
+              "dented",
+              "dry",
+              "safe_edges",
+              "shaped",
+              "stable",
+              "thick",
+              "thumb_rest",
+              "wall_checked",
+              "wide_handle"
+            ],
+            "memes": {}
+          },
+          "after": {
+            "id": "cup",
+            "noun": "cup",
+            "kind": "object",
+            "location": "bench",
+            "number": "singular",
+            "pronoun": "it",
+            "properties": [],
+            "state": [
+              "bisque",
+              "cool",
+              "dented",
+              "dry",
+              "safe_edges",
+              "shaped",
+              "stable",
+              "thick",
+              "thumb_rest",
+              "wall_checked",
+              "wide_handle"
+            ],
+            "memes": {}
+          }
+        },
+        {
+          "event_id": 17,
+          "kind": "glaze",
+          "tags": [
+            "causal_context",
+            "changed",
+            "frame.patient",
+            "state.add:blue",
+            "state.add:glazed"
+          ],
+          "participation": "participant",
+          "own_effects": {
+            "state": {
+              "before": [
+                "bisque",
+                "cool",
+                "dented",
+                "dry",
+                "safe_edges",
+                "shaped",
+                "stable",
+                "thick",
+                "thumb_rest",
+                "wall_checked",
+                "wide_handle"
+              ],
+              "after": [
+                "bisque",
+                "blue",
+                "cool",
+                "dented",
+                "dry",
+                "glazed",
+                "safe_edges",
+                "shaped",
+                "stable",
+                "thick",
+                "thumb_rest",
+                "wall_checked",
+                "wide_handle"
+              ]
+            }
+          },
+          "peers": [
+            "blue_glaze",
+            "hero"
+          ],
+          "shared_event": true,
+          "before": {
+            "id": "cup",
+            "noun": "cup",
+            "kind": "object",
+            "location": "bench",
+            "number": "singular",
+            "pronoun": "it",
+            "properties": [],
+            "state": [
+              "bisque",
+              "cool",
+              "dented",
+              "dry",
+              "safe_edges",
+              "shaped",
+              "stable",
+              "thick",
+              "thumb_rest",
+              "wall_checked",
+              "wide_handle"
+            ],
+            "memes": {}
+          },
+          "after": {
+            "id": "cup",
+            "noun": "cup",
+            "kind": "object",
+            "location": "bench",
+            "number": "singular",
+            "pronoun": "it",
+            "properties": [],
+            "state": [
+              "bisque",
+              "blue",
+              "cool",
+              "dented",
+              "dry",
+              "glazed",
+              "safe_edges",
+              "shaped",
+              "stable",
+              "thick",
+              "thumb_rest",
+              "wall_checked",
+              "wide_handle"
+            ],
+            "memes": {}
+          }
+        },
+        {
+          "event_id": 18,
+          "kind": "load_final",
+          "tags": [
+            "causal_context",
+            "changed",
+            "frame.patient",
+            "moved"
+          ],
+          "participation": "participant",
+          "own_effects": {
+            "location": {
+              "before": "bench",
+              "after": "kiln"
+            }
+          },
+          "peers": [
+            "helper",
+            "kiln"
+          ],
+          "shared_event": true,
+          "before": {
+            "id": "cup",
+            "noun": "cup",
+            "kind": "object",
+            "location": "bench",
+            "number": "singular",
+            "pronoun": "it",
+            "properties": [],
+            "state": [
+              "bisque",
+              "blue",
+              "cool",
+              "dented",
+              "dry",
+              "glazed",
+              "safe_edges",
+              "shaped",
+              "stable",
+              "thick",
+              "thumb_rest",
+              "wall_checked",
+              "wide_handle"
+            ],
+            "memes": {}
+          },
+          "after": {
+            "id": "cup",
+            "noun": "cup",
+            "kind": "object",
+            "location": "kiln",
+            "number": "singular",
+            "pronoun": "it",
+            "properties": [],
+            "state": [
+              "bisque",
+              "blue",
+              "cool",
+              "dented",
+              "dry",
+              "glazed",
+              "safe_edges",
+              "shaped",
+              "stable",
+              "thick",
+              "thumb_rest",
+              "wall_checked",
+              "wide_handle"
+            ],
+            "memes": {}
+          }
+        },
+        {
+          "event_id": 19,
+          "kind": "fire",
+          "tags": [
+            "causal_context",
+            "changed",
+            "frame.patient",
+            "state.add:fired",
+            "state.add:hot",
+            "state.remove:cool"
+          ],
+          "participation": "participant",
+          "own_effects": {
+            "state": {
+              "before": [
+                "bisque",
+                "blue",
+                "cool",
+                "dented",
+                "dry",
+                "glazed",
+                "safe_edges",
+                "shaped",
+                "stable",
+                "thick",
+                "thumb_rest",
+                "wall_checked",
+                "wide_handle"
+              ],
+              "after": [
+                "bisque",
+                "blue",
+                "dented",
+                "dry",
+                "fired",
+                "glazed",
+                "hot",
+                "safe_edges",
+                "shaped",
+                "stable",
+                "thick",
+                "thumb_rest",
+                "wall_checked",
+                "wide_handle"
+              ]
+            }
+          },
+          "peers": [
+            "helper",
+            "kiln"
+          ],
+          "shared_event": true,
+          "before": {
+            "id": "cup",
+            "noun": "cup",
+            "kind": "object",
+            "location": "kiln",
+            "number": "singular",
+            "pronoun": "it",
+            "properties": [],
+            "state": [
+              "bisque",
+              "blue",
+              "cool",
+              "dented",
+              "dry",
+              "glazed",
+              "safe_edges",
+              "shaped",
+              "stable",
+              "thick",
+              "thumb_rest",
+              "wall_checked",
+              "wide_handle"
+            ],
+            "memes": {}
+          },
+          "after": {
+            "id": "cup",
+            "noun": "cup",
+            "kind": "object",
+            "location": "kiln",
+            "number": "singular",
+            "pronoun": "it",
+            "properties": [],
+            "state": [
+              "bisque",
+              "blue",
+              "dented",
+              "dry",
+              "fired",
+              "glazed",
+              "hot",
+              "safe_edges",
+              "shaped",
+              "stable",
+              "thick",
+              "thumb_rest",
+              "wall_checked",
+              "wide_handle"
+            ],
+            "memes": {}
+          }
+        },
+        {
+          "event_id": 20,
+          "kind": "cool_final",
+          "tags": [
+            "causal_context",
+            "changed",
+            "frame.actor",
+            "frame.patient",
+            "state.add:cool",
+            "state.remove:hot"
+          ],
+          "participation": "participant",
+          "own_effects": {
+            "state": {
+              "before": [
+                "bisque",
+                "blue",
+                "dented",
+                "dry",
+                "fired",
+                "glazed",
+                "hot",
+                "safe_edges",
+                "shaped",
+                "stable",
+                "thick",
+                "thumb_rest",
+                "wall_checked",
+                "wide_handle"
+              ],
+              "after": [
+                "bisque",
+                "blue",
+                "cool",
+                "dented",
+                "dry",
+                "fired",
+                "glazed",
+                "safe_edges",
+                "shaped",
+                "stable",
+                "thick",
+                "thumb_rest",
+                "wall_checked",
+                "wide_handle"
+              ]
+            }
+          },
+          "peers": [
+            "kiln"
+          ],
+          "shared_event": true,
+          "before": {
+            "id": "cup",
+            "noun": "cup",
+            "kind": "object",
+            "location": "kiln",
+            "number": "singular",
+            "pronoun": "it",
+            "properties": [],
+            "state": [
+              "bisque",
+              "blue",
+              "dented",
+              "dry",
+              "fired",
+              "glazed",
+              "hot",
+              "safe_edges",
+              "shaped",
+              "stable",
+              "thick",
+              "thumb_rest",
+              "wall_checked",
+              "wide_handle"
+            ],
+            "memes": {}
+          },
+          "after": {
+            "id": "cup",
+            "noun": "cup",
+            "kind": "object",
+            "location": "kiln",
+            "number": "singular",
+            "pronoun": "it",
+            "properties": [],
+            "state": [
+              "bisque",
+              "blue",
+              "cool",
+              "dented",
+              "dry",
+              "fired",
+              "glazed",
+              "safe_edges",
+              "shaped",
+              "stable",
+              "thick",
+              "thumb_rest",
+              "wall_checked",
+              "wide_handle"
+            ],
+            "memes": {}
+          }
+        },
+        {
+          "event_id": 21,
+          "kind": "deliver",
+          "tags": [
+            "causal_context",
+            "changed",
+            "frame.patient",
+            "mentioned",
+            "moved",
+            "qa_context"
+          ],
+          "participation": "participant",
+          "own_effects": {
+            "location": {
+              "before": "kiln",
+              "after": "hero"
+            }
+          },
+          "peers": [
+            "helper",
+            "hero"
+          ],
+          "shared_event": true,
+          "before": {
+            "id": "cup",
+            "noun": "cup",
+            "kind": "object",
+            "location": "kiln",
+            "number": "singular",
+            "pronoun": "it",
+            "properties": [],
+            "state": [
+              "bisque",
+              "blue",
+              "cool",
+              "dented",
+              "dry",
+              "fired",
+              "glazed",
+              "safe_edges",
+              "shaped",
+              "stable",
+              "thick",
+              "thumb_rest",
+              "wall_checked",
+              "wide_handle"
+            ],
+            "memes": {}
+          },
+          "after": {
+            "id": "cup",
+            "noun": "cup",
+            "kind": "object",
+            "location": "hero",
+            "number": "singular",
+            "pronoun": "it",
+            "properties": [],
+            "state": [
+              "bisque",
+              "blue",
+              "cool",
+              "dented",
+              "dry",
+              "fired",
+              "glazed",
+              "safe_edges",
+              "shaped",
+              "stable",
+              "thick",
+              "thumb_rest",
+              "wall_checked",
+              "wide_handle"
+            ],
+            "memes": {}
+          }
+        },
+        {
+          "event_id": 22,
+          "kind": "give",
+          "tags": [
+            "causal_context",
+            "changed",
+            "frame.patient",
+            "mentioned",
+            "moved"
+          ],
+          "participation": "participant",
+          "own_effects": {
+            "location": {
+              "before": "hero",
+              "after": "grandpa"
+            }
+          },
+          "peers": [
+            "grandpa",
+            "hero"
+          ],
+          "shared_event": true,
+          "before": {
+            "id": "cup",
+            "noun": "cup",
+            "kind": "object",
+            "location": "hero",
+            "number": "singular",
+            "pronoun": "it",
+            "properties": [],
+            "state": [
+              "bisque",
+              "blue",
+              "cool",
+              "dented",
+              "dry",
+              "fired",
+              "glazed",
+              "safe_edges",
+              "shaped",
+              "stable",
+              "thick",
+              "thumb_rest",
+              "wall_checked",
+              "wide_handle"
+            ],
+            "memes": {}
+          },
+          "after": {
+            "id": "cup",
+            "noun": "cup",
+            "kind": "object",
+            "location": "grandpa",
+            "number": "singular",
+            "pronoun": "it",
+            "properties": [],
+            "state": [
+              "bisque",
+              "blue",
+              "cool",
+              "dented",
+              "dry",
+              "fired",
+              "glazed",
+              "safe_edges",
+              "shaped",
+              "stable",
+              "thick",
+              "thumb_rest",
+              "wall_checked",
+              "wide_handle"
+            ],
+            "memes": {}
+          }
+        },
+        {
+          "event_id": 23,
+          "kind": "use",
+          "tags": [
+            "causal_context",
+            "changed",
+            "frame.patient",
+            "mentioned",
+            "qa_context",
+            "state.add:tea"
+          ],
+          "participation": "participant",
+          "own_effects": {
+            "state": {
+              "before": [
+                "bisque",
+                "blue",
+                "cool",
+                "dented",
+                "dry",
+                "fired",
+                "glazed",
+                "safe_edges",
+                "shaped",
+                "stable",
+                "thick",
+                "thumb_rest",
+                "wall_checked",
+                "wide_handle"
+              ],
+              "after": [
+                "bisque",
+                "blue",
+                "cool",
+                "dented",
+                "dry",
+                "fired",
+                "glazed",
+                "safe_edges",
+                "shaped",
+                "stable",
+                "tea",
+                "thick",
+                "thumb_rest",
+                "wall_checked",
+                "wide_handle"
+              ]
+            }
+          },
+          "peers": [
+            "grandpa",
+            "teapot"
+          ],
+          "shared_event": true,
+          "before": {
+            "id": "cup",
+            "noun": "cup",
+            "kind": "object",
+            "location": "grandpa",
+            "number": "singular",
+            "pronoun": "it",
+            "properties": [],
+            "state": [
+              "bisque",
+              "blue",
+              "cool",
+              "dented",
+              "dry",
+              "fired",
+              "glazed",
+              "safe_edges",
+              "shaped",
+              "stable",
+              "thick",
+              "thumb_rest",
+              "wall_checked",
+              "wide_handle"
+            ],
+            "memes": {}
+          },
+          "after": {
+            "id": "cup",
+            "noun": "cup",
+            "kind": "object",
+            "location": "grandpa",
+            "number": "singular",
+            "pronoun": "it",
+            "properties": [],
+            "state": [
+              "bisque",
+              "blue",
+              "cool",
+              "dented",
+              "dry",
+              "fired",
+              "glazed",
+              "safe_edges",
+              "shaped",
+              "stable",
+              "tea",
+              "thick",
+              "thumb_rest",
+              "wall_checked",
+              "wide_handle"
+            ],
+            "memes": {}
+          }
+        },
+        {
+          "event_id": 24,
+          "kind": "ending",
+          "tags": [
+            "causal_context",
+            "frame.patient",
+            "qa_context"
+          ],
+          "participation": "participant",
+          "own_effects": {},
+          "peers": [
+            "grandpa"
+          ],
+          "shared_event": true,
+          "before": {
+            "id": "cup",
+            "noun": "cup",
+            "kind": "object",
+            "location": "grandpa",
+            "number": "singular",
+            "pronoun": "it",
+            "properties": [],
+            "state": [
+              "bisque",
+              "blue",
+              "cool",
+              "dented",
+              "dry",
+              "fired",
+              "glazed",
+              "safe_edges",
+              "shaped",
+              "stable",
+              "tea",
+              "thick",
+              "thumb_rest",
+              "wall_checked",
+              "wide_handle"
+            ],
+            "memes": {}
+          },
+          "after": {
+            "id": "cup",
+            "noun": "cup",
+            "kind": "object",
+            "location": "grandpa",
+            "number": "singular",
+            "pronoun": "it",
+            "properties": [],
+            "state": [
+              "bisque",
+              "blue",
+              "cool",
+              "dented",
+              "dry",
+              "fired",
+              "glazed",
+              "safe_edges",
+              "shaped",
+              "stable",
+              "tea",
+              "thick",
+              "thumb_rest",
+              "wall_checked",
+              "wide_handle"
+            ],
+            "memes": {}
+          }
+        }
+      ]
+    },
+    "grandpa": {
+      "initial": {
+        "id": "grandpa",
+        "noun": "Grandpa Len",
+        "kind": "person",
+        "location": "workshop",
+        "number": "singular",
+        "pronoun": "he",
+        "properties": [
+          "animate",
+          "can_hold",
+          "two_hands"
+        ],
+        "state": [
+          "stiff_hand"
+        ],
+        "memes": {}
+      },
+      "final": {
+        "id": "grandpa",
+        "noun": "Grandpa Len",
+        "kind": "person",
+        "location": "workshop",
+        "number": "singular",
+        "pronoun": "he",
+        "properties": [
+          "animate",
+          "can_hold",
+          "two_hands"
+        ],
+        "state": [
+          "stiff_hand",
+          "thumb_in_rest"
+        ],
+        "memes": {}
+      },
+      "line": [
+        {
+          "event_id": 1,
+          "kind": "need",
+          "tags": [
+            "causal_context",
+            "frame.actor"
+          ],
+          "participation": "participant",
+          "own_effects": {},
+          "peers": [
+            "old_mug"
+          ],
+          "shared_event": true,
+          "before": {
+            "id": "grandpa",
+            "noun": "Grandpa Len",
+            "kind": "person",
+            "location": "workshop",
+            "number": "singular",
+            "pronoun": "he",
+            "properties": [
+              "animate",
+              "can_hold",
+              "two_hands"
+            ],
+            "state": [
+              "stiff_hand"
+            ],
+            "memes": {}
+          },
+          "after": {
+            "id": "grandpa",
+            "noun": "Grandpa Len",
+            "kind": "person",
+            "location": "workshop",
+            "number": "singular",
+            "pronoun": "he",
+            "properties": [
+              "animate",
+              "can_hold",
+              "two_hands"
+            ],
+            "state": [
+              "stiff_hand"
+            ],
+            "memes": {}
+          }
+        },
+        {
+          "event_id": 2,
+          "kind": "goal",
+          "tags": [
+            "frame.destination",
+            "mentioned",
+            "qa_context"
+          ],
+          "participation": "participant",
+          "own_effects": {},
+          "peers": [
+            "cup",
+            "helper",
+            "hero"
+          ],
+          "shared_event": true,
+          "before": {
+            "id": "grandpa",
+            "noun": "Grandpa Len",
+            "kind": "person",
+            "location": "workshop",
+            "number": "singular",
+            "pronoun": "he",
+            "properties": [
+              "animate",
+              "can_hold",
+              "two_hands"
+            ],
+            "state": [
+              "stiff_hand"
+            ],
+            "memes": {}
+          },
+          "after": {
+            "id": "grandpa",
+            "noun": "Grandpa Len",
+            "kind": "person",
+            "location": "workshop",
+            "number": "singular",
+            "pronoun": "he",
+            "properties": [
+              "animate",
+              "can_hold",
+              "two_hands"
+            ],
+            "state": [
+              "stiff_hand"
+            ],
+            "memes": {}
+          }
+        },
+        {
+          "event_id": 6,
+          "kind": "consult",
+          "tags": [
+            "causal_context",
+            "frame.actor",
+            "mentioned",
+            "qa_context",
+            "speaker"
+          ],
+          "participation": "participant",
+          "own_effects": {},
+          "peers": [
+            "cup",
+            "hero"
+          ],
+          "shared_event": true,
+          "before": {
+            "id": "grandpa",
+            "noun": "Grandpa Len",
+            "kind": "person",
+            "location": "workshop",
+            "number": "singular",
+            "pronoun": "he",
+            "properties": [
+              "animate",
+              "can_hold",
+              "two_hands"
+            ],
+            "state": [
+              "stiff_hand"
+            ],
+            "memes": {}
+          },
+          "after": {
+            "id": "grandpa",
+            "noun": "Grandpa Len",
+            "kind": "person",
+            "location": "workshop",
+            "number": "singular",
+            "pronoun": "he",
+            "properties": [
+              "animate",
+              "can_hold",
+              "two_hands"
+            ],
+            "state": [
+              "stiff_hand"
+            ],
+            "memes": {}
+          }
+        },
+        {
+          "event_id": 22,
+          "kind": "give",
+          "tags": [
+            "causal_context",
+            "destination_holder",
+            "frame.destination",
+            "mentioned"
+          ],
+          "participation": "participant",
+          "own_effects": {},
+          "peers": [
+            "cup",
+            "hero"
+          ],
+          "shared_event": true,
+          "before": {
+            "id": "grandpa",
+            "noun": "Grandpa Len",
+            "kind": "person",
+            "location": "workshop",
+            "number": "singular",
+            "pronoun": "he",
+            "properties": [
+              "animate",
+              "can_hold",
+              "two_hands"
+            ],
+            "state": [
+              "stiff_hand"
+            ],
+            "memes": {}
+          },
+          "after": {
+            "id": "grandpa",
+            "noun": "Grandpa Len",
+            "kind": "person",
+            "location": "workshop",
+            "number": "singular",
+            "pronoun": "he",
+            "properties": [
+              "animate",
+              "can_hold",
+              "two_hands"
+            ],
+            "state": [
+              "stiff_hand"
+            ],
+            "memes": {}
+          }
+        },
+        {
+          "event_id": 23,
+          "kind": "use",
+          "tags": [
+            "frame.actor",
+            "mentioned",
+            "qa_context"
+          ],
+          "participation": "participant",
+          "own_effects": {},
+          "peers": [
+            "cup",
+            "teapot"
+          ],
+          "shared_event": true,
+          "before": {
+            "id": "grandpa",
+            "noun": "Grandpa Len",
+            "kind": "person",
+            "location": "workshop",
+            "number": "singular",
+            "pronoun": "he",
+            "properties": [
+              "animate",
+              "can_hold",
+              "two_hands"
+            ],
+            "state": [
+              "stiff_hand"
+            ],
+            "memes": {}
+          },
+          "after": {
+            "id": "grandpa",
+            "noun": "Grandpa Len",
+            "kind": "person",
+            "location": "workshop",
+            "number": "singular",
+            "pronoun": "he",
+            "properties": [
+              "animate",
+              "can_hold",
+              "two_hands"
+            ],
+            "state": [
+              "stiff_hand"
+            ],
+            "memes": {}
+          }
+        },
+        {
+          "event_id": 24,
+          "kind": "ending",
+          "tags": [
+            "changed",
+            "frame.actor",
+            "mentioned",
+            "qa_context",
+            "state.add:thumb_in_rest"
+          ],
+          "participation": "participant",
+          "own_effects": {
+            "state": {
+              "before": [
+                "stiff_hand"
+              ],
+              "after": [
+                "stiff_hand",
+                "thumb_in_rest"
+              ]
+            }
+          },
+          "peers": [
+            "cup"
+          ],
+          "shared_event": true,
+          "before": {
+            "id": "grandpa",
+            "noun": "Grandpa Len",
+            "kind": "person",
+            "location": "workshop",
+            "number": "singular",
+            "pronoun": "he",
+            "properties": [
+              "animate",
+              "can_hold",
+              "two_hands"
+            ],
+            "state": [
+              "stiff_hand"
+            ],
+            "memes": {}
+          },
+          "after": {
+            "id": "grandpa",
+            "noun": "Grandpa Len",
+            "kind": "person",
+            "location": "workshop",
+            "number": "singular",
+            "pronoun": "he",
+            "properties": [
+              "animate",
+              "can_hold",
+              "two_hands"
+            ],
+            "state": [
+              "stiff_hand",
+              "thumb_in_rest"
+            ],
+            "memes": {}
+          }
+        }
+      ]
+    },
+    "helper": {
+      "initial": {
+        "id": "helper",
+        "noun": "Mr Ivo",
+        "kind": "person",
+        "location": "workshop",
+        "number": "singular",
+        "pronoun": "he",
+        "properties": [
+          "animate",
+          "can_hold"
+        ],
+        "state": [],
+        "memes": {
+          "Trust": 0.8
+        }
+      },
+      "final": {
+        "id": "helper",
+        "noun": "Mr Ivo",
+        "kind": "person",
+        "location": "workshop",
+        "number": "singular",
+        "pronoun": "he",
+        "properties": [
+          "animate",
+          "can_hold"
+        ],
+        "state": [],
+        "memes": {
+          "Trust": 0.8
+        }
+      },
+      "line": [
+        {
+          "event_id": 2,
+          "kind": "goal",
+          "tags": [
+            "listener"
+          ],
+          "participation": "participant",
+          "own_effects": {},
+          "peers": [
+            "cup",
+            "grandpa",
+            "hero"
+          ],
+          "shared_event": true,
+          "before": {
+            "id": "helper",
+            "noun": "Mr Ivo",
+            "kind": "person",
+            "location": "workshop",
+            "number": "singular",
+            "pronoun": "he",
+            "properties": [
+              "animate",
+              "can_hold"
+            ],
+            "state": [],
+            "memes": {
+              "Trust": 0.8
+            }
+          },
+          "after": {
+            "id": "helper",
+            "noun": "Mr Ivo",
+            "kind": "person",
+            "location": "workshop",
+            "number": "singular",
+            "pronoun": "he",
+            "properties": [
+              "animate",
+              "can_hold"
+            ],
+            "state": [],
+            "memes": {
+              "Trust": 0.8
+            }
+          }
+        },
+        {
+          "event_id": 5,
+          "kind": "inspect",
+          "tags": [
+            "causal_context",
+            "frame.actor",
+            "mentioned",
+            "qa_context",
+            "speaker"
+          ],
+          "participation": "participant",
+          "own_effects": {},
+          "peers": [
+            "cup",
+            "hero"
+          ],
+          "shared_event": true,
+          "before": {
+            "id": "helper",
+            "noun": "Mr Ivo",
+            "kind": "person",
+            "location": "workshop",
+            "number": "singular",
+            "pronoun": "he",
+            "properties": [
+              "animate",
+              "can_hold"
+            ],
+            "state": [],
+            "memes": {
+              "Trust": 0.8
+            }
+          },
+          "after": {
+            "id": "helper",
+            "noun": "Mr Ivo",
+            "kind": "person",
+            "location": "workshop",
+            "number": "singular",
+            "pronoun": "he",
+            "properties": [
+              "animate",
+              "can_hold"
+            ],
+            "state": [],
+            "memes": {
+              "Trust": 0.8
+            }
+          }
+        },
+        {
+          "event_id": 8,
+          "kind": "thumb",
+          "tags": [
+            "listener"
+          ],
+          "participation": "participant",
+          "own_effects": {},
+          "peers": [
+            "cup",
+            "hero",
+            "sponge"
+          ],
+          "shared_event": true,
+          "before": {
+            "id": "helper",
+            "noun": "Mr Ivo",
+            "kind": "person",
+            "location": "workshop",
+            "number": "singular",
+            "pronoun": "he",
+            "properties": [
+              "animate",
+              "can_hold"
+            ],
+            "state": [],
+            "memes": {
+              "Trust": 0.8
+            }
+          },
+          "after": {
+            "id": "helper",
+            "noun": "Mr Ivo",
+            "kind": "person",
+            "location": "workshop",
+            "number": "singular",
+            "pronoun": "he",
+            "properties": [
+              "animate",
+              "can_hold"
+            ],
+            "state": [],
+            "memes": {
+              "Trust": 0.8
+            }
+          }
+        },
+        {
+          "event_id": 9,
+          "kind": "return_rib",
+          "tags": [
+            "causal_context",
+            "destination_holder",
+            "frame.destination"
+          ],
+          "participation": "participant",
+          "own_effects": {},
+          "peers": [
+            "hero",
+            "tool"
+          ],
+          "shared_event": true,
+          "before": {
+            "id": "helper",
+            "noun": "Mr Ivo",
+            "kind": "person",
+            "location": "workshop",
+            "number": "singular",
+            "pronoun": "he",
+            "properties": [
+              "animate",
+              "can_hold"
+            ],
+            "state": [],
+            "memes": {
+              "Trust": 0.8
+            }
+          },
+          "after": {
+            "id": "helper",
+            "noun": "Mr Ivo",
+            "kind": "person",
+            "location": "workshop",
+            "number": "singular",
+            "pronoun": "he",
+            "properties": [
+              "animate",
+              "can_hold"
+            ],
+            "state": [],
+            "memes": {
+              "Trust": 0.8
+            }
+          }
+        },
+        {
+          "event_id": 13,
+          "kind": "load_bisque",
+          "tags": [
+            "frame.actor"
+          ],
+          "participation": "participant",
+          "own_effects": {},
+          "peers": [
+            "cup",
+            "kiln"
+          ],
+          "shared_event": true,
+          "before": {
+            "id": "helper",
+            "noun": "Mr Ivo",
+            "kind": "person",
+            "location": "workshop",
+            "number": "singular",
+            "pronoun": "he",
+            "properties": [
+              "animate",
+              "can_hold"
+            ],
+            "state": [],
+            "memes": {
+              "Trust": 0.8
+            }
+          },
+          "after": {
+            "id": "helper",
+            "noun": "Mr Ivo",
+            "kind": "person",
+            "location": "workshop",
+            "number": "singular",
+            "pronoun": "he",
+            "properties": [
+              "animate",
+              "can_hold"
+            ],
+            "state": [],
+            "memes": {
+              "Trust": 0.8
+            }
+          }
+        },
+        {
+          "event_id": 14,
+          "kind": "bisque",
+          "tags": [
+            "causal_context",
+            "frame.actor"
+          ],
+          "participation": "participant",
+          "own_effects": {},
+          "peers": [
+            "cup",
+            "kiln"
+          ],
+          "shared_event": true,
+          "before": {
+            "id": "helper",
+            "noun": "Mr Ivo",
+            "kind": "person",
+            "location": "workshop",
+            "number": "singular",
+            "pronoun": "he",
+            "properties": [
+              "animate",
+              "can_hold"
+            ],
+            "state": [],
+            "memes": {
+              "Trust": 0.8
+            }
+          },
+          "after": {
+            "id": "helper",
+            "noun": "Mr Ivo",
+            "kind": "person",
+            "location": "workshop",
+            "number": "singular",
+            "pronoun": "he",
+            "properties": [
+              "animate",
+              "can_hold"
+            ],
+            "state": [],
+            "memes": {
+              "Trust": 0.8
+            }
+          }
+        },
+        {
+          "event_id": 16,
+          "kind": "unload_bisque",
+          "tags": [
+            "frame.actor"
+          ],
+          "participation": "participant",
+          "own_effects": {},
+          "peers": [
+            "bench",
+            "cup"
+          ],
+          "shared_event": true,
+          "before": {
+            "id": "helper",
+            "noun": "Mr Ivo",
+            "kind": "person",
+            "location": "workshop",
+            "number": "singular",
+            "pronoun": "he",
+            "properties": [
+              "animate",
+              "can_hold"
+            ],
+            "state": [],
+            "memes": {
+              "Trust": 0.8
+            }
+          },
+          "after": {
+            "id": "helper",
+            "noun": "Mr Ivo",
+            "kind": "person",
+            "location": "workshop",
+            "number": "singular",
+            "pronoun": "he",
+            "properties": [
+              "animate",
+              "can_hold"
+            ],
+            "state": [],
+            "memes": {
+              "Trust": 0.8
+            }
+          }
+        },
+        {
+          "event_id": 18,
+          "kind": "load_final",
+          "tags": [
+            "frame.actor"
+          ],
+          "participation": "participant",
+          "own_effects": {},
+          "peers": [
+            "cup",
+            "kiln"
+          ],
+          "shared_event": true,
+          "before": {
+            "id": "helper",
+            "noun": "Mr Ivo",
+            "kind": "person",
+            "location": "workshop",
+            "number": "singular",
+            "pronoun": "he",
+            "properties": [
+              "animate",
+              "can_hold"
+            ],
+            "state": [],
+            "memes": {
+              "Trust": 0.8
+            }
+          },
+          "after": {
+            "id": "helper",
+            "noun": "Mr Ivo",
+            "kind": "person",
+            "location": "workshop",
+            "number": "singular",
+            "pronoun": "he",
+            "properties": [
+              "animate",
+              "can_hold"
+            ],
+            "state": [],
+            "memes": {
+              "Trust": 0.8
+            }
+          }
+        },
+        {
+          "event_id": 19,
+          "kind": "fire",
+          "tags": [
+            "causal_context",
+            "frame.actor"
+          ],
+          "participation": "participant",
+          "own_effects": {},
+          "peers": [
+            "cup",
+            "kiln"
+          ],
+          "shared_event": true,
+          "before": {
+            "id": "helper",
+            "noun": "Mr Ivo",
+            "kind": "person",
+            "location": "workshop",
+            "number": "singular",
+            "pronoun": "he",
+            "properties": [
+              "animate",
+              "can_hold"
+            ],
+            "state": [],
+            "memes": {
+              "Trust": 0.8
+            }
+          },
+          "after": {
+            "id": "helper",
+            "noun": "Mr Ivo",
+            "kind": "person",
+            "location": "workshop",
+            "number": "singular",
+            "pronoun": "he",
+            "properties": [
+              "animate",
+              "can_hold"
+            ],
+            "state": [],
+            "memes": {
+              "Trust": 0.8
+            }
+          }
+        },
+        {
+          "event_id": 21,
+          "kind": "deliver",
+          "tags": [
+            "frame.actor",
+            "mentioned",
+            "qa_context"
+          ],
+          "participation": "participant",
+          "own_effects": {},
+          "peers": [
+            "cup",
+            "hero"
+          ],
+          "shared_event": true,
+          "before": {
+            "id": "helper",
+            "noun": "Mr Ivo",
+            "kind": "person",
+            "location": "workshop",
+            "number": "singular",
+            "pronoun": "he",
+            "properties": [
+              "animate",
+              "can_hold"
+            ],
+            "state": [],
+            "memes": {
+              "Trust": 0.8
+            }
+          },
+          "after": {
+            "id": "helper",
+            "noun": "Mr Ivo",
+            "kind": "person",
+            "location": "workshop",
+            "number": "singular",
+            "pronoun": "he",
+            "properties": [
+              "animate",
+              "can_hold"
+            ],
+            "state": [],
+            "memes": {
+              "Trust": 0.8
+            }
+          }
+        }
+      ]
+    },
+    "hero": {
+      "initial": {
+        "id": "hero",
+        "noun": "Bea",
+        "kind": "person",
+        "location": "workshop",
+        "number": "singular",
+        "pronoun": "she",
+        "properties": [
+          "animate",
+          "can_hold"
+        ],
+        "state": [],
+        "memes": {
+          "Care": 0.8555505845751168,
+          "Fear": 0.31859367384248116
+        }
+      },
+      "final": {
+        "id": "hero",
+        "noun": "Bea",
+        "kind": "person",
+        "location": "workshop",
+        "number": "singular",
+        "pronoun": "she",
+        "properties": [
+          "animate",
+          "can_hold"
+        ],
+        "state": [
+          "hoped_to_smooth"
+        ],
+        "memes": {
+          "Care": 0.8555505845751168,
+          "Fear": 0.31859367384248116
+        }
+      },
+      "line": [
+        {
+          "event_id": 2,
+          "kind": "goal",
+          "tags": [
+            "frame.actor",
+            "mentioned",
+            "qa_context",
+            "speaker"
+          ],
+          "participation": "participant",
+          "own_effects": {},
+          "peers": [
+            "cup",
+            "grandpa",
+            "helper"
+          ],
+          "shared_event": true,
+          "before": {
+            "id": "hero",
+            "noun": "Bea",
+            "kind": "person",
+            "location": "workshop",
+            "number": "singular",
+            "pronoun": "she",
+            "properties": [
+              "animate",
+              "can_hold"
+            ],
+            "state": [],
+            "memes": {
+              "Care": 0.8555505845751168,
+              "Fear": 0.31859367384248116
+            }
+          },
+          "after": {
+            "id": "hero",
+            "noun": "Bea",
+            "kind": "person",
+            "location": "workshop",
+            "number": "singular",
+            "pronoun": "she",
+            "properties": [
+              "animate",
+              "can_hold"
+            ],
+            "state": [],
+            "memes": {
+              "Care": 0.8555505845751168,
+              "Fear": 0.31859367384248116
+            }
+          }
+        },
+        {
+          "event_id": 3,
+          "kind": "shape",
+          "tags": [
+            "frame.actor"
+          ],
+          "participation": "participant",
+          "own_effects": {},
+          "peers": [
+            "cup",
+            "tool"
+          ],
+          "shared_event": true,
+          "before": {
+            "id": "hero",
+            "noun": "Bea",
+            "kind": "person",
+            "location": "workshop",
+            "number": "singular",
+            "pronoun": "she",
+            "properties": [
+              "animate",
+              "can_hold"
+            ],
+            "state": [],
+            "memes": {
+              "Care": 0.8555505845751168,
+              "Fear": 0.31859367384248116
+            }
+          },
+          "after": {
+            "id": "hero",
+            "noun": "Bea",
+            "kind": "person",
+            "location": "workshop",
+            "number": "singular",
+            "pronoun": "she",
+            "properties": [
+              "animate",
+              "can_hold"
+            ],
+            "state": [],
+            "memes": {
+              "Care": 0.8555505845751168,
+              "Fear": 0.31859367384248116
+            }
+          }
+        },
+        {
+          "event_id": 4,
+          "kind": "slip",
+          "tags": [
+            "frame.actor"
+          ],
+          "participation": "participant",
+          "own_effects": {},
+          "peers": [
+            "cup",
+            "tool"
+          ],
+          "shared_event": true,
+          "before": {
+            "id": "hero",
+            "noun": "Bea",
+            "kind": "person",
+            "location": "workshop",
+            "number": "singular",
+            "pronoun": "she",
+            "properties": [
+              "animate",
+              "can_hold"
+            ],
+            "state": [],
+            "memes": {
+              "Care": 0.8555505845751168,
+              "Fear": 0.31859367384248116
+            }
+          },
+          "after": {
+            "id": "hero",
+            "noun": "Bea",
+            "kind": "person",
+            "location": "workshop",
+            "number": "singular",
+            "pronoun": "she",
+            "properties": [
+              "animate",
+              "can_hold"
+            ],
+            "state": [],
+            "memes": {
+              "Care": 0.8555505845751168,
+              "Fear": 0.31859367384248116
+            }
+          }
+        },
+        {
+          "event_id": 5,
+          "kind": "inspect",
+          "tags": [
+            "listener",
+            "qa_context"
+          ],
+          "participation": "participant",
+          "own_effects": {},
+          "peers": [
+            "cup",
+            "helper"
+          ],
+          "shared_event": true,
+          "before": {
+            "id": "hero",
+            "noun": "Bea",
+            "kind": "person",
+            "location": "workshop",
+            "number": "singular",
+            "pronoun": "she",
+            "properties": [
+              "animate",
+              "can_hold"
+            ],
+            "state": [],
+            "memes": {
+              "Care": 0.8555505845751168,
+              "Fear": 0.31859367384248116
+            }
+          },
+          "after": {
+            "id": "hero",
+            "noun": "Bea",
+            "kind": "person",
+            "location": "workshop",
+            "number": "singular",
+            "pronoun": "she",
+            "properties": [
+              "animate",
+              "can_hold"
+            ],
+            "state": [],
+            "memes": {
+              "Care": 0.8555505845751168,
+              "Fear": 0.31859367384248116
+            }
+          }
+        },
+        {
+          "event_id": 6,
+          "kind": "consult",
+          "tags": [
+            "listener"
+          ],
+          "participation": "participant",
+          "own_effects": {},
+          "peers": [
+            "cup",
+            "grandpa"
+          ],
+          "shared_event": true,
+          "before": {
+            "id": "hero",
+            "noun": "Bea",
+            "kind": "person",
+            "location": "workshop",
+            "number": "singular",
+            "pronoun": "she",
+            "properties": [
+              "animate",
+              "can_hold"
+            ],
+            "state": [],
+            "memes": {
+              "Care": 0.8555505845751168,
+              "Fear": 0.31859367384248116
+            }
+          },
+          "after": {
+            "id": "hero",
+            "noun": "Bea",
+            "kind": "person",
+            "location": "workshop",
+            "number": "singular",
+            "pronoun": "she",
+            "properties": [
+              "animate",
+              "can_hold"
+            ],
+            "state": [],
+            "memes": {
+              "Care": 0.8555505845751168,
+              "Fear": 0.31859367384248116
+            }
+          }
+        },
+        {
+          "event_id": 7,
+          "kind": "fetch_sponge",
+          "tags": [
+            "changed",
+            "destination_holder",
+            "frame.actor",
+            "frame.destination",
+            "state.add:hoped_to_smooth"
+          ],
+          "participation": "participant",
+          "own_effects": {
+            "state": {
+              "before": [],
+              "after": [
+                "hoped_to_smooth"
+              ]
+            }
+          },
+          "peers": [
+            "sponge"
+          ],
+          "shared_event": true,
+          "before": {
+            "id": "hero",
+            "noun": "Bea",
+            "kind": "person",
+            "location": "workshop",
+            "number": "singular",
+            "pronoun": "she",
+            "properties": [
+              "animate",
+              "can_hold"
+            ],
+            "state": [],
+            "memes": {
+              "Care": 0.8555505845751168,
+              "Fear": 0.31859367384248116
+            }
+          },
+          "after": {
+            "id": "hero",
+            "noun": "Bea",
+            "kind": "person",
+            "location": "workshop",
+            "number": "singular",
+            "pronoun": "she",
+            "properties": [
+              "animate",
+              "can_hold"
+            ],
+            "state": [
+              "hoped_to_smooth"
+            ],
+            "memes": {
+              "Care": 0.8555505845751168,
+              "Fear": 0.31859367384248116
+            }
+          }
+        },
+        {
+          "event_id": 8,
+          "kind": "thumb",
+          "tags": [
+            "causal_context",
+            "frame.actor",
+            "mentioned",
+            "qa_context",
+            "speaker"
+          ],
+          "participation": "participant",
+          "own_effects": {},
+          "peers": [
+            "cup",
+            "helper",
+            "sponge"
+          ],
+          "shared_event": true,
+          "before": {
+            "id": "hero",
+            "noun": "Bea",
+            "kind": "person",
+            "location": "workshop",
+            "number": "singular",
+            "pronoun": "she",
+            "properties": [
+              "animate",
+              "can_hold"
+            ],
+            "state": [
+              "hoped_to_smooth"
+            ],
+            "memes": {
+              "Care": 0.8555505845751168,
+              "Fear": 0.31859367384248116
+            }
+          },
+          "after": {
+            "id": "hero",
+            "noun": "Bea",
+            "kind": "person",
+            "location": "workshop",
+            "number": "singular",
+            "pronoun": "she",
+            "properties": [
+              "animate",
+              "can_hold"
+            ],
+            "state": [
+              "hoped_to_smooth"
+            ],
+            "memes": {
+              "Care": 0.8555505845751168,
+              "Fear": 0.31859367384248116
+            }
+          }
+        },
+        {
+          "event_id": 9,
+          "kind": "return_rib",
+          "tags": [
+            "frame.actor",
+            "source_holder"
+          ],
+          "participation": "participant",
+          "own_effects": {},
+          "peers": [
+            "helper",
+            "tool"
+          ],
+          "shared_event": true,
+          "before": {
+            "id": "hero",
+            "noun": "Bea",
+            "kind": "person",
+            "location": "workshop",
+            "number": "singular",
+            "pronoun": "she",
+            "properties": [
+              "animate",
+              "can_hold"
+            ],
+            "state": [
+              "hoped_to_smooth"
+            ],
+            "memes": {
+              "Care": 0.8555505845751168,
+              "Fear": 0.31859367384248116
+            }
+          },
+          "after": {
+            "id": "hero",
+            "noun": "Bea",
+            "kind": "person",
+            "location": "workshop",
+            "number": "singular",
+            "pronoun": "she",
+            "properties": [
+              "animate",
+              "can_hold"
+            ],
+            "state": [
+              "hoped_to_smooth"
+            ],
+            "memes": {
+              "Care": 0.8555505845751168,
+              "Fear": 0.31859367384248116
+            }
+          }
+        },
+        {
+          "event_id": 10,
+          "kind": "return_sponge",
+          "tags": [
+            "frame.actor",
+            "source_holder"
+          ],
+          "participation": "participant",
+          "own_effects": {},
+          "peers": [
+            "bench",
+            "sponge"
+          ],
+          "shared_event": true,
+          "before": {
+            "id": "hero",
+            "noun": "Bea",
+            "kind": "person",
+            "location": "workshop",
+            "number": "singular",
+            "pronoun": "she",
+            "properties": [
+              "animate",
+              "can_hold"
+            ],
+            "state": [
+              "hoped_to_smooth"
+            ],
+            "memes": {
+              "Care": 0.8555505845751168,
+              "Fear": 0.31859367384248116
+            }
+          },
+          "after": {
+            "id": "hero",
+            "noun": "Bea",
+            "kind": "person",
+            "location": "workshop",
+            "number": "singular",
+            "pronoun": "she",
+            "properties": [
+              "animate",
+              "can_hold"
+            ],
+            "state": [
+              "hoped_to_smooth"
+            ],
+            "memes": {
+              "Care": 0.8555505845751168,
+              "Fear": 0.31859367384248116
+            }
+          }
+        },
+        {
+          "event_id": 11,
+          "kind": "shelve",
+          "tags": [
+            "frame.actor"
+          ],
+          "participation": "participant",
+          "own_effects": {},
+          "peers": [
+            "cup",
+            "shelf"
+          ],
+          "shared_event": true,
+          "before": {
+            "id": "hero",
+            "noun": "Bea",
+            "kind": "person",
+            "location": "workshop",
+            "number": "singular",
+            "pronoun": "she",
+            "properties": [
+              "animate",
+              "can_hold"
+            ],
+            "state": [
+              "hoped_to_smooth"
+            ],
+            "memes": {
+              "Care": 0.8555505845751168,
+              "Fear": 0.31859367384248116
+            }
+          },
+          "after": {
+            "id": "hero",
+            "noun": "Bea",
+            "kind": "person",
+            "location": "workshop",
+            "number": "singular",
+            "pronoun": "she",
+            "properties": [
+              "animate",
+              "can_hold"
+            ],
+            "state": [
+              "hoped_to_smooth"
+            ],
+            "memes": {
+              "Care": 0.8555505845751168,
+              "Fear": 0.31859367384248116
+            }
+          }
+        },
+        {
+          "event_id": 17,
+          "kind": "glaze",
+          "tags": [
+            "frame.actor"
+          ],
+          "participation": "participant",
+          "own_effects": {},
+          "peers": [
+            "blue_glaze",
+            "cup"
+          ],
+          "shared_event": true,
+          "before": {
+            "id": "hero",
+            "noun": "Bea",
+            "kind": "person",
+            "location": "workshop",
+            "number": "singular",
+            "pronoun": "she",
+            "properties": [
+              "animate",
+              "can_hold"
+            ],
+            "state": [
+              "hoped_to_smooth"
+            ],
+            "memes": {
+              "Care": 0.8555505845751168,
+              "Fear": 0.31859367384248116
+            }
+          },
+          "after": {
+            "id": "hero",
+            "noun": "Bea",
+            "kind": "person",
+            "location": "workshop",
+            "number": "singular",
+            "pronoun": "she",
+            "properties": [
+              "animate",
+              "can_hold"
+            ],
+            "state": [
+              "hoped_to_smooth"
+            ],
+            "memes": {
+              "Care": 0.8555505845751168,
+              "Fear": 0.31859367384248116
+            }
+          }
+        },
+        {
+          "event_id": 21,
+          "kind": "deliver",
+          "tags": [
+            "causal_context",
+            "destination_holder",
+            "frame.destination"
+          ],
+          "participation": "participant",
+          "own_effects": {},
+          "peers": [
+            "cup",
+            "helper"
+          ],
+          "shared_event": true,
+          "before": {
+            "id": "hero",
+            "noun": "Bea",
+            "kind": "person",
+            "location": "workshop",
+            "number": "singular",
+            "pronoun": "she",
+            "properties": [
+              "animate",
+              "can_hold"
+            ],
+            "state": [
+              "hoped_to_smooth"
+            ],
+            "memes": {
+              "Care": 0.8555505845751168,
+              "Fear": 0.31859367384248116
+            }
+          },
+          "after": {
+            "id": "hero",
+            "noun": "Bea",
+            "kind": "person",
+            "location": "workshop",
+            "number": "singular",
+            "pronoun": "she",
+            "properties": [
+              "animate",
+              "can_hold"
+            ],
+            "state": [
+              "hoped_to_smooth"
+            ],
+            "memes": {
+              "Care": 0.8555505845751168,
+              "Fear": 0.31859367384248116
+            }
+          }
+        },
+        {
+          "event_id": 22,
+          "kind": "give",
+          "tags": [
+            "frame.actor",
+            "mentioned",
+            "source_holder"
+          ],
+          "participation": "participant",
+          "own_effects": {},
+          "peers": [
+            "cup",
+            "grandpa"
+          ],
+          "shared_event": true,
+          "before": {
+            "id": "hero",
+            "noun": "Bea",
+            "kind": "person",
+            "location": "workshop",
+            "number": "singular",
+            "pronoun": "she",
+            "properties": [
+              "animate",
+              "can_hold"
+            ],
+            "state": [
+              "hoped_to_smooth"
+            ],
+            "memes": {
+              "Care": 0.8555505845751168,
+              "Fear": 0.31859367384248116
+            }
+          },
+          "after": {
+            "id": "hero",
+            "noun": "Bea",
+            "kind": "person",
+            "location": "workshop",
+            "number": "singular",
+            "pronoun": "she",
+            "properties": [
+              "animate",
+              "can_hold"
+            ],
+            "state": [
+              "hoped_to_smooth"
+            ],
+            "memes": {
+              "Care": 0.8555505845751168,
+              "Fear": 0.31859367384248116
+            }
+          }
+        }
+      ]
+    },
+    "kiln": {
+      "initial": {
+        "id": "kiln",
+        "noun": "kiln",
+        "kind": "object",
+        "location": "workshop",
+        "number": "singular",
+        "pronoun": "it",
+        "properties": [],
+        "state": [],
+        "memes": {}
+      },
+      "final": {
+        "id": "kiln",
+        "noun": "kiln",
+        "kind": "object",
+        "location": "workshop",
+        "number": "singular",
+        "pronoun": "it",
+        "properties": [],
+        "state": [],
+        "memes": {}
+      },
+      "line": [
+        {
+          "event_id": 13,
+          "kind": "load_bisque",
+          "tags": [
+            "causal_context",
+            "frame.destination"
+          ],
+          "participation": "participant",
+          "own_effects": {},
+          "peers": [
+            "cup",
+            "helper"
+          ],
+          "shared_event": true,
+          "before": {
+            "id": "kiln",
+            "noun": "kiln",
+            "kind": "object",
+            "location": "workshop",
+            "number": "singular",
+            "pronoun": "it",
+            "properties": [],
+            "state": [],
+            "memes": {}
+          },
+          "after": {
+            "id": "kiln",
+            "noun": "kiln",
+            "kind": "object",
+            "location": "workshop",
+            "number": "singular",
+            "pronoun": "it",
+            "properties": [],
+            "state": [],
+            "memes": {}
+          }
+        },
+        {
+          "event_id": 14,
+          "kind": "bisque",
+          "tags": [
+            "frame.instrument"
+          ],
+          "participation": "participant",
+          "own_effects": {},
+          "peers": [
+            "cup",
+            "helper"
+          ],
+          "shared_event": true,
+          "before": {
+            "id": "kiln",
+            "noun": "kiln",
+            "kind": "object",
+            "location": "workshop",
+            "number": "singular",
+            "pronoun": "it",
+            "properties": [],
+            "state": [],
+            "memes": {}
+          },
+          "after": {
+            "id": "kiln",
+            "noun": "kiln",
+            "kind": "object",
+            "location": "workshop",
+            "number": "singular",
+            "pronoun": "it",
+            "properties": [],
+            "state": [],
+            "memes": {}
+          }
+        },
+        {
+          "event_id": 15,
+          "kind": "cool_bisque",
+          "tags": [
+            "frame.instrument"
+          ],
+          "participation": "participant",
+          "own_effects": {},
+          "peers": [
+            "cup"
+          ],
+          "shared_event": true,
+          "before": {
+            "id": "kiln",
+            "noun": "kiln",
+            "kind": "object",
+            "location": "workshop",
+            "number": "singular",
+            "pronoun": "it",
+            "properties": [],
+            "state": [],
+            "memes": {}
+          },
+          "after": {
+            "id": "kiln",
+            "noun": "kiln",
+            "kind": "object",
+            "location": "workshop",
+            "number": "singular",
+            "pronoun": "it",
+            "properties": [],
+            "state": [],
+            "memes": {}
+          }
+        },
+        {
+          "event_id": 18,
+          "kind": "load_final",
+          "tags": [
+            "causal_context",
+            "frame.destination"
+          ],
+          "participation": "participant",
+          "own_effects": {},
+          "peers": [
+            "cup",
+            "helper"
+          ],
+          "shared_event": true,
+          "before": {
+            "id": "kiln",
+            "noun": "kiln",
+            "kind": "object",
+            "location": "workshop",
+            "number": "singular",
+            "pronoun": "it",
+            "properties": [],
+            "state": [],
+            "memes": {}
+          },
+          "after": {
+            "id": "kiln",
+            "noun": "kiln",
+            "kind": "object",
+            "location": "workshop",
+            "number": "singular",
+            "pronoun": "it",
+            "properties": [],
+            "state": [],
+            "memes": {}
+          }
+        },
+        {
+          "event_id": 19,
+          "kind": "fire",
+          "tags": [
+            "frame.instrument"
+          ],
+          "participation": "participant",
+          "own_effects": {},
+          "peers": [
+            "cup",
+            "helper"
+          ],
+          "shared_event": true,
+          "before": {
+            "id": "kiln",
+            "noun": "kiln",
+            "kind": "object",
+            "location": "workshop",
+            "number": "singular",
+            "pronoun": "it",
+            "properties": [],
+            "state": [],
+            "memes": {}
+          },
+          "after": {
+            "id": "kiln",
+            "noun": "kiln",
+            "kind": "object",
+            "location": "workshop",
+            "number": "singular",
+            "pronoun": "it",
+            "properties": [],
+            "state": [],
+            "memes": {}
+          }
+        },
+        {
+          "event_id": 20,
+          "kind": "cool_final",
+          "tags": [
+            "frame.instrument"
+          ],
+          "participation": "participant",
+          "own_effects": {},
+          "peers": [
+            "cup"
+          ],
+          "shared_event": true,
+          "before": {
+            "id": "kiln",
+            "noun": "kiln",
+            "kind": "object",
+            "location": "workshop",
+            "number": "singular",
+            "pronoun": "it",
+            "properties": [],
+            "state": [],
+            "memes": {}
+          },
+          "after": {
+            "id": "kiln",
+            "noun": "kiln",
+            "kind": "object",
+            "location": "workshop",
+            "number": "singular",
+            "pronoun": "it",
+            "properties": [],
+            "state": [],
+            "memes": {}
+          }
+        }
+      ]
+    },
+    "old_mug": {
+      "initial": {
+        "id": "old_mug",
+        "noun": "mug",
+        "kind": "object",
+        "location": "grandpa",
+        "number": "singular",
+        "pronoun": "it",
+        "properties": [],
+        "state": [
+          "old",
+          "thin_handle"
+        ],
+        "memes": {}
+      },
+      "final": {
+        "id": "old_mug",
+        "noun": "mug",
+        "kind": "object",
+        "location": "grandpa",
+        "number": "singular",
+        "pronoun": "it",
+        "properties": [],
+        "state": [
+          "old",
+          "thin_handle"
+        ],
+        "memes": {}
+      },
+      "line": [
+        {
+          "event_id": 1,
+          "kind": "need",
+          "tags": [
+            "causal_context",
+            "frame.patient"
+          ],
+          "participation": "participant",
+          "own_effects": {},
+          "peers": [
+            "grandpa"
+          ],
+          "shared_event": true,
+          "before": {
+            "id": "old_mug",
+            "noun": "mug",
+            "kind": "object",
+            "location": "grandpa",
+            "number": "singular",
+            "pronoun": "it",
+            "properties": [],
+            "state": [
+              "old",
+              "thin_handle"
+            ],
+            "memes": {}
+          },
+          "after": {
+            "id": "old_mug",
+            "noun": "mug",
+            "kind": "object",
+            "location": "grandpa",
+            "number": "singular",
+            "pronoun": "it",
+            "properties": [],
+            "state": [
+              "old",
+              "thin_handle"
+            ],
+            "memes": {}
+          }
+        }
+      ]
+    },
+    "shelf": {
+      "initial": {
+        "id": "shelf",
+        "noun": "shelf",
+        "kind": "object",
+        "location": "workshop",
+        "number": "singular",
+        "pronoun": "it",
+        "properties": [],
+        "state": [],
+        "memes": {}
+      },
+      "final": {
+        "id": "shelf",
+        "noun": "shelf",
+        "kind": "object",
+        "location": "workshop",
+        "number": "singular",
+        "pronoun": "it",
+        "properties": [],
+        "state": [],
+        "memes": {}
+      },
+      "line": [
+        {
+          "event_id": 11,
+          "kind": "shelve",
+          "tags": [
+            "frame.destination"
+          ],
+          "participation": "participant",
+          "own_effects": {},
+          "peers": [
+            "cup",
+            "hero"
+          ],
+          "shared_event": true,
+          "before": {
+            "id": "shelf",
+            "noun": "shelf",
+            "kind": "object",
+            "location": "workshop",
+            "number": "singular",
+            "pronoun": "it",
+            "properties": [],
+            "state": [],
+            "memes": {}
+          },
+          "after": {
+            "id": "shelf",
+            "noun": "shelf",
+            "kind": "object",
+            "location": "workshop",
+            "number": "singular",
+            "pronoun": "it",
+            "properties": [],
+            "state": [],
+            "memes": {}
+          }
+        },
+        {
+          "event_id": 12,
+          "kind": "dry",
+          "tags": [
+            "frame.destination"
+          ],
+          "participation": "participant",
+          "own_effects": {},
+          "peers": [
+            "cup"
+          ],
+          "shared_event": true,
+          "before": {
+            "id": "shelf",
+            "noun": "shelf",
+            "kind": "object",
+            "location": "workshop",
+            "number": "singular",
+            "pronoun": "it",
+            "properties": [],
+            "state": [],
+            "memes": {}
+          },
+          "after": {
+            "id": "shelf",
+            "noun": "shelf",
+            "kind": "object",
+            "location": "workshop",
+            "number": "singular",
+            "pronoun": "it",
+            "properties": [],
+            "state": [],
+            "memes": {}
+          }
+        }
+      ]
+    },
+    "sponge": {
+      "initial": {
+        "id": "sponge",
+        "noun": "sponge",
+        "kind": "object",
+        "location": "bench",
+        "number": "singular",
+        "pronoun": "it",
+        "properties": [],
+        "state": [],
+        "memes": {}
+      },
+      "final": {
+        "id": "sponge",
+        "noun": "sponge",
+        "kind": "object",
+        "location": "bench",
+        "number": "singular",
+        "pronoun": "it",
+        "properties": [],
+        "state": [],
+        "memes": {}
+      },
+      "line": [
+        {
+          "event_id": 7,
+          "kind": "fetch_sponge",
+          "tags": [
+            "causal_context",
+            "changed",
+            "frame.patient",
+            "moved"
+          ],
+          "participation": "participant",
+          "own_effects": {
+            "location": {
+              "before": "bench",
+              "after": "hero"
+            }
+          },
+          "peers": [
+            "hero"
+          ],
+          "shared_event": true,
+          "before": {
+            "id": "sponge",
+            "noun": "sponge",
+            "kind": "object",
+            "location": "bench",
+            "number": "singular",
+            "pronoun": "it",
+            "properties": [],
+            "state": [],
+            "memes": {}
+          },
+          "after": {
+            "id": "sponge",
+            "noun": "sponge",
+            "kind": "object",
+            "location": "hero",
+            "number": "singular",
+            "pronoun": "it",
+            "properties": [],
+            "state": [],
+            "memes": {}
+          }
+        },
+        {
+          "event_id": 8,
+          "kind": "thumb",
+          "tags": [
+            "causal_context",
+            "frame.instrument",
+            "mentioned",
+            "qa_context"
+          ],
+          "participation": "participant",
+          "own_effects": {},
+          "peers": [
+            "cup",
+            "helper",
+            "hero"
+          ],
+          "shared_event": true,
+          "before": {
+            "id": "sponge",
+            "noun": "sponge",
+            "kind": "object",
+            "location": "hero",
+            "number": "singular",
+            "pronoun": "it",
+            "properties": [],
+            "state": [],
+            "memes": {}
+          },
+          "after": {
+            "id": "sponge",
+            "noun": "sponge",
+            "kind": "object",
+            "location": "hero",
+            "number": "singular",
+            "pronoun": "it",
+            "properties": [],
+            "state": [],
+            "memes": {}
+          }
+        },
+        {
+          "event_id": 10,
+          "kind": "return_sponge",
+          "tags": [
+            "causal_context",
+            "changed",
+            "frame.patient",
+            "moved"
+          ],
+          "participation": "participant",
+          "own_effects": {
+            "location": {
+              "before": "hero",
+              "after": "bench"
+            }
+          },
+          "peers": [
+            "bench",
+            "hero"
+          ],
+          "shared_event": true,
+          "before": {
+            "id": "sponge",
+            "noun": "sponge",
+            "kind": "object",
+            "location": "hero",
+            "number": "singular",
+            "pronoun": "it",
+            "properties": [],
+            "state": [],
+            "memes": {}
+          },
+          "after": {
+            "id": "sponge",
+            "noun": "sponge",
+            "kind": "object",
+            "location": "bench",
+            "number": "singular",
+            "pronoun": "it",
+            "properties": [],
+            "state": [],
+            "memes": {}
+          }
+        },
+        {
+          "event_id": 24,
+          "kind": "ending",
+          "tags": [
+            "causal_context"
+          ],
+          "participation": "context",
+          "own_effects": {},
+          "peers": [],
+          "shared_event": false,
+          "before": {
+            "id": "sponge",
+            "noun": "sponge",
+            "kind": "object",
+            "location": "bench",
+            "number": "singular",
+            "pronoun": "it",
+            "properties": [],
+            "state": [],
+            "memes": {}
+          },
+          "after": {
+            "id": "sponge",
+            "noun": "sponge",
+            "kind": "object",
+            "location": "bench",
+            "number": "singular",
+            "pronoun": "it",
+            "properties": [],
+            "state": [],
+            "memes": {}
+          }
+        }
+      ]
+    },
+    "teapot": {
+      "initial": {
+        "id": "teapot",
+        "noun": "teapot",
+        "kind": "object",
+        "location": "bench",
+        "number": "singular",
+        "pronoun": "it",
+        "properties": [],
+        "state": [
+          "tea"
+        ],
+        "memes": {}
+      },
+      "final": {
+        "id": "teapot",
+        "noun": "teapot",
+        "kind": "object",
+        "location": "bench",
+        "number": "singular",
+        "pronoun": "it",
+        "properties": [],
+        "state": [],
+        "memes": {}
+      },
+      "line": [
+        {
+          "event_id": 23,
+          "kind": "use",
+          "tags": [
+            "causal_context",
+            "changed",
+            "frame.instrument",
+            "state.remove:tea"
+          ],
+          "participation": "participant",
+          "own_effects": {
+            "state": {
+              "before": [
+                "tea"
+              ],
+              "after": []
+            }
+          },
+          "peers": [
+            "cup",
+            "grandpa"
+          ],
+          "shared_event": true,
+          "before": {
+            "id": "teapot",
+            "noun": "teapot",
+            "kind": "object",
+            "location": "bench",
+            "number": "singular",
+            "pronoun": "it",
+            "properties": [],
+            "state": [
+              "tea"
+            ],
+            "memes": {}
+          },
+          "after": {
+            "id": "teapot",
+            "noun": "teapot",
+            "kind": "object",
+            "location": "bench",
+            "number": "singular",
+            "pronoun": "it",
+            "properties": [],
+            "state": [],
+            "memes": {}
+          }
+        }
+      ]
+    },
+    "tool": {
+      "initial": {
+        "id": "tool",
+        "noun": "shaping rib",
+        "kind": "object",
+        "location": "hero",
+        "number": "singular",
+        "pronoun": "it",
+        "properties": [],
+        "state": [
+          "borrowed"
+        ],
+        "memes": {}
+      },
+      "final": {
+        "id": "tool",
+        "noun": "shaping rib",
+        "kind": "object",
+        "location": "helper",
+        "number": "singular",
+        "pronoun": "it",
+        "properties": [],
+        "state": [
+          "borrowed"
+        ],
+        "memes": {}
+      },
+      "line": [
+        {
+          "event_id": 3,
+          "kind": "shape",
+          "tags": [
+            "causal_context",
+            "frame.instrument"
+          ],
+          "participation": "participant",
+          "own_effects": {},
+          "peers": [
+            "cup",
+            "hero"
+          ],
+          "shared_event": true,
+          "before": {
+            "id": "tool",
+            "noun": "shaping rib",
+            "kind": "object",
+            "location": "hero",
+            "number": "singular",
+            "pronoun": "it",
+            "properties": [],
+            "state": [
+              "borrowed"
+            ],
+            "memes": {}
+          },
+          "after": {
+            "id": "tool",
+            "noun": "shaping rib",
+            "kind": "object",
+            "location": "hero",
+            "number": "singular",
+            "pronoun": "it",
+            "properties": [],
+            "state": [
+              "borrowed"
+            ],
+            "memes": {}
+          }
+        },
+        {
+          "event_id": 4,
+          "kind": "slip",
+          "tags": [
+            "causal_context",
+            "frame.instrument",
+            "mentioned",
+            "qa_context"
+          ],
+          "participation": "participant",
+          "own_effects": {},
+          "peers": [
+            "cup",
+            "hero"
+          ],
+          "shared_event": true,
+          "before": {
+            "id": "tool",
+            "noun": "shaping rib",
+            "kind": "object",
+            "location": "hero",
+            "number": "singular",
+            "pronoun": "it",
+            "properties": [],
+            "state": [
+              "borrowed"
+            ],
+            "memes": {}
+          },
+          "after": {
+            "id": "tool",
+            "noun": "shaping rib",
+            "kind": "object",
+            "location": "hero",
+            "number": "singular",
+            "pronoun": "it",
+            "properties": [],
+            "state": [
+              "borrowed"
+            ],
+            "memes": {}
+          }
+        },
+        {
+          "event_id": 9,
+          "kind": "return_rib",
+          "tags": [
+            "causal_context",
+            "changed",
+            "frame.patient",
+            "moved"
+          ],
+          "participation": "participant",
+          "own_effects": {
+            "location": {
+              "before": "hero",
+              "after": "helper"
+            }
+          },
+          "peers": [
+            "helper",
+            "hero"
+          ],
+          "shared_event": true,
+          "before": {
+            "id": "tool",
+            "noun": "shaping rib",
+            "kind": "object",
+            "location": "hero",
+            "number": "singular",
+            "pronoun": "it",
+            "properties": [],
+            "state": [
+              "borrowed"
+            ],
+            "memes": {}
+          },
+          "after": {
+            "id": "tool",
+            "noun": "shaping rib",
+            "kind": "object",
+            "location": "helper",
+            "number": "singular",
+            "pronoun": "it",
+            "properties": [],
+            "state": [
+              "borrowed"
+            ],
+            "memes": {}
+          }
+        },
+        {
+          "event_id": 24,
+          "kind": "ending",
+          "tags": [
+            "causal_context"
+          ],
+          "participation": "context",
+          "own_effects": {},
+          "peers": [],
+          "shared_event": false,
+          "before": {
+            "id": "tool",
+            "noun": "shaping rib",
+            "kind": "object",
+            "location": "helper",
+            "number": "singular",
+            "pronoun": "it",
+            "properties": [],
+            "state": [
+              "borrowed"
+            ],
+            "memes": {}
+          },
+          "after": {
+            "id": "tool",
+            "noun": "shaping rib",
+            "kind": "object",
+            "location": "helper",
+            "number": "singular",
+            "pronoun": "it",
+            "properties": [],
+            "state": [
+              "borrowed"
+            ],
+            "memes": {}
+          }
+        }
+      ]
+    }
+  },
+  "limitations": [
+    "Declared dependencies are not a complete Python guard read set.",
+    "Frame actor/patient are coarse roles; compound scenes can involve additional people.",
+    "Holder tags describe physical possession, not legal ownership or intent.",
+    "Local lines project shared events; they are not independently executable."
+  ]
+}

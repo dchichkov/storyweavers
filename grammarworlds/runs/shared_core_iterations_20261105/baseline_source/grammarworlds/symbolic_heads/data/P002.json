@@ -1,0 +1,528 @@
+{
+  "id": "P002",
+  "name": "Person agreement",
+  "description": "Current finite verb slot → subject's discourse person. Prefer am/is/are as appropriate.",
+  "proposed_payload": "{person, number}",
+  "provenance": "Authored illustrative seeds; not learned or extracted.",
+  "status": "table",
+  "examples": [
+    {
+      "id": "P002.01",
+      "description": "Speaker I selects am.",
+      "query": "present_be",
+      "scope": "example",
+      "sources": [
+        {
+          "id": "source:1",
+          "channel": "subject_person",
+          "scope": "example",
+          "key": "I",
+          "confidence": 1.0
+        }
+      ],
+      "expected_features": {
+        "first_singular": 1.0
+      },
+      "grammar_weights": {
+        "am": 1.0,
+        "is": 1.0,
+        "waits": 1.0,
+        "rests": 1.0
+      },
+      "favored": "am",
+      "disfavored": "is"
+    },
+    {
+      "id": "P002.02",
+      "description": "Addressee you selects are.",
+      "query": "present_be",
+      "scope": "example",
+      "sources": [
+        {
+          "id": "source:2",
+          "channel": "subject_person",
+          "scope": "example",
+          "key": "you",
+          "confidence": 1.0
+        }
+      ],
+      "expected_features": {
+        "second": 1.0
+      },
+      "grammar_weights": {
+        "are": 1.0,
+        "am": 1.0,
+        "waits": 1.0,
+        "rests": 1.0
+      },
+      "favored": "are",
+      "disfavored": "am"
+    },
+    {
+      "id": "P002.03",
+      "description": "She selects third-person singular.",
+      "query": "present_be",
+      "scope": "example",
+      "sources": [
+        {
+          "id": "source:3",
+          "channel": "subject_person",
+          "scope": "example",
+          "key": "she",
+          "confidence": 1.0
+        }
+      ],
+      "expected_features": {
+        "third_singular": 1.0
+      },
+      "grammar_weights": {
+        "is": 1.0,
+        "am": 1.0,
+        "waits": 1.0,
+        "rests": 1.0
+      },
+      "favored": "is",
+      "disfavored": "am"
+    },
+    {
+      "id": "P002.04",
+      "description": "He shares third-person singular with she.",
+      "query": "present_be",
+      "scope": "example",
+      "sources": [
+        {
+          "id": "source:4",
+          "channel": "subject_person",
+          "scope": "example",
+          "key": "he",
+          "confidence": 1.0
+        }
+      ],
+      "expected_features": {
+        "third_singular": 1.0
+      },
+      "grammar_weights": {
+        "is": 1.0,
+        "am": 1.0,
+        "waits": 1.0,
+        "rests": 1.0
+      },
+      "favored": "is",
+      "disfavored": "am"
+    },
+    {
+      "id": "P002.05",
+      "description": "Inanimate it also selects is.",
+      "query": "present_be",
+      "scope": "example",
+      "sources": [
+        {
+          "id": "source:5",
+          "channel": "subject_person",
+          "scope": "example",
+          "key": "it",
+          "confidence": 1.0
+        }
+      ],
+      "expected_features": {
+        "third_singular": 1.0
+      },
+      "grammar_weights": {
+        "is": 1.0,
+        "am": 1.0,
+        "waits": 1.0,
+        "rests": 1.0
+      },
+      "favored": "is",
+      "disfavored": "am"
+    },
+    {
+      "id": "P002.06",
+      "description": "We changes person and number from I.",
+      "query": "present_be",
+      "scope": "example",
+      "sources": [
+        {
+          "id": "source:6",
+          "channel": "subject_person",
+          "scope": "example",
+          "key": "we",
+          "confidence": 1.0
+        }
+      ],
+      "expected_features": {
+        "first_plural": 1.0
+      },
+      "grammar_weights": {
+        "are": 1.0,
+        "am": 1.0,
+        "waits": 1.0,
+        "rests": 1.0
+      },
+      "favored": "are",
+      "disfavored": "am"
+    },
+    {
+      "id": "P002.07",
+      "description": "They selects are.",
+      "query": "present_be",
+      "scope": "example",
+      "sources": [
+        {
+          "id": "source:7",
+          "channel": "subject_person",
+          "scope": "example",
+          "key": "they",
+          "confidence": 1.0
+        }
+      ],
+      "expected_features": {
+        "third_plural": 1.0
+      },
+      "grammar_weights": {
+        "are": 1.0,
+        "is": 1.0,
+        "waits": 1.0,
+        "rests": 1.0
+      },
+      "favored": "are",
+      "disfavored": "is"
+    },
+    {
+      "id": "P002.08",
+      "description": "Past indicative I selects was in this seed.",
+      "query": "past_be",
+      "scope": "example",
+      "sources": [
+        {
+          "id": "source:8",
+          "channel": "subject_person",
+          "scope": "example",
+          "key": "I",
+          "confidence": 1.0
+        }
+      ],
+      "expected_features": {
+        "first_singular": 1.0
+      },
+      "grammar_weights": {
+        "was": 1.0,
+        "were": 1.0,
+        "waits": 1.0,
+        "rests": 1.0
+      },
+      "favored": "was",
+      "disfavored": "were"
+    },
+    {
+      "id": "P002.09",
+      "description": "Past you selects were.",
+      "query": "past_be",
+      "scope": "example",
+      "sources": [
+        {
+          "id": "source:9",
+          "channel": "subject_person",
+          "scope": "example",
+          "key": "you",
+          "confidence": 1.0
+        }
+      ],
+      "expected_features": {
+        "second": 1.0
+      },
+      "grammar_weights": {
+        "were": 1.0,
+        "was": 1.0,
+        "waits": 1.0,
+        "rests": 1.0
+      },
+      "favored": "were",
+      "disfavored": "was"
+    },
+    {
+      "id": "P002.10",
+      "description": "Past we selects were.",
+      "query": "past_be",
+      "scope": "example",
+      "sources": [
+        {
+          "id": "source:10",
+          "channel": "subject_person",
+          "scope": "example",
+          "key": "we",
+          "confidence": 1.0
+        }
+      ],
+      "expected_features": {
+        "first_plural": 1.0
+      },
+      "grammar_weights": {
+        "were": 1.0,
+        "was": 1.0,
+        "waits": 1.0,
+        "rests": 1.0
+      },
+      "favored": "were",
+      "disfavored": "was"
+    }
+  ],
+  "input_channel": "subject_person",
+  "receiver_mode": "multipliers",
+  "smoothing": 1.0,
+  "input_contract": "Supply current, scoped records in channel subject_person. Scope selection and structural parsing belong to the caller; no free-text parser is implied.",
+  "table_semantics": "Positive relative word-weight multipliers.",
+  "selection": [
+    {
+      "tokens": [
+        "present_be",
+        "I"
+      ],
+      "weight": 1.0
+    },
+    {
+      "tokens": [
+        "present_be",
+        "you"
+      ],
+      "weight": 1.0
+    },
+    {
+      "tokens": [
+        "present_be",
+        "she"
+      ],
+      "weight": 1.0
+    },
+    {
+      "tokens": [
+        "present_be",
+        "he"
+      ],
+      "weight": 1.0
+    },
+    {
+      "tokens": [
+        "present_be",
+        "it"
+      ],
+      "weight": 1.0
+    },
+    {
+      "tokens": [
+        "present_be",
+        "we"
+      ],
+      "weight": 1.0
+    },
+    {
+      "tokens": [
+        "present_be",
+        "they"
+      ],
+      "weight": 1.0
+    },
+    {
+      "tokens": [
+        "past_be",
+        "I"
+      ],
+      "weight": 1.0
+    },
+    {
+      "tokens": [
+        "past_be",
+        "you"
+      ],
+      "weight": 1.0
+    },
+    {
+      "tokens": [
+        "past_be",
+        "we"
+      ],
+      "weight": 1.0
+    }
+  ],
+  "projection": [
+    {
+      "tokens": [
+        "I",
+        "first_singular"
+      ],
+      "weight": 1.0
+    },
+    {
+      "tokens": [
+        "you",
+        "second"
+      ],
+      "weight": 1.0
+    },
+    {
+      "tokens": [
+        "she",
+        "third_singular"
+      ],
+      "weight": 1.0
+    },
+    {
+      "tokens": [
+        "he",
+        "third_singular"
+      ],
+      "weight": 1.0
+    },
+    {
+      "tokens": [
+        "it",
+        "third_singular"
+      ],
+      "weight": 1.0
+    },
+    {
+      "tokens": [
+        "we",
+        "first_plural"
+      ],
+      "weight": 1.0
+    },
+    {
+      "tokens": [
+        "they",
+        "third_plural"
+      ],
+      "weight": 1.0
+    }
+  ],
+  "receiver": [
+    {
+      "tokens": [
+        "present_be",
+        "first_singular",
+        "am"
+      ],
+      "weight": 4.0
+    },
+    {
+      "tokens": [
+        "present_be",
+        "first_singular",
+        "is"
+      ],
+      "weight": 0.25
+    },
+    {
+      "tokens": [
+        "present_be",
+        "second",
+        "are"
+      ],
+      "weight": 4.0
+    },
+    {
+      "tokens": [
+        "present_be",
+        "second",
+        "am"
+      ],
+      "weight": 0.25
+    },
+    {
+      "tokens": [
+        "present_be",
+        "third_singular",
+        "is"
+      ],
+      "weight": 4.0
+    },
+    {
+      "tokens": [
+        "present_be",
+        "third_singular",
+        "am"
+      ],
+      "weight": 0.25
+    },
+    {
+      "tokens": [
+        "present_be",
+        "first_plural",
+        "are"
+      ],
+      "weight": 4.0
+    },
+    {
+      "tokens": [
+        "present_be",
+        "first_plural",
+        "am"
+      ],
+      "weight": 0.25
+    },
+    {
+      "tokens": [
+        "present_be",
+        "third_plural",
+        "are"
+      ],
+      "weight": 4.0
+    },
+    {
+      "tokens": [
+        "present_be",
+        "third_plural",
+        "is"
+      ],
+      "weight": 0.25
+    },
+    {
+      "tokens": [
+        "past_be",
+        "first_singular",
+        "was"
+      ],
+      "weight": 4.0
+    },
+    {
+      "tokens": [
+        "past_be",
+        "first_singular",
+        "were"
+      ],
+      "weight": 0.25
+    },
+    {
+      "tokens": [
+        "past_be",
+        "second",
+        "were"
+      ],
+      "weight": 4.0
+    },
+    {
+      "tokens": [
+        "past_be",
+        "second",
+        "was"
+      ],
+      "weight": 0.25
+    },
+    {
+      "tokens": [
+        "past_be",
+        "first_plural",
+        "were"
+      ],
+      "weight": 4.0
+    },
+    {
+      "tokens": [
+        "past_be",
+        "first_plural",
+        "was"
+      ],
+      "weight": 0.25
+    }
+  ]
+}

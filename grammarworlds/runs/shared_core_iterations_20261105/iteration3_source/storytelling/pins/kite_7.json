@@ -1,0 +1,140 @@
+{
+  "scenario": "kite",
+  "seed": 7,
+  "story": "Nora wanted to fly a kite, but the kite was torn. Nora said, \u201cI want to repair the kite.\u201d Dad said, \u201cThe boat needs a sail.\u201d Nora said, \u201cI can cover the tear.\u201d She covered the tear with the tape. She launched the kite in the wind. Nora and Dad watched the patched kite. The kite danced above the meadow.",
+  "qa": [
+    {
+      "id": "kite:7:outcome",
+      "kind": "what_next",
+      "question": "What did they watch at the end?",
+      "answer": "Nora and Dad watched the patched kite dancing above the meadow. The tape had covered its tear.",
+      "entity_ids": [
+        "helper",
+        "hero",
+        "target",
+        "tool"
+      ],
+      "event_ids": [
+        5,
+        7
+      ],
+      "evidence": [
+        {
+          "start": 160,
+          "end": 195,
+          "text": "She covered the tear with the tape."
+        },
+        {
+          "start": 231,
+          "end": 303,
+          "text": "Nora and Dad watched the patched kite. The kite danced above the meadow."
+        }
+      ],
+      "text_sha256": "68e8aec74ad99528a76c29f5f6e68be0884ae64344da41388419ef79d75eba87"
+    },
+    {
+      "id": "kite:1:goal",
+      "kind": "who",
+      "question": "Who wanted to fly the kite?",
+      "answer": "Nora wanted to fly the kite. The kite was torn.",
+      "entity_ids": [
+        "hero",
+        "target"
+      ],
+      "event_ids": [
+        1
+      ],
+      "evidence": [
+        {
+          "start": 0,
+          "end": 89,
+          "text": "Nora wanted to fly a kite, but the kite was torn. Nora said, \u201cI want to repair the kite.\u201d"
+        }
+      ],
+      "text_sha256": "68e8aec74ad99528a76c29f5f6e68be0884ae64344da41388419ef79d75eba87"
+    },
+    {
+      "id": "kite:1:problem",
+      "kind": "what",
+      "question": "What stopped the kite from flying?",
+      "answer": "The kite was torn.",
+      "entity_ids": [
+        "target"
+      ],
+      "event_ids": [
+        1
+      ],
+      "evidence": [
+        {
+          "start": 0,
+          "end": 89,
+          "text": "Nora wanted to fly a kite, but the kite was torn. Nora said, \u201cI want to repair the kite.\u201d"
+        }
+      ],
+      "text_sha256": "68e8aec74ad99528a76c29f5f6e68be0884ae64344da41388419ef79d75eba87"
+    },
+    {
+      "id": "kite:5:patch",
+      "kind": "how",
+      "question": "How did Nora mend the kite?",
+      "answer": "Nora covered the tear with tape.",
+      "entity_ids": [
+        "hero",
+        "target",
+        "tool"
+      ],
+      "event_ids": [
+        5
+      ],
+      "evidence": [
+        {
+          "start": 160,
+          "end": 195,
+          "text": "She covered the tear with the tape."
+        }
+      ],
+      "text_sha256": "68e8aec74ad99528a76c29f5f6e68be0884ae64344da41388419ef79d75eba87"
+    },
+    {
+      "id": "kite:7:place",
+      "kind": "where",
+      "question": "Where did the repaired kite fly?",
+      "answer": "The kite danced above the meadow.",
+      "entity_ids": [
+        "target"
+      ],
+      "event_ids": [
+        7
+      ],
+      "evidence": [
+        {
+          "start": 231,
+          "end": 303,
+          "text": "Nora and Dad watched the patched kite. The kite danced above the meadow."
+        }
+      ],
+      "text_sha256": "68e8aec74ad99528a76c29f5f6e68be0884ae64344da41388419ef79d75eba87"
+    },
+    {
+      "id": "kite:2:material",
+      "kind": "what",
+      "question": "What did Dad say the boat needed?",
+      "answer": "Dad said the boat needed a sail.",
+      "entity_ids": [
+        "boat",
+        "helper"
+      ],
+      "event_ids": [
+        2
+      ],
+      "evidence": [
+        {
+          "start": 90,
+          "end": 124,
+          "text": "Dad said, \u201cThe boat needs a sail.\u201d"
+        }
+      ],
+      "text_sha256": "68e8aec74ad99528a76c29f5f6e68be0884ae64344da41388419ef79d75eba87"
+    }
+  ]
+}

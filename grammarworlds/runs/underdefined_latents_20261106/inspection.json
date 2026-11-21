@@ -1,0 +1,2590 @@
+{
+  "seed": 7,
+  "heads": true,
+  "source_events": [
+    4,
+    5
+  ],
+  "strict_fixture_mapping": {
+    "candidates": [],
+    "rejected": [
+      {
+        "rules": [
+          "fetch.portable_tool",
+          "repair.paper"
+        ],
+        "reason": "no compatible carrier",
+        "roles": [
+          "worker",
+          "item"
+        ]
+      },
+      {
+        "rules": [
+          "fetch.portable_tool",
+          "repair.kite"
+        ],
+        "reason": "no compatible carrier",
+        "roles": [
+          "worker",
+          "item"
+        ]
+      }
+    ]
+  },
+  "added_declarations": {
+    "book": [
+      "paper"
+    ],
+    "ada": [
+      "can_patch_paper"
+    ],
+    "omar": [
+      "can_patch_paper"
+    ]
+  },
+  "baseline": {
+    "story": "Ada said, \u201cI would like to repair the book.\u201d Ada said, \u201cI could help you.\u201d She fetched the tape from the bench. Ada said, \u201cI can help you.\u201d Ada handed Omar the tape. Omar handed the tape to Ada. Omar told Ada, \u201cI could help you.\u201d Ada said, \u201cI want to repair the book.\u201d",
+    "metrics": {
+      "words": 77,
+      "generation_steps": 85,
+      "uncertain_token_steps": 31,
+      "word_choice_steps": 31,
+      "head_changed_steps": 5
+    },
+    "goal_reached": false,
+    "stop": "step_limit",
+    "events": [
+      {
+        "kind": "intent",
+        "actor": "ada",
+        "patient": "book",
+        "instrument": "",
+        "destination": "",
+        "cause_ids": []
+      },
+      {
+        "kind": "offer",
+        "actor": "ada",
+        "patient": "omar",
+        "instrument": "",
+        "destination": "",
+        "cause_ids": []
+      },
+      {
+        "kind": "fetch",
+        "actor": "ada",
+        "patient": "tape",
+        "instrument": "",
+        "destination": "ada",
+        "cause_ids": []
+      },
+      {
+        "kind": "offer",
+        "actor": "ada",
+        "patient": "omar",
+        "instrument": "",
+        "destination": "",
+        "cause_ids": []
+      },
+      {
+        "kind": "transfer",
+        "actor": "ada",
+        "patient": "tape",
+        "instrument": "",
+        "destination": "omar",
+        "cause_ids": []
+      },
+      {
+        "kind": "transfer",
+        "actor": "omar",
+        "patient": "tape",
+        "instrument": "",
+        "destination": "ada",
+        "cause_ids": []
+      },
+      {
+        "kind": "offer",
+        "actor": "omar",
+        "patient": "ada",
+        "instrument": "",
+        "destination": "",
+        "cause_ids": []
+      },
+      {
+        "kind": "intent",
+        "actor": "ada",
+        "patient": "book",
+        "instrument": "",
+        "destination": "",
+        "cause_ids": []
+      }
+    ],
+    "first_scene_prior": [
+      {
+        "kind": "intent",
+        "roles": {
+          "actor": "ada",
+          "patient": "book"
+        },
+        "probability": 0.1666666666666667
+      },
+      {
+        "kind": "offer",
+        "roles": {
+          "actor": "ada",
+          "patient": "omar"
+        },
+        "probability": 0.16666666666666669
+      },
+      {
+        "kind": "transfer",
+        "roles": {
+          "actor": "ada",
+          "destination": "omar",
+          "patient": "book"
+        },
+        "probability": 0.16666666666666669
+      },
+      {
+        "kind": "fetch",
+        "roles": {
+          "actor": "ada",
+          "destination": "ada",
+          "patient": "tape"
+        },
+        "probability": 0.16666666666666669
+      },
+      {
+        "kind": "offer",
+        "roles": {
+          "actor": "omar",
+          "patient": "ada"
+        },
+        "probability": 0.16666666666666666
+      },
+      {
+        "kind": "fetch",
+        "roles": {
+          "actor": "omar",
+          "destination": "omar",
+          "patient": "tape"
+        },
+        "probability": 0.16666666666666666
+      }
+    ]
+  },
+  "mapped": {
+    "story": "Ada fetched the tape from the bench. She used the tape to repair the book.",
+    "status": "complete",
+    "metrics": {
+      "token_steps": 19,
+      "choice_steps": 2,
+      "head_changed_steps": 1
+    },
+    "goal_reached": true,
+    "mapping": {
+      "candidates": [
+        {
+          "bindings": {
+            "worker": "ada",
+            "tool": "tape",
+            "supply": "bench",
+            "item": "book"
+          },
+          "rules": [
+            "fetch.portable_tool",
+            "repair.paper"
+          ],
+          "score": 2.0,
+          "probability": 1.0
+        }
+      ],
+      "rejected": [
+        {
+          "rules": [
+            "fetch.portable_tool",
+            "repair.paper"
+          ],
+          "bindings": {
+            "worker": "omar",
+            "tool": "tape",
+            "supply": "bench",
+            "item": "book"
+          },
+          "reason": "target guards block program",
+          "blocking": {
+            "patch": [
+              "actor is not holding the item"
+            ]
+          }
+        },
+        {
+          "rules": [
+            "fetch.portable_tool",
+            "repair.kite"
+          ],
+          "reason": "no compatible carrier",
+          "roles": [
+            "worker",
+            "item"
+          ]
+        }
+      ],
+      "selected_rules": [
+        "fetch.portable_tool",
+        "repair.paper"
+      ],
+      "selected_bindings": {
+        "worker": "ada",
+        "tool": "tape",
+        "supply": "bench",
+        "item": "book"
+      }
+    },
+    "latent": [
+      {
+        "event": "fetch",
+        "operation": "fetch",
+        "ready": [
+          "fetch"
+        ],
+        "prior": [
+          {
+            "kind": "fetch",
+            "roles": {
+              "actor": "ada",
+              "item": "tape",
+              "source": "bench"
+            },
+            "probability": 1.0
+          }
+        ],
+        "committed": {
+          "id": 1,
+          "frame": {
+            "kind": "fetch",
+            "actor": "ada",
+            "patient": "tape",
+            "instrument": "",
+            "destination": "ada",
+            "cause_ids": []
+          },
+          "sentence": "Ada fetched the tape from the bench.",
+          "before": {
+            "flags": [],
+            "entities": {
+              "ada": {
+                "location": "garden",
+                "state": [],
+                "memes": {
+                  "Desire": 0.8,
+                  "Fear": 0.2,
+                  "Trust": 0.6
+                }
+              },
+              "omar": {
+                "location": "garden",
+                "state": [],
+                "memes": {
+                  "Care": 0.8,
+                  "Trust": 0.6
+                }
+              },
+              "book": {
+                "location": "ada",
+                "state": [
+                  "torn"
+                ],
+                "memes": {}
+              },
+              "tape": {
+                "location": "bench",
+                "state": [],
+                "memes": {}
+              },
+              "bench": {
+                "location": "garden",
+                "state": [],
+                "memes": {}
+              }
+            }
+          },
+          "after": {
+            "flags": [],
+            "entities": {
+              "ada": {
+                "location": "garden",
+                "state": [],
+                "memes": {
+                  "Desire": 0.8,
+                  "Fear": 0.2,
+                  "Trust": 0.6
+                }
+              },
+              "omar": {
+                "location": "garden",
+                "state": [],
+                "memes": {
+                  "Care": 0.8,
+                  "Trust": 0.6
+                }
+              },
+              "book": {
+                "location": "ada",
+                "state": [
+                  "torn"
+                ],
+                "memes": {}
+              },
+              "tape": {
+                "location": "ada",
+                "state": [],
+                "memes": {}
+              },
+              "bench": {
+                "location": "garden",
+                "state": [],
+                "memes": {}
+              }
+            }
+          },
+          "line_event": "fetch",
+          "operation": "fetch",
+          "attached_entities": [
+            "ada",
+            "tape",
+            "bench"
+          ],
+          "bound_roles": {
+            "actor": "ada",
+            "item": "tape",
+            "source": "bench"
+          },
+          "referents": [
+            "ada",
+            "tape"
+          ],
+          "speakers": [],
+          "narrated": true
+        },
+        "tokens": [
+          {
+            "token": "tape",
+            "choices": [
+              {
+                "word": "tape",
+                "probability": 1.0,
+                "events": {
+                  "fetch": 1.0
+                },
+                "grammar_rules": [
+                  "clause.subject:ada",
+                  "gf.AdvVP",
+                  "gf.ComplV2",
+                  "gf.DetCN",
+                  "gf.PredVP",
+                  "gf.UseCl",
+                  "gf.UseN",
+                  "gf.UsePN",
+                  "gf.finite",
+                  "local.PrepNP",
+                  "local.utterance",
+                  "referent:ada",
+                  "referent:tape",
+                  "story.scene"
+                ],
+                "grammar_probability": 1.0
+              }
+            ],
+            "posterior": [
+              {
+                "probability": 1.0,
+                "attributes": {
+                  "pos": "NOUN",
+                  "syntax_role": "object",
+                  "entity": "tape",
+                  "entity_features": {
+                    "id": "tape",
+                    "noun": "tape",
+                    "kind": "tool",
+                    "location": "bench",
+                    "number": "singular",
+                    "pronoun": "it",
+                    "properties": [
+                      "portable",
+                      "repair"
+                    ],
+                    "state": [],
+                    "memes": {}
+                  },
+                  "state_scope": "before_scene",
+                  "nominal": {
+                    "lemma": "tape",
+                    "mass": true,
+                    "modifiers": [],
+                    "type": "nominal"
+                  },
+                  "clause": {
+                    "polarity": "positive",
+                    "predicate": {
+                      "arguments": {
+                        "object": {
+                          "entity": "tape",
+                          "number": "singular",
+                          "person": 3,
+                          "type": "entity"
+                        }
+                      },
+                      "construction": "gf.ComplV2",
+                      "lemma": "fetch",
+                      "modality": "plain",
+                      "modifiers": [
+                        {
+                          "object": {
+                            "determiner": "the",
+                            "lemma": "bench",
+                            "modifiers": [],
+                            "number": "singular",
+                            "person": 3,
+                            "type": "nominal"
+                          },
+                          "preposition": "from"
+                        }
+                      ]
+                    },
+                    "subject": {
+                      "entity": "ada",
+                      "number": "singular",
+                      "person": 3,
+                      "type": "entity"
+                    },
+                    "tense": "past"
+                  },
+                  "action": {
+                    "arguments": {
+                      "object": {
+                        "entity": "tape",
+                        "number": "singular",
+                        "person": 3,
+                        "type": "entity"
+                      }
+                    },
+                    "construction": "gf.ComplV2",
+                    "lemma": "fetch",
+                    "modality": "plain",
+                    "modifiers": [
+                      {
+                        "object": {
+                          "determiner": "the",
+                          "lemma": "bench",
+                          "modifiers": [],
+                          "number": "singular",
+                          "person": 3,
+                          "type": "nominal"
+                        },
+                        "preposition": "from"
+                      }
+                    ]
+                  },
+                  "action_scope": "finite_clause",
+                  "assertion": "narrated_candidate",
+                  "quoted": false,
+                  "speaker": null,
+                  "listener": null,
+                  "modifier": null,
+                  "event": {
+                    "name": "obtain object from supply",
+                    "source_kind": "fetch",
+                    "occurrence": "fetch",
+                    "scope": "candidate_scene",
+                    "status": "proposed",
+                    "roles": {
+                      "actor": "ada",
+                      "item": "tape",
+                      "source": "bench"
+                    },
+                    "state_scope": "before_scene",
+                    "expected_effects": [
+                      {
+                        "entity": "tape",
+                        "location": "ada",
+                        "add": [],
+                        "remove": [],
+                        "status": "proposed"
+                      }
+                    ],
+                    "effects_scope": "declared_target_operation",
+                    "effects_complete": false,
+                    "transfer_policy": "role-bound-target-authoritative-v1"
+                  },
+                  "unresolved": []
+                }
+              }
+            ]
+          },
+          {
+            "token": "bench",
+            "choices": [
+              {
+                "word": "bench",
+                "probability": 1.0,
+                "events": {
+                  "fetch": 1.0
+                },
+                "grammar_rules": [
+                  "clause.subject:ada",
+                  "gf.AdvVP",
+                  "gf.ComplV2",
+                  "gf.DetCN",
+                  "gf.PredVP",
+                  "gf.UseCl",
+                  "gf.UseN",
+                  "gf.UsePN",
+                  "gf.finite",
+                  "local.PrepNP",
+                  "local.utterance",
+                  "referent:ada",
+                  "referent:tape",
+                  "story.scene"
+                ],
+                "grammar_probability": 1.0
+              }
+            ],
+            "posterior": [
+              {
+                "probability": 1.0,
+                "attributes": {
+                  "pos": "NOUN",
+                  "syntax_role": "oblique",
+                  "entity": null,
+                  "entity_features": null,
+                  "state_scope": "before_scene",
+                  "nominal": {
+                    "lemma": "bench",
+                    "mass": false,
+                    "modifiers": [],
+                    "type": "nominal"
+                  },
+                  "clause": {
+                    "polarity": "positive",
+                    "predicate": {
+                      "arguments": {
+                        "object": {
+                          "entity": "tape",
+                          "number": "singular",
+                          "person": 3,
+                          "type": "entity"
+                        }
+                      },
+                      "construction": "gf.ComplV2",
+                      "lemma": "fetch",
+                      "modality": "plain",
+                      "modifiers": [
+                        {
+                          "object": {
+                            "determiner": "the",
+                            "lemma": "bench",
+                            "modifiers": [],
+                            "number": "singular",
+                            "person": 3,
+                            "type": "nominal"
+                          },
+                          "preposition": "from"
+                        }
+                      ]
+                    },
+                    "subject": {
+                      "entity": "ada",
+                      "number": "singular",
+                      "person": 3,
+                      "type": "entity"
+                    },
+                    "tense": "past"
+                  },
+                  "action": {
+                    "arguments": {
+                      "object": {
+                        "entity": "tape",
+                        "number": "singular",
+                        "person": 3,
+                        "type": "entity"
+                      }
+                    },
+                    "construction": "gf.ComplV2",
+                    "lemma": "fetch",
+                    "modality": "plain",
+                    "modifiers": [
+                      {
+                        "object": {
+                          "determiner": "the",
+                          "lemma": "bench",
+                          "modifiers": [],
+                          "number": "singular",
+                          "person": 3,
+                          "type": "nominal"
+                        },
+                        "preposition": "from"
+                      }
+                    ]
+                  },
+                  "action_scope": "finite_clause",
+                  "assertion": "narrated_candidate",
+                  "quoted": false,
+                  "speaker": null,
+                  "listener": null,
+                  "modifier": {
+                    "object": {
+                      "determiner": "the",
+                      "lemma": "bench",
+                      "modifiers": [],
+                      "number": "singular",
+                      "person": 3,
+                      "type": "nominal"
+                    },
+                    "preposition": "from"
+                  },
+                  "event": {
+                    "name": "obtain object from supply",
+                    "source_kind": "fetch",
+                    "occurrence": "fetch",
+                    "scope": "candidate_scene",
+                    "status": "proposed",
+                    "roles": {
+                      "actor": "ada",
+                      "item": "tape",
+                      "source": "bench"
+                    },
+                    "state_scope": "before_scene",
+                    "expected_effects": [
+                      {
+                        "entity": "tape",
+                        "location": "ada",
+                        "add": [],
+                        "remove": [],
+                        "status": "proposed"
+                      }
+                    ],
+                    "effects_scope": "declared_target_operation",
+                    "effects_complete": false,
+                    "transfer_policy": "role-bound-target-authoritative-v1"
+                  },
+                  "unresolved": [
+                    "entity"
+                  ]
+                }
+              }
+            ]
+          }
+        ],
+        "transfer": {
+          "policy": "role-bound-target-authoritative-v1",
+          "occurrence": "fetch",
+          "operation": "fetch",
+          "roles": [
+            {
+              "slot": "actor",
+              "role": "worker",
+              "target": "ada",
+              "origin": {
+                "scenario": "kite",
+                "entity": "hero"
+              },
+              "fields": {
+                "id": {
+                  "source": "hero",
+                  "target": "ada",
+                  "decision": "use_target_value"
+                },
+                "noun": {
+                  "source": "Sam",
+                  "target": "Ada",
+                  "decision": "use_target_value"
+                },
+                "kind": {
+                  "source": "person",
+                  "target": "person",
+                  "decision": "compatible_target_value"
+                },
+                "number": {
+                  "source": "singular",
+                  "target": "singular",
+                  "decision": "compatible_target_value"
+                },
+                "pronoun": {
+                  "source": "he",
+                  "target": "she",
+                  "decision": "use_target_value"
+                },
+                "location": {
+                  "source": "meadow",
+                  "target": "garden",
+                  "decision": "use_target_value"
+                },
+                "state": {
+                  "source": [],
+                  "target": [],
+                  "decision": "compatible_target_value"
+                },
+                "memes": {
+                  "source": {
+                    "Care": 0.8,
+                    "Fear": 0.35613833845891507,
+                    "Curiosity": 0.65,
+                    "Trust": 0.35,
+                    "Joy": 0.1
+                  },
+                  "target": {
+                    "Desire": 0.8,
+                    "Fear": 0.2,
+                    "Trust": 0.6
+                  },
+                  "decision": "use_target_value"
+                },
+                "properties": {
+                  "source": [
+                    "animate",
+                    "can_climb",
+                    "can_hold",
+                    "can_repair"
+                  ],
+                  "target": [
+                    "can_help",
+                    "can_hold",
+                    "can_patch_paper"
+                  ],
+                  "decision": "use_target_value"
+                }
+              },
+              "source_only_properties": [
+                "animate",
+                "can_climb",
+                "can_repair"
+              ],
+              "unknown_source_fields": [],
+              "policy": "recompute_from_current_target",
+              "missing_source_profile": false
+            },
+            {
+              "slot": "item",
+              "role": "tool",
+              "target": "tape",
+              "origin": {
+                "scenario": "kite",
+                "entity": "tool"
+              },
+              "fields": {
+                "id": {
+                  "source": "tool",
+                  "target": "tape",
+                  "decision": "use_target_value"
+                },
+                "noun": {
+                  "source": "tape",
+                  "target": "tape",
+                  "decision": "compatible_target_value"
+                },
+                "kind": {
+                  "source": "tool",
+                  "target": "tool",
+                  "decision": "compatible_target_value"
+                },
+                "number": {
+                  "source": "singular",
+                  "target": "singular",
+                  "decision": "compatible_target_value"
+                },
+                "pronoun": {
+                  "source": "it",
+                  "target": "it",
+                  "decision": "compatible_target_value"
+                },
+                "location": {
+                  "source": "basket",
+                  "target": "bench",
+                  "decision": "use_target_value"
+                },
+                "state": {
+                  "source": [],
+                  "target": [],
+                  "decision": "compatible_target_value"
+                },
+                "memes": {
+                  "source": {},
+                  "target": {},
+                  "decision": "compatible_target_value"
+                },
+                "properties": {
+                  "source": [
+                    "portable",
+                    "repair"
+                  ],
+                  "target": [
+                    "portable",
+                    "repair"
+                  ],
+                  "decision": "compatible_target_value"
+                }
+              },
+              "source_only_properties": [],
+              "unknown_source_fields": [],
+              "policy": "recompute_from_current_target",
+              "missing_source_profile": false
+            },
+            {
+              "slot": "source",
+              "role": "supply",
+              "target": "bench",
+              "origin": null,
+              "fields": {},
+              "source_only_properties": [],
+              "unknown_source_fields": [],
+              "policy": "recompute_from_current_target",
+              "missing_source_profile": true
+            }
+          ],
+          "target_role_features": {
+            "actor": {
+              "id": "ada",
+              "noun": "Ada",
+              "kind": "person",
+              "location": "garden",
+              "number": "singular",
+              "pronoun": "she",
+              "properties": [
+                "can_help",
+                "can_hold",
+                "can_patch_paper"
+              ],
+              "state": [],
+              "memes": {
+                "Desire": 0.8,
+                "Fear": 0.2,
+                "Trust": 0.6
+              }
+            },
+            "item": {
+              "id": "tape",
+              "noun": "tape",
+              "kind": "tool",
+              "location": "bench",
+              "number": "singular",
+              "pronoun": "it",
+              "properties": [
+                "portable",
+                "repair"
+              ],
+              "state": [],
+              "memes": {}
+            },
+            "source": {
+              "id": "bench",
+              "noun": "bench",
+              "kind": "place",
+              "location": "garden",
+              "number": "singular",
+              "pronoun": "it",
+              "properties": [
+                "reachable"
+              ],
+              "state": [],
+              "memes": {}
+            }
+          },
+          "semantic_mapping": "declarative_mapping_grammar",
+          "mapping_rules": [
+            "fetch.portable_tool",
+            "repair.paper"
+          ],
+          "source_context": "provenance_only",
+          "target_guard_authoritative": true,
+          "linguistic_mapping": "regenerate_from_target_typed_grammar",
+          "source_positions": "discard_and_recompute",
+          "source_event": {
+            "scenario": "kite",
+            "kind": "fetch_tape",
+            "event_id": 4,
+            "target_operation": "fetch",
+            "mapping_rule": "fetch.portable_tool"
+          },
+          "untransferred_context": [
+            {
+              "event_id": 4,
+              "source_contract": {
+                "requires": [
+                  "patch"
+                ],
+                "excludes": [
+                  "ended",
+                  "prepared"
+                ],
+                "flags_added": [
+                  "prepared"
+                ],
+                "flags_removed": []
+              },
+              "source_dependencies": [
+                {
+                  "kind": "required_flag",
+                  "key": "patch",
+                  "source_event": 3
+                },
+                {
+                  "kind": "world_fact",
+                  "key": "problem",
+                  "source_event": null
+                }
+              ]
+            },
+            {
+              "event_id": 5,
+              "source_contract": {
+                "requires": [
+                  "prepared"
+                ],
+                "excludes": [
+                  "ended",
+                  "mended"
+                ],
+                "flags_added": [
+                  "mended"
+                ],
+                "flags_removed": []
+              },
+              "source_dependencies": [
+                {
+                  "kind": "required_flag",
+                  "key": "prepared",
+                  "source_event": 4
+                },
+                {
+                  "kind": "world_fact",
+                  "key": "problem",
+                  "source_event": null
+                }
+              ]
+            }
+          ]
+        }
+      },
+      {
+        "event": "patch",
+        "operation": "patch_paper",
+        "ready": [
+          "patch"
+        ],
+        "prior": [
+          {
+            "kind": "patch_paper",
+            "roles": {
+              "actor": "ada",
+              "item": "book",
+              "tool": "tape"
+            },
+            "probability": 1.0
+          }
+        ],
+        "committed": {
+          "id": 2,
+          "frame": {
+            "kind": "patch",
+            "actor": "ada",
+            "patient": "book",
+            "instrument": "tape",
+            "destination": "",
+            "cause_ids": []
+          },
+          "sentence": "She used the tape to repair the book.",
+          "before": {
+            "flags": [],
+            "entities": {
+              "ada": {
+                "location": "garden",
+                "state": [],
+                "memes": {
+                  "Desire": 0.8,
+                  "Fear": 0.2,
+                  "Trust": 0.6
+                }
+              },
+              "omar": {
+                "location": "garden",
+                "state": [],
+                "memes": {
+                  "Care": 0.8,
+                  "Trust": 0.6
+                }
+              },
+              "book": {
+                "location": "ada",
+                "state": [
+                  "torn"
+                ],
+                "memes": {}
+              },
+              "tape": {
+                "location": "ada",
+                "state": [],
+                "memes": {}
+              },
+              "bench": {
+                "location": "garden",
+                "state": [],
+                "memes": {}
+              }
+            }
+          },
+          "after": {
+            "flags": [],
+            "entities": {
+              "ada": {
+                "location": "garden",
+                "state": [],
+                "memes": {
+                  "Desire": 0.8,
+                  "Fear": 0.2,
+                  "Trust": 0.6
+                }
+              },
+              "omar": {
+                "location": "garden",
+                "state": [],
+                "memes": {
+                  "Care": 0.8,
+                  "Trust": 0.6
+                }
+              },
+              "book": {
+                "location": "ada",
+                "state": [
+                  "repaired"
+                ],
+                "memes": {}
+              },
+              "tape": {
+                "location": "ada",
+                "state": [],
+                "memes": {}
+              },
+              "bench": {
+                "location": "garden",
+                "state": [],
+                "memes": {}
+              }
+            }
+          },
+          "line_event": "patch",
+          "operation": "patch_paper",
+          "attached_entities": [
+            "ada",
+            "tape",
+            "book"
+          ],
+          "bound_roles": {
+            "actor": "ada",
+            "item": "book",
+            "tool": "tape"
+          },
+          "referents": [
+            "ada",
+            "book",
+            "tape"
+          ],
+          "speakers": [],
+          "narrated": true
+        },
+        "tokens": [
+          {
+            "token": "she",
+            "choices": [
+              {
+                "word": "she",
+                "probability": 0.4,
+                "events": {
+                  "patch": 1.0
+                },
+                "grammar_rules": [
+                  "clause.subject:ada",
+                  "expanded.clause",
+                  "gf.AdvVP",
+                  "gf.ComplV2",
+                  "gf.ComplV2V",
+                  "gf.DetCN",
+                  "gf.PredVP",
+                  "gf.UseCl",
+                  "gf.UseN",
+                  "gf.UsePron",
+                  "gf.finite",
+                  "gf.infVP",
+                  "local.PrepNP",
+                  "local.paraphrase",
+                  "local.reference.choice",
+                  "local.utterance",
+                  "referent:ada",
+                  "referent:book",
+                  "referent:tape",
+                  "story.scene"
+                ],
+                "grammar_probability": 0.4
+              },
+              {
+                "word": "Using",
+                "probability": 0.25,
+                "events": {
+                  "patch": 1.0
+                },
+                "grammar_rules": [
+                  "clause.subject:ada",
+                  "expanded.clause",
+                  "expanded.using_front",
+                  "gf.ComplV2",
+                  "gf.DetCN",
+                  "gf.PredVP",
+                  "gf.UseCl",
+                  "gf.UseN",
+                  "gf.UsePN",
+                  "gf.UsePron",
+                  "gf.finite",
+                  "local.paraphrase",
+                  "local.reference.choice",
+                  "local.utterance",
+                  "referent:ada",
+                  "referent:book",
+                  "referent:tape",
+                  "story.scene"
+                ],
+                "grammar_probability": 0.25
+              },
+              {
+                "word": "With",
+                "probability": 0.25,
+                "events": {
+                  "patch": 1.0
+                },
+                "grammar_rules": [
+                  "clause.subject:ada",
+                  "expanded.clause",
+                  "expanded.instrument_front",
+                  "gf.ComplV2",
+                  "gf.DetCN",
+                  "gf.PredVP",
+                  "gf.UseCl",
+                  "gf.UseN",
+                  "gf.UsePN",
+                  "gf.UsePron",
+                  "gf.finite",
+                  "local.paraphrase",
+                  "local.reference.choice",
+                  "local.utterance",
+                  "referent:ada",
+                  "referent:book",
+                  "referent:tape",
+                  "story.scene"
+                ],
+                "grammar_probability": 0.25
+              },
+              {
+                "word": "Ada",
+                "probability": 0.1,
+                "events": {
+                  "patch": 1.0
+                },
+                "grammar_rules": [
+                  "clause.subject:ada",
+                  "expanded.clause",
+                  "gf.AdvVP",
+                  "gf.ComplV2",
+                  "gf.ComplV2V",
+                  "gf.DetCN",
+                  "gf.PredVP",
+                  "gf.UseCl",
+                  "gf.UseN",
+                  "gf.UsePN",
+                  "gf.finite",
+                  "gf.infVP",
+                  "local.PrepNP",
+                  "local.paraphrase",
+                  "local.reference.choice",
+                  "local.utterance",
+                  "referent:ada",
+                  "referent:book",
+                  "referent:tape",
+                  "story.scene"
+                ],
+                "grammar_probability": 0.1
+              }
+            ],
+            "posterior": [
+              {
+                "probability": 0.5,
+                "attributes": {
+                  "pos": "PRON",
+                  "syntax_role": "subject",
+                  "entity": "ada",
+                  "entity_features": {
+                    "id": "ada",
+                    "noun": "Ada",
+                    "kind": "person",
+                    "location": "garden",
+                    "number": "singular",
+                    "pronoun": "she",
+                    "properties": [
+                      "can_help",
+                      "can_hold",
+                      "can_patch_paper"
+                    ],
+                    "state": [],
+                    "memes": {
+                      "Desire": 0.8,
+                      "Fear": 0.2,
+                      "Trust": 0.6
+                    }
+                  },
+                  "state_scope": "before_scene",
+                  "nominal": null,
+                  "clause": {
+                    "polarity": "positive",
+                    "predicate": {
+                      "arguments": {
+                        "action": {
+                          "arguments": {
+                            "object": {
+                              "entity": "book",
+                              "number": "singular",
+                              "person": 3,
+                              "type": "entity"
+                            }
+                          },
+                          "construction": "gf.ComplV2",
+                          "lemma": "repair",
+                          "modality": "plain"
+                        },
+                        "object": {
+                          "entity": "tape",
+                          "number": "singular",
+                          "person": 3,
+                          "type": "entity"
+                        }
+                      },
+                      "construction": "gf.ComplV2V",
+                      "lemma": "use",
+                      "modality": "plain"
+                    },
+                    "subject": {
+                      "entity": "ada",
+                      "number": "singular",
+                      "person": 3,
+                      "type": "entity"
+                    },
+                    "tense": "past"
+                  },
+                  "action": {
+                    "arguments": {
+                      "action": {
+                        "arguments": {
+                          "object": {
+                            "entity": "book",
+                            "number": "singular",
+                            "person": 3,
+                            "type": "entity"
+                          }
+                        },
+                        "construction": "gf.ComplV2",
+                        "lemma": "repair",
+                        "modality": "plain"
+                      },
+                      "object": {
+                        "entity": "tape",
+                        "number": "singular",
+                        "person": 3,
+                        "type": "entity"
+                      }
+                    },
+                    "construction": "gf.ComplV2V",
+                    "lemma": "use",
+                    "modality": "plain"
+                  },
+                  "action_scope": "finite_clause",
+                  "assertion": "narrated_candidate",
+                  "quoted": false,
+                  "speaker": null,
+                  "listener": null,
+                  "modifier": null,
+                  "event": {
+                    "name": "repair paper object",
+                    "source_kind": "patch_paper",
+                    "occurrence": "patch",
+                    "scope": "candidate_scene",
+                    "status": "proposed",
+                    "roles": {
+                      "actor": "ada",
+                      "item": "book",
+                      "tool": "tape"
+                    },
+                    "state_scope": "before_scene",
+                    "expected_effects": [
+                      {
+                        "entity": "book",
+                        "location": null,
+                        "add": [
+                          "repaired"
+                        ],
+                        "remove": [
+                          "torn"
+                        ],
+                        "status": "proposed"
+                      }
+                    ],
+                    "effects_scope": "declared_target_operation",
+                    "effects_complete": false,
+                    "transfer_policy": "role-bound-target-authoritative-v1"
+                  },
+                  "unresolved": []
+                }
+              },
+              {
+                "probability": 0.25,
+                "attributes": {
+                  "pos": "PRON",
+                  "syntax_role": "subject",
+                  "entity": "ada",
+                  "entity_features": {
+                    "id": "ada",
+                    "noun": "Ada",
+                    "kind": "person",
+                    "location": "garden",
+                    "number": "singular",
+                    "pronoun": "she",
+                    "properties": [
+                      "can_help",
+                      "can_hold",
+                      "can_patch_paper"
+                    ],
+                    "state": [],
+                    "memes": {
+                      "Desire": 0.8,
+                      "Fear": 0.2,
+                      "Trust": 0.6
+                    }
+                  },
+                  "state_scope": "before_scene",
+                  "nominal": null,
+                  "clause": {
+                    "polarity": "positive",
+                    "predicate": {
+                      "arguments": {
+                        "object": {
+                          "entity": "book",
+                          "number": "singular",
+                          "person": 3,
+                          "type": "entity"
+                        }
+                      },
+                      "construction": "gf.ComplV2",
+                      "lemma": "repair",
+                      "modality": "plain",
+                      "modifiers": [
+                        {
+                          "object": {
+                            "entity": "tape",
+                            "number": "singular",
+                            "person": 3,
+                            "type": "entity"
+                          },
+                          "preposition": "with"
+                        }
+                      ]
+                    },
+                    "subject": {
+                      "entity": "ada",
+                      "number": "singular",
+                      "person": 3,
+                      "type": "entity"
+                    },
+                    "tense": "past"
+                  },
+                  "action": {
+                    "arguments": {
+                      "object": {
+                        "entity": "book",
+                        "number": "singular",
+                        "person": 3,
+                        "type": "entity"
+                      }
+                    },
+                    "construction": "gf.ComplV2",
+                    "lemma": "repair",
+                    "modality": "plain",
+                    "modifiers": [
+                      {
+                        "object": {
+                          "entity": "tape",
+                          "number": "singular",
+                          "person": 3,
+                          "type": "entity"
+                        },
+                        "preposition": "with"
+                      }
+                    ]
+                  },
+                  "action_scope": "finite_clause",
+                  "assertion": "narrated_candidate",
+                  "quoted": false,
+                  "speaker": null,
+                  "listener": null,
+                  "modifier": null,
+                  "event": {
+                    "name": "repair paper object",
+                    "source_kind": "patch_paper",
+                    "occurrence": "patch",
+                    "scope": "candidate_scene",
+                    "status": "proposed",
+                    "roles": {
+                      "actor": "ada",
+                      "item": "book",
+                      "tool": "tape"
+                    },
+                    "state_scope": "before_scene",
+                    "expected_effects": [
+                      {
+                        "entity": "book",
+                        "location": null,
+                        "add": [
+                          "repaired"
+                        ],
+                        "remove": [
+                          "torn"
+                        ],
+                        "status": "proposed"
+                      }
+                    ],
+                    "effects_scope": "declared_target_operation",
+                    "effects_complete": false,
+                    "transfer_policy": "role-bound-target-authoritative-v1"
+                  },
+                  "unresolved": []
+                }
+              },
+              {
+                "probability": 0.25,
+                "attributes": {
+                  "pos": "PRON",
+                  "syntax_role": "subject",
+                  "entity": "ada",
+                  "entity_features": {
+                    "id": "ada",
+                    "noun": "Ada",
+                    "kind": "person",
+                    "location": "garden",
+                    "number": "singular",
+                    "pronoun": "she",
+                    "properties": [
+                      "can_help",
+                      "can_hold",
+                      "can_patch_paper"
+                    ],
+                    "state": [],
+                    "memes": {
+                      "Desire": 0.8,
+                      "Fear": 0.2,
+                      "Trust": 0.6
+                    }
+                  },
+                  "state_scope": "before_scene",
+                  "nominal": null,
+                  "clause": {
+                    "polarity": "positive",
+                    "predicate": {
+                      "arguments": {
+                        "object": {
+                          "entity": "book",
+                          "number": "singular",
+                          "person": 3,
+                          "type": "entity"
+                        }
+                      },
+                      "construction": "gf.ComplV2",
+                      "lemma": "fix",
+                      "modality": "plain",
+                      "modifiers": [
+                        {
+                          "object": {
+                            "entity": "tape",
+                            "number": "singular",
+                            "person": 3,
+                            "type": "entity"
+                          },
+                          "preposition": "with"
+                        }
+                      ]
+                    },
+                    "subject": {
+                      "entity": "ada",
+                      "number": "singular",
+                      "person": 3,
+                      "type": "entity"
+                    },
+                    "tense": "past"
+                  },
+                  "action": {
+                    "arguments": {
+                      "object": {
+                        "entity": "book",
+                        "number": "singular",
+                        "person": 3,
+                        "type": "entity"
+                      }
+                    },
+                    "construction": "gf.ComplV2",
+                    "lemma": "fix",
+                    "modality": "plain",
+                    "modifiers": [
+                      {
+                        "object": {
+                          "entity": "tape",
+                          "number": "singular",
+                          "person": 3,
+                          "type": "entity"
+                        },
+                        "preposition": "with"
+                      }
+                    ]
+                  },
+                  "action_scope": "finite_clause",
+                  "assertion": "narrated_candidate",
+                  "quoted": false,
+                  "speaker": null,
+                  "listener": null,
+                  "modifier": null,
+                  "event": {
+                    "name": "repair paper object",
+                    "source_kind": "patch_paper",
+                    "occurrence": "patch",
+                    "scope": "candidate_scene",
+                    "status": "proposed",
+                    "roles": {
+                      "actor": "ada",
+                      "item": "book",
+                      "tool": "tape"
+                    },
+                    "state_scope": "before_scene",
+                    "expected_effects": [
+                      {
+                        "entity": "book",
+                        "location": null,
+                        "add": [
+                          "repaired"
+                        ],
+                        "remove": [
+                          "torn"
+                        ],
+                        "status": "proposed"
+                      }
+                    ],
+                    "effects_scope": "declared_target_operation",
+                    "effects_complete": false,
+                    "transfer_policy": "role-bound-target-authoritative-v1"
+                  },
+                  "unresolved": []
+                }
+              }
+            ]
+          },
+          {
+            "token": "used",
+            "choices": [
+              {
+                "word": "used",
+                "probability": 0.4117647058823529,
+                "events": {
+                  "patch": 1.0
+                },
+                "grammar_rules": [
+                  "clause.subject:ada",
+                  "gf.ComplV2V",
+                  "gf.DetCN",
+                  "gf.PredVP",
+                  "gf.UseCl",
+                  "gf.UseN",
+                  "gf.UsePron",
+                  "gf.finite",
+                  "gf.infVP",
+                  "local.paraphrase",
+                  "local.reference.choice",
+                  "local.utterance",
+                  "referent:ada",
+                  "referent:book",
+                  "referent:tape",
+                  "story.scene"
+                ],
+                "grammar_probability": 0.5
+              },
+              {
+                "word": "fixed",
+                "probability": 0.29411764705882354,
+                "events": {
+                  "patch": 1.0
+                },
+                "grammar_rules": [
+                  "clause.subject:ada",
+                  "expanded.clause",
+                  "gf.AdvVP",
+                  "gf.ComplV2",
+                  "gf.DetCN",
+                  "gf.PredVP",
+                  "gf.UseCl",
+                  "gf.UseN",
+                  "gf.UsePron",
+                  "gf.finite",
+                  "local.PrepNP",
+                  "local.paraphrase",
+                  "local.reference.choice",
+                  "local.utterance",
+                  "referent:ada",
+                  "referent:book",
+                  "referent:tape",
+                  "story.scene"
+                ],
+                "grammar_probability": 0.25
+              },
+              {
+                "word": "repaired",
+                "probability": 0.29411764705882354,
+                "events": {
+                  "patch": 1.0
+                },
+                "grammar_rules": [
+                  "clause.subject:ada",
+                  "expanded.clause",
+                  "gf.AdvVP",
+                  "gf.ComplV2",
+                  "gf.DetCN",
+                  "gf.PredVP",
+                  "gf.UseCl",
+                  "gf.UseN",
+                  "gf.UsePron",
+                  "gf.finite",
+                  "local.PrepNP",
+                  "local.paraphrase",
+                  "local.reference.choice",
+                  "local.utterance",
+                  "referent:ada",
+                  "referent:book",
+                  "referent:tape",
+                  "story.scene"
+                ],
+                "grammar_probability": 0.25
+              }
+            ],
+            "posterior": [
+              {
+                "probability": 1.0,
+                "attributes": {
+                  "pos": "VERB",
+                  "syntax_role": "predicate",
+                  "entity": null,
+                  "entity_features": null,
+                  "state_scope": "before_scene",
+                  "nominal": null,
+                  "clause": {
+                    "polarity": "positive",
+                    "predicate": {
+                      "arguments": {
+                        "action": {
+                          "arguments": {
+                            "object": {
+                              "entity": "book",
+                              "number": "singular",
+                              "person": 3,
+                              "type": "entity"
+                            }
+                          },
+                          "construction": "gf.ComplV2",
+                          "lemma": "repair",
+                          "modality": "plain"
+                        },
+                        "object": {
+                          "entity": "tape",
+                          "number": "singular",
+                          "person": 3,
+                          "type": "entity"
+                        }
+                      },
+                      "construction": "gf.ComplV2V",
+                      "lemma": "use",
+                      "modality": "plain"
+                    },
+                    "subject": {
+                      "entity": "ada",
+                      "number": "singular",
+                      "person": 3,
+                      "type": "entity"
+                    },
+                    "tense": "past"
+                  },
+                  "action": {
+                    "arguments": {
+                      "action": {
+                        "arguments": {
+                          "object": {
+                            "entity": "book",
+                            "number": "singular",
+                            "person": 3,
+                            "type": "entity"
+                          }
+                        },
+                        "construction": "gf.ComplV2",
+                        "lemma": "repair",
+                        "modality": "plain"
+                      },
+                      "object": {
+                        "entity": "tape",
+                        "number": "singular",
+                        "person": 3,
+                        "type": "entity"
+                      }
+                    },
+                    "construction": "gf.ComplV2V",
+                    "lemma": "use",
+                    "modality": "plain"
+                  },
+                  "action_scope": "finite_clause",
+                  "assertion": "narrated_candidate",
+                  "quoted": false,
+                  "speaker": null,
+                  "listener": null,
+                  "modifier": null,
+                  "event": {
+                    "name": "repair paper object",
+                    "source_kind": "patch_paper",
+                    "occurrence": "patch",
+                    "scope": "candidate_scene",
+                    "status": "proposed",
+                    "roles": {
+                      "actor": "ada",
+                      "item": "book",
+                      "tool": "tape"
+                    },
+                    "state_scope": "before_scene",
+                    "expected_effects": [
+                      {
+                        "entity": "book",
+                        "location": null,
+                        "add": [
+                          "repaired"
+                        ],
+                        "remove": [
+                          "torn"
+                        ],
+                        "status": "proposed"
+                      }
+                    ],
+                    "effects_scope": "declared_target_operation",
+                    "effects_complete": false,
+                    "transfer_policy": "role-bound-target-authoritative-v1"
+                  },
+                  "unresolved": [
+                    "entity"
+                  ]
+                }
+              }
+            ]
+          },
+          {
+            "token": "tape",
+            "choices": [
+              {
+                "word": "tape",
+                "probability": 1.0,
+                "events": {
+                  "patch": 1.0
+                },
+                "grammar_rules": [
+                  "clause.subject:ada",
+                  "gf.ComplV2V",
+                  "gf.DetCN",
+                  "gf.PredVP",
+                  "gf.UseCl",
+                  "gf.UseN",
+                  "gf.UsePron",
+                  "gf.finite",
+                  "gf.infVP",
+                  "local.paraphrase",
+                  "local.reference.choice",
+                  "local.utterance",
+                  "referent:ada",
+                  "referent:book",
+                  "referent:tape",
+                  "story.scene"
+                ],
+                "grammar_probability": 1.0
+              }
+            ],
+            "posterior": [
+              {
+                "probability": 1.0,
+                "attributes": {
+                  "pos": "NOUN",
+                  "syntax_role": "object",
+                  "entity": "tape",
+                  "entity_features": {
+                    "id": "tape",
+                    "noun": "tape",
+                    "kind": "tool",
+                    "location": "ada",
+                    "number": "singular",
+                    "pronoun": "it",
+                    "properties": [
+                      "portable",
+                      "repair"
+                    ],
+                    "state": [],
+                    "memes": {}
+                  },
+                  "state_scope": "before_scene",
+                  "nominal": {
+                    "lemma": "tape",
+                    "mass": true,
+                    "modifiers": [],
+                    "type": "nominal"
+                  },
+                  "clause": {
+                    "polarity": "positive",
+                    "predicate": {
+                      "arguments": {
+                        "action": {
+                          "arguments": {
+                            "object": {
+                              "entity": "book",
+                              "number": "singular",
+                              "person": 3,
+                              "type": "entity"
+                            }
+                          },
+                          "construction": "gf.ComplV2",
+                          "lemma": "repair",
+                          "modality": "plain"
+                        },
+                        "object": {
+                          "entity": "tape",
+                          "number": "singular",
+                          "person": 3,
+                          "type": "entity"
+                        }
+                      },
+                      "construction": "gf.ComplV2V",
+                      "lemma": "use",
+                      "modality": "plain"
+                    },
+                    "subject": {
+                      "entity": "ada",
+                      "number": "singular",
+                      "person": 3,
+                      "type": "entity"
+                    },
+                    "tense": "past"
+                  },
+                  "action": {
+                    "arguments": {
+                      "action": {
+                        "arguments": {
+                          "object": {
+                            "entity": "book",
+                            "number": "singular",
+                            "person": 3,
+                            "type": "entity"
+                          }
+                        },
+                        "construction": "gf.ComplV2",
+                        "lemma": "repair",
+                        "modality": "plain"
+                      },
+                      "object": {
+                        "entity": "tape",
+                        "number": "singular",
+                        "person": 3,
+                        "type": "entity"
+                      }
+                    },
+                    "construction": "gf.ComplV2V",
+                    "lemma": "use",
+                    "modality": "plain"
+                  },
+                  "action_scope": "finite_clause",
+                  "assertion": "narrated_candidate",
+                  "quoted": false,
+                  "speaker": null,
+                  "listener": null,
+                  "modifier": null,
+                  "event": {
+                    "name": "repair paper object",
+                    "source_kind": "patch_paper",
+                    "occurrence": "patch",
+                    "scope": "candidate_scene",
+                    "status": "proposed",
+                    "roles": {
+                      "actor": "ada",
+                      "item": "book",
+                      "tool": "tape"
+                    },
+                    "state_scope": "before_scene",
+                    "expected_effects": [
+                      {
+                        "entity": "book",
+                        "location": null,
+                        "add": [
+                          "repaired"
+                        ],
+                        "remove": [
+                          "torn"
+                        ],
+                        "status": "proposed"
+                      }
+                    ],
+                    "effects_scope": "declared_target_operation",
+                    "effects_complete": false,
+                    "transfer_policy": "role-bound-target-authoritative-v1"
+                  },
+                  "unresolved": []
+                }
+              }
+            ]
+          },
+          {
+            "token": "repair",
+            "choices": [
+              {
+                "word": "repair",
+                "probability": 1.0,
+                "events": {
+                  "patch": 1.0
+                },
+                "grammar_rules": [
+                  "clause.subject:ada",
+                  "gf.ComplV2V",
+                  "gf.DetCN",
+                  "gf.PredVP",
+                  "gf.UseCl",
+                  "gf.UseN",
+                  "gf.UsePron",
+                  "gf.finite",
+                  "gf.infVP",
+                  "local.paraphrase",
+                  "local.reference.choice",
+                  "local.utterance",
+                  "referent:ada",
+                  "referent:book",
+                  "referent:tape",
+                  "story.scene"
+                ],
+                "grammar_probability": 1.0
+              }
+            ],
+            "posterior": [
+              {
+                "probability": 1.0,
+                "attributes": {
+                  "pos": "VERB",
+                  "syntax_role": "predicate",
+                  "entity": null,
+                  "entity_features": null,
+                  "state_scope": "before_scene",
+                  "nominal": null,
+                  "clause": {
+                    "polarity": "positive",
+                    "predicate": {
+                      "arguments": {
+                        "action": {
+                          "arguments": {
+                            "object": {
+                              "entity": "book",
+                              "number": "singular",
+                              "person": 3,
+                              "type": "entity"
+                            }
+                          },
+                          "construction": "gf.ComplV2",
+                          "lemma": "repair",
+                          "modality": "plain"
+                        },
+                        "object": {
+                          "entity": "tape",
+                          "number": "singular",
+                          "person": 3,
+                          "type": "entity"
+                        }
+                      },
+                      "construction": "gf.ComplV2V",
+                      "lemma": "use",
+                      "modality": "plain"
+                    },
+                    "subject": {
+                      "entity": "ada",
+                      "number": "singular",
+                      "person": 3,
+                      "type": "entity"
+                    },
+                    "tense": "past"
+                  },
+                  "action": {
+                    "arguments": {
+                      "object": {
+                        "entity": "book",
+                        "number": "singular",
+                        "person": 3,
+                        "type": "entity"
+                      }
+                    },
+                    "lemma": "repair",
+                    "modality": "plain"
+                  },
+                  "action_scope": "embedded_action",
+                  "assertion": "narrated_candidate",
+                  "quoted": false,
+                  "speaker": null,
+                  "listener": null,
+                  "modifier": null,
+                  "event": {
+                    "name": "repair paper object",
+                    "source_kind": "patch_paper",
+                    "occurrence": "patch",
+                    "scope": "candidate_scene",
+                    "status": "proposed",
+                    "roles": {
+                      "actor": "ada",
+                      "item": "book",
+                      "tool": "tape"
+                    },
+                    "state_scope": "before_scene",
+                    "expected_effects": [
+                      {
+                        "entity": "book",
+                        "location": null,
+                        "add": [
+                          "repaired"
+                        ],
+                        "remove": [
+                          "torn"
+                        ],
+                        "status": "proposed"
+                      }
+                    ],
+                    "effects_scope": "declared_target_operation",
+                    "effects_complete": false,
+                    "transfer_policy": "role-bound-target-authoritative-v1"
+                  },
+                  "unresolved": [
+                    "entity"
+                  ]
+                }
+              }
+            ]
+          },
+          {
+            "token": "book",
+            "choices": [
+              {
+                "word": "book",
+                "probability": 1.0,
+                "events": {
+                  "patch": 1.0
+                },
+                "grammar_rules": [
+                  "clause.subject:ada",
+                  "gf.ComplV2V",
+                  "gf.DetCN",
+                  "gf.PredVP",
+                  "gf.UseCl",
+                  "gf.UseN",
+                  "gf.UsePron",
+                  "gf.finite",
+                  "gf.infVP",
+                  "local.paraphrase",
+                  "local.reference.choice",
+                  "local.utterance",
+                  "referent:ada",
+                  "referent:book",
+                  "referent:tape",
+                  "story.scene"
+                ],
+                "grammar_probability": 1.0
+              }
+            ],
+            "posterior": [
+              {
+                "probability": 1.0,
+                "attributes": {
+                  "pos": "NOUN",
+                  "syntax_role": "predicate",
+                  "entity": "book",
+                  "entity_features": {
+                    "id": "book",
+                    "noun": "book",
+                    "kind": "object",
+                    "location": "ada",
+                    "number": "singular",
+                    "pronoun": "it",
+                    "properties": [
+                      "paper",
+                      "portable"
+                    ],
+                    "state": [
+                      "torn"
+                    ],
+                    "memes": {}
+                  },
+                  "state_scope": "before_scene",
+                  "nominal": {
+                    "lemma": "book",
+                    "mass": false,
+                    "modifiers": [],
+                    "type": "nominal"
+                  },
+                  "clause": {
+                    "polarity": "positive",
+                    "predicate": {
+                      "arguments": {
+                        "action": {
+                          "arguments": {
+                            "object": {
+                              "entity": "book",
+                              "number": "singular",
+                              "person": 3,
+                              "type": "entity"
+                            }
+                          },
+                          "construction": "gf.ComplV2",
+                          "lemma": "repair",
+                          "modality": "plain"
+                        },
+                        "object": {
+                          "entity": "tape",
+                          "number": "singular",
+                          "person": 3,
+                          "type": "entity"
+                        }
+                      },
+                      "construction": "gf.ComplV2V",
+                      "lemma": "use",
+                      "modality": "plain"
+                    },
+                    "subject": {
+                      "entity": "ada",
+                      "number": "singular",
+                      "person": 3,
+                      "type": "entity"
+                    },
+                    "tense": "past"
+                  },
+                  "action": {
+                    "arguments": {
+                      "object": {
+                        "entity": "book",
+                        "number": "singular",
+                        "person": 3,
+                        "type": "entity"
+                      }
+                    },
+                    "lemma": "repair",
+                    "modality": "plain"
+                  },
+                  "action_scope": "embedded_action",
+                  "assertion": "narrated_candidate",
+                  "quoted": false,
+                  "speaker": null,
+                  "listener": null,
+                  "modifier": null,
+                  "event": {
+                    "name": "repair paper object",
+                    "source_kind": "patch_paper",
+                    "occurrence": "patch",
+                    "scope": "candidate_scene",
+                    "status": "proposed",
+                    "roles": {
+                      "actor": "ada",
+                      "item": "book",
+                      "tool": "tape"
+                    },
+                    "state_scope": "before_scene",
+                    "expected_effects": [
+                      {
+                        "entity": "book",
+                        "location": null,
+                        "add": [
+                          "repaired"
+                        ],
+                        "remove": [
+                          "torn"
+                        ],
+                        "status": "proposed"
+                      }
+                    ],
+                    "effects_scope": "declared_target_operation",
+                    "effects_complete": false,
+                    "transfer_policy": "role-bound-target-authoritative-v1"
+                  },
+                  "unresolved": []
+                }
+              }
+            ]
+          }
+        ],
+        "transfer": {
+          "policy": "role-bound-target-authoritative-v1",
+          "occurrence": "patch",
+          "operation": "patch_paper",
+          "roles": [
+            {
+              "slot": "actor",
+              "role": "worker",
+              "target": "ada",
+              "origin": {
+                "scenario": "kite",
+                "entity": "hero"
+              },
+              "fields": {
+                "id": {
+                  "source": "hero",
+                  "target": "ada",
+                  "decision": "use_target_value"
+                },
+                "noun": {
+                  "source": "Sam",
+                  "target": "Ada",
+                  "decision": "use_target_value"
+                },
+                "kind": {
+                  "source": "person",
+                  "target": "person",
+                  "decision": "compatible_target_value"
+                },
+                "number": {
+                  "source": "singular",
+                  "target": "singular",
+                  "decision": "compatible_target_value"
+                },
+                "pronoun": {
+                  "source": "he",
+                  "target": "she",
+                  "decision": "use_target_value"
+                },
+                "location": {
+                  "source": "meadow",
+                  "target": "garden",
+                  "decision": "use_target_value"
+                },
+                "state": {
+                  "source": [],
+                  "target": [],
+                  "decision": "compatible_target_value"
+                },
+                "memes": {
+                  "source": {
+                    "Care": 0.8,
+                    "Fear": 0.35613833845891507,
+                    "Curiosity": 0.65,
+                    "Trust": 0.35,
+                    "Joy": 0.1
+                  },
+                  "target": {
+                    "Desire": 0.8,
+                    "Fear": 0.2,
+                    "Trust": 0.6
+                  },
+                  "decision": "use_target_value"
+                },
+                "properties": {
+                  "source": [
+                    "animate",
+                    "can_climb",
+                    "can_hold",
+                    "can_repair"
+                  ],
+                  "target": [
+                    "can_help",
+                    "can_hold",
+                    "can_patch_paper"
+                  ],
+                  "decision": "use_target_value"
+                }
+              },
+              "source_only_properties": [
+                "animate",
+                "can_climb",
+                "can_repair"
+              ],
+              "unknown_source_fields": [],
+              "policy": "recompute_from_current_target",
+              "missing_source_profile": false
+            },
+            {
+              "slot": "item",
+              "role": "item",
+              "target": "book",
+              "origin": {
+                "scenario": "kite",
+                "entity": "target"
+              },
+              "fields": {
+                "id": {
+                  "source": "target",
+                  "target": "book",
+                  "decision": "use_target_value"
+                },
+                "noun": {
+                  "source": "kite",
+                  "target": "book",
+                  "decision": "use_target_value"
+                },
+                "kind": {
+                  "source": "object",
+                  "target": "object",
+                  "decision": "compatible_target_value"
+                },
+                "number": {
+                  "source": "singular",
+                  "target": "singular",
+                  "decision": "compatible_target_value"
+                },
+                "pronoun": {
+                  "source": "it",
+                  "target": "it",
+                  "decision": "compatible_target_value"
+                },
+                "location": {
+                  "source": "meadow",
+                  "target": "ada",
+                  "decision": "use_target_value"
+                },
+                "state": {
+                  "source": [
+                    "fragile",
+                    "grounded",
+                    "torn"
+                  ],
+                  "target": [
+                    "torn"
+                  ],
+                  "decision": "use_target_value"
+                },
+                "memes": {
+                  "source": {},
+                  "target": {},
+                  "decision": "compatible_target_value"
+                },
+                "properties": {
+                  "source": [
+                    "flyable",
+                    "portable"
+                  ],
+                  "target": [
+                    "paper",
+                    "portable"
+                  ],
+                  "decision": "use_target_value"
+                }
+              },
+              "source_only_properties": [
+                "flyable"
+              ],
+              "unknown_source_fields": [],
+              "policy": "recompute_from_current_target",
+              "missing_source_profile": false
+            },
+            {
+              "slot": "tool",
+              "role": "tool",
+              "target": "tape",
+              "origin": {
+                "scenario": "kite",
+                "entity": "tool"
+              },
+              "fields": {
+                "id": {
+                  "source": "tool",
+                  "target": "tape",
+                  "decision": "use_target_value"
+                },
+                "noun": {
+                  "source": "tape",
+                  "target": "tape",
+                  "decision": "compatible_target_value"
+                },
+                "kind": {
+                  "source": "tool",
+                  "target": "tool",
+                  "decision": "compatible_target_value"
+                },
+                "number": {
+                  "source": "singular",
+                  "target": "singular",
+                  "decision": "compatible_target_value"
+                },
+                "pronoun": {
+                  "source": "it",
+                  "target": "it",
+                  "decision": "compatible_target_value"
+                },
+                "location": {
+                  "source": "basket",
+                  "target": "ada",
+                  "decision": "use_target_value"
+                },
+                "state": {
+                  "source": [],
+                  "target": [],
+                  "decision": "compatible_target_value"
+                },
+                "memes": {
+                  "source": {},
+                  "target": {},
+                  "decision": "compatible_target_value"
+                },
+                "properties": {
+                  "source": [
+                    "portable",
+                    "repair"
+                  ],
+                  "target": [
+                    "portable",
+                    "repair"
+                  ],
+                  "decision": "compatible_target_value"
+                }
+              },
+              "source_only_properties": [],
+              "unknown_source_fields": [],
+              "policy": "recompute_from_current_target",
+              "missing_source_profile": false
+            }
+          ],
+          "target_role_features": {
+            "actor": {
+              "id": "ada",
+              "noun": "Ada",
+              "kind": "person",
+              "location": "garden",
+              "number": "singular",
+              "pronoun": "she",
+              "properties": [
+                "can_help",
+                "can_hold",
+                "can_patch_paper"
+              ],
+              "state": [],
+              "memes": {
+                "Desire": 0.8,
+                "Fear": 0.2,
+                "Trust": 0.6
+              }
+            },
+            "item": {
+              "id": "book",
+              "noun": "book",
+              "kind": "object",
+              "location": "ada",
+              "number": "singular",
+              "pronoun": "it",
+              "properties": [
+                "paper",
+                "portable"
+              ],
+              "state": [
+                "torn"
+              ],
+              "memes": {}
+            },
+            "tool": {
+              "id": "tape",
+              "noun": "tape",
+              "kind": "tool",
+              "location": "ada",
+              "number": "singular",
+              "pronoun": "it",
+              "properties": [
+                "portable",
+                "repair"
+              ],
+              "state": [],
+              "memes": {}
+            }
+          },
+          "semantic_mapping": "declarative_mapping_grammar",
+          "mapping_rules": [
+            "fetch.portable_tool",
+            "repair.paper"
+          ],
+          "source_context": "provenance_only",
+          "target_guard_authoritative": true,
+          "linguistic_mapping": "regenerate_from_target_typed_grammar",
+          "source_positions": "discard_and_recompute",
+          "source_event": {
+            "scenario": "kite",
+            "kind": "mend",
+            "event_id": 5,
+            "target_operation": "patch_paper",
+            "mapping_rule": "repair.paper"
+          },
+          "untransferred_context": [
+            {
+              "event_id": 4,
+              "source_contract": {
+                "requires": [
+                  "patch"
+                ],
+                "excludes": [
+                  "ended",
+                  "prepared"
+                ],
+                "flags_added": [
+                  "prepared"
+                ],
+                "flags_removed": []
+              },
+              "source_dependencies": [
+                {
+                  "kind": "required_flag",
+                  "key": "patch",
+                  "source_event": 3
+                },
+                {
+                  "kind": "world_fact",
+                  "key": "problem",
+                  "source_event": null
+                }
+              ]
+            },
+            {
+              "event_id": 5,
+              "source_contract": {
+                "requires": [
+                  "prepared"
+                ],
+                "excludes": [
+                  "ended",
+                  "mended"
+                ],
+                "flags_added": [
+                  "mended"
+                ],
+                "flags_removed": []
+              },
+              "source_dependencies": [
+                {
+                  "kind": "required_flag",
+                  "key": "prepared",
+                  "source_event": 4
+                },
+                {
+                  "kind": "world_fact",
+                  "key": "problem",
+                  "source_event": null
+                }
+              ]
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

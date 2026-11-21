@@ -1,0 +1,37 @@
+from .schema import *
+
+SPEC=story(1,'bakery',dict(
+    hero=person('Tessa','she',memes={'Care':.8}),helper=person('Mrs Pike','she'),recipient=person('Mr Hobb','he',state=('lonely',)),
+    work=place('bakery'),bench=place('counter'),table=place('kitchen table'),hook=place('basket hook'),
+    basket=obj('wicker basket',location='bench'),cake=obj('birthday cake',location='basket',state=('whole',)),
+    candle=obj('candle',location='hero',state=('unlit',)),window=obj('window',state=('closed',))),
+    chain(
+        event('birthday_request',S('recipient',B('lonely')),Say('hero',V('want',V('give',R('recipient'),R('cake')))),
+            qa=[Q('goal','who','Who was the birthday cake for?','The birthday cake was for Mr Hobb. Tessa wanted to give it to him.','hero','recipient','cake')]),
+        event('basket_permission',Say('helper',V('need',R('basket')),listener='hero'),actor='helper',adds=('basket_permitted',),
+            qa=[Q('loan','what','What did Mrs Pike need back?','Mrs Pike needed her wicker basket back. Tessa was borrowing it to carry the cake.','helper','basket','hero',supports=('carry',))]),
+        event('borrow_basket',S('hero',V('borrow',R('basket'))),S(R('cake'),B(PP('in',R('basket')))),patient='basket',destination='hero',
+            guards=[at('basket','bench'),prop('hero','can_hold')],effects=[change('basket',location='hero')],portable='fetch',
+            qa=[Q('carry','how','How did Tessa carry the cake?','Tessa borrowed a wicker basket. The cake traveled in it.','hero','basket','cake')]),
+        fork('safe_route',
+            event('paved_route',S('hero',A(V('carry',R('basket')),PP('along',N('paved path')))),patient='basket',
+                guards=[at('basket','hero')],effects=[change('hero',add=('paved_route',))]),
+            event('wait_for_cart',S('hero',A(V('wait'),PP('beside',N('paved path')))),patient='basket',
+                guards=[at('basket','hero')],effects=[change('hero',add=('waited_for_cart',))])),
+        event('bumped_icing',S(Poss('cake','icing'),B('smudged')),patient='cake',guards=[at('cake','basket')],effects=[change('cake',add=('smudged',))]),
+        event('cake_arrives',S('hero',A(V('put',R('cake')),PP('on',R('table')))),patient='cake',destination='table',
+            guards=[at('cake','basket'),at('basket','hero')],effects=[change('cake',location='table')],
+            qa=[Q('arrival','where','Where did Tessa put the cake?','Tessa put the cake on Mr Hobb’s kitchen table. She had carried it in the basket.','hero','cake','table',supports=('carry',))]),
+        event('imperfect_gift',Say('recipient',B('pleased'),listener='hero'),actor='recipient',patient='cake',
+            guards=[at('cake','table'),has('cake','whole')],effects=[change('recipient',remove=('lonely',),memes={'Joy':.8})],
+            qa=[Q('welcome','why','Did the imperfect cake spoil the visit?','Mr Hobb was pleased with the cake. Tessa had put it on his table.','recipient','cake','hero',supports=('arrival',))]),
+        event('birthday_light',S('recipient',V('light',R('candle'))),actor='recipient',patient='candle',
+            guards=[has('candle','unlit')],effects=[change('candle',location='cake',add=('lit',),remove=('unlit',))]),
+        event('return_basket',S('hero',A(V('return',R('basket')),PP('to',R('helper')))),patient='basket',destination='helper',
+            guards=[at('basket','hero')],effects=[change('basket',location='helper')],portable='transfer'),
+        event('bright_window',S('recipient',V('open',R('window'))),S(R('candle'),V('glow')),actor='recipient',patient='window',
+            guards=[has('candle','lit'),at('cake','table'),at('basket','helper')],effects=[change('window',add=('open',),remove=('closed',))],
+            qa=[Q('outcome','what_next','What changed at Mr Hobb’s window?','Mr Hobb opened his window. The birthday candle glowed beside him.','recipient','window','candle')])
+    ),target='cake',tool_id='basket',premise='Tessa wants to remember Mr Hobb’s birthday while returning a borrowed basket.',
+    fidelity='An imperfect birthday gift is accepted; the borrowed basket is returned and the dark home gains light.',
+    variants=['Carry on the paved path or wait for the passing cart. The short adaptation returns the basket within the story.'])

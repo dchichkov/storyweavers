@@ -1,0 +1,119 @@
+{
+  "premise": "Ada and Omar are in a garden. Ada holds a torn book and wants to repair it. Tape is on a reachable bench in the garden. Both people can carry objects and offer help; Omar is willing to help. No events or ending are supplied.",
+  "goal": {
+    "actor": "ada",
+    "action": "repair",
+    "patient": "book",
+    "desired_state": "repaired"
+  },
+  "world": {
+    "scenario": "underdefined",
+    "entities": {
+      "ada": {
+        "id": "ada",
+        "noun": "Ada",
+        "kind": "person",
+        "location": "garden",
+        "number": "singular",
+        "pronoun": "she",
+        "properties": [
+          "can_help",
+          "can_hold"
+        ],
+        "state": [],
+        "memes": {
+          "Desire": 0.8,
+          "Fear": 0.2,
+          "Trust": 0.6
+        }
+      },
+      "omar": {
+        "id": "omar",
+        "noun": "Omar",
+        "kind": "person",
+        "location": "garden",
+        "number": "singular",
+        "pronoun": "he",
+        "properties": [
+          "can_help",
+          "can_hold"
+        ],
+        "state": [],
+        "memes": {
+          "Care": 0.8,
+          "Trust": 0.6
+        }
+      },
+      "book": {
+        "id": "book",
+        "noun": "book",
+        "kind": "object",
+        "location": "ada",
+        "number": "singular",
+        "pronoun": "it",
+        "properties": [
+          "portable"
+        ],
+        "state": [
+          "torn"
+        ],
+        "memes": {}
+      },
+      "tape": {
+        "id": "tape",
+        "noun": "tape",
+        "kind": "tool",
+        "location": "bench",
+        "number": "singular",
+        "pronoun": "it",
+        "properties": [
+          "portable",
+          "repair"
+        ],
+        "state": [],
+        "memes": {}
+      },
+      "bench": {
+        "id": "bench",
+        "noun": "bench",
+        "kind": "place",
+        "location": "garden",
+        "number": "singular",
+        "pronoun": "it",
+        "properties": [
+          "reachable"
+        ],
+        "state": [],
+        "memes": {}
+      }
+    },
+    "hero": "ada",
+    "helper": "omar",
+    "target": "book",
+    "tool": "tape",
+    "setting": "garden",
+    "facts": {
+      "problem": {
+        "id": "problem",
+        "text": "The book is torn.",
+        "tags": [
+          "problem",
+          "goal"
+        ],
+        "value": 1.0
+      },
+      "helper_available": {
+        "id": "helper_available",
+        "text": "Omar is nearby and willing to help.",
+        "tags": [
+          "helper",
+          "trust"
+        ],
+        "value": 1.0
+      }
+    },
+    "flags": [],
+    "history": [],
+    "focus": ""
+  }
+}

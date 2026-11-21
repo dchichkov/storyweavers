@@ -1,0 +1,3125 @@
+{
+  "rescue:notice": {
+    "scenario": "rescue",
+    "kind": "notice",
+    "observations": 20,
+    "entity_tags": {
+      "bread": [
+        "mentioned",
+        "qa_context"
+      ],
+      "helper": [
+        "listener",
+        "mentioned"
+      ],
+      "hero": [
+        "frame.actor",
+        "grammatical_subject",
+        "mentioned",
+        "qa_context",
+        "speaker"
+      ],
+      "target": [
+        "frame.patient",
+        "grammatical_subject",
+        "mentioned",
+        "qa_context"
+      ]
+    }
+  },
+  "rescue:choose_ladder": {
+    "scenario": "rescue",
+    "kind": "choose_ladder",
+    "observations": 4,
+    "entity_tags": {
+      "helper": [
+        "frame.actor",
+        "listener",
+        "mentioned",
+        "qa_context",
+        "speaker"
+      ],
+      "hero": [
+        "listener",
+        "mentioned",
+        "qa_context",
+        "speaker"
+      ],
+      "target": [
+        "frame.patient"
+      ],
+      "tool": [
+        "mentioned",
+        "qa_context"
+      ]
+    }
+  },
+  "rescue:prepare_ladder": {
+    "scenario": "rescue",
+    "kind": "prepare_ladder",
+    "observations": 4,
+    "entity_tags": {
+      "hero": [
+        "destination_holder",
+        "frame.actor",
+        "grammatical_subject",
+        "mentioned",
+        "qa_context"
+      ],
+      "target": [
+        "frame.patient"
+      ],
+      "tool": [
+        "changed",
+        "frame.instrument",
+        "mentioned",
+        "moved",
+        "qa_context",
+        "state.add:steady"
+      ]
+    }
+  },
+  "rescue:rescue_lift": {
+    "scenario": "rescue",
+    "kind": "rescue_lift",
+    "observations": 4,
+    "entity_tags": {
+      "helper": [
+        "frame.actor",
+        "grammatical_subject",
+        "mentioned",
+        "qa_context"
+      ],
+      "hero": [
+        "changed",
+        "concept.changed:Trust",
+        "destination_holder",
+        "frame.destination",
+        "qa_context"
+      ],
+      "target": [
+        "changed",
+        "frame.patient",
+        "mentioned",
+        "moved",
+        "qa_context",
+        "state.add:safe",
+        "state.remove:stranded"
+      ],
+      "tool": [
+        "frame.instrument",
+        "mentioned",
+        "qa_context"
+      ]
+    }
+  },
+  "rescue:shelter": {
+    "scenario": "rescue",
+    "kind": "shelter",
+    "observations": 20,
+    "entity_tags": {
+      "blanket": [
+        "mentioned",
+        "qa_context"
+      ],
+      "hero": [
+        "changed",
+        "concept.changed:Joy",
+        "frame.actor",
+        "grammatical_subject",
+        "mentioned",
+        "moved",
+        "qa_context",
+        "source_holder"
+      ],
+      "target": [
+        "changed",
+        "frame.patient",
+        "mentioned",
+        "moved",
+        "qa_context",
+        "state.add:warm",
+        "state.remove:cold",
+        "state.remove:frightened",
+        "state.remove:shivering"
+      ]
+    }
+  },
+  "rescue:ending": {
+    "scenario": "rescue",
+    "kind": "ending",
+    "observations": 20,
+    "entity_tags": {
+      "blanket": [
+        "mentioned",
+        "qa_context"
+      ],
+      "helper": [
+        "qa_context"
+      ],
+      "hero": [
+        "grammatical_subject",
+        "mentioned",
+        "qa_context"
+      ],
+      "target": [
+        "changed",
+        "frame.actor",
+        "frame.patient",
+        "grammatical_subject",
+        "mentioned",
+        "qa_context",
+        "state.add:resting"
+      ],
+      "bread": [
+        "qa_context"
+      ]
+    }
+  },
+  "rescue:choose_basket": {
+    "scenario": "rescue",
+    "kind": "choose_basket",
+    "observations": 16,
+    "entity_tags": {
+      "basket": [
+        "mentioned",
+        "qa_context"
+      ],
+      "bread": [
+        "mentioned",
+        "qa_context"
+      ],
+      "helper": [
+        "frame.actor",
+        "listener",
+        "mentioned",
+        "qa_context",
+        "speaker"
+      ],
+      "hero": [
+        "listener",
+        "mentioned",
+        "qa_context",
+        "speaker"
+      ],
+      "target": [
+        "frame.patient"
+      ]
+    }
+  },
+  "rescue:prepare_basket": {
+    "scenario": "rescue",
+    "kind": "prepare_basket",
+    "observations": 16,
+    "entity_tags": {
+      "basket": [
+        "changed",
+        "frame.instrument",
+        "moved"
+      ],
+      "helper": [
+        "destination_holder",
+        "frame.actor",
+        "frame.destination"
+      ],
+      "target": [
+        "frame.patient"
+      ]
+    }
+  },
+  "rescue:load_basket": {
+    "scenario": "rescue",
+    "kind": "load_basket",
+    "observations": 16,
+    "entity_tags": {
+      "basket": [
+        "frame.destination",
+        "mentioned",
+        "qa_context"
+      ],
+      "bread": [
+        "changed",
+        "frame.patient",
+        "mentioned",
+        "moved",
+        "qa_context"
+      ],
+      "hero": [
+        "frame.actor",
+        "grammatical_subject",
+        "mentioned",
+        "qa_context",
+        "source_holder"
+      ]
+    }
+  },
+  "rescue:place_basket": {
+    "scenario": "rescue",
+    "kind": "place_basket",
+    "observations": 16,
+    "entity_tags": {
+      "basket": [
+        "changed",
+        "frame.patient",
+        "mentioned",
+        "moved"
+      ],
+      "helper": [
+        "changed",
+        "destination_holder",
+        "frame.actor",
+        "grammatical_subject",
+        "mentioned",
+        "moved",
+        "source_holder"
+      ],
+      "rope": [
+        "changed",
+        "frame.instrument",
+        "mentioned",
+        "moved",
+        "state.add:attached"
+      ]
+    }
+  },
+  "rescue:basket_wait": {
+    "scenario": "rescue",
+    "kind": "basket_wait",
+    "observations": 16,
+    "entity_tags": {
+      "hero": [
+        "frame.actor",
+        "grammatical_subject",
+        "mentioned",
+        "qa_context"
+      ],
+      "target": [
+        "changed",
+        "concept.changed:Fear",
+        "frame.patient",
+        "grammatical_subject",
+        "mentioned",
+        "qa_context",
+        "state.add:calm",
+        "state.remove:frightened"
+      ]
+    }
+  },
+  "rescue:basket_enter": {
+    "scenario": "rescue",
+    "kind": "basket_enter",
+    "observations": 16,
+    "entity_tags": {
+      "basket": [
+        "frame.destination",
+        "frame.patient",
+        "mentioned",
+        "qa_context"
+      ],
+      "bread": [
+        "changed",
+        "mentioned",
+        "moved",
+        "qa_context",
+        "state.add:eaten"
+      ],
+      "hero": [
+        "changed",
+        "qa_context",
+        "state.add:hungry"
+      ],
+      "target": [
+        "changed",
+        "frame.actor",
+        "grammatical_subject",
+        "mentioned",
+        "moved",
+        "qa_context"
+      ]
+    }
+  },
+  "rescue:basket_lower": {
+    "scenario": "rescue",
+    "kind": "basket_lower",
+    "observations": 16,
+    "entity_tags": {
+      "basket": [
+        "changed",
+        "frame.patient",
+        "mentioned",
+        "moved",
+        "qa_context"
+      ],
+      "helper": [
+        "frame.actor",
+        "grammatical_subject",
+        "mentioned",
+        "qa_context"
+      ],
+      "rope": [
+        "frame.instrument",
+        "mentioned",
+        "qa_context"
+      ],
+      "target": [
+        "changed",
+        "qa_context",
+        "state.add:safe",
+        "state.remove:stranded"
+      ]
+    }
+  },
+  "kite:notice": {
+    "scenario": "kite",
+    "kind": "notice",
+    "observations": 20,
+    "entity_tags": {
+      "helper": [
+        "listener",
+        "mentioned"
+      ],
+      "hero": [
+        "frame.actor",
+        "grammatical_subject",
+        "mentioned",
+        "qa_context",
+        "speaker"
+      ],
+      "target": [
+        "frame.patient",
+        "grammatical_subject",
+        "mentioned",
+        "qa_context"
+      ]
+    }
+  },
+  "kite:inspect": {
+    "scenario": "kite",
+    "kind": "inspect",
+    "observations": 20,
+    "entity_tags": {
+      "helper": [
+        "mentioned",
+        "qa_context",
+        "speaker"
+      ],
+      "hero": [
+        "frame.actor",
+        "listener",
+        "mentioned"
+      ],
+      "target": [
+        "frame.patient",
+        "qa_context"
+      ],
+      "boat": [
+        "grammatical_subject",
+        "mentioned",
+        "qa_context"
+      ]
+    }
+  },
+  "kite:choose_patch": {
+    "scenario": "kite",
+    "kind": "choose_patch",
+    "observations": 10,
+    "entity_tags": {
+      "helper": [
+        "listener",
+        "mentioned"
+      ],
+      "hero": [
+        "frame.actor",
+        "mentioned",
+        "speaker"
+      ],
+      "target": [
+        "frame.patient"
+      ]
+    }
+  },
+  "kite:fetch_tape": {
+    "scenario": "kite",
+    "kind": "fetch_tape",
+    "observations": 10,
+    "entity_tags": {
+      "hero": [
+        "destination_holder",
+        "frame.actor"
+      ],
+      "target": [
+        "frame.patient"
+      ],
+      "tool": [
+        "changed",
+        "moved"
+      ]
+    }
+  },
+  "kite:mend": {
+    "scenario": "kite",
+    "kind": "mend",
+    "observations": 10,
+    "entity_tags": {
+      "hero": [
+        "frame.actor",
+        "grammatical_subject",
+        "mentioned",
+        "qa_context"
+      ],
+      "target": [
+        "changed",
+        "frame.patient",
+        "qa_context",
+        "state.add:repaired",
+        "state.remove:torn"
+      ],
+      "tool": [
+        "frame.instrument",
+        "mentioned",
+        "qa_context"
+      ]
+    }
+  },
+  "kite:test_flight": {
+    "scenario": "kite",
+    "kind": "test_flight",
+    "observations": 10,
+    "entity_tags": {
+      "hero": [
+        "changed",
+        "concept.changed:Curiosity",
+        "concept.changed:Joy",
+        "frame.actor",
+        "grammatical_subject",
+        "mentioned",
+        "qa_context"
+      ],
+      "target": [
+        "changed",
+        "frame.patient",
+        "mentioned",
+        "moved",
+        "qa_context",
+        "state.add:flying",
+        "state.add:torn",
+        "state.remove:grounded",
+        "state.remove:repaired"
+      ],
+      "tool": [
+        "qa_context"
+      ]
+    }
+  },
+  "kite:reconsider": {
+    "scenario": "kite",
+    "kind": "reconsider",
+    "observations": 3,
+    "entity_tags": {
+      "helper": [
+        "listener",
+        "mentioned"
+      ],
+      "hero": [
+        "frame.actor",
+        "mentioned",
+        "qa_context",
+        "speaker"
+      ],
+      "target": [
+        "frame.patient",
+        "qa_context"
+      ]
+    }
+  },
+  "kite:fetch_scissors": {
+    "scenario": "kite",
+    "kind": "fetch_scissors",
+    "observations": 13,
+    "entity_tags": {
+      "helper": [
+        "destination_holder",
+        "frame.actor"
+      ],
+      "scissors": [
+        "changed",
+        "frame.patient",
+        "moved"
+      ]
+    }
+  },
+  "kite:cut_sail": {
+    "scenario": "kite",
+    "kind": "cut_sail",
+    "observations": 13,
+    "entity_tags": {
+      "helper": [
+        "frame.actor",
+        "grammatical_subject",
+        "mentioned",
+        "qa_context"
+      ],
+      "scissors": [
+        "frame.instrument",
+        "mentioned",
+        "qa_context"
+      ],
+      "target": [
+        "changed",
+        "frame.patient",
+        "mentioned",
+        "qa_context",
+        "renamed",
+        "state.add:sail",
+        "state.remove:grounded",
+        "state.remove:torn"
+      ]
+    }
+  },
+  "kite:attach_sail": {
+    "scenario": "kite",
+    "kind": "attach_sail",
+    "observations": 13,
+    "entity_tags": {
+      "boat": [
+        "changed",
+        "frame.destination",
+        "mentioned",
+        "qa_context",
+        "state.remove:needs_sail"
+      ],
+      "hero": [
+        "frame.actor",
+        "grammatical_subject",
+        "mentioned",
+        "qa_context",
+        "source_holder"
+      ],
+      "string": [
+        "changed",
+        "frame.instrument",
+        "mentioned",
+        "moved",
+        "qa_context"
+      ],
+      "target": [
+        "changed",
+        "frame.patient",
+        "mentioned",
+        "moved",
+        "qa_context",
+        "state.add:attached"
+      ]
+    }
+  },
+  "kite:launch_boat": {
+    "scenario": "kite",
+    "kind": "launch_boat",
+    "observations": 13,
+    "entity_tags": {
+      "boat": [
+        "changed",
+        "frame.patient",
+        "mentioned",
+        "moved",
+        "qa_context",
+        "state.add:sailing"
+      ],
+      "hero": [
+        "changed",
+        "concept.changed:Joy",
+        "frame.actor",
+        "grammatical_subject",
+        "mentioned",
+        "qa_context"
+      ]
+    }
+  },
+  "kite:ending": {
+    "scenario": "kite",
+    "kind": "ending",
+    "observations": 20,
+    "entity_tags": {
+      "boat": [
+        "grammatical_subject",
+        "mentioned",
+        "qa_context"
+      ],
+      "helper": [
+        "grammatical_subject",
+        "mentioned",
+        "qa_context"
+      ],
+      "hero": [
+        "frame.actor",
+        "grammatical_subject",
+        "mentioned",
+        "qa_context"
+      ],
+      "target": [
+        "frame.patient",
+        "grammatical_subject",
+        "mentioned",
+        "qa_context"
+      ],
+      "tool": [
+        "qa_context"
+      ]
+    }
+  },
+  "kite:choose_sail": {
+    "scenario": "kite",
+    "kind": "choose_sail",
+    "observations": 10,
+    "entity_tags": {
+      "helper": [
+        "listener",
+        "mentioned"
+      ],
+      "hero": [
+        "frame.actor",
+        "mentioned",
+        "qa_context",
+        "speaker"
+      ],
+      "target": [
+        "frame.patient",
+        "qa_context"
+      ]
+    }
+  },
+  "key:notice": {
+    "scenario": "key",
+    "kind": "notice",
+    "observations": 20,
+    "entity_tags": {
+      "door": [
+        "grammatical_subject",
+        "mentioned",
+        "qa_context"
+      ],
+      "hero": [
+        "frame.actor",
+        "grammatical_subject",
+        "mentioned",
+        "qa_context"
+      ],
+      "storybook": [
+        "mentioned",
+        "qa_context"
+      ],
+      "target": [
+        "frame.patient",
+        "grammatical_subject",
+        "mentioned",
+        "qa_context"
+      ]
+    }
+  },
+  "key:offer_help": {
+    "scenario": "key",
+    "kind": "offer_help",
+    "observations": 20,
+    "entity_tags": {
+      "helper": [
+        "frame.actor",
+        "mentioned",
+        "qa_context",
+        "speaker"
+      ],
+      "hero": [
+        "listener",
+        "mentioned",
+        "qa_context"
+      ],
+      "target": [
+        "frame.patient"
+      ]
+    }
+  },
+  "key:choose_search": {
+    "scenario": "key",
+    "kind": "choose_search",
+    "observations": 14,
+    "entity_tags": {
+      "helper": [
+        "listener",
+        "mentioned"
+      ],
+      "hero": [
+        "frame.actor",
+        "mentioned",
+        "speaker"
+      ],
+      "target": [
+        "frame.patient",
+        "mentioned"
+      ]
+    }
+  },
+  "key:fetch_light": {
+    "scenario": "key",
+    "kind": "fetch_light",
+    "observations": 14,
+    "entity_tags": {
+      "hero": [
+        "destination_holder",
+        "frame.actor",
+        "grammatical_subject",
+        "mentioned",
+        "qa_context"
+      ],
+      "target": [
+        "frame.patient"
+      ],
+      "tool": [
+        "changed",
+        "mentioned",
+        "moved",
+        "qa_context"
+      ]
+    }
+  },
+  "key:find_key": {
+    "scenario": "key",
+    "kind": "find_key",
+    "observations": 14,
+    "entity_tags": {
+      "hero": [
+        "destination_holder",
+        "frame.actor",
+        "frame.destination",
+        "grammatical_subject",
+        "mentioned",
+        "qa_context"
+      ],
+      "target": [
+        "changed",
+        "frame.patient",
+        "mentioned",
+        "moved",
+        "qa_context",
+        "state.add:found",
+        "state.remove:hidden",
+        "state.remove:lost"
+      ],
+      "tool": [
+        "frame.instrument",
+        "mentioned",
+        "qa_context"
+      ]
+    }
+  },
+  "key:unlock_original": {
+    "scenario": "key",
+    "kind": "unlock_original",
+    "observations": 14,
+    "entity_tags": {
+      "door": [
+        "changed",
+        "frame.patient",
+        "mentioned",
+        "qa_context",
+        "state.add:open",
+        "state.remove:locked"
+      ],
+      "helper": [
+        "changed",
+        "moved"
+      ],
+      "hero": [
+        "changed",
+        "frame.actor",
+        "grammatical_subject",
+        "mentioned",
+        "moved",
+        "qa_context"
+      ],
+      "target": [
+        "frame.instrument",
+        "mentioned",
+        "qa_context"
+      ]
+    }
+  },
+  "key:hang_key": {
+    "scenario": "key",
+    "kind": "hang_key",
+    "observations": 14,
+    "entity_tags": {
+      "hero": [
+        "frame.actor",
+        "grammatical_subject",
+        "mentioned",
+        "qa_context",
+        "source_holder"
+      ],
+      "target": [
+        "changed",
+        "frame.patient",
+        "mentioned",
+        "moved",
+        "qa_context"
+      ]
+    }
+  },
+  "key:ending": {
+    "scenario": "key",
+    "kind": "ending",
+    "observations": 20,
+    "entity_tags": {
+      "helper": [
+        "mentioned",
+        "qa_context"
+      ],
+      "hero": [
+        "changed",
+        "frame.actor",
+        "grammatical_subject",
+        "mentioned",
+        "qa_context",
+        "state.add:reading"
+      ],
+      "storybook": [
+        "changed",
+        "frame.patient",
+        "mentioned",
+        "qa_context",
+        "state.add:open"
+      ],
+      "target": [
+        "grammatical_subject",
+        "mentioned",
+        "qa_context"
+      ],
+      "note": [
+        "qa_context"
+      ]
+    }
+  },
+  "key:admit_loss": {
+    "scenario": "key",
+    "kind": "admit_loss",
+    "observations": 6,
+    "entity_tags": {
+      "helper": [
+        "listener",
+        "mentioned",
+        "qa_context"
+      ],
+      "hero": [
+        "changed",
+        "concept.changed:Trust",
+        "frame.actor",
+        "mentioned",
+        "qa_context",
+        "speaker"
+      ],
+      "target": [
+        "frame.patient",
+        "mentioned",
+        "qa_context"
+      ]
+    }
+  },
+  "key:lend_spare": {
+    "scenario": "key",
+    "kind": "lend_spare",
+    "observations": 6,
+    "entity_tags": {
+      "helper": [
+        "frame.actor",
+        "grammatical_subject",
+        "mentioned",
+        "qa_context",
+        "source_holder"
+      ],
+      "hero": [
+        "destination_holder",
+        "frame.destination",
+        "mentioned",
+        "qa_context"
+      ],
+      "spare": [
+        "changed",
+        "frame.patient",
+        "mentioned",
+        "moved",
+        "qa_context"
+      ],
+      "target": [
+        "qa_context"
+      ]
+    }
+  },
+  "key:unlock_spare": {
+    "scenario": "key",
+    "kind": "unlock_spare",
+    "observations": 6,
+    "entity_tags": {
+      "door": [
+        "changed",
+        "frame.patient",
+        "mentioned",
+        "qa_context",
+        "state.add:open",
+        "state.remove:locked"
+      ],
+      "helper": [
+        "changed",
+        "moved"
+      ],
+      "hero": [
+        "changed",
+        "frame.actor",
+        "grammatical_subject",
+        "mentioned",
+        "moved",
+        "qa_context"
+      ],
+      "spare": [
+        "frame.instrument",
+        "mentioned",
+        "qa_context"
+      ]
+    }
+  },
+  "key:return_spare": {
+    "scenario": "key",
+    "kind": "return_spare",
+    "observations": 6,
+    "entity_tags": {
+      "helper": [
+        "destination_holder",
+        "frame.destination",
+        "mentioned",
+        "qa_context"
+      ],
+      "hero": [
+        "frame.actor",
+        "grammatical_subject",
+        "mentioned",
+        "qa_context",
+        "source_holder"
+      ],
+      "spare": [
+        "changed",
+        "frame.patient",
+        "mentioned",
+        "moved",
+        "qa_context"
+      ]
+    }
+  },
+  "key:write_reminder": {
+    "scenario": "key",
+    "kind": "write_reminder",
+    "observations": 6,
+    "entity_tags": {
+      "helper": [
+        "listener"
+      ],
+      "hero": [
+        "changed",
+        "concept.changed:Care",
+        "frame.actor",
+        "grammatical_subject",
+        "mentioned",
+        "qa_context",
+        "speaker"
+      ],
+      "note": [
+        "changed",
+        "frame.patient",
+        "mentioned",
+        "moved",
+        "qa_context",
+        "state.add:search_reminder"
+      ],
+      "pencil": [
+        "frame.instrument"
+      ],
+      "target": [
+        "mentioned",
+        "qa_context"
+      ]
+    }
+  },
+  "music:opening": {
+    "scenario": "music",
+    "kind": "opening",
+    "observations": 20,
+    "entity_tags": {
+      "hero": [
+        "frame.actor"
+      ]
+    }
+  },
+  "music:borrow": {
+    "scenario": "music",
+    "kind": "borrow",
+    "observations": 20,
+    "entity_tags": {
+      "drum": [
+        "changed",
+        "frame.patient",
+        "mentioned",
+        "moved",
+        "qa_context"
+      ],
+      "hero": [
+        "destination_holder",
+        "frame.actor",
+        "frame.destination",
+        "grammatical_subject",
+        "mentioned",
+        "qa_context"
+      ],
+      "partner": [
+        "mentioned",
+        "qa_context"
+      ],
+      "teacher": [
+        "mentioned",
+        "qa_context"
+      ]
+    }
+  },
+  "music:invite": {
+    "scenario": "music",
+    "kind": "invite",
+    "observations": 20,
+    "entity_tags": {
+      "hero": [
+        "frame.actor",
+        "mentioned",
+        "speaker"
+      ],
+      "partner": [
+        "frame.patient",
+        "listener",
+        "mentioned"
+      ]
+    }
+  },
+  "music:decline": {
+    "scenario": "music",
+    "kind": "decline",
+    "observations": 20,
+    "entity_tags": {
+      "hero": [
+        "listener",
+        "mentioned",
+        "qa_context"
+      ],
+      "partner": [
+        "changed",
+        "frame.actor",
+        "mentioned",
+        "qa_context",
+        "speaker",
+        "state.add:declined_public"
+      ]
+    }
+  },
+  "music:choose_solo": {
+    "scenario": "music",
+    "kind": "choose_solo",
+    "observations": 9,
+    "entity_tags": {
+      "hero": [
+        "changed",
+        "frame.actor",
+        "mentioned",
+        "qa_context",
+        "speaker",
+        "state.add:accepted_boundary"
+      ],
+      "partner": [
+        "listener",
+        "mentioned",
+        "qa_context"
+      ]
+    }
+  },
+  "music:prepare_solo": {
+    "scenario": "music",
+    "kind": "prepare_solo",
+    "observations": 9,
+    "entity_tags": {
+      "drum": [
+        "qa_context"
+      ],
+      "hero": [
+        "changed",
+        "frame.actor",
+        "grammatical_subject",
+        "mentioned",
+        "qa_context",
+        "state.add:loud_beat",
+        "state.add:practiced",
+        "state.add:soft_beat"
+      ],
+      "program": [
+        "changed",
+        "frame.patient",
+        "state.add:solo"
+      ]
+    }
+  },
+  "music:perform": {
+    "scenario": "music",
+    "kind": "perform",
+    "observations": 16,
+    "entity_tags": {
+      "drum": [
+        "frame.instrument",
+        "mentioned",
+        "qa_context"
+      ],
+      "hero": [
+        "changed",
+        "frame.actor",
+        "grammatical_subject",
+        "mentioned",
+        "qa_context",
+        "state.add:pattern_played",
+        "state.add:performed_solo"
+      ],
+      "partner": [
+        "mentioned",
+        "qa_context"
+      ],
+      "teacher": [
+        "mentioned",
+        "qa_context"
+      ]
+    }
+  },
+  "music:response": {
+    "scenario": "music",
+    "kind": "response",
+    "observations": 20,
+    "entity_tags": {
+      "hero": [
+        "changed",
+        "concept.changed:Joy",
+        "frame.actor",
+        "grammatical_subject",
+        "mentioned",
+        "qa_context",
+        "speaker",
+        "state.add:bowed",
+        "state.add:heard_answer",
+        "state.add:smiled"
+      ],
+      "partner": [
+        "changed",
+        "concept.changed:Trust",
+        "frame.actor",
+        "grammatical_subject",
+        "listener",
+        "mentioned",
+        "qa_context",
+        "state.add:applauded",
+        "state.add:smiled"
+      ],
+      "teacher": [
+        "qa_context"
+      ]
+    }
+  },
+  "music:return": {
+    "scenario": "music",
+    "kind": "return",
+    "observations": 24,
+    "entity_tags": {
+      "drum": [
+        "changed",
+        "frame.instrument",
+        "frame.patient",
+        "moved"
+      ],
+      "hero": [
+        "frame.actor",
+        "source_holder"
+      ],
+      "partner": [
+        "frame.actor",
+        "source_holder"
+      ],
+      "spare": [
+        "changed",
+        "frame.instrument",
+        "frame.patient",
+        "moved"
+      ]
+    }
+  },
+  "music:ending": {
+    "scenario": "music",
+    "kind": "ending",
+    "observations": 20,
+    "entity_tags": {
+      "hero": [
+        "changed",
+        "frame.actor",
+        "grammatical_subject",
+        "mentioned",
+        "qa_context",
+        "speaker",
+        "state.add:wants_repeat_rhythm"
+      ],
+      "drum": [
+        "mentioned",
+        "qa_context"
+      ],
+      "paper": [
+        "changed",
+        "mentioned",
+        "moved",
+        "qa_context"
+      ],
+      "partner": [
+        "listener",
+        "qa_context"
+      ],
+      "spare": [
+        "mentioned",
+        "qa_context"
+      ]
+    }
+  },
+  "music:offer_private": {
+    "scenario": "music",
+    "kind": "offer_private",
+    "observations": 4,
+    "entity_tags": {
+      "hero": [
+        "changed",
+        "listener",
+        "qa_context",
+        "state.add:accepted_boundary"
+      ],
+      "partner": [
+        "changed",
+        "frame.actor",
+        "mentioned",
+        "qa_context",
+        "speaker",
+        "state.add:consented"
+      ]
+    }
+  },
+  "music:pickup": {
+    "scenario": "music",
+    "kind": "pickup",
+    "observations": 4,
+    "entity_tags": {
+      "partner": [
+        "destination_holder",
+        "frame.actor",
+        "frame.destination"
+      ],
+      "spare": [
+        "changed",
+        "frame.patient",
+        "moved"
+      ]
+    }
+  },
+  "music:join": {
+    "scenario": "music",
+    "kind": "join",
+    "observations": 4,
+    "entity_tags": {
+      "drum": [
+        "qa_context"
+      ],
+      "hero": [
+        "frame.patient",
+        "grammatical_subject",
+        "mentioned",
+        "qa_context"
+      ],
+      "partner": [
+        "changed",
+        "frame.actor",
+        "grammatical_subject",
+        "mentioned",
+        "qa_context",
+        "state.add:joined"
+      ],
+      "spare": [
+        "frame.instrument",
+        "qa_context"
+      ]
+    }
+  },
+  "music:offer_pattern": {
+    "scenario": "music",
+    "kind": "offer_pattern",
+    "observations": 7,
+    "entity_tags": {
+      "hero": [
+        "changed",
+        "listener",
+        "mentioned",
+        "qa_context",
+        "state.add:accepted_boundary"
+      ],
+      "paper": [
+        "qa_context"
+      ],
+      "partner": [
+        "changed",
+        "frame.actor",
+        "mentioned",
+        "qa_context",
+        "speaker",
+        "state.add:pattern_consent"
+      ]
+    }
+  },
+  "music:write_pattern": {
+    "scenario": "music",
+    "kind": "write_pattern",
+    "observations": 7,
+    "entity_tags": {
+      "paper": [
+        "changed",
+        "frame.patient",
+        "mentioned",
+        "qa_context",
+        "state.add:rhythm"
+      ],
+      "partner": [
+        "frame.actor",
+        "grammatical_subject",
+        "mentioned",
+        "qa_context"
+      ],
+      "pencil": [
+        "frame.instrument",
+        "mentioned",
+        "qa_context"
+      ]
+    }
+  },
+  "music:prepare_pattern": {
+    "scenario": "music",
+    "kind": "prepare_pattern",
+    "observations": 7,
+    "entity_tags": {
+      "drum": [
+        "mentioned"
+      ],
+      "hero": [
+        "changed",
+        "frame.actor",
+        "grammatical_subject",
+        "mentioned",
+        "state.add:practiced"
+      ],
+      "partner": [
+        "mentioned"
+      ],
+      "program": [
+        "changed",
+        "frame.patient",
+        "state.add:solo"
+      ]
+    }
+  },
+  "greenhouse:notice": {
+    "scenario": "greenhouse",
+    "kind": "notice",
+    "observations": 20,
+    "entity_tags": {
+      "caretaker": [
+        "mentioned",
+        "qa_context",
+        "speaker"
+      ],
+      "hero": [
+        "frame.actor",
+        "grammatical_subject",
+        "listener",
+        "mentioned",
+        "qa_context"
+      ],
+      "sunflower": [
+        "mentioned",
+        "qa_context"
+      ],
+      "tap": [
+        "grammatical_subject",
+        "mentioned",
+        "qa_context"
+      ],
+      "tomatoes": [
+        "grammatical_subject",
+        "mentioned",
+        "qa_context"
+      ]
+    }
+  },
+  "greenhouse:borrow": {
+    "scenario": "greenhouse",
+    "kind": "borrow",
+    "observations": 20,
+    "entity_tags": {
+      "can": [
+        "changed",
+        "frame.patient",
+        "moved"
+      ],
+      "caretaker": [
+        "source_holder"
+      ],
+      "hero": [
+        "destination_holder",
+        "frame.actor",
+        "frame.destination"
+      ]
+    }
+  },
+  "greenhouse:fill": {
+    "scenario": "greenhouse",
+    "kind": "fill",
+    "observations": 20,
+    "entity_tags": {
+      "barrel": [
+        "changed",
+        "concept.changed:Water",
+        "frame.patient",
+        "grammatical_subject",
+        "mentioned",
+        "qa_context",
+        "state.add:empty",
+        "state.remove:one_can_of_water"
+      ],
+      "can": [
+        "changed",
+        "concept.changed:Water",
+        "frame.instrument",
+        "qa_context",
+        "state.add:full",
+        "state.remove:empty"
+      ],
+      "hero": [
+        "frame.actor",
+        "qa_context"
+      ]
+    }
+  },
+  "greenhouse:choose_flower": {
+    "scenario": "greenhouse",
+    "kind": "choose_flower",
+    "observations": 13,
+    "entity_tags": {
+      "caretaker": [
+        "listener",
+        "mentioned"
+      ],
+      "hero": [
+        "frame.actor",
+        "mentioned",
+        "qa_context",
+        "speaker"
+      ],
+      "sunflower": [
+        "mentioned",
+        "qa_context"
+      ],
+      "tomatoes": [
+        "qa_context"
+      ]
+    }
+  },
+  "greenhouse:water_first": {
+    "scenario": "greenhouse",
+    "kind": "water_first",
+    "observations": 20,
+    "entity_tags": {
+      "can": [
+        "changed",
+        "concept.changed:Water",
+        "frame.instrument",
+        "mentioned",
+        "qa_context",
+        "state.add:empty",
+        "state.remove:full"
+      ],
+      "hero": [
+        "frame.actor",
+        "grammatical_subject",
+        "mentioned",
+        "qa_context"
+      ],
+      "sunflower": [
+        "changed",
+        "concept.changed:Water",
+        "frame.patient",
+        "mentioned",
+        "qa_context",
+        "state.add:damp",
+        "state.add:watered",
+        "state.remove:dry"
+      ],
+      "tomatoes": [
+        "changed",
+        "concept.changed:Water",
+        "frame.patient",
+        "mentioned",
+        "qa_context",
+        "state.add:damp",
+        "state.add:watered",
+        "state.remove:dry"
+      ]
+    }
+  },
+  "greenhouse:shade_break": {
+    "scenario": "greenhouse",
+    "kind": "shade_break",
+    "observations": 20,
+    "entity_tags": {
+      "cloth": [
+        "changed",
+        "frame.actor",
+        "frame.patient",
+        "grammatical_subject",
+        "mentioned",
+        "qa_context",
+        "state.add:broken",
+        "state.remove:intact"
+      ],
+      "leaf": [
+        "changed",
+        "state.add:brown",
+        "state.remove:green"
+      ],
+      "sunflower": [
+        "qa_context"
+      ],
+      "tomatoes": [
+        "changed",
+        "grammatical_subject",
+        "mentioned",
+        "qa_context",
+        "state.add:brown_leaf",
+        "state.add:exposed"
+      ]
+    }
+  },
+  "greenhouse:secure": {
+    "scenario": "greenhouse",
+    "kind": "secure",
+    "observations": 20,
+    "entity_tags": {
+      "cloth": [
+        "qa_context"
+      ],
+      "hero": [
+        "frame.actor",
+        "grammatical_subject",
+        "mentioned",
+        "qa_context",
+        "source_holder"
+      ],
+      "pot": [
+        "frame.destination"
+      ],
+      "tie": [
+        "changed",
+        "frame.instrument",
+        "mentioned",
+        "moved",
+        "qa_context"
+      ],
+      "tomatoes": [
+        "changed",
+        "mentioned",
+        "qa_context",
+        "state.add:shaded",
+        "state.remove:exposed"
+      ],
+      "umbrella": [
+        "changed",
+        "frame.patient",
+        "mentioned",
+        "moved",
+        "qa_context",
+        "state.add:open",
+        "state.remove:closed"
+      ]
+    }
+  },
+  "greenhouse:repair_tap": {
+    "scenario": "greenhouse",
+    "kind": "repair_tap",
+    "observations": 17,
+    "entity_tags": {
+      "caretaker": [
+        "frame.actor",
+        "grammatical_subject",
+        "mentioned",
+        "qa_context"
+      ],
+      "tap": [
+        "changed",
+        "frame.patient",
+        "mentioned",
+        "qa_context",
+        "state.add:repaired",
+        "state.remove:broken"
+      ]
+    }
+  },
+  "greenhouse:refill": {
+    "scenario": "greenhouse",
+    "kind": "refill",
+    "observations": 17,
+    "entity_tags": {
+      "can": [
+        "changed",
+        "concept.changed:Water",
+        "frame.instrument",
+        "state.add:full",
+        "state.remove:empty"
+      ],
+      "hero": [
+        "frame.actor"
+      ],
+      "tap": [
+        "frame.patient"
+      ]
+    }
+  },
+  "greenhouse:water_second": {
+    "scenario": "greenhouse",
+    "kind": "water_second",
+    "observations": 17,
+    "entity_tags": {
+      "can": [
+        "changed",
+        "concept.changed:Water",
+        "frame.instrument",
+        "state.add:empty",
+        "state.remove:full"
+      ],
+      "caretaker": [
+        "qa_context"
+      ],
+      "hero": [
+        "frame.actor",
+        "grammatical_subject",
+        "mentioned",
+        "qa_context"
+      ],
+      "tap": [
+        "mentioned",
+        "qa_context"
+      ],
+      "tomatoes": [
+        "changed",
+        "concept.changed:Water",
+        "frame.patient",
+        "mentioned",
+        "qa_context",
+        "state.add:watered",
+        "state.remove:dry"
+      ],
+      "sunflower": [
+        "changed",
+        "concept.changed:Water",
+        "frame.patient",
+        "mentioned",
+        "qa_context",
+        "state.add:watered",
+        "state.remove:dry"
+      ]
+    }
+  },
+  "greenhouse:repair_shade": {
+    "scenario": "greenhouse",
+    "kind": "repair_shade",
+    "observations": 17,
+    "entity_tags": {
+      "clip": [
+        "changed",
+        "frame.instrument",
+        "mentioned",
+        "moved"
+      ],
+      "cloth": [
+        "changed",
+        "frame.patient",
+        "mentioned",
+        "state.add:repaired",
+        "state.remove:broken"
+      ],
+      "hero": [
+        "destination_holder"
+      ],
+      "owner": [
+        "changed",
+        "frame.actor",
+        "grammatical_subject",
+        "mentioned",
+        "moved",
+        "source_holder"
+      ],
+      "tie": [
+        "changed",
+        "moved"
+      ],
+      "umbrella": [
+        "changed",
+        "moved",
+        "state.add:closed",
+        "state.remove:open"
+      ]
+    }
+  },
+  "greenhouse:return": {
+    "scenario": "greenhouse",
+    "kind": "return",
+    "observations": 20,
+    "entity_tags": {
+      "can": [
+        "changed",
+        "frame.patient",
+        "moved"
+      ],
+      "caretaker": [
+        "destination_holder",
+        "frame.destination"
+      ],
+      "hero": [
+        "frame.actor",
+        "source_holder"
+      ]
+    }
+  },
+  "greenhouse:ending": {
+    "scenario": "greenhouse",
+    "kind": "ending",
+    "observations": 20,
+    "entity_tags": {
+      "caretaker": [
+        "listener",
+        "mentioned"
+      ],
+      "cloth": [
+        "mentioned",
+        "qa_context"
+      ],
+      "hero": [
+        "changed",
+        "concept.changed:Care",
+        "frame.actor",
+        "grammatical_subject",
+        "mentioned",
+        "qa_context",
+        "speaker",
+        "state.add:promised_seedlings_first"
+      ],
+      "leaf": [
+        "grammatical_subject",
+        "mentioned"
+      ],
+      "sunflower": [
+        "changed",
+        "grammatical_subject",
+        "mentioned",
+        "moved",
+        "qa_context",
+        "state.add:upright"
+      ],
+      "tomatoes": [
+        "changed",
+        "grammatical_subject",
+        "mentioned",
+        "qa_context",
+        "state.add:upright",
+        "state.remove:drooping"
+      ],
+      "tap": [
+        "qa_context"
+      ],
+      "umbrella": [
+        "mentioned",
+        "qa_context"
+      ]
+    }
+  },
+  "greenhouse:choose_seedlings": {
+    "scenario": "greenhouse",
+    "kind": "choose_seedlings",
+    "observations": 4,
+    "entity_tags": {
+      "caretaker": [
+        "listener"
+      ],
+      "hero": [
+        "frame.actor",
+        "mentioned",
+        "qa_context",
+        "speaker"
+      ],
+      "sunflower": [
+        "qa_context"
+      ],
+      "tomatoes": [
+        "mentioned",
+        "qa_context"
+      ]
+    }
+  },
+  "greenhouse:choose_share": {
+    "scenario": "greenhouse",
+    "kind": "choose_share",
+    "observations": 3,
+    "entity_tags": {
+      "barrel": [
+        "qa_context"
+      ],
+      "can": [
+        "qa_context"
+      ],
+      "caretaker": [
+        "listener",
+        "mentioned"
+      ],
+      "hero": [
+        "frame.actor",
+        "mentioned",
+        "qa_context",
+        "speaker"
+      ]
+    }
+  },
+  "greenhouse:move_flower": {
+    "scenario": "greenhouse",
+    "kind": "move_flower",
+    "observations": 3,
+    "entity_tags": {
+      "hero": [
+        "frame.actor",
+        "grammatical_subject",
+        "mentioned",
+        "qa_context"
+      ],
+      "sunflower": [
+        "changed",
+        "frame.patient",
+        "mentioned",
+        "moved",
+        "qa_context",
+        "state.add:shaded"
+      ],
+      "tomatoes": [
+        "qa_context"
+      ],
+      "umbrella": [
+        "mentioned",
+        "qa_context"
+      ]
+    }
+  },
+  "greenhouse:promise_repair": {
+    "scenario": "greenhouse",
+    "kind": "promise_repair",
+    "observations": 3,
+    "entity_tags": {
+      "caretaker": [
+        "changed",
+        "frame.actor",
+        "mentioned",
+        "qa_context",
+        "speaker",
+        "state.add:promised_repair"
+      ],
+      "hero": [
+        "listener",
+        "mentioned"
+      ],
+      "tap": [
+        "frame.patient",
+        "mentioned",
+        "qa_context"
+      ]
+    }
+  },
+  "library:wish": {
+    "scenario": "library",
+    "kind": "wish",
+    "observations": 20,
+    "entity_tags": {
+      "atlas": [
+        "causal_context",
+        "frame.patient",
+        "mentioned",
+        "qa_context"
+      ],
+      "hero": [
+        "causal_context",
+        "frame.actor",
+        "grammatical_subject",
+        "mentioned",
+        "qa_context"
+      ]
+    }
+  },
+  "library:missing": {
+    "scenario": "library",
+    "kind": "missing",
+    "observations": 20,
+    "entity_tags": {
+      "book": [
+        "causal_context",
+        "frame.patient",
+        "qa_context"
+      ],
+      "friend": [
+        "causal_context",
+        "frame.actor",
+        "listener",
+        "mentioned",
+        "qa_context",
+        "speaker"
+      ],
+      "hero": [
+        "listener",
+        "mentioned",
+        "qa_context",
+        "speaker"
+      ]
+    }
+  },
+  "library:borrow": {
+    "scenario": "library",
+    "kind": "borrow",
+    "observations": 20,
+    "entity_tags": {
+      "helper": [
+        "causal_context"
+      ],
+      "hero": [
+        "causal_context",
+        "destination_holder",
+        "frame.actor"
+      ],
+      "tool": [
+        "causal_context",
+        "changed",
+        "frame.patient",
+        "moved"
+      ]
+    }
+  },
+  "library:place_atlas": {
+    "scenario": "library",
+    "kind": "place_atlas",
+    "observations": 20,
+    "entity_tags": {
+      "atlas": [
+        "causal_context",
+        "changed",
+        "frame.patient",
+        "moved"
+      ],
+      "hero": [
+        "frame.actor",
+        "source_holder"
+      ],
+      "tool": [
+        "causal_context"
+      ]
+    }
+  },
+  "library:failed_search": {
+    "scenario": "library",
+    "kind": "failed_search",
+    "observations": 20,
+    "entity_tags": {
+      "book": [
+        "causal_context",
+        "qa_context"
+      ],
+      "friend": [
+        "causal_context",
+        "grammatical_subject",
+        "mentioned",
+        "qa_context"
+      ],
+      "hero": [
+        "frame.actor",
+        "grammatical_subject",
+        "mentioned",
+        "qa_context"
+      ],
+      "mitten": [
+        "causal_context",
+        "changed",
+        "frame.patient",
+        "moved"
+      ],
+      "tool": [
+        "causal_context",
+        "frame.instrument"
+      ]
+    }
+  },
+  "library:clue": {
+    "scenario": "library",
+    "kind": "clue",
+    "observations": 20,
+    "entity_tags": {
+      "book": [
+        "causal_context"
+      ],
+      "bookmark": [
+        "causal_context",
+        "frame.patient",
+        "mentioned",
+        "qa_context"
+      ],
+      "friend": [
+        "causal_context",
+        "frame.actor",
+        "grammatical_subject",
+        "mentioned",
+        "qa_context"
+      ],
+      "hero": [
+        "causal_context"
+      ],
+      "tool": [
+        "causal_context",
+        "frame.instrument"
+      ]
+    }
+  },
+  "library:request_help": {
+    "scenario": "library",
+    "kind": "request_help",
+    "observations": 20,
+    "entity_tags": {
+      "friend": [
+        "causal_context"
+      ],
+      "helper": [
+        "causal_context",
+        "frame.patient"
+      ],
+      "hero": [
+        "causal_context",
+        "frame.actor"
+      ]
+    }
+  },
+  "library:reserve_atlas": {
+    "scenario": "library",
+    "kind": "reserve_atlas",
+    "observations": 14,
+    "entity_tags": {
+      "atlas": [
+        "causal_context",
+        "changed",
+        "frame.patient",
+        "mentioned",
+        "qa_context",
+        "state.add:reserved"
+      ],
+      "helper": [
+        "causal_context",
+        "grammatical_subject",
+        "mentioned",
+        "qa_context"
+      ],
+      "hero": [
+        "causal_context",
+        "frame.actor",
+        "mentioned",
+        "qa_context"
+      ]
+    }
+  },
+  "library:fetch_ladder": {
+    "scenario": "library",
+    "kind": "fetch_ladder",
+    "observations": 20,
+    "entity_tags": {
+      "helper": [
+        "causal_context",
+        "frame.actor"
+      ],
+      "ladder": [
+        "causal_context",
+        "changed",
+        "frame.patient",
+        "moved"
+      ]
+    }
+  },
+  "library:retrieve": {
+    "scenario": "library",
+    "kind": "retrieve",
+    "observations": 20,
+    "entity_tags": {
+      "book": [
+        "causal_context",
+        "changed",
+        "frame.patient",
+        "mentioned",
+        "moved",
+        "qa_context",
+        "state.add:found",
+        "state.remove:missing"
+      ],
+      "friend": [
+        "causal_context"
+      ],
+      "helper": [
+        "causal_context",
+        "destination_holder",
+        "frame.actor",
+        "frame.destination",
+        "grammatical_subject",
+        "mentioned",
+        "qa_context"
+      ],
+      "hero": [
+        "causal_context"
+      ],
+      "ladder": [
+        "causal_context",
+        "frame.instrument",
+        "mentioned",
+        "qa_context"
+      ]
+    }
+  },
+  "library:recognize": {
+    "scenario": "library",
+    "kind": "recognize",
+    "observations": 20,
+    "entity_tags": {
+      "book": [
+        "causal_context",
+        "frame.patient"
+      ],
+      "bookmark": [
+        "causal_context"
+      ],
+      "friend": [
+        "causal_context",
+        "frame.actor"
+      ]
+    }
+  },
+  "library:checkout": {
+    "scenario": "library",
+    "kind": "checkout",
+    "observations": 20,
+    "entity_tags": {
+      "book": [
+        "causal_context",
+        "changed",
+        "frame.patient",
+        "mentioned",
+        "moved",
+        "state.add:checked_out"
+      ],
+      "friend": [
+        "causal_context",
+        "destination_holder",
+        "frame.destination",
+        "mentioned"
+      ],
+      "helper": [
+        "causal_context",
+        "frame.actor",
+        "grammatical_subject",
+        "mentioned",
+        "source_holder"
+      ]
+    }
+  },
+  "library:checkout_atlas": {
+    "scenario": "library",
+    "kind": "checkout_atlas",
+    "observations": 14,
+    "entity_tags": {
+      "atlas": [
+        "causal_context",
+        "changed",
+        "frame.patient",
+        "moved",
+        "state.add:checked_out",
+        "state.remove:reserved"
+      ],
+      "helper": [
+        "causal_context",
+        "frame.actor"
+      ],
+      "hero": [
+        "causal_context",
+        "destination_holder",
+        "frame.destination"
+      ]
+    }
+  },
+  "library:share_atlas": {
+    "scenario": "library",
+    "kind": "share_atlas",
+    "observations": 14,
+    "entity_tags": {
+      "atlas": [
+        "causal_context",
+        "changed",
+        "frame.patient",
+        "mentioned",
+        "qa_context",
+        "state.add:open"
+      ],
+      "friend": [
+        "causal_context",
+        "changed",
+        "concept.changed:Care",
+        "frame.actor",
+        "grammatical_subject",
+        "mentioned",
+        "qa_context",
+        "speaker"
+      ],
+      "hero": [
+        "causal_context",
+        "listener",
+        "mentioned",
+        "qa_context"
+      ]
+    }
+  },
+  "library:return_trolley": {
+    "scenario": "library",
+    "kind": "return_trolley",
+    "observations": 20,
+    "entity_tags": {
+      "hero": [
+        "causal_context",
+        "frame.actor",
+        "source_holder"
+      ],
+      "tool": [
+        "causal_context",
+        "changed",
+        "frame.patient",
+        "moved"
+      ]
+    }
+  },
+  "library:return_ladder": {
+    "scenario": "library",
+    "kind": "return_ladder",
+    "observations": 20,
+    "entity_tags": {
+      "helper": [
+        "causal_context",
+        "frame.actor"
+      ],
+      "ladder": [
+        "causal_context",
+        "changed",
+        "frame.patient",
+        "moved"
+      ]
+    }
+  },
+  "library:sketch_moon": {
+    "scenario": "library",
+    "kind": "sketch_moon",
+    "observations": 14,
+    "entity_tags": {
+      "atlas": [
+        "causal_context",
+        "mentioned",
+        "qa_context"
+      ],
+      "hero": [
+        "changed",
+        "concept.changed:Joy",
+        "frame.actor",
+        "grammatical_subject",
+        "mentioned",
+        "qa_context"
+      ],
+      "paper": [
+        "causal_context",
+        "changed",
+        "frame.patient",
+        "mentioned",
+        "qa_context",
+        "renamed",
+        "state.add:moon_drawing",
+        "state.remove:blank"
+      ],
+      "pencil": [
+        "causal_context",
+        "frame.instrument"
+      ]
+    }
+  },
+  "library:ending": {
+    "scenario": "library",
+    "kind": "ending",
+    "observations": 20,
+    "entity_tags": {
+      "atlas": [
+        "causal_context"
+      ],
+      "book": [
+        "causal_context",
+        "changed",
+        "frame.patient",
+        "state.add:open"
+      ],
+      "friend": [
+        "causal_context",
+        "mentioned",
+        "qa_context"
+      ],
+      "hero": [
+        "causal_context",
+        "frame.actor",
+        "grammatical_subject",
+        "mentioned",
+        "qa_context"
+      ],
+      "ladder": [
+        "causal_context"
+      ],
+      "paper": [
+        "mentioned",
+        "qa_context"
+      ],
+      "tool": [
+        "causal_context"
+      ]
+    }
+  },
+  "library:release_atlas": {
+    "scenario": "library",
+    "kind": "release_atlas",
+    "observations": 6,
+    "entity_tags": {
+      "atlas": [
+        "causal_context",
+        "changed",
+        "frame.patient",
+        "mentioned",
+        "moved",
+        "qa_context",
+        "state.add:released"
+      ],
+      "friend": [
+        "causal_context",
+        "mentioned",
+        "qa_context"
+      ],
+      "hero": [
+        "causal_context",
+        "frame.actor",
+        "grammatical_subject",
+        "mentioned",
+        "qa_context"
+      ]
+    }
+  },
+  "library:share_picture": {
+    "scenario": "library",
+    "kind": "share_picture",
+    "observations": 6,
+    "entity_tags": {
+      "book": [
+        "causal_context",
+        "changed",
+        "frame.patient",
+        "mentioned",
+        "qa_context",
+        "state.add:open"
+      ],
+      "friend": [
+        "changed",
+        "concept.changed:Care",
+        "frame.actor",
+        "grammatical_subject",
+        "mentioned",
+        "qa_context",
+        "speaker"
+      ],
+      "hero": [
+        "listener",
+        "mentioned",
+        "qa_context"
+      ]
+    }
+  },
+  "library:sketch_whale": {
+    "scenario": "library",
+    "kind": "sketch_whale",
+    "observations": 6,
+    "entity_tags": {
+      "book": [
+        "causal_context",
+        "mentioned",
+        "qa_context"
+      ],
+      "friend": [
+        "changed",
+        "concept.changed:Trust"
+      ],
+      "hero": [
+        "changed",
+        "concept.changed:Joy",
+        "frame.actor",
+        "grammatical_subject",
+        "mentioned",
+        "qa_context"
+      ],
+      "paper": [
+        "causal_context",
+        "changed",
+        "frame.patient",
+        "mentioned",
+        "qa_context",
+        "renamed",
+        "state.add:whale_drawing",
+        "state.remove:blank"
+      ],
+      "pencil": [
+        "causal_context",
+        "frame.instrument"
+      ]
+    }
+  },
+  "pottery:need": {
+    "scenario": "pottery",
+    "kind": "need",
+    "observations": 20,
+    "entity_tags": {
+      "grandpa": [
+        "causal_context",
+        "frame.actor"
+      ],
+      "old_mug": [
+        "causal_context",
+        "frame.patient"
+      ]
+    }
+  },
+  "pottery:goal": {
+    "scenario": "pottery",
+    "kind": "goal",
+    "observations": 20,
+    "entity_tags": {
+      "cup": [
+        "causal_context",
+        "frame.patient",
+        "mentioned",
+        "qa_context"
+      ],
+      "grandpa": [
+        "frame.destination",
+        "mentioned",
+        "qa_context"
+      ],
+      "helper": [
+        "listener",
+        "mentioned"
+      ],
+      "hero": [
+        "frame.actor",
+        "mentioned",
+        "qa_context",
+        "speaker"
+      ]
+    }
+  },
+  "pottery:shape": {
+    "scenario": "pottery",
+    "kind": "shape",
+    "observations": 20,
+    "entity_tags": {
+      "cup": [
+        "causal_context",
+        "changed",
+        "frame.patient",
+        "state.add:shaped"
+      ],
+      "hero": [
+        "frame.actor"
+      ],
+      "tool": [
+        "causal_context",
+        "frame.instrument"
+      ]
+    }
+  },
+  "pottery:slip": {
+    "scenario": "pottery",
+    "kind": "slip",
+    "observations": 20,
+    "entity_tags": {
+      "cup": [
+        "causal_context",
+        "changed",
+        "frame.patient",
+        "grammatical_subject",
+        "mentioned",
+        "qa_context",
+        "state.add:dented"
+      ],
+      "hero": [
+        "frame.actor"
+      ],
+      "tool": [
+        "causal_context",
+        "frame.instrument",
+        "grammatical_subject",
+        "mentioned",
+        "qa_context"
+      ]
+    }
+  },
+  "pottery:inspect": {
+    "scenario": "pottery",
+    "kind": "inspect",
+    "observations": 20,
+    "entity_tags": {
+      "cup": [
+        "causal_context",
+        "frame.patient",
+        "mentioned",
+        "qa_context"
+      ],
+      "helper": [
+        "causal_context",
+        "frame.actor",
+        "mentioned",
+        "qa_context",
+        "speaker"
+      ],
+      "hero": [
+        "listener",
+        "mentioned",
+        "qa_context"
+      ]
+    }
+  },
+  "pottery:consult": {
+    "scenario": "pottery",
+    "kind": "consult",
+    "observations": 20,
+    "entity_tags": {
+      "cup": [
+        "frame.patient",
+        "qa_context"
+      ],
+      "grandpa": [
+        "causal_context",
+        "frame.actor",
+        "mentioned",
+        "qa_context",
+        "speaker"
+      ],
+      "hero": [
+        "listener",
+        "mentioned"
+      ]
+    }
+  },
+  "pottery:fetch_sponge": {
+    "scenario": "pottery",
+    "kind": "fetch_sponge",
+    "observations": 20,
+    "entity_tags": {
+      "cup": [
+        "causal_context"
+      ],
+      "hero": [
+        "changed",
+        "destination_holder",
+        "frame.actor",
+        "frame.destination",
+        "state.add:hoped_to_smooth"
+      ],
+      "sponge": [
+        "causal_context",
+        "changed",
+        "frame.patient",
+        "moved"
+      ]
+    }
+  },
+  "pottery:thumb": {
+    "scenario": "pottery",
+    "kind": "thumb",
+    "observations": 9,
+    "entity_tags": {
+      "cup": [
+        "causal_context",
+        "changed",
+        "frame.patient",
+        "qa_context",
+        "state.add:safe_edges",
+        "state.add:thumb_rest",
+        "state.add:wall_checked"
+      ],
+      "helper": [
+        "listener",
+        "mentioned"
+      ],
+      "hero": [
+        "causal_context",
+        "frame.actor",
+        "grammatical_subject",
+        "mentioned",
+        "qa_context",
+        "speaker"
+      ],
+      "sponge": [
+        "causal_context",
+        "frame.instrument",
+        "mentioned",
+        "qa_context"
+      ]
+    }
+  },
+  "pottery:return_rib": {
+    "scenario": "pottery",
+    "kind": "return_rib",
+    "observations": 20,
+    "entity_tags": {
+      "helper": [
+        "causal_context",
+        "destination_holder",
+        "frame.destination"
+      ],
+      "hero": [
+        "frame.actor",
+        "source_holder"
+      ],
+      "tool": [
+        "causal_context",
+        "changed",
+        "frame.patient",
+        "moved"
+      ]
+    }
+  },
+  "pottery:return_sponge": {
+    "scenario": "pottery",
+    "kind": "return_sponge",
+    "observations": 20,
+    "entity_tags": {
+      "bench": [
+        "causal_context",
+        "frame.destination"
+      ],
+      "hero": [
+        "frame.actor",
+        "source_holder"
+      ],
+      "sponge": [
+        "causal_context",
+        "changed",
+        "frame.patient",
+        "moved"
+      ]
+    }
+  },
+  "pottery:shelve": {
+    "scenario": "pottery",
+    "kind": "shelve",
+    "observations": 20,
+    "entity_tags": {
+      "cup": [
+        "causal_context",
+        "changed",
+        "frame.patient",
+        "moved"
+      ],
+      "hero": [
+        "frame.actor"
+      ],
+      "shelf": [
+        "frame.destination"
+      ]
+    }
+  },
+  "pottery:dry": {
+    "scenario": "pottery",
+    "kind": "dry",
+    "observations": 20,
+    "entity_tags": {
+      "cup": [
+        "causal_context",
+        "changed",
+        "frame.actor",
+        "frame.patient",
+        "state.add:dry",
+        "state.remove:wet"
+      ],
+      "shelf": [
+        "frame.destination"
+      ]
+    }
+  },
+  "pottery:load_bisque": {
+    "scenario": "pottery",
+    "kind": "load_bisque",
+    "observations": 20,
+    "entity_tags": {
+      "cup": [
+        "causal_context",
+        "changed",
+        "frame.patient",
+        "moved"
+      ],
+      "helper": [
+        "frame.actor"
+      ],
+      "kiln": [
+        "causal_context",
+        "frame.destination"
+      ]
+    }
+  },
+  "pottery:bisque": {
+    "scenario": "pottery",
+    "kind": "bisque",
+    "observations": 20,
+    "entity_tags": {
+      "cup": [
+        "causal_context",
+        "changed",
+        "frame.patient",
+        "state.add:bisque",
+        "state.add:hot"
+      ],
+      "helper": [
+        "causal_context",
+        "frame.actor"
+      ],
+      "kiln": [
+        "frame.instrument"
+      ]
+    }
+  },
+  "pottery:cool_bisque": {
+    "scenario": "pottery",
+    "kind": "cool_bisque",
+    "observations": 20,
+    "entity_tags": {
+      "cup": [
+        "causal_context",
+        "changed",
+        "frame.actor",
+        "frame.patient",
+        "state.add:cool",
+        "state.remove:hot"
+      ],
+      "kiln": [
+        "frame.instrument"
+      ]
+    }
+  },
+  "pottery:unload_bisque": {
+    "scenario": "pottery",
+    "kind": "unload_bisque",
+    "observations": 20,
+    "entity_tags": {
+      "bench": [
+        "frame.destination"
+      ],
+      "cup": [
+        "causal_context",
+        "changed",
+        "frame.patient",
+        "moved"
+      ],
+      "helper": [
+        "frame.actor"
+      ]
+    }
+  },
+  "pottery:glaze": {
+    "scenario": "pottery",
+    "kind": "glaze",
+    "observations": 20,
+    "entity_tags": {
+      "blue_glaze": [
+        "causal_context",
+        "frame.instrument"
+      ],
+      "cup": [
+        "causal_context",
+        "changed",
+        "frame.patient",
+        "state.add:blue",
+        "state.add:glazed"
+      ],
+      "hero": [
+        "frame.actor"
+      ]
+    }
+  },
+  "pottery:load_final": {
+    "scenario": "pottery",
+    "kind": "load_final",
+    "observations": 20,
+    "entity_tags": {
+      "cup": [
+        "causal_context",
+        "changed",
+        "frame.patient",
+        "moved"
+      ],
+      "helper": [
+        "frame.actor"
+      ],
+      "kiln": [
+        "causal_context",
+        "frame.destination"
+      ]
+    }
+  },
+  "pottery:fire": {
+    "scenario": "pottery",
+    "kind": "fire",
+    "observations": 20,
+    "entity_tags": {
+      "cup": [
+        "causal_context",
+        "changed",
+        "frame.patient",
+        "state.add:fired",
+        "state.add:hot",
+        "state.remove:cool"
+      ],
+      "helper": [
+        "causal_context",
+        "frame.actor"
+      ],
+      "kiln": [
+        "frame.instrument"
+      ]
+    }
+  },
+  "pottery:cool_final": {
+    "scenario": "pottery",
+    "kind": "cool_final",
+    "observations": 20,
+    "entity_tags": {
+      "cup": [
+        "causal_context",
+        "changed",
+        "frame.actor",
+        "frame.patient",
+        "state.add:cool",
+        "state.remove:hot"
+      ],
+      "kiln": [
+        "frame.instrument"
+      ]
+    }
+  },
+  "pottery:deliver": {
+    "scenario": "pottery",
+    "kind": "deliver",
+    "observations": 20,
+    "entity_tags": {
+      "cup": [
+        "causal_context",
+        "changed",
+        "frame.patient",
+        "grammatical_subject",
+        "mentioned",
+        "moved",
+        "qa_context"
+      ],
+      "helper": [
+        "frame.actor",
+        "grammatical_subject",
+        "mentioned",
+        "qa_context"
+      ],
+      "hero": [
+        "causal_context",
+        "destination_holder",
+        "frame.destination"
+      ]
+    }
+  },
+  "pottery:give": {
+    "scenario": "pottery",
+    "kind": "give",
+    "observations": 20,
+    "entity_tags": {
+      "cup": [
+        "causal_context",
+        "changed",
+        "frame.patient",
+        "mentioned",
+        "moved"
+      ],
+      "grandpa": [
+        "causal_context",
+        "destination_holder",
+        "frame.destination",
+        "mentioned"
+      ],
+      "hero": [
+        "frame.actor",
+        "grammatical_subject",
+        "mentioned",
+        "source_holder"
+      ]
+    }
+  },
+  "pottery:use": {
+    "scenario": "pottery",
+    "kind": "use",
+    "observations": 20,
+    "entity_tags": {
+      "cup": [
+        "causal_context",
+        "changed",
+        "frame.patient",
+        "mentioned",
+        "qa_context",
+        "state.add:tea"
+      ],
+      "grandpa": [
+        "frame.actor",
+        "grammatical_subject",
+        "mentioned",
+        "qa_context"
+      ],
+      "teapot": [
+        "causal_context",
+        "changed",
+        "frame.instrument",
+        "state.remove:tea"
+      ]
+    }
+  },
+  "pottery:ending": {
+    "scenario": "pottery",
+    "kind": "ending",
+    "observations": 20,
+    "entity_tags": {
+      "cup": [
+        "causal_context",
+        "frame.patient",
+        "mentioned",
+        "qa_context"
+      ],
+      "grandpa": [
+        "changed",
+        "frame.actor",
+        "grammatical_subject",
+        "mentioned",
+        "qa_context",
+        "state.add:holding_wide_handle",
+        "state.add:holding_with_two_hands",
+        "state.add:thumb_in_rest"
+      ],
+      "sponge": [
+        "causal_context"
+      ],
+      "tool": [
+        "causal_context"
+      ],
+      "hero": [
+        "qa_context"
+      ]
+    }
+  },
+  "pottery:smooth": {
+    "scenario": "pottery",
+    "kind": "smooth",
+    "observations": 7,
+    "entity_tags": {
+      "cup": [
+        "causal_context",
+        "changed",
+        "frame.patient",
+        "qa_context",
+        "state.add:safe_edges",
+        "state.add:smoothed",
+        "state.add:wall_checked"
+      ],
+      "helper": [
+        "listener"
+      ],
+      "hero": [
+        "causal_context",
+        "frame.actor",
+        "grammatical_subject",
+        "mentioned",
+        "qa_context",
+        "speaker"
+      ],
+      "sponge": [
+        "causal_context",
+        "frame.instrument",
+        "mentioned",
+        "qa_context"
+      ]
+    }
+  },
+  "pottery:remake": {
+    "scenario": "pottery",
+    "kind": "remake",
+    "observations": 4,
+    "entity_tags": {
+      "cup": [
+        "causal_context",
+        "changed",
+        "frame.patient",
+        "mentioned",
+        "qa_context",
+        "renamed",
+        "state.add:bowl_shape",
+        "state.add:safe_edges",
+        "state.add:two_hand_grip",
+        "state.add:wall_checked",
+        "state.remove:dented",
+        "state.remove:wide_handle"
+      ],
+      "grandpa": [
+        "qa_context"
+      ],
+      "helper": [
+        "listener"
+      ],
+      "hero": [
+        "frame.actor",
+        "grammatical_subject",
+        "mentioned",
+        "qa_context",
+        "speaker"
+      ],
+      "tool": [
+        "causal_context",
+        "frame.instrument",
+        "mentioned",
+        "qa_context"
+      ]
+    }
+  }
+}

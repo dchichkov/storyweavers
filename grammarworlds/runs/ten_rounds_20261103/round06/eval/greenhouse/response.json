@@ -1,0 +1,392 @@
+{
+  "id": "resp_07458e266df22a62016aeb13f4b09c87d19e789065517b4df4",
+  "created_at": 1793790964.0,
+  "error": null,
+  "incomplete_details": null,
+  "instructions": null,
+  "metadata": {},
+  "model": "gpt-6-luna",
+  "object": "response",
+  "output": [
+    {
+      "id": "msg_07458e266df22a62016aeb13f8eafc87d185b4d496810d3e9f",
+      "content": [
+        {
+          "annotations": [],
+          "text": "{\"stories\":[{\"id\":\"s000014\",\"rating\":{\"coherence\":7,\"style\":5,\"grammar\":8,\"storytelling\":5,\"overall\":6},\"note\":\"The actions are understandable, but the final brown leaf remains and the story gives little emotional closure.\",\"group_id\":0},{\"id\":\"s000028\",\"rating\":{\"coherence\":7,\"style\":5,\"grammar\":8,\"storytelling\":5,\"overall\":6},\"note\":\"Nia shares the limited water and shelters both plants, but the ending is a static summary with no concrete resolution beyond the promise.\",\"group_id\":1},{\"id\":\"s000058\",\"rating\":{\"coherence\":7,\"style\":5,\"grammar\":8,\"storytelling\":5,\"overall\":6},\"note\":\"The equal-sharing choice and umbrella shelter make sense, though the ending is abrupt and duplicates the same plain summary.\",\"group_id\":1},{\"id\":\"s000023\",\"rating\":{\"coherence\":7,\"style\":5,\"grammar\":8,\"storytelling\":5,\"overall\":6},\"note\":\"The broken tap is eventually repaired and both plants receive water, but the brown leaf persists and the ending feels unresolved.\",\"group_id\":0},{\"id\":\"s000036\",\"rating\":{\"coherence\":8,\"style\":5,\"grammar\":8,\"storytelling\":6,\"overall\":6},\"note\":\"Watering the seedlings first and then the sunflower follows a clear sequence, with a tidy garden outcome but little child-centered feeling.\",\"group_id\":2},{\"id\":\"s000017\",\"rating\":{\"coherence\":7,\"style\":5,\"grammar\":8,\"storytelling\":5,\"overall\":6},\"note\":\"Equal water and shared shelter provide a sensible solution, but the promised future repair and static ending leave the situation only partly resolved.\",\"group_id\":1},{\"id\":\"s000053\",\"rating\":{\"coherence\":7,\"style\":5,\"grammar\":8,\"storytelling\":5,\"overall\":6},\"note\":\"Nia divides the scarce water and shelters both plants; the story ends with a simple status report rather than a vivid closing moment.\",\"group_id\":1},{\"id\":\"s000021\",\"rating\":{\"coherence\":7,\"style\":5,\"grammar\":8,\"storytelling\":5,\"overall\":6},\"note\":\"The tap repair lets both plants get water, but the brown leaf is still present and there is little sense of completion.\",\"group_id\":0},{\"id\":\"s000034\",\"rating\":{\"coherence\":7,\"style\":5,\"grammar\":8,\"storytelling\":5,\"overall\":6},\"note\":\"The sequence is clear and the shade cloth is fixed, yet the brown leaf remains as a lingering problem at the close.\",\"group_id\":0},{\"id\":\"s000048\",\"rating\":{\"coherence\":8,\"style\":5,\"grammar\":8,\"storytelling\":6,\"overall\":6},\"note\":\"The seedlings get water first, then the repaired tap supplies the sunflower; the outcome is clear but told in repetitive, report-like sentences.\",\"group_id\":2},{\"id\":\"s000002\",\"rating\":{\"coherence\":8,\"style\":5,\"grammar\":8,\"storytelling\":6,\"overall\":6},\"note\":\"Nia prioritizes the seedlings, then waters the sunflower after the tap is repaired, ending with both plants safely arranged together.\",\"group_id\":2},{\"id\":\"s000057\",\"rating\":{\"coherence\":7,\"style\":5,\"grammar\":8,\"storytelling\":5,\"overall\":6},\"note\":\"The equal-sharing choice resolves the immediate watering need and gives both plants shelter, though the tap repair is deferred and the close is flat.\",\"group_id\":1}],\"diversity\":{\"premise\":1,\"causal_path\":3,\"ending\":3,\"language\":1,\"overall\":2},\"diversity_evidence\":\"All twelve stories share the same broken-tap garden problem. Three causal variants appear: sunflower first with a brown-leaf consequence (s000014, s000023, s000021, s000034), seedlings first followed by watering the sunflower after repair (s000036, s000048, s000002), and equal water with shared umbrella shelter and repair deferred (s000028, s000058, s000017, s000053, s000057). Wording and outcomes repeat closely within each variant, so the sample shows little overall diversity.\",\"plot_groups\":[{\"group_id\":0,\"summary\":\"Nia waters the sunflower first from the scarce barrel supply; the seedlings suffer a brown leaf before the tap and shade cloth are repaired.\"},{\"group_id\":1,\"summary\":\"Nia divides the limited water between both plants and shelters them together under an umbrella while the tap repair is postponed.\"},{\"group_id\":2,\"summary\":\"Nia waters the tomato seedlings first, then uses the repaired tap to water the sunflower; the plants end up together in the garden.\"}] }",
+          "type": "output_text",
+          "logprobs": []
+        }
+      ],
+      "role": "assistant",
+      "status": "completed",
+      "type": "message",
+      "phase": "final_answer"
+    }
+  ],
+  "parallel_tool_calls": true,
+  "temperature": 1.0,
+  "tool_choice": "auto",
+  "tools": [],
+  "top_p": 0.98,
+  "background": false,
+  "completed_at": 1793790978.0,
+  "conversation": null,
+  "max_output_tokens": 4000,
+  "max_tool_calls": null,
+  "moderation": null,
+  "previous_response_id": null,
+  "prompt": null,
+  "prompt_cache_key": null,
+  "prompt_cache_retention": "24h",
+  "reasoning": {
+    "context": "all_turns",
+    "effort": "none",
+    "generate_summary": null,
+    "summary": null,
+    "mode": "standard"
+  },
+  "safety_identifier": null,
+  "service_tier": "flex",
+  "status": "completed",
+  "text": {
+    "format": {
+      "name": "harbor_story_set_v2",
+      "schema_": {
+        "type": "object",
+        "properties": {
+          "stories": {
+            "type": "array",
+            "minItems": 12,
+            "maxItems": 12,
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "enum": [
+                    "s000014",
+                    "s000028",
+                    "s000058",
+                    "s000023",
+                    "s000036",
+                    "s000017",
+                    "s000053",
+                    "s000021",
+                    "s000034",
+                    "s000048",
+                    "s000002",
+                    "s000057"
+                  ]
+                },
+                "rating": {
+                  "type": "object",
+                  "properties": {
+                    "coherence": {
+                      "type": "integer",
+                      "enum": [
+                        0,
+                        1,
+                        2,
+                        3,
+                        4,
+                        5,
+                        6,
+                        7,
+                        8,
+                        9
+                      ]
+                    },
+                    "style": {
+                      "type": "integer",
+                      "enum": [
+                        0,
+                        1,
+                        2,
+                        3,
+                        4,
+                        5,
+                        6,
+                        7,
+                        8,
+                        9
+                      ]
+                    },
+                    "grammar": {
+                      "type": "integer",
+                      "enum": [
+                        0,
+                        1,
+                        2,
+                        3,
+                        4,
+                        5,
+                        6,
+                        7,
+                        8,
+                        9
+                      ]
+                    },
+                    "storytelling": {
+                      "type": "integer",
+                      "enum": [
+                        0,
+                        1,
+                        2,
+                        3,
+                        4,
+                        5,
+                        6,
+                        7,
+                        8,
+                        9
+                      ]
+                    },
+                    "overall": {
+                      "type": "integer",
+                      "enum": [
+                        0,
+                        1,
+                        2,
+                        3,
+                        4,
+                        5,
+                        6,
+                        7,
+                        8,
+                        9
+                      ]
+                    }
+                  },
+                  "required": [
+                    "coherence",
+                    "style",
+                    "grammar",
+                    "storytelling",
+                    "overall"
+                  ],
+                  "additionalProperties": false
+                },
+                "note": {
+                  "type": "string"
+                },
+                "group_id": {
+                  "type": "integer",
+                  "enum": [
+                    0,
+                    1,
+                    2,
+                    3,
+                    4,
+                    5,
+                    6,
+                    7,
+                    8,
+                    9,
+                    10,
+                    11
+                  ]
+                }
+              },
+              "required": [
+                "id",
+                "rating",
+                "note",
+                "group_id"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "diversity": {
+            "type": "object",
+            "properties": {
+              "premise": {
+                "type": "integer",
+                "enum": [
+                  0,
+                  1,
+                  2,
+                  3,
+                  4,
+                  5,
+                  6,
+                  7,
+                  8,
+                  9
+                ]
+              },
+              "causal_path": {
+                "type": "integer",
+                "enum": [
+                  0,
+                  1,
+                  2,
+                  3,
+                  4,
+                  5,
+                  6,
+                  7,
+                  8,
+                  9
+                ]
+              },
+              "ending": {
+                "type": "integer",
+                "enum": [
+                  0,
+                  1,
+                  2,
+                  3,
+                  4,
+                  5,
+                  6,
+                  7,
+                  8,
+                  9
+                ]
+              },
+              "language": {
+                "type": "integer",
+                "enum": [
+                  0,
+                  1,
+                  2,
+                  3,
+                  4,
+                  5,
+                  6,
+                  7,
+                  8,
+                  9
+                ]
+              },
+              "overall": {
+                "type": "integer",
+                "enum": [
+                  0,
+                  1,
+                  2,
+                  3,
+                  4,
+                  5,
+                  6,
+                  7,
+                  8,
+                  9
+                ]
+              }
+            },
+            "required": [
+              "premise",
+              "causal_path",
+              "ending",
+              "language",
+              "overall"
+            ],
+            "additionalProperties": false
+          },
+          "diversity_evidence": {
+            "type": "string"
+          },
+          "plot_groups": {
+            "type": "array",
+            "minItems": 1,
+            "maxItems": 12,
+            "items": {
+              "type": "object",
+              "properties": {
+                "group_id": {
+                  "type": "integer",
+                  "enum": [
+                    0,
+                    1,
+                    2,
+                    3,
+                    4,
+                    5,
+                    6,
+                    7,
+                    8,
+                    9,
+                    10,
+                    11
+                  ]
+                },
+                "summary": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "group_id",
+                "summary"
+              ],
+              "additionalProperties": false
+            }
+          }
+        },
+        "required": [
+          "stories",
+          "diversity",
+          "diversity_evidence",
+          "plot_groups"
+        ],
+        "additionalProperties": false
+      },
+      "type": "json_schema",
+      "description": null,
+      "strict": true
+    },
+    "verbosity": "medium"
+  },
+  "top_logprobs": 0,
+  "truncation": "disabled",
+  "usage": {
+    "input_tokens": 2853,
+    "input_tokens_details": {
+      "cached_tokens": 0,
+      "cache_write_tokens": 0,
+      "cache_write_tokens_details": {
+        "ttl_12h_tokens": 0,
+        "ttl_30m_tokens": 0
+      }
+    },
+    "output_tokens": 1006,
+    "output_tokens_details": {
+      "reasoning_tokens": 0
+    },
+    "total_tokens": 3859
+  },
+  "user": null,
+  "access_programs": null,
+  "billing": {
+    "payer": "openai"
+  },
+  "frequency_penalty": 0.0,
+  "image": {
+    "context_compression": "disabled"
+  },
+  "presence_penalty": 0.0,
+  "prompt_cache_options": {
+    "mode": "explicit",
+    "ttl": "30m"
+  },
+  "store": false,
+  "tool_usage": {
+    "image_gen": {
+      "input_tokens": 0,
+      "input_tokens_details": {
+        "image_tokens": 0,
+        "text_tokens": 0
+      },
+      "output_tokens": 0,
+      "output_tokens_details": {
+        "image_tokens": 0,
+        "text_tokens": 0
+      },
+      "total_tokens": 0
+    },
+    "web_search": {
+      "num_requests": 0
+    }
+  }
+}

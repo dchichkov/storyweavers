@@ -1,0 +1,81 @@
+{
+  "id": "P036",
+  "name": "Character-specific belief",
+  "description": "Character viewpoint → their latest observation or report. Favor viewpoint-consistent statements.",
+  "proposed_payload": "{observer, believed_state, evidence_time}",
+  "provenance": "Authored illustrative seeds; not learned or extracted.",
+  "status": "program_required",
+  "examples": [
+    {
+      "id": "P036.01",
+      "description": "Mira sees key in drawer then leaves before it moves.",
+      "intended_feature": "Mira_believes:drawer",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P036.02",
+      "description": "Theo hears gate open before Nia closes it unseen.",
+      "intended_feature": "Theo_believes:open",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P036.03",
+      "description": "Nia watches the key move to a box.",
+      "intended_feature": "Nia_believes:box",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P036.04",
+      "description": "Omar receives a correction after an earlier false report.",
+      "intended_feature": "belief_updated_by_correction",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P036.05",
+      "description": "Two witnesses see different stages of a transfer.",
+      "intended_feature": "distinct_belief_states",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P036.06",
+      "description": "Mira knows Theo did not see the transfer.",
+      "intended_feature": "second_order_belief",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P036.07",
+      "description": "The narrator knows a secret no character knows.",
+      "intended_feature": "narrator_not_character_knowledge",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P036.08",
+      "description": "A character doubts an unreliable report.",
+      "intended_feature": "uncertain_belief_distribution",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P036.09",
+      "description": "An event is imagined rather than observed.",
+      "intended_feature": "imagined_branch_not_belief_fact",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P036.10",
+      "description": "No evidence reaches the character.",
+      "intended_feature": "belief_unknown",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    }
+  ],
+  "required_program": "Maintain observer-indexed belief states updated only through witnessed events or reports; distinguish nested beliefs and world truth."
+}

@@ -1,0 +1,581 @@
+{
+  "id": "P005",
+  "name": "Determiner completion",
+  "description": "Unfinished noun phrase → active determiner. Reweight noun forms.",
+  "proposed_payload": "{countability, number_constraints}",
+  "provenance": "Authored illustrative seeds; not learned or extracted.",
+  "status": "table",
+  "examples": [
+    {
+      "id": "P005.01",
+      "description": "A takes one countable animal.",
+      "query": "animal",
+      "scope": "example",
+      "sources": [
+        {
+          "id": "source:1",
+          "channel": "active_determiner",
+          "scope": "example",
+          "key": "a",
+          "confidence": 1.0
+        }
+      ],
+      "expected_features": {
+        "count_singular": 1.0
+      },
+      "grammar_weights": {
+        "cat": 1.0,
+        "cats": 1.0,
+        "waits": 1.0,
+        "rests": 1.0
+      },
+      "favored": "cat",
+      "disfavored": "cats"
+    },
+    {
+      "id": "P005.02",
+      "description": "These takes plural animals.",
+      "query": "animal",
+      "scope": "example",
+      "sources": [
+        {
+          "id": "source:2",
+          "channel": "active_determiner",
+          "scope": "example",
+          "key": "these",
+          "confidence": 1.0
+        }
+      ],
+      "expected_features": {
+        "count_plural": 1.0
+      },
+      "grammar_weights": {
+        "cats": 1.0,
+        "cat": 1.0,
+        "waits": 1.0,
+        "rests": 1.0
+      },
+      "favored": "cats",
+      "disfavored": "cat"
+    },
+    {
+      "id": "P005.03",
+      "description": "Each selects singular container.",
+      "query": "container",
+      "scope": "example",
+      "sources": [
+        {
+          "id": "source:3",
+          "channel": "active_determiner",
+          "scope": "example",
+          "key": "each",
+          "confidence": 1.0
+        }
+      ],
+      "expected_features": {
+        "count_singular": 1.0
+      },
+      "grammar_weights": {
+        "cup": 1.0,
+        "cups": 1.0,
+        "waits": 1.0,
+        "rests": 1.0
+      },
+      "favored": "cup",
+      "disfavored": "cups"
+    },
+    {
+      "id": "P005.04",
+      "description": "Several selects plural containers.",
+      "query": "container",
+      "scope": "example",
+      "sources": [
+        {
+          "id": "source:4",
+          "channel": "active_determiner",
+          "scope": "example",
+          "key": "several",
+          "confidence": 1.0
+        }
+      ],
+      "expected_features": {
+        "count_plural": 1.0
+      },
+      "grammar_weights": {
+        "cups": 1.0,
+        "cup": 1.0,
+        "waits": 1.0,
+        "rests": 1.0
+      },
+      "favored": "cups",
+      "disfavored": "cup"
+    },
+    {
+      "id": "P005.05",
+      "description": "Much selects mass water, not plural bottles.",
+      "query": "liquid",
+      "scope": "example",
+      "sources": [
+        {
+          "id": "source:5",
+          "channel": "active_determiner",
+          "scope": "example",
+          "key": "much",
+          "confidence": 1.0
+        }
+      ],
+      "expected_features": {
+        "mass": 1.0
+      },
+      "grammar_weights": {
+        "water": 1.0,
+        "bottles": 1.0,
+        "waits": 1.0,
+        "rests": 1.0
+      },
+      "favored": "water",
+      "disfavored": "bottles"
+    },
+    {
+      "id": "P005.06",
+      "description": "Little in this quantity sense selects mass rice.",
+      "query": "food",
+      "scope": "example",
+      "sources": [
+        {
+          "id": "source:6",
+          "channel": "active_determiner",
+          "scope": "example",
+          "key": "little",
+          "confidence": 1.0
+        }
+      ],
+      "expected_features": {
+        "mass": 1.0
+      },
+      "grammar_weights": {
+        "rice": 1.0,
+        "apples": 1.0,
+        "waits": 1.0,
+        "rests": 1.0
+      },
+      "favored": "rice",
+      "disfavored": "apples"
+    },
+    {
+      "id": "P005.07",
+      "description": "Those selects plural vehicles.",
+      "query": "vehicle",
+      "scope": "example",
+      "sources": [
+        {
+          "id": "source:7",
+          "channel": "active_determiner",
+          "scope": "example",
+          "key": "those",
+          "confidence": 1.0
+        }
+      ],
+      "expected_features": {
+        "count_plural": 1.0
+      },
+      "grammar_weights": {
+        "boats": 1.0,
+        "boat": 1.0,
+        "waits": 1.0,
+        "rests": 1.0
+      },
+      "favored": "boats",
+      "disfavored": "boat"
+    },
+    {
+      "id": "P005.08",
+      "description": "Every selects one grammatical tool.",
+      "query": "tool",
+      "scope": "example",
+      "sources": [
+        {
+          "id": "source:8",
+          "channel": "active_determiner",
+          "scope": "example",
+          "key": "every",
+          "confidence": 1.0
+        }
+      ],
+      "expected_features": {
+        "count_singular": 1.0
+      },
+      "grammar_weights": {
+        "hammer": 1.0,
+        "hammers": 1.0,
+        "waits": 1.0,
+        "rests": 1.0
+      },
+      "favored": "hammer",
+      "disfavored": "hammers"
+    },
+    {
+      "id": "P005.09",
+      "description": "Many selects plural plants.",
+      "query": "plant",
+      "scope": "example",
+      "sources": [
+        {
+          "id": "source:9",
+          "channel": "active_determiner",
+          "scope": "example",
+          "key": "many",
+          "confidence": 1.0
+        }
+      ],
+      "expected_features": {
+        "count_plural": 1.0
+      },
+      "grammar_weights": {
+        "trees": 1.0,
+        "tree": 1.0,
+        "waits": 1.0,
+        "rests": 1.0
+      },
+      "favored": "trees",
+      "disfavored": "tree"
+    },
+    {
+      "id": "P005.10",
+      "description": "This can select mass cloth.",
+      "query": "fabric",
+      "scope": "example",
+      "sources": [
+        {
+          "id": "source:10",
+          "channel": "active_determiner",
+          "scope": "example",
+          "key": "this",
+          "confidence": 1.0
+        }
+      ],
+      "expected_features": {
+        "singular_or_mass": 1.0
+      },
+      "grammar_weights": {
+        "cloth": 1.0,
+        "ribbons": 1.0,
+        "waits": 1.0,
+        "rests": 1.0
+      },
+      "favored": "cloth",
+      "disfavored": "ribbons"
+    }
+  ],
+  "input_channel": "active_determiner",
+  "receiver_mode": "multipliers",
+  "smoothing": 1.0,
+  "input_contract": "Supply current, scoped records in channel active_determiner. Scope selection and structural parsing belong to the caller; no free-text parser is implied.",
+  "table_semantics": "Positive relative word-weight multipliers.",
+  "selection": [
+    {
+      "tokens": [
+        "animal",
+        "a"
+      ],
+      "weight": 1.0
+    },
+    {
+      "tokens": [
+        "animal",
+        "these"
+      ],
+      "weight": 1.0
+    },
+    {
+      "tokens": [
+        "container",
+        "each"
+      ],
+      "weight": 1.0
+    },
+    {
+      "tokens": [
+        "container",
+        "several"
+      ],
+      "weight": 1.0
+    },
+    {
+      "tokens": [
+        "liquid",
+        "much"
+      ],
+      "weight": 1.0
+    },
+    {
+      "tokens": [
+        "food",
+        "little"
+      ],
+      "weight": 1.0
+    },
+    {
+      "tokens": [
+        "vehicle",
+        "those"
+      ],
+      "weight": 1.0
+    },
+    {
+      "tokens": [
+        "tool",
+        "every"
+      ],
+      "weight": 1.0
+    },
+    {
+      "tokens": [
+        "plant",
+        "many"
+      ],
+      "weight": 1.0
+    },
+    {
+      "tokens": [
+        "fabric",
+        "this"
+      ],
+      "weight": 1.0
+    }
+  ],
+  "projection": [
+    {
+      "tokens": [
+        "a",
+        "count_singular"
+      ],
+      "weight": 1.0
+    },
+    {
+      "tokens": [
+        "these",
+        "count_plural"
+      ],
+      "weight": 1.0
+    },
+    {
+      "tokens": [
+        "each",
+        "count_singular"
+      ],
+      "weight": 1.0
+    },
+    {
+      "tokens": [
+        "several",
+        "count_plural"
+      ],
+      "weight": 1.0
+    },
+    {
+      "tokens": [
+        "much",
+        "mass"
+      ],
+      "weight": 1.0
+    },
+    {
+      "tokens": [
+        "little",
+        "mass"
+      ],
+      "weight": 1.0
+    },
+    {
+      "tokens": [
+        "those",
+        "count_plural"
+      ],
+      "weight": 1.0
+    },
+    {
+      "tokens": [
+        "every",
+        "count_singular"
+      ],
+      "weight": 1.0
+    },
+    {
+      "tokens": [
+        "many",
+        "count_plural"
+      ],
+      "weight": 1.0
+    },
+    {
+      "tokens": [
+        "this",
+        "singular_or_mass"
+      ],
+      "weight": 1.0
+    }
+  ],
+  "receiver": [
+    {
+      "tokens": [
+        "animal",
+        "count_singular",
+        "cat"
+      ],
+      "weight": 4.0
+    },
+    {
+      "tokens": [
+        "animal",
+        "count_singular",
+        "cats"
+      ],
+      "weight": 0.25
+    },
+    {
+      "tokens": [
+        "animal",
+        "count_plural",
+        "cats"
+      ],
+      "weight": 4.0
+    },
+    {
+      "tokens": [
+        "animal",
+        "count_plural",
+        "cat"
+      ],
+      "weight": 0.25
+    },
+    {
+      "tokens": [
+        "container",
+        "count_singular",
+        "cup"
+      ],
+      "weight": 4.0
+    },
+    {
+      "tokens": [
+        "container",
+        "count_singular",
+        "cups"
+      ],
+      "weight": 0.25
+    },
+    {
+      "tokens": [
+        "container",
+        "count_plural",
+        "cups"
+      ],
+      "weight": 4.0
+    },
+    {
+      "tokens": [
+        "container",
+        "count_plural",
+        "cup"
+      ],
+      "weight": 0.25
+    },
+    {
+      "tokens": [
+        "liquid",
+        "mass",
+        "water"
+      ],
+      "weight": 4.0
+    },
+    {
+      "tokens": [
+        "liquid",
+        "mass",
+        "bottles"
+      ],
+      "weight": 0.25
+    },
+    {
+      "tokens": [
+        "food",
+        "mass",
+        "rice"
+      ],
+      "weight": 4.0
+    },
+    {
+      "tokens": [
+        "food",
+        "mass",
+        "apples"
+      ],
+      "weight": 0.25
+    },
+    {
+      "tokens": [
+        "vehicle",
+        "count_plural",
+        "boats"
+      ],
+      "weight": 4.0
+    },
+    {
+      "tokens": [
+        "vehicle",
+        "count_plural",
+        "boat"
+      ],
+      "weight": 0.25
+    },
+    {
+      "tokens": [
+        "tool",
+        "count_singular",
+        "hammer"
+      ],
+      "weight": 4.0
+    },
+    {
+      "tokens": [
+        "tool",
+        "count_singular",
+        "hammers"
+      ],
+      "weight": 0.25
+    },
+    {
+      "tokens": [
+        "plant",
+        "count_plural",
+        "trees"
+      ],
+      "weight": 4.0
+    },
+    {
+      "tokens": [
+        "plant",
+        "count_plural",
+        "tree"
+      ],
+      "weight": 0.25
+    },
+    {
+      "tokens": [
+        "fabric",
+        "singular_or_mass",
+        "cloth"
+      ],
+      "weight": 4.0
+    },
+    {
+      "tokens": [
+        "fabric",
+        "singular_or_mass",
+        "ribbons"
+      ],
+      "weight": 0.25
+    }
+  ]
+}

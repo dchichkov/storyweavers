@@ -1,0 +1,581 @@
+{
+  "id": "P015",
+  "name": "Ordered successor",
+  "description": "Current sequence item → configured ordering. Favor a successor in that ordering.",
+  "proposed_payload": "{ordering, successor_distribution}",
+  "provenance": "Authored illustrative seeds; not learned or extracted.",
+  "status": "table",
+  "examples": [
+    {
+      "id": "P015.01",
+      "description": "Monday advances to Tuesday.",
+      "query": "weekday",
+      "scope": "example",
+      "sources": [
+        {
+          "id": "source:1",
+          "channel": "ordered_item",
+          "scope": "example",
+          "key": "Monday",
+          "confidence": 1.0
+        }
+      ],
+      "expected_features": {
+        "Tuesday": 1.0
+      },
+      "grammar_weights": {
+        "Tuesday": 1.0,
+        "Sunday": 1.0,
+        "waits": 1.0,
+        "rests": 1.0
+      },
+      "favored": "Tuesday",
+      "disfavored": "Sunday"
+    },
+    {
+      "id": "P015.02",
+      "description": "Friday advances to Saturday.",
+      "query": "weekday",
+      "scope": "example",
+      "sources": [
+        {
+          "id": "source:2",
+          "channel": "ordered_item",
+          "scope": "example",
+          "key": "Friday",
+          "confidence": 1.0
+        }
+      ],
+      "expected_features": {
+        "Saturday": 1.0
+      },
+      "grammar_weights": {
+        "Saturday": 1.0,
+        "Thursday": 1.0,
+        "waits": 1.0,
+        "rests": 1.0
+      },
+      "favored": "Saturday",
+      "disfavored": "Thursday"
+    },
+    {
+      "id": "P015.03",
+      "description": "January advances to February.",
+      "query": "month",
+      "scope": "example",
+      "sources": [
+        {
+          "id": "source:3",
+          "channel": "ordered_item",
+          "scope": "example",
+          "key": "January",
+          "confidence": 1.0
+        }
+      ],
+      "expected_features": {
+        "February": 1.0
+      },
+      "grammar_weights": {
+        "February": 1.0,
+        "December": 1.0,
+        "waits": 1.0,
+        "rests": 1.0
+      },
+      "favored": "February",
+      "disfavored": "December"
+    },
+    {
+      "id": "P015.04",
+      "description": "Months wrap from December to January.",
+      "query": "month",
+      "scope": "example",
+      "sources": [
+        {
+          "id": "source:4",
+          "channel": "ordered_item",
+          "scope": "example",
+          "key": "December",
+          "confidence": 1.0
+        }
+      ],
+      "expected_features": {
+        "January": 1.0
+      },
+      "grammar_weights": {
+        "January": 1.0,
+        "November": 1.0,
+        "waits": 1.0,
+        "rests": 1.0
+      },
+      "favored": "January",
+      "disfavored": "November"
+    },
+    {
+      "id": "P015.05",
+      "description": "Counting advances one to two.",
+      "query": "digit",
+      "scope": "example",
+      "sources": [
+        {
+          "id": "source:5",
+          "channel": "ordered_item",
+          "scope": "example",
+          "key": "one",
+          "confidence": 1.0
+        }
+      ],
+      "expected_features": {
+        "two": 1.0
+      },
+      "grammar_weights": {
+        "two": 1.0,
+        "zero": 1.0,
+        "waits": 1.0,
+        "rests": 1.0
+      },
+      "favored": "two",
+      "disfavored": "zero"
+    },
+    {
+      "id": "P015.06",
+      "description": "Counting advances eight to nine.",
+      "query": "digit",
+      "scope": "example",
+      "sources": [
+        {
+          "id": "source:6",
+          "channel": "ordered_item",
+          "scope": "example",
+          "key": "eight",
+          "confidence": 1.0
+        }
+      ],
+      "expected_features": {
+        "nine": 1.0
+      },
+      "grammar_weights": {
+        "nine": 1.0,
+        "seven": 1.0,
+        "waits": 1.0,
+        "rests": 1.0
+      },
+      "favored": "nine",
+      "disfavored": "seven"
+    },
+    {
+      "id": "P015.07",
+      "description": "Alphabetical A advances to B.",
+      "query": "letter",
+      "scope": "example",
+      "sources": [
+        {
+          "id": "source:7",
+          "channel": "ordered_item",
+          "scope": "example",
+          "key": "A",
+          "confidence": 1.0
+        }
+      ],
+      "expected_features": {
+        "B": 1.0
+      },
+      "grammar_weights": {
+        "B": 1.0,
+        "Z": 1.0,
+        "waits": 1.0,
+        "rests": 1.0
+      },
+      "favored": "B",
+      "disfavored": "Z"
+    },
+    {
+      "id": "P015.08",
+      "description": "Alphabetical M advances to N.",
+      "query": "letter",
+      "scope": "example",
+      "sources": [
+        {
+          "id": "source:8",
+          "channel": "ordered_item",
+          "scope": "example",
+          "key": "M",
+          "confidence": 1.0
+        }
+      ],
+      "expected_features": {
+        "N": 1.0
+      },
+      "grammar_weights": {
+        "N": 1.0,
+        "L": 1.0,
+        "waits": 1.0,
+        "rests": 1.0
+      },
+      "favored": "N",
+      "disfavored": "L"
+    },
+    {
+      "id": "P015.09",
+      "description": "The configured season cycle advances summer to autumn.",
+      "query": "season",
+      "scope": "example",
+      "sources": [
+        {
+          "id": "source:9",
+          "channel": "ordered_item",
+          "scope": "example",
+          "key": "summer",
+          "confidence": 1.0
+        }
+      ],
+      "expected_features": {
+        "autumn": 1.0
+      },
+      "grammar_weights": {
+        "autumn": 1.0,
+        "spring": 1.0,
+        "waits": 1.0,
+        "rests": 1.0
+      },
+      "favored": "autumn",
+      "disfavored": "spring"
+    },
+    {
+      "id": "P015.10",
+      "description": "Ordinal second advances to third.",
+      "query": "ordinal",
+      "scope": "example",
+      "sources": [
+        {
+          "id": "source:10",
+          "channel": "ordered_item",
+          "scope": "example",
+          "key": "second",
+          "confidence": 1.0
+        }
+      ],
+      "expected_features": {
+        "third": 1.0
+      },
+      "grammar_weights": {
+        "third": 1.0,
+        "first": 1.0,
+        "waits": 1.0,
+        "rests": 1.0
+      },
+      "favored": "third",
+      "disfavored": "first"
+    }
+  ],
+  "input_channel": "ordered_item",
+  "receiver_mode": "multipliers",
+  "smoothing": 1.0,
+  "input_contract": "Supply current, scoped records in channel ordered_item. Scope selection and structural parsing belong to the caller; no free-text parser is implied.",
+  "table_semantics": "Positive relative word-weight multipliers.",
+  "selection": [
+    {
+      "tokens": [
+        "weekday",
+        "Monday"
+      ],
+      "weight": 1.0
+    },
+    {
+      "tokens": [
+        "weekday",
+        "Friday"
+      ],
+      "weight": 1.0
+    },
+    {
+      "tokens": [
+        "month",
+        "January"
+      ],
+      "weight": 1.0
+    },
+    {
+      "tokens": [
+        "month",
+        "December"
+      ],
+      "weight": 1.0
+    },
+    {
+      "tokens": [
+        "digit",
+        "one"
+      ],
+      "weight": 1.0
+    },
+    {
+      "tokens": [
+        "digit",
+        "eight"
+      ],
+      "weight": 1.0
+    },
+    {
+      "tokens": [
+        "letter",
+        "A"
+      ],
+      "weight": 1.0
+    },
+    {
+      "tokens": [
+        "letter",
+        "M"
+      ],
+      "weight": 1.0
+    },
+    {
+      "tokens": [
+        "season",
+        "summer"
+      ],
+      "weight": 1.0
+    },
+    {
+      "tokens": [
+        "ordinal",
+        "second"
+      ],
+      "weight": 1.0
+    }
+  ],
+  "projection": [
+    {
+      "tokens": [
+        "Monday",
+        "Tuesday"
+      ],
+      "weight": 1.0
+    },
+    {
+      "tokens": [
+        "Friday",
+        "Saturday"
+      ],
+      "weight": 1.0
+    },
+    {
+      "tokens": [
+        "January",
+        "February"
+      ],
+      "weight": 1.0
+    },
+    {
+      "tokens": [
+        "December",
+        "January"
+      ],
+      "weight": 1.0
+    },
+    {
+      "tokens": [
+        "one",
+        "two"
+      ],
+      "weight": 1.0
+    },
+    {
+      "tokens": [
+        "eight",
+        "nine"
+      ],
+      "weight": 1.0
+    },
+    {
+      "tokens": [
+        "A",
+        "B"
+      ],
+      "weight": 1.0
+    },
+    {
+      "tokens": [
+        "M",
+        "N"
+      ],
+      "weight": 1.0
+    },
+    {
+      "tokens": [
+        "summer",
+        "autumn"
+      ],
+      "weight": 1.0
+    },
+    {
+      "tokens": [
+        "second",
+        "third"
+      ],
+      "weight": 1.0
+    }
+  ],
+  "receiver": [
+    {
+      "tokens": [
+        "weekday",
+        "Tuesday",
+        "Tuesday"
+      ],
+      "weight": 4.0
+    },
+    {
+      "tokens": [
+        "weekday",
+        "Tuesday",
+        "Sunday"
+      ],
+      "weight": 0.25
+    },
+    {
+      "tokens": [
+        "weekday",
+        "Saturday",
+        "Saturday"
+      ],
+      "weight": 4.0
+    },
+    {
+      "tokens": [
+        "weekday",
+        "Saturday",
+        "Thursday"
+      ],
+      "weight": 0.25
+    },
+    {
+      "tokens": [
+        "month",
+        "February",
+        "February"
+      ],
+      "weight": 4.0
+    },
+    {
+      "tokens": [
+        "month",
+        "February",
+        "December"
+      ],
+      "weight": 0.25
+    },
+    {
+      "tokens": [
+        "month",
+        "January",
+        "January"
+      ],
+      "weight": 4.0
+    },
+    {
+      "tokens": [
+        "month",
+        "January",
+        "November"
+      ],
+      "weight": 0.25
+    },
+    {
+      "tokens": [
+        "digit",
+        "two",
+        "two"
+      ],
+      "weight": 4.0
+    },
+    {
+      "tokens": [
+        "digit",
+        "two",
+        "zero"
+      ],
+      "weight": 0.25
+    },
+    {
+      "tokens": [
+        "digit",
+        "nine",
+        "nine"
+      ],
+      "weight": 4.0
+    },
+    {
+      "tokens": [
+        "digit",
+        "nine",
+        "seven"
+      ],
+      "weight": 0.25
+    },
+    {
+      "tokens": [
+        "letter",
+        "B",
+        "B"
+      ],
+      "weight": 4.0
+    },
+    {
+      "tokens": [
+        "letter",
+        "B",
+        "Z"
+      ],
+      "weight": 0.25
+    },
+    {
+      "tokens": [
+        "letter",
+        "N",
+        "N"
+      ],
+      "weight": 4.0
+    },
+    {
+      "tokens": [
+        "letter",
+        "N",
+        "L"
+      ],
+      "weight": 0.25
+    },
+    {
+      "tokens": [
+        "season",
+        "autumn",
+        "autumn"
+      ],
+      "weight": 4.0
+    },
+    {
+      "tokens": [
+        "season",
+        "autumn",
+        "spring"
+      ],
+      "weight": 0.25
+    },
+    {
+      "tokens": [
+        "ordinal",
+        "third",
+        "third"
+      ],
+      "weight": 4.0
+    },
+    {
+      "tokens": [
+        "ordinal",
+        "third",
+        "first"
+      ],
+      "weight": 0.25
+    }
+  ]
+}

@@ -1,0 +1,81 @@
+{
+  "id": "P022",
+  "name": "Resource sufficiency",
+  "description": "Proposed action → required and available quantities. Favor acquisition or feasible action.",
+  "proposed_payload": "{required, available, deficit}",
+  "provenance": "Authored illustrative seeds; not learned or extracted.",
+  "status": "program_required",
+  "examples": [
+    {
+      "id": "P022.01",
+      "description": "Two boards available; repair requires three.",
+      "intended_feature": "deficit:1_board",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P022.02",
+      "description": "One candle available; task requires one.",
+      "intended_feature": "sufficient",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P022.03",
+      "description": "Half a liter available; task needs 750 milliliters.",
+      "intended_feature": "deficit:250_milliliters",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P022.04",
+      "description": "Three coins reserved elsewhere; only one free coin remains.",
+      "intended_feature": "available:1_coin",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P022.05",
+      "description": "Two actors both plan to consume the same loaf.",
+      "intended_feature": "shared_resource_conflict",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P022.06",
+      "description": "One plank is broken and unusable.",
+      "intended_feature": "exclude_unusable_inventory",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P022.07",
+      "description": "Task requires flour but only sand exists.",
+      "intended_feature": "resource_type_mismatch",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P022.08",
+      "description": "Reusable hammer needed for two sequential jobs.",
+      "intended_feature": "no_consumption_deficit",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P022.09",
+      "description": "Unknown amount of paint remains.",
+      "intended_feature": "sufficiency_unknown",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P022.10",
+      "description": "Four meters of rope needed; two pieces of two meters cannot be joined.",
+      "intended_feature": "segment_constraint_unsatisfied",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    }
+  ],
+  "required_program": "Perform unit-aware resource accounting over inventories and action requirements, reserving shared resources without mutating state during prediction."
+}

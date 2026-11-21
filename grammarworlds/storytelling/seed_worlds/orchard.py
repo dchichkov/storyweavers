@@ -1,0 +1,31 @@
+from .schema import *
+SPEC=story(12,'orchard',dict(
+ hero=person('Tessa','she'),helper=person('Jun','he'),recipient=person('Willa','she'),
+ work=place('orchard'),bench=place('shed'),branch=place('high branch'),low=place('low branch'),table=place('puppet table'),
+ picker=tool('picking basket',location='bench'),high=obj('golden pear',location='branch',state=('unripe',)),
+ pear=obj('ripe pear',location='low',state=('bruised',)),gift=obj('gift pear',location='hero'),knife=tool('picnic knife',location='hero')),
+ chain(
+  event('pear_promise',Say('helper',V('want',V('give',R('recipient'),R('gift'))),listener='hero'),Say('hero',V('want',V('pick',N('pear',det='a')))),
+   qa=[Q('goal','who','Who was Jun saving a pear for?','Jun wanted to give Willa a pear. Tessa wanted to pick a pear herself.','helper','recipient','hero','gift')]),
+  event('borrow_picker',S('hero',V('borrow',R('picker'))),patient='picker',destination='hero',guards=[at('picker','bench')],effects=[change('picker',location='hero')],portable='fetch'),
+  event('resisting_fruit',S(R('high'),B('unripe')),S('helper',V('pull',R('picker'))),S(R('branch'),B('bending')),actor='helper',patient='high',
+   guards=[at('high','branch')],effects=[change('branch',add=('bending',))],
+   qa=[Q('obstacle','what','What was wrong with the high pear?','The high pear was unripe. Pulling the picking basket bent its branch.','high','branch','picker','helper')]),
+  event('protect_branch',Say('hero',V('need',V('stop'))),S('helper',V('lower',R('picker'))),patient='branch',
+   guards=[has('branch','bending')],effects=[change('branch',add=('unbent',),remove=('bending',))],
+   qa=[Q('choice','why','Why did they lower the picking basket?','Tessa said they needed to stop. The high pear was unripe and its branch was bending.','hero','helper','picker','branch','high',supports=('obstacle',))]),
+  fork('pick_low',
+   event('tessa_picks_low',S('hero',A(V('pick',R('pear')),PP('from',R('low')))),patient='pear',instrument='picker',destination='hero',
+    guards=[at('pear','low'),at('picker','hero'),has('branch','unbent')],effects=[change('pear',location='hero')]),
+   event('jun_steadies_picker',S('helper',V('steady',R('picker'))),S('hero',V('pick',R('pear'))),patient='pear',instrument='picker',destination='hero',
+    guards=[at('pear','low'),at('picker','hero'),has('branch','unbent')],effects=[change('pear',location='hero'),change('helper',add=('steadied_picker',))])),
+  event('trim_bruise',S(R('pear'),B('bruised')),Using('hero',V('trim',R('pear')),'knife'),patient='pear',instrument='knife',
+   guards=[at('pear','hero'),at('knife','hero'),has('pear','bruised')],effects=[change('pear',add=('trimmed',),remove=('bruised',))],
+   qa=[Q('food','how','How did Tessa deal with the bruise?','Tessa trimmed the ripe pear with her picnic knife. They left the high pear on its branch.','hero','pear','knife','high',supports=('choice',))]),
+  event('return_picker',S('hero',A(V('return',R('picker')),PP('to',R('bench')))),patient='picker',destination='bench',guards=[at('picker','hero')],effects=[change('picker',location='bench')],portable='put_item'),
+  event('deliver_gift',S('hero',A(V('put',R('gift')),PP('on',R('table')))),patient='gift',destination='table',guards=[at('gift','hero')],effects=[change('gift',location='table')],
+   qa=[Q('gift','where','Where did the gift pear go?','Tessa put the gift pear on the puppet table. Jun had wanted to save it for Willa.','hero','helper','recipient','gift','table',supports=('goal',))]),
+  event('unbent_branch',S(R('branch'),B('unbent')),S(R('high'),A(V('shine'),PP('on',R('branch')))),patient='high',guards=[at('high','branch'),has('branch','unbent')],
+   qa=[Q('outcome','what_next','What remained in the orchard?','The golden pear shone on its unbent branch. The children had lowered the picking basket instead of forcing it.','high','branch','picker',supports=('choice',))])
+ ),target='pear',tool_id='picker',premise='The children must leave an unripe high pear and accept a bruised ripe one.',
+ fidelity='Protect the branch, pick a reachable ripe fruit, trim its bruise and save a good pear for Willa.',variants=['Tessa picks alone or Jun steadies the picker.'])

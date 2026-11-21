@@ -1,0 +1,581 @@
+{
+  "id": "P047",
+  "name": "Speech intention",
+  "description": "Dialogue continuation → speaker's communicative goal. Favor warning or apology language.",
+  "proposed_payload": "{speaker, intended_speech_act, target}",
+  "provenance": "Authored illustrative seeds; not learned or extracted.",
+  "status": "table",
+  "examples": [
+    {
+      "id": "P047.01",
+      "description": "Ice hazard goal favors a warning.",
+      "query": "utterance",
+      "scope": "example",
+      "sources": [
+        {
+          "id": "source:1",
+          "channel": "communicative_goal",
+          "scope": "example",
+          "key": "warn_ice",
+          "confidence": 1.0
+        }
+      ],
+      "expected_features": {
+        "warning": 1.0
+      },
+      "grammar_weights": {
+        "Careful": 1.0,
+        "Congratulations": 1.0,
+        "waits": 1.0,
+        "rests": 1.0
+      },
+      "favored": "Careful",
+      "disfavored": "Congratulations"
+    },
+    {
+      "id": "P047.02",
+      "description": "Spill apology favors sorry.",
+      "query": "utterance",
+      "scope": "example",
+      "sources": [
+        {
+          "id": "source:2",
+          "channel": "communicative_goal",
+          "scope": "example",
+          "key": "apologize_spill",
+          "confidence": 1.0
+        }
+      ],
+      "expected_features": {
+        "apology": 1.0
+      },
+      "grammar_weights": {
+        "Sorry": 1.0,
+        "Hooray": 1.0,
+        "waits": 1.0,
+        "rests": 1.0
+      },
+      "favored": "Sorry",
+      "disfavored": "Hooray"
+    },
+    {
+      "id": "P047.03",
+      "description": "Key request favors please.",
+      "query": "utterance",
+      "scope": "example",
+      "sources": [
+        {
+          "id": "source:3",
+          "channel": "communicative_goal",
+          "scope": "example",
+          "key": "request_key",
+          "confidence": 1.0
+        }
+      ],
+      "expected_features": {
+        "request": 1.0
+      },
+      "grammar_weights": {
+        "Please": 1.0,
+        "Farewell": 1.0,
+        "waits": 1.0,
+        "rests": 1.0
+      },
+      "favored": "Please",
+      "disfavored": "Farewell"
+    },
+    {
+      "id": "P047.04",
+      "description": "Helping acknowledgment favors thank.",
+      "query": "utterance",
+      "scope": "example",
+      "sources": [
+        {
+          "id": "source:4",
+          "channel": "communicative_goal",
+          "scope": "example",
+          "key": "thank_help",
+          "confidence": 1.0
+        }
+      ],
+      "expected_features": {
+        "gratitude": 1.0
+      },
+      "grammar_weights": {
+        "Thank": 1.0,
+        "Beware": 1.0,
+        "waits": 1.0,
+        "rests": 1.0
+      },
+      "favored": "Thank",
+      "disfavored": "Beware"
+    },
+    {
+      "id": "P047.05",
+      "description": "Meal invitation favors join.",
+      "query": "utterance",
+      "scope": "example",
+      "sources": [
+        {
+          "id": "source:5",
+          "channel": "communicative_goal",
+          "scope": "example",
+          "key": "invite_meal",
+          "confidence": 1.0
+        }
+      ],
+      "expected_features": {
+        "invitation": 1.0
+      },
+      "grammar_weights": {
+        "Join": 1.0,
+        "Stop": 1.0,
+        "waits": 1.0,
+        "rests": 1.0
+      },
+      "favored": "Join",
+      "disfavored": "Stop"
+    },
+    {
+      "id": "P047.06",
+      "description": "Reassurance favors safe when supported by the world.",
+      "query": "utterance",
+      "scope": "example",
+      "sources": [
+        {
+          "id": "source:6",
+          "channel": "communicative_goal",
+          "scope": "example",
+          "key": "reassure_child",
+          "confidence": 1.0
+        }
+      ],
+      "expected_features": {
+        "reassurance": 1.0
+      },
+      "grammar_weights": {
+        "Safe": 1.0,
+        "Danger": 1.0,
+        "waits": 1.0,
+        "rests": 1.0
+      },
+      "favored": "Safe",
+      "disfavored": "Danger"
+    },
+    {
+      "id": "P047.07",
+      "description": "Refusal intention favors no.",
+      "query": "utterance",
+      "scope": "example",
+      "sources": [
+        {
+          "id": "source:7",
+          "channel": "communicative_goal",
+          "scope": "example",
+          "key": "refuse_offer",
+          "confidence": 1.0
+        }
+      ],
+      "expected_features": {
+        "refusal": 1.0
+      },
+      "grammar_weights": {
+        "No": 1.0,
+        "Certainly": 1.0,
+        "waits": 1.0,
+        "rests": 1.0
+      },
+      "favored": "No",
+      "disfavored": "Certainly"
+    },
+    {
+      "id": "P047.08",
+      "description": "Success acknowledgment favors congratulations.",
+      "query": "utterance",
+      "scope": "example",
+      "sources": [
+        {
+          "id": "source:8",
+          "channel": "communicative_goal",
+          "scope": "example",
+          "key": "congratulate_success",
+          "confidence": 1.0
+        }
+      ],
+      "expected_features": {
+        "congratulation": 1.0
+      },
+      "grammar_weights": {
+        "Congratulations": 1.0,
+        "Sorry": 1.0,
+        "waits": 1.0,
+        "rests": 1.0
+      },
+      "favored": "Congratulations",
+      "disfavored": "Sorry"
+    },
+    {
+      "id": "P047.09",
+      "description": "Location inquiry favors where.",
+      "query": "utterance",
+      "scope": "example",
+      "sources": [
+        {
+          "id": "source:9",
+          "channel": "communicative_goal",
+          "scope": "example",
+          "key": "ask_location",
+          "confidence": 1.0
+        }
+      ],
+      "expected_features": {
+        "location_question": 1.0
+      },
+      "grammar_weights": {
+        "Where": 1.0,
+        "When": 1.0,
+        "waits": 1.0,
+        "rests": 1.0
+      },
+      "favored": "Where",
+      "disfavored": "When"
+    },
+    {
+      "id": "P047.10",
+      "description": "Reason inquiry favors why.",
+      "query": "utterance",
+      "scope": "example",
+      "sources": [
+        {
+          "id": "source:10",
+          "channel": "communicative_goal",
+          "scope": "example",
+          "key": "ask_reason",
+          "confidence": 1.0
+        }
+      ],
+      "expected_features": {
+        "reason_question": 1.0
+      },
+      "grammar_weights": {
+        "Why": 1.0,
+        "Who": 1.0,
+        "waits": 1.0,
+        "rests": 1.0
+      },
+      "favored": "Why",
+      "disfavored": "Who"
+    }
+  ],
+  "input_channel": "communicative_goal",
+  "receiver_mode": "multipliers",
+  "smoothing": 1.0,
+  "input_contract": "Supply current, scoped records in channel communicative_goal. Scope selection and structural parsing belong to the caller; no free-text parser is implied.",
+  "table_semantics": "Positive relative word-weight multipliers.",
+  "selection": [
+    {
+      "tokens": [
+        "utterance",
+        "warn_ice"
+      ],
+      "weight": 1.0
+    },
+    {
+      "tokens": [
+        "utterance",
+        "apologize_spill"
+      ],
+      "weight": 1.0
+    },
+    {
+      "tokens": [
+        "utterance",
+        "request_key"
+      ],
+      "weight": 1.0
+    },
+    {
+      "tokens": [
+        "utterance",
+        "thank_help"
+      ],
+      "weight": 1.0
+    },
+    {
+      "tokens": [
+        "utterance",
+        "invite_meal"
+      ],
+      "weight": 1.0
+    },
+    {
+      "tokens": [
+        "utterance",
+        "reassure_child"
+      ],
+      "weight": 1.0
+    },
+    {
+      "tokens": [
+        "utterance",
+        "refuse_offer"
+      ],
+      "weight": 1.0
+    },
+    {
+      "tokens": [
+        "utterance",
+        "congratulate_success"
+      ],
+      "weight": 1.0
+    },
+    {
+      "tokens": [
+        "utterance",
+        "ask_location"
+      ],
+      "weight": 1.0
+    },
+    {
+      "tokens": [
+        "utterance",
+        "ask_reason"
+      ],
+      "weight": 1.0
+    }
+  ],
+  "projection": [
+    {
+      "tokens": [
+        "warn_ice",
+        "warning"
+      ],
+      "weight": 1.0
+    },
+    {
+      "tokens": [
+        "apologize_spill",
+        "apology"
+      ],
+      "weight": 1.0
+    },
+    {
+      "tokens": [
+        "request_key",
+        "request"
+      ],
+      "weight": 1.0
+    },
+    {
+      "tokens": [
+        "thank_help",
+        "gratitude"
+      ],
+      "weight": 1.0
+    },
+    {
+      "tokens": [
+        "invite_meal",
+        "invitation"
+      ],
+      "weight": 1.0
+    },
+    {
+      "tokens": [
+        "reassure_child",
+        "reassurance"
+      ],
+      "weight": 1.0
+    },
+    {
+      "tokens": [
+        "refuse_offer",
+        "refusal"
+      ],
+      "weight": 1.0
+    },
+    {
+      "tokens": [
+        "congratulate_success",
+        "congratulation"
+      ],
+      "weight": 1.0
+    },
+    {
+      "tokens": [
+        "ask_location",
+        "location_question"
+      ],
+      "weight": 1.0
+    },
+    {
+      "tokens": [
+        "ask_reason",
+        "reason_question"
+      ],
+      "weight": 1.0
+    }
+  ],
+  "receiver": [
+    {
+      "tokens": [
+        "utterance",
+        "warning",
+        "Careful"
+      ],
+      "weight": 4.0
+    },
+    {
+      "tokens": [
+        "utterance",
+        "warning",
+        "Congratulations"
+      ],
+      "weight": 0.25
+    },
+    {
+      "tokens": [
+        "utterance",
+        "apology",
+        "Sorry"
+      ],
+      "weight": 4.0
+    },
+    {
+      "tokens": [
+        "utterance",
+        "apology",
+        "Hooray"
+      ],
+      "weight": 0.25
+    },
+    {
+      "tokens": [
+        "utterance",
+        "request",
+        "Please"
+      ],
+      "weight": 4.0
+    },
+    {
+      "tokens": [
+        "utterance",
+        "request",
+        "Farewell"
+      ],
+      "weight": 0.25
+    },
+    {
+      "tokens": [
+        "utterance",
+        "gratitude",
+        "Thank"
+      ],
+      "weight": 4.0
+    },
+    {
+      "tokens": [
+        "utterance",
+        "gratitude",
+        "Beware"
+      ],
+      "weight": 0.25
+    },
+    {
+      "tokens": [
+        "utterance",
+        "invitation",
+        "Join"
+      ],
+      "weight": 4.0
+    },
+    {
+      "tokens": [
+        "utterance",
+        "invitation",
+        "Stop"
+      ],
+      "weight": 0.25
+    },
+    {
+      "tokens": [
+        "utterance",
+        "reassurance",
+        "Safe"
+      ],
+      "weight": 4.0
+    },
+    {
+      "tokens": [
+        "utterance",
+        "reassurance",
+        "Danger"
+      ],
+      "weight": 0.25
+    },
+    {
+      "tokens": [
+        "utterance",
+        "refusal",
+        "No"
+      ],
+      "weight": 4.0
+    },
+    {
+      "tokens": [
+        "utterance",
+        "refusal",
+        "Certainly"
+      ],
+      "weight": 0.25
+    },
+    {
+      "tokens": [
+        "utterance",
+        "congratulation",
+        "Congratulations"
+      ],
+      "weight": 4.0
+    },
+    {
+      "tokens": [
+        "utterance",
+        "congratulation",
+        "Sorry"
+      ],
+      "weight": 0.25
+    },
+    {
+      "tokens": [
+        "utterance",
+        "location_question",
+        "Where"
+      ],
+      "weight": 4.0
+    },
+    {
+      "tokens": [
+        "utterance",
+        "location_question",
+        "When"
+      ],
+      "weight": 0.25
+    },
+    {
+      "tokens": [
+        "utterance",
+        "reason_question",
+        "Why"
+      ],
+      "weight": 4.0
+    },
+    {
+      "tokens": [
+        "utterance",
+        "reason_question",
+        "Who"
+      ],
+      "weight": 0.25
+    }
+  ]
+}

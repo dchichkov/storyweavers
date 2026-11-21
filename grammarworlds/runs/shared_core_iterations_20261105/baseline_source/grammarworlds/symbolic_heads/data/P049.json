@@ -1,0 +1,81 @@
+{
+  "id": "P049",
+  "name": "Premise completion",
+  "description": "Opening → missing participant/place/problem slots. Favor completing the premise.",
+  "proposed_payload": "{introduced_slots, missing_slots}",
+  "provenance": "Authored illustrative seeds; not learned or extracted.",
+  "status": "program_required",
+  "examples": [
+    {
+      "id": "P049.01",
+      "description": "Mira arrived at the mill; no problem established.",
+      "intended_feature": "missing:problem",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P049.02",
+      "description": "Village well is dry; no actor introduced.",
+      "intended_feature": "missing:actor",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P049.03",
+      "description": "Actor and problem exist but place is unspecified.",
+      "intended_feature": "missing:place",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P049.04",
+      "description": "Actor, setting, and problem are all present.",
+      "intended_feature": "premise_complete",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P049.05",
+      "description": "A new scene changes place without an introduction.",
+      "intended_feature": "scene_location_gap",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P049.06",
+      "description": "Problem is only mentioned in a hypothetical tale.",
+      "intended_feature": "actual_premise_still_missing",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P049.07",
+      "description": "Two actors are introduced but their relationship matters and is absent.",
+      "intended_feature": "missing:relevant_relationship",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P049.08",
+      "description": "Opening describes weather without a protagonist or problem.",
+      "intended_feature": "missing:{actor,problem}",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P049.09",
+      "description": "A terse opening already implies a grounded danger.",
+      "intended_feature": "avoid_redundant_problem_restatement",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P049.10",
+      "description": "No valid world event can supply a missing premise.",
+      "intended_feature": "request_more_world_state_not_fabricated_text",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    }
+  ],
+  "required_program": "Track which premise slots are already grounded in the narrative/world and choose missing introductions without inventing a problem or duplicating exposition."
+}

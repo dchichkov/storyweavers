@@ -1,0 +1,31 @@
+from .schema import *
+SPEC=story(16,'museum',dict(
+ hero=person('Miri','she'),helper=person('Kit','he'),visitor=person('Dot','she'),
+ work=place('museum'),bench=place('front desk'),track=place('marked track'),screen=place('screen'),
+ torch=tool('torch',location='bench',state=('moving',)),moth=obj('paper moth',location='track'),
+ shadow=obj('shadow',location='screen',state=('large',)),books=obj('book stack',location='track'),
+ clay=obj('clay wedge',location='track'),label=obj('instruction label',location='track')),
+ chain(
+  event('exhibit_goal',Say('hero',V('want',V('show',R('visitor'),N('shadow','small',det='a')))),Say('helper',V('want',N('dragon',det='a')),listener='hero'),
+   qa=[Q('goal','who','Who was Miri preparing the exhibit for?','Miri wanted to show Dot a small shadow. Kit wanted a dragon.','hero','visitor','helper','moth')]),
+  event('borrow_torch',S('hero',V('borrow',R('torch'))),patient='torch',destination='hero',guards=[at('torch','bench')],effects=[change('torch',location='hero')],portable='fetch'),
+  event('moving_light',S('hero',V('move',R('torch'))),S(R('shadow'),V('grow')),patient='shadow',instrument='torch',
+   guards=[at('torch','hero'),has('torch','moving')],effects=[change('shadow',add=('unexpected',))],
+   qa=[Q('error','what','What went wrong with the first demonstration?','The shadow grew while Miri moved the torch. She needed to keep the light still.','hero','torch','shadow',supports=('cause',))]),
+  event('read_small_print',S('helper',V('read',R('label'))),Say('hero',V('need',V('steady',R('torch')))),actor='helper',patient='label',
+   guards=[has('shadow','unexpected')],effects=[change('hero',add=('understands_control',))],
+   qa=[Q('cause','why','What did Miri need to keep still?','Miri needed to stop moving the torch. Kit read the instruction label.','hero','helper','torch','label')]),
+  fork('steady_light',
+   event('books_support',S('hero',A(V('rest',R('torch')),PP('on',R('books')))),patient='torch',destination='books',
+    guards=[at('torch','hero'),has('hero','understands_control')],effects=[change('torch',location='books',add=('fixed',),remove=('moving',))]),
+   event('clay_support',S('hero',A(V('steady',R('torch')),PP('with',R('clay')))),patient='torch',destination='clay',
+    guards=[at('torch','hero'),has('hero','understands_control')],effects=[change('torch',location='clay',add=('fixed',),remove=('moving',))])),
+  event('controlled_trial',S('hero',A(V('move',R('moth')),PP('toward',R('screen')))),S(R('shadow'),V('shrink')),patient='moth',instrument='torch',destination='screen',
+   guards=[has('torch','fixed')],effects=[change('moth',location='screen'),change('shadow',add=('small','controlled'),remove=('large','unexpected'))],
+   qa=[Q('test','how','What happened with the torch fixed?','The shadow shrank when Miri moved the moth toward the screen. The torch stayed fixed.','hero','moth','shadow','torch','screen',supports=('cause',))]),
+  event('visitor_turn',Say('visitor',Can(V('try')),listener='hero'),actor='visitor',effects=[change('visitor',add=('invited',))]),
+  event('little_wings',S('visitor',A(V('hold',R('moth')),PP('beside',R('screen')))),S(R('shadow'),B('small')),actor='visitor',patient='moth',destination='visitor',
+   guards=[has('torch','fixed'),has('visitor','invited'),has('shadow','controlled')],effects=[change('moth',location='visitor')],
+   qa=[Q('outcome','what_next','How did Dot take part?','Dot held the moth beside the screen. Its shadow was small.','visitor','moth','screen','shadow')])
+ ),target='shadow',tool_id='torch',premise='A shadow experiment fails because both the light and the cutout move.',
+ fidelity='Admit the faulty trial, fix the torch position, move only the moth, and let Dot try the corrected demonstration.',variants=['Support the torch on books or with a clay wedge.'])

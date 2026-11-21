@@ -1,0 +1,995 @@
+{
+  "schema": "event-mapping-bank-v1",
+  "rules": [
+    {
+      "id": "fetch.shared_tool",
+      "weight": 1,
+      "profiles": [
+        "catalog"
+      ],
+      "source": {
+        "scenarios": [
+          "key",
+          "kite",
+          "library"
+        ],
+        "kinds": [
+          "fetch_light",
+          "fetch_scissors",
+          "borrow"
+        ],
+        "bind": {
+          "worker": "frame.actor",
+          "item": "movements.0.item",
+          "supply": "movements.0.source"
+        },
+        "equals": {
+          "movements_count": 1,
+          "movements.0.destination": "$worker",
+          "changes": [
+            {
+              "entity": "$item",
+              "field": "location",
+              "before": "$supply",
+              "after": "$worker"
+            }
+          ]
+        },
+        "role_kinds": {
+          "worker": "person",
+          "item": "tool"
+        },
+        "absent": [
+          "movements.0.source_holder"
+        ]
+      },
+      "target": {
+        "id": "fetch_shared_tool",
+        "event": {
+          "op": "fetch",
+          "actor": "worker",
+          "item": "item",
+          "source": "supply"
+        },
+        "roles": {
+          "worker": {
+            "kind": "person",
+            "properties": [
+              "can_hold"
+            ]
+          },
+          "item": {
+            "kind": "tool",
+            "properties": [
+              "portable"
+            ]
+          },
+          "supply": {
+            "kind": "place",
+            "properties": [
+              "reachable"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "fetch.shared_instrument",
+      "weight": 1,
+      "profiles": [
+        "catalog"
+      ],
+      "source": {
+        "scenarios": [
+          "music"
+        ],
+        "kinds": [
+          "borrow"
+        ],
+        "bind": {
+          "worker": "frame.actor",
+          "item": "movements.0.item",
+          "supply": "movements.0.source"
+        },
+        "equals": {
+          "movements_count": 1,
+          "movements.0.destination": "$worker",
+          "changes": [
+            {
+              "entity": "$item",
+              "field": "location",
+              "before": "$supply",
+              "after": "$worker"
+            }
+          ]
+        },
+        "role_kinds": {
+          "worker": "person",
+          "item": "instrument"
+        },
+        "absent": [
+          "movements.0.source_holder"
+        ]
+      },
+      "target": {
+        "id": "fetch_shared_instrument",
+        "event": {
+          "op": "fetch",
+          "actor": "worker",
+          "item": "item",
+          "source": "supply"
+        },
+        "roles": {
+          "worker": {
+            "kind": "person",
+            "properties": [
+              "can_hold"
+            ]
+          },
+          "item": {
+            "kind": "instrument",
+            "properties": [
+              "portable"
+            ]
+          },
+          "supply": {
+            "kind": "place",
+            "properties": [
+              "reachable"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "put.tool",
+      "weight": 1,
+      "profiles": [
+        "catalog"
+      ],
+      "source": {
+        "scenarios": [
+          "key",
+          "music",
+          "library",
+          "pottery"
+        ],
+        "kinds": [
+          "hang_key",
+          "return",
+          "place_atlas",
+          "return_trolley",
+          "return_sponge"
+        ],
+        "bind": {
+          "worker": "frame.actor",
+          "item": "movements.0.item",
+          "destination": "movements.0.destination"
+        },
+        "equals": {
+          "movements_count": 1,
+          "movements.0.source_holder": "$worker",
+          "changes": [
+            {
+              "entity": "$item",
+              "field": "location",
+              "before": "$worker",
+              "after": "$destination"
+            }
+          ]
+        },
+        "role_kinds": {
+          "worker": "person",
+          "item": "tool"
+        },
+        "absent": [
+          "movements.0.destination_holder"
+        ]
+      },
+      "target": {
+        "id": "put_tool",
+        "event": {
+          "op": "put_item",
+          "actor": "worker",
+          "item": "item",
+          "destination": "destination"
+        },
+        "roles": {
+          "worker": {
+            "kind": "person",
+            "properties": [
+              "can_hold"
+            ]
+          },
+          "item": {
+            "kind": "tool",
+            "properties": [
+              "portable"
+            ]
+          },
+          "destination": {
+            "kind": "place",
+            "properties": [
+              "reachable"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "handoff.tool",
+      "weight": 1,
+      "profiles": [
+        "catalog"
+      ],
+      "source": {
+        "scenarios": [
+          "greenhouse",
+          "pottery"
+        ],
+        "kinds": [
+          "return",
+          "return_rib",
+          "give"
+        ],
+        "bind": {
+          "worker": "frame.actor",
+          "item": "movements.0.item",
+          "recipient": "movements.0.destination_holder"
+        },
+        "equals": {
+          "movements_count": 1,
+          "movements.0.source_holder": "$worker",
+          "changes": [
+            {
+              "entity": "$item",
+              "field": "location",
+              "before": "$worker",
+              "after": "$recipient"
+            }
+          ]
+        },
+        "role_kinds": {
+          "worker": "person",
+          "item": "tool",
+          "recipient": "person"
+        }
+      },
+      "target": {
+        "id": "handoff_tool",
+        "event": {
+          "op": "transfer",
+          "actor": "worker",
+          "item": "item",
+          "recipient": "recipient"
+        },
+        "roles": {
+          "worker": {
+            "kind": "person",
+            "properties": [
+              "can_hold"
+            ]
+          },
+          "item": {
+            "kind": "tool",
+            "properties": [
+              "portable"
+            ]
+          },
+          "recipient": {
+            "kind": "person",
+            "properties": [
+              "can_hold"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "put.object",
+      "weight": 1,
+      "profiles": [
+        "catalog"
+      ],
+      "source": {
+        "scenarios": [
+          "key",
+          "music",
+          "library",
+          "pottery"
+        ],
+        "kinds": [
+          "hang_key",
+          "return",
+          "place_atlas",
+          "return_trolley",
+          "return_sponge"
+        ],
+        "bind": {
+          "worker": "frame.actor",
+          "item": "movements.0.item",
+          "destination": "movements.0.destination"
+        },
+        "equals": {
+          "movements_count": 1,
+          "movements.0.source_holder": "$worker",
+          "changes": [
+            {
+              "entity": "$item",
+              "field": "location",
+              "before": "$worker",
+              "after": "$destination"
+            }
+          ]
+        },
+        "role_kinds": {
+          "worker": "person",
+          "item": "object"
+        },
+        "absent": [
+          "movements.0.destination_holder"
+        ]
+      },
+      "target": {
+        "id": "put_object",
+        "event": {
+          "op": "put_item",
+          "actor": "worker",
+          "item": "item",
+          "destination": "destination"
+        },
+        "roles": {
+          "worker": {
+            "kind": "person",
+            "properties": [
+              "can_hold"
+            ]
+          },
+          "item": {
+            "kind": "object",
+            "properties": [
+              "portable"
+            ]
+          },
+          "destination": {
+            "kind": "place",
+            "properties": [
+              "reachable"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "handoff.object",
+      "weight": 1,
+      "profiles": [
+        "catalog"
+      ],
+      "source": {
+        "scenarios": [
+          "greenhouse",
+          "pottery"
+        ],
+        "kinds": [
+          "return",
+          "return_rib",
+          "give"
+        ],
+        "bind": {
+          "worker": "frame.actor",
+          "item": "movements.0.item",
+          "recipient": "movements.0.destination_holder"
+        },
+        "equals": {
+          "movements_count": 1,
+          "movements.0.source_holder": "$worker",
+          "changes": [
+            {
+              "entity": "$item",
+              "field": "location",
+              "before": "$worker",
+              "after": "$recipient"
+            }
+          ]
+        },
+        "role_kinds": {
+          "worker": "person",
+          "item": "object",
+          "recipient": "person"
+        }
+      },
+      "target": {
+        "id": "handoff_object",
+        "event": {
+          "op": "transfer",
+          "actor": "worker",
+          "item": "item",
+          "recipient": "recipient"
+        },
+        "roles": {
+          "worker": {
+            "kind": "person",
+            "properties": [
+              "can_hold"
+            ]
+          },
+          "item": {
+            "kind": "object",
+            "properties": [
+              "portable"
+            ]
+          },
+          "recipient": {
+            "kind": "person",
+            "properties": [
+              "can_hold"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "put.instrument",
+      "weight": 1,
+      "profiles": [
+        "catalog"
+      ],
+      "source": {
+        "scenarios": [
+          "key",
+          "music",
+          "library",
+          "pottery"
+        ],
+        "kinds": [
+          "hang_key",
+          "return",
+          "place_atlas",
+          "return_trolley",
+          "return_sponge"
+        ],
+        "bind": {
+          "worker": "frame.actor",
+          "item": "movements.0.item",
+          "destination": "movements.0.destination"
+        },
+        "equals": {
+          "movements_count": 1,
+          "movements.0.source_holder": "$worker",
+          "changes": [
+            {
+              "entity": "$item",
+              "field": "location",
+              "before": "$worker",
+              "after": "$destination"
+            }
+          ]
+        },
+        "role_kinds": {
+          "worker": "person",
+          "item": "instrument"
+        },
+        "absent": [
+          "movements.0.destination_holder"
+        ]
+      },
+      "target": {
+        "id": "put_instrument",
+        "event": {
+          "op": "put_item",
+          "actor": "worker",
+          "item": "item",
+          "destination": "destination"
+        },
+        "roles": {
+          "worker": {
+            "kind": "person",
+            "properties": [
+              "can_hold"
+            ]
+          },
+          "item": {
+            "kind": "instrument",
+            "properties": [
+              "portable"
+            ]
+          },
+          "destination": {
+            "kind": "place",
+            "properties": [
+              "reachable"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "handoff.instrument",
+      "weight": 1,
+      "profiles": [
+        "catalog"
+      ],
+      "source": {
+        "scenarios": [
+          "greenhouse",
+          "pottery"
+        ],
+        "kinds": [
+          "return",
+          "return_rib",
+          "give"
+        ],
+        "bind": {
+          "worker": "frame.actor",
+          "item": "movements.0.item",
+          "recipient": "movements.0.destination_holder"
+        },
+        "equals": {
+          "movements_count": 1,
+          "movements.0.source_holder": "$worker",
+          "changes": [
+            {
+              "entity": "$item",
+              "field": "location",
+              "before": "$worker",
+              "after": "$recipient"
+            }
+          ]
+        },
+        "role_kinds": {
+          "worker": "person",
+          "item": "instrument",
+          "recipient": "person"
+        }
+      },
+      "target": {
+        "id": "handoff_instrument",
+        "event": {
+          "op": "transfer",
+          "actor": "worker",
+          "item": "item",
+          "recipient": "recipient"
+        },
+        "roles": {
+          "worker": {
+            "kind": "person",
+            "properties": [
+              "can_hold"
+            ]
+          },
+          "item": {
+            "kind": "instrument",
+            "properties": [
+              "portable"
+            ]
+          },
+          "recipient": {
+            "kind": "person",
+            "properties": [
+              "can_hold"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "rescue.prepare_support",
+      "weight": 1,
+      "profiles": [
+        "catalog"
+      ],
+      "source": {
+        "scenarios": [
+          "rescue"
+        ],
+        "kinds": [
+          "prepare_ladder"
+        ],
+        "bind": {
+          "worker": "frame.actor",
+          "item": "movements.0.item",
+          "supply": "movements.0.source"
+        },
+        "equals": {
+          "movements_count": 1,
+          "movements.0.destination": "$worker",
+          "changes": [
+            {
+              "entity": "$item",
+              "field": "location",
+              "before": "$supply",
+              "after": "$worker"
+            },
+            {
+              "entity": "$item",
+              "field": "state",
+              "add": [
+                "steady"
+              ],
+              "remove": []
+            }
+          ]
+        },
+        "role_kinds": {
+          "worker": "person",
+          "item": "tool"
+        }
+      },
+      "target": {
+        "id": "rescue_prepare_support",
+        "event": {
+          "op": "prepare_support",
+          "actor": "worker",
+          "item": "item",
+          "source": "supply"
+        },
+        "roles": {
+          "worker": {
+            "kind": "person",
+            "properties": [
+              "can_hold",
+              "can_prepare_support"
+            ]
+          },
+          "item": {
+            "kind": "tool",
+            "properties": [
+              "portable",
+              "reach"
+            ]
+          },
+          "supply": {
+            "kind": "place",
+            "properties": [
+              "reachable"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "pottery.shape_clay",
+      "weight": 1,
+      "profiles": [
+        "catalog"
+      ],
+      "source": {
+        "scenarios": [
+          "pottery"
+        ],
+        "kinds": [
+          "shape"
+        ],
+        "bind": {
+          "worker": "frame.actor",
+          "item": "frame.patient",
+          "tool": "frame.instrument"
+        },
+        "equals": {
+          "movements_count": 0,
+          "changes": [
+            {
+              "entity": "$item",
+              "field": "state",
+              "add": [
+                "shaped"
+              ],
+              "remove": []
+            }
+          ]
+        },
+        "role_kinds": {
+          "worker": "person",
+          "item": "object",
+          "tool": "object"
+        }
+      },
+      "target": {
+        "id": "pottery_shape_clay",
+        "event": {
+          "op": "shape_clay",
+          "actor": "worker",
+          "item": "item",
+          "tool": "tool"
+        },
+        "roles": {
+          "worker": {
+            "kind": "person",
+            "properties": [
+              "can_shape_clay"
+            ]
+          },
+          "item": {
+            "kind": "object",
+            "properties": [
+              "clay"
+            ]
+          },
+          "tool": {
+            "kind": "tool",
+            "properties": [
+              "shape"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "music.perform_solo",
+      "weight": 1,
+      "profiles": [
+        "catalog"
+      ],
+      "source": {
+        "scenarios": [
+          "music"
+        ],
+        "kinds": [
+          "perform"
+        ],
+        "bind": {
+          "worker": "frame.actor",
+          "item": "frame.instrument"
+        },
+        "equals": {
+          "movements_count": 0,
+          "changes": [
+            {
+              "entity": "$worker",
+              "field": "state",
+              "add": [
+                "performed_solo"
+              ],
+              "remove": []
+            }
+          ]
+        },
+        "role_kinds": {
+          "worker": "person",
+          "item": "instrument"
+        }
+      },
+      "target": {
+        "id": "music_perform_solo",
+        "event": {
+          "op": "perform_solo",
+          "actor": "worker",
+          "item": "item"
+        },
+        "roles": {
+          "worker": {
+            "kind": "person",
+            "properties": [
+              "can_drum"
+            ]
+          },
+          "item": {
+            "kind": "instrument",
+            "properties": [
+              "physics:drum"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "fetch.shared_object",
+      "weight": 1,
+      "profiles": [
+        "catalog"
+      ],
+      "source": {
+        "scenarios": [
+          "library"
+        ],
+        "kinds": [
+          "borrow"
+        ],
+        "bind": {
+          "worker": "frame.actor",
+          "item": "movements.0.item",
+          "supply": "movements.0.source"
+        },
+        "equals": {
+          "movements_count": 1,
+          "movements.0.destination": "$worker",
+          "changes": [
+            {
+              "entity": "$item",
+              "field": "location",
+              "before": "$supply",
+              "after": "$worker"
+            }
+          ]
+        },
+        "role_kinds": {
+          "worker": "person",
+          "item": "object"
+        },
+        "absent": [
+          "movements.0.source_holder"
+        ]
+      },
+      "target": {
+        "id": "fetch_shared_object",
+        "event": {
+          "op": "fetch",
+          "actor": "worker",
+          "item": "item",
+          "source": "supply"
+        },
+        "roles": {
+          "worker": {
+            "kind": "person",
+            "properties": [
+              "can_hold"
+            ]
+          },
+          "item": {
+            "kind": "object",
+            "properties": [
+              "portable"
+            ]
+          },
+          "supply": {
+            "kind": "place",
+            "properties": [
+              "reachable"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "greenhouse.repair_fixture",
+      "weight": 1,
+      "profiles": [
+        "catalog"
+      ],
+      "source": {
+        "scenarios": [
+          "greenhouse"
+        ],
+        "kinds": [
+          "repair_tap"
+        ],
+        "bind": {
+          "worker": "frame.actor",
+          "item": "frame.patient"
+        },
+        "role_kinds": {
+          "worker": "person",
+          "item": "object"
+        },
+        "equals": {
+          "movements_count": 0,
+          "changes": [
+            {
+              "entity": "$item",
+              "field": "state",
+              "add": [
+                "repaired"
+              ],
+              "remove": [
+                "broken"
+              ]
+            }
+          ]
+        }
+      },
+      "target": {
+        "id": "repair_fixture",
+        "event": {
+          "op": "repair_fixture",
+          "actor": "worker",
+          "item": "item"
+        },
+        "roles": {
+          "worker": {
+            "kind": "person",
+            "properties": [
+              "can_repair_fixture"
+            ]
+          },
+          "item": {
+            "kind": "object",
+            "properties": [
+              "repairable_fixture"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "library.sketch_moon",
+      "weight": 1,
+      "profiles": [
+        "catalog"
+      ],
+      "source": {
+        "scenarios": [
+          "library"
+        ],
+        "kinds": [
+          "sketch_moon"
+        ],
+        "bind": {
+          "worker": "frame.actor",
+          "item": "frame.patient",
+          "tool": "frame.instrument",
+          "reference": "source_entities.atlas.initial.id"
+        },
+        "role_kinds": {
+          "worker": "person",
+          "item": "object",
+          "tool": "tool",
+          "reference": "object"
+        },
+        "equals": {
+          "movements_count": 0,
+          "changes": [
+            {
+              "entity": "$worker",
+              "field": "memes.Joy",
+              "before": null,
+              "after": 0.7
+            },
+            {
+              "entity": "$item",
+              "field": "noun",
+              "before": "paper",
+              "after": "drawing"
+            },
+            {
+              "entity": "$item",
+              "field": "state",
+              "add": [
+                "moon_drawing"
+              ],
+              "remove": [
+                "blank"
+              ]
+            }
+          ]
+        }
+      },
+      "target": {
+        "id": "sketch_moon",
+        "event": {
+          "op": "sketch_moon",
+          "actor": "worker",
+          "item": "item",
+          "tool": "tool",
+          "reference": "reference"
+        },
+        "roles": {
+          "worker": {
+            "kind": "person",
+            "properties": [
+              "can_sketch_moon"
+            ]
+          },
+          "item": {
+            "kind": "object",
+            "properties": [
+              "drawable"
+            ]
+          },
+          "tool": {
+            "kind": "tool",
+            "properties": [
+              "draw"
+            ]
+          },
+          "reference": {
+            "kind": "object",
+            "properties": [
+              "moon_reference"
+            ]
+          }
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,81 @@
+{
+  "id": "P020",
+  "name": "Containment chain",
+  "description": "Object query → nested container relations. Favor reachable containment descriptions.",
+  "proposed_payload": "{object, container_path}",
+  "provenance": "Authored illustrative seeds; not learned or extracted.",
+  "status": "program_required",
+  "examples": [
+    {
+      "id": "P020.01",
+      "description": "Key in box in shed.",
+      "intended_feature": "key:[box,shed]",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P020.02",
+      "description": "Ring in pouch in chest in attic.",
+      "intended_feature": "ring:[pouch,chest,attic]",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P020.03",
+      "description": "Letter in Mira's pocket while Mira is in garden.",
+      "intended_feature": "letter:[pocket,Mira,garden]",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P020.04",
+      "description": "Cup on table in kitchen.",
+      "intended_feature": "relation_path:[on_table,in_kitchen]",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P020.05",
+      "description": "Coin moves from bag to drawer.",
+      "intended_feature": "coin:[drawer]",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P020.06",
+      "description": "Box and key erroneously contain each other.",
+      "intended_feature": "cycle_error",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P020.07",
+      "description": "Two boxes contain different keys.",
+      "intended_feature": "path_by_object_id",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P020.08",
+      "description": "A sealed bottle contains water and sits in a crate.",
+      "intended_feature": "water:[bottle,crate]",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P020.09",
+      "description": "A cloud is above the house, not inside it.",
+      "intended_feature": "reject_spatial_as_containment",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P020.10",
+      "description": "No container is known for the stone.",
+      "intended_feature": "empty_or_unknown_path",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    }
+  ],
+  "required_program": "Traverse typed containment relations with cycle detection, current-state resolution, and holder/location distinctions."
+}

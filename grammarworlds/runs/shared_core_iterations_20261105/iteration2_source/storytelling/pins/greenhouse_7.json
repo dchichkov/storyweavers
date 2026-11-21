@@ -1,0 +1,180 @@
+{
+  "scenario": "greenhouse",
+  "seed": 7,
+  "story": "Nia wanted to water the sunflower, but the tomato seedlings were thirsty. Mr Bell said, \u201cThe tap is broken.\u201d The rain barrel held one can of water. Nia said, \u201cI can divide water equally.\u201d She divided water equally between the tomato seedlings and the sunflower. The shade cloth fell. Nia secured the umbrella above the tomato seedlings with the garden tie. She moved the sunflower under the umbrella. Mr Bell said, \u201cI promise to repair the tap tomorrow.\u201d The tomato seedlings and the sunflower stood upright under the umbrella.",
+  "qa": [
+    {
+      "id": "greenhouse:11:outcome",
+      "kind": "what_next",
+      "question": "How were the plants protected at the end?",
+      "answer": "The tomato seedlings and sunflower stood under the umbrella. Nia had divided the water equally between them.",
+      "entity_ids": [
+        "can",
+        "cloth",
+        "hero",
+        "sunflower",
+        "tie",
+        "tomatoes",
+        "umbrella"
+      ],
+      "event_ids": [
+        5,
+        6,
+        7,
+        8,
+        11
+      ],
+      "evidence": [
+        {
+          "start": 188,
+          "end": 261,
+          "text": "She divided water equally between the tomato seedlings and the sunflower."
+        },
+        {
+          "start": 262,
+          "end": 283,
+          "text": "The shade cloth fell."
+        },
+        {
+          "start": 284,
+          "end": 356,
+          "text": "Nia secured the umbrella above the tomato seedlings with the garden tie."
+        },
+        {
+          "start": 357,
+          "end": 400,
+          "text": "She moved the sunflower under the umbrella."
+        },
+        {
+          "start": 455,
+          "end": 527,
+          "text": "The tomato seedlings and the sunflower stood upright under the umbrella."
+        }
+      ],
+      "text_sha256": "34ac47edd32b695d9804a67b51dc919212cc2b2221f874253ccd87c8adf2aa74"
+    },
+    {
+      "id": "greenhouse:1:goal",
+      "kind": "who",
+      "question": "Who wanted to water the sunflower?",
+      "answer": "Nia wanted to water the sunflower. The tomato seedlings were thirsty too.",
+      "entity_ids": [
+        "hero",
+        "sunflower",
+        "tomatoes"
+      ],
+      "event_ids": [
+        1
+      ],
+      "evidence": [
+        {
+          "start": 0,
+          "end": 108,
+          "text": "Nia wanted to water the sunflower, but the tomato seedlings were thirsty. Mr Bell said, \u201cThe tap is broken.\u201d"
+        }
+      ],
+      "text_sha256": "34ac47edd32b695d9804a67b51dc919212cc2b2221f874253ccd87c8adf2aa74"
+    },
+    {
+      "id": "greenhouse:1:problem",
+      "kind": "what",
+      "question": "What was wrong with the water supply?",
+      "answer": "Mr Bell said the tap was broken.",
+      "entity_ids": [
+        "caretaker",
+        "tap"
+      ],
+      "event_ids": [
+        1
+      ],
+      "evidence": [
+        {
+          "start": 0,
+          "end": 108,
+          "text": "Nia wanted to water the sunflower, but the tomato seedlings were thirsty. Mr Bell said, \u201cThe tap is broken.\u201d"
+        }
+      ],
+      "text_sha256": "34ac47edd32b695d9804a67b51dc919212cc2b2221f874253ccd87c8adf2aa74"
+    },
+    {
+      "id": "greenhouse:3:water",
+      "kind": "where",
+      "question": "Where was the first water, and how much was there?",
+      "answer": "The rain barrel held one can of water.",
+      "entity_ids": [
+        "barrel",
+        "can",
+        "hero"
+      ],
+      "event_ids": [
+        3
+      ],
+      "evidence": [
+        {
+          "start": 109,
+          "end": 147,
+          "text": "The rain barrel held one can of water."
+        }
+      ],
+      "text_sha256": "34ac47edd32b695d9804a67b51dc919212cc2b2221f874253ccd87c8adf2aa74"
+    },
+    {
+      "id": "greenhouse:4:choice",
+      "kind": "how",
+      "question": "How did Nia choose to use the limited water?",
+      "answer": "Nia chose to divide the water equally. There was only one can of water in the barrel.",
+      "entity_ids": [
+        "barrel",
+        "can",
+        "hero"
+      ],
+      "event_ids": [
+        3,
+        4
+      ],
+      "evidence": [
+        {
+          "start": 109,
+          "end": 147,
+          "text": "The rain barrel held one can of water."
+        },
+        {
+          "start": 148,
+          "end": 187,
+          "text": "Nia said, \u201cI can divide water equally.\u201d"
+        }
+      ],
+      "text_sha256": "34ac47edd32b695d9804a67b51dc919212cc2b2221f874253ccd87c8adf2aa74"
+    },
+    {
+      "id": "greenhouse:7:shade",
+      "kind": "why",
+      "question": "Why did Nia secure an umbrella above the seedlings?",
+      "answer": "The shade cloth had fallen. Nia secured an umbrella above the seedlings with a garden tie.",
+      "entity_ids": [
+        "cloth",
+        "hero",
+        "tie",
+        "tomatoes",
+        "umbrella"
+      ],
+      "event_ids": [
+        6,
+        7
+      ],
+      "evidence": [
+        {
+          "start": 262,
+          "end": 283,
+          "text": "The shade cloth fell."
+        },
+        {
+          "start": 284,
+          "end": 356,
+          "text": "Nia secured the umbrella above the tomato seedlings with the garden tie."
+        }
+      ],
+      "text_sha256": "34ac47edd32b695d9804a67b51dc919212cc2b2221f874253ccd87c8adf2aa74"
+    }
+  ]
+}

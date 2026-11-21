@@ -55,6 +55,7 @@ class World:
     flags: set[str] = field(default_factory=set)
     history: list[dict] = field(default_factory=list)
     focus: str = ""
+    narrative: dict = field(default_factory=dict)
 
     def clone(self) -> World:
         return deepcopy(self)
@@ -68,16 +69,22 @@ class World:
             if isinstance(value, (list, tuple)):
                 return [encode(v) for v in value]
             return value
-        return encode(asdict(self))
+        result = encode(asdict(self))
+        if not self.narrative:
+            result.pop('narrative')  # Preserve legacy serialized worlds.
+        return result
 
     @property
     def finished(self) -> bool:
         return "ended" in self.flags
 
     def snapshot(self) -> dict:
-        return {"flags": sorted(self.flags), "entities": {
+        result = {"flags": sorted(self.flags), "entities": {
             k: {"location": e.location, "state": sorted(e.state), "memes": dict(e.memes)}
             for k, e in self.entities.items()}}
+        if self.narrative:
+            result['narrative'] = deepcopy(self.narrative)
+        return result
 
     def facts_for_attention(self) -> list[Fact]:
         # The stored facts are original premises. Attention refreshes locations

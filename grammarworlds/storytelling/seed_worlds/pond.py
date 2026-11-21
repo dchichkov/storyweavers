@@ -1,0 +1,31 @@
+from .schema import *
+SPEC=story(14,'pond',dict(
+ hero=person('Mina','she'),helper=person('Theo','he'),gardener=person('Mr Alvarez','he'),
+ work=place('pond path'),bench=place('tool shed'),water=place('pond'),outlet=place('stone outlet'),
+ net=tool('long net',location='bench',state=('intact','free')),boat=obj('wooden boat',location='water',state=('drifting',)),
+ cord=tool('blue cord',location='helper'),branch=obj('willow branch',location='water')),
+ chain(
+  event('drifting_boat',S(R('boat'),A(V('drift'),PP('toward',N('reed',det='bare',number='plural')))),Say('helper',V('want',R('boat')),listener='hero'),
+   qa=[Q('goal','what','What did Theo want back?','Theo wanted his wooden boat. It was drifting toward the reeds.','helper','boat')]),
+  event('borrow_net',S('hero',V('borrow',R('net'))),patient='net',destination='hero',guards=[at('net','bench')],effects=[change('net',location='hero')],portable='fetch'),
+  event('net_snag',S(R('net'),A(V('snag'),PP('on',R('branch')))),patient='net',guards=[at('net','hero'),has('net','free')],effects=[change('net',add=('snagged',),remove=('free',))],
+   qa=[Q('snag','why','Why did the first attempt stop?','The net snagged on a willow branch. Mina was using it to reach the boat.','hero','net','boat','branch',supports=('goal',))]),
+  event('refuse_yank',Say('hero',V('need',V('free',R('net')))),Say('helper',Can(V('wait')),listener='hero'),
+   guards=[has('net','snagged')],effects=[change('hero',add=('protects_net',))],
+   qa=[Q('choice','how','What did Mina decide to do first?','Mina decided to free the net. Theo agreed to wait.','hero','helper','net')]),
+  fork('free_net',
+   event('turn_hoop',S('hero',A(V('turn',R('net')),'gently')),S(R('net'),B('free')),patient='net',guards=[has('net','snagged'),has('hero','protects_net')],effects=[change('net',add=('free','turned'),remove=('snagged',))],qa=[Q('freed','how','How did Mina free the net?','Mina gently turned the net, and it came free. She had decided to protect it.','hero','net',supports=('choice',))]),
+   event('ease_hoop',S('hero',A(V('push',R('net')),'gently')),S(R('net'),B('free')),patient='net',guards=[has('net','snagged'),has('hero','protects_net')],effects=[change('net',add=('free','eased'),remove=('snagged',))],qa=[Q('freed','how','How did Mina free the net?','Mina gently pushed the net, and it came free. She had decided to protect it.','hero','net',supports=('choice',))])),
+  event('follow_path',S(Both(R('hero'),R('helper')),A(V('walk'),PP('to',R('outlet')))),patient='boat',
+   guards=[has('net','free')],effects=[change('boat',location='outlet',add=('reachable',))],
+   qa=[Q('route','where','Where did they follow the boat?','Mina and Theo walked to the stone outlet. They had freed the snagged net first.','hero','helper','boat','outlet',supports=('freed',))]),
+  event('net_boat',Using('hero',V('lift',R('boat')),'net'),patient='boat',instrument='net',destination='hero',
+   guards=[at('net','hero'),has('net','free'),has('net','intact'),at('boat','outlet'),has('boat','reachable')],effects=[change('boat',location='hero',add=('recovered',),remove=('drifting',))],
+   qa=[Q('rescue','how','How did Mina recover the boat?','Mina lifted the boat with the net. They had followed it to the stone outlet.','hero','boat','net','outlet',supports=('route',))]),
+  event('return_net',S('hero',A(V('return',R('net')),PP('to',R('bench')))),patient='net',destination='bench',guards=[at('net','hero'),has('net','intact')],effects=[change('net',location='bench')],portable='put_item'),
+  event('tether_boat',S('helper',A(V('tie',R('cord')),PP('to',R('boat')))),actor='helper',patient='cord',guards=[has('boat','recovered'),at('cord','helper')],effects=[change('boat',add=('tethered',))]),
+  event('safe_circle',S(R('boat'),A(V('float'),PP('on',R('water')))),S('helper',V('hold',R('cord'))),patient='boat',destination='water',
+   guards=[has('boat','tethered'),at('net','bench')],effects=[change('boat',location='water',add=('sailing',))],
+   qa=[Q('outcome','what_next','What was different when the boat floated again?','The boat floated while Theo held its blue cord. He had tied the cord to the recovered boat.','helper','boat','cord',supports=('rescue',))])
+ ),target='boat',tool_id='net',premise='A borrowed net snags while retrieving a drifting boat; free it before trying again.',
+ fidelity='Stay on the path, avoid breaking the net, follow the boat to calm water, retrieve it and use a tether.',variants=['Turn or gently push the hoop free.'])

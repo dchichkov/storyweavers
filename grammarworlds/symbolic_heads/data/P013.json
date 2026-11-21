@@ -1,0 +1,581 @@
+{
+  "id": "P013",
+  "name": "Sense disambiguation",
+  "description": "Ambiguous word → nearby sense-bearing relations. Reweight sense-compatible words.",
+  "proposed_payload": "{sense_distribution, supporting_mentions}",
+  "provenance": "Authored illustrative seeds; not learned or extracted.",
+  "status": "table",
+  "examples": [
+    {
+      "id": "P013.01",
+      "description": "River selects the water-edge sense of bank.",
+      "query": "bank",
+      "scope": "example",
+      "sources": [
+        {
+          "id": "source:1",
+          "channel": "sense_cue",
+          "scope": "example",
+          "key": "river",
+          "confidence": 1.0
+        }
+      ],
+      "expected_features": {
+        "water_edge": 1.0
+      },
+      "grammar_weights": {
+        "muddy": 1.0,
+        "financial": 1.0,
+        "waits": 1.0,
+        "rests": 1.0
+      },
+      "favored": "muddy",
+      "disfavored": "financial"
+    },
+    {
+      "id": "P013.02",
+      "description": "Deposit selects the financial sense of bank.",
+      "query": "bank",
+      "scope": "example",
+      "sources": [
+        {
+          "id": "source:2",
+          "channel": "sense_cue",
+          "scope": "example",
+          "key": "deposit",
+          "confidence": 1.0
+        }
+      ],
+      "expected_features": {
+        "finance": 1.0
+      },
+      "grammar_weights": {
+        "financial": 1.0,
+        "muddy": 1.0,
+        "waits": 1.0,
+        "rests": 1.0
+      },
+      "favored": "financial",
+      "disfavored": "muddy"
+    },
+    {
+      "id": "P013.03",
+      "description": "Cave suggests the flying animal bat.",
+      "query": "bat",
+      "scope": "example",
+      "sources": [
+        {
+          "id": "source:3",
+          "channel": "sense_cue",
+          "scope": "example",
+          "key": "cave",
+          "confidence": 1.0
+        }
+      ],
+      "expected_features": {
+        "animal": 1.0
+      },
+      "grammar_weights": {
+        "flew": 1.0,
+        "swung": 1.0,
+        "waits": 1.0,
+        "rests": 1.0
+      },
+      "favored": "flew",
+      "disfavored": "swung"
+    },
+    {
+      "id": "P013.04",
+      "description": "Baseball suggests the sports bat.",
+      "query": "bat",
+      "scope": "example",
+      "sources": [
+        {
+          "id": "source:4",
+          "channel": "sense_cue",
+          "scope": "example",
+          "key": "baseball",
+          "confidence": 1.0
+        }
+      ],
+      "expected_features": {
+        "sports_tool": 1.0
+      },
+      "grammar_weights": {
+        "swung": 1.0,
+        "flew": 1.0,
+        "waits": 1.0,
+        "rests": 1.0
+      },
+      "favored": "swung",
+      "disfavored": "flew"
+    },
+    {
+      "id": "P013.05",
+      "description": "Wetland suggests the bird crane.",
+      "query": "crane",
+      "scope": "example",
+      "sources": [
+        {
+          "id": "source:5",
+          "channel": "sense_cue",
+          "scope": "example",
+          "key": "wetland",
+          "confidence": 1.0
+        }
+      ],
+      "expected_features": {
+        "bird": 1.0
+      },
+      "grammar_weights": {
+        "nested": 1.0,
+        "hoisted": 1.0,
+        "waits": 1.0,
+        "rests": 1.0
+      },
+      "favored": "nested",
+      "disfavored": "hoisted"
+    },
+    {
+      "id": "P013.06",
+      "description": "Construction suggests the lifting crane.",
+      "query": "crane",
+      "scope": "example",
+      "sources": [
+        {
+          "id": "source:6",
+          "channel": "sense_cue",
+          "scope": "example",
+          "key": "construction",
+          "confidence": 1.0
+        }
+      ],
+      "expected_features": {
+        "machine": 1.0
+      },
+      "grammar_weights": {
+        "hoisted": 1.0,
+        "nested": 1.0,
+        "waits": 1.0,
+        "rests": 1.0
+      },
+      "favored": "hoisted",
+      "disfavored": "nested"
+    },
+    {
+      "id": "P013.07",
+      "description": "Winter supplies seasonal context for spring.",
+      "query": "spring",
+      "scope": "example",
+      "sources": [
+        {
+          "id": "source:7",
+          "channel": "sense_cue",
+          "scope": "example",
+          "key": "winter",
+          "confidence": 1.0
+        }
+      ],
+      "expected_features": {
+        "season": 1.0
+      },
+      "grammar_weights": {
+        "bloomed": 1.0,
+        "coiled": 1.0,
+        "waits": 1.0,
+        "rests": 1.0
+      },
+      "favored": "bloomed",
+      "disfavored": "coiled"
+    },
+    {
+      "id": "P013.08",
+      "description": "Mattress supplies a mechanical spring cue.",
+      "query": "spring",
+      "scope": "example",
+      "sources": [
+        {
+          "id": "source:8",
+          "channel": "sense_cue",
+          "scope": "example",
+          "key": "mattress",
+          "confidence": 1.0
+        }
+      ],
+      "expected_features": {
+        "coil": 1.0
+      },
+      "grammar_weights": {
+        "coiled": 1.0,
+        "bloomed": 1.0,
+        "waits": 1.0,
+        "rests": 1.0
+      },
+      "favored": "coiled",
+      "disfavored": "bloomed"
+    },
+    {
+      "id": "P013.09",
+      "description": "Ocean suggests an animal seal.",
+      "query": "seal",
+      "scope": "example",
+      "sources": [
+        {
+          "id": "source:9",
+          "channel": "sense_cue",
+          "scope": "example",
+          "key": "ocean",
+          "confidence": 1.0
+        }
+      ],
+      "expected_features": {
+        "animal": 1.0
+      },
+      "grammar_weights": {
+        "swam": 1.0,
+        "stamped": 1.0,
+        "waits": 1.0,
+        "rests": 1.0
+      },
+      "favored": "swam",
+      "disfavored": "stamped"
+    },
+    {
+      "id": "P013.10",
+      "description": "Envelope suggests a closure or stamp sense.",
+      "query": "seal",
+      "scope": "example",
+      "sources": [
+        {
+          "id": "source:10",
+          "channel": "sense_cue",
+          "scope": "example",
+          "key": "envelope",
+          "confidence": 1.0
+        }
+      ],
+      "expected_features": {
+        "closure": 1.0
+      },
+      "grammar_weights": {
+        "stamped": 1.0,
+        "swam": 1.0,
+        "waits": 1.0,
+        "rests": 1.0
+      },
+      "favored": "stamped",
+      "disfavored": "swam"
+    }
+  ],
+  "input_channel": "sense_cue",
+  "receiver_mode": "multipliers",
+  "smoothing": 1.0,
+  "input_contract": "Supply current, scoped records in channel sense_cue. Scope selection and structural parsing belong to the caller; no free-text parser is implied.",
+  "table_semantics": "Positive relative word-weight multipliers.",
+  "selection": [
+    {
+      "tokens": [
+        "bank",
+        "river"
+      ],
+      "weight": 1.0
+    },
+    {
+      "tokens": [
+        "bank",
+        "deposit"
+      ],
+      "weight": 1.0
+    },
+    {
+      "tokens": [
+        "bat",
+        "cave"
+      ],
+      "weight": 1.0
+    },
+    {
+      "tokens": [
+        "bat",
+        "baseball"
+      ],
+      "weight": 1.0
+    },
+    {
+      "tokens": [
+        "crane",
+        "wetland"
+      ],
+      "weight": 1.0
+    },
+    {
+      "tokens": [
+        "crane",
+        "construction"
+      ],
+      "weight": 1.0
+    },
+    {
+      "tokens": [
+        "spring",
+        "winter"
+      ],
+      "weight": 1.0
+    },
+    {
+      "tokens": [
+        "spring",
+        "mattress"
+      ],
+      "weight": 1.0
+    },
+    {
+      "tokens": [
+        "seal",
+        "ocean"
+      ],
+      "weight": 1.0
+    },
+    {
+      "tokens": [
+        "seal",
+        "envelope"
+      ],
+      "weight": 1.0
+    }
+  ],
+  "projection": [
+    {
+      "tokens": [
+        "river",
+        "water_edge"
+      ],
+      "weight": 1.0
+    },
+    {
+      "tokens": [
+        "deposit",
+        "finance"
+      ],
+      "weight": 1.0
+    },
+    {
+      "tokens": [
+        "cave",
+        "animal"
+      ],
+      "weight": 1.0
+    },
+    {
+      "tokens": [
+        "baseball",
+        "sports_tool"
+      ],
+      "weight": 1.0
+    },
+    {
+      "tokens": [
+        "wetland",
+        "bird"
+      ],
+      "weight": 1.0
+    },
+    {
+      "tokens": [
+        "construction",
+        "machine"
+      ],
+      "weight": 1.0
+    },
+    {
+      "tokens": [
+        "winter",
+        "season"
+      ],
+      "weight": 1.0
+    },
+    {
+      "tokens": [
+        "mattress",
+        "coil"
+      ],
+      "weight": 1.0
+    },
+    {
+      "tokens": [
+        "ocean",
+        "animal"
+      ],
+      "weight": 1.0
+    },
+    {
+      "tokens": [
+        "envelope",
+        "closure"
+      ],
+      "weight": 1.0
+    }
+  ],
+  "receiver": [
+    {
+      "tokens": [
+        "bank",
+        "water_edge",
+        "muddy"
+      ],
+      "weight": 4.0
+    },
+    {
+      "tokens": [
+        "bank",
+        "water_edge",
+        "financial"
+      ],
+      "weight": 0.25
+    },
+    {
+      "tokens": [
+        "bank",
+        "finance",
+        "financial"
+      ],
+      "weight": 4.0
+    },
+    {
+      "tokens": [
+        "bank",
+        "finance",
+        "muddy"
+      ],
+      "weight": 0.25
+    },
+    {
+      "tokens": [
+        "bat",
+        "animal",
+        "flew"
+      ],
+      "weight": 4.0
+    },
+    {
+      "tokens": [
+        "bat",
+        "animal",
+        "swung"
+      ],
+      "weight": 0.25
+    },
+    {
+      "tokens": [
+        "bat",
+        "sports_tool",
+        "swung"
+      ],
+      "weight": 4.0
+    },
+    {
+      "tokens": [
+        "bat",
+        "sports_tool",
+        "flew"
+      ],
+      "weight": 0.25
+    },
+    {
+      "tokens": [
+        "crane",
+        "bird",
+        "nested"
+      ],
+      "weight": 4.0
+    },
+    {
+      "tokens": [
+        "crane",
+        "bird",
+        "hoisted"
+      ],
+      "weight": 0.25
+    },
+    {
+      "tokens": [
+        "crane",
+        "machine",
+        "hoisted"
+      ],
+      "weight": 4.0
+    },
+    {
+      "tokens": [
+        "crane",
+        "machine",
+        "nested"
+      ],
+      "weight": 0.25
+    },
+    {
+      "tokens": [
+        "spring",
+        "season",
+        "bloomed"
+      ],
+      "weight": 4.0
+    },
+    {
+      "tokens": [
+        "spring",
+        "season",
+        "coiled"
+      ],
+      "weight": 0.25
+    },
+    {
+      "tokens": [
+        "spring",
+        "coil",
+        "coiled"
+      ],
+      "weight": 4.0
+    },
+    {
+      "tokens": [
+        "spring",
+        "coil",
+        "bloomed"
+      ],
+      "weight": 0.25
+    },
+    {
+      "tokens": [
+        "seal",
+        "animal",
+        "swam"
+      ],
+      "weight": 4.0
+    },
+    {
+      "tokens": [
+        "seal",
+        "animal",
+        "stamped"
+      ],
+      "weight": 0.25
+    },
+    {
+      "tokens": [
+        "seal",
+        "closure",
+        "stamped"
+      ],
+      "weight": 4.0
+    },
+    {
+      "tokens": [
+        "seal",
+        "closure",
+        "swam"
+      ],
+      "weight": 0.25
+    }
+  ]
+}

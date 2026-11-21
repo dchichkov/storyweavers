@@ -1,0 +1,33 @@
+from .schema import *
+SPEC=story(7,'picnic',dict(
+ hero=person('Bea','she'),helper=person('Sam','he'),guest=person('Theo','he'),
+ work=place('meadow'),bench=place('basket shelf'),ground=place('grass'),
+ blanket=obj('blue blanket',location='bench',state=('clean',)),basket=obj('picnic basket',location='hero'),
+ sign=obj('welcome sign',location='basket',state=('secure',)),sandwich=obj('sandwich',location='basket'),
+ cookie=obj('cookie',location='helper'),stone=tool('smooth stone',location='ground')),
+ chain(
+  event('welcome_plan',Say('hero',V('want',V('welcome',R('guest')))),Say('helper',B('hungry'),listener='hero'),
+   qa=[Q('goal','who','Who was the picnic for?','Bea wanted to welcome Theo. Sam was already hungry.','hero','helper','guest')]),
+  event('borrow_blanket',S('hero',V('borrow',R('blanket'))),patient='blanket',destination='hero',guards=[at('blanket','bench')],effects=[change('blanket',location='hero')],portable='fetch'),
+  event('gust',S(R('sign'),A(V('drift'),PP('toward',N('river')))),S(R('basket'),B('unsteady')),patient='sign',
+   effects=[change('sign',location='ground',add=('lost',),remove=('secure',)),change('basket',add=('unsteady',))],
+   qa=[Q('gust','what','What happened to the welcome sign and basket?','The welcome sign drifted toward the river. The picnic basket became unsteady.','sign','basket')]),
+  event('save_lunch',S('helper',V('catch',R('basket'))),S('hero',V('hold',R('blanket'))),actor='helper',patient='basket',destination='helper',
+   guards=[at('basket','hero'),at('blanket','hero')],effects=[change('basket',location='helper',remove=('unsteady',),add=('safe',))],
+   qa=[Q('choice','how','How did they save the picnic?','Sam caught the basket while Bea held the blanket. The basket had become unsteady.','hero','helper','basket','blanket',supports=('gust',))]),
+  event('fetch_weight',S('hero',V('fetch',R('stone'))),patient='stone',destination='hero',guards=[at('stone','ground')],effects=[change('stone',location='hero')],portable='fetch'),
+  event('secure_blanket',S('hero',A(V('put',R('stone')),PP('on',R('blanket')))),patient='stone',destination='blanket',
+   guards=[at('stone','hero')],effects=[change('stone',location='blanket'),change('blanket',add=('weighted',))]),
+  event('save_portion',S('hero',A(V('save',R('sandwich')),PP('for',R('guest')))),patient='sandwich',
+   guards=[has('basket','safe')],effects=[change('sandwich',add=('reserved_for_theo',))],
+   qa=[Q('waiting','why','Why did Bea save a sandwich?','Bea saved a sandwich for Theo. She still wanted to welcome him.','hero','guest','sandwich',supports=('goal',))]),
+  event('late_guest',Say('guest',B('sorry'),listener='hero'),actor='guest',effects=[change('guest',add=('arrived',))]),
+  fork('share_lunch',
+   event('share_sandwich',S('guest',V('divide',R('sandwich'))),actor='guest',patient='sandwich',guards=[has('guest','arrived'),has('sandwich','reserved_for_theo')],effects=[change('sandwich',add=('shared',))]),
+   event('share_cookie',S('helper',V('share',R('cookie'))),actor='helper',patient='cookie',guards=[has('guest','arrived'),at('cookie','helper')],effects=[change('cookie',add=('shared',))])),
+  event('fold_together',S(Both(R('hero'),R('guest')),V('fold',R('blanket'))),patient='blanket',
+   guards=[has('blanket','weighted'),has('guest','arrived')],effects=[change('stone',location='ground'),change('blanket',location='hero',add=('folded',),remove=('weighted',))],
+   qa=[Q('outcome','what_next','How did the picnic end?','Bea and Theo folded the blue blanket together. Bea had saved a sandwich for him.','hero','guest','blanket',supports=('waiting',))])
+ ),target='basket',tool_id='stone',premise='A gust disrupts a welcome picnic while the guest is late.',
+ fidelity='Protect the picnic instead of chasing the sign toward water; keep a welcome for the delayed guest.',
+ variants=['Theo shares the saved sandwich or Sam shares his cookie. The unreachable sign is not magically recovered.'])

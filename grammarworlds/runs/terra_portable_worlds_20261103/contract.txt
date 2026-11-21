@@ -1,0 +1,54 @@
+Author one executable world module, not a prewritten story.
+Return JSON {design_notes: string, mismatches: string[], code: string}.
+Use only standard-library dataclasses/copy/random/math and imports from
+grammarworlds.world and grammarworlds.portable.language/features. No I/O,
+network, filesystem, eval/exec, runtime LLM, tests or harness imports.
+Do not alter shared grammar or runtime. No raw prose Nodes/sentence templates.
+Expose LEXICON (dict of NEW entries only), KERNELS (dict of Kernel objects),
+make_world(seed=0)->World, candidates(w)->list[(Kernel,Frame)],
+plan(w,frame,tense='past')->Sentence, commit(w,frame,sentence)->dict.
+
+World must be a World subclass retaining all inherited fields and methods.
+Override facts_for_attention: return grounded Fact objects from current carrier
+locations, states, numeric memes and prior events. Base implementation expects
+old rescue-world facts, so do not call it. Use Care, Fear, Trust etc on people to
+affect event availability or Kernel.preferences, not just fixed ordering.
+Frame.cause_ids must name existing facts returned by facts_for_attention.
+Record only physical/semantic state; never infer effects by parsing prose.
+Every person is kind='person', explicit pronoun and properties={'animate','can_hold'}.
+Location can be an entity ID (holder) or a place string. No invisible remote actions.
+
+Build Language(w,tense) in plan, then set g.lexicon to a deep copy of
+load_lexicon() merged with LEXICON. Never mutate the shared cached lexicon.
+LEXICON has categories nouns/adjectives/prepositions/adverbs/verbs/names; use
+dict entries for all categories, no duplicates of supplied vocabulary. Entity
+nouns for nonpeople must exist. Names of people need no lexical registration.
+Use explicit verb forms [base,past,participle] to avoid heuristic mistakes.
+Existing verb valencies cannot be extended by redeclaring a duplicate.
+g.ref has keywords subject/first/adjectives; g.s(ref-or-id,VP). g.be(str) means
+an adjective, NOT a location (use g.be(g.pp('in',g.n('workshop')))). No arbitrary
+English clauses in lexical entries. 'it' is an object pronoun; physical objects
+with plural number need pronoun='they'. Use g.sequence/reporting for local
+coreference rather than ambiguous bare pronouns. g.either alternatives must
+describe the SAME actual event, without inventing actions or states.
+
+candidates and plan must not mutate anything. Each Kernel requires/excludes is
+checked in candidates (the runtime does NOT do it). commit rechecks exact Frame
+membership, raising ValueError without mutation for forged/stale frames, then
+applies effects and Kernel.adds, sets w.focus=frame.actor, records
+{id:len(w.history)+1, frame:asdict(frame), sentence:sentence, before:w.snapshot()
+BEFORE effects, after:w.snapshot() AFTER effects} and appends it to w.history.
+Ended means 'ended' in flags and candidates must then be empty.
+
+Use the original wordwise Forest sampler via plan; do not sample sentences or
+events inside the pack. Every seed must finish within 24 events, each event at
+most 512 derivations. Aim for 12-20 events / 140-260 words with a clear beginning,
+state-driven turn, and physical ending image. Favor joined typed clauses and
+specific objects over a bare event log. Initial desires are allowed, initial
+resolution/choice/completion is not. Include two meaningful reachable branches
+with different actions/state consequences, not only paraphrases/order changes.
+Stay faithful to the source's values, while variants may change exact outcomes.
+We sample 60 unfiltered seeds in both tenses, replay frames, test physical guard
+interventions and inspect prose. This task needs only the provided facade and
+rule contracts, not the complete grammar implementation. Keep code compact,
+ideally under 400 lines. Report unsupported constructions in mismatches.

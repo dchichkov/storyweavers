@@ -1,0 +1,81 @@
+{
+  "id": "P040",
+  "name": "Promise obligation",
+  "description": "Actor action query → active commitments to others. Favor fulfillment or explicitly motivated breach.",
+  "proposed_payload": "{promisor, beneficiary, obligation, deadline}",
+  "provenance": "Authored illustrative seeds; not learned or extracted.",
+  "status": "program_required",
+  "examples": [
+    {
+      "id": "P040.01",
+      "description": "Mira promises Nia to return the cup by dusk.",
+      "intended_feature": "obligation:return_cup;deadline:dusk",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P040.02",
+      "description": "Theo agrees to watch until dawn.",
+      "intended_feature": "watch_interval_obligation",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P040.03",
+      "description": "Nia releases Mira from a promise.",
+      "intended_feature": "obligation_cancelled",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P040.04",
+      "description": "A promised cup is returned on time.",
+      "intended_feature": "obligation_fulfilled",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P040.05",
+      "description": "Deadline passes without fulfillment.",
+      "intended_feature": "obligation_overdue",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P040.06",
+      "description": "An actor merely hopes to help, without promising.",
+      "intended_feature": "goal_not_promise",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P040.07",
+      "description": "Two promises require incompatible simultaneous actions.",
+      "intended_feature": "obligation_conflict",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P040.08",
+      "description": "Promise is conditional on good weather; weather is bad.",
+      "intended_feature": "condition_unsatisfied",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P040.09",
+      "description": "A person promises on behalf of someone without authority.",
+      "intended_feature": "disputed_obligation",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P040.10",
+      "description": "A character intentionally breaks a promise.",
+      "intended_feature": "breach_event_required_not_silent_relabeling",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    }
+  ],
+  "required_program": "Track promise events and their promisor, beneficiary, content, deadline, release, fulfillment, and conflicts with other obligations."
+}

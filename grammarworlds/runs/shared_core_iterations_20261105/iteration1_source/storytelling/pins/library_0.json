@@ -1,0 +1,187 @@
+{
+  "scenario": "library",
+  "seed": 0,
+  "story": "Mina held a moon atlas, and she wanted to sketch the moon. Jun said, \u201cMy whale book is missing.\u201d Mina said, \u201cI promise to help you.\u201d Mina and Jun searched the window nook, but Mina did not find the whale book. Jun spotted the star bookmark on the high shelf. Mina returned the moon atlas to the display table, and she chose to help Jun. Ms Alvarez used the ladder to lift the whale book down. Ms Alvarez gave Jun the whale book. Jun said, \u201cI can help you.\u201d Jun opened the whale book for Mina. Mina sketched the whale from the whale book on the paper. Mina showed Jun the whale drawing.",
+  "qa": [
+    {
+      "id": "library:8:atlas",
+      "kind": "why",
+      "question": "Why did Mina put her atlas back?",
+      "answer": "Mina chose to help Jun. She returned the atlas to the display table.",
+      "entity_ids": [
+        "atlas",
+        "friend",
+        "hero"
+      ],
+      "event_ids": [
+        8
+      ],
+      "evidence": [
+        {
+          "start": 259,
+          "end": 336,
+          "text": "Mina returned the moon atlas to the display table, and she chose to help Jun."
+        }
+      ],
+      "text_sha256": "bd884ec76e5f36678ca57712e61fc543abe46474d5fabf2d302f9ebe9acb2cc9"
+    },
+    {
+      "id": "library:17:outcome",
+      "kind": "what_next",
+      "question": "How did Mina's drawing plan turn out?",
+      "answer": "Mina showed Jun her whale drawing. She had put the moon atlas back, and Jun had opened his whale book for her.",
+      "entity_ids": [
+        "atlas",
+        "book",
+        "bookmark",
+        "friend",
+        "helper",
+        "hero",
+        "ladder",
+        "paper"
+      ],
+      "event_ids": [
+        2,
+        6,
+        8,
+        10,
+        14,
+        16,
+        17
+      ],
+      "evidence": [
+        {
+          "start": 59,
+          "end": 132,
+          "text": "Jun said, \u201cMy whale book is missing.\u201d Mina said, \u201cI promise to help you.\u201d"
+        },
+        {
+          "start": 210,
+          "end": 258,
+          "text": "Jun spotted the star bookmark on the high shelf."
+        },
+        {
+          "start": 259,
+          "end": 336,
+          "text": "Mina returned the moon atlas to the display table, and she chose to help Jun."
+        },
+        {
+          "start": 337,
+          "end": 392,
+          "text": "Ms Alvarez used the ladder to lift the whale book down."
+        },
+        {
+          "start": 429,
+          "end": 492,
+          "text": "Jun said, \u201cI can help you.\u201d Jun opened the whale book for Mina."
+        },
+        {
+          "start": 493,
+          "end": 550,
+          "text": "Mina sketched the whale from the whale book on the paper."
+        },
+        {
+          "start": 551,
+          "end": 585,
+          "text": "Mina showed Jun the whale drawing."
+        }
+      ],
+      "text_sha256": "bd884ec76e5f36678ca57712e61fc543abe46474d5fabf2d302f9ebe9acb2cc9"
+    },
+    {
+      "id": "library:1:goal",
+      "kind": "what",
+      "question": "What did Mina want to do?",
+      "answer": "Mina wanted to sketch the moon. She held a moon atlas.",
+      "entity_ids": [
+        "atlas",
+        "hero"
+      ],
+      "event_ids": [
+        1
+      ],
+      "evidence": [
+        {
+          "start": 0,
+          "end": 58,
+          "text": "Mina held a moon atlas, and she wanted to sketch the moon."
+        }
+      ],
+      "text_sha256": "bd884ec76e5f36678ca57712e61fc543abe46474d5fabf2d302f9ebe9acb2cc9"
+    },
+    {
+      "id": "library:2:promise",
+      "kind": "who",
+      "question": "Who promised to help Jun?",
+      "answer": "Mina promised to help Jun. Jun had said his whale book was missing.",
+      "entity_ids": [
+        "book",
+        "friend",
+        "hero"
+      ],
+      "event_ids": [
+        2
+      ],
+      "evidence": [
+        {
+          "start": 59,
+          "end": 132,
+          "text": "Jun said, \u201cMy whale book is missing.\u201d Mina said, \u201cI promise to help you.\u201d"
+        }
+      ],
+      "text_sha256": "bd884ec76e5f36678ca57712e61fc543abe46474d5fabf2d302f9ebe9acb2cc9"
+    },
+    {
+      "id": "library:5:failed_search",
+      "kind": "where",
+      "question": "Where did the children search without finding the book?",
+      "answer": "They did not find the book in the window nook. Mina and Jun searched there together.",
+      "entity_ids": [
+        "book",
+        "friend",
+        "hero"
+      ],
+      "event_ids": [
+        5
+      ],
+      "evidence": [
+        {
+          "start": 133,
+          "end": 209,
+          "text": "Mina and Jun searched the window nook, but Mina did not find the whale book."
+        }
+      ],
+      "text_sha256": "bd884ec76e5f36678ca57712e61fc543abe46474d5fabf2d302f9ebe9acb2cc9"
+    },
+    {
+      "id": "library:10:retrieve",
+      "kind": "how",
+      "question": "How did they get the whale book down?",
+      "answer": "Ms Alvarez lifted the whale book down with a ladder. Jun had spotted a star bookmark on the high shelf.",
+      "entity_ids": [
+        "book",
+        "bookmark",
+        "friend",
+        "helper",
+        "ladder"
+      ],
+      "event_ids": [
+        6,
+        10
+      ],
+      "evidence": [
+        {
+          "start": 210,
+          "end": 258,
+          "text": "Jun spotted the star bookmark on the high shelf."
+        },
+        {
+          "start": 337,
+          "end": 392,
+          "text": "Ms Alvarez used the ladder to lift the whale book down."
+        }
+      ],
+      "text_sha256": "bd884ec76e5f36678ca57712e61fc543abe46474d5fabf2d302f9ebe9acb2cc9"
+    }
+  ]
+}

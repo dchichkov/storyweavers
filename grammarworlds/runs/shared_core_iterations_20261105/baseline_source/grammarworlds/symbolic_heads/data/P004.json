@@ -1,0 +1,581 @@
+{
+  "id": "P004",
+  "name": "Auxiliary complement",
+  "description": "Unfinished verb phrase → nearest governing auxiliary. Prefer compatible participles or infinitives.",
+  "proposed_payload": "{auxiliary_chain, required_form}",
+  "provenance": "Authored illustrative seeds; not learned or extracted.",
+  "status": "table",
+  "examples": [
+    {
+      "id": "P004.01",
+      "description": "Modal can takes a bare infinitive.",
+      "query": "walk",
+      "scope": "example",
+      "sources": [
+        {
+          "id": "source:1",
+          "channel": "governing_auxiliary",
+          "scope": "example",
+          "key": "can",
+          "confidence": 1.0
+        }
+      ],
+      "expected_features": {
+        "bare": 1.0
+      },
+      "grammar_weights": {
+        "walk": 1.0,
+        "walked": 1.0,
+        "waits": 1.0,
+        "rests": 1.0
+      },
+      "favored": "walk",
+      "disfavored": "walked"
+    },
+    {
+      "id": "P004.02",
+      "description": "Might takes swim.",
+      "query": "swim",
+      "scope": "example",
+      "sources": [
+        {
+          "id": "source:2",
+          "channel": "governing_auxiliary",
+          "scope": "example",
+          "key": "might",
+          "confidence": 1.0
+        }
+      ],
+      "expected_features": {
+        "bare": 1.0
+      },
+      "grammar_weights": {
+        "swim": 1.0,
+        "swam": 1.0,
+        "waits": 1.0,
+        "rests": 1.0
+      },
+      "favored": "swim",
+      "disfavored": "swam"
+    },
+    {
+      "id": "P004.03",
+      "description": "Must takes open.",
+      "query": "open",
+      "scope": "example",
+      "sources": [
+        {
+          "id": "source:3",
+          "channel": "governing_auxiliary",
+          "scope": "example",
+          "key": "must",
+          "confidence": 1.0
+        }
+      ],
+      "expected_features": {
+        "bare": 1.0
+      },
+      "grammar_weights": {
+        "open": 1.0,
+        "opened": 1.0,
+        "waits": 1.0,
+        "rests": 1.0
+      },
+      "favored": "open",
+      "disfavored": "opened"
+    },
+    {
+      "id": "P004.04",
+      "description": "Will takes go.",
+      "query": "go",
+      "scope": "example",
+      "sources": [
+        {
+          "id": "source:4",
+          "channel": "governing_auxiliary",
+          "scope": "example",
+          "key": "will",
+          "confidence": 1.0
+        }
+      ],
+      "expected_features": {
+        "bare": 1.0
+      },
+      "grammar_weights": {
+        "go": 1.0,
+        "went": 1.0,
+        "waits": 1.0,
+        "rests": 1.0
+      },
+      "favored": "go",
+      "disfavored": "went"
+    },
+    {
+      "id": "P004.05",
+      "description": "Perfect has selects seen.",
+      "query": "see",
+      "scope": "example",
+      "sources": [
+        {
+          "id": "source:5",
+          "channel": "governing_auxiliary",
+          "scope": "example",
+          "key": "has",
+          "confidence": 1.0
+        }
+      ],
+      "expected_features": {
+        "participle": 1.0
+      },
+      "grammar_weights": {
+        "seen": 1.0,
+        "saw": 1.0,
+        "waits": 1.0,
+        "rests": 1.0
+      },
+      "favored": "seen",
+      "disfavored": "saw"
+    },
+    {
+      "id": "P004.06",
+      "description": "Perfect had selects written.",
+      "query": "write",
+      "scope": "example",
+      "sources": [
+        {
+          "id": "source:6",
+          "channel": "governing_auxiliary",
+          "scope": "example",
+          "key": "had",
+          "confidence": 1.0
+        }
+      ],
+      "expected_features": {
+        "participle": 1.0
+      },
+      "grammar_weights": {
+        "written": 1.0,
+        "wrote": 1.0,
+        "waits": 1.0,
+        "rests": 1.0
+      },
+      "favored": "written",
+      "disfavored": "wrote"
+    },
+    {
+      "id": "P004.07",
+      "description": "Progressive is selects running.",
+      "query": "run",
+      "scope": "example",
+      "sources": [
+        {
+          "id": "source:7",
+          "channel": "governing_auxiliary",
+          "scope": "example",
+          "key": "is_progressive",
+          "confidence": 1.0
+        }
+      ],
+      "expected_features": {
+        "gerund": 1.0
+      },
+      "grammar_weights": {
+        "running": 1.0,
+        "ran": 1.0,
+        "waits": 1.0,
+        "rests": 1.0
+      },
+      "favored": "running",
+      "disfavored": "ran"
+    },
+    {
+      "id": "P004.08",
+      "description": "Progressive was selects singing.",
+      "query": "sing",
+      "scope": "example",
+      "sources": [
+        {
+          "id": "source:8",
+          "channel": "governing_auxiliary",
+          "scope": "example",
+          "key": "was_progressive",
+          "confidence": 1.0
+        }
+      ],
+      "expected_features": {
+        "gerund": 1.0
+      },
+      "grammar_weights": {
+        "singing": 1.0,
+        "sang": 1.0,
+        "waits": 1.0,
+        "rests": 1.0
+      },
+      "favored": "singing",
+      "disfavored": "sang"
+    },
+    {
+      "id": "P004.09",
+      "description": "Passive was selects broken.",
+      "query": "break",
+      "scope": "example",
+      "sources": [
+        {
+          "id": "source:9",
+          "channel": "governing_auxiliary",
+          "scope": "example",
+          "key": "was_passive",
+          "confidence": 1.0
+        }
+      ],
+      "expected_features": {
+        "participle": 1.0
+      },
+      "grammar_weights": {
+        "broken": 1.0,
+        "broke": 1.0,
+        "waits": 1.0,
+        "rests": 1.0
+      },
+      "favored": "broken",
+      "disfavored": "broke"
+    },
+    {
+      "id": "P004.10",
+      "description": "The parsed chain has been selects working.",
+      "query": "work",
+      "scope": "example",
+      "sources": [
+        {
+          "id": "source:10",
+          "channel": "governing_auxiliary",
+          "scope": "example",
+          "key": "has_been_progressive",
+          "confidence": 1.0
+        }
+      ],
+      "expected_features": {
+        "gerund": 1.0
+      },
+      "grammar_weights": {
+        "working": 1.0,
+        "worked": 1.0,
+        "waits": 1.0,
+        "rests": 1.0
+      },
+      "favored": "working",
+      "disfavored": "worked"
+    }
+  ],
+  "input_channel": "governing_auxiliary",
+  "receiver_mode": "multipliers",
+  "smoothing": 1.0,
+  "input_contract": "Supply current, scoped records in channel governing_auxiliary. Scope selection and structural parsing belong to the caller; no free-text parser is implied.",
+  "table_semantics": "Positive relative word-weight multipliers.",
+  "selection": [
+    {
+      "tokens": [
+        "walk",
+        "can"
+      ],
+      "weight": 1.0
+    },
+    {
+      "tokens": [
+        "swim",
+        "might"
+      ],
+      "weight": 1.0
+    },
+    {
+      "tokens": [
+        "open",
+        "must"
+      ],
+      "weight": 1.0
+    },
+    {
+      "tokens": [
+        "go",
+        "will"
+      ],
+      "weight": 1.0
+    },
+    {
+      "tokens": [
+        "see",
+        "has"
+      ],
+      "weight": 1.0
+    },
+    {
+      "tokens": [
+        "write",
+        "had"
+      ],
+      "weight": 1.0
+    },
+    {
+      "tokens": [
+        "run",
+        "is_progressive"
+      ],
+      "weight": 1.0
+    },
+    {
+      "tokens": [
+        "sing",
+        "was_progressive"
+      ],
+      "weight": 1.0
+    },
+    {
+      "tokens": [
+        "break",
+        "was_passive"
+      ],
+      "weight": 1.0
+    },
+    {
+      "tokens": [
+        "work",
+        "has_been_progressive"
+      ],
+      "weight": 1.0
+    }
+  ],
+  "projection": [
+    {
+      "tokens": [
+        "can",
+        "bare"
+      ],
+      "weight": 1.0
+    },
+    {
+      "tokens": [
+        "might",
+        "bare"
+      ],
+      "weight": 1.0
+    },
+    {
+      "tokens": [
+        "must",
+        "bare"
+      ],
+      "weight": 1.0
+    },
+    {
+      "tokens": [
+        "will",
+        "bare"
+      ],
+      "weight": 1.0
+    },
+    {
+      "tokens": [
+        "has",
+        "participle"
+      ],
+      "weight": 1.0
+    },
+    {
+      "tokens": [
+        "had",
+        "participle"
+      ],
+      "weight": 1.0
+    },
+    {
+      "tokens": [
+        "is_progressive",
+        "gerund"
+      ],
+      "weight": 1.0
+    },
+    {
+      "tokens": [
+        "was_progressive",
+        "gerund"
+      ],
+      "weight": 1.0
+    },
+    {
+      "tokens": [
+        "was_passive",
+        "participle"
+      ],
+      "weight": 1.0
+    },
+    {
+      "tokens": [
+        "has_been_progressive",
+        "gerund"
+      ],
+      "weight": 1.0
+    }
+  ],
+  "receiver": [
+    {
+      "tokens": [
+        "walk",
+        "bare",
+        "walk"
+      ],
+      "weight": 4.0
+    },
+    {
+      "tokens": [
+        "walk",
+        "bare",
+        "walked"
+      ],
+      "weight": 0.25
+    },
+    {
+      "tokens": [
+        "swim",
+        "bare",
+        "swim"
+      ],
+      "weight": 4.0
+    },
+    {
+      "tokens": [
+        "swim",
+        "bare",
+        "swam"
+      ],
+      "weight": 0.25
+    },
+    {
+      "tokens": [
+        "open",
+        "bare",
+        "open"
+      ],
+      "weight": 4.0
+    },
+    {
+      "tokens": [
+        "open",
+        "bare",
+        "opened"
+      ],
+      "weight": 0.25
+    },
+    {
+      "tokens": [
+        "go",
+        "bare",
+        "go"
+      ],
+      "weight": 4.0
+    },
+    {
+      "tokens": [
+        "go",
+        "bare",
+        "went"
+      ],
+      "weight": 0.25
+    },
+    {
+      "tokens": [
+        "see",
+        "participle",
+        "seen"
+      ],
+      "weight": 4.0
+    },
+    {
+      "tokens": [
+        "see",
+        "participle",
+        "saw"
+      ],
+      "weight": 0.25
+    },
+    {
+      "tokens": [
+        "write",
+        "participle",
+        "written"
+      ],
+      "weight": 4.0
+    },
+    {
+      "tokens": [
+        "write",
+        "participle",
+        "wrote"
+      ],
+      "weight": 0.25
+    },
+    {
+      "tokens": [
+        "run",
+        "gerund",
+        "running"
+      ],
+      "weight": 4.0
+    },
+    {
+      "tokens": [
+        "run",
+        "gerund",
+        "ran"
+      ],
+      "weight": 0.25
+    },
+    {
+      "tokens": [
+        "sing",
+        "gerund",
+        "singing"
+      ],
+      "weight": 4.0
+    },
+    {
+      "tokens": [
+        "sing",
+        "gerund",
+        "sang"
+      ],
+      "weight": 0.25
+    },
+    {
+      "tokens": [
+        "break",
+        "participle",
+        "broken"
+      ],
+      "weight": 4.0
+    },
+    {
+      "tokens": [
+        "break",
+        "participle",
+        "broke"
+      ],
+      "weight": 0.25
+    },
+    {
+      "tokens": [
+        "work",
+        "gerund",
+        "working"
+      ],
+      "weight": 4.0
+    },
+    {
+      "tokens": [
+        "work",
+        "gerund",
+        "worked"
+      ],
+      "weight": 0.25
+    }
+  ]
+}

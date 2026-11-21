@@ -1,0 +1,81 @@
+{
+  "id": "P045",
+  "name": "Conversation repair",
+  "description": "Current turn → disputed or corrected phrase. Favor the corrected referent.",
+  "proposed_payload": "{replaced_value, correction, scope}",
+  "provenance": "Authored illustrative seeds; not learned or extracted.",
+  "status": "program_required",
+  "examples": [
+    {
+      "id": "P045.01",
+      "description": "The red cup? No, the blue one.",
+      "intended_feature": "referent:blue_cup",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P045.02",
+      "description": "At noon? I meant dusk.",
+      "intended_feature": "corrected_time:dusk",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P045.03",
+      "description": "Mira says Theo came; Nia corrects it to Omar.",
+      "intended_feature": "corrected_actor:Omar",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P045.04",
+      "description": "Correction is itself retracted.",
+      "intended_feature": "restore_previous_supported_binding",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P045.05",
+      "description": "Not the big box, the small box.",
+      "intended_feature": "size_constraint:small",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P045.06",
+      "description": "Correction refers to quoted speech rather than world truth.",
+      "intended_feature": "quote_scoped_correction",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P045.07",
+      "description": "Two listeners reject different parts of a claim.",
+      "intended_feature": "partial_corrections",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P045.08",
+      "description": "No, I meant she brought it, not took it.",
+      "intended_feature": "corrected_event_direction",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P045.09",
+      "description": "A sarcastic no is not a factual correction.",
+      "intended_feature": "require_speech_act_disambiguation",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P045.10",
+      "description": "Correction names an entity not previously introduced.",
+      "intended_feature": "new_binding_requires_grounding",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    }
+  ],
+  "required_program": "Track explicit conversational corrections and their scope, replacing disputed bindings while preserving who asserted each version."
+}

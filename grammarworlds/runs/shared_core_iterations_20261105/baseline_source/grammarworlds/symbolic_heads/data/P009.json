@@ -1,0 +1,81 @@
+{
+  "id": "P009",
+  "name": "Repeated-prefix continuation",
+  "description": "Current suffix → earlier matching suffix and successor. Boost observed continuations proportionally.",
+  "proposed_payload": "{continuation_counts, match_length}",
+  "provenance": "Authored illustrative seeds; not learned or extracted.",
+  "status": "program_required",
+  "examples": [
+    {
+      "id": "P009.01",
+      "description": "Earlier brass bell; current suffix brass.",
+      "intended_feature": "bell:1",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P009.02",
+      "description": "Earlier quiet garden; current suffix quiet.",
+      "intended_feature": "garden:1",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P009.03",
+      "description": "Earlier red boat, red kite; current suffix red.",
+      "intended_feature": "boat:0.5,kite:0.5",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P009.04",
+      "description": "Earlier old red boat and new red kite; suffix old red.",
+      "intended_feature": "boat:1",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P009.05",
+      "description": "Earlier silver key twice and silver cup once; suffix silver.",
+      "intended_feature": "key:2/3,cup:1/3",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P009.06",
+      "description": "Earlier bright moon; suffix dark.",
+      "intended_feature": "no_match",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P009.07",
+      "description": "Earlier A B C and A B D; suffix A B.",
+      "intended_feature": "C:0.5,D:0.5",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P009.08",
+      "description": "Earlier wave wave foam; suffix wave wave.",
+      "intended_feature": "foam:1",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P009.09",
+      "description": "Earlier small blue box; suffix small blue.",
+      "intended_feature": "box:1",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P009.10",
+      "description": "Only the current unfinished brass occurs.",
+      "intended_feature": "no_prior_successor",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    }
+  ],
+  "required_program": "Index prior token spans and match variable-length current suffixes; count their observed successors without reading future tokens."
+}

@@ -1,0 +1,165 @@
+{
+  "worlds": 20,
+  "authored_episodes": 60,
+  "fine_event_kinds": 249,
+  "source_documents": 40,
+  "candidate_prefixes": 86,
+  "seeds": [
+    7,
+    19,
+    42,
+    103
+  ],
+  "metrics": {
+    "plain": {
+      "runs": 4,
+      "successes": 0,
+      "mean_needs_achieved": 0.5,
+      "mean_episodes": 3.25,
+      "deadline_overruns": 1,
+      "zero_immediate_progress_episodes": 11,
+      "distinct_source_orders": 4
+    },
+    "contextual": {
+      "runs": 4,
+      "successes": 4,
+      "mean_needs_achieved": 3.0,
+      "mean_episodes": 3.25,
+      "deadline_overruns": 0,
+      "zero_immediate_progress_episodes": 1,
+      "distinct_source_orders": 4
+    }
+  },
+  "runs": [
+    {
+      "seed": 7,
+      "policy": "plain",
+      "reason": "episode_limit",
+      "success": false,
+      "episodes": 4,
+      "sources": [
+        "music",
+        "seaside",
+        "repair",
+        "puppets"
+      ],
+      "seconds": 1195,
+      "needs_achieved": 1,
+      "resumed": 0,
+      "irrelevant": 3
+    },
+    {
+      "seed": 7,
+      "policy": "contextual",
+      "reason": "goal_achieved",
+      "success": true,
+      "episodes": 3,
+      "sources": [
+        "repair",
+        "museum",
+        "costume"
+      ],
+      "seconds": 1120,
+      "needs_achieved": 3,
+      "resumed": 0,
+      "irrelevant": 0
+    },
+    {
+      "seed": 19,
+      "policy": "plain",
+      "reason": "episode_limit",
+      "success": false,
+      "episodes": 4,
+      "sources": [
+        "repair",
+        "museum",
+        "pottery",
+        "pottery"
+      ],
+      "seconds": 1795,
+      "needs_achieved": 1,
+      "resumed": 0,
+      "irrelevant": 3
+    },
+    {
+      "seed": 19,
+      "policy": "contextual",
+      "reason": "goal_achieved",
+      "success": true,
+      "episodes": 3,
+      "sources": [
+        "museum",
+        "repair",
+        "music"
+      ],
+      "seconds": 1070,
+      "needs_achieved": 3,
+      "resumed": 0,
+      "irrelevant": 0
+    },
+    {
+      "seed": 42,
+      "policy": "plain",
+      "reason": "episode_limit",
+      "success": false,
+      "episodes": 4,
+      "sources": [
+        "repair",
+        "bakery",
+        "snow",
+        "library"
+      ],
+      "seconds": 1965,
+      "needs_achieved": 0,
+      "resumed": 0,
+      "irrelevant": 4
+    },
+    {
+      "seed": 42,
+      "policy": "contextual",
+      "reason": "goal_achieved",
+      "success": true,
+      "episodes": 4,
+      "sources": [
+        "museum",
+        "seaside",
+        "repair",
+        "puppets"
+      ],
+      "seconds": 1295,
+      "needs_achieved": 3,
+      "resumed": 0,
+      "irrelevant": 1
+    },
+    {
+      "seed": 103,
+      "policy": "plain",
+      "reason": "deadline",
+      "success": false,
+      "episodes": 1,
+      "sources": [
+        "biscuit"
+      ],
+      "seconds": 4090,
+      "needs_achieved": 0,
+      "resumed": 0,
+      "irrelevant": 1
+    },
+    {
+      "seed": 103,
+      "policy": "contextual",
+      "reason": "goal_achieved",
+      "success": true,
+      "episodes": 3,
+      "sources": [
+        "museum",
+        "repair",
+        "costume"
+      ],
+      "seconds": 1005,
+      "needs_achieved": 3,
+      "resumed": 0,
+      "irrelevant": 0
+    }
+  ]
+}

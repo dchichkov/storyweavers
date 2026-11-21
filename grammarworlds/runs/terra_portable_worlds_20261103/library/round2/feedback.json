@@ -1,0 +1,29 @@
+{
+  "check": {
+    "passed": 120,
+    "requested": 120,
+    "failed": 0,
+    "errors": [],
+    "failure_classes": {},
+    "guard_checks": 3666,
+    "unique_texts": 30,
+    "unique_event_paths": 8,
+    "outcomes": {
+      "atlas_released": 58,
+      "atlas_reserved": 62
+    },
+    "both_branches_observed": true,
+    "mean_words": 217.78333333333333,
+    "kernels": 17,
+    "new_lexicon_entries": 22,
+    "branching_steps": 342
+  },
+  "prose_review": [
+    "Correctness checks all passed. Preserve the guards and both atlas outcomes. This single revision is for prose and faithful motivation.",
+    "Opening currently says: Mina held a moon atlas, and she hoped to borrow a moon atlas. Establish why the atlas matters (sketching craters for class) and her promise to Jun. Same physical object repeated within an utterance should be definite after its first mention; use g.n with det=the for a repeated local object where grounded by that utterance, or avoid the repetition.",
+    "Jun said that a whale book was missing, and she listened to Jun: the she is stale cross-sentence focus after Jun became local subject. For a changed subject inside a joined sentence use g.s(g.ref(hero),vp) to force the proper name (subject=False default). Keep explicit local bindings only inside sequence/reporting.",
+    "The repeated ask X to lend Mina / X lent Mina, ask X to help Jun / X agreed to help Jun, and book repeated three times are stilted. Render each transaction once, add grounded motivations/consequences as typed clauses instead of redundant request-plus-execution. Stronger beginning and ending, still 12-20 bounded events.",
+    "Only 30 texts across 120 samples. Add a few true semantic-equivalent g.either alternatives or alternate constructions for major events, rather than only names/pronouns. Do not alter truth conditions or introduce actions without effects.",
+    "Your preferences never score: score_frame extracts feature=fact.id.split(\".\")[-1], then kernel.preferences.get(feature,0). Emit e.g. hero.Care with matching preference Care, and meaningful matching query tags. You may keep the Care-based branch guard; if using weighted choices both must still be physically valid."
+  ]
+}

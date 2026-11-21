@@ -1,0 +1,81 @@
+{
+  "id": "P011",
+  "name": "Pronoun antecedent distribution",
+  "description": "Current pronoun slot → compatible salient entities. Favor compatible pronouns; retain ambiguity.",
+  "proposed_payload": "{candidate_referents, probabilities}",
+  "provenance": "Authored illustrative seeds; not learned or extracted.",
+  "status": "program_required",
+  "examples": [
+    {
+      "id": "P011.01",
+      "description": "Mira arrived; she is the only compatible salient referent.",
+      "intended_feature": "Mira:1",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P011.02",
+      "description": "Theo and Nia arrived as one group.",
+      "intended_feature": "group:{Theo,Nia}",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P011.03",
+      "description": "Mira spoke to Nia; both are compatible with she.",
+      "intended_feature": "ambiguous:{Mira,Nia}",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P011.04",
+      "description": "The box beside the table is the subject; it follows.",
+      "intended_feature": "box_preferred_over_table",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P011.05",
+      "description": "The children saw the teacher; they follows.",
+      "intended_feature": "children_preferred",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P011.06",
+      "description": "Mira told Theo about herself.",
+      "intended_feature": "reflexive_bound_to_Mira",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P011.07",
+      "description": "Theo told Mira about himself.",
+      "intended_feature": "reflexive_bound_to_Theo",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P011.08",
+      "description": "Two boats and one rope are present; it follows.",
+      "intended_feature": "rope_preferred_by_number",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P011.09",
+      "description": "Singular they is the established pronoun for Alex.",
+      "intended_feature": "Alex_supported",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P011.10",
+      "description": "No entity has been introduced before she.",
+      "intended_feature": "unresolved_reference",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    }
+  ],
+  "required_program": "Resolve dynamic candidate referents using agreement, salience, binding constraints, and ambiguity; return a distribution, not a fixed pronoun dictionary."
+}

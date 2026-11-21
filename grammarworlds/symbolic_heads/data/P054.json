@@ -1,0 +1,81 @@
+{
+  "id": "P054",
+  "name": "State-driven turning point",
+  "description": "Narrative midpoint → a change enabling a previously blocked option. Favor a consequential turn.",
+  "proposed_payload": "{changed_state, newly_enabled_action}",
+  "provenance": "Authored illustrative seeds; not learned or extracted.",
+  "status": "program_required",
+  "examples": [
+    {
+      "id": "P054.01",
+      "description": "Found key unlocks the only exit.",
+      "intended_feature": "newly_enabled:escape",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P054.02",
+      "description": "Nia arrives with the missing repair skill.",
+      "intended_feature": "newly_enabled:repair",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P054.03",
+      "description": "Lamp is relit but the key was already visible.",
+      "intended_feature": "not_a_new_enabler",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P054.04",
+      "description": "Bridge repair connects previously separated banks.",
+      "intended_feature": "newly_enabled:crossing",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P054.05",
+      "description": "A revelation changes belief but not physical possibility.",
+      "intended_feature": "epistemic_turn",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P054.06",
+      "description": "An apparent solution fails to remove the blocker.",
+      "intended_feature": "false_turn",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P054.07",
+      "description": "Two simultaneous changes are jointly required for rescue.",
+      "intended_feature": "joint_enabling_change",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P054.08",
+      "description": "Removing a resource closes options instead of opening them.",
+      "intended_feature": "setback_turn",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P054.09",
+      "description": "A cosmetic color change leaves options unchanged.",
+      "intended_feature": "weak_turn",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P054.10",
+      "description": "A proposed future repair has not occurred.",
+      "intended_feature": "no_committed_turn",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    }
+  ],
+  "required_program": "Compare before/after world states and action eligibility to find consequential enabling changes, rather than choosing dramatic wording by keyword."
+}

@@ -1,0 +1,81 @@
+{
+  "id": "P042",
+  "name": "Addressee resolution",
+  "description": "Second-person reference → intended listener. Bind second-person descriptions.",
+  "proposed_payload": "{addressee_distribution}",
+  "provenance": "Authored illustrative seeds; not learned or extracted.",
+  "status": "program_required",
+  "examples": [
+    {
+      "id": "P042.01",
+      "description": "Mira tells Nia you should rest.",
+      "intended_feature": "you:Nia",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P042.02",
+      "description": "Theo asks Omar about your boat.",
+      "intended_feature": "your:Omar",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P042.03",
+      "description": "Mira addresses both Nia and Omar as you.",
+      "intended_feature": "group_addressee",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P042.04",
+      "description": "A speaker talks to herself.",
+      "intended_feature": "addressee_equals_speaker",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P042.05",
+      "description": "Omar, could you help? appears as a vocative.",
+      "intended_feature": "addressee:Omar",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P042.06",
+      "description": "A quoted letter addresses someone absent.",
+      "intended_feature": "letter_recipient_not_listener",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P042.07",
+      "description": "Two listeners are present without a selected addressee.",
+      "intended_feature": "ambiguous_addressee",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P042.08",
+      "description": "A new turn redirects a question to Theo.",
+      "intended_feature": "addressee_updates",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P042.09",
+      "description": "Generic you occurs in a proverb.",
+      "intended_feature": "generic_not_entity_specific",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P042.10",
+      "description": "A nested quote changes its own addressee.",
+      "intended_feature": "nested_scope_binding",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    }
+  ],
+  "required_program": "Resolve dialogue addressees from turn metadata, vocatives, group address, and nested quotations; retain ambiguity when not established."
+}

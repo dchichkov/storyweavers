@@ -1,0 +1,81 @@
+{
+  "id": "P038",
+  "name": "Information source reliability",
+  "description": "Conflicting report → source track record and directness. Reweight certainty and attribution.",
+  "proposed_payload": "{claim, source, reliability_estimate}",
+  "provenance": "Authored illustrative seeds; not learned or extracted.",
+  "status": "program_required",
+  "examples": [
+    {
+      "id": "P038.01",
+      "description": "Nia guesses the bridge is safe.",
+      "intended_feature": "low_directness",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P038.02",
+      "description": "Mira inspects the broken plank herself.",
+      "intended_feature": "direct_observation",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P038.03",
+      "description": "Three reports all repeat one rumor.",
+      "intended_feature": "one_underlying_source",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P038.04",
+      "description": "A trusted observer is uncertain about distance.",
+      "intended_feature": "trust_does_not_erase_uncertainty",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P038.05",
+      "description": "A formerly unreliable source provides verifiable evidence.",
+      "intended_feature": "evidence_updates_reliability",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P038.06",
+      "description": "Two direct witnesses disagree.",
+      "intended_feature": "unresolved_conflict",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P038.07",
+      "description": "A report predates a major storm.",
+      "intended_feature": "stale_source_evidence",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P038.08",
+      "description": "An anonymous message has no track record.",
+      "intended_feature": "unknown_reliability",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P038.09",
+      "description": "A precise measurement conflicts with a vague guess.",
+      "intended_feature": "measurement_weight_higher",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P038.10",
+      "description": "A narrator uses emphatic wording without evidence.",
+      "intended_feature": "no_confidence_from_style_alone",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    }
+  ],
+  "required_program": "Combine source identity, directness, calibrated reliability history, and correlated reports; do not confuse confident language with truth."
+}

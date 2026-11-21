@@ -1,0 +1,72 @@
+{
+  "schema": "event-mapping-bank-v1",
+  "rules": [
+    {
+      "id": "fetch.portable_tool",
+      "weight": 1,
+      "profiles": ["paper", "catalog"],
+      "source": {
+        "kinds": ["fetch_tape"],
+        "bind": {"worker": "frame.actor", "tool": "movements.0.item", "supply": "movements.0.source"},
+        "equals": {
+          "movements_count": 1,
+          "movements.0.destination": "$worker",
+          "changes": [{"entity": "$tool", "field": "location", "before": "$supply", "after": "$worker"}]
+        }
+      },
+      "target": {
+        "id": "fetch",
+        "event": {"op": "fetch", "actor": "worker", "item": "tool", "source": "supply"},
+        "roles": {
+          "worker": {"kind": "person", "properties": ["can_hold"]},
+          "tool": {"kind": "tool", "properties": ["portable"]},
+          "supply": {"kind": "place", "properties": ["reachable"]}
+        }
+      }
+    },
+    {
+      "id": "repair.paper",
+      "weight": 2,
+      "profiles": ["paper", "catalog"],
+      "source": {
+        "kinds": ["mend"],
+        "bind": {"worker": "frame.actor", "item": "frame.patient", "tool": "frame.instrument"},
+        "equals": {
+          "movements_count": 0,
+          "changes": [{"entity": "$item", "field": "state", "add": ["repaired"], "remove": ["torn"]}]
+        }
+      },
+      "target": {
+        "id": "patch",
+        "event": {"op": "patch_paper", "actor": "worker", "item": "item", "tool": "tool"},
+        "roles": {
+          "worker": {"kind": "person", "properties": ["can_patch_paper"]},
+          "item": {"kind": "object", "properties": ["paper"]},
+          "tool": {"kind": "tool", "properties": ["repair"]}
+        }
+      }
+    },
+    {
+      "id": "repair.kite",
+      "weight": 1,
+      "profiles": ["catalog"],
+      "source": {
+        "kinds": ["mend"],
+        "bind": {"worker": "frame.actor", "item": "frame.patient", "tool": "frame.instrument"},
+        "equals": {
+          "movements_count": 0,
+          "changes": [{"entity": "$item", "field": "state", "add": ["repaired"], "remove": ["torn"]}]
+        }
+      },
+      "target": {
+        "id": "patch",
+        "event": {"op": "mend_kite", "actor": "worker", "item": "item", "tool": "tool"},
+        "roles": {
+          "worker": {"kind": "person", "properties": ["can_repair"]},
+          "item": {"kind": "object", "properties": ["physics:kite"]},
+          "tool": {"kind": "tool", "properties": ["repair"]}
+        }
+      }
+    }
+  ]
+}

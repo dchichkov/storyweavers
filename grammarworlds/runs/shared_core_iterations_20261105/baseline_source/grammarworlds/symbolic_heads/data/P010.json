@@ -1,0 +1,81 @@
+{
+  "id": "P010",
+  "name": "Entity-name retrieval",
+  "description": "Current entity ID → previous surface names. Favor established names over new ones.",
+  "proposed_payload": "{entity_id, aliases, frequencies}",
+  "provenance": "Authored illustrative seeds; not learned or extracted.",
+  "status": "program_required",
+  "examples": [
+    {
+      "id": "P010.01",
+      "description": "Entity e1 has been introduced as Mira twice.",
+      "intended_feature": "e1:{Mira:2}",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P010.02",
+      "description": "Entity e2 has aliases Theodore and Theo, used once and three times.",
+      "intended_feature": "e2:{Theodore:1,Theo:3}",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P010.03",
+      "description": "Two different entities are both named Sam. Query e3.",
+      "intended_feature": "aliases_of_e3_only",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P010.04",
+      "description": "The captain and Nia refer to the same established entity.",
+      "intended_feature": "aliases:{captain,Nia}",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P010.05",
+      "description": "An unnamed traveler has no proper-name record.",
+      "intended_feature": "no_invented_name",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P010.06",
+      "description": "An entity is renamed Star after being called Puppy.",
+      "intended_feature": "current_alias:Star;previous_alias:Puppy",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P010.07",
+      "description": "The building named Rose is distinct from Rose the gardener.",
+      "intended_feature": "kind_bound_aliases",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P010.08",
+      "description": "Entity e8 appears only as the miller.",
+      "intended_feature": "alias:the_miller",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P010.09",
+      "description": "Omar is mentioned only in another scene's unresolved quotation.",
+      "intended_feature": "exclude_unbound_quotation_alias",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P010.10",
+      "description": "A new entity uses the unseen name Zeli.",
+      "intended_feature": "retrieve_Zeli_without_table_edit",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    }
+  ],
+  "required_program": "Join dynamic entity IDs to their established alias records and scoped mention counts; do not bake names into a global lexical table."
+}

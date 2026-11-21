@@ -1,0 +1,574 @@
+{
+  "id": "P059",
+  "name": "Conditional continuation counts",
+  "description": "Current word and active feature → matching corpus contexts. Apply a smoothed empirical probability adjustment.",
+  "proposed_payload": "{feature_bucket, next_word_counts, support}",
+  "provenance": "Authored illustrative seeds; not learned or extracted.",
+  "status": "table",
+  "examples": [
+    {
+      "id": "P059.01",
+      "description": "River with water favors flows; sings remains possible with lower count.",
+      "query": "river",
+      "scope": "example",
+      "sources": [
+        {
+          "id": "source:1",
+          "channel": "active_context_feature",
+          "scope": "example",
+          "key": "water",
+          "confidence": 1.0
+        }
+      ],
+      "expected_features": {
+        "water": 1.0
+      },
+      "grammar_weights": {
+        "flows": 1.0,
+        "sings": 1.0,
+        "waits": 1.0,
+        "rests": 1.0
+      },
+      "favored": "flows",
+      "disfavored": "sings"
+    },
+    {
+      "id": "P059.02",
+      "description": "Bird with song favors sings.",
+      "query": "bird",
+      "scope": "example",
+      "sources": [
+        {
+          "id": "source:2",
+          "channel": "active_context_feature",
+          "scope": "example",
+          "key": "song",
+          "confidence": 1.0
+        }
+      ],
+      "expected_features": {
+        "song": 1.0
+      },
+      "grammar_weights": {
+        "sings": 1.0,
+        "flows": 1.0,
+        "waits": 1.0,
+        "rests": 1.0
+      },
+      "favored": "sings",
+      "disfavored": "flows"
+    },
+    {
+      "id": "P059.03",
+      "description": "Fire with heat favors burns.",
+      "query": "fire",
+      "scope": "example",
+      "sources": [
+        {
+          "id": "source:3",
+          "channel": "active_context_feature",
+          "scope": "example",
+          "key": "heat",
+          "confidence": 1.0
+        }
+      ],
+      "expected_features": {
+        "heat": 1.0
+      },
+      "grammar_weights": {
+        "burns": 1.0,
+        "freezes": 1.0,
+        "waits": 1.0,
+        "rests": 1.0
+      },
+      "favored": "burns",
+      "disfavored": "freezes"
+    },
+    {
+      "id": "P059.04",
+      "description": "Snow with cold favors falls.",
+      "query": "snow",
+      "scope": "example",
+      "sources": [
+        {
+          "id": "source:4",
+          "channel": "active_context_feature",
+          "scope": "example",
+          "key": "cold",
+          "confidence": 1.0
+        }
+      ],
+      "expected_features": {
+        "cold": 1.0
+      },
+      "grammar_weights": {
+        "falls": 1.0,
+        "burns": 1.0,
+        "waits": 1.0,
+        "rests": 1.0
+      },
+      "favored": "falls",
+      "disfavored": "burns"
+    },
+    {
+      "id": "P059.05",
+      "description": "Locked door favors resists over unsupported opens.",
+      "query": "door",
+      "scope": "example",
+      "sources": [
+        {
+          "id": "source:5",
+          "channel": "active_context_feature",
+          "scope": "example",
+          "key": "locked",
+          "confidence": 1.0
+        }
+      ],
+      "expected_features": {
+        "locked": 1.0
+      },
+      "grammar_weights": {
+        "resists": 1.0,
+        "opens": 1.0,
+        "waits": 1.0,
+        "rests": 1.0
+      },
+      "favored": "resists",
+      "disfavored": "opens"
+    },
+    {
+      "id": "P059.06",
+      "description": "Unlocked door reverses the contextual preference.",
+      "query": "door",
+      "scope": "example",
+      "sources": [
+        {
+          "id": "source:6",
+          "channel": "active_context_feature",
+          "scope": "example",
+          "key": "unlocked",
+          "confidence": 1.0
+        }
+      ],
+      "expected_features": {
+        "unlocked": 1.0
+      },
+      "grammar_weights": {
+        "opens": 1.0,
+        "resists": 1.0,
+        "waits": 1.0,
+        "rests": 1.0
+      },
+      "favored": "opens",
+      "disfavored": "resists"
+    },
+    {
+      "id": "P059.07",
+      "description": "Seed with moisture favors sprouts.",
+      "query": "seed",
+      "scope": "example",
+      "sources": [
+        {
+          "id": "source:7",
+          "channel": "active_context_feature",
+          "scope": "example",
+          "key": "moisture",
+          "confidence": 1.0
+        }
+      ],
+      "expected_features": {
+        "moisture": 1.0
+      },
+      "grammar_weights": {
+        "sprouts": 1.0,
+        "rusts": 1.0,
+        "waits": 1.0,
+        "rests": 1.0
+      },
+      "favored": "sprouts",
+      "disfavored": "rusts"
+    },
+    {
+      "id": "P059.08",
+      "description": "The same moisture feature has a different effect with iron.",
+      "query": "iron",
+      "scope": "example",
+      "sources": [
+        {
+          "id": "source:8",
+          "channel": "active_context_feature",
+          "scope": "example",
+          "key": "moisture",
+          "confidence": 1.0
+        }
+      ],
+      "expected_features": {
+        "moisture": 1.0
+      },
+      "grammar_weights": {
+        "rusts": 1.0,
+        "sprouts": 1.0,
+        "waits": 1.0,
+        "rests": 1.0
+      },
+      "favored": "rusts",
+      "disfavored": "sprouts"
+    },
+    {
+      "id": "P059.09",
+      "description": "A fear feature favors hesitation for child.",
+      "query": "child",
+      "scope": "example",
+      "sources": [
+        {
+          "id": "source:9",
+          "channel": "active_context_feature",
+          "scope": "example",
+          "key": "fear",
+          "confidence": 1.0
+        }
+      ],
+      "expected_features": {
+        "fear": 1.0
+      },
+      "grammar_weights": {
+        "hesitates": 1.0,
+        "celebrates": 1.0,
+        "waits": 1.0,
+        "rests": 1.0
+      },
+      "favored": "hesitates",
+      "disfavored": "celebrates"
+    },
+    {
+      "id": "P059.10",
+      "description": "A joy feature changes the child continuation.",
+      "query": "child",
+      "scope": "example",
+      "sources": [
+        {
+          "id": "source:10",
+          "channel": "active_context_feature",
+          "scope": "example",
+          "key": "joy",
+          "confidence": 1.0
+        }
+      ],
+      "expected_features": {
+        "joy": 1.0
+      },
+      "grammar_weights": {
+        "celebrates": 1.0,
+        "hesitates": 1.0,
+        "waits": 1.0,
+        "rests": 1.0
+      },
+      "favored": "celebrates",
+      "disfavored": "hesitates"
+    }
+  ],
+  "input_channel": "active_context_feature",
+  "receiver_mode": "counts",
+  "smoothing": 1.0,
+  "input_contract": "Supply current, scoped records in channel active_context_feature. Scope selection and structural parsing belong to the caller; no free-text parser is implied.",
+  "table_semantics": "Illustrative continuation counts, smoothed toward the grammar distribution.",
+  "selection": [
+    {
+      "tokens": [
+        "river",
+        "water"
+      ],
+      "weight": 1.0
+    },
+    {
+      "tokens": [
+        "bird",
+        "song"
+      ],
+      "weight": 1.0
+    },
+    {
+      "tokens": [
+        "fire",
+        "heat"
+      ],
+      "weight": 1.0
+    },
+    {
+      "tokens": [
+        "snow",
+        "cold"
+      ],
+      "weight": 1.0
+    },
+    {
+      "tokens": [
+        "door",
+        "locked"
+      ],
+      "weight": 1.0
+    },
+    {
+      "tokens": [
+        "door",
+        "unlocked"
+      ],
+      "weight": 1.0
+    },
+    {
+      "tokens": [
+        "seed",
+        "moisture"
+      ],
+      "weight": 1.0
+    },
+    {
+      "tokens": [
+        "iron",
+        "moisture"
+      ],
+      "weight": 1.0
+    },
+    {
+      "tokens": [
+        "child",
+        "fear"
+      ],
+      "weight": 1.0
+    },
+    {
+      "tokens": [
+        "child",
+        "joy"
+      ],
+      "weight": 1.0
+    }
+  ],
+  "projection": [
+    {
+      "tokens": [
+        "water",
+        "water"
+      ],
+      "weight": 1.0
+    },
+    {
+      "tokens": [
+        "song",
+        "song"
+      ],
+      "weight": 1.0
+    },
+    {
+      "tokens": [
+        "heat",
+        "heat"
+      ],
+      "weight": 1.0
+    },
+    {
+      "tokens": [
+        "cold",
+        "cold"
+      ],
+      "weight": 1.0
+    },
+    {
+      "tokens": [
+        "locked",
+        "locked"
+      ],
+      "weight": 1.0
+    },
+    {
+      "tokens": [
+        "unlocked",
+        "unlocked"
+      ],
+      "weight": 1.0
+    },
+    {
+      "tokens": [
+        "moisture",
+        "moisture"
+      ],
+      "weight": 1.0
+    },
+    {
+      "tokens": [
+        "fear",
+        "fear"
+      ],
+      "weight": 1.0
+    },
+    {
+      "tokens": [
+        "joy",
+        "joy"
+      ],
+      "weight": 1.0
+    }
+  ],
+  "receiver": [
+    {
+      "tokens": [
+        "river",
+        "water",
+        "flows"
+      ],
+      "weight": 12
+    },
+    {
+      "tokens": [
+        "river",
+        "water",
+        "sings"
+      ],
+      "weight": 1
+    },
+    {
+      "tokens": [
+        "bird",
+        "song",
+        "sings"
+      ],
+      "weight": 12
+    },
+    {
+      "tokens": [
+        "bird",
+        "song",
+        "flows"
+      ],
+      "weight": 1
+    },
+    {
+      "tokens": [
+        "fire",
+        "heat",
+        "burns"
+      ],
+      "weight": 12
+    },
+    {
+      "tokens": [
+        "fire",
+        "heat",
+        "freezes"
+      ],
+      "weight": 1
+    },
+    {
+      "tokens": [
+        "snow",
+        "cold",
+        "falls"
+      ],
+      "weight": 12
+    },
+    {
+      "tokens": [
+        "snow",
+        "cold",
+        "burns"
+      ],
+      "weight": 1
+    },
+    {
+      "tokens": [
+        "door",
+        "locked",
+        "resists"
+      ],
+      "weight": 12
+    },
+    {
+      "tokens": [
+        "door",
+        "locked",
+        "opens"
+      ],
+      "weight": 1
+    },
+    {
+      "tokens": [
+        "door",
+        "unlocked",
+        "opens"
+      ],
+      "weight": 12
+    },
+    {
+      "tokens": [
+        "door",
+        "unlocked",
+        "resists"
+      ],
+      "weight": 1
+    },
+    {
+      "tokens": [
+        "seed",
+        "moisture",
+        "sprouts"
+      ],
+      "weight": 12
+    },
+    {
+      "tokens": [
+        "seed",
+        "moisture",
+        "rusts"
+      ],
+      "weight": 1
+    },
+    {
+      "tokens": [
+        "iron",
+        "moisture",
+        "rusts"
+      ],
+      "weight": 12
+    },
+    {
+      "tokens": [
+        "iron",
+        "moisture",
+        "sprouts"
+      ],
+      "weight": 1
+    },
+    {
+      "tokens": [
+        "child",
+        "fear",
+        "hesitates"
+      ],
+      "weight": 12
+    },
+    {
+      "tokens": [
+        "child",
+        "fear",
+        "celebrates"
+      ],
+      "weight": 1
+    },
+    {
+      "tokens": [
+        "child",
+        "joy",
+        "celebrates"
+      ],
+      "weight": 12
+    },
+    {
+      "tokens": [
+        "child",
+        "joy",
+        "hesitates"
+      ],
+      "weight": 1
+    }
+  ]
+}

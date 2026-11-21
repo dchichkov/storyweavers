@@ -1,0 +1,1091 @@
+{
+  "world": {
+    "scenario": "catalog_attachment",
+    "entities": {
+      "meadow": {
+        "id": "meadow",
+        "noun": "meadow",
+        "kind": "place",
+        "location": "",
+        "number": "singular",
+        "pronoun": "it",
+        "properties": [
+          "windy"
+        ],
+        "state": [],
+        "memes": {}
+      },
+      "import_library_hero": {
+        "id": "import_library_hero",
+        "noun": "Mino",
+        "kind": "person",
+        "location": "meadow",
+        "number": "singular",
+        "pronoun": "she",
+        "properties": [
+          "animate",
+          "can_hold",
+          "can_sketch_moon"
+        ],
+        "state": [],
+        "memes": {
+          "Care": 0.2806185464674407,
+          "Fear": 0.7084602421623396,
+          "Trust": 0.6582647713859684
+        }
+      },
+      "import_kite_target": {
+        "id": "import_kite_target",
+        "noun": "kite",
+        "kind": "object",
+        "location": "meadow",
+        "number": "singular",
+        "pronoun": "it",
+        "properties": [
+          "flyable",
+          "physics:kite",
+          "portable"
+        ],
+        "state": [
+          "grounded",
+          "torn"
+        ],
+        "memes": {}
+      },
+      "import_kite_hero": {
+        "id": "import_kite_hero",
+        "noun": "Sammy",
+        "kind": "person",
+        "location": "meadow",
+        "number": "singular",
+        "pronoun": "he",
+        "properties": [
+          "animate",
+          "can_climb",
+          "can_help",
+          "can_hold",
+          "can_repair"
+        ],
+        "state": [],
+        "memes": {
+          "Care": 0.8,
+          "Fear": 0.4846019374111061,
+          "Curiosity": 0.65,
+          "Trust": 0.35,
+          "Joy": 0.1
+        }
+      },
+      "import_kite_tool": {
+        "id": "import_kite_tool",
+        "noun": "tape",
+        "kind": "tool",
+        "location": "meadow",
+        "number": "singular",
+        "pronoun": "it",
+        "properties": [
+          "portable",
+          "repair"
+        ],
+        "state": [],
+        "memes": {}
+      },
+      "import_library_paper": {
+        "id": "import_library_paper",
+        "noun": "paper",
+        "kind": "object",
+        "location": "import_library_hero",
+        "number": "singular",
+        "pronoun": "it",
+        "properties": [
+          "drawable",
+          "portable"
+        ],
+        "state": [
+          "blank"
+        ],
+        "memes": {}
+      },
+      "import_library_pencil": {
+        "id": "import_library_pencil",
+        "noun": "pencil",
+        "kind": "tool",
+        "location": "import_library_hero",
+        "number": "singular",
+        "pronoun": "it",
+        "properties": [
+          "draw",
+          "portable"
+        ],
+        "state": [],
+        "memes": {}
+      },
+      "import_library_atlas": {
+        "id": "import_library_atlas",
+        "noun": "moon atlas",
+        "kind": "object",
+        "location": "import_library_hero",
+        "number": "singular",
+        "pronoun": "it",
+        "properties": [
+          "moon_reference"
+        ],
+        "state": [
+          "moon_picture"
+        ],
+        "memes": {}
+      },
+      "import_kite_string": {
+        "id": "import_kite_string",
+        "noun": "string",
+        "kind": "object",
+        "location": "import_library_hero",
+        "number": "singular",
+        "pronoun": "it",
+        "properties": [
+          "portable",
+          "tie"
+        ],
+        "state": [],
+        "memes": {}
+      },
+      "meadow_sky": {
+        "id": "meadow_sky",
+        "noun": "sky",
+        "kind": "place",
+        "location": "meadow",
+        "number": "singular",
+        "pronoun": "it",
+        "properties": [
+          "airspace"
+        ],
+        "state": [],
+        "memes": {}
+      },
+      "import_music_hero": {
+        "id": "import_music_hero",
+        "noun": "Niah",
+        "kind": "person",
+        "location": "meadow",
+        "number": "singular",
+        "pronoun": "she",
+        "properties": [
+          "animate",
+          "can_drum",
+          "can_hold"
+        ],
+        "state": [],
+        "memes": {
+          "Care": 0.8,
+          "Desire": 0.85,
+          "Fear": 0.3707611624466637
+        }
+      },
+      "import_music_drum": {
+        "id": "import_music_drum",
+        "noun": "little drum",
+        "kind": "instrument",
+        "location": "import_music_hero",
+        "number": "singular",
+        "pronoun": "it",
+        "properties": [
+          "physics:drum",
+          "portable",
+          "red_ribbon"
+        ],
+        "state": [],
+        "memes": {}
+      }
+    },
+    "hero": "import_library_hero",
+    "helper": "import_kite_hero",
+    "target": "import_kite_target",
+    "tool": "",
+    "setting": "meadow",
+    "facts": {},
+    "flags": [],
+    "history": [],
+    "focus": ""
+  },
+  "template": {
+    "schema": "attached-event-lines-v1",
+    "roles": {
+      "visitor": "person",
+      "kite": "object",
+      "repairer": "person",
+      "_kite_repair_tool": "tool",
+      "_visitor_paper": "object",
+      "_visitor_pencil": "tool",
+      "_visitor_atlas": "object",
+      "_kite_tether": "object",
+      "_airspace": "place",
+      "musician": "person",
+      "_musician_instrument": "instrument"
+    },
+    "events": {
+      "premise": {
+        "op": "premise",
+        "actor": "visitor",
+        "item": "kite"
+      },
+      "wish": {
+        "op": "wish_flight",
+        "actor": "visitor",
+        "item": "kite"
+      },
+      "offer": {
+        "op": "offer",
+        "actor": "repairer",
+        "listener": "visitor"
+      },
+      "repair": {
+        "op": "mend_kite",
+        "actor": "repairer",
+        "item": "kite",
+        "tool": "_kite_repair_tool"
+      },
+      "picture": {
+        "op": "sketch_moon",
+        "actor": "visitor",
+        "item": "_visitor_paper",
+        "tool": "_visitor_pencil",
+        "reference": "_visitor_atlas"
+      },
+      "flight": {
+        "op": "fly_kite",
+        "actor": "visitor",
+        "item": "kite",
+        "tool": "_kite_tether",
+        "destination": "_airspace"
+      },
+      "music": {
+        "op": "celebrate",
+        "actor": "musician",
+        "item": "kite",
+        "tool": "_musician_instrument"
+      }
+    },
+    "lines": [
+      {
+        "entity": "visitor",
+        "steps": [
+          "premise",
+          "wish",
+          "offer",
+          "picture",
+          "flight"
+        ]
+      },
+      {
+        "entity": "kite",
+        "steps": [
+          "premise",
+          "wish",
+          "repair",
+          "flight",
+          "music"
+        ]
+      },
+      {
+        "entity": "repairer",
+        "steps": [
+          "offer",
+          "repair"
+        ]
+      },
+      {
+        "entity": "_kite_repair_tool",
+        "steps": [
+          "repair"
+        ]
+      },
+      {
+        "entity": "_visitor_paper",
+        "steps": [
+          "picture"
+        ]
+      },
+      {
+        "entity": "_visitor_pencil",
+        "steps": [
+          "picture"
+        ]
+      },
+      {
+        "entity": "_visitor_atlas",
+        "steps": [
+          "picture"
+        ]
+      },
+      {
+        "entity": "_kite_tether",
+        "steps": [
+          "flight"
+        ]
+      },
+      {
+        "entity": "_airspace",
+        "steps": [
+          "flight"
+        ]
+      },
+      {
+        "entity": "musician",
+        "steps": [
+          "music"
+        ]
+      },
+      {
+        "entity": "_musician_instrument",
+        "steps": [
+          "music"
+        ]
+      }
+    ],
+    "source": {
+      "kind": "catalog-composition",
+      "input": {
+        "schema": "catalog-line-v1",
+        "context": {
+          "setting": "meadow",
+          "properties": [
+            "windy"
+          ]
+        },
+        "mentions": {
+          "visitor": {
+            "name": "Mino"
+          },
+          "repairer": {
+            "name": "Sammy"
+          },
+          "musician": {
+            "name": "Niah"
+          },
+          "kite": {
+            "noun": "kite"
+          }
+        },
+        "events": [
+          {
+            "id": "premise",
+            "op": "premise",
+            "actor": "visitor",
+            "item": "kite"
+          },
+          {
+            "id": "wish",
+            "op": "wish_flight",
+            "actor": "visitor",
+            "item": "kite"
+          },
+          {
+            "id": "offer",
+            "op": "offer",
+            "actor": "repairer",
+            "listener": "visitor"
+          },
+          {
+            "id": "repair",
+            "op": "mend_kite",
+            "actor": "repairer",
+            "item": "kite"
+          },
+          {
+            "id": "picture",
+            "op": "sketch_moon",
+            "actor": "visitor"
+          },
+          {
+            "id": "flight",
+            "op": "fly_kite",
+            "actor": "visitor",
+            "item": "kite"
+          },
+          {
+            "id": "music",
+            "op": "celebrate",
+            "actor": "musician",
+            "item": "kite"
+          }
+        ]
+      },
+      "retrieval": [
+        {
+          "action": "construct",
+          "entity": "meadow",
+          "evidence": "explicit line context"
+        },
+        {
+          "action": "import",
+          "role": "visitor",
+          "entity": "import_library_hero",
+          "prototype": "library:hero",
+          "match_score": 0.75,
+          "alternatives": [
+            {
+              "prototype": "library:hero",
+              "score": 0.75
+            }
+          ],
+          "source": {
+            "world": "library",
+            "entity": "hero",
+            "seed": 1
+          },
+          "export_additions": [
+            "can_sketch_moon"
+          ],
+          "physics": [
+            "library:sketch_moon"
+          ],
+          "dependency": null,
+          "relocation": {
+            "source": "library",
+            "target": "meadow"
+          },
+          "discarded_person_states": [],
+          "discarded_relational_properties": []
+        },
+        {
+          "action": "import",
+          "role": "kite",
+          "entity": "import_kite_target",
+          "prototype": "kite:target",
+          "match_score": 1.0,
+          "alternatives": [
+            {
+              "prototype": "kite:target",
+              "score": 1.0
+            }
+          ],
+          "source": {
+            "world": "kite",
+            "entity": "target",
+            "seed": 1
+          },
+          "export_additions": [
+            "physics:kite"
+          ],
+          "physics": [
+            "kite:mend",
+            "kite:test_flight"
+          ],
+          "dependency": null,
+          "relocation": {
+            "source": "meadow",
+            "target": "meadow"
+          },
+          "discarded_person_states": [],
+          "discarded_relational_properties": []
+        },
+        {
+          "action": "import",
+          "role": "repairer",
+          "entity": "import_kite_hero",
+          "prototype": "kite:hero",
+          "match_score": 0.75,
+          "alternatives": [
+            {
+              "prototype": "kite:hero",
+              "score": 0.75
+            }
+          ],
+          "source": {
+            "world": "kite",
+            "entity": "hero",
+            "seed": 1
+          },
+          "export_additions": [
+            "can_help"
+          ],
+          "physics": [],
+          "dependency": null,
+          "relocation": {
+            "source": "meadow",
+            "target": "meadow"
+          },
+          "discarded_person_states": [],
+          "discarded_relational_properties": []
+        },
+        {
+          "action": "import",
+          "role": "_kite_repair_tool",
+          "entity": "import_kite_tool",
+          "prototype": "kite:tool",
+          "match_score": 1.0,
+          "alternatives": [
+            {
+              "prototype": "kite:tool",
+              "score": 1.0
+            }
+          ],
+          "source": {
+            "world": "kite",
+            "entity": "tool",
+            "seed": 1
+          },
+          "export_additions": [],
+          "physics": [],
+          "dependency": [
+            "kite",
+            "repair_tool"
+          ],
+          "relocation": {
+            "source": "basket",
+            "target": "meadow"
+          },
+          "discarded_person_states": [],
+          "discarded_relational_properties": []
+        },
+        {
+          "action": "import",
+          "role": "_visitor_paper",
+          "entity": "import_library_paper",
+          "prototype": "library:paper",
+          "match_score": 1.0,
+          "alternatives": [
+            {
+              "prototype": "library:paper",
+              "score": 1.0
+            }
+          ],
+          "source": {
+            "world": "library",
+            "entity": "paper",
+            "seed": 1
+          },
+          "export_additions": [
+            "drawable",
+            "portable"
+          ],
+          "physics": [],
+          "dependency": [
+            "visitor",
+            "paper"
+          ],
+          "relocation": {
+            "source": "hero",
+            "target": "import_library_hero"
+          },
+          "discarded_person_states": [],
+          "discarded_relational_properties": []
+        },
+        {
+          "action": "import",
+          "role": "_visitor_pencil",
+          "entity": "import_library_pencil",
+          "prototype": "library:pencil",
+          "match_score": 1.0,
+          "alternatives": [
+            {
+              "prototype": "library:pencil",
+              "score": 1.0
+            }
+          ],
+          "source": {
+            "world": "library",
+            "entity": "pencil",
+            "seed": 1
+          },
+          "export_additions": [],
+          "physics": [],
+          "dependency": [
+            "visitor",
+            "pencil"
+          ],
+          "relocation": {
+            "source": "hero",
+            "target": "import_library_hero"
+          },
+          "discarded_person_states": [],
+          "discarded_relational_properties": []
+        },
+        {
+          "action": "import",
+          "role": "_visitor_atlas",
+          "entity": "import_library_atlas",
+          "prototype": "library:atlas",
+          "match_score": 1.0,
+          "alternatives": [
+            {
+              "prototype": "library:atlas",
+              "score": 1.0
+            }
+          ],
+          "source": {
+            "world": "library",
+            "entity": "atlas",
+            "seed": 1
+          },
+          "export_additions": [
+            "moon_reference"
+          ],
+          "physics": [],
+          "dependency": [
+            "visitor",
+            "atlas"
+          ],
+          "relocation": {
+            "source": "hero",
+            "target": "import_library_hero"
+          },
+          "discarded_person_states": [],
+          "discarded_relational_properties": []
+        },
+        {
+          "action": "import",
+          "role": "_kite_tether",
+          "entity": "import_kite_string",
+          "prototype": "kite:string",
+          "match_score": 1.0,
+          "alternatives": [
+            {
+              "prototype": "kite:string",
+              "score": 1.0
+            }
+          ],
+          "source": {
+            "world": "kite",
+            "entity": "string",
+            "seed": 1
+          },
+          "export_additions": [],
+          "physics": [],
+          "dependency": [
+            "kite",
+            "tether"
+          ],
+          "relocation": {
+            "source": "hero",
+            "target": "meadow"
+          },
+          "discarded_person_states": [],
+          "discarded_relational_properties": []
+        },
+        {
+          "action": "construct",
+          "entity": "meadow_sky",
+          "evidence": "fly_kite destination requirement"
+        },
+        {
+          "action": "import",
+          "role": "musician",
+          "entity": "import_music_hero",
+          "prototype": "music:hero",
+          "match_score": 0.8571,
+          "alternatives": [
+            {
+              "prototype": "music:hero",
+              "score": 0.8571
+            }
+          ],
+          "source": {
+            "world": "music",
+            "entity": "hero",
+            "seed": 1
+          },
+          "export_additions": [
+            "can_drum"
+          ],
+          "physics": [
+            "music:perform"
+          ],
+          "dependency": null,
+          "relocation": {
+            "source": "music room",
+            "target": "meadow"
+          },
+          "discarded_person_states": [
+            "wants_duet"
+          ],
+          "discarded_relational_properties": []
+        },
+        {
+          "action": "import",
+          "role": "_musician_instrument",
+          "entity": "import_music_drum",
+          "prototype": "music:drum",
+          "match_score": 1.0,
+          "alternatives": [
+            {
+              "prototype": "music:drum",
+              "score": 1.0
+            }
+          ],
+          "source": {
+            "world": "music",
+            "entity": "drum",
+            "seed": 1
+          },
+          "export_additions": [
+            "physics:drum"
+          ],
+          "physics": [],
+          "dependency": [
+            "musician",
+            "instrument"
+          ],
+          "relocation": {
+            "source": "shelf",
+            "target": "import_music_hero"
+          },
+          "discarded_person_states": [],
+          "discarded_relational_properties": [
+            "borrowed"
+          ]
+        },
+        {
+          "action": "place",
+          "entity": "import_kite_string",
+          "holder": "import_library_hero",
+          "evidence": "exported tether placement"
+        }
+      ]
+    }
+  },
+  "bindings": {
+    "visitor": "import_library_hero",
+    "kite": "import_kite_target",
+    "repairer": "import_kite_hero",
+    "_kite_repair_tool": "import_kite_tool",
+    "_visitor_paper": "import_library_paper",
+    "_visitor_pencil": "import_library_pencil",
+    "_visitor_atlas": "import_library_atlas",
+    "_kite_tether": "import_kite_string",
+    "_airspace": "meadow_sky",
+    "musician": "import_music_hero",
+    "_musician_instrument": "import_music_drum"
+  },
+  "audit": [
+    {
+      "action": "construct",
+      "entity": "meadow",
+      "evidence": "explicit line context"
+    },
+    {
+      "action": "import",
+      "role": "visitor",
+      "entity": "import_library_hero",
+      "prototype": "library:hero",
+      "match_score": 0.75,
+      "alternatives": [
+        {
+          "prototype": "library:hero",
+          "score": 0.75
+        }
+      ],
+      "source": {
+        "world": "library",
+        "entity": "hero",
+        "seed": 1
+      },
+      "export_additions": [
+        "can_sketch_moon"
+      ],
+      "physics": [
+        "library:sketch_moon"
+      ],
+      "dependency": null,
+      "relocation": {
+        "source": "library",
+        "target": "meadow"
+      },
+      "discarded_person_states": [],
+      "discarded_relational_properties": []
+    },
+    {
+      "action": "import",
+      "role": "kite",
+      "entity": "import_kite_target",
+      "prototype": "kite:target",
+      "match_score": 1.0,
+      "alternatives": [
+        {
+          "prototype": "kite:target",
+          "score": 1.0
+        }
+      ],
+      "source": {
+        "world": "kite",
+        "entity": "target",
+        "seed": 1
+      },
+      "export_additions": [
+        "physics:kite"
+      ],
+      "physics": [
+        "kite:mend",
+        "kite:test_flight"
+      ],
+      "dependency": null,
+      "relocation": {
+        "source": "meadow",
+        "target": "meadow"
+      },
+      "discarded_person_states": [],
+      "discarded_relational_properties": []
+    },
+    {
+      "action": "import",
+      "role": "repairer",
+      "entity": "import_kite_hero",
+      "prototype": "kite:hero",
+      "match_score": 0.75,
+      "alternatives": [
+        {
+          "prototype": "kite:hero",
+          "score": 0.75
+        }
+      ],
+      "source": {
+        "world": "kite",
+        "entity": "hero",
+        "seed": 1
+      },
+      "export_additions": [
+        "can_help"
+      ],
+      "physics": [],
+      "dependency": null,
+      "relocation": {
+        "source": "meadow",
+        "target": "meadow"
+      },
+      "discarded_person_states": [],
+      "discarded_relational_properties": []
+    },
+    {
+      "action": "import",
+      "role": "_kite_repair_tool",
+      "entity": "import_kite_tool",
+      "prototype": "kite:tool",
+      "match_score": 1.0,
+      "alternatives": [
+        {
+          "prototype": "kite:tool",
+          "score": 1.0
+        }
+      ],
+      "source": {
+        "world": "kite",
+        "entity": "tool",
+        "seed": 1
+      },
+      "export_additions": [],
+      "physics": [],
+      "dependency": [
+        "kite",
+        "repair_tool"
+      ],
+      "relocation": {
+        "source": "basket",
+        "target": "meadow"
+      },
+      "discarded_person_states": [],
+      "discarded_relational_properties": []
+    },
+    {
+      "action": "import",
+      "role": "_visitor_paper",
+      "entity": "import_library_paper",
+      "prototype": "library:paper",
+      "match_score": 1.0,
+      "alternatives": [
+        {
+          "prototype": "library:paper",
+          "score": 1.0
+        }
+      ],
+      "source": {
+        "world": "library",
+        "entity": "paper",
+        "seed": 1
+      },
+      "export_additions": [
+        "drawable",
+        "portable"
+      ],
+      "physics": [],
+      "dependency": [
+        "visitor",
+        "paper"
+      ],
+      "relocation": {
+        "source": "hero",
+        "target": "import_library_hero"
+      },
+      "discarded_person_states": [],
+      "discarded_relational_properties": []
+    },
+    {
+      "action": "import",
+      "role": "_visitor_pencil",
+      "entity": "import_library_pencil",
+      "prototype": "library:pencil",
+      "match_score": 1.0,
+      "alternatives": [
+        {
+          "prototype": "library:pencil",
+          "score": 1.0
+        }
+      ],
+      "source": {
+        "world": "library",
+        "entity": "pencil",
+        "seed": 1
+      },
+      "export_additions": [],
+      "physics": [],
+      "dependency": [
+        "visitor",
+        "pencil"
+      ],
+      "relocation": {
+        "source": "hero",
+        "target": "import_library_hero"
+      },
+      "discarded_person_states": [],
+      "discarded_relational_properties": []
+    },
+    {
+      "action": "import",
+      "role": "_visitor_atlas",
+      "entity": "import_library_atlas",
+      "prototype": "library:atlas",
+      "match_score": 1.0,
+      "alternatives": [
+        {
+          "prototype": "library:atlas",
+          "score": 1.0
+        }
+      ],
+      "source": {
+        "world": "library",
+        "entity": "atlas",
+        "seed": 1
+      },
+      "export_additions": [
+        "moon_reference"
+      ],
+      "physics": [],
+      "dependency": [
+        "visitor",
+        "atlas"
+      ],
+      "relocation": {
+        "source": "hero",
+        "target": "import_library_hero"
+      },
+      "discarded_person_states": [],
+      "discarded_relational_properties": []
+    },
+    {
+      "action": "import",
+      "role": "_kite_tether",
+      "entity": "import_kite_string",
+      "prototype": "kite:string",
+      "match_score": 1.0,
+      "alternatives": [
+        {
+          "prototype": "kite:string",
+          "score": 1.0
+        }
+      ],
+      "source": {
+        "world": "kite",
+        "entity": "string",
+        "seed": 1
+      },
+      "export_additions": [],
+      "physics": [],
+      "dependency": [
+        "kite",
+        "tether"
+      ],
+      "relocation": {
+        "source": "hero",
+        "target": "meadow"
+      },
+      "discarded_person_states": [],
+      "discarded_relational_properties": []
+    },
+    {
+      "action": "construct",
+      "entity": "meadow_sky",
+      "evidence": "fly_kite destination requirement"
+    },
+    {
+      "action": "import",
+      "role": "musician",
+      "entity": "import_music_hero",
+      "prototype": "music:hero",
+      "match_score": 0.8571,
+      "alternatives": [
+        {
+          "prototype": "music:hero",
+          "score": 0.8571
+        }
+      ],
+      "source": {
+        "world": "music",
+        "entity": "hero",
+        "seed": 1
+      },
+      "export_additions": [
+        "can_drum"
+      ],
+      "physics": [
+        "music:perform"
+      ],
+      "dependency": null,
+      "relocation": {
+        "source": "music room",
+        "target": "meadow"
+      },
+      "discarded_person_states": [
+        "wants_duet"
+      ],
+      "discarded_relational_properties": []
+    },
+    {
+      "action": "import",
+      "role": "_musician_instrument",
+      "entity": "import_music_drum",
+      "prototype": "music:drum",
+      "match_score": 1.0,
+      "alternatives": [
+        {
+          "prototype": "music:drum",
+          "score": 1.0
+        }
+      ],
+      "source": {
+        "world": "music",
+        "entity": "drum",
+        "seed": 1
+      },
+      "export_additions": [
+        "physics:drum"
+      ],
+      "physics": [],
+      "dependency": [
+        "musician",
+        "instrument"
+      ],
+      "relocation": {
+        "source": "shelf",
+        "target": "import_music_hero"
+      },
+      "discarded_person_states": [],
+      "discarded_relational_properties": [
+        "borrowed"
+      ]
+    },
+    {
+      "action": "place",
+      "entity": "import_kite_string",
+      "holder": "import_library_hero",
+      "evidence": "exported tether placement"
+    }
+  ]
+}

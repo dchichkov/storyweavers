@@ -1,0 +1,81 @@
+{
+  "id": "P050",
+  "name": "Unresolved-thread retrieval",
+  "description": "Scene continuation → salient unfinished event. Favor returning to a live thread.",
+  "proposed_payload": "{thread_id, salience, unresolved_state}",
+  "provenance": "Authored illustrative seeds; not learned or extracted.",
+  "status": "program_required",
+  "examples": [
+    {
+      "id": "P050.01",
+      "description": "Strange knock has not been answered.",
+      "intended_feature": "live_thread:knock",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P050.02",
+      "description": "Missing ring remains unfound.",
+      "intended_feature": "live_thread:ring",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P050.03",
+      "description": "Knock is answered and visitor identified.",
+      "intended_feature": "thread_resolved",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P050.04",
+      "description": "Two mysteries remain with different urgency.",
+      "intended_feature": "ranked_live_threads",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P050.05",
+      "description": "A promise is forgotten in narration but not fulfilled.",
+      "intended_feature": "obligation_thread_remains",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P050.06",
+      "description": "A red herring is explicitly dismissed.",
+      "intended_feature": "thread_closed",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P050.07",
+      "description": "Scene changes but a critical danger persists.",
+      "intended_feature": "carry_thread_across_scene",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P050.08",
+      "description": "A repeated description creates no new event.",
+      "intended_feature": "no_duplicate_thread",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P050.09",
+      "description": "A character abandons a search with an explicit reason.",
+      "intended_feature": "thread_abandoned",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P050.10",
+      "description": "No unresolved event exists.",
+      "intended_feature": "no_thread_signal",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    }
+  ],
+  "required_program": "Maintain persistent narrative threads with event IDs, resolution predicates, salience, scene relevance, and explicit abandonment."
+}

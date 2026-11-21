@@ -1,0 +1,81 @@
+{
+  "id": "P030",
+  "name": "Duration compatibility",
+  "description": "Ongoing event → start time and elapsed interval. Downweight implausibly immediate completion.",
+  "proposed_payload": "{elapsed, duration_model}",
+  "provenance": "Authored illustrative seeds; not learned or extracted.",
+  "status": "program_required",
+  "examples": [
+    {
+      "id": "P030.01",
+      "description": "Paint applied one minute ago; drying typically takes hours.",
+      "intended_feature": "unlikely_dry",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P030.02",
+      "description": "Seeds planted this morning; maturity takes weeks.",
+      "intended_feature": "unlikely_mature",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P030.03",
+      "description": "Water boiled for the required interval.",
+      "intended_feature": "duration_satisfied",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P030.04",
+      "description": "Bread baked briefly in an unheated oven.",
+      "intended_feature": "time_alone_insufficient",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P030.05",
+      "description": "Snow melts faster in warm weather than freezing weather.",
+      "intended_feature": "condition_dependent_duration",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P030.06",
+      "description": "A journey took two hours across a midnight boundary.",
+      "intended_feature": "elapsed:2_hours",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P030.07",
+      "description": "Start time is unknown.",
+      "intended_feature": "duration_unknown",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P030.08",
+      "description": "An instant switch action has no long waiting interval.",
+      "intended_feature": "immediate_effect_possible",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P030.09",
+      "description": "One clock uses minutes and another seconds.",
+      "intended_feature": "unit_conversion_required",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P030.10",
+      "description": "Estimated drying interval is a range.",
+      "intended_feature": "probability_over_completion",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    }
+  ],
+  "required_program": "Compare elapsed time with typed duration models, units, environmental conditions, and uncertainty; avoid treating duration estimates as certainties."
+}

@@ -1,0 +1,247 @@
+{
+  "world": {
+    "scenario": "underdefined",
+    "entities": {
+      "ada": {
+        "id": "ada",
+        "noun": "Ada",
+        "kind": "person",
+        "location": "garden",
+        "number": "singular",
+        "pronoun": "she",
+        "properties": [
+          "can_help",
+          "can_hold",
+          "can_patch_paper"
+        ],
+        "state": [],
+        "memes": {
+          "Desire": 0.8,
+          "Fear": 0.2,
+          "Trust": 0.6
+        }
+      },
+      "omar": {
+        "id": "omar",
+        "noun": "Omar",
+        "kind": "person",
+        "location": "garden",
+        "number": "singular",
+        "pronoun": "he",
+        "properties": [
+          "can_help",
+          "can_hold",
+          "can_patch_paper"
+        ],
+        "state": [],
+        "memes": {
+          "Care": 0.8,
+          "Trust": 0.6
+        }
+      },
+      "book": {
+        "id": "book",
+        "noun": "book",
+        "kind": "object",
+        "location": "ada",
+        "number": "singular",
+        "pronoun": "it",
+        "properties": [
+          "paper",
+          "portable"
+        ],
+        "state": [
+          "torn"
+        ],
+        "memes": {}
+      },
+      "tape": {
+        "id": "tape",
+        "noun": "tape",
+        "kind": "tool",
+        "location": "bench",
+        "number": "singular",
+        "pronoun": "it",
+        "properties": [
+          "portable",
+          "repair"
+        ],
+        "state": [],
+        "memes": {}
+      },
+      "bench": {
+        "id": "bench",
+        "noun": "bench",
+        "kind": "place",
+        "location": "garden",
+        "number": "singular",
+        "pronoun": "it",
+        "properties": [
+          "reachable"
+        ],
+        "state": [],
+        "memes": {}
+      }
+    },
+    "hero": "ada",
+    "helper": "omar",
+    "target": "book",
+    "tool": "tape",
+    "setting": "garden",
+    "facts": {
+      "problem": {
+        "id": "problem",
+        "text": "The book is torn.",
+        "tags": [
+          "problem",
+          "goal"
+        ],
+        "value": 1.0
+      },
+      "helper_available": {
+        "id": "helper_available",
+        "text": "Omar is nearby and willing to help.",
+        "tags": [
+          "helper",
+          "trust"
+        ],
+        "value": 1.0
+      }
+    },
+    "flags": [],
+    "history": [],
+    "focus": ""
+  },
+  "template": {
+    "schema": "attached-event-lines-v1",
+    "roles": {
+      "worker": "person",
+      "tool": "tool",
+      "supply": "place",
+      "item": "object"
+    },
+    "events": {
+      "fetch": {
+        "op": "fetch",
+        "actor": "worker",
+        "item": "tool",
+        "source": "supply"
+      },
+      "patch": {
+        "op": "patch_paper",
+        "actor": "worker",
+        "item": "item",
+        "tool": "tool"
+      }
+    },
+    "lines": [
+      {
+        "entity": "worker",
+        "steps": [
+          "fetch",
+          "patch"
+        ]
+      },
+      {
+        "entity": "item",
+        "steps": [
+          "patch"
+        ]
+      },
+      {
+        "entity": "tool",
+        "steps": [
+          "fetch",
+          "patch"
+        ]
+      }
+    ],
+    "source": {
+      "scenario": "kite",
+      "seed": 3000,
+      "entity": "hero",
+      "text_sha256": "eadddad27be9dafe15834622469f7fbe6a9ed4c49dd0e0af4c582d3d0acae899",
+      "event_ids": [
+        4,
+        5
+      ],
+      "port_policy": "reviewed portable operations replace source-specific guard/flag context",
+      "role_origins": {
+        "worker": "hero",
+        "tool": "tool",
+        "supply": "basket",
+        "item": "target"
+      },
+      "untransferred_context": [
+        {
+          "event_id": 4,
+          "source_contract": {
+            "requires": [
+              "patch"
+            ],
+            "excludes": [
+              "ended",
+              "prepared"
+            ],
+            "flags_added": [
+              "prepared"
+            ],
+            "flags_removed": []
+          },
+          "source_dependencies": [
+            {
+              "kind": "required_flag",
+              "key": "patch",
+              "source_event": 3
+            },
+            {
+              "kind": "world_fact",
+              "key": "problem",
+              "source_event": null
+            }
+          ]
+        },
+        {
+          "event_id": 5,
+          "source_contract": {
+            "requires": [
+              "prepared"
+            ],
+            "excludes": [
+              "ended",
+              "mended"
+            ],
+            "flags_added": [
+              "mended"
+            ],
+            "flags_removed": []
+          },
+          "source_dependencies": [
+            {
+              "kind": "required_flag",
+              "key": "prepared",
+              "source_event": 4
+            },
+            {
+              "kind": "world_fact",
+              "key": "problem",
+              "source_event": null
+            }
+          ]
+        }
+      ],
+      "target_requirements": [
+        "paper material",
+        "paper-patching capability",
+        "reachable supply for fetching",
+        "item and repair tool held by patching actor"
+      ]
+    }
+  },
+  "bindings": {
+    "worker": "omar",
+    "item": "book",
+    "tool": "tape",
+    "supply": "bench"
+  }
+}

@@ -1,0 +1,81 @@
+{
+  "id": "P026",
+  "name": "Precondition satisfaction",
+  "description": "Action query → explicit prerequisites. Reweight success, failure, or preparation.",
+  "proposed_payload": "{met, missing, prerequisite_ids}",
+  "provenance": "Authored illustrative seeds; not learned or extracted.",
+  "status": "program_required",
+  "examples": [
+    {
+      "id": "P026.01",
+      "description": "Lid fastened; opening requires unfastened.",
+      "intended_feature": "missing:unfasten",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P026.02",
+      "description": "Sack untied; opening requires untied.",
+      "intended_feature": "prerequisites_met",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P026.03",
+      "description": "Launch requires repaired boat and open water; only boat repaired.",
+      "intended_feature": "missing:open_water",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P026.04",
+      "description": "Lighting requires fuel and spark; both available.",
+      "intended_feature": "prerequisites_met",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P026.05",
+      "description": "Climbing requires strength or a ladder; ladder available.",
+      "intended_feature": "disjunction_satisfied",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P026.06",
+      "description": "Opening requires the right key, not merely any key.",
+      "intended_feature": "missing:matching_key",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P026.07",
+      "description": "Crossing requires a bridge that has not collapsed.",
+      "intended_feature": "negated_precondition_failed",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P026.08",
+      "description": "Recipe requires two eggs; only one exists.",
+      "intended_feature": "quantity_precondition_failed",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P026.09",
+      "description": "Required location is unknown.",
+      "intended_feature": "precondition_unknown",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P026.10",
+      "description": "Proposed action has no registered preconditions.",
+      "intended_feature": "unsupported_action_contract",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    }
+  ],
+  "required_program": "Evaluate typed precondition expressions against persistent world state, returning missing prerequisites and their evidence rather than surface associations."
+}

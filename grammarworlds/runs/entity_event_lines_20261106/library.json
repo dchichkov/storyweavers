@@ -1,0 +1,6182 @@
+{
+  "schema": "entity-event-lines-v1",
+  "scenario": "library",
+  "seed": 3000,
+  "story": "Mina held a moon atlas. She wanted to sketch the moon. Jun said, \u201cMy whale book is missing.\u201d Mina told Jun, \u201cI promise to help you.\u201d Mina and Jun searched the window nook, but Mina did not locate the whale book. Jun noticed the star bookmark on the high shelf. Ms Alvarez reserved the moon atlas for Mina. Using the ladder, Ms Alvarez lifted the whale book down. Ms Alvarez handed Jun the whale book. Jun said, \u201cI can help you.\u201d Jun opened the moon atlas for Mina. Mina sketched the moon from the moon atlas on the paper. Mina showed Jun the moon drawing.",
+  "text_sha256": "9b765213000067a34d6353ffe3612bb776762723a94a63ada2e780312fe8ca35",
+  "events": [
+    {
+      "id": 1,
+      "kind": "wish",
+      "frame": {
+        "kind": "wish",
+        "actor": "hero",
+        "patient": "atlas",
+        "instrument": "",
+        "destination": "",
+        "cause_ids": [
+          "loc:hero",
+          "loc:atlas"
+        ]
+      },
+      "narrated": true,
+      "text": "Mina held a moon atlas. She wanted to sketch the moon.",
+      "entity_tags": {
+        "atlas": [
+          "causal_context",
+          "frame.patient",
+          "mentioned",
+          "qa_context"
+        ],
+        "hero": [
+          "causal_context",
+          "frame.actor",
+          "mentioned",
+          "qa_context"
+        ]
+      },
+      "tag_evidence": {
+        "hero": {
+          "frame.actor": [
+            "frame.actor"
+          ],
+          "mentioned": [
+            "trace.referents"
+          ],
+          "qa_context": [
+            "claim:goal"
+          ],
+          "causal_context": [
+            "cause:loc:hero"
+          ]
+        },
+        "atlas": {
+          "frame.patient": [
+            "frame.patient"
+          ],
+          "mentioned": [
+            "trace.referents"
+          ],
+          "qa_context": [
+            "claim:goal"
+          ],
+          "causal_context": [
+            "cause:loc:atlas"
+          ]
+        }
+      },
+      "participants": [
+        "atlas",
+        "hero"
+      ],
+      "dialogue": [],
+      "movements": [],
+      "effects": {},
+      "dependencies": [
+        {
+          "kind": "declared_entity_cause",
+          "key": "loc:hero",
+          "entity": "hero",
+          "field": "location",
+          "source_event": null
+        },
+        {
+          "kind": "declared_entity_cause",
+          "key": "loc:atlas",
+          "entity": "atlas",
+          "field": "location",
+          "source_event": null
+        }
+      ],
+      "global_contract": {
+        "requires": [],
+        "excludes": [
+          "ended",
+          "wished"
+        ],
+        "flags_added": [
+          "wished"
+        ],
+        "flags_removed": []
+      },
+      "guard_reads_complete": false
+    },
+    {
+      "id": 2,
+      "kind": "missing",
+      "frame": {
+        "kind": "missing",
+        "actor": "friend",
+        "patient": "book",
+        "instrument": "",
+        "destination": "",
+        "cause_ids": [
+          "flag:wished",
+          "loc:friend",
+          "state:book:missing"
+        ]
+      },
+      "narrated": true,
+      "text": "Jun said, \u201cMy whale book is missing.\u201d Mina told Jun, \u201cI promise to help you.\u201d",
+      "entity_tags": {
+        "book": [
+          "causal_context",
+          "frame.patient",
+          "qa_context"
+        ],
+        "friend": [
+          "causal_context",
+          "frame.actor",
+          "listener",
+          "mentioned",
+          "qa_context",
+          "speaker"
+        ],
+        "hero": [
+          "listener",
+          "mentioned",
+          "qa_context",
+          "speaker"
+        ]
+      },
+      "tag_evidence": {
+        "friend": {
+          "frame.actor": [
+            "frame.actor"
+          ],
+          "speaker": [
+            "trace.speakers",
+            "dialogue.listener:friend:hero"
+          ],
+          "mentioned": [
+            "trace.referents"
+          ],
+          "listener": [
+            "dialogue.listener:hero:friend"
+          ],
+          "qa_context": [
+            "claim:promise"
+          ],
+          "causal_context": [
+            "cause:loc:friend"
+          ]
+        },
+        "book": {
+          "frame.patient": [
+            "frame.patient"
+          ],
+          "qa_context": [
+            "claim:promise"
+          ],
+          "causal_context": [
+            "cause:state:book:missing"
+          ]
+        },
+        "hero": {
+          "speaker": [
+            "trace.speakers",
+            "dialogue.listener:hero:friend"
+          ],
+          "mentioned": [
+            "trace.referents"
+          ],
+          "listener": [
+            "dialogue.listener:friend:hero"
+          ],
+          "qa_context": [
+            "claim:promise"
+          ]
+        }
+      },
+      "participants": [
+        "book",
+        "friend",
+        "hero"
+      ],
+      "dialogue": [
+        {
+          "speaker": "friend",
+          "listener": "hero"
+        },
+        {
+          "speaker": "hero",
+          "listener": "friend"
+        }
+      ],
+      "movements": [],
+      "effects": {},
+      "dependencies": [
+        {
+          "kind": "required_flag",
+          "key": "wished",
+          "source_event": 1
+        },
+        {
+          "kind": "declared_flag_cause",
+          "key": "flag:wished",
+          "source_event": 1
+        },
+        {
+          "kind": "declared_entity_cause",
+          "key": "loc:friend",
+          "entity": "friend",
+          "field": "location",
+          "source_event": null
+        },
+        {
+          "kind": "declared_entity_cause",
+          "key": "state:book:missing",
+          "entity": "book",
+          "field": "state",
+          "source_event": null
+        }
+      ],
+      "global_contract": {
+        "requires": [
+          "wished"
+        ],
+        "excludes": [
+          "ended",
+          "missing_introduced"
+        ],
+        "flags_added": [
+          "missing_introduced",
+          "promised_help"
+        ],
+        "flags_removed": []
+      },
+      "guard_reads_complete": false
+    },
+    {
+      "id": 3,
+      "kind": "borrow",
+      "frame": {
+        "kind": "borrow",
+        "actor": "hero",
+        "patient": "tool",
+        "instrument": "",
+        "destination": "",
+        "cause_ids": [
+          "flag:missing_introduced",
+          "loc:hero",
+          "loc:helper",
+          "loc:tool"
+        ]
+      },
+      "narrated": false,
+      "text": "",
+      "entity_tags": {
+        "helper": [
+          "causal_context"
+        ],
+        "hero": [
+          "causal_context",
+          "destination_holder",
+          "frame.actor"
+        ],
+        "tool": [
+          "causal_context",
+          "changed",
+          "frame.patient",
+          "moved"
+        ]
+      },
+      "tag_evidence": {
+        "hero": {
+          "frame.actor": [
+            "frame.actor"
+          ],
+          "causal_context": [
+            "cause:loc:hero"
+          ],
+          "destination_holder": [
+            "diff.location:tool"
+          ]
+        },
+        "tool": {
+          "frame.patient": [
+            "frame.patient"
+          ],
+          "causal_context": [
+            "cause:loc:tool"
+          ],
+          "changed": [
+            "replayed_entity_diff"
+          ],
+          "moved": [
+            "diff.location"
+          ]
+        },
+        "helper": {
+          "causal_context": [
+            "cause:loc:helper"
+          ]
+        }
+      },
+      "participants": [
+        "hero",
+        "tool"
+      ],
+      "dialogue": [],
+      "movements": [
+        {
+          "item": "tool",
+          "source": "station",
+          "destination": "hero",
+          "destination_holder": "hero"
+        }
+      ],
+      "effects": {
+        "tool": {
+          "location": {
+            "before": "station",
+            "after": "hero"
+          }
+        }
+      },
+      "dependencies": [
+        {
+          "kind": "required_flag",
+          "key": "missing_introduced",
+          "source_event": 2
+        },
+        {
+          "kind": "declared_flag_cause",
+          "key": "flag:missing_introduced",
+          "source_event": 2
+        },
+        {
+          "kind": "declared_entity_cause",
+          "key": "loc:hero",
+          "entity": "hero",
+          "field": "location",
+          "source_event": null
+        },
+        {
+          "kind": "declared_entity_cause",
+          "key": "loc:helper",
+          "entity": "helper",
+          "field": "location",
+          "source_event": null
+        },
+        {
+          "kind": "declared_entity_cause",
+          "key": "loc:tool",
+          "entity": "tool",
+          "field": "location",
+          "source_event": null
+        }
+      ],
+      "global_contract": {
+        "requires": [
+          "missing_introduced"
+        ],
+        "excludes": [
+          "ended",
+          "trolley_borrowed"
+        ],
+        "flags_added": [
+          "trolley_borrowed"
+        ],
+        "flags_removed": []
+      },
+      "guard_reads_complete": false
+    },
+    {
+      "id": 4,
+      "kind": "place_atlas",
+      "frame": {
+        "kind": "place_atlas",
+        "actor": "hero",
+        "patient": "atlas",
+        "instrument": "",
+        "destination": "desk",
+        "cause_ids": [
+          "flag:trolley_borrowed",
+          "loc:atlas",
+          "loc:tool"
+        ]
+      },
+      "narrated": false,
+      "text": "",
+      "entity_tags": {
+        "atlas": [
+          "causal_context",
+          "changed",
+          "frame.patient",
+          "moved"
+        ],
+        "hero": [
+          "frame.actor",
+          "source_holder"
+        ],
+        "tool": [
+          "causal_context"
+        ]
+      },
+      "tag_evidence": {
+        "hero": {
+          "frame.actor": [
+            "frame.actor"
+          ],
+          "source_holder": [
+            "diff.location:atlas"
+          ]
+        },
+        "atlas": {
+          "frame.patient": [
+            "frame.patient"
+          ],
+          "causal_context": [
+            "cause:loc:atlas"
+          ],
+          "changed": [
+            "replayed_entity_diff"
+          ],
+          "moved": [
+            "diff.location"
+          ]
+        },
+        "tool": {
+          "causal_context": [
+            "cause:loc:tool"
+          ]
+        }
+      },
+      "participants": [
+        "atlas",
+        "hero"
+      ],
+      "dialogue": [],
+      "movements": [
+        {
+          "item": "atlas",
+          "source": "hero",
+          "destination": "desk",
+          "source_holder": "hero"
+        }
+      ],
+      "effects": {
+        "atlas": {
+          "location": {
+            "before": "hero",
+            "after": "desk"
+          }
+        }
+      },
+      "dependencies": [
+        {
+          "kind": "required_flag",
+          "key": "trolley_borrowed",
+          "source_event": 3
+        },
+        {
+          "kind": "declared_flag_cause",
+          "key": "flag:trolley_borrowed",
+          "source_event": 3
+        },
+        {
+          "kind": "declared_entity_cause",
+          "key": "loc:atlas",
+          "entity": "atlas",
+          "field": "location",
+          "source_event": null
+        },
+        {
+          "kind": "declared_entity_cause",
+          "key": "loc:tool",
+          "entity": "tool",
+          "field": "location",
+          "source_event": 3
+        }
+      ],
+      "global_contract": {
+        "requires": [
+          "trolley_borrowed"
+        ],
+        "excludes": [
+          "atlas_on_desk",
+          "ended"
+        ],
+        "flags_added": [
+          "atlas_on_desk"
+        ],
+        "flags_removed": []
+      },
+      "guard_reads_complete": false
+    },
+    {
+      "id": 5,
+      "kind": "failed_search",
+      "frame": {
+        "kind": "failed_search",
+        "actor": "hero",
+        "patient": "mitten",
+        "instrument": "tool",
+        "destination": "",
+        "cause_ids": [
+          "flag:atlas_on_desk",
+          "loc:friend",
+          "loc:tool",
+          "loc:mitten",
+          "loc:book"
+        ]
+      },
+      "narrated": true,
+      "text": "Mina and Jun searched the window nook, but Mina did not locate the whale book.",
+      "entity_tags": {
+        "book": [
+          "causal_context",
+          "qa_context"
+        ],
+        "friend": [
+          "causal_context",
+          "mentioned",
+          "qa_context"
+        ],
+        "hero": [
+          "frame.actor",
+          "mentioned",
+          "qa_context"
+        ],
+        "mitten": [
+          "causal_context",
+          "changed",
+          "frame.patient",
+          "moved"
+        ],
+        "tool": [
+          "causal_context",
+          "frame.instrument"
+        ]
+      },
+      "tag_evidence": {
+        "hero": {
+          "frame.actor": [
+            "frame.actor"
+          ],
+          "mentioned": [
+            "trace.referents"
+          ],
+          "qa_context": [
+            "claim:failed_search"
+          ]
+        },
+        "mitten": {
+          "frame.patient": [
+            "frame.patient"
+          ],
+          "causal_context": [
+            "cause:loc:mitten"
+          ],
+          "changed": [
+            "replayed_entity_diff"
+          ],
+          "moved": [
+            "diff.location"
+          ]
+        },
+        "tool": {
+          "frame.instrument": [
+            "frame.instrument"
+          ],
+          "causal_context": [
+            "cause:loc:tool"
+          ]
+        },
+        "friend": {
+          "mentioned": [
+            "trace.referents"
+          ],
+          "qa_context": [
+            "claim:failed_search"
+          ],
+          "causal_context": [
+            "cause:loc:friend"
+          ]
+        },
+        "book": {
+          "qa_context": [
+            "claim:failed_search"
+          ],
+          "causal_context": [
+            "cause:loc:book"
+          ]
+        }
+      },
+      "participants": [
+        "hero",
+        "mitten",
+        "tool"
+      ],
+      "dialogue": [],
+      "movements": [
+        {
+          "item": "mitten",
+          "source": "window_nook",
+          "destination": "tool"
+        }
+      ],
+      "effects": {
+        "mitten": {
+          "location": {
+            "before": "window_nook",
+            "after": "tool"
+          }
+        }
+      },
+      "dependencies": [
+        {
+          "kind": "required_flag",
+          "key": "atlas_on_desk",
+          "source_event": 4
+        },
+        {
+          "kind": "declared_flag_cause",
+          "key": "flag:atlas_on_desk",
+          "source_event": 4
+        },
+        {
+          "kind": "declared_entity_cause",
+          "key": "loc:friend",
+          "entity": "friend",
+          "field": "location",
+          "source_event": null
+        },
+        {
+          "kind": "declared_entity_cause",
+          "key": "loc:tool",
+          "entity": "tool",
+          "field": "location",
+          "source_event": 3
+        },
+        {
+          "kind": "declared_entity_cause",
+          "key": "loc:mitten",
+          "entity": "mitten",
+          "field": "location",
+          "source_event": null
+        },
+        {
+          "kind": "declared_entity_cause",
+          "key": "loc:book",
+          "entity": "book",
+          "field": "location",
+          "source_event": null
+        }
+      ],
+      "global_contract": {
+        "requires": [
+          "atlas_on_desk"
+        ],
+        "excludes": [
+          "ended",
+          "searched_nook"
+        ],
+        "flags_added": [
+          "searched_nook"
+        ],
+        "flags_removed": []
+      },
+      "guard_reads_complete": false
+    },
+    {
+      "id": 6,
+      "kind": "clue",
+      "frame": {
+        "kind": "clue",
+        "actor": "friend",
+        "patient": "bookmark",
+        "instrument": "tool",
+        "destination": "",
+        "cause_ids": [
+          "flag:searched_nook",
+          "loc:hero",
+          "loc:friend",
+          "loc:tool",
+          "loc:book",
+          "loc:bookmark",
+          "state:bookmark:visible"
+        ]
+      },
+      "narrated": true,
+      "text": "Jun noticed the star bookmark on the high shelf.",
+      "entity_tags": {
+        "book": [
+          "causal_context"
+        ],
+        "bookmark": [
+          "causal_context",
+          "frame.patient",
+          "mentioned",
+          "qa_context"
+        ],
+        "friend": [
+          "causal_context",
+          "frame.actor",
+          "mentioned",
+          "qa_context"
+        ],
+        "hero": [
+          "causal_context"
+        ],
+        "tool": [
+          "causal_context",
+          "frame.instrument"
+        ]
+      },
+      "tag_evidence": {
+        "friend": {
+          "frame.actor": [
+            "frame.actor"
+          ],
+          "mentioned": [
+            "trace.referents"
+          ],
+          "qa_context": [
+            "claim:clue"
+          ],
+          "causal_context": [
+            "cause:loc:friend"
+          ]
+        },
+        "bookmark": {
+          "frame.patient": [
+            "frame.patient"
+          ],
+          "mentioned": [
+            "trace.referents"
+          ],
+          "qa_context": [
+            "claim:clue"
+          ],
+          "causal_context": [
+            "cause:loc:bookmark",
+            "cause:state:bookmark:visible"
+          ]
+        },
+        "tool": {
+          "frame.instrument": [
+            "frame.instrument"
+          ],
+          "causal_context": [
+            "cause:loc:tool"
+          ]
+        },
+        "hero": {
+          "causal_context": [
+            "cause:loc:hero"
+          ]
+        },
+        "book": {
+          "causal_context": [
+            "cause:loc:book"
+          ]
+        }
+      },
+      "participants": [
+        "bookmark",
+        "friend",
+        "tool"
+      ],
+      "dialogue": [],
+      "movements": [],
+      "effects": {},
+      "dependencies": [
+        {
+          "kind": "required_flag",
+          "key": "searched_nook",
+          "source_event": 5
+        },
+        {
+          "kind": "declared_flag_cause",
+          "key": "flag:searched_nook",
+          "source_event": 5
+        },
+        {
+          "kind": "declared_entity_cause",
+          "key": "loc:hero",
+          "entity": "hero",
+          "field": "location",
+          "source_event": null
+        },
+        {
+          "kind": "declared_entity_cause",
+          "key": "loc:friend",
+          "entity": "friend",
+          "field": "location",
+          "source_event": null
+        },
+        {
+          "kind": "declared_entity_cause",
+          "key": "loc:tool",
+          "entity": "tool",
+          "field": "location",
+          "source_event": 3
+        },
+        {
+          "kind": "declared_entity_cause",
+          "key": "loc:book",
+          "entity": "book",
+          "field": "location",
+          "source_event": null
+        },
+        {
+          "kind": "declared_entity_cause",
+          "key": "loc:bookmark",
+          "entity": "bookmark",
+          "field": "location",
+          "source_event": null
+        },
+        {
+          "kind": "declared_entity_cause",
+          "key": "state:bookmark:visible",
+          "entity": "bookmark",
+          "field": "state",
+          "source_event": null
+        }
+      ],
+      "global_contract": {
+        "requires": [
+          "searched_nook"
+        ],
+        "excludes": [
+          "clue",
+          "ended"
+        ],
+        "flags_added": [
+          "clue"
+        ],
+        "flags_removed": []
+      },
+      "guard_reads_complete": false
+    },
+    {
+      "id": 7,
+      "kind": "request_help",
+      "frame": {
+        "kind": "request_help",
+        "actor": "hero",
+        "patient": "helper",
+        "instrument": "",
+        "destination": "",
+        "cause_ids": [
+          "flag:clue",
+          "loc:hero",
+          "loc:friend",
+          "loc:helper"
+        ]
+      },
+      "narrated": false,
+      "text": "",
+      "entity_tags": {
+        "friend": [
+          "causal_context"
+        ],
+        "helper": [
+          "causal_context",
+          "frame.patient"
+        ],
+        "hero": [
+          "causal_context",
+          "frame.actor"
+        ]
+      },
+      "tag_evidence": {
+        "hero": {
+          "frame.actor": [
+            "frame.actor"
+          ],
+          "causal_context": [
+            "cause:loc:hero"
+          ]
+        },
+        "helper": {
+          "frame.patient": [
+            "frame.patient"
+          ],
+          "causal_context": [
+            "cause:loc:helper"
+          ]
+        },
+        "friend": {
+          "causal_context": [
+            "cause:loc:friend"
+          ]
+        }
+      },
+      "participants": [
+        "helper",
+        "hero"
+      ],
+      "dialogue": [],
+      "movements": [],
+      "effects": {},
+      "dependencies": [
+        {
+          "kind": "required_flag",
+          "key": "clue",
+          "source_event": 6
+        },
+        {
+          "kind": "declared_flag_cause",
+          "key": "flag:clue",
+          "source_event": 6
+        },
+        {
+          "kind": "declared_entity_cause",
+          "key": "loc:hero",
+          "entity": "hero",
+          "field": "location",
+          "source_event": null
+        },
+        {
+          "kind": "declared_entity_cause",
+          "key": "loc:friend",
+          "entity": "friend",
+          "field": "location",
+          "source_event": null
+        },
+        {
+          "kind": "declared_entity_cause",
+          "key": "loc:helper",
+          "entity": "helper",
+          "field": "location",
+          "source_event": null
+        }
+      ],
+      "global_contract": {
+        "requires": [
+          "clue"
+        ],
+        "excludes": [
+          "ended",
+          "help_requested"
+        ],
+        "flags_added": [
+          "help_requested"
+        ],
+        "flags_removed": []
+      },
+      "guard_reads_complete": false
+    },
+    {
+      "id": 8,
+      "kind": "reserve_atlas",
+      "frame": {
+        "kind": "reserve_atlas",
+        "actor": "hero",
+        "patient": "atlas",
+        "instrument": "",
+        "destination": "desk",
+        "cause_ids": [
+          "flag:help_requested",
+          "loc:atlas",
+          "loc:helper",
+          "hero.Care"
+        ]
+      },
+      "narrated": true,
+      "text": "Ms Alvarez reserved the moon atlas for Mina.",
+      "entity_tags": {
+        "atlas": [
+          "causal_context",
+          "changed",
+          "frame.patient",
+          "mentioned",
+          "qa_context",
+          "state.add:reserved"
+        ],
+        "helper": [
+          "causal_context",
+          "mentioned",
+          "qa_context"
+        ],
+        "hero": [
+          "causal_context",
+          "frame.actor",
+          "mentioned",
+          "qa_context"
+        ]
+      },
+      "tag_evidence": {
+        "hero": {
+          "frame.actor": [
+            "frame.actor"
+          ],
+          "mentioned": [
+            "trace.referents"
+          ],
+          "qa_context": [
+            "claim:atlas"
+          ],
+          "causal_context": [
+            "cause:hero.Care"
+          ]
+        },
+        "atlas": {
+          "frame.patient": [
+            "frame.patient"
+          ],
+          "mentioned": [
+            "trace.referents"
+          ],
+          "qa_context": [
+            "claim:atlas"
+          ],
+          "causal_context": [
+            "cause:loc:atlas"
+          ],
+          "changed": [
+            "replayed_entity_diff"
+          ],
+          "state.add:reserved": [
+            "diff.state"
+          ]
+        },
+        "helper": {
+          "mentioned": [
+            "trace.referents"
+          ],
+          "qa_context": [
+            "claim:atlas"
+          ],
+          "causal_context": [
+            "cause:loc:helper"
+          ]
+        }
+      },
+      "participants": [
+        "atlas",
+        "hero"
+      ],
+      "dialogue": [],
+      "movements": [],
+      "effects": {
+        "atlas": {
+          "state": {
+            "before": [
+              "moon_picture"
+            ],
+            "after": [
+              "moon_picture",
+              "reserved"
+            ]
+          }
+        }
+      },
+      "dependencies": [
+        {
+          "kind": "required_flag",
+          "key": "help_requested",
+          "source_event": 7
+        },
+        {
+          "kind": "declared_flag_cause",
+          "key": "flag:help_requested",
+          "source_event": 7
+        },
+        {
+          "kind": "declared_entity_cause",
+          "key": "loc:atlas",
+          "entity": "atlas",
+          "field": "location",
+          "source_event": 4
+        },
+        {
+          "kind": "declared_entity_cause",
+          "key": "loc:helper",
+          "entity": "helper",
+          "field": "location",
+          "source_event": null
+        },
+        {
+          "kind": "declared_entity_cause",
+          "key": "hero.Care",
+          "entity": "hero",
+          "field": "memes",
+          "source_event": null
+        }
+      ],
+      "global_contract": {
+        "requires": [
+          "help_requested"
+        ],
+        "excludes": [
+          "atlas_released",
+          "atlas_reserved",
+          "ended"
+        ],
+        "flags_added": [
+          "atlas_reserved"
+        ],
+        "flags_removed": []
+      },
+      "guard_reads_complete": false
+    },
+    {
+      "id": 9,
+      "kind": "fetch_ladder",
+      "frame": {
+        "kind": "fetch_ladder",
+        "actor": "helper",
+        "patient": "ladder",
+        "instrument": "",
+        "destination": "library",
+        "cause_ids": [
+          "flag:atlas_reserved",
+          "loc:helper",
+          "loc:ladder"
+        ]
+      },
+      "narrated": false,
+      "text": "",
+      "entity_tags": {
+        "helper": [
+          "causal_context",
+          "frame.actor"
+        ],
+        "ladder": [
+          "causal_context",
+          "changed",
+          "frame.patient",
+          "moved"
+        ]
+      },
+      "tag_evidence": {
+        "helper": {
+          "frame.actor": [
+            "frame.actor"
+          ],
+          "causal_context": [
+            "cause:loc:helper"
+          ]
+        },
+        "ladder": {
+          "frame.patient": [
+            "frame.patient"
+          ],
+          "causal_context": [
+            "cause:loc:ladder"
+          ],
+          "changed": [
+            "replayed_entity_diff"
+          ],
+          "moved": [
+            "diff.location"
+          ]
+        }
+      },
+      "participants": [
+        "helper",
+        "ladder"
+      ],
+      "dialogue": [],
+      "movements": [
+        {
+          "item": "ladder",
+          "source": "store",
+          "destination": "library"
+        }
+      ],
+      "effects": {
+        "ladder": {
+          "location": {
+            "before": "store",
+            "after": "library"
+          }
+        }
+      },
+      "dependencies": [
+        {
+          "kind": "required_flag",
+          "key": "help_requested",
+          "source_event": 7
+        },
+        {
+          "kind": "declared_flag_cause",
+          "key": "flag:atlas_reserved",
+          "source_event": 8
+        },
+        {
+          "kind": "declared_entity_cause",
+          "key": "loc:helper",
+          "entity": "helper",
+          "field": "location",
+          "source_event": null
+        },
+        {
+          "kind": "declared_entity_cause",
+          "key": "loc:ladder",
+          "entity": "ladder",
+          "field": "location",
+          "source_event": null
+        }
+      ],
+      "global_contract": {
+        "requires": [
+          "help_requested"
+        ],
+        "excludes": [
+          "ended",
+          "ladder_fetched"
+        ],
+        "flags_added": [
+          "ladder_fetched"
+        ],
+        "flags_removed": []
+      },
+      "guard_reads_complete": false
+    },
+    {
+      "id": 10,
+      "kind": "retrieve",
+      "frame": {
+        "kind": "retrieve",
+        "actor": "helper",
+        "patient": "book",
+        "instrument": "ladder",
+        "destination": "helper",
+        "cause_ids": [
+          "flag:clue",
+          "flag:atlas_reserved",
+          "loc:hero",
+          "loc:friend",
+          "loc:helper",
+          "loc:book",
+          "loc:ladder"
+        ]
+      },
+      "narrated": true,
+      "text": "Using the ladder, Ms Alvarez lifted the whale book down.",
+      "entity_tags": {
+        "book": [
+          "causal_context",
+          "changed",
+          "frame.patient",
+          "mentioned",
+          "moved",
+          "qa_context",
+          "state.add:found",
+          "state.remove:missing"
+        ],
+        "friend": [
+          "causal_context"
+        ],
+        "helper": [
+          "causal_context",
+          "destination_holder",
+          "frame.actor",
+          "frame.destination",
+          "mentioned",
+          "qa_context"
+        ],
+        "hero": [
+          "causal_context"
+        ],
+        "ladder": [
+          "causal_context",
+          "frame.instrument",
+          "mentioned",
+          "qa_context"
+        ]
+      },
+      "tag_evidence": {
+        "helper": {
+          "frame.actor": [
+            "frame.actor"
+          ],
+          "frame.destination": [
+            "frame.destination"
+          ],
+          "mentioned": [
+            "trace.referents"
+          ],
+          "qa_context": [
+            "claim:retrieve"
+          ],
+          "causal_context": [
+            "cause:loc:helper"
+          ],
+          "destination_holder": [
+            "diff.location:book"
+          ]
+        },
+        "book": {
+          "frame.patient": [
+            "frame.patient"
+          ],
+          "mentioned": [
+            "trace.referents"
+          ],
+          "qa_context": [
+            "claim:retrieve"
+          ],
+          "causal_context": [
+            "cause:loc:book"
+          ],
+          "changed": [
+            "replayed_entity_diff"
+          ],
+          "moved": [
+            "diff.location"
+          ],
+          "state.add:found": [
+            "diff.state"
+          ],
+          "state.remove:missing": [
+            "diff.state"
+          ]
+        },
+        "ladder": {
+          "frame.instrument": [
+            "frame.instrument"
+          ],
+          "mentioned": [
+            "trace.referents"
+          ],
+          "qa_context": [
+            "claim:retrieve"
+          ],
+          "causal_context": [
+            "cause:loc:ladder"
+          ]
+        },
+        "hero": {
+          "causal_context": [
+            "cause:loc:hero"
+          ]
+        },
+        "friend": {
+          "causal_context": [
+            "cause:loc:friend"
+          ]
+        }
+      },
+      "participants": [
+        "book",
+        "helper",
+        "ladder"
+      ],
+      "dialogue": [],
+      "movements": [
+        {
+          "item": "book",
+          "source": "high_shelf",
+          "destination": "helper",
+          "destination_holder": "helper"
+        }
+      ],
+      "effects": {
+        "book": {
+          "location": {
+            "before": "high_shelf",
+            "after": "helper"
+          },
+          "state": {
+            "before": [
+              "missing",
+              "whale_picture"
+            ],
+            "after": [
+              "found",
+              "whale_picture"
+            ]
+          }
+        }
+      },
+      "dependencies": [
+        {
+          "kind": "required_flag",
+          "key": "clue",
+          "source_event": 6
+        },
+        {
+          "kind": "required_flag",
+          "key": "ladder_fetched",
+          "source_event": 9
+        },
+        {
+          "kind": "declared_flag_cause",
+          "key": "flag:clue",
+          "source_event": 6
+        },
+        {
+          "kind": "declared_flag_cause",
+          "key": "flag:atlas_reserved",
+          "source_event": 8
+        },
+        {
+          "kind": "declared_entity_cause",
+          "key": "loc:hero",
+          "entity": "hero",
+          "field": "location",
+          "source_event": null
+        },
+        {
+          "kind": "declared_entity_cause",
+          "key": "loc:friend",
+          "entity": "friend",
+          "field": "location",
+          "source_event": null
+        },
+        {
+          "kind": "declared_entity_cause",
+          "key": "loc:helper",
+          "entity": "helper",
+          "field": "location",
+          "source_event": null
+        },
+        {
+          "kind": "declared_entity_cause",
+          "key": "loc:book",
+          "entity": "book",
+          "field": "location",
+          "source_event": null
+        },
+        {
+          "kind": "declared_entity_cause",
+          "key": "loc:ladder",
+          "entity": "ladder",
+          "field": "location",
+          "source_event": 9
+        }
+      ],
+      "global_contract": {
+        "requires": [
+          "clue",
+          "ladder_fetched"
+        ],
+        "excludes": [
+          "book_retrieved",
+          "ended"
+        ],
+        "flags_added": [
+          "book_retrieved"
+        ],
+        "flags_removed": []
+      },
+      "guard_reads_complete": false
+    },
+    {
+      "id": 11,
+      "kind": "recognize",
+      "frame": {
+        "kind": "recognize",
+        "actor": "friend",
+        "patient": "book",
+        "instrument": "",
+        "destination": "",
+        "cause_ids": [
+          "flag:book_retrieved",
+          "loc:friend",
+          "loc:book",
+          "loc:bookmark"
+        ]
+      },
+      "narrated": false,
+      "text": "",
+      "entity_tags": {
+        "book": [
+          "causal_context",
+          "frame.patient"
+        ],
+        "bookmark": [
+          "causal_context"
+        ],
+        "friend": [
+          "causal_context",
+          "frame.actor"
+        ]
+      },
+      "tag_evidence": {
+        "friend": {
+          "frame.actor": [
+            "frame.actor"
+          ],
+          "causal_context": [
+            "cause:loc:friend"
+          ]
+        },
+        "book": {
+          "frame.patient": [
+            "frame.patient"
+          ],
+          "causal_context": [
+            "cause:loc:book"
+          ]
+        },
+        "bookmark": {
+          "causal_context": [
+            "cause:loc:bookmark"
+          ]
+        }
+      },
+      "participants": [
+        "book",
+        "friend"
+      ],
+      "dialogue": [],
+      "movements": [],
+      "effects": {},
+      "dependencies": [
+        {
+          "kind": "required_flag",
+          "key": "book_retrieved",
+          "source_event": 10
+        },
+        {
+          "kind": "declared_flag_cause",
+          "key": "flag:book_retrieved",
+          "source_event": 10
+        },
+        {
+          "kind": "declared_entity_cause",
+          "key": "loc:friend",
+          "entity": "friend",
+          "field": "location",
+          "source_event": null
+        },
+        {
+          "kind": "declared_entity_cause",
+          "key": "loc:book",
+          "entity": "book",
+          "field": "location",
+          "source_event": 10
+        },
+        {
+          "kind": "declared_entity_cause",
+          "key": "loc:bookmark",
+          "entity": "bookmark",
+          "field": "location",
+          "source_event": null
+        }
+      ],
+      "global_contract": {
+        "requires": [
+          "book_retrieved"
+        ],
+        "excludes": [
+          "book_seen",
+          "ended"
+        ],
+        "flags_added": [
+          "book_seen"
+        ],
+        "flags_removed": []
+      },
+      "guard_reads_complete": false
+    },
+    {
+      "id": 12,
+      "kind": "checkout",
+      "frame": {
+        "kind": "checkout",
+        "actor": "helper",
+        "patient": "book",
+        "instrument": "",
+        "destination": "friend",
+        "cause_ids": [
+          "flag:book_seen",
+          "loc:helper",
+          "loc:friend",
+          "loc:book"
+        ]
+      },
+      "narrated": true,
+      "text": "Ms Alvarez handed Jun the whale book.",
+      "entity_tags": {
+        "book": [
+          "causal_context",
+          "changed",
+          "frame.patient",
+          "mentioned",
+          "moved",
+          "state.add:checked_out"
+        ],
+        "friend": [
+          "causal_context",
+          "destination_holder",
+          "frame.destination",
+          "mentioned"
+        ],
+        "helper": [
+          "causal_context",
+          "frame.actor",
+          "mentioned",
+          "source_holder"
+        ]
+      },
+      "tag_evidence": {
+        "helper": {
+          "frame.actor": [
+            "frame.actor"
+          ],
+          "mentioned": [
+            "trace.referents"
+          ],
+          "causal_context": [
+            "cause:loc:helper"
+          ],
+          "source_holder": [
+            "diff.location:book"
+          ]
+        },
+        "book": {
+          "frame.patient": [
+            "frame.patient"
+          ],
+          "mentioned": [
+            "trace.referents"
+          ],
+          "causal_context": [
+            "cause:loc:book"
+          ],
+          "changed": [
+            "replayed_entity_diff"
+          ],
+          "moved": [
+            "diff.location"
+          ],
+          "state.add:checked_out": [
+            "diff.state"
+          ]
+        },
+        "friend": {
+          "frame.destination": [
+            "frame.destination"
+          ],
+          "mentioned": [
+            "trace.referents"
+          ],
+          "causal_context": [
+            "cause:loc:friend"
+          ],
+          "destination_holder": [
+            "diff.location:book"
+          ]
+        }
+      },
+      "participants": [
+        "book",
+        "friend",
+        "helper"
+      ],
+      "dialogue": [],
+      "movements": [
+        {
+          "item": "book",
+          "source": "helper",
+          "destination": "friend",
+          "source_holder": "helper",
+          "destination_holder": "friend"
+        }
+      ],
+      "effects": {
+        "book": {
+          "location": {
+            "before": "helper",
+            "after": "friend"
+          },
+          "state": {
+            "before": [
+              "found",
+              "whale_picture"
+            ],
+            "after": [
+              "checked_out",
+              "found",
+              "whale_picture"
+            ]
+          }
+        }
+      },
+      "dependencies": [
+        {
+          "kind": "required_flag",
+          "key": "book_seen",
+          "source_event": 11
+        },
+        {
+          "kind": "declared_flag_cause",
+          "key": "flag:book_seen",
+          "source_event": 11
+        },
+        {
+          "kind": "declared_entity_cause",
+          "key": "loc:helper",
+          "entity": "helper",
+          "field": "location",
+          "source_event": null
+        },
+        {
+          "kind": "declared_entity_cause",
+          "key": "loc:friend",
+          "entity": "friend",
+          "field": "location",
+          "source_event": null
+        },
+        {
+          "kind": "declared_entity_cause",
+          "key": "loc:book",
+          "entity": "book",
+          "field": "location",
+          "source_event": 10
+        }
+      ],
+      "global_contract": {
+        "requires": [
+          "book_seen"
+        ],
+        "excludes": [
+          "book_checked_out",
+          "ended"
+        ],
+        "flags_added": [
+          "book_checked_out"
+        ],
+        "flags_removed": []
+      },
+      "guard_reads_complete": false
+    },
+    {
+      "id": 13,
+      "kind": "checkout_atlas",
+      "frame": {
+        "kind": "checkout_atlas",
+        "actor": "helper",
+        "patient": "atlas",
+        "instrument": "",
+        "destination": "hero",
+        "cause_ids": [
+          "flag:atlas_reserved",
+          "flag:book_checked_out",
+          "loc:helper",
+          "loc:hero",
+          "loc:atlas",
+          "state:atlas:reserved"
+        ]
+      },
+      "narrated": false,
+      "text": "",
+      "entity_tags": {
+        "atlas": [
+          "causal_context",
+          "changed",
+          "frame.patient",
+          "moved",
+          "state.add:checked_out",
+          "state.remove:reserved"
+        ],
+        "helper": [
+          "causal_context",
+          "frame.actor"
+        ],
+        "hero": [
+          "causal_context",
+          "destination_holder",
+          "frame.destination"
+        ]
+      },
+      "tag_evidence": {
+        "helper": {
+          "frame.actor": [
+            "frame.actor"
+          ],
+          "causal_context": [
+            "cause:loc:helper"
+          ]
+        },
+        "atlas": {
+          "frame.patient": [
+            "frame.patient"
+          ],
+          "causal_context": [
+            "cause:loc:atlas",
+            "cause:state:atlas:reserved"
+          ],
+          "changed": [
+            "replayed_entity_diff"
+          ],
+          "moved": [
+            "diff.location"
+          ],
+          "state.add:checked_out": [
+            "diff.state"
+          ],
+          "state.remove:reserved": [
+            "diff.state"
+          ]
+        },
+        "hero": {
+          "frame.destination": [
+            "frame.destination"
+          ],
+          "causal_context": [
+            "cause:loc:hero"
+          ],
+          "destination_holder": [
+            "diff.location:atlas"
+          ]
+        }
+      },
+      "participants": [
+        "atlas",
+        "helper",
+        "hero"
+      ],
+      "dialogue": [],
+      "movements": [
+        {
+          "item": "atlas",
+          "source": "desk",
+          "destination": "hero",
+          "destination_holder": "hero"
+        }
+      ],
+      "effects": {
+        "atlas": {
+          "location": {
+            "before": "desk",
+            "after": "hero"
+          },
+          "state": {
+            "before": [
+              "moon_picture",
+              "reserved"
+            ],
+            "after": [
+              "checked_out",
+              "moon_picture"
+            ]
+          }
+        }
+      },
+      "dependencies": [
+        {
+          "kind": "required_flag",
+          "key": "atlas_reserved",
+          "source_event": 8
+        },
+        {
+          "kind": "required_flag",
+          "key": "book_checked_out",
+          "source_event": 12
+        },
+        {
+          "kind": "declared_flag_cause",
+          "key": "flag:atlas_reserved",
+          "source_event": 8
+        },
+        {
+          "kind": "declared_flag_cause",
+          "key": "flag:book_checked_out",
+          "source_event": 12
+        },
+        {
+          "kind": "declared_entity_cause",
+          "key": "loc:helper",
+          "entity": "helper",
+          "field": "location",
+          "source_event": null
+        },
+        {
+          "kind": "declared_entity_cause",
+          "key": "loc:hero",
+          "entity": "hero",
+          "field": "location",
+          "source_event": null
+        },
+        {
+          "kind": "declared_entity_cause",
+          "key": "loc:atlas",
+          "entity": "atlas",
+          "field": "location",
+          "source_event": 4
+        },
+        {
+          "kind": "declared_entity_cause",
+          "key": "state:atlas:reserved",
+          "entity": "atlas",
+          "field": "state",
+          "source_event": 8
+        }
+      ],
+      "global_contract": {
+        "requires": [
+          "atlas_reserved",
+          "book_checked_out"
+        ],
+        "excludes": [
+          "atlas_checked_out",
+          "ended"
+        ],
+        "flags_added": [
+          "atlas_checked_out"
+        ],
+        "flags_removed": []
+      },
+      "guard_reads_complete": false
+    },
+    {
+      "id": 14,
+      "kind": "share_atlas",
+      "frame": {
+        "kind": "share_atlas",
+        "actor": "friend",
+        "patient": "atlas",
+        "instrument": "",
+        "destination": "",
+        "cause_ids": [
+          "loc:hero",
+          "loc:friend",
+          "loc:atlas"
+        ]
+      },
+      "narrated": true,
+      "text": "Jun said, \u201cI can help you.\u201d Jun opened the moon atlas for Mina.",
+      "entity_tags": {
+        "atlas": [
+          "causal_context",
+          "changed",
+          "frame.patient",
+          "mentioned",
+          "qa_context",
+          "state.add:open"
+        ],
+        "friend": [
+          "causal_context",
+          "changed",
+          "concept.changed:Care",
+          "frame.actor",
+          "mentioned",
+          "qa_context",
+          "speaker"
+        ],
+        "hero": [
+          "causal_context",
+          "listener",
+          "mentioned",
+          "qa_context"
+        ]
+      },
+      "tag_evidence": {
+        "friend": {
+          "frame.actor": [
+            "frame.actor"
+          ],
+          "speaker": [
+            "trace.speakers",
+            "dialogue.listener:friend:hero"
+          ],
+          "mentioned": [
+            "trace.referents"
+          ],
+          "qa_context": [
+            "claim:invitation"
+          ],
+          "causal_context": [
+            "cause:loc:friend"
+          ],
+          "changed": [
+            "replayed_entity_diff"
+          ],
+          "concept.changed:Care": [
+            "diff.memes"
+          ]
+        },
+        "atlas": {
+          "frame.patient": [
+            "frame.patient"
+          ],
+          "mentioned": [
+            "trace.referents"
+          ],
+          "qa_context": [
+            "claim:invitation"
+          ],
+          "causal_context": [
+            "cause:loc:atlas"
+          ],
+          "changed": [
+            "replayed_entity_diff"
+          ],
+          "state.add:open": [
+            "diff.state"
+          ]
+        },
+        "hero": {
+          "mentioned": [
+            "trace.referents"
+          ],
+          "listener": [
+            "dialogue.listener:friend:hero"
+          ],
+          "qa_context": [
+            "claim:invitation"
+          ],
+          "causal_context": [
+            "cause:loc:hero"
+          ]
+        }
+      },
+      "participants": [
+        "atlas",
+        "friend",
+        "hero"
+      ],
+      "dialogue": [
+        {
+          "speaker": "friend",
+          "listener": "hero"
+        }
+      ],
+      "movements": [],
+      "effects": {
+        "atlas": {
+          "state": {
+            "before": [
+              "checked_out",
+              "moon_picture"
+            ],
+            "after": [
+              "checked_out",
+              "moon_picture",
+              "open"
+            ]
+          }
+        },
+        "friend": {
+          "memes": {
+            "before": {
+              "Care": 0.46560750590167027,
+              "Fear": 0.33233051531214985,
+              "Trust": 0.5274398506242907
+            },
+            "after": {
+              "Care": 0.6656075059016703,
+              "Fear": 0.33233051531214985,
+              "Trust": 0.5274398506242907
+            }
+          }
+        }
+      },
+      "dependencies": [
+        {
+          "kind": "required_flag",
+          "key": "atlas_checked_out",
+          "source_event": 13
+        },
+        {
+          "kind": "declared_entity_cause",
+          "key": "loc:hero",
+          "entity": "hero",
+          "field": "location",
+          "source_event": null
+        },
+        {
+          "kind": "declared_entity_cause",
+          "key": "loc:friend",
+          "entity": "friend",
+          "field": "location",
+          "source_event": null
+        },
+        {
+          "kind": "declared_entity_cause",
+          "key": "loc:atlas",
+          "entity": "atlas",
+          "field": "location",
+          "source_event": 13
+        }
+      ],
+      "global_contract": {
+        "requires": [
+          "atlas_checked_out"
+        ],
+        "excludes": [
+          "drawing_invited",
+          "ended"
+        ],
+        "flags_added": [
+          "drawing_invited"
+        ],
+        "flags_removed": []
+      },
+      "guard_reads_complete": false
+    },
+    {
+      "id": 15,
+      "kind": "return_trolley",
+      "frame": {
+        "kind": "return_trolley",
+        "actor": "hero",
+        "patient": "tool",
+        "instrument": "",
+        "destination": "station",
+        "cause_ids": [
+          "flag:book_checked_out",
+          "loc:hero",
+          "loc:tool"
+        ]
+      },
+      "narrated": false,
+      "text": "",
+      "entity_tags": {
+        "hero": [
+          "causal_context",
+          "frame.actor",
+          "source_holder"
+        ],
+        "tool": [
+          "causal_context",
+          "changed",
+          "frame.patient",
+          "moved"
+        ]
+      },
+      "tag_evidence": {
+        "hero": {
+          "frame.actor": [
+            "frame.actor"
+          ],
+          "causal_context": [
+            "cause:loc:hero"
+          ],
+          "source_holder": [
+            "diff.location:tool"
+          ]
+        },
+        "tool": {
+          "frame.patient": [
+            "frame.patient"
+          ],
+          "causal_context": [
+            "cause:loc:tool"
+          ],
+          "changed": [
+            "replayed_entity_diff"
+          ],
+          "moved": [
+            "diff.location"
+          ]
+        }
+      },
+      "participants": [
+        "hero",
+        "tool"
+      ],
+      "dialogue": [],
+      "movements": [
+        {
+          "item": "tool",
+          "source": "hero",
+          "destination": "station",
+          "source_holder": "hero"
+        }
+      ],
+      "effects": {
+        "tool": {
+          "location": {
+            "before": "hero",
+            "after": "station"
+          }
+        }
+      },
+      "dependencies": [
+        {
+          "kind": "required_flag",
+          "key": "book_checked_out",
+          "source_event": 12
+        },
+        {
+          "kind": "declared_flag_cause",
+          "key": "flag:book_checked_out",
+          "source_event": 12
+        },
+        {
+          "kind": "declared_entity_cause",
+          "key": "loc:hero",
+          "entity": "hero",
+          "field": "location",
+          "source_event": null
+        },
+        {
+          "kind": "declared_entity_cause",
+          "key": "loc:tool",
+          "entity": "tool",
+          "field": "location",
+          "source_event": 3
+        }
+      ],
+      "global_contract": {
+        "requires": [
+          "book_checked_out"
+        ],
+        "excludes": [
+          "ended",
+          "trolley_returned"
+        ],
+        "flags_added": [
+          "trolley_returned"
+        ],
+        "flags_removed": []
+      },
+      "guard_reads_complete": false
+    },
+    {
+      "id": 16,
+      "kind": "return_ladder",
+      "frame": {
+        "kind": "return_ladder",
+        "actor": "helper",
+        "patient": "ladder",
+        "instrument": "",
+        "destination": "store",
+        "cause_ids": [
+          "flag:book_checked_out",
+          "loc:helper",
+          "loc:ladder"
+        ]
+      },
+      "narrated": false,
+      "text": "",
+      "entity_tags": {
+        "helper": [
+          "causal_context",
+          "frame.actor"
+        ],
+        "ladder": [
+          "causal_context",
+          "changed",
+          "frame.patient",
+          "moved"
+        ]
+      },
+      "tag_evidence": {
+        "helper": {
+          "frame.actor": [
+            "frame.actor"
+          ],
+          "causal_context": [
+            "cause:loc:helper"
+          ]
+        },
+        "ladder": {
+          "frame.patient": [
+            "frame.patient"
+          ],
+          "causal_context": [
+            "cause:loc:ladder"
+          ],
+          "changed": [
+            "replayed_entity_diff"
+          ],
+          "moved": [
+            "diff.location"
+          ]
+        }
+      },
+      "participants": [
+        "helper",
+        "ladder"
+      ],
+      "dialogue": [],
+      "movements": [
+        {
+          "item": "ladder",
+          "source": "library",
+          "destination": "store"
+        }
+      ],
+      "effects": {
+        "ladder": {
+          "location": {
+            "before": "library",
+            "after": "store"
+          }
+        }
+      },
+      "dependencies": [
+        {
+          "kind": "required_flag",
+          "key": "book_checked_out",
+          "source_event": 12
+        },
+        {
+          "kind": "required_flag",
+          "key": "ladder_fetched",
+          "source_event": 9
+        },
+        {
+          "kind": "declared_flag_cause",
+          "key": "flag:book_checked_out",
+          "source_event": 12
+        },
+        {
+          "kind": "declared_entity_cause",
+          "key": "loc:helper",
+          "entity": "helper",
+          "field": "location",
+          "source_event": null
+        },
+        {
+          "kind": "declared_entity_cause",
+          "key": "loc:ladder",
+          "entity": "ladder",
+          "field": "location",
+          "source_event": 9
+        }
+      ],
+      "global_contract": {
+        "requires": [
+          "book_checked_out",
+          "ladder_fetched"
+        ],
+        "excludes": [
+          "ended",
+          "ladder_returned"
+        ],
+        "flags_added": [
+          "ladder_returned"
+        ],
+        "flags_removed": []
+      },
+      "guard_reads_complete": false
+    },
+    {
+      "id": 17,
+      "kind": "sketch_moon",
+      "frame": {
+        "kind": "sketch_moon",
+        "actor": "hero",
+        "patient": "paper",
+        "instrument": "pencil",
+        "destination": "",
+        "cause_ids": [
+          "loc:paper",
+          "loc:pencil",
+          "state:atlas:moon_picture"
+        ]
+      },
+      "narrated": true,
+      "text": "Mina sketched the moon from the moon atlas on the paper.",
+      "entity_tags": {
+        "atlas": [
+          "causal_context",
+          "mentioned",
+          "qa_context"
+        ],
+        "hero": [
+          "changed",
+          "concept.changed:Joy",
+          "frame.actor",
+          "mentioned",
+          "qa_context"
+        ],
+        "paper": [
+          "causal_context",
+          "changed",
+          "frame.patient",
+          "mentioned",
+          "qa_context",
+          "renamed",
+          "state.add:moon_drawing",
+          "state.remove:blank"
+        ],
+        "pencil": [
+          "causal_context",
+          "frame.instrument"
+        ]
+      },
+      "tag_evidence": {
+        "hero": {
+          "frame.actor": [
+            "frame.actor"
+          ],
+          "mentioned": [
+            "trace.referents"
+          ],
+          "qa_context": [
+            "claim:drawing"
+          ],
+          "changed": [
+            "replayed_entity_diff"
+          ],
+          "concept.changed:Joy": [
+            "diff.memes"
+          ]
+        },
+        "paper": {
+          "frame.patient": [
+            "frame.patient"
+          ],
+          "mentioned": [
+            "trace.referents"
+          ],
+          "qa_context": [
+            "claim:drawing"
+          ],
+          "causal_context": [
+            "cause:loc:paper"
+          ],
+          "changed": [
+            "replayed_entity_diff"
+          ],
+          "renamed": [
+            "diff.noun"
+          ],
+          "state.add:moon_drawing": [
+            "diff.state"
+          ],
+          "state.remove:blank": [
+            "diff.state"
+          ]
+        },
+        "pencil": {
+          "frame.instrument": [
+            "frame.instrument"
+          ],
+          "causal_context": [
+            "cause:loc:pencil"
+          ]
+        },
+        "atlas": {
+          "mentioned": [
+            "trace.referents"
+          ],
+          "qa_context": [
+            "claim:drawing"
+          ],
+          "causal_context": [
+            "cause:state:atlas:moon_picture"
+          ]
+        }
+      },
+      "participants": [
+        "hero",
+        "paper",
+        "pencil"
+      ],
+      "dialogue": [],
+      "movements": [],
+      "effects": {
+        "hero": {
+          "memes": {
+            "before": {
+              "Care": 0.5833258768626751,
+              "Fear": 0.38736600615069816,
+              "Trust": 0.36835132413049776
+            },
+            "after": {
+              "Care": 0.5833258768626751,
+              "Fear": 0.38736600615069816,
+              "Trust": 0.36835132413049776,
+              "Joy": 0.7
+            }
+          }
+        },
+        "paper": {
+          "noun": {
+            "before": "paper",
+            "after": "drawing"
+          },
+          "state": {
+            "before": [
+              "blank"
+            ],
+            "after": [
+              "moon_drawing"
+            ]
+          }
+        }
+      },
+      "dependencies": [
+        {
+          "kind": "required_flag",
+          "key": "atlas_checked_out",
+          "source_event": 13
+        },
+        {
+          "kind": "required_flag",
+          "key": "drawing_invited",
+          "source_event": 14
+        },
+        {
+          "kind": "declared_entity_cause",
+          "key": "loc:paper",
+          "entity": "paper",
+          "field": "location",
+          "source_event": null
+        },
+        {
+          "kind": "declared_entity_cause",
+          "key": "loc:pencil",
+          "entity": "pencil",
+          "field": "location",
+          "source_event": null
+        },
+        {
+          "kind": "declared_entity_cause",
+          "key": "state:atlas:moon_picture",
+          "entity": "atlas",
+          "field": "state",
+          "source_event": 14
+        }
+      ],
+      "global_contract": {
+        "requires": [
+          "atlas_checked_out",
+          "drawing_invited"
+        ],
+        "excludes": [
+          "drawing_done",
+          "ended"
+        ],
+        "flags_added": [
+          "drawing_done"
+        ],
+        "flags_removed": []
+      },
+      "guard_reads_complete": false
+    },
+    {
+      "id": 18,
+      "kind": "ending",
+      "frame": {
+        "kind": "ending",
+        "actor": "hero",
+        "patient": "book",
+        "instrument": "",
+        "destination": "",
+        "cause_ids": [
+          "flag:atlas_reserved",
+          "loc:hero",
+          "loc:friend",
+          "loc:book",
+          "state:book:checked_out",
+          "loc:tool",
+          "loc:ladder",
+          "loc:atlas"
+        ]
+      },
+      "narrated": true,
+      "text": "Mina showed Jun the moon drawing.",
+      "entity_tags": {
+        "atlas": [
+          "causal_context"
+        ],
+        "book": [
+          "causal_context",
+          "changed",
+          "frame.patient",
+          "state.add:open"
+        ],
+        "friend": [
+          "causal_context",
+          "mentioned",
+          "qa_context"
+        ],
+        "hero": [
+          "causal_context",
+          "frame.actor",
+          "mentioned",
+          "qa_context"
+        ],
+        "ladder": [
+          "causal_context"
+        ],
+        "paper": [
+          "mentioned",
+          "qa_context"
+        ],
+        "tool": [
+          "causal_context"
+        ]
+      },
+      "tag_evidence": {
+        "hero": {
+          "frame.actor": [
+            "frame.actor"
+          ],
+          "mentioned": [
+            "trace.referents"
+          ],
+          "qa_context": [
+            "claim:outcome"
+          ],
+          "causal_context": [
+            "cause:loc:hero"
+          ]
+        },
+        "book": {
+          "frame.patient": [
+            "frame.patient"
+          ],
+          "causal_context": [
+            "cause:loc:book",
+            "cause:state:book:checked_out"
+          ],
+          "changed": [
+            "replayed_entity_diff"
+          ],
+          "state.add:open": [
+            "diff.state"
+          ]
+        },
+        "friend": {
+          "mentioned": [
+            "trace.referents"
+          ],
+          "qa_context": [
+            "claim:outcome"
+          ],
+          "causal_context": [
+            "cause:loc:friend"
+          ]
+        },
+        "paper": {
+          "mentioned": [
+            "trace.referents"
+          ],
+          "qa_context": [
+            "claim:outcome"
+          ]
+        },
+        "tool": {
+          "causal_context": [
+            "cause:loc:tool"
+          ]
+        },
+        "ladder": {
+          "causal_context": [
+            "cause:loc:ladder"
+          ]
+        },
+        "atlas": {
+          "causal_context": [
+            "cause:loc:atlas"
+          ]
+        }
+      },
+      "participants": [
+        "book",
+        "hero"
+      ],
+      "dialogue": [],
+      "movements": [],
+      "effects": {
+        "book": {
+          "state": {
+            "before": [
+              "checked_out",
+              "found",
+              "whale_picture"
+            ],
+            "after": [
+              "checked_out",
+              "found",
+              "open",
+              "whale_picture"
+            ]
+          }
+        }
+      },
+      "dependencies": [
+        {
+          "kind": "required_flag",
+          "key": "book_checked_out",
+          "source_event": 12
+        },
+        {
+          "kind": "required_flag",
+          "key": "drawing_done",
+          "source_event": 17
+        },
+        {
+          "kind": "required_flag",
+          "key": "ladder_returned",
+          "source_event": 16
+        },
+        {
+          "kind": "required_flag",
+          "key": "trolley_returned",
+          "source_event": 15
+        },
+        {
+          "kind": "declared_flag_cause",
+          "key": "flag:atlas_reserved",
+          "source_event": 8
+        },
+        {
+          "kind": "declared_entity_cause",
+          "key": "loc:hero",
+          "entity": "hero",
+          "field": "location",
+          "source_event": null
+        },
+        {
+          "kind": "declared_entity_cause",
+          "key": "loc:friend",
+          "entity": "friend",
+          "field": "location",
+          "source_event": null
+        },
+        {
+          "kind": "declared_entity_cause",
+          "key": "loc:book",
+          "entity": "book",
+          "field": "location",
+          "source_event": 12
+        },
+        {
+          "kind": "declared_entity_cause",
+          "key": "state:book:checked_out",
+          "entity": "book",
+          "field": "state",
+          "source_event": 12
+        },
+        {
+          "kind": "declared_entity_cause",
+          "key": "loc:tool",
+          "entity": "tool",
+          "field": "location",
+          "source_event": 15
+        },
+        {
+          "kind": "declared_entity_cause",
+          "key": "loc:ladder",
+          "entity": "ladder",
+          "field": "location",
+          "source_event": 16
+        },
+        {
+          "kind": "declared_entity_cause",
+          "key": "loc:atlas",
+          "entity": "atlas",
+          "field": "location",
+          "source_event": 13
+        }
+      ],
+      "global_contract": {
+        "requires": [
+          "book_checked_out",
+          "drawing_done",
+          "ladder_returned",
+          "trolley_returned"
+        ],
+        "excludes": [
+          "ended"
+        ],
+        "flags_added": [
+          "ended"
+        ],
+        "flags_removed": []
+      },
+      "guard_reads_complete": false
+    }
+  ],
+  "entities": {
+    "atlas": {
+      "initial": {
+        "id": "atlas",
+        "noun": "moon atlas",
+        "kind": "object",
+        "location": "hero",
+        "number": "singular",
+        "pronoun": "it",
+        "properties": [],
+        "state": [
+          "moon_picture"
+        ],
+        "memes": {}
+      },
+      "final": {
+        "id": "atlas",
+        "noun": "moon atlas",
+        "kind": "object",
+        "location": "hero",
+        "number": "singular",
+        "pronoun": "it",
+        "properties": [],
+        "state": [
+          "checked_out",
+          "moon_picture",
+          "open"
+        ],
+        "memes": {}
+      },
+      "line": [
+        {
+          "event_id": 1,
+          "kind": "wish",
+          "tags": [
+            "causal_context",
+            "frame.patient",
+            "mentioned",
+            "qa_context"
+          ],
+          "participation": "participant",
+          "own_effects": {},
+          "peers": [
+            "hero"
+          ],
+          "shared_event": true,
+          "before": {
+            "id": "atlas",
+            "noun": "moon atlas",
+            "kind": "object",
+            "location": "hero",
+            "number": "singular",
+            "pronoun": "it",
+            "properties": [],
+            "state": [
+              "moon_picture"
+            ],
+            "memes": {}
+          },
+          "after": {
+            "id": "atlas",
+            "noun": "moon atlas",
+            "kind": "object",
+            "location": "hero",
+            "number": "singular",
+            "pronoun": "it",
+            "properties": [],
+            "state": [
+              "moon_picture"
+            ],
+            "memes": {}
+          }
+        },
+        {
+          "event_id": 4,
+          "kind": "place_atlas",
+          "tags": [
+            "causal_context",
+            "changed",
+            "frame.patient",
+            "moved"
+          ],
+          "participation": "participant",
+          "own_effects": {
+            "location": {
+              "before": "hero",
+              "after": "desk"
+            }
+          },
+          "peers": [
+            "hero"
+          ],
+          "shared_event": true,
+          "before": {
+            "id": "atlas",
+            "noun": "moon atlas",
+            "kind": "object",
+            "location": "hero",
+            "number": "singular",
+            "pronoun": "it",
+            "properties": [],
+            "state": [
+              "moon_picture"
+            ],
+            "memes": {}
+          },
+          "after": {
+            "id": "atlas",
+            "noun": "moon atlas",
+            "kind": "object",
+            "location": "desk",
+            "number": "singular",
+            "pronoun": "it",
+            "properties": [],
+            "state": [
+              "moon_picture"
+            ],
+            "memes": {}
+          }
+        },
+        {
+          "event_id": 8,
+          "kind": "reserve_atlas",
+          "tags": [
+            "causal_context",
+            "changed",
+            "frame.patient",
+            "mentioned",
+            "qa_context",
+            "state.add:reserved"
+          ],
+          "participation": "participant",
+          "own_effects": {
+            "state": {
+              "before": [
+                "moon_picture"
+              ],
+              "after": [
+                "moon_picture",
+                "reserved"
+              ]
+            }
+          },
+          "peers": [
+            "hero"
+          ],
+          "shared_event": true,
+          "before": {
+            "id": "atlas",
+            "noun": "moon atlas",
+            "kind": "object",
+            "location": "desk",
+            "number": "singular",
+            "pronoun": "it",
+            "properties": [],
+            "state": [
+              "moon_picture"
+            ],
+            "memes": {}
+          },
+          "after": {
+            "id": "atlas",
+            "noun": "moon atlas",
+            "kind": "object",
+            "location": "desk",
+            "number": "singular",
+            "pronoun": "it",
+            "properties": [],
+            "state": [
+              "moon_picture",
+              "reserved"
+            ],
+            "memes": {}
+          }
+        },
+        {
+          "event_id": 13,
+          "kind": "checkout_atlas",
+          "tags": [
+            "causal_context",
+            "changed",
+            "frame.patient",
+            "moved",
+            "state.add:checked_out",
+            "state.remove:reserved"
+          ],
+          "participation": "participant",
+          "own_effects": {
+            "location": {
+              "before": "desk",
+              "after": "hero"
+            },
+            "state": {
+              "before": [
+                "moon_picture",
+                "reserved"
+              ],
+              "after": [
+                "checked_out",
+                "moon_picture"
+              ]
+            }
+          },
+          "peers": [
+            "helper",
+            "hero"
+          ],
+          "shared_event": true,
+          "before": {
+            "id": "atlas",
+            "noun": "moon atlas",
+            "kind": "object",
+            "location": "desk",
+            "number": "singular",
+            "pronoun": "it",
+            "properties": [],
+            "state": [
+              "moon_picture",
+              "reserved"
+            ],
+            "memes": {}
+          },
+          "after": {
+            "id": "atlas",
+            "noun": "moon atlas",
+            "kind": "object",
+            "location": "hero",
+            "number": "singular",
+            "pronoun": "it",
+            "properties": [],
+            "state": [
+              "checked_out",
+              "moon_picture"
+            ],
+            "memes": {}
+          }
+        },
+        {
+          "event_id": 14,
+          "kind": "share_atlas",
+          "tags": [
+            "causal_context",
+            "changed",
+            "frame.patient",
+            "mentioned",
+            "qa_context",
+            "state.add:open"
+          ],
+          "participation": "participant",
+          "own_effects": {
+            "state": {
+              "before": [
+                "checked_out",
+                "moon_picture"
+              ],
+              "after": [
+                "checked_out",
+                "moon_picture",
+                "open"
+              ]
+            }
+          },
+          "peers": [
+            "friend",
+            "hero"
+          ],
+          "shared_event": true,
+          "before": {
+            "id": "atlas",
+            "noun": "moon atlas",
+            "kind": "object",
+            "location": "hero",
+            "number": "singular",
+            "pronoun": "it",
+            "properties": [],
+            "state": [
+              "checked_out",
+              "moon_picture"
+            ],
+            "memes": {}
+          },
+          "after": {
+            "id": "atlas",
+            "noun": "moon atlas",
+            "kind": "object",
+            "location": "hero",
+            "number": "singular",
+            "pronoun": "it",
+            "properties": [],
+            "state": [
+              "checked_out",
+              "moon_picture",
+              "open"
+            ],
+            "memes": {}
+          }
+        },
+        {
+          "event_id": 17,
+          "kind": "sketch_moon",
+          "tags": [
+            "causal_context",
+            "mentioned",
+            "qa_context"
+          ],
+          "participation": "context",
+          "own_effects": {},
+          "peers": [],
+          "shared_event": false,
+          "before": {
+            "id": "atlas",
+            "noun": "moon atlas",
+            "kind": "object",
+            "location": "hero",
+            "number": "singular",
+            "pronoun": "it",
+            "properties": [],
+            "state": [
+              "checked_out",
+              "moon_picture",
+              "open"
+            ],
+            "memes": {}
+          },
+          "after": {
+            "id": "atlas",
+            "noun": "moon atlas",
+            "kind": "object",
+            "location": "hero",
+            "number": "singular",
+            "pronoun": "it",
+            "properties": [],
+            "state": [
+              "checked_out",
+              "moon_picture",
+              "open"
+            ],
+            "memes": {}
+          }
+        },
+        {
+          "event_id": 18,
+          "kind": "ending",
+          "tags": [
+            "causal_context"
+          ],
+          "participation": "context",
+          "own_effects": {},
+          "peers": [],
+          "shared_event": false,
+          "before": {
+            "id": "atlas",
+            "noun": "moon atlas",
+            "kind": "object",
+            "location": "hero",
+            "number": "singular",
+            "pronoun": "it",
+            "properties": [],
+            "state": [
+              "checked_out",
+              "moon_picture",
+              "open"
+            ],
+            "memes": {}
+          },
+          "after": {
+            "id": "atlas",
+            "noun": "moon atlas",
+            "kind": "object",
+            "location": "hero",
+            "number": "singular",
+            "pronoun": "it",
+            "properties": [],
+            "state": [
+              "checked_out",
+              "moon_picture",
+              "open"
+            ],
+            "memes": {}
+          }
+        }
+      ]
+    },
+    "book": {
+      "initial": {
+        "id": "book",
+        "noun": "whale book",
+        "kind": "object",
+        "location": "high_shelf",
+        "number": "singular",
+        "pronoun": "it",
+        "properties": [
+          "belongs_to_friend",
+          "blue"
+        ],
+        "state": [
+          "missing",
+          "whale_picture"
+        ],
+        "memes": {}
+      },
+      "final": {
+        "id": "book",
+        "noun": "whale book",
+        "kind": "object",
+        "location": "friend",
+        "number": "singular",
+        "pronoun": "it",
+        "properties": [
+          "belongs_to_friend",
+          "blue"
+        ],
+        "state": [
+          "checked_out",
+          "found",
+          "open",
+          "whale_picture"
+        ],
+        "memes": {}
+      },
+      "line": [
+        {
+          "event_id": 2,
+          "kind": "missing",
+          "tags": [
+            "causal_context",
+            "frame.patient",
+            "qa_context"
+          ],
+          "participation": "participant",
+          "own_effects": {},
+          "peers": [
+            "friend",
+            "hero"
+          ],
+          "shared_event": true,
+          "before": {
+            "id": "book",
+            "noun": "whale book",
+            "kind": "object",
+            "location": "high_shelf",
+            "number": "singular",
+            "pronoun": "it",
+            "properties": [
+              "belongs_to_friend",
+              "blue"
+            ],
+            "state": [
+              "missing",
+              "whale_picture"
+            ],
+            "memes": {}
+          },
+          "after": {
+            "id": "book",
+            "noun": "whale book",
+            "kind": "object",
+            "location": "high_shelf",
+            "number": "singular",
+            "pronoun": "it",
+            "properties": [
+              "belongs_to_friend",
+              "blue"
+            ],
+            "state": [
+              "missing",
+              "whale_picture"
+            ],
+            "memes": {}
+          }
+        },
+        {
+          "event_id": 5,
+          "kind": "failed_search",
+          "tags": [
+            "causal_context",
+            "qa_context"
+          ],
+          "participation": "context",
+          "own_effects": {},
+          "peers": [],
+          "shared_event": false,
+          "before": {
+            "id": "book",
+            "noun": "whale book",
+            "kind": "object",
+            "location": "high_shelf",
+            "number": "singular",
+            "pronoun": "it",
+            "properties": [
+              "belongs_to_friend",
+              "blue"
+            ],
+            "state": [
+              "missing",
+              "whale_picture"
+            ],
+            "memes": {}
+          },
+          "after": {
+            "id": "book",
+            "noun": "whale book",
+            "kind": "object",
+            "location": "high_shelf",
+            "number": "singular",
+            "pronoun": "it",
+            "properties": [
+              "belongs_to_friend",
+              "blue"
+            ],
+            "state": [
+              "missing",
+              "whale_picture"
+            ],
+            "memes": {}
+          }
+        },
+        {
+          "event_id": 6,
+          "kind": "clue",
+          "tags": [
+            "causal_context"
+          ],
+          "participation": "context",
+          "own_effects": {},
+          "peers": [],
+          "shared_event": false,
+          "before": {
+            "id": "book",
+            "noun": "whale book",
+            "kind": "object",
+            "location": "high_shelf",
+            "number": "singular",
+            "pronoun": "it",
+            "properties": [
+              "belongs_to_friend",
+              "blue"
+            ],
+            "state": [
+              "missing",
+              "whale_picture"
+            ],
+            "memes": {}
+          },
+          "after": {
+            "id": "book",
+            "noun": "whale book",
+            "kind": "object",
+            "location": "high_shelf",
+            "number": "singular",
+            "pronoun": "it",
+            "properties": [
+              "belongs_to_friend",
+              "blue"
+            ],
+            "state": [
+              "missing",
+              "whale_picture"
+            ],
+            "memes": {}
+          }
+        },
+        {
+          "event_id": 10,
+          "kind": "retrieve",
+          "tags": [
+            "causal_context",
+            "changed",
+            "frame.patient",
+            "mentioned",
+            "moved",
+            "qa_context",
+            "state.add:found",
+            "state.remove:missing"
+          ],
+          "participation": "participant",
+          "own_effects": {
+            "location": {
+              "before": "high_shelf",
+              "after": "helper"
+            },
+            "state": {
+              "before": [
+                "missing",
+                "whale_picture"
+              ],
+              "after": [
+                "found",
+                "whale_picture"
+              ]
+            }
+          },
+          "peers": [
+            "helper",
+            "ladder"
+          ],
+          "shared_event": true,
+          "before": {
+            "id": "book",
+            "noun": "whale book",
+            "kind": "object",
+            "location": "high_shelf",
+            "number": "singular",
+            "pronoun": "it",
+            "properties": [
+              "belongs_to_friend",
+              "blue"
+            ],
+            "state": [
+              "missing",
+              "whale_picture"
+            ],
+            "memes": {}
+          },
+          "after": {
+            "id": "book",
+            "noun": "whale book",
+            "kind": "object",
+            "location": "helper",
+            "number": "singular",
+            "pronoun": "it",
+            "properties": [
+              "belongs_to_friend",
+              "blue"
+            ],
+            "state": [
+              "found",
+              "whale_picture"
+            ],
+            "memes": {}
+          }
+        },
+        {
+          "event_id": 11,
+          "kind": "recognize",
+          "tags": [
+            "causal_context",
+            "frame.patient"
+          ],
+          "participation": "participant",
+          "own_effects": {},
+          "peers": [
+            "friend"
+          ],
+          "shared_event": true,
+          "before": {
+            "id": "book",
+            "noun": "whale book",
+            "kind": "object",
+            "location": "helper",
+            "number": "singular",
+            "pronoun": "it",
+            "properties": [
+              "belongs_to_friend",
+              "blue"
+            ],
+            "state": [
+              "found",
+              "whale_picture"
+            ],
+            "memes": {}
+          },
+          "after": {
+            "id": "book",
+            "noun": "whale book",
+            "kind": "object",
+            "location": "helper",
+            "number": "singular",
+            "pronoun": "it",
+            "properties": [
+              "belongs_to_friend",
+              "blue"
+            ],
+            "state": [
+              "found",
+              "whale_picture"
+            ],
+            "memes": {}
+          }
+        },
+        {
+          "event_id": 12,
+          "kind": "checkout",
+          "tags": [
+            "causal_context",
+            "changed",
+            "frame.patient",
+            "mentioned",
+            "moved",
+            "state.add:checked_out"
+          ],
+          "participation": "participant",
+          "own_effects": {
+            "location": {
+              "before": "helper",
+              "after": "friend"
+            },
+            "state": {
+              "before": [
+                "found",
+                "whale_picture"
+              ],
+              "after": [
+                "checked_out",
+                "found",
+                "whale_picture"
+              ]
+            }
+          },
+          "peers": [
+            "friend",
+            "helper"
+          ],
+          "shared_event": true,
+          "before": {
+            "id": "book",
+            "noun": "whale book",
+            "kind": "object",
+            "location": "helper",
+            "number": "singular",
+            "pronoun": "it",
+            "properties": [
+              "belongs_to_friend",
+              "blue"
+            ],
+            "state": [
+              "found",
+              "whale_picture"
+            ],
+            "memes": {}
+          },
+          "after": {
+            "id": "book",
+            "noun": "whale book",
+            "kind": "object",
+            "location": "friend",
+            "number": "singular",
+            "pronoun": "it",
+            "properties": [
+              "belongs_to_friend",
+              "blue"
+            ],
+            "state": [
+              "checked_out",
+              "found",
+              "whale_picture"
+            ],
+            "memes": {}
+          }
+        },
+        {
+          "event_id": 18,
+          "kind": "ending",
+          "tags": [
+            "causal_context",
+            "changed",
+            "frame.patient",
+            "state.add:open"
+          ],
+          "participation": "participant",
+          "own_effects": {
+            "state": {
+              "before": [
+                "checked_out",
+                "found",
+                "whale_picture"
+              ],
+              "after": [
+                "checked_out",
+                "found",
+                "open",
+                "whale_picture"
+              ]
+            }
+          },
+          "peers": [
+            "hero"
+          ],
+          "shared_event": true,
+          "before": {
+            "id": "book",
+            "noun": "whale book",
+            "kind": "object",
+            "location": "friend",
+            "number": "singular",
+            "pronoun": "it",
+            "properties": [
+              "belongs_to_friend",
+              "blue"
+            ],
+            "state": [
+              "checked_out",
+              "found",
+              "whale_picture"
+            ],
+            "memes": {}
+          },
+          "after": {
+            "id": "book",
+            "noun": "whale book",
+            "kind": "object",
+            "location": "friend",
+            "number": "singular",
+            "pronoun": "it",
+            "properties": [
+              "belongs_to_friend",
+              "blue"
+            ],
+            "state": [
+              "checked_out",
+              "found",
+              "open",
+              "whale_picture"
+            ],
+            "memes": {}
+          }
+        }
+      ]
+    },
+    "bookmark": {
+      "initial": {
+        "id": "bookmark",
+        "noun": "star bookmark",
+        "kind": "object",
+        "location": "book",
+        "number": "singular",
+        "pronoun": "it",
+        "properties": [],
+        "state": [
+          "visible"
+        ],
+        "memes": {}
+      },
+      "final": {
+        "id": "bookmark",
+        "noun": "star bookmark",
+        "kind": "object",
+        "location": "book",
+        "number": "singular",
+        "pronoun": "it",
+        "properties": [],
+        "state": [
+          "visible"
+        ],
+        "memes": {}
+      },
+      "line": [
+        {
+          "event_id": 6,
+          "kind": "clue",
+          "tags": [
+            "causal_context",
+            "frame.patient",
+            "mentioned",
+            "qa_context"
+          ],
+          "participation": "participant",
+          "own_effects": {},
+          "peers": [
+            "friend",
+            "tool"
+          ],
+          "shared_event": true,
+          "before": {
+            "id": "bookmark",
+            "noun": "star bookmark",
+            "kind": "object",
+            "location": "book",
+            "number": "singular",
+            "pronoun": "it",
+            "properties": [],
+            "state": [
+              "visible"
+            ],
+            "memes": {}
+          },
+          "after": {
+            "id": "bookmark",
+            "noun": "star bookmark",
+            "kind": "object",
+            "location": "book",
+            "number": "singular",
+            "pronoun": "it",
+            "properties": [],
+            "state": [
+              "visible"
+            ],
+            "memes": {}
+          }
+        },
+        {
+          "event_id": 11,
+          "kind": "recognize",
+          "tags": [
+            "causal_context"
+          ],
+          "participation": "context",
+          "own_effects": {},
+          "peers": [],
+          "shared_event": false,
+          "before": {
+            "id": "bookmark",
+            "noun": "star bookmark",
+            "kind": "object",
+            "location": "book",
+            "number": "singular",
+            "pronoun": "it",
+            "properties": [],
+            "state": [
+              "visible"
+            ],
+            "memes": {}
+          },
+          "after": {
+            "id": "bookmark",
+            "noun": "star bookmark",
+            "kind": "object",
+            "location": "book",
+            "number": "singular",
+            "pronoun": "it",
+            "properties": [],
+            "state": [
+              "visible"
+            ],
+            "memes": {}
+          }
+        }
+      ]
+    },
+    "friend": {
+      "initial": {
+        "id": "friend",
+        "noun": "Jun",
+        "kind": "person",
+        "location": "library",
+        "number": "singular",
+        "pronoun": "he",
+        "properties": [
+          "animate",
+          "can_hold"
+        ],
+        "state": [],
+        "memes": {
+          "Care": 0.46560750590167027,
+          "Fear": 0.33233051531214985,
+          "Trust": 0.5274398506242907
+        }
+      },
+      "final": {
+        "id": "friend",
+        "noun": "Jun",
+        "kind": "person",
+        "location": "library",
+        "number": "singular",
+        "pronoun": "he",
+        "properties": [
+          "animate",
+          "can_hold"
+        ],
+        "state": [],
+        "memes": {
+          "Care": 0.6656075059016703,
+          "Fear": 0.33233051531214985,
+          "Trust": 0.5274398506242907
+        }
+      },
+      "line": [
+        {
+          "event_id": 2,
+          "kind": "missing",
+          "tags": [
+            "causal_context",
+            "frame.actor",
+            "listener",
+            "mentioned",
+            "qa_context",
+            "speaker"
+          ],
+          "participation": "participant",
+          "own_effects": {},
+          "peers": [
+            "book",
+            "hero"
+          ],
+          "shared_event": true,
+          "before": {
+            "id": "friend",
+            "noun": "Jun",
+            "kind": "person",
+            "location": "library",
+            "number": "singular",
+            "pronoun": "he",
+            "properties": [
+              "animate",
+              "can_hold"
+            ],
+            "state": [],
+            "memes": {
+              "Care": 0.46560750590167027,
+              "Fear": 0.33233051531214985,
+              "Trust": 0.5274398506242907
+            }
+          },
+          "after": {
+            "id": "friend",
+            "noun": "Jun",
+            "kind": "person",
+            "location": "library",
+            "number": "singular",
+            "pronoun": "he",
+            "properties": [
+              "animate",
+              "can_hold"
+            ],
+            "state": [],
+            "memes": {
+              "Care": 0.46560750590167027,
+              "Fear": 0.33233051531214985,
+              "Trust": 0.5274398506242907
+            }
+          }
+        },
+        {
+          "event_id": 5,
+          "kind": "failed_search",
+          "tags": [
+            "causal_context",
+            "mentioned",
+            "qa_context"
+          ],
+          "participation": "context",
+          "own_effects": {},
+          "peers": [],
+          "shared_event": false,
+          "before": {
+            "id": "friend",
+            "noun": "Jun",
+            "kind": "person",
+            "location": "library",
+            "number": "singular",
+            "pronoun": "he",
+            "properties": [
+              "animate",
+              "can_hold"
+            ],
+            "state": [],
+            "memes": {
+              "Care": 0.46560750590167027,
+              "Fear": 0.33233051531214985,
+              "Trust": 0.5274398506242907
+            }
+          },
+          "after": {
+            "id": "friend",
+            "noun": "Jun",
+            "kind": "person",
+            "location": "library",
+            "number": "singular",
+            "pronoun": "he",
+            "properties": [
+              "animate",
+              "can_hold"
+            ],
+            "state": [],
+            "memes": {
+              "Care": 0.46560750590167027,
+              "Fear": 0.33233051531214985,
+              "Trust": 0.5274398506242907
+            }
+          }
+        },
+        {
+          "event_id": 6,
+          "kind": "clue",
+          "tags": [
+            "causal_context",
+            "frame.actor",
+            "mentioned",
+            "qa_context"
+          ],
+          "participation": "participant",
+          "own_effects": {},
+          "peers": [
+            "bookmark",
+            "tool"
+          ],
+          "shared_event": true,
+          "before": {
+            "id": "friend",
+            "noun": "Jun",
+            "kind": "person",
+            "location": "library",
+            "number": "singular",
+            "pronoun": "he",
+            "properties": [
+              "animate",
+              "can_hold"
+            ],
+            "state": [],
+            "memes": {
+              "Care": 0.46560750590167027,
+              "Fear": 0.33233051531214985,
+              "Trust": 0.5274398506242907
+            }
+          },
+          "after": {
+            "id": "friend",
+            "noun": "Jun",
+            "kind": "person",
+            "location": "library",
+            "number": "singular",
+            "pronoun": "he",
+            "properties": [
+              "animate",
+              "can_hold"
+            ],
+            "state": [],
+            "memes": {
+              "Care": 0.46560750590167027,
+              "Fear": 0.33233051531214985,
+              "Trust": 0.5274398506242907
+            }
+          }
+        },
+        {
+          "event_id": 7,
+          "kind": "request_help",
+          "tags": [
+            "causal_context"
+          ],
+          "participation": "context",
+          "own_effects": {},
+          "peers": [],
+          "shared_event": false,
+          "before": {
+            "id": "friend",
+            "noun": "Jun",
+            "kind": "person",
+            "location": "library",
+            "number": "singular",
+            "pronoun": "he",
+            "properties": [
+              "animate",
+              "can_hold"
+            ],
+            "state": [],
+            "memes": {
+              "Care": 0.46560750590167027,
+              "Fear": 0.33233051531214985,
+              "Trust": 0.5274398506242907
+            }
+          },
+          "after": {
+            "id": "friend",
+            "noun": "Jun",
+            "kind": "person",
+            "location": "library",
+            "number": "singular",
+            "pronoun": "he",
+            "properties": [
+              "animate",
+              "can_hold"
+            ],
+            "state": [],
+            "memes": {
+              "Care": 0.46560750590167027,
+              "Fear": 0.33233051531214985,
+              "Trust": 0.5274398506242907
+            }
+          }
+        },
+        {
+          "event_id": 10,
+          "kind": "retrieve",
+          "tags": [
+            "causal_context"
+          ],
+          "participation": "context",
+          "own_effects": {},
+          "peers": [],
+          "shared_event": false,
+          "before": {
+            "id": "friend",
+            "noun": "Jun",
+            "kind": "person",
+            "location": "library",
+            "number": "singular",
+            "pronoun": "he",
+            "properties": [
+              "animate",
+              "can_hold"
+            ],
+            "state": [],
+            "memes": {
+              "Care": 0.46560750590167027,
+              "Fear": 0.33233051531214985,
+              "Trust": 0.5274398506242907
+            }
+          },
+          "after": {
+            "id": "friend",
+            "noun": "Jun",
+            "kind": "person",
+            "location": "library",
+            "number": "singular",
+            "pronoun": "he",
+            "properties": [
+              "animate",
+              "can_hold"
+            ],
+            "state": [],
+            "memes": {
+              "Care": 0.46560750590167027,
+              "Fear": 0.33233051531214985,
+              "Trust": 0.5274398506242907
+            }
+          }
+        },
+        {
+          "event_id": 11,
+          "kind": "recognize",
+          "tags": [
+            "causal_context",
+            "frame.actor"
+          ],
+          "participation": "participant",
+          "own_effects": {},
+          "peers": [
+            "book"
+          ],
+          "shared_event": true,
+          "before": {
+            "id": "friend",
+            "noun": "Jun",
+            "kind": "person",
+            "location": "library",
+            "number": "singular",
+            "pronoun": "he",
+            "properties": [
+              "animate",
+              "can_hold"
+            ],
+            "state": [],
+            "memes": {
+              "Care": 0.46560750590167027,
+              "Fear": 0.33233051531214985,
+              "Trust": 0.5274398506242907
+            }
+          },
+          "after": {
+            "id": "friend",
+            "noun": "Jun",
+            "kind": "person",
+            "location": "library",
+            "number": "singular",
+            "pronoun": "he",
+            "properties": [
+              "animate",
+              "can_hold"
+            ],
+            "state": [],
+            "memes": {
+              "Care": 0.46560750590167027,
+              "Fear": 0.33233051531214985,
+              "Trust": 0.5274398506242907
+            }
+          }
+        },
+        {
+          "event_id": 12,
+          "kind": "checkout",
+          "tags": [
+            "causal_context",
+            "destination_holder",
+            "frame.destination",
+            "mentioned"
+          ],
+          "participation": "participant",
+          "own_effects": {},
+          "peers": [
+            "book",
+            "helper"
+          ],
+          "shared_event": true,
+          "before": {
+            "id": "friend",
+            "noun": "Jun",
+            "kind": "person",
+            "location": "library",
+            "number": "singular",
+            "pronoun": "he",
+            "properties": [
+              "animate",
+              "can_hold"
+            ],
+            "state": [],
+            "memes": {
+              "Care": 0.46560750590167027,
+              "Fear": 0.33233051531214985,
+              "Trust": 0.5274398506242907
+            }
+          },
+          "after": {
+            "id": "friend",
+            "noun": "Jun",
+            "kind": "person",
+            "location": "library",
+            "number": "singular",
+            "pronoun": "he",
+            "properties": [
+              "animate",
+              "can_hold"
+            ],
+            "state": [],
+            "memes": {
+              "Care": 0.46560750590167027,
+              "Fear": 0.33233051531214985,
+              "Trust": 0.5274398506242907
+            }
+          }
+        },
+        {
+          "event_id": 14,
+          "kind": "share_atlas",
+          "tags": [
+            "causal_context",
+            "changed",
+            "concept.changed:Care",
+            "frame.actor",
+            "mentioned",
+            "qa_context",
+            "speaker"
+          ],
+          "participation": "participant",
+          "own_effects": {
+            "memes": {
+              "before": {
+                "Care": 0.46560750590167027,
+                "Fear": 0.33233051531214985,
+                "Trust": 0.5274398506242907
+              },
+              "after": {
+                "Care": 0.6656075059016703,
+                "Fear": 0.33233051531214985,
+                "Trust": 0.5274398506242907
+              }
+            }
+          },
+          "peers": [
+            "atlas",
+            "hero"
+          ],
+          "shared_event": true,
+          "before": {
+            "id": "friend",
+            "noun": "Jun",
+            "kind": "person",
+            "location": "library",
+            "number": "singular",
+            "pronoun": "he",
+            "properties": [
+              "animate",
+              "can_hold"
+            ],
+            "state": [],
+            "memes": {
+              "Care": 0.46560750590167027,
+              "Fear": 0.33233051531214985,
+              "Trust": 0.5274398506242907
+            }
+          },
+          "after": {
+            "id": "friend",
+            "noun": "Jun",
+            "kind": "person",
+            "location": "library",
+            "number": "singular",
+            "pronoun": "he",
+            "properties": [
+              "animate",
+              "can_hold"
+            ],
+            "state": [],
+            "memes": {
+              "Care": 0.6656075059016703,
+              "Fear": 0.33233051531214985,
+              "Trust": 0.5274398506242907
+            }
+          }
+        },
+        {
+          "event_id": 18,
+          "kind": "ending",
+          "tags": [
+            "causal_context",
+            "mentioned",
+            "qa_context"
+          ],
+          "participation": "context",
+          "own_effects": {},
+          "peers": [],
+          "shared_event": false,
+          "before": {
+            "id": "friend",
+            "noun": "Jun",
+            "kind": "person",
+            "location": "library",
+            "number": "singular",
+            "pronoun": "he",
+            "properties": [
+              "animate",
+              "can_hold"
+            ],
+            "state": [],
+            "memes": {
+              "Care": 0.6656075059016703,
+              "Fear": 0.33233051531214985,
+              "Trust": 0.5274398506242907
+            }
+          },
+          "after": {
+            "id": "friend",
+            "noun": "Jun",
+            "kind": "person",
+            "location": "library",
+            "number": "singular",
+            "pronoun": "he",
+            "properties": [
+              "animate",
+              "can_hold"
+            ],
+            "state": [],
+            "memes": {
+              "Care": 0.6656075059016703,
+              "Fear": 0.33233051531214985,
+              "Trust": 0.5274398506242907
+            }
+          }
+        }
+      ]
+    },
+    "helper": {
+      "initial": {
+        "id": "helper",
+        "noun": "Ms Alvarez",
+        "kind": "person",
+        "location": "library",
+        "number": "singular",
+        "pronoun": "she",
+        "properties": [
+          "animate",
+          "can_hold"
+        ],
+        "state": [],
+        "memes": {
+          "Care": 0.5884172691736633,
+          "Fear": 0.28447458417664995,
+          "Trust": 0.6049175414128523
+        }
+      },
+      "final": {
+        "id": "helper",
+        "noun": "Ms Alvarez",
+        "kind": "person",
+        "location": "library",
+        "number": "singular",
+        "pronoun": "she",
+        "properties": [
+          "animate",
+          "can_hold"
+        ],
+        "state": [],
+        "memes": {
+          "Care": 0.5884172691736633,
+          "Fear": 0.28447458417664995,
+          "Trust": 0.6049175414128523
+        }
+      },
+      "line": [
+        {
+          "event_id": 3,
+          "kind": "borrow",
+          "tags": [
+            "causal_context"
+          ],
+          "participation": "context",
+          "own_effects": {},
+          "peers": [],
+          "shared_event": false,
+          "before": {
+            "id": "helper",
+            "noun": "Ms Alvarez",
+            "kind": "person",
+            "location": "library",
+            "number": "singular",
+            "pronoun": "she",
+            "properties": [
+              "animate",
+              "can_hold"
+            ],
+            "state": [],
+            "memes": {
+              "Care": 0.5884172691736633,
+              "Fear": 0.28447458417664995,
+              "Trust": 0.6049175414128523
+            }
+          },
+          "after": {
+            "id": "helper",
+            "noun": "Ms Alvarez",
+            "kind": "person",
+            "location": "library",
+            "number": "singular",
+            "pronoun": "she",
+            "properties": [
+              "animate",
+              "can_hold"
+            ],
+            "state": [],
+            "memes": {
+              "Care": 0.5884172691736633,
+              "Fear": 0.28447458417664995,
+              "Trust": 0.6049175414128523
+            }
+          }
+        },
+        {
+          "event_id": 7,
+          "kind": "request_help",
+          "tags": [
+            "causal_context",
+            "frame.patient"
+          ],
+          "participation": "participant",
+          "own_effects": {},
+          "peers": [
+            "hero"
+          ],
+          "shared_event": true,
+          "before": {
+            "id": "helper",
+            "noun": "Ms Alvarez",
+            "kind": "person",
+            "location": "library",
+            "number": "singular",
+            "pronoun": "she",
+            "properties": [
+              "animate",
+              "can_hold"
+            ],
+            "state": [],
+            "memes": {
+              "Care": 0.5884172691736633,
+              "Fear": 0.28447458417664995,
+              "Trust": 0.6049175414128523
+            }
+          },
+          "after": {
+            "id": "helper",
+            "noun": "Ms Alvarez",
+            "kind": "person",
+            "location": "library",
+            "number": "singular",
+            "pronoun": "she",
+            "properties": [
+              "animate",
+              "can_hold"
+            ],
+            "state": [],
+            "memes": {
+              "Care": 0.5884172691736633,
+              "Fear": 0.28447458417664995,
+              "Trust": 0.6049175414128523
+            }
+          }
+        },
+        {
+          "event_id": 8,
+          "kind": "reserve_atlas",
+          "tags": [
+            "causal_context",
+            "mentioned",
+            "qa_context"
+          ],
+          "participation": "context",
+          "own_effects": {},
+          "peers": [],
+          "shared_event": false,
+          "before": {
+            "id": "helper",
+            "noun": "Ms Alvarez",
+            "kind": "person",
+            "location": "library",
+            "number": "singular",
+            "pronoun": "she",
+            "properties": [
+              "animate",
+              "can_hold"
+            ],
+            "state": [],
+            "memes": {
+              "Care": 0.5884172691736633,
+              "Fear": 0.28447458417664995,
+              "Trust": 0.6049175414128523
+            }
+          },
+          "after": {
+            "id": "helper",
+            "noun": "Ms Alvarez",
+            "kind": "person",
+            "location": "library",
+            "number": "singular",
+            "pronoun": "she",
+            "properties": [
+              "animate",
+              "can_hold"
+            ],
+            "state": [],
+            "memes": {
+              "Care": 0.5884172691736633,
+              "Fear": 0.28447458417664995,
+              "Trust": 0.6049175414128523
+            }
+          }
+        },
+        {
+          "event_id": 9,
+          "kind": "fetch_ladder",
+          "tags": [
+            "causal_context",
+            "frame.actor"
+          ],
+          "participation": "participant",
+          "own_effects": {},
+          "peers": [
+            "ladder"
+          ],
+          "shared_event": true,
+          "before": {
+            "id": "helper",
+            "noun": "Ms Alvarez",
+            "kind": "person",
+            "location": "library",
+            "number": "singular",
+            "pronoun": "she",
+            "properties": [
+              "animate",
+              "can_hold"
+            ],
+            "state": [],
+            "memes": {
+              "Care": 0.5884172691736633,
+              "Fear": 0.28447458417664995,
+              "Trust": 0.6049175414128523
+            }
+          },
+          "after": {
+            "id": "helper",
+            "noun": "Ms Alvarez",
+            "kind": "person",
+            "location": "library",
+            "number": "singular",
+            "pronoun": "she",
+            "properties": [
+              "animate",
+              "can_hold"
+            ],
+            "state": [],
+            "memes": {
+              "Care": 0.5884172691736633,
+              "Fear": 0.28447458417664995,
+              "Trust": 0.6049175414128523
+            }
+          }
+        },
+        {
+          "event_id": 10,
+          "kind": "retrieve",
+          "tags": [
+            "causal_context",
+            "destination_holder",
+            "frame.actor",
+            "frame.destination",
+            "mentioned",
+            "qa_context"
+          ],
+          "participation": "participant",
+          "own_effects": {},
+          "peers": [
+            "book",
+            "ladder"
+          ],
+          "shared_event": true,
+          "before": {
+            "id": "helper",
+            "noun": "Ms Alvarez",
+            "kind": "person",
+            "location": "library",
+            "number": "singular",
+            "pronoun": "she",
+            "properties": [
+              "animate",
+              "can_hold"
+            ],
+            "state": [],
+            "memes": {
+              "Care": 0.5884172691736633,
+              "Fear": 0.28447458417664995,
+              "Trust": 0.6049175414128523
+            }
+          },
+          "after": {
+            "id": "helper",
+            "noun": "Ms Alvarez",
+            "kind": "person",
+            "location": "library",
+            "number": "singular",
+            "pronoun": "she",
+            "properties": [
+              "animate",
+              "can_hold"
+            ],
+            "state": [],
+            "memes": {
+              "Care": 0.5884172691736633,
+              "Fear": 0.28447458417664995,
+              "Trust": 0.6049175414128523
+            }
+          }
+        },
+        {
+          "event_id": 12,
+          "kind": "checkout",
+          "tags": [
+            "causal_context",
+            "frame.actor",
+            "mentioned",
+            "source_holder"
+          ],
+          "participation": "participant",
+          "own_effects": {},
+          "peers": [
+            "book",
+            "friend"
+          ],
+          "shared_event": true,
+          "before": {
+            "id": "helper",
+            "noun": "Ms Alvarez",
+            "kind": "person",
+            "location": "library",
+            "number": "singular",
+            "pronoun": "she",
+            "properties": [
+              "animate",
+              "can_hold"
+            ],
+            "state": [],
+            "memes": {
+              "Care": 0.5884172691736633,
+              "Fear": 0.28447458417664995,
+              "Trust": 0.6049175414128523
+            }
+          },
+          "after": {
+            "id": "helper",
+            "noun": "Ms Alvarez",
+            "kind": "person",
+            "location": "library",
+            "number": "singular",
+            "pronoun": "she",
+            "properties": [
+              "animate",
+              "can_hold"
+            ],
+            "state": [],
+            "memes": {
+              "Care": 0.5884172691736633,
+              "Fear": 0.28447458417664995,
+              "Trust": 0.6049175414128523
+            }
+          }
+        },
+        {
+          "event_id": 13,
+          "kind": "checkout_atlas",
+          "tags": [
+            "causal_context",
+            "frame.actor"
+          ],
+          "participation": "participant",
+          "own_effects": {},
+          "peers": [
+            "atlas",
+            "hero"
+          ],
+          "shared_event": true,
+          "before": {
+            "id": "helper",
+            "noun": "Ms Alvarez",
+            "kind": "person",
+            "location": "library",
+            "number": "singular",
+            "pronoun": "she",
+            "properties": [
+              "animate",
+              "can_hold"
+            ],
+            "state": [],
+            "memes": {
+              "Care": 0.5884172691736633,
+              "Fear": 0.28447458417664995,
+              "Trust": 0.6049175414128523
+            }
+          },
+          "after": {
+            "id": "helper",
+            "noun": "Ms Alvarez",
+            "kind": "person",
+            "location": "library",
+            "number": "singular",
+            "pronoun": "she",
+            "properties": [
+              "animate",
+              "can_hold"
+            ],
+            "state": [],
+            "memes": {
+              "Care": 0.5884172691736633,
+              "Fear": 0.28447458417664995,
+              "Trust": 0.6049175414128523
+            }
+          }
+        },
+        {
+          "event_id": 16,
+          "kind": "return_ladder",
+          "tags": [
+            "causal_context",
+            "frame.actor"
+          ],
+          "participation": "participant",
+          "own_effects": {},
+          "peers": [
+            "ladder"
+          ],
+          "shared_event": true,
+          "before": {
+            "id": "helper",
+            "noun": "Ms Alvarez",
+            "kind": "person",
+            "location": "library",
+            "number": "singular",
+            "pronoun": "she",
+            "properties": [
+              "animate",
+              "can_hold"
+            ],
+            "state": [],
+            "memes": {
+              "Care": 0.5884172691736633,
+              "Fear": 0.28447458417664995,
+              "Trust": 0.6049175414128523
+            }
+          },
+          "after": {
+            "id": "helper",
+            "noun": "Ms Alvarez",
+            "kind": "person",
+            "location": "library",
+            "number": "singular",
+            "pronoun": "she",
+            "properties": [
+              "animate",
+              "can_hold"
+            ],
+            "state": [],
+            "memes": {
+              "Care": 0.5884172691736633,
+              "Fear": 0.28447458417664995,
+              "Trust": 0.6049175414128523
+            }
+          }
+        }
+      ]
+    },
+    "hero": {
+      "initial": {
+        "id": "hero",
+        "noun": "Mina",
+        "kind": "person",
+        "location": "library",
+        "number": "singular",
+        "pronoun": "she",
+        "properties": [
+          "animate",
+          "can_hold"
+        ],
+        "state": [],
+        "memes": {
+          "Care": 0.5833258768626751,
+          "Fear": 0.38736600615069816,
+          "Trust": 0.36835132413049776
+        }
+      },
+      "final": {
+        "id": "hero",
+        "noun": "Mina",
+        "kind": "person",
+        "location": "library",
+        "number": "singular",
+        "pronoun": "she",
+        "properties": [
+          "animate",
+          "can_hold"
+        ],
+        "state": [],
+        "memes": {
+          "Care": 0.5833258768626751,
+          "Fear": 0.38736600615069816,
+          "Trust": 0.36835132413049776,
+          "Joy": 0.7
+        }
+      },
+      "line": [
+        {
+          "event_id": 1,
+          "kind": "wish",
+          "tags": [
+            "causal_context",
+            "frame.actor",
+            "mentioned",
+            "qa_context"
+          ],
+          "participation": "participant",
+          "own_effects": {},
+          "peers": [
+            "atlas"
+          ],
+          "shared_event": true,
+          "before": {
+            "id": "hero",
+            "noun": "Mina",
+            "kind": "person",
+            "location": "library",
+            "number": "singular",
+            "pronoun": "she",
+            "properties": [
+              "animate",
+              "can_hold"
+            ],
+            "state": [],
+            "memes": {
+              "Care": 0.5833258768626751,
+              "Fear": 0.38736600615069816,
+              "Trust": 0.36835132413049776
+            }
+          },
+          "after": {
+            "id": "hero",
+            "noun": "Mina",
+            "kind": "person",
+            "location": "library",
+            "number": "singular",
+            "pronoun": "she",
+            "properties": [
+              "animate",
+              "can_hold"
+            ],
+            "state": [],
+            "memes": {
+              "Care": 0.5833258768626751,
+              "Fear": 0.38736600615069816,
+              "Trust": 0.36835132413049776
+            }
+          }
+        },
+        {
+          "event_id": 2,
+          "kind": "missing",
+          "tags": [
+            "listener",
+            "mentioned",
+            "qa_context",
+            "speaker"
+          ],
+          "participation": "participant",
+          "own_effects": {},
+          "peers": [
+            "book",
+            "friend"
+          ],
+          "shared_event": true,
+          "before": {
+            "id": "hero",
+            "noun": "Mina",
+            "kind": "person",
+            "location": "library",
+            "number": "singular",
+            "pronoun": "she",
+            "properties": [
+              "animate",
+              "can_hold"
+            ],
+            "state": [],
+            "memes": {
+              "Care": 0.5833258768626751,
+              "Fear": 0.38736600615069816,
+              "Trust": 0.36835132413049776
+            }
+          },
+          "after": {
+            "id": "hero",
+            "noun": "Mina",
+            "kind": "person",
+            "location": "library",
+            "number": "singular",
+            "pronoun": "she",
+            "properties": [
+              "animate",
+              "can_hold"
+            ],
+            "state": [],
+            "memes": {
+              "Care": 0.5833258768626751,
+              "Fear": 0.38736600615069816,
+              "Trust": 0.36835132413049776
+            }
+          }
+        },
+        {
+          "event_id": 3,
+          "kind": "borrow",
+          "tags": [
+            "causal_context",
+            "destination_holder",
+            "frame.actor"
+          ],
+          "participation": "participant",
+          "own_effects": {},
+          "peers": [
+            "tool"
+          ],
+          "shared_event": true,
+          "before": {
+            "id": "hero",
+            "noun": "Mina",
+            "kind": "person",
+            "location": "library",
+            "number": "singular",
+            "pronoun": "she",
+            "properties": [
+              "animate",
+              "can_hold"
+            ],
+            "state": [],
+            "memes": {
+              "Care": 0.5833258768626751,
+              "Fear": 0.38736600615069816,
+              "Trust": 0.36835132413049776
+            }
+          },
+          "after": {
+            "id": "hero",
+            "noun": "Mina",
+            "kind": "person",
+            "location": "library",
+            "number": "singular",
+            "pronoun": "she",
+            "properties": [
+              "animate",
+              "can_hold"
+            ],
+            "state": [],
+            "memes": {
+              "Care": 0.5833258768626751,
+              "Fear": 0.38736600615069816,
+              "Trust": 0.36835132413049776
+            }
+          }
+        },
+        {
+          "event_id": 4,
+          "kind": "place_atlas",
+          "tags": [
+            "frame.actor",
+            "source_holder"
+          ],
+          "participation": "participant",
+          "own_effects": {},
+          "peers": [
+            "atlas"
+          ],
+          "shared_event": true,
+          "before": {
+            "id": "hero",
+            "noun": "Mina",
+            "kind": "person",
+            "location": "library",
+            "number": "singular",
+            "pronoun": "she",
+            "properties": [
+              "animate",
+              "can_hold"
+            ],
+            "state": [],
+            "memes": {
+              "Care": 0.5833258768626751,
+              "Fear": 0.38736600615069816,
+              "Trust": 0.36835132413049776
+            }
+          },
+          "after": {
+            "id": "hero",
+            "noun": "Mina",
+            "kind": "person",
+            "location": "library",
+            "number": "singular",
+            "pronoun": "she",
+            "properties": [
+              "animate",
+              "can_hold"
+            ],
+            "state": [],
+            "memes": {
+              "Care": 0.5833258768626751,
+              "Fear": 0.38736600615069816,
+              "Trust": 0.36835132413049776
+            }
+          }
+        },
+        {
+          "event_id": 5,
+          "kind": "failed_search",
+          "tags": [
+            "frame.actor",
+            "mentioned",
+            "qa_context"
+          ],
+          "participation": "participant",
+          "own_effects": {},
+          "peers": [
+            "mitten",
+            "tool"
+          ],
+          "shared_event": true,
+          "before": {
+            "id": "hero",
+            "noun": "Mina",
+            "kind": "person",
+            "location": "library",
+            "number": "singular",
+            "pronoun": "she",
+            "properties": [
+              "animate",
+              "can_hold"
+            ],
+            "state": [],
+            "memes": {
+              "Care": 0.5833258768626751,
+              "Fear": 0.38736600615069816,
+              "Trust": 0.36835132413049776
+            }
+          },
+          "after": {
+            "id": "hero",
+            "noun": "Mina",
+            "kind": "person",
+            "location": "library",
+            "number": "singular",
+            "pronoun": "she",
+            "properties": [
+              "animate",
+              "can_hold"
+            ],
+            "state": [],
+            "memes": {
+              "Care": 0.5833258768626751,
+              "Fear": 0.38736600615069816,
+              "Trust": 0.36835132413049776
+            }
+          }
+        },
+        {
+          "event_id": 6,
+          "kind": "clue",
+          "tags": [
+            "causal_context"
+          ],
+          "participation": "context",
+          "own_effects": {},
+          "peers": [],
+          "shared_event": false,
+          "before": {
+            "id": "hero",
+            "noun": "Mina",
+            "kind": "person",
+            "location": "library",
+            "number": "singular",
+            "pronoun": "she",
+            "properties": [
+              "animate",
+              "can_hold"
+            ],
+            "state": [],
+            "memes": {
+              "Care": 0.5833258768626751,
+              "Fear": 0.38736600615069816,
+              "Trust": 0.36835132413049776
+            }
+          },
+          "after": {
+            "id": "hero",
+            "noun": "Mina",
+            "kind": "person",
+            "location": "library",
+            "number": "singular",
+            "pronoun": "she",
+            "properties": [
+              "animate",
+              "can_hold"
+            ],
+            "state": [],
+            "memes": {
+              "Care": 0.5833258768626751,
+              "Fear": 0.38736600615069816,
+              "Trust": 0.36835132413049776
+            }
+          }
+        },
+        {
+          "event_id": 7,
+          "kind": "request_help",
+          "tags": [
+            "causal_context",
+            "frame.actor"
+          ],
+          "participation": "participant",
+          "own_effects": {},
+          "peers": [
+            "helper"
+          ],
+          "shared_event": true,
+          "before": {
+            "id": "hero",
+            "noun": "Mina",
+            "kind": "person",
+            "location": "library",
+            "number": "singular",
+            "pronoun": "she",
+            "properties": [
+              "animate",
+              "can_hold"
+            ],
+            "state": [],
+            "memes": {
+              "Care": 0.5833258768626751,
+              "Fear": 0.38736600615069816,
+              "Trust": 0.36835132413049776
+            }
+          },
+          "after": {
+            "id": "hero",
+            "noun": "Mina",
+            "kind": "person",
+            "location": "library",
+            "number": "singular",
+            "pronoun": "she",
+            "properties": [
+              "animate",
+              "can_hold"
+            ],
+            "state": [],
+            "memes": {
+              "Care": 0.5833258768626751,
+              "Fear": 0.38736600615069816,
+              "Trust": 0.36835132413049776
+            }
+          }
+        },
+        {
+          "event_id": 8,
+          "kind": "reserve_atlas",
+          "tags": [
+            "causal_context",
+            "frame.actor",
+            "mentioned",
+            "qa_context"
+          ],
+          "participation": "participant",
+          "own_effects": {},
+          "peers": [
+            "atlas"
+          ],
+          "shared_event": true,
+          "before": {
+            "id": "hero",
+            "noun": "Mina",
+            "kind": "person",
+            "location": "library",
+            "number": "singular",
+            "pronoun": "she",
+            "properties": [
+              "animate",
+              "can_hold"
+            ],
+            "state": [],
+            "memes": {
+              "Care": 0.5833258768626751,
+              "Fear": 0.38736600615069816,
+              "Trust": 0.36835132413049776
+            }
+          },
+          "after": {
+            "id": "hero",
+            "noun": "Mina",
+            "kind": "person",
+            "location": "library",
+            "number": "singular",
+            "pronoun": "she",
+            "properties": [
+              "animate",
+              "can_hold"
+            ],
+            "state": [],
+            "memes": {
+              "Care": 0.5833258768626751,
+              "Fear": 0.38736600615069816,
+              "Trust": 0.36835132413049776
+            }
+          }
+        },
+        {
+          "event_id": 10,
+          "kind": "retrieve",
+          "tags": [
+            "causal_context"
+          ],
+          "participation": "context",
+          "own_effects": {},
+          "peers": [],
+          "shared_event": false,
+          "before": {
+            "id": "hero",
+            "noun": "Mina",
+            "kind": "person",
+            "location": "library",
+            "number": "singular",
+            "pronoun": "she",
+            "properties": [
+              "animate",
+              "can_hold"
+            ],
+            "state": [],
+            "memes": {
+              "Care": 0.5833258768626751,
+              "Fear": 0.38736600615069816,
+              "Trust": 0.36835132413049776
+            }
+          },
+          "after": {
+            "id": "hero",
+            "noun": "Mina",
+            "kind": "person",
+            "location": "library",
+            "number": "singular",
+            "pronoun": "she",
+            "properties": [
+              "animate",
+              "can_hold"
+            ],
+            "state": [],
+            "memes": {
+              "Care": 0.5833258768626751,
+              "Fear": 0.38736600615069816,
+              "Trust": 0.36835132413049776
+            }
+          }
+        },
+        {
+          "event_id": 13,
+          "kind": "checkout_atlas",
+          "tags": [
+            "causal_context",
+            "destination_holder",
+            "frame.destination"
+          ],
+          "participation": "participant",
+          "own_effects": {},
+          "peers": [
+            "atlas",
+            "helper"
+          ],
+          "shared_event": true,
+          "before": {
+            "id": "hero",
+            "noun": "Mina",
+            "kind": "person",
+            "location": "library",
+            "number": "singular",
+            "pronoun": "she",
+            "properties": [
+              "animate",
+              "can_hold"
+            ],
+            "state": [],
+            "memes": {
+              "Care": 0.5833258768626751,
+              "Fear": 0.38736600615069816,
+              "Trust": 0.36835132413049776
+            }
+          },
+          "after": {
+            "id": "hero",
+            "noun": "Mina",
+            "kind": "person",
+            "location": "library",
+            "number": "singular",
+            "pronoun": "she",
+            "properties": [
+              "animate",
+              "can_hold"
+            ],
+            "state": [],
+            "memes": {
+              "Care": 0.5833258768626751,
+              "Fear": 0.38736600615069816,
+              "Trust": 0.36835132413049776
+            }
+          }
+        },
+        {
+          "event_id": 14,
+          "kind": "share_atlas",
+          "tags": [
+            "causal_context",
+            "listener",
+            "mentioned",
+            "qa_context"
+          ],
+          "participation": "participant",
+          "own_effects": {},
+          "peers": [
+            "atlas",
+            "friend"
+          ],
+          "shared_event": true,
+          "before": {
+            "id": "hero",
+            "noun": "Mina",
+            "kind": "person",
+            "location": "library",
+            "number": "singular",
+            "pronoun": "she",
+            "properties": [
+              "animate",
+              "can_hold"
+            ],
+            "state": [],
+            "memes": {
+              "Care": 0.5833258768626751,
+              "Fear": 0.38736600615069816,
+              "Trust": 0.36835132413049776
+            }
+          },
+          "after": {
+            "id": "hero",
+            "noun": "Mina",
+            "kind": "person",
+            "location": "library",
+            "number": "singular",
+            "pronoun": "she",
+            "properties": [
+              "animate",
+              "can_hold"
+            ],
+            "state": [],
+            "memes": {
+              "Care": 0.5833258768626751,
+              "Fear": 0.38736600615069816,
+              "Trust": 0.36835132413049776
+            }
+          }
+        },
+        {
+          "event_id": 15,
+          "kind": "return_trolley",
+          "tags": [
+            "causal_context",
+            "frame.actor",
+            "source_holder"
+          ],
+          "participation": "participant",
+          "own_effects": {},
+          "peers": [
+            "tool"
+          ],
+          "shared_event": true,
+          "before": {
+            "id": "hero",
+            "noun": "Mina",
+            "kind": "person",
+            "location": "library",
+            "number": "singular",
+            "pronoun": "she",
+            "properties": [
+              "animate",
+              "can_hold"
+            ],
+            "state": [],
+            "memes": {
+              "Care": 0.5833258768626751,
+              "Fear": 0.38736600615069816,
+              "Trust": 0.36835132413049776
+            }
+          },
+          "after": {
+            "id": "hero",
+            "noun": "Mina",
+            "kind": "person",
+            "location": "library",
+            "number": "singular",
+            "pronoun": "she",
+            "properties": [
+              "animate",
+              "can_hold"
+            ],
+            "state": [],
+            "memes": {
+              "Care": 0.5833258768626751,
+              "Fear": 0.38736600615069816,
+              "Trust": 0.36835132413049776
+            }
+          }
+        },
+        {
+          "event_id": 17,
+          "kind": "sketch_moon",
+          "tags": [
+            "changed",
+            "concept.changed:Joy",
+            "frame.actor",
+            "mentioned",
+            "qa_context"
+          ],
+          "participation": "participant",
+          "own_effects": {
+            "memes": {
+              "before": {
+                "Care": 0.5833258768626751,
+                "Fear": 0.38736600615069816,
+                "Trust": 0.36835132413049776
+              },
+              "after": {
+                "Care": 0.5833258768626751,
+                "Fear": 0.38736600615069816,
+                "Trust": 0.36835132413049776,
+                "Joy": 0.7
+              }
+            }
+          },
+          "peers": [
+            "paper",
+            "pencil"
+          ],
+          "shared_event": true,
+          "before": {
+            "id": "hero",
+            "noun": "Mina",
+            "kind": "person",
+            "location": "library",
+            "number": "singular",
+            "pronoun": "she",
+            "properties": [
+              "animate",
+              "can_hold"
+            ],
+            "state": [],
+            "memes": {
+              "Care": 0.5833258768626751,
+              "Fear": 0.38736600615069816,
+              "Trust": 0.36835132413049776
+            }
+          },
+          "after": {
+            "id": "hero",
+            "noun": "Mina",
+            "kind": "person",
+            "location": "library",
+            "number": "singular",
+            "pronoun": "she",
+            "properties": [
+              "animate",
+              "can_hold"
+            ],
+            "state": [],
+            "memes": {
+              "Care": 0.5833258768626751,
+              "Fear": 0.38736600615069816,
+              "Trust": 0.36835132413049776,
+              "Joy": 0.7
+            }
+          }
+        },
+        {
+          "event_id": 18,
+          "kind": "ending",
+          "tags": [
+            "causal_context",
+            "frame.actor",
+            "mentioned",
+            "qa_context"
+          ],
+          "participation": "participant",
+          "own_effects": {},
+          "peers": [
+            "book"
+          ],
+          "shared_event": true,
+          "before": {
+            "id": "hero",
+            "noun": "Mina",
+            "kind": "person",
+            "location": "library",
+            "number": "singular",
+            "pronoun": "she",
+            "properties": [
+              "animate",
+              "can_hold"
+            ],
+            "state": [],
+            "memes": {
+              "Care": 0.5833258768626751,
+              "Fear": 0.38736600615069816,
+              "Trust": 0.36835132413049776,
+              "Joy": 0.7
+            }
+          },
+          "after": {
+            "id": "hero",
+            "noun": "Mina",
+            "kind": "person",
+            "location": "library",
+            "number": "singular",
+            "pronoun": "she",
+            "properties": [
+              "animate",
+              "can_hold"
+            ],
+            "state": [],
+            "memes": {
+              "Care": 0.5833258768626751,
+              "Fear": 0.38736600615069816,
+              "Trust": 0.36835132413049776,
+              "Joy": 0.7
+            }
+          }
+        }
+      ]
+    },
+    "ladder": {
+      "initial": {
+        "id": "ladder",
+        "noun": "ladder",
+        "kind": "object",
+        "location": "store",
+        "number": "singular",
+        "pronoun": "it",
+        "properties": [],
+        "state": [],
+        "memes": {}
+      },
+      "final": {
+        "id": "ladder",
+        "noun": "ladder",
+        "kind": "object",
+        "location": "store",
+        "number": "singular",
+        "pronoun": "it",
+        "properties": [],
+        "state": [],
+        "memes": {}
+      },
+      "line": [
+        {
+          "event_id": 9,
+          "kind": "fetch_ladder",
+          "tags": [
+            "causal_context",
+            "changed",
+            "frame.patient",
+            "moved"
+          ],
+          "participation": "participant",
+          "own_effects": {
+            "location": {
+              "before": "store",
+              "after": "library"
+            }
+          },
+          "peers": [
+            "helper"
+          ],
+          "shared_event": true,
+          "before": {
+            "id": "ladder",
+            "noun": "ladder",
+            "kind": "object",
+            "location": "store",
+            "number": "singular",
+            "pronoun": "it",
+            "properties": [],
+            "state": [],
+            "memes": {}
+          },
+          "after": {
+            "id": "ladder",
+            "noun": "ladder",
+            "kind": "object",
+            "location": "library",
+            "number": "singular",
+            "pronoun": "it",
+            "properties": [],
+            "state": [],
+            "memes": {}
+          }
+        },
+        {
+          "event_id": 10,
+          "kind": "retrieve",
+          "tags": [
+            "causal_context",
+            "frame.instrument",
+            "mentioned",
+            "qa_context"
+          ],
+          "participation": "participant",
+          "own_effects": {},
+          "peers": [
+            "book",
+            "helper"
+          ],
+          "shared_event": true,
+          "before": {
+            "id": "ladder",
+            "noun": "ladder",
+            "kind": "object",
+            "location": "library",
+            "number": "singular",
+            "pronoun": "it",
+            "properties": [],
+            "state": [],
+            "memes": {}
+          },
+          "after": {
+            "id": "ladder",
+            "noun": "ladder",
+            "kind": "object",
+            "location": "library",
+            "number": "singular",
+            "pronoun": "it",
+            "properties": [],
+            "state": [],
+            "memes": {}
+          }
+        },
+        {
+          "event_id": 16,
+          "kind": "return_ladder",
+          "tags": [
+            "causal_context",
+            "changed",
+            "frame.patient",
+            "moved"
+          ],
+          "participation": "participant",
+          "own_effects": {
+            "location": {
+              "before": "library",
+              "after": "store"
+            }
+          },
+          "peers": [
+            "helper"
+          ],
+          "shared_event": true,
+          "before": {
+            "id": "ladder",
+            "noun": "ladder",
+            "kind": "object",
+            "location": "library",
+            "number": "singular",
+            "pronoun": "it",
+            "properties": [],
+            "state": [],
+            "memes": {}
+          },
+          "after": {
+            "id": "ladder",
+            "noun": "ladder",
+            "kind": "object",
+            "location": "store",
+            "number": "singular",
+            "pronoun": "it",
+            "properties": [],
+            "state": [],
+            "memes": {}
+          }
+        },
+        {
+          "event_id": 18,
+          "kind": "ending",
+          "tags": [
+            "causal_context"
+          ],
+          "participation": "context",
+          "own_effects": {},
+          "peers": [],
+          "shared_event": false,
+          "before": {
+            "id": "ladder",
+            "noun": "ladder",
+            "kind": "object",
+            "location": "store",
+            "number": "singular",
+            "pronoun": "it",
+            "properties": [],
+            "state": [],
+            "memes": {}
+          },
+          "after": {
+            "id": "ladder",
+            "noun": "ladder",
+            "kind": "object",
+            "location": "store",
+            "number": "singular",
+            "pronoun": "it",
+            "properties": [],
+            "state": [],
+            "memes": {}
+          }
+        }
+      ]
+    },
+    "mitten": {
+      "initial": {
+        "id": "mitten",
+        "noun": "mitten",
+        "kind": "object",
+        "location": "window_nook",
+        "number": "singular",
+        "pronoun": "it",
+        "properties": [],
+        "state": [],
+        "memes": {}
+      },
+      "final": {
+        "id": "mitten",
+        "noun": "mitten",
+        "kind": "object",
+        "location": "tool",
+        "number": "singular",
+        "pronoun": "it",
+        "properties": [],
+        "state": [],
+        "memes": {}
+      },
+      "line": [
+        {
+          "event_id": 5,
+          "kind": "failed_search",
+          "tags": [
+            "causal_context",
+            "changed",
+            "frame.patient",
+            "moved"
+          ],
+          "participation": "participant",
+          "own_effects": {
+            "location": {
+              "before": "window_nook",
+              "after": "tool"
+            }
+          },
+          "peers": [
+            "hero",
+            "tool"
+          ],
+          "shared_event": true,
+          "before": {
+            "id": "mitten",
+            "noun": "mitten",
+            "kind": "object",
+            "location": "window_nook",
+            "number": "singular",
+            "pronoun": "it",
+            "properties": [],
+            "state": [],
+            "memes": {}
+          },
+          "after": {
+            "id": "mitten",
+            "noun": "mitten",
+            "kind": "object",
+            "location": "tool",
+            "number": "singular",
+            "pronoun": "it",
+            "properties": [],
+            "state": [],
+            "memes": {}
+          }
+        }
+      ]
+    },
+    "paper": {
+      "initial": {
+        "id": "paper",
+        "noun": "paper",
+        "kind": "object",
+        "location": "hero",
+        "number": "singular",
+        "pronoun": "it",
+        "properties": [],
+        "state": [
+          "blank"
+        ],
+        "memes": {}
+      },
+      "final": {
+        "id": "paper",
+        "noun": "drawing",
+        "kind": "object",
+        "location": "hero",
+        "number": "singular",
+        "pronoun": "it",
+        "properties": [],
+        "state": [
+          "moon_drawing"
+        ],
+        "memes": {}
+      },
+      "line": [
+        {
+          "event_id": 17,
+          "kind": "sketch_moon",
+          "tags": [
+            "causal_context",
+            "changed",
+            "frame.patient",
+            "mentioned",
+            "qa_context",
+            "renamed",
+            "state.add:moon_drawing",
+            "state.remove:blank"
+          ],
+          "participation": "participant",
+          "own_effects": {
+            "noun": {
+              "before": "paper",
+              "after": "drawing"
+            },
+            "state": {
+              "before": [
+                "blank"
+              ],
+              "after": [
+                "moon_drawing"
+              ]
+            }
+          },
+          "peers": [
+            "hero",
+            "pencil"
+          ],
+          "shared_event": true,
+          "before": {
+            "id": "paper",
+            "noun": "paper",
+            "kind": "object",
+            "location": "hero",
+            "number": "singular",
+            "pronoun": "it",
+            "properties": [],
+            "state": [
+              "blank"
+            ],
+            "memes": {}
+          },
+          "after": {
+            "id": "paper",
+            "noun": "drawing",
+            "kind": "object",
+            "location": "hero",
+            "number": "singular",
+            "pronoun": "it",
+            "properties": [],
+            "state": [
+              "moon_drawing"
+            ],
+            "memes": {}
+          }
+        },
+        {
+          "event_id": 18,
+          "kind": "ending",
+          "tags": [
+            "mentioned",
+            "qa_context"
+          ],
+          "participation": "context",
+          "own_effects": {},
+          "peers": [],
+          "shared_event": false,
+          "before": {
+            "id": "paper",
+            "noun": "drawing",
+            "kind": "object",
+            "location": "hero",
+            "number": "singular",
+            "pronoun": "it",
+            "properties": [],
+            "state": [
+              "moon_drawing"
+            ],
+            "memes": {}
+          },
+          "after": {
+            "id": "paper",
+            "noun": "drawing",
+            "kind": "object",
+            "location": "hero",
+            "number": "singular",
+            "pronoun": "it",
+            "properties": [],
+            "state": [
+              "moon_drawing"
+            ],
+            "memes": {}
+          }
+        }
+      ]
+    },
+    "pencil": {
+      "initial": {
+        "id": "pencil",
+        "noun": "pencil",
+        "kind": "tool",
+        "location": "hero",
+        "number": "singular",
+        "pronoun": "it",
+        "properties": [
+          "draw",
+          "portable"
+        ],
+        "state": [],
+        "memes": {}
+      },
+      "final": {
+        "id": "pencil",
+        "noun": "pencil",
+        "kind": "tool",
+        "location": "hero",
+        "number": "singular",
+        "pronoun": "it",
+        "properties": [
+          "draw",
+          "portable"
+        ],
+        "state": [],
+        "memes": {}
+      },
+      "line": [
+        {
+          "event_id": 17,
+          "kind": "sketch_moon",
+          "tags": [
+            "causal_context",
+            "frame.instrument"
+          ],
+          "participation": "participant",
+          "own_effects": {},
+          "peers": [
+            "hero",
+            "paper"
+          ],
+          "shared_event": true,
+          "before": {
+            "id": "pencil",
+            "noun": "pencil",
+            "kind": "tool",
+            "location": "hero",
+            "number": "singular",
+            "pronoun": "it",
+            "properties": [
+              "draw",
+              "portable"
+            ],
+            "state": [],
+            "memes": {}
+          },
+          "after": {
+            "id": "pencil",
+            "noun": "pencil",
+            "kind": "tool",
+            "location": "hero",
+            "number": "singular",
+            "pronoun": "it",
+            "properties": [
+              "draw",
+              "portable"
+            ],
+            "state": [],
+            "memes": {}
+          }
+        }
+      ]
+    },
+    "tool": {
+      "initial": {
+        "id": "tool",
+        "noun": "book trolley",
+        "kind": "object",
+        "location": "station",
+        "number": "singular",
+        "pronoun": "it",
+        "properties": [
+          "can_hold"
+        ],
+        "state": [],
+        "memes": {}
+      },
+      "final": {
+        "id": "tool",
+        "noun": "book trolley",
+        "kind": "object",
+        "location": "station",
+        "number": "singular",
+        "pronoun": "it",
+        "properties": [
+          "can_hold"
+        ],
+        "state": [],
+        "memes": {}
+      },
+      "line": [
+        {
+          "event_id": 3,
+          "kind": "borrow",
+          "tags": [
+            "causal_context",
+            "changed",
+            "frame.patient",
+            "moved"
+          ],
+          "participation": "participant",
+          "own_effects": {
+            "location": {
+              "before": "station",
+              "after": "hero"
+            }
+          },
+          "peers": [
+            "hero"
+          ],
+          "shared_event": true,
+          "before": {
+            "id": "tool",
+            "noun": "book trolley",
+            "kind": "object",
+            "location": "station",
+            "number": "singular",
+            "pronoun": "it",
+            "properties": [
+              "can_hold"
+            ],
+            "state": [],
+            "memes": {}
+          },
+          "after": {
+            "id": "tool",
+            "noun": "book trolley",
+            "kind": "object",
+            "location": "hero",
+            "number": "singular",
+            "pronoun": "it",
+            "properties": [
+              "can_hold"
+            ],
+            "state": [],
+            "memes": {}
+          }
+        },
+        {
+          "event_id": 4,
+          "kind": "place_atlas",
+          "tags": [
+            "causal_context"
+          ],
+          "participation": "context",
+          "own_effects": {},
+          "peers": [],
+          "shared_event": false,
+          "before": {
+            "id": "tool",
+            "noun": "book trolley",
+            "kind": "object",
+            "location": "hero",
+            "number": "singular",
+            "pronoun": "it",
+            "properties": [
+              "can_hold"
+            ],
+            "state": [],
+            "memes": {}
+          },
+          "after": {
+            "id": "tool",
+            "noun": "book trolley",
+            "kind": "object",
+            "location": "hero",
+            "number": "singular",
+            "pronoun": "it",
+            "properties": [
+              "can_hold"
+            ],
+            "state": [],
+            "memes": {}
+          }
+        },
+        {
+          "event_id": 5,
+          "kind": "failed_search",
+          "tags": [
+            "causal_context",
+            "frame.instrument"
+          ],
+          "participation": "participant",
+          "own_effects": {},
+          "peers": [
+            "hero",
+            "mitten"
+          ],
+          "shared_event": true,
+          "before": {
+            "id": "tool",
+            "noun": "book trolley",
+            "kind": "object",
+            "location": "hero",
+            "number": "singular",
+            "pronoun": "it",
+            "properties": [
+              "can_hold"
+            ],
+            "state": [],
+            "memes": {}
+          },
+          "after": {
+            "id": "tool",
+            "noun": "book trolley",
+            "kind": "object",
+            "location": "hero",
+            "number": "singular",
+            "pronoun": "it",
+            "properties": [
+              "can_hold"
+            ],
+            "state": [],
+            "memes": {}
+          }
+        },
+        {
+          "event_id": 6,
+          "kind": "clue",
+          "tags": [
+            "causal_context",
+            "frame.instrument"
+          ],
+          "participation": "participant",
+          "own_effects": {},
+          "peers": [
+            "bookmark",
+            "friend"
+          ],
+          "shared_event": true,
+          "before": {
+            "id": "tool",
+            "noun": "book trolley",
+            "kind": "object",
+            "location": "hero",
+            "number": "singular",
+            "pronoun": "it",
+            "properties": [
+              "can_hold"
+            ],
+            "state": [],
+            "memes": {}
+          },
+          "after": {
+            "id": "tool",
+            "noun": "book trolley",
+            "kind": "object",
+            "location": "hero",
+            "number": "singular",
+            "pronoun": "it",
+            "properties": [
+              "can_hold"
+            ],
+            "state": [],
+            "memes": {}
+          }
+        },
+        {
+          "event_id": 15,
+          "kind": "return_trolley",
+          "tags": [
+            "causal_context",
+            "changed",
+            "frame.patient",
+            "moved"
+          ],
+          "participation": "participant",
+          "own_effects": {
+            "location": {
+              "before": "hero",
+              "after": "station"
+            }
+          },
+          "peers": [
+            "hero"
+          ],
+          "shared_event": true,
+          "before": {
+            "id": "tool",
+            "noun": "book trolley",
+            "kind": "object",
+            "location": "hero",
+            "number": "singular",
+            "pronoun": "it",
+            "properties": [
+              "can_hold"
+            ],
+            "state": [],
+            "memes": {}
+          },
+          "after": {
+            "id": "tool",
+            "noun": "book trolley",
+            "kind": "object",
+            "location": "station",
+            "number": "singular",
+            "pronoun": "it",
+            "properties": [
+              "can_hold"
+            ],
+            "state": [],
+            "memes": {}
+          }
+        },
+        {
+          "event_id": 18,
+          "kind": "ending",
+          "tags": [
+            "causal_context"
+          ],
+          "participation": "context",
+          "own_effects": {},
+          "peers": [],
+          "shared_event": false,
+          "before": {
+            "id": "tool",
+            "noun": "book trolley",
+            "kind": "object",
+            "location": "station",
+            "number": "singular",
+            "pronoun": "it",
+            "properties": [
+              "can_hold"
+            ],
+            "state": [],
+            "memes": {}
+          },
+          "after": {
+            "id": "tool",
+            "noun": "book trolley",
+            "kind": "object",
+            "location": "station",
+            "number": "singular",
+            "pronoun": "it",
+            "properties": [
+              "can_hold"
+            ],
+            "state": [],
+            "memes": {}
+          }
+        }
+      ]
+    }
+  },
+  "limitations": [
+    "Declared dependencies are not a complete Python guard read set.",
+    "Frame actor/patient are coarse roles; compound scenes can involve additional people.",
+    "Holder tags describe physical possession, not legal ownership or intent.",
+    "Local lines project shared events; they are not independently executable."
+  ]
+}

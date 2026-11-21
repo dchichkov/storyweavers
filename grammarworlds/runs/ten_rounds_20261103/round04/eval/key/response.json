@@ -1,0 +1,392 @@
+{
+  "id": "resp_0cf085916f6a12b4016aeb10ab950487d1b6f4449c313350aa",
+  "created_at": 1793790123.0,
+  "error": null,
+  "incomplete_details": null,
+  "instructions": null,
+  "metadata": {},
+  "model": "gpt-6-luna",
+  "object": "response",
+  "output": [
+    {
+      "id": "msg_0cf085916f6a12b4016aeb10b4c06c87d1b7c5cbf29495f3df",
+      "content": [
+        {
+          "annotations": [],
+          "text": "{\"stories\":[{\"id\":\"s000014\",\"rating\":{\"coherence\":8,\"style\":5,\"grammar\":9,\"storytelling\":6,\"overall\":6},\"note\":\"The lantern search finds the key and gets Lily inside, though the repeated name-led sentences make the telling feel mechanical.\",\"group_id\":0},{\"id\":\"s000028\",\"rating\":{\"coherence\":8,\"style\":5,\"grammar\":9,\"storytelling\":6,\"overall\":6},\"note\":\"The lantern search finds the key and gets Lily inside, though the repeated name-led sentences make the telling feel mechanical.\",\"group_id\":0},{\"id\":\"s000058\",\"rating\":{\"coherence\":8,\"style\":5,\"grammar\":9,\"storytelling\":6,\"overall\":6},\"note\":\"Sam finds the key with the lantern and reaches the book; the sequence is clear but reads like a list of actions.\",\"group_id\":0},{\"id\":\"s000023\",\"rating\":{\"coherence\":8,\"style\":5,\"grammar\":9,\"storytelling\":6,\"overall\":6},\"note\":\"Nora finds the missing key and enters to read, but the repetitive phrasing gives little sense of suspense or discovery.\",\"group_id\":0},{\"id\":\"s000036\",\"rating\":{\"coherence\":7,\"style\":5,\"grammar\":9,\"storytelling\":5,\"overall\":5},\"note\":\"A spare key lets Nora enter and read while the original remains missing; the promise and note resolve little beyond postponing the search.\",\"group_id\":1},{\"id\":\"s000017\",\"rating\":{\"coherence\":8,\"style\":5,\"grammar\":9,\"storytelling\":6,\"overall\":6},\"note\":\"Ben's lantern search succeeds and ends with reading beside Mum, though the prose is mostly a repetitive sequence of actions.\",\"group_id\":0},{\"id\":\"s000053\",\"rating\":{\"coherence\":7,\"style\":5,\"grammar\":9,\"storytelling\":5,\"overall\":5},\"note\":\"Sam borrows a spare key and returns it, but the lost key stays missing and the promised search is deferred.\",\"group_id\":1},{\"id\":\"s000021\",\"rating\":{\"coherence\":7,\"style\":5,\"grammar\":9,\"storytelling\":5,\"overall\":5},\"note\":\"Sam gets inside with a spare key and leaves a note about the unresolved original key; the ending is complete but somewhat inconclusive.\",\"group_id\":1},{\"id\":\"s000034\",\"rating\":{\"coherence\":8,\"style\":5,\"grammar\":9,\"storytelling\":6,\"overall\":6},\"note\":\"Nora locates the key under the bench and reaches the storybook, with clear events but little expressive detail.\",\"group_id\":0},{\"id\":\"s000048\",\"rating\":{\"coherence\":8,\"style\":5,\"grammar\":9,\"storytelling\":6,\"overall\":6},\"note\":\"Nora's lantern search solves the locked-door problem, although the repeated sentence pattern makes the story feel like an event log.\",\"group_id\":0},{\"id\":\"s000002\",\"rating\":{\"coherence\":8,\"style\":5,\"grammar\":9,\"storytelling\":6,\"overall\":6},\"note\":\"Lily finds the key and opens the cottage; the concrete ending is clear, but the narration is highly repetitive.\",\"group_id\":0},{\"id\":\"s000057\",\"rating\":{\"coherence\":8,\"style\":5,\"grammar\":9,\"storytelling\":6,\"overall\":6},\"note\":\"Lily finds the key with the lantern and gets to her book, in a coherent but mechanically repeated sequence.\",\"group_id\":0}],\"diversity\":{\"premise\":1,\"causal_path\":2,\"ending\":2,\"language\":1,\"overall\":1},\"diversity_evidence\":\"All twelve stories share the locked cottage and reading goal. Ten stories (s000014, s000028, s000058, s000023, s000017, s000034, s000048, s000002, s000057, and one? actually the set's remaining lantern-search story) follow the same lantern-and-found-key resolution; s000036, s000053, and s000021 instead use a spare key and defer finding the original. The language and final image of reading beside a parent remain nearly identical throughout. This describes only this sample.\",\"plot_groups\":[{\"group_id\":0,\"summary\":\"The child uses a lantern to find the missing key under a bench, unlocks the cottage, and opens a storybook beside a parent.\"},{\"group_id\":1,\"summary\":\"The child admits losing the key, borrows and returns a spare to enter, then leaves a note or promise to search for the original later.\"}]}",
+          "type": "output_text",
+          "logprobs": []
+        }
+      ],
+      "role": "assistant",
+      "status": "completed",
+      "type": "message",
+      "phase": "final_answer"
+    }
+  ],
+  "parallel_tool_calls": true,
+  "temperature": 1.0,
+  "tool_choice": "auto",
+  "tools": [],
+  "top_p": 0.98,
+  "background": false,
+  "completed_at": 1793790140.0,
+  "conversation": null,
+  "max_output_tokens": 4000,
+  "max_tool_calls": null,
+  "moderation": null,
+  "previous_response_id": null,
+  "prompt": null,
+  "prompt_cache_key": null,
+  "prompt_cache_retention": "24h",
+  "reasoning": {
+    "context": "all_turns",
+    "effort": "none",
+    "generate_summary": null,
+    "summary": null,
+    "mode": "standard"
+  },
+  "safety_identifier": null,
+  "service_tier": "flex",
+  "status": "completed",
+  "text": {
+    "format": {
+      "name": "harbor_story_set_v2",
+      "schema_": {
+        "type": "object",
+        "properties": {
+          "stories": {
+            "type": "array",
+            "minItems": 12,
+            "maxItems": 12,
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "enum": [
+                    "s000014",
+                    "s000028",
+                    "s000058",
+                    "s000023",
+                    "s000036",
+                    "s000017",
+                    "s000053",
+                    "s000021",
+                    "s000034",
+                    "s000048",
+                    "s000002",
+                    "s000057"
+                  ]
+                },
+                "rating": {
+                  "type": "object",
+                  "properties": {
+                    "coherence": {
+                      "type": "integer",
+                      "enum": [
+                        0,
+                        1,
+                        2,
+                        3,
+                        4,
+                        5,
+                        6,
+                        7,
+                        8,
+                        9
+                      ]
+                    },
+                    "style": {
+                      "type": "integer",
+                      "enum": [
+                        0,
+                        1,
+                        2,
+                        3,
+                        4,
+                        5,
+                        6,
+                        7,
+                        8,
+                        9
+                      ]
+                    },
+                    "grammar": {
+                      "type": "integer",
+                      "enum": [
+                        0,
+                        1,
+                        2,
+                        3,
+                        4,
+                        5,
+                        6,
+                        7,
+                        8,
+                        9
+                      ]
+                    },
+                    "storytelling": {
+                      "type": "integer",
+                      "enum": [
+                        0,
+                        1,
+                        2,
+                        3,
+                        4,
+                        5,
+                        6,
+                        7,
+                        8,
+                        9
+                      ]
+                    },
+                    "overall": {
+                      "type": "integer",
+                      "enum": [
+                        0,
+                        1,
+                        2,
+                        3,
+                        4,
+                        5,
+                        6,
+                        7,
+                        8,
+                        9
+                      ]
+                    }
+                  },
+                  "required": [
+                    "coherence",
+                    "style",
+                    "grammar",
+                    "storytelling",
+                    "overall"
+                  ],
+                  "additionalProperties": false
+                },
+                "note": {
+                  "type": "string"
+                },
+                "group_id": {
+                  "type": "integer",
+                  "enum": [
+                    0,
+                    1,
+                    2,
+                    3,
+                    4,
+                    5,
+                    6,
+                    7,
+                    8,
+                    9,
+                    10,
+                    11
+                  ]
+                }
+              },
+              "required": [
+                "id",
+                "rating",
+                "note",
+                "group_id"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "diversity": {
+            "type": "object",
+            "properties": {
+              "premise": {
+                "type": "integer",
+                "enum": [
+                  0,
+                  1,
+                  2,
+                  3,
+                  4,
+                  5,
+                  6,
+                  7,
+                  8,
+                  9
+                ]
+              },
+              "causal_path": {
+                "type": "integer",
+                "enum": [
+                  0,
+                  1,
+                  2,
+                  3,
+                  4,
+                  5,
+                  6,
+                  7,
+                  8,
+                  9
+                ]
+              },
+              "ending": {
+                "type": "integer",
+                "enum": [
+                  0,
+                  1,
+                  2,
+                  3,
+                  4,
+                  5,
+                  6,
+                  7,
+                  8,
+                  9
+                ]
+              },
+              "language": {
+                "type": "integer",
+                "enum": [
+                  0,
+                  1,
+                  2,
+                  3,
+                  4,
+                  5,
+                  6,
+                  7,
+                  8,
+                  9
+                ]
+              },
+              "overall": {
+                "type": "integer",
+                "enum": [
+                  0,
+                  1,
+                  2,
+                  3,
+                  4,
+                  5,
+                  6,
+                  7,
+                  8,
+                  9
+                ]
+              }
+            },
+            "required": [
+              "premise",
+              "causal_path",
+              "ending",
+              "language",
+              "overall"
+            ],
+            "additionalProperties": false
+          },
+          "diversity_evidence": {
+            "type": "string"
+          },
+          "plot_groups": {
+            "type": "array",
+            "minItems": 1,
+            "maxItems": 12,
+            "items": {
+              "type": "object",
+              "properties": {
+                "group_id": {
+                  "type": "integer",
+                  "enum": [
+                    0,
+                    1,
+                    2,
+                    3,
+                    4,
+                    5,
+                    6,
+                    7,
+                    8,
+                    9,
+                    10,
+                    11
+                  ]
+                },
+                "summary": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "group_id",
+                "summary"
+              ],
+              "additionalProperties": false
+            }
+          }
+        },
+        "required": [
+          "stories",
+          "diversity",
+          "diversity_evidence",
+          "plot_groups"
+        ],
+        "additionalProperties": false
+      },
+      "type": "json_schema",
+      "description": null,
+      "strict": true
+    },
+    "verbosity": "medium"
+  },
+  "top_logprobs": 0,
+  "truncation": "disabled",
+  "usage": {
+    "input_tokens": 2407,
+    "input_tokens_details": {
+      "cached_tokens": 0,
+      "cache_write_tokens": 0,
+      "cache_write_tokens_details": {
+        "ttl_12h_tokens": 0,
+        "ttl_30m_tokens": 0
+      }
+    },
+    "output_tokens": 972,
+    "output_tokens_details": {
+      "reasoning_tokens": 0
+    },
+    "total_tokens": 3379
+  },
+  "user": null,
+  "access_programs": null,
+  "billing": {
+    "payer": "openai"
+  },
+  "frequency_penalty": 0.0,
+  "image": {
+    "context_compression": "disabled"
+  },
+  "presence_penalty": 0.0,
+  "prompt_cache_options": {
+    "mode": "explicit",
+    "ttl": "30m"
+  },
+  "store": false,
+  "tool_usage": {
+    "image_gen": {
+      "input_tokens": 0,
+      "input_tokens_details": {
+        "image_tokens": 0,
+        "text_tokens": 0
+      },
+      "output_tokens": 0,
+      "output_tokens_details": {
+        "image_tokens": 0,
+        "text_tokens": 0
+      },
+      "total_tokens": 0
+    },
+    "web_search": {
+      "num_requests": 0
+    }
+  }
+}

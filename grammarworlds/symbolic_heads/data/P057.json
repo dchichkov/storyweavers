@@ -1,0 +1,81 @@
+{
+  "id": "P057",
+  "name": "Predicate-filtered retrieval",
+  "description": "Query predicate → matching past items only. Favor continuations grounded in the selected subset.",
+  "proposed_payload": "{matching_items, weights}",
+  "provenance": "Authored illustrative seeds; not learned or extracted.",
+  "status": "program_required",
+  "examples": [
+    {
+      "id": "P057.01",
+      "description": "Red cup and blue bowl; select red.",
+      "intended_feature": "{red_cup}",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P057.02",
+      "description": "Small box and large crate; select large.",
+      "intended_feature": "{large_crate}",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P057.03",
+      "description": "Three tools; select portable and metal.",
+      "intended_feature": "conjunction_matches_only",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P057.04",
+      "description": "One object has unknown color; select red.",
+      "intended_feature": "unknown_not_false_certainty",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P057.05",
+      "description": "Select objects not broken.",
+      "intended_feature": "negation_with_known_states",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P057.06",
+      "description": "No candidate satisfies the predicate.",
+      "intended_feature": "empty_selection",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P057.07",
+      "description": "Several cups satisfy red.",
+      "intended_feature": "preserve_all_matches",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P057.08",
+      "description": "Predicate concerns owner rather than appearance.",
+      "intended_feature": "typed_relation_filter",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P057.09",
+      "description": "The same object appears twice in memory.",
+      "intended_feature": "deduplicate_by_entity_id",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P057.10",
+      "description": "Filter refers to an unsupported attribute.",
+      "intended_feature": "unsupported_predicate",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    }
+  ],
+  "required_program": "Evaluate typed predicates over a dynamic candidate set, preserving conjunction, negation, missing values, and selection weights."
+}

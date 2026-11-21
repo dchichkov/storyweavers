@@ -1,0 +1,2885 @@
+{
+  "schema": "entity-event-lines-v1",
+  "scenario": "music",
+  "seed": 3000,
+  "story": "Nia borrowed the little drum from Dalia, and she hoped to play a duet with Mateo. Nia said, \u201cI need an answering beat.\u201d Mateo told Nia, \u201cI am not ready for the audience.\u201d Nia said, \u201cI'll perform a solo.\u201d Nia rehearsed a soft beat and a loud beat. Nia played the solo on the little drum before Dalia. Mateo clapped. Nia bowed.",
+  "text_sha256": "57f9d40fdfe0efd9471ec23997d8936933b1f3bafd0d971aab893fa57bfa04ca",
+  "events": [
+    {
+      "id": 1,
+      "kind": "opening",
+      "frame": {
+        "kind": "opening",
+        "actor": "hero",
+        "patient": "",
+        "instrument": "",
+        "destination": "",
+        "cause_ids": [
+          "duet",
+          "boundary"
+        ]
+      },
+      "narrated": false,
+      "text": "",
+      "entity_tags": {
+        "hero": [
+          "frame.actor"
+        ]
+      },
+      "tag_evidence": {
+        "hero": {
+          "frame.actor": [
+            "frame.actor"
+          ]
+        }
+      },
+      "participants": [
+        "hero"
+      ],
+      "dialogue": [],
+      "movements": [],
+      "effects": {},
+      "dependencies": [
+        {
+          "kind": "world_fact",
+          "key": "duet",
+          "source_event": null
+        },
+        {
+          "kind": "world_fact",
+          "key": "boundary",
+          "source_event": null
+        }
+      ],
+      "global_contract": {
+        "requires": [],
+        "excludes": [
+          "ended",
+          "opened"
+        ],
+        "flags_added": [
+          "opened"
+        ],
+        "flags_removed": []
+      },
+      "guard_reads_complete": false
+    },
+    {
+      "id": 2,
+      "kind": "borrow",
+      "frame": {
+        "kind": "borrow",
+        "actor": "hero",
+        "patient": "drum",
+        "instrument": "",
+        "destination": "hero",
+        "cause_ids": [
+          "duet",
+          "boundary"
+        ]
+      },
+      "narrated": true,
+      "text": "Nia borrowed the little drum from Dalia, and she hoped to play a duet with Mateo.",
+      "entity_tags": {
+        "drum": [
+          "changed",
+          "frame.patient",
+          "mentioned",
+          "moved",
+          "qa_context"
+        ],
+        "hero": [
+          "destination_holder",
+          "frame.actor",
+          "frame.destination",
+          "mentioned",
+          "qa_context"
+        ],
+        "partner": [
+          "mentioned",
+          "qa_context"
+        ],
+        "teacher": [
+          "mentioned",
+          "qa_context"
+        ]
+      },
+      "tag_evidence": {
+        "hero": {
+          "frame.actor": [
+            "frame.actor"
+          ],
+          "frame.destination": [
+            "frame.destination"
+          ],
+          "mentioned": [
+            "trace.referents"
+          ],
+          "qa_context": [
+            "claim:goal",
+            "claim:instrument"
+          ],
+          "destination_holder": [
+            "diff.location:drum"
+          ]
+        },
+        "drum": {
+          "frame.patient": [
+            "frame.patient"
+          ],
+          "mentioned": [
+            "trace.referents"
+          ],
+          "qa_context": [
+            "claim:goal",
+            "claim:instrument"
+          ],
+          "changed": [
+            "replayed_entity_diff"
+          ],
+          "moved": [
+            "diff.location"
+          ]
+        },
+        "partner": {
+          "mentioned": [
+            "trace.referents"
+          ],
+          "qa_context": [
+            "claim:goal"
+          ]
+        },
+        "teacher": {
+          "mentioned": [
+            "trace.referents"
+          ],
+          "qa_context": [
+            "claim:goal",
+            "claim:instrument"
+          ]
+        }
+      },
+      "participants": [
+        "drum",
+        "hero"
+      ],
+      "dialogue": [],
+      "movements": [
+        {
+          "item": "drum",
+          "source": "shelf",
+          "destination": "hero",
+          "destination_holder": "hero"
+        }
+      ],
+      "effects": {
+        "drum": {
+          "location": {
+            "before": "shelf",
+            "after": "hero"
+          }
+        }
+      },
+      "dependencies": [
+        {
+          "kind": "required_flag",
+          "key": "opened",
+          "source_event": 1
+        },
+        {
+          "kind": "world_fact",
+          "key": "duet",
+          "source_event": null
+        },
+        {
+          "kind": "world_fact",
+          "key": "boundary",
+          "source_event": null
+        }
+      ],
+      "global_contract": {
+        "requires": [
+          "opened"
+        ],
+        "excludes": [
+          "borrowed",
+          "ended"
+        ],
+        "flags_added": [
+          "borrowed"
+        ],
+        "flags_removed": []
+      },
+      "guard_reads_complete": false
+    },
+    {
+      "id": 3,
+      "kind": "invite",
+      "frame": {
+        "kind": "invite",
+        "actor": "hero",
+        "patient": "partner",
+        "instrument": "",
+        "destination": "",
+        "cause_ids": [
+          "duet",
+          "boundary"
+        ]
+      },
+      "narrated": true,
+      "text": "Nia said, \u201cI need an answering beat.\u201d",
+      "entity_tags": {
+        "hero": [
+          "frame.actor",
+          "mentioned",
+          "speaker"
+        ],
+        "partner": [
+          "frame.patient",
+          "listener"
+        ]
+      },
+      "tag_evidence": {
+        "hero": {
+          "frame.actor": [
+            "frame.actor"
+          ],
+          "speaker": [
+            "trace.speakers",
+            "dialogue.listener:hero:partner"
+          ],
+          "mentioned": [
+            "trace.referents"
+          ]
+        },
+        "partner": {
+          "frame.patient": [
+            "frame.patient"
+          ],
+          "listener": [
+            "dialogue.listener:hero:partner"
+          ]
+        }
+      },
+      "participants": [
+        "hero",
+        "partner"
+      ],
+      "dialogue": [
+        {
+          "speaker": "hero",
+          "listener": "partner"
+        }
+      ],
+      "movements": [],
+      "effects": {},
+      "dependencies": [
+        {
+          "kind": "required_flag",
+          "key": "borrowed",
+          "source_event": 2
+        },
+        {
+          "kind": "world_fact",
+          "key": "duet",
+          "source_event": null
+        },
+        {
+          "kind": "world_fact",
+          "key": "boundary",
+          "source_event": null
+        }
+      ],
+      "global_contract": {
+        "requires": [
+          "borrowed"
+        ],
+        "excludes": [
+          "ended",
+          "invited"
+        ],
+        "flags_added": [
+          "invited"
+        ],
+        "flags_removed": []
+      },
+      "guard_reads_complete": false
+    },
+    {
+      "id": 4,
+      "kind": "decline",
+      "frame": {
+        "kind": "decline",
+        "actor": "partner",
+        "patient": "",
+        "instrument": "",
+        "destination": "",
+        "cause_ids": [
+          "duet",
+          "boundary"
+        ]
+      },
+      "narrated": true,
+      "text": "Mateo told Nia, \u201cI am not ready for the audience.\u201d",
+      "entity_tags": {
+        "hero": [
+          "listener",
+          "mentioned",
+          "qa_context"
+        ],
+        "partner": [
+          "changed",
+          "frame.actor",
+          "mentioned",
+          "qa_context",
+          "speaker",
+          "state.add:declined_public"
+        ]
+      },
+      "tag_evidence": {
+        "partner": {
+          "frame.actor": [
+            "frame.actor"
+          ],
+          "speaker": [
+            "trace.speakers",
+            "dialogue.listener:partner:hero"
+          ],
+          "mentioned": [
+            "trace.referents"
+          ],
+          "qa_context": [
+            "claim:boundary"
+          ],
+          "changed": [
+            "replayed_entity_diff"
+          ],
+          "state.add:declined_public": [
+            "diff.state"
+          ]
+        },
+        "hero": {
+          "mentioned": [
+            "trace.referents"
+          ],
+          "listener": [
+            "dialogue.listener:partner:hero"
+          ],
+          "qa_context": [
+            "claim:boundary"
+          ]
+        }
+      },
+      "participants": [
+        "hero",
+        "partner"
+      ],
+      "dialogue": [
+        {
+          "speaker": "partner",
+          "listener": "hero"
+        }
+      ],
+      "movements": [],
+      "effects": {
+        "partner": {
+          "state": {
+            "before": [
+              "public_unready"
+            ],
+            "after": [
+              "declined_public",
+              "public_unready"
+            ]
+          }
+        }
+      },
+      "dependencies": [
+        {
+          "kind": "required_flag",
+          "key": "invited",
+          "source_event": 3
+        },
+        {
+          "kind": "world_fact",
+          "key": "duet",
+          "source_event": null
+        },
+        {
+          "kind": "world_fact",
+          "key": "boundary",
+          "source_event": null
+        }
+      ],
+      "global_contract": {
+        "requires": [
+          "invited"
+        ],
+        "excludes": [
+          "declined",
+          "ended"
+        ],
+        "flags_added": [
+          "declined"
+        ],
+        "flags_removed": []
+      },
+      "guard_reads_complete": false
+    },
+    {
+      "id": 5,
+      "kind": "choose_solo",
+      "frame": {
+        "kind": "choose_solo",
+        "actor": "hero",
+        "patient": "",
+        "instrument": "",
+        "destination": "",
+        "cause_ids": [
+          "duet",
+          "boundary"
+        ]
+      },
+      "narrated": true,
+      "text": "Nia said, \u201cI'll perform a solo.\u201d",
+      "entity_tags": {
+        "hero": [
+          "changed",
+          "frame.actor",
+          "mentioned",
+          "qa_context",
+          "speaker",
+          "state.add:accepted_boundary"
+        ],
+        "partner": [
+          "listener",
+          "qa_context"
+        ]
+      },
+      "tag_evidence": {
+        "hero": {
+          "frame.actor": [
+            "frame.actor"
+          ],
+          "speaker": [
+            "trace.speakers",
+            "dialogue.listener:hero:partner"
+          ],
+          "mentioned": [
+            "trace.referents"
+          ],
+          "qa_context": [
+            "claim:choice"
+          ],
+          "changed": [
+            "replayed_entity_diff"
+          ],
+          "state.add:accepted_boundary": [
+            "diff.state"
+          ]
+        },
+        "partner": {
+          "listener": [
+            "dialogue.listener:hero:partner"
+          ],
+          "qa_context": [
+            "claim:choice"
+          ]
+        }
+      },
+      "participants": [
+        "hero",
+        "partner"
+      ],
+      "dialogue": [
+        {
+          "speaker": "hero",
+          "listener": "partner"
+        }
+      ],
+      "movements": [],
+      "effects": {
+        "hero": {
+          "state": {
+            "before": [
+              "wants_duet"
+            ],
+            "after": [
+              "accepted_boundary",
+              "wants_duet"
+            ]
+          }
+        }
+      },
+      "dependencies": [
+        {
+          "kind": "required_flag",
+          "key": "declined",
+          "source_event": 4
+        },
+        {
+          "kind": "world_fact",
+          "key": "duet",
+          "source_event": null
+        },
+        {
+          "kind": "world_fact",
+          "key": "boundary",
+          "source_event": null
+        }
+      ],
+      "global_contract": {
+        "requires": [
+          "declined"
+        ],
+        "excludes": [
+          "chosen",
+          "ended"
+        ],
+        "flags_added": [
+          "chosen",
+          "solo_plan"
+        ],
+        "flags_removed": []
+      },
+      "guard_reads_complete": false
+    },
+    {
+      "id": 6,
+      "kind": "prepare_solo",
+      "frame": {
+        "kind": "prepare_solo",
+        "actor": "hero",
+        "patient": "program",
+        "instrument": "",
+        "destination": "",
+        "cause_ids": [
+          "duet",
+          "boundary"
+        ]
+      },
+      "narrated": true,
+      "text": "Nia rehearsed a soft beat and a loud beat.",
+      "entity_tags": {
+        "drum": [
+          "qa_context"
+        ],
+        "hero": [
+          "changed",
+          "frame.actor",
+          "mentioned",
+          "qa_context",
+          "state.add:loud_beat",
+          "state.add:practiced",
+          "state.add:soft_beat"
+        ],
+        "program": [
+          "changed",
+          "frame.patient",
+          "state.add:solo"
+        ]
+      },
+      "tag_evidence": {
+        "hero": {
+          "frame.actor": [
+            "frame.actor"
+          ],
+          "mentioned": [
+            "trace.referents"
+          ],
+          "qa_context": [
+            "claim:preparation"
+          ],
+          "changed": [
+            "replayed_entity_diff"
+          ],
+          "state.add:loud_beat": [
+            "diff.state"
+          ],
+          "state.add:practiced": [
+            "diff.state"
+          ],
+          "state.add:soft_beat": [
+            "diff.state"
+          ]
+        },
+        "program": {
+          "frame.patient": [
+            "frame.patient"
+          ],
+          "changed": [
+            "replayed_entity_diff"
+          ],
+          "state.add:solo": [
+            "diff.state"
+          ]
+        },
+        "drum": {
+          "qa_context": [
+            "claim:preparation"
+          ]
+        }
+      },
+      "participants": [
+        "hero",
+        "program"
+      ],
+      "dialogue": [],
+      "movements": [],
+      "effects": {
+        "hero": {
+          "state": {
+            "before": [
+              "accepted_boundary",
+              "wants_duet"
+            ],
+            "after": [
+              "accepted_boundary",
+              "loud_beat",
+              "practiced",
+              "soft_beat",
+              "wants_duet"
+            ]
+          }
+        },
+        "program": {
+          "state": {
+            "before": [],
+            "after": [
+              "solo"
+            ]
+          }
+        }
+      },
+      "dependencies": [
+        {
+          "kind": "required_flag",
+          "key": "solo_plan",
+          "source_event": 5
+        },
+        {
+          "kind": "world_fact",
+          "key": "duet",
+          "source_event": null
+        },
+        {
+          "kind": "world_fact",
+          "key": "boundary",
+          "source_event": null
+        }
+      ],
+      "global_contract": {
+        "requires": [
+          "solo_plan"
+        ],
+        "excludes": [
+          "ended",
+          "prepared"
+        ],
+        "flags_added": [
+          "prepared"
+        ],
+        "flags_removed": []
+      },
+      "guard_reads_complete": false
+    },
+    {
+      "id": 7,
+      "kind": "perform",
+      "frame": {
+        "kind": "perform",
+        "actor": "hero",
+        "patient": "",
+        "instrument": "drum",
+        "destination": "",
+        "cause_ids": [
+          "duet",
+          "boundary"
+        ]
+      },
+      "narrated": true,
+      "text": "Nia played the solo on the little drum before Dalia.",
+      "entity_tags": {
+        "drum": [
+          "frame.instrument",
+          "mentioned",
+          "qa_context"
+        ],
+        "hero": [
+          "changed",
+          "frame.actor",
+          "mentioned",
+          "qa_context",
+          "state.add:performed_solo"
+        ],
+        "partner": [
+          "qa_context"
+        ],
+        "teacher": [
+          "mentioned",
+          "qa_context"
+        ]
+      },
+      "tag_evidence": {
+        "hero": {
+          "frame.actor": [
+            "frame.actor"
+          ],
+          "mentioned": [
+            "trace.referents"
+          ],
+          "qa_context": [
+            "claim:performance"
+          ],
+          "changed": [
+            "replayed_entity_diff"
+          ],
+          "state.add:performed_solo": [
+            "diff.state"
+          ]
+        },
+        "drum": {
+          "frame.instrument": [
+            "frame.instrument"
+          ],
+          "mentioned": [
+            "trace.referents"
+          ],
+          "qa_context": [
+            "claim:performance"
+          ]
+        },
+        "teacher": {
+          "mentioned": [
+            "trace.referents"
+          ],
+          "qa_context": [
+            "claim:performance"
+          ]
+        },
+        "partner": {
+          "qa_context": [
+            "claim:performance"
+          ]
+        }
+      },
+      "participants": [
+        "drum",
+        "hero"
+      ],
+      "dialogue": [],
+      "movements": [],
+      "effects": {
+        "hero": {
+          "state": {
+            "before": [
+              "accepted_boundary",
+              "loud_beat",
+              "practiced",
+              "soft_beat",
+              "wants_duet"
+            ],
+            "after": [
+              "accepted_boundary",
+              "loud_beat",
+              "performed_solo",
+              "practiced",
+              "soft_beat",
+              "wants_duet"
+            ]
+          }
+        }
+      },
+      "dependencies": [
+        {
+          "kind": "required_flag",
+          "key": "prepared",
+          "source_event": 6
+        },
+        {
+          "kind": "world_fact",
+          "key": "duet",
+          "source_event": null
+        },
+        {
+          "kind": "world_fact",
+          "key": "boundary",
+          "source_event": null
+        }
+      ],
+      "global_contract": {
+        "requires": [
+          "prepared"
+        ],
+        "excludes": [
+          "ended",
+          "performed"
+        ],
+        "flags_added": [
+          "performed"
+        ],
+        "flags_removed": []
+      },
+      "guard_reads_complete": false
+    },
+    {
+      "id": 8,
+      "kind": "response",
+      "frame": {
+        "kind": "response",
+        "actor": "partner",
+        "patient": "",
+        "instrument": "",
+        "destination": "",
+        "cause_ids": [
+          "duet",
+          "boundary"
+        ]
+      },
+      "narrated": true,
+      "text": "Mateo clapped. Nia bowed.",
+      "entity_tags": {
+        "hero": [
+          "changed",
+          "concept.changed:Joy",
+          "mentioned",
+          "qa_context",
+          "state.add:bowed"
+        ],
+        "partner": [
+          "changed",
+          "concept.changed:Trust",
+          "frame.actor",
+          "mentioned",
+          "qa_context",
+          "state.add:applauded"
+        ],
+        "teacher": [
+          "qa_context"
+        ]
+      },
+      "tag_evidence": {
+        "partner": {
+          "frame.actor": [
+            "frame.actor"
+          ],
+          "mentioned": [
+            "trace.referents"
+          ],
+          "qa_context": [
+            "claim:outcome"
+          ],
+          "changed": [
+            "replayed_entity_diff"
+          ],
+          "state.add:applauded": [
+            "diff.state"
+          ],
+          "concept.changed:Trust": [
+            "diff.memes"
+          ]
+        },
+        "hero": {
+          "mentioned": [
+            "trace.referents"
+          ],
+          "qa_context": [
+            "claim:outcome"
+          ],
+          "changed": [
+            "replayed_entity_diff"
+          ],
+          "state.add:bowed": [
+            "diff.state"
+          ],
+          "concept.changed:Joy": [
+            "diff.memes"
+          ]
+        },
+        "teacher": {
+          "qa_context": [
+            "claim:outcome"
+          ]
+        }
+      },
+      "participants": [
+        "hero",
+        "partner"
+      ],
+      "dialogue": [],
+      "movements": [],
+      "effects": {
+        "hero": {
+          "memes": {
+            "before": {
+              "Care": 0.8,
+              "Desire": 0.85,
+              "Fear": 0.29368300307534906
+            },
+            "after": {
+              "Care": 0.8,
+              "Desire": 0.85,
+              "Fear": 0.29368300307534906,
+              "Joy": 0.8
+            }
+          },
+          "state": {
+            "before": [
+              "accepted_boundary",
+              "loud_beat",
+              "performed_solo",
+              "practiced",
+              "soft_beat",
+              "wants_duet"
+            ],
+            "after": [
+              "accepted_boundary",
+              "bowed",
+              "loud_beat",
+              "performed_solo",
+              "practiced",
+              "soft_beat",
+              "wants_duet"
+            ]
+          }
+        },
+        "partner": {
+          "memes": {
+            "before": {
+              "Trust": 0.4122342160869985,
+              "Fear": 0.6589448461157755,
+              "Readiness": 0.1
+            },
+            "after": {
+              "Trust": 0.6122342160869985,
+              "Fear": 0.6589448461157755,
+              "Readiness": 0.1
+            }
+          },
+          "state": {
+            "before": [
+              "declined_public",
+              "public_unready"
+            ],
+            "after": [
+              "applauded",
+              "declined_public",
+              "public_unready"
+            ]
+          }
+        }
+      },
+      "dependencies": [
+        {
+          "kind": "required_flag",
+          "key": "performed",
+          "source_event": 7
+        },
+        {
+          "kind": "world_fact",
+          "key": "duet",
+          "source_event": null
+        },
+        {
+          "kind": "world_fact",
+          "key": "boundary",
+          "source_event": null
+        }
+      ],
+      "global_contract": {
+        "requires": [
+          "performed"
+        ],
+        "excludes": [
+          "ended",
+          "responded"
+        ],
+        "flags_added": [
+          "responded"
+        ],
+        "flags_removed": []
+      },
+      "guard_reads_complete": false
+    },
+    {
+      "id": 9,
+      "kind": "return",
+      "frame": {
+        "kind": "return",
+        "actor": "hero",
+        "patient": "drum",
+        "instrument": "drum",
+        "destination": "shelf",
+        "cause_ids": [
+          "shelf"
+        ]
+      },
+      "narrated": false,
+      "text": "",
+      "entity_tags": {
+        "drum": [
+          "changed",
+          "frame.instrument",
+          "frame.patient",
+          "moved"
+        ],
+        "hero": [
+          "frame.actor",
+          "source_holder"
+        ]
+      },
+      "tag_evidence": {
+        "hero": {
+          "frame.actor": [
+            "frame.actor"
+          ],
+          "source_holder": [
+            "diff.location:drum"
+          ]
+        },
+        "drum": {
+          "frame.patient": [
+            "frame.patient"
+          ],
+          "frame.instrument": [
+            "frame.instrument"
+          ],
+          "changed": [
+            "replayed_entity_diff"
+          ],
+          "moved": [
+            "diff.location"
+          ]
+        }
+      },
+      "participants": [
+        "drum",
+        "hero"
+      ],
+      "dialogue": [],
+      "movements": [
+        {
+          "item": "drum",
+          "source": "hero",
+          "destination": "shelf",
+          "source_holder": "hero"
+        }
+      ],
+      "effects": {
+        "drum": {
+          "location": {
+            "before": "hero",
+            "after": "shelf"
+          }
+        }
+      },
+      "dependencies": [
+        {
+          "kind": "required_flag",
+          "key": "responded",
+          "source_event": 8
+        },
+        {
+          "kind": "world_fact",
+          "key": "shelf",
+          "source_event": null
+        }
+      ],
+      "global_contract": {
+        "requires": [
+          "responded"
+        ],
+        "excludes": [
+          "ended"
+        ],
+        "flags_added": [],
+        "flags_removed": []
+      },
+      "guard_reads_complete": false
+    },
+    {
+      "id": 10,
+      "kind": "ending",
+      "frame": {
+        "kind": "ending",
+        "actor": "hero",
+        "patient": "",
+        "instrument": "",
+        "destination": "",
+        "cause_ids": [
+          "duet",
+          "boundary"
+        ]
+      },
+      "narrated": false,
+      "text": "",
+      "entity_tags": {
+        "hero": [
+          "frame.actor"
+        ]
+      },
+      "tag_evidence": {
+        "hero": {
+          "frame.actor": [
+            "frame.actor"
+          ]
+        }
+      },
+      "participants": [
+        "hero"
+      ],
+      "dialogue": [],
+      "movements": [],
+      "effects": {},
+      "dependencies": [
+        {
+          "kind": "required_flag",
+          "key": "responded",
+          "source_event": 8
+        },
+        {
+          "kind": "world_fact",
+          "key": "duet",
+          "source_event": null
+        },
+        {
+          "kind": "world_fact",
+          "key": "boundary",
+          "source_event": null
+        }
+      ],
+      "global_contract": {
+        "requires": [
+          "responded"
+        ],
+        "excludes": [
+          "ended"
+        ],
+        "flags_added": [
+          "ended"
+        ],
+        "flags_removed": []
+      },
+      "guard_reads_complete": false
+    }
+  ],
+  "entities": {
+    "drum": {
+      "initial": {
+        "id": "drum",
+        "noun": "little drum",
+        "kind": "instrument",
+        "location": "shelf",
+        "number": "singular",
+        "pronoun": "it",
+        "properties": [
+          "borrowed",
+          "portable",
+          "red_ribbon"
+        ],
+        "state": [],
+        "memes": {}
+      },
+      "final": {
+        "id": "drum",
+        "noun": "little drum",
+        "kind": "instrument",
+        "location": "shelf",
+        "number": "singular",
+        "pronoun": "it",
+        "properties": [
+          "borrowed",
+          "portable",
+          "red_ribbon"
+        ],
+        "state": [],
+        "memes": {}
+      },
+      "line": [
+        {
+          "event_id": 2,
+          "kind": "borrow",
+          "tags": [
+            "changed",
+            "frame.patient",
+            "mentioned",
+            "moved",
+            "qa_context"
+          ],
+          "participation": "participant",
+          "own_effects": {
+            "location": {
+              "before": "shelf",
+              "after": "hero"
+            }
+          },
+          "peers": [
+            "hero"
+          ],
+          "shared_event": true,
+          "before": {
+            "id": "drum",
+            "noun": "little drum",
+            "kind": "instrument",
+            "location": "shelf",
+            "number": "singular",
+            "pronoun": "it",
+            "properties": [
+              "borrowed",
+              "portable",
+              "red_ribbon"
+            ],
+            "state": [],
+            "memes": {}
+          },
+          "after": {
+            "id": "drum",
+            "noun": "little drum",
+            "kind": "instrument",
+            "location": "hero",
+            "number": "singular",
+            "pronoun": "it",
+            "properties": [
+              "borrowed",
+              "portable",
+              "red_ribbon"
+            ],
+            "state": [],
+            "memes": {}
+          }
+        },
+        {
+          "event_id": 6,
+          "kind": "prepare_solo",
+          "tags": [
+            "qa_context"
+          ],
+          "participation": "context",
+          "own_effects": {},
+          "peers": [],
+          "shared_event": false,
+          "before": {
+            "id": "drum",
+            "noun": "little drum",
+            "kind": "instrument",
+            "location": "hero",
+            "number": "singular",
+            "pronoun": "it",
+            "properties": [
+              "borrowed",
+              "portable",
+              "red_ribbon"
+            ],
+            "state": [],
+            "memes": {}
+          },
+          "after": {
+            "id": "drum",
+            "noun": "little drum",
+            "kind": "instrument",
+            "location": "hero",
+            "number": "singular",
+            "pronoun": "it",
+            "properties": [
+              "borrowed",
+              "portable",
+              "red_ribbon"
+            ],
+            "state": [],
+            "memes": {}
+          }
+        },
+        {
+          "event_id": 7,
+          "kind": "perform",
+          "tags": [
+            "frame.instrument",
+            "mentioned",
+            "qa_context"
+          ],
+          "participation": "participant",
+          "own_effects": {},
+          "peers": [
+            "hero"
+          ],
+          "shared_event": true,
+          "before": {
+            "id": "drum",
+            "noun": "little drum",
+            "kind": "instrument",
+            "location": "hero",
+            "number": "singular",
+            "pronoun": "it",
+            "properties": [
+              "borrowed",
+              "portable",
+              "red_ribbon"
+            ],
+            "state": [],
+            "memes": {}
+          },
+          "after": {
+            "id": "drum",
+            "noun": "little drum",
+            "kind": "instrument",
+            "location": "hero",
+            "number": "singular",
+            "pronoun": "it",
+            "properties": [
+              "borrowed",
+              "portable",
+              "red_ribbon"
+            ],
+            "state": [],
+            "memes": {}
+          }
+        },
+        {
+          "event_id": 9,
+          "kind": "return",
+          "tags": [
+            "changed",
+            "frame.instrument",
+            "frame.patient",
+            "moved"
+          ],
+          "participation": "participant",
+          "own_effects": {
+            "location": {
+              "before": "hero",
+              "after": "shelf"
+            }
+          },
+          "peers": [
+            "hero"
+          ],
+          "shared_event": true,
+          "before": {
+            "id": "drum",
+            "noun": "little drum",
+            "kind": "instrument",
+            "location": "hero",
+            "number": "singular",
+            "pronoun": "it",
+            "properties": [
+              "borrowed",
+              "portable",
+              "red_ribbon"
+            ],
+            "state": [],
+            "memes": {}
+          },
+          "after": {
+            "id": "drum",
+            "noun": "little drum",
+            "kind": "instrument",
+            "location": "shelf",
+            "number": "singular",
+            "pronoun": "it",
+            "properties": [
+              "borrowed",
+              "portable",
+              "red_ribbon"
+            ],
+            "state": [],
+            "memes": {}
+          }
+        }
+      ]
+    },
+    "hero": {
+      "initial": {
+        "id": "hero",
+        "noun": "Nia",
+        "kind": "person",
+        "location": "music room",
+        "number": "singular",
+        "pronoun": "she",
+        "properties": [
+          "animate",
+          "can_hold"
+        ],
+        "state": [
+          "wants_duet"
+        ],
+        "memes": {
+          "Care": 0.8,
+          "Desire": 0.85,
+          "Fear": 0.29368300307534906
+        }
+      },
+      "final": {
+        "id": "hero",
+        "noun": "Nia",
+        "kind": "person",
+        "location": "music room",
+        "number": "singular",
+        "pronoun": "she",
+        "properties": [
+          "animate",
+          "can_hold"
+        ],
+        "state": [
+          "accepted_boundary",
+          "bowed",
+          "loud_beat",
+          "performed_solo",
+          "practiced",
+          "soft_beat",
+          "wants_duet"
+        ],
+        "memes": {
+          "Care": 0.8,
+          "Desire": 0.85,
+          "Fear": 0.29368300307534906,
+          "Joy": 0.8
+        }
+      },
+      "line": [
+        {
+          "event_id": 1,
+          "kind": "opening",
+          "tags": [
+            "frame.actor"
+          ],
+          "participation": "participant",
+          "own_effects": {},
+          "peers": [],
+          "shared_event": false,
+          "before": {
+            "id": "hero",
+            "noun": "Nia",
+            "kind": "person",
+            "location": "music room",
+            "number": "singular",
+            "pronoun": "she",
+            "properties": [
+              "animate",
+              "can_hold"
+            ],
+            "state": [
+              "wants_duet"
+            ],
+            "memes": {
+              "Care": 0.8,
+              "Desire": 0.85,
+              "Fear": 0.29368300307534906
+            }
+          },
+          "after": {
+            "id": "hero",
+            "noun": "Nia",
+            "kind": "person",
+            "location": "music room",
+            "number": "singular",
+            "pronoun": "she",
+            "properties": [
+              "animate",
+              "can_hold"
+            ],
+            "state": [
+              "wants_duet"
+            ],
+            "memes": {
+              "Care": 0.8,
+              "Desire": 0.85,
+              "Fear": 0.29368300307534906
+            }
+          }
+        },
+        {
+          "event_id": 2,
+          "kind": "borrow",
+          "tags": [
+            "destination_holder",
+            "frame.actor",
+            "frame.destination",
+            "mentioned",
+            "qa_context"
+          ],
+          "participation": "participant",
+          "own_effects": {},
+          "peers": [
+            "drum"
+          ],
+          "shared_event": true,
+          "before": {
+            "id": "hero",
+            "noun": "Nia",
+            "kind": "person",
+            "location": "music room",
+            "number": "singular",
+            "pronoun": "she",
+            "properties": [
+              "animate",
+              "can_hold"
+            ],
+            "state": [
+              "wants_duet"
+            ],
+            "memes": {
+              "Care": 0.8,
+              "Desire": 0.85,
+              "Fear": 0.29368300307534906
+            }
+          },
+          "after": {
+            "id": "hero",
+            "noun": "Nia",
+            "kind": "person",
+            "location": "music room",
+            "number": "singular",
+            "pronoun": "she",
+            "properties": [
+              "animate",
+              "can_hold"
+            ],
+            "state": [
+              "wants_duet"
+            ],
+            "memes": {
+              "Care": 0.8,
+              "Desire": 0.85,
+              "Fear": 0.29368300307534906
+            }
+          }
+        },
+        {
+          "event_id": 3,
+          "kind": "invite",
+          "tags": [
+            "frame.actor",
+            "mentioned",
+            "speaker"
+          ],
+          "participation": "participant",
+          "own_effects": {},
+          "peers": [
+            "partner"
+          ],
+          "shared_event": true,
+          "before": {
+            "id": "hero",
+            "noun": "Nia",
+            "kind": "person",
+            "location": "music room",
+            "number": "singular",
+            "pronoun": "she",
+            "properties": [
+              "animate",
+              "can_hold"
+            ],
+            "state": [
+              "wants_duet"
+            ],
+            "memes": {
+              "Care": 0.8,
+              "Desire": 0.85,
+              "Fear": 0.29368300307534906
+            }
+          },
+          "after": {
+            "id": "hero",
+            "noun": "Nia",
+            "kind": "person",
+            "location": "music room",
+            "number": "singular",
+            "pronoun": "she",
+            "properties": [
+              "animate",
+              "can_hold"
+            ],
+            "state": [
+              "wants_duet"
+            ],
+            "memes": {
+              "Care": 0.8,
+              "Desire": 0.85,
+              "Fear": 0.29368300307534906
+            }
+          }
+        },
+        {
+          "event_id": 4,
+          "kind": "decline",
+          "tags": [
+            "listener",
+            "mentioned",
+            "qa_context"
+          ],
+          "participation": "participant",
+          "own_effects": {},
+          "peers": [
+            "partner"
+          ],
+          "shared_event": true,
+          "before": {
+            "id": "hero",
+            "noun": "Nia",
+            "kind": "person",
+            "location": "music room",
+            "number": "singular",
+            "pronoun": "she",
+            "properties": [
+              "animate",
+              "can_hold"
+            ],
+            "state": [
+              "wants_duet"
+            ],
+            "memes": {
+              "Care": 0.8,
+              "Desire": 0.85,
+              "Fear": 0.29368300307534906
+            }
+          },
+          "after": {
+            "id": "hero",
+            "noun": "Nia",
+            "kind": "person",
+            "location": "music room",
+            "number": "singular",
+            "pronoun": "she",
+            "properties": [
+              "animate",
+              "can_hold"
+            ],
+            "state": [
+              "wants_duet"
+            ],
+            "memes": {
+              "Care": 0.8,
+              "Desire": 0.85,
+              "Fear": 0.29368300307534906
+            }
+          }
+        },
+        {
+          "event_id": 5,
+          "kind": "choose_solo",
+          "tags": [
+            "changed",
+            "frame.actor",
+            "mentioned",
+            "qa_context",
+            "speaker",
+            "state.add:accepted_boundary"
+          ],
+          "participation": "participant",
+          "own_effects": {
+            "state": {
+              "before": [
+                "wants_duet"
+              ],
+              "after": [
+                "accepted_boundary",
+                "wants_duet"
+              ]
+            }
+          },
+          "peers": [
+            "partner"
+          ],
+          "shared_event": true,
+          "before": {
+            "id": "hero",
+            "noun": "Nia",
+            "kind": "person",
+            "location": "music room",
+            "number": "singular",
+            "pronoun": "she",
+            "properties": [
+              "animate",
+              "can_hold"
+            ],
+            "state": [
+              "wants_duet"
+            ],
+            "memes": {
+              "Care": 0.8,
+              "Desire": 0.85,
+              "Fear": 0.29368300307534906
+            }
+          },
+          "after": {
+            "id": "hero",
+            "noun": "Nia",
+            "kind": "person",
+            "location": "music room",
+            "number": "singular",
+            "pronoun": "she",
+            "properties": [
+              "animate",
+              "can_hold"
+            ],
+            "state": [
+              "accepted_boundary",
+              "wants_duet"
+            ],
+            "memes": {
+              "Care": 0.8,
+              "Desire": 0.85,
+              "Fear": 0.29368300307534906
+            }
+          }
+        },
+        {
+          "event_id": 6,
+          "kind": "prepare_solo",
+          "tags": [
+            "changed",
+            "frame.actor",
+            "mentioned",
+            "qa_context",
+            "state.add:loud_beat",
+            "state.add:practiced",
+            "state.add:soft_beat"
+          ],
+          "participation": "participant",
+          "own_effects": {
+            "state": {
+              "before": [
+                "accepted_boundary",
+                "wants_duet"
+              ],
+              "after": [
+                "accepted_boundary",
+                "loud_beat",
+                "practiced",
+                "soft_beat",
+                "wants_duet"
+              ]
+            }
+          },
+          "peers": [
+            "program"
+          ],
+          "shared_event": true,
+          "before": {
+            "id": "hero",
+            "noun": "Nia",
+            "kind": "person",
+            "location": "music room",
+            "number": "singular",
+            "pronoun": "she",
+            "properties": [
+              "animate",
+              "can_hold"
+            ],
+            "state": [
+              "accepted_boundary",
+              "wants_duet"
+            ],
+            "memes": {
+              "Care": 0.8,
+              "Desire": 0.85,
+              "Fear": 0.29368300307534906
+            }
+          },
+          "after": {
+            "id": "hero",
+            "noun": "Nia",
+            "kind": "person",
+            "location": "music room",
+            "number": "singular",
+            "pronoun": "she",
+            "properties": [
+              "animate",
+              "can_hold"
+            ],
+            "state": [
+              "accepted_boundary",
+              "loud_beat",
+              "practiced",
+              "soft_beat",
+              "wants_duet"
+            ],
+            "memes": {
+              "Care": 0.8,
+              "Desire": 0.85,
+              "Fear": 0.29368300307534906
+            }
+          }
+        },
+        {
+          "event_id": 7,
+          "kind": "perform",
+          "tags": [
+            "changed",
+            "frame.actor",
+            "mentioned",
+            "qa_context",
+            "state.add:performed_solo"
+          ],
+          "participation": "participant",
+          "own_effects": {
+            "state": {
+              "before": [
+                "accepted_boundary",
+                "loud_beat",
+                "practiced",
+                "soft_beat",
+                "wants_duet"
+              ],
+              "after": [
+                "accepted_boundary",
+                "loud_beat",
+                "performed_solo",
+                "practiced",
+                "soft_beat",
+                "wants_duet"
+              ]
+            }
+          },
+          "peers": [
+            "drum"
+          ],
+          "shared_event": true,
+          "before": {
+            "id": "hero",
+            "noun": "Nia",
+            "kind": "person",
+            "location": "music room",
+            "number": "singular",
+            "pronoun": "she",
+            "properties": [
+              "animate",
+              "can_hold"
+            ],
+            "state": [
+              "accepted_boundary",
+              "loud_beat",
+              "practiced",
+              "soft_beat",
+              "wants_duet"
+            ],
+            "memes": {
+              "Care": 0.8,
+              "Desire": 0.85,
+              "Fear": 0.29368300307534906
+            }
+          },
+          "after": {
+            "id": "hero",
+            "noun": "Nia",
+            "kind": "person",
+            "location": "music room",
+            "number": "singular",
+            "pronoun": "she",
+            "properties": [
+              "animate",
+              "can_hold"
+            ],
+            "state": [
+              "accepted_boundary",
+              "loud_beat",
+              "performed_solo",
+              "practiced",
+              "soft_beat",
+              "wants_duet"
+            ],
+            "memes": {
+              "Care": 0.8,
+              "Desire": 0.85,
+              "Fear": 0.29368300307534906
+            }
+          }
+        },
+        {
+          "event_id": 8,
+          "kind": "response",
+          "tags": [
+            "changed",
+            "concept.changed:Joy",
+            "mentioned",
+            "qa_context",
+            "state.add:bowed"
+          ],
+          "participation": "participant",
+          "own_effects": {
+            "memes": {
+              "before": {
+                "Care": 0.8,
+                "Desire": 0.85,
+                "Fear": 0.29368300307534906
+              },
+              "after": {
+                "Care": 0.8,
+                "Desire": 0.85,
+                "Fear": 0.29368300307534906,
+                "Joy": 0.8
+              }
+            },
+            "state": {
+              "before": [
+                "accepted_boundary",
+                "loud_beat",
+                "performed_solo",
+                "practiced",
+                "soft_beat",
+                "wants_duet"
+              ],
+              "after": [
+                "accepted_boundary",
+                "bowed",
+                "loud_beat",
+                "performed_solo",
+                "practiced",
+                "soft_beat",
+                "wants_duet"
+              ]
+            }
+          },
+          "peers": [
+            "partner"
+          ],
+          "shared_event": true,
+          "before": {
+            "id": "hero",
+            "noun": "Nia",
+            "kind": "person",
+            "location": "music room",
+            "number": "singular",
+            "pronoun": "she",
+            "properties": [
+              "animate",
+              "can_hold"
+            ],
+            "state": [
+              "accepted_boundary",
+              "loud_beat",
+              "performed_solo",
+              "practiced",
+              "soft_beat",
+              "wants_duet"
+            ],
+            "memes": {
+              "Care": 0.8,
+              "Desire": 0.85,
+              "Fear": 0.29368300307534906
+            }
+          },
+          "after": {
+            "id": "hero",
+            "noun": "Nia",
+            "kind": "person",
+            "location": "music room",
+            "number": "singular",
+            "pronoun": "she",
+            "properties": [
+              "animate",
+              "can_hold"
+            ],
+            "state": [
+              "accepted_boundary",
+              "bowed",
+              "loud_beat",
+              "performed_solo",
+              "practiced",
+              "soft_beat",
+              "wants_duet"
+            ],
+            "memes": {
+              "Care": 0.8,
+              "Desire": 0.85,
+              "Fear": 0.29368300307534906,
+              "Joy": 0.8
+            }
+          }
+        },
+        {
+          "event_id": 9,
+          "kind": "return",
+          "tags": [
+            "frame.actor",
+            "source_holder"
+          ],
+          "participation": "participant",
+          "own_effects": {},
+          "peers": [
+            "drum"
+          ],
+          "shared_event": true,
+          "before": {
+            "id": "hero",
+            "noun": "Nia",
+            "kind": "person",
+            "location": "music room",
+            "number": "singular",
+            "pronoun": "she",
+            "properties": [
+              "animate",
+              "can_hold"
+            ],
+            "state": [
+              "accepted_boundary",
+              "bowed",
+              "loud_beat",
+              "performed_solo",
+              "practiced",
+              "soft_beat",
+              "wants_duet"
+            ],
+            "memes": {
+              "Care": 0.8,
+              "Desire": 0.85,
+              "Fear": 0.29368300307534906,
+              "Joy": 0.8
+            }
+          },
+          "after": {
+            "id": "hero",
+            "noun": "Nia",
+            "kind": "person",
+            "location": "music room",
+            "number": "singular",
+            "pronoun": "she",
+            "properties": [
+              "animate",
+              "can_hold"
+            ],
+            "state": [
+              "accepted_boundary",
+              "bowed",
+              "loud_beat",
+              "performed_solo",
+              "practiced",
+              "soft_beat",
+              "wants_duet"
+            ],
+            "memes": {
+              "Care": 0.8,
+              "Desire": 0.85,
+              "Fear": 0.29368300307534906,
+              "Joy": 0.8
+            }
+          }
+        },
+        {
+          "event_id": 10,
+          "kind": "ending",
+          "tags": [
+            "frame.actor"
+          ],
+          "participation": "participant",
+          "own_effects": {},
+          "peers": [],
+          "shared_event": false,
+          "before": {
+            "id": "hero",
+            "noun": "Nia",
+            "kind": "person",
+            "location": "music room",
+            "number": "singular",
+            "pronoun": "she",
+            "properties": [
+              "animate",
+              "can_hold"
+            ],
+            "state": [
+              "accepted_boundary",
+              "bowed",
+              "loud_beat",
+              "performed_solo",
+              "practiced",
+              "soft_beat",
+              "wants_duet"
+            ],
+            "memes": {
+              "Care": 0.8,
+              "Desire": 0.85,
+              "Fear": 0.29368300307534906,
+              "Joy": 0.8
+            }
+          },
+          "after": {
+            "id": "hero",
+            "noun": "Nia",
+            "kind": "person",
+            "location": "music room",
+            "number": "singular",
+            "pronoun": "she",
+            "properties": [
+              "animate",
+              "can_hold"
+            ],
+            "state": [
+              "accepted_boundary",
+              "bowed",
+              "loud_beat",
+              "performed_solo",
+              "practiced",
+              "soft_beat",
+              "wants_duet"
+            ],
+            "memes": {
+              "Care": 0.8,
+              "Desire": 0.85,
+              "Fear": 0.29368300307534906,
+              "Joy": 0.8
+            }
+          }
+        }
+      ]
+    },
+    "paper": {
+      "initial": {
+        "id": "paper",
+        "noun": "paper",
+        "kind": "object",
+        "location": "piano",
+        "number": "singular",
+        "pronoun": "it",
+        "properties": [
+          "portable"
+        ],
+        "state": [],
+        "memes": {}
+      },
+      "final": {
+        "id": "paper",
+        "noun": "paper",
+        "kind": "object",
+        "location": "piano",
+        "number": "singular",
+        "pronoun": "it",
+        "properties": [
+          "portable"
+        ],
+        "state": [],
+        "memes": {}
+      },
+      "line": []
+    },
+    "partner": {
+      "initial": {
+        "id": "partner",
+        "noun": "Mateo",
+        "kind": "person",
+        "location": "music room",
+        "number": "singular",
+        "pronoun": "he",
+        "properties": [
+          "animate",
+          "can_hold"
+        ],
+        "state": [
+          "public_unready"
+        ],
+        "memes": {
+          "Trust": 0.4122342160869985,
+          "Fear": 0.6589448461157755,
+          "Readiness": 0.1
+        }
+      },
+      "final": {
+        "id": "partner",
+        "noun": "Mateo",
+        "kind": "person",
+        "location": "music room",
+        "number": "singular",
+        "pronoun": "he",
+        "properties": [
+          "animate",
+          "can_hold"
+        ],
+        "state": [
+          "applauded",
+          "declined_public",
+          "public_unready"
+        ],
+        "memes": {
+          "Trust": 0.6122342160869985,
+          "Fear": 0.6589448461157755,
+          "Readiness": 0.1
+        }
+      },
+      "line": [
+        {
+          "event_id": 2,
+          "kind": "borrow",
+          "tags": [
+            "mentioned",
+            "qa_context"
+          ],
+          "participation": "context",
+          "own_effects": {},
+          "peers": [],
+          "shared_event": false,
+          "before": {
+            "id": "partner",
+            "noun": "Mateo",
+            "kind": "person",
+            "location": "music room",
+            "number": "singular",
+            "pronoun": "he",
+            "properties": [
+              "animate",
+              "can_hold"
+            ],
+            "state": [
+              "public_unready"
+            ],
+            "memes": {
+              "Trust": 0.4122342160869985,
+              "Fear": 0.6589448461157755,
+              "Readiness": 0.1
+            }
+          },
+          "after": {
+            "id": "partner",
+            "noun": "Mateo",
+            "kind": "person",
+            "location": "music room",
+            "number": "singular",
+            "pronoun": "he",
+            "properties": [
+              "animate",
+              "can_hold"
+            ],
+            "state": [
+              "public_unready"
+            ],
+            "memes": {
+              "Trust": 0.4122342160869985,
+              "Fear": 0.6589448461157755,
+              "Readiness": 0.1
+            }
+          }
+        },
+        {
+          "event_id": 3,
+          "kind": "invite",
+          "tags": [
+            "frame.patient",
+            "listener"
+          ],
+          "participation": "participant",
+          "own_effects": {},
+          "peers": [
+            "hero"
+          ],
+          "shared_event": true,
+          "before": {
+            "id": "partner",
+            "noun": "Mateo",
+            "kind": "person",
+            "location": "music room",
+            "number": "singular",
+            "pronoun": "he",
+            "properties": [
+              "animate",
+              "can_hold"
+            ],
+            "state": [
+              "public_unready"
+            ],
+            "memes": {
+              "Trust": 0.4122342160869985,
+              "Fear": 0.6589448461157755,
+              "Readiness": 0.1
+            }
+          },
+          "after": {
+            "id": "partner",
+            "noun": "Mateo",
+            "kind": "person",
+            "location": "music room",
+            "number": "singular",
+            "pronoun": "he",
+            "properties": [
+              "animate",
+              "can_hold"
+            ],
+            "state": [
+              "public_unready"
+            ],
+            "memes": {
+              "Trust": 0.4122342160869985,
+              "Fear": 0.6589448461157755,
+              "Readiness": 0.1
+            }
+          }
+        },
+        {
+          "event_id": 4,
+          "kind": "decline",
+          "tags": [
+            "changed",
+            "frame.actor",
+            "mentioned",
+            "qa_context",
+            "speaker",
+            "state.add:declined_public"
+          ],
+          "participation": "participant",
+          "own_effects": {
+            "state": {
+              "before": [
+                "public_unready"
+              ],
+              "after": [
+                "declined_public",
+                "public_unready"
+              ]
+            }
+          },
+          "peers": [
+            "hero"
+          ],
+          "shared_event": true,
+          "before": {
+            "id": "partner",
+            "noun": "Mateo",
+            "kind": "person",
+            "location": "music room",
+            "number": "singular",
+            "pronoun": "he",
+            "properties": [
+              "animate",
+              "can_hold"
+            ],
+            "state": [
+              "public_unready"
+            ],
+            "memes": {
+              "Trust": 0.4122342160869985,
+              "Fear": 0.6589448461157755,
+              "Readiness": 0.1
+            }
+          },
+          "after": {
+            "id": "partner",
+            "noun": "Mateo",
+            "kind": "person",
+            "location": "music room",
+            "number": "singular",
+            "pronoun": "he",
+            "properties": [
+              "animate",
+              "can_hold"
+            ],
+            "state": [
+              "declined_public",
+              "public_unready"
+            ],
+            "memes": {
+              "Trust": 0.4122342160869985,
+              "Fear": 0.6589448461157755,
+              "Readiness": 0.1
+            }
+          }
+        },
+        {
+          "event_id": 5,
+          "kind": "choose_solo",
+          "tags": [
+            "listener",
+            "qa_context"
+          ],
+          "participation": "participant",
+          "own_effects": {},
+          "peers": [
+            "hero"
+          ],
+          "shared_event": true,
+          "before": {
+            "id": "partner",
+            "noun": "Mateo",
+            "kind": "person",
+            "location": "music room",
+            "number": "singular",
+            "pronoun": "he",
+            "properties": [
+              "animate",
+              "can_hold"
+            ],
+            "state": [
+              "declined_public",
+              "public_unready"
+            ],
+            "memes": {
+              "Trust": 0.4122342160869985,
+              "Fear": 0.6589448461157755,
+              "Readiness": 0.1
+            }
+          },
+          "after": {
+            "id": "partner",
+            "noun": "Mateo",
+            "kind": "person",
+            "location": "music room",
+            "number": "singular",
+            "pronoun": "he",
+            "properties": [
+              "animate",
+              "can_hold"
+            ],
+            "state": [
+              "declined_public",
+              "public_unready"
+            ],
+            "memes": {
+              "Trust": 0.4122342160869985,
+              "Fear": 0.6589448461157755,
+              "Readiness": 0.1
+            }
+          }
+        },
+        {
+          "event_id": 7,
+          "kind": "perform",
+          "tags": [
+            "qa_context"
+          ],
+          "participation": "context",
+          "own_effects": {},
+          "peers": [],
+          "shared_event": false,
+          "before": {
+            "id": "partner",
+            "noun": "Mateo",
+            "kind": "person",
+            "location": "music room",
+            "number": "singular",
+            "pronoun": "he",
+            "properties": [
+              "animate",
+              "can_hold"
+            ],
+            "state": [
+              "declined_public",
+              "public_unready"
+            ],
+            "memes": {
+              "Trust": 0.4122342160869985,
+              "Fear": 0.6589448461157755,
+              "Readiness": 0.1
+            }
+          },
+          "after": {
+            "id": "partner",
+            "noun": "Mateo",
+            "kind": "person",
+            "location": "music room",
+            "number": "singular",
+            "pronoun": "he",
+            "properties": [
+              "animate",
+              "can_hold"
+            ],
+            "state": [
+              "declined_public",
+              "public_unready"
+            ],
+            "memes": {
+              "Trust": 0.4122342160869985,
+              "Fear": 0.6589448461157755,
+              "Readiness": 0.1
+            }
+          }
+        },
+        {
+          "event_id": 8,
+          "kind": "response",
+          "tags": [
+            "changed",
+            "concept.changed:Trust",
+            "frame.actor",
+            "mentioned",
+            "qa_context",
+            "state.add:applauded"
+          ],
+          "participation": "participant",
+          "own_effects": {
+            "memes": {
+              "before": {
+                "Trust": 0.4122342160869985,
+                "Fear": 0.6589448461157755,
+                "Readiness": 0.1
+              },
+              "after": {
+                "Trust": 0.6122342160869985,
+                "Fear": 0.6589448461157755,
+                "Readiness": 0.1
+              }
+            },
+            "state": {
+              "before": [
+                "declined_public",
+                "public_unready"
+              ],
+              "after": [
+                "applauded",
+                "declined_public",
+                "public_unready"
+              ]
+            }
+          },
+          "peers": [
+            "hero"
+          ],
+          "shared_event": true,
+          "before": {
+            "id": "partner",
+            "noun": "Mateo",
+            "kind": "person",
+            "location": "music room",
+            "number": "singular",
+            "pronoun": "he",
+            "properties": [
+              "animate",
+              "can_hold"
+            ],
+            "state": [
+              "declined_public",
+              "public_unready"
+            ],
+            "memes": {
+              "Trust": 0.4122342160869985,
+              "Fear": 0.6589448461157755,
+              "Readiness": 0.1
+            }
+          },
+          "after": {
+            "id": "partner",
+            "noun": "Mateo",
+            "kind": "person",
+            "location": "music room",
+            "number": "singular",
+            "pronoun": "he",
+            "properties": [
+              "animate",
+              "can_hold"
+            ],
+            "state": [
+              "applauded",
+              "declined_public",
+              "public_unready"
+            ],
+            "memes": {
+              "Trust": 0.6122342160869985,
+              "Fear": 0.6589448461157755,
+              "Readiness": 0.1
+            }
+          }
+        }
+      ]
+    },
+    "pencil": {
+      "initial": {
+        "id": "pencil",
+        "noun": "pencil",
+        "kind": "tool",
+        "location": "piano",
+        "number": "singular",
+        "pronoun": "it",
+        "properties": [
+          "portable",
+          "write"
+        ],
+        "state": [],
+        "memes": {}
+      },
+      "final": {
+        "id": "pencil",
+        "noun": "pencil",
+        "kind": "tool",
+        "location": "piano",
+        "number": "singular",
+        "pronoun": "it",
+        "properties": [
+          "portable",
+          "write"
+        ],
+        "state": [],
+        "memes": {}
+      },
+      "line": []
+    },
+    "program": {
+      "initial": {
+        "id": "program",
+        "noun": "signup sheet",
+        "kind": "object",
+        "location": "piano",
+        "number": "singular",
+        "pronoun": "it",
+        "properties": [
+          "physical"
+        ],
+        "state": [],
+        "memes": {}
+      },
+      "final": {
+        "id": "program",
+        "noun": "signup sheet",
+        "kind": "object",
+        "location": "piano",
+        "number": "singular",
+        "pronoun": "it",
+        "properties": [
+          "physical"
+        ],
+        "state": [
+          "solo"
+        ],
+        "memes": {}
+      },
+      "line": [
+        {
+          "event_id": 6,
+          "kind": "prepare_solo",
+          "tags": [
+            "changed",
+            "frame.patient",
+            "state.add:solo"
+          ],
+          "participation": "participant",
+          "own_effects": {
+            "state": {
+              "before": [],
+              "after": [
+                "solo"
+              ]
+            }
+          },
+          "peers": [
+            "hero"
+          ],
+          "shared_event": true,
+          "before": {
+            "id": "program",
+            "noun": "signup sheet",
+            "kind": "object",
+            "location": "piano",
+            "number": "singular",
+            "pronoun": "it",
+            "properties": [
+              "physical"
+            ],
+            "state": [],
+            "memes": {}
+          },
+          "after": {
+            "id": "program",
+            "noun": "signup sheet",
+            "kind": "object",
+            "location": "piano",
+            "number": "singular",
+            "pronoun": "it",
+            "properties": [
+              "physical"
+            ],
+            "state": [
+              "solo"
+            ],
+            "memes": {}
+          }
+        }
+      ]
+    },
+    "spare": {
+      "initial": {
+        "id": "spare",
+        "noun": "second drum",
+        "kind": "instrument",
+        "location": "shelf",
+        "number": "singular",
+        "pronoun": "it",
+        "properties": [
+          "portable"
+        ],
+        "state": [],
+        "memes": {}
+      },
+      "final": {
+        "id": "spare",
+        "noun": "second drum",
+        "kind": "instrument",
+        "location": "shelf",
+        "number": "singular",
+        "pronoun": "it",
+        "properties": [
+          "portable"
+        ],
+        "state": [],
+        "memes": {}
+      },
+      "line": []
+    },
+    "teacher": {
+      "initial": {
+        "id": "teacher",
+        "noun": "Dalia",
+        "kind": "person",
+        "location": "music room",
+        "number": "singular",
+        "pronoun": "she",
+        "properties": [
+          "animate",
+          "can_hold"
+        ],
+        "state": [],
+        "memes": {
+          "Care": 0.9
+        }
+      },
+      "final": {
+        "id": "teacher",
+        "noun": "Dalia",
+        "kind": "person",
+        "location": "music room",
+        "number": "singular",
+        "pronoun": "she",
+        "properties": [
+          "animate",
+          "can_hold"
+        ],
+        "state": [],
+        "memes": {
+          "Care": 0.9
+        }
+      },
+      "line": [
+        {
+          "event_id": 2,
+          "kind": "borrow",
+          "tags": [
+            "mentioned",
+            "qa_context"
+          ],
+          "participation": "context",
+          "own_effects": {},
+          "peers": [],
+          "shared_event": false,
+          "before": {
+            "id": "teacher",
+            "noun": "Dalia",
+            "kind": "person",
+            "location": "music room",
+            "number": "singular",
+            "pronoun": "she",
+            "properties": [
+              "animate",
+              "can_hold"
+            ],
+            "state": [],
+            "memes": {
+              "Care": 0.9
+            }
+          },
+          "after": {
+            "id": "teacher",
+            "noun": "Dalia",
+            "kind": "person",
+            "location": "music room",
+            "number": "singular",
+            "pronoun": "she",
+            "properties": [
+              "animate",
+              "can_hold"
+            ],
+            "state": [],
+            "memes": {
+              "Care": 0.9
+            }
+          }
+        },
+        {
+          "event_id": 7,
+          "kind": "perform",
+          "tags": [
+            "mentioned",
+            "qa_context"
+          ],
+          "participation": "context",
+          "own_effects": {},
+          "peers": [],
+          "shared_event": false,
+          "before": {
+            "id": "teacher",
+            "noun": "Dalia",
+            "kind": "person",
+            "location": "music room",
+            "number": "singular",
+            "pronoun": "she",
+            "properties": [
+              "animate",
+              "can_hold"
+            ],
+            "state": [],
+            "memes": {
+              "Care": 0.9
+            }
+          },
+          "after": {
+            "id": "teacher",
+            "noun": "Dalia",
+            "kind": "person",
+            "location": "music room",
+            "number": "singular",
+            "pronoun": "she",
+            "properties": [
+              "animate",
+              "can_hold"
+            ],
+            "state": [],
+            "memes": {
+              "Care": 0.9
+            }
+          }
+        },
+        {
+          "event_id": 8,
+          "kind": "response",
+          "tags": [
+            "qa_context"
+          ],
+          "participation": "context",
+          "own_effects": {},
+          "peers": [],
+          "shared_event": false,
+          "before": {
+            "id": "teacher",
+            "noun": "Dalia",
+            "kind": "person",
+            "location": "music room",
+            "number": "singular",
+            "pronoun": "she",
+            "properties": [
+              "animate",
+              "can_hold"
+            ],
+            "state": [],
+            "memes": {
+              "Care": 0.9
+            }
+          },
+          "after": {
+            "id": "teacher",
+            "noun": "Dalia",
+            "kind": "person",
+            "location": "music room",
+            "number": "singular",
+            "pronoun": "she",
+            "properties": [
+              "animate",
+              "can_hold"
+            ],
+            "state": [],
+            "memes": {
+              "Care": 0.9
+            }
+          }
+        }
+      ]
+    }
+  },
+  "limitations": [
+    "Declared dependencies are not a complete Python guard read set.",
+    "Frame actor/patient are coarse roles; compound scenes can involve additional people.",
+    "Holder tags describe physical possession, not legal ownership or intent.",
+    "Local lines project shared events; they are not independently executable."
+  ]
+}

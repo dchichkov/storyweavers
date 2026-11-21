@@ -23,6 +23,7 @@ class Node:
     label: str
     children: tuple = ()
     weights: tuple[float, ...] = ()
+    attributes: str = ""  # Optional typed metadata; inert for legacy surface expansion.
 
 
 def text(words: str) -> Node:

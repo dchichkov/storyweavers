@@ -1,0 +1,581 @@
+{
+  "id": "P003",
+  "name": "Tense anchoring",
+  "description": "Current event → governing temporal frame. Reweight tense-compatible forms.",
+  "proposed_payload": "{event_time, tense_context}",
+  "provenance": "Authored illustrative seeds; not learned or extracted.",
+  "status": "table",
+  "examples": [
+    {
+      "id": "P003.01",
+      "description": "Yesterday favors past walking.",
+      "query": "walk",
+      "scope": "example",
+      "sources": [
+        {
+          "id": "source:1",
+          "channel": "temporal_anchor",
+          "scope": "example",
+          "key": "yesterday",
+          "confidence": 1.0
+        }
+      ],
+      "expected_features": {
+        "past": 1.0
+      },
+      "grammar_weights": {
+        "walked": 1.0,
+        "walks": 1.0,
+        "waits": 1.0,
+        "rests": 1.0
+      },
+      "favored": "walked",
+      "disfavored": "walks"
+    },
+    {
+      "id": "P003.02",
+      "description": "Last night favors past opening.",
+      "query": "open",
+      "scope": "example",
+      "sources": [
+        {
+          "id": "source:2",
+          "channel": "temporal_anchor",
+          "scope": "example",
+          "key": "last_night",
+          "confidence": 1.0
+        }
+      ],
+      "expected_features": {
+        "past": 1.0
+      },
+      "grammar_weights": {
+        "opened": 1.0,
+        "opens": 1.0,
+        "waits": 1.0,
+        "rests": 1.0
+      },
+      "favored": "opened",
+      "disfavored": "opens"
+    },
+    {
+      "id": "P003.03",
+      "description": "Habitual present play in a present-tense frame.",
+      "query": "play",
+      "scope": "example",
+      "sources": [
+        {
+          "id": "source:3",
+          "channel": "temporal_anchor",
+          "scope": "example",
+          "key": "every_day",
+          "confidence": 1.0
+        }
+      ],
+      "expected_features": {
+        "habitual_present": 1.0
+      },
+      "grammar_weights": {
+        "plays": 1.0,
+        "played": 1.0,
+        "waits": 1.0,
+        "rests": 1.0
+      },
+      "favored": "plays",
+      "disfavored": "played"
+    },
+    {
+      "id": "P003.04",
+      "description": "Now anchors a present simple wait clause.",
+      "query": "wait",
+      "scope": "example",
+      "sources": [
+        {
+          "id": "source:4",
+          "channel": "temporal_anchor",
+          "scope": "example",
+          "key": "now",
+          "confidence": 1.0
+        }
+      ],
+      "expected_features": {
+        "present": 1.0
+      },
+      "grammar_weights": {
+        "waits": 1.0,
+        "waited": 1.0,
+        "rests": 1.0,
+        "moves": 1.0
+      },
+      "favored": "waits",
+      "disfavored": "waited"
+    },
+    {
+      "id": "P003.05",
+      "description": "Tomorrow favors a future auxiliary before leave.",
+      "query": "leave",
+      "scope": "example",
+      "sources": [
+        {
+          "id": "source:5",
+          "channel": "temporal_anchor",
+          "scope": "example",
+          "key": "tomorrow",
+          "confidence": 1.0
+        }
+      ],
+      "expected_features": {
+        "future": 1.0
+      },
+      "grammar_weights": {
+        "will": 1.0,
+        "left": 1.0,
+        "waits": 1.0,
+        "rests": 1.0
+      },
+      "favored": "will",
+      "disfavored": "left"
+    },
+    {
+      "id": "P003.06",
+      "description": "Next week favors future arrival.",
+      "query": "arrive",
+      "scope": "example",
+      "sources": [
+        {
+          "id": "source:6",
+          "channel": "temporal_anchor",
+          "scope": "example",
+          "key": "next_week",
+          "confidence": 1.0
+        }
+      ],
+      "expected_features": {
+        "future": 1.0
+      },
+      "grammar_weights": {
+        "will": 1.0,
+        "arrived": 1.0,
+        "waits": 1.0,
+        "rests": 1.0
+      },
+      "favored": "will",
+      "disfavored": "arrived"
+    },
+    {
+      "id": "P003.07",
+      "description": "Remote past uses irregular sang.",
+      "query": "sing",
+      "scope": "example",
+      "sources": [
+        {
+          "id": "source:7",
+          "channel": "temporal_anchor",
+          "scope": "example",
+          "key": "long_ago",
+          "confidence": 1.0
+        }
+      ],
+      "expected_features": {
+        "past": 1.0
+      },
+      "grammar_weights": {
+        "sang": 1.0,
+        "sings": 1.0,
+        "waits": 1.0,
+        "rests": 1.0
+      },
+      "favored": "sang",
+      "disfavored": "sings"
+    },
+    {
+      "id": "P003.08",
+      "description": "Seasonal habitual growth uses present in this frame.",
+      "query": "grow",
+      "scope": "example",
+      "sources": [
+        {
+          "id": "source:8",
+          "channel": "temporal_anchor",
+          "scope": "example",
+          "key": "each_spring",
+          "confidence": 1.0
+        }
+      ],
+      "expected_features": {
+        "habitual_present": 1.0
+      },
+      "grammar_weights": {
+        "grows": 1.0,
+        "grew": 1.0,
+        "waits": 1.0,
+        "rests": 1.0
+      },
+      "favored": "grows",
+      "disfavored": "grew"
+    },
+    {
+      "id": "P003.09",
+      "description": "Completed earlier event uses past.",
+      "query": "finish",
+      "scope": "example",
+      "sources": [
+        {
+          "id": "source:9",
+          "channel": "temporal_anchor",
+          "scope": "example",
+          "key": "earlier_today",
+          "confidence": 1.0
+        }
+      ],
+      "expected_features": {
+        "past": 1.0
+      },
+      "grammar_weights": {
+        "finished": 1.0,
+        "finishes": 1.0,
+        "waits": 1.0,
+        "rests": 1.0
+      },
+      "favored": "finished",
+      "disfavored": "finishes"
+    },
+    {
+      "id": "P003.10",
+      "description": "Later in a future frame favors will return.",
+      "query": "return",
+      "scope": "example",
+      "sources": [
+        {
+          "id": "source:10",
+          "channel": "temporal_anchor",
+          "scope": "example",
+          "key": "later",
+          "confidence": 1.0
+        }
+      ],
+      "expected_features": {
+        "future": 1.0
+      },
+      "grammar_weights": {
+        "will": 1.0,
+        "returned": 1.0,
+        "waits": 1.0,
+        "rests": 1.0
+      },
+      "favored": "will",
+      "disfavored": "returned"
+    }
+  ],
+  "input_channel": "temporal_anchor",
+  "receiver_mode": "multipliers",
+  "smoothing": 1.0,
+  "input_contract": "Supply current, scoped records in channel temporal_anchor. Scope selection and structural parsing belong to the caller; no free-text parser is implied.",
+  "table_semantics": "Positive relative word-weight multipliers.",
+  "selection": [
+    {
+      "tokens": [
+        "walk",
+        "yesterday"
+      ],
+      "weight": 1.0
+    },
+    {
+      "tokens": [
+        "open",
+        "last_night"
+      ],
+      "weight": 1.0
+    },
+    {
+      "tokens": [
+        "play",
+        "every_day"
+      ],
+      "weight": 1.0
+    },
+    {
+      "tokens": [
+        "wait",
+        "now"
+      ],
+      "weight": 1.0
+    },
+    {
+      "tokens": [
+        "leave",
+        "tomorrow"
+      ],
+      "weight": 1.0
+    },
+    {
+      "tokens": [
+        "arrive",
+        "next_week"
+      ],
+      "weight": 1.0
+    },
+    {
+      "tokens": [
+        "sing",
+        "long_ago"
+      ],
+      "weight": 1.0
+    },
+    {
+      "tokens": [
+        "grow",
+        "each_spring"
+      ],
+      "weight": 1.0
+    },
+    {
+      "tokens": [
+        "finish",
+        "earlier_today"
+      ],
+      "weight": 1.0
+    },
+    {
+      "tokens": [
+        "return",
+        "later"
+      ],
+      "weight": 1.0
+    }
+  ],
+  "projection": [
+    {
+      "tokens": [
+        "yesterday",
+        "past"
+      ],
+      "weight": 1.0
+    },
+    {
+      "tokens": [
+        "last_night",
+        "past"
+      ],
+      "weight": 1.0
+    },
+    {
+      "tokens": [
+        "every_day",
+        "habitual_present"
+      ],
+      "weight": 1.0
+    },
+    {
+      "tokens": [
+        "now",
+        "present"
+      ],
+      "weight": 1.0
+    },
+    {
+      "tokens": [
+        "tomorrow",
+        "future"
+      ],
+      "weight": 1.0
+    },
+    {
+      "tokens": [
+        "next_week",
+        "future"
+      ],
+      "weight": 1.0
+    },
+    {
+      "tokens": [
+        "long_ago",
+        "past"
+      ],
+      "weight": 1.0
+    },
+    {
+      "tokens": [
+        "each_spring",
+        "habitual_present"
+      ],
+      "weight": 1.0
+    },
+    {
+      "tokens": [
+        "earlier_today",
+        "past"
+      ],
+      "weight": 1.0
+    },
+    {
+      "tokens": [
+        "later",
+        "future"
+      ],
+      "weight": 1.0
+    }
+  ],
+  "receiver": [
+    {
+      "tokens": [
+        "walk",
+        "past",
+        "walked"
+      ],
+      "weight": 4.0
+    },
+    {
+      "tokens": [
+        "walk",
+        "past",
+        "walks"
+      ],
+      "weight": 0.25
+    },
+    {
+      "tokens": [
+        "open",
+        "past",
+        "opened"
+      ],
+      "weight": 4.0
+    },
+    {
+      "tokens": [
+        "open",
+        "past",
+        "opens"
+      ],
+      "weight": 0.25
+    },
+    {
+      "tokens": [
+        "play",
+        "habitual_present",
+        "plays"
+      ],
+      "weight": 4.0
+    },
+    {
+      "tokens": [
+        "play",
+        "habitual_present",
+        "played"
+      ],
+      "weight": 0.25
+    },
+    {
+      "tokens": [
+        "wait",
+        "present",
+        "waits"
+      ],
+      "weight": 4.0
+    },
+    {
+      "tokens": [
+        "wait",
+        "present",
+        "waited"
+      ],
+      "weight": 0.25
+    },
+    {
+      "tokens": [
+        "leave",
+        "future",
+        "will"
+      ],
+      "weight": 4.0
+    },
+    {
+      "tokens": [
+        "leave",
+        "future",
+        "left"
+      ],
+      "weight": 0.25
+    },
+    {
+      "tokens": [
+        "arrive",
+        "future",
+        "will"
+      ],
+      "weight": 4.0
+    },
+    {
+      "tokens": [
+        "arrive",
+        "future",
+        "arrived"
+      ],
+      "weight": 0.25
+    },
+    {
+      "tokens": [
+        "sing",
+        "past",
+        "sang"
+      ],
+      "weight": 4.0
+    },
+    {
+      "tokens": [
+        "sing",
+        "past",
+        "sings"
+      ],
+      "weight": 0.25
+    },
+    {
+      "tokens": [
+        "grow",
+        "habitual_present",
+        "grows"
+      ],
+      "weight": 4.0
+    },
+    {
+      "tokens": [
+        "grow",
+        "habitual_present",
+        "grew"
+      ],
+      "weight": 0.25
+    },
+    {
+      "tokens": [
+        "finish",
+        "past",
+        "finished"
+      ],
+      "weight": 4.0
+    },
+    {
+      "tokens": [
+        "finish",
+        "past",
+        "finishes"
+      ],
+      "weight": 0.25
+    },
+    {
+      "tokens": [
+        "return",
+        "future",
+        "will"
+      ],
+      "weight": 4.0
+    },
+    {
+      "tokens": [
+        "return",
+        "future",
+        "returned"
+      ],
+      "weight": 0.25
+    }
+  ]
+}

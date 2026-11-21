@@ -1,0 +1,386 @@
+{
+  "id": "resp_0d9ba28f16a66192016aeb179596a887d1af30594de0479fc2",
+  "created_at": 1793791893.0,
+  "error": null,
+  "incomplete_details": null,
+  "instructions": null,
+  "metadata": {},
+  "model": "gpt-6-luna",
+  "object": "response",
+  "output": [
+    {
+      "id": "msg_0d9ba28f16a66192016aeb1798509087d190dd4df945964416",
+      "content": [
+        {
+          "annotations": [],
+          "text": "{\"stories\":[{\"id\":\"s000014\",\"rating\":{\"coherence\":8,\"style\":5,\"grammar\":9,\"storytelling\":6,\"overall\":6},\"note\":\"The dent becomes a useful thumb rest, and the final tea-drinking image completes the gift; the brief, repetitive prose feels more like a sequence of steps than a developed tale.\",\"group_id\":0},{\"id\":\"s000028\",\"rating\":{\"coherence\":8,\"style\":5,\"grammar\":9,\"storytelling\":6,\"overall\":6},\"note\":\"Bea turns the dent into a thumb rest suited to Grandpa, with his thumb resting there at the end; the repetitive, procedural telling limits the story’s warmth.\",\"group_id\":0},{\"id\":\"s000058\",\"rating\":{\"coherence\":8,\"style\":5,\"grammar\":9,\"storytelling\":6,\"overall\":6},\"note\":\"The dented cup is reshaped into the bowl Grandpa can hold with two hands, and the ending shows him doing so; the prose is clear but step-by-step.\",\"group_id\":1},{\"id\":\"s000023\",\"rating\":{\"coherence\":8,\"style\":5,\"grammar\":9,\"storytelling\":5,\"overall\":6},\"note\":\"Bea smooths the dent and Grandpa uses the cup’s wide handle, resolving the making problem; the outcome is sensible but the turn is modest and the ending is abrupt.\",\"group_id\":2},{\"id\":\"s000036\",\"rating\":{\"coherence\":8,\"style\":5,\"grammar\":9,\"storytelling\":6,\"overall\":6},\"note\":\"Bea reshapes the cup into a bowl after learning Grandpa can hold one with two hands, and the final action confirms it works; the prose remains procedural.\",\"group_id\":1},{\"id\":\"s000017\",\"rating\":{\"coherence\":8,\"style\":5,\"grammar\":9,\"storytelling\":6,\"overall\":6},\"note\":\"Bea makes the dent into a thumb rest, which Grandpa uses while drinking tea; the useful adaptation provides a clear ending, though the narration is repetitive.\",\"group_id\":0},{\"id\":\"s000053\",\"rating\":{\"coherence\":8,\"style\":5,\"grammar\":9,\"storytelling\":6,\"overall\":6},\"note\":\"The cup becomes a bowl that Grandpa can hold, and the last image shows him using it; events are clear but told as a compact sequence of steps.\",\"group_id\":1},{\"id\":\"s000021\",\"rating\":{\"coherence\":8,\"style\":5,\"grammar\":9,\"storytelling\":6,\"overall\":6},\"note\":\"Bea reshapes the failed cup into a bowl to suit Grandpa, and he holds it with two hands at the end; the story is coherent but mechanically repetitive.\",\"group_id\":1},{\"id\":\"s000034\",\"rating\":{\"coherence\":8,\"style\":5,\"grammar\":9,\"storytelling\":6,\"overall\":6},\"note\":\"The dent becomes a thumb rest and Grandpa’s thumb fits it in the final image; this is a clear practical resolution, delivered in plain, repetitive prose.\",\"group_id\":0},{\"id\":\"s000048\",\"rating\":{\"coherence\":8,\"style\":5,\"grammar\":9,\"storytelling\":6,\"overall\":6},\"note\":\"Bea turns the dented cup into a bowl appropriate for Grandpa, who holds it with both hands; the concrete ending works, though the narration reads like instructions.\",\"group_id\":1}],\"diversity\":{\"premise\":2,\"causal_path\":2,\"ending\":3,\"language\":1,\"overall\":2},\"diversity_evidence\":\"All ten stories share Bea’s pottery gift for Grandpa, the slipping rib and dent, and firing the finished piece. The main causal alternatives are turning the dent into a thumb rest (s000014, s000028, s000017, s000034), reshaping the cup into a bowl (s000058, s000036, s000053, s000021, s000048), or smoothing the dent and keeping the cup (s000023). These branches produce slightly different final uses, but most stories repeat the same language and sequence. This describes only this sample, not the whole generator.\",\"plot_groups\":[{\"group_id\":0,\"summary\":\"A dented cup is adapted into a thumb rest; Grandpa uses the feature while drinking tea.\"},{\"group_id\":1,\"summary\":\"The cup is reshaped into a bowl to suit Grandpa’s two-handed grip; he holds and uses the bowl.\"},{\"group_id\":2,\"summary\":\"Bea smooths the dent and keeps the cup; Grandpa uses its wide handle.\"}]}",
+          "type": "output_text",
+          "logprobs": []
+        }
+      ],
+      "role": "assistant",
+      "status": "completed",
+      "type": "message",
+      "phase": "final_answer"
+    }
+  ],
+  "parallel_tool_calls": true,
+  "temperature": 1.0,
+  "tool_choice": "auto",
+  "tools": [],
+  "top_p": 0.98,
+  "background": false,
+  "completed_at": 1793791904.0,
+  "conversation": null,
+  "max_output_tokens": 4000,
+  "max_tool_calls": null,
+  "moderation": null,
+  "previous_response_id": null,
+  "prompt": null,
+  "prompt_cache_key": null,
+  "prompt_cache_retention": "24h",
+  "reasoning": {
+    "context": "all_turns",
+    "effort": "none",
+    "generate_summary": null,
+    "summary": null,
+    "mode": "standard"
+  },
+  "safety_identifier": null,
+  "service_tier": "flex",
+  "status": "completed",
+  "text": {
+    "format": {
+      "name": "harbor_story_set_v2",
+      "schema_": {
+        "type": "object",
+        "properties": {
+          "stories": {
+            "type": "array",
+            "minItems": 10,
+            "maxItems": 10,
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "enum": [
+                    "s000014",
+                    "s000028",
+                    "s000058",
+                    "s000023",
+                    "s000036",
+                    "s000017",
+                    "s000053",
+                    "s000021",
+                    "s000034",
+                    "s000048"
+                  ]
+                },
+                "rating": {
+                  "type": "object",
+                  "properties": {
+                    "coherence": {
+                      "type": "integer",
+                      "enum": [
+                        0,
+                        1,
+                        2,
+                        3,
+                        4,
+                        5,
+                        6,
+                        7,
+                        8,
+                        9
+                      ]
+                    },
+                    "style": {
+                      "type": "integer",
+                      "enum": [
+                        0,
+                        1,
+                        2,
+                        3,
+                        4,
+                        5,
+                        6,
+                        7,
+                        8,
+                        9
+                      ]
+                    },
+                    "grammar": {
+                      "type": "integer",
+                      "enum": [
+                        0,
+                        1,
+                        2,
+                        3,
+                        4,
+                        5,
+                        6,
+                        7,
+                        8,
+                        9
+                      ]
+                    },
+                    "storytelling": {
+                      "type": "integer",
+                      "enum": [
+                        0,
+                        1,
+                        2,
+                        3,
+                        4,
+                        5,
+                        6,
+                        7,
+                        8,
+                        9
+                      ]
+                    },
+                    "overall": {
+                      "type": "integer",
+                      "enum": [
+                        0,
+                        1,
+                        2,
+                        3,
+                        4,
+                        5,
+                        6,
+                        7,
+                        8,
+                        9
+                      ]
+                    }
+                  },
+                  "required": [
+                    "coherence",
+                    "style",
+                    "grammar",
+                    "storytelling",
+                    "overall"
+                  ],
+                  "additionalProperties": false
+                },
+                "note": {
+                  "type": "string"
+                },
+                "group_id": {
+                  "type": "integer",
+                  "enum": [
+                    0,
+                    1,
+                    2,
+                    3,
+                    4,
+                    5,
+                    6,
+                    7,
+                    8,
+                    9
+                  ]
+                }
+              },
+              "required": [
+                "id",
+                "rating",
+                "note",
+                "group_id"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "diversity": {
+            "type": "object",
+            "properties": {
+              "premise": {
+                "type": "integer",
+                "enum": [
+                  0,
+                  1,
+                  2,
+                  3,
+                  4,
+                  5,
+                  6,
+                  7,
+                  8,
+                  9
+                ]
+              },
+              "causal_path": {
+                "type": "integer",
+                "enum": [
+                  0,
+                  1,
+                  2,
+                  3,
+                  4,
+                  5,
+                  6,
+                  7,
+                  8,
+                  9
+                ]
+              },
+              "ending": {
+                "type": "integer",
+                "enum": [
+                  0,
+                  1,
+                  2,
+                  3,
+                  4,
+                  5,
+                  6,
+                  7,
+                  8,
+                  9
+                ]
+              },
+              "language": {
+                "type": "integer",
+                "enum": [
+                  0,
+                  1,
+                  2,
+                  3,
+                  4,
+                  5,
+                  6,
+                  7,
+                  8,
+                  9
+                ]
+              },
+              "overall": {
+                "type": "integer",
+                "enum": [
+                  0,
+                  1,
+                  2,
+                  3,
+                  4,
+                  5,
+                  6,
+                  7,
+                  8,
+                  9
+                ]
+              }
+            },
+            "required": [
+              "premise",
+              "causal_path",
+              "ending",
+              "language",
+              "overall"
+            ],
+            "additionalProperties": false
+          },
+          "diversity_evidence": {
+            "type": "string"
+          },
+          "plot_groups": {
+            "type": "array",
+            "minItems": 1,
+            "maxItems": 10,
+            "items": {
+              "type": "object",
+              "properties": {
+                "group_id": {
+                  "type": "integer",
+                  "enum": [
+                    0,
+                    1,
+                    2,
+                    3,
+                    4,
+                    5,
+                    6,
+                    7,
+                    8,
+                    9
+                  ]
+                },
+                "summary": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "group_id",
+                "summary"
+              ],
+              "additionalProperties": false
+            }
+          }
+        },
+        "required": [
+          "stories",
+          "diversity",
+          "diversity_evidence",
+          "plot_groups"
+        ],
+        "additionalProperties": false
+      },
+      "type": "json_schema",
+      "description": null,
+      "strict": true
+    },
+    "verbosity": "medium"
+  },
+  "top_logprobs": 0,
+  "truncation": "disabled",
+  "usage": {
+    "input_tokens": 2477,
+    "input_tokens_details": {
+      "cached_tokens": 0,
+      "cache_write_tokens": 0,
+      "cache_write_tokens_details": {
+        "ttl_12h_tokens": 0,
+        "ttl_30m_tokens": 0
+      }
+    },
+    "output_tokens": 959,
+    "output_tokens_details": {
+      "reasoning_tokens": 0
+    },
+    "total_tokens": 3436
+  },
+  "user": null,
+  "access_programs": null,
+  "billing": {
+    "payer": "openai"
+  },
+  "frequency_penalty": 0.0,
+  "image": {
+    "context_compression": "disabled"
+  },
+  "presence_penalty": 0.0,
+  "prompt_cache_options": {
+    "mode": "explicit",
+    "ttl": "30m"
+  },
+  "store": false,
+  "tool_usage": {
+    "image_gen": {
+      "input_tokens": 0,
+      "input_tokens_details": {
+        "image_tokens": 0,
+        "text_tokens": 0
+      },
+      "output_tokens": 0,
+      "output_tokens_details": {
+        "image_tokens": 0,
+        "text_tokens": 0
+      },
+      "total_tokens": 0
+    },
+    "web_search": {
+      "num_requests": 0
+    }
+  }
+}

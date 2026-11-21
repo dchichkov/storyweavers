@@ -1,0 +1,81 @@
+{
+  "id": "P055",
+  "name": "Resolution verification",
+  "description": "Closing passage → initial goal and present world state. Favor closure only when supported.",
+  "proposed_payload": "{initial_goal, outcome, remaining_conflicts}",
+  "provenance": "Authored illustrative seeds; not learned or extracted.",
+  "status": "program_required",
+  "examples": [
+    {
+      "id": "P055.01",
+      "description": "Repaired boat carries everyone home.",
+      "intended_feature": "rescue_goal_satisfied",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P055.02",
+      "description": "Lost child reunites safely with family.",
+      "intended_feature": "reunion_goal_satisfied",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P055.03",
+      "description": "Key found but door remains locked.",
+      "intended_feature": "partial_resolution",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P055.04",
+      "description": "One traveler is still stranded.",
+      "intended_feature": "unresolved_rescue",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P055.05",
+      "description": "Goal is abandoned after a meaningful change of values.",
+      "intended_feature": "explicit_goal_revision",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P055.06",
+      "description": "A success claim contradicts current damaged state.",
+      "intended_feature": "false_resolution",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P055.07",
+      "description": "Task succeeded but a return promise remains unfulfilled.",
+      "intended_feature": "residual_obligation",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P055.08",
+      "description": "Attempt fails and the story acknowledges the loss.",
+      "intended_feature": "grounded_failure_ending",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P055.09",
+      "description": "No initial goal was established.",
+      "intended_feature": "resolution_reference_missing",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P055.10",
+      "description": "Physical goal succeeds at a relationship cost.",
+      "intended_feature": "mixed_outcome",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    }
+  ],
+  "required_program": "Evaluate initial goals and active conflicts against terminal state, preserving partial success, failure, sacrifice, and unresolved obligations."
+}

@@ -1,0 +1,576 @@
+{
+  "change": "Round09: QA validates selected beat decisions, cites exact beat-only spans and the real discovery anchor, names the detail carrier, preserves utterance tense, and maps evidence into framed display. Held-out review also exposed a hidden library decoy: optional reactions now require reader-visible entity references rather than a frame patient alone. Focused QA/beat/dialogue checks:21 passed.",
+  "started_at": "2026-11-15T22:03:23.569090+00:00",
+  "finished_at": "2026-11-15T22:03:37.029829+00:00",
+  "runs": [
+    {
+      "scenario": "pottery",
+      "seed": 43,
+      "budget": 2,
+      "used": 1,
+      "words": 107,
+      "presentation_styles": {
+        "title": [
+          "hero"
+        ],
+        "opening": [
+          "storyteller"
+        ],
+        "closing": [
+          "storyteller"
+        ]
+      },
+      "qa_count": 4,
+      "baseline_seed": 502,
+      "baseline_words": 103,
+      "selected": [
+        "immediate",
+        "echo:pottery:dent"
+      ],
+      "annotated_beats": 11,
+      "detail_links": 3
+    },
+    {
+      "scenario": "pottery",
+      "seed": 43,
+      "budget": 6,
+      "used": 1,
+      "words": 107,
+      "presentation_styles": {
+        "title": [
+          "hero"
+        ],
+        "opening": [
+          "storyteller"
+        ],
+        "closing": [
+          "storyteller"
+        ]
+      },
+      "qa_count": 4,
+      "baseline_seed": 502,
+      "baseline_words": 103,
+      "selected": [
+        "immediate",
+        "echo:pottery:dent"
+      ],
+      "annotated_beats": 11,
+      "detail_links": 3
+    },
+    {
+      "scenario": "pottery",
+      "seed": 907,
+      "budget": 2,
+      "used": 1,
+      "words": 100,
+      "presentation_styles": {
+        "title": [
+          "object"
+        ],
+        "opening": [
+          "storyteller"
+        ],
+        "closing": [
+          "the_end"
+        ]
+      },
+      "qa_count": 4,
+      "baseline_seed": 504,
+      "baseline_words": 100,
+      "selected": [
+        "reaction",
+        "immediate"
+      ],
+      "annotated_beats": 11,
+      "detail_links": 3
+    },
+    {
+      "scenario": "pottery",
+      "seed": 907,
+      "budget": 6,
+      "used": 1,
+      "words": 100,
+      "presentation_styles": {
+        "title": [
+          "object"
+        ],
+        "opening": [
+          "storyteller"
+        ],
+        "closing": [
+          "the_end"
+        ]
+      },
+      "qa_count": 4,
+      "baseline_seed": 504,
+      "baseline_words": 100,
+      "selected": [
+        "reaction",
+        "immediate"
+      ],
+      "annotated_beats": 11,
+      "detail_links": 3
+    },
+    {
+      "scenario": "repair",
+      "seed": 43,
+      "budget": 2,
+      "used": 0,
+      "words": 118,
+      "presentation_styles": {
+        "title": [
+          "hero"
+        ],
+        "opening": [
+          "storyteller"
+        ],
+        "closing": [
+          "storyteller"
+        ]
+      },
+      "qa_count": 4,
+      "baseline_seed": 500,
+      "baseline_words": 118,
+      "selected": [
+        "immediate",
+        "immediate",
+        "immediate",
+        "immediate"
+      ],
+      "annotated_beats": 7,
+      "detail_links": 4
+    },
+    {
+      "scenario": "repair",
+      "seed": 43,
+      "budget": 6,
+      "used": 0,
+      "words": 118,
+      "presentation_styles": {
+        "title": [
+          "hero"
+        ],
+        "opening": [
+          "storyteller"
+        ],
+        "closing": [
+          "storyteller"
+        ]
+      },
+      "qa_count": 4,
+      "baseline_seed": 500,
+      "baseline_words": 118,
+      "selected": [
+        "immediate",
+        "immediate",
+        "immediate",
+        "immediate"
+      ],
+      "annotated_beats": 7,
+      "detail_links": 4
+    },
+    {
+      "scenario": "repair",
+      "seed": 907,
+      "budget": 2,
+      "used": 1,
+      "words": 123,
+      "presentation_styles": {
+        "title": [
+          "object"
+        ],
+        "opening": [
+          "storyteller"
+        ],
+        "closing": [
+          "the_end"
+        ]
+      },
+      "qa_count": 4,
+      "baseline_seed": 513,
+      "baseline_words": 120,
+      "selected": [
+        "immediate",
+        "immediate",
+        "echo:repair:rattle"
+      ],
+      "annotated_beats": 8,
+      "detail_links": 4
+    },
+    {
+      "scenario": "repair",
+      "seed": 907,
+      "budget": 6,
+      "used": 1,
+      "words": 123,
+      "presentation_styles": {
+        "title": [
+          "object"
+        ],
+        "opening": [
+          "storyteller"
+        ],
+        "closing": [
+          "the_end"
+        ]
+      },
+      "qa_count": 4,
+      "baseline_seed": 513,
+      "baseline_words": 120,
+      "selected": [
+        "immediate",
+        "immediate",
+        "echo:repair:rattle"
+      ],
+      "annotated_beats": 8,
+      "detail_links": 4
+    },
+    {
+      "scenario": "camp",
+      "seed": 43,
+      "budget": 2,
+      "used": 2,
+      "words": 82,
+      "presentation_styles": {
+        "title": [
+          "hero"
+        ],
+        "opening": [
+          "storyteller"
+        ],
+        "closing": [
+          "storyteller"
+        ]
+      },
+      "qa_count": 4,
+      "baseline_seed": 503,
+      "baseline_words": 75,
+      "selected": [
+        "reaction",
+        "echo:camp:missing_rabbit"
+      ],
+      "annotated_beats": 9,
+      "detail_links": 2
+    },
+    {
+      "scenario": "camp",
+      "seed": 43,
+      "budget": 6,
+      "used": 2,
+      "words": 85,
+      "presentation_styles": {
+        "title": [
+          "hero"
+        ],
+        "opening": [
+          "storyteller"
+        ],
+        "closing": [
+          "storyteller"
+        ]
+      },
+      "qa_count": 4,
+      "baseline_seed": 503,
+      "baseline_words": 75,
+      "selected": [
+        "reaction",
+        "committing",
+        "immediate",
+        "immediate"
+      ],
+      "annotated_beats": 9,
+      "detail_links": 2
+    },
+    {
+      "scenario": "camp",
+      "seed": 907,
+      "budget": 2,
+      "used": 1,
+      "words": 76,
+      "presentation_styles": {
+        "title": [
+          "object"
+        ],
+        "opening": [
+          "storyteller"
+        ],
+        "closing": [
+          "the_end"
+        ]
+      },
+      "qa_count": 4,
+      "baseline_seed": 503,
+      "baseline_words": 75,
+      "selected": [
+        "reaction",
+        "immediate",
+        "immediate"
+      ],
+      "annotated_beats": 8,
+      "detail_links": 2
+    },
+    {
+      "scenario": "camp",
+      "seed": 907,
+      "budget": 6,
+      "used": 1,
+      "words": 76,
+      "presentation_styles": {
+        "title": [
+          "object"
+        ],
+        "opening": [
+          "storyteller"
+        ],
+        "closing": [
+          "the_end"
+        ]
+      },
+      "qa_count": 4,
+      "baseline_seed": 503,
+      "baseline_words": 75,
+      "selected": [
+        "reaction",
+        "immediate",
+        "immediate",
+        "immediate",
+        "immediate"
+      ],
+      "annotated_beats": 8,
+      "detail_links": 2
+    },
+    {
+      "scenario": "library",
+      "seed": 43,
+      "budget": 2,
+      "used": 2,
+      "words": 122,
+      "presentation_styles": {
+        "title": [
+          "hero"
+        ],
+        "opening": [
+          "storyteller"
+        ],
+        "closing": [
+          "storyteller"
+        ]
+      },
+      "qa_count": 4,
+      "baseline_seed": 504,
+      "baseline_words": 114,
+      "selected": [
+        "reaction",
+        "immediate",
+        "echo:library:missing_book"
+      ],
+      "annotated_beats": 13,
+      "detail_links": 2
+    },
+    {
+      "scenario": "library",
+      "seed": 43,
+      "budget": 6,
+      "used": 2,
+      "words": 122,
+      "presentation_styles": {
+        "title": [
+          "hero"
+        ],
+        "opening": [
+          "storyteller"
+        ],
+        "closing": [
+          "storyteller"
+        ]
+      },
+      "qa_count": 4,
+      "baseline_seed": 504,
+      "baseline_words": 114,
+      "selected": [
+        "reaction",
+        "immediate",
+        "echo:library:missing_book"
+      ],
+      "annotated_beats": 13,
+      "detail_links": 2
+    },
+    {
+      "scenario": "library",
+      "seed": 907,
+      "budget": 2,
+      "used": 1,
+      "words": 112,
+      "presentation_styles": {
+        "title": [
+          "object"
+        ],
+        "opening": [
+          "storyteller"
+        ],
+        "closing": [
+          "the_end"
+        ]
+      },
+      "qa_count": 4,
+      "baseline_seed": 508,
+      "baseline_words": 112,
+      "selected": [
+        "immediate",
+        "echo:library:missing_book"
+      ],
+      "annotated_beats": 12,
+      "detail_links": 2
+    },
+    {
+      "scenario": "library",
+      "seed": 907,
+      "budget": 6,
+      "used": 1,
+      "words": 112,
+      "presentation_styles": {
+        "title": [
+          "object"
+        ],
+        "opening": [
+          "storyteller"
+        ],
+        "closing": [
+          "the_end"
+        ]
+      },
+      "qa_count": 4,
+      "baseline_seed": 508,
+      "baseline_words": 112,
+      "selected": [
+        "immediate",
+        "echo:library:missing_book"
+      ],
+      "annotated_beats": 12,
+      "detail_links": 2
+    },
+    {
+      "scenario": "museum",
+      "seed": 43,
+      "budget": 2,
+      "used": 2,
+      "words": 90,
+      "presentation_styles": {
+        "title": [
+          "hero"
+        ],
+        "opening": [
+          "storyteller"
+        ],
+        "closing": [
+          "storyteller"
+        ]
+      },
+      "qa_count": 4,
+      "baseline_seed": 509,
+      "baseline_words": 81,
+      "selected": [
+        "inspection",
+        "immediate",
+        "echo:museum:moving_light"
+      ],
+      "annotated_beats": 9,
+      "detail_links": 4
+    },
+    {
+      "scenario": "museum",
+      "seed": 43,
+      "budget": 6,
+      "used": 2,
+      "words": 92,
+      "presentation_styles": {
+        "title": [
+          "hero"
+        ],
+        "opening": [
+          "storyteller"
+        ],
+        "closing": [
+          "storyteller"
+        ]
+      },
+      "qa_count": 4,
+      "baseline_seed": 509,
+      "baseline_words": 81,
+      "selected": [
+        "inspection",
+        "committing",
+        "immediate",
+        "immediate"
+      ],
+      "annotated_beats": 9,
+      "detail_links": 4
+    },
+    {
+      "scenario": "museum",
+      "seed": 907,
+      "budget": 2,
+      "used": 2,
+      "words": 86,
+      "presentation_styles": {
+        "title": [
+          "object"
+        ],
+        "opening": [
+          "storyteller"
+        ],
+        "closing": [
+          "the_end"
+        ]
+      },
+      "qa_count": 4,
+      "baseline_seed": 509,
+      "baseline_words": 81,
+      "selected": [
+        "reaction",
+        "echo:museum:moving_light"
+      ],
+      "annotated_beats": 9,
+      "detail_links": 4
+    },
+    {
+      "scenario": "museum",
+      "seed": 907,
+      "budget": 6,
+      "used": 2,
+      "words": 86,
+      "presentation_styles": {
+        "title": [
+          "object"
+        ],
+        "opening": [
+          "storyteller"
+        ],
+        "closing": [
+          "the_end"
+        ]
+      },
+      "qa_count": 4,
+      "baseline_seed": 509,
+      "baseline_words": 81,
+      "selected": [
+        "reaction",
+        "immediate",
+        "echo:museum:moving_light"
+      ],
+      "annotated_beats": 9,
+      "detail_links": 4
+    }
+  ],
+  "choices": {
+    "immediate": 32,
+    "echo:pottery:dent": 2,
+    "reaction": 10,
+    "echo:repair:rattle": 2,
+    "echo:camp:missing_rabbit": 1,
+    "committing": 2,
+    "echo:library:missing_book": 4,
+    "inspection": 2,
+    "echo:museum:moving_light": 3
+  }
+}

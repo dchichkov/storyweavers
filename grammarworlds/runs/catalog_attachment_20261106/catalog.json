@@ -1,0 +1,769 @@
+{
+  "kite:hero": {
+    "entity": {
+      "id": "hero",
+      "noun": "Sam",
+      "kind": "person",
+      "location": "meadow",
+      "number": "singular",
+      "pronoun": "he",
+      "properties": [
+        "animate",
+        "can_climb",
+        "can_help",
+        "can_hold",
+        "can_repair"
+      ],
+      "state": [],
+      "memes": {
+        "Care": 0.8,
+        "Fear": 0.4846019374111061,
+        "Curiosity": 0.65,
+        "Trust": 0.35,
+        "Joy": 0.1
+      }
+    },
+    "source": {
+      "world": "kite",
+      "entity": "hero",
+      "seed": 1
+    },
+    "additions": [
+      "can_help"
+    ],
+    "links": {},
+    "packages": []
+  },
+  "kite:helper": {
+    "entity": {
+      "id": "helper",
+      "noun": "Mum",
+      "kind": "person",
+      "location": "meadow",
+      "number": "singular",
+      "pronoun": "she",
+      "properties": [
+        "animate",
+        "can_hold",
+        "can_repair"
+      ],
+      "state": [],
+      "memes": {
+        "Care": 0.9
+      }
+    },
+    "source": {
+      "world": "kite",
+      "entity": "helper",
+      "seed": 1
+    },
+    "additions": [],
+    "links": {},
+    "packages": []
+  },
+  "kite:bread": {
+    "entity": {
+      "id": "bread",
+      "noun": "bread",
+      "kind": "food",
+      "location": "kitchen",
+      "number": "singular",
+      "pronoun": "it",
+      "properties": [
+        "edible"
+      ],
+      "state": [],
+      "memes": {}
+    },
+    "source": {
+      "world": "kite",
+      "entity": "bread",
+      "seed": 1
+    },
+    "additions": [],
+    "links": {},
+    "packages": []
+  },
+  "kite:water": {
+    "entity": {
+      "id": "water",
+      "noun": "water",
+      "kind": "drink",
+      "location": "kitchen",
+      "number": "singular",
+      "pronoun": "it",
+      "properties": [
+        "drinkable"
+      ],
+      "state": [],
+      "memes": {}
+    },
+    "source": {
+      "world": "kite",
+      "entity": "water",
+      "seed": 1
+    },
+    "additions": [],
+    "links": {},
+    "packages": []
+  },
+  "kite:stone": {
+    "entity": {
+      "id": "stone",
+      "noun": "stone",
+      "kind": "object",
+      "location": "meadow",
+      "number": "singular",
+      "pronoun": "it",
+      "properties": [
+        "portable"
+      ],
+      "state": [],
+      "memes": {}
+    },
+    "source": {
+      "world": "kite",
+      "entity": "stone",
+      "seed": 1
+    },
+    "additions": [],
+    "links": {},
+    "packages": []
+  },
+  "kite:target": {
+    "entity": {
+      "id": "target",
+      "noun": "kite",
+      "kind": "object",
+      "location": "meadow",
+      "number": "singular",
+      "pronoun": "it",
+      "properties": [
+        "flyable",
+        "physics:kite",
+        "portable"
+      ],
+      "state": [
+        "grounded",
+        "torn"
+      ],
+      "memes": {}
+    },
+    "source": {
+      "world": "kite",
+      "entity": "target",
+      "seed": 1
+    },
+    "additions": [
+      "physics:kite"
+    ],
+    "links": {
+      "repair_tool": "kite:tool",
+      "tether": "kite:string"
+    },
+    "packages": [
+      "kite:mend",
+      "kite:test_flight"
+    ]
+  },
+  "kite:tool": {
+    "entity": {
+      "id": "tool",
+      "noun": "tape",
+      "kind": "tool",
+      "location": "basket",
+      "number": "singular",
+      "pronoun": "it",
+      "properties": [
+        "portable",
+        "repair"
+      ],
+      "state": [],
+      "memes": {}
+    },
+    "source": {
+      "world": "kite",
+      "entity": "tool",
+      "seed": 1
+    },
+    "additions": [],
+    "links": {},
+    "packages": []
+  },
+  "kite:boat": {
+    "entity": {
+      "id": "boat",
+      "noun": "boat",
+      "kind": "object",
+      "location": "meadow",
+      "number": "singular",
+      "pronoun": "it",
+      "properties": [
+        "float",
+        "portable"
+      ],
+      "state": [
+        "needs_sail"
+      ],
+      "memes": {}
+    },
+    "source": {
+      "world": "kite",
+      "entity": "boat",
+      "seed": 1
+    },
+    "additions": [],
+    "links": {},
+    "packages": []
+  },
+  "kite:scissors": {
+    "entity": {
+      "id": "scissors",
+      "noun": "scissors",
+      "kind": "tool",
+      "location": "basket",
+      "number": "plural",
+      "pronoun": "they",
+      "properties": [
+        "cut",
+        "portable"
+      ],
+      "state": [],
+      "memes": {}
+    },
+    "source": {
+      "world": "kite",
+      "entity": "scissors",
+      "seed": 1
+    },
+    "additions": [],
+    "links": {},
+    "packages": []
+  },
+  "kite:string": {
+    "entity": {
+      "id": "string",
+      "noun": "string",
+      "kind": "object",
+      "location": "hero",
+      "number": "singular",
+      "pronoun": "it",
+      "properties": [
+        "portable",
+        "tie"
+      ],
+      "state": [],
+      "memes": {}
+    },
+    "source": {
+      "world": "kite",
+      "entity": "string",
+      "seed": 1
+    },
+    "additions": [],
+    "links": {},
+    "packages": []
+  },
+  "library:hero": {
+    "entity": {
+      "id": "hero",
+      "noun": "Mina",
+      "kind": "person",
+      "location": "library",
+      "number": "singular",
+      "pronoun": "she",
+      "properties": [
+        "animate",
+        "can_hold",
+        "can_sketch_moon"
+      ],
+      "state": [],
+      "memes": {
+        "Care": 0.2806185464674407,
+        "Fear": 0.7084602421623396,
+        "Trust": 0.6582647713859684
+      }
+    },
+    "source": {
+      "world": "library",
+      "entity": "hero",
+      "seed": 1
+    },
+    "additions": [
+      "can_sketch_moon"
+    ],
+    "links": {
+      "paper": "library:paper",
+      "pencil": "library:pencil",
+      "atlas": "library:atlas"
+    },
+    "packages": [
+      "library:sketch_moon"
+    ]
+  },
+  "library:helper": {
+    "entity": {
+      "id": "helper",
+      "noun": "Ms Alvarez",
+      "kind": "person",
+      "location": "library",
+      "number": "singular",
+      "pronoun": "she",
+      "properties": [
+        "animate",
+        "can_hold"
+      ],
+      "state": [],
+      "memes": {
+        "Care": 0.35304141544365303,
+        "Fear": 0.4972610522551646,
+        "Trust": 0.46969463887324286
+      }
+    },
+    "source": {
+      "world": "library",
+      "entity": "helper",
+      "seed": 1
+    },
+    "additions": [],
+    "links": {},
+    "packages": []
+  },
+  "library:friend": {
+    "entity": {
+      "id": "friend",
+      "noun": "Jun",
+      "kind": "person",
+      "location": "library",
+      "number": "singular",
+      "pronoun": "he",
+      "properties": [
+        "animate",
+        "can_hold"
+      ],
+      "state": [],
+      "memes": {
+        "Care": 0.5909557836336577,
+        "Fear": 0.673234010681308,
+        "Trust": 0.25631575206454094
+      }
+    },
+    "source": {
+      "world": "library",
+      "entity": "friend",
+      "seed": 1
+    },
+    "additions": [],
+    "links": {},
+    "packages": []
+  },
+  "library:book": {
+    "entity": {
+      "id": "book",
+      "noun": "whale book",
+      "kind": "object",
+      "location": "high_shelf",
+      "number": "singular",
+      "pronoun": "it",
+      "properties": [
+        "belongs_to_friend",
+        "blue"
+      ],
+      "state": [
+        "missing",
+        "whale_picture"
+      ],
+      "memes": {}
+    },
+    "source": {
+      "world": "library",
+      "entity": "book",
+      "seed": 1
+    },
+    "additions": [],
+    "links": {},
+    "packages": []
+  },
+  "library:atlas": {
+    "entity": {
+      "id": "atlas",
+      "noun": "moon atlas",
+      "kind": "object",
+      "location": "hero",
+      "number": "singular",
+      "pronoun": "it",
+      "properties": [
+        "moon_reference"
+      ],
+      "state": [
+        "moon_picture"
+      ],
+      "memes": {}
+    },
+    "source": {
+      "world": "library",
+      "entity": "atlas",
+      "seed": 1
+    },
+    "additions": [
+      "moon_reference"
+    ],
+    "links": {},
+    "packages": []
+  },
+  "library:paper": {
+    "entity": {
+      "id": "paper",
+      "noun": "paper",
+      "kind": "object",
+      "location": "hero",
+      "number": "singular",
+      "pronoun": "it",
+      "properties": [
+        "drawable",
+        "portable"
+      ],
+      "state": [
+        "blank"
+      ],
+      "memes": {}
+    },
+    "source": {
+      "world": "library",
+      "entity": "paper",
+      "seed": 1
+    },
+    "additions": [
+      "drawable",
+      "portable"
+    ],
+    "links": {},
+    "packages": []
+  },
+  "library:pencil": {
+    "entity": {
+      "id": "pencil",
+      "noun": "pencil",
+      "kind": "tool",
+      "location": "hero",
+      "number": "singular",
+      "pronoun": "it",
+      "properties": [
+        "draw",
+        "portable"
+      ],
+      "state": [],
+      "memes": {}
+    },
+    "source": {
+      "world": "library",
+      "entity": "pencil",
+      "seed": 1
+    },
+    "additions": [],
+    "links": {},
+    "packages": []
+  },
+  "library:tool": {
+    "entity": {
+      "id": "tool",
+      "noun": "book trolley",
+      "kind": "object",
+      "location": "station",
+      "number": "singular",
+      "pronoun": "it",
+      "properties": [
+        "can_hold"
+      ],
+      "state": [],
+      "memes": {}
+    },
+    "source": {
+      "world": "library",
+      "entity": "tool",
+      "seed": 1
+    },
+    "additions": [],
+    "links": {},
+    "packages": []
+  },
+  "library:ladder": {
+    "entity": {
+      "id": "ladder",
+      "noun": "ladder",
+      "kind": "object",
+      "location": "store",
+      "number": "singular",
+      "pronoun": "it",
+      "properties": [],
+      "state": [],
+      "memes": {}
+    },
+    "source": {
+      "world": "library",
+      "entity": "ladder",
+      "seed": 1
+    },
+    "additions": [],
+    "links": {},
+    "packages": []
+  },
+  "library:mitten": {
+    "entity": {
+      "id": "mitten",
+      "noun": "mitten",
+      "kind": "object",
+      "location": "window_nook",
+      "number": "singular",
+      "pronoun": "it",
+      "properties": [],
+      "state": [],
+      "memes": {}
+    },
+    "source": {
+      "world": "library",
+      "entity": "mitten",
+      "seed": 1
+    },
+    "additions": [],
+    "links": {},
+    "packages": []
+  },
+  "library:bookmark": {
+    "entity": {
+      "id": "bookmark",
+      "noun": "star bookmark",
+      "kind": "object",
+      "location": "book",
+      "number": "singular",
+      "pronoun": "it",
+      "properties": [],
+      "state": [
+        "visible"
+      ],
+      "memes": {}
+    },
+    "source": {
+      "world": "library",
+      "entity": "bookmark",
+      "seed": 1
+    },
+    "additions": [],
+    "links": {},
+    "packages": []
+  },
+  "music:hero": {
+    "entity": {
+      "id": "hero",
+      "noun": "Nia",
+      "kind": "person",
+      "location": "music room",
+      "number": "singular",
+      "pronoun": "she",
+      "properties": [
+        "animate",
+        "can_drum",
+        "can_hold"
+      ],
+      "state": [
+        "wants_duet"
+      ],
+      "memes": {
+        "Care": 0.8,
+        "Desire": 0.85,
+        "Fear": 0.3707611624466637
+      }
+    },
+    "source": {
+      "world": "music",
+      "entity": "hero",
+      "seed": 1
+    },
+    "additions": [
+      "can_drum"
+    ],
+    "links": {
+      "instrument": "music:drum"
+    },
+    "packages": [
+      "music:perform"
+    ]
+  },
+  "music:partner": {
+    "entity": {
+      "id": "partner",
+      "noun": "Mateo",
+      "kind": "person",
+      "location": "music room",
+      "number": "singular",
+      "pronoun": "he",
+      "properties": [
+        "animate",
+        "can_hold"
+      ],
+      "state": [
+        "public_unready"
+      ],
+      "memes": {
+        "Trust": 0.6209060244672734,
+        "Fear": 0.42524272875508373,
+        "Readiness": 0.1
+      }
+    },
+    "source": {
+      "world": "music",
+      "entity": "partner",
+      "seed": 1
+    },
+    "additions": [],
+    "links": {},
+    "packages": []
+  },
+  "music:teacher": {
+    "entity": {
+      "id": "teacher",
+      "noun": "Dalia",
+      "kind": "person",
+      "location": "music room",
+      "number": "singular",
+      "pronoun": "she",
+      "properties": [
+        "animate",
+        "can_hold"
+      ],
+      "state": [],
+      "memes": {
+        "Care": 0.9
+      }
+    },
+    "source": {
+      "world": "music",
+      "entity": "teacher",
+      "seed": 1
+    },
+    "additions": [],
+    "links": {},
+    "packages": []
+  },
+  "music:drum": {
+    "entity": {
+      "id": "drum",
+      "noun": "little drum",
+      "kind": "instrument",
+      "location": "shelf",
+      "number": "singular",
+      "pronoun": "it",
+      "properties": [
+        "borrowed",
+        "physics:drum",
+        "portable",
+        "red_ribbon"
+      ],
+      "state": [],
+      "memes": {}
+    },
+    "source": {
+      "world": "music",
+      "entity": "drum",
+      "seed": 1
+    },
+    "additions": [
+      "physics:drum"
+    ],
+    "links": {},
+    "packages": []
+  },
+  "music:spare": {
+    "entity": {
+      "id": "spare",
+      "noun": "second drum",
+      "kind": "instrument",
+      "location": "shelf",
+      "number": "singular",
+      "pronoun": "it",
+      "properties": [
+        "portable"
+      ],
+      "state": [],
+      "memes": {}
+    },
+    "source": {
+      "world": "music",
+      "entity": "spare",
+      "seed": 1
+    },
+    "additions": [],
+    "links": {},
+    "packages": []
+  },
+  "music:program": {
+    "entity": {
+      "id": "program",
+      "noun": "signup sheet",
+      "kind": "object",
+      "location": "piano",
+      "number": "singular",
+      "pronoun": "it",
+      "properties": [
+        "physical"
+      ],
+      "state": [],
+      "memes": {}
+    },
+    "source": {
+      "world": "music",
+      "entity": "program",
+      "seed": 1
+    },
+    "additions": [],
+    "links": {},
+    "packages": []
+  },
+  "music:paper": {
+    "entity": {
+      "id": "paper",
+      "noun": "paper",
+      "kind": "object",
+      "location": "piano",
+      "number": "singular",
+      "pronoun": "it",
+      "properties": [
+        "portable"
+      ],
+      "state": [],
+      "memes": {}
+    },
+    "source": {
+      "world": "music",
+      "entity": "paper",
+      "seed": 1
+    },
+    "additions": [],
+    "links": {},
+    "packages": []
+  },
+  "music:pencil": {
+    "entity": {
+      "id": "pencil",
+      "noun": "pencil",
+      "kind": "tool",
+      "location": "piano",
+      "number": "singular",
+      "pronoun": "it",
+      "properties": [
+        "portable",
+        "write"
+      ],
+      "state": [],
+      "memes": {}
+    },
+    "source": {
+      "world": "music",
+      "entity": "pencil",
+      "seed": 1
+    },
+    "additions": [],
+    "links": {},
+    "packages": []
+  }
+}

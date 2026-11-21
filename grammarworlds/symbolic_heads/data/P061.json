@@ -1,0 +1,81 @@
+{
+  "id": "P061",
+  "name": "Evidence freshness",
+  "description": "Retrieved fact → age and intervening relevant events. Discount stale evidence.",
+  "proposed_payload": "{fact, age, invalidating_events}",
+  "provenance": "Authored illustrative seeds; not learned or extracted.",
+  "status": "program_required",
+  "examples": [
+    {
+      "id": "P061.01",
+      "description": "Bridge inspected before a severe storm.",
+      "intended_feature": "inspection_stale",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P061.02",
+      "description": "Latch tested after repair.",
+      "intended_feature": "fresh_evidence",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P061.03",
+      "description": "Birth date recorded long ago.",
+      "intended_feature": "stable_property_not_time_decayed",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P061.04",
+      "description": "Cup location recorded before it was moved.",
+      "intended_feature": "invalidated_location",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P061.05",
+      "description": "Weather report is a week old.",
+      "intended_feature": "low_freshness",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P061.06",
+      "description": "An event has no timestamp but known ordering.",
+      "intended_feature": "partial_temporal_freshness",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P061.07",
+      "description": "Two reports refer to the same observation time.",
+      "intended_feature": "same_age_despite_report_order",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P061.08",
+      "description": "A later message repeats an old inspection.",
+      "intended_feature": "do_not_refresh_observation_time",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P061.09",
+      "description": "An object state persists without intervening changes.",
+      "intended_feature": "persistence_support",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P061.10",
+      "description": "Query asks historical state at yesterday noon.",
+      "intended_feature": "freshness_relative_to_query_time",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    }
+  ],
+  "required_program": "Compute evidence age relative to query time and invalidate it through intervening relevant events; use property-specific persistence models."
+}

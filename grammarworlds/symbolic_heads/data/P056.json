@@ -1,0 +1,81 @@
+{
+  "id": "P056",
+  "name": "Final-image selection",
+  "description": "Ending → concrete objects whose states show the change. Favor an ending image that demonstrates the outcome.",
+  "proposed_payload": "{physical_carrier, before_state, after_state}",
+  "provenance": "Authored illustrative seeds; not learned or extracted.",
+  "status": "program_required",
+  "examples": [
+    {
+      "id": "P056.01",
+      "description": "Broken lantern now lights the doorstep.",
+      "intended_feature": "image:lit_lantern",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P056.02",
+      "description": "Once-empty bench now holds both friends.",
+      "intended_feature": "image:occupied_bench",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P056.03",
+      "description": "Torn sail now carries the boat forward.",
+      "intended_feature": "image:working_sail",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P056.04",
+      "description": "Dry garden now contains watered seedlings.",
+      "intended_feature": "image:watered_plants",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P056.05",
+      "description": "Borrowed cup rests back on its owner's shelf.",
+      "intended_feature": "image:returned_cup",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P056.06",
+      "description": "Locked door now stands open.",
+      "intended_feature": "image:open_door",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P056.07",
+      "description": "A purely abstract happiness label lacks a carrier.",
+      "intended_feature": "reject_bare_concept_image",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P056.08",
+      "description": "Proposed final image shows a repair that never happened.",
+      "intended_feature": "reject_ungrounded_image",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P056.09",
+      "description": "Changed object exists but viewpoint cannot observe it.",
+      "intended_feature": "visibility_constraint",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P056.10",
+      "description": "Story ends in loss with an empty chair.",
+      "intended_feature": "grounded_negative_final_image",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    }
+  ],
+  "required_program": "Select grounded physical carriers whose before/after states express the resolved change, with viewpoint and visibility checks."
+}

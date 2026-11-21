@@ -1,0 +1,81 @@
+{
+  "id": "P046",
+  "name": "Shared knowledge",
+  "description": "Explanatory turn → overlap in interlocutors' knowledge. Reweight reminders versus explanations.",
+  "proposed_payload": "{shared_facts, listener_gaps}",
+  "provenance": "Authored illustrative seeds; not learned or extracted.",
+  "status": "program_required",
+  "examples": [
+    {
+      "id": "P046.01",
+      "description": "Both watched the bridge collapse together.",
+      "intended_feature": "shared_observation",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P046.02",
+      "description": "Only Mira saw the crack.",
+      "intended_feature": "listener_gap:crack",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P046.03",
+      "description": "Theo tells Nia the key location and she acknowledges.",
+      "intended_feature": "common_ground_updated",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P046.04",
+      "description": "Theo reports a fact but Nia cannot hear.",
+      "intended_feature": "no_shared_update",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P046.05",
+      "description": "Both know a fact but neither knows the other knows.",
+      "intended_feature": "not_mutually_established",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P046.06",
+      "description": "A new listener joins halfway through.",
+      "intended_feature": "new_listener_gaps",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P046.07",
+      "description": "A previously shared fact becomes false after an unseen event.",
+      "intended_feature": "shared_belief_not_current_truth",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P046.08",
+      "description": "One listener disputes a claim.",
+      "intended_feature": "contested_common_ground",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P046.09",
+      "description": "A secret is deliberately withheld from Omar.",
+      "intended_feature": "Omar_excluded",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P046.10",
+      "description": "No participant knowledge records exist.",
+      "intended_feature": "common_ground_unknown",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    }
+  ],
+  "required_program": "Compute conversation common ground from participant-specific knowledge and acknowledgments; distinguish mutual knowledge from mere coincident beliefs."
+}

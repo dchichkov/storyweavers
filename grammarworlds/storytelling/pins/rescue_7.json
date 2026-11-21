@@ -1,0 +1,158 @@
+{
+  "scenario": "rescue",
+  "seed": 7,
+  "story": "Nora wanted to eat the bread, but a puppy shivered on a high ledge. Nora said, \u201cThe puppy needs help.\u201d Dad said, \u201cI can lower the basket.\u201d Nora said, \u201cI can share the bread.\u201d Nora put the bread in the basket. Dad carried the basket to the window, and he lowered the basket to the ledge with the rope. Nora waited because the puppy was frightened. The puppy entered the basket, and it ate the bread. Dad lowered the basket to the garden with the rope. Nora carried the puppy into the cottage, and she wrapped the puppy in the warm blanket. Nora was hungry, but the puppy rested in the warm blanket.",
+  "qa": [
+    {
+      "id": "rescue:10:outcome",
+      "kind": "why",
+      "question": "Why was Nora hungry at the end?",
+      "answer": "The puppy ate the bread that Nora had meant to eat. It rested in the warm blanket after the rescue.",
+      "entity_ids": [
+        "basket",
+        "blanket",
+        "bread",
+        "hero",
+        "target"
+      ],
+      "event_ids": [
+        1,
+        4,
+        7,
+        10
+      ],
+      "evidence": [
+        {
+          "start": 0,
+          "end": 102,
+          "text": "Nora wanted to eat the bread, but a puppy shivered on a high ledge. Nora said, \u201cThe puppy needs help.\u201d"
+        },
+        {
+          "start": 175,
+          "end": 208,
+          "text": "Nora put the bread in the basket."
+        },
+        {
+          "start": 347,
+          "end": 398,
+          "text": "The puppy entered the basket, and it ate the bread."
+        },
+        {
+          "start": 539,
+          "end": 597,
+          "text": "Nora was hungry, but the puppy rested in the warm blanket."
+        }
+      ],
+      "text_sha256": "7ee92006d324afb26ac26b8edee1843a3687ee1bd65c9841ecc24e5f46410526"
+    },
+    {
+      "id": "rescue:1:problem",
+      "kind": "what",
+      "question": "What interrupted the meal?",
+      "answer": "A puppy was shivering on a high ledge. Nora wanted to eat the bread.",
+      "entity_ids": [
+        "bread",
+        "hero",
+        "target"
+      ],
+      "event_ids": [
+        1
+      ],
+      "evidence": [
+        {
+          "start": 0,
+          "end": 102,
+          "text": "Nora wanted to eat the bread, but a puppy shivered on a high ledge. Nora said, \u201cThe puppy needs help.\u201d"
+        }
+      ],
+      "text_sha256": "7ee92006d324afb26ac26b8edee1843a3687ee1bd65c9841ecc24e5f46410526"
+    },
+    {
+      "id": "rescue:1:goal",
+      "kind": "who",
+      "question": "Who noticed that the animal needed help?",
+      "answer": "Nora said the puppy needed help.",
+      "entity_ids": [
+        "hero",
+        "target"
+      ],
+      "event_ids": [
+        1
+      ],
+      "evidence": [
+        {
+          "start": 0,
+          "end": 102,
+          "text": "Nora wanted to eat the bread, but a puppy shivered on a high ledge. Nora said, \u201cThe puppy needs help.\u201d"
+        }
+      ],
+      "text_sha256": "7ee92006d324afb26ac26b8edee1843a3687ee1bd65c9841ecc24e5f46410526"
+    },
+    {
+      "id": "rescue:2:strategy",
+      "kind": "how",
+      "question": "What did they offer to do?",
+      "answer": "Dad offered to lower a basket. Nora offered to share the bread.",
+      "entity_ids": [
+        "basket",
+        "bread",
+        "helper",
+        "hero"
+      ],
+      "event_ids": [
+        2
+      ],
+      "evidence": [
+        {
+          "start": 103,
+          "end": 174,
+          "text": "Dad said, \u201cI can lower the basket.\u201d Nora said, \u201cI can share the bread.\u201d"
+        }
+      ],
+      "text_sha256": "7ee92006d324afb26ac26b8edee1843a3687ee1bd65c9841ecc24e5f46410526"
+    },
+    {
+      "id": "rescue:4:tool",
+      "kind": "where",
+      "question": "Where did the bread go?",
+      "answer": "Nora put the bread in the basket.",
+      "entity_ids": [
+        "basket",
+        "bread",
+        "hero"
+      ],
+      "event_ids": [
+        4
+      ],
+      "evidence": [
+        {
+          "start": 175,
+          "end": 208,
+          "text": "Nora put the bread in the basket."
+        }
+      ],
+      "text_sha256": "7ee92006d324afb26ac26b8edee1843a3687ee1bd65c9841ecc24e5f46410526"
+    },
+    {
+      "id": "rescue:6:patience",
+      "kind": "why",
+      "question": "Why did Nora wait?",
+      "answer": "Nora waited because the puppy was frightened.",
+      "entity_ids": [
+        "hero",
+        "target"
+      ],
+      "event_ids": [
+        6
+      ],
+      "evidence": [
+        {
+          "start": 301,
+          "end": 346,
+          "text": "Nora waited because the puppy was frightened."
+        }
+      ],
+      "text_sha256": "7ee92006d324afb26ac26b8edee1843a3687ee1bd65c9841ecc24e5f46410526"
+    }
+  ]
+}

@@ -1,0 +1,32 @@
+from .schema import *
+SPEC=story(17,'laundry',dict(
+ hero=person('Tessa','she'),helper=person('Mr Osei','he'),owner=person('Mrs Bell','she'),
+ work=place('garden'),bench=place('washing basket'),shelter=place('rain shelter'),
+ bag=tool('peg bag',location='bench'),sheet=obj('white sheet',location='hero',state=('clean',)),
+ line=obj('washing line',state=('sagging',)),sock=obj('little sock',location='hero'),propstick=obj('wooden prop',state=('slipping',))),
+ chain(
+  event('help_washing',Say('hero',Can(V('hang',R('sheet'))),listener='owner'),Say('owner',V('need',R('bag')),listener='hero'),
+   qa=[Q('goal','who','Who offered to hang Mrs Bell’s sheet?','Tessa offered to hang the sheet. Mrs Bell needed her peg bag back.','hero','owner','sheet','bag')]),
+  event('borrow_pegs',S('hero',V('borrow',R('bag'))),patient='bag',destination='hero',guards=[at('bag','bench')],effects=[change('bag',location='hero')],portable='fetch'),
+  event('slipping_prop',S(R('propstick'),B('slippery')),S(R('line'),B('low')),patient='propstick',guards=[has('propstick','slipping')],
+   qa=[Q('problem','what','What was wrong with the washing line?','Its wooden prop was slippery and the line was low. The sheet still needed to be hung.','propstick','line','sheet',supports=('goal',))]),
+  event('ask_help',Say('hero',V('need',N('help',det='bare'))),Say('helper',Can(V('hold',R('sheet'))),listener='hero'),
+   effects=[change('helper',add=('helping',))],
+   qa=[Q('choice','how','How did Tessa respond to the slipping prop?','Tessa asked for help. Mr Osei offered to hold the sheet.','hero','helper','sheet')]),
+  event('move_inside',S(Both(R('hero'),R('helper')),A(V('carry',R('sheet')),PP('into',R('shelter')))),patient='sheet',destination='shelter',
+   guards=[has('helper','helping'),has('sheet','clean'),at('sheet','hero')],effects=[change('sheet',location='shelter')],
+   qa=[Q('shelter','where','Where did they take the sheet?','Tessa and Mr Osei carried it into the rain shelter. They had asked for help instead of using the low line.','hero','helper','sheet','shelter',supports=('choice',))]),
+  fork('peg_sheet',
+   event('fold_sheet',S('hero',V('fold',R('sheet'))),S('hero',V('peg',R('sheet'))),patient='sheet',instrument='bag',
+    guards=[at('sheet','shelter'),at('bag','hero')],effects=[change('sheet',add=('secured','folded'))]),
+   event('drape_sheet',S('hero',V('drape',R('sheet'))),S('hero',V('peg',R('sheet'))),patient='sheet',instrument='bag',
+    guards=[at('sheet','shelter'),at('bag','hero')],effects=[change('sheet',add=('secured','draped'))])),
+  event('catch_sock',S(R('sock'),V('slip')),S('helper',V('catch',R('sock'))),actor='helper',patient='sock',destination='helper',guards=[has('sheet','secured'),at('sock','hero')],effects=[change('sock',location='helper')]),
+  event('hang_sock',S('helper',A(V('hang',R('sock')),PP('beside',R('sheet')))),actor='helper',patient='sock',destination='shelter',
+   guards=[at('sock','helper'),has('sheet','secured')],effects=[change('sock',location='shelter',add=('hung',))]),
+  event('return_bag',S('hero',V('give',R('owner'),R('bag'))),patient='bag',destination='owner',guards=[at('bag','hero')],effects=[change('bag',location='owner')],portable='transfer',
+   qa=[Q('loan','who','Who got the peg bag back?','Tessa gave the peg bag to Mrs Bell. The sheet was now in the shelter.','hero','owner','bag','sheet',supports=('shelter',))]),
+  event('sheltered_sock',S(R('sock'),A(V('swing'),'gently')),S(R('sheet'),B('clean')),patient='sock',guards=[at('sock','shelter'),has('sheet','secured'),has('sheet','clean')],
+   qa=[Q('outcome','what_next','What did the sheltered washing look like?','The little sock swung gently, and the white sheet stayed clean. Both were protected inside the rain shelter.','sock','sheet','shelter',supports=('shelter',))])
+ ),target='sheet',tool_id='bag',premise='A slipping prop threatens clean washing as rain approaches.',
+ fidelity='Ask for help and move clean washing under shelter rather than ignore an unsafe line; return the peg bag.',variants=['Fold or drape the sheet before securing it.'])

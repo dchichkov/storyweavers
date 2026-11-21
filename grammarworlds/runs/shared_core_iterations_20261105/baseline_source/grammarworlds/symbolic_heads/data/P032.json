@@ -1,0 +1,581 @@
+{
+  "id": "P032",
+  "name": "Undo and restoration",
+  "description": "Current goal → reversible prior change and inverse action. Favor state-restoring actions.",
+  "proposed_payload": "{change, inverse_candidates}",
+  "provenance": "Authored illustrative seeds; not learned or extracted.",
+  "status": "table",
+  "examples": [
+    {
+      "id": "P032.01",
+      "description": "Undo a tie by untying.",
+      "query": "restore",
+      "scope": "example",
+      "sources": [
+        {
+          "id": "source:1",
+          "channel": "reversible_change",
+          "scope": "example",
+          "key": "tied",
+          "confidence": 1.0
+        }
+      ],
+      "expected_features": {
+        "untie": 1.0
+      },
+      "grammar_weights": {
+        "untied": 1.0,
+        "tightened": 1.0,
+        "waits": 1.0,
+        "rests": 1.0
+      },
+      "favored": "untied",
+      "disfavored": "tightened"
+    },
+    {
+      "id": "P032.02",
+      "description": "Restore exposure by uncovering.",
+      "query": "restore",
+      "scope": "example",
+      "sources": [
+        {
+          "id": "source:2",
+          "channel": "reversible_change",
+          "scope": "example",
+          "key": "covered",
+          "confidence": 1.0
+        }
+      ],
+      "expected_features": {
+        "uncover": 1.0
+      },
+      "grammar_weights": {
+        "uncovered": 1.0,
+        "covered": 1.0,
+        "waits": 1.0,
+        "rests": 1.0
+      },
+      "favored": "uncovered",
+      "disfavored": "covered"
+    },
+    {
+      "id": "P032.03",
+      "description": "Undo closing by opening.",
+      "query": "restore",
+      "scope": "example",
+      "sources": [
+        {
+          "id": "source:3",
+          "channel": "reversible_change",
+          "scope": "example",
+          "key": "closed",
+          "confidence": 1.0
+        }
+      ],
+      "expected_features": {
+        "open": 1.0
+      },
+      "grammar_weights": {
+        "opened": 1.0,
+        "closed": 1.0,
+        "waits": 1.0,
+        "rests": 1.0
+      },
+      "favored": "opened",
+      "disfavored": "closed"
+    },
+    {
+      "id": "P032.04",
+      "description": "Undo locking with an unlock action; prerequisites still belong to the world.",
+      "query": "restore",
+      "scope": "example",
+      "sources": [
+        {
+          "id": "source:4",
+          "channel": "reversible_change",
+          "scope": "example",
+          "key": "locked",
+          "confidence": 1.0
+        }
+      ],
+      "expected_features": {
+        "unlock": 1.0
+      },
+      "grammar_weights": {
+        "unlocked": 1.0,
+        "locked": 1.0,
+        "waits": 1.0,
+        "rests": 1.0
+      },
+      "favored": "unlocked",
+      "disfavored": "locked"
+    },
+    {
+      "id": "P032.05",
+      "description": "Undo folding by unfolding.",
+      "query": "restore",
+      "scope": "example",
+      "sources": [
+        {
+          "id": "source:5",
+          "channel": "reversible_change",
+          "scope": "example",
+          "key": "folded",
+          "confidence": 1.0
+        }
+      ],
+      "expected_features": {
+        "unfold": 1.0
+      },
+      "grammar_weights": {
+        "unfolded": 1.0,
+        "folded": 1.0,
+        "waits": 1.0,
+        "rests": 1.0
+      },
+      "favored": "unfolded",
+      "disfavored": "folded"
+    },
+    {
+      "id": "P032.06",
+      "description": "Undo filling by emptying.",
+      "query": "restore",
+      "scope": "example",
+      "sources": [
+        {
+          "id": "source:6",
+          "channel": "reversible_change",
+          "scope": "example",
+          "key": "filled",
+          "confidence": 1.0
+        }
+      ],
+      "expected_features": {
+        "empty": 1.0
+      },
+      "grammar_weights": {
+        "emptied": 1.0,
+        "filled": 1.0,
+        "waits": 1.0,
+        "rests": 1.0
+      },
+      "favored": "emptied",
+      "disfavored": "filled"
+    },
+    {
+      "id": "P032.07",
+      "description": "Undo raising by lowering.",
+      "query": "restore",
+      "scope": "example",
+      "sources": [
+        {
+          "id": "source:7",
+          "channel": "reversible_change",
+          "scope": "example",
+          "key": "raised",
+          "confidence": 1.0
+        }
+      ],
+      "expected_features": {
+        "lower": 1.0
+      },
+      "grammar_weights": {
+        "lowered": 1.0,
+        "raised": 1.0,
+        "waits": 1.0,
+        "rests": 1.0
+      },
+      "favored": "lowered",
+      "disfavored": "raised"
+    },
+    {
+      "id": "P032.08",
+      "description": "Undo attaching by detaching.",
+      "query": "restore",
+      "scope": "example",
+      "sources": [
+        {
+          "id": "source:8",
+          "channel": "reversible_change",
+          "scope": "example",
+          "key": "attached",
+          "confidence": 1.0
+        }
+      ],
+      "expected_features": {
+        "detach": 1.0
+      },
+      "grammar_weights": {
+        "detached": 1.0,
+        "attached": 1.0,
+        "waits": 1.0,
+        "rests": 1.0
+      },
+      "favored": "detached",
+      "disfavored": "attached"
+    },
+    {
+      "id": "P032.09",
+      "description": "Undo wrapping by unwrapping.",
+      "query": "restore",
+      "scope": "example",
+      "sources": [
+        {
+          "id": "source:9",
+          "channel": "reversible_change",
+          "scope": "example",
+          "key": "wrapped",
+          "confidence": 1.0
+        }
+      ],
+      "expected_features": {
+        "unwrap": 1.0
+      },
+      "grammar_weights": {
+        "unwrapped": 1.0,
+        "wrapped": 1.0,
+        "waits": 1.0,
+        "rests": 1.0
+      },
+      "favored": "unwrapped",
+      "disfavored": "wrapped"
+    },
+    {
+      "id": "P032.10",
+      "description": "Undo switching on by switching off.",
+      "query": "restore",
+      "scope": "example",
+      "sources": [
+        {
+          "id": "source:10",
+          "channel": "reversible_change",
+          "scope": "example",
+          "key": "switched_on",
+          "confidence": 1.0
+        }
+      ],
+      "expected_features": {
+        "switch_off": 1.0
+      },
+      "grammar_weights": {
+        "off": 1.0,
+        "on": 1.0,
+        "waits": 1.0,
+        "rests": 1.0
+      },
+      "favored": "off",
+      "disfavored": "on"
+    }
+  ],
+  "input_channel": "reversible_change",
+  "receiver_mode": "multipliers",
+  "smoothing": 1.0,
+  "input_contract": "Supply current, scoped records in channel reversible_change. Scope selection and structural parsing belong to the caller; no free-text parser is implied.",
+  "table_semantics": "Positive relative word-weight multipliers.",
+  "selection": [
+    {
+      "tokens": [
+        "restore",
+        "tied"
+      ],
+      "weight": 1.0
+    },
+    {
+      "tokens": [
+        "restore",
+        "covered"
+      ],
+      "weight": 1.0
+    },
+    {
+      "tokens": [
+        "restore",
+        "closed"
+      ],
+      "weight": 1.0
+    },
+    {
+      "tokens": [
+        "restore",
+        "locked"
+      ],
+      "weight": 1.0
+    },
+    {
+      "tokens": [
+        "restore",
+        "folded"
+      ],
+      "weight": 1.0
+    },
+    {
+      "tokens": [
+        "restore",
+        "filled"
+      ],
+      "weight": 1.0
+    },
+    {
+      "tokens": [
+        "restore",
+        "raised"
+      ],
+      "weight": 1.0
+    },
+    {
+      "tokens": [
+        "restore",
+        "attached"
+      ],
+      "weight": 1.0
+    },
+    {
+      "tokens": [
+        "restore",
+        "wrapped"
+      ],
+      "weight": 1.0
+    },
+    {
+      "tokens": [
+        "restore",
+        "switched_on"
+      ],
+      "weight": 1.0
+    }
+  ],
+  "projection": [
+    {
+      "tokens": [
+        "tied",
+        "untie"
+      ],
+      "weight": 1.0
+    },
+    {
+      "tokens": [
+        "covered",
+        "uncover"
+      ],
+      "weight": 1.0
+    },
+    {
+      "tokens": [
+        "closed",
+        "open"
+      ],
+      "weight": 1.0
+    },
+    {
+      "tokens": [
+        "locked",
+        "unlock"
+      ],
+      "weight": 1.0
+    },
+    {
+      "tokens": [
+        "folded",
+        "unfold"
+      ],
+      "weight": 1.0
+    },
+    {
+      "tokens": [
+        "filled",
+        "empty"
+      ],
+      "weight": 1.0
+    },
+    {
+      "tokens": [
+        "raised",
+        "lower"
+      ],
+      "weight": 1.0
+    },
+    {
+      "tokens": [
+        "attached",
+        "detach"
+      ],
+      "weight": 1.0
+    },
+    {
+      "tokens": [
+        "wrapped",
+        "unwrap"
+      ],
+      "weight": 1.0
+    },
+    {
+      "tokens": [
+        "switched_on",
+        "switch_off"
+      ],
+      "weight": 1.0
+    }
+  ],
+  "receiver": [
+    {
+      "tokens": [
+        "restore",
+        "untie",
+        "untied"
+      ],
+      "weight": 4.0
+    },
+    {
+      "tokens": [
+        "restore",
+        "untie",
+        "tightened"
+      ],
+      "weight": 0.25
+    },
+    {
+      "tokens": [
+        "restore",
+        "uncover",
+        "uncovered"
+      ],
+      "weight": 4.0
+    },
+    {
+      "tokens": [
+        "restore",
+        "uncover",
+        "covered"
+      ],
+      "weight": 0.25
+    },
+    {
+      "tokens": [
+        "restore",
+        "open",
+        "opened"
+      ],
+      "weight": 4.0
+    },
+    {
+      "tokens": [
+        "restore",
+        "open",
+        "closed"
+      ],
+      "weight": 0.25
+    },
+    {
+      "tokens": [
+        "restore",
+        "unlock",
+        "unlocked"
+      ],
+      "weight": 4.0
+    },
+    {
+      "tokens": [
+        "restore",
+        "unlock",
+        "locked"
+      ],
+      "weight": 0.25
+    },
+    {
+      "tokens": [
+        "restore",
+        "unfold",
+        "unfolded"
+      ],
+      "weight": 4.0
+    },
+    {
+      "tokens": [
+        "restore",
+        "unfold",
+        "folded"
+      ],
+      "weight": 0.25
+    },
+    {
+      "tokens": [
+        "restore",
+        "empty",
+        "emptied"
+      ],
+      "weight": 4.0
+    },
+    {
+      "tokens": [
+        "restore",
+        "empty",
+        "filled"
+      ],
+      "weight": 0.25
+    },
+    {
+      "tokens": [
+        "restore",
+        "lower",
+        "lowered"
+      ],
+      "weight": 4.0
+    },
+    {
+      "tokens": [
+        "restore",
+        "lower",
+        "raised"
+      ],
+      "weight": 0.25
+    },
+    {
+      "tokens": [
+        "restore",
+        "detach",
+        "detached"
+      ],
+      "weight": 4.0
+    },
+    {
+      "tokens": [
+        "restore",
+        "detach",
+        "attached"
+      ],
+      "weight": 0.25
+    },
+    {
+      "tokens": [
+        "restore",
+        "unwrap",
+        "unwrapped"
+      ],
+      "weight": 4.0
+    },
+    {
+      "tokens": [
+        "restore",
+        "unwrap",
+        "wrapped"
+      ],
+      "weight": 0.25
+    },
+    {
+      "tokens": [
+        "restore",
+        "switch_off",
+        "off"
+      ],
+      "weight": 4.0
+    },
+    {
+      "tokens": [
+        "restore",
+        "switch_off",
+        "on"
+      ],
+      "weight": 0.25
+    }
+  ]
+}

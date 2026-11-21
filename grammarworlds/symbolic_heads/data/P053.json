@@ -1,0 +1,81 @@
+{
+  "id": "P053",
+  "name": "Relationship-specific behavior",
+  "description": "Interaction → pair's accumulated relationship state. Reweight disclosure, cooperation, or caution.",
+  "proposed_payload": "{actor_pair, trust, history}",
+  "provenance": "Authored illustrative seeds; not learned or extracted.",
+  "status": "program_required",
+  "examples": [
+    {
+      "id": "P053.01",
+      "description": "Mira trusts Nia after repeated help.",
+      "intended_feature": "Mira_to_Nia:high_trust",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P053.02",
+      "description": "Theo distrusts Omar after a broken promise.",
+      "intended_feature": "Theo_to_Omar:low_trust",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P053.03",
+      "description": "Nia trusts Mira but Mira does not trust Nia.",
+      "intended_feature": "directed_relationship",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P053.04",
+      "description": "Two people share a name but have different histories.",
+      "intended_feature": "bind_pair_by_ids",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P053.05",
+      "description": "A stranger has no relationship record.",
+      "intended_feature": "unknown_relationship",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P053.06",
+      "description": "Reconciliation improves a previously damaged bond.",
+      "intended_feature": "updated_relationship",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P053.07",
+      "description": "Envy is high despite affection.",
+      "intended_feature": "mixed_relationship_dimensions",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P053.08",
+      "description": "Trust in one skill does not imply trust in every domain.",
+      "intended_feature": "domain_scoped_trust",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P053.09",
+      "description": "A coercive obligation conflicts with friendly behavior.",
+      "intended_feature": "preserve_conflicting_constraints",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P053.10",
+      "description": "An imagined friendship has no carrier-bound state.",
+      "intended_feature": "no_real_relationship_update",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    }
+  ],
+  "required_program": "Query directed pair-specific relationship magnitudes and history, then gate behavioral priors by actor, partner, and compatible commitments."
+}

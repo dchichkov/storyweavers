@@ -1,0 +1,81 @@
+{
+  "id": "P008",
+  "name": "Clause-boundary tracking",
+  "description": "Current prefix → unmatched clause openers. Favor a main clause when still required.",
+  "proposed_payload": "{open_clause, completion_state}",
+  "provenance": "Authored illustrative seeds; not learned or extracted.",
+  "status": "program_required",
+  "examples": [
+    {
+      "id": "P008.01",
+      "description": "Although rain fell, the prefix ends at the comma.",
+      "intended_feature": "main_clause_required",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P008.02",
+      "description": "If the latch breaks, the prefix ends at the comma.",
+      "intended_feature": "consequent_required",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P008.03",
+      "description": "Because Mira left, the prefix ends at the comma.",
+      "intended_feature": "main_clause_required",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P008.04",
+      "description": "When the bell rang, Theo smiled.",
+      "intended_feature": "no_open_subordinate_clause",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P008.05",
+      "description": "Mira said that Nia believed that the gate was open.",
+      "intended_feature": "nested_complements_completed",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P008.06",
+      "description": "The sailor who found the map",
+      "intended_feature": "relative_closed_main_predicate_required",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P008.07",
+      "description": "The cup that Theo said Nia broke",
+      "intended_feature": "relative_closed_main_predicate_required",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P008.08",
+      "description": "Mira wondered whether",
+      "intended_feature": "embedded_question_open",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P008.09",
+      "description": "After the boat sank",
+      "intended_feature": "temporal_clause_requires_main_clause",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P008.10",
+      "description": "Nia laughed.",
+      "intended_feature": "sentence_complete",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    }
+  ],
+  "required_program": "Maintain an incremental clause stack from grammatical derivations; distinguish nested subordinate clauses from completed main clauses."
+}

@@ -1,0 +1,81 @@
+{
+  "id": "P028",
+  "name": "Consequence retrieval",
+  "description": "Event-focused continuation → recorded resulting changes. Favor consequences already supported by the world.",
+  "proposed_payload": "{event, resulting_states}",
+  "provenance": "Authored illustrative seeds; not learned or extracted.",
+  "status": "program_required",
+  "examples": [
+    {
+      "id": "P028.01",
+      "description": "Spill soaks letter.",
+      "intended_feature": "result:letter_wet",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P028.02",
+      "description": "Repair seals leak.",
+      "intended_feature": "result:boat_watertight",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P028.03",
+      "description": "Gift transfers cup and raises gratitude.",
+      "intended_feature": "results:{ownership,carrier_gratitude}",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P028.04",
+      "description": "Warning is ignored and causes no recorded action.",
+      "intended_feature": "no_invented_compliance",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P028.05",
+      "description": "Lamp extinguished.",
+      "intended_feature": "result:lamp_unlit",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P028.06",
+      "description": "Window opened then immediately closed.",
+      "intended_feature": "historical_open_effect_not_current_state",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P028.07",
+      "description": "Door unlocks but does not open.",
+      "intended_feature": "unlocked_not_open",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P028.08",
+      "description": "Action fails before any effects execute.",
+      "intended_feature": "no_success_effect",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P028.09",
+      "description": "Two events share the same resulting state.",
+      "intended_feature": "preserve_both_provenances",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P028.10",
+      "description": "No effect metadata exists for the event.",
+      "intended_feature": "result_unknown",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    }
+  ],
+  "required_program": "Traverse committed event-to-state effect edges, distinguish direct effects from inferred possibilities, and respect later invalidation."
+}

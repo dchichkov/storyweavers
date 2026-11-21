@@ -1,0 +1,591 @@
+{
+  "id": "P006",
+  "name": "Verb argument expectation",
+  "description": "Current predicate → its unfilled argument slots. Favor a location or transferred object.",
+  "proposed_payload": "{predicate, remaining_roles}",
+  "provenance": "Authored illustrative seeds; not learned or extracted.",
+  "status": "table",
+  "examples": [
+    {
+      "id": "P006.01",
+      "description": "Put the cup still needs a location.",
+      "query": "put",
+      "scope": "example",
+      "sources": [
+        {
+          "id": "source:1",
+          "channel": "predicate_argument_state",
+          "scope": "example",
+          "key": "patient_filled",
+          "confidence": 1.0
+        }
+      ],
+      "expected_features": {
+        "location_remaining": 1.0
+      },
+      "grammar_weights": {
+        "on": 1.0,
+        "quickly": 1.0,
+        "waits": 1.0,
+        "rests": 1.0
+      },
+      "favored": "on",
+      "disfavored": "quickly"
+    },
+    {
+      "id": "P006.02",
+      "description": "Give Nia can continue with an object determiner.",
+      "query": "give",
+      "scope": "example",
+      "sources": [
+        {
+          "id": "source:2",
+          "channel": "predicate_argument_state",
+          "scope": "example",
+          "key": "recipient_filled",
+          "confidence": 1.0
+        }
+      ],
+      "expected_features": {
+        "patient_remaining": 1.0
+      },
+      "grammar_weights": {
+        "a": 1.0,
+        "to": 1.0,
+        "waits": 1.0,
+        "rests": 1.0
+      },
+      "favored": "a",
+      "disfavored": "to"
+    },
+    {
+      "id": "P006.03",
+      "description": "Lend the rope can introduce its recipient.",
+      "query": "lend",
+      "scope": "example",
+      "sources": [
+        {
+          "id": "source:3",
+          "channel": "predicate_argument_state",
+          "scope": "example",
+          "key": "patient_filled",
+          "confidence": 1.0
+        }
+      ],
+      "expected_features": {
+        "recipient_remaining": 1.0
+      },
+      "grammar_weights": {
+        "to": 1.0,
+        "under": 1.0,
+        "waits": 1.0,
+        "rests": 1.0
+      },
+      "favored": "to",
+      "disfavored": "under"
+    },
+    {
+      "id": "P006.04",
+      "description": "Sleep permits an adverb rather than a direct object.",
+      "query": "sleep",
+      "scope": "example",
+      "sources": [
+        {
+          "id": "source:4",
+          "channel": "predicate_argument_state",
+          "scope": "example",
+          "key": "subject_filled",
+          "confidence": 1.0
+        }
+      ],
+      "expected_features": {
+        "no_object": 1.0
+      },
+      "grammar_weights": {
+        "peacefully": 1.0,
+        "the": 1.0,
+        "waits": 1.0,
+        "rests": 1.0
+      },
+      "favored": "peacefully",
+      "disfavored": "the"
+    },
+    {
+      "id": "P006.05",
+      "description": "Depend introduces its complement with on.",
+      "query": "depend",
+      "scope": "example",
+      "sources": [
+        {
+          "id": "source:5",
+          "channel": "predicate_argument_state",
+          "scope": "example",
+          "key": "subject_filled",
+          "confidence": 1.0
+        }
+      ],
+      "expected_features": {
+        "on_complement": 1.0
+      },
+      "grammar_weights": {
+        "on": 1.0,
+        "into": 1.0,
+        "waits": 1.0,
+        "rests": 1.0
+      },
+      "favored": "on",
+      "disfavored": "into"
+    },
+    {
+      "id": "P006.06",
+      "description": "Listen introduces a target with to.",
+      "query": "listen",
+      "scope": "example",
+      "sources": [
+        {
+          "id": "source:6",
+          "channel": "predicate_argument_state",
+          "scope": "example",
+          "key": "subject_filled",
+          "confidence": 1.0
+        }
+      ],
+      "expected_features": {
+        "to_complement": 1.0
+      },
+      "grammar_weights": {
+        "to": 1.0,
+        "of": 1.0,
+        "waits": 1.0,
+        "rests": 1.0
+      },
+      "favored": "to",
+      "disfavored": "of"
+    },
+    {
+      "id": "P006.07",
+      "description": "Fill the cup introduces its contents with with.",
+      "query": "fill",
+      "scope": "example",
+      "sources": [
+        {
+          "id": "source:7",
+          "channel": "predicate_argument_state",
+          "scope": "example",
+          "key": "patient_filled",
+          "confidence": 1.0
+        }
+      ],
+      "expected_features": {
+        "with_complement": 1.0
+      },
+      "grammar_weights": {
+        "with": 1.0,
+        "from": 1.0,
+        "waits": 1.0,
+        "rests": 1.0
+      },
+      "favored": "with",
+      "disfavored": "from"
+    },
+    {
+      "id": "P006.08",
+      "description": "Remove the lid may name its source.",
+      "query": "remove",
+      "scope": "example",
+      "sources": [
+        {
+          "id": "source:8",
+          "channel": "predicate_argument_state",
+          "scope": "example",
+          "key": "patient_filled",
+          "confidence": 1.0
+        }
+      ],
+      "expected_features": {
+        "from_complement": 1.0
+      },
+      "grammar_weights": {
+        "from": 1.0,
+        "at": 1.0,
+        "waits": 1.0,
+        "rests": 1.0
+      },
+      "favored": "from",
+      "disfavored": "at"
+    },
+    {
+      "id": "P006.09",
+      "description": "Tell Nia can introduce a content clause.",
+      "query": "tell",
+      "scope": "example",
+      "sources": [
+        {
+          "id": "source:9",
+          "channel": "predicate_argument_state",
+          "scope": "example",
+          "key": "recipient_filled",
+          "confidence": 1.0
+        }
+      ],
+      "expected_features": {
+        "content_remaining": 1.0
+      },
+      "grammar_weights": {
+        "that": 1.0,
+        "under": 1.0,
+        "waits": 1.0,
+        "rests": 1.0
+      },
+      "favored": "that",
+      "disfavored": "under"
+    },
+    {
+      "id": "P006.10",
+      "description": "Become selects a predicative adjective here.",
+      "query": "become",
+      "scope": "example",
+      "sources": [
+        {
+          "id": "source:10",
+          "channel": "predicate_argument_state",
+          "scope": "example",
+          "key": "subject_filled",
+          "confidence": 1.0
+        }
+      ],
+      "expected_features": {
+        "predicative_remaining": 1.0
+      },
+      "grammar_weights": {
+        "quiet": 1.0,
+        "quietly": 1.0,
+        "waits": 1.0,
+        "rests": 1.0
+      },
+      "favored": "quiet",
+      "disfavored": "quietly"
+    }
+  ],
+  "input_channel": "predicate_argument_state",
+  "receiver_mode": "multipliers",
+  "smoothing": 1.0,
+  "input_contract": "Supply current, scoped records in channel predicate_argument_state. Scope selection and structural parsing belong to the caller; no free-text parser is implied.",
+  "table_semantics": "Positive relative word-weight multipliers.",
+  "selection": [
+    {
+      "tokens": [
+        "put",
+        "patient_filled"
+      ],
+      "weight": 1.0
+    },
+    {
+      "tokens": [
+        "give",
+        "recipient_filled"
+      ],
+      "weight": 1.0
+    },
+    {
+      "tokens": [
+        "lend",
+        "patient_filled"
+      ],
+      "weight": 1.0
+    },
+    {
+      "tokens": [
+        "sleep",
+        "subject_filled"
+      ],
+      "weight": 1.0
+    },
+    {
+      "tokens": [
+        "depend",
+        "subject_filled"
+      ],
+      "weight": 1.0
+    },
+    {
+      "tokens": [
+        "listen",
+        "subject_filled"
+      ],
+      "weight": 1.0
+    },
+    {
+      "tokens": [
+        "fill",
+        "patient_filled"
+      ],
+      "weight": 1.0
+    },
+    {
+      "tokens": [
+        "remove",
+        "patient_filled"
+      ],
+      "weight": 1.0
+    },
+    {
+      "tokens": [
+        "tell",
+        "recipient_filled"
+      ],
+      "weight": 1.0
+    },
+    {
+      "tokens": [
+        "become",
+        "subject_filled"
+      ],
+      "weight": 1.0
+    }
+  ],
+  "projection": [
+    {
+      "tokens": [
+        "put",
+        "patient_filled",
+        "location_remaining"
+      ],
+      "weight": 1.0
+    },
+    {
+      "tokens": [
+        "give",
+        "recipient_filled",
+        "patient_remaining"
+      ],
+      "weight": 1.0
+    },
+    {
+      "tokens": [
+        "lend",
+        "patient_filled",
+        "recipient_remaining"
+      ],
+      "weight": 1.0
+    },
+    {
+      "tokens": [
+        "sleep",
+        "subject_filled",
+        "no_object"
+      ],
+      "weight": 1.0
+    },
+    {
+      "tokens": [
+        "depend",
+        "subject_filled",
+        "on_complement"
+      ],
+      "weight": 1.0
+    },
+    {
+      "tokens": [
+        "listen",
+        "subject_filled",
+        "to_complement"
+      ],
+      "weight": 1.0
+    },
+    {
+      "tokens": [
+        "fill",
+        "patient_filled",
+        "with_complement"
+      ],
+      "weight": 1.0
+    },
+    {
+      "tokens": [
+        "remove",
+        "patient_filled",
+        "from_complement"
+      ],
+      "weight": 1.0
+    },
+    {
+      "tokens": [
+        "tell",
+        "recipient_filled",
+        "content_remaining"
+      ],
+      "weight": 1.0
+    },
+    {
+      "tokens": [
+        "become",
+        "subject_filled",
+        "predicative_remaining"
+      ],
+      "weight": 1.0
+    }
+  ],
+  "receiver": [
+    {
+      "tokens": [
+        "put",
+        "location_remaining",
+        "on"
+      ],
+      "weight": 4.0
+    },
+    {
+      "tokens": [
+        "put",
+        "location_remaining",
+        "quickly"
+      ],
+      "weight": 0.25
+    },
+    {
+      "tokens": [
+        "give",
+        "patient_remaining",
+        "a"
+      ],
+      "weight": 4.0
+    },
+    {
+      "tokens": [
+        "give",
+        "patient_remaining",
+        "to"
+      ],
+      "weight": 0.25
+    },
+    {
+      "tokens": [
+        "lend",
+        "recipient_remaining",
+        "to"
+      ],
+      "weight": 4.0
+    },
+    {
+      "tokens": [
+        "lend",
+        "recipient_remaining",
+        "under"
+      ],
+      "weight": 0.25
+    },
+    {
+      "tokens": [
+        "sleep",
+        "no_object",
+        "peacefully"
+      ],
+      "weight": 4.0
+    },
+    {
+      "tokens": [
+        "sleep",
+        "no_object",
+        "the"
+      ],
+      "weight": 0.25
+    },
+    {
+      "tokens": [
+        "depend",
+        "on_complement",
+        "on"
+      ],
+      "weight": 4.0
+    },
+    {
+      "tokens": [
+        "depend",
+        "on_complement",
+        "into"
+      ],
+      "weight": 0.25
+    },
+    {
+      "tokens": [
+        "listen",
+        "to_complement",
+        "to"
+      ],
+      "weight": 4.0
+    },
+    {
+      "tokens": [
+        "listen",
+        "to_complement",
+        "of"
+      ],
+      "weight": 0.25
+    },
+    {
+      "tokens": [
+        "fill",
+        "with_complement",
+        "with"
+      ],
+      "weight": 4.0
+    },
+    {
+      "tokens": [
+        "fill",
+        "with_complement",
+        "from"
+      ],
+      "weight": 0.25
+    },
+    {
+      "tokens": [
+        "remove",
+        "from_complement",
+        "from"
+      ],
+      "weight": 4.0
+    },
+    {
+      "tokens": [
+        "remove",
+        "from_complement",
+        "at"
+      ],
+      "weight": 0.25
+    },
+    {
+      "tokens": [
+        "tell",
+        "content_remaining",
+        "that"
+      ],
+      "weight": 4.0
+    },
+    {
+      "tokens": [
+        "tell",
+        "content_remaining",
+        "under"
+      ],
+      "weight": 0.25
+    },
+    {
+      "tokens": [
+        "become",
+        "predicative_remaining",
+        "quiet"
+      ],
+      "weight": 4.0
+    },
+    {
+      "tokens": [
+        "become",
+        "predicative_remaining",
+        "quietly"
+      ],
+      "weight": 0.25
+    }
+  ]
+}

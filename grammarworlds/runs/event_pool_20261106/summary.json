@@ -1,0 +1,226 @@
+{
+  "profiles": {
+    "magic_from_bare": {
+      "False": {
+        "runs": 20,
+        "completed": 20,
+        "fragments": {
+          "hat.portal_bound": 20
+        },
+        "distinct_texts": 20,
+        "token_steps": 2815,
+        "choice_steps": 240,
+        "head_changed_steps": 0
+      },
+      "True": {
+        "runs": 20,
+        "completed": 20,
+        "fragments": {
+          "hat.portal_bound": 20
+        },
+        "distinct_texts": 20,
+        "token_steps": 2815,
+        "choice_steps": 240,
+        "head_changed_steps": 0
+      }
+    },
+    "magic_local_cast": {
+      "False": {
+        "runs": 20,
+        "completed": 20,
+        "fragments": {
+          "hat.portal_bound": 20
+        },
+        "distinct_texts": 20,
+        "token_steps": 2952,
+        "choice_steps": 240,
+        "head_changed_steps": 0
+      },
+      "True": {
+        "runs": 20,
+        "completed": 20,
+        "fragments": {
+          "hat.portal_bound": 20
+        },
+        "distinct_texts": 20,
+        "token_steps": 2952,
+        "choice_steps": 240,
+        "head_changed_steps": 0
+      }
+    },
+    "stage_local_cast": {
+      "False": {
+        "runs": 20,
+        "completed": 20,
+        "fragments": {
+          "hat.stage": 20
+        },
+        "distinct_texts": 17,
+        "token_steps": 2343,
+        "choice_steps": 160,
+        "head_changed_steps": 0
+      },
+      "True": {
+        "runs": 20,
+        "completed": 20,
+        "fragments": {
+          "hat.stage": 20
+        },
+        "distinct_texts": 17,
+        "token_steps": 2343,
+        "choice_steps": 160,
+        "head_changed_steps": 0
+      }
+    },
+    "source_flavor": {
+      "False": {
+        "runs": 20,
+        "completed": 20,
+        "fragments": {
+          "hat.portal_bound": 20
+        },
+        "distinct_texts": 20,
+        "token_steps": 2815,
+        "choice_steps": 240,
+        "head_changed_steps": 0
+      },
+      "True": {
+        "runs": 20,
+        "completed": 20,
+        "fragments": {
+          "hat.portal_bound": 20
+        },
+        "distinct_texts": 20,
+        "token_steps": 2815,
+        "choice_steps": 240,
+        "head_changed_steps": 0
+      }
+    },
+    "ambiguous_open_hat": {
+      "False": {
+        "runs": 20,
+        "completed": 20,
+        "fragments": {
+          "hat.stage": 11,
+          "hat.portal_open": 9
+        },
+        "distinct_texts": 19,
+        "token_steps": 2188,
+        "choice_steps": 169,
+        "head_changed_steps": 0
+      },
+      "True": {
+        "runs": 20,
+        "completed": 20,
+        "fragments": {
+          "hat.stage": 11,
+          "hat.portal_open": 9
+        },
+        "distinct_texts": 19,
+        "token_steps": 2188,
+        "choice_steps": 169,
+        "head_changed_steps": 0
+      }
+    },
+    "kite_from_brief": {
+      "False": {
+        "runs": 20,
+        "completed": 20,
+        "fragments": {
+          "kite.recover_flight": 20
+        },
+        "distinct_texts": 14,
+        "token_steps": 842,
+        "choice_steps": 110,
+        "head_changed_steps": 0
+      },
+      "True": {
+        "runs": 20,
+        "completed": 20,
+        "fragments": {
+          "kite.recover_flight": 20
+        },
+        "distinct_texts": 14,
+        "token_steps": 841,
+        "choice_steps": 110,
+        "head_changed_steps": 30
+      }
+    },
+    "drawing_from_brief": {
+      "False": {
+        "runs": 20,
+        "completed": 20,
+        "fragments": {
+          "library.moon_picture": 20
+        },
+        "distinct_texts": 7,
+        "token_steps": 374,
+        "choice_steps": 40,
+        "head_changed_steps": 0
+      },
+      "True": {
+        "runs": 20,
+        "completed": 20,
+        "fragments": {
+          "library.moon_picture": 20
+        },
+        "distinct_texts": 7,
+        "token_steps": 374,
+        "choice_steps": 40,
+        "head_changed_steps": 0
+      }
+    }
+  },
+  "direct_authored_equal": 40,
+  "direct_authored_runs": 40,
+  "ablations": {
+    "no_hat_physics": {
+      "runs": 20,
+      "blocked": 20,
+      "example": {
+        "e003": [
+          "this hat has no portal physics"
+        ]
+      }
+    },
+    "wand_elsewhere": {
+      "runs": 20,
+      "blocked": 20,
+      "example": {
+        "e003": [
+          "portal focus is not held"
+        ]
+      }
+    },
+    "missing_ribbon": {
+      "status": "invalid_binding",
+      "reason": "role type mismatch or missing carrier: ribbon"
+    },
+    "rabbit_not_calm": {
+      "runs": 20,
+      "blocked": 20,
+      "example": {
+        "e000": [
+          "rabbit is not compatible or calm"
+        ]
+      }
+    },
+    "food_elsewhere": {
+      "runs": 20,
+      "blocked": 20,
+      "example": {
+        "e011": [
+          "rabbit food is not available"
+        ]
+      }
+    },
+    "no_pool": {
+      "status": "unresolved",
+      "reason": "{\"message\": \"no compatible event fragment\", \"rejected\": []}"
+    },
+    "missing_recovery_fragment": {
+      "status": "unresolved",
+      "reason": "{\"message\": \"no compatible event fragment\", \"rejected\": [{\"fragment\": \"hat.portal_bound\", \"reason\": \"physical plan blocked: {\\\"e003\\\": [\\\"portal is not open\\\"]}\"}, {\"fragment\": \"hat.portal_open\", \"reason\": \"prototype does not satisfy hat\"}, {\"fragment\": \"hat.stage\", \"reason\": \"prototype does not satisfy hat\"}]}"
+    }
+  }
+}

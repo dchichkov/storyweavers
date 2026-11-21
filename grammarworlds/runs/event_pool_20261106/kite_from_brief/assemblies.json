@@ -1,0 +1,362 @@
+{
+  "kite.recover_flight": {
+    "world": {
+      "scenario": "catalog_attachment",
+      "entities": {
+        "meadow": {
+          "id": "meadow",
+          "noun": "meadow",
+          "kind": "place",
+          "location": "",
+          "number": "singular",
+          "pronoun": "it",
+          "properties": [
+            "windy"
+          ],
+          "state": [],
+          "memes": {}
+        },
+        "pool_actor": {
+          "id": "pool_actor",
+          "noun": "Sam",
+          "kind": "person",
+          "location": "meadow",
+          "number": "singular",
+          "pronoun": "he",
+          "properties": [
+            "animate",
+            "can_climb",
+            "can_help",
+            "can_hold",
+            "can_repair"
+          ],
+          "state": [],
+          "memes": {
+            "Care": 0.8,
+            "Fear": 0.4846019374111061,
+            "Curiosity": 0.65,
+            "Trust": 0.35,
+            "Joy": 0.1
+          }
+        },
+        "pool_item": {
+          "id": "pool_item",
+          "noun": "kite",
+          "kind": "object",
+          "location": "meadow",
+          "number": "singular",
+          "pronoun": "it",
+          "properties": [
+            "flyable",
+            "physics:kite",
+            "portable"
+          ],
+          "state": [
+            "grounded",
+            "torn"
+          ],
+          "memes": {}
+        },
+        "pool_tool": {
+          "id": "pool_tool",
+          "noun": "tape",
+          "kind": "tool",
+          "location": "meadow",
+          "number": "singular",
+          "pronoun": "it",
+          "properties": [
+            "portable",
+            "repair"
+          ],
+          "state": [],
+          "memes": {}
+        },
+        "pool_tether": {
+          "id": "pool_tether",
+          "noun": "string",
+          "kind": "object",
+          "location": "pool_actor",
+          "number": "singular",
+          "pronoun": "it",
+          "properties": [
+            "portable",
+            "tie"
+          ],
+          "state": [],
+          "memes": {}
+        },
+        "pool_sky": {
+          "id": "pool_sky",
+          "noun": "sky",
+          "kind": "place",
+          "location": "meadow",
+          "number": "singular",
+          "pronoun": "it",
+          "properties": [
+            "airspace"
+          ],
+          "state": [],
+          "memes": {}
+        }
+      },
+      "hero": "pool_actor",
+      "helper": "",
+      "target": "pool_item",
+      "tool": "",
+      "setting": "meadow",
+      "facts": {},
+      "flags": [],
+      "history": [],
+      "focus": ""
+    },
+    "template": {
+      "schema": "attached-event-lines-v1",
+      "roles": {
+        "actor": "person",
+        "item": "object",
+        "tool": "tool",
+        "tether": "object",
+        "sky": "place"
+      },
+      "events": {
+        "e000": {
+          "op": "premise",
+          "actor": "actor",
+          "item": "item"
+        },
+        "e001": {
+          "op": "wish_flight",
+          "actor": "actor",
+          "item": "item"
+        },
+        "e002": {
+          "op": "mend_kite",
+          "actor": "actor",
+          "item": "item",
+          "tool": "tool"
+        },
+        "e003": {
+          "op": "fly_kite",
+          "actor": "actor",
+          "item": "item",
+          "tool": "tether",
+          "destination": "sky"
+        }
+      },
+      "lines": [
+        {
+          "entity": "actor",
+          "steps": [
+            "e000",
+            "e001",
+            "e002",
+            "e003"
+          ]
+        },
+        {
+          "entity": "item",
+          "steps": [
+            "e000",
+            "e001",
+            "e002",
+            "e003"
+          ]
+        },
+        {
+          "entity": "tool",
+          "steps": [
+            "e002"
+          ]
+        },
+        {
+          "entity": "tether",
+          "steps": [
+            "e003"
+          ]
+        },
+        {
+          "entity": "sky",
+          "steps": [
+            "e003"
+          ]
+        }
+      ],
+      "source": {
+        "kind": "event-pool",
+        "fragment": "kite.recover_flight",
+        "authored_source": "kite:mend+test_flight portable export",
+        "assembly": [
+          {
+            "action": "construct",
+            "entity": "meadow",
+            "reason": "brief setting",
+            "properties": [
+              "windy"
+            ]
+          },
+          {
+            "action": "import",
+            "role": "actor",
+            "entity": "pool_actor",
+            "prototype": "kite:hero",
+            "source": {
+              "world": "kite",
+              "entity": "hero",
+              "seed": 1
+            },
+            "reason": "fragment dependency",
+            "inherited_properties": [
+              "animate",
+              "can_climb",
+              "can_help",
+              "can_hold",
+              "can_repair"
+            ],
+            "inherited_state": []
+          },
+          {
+            "action": "import",
+            "role": "item",
+            "entity": "pool_item",
+            "prototype": "kite:target",
+            "source": {
+              "world": "kite",
+              "entity": "target",
+              "seed": 1
+            },
+            "reason": "explicit anchor",
+            "inherited_properties": [
+              "flyable",
+              "physics:kite",
+              "portable"
+            ],
+            "inherited_state": [
+              "grounded",
+              "torn"
+            ]
+          },
+          {
+            "action": "import",
+            "role": "tool",
+            "entity": "pool_tool",
+            "prototype": "kite:tool",
+            "source": {
+              "world": "kite",
+              "entity": "tool",
+              "seed": 1
+            },
+            "reason": "fragment dependency",
+            "inherited_properties": [
+              "portable",
+              "repair"
+            ],
+            "inherited_state": []
+          },
+          {
+            "action": "import",
+            "role": "tether",
+            "entity": "pool_tether",
+            "prototype": "kite:string",
+            "source": {
+              "world": "kite",
+              "entity": "string",
+              "seed": 1
+            },
+            "reason": "fragment dependency",
+            "inherited_properties": [
+              "portable",
+              "tie"
+            ],
+            "inherited_state": []
+          },
+          {
+            "action": "import",
+            "role": "sky",
+            "entity": "pool_sky",
+            "prototype": "magic:stage",
+            "source": "constructed sky",
+            "reason": "fragment dependency",
+            "inherited_properties": [
+              "airspace"
+            ],
+            "inherited_state": []
+          },
+          {
+            "action": "place",
+            "entity": "pool_actor",
+            "destination": "meadow",
+            "reason": "authored bundle placement"
+          },
+          {
+            "action": "place",
+            "entity": "pool_item",
+            "destination": "meadow",
+            "reason": "authored bundle placement"
+          },
+          {
+            "action": "place",
+            "entity": "pool_tool",
+            "destination": "meadow",
+            "reason": "authored bundle placement"
+          },
+          {
+            "action": "place",
+            "entity": "pool_tether",
+            "destination": "pool_actor",
+            "reason": "authored bundle placement"
+          },
+          {
+            "action": "place",
+            "entity": "pool_sky",
+            "destination": "meadow",
+            "reason": "authored bundle placement"
+          }
+        ],
+        "expansion": {
+          "e000": [
+            "0"
+          ],
+          "e001": [
+            "1"
+          ],
+          "e002": [
+            "2"
+          ],
+          "e003": [
+            "3"
+          ]
+        },
+        "retrieval": {
+          "candidates": [
+            {
+              "fragment": "kite.recover_flight",
+              "score": 1,
+              "probability": 1.0
+            }
+          ],
+          "rejected": [],
+          "selection_seed": 0,
+          "forced_fragment": null
+        },
+        "brief": {
+          "schema": "event-pool-v1",
+          "intent": "fly",
+          "setting": "meadow",
+          "environment": [
+            "windy"
+          ],
+          "roles": {
+            "item": {}
+          }
+        }
+      }
+    },
+    "bindings": {
+      "actor": "pool_actor",
+      "item": "pool_item",
+      "tool": "pool_tool",
+      "tether": "pool_tether",
+      "sky": "pool_sky"
+    }
+  }
+}

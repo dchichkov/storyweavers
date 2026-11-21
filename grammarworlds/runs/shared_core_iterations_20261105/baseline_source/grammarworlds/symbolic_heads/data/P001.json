@@ -1,0 +1,485 @@
+{
+  "id": "P001",
+  "name": "Subject-number retrieval",
+  "description": "Current clause → grammatical subject → number. Reweight singular/plural verb forms.",
+  "proposed_payload": "{subject, number}",
+  "provenance": "Authored illustrative seeds; not learned or extracted.",
+  "status": "table",
+  "examples": [
+    {
+      "id": "P001.01",
+      "description": "Plural boats governs agreement despite singular pier nearby.",
+      "query": "present_be",
+      "scope": "example",
+      "sources": [
+        {
+          "id": "source:1",
+          "channel": "grammatical_subject",
+          "scope": "example",
+          "key": "boats",
+          "confidence": 1.0
+        }
+      ],
+      "expected_features": {
+        "plural": 1.0
+      },
+      "grammar_weights": {
+        "are": 1.0,
+        "is": 1.0,
+        "waits": 1.0,
+        "rests": 1.0
+      },
+      "favored": "are",
+      "disfavored": "is"
+    },
+    {
+      "id": "P001.02",
+      "description": "One boat remains singular despite nearby rocks.",
+      "query": "present_be",
+      "scope": "example",
+      "sources": [
+        {
+          "id": "source:2",
+          "channel": "grammatical_subject",
+          "scope": "example",
+          "key": "boat",
+          "confidence": 1.0
+        }
+      ],
+      "expected_features": {
+        "singular": 1.0
+      },
+      "grammar_weights": {
+        "is": 1.0,
+        "are": 1.0,
+        "waits": 1.0,
+        "rests": 1.0
+      },
+      "favored": "is",
+      "disfavored": "are"
+    },
+    {
+      "id": "P001.03",
+      "description": "Children is an irregular plural.",
+      "query": "past_be",
+      "scope": "example",
+      "sources": [
+        {
+          "id": "source:3",
+          "channel": "grammatical_subject",
+          "scope": "example",
+          "key": "children",
+          "confidence": 1.0
+        }
+      ],
+      "expected_features": {
+        "plural": 1.0
+      },
+      "grammar_weights": {
+        "were": 1.0,
+        "was": 1.0,
+        "waits": 1.0,
+        "rests": 1.0
+      },
+      "favored": "were",
+      "disfavored": "was"
+    },
+    {
+      "id": "P001.04",
+      "description": "One child controls past copula agreement.",
+      "query": "past_be",
+      "scope": "example",
+      "sources": [
+        {
+          "id": "source:4",
+          "channel": "grammatical_subject",
+          "scope": "example",
+          "key": "child",
+          "confidence": 1.0
+        }
+      ],
+      "expected_features": {
+        "singular": 1.0
+      },
+      "grammar_weights": {
+        "was": 1.0,
+        "were": 1.0,
+        "waits": 1.0,
+        "rests": 1.0
+      },
+      "favored": "was",
+      "disfavored": "were"
+    },
+    {
+      "id": "P001.05",
+      "description": "Mass noun bread takes singular agreement.",
+      "query": "present_be",
+      "scope": "example",
+      "sources": [
+        {
+          "id": "source:5",
+          "channel": "grammatical_subject",
+          "scope": "example",
+          "key": "bread",
+          "confidence": 1.0
+        }
+      ],
+      "expected_features": {
+        "singular": 1.0
+      },
+      "grammar_weights": {
+        "is": 1.0,
+        "are": 1.0,
+        "waits": 1.0,
+        "rests": 1.0
+      },
+      "favored": "is",
+      "disfavored": "are"
+    },
+    {
+      "id": "P001.06",
+      "description": "Scissors has plural grammatical form.",
+      "query": "present_be",
+      "scope": "example",
+      "sources": [
+        {
+          "id": "source:6",
+          "channel": "grammatical_subject",
+          "scope": "example",
+          "key": "scissors",
+          "confidence": 1.0
+        }
+      ],
+      "expected_features": {
+        "plural": 1.0
+      },
+      "grammar_weights": {
+        "are": 1.0,
+        "is": 1.0,
+        "waits": 1.0,
+        "rests": 1.0
+      },
+      "favored": "are",
+      "disfavored": "is"
+    },
+    {
+      "id": "P001.07",
+      "description": "This seed uses singular collective agreement for flock.",
+      "query": "present_be",
+      "scope": "example",
+      "sources": [
+        {
+          "id": "source:7",
+          "channel": "grammatical_subject",
+          "scope": "example",
+          "key": "flock",
+          "confidence": 1.0
+        }
+      ],
+      "expected_features": {
+        "singular": 1.0
+      },
+      "grammar_weights": {
+        "is": 1.0,
+        "are": 1.0,
+        "waits": 1.0,
+        "rests": 1.0
+      },
+      "favored": "is",
+      "disfavored": "are"
+    },
+    {
+      "id": "P001.08",
+      "description": "Mice transmits plural rather than a suffix heuristic.",
+      "query": "past_be",
+      "scope": "example",
+      "sources": [
+        {
+          "id": "source:8",
+          "channel": "grammatical_subject",
+          "scope": "example",
+          "key": "mice",
+          "confidence": 1.0
+        }
+      ],
+      "expected_features": {
+        "plural": 1.0
+      },
+      "grammar_weights": {
+        "were": 1.0,
+        "was": 1.0,
+        "waits": 1.0,
+        "rests": 1.0
+      },
+      "favored": "were",
+      "disfavored": "was"
+    },
+    {
+      "id": "P001.09",
+      "description": "News ends in s but is grammatically singular.",
+      "query": "past_be",
+      "scope": "example",
+      "sources": [
+        {
+          "id": "source:9",
+          "channel": "grammatical_subject",
+          "scope": "example",
+          "key": "news",
+          "confidence": 1.0
+        }
+      ],
+      "expected_features": {
+        "singular": 1.0
+      },
+      "grammar_weights": {
+        "was": 1.0,
+        "were": 1.0,
+        "waits": 1.0,
+        "rests": 1.0
+      },
+      "favored": "was",
+      "disfavored": "were"
+    },
+    {
+      "id": "P001.10",
+      "description": "A coordinated subject transmits plural.",
+      "query": "present_be",
+      "scope": "example",
+      "sources": [
+        {
+          "id": "source:10",
+          "channel": "grammatical_subject",
+          "scope": "example",
+          "key": "Mira_and_Theo",
+          "confidence": 1.0
+        }
+      ],
+      "expected_features": {
+        "plural": 1.0
+      },
+      "grammar_weights": {
+        "are": 1.0,
+        "is": 1.0,
+        "waits": 1.0,
+        "rests": 1.0
+      },
+      "favored": "are",
+      "disfavored": "is"
+    }
+  ],
+  "input_channel": "grammatical_subject",
+  "receiver_mode": "multipliers",
+  "smoothing": 1.0,
+  "input_contract": "Supply current, scoped records in channel grammatical_subject. Scope selection and structural parsing belong to the caller; no free-text parser is implied.",
+  "table_semantics": "Positive relative word-weight multipliers.",
+  "selection": [
+    {
+      "tokens": [
+        "present_be",
+        "boats"
+      ],
+      "weight": 1.0
+    },
+    {
+      "tokens": [
+        "present_be",
+        "boat"
+      ],
+      "weight": 1.0
+    },
+    {
+      "tokens": [
+        "past_be",
+        "children"
+      ],
+      "weight": 1.0
+    },
+    {
+      "tokens": [
+        "past_be",
+        "child"
+      ],
+      "weight": 1.0
+    },
+    {
+      "tokens": [
+        "present_be",
+        "bread"
+      ],
+      "weight": 1.0
+    },
+    {
+      "tokens": [
+        "present_be",
+        "scissors"
+      ],
+      "weight": 1.0
+    },
+    {
+      "tokens": [
+        "present_be",
+        "flock"
+      ],
+      "weight": 1.0
+    },
+    {
+      "tokens": [
+        "past_be",
+        "mice"
+      ],
+      "weight": 1.0
+    },
+    {
+      "tokens": [
+        "past_be",
+        "news"
+      ],
+      "weight": 1.0
+    },
+    {
+      "tokens": [
+        "present_be",
+        "Mira_and_Theo"
+      ],
+      "weight": 1.0
+    }
+  ],
+  "projection": [
+    {
+      "tokens": [
+        "boats",
+        "plural"
+      ],
+      "weight": 1.0
+    },
+    {
+      "tokens": [
+        "boat",
+        "singular"
+      ],
+      "weight": 1.0
+    },
+    {
+      "tokens": [
+        "children",
+        "plural"
+      ],
+      "weight": 1.0
+    },
+    {
+      "tokens": [
+        "child",
+        "singular"
+      ],
+      "weight": 1.0
+    },
+    {
+      "tokens": [
+        "bread",
+        "singular"
+      ],
+      "weight": 1.0
+    },
+    {
+      "tokens": [
+        "scissors",
+        "plural"
+      ],
+      "weight": 1.0
+    },
+    {
+      "tokens": [
+        "flock",
+        "singular"
+      ],
+      "weight": 1.0
+    },
+    {
+      "tokens": [
+        "mice",
+        "plural"
+      ],
+      "weight": 1.0
+    },
+    {
+      "tokens": [
+        "news",
+        "singular"
+      ],
+      "weight": 1.0
+    },
+    {
+      "tokens": [
+        "Mira_and_Theo",
+        "plural"
+      ],
+      "weight": 1.0
+    }
+  ],
+  "receiver": [
+    {
+      "tokens": [
+        "present_be",
+        "plural",
+        "are"
+      ],
+      "weight": 4.0
+    },
+    {
+      "tokens": [
+        "present_be",
+        "plural",
+        "is"
+      ],
+      "weight": 0.25
+    },
+    {
+      "tokens": [
+        "present_be",
+        "singular",
+        "is"
+      ],
+      "weight": 4.0
+    },
+    {
+      "tokens": [
+        "present_be",
+        "singular",
+        "are"
+      ],
+      "weight": 0.25
+    },
+    {
+      "tokens": [
+        "past_be",
+        "plural",
+        "were"
+      ],
+      "weight": 4.0
+    },
+    {
+      "tokens": [
+        "past_be",
+        "plural",
+        "was"
+      ],
+      "weight": 0.25
+    },
+    {
+      "tokens": [
+        "past_be",
+        "singular",
+        "was"
+      ],
+      "weight": 4.0
+    },
+    {
+      "tokens": [
+        "past_be",
+        "singular",
+        "were"
+      ],
+      "weight": 0.25
+    }
+  ]
+}

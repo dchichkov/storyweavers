@@ -1,0 +1,81 @@
+{
+  "id": "P063",
+  "name": "Sparse-context backoff",
+  "description": "Feature-conditioned predictor → effective sample support. Back off toward grammar/base statistics when evidence is sparse.",
+  "proposed_payload": "{sample_support, shrinkage_weight}",
+  "provenance": "Authored illustrative seeds; not learned or extracted.",
+  "status": "program_required",
+  "examples": [
+    {
+      "id": "P063.01",
+      "description": "Recipient trigram has one observation.",
+      "intended_feature": "strong_backoff",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P063.02",
+      "description": "Locked-door feature has hundreds of independent observations.",
+      "intended_feature": "weaker_backoff",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P063.03",
+      "description": "Trigram absent but bigram has support.",
+      "intended_feature": "backoff_to_bigram",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P063.04",
+      "description": "Neither trigram nor bigram has support.",
+      "intended_feature": "grammar_prior",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P063.05",
+      "description": "Large counts duplicate one repeated document.",
+      "intended_feature": "reduced_effective_support",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P063.06",
+      "description": "New domain differs from the counting corpus.",
+      "intended_feature": "domain_shift_discount",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P063.07",
+      "description": "Frequent context has highly variable continuations.",
+      "intended_feature": "preserve_entropy",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P063.08",
+      "description": "Rare context has one extreme outlier.",
+      "intended_feature": "shrink_outlier",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P063.09",
+      "description": "Counts include held-out evaluation text.",
+      "intended_feature": "reject_leakage",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P063.10",
+      "description": "Support is unknown for an authored multiplier table.",
+      "intended_feature": "do_not_fabricate_sample_count",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    }
+  ],
+  "required_program": "Estimate effective sample support and fit hierarchical interpolation between trigram, bigram, and grammar priors; account for correlated counts."
+}

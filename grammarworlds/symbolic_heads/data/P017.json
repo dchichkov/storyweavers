@@ -1,0 +1,81 @@
+{
+  "id": "P017",
+  "name": "Current location",
+  "description": "Entity-focused query → latest valid location event. Favor grounded location words.",
+  "proposed_payload": "{entity, location, event_id}",
+  "provenance": "Authored illustrative seeds; not learned or extracted.",
+  "status": "program_required",
+  "examples": [
+    {
+      "id": "P017.01",
+      "description": "Mira enters the shed after leaving the garden.",
+      "intended_feature": "Mira:shed",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P017.02",
+      "description": "Theo walks into the orchard.",
+      "intended_feature": "Theo:orchard",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P017.03",
+      "description": "The cup is carried from table to shelf.",
+      "intended_feature": "cup:shelf",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P017.04",
+      "description": "Nia exits the cottage into the courtyard.",
+      "intended_feature": "Nia:courtyard",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P017.05",
+      "description": "The boat drifts from harbor to cove.",
+      "intended_feature": "boat:cove",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P017.06",
+      "description": "Omar remains in the kitchen while Mira leaves.",
+      "intended_feature": "Omar:kitchen",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P017.07",
+      "description": "A key moves twice, drawer to pocket to box.",
+      "intended_feature": "key:box",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P017.08",
+      "description": "A report says Mira is at the mill but no world move is committed.",
+      "intended_feature": "preserve_world_location_separate_from_report",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P017.09",
+      "description": "An entity's only location record was invalidated.",
+      "intended_feature": "location_unknown",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P017.10",
+      "description": "Two entities named Sam move to different places.",
+      "intended_feature": "location_by_entity_id",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    }
+  ],
+  "required_program": "Resolve an entity ID and replay or query its latest committed location, with movement chronology and entity-specific provenance."
+}

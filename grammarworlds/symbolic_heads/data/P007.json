@@ -1,0 +1,581 @@
+{
+  "id": "P007",
+  "name": "Coordination parallelism",
+  "description": "After conjunction → first conjunct's structure. Favor a parallel continuation.",
+  "proposed_payload": "{category, inflection, coordination}",
+  "provenance": "Authored illustrative seeds; not learned or extracted.",
+  "status": "table",
+  "examples": [
+    {
+      "id": "P007.01",
+      "description": "Singing and dancing maintains gerund form.",
+      "query": "and",
+      "scope": "example",
+      "sources": [
+        {
+          "id": "source:1",
+          "channel": "first_conjunct_structure",
+          "scope": "example",
+          "key": "singing",
+          "confidence": 1.0
+        }
+      ],
+      "expected_features": {
+        "gerund": 1.0
+      },
+      "grammar_weights": {
+        "dancing": 1.0,
+        "danced": 1.0,
+        "waits": 1.0,
+        "rests": 1.0
+      },
+      "favored": "dancing",
+      "disfavored": "danced"
+    },
+    {
+      "id": "P007.02",
+      "description": "Quiet but alert coordinates adjectives.",
+      "query": "but",
+      "scope": "example",
+      "sources": [
+        {
+          "id": "source:2",
+          "channel": "first_conjunct_structure",
+          "scope": "example",
+          "key": "quiet",
+          "confidence": 1.0
+        }
+      ],
+      "expected_features": {
+        "adjective": 1.0
+      },
+      "grammar_weights": {
+        "alert": 1.0,
+        "alertly": 1.0,
+        "waits": 1.0,
+        "rests": 1.0
+      },
+      "favored": "alert",
+      "disfavored": "alertly"
+    },
+    {
+      "id": "P007.03",
+      "description": "Quickly and carefully coordinates adverbs.",
+      "query": "and",
+      "scope": "example",
+      "sources": [
+        {
+          "id": "source:3",
+          "channel": "first_conjunct_structure",
+          "scope": "example",
+          "key": "quickly",
+          "confidence": 1.0
+        }
+      ],
+      "expected_features": {
+        "adverb": 1.0
+      },
+      "grammar_weights": {
+        "carefully": 1.0,
+        "careful": 1.0,
+        "waits": 1.0,
+        "rests": 1.0
+      },
+      "favored": "carefully",
+      "disfavored": "careful"
+    },
+    {
+      "id": "P007.04",
+      "description": "Walked and rested shares tense.",
+      "query": "and",
+      "scope": "example",
+      "sources": [
+        {
+          "id": "source:4",
+          "channel": "first_conjunct_structure",
+          "scope": "example",
+          "key": "walked",
+          "confidence": 1.0
+        }
+      ],
+      "expected_features": {
+        "past_verb": 1.0
+      },
+      "grammar_weights": {
+        "rested": 1.0,
+        "rest": 1.0,
+        "waits": 1.0,
+        "rests": 1.0
+      },
+      "favored": "rested",
+      "disfavored": "rest"
+    },
+    {
+      "id": "P007.05",
+      "description": "To swim or to run repeats infinitive structure.",
+      "query": "or",
+      "scope": "example",
+      "sources": [
+        {
+          "id": "source:5",
+          "channel": "first_conjunct_structure",
+          "scope": "example",
+          "key": "to_swim",
+          "confidence": 1.0
+        }
+      ],
+      "expected_features": {
+        "infinitive": 1.0
+      },
+      "grammar_weights": {
+        "to": 1.0,
+        "swam": 1.0,
+        "waits": 1.0,
+        "rests": 1.0
+      },
+      "favored": "to",
+      "disfavored": "swam"
+    },
+    {
+      "id": "P007.06",
+      "description": "A cup and a bowl coordinates noun phrases.",
+      "query": "and",
+      "scope": "example",
+      "sources": [
+        {
+          "id": "source:6",
+          "channel": "first_conjunct_structure",
+          "scope": "example",
+          "key": "a_cup",
+          "confidence": 1.0
+        }
+      ],
+      "expected_features": {
+        "noun_phrase": 1.0
+      },
+      "grammar_weights": {
+        "a": 1.0,
+        "walked": 1.0,
+        "waits": 1.0,
+        "rests": 1.0
+      },
+      "favored": "a",
+      "disfavored": "walked"
+    },
+    {
+      "id": "P007.07",
+      "description": "Tired but hopeful shares category.",
+      "query": "but",
+      "scope": "example",
+      "sources": [
+        {
+          "id": "source:7",
+          "channel": "first_conjunct_structure",
+          "scope": "example",
+          "key": "tired",
+          "confidence": 1.0
+        }
+      ],
+      "expected_features": {
+        "adjective": 1.0
+      },
+      "grammar_weights": {
+        "hopeful": 1.0,
+        "hopefully": 1.0,
+        "waits": 1.0,
+        "rests": 1.0
+      },
+      "favored": "hopeful",
+      "disfavored": "hopefully"
+    },
+    {
+      "id": "P007.08",
+      "description": "Under the bed or behind the chair shares phrase type.",
+      "query": "or",
+      "scope": "example",
+      "sources": [
+        {
+          "id": "source:8",
+          "channel": "first_conjunct_structure",
+          "scope": "example",
+          "key": "under_the_bed",
+          "confidence": 1.0
+        }
+      ],
+      "expected_features": {
+        "preposition_phrase": 1.0
+      },
+      "grammar_weights": {
+        "behind": 1.0,
+        "hidden": 1.0,
+        "waits": 1.0,
+        "rests": 1.0
+      },
+      "favored": "behind",
+      "disfavored": "hidden"
+    },
+    {
+      "id": "P007.09",
+      "description": "Has eaten and has rested repeats the auxiliary frame.",
+      "query": "and",
+      "scope": "example",
+      "sources": [
+        {
+          "id": "source:9",
+          "channel": "first_conjunct_structure",
+          "scope": "example",
+          "key": "has_eaten",
+          "confidence": 1.0
+        }
+      ],
+      "expected_features": {
+        "perfect_clause": 1.0
+      },
+      "grammar_weights": {
+        "has": 1.0,
+        "ate": 1.0,
+        "waits": 1.0,
+        "rests": 1.0
+      },
+      "favored": "has",
+      "disfavored": "ate"
+    },
+    {
+      "id": "P007.10",
+      "description": "Softly and slowly shares adverb form.",
+      "query": "and",
+      "scope": "example",
+      "sources": [
+        {
+          "id": "source:10",
+          "channel": "first_conjunct_structure",
+          "scope": "example",
+          "key": "softly",
+          "confidence": 1.0
+        }
+      ],
+      "expected_features": {
+        "adverb": 1.0
+      },
+      "grammar_weights": {
+        "slowly": 1.0,
+        "slow": 1.0,
+        "waits": 1.0,
+        "rests": 1.0
+      },
+      "favored": "slowly",
+      "disfavored": "slow"
+    }
+  ],
+  "input_channel": "first_conjunct_structure",
+  "receiver_mode": "multipliers",
+  "smoothing": 1.0,
+  "input_contract": "Supply current, scoped records in channel first_conjunct_structure. Scope selection and structural parsing belong to the caller; no free-text parser is implied.",
+  "table_semantics": "Positive relative word-weight multipliers.",
+  "selection": [
+    {
+      "tokens": [
+        "and",
+        "singing"
+      ],
+      "weight": 1.0
+    },
+    {
+      "tokens": [
+        "but",
+        "quiet"
+      ],
+      "weight": 1.0
+    },
+    {
+      "tokens": [
+        "and",
+        "quickly"
+      ],
+      "weight": 1.0
+    },
+    {
+      "tokens": [
+        "and",
+        "walked"
+      ],
+      "weight": 1.0
+    },
+    {
+      "tokens": [
+        "or",
+        "to_swim"
+      ],
+      "weight": 1.0
+    },
+    {
+      "tokens": [
+        "and",
+        "a_cup"
+      ],
+      "weight": 1.0
+    },
+    {
+      "tokens": [
+        "but",
+        "tired"
+      ],
+      "weight": 1.0
+    },
+    {
+      "tokens": [
+        "or",
+        "under_the_bed"
+      ],
+      "weight": 1.0
+    },
+    {
+      "tokens": [
+        "and",
+        "has_eaten"
+      ],
+      "weight": 1.0
+    },
+    {
+      "tokens": [
+        "and",
+        "softly"
+      ],
+      "weight": 1.0
+    }
+  ],
+  "projection": [
+    {
+      "tokens": [
+        "singing",
+        "gerund"
+      ],
+      "weight": 1.0
+    },
+    {
+      "tokens": [
+        "quiet",
+        "adjective"
+      ],
+      "weight": 1.0
+    },
+    {
+      "tokens": [
+        "quickly",
+        "adverb"
+      ],
+      "weight": 1.0
+    },
+    {
+      "tokens": [
+        "walked",
+        "past_verb"
+      ],
+      "weight": 1.0
+    },
+    {
+      "tokens": [
+        "to_swim",
+        "infinitive"
+      ],
+      "weight": 1.0
+    },
+    {
+      "tokens": [
+        "a_cup",
+        "noun_phrase"
+      ],
+      "weight": 1.0
+    },
+    {
+      "tokens": [
+        "tired",
+        "adjective"
+      ],
+      "weight": 1.0
+    },
+    {
+      "tokens": [
+        "under_the_bed",
+        "preposition_phrase"
+      ],
+      "weight": 1.0
+    },
+    {
+      "tokens": [
+        "has_eaten",
+        "perfect_clause"
+      ],
+      "weight": 1.0
+    },
+    {
+      "tokens": [
+        "softly",
+        "adverb"
+      ],
+      "weight": 1.0
+    }
+  ],
+  "receiver": [
+    {
+      "tokens": [
+        "and",
+        "gerund",
+        "dancing"
+      ],
+      "weight": 4.0
+    },
+    {
+      "tokens": [
+        "and",
+        "gerund",
+        "danced"
+      ],
+      "weight": 0.25
+    },
+    {
+      "tokens": [
+        "but",
+        "adjective",
+        "alert"
+      ],
+      "weight": 4.0
+    },
+    {
+      "tokens": [
+        "but",
+        "adjective",
+        "alertly"
+      ],
+      "weight": 0.25
+    },
+    {
+      "tokens": [
+        "and",
+        "adverb",
+        "carefully"
+      ],
+      "weight": 4.0
+    },
+    {
+      "tokens": [
+        "and",
+        "adverb",
+        "careful"
+      ],
+      "weight": 0.25
+    },
+    {
+      "tokens": [
+        "and",
+        "past_verb",
+        "rested"
+      ],
+      "weight": 4.0
+    },
+    {
+      "tokens": [
+        "and",
+        "past_verb",
+        "rest"
+      ],
+      "weight": 0.25
+    },
+    {
+      "tokens": [
+        "or",
+        "infinitive",
+        "to"
+      ],
+      "weight": 4.0
+    },
+    {
+      "tokens": [
+        "or",
+        "infinitive",
+        "swam"
+      ],
+      "weight": 0.25
+    },
+    {
+      "tokens": [
+        "and",
+        "noun_phrase",
+        "a"
+      ],
+      "weight": 4.0
+    },
+    {
+      "tokens": [
+        "and",
+        "noun_phrase",
+        "walked"
+      ],
+      "weight": 0.25
+    },
+    {
+      "tokens": [
+        "but",
+        "adjective",
+        "hopeful"
+      ],
+      "weight": 4.0
+    },
+    {
+      "tokens": [
+        "but",
+        "adjective",
+        "hopefully"
+      ],
+      "weight": 0.25
+    },
+    {
+      "tokens": [
+        "or",
+        "preposition_phrase",
+        "behind"
+      ],
+      "weight": 4.0
+    },
+    {
+      "tokens": [
+        "or",
+        "preposition_phrase",
+        "hidden"
+      ],
+      "weight": 0.25
+    },
+    {
+      "tokens": [
+        "and",
+        "perfect_clause",
+        "has"
+      ],
+      "weight": 4.0
+    },
+    {
+      "tokens": [
+        "and",
+        "perfect_clause",
+        "ate"
+      ],
+      "weight": 0.25
+    },
+    {
+      "tokens": [
+        "and",
+        "adverb",
+        "slowly"
+      ],
+      "weight": 4.0
+    },
+    {
+      "tokens": [
+        "and",
+        "adverb",
+        "slow"
+      ],
+      "weight": 0.25
+    }
+  ]
+}

@@ -1,0 +1,66 @@
+{
+  "schema": "catalog-line-v1",
+  "context": {
+    "setting": "meadow",
+    "properties": [
+      "windy"
+    ]
+  },
+  "mentions": {
+    "visitor": {
+      "name": "Mino"
+    },
+    "repairer": {
+      "name": "Sammy"
+    },
+    "musician": {
+      "name": "Niah"
+    },
+    "kite": {
+      "noun": "kite"
+    }
+  },
+  "events": [
+    {
+      "id": "premise",
+      "op": "premise",
+      "actor": "visitor",
+      "item": "kite"
+    },
+    {
+      "id": "wish",
+      "op": "wish_flight",
+      "actor": "visitor",
+      "item": "kite"
+    },
+    {
+      "id": "offer",
+      "op": "offer",
+      "actor": "repairer",
+      "listener": "visitor"
+    },
+    {
+      "id": "repair",
+      "op": "mend_kite",
+      "actor": "repairer",
+      "item": "kite"
+    },
+    {
+      "id": "picture",
+      "op": "sketch_moon",
+      "actor": "visitor"
+    },
+    {
+      "id": "flight",
+      "op": "fly_kite",
+      "actor": "visitor",
+      "item": "kite"
+    },
+    {
+      "id": "music",
+      "op": "celebrate",
+      "actor": "musician",
+      "item": "kite"
+    }
+  ]
+}

@@ -1,0 +1,162 @@
+{
+  "scenario": "key",
+  "seed": 7,
+  "story": "Nora wanted to read a storybook inside, but the door was locked. The key was missing. Dad said, \u201cI can help you.\u201d Nora said, \u201cI want to find the key.\u201d Nora fetched the lantern from the porch. She used the lantern to find the key under the bench. She unlocked the door with the key, and she stepped inside the cottage. She hung the key on the hook. Nora opened the storybook beside Dad.",
+  "qa": [
+    {
+      "id": "key:8:outcome",
+      "kind": "what_next",
+      "question": "What changed by the end?",
+      "answer": "Nora opened the storybook beside Dad. The found key was on the hook.",
+      "entity_ids": [
+        "helper",
+        "hero",
+        "storybook",
+        "target",
+        "tool"
+      ],
+      "event_ids": [
+        4,
+        5,
+        7,
+        8
+      ],
+      "evidence": [
+        {
+          "start": 151,
+          "end": 191,
+          "text": "Nora fetched the lantern from the porch."
+        },
+        {
+          "start": 192,
+          "end": 245,
+          "text": "She used the lantern to find the key under the bench."
+        },
+        {
+          "start": 318,
+          "end": 347,
+          "text": "She hung the key on the hook."
+        },
+        {
+          "start": 348,
+          "end": 385,
+          "text": "Nora opened the storybook beside Dad."
+        }
+      ],
+      "text_sha256": "cbcb76dfcca5e6ef7d9a731282a2d420165dc806a3e61cbc4fda8c14ecefccbc"
+    },
+    {
+      "id": "key:1:goal",
+      "kind": "who",
+      "question": "Who wanted to read inside?",
+      "answer": "Nora wanted to read a storybook inside. The door was locked.",
+      "entity_ids": [
+        "door",
+        "hero",
+        "storybook"
+      ],
+      "event_ids": [
+        1
+      ],
+      "evidence": [
+        {
+          "start": 0,
+          "end": 85,
+          "text": "Nora wanted to read a storybook inside, but the door was locked. The key was missing."
+        }
+      ],
+      "text_sha256": "cbcb76dfcca5e6ef7d9a731282a2d420165dc806a3e61cbc4fda8c14ecefccbc"
+    },
+    {
+      "id": "key:1:problem",
+      "kind": "what",
+      "question": "Why could they not open the door?",
+      "answer": "The door was locked, and the key was missing.",
+      "entity_ids": [
+        "door",
+        "target"
+      ],
+      "event_ids": [
+        1
+      ],
+      "evidence": [
+        {
+          "start": 0,
+          "end": 85,
+          "text": "Nora wanted to read a storybook inside, but the door was locked. The key was missing."
+        }
+      ],
+      "text_sha256": "cbcb76dfcca5e6ef7d9a731282a2d420165dc806a3e61cbc4fda8c14ecefccbc"
+    },
+    {
+      "id": "key:4:tool",
+      "kind": "where",
+      "question": "Where did the lantern come from?",
+      "answer": "Nora fetched the lantern from the porch.",
+      "entity_ids": [
+        "hero",
+        "tool"
+      ],
+      "event_ids": [
+        4
+      ],
+      "evidence": [
+        {
+          "start": 151,
+          "end": 191,
+          "text": "Nora fetched the lantern from the porch."
+        }
+      ],
+      "text_sha256": "cbcb76dfcca5e6ef7d9a731282a2d420165dc806a3e61cbc4fda8c14ecefccbc"
+    },
+    {
+      "id": "key:5:solution",
+      "kind": "how",
+      "question": "How was the missing key found?",
+      "answer": "Nora found it under the bench with the lantern. The lantern came from the porch.",
+      "entity_ids": [
+        "hero",
+        "target",
+        "tool"
+      ],
+      "event_ids": [
+        4,
+        5
+      ],
+      "evidence": [
+        {
+          "start": 151,
+          "end": 191,
+          "text": "Nora fetched the lantern from the porch."
+        },
+        {
+          "start": 192,
+          "end": 245,
+          "text": "She used the lantern to find the key under the bench."
+        }
+      ],
+      "text_sha256": "cbcb76dfcca5e6ef7d9a731282a2d420165dc806a3e61cbc4fda8c14ecefccbc"
+    },
+    {
+      "id": "key:2:help",
+      "kind": "who",
+      "question": "Who offered help?",
+      "answer": "Dad offered to help Nora.",
+      "entity_ids": [
+        "helper",
+        "hero"
+      ],
+      "event_ids": [
+        2
+      ],
+      "evidence": [
+        {
+          "start": 86,
+          "end": 113,
+          "text": "Dad said, \u201cI can help you.\u201d"
+        }
+      ],
+      "text_sha256": "cbcb76dfcca5e6ef7d9a731282a2d420165dc806a3e61cbc4fda8c14ecefccbc"
+    }
+  ]
+}

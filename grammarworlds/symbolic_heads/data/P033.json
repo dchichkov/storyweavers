@@ -1,0 +1,81 @@
+{
+  "id": "P033",
+  "name": "Active goal",
+  "description": "Actor-focused continuation → unsatisfied goal record. Favor goal-relevant actions.",
+  "proposed_payload": "{goal, progress, priority}",
+  "provenance": "Authored illustrative seeds; not learned or extracted.",
+  "status": "program_required",
+  "examples": [
+    {
+      "id": "P033.01",
+      "description": "Mira wants her lost key and has not found it.",
+      "intended_feature": "active:find_key",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P033.02",
+      "description": "Theo wants to repair a sail; sail remains torn.",
+      "intended_feature": "active:repair_sail",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P033.03",
+      "description": "Nia found the ring she was seeking.",
+      "intended_feature": "goal_satisfied",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P033.04",
+      "description": "Omar abandons his plan to leave.",
+      "intended_feature": "goal_inactive",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P033.05",
+      "description": "Mira has urgent rescue and optional decorating goals.",
+      "intended_feature": "rescue_higher_priority",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P033.06",
+      "description": "Theo wants what Nia wants but goal content is unresolved.",
+      "intended_feature": "unresolved_goal_reference",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P033.07",
+      "description": "A narrator mentions a key with no character desire.",
+      "intended_feature": "no_goal_inferred",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P033.08",
+      "description": "Two characters seek different keys.",
+      "intended_feature": "actor_specific_targets",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P033.09",
+      "description": "A goal becomes impossible after its object is destroyed.",
+      "intended_feature": "impossible_goal_flag",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P033.10",
+      "description": "A completed goal is explicitly renewed.",
+      "intended_feature": "new_goal_instance",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    }
+  ],
+  "required_program": "Query actor-specific goal records, satisfaction predicates, priorities, and abandonment history; do not infer goals merely from adjacent nouns."
+}

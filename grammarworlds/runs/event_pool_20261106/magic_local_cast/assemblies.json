@@ -1,0 +1,601 @@
+{
+  "hat.portal_bound": {
+    "world": {
+      "scenario": "catalog_attachment",
+      "entities": {
+        "ada": {
+          "id": "ada",
+          "noun": "Ada",
+          "kind": "person",
+          "location": "garden",
+          "number": "singular",
+          "pronoun": "she",
+          "properties": [
+            "can_hold",
+            "can_portal"
+          ],
+          "state": [],
+          "memes": {}
+        },
+        "teo": {
+          "id": "teo",
+          "noun": "Teo",
+          "kind": "person",
+          "location": "garden",
+          "number": "singular",
+          "pronoun": "he",
+          "properties": [
+            "can_hold"
+          ],
+          "state": [],
+          "memes": {}
+        },
+        "pet": {
+          "id": "pet",
+          "noun": "brown rabbit",
+          "kind": "animal",
+          "location": "pen",
+          "number": "singular",
+          "pronoun": "it",
+          "properties": [
+            "calm",
+            "rabbit"
+          ],
+          "state": [
+            "hungry"
+          ],
+          "memes": {}
+        },
+        "prop": {
+          "id": "prop",
+          "noun": "velvet hat",
+          "kind": "object",
+          "location": "desk",
+          "number": "singular",
+          "pronoun": "it",
+          "properties": [
+            "hat",
+            "portal_hat",
+            "rabbit_capacity"
+          ],
+          "state": [
+            "bound"
+          ],
+          "memes": {}
+        },
+        "pen": {
+          "id": "pen",
+          "noun": "pen",
+          "kind": "place",
+          "location": "garden",
+          "number": "singular",
+          "pronoun": "it",
+          "properties": [
+            "reachable"
+          ],
+          "state": [],
+          "memes": {}
+        },
+        "desk": {
+          "id": "desk",
+          "noun": "desk",
+          "kind": "place",
+          "location": "garden",
+          "number": "singular",
+          "pronoun": "it",
+          "properties": [
+            "reachable"
+          ],
+          "state": [],
+          "memes": {}
+        },
+        "bell": {
+          "id": "bell",
+          "noun": "bell",
+          "kind": "object",
+          "location": "garden",
+          "number": "singular",
+          "pronoun": "it",
+          "properties": [
+            "rings"
+          ],
+          "state": [
+            "silent"
+          ],
+          "memes": {}
+        },
+        "garden": {
+          "id": "garden",
+          "noun": "garden",
+          "kind": "place",
+          "location": "",
+          "number": "singular",
+          "pronoun": "it",
+          "properties": [],
+          "state": [],
+          "memes": {}
+        },
+        "pool_food": {
+          "id": "pool_food",
+          "noun": "carrot",
+          "kind": "food",
+          "location": "desk",
+          "number": "singular",
+          "pronoun": "it",
+          "properties": [
+            "edible",
+            "portable",
+            "rabbit_food"
+          ],
+          "state": [],
+          "memes": {}
+        },
+        "pool_wand": {
+          "id": "pool_wand",
+          "noun": "wand",
+          "kind": "tool",
+          "location": "ada",
+          "number": "singular",
+          "pronoun": "it",
+          "properties": [
+            "portable",
+            "portal_focus"
+          ],
+          "state": [],
+          "memes": {}
+        },
+        "pool_ribbon": {
+          "id": "pool_ribbon",
+          "noun": "ribbon",
+          "kind": "object",
+          "location": "prop",
+          "number": "singular",
+          "pronoun": "it",
+          "properties": [
+            "tie"
+          ],
+          "state": [
+            "tied"
+          ],
+          "memes": {}
+        }
+      },
+      "hero": "ada",
+      "helper": "teo",
+      "target": "pet",
+      "tool": "prop",
+      "setting": "garden",
+      "facts": {},
+      "flags": [],
+      "history": [],
+      "focus": ""
+    },
+    "template": {
+      "schema": "attached-event-lines-v1",
+      "roles": {
+        "actor": "person",
+        "audience": "person",
+        "rabbit": "animal",
+        "hat": "object",
+        "stage": "place",
+        "source": "place",
+        "food": "food",
+        "wand": "tool",
+        "ribbon": "object"
+      },
+      "events": {
+        "e000": {
+          "op": "show_premise",
+          "actor": "actor",
+          "audience": "audience",
+          "rabbit": "rabbit",
+          "source": "source"
+        },
+        "e001": {
+          "op": "take_hat",
+          "actor": "actor",
+          "hat": "hat",
+          "stage": "stage"
+        },
+        "e002": {
+          "op": "promise_show",
+          "actor": "actor",
+          "audience": "audience",
+          "hat": "hat"
+        },
+        "e003": {
+          "op": "failed_portal",
+          "actor": "actor",
+          "rabbit": "rabbit",
+          "hat": "hat",
+          "wand": "wand",
+          "source": "source"
+        },
+        "e004": {
+          "op": "notice_binding",
+          "actor": "audience",
+          "hat": "hat",
+          "ribbon": "ribbon"
+        },
+        "e005": {
+          "op": "untie_hat",
+          "actor": "actor",
+          "hat": "hat",
+          "ribbon": "ribbon"
+        },
+        "e006": {
+          "op": "portal_rabbit",
+          "actor": "actor",
+          "rabbit": "rabbit",
+          "hat": "hat",
+          "wand": "wand",
+          "source": "source"
+        },
+        "e007": {
+          "op": "peek_rabbit",
+          "actor": "actor",
+          "audience": "audience",
+          "rabbit": "rabbit",
+          "hat": "hat"
+        },
+        "e008": {
+          "op": "lift_rabbit",
+          "actor": "actor",
+          "audience": "audience",
+          "rabbit": "rabbit",
+          "hat": "hat"
+        },
+        "e009": {
+          "op": "applaud_reveal",
+          "actor": "audience",
+          "rabbit": "rabbit",
+          "holder": "actor"
+        },
+        "e010": {
+          "op": "settle_rabbit",
+          "actor": "actor",
+          "rabbit": "rabbit",
+          "hat": "hat",
+          "stage": "stage"
+        },
+        "e011": {
+          "op": "feed_rabbit",
+          "actor": "actor",
+          "rabbit": "rabbit",
+          "food": "food",
+          "stage": "stage"
+        },
+        "e012": {
+          "op": "rabbit_final_image",
+          "actor": "actor",
+          "rabbit": "rabbit",
+          "hat": "hat",
+          "food": "food",
+          "stage": "stage"
+        }
+      },
+      "lines": [
+        {
+          "entity": "actor",
+          "steps": [
+            "e000",
+            "e001",
+            "e002",
+            "e003",
+            "e005",
+            "e006",
+            "e007",
+            "e008",
+            "e009",
+            "e010",
+            "e011",
+            "e012"
+          ]
+        },
+        {
+          "entity": "audience",
+          "steps": [
+            "e000",
+            "e002",
+            "e004",
+            "e007",
+            "e008",
+            "e009"
+          ]
+        },
+        {
+          "entity": "rabbit",
+          "steps": [
+            "e000",
+            "e003",
+            "e006",
+            "e007",
+            "e008",
+            "e009",
+            "e010",
+            "e011",
+            "e012"
+          ]
+        },
+        {
+          "entity": "hat",
+          "steps": [
+            "e001",
+            "e002",
+            "e003",
+            "e004",
+            "e005",
+            "e006",
+            "e007",
+            "e008",
+            "e010",
+            "e012"
+          ]
+        },
+        {
+          "entity": "stage",
+          "steps": [
+            "e001",
+            "e010",
+            "e011",
+            "e012"
+          ]
+        },
+        {
+          "entity": "source",
+          "steps": [
+            "e000",
+            "e003",
+            "e006"
+          ]
+        },
+        {
+          "entity": "food",
+          "steps": [
+            "e011",
+            "e012"
+          ]
+        },
+        {
+          "entity": "wand",
+          "steps": [
+            "e003",
+            "e006"
+          ]
+        },
+        {
+          "entity": "ribbon",
+          "steps": [
+            "e004",
+            "e005"
+          ]
+        }
+      ],
+      "source": {
+        "kind": "event-pool",
+        "fragment": "hat.portal_bound",
+        "authored_source": "authored_hat:Merlin_bound_hat",
+        "assembly": [
+          {
+            "action": "construct",
+            "entity": "garden",
+            "reason": "brief setting",
+            "properties": []
+          },
+          {
+            "action": "reuse",
+            "role": "actor",
+            "entity": "ada",
+            "reason": "compatible local carrier (world role resolves ties)"
+          },
+          {
+            "action": "reuse",
+            "role": "audience",
+            "entity": "teo",
+            "reason": "compatible local carrier (world role resolves ties)"
+          },
+          {
+            "action": "reuse",
+            "role": "rabbit",
+            "entity": "pet",
+            "reason": "explicit/inferred physical binding"
+          },
+          {
+            "action": "reuse",
+            "role": "hat",
+            "entity": "prop",
+            "reason": "explicit/inferred physical binding"
+          },
+          {
+            "action": "reuse",
+            "role": "stage",
+            "entity": "desk",
+            "reason": "explicit/inferred physical binding"
+          },
+          {
+            "action": "reuse",
+            "role": "source",
+            "entity": "pen",
+            "reason": "explicit/inferred physical binding"
+          },
+          {
+            "action": "import",
+            "role": "food",
+            "entity": "pool_food",
+            "prototype": "magic:food",
+            "source": {
+              "world": "authored_hat",
+              "entity": "food"
+            },
+            "reason": "fragment dependency",
+            "inherited_properties": [
+              "edible",
+              "portable",
+              "rabbit_food"
+            ],
+            "inherited_state": []
+          },
+          {
+            "action": "import",
+            "role": "wand",
+            "entity": "pool_wand",
+            "prototype": "magic:wand",
+            "source": {
+              "world": "authored_hat",
+              "entity": "wand"
+            },
+            "reason": "fragment dependency",
+            "inherited_properties": [
+              "portable",
+              "portal_focus"
+            ],
+            "inherited_state": []
+          },
+          {
+            "action": "import",
+            "role": "ribbon",
+            "entity": "pool_ribbon",
+            "prototype": "magic:ribbon",
+            "source": {
+              "world": "authored_hat",
+              "entity": "ribbon"
+            },
+            "reason": "fragment dependency",
+            "inherited_properties": [
+              "tie"
+            ],
+            "inherited_state": [
+              "tied"
+            ]
+          },
+          {
+            "action": "place",
+            "entity": "pool_food",
+            "destination": "desk",
+            "reason": "authored bundle placement"
+          },
+          {
+            "action": "place",
+            "entity": "pool_wand",
+            "destination": "ada",
+            "reason": "authored bundle placement"
+          },
+          {
+            "action": "place",
+            "entity": "pool_ribbon",
+            "destination": "prop",
+            "reason": "authored bundle placement"
+          }
+        ],
+        "expansion": {
+          "e000": [
+            "0",
+            "show.setup",
+            "0"
+          ],
+          "e001": [
+            "0",
+            "show.setup",
+            "1"
+          ],
+          "e002": [
+            "0",
+            "show.setup",
+            "2"
+          ],
+          "e003": [
+            "1",
+            "hat.unbind",
+            "0"
+          ],
+          "e004": [
+            "1",
+            "hat.unbind",
+            "1"
+          ],
+          "e005": [
+            "1",
+            "hat.unbind",
+            "2"
+          ],
+          "e006": [
+            "2",
+            "rabbit.arrive_magic",
+            "0"
+          ],
+          "e007": [
+            "3",
+            "rabbit.reveal",
+            "0"
+          ],
+          "e008": [
+            "3",
+            "rabbit.reveal",
+            "1"
+          ],
+          "e009": [
+            "3",
+            "rabbit.reveal",
+            "2"
+          ],
+          "e010": [
+            "4",
+            "rabbit.care_ending",
+            "0"
+          ],
+          "e011": [
+            "4",
+            "rabbit.care_ending",
+            "1"
+          ],
+          "e012": [
+            "4",
+            "rabbit.care_ending",
+            "2"
+          ]
+        },
+        "retrieval": {
+          "candidates": [
+            {
+              "fragment": "hat.portal_bound",
+              "score": 3,
+              "probability": 1.0
+            }
+          ],
+          "rejected": [
+            {
+              "fragment": "hat.portal_open",
+              "reason": "incompatible existing hat"
+            },
+            {
+              "fragment": "hat.stage",
+              "reason": "incompatible existing hat"
+            }
+          ],
+          "selection_seed": 0,
+          "forced_fragment": null
+        },
+        "brief": {
+          "schema": "event-pool-v1",
+          "intent": "reveal",
+          "setting": "garden",
+          "roles": {
+            "rabbit": "pet",
+            "hat": "prop"
+          }
+        }
+      }
+    },
+    "bindings": {
+      "actor": "ada",
+      "audience": "teo",
+      "rabbit": "pet",
+      "hat": "prop",
+      "stage": "desk",
+      "source": "pen",
+      "food": "pool_food",
+      "wand": "pool_wand",
+      "ribbon": "pool_ribbon"
+    }
+  }
+}

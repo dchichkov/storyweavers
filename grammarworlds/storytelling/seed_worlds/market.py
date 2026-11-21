@@ -1,0 +1,30 @@
+from .schema import *
+SPEC=story(9,'market',dict(
+ hero=person('Mina','she'),helper=person('Aunt Farah','she'),customer=person('Mrs Dutta','she'),
+ work=place('market'),bench=place('olive stall'),counter=place('apple counter'),
+ scale=tool('brass scale',location='bench',state=('biased',)),leaf=obj('leaf',location='scale'),
+ bag=obj('apple bag',location='hero',state=('underweight',)),pie=obj('pie',location='customer')),
+ chain(
+  event('order_goal',Say('hero',Can(V('fill',R('bag')))),Say('customer',V('need',V('catch',N('bus'))),listener='hero'),
+   qa=[Q('goal','who','Who needed to catch a bus?','Mrs Dutta needed to catch a bus. Mina offered to fill her apple bag.','hero','customer','bag')]),
+  event('borrow_scale',S('hero',V('borrow',R('scale'))),patient='scale',destination='hero',guards=[at('scale','bench')],effects=[change('scale',location='hero')],portable='fetch'),
+  event('weigh_order',S('hero',V('weigh',R('bag'))),patient='bag',instrument='scale',guards=[at('scale','hero'),has('scale','biased')],effects=[change('bag',add=('weighed_once',))]),
+  event('discover_leaf',S('hero',A(V('find',R('leaf')),PP('under',Poss('scale','pan')))),S(R('bag'),B('underweight')),patient='leaf',
+   guards=[at('leaf','scale'),has('bag','weighed_once')],effects=[change('hero',add=('knows_bias',))],
+   qa=[Q('cause','what','What had affected the scale?','Mina found a leaf under the scale’s pan. She had already weighed the apple bag.','hero','leaf','scale','bag')]),
+  event('admit_error',Say('hero',B('wrong'),listener='customer'),Say('customer',Can(V('wait')),listener='hero'),
+   guards=[has('hero','knows_bias')],effects=[change('hero',add=('admitted_error',),memes={'Honesty':.9})],
+   qa=[Q('honesty','how','How did Mina respond to the mistake?','Mina admitted she was wrong. Mrs Dutta said she could wait.','hero','customer')]),
+  fork('zero_scale',
+   event('mina_clears_leaf',S('hero',V('remove',R('leaf'))),patient='leaf',guards=[at('leaf','scale'),has('hero','admitted_error')],effects=[change('leaf',location='counter'),change('scale',add=('zeroed',),remove=('biased',)),change('hero',add=('corrected_scale',))],qa=[Q('zeroing','who','Who removed the trapped leaf?','Mina removed the leaf. It had been under the scale’s pan.','hero','leaf','scale',supports=('cause',))]),
+   event('farah_clears_leaf',S('helper',V('remove',R('leaf'))),actor='helper',patient='leaf',guards=[at('leaf','scale'),has('hero','admitted_error')],effects=[change('leaf',location='counter'),change('scale',add=('zeroed',),remove=('biased',)),change('helper',add=('corrected_scale',))],qa=[Q('zeroing','who','Who removed the trapped leaf?','Aunt Farah removed the leaf. It had been under the scale’s pan.','helper','leaf','scale',supports=('cause',))])),
+  event('correct_weight',S('hero',A(V('weigh',R('bag')),'again')),S(R('bag'),B('full')),patient='bag',instrument='scale',
+   guards=[at('scale','hero'),has('scale','zeroed')],effects=[change('bag',add=('correct_weight',),remove=('underweight',))],
+   qa=[Q('correction','why','Why did Mina weigh the apples again?','Mina weighed the bag again after the leaf was removed. This time the bag was full.','hero','bag','leaf','scale',supports=('cause','honesty','zeroing'))]),
+  event('deliver_order',S('hero',V('give',R('customer'),R('bag'))),patient='bag',destination='customer',guards=[has('bag','correct_weight'),at('bag','hero')],effects=[change('bag',location='customer')],portable='transfer',
+   qa=[Q('delivery','who','Who received the corrected order?','Mina gave Mrs Dutta the apple bag. She had checked the weight again.','hero','customer','bag',supports=('correction',))]),
+  event('return_scale',S('hero',A(V('return',R('scale')),PP('to',R('bench')))),patient='scale',destination='bench',guards=[at('scale','hero')],effects=[change('scale',location='bench')],portable='put_item'),
+  event('steady_dial',S(Poss('scale','dial'),A(V('rest'),PP('at',N('zero',det='bare')))),patient='scale',guards=[has('scale','zeroed'),at('bag','customer')],
+   qa=[Q('outcome','what_next','What did the final scale reading show?','The scale’s dial rested at zero. Mina had corrected Mrs Dutta’s order.','scale','hero','bag',supports=('delivery',))])
+ ),target='bag',tool_id='scale',premise='A leaf makes a borrowed scale read too high; Mina must correct an underweight order.',
+ fidelity='Inspect the empty scale, admit the bias, remove the obstruction and reweigh before delivery.',variants=['Mina or Aunt Farah removes the leaf.'])

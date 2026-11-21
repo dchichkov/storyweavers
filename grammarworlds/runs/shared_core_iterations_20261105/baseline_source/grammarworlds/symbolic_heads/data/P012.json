@@ -1,0 +1,81 @@
+{
+  "id": "P012",
+  "name": "Lexical repetition suppression",
+  "description": "Current candidate → recent uses and their predicted mass. Reduce excess repetition, without a blanket ban.",
+  "proposed_payload": "{recent_frequency, overprediction_score}",
+  "provenance": "Authored illustrative seeds; not learned or extracted.",
+  "status": "program_required",
+  "examples": [
+    {
+      "id": "P012.01",
+      "description": "Lantern repeats five times and is overpredicted again.",
+      "intended_feature": "strong_repetition_penalty",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P012.02",
+      "description": "Lantern occurs once in a necessary first reference.",
+      "intended_feature": "no_repetition_penalty",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P012.03",
+      "description": "Quiet appears in three consecutive descriptions.",
+      "intended_feature": "adjective_penalty",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P012.04",
+      "description": "The grammar requires the proper name Mira to disambiguate.",
+      "intended_feature": "preserve_required_reference",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P012.05",
+      "description": "A quoted refrain repeats ring intentionally.",
+      "intended_feature": "quotation_exemption",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P012.06",
+      "description": "Walked and walking repeat the same lemma.",
+      "intended_feature": "lemma_level_repetition_signal",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P012.07",
+      "description": "Two uses of key are separated by many paragraphs.",
+      "intended_feature": "decayed_penalty",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P012.08",
+      "description": "The word the repeats as a function word.",
+      "intended_feature": "function_word_exemption",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P012.09",
+      "description": "A repeated name has low predicted mass already.",
+      "intended_feature": "small_or_zero_adjustment",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P012.10",
+      "description": "Boat is frequent in the story but absent from recent context.",
+      "intended_feature": "distinguish_global_frequency_from_local_repetition",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    }
+  ],
+  "required_program": "Count recent token/lemma usage, compare predicted mass to a baseline, and apply a graded penalty with exemptions for required names or quotations."
+}

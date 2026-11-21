@@ -1,0 +1,81 @@
+{
+  "id": "P034",
+  "name": "Goal blocker",
+  "description": "Active goal → recorded obstacle. Favor resolving or routing around the blocker.",
+  "proposed_payload": "{goal, blocker, dependency}",
+  "provenance": "Authored illustrative seeds; not learned or extracted.",
+  "status": "program_required",
+  "examples": [
+    {
+      "id": "P034.01",
+      "description": "Leaving requires a bridge; bridge broken.",
+      "intended_feature": "blocker:broken_bridge",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P034.02",
+      "description": "Water collection requires the well; well dry.",
+      "intended_feature": "blocker:dry_well",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P034.03",
+      "description": "Painting goal exists but unrelated cup is broken.",
+      "intended_feature": "unrelated_fact_not_blocker",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P034.04",
+      "description": "Two routes exist and only one is blocked.",
+      "intended_feature": "alternative_route_available",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P034.05",
+      "description": "Opening door requires missing key.",
+      "intended_feature": "blocker:missing_key",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P034.06",
+      "description": "Key recovered; prior key blocker resolved.",
+      "intended_feature": "remove_stale_blocker",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P034.07",
+      "description": "Rescue blocked by height and missing ladder.",
+      "intended_feature": "linked_blocker_chain",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P034.08",
+      "description": "Mira fears heights but physical route is available.",
+      "intended_feature": "distinguish_emotional_from_physical_blocker",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P034.09",
+      "description": "No plan specifies how a goal will be reached.",
+      "intended_feature": "blocker_unknown",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    },
+    {
+      "id": "P034.10",
+      "description": "A supposed blocker is based only on a false belief.",
+      "intended_feature": "belief_scoped_blocker",
+      "expected_exception": "ProgramRequired",
+      "status": "design_fixture_not_executed"
+    }
+  ],
+  "required_program": "Join active goals to failed prerequisites, causal obstacles, and alternative routes; distinguish a real blocker from incidental negative facts."
+}
